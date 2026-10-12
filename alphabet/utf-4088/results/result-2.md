@@ -5,6 +5,28 @@
 **Execution:** executed (Python reference prototype)
 **Match status:** provisional-leading-match
 
+## Ordered candidate symbol
+
+- **Ordinal:** 2 of 5
+- **Symbol ID:** UTF4088-SYMBOL-000002
+- **Candidate key:** 0x3A8AF7C9593A783F
+- **Glyph:** 8 × 12 binary bitmap; not a Unicode character.
+
+```text
+..###.#.
+#...#.#.
+####.###
+##..#..#
+.#.##..#
+..###.#.
+.####...
+..######
+..####..
+.##.###.
+####..##
+.##...#.
+```
+
 ## Input and coordinate values
 
 | Field | Value |
@@ -19,13 +41,12 @@
 | delta from previous input (seconds) | 1.25 |
 | 4D feature vector | x, y, normalized depth, normalized voltage |
 
-## Candidate symbol and wording
+## Wording and ranking
 
-- Derived symbol key: 0x3A8AF7C9593A783F (64-bit key; not a Unicode code point)
-- Anglophone wording: temporal relation
-- Latin wording: relatio temporalis
-- Dominant axes: time, relation
-- Prototype merit score: 0.360
+- **Anglophone wording:** temporal relation
+- **Latin wording:** relatio temporalis
+- **Dominant axes:** time, relation
+- **Prototype merit score:** 0.360
 
 ## Proximity to curated reference terms
 
@@ -37,15 +58,13 @@
 | 4 | cause (TERM-CAUSA) | cause | causa | 0.697586 | 0.061400 | 0.764444 | 0.307466 | 1.25 |
 | 5 | definability (TERM-DEFINIBILITAS) | definability | definibilitas | 0.775084 | 0.045034 | 0.764444 | 0.296828 | 1.55 |
 
-Nearest geometric anchor: time, 4D distance 0.053393.
-Nearest composite anchor: time, margin over runner-up 0.466701.
-
 ## Interpretation and limits
 
 Coordinates, weights, and reference anchors are curated demonstration inputs. Proximity is a numeric result of this declared prototype, not proof that a glyph has an established natural-language meaning.
 
 - Depth is an abstract iteration, not physical pressure. Normalized voltage is synthetic, not measured volts.
 - Logical time and z-layer are recorded but excluded from the 4D matching metric.
-- Latin/English labels are provisional. Definibilitas is a Latinized technical coinage, not claimed as classical Latin.
-- The key is not a Unicode scalar or registered UTF-4088 code point.
+- English/Latin labels are provisional and are not validated word origins.
+- Candidate key and bitmap are experimental outputs, not published UTF-4088 code points.
 - C++ equivalence and semantic validity have not been verified.
+

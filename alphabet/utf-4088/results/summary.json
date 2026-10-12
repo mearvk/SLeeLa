@@ -38,7 +38,22 @@
       "composite_proximity": 0.8666724765090921,
       "composite_margin": 0.520691239708399,
       "match_status": "provisional-leading-match",
-      "overall_merit_score": 0.25
+      "overall_merit_score": 0.25,
+      "symbol_id": "UTF4088-SYMBOL-000001",
+      "glyph_ascii": [
+        "#.#.####",
+        "#.#..#.#",
+        ".#.#.###",
+        ".###..##",
+        "..##..##",
+        "#..#..##",
+        "...##...",
+        "..#.....",
+        "#..####.",
+        "..##.###",
+        ".####..#",
+        "#.##...#"
+      ]
     },
     {
       "input_id": 2,
@@ -59,7 +74,22 @@
       "composite_proximity": 0.8660574829250132,
       "composite_margin": 0.4667009560227991,
       "match_status": "provisional-leading-match",
-      "overall_merit_score": 0.36
+      "overall_merit_score": 0.36,
+      "symbol_id": "UTF4088-SYMBOL-000002",
+      "glyph_ascii": [
+        "..###.#.",
+        "#...#.#.",
+        "####.###",
+        "##..#..#",
+        ".#.##..#",
+        "..###.#.",
+        ".####...",
+        "..######",
+        "..####..",
+        ".##.###.",
+        "####..##",
+        ".##...#."
+      ]
     },
     {
       "input_id": 3,
@@ -80,7 +110,22 @@
       "composite_proximity": 0.8311294473191807,
       "composite_margin": 0.35173145400823624,
       "match_status": "provisional-leading-match",
-      "overall_merit_score": 0.44999999999999996
+      "overall_merit_score": 0.44999999999999996,
+      "symbol_id": "UTF4088-SYMBOL-000003",
+      "glyph_ascii": [
+        "######.#",
+        ".##..#..",
+        "#..#.###",
+        "#.#.#..#",
+        "#.#..#..",
+        ".###.#.#",
+        "#..#..##",
+        "..#####.",
+        "##.##.#.",
+        "#.#..##.",
+        ".##.##.#",
+        "...#..##"
+      ]
     },
     {
       "input_id": 4,
@@ -101,7 +146,22 @@
       "composite_proximity": 0.835553042034755,
       "composite_margin": 0.1490699510160951,
       "match_status": "provisional-leading-match",
-      "overall_merit_score": 0.91
+      "overall_merit_score": 0.91,
+      "symbol_id": "UTF4088-SYMBOL-000004",
+      "glyph_ascii": [
+        "...#..#.",
+        "....##..",
+        "...###..",
+        ".#.....#",
+        "#.#...#.",
+        "..###...",
+        "....##.#",
+        "..##..##",
+        ".####...",
+        "##.###.#",
+        "###..##.",
+        "##...#.."
+      ]
     },
     {
       "input_id": 5,
@@ -122,7 +182,22 @@
       "composite_proximity": 0.7966527272678278,
       "composite_margin": 0.48967096237418634,
       "match_status": "provisional-leading-match",
-      "overall_merit_score": 0.32
+      "overall_merit_score": 0.32,
+      "symbol_id": "UTF4088-SYMBOL-000005",
+      "glyph_ascii": [
+        "#.#.#.##",
+        "###.#..#",
+        "....#..#",
+        "#...##.#",
+        "#.......",
+        "##.#..##",
+        ".###....",
+        ".#..###.",
+        "...#.###",
+        "...#.#.#",
+        ".##.....",
+        ".###.#.#"
+      ]
     }
   ],
   "limits": [
@@ -130,5 +205,8 @@
     "Latin and English labels are provisional wordings, not validated philological output.",
     "Proximity scores are model outputs, not factual probabilities.",
     "Native C++ engine equivalence is not verified."
-  ]
+  ],
+  "symbol_set": "symbols-ordered.json",
+  "unique_symbol_count": 5,
+  "ordering": "ascending input_id"
 }

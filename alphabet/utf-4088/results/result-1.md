@@ -5,6 +5,28 @@
 **Execution:** executed (Python reference prototype)
 **Match status:** provisional-leading-match
 
+## Ordered candidate symbol
+
+- **Ordinal:** 1 of 5
+- **Symbol ID:** UTF4088-SYMBOL-000001
+- **Candidate key:** 0xAFA5577333931820
+- **Glyph:** 8 × 12 binary bitmap; not a Unicode character.
+
+```text
+#.#.####
+#.#..#.#
+.#.#.###
+.###..##
+..##..##
+#..#..##
+...##...
+..#.....
+#..####.
+..##.###
+.####..#
+#.##...#
+```
+
 ## Input and coordinate values
 
 | Field | Value |
@@ -19,13 +41,12 @@
 | delta from previous input (seconds) | — |
 | 4D feature vector | x, y, normalized depth, normalized voltage |
 
-## Candidate symbol and wording
+## Wording and ranking
 
-- Derived symbol key: 0xAFA5577333931820 (64-bit key; not a Unicode code point)
-- Anglophone wording: spatial distance
-- Latin wording: distantia spatialis
-- Dominant axes: space, distance
-- Prototype merit score: 0.250
+- **Anglophone wording:** spatial distance
+- **Latin wording:** distantia spatialis
+- **Dominant axes:** space, distance
+- **Prototype merit score:** 0.250
 
 ## Proximity to curated reference terms
 
@@ -37,15 +58,13 @@
 | 4 | eccentricity (TERM-ECCENTRICITAS) | eccentricity | eccentricitas | 1.206524 | 0.008018 | 0.813333 | 0.289878 | 5.20 |
 | 5 | relation (TERM-RELATIO) | relation | relatio | 0.778075 | 0.044499 | 0.631111 | 0.249813 | 2.00 |
 
-Nearest geometric anchor: space, 4D distance 0.052915.
-Nearest composite anchor: space, margin over runner-up 0.520691.
-
 ## Interpretation and limits
 
 Coordinates, weights, and reference anchors are curated demonstration inputs. Proximity is a numeric result of this declared prototype, not proof that a glyph has an established natural-language meaning.
 
 - Depth is an abstract iteration, not physical pressure. Normalized voltage is synthetic, not measured volts.
 - Logical time and z-layer are recorded but excluded from the 4D matching metric.
-- Latin/English labels are provisional. Definibilitas is a Latinized technical coinage, not claimed as classical Latin.
-- The key is not a Unicode scalar or registered UTF-4088 code point.
+- English/Latin labels are provisional and are not validated word origins.
+- Candidate key and bitmap are experimental outputs, not published UTF-4088 code points.
 - C++ equivalence and semantic validity have not been verified.
+

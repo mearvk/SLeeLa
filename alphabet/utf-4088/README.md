@@ -8,7 +8,8 @@ This directory contains a reproducible five-input curation run for the experimen
 - reference-terms.json — nine curated English/Latin reference-term anchors.
 - run_inputs.py — standard-library Python reference runner.
 - results/result-1.json/.xml/.md through result-5.json/.xml/.md — complete per-input results and ranked proximity tables.
-- results/summary.json, summary.xml, summary.md — combined results table in all three requested formats.
+- results/summary.json, summary.xml, summary.md — combined results table in all three formats.
+- results/symbols-ordered.json, symbols-ordered.xml, symbols-ordered.md — unique candidate glyphs in input order 1–5.
 - METHODOLOGY.md — input, feature-space, scoring, wording, and reproducibility contract.
 
 ## Run
@@ -17,7 +18,7 @@ From the repository root, run:
 
     python3 alphabet/utf-4088/run_inputs.py
 
-The prototype validates inputs, computes four-dimensional distances, semantic profile proximity, composite rankings, derived 64-bit candidate keys, provisional English/Latin wordings, and emits all per-input and summary documents.
+The prototype validates inputs, computes four-dimensional distances, semantic profile proximity, composite rankings, derived 64-bit candidate keys, unique 8×12 candidate glyphs, provisional English/Latin wordings, and emits all per-input and summary documents.
 
 ## Important boundaries
 

@@ -39,3 +39,8 @@ The program reads inputs/input-1.json through input-5.json and reference-terms.j
 - English/Latin labels are proposed wordings based on the top two semantic-profile axes.
 - The result key is not a Unicode scalar value, an established code point, or a published registry assignment.
 - No physical voltage/pressure is applied, measured, or inferred.
+
+
+## Generated ordered glyph sequence
+
+The runner creates one deterministic 8×12 binary candidate glyph per input. Stable symbol IDs (`UTF4088-SYMBOL-000001` through `UTF4088-SYMBOL-000005`) are assigned in ascending input order. Each bitmap encodes the 64-bit candidate key in its first 64 bits and a 32-bit reversible ordinal suffix in the last 32 bits, making glyph bitmaps unique within the supported 32-bit ordinal range. The ordered outputs are `results/symbols-ordered.json`, `results/symbols-ordered.xml`, and `results/symbols-ordered.md`; they preserve input order and do not sort by proximity score. This is an internal glyph bitmap format, not Unicode.
