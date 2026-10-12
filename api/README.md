@@ -71,3 +71,16 @@ See `api/server/API.html` for the compiled `sleelas` server launcher. It starts 
 ## Regex API
 
 See `api/regex/` for the **SLeeLa Regex API 1.0.0 draft**. It introduces a deliberately simple four-level pattern language: **Find**, **Shape**, **Structure**, and **Expression**. The design puts readable text questions ahead of punctuation-heavy regex syntax while preserving a documented Unicode-aware and deterministic implementation boundary. Level exemplars are `LEVEL-1-FIND.sleela` through `LEVEL-4-EXPRESSION.sleela`; the native C foundation lives in `impl/core/sleela_regex.c` and `impl/core/sleela_regex.h`.
+
+## Language and runtime contracts
+
+- [Language API](language/README.md) — syntax-version compatibility and system references.
+- [Syntax version matrix](language/SYNTAX-VERSION-MATRIX.md) — features from 1.8 through 1.11 and their evidence boundaries.
+- [Runtime GC-hint API](runtime/gc/GC-HINT-API.md) — syntax 1.9 GC/mem hint forms, range, safety, and regression matrix.
+- [System namespace API](language/system-namespace/API.md) — evidence-backed `ran::` references.
+
+## Module completeness and build status
+
+A directory containing an API page is not automatically an independently buildable module. Some directories are documentation facades, while native implementation and tests live under `impl/`, `lib/`, or other repository areas. For every module, document the real source-of-truth location, available build target, test command, platform constraints, and whether the public behavior is implemented or design-only. Do not add duplicate source trees or speculative Makefiles merely to make folder layouts uniform.
+
+The [API catalogue](API-CATALOG.md) includes the maintenance checklist and the distinction between source-backed behavior, partial facades, and targets.
