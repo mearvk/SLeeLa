@@ -1201,6 +1201,7 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
         g_source_remove(state->footer_tick);
         state->footer_tick = 0;
     }
+    if (state->footer_scroll_tick != 0) { g_source_remove(state->footer_scroll_tick); state->footer_scroll_tick = 0; }
     if (state->throbber_tick != 0 && state->throbber != nullptr) {
         gtk_widget_remove_tick_callback(state->throbber, state->throbber_tick);
         state->throbber_tick = 0;
