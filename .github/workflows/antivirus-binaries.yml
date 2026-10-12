@@ -127,17 +127,17 @@ jobs:
           import sys
           import zipfile
           root = Path("antivirus/dist")
-          lines = []
-          for path in sorted(p for p in root.rglob("*") if p.is_file()):
-              if path.name in {"SHA256SUMS", "INTEGRITY-MANIFEST.json"}:
-                  continue
-              digest = hashlib.sha256(path.read_bytes()).hexdigest()
-              lines.append(f"{digest}  {path.relative_to(root).as_posix()}")
-          (root / "SHA256SUMS").write_text("\\n".join(lines) + "\\n", encoding="utf-8")
           subprocess.run([
               sys.executable, "antivirus/tools/sleelavirin_manifest.py",
               "--root", str(root), "--write", str(root / "INTEGRITY-MANIFEST.json")
           ], check=True)
+          lines = []
+          for path in sorted(p for p in root.rglob("*") if p.is_file()):
+              if path.name == "SHA256SUMS":
+                  continue
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              lines.append(f"{digest}  {path.relative_to(root).as_posix()}")
+          (root / "SHA256SUMS").write_text("\\n".join(lines) + "\\n", encoding="utf-8")
           subprocess.run([
               sys.executable, "antivirus/tools/sleelavirin_manifest.py",
               "--root", str(root), "--verify", str(root / "INTEGRITY-MANIFEST.json")
