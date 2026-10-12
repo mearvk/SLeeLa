@@ -371,7 +371,7 @@ def main():
                 except Exception as exc:
                     path = futures[future]
                     verdict, message = "ERROR", f"ERROR ClamAV worker failure for {path}: {type(exc).__name__}: {exc}"
-                print(message)
+                print(safe_console(message))
                 records.append({"engine": "clamav", "path": str(path), "verdict": verdict, "message": message})
                 if verdict == "DETECTED":
                     found.append(path)
