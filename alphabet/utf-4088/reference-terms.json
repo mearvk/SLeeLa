@@ -1,0 +1,262 @@
+{
+  "schema": "utf4088-known-term-reference-v1",
+  "reference_set_id": "utf4088-known-terms-v1",
+  "status": "curated experimental anchors",
+  "warning": "Anchor coordinates and semantic signatures are manually curated prototype values, not measured linguistic truths or a published UTF-4088 lexicon.",
+  "dimensions_4d": [
+    "x",
+    "y",
+    "normalized_depth",
+    "normalized_voltage"
+  ],
+  "semantic_axes": [
+    "merit",
+    "time",
+    "space",
+    "importance",
+    "eccentricity",
+    "cause",
+    "distance",
+    "definability",
+    "relation"
+  ],
+  "distance_policy": {
+    "geometry_metric": "euclidean",
+    "geometry_bandwidth": 0.25,
+    "geometry_proximity": "exp(-euclidean_distance / geometry_bandwidth)",
+    "semantic_metric": "1 - mean absolute difference across all 9 semantic axes",
+    "composite_weights": {
+      "geometry_proximity": 0.65,
+      "semantic_proximity": 0.35
+    },
+    "time_policy": "logical time is reported as metadata and is excluded from the four-dimensional distance",
+    "z_policy": "z_layer controls map traversal and is reported as metadata; it is not a fifth matching dimension"
+  },
+  "terms": [
+    {
+      "term_id": "TERM-MERITUM",
+      "concept": "merit",
+      "english": "merit",
+      "latin": "meritum",
+      "latin_status": "classical lexical form",
+      "anchor_4d": {
+        "x": 0.35,
+        "y": 0.58,
+        "normalized_depth": 0.74,
+        "normalized_voltage": 0.72
+      },
+      "reference_time_seconds": 3.5,
+      "semantic_signature": {
+        "merit": 0.95,
+        "time": 0.25,
+        "space": 0.35,
+        "importance": 0.82,
+        "eccentricity": 0.12,
+        "cause": 0.58,
+        "distance": 0.25,
+        "definability": 0.64,
+        "relation": 0.52
+      }
+    },
+    {
+      "term_id": "TERM-TEMPUS",
+      "concept": "time",
+      "english": "time",
+      "latin": "tempus",
+      "latin_status": "classical lexical form",
+      "anchor_4d": {
+        "x": 0.32,
+        "y": 0.08,
+        "normalized_depth": 0.25,
+        "normalized_voltage": 0.33
+      },
+      "reference_time_seconds": 1,
+      "semantic_signature": {
+        "merit": 0.32,
+        "time": 0.98,
+        "space": 0.25,
+        "importance": 0.4,
+        "eccentricity": 0.12,
+        "cause": 0.42,
+        "distance": 0.35,
+        "definability": 0.36,
+        "relation": 0.78
+      }
+    },
+    {
+      "term_id": "TERM-SPATIUM",
+      "concept": "space",
+      "english": "space",
+      "latin": "spatium",
+      "latin_status": "classical lexical form",
+      "anchor_4d": {
+        "x": 0.08,
+        "y": 0.08,
+        "normalized_depth": 0.03,
+        "normalized_voltage": 0.13
+      },
+      "reference_time_seconds": 0,
+      "semantic_signature": {
+        "merit": 0.2,
+        "time": 0.12,
+        "space": 0.98,
+        "importance": 0.3,
+        "eccentricity": 0.28,
+        "cause": 0.2,
+        "distance": 0.76,
+        "definability": 0.28,
+        "relation": 0.42
+      }
+    },
+    {
+      "term_id": "TERM-MOMENTUM",
+      "concept": "importance",
+      "english": "importance",
+      "latin": "momentum",
+      "latin_status": "Latin lexical form used for significance/importance",
+      "anchor_4d": {
+        "x": 0.36,
+        "y": 0.58,
+        "normalized_depth": 0.8,
+        "normalized_voltage": 0.84
+      },
+      "reference_time_seconds": 3.8,
+      "semantic_signature": {
+        "merit": 0.74,
+        "time": 0.28,
+        "space": 0.32,
+        "importance": 0.98,
+        "eccentricity": 0.18,
+        "cause": 0.52,
+        "distance": 0.28,
+        "definability": 0.62,
+        "relation": 0.55
+      }
+    },
+    {
+      "term_id": "TERM-ECCENTRICITAS",
+      "concept": "eccentricity",
+      "english": "eccentricity",
+      "latin": "eccentricitas",
+      "latin_status": "technical/late Latin form; provisional for this catalogue",
+      "anchor_4d": {
+        "x": 0.05,
+        "y": 0.08,
+        "normalized_depth": 0.92,
+        "normalized_voltage": 0.9
+      },
+      "reference_time_seconds": 5.2,
+      "semantic_signature": {
+        "merit": 0.22,
+        "time": 0.2,
+        "space": 0.52,
+        "importance": 0.4,
+        "eccentricity": 0.98,
+        "cause": 0.34,
+        "distance": 0.76,
+        "definability": 0.3,
+        "relation": 0.4
+      }
+    },
+    {
+      "term_id": "TERM-CAUSA",
+      "concept": "cause",
+      "english": "cause",
+      "latin": "causa",
+      "latin_status": "classical lexical form",
+      "anchor_4d": {
+        "x": 0.1,
+        "y": 0.58,
+        "normalized_depth": 0.52,
+        "normalized_voltage": 0.58
+      },
+      "reference_time_seconds": 2.5,
+      "semantic_signature": {
+        "merit": 0.48,
+        "time": 0.25,
+        "space": 0.28,
+        "importance": 0.42,
+        "eccentricity": 0.2,
+        "cause": 0.98,
+        "distance": 0.3,
+        "definability": 0.76,
+        "relation": 0.7
+      }
+    },
+    {
+      "term_id": "TERM-DISTANTIA",
+      "concept": "distance",
+      "english": "distance",
+      "latin": "distantia",
+      "latin_status": "classical lexical form",
+      "anchor_4d": {
+        "x": 0.9,
+        "y": 0.9,
+        "normalized_depth": 0.75,
+        "normalized_voltage": 0.65
+      },
+      "reference_time_seconds": 4,
+      "semantic_signature": {
+        "merit": 0.24,
+        "time": 0.35,
+        "space": 0.76,
+        "importance": 0.28,
+        "eccentricity": 0.54,
+        "cause": 0.3,
+        "distance": 0.98,
+        "definability": 0.28,
+        "relation": 0.52
+      }
+    },
+    {
+      "term_id": "TERM-DEFINIBILITAS",
+      "concept": "definability",
+      "english": "definability",
+      "latin": "definibilitas",
+      "latin_status": "provisional Latinized technical coinage; not claimed as a classical attestation",
+      "anchor_4d": {
+        "x": 0.55,
+        "y": 0.6,
+        "normalized_depth": 0.45,
+        "normalized_voltage": 0.73
+      },
+      "reference_time_seconds": 2.8,
+      "semantic_signature": {
+        "merit": 0.5,
+        "time": 0.25,
+        "space": 0.34,
+        "importance": 0.48,
+        "eccentricity": 0.16,
+        "cause": 0.74,
+        "distance": 0.3,
+        "definability": 0.98,
+        "relation": 0.78
+      }
+    },
+    {
+      "term_id": "TERM-RELATIO",
+      "concept": "relation",
+      "english": "relation",
+      "latin": "relatio",
+      "latin_status": "classical lexical form",
+      "anchor_4d": {
+        "x": 0.32,
+        "y": 0.4,
+        "normalized_depth": 0.5,
+        "normalized_voltage": 0.52
+      },
+      "reference_time_seconds": 2,
+      "semantic_signature": {
+        "merit": 0.42,
+        "time": 0.62,
+        "space": 0.5,
+        "importance": 0.48,
+        "eccentricity": 0.2,
+        "cause": 0.66,
+        "distance": 0.46,
+        "definability": 0.7,
+        "relation": 0.98
+      }
+    }
+  ]
+}

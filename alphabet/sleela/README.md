@@ -30,3 +30,8 @@ Run the native C++ runtime tests with: make -C lib/alphabet/native test. Compile
 ## UTF-4088 protocol relay
 
 The specialized UTF-4088 catalogue specifications are mirrored here so the general alphabet documentation remains navigable from one directory. Start at [UTF-4088-RELAY.md](UTF-4088-RELAY.md) for the map traversal and pressure protocol, National Lien Alphabetic Register, probe ordering and match-driven candidate generation, identifier/serialization contract, and SLeeLa adapter integration. The canonical protocol set and cross-directory index live in [utf-4088/ALPHABET-RELAY.md](../../utf-4088/ALPHABET-RELAY.md). Keep mirror copies synchronized when the canonical documents change.
+
+
+## UTF-4088 input and result samples
+
+The curated five-input probe run is documented in [alphabet/utf-4088/README.md](../utf-4088/README.md). It contains inputs 1–5 as JSON and each corresponding prototype result in JSON, XML, and Markdown, plus consolidated result tables in all three formats. These are reproducible experimental scores, not semantically validated symbols; see the methodology before interpreting the numbers.

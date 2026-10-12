@@ -1,0 +1,41 @@
+{
+  "schema": "utf4088-alphabet-probe-input-v1",
+  "input_id": 1,
+  "input_name": "Input 1 — layer zero, top-left",
+  "reference_set_id": "utf4088-known-terms-v1",
+  "location": {
+    "x": 0.05,
+    "y": 0.05,
+    "z_layer": 0,
+    "coordinate_system": "normalized map coordinates"
+  },
+  "pressure": {
+    "iteration": 1,
+    "minimum": 1,
+    "maximum": 50,
+    "interpretation": "abstract depth/iteration; not physical pressure"
+  },
+  "field": {
+    "voltage_normalized": 0.12,
+    "interpretation": "synthetic normalized model input; not a hardware voltage measurement"
+  },
+  "time": {
+    "logical_seconds": 0,
+    "interpretation": "deterministic logical sample time; not wall-clock timing"
+  },
+  "semantic_profile": {
+    "merit": 0.2,
+    "time": 0.12,
+    "space": 0.95,
+    "importance": 0.3,
+    "eccentricity": 0.25,
+    "cause": 0.2,
+    "distance": 0.82,
+    "definability": 0.28,
+    "relation": 0.3
+  },
+  "provenance": {
+    "profile_status": "provisional curated weights",
+    "human_meaning_validated": false
+  }
+}
