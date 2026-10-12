@@ -67,7 +67,7 @@ clamav: clamav-check
 	python3 tools/sleelavirin_clamav.py --help >/dev/null
 
 clamav-check:
-	@command -v clamscan >/dev/null 2>&1 || { echo "ClamAV not found; install ClamAV and its signature database, or set --clamscan." >&2; exit 2; }
+	@command -v clamscan >/dev/null 2>&1 || { echo "ClamAV not found; install ClamAV and ensure clamscan is on PATH." >&2; exit 2; }
 	@clamscan --version
 
 clean:
