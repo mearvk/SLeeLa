@@ -49,3 +49,7 @@ The runner creates one deterministic 8×12 binary candidate glyph per input. Sta
 ## Rigorous five-input mapping
 
 Exact application coordinates, pressure iterations, normalized voltage, logical time, four-dimensional step vectors and lengths, and the trial-only sudden-pressure rule are tabulated in [RIGOROUS.INPUTS.md](RIGOROUS.INPUTS.md). That document also distinguishes the existing state-derived key from a future transition/event key.
+
+## Source-code symbol inventory
+
+The trial's ordered glyphs are output artifacts, separate from the implementation-level geometry vocabulary. See [SYMBOLS.md](SYMBOLS.md) for the C/C++ source inventory covering four-dimensional points, field-derived features, bitmap topology, graph coalescence, and which coincidence behaviors are not yet implemented.
