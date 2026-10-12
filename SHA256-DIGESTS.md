@@ -5389,7 +5389,7 @@ f93f67bacad4205c3279122839bdcb71d2523216e662c5c9e82eb916619f624d  http/spec/PCC.
 63d4b255a5e5abf698289de42acbd6c09c9ce86837f392de5fa38b45eede2b57  ide/ARCHITECTURE.md
 735d3af253b59445fb191d20c0b5a9ff55f76ac3f017f8368dd83bd3f642ef6d  ide/README.md
 ed0227d9d1495445f83ad1e3d9a2c890055979ad6fb32672f5ce8dff5309eda5  ide/SLEELA.IDE.CONTRACT.md
-2b231bc452669e570b63e141c9c22559848f069e258e381636a488177c456a3f  ide/VERSION.md
+b0828e22e32808231660872de2cff44a083cbec8c80ddc06ce37a1703bcc4e5c  ide/VERSION.md
 a794c0bdf5e7a95ecde74f75b05169b37bfb0b54a65458fe83f17c4b39adebc8  ide/analysis/README.md
 197c6cbce2820f0696a9abbe36162f33d51a10ce764391e40191859a995d8a9c  ide/build/COMMANDS.md
 fe781ab213a07d7556b4114bd69dc2af1a21dcacfa3c0dfac45dfcdea4680139  ide/build/README.md
@@ -5406,7 +5406,7 @@ d78eca0e4d462e38015c94dadcb686c00acc17ad503c88259bfdadec59a0680a  ide/language/R
 81834446f57d7656e4ef0e7a7946d0ea4f3be969ed25ee5d181e32dbd8d4d0d4  ide/project/MODULE.md
 ca6fcf1628a210306200ecaed11c1211ae8928e0caa6fb547cddf0c0eb4fe924  ide/project/README.md
 1b467b89bd0d9d40b356d696de1470a438f3ad1489a31aedf4223c83f738c615  ide/sleela-intellij/.gitignore
-7674cc2a9612722ac2c4b78b842fcc17bbf7d44ecf529f9b137c5ead58023a9c  ide/sleela-intellij/README.md
+f8bd7d58101893c7752dbc27de36e4e56992f3cc2c372390d92d9576412e53d1  ide/sleela-intellij/README.md
 258a8fcbe8aa2200813864c4c737418784f0ed3285fb305355e52efe19f7aa7f  ide/sleela-intellij/build.gradle.kts
 693806a3da6199e57e39be12cfdc5ba3f41a03f0e51daa7c4a421863e4e4a467  ide/sleela-intellij/gradle.properties
 7e0821d895908883350587c74476b717016ab416320c44dc82a10def916c6fb5  ide/sleela-intellij/gradle/wrapper/gradle-wrapper.properties
@@ -5417,6 +5417,7 @@ e103ce5f4f3db98c2ca371ed89e224cbb53aea420e834e78ee0e6a3f3ba48898  ide/sleela-int
 b38886f682734b6776e795ea63817fad9d1ecfcd3f7d7ae5083449b801a8ddd0  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/NativeSourceClassifier.kt
 b8c4ed7ac3c78853c6e1e9920ce29aa05a319a46e9c5526adfc66eb9429b6fae  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/NativeToolchain.kt
 acfac1fe5883c1d7bd4b6d80582a64c9d8fbdd786c62d84f088cfbc8dac980bc  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaColorSettingsPage.kt
+86e6eb64e213f13252f1cc97219d9a31cc39eef79b133ac11e09cb5e37eebf69  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaCommandRunner.kt
 2d25f9dc0c70dd9f22c301671b9734d76a92166f2d01b14d04cfb9491ca3d4ad  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaCommenter.kt
 485b847cdd820ab6d73b3c2bb9ba9444e8fe63ed1626ce85d9bbb2317ca59916  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaCompilerBridge.kt
 771d24830271293274bd6629b5941f788ad12eb1ad21a383f55c0799eeed385b  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaCompilerProvider.kt
@@ -5424,7 +5425,7 @@ e888860af9385f43a89d3e37bdc2b61b86a0dcf2bbf652c175c33b8e3e32cef2  ide/sleela-int
 c31e5bac558601b958e6af97a683a9d7bc6178c8b4edf74983c7cbe63ed5c8dc  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaDiagnosticParser.kt
 7f2c2e79674496d51699c2820b2332032657efe77c6cea8cc737009fe4148179  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaFallbackLexer.kt
 a05d0584bd0b2008cae39b460ba02f3d71b7c3abc96f77053ba7af5810a8d843  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaFileType.kt
-6fe3ffa0111b43bcfe0fdb4a651f2628e35eed897091580cd2a7dbd7f0ea4968  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaIcons.kt
+bfe365a1cb04d50f024f3d8e6a7dad828d3a1cacb87f1427d2567340ab7e7378  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaIcons.kt
 93067c7b22a87afdf429a3eded65e3f20459714b5140e1e3479a175125cfbb00  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaLanguage.kt
 815bf464a1257d1b2a392ca6aa63126272e90cab900cdaf4d935d9c134e1b1d2  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaLexer.kt
 b79e9ec9341808bb59fbe62d1411156e8eff9030cb58c041b2f84e1ce892b7f8  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaLibraryIndex.kt
@@ -5433,8 +5434,30 @@ db3401f818f02df81eeead01bd3a9acc3413c9fd76740e9c4317304124f25bf3  ide/sleela-int
 b313b4830da678be8a54ef1a2ddbb4aa0af232b0c8ba543a8a7c2211e5eb80b5  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaParserDefinition.kt
 c29d793098fd6a26e5b6f2e40d390918cbe266b204b5dfce51b107d79e911aa3  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaSyntaxHighlighter.kt
 5270b7326fcfe48f7ccefa40395d7313a6fcaa5388b5070884fba1de7b250db6  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaTokenTypes.kt
-b8619356422538c3f449f5d2f09d37ba732db121e48ef074a9dccceab5ef3937  ide/sleela-intellij/src/main/resources/META-INF/plugin.xml
+e642dda55c90d206a253e71cf7fb14bb386c29ff0214b620da45a553f43e1eed  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/actions/SleelaBuildFileAction.kt
+2b2f7c47e5c230ee0774504d2be24fa1a0c7401ea766d91d96a3478626240cd0  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/actions/SleelaCheckFileAction.kt
+cb19e0539765379bf30b8985fc0beab0ba1ad1100400d24c8584ab439c9816fa  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/actions/SleelaFileAction.kt
+cbd7796a2766313637de14bf2a8ea332e8a63b771b86f8880773240c878f35e1  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/actions/SleelaNewFileAction.kt
+85d34d4e3e3b956f3f0509e52077ec2015d054d06a8e323c3f1b1f6b3c3617f4  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/actions/SleelaOpenDocsAction.kt
+ea39ad3142c352d38a04ad9e7faebb0c1966db7faa5e9de29902d740e878af77  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/actions/SleelaRunFileAction.kt
+b0c62e2e02ab4d77d966c2e17c2a1cad51b72830986f582b95dc51fce2920ca5  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/actions/SleelaTranspileFileAction.kt
+11c669795f4ac0024e342bac208276d8e9c09627f9042c377ce3046f72d0486c  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/actions/SleelaVersionAction.kt
+f94b4a2fbd6ef518e86666ba3df2ca07b1d2ee89e8ad2f39aa5b7243e409b5a0  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/run/SleelaRunConfiguration.kt
+30e95a797e5fc6dc04b13c0ccccfea2051857821f60bf62ceb4142c7f86d143c  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/run/SleelaRunConfigurationEditor.kt
+e7c133acbac2b937a4c63cce389d5e5816d23e726c751a01d0a964811c353b22  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/run/SleelaRunConfigurationProducer.kt
+1945352379e6c9ab9195a7633a8fcd5eb9eeb7669e848b92cbd8e56189fe9072  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/run/SleelaRunConfigurationType.kt
+d7dcfb59cd9d091483dcf667a15607481e2a4e82cf34c41aa1ce5531b245d510  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/toolwindow/SleelaToolWindowFactory.kt
+cfe86ba47a409c11fb1779be2886a4b0bc6bfc6d2b4e1ff3047ba1331f7b0c18  ide/sleela-intellij/src/main/resources/META-INF/plugin.xml
+ded9067f1ef1e19e3c00a9de19cdb74baaa82fe3fb84f83279f6937de1a8933f  ide/sleela-intellij/src/main/resources/fileTemplates/internal/SLeeLa Class.sleela.ft
+2b206ed30bd44246400cfb963fcc8ecc23ad5f735b25eb7743eb8bf146c3de78  ide/sleela-intellij/src/main/resources/fileTemplates/internal/SLeeLa File.sleela.ft
+e1ee8060dc751be20f614f9a109bd970d2f0f9928d1a6ca5670515399a77e27c  ide/sleela-intellij/src/main/resources/fileTemplates/internal/SLeeLa Program.sleela.ft
+954ccf6eec6fb61bf3802367f31a7221c1b6ef0d4b3c5027b64e3ac6081d27ec  ide/sleela-intellij/src/main/resources/icons/sleela-build.svg
+89926270362db2067503cf7abf9cd86f1ce3278d87c3e5954eacb7a6f3634bb6  ide/sleela-intellij/src/main/resources/icons/sleela-check.svg
 64cd101ed08fba4d0c0fad24bfba1860c668b930d5c3a2e6566f3a5b7a3bed09  ide/sleela-intellij/src/main/resources/icons/sleela-file.svg
+dae5db679e36c87d7848ae12ebdf8a0e70443d123787a9e3d7264aad1963046c  ide/sleela-intellij/src/main/resources/icons/sleela-run.svg
+72db8bc8a5974e217e1cbfe2e472137db6bdfcce04062ae6f502bf598deeb35f  ide/sleela-intellij/src/main/resources/icons/sleela-toolwindow.svg
+1d8d3c5b3189f2bd550287ad699aa7ad17bf6c165b981b5c6bd9ab06f9dd839b  ide/sleela-intellij/src/main/resources/icons/sleela-transpile.svg
+59d822f2d5c0240220c4bfefc82f2c5686e1d5e22a6336e43b865005a62060ef  ide/sleela-intellij/src/main/resources/messages/SleelaBundle.properties
 509dc95ccd77e3470ebbebb047d4b698652e0e736ee06e2f4f38a1ede81555dd  ide/sleela-intellij/src/test/kotlin/com/mearvk/sleela/ide/SleelaDiagnosticParserTest.kt
 0b62e89fbd5b08d48ccea379c411c66c2399d173bfb805679003d8275f02ae03  ide/sleela/PSI.md
 1169b2c6bd52a31d1840c26f281ccc8a0d2903748cf53124584eda12a5596ebb  ide/sleela/README.md
