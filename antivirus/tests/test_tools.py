@@ -134,6 +134,8 @@ class ScanCoordinatorTests(unittest.TestCase):
             target = scan.safe_quarantine(path, dest, [str(scanned)], stamp)
             self.assertTrue(target.exists())
             self.assertNotEqual(target.name, path.name)
+            self.assertEqual(target.read_text(), "detected")
+            self.assertEqual((dest / path.name).read_text(), "existing")
             second = scanned / "second.bin"
             second.write_text("old")
             old_stamp = scan.file_stamp(second)
