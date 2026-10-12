@@ -260,7 +260,13 @@ The interactive prompt defaults to the account username followed by '$ '
 prompt set OLD NEW changes it only if OLD matches the current prompt.
 The replacement is the remainder of the input line; this is not a general
 POSIX PS1 expansion engine.)HELP"},
-        {"footerbar", R"HELP(Topic-selected RSS footerbar feed\nCommands: footerbar chemistry; footerbar pharmacology; footerbar chemistry pharmacology.\nUse footerbar list to print the 100 supported topic terms, footerbar status to\ninspect the saved selection, and footerbar clear to disable the feed. The GUI\nchecks for selection changes every 30 seconds and refreshes RSS headlines every\n15 minutes. Network access and the curl executable are required.)HELP"},\n        {"soros", R"HELP(Soros relative time
+        {"footerbar", R"HELP(Topic-selected RSS footerbar feed
+Commands: footerbar chemistry; footerbar pharmacology; footerbar chemistry pharmacology.
+Use footerbar list to print the 100 supported topic terms, footerbar status to
+inspect the saved selection, and footerbar clear to disable the feed. The GUI
+checks for selection changes every 30 seconds and refreshes RSS headlines every
+15 minutes. Network access and the curl executable are required.)HELP"},
+        {"soros", R"HELP(Soros relative time
 Command: soros time
 Uses the terminal's local civil year: 2026 maps to 2407; each following year
 adds one (2027 maps to 2408). 2607+ is the project's Great Mystery marker,
