@@ -117,7 +117,14 @@ The current GUI displays version `1.0.0`, matching the project's initial SleelaT
 
 ## Desktop installation
 
-`make install` installs both executables and the desktop launcher:
+The CLI-only `make install` target installs `slsh`. To install the GUI and desktop launcher together with the required shell executable, build the GUI and run:
+
+```sh
+make all-gui
+make install-all
+```
+
+The staged paths are:
 
 ```text
 $(PREFIX)/bin/slsh
@@ -126,6 +133,10 @@ $(PREFIX)/share/applications/SleelaTerminal.desktop
 ```
 
 The desktop entry declares `Terminal=false`, so launching SleelaTerminal does not wrap the shell inside another terminal emulator.
+
+## Runtime validation boundary
+
+CI currently verifies that the GTK4/VTE GUI compiles on Ubuntu; compilation does not validate window startup, PTY interaction, keyboard input, clipboard behavior, or close/restart lifecycle. Before calling the GUI runtime-validated on a desktop, manually test: launch and close; run a command and verify its exit status; resize the window; type/paste/select/copy text; open and dismiss Settings; close the window while a foreground child is running; and confirm the child and GUI exit cleanly. Linux/macOS CLI CI does not claim native Windows support.
 
 ## Dependencies
 
