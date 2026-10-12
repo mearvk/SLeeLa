@@ -35,8 +35,20 @@
       "sha256": "d2732f812ee4e06282b863bbfd4ecc20e09efabcd61f5ad3fe72b943d7e6baa5"
     },
     {
+      "path": "antivirus/src/sleelavirin_native.c",
+      "sha256": "f160caac57739eece81492c77ae80a131660079e2c067daee638900fc4b71968"
+    },
+    {
+      "path": "antivirus/src/sleelavirin_native.h",
+      "sha256": "4f386e98a9973ced8a048a1b5f34e6f263fbf7647ff9a3e647a678e26706c102"
+    },
+    {
+      "path": "antivirus/src/sleelavirin_native_main.c",
+      "sha256": "b7e785923ddbdd373da582da583914c839c4d80949b28dc343ffedfdee6ffcd2"
+    },
+    {
       "path": "antivirus/src/sleelavirin_scan.c",
-      "sha256": "9e73e530547ce68856fe8faf8c6b5d693ee784d9a037f00f59ca43a9a0271cf7"
+      "sha256": "5fe914372bf693ad04e26f834ab93d4a3bcaca08588e5dd9f3d81e4b30410f4d"
     },
     {
       "path": "antivirus/src/sleelavirin_scan.h",
@@ -44,7 +56,23 @@
     },
     {
       "path": "antivirus/tests/test_scan.c",
-      "sha256": "b05d066a5035c07971d445a2352b6caa0466f4fccc1c200a1804d3e24d8d1e75"
+      "sha256": "b4e77a08aa57ca9041bdf2ea3481703eecb0769c73ce7b4d5a874c71f9b7114f"
+    },
+    {
+      "path": "antivirus/tests/test_tools.py",
+      "sha256": "581c2f63809ef7c3176cbec6f69d8b0992fdc31ccfc4c1d4c21f98264c264df0"
+    },
+    {
+      "path": "antivirus/tools/sleelavirin_clamav.py",
+      "sha256": "253ab417a4e4d49200147230aa66708d5f05dd397f7389a2eb5c264086d324b8"
+    },
+    {
+      "path": "antivirus/tools/sleelavirin_import_clamav.py",
+      "sha256": "161014fea73a636613237e2127c2e80058cf587d18aef8ba972701b4f6fdc9ee"
+    },
+    {
+      "path": "antivirus/tools/sleelavirin_scan.py",
+      "sha256": "f7241c0320f1652c7c0e294f6a2bd8237fbfdd2854262de24e6b6577ba6b08ec"
     },
     {
       "path": "api/ANNOTATION_API.md",
@@ -2699,6 +2727,10 @@
       "sha256": "4653e6aa8bec8490ae372a052c38a946d24db251d5726a9667bc44ba52cf564a"
     },
     {
+      "path": "churn/validate_data.py",
+      "sha256": "4aa04f7cfe99e9a8ca52c9365df10e9c92bee558af968bba29d353934725081b"
+    },
+    {
       "path": "citizen/sleela/CitizenDemo.sleela",
       "sha256": "f11c816d4907e80037a678e1310920042647ed8be0f4ade48d925b4bd33dbc5f"
     },
@@ -3032,7 +3064,7 @@
     },
     {
       "path": "common-rails/common-rails.sst",
-      "sha256": "bb5c6636ab03406c7a5de3008a53483e1002bc426e2c297a2f0694090441fc2b"
+      "sha256": "74a52e7897c589ea363dab405f36daf7239fde3b2557bc9de60ed2ff371da440"
     },
     {
       "path": "common-rails/heritage/HeritagePrint.c",
@@ -3124,7 +3156,7 @@
     },
     {
       "path": "common-rails/heritage/printing/cpp/CommonRailsPrinting.cpp",
-      "sha256": "fd5018cb14906f99351928d4d7fa4e63e212d0e5a1d6a136559e20c26359facc"
+      "sha256": "4568dd323f7718536eb533759bb79fb845cef31a2270178afe0ef73545718d59"
     },
     {
       "path": "common-rails/heritage/printing/cpp/CommonRailsPrinting.hpp",
@@ -51832,15 +51864,15 @@
     },
     {
       "path": "runtime/config_location.c",
-      "sha256": "1b2e9d60edbe106cee182aaf32151e37481ca32f500970f2158d30a802c7f155"
+      "sha256": "aba4443e8a18bb47541468f49d7bfc1a2dca24543db5c4dfae8214bfa88e53f9"
     },
     {
       "path": "runtime/config_location.h",
-      "sha256": "9982b9b608bc9f97837d1ba18dcbff2328ed940acead7aa6e97571f04c2f23b3"
+      "sha256": "239f90bf72a2af36ea1a7db842dc8b0351ad86d465ee78c56fd4106e5cfea6cf"
     },
     {
       "path": "runtime/config_location_smoke.c",
-      "sha256": "0f560b71b2841f48e500b42c8176db7c4811b1249b780dfd834a9e2c91228bf9"
+      "sha256": "7d62ff0daef2893f1beabc4235f03416c242a22e2bb08763ef35f5fabd5876b1"
     },
     {
       "path": "runtime/garbage_collector.c",
@@ -51880,7 +51912,7 @@
     },
     {
       "path": "runtime/vm_config.c",
-      "sha256": "6d6bb34153e019b64c44719b5833d8eefdbecab4e4922dc81dd9f3ec6f863304"
+      "sha256": "5fa900292d49b8310a23adc426e230bf02300e1f6ece19f2388ff088f0b36b96"
     },
     {
       "path": "runtime/vm_config.h",
@@ -51888,7 +51920,7 @@
     },
     {
       "path": "runtime/vm_config_smoke.c",
-      "sha256": "96c75c4fcec7f794dbdeea22ed7e8eea3ef47db0068bd26cb0a9515eccef1846"
+      "sha256": "26801772d36a26450bfdfe06feb36a50d623240c3f46e9b6c6c8d3fe8ff50647"
     },
     {
       "path": "scripts/autocheck-toolchain.sh",
@@ -51921,6 +51953,10 @@
     {
       "path": "scripts/tutorial-check.sh",
       "sha256": "c5c146a9cc9c33b12c9abcf05430d4ea5b2ae98f6d4fe1e55403cfc42386b061"
+    },
+    {
+      "path": "scripts/validate-config.py",
+      "sha256": "3654a3c91818a66f302d0b2464eb5e8ce971cd5a8363841626fad22f6dfa0be6"
     },
     {
       "path": "security/BUILD-VERIFICATION.md",
