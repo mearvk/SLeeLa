@@ -77,7 +77,7 @@ def stage_text(path, content):
     fd, temp_name = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=str(path.parent))
     temp_path = Path(temp_name)
     try:
-        with os.fdopen(fd, "w", encoding="utf-8", newline="\\n") as handle:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
             handle.write(content)
             handle.flush()
             os.fsync(handle.fileno())
@@ -163,7 +163,7 @@ def main():
         }
         # Stage provenance before changing the active index. If publication fails,
         # restore the previous index (or remove the new index if none existed).
-        manifest_temp = stage_text(manifest_path, json.dumps(manifest, indent=2, sort_keys=True) + "\\n")
+        manifest_temp = stage_text(manifest_path, json.dumps(manifest, indent=2, sort_keys=True) + "\n")
         backup_path = None
         had_output = output.exists()
         if had_output:
