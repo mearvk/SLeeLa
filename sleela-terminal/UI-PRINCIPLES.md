@@ -30,22 +30,26 @@ All colours come from a single named palette defined once at the top of the CSS
 (as CSS custom properties / `@define-color`). No raw hex values are scattered
 through individual selectors. Changing the theme means editing one block.
 
-The palette is the project's established dark rich-purple family on a near-black
-terminal:
+The window chrome retains the project's dark rich-purple family, while the
+terminal text pane and command-result surfaces use a separate neutral, high-contrast
+reading palette:
 
 | Token | Value | Use |
 |---|---|---|
-| `--sl-bg` | `#15101c` | window / terminal background (unified) |
+| `--sl-bg` | `#15101c` | window chrome background |
 | `--sl-surface` | `#21112f` | popovers, dialogs, raised surfaces |
 | `--sl-surface-hi` | `#321a4d` | gradient top / hover surface |
 | `--sl-chrome` | `#24103f` | title bar / footer base |
 | `--sl-border` | `#7f56aa` | 1px separators and surface borders |
-| `--sl-fg` | `#ffffff` | primary text / controls |
+| `--sl-fg` | `#ffffff` | chrome text / controls |
 | `--sl-fg-dim` | `rgba(255,255,255,.70)` | secondary / note text |
 | `--sl-accent` | `#9d6cff` | focus ring, suggested action |
 
-The terminal background and the window background are the **same** value so the
-terminal does not float as a separate near-black rectangle inside purple chrome.
+The terminal text pane uses `#fcfcfc` (RGB 252, 252, 252). Command-result text
+areas use charcoal `#4b4b4b` with near-white `#f2f2f2` output text. Keep this
+three-colour hierarchy consistent: near-white workspace, dark result surface,
+light readable result text. The purple/black palette belongs to the surrounding
+window chrome only.
 
 ## 3. Restraint over effects
 
