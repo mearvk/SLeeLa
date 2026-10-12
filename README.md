@@ -37,6 +37,32 @@ The repository includes a native C/C++ implementation, SLVM generation reference
 - **Safe failure:** test malformed input, resource limits, process failures, and cleanup paths.
 - **Reproducible releases:** rebuild cleanly and publish artifact hashes and release notes.
 
+## Antivirus build and integrity
+
+The Sleelavirin antivirus package includes a native SHA-256 scanner, an optional
+ClamAV adapter, source/index integrity manifests, and platform-package checksums.
+Build and test the package from the repository root:
+
+```sh
+make antivirus
+make antivirus-test
+make antivirus-integrity
+make antivirus-integrity-check MANIFEST=build/INTEGRITY-MANIFEST.json
+```
+
+The integrity manifest is generated under `antivirus/build/`; it covers tracked
+source and documentation inputs plus protected signature-index files, while
+excluding generated output and the mutable ClamAV cache. ClamAV database
+snapshots have their own manifests. Release ZIPs include `INTEGRITY-MANIFEST.json`,
+`SHA256SUMS`, and a `.sha256` sidecar. Verify downloaded archive hashes against
+a trusted value obtained independently: a checksum stored beside an archive is
+not a publisher signature. See the [Sleelavirin guide](antivirus/README.md),
+[security checklist](antivirus/SECURITY.md), and
+[antivirus build workflow](.github/workflows/antivirus-binaries.yml).
+
+A release is not considered verified until the relevant CI jobs pass on the
+exact release commit and the resulting artifacts have been checked.
+
 ## Contributing
 1. Read the documentation index and testing policy.
 2. Make focused changes with positive and negative tests.
