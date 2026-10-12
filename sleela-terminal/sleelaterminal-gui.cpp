@@ -44,6 +44,8 @@ struct ThrobberCell {
     // (tr,tg,tb) is a fully-saturated hue; tinted==false means pure base shade.
     bool tinted = false;
     double tr = 0.0, tg = 0.0, tb = 0.0;
+    int shape = 0;          // 0=circle/lava ball, 1=triangle, 2=rectangle
+    bool outline_only = false;
 };
 
 struct AppConfig {
@@ -1350,107 +1352,57 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
     if (width <= 0 || height <= 0) return;
     state->throbber_w = width;
 
-    // Keep the rail pure white edge-to-edge. Translucent glass-like colour
-    // layers are composited above it; no opaque colour block replaces the rail.
+    // The rail is exactly four pixels tall: use a clean white base and compact,
+    // monochrome moving glyphs. All geometry is clipped to the rail so no
+    // triangle rotation or circle stroke can increase its layout height.
     cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
     cairo_paint(cr);
+    cairo_save(cr);
+    cairo_rectangle(cr, 0, 0, width, height);
+    cairo_clip(cr);
 
-    const double amp = state->throbber_amp;
-    const double colour_gate = std::clamp((amp - 0.80) / 0.15, 0.0, 1.0);
     const double t = state->throbber_t;
-    const double tau = 6.283185307179586;
-    auto clamp01 = [](double v) { return std::clamp(v, 0.0, 1.0); };
-    auto mix = [](double a, double b, double f) { return a + (b - a) * f; };
-
-    // Thin-film interference palette: cyan, sapphire, violet, rose and amber.
-    auto spectrum = [&](double phase) {
-        const double p = phase - std::floor(phase);
-        const double segment = p * 5.0;
-        const int i = std::min(4, static_cast<int>(segment));
-        const double f = segment - i;
-        static const double colours[6][3] = {
-            {0.12, 0.92, 1.00}, {0.22, 0.43, 1.00},
-            {0.66, 0.30, 1.00}, {1.00, 0.35, 0.72},
-            {1.00, 0.72, 0.30}, {0.12, 0.92, 1.00}
-        };
-        return std::array<double, 3>{
-            mix(colours[i][0], colours[i + 1][0], f),
-            mix(colours[i][1], colours[i + 1][1], f),
-            mix(colours[i][2], colours[i + 1][2], f)
-        };
-    };
-
-    std::vector<double> field(static_cast<size_t>(width), 0.0);
-    std::vector<double> hue_r(static_cast<size_t>(width), 0.0);
-    std::vector<double> hue_g(static_cast<size_t>(width), 0.0);
-    std::vector<double> hue_b(static_cast<size_t>(width), 0.0);
-    std::vector<double> hue_w(static_cast<size_t>(width), 0.0);
+    const double mid_y = height * 0.5;
     for (const auto &c : state->throbber_cells) {
-        if (!c.alive || c.intensity < 0.001) continue;
-        const int x0 = std::max(0, static_cast<int>(std::floor(c.x - c.sigma * 4.8)));
-        const int x1 = std::min(width - 1, static_cast<int>(std::ceil(c.x + c.sigma * 2.4)));
-        const double flick = 0.84 + 0.16 * std::sin(t * 6.0 + c.phase);
-        for (int x = x0; x <= x1; ++x) {
-            const double dx = (x + 0.5) - c.x;
-            // Asymmetric falloff suggests a refracted edge and trailing caustic.
-            const double sigma = std::max(0.5, dx < 0.0 ? c.sigma * 1.45 : c.sigma * 0.72);
-            const double e = dx / sigma;
-            const double contribution = c.intensity * std::exp(-0.5 * e * e) * flick;
-            const size_t ix = static_cast<size_t>(x);
-            field[ix] += contribution;
-            if (c.tinted) {
-                hue_r[ix] += c.tr * contribution;
-                hue_g[ix] += c.tg * contribution;
-                hue_b[ix] += c.tb * contribution;
-                hue_w[ix] += contribution;
-            }
+        if (!c.alive || c.intensity < 0.015) continue;
+        const double x = c.x;
+        const double r = std::clamp(1.15 + c.base_intensity * 0.55, 1.15, 1.70);
+        const double fade = std::clamp(c.intensity * 1.5, 0.0, 1.0);
+        const double shade = c.outline_only ? 0.30 : (0.38 + 0.48 * c.base_intensity);
+        const double grey = std::clamp(1.0 - shade * fade, 0.42, 0.96);
+        cairo_set_line_width(cr, 0.75);
+        cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+        cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
+        cairo_set_source_rgba(cr, grey, grey, grey, std::clamp(0.28 + 0.72 * fade, 0.0, 1.0));
+
+        // Keep the shapes nearly level: only a small angular wobble is allowed
+        // because the entire rail is 4px high.
+        const double angle = 0.10 * std::sin(t * 1.1 + c.phase);
+        cairo_save(cr);
+        cairo_translate(cr, x, mid_y);
+        cairo_rotate(cr, angle);
+
+        if (c.shape == 0) { // lava ball: circular bead, filled or outline-only
+            cairo_arc(cr, 0.0, 0.0, r, 0.0, 6.283185307179586);
+            if (c.outline_only) cairo_stroke(cr);
+            else cairo_fill(cr);
+        } else if (c.shape == 1) { // compact triangle
+            cairo_move_to(cr, 0.0, -r);
+            cairo_line_to(cr, r * 0.92, r * 0.72);
+            cairo_line_to(cr, -r * 0.92, r * 0.72);
+            cairo_close_path(cr);
+            if (c.outline_only) cairo_stroke(cr);
+            else cairo_fill(cr);
+        } else { // short horizontal rectangle
+            const double half_w = r * 1.15;
+            const double half_h = std::min(1.05, r * 0.62);
+            cairo_rectangle(cr, -half_w, -half_h, half_w * 2.0, half_h * 2.0);
+            if (c.outline_only) cairo_stroke(cr);
+            else cairo_fill(cr);
         }
+        cairo_restore(cr);
     }
-
-    for (int x = 0; x < width; ++x) {
-        const size_t ix = static_cast<size_t>(x);
-        const double f = clamp01(field[ix] * (0.48 + 0.92 * amp));
-        if (f < 0.003) continue;
-
-        const double xf = static_cast<double>(x) / std::max(1, width);
-        const double sway = 0.76 + 0.24 * (0.5 + 0.5 *
-            std::sin(xf * tau * 1.15 - t * 1.25 + 0.35 * std::sin(t * 0.31)));
-        const double band_phase = xf * 1.65 - t * 0.075 + 0.07 * std::sin(t * 0.19 + xf * tau);
-        const auto prism = spectrum(band_phase);
-
-        double tr = 0.10, tg = 0.22, tb = 0.42;
-        if (hue_w[ix] > 0.0001 && colour_gate > 0.0) {
-            const double hue_mix = colour_gate * std::min(1.0, f);
-            tr = mix(tr, hue_r[ix] / hue_w[ix], hue_mix);
-            tg = mix(tg, hue_g[ix] / hue_w[ix], hue_mix);
-            tb = mix(tb, hue_b[ix] / hue_w[ix], hue_mix);
-        }
-        const double iridescence = 0.16 + 0.62 * colour_gate;
-        tr = mix(tr, prism[0], iridescence);
-        tg = mix(tg, prism[1], iridescence);
-        tb = mix(tb, prism[2], iridescence);
-
-        // Transparent coloured body and a moving specular line create the glass edge.
-        const double alpha = std::clamp(f * sway * (0.28 + 0.38 * amp), 0.0, 0.78);
-        cairo_set_source_rgba(cr, tr, tg, tb, alpha);
-        cairo_rectangle(cr, x, 0, 1, height);
-        cairo_fill(cr);
-
-        const double glint_phase = std::sin(xf * tau * 2.3 - t * 2.2 + std::sin(t * 0.7));
-        if (f > 0.12 && glint_phase > 0.80) {
-            const double glint_alpha = (glint_phase - 0.80) * 0.42 * f;
-            cairo_set_source_rgba(cr, 0.82, 0.98, 1.0, glint_alpha);
-            cairo_rectangle(cr, x, 0, 1, height);
-            cairo_fill(cr);
-        }
-
-        // A restrained spectral edge gives the cell a holographic rim.
-        if (x > 0 && (static_cast<int>(x + t * 13.0) % 17) < 2 && f > 0.20) {
-            cairo_set_source_rgba(cr, prism[0], prism[1], prism[2], 0.24 * f);
-            cairo_rectangle(cr, x, 0, 1, height);
-            cairo_fill(cr);
-        }
-    }
+    cairo_restore(cr);
 }
 
 // Spawn a fresh excitation. Birth position spans the whole 0-100% of the strip
@@ -1512,36 +1464,25 @@ void throbber_spawn(AppState *state, int W) {
         c.x = g_random_double() * W;                 // occasional anywhere in 0-100%
     }
 
-    // Varied speed: some children glide, some race. Wider spread so the field
-    // reads as many independent reflexes rather than a uniform conveyor.
-    c.v = 14.0 + g_random_double() * g_random_double() * 150.0; // skewed: mostly slow, a few fast
+    // Keep the particles moving at a fairly even horizontal pace. Small
+    // per-particle variation adds life without making the strip look erratic.
+    c.v = 26.0 + g_random_double() * 12.0;
     c.a = 0.0;
     c.j = 0.0;
-    c.base_intensity = 0.35 + g_random_double() * 0.6; // relative shade strength
-    c.intensity = 0.0;                                  // eases up from birth (fade-in)
+    c.base_intensity = 0.35 + g_random_double() * 0.6;
+    c.intensity = 0.0;
     c.energy = 1.0;
-    c.sigma = 7.0 + g_random_double() * 25.0;        // glow half-width; broad cells can exceed 50px overall
-    c.speed_mul = 0.45 + g_random_double() * g_random_double() * 2.6; // 0.45..~3x, skewed slow
+    c.sigma = 1.0 + g_random_double() * 0.7;
+    c.speed_mul = 0.85 + g_random_double() * 0.30;
+    c.shape = g_random_int_range(0, 3);
+    c.outline_only = (g_random_double() < 0.45);
     c.phase = g_random_double() * 6.2831853;
     // 1 in 30 children may pause or run right->left for 20-50 px.
     c.retro = (g_random_int_range(0, 30) == 0);
     c.retro_px = c.retro ? (20.0 + g_random_double() * 30.0) : 0.0;
 
-    // Each child carries a latent hue (orange / green / blue / red). It stays
-    // dormant at normal wattage and only surfaces under strong amplification
-    // (see throbber_draw). Give most children a hue so colour can appear when
-    // the field is driven hard.
-    static const double hues[4][3] = {
-        {1.00, 0.55, 0.10},  // orange
-        {0.20, 0.85, 0.35},  // green
-        {0.30, 0.60, 1.00},  // blue
-        {1.00, 0.25, 0.25},  // red
-    };
-    c.tinted = (g_random_double() < 0.75);
-    if (c.tinted) {
-        const int h = g_random_int_range(0, 4);
-        c.tr = hues[h][0]; c.tg = hues[h][1]; c.tb = hues[h][2];
-    }
+    // This effect is intentionally monochrome: no coloured spill or terminal glow.
+    c.tinted = false;
 
     state->throbber_cells.push_back(c);
 }
@@ -1622,28 +1563,11 @@ gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_da
         c.v += c.a * dt;
         c.x += c.v * dt;
 
-        // --- Centre sweet spot (40-60%), soft shoulders to ~35/65% ----------
-        // The pulsing concentrates in the middle of the strip. A column's
-        // "centre weight" is ~1 across 40-60% and falls off outside it; pulses
-        // that drift away from centre both glow less AND decay faster, so the
-        // visible life of a pulse is spent mainly in the 35-65% band.
+        // Uniform life across the rail: particles should traverse most of
+        // the width horizontally instead of vanishing around the centre.
         const double frac = (W > 0) ? (c.x / W) : 0.5;
-        double dist = std::fabs(frac - 0.50);
-        double center_weight;
-        if (dist <= 0.10) {
-            center_weight = 1.0;                         // flat top across 40-60%
-        } else {
-            // Gaussian shoulders beyond +/-10%: ~0.37 at the 35/65% edges, less
-            // further out, so off-centre pulses clearly recede.
-            double e = (dist - 0.10) / 0.07;
-            center_weight = std::exp(-0.5 * e * e);
-        }
-
-        // Energy (the "amplification series") decays faster the farther the
-        // pulse is from the sweet spot: in-band it lingers, out-of-band it dies
-        // off quickly because it "wasn't of the sweet spot".
-        double decay = 0.10 + 0.05 * state->throbber_amp
-                     + 0.9 * (1.0 - center_weight);       // off-centre penalty
+        const double center_weight = 1.0;
+        double decay = 0.13 + 0.04 * state->throbber_amp;
         c.energy -= dt * decay;
         if (c.energy < 0.0) c.energy = 0.0;
 
