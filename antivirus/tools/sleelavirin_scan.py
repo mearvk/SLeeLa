@@ -118,7 +118,7 @@ def main():
                 if result.stderr: print(result.stderr, file=sys.stderr)
                 if result.returncode == 1:
                     print('CLAMAV_DETECTION')
-                    found.extend(Path(line.split(': ', 1)[0]) for line in result.stdout.splitlines() if ' FOUND' in line)
+                    found.extend(Path(line.rsplit(': ', 1)[0]) for line in result.stdout.splitlines() if ' FOUND' in line)
                     if args.action == 'stop': break
                 elif result.returncode != 0:
                     print(f'CLAMAV_ERROR exit={result.returncode}', file=sys.stderr)
