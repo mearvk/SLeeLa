@@ -27,3 +27,4 @@ This is an executed Python reference prototype, not a claim that the native C++ 
 The canonical UTF-4088 specification set remains under [../../utf-4088/](../../utf-4088/README.md). The general alphabet documentation links to this run via [../sleela/README.md](../sleela/README.md).
 
 - [RIGOROUS.INPUTS.md](RIGOROUS.INPUTS.md) — exact five-input application coordinates, 4D points and step lengths, pressure/voltage values, logical time, and the trial-specific sudden-pressure rule.
+- [SYMBOLS.md](SYMBOLS.md) — editable review catalogue for the five 4D-study symbols, their stable IDs, keys, 8×12 glyphs, provisional labels, and source-layer editing rules.
