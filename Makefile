@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps install install-product tutorial-check tests server config route clean help
+.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps install install-product tutorial-check tests server config route common-rails clean help
 
-all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route
+all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
@@ -74,6 +74,9 @@ route:
 config:
 	@make -C config test
 
+common-rails:
+	$(MAKE) -C common-rails check
+
 clean:
 	$(MAKE) -C impl clean
 	$(MAKE) -C java28 clean
@@ -104,6 +107,7 @@ help:
 	@echo "  make server    Build api/server/"
 	@echo "  make route     Validate unified route data"
 	@echo "  make config    Validate configuration policy and run location/VM smoke tests"
+	@echo "  make common-rails Build and run CommonRails C/C++/Java/Sleela/SST checks"
 	@echo "  make clean     Remove outputs from dispatched build systems"
 	@echo ""
 	@echo "Product-specific build folders and Makefiles remain authoritative."
