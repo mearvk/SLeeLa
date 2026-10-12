@@ -1,48 +1,42 @@
 # SLeeLa Configuration Index
 
-Shared/core configuration has one standard root: `config/`.
+Shared configuration policy and templates live in repository config/. Runtime configuration is resolved separately to one canonical absolute root.
 
-## Core
-- `config/config-location.conf` — configuration-location policy
-- `config/vm.conf` — VM generation/profile
-- `config/slvm-runtime.conf` — runtime defaults
-- `config/*.properties.example` — platform/example templates
+## Global policy and templates
+
+- config/config-location.conf — authoritative location policy parsed by the C resolver
+- config/sleela.conf — unified runtime settings and mirrored path policy
+- config/vm.conf — persistent VM selection defaults
+- config/slvm-runtime.conf — SLVM/6 runtime profile
+- config/*.properties.example — platform, BODI, and common-runtime examples
+- config/CONFIGURATION.md — unified configuration contract
+- config/CONFIG-LOCATION.md — path resolution and precedence
+- config/VM-CONFIG.md — VM selection contract
+- config/Makefile — configuration validation and resolver smoke test
+
+## Canonical runtime locations
+
+- Project: <project-root>/.sleela/config/
+- Installed package: <install-root>/Config/
+- Unix-like system fallback: /etc/sleela/
+- Windows system fallback: C:\\ProgramData\\SLeeLa\\Config\\
+
+The repository source config/ directory is not the default runtime root.
 
 ## Component-local configuration
-- `api/audio-mixer/`
-- `http-3.0/`
-- `http-8.0/`, `http-9.0/`
-- `http/8.0/`, `http/9.0/`, `http/PRO/`
-- `preferred-routers/`
-- `server-edition/*/config/`
-- `telephony-skya/config/`
-- `sleela-virtual-machine/*/config/`
 
-These are discoverable component configurations, not competing global roots.
+Component-private settings may stay with their component for packaging or isolation. Examples include api/audio-mixer/, http-3.0/, http-8.0/, http-9.0/, http/8.0/, http/9.0/, http/PRO/, preferred-routers/, server-edition/*/config/, telephony-skya/config/, and sleela-virtual-machine/*/config/. These are component configurations, not competing global roots.
 
 ## Generated OS configuration (OS Creator™)
 
-OS Creator™ (`lib/os/os-creator/`) writes an **output** configuration set into
-the OS development tree it produces, rooted at `/os-development` (not under this
-repository). These are generated per-build, not repository configuration:
+OS Creator™ (lib/os/os-creator/) emits configuration into the generated OS development tree rooted at /os-development, outside this repository: /os-development/config/os.conf; firmware/uefi/uefi.conf and firmware/bios/bios.cfg; boot/loader/loader.conf and boot/kernel-loader/kernel-loader.conf; kernel/driver-loader/drivers.conf; userspace/os-loader/services.conf; desktop/gui-loader/session.conf (desktop editions). These outputs are documented in lib/os/os-creator/ARCHITECTURE.md and do not participate in repository configuration resolution.
 
-- `/os-development/config/os.conf` — the OS model's global identity/config
-- `/os-development/firmware/uefi/uefi.conf`, `/firmware/bios/bios.cfg`
-- `/os-development/boot/loader/loader.conf`, `/boot/kernel-loader/kernel-loader.conf`
-- `/os-development/kernel/driver-loader/drivers.conf`
-- `/os-development/userspace/os-loader/services.conf`
-- `/os-development/desktop/gui-loader/session.conf` (desktop editions only)
+## Rules
 
-They are emitted by the OS Creator™ piece emitters and documented in
-`lib/os/os-creator/ARCHITECTURE.md`; they do not participate in the repository
-configuration policy below.
-
-## Rule for new configuration
-
-1. Shared/runtime-wide configuration goes under root `config/`.
-2. Component-private configuration stays with its component.
-3. Every new global configuration file is documented here.
-4. Installed packages expose `<install-root>/Config/`.
-5. Administrator-managed configuration may use `/etc/sleela/`.
-6. Generated OS trees (OS Creator™) carry their own `/os-development/config/`,
-   which is build output, not repository configuration.
+1. Shared/runtime-wide policy goes in root config/.
+2. Component-private settings stay with their component.
+3. Document every new global policy/template here.
+4. Installed packages expose <install-root>/Config/.
+5. System fallback is /etc/sleela/ on Unix-like systems and C:\\ProgramData\\SLeeLa\\Config\\ on Windows.
+6. Generated OS configuration is build output, not repository configuration.
+7. Run make config before submitting configuration changes.
