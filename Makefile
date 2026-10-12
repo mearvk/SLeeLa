@@ -5,7 +5,7 @@
 
 .PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check install install-product tutorial-check tests server config route common-rails clean help
 
-all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails codecs
+all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails codecs churn
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
@@ -58,6 +58,16 @@ codecs:
 codecs-test:
 	$(MAKE) -C codecs test
 
+# Churn data/model sets and their Java constraint-report tools.
+churn:
+	$(MAKE) -C churn all
+
+churn-test:
+	$(MAKE) -C churn test
+
+churn-data-check:
+	$(MAKE) -C churn data-check
+
 install:
 	$(MAKE) -C install all
 
@@ -93,6 +103,7 @@ clean:
 	$(MAKE) -C lib/vm clean
 	$(MAKE) -C tests clean
 	$(MAKE) -C codecs clean
+	$(MAKE) -C churn clean
 	@make -C config clean
 
 help:
@@ -106,6 +117,9 @@ help:
 	@echo "  make vm        Build lib/vm/"
 	@echo "  make codecs    Build the C/C++ codec registry and plugins"
 	@echo "  make codecs-test Build and run codec registry/manager tests"
+	@echo "  make churn     Compile the five churn constraint-report tools and validate data"
+	@echo "  make churn-test Run all five churn constraint reports"
+	@echo "  make churn-data-check Validate churn JSON/XML/CSV/TXT files"
 	@echo "  make jetbrains Show JetBrains source acquisition helpers"
 	@echo "  make connector Build all optional native database/data-source connectors"
 	@echo "  make connector-test Run available offline connector tests"
