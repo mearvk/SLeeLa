@@ -135,3 +135,8 @@ The canonical documentation set for this existing directory is indexed in [ALPHA
 The same protocol set is mirrored for discovery in [alphabet/sleela/UTF-4088-RELAY.md](../alphabet/sleela/UTF-4088-RELAY.md). This directory remains the canonical home for UTF-4088-specific protocols, catalogue design documents, implementation, registry data, and tests; `/alphabet/sleela` contains SLeeLa's broader alphabet documentation and synchronized mirrors.
 
 Use the relay to navigate the additional character-map, gradation, symbol-weight, natural-die, voltage-field, build, registry, and testing material. The relay does not claim that proposed probe scheduling or semantic validation has been implemented end to end.
+
+
+## Five-input application trial mapping
+
+The detailed five-point mapping and sudden-pressure transition rules are maintained in [alphabet/utf-4088/RIGOROUS.INPUTS.md](../alphabet/utf-4088/RIGOROUS.INPUTS.md). The tables report normalized model inputs only; they do not claim physical pressure or voltage measurements.

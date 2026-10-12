@@ -44,3 +44,8 @@ The program reads inputs/input-1.json through input-5.json and reference-terms.j
 ## Generated ordered glyph sequence
 
 The runner creates one deterministic 8×12 binary candidate glyph per input. Stable symbol IDs (`UTF4088-SYMBOL-000001` through `UTF4088-SYMBOL-000005`) are assigned in ascending input order. Each bitmap encodes the 64-bit candidate key in its first 64 bits and a 32-bit reversible ordinal suffix in the last 32 bits, making glyph bitmaps unique within the supported 32-bit ordinal range. The ordered outputs are `results/symbols-ordered.json`, `results/symbols-ordered.xml`, and `results/symbols-ordered.md`; they preserve input order and do not sort by proximity score. This is an internal glyph bitmap format, not Unicode.
+
+
+## Rigorous five-input mapping
+
+Exact application coordinates, pressure iterations, normalized voltage, logical time, four-dimensional step vectors and lengths, and the trial-only sudden-pressure rule are tabulated in [RIGOROUS.INPUTS.md](RIGOROUS.INPUTS.md). That document also distinguishes the existing state-derived key from a future transition/event key.
