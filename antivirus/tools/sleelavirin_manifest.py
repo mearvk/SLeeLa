@@ -7,7 +7,6 @@ local database cache. ClamAV snapshots have their own manifest and validator.
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path
 import sys
 
@@ -34,7 +33,7 @@ def sha256(path):
 
 def ignored(path, root, manifest_path):
     rel = path.relative_to(root)
-    if path.resolve() == manifest_path.resolve():
+    if path.resolve() == manifest_path.resolve() or path.name == "SHA256SUMS":
         return True
     if any(part in EXCLUDED_PREFIXES or part in EXCLUDED_DIRS for part in rel.parts):
         return True
