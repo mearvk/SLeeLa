@@ -705,6 +705,20 @@ int runScript(const std::string& src, Environment& env) {
     return runNormalScript(src, env);
 }
 
+void printCommandSummary(const std::string& command) {
+    const std::time_t now = std::time(nullptr);
+    std::tm local{};
+    char timestamp[64] = "unknown local time";
+    if (::localtime_r(&now, &local) != nullptr) {
+        std::strftime(timestamp, sizeof timestamp, "%Y-%m-%d %H:%M:%S %Z", &local);
+    }
+    // VTE ANSI background is a text-cell rectangle, not a separate GTK panel.
+    // The workspace/terminal base colours remain unchanged.
+    std::cout << "\033[48;2;112;91;69m\033[38;2;252;248;240m  "
+              << command << "   \xC2\xB7   " << timestamp
+              << "  \033[0m\n" << std::flush;
+}
+
 int repl(Environment& env) {
     std::vector<std::string> history;
     const std::string startup_banner = "SleelaTerminal(TM) slsh -- original SLeeLa shell. Type 'exit' to leave.";
@@ -772,6 +786,7 @@ int repl(Environment& env) {
         if (line.empty()) continue;
 
         if (history.empty() || history.back() != line) history.push_back(line);
+        printCommandSummary(line);
         runScript(line, env);
         if (env.shouldExit()) return env.exitCode();
     }
