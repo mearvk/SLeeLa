@@ -44,3 +44,10 @@ See EXAMPLES.md and CONFORMANCE-TESTS.md. Native UTF-8, capacity parsing, and bo
 ## 8. Change control
 
 Changes to character syntax or catalogue serialization must update the language source contract, compiler, VM, API/library docs, and tests. Unsupported conversions must fail explicitly rather than truncate or silently reinterpret identifiers.
+
+
+## 9. UTF-4088 input maps and ordered subject indexes
+
+UTF-4088 defines a separate experimental spatial traversal protocol in [INPUT-MAP-AND-PRESSURE.md](../../utf-4088/INPUT-MAP-AND-PRESSURE.md). Traversal starts at the top-left, moves right, proceeds down rows, and advances to the next z-layer after completing the current layer. Each element processes pressure iteration levels 1–50 in ascending order. These levels are abstract algorithmic values, not physical pressure or Unicode code points.
+
+The [National Lien Alphabetic Register](../../utf-4088/NATIONAL-LIEN-REGISTER.md) separates permanent catalogue IDs, alphabetic rank, map coordinates, registry ordinal, and pressure level. Its subject meanings must be sourced or explicitly marked provisional/experimental.
