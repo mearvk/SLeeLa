@@ -49,7 +49,7 @@ Any new output presentation must preserve shell behavior:
 
 The custom `ls` builtin has been removed. `slsh` now resolves `ls` through the normal external-command PATH lookup, so the operating system's standard `ls` handles `-l`, `-la`, and its full native option set. Command flags remain separate argv entries and are not stripped or reinterpreted by the shell. Standard output, pipelines, and redirection remain unstyled.
 
-External commands continue to receive option flags in argv; the leading hyphen is not stripped by the shell. Regression checks have been added for the built-in's common flags and an external command receiving `-la` as an argument.
+External commands continue to receive option flags in argv; the leading hyphen is not stripped by the shell. Regression checks exercise `ls -l`, `ls -la`, `ls -lh`, `ls -F`, `ls -d`, `ls -1 -- PATH`, and an external command receiving `-la` as an argument.
 
 Continue testing long and Unicode filenames, paths with spaces, empty directories, and output redirection.
 
@@ -166,8 +166,8 @@ Append dated notes here after each work session.
 
 
 ### 2026-10-12 — standard command results and summary rows
-- Removed the custom per-file `ls` tiles in favour of plain, conventional text output. The built-in parses clustered flags (`-l`, `-a`, `-la`) and common `-A`, `-h`, `-1`, `-F`, `-d`, and `--` options; long listing includes mode, links, numeric uid/gid, size, modification time, and name.
-- External commands continue receiving flags as separate argv entries; leading hyphens are not stripped by the shell. The observed `ls -l` issue was in the custom builtin's option handling, which previously rejected every option except `-a` and `-A`.
+- Removed the custom per-file `ls` tiles and then removed the custom `ls` builtin itself. The shell now resolves the system `ls` through PATH, restoring native output formatting and native handling of `-l`, `-la`, and other options.
+- The observed `ls -l` issue came from the custom builtin's option handling; normal external commands already receive option flags as argv entries. Regression checks cover common `ls` invocations and flag preservation for an external command.
 - Added an interactive summary row immediately after command submission: command text plus local date/time in a muted warm-brown ANSI text-cell background, followed by the command's actual output on the next line. The workspace/terminal palette remains unchanged.
 - The summary treatment is not a standalone GTK rounded output panel; it colors the summary text cells in VTE. Shell scripts/non-interactive execution remain free of these presentation rows.
 - Validation status: source and documentation updates pushed; GUI compilation/runtime still requires GTK 4 and VTE GTK 4 development packages. Run the shell smoke suite and explicit `ls -l`, `ls -la`, external flag, pipeline, and redirection checks before treating runtime validation as complete.
