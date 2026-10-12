@@ -35,6 +35,8 @@ These documents describe distinct aspects of the experimental design. The voltag
 - [Character-map header](character_map.hpp) and [implementation](character_map.cpp)
 - [Digraph engine header](digraph_engine.hpp) and [implementation](digraph_engine.cpp)
 - [Voltage-field header](voltage_field.hpp) and [implementation](voltage_field.cpp)
+- [Semantic concept-symbol registry header](semantics/concept_symbols.hpp) and [implementation](semantics/concept_symbols.cpp)
+- [Versioned concept meanings and 4D anchors](semantics/character_meanings.json)
 - [Registry generator](registry_generator.cpp)
 - [SLeeLa alphabet adapter header](sleela_alphabet_adapter.hpp) and [implementation](sleela_alphabet_adapter.cpp)
 - [CMake build definition](CMakeLists.txt)
