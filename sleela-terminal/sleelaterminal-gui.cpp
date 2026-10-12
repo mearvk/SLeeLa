@@ -1123,8 +1123,8 @@ void footer_ticker_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height
     if (scrolling) {
         // Pixel offset advances to the right; once the complete message exits,
         // restart just beyond the left edge for a continuous, clipped marquee.
-        x = static_cast<double>(state->footer_position);
-        if (x > width) x = -text_width + (x - width);
+        const double cycle = static_cast<double>(std::max(1, width + text_width));
+        x = std::fmod(static_cast<double>(state->footer_position), cycle) - text_width;
     }
     const double y = std::max(0.0, (height - text_height) / 2.0);
     cairo_save(cr);
