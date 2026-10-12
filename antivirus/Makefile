@@ -22,7 +22,7 @@ NATIVE_OBJ := $(BUILD_DIR)/sleelavirin_native.o
 NATIVE_MAIN_OBJ := $(BUILD_DIR)/sleelavirin_native_main.o
 NATIVE_BIN := $(BUILD_DIR)/sleelavirin-scan
 
-.PHONY: all library native native-test clamav clamav-check definitions-import definitions-check test check clean help
+.PHONY: all library native native-test clamav clamav-check clamav-update clamav-snapshot-check definitions-import definitions-check test check clean help
 
 all: library $(TEST_BIN) native
 
@@ -69,6 +69,13 @@ native-test: $(NATIVE_BIN)
 clamav: clamav-check
 	python3 tools/sleelavirin_clamav.py --help >/dev/null
 
+clamav-update:
+	python3 tools/sleelavirin_update_clamav.py --root signatures/clamav-cache
+
+clamav-snapshot-check:
+	@test -n "$(SNAPSHOT)" || { echo "Usage: make clamav-snapshot-check SNAPSHOT=signatures/clamav-cache/snapshots/<id>" >&2; exit 2; }
+	python3 tools/sleelavirin_update_clamav.py --check "$(SNAPSHOT)"
+
 definitions-import:
 	@echo "Usage: python3 tools/sleelavirin_import_clamav.py --source DIR --output signatures/native-sha256.txt"
 	@echo "Only compatible extracted text .hsb SHA-256 records are imported."
@@ -90,5 +97,7 @@ help:
 	@echo "  make test     Build and run the local C and native scanner tests"
 	@echo "  make definitions-check Validate the native SHA-256 index"
 	@echo "  make definitions-import Show compatible ClamAV import usage"
+	@echo "  make clamav-update Retrieve and validate official ClamAV databases"
+	@echo "  make clamav-snapshot-check SNAPSHOT=DIR Verify snapshot SHA-256 manifest"
 	@echo "  make clean    Remove antivirus/build/"
 	@echo "  CC=clang make Use Clang instead of the default C compiler"
