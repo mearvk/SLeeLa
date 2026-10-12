@@ -363,9 +363,9 @@ int repl(Environment& env) {
     std::cout << startup_banner << '\n' << std::flush;
 
     // Fade the one-line welcome banner after five seconds without blocking the
-    // REPL. Repaint only the first terminal row, saving/restoring the live
-    // cursor so the user's prompt and input line remain in place. ANSI colour
-    // levels step down briefly before the banner row is cleared.
+    // REPL. Each fade frame repaints only row 1 and saves/restores the live cursor.
+    // Once the banner has faded, delete row 1: the terminal shifts the prompt row
+    // (including any text already typed) up to row 1 and repaints the screen.
     std::thread([startup_banner]() {
         std::this_thread::sleep_for(std::chrono::seconds(5));
         static const char *const fade_colours[] = {
@@ -378,8 +378,10 @@ int repl(Environment& env) {
             (void)::write(STDOUT_FILENO, frame.data(), frame.size());
             std::this_thread::sleep_for(std::chrono::milliseconds(180));
         }
-        const std::string clear = "\033[s\033[1;1H\033[2K\033[u";
-        (void)::write(STDOUT_FILENO, clear.data(), clear.size());
+        // Clear the faded banner, then delete its row. This shifts the live
+        // prompt/input row up to line 1 and lets the terminal repaint the screen.
+        const std::string clear_and_promote = "\033[1;1H\033[2K\033[1;1H\033[M";
+        (void)::write(STDOUT_FILENO, clear_and_promote.data(), clear_and_promote.size());
     }).detach();
 
     for (;;) {
