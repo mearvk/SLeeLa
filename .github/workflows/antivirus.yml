@@ -18,12 +18,12 @@ permissions:
 
 jobs:
   test:
-    name: Antivirus build and tests (\${{ matrix.os }})
+    name: Antivirus build and tests (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: \${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
