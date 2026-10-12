@@ -109,16 +109,22 @@ def main():
     if args.engine in ('clamav', 'both') and not (args.action == 'stop' and found):
         clam = shutil.which(args.clamscan)
         if not clam: print(f'ERROR: ClamAV not found: {args.clamscan}', file=sys.stderr); return 2
-        command = [clam, '--infected', '--no-summary', '--max-filesize', str(args.max_file_size), *[str(p) for p in paths]]
         try:
-            result = subprocess.run(command, capture_output=True, text=True)
-            if result.stdout: print(result.stdout, end='' if result.stdout.endswith('\n') else '\n')
-            if result.stderr: print(result.stderr, file=sys.stderr)
-            if result.returncode == 1:
-                print('CLAMAV_DETECTION')
-                found.extend(Path(line.split(': ', 1)[0]) for line in result.stdout.splitlines() if ' FOUND' in line)
-            elif result.returncode == 0: print('CLAMAV_NO_DETECTION (not a guarantee that files are safe)')
-            else: print(f'CLAMAV_ERROR exit={result.returncode}', file=sys.stderr); errors += 1
+            batches = [[str(path)] for path in paths] if args.action == 'stop' else [[str(p) for p in paths]]
+            for batch in batches:
+                command = [clam, '--infected', '--no-summary', '--max-filesize', str(args.max_file_size), *batch]
+                result = subprocess.run(command, capture_output=True, text=True)
+                if result.stdout: print(result.stdout, end='' if result.stdout.endswith('\\n') else '\\n')
+                if result.stderr: print(result.stderr, file=sys.stderr)
+                if result.returncode == 1:
+                    print('CLAMAV_DETECTION')
+                    found.extend(Path(line.split(': ', 1)[0]) for line in result.stdout.splitlines() if ' FOUND' in line)
+                    if args.action == 'stop': break
+                elif result.returncode != 0:
+                    print(f'CLAMAV_ERROR exit={result.returncode}', file=sys.stderr)
+                    errors += 1
+                elif args.action != 'stop':
+                    print('CLAMAV_NO_DETECTION (not a guarantee that files are safe)')
         except OSError as exc: print(f'ERROR unable to start ClamAV: {exc}', file=sys.stderr); errors += 1
     unique = list(dict.fromkeys(found))
     if args.action == 'quarantine' and unique:
