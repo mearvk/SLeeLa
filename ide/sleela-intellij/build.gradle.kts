@@ -13,10 +13,10 @@ plugins {
 group = providers.gradleProperty("group").get()
 version = providers.gradleProperty("version").get()
 
-repositories {
-    mavenCentral()
-    intellijPlatform { defaultRepositories() }
-}
+// Repositories are declared centrally in settings.gradle.kts
+// (dependencyResolutionManagement with RepositoriesMode.FAIL_ON_PROJECT_REPOS),
+// so a project-level repositories { } block here is both redundant and rejected
+// ("repository 'MavenRepo' was added by build file"). Do not add one.
 
 dependencies {
     intellijPlatform {
