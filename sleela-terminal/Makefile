@@ -72,8 +72,10 @@ install: $(SLSH)
 
 install-gui: install $(GUI)
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
+	$(INSTALL) -d $(DESTDIR)$(BINDIR)/assets
 	$(INSTALL) -d $(DESTDIR)$(DESKTOPDIR)
 	$(INSTALL) -m 0755 $(GUI) $(DESTDIR)$(BINDIR)/SleelaTerminal
+	$(INSTALL) -m 0644 assets/* $(DESTDIR)$(BINDIR)/assets/
 	$(INSTALL) -m 0644 SleelaTerminal.desktop $(DESTDIR)$(DESKTOPDIR)/SleelaTerminal.desktop
 
 install-all: install install-gui
