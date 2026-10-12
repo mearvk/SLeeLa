@@ -115,3 +115,16 @@ To keep the vocabulary precise, these are **not** Sleela source files:
 ## Unsigned integer implementation status
 
 The C++ arbitrary-width value foundation is in `impl/frontend/unsigned_integer.h`, with an independent smoke test under `impl/tests/unsigned_integer_test.cpp` and the `test-unsigned-integer` Makefile target. It stores normalized little-endian bytes for widths 1..1048576 and supports decimal parsing/formatting, width-checked byte serialization, same-width comparison, checked addition/subtraction, and overflow detection. The type checker recognizes the `U<n>` type-name family. This is an implementation phase, not yet a claim that all operators are lowered through the VM's stable runtime value ABI.
+
+
+## Unicode and specialized character-catalogue runtime
+
+The native alphabet runtime in lib/alphabet/native/ provides strict UTF-8 decoding/encoding, Unicode scalar-value counting, C<n> capacity-signature validation, and bounded ordered-set membership. Its tests are run with:
+
+    make -C lib/alphabet/native test
+
+This native module is separate from the source-language grammar. Compiler/type-checker support for C<n> declarations and SLVM native bindings must be verified end-to-end before being described as enabled language features. The module does not implement grapheme-cluster segmentation or normalization.
+
+UTF-4088 in utf-4088/ is an experimental catalogue and identifier namespace, not a Unicode encoding. Its SLeeLa adapter performs exact lookup against the published front-end registry. Experimental IDs above U+10FFFF are not Unicode scalar values and must never be passed to the native UTF-8 encoder. The catalogue's declared C1048576 capacity is distinct from the currently populated registry.
+
+See alphabet/sleela/UNICODE-AND-CHARACTER-SETS.md, alphabet/sleela/CONFORMANCE-TESTS.md, and utf-4088/SLeeLa-ALPHABET-INTEGRATION.md for the cross-component contract and outstanding compiler/VM integration tests.
