@@ -20,7 +20,13 @@ version = providers.gradleProperty("version").get()
 
 dependencies {
     intellijPlatform {
-        create(providers.gradleProperty("platformType").get(), providers.gradleProperty("platformVersion").get())
+        // Use the dedicated IntelliJ IDEA Community helper. The generic
+        // create("IC", version) produced a broken "idea:ideaIC:<v>" coordinate
+        // that Gradle searched for on Maven Central and could not find;
+        // intellijIdea(version) resolves the correct
+        // com.jetbrains.intellij.idea:ideaIC artifact from the IntelliJ repos.
+        // The version must be a published build (e.g. 2025.3.6.1).
+        intellijIdea(providers.gradleProperty("platformVersion").get())
         testFramework(TestFrameworkType.Platform)
     }
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
