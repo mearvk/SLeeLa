@@ -1,4 +1,6 @@
 # SLeeLa — BANKS3.md
+<p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/merchandise/sleela-marketing-logo-001.png" alt="SLeeLa Marketing Logo" width="560"></p>
+
 
 ## HTTP 3.0 National Banking, Economic & Historical Registry — Combined 391-Country Table
 
