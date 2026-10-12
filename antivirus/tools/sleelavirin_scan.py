@@ -402,7 +402,7 @@ def main():
             try:
                 with os.fdopen(fd, "w", encoding="utf-8") as report:
                     json.dump(summary, report, indent=2, sort_keys=True)
-                    report.write("\\n")
+                    report.write(chr(10))
                     report.flush()
                     os.fsync(report.fileno())
                 os.replace(temp_name, report_path)
