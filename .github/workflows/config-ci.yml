@@ -6,6 +6,7 @@ on:
     paths:
       - "config/**"
       - "runtime/config_location.*"
+      - "runtime/vm_config.*"
       - "scripts/validate-config.py"
       - "Makefile"
       - ".github/workflows/config-ci.yml"
