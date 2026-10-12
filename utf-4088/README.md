@@ -140,3 +140,7 @@ Use the relay to navigate the additional character-map, gradation, symbol-weight
 ## Five-input application trial mapping
 
 The detailed five-point mapping and sudden-pressure transition rules are maintained in [alphabet/utf-4088/RIGOROUS.INPUTS.md](../alphabet/utf-4088/RIGOROUS.INPUTS.md). The tables report normalized model inputs only; they do not claim physical pressure or voltage measurements.
+
+## Five-input 4D symbol register
+
+The editable review catalogue for the current five-input study is [alphabet/utf-4088/SYMBOLS.md](../alphabet/utf-4088/SYMBOLS.md). It records candidate identities and glyphs without treating experimental keys as Unicode code points or proposed wording as validated meaning.
