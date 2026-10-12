@@ -147,7 +147,7 @@ int biLs(const std::vector<std::string>& args, Environment&) {
         if (options && arg == "--") { options = false; continue; }
         if (options && arg == "--help") {
             std::cout << "Usage: ls [-aAhl1Fd] [--] [PATH ...]\n"
-                      << "  -a show hidden entries (including . and ..)\\n"
+                      << "  -a show hidden entries (including . and ..)\n"
                       << "  -A show hidden entries except . and ..\n"
                       << "  -l long format  -h human-readable sizes  -1 one per line\n"
                       << "  -F classify names  -d list directory operands themselves\n";
