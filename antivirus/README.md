@@ -113,7 +113,9 @@ The native C11 scanner reads each supplied file, computes SHA-256 using its bund
 
 ```sh
 make -C antivirus
-./antivirus/build/sleelavirin-scan --database antivirus/signatures/native-sha256.txt ./path/to/file
+python3 antivirus/tools/sleelavirin_scan.py --engine native ./path/to/file
+# Explicit local signature database:
+python3 antivirus/tools/sleelavirin_scan.py --engine native --database antivirus/signatures/native-sha256.txt ./path/to/file
 ```
 
 The signature file format is one 64-character SHA-256 hex digest per line, optionally followed by a human-readable name. Blank lines and lines beginning with `#` are ignored. The shipped database is intentionally empty: populate it only with trusted, provenance-documented signatures. A test-only signature fixture is kept under `antivirus/tests/` and must not be copied into production databases.
@@ -125,10 +127,10 @@ The native scanner reports `DETECTED`, `NO_MATCH`, or `ERROR`. `NO_MATCH` means 
 Install ClamAV and initialize/update its signature database according to the official ClamAV documentation. Then run:
 
 ```sh
-python3 antivirus/tools/sleelavirin_clamav.py ./path/to/file
-python3 antivirus/tools/sleelavirin_clamav.py ./path/to/directory
+python3 antivirus/tools/sleelavirin_scan.py --engine clamav ./path/to/file
+python3 antivirus/tools/sleelavirin_scan.py --engine clamav ./path/to/directory
 # If clamscan is not on PATH:
-python3 antivirus/tools/sleelavirin_clamav.py --clamscan /path/to/clamscan ./path/to/file
+python3 antivirus/tools/sleelavirin_scan.py --engine clamav --clamscan /path/to/clamscan ./path/to/file
 ```
 
 The adapter uses the installed `clamscan` executable and requests recursive scanning for supplied directories. It does not install ClamAV or download signatures. It maps ClamAV exit status 0 to no detection, 1 to detection, and other nonzero statuses to a scan error. No detection is not a guarantee that a file is safe. See the official [ClamAV scanning guide](https://docs.clamav.net/manual/Usage/Scanning.html).
