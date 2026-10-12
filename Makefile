@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check install install-product tutorial-check tests server config route common-rails clean help
+.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-product tutorial-check tests server config route common-rails clean help
 
-all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails codecs churn
+all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails codecs churn antivirus
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
@@ -68,6 +68,23 @@ churn-test:
 churn-data-check:
 	$(MAKE) -C churn data-check
 
+# Sleelavirin's portable C core and self-tests (no third-party engine required).
+antivirus:
+	$(MAKE) -C antivirus all
+
+antivirus-test:
+	$(MAKE) -C antivirus test
+
+antivirus-clamav:
+	$(MAKE) -C antivirus clamav
+
+antivirus-integrity:
+	$(MAKE) -C antivirus integrity-manifest
+
+antivirus-integrity-check:
+	@test -n "$(MANIFEST)" || { echo "Usage: make antivirus-integrity-check MANIFEST=build/INTEGRITY-MANIFEST.json" >&2; exit 2; }
+	$(MAKE) -C antivirus integrity-check MANIFEST="$(MANIFEST)"
+
 install:
 	$(MAKE) -C install all
 
@@ -104,6 +121,7 @@ clean:
 	$(MAKE) -C tests clean
 	$(MAKE) -C codecs clean
 	$(MAKE) -C churn clean
+	$(MAKE) -C antivirus clean
 	@make -C config clean
 
 help:
@@ -120,6 +138,11 @@ help:
 	@echo "  make churn     Compile the five churn constraint-report tools and validate data"
 	@echo "  make churn-test Run all five churn constraint reports"
 	@echo "  make churn-data-check Validate churn JSON/XML/CSV/TXT files"
+	@echo "  make antivirus Build Sleelavirin C core and self-test executable"
+	@echo "  make antivirus-test Build and run Sleelavirin C/native scanner self-tests"
+	@echo "  make antivirus-clamav Check optional ClamAV scanner integration"
+	@echo "  make antivirus-integrity Generate SHA-256 inventory for antivirus source and indexes"
+	@echo "  make antivirus-integrity-check MANIFEST=PATH Verify the SHA-256 inventory"
 	@echo "  make jetbrains Show JetBrains source acquisition helpers"
 	@echo "  make connector Build all optional native database/data-source connectors"
 	@echo "  make connector-test Run available offline connector tests"
