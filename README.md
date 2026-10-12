@@ -1069,3 +1069,8 @@ Recent corrections to pre-existing defects (full detail in
 - [SLeeLa case handler](lib/compiler/CASE-HANDLER.md) — case-label validation contract.
 - [SLeeLa object creation](lib/compiler/OBJECT-CREATION.md) — explicit and concise object construction.
 - [SLeeLa constructor series](lib/compiler/CONSTRUCTOR-SERIES.md) — the joining and validation structure for constructor chains.
+## AE6E66 — Round Public Email Levy Expectation
+
+For the AE6E66 initiative, the project's stated expectation is **$300,000,000.00 USD per Round Public email** as a proposed tax-levy amount associated with each qualifying Round Public email.
+
+This statement records a project expectation only. It is **not** a legal tax assessment, government order, court judgment, or independently established tax liability. Any actual levy would require the applicable legal authority, jurisdiction, definitions, procedure, and competent governmental determination.
