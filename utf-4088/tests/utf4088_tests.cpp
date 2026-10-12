@@ -5,6 +5,7 @@
 #include "character_map.hpp"
 #include "digraph_engine.hpp"
 #include "utf4088.hpp"
+#include "sleela_alphabet_adapter.hpp"
 #include "voltage_field.hpp"
 #include "glyph8x12.hpp"
 
@@ -37,6 +38,13 @@ int main() {
         assert(first[i].shape_id == cached[i].shape_id);
         assert(first[i].meaning_id == cached[i].meaning_id);
     }
+    assert(sleela_catalogue_capacity == 1048576);
+    assert(is_frontend_identifier(0x110000ULL));
+    assert(!is_frontend_identifier(0x10FFFFULL));
+    const auto firstRecord = lookup_frontend_identifier(0x110000ULL);
+    assert(firstRecord.has_value());
+    assert(firstRecord->integer_id == 0);
+    assert(!lookup_frontend_identifier(0x1FFFFFFFFULL).has_value());
 
     assert(derive_remainder_symbol(1, 2, 3, 4) ==
            derive_remainder_symbol(1, 2, 3, 4));
