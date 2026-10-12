@@ -30,7 +30,7 @@ GUI   := $(BUILD)/SleelaTerminal
 GTK4_VTE_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(GTK4_VTE_PKGS) 2>/dev/null)
 GTK4_VTE_LIBS   := $(shell $(PKG_CONFIG) --libs $(GTK4_VTE_PKGS) 2>/dev/null)
 
-.PHONY: all cli all-gui smoke test m5-smoke gui sanitize fuzz install install-gui install-all install-strip uninstall clean
+.PHONY: all cli all-gui smoke test m5-smoke install-smoke gui sanitize fuzz install install-gui install-all install-strip uninstall clean
 
 all: cli
 
@@ -62,6 +62,10 @@ m5-smoke: $(SLSH)
 
 test: smoke m5-smoke
 
+# Validate DESTDIR staging, executable permissions, and the installed CLI.
+install-smoke: $(SLSH)
+	sh ./install-smoke.sh
+
 install: $(SLSH)
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 0755 $(SLSH) $(DESTDIR)$(BINDIR)/slsh
@@ -74,8 +78,10 @@ install-gui: $(GUI)
 
 install-all: install install-gui
 
-install-strip: CXXFLAGS += -s
-install-strip: clean install
+# Keep clean/rebuild/install ordered even when make is invoked with -j.
+install-strip:
+	$(MAKE) clean
+	$(MAKE) CXXFLAGS="$(CXXFLAGS) -s" install
 
 uninstall:
 	rm -f $(DESTDIR)$(BINDIR)/slsh
