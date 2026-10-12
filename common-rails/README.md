@@ -133,6 +133,24 @@ provenance, an explanation chain, and a colorization work-plan item.
 ./impl/build/nordshrift build common-rails/common-rails.sst   # transpile + run on the core
 ```
 
+## Building and checking CommonRails
+
+From this directory, run:
+
+```sh
+make check
+make clean
+```
+
+The CommonRails Makefile builds and runs the C and C++ contract tests, compiles
+and runs the Java contract test, and checks the Sleela and SST sources when the
+local toolchain binaries are available. If those binaries are missing, the two
+toolchain checks report a clear skip; build them first with `make -C ../impl all`
+to run the complete set. The C, C++, and Java checks require their respective
+native compiler/JDK.
+
+The repository-root dispatcher also exposes `make common-rails`.
+
 ## Building the toolchain
 
 Both binaries come from the `impl/` tree (C11 + C++17):
