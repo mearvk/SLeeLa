@@ -16,11 +16,13 @@
 #include <cerrno>
 #include <csignal>
 #include <ctime>
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <termios.h>
+#include <thread>
 #include <unistd.h>
 #include <vector>
 
@@ -357,7 +359,28 @@ int runScript(const std::string& src, Environment& env) {
 
 int repl(Environment& env) {
     std::vector<std::string> history;
-    std::cout << "SleelaTerminal(TM) slsh -- original SLeeLa shell. Type 'exit' to leave.\n";
+    const std::string startup_banner = "SleelaTerminal(TM) slsh -- original SLeeLa shell. Type 'exit' to leave."; 
+    std::cout << startup_banner << '\n' << std::flush;
+
+    // Fade the one-line welcome banner after five seconds without blocking the
+    // REPL. Repaint only the first terminal row, saving/restoring the live
+    // cursor so the user's prompt and input line remain in place. ANSI colour
+    // levels step down briefly before the banner row is cleared.
+    std::thread([startup_banner]() {
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+        static const char *const fade_colours[] = {
+            "\033[38;5;250m", "\033[38;5;244m",
+            "\033[38;5;238m", "\033[38;5;232m"
+        };
+        for (const char *colour : fade_colours) {
+            const std::string frame = std::string("\033[s\033[1;1H\033[2K")
+                + colour + startup_banner + "\033[0m\033[u";
+            (void)::write(STDOUT_FILENO, frame.data(), frame.size());
+            std::this_thread::sleep_for(std::chrono::milliseconds(180));
+        }
+        const std::string clear = "\033[s\033[1;1H\033[2K\033[u";
+        (void)::write(STDOUT_FILENO, clear.data(), clear.size());
+    }).detach();
 
     for (;;) {
         bool eof = false;
