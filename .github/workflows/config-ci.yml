@@ -1,0 +1,39 @@
+name: SLeeLa Configuration CI
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "config/**"
+      - "runtime/config_location.*"
+      - "scripts/validate-config.py"
+      - "Makefile"
+      - ".github/workflows/config-ci.yml"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "config/**"
+      - "runtime/config_location.*"
+      - "scripts/validate-config.py"
+      - "Makefile"
+      - ".github/workflows/config-ci.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: config-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate configuration and compile resolver smoke test
+        run: make -C config test
+      - name: Clean generated configuration test output
+        if: always()
+        run: make -C config clean
