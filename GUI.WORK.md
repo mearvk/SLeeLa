@@ -171,3 +171,11 @@ Append dated notes here after each work session.
 - Added an interactive summary row immediately after command submission: command text plus local date/time in a muted warm-brown ANSI text-cell background, followed by the command's actual output on the next line. The workspace/terminal palette remains unchanged.
 - The summary treatment is not a standalone GTK rounded output panel; it colors the summary text cells in VTE. Shell scripts/non-interactive execution remain free of these presentation rows.
 - Validation status: source and documentation updates pushed; GUI compilation/runtime still requires GTK 4 and VTE GTK 4 development packages. Run the shell smoke suite and explicit `ls -l`, `ls -la`, external flag, pipeline, and redirection checks before treating runtime validation as complete.
+
+
+### 2026-10-12 — independent terminal tabs
+- Added a GTK Notebook tab strip and a title-bar `+` button. Each tab has an independent VTE terminal, PTY, `slsh` process, scrollback, and shell working directory while sharing the main window chrome and palette.
+- Added per-tab close buttons; closing one tab signals only its shell, and closing the final tab exits the application. Tabs are reorderable.
+- Keyboard shortcuts: Ctrl+Shift+T new tab, Ctrl+Shift+W close current tab, Ctrl+Tab / Ctrl+Page Down next tab, Ctrl+Shift+Tab / Ctrl+Page Up previous tab.
+- Kept the existing workspace (`#FCFCFC`), terminal surface (`#4B4B4B`), light text (`#F2F2F2`), and command-summary row treatment.
+- Source committed to both `main` and `master`; the GUI has not been compiled or runtime-tested in this environment because GTK 4 / VTE GTK 4 development packages are unavailable. Verify tab creation, switching, independent commands/current directories, close-one-while-others-run, final-tab close, keyboard shortcuts, and resize/scrollback before marking runtime validation complete.
