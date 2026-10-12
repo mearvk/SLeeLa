@@ -364,7 +364,7 @@ void install_css() {
            softly rounded corners (18% radius) to match the title-bar blue. */
         headerbar.sleela-titlebar button.sleela-settings-btn {
             color: #ffffff;
-            background: @sl_tb_light_blue;
+            background: @sl_tb_dark_blue;
             border: 1px solid #000000;
             border-radius: 18%;
             box-shadow: inset 0 1px 0 alpha(#ffffff, 0.22);
@@ -375,7 +375,7 @@ void install_css() {
             transition: background 120ms ease, box-shadow 120ms ease;
         }
         headerbar.sleela-titlebar button.sleela-settings-btn:hover {
-            background: #6288d6;
+            background: #203b78;
             box-shadow: inset 0 1px 0 alpha(#ffffff, 0.30), 0 0 0 1px alpha(#000000, 0.20);
         }
         headerbar.sleela-titlebar button.sleela-settings-btn:active {
@@ -1501,7 +1501,7 @@ void activate(GtkApplication *application, gpointer user_data) {
                 cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
                 cairo_set_line_width(cr, 1.0);
                 cairo_stroke_preserve(cr);
-                cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+                cairo_set_source_rgb(cr, 0.31, 0.455, 0.784); // title-bar light blue (#4f74c8)
                 cairo_fill(cr);
             }
         }, nullptr, nullptr);
