@@ -273,7 +273,14 @@ void install_css() {
         /* The throbber occupies the thin seam between the title bar and the
            terminal; its colour is painted per-frame by the draw function. */
         drawingarea.sleela-throbber { background: @sl_chrome; min-height: 2px; }
-        headerbar.sleela-titlebar label { color: @sl_fg; font-weight: 600; }
+        headerbar.sleela-titlebar label {
+            color: #ffffff;
+            font-weight: 600;
+            /* GTK CSS has no portable text-stroke; eight 1px shadows create a crisp black outline. */
+            text-shadow: -1px -1px 0 #000000, 0 -1px 0 #000000, 1px -1px 0 #000000,
+                         -1px 0 0 #000000, 1px 0 0 #000000,
+                         -1px 1px 0 #000000, 0 1px 0 #000000, 1px 1px 0 #000000;
+        }
         image.sleela-titlebar-logo { margin-left: 8px; margin-right: 4px; }
         /* Window controls (close / minimize / maximize). In GTK 4 these are
            native title buttons under a `windowcontrols` node, and the symbolic
