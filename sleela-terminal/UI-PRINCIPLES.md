@@ -140,3 +140,17 @@ and pipelines remain free of GUI styling sequences.
 The command summary strip is separate from command output: it shows the command
 text and local timestamp, then the result follows on the next line. It does
 not alter command arguments, stdout bytes, or redirection contents.
+
+
+## 12. Independent terminal tabs
+
+The main terminal workspace supports multiple tabs in one window. Each tab owns
+its own VTE widget, PTY, shell process, scrollback, and terminal state; commands
+and working-directory changes in one tab must not affect another. The first
+and subsequent tabs share the application frame, palette, settings, and footer.
+A plus control creates a tab; each tab has its own close control. Keyboard
+shortcuts: Ctrl+Shift+T creates a tab, Ctrl+Shift+W closes the current tab,
+Ctrl+Tab / Ctrl+Page Down advances, and Ctrl+Shift+Tab / Ctrl+Page Up goes back.
+Closing a shell tab must not terminate other tabs; closing the final tab closes
+the application. The existing near-white workspace and charcoal terminal
+surface are unchanged.
