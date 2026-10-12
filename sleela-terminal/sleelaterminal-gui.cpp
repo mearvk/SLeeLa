@@ -364,7 +364,7 @@ void install_css() {
            softly rounded corners (18% radius) to match the title-bar blue. */
         headerbar.sleela-titlebar button.sleela-settings-btn {
             color: #ffffff;
-            background: #4f74c8;
+            background: #203b78;
             border: 1px solid #000000;
             border-radius: 18%;
             box-shadow: inset 0 1px 0 alpha(#ffffff, 0.28);
@@ -375,11 +375,11 @@ void install_css() {
             transition: background 120ms ease, box-shadow 120ms ease;
         }
         headerbar.sleela-titlebar button.sleela-settings-btn:hover {
-            background: #6688d6;
+            background: #31569a;
             box-shadow: inset 0 1px 0 alpha(#ffffff, 0.36), 0 0 0 1px alpha(#000000, 0.20);
         }
         headerbar.sleela-titlebar button.sleela-settings-btn:active {
-            background: #3c5fae;
+            background: #16244f;
             box-shadow: inset 0 1px 2px alpha(#000000, 0.35);
         }
         headerbar.sleela-titlebar button.sleela-settings-btn:focus {
@@ -1485,7 +1485,7 @@ void activate(GtkApplication *application, gpointer user_data) {
             const double left = 1.0;
             const double right = static_cast<double>(width) - 1.0;
             const double inset = 1.0;
-            const double bars_y[] = {inset, (height - bar_height) / 2.0, height - bar_height - inset};
+            const double bars_y[] = {inset, inset + 2.2, inset + 4.4};
             for (double y : bars_y) {
                 const double radius = 0.9;
                 cairo_new_path(cr);
