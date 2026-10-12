@@ -33,7 +33,9 @@ warn "Note: '$TASK' downloads the IntelliJ Platform SDK (IC 2026.1) on first run
 warn "      It requires outbound access to JetBrains + Maven Central and cannot run offline."
 
 log "Running: $GRADLE $TASK (in $PLUGIN_DIR)"
-( cd "$PLUGIN_DIR" && "$GRADLE" "$TASK" )
+# $GRADLE may be "gradle" or "sh /path/gradlew"; leave it unquoted so it splits
+# into words. $TASK is a single known token, so this is safe.
+( cd "$PLUGIN_DIR" && $GRADLE "$TASK" )
 
 if [ "$TASK" = "buildPlugin" ]; then
   DIST="$PLUGIN_DIR/build/distributions"

@@ -73,5 +73,8 @@ if [ ! -f "$WRAPPER_DIR/gradle-wrapper.properties" ]; then
   cp "$SCRATCH/gradle/wrapper/gradle-wrapper.properties" "$WRAPPER_DIR/"
 fi
 
+# git does not always preserve the execute bit on checkout; ensure gradlew runs.
+chmod +x "$PLUGIN_DIR/gradlew" 2>/dev/null || true
+
 log "Installed wrapper jar: $JAR ($(wc -c < "$JAR") bytes)"
 log "Done. You can now run ./gradlew from $PLUGIN_DIR."
