@@ -29,9 +29,9 @@ trap cleanup EXIT INT TERM
 "$CC" $CFLAGS -I.. debugger_line_c_test.c ../debugger_c.c ../debugger_line.c -o debugger-line-c-test
 ./debugger-line-c-test
 
-c++ $CXXFLAGS -I.. ../debug_engine.cpp ../debug_engine_c.cpp debug_engine_c_test.c ../debugger.cpp -o debug-engine-c-test
+"$CXX" $CXXFLAGS -I.. ../debug_engine.cpp ../debug_engine_c.cpp debug_engine_c_test.c ../debugger.cpp -o debug-engine-c-test
 ./debug-engine-c-test
-c++ $CXXFLAGS -I.. ../debug_diagnostics.cpp debug_diagnostics_test.cpp -o debug-diagnostics-test
+"$CXX" $CXXFLAGS -I.. ../debug_diagnostics.cpp debug_diagnostics_test.cpp -o debug-diagnostics-test
 ./debug-diagnostics-test
 
 echo "SLeeLa debugger test suite: PASS"
