@@ -49,7 +49,8 @@ L1  Core + Arith       Value/Token/AST model, precedence-climbing arithmetic
 - **Executor** — runs the AST: assignments, expansion, builtin/external
   dispatch, pipelines, redirections, control flow, and `$?` exit status.
 - **Builtins** — `cd`, `pwd`, `echo`, `export`, `unset`, `true`, `false`,
-  `exit`, `set`, `:`.
+  `exit`, `set`, `:`, plus topic-based `help` for language features, jobs,
+  process substitution, traps, prompt, portability, and build/install workflows.
 
 **M2 — control, functions, expansion:**
 
@@ -139,6 +140,10 @@ than claiming that this project-defined notation replaces a civil calendar.
 
 See [`M5-HARDENING.md`](M5-HARDENING.md) for the implementation closeout and
 remaining gates toward the **GREAT** engineering classification.
+
+## Interactive prompt and help
+
+The interactive prompt defaults to the account username followed by `$ ` (for example, `ada$ `). Run `help` for the feature index or `help expansion`, `help jobs`, `help process`, `help traps`, `help select`, `help prompt`, `help soros`, `help portability`, or `help build` for topic-specific guidance. The help text also calls out known conformance and platform limitations.
 
 ## Build & run
 
