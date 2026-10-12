@@ -50,7 +50,7 @@ struct ThrobberCell {
 
 struct AppConfig {
     std::string font = "Monospace 11";
-    std::string foreground = "#FFFFFF";
+    std::string foreground = "#262626";
     std::string input_language = "system";
     std::string output_language = "system";
     bool national_feeds = false;
