@@ -103,6 +103,7 @@ help:
 	@echo "  make tests     Build and run tests/"
 	@echo "  make server    Build api/server/"
 	@echo "  make route     Validate unified route data"
+	@echo "  make config    Validate configuration policy and run location/VM smoke tests"
 	@echo "  make clean     Remove outputs from dispatched build systems"
 	@echo ""
 	@echo "Product-specific build folders and Makefiles remain authoritative."
