@@ -54,3 +54,11 @@ if (SLEE_LA_BUILD_API_EXAMPLES)
   add_executable(slecompiler-api-slir-vm examples/api_slir_vm.cpp)
   target_link_libraries(slecompiler-api-slir-vm PRIVATE sleela_decompiler)
 endif()
+
+include(GNUInstallDirs)
+install(TARGETS sleela_decompiler sleela-decompiler
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/sleela-decompiler)
+install(DIRECTORY ../api/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/sleela-api)
