@@ -1,0 +1,27 @@
+/*
+ * SLeeLa 1.9 CharacterSet library surface.
+ * C<n> is a catalogue-capacity signature, not a bit width or Unicode encoding.
+ * Native runtime owns UTF-8 validation, duplicate checks, and insertion.
+ * This is the SLeeLa-facing API contract; compiler/VM binding remains explicit
+ * integration work until native calls are connected and tested end-to-end.
+ */
+#sleela 1.9
+class CharacterSet {
+  String name;
+  int capacity;
+  int populated;
+
+  void configure(String setName, int maximumEntries) {
+    name = setName;
+    capacity = maximumEntries;
+    populated = 0;
+  }
+
+  String setName() { return name; }
+  int maxEntries() { return capacity; }
+  int size() { return populated; }
+  boolean isEmpty() { return populated == 0; }
+
+  boolean contains(String symbol) { return false; }
+  boolean add(String symbol) { return false; }
+}
