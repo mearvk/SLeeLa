@@ -87,6 +87,24 @@ class ScanCoordinatorTests(unittest.TestCase):
             self.assertEqual(first[0], second[0])
             self.assertEqual(len(first), 5)
 
+    @mock.patch.object(scan.subprocess, "run", side_effect=scan.subprocess.TimeoutExpired(cmd=["scanner"], timeout=1))
+    def test_native_timeout_is_error_not_clean(self, run):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "sample"
+            path.write_text("sample")
+            verdict, _, message = scan.native_scan("native", "db", path, scan.file_stamp(path), timeout=1)
+            self.assertEqual(verdict, "ERROR")
+            self.assertIn("SCAN_TIMEOUT", message)
+
+    @mock.patch.object(scan.subprocess, "run", side_effect=scan.subprocess.TimeoutExpired(cmd=["clamscan"], timeout=1))
+    def test_clamav_timeout_is_error_not_clean(self, run):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "sample"
+            path.write_text("sample")
+            verdict, _, message = scan.clamav_scan_one("clamscan", path, 1024, 4096, 4, scan.file_stamp(path), timeout=1)
+            self.assertEqual(verdict, "ERROR")
+            self.assertIn("CLAMAV_TIMEOUT", message)
+
     @mock.patch.object(scan.subprocess, "run")
     def test_clamav_limits_and_no_match(self, run):
         with tempfile.TemporaryDirectory() as temp:
@@ -227,6 +245,27 @@ class DefinitionImporterTests(unittest.TestCase):
             self.assertEqual(data["source_version"], "daily-test-123")
             self.assertEqual(data["signature_count"], 1)
             self.assertEqual(data["index_sha256"], __import__("hashlib").sha256(output.read_bytes()).hexdigest())
+
+    def test_manifest_integrity_is_bound_to_active_index(self):
+        digest = "a" * 64
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            index = root / "index.txt"
+            index.write_text("# index\\n" + digest + " label\\n")
+            manifest = root / "index.manifest.json"
+            manifest.write_text(__import__("json").dumps({
+                "schema": "sleelavirin-native-index-manifest-v1",
+                "index_sha256": "0" * 64,
+                "signature_count": 1
+            }))
+            errors = importer.validate_manifest(index, manifest)
+            self.assertTrue(any("does not match active index bytes" in error for error in errors))
+            manifest.write_text(__import__("json").dumps({
+                "schema": "sleelavirin-native-index-manifest-v1",
+                "index_sha256": __import__("hashlib").sha256(index.read_bytes()).hexdigest(),
+                "signature_count": 1
+            }))
+            self.assertEqual(importer.validate_manifest(index, manifest), [])
 
     def test_manifest_cannot_overwrite_active_index(self):
         digest = "d" * 64
