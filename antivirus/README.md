@@ -277,3 +277,30 @@ python3 antivirus/tools/sleelavirin_verify_signature.py \
 ```
 
 Signatures must be created by the release process and the corresponding public key distributed through an independent trusted channel. Do not commit private signing keys. Signature verification is optional until a project release key and key-rotation policy are established.
+
+
+## Standalone binary distributions
+
+The `.github/workflows/antivirus-binaries.yml` workflow builds and smoke-tests platform-native packages for Linux x86-64, Windows x86-64, macOS Apple Silicon (arm64), and macOS Intel (x86-64). On pushes, the packages are available as GitHub Actions artifacts; pushing a version tag such as `v1.0.0` publishes each platform ZIP to the GitHub Release.
+
+Each archive contains:
+
+- `sleelavirin-native[.exe]`: the compiled native C scanner;
+- `sleelavirin-scan[.exe]`: the standalone scan coordinator;
+- `sleelavirin-clamav[.exe]`: the ClamAV adapter CLI;
+- `sleelavirin-update-clamav[.exe]`: FreshClam-based database snapshot updater;
+- `sleelavirin-import-clamav[.exe]`: compatible signature-index importer;
+- `sleelavirin-verify-signature[.exe]`: detached release-signature verifier;
+- `signatures/native-sha256.txt`: the shipped native index (empty by default);
+- `SHA256SUMS`: hashes of the packaged files.
+
+Extract the ZIP and run the coordinator from the extracted directory. For example, on Linux/macOS:
+
+```sh
+./sleelavirin-scan --engine native --report-json scan-report.json /path/to/scan
+./sleelavirin-scan --engine both --report-json scan-report.json /path/to/scan
+```
+
+On Windows, use `sleelavirin-scan.exe` with the same arguments. The native binary and signature index are resolved relative to the extracted package. The ClamAV backend still requires a compatible ClamAV installation and usable signature database on the host; the package does not embed ClamAV, FreshClam, or third-party signature databases. The native index is intentionally empty and its no-match result is not proof of safety.
+
+These are native per-platform builds, not one universal executable. Only artifacts produced and smoke-tested by the workflow should be distributed. The ZIP's SHA-256 file detects accidental changes but is not a publisher-authentication mechanism; use the detached-signature verifier only after a trusted release key and independent public-key distribution are established.
