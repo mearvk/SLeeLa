@@ -304,6 +304,32 @@ void install_css() {
         headerbar.sleela-titlebar button.titlebutton:active { background: alpha(@sl_fg, 0.42); }
         windowcontrols > button.titlebutton:focus,
         headerbar.sleela-titlebar button.titlebutton:focus { outline: 2px solid @sl_accent; outline-offset: -2px; }
+        /* Per-control mouseover highlights make the three native window actions
+           easy to distinguish. Keep the glyph white and use the shared transition
+           defined above for a restrained, quick highlight rather than a flash. */
+        windowcontrols > button.titlebutton.minimize:hover,
+        headerbar.sleela-titlebar button.titlebutton.minimize:hover {
+            background: #4f74c8;
+            border-color: #8fb4ff;
+            color: #ffffff;
+        }
+        windowcontrols > button.titlebutton.minimize:active,
+        headerbar.sleela-titlebar button.titlebutton.minimize:active {
+            background: #31569a;
+            border-color: #8fb4ff;
+        }
+        windowcontrols > button.titlebutton.maximize:hover,
+        headerbar.sleela-titlebar button.titlebutton.maximize:hover {
+            background: #238636;
+            border-color: #56d364;
+            color: #ffffff;
+        }
+        windowcontrols > button.titlebutton.maximize:active,
+        headerbar.sleela-titlebar button.titlebutton.maximize:active {
+            background: #196c2e;
+            border-color: #56d364;
+        }
+
         /* Close: a clear red resting tint, solid red on hover, glyph stays white. */
         windowcontrols > button.titlebutton.close,
         headerbar.sleela-titlebar button.titlebutton.close {
