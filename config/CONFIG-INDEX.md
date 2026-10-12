@@ -12,7 +12,9 @@ Shared configuration policy and templates live in repository config/. Runtime co
 - config/CONFIGURATION.md — unified configuration contract
 - config/CONFIG-LOCATION.md — path resolution and precedence
 - config/VM-CONFIG.md — VM selection contract
-- config/Makefile — configuration validation and resolver smoke test
+- config/Makefile — configuration validation, resolver smoke test, and VM-selection smoke test
+- scripts/validate-config.py — cross-template and properties-example validation
+- .github/workflows/config-ci.yml — Linux/macOS configuration CI
 
 ## Canonical runtime locations
 
