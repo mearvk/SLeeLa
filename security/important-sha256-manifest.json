@@ -60,7 +60,7 @@
     },
     {
       "path": "antivirus/tests/test_tools.py",
-      "sha256": "159d20d5e6904b75d265673fbdf3799a73d000235ca143c6b7f47ddc6e9f86db"
+      "sha256": "581c2f63809ef7c3176cbec6f69d8b0992fdc31ccfc4c1d4c21f98264c264df0"
     },
     {
       "path": "antivirus/tools/sleelavirin_clamav.py",
@@ -68,7 +68,7 @@
     },
     {
       "path": "antivirus/tools/sleelavirin_import_clamav.py",
-      "sha256": "69b400b685a6f312f55a4177efcabdd4fc1c8cfd75a22c852798477be1c11e97"
+      "sha256": "161014fea73a636613237e2127c2e80058cf587d18aef8ba972701b4f6fdc9ee"
     },
     {
       "path": "antivirus/tools/sleelavirin_scan.py",
