@@ -72,3 +72,6 @@ python3 antivirus/tools/sleelavirin_scan.py --engine both --jobs 4 --clamav-jobs
 # Tighter archive limits
 python3 antivirus/tools/sleelavirin_scan.py --engine clamav --clamav-jobs 1 --max-file-size 80M --clamav-max-scansize 250M --clamav-max-recursion 4 /path/to/scan
 ```
+
+
+Engine subprocesses have a 120-second per-file timeout by default. Configure `--scan-timeout N`; `0` disables the timeout. Timeouts return an error verdict and contribute to incomplete/error exit status, never a clean verdict. See [SECURITY.md](SECURITY.md) for integrity, adversarial test, quarantine, and release requirements.
