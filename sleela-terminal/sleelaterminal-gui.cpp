@@ -216,7 +216,12 @@ void install_css() {
         @define-color sl_chrome      #24103f;
         @define-color sl_border      #7f56aa;
         @define-color sl_fg          #ffffff;
-        @define-color sl_accent      #9d6cff;
+        @define-color sl_accent      #6fa5ff;
+        @define-color sl_menu_bg     #16244f;
+        @define-color sl_menu_mid    #203b78;
+        @define-color sl_menu_edge   #4f74c8;
+        @define-color sl_menu_hover  #31569a;
+        @define-color sl_menu_active #426fc0;
 
         /* Title-bar gradient palette. The bar is no longer a flat chrome fill:
            it sweeps left -> right through a curated sequence of the project's
@@ -353,38 +358,81 @@ void install_css() {
         button.sleela-footer-java:focus { outline: 2px solid @sl_accent; outline-offset: -2px; }
         button.sleela-footer-java image { background: transparent; border: none; box-shadow: none; }
 
-        /* Shared surface styling for popovers and dialogs. */
-        window.sleela-installer { background: @sl_surface; color: @sl_fg; }
+        /* All interactive menus and selection surfaces share the main frame's
+           blue palette: deep-blue base, brighter blue hover, and light-blue focus.
+           This covers the Settings subframe, software popover, and terminal
+           right-click/click-select menu instead of letting GTK theme them gray. */
+        window.sleela-installer {
+            background: linear-gradient(to bottom, @sl_menu_mid, @sl_menu_bg);
+            color: @sl_fg;
+            border: 1px solid @sl_menu_edge;
+        }
         window.sleela-installer label { color: @sl_fg; }
 
-        popover.sleela-software contents { background: @sl_surface; border: 1px solid @sl_border; }
-        /* Settings is a subframe window; theme the window surface itself. */
-        window.sleela-settings { background: @sl_surface; }
-        window.sleela-settings scrolledwindow { background: @sl_surface; }
+        popover contents {
+            background: linear-gradient(to bottom, @sl_menu_mid, @sl_menu_bg);
+            color: @sl_fg;
+            border: 1px solid @sl_menu_edge;
+        }
+        popover.sleela-software contents,
+        popover.sleela-context-menu contents {
+            background: linear-gradient(to bottom, @sl_menu_mid, @sl_menu_bg);
+            color: @sl_fg;
+            border: 1px solid @sl_menu_edge;
+        }
+        popover label { color: @sl_fg; }
+
+        /* Settings is a subframe window; its whole scrollable surface matches
+           the same blue used by the main title frame. */
+        window.sleela-settings {
+            background: linear-gradient(to bottom, @sl_menu_mid, @sl_menu_bg);
+            color: @sl_fg;
+            border: 1px solid @sl_menu_edge;
+        }
+        window.sleela-settings scrolledwindow,
+        window.sleela-settings viewport { background: @sl_menu_bg; color: @sl_fg; }
 
         popover.sleela-software label,
         window.sleela-settings label { color: @sl_fg; }
         window.sleela-settings label.section { font-weight: 800; margin-top: 8px; }
 
-        popover.sleela-software button,
-        window.sleela-settings button {
+        popover button,
+        window.sleela-settings button,
+        window.sleela-installer button {
             color: @sl_fg;
-            background: alpha(@sl_fg, 0.08);
+            background: @sl_menu_bg;
+            border: 1px solid alpha(@sl_menu_edge, 0.78);
+            border-radius: 6px;
             min-width: 260px;
             min-height: 32px;
             text-align: left;
-            transition: background 120ms ease;
+            transition: background 120ms ease, border-color 120ms ease;
         }
-        popover.sleela-software button:hover,
-        window.sleela-settings button:hover { background: alpha(@sl_fg, 0.16); }
-        popover.sleela-software button:focus,
-        window.sleela-settings button:focus { outline: 2px solid @sl_accent; outline-offset: -2px; }
-        /* Keep the Close suggested-action compact, not full-width like the list. */
+        popover button:hover,
+        window.sleela-settings button:hover,
+        window.sleela-installer button:hover {
+            background: @sl_menu_hover;
+            border-color: @sl_menu_edge;
+        }
+        popover button:active,
+        window.sleela-settings button:active,
+        window.sleela-installer button:active { background: @sl_menu_active; }
+        popover button:focus,
+        window.sleela-settings button:focus,
+        window.sleela-installer button:focus {
+            outline: 2px solid @sl_menu_edge;
+            outline-offset: -2px;
+        }
+        popover checkbutton,
+        window.sleela-settings checkbutton { color: @sl_fg; }
+        /* Keep the Close suggested-action compact, with a solid frame-blue fill. */
         window.sleela-settings button.suggested-action { min-width: 88px; }
-
-        /* The single suggested action uses the accent; nothing else does. */
-        button.suggested-action { background: @sl_accent; color: @sl_fg; }
-        button.suggested-action:hover { background: shade(@sl_accent, 1.12); }
+        button.suggested-action {
+            background: @sl_menu_edge;
+            border-color: @sl_menu_edge;
+            color: @sl_fg;
+        }
+        button.suggested-action:hover { background: @sl_menu_hover; }
 
         textview.sleela-scan-output { color: @sl_fg; background: @sl_bg; }
 
@@ -785,6 +833,7 @@ void terminal_clear_selection(GtkWidget *, gpointer user_data) { vte_terminal_un
 void terminal_mouse_menu(GtkGestureClick *gesture, int, double, double, gpointer user_data) {
     auto *terminal = VTE_TERMINAL(user_data);
     GtkPopover *popover = GTK_POPOVER(gtk_popover_new());
+    gtk_widget_add_css_class(GTK_WIDGET(popover), "sleela-context-menu");
     gtk_widget_set_parent(GTK_WIDGET(popover), GTK_WIDGET(terminal));
     gtk_popover_set_has_arrow(popover, TRUE);
 
