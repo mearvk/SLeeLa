@@ -64,6 +64,12 @@ def main():
         raise ValueError("config/vm.conf: vm.version must be an integer") from exc
     if not 1 <= version <= 11:
         raise ValueError("config/vm.conf: vm.version must be in range 1..11")
+    try:
+        runtime_vm_version = int(unquote(runtime.get("vm.version", "")))
+    except ValueError as exc:
+        raise ValueError("config/sleela.conf: vm.version must be an integer") from exc
+    if runtime_vm_version != version:
+        raise ValueError("config/sleela.conf: vm.version must match config/vm.conf")
     if vm.get("vm.strict", "").lower() not in {"true", "false", "1", "0"}:
         raise ValueError("config/vm.conf: invalid vm.strict value")
     if vm.get("vm.profile", "") not in {"user", "administrator", "developer"}:
