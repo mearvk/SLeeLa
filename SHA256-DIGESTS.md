@@ -5437,7 +5437,7 @@ bfe365a1cb04d50f024f3d8e6a7dad828d3a1cacb87f1427d2567340ab7e7378  ide/sleela-int
 b79e9ec9341808bb59fbe62d1411156e8eff9030cb58c041b2f84e1ce892b7f8  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaLibraryIndex.kt
 db3401f818f02df81eeead01bd3a9acc3413c9fd76740e9c4317304124f25bf3  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaModuleModel.kt
 840ddecfef30422139a417c1d5db88379a440a0f557243cb402eb8ec056a01bf  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaParser.kt
-b313b4830da678be8a54ef1a2ddbb4aa0af232b0c8ba543a8a7c2211e5eb80b5  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaParserDefinition.kt
+3fbe0687132a99a9e147045a9e4f7c5efff36ce1ad09e0b8e2d21860d9e54a3e  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaParserDefinition.kt
 c29d793098fd6a26e5b6f2e40d390918cbe266b204b5dfce51b107d79e911aa3  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaSyntaxHighlighter.kt
 5270b7326fcfe48f7ccefa40395d7313a6fcaa5388b5070884fba1de7b250db6  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/SleelaTokenTypes.kt
 e642dda55c90d206a253e71cf7fb14bb386c29ff0214b620da45a553f43e1eed  ide/sleela-intellij/src/main/kotlin/com/mearvk/sleela/ide/actions/SleelaBuildFileAction.kt
