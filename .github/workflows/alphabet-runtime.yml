@@ -8,6 +8,7 @@ on:
       - 'lib/alphabet/**'
       - 'utf-4088/**'
       - 'tools/sleela-character-scan.py'
+      - 'tools/tests/test_sleela_character_scan.py'
       - '.github/workflows/alphabet-runtime.yml'
   pull_request:
     branches: [main, master]
@@ -16,12 +17,13 @@ on:
       - 'lib/alphabet/**'
       - 'utf-4088/**'
       - 'tools/sleela-character-scan.py'
+      - 'tools/tests/test_sleela_character_scan.py'
       - '.github/workflows/alphabet-runtime.yml'
   workflow_dispatch:
 
 jobs:
   native-alphabet:
-    name: Native alphabet runtime (${{ matrix.os }})
+    name: Alphabet runtime (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -41,3 +43,5 @@ jobs:
         run: cmake --build build-utf4088 --config Release --parallel
       - name: Test UTF-4088 catalogue
         run: ctest --test-dir build-utf4088 -C Release --output-on-failure
+      - name: Test read-only catalogue scanner
+        run: python -m unittest tools/tests/test_sleela_character_scan.py
