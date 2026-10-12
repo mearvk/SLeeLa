@@ -170,3 +170,11 @@ Append dated notes here after each work session.
 - Kept the workspace near-white and added GTK overflow clipping to the rounded terminal overlay.
 - Scope note: this delivers a consistent dark interactive-terminal surface for all command output while preserving VTE/PTTY behavior. It does not implement output-only panels per command; that needs a larger output architecture change. Do not mark it complete prematurely.
 - Build/runtime verification must be performed in an environment with GTK 4 and VTE GTK 4 development packages. No local GUI build was available during this edit.
+
+
+### 2026-10-12 — standard command results and summary rows
+- Removed the custom per-file `ls` tiles in favour of plain, conventional text output. The built-in parses clustered flags (`-l`, `-a`, `-la`) and common `-A`, `-h`, `-1`, `-F`, `-d`, and `--` options; long listing includes mode, links, numeric uid/gid, size, modification time, and name.
+- External commands continue receiving flags as separate argv entries; leading hyphens are not stripped by the shell. The observed `ls -l` issue was in the custom builtin's option handling, which previously rejected every option except `-a` and `-A`.
+- Added an interactive summary row immediately after command submission: command text plus local date/time in a muted warm-brown ANSI text-cell background, followed by the command's actual output on the next line. The workspace/terminal palette remains unchanged.
+- The summary treatment is not a standalone GTK rounded output panel; it colors the summary text cells in VTE. Shell scripts/non-interactive execution remain free of these presentation rows.
+- Validation status: source and documentation updates pushed; GUI compilation/runtime still requires GTK 4 and VTE GTK 4 development packages. Run the shell smoke suite and explicit `ls -l`, `ls -la`, external flag, pipeline, and redirection checks before treating runtime validation as complete.
