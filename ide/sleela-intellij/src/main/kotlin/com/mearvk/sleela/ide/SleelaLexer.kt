@@ -5,7 +5,15 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.tree.IElementType
 import java.nio.file.Path
 
-/** IntelliJ lexer adapter backed by the authoritative SLeeLa compiler bridge. */
+/**
+ * IntelliJ lexer adapter.
+ *
+ * Tokens come from the authoritative SLeeLa compiler bridge when a provider has
+ * been installed; otherwise the plugin uses [SleelaFallbackLexer], a structural
+ * tokenizer derived from SLEELA.syntax, so syntax highlighting works without a
+ * running native compiler. Either way the IDE never invents SLeeLa *semantics* —
+ * parsing and diagnostics remain the compiler's responsibility.
+ */
 class SleelaLexer(private val project: Project?) : LexerBase() {
     private var bufferText = ""
     private var tokens = emptyList<SleelaToken>()
@@ -20,13 +28,20 @@ class SleelaLexer(private val project: Project?) : LexerBase() {
         current = null
         tokenStart = startOffset
         tokenEnd = startOffset
-        tokens = try {
-            val root = project?.basePath?.let(Path::of)
-            if (root == null) emptyList() else SleelaCompilerProviders.create(root).lex(bufferText, Path.of("<editor>.sleela")).tokens
-        } catch (_: IllegalStateException) {
-            emptyList()
-        }
+        tokens = lexTokens(bufferText)
         advance()
+    }
+
+    private fun lexTokens(text: String): List<SleelaToken> {
+        val root = project?.basePath?.let(Path::of)
+        if (root != null && SleelaCompilerProviders.isInstalled()) {
+            try {
+                return SleelaCompilerProviders.create(root).lex(text, Path.of("<editor>.sleela")).tokens
+            } catch (_: Exception) {
+                // Fall through to the local structural lexer.
+            }
+        }
+        return SleelaFallbackLexer.tokenize(text)
     }
 
     override fun getState() = 0
