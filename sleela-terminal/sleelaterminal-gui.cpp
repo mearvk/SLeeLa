@@ -233,6 +233,8 @@ void install_css(AppState *state) {
         @define-color sl_textpane_bg #fcfcfc;
         @define-color sl_output_bg   #4b4b4b;
         @define-color sl_output_fg   #f2f2f2;
+        @define-color sl_item_bg     #626262;
+        @define-color sl_item_fg     #ffffff;
         @define-color sl_surface     #21112f;
         @define-color sl_chrome      #24103f;
         @define-color sl_border      #7f56aa;
@@ -500,13 +502,24 @@ void install_css(AppState *state) {
         }
         button.suggested-action:hover { background: @sl_menu_hover; }
 
-        /* Three-colour reading hierarchy:
-           1) the terminal/text-pane surface is #fcfcfc;
-           2) command-result bubbles use a clearly darker neutral charcoal;
-           3) result text is a soft near-white for readable contrast on charcoal. */
-        vte-terminal {
-            color: #262626;
+        /* The near-white workspace frames a rounded charcoal terminal panel.
+           VTE output is light on charcoal; individual ANSI-highlighted tokens
+           can use the lighter item shade. GTK CSS rounds the panel container,
+           while terminal glyph/background cells remain terminal-rendered. */
+        box.sleela-workspace {
             background: @sl_textpane_bg;
+        }
+        overlay.sleela-terminal-panel {
+            background: @sl_output_bg;
+            border: 1px solid #383838;
+            border-radius: 12px;
+            padding: 10px;
+            margin: 12px;
+        }
+        vte-terminal {
+            color: @sl_output_fg;
+            background: @sl_output_bg;
+            border-radius: 8px;
         }
         textview.sleela-scan-output {
             color: @sl_output_fg;
@@ -1713,6 +1726,7 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_window_set_titlebar(state->window, header);
 
     GtkWidget *root = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_widget_add_css_class(root, "sleela-workspace");
 
     // Full-width 4px pure-white throbber rail below the title bar. The moving
     // coloured field is composited inside the white pixels; the frame clock
@@ -1744,6 +1758,7 @@ void activate(GtkApplication *application, gpointer user_data) {
     // Let the throbber cast a faint, moving light field over the terminal
     // surface without intercepting clicks, text selection, or keyboard input.
     GtkWidget *terminal_overlay = gtk_overlay_new();
+    gtk_widget_add_css_class(terminal_overlay, "sleela-terminal-panel");
     gtk_widget_set_hexpand(terminal_overlay, TRUE);
     gtk_widget_set_vexpand(terminal_overlay, TRUE);
     gtk_overlay_set_child(GTK_OVERLAY(terminal_overlay), terminal);
