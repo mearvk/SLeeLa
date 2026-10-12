@@ -52,7 +52,16 @@ Environment::Environment() {
         }
     }
     if (username.empty()) username = "user";
-    prompt_ = username + "$ ";
+
+    // Keep the stored prompt plain text; slsh applies colours only when rendering.
+    char hostname_buffer[256] = {};
+    std::string hostname;
+    if (::gethostname(hostname_buffer, sizeof(hostname_buffer) - 1) == 0) {
+        hostname_buffer[sizeof(hostname_buffer) - 1] = '\0';
+        hostname = hostname_buffer;
+    }
+    if (hostname.empty()) hostname = "computer";
+    prompt_ = username + "@" + hostname + ": ";
 }
 
 std::string Environment::get(const std::string& name) const {
