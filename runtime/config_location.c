@@ -95,6 +95,8 @@ int sleela_config_location_resolve(SLEELA_CONFIG_LOCATION *location,
                                    const char *project_root,
                                    const char *install_root,
                                    const char *explicit_absolute_root) {
+    const char *effective_project;
+    const char *effective_install;
     if (!location) return 0;
     if (explicit_absolute_root && explicit_absolute_root[0]) {
         if (!is_absolute_path(explicit_absolute_root) || !copy_text(location->config_root, sizeof(location->config_root), explicit_absolute_root)) return 0;
@@ -102,16 +104,18 @@ int sleela_config_location_resolve(SLEELA_CONFIG_LOCATION *location,
         return 1;
     }
     if (location->config_root[0] && location->source == 1) return 1;
-    if (project_root && project_root[0]) {
-        if (!is_absolute_path(project_root) || !copy_text(location->project_root, sizeof(location->project_root), project_root)) return 0;
-        if (join_path(location->config_root, sizeof(location->config_root), project_root, location->relative_path)) {
+    effective_project = (project_root && project_root[0]) ? project_root : location->project_root;
+    effective_install = (install_root && install_root[0]) ? install_root : location->install_root;
+    if (effective_project && effective_project[0]) {
+        if (!is_absolute_path(effective_project) || !copy_text(location->project_root, sizeof(location->project_root), effective_project)) return 0;
+        if (join_path(location->config_root, sizeof(location->config_root), effective_project, location->relative_path)) {
             location->source = 2;
             return 1;
         }
     }
-    if (install_root && install_root[0]) {
-        if (!is_absolute_path(install_root) || !copy_text(location->install_root, sizeof(location->install_root), install_root)) return 0;
-        if (join_path(location->config_root, sizeof(location->config_root), install_root, location->install_relative)) {
+    if (effective_install && effective_install[0]) {
+        if (!is_absolute_path(effective_install) || !copy_text(location->install_root, sizeof(location->install_root), effective_install)) return 0;
+        if (join_path(location->config_root, sizeof(location->config_root), effective_install, location->install_relative)) {
             location->source = 3;
             return 1;
         }
