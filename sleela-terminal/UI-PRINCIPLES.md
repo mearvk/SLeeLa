@@ -130,12 +130,12 @@ spacing value, it must either fit these principles or update them deliberately.
 ## 11. File browsing and `ls` output
 
 The main workspace remains near-white (`#FCFCFC`); the interactive terminal
-uses charcoal (`#4B4B4B`) with light text (`#F2F2F2`). The shell's `ls`
-builtin emits conventional plain text instead of custom rounded tiles. It
-supports common flags including clustered `-la`, long format `-l`, hidden
-entries `-a` / `-A`, human-readable sizes `-h`, classification suffixes
-`-F`, directory operands `-d`, and `--` to end option parsing. Redirected
-output and pipelines remain free of ANSI styling sequences.
+uses charcoal (`#4B4B4B`) with light text (`#F2F2F2`). The custom `ls`
+builtin and per-file tiles have been removed. The shell resolves `ls` through
+the normal external-command PATH lookup, so the platform's standard `ls`
+provides its native output format and full flag set (including `-l` and
+`-la`). Command flags are preserved as argv entries, and redirected output
+and pipelines remain free of GUI styling sequences.
 
 The command summary strip is separate from command output: it shows the command
 text and local timestamp, then the result follows on the next line. It does
