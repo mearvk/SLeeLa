@@ -84,3 +84,8 @@ See `api/regex/` for the **SLeeLa Regex API 1.0.0 draft**. It introduces a delib
 A directory containing an API page is not automatically an independently buildable module. Some directories are documentation facades, while native implementation and tests live under `impl/`, `lib/`, or other repository areas. For every module, document the real source-of-truth location, available build target, test command, platform constraints, and whether the public behavior is implemented or design-only. Do not add duplicate source trees or speculative Makefiles merely to make folder layouts uniform.
 
 The [API catalogue](API-CATALOG.md) includes the maintenance checklist and the distinction between source-backed behavior, partial facades, and targets.
+
+
+## Module completeness matrix
+
+See [MODULE-COMPLETENESS.md](MODULE-COMPLETENESS.md) for the module-by-module inventory of existing API entry points, aggregate build integration, and evidence gaps. The shared posting build also provides a `make test` target for posting/listener/router descriptor validation.
