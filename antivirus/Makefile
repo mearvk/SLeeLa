@@ -22,7 +22,7 @@ NATIVE_OBJ := $(BUILD_DIR)/sleelavirin_native.o
 NATIVE_MAIN_OBJ := $(BUILD_DIR)/sleelavirin_native_main.o
 NATIVE_BIN := $(BUILD_DIR)/sleelavirin-scan
 
-.PHONY: all library native native-test clamav clamav-check clamav-update clamav-snapshot-check definitions-import definitions-check test check clean help
+.PHONY: all library native native-test clamav clamav-check clamav-update clamav-snapshot-check definitions-import definitions-check integrity-manifest integrity-check test check clean help
 
 all: library $(TEST_BIN) native
 
@@ -57,7 +57,7 @@ $(TEST_BIN): $(TEST_DIR)/test_scan.c $(LIBRARY) $(SRC_DIR)/sleelavirin_scan.h $(
 test check: all
 	"$(TEST_BIN)"
 	$(MAKE) native-test
-	python3 -m py_compile tools/sleelavirin_scan.py tools/sleelavirin_clamav.py tools/sleelavirin_import_clamav.py tools/sleelavirin_update_clamav.py tools/sleelavirin_verify_signature.py tests/test_tools.py tests/test_update_clamav.py tests/test_verify_signature.py tests/test_scan_report.py tests/test_eicar_integration.py
+	python3 -m py_compile tools/sleelavirin_scan.py tools/sleelavirin_clamav.py tools/sleelavirin_import_clamav.py tools/sleelavirin_update_clamav.py tools/sleelavirin_verify_signature.py tools/sleelavirin_manifest.py tests/test_tools.py tests/test_update_clamav.py tests/test_verify_signature.py tests/test_scan_report.py tests/test_eicar_integration.py tests/test_manifest.py
 	python3 -m unittest discover -s tests -p 'test_*.py' -v
 	$(MAKE) definitions-check
 
@@ -83,6 +83,13 @@ definitions-import:
 definitions-check:
 	python3 tools/sleelavirin_import_clamav.py --check signatures/native-sha256.txt
 
+integrity-manifest:
+	python3 tools/sleelavirin_manifest.py --root . --write build/INTEGRITY-MANIFEST.json
+
+integrity-check:
+	@test -n "$(MANIFEST)" || { echo "Usage: make integrity-check MANIFEST=PATH" >&2; exit 2; }
+	python3 tools/sleelavirin_manifest.py --root . --verify "$(MANIFEST)"
+
 clamav-check:
 	@command -v clamscan >/dev/null 2>&1 || { echo "ClamAV not found; install ClamAV and ensure clamscan is on PATH." >&2; exit 2; }
 	@clamscan --version
@@ -97,6 +104,8 @@ help:
 	@echo "  make test     Build and run the local C and native scanner tests"
 	@echo "  make definitions-check Validate the native SHA-256 index"
 	@echo "  make definitions-import Show compatible ClamAV import usage"
+	@echo "  make integrity-manifest Generate SHA-256 inventory at build/INTEGRITY-MANIFEST.json"
+	@echo "  make integrity-check MANIFEST=PATH Verify hashes and detect missing/extra files"
 	@echo "  make clamav-update Retrieve and validate official ClamAV databases"
 	@echo "  make clamav-snapshot-check SNAPSHOT=DIR Verify snapshot SHA-256 manifest"
 	@echo "  python3 tools/sleelavirin_verify_signature.py --help Verify signed release artifacts"
