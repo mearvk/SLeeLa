@@ -414,6 +414,48 @@ void install_css(AppState *state) {
             outline-offset: 1px;
         }
 
+        /* Tabs keep the light workspace visible above the unchanged charcoal PTY surface. */
+        notebook.sleela-terminal-tabs > header {
+            background: @sl_textpane_bg;
+            border-bottom: 1px solid #d7d7d7;
+            padding: 3px 6px;
+        }
+        notebook.sleela-terminal-tabs tab {
+            background: #eeeeee;
+            color: #333333;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px 6px 0 0;
+            padding: 2px 7px;
+            margin-right: 3px;
+        }
+        notebook.sleela-terminal-tabs tab label { color: #333333; }
+        notebook.sleela-terminal-tabs tab:checked {
+            background: @sl_output_bg;
+            border-color: #777777;
+        }
+        notebook.sleela-terminal-tabs tab:checked label { color: @sl_output_fg; }
+        notebook.sleela-terminal-tabs tab button {
+            min-width: 18px;
+            min-height: 18px;
+            padding: 0;
+            border-radius: 4px;
+            color: inherit;
+        }
+        headerbar.sleela-titlebar button.sleela-new-tab {
+            min-width: 25px;
+            min-height: 24px;
+            padding: 0 5px;
+            margin-left: 2px;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            background: #203b78;
+            color: #ffffff;
+            font-weight: 700;
+        }
+        headerbar.sleela-titlebar button.sleela-new-tab:hover {
+            background: #31569a;
+        }
+
         /* Footer: flat chrome bar matching the title bar, one hairline on top. */
         box.sleela-footer {
             min-height: 38px;
@@ -1990,6 +2032,7 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_overlay_set_measure_overlay(GTK_OVERLAY(terminal_overlay), glow, FALSE);
     state->page = terminal_overlay;
     state->notebook = gtk_notebook_new();
+    gtk_widget_add_css_class(state->notebook, "sleela-terminal-tabs");
     gtk_notebook_set_scrollable(GTK_NOTEBOOK(state->notebook), TRUE);
     gtk_notebook_set_show_border(GTK_NOTEBOOK(state->notebook), FALSE);
     gtk_widget_set_hexpand(state->notebook, TRUE);
