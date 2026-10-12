@@ -1451,6 +1451,7 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
             cairo_fill(cr);
         }
     }
+}
 
 // Spawn a fresh excitation. Birth position spans the whole 0-100% of the strip
 // width: most children enter at the left edge (preserving the dominant
