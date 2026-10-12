@@ -56,4 +56,25 @@ make install DESTDIR=/tmp/package-root PREFIX=/usr
 - **macOS:** CI checks the core CLI build and smoke tests. Process groups, signals, FIFO lifecycle, and interactive terminal behavior still require platform-specific validation.
 - **Windows:** native Windows support is not claimed. The implementation uses POSIX interfaces including `fork`/process execution, `termios`, `unistd`, signals, and FIFO-based process substitution. A Windows port needs an explicit OS abstraction layer or a POSIX compatibility environment and separate tests.
 
+## Validation gates
+
+The checked-in workflow defines the following automated gates:
+
+| Gate | Platform | What it establishes |
+|---|---|---|
+| Clean CLI build + smoke tests | Ubuntu and macOS | Build and regression checks on the core shell |
+| ASan/UBSan smoke run | Ubuntu | Sanitizer coverage for the smoke executable |
+| Clang/libFuzzer build | Ubuntu | The fuzz target compiles; this is not a sustained fuzz campaign |
+| Optional GUI build | Ubuntu | GTK4/VTE GUI compiles against the runner's packages |
+
+A workflow definition is not evidence that the latest run passed. Check the repository's Actions page for the run associated with the commit under review.
+
+## Release blockers and explicit non-goals
+
+- Full POSIX shell conformance is not claimed. Quote provenance, field splitting, and several special-builtin/function assignment semantics need dedicated tests and implementation work.
+- Interactive process groups, terminal job control, signal delivery, and child/FIFO cleanup need integration tests beyond the current smoke script.
+- Windows-native support is not claimed. Do not advertise a native Windows build until a platform abstraction and Windows CI/test coverage exist.
+- macOS CLI CI does not by itself establish full interactive-terminal or process-substitution parity.
+- GUI compilation is not GUI runtime validation; window lifecycle, PTY behavior, keyboard input, and clipboard behavior need runtime testing on supported desktops.
+
 A successful compile is not proof of full POSIX conformance or production readiness. See `M5-HARDENING.md` and `PERFORMANCE.md` for outstanding validation gates.
