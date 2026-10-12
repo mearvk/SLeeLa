@@ -192,3 +192,20 @@ python3 antivirus/tools/sleelavirin_import_clamav.py --check antivirus/signature
 ```
 
 Extract trusted database content with a compatible ClamAV `sigtool` installation; do not pass binary `.cvd` or `.cld` files directly to the importer. Record the database version and source, and verify redistribution terms before packaging imported definitions.
+
+
+### Resource controls and scan result integrity
+
+`--jobs` limits concurrent native scans. `--clamav-jobs` independently limits concurrent ClamAV processes; both default to one. ClamAV receives per-file size, total scan-size, and nested archive recursion limits through `--max-file-size`, `--clamav-max-scansize`, and `--clamav-max-recursion`. The default limits are 100 MiB per file, 400 MiB per ClamAV scan, and recursion depth 8. Tune these to the host's capacity and threat model.
+
+The coordinator reports incomplete coverage and exits with status 2 when files cannot be enumerated or skipped/over-limit inputs prevent a complete scan. Exit status 1 indicates at least one detection; 0 means no detection and no known scan errors, not proof that files are safe. Files changed during scanning are treated as errors. Quarantine refuses a destination within the scanned directory tree and avoids overwriting existing names; this is defense in depth, not a substitute for isolating suspicious files.
+
+Definition imports now produce a provenance manifest. Example:
+
+```sh
+python3 antivirus/tools/sleelavirin_import_clamav.py \
+  --source ./clamav-extracted \
+  --source-version "daily-<database-version>" \
+  --source-url "trusted-internal-artifact-id" \
+  --output antivirus/signatures/native-sha256.txt
+```
