@@ -153,5 +153,48 @@ class DefinitionImporterTests(unittest.TestCase):
             self.assertIn("not changed", stderr.getvalue())
 
 
+    def test_successful_import_writes_provenance_manifest(self):
+        digest = "c" * 64
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source"
+            source.mkdir()
+            (source / "daily.hsb").write_text(f"{digest}:7:Example.Signature\n")
+            output = root / "native.txt"
+            with mock.patch("sys.argv", [
+                "importer", "--source", str(source), "--output", str(output),
+                "--source-version", "daily-test-123", "--source-url", "internal://clamav/daily-test-123"
+            ]):
+                result = importer.main()
+            self.assertEqual(result, 0)
+            manifest = Path(str(output) + ".manifest.json")
+            self.assertTrue(manifest.is_file())
+            import json
+            data = json.loads(manifest.read_text())
+            self.assertEqual(data["source_version"], "daily-test-123")
+            self.assertEqual(data["signature_count"], 1)
+            self.assertEqual(data["index_sha256"], __import__("hashlib").sha256(output.read_bytes()).hexdigest())
+
+    def test_manifest_cannot_overwrite_active_index(self):
+        digest = "d" * 64
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source"
+            source.mkdir()
+            (source / "daily.hsb").write_text(f"{digest}:7:Example.Signature\n")
+            output = root / "native.txt"
+            output.write_text("# keep previous index\n" + "e" * 64 + " old\n")
+            previous = output.read_text()
+            errors = io.StringIO()
+            with mock.patch("sys.argv", [
+                "importer", "--source", str(source), "--output", str(output), "--manifest", str(output)
+            ]):
+                with redirect_stderr(errors):
+                    result = importer.main()
+            self.assertEqual(result, 2)
+            self.assertEqual(output.read_text(), previous)
+            self.assertIn("must differ", errors.getvalue())
+
+
 if __name__ == "__main__":
     unittest.main()
