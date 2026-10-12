@@ -2,71 +2,45 @@
 
 ## 1. Purpose
 
-This document defines what alphabet-related documentation should record for SLeeLa. It is a documentation checklist, not a claim that every listed capability is currently implemented.
+This document defines documentation requirements for SLeeLa alphabet-related behavior. Native runtime behavior and language-level/compiler support are tracked separately.
 
 ## 2. Terminology
 
-Use these terms consistently:
+- Alphabet: a defined set of written letters for a language or notation.
+- Symbol: a written unit used in source text or data.
+- UTF-8 encoding: a mapping between Unicode scalar values and bytes.
+- Unicode scalar value: a Unicode code point excluding surrogate values U+D800–U+DFFF; maximum U+10FFFF.
+- Grapheme cluster: a sequence of code points perceived as one user-facing character.
+- Glyph: the visual form used to render a character.
+- Catalogue ID: an identifier within a particular catalogue; it is not automatically a Unicode code point.
+- Character set: a defined collection of symbols with membership rules.
 
-- **Alphabet:** a defined set of written letters for a language or notation.
-- **Symbol:** a written unit used in source text or data; it may be a letter, digit, punctuation mark, or other character.
-- **Character encoding:** a mapping between text data and encoded units, such as UTF-8 bytes.
-- **Unicode code point:** a numeric value identifying a Unicode code point.
-- **Grapheme cluster:** a sequence of code points perceived as one user-facing character in a given context.
-- **Glyph:** the visual form used to render a character.
-- **Character set:** a defined collection of characters, with membership rules where applicable.
+These concepts are not interchangeable. One visible character may contain multiple scalar values; a UTF-8 scalar value may occupy multiple bytes.
 
-These concepts are related but are not interchangeable. In particular, a visible character may contain multiple code points, and a UTF-8 character may occupy multiple bytes.
+## 3. C<n> character-set capacity signatures
 
-## 3. Required documentation for each formally supported set
+SLeeLa's source contract defines C<n> for decimal n in the range 1..1048576. C<n> is a maximum catalogue-entry capacity, not a bit width, encoding, or populated count. Canonical forms disallow leading zeroes, signs, zero, and values above the maximum.
 
-When a set is implemented and ready to document, record:
+The native runtime validates these signatures. Compiler/type-checker acceptance of C<n> declarations must not be claimed until the parser, type checker, runtime representation, and serialization path have end-to-end tests.
 
-1. Canonical name and stable identifier.
-2. Intended purpose and supported language or notation.
-3. Included characters and any exclusions.
-4. Case behavior, if applicable.
-5. Ordering rules, if any.
-6. Encoding and normalization assumptions.
-7. Membership and validation behavior.
-8. Invalid-input and error-handling behavior.
-9. Language-version compatibility.
-10. Tests and representative examples.
+## 4. UTF-8 behavior
 
-If a property is not defined, label it unspecified rather than inventing a rule.
+The native runtime in lib/alphabet/native/ performs strict UTF-8 decoding and encoding. It rejects malformed/truncated sequences, overlong encodings, surrogates, and values above U+10FFFF. Its count API counts Unicode scalar values, not grapheme clusters. Normalization and grapheme segmentation are not implemented by this module and require versioned Unicode data.
 
-## 4. Source-text considerations
+## 5. Specialized UTF-4088 catalogue
 
-Documentation must distinguish the encoding of source files from the meaning of character literals and from runtime character-set data. UTF-8 byte length must not be presented as a universal count of characters.
+UTF-4088 is an experimental SLeeLa-specific identifier/catalogue system, not a standard UTF encoding or Unicode extension. Values above U+10FFFF belong to a separate identifier namespace and must not be passed to Unicode UTF-8 encoding functions. The catalogue's declared capacity and current registry population are distinct.
 
-Examples involving non-ASCII text should identify any assumptions about compiler input encoding, normalization, and display support.
+The adapter in utf-4088/ performs exact lookup against the published front-end registry. This does not automatically enable UTF-4088 identifiers as native SLeeLa source-language values.
 
-## 5. Relationship to SLeeLa language features
+## 6. Library discovery and loading
 
-If SLeeLa defines character or character-set types (including any version-specific `C<n>` forms), document them only in coordination with the canonical language specification and implementation. Record exact syntax, range limits, type checking, conversion rules, and runtime representation only after these have been verified.
+The read-only scanner tools/sleela-character-scan.py inventories literal and source files without importing or executing them. Its record count is an estimate, not authoritative validation. Runtime loaders must use allowlisted roots, canonicalize paths, reject traversal, enforce file/record limits, and require explicit opt-in before running procedural generators.
 
-Do not infer that a type name, size, or encoding is supported solely because it appears in a proposal or example.
+## 7. Examples and tests
 
-## 6. Examples and tests
+See EXAMPLES.md and CONFORMANCE-TESTS.md. Native UTF-8, capacity parsing, and bounded-set behavior have C++ regression tests. Compiler C<n> syntax, SLVM native bindings, Unicode normalization/grapheme segmentation, and cross-platform end-to-end integration remain follow-up tests.
 
-For each supported rule, provide:
+## 8. Change control
 
-- A minimal valid example.
-- A boundary or edge-case example.
-- An invalid example where rejection behavior is defined.
-- A corresponding automated test or a reference to the test that verifies it.
-
-Examples must be labeled as **implemented**, **proposed**, or **illustrative** as appropriate.
-
-## 7. Versioning and change control
-
-Changes to documented behavior should identify the applicable SLeeLa language version and update related compiler, VM, API, and library documentation. Compatibility-impacting changes should include migration notes.
-
-## 8. Review checklist
-
-- [ ] Terminology is precise and consistent.
-- [ ] Implemented behavior is supported by code or tests.
-- [ ] Proposals are clearly labeled.
-- [ ] Encoding, code points, grapheme clusters, and glyphs are not conflated.
-- [ ] Examples match the stated language version.
-- [ ] Related documentation and tests are linked or updated.
+Changes to character syntax or catalogue serialization must update the language source contract, compiler, VM, API/library docs, and tests. Unsupported conversions must fail explicitly rather than truncate or silently reinterpret identifiers.
