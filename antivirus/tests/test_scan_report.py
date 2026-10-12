@@ -17,7 +17,7 @@ class ScanReportTests(unittest.TestCase):
     def test_terminal_control_characters_are_escaped(self):
         rendered = scanner.safe_console("name\x1b[31m\nforged")
         self.assertNotIn(chr(27), rendered)
-        self.assertNotIn("\\n", rendered)
+        self.assertNotIn(chr(10), rendered)
 
     def run_scan(self, result_code):
         temp = tempfile.TemporaryDirectory()
