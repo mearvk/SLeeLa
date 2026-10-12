@@ -41,6 +41,7 @@ jetbrains:
 	$(MAKE) -C jetbrains all
 
 # Optional native connectors have third-party client-library dependencies.
+# Keep them out of the default build; invoke explicitly when those dependencies are installed.
 connector:
 	$(MAKE) -C lib/connector all
 
@@ -71,9 +72,7 @@ route:
 	@echo "SLeeLa unified route data: route/ROUTE.DATA.json"
 
 config:
-	@echo "SLeeLa unified configuration: config/sleela.conf"
-	@echo "Canonical runtime location: <PROJECT_ROOT>/.sleela/config"
-	@echo "Override with config.mode=absolute and config.absolute_path"
+	@make -C config test
 
 clean:
 	$(MAKE) -C impl clean
@@ -83,6 +82,7 @@ clean:
 	$(MAKE) -C lib/decompiler clean
 	$(MAKE) -C lib/vm clean
 	$(MAKE) -C tests clean
+	@make -C config clean
 
 help:
 	@echo "SLeeLa repository build dispatcher"
@@ -94,8 +94,8 @@ help:
 	@echo "  make decompiler Build lib/decompiler/"
 	@echo "  make vm        Build lib/vm/"
 	@echo "  make jetbrains Show JetBrains source acquisition helpers"
-	@echo "  make connector Build optional native connectors"
-	@echo "  make connector-test Run offline connector tests"
+	@echo "  make connector Build all optional native database/data-source connectors"
+	@echo "  make connector-test Run available offline connector tests"
 	@echo "  make connector-check-deps Report native connector dependencies"
 	@echo "  make install     Verify Quick and Safe installer entry points"
 	@echo "  make install-product  Build and interactively install compiled products (user-local or system-wide)"
