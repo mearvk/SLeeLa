@@ -63,8 +63,10 @@ An example schema is provided in `sleela-terminal.conf.example`. The file uses s
 From `sleela-terminal`:
 
 ```sh
-make gui
+make all-gui
 ```
+
+`make gui` builds only the GUI executable (and its `slsh` dependency); `make all-gui` builds the CLI, smoke-test executable, and GUI.
 
 The executable is:
 
@@ -72,9 +74,11 @@ The executable is:
 build/SleelaTerminal
 ```
 
-The default `make` target builds the GUI in addition to `build/slsh` and the smoke-test executable.
+The default `make` target builds the CLI shell and smoke-test executable only. The GUI is an optional target and requires GTK 4 and VTE development packages.
 
 ## Run
+
+Build the GUI first with `make gui` or `make all-gui`, then run:
 
 ```sh
 ./build/SleelaTerminal
