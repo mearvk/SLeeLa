@@ -48,7 +48,11 @@ def enumerate_files(inputs, depth_limit, follow, excludes, extensions, size_limi
             elif root.is_dir():
                 candidates = []
                 root_depth = len(root.resolve().parts)
-                for current, dirs, names in os.walk(root, followlinks=follow):
+                def walk_error(exc):
+                    nonlocal incomplete
+                    print(f"ERROR directory walk: {exc}", file=sys.stderr)
+                    incomplete = True
+                for current, dirs, names in os.walk(root, followlinks=follow, onerror=walk_error):
                     here = Path(current)
                     try:
                         real_dir = str(here.resolve())
