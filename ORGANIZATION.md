@@ -1,4 +1,6 @@
 # SLeeLa — Repository Organization
+<p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/merchandise/sleela-marketing-logo-001.png" alt="SLeeLa Marketing Logo" width="560"></p>
+
 
 A one-page map of this repository, intended to orient a new contributor or an
 AI assistant (Kiro, ChatGPT, etc.) quickly. For the full project narrative see
