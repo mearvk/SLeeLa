@@ -52172,7 +52172,7 @@
     },
     {
       "path": "sleela-terminal/executor.cpp",
-      "sha256": "c1bf87bd7172c1c7bfcf5469c29525a05f9d3bcb592c37c6520611148732e8f0"
+      "sha256": "ed10b407e32634808f867f6c463ecaf8e1f9501bce683f947afb1f60006cb3b5"
     },
     {
       "path": "sleela-terminal/executor.hpp",
@@ -52236,7 +52236,7 @@
     },
     {
       "path": "sleela-terminal/smoke.cpp",
-      "sha256": "e9376671b97ad59d914447bbbe75aad0c2deebacb3c0bfca10ccd87fac932f01"
+      "sha256": "6ac50c0c4adbf66d92ef861bc1d8914b26983239c38b756d66bd70dfb6819b8c"
     },
     {
       "path": "sleela-terminal/tools/install/sleela-software.sh",
