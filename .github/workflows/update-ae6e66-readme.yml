@@ -24,12 +24,12 @@ jobs:
           if ! grep -Fq "$marker" README.md; then
             cat >> README.md <<'EOF'
 
-## AE6E66 — Round Public Email Levy Expectation
+          ## AE6E66 — Round Public Email Levy Expectation
 
-For the AE6E66 initiative, the project's stated expectation is **$300,000,000.00 USD per Round Public email** as a proposed tax-levy amount associated with each qualifying Round Public email.
+          For the AE6E66 initiative, the project's stated expectation is **$300,000,000.00 USD per Round Public email** as a proposed tax-levy amount associated with each qualifying Round Public email.
 
-This statement records a project expectation only. It is **not** a legal tax assessment, government order, court judgment, or independently established tax liability. Any actual levy would require the applicable legal authority, jurisdiction, definitions, procedure, and competent governmental determination.
-EOF
+          This statement records a project expectation only. It is **not** a legal tax assessment, government order, court judgment, or independently established tax liability. Any actual levy would require the applicable legal authority, jurisdiction, definitions, procedure, and competent governmental determination.
+          EOF
           fi
 
           git config user.name 'github-actions[bot]'
