@@ -45,6 +45,19 @@ int main(void) {
     CHECK(sleela_config_location_resolve(&c, PROJECT_ROOT, NULL, NULL), 13);
     CHECK(strcmp(sleela_config_location_root(&c), ENV_ROOT) == 0, 14);
     CHECK(set_env("SLEELA_CONFIG_ROOT", NULL) == 0, 15);
+    sleela_config_location_defaults(&c);
+    CHECK(set_env("SLEELA_PROJECT_ROOT", PROJECT_ROOT) == 0, 16);
+    CHECK(set_env("SLEELA_INSTALL_ROOT", NULL) == 0, 17);
+    CHECK(sleela_config_location_from_environment(&c), 18);
+    CHECK(sleela_config_location_resolve(&c, NULL, NULL, NULL), 19);
+    CHECK(strcmp(sleela_config_location_root(&c), PROJECT_EXPECTED) == 0, 20);
+    CHECK(set_env("SLEELA_PROJECT_ROOT", NULL) == 0, 21);
+    CHECK(set_env("SLEELA_INSTALL_ROOT", INSTALL_ROOT) == 0, 22);
+    sleela_config_location_defaults(&c);
+    CHECK(sleela_config_location_from_environment(&c), 23);
+    CHECK(sleela_config_location_resolve(&c, NULL, NULL, NULL), 24);
+    CHECK(strcmp(sleela_config_location_root(&c), INSTALL_EXPECTED) == 0, 25);
+    CHECK(set_env("SLEELA_INSTALL_ROOT", NULL) == 0, 26);
     memset(long_path, 'x', sizeof(long_path) - 1);
 #ifdef _WIN32
     long_path[0] = 'C'; long_path[1] = ':'; long_path[2] = '\\';
@@ -53,7 +66,7 @@ int main(void) {
 #endif
     long_path[sizeof(long_path) - 1] = '\\0';
     sleela_config_location_defaults(&c);
-    CHECK(!sleela_config_location_resolve(&c, long_path, NULL, NULL), 16);
+    CHECK(!sleela_config_location_resolve(&c, long_path, NULL, NULL), 27);
     puts("config location smoke: PASS");
     return 0;
 }
