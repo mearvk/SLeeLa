@@ -33,7 +33,9 @@ jobs:
       - name: Install X11, FreeType, and Fontconfig development packages
         run: sudo apt-get update && sudo apt-get install -y libx11-dev libfreetype-dev libfontconfig-dev
       - name: Show toolchain
-        run: { g++ --version | head -1; make --version | head -1; }
+        run: |
+          g++ --version | head -1
+          make --version | head -1
       - name: Build the toolkit (X11 backend)
         run: make clean all
       - name: Build the gallery example
