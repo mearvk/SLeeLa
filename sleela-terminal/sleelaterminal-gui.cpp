@@ -360,26 +360,32 @@ void install_css() {
             color: #ffffff;
         }
 
-        /* Settings (gear) button: a quiet, flat affordance. No resting
-           background or border -- the icon alone sits in the bar; it reveals a
-           soft tint only on hover/active. ~25% smaller than the 32px controls. */
+        /* Settings: compact blue hamburger control with a fine black outline and
+           softly rounded corners (18% radius) to match the title-bar blue. */
         headerbar.sleela-titlebar button.sleela-settings-btn {
-            color: alpha(@sl_fg, 0.82);
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            min-width: 24px;
-            min-height: 24px;
-            padding: 2px;
+            color: #ffffff;
+            background: @sl_tb_light_blue;
+            border: 1px solid #000000;
+            border-radius: 18%;
+            box-shadow: inset 0 1px 0 alpha(#ffffff, 0.22);
+            min-width: 27px;
+            min-height: 27px;
+            padding: 3px;
             margin-right: 4px;
-            transition: background 120ms ease, color 120ms ease;
+            transition: background 120ms ease, box-shadow 120ms ease;
         }
         headerbar.sleela-titlebar button.sleela-settings-btn:hover {
-            color: @sl_fg;
-            background: alpha(@sl_fg, 0.12);
+            background: #6288d6;
+            box-shadow: inset 0 1px 0 alpha(#ffffff, 0.30), 0 0 0 1px alpha(#000000, 0.20);
         }
-        headerbar.sleela-titlebar button.sleela-settings-btn:active { background: alpha(@sl_fg, 0.20); }
-        headerbar.sleela-titlebar button.sleela-settings-btn:focus { outline: 1px solid @sl_accent; outline-offset: -1px; }
+        headerbar.sleela-titlebar button.sleela-settings-btn:active {
+            background: @sl_tb_dark_blue;
+            box-shadow: inset 0 1px 2px alpha(#000000, 0.35);
+        }
+        headerbar.sleela-titlebar button.sleela-settings-btn:focus {
+            outline: 1px solid @sl_accent;
+            outline-offset: 1px;
+        }
 
         /* Footer: flat chrome bar matching the title bar, one hairline on top. */
         box.sleela-footer {
@@ -1466,14 +1472,40 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_widget_set_tooltip_text(logo, "SleelaTerminal™ — Debian / Windows Terminal");
     gtk_header_bar_pack_start(GTK_HEADER_BAR(header), logo);
 
-    // Settings control on the RIGHT of the title bar: a gear icon (the
-    // conventional Settings glyph), flat/quiet by default with only a soft
-    // hover tint, ~25% smaller than the other title controls. Clicking it opens
-    // the Settings subframe window. Packed at the end so it sits on the right.
+    // Settings control on the RIGHT of the title bar: a custom three-bar
+    // hamburger glyph, filled title-bar blue with a 1px black outline. Clicking
+    // it opens the Settings subframe window. Packed at the end so it sits right.
     GtkWidget *settings = gtk_button_new();
-    GtkWidget *settings_image = gtk_image_new_from_icon_name("emblem-system-symbolic");
-    gtk_image_set_pixel_size(GTK_IMAGE(settings_image), 16);
-    gtk_button_set_child(GTK_BUTTON(settings), settings_image);
+    GtkWidget *settings_glyph = gtk_drawing_area_new();
+    gtk_drawing_area_set_content_width(GTK_DRAWING_AREA(settings_glyph), 15);
+    gtk_drawing_area_set_content_height(GTK_DRAWING_AREA(settings_glyph), 15);
+    gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(settings_glyph),
+        [](GtkDrawingArea *, cairo_t *cr, int width, int height, gpointer) {
+            const double bar_height = 2.0;
+            const double left = 1.0;
+            const double right = static_cast<double>(width) - 1.0;
+            const double bars_y[] = {2.0, (height - bar_height) / 2.0, height - bar_height - 2.0};
+            for (double y : bars_y) {
+                const double radius = 1.0;
+                cairo_new_path(cr);
+                cairo_move_to(cr, left + radius, y);
+                cairo_line_to(cr, right - radius, y);
+                cairo_arc(cr, right - radius, y + radius, radius, -M_PI_2, 0.0);
+                cairo_line_to(cr, right, y + bar_height - radius);
+                cairo_arc(cr, right - radius, y + bar_height - radius, radius, 0.0, M_PI_2);
+                cairo_line_to(cr, left + radius, y + bar_height);
+                cairo_arc(cr, left + radius, y + bar_height - radius, radius, M_PI_2, M_PI);
+                cairo_line_to(cr, left, y + radius);
+                cairo_arc(cr, left + radius, y + radius, radius, M_PI, 3.0 * M_PI_2);
+                cairo_close_path(cr);
+                cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
+                cairo_set_line_width(cr, 1.0);
+                cairo_stroke_preserve(cr);
+                cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+                cairo_fill(cr);
+            }
+        }, nullptr, nullptr);
+    gtk_button_set_child(GTK_BUTTON(settings), settings_glyph);
     gtk_widget_set_tooltip_text(settings, "SleelaTerminal Settings");
     gtk_widget_add_css_class(settings, "sleela-settings-btn");
     gtk_widget_set_valign(settings, GTK_ALIGN_CENTER);
