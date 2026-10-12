@@ -105,7 +105,7 @@ left edge with no surrounding whitespace. It is a strict image — no button
 outline — and is produced by `tools/logo/Trim.java` from the source artwork in
 `images/`.
 
-The title bar and footer retain the dark rich-purple visual language, bright white controls/text, and a clean flat treatment. The settings subframe uses the same purple family rather than introducing a separate theme.
+The title bar keeps its branded purple-to-blue gradient, while every interactive selection surface—the Settings subframe, software popover, and terminal right-click menu—uses the same deep-blue/light-blue family as the main frame. Menu text stays white, hover and active states brighten in blue, and keyboard focus uses a visible light-blue outline so selection states remain clear.
 
 The bottom edge of the title bar is a **living throbber** rather than a static border: a 2px seam that is not one uniform brightness but a **flowing field** of many small excitations — "children of wattage" — each adding a *relative* darker/lighter shade near its own position, as if voltage were being fed through a living receptor. **At rest the strip is the title-bar colour itself** (the same chrome purple), so the seam reads as the title bar coming alive rather than a separate band. It is repainted ~20 times a second while the terminal is open.
 
