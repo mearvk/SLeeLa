@@ -209,3 +209,16 @@ python3 antivirus/tools/sleelavirin_import_clamav.py \
   --source-url "trusted-internal-artifact-id" \
   --output antivirus/signatures/native-sha256.txt
 ```
+
+
+## Security hardening and release checks
+
+See [SECURITY.md](SECURITY.md) for the security model, signature-index integrity checks, quarantine expectations, adversarial test coverage, CI checks, and release checklist. To verify an imported index against its provenance manifest, run:
+
+```sh
+python3 antivirus/tools/sleelavirin_import_clamav.py \\
+  --check antivirus/signatures/native-sha256.txt \\
+  --check-manifest antivirus/signatures/native-sha256.txt.manifest.json
+```
+
+Per-file engine processes have a 120-second default timeout. Configure `--scan-timeout N`; use `0` only when intentionally disabling the timeout. A timeout is a scan error, never a clean verdict.
