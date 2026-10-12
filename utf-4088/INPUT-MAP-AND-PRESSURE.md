@@ -90,3 +90,8 @@ Conformance tests should verify:
 - Repeated runs with the same input and seed produce the same ordered trace.
 
 This protocol defines ordering only. It does not claim that all 16,606 current registry records have verified meanings or that UTF-4088 is a standard Unicode encoding.
+
+
+## Adaptive probe scheduling
+
+The canonical coordinate/depth traversal remains the reproducible baseline. An optional adaptive scheduling policy may choose the next probe using expected match utility, coverage, uncertainty reduction, and compute/resource cost, as specified in [PROBE-ORDERING-AND-MATCHING.md](PROBE-ORDERING-AND-MATCHING.md). Adaptive runs must log their policy and maintain a coverage pass; they must not silently change the meaning of depth 1–50.
