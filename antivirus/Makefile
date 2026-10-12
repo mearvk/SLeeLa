@@ -22,7 +22,7 @@ NATIVE_OBJ := $(BUILD_DIR)/sleelavirin_native.o
 NATIVE_MAIN_OBJ := $(BUILD_DIR)/sleelavirin_native_main.o
 NATIVE_BIN := $(BUILD_DIR)/sleelavirin-scan
 
-.PHONY: all library native native-test clamav clamav-check test check clean help
+.PHONY: all library native native-test clamav clamav-check definitions-import definitions-check test check clean help
 
 all: library $(TEST_BIN) native
 
@@ -66,6 +66,13 @@ native-test: $(NATIVE_BIN)
 clamav: clamav-check
 	python3 tools/sleelavirin_clamav.py --help >/dev/null
 
+definitions-import:
+	@echo "Usage: python3 tools/sleelavirin_import_clamav.py --source DIR --output signatures/native-sha256.txt"
+	@echo "Only compatible extracted text .hsb SHA-256 records are imported."
+
+definitions-check:
+	python3 tools/sleelavirin_import_clamav.py --check signatures/native-sha256.txt
+
 clamav-check:
 	@command -v clamscan >/dev/null 2>&1 || { echo "ClamAV not found; install ClamAV and ensure clamscan is on PATH." >&2; exit 2; }
 	@clamscan --version
@@ -78,5 +85,7 @@ help:
 	@echo "  make          Build the static library, self-test, and native scanner"
 	@echo "  make library  Build build/libsleelavirin.a"
 	@echo "  make test     Build and run the local C and native scanner tests"
+	@echo "  make definitions-check Validate the native SHA-256 index"
+	@echo "  make definitions-import Show compatible ClamAV import usage"
 	@echo "  make clean    Remove antivirus/build/"
 	@echo "  CC=clang make Use Clang instead of the default C compiler"
