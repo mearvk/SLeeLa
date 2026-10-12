@@ -112,17 +112,15 @@ int sleela_config_location_resolve(SLEELA_CONFIG_LOCATION *location,
     effective_install = (install_root && install_root[0]) ? install_root : location->install_root;
     if (effective_project && effective_project[0]) {
         if (!is_absolute_path(effective_project) || !copy_text(location->project_root, sizeof(location->project_root), effective_project)) return 0;
-        if (join_path(location->config_root, sizeof(location->config_root), effective_project, location->relative_path)) {
-            location->source = 2;
-            return 1;
-        }
+        if (!join_path(location->config_root, sizeof(location->config_root), effective_project, location->relative_path)) return 0;
+        location->source = 2;
+        return 1;
     }
     if (effective_install && effective_install[0]) {
         if (!is_absolute_path(effective_install) || !copy_text(location->install_root, sizeof(location->install_root), effective_install)) return 0;
-        if (join_path(location->config_root, sizeof(location->config_root), effective_install, location->install_relative)) {
-            location->source = 3;
-            return 1;
-        }
+        if (!join_path(location->config_root, sizeof(location->config_root), effective_install, location->install_relative)) return 0;
+        location->source = 3;
+        return 1;
     }
     if (location->absolute_root[0] && is_absolute_path(location->absolute_root)) {
         if (!copy_text(location->config_root, sizeof(location->config_root), location->absolute_root)) return 0;
