@@ -75,3 +75,15 @@ python3 antivirus/tools/sleelavirin_scan.py --engine clamav --clamav-jobs 1 --ma
 
 
 Engine subprocesses have a 120-second per-file timeout by default. Configure `--scan-timeout N`; `0` disables the timeout. Timeouts return an error verdict and contribute to incomplete/error exit status, never a clean verdict. See [SECURITY.md](SECURITY.md) for integrity, adversarial test, quarantine, and release requirements.
+
+
+## ClamAV database updates and provenance
+
+The optional ClamAV backend uses the installed ClamAV engine and its own official signature database. Update and snapshot databases with:
+
+```sh
+python3 antivirus/tools/sleelavirin_update_clamav.py \
+  --root antivirus/signatures/clamav-cache
+```
+
+The updater uses FreshClam, validates the staged database by loading it with `clamscan`, records per-file SHA-256 hashes and sizes, and atomically updates a pointer to a content-addressed snapshot. Do not commit downloaded databases into the source repository. See [README.md](README.md) and [SECURITY.md](SECURITY.md) for trust limitations and rollback guidance.
