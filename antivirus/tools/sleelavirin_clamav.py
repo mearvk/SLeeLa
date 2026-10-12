@@ -21,7 +21,7 @@ def main() -> int:
         print(f"ERROR: ClamAV executable not found: {args.clamscan}", file=sys.stderr)
         return 2
 
-    command = [executable, "--infected", "--no-summary", "--", *args.paths]
+    command = [executable, "--recursive", "--infected", "--no-summary", "--", *args.paths]
     try:
         result = subprocess.run(command, check=False)
     except OSError as exc:
