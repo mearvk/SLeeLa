@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.20)
+project(sleela_alphabet_native LANGUAGES CXX)
+
+include(CTest)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_library(sleela_alphabet_native character_runtime.cpp)
+target_include_directories(sleela_alphabet_native PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+if(MSVC)
+  target_compile_options(sleela_alphabet_native PRIVATE /W4 /permissive-)
+else()
+  target_compile_options(sleela_alphabet_native PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+if(BUILD_TESTING)
+  add_executable(sleela_alphabet_native_tests tests.cpp)
+  target_link_libraries(sleela_alphabet_native_tests PRIVATE sleela_alphabet_native)
+  add_test(NAME sleela_alphabet_native_tests COMMAND sleela_alphabet_native_tests)
+endif()
