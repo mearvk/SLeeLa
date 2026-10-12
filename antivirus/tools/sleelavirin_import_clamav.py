@@ -36,6 +36,28 @@ def validate_database(path):
     return errors, count
 
 
+def validate_manifest(index_path, manifest_path):
+    """Verify manifest provenance fields and bind the manifest to exact index bytes."""
+    try:
+        raw = index_path.read_bytes()
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        return [f"cannot read/parse manifest or index: {exc}"]
+    errors = []
+    if manifest.get("schema") != "sleelavirin-native-index-manifest-v1":
+        errors.append("unsupported or missing manifest schema")
+    actual_digest = hashlib.sha256(raw).hexdigest()
+    if manifest.get("index_sha256") != actual_digest:
+        errors.append("manifest index_sha256 does not match active index bytes")
+    _, count = validate_database(index_path)
+    try:
+        if int(manifest.get("signature_count", -1)) != count:
+            errors.append("manifest signature_count does not match active index")
+    except (TypeError, ValueError):
+        errors.append("manifest signature_count is invalid")
+    return errors
+
+
 def collect_signatures(source):
     entries, skipped = {}, 0
     paths = sorted(p for p in source.rglob("*") if p.is_file() and p.suffix.lower() == ".hsb")
@@ -95,18 +117,25 @@ def main():
     parser.add_argument("--source", type=Path, help="directory of extracted plain-text .hsb files")
     parser.add_argument("--output", type=Path, help="native SHA-256 index destination")
     parser.add_argument("--check", type=Path, help="validate an existing native index")
+    parser.add_argument("--check-manifest", type=Path, help="also verify a provenance manifest against --check index bytes")
     parser.add_argument("--source-version", default="unspecified", help="ClamAV database/version identifier")
     parser.add_argument("--source-url", default="", help="origin URL or internal artifact identifier")
     parser.add_argument("--manifest", type=Path, help="provenance JSON path (default: OUTPUT.manifest.json)")
     args = parser.parse_args()
     if args.check:
         errors, count = validate_database(args.check)
+        if args.check_manifest:
+            errors.extend(validate_manifest(args.check, args.check_manifest))
         for error in errors:
             print(f"INVALID {error}", file=sys.stderr)
         if errors:
             return 2
         print(f"VALID {args.check}: {count} signature(s)")
+        if args.check_manifest:
+            print(f"VALID MANIFEST {args.check_manifest}")
         return 0
+    if args.check_manifest:
+        parser.error("--check-manifest requires --check")
     if not args.source or not args.output:
         parser.error("provide --source and --output, or use --check")
     source = args.source.expanduser()
