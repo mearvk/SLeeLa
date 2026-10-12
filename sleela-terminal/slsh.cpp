@@ -726,11 +726,13 @@ int repl(Environment& env) {
             (void)::write(STDOUT_FILENO, frame.data(), frame.size());
             std::this_thread::sleep_for(std::chrono::milliseconds(180));
         }
-        // Clear only the banner row and preserve the live cursor position.
-        // Deleting the row would leave the cursor at column 1, away from the
-        // prompt's colon, until the user typed or another redraw occurred.
-        const std::string clear_banner = "\033[s\033[1;1H\033[2K\033[u";
-        (void)::write(STDOUT_FILENO, clear_banner.data(), clear_banner.size());
+        // Remove the banner row so the prompt row shifts to the top of the
+        // terminal. After deleting row 1, explicitly home the cursor to the
+        // beginning of the now-top prompt line; the line editor will position
+        // it at the input insertion point on the next redraw.
+        const std::string clear_and_promote =
+            "\033[s\033[1;1H\033[2K\033[1;1H\033[M\033[1;1H";
+        (void)::write(STDOUT_FILENO, clear_and_promote.data(), clear_and_promote.size());
     }).detach();
 
     for (;;) {
