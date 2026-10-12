@@ -76,7 +76,8 @@ struct AppState {
     // left->right at ~20 Hz; see throbber_tick / throbber_draw.
     GtkWidget *throbber = nullptr;
     GtkWidget *terminal_glow = nullptr; // non-interactive overlay lit by throbber cells
-    guint throbber_tick = 0;
+    guint throbber_tick = 0; // GTK frame-clock callback ID (main thread only)
+    gint64 throbber_last_frame_us = 0;
     double throbber_t = 0.0;        // monotonically advancing time (seconds)
     int    throbber_w = 0;          // last known strip width (px)
     double throbber_amp = 0.6;      // slow reflexive "amplification" field [0..1]
@@ -1102,8 +1103,8 @@ void child_exited(VteTerminal *, int, gpointer user_data) {
         g_source_remove(state->footer_tick);
         state->footer_tick = 0;
     }
-    if (state->throbber_tick != 0) {
-        g_source_remove(state->throbber_tick);
+    if (state->throbber_tick != 0 && state->throbber != nullptr) {
+        gtk_widget_remove_tick_callback(state->throbber, state->throbber_tick);
         state->throbber_tick = 0;
     }
     state->throbber = nullptr;
@@ -1137,8 +1138,8 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
         g_source_remove(state->footer_tick);
         state->footer_tick = 0;
     }
-    if (state->throbber_tick != 0) {
-        g_source_remove(state->throbber_tick);
+    if (state->throbber_tick != 0 && state->throbber != nullptr) {
+        gtk_widget_remove_tick_callback(state->throbber, state->throbber_tick);
         state->throbber_tick = 0;
     }
     state->throbber = nullptr;
@@ -1173,28 +1174,42 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
     const double colour_gate = std::max(0.0, (amp - 0.80) / 0.15); // 0..1
     const double colour_gate_c = colour_gate > 1.0 ? 1.0 : colour_gate;
 
-    for (int x = 0; x < width; ++x) {
-        const double px = x + 0.5;
-
-        // Accumulate the scalar field (how far this column departs from rest)
-        // and, separately, the hue weighted by each tinted cell's contribution.
-        double f = 0.0;
-        double hr = 0.0, hg = 0.0, hb = 0.0, hw = 0.0;
-        for (const auto &c : state->throbber_cells) {
-            if (!c.alive) continue;
-            double dx = px - c.x;
-            // Asymmetric width: trailing (left) side longer -> comet tail that
-            // points back the way it came, reinforcing left->right flow.
-            double s = (dx < 0.0) ? c.sigma * 1.6 : c.sigma * 0.8;
-            if (s < 0.5) s = 0.5;
-            double e = dx / s;
-            double bump = std::exp(-0.5 * e * e);
-            double flick = 0.85 + 0.15 * std::sin(state->throbber_t * 6.0 + c.phase);
-            double contrib = c.intensity * bump * flick;
-            f += contrib;
-            if (c.tinted) { hr += c.tr * contrib; hg += c.tg * contrib; hb += c.tb * contrib; hw += contrib; }
+    // Build the light field by visiting only each cell's visible footprint.
+    // The previous pixel-major loop evaluated every cell at every pixel; this
+    // cell-major pass skips pixels more than ~3 sigma from a pulse, where its
+    // contribution is visually negligible. Arrays are local to this draw and
+    // bounded by the strip width, which is only a few pixels high.
+    std::vector<double> field(static_cast<size_t>(width), 0.0);
+    std::vector<double> hue_r(static_cast<size_t>(width), 0.0);
+    std::vector<double> hue_g(static_cast<size_t>(width), 0.0);
+    std::vector<double> hue_b(static_cast<size_t>(width), 0.0);
+    std::vector<double> hue_w(static_cast<size_t>(width), 0.0);
+    const double flick_time = state->throbber_t * 6.0;
+    for (const auto &c : state->throbber_cells) {
+        if (!c.alive || c.intensity < 0.001) continue;
+        const int x0 = std::max(0, static_cast<int>(std::floor(c.x - c.sigma * 4.8)));
+        const int x1 = std::min(width - 1, static_cast<int>(std::ceil(c.x + c.sigma * 2.4)));
+        const double flick = 0.85 + 0.15 * std::sin(flick_time + c.phase);
+        for (int x = x0; x <= x1; ++x) {
+            const double dx = (x + 0.5) - c.x;
+            const double s = std::max(0.5, (dx < 0.0) ? c.sigma * 1.6 : c.sigma * 0.8);
+            const double e = dx / s;
+            const double contrib = c.intensity * std::exp(-0.5 * e * e) * flick;
+            const size_t ix = static_cast<size_t>(x);
+            field[ix] += contrib;
+            if (c.tinted) {
+                hue_r[ix] += c.tr * contrib;
+                hue_g[ix] += c.tg * contrib;
+                hue_b[ix] += c.tb * contrib;
+                hue_w[ix] += contrib;
+            }
         }
-        f *= (0.5 + 0.9 * amp);
+    }
+
+    for (int x = 0; x < width; ++x) {
+        const size_t ix = static_cast<size_t>(x);
+        double f = field[ix] * (0.5 + 0.9 * amp);
+        double hr = hue_r[ix], hg = hue_g[ix], hb = hue_b[ix], hw = hue_w[ix];
         if (f > 1.2) f = 1.2;
 
         // Relative shade of the chrome base.
@@ -1263,7 +1278,10 @@ void terminal_glow_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gp
         cairo_pattern_t *glow = cairo_pattern_create_radial(x, 0.0, 1.0, x, 0.0, sigma);
         cairo_pattern_add_color_stop_rgba(glow, 0.0, r, g, b, strength);
         cairo_pattern_add_color_stop_rgba(glow, 1.0, r, g, b, 0.0);
-        cairo_rectangle(cr, 0, 0, width, height);
+        // The radial gradient is transparent beyond sigma. Restrict the fill
+        // to its actual vertical footprint instead of repainting the full
+        // terminal pane for every cell.
+        cairo_rectangle(cr, 0, 0, width, std::min(height, static_cast<int>(std::ceil(sigma))));
         cairo_set_source(cr, glow);
         cairo_fill(cr);
         cairo_pattern_destroy(glow);
@@ -1326,12 +1344,22 @@ void throbber_spawn(AppState *state, int W) {
     state->throbber_cells.push_back(c);
 }
 
-// 20 Hz update of the living field.
-gboolean throbber_tick(gpointer user_data) {
+// Frame-clock-driven update: GTK calls this on the UI thread at display cadence.
+// Simulate at up to ~30 updates/second, skip redundant refreshes on 60/120/144 Hz
+// displays, and clamp long pauses (minimize, debugger stop, scheduling delay).
+gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (state->throbber == nullptr) return G_SOURCE_REMOVE;
 
-    const double dt = 1.0 / 20.0;
+    const gint64 frame_us = gdk_frame_clock_get_frame_time(frame_clock);
+    if (state->throbber_last_frame_us == 0) {
+        state->throbber_last_frame_us = frame_us;
+        return G_SOURCE_CONTINUE;
+    }
+    const gint64 elapsed_us = frame_us - state->throbber_last_frame_us;
+    if (elapsed_us < 33333) return G_SOURCE_CONTINUE; // cap simulation to ~30 FPS
+    state->throbber_last_frame_us = frame_us;
+    const double dt = std::clamp(elapsed_us / 1000000.0, 0.001, 0.050);
     state->throbber_t += dt;
     const int W = state->throbber_w > 0 ? state->throbber_w : 600;
 
@@ -1630,9 +1658,12 @@ void activate(GtkApplication *application, gpointer user_data) {
     state->footer_tick = g_timeout_add_seconds(30, footer_feed_tick, state);
     footer_feed_tick(state);
 
-    // Drive the throbber at 20 Hz (every 50 ms) for as long as the window lives.
-    // The timer is removed in child_exited / window_close_request.
-    state->throbber_tick = g_timeout_add(33, throbber_tick, state);
+    // GTK's frame clock schedules updates with display frames and naturally
+    // pauses callbacks while the drawing widget is unmapped. This avoids a
+    // free-running timer and keeps all GTK/Cairo work on the UI thread.
+    state->throbber_last_frame_us = 0;
+    state->throbber_tick = gtk_widget_add_tick_callback(
+        throbber, throbber_tick, state, nullptr);
 
     std::vector<char *> shell_argv;
     shell_argv.push_back(const_cast<char *>(state->shell_path.c_str()));
