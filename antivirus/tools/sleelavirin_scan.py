@@ -191,6 +191,11 @@ def safe_quarantine(path, destination, scanned_roots, expected_stamp):
     return target
 
 
+def unique_paths(paths):
+    """Keep first occurrence of each path while preserving order."""
+    return list(dict.fromkeys(paths))
+
+
 def main():
     package = Path(__file__).resolve().parent.parent
     parser = argparse.ArgumentParser(description="Native-first Sleelavirin scanner with optional ClamAV secondary engine.")
@@ -282,7 +287,7 @@ def main():
                         break
                 elif verdict == "ERROR":
                     errors += 1
-    unique = list(dict.fromkeys(found))
+    unique = unique_paths(found)
     if args.action == "quarantine" and unique:
         destination = Path(args.quarantine_dir).expanduser()
         for path in unique:
