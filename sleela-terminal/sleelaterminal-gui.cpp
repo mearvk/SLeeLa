@@ -5,6 +5,7 @@
 #include <cctype>
 #include <cstdlib>
 #include <regex>
+#include <set>
 #include <cmath>
 #include <csignal>
 #include <filesystem>
@@ -554,24 +555,63 @@ void make_settings_menu(AppState *state, GtkWidget *settings_button_widget) {
     gtk_widget_set_halign(appearance, GTK_ALIGN_START);
     gtk_box_append(GTK_BOX(box), appearance);
 
-    struct FontChoice { const char *label; const char *value; };
-    static const FontChoice fonts[] = {
-        {"Monospace 10", "Monospace 10"},
-        {"Monospace 11", "Monospace 11"},
-        {"Monospace 12", "Monospace 12"},
-        {"Sans 11", "Sans 11"},
-        {"Serif 11", "Serif 11"}
-    };
-    for (const auto &choice : fonts) {
-        GtkWidget *button = gtk_button_new_with_label(choice.label);
-        g_object_set_data_full(G_OBJECT(button), "sleela-value", g_strdup(choice.value), g_free);
+    GtkWidget *font_status = gtk_label_new("Installed monospaced fonts");
+    gtk_widget_set_halign(font_status, GTK_ALIGN_START);
+    gtk_box_append(GTK_BOX(box), font_status);
+
+    // Only offer font families reported by the active OS/Pango font backend.
+    PangoFontMap *font_map = pango_cairo_font_map_get_default();
+    PangoFontFamily **families = nullptr;
+    int family_count = 0;
+    pango_font_map_list_families(font_map, &families, &family_count);
+    std::vector<std::string> installed_monospace;
+    for (int i = 0; i < family_count; ++i) {
+        if (pango_font_family_is_monospace(families[i])) {
+            const char *name = pango_font_family_get_name(families[i]);
+            if (name && *name) installed_monospace.emplace_back(name);
+        }
+    }
+    g_free(families);
+    std::sort(installed_monospace.begin(), installed_monospace.end());
+    installed_monospace.erase(std::unique(installed_monospace.begin(), installed_monospace.end()),
+                              installed_monospace.end());
+
+    for (const auto &family : installed_monospace) {
+        GtkWidget *button = gtk_button_new_with_label((family + " 11").c_str());
+        const std::string value = family + " 11";
+        g_object_set_data_full(G_OBJECT(button), "sleela-value", g_strdup(value.c_str()), g_free);
         g_signal_connect(button, "clicked", G_CALLBACK(+[](GtkButton *button, gpointer data) {
             auto *state = static_cast<AppState *>(data);
             set_font(state, static_cast<const char *>(g_object_get_data(G_OBJECT(button), "sleela-value")));
         }), state);
         gtk_box_append(GTK_BOX(box), button);
     }
+    if (installed_monospace.empty()) {
+        GtkWidget *button = gtk_button_new_with_label("Monospace 11 (system fallback)");
+        g_signal_connect(button, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
+            set_font(static_cast<AppState *>(data), "Monospace 11");
+        }), state);
+        gtk_box_append(GTK_BOX(box), button);
+    }
 
+    GtkWidget *size_label = gtk_label_new("Font size");
+    gtk_widget_set_halign(size_label, GTK_ALIGN_START);
+    gtk_box_append(GTK_BOX(box), size_label);
+    const char *font_sizes[] = {"10", "11", "12", "14", "16"};
+    for (const char *size : font_sizes) {
+        GtkWidget *button = gtk_button_new_with_label(size);
+        g_object_set_data_full(G_OBJECT(button), "sleela-size", g_strdup(size), g_free);
+        g_signal_connect(button, "clicked", G_CALLBACK(+[](GtkButton *button, gpointer data) {
+            auto *state = static_cast<AppState *>(data);
+            const char *size = static_cast<const char *>(g_object_get_data(G_OBJECT(button), "sleela-size"));
+            PangoFontDescription *current = pango_font_description_from_string(state->config.font.c_str());
+            const char *family = pango_font_description_get_family(current);
+            std::string selected = std::string(family && *family ? family : "Monospace") + " " + size;
+            pango_font_description_free(current);
+            set_font(state, selected.c_str());
+        }), state);
+        gtk_box_append(GTK_BOX(box), button);
+    }
     struct ColorChoice { const char *label; const char *value; };
     static const ColorChoice colors[] = {
         {"Font: White", "#FFFFFF"},
@@ -1188,11 +1228,17 @@ void terminal_glow_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gp
     auto *state = static_cast<AppState *>(user_data);
     if (width <= 0 || height <= 0 || state->throbber_w <= 0) return;
 
+    const double pane_scale = static_cast<double>(width) / state->throbber_w;
     for (const auto &c : state->throbber_cells) {
-        if (!c.alive || c.intensity < 0.015) continue;
-        const double x = c.x * static_cast<double>(width) / state->throbber_w;
-        const double sigma = std::max(12.0, c.sigma * 2.2 * static_cast<double>(width) / state->throbber_w);
-        const double strength = std::clamp(c.intensity * (0.025 + 0.035 * state->throbber_amp), 0.0, 0.055);
+        if (!c.alive || c.intensity < 0.008) continue;
+        const double x = c.x * pane_scale;
+        const double visual_width = std::max(1.0, c.sigma * 2.4);
+        const double sigma = std::max(14.0, c.sigma * 2.8 * pane_scale);
+        // Wider source strips emit a proportionally stronger and broader reflection,
+        // capped to protect text contrast on the terminal surface.
+        const double width_energy = std::clamp(visual_width / 50.0, 0.35, 2.8);
+        const double strength = std::clamp(c.intensity *
+            (0.045 + 0.060 * state->throbber_amp) * width_energy, 0.0, 0.16);
         double r = 0.42, g = 0.67, b = 1.0; // light-blue reflected from the strip
         if (c.tinted && state->throbber_amp > 0.82) {
             const double tint = std::clamp((state->throbber_amp - 0.82) / 0.18, 0.0, 0.25);
