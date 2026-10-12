@@ -940,7 +940,7 @@ std::string cleanFeedTitle(std::string value) {
         value.compare(value.size() - 3, 3, "]]>") == 0)
         value = value.substr(9, value.size() - 12);
     const std::pair<const char*, const char*> entities[] = {
-        {"&amp;", "&"}, {"&quot;", "\\""}, {"&#39;", "'"}, {"&apos;", "'"},
+        {"&amp;", "&"}, {"&quot;", "\""}, {"&#39;", "'"}, {"&apos;", "'"},
         {"&lt;", "<"}, {"&gt;", ">"}
     };
     for (const auto &entity : entities) {
@@ -951,8 +951,8 @@ std::string cleanFeedTitle(std::string value) {
             pos += std::char_traits<char>::length(entity.second);
         }
     }
-    std::replace(value.begin(), value.end(), '\\n', ' ');
-    std::replace(value.begin(), value.end(), '\\r', ' ');
+    std::replace(value.begin(), value.end(), '\n', ' ');
+    std::replace(value.begin(), value.end(), '\r', ' ');
     return value;
 }
 
