@@ -497,6 +497,52 @@ Resolved resolveSimple(const Node& node, Environment& env) {
     return r;
 }
 
+// execvpe is a GNU extension and is unavailable on macOS. Provide the
+// small PATH-searching equivalent using portable POSIX execve so the shell
+// can pass its own exported environment on Linux and macOS.
+int execWithEnvironment(const char* file, char* const argv[], char* const envp[]) {
+    if (std::strchr(file, '/') != nullptr) {
+        ::execve(file, argv, envp);
+        return -1;
+    }
+
+    const char* path = nullptr;
+    for (char* const* entry = envp; entry && *entry; ++entry) {
+        if (std::strncmp(*entry, "PATH=", 5) == 0) {
+            path = *entry + 5;
+            break;
+        }
+    }
+    if (!path) path = "/usr/bin:/bin";
+
+    bool access_denied = false;
+    const char* component = path;
+    for (;;) {
+        const char* separator = std::strchr(component, ':');
+        const std::size_t length = separator
+            ? static_cast<std::size_t>(separator - component)
+            : std::strlen(component);
+        std::string candidate;
+        if (length == 0) {
+            candidate = file;
+        } else {
+            candidate.assign(component, length);
+            candidate += '/';
+            candidate += file;
+        }
+        ::execve(candidate.c_str(), argv, envp);
+        if (errno == EACCES) {
+            access_denied = true;
+        } else if (errno != ENOENT && errno != ENOTDIR) {
+            return -1;
+        }
+        if (!separator) break;
+        component = separator + 1;
+    }
+    errno = access_denied ? EACCES : ENOENT;
+    return -1;
+}
+
 // Run an external program with the given argv/redirs in a child process.
 // Returns the child's exit status.
 int runExternal(const std::vector<std::string>& argv,
@@ -519,7 +565,7 @@ int runExternal(const std::vector<std::string>& argv,
     if (pid < 0) { std::perror("fork"); return 127; }
     if (pid == 0) {
         if (applyRedirs(redirs) != 0) _exit(1);
-        ::execvpe(cargv[0], cargv.data(), cenv.data());
+        execWithEnvironment(cargv[0], cargv.data(), cenv.data());
         std::fprintf(stderr, "slsh: %s: %s\n", cargv[0], std::strerror(errno));
         _exit(127);
     }
@@ -636,7 +682,7 @@ int execPipeline(const Node& node, Environment& env) {
                 std::vector<char*> cenv;
                 for (auto& s : envv) cenv.push_back(const_cast<char*>(s.c_str()));
                 cenv.push_back(nullptr);
-                ::execvpe(cargv[0], cargv.data(), cenv.data());
+                execWithEnvironment(cargv[0], cargv.data(), cenv.data());
                 std::fprintf(stderr, "slsh: %s: %s\n", cargv[0], std::strerror(errno));
                 _exit(127);
             } else {
