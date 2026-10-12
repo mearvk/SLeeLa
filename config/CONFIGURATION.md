@@ -40,4 +40,4 @@ New runtime code must not create competing configuration roots. Legacy configura
 
 ## Build and validation
 
-From the repository root run: make config, make -C config test, and make -C config clean. Validation checks policy/template consistency and properties examples, then compiles and runs the C resolver smoke test without changing system files.
+From the repository root run: make config, make -C config test, and make -C config clean. Validation checks policy/template consistency and properties examples, then compiles and runs the configuration-location and VM-selection smoke tests without changing system files.
