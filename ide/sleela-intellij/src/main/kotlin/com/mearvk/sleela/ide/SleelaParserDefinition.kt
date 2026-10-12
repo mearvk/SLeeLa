@@ -27,6 +27,9 @@ class SleelaParserDefinition : ParserDefinition {
         object : PsiFileBase(viewProvider, SleelaLanguage) {
             override fun getFileType(): com.intellij.openapi.fileTypes.FileType = SleelaFileType
         }
+    // Overrides a member the platform has deprecated but still calls; the
+    // suppression keeps the build warning-free without changing behaviour.
+    @Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
     override fun spaceExistanceTypeBetweenTokens(left: ASTNode?, right: ASTNode?): ParserDefinition.SpaceRequirements =
         ParserDefinition.SpaceRequirements.MAY
     override fun createElement(node: ASTNode): PsiElement = com.intellij.extapi.psi.ASTWrapperPsiElement(node)
