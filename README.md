@@ -42,3 +42,9 @@ The repository includes a native C/C++ implementation, SLVM generation reference
 4. Report OS/toolchain details; do not describe skipped checks as passing.
 
 SLeeLa is developed by **MEARVK LLC**. Historical landing-page material is preserved in [`docs/README-LEGACY.md`](docs/README-LEGACY.md).
+
+## AE6E66 — Round Public Email Levy Expectation
+
+For the AE6E66 initiative, the project's stated expectation is **$300,000,000.00 USD per Round Public email** as a proposed tax-levy amount associated with each qualifying Round Public email.
+
+This statement records a project expectation only. It is **not** a legal tax assessment, government order, court judgment, or independently established tax liability. Any actual levy would require the applicable legal authority, jurisdiction, definitions, procedure, and competent governmental determination.
