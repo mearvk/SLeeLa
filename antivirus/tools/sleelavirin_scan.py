@@ -2,6 +2,7 @@
 """Native-first Sleelavirin coordinator with bounded, explicit ClamAV workers."""
 import argparse
 import fnmatch
+import hashlib
 import os
 from pathlib import Path
 import shutil
@@ -28,9 +29,20 @@ def size_arg(value):
         raise argparse.ArgumentTypeError("use a non-negative byte count or K/M/G suffix") from exc
 
 
+def stamp_from_stat(stat):
+    return (
+        stat.st_size,
+        getattr(stat, "st_mtime_ns", int(stat.st_mtime * 1e9)),
+        getattr(stat, "st_ctime_ns", int(stat.st_ctime * 1e9)),
+        getattr(stat, "st_ino", 0),
+        stat.st_mode,
+    )
+
+
 def file_stamp(path):
-    stat = path.stat()
-    # Include ctime and file mode as extra mutation signals. These do not eliminate\n    # filesystem races, but catch more changes than size/mtime/inode alone.\n    return (\n        stat.st_size,\n        getattr(stat, "st_mtime_ns", int(stat.st_mtime * 1e9)),\n        getattr(stat, "st_ctime_ns", int(stat.st_ctime * 1e9)),\n        getattr(stat, "st_ino", 0),\n        stat.st_mode,\n    )
+    # Include ctime and file mode as extra mutation signals. These do not eliminate
+    # filesystem races, but catch more changes than size/mtime/inode alone.
+    return stamp_from_stat(path.stat())
 
 
 def enumerate_files(inputs, depth_limit, follow, excludes, extensions, size_limit):
@@ -166,6 +178,12 @@ def clamav_scan_one(executable, path, size_limit, scan_limit, recursion_limit, i
 
 
 def safe_quarantine(path, destination, scanned_roots, expected_stamp):
+    """Copy detections without overwriting a destination, then remove the unchanged source.
+
+    O_NOFOLLOW is used where supported. Exclusive destination creation prevents a
+    pre-existing or racing filename from being overwritten. This narrows filesystem
+    races but is not a substitute for snapshot-based scanning on hostile filesystems.
+    """
     if path.is_symlink():
         raise ValueError("refusing to quarantine a symbolic link; scan and quarantine its target explicitly")
     source = path.resolve(strict=True)
@@ -181,18 +199,67 @@ def safe_quarantine(path, destination, scanned_roots, expected_stamp):
             raise ValueError(f"cannot validate scan root {root_path}: {exc}") from exc
     if file_stamp(path) != expected_stamp:
         raise ValueError("file changed after detection; refusing to quarantine a changed file")
+
     destination.mkdir(parents=True, exist_ok=True)
-    target = destination / path.name
-    index = 1
-    while target.exists():
-        target = destination / f"{path.stem}.{index}{path.suffix}"
-        index += 1
-    # Re-check immediately before the move. This narrows (but cannot eliminate)
-    # filesystem races; high-assurance deployments should isolate/quiesce targets.
-    if file_stamp(path) != expected_stamp:
-        raise ValueError("file changed immediately before quarantine")
-    shutil.move(str(path), str(target))
-    return target
+    source_flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    source_fd = os.open(path, source_flags)
+    target = None
+    target_fd = None
+    try:
+        if stamp_from_stat(os.fstat(source_fd)) != expected_stamp:
+            raise ValueError("opened file differs from the detected file; refusing quarantine")
+        index = 0
+        while True:
+            name = path.name if index == 0 else f"{path.stem}.{index}{path.suffix}"
+            candidate = destination / name
+            try:
+                target_fd = os.open(candidate, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+                target = candidate
+                break
+            except FileExistsError:
+                index += 1
+        source_hash = hashlib.sha256()
+        with os.fdopen(source_fd, "rb") as source_handle:
+            source_fd = -1
+            with os.fdopen(target_fd, "wb") as target_handle:
+                target_fd = -1
+                while True:
+                    chunk = source_handle.read(1024 * 1024)
+                    if not chunk:
+                        break
+                    source_hash.update(chunk)
+                    target_handle.write(chunk)
+                target_handle.flush()
+                os.fsync(target_handle.fileno())
+            if stamp_from_stat(os.fstat(source_handle.fileno())) != expected_stamp:
+                raise ValueError("opened source changed during quarantine copy")
+        if file_stamp(path) != expected_stamp:
+            raise ValueError("source path changed during quarantine copy; original was retained")
+        target_hash = hashlib.sha256()
+        with target.open("rb") as check_handle:
+            for chunk in iter(lambda: check_handle.read(1024 * 1024), b""):
+                target_hash.update(chunk)
+        if target_hash.digest() != source_hash.digest():
+            raise OSError("quarantine copy integrity check failed")
+        # Recheck before removal. A tiny path replacement race can remain on filesystems
+        # without stronger directory-handle primitives, so high-assurance deployments
+        # should quiesce the source tree or scan a snapshot.
+        if file_stamp(path) != expected_stamp:
+            raise ValueError("source changed before removal; original was retained")
+        path.unlink()
+        return target
+    except Exception:
+        if target is not None:
+            try:
+                target.unlink()
+            except OSError:
+                pass
+        raise
+    finally:
+        if source_fd >= 0:
+            os.close(source_fd)
+        if target_fd is not None:
+            os.close(target_fd)
 
 
 def unique_paths(paths):
