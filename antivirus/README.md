@@ -120,7 +120,7 @@ python3 antivirus/tools/sleelavirin_scan.py --engine native --database antivirus
 
 The signature file format is one 64-character SHA-256 hex digest per line, optionally followed by a human-readable name. Blank lines and lines beginning with `#` are ignored. The shipped database is intentionally empty: populate it only with trusted, provenance-documented signatures. A test-only signature fixture is kept under `antivirus/tests/` and must not be copied into production databases.
 
-The native scanner reports `DETECTED`, `NO_MATCH`, or `ERROR`. `NO_MATCH` means only that the selected local database did not contain that file's digest; it does **not** mean the file is clean. This backend currently supports file paths, not recursive directory traversal, archive inspection, behavior monitoring, or real-time protection.
+The native scanner reports `DETECTED`, `NO_MATCH`, or `ERROR`. `NO_MATCH` means only that the selected local database did not contain that file's digest; it does **not** mean the file is clean. The scan coordinator adds bounded directory traversal, exclusions, extension filters, file-size/depth limits, configurable native worker count, and report/quarantine/stop actions. Archive inspection, behavior monitoring, and real-time protection are not provided by the native matcher.
 
 ### Optional ClamAV backend
 
@@ -161,3 +161,34 @@ Sleelavirin does not initially attempt to reproduce the internals of commercial 
 **Architectural / initial package structure.** Individual scanners, providers, and rule sets become **Implemented** only when their corresponding source and tests exist.
 
 Max Rupplin — MEARVK LLC — 2026
+
+### Native-first scan options
+
+Use the coordinator for directory scanning and response policy:
+
+```sh
+# Native engine (default)
+python3 antivirus/tools/sleelavirin_scan.py --engine native --jobs 4 --max-depth 8 /path/to/scan
+
+# Native pass followed by ClamAV as a secondary engine
+python3 antivirus/tools/sleelavirin_scan.py --engine both --jobs 4 --max-depth 6 --action report /path/to/scan
+
+# Move detections to quarantine instead of deleting them
+python3 antivirus/tools/sleelavirin_scan.py --engine both --action quarantine --quarantine-dir ./quarantine /path/to/scan
+
+# Exclusions and extension filters can be repeated
+python3 antivirus/tools/sleelavirin_scan.py --exclude '*.cache' --extension .exe --extension .dll /path/to/scan
+```
+
+Options include `--max-depth` (0 means unlimited), `--jobs` for native workers, `--max-file-size`, repeatable `--exclude` and `--extension`, opt-in `--follow-symlinks`, and `--action report|quarantine|stop`. Reporting is the default. Quarantine moves detected files; it does not automatically delete them. A skipped, unreadable, or over-limit file means incomplete coverage.
+
+### Importing compatible ClamAV definitions into the native index
+
+ClamAV definitions are not all whole-file hashes. Sleelavirin's importer accepts only extracted plain-text `.hsb` records with a 64-hex SHA-256 digest and compatible hash/size/name fields. It does not decode signed `.cvd` or `.cld` archives, nor can it convert every ClamAV signature family.
+
+```sh
+python3 antivirus/tools/sleelavirin_import_clamav.py --source ./clamav-extracted --output antivirus/signatures/native-sha256.txt
+python3 antivirus/tools/sleelavirin_import_clamav.py --check antivirus/signatures/native-sha256.txt
+```
+
+Extract trusted database content with a compatible ClamAV `sigtool` installation; do not pass binary `.cvd` or `.cld` files directly to the importer. Record the database version and source, and verify redistribution terms before packaging imported definitions.
