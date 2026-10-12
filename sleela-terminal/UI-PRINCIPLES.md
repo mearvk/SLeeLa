@@ -114,3 +114,16 @@ stylesheet still parses. If a change adds motion, a new colour, or a new
 spacing value, it must either fit these principles or update them deliberately.
 
 — SleelaTerminal™ · MEARVK LLC
+
+## 11. Rounded file-item renderer
+
+The title-bar **Files** control opens a GTK FlowBox browser. Every entry is a
+separate rounded button, not terminal text with ANSI colouring. Regular files
+use a charcoal-gray chip (`#626262`) and white text; directories use a muted
+purple chip. The browser supports path entry, parent navigation, directory
+sorting, and opening files with the desktop's associated application.
+
+The main workspace remains near-white (`#fcfcfc`); the terminal and file
+browser use a charcoal surface (`#4b4b4b`). This provides the requested three
+levels: bright workspace, dark rounded panel, and lighter individual item
+surfaces.
