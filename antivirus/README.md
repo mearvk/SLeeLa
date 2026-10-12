@@ -252,3 +252,28 @@ python3 antivirus/tools/sleelavirin_update_clamav.py \
 `current.json` identifies the active snapshot and its manifest. Protect that pointer, the manifest, and the expected snapshot ID with appropriate filesystem permissions or independent trusted storage. SHA-256 detects changes relative to a trusted expected value; a manifest and hash stored together are not an independent publisher signature. FreshClam and ClamAV's database validation establish the upstream trust check; SHA-256 then provides local integrity tracking.
 
 This full ClamAV snapshot is for the secondary ClamAV engine. The native SLeeLa SHA-256 importer remains a limited subset importer: it does not turn all CVD/CLD signature families into native whole-file hash signatures.
+
+
+## Scan reports, archive limits, and release integrity
+
+For an auditable machine-readable result, use `--report-json`:
+
+```sh
+python3 antivirus/tools/sleelavirin_scan.py --engine both \
+  --max-depth 8 --max-file-size 100M --clamav-max-scansize 400M \
+  --clamav-max-recursion 8 --jobs 2 --clamav-jobs 1 \
+  --report-json antivirus-report.json /path/to/scan
+```
+
+The report contains per-engine verdict records, eligible-file count, detections, errors, completion state, and an explicit limitation statement. Exit status 0 means no match and a complete scan; 1 means detection; 2 means an error or incomplete scan. A detection can coexist with errors; inspect both the report and stderr. `CLEAN_NO_MATCH` is not a guarantee of safety.
+
+To verify a detached release signature, with OpenSSL installed and a trusted public key obtained independently:
+
+```sh
+python3 antivirus/tools/sleelavirin_verify_signature.py \
+  --public-key release-public.pem \
+  --signature native-sha256.txt.sig \
+  --file antivirus/signatures/native-sha256.txt
+```
+
+Signatures must be created by the release process and the corresponding public key distributed through an independent trusted channel. Do not commit private signing keys. Signature verification is optional until a project release key and key-rotation policy are established.
