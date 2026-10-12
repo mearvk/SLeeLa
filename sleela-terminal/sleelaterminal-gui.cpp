@@ -1478,15 +1478,16 @@ void activate(GtkApplication *application, gpointer user_data) {
     GtkWidget *settings = gtk_button_new();
     GtkWidget *settings_glyph = gtk_drawing_area_new();
     gtk_drawing_area_set_content_width(GTK_DRAWING_AREA(settings_glyph), 15);
-    gtk_drawing_area_set_content_height(GTK_DRAWING_AREA(settings_glyph), 15);
+    gtk_drawing_area_set_content_height(GTK_DRAWING_AREA(settings_glyph), 10); // ~30% shorter vertically
     gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(settings_glyph),
         [](GtkDrawingArea *, cairo_t *cr, int width, int height, gpointer) {
-            const double bar_height = 2.0;
+            const double bar_height = 1.8;
             const double left = 1.0;
             const double right = static_cast<double>(width) - 1.0;
-            const double bars_y[] = {2.0, (height - bar_height) / 2.0, height - bar_height - 2.0};
+            const double inset = 1.0;
+            const double bars_y[] = {inset, (height - bar_height) / 2.0, height - bar_height - inset};
             for (double y : bars_y) {
-                const double radius = 1.0;
+                const double radius = 0.9;
                 cairo_new_path(cr);
                 cairo_move_to(cr, left + radius, y);
                 cairo_line_to(cr, right - radius, y);
@@ -1498,11 +1499,26 @@ void activate(GtkApplication *application, gpointer user_data) {
                 cairo_line_to(cr, left, y + radius);
                 cairo_arc(cr, left + radius, y + radius, radius, M_PI, 3.0 * M_PI_2);
                 cairo_close_path(cr);
+
+                // Black 1px outline, with a subtle vertical blue bevel for depth.
                 cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
                 cairo_set_line_width(cr, 1.0);
                 cairo_stroke_preserve(cr);
-                cairo_set_source_rgb(cr, 0.31, 0.455, 0.784); // title-bar light blue (#4f74c8)
+                cairo_pattern_t *bevel = cairo_pattern_create_linear(0.0, y, 0.0, y + bar_height);
+                cairo_pattern_add_color_stop_rgb(bevel, 0.0, 0.24, 0.39, 0.72); // soft top highlight
+                cairo_pattern_add_color_stop_rgb(bevel, 0.45, 0.12, 0.25, 0.55);
+                cairo_pattern_add_color_stop_rgb(bevel, 1.0, 0.07, 0.16, 0.38); // shaded lower edge
+                cairo_set_source(cr, bevel);
                 cairo_fill(cr);
+                cairo_pattern_destroy(bevel);
+
+                // Fine top glint gives the bars a restrained 3D lighting effect.
+                cairo_new_path(cr);
+                cairo_move_to(cr, left + radius + 0.4, y + 0.35);
+                cairo_line_to(cr, right - radius - 0.4, y + 0.35);
+                cairo_set_source_rgba(cr, 0.58, 0.73, 1.0, 0.65);
+                cairo_set_line_width(cr, 0.45);
+                cairo_stroke(cr);
             }
         }, nullptr, nullptr);
     gtk_button_set_child(GTK_BUTTON(settings), settings_glyph);
