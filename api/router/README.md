@@ -1,14 +1,9 @@
 # Router API
 
-This folder is the API documentation entry point for deterministic route matching. Consult the existing router API reference and implementation for the exact route representation and supported methods.
+The C ABI is defined by [`sleela_router.h`](sleela_router.h) and implemented in [`sleela_router.c`](sleela_router.c). The current contract validates a method, absolute path, and absolute target, then matches **exactly** on method and path. It does not implement wildcard routes, path parameters, middleware, precedence rules, or request dispatch.
 
-## Scope
+## Build and tests
 
-The public contract should state path normalization, method matching, precedence, duplicate-route behavior, parameter handling (if implemented), and invalid-route errors. Do not claim dynamic dispatch, middleware, or parameter extraction unless implemented and tested.
+The router object and static library are built by the aggregate [`../posting/Makefile`](../posting/Makefile). From `api/posting/`, run `make all` to build the posting, listener, and router static libraries, or `make test` to run the shared validation tests.
 
-## Maintenance
-
-- Keep route declaration and route execution clearly distinguished.
-- Add exact-match, method mismatch, duplicate, and malformed-path tests as applicable.
-- Document the module's actual build/test command rather than assuming a standalone build exists.
-- Update [the API catalogue](../API-CATALOG.md) when the supported contract changes.
+Invalid descriptors return `-1` from validation and a nonmatching or null input returns `0` from the match function. These are descriptor-validation and exact-match helpers, not a network server.
