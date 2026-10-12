@@ -1,7 +1,8 @@
 JAVAC?=javac
 all: check
 check:
-	$(JAVAC) CommonRailsPrinting.java PrintContractTest.java
+	$(JAVAC) -d . CommonRailsPrinting.java PrintContractTest.java
 	java -ea -cp . PrintContractTest
 clean:
-	rm -f *.class CommonRailsPrinting\$$*.class
+	rm -rf com
+	rm -f *.class
