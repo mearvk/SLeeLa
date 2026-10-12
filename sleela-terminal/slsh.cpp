@@ -707,14 +707,39 @@ int runScript(const std::string& src, Environment& env) {
 
 int repl(Environment& env) {
     std::vector<std::string> history;
-    const std::string startup_banner = "SleelaTerminal(TM) slsh -- original SLeeLa shell. Type 'exit' to leave."; 
+    const std::string startup_banner = "SleelaTerminal(TM) slsh -- original SLeeLa shell. Type 'exit' to leave.";
+    const std::string initial_prompt = colourPrompt(env.prompt());
+    // Count visible prompt columns, excluding ANSI colour/control sequences.
+    std::size_t prompt_columns = 0;
+    bool in_escape = false;
+    bool in_csi = false;
+    for (unsigned char ch : initial_prompt) {
+        if (!in_escape && ch == 0x1b) {
+            in_escape = true;
+            continue;
+        }
+        if (in_escape) {
+            if (!in_csi && ch == '[') {
+                in_csi = true;
+                continue;
+            }
+            if (in_csi && ch >= 0x40 && ch <= 0x7e) {
+                in_escape = false;
+                in_csi = false;
+            } else if (!in_csi) {
+                in_escape = false;
+            }
+            continue;
+        }
+        ++prompt_columns;
+    }
     std::cout << startup_banner << '\n' << std::flush;
 
     // Fade the one-line welcome banner after five seconds without blocking the
     // REPL. Each fade frame repaints only row 1 and saves/restores the live cursor.
-    // Once the banner has faded, delete row 1: the terminal shifts the prompt row
-    // (including any text already typed) up to row 1 and repaints the screen.
-    std::thread([startup_banner]() {
+    // Deleting row 1 promotes the prompt row; put the cursor after the prompt,
+    // not at column 1, so the empty input line starts in the normal position.
+    std::thread([startup_banner, prompt_columns]() {
         std::this_thread::sleep_for(std::chrono::seconds(5));
         static const char *const fade_colours[] = {
             "\033[38;5;250m", "\033[38;5;244m",
@@ -726,13 +751,14 @@ int repl(Environment& env) {
             (void)::write(STDOUT_FILENO, frame.data(), frame.size());
             std::this_thread::sleep_for(std::chrono::milliseconds(180));
         }
-        // Remove the banner row so the prompt row shifts to the top of the
-        // terminal. After deleting row 1, explicitly home the cursor to the
-        // beginning of the now-top prompt line; the line editor will position
-        // it at the input insertion point on the next redraw.
         const std::string clear_and_promote =
-            "\033[s\033[1;1H\033[2K\033[1;1H\033[M\033[1;1H";
+            "\033[1;1H\033[2K\033[1;1H\033[M\033[1;1H";
         (void)::write(STDOUT_FILENO, clear_and_promote.data(), clear_and_promote.size());
+        if (prompt_columns > 0) {
+            const std::string move_to_input =
+                "\033[" + std::to_string(prompt_columns) + "C";
+            (void)::write(STDOUT_FILENO, move_to_input.data(), move_to_input.size());
+        }
     }).detach();
 
     for (;;) {
