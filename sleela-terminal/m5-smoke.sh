@@ -34,6 +34,17 @@ test "$(printf '%s\n' 'uname -s' | "$SLSH")" != ""
 test "$(printf '%s\n' 'false | true; echo $?' | "$SLSH")" = 0
 test "$(printf '%s\n' 'true | false; echo $?' | "$SLSH")" = 1
 
+# The help index and feature topics are available in non-interactive mode too.
+"$SLSH" -c 'help' >"$tmpdir/help.txt"
+grep -q 'Topics: expansion, control, jobs, io, process, traps, select, prompt, soros' "$tmpdir/help.txt"
+"$SLSH" -c 'help expansion' >"$tmpdir/help-expansion.txt"
+grep -q 'quote fidelity has known gaps' "$tmpdir/help-expansion.txt"
+if "$SLSH" -c 'help no-such-topic' >"$tmpdir/help-invalid.txt" 2>&1; then
+  echo "help accepted an unknown topic" >&2
+  exit 1
+fi
+
+
 # exit is a shell builtin and must terminate the shell with its requested status.
 set +e
 "$SLSH" -c 'printf before; exit 7; printf after' >"$tmpdir/exit.out" 2>"$tmpdir/exit.err"
