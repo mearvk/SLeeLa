@@ -44,7 +44,7 @@ $(SLSH): $(CLI_SRC) $(HEADERS) | $(BUILD)
 $(SMOKE): $(SMOKE_SRC) $(HEADERS) | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(SMOKE_SRC) -o $@
 
-$(GUI): $(GUI_SRC) $(SLSH) | $(BUILD)
+$(GUI): $(GUI_SRC) file-list-renderer.hpp $(SLSH) | $(BUILD)
 	@test -n "$(GTK4_VTE_CFLAGS)" && test -n "$(GTK4_VTE_LIBS)" || { echo "Missing GTK4/VTE development packages. Install gtk4 and vte-2.91-gtk4 development packages." >&2; exit 1; }
 	$(CXX) $(CXXFLAGS) $(GTK4_VTE_CFLAGS) $(GUI_SRC) -o $@ $(GTK4_VTE_LIBS)
 
