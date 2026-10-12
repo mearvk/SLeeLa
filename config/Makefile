@@ -23,8 +23,8 @@ $(VM_SMOKE): ../runtime/vm_config.c ../runtime/vm_config.h ../runtime/vm_config_
 	"$(CC)" -std=c11 -Wall -Wextra -pedantic -I../runtime ../runtime/vm_config.c ../runtime/vm_config_smoke.c -o "$@"
 
 smoke: $(SMOKE) $(VM_SMOKE)
-	cd .. && "./config/$(SMOKE)" config/config-location.conf
-	cd .. && "./config/$(VM_SMOKE)" config/vm.conf
+	cd .. && "./config/$(SMOKE)"
+	cd .. && "./config/$(VM_SMOKE)"
 
 clean:
 	"$(RM)" -r "$(BUILD_DIR)"
