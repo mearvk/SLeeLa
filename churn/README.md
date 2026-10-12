@@ -67,9 +67,7 @@ make churn-test
 
 Or from this directory: `make all`, `make test`, `make clean`.
 
-The data check parses JSON and XML, checks CSV column consistency, and ensures
-text files are non-empty. It does not establish scientific correctness, unit
-compatibility, referential integrity, or that sources are still current. Java
+The data check parses JSON/XML/CSV/TXT, checks CSV headers and row widths, detects duplicate IDs in supported record arrays/CSV ID columns, validates evidence-kind values, and enforces the opt-in `churn-1` JSON contract. It does not establish scientific correctness, unit compatibility, referential integrity, or that sources are still current. Java
 constraint reports are generated outputs and remain ignored by Git. See
 [DATA-CATALOG.md](DATA-CATALOG.md) for the recommended validation roadmap.
 
