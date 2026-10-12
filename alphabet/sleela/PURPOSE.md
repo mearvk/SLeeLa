@@ -1,41 +1,35 @@
-# Purpose of `alphabet/sleela`
+# Purpose of alphabet/sleela
 
 ## Mission
 
-This directory is the documentation home for alphabet-related language concepts in SLeeLa: the written symbols used in source text, the character data represented by programs, and the conventions used by language tools and educational material.
-
-It should make these concepts understandable without conflating source syntax, character encoding, linguistic alphabets, and rendered glyphs.
+This directory documents SLeeLa's general alphabet APIs and specialized character catalogues. It distinguishes source text, encodings, Unicode scalar values, grapheme clusters, glyphs, and catalogue-specific identifiers.
 
 ## Scope
 
-Documentation may cover:
-
-- Alphabet and symbol inventories when formally defined by the project.
-- Character names, case distinctions, ordering, and classification.
-- The relationship between source text and Unicode.
-- Character-set types and libraries, when specified by the language.
-- Examples for learners, implementers, and tooling authors.
-- Validation and test expectations for supported behavior.
+- Alphabet and symbol inventories, ordering, naming, and classification.
+- UTF-8 source handling and Unicode concepts.
+- The C<n> character-set capacity signature family.
+- Specialized catalogues such as UTF-4088 and their identifier namespaces.
+- Educator examples, compiler/VM contracts, conformance tests, and migration notes.
 
 ## Out of scope
 
-This directory should not independently redefine the SLeeLa grammar, duplicate the complete API reference, or promise runtime features that have not been implemented. Compiler, VM, and library behavior should be linked to their canonical documentation where available.
+This directory does not independently redefine the whole SLeeLa grammar or assert that every documented API is already wired into the compiler and SLVM. Proposed or illustrative source syntax must be labelled accordingly.
 
-## Audiences
+## Related implementation
 
-- **Learners and educators:** concise explanations and carefully labeled examples.
-- **Language implementers:** precise terminology, edge cases, and testable rules.
-- **Library authors:** consistent conventions for character and character-set data.
-- **Documentation maintainers:** a single place to orient readers to alphabet-related material.
+- lib/alphabet/: SLeeLa-facing alphabet classes.
+- lib/alphabet/native/: tested C++17 Unicode-scalar UTF-8 and bounded character-set primitives.
+- utf-4088/: experimental character catalogue and SLeeLa adapter.
+- tools/sleela-character-scan.py: read-only source-folder inventory; it does not execute generators.
 
 ## Source of truth
 
-When a rule conflicts with the main SLeeLa language specification, the canonical language specification takes precedence. Implementation behavior should be verified against source code and tests before it is described as supported.
+The language specification governs source syntax. Implementation status must be verified against native tests and compiler/VM integration tests. C<n> is capacity, not a bit width; UTF-4088 identifiers above U+10FFFF are not Unicode scalar values.
 
 ## Maintenance checklist
 
-- Keep examples consistent with the current language version.
-- Mark proposals and future work explicitly.
-- Avoid claiming that a specific alphabet or encoding is supported without evidence.
-- Link to relevant compiler, VM, library, and test documentation when those paths exist.
-- Review this directory whenever character syntax, source encoding, or character-set APIs change.
+- Keep docs synchronized with compiler, VM, and library changes.
+- Distinguish implemented behavior from proposed language syntax.
+- Add malformed-input and boundary tests.
+- Never treat declared capacity as actual catalogue population.
