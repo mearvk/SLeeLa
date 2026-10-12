@@ -276,10 +276,13 @@ def unique_paths(paths):
 
 
 def main():
-    package = Path(__file__).resolve().parent.parent
+    frozen = bool(getattr(sys, "frozen", False))
+    package = Path(sys.executable).resolve().parent if frozen else Path(__file__).resolve().parent.parent
     parser = argparse.ArgumentParser(description="Native-first Sleelavirin scanner with optional ClamAV secondary engine.")
     parser.add_argument("--engine", choices=("native", "clamav", "both"), default="native")
-    parser.add_argument("--native-scanner", default=str(package / "build" / ("sleelavirin-scan.exe" if os.name == "nt" else "sleelavirin-scan")))
+    native_name = "sleelavirin-native.exe" if os.name == "nt" else "sleelavirin-native"
+    native_default = package / native_name if frozen else package / "build" / ("sleelavirin-scan.exe" if os.name == "nt" else "sleelavirin-scan")
+    parser.add_argument("--native-scanner", default=str(native_default))
     parser.add_argument("--database", default=str(package / "signatures" / "native-sha256.txt"))
     parser.add_argument("--clamscan", default="clamscan")
     parser.add_argument("--max-depth", type=int, default=8, help="directory depth; 0 means unlimited")
