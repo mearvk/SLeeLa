@@ -120,3 +120,8 @@ The [National Lien Alphabetic Register](NATIONAL-LIEN-REGISTER.md) separates per
 ## Probe-driven alphabet generation
 
 The proposed candidate-probing and match-ordering algorithm is specified in [PROBE-ORDERING-AND-MATCHING.md](PROBE-ORDERING-AND-MATCHING.md). It separates spatial traversal, probe priority, nearest-match order, and published alphabetic rank. The specification describes a deterministic baseline, a bounded 1–50 depth range, match evidence, resource budgets, and validation metrics; it is a design contract, not a claim that the complete engine already exists.
+
+
+## Alphabet documentation relay
+
+The protocol suite is indexed by [ALPHABET-RELAY.md](ALPHABET-RELAY.md), with synchronized document mirrors in [alphabet/sleela/UTF-4088-RELAY.md](../alphabet/sleela/UTF-4088-RELAY.md). The mirror series exists to make the input map, pressure/depth traversal, National Lien register, probe ordering and matching, serialization boundaries, and SLeeLa adapter integration discoverable from either documentation directory. Keep both copies current when changing a canonical protocol.
