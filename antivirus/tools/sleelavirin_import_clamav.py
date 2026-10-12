@@ -148,6 +148,9 @@ def main():
             return 2
         digest = hashlib.sha256(candidate.encode("utf-8")).hexdigest()
         manifest_path = args.manifest.expanduser() if args.manifest else Path(str(output) + ".manifest.json")
+        if manifest_path.resolve() == output.resolve():
+            print("ERROR: manifest path must differ from the active index path", file=sys.stderr)
+            return 2
         manifest = {
             "schema": "sleelavirin-native-index-manifest-v1",
             "source_engine": "ClamAV",
