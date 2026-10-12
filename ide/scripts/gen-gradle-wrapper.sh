@@ -37,9 +37,29 @@ trap 'rm -rf "$SCRATCH"' EXIT
 
 log "Generating Gradle $GRADLE_VERSION wrapper in a scratch project..."
 printf 'rootProject.name = "wrapgen"\n' > "$SCRATCH/settings.gradle.kts"
-# --no-validate-url: skip the network check against services.gradle.org (the jar
-# itself is identical regardless; the version is enforced by the .properties).
-( cd "$SCRATCH" && gradle wrapper --gradle-version "$GRADLE_VERSION" --no-validate-url )
+
+# The wrapper jar is identical regardless of the pinned version; the version is
+# enforced later by gradle-wrapper.properties. We just need any gradle to emit a
+# jar. Strategy, in order of preference:
+#   1. Plain `wrapper` — works on every Gradle version. When online it validates
+#      the distribution URL against services.gradle.org and passes.
+#   2. If that fails (e.g. offline URL check) AND this gradle supports it, retry
+#      with --no-validate-url (added in Gradle 8.2). Older gradle never gets here
+#      with an unknown-option error because we don't pass the flag up front.
+gen_wrapper() {
+  ( cd "$SCRATCH" && gradle wrapper --gradle-version "$GRADLE_VERSION" "$@" )
+}
+
+if ! gen_wrapper 2>"$SCRATCH/err.log"; then
+  if grep -q 'validate\|distribution url\|services.gradle.org' "$SCRATCH/err.log" \
+     && gradle help --task :wrapper 2>/dev/null | grep -q -- '--no-validate-url'; then
+    warn "Distribution-URL validation failed (offline?); retrying with --no-validate-url."
+    gen_wrapper --no-validate-url || { cat "$SCRATCH/err.log" >&2; die "gradle wrapper failed; see output above."; }
+  else
+    cat "$SCRATCH/err.log" >&2
+    die "gradle wrapper failed; see output above."
+  fi
+fi
 
 [ -f "$SCRATCH/gradle/wrapper/gradle-wrapper.jar" ] \
   || die "Wrapper jar was not produced; check the gradle output above."
