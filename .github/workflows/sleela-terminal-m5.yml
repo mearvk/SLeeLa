@@ -30,6 +30,8 @@ jobs:
         run: make clean all
       - name: Full smoke suite
         run: make test
+      - name: Staged install and uninstall smoke test
+        run: make install-smoke
 
   linux-hardening:
     name: Linux sanitizer and fuzz checks
