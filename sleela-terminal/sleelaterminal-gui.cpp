@@ -3,6 +3,7 @@
 #include <pango/pangocairo.h>
 
 #include <algorithm>
+#include <array>
 #include <cctype>
 #include <cstdlib>
 #include <regex>
@@ -1349,71 +1350,107 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
     if (width <= 0 || height <= 0) return;
     state->throbber_w = width;
 
-    // The throbber is a continuous, pure-white 4px rail across the entire
-    // terminal. The existing moving colour field is composited into its pixels;
-    // it never replaces the rail or paints a separate seam.
+    // Keep the rail pure white edge-to-edge. Translucent glass-like colour
+    // layers are composited above it; no opaque colour block replaces the rail.
     cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
     cairo_paint(cr);
 
-    auto mix = [](double c0, double c1, double k) { return c0 + (c1 - c0) * k; };
     const double amp = state->throbber_amp;
     const double colour_gate = std::clamp((amp - 0.80) / 0.15, 0.0, 1.0);
+    const double t = state->throbber_t;
+    const double tau = 6.283185307179586;
+    auto clamp01 = [](double v) { return std::clamp(v, 0.0, 1.0); };
+    auto mix = [](double a, double b, double f) { return a + (b - a) * f; };
+
+    // Thin-film interference palette: cyan, sapphire, violet, rose and amber.
+    auto spectrum = [&](double phase) {
+        const double p = phase - std::floor(phase);
+        const double segment = p * 5.0;
+        const int i = std::min(4, static_cast<int>(segment));
+        const double f = segment - i;
+        static const double colours[6][3] = {
+            {0.12, 0.92, 1.00}, {0.22, 0.43, 1.00},
+            {0.66, 0.30, 1.00}, {1.00, 0.35, 0.72},
+            {1.00, 0.72, 0.30}, {0.12, 0.92, 1.00}
+        };
+        return std::array<double, 3>{
+            mix(colours[i][0], colours[i + 1][0], f),
+            mix(colours[i][1], colours[i + 1][1], f),
+            mix(colours[i][2], colours[i + 1][2], f)
+        };
+    };
 
     std::vector<double> field(static_cast<size_t>(width), 0.0);
     std::vector<double> hue_r(static_cast<size_t>(width), 0.0);
     std::vector<double> hue_g(static_cast<size_t>(width), 0.0);
     std::vector<double> hue_b(static_cast<size_t>(width), 0.0);
     std::vector<double> hue_w(static_cast<size_t>(width), 0.0);
-    const double flick_time = state->throbber_t * 6.0;
     for (const auto &c : state->throbber_cells) {
         if (!c.alive || c.intensity < 0.001) continue;
         const int x0 = std::max(0, static_cast<int>(std::floor(c.x - c.sigma * 4.8)));
         const int x1 = std::min(width - 1, static_cast<int>(std::ceil(c.x + c.sigma * 2.4)));
-        const double flick = 0.85 + 0.15 * std::sin(flick_time + c.phase);
+        const double flick = 0.84 + 0.16 * std::sin(t * 6.0 + c.phase);
         for (int x = x0; x <= x1; ++x) {
             const double dx = (x + 0.5) - c.x;
-            const double sigma = std::max(0.5, (dx < 0.0) ? c.sigma * 1.6 : c.sigma * 0.8);
+            // Asymmetric falloff suggests a refracted edge and trailing caustic.
+            const double sigma = std::max(0.5, dx < 0.0 ? c.sigma * 1.45 : c.sigma * 0.72);
             const double e = dx / sigma;
-            const double contrib = c.intensity * std::exp(-0.5 * e * e) * flick;
+            const double contribution = c.intensity * std::exp(-0.5 * e * e) * flick;
             const size_t ix = static_cast<size_t>(x);
-            field[ix] += contrib;
+            field[ix] += contribution;
             if (c.tinted) {
-                hue_r[ix] += c.tr * contrib;
-                hue_g[ix] += c.tg * contrib;
-                hue_b[ix] += c.tb * contrib;
-                hue_w[ix] += contrib;
+                hue_r[ix] += c.tr * contribution;
+                hue_g[ix] += c.tg * contribution;
+                hue_b[ix] += c.tb * contribution;
+                hue_w[ix] += contribution;
             }
         }
     }
 
-    // A slow travelling envelope gives the white rail its own coursing sway.
-    // It only shades pixels where the coloured field is active; untouched pixels
-    // remain pure white from edge to edge.
     for (int x = 0; x < width; ++x) {
         const size_t ix = static_cast<size_t>(x);
-        const double f = std::clamp(field[ix] * (0.5 + 0.9 * amp), 0.0, 1.0);
-        if (f < 0.004) continue;
+        const double f = clamp01(field[ix] * (0.48 + 0.92 * amp));
+        if (f < 0.003) continue;
 
-        const double sway = 0.82 + 0.18 * (0.5 + 0.5 *
-            std::sin((static_cast<double>(x) / std::max(1, width)) * 6.2831853
-                     - state->throbber_t * 1.15));
-        const double strength = std::clamp(f * sway, 0.0, 0.92);
+        const double xf = static_cast<double>(x) / std::max(1, width);
+        const double sway = 0.76 + 0.24 * (0.5 + 0.5 *
+            std::sin(xf * tau * 1.15 - t * 1.25 + 0.35 * std::sin(t * 0.31)));
+        const double band_phase = xf * 1.65 - t * 0.075 + 0.07 * std::sin(t * 0.19 + xf * tau);
+        const auto prism = spectrum(band_phase);
 
-        // Cells tint the white rail. Their latent hues emerge under strong
-        // amplification; otherwise the moving light reads as cool navy/blue.
-        double tr = 0.07, tg = 0.16, tb = 0.34;
-        const double hw = hue_w[ix];
-        if (hw > 0.0001 && colour_gate > 0.0) {
-            const double hue_strength = colour_gate * std::min(1.0, f);
-            tr = mix(tr, hue_r[ix] / hw, hue_strength);
-            tg = mix(tg, hue_g[ix] / hw, hue_strength);
-            tb = mix(tb, hue_b[ix] / hw, hue_strength);
+        double tr = 0.10, tg = 0.22, tb = 0.42;
+        if (hue_w[ix] > 0.0001 && colour_gate > 0.0) {
+            const double hue_mix = colour_gate * std::min(1.0, f);
+            tr = mix(tr, hue_r[ix] / hue_w[ix], hue_mix);
+            tg = mix(tg, hue_g[ix] / hue_w[ix], hue_mix);
+            tb = mix(tb, hue_b[ix] / hue_w[ix], hue_mix);
         }
-        cairo_set_source_rgba(cr, tr, tg, tb, strength);
+        const double iridescence = 0.16 + 0.62 * colour_gate;
+        tr = mix(tr, prism[0], iridescence);
+        tg = mix(tg, prism[1], iridescence);
+        tb = mix(tb, prism[2], iridescence);
+
+        // Transparent coloured body and a moving specular line create the glass edge.
+        const double alpha = std::clamp(f * sway * (0.28 + 0.38 * amp), 0.0, 0.78);
+        cairo_set_source_rgba(cr, tr, tg, tb, alpha);
         cairo_rectangle(cr, x, 0, 1, height);
         cairo_fill(cr);
+
+        const double glint_phase = std::sin(xf * tau * 2.3 - t * 2.2 + std::sin(t * 0.7));
+        if (f > 0.12 && glint_phase > 0.80) {
+            const double glint_alpha = (glint_phase - 0.80) * 0.42 * f;
+            cairo_set_source_rgba(cr, 0.82, 0.98, 1.0, glint_alpha);
+            cairo_rectangle(cr, x, 0, 1, height);
+            cairo_fill(cr);
+        }
+
+        // A restrained spectral edge gives the cell a holographic rim.
+        if (x > 0 && (static_cast<int>(x + t * 13.0) % 17) < 2 && f > 0.20) {
+            cairo_set_source_rgba(cr, prism[0], prism[1], prism[2], 0.24 * f);
+            cairo_rectangle(cr, x, 0, 1, height);
+            cairo_fill(cr);
+        }
     }
-}
 
 // Spawn a fresh excitation. Birth position spans the whole 0-100% of the strip
 // width: most children enter at the left edge (preserving the dominant
