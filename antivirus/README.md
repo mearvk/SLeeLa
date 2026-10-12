@@ -85,6 +85,24 @@ POLICY DECISION
 INSTALL / EXECUTE / QUARANTINE / REJECT / REVIEW
 ```
 
+## Build and test
+
+The portable C fingerprint matcher and Trap-2 heuristic evaluator can be built without an external antivirus engine:
+
+```sh
+# From the repository root
+make antivirus
+make antivirus-test
+
+# Or from this directory
+make
+make test
+```
+
+The local Makefile writes generated objects, the static library, and the self-test executable to `antivirus/build/`. Run `make -C antivirus clean` to remove these generated files.
+
+**Implementation boundary:** the current C core compares caller-supplied fingerprints and evaluates caller-supplied heuristic indicators. It does not read or hash files itself, update signature databases, or invoke ClamAV, Windows AMSI, or another provider. The self-test is a unit test of the current core, not evidence of full malware-detection coverage. Provider adapters and safe file-hashing integration remain separate work.
+
 ## Initial scope
 
 The first Sleelavirin structural release covers:
