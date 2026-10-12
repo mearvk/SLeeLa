@@ -50,7 +50,7 @@ struct ThrobberCell {
 
 struct AppConfig {
     std::string font = "Monospace 11";
-    std::string foreground = "#262626";
+    std::string foreground = "#f2f2f2";
     std::string input_language = "system";
     std::string output_language = "system";
     bool national_feeds = false;
@@ -203,11 +203,14 @@ void apply_terminal_style(AppState *state) {
     if (!parse_rgba(state->config.foreground, foreground)) {
         gdk_rgba_parse(&foreground, "#262626");
     }
-    // The terminal text pane uses a near-white surface for comfortable reading.
-    // Keep its default text dark enough for strong contrast.
-    gdk_rgba_parse(&background, "#fcfcfc");
+    // Keep the surrounding GTK workspace near-white; the interactive VTE
+    // surface itself is the shared charcoal command-output surface. VTE owns
+    // the live PTY stream, so styling it as one surface preserves arbitrary
+    // interactive programs, scrollback, selection, and shell I/O semantics.
+    gdk_rgba_parse(&foreground, "#f2f2f2");
+    gdk_rgba_parse(&background, "#4b4b4b");
 
-    // A restrained ANSI palette that remains legible on the near-white text pane.
+    // A restrained ANSI palette tuned for the charcoal VTE surface.
     static const char *const kPalette[16] = {
         "#1b1526", "#e06c75", "#8fcf8f", "#e5c07b", // black, red, green, yellow
         "#8f9ff0", "#c58af0", "#6fd0d8", "#cfcad8", // blue, magenta, cyan, white
@@ -502,10 +505,12 @@ void install_css(AppState *state) {
         }
         button.suggested-action:hover { background: @sl_menu_hover; }
 
-        /* The near-white workspace frames a rounded charcoal terminal panel.
-           VTE output is light on charcoal; individual ANSI-highlighted tokens
-           can use the lighter item shade. GTK CSS rounds the panel container,
-           while terminal glyph/background cells remain terminal-rendered. */
+        /* The near-white workspace frames one rounded charcoal interactive
+           terminal surface. All VTE output shares the same base palette, while
+           ANSI styling remains available for semantic emphasis. A distinct
+           rounded panel for each completed command would require separating
+           arbitrary PTY output from the interactive stream and is not simulated
+           by this container. */
         box.sleela-workspace {
             background: @sl_textpane_bg;
         }
@@ -1795,6 +1800,8 @@ void activate(GtkApplication *application, gpointer user_data) {
     // surface without intercepting clicks, text selection, or keyboard input.
     GtkWidget *terminal_overlay = gtk_overlay_new();
     gtk_widget_add_css_class(terminal_overlay, "sleela-terminal-panel");
+    // Clip the VTE child and glow to the panel's rounded silhouette.
+    gtk_widget_set_overflow(terminal_overlay, GTK_OVERFLOW_HIDDEN);
     gtk_widget_set_hexpand(terminal_overlay, TRUE);
     gtk_widget_set_vexpand(terminal_overlay, TRUE);
     gtk_overlay_set_child(GTK_OVERLAY(terminal_overlay), terminal);
