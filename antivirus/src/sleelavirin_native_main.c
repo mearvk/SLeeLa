@@ -24,7 +24,7 @@ int main(int argc,char **argv)
     for(;i<argc;i++){
         char name[512]; int result=sleelavirin_native_scan_file(argv[i],database,name,sizeof(name));
         scanned++;
-        if(result==1){printf("DETECTED %s%s%s\n",argv[i],name[0]?" : ":"",name);status=1;}
+        if(result==1){printf("DETECTED %s%s%s\n",argv[i],name[0]?" : ":"",name);if(status==0)status=1;}
         else if(result==0){printf("NO_MATCH %s\n",argv[i]);}
         else {fprintf(stderr,"ERROR %s (file or signature database unavailable/unreadable)\n",argv[i]);status=2;}
     }
