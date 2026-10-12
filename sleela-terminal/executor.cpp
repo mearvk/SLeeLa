@@ -14,6 +14,9 @@
 #include <cstring>
 #include <fcntl.h>
 #include <functional>
+#include <filesystem>
+#include <sys/ioctl.h>
+#include <algorithm>
 #include <iostream>
 #include <map>
 #include <string>
@@ -124,6 +127,133 @@ int biEcho(const std::vector<std::string>& a, Environment&) {
     if (newline) std::cout << '\n';
     std::cout.flush();
     return 0;
+}
+
+
+// ls [PATH ...] -- render directory entries as rounded terminal tiles.
+// The VTE workspace supplies the charcoal output panel; ANSI backgrounds
+// create individually shaded tiles, with Unicode rounded box-drawing corners.
+int biLs(const std::vector<std::string>& args, Environment&) {
+    namespace fs = std::filesystem;
+    bool show_hidden = false;
+    std::vector<fs::path> paths;
+    for (std::size_t i = 1; i < args.size(); ++i) {
+        if (args[i] == "-a" || args[i] == "-A") show_hidden = true;
+        else if (!args[i].empty() && args[i][0] == '-') {
+            std::cerr << "ls: unsupported option: " << args[i] << '\n';
+            return 2;
+        } else paths.emplace_back(args[i]);
+    }
+    if (paths.empty()) paths.emplace_back(".");
+    struct Item { std::string label; bool directory; };
+    std::vector<Item> items;
+    bool had_error = false;
+    for (const auto& path : paths) {
+        std::error_code ec;
+        if (fs::is_directory(path, ec)) {
+            std::vector<fs::directory_entry> entries;
+            fs::directory_iterator it(path, ec), end;
+            if (ec) {
+                std::cerr << "ls: " << path.string() << ": " << ec.message() << '\n';
+                had_error = true;
+                continue;
+            }
+            for (; it != end; it.increment(ec)) {
+                if (ec) { had_error = true; ec.clear(); continue; }
+                const std::string name = it->path().filename().string();
+                if (!show_hidden && !name.empty() && name[0] == '.') continue;
+                entries.push_back(*it);
+            }
+            std::sort(entries.begin(), entries.end(), [](const auto& a, const auto& b) {
+                std::error_code ea, eb;
+                const bool da = a.is_directory(ea), db = b.is_directory(eb);
+                if (da != db) return da > db;
+                return a.path().filename().string() < b.path().filename().string();
+            });
+            for (const auto& entry : entries) {
+                std::error_code type_error;
+                items.push_back({entry.path().filename().string(), entry.is_directory(type_error)});
+            }
+        } else if (fs::exists(path, ec)) {
+            items.push_back({path.filename().empty() ? path.string() : path.filename().string(),
+                             fs::is_directory(path, ec)});
+        } else {
+            std::cerr << "ls: cannot access '" << path.string() << "': "
+                      << (ec ? ec.message() : "No such file or directory") << '\n';
+            had_error = true;
+        }
+    }
+    if (items.empty()) return had_error ? 2 : 0;
+
+    // Redirected output remains conventional and machine-readable.
+    if (!::isatty(STDOUT_FILENO)) {
+        for (const auto& item : items) std::cout << item.label << '\n';
+        std::cout.flush();
+        return had_error ? 2 : 0;
+    }
+
+    struct winsize ws{};
+    unsigned terminal_width = 80;
+    if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == 0 && ws.ws_col >= 24)
+        terminal_width = ws.ws_col;
+    struct Tile { Item item; std::size_t width; };
+    std::vector<Tile> tiles;
+    for (const auto& item : items) {
+        // Keep the tile compact while allowing long names to remain intact.
+        tiles.push_back({item, std::min<std::size_t>(item.label.size(), terminal_width > 8 ? terminal_width - 8 : 16) + 2});
+    }
+    const std::size_t gap = 2;
+    std::vector<std::vector<Tile>> rows;
+    std::vector<Tile> row;
+    std::size_t used = 0;
+    for (const auto& tile : tiles) {
+        const std::size_t tile_width = tile.width + 2; // side borders
+        if (!row.empty() && used + gap + tile_width > terminal_width) {
+            rows.push_back(row); row.clear(); used = 0;
+        }
+        if (!row.empty()) used += gap;
+        row.push_back(tile); used += tile_width;
+    }
+    if (!row.empty()) rows.push_back(row);
+
+    constexpr const char* reset = "\033[0m";
+    for (const auto& line : rows) {
+        // Rounded top edges.
+        for (std::size_t i = 0; i < line.size(); ++i) {
+            const auto& tile = line[i];
+            const char* bg = tile.item.directory ? "\033[48;2;106;91;125m" : "\033[48;2;98;98;98m";
+            const std::size_t width = tile.width;
+            std::cout << bg << "\033[97m╭";
+            for (std::size_t k = 0; k < width; ++k) std::cout << "─";
+            std::cout << "╮" << reset;
+            if (i + 1 < line.size()) std::cout << "  ";
+        }
+        std::cout << '\n';
+        // Item label rows.
+        for (std::size_t i = 0; i < line.size(); ++i) {
+            const auto& tile = line[i];
+            const char* bg = tile.item.directory ? "\033[48;2;106;91;125m" : "\033[48;2;98;98;98m";
+            const std::size_t max_label = tile.width > 2 ? tile.width - 2 : 0;
+            std::string label = tile.item.label.substr(0, max_label);
+            std::cout << bg << "\033[97m│ " << label;
+            if (label.size() < max_label) std::cout << std::string(max_label - label.size(), ' ');
+            std::cout << " │" << reset;
+            if (i + 1 < line.size()) std::cout << "  ";
+        }
+        std::cout << '\n';
+        // Rounded bottom edges.
+        for (std::size_t i = 0; i < line.size(); ++i) {
+            const auto& tile = line[i];
+            const char* bg = tile.item.directory ? "\033[48;2;106;91;125m" : "\033[48;2;98;98;98m";
+            std::cout << bg << "\033[97m╰";
+            for (std::size_t k = 0; k < tile.width; ++k) std::cout << "─";
+            std::cout << "╯" << reset;
+            if (i + 1 < line.size()) std::cout << "  ";
+        }
+        std::cout << "\n\n";
+    }
+    std::cout.flush();
+    return had_error ? 2 : 0;
 }
 
 int biPwd(const std::vector<std::string>&, Environment&) {
@@ -579,7 +709,7 @@ int biGetopts(const std::vector<std::string>& a, Environment& env) {
 
 const std::map<std::string, Builtin>& builtins() {
     static const std::map<std::string, Builtin> table = {
-        {"echo", biEcho}, {"pwd", biPwd}, {"cd", biCd},
+        {"echo", biEcho}, {"ls", biLs}, {"pwd", biPwd}, {"cd", biCd},
         {"export", biExport}, {"unset", biUnset},
         {"true", biTrue}, {"false", biFalse}, {":", biColon},
         {"exit", biExit}, {"set", biSet},
