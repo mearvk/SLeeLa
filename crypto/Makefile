@@ -1,30 +1,49 @@
-# crypto/Makefile — SLeeLa national-grade cryptography reference library.
+# crypto/Makefile — SLeeLa reference cryptography library.
 #
-# Builds the C library (libslcrypto.a), the C++ header façade is header-only.
-# `make test` builds and runs the Known-Answer Tests against FIPS/NIST/RFC
-# vectors.
+# Builds libslcrypto.a and the C++17 façade's Known-Answer Test executable.
+# These are reference implementations, not production-hardened cryptography;
+# see README.md for the security boundary and PQ-INTEGRATION.md for PQ status.
+#
+# Tool overrides: make CC=clang CXX=clang++ AR=llvm-ar
+# Windows: use GNU Make with a POSIX-compatible shell/toolchain (for example,
+# MSYS2/MinGW-w64 or clang). This is not an nmake makefile.
 
-CC      ?= cc
-CXX     ?= c++
-CFLAGS  ?= -std=c11   -O2 -Wall -Wextra -Iinclude
-CXXFLAGS?= -std=c++17 -O2 -Wall -Wextra -Iinclude
+CC       ?= cc
+CXX      ?= c++
+AR       ?= ar
+CFLAGS   ?= -std=c11 -O2 -Wall -Wextra -Iinclude
+CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Iinclude
 
-SRC   := src/sha2.c src/sha3.c src/aes.c src/mac_kdf.c src/pq.c
-OBJ   := $(SRC:.c=.o)
-LIB   := libslcrypto.a
+SRC := src/sha2.c src/sha3.c src/aes.c src/mac_kdf.c src/pq.c
+OBJ := $(SRC:.c=.o)
+LIB := libslcrypto.a
+TEST_BIN := kat_test
+HEADERS := include/slcrypto.h
 
-.PHONY: all test clean
+.PHONY: all test clean help
+
 all: $(LIB)
 
 $(LIB): $(OBJ)
-	ar rcs $@ $(OBJ)
+	$(AR) rcs $@ $(OBJ)
 
-%.o: %.c
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-test: $(LIB)
-	$(CXX) $(CXXFLAGS) test/kat_test.cpp $(LIB) -o kat_test
-	./kat_test
+$(TEST_BIN): test/kat_test.cpp cpp/slcrypto.hpp $(HEADERS) $(LIB)
+	$(CXX) $(CXXFLAGS) test/kat_test.cpp $(LIB) -o $@
+
+test: $(TEST_BIN)
+	./$(TEST_BIN)
 
 clean:
-	rm -f $(OBJ) $(LIB) kat_test
+	$(RM) $(OBJ) $(LIB) $(TEST_BIN)
+
+help:
+	@printf '%s\n' \
+	  'SLeeLa crypto build targets:' \
+	  '  all   Build libslcrypto.a (default)' \
+	  '  test  Build and run Known-Answer Tests' \
+	  '  clean Remove generated objects, library, and test executable' \
+	  '  help  Show this help' \
+	  'Overrides: CC, CXX, AR, CFLAGS, CXXFLAGS'
