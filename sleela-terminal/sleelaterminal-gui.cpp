@@ -50,7 +50,7 @@ struct ThrobberCell {
 
 struct AppConfig {
     std::string font = "Monospace 11";
-    std::string foreground = "#FFFFFF";
+    std::string foreground = "#262626";
     std::string input_language = "system";
     std::string output_language = "system";
     bool national_feeds = false;
@@ -201,16 +201,13 @@ void apply_terminal_style(AppState *state) {
     GdkRGBA foreground;
     GdkRGBA background;
     if (!parse_rgba(state->config.foreground, foreground)) {
-        gdk_rgba_parse(&foreground, "#FFFFFF");
+        gdk_rgba_parse(&foreground, "#262626");
     }
-    // Terminal background matches the window background (@sl_bg) so the terminal
-    // reads as one surface with the chrome rather than a separate near-black
-    // rectangle. See UI-PRINCIPLES.md (principle 2).
-    gdk_rgba_parse(&background, "#15101c");
+    // The terminal text pane uses a near-white surface for comfortable reading.
+    // Keep its default text dark enough for strong contrast.
+    gdk_rgba_parse(&background, "#fcfcfc");
 
-    // A 16-colour ANSI palette tuned to the dark-purple theme: slightly warmer
-    // and less saturated than raw VTE defaults so output is legible and calm on
-    // the @sl_bg background without clashing with the purple frame.
+    // A restrained ANSI palette that remains legible on the near-white text pane.
     static const char *const kPalette[16] = {
         "#1b1526", "#e06c75", "#8fcf8f", "#e5c07b", // black, red, green, yellow
         "#8f9ff0", "#c58af0", "#6fd0d8", "#cfcad8", // blue, magenta, cyan, white
@@ -233,6 +230,9 @@ void install_css(AppState *state) {
     // rejects the stray backslash and drops the rest of the rule.
     const char *css = R"CSS(
         @define-color sl_bg          #15101c;
+        @define-color sl_textpane_bg #fcfcfc;
+        @define-color sl_output_bg   #e4e4e4;
+        @define-color sl_output_fg   #303030;
         @define-color sl_surface     #21112f;
         @define-color sl_chrome      #24103f;
         @define-color sl_border      #7f56aa;
@@ -500,7 +500,17 @@ void install_css(AppState *state) {
         }
         button.suggested-action:hover { background: @sl_menu_hover; }
 
-        textview.sleela-scan-output { color: @sl_fg; background: @sl_bg; }
+        /* Command-result bubbles are four 6-point RGB steps darker than
+           the #fcfcfc text pane. Dark text preserves comfortable contrast. */
+        textview.sleela-scan-output {
+            color: @sl_output_fg;
+            background: @sl_output_bg;
+            caret-color: @sl_output_fg;
+        }
+        textview.sleela-scan-output text {
+            color: @sl_output_fg;
+            background-color: @sl_output_bg;
+        }
 
         /* Secondary / explanatory notes: one dim colour, slightly smaller. */
         label.sleela-software-note,
