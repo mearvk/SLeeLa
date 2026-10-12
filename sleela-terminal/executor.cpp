@@ -130,53 +130,82 @@ int biEcho(const std::vector<std::string>& a, Environment&) {
 }
 
 
-// ls [PATH ...] -- render directory entries as rounded terminal tiles.
-// The VTE workspace supplies the charcoal output panel; ANSI backgrounds
-// create individually shaded tiles, with Unicode rounded box-drawing corners.
+// ls [OPTIONS] [PATH ...] -- conventional, plain ls-style output.
+// Flags are parsed as a conventional clustered option word (-la == -l -a).
 int biLs(const std::vector<std::string>& args, Environment&) {
     namespace fs = std::filesystem;
-    bool show_hidden = false;
+    bool show_all = false, almost_all = false, long_format = false;
+    bool human = false, classify = false, list_directory = false;
+    bool options = true;
     std::vector<fs::path> paths;
     for (std::size_t i = 1; i < args.size(); ++i) {
-        if (args[i] == "-a" || args[i] == "-A") show_hidden = true;
-        else if (!args[i].empty() && args[i][0] == '-') {
-            std::cerr << "ls: unsupported option: " << args[i] << '\n';
-            return 2;
-        } else paths.emplace_back(args[i]);
+        const std::string& arg = args[i];
+        if (options && arg == "--") { options = false; continue; }
+        if (options && arg.size() > 1 && arg[0] == '-') {
+            for (std::size_t j = 1; j < arg.size(); ++j) {
+                switch (arg[j]) {
+                    case 'a': show_all = true; break;
+                    case 'A': almost_all = true; break;
+                    case 'l': long_format = true; break;
+                    case 'h': human = true; break;
+                    case '1': break; // one entry per line is the default here
+                    case 'F': classify = true; break;
+                    case 'd': list_directory = true; break;
+                    default:
+                        std::cerr << "ls: invalid option -- '" << arg[j] << "'\n"
+                                  << "Try 'ls --help' for supported options.\n";
+                        return 2;
+                }
+            }
+        } else {
+            paths.emplace_back(arg);
+        }
     }
     if (paths.empty()) paths.emplace_back(".");
-    struct Item { std::string label; bool directory; };
+    struct Item { fs::path path; std::string name; bool directory = false; struct stat info{}; bool stat_ok = false; };
     std::vector<Item> items;
     bool had_error = false;
+    auto add_item = [&](const fs::path& p, const std::string& label) {
+        Item item;
+        item.path = p;
+        item.name = label;
+        item.stat_ok = (::lstat(p.c_str(), &item.info) == 0);
+        item.directory = item.stat_ok && S_ISDIR(item.info.st_mode);
+        items.push_back(std::move(item));
+    };
     for (const auto& path : paths) {
         std::error_code ec;
-        if (fs::is_directory(path, ec)) {
+        if (!list_directory && fs::is_directory(path, ec)) {
             std::vector<fs::directory_entry> entries;
             fs::directory_iterator it(path, ec), end;
             if (ec) {
-                std::cerr << "ls: " << path.string() << ": " << ec.message() << '\n';
+                std::cerr << "ls: cannot open directory '" << path.string()
+                          << "': " << ec.message() << '\n';
                 had_error = true;
                 continue;
+            }
+            if (show_all) {
+                add_item(path / ".", ".");
+                add_item(path / "..", "..");
             }
             for (; it != end; it.increment(ec)) {
                 if (ec) { had_error = true; ec.clear(); continue; }
                 const std::string name = it->path().filename().string();
-                if (!show_hidden && !name.empty() && name[0] == '.') continue;
+                if (!show_all && !almost_all && !name.empty() && name[0] == '.') continue;
+                if (almost_all && !name.empty() && name[0] == '.') continue;
                 entries.push_back(*it);
             }
             std::sort(entries.begin(), entries.end(), [](const auto& a, const auto& b) {
+                const std::string an = a.path().filename().string();
+                const std::string bn = b.path().filename().string();
                 std::error_code ea, eb;
-                const bool da = a.is_directory(ea), db = b.is_directory(eb);
-                if (da != db) return da > db;
-                return a.path().filename().string() < b.path().filename().string();
+                const bool ad = a.is_directory(ea), bd = b.is_directory(eb);
+                if (ad != bd) return ad > bd;
+                return an < bn;
             });
-            for (const auto& entry : entries) {
-                std::error_code type_error;
-                items.push_back({entry.path().filename().string(), entry.is_directory(type_error)});
-            }
-        } else if (fs::exists(path, ec)) {
-            items.push_back({path.filename().empty() ? path.string() : path.filename().string(),
-                             fs::is_directory(path, ec)});
+            for (const auto& entry : entries) add_item(entry.path(), entry.path().filename().string());
+        } else if (fs::exists(path, ec) || list_directory) {
+            add_item(path, path.filename().empty() ? path.string() : path.filename().string());
         } else {
             std::cerr << "ls: cannot access '" << path.string() << "': "
                       << (ec ? ec.message() : "No such file or directory") << '\n';
@@ -185,72 +214,56 @@ int biLs(const std::vector<std::string>& args, Environment&) {
     }
     if (items.empty()) return had_error ? 2 : 0;
 
-    // Redirected output remains conventional and machine-readable.
-    if (!::isatty(STDOUT_FILENO)) {
-        for (const auto& item : items) std::cout << item.label << '\n';
-        std::cout.flush();
-        return had_error ? 2 : 0;
-    }
-
-    struct winsize ws{};
-    unsigned terminal_width = 80;
-    if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == 0 && ws.ws_col >= 24)
-        terminal_width = ws.ws_col;
-    struct Tile { Item item; std::size_t width; };
-    std::vector<Tile> tiles;
+    auto mode_string = [](mode_t mode) {
+        std::string s(10, '-');
+        s[0] = S_ISDIR(mode) ? 'd' : S_ISLNK(mode) ? 'l' : S_ISCHR(mode) ? 'c' :
+               S_ISBLK(mode) ? 'b' : S_ISFIFO(mode) ? 'p' : S_ISSOCK(mode) ? 's' : '-';
+        const mode_t bits[] = {S_IRUSR,S_IWUSR,S_IXUSR,S_IRGRP,S_IWGRP,S_IXGRP,S_IROTH,S_IWOTH,S_IXOTH};
+        const char chars[] = {'r','w','x','r','w','x','r','w','x'};
+        for (int i=0;i<9;++i) if (mode & bits[i]) s[i+1]=chars[i];
+        if (mode & S_ISUID) s[3] = (mode & S_IXUSR) ? 's' : 'S';
+        if (mode & S_ISGID) s[6] = (mode & S_IXGRP) ? 's' : 'S';
+        if (mode & S_ISVTX) s[9] = (mode & S_IXOTH) ? 't' : 'T';
+        return s;
+    };
+    auto size_string = [&](std::uintmax_t bytes) {
+        if (!human) return std::to_string(bytes);
+        const char* units[] = {"B","K","M","G","T","P"};
+        double n = static_cast<double>(bytes);
+        int u = 0;
+        while (n >= 1024.0 && u < 5) { n /= 1024.0; ++u; }
+        std::ostringstream out;
+        if (u == 0) out << static_cast<unsigned long long>(bytes);
+        else out << std::fixed << std::setprecision(n < 10.0 ? 1 : 0) << n << units[u];
+        return out.str();
+    };
     for (const auto& item : items) {
-        // Keep the tile compact while allowing long names to remain intact.
-        tiles.push_back({item, std::min<std::size_t>(item.label.size(), terminal_width > 8 ? terminal_width - 8 : 16) + 2});
-    }
-    const std::size_t gap = 2;
-    std::vector<std::vector<Tile>> rows;
-    std::vector<Tile> row;
-    std::size_t used = 0;
-    for (const auto& tile : tiles) {
-        const std::size_t tile_width = tile.width + 2; // side borders
-        if (!row.empty() && used + gap + tile_width > terminal_width) {
-            rows.push_back(row); row.clear(); used = 0;
+        std::string name = item.name;
+        if (classify) {
+            if (item.directory) name += '/';
+            else if (item.stat_ok && S_ISLNK(item.info.st_mode)) name += '@';
+            else if (item.stat_ok && (item.info.st_mode & (S_IXUSR|S_IXGRP|S_IXOTH))) name += '*';
         }
-        if (!row.empty()) used += gap;
-        row.push_back(tile); used += tile_width;
-    }
-    if (!row.empty()) rows.push_back(row);
-
-    constexpr const char* reset = "\033[0m";
-    for (const auto& line : rows) {
-        // Rounded top edges.
-        for (std::size_t i = 0; i < line.size(); ++i) {
-            const auto& tile = line[i];
-            const char* bg = tile.item.directory ? "\033[48;2;106;91;125m" : "\033[48;2;98;98;98m";
-            const std::size_t width = tile.width;
-            std::cout << bg << "\033[97m╭";
-            for (std::size_t k = 0; k < width; ++k) std::cout << "─";
-            std::cout << "╮" << reset;
-            if (i + 1 < line.size()) std::cout << "  ";
+        if (!long_format) {
+            std::cout << name << '\n';
+            continue;
         }
-        std::cout << '\n';
-        // Item label rows.
-        for (std::size_t i = 0; i < line.size(); ++i) {
-            const auto& tile = line[i];
-            const char* bg = tile.item.directory ? "\033[48;2;106;91;125m" : "\033[48;2;98;98;98m";
-            const std::size_t max_label = tile.width > 2 ? tile.width - 2 : 0;
-            std::string label = tile.item.label.substr(0, max_label);
-            std::cout << bg << "\033[97m│ " << label;
-            if (label.size() < max_label) std::cout << std::string(max_label - label.size(), ' ');
-            std::cout << " │" << reset;
-            if (i + 1 < line.size()) std::cout << "  ";
+        if (!item.stat_ok) {
+            std::cerr << "ls: cannot access '" << item.path.string() << "': "
+                      << std::strerror(errno) << '\n';
+            had_error = true;
+            continue;
         }
-        std::cout << '\n';
-        // Rounded bottom edges.
-        for (std::size_t i = 0; i < line.size(); ++i) {
-            const auto& tile = line[i];
-            const char* bg = tile.item.directory ? "\033[48;2;106;91;125m" : "\033[48;2;98;98;98m";
-            std::cout << bg << "\033[97m╰";
-            for (std::size_t k = 0; k < tile.width; ++k) std::cout << "─";
-            std::cout << "╯" << reset;
-            if (i + 1 < line.size()) std::cout << "  ";
-        }
-        std::cout << "\n\n";
+        char datebuf[32] = {};
+        const std::time_t stamp = item.info.st_mtime;
+        std::tm local{};
+        if (::localtime_r(&stamp, &local)) std::strftime(datebuf, sizeof datebuf, "%b %e %H:%M", &local);
+        std::cout << mode_string(item.info.st_mode) << ' '
+                  << std::setw(3) << item.info.st_nlink << ' '
+                  << std::setw(6) << item.info.st_uid << ' '
+                  << std::setw(6) << item.info.st_gid << ' '
+                  << std::setw(8) << size_string(static_cast<std::uintmax_t>(item.info.st_size)) << ' '
+                  << datebuf << ' ' << name << '\n';
     }
     std::cout.flush();
     return had_error ? 2 : 0;
