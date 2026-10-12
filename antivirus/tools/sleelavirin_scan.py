@@ -106,14 +106,14 @@ def enumerate_files(inputs, depth_limit, follow, excludes, extensions, size_limi
     return output, incomplete
 
 
-def native_scan(executable, database, path, initial_stamp=None):
+def native_scan(executable, database, path, initial_stamp=None, timeout=120):
     try:
         before = file_stamp(path)
         if initial_stamp is not None and before != initial_stamp:
             return "ERROR", path, f"ERROR_CHANGED_BEFORE_SCAN {path}"
         result = subprocess.run(
             [str(executable), "--database", str(database), str(path)],
-            capture_output=True, text=True, check=False
+            capture_output=True, text=True, check=False, timeout=timeout
         )
         output = (result.stdout + result.stderr).strip()
         try:
@@ -127,11 +127,13 @@ def native_scan(executable, database, path, initial_stamp=None):
         if result.returncode == 1 and "DETECTED " in output:
             return "DETECTED", path, output
         return "ERROR", path, output or f"ERROR {path} exit={result.returncode}"
+    except subprocess.TimeoutExpired:
+        return "ERROR", path, f"ERROR_SCAN_TIMEOUT {path} after {timeout}s"
     except OSError as exc:
         return "ERROR", path, f"ERROR {path}: {exc}"
 
 
-def clamav_scan_one(executable, path, size_limit, scan_limit, recursion_limit, initial_stamp=None):
+def clamav_scan_one(executable, path, size_limit, scan_limit, recursion_limit, initial_stamp=None, timeout=120):
     try:
         before = file_stamp(path)
         if initial_stamp is not None and before != initial_stamp:
@@ -141,7 +143,7 @@ def clamav_scan_one(executable, path, size_limit, scan_limit, recursion_limit, i
             f"--max-filesize={size_limit}", f"--max-scansize={scan_limit}",
             f"--max-recursion={recursion_limit}", "--", str(path)
         ]
-        result = subprocess.run(command, capture_output=True, text=True, check=False)
+        result = subprocess.run(command, capture_output=True, text=True, check=False, timeout=timeout)
         output = (result.stdout + result.stderr).strip()
         try:
             after = file_stamp(path)
@@ -157,6 +159,8 @@ def clamav_scan_one(executable, path, size_limit, scan_limit, recursion_limit, i
                 return "DETECTED", path, "\n".join(detected_lines)
             return "ERROR", path, f"CLAMAV_ERROR detection exit without a parseable file verdict: {path}"
         return "ERROR", path, output or f"CLAMAV_ERROR {path} exit={result.returncode}"
+    except subprocess.TimeoutExpired:
+        return "ERROR", path, f"ERROR_CLAMAV_TIMEOUT {path} after {timeout}s"
     except OSError as exc:
         return "ERROR", path, f"ERROR starting ClamAV for {path}: {exc}"
 
@@ -209,6 +213,7 @@ def main():
     parser.add_argument("--max-file-size", type=size_arg, default=100 * 1024 * 1024, help="bytes or K/M/G; default 100M")
     parser.add_argument("--clamav-max-scansize", type=size_arg, default=400 * 1024 * 1024, help="ClamAV total bytes scanned per file; default 400M")
     parser.add_argument("--clamav-max-recursion", type=int, default=8, help="maximum nested archive recursion for ClamAV")
+    parser.add_argument("--scan-timeout", type=int, default=120, help="per-file engine timeout in seconds; 0 disables timeout")
     parser.add_argument("--exclude", action="append", default=[], metavar="GLOB")
     parser.add_argument("--extension", action="append", default=[], metavar=".EXT")
     parser.add_argument("--follow-symlinks", action="store_true")
@@ -216,7 +221,7 @@ def main():
     parser.add_argument("--quarantine-dir", default=str(package / "quarantine"))
     parser.add_argument("paths", nargs="+")
     args = parser.parse_args()
-    if args.max_depth < 0 or args.jobs < 1 or args.clamav_jobs < 1 or args.clamav_max_recursion < 0:
+    if args.max_depth < 0 or args.jobs < 1 or args.clamav_jobs < 1 or args.clamav_max_recursion < 0 or args.scan_timeout < 0:
         parser.error("depth/recursion must be >= 0 and worker counts must be >= 1")
     if args.clamav_max_scansize < args.max_file_size:
         parser.error("--clamav-max-scansize should be >= --max-file-size")
@@ -256,7 +261,7 @@ def main():
             return 2
         workers = 1 if args.action == "stop" else args.jobs
         with ThreadPoolExecutor(max_workers=workers) as pool:
-            futures = {pool.submit(native_scan, native_exe, database, path, initial_stamps.get(path)): path for path in paths}
+            futures = {pool.submit(native_scan, native_exe, database, path, initial_stamps.get(path), args.scan_timeout or None): path for path in paths}
             for future in as_completed(futures):
                 verdict, path, message = future.result()
                 print(message)
@@ -275,7 +280,7 @@ def main():
             return 2
         workers = 1 if args.action == "stop" else args.clamav_jobs
         with ThreadPoolExecutor(max_workers=workers) as pool:
-            futures = {pool.submit(clamav_scan_one, clam, path, args.max_file_size, args.clamav_max_scansize, args.clamav_max_recursion, initial_stamps.get(path)): path for path in paths}
+            futures = {pool.submit(clamav_scan_one, clam, path, args.max_file_size, args.clamav_max_scansize, args.clamav_max_recursion, initial_stamps.get(path), args.scan_timeout or None): path for path in paths}
             for future in as_completed(futures):
                 verdict, path, message = future.result()
                 print(message)
