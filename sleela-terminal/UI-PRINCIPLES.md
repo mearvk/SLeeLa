@@ -123,3 +123,14 @@ stylesheet still parses. If a change adds motion, a new colour, or a new
 spacing value, it must either fit these principles or update them deliberately.
 
 — SleelaTerminal™ · MEARVK LLC
+
+## Interactive `ls` presentation
+
+The `slsh` shell provides an interactive `ls` builtin. In a terminal session it
+renders each entry as a compact, rounded-corner Unicode tile with a lighter
+background; directories use a distinct muted-purple shade. The surrounding
+terminal remains the charcoal output surface (`#4B4B4B`) on the near-white
+workspace (`#FCFCFC`). Redirected output stays plain, newline-separated names
+so scripts and pipelines do not receive presentation escape sequences. The
+builtin currently supports `ls`, `ls -a` / `ls -A`, and path arguments; it
+does not yet implement the full option set of system `ls`.
