@@ -57,7 +57,7 @@ $(TEST_BIN): $(TEST_DIR)/test_scan.c $(LIBRARY) $(SRC_DIR)/sleelavirin_scan.h $(
 test check: all
 	"$(TEST_BIN)"
 	$(MAKE) native-test
-	python3 -m py_compile tools/sleelavirin_scan.py tools/sleelavirin_clamav.py tools/sleelavirin_import_clamav.py tools/sleelavirin_update_clamav.py tools/sleelavirin_verify_signature.py tests/test_tools.py tests/test_update_clamav.py tests/test_verify_signature.py tests/test_scan_report.py
+	python3 -m py_compile tools/sleelavirin_scan.py tools/sleelavirin_clamav.py tools/sleelavirin_import_clamav.py tools/sleelavirin_update_clamav.py tools/sleelavirin_verify_signature.py tests/test_tools.py tests/test_update_clamav.py tests/test_verify_signature.py tests/test_scan_report.py tests/test_eicar_integration.py
 	python3 -m unittest discover -s tests -p 'test_*.py' -v
 	$(MAKE) definitions-check
 
