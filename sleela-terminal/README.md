@@ -203,3 +203,8 @@ Configure the footerbar from the shell with `footerbar chemistry`, `footerbar ph
 ### Interactive Tab completion
 
 In an interactive terminal, press **Tab** to complete a command from shell builtins and executable programs on `PATH`, or to complete a file or directory name. A unique directory completion keeps a trailing slash; a unique command/file completion adds a space. When several names match, Tab expands their shared prefix; pressing Tab again lists the matching candidates. Hidden files are offered when the typed prefix begins with a dot. Completion is part of the CLI line editor and does not change non-interactive script input.
+
+### Footer ticker appearance, scrolling, and RSS freshness
+
+The footer ticker uses a slightly grey text colour with a 1px pure-white text outline. In **Settings → Footer ticker**, choose when rightward scrolling starts: 5, 10, 15, 30, 45, or 60 minutes after the current footer message appears. The preference is saved in the user configuration. RSS searches request the past day of stories and display up to eight headlines. When a topic feed is enabled, SleelaTerminal refreshes every 15 minutes from 9:00 AM through 4:59 PM local time, and hourly outside that workday window. Feed updates require network access and `curl`.
+
