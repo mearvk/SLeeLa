@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <vte/vte.h>
+#include "file-list-renderer.hpp"
 #include <pango/pangocairo.h>
 
 #include <algorithm>
@@ -233,6 +234,8 @@ void install_css(AppState *state) {
         @define-color sl_textpane_bg #fcfcfc;
         @define-color sl_output_bg   #4b4b4b;
         @define-color sl_output_fg   #f2f2f2;
+        @define-color sl_item_bg     #626262;
+        @define-color sl_item_fg     #ffffff;
         @define-color sl_surface     #21112f;
         @define-color sl_chrome      #24103f;
         @define-color sl_border      #7f56aa;
@@ -500,13 +503,59 @@ void install_css(AppState *state) {
         }
         button.suggested-action:hover { background: @sl_menu_hover; }
 
-        /* Three-colour reading hierarchy:
-           1) the terminal/text-pane surface is #fcfcfc;
-           2) command-result bubbles use a clearly darker neutral charcoal;
-           3) result text is a soft near-white for readable contrast on charcoal. */
-        vte-terminal {
-            color: #262626;
+        /* The near-white workspace frames a rounded charcoal terminal panel.
+           VTE output is light on charcoal; individual ANSI-highlighted tokens
+           can use the lighter item shade. GTK CSS rounds the panel container,
+           while terminal glyph/background cells remain terminal-rendered. */
+        box.sleela-workspace {
             background: @sl_textpane_bg;
+        }
+        overlay.sleela-terminal-panel {
+            background: @sl_output_bg;
+            border: 1px solid #383838;
+            border-radius: 12px;
+            padding: 10px;
+            margin: 12px;
+        }
+        vte-terminal {
+            color: @sl_output_fg;
+            background: @sl_output_bg;
+            border-radius: 8px;
+        }
+        window .sleela-file-browser {
+            color: #f2f2f2;
+            background: #4b4b4b;
+        }
+        .sleela-file-browser entry {
+            color: #ffffff;
+            background: #383838;
+            border: 1px solid #777777;
+            border-radius: 8px;
+            padding: 8px 10px;
+        }
+        .sleela-file-browser button.sleela-file-item {
+            color: #ffffff;
+            background: #626262;
+            border: 1px solid #777777;
+            border-radius: 10px;
+            padding: 8px 10px;
+            min-height: 30px;
+            transition: background 120ms ease, border-color 120ms ease;
+        }
+        .sleela-file-browser button.sleela-file-directory {
+            background: #6a5b7d;
+            border-color: #8b79a0;
+        }
+        .sleela-file-browser button.sleela-file-item:hover {
+            background: #777777;
+            border-color: #aaaaaa;
+        }
+        .sleela-file-browser button.sleela-file-directory:hover {
+            background: #7b6a91;
+        }
+        .sleela-file-browser button.sleela-file-parent,
+        .sleela-file-browser button {
+            border-radius: 8px;
         }
         textview.sleela-scan-output {
             color: @sl_output_fg;
@@ -1623,6 +1672,15 @@ gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_da
     return G_SOURCE_CONTINUE;
 }
 
+void open_file_items(GtkButton *, gpointer user_data) {
+    auto *state = static_cast<AppState *>(user_data);
+    const char *home = g_get_home_dir();
+    std::error_code ec;
+    const auto initial = std::filesystem::current_path(ec);
+    sleela::terminal::file_items_detail::open(
+        state->window, ec ? std::filesystem::path(home) : initial);
+}
+
 void activate(GtkApplication *application, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     install_css(state);
@@ -1708,11 +1766,19 @@ void activate(GtkApplication *application, gpointer user_data) {
     g_signal_connect(settings, "clicked", G_CALLBACK(open_settings), settings);
     gtk_header_bar_pack_end(GTK_HEADER_BAR(header), settings);
 
+    GtkWidget *files_button = gtk_button_new_with_label("Files");
+    gtk_widget_set_tooltip_text(files_button, "Open rounded file-item browser");
+    gtk_widget_add_css_class(files_button, "sleela-settings-btn");
+    gtk_widget_set_valign(files_button, GTK_ALIGN_CENTER);
+    g_signal_connect(files_button, "clicked", G_CALLBACK(open_file_items), state);
+    gtk_header_bar_pack_end(GTK_HEADER_BAR(header), files_button);
+
     GtkWidget *title = gtk_label_new(kWindowTitle);
     gtk_header_bar_set_title_widget(GTK_HEADER_BAR(header), title);
     gtk_window_set_titlebar(state->window, header);
 
     GtkWidget *root = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_widget_add_css_class(root, "sleela-workspace");
 
     // Full-width 4px pure-white throbber rail below the title bar. The moving
     // coloured field is composited inside the white pixels; the frame clock
@@ -1744,6 +1810,7 @@ void activate(GtkApplication *application, gpointer user_data) {
     // Let the throbber cast a faint, moving light field over the terminal
     // surface without intercepting clicks, text selection, or keyboard input.
     GtkWidget *terminal_overlay = gtk_overlay_new();
+    gtk_widget_add_css_class(terminal_overlay, "sleela-terminal-panel");
     gtk_widget_set_hexpand(terminal_overlay, TRUE);
     gtk_widget_set_vexpand(terminal_overlay, TRUE);
     gtk_overlay_set_child(GTK_OVERLAY(terminal_overlay), terminal);
