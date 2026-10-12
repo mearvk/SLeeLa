@@ -191,6 +191,114 @@ int biSet(const std::vector<std::string>&, Environment& env) {
     return 0;
 }
 
+// help [topic] -- built-in guide to the shell's substantial features.
+int biHelp(const std::vector<std::string>& a, Environment&) {
+    const std::string topic = a.size() > 1 ? a[1] : "all";
+    const std::map<std::string, std::string> pages = {
+        {"all", R"HELP(SLeeLa Terminal (slsh) help
+Usage: help [topic]
+
+Commands: cd, pwd, echo [-n], export, unset, set, true, false, :, exit,
+break [n], continue [n], read [-r] name..., getopts, test/[ ], jobs, wait,
+fg, bg, help [topic], prompt, prompt set OLD NEW, soros time.
+
+Language: assignments; ; and newline; &&, ||, !, |, &; redirection (<, >, >>);
+if/elif/else/fi; while/until; for/in/do/done; case/in/esac; functions; brace
+groups; here-documents; parameter, arithmetic, command, tilde and brace
+expansion; pathname globbing; field splitting.
+
+Topics: expansion, control, jobs, io, process, traps, select, prompt, soros,
+options, portability, build. Use help TOPIC for details.
+See README.md, BUILD-PLATFORMS.md, and M5-HARDENING.md.)HELP"},
+        {"expansion", R"HELP(Expansion
+$name and \${name}; positional parameters $1..$9, $#, $?, and $@.
+Arithmetic: $(( expression )). Parameter operators: \${x:-default},
+\${x:=default}, \${x:?message}, \${x:+alternate}, and \${#x}.
+Command substitution: $( commands ). Tilde expansion: ~ and ~user.
+Brace expansion: {a,b} and {1..5}; pathname patterns: *, ?, [a-z], [!0-9].
+Field splitting and globbing are supported, but quote fidelity has known gaps:
+empty quoted words, quoted whitespace/glob suppression, and "$@" argument
+boundaries are not yet fully POSIX-conformant.)HELP"},
+        {"control", R"HELP(Control flow
+if/elif/else/fi; while and until loops; for name in words; do ...; done.
+case word in pattern) ... ;; esac. Define functions with name() { commands; }.
+Brace groups { commands; } run in the current shell.
+break [n] and continue [n] target enclosing loops. ! inverts pipeline status.
+&& and || short-circuit.)HELP"},
+        {"jobs", R"HELP(Jobs and process control
+command & starts a background job; jobs lists tracked jobs; wait [id] waits.
+fg [id] and bg [id] request foreground/background continuation.
+Full POSIX process-group and terminal job control is not claimed; see
+M5-HARDENING.md for remaining validation gaps.)HELP"},
+        {"io", R"HELP(Input/output
+command < file reads stdin; > truncates output; >> appends output.
+command1 | command2 connects stdout to the next command's stdin.
+Here-documents use <<DELIM or <<-DELIM; <<- strips leading tabs. A quoted
+delimiter suppresses body expansion. read [-r] name... reads a line; extra
+fields go to the last name, and no names stores the line in REPLY.
+Redirection failures are diagnosed and cause the command to fail.)HELP"},
+        {"process", R"HELP(Process integration
+<(command) supplies a readable FIFO path; >(command) supplies a writable FIFO.
+command & runs asynchronously and records a job.
+Exported variables are passed to external commands; prefix assignments for
+external commands are scoped to the child environment.
+Process substitution and interactive child/job lifecycle behavior have
+platform and validation limits; see BUILD-PLATFORMS.md and M5-HARDENING.md.)HELP"},
+        {"traps", R"HELP(Signal traps
+trap 'commands' SIGNAL registers an M5 trap action for supported names/numbers.
+Common names include HUP, INT, TERM, QUIT, USR1, USR2, PIPE, and ALRM.
+Registered actions are dispatched after the active shell command. This does
+not claim complete POSIX trap or signal/job-control semantics.)HELP"},
+        {"select", R"HELP(select menus
+Syntax: select name in item...; do commands; done
+Displays numbered choices; PS3 controls the prompt and REPLY records input.
+The selected item is assigned to name; break exits the menu loop.
+Example: select x in alpha beta; do echo "$x:$REPLY"; break; done)HELP"},
+        {"prompt", R"HELP(Prompt
+The interactive prompt defaults to the account username followed by '$ '
+(for example, ada$ ). The prompt command prints the current prompt.
+prompt set OLD NEW changes it only if OLD matches the current prompt.
+The replacement is the remainder of the input line; this is not a general
+POSIX PS1 expansion engine.)HELP"},
+        {"soros", R"HELP(Soros relative time
+Command: soros time
+Uses the terminal's local civil year: 2026 maps to 2407; each following year
+adds one (2027 maps to 2408). 2607+ is the project's Great Mystery marker,
+not an externally recognized calendar or historical dating system.)HELP"},
+        {"options", R"HELP(Option parsing and predicates
+getopts optstring name [arg...] updates OPTIND and OPTARG. It supports bundled
+flags (-abc), -oVALUE, and -o VALUE. test and [ ] support string, numeric,
+and selected file predicates. See help io and help control.)HELP"},
+        {"portability", R"HELP(Portability and conformance
+The core CLI targets POSIX-like Linux and macOS. Native Windows support is not
+claimed. GUI compilation does not prove GUI runtime behavior. Quote provenance
+and field splitting, complete POSIX job control, and some signal/child lifecycle
+behavior remain implementation or validation gaps. See BUILD-PLATFORMS.md and
+M5-HARDENING.md.)HELP"},
+        {"build", R"HELP(Build and install
+From sleela-terminal:
+  make                 build CLI and smoke binary
+  make test            run layered and M5 smoke tests
+  make install-smoke   stage install, run installed CLI, then uninstall
+  make sanitize        build/run AddressSanitizer and UBSan smoke checks
+  make fuzz            compile the Clang/libFuzzer target
+  make gui             optional GTK4/VTE GUI build
+  make all-gui         build CLI, tests, and GUI
+  make install         install CLI to PREFIX/bin (default /usr/local/bin)
+  make install-all     install CLI, GUI, and desktop entry
+Use PREFIX=/usr for /usr installs and DESTDIR for packaging/staging.)HELP"}
+    };
+    const auto it = pages.find(topic);
+    if (it == pages.end()) {
+        std::cerr << "help: unknown topic '" << topic << "'\n"
+                  << "Available topics: expansion control jobs io process traps select prompt soros options portability build all\n";
+        return 2;
+    }
+    std::cout << it->second << "\n";
+    std::cout.flush();
+    return 0;
+}
+
 // ---- job-control builtins (M4) ----
 
 // Reap any jobs that have already terminated, marking them not-running.
@@ -472,7 +580,7 @@ const std::map<std::string, Builtin>& builtins() {
         {"break", biBreak}, {"continue", biContinue},
         {"jobs", biJobs}, {"wait", biWait}, {"fg", biFg}, {"bg", biBg},
         {"test", biTest}, {"[", biTest},
-        {"read", biRead}, {"getopts", biGetopts},
+        {"read", biRead}, {"getopts", biGetopts}, {"help", biHelp},
     };
     return table;
 }
