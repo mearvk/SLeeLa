@@ -1,4 +1,6 @@
 # CDMA Lawful Claims Registry
+<p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/merchandise/sleela-marketing-logo-001.png" alt="SLeeLa Marketing Logo" width="560"></p>
+
 
 **Purpose:** a concise, evidence-led registry for lawful claims, practical help, and the points where life and CMDA-related concerns intersect. This document is a project record and general information, not legal advice or a determination that any claim is valid.
 
