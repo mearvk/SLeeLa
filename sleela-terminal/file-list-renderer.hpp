@@ -20,9 +20,12 @@ struct BrowserState {
 };
 
 inline void show_error(GtkWindow *parent, const std::string &message) {
-    GtkAlertDialog *dialog = gtk_alert_dialog_new("%s", message.c_str());
-    gtk_alert_dialog_show(dialog, parent);
-    g_object_unref(dialog);
+    GtkWidget *dialog = gtk_message_dialog_new(
+        parent, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, "%s", message.c_str());
+    g_signal_connect(dialog, "response", G_CALLBACK(+[](GtkDialog *d, int, gpointer) {
+        gtk_window_destroy(GTK_WINDOW(d));
+    }), nullptr);
+    gtk_window_present(GTK_WINDOW(dialog));
 }
 
 inline void rounded_item(GtkWidget *button, bool directory) {
@@ -56,8 +59,9 @@ inline void item_clicked(GtkButton *button, gpointer data) {
     }
     GError *error = nullptr;
     GFile *file = g_file_new_for_path(path.c_str());
-    GAppInfo *app = g_app_info_get_default_for_type(
-        g_content_type_guess(path.c_str(), nullptr, 0, nullptr), FALSE);
+    gchar *content_type = g_content_type_guess(path.c_str(), nullptr, 0, nullptr);
+    GAppInfo *app = content_type ? g_app_info_get_default_for_type(content_type, FALSE) : nullptr;
+    g_free(content_type);
     if (app) {
         GList *files = nullptr;
         files = g_list_append(files, file);
@@ -82,6 +86,11 @@ inline void item_clicked(GtkButton *button, gpointer data) {
 inline void path_activate(GtkEntry *entry, gpointer data) {
     auto *state = static_cast<BrowserState *>(data);
     navigate(state, gtk_editable_get_text(GTK_EDITABLE(entry)));
+}
+
+inline void go_clicked(GtkButton *, gpointer data) {
+    auto *state = static_cast<BrowserState *>(data);
+    path_activate(GTK_ENTRY(state->path_entry), state);
 }
 
 inline void parent_clicked(GtkButton *, gpointer data) {
@@ -153,7 +162,7 @@ inline void open(GtkWindow *parent, const std::filesystem::path &initial_directo
     gtk_entry_set_placeholder_text(GTK_ENTRY(path), "Directory path");
     g_signal_connect(path, "activate", G_CALLBACK(path_activate), state);
     GtkWidget *refresh = gtk_button_new_with_label("Go");
-    g_signal_connect_swapped(refresh, "clicked", G_CALLBACK(path_activate), path);
+    g_signal_connect(refresh, "clicked", G_CALLBACK(go_clicked), state);
     gtk_box_append(GTK_BOX(path_row), path);
     gtk_box_append(GTK_BOX(path_row), refresh);
     gtk_box_append(GTK_BOX(root), path_row);
