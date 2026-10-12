@@ -149,3 +149,8 @@ The existing CLI shell remains a C++17 program and does not depend on GTK or VTE
 ## Title-bar gradient presets
 
 The title-bar gradient is stored in `assets/HORIZONTAL.cfg` and `assets/VERTICAL.cfg`; each preset supplies both its direction and its own color stops. Both presets use a dark-navy palette with the former white glint replaced by a narrow blue-black center grade, blended through nearby navy stops to preserve the existing linear fade and restrained 3D bevel. The active selection in `assets/GRADIENT.cfg` is `active=HORIZONTAL.cfg`, so the gradient runs left to right. Change it to `active=VERTICAL.cfg` to run the same palette from top to bottom, then restart SleelaTerminal.
+
+
+## Text pane and command-result colors
+
+The VTE text pane uses near-white RGB **(252, 252, 252)** (`#fcfcfc`) with dark default terminal text. Command-result text views use a subtly darker light-gray surface, RGB **(228, 228, 228)** (`#e4e4e4`), with dark-gray text (`#303030`) so results are distinct from the main pane while remaining readable. These are separate named CSS tokens; the rest of the window's purple chrome is unchanged.
