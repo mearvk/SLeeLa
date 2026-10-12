@@ -1120,17 +1120,17 @@ void footer_ticker_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height
     const gint64 now = g_get_monotonic_time();
     const gint64 delay = static_cast<gint64>(state->config.footer_scroll_delay_minutes) * 60 * G_USEC_PER_SEC;
     const bool scrolling = state->footer_text_changed_us != 0 &&
-        now - state->footer_text_changed_us >= delay && text_width > width;
-    // Keep the beginning of the message readable during the configured pause.
-    // Then start fully off the left edge and move right so every character,
-    // including the end of a long RSS headline, crosses the fixed viewport.
+        now - state->footer_text_changed_us >= delay;
+    // Show one copy at the left during the pause. Then it travels right and
+    // fully exits; only after it has gone does that same single line re-enter
+    // from the left. There is never a second, duplicated copy on screen.
     double x = 0.0;
     double alpha = 1.0;
     if (scrolling) {
         const double cycle = static_cast<double>(std::max(1, width + text_width));
-        const double phase = std::min(static_cast<double>(state->footer_position), cycle);
-        x = -static_cast<double>(text_width) + phase;
-        // Fade the message gently as it completes its rightward exit.
+        const double phase = std::fmod(static_cast<double>(state->footer_position), cycle);
+        x = phase < width ? phase : -static_cast<double>(text_width) + (phase - width);
+        // Fade only as the line leaves the right edge.
         const double fade_start = static_cast<double>(width) * 0.55;
         if (x > fade_start) {
             alpha = std::clamp((static_cast<double>(width) - x) /
@@ -1163,28 +1163,10 @@ gboolean footer_scroll_tick(gpointer user_data) {
     const gint64 now = g_get_monotonic_time();
     const gint64 delay = static_cast<gint64>(state->config.footer_scroll_delay_minutes) * 60 * G_USEC_PER_SEC;
     if (state->footer_text_changed_us != 0 && now - state->footer_text_changed_us >= delay) {
-        // Approx. 13 px/s at the 150ms cadence. The full line travels from
-        // entirely off-screen left until it has exited the right edge.
+        // Approx. 13 px/s at the 150ms cadence. Keep advancing through one
+        // complete cycle: the line exits right, then re-enters from the left.
+        // Modulo positioning in the draw callback guarantees a single copy.
         state->footer_position += 2;
-        PangoLayout *layout = gtk_widget_create_pango_layout(state->footer_text, state->footer_full_text.c_str());
-        PangoFontDescription *font = pango_font_description_from_string("Sans Bold 10");
-        pango_layout_set_font_description(layout, font);
-        int text_width = 0, text_height = 0;
-        pango_layout_get_pixel_size(layout, &text_width, &text_height);
-        pango_font_description_free(font);
-        g_object_unref(layout);
-        const int width = gtk_widget_get_width(state->footer_text);
-        const guint cycle = static_cast<guint>(std::max(1, width + text_width));
-        if (state->footer_position >= cycle) {
-            // Once the complete line has faded off the right, refresh the feed
-            // immediately (when topics are enabled) and restart the quiet period.
-            state->footer_position = 0;
-            state->footer_text_changed_us = now;
-            if (!readFooterbarTopics().empty()) {
-                state->feed_last_fetch = 0;
-                footer_feed_tick(state);
-            }
-        }
         gtk_widget_queue_draw(state->footer_text);
     }
     return G_SOURCE_CONTINUE;
