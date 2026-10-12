@@ -122,8 +122,14 @@ jobs:
         run: |
           from pathlib import Path
           import hashlib
+          import subprocess
+          import sys
           import zipfile
           root = Path("antivirus/dist")
+          subprocess.run([
+              sys.executable, "antivirus/tools/sleelavirin_manifest.py",
+              "--root", str(root), "--write", str(root / "INTEGRITY-MANIFEST.json")
+          ], check=True)
           lines = []
           for path in sorted(p for p in root.rglob("*") if p.is_file()):
               if path.name == "SHA256SUMS":
@@ -131,10 +137,16 @@ jobs:
               digest = hashlib.sha256(path.read_bytes()).hexdigest()
               lines.append(f"{digest}  {path.relative_to(root).as_posix()}")
           (root / "SHA256SUMS").write_text("\n".join(lines) + "\n", encoding="utf-8")
+          subprocess.run([
+              sys.executable, "antivirus/tools/sleelavirin_manifest.py",
+              "--root", str(root), "--verify", str(root / "INTEGRITY-MANIFEST.json")
+          ], check=True)
           archive = Path("${{ matrix.archive }}")
           with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zf:
               for path in sorted(p for p in root.rglob("*") if p.is_file()):
                   zf.write(path, Path("sleelavirin") / path.relative_to(root))
+          archive_hash = hashlib.sha256(archive.read_bytes()).hexdigest()
+          Path(str(archive) + ".sha256").write_text(f"{archive_hash}  {archive.name}\n", encoding="utf-8")
       - uses: actions/upload-artifact@v4
         with:
           name: sleelavirin-${{ matrix.platform }}
