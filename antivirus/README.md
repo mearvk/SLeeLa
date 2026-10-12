@@ -304,3 +304,28 @@ Extract the ZIP and run the coordinator from the extracted directory. For exampl
 On Windows, use `sleelavirin-scan.exe` with the same arguments. The native binary and signature index are resolved relative to the extracted package. The ClamAV backend still requires a compatible ClamAV installation and usable signature database on the host; the package does not embed ClamAV, FreshClam, or third-party signature databases. The native index is intentionally empty and its no-match result is not proof of safety.
 
 These are native per-platform builds, not one universal executable. Only artifacts produced and smoke-tested by the workflow should be distributed. The ZIP's SHA-256 file detects accidental changes but is not a publisher-authentication mechanism; use the detached-signature verifier only after a trusted release key and independent public-key distribution are established.
+
+
+## SHA-256 integrity inventory
+
+Generate a SHA-256 inventory of the antivirus source tree, including source files, tests, build metadata, documentation, and protected signature-index files:
+
+```sh
+make -C antivirus integrity-manifest
+make -C antivirus integrity-check MANIFEST=build/INTEGRITY-MANIFEST.json
+```
+
+The manifest is written under `antivirus/build/` and intentionally excludes generated build/dist folders, Python caches, itself, and the mutable local ClamAV cache. The ClamAV updater's per-snapshot `manifest.json` independently records each downloaded `.cvd`/`.cld` database hash and byte length. The native `signatures/native-sha256.txt` index is included in the source inventory; imported indexes should also be checked against their provenance manifest when one exists.
+
+Each release package now contains:
+- `INTEGRITY-MANIFEST.json`: per-file SHA-256 and size records, including the packaged native index and binaries;
+- `SHA256SUMS`: convenient checksum list for package files;
+- a `.sha256` sidecar alongside the platform ZIP, containing the ZIP's SHA-256.
+
+Verify a package manifest after extraction from its extracted directory:
+
+```sh
+python tools/sleelavirin_manifest.py --root . --verify INTEGRITY-MANIFEST.json
+```
+
+The checksum list and manifest are integrity checks, not independent publisher authentication. An attacker who can replace both files and their checksums can recompute them. For tamper evidence, compare the archive's SHA-256 with a trusted value obtained independently, or authenticate a release signature using a public key distributed through a separate trusted channel. The release workflow checks its manifest before packaging.
