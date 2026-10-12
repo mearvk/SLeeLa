@@ -524,6 +524,7 @@ void install_css(AppState *state) {
         }
     }
     std::string gradient_direction = "to bottom";
+    std::string gradient_stops;
     {
         std::ifstream preset(asset_path(state, active_preset.c_str()));
         std::string line;
@@ -532,15 +533,51 @@ void install_css(AppState *state) {
                 const std::string candidate = line.substr(10);
                 if (candidate == "to right" || candidate == "to bottom")
                     gradient_direction = candidate;
+            } else if (line.rfind("stops=", 0) == 0) {
+                gradient_stops = line.substr(6);
             }
         }
     }
     std::string css_text(css);
-    const std::string gradient_anchor = "linear-gradient(to right,";
-    const auto gradient_pos = css_text.find(gradient_anchor);
-    if (gradient_pos != std::string::npos)
-        css_text.replace(gradient_pos, gradient_anchor.size(),
-                         "linear-gradient(" + gradient_direction + ",");
+    // The preset's stop list is authoritative, not just its orientation.
+    // This keeps the horizontal reference palette intact while allowing the
+    // active vertical preset to use the new navy / silver bevel treatment.
+    if (!gradient_stops.empty()) {
+        std::string gradient = "linear-gradient(" + gradient_direction + ",";
+        std::size_t start = 0;
+        while (start < gradient_stops.size()) {
+            const std::size_t comma = gradient_stops.find(',', start);
+            const std::string stop = gradient_stops.substr(
+                start, comma == std::string::npos ? std::string::npos : comma - start);
+            const std::size_t colon = stop.find(':');
+            if (colon != std::string::npos) {
+                const std::string position = stop.substr(0, colon);
+                const std::string color = stop.substr(colon + 1);
+                try {
+                    const int percent = std::stoi(position);
+                    if (percent >= 0 && percent <= 100 &&
+                        color.size() == 7 && color[0] == '#') {
+                        gradient += " " + color + " " + std::to_string(percent) + "%,";
+                    }
+                } catch (...) {
+                    // Ignore malformed stop entries and keep valid ones.
+                }
+            }
+            if (comma == std::string::npos) break;
+            start = comma + 1;
+        }
+        if (gradient.back() == ',') {
+            gradient.back() = ')';
+            const std::string gradient_anchor = "background: linear-gradient(to right,";
+            const auto gradient_pos = css_text.find(gradient_anchor);
+            if (gradient_pos != std::string::npos) {
+                const auto end_pos = css_text.find(';', gradient_pos);
+                if (end_pos != std::string::npos)
+                    css_text.replace(gradient_pos, end_pos - gradient_pos,
+                                     "background: " + gradient);
+            }
+        }
+    }
 
     GtkCssProvider *provider = gtk_css_provider_new();
     gtk_css_provider_load_from_string(provider, css_text.c_str());
