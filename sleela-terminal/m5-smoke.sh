@@ -8,6 +8,11 @@ cleanup() {
 }
 trap cleanup EXIT
 trap 'exit 1' HUP INT TERM
+find_m5_fifos() {
+  for path in /tmp/slsh-m5-*; do
+    [ -p "$path" ] && printf '%s\n' "$path"
+  done | sort
+}
 case "$SLSH" in
   /*) SLSH_ABS=$SLSH ;;
   *)  SLSH_ABS=$ROOT/$SLSH ;;
@@ -18,7 +23,7 @@ cat "$tmpdir/select.out"
 cat "$tmpdir/select.err"
 
 # Process-substitution FIFOs must be removed after the owning command exits.
-fifo_before=$(find /tmp -name 'slsh-m5-*' -type p -print | sort)
+fifo_before=$(find_m5_fifos)
 test "$(printf '%s\n' 'cat <(printf hi)' | "$SLSH")" = hi
 
 # Verify ordinary utilities are resolved as external executables through PATH.
@@ -38,7 +43,7 @@ test "$exit_status" -eq 7
 test "$(cat "$tmpdir/exit.out")" = before
 
 test "$(printf '%s\n' 'printf hi > >(cat)' | "$SLSH")" = hi
-fifo_after=$(find /tmp -name 'slsh-m5-*' -type p -print | sort)
+fifo_after=$(find_m5_fifos)
 test "$fifo_before" = "$fifo_after" || {
   echo "process-substitution FIFO leaked into /tmp" >&2
   echo "before: $fifo_before" >&2
