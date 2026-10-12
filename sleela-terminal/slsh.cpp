@@ -753,12 +753,13 @@ void applyTabCompletion(std::string& line, std::size_t& cursor,
     if (matches.empty()) return;
 
     std::string replacement;
+    std::string suffix;
     if (matches.size() == 1) {
         replacement = matches.front().text;
         if (matches.front().is_directory) {
-            if (replacement.empty() || replacement.back() != '/') replacement.push_back('/');
+            if (replacement.empty() || replacement.back() != '/') suffix = "/";
         } else {
-            replacement.push_back(' ');
+            suffix = " ";
         }
     } else {
         replacement = matches.front().text;
@@ -781,7 +782,7 @@ void applyTabCompletion(std::string& line, std::size_t& cursor,
 
     // Escape shell-significant characters in filesystem names. Command names
     // contain none of these characters, so applying this uniformly is safe.
-    replacement = escapeCompletion(replacement);
+    replacement = escapeCompletion(replacement) + suffix;
     line.replace(token_start, cursor - token_start, replacement);
     cursor = token_start + replacement.size();
     redrawLine(prompt, line, cursor);
