@@ -14,6 +14,7 @@ add_library(utf4088
     digraph_engine.cpp
     voltage_field.cpp
     algebra/glyph8x12.cpp
+    semantics/concept_symbols.cpp
 )
 target_include_directories(utf4088 PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}"

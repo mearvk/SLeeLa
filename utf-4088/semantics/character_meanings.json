@@ -4,7 +4,7 @@
   "status": "experimental",
   "primary_mathematical_consideration": "polygraph_5_falloff",
   "polygraph_5": {
-    "coefficient": 5.0,
+    "coefficient": 5,
     "formula": "F5(d)=exp(-5*d/r0)",
     "radius": "r0",
     "interpretation": "Normalized semantic/graph evidence decays with distance from the selected character's interpretive center.",
@@ -30,36 +30,51 @@
       "id": 0,
       "symbol": "A",
       "meaning": "alphabetic identity; initial English/American Latin letter",
-      "language": ["english"],
-      "historical_range": [1888, 2026],
-      "meaning_weight": 1.0,
-      "time_weight": 1.0,
-      "cause_weight": 1.0,
-      "falloff": 1.0,
+      "language": [
+        "english"
+      ],
+      "historical_range": [
+        1888,
+        2026
+      ],
+      "meaning_weight": 1,
+      "time_weight": 1,
+      "cause_weight": 1,
+      "falloff": 1,
       "status": "seed"
     },
     {
       "id": 1,
       "symbol": "한",
       "meaning": "Korean syllabic block exemplar; semantic value is context-dependent",
-      "language": ["korean"],
-      "historical_range": [1888, 2026],
-      "meaning_weight": 1.0,
-      "time_weight": 1.0,
-      "cause_weight": 1.0,
-      "falloff": 1.0,
+      "language": [
+        "korean"
+      ],
+      "historical_range": [
+        1888,
+        2026
+      ],
+      "meaning_weight": 1,
+      "time_weight": 1,
+      "cause_weight": 1,
+      "falloff": 1,
       "status": "seed"
     },
     {
       "id": 2,
       "symbol": "Ä",
       "meaning": "Latin-derived Germanic orthographic vowel form; language-specific meaning",
-      "language": ["germanic"],
-      "historical_range": [1872, 2026],
-      "meaning_weight": 1.0,
-      "time_weight": 1.0,
-      "cause_weight": 1.0,
-      "falloff": 1.0,
+      "language": [
+        "germanic"
+      ],
+      "historical_range": [
+        1872,
+        2026
+      ],
+      "meaning_weight": 1,
+      "time_weight": 1,
+      "cause_weight": 1,
+      "falloff": 1,
       "status": "seed"
     }
   ],
@@ -67,5 +82,1693 @@
     "principle": "Generated symbols inherit no semantic meaning merely from their bitmap.",
     "requirement": "A generated symbol must acquire meaning through an explicit graph, corpus, historical, or application annotation before being treated as interpreted language.",
     "neural_use": "Weights may be used as training/selection features, not as assertions of objective meaning."
-  }
+  },
+  "concept_symbol_registry": {
+    "version": 1,
+    "id_format": "UTF4088-CONCEPT-000001",
+    "source_cpp": "utf-4088/semantics/concept_symbols.cpp",
+    "seed_prefix": "UTF4088-CONCEPT-V1:",
+    "glyph_algorithm": "utf4088::seed_glyph applied to the fixed concept seed",
+    "anchor_policy": "Provisional normalized coordinates in [0,1] on (x,y,pressure,voltage); concepts in a domain are deliberately placed in a nearby study cluster.",
+    "semantic_status": "Curated starter definitions; not externally validated and not inferred from glyph geometry.",
+    "graph_policy": "related_keys are explicit semantic proposals; the current digraph engine does not automatically construct these semantic edges."
+  },
+  "concept_symbols": [
+    {
+      "id": 1,
+      "concept_id": "UTF4088-CONCEPT-000001",
+      "key": "wealth",
+      "label": "Wealth",
+      "domain": "economy",
+      "definition": "Stock of economic assets and resources, net of liabilities where that accounting context applies; distinct from income and money.",
+      "related_keys": [
+        "money",
+        "income",
+        "property",
+        "resources",
+        "value",
+        "trade"
+      ],
+      "anchor_4d": {
+        "x": 0.1,
+        "y": 0.15,
+        "normalized_pressure": 0.2,
+        "normalized_voltage": 0.25
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:wealth",
+      "glyph_rows_ascii": [
+        "#.#..##.",
+        "##....#.",
+        ".#.....#",
+        "##.###.#",
+        "####.##.",
+        ".##.##..",
+        ".###....",
+        "......##",
+        ".#.#..#.",
+        ".#.#.###",
+        "#...#..#",
+        "#...#..#"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 2,
+      "concept_id": "UTF4088-CONCEPT-000002",
+      "key": "money",
+      "label": "Money",
+      "domain": "economy",
+      "definition": "A medium of exchange, unit of account, or store of value within a specified social or institutional system; not identical to wealth.",
+      "related_keys": [
+        "wealth",
+        "trade",
+        "debt",
+        "value"
+      ],
+      "anchor_4d": {
+        "x": 0.112,
+        "y": 0.164,
+        "normalized_pressure": 0.206,
+        "normalized_voltage": 0.259
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:money",
+      "glyph_rows_ascii": [
+        "#..#.#.#",
+        "#....#.#",
+        "...#...#",
+        "####..#.",
+        "####....",
+        "....#.#.",
+        "..##..#.",
+        "##...###",
+        "###.####",
+        "##...#.#",
+        "#.##...#",
+        "##..#..#"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 3,
+      "concept_id": "UTF4088-CONCEPT-000003",
+      "key": "income",
+      "label": "Income",
+      "domain": "economy",
+      "definition": "A flow of earnings or receipts over a time interval; distinct from accumulated wealth or a balance-sheet stock.",
+      "related_keys": [
+        "wealth",
+        "trade",
+        "resources"
+      ],
+      "anchor_4d": {
+        "x": 0.124,
+        "y": 0.178,
+        "normalized_pressure": 0.212,
+        "normalized_voltage": 0.268
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:income",
+      "glyph_rows_ascii": [
+        "....#.#.",
+        "...##.#.",
+        "#..##.#.",
+        ".###.#..",
+        ".###..##",
+        ".#..##.#",
+        "#.##.##.",
+        "...#.###",
+        "#.####.#",
+        "..######",
+        ".##.##.#",
+        ".#.#.##."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 4,
+      "concept_id": "UTF4088-CONCEPT-000004",
+      "key": "property",
+      "label": "Property",
+      "domain": "economy",
+      "definition": "An asset or resource together with recognized ownership, use, or control rights.",
+      "related_keys": [
+        "wealth",
+        "resources",
+        "trade",
+        "wood"
+      ],
+      "anchor_4d": {
+        "x": 0.136,
+        "y": 0.152,
+        "normalized_pressure": 0.218,
+        "normalized_voltage": 0.277
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:property",
+      "glyph_rows_ascii": [
+        "##.###.#",
+        ".####...",
+        ".##.##..",
+        "...#...#",
+        "..#.####",
+        "#...#.##",
+        "###....#",
+        "###.###.",
+        "##.#.##.",
+        "..##..#.",
+        "#.#...##",
+        "...###.."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 5,
+      "concept_id": "UTF4088-CONCEPT-000005",
+      "key": "trade",
+      "label": "Trade",
+      "domain": "economy",
+      "definition": "An exchange of goods, services, or rights between parties under a specified transaction context.",
+      "related_keys": [
+        "money",
+        "wealth",
+        "quality",
+        "region"
+      ],
+      "anchor_4d": {
+        "x": 0.103,
+        "y": 0.166,
+        "normalized_pressure": 0.224,
+        "normalized_voltage": 0.286
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:trade",
+      "glyph_rows_ascii": [
+        ".#.....#",
+        "#####..#",
+        "..#####.",
+        "#.##.###",
+        "..####.#",
+        "....#.#.",
+        "..####.#",
+        "###..##.",
+        "..###.#.",
+        "#.#..##.",
+        ".###.##.",
+        "...###.#"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 6,
+      "concept_id": "UTF4088-CONCEPT-000006",
+      "key": "debt",
+      "label": "Debt",
+      "domain": "economy",
+      "definition": "An obligation to repay money, goods, or another specified value; distinct from an asset or from wealth itself.",
+      "related_keys": [
+        "money",
+        "wealth",
+        "property"
+      ],
+      "anchor_4d": {
+        "x": 0.115,
+        "y": 0.18,
+        "normalized_pressure": 0.23,
+        "normalized_voltage": 0.253
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:debt",
+      "glyph_rows_ascii": [
+        ".#...#..",
+        "....#..#",
+        "..#...##",
+        "..##..#.",
+        ".....###",
+        "###.#.#.",
+        "###....#",
+        "#..#...#",
+        "###.##.#",
+        ".#.#..##",
+        ".#..#...",
+        "##.##..."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 7,
+      "concept_id": "UTF4088-CONCEPT-000007",
+      "key": "resources",
+      "label": "Resources",
+      "domain": "economy",
+      "definition": "Useful assets, materials, capabilities, or supplies available for a purpose; the resource type should be explicit.",
+      "related_keys": [
+        "wealth",
+        "property",
+        "wood",
+        "water"
+      ],
+      "anchor_4d": {
+        "x": 0.127,
+        "y": 0.154,
+        "normalized_pressure": 0.236,
+        "normalized_voltage": 0.262
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:resources",
+      "glyph_rows_ascii": [
+        ".##..#..",
+        "..##..#.",
+        ".#..###.",
+        "....#.#.",
+        ".#...#.#",
+        "..#..#..",
+        "..##.#.#",
+        ".###.#..",
+        "###..##.",
+        "....##.#",
+        "....##..",
+        "....#..#"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 8,
+      "concept_id": "UTF4088-CONCEPT-000008",
+      "key": "wood",
+      "label": "Wood",
+      "domain": "material_nature",
+      "definition": "The structural material derived from tree tissues; distinct from a living tree, a forest ecosystem, or processed timber.",
+      "related_keys": [
+        "tree",
+        "forest",
+        "timber",
+        "plant",
+        "resources"
+      ],
+      "anchor_4d": {
+        "x": 0.8,
+        "y": 0.15,
+        "normalized_pressure": 0.28,
+        "normalized_voltage": 0.3
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:wood",
+      "glyph_rows_ascii": [
+        "####..##",
+        "#.#.#..#",
+        ".##.#..#",
+        ".#.####.",
+        ".##.#.#.",
+        "####.###",
+        "..####.#",
+        "..###.##",
+        "..##....",
+        "###....#",
+        "######.#",
+        "#..##..."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 9,
+      "concept_id": "UTF4088-CONCEPT-000009",
+      "key": "tree",
+      "label": "Tree",
+      "domain": "material_nature",
+      "definition": "A perennial woody plant with a trunk or comparable main stem and branching crown; biological details depend on taxon.",
+      "related_keys": [
+        "wood",
+        "forest",
+        "plant",
+        "environment"
+      ],
+      "anchor_4d": {
+        "x": 0.812,
+        "y": 0.164,
+        "normalized_pressure": 0.286,
+        "normalized_voltage": 0.309
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:tree",
+      "glyph_rows_ascii": [
+        "..#..#..",
+        ".####...",
+        "...#.#.#",
+        "###.####",
+        "...##.#.",
+        ".#..#.##",
+        "#.##.#.#",
+        ".###.#..",
+        "#.##..##",
+        "..#.#.#.",
+        "####....",
+        "#.#.####"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 10,
+      "concept_id": "UTF4088-CONCEPT-000010",
+      "key": "forest",
+      "label": "Forest",
+      "domain": "material_nature",
+      "definition": "An ecosystem or land area dominated by trees and associated organisms and processes; not a synonym for wood.",
+      "related_keys": [
+        "tree",
+        "wood",
+        "plant",
+        "environment",
+        "asia"
+      ],
+      "anchor_4d": {
+        "x": 0.824,
+        "y": 0.178,
+        "normalized_pressure": 0.292,
+        "normalized_voltage": 0.318
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:forest",
+      "glyph_rows_ascii": [
+        ".####...",
+        "#.####..",
+        ".#..#..#",
+        "##......",
+        ".#.#....",
+        ".#...##.",
+        "#..#.###",
+        "#...#..#",
+        ".####...",
+        "########",
+        "######..",
+        ".###.###"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 11,
+      "concept_id": "UTF4088-CONCEPT-000011",
+      "key": "timber",
+      "label": "Timber",
+      "domain": "material_nature",
+      "definition": "Wood prepared or designated for construction, woodworking, or other material use; usage may vary by region.",
+      "related_keys": [
+        "wood",
+        "tree",
+        "property",
+        "quality"
+      ],
+      "anchor_4d": {
+        "x": 0.836,
+        "y": 0.152,
+        "normalized_pressure": 0.298,
+        "normalized_voltage": 0.327
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:timber",
+      "glyph_rows_ascii": [
+        "####..##",
+        "..#.##..",
+        ".....###",
+        "..#.....",
+        ".#..##.#",
+        "###.#..#",
+        "#.##.#.#",
+        "...#.#.#",
+        "#####..#",
+        "#....#..",
+        "###..##.",
+        ".#.###.#"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 12,
+      "concept_id": "UTF4088-CONCEPT-000012",
+      "key": "plant",
+      "label": "Plant",
+      "domain": "material_nature",
+      "definition": "A plant organism or member of the plant kingdom, interpreted at the taxonomic scope specified by context.",
+      "related_keys": [
+        "tree",
+        "forest",
+        "wood",
+        "life",
+        "environment"
+      ],
+      "anchor_4d": {
+        "x": 0.803,
+        "y": 0.166,
+        "normalized_pressure": 0.304,
+        "normalized_voltage": 0.336
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:plant",
+      "glyph_rows_ascii": [
+        "##.#.##.",
+        "#..#.###",
+        "#..##.##",
+        "##.####.",
+        "##.#.#.#",
+        ".###.#.#",
+        "#..#...#",
+        ".###...#",
+        "#...#...",
+        "##..####",
+        ".##.#.##",
+        ".#...##."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 13,
+      "concept_id": "UTF4088-CONCEPT-000013",
+      "key": "stone",
+      "label": "Stone",
+      "domain": "material_nature",
+      "definition": "A naturally occurring piece of rock or mineral material, distinguished from a geological formation.",
+      "related_keys": [
+        "wood",
+        "water",
+        "resources",
+        "quality"
+      ],
+      "anchor_4d": {
+        "x": 0.815,
+        "y": 0.18,
+        "normalized_pressure": 0.31,
+        "normalized_voltage": 0.303
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:stone",
+      "glyph_rows_ascii": [
+        ".##.#..#",
+        "####...#",
+        "...####.",
+        ".#.#####",
+        "#######.",
+        "#.###..#",
+        ".#......",
+        "#.###..#",
+        "##..####",
+        "##.#..##",
+        ".#...##.",
+        "####...#"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 14,
+      "concept_id": "UTF4088-CONCEPT-000014",
+      "key": "water",
+      "label": "Water",
+      "domain": "material_nature",
+      "definition": "The substance H2O or a specified body or supply of it; distinguish substance, resource, and geographic-feature senses.",
+      "related_keys": [
+        "resources",
+        "life",
+        "environment",
+        "asia"
+      ],
+      "anchor_4d": {
+        "x": 0.827,
+        "y": 0.154,
+        "normalized_pressure": 0.316,
+        "normalized_voltage": 0.312
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:water",
+      "glyph_rows_ascii": [
+        ".###..##",
+        "#...#.#.",
+        "...#...#",
+        "####..#.",
+        "..#.####",
+        "#####.##",
+        ".....###",
+        "#...###.",
+        ".##....#",
+        "##..#.##",
+        "#.#.####",
+        ".#.##.#."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 15,
+      "concept_id": "UTF4088-CONCEPT-000015",
+      "key": "sex",
+      "label": "Sex (context-dependent)",
+      "domain": "human_experience",
+      "definition": "An intentionally broad, ambiguous head concept. Resolve to biological sex, sexual activity, or sexuality only when context supports that distinction.",
+      "related_keys": [
+        "biological_sex",
+        "sexual_activity",
+        "sexuality",
+        "consent"
+      ],
+      "anchor_4d": {
+        "x": 0.15,
+        "y": 0.8,
+        "normalized_pressure": 0.68,
+        "normalized_voltage": 0.74
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:sex",
+      "glyph_rows_ascii": [
+        "##...#.#",
+        "#.###...",
+        ".###..##",
+        "##.#....",
+        "#.##.###",
+        "#.##.#.#",
+        "#.##..##",
+        "##.###.#",
+        "#..##...",
+        ".###.#.#",
+        "###.####",
+        ".#..#.##"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 16,
+      "concept_id": "UTF4088-CONCEPT-000016",
+      "key": "biological_sex",
+      "label": "Biological sex",
+      "domain": "human_experience",
+      "definition": "Biological sex characteristics or classification in a stated medical, biological, or demographic context; not a synonym for gender identity.",
+      "related_keys": [
+        "sex",
+        "reproduction",
+        "health"
+      ],
+      "anchor_4d": {
+        "x": 0.162,
+        "y": 0.814,
+        "normalized_pressure": 0.686,
+        "normalized_voltage": 0.749
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:biological_sex",
+      "glyph_rows_ascii": [
+        "..#.###.",
+        "#..#.#..",
+        "....##.#",
+        "#....#..",
+        "..###...",
+        ".###..##",
+        ".###.#.#",
+        "..#..#.#",
+        "#..#.##.",
+        "#..###.#",
+        "##...#.#",
+        ".#.#.###"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 17,
+      "concept_id": "UTF4088-CONCEPT-000017",
+      "key": "sexual_activity",
+      "label": "Sexual activity",
+      "domain": "human_experience",
+      "definition": "Sexual behavior described neutrally for the relevant health, legal, or social context; consent must be represented separately.",
+      "related_keys": [
+        "sex",
+        "sexuality",
+        "consent",
+        "pleasure",
+        "intimacy"
+      ],
+      "anchor_4d": {
+        "x": 0.174,
+        "y": 0.828,
+        "normalized_pressure": 0.692,
+        "normalized_voltage": 0.758
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:sexual_activity",
+      "glyph_rows_ascii": [
+        "...##...",
+        "####.#.#",
+        "##.#.#.#",
+        ".####...",
+        ".###....",
+        "....##..",
+        "#...####",
+        "##...##.",
+        "#.#####.",
+        "##..#..#",
+        ".#..#.##",
+        ".####.#."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 18,
+      "concept_id": "UTF4088-CONCEPT-000018",
+      "key": "sexuality",
+      "label": "Sexuality",
+      "domain": "human_experience",
+      "definition": "The broader domain of sexual identity, orientation, feelings, and expression as defined by the application; not reducible to one act or biological trait.",
+      "related_keys": [
+        "sex",
+        "sexual_activity",
+        "desire",
+        "intimacy"
+      ],
+      "anchor_4d": {
+        "x": 0.186,
+        "y": 0.802,
+        "normalized_pressure": 0.698,
+        "normalized_voltage": 0.767
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:sexuality",
+      "glyph_rows_ascii": [
+        "#.#.#.##",
+        "##.#...#",
+        "##..#.##",
+        "..###..#",
+        "....#.##",
+        "#...###.",
+        "#.###.#.",
+        "###.#.##",
+        ".##..##.",
+        "..###.##",
+        "##.###..",
+        "#.##...."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 19,
+      "concept_id": "UTF4088-CONCEPT-000019",
+      "key": "pleasure",
+      "label": "Pleasure",
+      "domain": "human_experience",
+      "definition": "A positive subjective hedonic experience; distinct from long-term wellbeing, satisfaction of a goal, and moral approval.",
+      "related_keys": [
+        "satisfaction",
+        "wellbeing",
+        "desire",
+        "pain"
+      ],
+      "anchor_4d": {
+        "x": 0.153,
+        "y": 0.816,
+        "normalized_pressure": 0.704,
+        "normalized_voltage": 0.776
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:pleasure",
+      "glyph_rows_ascii": [
+        ".##..###",
+        ".#......",
+        "##.###.#",
+        "..#.#..#",
+        ".......#",
+        "#####..#",
+        "..######",
+        "....#...",
+        ".#..#...",
+        "#.#...##",
+        "##...#..",
+        "#.###..."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 20,
+      "concept_id": "UTF4088-CONCEPT-000020",
+      "key": "desire",
+      "label": "Desire",
+      "domain": "human_experience",
+      "definition": "A motivational state directed toward an object, outcome, or experience; specify its object and context when useful.",
+      "related_keys": [
+        "pleasure",
+        "sexuality",
+        "wealth",
+        "relationship"
+      ],
+      "anchor_4d": {
+        "x": 0.165,
+        "y": 0.83,
+        "normalized_pressure": 0.71,
+        "normalized_voltage": 0.743
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:desire",
+      "glyph_rows_ascii": [
+        ".#.#.###",
+        "..#..###",
+        "..##..##",
+        ".#.##.#.",
+        ".##....#",
+        ".#...#..",
+        ".##...##",
+        "####.###",
+        ".#..#.#.",
+        "##.#.##.",
+        ".#.#.#..",
+        ".##.###."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 21,
+      "concept_id": "UTF4088-CONCEPT-000021",
+      "key": "intimacy",
+      "label": "Intimacy",
+      "domain": "human_experience",
+      "definition": "Closeness, trust, or private connection between people, with emotional, social, and sexual dimensions distinguished by context.",
+      "related_keys": [
+        "relationship",
+        "sexual_activity",
+        "sexuality",
+        "consent"
+      ],
+      "anchor_4d": {
+        "x": 0.177,
+        "y": 0.804,
+        "normalized_pressure": 0.716,
+        "normalized_voltage": 0.752
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:intimacy",
+      "glyph_rows_ascii": [
+        "##.#....",
+        "..###..#",
+        "####...#",
+        ".#..##..",
+        "..###...",
+        "....#.#.",
+        ".#...###",
+        "####.#.#",
+        ".##...#.",
+        "#.#.##.#",
+        "...##.#.",
+        ".##..##."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 22,
+      "concept_id": "UTF4088-CONCEPT-000022",
+      "key": "consent",
+      "label": "Consent",
+      "domain": "human_experience",
+      "definition": "Voluntary, informed, specific, and revocable agreement within a defined context; applicable legal requirements depend on jurisdiction.",
+      "related_keys": [
+        "sexual_activity",
+        "relationship",
+        "ethics"
+      ],
+      "anchor_4d": {
+        "x": 0.189,
+        "y": 0.818,
+        "normalized_pressure": 0.722,
+        "normalized_voltage": 0.761
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:consent",
+      "glyph_rows_ascii": [
+        "#.#...#.",
+        "..#...#.",
+        ".###..##",
+        ".#..####",
+        "...##...",
+        "#.#.#...",
+        "##.#####",
+        "#....#..",
+        "##.##..#",
+        "...#....",
+        "#.##...#",
+        ".#.#.##."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 23,
+      "concept_id": "UTF4088-CONCEPT-000023",
+      "key": "reproduction",
+      "label": "Reproduction",
+      "domain": "human_experience",
+      "definition": "The biological process by which organisms produce offspring; separate from sexual activity, fertility status, and social parenthood.",
+      "related_keys": [
+        "biological_sex",
+        "life",
+        "health"
+      ],
+      "anchor_4d": {
+        "x": 0.156,
+        "y": 0.832,
+        "normalized_pressure": 0.728,
+        "normalized_voltage": 0.77
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:reproduction",
+      "glyph_rows_ascii": [
+        "##.....#",
+        "..##..#.",
+        "........",
+        "####.#..",
+        ".#.##.##",
+        "##.##..#",
+        "##.##.#.",
+        ".#.####.",
+        "#..#..##",
+        "##.#####",
+        ".###.#..",
+        "..#####."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 24,
+      "concept_id": "UTF4088-CONCEPT-000024",
+      "key": "wellbeing",
+      "label": "Wellbeing",
+      "domain": "human_experience",
+      "definition": "A multidimensional state of health and quality of life; not identical to momentary pleasure or a single metric.",
+      "related_keys": [
+        "pleasure",
+        "health",
+        "satisfaction",
+        "quality",
+        "pain"
+      ],
+      "anchor_4d": {
+        "x": 0.168,
+        "y": 0.806,
+        "normalized_pressure": 0.734,
+        "normalized_voltage": 0.779
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:wellbeing",
+      "glyph_rows_ascii": [
+        "#....#..",
+        "..######",
+        "...#...#",
+        "...#.###",
+        "..#.####",
+        ".#......",
+        ".##.####",
+        "#######.",
+        "###.####",
+        "#.##.#.#",
+        ".#.#.##.",
+        ".##....#"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 25,
+      "concept_id": "UTF4088-CONCEPT-000025",
+      "key": "satisfaction",
+      "label": "Satisfaction",
+      "domain": "human_experience",
+      "definition": "A judgment or feeling that a need, expectation, or goal has been met; distinguish from pleasure and objective quality.",
+      "related_keys": [
+        "pleasure",
+        "wellbeing",
+        "quality",
+        "desire"
+      ],
+      "anchor_4d": {
+        "x": 0.18,
+        "y": 0.82,
+        "normalized_pressure": 0.74,
+        "normalized_voltage": 0.746
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:satisfaction",
+      "glyph_rows_ascii": [
+        "....#..#",
+        ".#....##",
+        ".###....",
+        "..#...##",
+        "#####...",
+        "........",
+        "###.#.##",
+        "#..###.#",
+        "#.#.###.",
+        "...#####",
+        ".##.....",
+        ".....##."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 26,
+      "concept_id": "UTF4088-CONCEPT-000026",
+      "key": "pain",
+      "label": "Pain",
+      "domain": "human_experience",
+      "definition": "An unpleasant sensory or emotional experience associated with or resembling actual or potential tissue damage; context may be physical or psychological.",
+      "related_keys": [
+        "pleasure",
+        "health",
+        "wellbeing"
+      ],
+      "anchor_4d": {
+        "x": 0.192,
+        "y": 0.834,
+        "normalized_pressure": 0.746,
+        "normalized_voltage": 0.755
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:pain",
+      "glyph_rows_ascii": [
+        "#.#.##.#",
+        "##...#..",
+        ".##....#",
+        ".......#",
+        "##..#.##",
+        "###.#...",
+        "#####..#",
+        ".###..##",
+        "####.#.#",
+        ".##.....",
+        ".###...#",
+        "#.##..##"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 27,
+      "concept_id": "UTF4088-CONCEPT-000027",
+      "key": "health",
+      "label": "Health",
+      "domain": "human_experience",
+      "definition": "Physical, mental, and social functioning under the chosen health framework; not merely the absence of disease.",
+      "related_keys": [
+        "wellbeing",
+        "pain",
+        "reproduction",
+        "quality"
+      ],
+      "anchor_4d": {
+        "x": 0.159,
+        "y": 0.808,
+        "normalized_pressure": 0.752,
+        "normalized_voltage": 0.764
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:health",
+      "glyph_rows_ascii": [
+        "..#.#.##",
+        ".#######",
+        "#.####.#",
+        "##..#.#.",
+        "...##.#.",
+        "#..#..#.",
+        "..##..#.",
+        "###.#.##",
+        "#####.#.",
+        "##.##.##",
+        ".#..#.##",
+        "###.#..."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 28,
+      "concept_id": "UTF4088-CONCEPT-000028",
+      "key": "relationship",
+      "label": "Relationship",
+      "domain": "human_experience",
+      "definition": "A connection or association between people, entities, or concepts; specify the relationship type when it affects interpretation.",
+      "related_keys": [
+        "intimacy",
+        "consent",
+        "desire",
+        "trade"
+      ],
+      "anchor_4d": {
+        "x": 0.171,
+        "y": 0.822,
+        "normalized_pressure": 0.758,
+        "normalized_voltage": 0.773
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:relationship",
+      "glyph_rows_ascii": [
+        "#.#.####",
+        "#..#....",
+        "####....",
+        ".#...#..",
+        "##......",
+        "####..##",
+        "..#.....",
+        "#.##.#..",
+        "..####..",
+        ".##.#...",
+        "..#.###.",
+        "#.#..##."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 29,
+      "concept_id": "UTF4088-CONCEPT-000029",
+      "key": "quality",
+      "label": "Quality",
+      "domain": "evaluation",
+      "definition": "A property or degree assessed against an explicit criterion, purpose, or standard; not an absolute universal score.",
+      "related_keys": [
+        "standard",
+        "excellence",
+        "defect",
+        "value",
+        "merit"
+      ],
+      "anchor_4d": {
+        "x": 0.5,
+        "y": 0.5,
+        "normalized_pressure": 0.43,
+        "normalized_voltage": 0.46
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:quality",
+      "glyph_rows_ascii": [
+        ".....##.",
+        ".####.##",
+        "...#..#.",
+        "#.#...#.",
+        "#..#.#.#",
+        "##..###.",
+        "..#####.",
+        ".##.###.",
+        "....####",
+        ".#.###..",
+        "..##...#",
+        "#.#.##.#"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 30,
+      "concept_id": "UTF4088-CONCEPT-000030",
+      "key": "quantity",
+      "label": "Quantity",
+      "domain": "evaluation",
+      "definition": "An amount or count measured in a declared unit or counting convention; distinct from quality.",
+      "related_keys": [
+        "quality",
+        "value",
+        "resources"
+      ],
+      "anchor_4d": {
+        "x": 0.512,
+        "y": 0.514,
+        "normalized_pressure": 0.436,
+        "normalized_voltage": 0.469
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:quantity",
+      "glyph_rows_ascii": [
+        "####.#.#",
+        "..#####.",
+        "###.##..",
+        "########",
+        ".#......",
+        "..##.###",
+        "####..##",
+        ".#.#.###",
+        "####.###",
+        "..#..###",
+        "...#...#",
+        "##..#.##"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 31,
+      "concept_id": "UTF4088-CONCEPT-000031",
+      "key": "value",
+      "label": "Value",
+      "domain": "evaluation",
+      "definition": "Worth or significance under a specified economic, practical, ethical, or personal framework; record the value type and viewpoint.",
+      "related_keys": [
+        "wealth",
+        "money",
+        "quality",
+        "merit",
+        "trade"
+      ],
+      "anchor_4d": {
+        "x": 0.524,
+        "y": 0.528,
+        "normalized_pressure": 0.442,
+        "normalized_voltage": 0.478
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:value",
+      "glyph_rows_ascii": [
+        "..#####.",
+        "#..#.#.#",
+        ".###....",
+        "...#....",
+        "..###...",
+        "#.......",
+        "#..#....",
+        ".#..##.#",
+        ".....###",
+        "#...#...",
+        "..#.....",
+        "#..##.##"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 32,
+      "concept_id": "UTF4088-CONCEPT-000032",
+      "key": "merit",
+      "label": "Merit",
+      "domain": "evaluation",
+      "definition": "A feature considered deserving of recognition under stated criteria; not a universal ranking of people or cultures.",
+      "related_keys": [
+        "quality",
+        "value",
+        "excellence",
+        "standard"
+      ],
+      "anchor_4d": {
+        "x": 0.536,
+        "y": 0.502,
+        "normalized_pressure": 0.448,
+        "normalized_voltage": 0.487
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:merit",
+      "glyph_rows_ascii": [
+        "#.##..#.",
+        ".....###",
+        ".###...#",
+        "#.###..#",
+        ".##.##.#",
+        ".#.#..#.",
+        "..#.##..",
+        "##..#.#.",
+        ".##...#.",
+        "##.#...#",
+        ".#.#...#",
+        "###..#.."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 33,
+      "concept_id": "UTF4088-CONCEPT-000033",
+      "key": "standard",
+      "label": "Standard",
+      "domain": "evaluation",
+      "definition": "A declared rule, criterion, or reference level against which an object, quality, or process may be assessed.",
+      "related_keys": [
+        "quality",
+        "excellence",
+        "defect",
+        "value"
+      ],
+      "anchor_4d": {
+        "x": 0.503,
+        "y": 0.516,
+        "normalized_pressure": 0.454,
+        "normalized_voltage": 0.496
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:standard",
+      "glyph_rows_ascii": [
+        "..#....#",
+        ".##.#...",
+        "#...#...",
+        "......#.",
+        "###..###",
+        "##.###..",
+        ".####...",
+        "......#.",
+        "#.#...##",
+        "#..#....",
+        "..#.###.",
+        "#..###.#"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 34,
+      "concept_id": "UTF4088-CONCEPT-000034",
+      "key": "defect",
+      "label": "Defect",
+      "domain": "evaluation",
+      "definition": "A departure from a stated requirement or intended function; classification depends on the declared standard and use.",
+      "related_keys": [
+        "quality",
+        "standard",
+        "excellence"
+      ],
+      "anchor_4d": {
+        "x": 0.515,
+        "y": 0.53,
+        "normalized_pressure": 0.46,
+        "normalized_voltage": 0.463
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:defect",
+      "glyph_rows_ascii": [
+        "#.#....#",
+        ".##.....",
+        "....#..#",
+        "...##.#.",
+        ".#....##",
+        "..#.###.",
+        ".#.#.#..",
+        "...###..",
+        "#.####.#",
+        "..###..#",
+        "####....",
+        "#..#.###"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 35,
+      "concept_id": "UTF4088-CONCEPT-000035",
+      "key": "excellence",
+      "label": "Excellence",
+      "domain": "evaluation",
+      "definition": "A high level of performance or quality against explicit criteria; the criteria and supporting evidence should be recorded.",
+      "related_keys": [
+        "quality",
+        "merit",
+        "standard"
+      ],
+      "anchor_4d": {
+        "x": 0.527,
+        "y": 0.504,
+        "normalized_pressure": 0.466,
+        "normalized_voltage": 0.472
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:excellence",
+      "glyph_rows_ascii": [
+        "#.#....#",
+        "#..#.##.",
+        ".##.#...",
+        ".......#",
+        "##.###..",
+        "....###.",
+        "...##.##",
+        ".#..##.#",
+        "#..##.#.",
+        ".#.#..#.",
+        ".#..##..",
+        "##.....#"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 36,
+      "concept_id": "UTF4088-CONCEPT-000036",
+      "key": "asia",
+      "label": "Asia",
+      "domain": "geography_culture",
+      "definition": "A broad geographic region or continent under a chosen geographic convention; do not infer one culture, language, or identity from the place label.",
+      "related_keys": [
+        "continent",
+        "region",
+        "country",
+        "geography",
+        "culture",
+        "language"
+      ],
+      "anchor_4d": {
+        "x": 0.82,
+        "y": 0.8,
+        "normalized_pressure": 0.3,
+        "normalized_voltage": 0.34
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:asia",
+      "glyph_rows_ascii": [
+        "####..##",
+        ".##.#.#.",
+        ".#.##.##",
+        "#..#..##",
+        ".###.###",
+        ".####..#",
+        ".##..#.#",
+        "#####...",
+        ".#......",
+        "#.#...##",
+        "#..####.",
+        "#.###..."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 37,
+      "concept_id": "UTF4088-CONCEPT-000037",
+      "key": "continent",
+      "label": "Continent",
+      "domain": "geography_culture",
+      "definition": "A large landmass or recognized continental region under a named geographic convention; boundaries may vary by convention.",
+      "related_keys": [
+        "asia",
+        "geography",
+        "region"
+      ],
+      "anchor_4d": {
+        "x": 0.832,
+        "y": 0.814,
+        "normalized_pressure": 0.306,
+        "normalized_voltage": 0.349
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:continent",
+      "glyph_rows_ascii": [
+        "#.#.#.#.",
+        ".#.....#",
+        "#.####.#",
+        "....#.##",
+        "#...##.#",
+        "#..#####",
+        "###..#..",
+        "##..#...",
+        "...##.#.",
+        "###...##",
+        "..##.###",
+        ".###..##"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 38,
+      "concept_id": "UTF4088-CONCEPT-000038",
+      "key": "region",
+      "label": "Region",
+      "domain": "geography_culture",
+      "definition": "A geographic or functional area defined by explicit boundaries or criteria; the label alone does not define political status or culture.",
+      "related_keys": [
+        "asia",
+        "continent",
+        "country",
+        "geography",
+        "forest"
+      ],
+      "anchor_4d": {
+        "x": 0.844,
+        "y": 0.828,
+        "normalized_pressure": 0.312,
+        "normalized_voltage": 0.358
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:region",
+      "glyph_rows_ascii": [
+        ".###.###",
+        "...#...#",
+        "#..###..",
+        "##.#.#..",
+        "###.#.##",
+        "##.#....",
+        "###..#.#",
+        ".#...#..",
+        "######..",
+        "###.##..",
+        ".######.",
+        "###.###."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 39,
+      "concept_id": "UTF4088-CONCEPT-000039",
+      "key": "country",
+      "label": "Country",
+      "domain": "geography_culture",
+      "definition": "A country or state under a declared political or geographic model; country, nation, culture, and language are not interchangeable.",
+      "related_keys": [
+        "region",
+        "asia",
+        "culture",
+        "language",
+        "trade"
+      ],
+      "anchor_4d": {
+        "x": 0.856,
+        "y": 0.802,
+        "normalized_pressure": 0.318,
+        "normalized_voltage": 0.367
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:country",
+      "glyph_rows_ascii": [
+        ".#..#..#",
+        "##....##",
+        "..#####.",
+        "..####.#",
+        ".###.#..",
+        "...#...#",
+        ".#.##..#",
+        "##.#.#.#",
+        "#.#..##.",
+        "##.#.#.#",
+        "##.....#",
+        ".###..##"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 40,
+      "concept_id": "UTF4088-CONCEPT-000040",
+      "key": "geography",
+      "label": "Geography",
+      "domain": "geography_culture",
+      "definition": "The study or representation of places, spatial relations, environments, and human activity; distinct from any single place name.",
+      "related_keys": [
+        "asia",
+        "continent",
+        "region",
+        "environment"
+      ],
+      "anchor_4d": {
+        "x": 0.823,
+        "y": 0.816,
+        "normalized_pressure": 0.324,
+        "normalized_voltage": 0.376
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:geography",
+      "glyph_rows_ascii": [
+        ".#..###.",
+        ".##.....",
+        ".#.##..#",
+        "..#.##.#",
+        ".......#",
+        "###.#.##",
+        "##...###",
+        ".##.####",
+        "###...##",
+        "###.#.#.",
+        "#......#",
+        "..#..#.."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 41,
+      "concept_id": "UTF4088-CONCEPT-000041",
+      "key": "culture",
+      "label": "Culture",
+      "domain": "geography_culture",
+      "definition": "Shared and changing practices, meanings, institutions, and artifacts in a group or setting; avoid assuming a country has only one culture.",
+      "related_keys": [
+        "asia",
+        "region",
+        "country",
+        "language"
+      ],
+      "anchor_4d": {
+        "x": 0.835,
+        "y": 0.83,
+        "normalized_pressure": 0.33,
+        "normalized_voltage": 0.343
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:culture",
+      "glyph_rows_ascii": [
+        "##..#.#.",
+        "###.###.",
+        "....###.",
+        ".#...###",
+        "....#.##",
+        "#..###.#",
+        "####..#.",
+        ".###.##.",
+        "###.#...",
+        ".#......",
+        "###.#..#",
+        "#...####"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 42,
+      "concept_id": "UTF4088-CONCEPT-000042",
+      "key": "language",
+      "label": "Language",
+      "domain": "geography_culture",
+      "definition": "A system of communication with linguistic structure and community use; not equivalent to ethnicity, nationality, or culture.",
+      "related_keys": [
+        "culture",
+        "region",
+        "asia"
+      ],
+      "anchor_4d": {
+        "x": 0.847,
+        "y": 0.804,
+        "normalized_pressure": 0.336,
+        "normalized_voltage": 0.352
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:language",
+      "glyph_rows_ascii": [
+        "........",
+        "#.#..###",
+        "..#....#",
+        "......#.",
+        ".###.###",
+        ".#####.#",
+        ".#..#.##",
+        "#.#..##.",
+        "#...#.##",
+        "#.#..##.",
+        "#.#.#..#",
+        "##...#.."
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 43,
+      "concept_id": "UTF4088-CONCEPT-000043",
+      "key": "environment",
+      "label": "Environment",
+      "domain": "material_nature",
+      "definition": "The surrounding physical, biological, and social conditions relevant to an organism or system; define the boundary and scale.",
+      "related_keys": [
+        "forest",
+        "tree",
+        "plant",
+        "water",
+        "geography"
+      ],
+      "anchor_4d": {
+        "x": 0.839,
+        "y": 0.168,
+        "normalized_pressure": 0.322,
+        "normalized_voltage": 0.321
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:environment",
+      "glyph_rows_ascii": [
+        "####.###",
+        "##...##.",
+        "##...##.",
+        ".#.##..#",
+        "..####.#",
+        ".#.#....",
+        "#..###.#",
+        "###..#..",
+        "##..###.",
+        ".#.#....",
+        ".#..####",
+        "..#.#..#"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    },
+    {
+      "id": 44,
+      "concept_id": "UTF4088-CONCEPT-000044",
+      "key": "life",
+      "label": "Life",
+      "domain": "material_nature",
+      "definition": "The state or processes associated with living organisms under the selected domain definition; no universal operational definition is assumed.",
+      "related_keys": [
+        "plant",
+        "tree",
+        "reproduction",
+        "health",
+        "environment"
+      ],
+      "anchor_4d": {
+        "x": 0.806,
+        "y": 0.182,
+        "normalized_pressure": 0.328,
+        "normalized_voltage": 0.33
+      },
+      "glyph_seed": "UTF4088-CONCEPT-V1:life",
+      "glyph_rows_ascii": [
+        ".#.####.",
+        "##...###",
+        ".#.#....",
+        ".#.#...#",
+        "..###...",
+        "...##.#.",
+        "#####.#.",
+        "...#....",
+        "..###..#",
+        "###.###.",
+        "#..##...",
+        "#.######"
+      ],
+      "status": "provisional-concept-seed",
+      "source": "UTF-4088 v1 concept-symbol starter registry",
+      "caveat": "The geometry anchor is a curated synthetic study coordinate. It is not a measured fact or proof of semantic equivalence."
+    }
+  ]
 }

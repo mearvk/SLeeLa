@@ -8,6 +8,7 @@
 #include "sleela_alphabet_adapter.hpp"
 #include "voltage_field.hpp"
 #include "glyph8x12.hpp"
+#include "semantics/concept_symbols.hpp"
 
 #include <cassert>
 #include <cmath>
@@ -54,6 +55,29 @@ int main() {
     const auto glyph = seed_glyph("utf4088-regression-seed");
     assert(glyph_signature(glyph) == glyph_signature(glyph));
     assert(analyze_glyph(glyph).black_pixels <= 96);
+
+
+    // The semantic concept registry must expose stable concept identities and
+    // reproducible, distinct 8x12 seed glyphs for the starter vocabulary.
+    const auto& conceptSymbols = semantics::concept_symbol_registry();
+    assert(conceptSymbols.size() == 44);
+    for (std::size_t i = 0; i < conceptSymbols.size(); ++i) {
+        const auto& concept = conceptSymbols[i];
+        assert(concept.id == i + 1);
+        assert(concept.metrics.black_pixels <= 96);
+        for (double coordinate : concept.anchor_4d) {
+            assert(std::isfinite(coordinate));
+            assert(coordinate >= 0.0 && coordinate <= 1.0);
+        }
+        for (std::size_t j = 0; j < i; ++j) {
+            assert(concept.key != conceptSymbols[j].key);
+            assert(concept.id != conceptSymbols[j].id);
+            assert(concept.glyph.rows != conceptSymbols[j].glyph.rows);
+        }
+    }
+    for (const char* key : {"wealth", "wood", "sex", "pleasure", "quality", "asia"}) {
+        assert(semantics::find_concept_symbol(key) != nullptr);
+    }
 
     const std::vector<VoltageSample> samples{
         {0, 0, 0, 0}, {1, 0, 1, 1}, {-1, 0, -1, 2},
