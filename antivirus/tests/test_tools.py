@@ -127,8 +127,8 @@ class DefinitionImporterTests(unittest.TestCase):
             root = Path(temp)
             source = root / "source"
             source.mkdir()
-            (source / "one.hsb").write_text(f"{digest}:12:Example.One\\nnot-a-signature\\n")
-            (source / "two.hsb").write_text(f"{digest.upper()}:12:Example.Two\\n")
+            (source / "one.hsb").write_text(f"{digest}:12:Example.One\nnot-a-signature\n")
+            (source / "two.hsb").write_text(f"{digest.upper()}:12:Example.Two\n")
             entries, skipped, errors = importer.collect_signatures(source)
             self.assertFalse(errors)
             self.assertEqual(len(entries), 1)
@@ -140,9 +140,9 @@ class DefinitionImporterTests(unittest.TestCase):
             root = Path(temp)
             source = root / "source"
             source.mkdir()
-            (source / "bad.hsb").write_text("no compatible records\\n")
+            (source / "bad.hsb").write_text("no compatible records\n")
             output = root / "active.txt"
-            output.write_text("# previous valid index\\n" + "b" * 64 + " old\\n")
+            output.write_text("# previous valid index\n" + "b" * 64 + " old\n")
             old = output.read_text()
             stderr = io.StringIO()
             with mock.patch("sys.argv", ["importer", "--source", str(source), "--output", str(output)]):
