@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <vte/vte.h>
+#include <pango/pangocairo.h>
 
 #include <algorithm>
 #include <cctype>
@@ -1410,7 +1411,7 @@ gboolean throbber_tick(gpointer user_data) {
         // middle and less-centred pulses are already fading relative to it.
         double target_i = c.base_intensity * center_weight * edge_fade * c.energy * breath;
         // Ease the live intensity toward its target so fade-in / fade-out smooth.
-        c.intensity += (target_i - c.intensity) * 0.30;
+        c.intensity += (target_i - c.intensity) * 0.42;
 
         // The pulse still travels left->right across the whole width; it only
         // dies on exit at the right edge (or once it has faded to nothing well
@@ -1576,7 +1577,7 @@ void activate(GtkApplication *application, gpointer user_data) {
 
     // Drive the throbber at 20 Hz (every 50 ms) for as long as the window lives.
     // The timer is removed in child_exited / window_close_request.
-    state->throbber_tick = g_timeout_add(50, throbber_tick, state);
+    state->throbber_tick = g_timeout_add(33, throbber_tick, state);
 
     std::vector<char *> shell_argv;
     shell_argv.push_back(const_cast<char *>(state->shell_path.c_str()));
