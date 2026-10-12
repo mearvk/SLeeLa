@@ -18,10 +18,13 @@ SCAN_OBJ := $(BUILD_DIR)/sleelavirin_scan.o
 HEURISTIC_OBJ := $(BUILD_DIR)/sleelavirin_heuristic.o
 LIBRARY := $(BUILD_DIR)/libsleelavirin.a
 TEST_BIN := $(BUILD_DIR)/test_scan
+NATIVE_OBJ := $(BUILD_DIR)/sleelavirin_native.o
+NATIVE_MAIN_OBJ := $(BUILD_DIR)/sleelavirin_native_main.o
+NATIVE_BIN := $(BUILD_DIR)/sleelavirin-scan
 
-.PHONY: all library test check clean help
+.PHONY: all library native native-test clamav clamav-check test check clean help
 
-all: library $(TEST_BIN)
+all: library $(TEST_BIN) native
 
 library: $(LIBRARY)
 
@@ -34,6 +37,17 @@ $(SCAN_OBJ): $(SRC_DIR)/sleelavirin_scan.c $(SRC_DIR)/sleelavirin_scan.h | $(BUI
 $(HEURISTIC_OBJ): $(SRC_DIR)/sleelavirin_heuristic.c $(SRC_DIR)/sleelavirin_heuristic.h | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -std=c11 -I$(SRC_DIR) -c "$<" -o "$@"
 
+$(NATIVE_OBJ): $(SRC_DIR)/sleelavirin_native.c $(SRC_DIR)/sleelavirin_native.h | $(BUILD_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -std=c11 -I$(SRC_DIR) -c "$<" -o "$@"
+
+$(NATIVE_MAIN_OBJ): $(SRC_DIR)/sleelavirin_native_main.c $(SRC_DIR)/sleelavirin_native.h | $(BUILD_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -std=c11 -I$(SRC_DIR) -c "$<" -o "$@"
+
+$(NATIVE_BIN): $(NATIVE_OBJ) $(NATIVE_MAIN_OBJ)
+	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o "$@"
+
+native: $(NATIVE_BIN)
+
 $(LIBRARY): $(SCAN_OBJ) $(HEURISTIC_OBJ)
 	$(AR) rcs "$@" $^
 
@@ -42,6 +56,19 @@ $(TEST_BIN): $(TEST_DIR)/test_scan.c $(LIBRARY) $(SRC_DIR)/sleelavirin_scan.h $(
 
 test check: all
 	"$(TEST_BIN)"
+	$(MAKE) native-test
+
+native-test: $(NATIVE_BIN)
+	@set -eu; output=$("./$(NATIVE_BIN)" --database tests/native-sha256.txt tests/native_sample.txt); echo "$output"; echo "$output" | grep -q '^DETECTED tests/native_sample.txt : test-sample$'
+	@set -eu; output=$("./$(NATIVE_BIN)" --database signatures/native-sha256.txt tests/native_sample.txt); echo "$output"; echo "$output" | grep -q '^NO_MATCH tests/native_sample.txt$'
+	@echo "Native scanner signature/no-match tests: PASS"
+
+clamav: clamav-check
+	python3 tools/sleelavirin_clamav.py --help >/dev/null
+
+clamav-check:
+	@command -v clamscan >/dev/null 2>&1 || { echo "ClamAV not found; install ClamAV and its signature database, or set --clamscan." >&2; exit 2; }
+	@clamscan --version
 
 clean:
 	rm -rf "$(BUILD_DIR)"
