@@ -3,7 +3,11 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.2.20"
-    id("org.jetbrains.intellij.platform") version "2.19.0"
+    // No version here: the IntelliJ Platform plugin is already placed on the
+    // build classpath by org.jetbrains.intellij.platform.settings (pinned to
+    // 2.19.0 in settings.gradle.kts). Re-declaring a version causes
+    // "already on the classpath with an unknown version" at resolution time.
+    id("org.jetbrains.intellij.platform")
 }
 
 group = providers.gradleProperty("group").get()
