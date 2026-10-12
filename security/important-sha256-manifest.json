@@ -9040,7 +9040,7 @@
     },
     {
       "path": "lib/connector/test_connector_registry.c",
-      "sha256": "f6b3ffb53c5b21e30730da58747a78a3055ef5c5de2ec68119fb2de2c6c5d40d"
+      "sha256": "2d726919f98f56dcaf8b7514dc553a1212bc76e03a0ce0edb6ae9306bc4f84bd"
     },
     {
       "path": "lib/connector/xml/test_xml_connector.c",
@@ -52224,7 +52224,7 @@
     },
     {
       "path": "sleela-terminal/executor.cpp",
-      "sha256": "15bbc50dc32fba41ad8c745a28ba282dc747dc97c29a617b2efb24383f3e803f"
+      "sha256": "c27a57e038dd49872b6c229ca048f9b18e78af9bd4d9537917820a1a6f03e821"
     },
     {
       "path": "sleela-terminal/executor.hpp",
@@ -52232,7 +52232,7 @@
     },
     {
       "path": "sleela-terminal/expand.cpp",
-      "sha256": "b749e029aa3f563b14ae010479879f5a2cdbf1fc56e86ecab32ca8277bf79447"
+      "sha256": "08934a644c5619029879fd6ddaf7dba0266ae4827fb9f0ffaa7291bab0891973"
     },
     {
       "path": "sleela-terminal/expand.hpp",
@@ -52240,7 +52240,7 @@
     },
     {
       "path": "sleela-terminal/fuzz.cpp",
-      "sha256": "4aab631d157255f14ccf30952ac938246901757c4661283dce30d3831b105545"
+      "sha256": "51b5b230b4941b32902979828ca318908b57a47bba5aecb28629a531ab957361"
     },
     {
       "path": "sleela-terminal/lexer.cpp",
@@ -52280,7 +52280,7 @@
     },
     {
       "path": "sleela-terminal/smoke.cpp",
-      "sha256": "c85c8c329343a047034b5c94d8e750901c68df400e0feeee8ef401b0b996b17f"
+      "sha256": "89cf410f65ef0ec682921249c68818e7cc0710dfbc96e7ff99cddc60108e58d5"
     },
     {
       "path": "sleela-terminal/tools/install/sleela-software.sh",
