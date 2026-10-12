@@ -91,6 +91,7 @@ jobs:
           python -m PyInstaller --noconfirm --clean --onefile --name sleelavirin-scan antivirus/tools/sleelavirin_scan.py
           python -m PyInstaller --noconfirm --clean --onefile --name sleelavirin-update-clamav antivirus/tools/sleelavirin_update_clamav.py
           python -m PyInstaller --noconfirm --clean --onefile --name sleelavirin-import-clamav antivirus/tools/sleelavirin_import_clamav.py
+          python -m PyInstaller --noconfirm --clean --onefile --name sleelavirin-clamav antivirus/tools/sleelavirin_clamav.py
           python -m PyInstaller --noconfirm --clean --onefile --name sleelavirin-verify-signature antivirus/tools/sleelavirin_verify_signature.py
           Copy-Item dist/sleelavirin-scan.exe antivirus/dist/
           Copy-Item dist/sleelavirin-update-clamav.exe antivirus/dist/
@@ -122,27 +123,43 @@ jobs:
         run: |
           from pathlib import Path
           import hashlib
+          import subprocess
+          import sys
           import zipfile
           root = Path("antivirus/dist")
           lines = []
           for path in sorted(p for p in root.rglob("*") if p.is_file()):
-              if path.name == "SHA256SUMS":
+              if path.name in {"SHA256SUMS", "INTEGRITY-MANIFEST.json"}:
                   continue
               digest = hashlib.sha256(path.read_bytes()).hexdigest()
               lines.append(f"{digest}  {path.relative_to(root).as_posix()}")
-          (root / "SHA256SUMS").write_text("\n".join(lines) + "\n", encoding="utf-8")
+          (root / "SHA256SUMS").write_text("\\n".join(lines) + "\\n", encoding="utf-8")
+          subprocess.run([
+              sys.executable, "antivirus/tools/sleelavirin_manifest.py",
+              "--root", str(root), "--write", str(root / "INTEGRITY-MANIFEST.json")
+          ], check=True)
+          subprocess.run([
+              sys.executable, "antivirus/tools/sleelavirin_manifest.py",
+              "--root", str(root), "--verify", str(root / "INTEGRITY-MANIFEST.json")
+          ], check=True)
           archive = Path("${{ matrix.archive }}")
           with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zf:
               for path in sorted(p for p in root.rglob("*") if p.is_file()):
                   zf.write(path, Path("sleelavirin") / path.relative_to(root))
+          archive_hash = hashlib.sha256(archive.read_bytes()).hexdigest()
+          Path(str(archive) + ".sha256").write_text(f"{archive_hash}  {archive.name}\n", encoding="utf-8")
       - uses: actions/upload-artifact@v4
         with:
           name: sleelavirin-${{ matrix.platform }}
-          path: ${{ matrix.archive }}
+          path: |
+            ${{ matrix.archive }}
+            ${{ matrix.archive }}.sha256
           if-no-files-found: error
           retention-days: 30
       - name: Publish tagged release asset
         if: startsWith(github.ref, 'refs/tags/v') && github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ matrix.archive }}
+          files: |
+            ${{ matrix.archive }}
+            ${{ matrix.archive }}.sha256
