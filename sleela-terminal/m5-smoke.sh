@@ -17,6 +17,10 @@ test "$(printf '%s\n' 'cat <(printf hi)' | "$SLSH")" = hi
 test "$(printf '%s\n' 'printf external-ok' | "$SLSH")" = external-ok
 test "$(printf '%s\n' 'uname -s' | "$SLSH")" != ""
 
+# Pipeline status is the status of the final command, and $? reflects it.
+test "$(printf '%s\n' 'false | true; echo $?' | "$SLSH")" = 0
+test "$(printf '%s\n' 'true | false; echo $?' | "$SLSH")" = 1
+
 # exit is a shell builtin and must terminate the shell with its requested status.
 set +e
 "$SLSH" -c 'printf before; exit 7; printf after' >/tmp/exit.out 2>/tmp/exit.err
