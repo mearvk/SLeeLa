@@ -253,7 +253,7 @@ class DefinitionImporterTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             index = root / "index.txt"
-            index.write_text("# index\\n" + digest + " label\\n")
+            index.write_text("# index\n" + digest + " label\n")
             manifest = root / "index.manifest.json"
             manifest.write_text(__import__("json").dumps({
                 "schema": "sleelavirin-native-index-manifest-v1",
