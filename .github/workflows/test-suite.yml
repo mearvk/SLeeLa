@@ -6,6 +6,11 @@ on:
   pull_request:
 permissions:
   contents: write
+# Serialize this workflow per branch. The retry loop below also handles pushes
+# from other workflows that cannot share this concurrency group.
+concurrency:
+  group: sleela-test-suite-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   linux:
     timeout-minutes: 30
@@ -17,9 +22,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 - <<'PY'
+          target="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+          for attempt in 1 2 3 4 5; do
+            echo "README normalization attempt ${attempt}/5"
+            git fetch origin "${target}"
+            git reset --hard "origin/${target}"
+
+            python3 - <<'PY'
           from pathlib import Path
-          import re
           image = "https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png"
           html = f'<img align="right" src="{image}" width="75" height="75" alt="SLeeLa">'
           changed = 0
@@ -27,31 +37,34 @@ jobs:
               if ".git" in path.parts:
                   continue
               text = path.read_text(encoding="utf-8")
-              # Remove the Debian logo previously inserted by automation, wherever it
-              # occurs as a standalone Markdown/HTML image line, then place the
-              # canonical 75x75 image at the top-right of the document.
-              lines = text.splitlines()
-              kept = []
-              removed = False
-              for line in lines:
+              lines = []
+              for line in text.splitlines():
                   if image in line and ("![SLeeLa]" in line or "<img" in line):
-                      removed = True
                       continue
-                  kept.append(line)
-              new_text = html + "\n\n" + "\n".join(kept).lstrip("\n")
+                  lines.append(line)
+              new_text = html + "\n\n" + "\n".join(lines).lstrip("\n")
               if new_text != text:
                   path.write_text(new_text, encoding="utf-8")
                   changed += 1
           print(f"README files updated: {changed}")
           PY
-          git config user.name "SLeeLa Automation"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- 'README.md' '**/README.md'
-          if ! git diff --cached --quiet; then
+
+            git config user.name "SLeeLa Automation"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -- 'README.md' '**/README.md'
+            if git diff --cached --quiet; then
+              echo "README logos are already normalized."
+              exit 0
+            fi
             git commit -m "docs: standardize README Debian logo to 75x75 upper-right"
-            target="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
-          git push origin "HEAD:refs/heads/$target"
-          fi
+            if git push origin "HEAD:refs/heads/${target}"; then
+              echo "README normalization pushed successfully."
+              exit 0
+            fi
+            echo "Push raced with another commit; refreshing and retrying."
+          done
+          echo "::error::README normalization could not push after five attempts."
+          exit 1
       - name: Synchronize Ubuntu contacts into SLeeLa
         if: github.event_name != 'pull_request'
         continue-on-error: true
