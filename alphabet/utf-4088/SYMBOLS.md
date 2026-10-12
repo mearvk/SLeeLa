@@ -66,7 +66,7 @@ The same resolver computes additional scores:
 
 This is an address-derived identifier, **not** a reversible encoding, rendered glyph, semantic label, or guarantee of collision-free identity. Different inputs may collide after quantization or hashing. The code does not return the internal intermediate geometry as a public symbol description.
 
-The simpler public `InputState` / `CodePoint` API in [utf4088.hpp](../../utf-4088/utf4088.hpp) accepts an already-created integer input. [utf4088.cpp](../../utf-4088/utf4088.cpp) currently validates the experimental interval `0x110000 < value <= 0x1FFFFFFFF`; it does not compute the 4D geometry or derive a point from electrical hardware.
+The simpler public `InputState` / `CodePoint` API in [utf4088.hpp](../../utf-4088/utf4088.hpp) accepts an already-created integer input. [utf4088.cpp](../../utf-4088/utf4088.cpp) currently validates the experimental interval `0x110000 <= value <= 0x1FFFFFFFF`; it does not compute the 4D geometry or derive a point from electrical hardware.
 
 ## 4. Voltage-field geometry symbols
 
@@ -101,7 +101,7 @@ Defined in [voltage_field.hpp](../../utf-4088/voltage_field.hpp), with calculati
 | `direction` | `atan2(dVdy, dVdx)` | Gradient angle in radians |
 | `uniformity` | `1 / (1 + sqrt(population variance))` across valid sample voltages | A field-uniformity score |
 
-The field API turns these values into a packed 64-bit `field_to_input` value. The documented bit allocation is 20 bits each for voltage, magnitude, and uniformity, plus 4 bits for direction. The packer quantizes absolute values and masks each field into its allotted bits. In particular, direction is currently reduced to the low four bits of the quantized absolute angle rather than a carefully defined circular-angle code. Consequently, different field states can produce the same packed input; that is an implementation-level encoding limitation, not evidence of a true geometric coincidence.
+The `VoltageSample.time` field must be finite, but the current field analysis does not use it in the gradient, uniformity, or packed-state formulas. The field API turns the other derived values into a packed 64-bit `field_to_input` value. The documented bit allocation is 20 bits each for voltage, magnitude, and uniformity, plus 4 bits for direction. The packer quantizes absolute values and masks each field into its allotted bits. In particular, direction is currently reduced to the low four bits of the quantized absolute angle rather than a carefully defined circular-angle code. Consequently, different field states can produce the same packed input; that is an implementation-level encoding limitation, not evidence of a true geometric coincidence.
 
 These sample values are software data. Any actual hardware sampling and electrical safety contract must remain in a separate adapter.
 
