@@ -86,6 +86,9 @@ The M5 smoke suite covers:
 - invalid and valid selection behavior;
 - `<(...)` process substitution;
 - `>(...)` process substitution;
+- cleanup of process-substitution FIFOs after normal completion;
+- pipeline last-command exit-status propagation and `$?`;
+- explicit `exit` status and termination behavior;
 - signal trap registration and dispatch;
 - multi-segment pathname globbing;
 - filenames containing shell metacharacters;
@@ -101,12 +104,13 @@ The current classification remains **BETTER+** because the following evidence is
 - Windows-native terminal/PTY validation where Windows support is targeted;
 - descriptor-leak tests across pipelines, substitutions, and redirections;
 - signal-burst and blocking-input trap stress tests;
-- complete command-substitution and pipeline exit-status conformance tests;
+- complete command-substitution and pipeline exit-status conformance tests (the new smoke checks cover only the pipeline's last-command status);
 - symlink, permission, inaccessible-directory, and filesystem-race testing;
 - long-running resource-limit tests;
 - repeatable performance benchmarks;
 - retained fuzz corpus and sustained fuzz execution in CI;
-- broader POSIX behavior matrices.
+- broader POSIX behavior matrices;
+- quote-provenance implementation and regression tests for empty quoted words, quoted whitespace, glob suppression, single-quote literal expansion, and `"$@"` argument boundaries.
 
 ## 6. Engineering conclusion
 
