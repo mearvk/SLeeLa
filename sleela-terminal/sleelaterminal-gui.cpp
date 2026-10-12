@@ -61,7 +61,7 @@ struct AppState {
     std::string shell_path;
     GtkWindow *window = nullptr;
     VteTerminal *terminal = nullptr;
-    GtkLabel *footer_text = nullptr;
+    GtkWidget *footer_text = nullptr;
     std::string executable_path;
     GPid child_pid = 0;
     guint footer_tick = 0;
@@ -406,7 +406,7 @@ void install_css() {
         box.sleela-footer label { color: @sl_fg; font-weight: 600; }
         label.sleela-footer-brand { font-weight: 800; letter-spacing: 0.5px; }
         label.sleela-footer-separator { color: alpha(@sl_fg, 0.42); padding-left: 8px; padding-right: 8px; }
-        label.sleela-footer-ticker {
+        label.sleela-footer-ticker, drawingarea.sleela-footer-ticker {
             color: #b8b8b8;
             text-shadow: -1px -1px 0 #ffffff, 0 -1px 0 #ffffff, 1px -1px 0 #ffffff,
                          -1px 0 0 #ffffff, 1px 0 0 #ffffff,
@@ -1029,7 +1029,8 @@ std::string readFooterbarTopics() {
 void set_footer_text(AppState *state, const std::string &value) {
     if (!state || state->footer_full_text == value) return;
     state->footer_full_text = value; state->footer_position = 0; state->footer_text_changed_us = g_get_monotonic_time();
-    if (state->footer_text) gtk_label_set_text(state->footer_text, value.c_str());
+    state->footer_position = 0;
+    if (state->footer_text) gtk_widget_queue_draw(state->footer_text);
 }
 
 std::string cleanFeedTitle(std::string value) {
@@ -1105,14 +1106,55 @@ void footer_feed_finished(GObject *source, GAsyncResult *result, gpointer user_d
     if (error) g_error_free(error);
 }
 
+void footer_ticker_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer user_data) {
+    auto *state = static_cast<AppState *>(user_data);
+    if (!state || state->footer_full_text.empty() || width <= 0 || height <= 0) return;
+    PangoLayout *layout = pango_cairo_create_layout(cr);
+    PangoFontDescription *font = pango_font_description_from_string("Sans Bold 10");
+    pango_layout_set_font_description(layout, font);
+    pango_layout_set_text(layout, state->footer_full_text.c_str(), -1);
+    int text_width = 0, text_height = 0;
+    pango_layout_get_pixel_size(layout, &text_width, &text_height);
+    const gint64 now = g_get_monotonic_time();
+    const gint64 delay = static_cast<gint64>(state->config.footer_scroll_delay_minutes) * 60 * G_USEC_PER_SEC;
+    const bool scrolling = state->footer_text_changed_us != 0 &&
+        now - state->footer_text_changed_us >= delay && text_width > width;
+    double x = 0.0;
+    if (scrolling) {
+        // Pixel offset advances to the right; once the complete message exits,
+        // restart just beyond the left edge for a continuous, clipped marquee.
+        x = static_cast<double>(state->footer_position);
+        if (x > width) x = -text_width + (x - width);
+    }
+    const double y = std::max(0.0, (height - text_height) / 2.0);
+    cairo_save(cr);
+    cairo_rectangle(cr, 0, 0, width, height);
+    cairo_clip(cr);
+    // Preserve the subtle grey lettering with a crisp one-pixel white outline.
+    const double outline[][2] = {{-1,-1},{0,-1},{1,-1},{-1,0},{1,0},{-1,1},{0,1},{1,1}};
+    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+    for (const auto &offset : outline) {
+        cairo_move_to(cr, x + offset[0], y + offset[1]);
+        pango_cairo_show_layout(cr, layout);
+    }
+    cairo_set_source_rgb(cr, 0.72, 0.72, 0.72);
+    cairo_move_to(cr, x, y);
+    pango_cairo_show_layout(cr, layout);
+    cairo_restore(cr);
+    pango_font_description_free(font);
+    g_object_unref(layout);
+    (void)area;
+}
+
 gboolean footer_scroll_tick(gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (!state->footer_text || state->footer_full_text.empty()) return G_SOURCE_CONTINUE;
     const gint64 now = g_get_monotonic_time();
     const gint64 delay = static_cast<gint64>(state->config.footer_scroll_delay_minutes) * 60 * G_USEC_PER_SEC;
-    if (state->footer_text_changed_us == 0 || now - state->footer_text_changed_us < delay) return G_SOURCE_CONTINUE;
-    state->footer_position = (state->footer_position + 1) % 36;
-    gtk_label_set_text(state->footer_text, (std::string(state->footer_position, ' ') + state->footer_full_text).c_str());
+    if (state->footer_text_changed_us != 0 && now - state->footer_text_changed_us >= delay) {
+        state->footer_position += 2; // ~13 px/s at the 150 ms timer cadence
+        gtk_widget_queue_draw(state->footer_text);
+    }
     return G_SOURCE_CONTINUE;
 }
 
@@ -1687,18 +1729,17 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_widget_set_valign(separator, GTK_ALIGN_CENTER);
     gtk_box_append(GTK_BOX(footer), separator);
 
-    GtkWidget *footer_text = gtk_label_new(footer_messages().front().c_str());
-    state->footer_text = GTK_LABEL(footer_text);
+    GtkWidget *footer_text = gtk_drawing_area_new();
+    state->footer_text = footer_text;
     gtk_widget_add_css_class(footer_text, "sleela-footer-ticker");
     gtk_widget_set_hexpand(footer_text, TRUE);
-    gtk_widget_set_halign(footer_text, GTK_ALIGN_START);
+    gtk_widget_set_halign(footer_text, GTK_ALIGN_FILL);
     gtk_widget_set_valign(footer_text, GTK_ALIGN_CENTER);
-    // Keep RSS text from contributing its full natural width to the window's
-    // minimum size. The ticker gets a bounded width and truncates to its actual
-    // allocation; the footer/window must never grow to accommodate a headline.
-    gtk_label_set_ellipsize(state->footer_text, PANGO_ELLIPSIZE_END);
-    gtk_label_set_width_chars(state->footer_text, 28);
-    gtk_label_set_max_width_chars(state->footer_text, 44);
+    // DrawingArea measures independently of headline length. Pango renders the
+    // entire RSS string inside the fixed allocated viewport, without ellipses
+    // and without allowing the headline to resize the Terminal window.
+    gtk_widget_set_size_request(footer_text, 160, 30);
+    gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(footer_text), footer_ticker_draw, state, nullptr);
     gtk_box_append(GTK_BOX(footer), footer_text);
 
     // CMD footer control: strict image only; the image itself is the clickable surface.
