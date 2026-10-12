@@ -66,7 +66,8 @@ L1  Core + Arith       Value/Token/AST model, precedence-climbing arithmetic
 - **Parameter operators** — `${x:-default}`, `${x:=default}` (assigns back),
   `${x:?message}`, `${x:+alternate}`, and `${#x}` (length).
 - **Brace expansion** — `{a,b,c}` lists and numeric `{m..n}` ranges (cartesian
-  when combined, e.g. `{a,b}{1,2}`).
+  when combined, e.g. `{a,b}{1,2}`). Expansion is capped at 4,096 results and
+  64 recursive levels to limit memory/stack exhaustion from pathological input.
 - **Tilde expansion** — `~` → `$HOME`, `~user` → that user's home.
 - **Here-documents** — `<< DELIM` and `<<- DELIM` (tab-stripping); the body is
   expanded unless the delimiter is quoted (`<<'DELIM'`).
@@ -109,7 +110,8 @@ L1  Core + Arith       Value/Token/AST model, precedence-climbing arithmetic
   assignments use scoped environments, redirection failures are checked, and
   the process-substitution startup path avoids the common FIFO open deadlock.
 - **M5 CI validation** — the workflow performs a clean build, full smoke suite,
-  sanitizer validation, Clang installation, and fuzz-target compilation.
+  sanitizer validation, Clang installation, and fuzz-target compilation. The
+  fuzz harness also exercises expansion with command execution disabled.
 
 ### Soros relative time
 

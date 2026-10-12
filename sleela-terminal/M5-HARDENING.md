@@ -66,6 +66,12 @@ The fuzz harness is bounded to 64 KiB input and exercises lexer input first, the
 
 **Important:** the presence of these workflow gates is evidence of repeatable validation infrastructure, not evidence that every future workflow run has passed. GitHub Actions results must be inspected separately.
 
+### Expansion resource hardening
+
+- Numeric brace ranges are parsed defensively; out-of-range numbers remain literal instead of throwing out of the shell.
+- Brace expansion is bounded to 4,096 results, 64 recursive levels, and 1 MiB per word.
+- The fuzz harness exercises expansion with command substitution disabled; smoke tests cover large ranges, cartesian products, and deep nesting.
+
 ## 4. Regression baseline
 
 The M5 smoke suite covers:
