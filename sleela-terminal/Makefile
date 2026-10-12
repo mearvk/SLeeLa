@@ -70,7 +70,7 @@ install: $(SLSH)
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 0755 $(SLSH) $(DESTDIR)$(BINDIR)/slsh
 
-install-gui: $(GUI)
+install-gui: install $(GUI)
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -d $(DESTDIR)$(DESKTOPDIR)
 	$(INSTALL) -m 0755 $(GUI) $(DESTDIR)$(BINDIR)/SleelaTerminal
