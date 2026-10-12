@@ -1446,22 +1446,15 @@ void throbber_spawn(AppState *state, int W) {
     ThrobberCell c;
     c.alive = true;
 
-    // Birth position: odds favour starting around 35% of the width, so the
-    // flow then does most of its pulsing through the central sweet spot before
-    // fading by ~65%. A minority still enter from the left edge (keeping the
-    // left->right feed) or appear elsewhere, but the bulk cluster near 0.35W.
+    // Mostly enter from the left and travel across the rail; a smaller share
+    // starts mid-rail so the animation has depth without losing its direction.
     const double roll = g_random_double();
-    if (roll < 0.65) {
-        // cluster around 35% with a modest spread (approx normal via two rolls)
-        double gauss = (g_random_double() + g_random_double() - 1.0); // ~[-1,1], centre-weighted
-        double frac = 0.35 + gauss * 0.12;                            // mostly 0.23..0.47
-        if (frac < 0.0) frac = 0.0;
-        if (frac > 1.0) frac = 1.0;
-        c.x = frac * W;
-    } else if (roll < 0.85) {
-        c.x = -4.0 + g_random_double() * 6.0;        // enter from just off the left
+    if (roll < 0.72) {
+        c.x = -3.0 + g_random_double() * 2.0;
+    } else if (roll < 0.90) {
+        c.x = g_random_double() * W;
     } else {
-        c.x = g_random_double() * W;                 // occasional anywhere in 0-100%
+        c.x = W * (0.20 + g_random_double() * 0.25);
     }
 
     // Keep the particles moving at a fairly even horizontal pace. Small
@@ -1535,7 +1528,7 @@ gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_da
 
         // Reflexive, amplified desired speed, scaled by this cell's own speed
         // character so some pulses glide and others race across the sweet spot.
-        double desired_v = (18.0 + 70.0 * state->throbber_amp) * c.speed_mul;
+        double desired_v = (34.0 + 10.0 * state->throbber_amp) * c.speed_mul;
 
         // Size-dependent pacing: broad light bars (>50px overall) glide more
         // slowly; medium bars gain a little pace; narrow sparks move faster.
@@ -1567,7 +1560,7 @@ gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_da
         // the width horizontally instead of vanishing around the centre.
         const double frac = (W > 0) ? (c.x / W) : 0.5;
         const double center_weight = 1.0;
-        double decay = 0.13 + 0.04 * state->throbber_amp;
+        double decay = 0.055 + 0.015 * state->throbber_amp;
         c.energy -= dt * decay;
         if (c.energy < 0.0) c.energy = 0.0;
 
