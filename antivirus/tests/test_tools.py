@@ -120,6 +120,47 @@ class ScanCoordinatorTests(unittest.TestCase):
                 scan.safe_quarantine(path, root / "quarantine", [str(root)], scan.file_stamp(path))
 
 
+    def test_directory_walk_errors_mark_scan_incomplete(self):
+        with tempfile.TemporaryDirectory() as temp:
+            def failed_walk(root, followlinks=False, onerror=None):
+                if onerror:
+                    onerror(PermissionError("permission denied fixture"))
+                return iter(())
+            with mock.patch.object(scan.os, "walk", side_effect=failed_walk):
+                paths, incomplete = scan.enumerate_files([temp], 8, False, [], set(), 100)
+            self.assertEqual(paths, [])
+            self.assertTrue(incomplete)
+
+    def test_followed_symlink_loop_terminates_and_deduplicates(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            sub = root / "sub"
+            sub.mkdir()
+            (sub / "sample.bin").write_text("sample")
+            try:
+                (sub / "loop").symlink_to(root, target_is_directory=True)
+            except (OSError, NotImplementedError):
+                self.skipTest("directory symbolic links are not available")
+            paths, incomplete = scan.enumerate_files([temp], 0, True, [], set(), 100)
+            self.assertFalse(incomplete)
+            self.assertEqual(sum(p.name == "sample.bin" for p in paths), 1)
+
+    def test_duplicate_detection_paths_are_reported_once(self):
+        path = Path("sample.bin")
+        self.assertEqual(scan.unique_paths([path, path, Path("other.bin"), path]),
+                         [path, Path("other.bin")])
+
+    @mock.patch.object(scan.subprocess, "run")
+    def test_native_database_or_engine_errors_are_not_clean(self, run):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "sample"
+            path.write_text("sample")
+            run.return_value = mock.Mock(returncode=2, stdout="", stderr="invalid signature database")
+            verdict, _, message = scan.native_scan("native", "corrupt-db", path, scan.file_stamp(path))
+            self.assertEqual(verdict, "ERROR")
+            self.assertIn("invalid signature database", message)
+
+
 class DefinitionImporterTests(unittest.TestCase):
     def test_import_deduplicates_and_skips_incompatible_records(self):
         digest = "a" * 64
@@ -208,6 +249,42 @@ class DefinitionImporterTests(unittest.TestCase):
                 self.skipTest("symbolic links are not available in this environment")
             with self.assertRaises(ValueError):
                 scan.safe_quarantine(link, root / "quarantine", [str(root)], scan.file_stamp(link))
+
+
+    def test_corrupt_database_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            database = Path(temp) / "corrupt.txt"
+            database.write_text("not-a-sha256-record\n")
+            errors, count = importer.validate_database(database)
+            self.assertTrue(errors)
+            self.assertEqual(count, 0)
+
+    def test_manifest_publication_failure_rolls_back_active_index(self):
+        digest = "f" * 64
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source"
+            source.mkdir()
+            (source / "daily.hsb").write_text(f"{digest}:7:Example.Signature\n")
+            output = root / "native.txt"
+            output.write_text("# previous index\n" + "e" * 64 + " old\n")
+            previous = output.read_text()
+            real_replace = os.replace
+            calls = {"count": 0}
+            def fail_manifest_replace(src, dst):
+                calls["count"] += 1
+                if calls["count"] == 2:
+                    raise OSError("simulated manifest publication failure")
+                return real_replace(src, dst)
+            errors = io.StringIO()
+            with mock.patch("sys.argv", [
+                "importer", "--source", str(source), "--output", str(output)
+            ]), mock.patch.object(importer.os, "replace", side_effect=fail_manifest_replace):
+                with redirect_stderr(errors):
+                    result = importer.main()
+            self.assertEqual(result, 2)
+            self.assertEqual(output.read_text(), previous)
+            self.assertIn("rolled back", errors.getvalue())
 
 
 if __name__ == "__main__":
