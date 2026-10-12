@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Native Database and Data-Source Connectors
 
 This directory contains native C interfaces and C++17 facades for database and non-database sources. Each adapter is opt-in: its external client library must be installed, and network or database access begins only when the caller explicitly opens a connection or makes a request.

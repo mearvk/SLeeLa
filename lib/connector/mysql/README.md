@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # MySQL connector
 
 C ABI plus C++17 RAII connection and prepared-statement wrappers using mysqlclient or MariaDB Connector/C. Supports connection lifecycle, ping, one-statement execution, affected rows, last-error reporting, prepared statement creation, typed parameter/result binding through `MYSQL_BIND`, execute/store/fetch, and deterministic statement cleanup.
