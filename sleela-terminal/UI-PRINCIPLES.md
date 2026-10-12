@@ -45,20 +45,20 @@ reading palette:
 | `--sl-fg-dim` | `rgba(255,255,255,.70)` | secondary / note text |
 | `--sl-accent` | `#9d6cff` | focus ring, suggested action |
 
-The workspace uses `#fcfcfc` (RGB 252, 252, 252). The terminal
-surface is inset in a rounded charcoal panel (`#4b4b4b`) with a 12px radius,
-fine border, and internal spacing. The custom file-item browser renders each
-entry as an individual rounded chip: regular files use `#626262` with white
-text, and directories use a restrained muted-purple distinction. Keep the
-hierarchy consistent: bright workspace, rounded dark panel, readable light
-text, and slightly lighter item backgrounds. The purple/black palette belongs
-to the surrounding window chrome except for the intentional directory accent.
+The GTK workspace uses `#fcfcfc` (RGB 252, 252, 252). The interactive VTE
+terminal surface uses charcoal `#4b4b4b` with near-white `#f2f2f2` text. Keep
+this three-colour hierarchy consistent: near-white workspace, dark terminal
+surface, light readable terminal text. The purple/black palette belongs to the
+surrounding window chrome only.
 
-The file-item browser is a GTK FlowBox renderer rather than terminal ANSI
-output, so each file or directory receives its own rounded widget background.
-It supports directory navigation, parent-directory navigation, a path field,
-sorting directories before files, and opening files with their desktop
-application.
+**Implementation boundary:** VTE presents an ongoing interactive PTY stream,
+not discrete command-result widgets. The current design therefore applies the
+charcoal surface to the whole interactive terminal, including the prompt and
+empty terminal state. It does not yet create a separate rounded panel that
+appears only around each command's output. Do not describe per-command
+response panels as implemented until a separate output-view architecture can
+preserve arbitrary interactive programs, stdout/stderr, terminal control
+sequences, scrollback, selection, pipelines, and redirection.
 
 ## 3. Restraint over effects
 
@@ -123,6 +123,19 @@ stylesheet still parses. If a change adds motion, a new colour, or a new
 spacing value, it must either fit these principles or update them deliberately.
 
 — SleelaTerminal™ · MEARVK LLC
+
+## 11. Rounded file-item renderer
+
+The title-bar **Files** control opens a GTK FlowBox browser. Every entry is a
+separate rounded button, not terminal text with ANSI colouring. Regular files
+use a charcoal-gray chip (`#626262`) and white text; directories use a muted
+purple chip. The browser supports path entry, parent navigation, directory
+sorting, and opening files with the desktop's associated application.
+
+The main workspace remains near-white (`#fcfcfc`); the terminal and file
+browser use a charcoal surface (`#4b4b4b`). The VTE surface has a light
+foreground (`#f2f2f2`) and is clipped to the rounded terminal container.
+Individual `ls` tiles are legacy ANSI styling, not the global output model.
 
 ## Interactive `ls` presentation
 
