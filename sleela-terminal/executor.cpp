@@ -200,15 +200,15 @@ Usage: help [topic]
 
 Commands: cd, pwd, echo [-n], export, unset, set, true, false, :, exit,
 break [n], continue [n], read [-r] name..., getopts, test/[ ], jobs, wait,
-fg, bg, help [topic], prompt, prompt set OLD NEW, soros time.
+fg, bg, help [topic], prompt, prompt set OLD NEW, footerbar [topic...], soros time.
 
 Language: assignments; ; and newline; &&, ||, !, |, &; redirection (<, >, >>);
 if/elif/else/fi; while/until; for/in/do/done; case/in/esac; functions; brace
 groups; here-documents; parameter, arithmetic, command, tilde and brace
 expansion; pathname globbing; field splitting.
 
-Topics: expansion, control, jobs, io, process, traps, select, prompt, soros,
-options, portability, build. Use help TOPIC for details.
+Topics: expansion, control, jobs, io, process, traps, select, prompt, footerbar,
+soros, options, portability, build. Use help TOPIC for details.
 See README.md, BUILD-PLATFORMS.md, and M5-HARDENING.md.)HELP"},
         {"expansion", R"HELP(Expansion
 $name and ${name}; positional parameters $1..$9, $#, $?, and $@.
@@ -260,7 +260,7 @@ The interactive prompt defaults to the account username followed by '$ '
 prompt set OLD NEW changes it only if OLD matches the current prompt.
 The replacement is the remainder of the input line; this is not a general
 POSIX PS1 expansion engine.)HELP"},
-        {"soros", R"HELP(Soros relative time
+        {"footerbar", R"HELP(Topic-selected RSS footerbar feed\nCommands: footerbar chemistry; footerbar pharmacology; footerbar chemistry pharmacology.\nUse footerbar list to print the 100 supported topic terms, footerbar status to\ninspect the saved selection, and footerbar clear to disable the feed. The GUI\nchecks for selection changes every 30 seconds and refreshes RSS headlines every\n15 minutes. Network access and the curl executable are required.)HELP"},\n        {"soros", R"HELP(Soros relative time
 Command: soros time
 Uses the terminal's local civil year: 2026 maps to 2407; each following year
 adds one (2027 maps to 2408). 2607+ is the project's Great Mystery marker,
@@ -291,7 +291,7 @@ Use PREFIX=/usr for /usr installs and DESTDIR for packaging/staging.)HELP"}
     const auto it = pages.find(topic);
     if (it == pages.end()) {
         std::cerr << "help: unknown topic '" << topic << "'\n"
-                  << "Available topics: expansion control jobs io process traps select prompt soros options portability build all\n";
+                  << "Available topics: expansion control jobs io process traps select prompt footerbar soros options portability build all\n";
         return 2;
     }
     std::cout << it->second << "\n";
