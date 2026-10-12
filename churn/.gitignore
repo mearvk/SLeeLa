@@ -5,3 +5,7 @@
 
 # Compiled Java classes
 *.class
+
+# Local compiled classes and build outputs
+build/
+out/
