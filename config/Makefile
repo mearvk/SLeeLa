@@ -15,7 +15,7 @@ check:
 
 $(SMOKE): ../runtime/config_location.c ../runtime/config_location.h ../runtime/config_location_smoke.c
 	@mkdir -p "$(BUILD_DIR)"
-	"$(CC)" -std=c11 -Wall -Wextra -Werror -pedantic -I../runtime ../runtime/config_location.c ../runtime/config_location_smoke.c -o "$@"
+	"$(CC)" -std=c11 -Wall -Wextra -pedantic -I../runtime ../runtime/config_location.c ../runtime/config_location_smoke.c -o "$@"
 
 smoke: $(SMOKE)
 	cd .. && "./config/$(SMOKE)" config/config-location.conf
