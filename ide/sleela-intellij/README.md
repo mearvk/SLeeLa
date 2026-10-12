@@ -13,6 +13,7 @@ from the real compiler, never a second grammar (see
 
 ## Features (v0.3.0-dev)
 
+**Editor**
 - Recognizes `.sleela` source files (branded Slick-Black / brand-green icon).
 - Syntax highlighting derived from the normative `SLEELA.syntax` grammar
   (keywords, types, strings, numbers, comments, the `#sleela` version directive).
@@ -20,6 +21,27 @@ from the real compiler, never a second grammar (see
   ([`NativeSleelaCompilerBridge`](src/main/kotlin/com/mearvk/sleela/ide/NativeSleelaCompilerBridge.kt)).
 - Line (`//`) and block (`/* */`) comment support.
 - Customizable color scheme (Settings → Editor → Color Scheme → SLeeLa).
+
+**Developer actions (buttons, menus, shortcuts)**
+- A top-level **SLeeLa** main menu, an editor context menu, a project-view
+  context menu, and main-toolbar buttons — all branded.
+- **Run SLeeLa File** (`Ctrl+Shift+F10`) → `sleela run`
+- **Check SLeeLa File** (`Ctrl+Shift+K`) → `sleela check`
+- **Build SLeeLa Artifact** → `sleela compile … -o …`
+- **Transpile with Nordshrift** → `sleela nordshrift --emit --target=java`
+- **SLeeLa Compiler Version** → `sleela version` (balloon)
+- **Language Syntax Reference** / **SLeeLa on GitHub** doc links.
+
+**Run configurations**
+- A first-class **SLeeLa** run configuration type (file + program arguments).
+- A context producer so the gutter Run icon and right-click → Run work with
+  zero setup — the smooth path for novices.
+
+**Tool window & onboarding**
+- A dockable **SLeeLa** tool window with Run/Check/Build/Transpile buttons and
+  a live compiler-status readout.
+- **New → SLeeLa File** with Class / Program (with `main`) / Empty templates.
+- Balloon notifications under the **SLeeLa** group (e.g. missing compiler).
 
 ## Architecture
 
