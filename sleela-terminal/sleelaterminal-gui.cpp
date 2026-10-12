@@ -67,6 +67,7 @@ struct AppState {
     // field of discrete excitations ("children of wattage") that stream mainly
     // left->right at ~20 Hz; see throbber_tick / throbber_draw.
     GtkWidget *throbber = nullptr;
+    GtkWidget *terminal_glow = nullptr; // non-interactive overlay lit by throbber cells
     guint throbber_tick = 0;
     double throbber_t = 0.0;        // monotonically advancing time (seconds)
     int    throbber_w = 0;          // last known strip width (px)
@@ -1059,6 +1060,35 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
 // left->right feed), but a share are born anywhere across 0-100% and simply
 // fade in at that spot (intensity eases up from 0). Either way the pulse then
 // travels left->right all the way through to 100%.
+// Paint a restrained, diffuse reflection of the title-bar throbber into the
+// terminal pane. The overlay is non-interactive, so terminal input and selection
+// remain owned by VTE. Keep alpha low so text contrast remains the priority.
+void terminal_glow_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointer user_data) {
+    auto *state = static_cast<AppState *>(user_data);
+    if (width <= 0 || height <= 0 || state->throbber_w <= 0) return;
+
+    for (const auto &c : state->throbber_cells) {
+        if (!c.alive || c.intensity < 0.015) continue;
+        const double x = c.x * static_cast<double>(width) / state->throbber_w;
+        const double sigma = std::max(12.0, c.sigma * 2.2 * static_cast<double>(width) / state->throbber_w);
+        const double strength = std::clamp(c.intensity * (0.025 + 0.035 * state->throbber_amp), 0.0, 0.055);
+        double r = 0.42, g = 0.67, b = 1.0; // light-blue reflected from the strip
+        if (c.tinted && state->throbber_amp > 0.82) {
+            const double tint = std::clamp((state->throbber_amp - 0.82) / 0.18, 0.0, 0.25);
+            r = r * (1.0 - tint) + c.tr * tint;
+            g = g * (1.0 - tint) + c.tg * tint;
+            b = b * (1.0 - tint) + c.tb * tint;
+        }
+        cairo_pattern_t *glow = cairo_pattern_create_radial(x, 0.0, 1.0, x, 0.0, sigma);
+        cairo_pattern_add_color_stop_rgba(glow, 0.0, r, g, b, strength);
+        cairo_pattern_add_color_stop_rgba(glow, 1.0, r, g, b, 0.0);
+        cairo_rectangle(cr, 0, 0, width, height);
+        cairo_set_source(cr, glow);
+        cairo_fill(cr);
+        cairo_pattern_destroy(glow);
+    }
+}
+
 void throbber_spawn(AppState *state, int W) {
     ThrobberCell c;
     c.alive = true;
@@ -1089,7 +1119,7 @@ void throbber_spawn(AppState *state, int W) {
     c.base_intensity = 0.35 + g_random_double() * 0.6; // relative shade strength
     c.intensity = 0.0;                                  // eases up from birth (fade-in)
     c.energy = 1.0;
-    c.sigma = 6.0 + g_random_double() * 14.0;        // glow half-width
+    c.sigma = 7.0 + g_random_double() * 25.0;        // glow half-width; broad cells can exceed 50px overall
     c.speed_mul = 0.45 + g_random_double() * g_random_double() * 2.6; // 0.45..~3x, skewed slow
     c.phase = g_random_double() * 6.2831853;
     // 1 in 30 children may pause or run right->left for 20-50 px.
@@ -1154,6 +1184,14 @@ gboolean throbber_tick(gpointer user_data) {
         // Reflexive, amplified desired speed, scaled by this cell's own speed
         // character so some pulses glide and others race across the sweet spot.
         double desired_v = (18.0 + 70.0 * state->throbber_amp) * c.speed_mul;
+
+        // Size-dependent pacing: broad light bars (>50px overall) glide more
+        // slowly; medium bars gain a little pace; narrow sparks move faster.
+        // Width is estimated from the visible Gaussian footprint (about 2.4σ).
+        const double visual_width = c.sigma * 2.4;
+        if (visual_width > 50.0) desired_v /= 1.7;
+        else if (visual_width >= 25.0) desired_v *= 1.12;
+        else desired_v *= 1.32;
 
         if (c.retro && c.retro_px > 0.0) {
             // This rare child pauses or glides right->left for its allotment.
@@ -1221,6 +1259,7 @@ gboolean throbber_tick(gpointer user_data) {
         state->throbber_cells.end());
 
     gtk_widget_queue_draw(state->throbber);
+    if (state->terminal_glow != nullptr) gtk_widget_queue_draw(state->terminal_glow);
     return G_SOURCE_CONTINUE;
 }
 
@@ -1300,7 +1339,22 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_gesture_single_set_button(GTK_GESTURE_SINGLE(right_click), GDK_BUTTON_SECONDARY);
     g_signal_connect(right_click, "pressed", G_CALLBACK(terminal_mouse_menu), terminal);
     gtk_widget_add_controller(terminal, GTK_EVENT_CONTROLLER(right_click));
-    gtk_box_append(GTK_BOX(root), terminal);
+    // Let the throbber cast a faint, moving light field over the terminal
+    // surface without intercepting clicks, text selection, or keyboard input.
+    GtkWidget *terminal_overlay = gtk_overlay_new();
+    gtk_widget_set_hexpand(terminal_overlay, TRUE);
+    gtk_widget_set_vexpand(terminal_overlay, TRUE);
+    gtk_overlay_set_child(GTK_OVERLAY(terminal_overlay), terminal);
+    GtkWidget *glow = gtk_drawing_area_new();
+    state->terminal_glow = glow;
+    gtk_widget_add_css_class(glow, "sleela-terminal-glow");
+    gtk_widget_set_hexpand(glow, TRUE);
+    gtk_widget_set_vexpand(glow, TRUE);
+    gtk_widget_set_can_target(glow, FALSE);
+    gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(glow), terminal_glow_draw, state, nullptr);
+    gtk_overlay_add_overlay(GTK_OVERLAY(terminal_overlay), glow);
+    gtk_overlay_set_measure_overlay(GTK_OVERLAY(terminal_overlay), glow, FALSE);
+    gtk_box_append(GTK_BOX(root), terminal_overlay);
 
     GtkWidget *footer = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_widget_add_css_class(footer, "sleela-footer");
