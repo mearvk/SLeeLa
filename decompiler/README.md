@@ -6,12 +6,45 @@
 
 
 
-
 # Slecompiler™
 
 **Max Rupplin - MEARVK LLC - 2026**
 
 Slecompiler™ is the SLeeLa native-binary analysis, decompilation, library inspection, driver investigation, and refactoring subsystem.
+
+## Build
+
+Requirements: CMake 3.20 or newer, a C++20-capable compiler, and GNU Make (for the Makefile wrapper).
+
+From this directory:
+
+```sh
+make                 # Configure and build
+make test            # Build and run the registered tests
+make check           # Alias for make test
+make stage           # Install into ./build/stage
+make clean           # Remove generated build files
+```
+
+Useful overrides:
+
+```sh
+make BUILD_TYPE=Debug
+make JOBS=4
+make BUILD_EXAMPLES=OFF
+make GENERATOR=Ninja
+make PREFIX=/your/staging/path stage
+```
+
+The same CMake project can be built directly without GNU Make:
+
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release --parallel
+ctest --test-dir build --output-on-failure
+```
+
+The wrapper and CMake project target Linux, macOS, and Windows toolchains. On Windows, use a shell/environment that provides GNU Make and CMake, or invoke CMake directly. A build has not been validated on every platform merely by providing these build definitions.
 
 ## Linux-first native coverage
 
