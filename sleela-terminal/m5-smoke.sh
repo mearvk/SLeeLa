@@ -2,15 +2,23 @@
 set -eu
 SLSH=${1:-./build/slsh}
 ROOT=$(pwd)
+tmpdir=$(mktemp -d)
+cleanup() {
+  rm -rf "$tmpdir"
+}
+trap cleanup EXIT
+trap 'exit 1' HUP INT TERM
 case "$SLSH" in
   /*) SLSH_ABS=$SLSH ;;
   *)  SLSH_ABS=$ROOT/$SLSH ;;
 esac
 
-printf '1\n' | "$SLSH" -c 'PS3="pick> "; select x in alpha beta; do echo "$x:$REPLY"; break; done' 2>/tmp/select.err >/tmp/select.out
-cat /tmp/select.out
-cat /tmp/select.err
+printf '1\n' | "$SLSH" -c 'PS3="pick> "; select x in alpha beta; do echo "$x:$REPLY"; break; done' 2>"$tmpdir/select.err" >"$tmpdir/select.out"
+cat "$tmpdir/select.out"
+cat "$tmpdir/select.err"
 
+# Process-substitution FIFOs must be removed after the owning command exits.
+fifo_before=$(find /tmp -name 'slsh-m5-*' -type p -print | sort)
 test "$(printf '%s\n' 'cat <(printf hi)' | "$SLSH")" = hi
 
 # Verify ordinary utilities are resolved as external executables through PATH.
@@ -23,18 +31,23 @@ test "$(printf '%s\n' 'true | false; echo $?' | "$SLSH")" = 1
 
 # exit is a shell builtin and must terminate the shell with its requested status.
 set +e
-"$SLSH" -c 'printf before; exit 7; printf after' >/tmp/exit.out 2>/tmp/exit.err
+"$SLSH" -c 'printf before; exit 7; printf after' >"$tmpdir/exit.out" 2>"$tmpdir/exit.err"
 exit_status=$?
 set -e
 test "$exit_status" -eq 7
-test "$(cat /tmp/exit.out)" = before
+test "$(cat "$tmpdir/exit.out")" = before
 
 test "$(printf '%s\n' 'printf hi > >(cat)' | "$SLSH")" = hi
+fifo_after=$(find /tmp -name 'slsh-m5-*' -type p -print | sort)
+test "$fifo_before" = "$fifo_after" || {
+  echo "process-substitution FIFO leaked into /tmp" >&2
+  echo "before: $fifo_before" >&2
+  echo "after:  $fifo_after" >&2
+  exit 1
+}
 
 test "$(printf '%s\n' "trap 'echo trapped' USR1" 'kill -USR1 $$' | "$SLSH")" = trapped
 
-tmpdir=$(mktemp -d)
-trap 'rm -rf "$tmpdir" /tmp/select.err /tmp/select.out /tmp/exit.out /tmp/exit.err' EXIT
 mkdir -p "$tmpdir/a/include" "$tmpdir/b/include"
 touch "$tmpdir/a/include/x.hpp" "$tmpdir/b/include/y.hpp" "$tmpdir/a/include/evil;echo-INJECTED.hpp"
 actual=$(cd "$tmpdir" && "$SLSH_ABS" -c 'echo */include/*.hpp')
