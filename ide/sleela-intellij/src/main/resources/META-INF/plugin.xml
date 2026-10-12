@@ -11,18 +11,23 @@
         Turing-complete C/C++ execution core. This plugin keeps the native SLeeLa
         compiler (<i>Sleelvac&trade;</i>) authoritative: syntax, parsing, and
         diagnostics come from the real compiler, never a second grammar.</p>
+        <h3>For every developer</h3>
         <ul>
-            <li>Recognizes <code>.sleela</code> source files.</li>
-            <li>Syntax highlighting derived from the normative <code>SLEELA.syntax</code> grammar.</li>
-            <li>Live diagnostics from the native <code>sleela check</code> compiler bridge.</li>
-            <li>Line/block comment support and a customizable color scheme.</li>
+            <li><b>Novice:</b> New&nbsp;→&nbsp;SLeeLa&nbsp;File templates, a gutter Run button,
+                a branded SLeeLa tool window with one-click Run / Check / Build, and
+                in-editor links to the language reference.</li>
+            <li><b>Professional:</b> SLeeLa run configurations, Nordshrift transpile,
+                artifact build, compiler diagnostics, and keyboard-mapped actions.</li>
         </ul>
         <p><b>SLeeLa — MEARVK LLC — 2026</b></p>
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
 
+    <resource-bundle>messages.SleelaBundle</resource-bundle>
+
     <extensions defaultExtensionNs="com.intellij">
+        <!-- Language -->
         <fileType
             name="SLeeLa"
             language="SLeeLa"
@@ -43,5 +48,109 @@
             implementationClass="com.mearvk.sleela.ide.SleelaDiagnosticAnnotator"/>
         <colorSettingsPage
             implementation="com.mearvk.sleela.ide.SleelaColorSettingsPage"/>
+
+        <!-- Run / build -->
+        <configurationType
+            implementation="com.mearvk.sleela.ide.run.SleelaRunConfigurationType"/>
+        <runConfigurationProducer
+            implementation="com.mearvk.sleela.ide.run.SleelaRunConfigurationProducer"/>
+
+        <!-- Tool window -->
+        <toolWindow
+            id="SLeeLa"
+            anchor="right"
+            factoryClass="com.mearvk.sleela.ide.toolwindow.SleelaToolWindowFactory"
+            icon="com.mearvk.sleela.ide.SleelaIcons.TOOL_WINDOW"/>
+
+        <!-- Notifications -->
+        <notificationGroup
+            id="SLeeLa"
+            displayType="BALLOON"
+            key="notification.group.sleela"/>
+
+        <!-- New file templates -->
+        <internalFileTemplate name="SLeeLa Class"/>
+        <internalFileTemplate name="SLeeLa Program"/>
+        <internalFileTemplate name="SLeeLa File"/>
     </extensions>
+
+    <actions>
+        <!-- Individual actions -->
+        <action id="Sleela.RunFile"
+                class="com.mearvk.sleela.ide.actions.SleelaRunFileAction"
+                icon="com.mearvk.sleela.ide.SleelaIcons.RUN">
+            <keyboard-shortcut keymap="$default" first-keystroke="control shift F10"/>
+        </action>
+        <action id="Sleela.CheckFile"
+                class="com.mearvk.sleela.ide.actions.SleelaCheckFileAction"
+                icon="com.mearvk.sleela.ide.SleelaIcons.CHECK">
+            <keyboard-shortcut keymap="$default" first-keystroke="control shift K"/>
+        </action>
+        <action id="Sleela.BuildFile"
+                class="com.mearvk.sleela.ide.actions.SleelaBuildFileAction"
+                icon="com.mearvk.sleela.ide.SleelaIcons.BUILD"/>
+        <action id="Sleela.TranspileFile"
+                class="com.mearvk.sleela.ide.actions.SleelaTranspileFileAction"
+                icon="com.mearvk.sleela.ide.SleelaIcons.TRANSPILE"/>
+        <action id="Sleela.Version"
+                class="com.mearvk.sleela.ide.actions.SleelaVersionAction"/>
+        <action id="Sleela.OpenSyntax"
+                class="com.mearvk.sleela.ide.actions.SleelaOpenSyntaxAction"/>
+        <action id="Sleela.OpenHomepage"
+                class="com.mearvk.sleela.ide.actions.SleelaOpenHomepageAction"/>
+
+        <!-- New SLeeLa File (added to the New menu) -->
+        <action id="Sleela.NewFile"
+                class="com.mearvk.sleela.ide.actions.SleelaNewFileAction"
+                icon="com.mearvk.sleela.ide.SleelaIcons.FILE">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
+
+        <!-- Reusable group of file actions for the tool window toolbar -->
+        <group id="Sleela.ToolWindow.Actions">
+            <reference ref="Sleela.RunFile"/>
+            <reference ref="Sleela.CheckFile"/>
+            <reference ref="Sleela.BuildFile"/>
+            <reference ref="Sleela.TranspileFile"/>
+        </group>
+
+        <!-- Top-level "SLeeLa" main-menu entry -->
+        <group id="Sleela.MainMenu" text="SLee_La" description="SLeeLa language actions" popup="true">
+            <add-to-group group-id="MainMenu" anchor="before" relative-to-action="HelpMenu"/>
+            <reference ref="Sleela.RunFile"/>
+            <reference ref="Sleela.CheckFile"/>
+            <reference ref="Sleela.BuildFile"/>
+            <reference ref="Sleela.TranspileFile"/>
+            <separator/>
+            <reference ref="Sleela.Version"/>
+            <separator/>
+            <reference ref="Sleela.OpenSyntax"/>
+            <reference ref="Sleela.OpenHomepage"/>
+        </group>
+
+        <!-- Editor context menu -->
+        <group id="Sleela.EditorPopup">
+            <reference ref="Sleela.RunFile"/>
+            <reference ref="Sleela.CheckFile"/>
+            <reference ref="Sleela.BuildFile"/>
+            <reference ref="Sleela.TranspileFile"/>
+            <separator/>
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </group>
+
+        <!-- Project view (file tree) context menu -->
+        <group id="Sleela.ProjectViewPopup">
+            <reference ref="Sleela.RunFile"/>
+            <reference ref="Sleela.CheckFile"/>
+            <separator/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
+        </group>
+
+        <!-- Main toolbar run-actions area -->
+        <group id="Sleela.MainToolbar">
+            <reference ref="Sleela.RunFile"/>
+            <reference ref="Sleela.CheckFile"/>
+            <add-to-group group-id="MainToolBar" anchor="last"/>
+        </group>
+    </actions>
 </idea-plugin>
