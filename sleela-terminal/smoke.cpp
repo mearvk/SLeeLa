@@ -222,6 +222,29 @@ int main() {
         assert(run("while false; do echo loop; done", env) == 0);
     }
 
+    // --- Standard ls option regression tests --------------------------------
+    {
+        Environment env;
+        const std::string root = "/tmp/sleela-ls-flags-regression";
+        ::mkdir(root.c_str(), 0700);
+        const std::string hidden = root + "/.hidden";
+        const std::string visible = root + "/visible.txt";
+        { std::ofstream out(hidden); out << "hidden"; }
+        { std::ofstream out(visible); out << "visible"; }
+        assert(run("ls -l " + root, env) == 0);
+        assert(run("ls -la " + root, env) == 0);
+        assert(run("ls -lh " + root, env) == 0);
+        assert(run("ls -F " + root, env) == 0);
+        assert(run("ls -d " + root, env) == 0);
+        assert(run("ls -1 -- " + visible, env) == 0);
+        // Option-looking arguments are preserved for external programs too.
+        run("flag_output=$(printf '%s' -la)", env);
+        assert(env.get("flag_output") == "-la");
+        ::unlink(hidden.c_str());
+        ::unlink(visible.c_str());
+        ::rmdir(root.c_str());
+    }
+
     // --- L5: M2 execution (for / case / functions / command subst) ---------
     {
         Environment env;
