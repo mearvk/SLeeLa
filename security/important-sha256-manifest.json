@@ -55,12 +55,28 @@
       "sha256": "0f6c75588c59a8ff10a8ff6cb2172b3b363e65734c8d07914cce9ca1cc1a0c3b"
     },
     {
+      "path": "antivirus/tests/test_eicar_integration.py",
+      "sha256": "11b9f5b8a8374f7cb60d95573b94eea225ebf011d0706740fdc250813964970e"
+    },
+    {
       "path": "antivirus/tests/test_scan.c",
       "sha256": "b4e77a08aa57ca9041bdf2ea3481703eecb0769c73ce7b4d5a874c71f9b7114f"
     },
     {
+      "path": "antivirus/tests/test_scan_report.py",
+      "sha256": "e8ecae38f3527f1d402bc0d1de9c383bc5035e93cc3e21ca7129d31295041d98"
+    },
+    {
       "path": "antivirus/tests/test_tools.py",
-      "sha256": "abb914a693f22385e23891c1361d620e2d6323dc0747cdb0f2fcb781f1f0f542"
+      "sha256": "66dd78151795a4ad03eb25535251a9f1825e08725d665a6944a7e0978116b8d4"
+    },
+    {
+      "path": "antivirus/tests/test_update_clamav.py",
+      "sha256": "6b424e81b3e97358a904ac84a47b34d310da4345f3938316214669eed42ff637"
+    },
+    {
+      "path": "antivirus/tests/test_verify_signature.py",
+      "sha256": "441d243dcafcec548d1d4e755cad4d9b48ec79698a5e382ed2977799f898b812"
     },
     {
       "path": "antivirus/tools/sleelavirin_clamav.py",
@@ -68,11 +84,19 @@
     },
     {
       "path": "antivirus/tools/sleelavirin_import_clamav.py",
-      "sha256": "161014fea73a636613237e2127c2e80058cf587d18aef8ba972701b4f6fdc9ee"
+      "sha256": "f1cedc82c42d935584872f6632fdb1d6ea3472b8af1e3d9da744ba6c0b9adc46"
     },
     {
       "path": "antivirus/tools/sleelavirin_scan.py",
-      "sha256": "fbe0828d793623ece08b366739ab44cf3f0c20872dca0f114ae490ce4aba8608"
+      "sha256": "a0da56e4a3d47b698d51ba2965faa0c5d0be4ffeb091d1c34187d9a17f1e9de8"
+    },
+    {
+      "path": "antivirus/tools/sleelavirin_update_clamav.py",
+      "sha256": "0387cf9b6209a61bbb07a9cf47c2ec735bc714838df9773ffff428d3691011ec"
+    },
+    {
+      "path": "antivirus/tools/sleelavirin_verify_signature.py",
+      "sha256": "9d854c994de5004835e59c123647549b1078f3ae83f06785335a0f1bed79fcb0"
     },
     {
       "path": "api/ANNOTATION_API.md",
