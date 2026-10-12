@@ -120,7 +120,8 @@ int sleelavirin_hashmap_scan(const sleelavirin_hashmap_t *map,
             }
         }
     }
-    out->kind = SLEELAVIRIN_CLEAN;
-    out->confidence = 100;
+    /* No known match is not proof that a file is clean. */
+    out->kind = SLEELAVIRIN_UNKNOWN;
+    out->confidence = 0;
     return 0;
 }
