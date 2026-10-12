@@ -116,3 +116,8 @@ Selections are saved to `$XDG_CONFIG_HOME/sleela/footerbar-topics.conf`, or `~/.
 98. `stem-cells`
 99. `surgery`
 100. `vaccinology`
+
+## Freshness and footer ticker
+
+The GUI requests Google News RSS items from the past day, displays up to eight headlines, and refreshes every 15 minutes during the local 9 AM–5 PM workday and hourly outside those hours. Footer text uses a grey fill with a 1px white outline. Rightward scrolling can be delayed by 5, 10, 15, 30, 45, or 60 minutes in the GUI Settings under **Footer ticker**. Network access and `curl` are required.
+
