@@ -88,6 +88,20 @@ void writeBytes(const std::string& s) {
     }
 }
 
+std::string colourPrompt(const std::string& prompt) {
+    // Colour the conventional username@computername: prompt without changing
+    // the plain prompt stored by Environment or reported by the prompt command.
+    const std::size_t at = prompt.find('@');
+    const std::size_t colon = prompt.find(':', at == std::string::npos ? 0 : at + 1);
+    if (at == std::string::npos || colon == std::string::npos ||
+        colon + 1 >= prompt.size() || prompt[colon + 1] != ' ') {
+        return prompt;
+    }
+    return "\033[1;32m" + prompt.substr(0, at) + "\033[0m@" +
+           "\033[1;34m" + prompt.substr(at + 1, colon - at - 1) +
+           "\033[0m:\033[0m ";
+}
+
 void redrawLine(const std::string& prompt, const std::string& line, std::size_t cursor) {
     writeBytes("\r\x1b[2K" + prompt + line + "\x1b[K");
     const std::size_t right = line.size() - cursor;
@@ -378,15 +392,15 @@ int repl(Environment& env) {
             (void)::write(STDOUT_FILENO, frame.data(), frame.size());
             std::this_thread::sleep_for(std::chrono::milliseconds(180));
         }
-        // Clear the faded banner, then delete its row. This shifts the live
-        // prompt/input row up to line 1 and lets the terminal repaint the screen.
-        const std::string clear_and_promote = "\033[1;1H\033[2K\033[1;1H\033[M";
+        // Clear the faded banner and delete its row, promoting the prompt to
+        // line 1. Reset to column 1 so the next repaint starts at the prompt front.
+        const std::string clear_and_promote = "\033[1;1H\033[2K\033[1;1H\033[M\033[1;1H";
         (void)::write(STDOUT_FILENO, clear_and_promote.data(), clear_and_promote.size());
     }).detach();
 
     for (;;) {
         bool eof = false;
-        const std::string line = readInteractiveLine(env.prompt(), history, eof);
+        const std::string line = readInteractiveLine(colourPrompt(env.prompt()), history, eof);
         if (g_interrupted) {
             g_interrupted = 0;
             continue;
