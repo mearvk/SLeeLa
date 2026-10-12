@@ -6,7 +6,7 @@
 #
 # The repo intentionally does NOT commit gradle/wrapper/gradle-wrapper.jar (it is
 # a binary materialized on demand; see sleela-intellij/.gitignore). This script
-# regenerates it pinned to the version the repo expects (8.14.3).
+# regenerates it pinned to the version the repo expects (9.8.0).
 #
 # Why not just `cd sleela-intellij && gradle wrapper`? Because settings.gradle.kts
 # references the IntelliJ Platform plugin, so evaluating the real project needs

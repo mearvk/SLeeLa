@@ -11,7 +11,9 @@ IDE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 REPO_ROOT="$(cd "$IDE_DIR/.." && pwd)"
 PLUGIN_DIR="$IDE_DIR/sleela-intellij"
 
-GRADLE_VERSION="8.14.3"
+# The IntelliJ Platform Gradle Plugin 2.19.0 (see build.gradle.kts) requires
+# Gradle 9.0.0+. Keep this in sync with gradle-wrapper.properties.
+GRADLE_VERSION="9.8.0"
 
 # --- logging -----------------------------------------------------------------
 log()  { printf '\033[1;32m[sleela-ide]\033[0m %s\n' "$*"; }
@@ -65,7 +67,7 @@ ensure_jdk21() {
 }
 
 # --- gradle launcher ---------------------------------------------------------
-# Prefer the project wrapper (reproducible 8.14.3). Fall back to a system gradle
+# Prefer the project wrapper (reproducible 9.8.0). Fall back to a system gradle
 # only when the wrapper jar has not been generated yet.
 gradle_cmd() {
   # Prefer the wrapper whenever its jar exists. Invoke via `sh gradlew` so a

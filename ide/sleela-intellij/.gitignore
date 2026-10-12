@@ -2,5 +2,5 @@
 .gradle/
 build/
 # The Gradle wrapper jar is a binary materialized on demand; run
-# `gradle wrapper --gradle-version 8.14.3` to generate it (see README).
+# `gradle wrapper --gradle-version 9.8.0` to generate it (see README).
 gradle/wrapper/gradle-wrapper.jar

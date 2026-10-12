@@ -73,7 +73,7 @@ materializes on demand). On a networked machine, generate it once:
 
 ```sh
 cd ide/sleela-intellij
-gradle wrapper --gradle-version 8.14.3   # creates gradle/wrapper/gradle-wrapper.jar
+gradle wrapper --gradle-version 9.8.0   # creates gradle/wrapper/gradle-wrapper.jar
 ```
 
 Then build and run a sandbox IDE with the plugin:
@@ -85,7 +85,8 @@ Then build and run a sandbox IDE with the plugin:
 ```
 
 If `./gradlew` is unavailable before the wrapper jar exists, use a local
-Gradle 8.14.x: `gradle build`.
+Gradle 9.x: `gradle build` (the IntelliJ Platform Gradle Plugin 2.19.0 requires
+Gradle 9.0.0 or newer).
 
 ## Status
 

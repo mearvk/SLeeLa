@@ -5,7 +5,7 @@ them from anywhere; each resolves the repo layout relative to its own location.
 
 | Script | What it produces | Network? |
 |---|---|---|
-| `gen-gradle-wrapper.sh` | `sleela-intellij/gradle/wrapper/gradle-wrapper.jar` (pinned to Gradle 8.14.3) | No |
+| `gen-gradle-wrapper.sh` | `sleela-intellij/gradle/wrapper/gradle-wrapper.jar` (pinned to Gradle 9.8.0) | No |
 | `build-native-compiler.sh` | `impl/build/sleela` — the native compiler the IDE drives | No |
 | `build-plugin.sh` | `sleela-intellij/build/distributions/sleela-intellij-<ver>.zip` | **Yes** (IntelliJ SDK) |
 | `build-all.sh` | All of the above in order | Yes (step 3 only) |
