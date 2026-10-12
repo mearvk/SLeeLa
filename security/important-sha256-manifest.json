@@ -3492,7 +3492,7 @@
     },
     {
       "path": "debugger/tests/run-tests.sh",
-      "sha256": "3666b53cc50029bf25b21f3e33a4a247a0ba7dc8a5edfd5c01b7ca7e75ccd4e1"
+      "sha256": "98ae2819d1885129d4f0043ca747027dec65eba7d57178bdf2de3c902932dc64"
     },
     {
       "path": "decompiler/cli/main.cpp",
