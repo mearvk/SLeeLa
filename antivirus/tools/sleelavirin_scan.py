@@ -158,6 +158,8 @@ def clamav_scan_one(executable, path, size_limit, scan_limit, recursion_limit, i
 
 
 def safe_quarantine(path, destination, scanned_roots, expected_stamp):
+    if path.is_symlink():
+        raise ValueError("refusing to quarantine a symbolic link; scan and quarantine its target explicitly")
     source = path.resolve(strict=True)
     dest = destination.resolve()
     if source == dest or dest in source.parents:
