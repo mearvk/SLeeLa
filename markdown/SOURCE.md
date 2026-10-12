@@ -128,3 +128,8 @@ This native module is separate from the source-language grammar. Compiler/type-c
 UTF-4088 in utf-4088/ is an experimental catalogue and identifier namespace, not a Unicode encoding. Its SLeeLa adapter performs exact lookup against the published front-end registry. Experimental IDs above U+10FFFF are not Unicode scalar values and must never be passed to the native UTF-8 encoder. The catalogue's declared C1048576 capacity is distinct from the currently populated registry.
 
 See alphabet/sleela/UNICODE-AND-CHARACTER-SETS.md, alphabet/sleela/CONFORMANCE-TESTS.md, and utf-4088/SLeeLa-ALPHABET-INTEGRATION.md for the cross-component contract and outstanding compiler/VM integration tests.
+
+
+## UTF-4088 input-map ordering
+
+The specialized UTF-4088 catalogue defines its spatial input-map traversal and abstract pressure iterations in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). The National Lien subject-index policy is in [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). Map coordinates, pressure levels (1–50), permanent catalogue IDs, and alphabetic ranks are independent fields; none should be silently substituted for another. Pressure is an algorithmic iteration level, not a physical quantity.
