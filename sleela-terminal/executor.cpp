@@ -211,9 +211,9 @@ Topics: expansion, control, jobs, io, process, traps, select, prompt, soros,
 options, portability, build. Use help TOPIC for details.
 See README.md, BUILD-PLATFORMS.md, and M5-HARDENING.md.)HELP"},
         {"expansion", R"HELP(Expansion
-$name and \${name}; positional parameters $1..$9, $#, $?, and $@.
-Arithmetic: $(( expression )). Parameter operators: \${x:-default},
-\${x:=default}, \${x:?message}, \${x:+alternate}, and \${#x}.
+$name and ${name}; positional parameters $1..$9, $#, $?, and $@.
+Arithmetic: $(( expression )). Parameter operators: ${x:-default},
+${x:=default}, ${x:?message}, ${x:+alternate}, and ${#x}.
 Command substitution: $( commands ). Tilde expansion: ~ and ~user.
 Brace expansion: {a,b} and {1..5}; pathname patterns: *, ?, [a-z], [!0-9].
 Field splitting and globbing are supported, but quote fidelity has known gaps:
