@@ -62,3 +62,13 @@ Release checklist:
 - Before/after metadata checks cannot eliminate all time-of-check/time-of-use races.
 - A manifest checksum without an independently trusted expected value does not authenticate code or index origin.
 - CI static analysis and unit tests reduce risk but are not a substitute for an independent security review or platform-specific penetration testing.
+
+
+## ClamAV database acquisition and precious-file integrity
+
+- Retrieve updates with the supported `freshclam` client; do not treat a direct HTTP download or a checksum published beside an untrusted file as sufficient authentication.
+- The SLeeLa updater stages database files separately, requires FreshClam to exit successfully, and requires `clamscan` to load and scan using the staged database before publishing it.
+- Every stored `.cvd`/`.cld` file receives a SHA-256 digest and byte length in `manifest.json`. The snapshot ID is derived from the canonical database-entry list. The `current.json` pointer is replaced atomically only after validation, and older snapshots remain available.
+- Keep the cache out of version control and restrict write access to the updater account. For stronger rollback protection, store the expected snapshot ID or a signed manifest in a separate trusted location. A SHA-256 value is an integrity fingerprint, not a publisher signature; an attacker who can replace both a database and its manifest can recompute the hash.
+- Run `python3 antivirus/tools/sleelavirin_update_clamav.py --check PATH_TO_SNAPSHOT` to verify the snapshot against its manifest. This checks local integrity; it does not replace upstream CVD signature verification.
+- Native SHA-256 index imports are only compatible subsets of supported extracted `.hsb` records. Keep the full ClamAV database for the ClamAV engine; do not describe the native subset as equivalent coverage.
