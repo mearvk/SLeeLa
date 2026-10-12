@@ -14,6 +14,7 @@ object SleelaCompilerProviders {
     @Volatile private var provider: SleelaCompilerProvider? = null
 
     fun install(value: SleelaCompilerProvider) { provider = value }
+    fun isInstalled(): Boolean = provider != null
     fun create(projectRoot: Path): SleelaCompilerBridge =
         requireNotNull(provider) { "No SLeeLa compiler provider has been installed for this IDE project" }
             .create(projectRoot)
