@@ -254,7 +254,7 @@ class DefinitionImporterTests(unittest.TestCase):
     def test_corrupt_database_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
             database = Path(temp) / "corrupt.txt"
-            database.write_text("not-a-sha256-record\\n")
+            database.write_text("not-a-sha256-record\n")
             errors, count = importer.validate_database(database)
             self.assertTrue(errors)
             self.assertEqual(count, 0)
@@ -265,9 +265,9 @@ class DefinitionImporterTests(unittest.TestCase):
             root = Path(temp)
             source = root / "source"
             source.mkdir()
-            (source / "daily.hsb").write_text(f"{digest}:7:Example.Signature\\n")
+            (source / "daily.hsb").write_text(f"{digest}:7:Example.Signature\n")
             output = root / "native.txt"
-            output.write_text("# previous index\\n" + "e" * 64 + " old\\n")
+            output.write_text("# previous index\n" + "e" * 64 + " old\n")
             previous = output.read_text()
             real_replace = os.replace
             calls = {"count": 0}
