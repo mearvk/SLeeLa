@@ -21,5 +21,15 @@ libsleela-router.a: ../router/sleela_router.o
 ../router/sleela_router.o:
 	$(CC) $(CFLAGS) -I../router -c ../router/sleela_router.c -o $@
 
+build/test_api_contracts: tests/test_api_contracts.c sleela_post.c ../listener/sleela_listener.c ../router/sleela_router.c | build
+	$(CC) $(CFLAGS) -I. -I../listener -I../router $^ -o $@
+
+build:
+	mkdir -p build
+
+test: build/test_api_contracts
+	./build/test_api_contracts
+
 clean:
 	rm -f *.o *.a ../listener/*.o ../router/*.o
+	rm -rf build
