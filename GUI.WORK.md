@@ -47,7 +47,7 @@ Any new output presentation must preserve shell behavior:
 
 ## 3. `ls` output and shell behavior
 
-The `ls` shell builtin now emits conventional plain text instead of custom rounded tiles. It parses clustered flags such as `-la` and supports `-l`, `-a`, `-A`, `-h`, `-1`, `-F`, `-d`, and `--`. Long format includes permissions, link count, numeric uid/gid, size, modification time, and name. Styling escapes are not written into normal, redirected, or piped command output.
+The custom `ls` builtin has been removed. `slsh` now resolves `ls` through the normal external-command PATH lookup, so the operating system's standard `ls` handles `-l`, `-la`, and its full native option set. Command flags remain separate argv entries and are not stripped or reinterpreted by the shell. Standard output, pipelines, and redirection remain unstyled.
 
 External commands continue to receive option flags in argv; the leading hyphen is not stripped by the shell. Regression checks have been added for the built-in's common flags and an external command receiving `-la` as an argument.
 
