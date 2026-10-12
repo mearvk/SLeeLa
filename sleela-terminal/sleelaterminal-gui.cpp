@@ -1106,6 +1106,8 @@ void footer_feed_finished(GObject *source, GAsyncResult *result, gpointer user_d
     if (error) g_error_free(error);
 }
 
+gboolean footer_feed_tick(gpointer user_data);
+
 void footer_ticker_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (!state || state->footer_full_text.empty() || width <= 0 || height <= 0) return;
