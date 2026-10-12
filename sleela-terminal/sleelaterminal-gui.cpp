@@ -231,8 +231,8 @@ void install_css(AppState *state) {
     const char *css = R"CSS(
         @define-color sl_bg          #15101c;
         @define-color sl_textpane_bg #fcfcfc;
-        @define-color sl_output_bg   #e4e4e4;
-        @define-color sl_output_fg   #303030;
+        @define-color sl_output_bg   #4b4b4b;
+        @define-color sl_output_fg   #f2f2f2;
         @define-color sl_surface     #21112f;
         @define-color sl_chrome      #24103f;
         @define-color sl_border      #7f56aa;
@@ -500,8 +500,14 @@ void install_css(AppState *state) {
         }
         button.suggested-action:hover { background: @sl_menu_hover; }
 
-        /* Command-result bubbles are four 6-point RGB steps darker than
-           the #fcfcfc text pane. Dark text preserves comfortable contrast. */
+        /* Three-colour reading hierarchy:
+           1) the terminal/text-pane surface is #fcfcfc;
+           2) command-result bubbles use a clearly darker neutral charcoal;
+           3) result text is a soft near-white for readable contrast on charcoal. */
+        vte-terminal {
+            color: #262626;
+            background: @sl_textpane_bg;
+        }
         textview.sleela-scan-output {
             color: @sl_output_fg;
             background: @sl_output_bg;
