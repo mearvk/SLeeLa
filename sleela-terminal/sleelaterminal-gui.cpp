@@ -1693,8 +1693,12 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_widget_set_hexpand(footer_text, TRUE);
     gtk_widget_set_halign(footer_text, GTK_ALIGN_START);
     gtk_widget_set_valign(footer_text, GTK_ALIGN_CENTER);
-    gtk_label_set_ellipsize(state->footer_text, PANGO_ELLIPSIZE_NONE);
+    // Keep RSS text from contributing its full natural width to the window's
+    // minimum size. The ticker gets a bounded width and truncates to its actual
+    // allocation; the footer/window must never grow to accommodate a headline.
+    gtk_label_set_ellipsize(state->footer_text, PANGO_ELLIPSIZE_END);
     gtk_label_set_width_chars(state->footer_text, 28);
+    gtk_label_set_max_width_chars(state->footer_text, 44);
     gtk_box_append(GTK_BOX(footer), footer_text);
 
     // CMD footer control: strict image only; the image itself is the clickable surface.
