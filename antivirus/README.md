@@ -101,7 +101,7 @@ make test
 
 The local Makefile writes generated objects, the static library, and the self-test executable to `antivirus/build/`. Run `make -C antivirus clean` to remove these generated files.
 
-**Implementation boundary:** the current C core compares caller-supplied fingerprints and evaluates caller-supplied heuristic indicators. It does not read or hash files itself, update signature databases, or invoke ClamAV, Windows AMSI, or another provider. The self-test is a unit test of the current core, not evidence of full malware-detection coverage. Provider adapters and safe file-hashing integration remain separate work.
+**Component boundary:** the original portable C fingerprint-matcher library compares caller-supplied fingerprints and evaluates caller-supplied heuristic indicators; its unit test does not establish broad malware-detection coverage. The separate native SHA-256 scanner below reads files and matches their digests against a local index. The Python coordinator supplies traversal, limits, reporting, and response policy, while the optional ClamAV adapter invokes an installed ClamAV executable. These components have distinct responsibilities and none provides a guarantee that an undetected file is safe.
 
 ## Scanner backends
 
@@ -158,7 +158,7 @@ Sleelavirin does not initially attempt to reproduce the internals of commercial 
 
 ## Status
 
-**Architectural / initial package structure.** Individual scanners, providers, and rule sets become **Implemented** only when their corresponding source and tests exist.
+**Implementation status varies by component.** The native SHA-256 scanner, scan coordinator, optional ClamAV adapter and updater, compatible-index importer, integrity-manifest tool, and associated tests have source implementations. Treat platform packages as release-ready only after the corresponding CI build and smoke tests pass. Features not documented with implementation and tests remain architectural or planned; no-match is never a safety guarantee.
 
 Max Rupplin — MEARVK LLC — 2026
 
