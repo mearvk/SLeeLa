@@ -25,3 +25,8 @@ The alphabet documentation directory describes alphabet, character, and characte
 5. Do not claim full compiler/SLVM support until end-to-end tests prove it.
 
 Run the native C++ runtime tests with: make -C lib/alphabet/native test. Compiler parsing of C<n>, SLeeLa-facing native bindings, normalization, and grapheme segmentation remain separate integration work.
+
+
+## UTF-4088 protocol relay
+
+The specialized UTF-4088 catalogue specifications are mirrored here so the general alphabet documentation remains navigable from one directory. Start at [UTF-4088-RELAY.md](UTF-4088-RELAY.md) for the map traversal and pressure protocol, National Lien Alphabetic Register, probe ordering and match-driven candidate generation, identifier/serialization contract, and SLeeLa adapter integration. The canonical protocol set and cross-directory index live in [utf-4088/ALPHABET-RELAY.md](../../utf-4088/ALPHABET-RELAY.md). Keep mirror copies synchronized when the canonical documents change.
