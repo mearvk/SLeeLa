@@ -43,6 +43,8 @@ def validate_manifest(index_path, manifest_path):
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         return [f"cannot read/parse manifest or index: {exc}"]
+    if not isinstance(manifest, dict):
+        return ["manifest root must be a JSON object"]
     errors = []
     if manifest.get("schema") != "sleelavirin-native-index-manifest-v1":
         errors.append("unsupported or missing manifest schema")
