@@ -13,3 +13,8 @@ The adapter compares the UTF-4088 identifier against the registry's explicit cod
 ## Build
 
 The UTF-4088 CMake target includes the adapter. Build and run the test suite using the commands in README.md. A successful UTF-4088 build verifies this adapter in its own library; it does not by itself establish that SLeeLa source syntax or SLVM native bindings are wired to it.
+
+
+## Input map and ordered register
+
+The spatial traversal contract is documented in [INPUT-MAP-AND-PRESSURE.md](INPUT-MAP-AND-PRESSURE.md), and its subject index policy in [NATIONAL-LIEN-REGISTER.md](NATIONAL-LIEN-REGISTER.md). Keep permanent UTF-4088 identifiers separate from alphabetic ranks and map coordinates. Pressure is an abstract integer iteration level from 1 through 50; it is not a Unicode value or physical signal.
