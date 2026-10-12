@@ -364,22 +364,22 @@ void install_css() {
            softly rounded corners (18% radius) to match the title-bar blue. */
         headerbar.sleela-titlebar button.sleela-settings-btn {
             color: #ffffff;
-            background: @sl_tb_dark_blue;
+            background: #4f74c8;
             border: 1px solid #000000;
             border-radius: 18%;
-            box-shadow: inset 0 1px 0 alpha(#ffffff, 0.22);
+            box-shadow: inset 0 1px 0 alpha(#ffffff, 0.28);
             min-width: 27px;
-            min-height: 27px;
-            padding: 3px;
+            min-height: 19px;
+            padding: 1px 3px;
             margin-right: 4px;
             transition: background 120ms ease, box-shadow 120ms ease;
         }
         headerbar.sleela-titlebar button.sleela-settings-btn:hover {
-            background: #203b78;
-            box-shadow: inset 0 1px 0 alpha(#ffffff, 0.30), 0 0 0 1px alpha(#000000, 0.20);
+            background: #6688d6;
+            box-shadow: inset 0 1px 0 alpha(#ffffff, 0.36), 0 0 0 1px alpha(#000000, 0.20);
         }
         headerbar.sleela-titlebar button.sleela-settings-btn:active {
-            background: @sl_tb_dark_blue;
+            background: #3c5fae;
             box-shadow: inset 0 1px 2px alpha(#000000, 0.35);
         }
         headerbar.sleela-titlebar button.sleela-settings-btn:focus {
@@ -1505,9 +1505,9 @@ void activate(GtkApplication *application, gpointer user_data) {
                 cairo_set_line_width(cr, 1.0);
                 cairo_stroke_preserve(cr);
                 cairo_pattern_t *bevel = cairo_pattern_create_linear(0.0, y, 0.0, y + bar_height);
-                cairo_pattern_add_color_stop_rgb(bevel, 0.0, 0.24, 0.39, 0.72); // soft top highlight
-                cairo_pattern_add_color_stop_rgb(bevel, 0.45, 0.12, 0.25, 0.55);
-                cairo_pattern_add_color_stop_rgb(bevel, 1.0, 0.07, 0.16, 0.38); // shaded lower edge
+                cairo_pattern_add_color_stop_rgb(bevel, 0.0, 0.16, 0.29, 0.62); // dark-blue top highlight
+                cairo_pattern_add_color_stop_rgb(bevel, 0.45, 0.09, 0.19, 0.44);
+                cairo_pattern_add_color_stop_rgb(bevel, 1.0, 0.04, 0.10, 0.27); // deeper shaded lower edge
                 cairo_set_source(cr, bevel);
                 cairo_fill(cr);
                 cairo_pattern_destroy(bevel);
