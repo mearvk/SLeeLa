@@ -45,11 +45,20 @@ reading palette:
 | `--sl-fg-dim` | `rgba(255,255,255,.70)` | secondary / note text |
 | `--sl-accent` | `#9d6cff` | focus ring, suggested action |
 
-The terminal text pane uses `#fcfcfc` (RGB 252, 252, 252). Command-result text
-areas use charcoal `#4b4b4b` with near-white `#f2f2f2` output text. Keep this
-three-colour hierarchy consistent: near-white workspace, dark result surface,
-light readable result text. The purple/black palette belongs to the surrounding
-window chrome only.
+The workspace uses `#fcfcfc` (RGB 252, 252, 252). The terminal
+surface is inset in a rounded charcoal panel (`#4b4b4b`) with a 12px radius,
+fine border, and internal spacing. The custom file-item browser renders each
+entry as an individual rounded chip: regular files use `#626262` with white
+text, and directories use a restrained muted-purple distinction. Keep the
+hierarchy consistent: bright workspace, rounded dark panel, readable light
+text, and slightly lighter item backgrounds. The purple/black palette belongs
+to the surrounding window chrome except for the intentional directory accent.
+
+The file-item browser is a GTK FlowBox renderer rather than terminal ANSI
+output, so each file or directory receives its own rounded widget background.
+It supports directory navigation, parent-directory navigation, a path field,
+sorting directories before files, and opening files with their desktop
+application.
 
 ## 3. Restraint over effects
 
