@@ -46,6 +46,6 @@ The generated symbols for input definitions 1–5 are stored in [symbols-ordered
 
 See [RIGOROUS.INPUTS.md](../utf-4088/RIGOROUS.INPUTS.md) for the five trial tables covering application x/y, depth-pressure iteration, normalized voltage, four-dimensional step sizes, logical time, and sudden-pressure transition flags.
 
-## UTF-4088 source-layer symbol register
+## UTF-4088 source-level geometry and coincidence symbols
 
-See [SYMBOLS.md](../utf-4088/SYMBOLS.md) for the editable catalogue of current 4D-study candidates, including glyphs, stable identities, provisional labels, and maintenance rules.
+See [SYMBOLS.md](../utf-4088/SYMBOLS.md) for the C/C++-grounded inventory of 4D points, voltage-field features, 8×12 glyph topology, graph nodes/edges, and implemented state/edge coalescence. It distinguishes exact packed-ID coincidence from geometric intersection and near-coincidence behavior that is not yet implemented.
