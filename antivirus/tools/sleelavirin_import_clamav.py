@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 from pathlib import Path
 import re
 import sys
@@ -71,18 +72,19 @@ def collect_signatures(source):
     return entries, skipped, errors
 
 
-def write_atomic(path, content):
+def stage_text(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, temp_name = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=str(path.parent))
+    temp_path = Path(temp_name)
     try:
-        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\\n") as handle:
             handle.write(content)
             handle.flush()
             os.fsync(handle.fileno())
-        os.replace(temp_name, path)
+        return temp_path
     except Exception:
         try:
-            os.unlink(temp_name)
+            temp_path.unlink()
         except OSError:
             pass
         raise
@@ -159,12 +161,38 @@ def main():
             "index_sha256": digest,
             "coverage_note": "Compatible extracted .hsb subset only; not equivalent to the full ClamAV signature database.",
         }
-        # Atomic index replacement preserves the prior valid index on all earlier failures.
-        os.replace(temp_path, output)
-        write_atomic(manifest_path, json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+        # Stage provenance before changing the active index. If publication fails,
+        # restore the previous index (or remove the new index if none existed).
+        manifest_temp = stage_text(manifest_path, json.dumps(manifest, indent=2, sort_keys=True) + "\\n")
+        backup_path = None
+        had_output = output.exists()
+        if had_output:
+            fd_backup, backup_name = tempfile.mkstemp(prefix=output.name + ".", suffix=".backup", dir=str(output.parent))
+            os.close(fd_backup)
+            backup_path = Path(backup_name)
+            shutil.copy2(output, backup_path)
+        try:
+            os.replace(temp_path, output)
+            os.replace(manifest_temp, manifest_path)
+        except OSError:
+            if backup_path is not None and backup_path.exists():
+                os.replace(backup_path, output)
+            elif not had_output:
+                try:
+                    output.unlink()
+                except OSError:
+                    pass
+            raise
+        finally:
+            for temporary in (manifest_temp, backup_path):
+                if temporary is not None:
+                    try:
+                        temporary.unlink()
+                    except OSError:
+                        pass
     except OSError as exc:
-        print(f"ERROR writing candidate/manifest: {exc}", file=sys.stderr)
-        print("If index replacement already completed, verify its adjacent manifest before deployment.", file=sys.stderr)
+        print(f"ERROR writing candidate/index manifest: {exc}", file=sys.stderr)
+        print("Active index is preserved or rolled back where the filesystem permits.", file=sys.stderr)
         return 2
     finally:
         try:
