@@ -32,7 +32,8 @@ jobs:
       - name: Headless smoke test
         run: make smoke
       - name: Confirm the X11 backend was selected
-        run: make help | grep -qi "backend auto-detected: linux"
+        run: |
+          make help | grep -qi "backend auto-detected: linux"
 
   macos:
     name: macOS (Cocoa backend)
@@ -50,7 +51,8 @@ jobs:
       - name: Headless smoke test
         run: make smoke
       - name: Confirm the Cocoa backend was selected
-        run: make help | grep -qi "backend auto-detected: macos"
+        run: |
+          make help | grep -qi "backend auto-detected: macos"
 
   windows:
     name: Windows 10+ (Win32 backend, MinGW)
@@ -77,4 +79,5 @@ jobs:
       - name: Headless smoke test
         run: make smoke
       - name: Confirm the Win32 backend was selected
-        run: make help | grep -qi "backend auto-detected: windows"
+        run: |
+          make help | grep -qi "backend auto-detected: windows"
