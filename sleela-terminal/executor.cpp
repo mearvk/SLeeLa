@@ -19,6 +19,10 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
+#include <sstream>
+#include <cstdint>
+#include <iomanip>
+#include <ctime>
 #include <string>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -141,6 +145,14 @@ int biLs(const std::vector<std::string>& args, Environment&) {
     for (std::size_t i = 1; i < args.size(); ++i) {
         const std::string& arg = args[i];
         if (options && arg == "--") { options = false; continue; }
+        if (options && arg == "--help") {
+            std::cout << "Usage: ls [-aAhl1Fd] [--] [PATH ...]\\n"
+                      << "  -a show hidden entries (including . and ..)\\n"
+                      << "  -A show hidden entries except . and ..\\n"
+                      << "  -l long format  -h human-readable sizes  -1 one per line\\n"
+                      << "  -F classify names  -d list directory operands themselves\\n";
+            return 0;
+        }
         if (options && arg.size() > 1 && arg[0] == '-') {
             for (std::size_t j = 1; j < arg.size(); ++j) {
                 switch (arg[j]) {
@@ -192,7 +204,6 @@ int biLs(const std::vector<std::string>& args, Environment&) {
                 if (ec) { had_error = true; ec.clear(); continue; }
                 const std::string name = it->path().filename().string();
                 if (!show_all && !almost_all && !name.empty() && name[0] == '.') continue;
-                if (almost_all && !name.empty() && name[0] == '.') continue;
                 entries.push_back(*it);
             }
             std::sort(entries.begin(), entries.end(), [](const auto& a, const auto& b) {
