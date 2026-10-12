@@ -2,11 +2,46 @@
 <idea-plugin>
     <id>com.mearvk.sleela.ide</id>
     <name>SLeeLa IDE Integration</name>
-    <vendor>MEARVK LLC</vendor>
-    <description><![CDATA[SLeeLa language and mixed-language project integration for the IntelliJ Platform.]]></description>
+    <vendor url="https://github.com/mearvk/SLeeLa" email="support@mearvk.com">MEARVK LLC</vendor>
+    <description><![CDATA[
+        <h2>SLeeLa IDE Integration</h2>
+        <p>First-class <b>SLeeLa</b> language support for the IntelliJ Platform, with
+        mixed-language project integration for C, C++, and Java.</p>
+        <p>SLeeLa is a Java-like native systems language that compiles to bytecode on a
+        Turing-complete C/C++ execution core. This plugin keeps the native SLeeLa
+        compiler (<i>Sleelvac&trade;</i>) authoritative: syntax, parsing, and
+        diagnostics come from the real compiler, never a second grammar.</p>
+        <ul>
+            <li>Recognizes <code>.sleela</code> source files.</li>
+            <li>Syntax highlighting derived from the normative <code>SLEELA.syntax</code> grammar.</li>
+            <li>Live diagnostics from the native <code>sleela check</code> compiler bridge.</li>
+            <li>Line/block comment support and a customizable color scheme.</li>
+        </ul>
+        <p><b>SLeeLa — MEARVK LLC — 2026</b></p>
+    ]]></description>
+
     <depends>com.intellij.modules.platform</depends>
+
     <extensions defaultExtensionNs="com.intellij">
-        <fileType name="SLeeLa" language="SLeeLa" implementationClass="com.mearvk.sleela.ide.SleelaFileType"/>
-        <lang.parserDefinition language="SLeeLa" implementationClass="com.mearvk.sleela.ide.SleelaParserDefinition"/>
+        <fileType
+            name="SLeeLa"
+            language="SLeeLa"
+            extensions="sleela"
+            implementationClass="com.mearvk.sleela.ide.SleelaFileType"
+            fieldName="INSTANCE"/>
+        <lang.parserDefinition
+            language="SLeeLa"
+            implementationClass="com.mearvk.sleela.ide.SleelaParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+            language="SLeeLa"
+            implementationClass="com.mearvk.sleela.ide.SleelaSyntaxHighlighterFactory"/>
+        <lang.commenter
+            language="SLeeLa"
+            implementationClass="com.mearvk.sleela.ide.SleelaCommenter"/>
+        <annotator
+            language="SLeeLa"
+            implementationClass="com.mearvk.sleela.ide.SleelaDiagnosticAnnotator"/>
+        <colorSettingsPage
+            implementation="com.mearvk.sleela.ide.SleelaColorSettingsPage"/>
     </extensions>
 </idea-plugin>
