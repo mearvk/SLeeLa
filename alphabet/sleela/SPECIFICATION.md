@@ -51,3 +51,8 @@ Changes to character syntax or catalogue serialization must update the language 
 UTF-4088 defines a separate experimental spatial traversal protocol in [INPUT-MAP-AND-PRESSURE.md](../../utf-4088/INPUT-MAP-AND-PRESSURE.md). Traversal starts at the top-left, moves right, proceeds down rows, and advances to the next z-layer after completing the current layer. Each element processes pressure iteration levels 1–50 in ascending order. These levels are abstract algorithmic values, not physical pressure or Unicode code points.
 
 The [National Lien Alphabetic Register](../../utf-4088/NATIONAL-LIEN-REGISTER.md) separates permanent catalogue IDs, alphabetic rank, map coordinates, registry ordinal, and pressure level. Its subject meanings must be sourced or explicitly marked provisional/experimental.
+
+
+## 10. Mirrored UTF-4088 protocol documents
+
+For the complete specialized workflow, see the [UTF-4088 relay index](UTF-4088-RELAY.md). Its mirrors define input-map traversal and bounded depth iterations, the National Lien Alphabetic Register, match-driven probe priority, the serialization boundary, and the SLeeLa adapter. The canonical companion index is [utf-4088/ALPHABET-RELAY.md](../../utf-4088/ALPHABET-RELAY.md). The relay describes proposed protocols; executable engine and end-to-end conformance must be demonstrated separately.
