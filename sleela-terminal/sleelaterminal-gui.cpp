@@ -1117,6 +1117,12 @@ void open_software_menu(GtkButton *, gpointer user_data) {
     auto *state = static_cast<AppState *>(g_object_get_data(G_OBJECT(button), "sleela-state"));
     show_install_prompt(state, button, "cmd", "CMD");
 }
+// Declare tab/session helpers before the key handler uses them.
+AppState *root_state(AppState *state);
+void create_new_tab(AppState *owner);
+void close_tab(AppState *session);
+void remove_tab(AppState *session);
+
 // Ctrl+C is copy when VTE has a selection. Without a selection it is left to
 // the PTY so the shell/foreground program receives the normal interrupt key.
 gboolean terminal_key_pressed(GtkEventControllerKey *, guint keyval, guint,
@@ -1782,8 +1788,6 @@ gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_da
 
         // Uniform life across the rail: particles should traverse most of
         // the width horizontally instead of vanishing around the centre.
-        const double frac = (W > 0) ? (c.x / W) : 0.5;
-        const double center_weight = 1.0;
         // Once a particle appears, keep its brightness stable across the
         // visible band. It leaves only when its centre passes the right edge.
         c.energy = 1.0;
@@ -1929,7 +1933,7 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_drawing_area_set_content_width(GTK_DRAWING_AREA(settings_glyph), 15);
     gtk_drawing_area_set_content_height(GTK_DRAWING_AREA(settings_glyph), 10); // ~30% shorter vertically
     gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(settings_glyph),
-        [](GtkDrawingArea *, cairo_t *cr, int width, int height, gpointer) {
+        [](GtkDrawingArea *, cairo_t *cr, int width, int /*height*/, gpointer) {
             const double bar_height = 1.8;
             const double left = 1.0;
             const double right = static_cast<double>(width) - 1.0;
