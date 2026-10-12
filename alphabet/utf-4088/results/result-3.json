@@ -10,9 +10,53 @@
     "meaning_validation": "not_performed"
   },
   "symbol": {
+    "ordinal": 3,
+    "symbol_id": "UTF4088-SYMBOL-000003",
     "derived_symbol_key_u64": "0xFD6497A9A475933E",
     "is_unicode_codepoint": false,
-    "registry_status": "provisional candidate; not published or semantically validated"
+    "glyph_8x12": {
+      "ordinal": 3,
+      "symbol_id": "UTF4088-SYMBOL-000003",
+      "format": "utf4088-binary-glyph-8x12-v1",
+      "width": 8,
+      "height": 12,
+      "pixel_values": {
+        "0": "background",
+        "1": "stroke"
+      },
+      "rows_binary": [
+        "11111101",
+        "01100100",
+        "10010111",
+        "10101001",
+        "10100100",
+        "01110101",
+        "10010011",
+        "00111110",
+        "11011010",
+        "10100110",
+        "01101101",
+        "00010011"
+      ],
+      "rows_ascii": [
+        "######.#",
+        ".##..#..",
+        "#..#.###",
+        "#.#.#..#",
+        "#.#..#..",
+        ".###.#.#",
+        "#..#..##",
+        "..#####.",
+        "##.##.#.",
+        "#.#..##.",
+        ".##.##.#",
+        "...#..##"
+      ],
+      "bitmap_row_major": "111111010110010010010111101010011010010001110101100100110011111011011010101001100110110100010011",
+      "identity_rule": "First 64 bits encode the derived candidate key; final 32 bits encode ordinal * 0x9E3779B1 modulo 2^32, unique for uint32 ordinals.",
+      "encoding_notice": "Experimental glyph bitmap; not a Unicode character, code point, font glyph, or semantically validated symbol."
+    },
+    "registry_status": "provisional unique ordered bitmap; not published or semantically validated"
   },
   "coordinates": {
     "location": {

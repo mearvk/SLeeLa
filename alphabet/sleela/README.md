@@ -35,3 +35,8 @@ The specialized UTF-4088 catalogue specifications are mirrored here so the gener
 ## UTF-4088 input and result samples
 
 The curated five-input probe run is documented in [alphabet/utf-4088/README.md](../utf-4088/README.md). It contains inputs 1–5 as JSON and each corresponding prototype result in JSON, XML, and Markdown, plus consolidated result tables in all three formats. These are reproducible experimental scores, not semantically validated symbols; see the methodology before interpreting the numbers.
+
+
+## Ordered UTF-4088 candidate symbols
+
+The generated symbols for input definitions 1–5 are stored in [symbols-ordered.json](../utf-4088/results/symbols-ordered.json), [symbols-ordered.xml](../utf-4088/results/symbols-ordered.xml), and [symbols-ordered.md](../utf-4088/results/symbols-ordered.md). These are unique experimental 8×12 glyph bitmaps, not Unicode characters or validated lexical symbols.
