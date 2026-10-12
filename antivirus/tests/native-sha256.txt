@@ -1,0 +1,2 @@
+# Test-only SHA-256 signature; never ship as a production detection database.
+eaa50298495d436d42d8a0352d4315c2f052f1129a039c6dbeea422f7463d50d test-sample
