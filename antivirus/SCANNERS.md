@@ -49,7 +49,7 @@ The native index importer accepts only extracted text `.hsb` records with a 64-h
 | `--exclude GLOB` | Exclude matching path/basename; repeatable |
 | `--extension .exe` | Restrict to selected extensions; repeatable |
 | `--follow-symlinks` | Opt in to following symbolic links |
-| `--action report|quarantine|stop` | Report (default), move detections to quarantine, or stop after a native detection |
+| `--action report|quarantine|stop` | Report (default), move detections to quarantine, or stop at the first detection |
 | `--quarantine-dir DIR` | Quarantine destination; files are moved, not deleted |
 
 `--jobs` controls native workers, not ClamAV internal threads. ClamAV scan limits for nested archives are controlled by ClamAV itself. Skipped, unreadable, excluded, or over-limit files mean incomplete coverage, never a clean verdict.
