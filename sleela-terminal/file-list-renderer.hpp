@@ -58,8 +58,9 @@ inline void item_clicked(GtkButton *button, gpointer data) {
         return;
     }
     GError *error = nullptr;
-    GFile *file = g_file_new_for_path(path.c_str());
-    gchar *content_type = g_content_type_guess(path.c_str(), nullptr, 0, nullptr);
+    const std::string native_path = path.string();
+    GFile *file = g_file_new_for_path(native_path.c_str());
+    gchar *content_type = g_content_type_guess(native_path.c_str(), nullptr, 0, nullptr);
     GAppInfo *app = content_type ? g_app_info_get_default_for_type(content_type, FALSE) : nullptr;
     g_free(content_type);
     if (app) {
