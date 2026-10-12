@@ -75,6 +75,18 @@ class ScanCoordinatorTests(unittest.TestCase):
             self.assertEqual(verdict, "ERROR")
             self.assertIn("CHANGED_DURING_SCAN", message)
 
+    def test_file_stamp_tracks_metadata_beyond_size_and_mtime(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "sample"
+            path.write_text("same-size")
+            first = scan.file_stamp(path)
+            # Rewriting identical-length content should normally change ctime even
+            # if a filesystem or caller preserves the modification timestamp.
+            path.write_text("same-size")
+            second = scan.file_stamp(path)
+            self.assertEqual(first[0], second[0])
+            self.assertEqual(len(first), 5)
+
     @mock.patch.object(scan.subprocess, "run")
     def test_clamav_limits_and_no_match(self, run):
         with tempfile.TemporaryDirectory() as temp:
