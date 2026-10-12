@@ -41,3 +41,8 @@ The spatial traversal and pressure rules are defined in [Input Map and Pressure 
 ## Scope and caveats
 
 The current UTF-4088 implementation documents a generated front-end registry of 16,606 records, while catalogue capacity is a separate declaration. This register policy does not automatically create 16,606 verified subject definitions. Populate it from actual registry records, preserve provenance, and mark unknown meanings as unknown rather than inventing them.
+
+
+## Probe-driven candidate discovery
+
+Candidate discovery and probe scheduling are defined separately in [PROBE-ORDERING-AND-MATCHING.md](PROBE-ORDERING-AND-MATCHING.md). Probe priority may optimize discovery logistics, but it must not alter permanent catalogue IDs or replace the separately versioned alphabetic collation. Approximate glyph proximity is evidence for a candidate relationship, not proof of shared meaning.
