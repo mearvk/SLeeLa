@@ -4,7 +4,7 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "878d101a52142f3d2307b6a62689caaf3f4c67ec5b2d7b6983be04b670ab25fc"
+      "sha256": "98ea9dc5601468877654cfa537abacfe4321eaefdca392703660bcc32c0bac98"
     },
     {
       "path": "SLEELA.syntax",
@@ -112,7 +112,7 @@
     },
     {
       "path": "api/API-CATALOG.md",
-      "sha256": "3248016484491820dcc76e26ffb63761730d1507335c2dd179f588341b2d8a2c"
+      "sha256": "fe0cc809c8f30a4a7ed8a3cbeeed88fe63b35affab2a1777f89d5712819e1e6d"
     },
     {
       "path": "api/API.html",
@@ -139,12 +139,20 @@
       "sha256": "692ec64af370d5f061c99e2b39c257dfaedc2453e644b488191ef4a041e0e379"
     },
     {
+      "path": "api/MODULE-COMPLETENESS.md",
+      "sha256": "df5e63122f744d70dc8487cbe6653aab34700029c55bc5c89e678655c3496d4e"
+    },
+    {
       "path": "api/README.md",
-      "sha256": "bed3a401f4c177a60ed58a846535f0a3d552a354ae55c31644c33a81ba827da0"
+      "sha256": "9869c51623c78abeb5e5ca439dd8865a657a2423637728e09554d9ce929328d2"
+    },
+    {
+      "path": "api/SOURCE-COVERAGE-ADDENDUM.md",
+      "sha256": "bfec487fe3757a8b64474ec6508c7747ce339102c41368badb73b61707573bb5"
     },
     {
       "path": "api/SOURCE-COVERAGE.html",
-      "sha256": "a73de153c33a124796b9ca4e6562c61f17cc76f9fef1e7d1b05d711e6e5ee143"
+      "sha256": "ca37efe6b31b79f3a888f356183d0fdeafacaf22e02a523d92fe5d0a15547337"
     },
     {
       "path": "api/ai/API.html",
@@ -368,7 +376,27 @@
     },
     {
       "path": "api/index.html",
-      "sha256": "23df51a719ae9d71e62466e317b63204e508fca7ab4a107862382841d63688fb"
+      "sha256": "b6365614f664d9d09f60043e7cc102c345d7901895c4c7cd8a0c8c2377696391"
+    },
+    {
+      "path": "api/language/README.md",
+      "sha256": "aeb599e4f6ad8da391b88fca94b513b6cb54075700dc47745b332640b3202aa6"
+    },
+    {
+      "path": "api/language/SYNTAX-VERSION-MATRIX.md",
+      "sha256": "bff515a195a71f159114b09c34b51fa5adff61a5f4deb5b09f766d1db9304813"
+    },
+    {
+      "path": "api/language/system-namespace/API.md",
+      "sha256": "56dc54bf3b64e60668c08b256f64a96022d9eaa3bc3532a2dcd20600227099fd"
+    },
+    {
+      "path": "api/language/system-namespace/REFERENCES.md",
+      "sha256": "b7a837b2775832c131e8189ef8f6cb3e469c04fbdb990cc144cdfdc43a7804e5"
+    },
+    {
+      "path": "api/listener/README.md",
+      "sha256": "82900c1e3c17000903db8d1cdbd867597d3372f84a3461fc2eed4a4b9fb6bc76"
     },
     {
       "path": "api/listener/sleela_listener.c",
@@ -471,8 +499,16 @@
       "sha256": "084f485557690e405a86d501ea28889d135e808a5e2e9249b5283656994b6bf8"
     },
     {
+      "path": "api/nordshrift/README.md",
+      "sha256": "d3882deafb3d2918f4c04e9b43f3132d829e89b0df572bf80c7faf598c089075"
+    },
+    {
       "path": "api/posting/API.html",
       "sha256": "0ac16b5d2dfba4a58fbac255e9e68cc12eb3457badfb26c907f100b6650fd11a"
+    },
+    {
+      "path": "api/posting/README.md",
+      "sha256": "ad89d14a771e39b12c2b45fc77d5dce421823e576feffd11ef59543092624935"
     },
     {
       "path": "api/posting/sleela_post.c",
@@ -481,6 +517,10 @@
     {
       "path": "api/posting/sleela_post.h",
       "sha256": "76f0c657592d55a6f4f4d3142122adad6141513637530953a062df6c16318bac"
+    },
+    {
+      "path": "api/posting/tests/test_api_contracts.c",
+      "sha256": "43bc13df9941ae99faaaae1e0c920653bcbd4708df9cabf2e92a1523cd324263"
     },
     {
       "path": "api/regex/API.html",
@@ -515,12 +555,32 @@
       "sha256": "c9f3a76e078be491f34f7d48d5b97e2139dc1d23c6b5ac24c9537f330c7bb8a9"
     },
     {
+      "path": "api/router/README.md",
+      "sha256": "7c7bb80d2b70f0bb5def47c531357fa603f44f20b3cfebc1bd048a35b40684b9"
+    },
+    {
       "path": "api/router/sleela_router.c",
       "sha256": "9a240c176e5caca4a43a1aba5cb635cd47a073da5c7f98be7ab4a04a62878cce"
     },
     {
       "path": "api/router/sleela_router.h",
       "sha256": "cc434499eec9089d63cb0638e4cff02a1e58569c6cf9f715f5c95fef367a5856"
+    },
+    {
+      "path": "api/runtime/gc/GC-HINT-API.md",
+      "sha256": "62343d0b59d31f7fdd6dd06546b53c88d934ac2479bd89f61532645b39cbb24b"
+    },
+    {
+      "path": "api/runtime/gc/README.md",
+      "sha256": "ad7949bc6ef26b5914dc6c6a6391dd9427b6508917fcc159e19a5a52051ff80f"
+    },
+    {
+      "path": "api/runtime/gc/SEMANTICS.md",
+      "sha256": "5498b5c3cb2d5a6d15dc5cf97f14440d92e5319bd9f896990ed0990baf93c866"
+    },
+    {
+      "path": "api/runtime/gc/TEST-MATRIX.md",
+      "sha256": "5bb8b970d4240c3e4dde8c516d381ead0b4fd50fa747a94815e3495f06cbe5ba"
     },
     {
       "path": "api/server/API.html",
