@@ -23,8 +23,8 @@ cpp-check:
 java-check:
 	$(MAKE) -C heritage/printing/java check
 
-# Skip these two only when the toolchain has not been built yet. Build it first
-# with: make -C ../impl all
+# Skip these two only when the toolchain has not been built yet. CI and local
+# developers can build it first with: make -C ../impl all
 sleela-check:
 	@if test -x "$(SLEELA)"; then \
 	  "$(SLEELA)" check CommonRails.sleela && \
