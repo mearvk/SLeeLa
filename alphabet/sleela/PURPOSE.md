@@ -33,3 +33,8 @@ The language specification governs source syntax. Implementation status must be 
 - Distinguish implemented behavior from proposed language syntax.
 - Add malformed-input and boundary tests.
 - Never treat declared capacity as actual catalogue population.
+
+
+## UTF-4088 documentation relay
+
+The specialized catalogue's ordered probing rules are available in the [UTF-4088 relay](UTF-4088-RELAY.md). The mirrored series covers top-left/right/down/Z-layer map traversal, depth iterations 1–50, the National Lien subject register, deterministic probe scheduling, nearest-match evidence, and catalogue serialization. These are distinct concerns: stable catalogue identity, map coordinate, probe priority, match order, depth and published alphabetic rank must not be conflated. See the canonical [UTF-4088 relay index](../../utf-4088/ALPHABET-RELAY.md).
