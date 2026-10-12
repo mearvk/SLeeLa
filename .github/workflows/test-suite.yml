@@ -21,6 +21,8 @@ jobs:
       # should run as dedicated workflows, not race contributor commits during CI.
       - name: Test suite
         run: bash ./test-suites/run-all.sh --all
+      - name: SleelaTerminal build, regression, and staged-install checks
+        run: make -C sleela-terminal clean all test install-smoke
       - name: All SLeeLa source inputs, outputs, and procedural operations
         run: bash ./test-suites/sleela-source-behavior.sh
       - name: Sanitizers
