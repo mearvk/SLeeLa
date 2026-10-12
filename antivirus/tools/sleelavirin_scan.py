@@ -114,7 +114,7 @@ def main():
             for batch in batches:
                 command = [clam, '--infected', '--no-summary', '--max-filesize', str(args.max_file_size), *batch]
                 result = subprocess.run(command, capture_output=True, text=True)
-                if result.stdout: print(result.stdout, end='' if result.stdout.endswith('\\n') else '\\n')
+                if result.stdout: print(result.stdout, end='' if result.stdout.endswith('\n') else '\n')
                 if result.stderr: print(result.stderr, file=sys.stderr)
                 if result.returncode == 1:
                     print('CLAMAV_DETECTION')
