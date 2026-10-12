@@ -278,3 +278,38 @@ The catalogue does not make /api the implementation authority. Actual source dec
 # Maintenance
 
 When a public API is added: update its implementation, add a focused /api reference when appropriate, add it here, link declaration and implementation, add an example or test when practical, regenerate SOURCE-COVERAGE.html, and keep API.html, index.html and README.md as navigation surfaces. For a subject-library addition, also record units, assumptions, model/procedure XML, observed-data persistence and explicit evidence status.
+
+
+## Language syntax and runtime GC contracts
+
+- [Language API and version contracts](language/README.md): separates syntax version from compiler release version and links normative grammar to tests.
+- [Syntax version matrix](language/SYNTAX-VERSION-MATRIX.md): 1.8 local inference/constructor arguments, 1.9 GC hints, 1.10 `extends` forms, and 1.11 nested classes.
+- [GC-hint API](runtime/gc/GC-HINT-API.md): syntax 1.9 `gc` / `mem` assignment forms and the 0–100 range.
+- [GC semantics](runtime/gc/SEMANTICS.md): liveness and the distinction between language hints, native GC, and tracked native allocation.
+- [System namespace API](language/system-namespace/API.md): conservative `ran::` reference documentation grounded in positive/negative fixtures.
+
+## Module completeness audit (A–E)
+
+The API tree intentionally contains a mixture of detailed API references, navigation pages, declarative schemas, and native facades. Uniformity means every module explains its contract and links to source/tests; it does not mean every folder must own a duplicate implementation or standalone build.
+
+| Module area | Existing entry point | Follow-up rule |
+|---|---|---|
+| AI | `ai/README.md`, `ai/API.html` | Tie provider/connector claims to concrete implementations and tests. |
+| Audio mixer | `audio-mixer/README.md` | Document actual build and supported input/config formats; separate future features from implemented processing. |
+| BODI, analytics, database, email | Existing README/API pages and Makefiles | Keep module and group builds, tests, dependencies, and platform constraints explicit. |
+| Listener, router, posting | Existing API references; listener/router navigation pages added | Separate declaration/validation from actual socket or dispatch execution. |
+| Media | `media/README.md`, `media/API.html` | Mark each codec, transform, and provider as implemented, partial, or planned. |
+| Nordshrift | `nordshrift/API.html`, `nordshrift/README.md` | Treat schema/reference semantics separately from side-effecting execution. |
+| Regex | `regex/README.md`, `regex/API.html` | Preserve its documented draft/implementation boundary and unsupported levels. |
+| Native runtime/memory | `native/runtime/`, `native/memory/` | Keep C/C++ ABI, VM GC, and managed memory responsibilities distinct. |
+| Server/webserver | Existing API pages and Makefiles | State supported operating systems and what the build actually packages. |
+
+## Required maintenance workflow
+
+1. Identify the implementation source and whether it is compiled into a parent target or standalone module.
+2. Record the real build command and dependencies; do not invent a build target when none exists.
+3. Link each behavior to tests or mark it unverified/partial.
+4. Add both positive and negative tests for public validation boundaries where appropriate.
+5. Update the focused module page, this catalogue, `api/README.md`, and `api/index.html` navigation together.
+6. Regenerate `API.html` and `SOURCE-COVERAGE.html` using the repository's actual generator if one exists; otherwise update their documented scope rather than presenting a hand-edited report as generated or exhaustive.
+7. Verify the same intended documentation changes on `main` and `master` without overwriting unrelated branch divergence.
