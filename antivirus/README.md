@@ -103,6 +103,38 @@ The local Makefile writes generated objects, the static library, and the self-te
 
 **Implementation boundary:** the current C core compares caller-supplied fingerprints and evaluates caller-supplied heuristic indicators. It does not read or hash files itself, update signature databases, or invoke ClamAV, Windows AMSI, or another provider. The self-test is a unit test of the current core, not evidence of full malware-detection coverage. Provider adapters and safe file-hashing integration remain separate work.
 
+## Scanner backends
+
+Sleelavirin exposes two explicit scan backends:
+
+### Native SHA-256 signature scanner
+
+The native C11 scanner reads each supplied file, computes SHA-256 using its bundled implementation, and compares the digest against a local text signature database. It has no third-party crypto dependency.
+
+```sh
+make -C antivirus
+./antivirus/build/sleelavirin-scan --database antivirus/signatures/native-sha256.txt ./path/to/file
+```
+
+The signature file format is one 64-character SHA-256 hex digest per line, optionally followed by a human-readable name. Blank lines and lines beginning with `#` are ignored. The shipped database is intentionally empty: populate it only with trusted, provenance-documented signatures. A test-only signature fixture is kept under `antivirus/tests/` and must not be copied into production databases.
+
+The native scanner reports `DETECTED`, `NO_MATCH`, or `ERROR`. `NO_MATCH` means only that the selected local database did not contain that file's digest; it does **not** mean the file is clean. This backend currently supports file paths, not recursive directory traversal, archive inspection, behavior monitoring, or real-time protection.
+
+### Optional ClamAV backend
+
+Install ClamAV and initialize/update its signature database according to the official ClamAV documentation. Then run:
+
+```sh
+python3 antivirus/tools/sleelavirin_clamav.py ./path/to/file
+python3 antivirus/tools/sleelavirin_clamav.py ./path/to/directory
+# If clamscan is not on PATH:
+python3 antivirus/tools/sleelavirin_clamav.py --clamscan /path/to/clamscan ./path/to/file
+```
+
+The adapter uses the installed `clamscan` executable and requests recursive scanning for supplied directories. It does not install ClamAV or download signatures. It maps ClamAV exit status 0 to no detection, 1 to detection, and other nonzero statuses to a scan error. No detection is not a guarantee that a file is safe. See the official [ClamAV scanning guide](https://docs.clamav.net/manual/Usage/Scanning.html).
+
+Check the optional integration with `make -C antivirus clamav`, or from the repository root with `make antivirus-clamav`. This check requires `clamscan` to be installed. The default `make antivirus` build does not require ClamAV.
+
 ## Initial scope
 
 The first Sleelavirin structural release covers:
