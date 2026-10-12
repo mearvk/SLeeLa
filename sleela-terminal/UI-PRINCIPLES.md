@@ -45,11 +45,20 @@ reading palette:
 | `--sl-fg-dim` | `rgba(255,255,255,.70)` | secondary / note text |
 | `--sl-accent` | `#9d6cff` | focus ring, suggested action |
 
-The terminal text pane uses `#fcfcfc` (RGB 252, 252, 252). Command-result text
-areas use charcoal `#4b4b4b` with near-white `#f2f2f2` output text. Keep this
-three-colour hierarchy consistent: near-white workspace, dark result surface,
-light readable result text. The purple/black palette belongs to the surrounding
-window chrome only.
+The GTK workspace uses `#fcfcfc` (RGB 252, 252, 252). The interactive VTE
+terminal surface uses charcoal `#4b4b4b` with near-white `#f2f2f2` text. Keep
+this three-colour hierarchy consistent: near-white workspace, dark terminal
+surface, light readable terminal text. The purple/black palette belongs to the
+surrounding window chrome only.
+
+**Implementation boundary:** VTE presents an ongoing interactive PTY stream,
+not discrete command-result widgets. The current design therefore applies the
+charcoal surface to the whole interactive terminal, including the prompt and
+empty terminal state. It does not yet create a separate rounded panel that
+appears only around each command's output. Do not describe per-command
+response panels as implemented until a separate output-view architecture can
+preserve arbitrary interactive programs, stdout/stderr, terminal control
+sequences, scrollback, selection, pipelines, and redirection.
 
 ## 3. Restraint over effects
 
@@ -124,9 +133,9 @@ purple chip. The browser supports path entry, parent navigation, directory
 sorting, and opening files with the desktop's associated application.
 
 The main workspace remains near-white (`#fcfcfc`); the terminal and file
-browser use a charcoal surface (`#4b4b4b`). This provides the requested three
-levels: bright workspace, dark rounded panel, and lighter individual item
-surfaces.
+browser use a charcoal surface (`#4b4b4b`). The VTE surface has a light
+foreground (`#f2f2f2`) and is clipped to the rounded terminal container.
+Individual `ls` tiles are legacy ANSI styling, not the global output model.
 
 ## Interactive `ls` presentation
 
