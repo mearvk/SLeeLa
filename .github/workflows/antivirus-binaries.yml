@@ -19,6 +19,8 @@ permissions:
 
 jobs:
   build:
+    permissions:
+      contents: write
     name: Build standalone binaries (${{ matrix.os }})
     strategy:
       fail-fast: false
@@ -33,6 +35,9 @@ jobs:
           - os: macos-14
             platform: macos-arm64
             archive: sleelavirin-macos-arm64.zip
+          - os: macos-15-intel
+            platform: macos-x86_64
+            archive: sleelavirin-macos-x86_64.zip
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     steps:
@@ -72,10 +77,12 @@ jobs:
           python -m PyInstaller --noconfirm --clean --onefile --name sleelavirin-scan antivirus/tools/sleelavirin_scan.py
           python -m PyInstaller --noconfirm --clean --onefile --name sleelavirin-update-clamav antivirus/tools/sleelavirin_update_clamav.py
           python -m PyInstaller --noconfirm --clean --onefile --name sleelavirin-import-clamav antivirus/tools/sleelavirin_import_clamav.py
+          python -m PyInstaller --noconfirm --clean --onefile --name sleelavirin-clamav antivirus/tools/sleelavirin_clamav.py
           python -m PyInstaller --noconfirm --clean --onefile --name sleelavirin-verify-signature antivirus/tools/sleelavirin_verify_signature.py
           cp dist/sleelavirin-scan antivirus/dist/
           cp dist/sleelavirin-update-clamav antivirus/dist/
           cp dist/sleelavirin-import-clamav antivirus/dist/
+          cp dist/sleelavirin-clamav antivirus/dist/
           cp dist/sleelavirin-verify-signature antivirus/dist/
       - name: Build standalone Python executables (Windows)
         if: runner.os == 'Windows'
@@ -88,6 +95,7 @@ jobs:
           Copy-Item dist/sleelavirin-scan.exe antivirus/dist/
           Copy-Item dist/sleelavirin-update-clamav.exe antivirus/dist/
           Copy-Item dist/sleelavirin-import-clamav.exe antivirus/dist/
+          Copy-Item dist/sleelavirin-clamav.exe antivirus/dist/
           Copy-Item dist/sleelavirin-verify-signature.exe antivirus/dist/
       - name: Smoke-test packaged executables (Linux/macOS)
         if: runner.os != 'Windows'
@@ -96,6 +104,7 @@ jobs:
           antivirus/dist/sleelavirin-scan --help
           antivirus/dist/sleelavirin-update-clamav --help
           antivirus/dist/sleelavirin-import-clamav --help
+          antivirus/dist/sleelavirin-clamav --help
           antivirus/dist/sleelavirin-verify-signature --help
           antivirus/dist/sleelavirin-native --help
       - name: Smoke-test packaged executables (Windows)
@@ -105,6 +114,7 @@ jobs:
           antivirus/dist/sleelavirin-scan.exe --help
           antivirus/dist/sleelavirin-update-clamav.exe --help
           antivirus/dist/sleelavirin-import-clamav.exe --help
+          antivirus/dist/sleelavirin-clamav.exe --help
           antivirus/dist/sleelavirin-verify-signature.exe --help
           antivirus/dist/sleelavirin-native.exe --help
       - name: Write checksums and package release archive
