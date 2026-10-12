@@ -87,3 +87,10 @@ python3 antivirus/tools/sleelavirin_update_clamav.py \
 ```
 
 The updater uses FreshClam, validates the staged database by loading it with `clamscan`, records per-file SHA-256 hashes and sizes, and atomically updates a pointer to a content-addressed snapshot. Do not commit downloaded databases into the source repository. See [README.md](README.md) and [SECURITY.md](SECURITY.md) for trust limitations and rollback guidance.
+
+
+## Reports and release authenticity
+
+Use `--report-json PATH` to produce an atomic JSON summary with per-engine results, counts, completion status, and limitations. The CLI exit codes remain authoritative: 0 = complete no-match, 1 = detection, 2 = error/incomplete (detection may coexist with errors). Never treat `CLEAN_NO_MATCH` as proof of safety.
+
+For signed release artifacts, use `tools/sleelavirin_verify_signature.py` with a detached OpenSSL SHA-256 signature and a public key obtained independently. See [SECURITY.md](SECURITY.md) before treating signed artifacts as a release gate.
