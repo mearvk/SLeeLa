@@ -2,6 +2,9 @@
 #include <vte/vte.h>
 
 #include <algorithm>
+#include <cctype>
+#include <cstdlib>
+#include <regex>
 #include <cmath>
 #include <csignal>
 #include <filesystem>
@@ -60,6 +63,9 @@ struct AppState {
     GPid child_pid = 0;
     guint footer_tick = 0;
     guint footer_position = 0;
+    std::string feed_topics_signature;
+    bool feed_fetching = false;
+    gint64 feed_last_fetch = 0;
     AppConfig config;
 
     // Title-bar throbber: a thin living light-blue strip along the bottom of
@@ -914,6 +920,119 @@ void terminal_mouse_menu(GtkGestureClick *gesture, int, double, double, gpointer
     gtk_popover_popup(popover);
 }
 
+
+std::string readFooterbarTopics() {
+    const char *xdg = std::getenv("XDG_CONFIG_HOME");
+    const char *home = std::getenv("HOME");
+    std::filesystem::path base = (xdg && *xdg) ? xdg :
+        ((home && *home) ? (std::filesystem::path(home) / ".config").string() : ".config");
+    std::ifstream in(base / "sleela" / "footerbar-topics.conf");
+    std::string topic, joined;
+    while (in >> topic) {
+        if (!joined.empty()) joined += " OR ";
+        joined += topic;
+    }
+    return joined;
+}
+
+std::string cleanFeedTitle(std::string value) {
+    if (value.size() >= 12 && value.compare(0, 9, "<![CDATA[") == 0 &&
+        value.compare(value.size() - 3, 3, "]]>") == 0)
+        value = value.substr(9, value.size() - 12);
+    const std::pair<const char*, const char*> entities[] = {
+        {"&amp;", "&"}, {"&quot;", "\\""}, {"&#39;", "'"}, {"&apos;", "'"},
+        {"&lt;", "<"}, {"&gt;", ">"}
+    };
+    for (const auto &entity : entities) {
+        std::size_t pos = 0;
+        const auto length = std::char_traits<char>::length(entity.first);
+        while ((pos = value.find(entity.first, pos)) != std::string::npos) {
+            value.replace(pos, length, entity.second);
+            pos += std::char_traits<char>::length(entity.second);
+        }
+    }
+    std::replace(value.begin(), value.end(), '\\n', ' ');
+    std::replace(value.begin(), value.end(), '\\r', ' ');
+    return value;
+}
+
+void footer_feed_worker(GTask *task, gpointer, gpointer task_data, GCancellable *) {
+    const std::string topics = static_cast<const char *>(task_data);
+    gchar *escaped = g_uri_escape_string(topics.c_str(), nullptr, FALSE);
+    const std::string query = "https://news.google.com/rss/search?q=" +
+        std::string(escaped ? escaped : "") + "&hl=en-US&gl=US&ceid=US:en";
+    g_free(escaped);
+    gchar *argv[] = {const_cast<gchar *>("curl"), const_cast<gchar *>("-fsSL"),
+        const_cast<gchar *>("--max-time"), const_cast<gchar *>("12"),
+        const_cast<gchar *>(query.c_str()), nullptr};
+    gchar *stdout_text = nullptr, *stderr_text = nullptr;
+    gint wait_status = 0;
+    GError *error = nullptr;
+    const gboolean spawned = g_spawn_sync(nullptr, argv, nullptr, G_SPAWN_SEARCH_PATH,
+        nullptr, nullptr, &stdout_text, &stderr_text, &wait_status, &error);
+    std::string headline;
+    if (spawned && g_spawn_check_wait_status(wait_status, nullptr) && stdout_text) {
+        const std::string xml(stdout_text);
+        const std::regex item_title("<item[^>]*>[\\s\\S]*?<title[^>]*>([\\s\\S]*?)</title>",
+                                    std::regex::icase);
+        std::smatch match;
+        if (std::regex_search(xml, match, item_title)) headline = cleanFeedTitle(match[1].str());
+    }
+    if (headline.empty()) headline = "No current headlines returned; check network access and curl";
+    g_free(stdout_text);
+    g_free(stderr_text);
+    if (error) g_error_free(error);
+    g_task_return_pointer(task, g_strdup(headline.c_str()), g_free);
+}
+
+void footer_feed_finished(GObject *source, GAsyncResult *result, gpointer user_data) {
+    (void)source;
+    auto *state = static_cast<AppState *>(user_data);
+    GError *error = nullptr;
+    gchar *headline = static_cast<gchar *>(g_task_propagate_pointer(G_TASK(result), &error));
+    state->feed_fetching = false;
+    if (state->footer_text != nullptr) {
+        if (headline) {
+            const std::string display = "RSS  •  " + state->feed_topics_signature + "  —  " + headline;
+            gtk_label_set_text(state->footer_text, display.c_str());
+        } else if (error) {
+            gtk_label_set_text(state->footer_text, "RSS feed unavailable");
+        }
+    }
+    if (headline) g_free(headline);
+    if (error) g_error_free(error);
+}
+
+gboolean footer_feed_tick(gpointer user_data) {
+    auto *state = static_cast<AppState *>(user_data);
+    const std::string topics = readFooterbarTopics();
+    if (topics.empty()) {
+        state->feed_topics_signature.clear();
+        if (state->footer_text != nullptr)
+            gtk_label_set_text(state->footer_text, "Secure Shell Interface  •  Interactive session");
+        return G_SOURCE_CONTINUE;
+    }
+    const gint64 now = g_get_monotonic_time();
+    if (topics != state->feed_topics_signature) {
+        state->feed_topics_signature = topics;
+        state->feed_last_fetch = 0;
+    }
+    if (!state->feed_fetching && (state->feed_last_fetch == 0 ||
+        now - state->feed_last_fetch >= 15 * 60 * G_USEC_PER_SEC)) {
+        state->feed_fetching = true;
+        state->feed_last_fetch = now;
+        GTask *task = g_task_new(nullptr, nullptr, footer_feed_finished, state);
+        g_task_set_task_data(task, g_strdup(topics.c_str()), g_free);
+        g_task_run_in_thread(task, footer_feed_worker);
+        g_object_unref(task);
+        if (state->footer_text != nullptr) {
+            const std::string display = "RSS  •  " + topics + "  —  loading headlines…";
+            gtk_label_set_text(state->footer_text, display.c_str());
+        }
+    }
+    return G_SOURCE_CONTINUE;
+}
+
 const std::vector<std::string> &footer_messages() {
     // A single, static status line. The footer is a calm frame, not a ticker:
     // moving text competes with terminal output. See UI-PRINCIPLES.md (6).
@@ -934,6 +1053,7 @@ void child_exited(VteTerminal *, int, gpointer user_data) {
         state->throbber_tick = 0;
     }
     state->throbber = nullptr;
+    state->footer_text = nullptr;
     state->child_pid = 0;
     if (state->window != nullptr) {
         GtkApplication *application = gtk_window_get_application(state->window);
@@ -968,6 +1088,7 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
         state->throbber_tick = 0;
     }
     state->throbber = nullptr;
+    state->footer_text = nullptr;
     gtk_window_destroy(window);
     g_application_quit(G_APPLICATION(gtk_window_get_application(window)));
     return TRUE;
@@ -1404,7 +1525,8 @@ void activate(GtkApplication *application, gpointer user_data) {
     // terminal content, which is the hero. See UI-PRINCIPLES.md (principle 6).
     // The footer shows a single clear status string; no rotation timer runs.
     state->footer_position = 0;
-    state->footer_tick = 0;
+    state->footer_tick = g_timeout_add_seconds(30, footer_feed_tick, state);
+    footer_feed_tick(state);
 
     // Drive the throbber at 20 Hz (every 50 ms) for as long as the window lives.
     // The timer is removed in child_exited / window_close_request.
