@@ -195,3 +195,7 @@ printf '%s\n' 'cat <(printf hi)' | ./build/slsh
 
 *Original SleelaTerminal™ work. Behaviour targets public POSIX-shell
 specifications; no shell source was copied.*
+
+## Footerbar topic news feed
+
+Configure the footerbar from the shell with `footerbar chemistry`, `footerbar pharmacology`, or `footerbar chemistry pharmacology` to select one or multiple topics. Use `footerbar list` to see the 100-term catalog, `footerbar status` to inspect the saved selection, and `footerbar clear` to disable it. The GUI polls for changes and displays RSS headlines for the selected topics. See [FOOTERBAR-TOPICS.md](FOOTERBAR-TOPICS.md).
