@@ -109,3 +109,9 @@ The regression suite checks identifier boundaries, deterministic registry genera
 ## Status
 
 Experimental / conceptual. No claim of standards-body approval or Unicode compatibility is made.
+
+## Input-map traversal and pressure protocol
+
+The canonical spatial iteration order and pressure scale are defined in [INPUT-MAP-AND-PRESSURE.md](INPUT-MAP-AND-PRESSURE.md): begin at the top-left of layer `z=0`, move right, then down row by row, and advance to the next z-layer only after completing the current layer. Each element's pressure iterations run from 1 through the assumed maximum of 50. These are logical iteration values, not physical pressure or voltage.
+
+The [National Lien Alphabetic Register](NATIONAL-LIEN-REGISTER.md) separates permanent catalogue IDs, alphabetic ranks, map coordinates, registry ordinals, and pressure levels.
