@@ -65,9 +65,9 @@ int sleela_config_location_load_policy(const char *path, SLEELA_CONFIG_LOCATION 
         if (!strcmp(p, "config.project.name")) {
             if (!copy_text(location->project_name, sizeof(location->project_name), eq)) { fclose(f); return 0; }
         } else if (!strcmp(p, "config.location.relative")) {
-            if (!eq[0] || is_absolute_path(eq) || eq[0] == '/' || eq[0] == 92 || strchr(eq, ':') || strstr(eq, "..") || !copy_text(location->relative_path, sizeof(location->relative_path), eq)) { fclose(f); return 0; }
+            if (!eq[0] || is_absolute_path(eq) || eq[0] == '/' || eq[0] == '\\' || strchr(eq, ':') || strstr(eq, "..") || !copy_text(location->relative_path, sizeof(location->relative_path), eq)) { fclose(f); return 0; }
         } else if (!strcmp(p, "config.location.install_relative")) {
-            if (!eq[0] || is_absolute_path(eq) || eq[0] == '/' || eq[0] == 92 || strchr(eq, ':') || strstr(eq, "..") || !copy_text(location->install_relative, sizeof(location->install_relative), eq)) { fclose(f); return 0; }
+            if (!eq[0] || is_absolute_path(eq) || eq[0] == '/' || eq[0] == '\\' || strchr(eq, ':') || strstr(eq, "..") || !copy_text(location->install_relative, sizeof(location->install_relative), eq)) { fclose(f); return 0; }
         } else if (!strcmp(p, "config.location.absolute")) {
 #ifdef _WIN32
             /* The checked-in /etc/sleela value is the Unix fallback. Keep the
