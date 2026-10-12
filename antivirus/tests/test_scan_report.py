@@ -15,7 +15,7 @@ SPEC.loader.exec_module(scanner)
 
 class ScanReportTests(unittest.TestCase):
     def test_terminal_control_characters_are_escaped(self):
-        rendered = scanner.safe_console("name\\x1b[31m\\nforged")
+        rendered = scanner.safe_console("name\x1b[31m\nforged")
         self.assertNotIn(chr(27), rendered)
         self.assertNotIn("\\n", rendered)
 
