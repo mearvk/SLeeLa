@@ -141,6 +141,6 @@ Use the relay to navigate the additional character-map, gradation, symbol-weight
 
 The detailed five-point mapping and sudden-pressure transition rules are maintained in [alphabet/utf-4088/RIGOROUS.INPUTS.md](../alphabet/utf-4088/RIGOROUS.INPUTS.md). The tables report normalized model inputs only; they do not claim physical pressure or voltage measurements.
 
-## Five-input 4D symbol register
+## 4D implementation symbol inventory
 
-The editable review catalogue for the current five-input study is [alphabet/utf-4088/SYMBOLS.md](../alphabet/utf-4088/SYMBOLS.md). It records candidate identities and glyphs without treating experimental keys as Unicode code points or proposed wording as validated meaning.
+The source-level catalogue at [alphabet/utf-4088/SYMBOLS.md](../alphabet/utf-4088/SYMBOLS.md) documents the C/C++ 4D point and field symbols, geometric comparison metrics, binary glyph topology, registry identifiers, and graph state/edge coalescence. The separate five-input probe glyphs and provisional labels remain in the trial output files under [alphabet/utf-4088/results](../alphabet/utf-4088/results/).
