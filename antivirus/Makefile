@@ -77,6 +77,6 @@ help:
 	@echo "Sleelavirin antivirus co-package"
 	@echo "  make          Build the static library, self-test, and native scanner"
 	@echo "  make library  Build build/libsleelavirin.a"
-	@echo "  make test     Build and run the local C self-tests"
+	@echo "  make test     Build and run the local C and native scanner tests"
 	@echo "  make clean    Remove antivirus/build/"
 	@echo "  CC=clang make Use Clang instead of the default C compiler"
