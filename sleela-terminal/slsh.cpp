@@ -152,8 +152,12 @@ std::vector<CompletionCandidate> completionCandidates(const std::string& line,
                                                        std::size_t cursor,
                                                        std::size_t token_start) {
     const std::string token = line.substr(token_start, cursor - token_start);
+    const std::string before_token = line.substr(0, token_start);
+    const std::size_t separator = before_token.find_last_of(";|&\n");
+    const std::string command_prefix = separator == std::string::npos
+        ? before_token : before_token.substr(separator + 1);
     const bool command_position =
-        line.substr(0, token_start).find_first_not_of(" \t") == std::string::npos &&
+        command_prefix.find_first_not_of(" \t") == std::string::npos &&
         token.find('/') == std::string::npos;
     std::vector<std::string> names;
     if (command_position) {
