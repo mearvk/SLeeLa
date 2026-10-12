@@ -45,3 +45,7 @@ The generated symbols for input definitions 1–5 are stored in [symbols-ordered
 ## Rigorous UTF-4088 input mappings
 
 See [RIGOROUS.INPUTS.md](../utf-4088/RIGOROUS.INPUTS.md) for the five trial tables covering application x/y, depth-pressure iteration, normalized voltage, four-dimensional step sizes, logical time, and sudden-pressure transition flags.
+
+## UTF-4088 source-layer symbol register
+
+See [SYMBOLS.md](../utf-4088/SYMBOLS.md) for the editable catalogue of current 4D-study candidates, including glyphs, stable identities, provisional labels, and maintenance rules.
