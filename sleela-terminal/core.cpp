@@ -5,6 +5,7 @@
 
 #include <cctype>
 #include <cstdlib>
+#include <pwd.h>
 #include <unistd.h>
 
 extern char** environ;
@@ -41,6 +42,17 @@ Environment::Environment() {
         const std::string value = entry.substr(eq + 1);
         vars_[name] = Var{value, true};
     }
+
+    // Prefer the environment's account name; fall back to the POSIX account DB.
+    std::string username = get("USER");
+    if (username.empty()) username = get("LOGNAME");
+    if (username.empty()) {
+        if (const passwd* account = ::getpwuid(::getuid())) {
+            if (account->pw_name) username = account->pw_name;
+        }
+    }
+    if (username.empty()) username = "user";
+    prompt_ = username + "$ ";
 }
 
 std::string Environment::get(const std::string& name) const {
