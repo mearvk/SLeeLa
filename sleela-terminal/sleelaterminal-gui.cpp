@@ -3,6 +3,7 @@
 #include <pango/pangocairo.h>
 
 #include <algorithm>
+#include <array>
 #include <cctype>
 #include <cstdlib>
 #include <regex>
