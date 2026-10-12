@@ -16,8 +16,8 @@ add_library(utf4088
     algebra/glyph8x12.cpp
 )
 target_include_directories(utf4088 PUBLIC
-    "\${CMAKE_CURRENT_SOURCE_DIR}"
-    "\${CMAKE_CURRENT_SOURCE_DIR}/algebra"
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/algebra"
 )
 if(MSVC)
     target_compile_options(utf4088 PRIVATE /W4 /permissive-)
