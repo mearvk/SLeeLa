@@ -23,6 +23,7 @@ These documents are maintained here in `/utf-4088`. The `/alphabet/sleela` versi
 - [Gradation matrix](GRADATION-MATRIX.md)
 - [Natural die unit](NATURAL-DIE-UNIT.md)
 - [Symbol weights](SYMBOL-WEIGHTS.md)
+- [Implementation-level 4D geometry, bitmap topology, and coincidence/coalescence catalogue](../alphabet/utf-4088/SYMBOLS.md)
 - [2D voltage field API](VOLTAGE-2D-API.md)
 - [Character-set source policy](SLEELA-CHARSET.conf)
 
