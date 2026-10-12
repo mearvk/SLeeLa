@@ -30,7 +30,7 @@ def size_arg(value):
 
 def file_stamp(path):
     stat = path.stat()
-    return (stat.st_size, getattr(stat, "st_mtime_ns", int(stat.st_mtime * 1e9)), getattr(stat, "st_ino", 0))
+    # Include ctime and file mode as extra mutation signals. These do not eliminate\n    # filesystem races, but catch more changes than size/mtime/inode alone.\n    return (\n        stat.st_size,\n        getattr(stat, "st_mtime_ns", int(stat.st_mtime * 1e9)),\n        getattr(stat, "st_ctime_ns", int(stat.st_ctime * 1e9)),\n        getattr(stat, "st_ino", 0),\n        stat.st_mode,\n    )
 
 
 def enumerate_files(inputs, depth_limit, follow, excludes, extensions, size_limit):
