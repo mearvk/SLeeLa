@@ -265,6 +265,11 @@ def safe_quarantine(path, destination, scanned_roots, expected_stamp):
             os.close(target_fd)
 
 
+def safe_console(value):
+    """Escape control characters in untrusted paths and engine output."""
+    return "".join(ch if ch.isprintable() else "\\u%04x" % ord(ch) for ch in str(value))
+
+
 def unique_paths(paths):
     """Keep first occurrence of each path while preserving order."""
     return list(dict.fromkeys(paths))
@@ -341,7 +346,7 @@ def main():
                 except Exception as exc:
                     path = futures[future]
                     verdict, message = "ERROR", f"ERROR native worker failure for {path}: {type(exc).__name__}: {exc}"
-                print(message)
+                print(safe_console(message))
                 records.append({"engine": "native", "path": str(path), "verdict": verdict, "message": message})
                 if verdict == "DETECTED":
                     found.append(path)
@@ -366,7 +371,7 @@ def main():
                 except Exception as exc:
                     path = futures[future]
                     verdict, message = "ERROR", f"ERROR ClamAV worker failure for {path}: {type(exc).__name__}: {exc}"
-                print(message)
+                print(safe_console(message))
                 records.append({"engine": "clamav", "path": str(path), "verdict": verdict, "message": message})
                 if verdict == "DETECTED":
                     found.append(path)
