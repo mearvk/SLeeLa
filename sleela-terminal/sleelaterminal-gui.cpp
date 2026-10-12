@@ -1366,14 +1366,14 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
     for (const auto &c : state->throbber_cells) {
         if (!c.alive || c.intensity < 0.015) continue;
         const double x = c.x;
-        const double r = std::clamp(1.15 + c.base_intensity * 0.55, 1.15, 1.70);
-        const double fade = std::clamp(c.intensity * 1.5, 0.0, 1.0);
-        const double shade = c.outline_only ? 0.30 : (0.38 + 0.48 * c.base_intensity);
-        const double grey = std::clamp(1.0 - shade * fade, 0.42, 0.96);
-        cairo_set_line_width(cr, 0.75);
+        // Enlarge the silhouettes as much as the 4px rail permits. A faint
+        // gray offset edge supplies depth against the white rail; the object
+        // itself and its principal outline remain white.
+        const double r = std::clamp(1.75 + c.base_intensity * 0.20, 1.75, 1.95);
+        const double fade = std::clamp(c.intensity * 2.0, 0.0, 1.0);
+        cairo_set_line_width(cr, 0.9);
         cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
         cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
-        cairo_set_source_rgba(cr, grey, grey, grey, std::clamp(0.28 + 0.72 * fade, 0.0, 1.0));
 
         // Keep the shapes nearly level: only a small angular wobble is allowed
         // because the entire rail is 4px high.
@@ -1382,23 +1382,47 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
         cairo_translate(cr, x, mid_y);
         cairo_rotate(cr, angle);
 
-        if (c.shape == 0) { // lava ball: circular bead, filled or outline-only
-            cairo_arc(cr, 0.0, 0.0, r, 0.0, 6.283185307179586);
-            if (c.outline_only) cairo_stroke(cr);
-            else cairo_fill(cr);
-        } else if (c.shape == 1) { // compact triangle
-            cairo_move_to(cr, 0.0, -r);
-            cairo_line_to(cr, r * 0.92, r * 0.72);
-            cairo_line_to(cr, -r * 0.92, r * 0.72);
-            cairo_close_path(cr);
-            if (c.outline_only) cairo_stroke(cr);
-            else cairo_fill(cr);
-        } else { // short horizontal rectangle
-            const double half_w = r * 1.15;
-            const double half_h = std::min(1.05, r * 0.62);
-            cairo_rectangle(cr, -half_w, -half_h, half_w * 2.0, half_h * 2.0);
-            if (c.outline_only) cairo_stroke(cr);
-            else cairo_fill(cr);
+        // First paint a tiny offset gray contact shadow, then the white body
+        // and white outline. The offset is sub-pixel and the rotation is tiny,
+        // giving a raised/3D read without adding vertical movement.
+        auto shape_path = [&](double dx, double dy) {
+            if (c.shape == 0) {
+                cairo_arc(cr, dx, dy, r, 0.0, 6.283185307179586);
+            } else if (c.shape == 1) {
+                cairo_move_to(cr, dx, dy - r);
+                cairo_line_to(cr, dx + r * 1.05, dy + r * 0.78);
+                cairo_line_to(cr, dx - r * 1.05, dy + r * 0.78);
+                cairo_close_path(cr);
+            } else {
+                const double half_w = r * 1.40;
+                const double half_h = 1.15;
+                cairo_rectangle(cr, dx - half_w, dy - half_h, half_w * 2.0, half_h * 2.0);
+            }
+        };
+        shape_path(0.0, 0.35);
+        cairo_set_source_rgba(cr, 0.55, 0.55, 0.55, 0.70 * fade);
+        cairo_fill_preserve(cr);
+        cairo_set_source_rgba(cr, 0.62, 0.62, 0.62, 0.75 * fade);
+        cairo_set_line_width(cr, 0.55);
+        cairo_stroke(cr);
+
+        shape_path(0.0, 0.0);
+        cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, fade);
+        cairo_fill_preserve(cr);
+        cairo_set_line_width(cr, 0.8);
+        cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, fade);
+        cairo_stroke(cr);
+
+        // A narrow silver-gray lower rim and white upper glint make each
+        // white-on-white particle read as a small polished 3D object.
+        cairo_set_source_rgba(cr, 0.68, 0.68, 0.68, 0.85 * fade);
+        cairo_set_line_width(cr, 0.45);
+        if (c.shape == 0) {
+            cairo_arc(cr, 0.0, 0.0, r * 0.72, 0.15, 2.75);
+            cairo_stroke(cr);
+        } else {
+            shape_path(0.0, 0.0);
+            cairo_stroke(cr);
         }
         cairo_restore(cr);
     }
@@ -1462,13 +1486,13 @@ void throbber_spawn(AppState *state, int W) {
     c.v = 26.0 + g_random_double() * 12.0;
     c.a = 0.0;
     c.j = 0.0;
-    c.base_intensity = 0.35 + g_random_double() * 0.6;
+    c.base_intensity = 0.80 + g_random_double() * 0.20;
     c.intensity = 0.0;
     c.energy = 1.0;
     c.sigma = 1.0 + g_random_double() * 0.7;
     c.speed_mul = 0.85 + g_random_double() * 0.30;
     c.shape = g_random_int_range(0, 3);
-    c.outline_only = (g_random_double() < 0.45);
+    c.outline_only = false;
     c.phase = g_random_double() * 6.2831853;
     // 1 in 30 children may pause or run right->left for 20-50 px.
     c.retro = (g_random_int_range(0, 30) == 0);
@@ -1560,24 +1584,16 @@ gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_da
         // the width horizontally instead of vanishing around the centre.
         const double frac = (W > 0) ? (c.x / W) : 0.5;
         const double center_weight = 1.0;
-        double decay = 0.055 + 0.015 * state->throbber_amp;
-        c.energy -= dt * decay;
-        if (c.energy < 0.0) c.energy = 0.0;
-
-        double edge_fade = 1.0;
-        if (c.x > W * 0.90) edge_fade = std::max(0.0, (W - c.x) / (W * 0.10));
-        double breath = 0.9 + 0.1 * std::sin(state->throbber_t * 1.7 + c.phase);
-        // Brightness is gated by centre proximity, so the pulsing lives in the
-        // middle and less-centred pulses are already fading relative to it.
-        double target_i = c.base_intensity * center_weight * edge_fade * c.energy * breath;
-        // Ease the live intensity toward its target so fade-in / fade-out smooth.
-        c.intensity += (target_i - c.intensity) * 0.42;
+        // Once a particle appears, keep its brightness stable across the
+        // visible band. It leaves only when its centre passes the right edge.
+        c.energy = 1.0;
+        const double target_i = c.base_intensity;
+        c.intensity += (target_i - c.intensity) * std::min(1.0, 8.0 * dt);
 
         // The pulse still travels left->right across the whole width; it only
         // dies on exit at the right edge (or once it has faded to nothing well
         // past the sweet spot, so spent pulses don't linger invisibly).
-        if (c.x > W + 6.0) c.alive = false;
-        else if (frac > 0.70 && c.energy <= 0.0 && c.intensity < 0.01) c.alive = false;
+        if (c.x > W + 4.0) c.alive = false;
     }
 
     // Compact the pool: drop dead cells.
