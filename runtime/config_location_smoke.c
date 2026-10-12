@@ -23,7 +23,7 @@ static int set_env(const char *k, const char *v) { return SetEnvironmentVariable
 #define ENV_ROOT "/tmp/sleela-env-config"
 static int set_env(const char *k, const char *v) { return v ? setenv(k, v, 1) : unsetenv(k); }
 #endif
-#define CHECK(c, n) do { if (!(c)) { fprintf(stderr, "config location smoke failed: %d\\n", (n)); return (n); } } while (0)
+#define CHECK(c, n) do { if (!(c)) { fprintf(stderr, "config location smoke failed: %d\n", (n)); return (n); } } while (0)
 int main(void) {
     SLEELA_CONFIG_LOCATION c;
     char long_path[SLEELA_CONFIG_LOCATION_MAX + 8];
@@ -64,7 +64,7 @@ int main(void) {
 #else
     long_path[0] = '/';
 #endif
-    long_path[sizeof(long_path) - 1] = '\\0';
+    long_path[sizeof(long_path) - 1] = '\0';
     sleela_config_location_defaults(&c);
     CHECK(!sleela_config_location_resolve(&c, long_path, NULL, NULL), 27);
     puts("config location smoke: PASS");
