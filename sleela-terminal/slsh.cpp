@@ -275,7 +275,10 @@ std::string readInteractiveLine(const std::string& prompt,
     bool have_history_buffer = false;
     std::string saved_line;
 
-    writeBytes(prompt);
+    // Paint the complete prompt through the same positioning path used for edits.
+    // With an empty input line, cursor == line.size() == 0, so the insertion
+    // point is deterministically just after the prompt's trailing colon/space.
+    redrawLine(prompt, line, cursor);
     for (;;) {
         char c = 0;
         if (!readByte(c)) { eof = true; return {}; }
@@ -723,10 +726,11 @@ int repl(Environment& env) {
             (void)::write(STDOUT_FILENO, frame.data(), frame.size());
             std::this_thread::sleep_for(std::chrono::milliseconds(180));
         }
-        // Clear the faded banner and delete its row, promoting the prompt to
-        // line 1. Reset to column 1 so the next repaint starts at the prompt front.
-        const std::string clear_and_promote = "\033[1;1H\033[2K\033[1;1H\033[M\033[1;1H";
-        (void)::write(STDOUT_FILENO, clear_and_promote.data(), clear_and_promote.size());
+        // Clear only the banner row and preserve the live cursor position.
+        // Deleting the row would leave the cursor at column 1, away from the
+        // prompt's colon, until the user typed or another redraw occurred.
+        const std::string clear_banner = "\033[s\033[1;1H\033[2K\033[u";
+        (void)::write(STDOUT_FILENO, clear_banner.data(), clear_banner.size());
     }).detach();
 
     for (;;) {
