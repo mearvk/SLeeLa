@@ -33,7 +33,10 @@ The intended design is a visually unified, rounded response rectangle/panel. Do 
 
 ### Important implementation distinction
 
-The current terminal uses GTK 4 with VTE. ANSI background sequences can color terminal cells, but they do **not** create a true independent GTK rounded rectangle around a block of output. If the visual requirement is a genuine rounded response panel, investigate an appropriate GTK layout/output component or a carefully designed output view. Do not claim that a real rounded panel exists if the implementation only colors VTE cells.
+The current terminal uses GTK 4 with VTE. ANSI background sequences can color terminal cells, but they do **not** create a true independent GTK rounded rectangle around a block of output.
+
+- The GUI's supported compromise is a near-white workspace surrounding one rounded charcoal interactive-terminal surface, with light output text. This is consistent for all VTE output, but the surface remains visible around the prompt and while the terminal is empty.
+- A per-command response panel that appears only when output exists is **not implemented**. It requires an output-view architecture that can distinguish completed-command output from prompts and interactive PTY programs without breaking shell behavior. Do not claim that milestone complete until tested.
 
 Any new output presentation must preserve shell behavior:
 - stdout and stderr should remain understandable and not be silently lost;
@@ -126,7 +129,8 @@ Relevant source links:
 
 ### Priority 2 — Implement the unified response appearance
 - [ ] Decide whether the response surface can be achieved inside VTE with acceptable compromises or requires a dedicated GTK output view/panel.
-- [ ] Apply the shared `#4B4B4B` output surface and `#F2F2F2` text to all command output, not only `ls`.
+- [x] Apply the shared `#4B4B4B` terminal surface and `#F2F2F2` text to all VTE output, not only `ls`.
+- [ ] Implement a distinct per-command rounded response panel that appears only when output exists; this requires an architecture change beyond VTE cell styling.
 - [ ] Keep the workspace at `#FCFCFC`.
 - [ ] Ensure no output means no response panel.
 - [ ] Retire or adapt the `ls`-specific per-file colors so the behavior matches the unified design.
@@ -136,6 +140,7 @@ Relevant source links:
 - [ ] Run the repository's documented build from `sleela-terminal` (previously `make -C sleela-terminal`).
 - [ ] Run the relevant smoke/unit tests (previously `make test`, if still defined).
 - [ ] Test `ls`, `echo`, a successful command, a failing command, compiler output, a command with no output, a pipeline, and redirected output.
+- [ ] Verify rounded clipping and the foreground/background colors in a running GTK/VTE window.
 - [ ] Check ANSI colors, Unicode, long filenames, terminal resizing, scrolling, copy/paste, and prompt redraw.
 - [ ] Record actual build/test outcomes. Do not label checks as passing unless they were run and passed.
 
@@ -159,3 +164,9 @@ Append dated notes here after each work session.
 - The shared response surface applies to every command that emits output, not just `ls`.
 - The separate Files button is not part of the intended design.
 - Build/test status for the recent GUI/command-output changes remains unverified and must be checked during the next session.
+
+### 2026-10-12 — terminal surface correction
+- Corrected the VTE runtime background from near-white to charcoal and forced the default terminal foreground to near-white, matching the CSS palette. This resolves the CSS/runtime mismatch that caused the terminal to appear white inside the dark frame.
+- Kept the workspace near-white and added GTK overflow clipping to the rounded terminal overlay.
+- Scope note: this delivers a consistent dark interactive-terminal surface for all command output while preserving VTE/PTTY behavior. It does not implement output-only panels per command; that needs a larger output architecture change. Do not mark it complete prematurely.
+- Build/runtime verification must be performed in an environment with GTK 4 and VTE GTK 4 development packages. No local GUI build was available during this edit.
