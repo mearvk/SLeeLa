@@ -1,23 +1,12 @@
 name: Build SleelaUI toolkit
 
-# Proves SLeeLa's own cross-platform User Interface toolkit (user-interface/)
-# builds its native backend on every modern desktop OS and that the portable
-# core passes the headless smoke test everywhere:
-#   * Linux   -> X11 backend   (Xlib + FreeType + Fontconfig)
-#   * macOS   -> Cocoa backend (AppKit + Core Text)
-#   * Windows -> Win32 backend (MinGW-w64, gdi32/user32)
-# The headless backend has no window-system dependency, so the smoke test runs
-# on all three runners with no display.
-
+# Always schedule the matrix for branch and PR changes so a zero-job run cannot
+# masquerade as successful cross-platform validation.
 on:
   push:
-    paths:
-      - 'user-interface/**'
-      - '.github/workflows/user-interface.yml'
+    branches: [main, master]
   pull_request:
-    paths:
-      - 'user-interface/**'
-      - '.github/workflows/user-interface.yml'
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:
