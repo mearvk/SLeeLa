@@ -6,9 +6,11 @@ ENGINE_CPP = debug_engine.cpp
 DIAGNOSTICS_CPP = debug_diagnostics.cpp
 CONFORMANCE_CPP = debug_conformance.cpp
 
+.PHONY: all test conformance clean help
+
 all: sleela-debugger debug-engine-test debug-diagnostics-test debug-conformance-test
 
-sleela-debugger: main.cpp $(COMMON_CPP) debugger.hpp debugger_backend.hpp debugger_actions.hpp debugger_platform.hpp
+sleela-debugger: main.cpp $(COMMON_CPP) debugger.hpp debugger_backend.hpp debugger_actions.hpp debugger_platform.hpp debugger_backend_linux.hpp debugger_backend_macos.hpp debugger_backend_windows.hpp
 	$(CXX) $(CXXFLAGS) main.cpp $(COMMON_CPP) -o $@
 
 debug-engine-test: debug_engine_test.cpp $(ENGINE_CPP) debug_engine.hpp debugger.hpp debugger_backend.hpp
@@ -20,16 +22,22 @@ debug-diagnostics-test: debug_diagnostics_test.cpp $(DIAGNOSTICS_CPP) debug_diag
 debug-conformance-test: debug_conformance_test.cpp $(CONFORMANCE_CPP) debug_conformance.hpp
 	$(CXX) $(CXXFLAGS) debug_conformance_test.cpp $(CONFORMANCE_CPP) -o $@
 
-test:
+# Build all executable test targets before running the full suite.
+test: all
 	./tests/run-tests.sh
 	./debug-engine-test
 	./debug-diagnostics-test
 	./debug-conformance-test
+	./sleela-debugger --self-test
 
 # Conformance tests validate the debugger's model/integration contract.
 # They do not by themselves certify native Linux/macOS/Windows execution.
 conformance: debug-conformance-test
 	./debug-conformance-test
+
+help:
+	@echo "Targets: all test conformance clean"
+	@echo "Overrides: CXX, CXXFLAGS"
 
 clean:
 	rm -f sleela-debugger debug-engine-test debug-diagnostics-test debug-conformance-test
