@@ -54,17 +54,24 @@ int applyRedirs(const std::vector<Redirection>& redirs) {
             int hp[2];
             if (::pipe(hp) != 0) { std::perror("heredoc pipe"); return -1; }
             pid_t w = ::fork();
+            if (w < 0) {
+                std::perror("heredoc fork");
+                ::close(hp[0]);
+                ::close(hp[1]);
+                return -1;
+            }
             if (w == 0) {
                 ::close(hp[0]);
                 const std::string& b = r.body;
                 std::size_t off = 0;
                 while (off < b.size()) {
                     ssize_t k = ::write(hp[1], b.data() + off, b.size() - off);
+                    if (k < 0 && errno == EINTR) continue;
                     if (k <= 0) break;
                     off += static_cast<std::size_t>(k);
                 }
                 ::close(hp[1]);
-                _exit(0);
+                _exit(off == b.size() ? 0 : 1);
             }
             ::close(hp[1]);
             const int target = r.fd >= 0 ? r.fd : 0;
@@ -593,7 +600,11 @@ int execPipeline(const Node& node, Environment& env) {
     const std::size_t n = cmds.size();
     std::vector<int> pipes((n - 1) * 2, -1);
     for (std::size_t i = 0; i + 1 < n; ++i) {
-        if (::pipe(&pipes[i * 2]) != 0) { std::perror("pipe"); return 1; }
+        if (::pipe(&pipes[i * 2]) != 0) {
+            std::perror("pipe");
+            for (int fd : pipes) if (fd >= 0) ::close(fd);
+            return 1;
+        }
     }
 
     std::vector<pid_t> pids(n, -1);
@@ -611,7 +622,20 @@ int execPipeline(const Node& node, Environment& env) {
         }
 
         pid_t pid = ::fork();
-        if (pid < 0) { std::perror("fork"); return 1; }
+        if (pid < 0) {
+            std::perror("fork");
+            for (int fd : pipes) if (fd >= 0) ::close(fd);
+            // Reap every stage already started before returning from a partial
+            // pipeline launch; otherwise children can be orphaned/zombified.
+            for (pid_t started : pids) {
+                if (started <= 0) continue;
+                int ignored = 0;
+                pid_t wr;
+                do { wr = ::waitpid(started, &ignored, 0); }
+                while (wr < 0 && errno == EINTR);
+            }
+            return 1;
+        }
         if (pid == 0) {
             // wire stdin from previous pipe, stdout to next pipe
             if (i > 0) ::dup2(pipes[(i - 1) * 2], 0);
@@ -652,8 +676,14 @@ int execPipeline(const Node& node, Environment& env) {
     int last = 0;
     for (std::size_t i = 0; i < n; ++i) {
         int status = 0;
-        ::waitpid(pids[i], &status, 0);
-        int rc = WIFEXITED(status) ? WEXITSTATUS(status) : 128 + WTERMSIG(status);
+        pid_t wr;
+        do { wr = ::waitpid(pids[i], &status, 0); }
+        while (wr < 0 && errno == EINTR);
+        int rc = 1;
+        if (wr == pids[i]) {
+            if (WIFEXITED(status)) rc = WEXITSTATUS(status);
+            else if (WIFSIGNALED(status)) rc = 128 + WTERMSIG(status);
+        }
         if (i == n - 1) last = rc;
     }
     return node.negated ? (last == 0 ? 1 : 0) : last;
@@ -865,7 +895,16 @@ std::string captureCommand(const std::string& src, Environment& env) {
     while ((r = ::read(fds[0], buf, sizeof buf)) > 0) out.append(buf, static_cast<std::size_t>(r));
     ::close(fds[0]);
     int st = 0;
-    ::waitpid(pid, &st, 0);
+    pid_t wr;
+    do { wr = ::waitpid(pid, &st, 0); }
+    while (wr < 0 && errno == EINTR);
+    if (wr == pid) {
+        if (WIFEXITED(st)) env.setLastStatus(WEXITSTATUS(st));
+        else if (WIFSIGNALED(st)) env.setLastStatus(128 + WTERMSIG(st));
+        else env.setLastStatus(1);
+    } else {
+        env.setLastStatus(1);
+    }
     return out;
 }
 

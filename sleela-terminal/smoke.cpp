@@ -155,6 +155,18 @@ int main() {
             assert(b3.size() == 4 && b3[0] == "a1" && b3[3] == "b2");
             auto b4 = expandWord("noalt{single}", env, none); // no comma -> literal
             assert(b4.size() == 1 && b4[0] == "noalt{single}");
+
+            // Resource limits: large ranges and cartesian products remain
+            // literal rather than allocating an unbounded number of fields.
+            auto hugeRange = expandWord("{1..5000}", env, none);
+            assert(hugeRange.size() == 1 && hugeRange[0] == "{1..5000}");
+            auto hugeProduct = expandWord("{a,b,c,d}{1,2,3,4}{x,y,z}", env, none);
+            assert(hugeProduct.size() == 48);
+            std::string tooDeep(70, '{');
+            tooDeep += "x";
+            tooDeep.append(70, '}');
+            auto deep = expandWord(tooDeep, env, none);
+            assert(!deep.empty());
         }
 
         // --- M3: tilde expansion ---
