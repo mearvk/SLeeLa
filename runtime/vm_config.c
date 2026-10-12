@@ -51,8 +51,9 @@ int sleela_vm_config_load(const char *path, SLEELA_VM_CONFIG *config) {
     if (!file) return -2;
     sleela_vm_config_defaults(&next);
     while (fgets(line, sizeof(line), file)) {
-        char *entry = trim(line), *equals, *key, *value;
         size_t length = strlen(line);
+        char *entry, *equals, *key, *value;
+        entry = trim(line);
         if (length && line[length - 1] != '\n' && !feof(file)) {
             fclose(file);
             return -3;
