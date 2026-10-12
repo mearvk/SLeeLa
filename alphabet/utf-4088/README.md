@@ -25,3 +25,5 @@ The prototype validates inputs, computes four-dimensional distances, semantic pr
 This is an executed Python reference prototype, not a claim that the native C++ probe engine has been run or independently matched bit-for-bit. All source inputs and semantic profiles are manually curated demonstration values. The English and Latin wordings are suggestions only. Depth is an abstract iteration level, normalized voltage is synthetic, time is metadata, and the result keys are not Unicode scalar values or published UTF-4088 code points.
 
 The canonical UTF-4088 specification set remains under [../../utf-4088/](../../utf-4088/README.md). The general alphabet documentation links to this run via [../sleela/README.md](../sleela/README.md).
+
+- [RIGOROUS.INPUTS.md](RIGOROUS.INPUTS.md) — exact five-input application coordinates, 4D points and step lengths, pressure/voltage values, logical time, and the trial-specific sudden-pressure rule.
