@@ -5,6 +5,8 @@
 
 ## Names - These People cannot Sign Co-Sign 0 (Zero)
 
+### These People May Be Associated with Murders and Failures of Magnitudes
+
 Kaya Scodelario
 
 Michelle Dockery
@@ -12,6 +14,10 @@ Michelle Dockery
 Flora Moorman
 
 Larry Moorman
+
+William Watkins
+
+Bridgette Slivinski 
 
 ## Contents
 
