@@ -165,6 +165,7 @@ such as an IDE — needs, so a complete GUI can be authored in SLeeLa alone.
 | `SLTreeView` | A hierarchical tree with depth indentation, expand/collapse, and selection. | `SLScrollView` + `SLLabel` rows |
 | `SLNotebook` | A tabbed container: a tab strip over a one-page-visible content stack, with per-tab dirty markers. | `SLBox` + `SLButton` tabs |
 | `SLTextView` | A multi-line editable **code editor**: line buffer, caret, selection, dirty flag, gutter line numbers, current-line highlight, drawn via the Draw API. | `SLCanvasView` + `SLDrawContext` |
+| `SLLoadingIndicator` | A unified **loading indicator** with a caption that switches between indeterminate (throbber/spinner) and determinate (progress bar) modes, with `done()`/`fail()` end states. | `SLThrobber` + `SLSpinner` + `SLProgressBar` |
 
 > The full catalogue — every widget with its C ABI constructor, SLeeLa class,
 > description, and focus behaviour — is tabulated in

@@ -1,0 +1,69 @@
+/*
+ * lib/user-interface/SLLoadingDemo.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLoadingDemo — a worked, runnable example that builds a
+ *   Slick Black window from pure SLeeLa source showing the activity family: a
+ *   flowing SLThrobber, an arc SLSpinner, a determinate SLProgressBar, and the
+ *   unified SLLoadingIndicator stepping from an indeterminate "Resolving…"
+ *   phase into a determinate "Compiling… NN%" phase and finally done(). It is
+ *   the SLeeLa-source twin of the gallery, proving the loading indicators are
+ *   fully usable from the language itself.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLLoadingDemo {
+  SLUserInterface ui;
+  SLWindow win;
+  SLLoadingIndicator loader;
+
+  int run() {
+    ui = new SLUserInterface();
+    ui.configure("com.mearvk.SleelaUI.Loading");
+    if (!ui.open()) { return 1; }   // headless: no display
+
+    SLTheme theme = new SLTheme();
+    theme.slickBlack();
+    win = ui.openWindow("SleelaUI Loading Indicators - MEARVK LLC", 520, 300,
+                        theme.handle());
+    SLWidget root = win.rootWidget();
+
+    SLBox content = new SLBox();
+    content.vertical(root, 16);
+    content.setMarginAll(20);
+    content.setExpand(true, true);
+
+    // The three primitives, each on its own row.
+    SLLabel t1 = new SLLabel(); t1.createIn(content, "Throbber (flowing field):");
+    SLThrobber throb = new SLThrobber();
+    throb.createIn(content, 200);
+    throb.setSizeRequest(0, 8);
+    throb.setIntensity(0.7);
+    throb.setHue(150.0);
+
+    SLLabel t2 = new SLLabel(); t2.createIn(content, "Spinner (accent arc):");
+    SLSpinner spin = new SLSpinner();
+    spin.createIn(content);
+
+    SLLabel t3 = new SLLabel(); t3.createIn(content, "Progress bar (determinate):");
+    SLProgressBar bar = new SLProgressBar();
+    bar.createIn(content, 0.35);
+    bar.setExpand(true, false);
+
+    SLSeparator rule = new SLSeparator();
+    rule.horizontal(content);
+
+    // The unified loading indicator: starts indeterminate, then determinate.
+    loader = new SLLoadingIndicator();
+    loader.createIn(content, SLLoadingIndicator.STYLE_THROBBER, 160);
+    loader.beginIndeterminate("Resolving library...");
+    // (A host would later call these as work proceeds:)
+    loader.beginDeterminate("Compiling", 0.0);
+    loader.setFraction(0.6);           // caption becomes "Compiling  60%"
+    loader.done("Build succeeded");
+
+    win.show();
+    return ui.run();
+  }
+}

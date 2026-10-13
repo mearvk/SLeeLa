@@ -1,0 +1,185 @@
+/*
+ * lib/user-interface/SLLoadingIndicator.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLoadingIndicator — a SleelaUI composite "loading"
+ *   widget that unifies the three activity primitives behind one caption, with
+ *   no new C ABI. It is a horizontal row of {activity visual, caption label}
+ *   that switches between two modes:
+ *     - INDETERMINATE (unknown length): shows an SLThrobber (the water-flow
+ *       field) or an SLSpinner (the accent arc), advanced each frame by the
+ *       window loop / a host phase;
+ *     - DETERMINATE (known length): shows an SLProgressBar filled to a fraction
+ *       in [0,1], with the caption optionally carrying a percentage.
+ *   A task begins indeterminate ("Resolving…"), may switch to determinate once
+ *   a total is known ("Compiling… 60%"), and ends with done()/fail() which hide
+ *   the activity visual and set a final caption. This is the IDE-friendly
+ *   loading indicator built from SLThrobber + SLSpinner + SLProgressBar.
+ *
+ * An SLLoadingIndicator IS an SLWidget container (its handle is the row box).
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLLoadingIndicator extends SLWidget {
+  // Mode ordinals.
+  static final int MODE_IDLE          = 0;
+  static final int MODE_INDETERMINATE = 1;
+  static final int MODE_DETERMINATE   = 2;
+  static final int MODE_DONE          = 3;
+  static final int MODE_FAILED        = 4;
+
+  // Which indeterminate visual to use.
+  static final int STYLE_THROBBER = 0;   // the water-flow field (default)
+  static final int STYLE_SPINNER  = 1;   // the accent arc on a ring
+
+  SLBox row;             // horizontal: [visual] [caption]
+  SLThrobber throbber;   // indeterminate (STYLE_THROBBER)
+  SLSpinner spinner;     // indeterminate (STYLE_SPINNER)
+  SLProgressBar bar;     // determinate
+  SLLabel caption;       // the status text
+
+  int style;             // STYLE_THROBBER | STYLE_SPINNER
+  int mode;
+  double fraction;       // current determinate fraction [0,1]
+  double phase;          // current indeterminate phase [0,1]
+  boolean showPercent;   // append " NN%" to the caption in determinate mode
+  String baseCaption;    // the caption text without any appended percentage
+
+  // Create the indicator inside `parent`. style picks the indeterminate visual;
+  // visualWidth sizes the throbber (ignored for the spinner).
+  void createIn(SLWidget parent, int style0, int visualWidth) {
+    style = style0;
+    row = new SLBox();
+    row.horizontal(parent, 10);
+    widget = row.handle();
+
+    // Build all three visuals once; show only the active one.
+    throbber = new SLThrobber();
+    throbber.createIn(row, visualWidth > 0 ? visualWidth : 120);
+    throbber.setSizeRequest(0, 6);
+    throbber.setIntensity(0.6);
+    throbber.setHue(150.0);          // green water, matching the brand accent
+
+    spinner = new SLSpinner();
+    spinner.createIn(row);
+
+    bar = new SLProgressBar();
+    bar.createIn(row, 0.0);
+    bar.setExpand(true, false);
+
+    caption = new SLLabel();
+    caption.createIn(row, "");
+    caption.setAlign(ALIGN_START, ALIGN_CENTER);
+
+    mode = MODE_IDLE;
+    fraction = 0.0; phase = 0.0; showPercent = true;
+    applyMode();
+  }
+
+  // ---- lifecycle ----------------------------------------------------------
+
+  // Begin an indeterminate task of unknown length.
+  void beginIndeterminate(String text) {
+    mode = MODE_INDETERMINATE;
+    setCaption(text);
+    applyMode();
+  }
+
+  // Begin (or switch to) a determinate task; `initial` is the starting [0,1].
+  void beginDeterminate(String text, double initial) {
+    mode = MODE_DETERMINATE;
+    setFraction(initial);
+    setCaption(text);
+    applyMode();
+  }
+
+  // Update determinate progress; clamps to [0,1] and refreshes the caption.
+  void setFraction(double value) {
+    fraction = clamp01(value);
+    if (bar.valid()) { bar.setFraction(fraction); }
+    if (mode == MODE_DETERMINATE) { refreshCaption(); }
+  }
+  double getFraction() { return fraction; }
+
+  // Advance the indeterminate visual (host calls this each frame; phase wraps).
+  void tick(double delta) {
+    phase = phase + delta;
+    while (phase >= 1.0) { phase = phase - 1.0; }
+    if (mode == MODE_INDETERMINATE && style == STYLE_SPINNER && spinner.valid()) {
+      spinner.setPhase(phase);
+    }
+    // The throbber animates itself from the window frame loop; nothing to push.
+  }
+
+  // Finish successfully: hide the activity visual, set a final caption.
+  void done(String text) {
+    mode = MODE_DONE;
+    if (text != null) { setCaption(text); }
+    applyMode();
+  }
+
+  // Finish with an error: hide the activity visual, set a failure caption.
+  void fail(String text) {
+    mode = MODE_FAILED;
+    if (text != null) { setCaption(text); }
+    applyMode();
+  }
+
+  // Reset to idle (hidden).
+  void reset() {
+    mode = MODE_IDLE; fraction = 0.0; phase = 0.0;
+    if (bar.valid()) { bar.setFraction(0.0); }
+    setCaption("");
+    applyMode();
+  }
+
+  // ---- query --------------------------------------------------------------
+
+  int currentMode() { return mode; }
+  boolean busy() { return mode == MODE_INDETERMINATE || mode == MODE_DETERMINATE; }
+  boolean finished() { return mode == MODE_DONE || mode == MODE_FAILED; }
+  boolean failed() { return mode == MODE_FAILED; }
+
+  // Choose the indeterminate visual (throbber vs spinner) at any time.
+  void setStyle(int style0) { style = style0; applyMode(); }
+
+  // Whether to append a percentage to the determinate caption.
+  void setShowPercent(boolean on) { showPercent = on; refreshCaption(); }
+
+  // Set the base caption text (without any appended percentage).
+  void setCaption(String text) { baseCaption = (text == null) ? "" : text; refreshCaption(); }
+
+  // ---- internals ----------------------------------------------------------
+
+  // Show exactly the visual the current mode needs; hide the rest.
+  void applyMode() {
+    boolean indet = (mode == MODE_INDETERMINATE);
+    boolean det   = (mode == MODE_DETERMINATE);
+    if (throbber.valid()) { throbber.setVisible(indet && style == STYLE_THROBBER); }
+    if (spinner.valid())  { spinner.setVisible(indet && style == STYLE_SPINNER); }
+    if (bar.valid())      { bar.setVisible(det); }
+    refreshCaption();
+  }
+
+  // Rebuild the caption, appending " NN%" in determinate mode when enabled.
+  void refreshCaption() {
+    if (caption == null || !caption.valid()) { return; }
+    String text = (baseCaption == null) ? "" : baseCaption;
+    if (mode == MODE_DETERMINATE && showPercent) {
+      text = text + "  " + percentText(fraction) + "%";
+    }
+    caption.setText(text);
+  }
+
+  // fraction[0,1] -> integer percent 0..100 without a float->int cast.
+  String percentText(double f) {
+    double v = clamp01(f);
+    int p = 0;
+    double acc = 0.0;
+    while (acc + 0.01 <= v && p < 100) { acc = acc + 0.01; p = p + 1; }
+    return "" + p;
+  }
+
+  double clamp01(double v) { if (v < 0.0) { return 0.0; } if (v > 1.0) { return 1.0; } return v; }
+}

@@ -33,6 +33,7 @@ class SLIdeWorkbenchUI {
   SLTreeView tree;
   SLNotebook notebook;
   SLStatusBar status;
+  SLLoadingIndicator loading;   // shown in the status bar during compiles
 
   // State models (the existing SLeeLa logic layer).
   SLIdeTabGroup tabs;
@@ -66,6 +67,11 @@ class SLIdeWorkbenchUI {
     status = new SLStatusBar();
     status.createIn(rootColumn);
     status.setText("Ready");
+
+    // A loading indicator lives in the status bar: indeterminate while
+    // Nordshrift resolves/transpiles, then idle. Starts hidden (idle).
+    loading = new SLLoadingIndicator();
+    loading.createIn(status, SLLoadingIndicator.STYLE_SPINNER, 0);
 
     // State models.
     tabs = new SLIdeTabGroup();  tabs.init();
@@ -183,7 +189,8 @@ class SLIdeWorkbenchUI {
     SLIdeEditor model = tabs.active();
     if (model == null) { return; }
     diagnostics.clearDocument(model.getId());
-    status.setText("Compiling " + fileName(model.getPath()) + " ...");
+    // Length is unknown until the compiler reports, so start indeterminate.
+    loading.beginIndeterminate("Compiling " + fileName(model.getPath()) + " ...");
   }
 
   // Mark the active editor saved (host persists the buffer first).
@@ -221,7 +228,19 @@ class SLIdeWorkbenchUI {
     refreshStatus();
   }
   void finishCompile() {
-    status.setText(diagnostics.statusLine());
+    if (diagnostics.compileSucceeded()) { loading.done("Build succeeded"); }
+    else { loading.fail(diagnostics.statusLine()); }
+    refreshStatus();
+  }
+
+  // Optional: a host that knows the total work can switch the indicator to a
+  // determinate progress bar and feed it a fraction in [0,1].
+  void reportCompileProgress(double fraction) {
+    if (loading.currentMode() != SLLoadingIndicator.MODE_DETERMINATE) {
+      loading.beginDeterminate("Compiling", fraction);
+    } else {
+      loading.setFraction(fraction);
+    }
   }
 
   // ---- loop ---------------------------------------------------------------
@@ -234,6 +253,7 @@ class SLIdeWorkbenchUI {
       if (dispatched < 0) { break; }
       if (!pollCommands()) { ui.quit(0); }
       syncDirtyFromEditor();
+      if (loading.busy()) { loading.tick(0.03); }   // advance the spinner arc
       window.requestRedraw();
     }
     return 0;
