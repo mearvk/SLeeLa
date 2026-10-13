@@ -153,6 +153,19 @@ implements the same surface.
 | `SLThrobber` | A width-adjustable, water-like flowing, colour-predictive activity field. |
 | `SLCanvasView` | A general animated drawing surface driven by a per-frame draw routine. |
 
+### Composite / data widgets
+
+These are **built entirely in SLeeLa from the primitives above** (they add no
+new C ABI). They are the data and container widgets a document application —
+such as an IDE — needs, so a complete GUI can be authored in SLeeLa alone.
+
+| Class | Role | Composed from |
+|---|---|---|
+| `SLScrollView` | A scrollable, clipping viewport; children build into its `contentArea()`. | `SLFrame` + `SLBox` + `SLScrollBar` |
+| `SLTreeView` | A hierarchical tree with depth indentation, expand/collapse, and selection. | `SLScrollView` + `SLLabel` rows |
+| `SLNotebook` | A tabbed container: a tab strip over a one-page-visible content stack, with per-tab dirty markers. | `SLBox` + `SLButton` tabs |
+| `SLTextView` | A multi-line editable **code editor**: line buffer, caret, selection, dirty flag, gutter line numbers, current-line highlight, drawn via the Draw API. | `SLCanvasView` + `SLDrawContext` |
+
 > The full catalogue — every widget with its C ABI constructor, SLeeLa class,
 > description, and focus behaviour — is tabulated in
 > [`user-interface/WIDGETS.DESCRIPTION.md`](../../user-interface/WIDGETS.DESCRIPTION.md).

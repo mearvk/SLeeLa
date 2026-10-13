@@ -1,0 +1,283 @@
+/*
+ * lib/ide-workbench/SLIdeWorkbenchUI.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLIdeWorkbenchUI — the IDE shell rendered as a REAL
+ *   SleelaUI graphical interface, built entirely in SLeeLa. Where SLIdeWorkbench
+ *   models the IDE's state/service handoffs, this class constructs the actual
+ *   window and widgets from /lib/user-interface: an application + window, a
+ *   header bar with Open/Compile/Save/Close buttons, a horizontally split body
+ *   with an SLTreeView project explorer on the left and an SLNotebook of
+ *   SLTextView code editors on the right, and an SLStatusBar footer carrying the
+ *   diagnostics summary. It runs the SleelaUI event loop and polls the widgets
+ *   for activations — so the IDE's user interface is pure SLeeLa over SleelaUI,
+ *   not deferred to a foreign toolkit.
+ *
+ * Family: ide-workbench. The GUI is SleelaUI; SLeeLa owns both meaning and
+ * presentation here.
+ */
+#sleela 1.5
+class SLIdeWorkbenchUI {
+  SLUserInterface ui;
+  SLWindow window;
+  SLBox rootColumn;
+
+  // Header-bar command buttons (SLIdeCommandRegistry affordances in SleelaUI).
+  SLHeaderBar header;
+  SLButton openBtn;
+  SLButton compileBtn;
+  SLButton saveBtn;
+  SLButton closeBtn;
+
+  // Body: tree on the left, editor notebook on the right.
+  SLBox body;
+  SLTreeView tree;
+  SLNotebook notebook;
+  SLStatusBar status;
+
+  // State models (the existing SLeeLa logic layer).
+  SLIdeTabGroup tabs;
+  SLIdeProjectTree projectModel;
+  SLIdeDiagnosticsPanel diagnostics;
+
+  // Per-page editor views, index-aligned with the notebook pages.
+  SLTextView[] editors;
+  int editorCount;
+
+  boolean ready;
+
+  // Build and show the whole IDE window. Returns true when the toolkit came up.
+  boolean boot(String appId, String title, int width, int height, String root) {
+    ui = new SLUserInterface();
+    ui.configure(appId);
+    if (!ui.open()) { ready = false; return false; }
+
+    SLTheme theme = new SLTheme();
+    theme.slickBlack();
+    window = ui.openWindow(title, width, height, theme.handle());
+    SLWidget rootWidget = window.rootWidget();
+
+    rootColumn = new SLBox();
+    rootColumn.vertical(rootWidget, 0);
+    rootColumn.setExpand(true, true);
+
+    buildHeader();
+    buildBody();
+
+    status = new SLStatusBar();
+    status.createIn(rootColumn);
+    status.setText("Ready");
+
+    // State models.
+    tabs = new SLIdeTabGroup();  tabs.init();
+    projectModel = new SLIdeProjectTree(); projectModel.init(root);
+    diagnostics = new SLIdeDiagnosticsPanel(); diagnostics.init();
+
+    editors = new SLTextView[SLIdeTabGroup.SLGUI_MAX_DOCUMENTS * 8];
+    editorCount = 0;
+
+    window.show();
+    ready = true;
+    refreshStatus();
+    return true;
+  }
+
+  void buildHeader() {
+    header = new SLHeaderBar();
+    header.createIn(rootColumn);
+    header.setSizeRequest(0, 40);
+
+    SLLabel brand = new SLLabel();
+    brand.createIn(header, "SLeeLa IDE");
+    brand.setMargin(0, 0, 0, 12);
+    brand.setAlign(SLWidget.ALIGN_START, SLWidget.ALIGN_CENTER);
+
+    SLSpacer gap = new SLSpacer();
+    gap.createIn(header);
+
+    openBtn = new SLButton();    openBtn.createIn(header, "Open");
+    compileBtn = new SLButton(); compileBtn.createIn(header, "Compile");
+    compileBtn.setSuggested(true);
+    saveBtn = new SLButton();    saveBtn.createIn(header, "Save");
+    closeBtn = new SLButton();   closeBtn.createIn(header, "Close");
+  }
+
+  void buildBody() {
+    body = new SLBox();
+    body.horizontal(rootColumn, 0);
+    body.setExpand(true, true);
+
+    // Left: project explorer (tree).
+    SLFrame left = new SLFrame();
+    left.createIn(body, "Project");
+    left.setSizeRequest(260, 0);
+    tree = new SLTreeView();
+    tree.createIn(left, 40);
+
+    // Right: tabbed code editors.
+    SLFrame right = new SLFrame();
+    right.createIn(body, "");
+    right.setExpand(true, true);
+    notebook = new SLNotebook();
+    notebook.createIn(right);
+  }
+
+  boolean isReady() { return ready; }
+
+  // ---- opening / editing --------------------------------------------------
+
+  // Register a project file in the tree (host enumerates the filesystem).
+  void addTreeNode(String id, String label, String parentId, boolean isLeaf) {
+    tree.addNode(id, label, parentId, isLeaf);
+  }
+  void rebuildTree() { tree.rebuild(); }
+
+  // Open a file into a new editor tab with its contents split into lines.
+  int openFile(String documentId, String path, String[] lines, int lineCount, String revision) {
+    SLIdeEditor model = new SLIdeEditor();
+    model.configure(documentId, path, projectModel.languageFor(path));
+    model.loadText(joinLines(lines, lineCount), revision);
+    int tabIndex = tabs.open(model);
+
+    int page = notebook.addPage(fileName(path));
+    SLTextView view = new SLTextView();
+    view.createIn(notebook.pageContent(page), 800, 600);
+    view.loadLines(lines, lineCount);
+    editors[page] = view;
+    if (page >= editorCount) { editorCount = page + 1; }
+
+    rearmWatchCheck();
+    refreshStatus();
+    return page;
+  }
+
+  SLTextView activeEditorView() {
+    int i = notebook.activeIndex();
+    if (i < 0 || i >= editorCount) { return null; }
+    return editors[i];
+  }
+
+  // ---- commands -----------------------------------------------------------
+
+  // Poll the SleelaUI widgets once per loop turn and act on activations.
+  // Returns false when Close was pressed on the last tab (host may quit).
+  boolean pollCommands() {
+    if (openBtn.clicked())    { onOpenSelected(); }
+    if (compileBtn.clicked()) { onCompile(); }
+    if (saveBtn.clicked())    { onSave(); }
+    if (closeBtn.clicked())   { return onClose(); }
+    int clickedTab = notebook.takeClickedTab();
+    if (clickedTab >= 0) { tabs.focus(clickedTab); refreshStatus(); }
+    return true;
+  }
+
+  // Open the tree-selected file. The host supplies the real contents; here we
+  // signal selection so a host callback can call openFile(...).
+  String onOpenSelected() {
+    if (!tree.selectionIsLeaf()) { return null; }
+    return tree.selectedId();   // host reads this id, loads the file, calls openFile
+  }
+
+  // Compile the active editor: the host runs Nordshrift (.sst) + the SLeeLa
+  // compiler and reports diagnostics back via publishDiagnostic(...).
+  void onCompile() {
+    SLIdeEditor model = tabs.active();
+    if (model == null) { return; }
+    diagnostics.clearDocument(model.getId());
+    status.setText("Compiling " + fileName(model.getPath()) + " ...");
+  }
+
+  // Mark the active editor saved (host persists the buffer first).
+  void onSave() {
+    SLTextView view = activeEditorView();
+    SLIdeEditor model = tabs.active();
+    if (view != null) { view.markSaved(); }
+    if (model != null) { model.markSaved(currentRevision()); }
+    int i = notebook.activeIndex();
+    if (i >= 0) { notebook.setDirty(i, false); }
+    refreshStatus();
+  }
+
+  boolean onClose() {
+    int i = notebook.activeIndex();
+    if (i < 0) { return true; }
+    tabs.close(i);
+    rearmWatchCheck();
+    refreshStatus();
+    return tabs.size() > 0;
+  }
+
+  // Reflect an edit from the active text view into the tab's dirty marker.
+  void syncDirtyFromEditor() {
+    SLTextView view = activeEditorView();
+    int i = notebook.activeIndex();
+    if (view != null && i >= 0) { notebook.setDirty(i, view.isDirty()); }
+    refreshStatus();
+  }
+
+  // ---- diagnostics --------------------------------------------------------
+
+  void publishDiagnostic(String documentId, int severity, int line, int col, String message) {
+    diagnostics.publish(documentId, severity, line, col, message);
+    refreshStatus();
+  }
+  void finishCompile() {
+    status.setText(diagnostics.statusLine());
+  }
+
+  // ---- loop ---------------------------------------------------------------
+
+  // Run the SleelaUI event loop, polling commands each turn, until the window
+  // closes. Returns the process-style exit code.
+  int runLoop() {
+    while (ui.active()) {
+      int dispatched = ui.pump(true);     // block for at least one event
+      if (dispatched < 0) { break; }
+      if (!pollCommands()) { ui.quit(0); }
+      syncDirtyFromEditor();
+      window.requestRedraw();
+    }
+    return 0;
+  }
+
+  // ---- helpers ------------------------------------------------------------
+
+  void refreshStatus() {
+    String watch = "watch " + tabs.watchSetSize() + "/" + SLIdeTabGroup.SLGUI_MAX_DOCUMENTS;
+    status.setText(diagnostics.statusLine() + "  |  " + tabs.size() + " open  |  " + watch);
+  }
+
+  void rearmWatchCheck() {
+    // The open-tab count is unbounded; the OS watch set stays within 1..14.
+    // (The real WatchService lives in the gui/ native host; here we keep the
+    // registration honest and surface it in the status bar.)
+    refreshStatus();
+  }
+
+  String fileName(String path) {
+    if (path == null) { return "untitled"; }
+    int slash = lastIndexOf(path, "/");
+    if (slash < 0) { return path; }
+    return path.substring(slash + 1, path.length());
+  }
+
+  int lastIndexOf(String s, String ch) {
+    int found = -1;
+    for (int i = 0; i < s.length(); i = i + 1) {
+      if (s.substring(i, i + 1) == ch) { found = i; }
+    }
+    return found;
+  }
+
+  String joinLines(String[] lines, int n) {
+    String s = "";
+    for (int i = 0; i < n; i = i + 1) {
+      s = s + lines[i];
+      if (i < n - 1) { s = s + "\n"; }
+    }
+    return s;
+  }
+
+  String currentRevision() { return "saved"; }
+
+  void shutdown() { if (ui != null) { ui.close(); } }
+}

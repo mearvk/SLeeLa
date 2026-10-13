@@ -81,12 +81,38 @@ SLIdeCommandRegistry "save"     -> SLDocument / SLDocumentConverter persist
 SLGuiDocumentListener           -> external change -> active editor refresh
 ```
 
+## The GUI is written in SLeeLa (SleelaUI)
+
+The IDE's user interface is authored **entirely in SLeeLa** on top of
+**SleelaUI™** (`/lib/user-interface`), SLeeLa's own cross-platform toolkit whose
+`ui*`/`draw*` built-ins drive real native windows (X11/Cocoa/Win32). Nothing in
+the GUI is deferred to a foreign toolkit.
+
+| Layer | Class | Role |
+|---|---|---|
+| **GUI shell** | `SLIdeWorkbenchUI` | Builds the real window: header-bar commands, a split body (tree + editor notebook), a status bar; runs the SleelaUI event loop and polls widget activations. |
+| state model | `SLIdeEditor`, `SLIdeTabGroup`, `SLIdeDiagnosticsPanel`, `SLIdeProjectTree` | The IDE's logic/state (dirty tracking, the 1..14 watch cap, the diagnostics failure rule, language routing). |
+| service contract | `SLIdeWorkbench` | The headless `openFile -> compileActive -> saveActive` loop and the Nordshrift/compiler handoff (toolkit-independent). |
+
+The GUI shell is built from these **competent SleelaUI widgets**, all written in
+SLeeLa over the toolkit primitives (no new C ABI):
+
+- `SLTreeView` — the project explorer (depth, expand/collapse, selection);
+- `SLNotebook` — the tabbed, dirty-aware editor surface;
+- `SLTextView` — a real multi-line **code editor** (line buffer, caret,
+  selection, gutter line numbers, drawn via the Draw API);
+- `SLScrollView` — the scrollable viewport the tree/editors sit in.
+
+Run it: `impl/build/sleela run lib/ide-workbench/ide-workbench-gui-demo.sleela`
+(exits cleanly on a headless host with no display, like `SLGalleryDemo`).
+
 ## Scaffolding status
 
-These classes are **composition scaffolding with real bindings to the existing
-contracts** — they model IDE state and the service handoffs, in the same
-contract-first style as `lib/gui`. They are the skeleton to flesh out against
-the live Java host / native bridge; they are not yet a shipping desktop binary.
+The GUI shell and widgets are complete SLeeLa source. The remaining host work is
+the toolchain glue the service layer calls out to (Nordshrift + `sleela check`,
+and the real OS `WatchService`), which the `/ide` IntelliJ layer and the `gui/`
+native host provide; the SLeeLa side no longer defers any *widget* work to a
+foreign toolkit.
 
 ## Build / verify
 

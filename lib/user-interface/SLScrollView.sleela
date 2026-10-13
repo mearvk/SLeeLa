@@ -1,0 +1,110 @@
+/*
+ * lib/user-interface/SLScrollView.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLScrollView — a SleelaUI scrollable viewport. It is a
+ *   composite SleelaUI widget (it adds no new C ABI): a vertical content box
+ *   held inside a clipping frame, with an SLScrollBar on the needed axes. The
+ *   content box is the parent handle children attach to; the view tracks the
+ *   content's natural extent against the viewport extent and only shows a bar
+ *   when the content overflows. Scroll position is reported in [0,1] by the
+ *   bars and converted to a pixel offset the toolkit applies to the content.
+ *
+ * An SLScrollView IS an SLWidget container built from SLFrame + SLBox +
+ * SLScrollBar, so any widget set (a tree, a list, a text view) becomes
+ * scrollable by being built into its content().
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLScrollView extends SLWidget {
+  SLFrame clip;        // the clipping viewport
+  SLBox layout;        // horizontal: content column + vertical scrollbar
+  SLBox content;       // the vertical content column children attach to
+  SLScrollBar vbar;    // vertical scrollbar (shown only when overflowing)
+  SLScrollBar hbar;    // horizontal scrollbar (optional)
+  int contentExtent;   // natural content height in pixels
+  int viewportExtent;  // visible viewport height in pixels
+  boolean horizontal;  // whether a horizontal bar is enabled
+
+  // Create a scroll view inside `parent`. horizontalBar enables the x-axis bar.
+  void createIn(SLWidget parent, boolean horizontalBar) {
+    clip = new SLFrame();
+    clip.createIn(parent, "");
+    clip.setExpand(true, true);
+    widget = clip.handle();        // the SLScrollView IS its clipping frame
+
+    layout = new SLBox();
+    layout.horizontal(clip, 0);
+    layout.setExpand(true, true);
+
+    content = new SLBox();
+    content.vertical(layout, 0);
+    content.setExpand(true, true);
+
+    vbar = new SLScrollBar();
+    vbar.createIn(layout, ORIENT_VERTICAL, 0.0, 1.0);
+
+    horizontal = horizontalBar;
+    if (horizontal) {
+      hbar = new SLScrollBar();
+      hbar.createIn(clip, ORIENT_HORIZONTAL, 0.0, 1.0);
+    }
+    contentExtent = 0; viewportExtent = 0;
+  }
+
+  // The container children attach to (via createIn(scroll.content(), ...)).
+  SLWidget contentArea() { return content; }
+
+  // Tell the view how tall its content and viewport are so it can size the
+  // thumb (page fraction) and decide whether the bar is needed.
+  void setExtents(int content_px, int viewport_px) {
+    contentExtent = content_px;
+    viewportExtent = viewport_px;
+    // The thumb's page fraction is fixed at construction in the current ABI;
+    // here we only toggle the bar's visibility based on overflow.
+    if (vbar.valid()) { vbar.setVisible(content_px > viewport_px); }
+  }
+
+  // Whether the content currently overflows the viewport (bar is meaningful).
+  boolean overflowing() { return contentExtent > viewportExtent; }
+
+  // Current vertical scroll offset in pixels, derived from the bar position.
+  // The position is a [0,1] double; we convert through a permille integer so
+  // the result stays in integer pixel space with no float->int cast.
+  int scrollOffset() {
+    if (!overflowing()) { return 0; }
+    int permille = positionPermille();        // 0..1000
+    int range = contentExtent - viewportExtent;
+    return (range * permille) / 1000;
+  }
+
+  // The bar position in integer permille (0..1000), i.e. floor(position*1000).
+  int positionPermille() {
+    double pos = clamp01(vbar.position());
+    int p = 0;
+    double acc = 0.0;
+    // Count whole permille steps without a float->int cast.
+    while (acc + 0.001 <= pos && p < 1000) { acc = acc + 0.001; p = p + 1; }
+    return p;
+  }
+
+  // Scroll so the pixel row `y` is visible (used by tree/list/text to follow
+  // the caret or selection).
+  void scrollToPixel(int y) {
+    if (!overflowing()) { return; }
+    int range = contentExtent - viewportExtent;
+    if (range <= 0) { return; }
+    double pos = clamp01((y + 0.0) / (range + 0.0));
+    vbar.setPosition(pos);
+  }
+
+  // True if the user moved either bar since the last check.
+  boolean scrolled() {
+    boolean v = vbar.valid() && vbar.changed();
+    boolean h = horizontal && hbar.valid() && hbar.changed();
+    return v || h;
+  }
+
+  double clamp01(double v) { if (v < 0.0) { return 0.0; } if (v > 1.0) { return 1.0; } return v; }
+}

@@ -1,0 +1,180 @@
+/*
+ * lib/user-interface/SLTreeView.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLTreeView — a competent SleelaUI hierarchical tree. It is
+ *   a composite widget (no new C ABI): an SLScrollView whose content column
+ *   holds one SLLabel row per *visible* node, indented by depth and prefixed
+ *   with a disclosure marker. Nodes carry a stable id, a display label, a parent
+ *   id, a depth, an expanded flag, and a leaf flag. Expanding/collapsing a
+ *   branch recomputes the visible row set; clicking a row selects it and reports
+ *   the selected node id. This is the data widget an IDE project explorer needs,
+ *   written entirely in SLeeLa over the SleelaUI primitives.
+ *
+ * An SLTreeView IS an SLWidget (its handle is the scroll view's frame).
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLTreeView extends SLWidget {
+  static final int MAX_NODES = 65536;
+  static final int ROW_HEIGHT = 22;   // pixels per row (for scroll math)
+
+  SLScrollView scroll;
+
+  // Node model (parallel arrays keyed by node index).
+  String[] ids;
+  String[] labels;
+  int[] parents;        // index of parent node, -1 for a root
+  int[] depths;
+  boolean[] expanded;
+  boolean[] leaf;
+  int count;
+
+  // Visible-row projection (indices into the node arrays, in display order).
+  int[] visible;
+  int visibleCount;
+
+  // One reusable label row per visible slot.
+  SLLabel[] rows;
+  int rowCapacity;
+  int selectedRow;      // index into `visible`, -1 when nothing selected
+
+  void createIn(SLWidget parent, int visibleRows) {
+    scroll = new SLScrollView();
+    scroll.createIn(parent, false);
+    scroll.setExpand(true, true);
+    widget = scroll.handle();
+
+    ids = new String[MAX_NODES];
+    labels = new String[MAX_NODES];
+    parents = new int[MAX_NODES];
+    depths = new int[MAX_NODES];
+    expanded = new boolean[MAX_NODES];
+    leaf = new boolean[MAX_NODES];
+    count = 0;
+
+    visible = new int[MAX_NODES];
+    visibleCount = 0;
+
+    rowCapacity = visibleRows;
+    rows = new SLLabel[rowCapacity];
+    for (int i = 0; i < rowCapacity; i = i + 1) {
+      SLLabel row = new SLLabel();
+      row.createIn(scroll.contentArea(), "");
+      row.setAlign(ALIGN_START, ALIGN_CENTER);
+      row.setSizeRequest(0, ROW_HEIGHT);
+      rows[i] = row;
+    }
+    selectedRow = -1;
+  }
+
+  // Add a node under `parentId` ("" / null for a root). Returns its index.
+  int addNode(String id, String label, String parentId, boolean isLeaf) {
+    if (count >= MAX_NODES) { return -1; }
+    int parentIdx = (parentId == null) ? -1 : indexOfId(parentId);
+    ids[count] = id;
+    labels[count] = label;
+    parents[count] = parentIdx;
+    depths[count] = (parentIdx < 0) ? 0 : depths[parentIdx] + 1;
+    expanded[count] = false;
+    leaf[count] = isLeaf;
+    int idx = count;
+    count = count + 1;
+    return idx;
+  }
+
+  int indexOfId(String id) {
+    for (int i = 0; i < count; i = i + 1) {
+      if (ids[i] == id) { return i; }
+    }
+    return -1;
+  }
+
+  // Recompute the visible rows: a node is visible when every ancestor is
+  // expanded. Walks nodes in insertion order (parents precede children).
+  void rebuild() {
+    visibleCount = 0;
+    for (int i = 0; i < count; i = i + 1) {
+      if (ancestorsExpanded(i)) {
+        visible[visibleCount] = i;
+        visibleCount = visibleCount + 1;
+      }
+    }
+    scroll.setExtents(visibleCount * ROW_HEIGHT, rowCapacity * ROW_HEIGHT);
+    paint();
+  }
+
+  boolean ancestorsExpanded(int node) {
+    int p = parents[node];
+    while (p >= 0) {
+      if (!expanded[p]) { return false; }
+      p = parents[p];
+    }
+    return true;
+  }
+
+  // Repaint the visible slice into the reusable row labels.
+  void paint() {
+    int first = firstVisibleRow();
+    for (int slot = 0; slot < rowCapacity; slot = slot + 1) {
+      int v = first + slot;
+      if (v < visibleCount) {
+        int node = visible[v];
+        rows[slot].setText(rowText(node));
+        rows[slot].setVisible(true);
+        rows[slot].setSuggested(v == selectedRow);
+      } else {
+        rows[slot].setText("");
+        rows[slot].setVisible(false);
+      }
+    }
+  }
+
+  int firstVisibleRow() {
+    int off = scroll.scrollOffset();
+    return off / ROW_HEIGHT;
+  }
+
+  // "    > Branch" / "      file.sleela" — indent by depth, disclosure marker.
+  String rowText(int node) {
+    String pad = indent(depths[node]);
+    if (leaf[node]) { return pad + "  " + labels[node]; }
+    String marker = expanded[node] ? "v " : "> ";
+    return pad + marker + labels[node];
+  }
+
+  String indent(int depth) {
+    String s = "";
+    for (int i = 0; i < depth; i = i + 1) { s = s + "  "; }
+    return s;
+  }
+
+  // Toggle a branch open/closed by node id; leaves are ignored.
+  void toggle(String id) {
+    int idx = indexOfId(id);
+    if (idx < 0 || leaf[idx]) { return; }
+    expanded[idx] = !expanded[idx];
+    rebuild();
+  }
+
+  // Select a visible row (0-based into the visible projection).
+  void selectRow(int visibleIndex) {
+    if (visibleIndex < 0 || visibleIndex >= visibleCount) { return; }
+    selectedRow = visibleIndex;
+    paint();
+  }
+
+  // The selected node id, or null when nothing is selected.
+  String selectedId() {
+    if (selectedRow < 0 || selectedRow >= visibleCount) { return null; }
+    return ids[visible[selectedRow]];
+  }
+  boolean selectionIsLeaf() {
+    if (selectedRow < 0 || selectedRow >= visibleCount) { return false; }
+    return leaf[visible[selectedRow]];
+  }
+
+  int nodeCount() { return count; }
+  int visibleRowCount() { return visibleCount; }
+}
