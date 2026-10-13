@@ -1,0 +1,116 @@
+/*
+ * lib/cpu/SLCPUCatalog.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCPUCatalog — the by-name front door to the CPU roster.
+ *   Where SLHardwareRegistry catalogs memory/SSD/HDD/USB/GPU parts by name, this
+ *   is the missing CPU family: a registry of the runnable SL<ARCH>CPU models so
+ *   a caller can pick a processor by key (e.g. "6502", "arm", "riscv", "x86",
+ *   "ps5", "xbox-series-x") instead of hard-coding `new SL6502CPU()`. Each entry
+ *   records a stable key, a human label, the architecture family, the rated spec
+ *   clock (MHz) and data-path width, so a fleet can be assembled from the roster
+ *   and its performance accounted. The catalog hands back a configured,
+ *   bring-up-ready SLCPURuntime via make(key); list()/keys() enumerate the
+ *   roster for a chooser UI or a fleet runner.
+ *
+ * Family: cpu. Selects/instantiates models that extend SLCPURuntime; consumed by
+ *   SLCPUFleet and any "choose a CPU" surface.
+ */
+#sleela 1.3
+class SLCPUCatalog {
+  static final int MAX = 128;
+
+  String[] key;         // stable selection key, e.g. "6502"
+  String[] label;       // human label, e.g. "MOS 6502"
+  String[] family;      // architecture family, e.g. "6502", "arm", "x86"
+  int[]    specMHz;     // rated spec clock (MHz)
+  int[]    width;       // data-path width (bits)
+  int      count;
+
+  void configure() {
+    key = new String[MAX]; label = new String[MAX]; family = new String[MAX];
+    specMHz = new int[MAX]; width = new int[MAX]; count = 0;
+    seedRoster();
+  }
+
+  // Register one model in the roster.
+  void add(String k, String human, String fam, int mhz, int bits) {
+    if (count >= MAX) { return; }
+    key[count] = k; label[count] = human; family[count] = fam;
+    specMHz[count] = mhz; width[count] = bits; count = count + 1;
+  }
+
+  int size() { return count; }
+  boolean has(String k) { return indexOf(k) >= 0; }
+  int indexOf(String k) {
+    for (int i = 0; i < count; i = i + 1) { if (key[i] == k) { return i; } }
+    return -1;
+  }
+  String labelOf(String k)  { int i = indexOf(k); return (i < 0) ? "" : label[i]; }
+  String familyOf(String k) { int i = indexOf(k); return (i < 0) ? "" : family[i]; }
+  int specOf(String k)      { int i = indexOf(k); return (i < 0) ? 0 : specMHz[i]; }
+  int widthOf(String k)     { int i = indexOf(k); return (i < 0) ? 0 : width[i]; }
+
+  String keyAt(int i)   { if (i < 0 || i >= count) { return ""; } return key[i]; }
+  String labelAt(int i) { if (i < 0 || i >= count) { return ""; } return label[i]; }
+  int specAt(int i)     { if (i < 0 || i >= count) { return 0; } return specMHz[i]; }
+
+  // A newline-separated listing of the roster, for a chooser or report.
+  String list() {
+    String s = "";
+    for (int i = 0; i < count; i = i + 1) {
+      s = s + key[i] + "\t" + label[i] + "\t" + family[i] + "\t"
+            + specMHz[i] + " MHz\t" + width[i] + "-bit\n";
+    }
+    return s;
+  }
+
+  // Instantiate and configure the model selected by key, as a runnable
+  // SLCPURuntime. Returns null if the key is unknown. The concrete model's
+  // configure() does bring-up (register set, memory, spec clock); the family
+  // switch maps a catalog key onto its SL<ARCH>CPU class.
+  SLCPURuntime make(String k) {
+    String fam = familyOf(k);
+    if (fam == "") { return null; }
+    SLCPURuntime cpu = instantiate(fam);
+    if (cpu == null) { return null; }
+    return cpu;
+  }
+
+  // Map an architecture family onto its concrete runnable class. Covers the
+  // classic cores directly; console/system families reuse the CPU core they
+  // shipped (e.g. a Genesis is a 68000-class core), so the roster stays runnable
+  // without a bespoke class per SKU.
+  SLCPURuntime instantiate(String fam) {
+    if (fam == "6502")  { SL6502CPU c = new SL6502CPU();   c.configure(); return c; }
+    if (fam == "z80")   { SLZ80CPU c = new SLZ80CPU();     c.configure(); return c; }
+    if (fam == "6809")  { SL6809CPU c = new SL6809CPU();   c.configure(); return c; }
+    if (fam == "68000") { SL68000CPU c = new SL68000CPU(); c.configure(); return c; }
+    if (fam == "arm")   { SLARMCPU c = new SLARMCPU();     c.configure(); return c; }
+    if (fam == "mips")  { SLMIPSCPU c = new SLMIPSCPU();   c.configure(); return c; }
+    if (fam == "riscv") { SLRISCVCPU c = new SLRISCVCPU(); c.configure("IM"); return c; }
+    if (fam == "x86")   { SLX86CPU c = new SLX86CPU();     c.configure(); return c; }
+    if (fam == "powerpc") { SLPowerPCCPU c = new SLPowerPCCPU(); c.configure(); return c; }
+    if (fam == "sparc") { SLSparcCPU c = new SLSparcCPU(); c.configure(); return c; }
+    if (fam == "vax")   { SLVAXCPU c = new SLVAXCPU();     c.configure(); return c; }
+    if (fam == "superh"){ SLSuperHCPU c = new SLSuperHCPU(); c.configure(); return c; }
+    return null;
+  }
+
+  // A representative starter roster spanning eras and families. A deployment may
+  // add() more entries (every runnable SL<ARCH>CPU is eligible) without changing
+  // this class. Spec clocks are rated reference values in MHz.
+  void seedRoster() {
+    add("6502",  "MOS 6502",            "6502",   1,    8);
+    add("z80",   "Zilog Z80",           "z80",    4,    8);
+    add("6809",  "Motorola 6809",       "6809",   2,    8);
+    add("68000", "Motorola 68000",      "68000",  8,   16);
+    add("arm",   "ARM (ARMv4 A32)",     "arm",    200, 32);
+    add("mips",  "MIPS R3000",          "mips",   33,  32);
+    add("riscv", "RISC-V RV32IM",       "riscv",  100, 32);
+    add("x86",   "Intel x86 (IA-32)",   "x86",    166, 32);
+    add("ppc",   "PowerPC",             "powerpc",233, 32);
+    add("sparc", "SPARC",               "sparc",  143, 32);
+    add("vax",   "DEC VAX",             "vax",    5,   32);
+    add("sh4",   "SuperH SH-4",         "superh", 200, 32);
+  }
+}

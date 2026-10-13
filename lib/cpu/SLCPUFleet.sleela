@@ -1,0 +1,162 @@
+/*
+ * lib/cpu/SLCPUFleet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCPUFleet — a selected roster of CPUs run as a group to
+ *   produce NET RESULTS. Where SLCPURuntime.runWorkload() runs one program on
+ *   one CPU and returns a single observable, a fleet selects several models from
+ *   the SLCPUCatalog, runs a workload (or a workload set) across all of them,
+ *   and AGGREGATES the per-CPU outcomes into a net-results scoreboard: total and
+ *   effective throughput (scaled by each CPU's clock policy), admitted vs.
+ *   rejected counts, the fastest/slowest member, and a per-member line. This is
+ *   the "simulate a real world with net results" surface — the world is the set
+ *   of heterogeneous machines, the net result is the aggregate of running real
+ *   work on them.
+ *
+ * Family: cpu. Composes SLCPUCatalog + SLCPURuntime + SLWorkload/SLCPUResource.
+ */
+#sleela 1.3
+class SLCPUFleet {
+  static final int MAX = 128;
+
+  SLCPUCatalog catalog;
+  String[]     memberKey;    // selected catalog keys
+  SLCPURuntime[] member;     // the configured CPUs
+  int          size;
+
+  // --- net-results accumulators (reset per run) ---
+  int ran;                   // CPUs that produced a result
+  int rejected;              // CPUs that rejected the workload
+  int netOutput;             // sum of observable outputs across the fleet
+  int totalSpecMHz;          // sum of rated clocks
+  int totalEffectiveMHz;     // sum of effective (post-overclock) clocks
+  int totalInstructions;     // sum of instructions retired across the fleet
+  int fastestMHz;  String fastestKey;
+  int slowestMHz;  String slowestKey;
+  String memberReport;       // per-member lines accumulated during a run
+
+  void configure(SLCPUCatalog cat) {
+    catalog = cat;
+    memberKey = new String[MAX];
+    member = new SLCPURuntime[MAX];
+    size = 0;
+    resetResults();
+  }
+
+  // --- fleet assembly (choose from the roster) ---
+
+  // Add one CPU by catalog key; returns true if the key resolved.
+  boolean select(String key) {
+    if (size >= MAX) { return false; }
+    SLCPURuntime cpu = catalog.make(key);
+    if (cpu == null) { return false; }
+    memberKey[size] = key;
+    member[size] = cpu;
+    size = size + 1;
+    return true;
+  }
+
+  // Add every model in the catalog (the whole roster).
+  void selectAll() {
+    for (int i = 0; i < catalog.size(); i = i + 1) { select(catalog.keyAt(i)); }
+  }
+
+  int count() { return size; }
+  SLCPURuntime at(int i) { if (i < 0 || i >= size) { return null; } return member[i]; }
+  String keyAt(int i)    { if (i < 0 || i >= size) { return ""; } return memberKey[i]; }
+
+  // --- overclock the whole fleet (optional) ---
+  // Push every member to a percentage of its spec clock (e.g. 120 = +20%);
+  // members whose policy marks the target unstable still run but are flagged.
+  void overclockFleetPercent(int percent) {
+    for (int i = 0; i < size; i = i + 1) {
+      SLCPURuntime c = member[i];
+      int target = (c.specClockMHz() * percent) / 100;
+      c.overclock(target);
+    }
+  }
+
+  // --- run work across the fleet and aggregate NET RESULTS ---
+
+  // Run the SAME workload spec on every member (each gets its own fresh grant,
+  // since a grant accumulates usage). `path`/`lang` name the source; `words` and
+  // `budget` size each per-CPU grant. Returns the net (summed) output.
+  int runAcross(String path, int lang, int words, int budget) {
+    resetResults();
+    for (int i = 0; i < size; i = i + 1) {
+      SLCPURuntime cpu = member[i];
+      SLCPUResource grant = new SLCPUResource();
+      grant.configure(words, budget, grant.PRIORITY_NORMAL);
+      SLWorkload job = new SLWorkload();
+      job.configure("fleet-job", path, lang, grant);
+      int out = cpu.runWorkload(job);
+      accumulate(memberKey[i], cpu, grant, out, job);
+    }
+    return netOutput;
+  }
+
+  // Fold one member's outcome into the net results.
+  void accumulate(String key, SLCPURuntime cpu, SLCPUResource grant, int out, SLWorkload job) {
+    int eff = cpu.effectiveMHz();
+    int spec = cpu.specClockMHz();
+    totalSpecMHz = totalSpecMHz + spec;
+    totalEffectiveMHz = totalEffectiveMHz + eff;
+    if (eff > fastestMHz) { fastestMHz = eff; fastestKey = key; }
+    if (slowestMHz < 0 || eff < slowestMHz) { slowestMHz = eff; slowestKey = key; }
+
+    String line = "  " + key + " @ " + eff + " MHz";
+    if (cpu.overclocked()) { line = line + " (OC" + (cpu.clockStable() ? "" : ", UNSTABLE") + ")"; }
+    if (out < 0 || job.rejected()) {
+      rejected = rejected + 1;
+      line = line + "  -> REJECTED";
+    } else {
+      ran = ran + 1;
+      netOutput = netOutput + out;
+      totalInstructions = totalInstructions + grant.used();
+      line = line + "  -> " + out + " (" + grant.used() + " instr)";
+    }
+    memberReport = memberReport + line + "\n";
+  }
+
+  void resetResults() {
+    ran = 0; rejected = 0; netOutput = 0;
+    totalSpecMHz = 0; totalEffectiveMHz = 0; totalInstructions = 0;
+    fastestMHz = 0; fastestKey = "";
+    slowestMHz = -1; slowestKey = "";
+    memberReport = "";
+  }
+
+  // --- net-results readout ---
+
+  int fleetSize()          { return size; }
+  int completed()          { return ran; }
+  int rejectedCount()      { return rejected; }
+  int net()                { return netOutput; }
+  int aggregateSpecMHz()   { return totalSpecMHz; }
+  int aggregateEffectiveMHz() { return totalEffectiveMHz; }
+  int retiredInstructions(){ return totalInstructions; }
+  String fastest()         { return fastestKey; }
+  String slowest()         { return slowestKey; }
+
+  // Aggregate overclock headroom actually realised, ×1000 (1000 = fleet at
+  // spec, 1250 = +25% aggregate effective clock). Lets a caller score the
+  // net performance gain without floating point.
+  int fleetSpeedRatioMilli() {
+    if (totalSpecMHz <= 0) { return 1000; }
+    return (totalEffectiveMHz * 1000) / totalSpecMHz;
+  }
+
+  // The net-results scoreboard: a world-level summary of running real work on
+  // the whole selected fleet.
+  String scoreboard() {
+    String s = "=== CPU FLEET NET RESULTS ===\n";
+    s = s + "fleet size        : " + size + " CPUs\n";
+    s = s + "completed / reject: " + ran + " / " + rejected + "\n";
+    s = s + "net output (sum)  : " + netOutput + "\n";
+    s = s + "retired instr     : " + totalInstructions + "\n";
+    s = s + "aggregate clock   : " + totalEffectiveMHz + " MHz effective / "
+          + totalSpecMHz + " MHz spec (ratio x" + fleetSpeedRatioMilli() + "/1000)\n";
+    s = s + "fastest / slowest : " + fastestKey + " / " + slowestKey + "\n";
+    s = s + "-- per member --\n" + memberReport;
+    return s;
+  }
+}
