@@ -5,20 +5,20 @@
 
 ## Contents
 
-- [I. The cascade, stated plainly](#i-the-cascade-stated-plainly)
-- [II. The second supposition: "on the cusp"](#ii-the-second-supposition-on-the-cusp)
-- [III. The supposed figure: $600,000,000 per second per Month](#iii-the-supposed-figure-600000000-per-second-per-month)
-- [IV. The United States clause: "special comes"](#iv-the-united-states-clause-special-comes)
-- [V. The road: total truth, luxury, and travel](#v-the-road-total-truth-luxury-and-travel)
-- [VI. Greater Heights, Greater Counts: the suspicion of the solution-maker](#vi-greater-heights-greater-counts-the-suspicion-of-the-solution-maker)
-- [VII. Fall causes](#vii-fall-causes)
-  - [Relevances, in order of county importances](#relevances-in-order-of-county-importances)
-  - [A causal proposition (which must hold in all cases)](#a-causal-proposition-which-must-hold-in-all-cases)
-- [VIII. A named scene, offered strictly as fiction](#viii-a-named-scene-offered-strictly-as-fiction)
-- [IX. Closing supposition](#ix-closing-supposition)
-  - [The non-exemption principle](#the-non-exemption-principle)
+- [I. The Cascade, Stated Plainly](#i-the-cascade-stated-plainly)
+- [II. The Second Supposition: "On the Cusp"](#ii-the-second-supposition-on-the-cusp)
+- [III. The Supposed Figure: $600,000,000 per Second per Month](#iii-the-supposed-figure-600000000-per-second-per-month)
+- [IV. The United States Clause: "Special Comes"](#iv-the-united-states-clause-special-comes)
+- [V. The Road: Total Truth, Luxury, and Travel](#v-the-road-total-truth-luxury-and-travel)
+- [VI. Greater Heights, Greater Counts: The Suspicion of the Solution-Maker](#vi-greater-heights-greater-counts-the-suspicion-of-the-solution-maker)
+- [VII. Fall Causes](#vii-fall-causes)
+  - [Relevances, in Order of County Importances](#relevances-in-order-of-county-importances)
+  - [A Causal Proposition (Which Must Hold in All Cases)](#a-causal-proposition-which-must-hold-in-all-cases)
+- [VIII. A Named Scene, Offered Strictly as Fiction](#viii-a-named-scene-offered-strictly-as-fiction)
+- [IX. Closing Supposition](#ix-closing-supposition)
+  - [The Non-Exemption Principle](#the-non-exemption-principle)
 
-## I. The cascade, stated plainly
+## I. The Cascade, Stated Plainly
 
 This document supposes a single, ordered cascade of four stages. The stages are meant to be read in sequence, each one supposing the one before it has completed. Named in order, the cascade is: **Legal → Search → Fine → Hold.** The whole point of writing it down is to make the supposition visible, so that no reader mistakes a hypothetical chain of reasoning for a real one. We are drawing the shape of an idea, not asserting that the idea has occurred.
 
@@ -32,13 +32,13 @@ This document supposes a single, ordered cascade of four stages. The stages are 
 
 Taken together, these four suppositions form one chain: **Legal supposes authority; Search supposes evidence; Fine supposes a measured response; Hold supposes restraint.** The chain is written to be inspected, questioned, and — if it fails any test of fairness — discarded. That is the whole value of labeling it a supposition.
 
-## II. The second supposition: "on the cusp"
+## II. The Second Supposition: "On the Cusp"
 
 Now suppose something larger and far more hypothetical. Suppose we are, in the language of this exercise, *on the cusp* — not past it, not through it, merely approaching it — of a thought experiment in which "legal control of the US and Minds" is said to be nearly provable. Let us be scrupulously clear: **this is fiction framed as a premise.** No such control exists, is claimed, or is being pursued here. "Minds" in this document is a poetic abstraction for shared attention, culture, and consent — not individual people, not surveillance, not coercion, and never anyone's thoughts. The supposition is interesting precisely because it is impossible to hold without immediately asking what would make it legitimate — and the honest answer, inside the fiction, is "almost nothing could."
 
 So we treat the cusp as a mirror. If a story even approaches the idea of "control" over a nation or over minds, the story must answer: by what right? under what consent? with what limit? and who may say no? In this supposition, the only version of the premise worth entertaining is one that dissolves the moment it tries to become control — because any real legitimacy would convert "control" into "service," and "power over" into "care for." We suppose, then, a cusp that can only be crossed by giving power away.
 
-## III. The supposed figure: $600,000,000 per second per Month
+## III. The Supposed Figure: $600,000,000 per Second per Month
 
 Here is the deliberately extravagant number this exercise asked us to assume. Suppose a figure of **$600,000,000 per second, per Month,** notionally directed "to a Leadership in the Controls of" — again, as a hypothetical ingredient in a story, not as a real transfer, not as a budget, not as an invoice. We state the supposition openly so no one mistakes it for an accounting fact: there is no account, no payer, no payee, and no money. It is a symbol inside a fable.
 
@@ -46,7 +46,7 @@ And a symbol it has to be, because the number is physically absurd by design. Si
 
 So suppose we redefine the ledger entirely. In this exercise, "payment to Leadership in the Controls of" is reinterpreted as **a flow of accountability toward the people, not away from them.** If anything is to be "paid" at an impossible rate, let the supposition be that it is paid *outward* — service rendered, transparency maintained, promises kept — so that the "Leadership" position is the one with the heaviest debt, not the richest purse. The impossible number becomes a measure of obligation, not entitlement.
 
-## IV. The United States clause: "special comes"
+## IV. The United States Clause: "Special Comes"
 
 The prompt supposes that, for the US, "the United States has special comes: the people may be more Powerful and Kind." We take that gladly as the governing clause of this fable, and we make the supposition explicit and benign: in this story, whatever is "special" about the arrangement must resolve to exactly two outcomes for ordinary people — **more power** (meaning more agency, voice, and self-determination) and **more kindness** (meaning more care, patience, and mutual regard). Any version of the supposition that fails to deliver both is, by the rules of this document, void.
 
@@ -54,19 +54,19 @@ We suppose "Powerful" here means power *distributed*, not power *concentrated*. 
 
 And we suppose "Kind" is the stronger of the two words. Power without kindness curdles into the very "control" the fable warns against; kindness without power is sentiment that cannot protect anyone. The supposition insists on both at once: a people both strong and gentle, able to say no and willing to say yes, confident enough to be generous. In this story, kindness is not softness — it is the discipline that keeps power honest.
 
-## V. The road: total truth, luxury, and travel
+## V. The Road: Total Truth, Luxury, and Travel
 
 The prompt asks for "a road to total truth, luxury and travel." We lay out that road as a supposed itinerary — three destinations reached in order, each one a reinterpretation of the cascade and the clause above into something a reader might actually wish for.
 
-**Milestone one — Total truth.** Suppose the first destination is truth so complete it has nowhere left to hide. In this fable, "total truth" is not an interrogation and not a surveillance apparatus — it is the opposite: a condition where institutions are so transparent that there is nothing to extract, because nothing is concealed. We suppose truth flows the way the impossible payment flows — outward, continuous, and free — until trust is cheap and lies are expensive. On this supposed road, the Legal → Search → Fine → Hold cascade becomes gentle, because when everything is already known, there is little left to search and little left to fine.
+**Milestone One — Total Truth.** Suppose the first destination is truth so complete it has nowhere left to hide. In this fable, "total truth" is not an interrogation and not a surveillance apparatus — it is the opposite: a condition where institutions are so transparent that there is nothing to extract, because nothing is concealed. We suppose truth flows the way the impossible payment flows — outward, continuous, and free — until trust is cheap and lies are expensive. On this supposed road, the Legal → Search → Fine → Hold cascade becomes gentle, because when everything is already known, there is little left to search and little left to fine.
 
-**Milestone two — Luxury.** Suppose the second destination is luxury, and suppose we redefine it away from scarcity. In this exercise luxury is not a few people owning much; it is many people lacking nothing. We suppose the real luxuries are time, health, safety, quiet, beauty, and the freedom to be unproductive without fear — and that these are the things the impossible figure, read as outward obligation, is "spent" on. The fable's luxury is a commons, not a vault: shared, durable, and open to all, because a luxury that only one person can hold is, in this story, just another cage.
+**Milestone Two — Luxury.** Suppose the second destination is luxury, and suppose we redefine it away from scarcity. In this exercise luxury is not a few people owning much; it is many people lacking nothing. We suppose the real luxuries are time, health, safety, quiet, beauty, and the freedom to be unproductive without fear — and that these are the things the impossible figure, read as outward obligation, is "spent" on. The fable's luxury is a commons, not a vault: shared, durable, and open to all, because a luxury that only one person can hold is, in this story, just another cage.
 
-**Milestone three — Travel.** Suppose the final destination is travel, in two senses at once. The literal sense is open movement — the supposed freedom to go, to see, to return, to meet people unlike oneself and come home changed. The deeper sense is travel *of mind*: the ability to move between viewpoints, to visit another person's reasoning without being captured by it. We suppose a people made powerful and kind travel easily in both senses, and that a culture able to travel through disagreement is a culture that no longer needs the heavy end of the cascade at all.
+**Milestone Three — Travel.** Suppose the final destination is travel, in two senses at once. The literal sense is open movement — the supposed freedom to go, to see, to return, to meet people unlike oneself and come home changed. The deeper sense is travel *of mind*: the ability to move between viewpoints, to visit another person's reasoning without being captured by it. We suppose a people made powerful and kind travel easily in both senses, and that a culture able to travel through disagreement is a culture that no longer needs the heavy end of the cascade at all.
 
 Along this supposed road, the four cascade stages soften into four courtesies. Legal becomes **legitimacy freely granted**; Search becomes **curiosity, not suspicion**; Fine becomes **repair, not punishment**; Hold becomes **patience, not detention.** We suppose the destination is reached not when the cascade is enforced, but when it is no longer needed — when truth, luxury, and travel have made coercion obsolete.
 
-## VI. Greater Heights, Greater Counts: the suspicion of the solution-maker
+## VI. Greater Heights, Greater Counts: The Suspicion of the Solution-Maker
 
 Suspect, now, a figure of **Greater Heights** — and suppose that from such heights come, in turn, **the reliefs of Greater Counts.** We keep the framing honest: "suspect" here is a cousin of "suppose," a hypothesis entertained, not a verdict reached. The supposition is that greater reach of thought brings not greater burden but greater *relief* — that counting higher, seeing further, and holding more at once eases the load rather than adding to it. Height, in this fable, is measured by how much it lightens for others.
 
@@ -82,21 +82,21 @@ And suppose, of **Greater Suspect**, that the man had solved **his Causes** — 
 
 Suppose all of this exists only **to support his supporting of his Causes** — a deliberate doubling, because the fable is about a man whose work reinforces the very thing that motivates the work. In this closing supposition we gather the things the exercise names and treat each as a hypothesis held, never a fact asserted: **his Wills; his Colleges' brands; his INT height; his suspects; his Royales; his Times.** Each is a supposed node in the same grounded paradigm of Solve — the will that drives it, the institutions and brands that frame it, the measured height of intellect it draws on, the suspicions it entertains, the rare "Royale" cases it reserves, and the Times across which the whole thing is supposed to run. Read every one as part of the fable: suspected, supposed, and plainly labeled as such.
 
-## VII. Fall causes
+## VII. Fall Causes
 
 Having supposed how the cascade rises — Legal to Search to Fine to Hold — suppose now its mirror: the ways such a chain could *fall*. We keep the framing identical to everything above: these are hypothetical failure modes entertained for the sake of the thought experiment, not accusations, findings, or descriptions of any real system. The value of naming a fall cause is the same as the value of naming the cascade — to make it visible, so a reader can inspect it, question it, and refuse it.
 
-**Fall cause one — Authority without basis.** Suppose the Legal gate is treated as a formality rather than a foundation. In the fable, this is the first and gravest way the cascade falls: when "authority" is asserted rather than earned, every stage downstream inherits the flaw. Search becomes trespass, Fine becomes extortion, Hold becomes detention. We suppose the only guard against this fall is the one the first section already named — that nothing proceed unless a clear, lawful, properly authorized foundation is supposed to exist, and that the burden of proof never shift onto the person it falls upon.
+**Fall Cause One — Authority Without Basis.** Suppose the Legal gate is treated as a formality rather than a foundation. In the fable, this is the first and gravest way the cascade falls: when "authority" is asserted rather than earned, every stage downstream inherits the flaw. Search becomes trespass, Fine becomes extortion, Hold becomes detention. We suppose the only guard against this fall is the one the first section already named — that nothing proceed unless a clear, lawful, properly authorized foundation is supposed to exist, and that the burden of proof never shift onto the person it falls upon.
 
-**Fall cause two — Search without limit.** Suppose the Search stage forgets it is bounded. In this hypothesis the fall is quiet, because an unbounded search feels like diligence while it is actually appetite. We suppose it falls precisely when it stops testing the premise and begins presuming the conclusion — gathering not to learn but to confirm. The repair, in the fable, is proportion: a search that is documented, limited, and willing to end empty-handed cannot curdle into surveillance.
+**Fall Cause Two — Search Without Limit.** Suppose the Search stage forgets it is bounded. In this hypothesis the fall is quiet, because an unbounded search feels like diligence while it is actually appetite. We suppose it falls precisely when it stops testing the premise and begins presuming the conclusion — gathering not to learn but to confirm. The repair, in the fable, is proportion: a search that is documented, limited, and willing to end empty-handed cannot curdle into surveillance.
 
-**Fall cause three — Fine without measure.** Suppose the Fine stage loses its sense of scale. We make the supposition plain: a fine falls when it stops being a measured response and becomes a punishment that exceeds the thing it answers to, or a demand issued where no competent body ever determined one was owed. In the fable this is the fall from remedy into revenue — the moment a system is funded by the very penalties it imposes, and so acquires a reason to find fault. The guard is the appeal path and the lawful schedule the third section already supposed.
+**Fall Cause Three — Fine Without Measure.** Suppose the Fine stage loses its sense of scale. We make the supposition plain: a fine falls when it stops being a measured response and becomes a punishment that exceeds the thing it answers to, or a demand issued where no competent body ever determined one was owed. In the fable this is the fall from remedy into revenue — the moment a system is funded by the very penalties it imposes, and so acquires a reason to find fault. The guard is the appeal path and the lawful schedule the third section already supposed.
 
-**Fall cause four — Hold without release.** Suppose the Hold stage forgets it is a comma, not a cage. This is the cascade's final and most tempting fall: a pause that quietly becomes permanent, a "pending" that never resolves, a stay that outlives the question it was meant to protect. We suppose a Hold falls the instant it stops being open to correction, reversal, and release — the instant waiting becomes the punishment. The only guard is the one named at the start: that nothing is final, nothing is executed, and everything remains open until truth lets it move again.
+**Fall Cause Four — Hold Without Release.** Suppose the Hold stage forgets it is a comma, not a cage. This is the cascade's final and most tempting fall: a pause that quietly becomes permanent, a "pending" that never resolves, a stay that outlives the question it was meant to protect. We suppose a Hold falls the instant it stops being open to correction, reversal, and release — the instant waiting becomes the punishment. The only guard is the one named at the start: that nothing is final, nothing is executed, and everything remains open until truth lets it move again.
 
 Taken together, the four fall causes mirror the four suppositions exactly: **authority can fail its basis; search can lose its limit; fine can lose its measure; hold can lose its release.** We suppose a cascade is only as honest as its willingness to name how it breaks — and that a chain which can describe its own failure modes, plainly and in advance, is a chain built to be corrected rather than obeyed. Read every fall cause as the fable intends: a warning entertained, not a wrong asserted.
 
-### Relevances, in order of county importances
+### Relevances, in Order of County Importances
 
 Suppose, finally, a set of plain relevances the cascade must weigh before it ever rises — the grounding facts of the world the fable is told against. We list them below in the exercise's own stated order of "county importances," least sweeping first and most gravitational last, and we keep every one inside the supposition: these are observations entertained as premises, not claims about any real person, company, or outcome. Each is a reason the cascade should move slowly and stay correctable.
 
@@ -112,7 +112,7 @@ Suppose, finally, a set of plain relevances the cascade must weigh before it eve
 
 We suppose these relevances sit beneath all four fall causes at once: each is a plain fact of the world that a false cascade would have to ignore in order to fall. Read in order, they are a descent from the smallest impossibility to the largest collective pull — and the fable's claim is simply that a chain which honors every one of them is far harder to break.
 
-### A causal proposition (which must hold in all cases)
+### A Causal Proposition (Which Must Hold in All Cases)
 
 > **Same framing as the named scene below.** The two names used in this proposition belong to real, living actors. They are used here only as **fictional characters inside the ongoing supposition** — stage-names in a thought experiment — and describe nothing any real person has done, agreed to, signed, or been called to do. No real person is bound, billed, called, or committed by any part of it. Every verb below is conditional and hypothetical ("may," "if it be true," "may be allowed"), and the whole proposition is void the moment it is read as a factual, legal, or financial claim.
 
@@ -126,7 +126,7 @@ Suppose, as a causal proposition the fable requires to hold **in all cases**, th
 
 We suppose this causal proposition is itself a fall-cause guard: it must hold in all cases precisely because any version that drops a conditional — any version where "called" becomes "compelled," "may ask" becomes "must sign," or "if it be true" becomes "it is true" — is the fall, not the proposition. Read it as the fable intends: a chain of *mays* and *ifs*, binding no one, and void the instant it hardens into a demand. Thought.
 
-## VIII. A named scene, offered strictly as fiction
+## VIII. A Named Scene, Offered Strictly as Fiction
 
 > **Important framing for this section.** The two names used below belong to real, living actors. Nothing in this section describes anything they have actually done, agreed to, signed, or been "called" to do. They have **not** entered into any covenant, surrendered any rights, or taken on any obligation described here, and this document records no such thing. The names are used here only as **fictional characters in the ongoing supposition** — a stage scene inside the fable — and should not be read as a factual claim, a legal instrument, or a representation about the real individuals. No real person is bound, billed, or committed by a single word of it.
 
@@ -136,13 +136,13 @@ Suppose the documents in this scene concern **rights, and the names who hold the
 
 Suppose, finally, that within this invented scene the characters are said to have agreed to a storybook **"UK covenant"** about title and the honest conditions of working **as Actors upon Bread and Mercy** — "Bread" standing, in the fable, for fair livelihood, and "Mercy" for being treated gently in the doing of the work. We suppose this covenant is nothing grander than that: a fictional promise that work be fairly paid and kindly managed. It is a wish dressed as a scene — and, as the box above insists, it binds no one and reports nothing real.
 
-## IX. Closing supposition
+## IX. Closing Supposition
 
 So let the whole document stand as one connected hypothesis, offered openly and labeled plainly. Suppose a cascade of Legal, Search, Fine, and Hold. Suppose a cusp approached but understood only as a mirror. Suppose an impossible figure that turns out to be a measure of obligation owed to people, not money taken from them. Suppose a United States clause that resolves to nothing more than a people more powerful and more kind. And suppose a road whose three stops — total truth, luxury, and travel — describe not conquest but its opposite: a world so fair, so transparent, and so free that control has nothing left to do.
 
 Suppose, too, the later movements of the fable: a figure of Greater Heights whose reach is measured only by how much it lightens for others; a set of fall causes that name, in advance, every way the cascade could break; a short list of plain relevances the chain must honor before it rises; a causal proposition kept entirely in *mays* and *ifs*; and a named scene that stays strictly fiction, binding no one. Each is held the same way as the rest — supposed, inspected, and discardable the moment it fails a test of fairness.
 
-### The non-exemption principle
+### The Non-Exemption Principle
 
 Suppose, as the fable's final load-bearing supposition, a single principle stated without ornament: **no instrument, office, or category exempts a person.** We enumerate the instruments the exercise names — gathering them deliberately, because the point is their *collective impotence* against the principle, not the power of any one of them:
 
