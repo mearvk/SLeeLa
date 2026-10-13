@@ -17,8 +17,17 @@
 class SLCompilerDriver {
   SLInstructionSet isa;
   int lastLanguage;
+  SLTimingProfile profile;   // the operating point stamped into compiled output
 
-  void configure(SLInstructionSet instructionSet) { isa = instructionSet; lastLanguage = -1; }
+  void configure(SLInstructionSet instructionSet) {
+    isa = instructionSet; lastLanguage = -1; profile = null;
+  }
+
+  // Give the driver a timing/voltage/expertise profile. Every program it
+  // compiles from here on carries that profile's sealed manifest, so the VM
+  // and loader operate the STATED timings rather than guessing hardware
+  // quality. Without a profile, output compiles exactly as before (no header).
+  void useTimingProfile(SLTimingProfile p) { profile = p; }
 
   // Build the appropriate frontend for a language id.
   SLFrontend frontendFor(int langId, String path) {
@@ -55,6 +64,10 @@ class SLCompilerDriver {
     SLLowering backend = new SLLowering();
     backend.configure(isa, prog, ir);
     backend.lower();
+
+    // Stamp the stated operating point into the compiled image so downstream
+    // consumers honor declared timings instead of assuming hardware quality.
+    if (profile != null) { prog.attachTiming(profile.toManifest()); }
     return prog;
   }
 

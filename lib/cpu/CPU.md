@@ -81,6 +81,24 @@ that bottoms out at Boolean logic.
 |---|---|
 | `SLStack` | The hardware call/data stack (grows downward) for PUSH/POP and CALL/RET return addresses. |
 
+### Layer 2.7 — Voltages, variable clocks, and expert timings
+| Class | Role |
+|---|---|
+| `SLVoltageRail` | One named, adjustable supply rail — **actual voltages in mV**, with load-line droop and a safe window. |
+| `SLTiming` | A named, careful timing budget (setup/hold/propagation/jitter/guardband in ps) with slack and max-frequency reporting. |
+| `SLBusTiming` | A bus's **variable clock speed** + named address/data-strobe/control budgets; voltage caps the trustworthy clock. |
+| `SLCpuTiming` | Expert CPU core timings: variable clock + Vcore + per-stage pipeline budgets; the critical stage sets the honest max clock. |
+| `SLIOTiming` | Expert timings for **control of I/O**: handshake/turnaround/recovery budgets + clock-domain-crossing synchronizer latency. |
+| `SLRamTiming` | Expert RAM timings: CL/tRCD/tRP/tRAS/tRC/command-rate with derived real-nanosecond access latency. |
+| `SLTimingClass` | The expertise tier as a **Class Object** — Novice/Basic/Advanced/Expert — carrying brand/medium and the dialing policy. |
+| `SLTimingProfile` | Gathers all rails + expert timings under one tier, dials them, checks `honored()`, seals an `SLTimingManifest`. |
+| `SLTimingManifest` | The serializable operating point a **compiled `.sleela` image carries** so the VM/loader honor **declared** timings. |
+
+> **This layer is documented in detail in [`TIMING.md`](TIMING.md).** It lets a
+> compiled `.sleela` file state the actual voltages, variable clocks, and expert
+> bus/CPU/I/O/RAM timings it was built for, so the compilers and VM operate those
+> stated numbers rather than assuming the quality of the hardware.
+
 ### Layer 5 — Programs and the multi-language toolchain
 | Class | Role |
 |---|---|

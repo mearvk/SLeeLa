@@ -1,0 +1,85 @@
+/*
+ * lib/cpu/SLTiming.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLTiming — one named, careful timing budget: the atom all
+ *   the expert bus / CPU / I/O / RAM timings are built from. A budget names a
+ *   path and states its real electrical constraints in picoseconds (ps):
+ *   setup, hold, propagation, and jitter, all against a declared period. Rather
+ *   than assume a part is "fast enough", a budget is CHECKED — slack is period
+ *   minus the consumed time, and a path is honored only when slack is
+ *   non-negative with the stated guardband.
+ *
+ * Everything here is nameful and quality-first: each budget carries the signal
+ * name and a human reason, so a timing report reads as prose, not as magic
+ * numbers. A compiled .sleela file embeds these budgets so a compiler or VM
+ * operates the STATED timings instead of inferring confidences about silicon.
+ *
+ * Family: cpu. Pure Sleela timing model (picosecond integer arithmetic).
+ */
+#sleela 1.3
+class SLTiming {
+  String signal;      // nameful path: "addr->ras", "cas->dq", "req->ack", ...
+  String reason;      // why this budget exists, in words
+  int periodPs;       // the clock/strobe period this path must fit inside (ps)
+  int setupPs;        // required setup before the capturing edge (ps)
+  int holdPs;         // required hold after the capturing edge (ps)
+  int propagationPs;  // combinational / flight time along the path (ps)
+  int jitterPs;       // peak cycle-to-cycle jitter to subtract from the period
+  int guardbandPs;    // extra margin demanded on top of a bare pass (ps)
+  int checks;         // how many times this budget has been evaluated
+  int violations;     // how many of those failed
+
+  // Name a path and give it a period and a guardband.
+  void configure(String name, int period, int guardband) {
+    signal = name; reason = ""; periodPs = period;
+    setupPs = 0; holdPs = 0; propagationPs = 0; jitterPs = 0;
+    guardbandPs = guardband; checks = 0; violations = 0;
+  }
+
+  void describe(String why) { reason = why; }
+
+  // State the path's electrical constraints.
+  void setSetup(int ps) { if (ps >= 0) { setupPs = ps; } }
+  void setHold(int ps) { if (ps >= 0) { holdPs = ps; } }
+  void setPropagation(int ps) { if (ps >= 0) { propagationPs = ps; } }
+  void setJitter(int ps) { if (ps >= 0) { jitterPs = ps; } }
+  void setPeriod(int ps) { if (ps > 0) { periodPs = ps; } }
+  void setGuardband(int ps) { if (ps >= 0) { guardbandPs = ps; } }
+
+  // Time consumed along the path before data is stable at the capture point.
+  int consumedPs() { return propagationPs + setupPs; }
+
+  // The usable period after jitter is removed from the raw period.
+  int effectivePeriodPs() { return periodPs - jitterPs; }
+
+  // Setup slack: usable period minus consumed time minus the demanded
+  // guardband. Non-negative = the path is honored.
+  int setupSlackPs() { return effectivePeriodPs() - consumedPs() - guardbandPs; }
+
+  // Hold slack: propagation must out-last the required hold window.
+  int holdSlackPs() { return propagationPs - holdPs; }
+
+  // Does this budget hold, counting setup, hold, and guardband together?
+  boolean honored() {
+    checks = checks + 1;
+    boolean ok = setupSlackPs() >= 0 && holdSlackPs() >= 0;
+    if (!ok) { violations = violations + 1; }
+    return ok;
+  }
+
+  // The highest strobe frequency (MHz) this path can be run at and still meet
+  // setup with its guardband: f = 1e6 / (consumed + guardband + jitter) ps.
+  int maxFrequencyMHz() {
+    int floorPs = consumedPs() + guardbandPs + jitterPs;
+    if (floorPs <= 0) { return 0; }
+    return 1000000 / floorPs;
+  }
+
+  String signalName() { return signal; }
+  String why() { return reason; }
+  int period() { return periodPs; }
+  int guardband() { return guardbandPs; }
+  int checkCount() { return checks; }
+  int violationCount() { return violations; }
+  boolean clean() { return violations == 0; }
+}

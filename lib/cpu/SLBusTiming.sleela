@@ -1,0 +1,144 @@
+/*
+ * lib/cpu/SLBusTiming.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLBusTiming — the careful, nameful timing + variable
+ *   clock speed of one interconnect (front-side / memory / peripheral bus). A
+ *   bus here is not assumed to "just work" at a frequency: its clock is a
+ *   VARIABLE speed with a floor and a ceiling the operator may dial between,
+ *   and three named SLTiming budgets (address, data, control) are checked
+ *   against the period that frequency implies. Bus timing is given special care
+ *   — this is the class the thesis "timing issues for buses shall be careful
+ *   and nameful" lives in — so the data-strobe path carries its own name and
+ *   reason and the whole bus reports whether it is honored at the dialed speed.
+ *
+ * It rides on an SLVoltageRail: the achievable clock ceiling scales with the
+ * rail's effective (settled, under-load) voltage, so under-volting a bus
+ * lowers the speed it can be trusted at rather than silently corrupting it.
+ *
+ * Family: cpu. Composes SLTiming and SLVoltageRail; partners SLBus/SLClock.
+ */
+#sleela 1.3
+class SLBusTiming {
+  String name;         // nameful bus: "FSB", "MemBus", "PCIe", "IOBus", ...
+  int minMHz;          // lowest clock the operator may dial the bus to
+  int maxMHz;          // highest clock the bus is validated for
+  int currentMHz;      // the variable clock the bus is presently run at
+  int widthBits;       // transfer width (for bandwidth reporting)
+  int transfersPerClk; // 1 = SDR, 2 = DDR, 4 = QDR; the data-rate multiplier
+
+  SLVoltageRail rail;  // the supply this interconnect sits on
+  int mvPerMHz;        // how much settled voltage one extra MHz of ceiling needs
+
+  SLTiming addrPath;   // address-lane budget
+  SLTiming dataPath;   // data-strobe budget (the carefully-named one)
+  SLTiming ctrlPath;   // control/handshake budget
+
+  // Configure a bus: name, dialing range, width, and data-rate multiplier.
+  void configure(String busName, int floorMHz, int ceilingMHz, int bits, int perClock) {
+    name = busName; minMHz = floorMHz; maxMHz = ceilingMHz;
+    currentMHz = floorMHz; widthBits = bits;
+    transfersPerClk = perClock; if (transfersPerClk < 1) { transfersPerClk = 1; }
+    mvPerMHz = 0;
+
+    addrPath = new SLTiming(); addrPath.configure("addr-lane", periodPsAt(currentMHz), 40);
+    addrPath.describe("address must be stable at the far end before the command strobe");
+
+    dataPath = new SLTiming(); dataPath.configure("data-strobe", strobePeriodPs(), 60);
+    dataPath.describe("payload must settle inside the data eye on every transfer edge");
+
+    ctrlPath = new SLTiming(); ctrlPath.configure("req-ack", periodPsAt(currentMHz), 50);
+    ctrlPath.describe("request/acknowledge handshake must round-trip within one clock");
+  }
+
+  // Bind the supply rail and the volts-per-MHz the ceiling needs.
+  void attachRail(SLVoltageRail supply, int millivoltsPerMHz) {
+    rail = supply; mvPerMHz = millivoltsPerMHz;
+  }
+
+  // The clock period in picoseconds for a given MHz: 1e6 ps / MHz.
+  int periodPsAt(int mhz) { if (mhz <= 0) { return 0; } return 1000000 / mhz; }
+
+  // The data strobe period: the clock period divided by transfers-per-clock
+  // (DDR halves the eye the data must settle inside, QDR quarters it).
+  int strobePeriodPs() {
+    int p = periodPsAt(currentMHz);
+    if (transfersPerClk <= 0) { return p; }
+    return p / transfersPerClk;
+  }
+
+  // Dial the variable bus clock. The request is clamped into [min,max] AND into
+  // whatever the settled rail voltage can support — so a brown-out rail caps
+  // the trustworthy speed instead of letting the bus run unverified.
+  int setClock(int mhz) {
+    int target = mhz;
+    if (target < minMHz) { target = minMHz; }
+    if (target > maxMHz) { target = maxMHz; }
+    int ceiling = voltageCeilingMHz();
+    if (ceiling > 0 && target > ceiling) { target = ceiling; }
+    currentMHz = target;
+    retime();
+    return currentMHz;
+  }
+
+  // The highest MHz the present settled voltage justifies. With no rail or no
+  // volts-per-MHz declared, the datasheet ceiling stands.
+  int voltageCeilingMHz() {
+    if (rail == null || mvPerMHz <= 0) { return maxMHz; }
+    return rail.effectiveMv() / mvPerMHz;
+  }
+
+  // Re-stamp every budget's period after a clock change so checks reflect the
+  // speed the bus is actually dialed to.
+  void retime() {
+    addrPath.setPeriod(periodPsAt(currentMHz));
+    ctrlPath.setPeriod(periodPsAt(currentMHz));
+    dataPath.setPeriod(strobePeriodPs());
+  }
+
+  // State the physical path lengths (ps). These are the measured flight/settle
+  // times the budgets are checked against — quality over control.
+  void setAddressPath(int propagationPs, int setupPs, int holdPs) {
+    addrPath.setPropagation(propagationPs); addrPath.setSetup(setupPs); addrPath.setHold(holdPs);
+  }
+  void setDataPath(int propagationPs, int setupPs, int holdPs, int jitterPs) {
+    dataPath.setPropagation(propagationPs); dataPath.setSetup(setupPs);
+    dataPath.setHold(holdPs); dataPath.setJitter(jitterPs);
+  }
+  void setControlPath(int propagationPs, int setupPs, int holdPs) {
+    ctrlPath.setPropagation(propagationPs); ctrlPath.setSetup(setupPs); ctrlPath.setHold(holdPs);
+  }
+
+  // Is every lane honored at the dialed clock AND is the rail in limits? Bus
+  // timing is treated with care: all three named paths must pass together.
+  boolean honored() {
+    boolean paths = addrPath.honored() && dataPath.honored() && ctrlPath.honored();
+    boolean power = (rail == null) || rail.withinLimits();
+    return paths && power;
+  }
+
+  // Peak bandwidth in megabytes/sec at the dialed clock:
+  //   MHz * transfers/clk * (width/8) bytes.
+  int bandwidthMBs() {
+    return currentMHz * transfersPerClk * (widthBits / 8);
+  }
+
+  // The tightest (smallest) setup slack across the three lanes — the lane that
+  // will fail first if the clock is pushed. Names the quality margin left.
+  int worstSlackPs() {
+    int a = addrPath.setupSlackPs();
+    int d = dataPath.setupSlackPs();
+    int c = ctrlPath.setupSlackPs();
+    int w = a;
+    if (d < w) { w = d; }
+    if (c < w) { w = c; }
+    return w;
+  }
+
+  String busName() { return name; }
+  int clock() { return currentMHz; }
+  int floorMHz() { return minMHz; }
+  int ceilingMHz() { return maxMHz; }
+  SLTiming addressBudget() { return addrPath; }
+  SLTiming dataBudget() { return dataPath; }
+  SLTiming controlBudget() { return ctrlPath; }
+}
