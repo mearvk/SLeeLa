@@ -38,6 +38,27 @@ implementation.
 
 A runnable, self-contained walkthrough is `gui-demo.sleela`.
 
+## Events, DHTML-style DOM, and scripting
+
+On top of the integration layer, `lib/gui` provides the backing API for
+dynamic interfaces — action callbacks, a browser-DOM-style document, and a
+scripting engine. SLeeLa owns the meaning of events and the document; the host
+raises activations and mirrors the DOM onto SleelaUI widgets.
+
+| Class | Role |
+|---|---|
+| `SLGuiEventType` | The event catalogue (click/input/change/keydown/…). |
+| `SLGuiEvent` | A dispatched event with `preventDefault`/`stopPropagation`. |
+| `SLGuiHandler` | A bound callback `(type, target, operation)`, take-the-latch. |
+| `SLGuiEventBus` | The dispatcher: `addEventListener`, phased `dispatch`. |
+| `SLGuiNode` | A DOM element: attributes, inline style, children, visibility. |
+| `SLGuiDom` | The document: `getElementById`, `createElement`, `onClick`, … |
+| `SLGuiScriptCommand` | One script instruction (verb + operands). |
+| `SLGuiScript` | The command-list engine that drives the DOM/events. |
+
+The full contract and a runnable walkthrough (`gui-events-demo.sleela`) are in
+[`EVENTS-DOM-SCRIPTING.md`](EVENTS-DOM-SCRIPTING.md).
+
 ## The three integration paths
 
 ```
