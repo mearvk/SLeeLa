@@ -1,0 +1,103 @@
+/*
+ * lib/cpu/SLTimingClass.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLTimingClass — the expertise TIER expressed as a Class
+ *   Object in its own right. The request is explicit: "settings for this
+ *   advanced brand or medium of this or basic/novice as Class Objects
+ *   themselves." So a tier is not a bare integer flag — it is a first-class
+ *   object carrying a tier id, a brand/medium label, and the POLICY that tier
+ *   implies: how much guardband to demand, how much headroom to insist on, how
+ *   aggressively clocks may be dialed, and whether expert knobs are even
+ *   writable.
+ *
+ *   NOVICE   — maximum safety: fat guardbands, locked rails, conservative
+ *              clocks, expert knobs read-only. Nothing can be dialed into harm.
+ *   BASIC    — safe defaults with a little room; limited dialing.
+ *   ADVANCED — tuned: tighter guardbands, more clock range, most knobs open.
+ *   EXPERT   — full control: minimal guardband, unlocked rails on request,
+ *              clocks and timings dialed to the edge of what budgets honor.
+ *
+ * A profile asks its SLTimingClass what is allowed; the tier decides. This is
+ * where "basic/novice/advanced" become objects that govern the rest.
+ *
+ * Family: cpu. Pure Sleela policy object; governs SLTimingProfile.
+ */
+#sleela 1.3
+class SLTimingClass {
+  static final int TIER_NOVICE   = 0;
+  static final int TIER_BASIC    = 1;
+  static final int TIER_ADVANCED = 2;
+  static final int TIER_EXPERT   = 3;
+
+  int tier;            // one of TIER_*
+  String label;        // nameful: tier name, e.g. "Expert"
+  String medium;       // the "brand or medium" this tier is applied to/for
+  int guardbandPs;     // timing guardband this tier demands on every budget
+  int headroomMv;      // voltage headroom (above floor) this tier insists on
+  int clockHeadroomPct;// how far below the honest ceiling this tier dials (%)
+  int knobsWritable;   // 1 = expert timing/voltage knobs may be changed
+  int railsUnlockable; // 1 = rails may be unlocked (uncapped adjustment)
+
+  // Build the tier object for a given tier id and brand/medium label.
+  void configure(int tierId, String brandOrMedium) {
+    tier = tierId; medium = brandOrMedium;
+    applyPolicy();
+  }
+
+  // Convenience constructors by name — each returns this configured object.
+  void novice(String brandOrMedium)   { tier = TIER_NOVICE;   medium = brandOrMedium; applyPolicy(); }
+  void basic(String brandOrMedium)    { tier = TIER_BASIC;    medium = brandOrMedium; applyPolicy(); }
+  void advanced(String brandOrMedium) { tier = TIER_ADVANCED; medium = brandOrMedium; applyPolicy(); }
+  void expert(String brandOrMedium)   { tier = TIER_EXPERT;   medium = brandOrMedium; applyPolicy(); }
+
+  // The heart of the object: a tier IS its policy.
+  void applyPolicy() {
+    if (tier == TIER_NOVICE) {
+      label = "Novice";
+      guardbandPs = 120; headroomMv = 120; clockHeadroomPct = 30;
+      knobsWritable = 0; railsUnlockable = 0;
+    } else if (tier == TIER_BASIC) {
+      label = "Basic";
+      guardbandPs = 80; headroomMv = 80; clockHeadroomPct = 20;
+      knobsWritable = 0; railsUnlockable = 0;
+    } else if (tier == TIER_ADVANCED) {
+      label = "Advanced";
+      guardbandPs = 50; headroomMv = 40; clockHeadroomPct = 10;
+      knobsWritable = 1; railsUnlockable = 0;
+    } else {
+      tier = TIER_EXPERT; label = "Expert";
+      guardbandPs = 20; headroomMv = 10; clockHeadroomPct = 0;
+      knobsWritable = 1; railsUnlockable = 1;
+    }
+  }
+
+  // May the operator change an expert timing/voltage knob at this tier?
+  boolean allowsKnob() { return knobsWritable == 1; }
+  // May a rail be unlocked (adjustment uncapped) at this tier?
+  boolean allowsUnlock() { return railsUnlockable == 1; }
+
+  // Given an honest ceiling frequency, the speed this tier is willing to dial
+  // to: pulled back by its clock headroom. Novice leaves 30% on the table;
+  // Expert takes it all.
+  int dialableMHz(int ceilingMHz) {
+    return ceilingMHz - ((ceilingMHz * clockHeadroomPct) / 100);
+  }
+
+  // Does a candidate budget slack satisfy this tier's guardband demand? (The
+  // SLTiming guardband is set from this value, so a passing budget already
+  // honors the tier; this reports extra margin beyond the demand.)
+  boolean satisfiesSlack(int slackPs) { return slackPs >= 0; }
+
+  // Does a rail's headroom satisfy this tier's insistence?
+  boolean satisfiesHeadroom(int railHeadroomMv) { return railHeadroomMv >= headroomMv; }
+
+  // Promote/demote to another tier (re-applies policy). Returns the new label.
+  String retier(int tierId) { tier = tierId; applyPolicy(); return label; }
+
+  int tierId() { return tier; }
+  String tierName() { return label; }
+  String brandOrMedium() { return medium; }
+  int guardband() { return guardbandPs; }
+  int headroom() { return headroomMv; }
+  int clockHeadroom() { return clockHeadroomPct; }
+}

@@ -42,6 +42,11 @@ class SLSleelaVM {
   int exitArg;       // its immediate
   int exitPayload;   // the stack value it carried (e.g. the char to print)
 
+  // Stated operating point (step: honor declared timings). When a compiled
+  // .sleela image carries an SLTimingManifest, the VM adopts it here and
+  // reports the DECLARED clocks/voltages instead of assuming hardware quality.
+  SLTimingManifest timing;
+
   void configure(int codeCap, int stackCap, int globalCap) {
     op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
     codeOps = new SLRAM(); codeOps.configure(codeCap, 32); codeOps.allocate();
@@ -50,7 +55,20 @@ class SLSleelaVM {
     globals = new SLRAM(); globals.configure(globalCap, 32); globals.allocate();
     codeLen = 0; ip = 0; sp = 0; halted = 0; executed = 0; lastPrint = 0;
     hosted = 0; exitPending = 0; exitOpcode = -1; exitArg = 0; exitPayload = 0;
+    timing = null;
   }
+
+  // Adopt the operating point a compiled image declares. After this the VM
+  // operates the STATED timings (clocks/voltages/tier) rather than inferring
+  // the quality of the CPU it is modeled on.
+  void adoptTiming(SLTimingManifest manifest) { timing = manifest; }
+  // Convenience: pull the manifest straight off a compiled program.
+  void adoptProgramTiming(SLProgram prog) { if (prog != null && prog.hasTiming()) { timing = prog.timingManifest(); } }
+  boolean hasTiming() { return timing != null; }
+  SLTimingManifest timingManifest() { return timing; }
+  // The core clock (MHz) the image was compiled for, or 0 if it stated none —
+  // the VM never fabricates a frequency it was not told.
+  int declaredCoreMHz() { if (timing == null) { return 0; } return timing.core(); }
 
   // Enable hosted mode: service opcodes park VM-exits instead of acting inline.
   void setHosted() { hosted = 1; }

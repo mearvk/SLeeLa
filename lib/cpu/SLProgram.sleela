@@ -9,7 +9,13 @@
  * Instructions are staged into a backing SLRAM region at build time so the
  * loader can copy them to their final load address.
  *
- * Family: cpu. Composes SLInstruction and SLRAM.
+ * A program may also carry an SLTimingManifest — the stated timing/voltage/
+ * expertise operating point the image was compiled for. When present, a
+ * compiler or VM operates those DECLARED timings instead of assuming the
+ * quality of the hardware ("rather than inherently to expect the quality of
+ * these operating as confidences of how CPUs operate").
+ *
+ * Family: cpu. Composes SLInstruction, SLRAM, and SLTimingManifest.
  */
 #sleela 1.3
 class SLProgram {
@@ -17,13 +23,24 @@ class SLProgram {
   int entryPoint;
   int length;        // instruction count
   SLRAM image;       // staging buffer holding the encoded words
+  SLTimingManifest timing;   // stated operating point (null until attached)
 
   void configure(String programName, int capacityWords) {
     name = programName; entryPoint = 0; length = 0;
     image = new SLRAM(); image.configure(capacityWords, 32); image.allocate();
+    timing = null;
   }
 
   void setEntryPoint(int addr) { entryPoint = addr; }
+
+  // Attach the stated timing/voltage/expertise manifest this image was compiled
+  // for. The loader and VM read it instead of inferring an operating point.
+  void attachTiming(SLTimingManifest manifest) { timing = manifest; }
+  SLTimingManifest timingManifest() { return timing; }
+  boolean hasTiming() { return timing != null; }
+  // True only when the image declares an operating point AND that point was
+  // sealed honored at compile time — the consumer may trust it as stated.
+  boolean timingHonored() { return timing != null && timing.honored(); }
 
   // Append one encoded instruction word to the image.
   int append(int encodedWord) {

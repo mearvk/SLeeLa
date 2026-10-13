@@ -1,0 +1,122 @@
+/*
+ * lib/cpu/SLCpuTiming.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCpuTiming — the expert core-timing settings of a CPU:
+ *   the actual core clock (variable, with floor/ceiling), the Vcore rail it
+ *   runs on, and the per-stage pipeline budgets (fetch, decode, execute,
+ *   writeback) stated as named SLTiming paths. Rather than assume a core "just
+ *   runs" at its advertised frequency, the critical path (the slowest stage)
+ *   determines the real maximum clock, and dialing above what the stage budgets
+ *   and the settled Vcore can honor is refused.
+ *
+ * This is the expert surface for CPU timing: a tuner states measured stage
+ * delays and a Vcore operating point, and the class reports the honest ceiling,
+ * the critical stage by name, and whether the dialed point is honored.
+ *
+ * Family: cpu. Composes SLTiming and SLVoltageRail; partners SLCore/SLClock.
+ */
+#sleela 1.3
+class SLCpuTiming {
+  String name;        // nameful: "core0-pipeline", ...
+  int minMHz;         // lowest core clock the operator may dial
+  int maxMHz;         // datasheet ceiling for the core clock
+  int currentMHz;     // the variable core clock presently selected
+
+  SLVoltageRail vcore; // the core supply rail
+  int mvPerMHz;        // settled Vcore each extra MHz of ceiling needs
+
+  SLTiming fetch;      // fetch-stage critical path
+  SLTiming decode;     // decode-stage critical path
+  SLTiming execute;    // execute-stage critical path (usually the long pole)
+  SLTiming writeback;  // writeback-stage critical path
+
+  void configure(String coreName, int floorMHz, int ceilingMHz) {
+    name = coreName; minMHz = floorMHz; maxMHz = ceilingMHz; currentMHz = floorMHz;
+    mvPerMHz = 0;
+    int p = periodPsAt(currentMHz);
+    fetch = new SLTiming(); fetch.configure("if-stage", p, 30);
+    fetch.describe("instruction fetch from L1 must present before decode latches");
+    decode = new SLTiming(); decode.configure("id-stage", p, 30);
+    decode.describe("decode + register read must settle before execute reads operands");
+    execute = new SLTiming(); execute.configure("ex-stage", p, 40);
+    execute.describe("ALU critical path (carry chain) — the pipeline's long pole");
+    writeback = new SLTiming(); writeback.configure("wb-stage", p, 25);
+    writeback.describe("result must reach the register file before the next capture edge");
+  }
+
+  void attachVcore(SLVoltageRail rail, int millivoltsPerMHz) {
+    vcore = rail; mvPerMHz = millivoltsPerMHz;
+  }
+
+  int periodPsAt(int mhz) { if (mhz <= 0) { return 0; } return 1000000 / mhz; }
+
+  // State a stage's measured path (propagation + setup, with hold).
+  void setFetch(int propPs, int setupPs, int holdPs) { fetch.setPropagation(propPs); fetch.setSetup(setupPs); fetch.setHold(holdPs); }
+  void setDecode(int propPs, int setupPs, int holdPs) { decode.setPropagation(propPs); decode.setSetup(setupPs); decode.setHold(holdPs); }
+  void setExecute(int propPs, int setupPs, int holdPs) { execute.setPropagation(propPs); execute.setSetup(setupPs); execute.setHold(holdPs); }
+  void setWriteback(int propPs, int setupPs, int holdPs) { writeback.setPropagation(propPs); writeback.setSetup(setupPs); writeback.setHold(holdPs); }
+
+  // Jitter from the clock tree applies to every stage equally.
+  void setClockJitter(int jitterPs) {
+    fetch.setJitter(jitterPs); decode.setJitter(jitterPs);
+    execute.setJitter(jitterPs); writeback.setJitter(jitterPs);
+  }
+
+  // The honest maximum core clock: the lowest per-stage max-frequency (the
+  // critical stage wins) further capped by what the settled Vcore supports.
+  int criticalMaxMHz() {
+    int m = fetch.maxFrequencyMHz();
+    if (decode.maxFrequencyMHz() < m) { m = decode.maxFrequencyMHz(); }
+    if (execute.maxFrequencyMHz() < m) { m = execute.maxFrequencyMHz(); }
+    if (writeback.maxFrequencyMHz() < m) { m = writeback.maxFrequencyMHz(); }
+    int vc = voltageCeilingMHz();
+    if (vc > 0 && vc < m) { m = vc; }
+    if (m > maxMHz) { m = maxMHz; }
+    return m;
+  }
+
+  int voltageCeilingMHz() {
+    if (vcore == null || mvPerMHz <= 0) { return maxMHz; }
+    return vcore.effectiveMv() / mvPerMHz;
+  }
+
+  // Dial the variable core clock, clamped into [min,max] and into the honest
+  // critical/voltage ceiling. Returns the clock actually set.
+  int setClock(int mhz) {
+    int target = mhz;
+    if (target < minMHz) { target = minMHz; }
+    if (target > maxMHz) { target = maxMHz; }
+    int ceiling = criticalMaxMHz();
+    if (ceiling > 0 && target > ceiling) { target = ceiling; }
+    currentMHz = target;
+    retime();
+    return currentMHz;
+  }
+
+  void retime() {
+    int p = periodPsAt(currentMHz);
+    fetch.setPeriod(p); decode.setPeriod(p); execute.setPeriod(p); writeback.setPeriod(p);
+  }
+
+  // Which stage is the critical path, by name — nameful reporting.
+  String criticalStage() {
+    int m = fetch.maxFrequencyMHz(); String s = fetch.signalName();
+    if (decode.maxFrequencyMHz() < m) { m = decode.maxFrequencyMHz(); s = decode.signalName(); }
+    if (execute.maxFrequencyMHz() < m) { m = execute.maxFrequencyMHz(); s = execute.signalName(); }
+    if (writeback.maxFrequencyMHz() < m) { m = writeback.maxFrequencyMHz(); s = writeback.signalName(); }
+    return s;
+  }
+
+  // Every stage honored at the dialed clock AND Vcore in limits.
+  boolean honored() {
+    boolean stages = fetch.honored() && decode.honored() && execute.honored() && writeback.honored();
+    boolean power = (vcore == null) || vcore.withinLimits();
+    return stages && power;
+  }
+
+  String timingName() { return name; }
+  int clock() { return currentMHz; }
+  int floorMHz() { return minMHz; }
+  int ceilingMHz() { return maxMHz; }
+  SLTiming executeBudget() { return execute; }
+}

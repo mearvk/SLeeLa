@@ -1,0 +1,146 @@
+/*
+ * lib/cpu/SLTimingManifest.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLTimingManifest — the compact, serializable record of a
+ *   timing/voltage/expertise profile that a COMPILED .sleela file carries
+ *   inside it. This is the pivot the request turns on: a compiled program must
+ *   not oblige a compiler or VM to GUESS the quality of the hardware it runs on
+ *   ("rather than inherently to expect the quality of these operating as
+ *   confidences of how CPUs operate"). Instead the program states its timings,
+ *   and the engine operates those STATED numbers.
+ *
+ *   A manifest flattens an SLTimingProfile into plain integers/strings: the
+ *   expertise tier + brand/medium, the dialed core/bus/io clocks, the settled
+ *   rail voltages, the RAM primaries, and the worst honored slack. It can be
+ *   embedded as a header in an SLProgram image and read back by any consumer —
+ *   SLSleelaVM, SLControlUnit, SLCompilerDriver — so every stage honors the
+ *   same declared operating point.
+ *
+ * Family: cpu. Serialization layer over SLTimingProfile; embedded in SLProgram.
+ */
+#sleela 1.3
+class SLTimingManifest {
+  // --- magic / identity ---
+  static final int MAGIC = 5213;   // "SL-TIMING" marker word in a program header
+  int version;
+
+  // --- expertise tier ---
+  int tier;              // SLTimingClass.TIER_*
+  String tierLabel;      // "Novice" / "Basic" / "Advanced" / "Expert"
+  String brandMedium;    // the brand or medium this profile targets
+
+  // --- dialed clocks (variable speeds) ---
+  int coreMHz;
+  int busMHz;
+  int ioMHz;
+  int ramMTs;
+
+  // --- settled actual voltages (millivolts) ---
+  int vcoreMv;
+  int vsocMv;
+  int vddqMv;
+  int vioMv;
+
+  // --- RAM primaries (command-clock cycles) ---
+  int cl; int trcd; int trp; int tras;
+
+  // --- honored summary ---
+  int honoredFlag;       // 1 = every budget honored when the manifest was sealed
+  int worstSlackPs;      // tightest setup slack across all paths (quality margin)
+
+  void configure() {
+    version = 1;
+    tier = 0; tierLabel = "Novice"; brandMedium = "";
+    coreMHz = 0; busMHz = 0; ioMHz = 0; ramMTs = 0;
+    vcoreMv = 0; vsocMv = 0; vddqMv = 0; vioMv = 0;
+    cl = 0; trcd = 0; trp = 0; tras = 0;
+    honoredFlag = 0; worstSlackPs = 0;
+  }
+
+  void setTier(int tierId, String label, String brandOrMedium) {
+    tier = tierId; tierLabel = label; brandMedium = brandOrMedium;
+  }
+  void setClocks(int core, int bus, int io, int ram) {
+    coreMHz = core; busMHz = bus; ioMHz = io; ramMTs = ram;
+  }
+  void setVoltages(int vcore, int vsoc, int vddq, int vio) {
+    vcoreMv = vcore; vsocMv = vsoc; vddqMv = vddq; vioMv = vio;
+  }
+  void setRam(int casLatency, int rasToCas, int rowPrecharge, int rowActive) {
+    cl = casLatency; trcd = rasToCas; trp = rowPrecharge; tras = rowActive;
+  }
+  void seal(boolean isHonored, int worstSlack) {
+    honoredFlag = isHonored ? 1 : 0; worstSlackPs = worstSlack;
+  }
+
+  // Is this a well-formed, honored manifest a consumer may trust?
+  boolean valid() { return version > 0 && honoredFlag == 1; }
+  boolean honored() { return honoredFlag == 1; }
+
+  // Serialize the numeric fields into a caller-provided SLRAM header region,
+  // starting at `at`. Returns the next free word index. A compiled .sleela
+  // image stores this header ahead of the instruction stream so the loader and
+  // the VM read the STATED operating point instead of inferring one.
+  int writeHeader(SLRAM mem, int at) {
+    int i = at;
+    mem.writeWord(i, MAGIC);       i = i + 1;
+    mem.writeWord(i, version);     i = i + 1;
+    mem.writeWord(i, tier);        i = i + 1;
+    mem.writeWord(i, coreMHz);     i = i + 1;
+    mem.writeWord(i, busMHz);      i = i + 1;
+    mem.writeWord(i, ioMHz);       i = i + 1;
+    mem.writeWord(i, ramMTs);      i = i + 1;
+    mem.writeWord(i, vcoreMv);     i = i + 1;
+    mem.writeWord(i, vsocMv);      i = i + 1;
+    mem.writeWord(i, vddqMv);      i = i + 1;
+    mem.writeWord(i, vioMv);       i = i + 1;
+    mem.writeWord(i, cl);          i = i + 1;
+    mem.writeWord(i, trcd);        i = i + 1;
+    mem.writeWord(i, trp);         i = i + 1;
+    mem.writeWord(i, tras);        i = i + 1;
+    mem.writeWord(i, honoredFlag); i = i + 1;
+    mem.writeWord(i, worstSlackPs);i = i + 1;
+    return i;
+  }
+
+  // The fixed number of header words writeHeader emits (so a loader can skip
+  // the header to reach the first instruction).
+  int headerWords() { return 17; }
+
+  // Read the manifest back from an SLRAM header at `at`. Returns true only when
+  // the magic matches — so a consumer can tell "this image carries a stated
+  // profile" from "this image expects me to assume one".
+  boolean readHeader(SLRAM mem, int at) {
+    int i = at;
+    if (mem.readWord(i) != MAGIC) { return false; }
+    i = i + 1;
+    version = mem.readWord(i);     i = i + 1;
+    tier = mem.readWord(i);        i = i + 1;
+    coreMHz = mem.readWord(i);     i = i + 1;
+    busMHz = mem.readWord(i);      i = i + 1;
+    ioMHz = mem.readWord(i);       i = i + 1;
+    ramMTs = mem.readWord(i);      i = i + 1;
+    vcoreMv = mem.readWord(i);     i = i + 1;
+    vsocMv = mem.readWord(i);      i = i + 1;
+    vddqMv = mem.readWord(i);      i = i + 1;
+    vioMv = mem.readWord(i);       i = i + 1;
+    cl = mem.readWord(i);          i = i + 1;
+    trcd = mem.readWord(i);        i = i + 1;
+    trp = mem.readWord(i);         i = i + 1;
+    tras = mem.readWord(i);        i = i + 1;
+    honoredFlag = mem.readWord(i); i = i + 1;
+    worstSlackPs = mem.readWord(i);i = i + 1;
+    return true;
+  }
+
+  int tierId() { return tier; }
+  String tierName() { return tierLabel; }
+  String brandOrMedium() { return brandMedium; }
+  int core() { return coreMHz; }
+  int bus() { return busMHz; }
+  int io() { return ioMHz; }
+  int ram() { return ramMTs; }
+  int vcore() { return vcoreMv; }
+  int vddq() { return vddqMv; }
+  int worstSlack() { return worstSlackPs; }
+}
