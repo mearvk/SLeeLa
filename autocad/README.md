@@ -100,3 +100,71 @@ complete, buildable plan-entry shell wired to call the renderer through
 point and is clearly marked.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+---
+
+## AutoCAD Creator™
+
+The [AutoCAD Creator™](creator/README.md) is the interactive sibling of the
+renderer documented above. Where the renderer turns a plan into a drawing in one
+shot, the Creator lets you **create and alter** a 2D AutoCAD document live — add
+walls, rooms, dimensions and notes, then move, relabel, re-layer, delete, and
+undo what you placed — and **save** the result as a real AutoCAD DXF drawing (R12
+text, opens in AutoCAD / LibreCAD).
+
+Both the editing engine and the graphical interface are written in **SLeeLa**.
+Unlike the renderer's JavaFX surface, the Creator's GUI is built on **SleelaUI™**,
+SLeeLa's own cross-platform UI toolkit (under
+[`/lib/user-interface`](../lib/user-interface)) — not JavaFX — raising a real
+native window on X11 / Cocoa / Win32 with the signature Slick Black look.
+
+### Architectural rule
+
+> **SleelaUI presents; SLeeLa decides.**
+
+The GUI never computes geometry and never writes DXF. Every tool issues a
+*create / alter / delete / undo / save* intent to the authoritative
+[`SLCadCreator`](../lib/autocad/SLCadCreator.sleela); the Creator owns the
+editable document and the edit history, and the canvas only *previews* the
+geometry the Creator holds.
+
+```text
+        Tools + property fields + plan text         (SleelaUI window)
+                         |
+                         v  create / alter / delete / undo / save
+            SLCadCreator  ->  SLCadDocument          <-- authoritative
+         (edit history)       (editable entities)
+                         |
+            +------------+------------+
+            |                         |
+       drawing.dxf              live preview
+     (AutoCAD / LibreCAD)      (SLCadCanvas, Draw API)
+```
+
+### Classes
+
+The reusable editing engine lives in [`/lib/autocad`](../lib/autocad):
+
+| Class | Role |
+|---|---|
+| [`SLCadEntity`](../lib/autocad/SLCadEntity.sleela)   | One addressable, mutable 2D entity (line / text / dim): move, reshape, relabel, re-layer, soft-delete, emit DXF. |
+| [`SLCadDocument`](../lib/autocad/SLCadDocument.sleela) | The editable 2D document: indexable entity store with create / alter / delete, click hit-test, live extents, and DXF serialisation. |
+| [`SLCadCommand`](../lib/autocad/SLCadCommand.sleela)  | One recorded, reversible edit for undo + audit. |
+| [`SLCadCreator`](../lib/autocad/SLCadCreator.sleela)  | The Creator facade: owns the document, selection, active layer, and command history. |
+
+The GUI shell and headless demo live under [`creator/`](creator):
+[`creator/creator.sleela`](creator/creator.sleela) (self-contained demo),
+[`creator/cad/CadCreatorApp.sleela`](creator/cad/CadCreatorApp.sleela) (SleelaUI
+window), and [`creator/cad/SLCadCanvas.sleela`](creator/cad/SLCadCanvas.sleela)
+(drawing surface).
+
+### Build & run
+
+```sh
+make creator          # from autocad/: run the Creator demo -> out/altered.dxf
+```
+
+On a display this opens the live editing window and drives the editing API; on a
+headless host it builds the drawing in memory, prints a report plus the DXF, and
+exits cleanly. See the [Creator module README](creator/README.md) for the full
+tool list and editing API.
