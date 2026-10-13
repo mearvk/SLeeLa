@@ -28,14 +28,21 @@ jobs:
           # Integration layer: 9 Master Classes + SLPackage + gui-demo (11).
           # Event/DHTML/scripting layer: SLGuiEventType, SLGuiEvent,
           # SLGuiHandler, SLGuiEventBus, SLGuiNode, SLGuiDom,
-          # SLGuiScriptCommand, SLGuiScript + gui-events-demo (9).  Total 20.
-          test "$(find lib/gui -maxdepth 1 -name '*.sleela' | wc -l)" -eq 20
+          # SLGuiScriptCommand, SLGuiScript + gui-events-demo (9).
+          # Support structure (DOM<->toolkit wiring): SLGuiWidgetFactory,
+          # SLGuiMount, SLGuiHostAdapter, SLGuiApp + gui-app-demo (5). Total 25.
+          test "$(find lib/gui -maxdepth 1 -name '*.sleela' | wc -l)" -eq 25
           test -f lib/gui/SLPackage.sleela
           test -f lib/gui/gui-demo.sleela
           test -f lib/gui/gui-events-demo.sleela
+          test -f lib/gui/gui-app-demo.sleela
           # Event + DHTML + scripting classes are present.
           for c in SLGuiEventType SLGuiEvent SLGuiHandler SLGuiEventBus \
                    SLGuiNode SLGuiDom SLGuiScriptCommand SLGuiScript; do
+            test -f "lib/gui/$c.sleela"
+          done
+          # DOM<->toolkit support-structure classes are present.
+          for c in SLGuiWidgetFactory SLGuiMount SLGuiHostAdapter SLGuiApp; do
             test -f "lib/gui/$c.sleela"
           done
           for f in lib/gui/*.sleela; do

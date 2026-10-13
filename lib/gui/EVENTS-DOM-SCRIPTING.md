@@ -78,13 +78,51 @@ s.run();
 A runnable walkthrough of all three sub-layers is
 [`gui-events-demo.sleela`](gui-events-demo.sleela).
 
+## The support structure (DOM ↔ toolkit wiring)
+
+The event/DOM/scripting layer is SLeeLa-owned and host-agnostic. The **support
+structure** is the concrete wiring that projects it onto real
+[`/lib/user-interface`](../user-interface/) widgets and feeds interactions back:
+
+| Class | Role |
+|---|---|
+| `SLGuiWidgetFactory` | The one place that maps a node `tag` → a SleelaUI constructor (`uiBox`/`uiButton`/`uiLabel`/`uiEntry`/…) and says which tags are interactive and what event they raise. |
+| `SLGuiMount` | The **reconciler**: mounts the DOM depth-first (parent before child), keeps an `id → widget-handle` map, and on each pass applies every **dirty** node's text/visibility/sensitivity/accent/size to its widget, then clears the flag. The SLeeLa→toolkit half. |
+| `SLGuiHostAdapter` | Polls each mounted interactive widget's activation latch (`uiWidgetTakeActivated`) and raises the matching `SLGuiEvent` (CLICK/SUBMIT/TOGGLE, carrying the widget's live value) into the bus. The toolkit→SLeeLa half. |
+| `SLGuiApp` | The top-level object: opens the app + window, owns the DOM + mount + host adapter + script engine, and runs the loop (**pump → poll activations → mount new nodes → reconcile**). |
+
+```
+            SLeeLa-owned                         host / toolkit
+         ┌───────────────┐   reconcile (dirty)  ┌──────────────────┐
+         │   SLGuiDom     │ ───── SLGuiMount ───▶ │ SleelaUI widgets │
+         │  (SLGuiNode)   │                       │ (ui* built-ins)  │
+         │   SLGuiEventBus │ ◀─── SLGuiHostAdapter ─ (uiWidgetTake-  │
+         └───────────────┘    dispatch events     │   Activated)     │
+                 ▲                                 └──────────────────┘
+                 │ SLGuiApp owns + runs the loop
+```
+
+### Minimal support-structure usage
+
+```sleela
+SLGuiApp app = new SLGuiApp();
+if (app.boot("com.mearvk.App", "App", 640, 420)) {
+  SLGuiNode save = app.add("root", "button", "save");
+  save.setText("Save");
+  app.onClick("save", "doSave");   // bind a callback
+  app.run();                       // mount, show, loop (poll + reconcile)
+}
+```
+
+A runnable walkthrough is [`gui-app-demo.sleela`](gui-app-demo.sleela).
+
 ## Relationship to the toolkit
 
 The DOM nodes name SleelaUI concepts (`window`, `box`, `button`, `label`,
-`entry`, …). The host mounts each node onto the matching
+`entry`, …). `SLGuiMount` mounts each node onto the matching
 [`/lib/user-interface`](../user-interface/) widget and pushes dirty-node changes
-to it; conversely it raises `SLGuiEvent`s when the user interacts. The event
-bus and DOM stay the single SLeeLa-owned source of truth, consistent with the
-`lib/gui` division of authority.
+to it; `SLGuiHostAdapter` raises `SLGuiEvent`s when the user interacts. The
+event bus and DOM stay the single SLeeLa-owned source of truth, consistent with
+the `lib/gui` division of authority.
 
 **SLeeLa — MEARVK LLC — 2026**
