@@ -26,6 +26,7 @@ class SLMachine {
   SLOperatingSystem os;
   SLProgramLoader loader;
   SLInstructionSet isa;
+  SLTimingProfile timing;   // the machine's adjustable operating point (optional)
   int kernelEntry;
   int syscallHandler;
 
@@ -278,8 +279,33 @@ class SLMachine {
     return os.run(rounds);
   }
 
+  // Select the machine's adjustable timing/voltage operating point for a given
+  // expertise tier (SLTimingClass.TIER_NOVICE/BASIC/ADVANCED/EXPERT) and brand
+  // or medium. The profile owns the actual voltages, the variable bus/core/IO
+  // clocks, and the expert CPU/RAM/I/O timings; it is sealed into a manifest
+  // that every program compiled through the loader's compiler then carries.
+  SLTimingProfile selectTiming(int tier, String brandOrMedium) {
+    timing = new SLTimingProfile();
+    timing.configure(tier, brandOrMedium);
+    return timing;
+  }
+
+  // Compile a program with the machine's selected timing profile stamped into
+  // the resulting .sleela image, so the VM/loader honor the declared operating
+  // point instead of assuming hardware quality. Returns the compiled program.
+  SLProgram compileWithTiming(String path, int langId, String programName) {
+    SLCompilerDriver driver = new SLCompilerDriver(); driver.configure(isa);
+    if (timing != null) { driver.useTimingProfile(timing); }
+    return driver.compile(path, langId, programName);
+  }
+
+  // Is the machine's selected operating point internally honored — every expert
+  // timing met on every rail at the dialed speeds, with the tier's headroom?
+  boolean timingHonored() { return timing != null && timing.honored(); }
+
   SLCPU processor() { return cpu; }
   SLOperatingSystem operatingSystem() { return os; }
   SLProgramLoader programLoader() { return loader; }
   SLRAM mainMemory() { return memory; }
+  SLTimingProfile timingProfile() { return timing; }
 }
