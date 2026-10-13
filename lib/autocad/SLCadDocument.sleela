@@ -1,0 +1,269 @@
+/*
+ * lib/autocad/SLCadDocument.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCadDocument -- the editable 2D AutoCAD document the
+ *   Creator(TM) alters and saves. Where SLCadModel is an append-only geometry
+ *   accumulator aimed at a single render, SLCadDocument keeps an indexable store
+ *   of individually addressable SLCadEntity records so geometry can be created
+ *   AND changed after the fact: select an entity by id, move it, re-layer it,
+ *   re-label it, re-point a line, or delete it, then re-emit a fresh DXF. It
+ *   owns the drawing metadata (title, units) and recomputes the extents from the
+ *   live entities on demand, so edits never leave stale bounds. This is the
+ *   SLeeLa-owned source of truth the GUI canvas paints and the Save action
+ *   serialises.
+ *
+ * The SLeeLa surface exposes real array storage (as the /lib/user-interface
+ * classes rely on), so the document holds a flat SLCadEntity[] indexed by slot;
+ * ids are stable and a delete is a soft tombstone so surviving ids never shift.
+ *
+ * Family: autocad. SLeeLa owns the document and every edit; a front end issues
+ * create/alter/delete intents and reads geometry back for preview and save.
+ */
+#sleela 1.5
+class SLCadDocument {
+  static final int MAX_ENTITIES = 8192;
+
+  String title;
+  String units;
+  double curX; double curY;        // insertion point applied to the next room
+
+  SLCadEntity[] items;
+  int count;                       // number of slots used (alive + tombstoned)
+  int nextId;                      // monotonic id source
+
+  SLCadDxf writer;                 // the DXF section wrapper (reused)
+
+  // ---- lifecycle ----------------------------------------------------------
+
+  void begin(String t, String u) {
+    title = t; units = u;
+    curX = 0.0; curY = 0.0;
+    items = new SLCadEntity[MAX_ENTITIES];
+    count = 0; nextId = 1;
+    writer = new SLCadDxf();
+  }
+
+  String getTitle() { return title; }
+  String getUnits() { return units; }
+  void setTitle(String t) { title = t; }
+  void setUnits(String u) { units = u; }
+  void setAt(double x, double y) { curX = x; curY = y; }
+
+  // ---- creation (returns the new entity id, or -1 if the store is full) ---
+
+  int addLine(String layer, double x1, double y1, double x2, double y2) {
+    if (count >= MAX_ENTITIES) { return -1; }
+    SLCadEntity e = new SLCadEntity();
+    e.asLine(nextId, layer, x1, y1, x2, y2);
+    return store(e);
+  }
+
+  int addText(String layer, double x, double y, String value, double height) {
+    if (count >= MAX_ENTITIES) { return -1; }
+    SLCadEntity e = new SLCadEntity();
+    e.asText(nextId, layer, x, y, value, height);
+    return store(e);
+  }
+
+  int addDim(String layer, double x1, double y1, double x2, double y2, double height) {
+    if (count >= MAX_ENTITIES) { return -1; }
+    SLCadEntity e = new SLCadEntity();
+    e.asDim(nextId, layer, x1, y1, x2, y2, height);
+    return store(e);
+  }
+
+  // A wall is a line on the "walls" layer.
+  int addWall(double x1, double y1, double x2, double y2) {
+    return addLine("walls", x1, y1, x2, y2);
+  }
+
+  // A note is text on the "notes" layer at a default height.
+  int addNote(double x, double y, String text) {
+    return addText("notes", x, y, text, 150.0);
+  }
+
+  // A dimension on the "dims" layer with the standard label height.
+  int addDimension(double x1, double y1, double x2, double y2) {
+    return addDim("dims", x1, y1, x2, y2, 120.0);
+  }
+
+  // Expand a room (w x h) at the current insertion point into four walls and a
+  // centred label; returns the id of the first (south) wall so a caller can
+  // locate the room.
+  int addRoom(double w, double h, String name) {
+    double ox = curX; double oy = curY;
+    int first = addWall(ox,     oy,     ox + w, oy);        // south
+    addWall(ox + w, oy,     ox + w, oy + h);                // east
+    addWall(ox + w, oy + h, ox,     oy + h);                // north
+    addWall(ox,     oy + h, ox,     oy);                    // west
+    if (name != "") {
+      addText("notes", ox + w / 2.0, oy + h / 2.0, name, 150.0);
+    }
+    return first;
+  }
+
+  int store(SLCadEntity e) {
+    items[count] = e;
+    count = count + 1;
+    nextId = nextId + 1;
+    return e.getId();
+  }
+
+  // ---- lookup -------------------------------------------------------------
+
+  int size() { return count; }
+  SLCadEntity at(int index) {
+    if (index < 0 || index >= count) { return null; }
+    return items[index];
+  }
+  int indexOfId(int id) {
+    for (int i = 0; i < count; i = i + 1) {
+      if (items[i] != null && items[i].getId() == id) { return i; }
+    }
+    return -1;
+  }
+  SLCadEntity byId(int id) {
+    int i = indexOfId(id);
+    if (i < 0) { return null; }
+    return items[i];
+  }
+  int aliveCount() {
+    int n = 0;
+    for (int i = 0; i < count; i = i + 1) {
+      if (items[i] != null && items[i].isAlive()) { n = n + 1; }
+    }
+    return n;
+  }
+
+  // Hit test: the id of the live entity whose anchor/first point is nearest to
+  // (x,y) within `radius`, or -1. Lets a GUI turn a click into a selection.
+  int pick(double x, double y, double radius) {
+    int best = -1;
+    double bestD = radius;
+    for (int i = 0; i < count; i = i + 1) {
+      SLCadEntity e = items[i];
+      if (e == null || !e.isAlive()) { continue; }
+      double d = dist(x, y, e.getX1(), e.getY1());
+      if (d <= bestD) { bestD = d; best = e.getId(); }
+      if (!e.isText()) {
+        double d2 = dist(x, y, e.getX2(), e.getY2());
+        if (d2 <= bestD) { bestD = d2; best = e.getId(); }
+      }
+    }
+    return best;
+  }
+  double dist(double ax, double ay, double bx, double by) {
+    double dx = bx - ax; double dy = by - ay;
+    double d = dx * dx + dy * dy;
+    if (d <= 0.0) { return 0.0; }
+    return sqrtApprox(d);
+  }
+  // A dependency-free square root (Newton's method) so hit testing needs no
+  // import beyond this class; converges fast for the magnitudes CAD uses.
+  double sqrtApprox(double v) {
+    if (v <= 0.0) { return 0.0; }
+    double g = v;
+    for (int i = 0; i < 24; i = i + 1) { g = 0.5 * (g + v / g); }
+    return g;
+  }
+
+  // ---- alteration ---------------------------------------------------------
+
+  // Move an entity by (dx,dy). Returns true if it existed and is alive.
+  boolean move(int id, double dx, double dy) {
+    SLCadEntity e = byId(id);
+    if (e == null || !e.isAlive()) { return false; }
+    e.translate(dx, dy);
+    return true;
+  }
+  // Re-point a line/dim's endpoints.
+  boolean reshape(int id, double x1, double y1, double x2, double y2) {
+    SLCadEntity e = byId(id);
+    if (e == null || !e.isAlive()) { return false; }
+    e.setEndpoints(x1, y1, x2, y2);
+    return true;
+  }
+  // Move a point-anchored entity (TEXT) or a line's first point.
+  boolean moveTo(int id, double x, double y) {
+    SLCadEntity e = byId(id);
+    if (e == null || !e.isAlive()) { return false; }
+    e.setP1(x, y);
+    return true;
+  }
+  boolean relabel(int id, String text) {
+    SLCadEntity e = byId(id);
+    if (e == null || !e.isAlive()) { return false; }
+    e.setValue(text);
+    return true;
+  }
+  boolean restyle(int id, String layer) {
+    SLCadEntity e = byId(id);
+    if (e == null || !e.isAlive()) { return false; }
+    e.setLayer(layer);
+    return true;
+  }
+  // Soft-delete (tombstone) / restore -- ids stay stable across the edit.
+  boolean remove(int id) {
+    SLCadEntity e = byId(id);
+    if (e == null || !e.isAlive()) { return false; }
+    e.kill();
+    return true;
+  }
+  boolean restore(int id) {
+    SLCadEntity e = byId(id);
+    if (e == null || e.isAlive()) { return false; }
+    e.revive();
+    return true;
+  }
+
+  // ---- extents (recomputed from the live entities) ------------------------
+
+  double minX() { return boundX(true); }
+  double maxX() { return boundX(false); }
+  double minY() { return boundY(true); }
+  double maxY() { return boundY(false); }
+
+  double boundX(boolean wantMin) {
+    boolean seen = false; double acc = 0.0;
+    for (int i = 0; i < count; i = i + 1) {
+      SLCadEntity e = items[i];
+      if (e == null || !e.isAlive()) { continue; }
+      acc = fold(acc, e.getX1(), wantMin, seen); seen = true;
+      if (!e.isText()) { acc = fold(acc, e.getX2(), wantMin, true); }
+    }
+    return seen ? acc : 0.0;
+  }
+  double boundY(boolean wantMin) {
+    boolean seen = false; double acc = 0.0;
+    for (int i = 0; i < count; i = i + 1) {
+      SLCadEntity e = items[i];
+      if (e == null || !e.isAlive()) { continue; }
+      acc = fold(acc, e.getY1(), wantMin, seen); seen = true;
+      if (!e.isText()) { acc = fold(acc, e.getY2(), wantMin, true); }
+    }
+    return seen ? acc : 0.0;
+  }
+  double fold(double acc, double v, boolean wantMin, boolean seen) {
+    if (!seen) { return v; }
+    if (wantMin) { return (v < acc) ? v : acc; }
+    return (v > acc) ? v : acc;
+  }
+
+  // ---- serialisation (Save) -----------------------------------------------
+
+  // Emit the whole document as AutoCAD DXF (R12 text) with the current extents.
+  // This is what the Creator's Save produces; a host writes it to a .dxf file
+  // (or the runnable `main` prints it, as the renderer does).
+  String toDxf() {
+    String walls = ""; String dims = ""; String notes = "";
+    for (int i = 0; i < count; i = i + 1) {
+      SLCadEntity e = items[i];
+      if (e == null || !e.isAlive()) { continue; }
+      String rec = e.toDxf();
+      if (e.getLayer() == "walls") { walls = walls + rec; }
+      else if (e.getLayer() == "dims") { dims = dims + rec; }
+      else { notes = notes + rec; }
+    }
+    return writer.document(minX(), minY(), maxX(), maxY(), walls, dims, notes);
+  }
+}

@@ -16,7 +16,7 @@ RENDER := cad/render.sleela
 export SLEELA_SHEET ?= $(REPO_ROOT)/SHEET.sheet
 export SLEELA_SHA256_MANIFEST ?= $(REPO_ROOT)/security/sha256-manifest.json
 
-.PHONY: all render gui clean help
+.PHONY: all render creator gui clean help
 
 all: render
 
@@ -30,6 +30,11 @@ render: $(OUT)
 $(OUT):
 	@mkdir -p "$(OUT)"
 
+# Run the AutoCAD Creator(TM): create + alter a document, save it as DXF. The
+# Creator (editable engine in /lib/autocad + SleelaUI GUI) lives under creator/.
+creator:
+	@$(MAKE) -C creator creator
+
 # Build the JavaFX plan-entry GUI (presentation layer).
 gui:
 	@cd gui && mvn -q -DskipTests package
@@ -37,9 +42,11 @@ gui:
 clean:
 	@rm -rf "$(OUT)"
 	@cd gui && mvn -q clean >/dev/null 2>&1 || true
+	@$(MAKE) -C creator clean >/dev/null 2>&1 || true
 
 help:
-	@echo "SLeeLa AutoCAD Renderer"
-	@echo "  make render  Run the SLeeLa renderer -> out/drawing.dxf"
-	@echo "  make gui     Build the JavaFX plan-entry GUI (Maven)"
-	@echo "  make clean   Remove generated output"
+	@echo "SLeeLa AutoCAD Renderer + Creator(TM)"
+	@echo "  make render   Run the SLeeLa renderer -> out/drawing.dxf"
+	@echo "  make creator  Run the SLeeLa Creator -> creator/out/altered.dxf"
+	@echo "  make gui      Build the JavaFX plan-entry GUI (Maven)"
+	@echo "  make clean    Remove generated output"

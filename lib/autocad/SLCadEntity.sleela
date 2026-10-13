@@ -1,0 +1,152 @@
+/*
+ * lib/autocad/SLCadEntity.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCadEntity -- a single, individually addressable 2D
+ *   drawing entity in the editable AutoCAD model. Where SLCadModel accumulates
+ *   geometry append-only into a DXF string (good for one-shot rendering), an
+ *   SLCadEntity is a mutable record the AutoCAD Creator(TM) can select, move,
+ *   re-layer, re-label, and delete after it has been created. Each entity has a
+ *   stable id, a kind (line / text / dim), a layer, two points (p1,p2 -- the
+ *   second is unused for a point-anchored TEXT), a text value (for TEXT and the
+ *   measured label of a DIM) and a text height, plus an "alive" flag so a
+ *   delete is a soft tombstone that keeps ids stable. This is the atom the
+ *   editable SLCadDocument stores and the SLCadCanvas paints.
+ *
+ * Family: autocad. SLeeLa owns the geometry and every edit to it; a front end
+ * only issues create/alter/move/delete intents.
+ */
+#sleela 1.5
+import math;
+class SLCadEntity {
+  // Entity-kind ordinals. A front end and the renderer agree on these.
+  static final int KIND_LINE = 0;   // a straight segment (walls/dims geometry)
+  static final int KIND_TEXT = 1;   // a point-anchored text label (notes/title)
+  static final int KIND_DIM  = 2;   // a linear dimension: segment + measured label
+
+  int id;            // stable identity, assigned by the document
+  int kind;          // KIND_LINE / KIND_TEXT / KIND_DIM
+  String layer;      // "walls" / "dims" / "notes"
+  double x1; double y1;   // first point (anchor for TEXT)
+  double x2; double y2;   // second point (ignored for TEXT)
+  String value;      // text payload (TEXT content; "" for a bare LINE)
+  double height;     // text height (for TEXT / DIM label)
+  int alive;         // 1 = present, 0 = tombstoned (deleted but id reserved)
+
+  // ---- construction -------------------------------------------------------
+
+  // Configure as a straight segment on `lyr` from (ax,ay) to (bx,by).
+  void asLine(int entityId, String lyr, double ax, double ay, double bx, double by) {
+    id = entityId; kind = KIND_LINE; layer = lyr;
+    x1 = ax; y1 = ay; x2 = bx; y2 = by;
+    value = ""; height = 0.0; alive = 1;
+  }
+
+  // Configure as a text label anchored at (ax,ay) with content `text`.
+  void asText(int entityId, String lyr, double ax, double ay, String text, double h) {
+    id = entityId; kind = KIND_TEXT; layer = lyr;
+    x1 = ax; y1 = ay; x2 = ax; y2 = ay;
+    value = text; height = h; alive = 1;
+  }
+
+  // Configure as a linear dimension between (ax,ay) and (bx,by); the measured
+  // label is derived on demand (see measured()).
+  void asDim(int entityId, String lyr, double ax, double ay, double bx, double by, double h) {
+    id = entityId; kind = KIND_DIM; layer = lyr;
+    x1 = ax; y1 = ay; x2 = bx; y2 = by;
+    value = ""; height = h; alive = 1;
+  }
+
+  // ---- queries ------------------------------------------------------------
+
+  int getId() { return id; }
+  int getKind() { return kind; }
+  String getLayer() { return layer; }
+  boolean isLine() { return kind == KIND_LINE; }
+  boolean isText() { return kind == KIND_TEXT; }
+  boolean isDim()  { return kind == KIND_DIM; }
+  boolean isAlive() { return alive == 1; }
+
+  double getX1() { return x1; }
+  double getY1() { return y1; }
+  double getX2() { return x2; }
+  double getY2() { return y2; }
+  String getValue() { return value; }
+  double getHeight() { return height; }
+
+  // The measured length of a dimension (and the natural label for a DIM).
+  double length() { return math.hypot(x2 - x1, y2 - y1); }
+
+  // The label text for this entity: its value, or the measured length for a
+  // DIM with no explicit override.
+  String label() {
+    // NB: in the SLeeLa VM a String compares `== null` as true regardless of
+    // content, so emptiness is tested with `== ""` (which also covers unset).
+    if (kind == KIND_DIM && value == "") { return num(length()); }
+    return value;
+  }
+
+  // The midpoint, where a DIM measurement/label sits.
+  double midX() { return (x1 + x2) / 2.0; }
+  double midY() { return (y1 + y2) / 2.0; }
+
+  // ---- alteration (the editable half) -------------------------------------
+
+  // Move the whole entity by (dx,dy).
+  void translate(double dx, double dy) {
+    x1 = x1 + dx; y1 = y1 + dy;
+    x2 = x2 + dx; y2 = y2 + dy;
+  }
+
+  // Set the first point (and, for TEXT, keep the second coincident).
+  void setP1(double ax, double ay) {
+    x1 = ax; y1 = ay;
+    if (kind == KIND_TEXT) { x2 = ax; y2 = ay; }
+  }
+  // Set the second point (ignored for TEXT, which is point-anchored).
+  void setP2(double bx, double by) {
+    if (kind == KIND_TEXT) { return; }
+    x2 = bx; y2 = by;
+  }
+  // Re-point both ends at once.
+  void setEndpoints(double ax, double ay, double bx, double by) {
+    setP1(ax, ay); setP2(bx, by);
+  }
+
+  void setLayer(String lyr) { layer = lyr; }
+  void setValue(String text) { value = text; }
+  void setHeight(double h) { height = h; }
+
+  // Soft-delete: keep the id reserved so other entities keep their identity.
+  void kill() { alive = 0; }
+  void revive() { alive = 1; }
+
+  // ---- DXF ----------------------------------------------------------------
+
+  // Emit just this entity's DXF group-code/value records (empty when dead).
+  String toDxf() {
+    if (alive == 0) { return ""; }
+    if (kind == KIND_TEXT) { return textRecord(layer, x1, y1, height, label()); }
+    if (kind == KIND_DIM) {
+      String s = lineRecord(layer, x1, y1, x2, y2);
+      s = s + textRecord(layer, midX(), midY(), height, label());
+      return s;
+    }
+    return lineRecord(layer, x1, y1, x2, y2);
+  }
+
+  String lineRecord(String lyr, double ax, double ay, double bx, double by) {
+    String s = "0\nLINE\n8\n" + lyr + "\n";
+    s = s + "10\n" + num(ax) + "\n20\n" + num(ay) + "\n30\n0.0\n";
+    s = s + "11\n" + num(bx) + "\n21\n" + num(by) + "\n31\n0.0\n";
+    return s;
+  }
+
+  String textRecord(String lyr, double ax, double ay, double h, String text) {
+    String s = "0\nTEXT\n8\n" + lyr + "\n";
+    s = s + "10\n" + num(ax) + "\n20\n" + num(ay) + "\n30\n0.0\n";
+    s = s + "40\n" + num(h) + "\n1\n" + text + "\n";
+    return s;
+  }
+
+  String num(double v) { return "" + v; }
+}

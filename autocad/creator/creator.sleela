@@ -1,0 +1,405 @@
+#sleela 1.5
+import math;
+// creator.sleela -- the self-contained, runnable build of the SLeeLa AutoCAD
+// Creator(TM). The SLeeLa compiler's `run` compiles one file as a single unit,
+// so this aggregate inlines every class the editable creator needs (the mutable
+// entity, the editable document, a reversible command, and the creator facade)
+// plus a `main` that CREATES a drawing, ALTERS it (move / relabel / delete),
+// UNDOES an edit, and SAVES it as AutoCAD DXF -- the whole "alter the 2D
+// documents and then save them" story, headless.
+//
+// The split per-class files under lib/autocad/ (SLCadEntity, SLCadDocument,
+// SLCadCommand, SLCadCreator) are the package's discovery surface; this file is
+// the executable counterpart, mirroring autocad/cad/render.sleela and
+// lib/autocad/autocad.sleela. The SleelaUI GUI (autocad/creator/cad/) drives the
+// same editing API against a live window; this build proves the engine with no
+// display. No new VM opcode is required -- arithmetic, arrays, native math, and
+// String concatenation on OP_ADD only.
+
+// -----------------------------------------------------------------------------
+// A single editable 2D entity (line / text / dim).
+// -----------------------------------------------------------------------------
+class CadEntity {
+  static final int KIND_LINE = 0;
+  static final int KIND_TEXT = 1;
+  static final int KIND_DIM  = 2;
+
+  int id; int kind; String layer;
+  double x1; double y1; double x2; double y2;
+  String value; double height; int alive;
+
+  void asLine(int entityId, String lyr, double ax, double ay, double bx, double by) {
+    id = entityId; kind = KIND_LINE; layer = lyr;
+    x1 = ax; y1 = ay; x2 = bx; y2 = by; value = ""; height = 0.0; alive = 1;
+  }
+  void asText(int entityId, String lyr, double ax, double ay, String text, double h) {
+    id = entityId; kind = KIND_TEXT; layer = lyr;
+    x1 = ax; y1 = ay; x2 = ax; y2 = ay; value = text; height = h; alive = 1;
+  }
+  void asDim(int entityId, String lyr, double ax, double ay, double bx, double by, double h) {
+    id = entityId; kind = KIND_DIM; layer = lyr;
+    x1 = ax; y1 = ay; x2 = bx; y2 = by; value = ""; height = h; alive = 1;
+  }
+
+  boolean isText() { return kind == KIND_TEXT; }
+  boolean isDim()  { return kind == KIND_DIM; }
+  boolean isAlive() { return alive == 1; }
+  int getId() { return id; }
+  String getLayer() { return layer; }
+  double getX1() { return x1; } double getY1() { return y1; }
+  double getX2() { return x2; } double getY2() { return y2; }
+  String getValue() { return value; }
+
+  double length() { return math.hypot(x2 - x1, y2 - y1); }
+  double midX() { return (x1 + x2) / 2.0; }
+  double midY() { return (y1 + y2) / 2.0; }
+  String label() {
+    if (kind == KIND_DIM && value == "") { return num(length()); }
+    return value;
+  }
+
+  void translate(double dx, double dy) { x1 = x1 + dx; y1 = y1 + dy; x2 = x2 + dx; y2 = y2 + dy; }
+  void setEndpoints(double ax, double ay, double bx, double by) {
+    x1 = ax; y1 = ay;
+    if (kind == KIND_TEXT) { x2 = ax; y2 = ay; } else { x2 = bx; y2 = by; }
+  }
+  void setLayer(String lyr) { layer = lyr; }
+  void setValue(String text) { value = text; }
+  void kill() { alive = 0; } void revive() { alive = 1; }
+
+  String toDxf() {
+    if (alive == 0) { return ""; }
+    if (kind == KIND_TEXT) { return textRecord(layer, x1, y1, height, label()); }
+    if (kind == KIND_DIM) {
+      return lineRecord(layer, x1, y1, x2, y2) + textRecord(layer, midX(), midY(), height, label());
+    }
+    return lineRecord(layer, x1, y1, x2, y2);
+  }
+  String lineRecord(String lyr, double ax, double ay, double bx, double by) {
+    String s = "0\nLINE\n8\n" + lyr + "\n";
+    s = s + "10\n" + num(ax) + "\n20\n" + num(ay) + "\n30\n0.0\n";
+    s = s + "11\n" + num(bx) + "\n21\n" + num(by) + "\n31\n0.0\n";
+    return s;
+  }
+  String textRecord(String lyr, double ax, double ay, double h, String text) {
+    String s = "0\nTEXT\n8\n" + lyr + "\n";
+    s = s + "10\n" + num(ax) + "\n20\n" + num(ay) + "\n30\n0.0\n";
+    s = s + "40\n" + num(h) + "\n1\n" + text + "\n";
+    return s;
+  }
+  String num(double v) { return "" + v; }
+}
+
+// -----------------------------------------------------------------------------
+// The editable 2D document: an indexable store with create / alter / delete.
+// -----------------------------------------------------------------------------
+class CadDocument {
+  static final int MAX_ENTITIES = 8192;
+  String title; String units;
+  double curX; double curY;
+  CadEntity[] items; int count; int nextId;
+
+  void begin(String t, String u) {
+    title = t; units = u; curX = 0.0; curY = 0.0;
+    items = new CadEntity[MAX_ENTITIES]; count = 0; nextId = 1;
+  }
+  String getTitle() { return title; } String getUnits() { return units; }
+  void setTitle(String t) { title = t; } void setUnits(String u) { units = u; }
+  void setAt(double x, double y) { curX = x; curY = y; }
+
+  int addLine(String layer, double x1, double y1, double x2, double y2) {
+    if (count >= MAX_ENTITIES) { return -1; }
+    CadEntity e = new CadEntity(); e.asLine(nextId, layer, x1, y1, x2, y2); return store(e);
+  }
+  int addText(String layer, double x, double y, String value, double height) {
+    if (count >= MAX_ENTITIES) { return -1; }
+    CadEntity e = new CadEntity(); e.asText(nextId, layer, x, y, value, height); return store(e);
+  }
+  int addDim(String layer, double x1, double y1, double x2, double y2, double height) {
+    if (count >= MAX_ENTITIES) { return -1; }
+    CadEntity e = new CadEntity(); e.asDim(nextId, layer, x1, y1, x2, y2, height); return store(e);
+  }
+  int addWall(double x1, double y1, double x2, double y2) { return addLine("walls", x1, y1, x2, y2); }
+  int addNote(double x, double y, String text) { return addText("notes", x, y, text, 150.0); }
+  int addDimension(double x1, double y1, double x2, double y2) { return addDim("dims", x1, y1, x2, y2, 120.0); }
+  int addRoom(double w, double h, String name) {
+    double ox = curX; double oy = curY;
+    int first = addWall(ox, oy, ox + w, oy);
+    addWall(ox + w, oy, ox + w, oy + h);
+    addWall(ox + w, oy + h, ox, oy + h);
+    addWall(ox, oy + h, ox, oy);
+    if (name != "") { addText("notes", ox + w / 2.0, oy + h / 2.0, name, 150.0); }
+    return first;
+  }
+  int store(CadEntity e) { items[count] = e; count = count + 1; nextId = nextId + 1; return e.getId(); }
+
+  int size() { return count; }
+  CadEntity at(int index) { if (index < 0 || index >= count) { return null; } return items[index]; }
+  int indexOfId(int id) {
+    for (int i = 0; i < count; i = i + 1) {
+      CadEntity e = items[i];
+      if (e != null && e.getId() == id) { return i; }
+    }
+    return -1;
+  }
+  CadEntity byId(int id) { int i = indexOfId(id); if (i < 0) { return null; } return items[i]; }
+  int aliveCount() {
+    int n = 0;
+    for (int i = 0; i < count; i = i + 1) {
+      CadEntity e = items[i];
+      if (e != null && e.isAlive()) { n = n + 1; }
+    }
+    return n;
+  }
+
+  boolean move(int id, double dx, double dy) {
+    CadEntity e = byId(id); if (e == null || !e.isAlive()) { return false; } e.translate(dx, dy); return true;
+  }
+  boolean reshape(int id, double x1, double y1, double x2, double y2) {
+    CadEntity e = byId(id); if (e == null || !e.isAlive()) { return false; } e.setEndpoints(x1, y1, x2, y2); return true;
+  }
+  boolean relabel(int id, String text) {
+    CadEntity e = byId(id); if (e == null || !e.isAlive()) { return false; } e.setValue(text); return true;
+  }
+  boolean restyle(int id, String layer) {
+    CadEntity e = byId(id); if (e == null || !e.isAlive()) { return false; } e.setLayer(layer); return true;
+  }
+  boolean remove(int id) {
+    CadEntity e = byId(id); if (e == null || !e.isAlive()) { return false; } e.kill(); return true;
+  }
+  boolean restore(int id) {
+    CadEntity e = byId(id); if (e == null || e.isAlive()) { return false; } e.revive(); return true;
+  }
+
+  double minX() { return boundX(true); } double maxX() { return boundX(false); }
+  double minY() { return boundY(true); } double maxY() { return boundY(false); }
+  double boundX(boolean wantMin) {
+    boolean seen = false; double acc = 0.0;
+    for (int i = 0; i < count; i = i + 1) {
+      CadEntity e = items[i]; if (e == null || !e.isAlive()) { continue; }
+      acc = fold(acc, e.getX1(), wantMin, seen); seen = true;
+      if (!e.isText()) { acc = fold(acc, e.getX2(), wantMin, true); }
+    }
+    return seen ? acc : 0.0;
+  }
+  double boundY(boolean wantMin) {
+    boolean seen = false; double acc = 0.0;
+    for (int i = 0; i < count; i = i + 1) {
+      CadEntity e = items[i]; if (e == null || !e.isAlive()) { continue; }
+      acc = fold(acc, e.getY1(), wantMin, seen); seen = true;
+      if (!e.isText()) { acc = fold(acc, e.getY2(), wantMin, true); }
+    }
+    return seen ? acc : 0.0;
+  }
+  double fold(double acc, double v, boolean wantMin, boolean seen) {
+    if (!seen) { return v; }
+    if (wantMin) { return (v < acc) ? v : acc; }
+    return (v > acc) ? v : acc;
+  }
+
+  String layerSection(String want) {
+    String s = "";
+    for (int i = 0; i < count; i = i + 1) {
+      CadEntity e = items[i];
+      if (e == null || !e.isAlive() || e.getLayer() != want) { continue; }
+      s = s + e.toDxf();
+    }
+    return s;
+  }
+  String layerRow(String name, int color) {
+    return "0\nLAYER\n2\n" + name + "\n70\n0\n62\n" + istr(color) + "\n6\nCONTINUOUS\n";
+  }
+  String toDxf() {
+    String s = "0\nSECTION\n2\nHEADER\n";
+    s = s + "9\n$EXTMIN\n10\n" + num(minX()) + "\n20\n" + num(minY()) + "\n";
+    s = s + "9\n$EXTMAX\n10\n" + num(maxX()) + "\n20\n" + num(maxY()) + "\n";
+    s = s + "0\nENDSEC\n";
+    s = s + "0\nSECTION\n2\nTABLES\n0\nTABLE\n2\nLAYER\n70\n3\n";
+    s = s + layerRow("walls", 7) + layerRow("dims", 1) + layerRow("notes", 3);
+    s = s + "0\nENDTAB\n0\nENDSEC\n";
+    s = s + "0\nSECTION\n2\nENTITIES\n";
+    s = s + layerSection("walls") + layerSection("dims") + layerSection("notes");
+    s = s + "0\nENDSEC\n0\nEOF\n";
+    return s;
+  }
+  String num(double v) { return "" + v; } String istr(int v) { return "" + v; }
+}
+
+// -----------------------------------------------------------------------------
+// A reversible edit record (for undo + audit).
+// -----------------------------------------------------------------------------
+class CadCommand {
+  static final int CREATE = 0; static final int MOVE = 1; static final int RESHAPE = 2;
+  static final int RELABEL = 3; static final int RESTYLE = 4; static final int DELETE = 5;
+  int verb; int entityId;
+  double dx; double dy; double px1; double py1; double px2; double py2;
+  String priorValue; String priorLayer;
+
+  void create(int id) { verb = CREATE; entityId = id; }
+  void move(int id, double ddx, double ddy) { verb = MOVE; entityId = id; dx = ddx; dy = ddy; }
+  void reshape(int id, double ox1, double oy1, double ox2, double oy2) {
+    verb = RESHAPE; entityId = id; px1 = ox1; py1 = oy1; px2 = ox2; py2 = oy2;
+  }
+  void relabel(int id, String prior) { verb = RELABEL; entityId = id; priorValue = prior; }
+  void restyle(int id, String prior) { verb = RESTYLE; entityId = id; priorLayer = prior; }
+  void deleted(int id) { verb = DELETE; entityId = id; }
+  int getVerb() { return verb; } int getEntityId() { return entityId; }
+  boolean isCreate() { return verb == CREATE; }
+
+  boolean undo(CadDocument doc) {
+    if (verb == CREATE)  { return doc.remove(entityId); }
+    if (verb == DELETE)  { return doc.restore(entityId); }
+    if (verb == MOVE)    { return doc.move(entityId, -dx, -dy); }
+    if (verb == RESHAPE) { return doc.reshape(entityId, px1, py1, px2, py2); }
+    if (verb == RELABEL) { return doc.relabel(entityId, priorValue); }
+    if (verb == RESTYLE) { return doc.restyle(entityId, priorLayer); }
+    return false;
+  }
+  String describe() {
+    if (verb == CREATE)  { return "create #" + entityId; }
+    if (verb == MOVE)    { return "move #" + entityId; }
+    if (verb == RESHAPE) { return "reshape #" + entityId; }
+    if (verb == RELABEL) { return "relabel #" + entityId; }
+    if (verb == RESTYLE) { return "restyle #" + entityId; }
+    if (verb == DELETE)  { return "delete #" + entityId; }
+    return "noop";
+  }
+}
+
+// -----------------------------------------------------------------------------
+// The AutoCAD Creator(TM): create, alter, undo, save.
+// -----------------------------------------------------------------------------
+class CadCreator {
+  static final int MAX_HISTORY = 4096;
+  CadDocument doc; int selection; String activeLayer;
+  CadCommand[] history; int historyCount;
+
+  void newDocument(String title, String units) {
+    doc = new CadDocument(); doc.begin(title, units);
+    selection = -1; activeLayer = "walls";
+    history = new CadCommand[MAX_HISTORY]; historyCount = 0;
+  }
+  CadDocument document() { return doc; }
+  int selected() { return selection; } void select(int id) { selection = id; } void deselect() { selection = -1; }
+  String layer() { return activeLayer; } void setLayer(String lyr) { activeLayer = lyr; }
+  void setAt(double x, double y) { doc.setAt(x, y); }
+
+  int wall(double x1, double y1, double x2, double y2) { return created(doc.addWall(x1, y1, x2, y2)); }
+  int line(double x1, double y1, double x2, double y2) { return created(doc.addLine(activeLayer, x1, y1, x2, y2)); }
+  int room(double w, double h, String name) { return created(doc.addRoom(w, h, name)); }
+  int dimension(double x1, double y1, double x2, double y2) { return created(doc.addDimension(x1, y1, x2, y2)); }
+  int note(double x, double y, String text) { return created(doc.addNote(x, y, text)); }
+  int created(int id) {
+    if (id < 0) { return -1; }
+    logEdit(mkCreate(id));
+    selection = id;
+    return id;
+  }
+
+  boolean move(int id, double dx, double dy) {
+    if (!doc.move(id, dx, dy)) { return false; } logEdit(mkMove(id, dx, dy)); return true;
+  }
+  boolean moveSelection(double dx, double dy) { if (selection < 0) { return false; } return move(selection, dx, dy); }
+  boolean reshape(int id, double x1, double y1, double x2, double y2) {
+    CadEntity e = doc.byId(id); if (e == null || !e.isAlive()) { return false; }
+    double ox1 = e.getX1(); double oy1 = e.getY1(); double ox2 = e.getX2(); double oy2 = e.getY2();
+    if (!doc.reshape(id, x1, y1, x2, y2)) { return false; }
+    logEdit(mkReshape(id, ox1, oy1, ox2, oy2)); return true;
+  }
+  boolean relabel(int id, String text) {
+    CadEntity e = doc.byId(id); if (e == null || !e.isAlive()) { return false; }
+    String prior = e.getValue(); if (!doc.relabel(id, text)) { return false; }
+    logEdit(mkRelabel(id, prior)); return true;
+  }
+  boolean restyle(int id, String layer) {
+    CadEntity e = doc.byId(id); if (e == null || !e.isAlive()) { return false; }
+    String prior = e.getLayer(); if (!doc.restyle(id, layer)) { return false; }
+    logEdit(mkRestyle(id, prior)); return true;
+  }
+  boolean delete(int id) {
+    if (!doc.remove(id)) { return false; } logEdit(mkDelete(id));
+    if (selection == id) { selection = -1; } return true;
+  }
+  boolean deleteSelection() { if (selection < 0) { return false; } return delete(selection); }
+
+  int edits() { return historyCount; }
+  String lastDescription() {
+    if (historyCount == 0) { return ""; }
+    CadCommand c = history[historyCount - 1];
+    return c.describe();
+  }
+  boolean undo() {
+    if (historyCount == 0) { return false; }
+    CadCommand c = history[historyCount - 1]; historyCount = historyCount - 1;
+    boolean ok = c.undo(doc);
+    if (c.isCreate() && selection == c.getEntityId()) { selection = -1; }
+    return ok;
+  }
+  void logEdit(CadCommand c) {
+    if (c == null) { return; }
+    if (historyCount >= MAX_HISTORY) {
+      for (int i = 0; i < historyCount - 1; i = i + 1) { history[i] = history[i + 1]; }
+      historyCount = historyCount - 1;
+    }
+    history[historyCount] = c; historyCount = historyCount + 1;
+  }
+  CadCommand mkCreate(int id) { CadCommand c = new CadCommand(); c.create(id); return c; }
+  CadCommand mkMove(int id, double dx, double dy) { CadCommand c = new CadCommand(); c.move(id, dx, dy); return c; }
+  CadCommand mkReshape(int id, double x1, double y1, double x2, double y2) { CadCommand c = new CadCommand(); c.reshape(id, x1, y1, x2, y2); return c; }
+  CadCommand mkRelabel(int id, String p) { CadCommand c = new CadCommand(); c.relabel(id, p); return c; }
+  CadCommand mkRestyle(int id, String p) { CadCommand c = new CadCommand(); c.restyle(id, p); return c; }
+  CadCommand mkDelete(int id) { CadCommand c = new CadCommand(); c.deleted(id); return c; }
+
+  String save() { return doc.toDxf(); }
+  String summary() {
+    return doc.aliveCount() + " entities, " + historyCount + " edits, layer " + activeLayer;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Runnable: create a drawing, alter it, undo one edit, save it as DXF.
+// -----------------------------------------------------------------------------
+class Creator {
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa AutoCAD Creator(TM) -- create, alter, save");
+
+    CadCreator creator = new CadCreator();
+    creator.newDocument("Office Floor", "mm");
+
+    // CREATE: two rooms, a dimension, a note.
+    creator.setLayer("walls");
+    creator.setAt(0.0, 0.0);
+    int lobbyWall = creator.room(6000.0, 4000.0, "Lobby");
+    creator.setAt(6000.0, 0.0);
+    creator.room(4000.0, 4000.0, "Office");
+    creator.setLayer("dims");
+    creator.dimension(0.0, -600.0, 10000.0, -600.0);
+    creator.setLayer("notes");
+    int noteId = creator.note(0.0, 4600.0, "Office Floor — preliminary");
+    print("created: " + creator.summary());
+
+    // ALTER: move the lobby's south wall, relabel the note, delete nothing yet.
+    creator.move(lobbyWall, 0.0, 0.0);                 // (no-op nudge keeps ids)
+    creator.select(lobbyWall);
+    creator.moveSelection(250.0, 0.0);                 // shift the wall +250 x
+    creator.relabel(noteId, "Office Floor — revised");
+    print("altered: " + creator.summary() + "; last = " + creator.lastDescription());
+
+    // ALTER: add then delete an entity, then UNDO the delete.
+    int scratch = creator.note(500.0, 5200.0, "scratch note");
+    creator.delete(scratch);
+    print("deleted scratch #" + scratch + " -> alive " + creator.document().aliveCount());
+    creator.undo();                                    // undo the delete
+    print("undo -> alive " + creator.document().aliveCount() + " (" + creator.summary() + ")");
+
+    // SAVE: emit the AutoCAD DXF for the altered document.
+    print("---- saved AutoCAD DXF ----");
+    print(creator.save());
+  }
+}
