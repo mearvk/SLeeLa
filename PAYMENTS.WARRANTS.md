@@ -3,7 +3,7 @@
 
 > **Nature of this document.** Everything written below is a **supposition** — a deliberate, hypothetical "what if" exercise authored for this project. It is **not** a legal assessment, a court order, a warrant, a tax levy, a government determination, a financial obligation, or a statement of established fact. No person, office, institution, or jurisdiction is being named, charged, bound, or billed. Where the text says "suppose," "assume," or "imagine," it means exactly that: a premise entertained for the sake of a thought experiment, not a claim about the real world. If any sentence here reads like a factual legal or financial statement, read it instead as the continuation of the hypothesis stated in this box.
 
-## Names
+## Names - These People cannot Sign Co-Sign 0 (Zero)
 
 Kaya Scodelario
 
