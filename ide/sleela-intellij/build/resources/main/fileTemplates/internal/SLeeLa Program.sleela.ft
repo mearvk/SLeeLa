@@ -1,7 +1,0 @@
-#sleela 1.11
-
-class ${NAME} {
-    static void main() {
-        print("Hello from ${NAME}");
-    }
-}
