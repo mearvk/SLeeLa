@@ -49,12 +49,43 @@ geometry the Creator holds.
 | Restyle | `restyle(id,layer)`                 | Move an entity onto another layer.       |
 | Delete  | `delete(id)` / `deleteSelection`    | Soft-delete (ids stay stable).           |
 | Undo    | `undo()`                            | Reverse the most recent recorded edit.   |
+| Inspect | `inspect(id)` / `inspectSelection()` | One-line readout of an entity (kind, layer, coords, label). |
+| Report  | `report()` / `listEntities()` / `listHistory()` | Full content + audit dump (metadata, entities, time-ordered edits). |
 | Save    | `save()`                            | Serialise the whole document to DXF.     |
 
 Every create and every alteration is captured as a reversible
 [`SLCadCommand`](../../lib/autocad/SLCadCommand.sleela), so editing is a
 first-class, inspectable, undoable operation — that is what makes this a
 *creator* rather than a one-shot renderer.
+
+## Timestamping & inspection
+
+Content is **timestamped** and **inspectable**:
+
+- **Creation / update timestamps.** The document records when it was created and
+  when it was last changed. Every edit advances the update stamp, and both land
+  in the saved DXF HEADER as AutoCAD's standard `$TDCREATE` and `$TDUPDATE`
+  variables (Julian date, group code 40, written as plain fixed-point decimals —
+  never scientific notation). Time is **host-supplied** — the Creator carries a
+  clock you set with `setClock(julian, label)` and `newDocumentAt(title, units,
+  julian, label)` — because the runtime exposes no live wall clock; this keeps
+  the engine deterministic and testable. A host with a real clock feeds its own
+  Julian date in.
+- **Per-edit audit trail.** Each [`SLCadCommand`](../../lib/autocad/SLCadCommand.sleela)
+  is stamped with a sequence number and the edit time, so `listHistory()` /
+  `report()` print a time-ordered record of what changed and when.
+- **Content inspection.** `inspect(id)` and `inspectSelection()` return a
+  one-line description of an entity (kind, layer, coordinates, label, and a
+  `[deleted]` flag for tombstones); `listEntities()` dumps them all and
+  `report()` adds the document metadata, timestamps, and the audit trail. The
+  GUI shows the selected entity in a live readout and has **Inspect** and
+  **Report** buttons.
+
+The runnable [`creator.sleela`](creator.sleela) demo ends with a headless
+**SELF-CHECK** asserting these invariants (content created, create/update
+timestamps present, an edit advanced `$TDUPDATE`, edits recorded, inspection
+resolves an entity); `make creator` additionally greps the saved DXF to confirm
+the `$TDCREATE`/`$TDUPDATE` records and a well-formed `EOF`.
 
 ## The classes
 

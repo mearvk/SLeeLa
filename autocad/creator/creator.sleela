@@ -57,6 +57,23 @@ class CadEntity {
     if (kind == KIND_DIM && value == "") { return num(length()); }
     return value;
   }
+  String kindName() {
+    if (kind == KIND_TEXT) { return "text"; }
+    if (kind == KIND_DIM)  { return "dim"; }
+    return "line";
+  }
+  // One-line inspection summary (see lib/autocad/SLCadEntity.describe()).
+  String describe() {
+    String s = "#" + id + " " + kindName() + " " + layer;
+    if (kind == KIND_TEXT) {
+      s = s + " (" + num(x1) + "," + num(y1) + ") \"" + value + "\"";
+    } else {
+      s = s + " (" + num(x1) + "," + num(y1) + ")->(" + num(x2) + "," + num(y2) + ")";
+      if (kind == KIND_DIM) { s = s + " =" + num(length()); }
+    }
+    if (alive == 0) { s = s + " [deleted]"; }
+    return s;
+  }
 
   void translate(double dx, double dy) { x1 = x1 + dx; y1 = y1 + dy; x2 = x2 + dx; y2 = y2 + dy; }
   void setEndpoints(double ax, double ay, double bx, double by) {
@@ -98,14 +115,25 @@ class CadDocument {
   String title; String units;
   double curX; double curY;
   CadEntity[] items; int count; int nextId;
+  // Host-supplied timestamps (Julian date for $TDCREATE/$TDUPDATE + label).
+  double createdAt; double updatedAt; String createdLabel; String updatedLabel;
 
-  void begin(String t, String u) {
+  void begin(String t, String u) { beginAt(t, u, 0.0, ""); }
+  void beginAt(String t, String u, double createdJulian, String createdText) {
     title = t; units = u; curX = 0.0; curY = 0.0;
     items = new CadEntity[MAX_ENTITIES]; count = 0; nextId = 1;
+    createdAt = createdJulian; updatedAt = createdJulian;
+    createdLabel = createdText; updatedLabel = createdText;
   }
   String getTitle() { return title; } String getUnits() { return units; }
   void setTitle(String t) { title = t; } void setUnits(String u) { units = u; }
   void setAt(double x, double y) { curX = x; curY = y; }
+  double getCreatedAt() { return createdAt; } double getUpdatedAt() { return updatedAt; }
+  String getCreatedLabel() { return createdLabel; } String getUpdatedLabel() { return updatedLabel; }
+  void touch(double whenJulian, String whenText) {
+    if (whenJulian > 0.0) { updatedAt = whenJulian; }
+    if (whenText != "") { updatedLabel = whenText; }
+  }
 
   int addLine(String layer, double x1, double y1, double x2, double y2) {
     if (count >= MAX_ENTITIES) { return -1; }
@@ -213,6 +241,8 @@ class CadDocument {
     String s = "0\nSECTION\n2\nHEADER\n";
     s = s + "9\n$EXTMIN\n10\n" + num(minX()) + "\n20\n" + num(minY()) + "\n";
     s = s + "9\n$EXTMAX\n10\n" + num(maxX()) + "\n20\n" + num(maxY()) + "\n";
+    if (createdAt > 0.0) { s = s + "9\n$TDCREATE\n40\n" + julian(createdAt) + "\n"; }
+    if (updatedAt > 0.0) { s = s + "9\n$TDUPDATE\n40\n" + julian(updatedAt) + "\n"; }
     s = s + "0\nENDSEC\n";
     s = s + "0\nSECTION\n2\nTABLES\n0\nTABLE\n2\nLAYER\n70\n3\n";
     s = s + layerRow("walls", 7) + layerRow("dims", 1) + layerRow("notes", 3);
@@ -223,6 +253,48 @@ class CadDocument {
     return s;
   }
   String num(double v) { return "" + v; } String istr(int v) { return "" + v; }
+  // Plain fixed-point (6dp) formatting for the Julian $TDCREATE/$TDUPDATE values
+  // so they never print in scientific notation (standalone `run` resolves no
+  // String instance methods, so pad6 is built purely from integer arithmetic).
+  String julian(double v) {
+    if (v < 0.0) { return "-" + julian(0.0 - v); }
+    double whole = math.floor(v);
+    double frac = v - whole;
+    double six = math.floor(frac * 1000000.0 + 0.5);
+    if (six >= 1000000.0) { whole = whole + 1.0; six = six - 1000000.0; }
+    return wholeStr(whole) + "." + pad6(six);
+  }
+  String wholeStr(double w) {
+    w = math.floor(w);
+    if (w < 1.0) { return "0"; }
+    String s = "";
+    while (w >= 1.0) {
+      double q = math.floor(w / 10.0);
+      double d = w - q * 10.0;
+      s = digitChar(d) + s;
+      w = q;
+    }
+    return s;
+  }
+  String pad6(double f) {
+    String s = "";
+    double scale = 100000.0;
+    for (int i = 0; i < 6; i = i + 1) {
+      double digit = math.floor(f / scale);
+      f = f - digit * scale;
+      s = s + digitChar(digit);
+      scale = math.floor(scale / 10.0);
+    }
+    return s;
+  }
+  String digitChar(double d) {
+    double r = math.floor(d + 0.5);
+    if (r <= 0.0) { return "0"; } if (r == 1.0) { return "1"; }
+    if (r == 2.0) { return "2"; } if (r == 3.0) { return "3"; }
+    if (r == 4.0) { return "4"; } if (r == 5.0) { return "5"; }
+    if (r == 6.0) { return "6"; } if (r == 7.0) { return "7"; }
+    if (r == 8.0) { return "8"; } return "9";
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -234,6 +306,14 @@ class CadCommand {
   int verb; int entityId;
   double dx; double dy; double px1; double py1; double px2; double py2;
   String priorValue; String priorLayer;
+  int seq; double stampedAt; String stampLabel;    // audit metadata
+
+  void stamp(int sequence, double whenJulian, String whenText) {
+    seq = sequence; stampedAt = whenJulian; stampLabel = whenText;
+  }
+  int getSeq() { return seq; }
+  double getStampedAt() { return stampedAt; }
+  String getStampLabel() { return stampLabel; }
 
   void create(int id) { verb = CREATE; entityId = id; }
   void move(int id, double ddx, double ddy) { verb = MOVE; entityId = id; dx = ddx; dy = ddy; }
@@ -264,6 +344,11 @@ class CadCommand {
     if (verb == DELETE)  { return "delete #" + entityId; }
     return "noop";
   }
+  String describeAt() {
+    String s = "#" + seq;
+    if (stampLabel != "") { s = s + " @ " + stampLabel; }
+    return s + "  " + describe();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -273,11 +358,17 @@ class CadCreator {
   static final int MAX_HISTORY = 4096;
   CadDocument doc; int selection; String activeLayer;
   CadCommand[] history; int historyCount;
+  double nowJulian; String nowLabel;              // host-supplied clock
 
-  void newDocument(String title, String units) {
-    doc = new CadDocument(); doc.begin(title, units);
+  void setClock(double whenJulian, String whenText) { nowJulian = whenJulian; nowLabel = whenText; }
+  double clock() { return nowJulian; } String clockLabel() { return nowLabel; }
+
+  void newDocument(String title, String units) { newDocumentAt(title, units, 0.0, ""); }
+  void newDocumentAt(String title, String units, double createdJulian, String createdText) {
+    doc = new CadDocument(); doc.beginAt(title, units, createdJulian, createdText);
     selection = -1; activeLayer = "walls";
     history = new CadCommand[MAX_HISTORY]; historyCount = 0;
+    nowJulian = createdJulian; nowLabel = createdText;
   }
   CadDocument document() { return doc; }
   int selected() { return selection; } void select(int id) { selection = id; } void deselect() { selection = -1; }
@@ -341,7 +432,56 @@ class CadCreator {
       for (int i = 0; i < historyCount - 1; i = i + 1) { history[i] = history[i + 1]; }
       historyCount = historyCount - 1;
     }
+    c.stamp(historyCount + 1, nowJulian, nowLabel);
+    doc.touch(nowJulian, nowLabel);
     history[historyCount] = c; historyCount = historyCount + 1;
+  }
+
+  // ---- inspection ---------------------------------------------------------
+  String inspect(int id) {
+    CadEntity e = doc.byId(id);
+    if (e == null) { return ""; }
+    return e.describe();
+  }
+  String inspectSelection() {
+    if (selection < 0) { return "(no selection)"; }
+    String s = inspect(selection);
+    return (s == "") ? ("(stale selection #" + selection + ")") : s;
+  }
+  String listEntities() {
+    String s = "";
+    for (int i = 0; i < doc.size(); i = i + 1) {
+      CadEntity e = doc.at(i);
+      if (e == null) { continue; }
+      s = s + e.describe() + "\n";
+    }
+    return s;
+  }
+  String listHistory() {
+    String s = "";
+    for (int i = 0; i < historyCount; i = i + 1) {
+      CadCommand c = history[i];
+      s = s + c.describeAt() + "\n";
+    }
+    return s;
+  }
+  String stampText(String label, double julian) {
+    if (label != "") { return label; }
+    if (julian > 0.0) { return "JD " + julian; }
+    return "unset";
+  }
+  String report() {
+    String s = "AutoCAD Creator report\n";
+    s = s + "  title    : " + doc.getTitle() + "\n";
+    s = s + "  units    : " + doc.getUnits() + "\n";
+    s = s + "  created  : " + stampText(doc.getCreatedLabel(), doc.getCreatedAt()) + "\n";
+    s = s + "  updated  : " + stampText(doc.getUpdatedLabel(), doc.getUpdatedAt()) + "\n";
+    s = s + "  entities : " + doc.aliveCount() + " live / " + doc.size() + " total\n";
+    s = s + "  edits    : " + historyCount + "\n";
+    s = s + "  selected : " + inspectSelection() + "\n";
+    s = s + "-- entities --\n" + listEntities();
+    s = s + "-- history --\n" + listHistory();
+    return s;
   }
   CadCommand mkCreate(int id) { CadCommand c = new CadCommand(); c.create(id); return c; }
   CadCommand mkMove(int id, double dx, double dy) { CadCommand c = new CadCommand(); c.move(id, dx, dy); return c; }
@@ -352,7 +492,9 @@ class CadCreator {
 
   String save() { return doc.toDxf(); }
   String summary() {
-    return doc.aliveCount() + " entities, " + historyCount + " edits, layer " + activeLayer;
+    String s = doc.aliveCount() + " entities, " + historyCount + " edits, layer " + activeLayer;
+    if (doc.getUpdatedLabel() != "") { s = s + ", " + doc.getUpdatedLabel(); }
+    return s;
   }
 }
 
@@ -366,40 +508,94 @@ class Creator {
     print("================================================================");
   }
 
+  // A monotonic logical clock: the runtime has no live wall-clock, so each edit
+  // is stamped with the next tick (distinct, strictly increasing) which lands
+  // in $TDUPDATE and the audit trail. A host with a real clock supplies its own.
+  int tick;
+  double julianForTick(int t) { return 2461000.0 + t * 0.00001; }
+  void tickClock(CadCreator creator) { tick = tick + 1; creator.setClock(julianForTick(tick), "edit-" + tick); }
+
   void main() {
     banner("SLeeLa AutoCAD Creator(TM) -- create, alter, save");
 
+    tick = 0;
     CadCreator creator = new CadCreator();
-    creator.newDocument("Office Floor", "mm");
+    creator.newDocumentAt("Office Floor", "mm", julianForTick(0), "created");
 
     // CREATE: two rooms, a dimension, a note.
     creator.setLayer("walls");
     creator.setAt(0.0, 0.0);
+    tickClock(creator);
     int lobbyWall = creator.room(6000.0, 4000.0, "Lobby");
     creator.setAt(6000.0, 0.0);
+    tickClock(creator);
     creator.room(4000.0, 4000.0, "Office");
     creator.setLayer("dims");
+    tickClock(creator);
     creator.dimension(0.0, -600.0, 10000.0, -600.0);
     creator.setLayer("notes");
+    tickClock(creator);
     int noteId = creator.note(0.0, 4600.0, "Office Floor — preliminary");
     print("created: " + creator.summary());
 
-    // ALTER: move the lobby's south wall, relabel the note, delete nothing yet.
-    creator.move(lobbyWall, 0.0, 0.0);                 // (no-op nudge keeps ids)
+    // ALTER: move the lobby's south wall, relabel the note.
     creator.select(lobbyWall);
+    tickClock(creator);
     creator.moveSelection(250.0, 0.0);                 // shift the wall +250 x
+    tickClock(creator);
     creator.relabel(noteId, "Office Floor — revised");
     print("altered: " + creator.summary() + "; last = " + creator.lastDescription());
 
+    // INSPECT: show what a given id and the selection are now.
+    print("inspect wall: " + creator.inspect(lobbyWall));
+    print("inspect note: " + creator.inspect(noteId));
+
     // ALTER: add then delete an entity, then UNDO the delete.
+    tickClock(creator);
     int scratch = creator.note(500.0, 5200.0, "scratch note");
+    tickClock(creator);
     creator.delete(scratch);
     print("deleted scratch #" + scratch + " -> alive " + creator.document().aliveCount());
+    tickClock(creator);
     creator.undo();                                    // undo the delete
     print("undo -> alive " + creator.document().aliveCount() + " (" + creator.summary() + ")");
+
+    // INSPECTION report: metadata + timestamps + entities + audit trail.
+    print("---- inspection report ----");
+    print(creator.report());
+
+    // SELF-CHECK: timestamping + inspection must hold.
+    selfCheck(creator);
 
     // SAVE: emit the AutoCAD DXF for the altered document.
     print("---- saved AutoCAD DXF ----");
     print(creator.save());
+  }
+
+  // A small headless test over the editable engine. It asserts on the document
+  // and Creator state directly (the standalone `run` form of SLeeLa resolves no
+  // String instance methods, so we never introspect the DXF text here -- the
+  // Makefile greps the saved .dxf for the $TDCREATE/$TDUPDATE header records as
+  // the complementary output-level check). Verifies that AutoCAD content was
+  // created, that the document carries creation + update timestamps, that an
+  // edit strictly advanced the update time (what lands in $TDUPDATE), that the
+  // audit trail recorded edits, and that inspection resolves an entity.
+  void selfCheck(CadCreator creator) {
+    int fails = 0;
+    CadDocument doc = creator.document();
+    fails = fails + expect(doc.aliveCount() > 0, "content was created (alive entities)");
+    fails = fails + expect(doc.getCreatedAt() > 0.0, "document has a creation timestamp ($TDCREATE)");
+    fails = fails + expect(doc.getUpdatedAt() >= doc.getCreatedAt(), "update time >= create time");
+    fails = fails + expect(doc.getUpdatedAt() > doc.getCreatedAt(), "an edit advanced $TDUPDATE");
+    fails = fails + expect(creator.edits() > 0, "edits were recorded for audit");
+    fails = fails + expect(creator.lastDescription() != "", "last edit is describable");
+    fails = fails + expect(creator.inspect(1) != "", "inspection resolves entity #1");
+    fails = fails + expect(creator.inspectSelection() != "", "selection inspection is reportable");
+    if (fails == 0) { print("SELF-CHECK: PASS (all timestamp + inspection checks)"); }
+    else { print("SELF-CHECK: FAIL (" + fails + " checks failed)"); }
+  }
+  int expect(boolean cond, String what) {
+    if (cond) { print("  [ok]   " + what); return 0; }
+    print("  [FAIL] " + what); return 1;
   }
 }

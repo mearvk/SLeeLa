@@ -33,7 +33,22 @@ creator: $(OUT)
 		| awk '1; /^EOF$$/{exit}' > "$(OUT)/altered.dxf"
 	@echo "Wrote $(OUT)/altered.dxf (open in AutoCAD or LibreCAD)"
 	@echo "Report (from $(OUT)/creator.log):"
-	@sed -n 's/^/  /p' "$(OUT)/creator.log" | grep -E "create|alter|delet|undo|saved|entities" || true
+	@sed -n 's/^/  /p' "$(OUT)/creator.log" | grep -E "create|alter|delet|undo|saved|entities|SELF-CHECK" || true
+	@$(MAKE) --no-print-directory verify
+
+# Output-level checks on the saved DXF: the engine's own SELF-CHECK must pass,
+# and the DXF must carry the AutoCAD creation/update timestamps ($TDCREATE /
+# $TDUPDATE) and a well-formed EOF. Fails the build if any are missing.
+.PHONY: verify
+verify:
+	@grep -q "SELF-CHECK: PASS" "$(OUT)/creator.log" || { echo "VERIFY FAIL: engine self-check did not pass"; exit 1; }
+	@grep -q '\$$TDCREATE' "$(OUT)/altered.dxf" || { echo "VERIFY FAIL: DXF missing \$$TDCREATE timestamp"; exit 1; }
+	@grep -q '\$$TDUPDATE' "$(OUT)/altered.dxf" || { echo "VERIFY FAIL: DXF missing \$$TDUPDATE timestamp"; exit 1; }
+	@grep -q '^EOF$$' "$(OUT)/altered.dxf" || { echo "VERIFY FAIL: DXF not terminated with EOF"; exit 1; }
+	@echo "VERIFY OK: self-check passed; DXF carries \$$TDCREATE + \$$TDUPDATE and ends with EOF"
+
+$(OUT):
+	@mkdir -p "$(OUT)"
 
 # The SleelaUI GUI is pure SLeeLa and needs no external build; on a display,
 # run its application class through the runtime.

@@ -89,6 +89,32 @@ class SLCadEntity {
   double midX() { return (x1 + x2) / 2.0; }
   double midY() { return (y1 + y2) / 2.0; }
 
+  // ---- inspection ---------------------------------------------------------
+
+  // The entity kind as a word, for reports and the GUI readout.
+  String kindName() {
+    if (kind == KIND_TEXT) { return "text"; }
+    if (kind == KIND_DIM)  { return "dim"; }
+    return "line";
+  }
+
+  // A one-line, human-readable summary of this entity's current state, e.g.
+  //   "#7 line walls (0,0)->(6000,0)"            (a wall)
+  //   "#9 text notes (3000,2000) \"Lobby\""      (a label)
+  //   "#4 dim dims (0,-600)->(10000,-600) =10000" (a dimension + measure)
+  // A tombstoned entity is flagged so an audit sees deletions too.
+  String describe() {
+    String s = "#" + id + " " + kindName() + " " + layer;
+    if (kind == KIND_TEXT) {
+      s = s + " (" + num(x1) + "," + num(y1) + ") \"" + value + "\"";
+    } else {
+      s = s + " (" + num(x1) + "," + num(y1) + ")->(" + num(x2) + "," + num(y2) + ")";
+      if (kind == KIND_DIM) { s = s + " =" + num(length()); }
+    }
+    if (alive == 0) { s = s + " [deleted]"; }
+    return s;
+  }
+
   // ---- alteration (the editable half) -------------------------------------
 
   // Move the whole entity by (dx,dy).

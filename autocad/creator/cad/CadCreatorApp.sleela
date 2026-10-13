@@ -32,6 +32,8 @@ class CadCreatorApp {
   SLButton toolSelect; SLButton toolLine; SLButton toolRoom; SLButton toolDim;
   SLButton toolNote;   SLButton toolMove; SLButton toolDelete;
   SLButton actUndo;    SLButton actSave;  SLButton actBuild;
+  SLButton actInspect; SLButton actReport;
+  SLLabel  readout;                 // shows the selected entity's details
   SLComboBox layerPick;
 
   // Property inputs (the numbers/text a tool consumes).
@@ -52,7 +54,8 @@ class CadCreatorApp {
 
   int run() {
     creator = new SLCadCreator();
-    creator.newDocument("Untitled", "mm");
+    tick = 0;
+    creator.newDocumentAt("Untitled", "mm", julianForTick(0), "created");
     seedDemo();                       // a starter drawing to edit
 
     ui = new SLUserInterface();
@@ -147,6 +150,12 @@ class CadCreatorApp {
     actUndo = new SLButton();
     actUndo.createIn(col, "Undo last edit");
 
+    actInspect = new SLButton();
+    actInspect.createIn(col, "Inspect selection");
+
+    actReport = new SLButton();
+    actReport.createIn(col, "Report (print)");
+
     activeTool = T_SELECT;
   }
 
@@ -183,6 +192,11 @@ class CadCreatorApp {
     SLSpacer asp = new SLSpacer(); asp.createIn(actRow);
     SLLabel hint = new SLLabel();
     hint.createIn(actRow, "Pick a tool, fill the fields, Apply.");
+
+    // A live readout of the selected entity (kind, layer, coords, label).
+    readout = new SLLabel();
+    readout.createIn(centre, "selection: (none)");
+    readout.setAlign(SLWidget.ALIGN_START, SLWidget.ALIGN_CENTER);
 
     // The live preview surface.
     SLLabel ch = new SLLabel();
@@ -258,8 +272,10 @@ class CadCreatorApp {
   // The action buttons perform the actual AutoCAD work via the creator.
   void pollActions() {
     if (applyButton.clicked()) { applyTool(); }
-    if (actUndo.clicked())     { creator.undo(); refreshStatus(); }
+    if (actUndo.clicked())     { tickClock(); creator.undo(); refreshStatus(); refreshReadout(); }
     if (actBuild.clicked())    { buildFromPlan(); }
+    if (actInspect.clicked())  { refreshReadout(); note(creator.inspectSelection()); }
+    if (actReport.clicked())   { print(creator.report()); note("printed report"); }
     if (actSave.clicked())     { saveDocument(); }
   }
 
@@ -271,6 +287,8 @@ class CadCreatorApp {
     double h = numField(inH);
     String text = textField(inText);
 
+    tickClock();                      // stamp this edit with the next tick
+
     if (activeTool == T_LINE)   { creator.wall(x, y, w, h); }
     else if (activeTool == T_ROOM) { creator.room(w, h, text); }
     else if (activeTool == T_DIM)  { creator.dimension(x, y, w, h); }
@@ -281,12 +299,33 @@ class CadCreatorApp {
 
     canvas.setSelected(creator.selected());
     refreshStatus();
+    refreshReadout();
   }
+
+  // Update the readout label with the selected entity's details.
+  void refreshReadout() {
+    if (readout != null) { readout.setText("selection: " + creator.inspectSelection()); }
+  }
+
+  // The runtime has no live wall-clock, so the GUI advances a logical clock:
+  // a monotonic tick count rendered as a readable label. Each edit therefore
+  // carries a distinct, ordered timestamp that lands in $TDUPDATE and the audit
+  // trail. A host with a real clock would call creator.setClock(julian, iso).
+  int tick;
+  void tickClock() {
+    tick = tick + 1;
+    creator.setClock(julianForTick(tick), "edit-" + tick);
+  }
+  // Map a tick onto a monotonically increasing Julian-date-like value so each
+  // edit's $TDUPDATE strictly advances (base is a plausible 2026 Julian day).
+  double julianForTick(int t) { return 2461000.0 + t * 0.00001; }
 
   // ---- plan seeding -------------------------------------------------------
 
   void buildFromPlan() {
-    creator.newDocument(creator.document().getTitle(), creator.document().getUnits());
+    tick = tick + 1;
+    creator.newDocumentAt(creator.document().getTitle(), creator.document().getUnits(),
+                          julianForTick(tick), "rebuilt-" + tick);
     int n = planView.getLineCount();
     for (int i = 0; i < n; i = i + 1) {
       applyPlanLine(planView.lineAt(i));
@@ -405,14 +444,23 @@ class CadCreatorApp {
     }
     if (firstWall >= 0) {
       creator.select(firstWall);
+      tickClock();
       creator.moveSelection(250.0, 0.0);           // alter: move a wall
       print("altered wall #" + firstWall + " (+250 x); " + creator.lastDescription());
+      print("inspect: " + creator.inspect(firstWall));
     }
+    tickClock();
     int noteId = creator.note(500.0, 5200.0, "Added via Creator");  // create
+    tickClock();
     creator.relabel(noteId, "Added + relabelled");                  // alter
     print("created note #" + noteId + ", then relabelled it.");
+    tickClock();
     creator.undo();                                                 // undo relabel
     print("undo -> history now " + creator.edits() + " edits.");
+
+    // INSPECTION: dump the full report (metadata + timestamps + entities + audit).
+    print("---- inspection report ----");
+    print(creator.report());
 
     print("---- saved AutoCAD DXF ----");
     print(creator.save());

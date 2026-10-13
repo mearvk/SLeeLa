@@ -4,6 +4,7 @@
  * Definition: Defines the SLeeLa standard-library type SLCadDxf used within the autocad library family.
  */
 #sleela 1.3
+import math;
 // Unified SLeeLa standard-library front-end object.
 // Family: autocad. Wraps accumulated geometry (walls / dimensions / notes
 // entity text) in the AutoCAD DXF sections (HEADER with extents, TABLES with
@@ -21,14 +22,72 @@ class SLCadDxf {
   String num(double v) { return "" + v; }
   String istr(int v) { return "" + v; }
 
+  // Format a Julian-date timestamp as a plain fixed-point decimal (6 places),
+  // never scientific notation. DXF group-code-40 values must be plain decimals,
+  // and a Julian date (~2.46e6) would otherwise print as "2.461e+06", which
+  // both loses precision and breaks strict DXF readers. Builds the string from
+  // integer + scaled-fraction parts so no stdlib formatting import is needed.
+  String julian(double v) {
+    if (v < 0.0) { return "-" + julian(0.0 - v); }
+    double whole = math.floor(v);
+    double frac = v - whole;                        // 0 <= frac < 1
+    double six = math.floor(frac * 1000000.0 + 0.5);// 6 dp, rounded
+    if (six >= 1000000.0) { whole = whole + 1.0; six = six - 1000000.0; }
+    return wholeStr(whole) + "." + pad6(six);
+  }
+  // The integer part of a non-negative double as plain decimal digits (never
+  // scientific notation, which "" + aDouble would otherwise produce for a
+  // Julian date of ~2.46e6).
+  String wholeStr(double w) {
+    w = math.floor(w);
+    if (w < 1.0) { return "0"; }
+    String s = "";
+    while (w >= 1.0) {
+      double q = math.floor(w / 10.0);
+      double d = w - q * 10.0;
+      s = digitChar(d) + s;
+      w = q;
+    }
+    return s;
+  }
+  // Zero-pad a 0..999999 fractional count to exactly six decimal digits.
+  String pad6(double f) {
+    String s = "";
+    double scale = 100000.0;
+    for (int i = 0; i < 6; i = i + 1) {
+      double digit = math.floor(f / scale);
+      f = f - digit * scale;
+      s = s + digitChar(digit);
+      scale = math.floor(scale / 10.0);
+    }
+    return s;
+  }
+  String digitChar(double d) {
+    double r = math.floor(d + 0.5);
+    if (r <= 0.0) { return "0"; } if (r == 1.0) { return "1"; }
+    if (r == 2.0) { return "2"; } if (r == 3.0) { return "3"; }
+    if (r == 4.0) { return "4"; } if (r == 5.0) { return "5"; }
+    if (r == 6.0) { return "6"; } if (r == 7.0) { return "7"; }
+    if (r == 8.0) { return "8"; } return "9";
+  }
+
   String layer(String name, int color) {
     return "0\nLAYER\n2\n" + name + "\n70\n0\n62\n" + istr(color) + "\n6\nCONTINUOUS\n";
   }
 
-  String header(double minX, double minY, double maxX, double maxY) {
+  // Header with drawing extents plus the AutoCAD creation/update timestamps.
+  // $TDCREATE / $TDUPDATE are DXF's standard local creation and last-update
+  // times, expressed as Julian dates (group code 40). A zero timestamp means
+  // "unset" and the record is omitted, so passing (…, 0.0, 0.0) reproduces the
+  // pre-timestamp HEADER byte-for-byte. (SLeeLa has no method overloading, so
+  // this is the single header entry point; callers always pass the two stamps.)
+  String header(double minX, double minY, double maxX, double maxY,
+                double createdJulian, double updatedJulian) {
     String s = "0\nSECTION\n2\nHEADER\n";
     s = s + "9\n$EXTMIN\n10\n" + num(minX) + "\n20\n" + num(minY) + "\n";
     s = s + "9\n$EXTMAX\n10\n" + num(maxX) + "\n20\n" + num(maxY) + "\n";
+    if (createdJulian > 0.0) { s = s + "9\n$TDCREATE\n40\n" + julian(createdJulian) + "\n"; }
+    if (updatedJulian > 0.0) { s = s + "9\n$TDUPDATE\n40\n" + julian(updatedJulian) + "\n"; }
     s = s + "0\nENDSEC\n";
     return s;
   }
@@ -40,10 +99,14 @@ class SLCadDxf {
     return s;
   }
 
-  // Wrap the three accumulated entity strings in a complete DXF document.
+  // Wrap the three accumulated entity strings in a complete DXF document, with
+  // the AutoCAD creation/update timestamps embedded in the HEADER. (No method
+  // overloading in SLeeLa, so this is the single entry point; pass 0.0/0.0 for
+  // the timestamps to emit a HEADER identical to the pre-timestamp output.)
   String document(double minX, double minY, double maxX, double maxY,
+                  double createdJulian, double updatedJulian,
                   String walls, String dims, String notes) {
-    String s = header(minX, minY, maxX, maxY);
+    String s = header(minX, minY, maxX, maxY, createdJulian, updatedJulian);
     s = s + tables();
     s = s + "0\nSECTION\n2\nENTITIES\n";
     s = s + walls + dims + notes;
