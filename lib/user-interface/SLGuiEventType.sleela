@@ -1,0 +1,64 @@
+/*
+ * lib/user-interface/SLGuiEventType.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiEventType — the catalogue of GUI event kinds the
+ *   /lib/gui event layer understands. These are the SLeeLa-facing names a
+ *   handler binds to (the DHTML-style "click", "input", "change", "keydown",
+ *   ...). The host raises one of these on a target; SLeeLa decides what it
+ *   means. Each kind has a stable ordinal (used by the dispatch tables) and a
+ *   canonical lowercase name (the string an onX binding or addEventListener
+ *   uses), mirroring the activation model already in SLGuiAction.
+ *
+ * Family: user-interface. Java/native raise typed activations; SLeeLa owns their meaning.
+ */
+#sleela 1.5
+class SLGuiEventType {
+  // Ordinals (stable; used as table indices).
+  static final int CLICK      = 0;   // a primary activation (click / Enter / Space)
+  static final int DBLCLICK   = 1;   // a double activation
+  static final int INPUT      = 2;   // live text input (per keystroke)
+  static final int CHANGE     = 3;   // a committed value change (blur/Enter)
+  static final int FOCUS      = 4;   // the target gained focus
+  static final int BLUR       = 5;   // the target lost focus
+  static final int KEYDOWN    = 6;   // a key went down while focused
+  static final int KEYUP      = 7;   // a key came up while focused
+  static final int POINTERDOWN= 8;   // a pointer press began on the target
+  static final int POINTERUP  = 9;   // a pointer press ended on the target
+  static final int POINTERMOVE=10;   // the pointer moved over the target
+  static final int SCROLL     =11;   // the target scrolled
+  static final int SUBMIT     =12;   // a form-like submit (Enter in an entry)
+  static final int TOGGLE     =13;   // a toggle/checkbox flipped
+  static final int CUSTOM     =14;   // a host- or script-defined event
+
+  static final int COUNT      =15;   // number of defined event kinds
+
+  // The canonical lowercase name for an ordinal (the addEventListener string).
+  String nameOf(int type) {
+    if (type == CLICK)       { return "click"; }
+    if (type == DBLCLICK)    { return "dblclick"; }
+    if (type == INPUT)       { return "input"; }
+    if (type == CHANGE)      { return "change"; }
+    if (type == FOCUS)       { return "focus"; }
+    if (type == BLUR)        { return "blur"; }
+    if (type == KEYDOWN)     { return "keydown"; }
+    if (type == KEYUP)       { return "keyup"; }
+    if (type == POINTERDOWN) { return "pointerdown"; }
+    if (type == POINTERUP)   { return "pointerup"; }
+    if (type == POINTERMOVE) { return "pointermove"; }
+    if (type == SCROLL)      { return "scroll"; }
+    if (type == SUBMIT)      { return "submit"; }
+    if (type == TOGGLE)      { return "toggle"; }
+    if (type == CUSTOM)      { return "custom"; }
+    return "unknown";
+  }
+
+  // The ordinal for a canonical name (-1 when the name is not recognised).
+  int typeOf(String name) {
+    for (int t = 0; t < COUNT; t = t + 1) {
+      if (nameOf(t) == name) { return t; }
+    }
+    return -1;
+  }
+
+  boolean valid(int type) { return type >= 0 && type < COUNT; }
+}

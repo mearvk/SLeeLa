@@ -167,6 +167,32 @@ such as an IDE — needs, so a complete GUI can be authored in SLeeLa alone.
 | `SLTextView` | A multi-line editable **code editor**: line buffer, caret, selection, dirty flag, gutter line numbers, current-line highlight, drawn via the Draw API. | `SLCanvasView` + `SLDrawContext` |
 | `SLLoadingIndicator` | A unified **loading indicator** with a caption that switches between indeterminate (throbber/spinner) and determinate (progress bar) modes, with `done()`/`fail()` end states. | `SLThrobber` + `SLSpinner` + `SLProgressBar` |
 
+### Events, DHTML-style DOM, and scripting
+
+The backing API for **dynamic** interfaces — action callbacks / `onClick`, a
+browser-DOM-style document with live manipulation, a small scripting engine, and
+the support structure that projects the DOM onto real widgets and feeds
+activations back. SLeeLa owns the meaning of events and the document; the
+toolkit renders it. (These classes are maintained in parallel with the
+identical set in [`/lib/gui`](../gui/); see
+[`/lib/gui/EVENTS-DOM-SCRIPTING.md`](../gui/EVENTS-DOM-SCRIPTING.md) for the full
+contract and runnable walkthroughs.)
+
+| Class | Role |
+|---|---|
+| `SLGuiEventType` | The event catalogue (`click`, `input`, `change`, `keydown`, `toggle`, `submit`, `custom`, …) with ordinals ↔ names. |
+| `SLGuiEvent` | A dispatched event with a value/key/pointer payload and `preventDefault`/`stopPropagation`. |
+| `SLGuiHandler` | A bound callback `(type, target, operation)` with `once`/`capture` and a take-the-latch activation. |
+| `SLGuiEventBus` | The dispatcher: `addEventListener`/`removeEventListener`, phased capture → bubble `dispatch`, `once` sweeping. |
+| `SLGuiNode` | A DOM element: tag/id/text, parent + children, an attribute map, an inline **style** map, visibility/enabled, a live widget handle. |
+| `SLGuiDom` | The document: `getElementById`, `createElement`, `appendChild`, `setText`/`setAttribute`/`setStyle`, `show`/`hide`, `onClick`/`onInput`/… |
+| `SLGuiScriptCommand` | One script instruction (verb + operands). |
+| `SLGuiScript` | The bounded command-list engine that drives the DOM/events. |
+| `SLGuiWidgetFactory` | Maps a node `tag` → a SleelaUI constructor (the DOM→toolkit seam). |
+| `SLGuiMount` | The reconciler: depth-first mount, `id → widget` map, applies dirty-node state to widgets. |
+| `SLGuiHostAdapter` | Polls widget activation latches and raises the matching `SLGuiEvent`s into the bus. |
+| `SLGuiApp` | The top-level support object: app + window + DOM + mount + host adapter + script engine + run loop. |
+
 > The full catalogue — every widget with its C ABI constructor, SLeeLa class,
 > description, and focus behaviour — is tabulated in
 > [`user-interface/WIDGETS.DESCRIPTION.md`](../../user-interface/WIDGETS.DESCRIPTION.md).

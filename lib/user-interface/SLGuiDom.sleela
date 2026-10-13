@@ -1,0 +1,202 @@
+/*
+ * lib/user-interface/SLGuiDom.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiDom — the DHTML-style document model for /lib/gui: a
+ *   flat registry of SLGuiNode elements forming a tree, plus the manipulation
+ *   API a browser DOM exposes — createElement, getElementById, appendChild,
+ *   removeChild, setText/setAttribute/setStyle on an id, show/hide, and a simple
+ *   getElementsByTag / querySelector-by-attribute lookup. It owns an
+ *   SLGuiEventBus so handlers bind to node ids (onClick, onInput, on(type,...),
+ *   addEventListener) and raised events route to SLeeLa operations. The DOM is
+ *   the single SLeeLa-owned source of truth; a host walks the dirty nodes and
+ *   mirrors them onto real SleelaUI widgets.
+ *
+ * Family: user-interface. SLeeLa owns the document and dispatch; the host mounts and
+ * paints it.
+ */
+#sleela 1.5
+class SLGuiDom {
+  static final int MAX_NODES = 65536;
+
+  SLGuiNode[] nodes;
+  int count;
+  String rootId;
+  SLGuiEventBus bus;
+  SLGuiEventType types;   // name<->ordinal helper
+  int idSeq;              // auto-id counter for createElement without an id
+
+  void init() {
+    nodes = new SLGuiNode[MAX_NODES];
+    count = 0; rootId = "";
+    bus = new SLGuiEventBus(); bus.init();
+    types = new SLGuiEventType();
+    idSeq = 0;
+  }
+
+  SLGuiEventBus events() { return bus; }
+  int size() { return count; }
+
+  // ---- creation / tree ----------------------------------------------------
+
+  // createElement(tag, id): id "" generates a stable auto id ("n<seq>").
+  SLGuiNode createElement(String tag, String id) {
+    if (count >= MAX_NODES) { return null; }
+    String nodeId = (id == null || id == "") ? autoId() : id;
+    SLGuiNode n = new SLGuiNode();
+    n.configure(nodeId, tag, "");
+    nodes[count] = n; count = count + 1;
+    return n;
+  }
+
+  // The document root (the window element). Created once.
+  SLGuiNode createRoot(String tag, String id) {
+    SLGuiNode n = createElement(tag, id);
+    if (n != null) { rootId = n.getId(); }
+    return n;
+  }
+  SLGuiNode root() { return getElementById(rootId); }
+
+  SLGuiNode getElementById(String id) {
+    for (int i = 0; i < count; i = i + 1) {
+      if (nodes[i].getId() == id) { return nodes[i]; }
+    }
+    return null;
+  }
+  int indexOfId(String id) {
+    for (int i = 0; i < count; i = i + 1) { if (nodes[i].getId() == id) { return i; } }
+    return -1;
+  }
+
+  // appendChild(parentId, childId): link child under parent in both directions.
+  boolean appendChild(String parentId, String childId) {
+    SLGuiNode p = getElementById(parentId);
+    SLGuiNode c = getElementById(childId);
+    if (p == null || c == null) { return false; }
+    c.setParent(parentId);
+    return p.appendChild(childId);
+  }
+
+  // Convenience: create a child element already appended to a parent.
+  SLGuiNode appendElement(String parentId, String tag, String id) {
+    SLGuiNode c = createElement(tag, id);
+    if (c == null) { return null; }
+    appendChild(parentId, c.getId());
+    return c;
+  }
+
+  // removeChild: detach from parent, remove its handlers, and drop the node
+  // (and recursively its subtree).
+  boolean removeChild(String childId) {
+    SLGuiNode c = getElementById(childId);
+    if (c == null) { return false; }
+    SLGuiNode p = getElementById(c.getParent());
+    if (p != null) { p.removeChild(childId); }
+    removeSubtree(childId);
+    return true;
+  }
+
+  // ---- manipulation (id-addressed, DHTML-style) ---------------------------
+
+  void setText(String id, String text) {
+    SLGuiNode n = getElementById(id); if (n != null) { n.setText(text); }
+  }
+  void setAttribute(String id, String name, String value) {
+    SLGuiNode n = getElementById(id); if (n != null) { n.setAttribute(name, value); }
+  }
+  void setStyle(String id, String prop, String value) {
+    SLGuiNode n = getElementById(id); if (n != null) { n.setStyle(prop, value); }
+  }
+  void show(String id) { SLGuiNode n = getElementById(id); if (n != null) { n.show(); } }
+  void hide(String id) { SLGuiNode n = getElementById(id); if (n != null) { n.hide(); } }
+  void setEnabled(String id, boolean on) {
+    SLGuiNode n = getElementById(id); if (n != null) { n.setEnabled(on); }
+  }
+
+  // ---- queries ------------------------------------------------------------
+
+  // Fill `out` with the ids of every node with the given tag; returns the count.
+  int getElementsByTag(String tag, String[] out, int cap) {
+    int n = 0;
+    for (int i = 0; i < count && n < cap; i = i + 1) {
+      if (nodes[i].getTag() == tag) { out[n] = nodes[i].getId(); n = n + 1; }
+    }
+    return n;
+  }
+  // Return the first node id whose attribute `name` equals `value` (or null).
+  String querySelectorByAttr(String name, String value) {
+    for (int i = 0; i < count; i = i + 1) {
+      String got = nodes[i].getAttribute(name);
+      if (got != null && got == value) { return nodes[i].getId(); }
+    }
+    return null;
+  }
+
+  // ---- events (addEventListener + onX shorthands) -------------------------
+
+  SLGuiHandler addEventListener(String id, String eventName, String operation) {
+    int t = types.typeOf(eventName);
+    if (t < 0) { return null; }
+    return bus.addListener(id, t, operation);
+  }
+  boolean removeEventListener(String id, String eventName, String operation) {
+    int t = types.typeOf(eventName);
+    if (t < 0) { return false; }
+    return bus.removeListener(id, t, operation);
+  }
+
+  // Shorthands mirroring onclick=/oninput= style bindings.
+  SLGuiHandler onClick(String id, String operation) {
+    return bus.addListener(id, SLGuiEventType.CLICK, operation);
+  }
+  SLGuiHandler onInput(String id, String operation) {
+    return bus.addListener(id, SLGuiEventType.INPUT, operation);
+  }
+  SLGuiHandler onChange(String id, String operation) {
+    return bus.addListener(id, SLGuiEventType.CHANGE, operation);
+  }
+  SLGuiHandler onKeyDown(String id, String operation) {
+    return bus.addListener(id, SLGuiEventType.KEYDOWN, operation);
+  }
+  SLGuiHandler onSubmit(String id, String operation) {
+    return bus.addListener(id, SLGuiEventType.SUBMIT, operation);
+  }
+
+  // The host raises an activation on a node; dispatch it through the bus.
+  // Returns how many handlers fired.
+  int dispatchEvent(SLGuiEvent event) { return bus.dispatch(event); }
+  int fire(int eventType, String targetId, String value) {
+    return bus.raise(eventType, targetId, value);
+  }
+
+  // ---- host sync ----------------------------------------------------------
+
+  // The number of nodes needing a host re-sync (dirty), for the mount walk.
+  int dirtyCount() {
+    int n = 0;
+    for (int i = 0; i < count; i = i + 1) { if (nodes[i].isDirty()) { n = n + 1; } }
+    return n;
+  }
+  SLGuiNode nodeAt(int i) {
+    if (i < 0 || i >= count) { return null; }
+    return nodes[i];
+  }
+
+  // ---- internals ----------------------------------------------------------
+
+  String autoId() { idSeq = idSeq + 1; return "n" + idSeq; }
+
+  void removeSubtree(String id) {
+    SLGuiNode n = getElementById(id);
+    if (n == null) { return; }
+    for (int i = 0; i < n.children(); i = i + 1) { removeSubtree(n.childAt(i)); }
+    bus.removeTarget(id);
+    removeNode(id);
+  }
+  void removeNode(String id) {
+    int idx = indexOfId(id);
+    if (idx < 0) { return; }
+    for (int i = idx; i < count - 1; i = i + 1) { nodes[i] = nodes[i + 1]; }
+    count = count - 1;
+    nodes[count] = null;
+  }
+}

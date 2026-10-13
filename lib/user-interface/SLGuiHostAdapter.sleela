@@ -1,0 +1,86 @@
+/*
+ * lib/user-interface/SLGuiHostAdapter.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiHostAdapter — the toolkit->SLeeLa half of the loop.
+ *   Where SLGuiMount pushes DOM state onto widgets, the host adapter reads the
+ *   widgets back: once per frame it polls each mounted interactive node's
+ *   widget activation latch (uiWidgetTakeActivated, the same latch SLButton and
+ *   SLEntry expose) and, when a widget fired, builds the matching SLGuiEvent
+ *   (CLICK for a button, SUBMIT for an entry, TOGGLE for a toggle — carrying the
+ *   widget's current text/toggle state as the event value) and dispatches it
+ *   through the DOM's SLGuiEventBus so the bound onClick/onSubmit/onToggle
+ *   handlers fire. This is what turns a real user interaction into a SLeeLa
+ *   event; the DOM stays authoritative for what the event means.
+ *
+ * Family: user-interface. The adapter crosses the `ui*` SLVM bridge inbound; dispatch and
+ * meaning stay SLeeLa-owned.
+ */
+#sleela 1.5
+class SLGuiHostAdapter {
+  SLGuiDom dom;
+  SLGuiMount mount;
+  SLGuiWidgetFactory factory;
+  int tick;             // monotonic frame counter stamped onto events
+  int raisedLast;       // events raised on the last poll pass
+
+  void init(SLGuiDom document, SLGuiMount mountEngine) {
+    dom = document; mount = mountEngine;
+    factory = new SLGuiWidgetFactory();
+    tick = 0; raisedLast = 0;
+  }
+
+  // Poll every mounted interactive node once; raise an SLGuiEvent for each that
+  // fired since the last poll. Returns the number of events dispatched.
+  int poll() {
+    raisedLast = 0;
+    tick = tick + 1;
+    int n = dom.size();
+    for (int i = 0; i < n; i = i + 1) {
+      SLGuiNode node = dom.nodeAt(i);
+      if (node == null) { continue; }
+      if (!factory.interactive(node.getTag())) { continue; }
+      int wh = node.widgetHandle();
+      if (wh < 0) { wh = mount.handleOf(node.getId()); }
+      if (wh < 0) { continue; }
+      if (uiWidgetTakeActivated(wh) == 1) { raiseFor(node, wh); }
+    }
+    return raisedLast;
+  }
+
+  // Build and dispatch the event a fired widget implies.
+  void raiseFor(SLGuiNode node, int widgetHandle) {
+    int type = factory.activationEvent(node.getTag());
+    SLGuiEvent e = new SLGuiEvent();
+    e.configure(type, node.getId());
+    e.setTimestamp(tick);
+
+    // Carry the widget's live value so the handler sees it. For an entry, the
+    // committed text; for a toggle, the on/off state; for a button, its label.
+    if (node.getTag() == "entry" || node.getTag() == "input") {
+      String text = uiWidgetGetText(widgetHandle);
+      e.setValue(text);
+      node.setText(text);              // keep the DOM in sync with the widget
+    } else if (node.getTag() == "toggle" || node.getTag() == "switch") {
+      int on = uiWidgetGetToggle(widgetHandle);
+      e.setToggle(on);
+      e.setValue(on == 1 ? "on" : "off");
+    } else {
+      e.setValue(node.text());
+    }
+
+    dom.dispatchEvent(e);
+    raisedLast = raisedLast + 1;
+  }
+
+  // Also feed a synthetic input event (per-keystroke) for an entry, used by a
+  // host that wants live INPUT handlers in addition to the committed SUBMIT.
+  int raiseInput(String nodeId, String text) {
+    SLGuiNode node = dom.getElementById(nodeId);
+    if (node == null) { return 0; }
+    node.setText(text);
+    return dom.fire(SLGuiEventType.INPUT, nodeId, text);
+  }
+
+  int raisedCount() { return raisedLast; }
+  int frame() { return tick; }
+}
