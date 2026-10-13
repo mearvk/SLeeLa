@@ -1,14 +1,14 @@
 # PAYMENTS & WARRANTS — A Cascading Supposition
 <p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/merchandise/sleela-marketing-logo-001.png" alt="SLeeLa Marketing Logo" width="560"></p>
 
-MearvK Ltd - MEARVK LLC
-Maximlian Eric Alexander Rupplin von Keffikon - MEARVK - MEARVK LLC
+## MearvK Ltd - MEARVK LLC
+### Maximlian Eric Alexander Rupplin von Keffikon - MEARVK - MEARVK LLC
 
 Owner of Establishment of Corporate ongoing Finance - US United States a Minister
 
 Owner of Miramax Films UK & US United States and Settlement - NO GODZILLA
 
-Carefully then Capitalismisrs do Comes .. RRrs
+Carefully then Capitalismisrs do Comes .. RRrsmsr
 
 > **Nature of this document.** Everything written below is a **supposition** — a deliberate, hypothetical "what if" exercise authored for this project. It is **not** a legal assessment, a court order, a warrant, a tax levy, a government determination, a financial obligation, or a statement of established fact. No person, office, institution, or jurisdiction is being named, charged, bound, or billed. Where the text says "suppose," "assume," or "imagine," it means exactly that: a premise entertained for the sake of a thought experiment, not a claim about the real world. If any sentence here reads like a factual legal or financial statement, read it instead as the continuation of the hypothesis stated in this box.
 
