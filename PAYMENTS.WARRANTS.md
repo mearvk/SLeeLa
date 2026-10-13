@@ -16,6 +16,7 @@
   - [A causal proposition (which must hold in all cases)](#a-causal-proposition-which-must-hold-in-all-cases)
 - [VIII. A named scene, offered strictly as fiction](#viii-a-named-scene-offered-strictly-as-fiction)
 - [IX. Closing supposition](#ix-closing-supposition)
+  - [The non-exemption principle](#the-non-exemption-principle)
 
 ## I. The cascade, stated plainly
 
@@ -140,5 +141,18 @@ Suppose, finally, that within this invented scene the characters are said to hav
 So let the whole document stand as one connected hypothesis, offered openly and labeled plainly. Suppose a cascade of Legal, Search, Fine, and Hold. Suppose a cusp approached but understood only as a mirror. Suppose an impossible figure that turns out to be a measure of obligation owed to people, not money taken from them. Suppose a United States clause that resolves to nothing more than a people more powerful and more kind. And suppose a road whose three stops — total truth, luxury, and travel — describe not conquest but its opposite: a world so fair, so transparent, and so free that control has nothing left to do.
 
 Suppose, too, the later movements of the fable: a figure of Greater Heights whose reach is measured only by how much it lightens for others; a set of fall causes that name, in advance, every way the cascade could break; a short list of plain relevances the chain must honor before it rises; a causal proposition kept entirely in *mays* and *ifs*; and a named scene that stays strictly fiction, binding no one. Each is held the same way as the rest — supposed, inspected, and discardable the moment it fails a test of fairness.
+
+### The non-exemption principle
+
+Suppose, as the fable's final load-bearing supposition, a single principle stated without ornament: **no instrument, office, or category exempts a person.** We enumerate the instruments the exercise names — gathering them deliberately, because the point is their *collective impotence* against the principle, not the power of any one of them:
+
+- **Instruments and acts:** Murder; Warranties; Comes; Specials; Hands; Cause; Tools.
+- **Ledgers and lists:** Inventories; Seccials; Lists; Mandatories; Albeits; Times.
+- **Framings and notices:** Concerns; Abouts; Listings; Offerings.
+- **Offices and registries:** Special Agents; Directories; CIA.
+
+Suppose that not one of these — singly or in concert, as instrument, as ledger, as framing, or as office — **may excuse a person from trial, from certainties, or from life's lessons as cause,** nor may any of them pretend to *inventory* those things away. We mean this precisely: a trial is not escaped by naming a tool; a certainty is not dissolved by filing it under a list; a lesson is not voided by assigning it an office. The ordinary cause remains ordinary, and the fable keeps it so — because, like life itself, it is **the ordinary cause** that governs, not the special guess made about it. A guess, however elaborate, is still only a game played against a certainty; the certainty does not yield to the game.
+
+Suppose, finally, the sentence the exercise reserves for last — and read it exactly: **to read _is_ to cause.** The act of reading is not passive reception; it is itself a causing, and so it carries the obligation that causing carries. In this fable that obligation is simple and strict: **to name names is to name them as Specials** — to grant each named thing the full weight of a special case, examined on its own merits, never collapsed into a category and never excused by one. Reading closely, in other words, is the opposite of exemption. It is the discipline that holds every named thing to account precisely *because* it was named.
 
 **Final reminder.** None of the above is a legal finding, a warrant, a payment, an assessment, or an obligation. It is a supposition — a story this project chose to tell about what power might look like if it were only ever used to make people stronger and kinder. Read it as the fable it is, and nothing more.
