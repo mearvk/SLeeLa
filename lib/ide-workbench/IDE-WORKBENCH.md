@@ -100,6 +100,13 @@ through `SLGuiEventBus`, and the `SLGuiMount` reconciler + `SLGuiHostAdapter`
 project the DOM onto widgets and feed real activations back — no ad-hoc
 `.clicked()` polling.
 
+The **content controls are DOM-driven too.** The tree and notebook have proxy
+DOM nodes (`ide-tree`, `ide-notebook`); a tree row selection raises a
+`CHANGE("ide-tree", <nodeId>)` event and a tab switch raises a
+`TOGGLE("ide-notebook", <index>)` event onto the same bus, handled by
+`onTreeActivate` / `onTabChange`. So every interaction in the shell — commands
+*and* content — travels one dispatch path.
+
 The GUI shell is built from these **competent SleelaUI widgets**, all written in
 SLeeLa over the toolkit primitives (no new C ABI):
 

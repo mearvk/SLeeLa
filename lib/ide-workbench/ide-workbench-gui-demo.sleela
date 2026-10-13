@@ -49,6 +49,12 @@ class IdeWorkbenchGuiDemo {
                           "symbol 'Greeting' is never referenced");
     ide.finishCompile();
 
+    // Content-control interactions now flow through the DOM event bus too: a
+    // tab switch raises TOGGLE("ide-notebook", idx) and a tree selection raises
+    // CHANGE("ide-tree", id), handled by onTabChange / onTreeActivate.
+    ide.onTabChange("0");                 // focus the first editor tab
+    String opened = ide.onTreeActivate("f2");  // selecting a leaf names a file
+
     // Hand control to the SleelaUI event loop (polls the command buttons).
     int code = ide.runLoop();
     ide.shutdown();

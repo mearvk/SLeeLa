@@ -29,6 +29,12 @@ class SLIdeWorkbenchUI {
   SLGuiHandler saveH;
   SLGuiHandler closeH;
 
+  // Content-control handlers: tree selection (CHANGE) and tab switch (TOGGLE),
+  // routed through the SAME event bus so the content controls are DOM-driven
+  // too, not polled ad hoc.
+  SLGuiHandler treeSelectH;
+  SLGuiHandler tabChangeH;
+
   // Rich content controls mounted into DOM container handles.
   SLTreeView tree;
   SLNotebook notebook;
@@ -44,6 +50,7 @@ class SLIdeWorkbenchUI {
   SLTextView[] editors;
   int editorCount;
 
+  String lastTreeSelection;     // debounce: only fire CHANGE when it moves
   boolean ready;
 
   // Build and show the IDE. Returns true when the toolkit came up.
@@ -62,6 +69,7 @@ class SLIdeWorkbenchUI {
 
     editors = new SLTextView[SLIdeTabGroup.SLGUI_MAX_DOCUMENTS * 8];
     editorCount = 0;
+    lastTreeSelection = "";
 
     app.refresh();        // mount the DOM chrome onto real widgets
     ready = true;
@@ -108,6 +116,18 @@ class SLIdeWorkbenchUI {
     SLGuiNode rightN = dom.appendElement("ide-body", "frame", "ide-right");
 
     SLGuiNode statusN = dom.appendElement("root", "status", "ide-status");
+
+    // DOM proxy nodes for the two content controls, so their interactions
+    // (a tree selection, a tab switch) dispatch through the event bus like the
+    // commands do. These are logical nodes: the specialised SleelaUI widgets
+    // live inside the ide-left / ide-right handles, but their events route here.
+    dom.appendElement("ide-left", "treeview", "ide-tree");
+    dom.appendElement("ide-right", "notebook", "ide-notebook");
+
+    // CHANGE on the tree carries the selected node id; TOGGLE on the notebook
+    // carries the newly-active tab index (as a string).
+    treeSelectH = dom.addEventListener("ide-tree", "change", "onTreeActivate");
+    tabChangeH = dom.addEventListener("ide-notebook", "toggle", "onTabChange");
 
     // Mount the DOM so the container handles exist, then attach specialised
     // SleelaUI widgets into those handles.
@@ -177,15 +197,50 @@ class SLIdeWorkbenchUI {
   // are raised by SLGuiHostAdapter when the real buttons fire, so there is no
   // direct widget polling here. Returns false when Close emptied the tabs.
   boolean pollCommands() {
-    if (openH != null && openH.take())       { onOpenSelected(); }
-    if (compileH != null && compileH.take()) { onCompile(); }
-    if (saveH != null && saveH.take())       { onSave(); }
-    if (closeH != null && closeH.take())     { return onClose(); }
-    int clickedTab = notebook.takeClickedTab();
-    if (clickedTab >= 0) { tabs.focus(clickedTab); refreshStatus(); }
+    // Content-control interactions are translated into DOM events first, so
+    // their handlers run through the same bus as the commands.
+    routeContentEvents();
+
+    if (openH != null && openH.take())           { onOpenSelected(); }
+    if (compileH != null && compileH.take())     { onCompile(); }
+    if (saveH != null && saveH.take())           { onSave(); }
+    if (treeSelectH != null && treeSelectH.take()) { onTreeActivate(treeSelectH.value()); }
+    if (tabChangeH != null && tabChangeH.take())   { onTabChange(tabChangeH.value()); }
+    if (closeH != null && closeH.take())         { return onClose(); }
     return true;
   }
 
+  // Translate raw content-control state changes into DOM events on the bus.
+  // A tab click raises TOGGLE("ide-notebook", <index>); a tree row selection
+  // raises CHANGE("ide-tree", <nodeId>). The host adapter already turns command
+  // button presses into events; these two controls are specialised widgets, so
+  // the shell bridges their state into the same dispatch path here.
+  void routeContentEvents() {
+    int clickedTab = notebook.takeClickedTab();
+    if (clickedTab >= 0) {
+      dom.fire(SLGuiEventType.TOGGLE, "ide-notebook", "" + clickedTab);
+    }
+    String sel = tree.selectedId();
+    if (sel != null && sel != lastTreeSelection) {
+      lastTreeSelection = sel;
+      dom.fire(SLGuiEventType.CHANGE, "ide-tree", sel);
+    }
+  }
+
+  // Handler for a tree CHANGE: the selected id is the DOM event's value.
+  // Returns the id of a selected leaf (a file the host should open), else null.
+  String onTreeActivate(String nodeId) {
+    if (!tree.selectionIsLeaf()) { return null; }
+    return nodeId;   // host reads this id, loads the file, calls openFile(...)
+  }
+
+  // Handler for a notebook TOGGLE: focus the newly-active tab.
+  void onTabChange(String indexStr) {
+    int idx = parseInt(indexStr);
+    if (idx >= 0) { tabs.focus(idx); notebook.select(idx); refreshStatus(); }
+  }
+
+  // Backward-compatible entry: the Open command selects whatever the tree has.
   String onOpenSelected() {
     if (!tree.selectionIsLeaf()) { return null; }
     return tree.selectedId();   // host reads this id, loads the file, calls openFile
@@ -295,6 +350,26 @@ class SLIdeWorkbenchUI {
   }
 
   String currentRevision() { return "saved"; }
+
+  // Parse a non-negative integer from a decimal string ("" / null -> -1).
+  int parseInt(String s) {
+    if (s == null || s == "") { return -1; }
+    int value = 0;
+    for (int i = 0; i < s.length(); i = i + 1) {
+      int d = digit(s.substring(i, i + 1));
+      if (d < 0) { return -1; }
+      value = value * 10 + d;
+    }
+    return value;
+  }
+  int digit(String ch) {
+    if (ch == "0") { return 0; } if (ch == "1") { return 1; }
+    if (ch == "2") { return 2; } if (ch == "3") { return 3; }
+    if (ch == "4") { return 4; } if (ch == "5") { return 5; }
+    if (ch == "6") { return 6; } if (ch == "7") { return 7; }
+    if (ch == "8") { return 8; } if (ch == "9") { return 9; }
+    return -1;
+  }
 
   void shutdown() { if (app != null) { app.shutdown(); } }
 }
