@@ -33,6 +33,21 @@ class SLCadCommand {
   String priorValue;                    // RELABEL prior text
   String priorLayer;                    // RESTYLE prior layer
 
+  // Audit metadata: when the edit was applied (host-supplied) and its order in
+  // the session. seq is 1-based; stampedAt is a Julian date (0 = unstamped) and
+  // stampLabel its readable form. Stamped by the Creator via stamp().
+  int seq;
+  double stampedAt;
+  String stampLabel;
+
+  // Attach the audit stamp (sequence number + host time) to this command.
+  void stamp(int sequence, double whenJulian, String whenText) {
+    seq = sequence; stampedAt = whenJulian; stampLabel = whenText;
+  }
+  int getSeq() { return seq; }
+  double getStampedAt() { return stampedAt; }
+  String getStampLabel() { return stampLabel; }
+
   void create(int id)                    { verb = CREATE;  entityId = id; }
   void move(int id, double ddx, double ddy) { verb = MOVE; entityId = id; dx = ddx; dy = ddy; }
   void reshape(int id, double ox1, double oy1, double ox2, double oy2) {
@@ -65,5 +80,13 @@ class SLCadCommand {
     if (verb == RESTYLE) { return "restyle #" + entityId; }
     if (verb == DELETE)  { return "delete #" + entityId; }
     return "noop";
+  }
+
+  // The same description prefixed with the audit stamp, for a timeline view:
+  //   "#3 @ 2026-10-13T18:00Z  move #7"
+  String describeAt() {
+    String s = "#" + seq;
+    if (stampLabel != "") { s = s + " @ " + stampLabel; }
+    return s + "  " + describe();
   }
 }

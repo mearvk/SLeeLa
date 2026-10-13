@@ -27,16 +27,41 @@ class SLCadCreator {
   SLCadCommand[] history;        // recorded edits (for undo + audit)
   int historyCount;
 
+  // ---- clock (host-supplied) ----------------------------------------------
+  // The runtime has no live wall-clock, so the host feeds time in. `nowJulian`
+  // is the current time as a Julian date (AutoCAD's $TDCREATE/$TDUPDATE unit)
+  // and `nowLabel` a readable form; every edit stamps the document and the
+  // command it records. Left at 0/"" (the default), timestamping is inert and
+  // output is byte-identical to the pre-timestamp Creator.
+  double nowJulian;
+  String nowLabel;
+
+  // Advance the Creator's clock. A host calls this before an edit (or once per
+  // UI frame) so subsequent edits carry the given time.
+  void setClock(double whenJulian, String whenText) {
+    nowJulian = whenJulian;
+    nowLabel = whenText;
+  }
+  double clock() { return nowJulian; }
+  String clockLabel() { return nowLabel; }
+
   // ---- lifecycle ----------------------------------------------------------
 
-  // Start a fresh, empty document.
+  // Start a fresh, empty document (no creation timestamp).
   void newDocument(String title, String units) {
+    newDocumentAt(title, units, 0.0, "");
+  }
+
+  // Start a fresh document stamped with a host-supplied creation time.
+  void newDocumentAt(String title, String units, double createdJulian, String createdText) {
     doc = new SLCadDocument();
-    doc.begin(title, units);
+    doc.beginAt(title, units, createdJulian, createdText);
     selection = -1;
     activeLayer = "walls";
     history = new SLCadCommand[MAX_HISTORY];
     historyCount = 0;
+    nowJulian = createdJulian;
+    nowLabel = createdText;
   }
 
   SLCadDocument document() { return doc; }
@@ -177,6 +202,10 @@ class SLCadCreator {
       for (int i = 0; i < historyCount - 1; i = i + 1) { history[i] = history[i + 1]; }
       historyCount = historyCount - 1;
     }
+    // Stamp the edit with its order + the host clock, and advance the
+    // document's $TDUPDATE so a saved DXF reflects this change's time.
+    c.stamp(historyCount + 1, nowJulian, nowLabel);
+    doc.touch(nowJulian, nowLabel);
     history[historyCount] = c;
     historyCount = historyCount + 1;
   }
@@ -195,6 +224,70 @@ class SLCadCreator {
     SLCadCommand c = new SLCadCommand(); c.restyle(id, prior); return c;
   }
   SLCadCommand makeDelete(int id)  { SLCadCommand c = new SLCadCommand(); c.deleted(id); return c; }
+
+  // ---- inspection ---------------------------------------------------------
+
+  // One-line description of an entity by id ("" if there is no such entity).
+  // The GUI property strip and any audit view read this to show WHAT a given
+  // id is -- its kind, layer, geometry, and label.
+  String inspect(int id) {
+    SLCadEntity e = doc.byId(id);
+    if (e == null) { return ""; }
+    return e.describe();
+  }
+  // The currently selected entity, described (or a hint when nothing is picked).
+  String inspectSelection() {
+    if (selection < 0) { return "(no selection)"; }
+    String s = inspect(selection);
+    return (s == "") ? ("(stale selection #" + selection + ")") : s;
+  }
+
+  // A newline-separated listing of every entity currently in the document
+  // (alive and tombstoned), newest slots last. Suitable for a report pane.
+  String listEntities() {
+    String s = "";
+    for (int i = 0; i < doc.size(); i = i + 1) {
+      SLCadEntity e = doc.at(i);
+      if (e == null) { continue; }
+      s = s + e.describe() + "\n";
+    }
+    return s;
+  }
+
+  // A newline-separated listing of the recorded edit history, each line
+  // carrying its sequence number and timestamp -- the time-ordered audit trail.
+  String listHistory() {
+    String s = "";
+    for (int i = 0; i < historyCount; i = i + 1) {
+      s = s + history[i].describeAt() + "\n";
+    }
+    return s;
+  }
+
+  // A full inspection report: document metadata (title, units, timestamps,
+  // counts) followed by the entity listing and the edit history. This is the
+  // "inspect the AutoCAD content" surface a report pane or a headless run dumps.
+  String report() {
+    String s = "AutoCAD Creator report\n";
+    s = s + "  title    : " + doc.getTitle() + "\n";
+    s = s + "  units    : " + doc.getUnits() + "\n";
+    s = s + "  created  : " + stampText(doc.getCreatedLabel(), doc.getCreatedAt()) + "\n";
+    s = s + "  updated  : " + stampText(doc.getUpdatedLabel(), doc.getUpdatedAt()) + "\n";
+    s = s + "  entities : " + doc.aliveCount() + " live / " + doc.size() + " total\n";
+    s = s + "  edits    : " + historyCount + "\n";
+    s = s + "  selected : " + inspectSelection() + "\n";
+    s = s + "-- entities --\n" + listEntities();
+    s = s + "-- history --\n" + listHistory();
+    return s;
+  }
+
+  // Render a timestamp for the report: prefer the readable label, fall back to
+  // the Julian value, and say "unset" when the host supplied no time.
+  String stampText(String label, double julian) {
+    if (label != "") { return label; }
+    if (julian > 0.0) { return "JD " + julian; }
+    return "unset";
+  }
 
   // ---- plan import (text directives -> geometry) -------------------------
 
@@ -221,7 +314,9 @@ class SLCadCreator {
 
   // A one-line status summary for a GUI status bar.
   String summary() {
-    return doc.aliveCount() + " entities • " + historyCount + " edits • layer "
-         + activeLayer + (selection >= 0 ? (" • sel #" + selection) : "");
+    String s = doc.aliveCount() + " entities • " + historyCount + " edits • layer "
+             + activeLayer + (selection >= 0 ? (" • sel #" + selection) : "");
+    if (doc.getUpdatedLabel() != "") { s = s + " • " + doc.getUpdatedLabel(); }
+    return s;
   }
 }

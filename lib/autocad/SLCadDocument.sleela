@@ -31,15 +31,35 @@ class SLCadDocument {
   int count;                       // number of slots used (alive + tombstoned)
   int nextId;                      // monotonic id source
 
+  // ---- timestamps ---------------------------------------------------------
+  // Time is supplied by the host (there is no live wall-clock in the runtime),
+  // so the engine stays deterministic. A timestamp is carried as a Julian date
+  // (AutoCAD's $TDCREATE/$TDUPDATE unit, group code 40) plus a human-readable
+  // label the inspection/report API prints. createdAt is set once at begin();
+  // updatedAt advances on every mutation via touch().
+  double createdAt;                // Julian date the document was created (0 = unset)
+  double updatedAt;                // Julian date of the most recent edit (0 = unset)
+  String createdLabel;             // readable creation stamp (e.g. "2026-10-13T18:00Z")
+  String updatedLabel;             // readable last-update stamp
+
   SLCadDxf writer;                 // the DXF section wrapper (reused)
 
   // ---- lifecycle ----------------------------------------------------------
 
   void begin(String t, String u) {
+    beginAt(t, u, 0.0, "");
+  }
+
+  // Begin a document and record its creation timestamp (Julian date + label).
+  // A zero/empty timestamp means "unset" and no $TDCREATE/$TDUPDATE is emitted,
+  // so existing callers of begin() are byte-compatible with the old output.
+  void beginAt(String t, String u, double createdJulian, String createdText) {
     title = t; units = u;
     curX = 0.0; curY = 0.0;
     items = new SLCadEntity[MAX_ENTITIES];
     count = 0; nextId = 1;
+    createdAt = createdJulian; updatedAt = createdJulian;
+    createdLabel = createdText; updatedLabel = createdText;
     writer = new SLCadDxf();
   }
 
@@ -48,6 +68,22 @@ class SLCadDocument {
   void setTitle(String t) { title = t; }
   void setUnits(String u) { units = u; }
   void setAt(double x, double y) { curX = x; curY = y; }
+
+  // ---- timestamp access ---------------------------------------------------
+
+  double getCreatedAt() { return createdAt; }
+  double getUpdatedAt() { return updatedAt; }
+  String getCreatedLabel() { return createdLabel; }
+  String getUpdatedLabel() { return updatedLabel; }
+
+  // Record that the document changed at the given host-supplied time. The
+  // Creator calls this after each create/alter/delete so $TDUPDATE and the
+  // readable label track the last edit. Called with (0, "") it is a no-op,
+  // which keeps timestamp-unaware callers unchanged.
+  void touch(double whenJulian, String whenText) {
+    if (whenJulian > 0.0) { updatedAt = whenJulian; }
+    if (whenText != "") { updatedLabel = whenText; }
+  }
 
   // ---- creation (returns the new entity id, or -1 if the store is full) ---
 
@@ -264,6 +300,7 @@ class SLCadDocument {
       else if (e.getLayer() == "dims") { dims = dims + rec; }
       else { notes = notes + rec; }
     }
-    return writer.document(minX(), minY(), maxX(), maxY(), walls, dims, notes);
+    return writer.document(minX(), minY(), maxX(), maxY(),
+                           createdAt, updatedAt, walls, dims, notes);
   }
 }
