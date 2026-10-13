@@ -93,6 +93,25 @@ class SLCPUCatalog {
     if (fam == "sparc") { SLSparcCPU c = new SLSparcCPU(); c.configure(); return c; }
     if (fam == "vax")   { SLVAXCPU c = new SLVAXCPU();     c.configure(); return c; }
     if (fam == "superh"){ SLSuperHCPU c = new SLSuperHCPU(); c.configure(); return c; }
+    // --- prominent modern/brand CPUs (added folders) ---
+    if (fam == "intel-core")  { SLIntelCoreCPU c = new SLIntelCoreCPU();   c.configure(); return c; }
+    if (fam == "intel-xeon")  { SLIntelXeonCPU c = new SLIntelXeonCPU();   c.configure(); return c; }
+    if (fam == "intel-8086")  { SLIntel8086CPU c = new SLIntel8086CPU();   c.configure(); return c; }
+    if (fam == "amd-ryzen")   { SLAMDRyzenCPU c = new SLAMDRyzenCPU();     c.configure(); return c; }
+    if (fam == "amd-epyc")    { SLAMDEPYCCPU c = new SLAMDEPYCCPU();       c.configure(); return c; }
+    if (fam == "amd-athlon")  { SLAMDAthlonCPU c = new SLAMDAthlonCPU();   c.configure(); return c; }
+    if (fam == "apple-m1")    { SLAppleM1CPU c = new SLAppleM1CPU();       c.configure(); return c; }
+    if (fam == "apple-m4")    { SLAppleM4CPU c = new SLAppleM4CPU();       c.configure(); return c; }
+    if (fam == "snapdragon")  { SLSnapdragonCPU c = new SLSnapdragonCPU(); c.configure(); return c; }
+    if (fam == "neoverse")    { SLArmNeoverseCPU c = new SLArmNeoverseCPU(); c.configure(); return c; }
+    if (fam == "grace")       { SLNvidiaGraceCPU c = new SLNvidiaGraceCPU(); c.configure(); return c; }
+    if (fam == "ampere")      { SLAmpereAltraCPU c = new SLAmpereAltraCPU(); c.configure(); return c; }
+    if (fam == "power9")      { SLIBMPower9CPU c = new SLIBMPower9CPU();   c.configure(); return c; }
+    if (fam == "power10")     { SLIBMPower10CPU c = new SLIBMPower10CPU(); c.configure(); return c; }
+    if (fam == "ultrasparc")  { SLSunUltraSPARCCPU c = new SLSunUltraSPARCCPU(); c.configure(); return c; }
+    if (fam == "sifive")      { SLSiFiveU74CPU c = new SLSiFiveU74CPU();   c.configure(); return c; }
+    if (fam == "6800")        { SL6800CPU c = new SL6800CPU();            c.configure(); return c; }
+    if (fam == "65c816")      { SL65C816CPU c = new SL65C816CPU();        c.configure(); return c; }
     return null;
   }
 
@@ -112,5 +131,24 @@ class SLCPUCatalog {
     add("sparc", "SPARC",               "sparc",  143, 32);
     add("vax",   "DEC VAX",             "vax",    5,   32);
     add("sh4",   "SuperH SH-4",         "superh", 200, 32);
+    // --- prominent modern/brand CPUs ---
+    add("8086",      "Intel 8086",            "intel-8086", 5,    16);
+    add("intel-core","Intel Core (x86-64)",   "intel-core", 3600, 64);
+    add("xeon",      "Intel Xeon (x86-64)",   "intel-xeon", 3800, 64);
+    add("athlon",    "AMD Athlon (K7)",       "amd-athlon", 1000, 32);
+    add("ryzen",     "AMD Ryzen (Zen)",       "amd-ryzen",  4500, 64);
+    add("epyc",      "AMD EPYC (Zen)",        "amd-epyc",   3700, 64);
+    add("m1",        "Apple M1",              "apple-m1",   3200, 64);
+    add("m4",        "Apple M4",              "apple-m4",   4400, 64);
+    add("snapdragon","Qualcomm Snapdragon",   "snapdragon", 3300, 64);
+    add("neoverse",  "ARM Neoverse",          "neoverse",   3000, 64);
+    add("grace",     "NVIDIA Grace",          "grace",      3400, 64);
+    add("ampere",    "Ampere Altra",          "ampere",     3000, 64);
+    add("power9",    "IBM POWER9",            "power9",     3800, 64);
+    add("power10",   "IBM POWER10",           "power10",    4000, 64);
+    add("ultrasparc","Sun UltraSPARC",        "ultrasparc", 1200, 64);
+    add("sifive",    "SiFive U74 (RV64GC)",   "sifive",     1500, 64);
+    add("6800",      "Motorola 6800",         "6800",       1,     8);
+    add("65c816",    "WDC 65C816",            "65c816",     4,    16);
   }
 }

@@ -70,6 +70,29 @@ make -C lib/cpu world     # -> out/world.log, prints the scoreboards + SELF-CHEC
 `make world` also runs `verify`, which fails the build unless the simulation's
 `SELF-CHECK: PASS` line is present.
 
+## The roster (brands & families)
+
+Every architecture folder under `lib/cpu/` ships a runnable `SL<ARCH>CPU`
+(extends `SLCPURuntime`) and is eligible for the catalog. The roster spans:
+
+- **Intel** — 8080, 8086, 80286, 80386, 80486, Pentium, Celeron, Core (x86-64), Xeon
+- **AMD** — Athlon, Opteron, Ryzen (Zen), EPYC
+- **Apple Silicon** — A-series, M1, M2, M3, M4 (ARM64)
+- **Qualcomm / ARM / embedded** — Snapdragon, ARM Neoverse, Cortex-A/-M/-R, MediaTek Dimensity, Rockchip, NVIDIA Grace, Ampere Altra, Xtensa
+- **IBM / POWER** — 801, ROMP, POWER1, POWER9, POWER10, PowerPC, System/360·370·390, z/Architecture
+- **SPARC** — SPARC V8, Sun UltraSPARC
+- **RISC-V** — RV32IM, SiFive U74 (RV64GC)
+- **DEC** — PDP-1…15 line, VAX, Alpha
+- **Motorola** — 6800, 6809, 68000, 68020·30·40·60, 88000, ColdFire, DSP56000
+- **Classic micros** — MOS 6502, Zilog Z80 / Z8000 / eZ80, WDC 65C816, Intel 4004
+- **Consoles** — Atari, Nintendo (NES…Switch 2), Sega (SG-1000…Dreamcast), Sony (PS1…PS5), Microsoft (Xbox…Series X)
+- plus workstation/DSP/embedded families (PA-RISC, i860/i960, Itanium, Clipper, NS32000, OpenRISC, SuperH, TMS320, SHARC, Transputer, dsPIC, …)
+
+New brands/models are added by extending the data-driven generator
+[`tools/generate-cpu-models.py`](../../tools/generate-cpu-models.py) (one proven
+pattern applied with accurate per-arch metadata) and registering them in
+[`SLCPUCatalog`](SLCPUCatalog.sleela) so they are selectable by name.
+
 ## Fidelity
 
 These are **behavioral models for net-result accounting**, not cycle-accurate
