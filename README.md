@@ -81,6 +81,38 @@ SLeeLa's alphabet documentation and native character runtime are maintained in a
 
 The experimental UTF-4088 catalogue and its SLeeLa lookup adapter are documented in utf-4088/SLeeLa-ALPHABET-INTEGRATION.md. UTF-4088 IDs are a separate namespace, not Unicode scalar values. Compiler and SLVM binding work is explicitly tracked separately from these native foundations.
 
+## AutoCAD Creator™
+
+The [AutoCAD Creator™](autocad/creator/README.md) is an interactive 2D CAD
+application written entirely in SLeeLa. Where the sibling AutoCAD Renderer turns
+a plan into a drawing in one shot, the Creator lets you **create and alter** a 2D
+AutoCAD document live — add walls, rooms, dimensions and notes, then move,
+relabel, re-layer, delete, and undo what you placed — and **save** the result as a
+real AutoCAD DXF drawing (R12 text, opens in AutoCAD / LibreCAD).
+
+Its graphical interface is built on **SleelaUI™**, SLeeLa's own cross-platform UI
+toolkit (under [`lib/user-interface`](lib/user-interface)) — not JavaFX — raising
+a real native window on X11 / Cocoa / Win32. The design follows one rule,
+**"SleelaUI presents; SLeeLa decides"**: the GUI never computes geometry or writes
+DXF. Every tool issues a create / alter / delete / undo / save intent to the
+authoritative [`SLCadCreator`](lib/autocad/SLCadCreator.sleela), which owns the
+editable document and a reversible command history, while the canvas only previews
+the geometry the Creator holds.
+
+The reusable editing engine lives in [`lib/autocad`](lib/autocad) —
+[`SLCadEntity`](lib/autocad/SLCadEntity.sleela),
+[`SLCadDocument`](lib/autocad/SLCadDocument.sleela),
+[`SLCadCommand`](lib/autocad/SLCadCommand.sleela), and
+[`SLCadCreator`](lib/autocad/SLCadCreator.sleela) — and runs end to end headless.
+The GUI shell and demo live under [`autocad/creator`](autocad/creator):
+
+```sh
+make creator          # from autocad/: run the Creator demo -> out/altered.dxf
+```
+
+On a display this opens the live editing window; on a headless host it builds the
+drawing in memory, prints a report plus the DXF, and exits cleanly.
+
 
 ## UTF-4088 input-map ordering
 
