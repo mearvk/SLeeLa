@@ -3,6 +3,20 @@
 
 > **Nature of this document.** Everything written below is a **supposition** — a deliberate, hypothetical "what if" exercise authored for this project. It is **not** a legal assessment, a court order, a warrant, a tax levy, a government determination, a financial obligation, or a statement of established fact. No person, office, institution, or jurisdiction is being named, charged, bound, or billed. Where the text says "suppose," "assume," or "imagine," it means exactly that: a premise entertained for the sake of a thought experiment, not a claim about the real world. If any sentence here reads like a factual legal or financial statement, read it instead as the continuation of the hypothesis stated in this box.
 
+## Contents
+
+- [I. The cascade, stated plainly](#i-the-cascade-stated-plainly)
+- [II. The second supposition: "on the cusp"](#ii-the-second-supposition-on-the-cusp)
+- [III. The supposed figure: $600,000,000 per second per Month](#iii-the-supposed-figure-600000000-per-second-per-month)
+- [IV. The United States clause: "special comes"](#iv-the-united-states-clause-special-comes)
+- [V. The road: total truth, luxury, and travel](#v-the-road-total-truth-luxury-and-travel)
+- [VI. Greater Heights, Greater Counts: the suspicion of the solution-maker](#vi-greater-heights-greater-counts-the-suspicion-of-the-solution-maker)
+- [VII. Fall causes](#vii-fall-causes)
+  - [Relevances, in order of county importances](#relevances-in-order-of-county-importances)
+  - [A causal proposition (which must hold in all cases)](#a-causal-proposition-which-must-hold-in-all-cases)
+- [VIII. A named scene, offered strictly as fiction](#viii-a-named-scene-offered-strictly-as-fiction)
+- [IX. Closing supposition](#ix-closing-supposition)
+
 ## I. The cascade, stated plainly
 
 This document supposes a single, ordered cascade of four stages. The stages are meant to be read in sequence, each one supposing the one before it has completed. Named in order, the cascade is: **Legal → Search → Fine → Hold.** The whole point of writing it down is to make the supposition visible, so that no reader mistakes a hypothetical chain of reasoning for a real one. We are drawing the shape of an idea, not asserting that the idea has occurred.
@@ -124,5 +138,7 @@ Suppose, finally, that within this invented scene the characters are said to hav
 ## IX. Closing supposition
 
 So let the whole document stand as one connected hypothesis, offered openly and labeled plainly. Suppose a cascade of Legal, Search, Fine, and Hold. Suppose a cusp approached but understood only as a mirror. Suppose an impossible figure that turns out to be a measure of obligation owed to people, not money taken from them. Suppose a United States clause that resolves to nothing more than a people more powerful and more kind. And suppose a road whose three stops — total truth, luxury, and travel — describe not conquest but its opposite: a world so fair, so transparent, and so free that control has nothing left to do.
+
+Suppose, too, the later movements of the fable: a figure of Greater Heights whose reach is measured only by how much it lightens for others; a set of fall causes that name, in advance, every way the cascade could break; a short list of plain relevances the chain must honor before it rises; a causal proposition kept entirely in *mays* and *ifs*; and a named scene that stays strictly fiction, binding no one. Each is held the same way as the rest — supposed, inspected, and discardable the moment it fails a test of fairness.
 
 **Final reminder.** None of the above is a legal finding, a warrant, a payment, an assessment, or an obligation. It is a supposition — a story this project chose to tell about what power might look like if it were only ever used to make people stronger and kinder. Read it as the fable it is, and nothing more.
