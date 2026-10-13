@@ -11843,6 +11843,10 @@
       "sha256": "b96e9ab5455804a25c713af4cecf7ed83d002ebe92216513a59240d89a6166f7"
     },
     {
+      "path": "lib/gui/SLGuiApp.sleela",
+      "sha256": "b6231119ea265c0ac1ac6ddb6925a3736d8e0c47686d9bc1762d8e1520b39f5d"
+    },
+    {
       "path": "lib/gui/SLGuiBackend.sleela",
       "sha256": "1cdfc6f0ca0d3d95cbbe58160cc772ec023fd94913266efbb31be7e93d5375bf"
     },
@@ -11883,8 +11887,16 @@
       "sha256": "dd902778029fa7f89f2850f07e9546b57f477237491a6af5e0bfb8512dd43b66"
     },
     {
+      "path": "lib/gui/SLGuiHostAdapter.sleela",
+      "sha256": "0b1233adf70f988d3c3d4124a8f902f01ee873aff73098c8bf75f11456a9c307"
+    },
+    {
       "path": "lib/gui/SLGuiIntegration.sleela",
       "sha256": "1c57f8f0fdbddf601def695b009e81a4038f9497c5c060c9bf3208adf945fb2a"
+    },
+    {
+      "path": "lib/gui/SLGuiMount.sleela",
+      "sha256": "623a29d7305901a5e33a3f82f6ccb8c9598a6eb8e3c657d91fac1cf85f1852dd"
     },
     {
       "path": "lib/gui/SLGuiNode.sleela",
@@ -11903,12 +11915,20 @@
       "sha256": "0b5f88222185bd91a6331296d5ea0386f980bbc71533b3872b3bdca595bf64fc"
     },
     {
+      "path": "lib/gui/SLGuiWidgetFactory.sleela",
+      "sha256": "38a6e52a735f2485379ec40df71f993cae16743f195970e62740f953b2cc3374"
+    },
+    {
       "path": "lib/gui/SLGuiWindow.sleela",
       "sha256": "8d0f2dade3df589951c6d23a851b4cef53884eb2b88699c80890007927667c10"
     },
     {
       "path": "lib/gui/SLPackage.sleela",
       "sha256": "d4cdef9faf3bc02737c1cf49d30c1369d36acd2ecda8bc85e2f7fad54612d3d3"
+    },
+    {
+      "path": "lib/gui/gui-app-demo.sleela",
+      "sha256": "d3c0eb92d319f2a3dc18de96544163a64b2f91e3b2e144a1bdd97ef8576af50b"
     },
     {
       "path": "lib/gui/gui-demo.sleela",
