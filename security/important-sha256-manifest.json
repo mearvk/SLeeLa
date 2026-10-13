@@ -815,6 +815,18 @@
       "sha256": "5cce2939d9d1101e2a61094c46667fa07f17b36004d84a2d005c181308b6692f"
     },
     {
+      "path": "autocad/creator/cad/CadCreatorApp.sleela",
+      "sha256": "56ea9c3e2d9a8d65fa8f973d5d2213372f7a2fc97fc01c58e24d47d067e62612"
+    },
+    {
+      "path": "autocad/creator/cad/SLCadCanvas.sleela",
+      "sha256": "e9aff2273f9a60d1dcb27f1fadd45c9e451251b4c5bb9a99c62dfcc3b70e9c41"
+    },
+    {
+      "path": "autocad/creator/creator.sleela",
+      "sha256": "2af3c94acdc5bc459a17ce29fd9025a8f84b824f1054cf6b94813175c7483ef3"
+    },
+    {
       "path": "bash/CWRU/misc/errlist.c",
       "sha256": "79ca174cd6ea92d417c074287df7ed1ed0ef28a9d1281be3c014151175eb4743"
     },
@@ -7175,8 +7187,24 @@
       "sha256": "5479cec411884a0db2b569f69c8f1c218c10a4138504f5b05265d9c1f89bb2d4"
     },
     {
+      "path": "lib/autocad/SLCadCommand.sleela",
+      "sha256": "3fc65806415efa01bf08fa11df064c92f14728cb534cdcf88e81234b59bb6f62"
+    },
+    {
+      "path": "lib/autocad/SLCadCreator.sleela",
+      "sha256": "ebd2578785b13b7412c44e0b2b5a93d930bf8ca58a2e4f1687ca69c986d81068"
+    },
+    {
+      "path": "lib/autocad/SLCadDocument.sleela",
+      "sha256": "e72e88fbb9459592a81af13400278c3daaf21e6fbf142e2fc2f5262b5f4e1400"
+    },
+    {
       "path": "lib/autocad/SLCadDxf.sleela",
       "sha256": "63bd91160be4c5def4b279057296a43136db6be95e02742b9de6c6115c560c3c"
+    },
+    {
+      "path": "lib/autocad/SLCadEntity.sleela",
+      "sha256": "e5eed7cad02276de3346b98bd0e9590393b2d9bd9eb3cd834c26c9f75a2e3cf6"
     },
     {
       "path": "lib/autocad/SLCadModel.sleela",
@@ -12080,7 +12108,7 @@
     },
     {
       "path": "lib/ide-workbench/SLIdeWorkbenchUI.sleela",
-      "sha256": "6cbd54c06476a37f737121c306b1a029dfaf271dad21d75728089a2cfa0414dd"
+      "sha256": "764a91cb605a72e632c76d64419a9fb8e85281acd5e917e17d4f619d67504d1e"
     },
     {
       "path": "lib/ide-workbench/SLPackage.sleela",
@@ -12092,7 +12120,7 @@
     },
     {
       "path": "lib/ide-workbench/ide-workbench-gui-demo.sleela",
-      "sha256": "48795d69cb15ab3e2f9dae7342f3d30518357dbda0d22033617e15890fa1f111"
+      "sha256": "1179f802580625bda49f9e6d763b23b7d722202eb97055a773b2afd0beee1def"
     },
     {
       "path": "lib/inference-model/SLPackage.sleela",
@@ -50927,6 +50955,54 @@
       "sha256": "3f3689b38c8ad4691dda7f854ea74f3fcc4be4b8d2a3dbfbbd0e810d1ab551be"
     },
     {
+      "path": "lib/user-interface/SLGuiApp.sleela",
+      "sha256": "4cb5fc7a50833aa286e9c0447ded8ed4b45e248a6a3618cd526abefc597c4ed7"
+    },
+    {
+      "path": "lib/user-interface/SLGuiDom.sleela",
+      "sha256": "3821d96bc92431c959b560dafc940c9af1cccc41cc425b14236075b2d3bf7738"
+    },
+    {
+      "path": "lib/user-interface/SLGuiEvent.sleela",
+      "sha256": "09b86a63b7fc0f7a1f0504d30ff85c39cc6182cb99a6f9721ae0583f1be5b68a"
+    },
+    {
+      "path": "lib/user-interface/SLGuiEventBus.sleela",
+      "sha256": "c630e35807e3f5e29031ffab69d0f366cc01dd6da02b69b3c09b0acaa9899951"
+    },
+    {
+      "path": "lib/user-interface/SLGuiEventType.sleela",
+      "sha256": "ba90fc68c7211713bd2c3b4df5b32d283127e5863ba05f99bd5895a2fabb9d66"
+    },
+    {
+      "path": "lib/user-interface/SLGuiHandler.sleela",
+      "sha256": "2fb2a35e5b4ded12fe35bf19ff91706886b2320d949959c53991e9ad9267fb49"
+    },
+    {
+      "path": "lib/user-interface/SLGuiHostAdapter.sleela",
+      "sha256": "0a0072bc631a2513d7a3bba0862ced04b88f511923011e625a01638b62c6f5f9"
+    },
+    {
+      "path": "lib/user-interface/SLGuiMount.sleela",
+      "sha256": "c5170cbafb4a1b0196c7d1c9e214563ceecf1e73679adca2a613de21c749988e"
+    },
+    {
+      "path": "lib/user-interface/SLGuiNode.sleela",
+      "sha256": "d749ffb53ba61a238bca3f44cd35752da4f02f55d5099f41a34c8cbabe1f01a2"
+    },
+    {
+      "path": "lib/user-interface/SLGuiScript.sleela",
+      "sha256": "dbc91f2f77006f77662b938242d486d25892e2c15bb2d684d7f68759f1bb64b7"
+    },
+    {
+      "path": "lib/user-interface/SLGuiScriptCommand.sleela",
+      "sha256": "50d6672e1d585f838c4b5a8c90f22373e74441c0d7f7ad3c1df0bd49ad3c85bd"
+    },
+    {
+      "path": "lib/user-interface/SLGuiWidgetFactory.sleela",
+      "sha256": "6b6c2248fbf854796856bbff7e877ff8080e836a854993d925404bb74a25c5c6"
+    },
+    {
       "path": "lib/user-interface/SLHeaderBar.sleela",
       "sha256": "c4ad2369cf9553d03cf9d441c2403a1b7c90ec5a7ce424b47efdf76ff765803e"
     },
@@ -51085,6 +51161,14 @@
     {
       "path": "lib/user-interface/SLWindow.sleela",
       "sha256": "b7ba876632edc957100a62978858b561e37fed5ae766f4f5306c1911c103f02e"
+    },
+    {
+      "path": "lib/user-interface/gui-app-demo.sleela",
+      "sha256": "52de695ac42843c402e42048f873263675c29e1ae091d04d4445aba3437aa839"
+    },
+    {
+      "path": "lib/user-interface/gui-events-demo.sleela",
+      "sha256": "5b2bd942ebc3803f07c57084636cca59fc7c78b39e1ba72f6c9070a4276943b8"
     },
     {
       "path": "lib/video/Video.sleela",
