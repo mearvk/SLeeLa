@@ -90,9 +90,15 @@ the GUI is deferred to a foreign toolkit.
 
 | Layer | Class | Role |
 |---|---|---|
-| **GUI shell** | `SLIdeWorkbenchUI` | Builds the real window: header-bar commands, a split body (tree + editor notebook), a status bar; runs the SleelaUI event loop and polls widget activations. |
+| **GUI shell** | `SLIdeWorkbenchUI` | Built on the `lib/gui` support structure (`SLGuiApp`/`SLGuiDom`): the header + Open/Compile/Save/Close commands are DOM button nodes with `onClick` handlers bound through the event bus, so clicks flow widget → `SLGuiHostAdapter` → `SLGuiEvent` → handler → command. The rich controls (tree, editor notebook, status/loading) mount into the DOM's container handles. `SLGuiApp` runs the loop (pump → poll activations → reconcile). |
 | state model | `SLIdeEditor`, `SLIdeTabGroup`, `SLIdeDiagnosticsPanel`, `SLIdeProjectTree` | The IDE's logic/state (dirty tracking, the 1..14 watch cap, the diagnostics failure rule, language routing). |
 | service contract | `SLIdeWorkbench` | The headless `openFile -> compileActive -> saveActive` loop and the Nordshrift/compiler handoff (toolkit-independent). |
+
+The IDE shell is the **first full consumer of the `lib/gui` dynamic stack**:
+its chrome is an `SLGuiApp` DOM, its commands are `onClick` handlers dispatched
+through `SLGuiEventBus`, and the `SLGuiMount` reconciler + `SLGuiHostAdapter`
+project the DOM onto widgets and feed real activations back — no ad-hoc
+`.clicked()` polling.
 
 The GUI shell is built from these **competent SleelaUI widgets**, all written in
 SLeeLa over the toolkit primitives (no new C ABI):

@@ -2,40 +2,40 @@
  * lib/ide-workbench/SLIdeWorkbenchUI.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLIdeWorkbenchUI — the IDE shell rendered as a REAL
- *   SleelaUI graphical interface, built entirely in SLeeLa. Where SLIdeWorkbench
- *   models the IDE's state/service handoffs, this class constructs the actual
- *   window and widgets from /lib/user-interface: an application + window, a
- *   header bar with Open/Compile/Save/Close buttons, a horizontally split body
- *   with an SLTreeView project explorer on the left and an SLNotebook of
- *   SLTextView code editors on the right, and an SLStatusBar footer carrying the
- *   diagnostics summary. It runs the SleelaUI event loop and polls the widgets
- *   for activations — so the IDE's user interface is pure SLeeLa over SleelaUI,
- *   not deferred to a foreign toolkit.
+ *   SleelaUI graphical interface, built on the /lib/gui support structure. The
+ *   shell's chrome (the window, header bar, and the Open/Compile/Save/Close
+ *   command buttons) is expressed as an SLGuiApp DOM: each command is a DOM
+ *   button node with an onClick handler bound through the event bus, so a real
+ *   click flows widget -> SLGuiHostAdapter -> SLGuiEvent -> handler -> command,
+ *   instead of ad-hoc .clicked() polling. The rich content controls (the
+ *   SLTreeView project explorer, the SLNotebook of SLTextView code editors, and
+ *   the SLLoadingIndicator) are specialised SleelaUI widgets mounted into the
+ *   DOM's body/status container handles. SLGuiApp runs the loop (pump -> poll
+ *   activations -> dispatch -> reconcile); this class only reads the command
+ *   handler latches and acts. The IDE is the first full consumer of the
+ *   event/DOM/support stack.
  *
- * Family: ide-workbench. The GUI is SleelaUI; SLeeLa owns both meaning and
- * presentation here.
+ * Family: ide-workbench. The GUI is SleelaUI driven through the lib/gui DOM;
+ * SLeeLa owns meaning and dispatch.
  */
 #sleela 1.5
 class SLIdeWorkbenchUI {
-  SLUserInterface ui;
-  SLWindow window;
-  SLBox rootColumn;
+  SLGuiApp app;                 // the /lib/gui support structure (app+window+DOM)
+  SLGuiDom dom;
 
-  // Header-bar command buttons (SLIdeCommandRegistry affordances in SleelaUI).
-  SLHeaderBar header;
-  SLButton openBtn;
-  SLButton compileBtn;
-  SLButton saveBtn;
-  SLButton closeBtn;
+  // Command handlers (bound through the DOM event bus; polled for latches).
+  SLGuiHandler openH;
+  SLGuiHandler compileH;
+  SLGuiHandler saveH;
+  SLGuiHandler closeH;
 
-  // Body: tree on the left, editor notebook on the right.
-  SLBox body;
+  // Rich content controls mounted into DOM container handles.
   SLTreeView tree;
   SLNotebook notebook;
   SLStatusBar status;
-  SLLoadingIndicator loading;   // shown in the status bar during compiles
+  SLLoadingIndicator loading;
 
-  // State models (the existing SLeeLa logic layer).
+  // State models (the SLeeLa logic layer).
   SLIdeTabGroup tabs;
   SLIdeProjectTree projectModel;
   SLIdeDiagnosticsPanel diagnostics;
@@ -46,32 +46,14 @@ class SLIdeWorkbenchUI {
 
   boolean ready;
 
-  // Build and show the whole IDE window. Returns true when the toolkit came up.
+  // Build and show the IDE. Returns true when the toolkit came up.
   boolean boot(String appId, String title, int width, int height, String root) {
-    ui = new SLUserInterface();
-    ui.configure(appId);
-    if (!ui.open()) { ready = false; return false; }
+    app = new SLGuiApp();
+    if (!app.boot(appId, title, width, height)) { ready = false; return false; }
+    dom = app.document();
 
-    SLTheme theme = new SLTheme();
-    theme.slickBlack();
-    window = ui.openWindow(title, width, height, theme.handle());
-    SLWidget rootWidget = window.rootWidget();
-
-    rootColumn = new SLBox();
-    rootColumn.vertical(rootWidget, 0);
-    rootColumn.setExpand(true, true);
-
-    buildHeader();
-    buildBody();
-
-    status = new SLStatusBar();
-    status.createIn(rootColumn);
-    status.setText("Ready");
-
-    // A loading indicator lives in the status bar: indeterminate while
-    // Nordshrift resolves/transpiles, then idle. Starts hidden (idle).
-    loading = new SLLoadingIndicator();
-    loading.createIn(status, SLLoadingIndicator.STYLE_SPINNER, 0);
+    buildChromeDom();     // header + command buttons as DOM nodes
+    buildContent();       // tree + notebook + status mounted into DOM handles
 
     // State models.
     tabs = new SLIdeTabGroup();  tabs.init();
@@ -81,63 +63,90 @@ class SLIdeWorkbenchUI {
     editors = new SLTextView[SLIdeTabGroup.SLGUI_MAX_DOCUMENTS * 8];
     editorCount = 0;
 
-    window.show();
+    app.refresh();        // mount the DOM chrome onto real widgets
     ready = true;
     refreshStatus();
     return true;
   }
 
-  void buildHeader() {
-    header = new SLHeaderBar();
-    header.createIn(rootColumn);
-    header.setSizeRequest(0, 40);
+  // The window chrome, expressed as a DOM: a header bar holding a brand label,
+  // a spacer, and the four command buttons. Each command button binds an
+  // onClick handler through the event bus.
+  void buildChromeDom() {
+    SLGuiNode header = dom.appendElement("root", "header", "ide-header");
+    SLGuiNode brand = dom.appendElement("ide-header", "label", "ide-brand");
+    brand.setText("SLeeLa IDE");
+    dom.appendElement("ide-header", "spacer", "ide-gap");
 
-    SLLabel brand = new SLLabel();
-    brand.createIn(header, "SLeeLa IDE");
-    brand.setMargin(0, 0, 0, 12);
-    brand.setAlign(SLWidget.ALIGN_START, SLWidget.ALIGN_CENTER);
+    SLGuiNode open = dom.appendElement("ide-header", "button", "cmd-open");
+    open.setText("Open");
+    SLGuiNode compile = dom.appendElement("ide-header", "button", "cmd-compile");
+    compile.setText("Compile");
+    compile.setStyle("accent", "suggested");
+    SLGuiNode save = dom.appendElement("ide-header", "button", "cmd-save");
+    save.setText("Save");
+    SLGuiNode close = dom.appendElement("ide-header", "button", "cmd-close");
+    close.setText("Close");
 
-    SLSpacer gap = new SLSpacer();
-    gap.createIn(header);
-
-    openBtn = new SLButton();    openBtn.createIn(header, "Open");
-    compileBtn = new SLButton(); compileBtn.createIn(header, "Compile");
-    compileBtn.setSuggested(true);
-    saveBtn = new SLButton();    saveBtn.createIn(header, "Save");
-    closeBtn = new SLButton();   closeBtn.createIn(header, "Close");
+    // Bind the command callbacks (DHTML onClick). The handler latches each fire;
+    // the loop reads the latch and runs the matching command.
+    openH = dom.onClick("cmd-open", "onOpenSelected");
+    compileH = dom.onClick("cmd-compile", "onCompile");
+    saveH = dom.onClick("cmd-save", "onSave");
+    closeH = dom.onClick("cmd-close", "onClose");
   }
 
-  void buildBody() {
-    body = new SLBox();
-    body.horizontal(rootColumn, 0);
-    body.setExpand(true, true);
+  // The body + status, as DOM containers whose mounted widget handles host the
+  // specialised controls (tree / notebook / status bar / loading indicator).
+  void buildContent() {
+    SLGuiNode body = dom.appendElement("root", "hbox", "ide-body");
 
-    // Left: project explorer (tree).
-    SLFrame left = new SLFrame();
-    left.createIn(body, "Project");
-    left.setSizeRequest(260, 0);
+    SLGuiNode leftN = dom.appendElement("ide-body", "frame", "ide-left");
+    leftN.setText("Project");
+    leftN.setStyle("min-width", "260");
+
+    SLGuiNode rightN = dom.appendElement("ide-body", "frame", "ide-right");
+
+    SLGuiNode statusN = dom.appendElement("root", "status", "ide-status");
+
+    // Mount the DOM so the container handles exist, then attach specialised
+    // SleelaUI widgets into those handles.
+    app.refresh();
+
+    SLWidget left = adopt(dom.getElementById("ide-left").widgetHandle());
     tree = new SLTreeView();
     tree.createIn(left, 40);
 
-    // Right: tabbed code editors.
-    SLFrame right = new SLFrame();
-    right.createIn(body, "");
+    SLWidget right = adopt(dom.getElementById("ide-right").widgetHandle());
     right.setExpand(true, true);
     notebook = new SLNotebook();
     notebook.createIn(right);
+
+    SLWidget statusW = adopt(dom.getElementById("ide-status").widgetHandle());
+    status = new SLStatusBar();
+    status.adopt(statusW.handle());
+    status.setText("Ready");
+
+    loading = new SLLoadingIndicator();
+    loading.createIn(statusW, SLLoadingIndicator.STYLE_SPINNER, 0);
+  }
+
+  // Wrap a raw widget handle as an SLWidget so specialised controls can attach.
+  SLWidget adopt(int handle) {
+    SLWidget w = new SLBox();
+    w.adopt(handle);
+    return w;
   }
 
   boolean isReady() { return ready; }
 
   // ---- opening / editing --------------------------------------------------
 
-  // Register a project file in the tree (host enumerates the filesystem).
   void addTreeNode(String id, String label, String parentId, boolean isLeaf) {
     tree.addNode(id, label, parentId, isLeaf);
   }
   void rebuildTree() { tree.rebuild(); }
 
-  // Open a file into a new editor tab with its contents split into lines.
   int openFile(String documentId, String path, String[] lines, int lineCount, String revision) {
     SLIdeEditor model = new SLIdeEditor();
     model.configure(documentId, path, projectModel.languageFor(path));
@@ -162,38 +171,33 @@ class SLIdeWorkbenchUI {
     return editors[i];
   }
 
-  // ---- commands -----------------------------------------------------------
+  // ---- commands (driven by the event-bus handler latches) -----------------
 
-  // Poll the SleelaUI widgets once per loop turn and act on activations.
-  // Returns false when Close was pressed on the last tab (host may quit).
+  // Read the command handler latches once per loop turn and act. The latches
+  // are raised by SLGuiHostAdapter when the real buttons fire, so there is no
+  // direct widget polling here. Returns false when Close emptied the tabs.
   boolean pollCommands() {
-    if (openBtn.clicked())    { onOpenSelected(); }
-    if (compileBtn.clicked()) { onCompile(); }
-    if (saveBtn.clicked())    { onSave(); }
-    if (closeBtn.clicked())   { return onClose(); }
+    if (openH != null && openH.take())       { onOpenSelected(); }
+    if (compileH != null && compileH.take()) { onCompile(); }
+    if (saveH != null && saveH.take())       { onSave(); }
+    if (closeH != null && closeH.take())     { return onClose(); }
     int clickedTab = notebook.takeClickedTab();
     if (clickedTab >= 0) { tabs.focus(clickedTab); refreshStatus(); }
     return true;
   }
 
-  // Open the tree-selected file. The host supplies the real contents; here we
-  // signal selection so a host callback can call openFile(...).
   String onOpenSelected() {
     if (!tree.selectionIsLeaf()) { return null; }
     return tree.selectedId();   // host reads this id, loads the file, calls openFile
   }
 
-  // Compile the active editor: the host runs Nordshrift (.sst) + the SLeeLa
-  // compiler and reports diagnostics back via publishDiagnostic(...).
   void onCompile() {
     SLIdeEditor model = tabs.active();
     if (model == null) { return; }
     diagnostics.clearDocument(model.getId());
-    // Length is unknown until the compiler reports, so start indeterminate.
     loading.beginIndeterminate("Compiling " + fileName(model.getPath()) + " ...");
   }
 
-  // Mark the active editor saved (host persists the buffer first).
   void onSave() {
     SLTextView view = activeEditorView();
     SLIdeEditor model = tabs.active();
@@ -213,7 +217,6 @@ class SLIdeWorkbenchUI {
     return tabs.size() > 0;
   }
 
-  // Reflect an edit from the active text view into the tab's dirty marker.
   void syncDirtyFromEditor() {
     SLTextView view = activeEditorView();
     int i = notebook.activeIndex();
@@ -232,9 +235,6 @@ class SLIdeWorkbenchUI {
     else { loading.fail(diagnostics.statusLine()); }
     refreshStatus();
   }
-
-  // Optional: a host that knows the total work can switch the indicator to a
-  // determinate progress bar and feed it a fraction in [0,1].
   void reportCompileProgress(double fraction) {
     if (loading.currentMode() != SLLoadingIndicator.MODE_DETERMINATE) {
       loading.beginDeterminate("Compiling", fraction);
@@ -245,16 +245,16 @@ class SLIdeWorkbenchUI {
 
   // ---- loop ---------------------------------------------------------------
 
-  // Run the SleelaUI event loop, polling commands each turn, until the window
-  // closes. Returns the process-style exit code.
+  // Run via the SLGuiApp support loop: each turn it pumps the toolkit, lets
+  // SLGuiHostAdapter poll widget activations into the event bus (firing the
+  // bound command handlers), and reconciles the DOM. We then read the command
+  // latches and advance IDE state.
   int runLoop() {
-    while (ui.active()) {
-      int dispatched = ui.pump(true);     // block for at least one event
-      if (dispatched < 0) { break; }
-      if (!pollCommands()) { ui.quit(0); }
+    while (app.ui.active()) {
+      int raised = app.step(true);     // pump + poll activations + reconcile
+      if (!pollCommands()) { app.quit(0); }
       syncDirtyFromEditor();
-      if (loading.busy()) { loading.tick(0.03); }   // advance the spinner arc
-      window.requestRedraw();
+      if (loading.busy()) { loading.tick(0.03); }
     }
     return 0;
   }
@@ -263,15 +263,12 @@ class SLIdeWorkbenchUI {
 
   void refreshStatus() {
     String watch = "watch " + tabs.watchSetSize() + "/" + SLIdeTabGroup.SLGUI_MAX_DOCUMENTS;
-    status.setText(diagnostics.statusLine() + "  |  " + tabs.size() + " open  |  " + watch);
+    if (status != null) {
+      status.setText(diagnostics.statusLine() + "  |  " + tabs.size() + " open  |  " + watch);
+    }
   }
 
-  void rearmWatchCheck() {
-    // The open-tab count is unbounded; the OS watch set stays within 1..14.
-    // (The real WatchService lives in the gui/ native host; here we keep the
-    // registration honest and surface it in the status bar.)
-    refreshStatus();
-  }
+  void rearmWatchCheck() { refreshStatus(); }
 
   String fileName(String path) {
     if (path == null) { return "untitled"; }
@@ -299,5 +296,5 @@ class SLIdeWorkbenchUI {
 
   String currentRevision() { return "saved"; }
 
-  void shutdown() { if (ui != null) { ui.close(); } }
+  void shutdown() { if (app != null) { app.shutdown(); } }
 }
