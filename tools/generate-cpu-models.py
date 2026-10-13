@@ -128,6 +128,45 @@ SPECS = [
     ("atari-lynx","SLAtariLynxCPU","SLAtariLynxCPU","Atari Lynx (65C02 / Mikey)",8,16,5,ACC,-1),
     ("atari-jaguar","SLAtariJaguarCPU","SLAtariJaguarCPU","Atari Jaguar (68000 + Tom/Jerry RISC)",32,24,16,CISC,-1),
     ("atari-jaguar-cd","SLAtariJaguarCDCPU","SLAtariJaguarCDCPU","Atari Jaguar CD (68000 + Tom/Jerry RISC)",32,24,16,CISC,-1),
+    # --- Intel desktop/server line (prominent brands) ---
+    ("intel-8080","SLIntel8080CPU","SLIntel8080CPU","Intel 8080",8,16,8,ACC,-1),
+    ("intel-8086","SLIntel8086CPU","SLIntel8086CPU","Intel 8086",16,20,8,CISC,-1),
+    ("intel-80286","SLIntel80286CPU","SLIntel80286CPU","Intel 80286",16,24,8,CISC,-1),
+    ("intel-80386","SLIntel80386CPU","SLIntel80386CPU","Intel 80386",32,32,8,CISC,-1),
+    ("intel-80486","SLIntel80486CPU","SLIntel80486CPU","Intel 80486",32,32,8,CISC,-1),
+    ("intel-pentium","SLIntelPentiumCPU","SLIntelPentiumCPU","Intel Pentium",32,32,8,CISC,-1),
+    ("intel-celeron","SLIntelCeleronCPU","SLIntelCeleronCPU","Intel Celeron",32,36,8,CISC,-1),
+    ("intel-core","SLIntelCoreCPU","SLIntelCoreCPU","Intel Core (x86-64)",64,48,16,CISC,-1),
+    ("intel-xeon","SLIntelXeonCPU","SLIntelXeonCPU","Intel Xeon (x86-64)",64,48,16,CISC,-1),
+    # --- AMD desktop/server line ---
+    ("amd-athlon","SLAMDAthlonCPU","SLAMDAthlonCPU","AMD Athlon (K7)",32,32,8,CISC,-1),
+    ("amd-opteron","SLAMDOpteronCPU","SLAMDOpteronCPU","AMD Opteron (x86-64)",64,48,16,CISC,-1),
+    ("amd-ryzen","SLAMDRyzenCPU","SLAMDRyzenCPU","AMD Ryzen (Zen x86-64)",64,48,16,CISC,-1),
+    ("amd-epyc","SLAMDEPYCCPU","SLAMDEPYCCPU","AMD EPYC (Zen x86-64)",64,48,16,CISC,-1),
+    # --- Apple Silicon (ARM64) ---
+    ("apple-a-series","SLAppleASeriesCPU","SLAppleASeriesCPU","Apple A-series (ARM64)",64,48,32,RISC,-1),
+    ("apple-m1","SLAppleM1CPU","SLAppleM1CPU","Apple M1 (ARM64)",64,48,32,RISC,-1),
+    ("apple-m2","SLAppleM2CPU","SLAppleM2CPU","Apple M2 (ARM64)",64,48,32,RISC,-1),
+    ("apple-m3","SLAppleM3CPU","SLAppleM3CPU","Apple M3 (ARM64)",64,48,32,RISC,-1),
+    ("apple-m4","SLAppleM4CPU","SLAppleM4CPU","Apple M4 (ARM64)",64,48,32,RISC,-1),
+    # --- Qualcomm / ARM server / embedded SoCs ---
+    ("qualcomm-snapdragon","SLSnapdragonCPU","SLSnapdragonCPU","Qualcomm Snapdragon (ARM64)",64,48,32,RISC,-1),
+    ("arm-neoverse","SLArmNeoverseCPU","SLArmNeoverseCPU","ARM Neoverse (ARM64 server)",64,48,32,RISC,-1),
+    ("arm-cortex-a","SLArmCortexACPU","SLArmCortexACPU","ARM Cortex-A (ARM64)",64,48,32,RISC,-1),
+    ("mediatek-dimensity","SLMediaTekDimensityCPU","SLMediaTekDimensityCPU","MediaTek Dimensity (ARM64)",64,48,32,RISC,-1),
+    ("rockchip","SLRockchipCPU","SLRockchipCPU","Rockchip (ARM64)",64,40,32,RISC,-1),
+    ("nvidia-grace","SLNvidiaGraceCPU","SLNvidiaGraceCPU","NVIDIA Grace (ARM Neoverse V2)",64,48,32,RISC,-1),
+    ("ampere-altra","SLAmpereAltraCPU","SLAmpereAltraCPU","Ampere Altra (ARM64 server)",64,48,32,RISC,-1),
+    # --- IBM POWER / Sun SPARC server ---
+    ("ibm-power9","SLIBMPower9CPU","SLIBMPower9CPU","IBM POWER9",64,52,32,RISC,-1),
+    ("ibm-power10","SLIBMPower10CPU","SLIBMPower10CPU","IBM POWER10",64,52,32,RISC,-1),
+    ("sun-ultrasparc","SLSunUltraSPARCCPU","SLSunUltraSPARCCPU","Sun UltraSPARC",64,44,32,RISC,0),
+    # --- SiFive RISC-V ---
+    ("sifive-u74","SLSiFiveU74CPU","SLSiFiveU74CPU","SiFive U74 (RISC-V RV64GC)",64,39,32,RISC,0),
+    # --- Classic gaps ---
+    ("motorola-6800","SL6800CPU","SL6800CPU","Motorola 6800",8,16,4,ACC,-1),
+    ("wdc-65c816","SL65C816CPU","SL65C816CPU","WDC 65C816",16,24,6,ACC,-1),
+    ("zilog-ez80","SLeZ80CPU","SLeZ80CPU","Zilog eZ80",8,24,10,ACC,-1),
 ]
 
 
@@ -282,6 +321,22 @@ CLOCK = {
     "xbox-series-s":3600,"xbox-series-x":3800,
     "atari-2600":1,"atari-5200":2,"atari-7800":2,"atari-xegs":2,"atari-lynx":4,
     "atari-jaguar":27,"atari-jaguar-cd":27,"atari-vcs":1700,
+    # Intel line
+    "intel-8080":2,"intel-8086":5,"intel-80286":12,"intel-80386":33,"intel-80486":66,
+    "intel-pentium":100,"intel-celeron":1200,"intel-core":3600,"intel-xeon":3800,
+    # AMD line
+    "amd-athlon":1000,"amd-opteron":2400,"amd-ryzen":4500,"amd-epyc":3700,
+    # Apple Silicon
+    "apple-a-series":2900,"apple-m1":3200,"apple-m2":3500,"apple-m3":4000,"apple-m4":4400,
+    # Qualcomm / ARM / embedded
+    "qualcomm-snapdragon":3300,"arm-neoverse":3000,"arm-cortex-a":2400,
+    "mediatek-dimensity":3350,"rockchip":2400,"nvidia-grace":3400,"ampere-altra":3000,
+    # IBM / Sun server
+    "ibm-power9":3800,"ibm-power10":4000,"sun-ultrasparc":1200,
+    # SiFive
+    "sifive-u74":1500,
+    # Classic gaps
+    "motorola-6800":1,"wdc-65c816":4,"zilog-ez80":50,
 }
 
 

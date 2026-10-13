@@ -179,6 +179,21 @@ class CpuCatalog {
     add("ppc",   "PowerPC",           "powerpc",233, 32,  1048576);
     add("ps5",   "PlayStation 5 SoC", "x86-64", 3500,64,  16777216);
     add("xbsx",  "Xbox Series X SoC", "x86-64", 3800,64,  16777216);
+    // prominent modern brands (newly added folders)
+    add("intel-core","Intel Core",    "x86-64", 3600,64,  16777216);
+    add("xeon",  "Intel Xeon",        "x86-64", 3800,64,  16777216);
+    add("ryzen", "AMD Ryzen (Zen)",   "x86-64", 4500,64,  16777216);
+    add("epyc",  "AMD EPYC (Zen)",    "x86-64", 3700,64,  16777216);
+    add("m1",    "Apple M1",          "arm64",  3200,64,  16777216);
+    add("m4",    "Apple M4",          "arm64",  4400,64,  16777216);
+    add("snapdragon","Qualcomm Snapdragon","arm64",3300,64,16777216);
+    add("neoverse","ARM Neoverse",    "arm64",  3000,64,  16777216);
+    add("grace", "NVIDIA Grace",      "arm64",  3400,64,  16777216);
+    add("power10","IBM POWER10",      "powerpc",4000,64,  16777216);
+    add("ultrasparc","Sun UltraSPARC","sparc",  1200,64,  16777216);
+    add("sifive","SiFive U74",        "riscv",  1500,64,  262144);
+    add("8086",  "Intel 8086",        "x86",    5,   16,  1048576);
+    add("6800",  "Motorola 6800",     "6800",   1,    8,  65536);
   }
 }
 
@@ -333,6 +348,9 @@ class World {
     fleet.select("x86");
     fleet.select("ps5");
     fleet.select("xbsx");
+    fleet.select("ryzen");      // AMD Ryzen (Zen)
+    fleet.select("m4");         // Apple M4
+    fleet.select("grace");      // NVIDIA Grace
     print("Chosen fleet: " + fleet.count() + " CPUs");
 
     // 3) RUN real work across the fleet -> NET RESULTS. The same C workload
@@ -371,9 +389,9 @@ class World {
     int fails = 0;
     fails = fails + expect(roster.size() >= 10, "roster offers a full set of CPUs to choose from");
     fails = fails + expect(roster.has("ps5") && roster.has("6502"), "roster spans modern + classic CPUs");
-    fails = fails + expect(fleet.count() == 7, "a fleet was chosen from the roster");
-    fails = fails + expect(fleet.completed() == 7 && fleet.rejectedCount() == 0, "every chosen CPU ran the workload");
-    fails = fails + expect(net == 7 * 42, "net output is the sum of per-CPU observables");
+    fails = fails + expect(fleet.count() == 10, "a fleet was chosen from the roster");
+    fails = fails + expect(fleet.completed() == 10 && fleet.rejectedCount() == 0, "every chosen CPU ran the workload");
+    fails = fails + expect(net == 10 * 42, "net output is the sum of per-CPU observables");
     fails = fails + expect(net2 == net, "overclock leaves the result invariant (Turing-effect)");
     fails = fails + expect(fleet.fleetSpeedRatioMilli() > 1000, "overclock raised aggregate effective clock");
     fails = fails + expect(netFleet.count() == roster.size(), "network world ran the whole roster");
