@@ -99,6 +99,20 @@ that bottoms out at Boolean logic.
 > bus/CPU/I/O/RAM timings it was built for, so the compilers and VM operate those
 > stated numbers rather than assuming the quality of the hardware.
 
+### Layer 2.8 — OS-specific native runner
+| Class | Role |
+|---|---|
+| `SLNativeTarget` | Names the OS / architecture / ABI and the native artifact (`.so`/`.dll`/`.dylib`) + entry symbol to load — in the clear. |
+| `SLNativeCapability` | The deny-by-default **capability sandbox** naming exactly what the native path may touch (matches `SLPlatformCapability`). |
+| `SLNativeGuard` | The named **safety contract**: trusted SHA-256 verification, capability sandbox, bounded handles, ownership + fail-closed, deadline, cancellation, ordered teardown. |
+| `SLNativeRunner` | Runs an `SLCPU` + `SLProgram` on the OS-native fast path (`verify → load → bind → run → teardown`); falls back to `SLControlUnit` when the native path is unavailable or the guard is unsatisfied. |
+
+> **This layer is documented in detail in [`NATIVE-RUNNER.md`](NATIVE-RUNNER.md).**
+> It executes the `/lib/cpu` machine as quickly as native code allows while every
+> safety and security concern stays named and checked. Its native substrate lives
+> in `impl/core/sleela_cpu_runner.{h,c}` with a verified smoke test
+> (`make test-cpu-runner`).
+
 ### Layer 5 — Programs and the multi-language toolchain
 | Class | Role |
 |---|---|

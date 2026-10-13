@@ -1,0 +1,117 @@
+/*
+ * lib/cpu/SLNativeCapability.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLNativeCapability — the capability sandbox for a native
+ *   CPU runner, naming EXACTLY what the native fast path is permitted to touch.
+ *   A capability set is deny-by-default: nothing is allowed until it is granted
+ *   by name. The capability names match the host contract in
+ *   impl/core/sleela_platform.h (SL_CAP_MEMORY, SL_CAP_FILE_IO, SL_CAP_NETWORK,
+ *   ...), so granting a capability here authorizes precisely the one native
+ *   boundary it names and no other.
+ *
+ * This is a security object in the clear: a reviewer reads the grant set and
+ * knows the whole surface the native runner can reach. A CPU model that only
+ * computes needs no capabilities at all; one that prints needs TERMINAL; one
+ * that loads a program from disk needs FILE_IO. Least privilege is the default.
+ *
+ * Family: cpu. Pure Sleela policy object; consumed by SLNativeGuard/Runner.
+ */
+#sleela 1.3
+class SLNativeCapability {
+  // Capability ordinals, matching impl/core/sleela_platform.h SLPlatformCapability.
+  static final int CAP_MEMORY          = 0;
+  static final int CAP_FILE_IO         = 1;
+  static final int CAP_NETWORK         = 2;
+  static final int CAP_THREADS         = 3;
+  static final int CAP_DYNAMIC_LIBRARY = 4;
+  static final int CAP_TERMINAL        = 5;
+  static final int CAP_PATHS           = 6;
+  static final int CAP_PROCESS         = 7;
+  static final int CAP_IPC             = 8;
+  static final int CAP_TIME            = 9;
+  static final int CAP_MAX             = 10;
+
+  // One grant bit per capability (0 = denied, 1 = granted). SLeeLa surface has
+  // no arrays, so the set is a fixed row of named fields — explicit and auditable.
+  int memory; int fileIo; int network; int threads; int dynamicLibrary;
+  int terminal; int paths; int process; int ipc; int time;
+  int grants;   // count of capabilities granted, for a quick least-privilege read
+
+  // Deny-by-default: a fresh set grants nothing.
+  void configure() {
+    memory = 0; fileIo = 0; network = 0; threads = 0; dynamicLibrary = 0;
+    terminal = 0; paths = 0; process = 0; ipc = 0; time = 0; grants = 0;
+  }
+
+  // The minimum a native CPU runner needs: load its library and allocate the
+  // modeled memory. Nothing else — no network, no process spawning, no FS.
+  void grantRunnerMinimum() {
+    configure();
+    grant(CAP_DYNAMIC_LIBRARY);   // to dlopen/LoadLibrary the fast core
+    grant(CAP_MEMORY);            // to back SLRAM cells natively
+  }
+
+  void grant(int capability) { if (set(capability, 1)) { grants = grants + 1; } }
+  void revoke(int capability) { if (set(capability, 0)) { grants = grants - 1; } }
+
+  // Set a capability's bit; returns true only if the bit actually changed (so
+  // the grant count stays honest under repeated grant/revoke).
+  boolean set(int capability, int value) {
+    if (capability == CAP_MEMORY && memory != value) { memory = value; return true; }
+    if (capability == CAP_FILE_IO && fileIo != value) { fileIo = value; return true; }
+    if (capability == CAP_NETWORK && network != value) { network = value; return true; }
+    if (capability == CAP_THREADS && threads != value) { threads = value; return true; }
+    if (capability == CAP_DYNAMIC_LIBRARY && dynamicLibrary != value) { dynamicLibrary = value; return true; }
+    if (capability == CAP_TERMINAL && terminal != value) { terminal = value; return true; }
+    if (capability == CAP_PATHS && paths != value) { paths = value; return true; }
+    if (capability == CAP_PROCESS && process != value) { process = value; return true; }
+    if (capability == CAP_IPC && ipc != value) { ipc = value; return true; }
+    if (capability == CAP_TIME && time != value) { time = value; return true; }
+    return false;
+  }
+
+  // Is a given capability granted by name?
+  boolean allows(int capability) {
+    if (capability == CAP_MEMORY) { return memory == 1; }
+    if (capability == CAP_FILE_IO) { return fileIo == 1; }
+    if (capability == CAP_NETWORK) { return network == 1; }
+    if (capability == CAP_THREADS) { return threads == 1; }
+    if (capability == CAP_DYNAMIC_LIBRARY) { return dynamicLibrary == 1; }
+    if (capability == CAP_TERMINAL) { return terminal == 1; }
+    if (capability == CAP_PATHS) { return paths == 1; }
+    if (capability == CAP_PROCESS) { return process == 1; }
+    if (capability == CAP_IPC) { return ipc == 1; }
+    if (capability == CAP_TIME) { return time == 1; }
+    return false;
+  }
+
+  // The nameful label of a capability — so denials read as prose, not numbers.
+  String nameOf(int capability) {
+    if (capability == CAP_MEMORY) { return "memory"; }
+    if (capability == CAP_FILE_IO) { return "file-io"; }
+    if (capability == CAP_NETWORK) { return "network"; }
+    if (capability == CAP_THREADS) { return "threads"; }
+    if (capability == CAP_DYNAMIC_LIBRARY) { return "dynamic-library"; }
+    if (capability == CAP_TERMINAL) { return "terminal"; }
+    if (capability == CAP_PATHS) { return "paths"; }
+    if (capability == CAP_PROCESS) { return "process"; }
+    if (capability == CAP_IPC) { return "ipc"; }
+    if (capability == CAP_TIME) { return "time"; }
+    return "unknown";
+  }
+
+  // Does this set stay within an authorized ceiling? Every capability granted
+  // here must also be granted in `ceiling` — a runner can only ever narrow, not
+  // widen, the privilege its guard allows.
+  boolean withinCeiling(SLNativeCapability ceiling) {
+    int c = CAP_MEMORY;
+    while (c < CAP_MAX) {
+      if (allows(c) && !ceiling.allows(c)) { return false; }
+      c = c + 1;
+    }
+    return true;
+  }
+
+  int grantCount() { return grants; }
+  boolean isLeastPrivilege() { return grants <= 2; }  // library + memory only
+}
