@@ -4,7 +4,7 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "98ea9dc5601468877654cfa537abacfe4321eaefdca392703660bcc32c0bac98"
+      "sha256": "3be9be75a3aab173ba729bf4f2004407fe7a32a203cda5c2541ea106824ac22e"
     },
     {
       "path": "SLEELA.syntax",
@@ -25,6 +25,10 @@
     {
       "path": "alphabet/sleela/AlphabetDemo18.sleela",
       "sha256": "c40387b2b93ffb32268dd060a3c50942541b9f1c5a2968ea8f0ba826c0b0a6c6"
+    },
+    {
+      "path": "alphabet/utf-4088/run_inputs.py",
+      "sha256": "c1938a7558c5ad8889dc85b29e94c02736d337c676068d4a6afb29258bc939da"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -5167,6 +5171,26 @@
       "sha256": "f09e47ddcfa842ac0c9995261f94a614b8781eeb14404e5d94f4310cd6097098"
     },
     {
+      "path": "ide/scripts/build-all.sh",
+      "sha256": "02520b0244b8a36653789d1e6cf7ef346e69f1e2456c2c064da32517ab6bd9f1"
+    },
+    {
+      "path": "ide/scripts/build-native-compiler.sh",
+      "sha256": "a15fbdbe36cb71a75e4fd5c340df2a14788001ee5e38351998d17eb5e9db1740"
+    },
+    {
+      "path": "ide/scripts/build-plugin.sh",
+      "sha256": "ae285ad2fb1989991370c8cdf822e8262441cbbf1214b825dfd7aa5172eb0a69"
+    },
+    {
+      "path": "ide/scripts/common.sh",
+      "sha256": "80b34550a09b31488c0f48b94fa74aba2bfd28fbd85f4c80a208046b01de721c"
+    },
+    {
+      "path": "ide/scripts/gen-gradle-wrapper.sh",
+      "sha256": "61c0c1204a729b628f5bd36c320692ff5bd4959bf9ddc9102821f50d95c988a4"
+    },
+    {
       "path": "ide/tests/samples/Hello.sleela",
       "sha256": "a90c2b798243a905c9cf9a3ddafa5533d0ef710cc9ef4592adcff3e688d5aba3"
     },
@@ -7019,6 +7043,10 @@
       "sha256": "09ceb6f2500dab9ebf535f41f2ec67c4822975cfacdf773c8167179953819f3e"
     },
     {
+      "path": "lib/alphabet/CharacterSet.sleela",
+      "sha256": "57153f461c473cea724b0924d88a2a3b05bef9b8e721a36976be40489fbf159f"
+    },
+    {
       "path": "lib/alphabet/Color.sleela",
       "sha256": "9484cec25fc95500ef4c05f59e8b2e19121dd875c3443756f71b2186f87a1040"
     },
@@ -7065,6 +7093,18 @@
     {
       "path": "lib/alphabet/Theme.sleela",
       "sha256": "f8abd36a0902491a40b1d63f2e5c3977219d4d0c1fb2541ab0e2fbcfeabe4226"
+    },
+    {
+      "path": "lib/alphabet/native/character_runtime.cpp",
+      "sha256": "3b66979f9169e50632ccb4f4673bd181938787bb9abe623bcf03649a60926876"
+    },
+    {
+      "path": "lib/alphabet/native/character_runtime.hpp",
+      "sha256": "bdc54af3adab022f00682b4d845938a2231d5160484ec4e91ac72375d16b5d09"
+    },
+    {
+      "path": "lib/alphabet/native/tests.cpp",
+      "sha256": "62562c806657fc8fc9a43fed31e6b94f2ec833d2cdea82b636053265bd1aebfe"
     },
     {
       "path": "lib/antivirus/Antivirus.sleela",
@@ -11819,6 +11859,26 @@
       "sha256": "9bdbce7ac2da628501731ea27047bae6bf78219dcdc6db438f5092e9a2767fa4"
     },
     {
+      "path": "lib/gui/SLGuiDom.sleela",
+      "sha256": "acf53083d0940b6231b8cd96d4125d803afe130faa69a7847ea23f89c7319ad1"
+    },
+    {
+      "path": "lib/gui/SLGuiEvent.sleela",
+      "sha256": "f6ce0df3499042c6222e9d2b0209f7fbdd0adeb4f742e05aec802910b3f107ba"
+    },
+    {
+      "path": "lib/gui/SLGuiEventBus.sleela",
+      "sha256": "894aaf3f4837bc3debaf99bbc01f2469e12cde614e4cfb135eadef8d10eb1ba7"
+    },
+    {
+      "path": "lib/gui/SLGuiEventType.sleela",
+      "sha256": "2680fb20dfd999341d701982e5b86e9fa11f939ed4fb387adee55f589cfef019"
+    },
+    {
+      "path": "lib/gui/SLGuiHandler.sleela",
+      "sha256": "c578f64f246e669dff7ec619f374da93a44272770b456b7a8c4544a7de9ec86e"
+    },
+    {
       "path": "lib/gui/SLGuiHost.sleela",
       "sha256": "dd902778029fa7f89f2850f07e9546b57f477237491a6af5e0bfb8512dd43b66"
     },
@@ -11827,8 +11887,20 @@
       "sha256": "1c57f8f0fdbddf601def695b009e81a4038f9497c5c060c9bf3208adf945fb2a"
     },
     {
+      "path": "lib/gui/SLGuiNode.sleela",
+      "sha256": "f313bad292d29b4fc68302eb4d0ea0d023584ed7881d77e79dce6c720ffb02ea"
+    },
+    {
       "path": "lib/gui/SLGuiRuntime.sleela",
       "sha256": "ccfd0baf6af9ca75f0ff84fc84247c4bf8071ec2539a45c6a9a1c9a4ac11aede"
+    },
+    {
+      "path": "lib/gui/SLGuiScript.sleela",
+      "sha256": "588ed05e7001094d152041edff1a108aa044b6d644b1bda21632912080b70640"
+    },
+    {
+      "path": "lib/gui/SLGuiScriptCommand.sleela",
+      "sha256": "0b5f88222185bd91a6331296d5ea0386f980bbc71533b3872b3bdca595bf64fc"
     },
     {
       "path": "lib/gui/SLGuiWindow.sleela",
@@ -11841,6 +11913,10 @@
     {
       "path": "lib/gui/gui-demo.sleela",
       "sha256": "ed99102593c8b34cb88fcb626bd6a43c015fda7d6ba0d502d365f4be232a7cea"
+    },
+    {
+      "path": "lib/gui/gui-events-demo.sleela",
+      "sha256": "e0c045937dc5a2dd4a4384681d5cae821e639b1e354af997325af2e9a55ed5d9"
     },
     {
       "path": "lib/html/SLPackage.sleela",
@@ -11957,6 +12033,46 @@
     {
       "path": "lib/ide/SLPackage.sleela",
       "sha256": "13f19594ecdac0d5a10acf67b0119fe8da6ca701821f31ea597def07090a2b04"
+    },
+    {
+      "path": "lib/ide-workbench/SLIdeCommandRegistry.sleela",
+      "sha256": "01a2acbe1b12efd22407f02a70f25dabef42262561f0cd18bbe0d23df9df3a2b"
+    },
+    {
+      "path": "lib/ide-workbench/SLIdeDiagnosticsPanel.sleela",
+      "sha256": "4d185e924470caa65b6b42106e573a19d3da538b931d934ec4d44b816bf935b3"
+    },
+    {
+      "path": "lib/ide-workbench/SLIdeEditor.sleela",
+      "sha256": "dcb8e01d66e76bc681d55d63d127fe3256e57569628c994a11b36bb809cc1996"
+    },
+    {
+      "path": "lib/ide-workbench/SLIdeProjectTree.sleela",
+      "sha256": "39e2f328b2fcaaeb853a1fce1bd5108df6aa12249f36119fbf2bc577a58d6b68"
+    },
+    {
+      "path": "lib/ide-workbench/SLIdeTabGroup.sleela",
+      "sha256": "a0224b44c638bca2b31538a6241b28650a5367f32f9ba0a7a05518d31cd518eb"
+    },
+    {
+      "path": "lib/ide-workbench/SLIdeWorkbench.sleela",
+      "sha256": "2fafd4cbf9d6dd9ce58cd22ab31c436644ff3a775deaa37f12d9425b9c4e35c5"
+    },
+    {
+      "path": "lib/ide-workbench/SLIdeWorkbenchUI.sleela",
+      "sha256": "6cbd54c06476a37f737121c306b1a029dfaf271dad21d75728089a2cfa0414dd"
+    },
+    {
+      "path": "lib/ide-workbench/SLPackage.sleela",
+      "sha256": "5895bb954b5e014f17fccfa0bd09ef6429dbd94f9b8b9465cc3462e98c567548"
+    },
+    {
+      "path": "lib/ide-workbench/ide-workbench-demo.sleela",
+      "sha256": "099ae61efc0611f7801695b5c2eed07bf5757ba35ae88ebfc7f2c53b8c2e8b97"
+    },
+    {
+      "path": "lib/ide-workbench/ide-workbench-gui-demo.sleela",
+      "sha256": "48795d69cb15ab3e2f9dae7342f3d30518357dbda0d22033617e15890fa1f111"
     },
     {
       "path": "lib/inference-model/SLPackage.sleela",
@@ -50831,6 +50947,14 @@
       "sha256": "40fcdfb1e43eb9760ad7808fd5ce9e62092f88e4b6d7b26a030b65a84972b3b0"
     },
     {
+      "path": "lib/user-interface/SLLoadingDemo.sleela",
+      "sha256": "ad3f8957073787108da3273571b3f3118c01a747057d80e7ee3bb168bda39a2c"
+    },
+    {
+      "path": "lib/user-interface/SLLoadingIndicator.sleela",
+      "sha256": "90f6db0df39c1f1ad7bc0bc64ec57fcf500bb34206694a6d18641aa56c8a4305"
+    },
+    {
       "path": "lib/user-interface/SLMaterial.sleela",
       "sha256": "414e29b10b201af36edafbddce0a24825fd82be3648b51da04d8a94f3a537024"
     },
@@ -50845,6 +50969,10 @@
     {
       "path": "lib/user-interface/SLMood.sleela",
       "sha256": "676d2a7c01bfe4ea18122beb93723b5921e64bb61553abccaba9e56eb152c487"
+    },
+    {
+      "path": "lib/user-interface/SLNotebook.sleela",
+      "sha256": "d38f7c04a93f559969a273bc711a18c1d949aaa9524ae81633efedecb2d9e4ca"
     },
     {
       "path": "lib/user-interface/SLPackage.sleela",
@@ -50865,6 +50993,10 @@
     {
       "path": "lib/user-interface/SLScrollBar.sleela",
       "sha256": "b845189266df4de38a6fea84225edfe2937a9342f16ee6a623328fa7e7299478"
+    },
+    {
+      "path": "lib/user-interface/SLScrollView.sleela",
+      "sha256": "9c6a0511bd33a0a682e9bb4907a31ed9908cd91ff30def318ec514b1f6189e0a"
     },
     {
       "path": "lib/user-interface/SLSearchEntry.sleela",
@@ -50895,6 +51027,10 @@
       "sha256": "4e04d21b25a3a3be8553a3bc5f15d9638ef4dbdec742d4eb1042949ac8c5606b"
     },
     {
+      "path": "lib/user-interface/SLTextView.sleela",
+      "sha256": "9d51dbfea07376c7a82f652f569c2fd06790fe204de6b8152982c4d969408eaa"
+    },
+    {
       "path": "lib/user-interface/SLTheme.sleela",
       "sha256": "ec7dc6be1e97cf8608936c3546291e1016075084a643c9b9fd356b01ad70f8c8"
     },
@@ -50909,6 +51045,10 @@
     {
       "path": "lib/user-interface/SLTooltip.sleela",
       "sha256": "ec5915596b83016edc5f11a023cc2075548e5a9fa6f68999e08a34162d393492"
+    },
+    {
+      "path": "lib/user-interface/SLTreeView.sleela",
+      "sha256": "a8438037252d620936df9c77346080c6482418aa70960b9849798f59acc6ccde"
     },
     {
       "path": "lib/user-interface/SLUserInterface.sleela",
@@ -54048,7 +54188,7 @@
     },
     {
       "path": "tools/tests/test_sleela_character_scan.py",
-      "sha256": "c23336a1ba3ae171645fc66220dcc9dbc256022f502cf6cc08b8eca96f5af074"
+      "sha256": "de00fcc02b2d8532dfc4212ca1b7eb5257349afdcfedd1a18944d41dbffac6aa"
     },
     {
       "path": "tools/verify-before-execution.py",
@@ -54331,8 +54471,24 @@
       "sha256": "8e68b5646a099a428c7f05efc643aed291aed489d11b5a8c838d76634e6302dc"
     },
     {
+      "path": "utf-4088/semantics/concept_symbols.cpp",
+      "sha256": "82d88b790de39f3ad61103acd695c4d405f83181ca8d0cf87f0704db22b0b078"
+    },
+    {
+      "path": "utf-4088/semantics/concept_symbols.hpp",
+      "sha256": "c5dc653591e9cc37297509ada3785c4bd68ea19b8001caa217764572a4ef08a8"
+    },
+    {
+      "path": "utf-4088/sleela_alphabet_adapter.cpp",
+      "sha256": "e36492c8f056fb3c109001831175a6816ade665697edbda8305aaea730de8435"
+    },
+    {
+      "path": "utf-4088/sleela_alphabet_adapter.hpp",
+      "sha256": "a3fdf0051074061af0ed386e87f05ff9a3ecbf6768797e0a8e07026fc5d24701"
+    },
+    {
       "path": "utf-4088/tests/utf4088_tests.cpp",
-      "sha256": "e859c29a56941031dfc62a0825bc7929fcf05d143075bd6af3eb9b5fd16ccf3e"
+      "sha256": "93c9e88a50bd72ac83fb9f3e93d2c2f15eb52f642f18a0b73ce4334c32e1d07c"
     },
     {
       "path": "utf-4088/utf4088.cpp",
