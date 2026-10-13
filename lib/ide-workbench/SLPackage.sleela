@@ -1,0 +1,21 @@
+/*
+ * lib/ide-workbench/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for ide-workbench.
+ */
+#sleela 1.3
+// Library facade for module package: ide-workbench
+// Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+// This package is the IDE *composition* layer: it wires together lib/gui
+// (window/actions/1..14 document watch), lib/user-interface + lib/ui (widgets),
+// lib/nordshrift (.sst -> .sleela "SST Nordshrit" path), lib/compiler, and
+// lib/sldocument (save/load) into a working SLeeLa IDE. The Master Classes
+// (SLIdeEditor, SLIdeTabGroup, SLIdeProjectTree, SLIdeCommandRegistry,
+// SLIdeDiagnosticsPanel, SLIdeWorkbench) are one-class-per-file source units;
+// this facade only names the package itself, mirroring lib/gui/SLPackage.sleela.
+class SLPackage {
+  String packageName;
+  void configure(String name) { packageName = name; }
+  String name() { return packageName; }
+  boolean available() { return packageName != null; }
+}

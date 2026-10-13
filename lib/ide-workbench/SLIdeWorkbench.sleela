@@ -1,0 +1,160 @@
+/*
+ * lib/ide-workbench/SLIdeWorkbench.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLIdeWorkbench — the top-level IDE composition. It owns
+ *   the lib/gui window + the three-path integration posture, the tab group of
+ *   open editors, the project tree, the command registry, and the diagnostics
+ *   panel, and it implements the core edit -> compile -> save loop over the
+ *   existing services: Nordshrift (.sst -> .sleela) + the SLeeLa compiler for
+ *   compilation, and lib/sldocument for load/save. SLeeLa owns the IDE's
+ *   meaning; the Java/native host owns presentation and desktop lifecycle.
+ */
+#sleela 1.3
+// Family: ide-workbench. The IDE shell that wires every existing contract.
+class SLIdeWorkbench {
+  SLGuiBackend backend;             // lib/gui: toolkit selection
+  SLGuiWindow window;               // lib/gui: the host window
+  SLGuiIntegration integration;     // lib/gui: three-path posture
+  SLGuiDocumentListener watch;      // lib/gui: OS-driven 1..14 document watch
+
+  SLIdeTabGroup tabs;               // open editors (unbounded)
+  SLIdeProjectTree tree;            // project explorer
+  SLIdeCommandRegistry commands;    // Open/Save/Compile/Run/...
+  SLIdeDiagnosticsPanel diagnostics;// compiler problems surface
+
+  int ready;
+
+  // Stand up the whole shell. `root` is the opened project directory.
+  void boot(String backendKind, String title, int width, int height, String root) {
+    backend = new SLGuiBackend();
+    backend.configure(backendKind);
+
+    window = new SLGuiWindow();
+    window.configure(title, width, height);
+
+    integration = new SLGuiIntegration();
+    integration.configure();
+    integration.enableJavaHost();
+    integration.enableSleelaIntent();
+    integration.enableNativeAbi();   // recommended(): all three paths
+
+    tabs = new SLIdeTabGroup();  tabs.init();
+    tree = new SLIdeProjectTree(); tree.init(root);
+    commands = new SLIdeCommandRegistry(); commands.init();
+    commands.installDefaults();
+    diagnostics = new SLIdeDiagnosticsPanel(); diagnostics.init();
+
+    watch = new SLGuiDocumentListener();
+
+    ready = (backend.supported() && window.valid() && integration.recommended()) ? 1 : 0;
+    if (ready == 1) { window.show(); }
+    syncCommandState();
+  }
+
+  boolean isReady() { return ready == 1; }
+
+  // --- Opening / editing ---------------------------------------------------
+
+  // Open a file from the tree into an editor tab, classifying its language.
+  int openFile(String documentId, String path, String contents, String revision) {
+    SLIdeEditor ed = new SLIdeEditor();
+    ed.configure(documentId, path, tree.languageFor(path));
+    ed.loadText(contents, revision);
+    int idx = tabs.open(ed);
+    rearmWatch();
+    syncCommandState();
+    return idx;
+  }
+
+  // Apply a user edit to the active editor.
+  void editActive(String newText) {
+    SLIdeEditor ed = tabs.activeEditor();
+    if (ed != null) { ed.setText(newText); syncCommandState(); }
+  }
+
+  // --- Compile (SST Nordshrit path + SLeeLa compiler) ----------------------
+
+  // Compile the active editor. .sst routes through NordshriftCompilerBridge;
+  // .sleela goes straight to the SLeeLa compiler. Diagnostics are published to
+  // the panel; the return value honors the IDE failure rule.
+  boolean compileActive(NordshriftCompilerBridge nordshrift, SLCompiler compiler) {
+    SLIdeEditor ed = tabs.activeEditor();
+    if (ed == null) { return false; }
+
+    diagnostics.clearDocument(ed.getId());
+
+    int prepared = 1;
+    if (ed.isSst()) {
+      // .sst -> Nordshrift -> /lib discovery -> .sleela, then compile.
+      nordshrift.resolveLibrary();
+      prepared = nordshrift.prepare();
+      if (prepared == 1) { prepared = nordshrift.compileToSleela(); }
+      if (prepared != 1) {
+        diagnostics.publish(ed.getId(), diagnostics.SEV_ERROR, 1, 1,
+          "Nordshrift could not resolve/transpile the .sst sheet");
+      }
+    }
+
+    if (prepared == 1) {
+      // The SLeeLa compiler is authoritative for the resulting source.
+      compiler.start();
+      compiler.emit();
+      compiler.stop();
+    }
+
+    boolean ok = diagnostics.compileSucceeded() && prepared == 1;
+    window.setText(diagnostics.statusLine());
+    return ok;
+  }
+
+  // --- Save / load (lib/sldocument owns persistence) -----------------------
+
+  // The host persisted the active editor at `revision`; mark it clean.
+  boolean saveActive(String revision) {
+    SLIdeEditor ed = tabs.activeEditor();
+    if (ed == null) { return false; }
+    ed.markSaved(revision);
+    syncCommandState();
+    return true;
+  }
+
+  // --- OS-driven external change -------------------------------------------
+
+  // An OS watch call reported `realChanges`; refresh the active editor's view
+  // (full reconciliation of each stale buffer is a host re-read).
+  int onDocumentChange(String documentId, String revision, int realChanges) {
+    if (!watch.isRunning()) { return 0; }
+    int emitted = watch.onOsCall(realChanges);
+    if (emitted > 0) { window.refresh(documentId, revision); }
+    return emitted;
+  }
+
+  // --- Internal wiring -----------------------------------------------------
+
+  // Re-register the OS watch over the current bounded (1..14) watch set.
+  void rearmWatch() {
+    int n = tabs.watchSetSize();
+    if (n < 1) { watch.close(); return; }
+    watch.configure(n);
+    watch.watch();
+  }
+
+  // Keep command availability honest: Save/Save All reflect dirty state;
+  // Compile/Run require an active editor.
+  void syncCommandState() {
+    boolean haveActive = tabs.activeEditor() != null;
+    commands.setEnabled("ide.compile", haveActive);
+    commands.setEnabled("ide.run", haveActive);
+    SLIdeEditor ed = tabs.activeEditor();
+    commands.setEnabled("ide.save", ed != null && ed.isDirty());
+    commands.setEnabled("ide.saveAll", tabs.anyDirty());
+    commands.setEnabled("ide.close", haveActive);
+  }
+
+  // Accessors for the host/presentation layer.
+  SLIdeTabGroup tabGroup() { return tabs; }
+  SLIdeProjectTree projectTree() { return tree; }
+  SLIdeCommandRegistry commandRegistry() { return commands; }
+  SLIdeDiagnosticsPanel diagnosticsPanel() { return diagnostics; }
+  SLGuiWindow hostWindow() { return window; }
+}
