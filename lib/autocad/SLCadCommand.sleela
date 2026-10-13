@@ -1,0 +1,69 @@
+/*
+ * lib/autocad/SLCadCommand.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCadCommand -- one recorded, reversible edit the AutoCAD
+ *   Creator(TM) applied to a document. Every creation (line/text/dim/room) and
+ *   every alteration (move/reshape/relabel/restyle/delete) is captured as a
+ *   command so the Creator can keep an audit trail and offer undo: a command
+ *   remembers its verb, the id of the entity it affected, and the "before"
+ *   values needed to reverse it (prior endpoints, prior label/layer, prior
+ *   alive flag). This keeps editing a first-class, inspectable operation rather
+ *   than an opaque mutation -- which is exactly what makes a creator (as opposed
+ *   to a one-shot renderer) possible.
+ *
+ * Family: autocad. SLeeLa owns the edit history; a command is a plain record,
+ * replayed/reversed against an SLCadDocument.
+ */
+#sleela 1.5
+class SLCadCommand {
+  // Verb ordinals.
+  static final int CREATE  = 0;   // an entity was created (undo = delete it)
+  static final int MOVE    = 1;   // translated by (dx,dy)
+  static final int RESHAPE = 2;   // endpoints changed (before stored)
+  static final int RELABEL = 3;   // text value changed (before stored)
+  static final int RESTYLE = 4;   // layer changed (before stored)
+  static final int DELETE  = 5;   // tombstoned (undo = restore)
+
+  int verb;
+  int entityId;
+
+  // "Before" snapshot for reversal (meaning depends on the verb).
+  double dx; double dy;                 // MOVE delta
+  double px1; double py1; double px2; double py2;  // RESHAPE prior endpoints
+  String priorValue;                    // RELABEL prior text
+  String priorLayer;                    // RESTYLE prior layer
+
+  void create(int id)                    { verb = CREATE;  entityId = id; }
+  void move(int id, double ddx, double ddy) { verb = MOVE; entityId = id; dx = ddx; dy = ddy; }
+  void reshape(int id, double ox1, double oy1, double ox2, double oy2) {
+    verb = RESHAPE; entityId = id; px1 = ox1; py1 = oy1; px2 = ox2; py2 = oy2;
+  }
+  void relabel(int id, String prior)     { verb = RELABEL; entityId = id; priorValue = prior; }
+  void restyle(int id, String prior)     { verb = RESTYLE; entityId = id; priorLayer = prior; }
+  void deleted(int id)                   { verb = DELETE;  entityId = id; }
+
+  int getVerb() { return verb; }
+  int getEntityId() { return entityId; }
+
+  // Reverse this command against `doc`. Returns true when something changed.
+  boolean undo(SLCadDocument doc) {
+    if (verb == CREATE)  { return doc.remove(entityId); }       // undo create = delete
+    if (verb == DELETE)  { return doc.restore(entityId); }      // undo delete = restore
+    if (verb == MOVE)    { return doc.move(entityId, -dx, -dy); }
+    if (verb == RESHAPE) { return doc.reshape(entityId, px1, py1, px2, py2); }
+    if (verb == RELABEL) { return doc.relabel(entityId, priorValue); }
+    if (verb == RESTYLE) { return doc.restyle(entityId, priorLayer); }
+    return false;
+  }
+
+  // A short, human-readable description for a history/log view.
+  String describe() {
+    if (verb == CREATE)  { return "create #" + entityId; }
+    if (verb == MOVE)    { return "move #" + entityId; }
+    if (verb == RESHAPE) { return "reshape #" + entityId; }
+    if (verb == RELABEL) { return "relabel #" + entityId; }
+    if (verb == RESTYLE) { return "restyle #" + entityId; }
+    if (verb == DELETE)  { return "delete #" + entityId; }
+    return "noop";
+  }
+}

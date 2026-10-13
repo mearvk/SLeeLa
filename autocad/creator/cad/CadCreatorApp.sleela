@@ -1,0 +1,493 @@
+/*
+ * autocad/creator/cad/CadCreatorApp.sleela
+ * SLeeLa AutoCAD Creator(TM) -- the application GUI.
+ * Definition: Defines CadCreatorApp -- the AutoCAD Creator(TM) desktop
+ *   application, built entirely from SLeeLa source using SleelaUI (SLeeLa's OWN
+ *   cross-platform toolkit under /lib/user-interface), NOT JavaFX. It opens a
+ *   real native window (X11/Cocoa/Win32) with:
+ *     - a header bar (brand + document title + Save),
+ *     - a left tool column (Select / Line / Room / Dim / Note / Move / Delete /
+ *       Undo and a layer chooser) that controls the AutoCAD work,
+ *     - a property strip of entries (coords, size, label) feeding the tools,
+ *     - a central SLCadCanvas 2D drawing surface that previews the live model,
+ *     - a plan editor (SLTextView) + "Build from plan" to seed a drawing,
+ *     - a status bar.
+ *   Every control issues an intent to the authoritative SLCadCreator (create /
+ *   alter / delete / undo / save); the GUI computes no geometry and writes no
+ *   DXF itself. On a headless host (no display) it builds the model in memory,
+ *   prints a report + the DXF, and exits cleanly -- so the module is exercised
+ *   end to end without a screen.
+ *
+ * Family: autocad (creator module). JavaFX presents elsewhere; here SleelaUI
+ * presents and SLeeLa decides.
+ */
+#sleela 1.5
+class CadCreatorApp {
+  SLUserInterface ui;
+  SLWindow win;
+  SLCadCreator creator;
+  SLCadCanvas canvas;
+
+  // Tool palette.
+  SLButton toolSelect; SLButton toolLine; SLButton toolRoom; SLButton toolDim;
+  SLButton toolNote;   SLButton toolMove; SLButton toolDelete;
+  SLButton actUndo;    SLButton actSave;  SLButton actBuild;
+  SLComboBox layerPick;
+
+  // Property inputs (the numbers/text a tool consumes).
+  SLEntry inX; SLEntry inY; SLEntry inW; SLEntry inH; SLEntry inText;
+  SLTextView planView;
+  SLStatusBar status;
+
+  int activeTool;   // mirrors the selected palette button
+  static final int T_SELECT = 0;
+  static final int T_LINE   = 1;
+  static final int T_ROOM   = 2;
+  static final int T_DIM    = 3;
+  static final int T_NOTE   = 4;
+  static final int T_MOVE   = 5;
+  static final int T_DELETE = 6;
+
+  // ---- entry point --------------------------------------------------------
+
+  int run() {
+    creator = new SLCadCreator();
+    creator.newDocument("Untitled", "mm");
+    seedDemo();                       // a starter drawing to edit
+
+    ui = new SLUserInterface();
+    ui.configure("com.mearvk.SleelaUI.AutoCadCreator");
+    if (!ui.open()) {
+      // Headless host: no display. Prove the whole pipeline in memory.
+      return headless();
+    }
+
+    SLTheme theme = new SLTheme();
+    theme.slickBlack();
+    win = ui.openWindow("SLeeLa • AutoCAD Creator™ - MEARVK LLC",
+                        1180, 760, theme.handle());
+    SLWidget root = win.rootWidget();
+
+    buildHeader(root);
+    buildBody(root);
+    buildStatus(root);
+    refreshStatus();
+
+    win.show();
+    return loop();
+  }
+
+  // ---- layout -------------------------------------------------------------
+
+  void buildHeader(SLWidget root) {
+    SLHeaderBar header = new SLHeaderBar();
+    header.createIn(root);
+    header.setSizeRequest(0, 46);
+
+    SLLabel brand = new SLLabel();
+    brand.createIn(header, "AutoCAD Creator™");
+    brand.setMargin(0, 0, 0, 14);
+    brand.setAlign(SLWidget.ALIGN_START, SLWidget.ALIGN_CENTER);
+
+    SLLabel docTitle = new SLLabel();
+    docTitle.createIn(header, "—  " + creator.document().getTitle());
+    docTitle.setMargin(0, 0, 0, 10);
+
+    SLSpacer sp = new SLSpacer();
+    sp.createIn(header);
+
+    actSave = new SLButton();
+    actSave.createIn(header, "Save DXF");
+    actSave.setSuggested(true);
+    actSave.setMargin(6, 12, 6, 0);
+  }
+
+  void buildBody(SLWidget root) {
+    SLBox body = new SLBox();
+    body.horizontal(root, 12);
+    body.setExpand(true, true);
+    body.setMarginAll(14);
+
+    buildTools(body);
+    buildCanvas(body);
+    buildSidePlan(body);
+  }
+
+  // Left: the tool column that controls the AutoCAD work.
+  void buildTools(SLWidget body) {
+    SLBox col = new SLBox();
+    col.vertical(body, 8);
+    col.setSizeRequest(190, 0);
+
+    SLLabel h = new SLLabel();
+    h.createIn(col, "Tools");
+
+    toolSelect = toolButton(col, "Select");
+    toolLine   = toolButton(col, "Line / Wall");
+    toolRoom   = toolButton(col, "Room");
+    toolDim    = toolButton(col, "Dimension");
+    toolNote   = toolButton(col, "Note");
+    toolMove   = toolButton(col, "Move selection");
+    toolDelete = toolButton(col, "Delete selection");
+    toolDelete.setDestructive(true);
+
+    SLSeparator r1 = new SLSeparator(); r1.horizontal(col);
+
+    SLLabel lh = new SLLabel();
+    lh.createIn(col, "Active layer");
+    layerPick = new SLComboBox();
+    layerPick.createIn(col);
+    layerPick.addOption("walls");
+    layerPick.addOption("dims");
+    layerPick.addOption("notes");
+    layerPick.setSelectedIndex(0);
+
+    SLSeparator r2 = new SLSeparator(); r2.horizontal(col);
+
+    actUndo = new SLButton();
+    actUndo.createIn(col, "Undo last edit");
+
+    activeTool = T_SELECT;
+  }
+
+  SLButton toolButton(SLWidget parent, String label) {
+    SLButton b = new SLButton();
+    b.createIn(parent, label);
+    b.setExpand(true, false);
+    return b;
+  }
+
+  // Centre: the property strip + the 2D drawing surface.
+  void buildCanvas(SLWidget body) {
+    SLBox centre = new SLBox();
+    centre.vertical(body, 10);
+    centre.setExpand(true, true);
+
+    // Property inputs the active tool reads.
+    SLBox props = new SLBox();
+    props.horizontal(centre, 8);
+    inX = labelledEntry(props, "x");
+    inY = labelledEntry(props, "y");
+    inW = labelledEntry(props, "w / x2");
+    inH = labelledEntry(props, "h / y2");
+    inText = labelledEntry(props, "label");
+
+    SLBox actRow = new SLBox();
+    actRow.horizontal(centre, 8);
+    SLButton apply = new SLButton();
+    apply.createIn(actRow, "Apply tool");
+    apply.setSuggested(true);
+    // Reuse apply as the primary action; store on actBuild-less path via tag.
+    // (Apply is wired in the loop by identity below.)
+    applyButton = apply;
+    SLSpacer asp = new SLSpacer(); asp.createIn(actRow);
+    SLLabel hint = new SLLabel();
+    hint.createIn(actRow, "Pick a tool, fill the fields, Apply.");
+
+    // The live preview surface.
+    SLLabel ch = new SLLabel();
+    ch.createIn(centre, "Drawing");
+    canvas = new SLCadCanvas();
+    canvas.createIn(centre, 640, 520, creator);
+    // The draw handler ordinal (0) is bound by the host to drawFrame();
+    // its body calls canvas.render(ctx) each frame.
+    canvas.setDrawHandler(0);
+  }
+
+  // Right: the plan editor to seed/replace the drawing from text directives.
+  void buildSidePlan(SLWidget body) {
+    SLBox side = new SLBox();
+    side.vertical(body, 8);
+    side.setSizeRequest(300, 0);
+
+    SLLabel h = new SLLabel();
+    h.createIn(side, "Plan (text directives)");
+
+    planView = new SLTextView();
+    planView.createIn(side, 300, 420);
+    loadDefaultPlan();
+
+    actBuild = new SLButton();
+    actBuild.createIn(side, "Build from plan");
+    actBuild.setExpand(true, false);
+  }
+
+  SLEntry labelledEntry(SLWidget row, String placeholder) {
+    SLBox cell = new SLBox();
+    cell.vertical(row, 2);
+    SLLabel l = new SLLabel();
+    l.createIn(cell, placeholder);
+    SLEntry e = new SLEntry();
+    e.createIn(cell, placeholder);
+    e.setSizeRequest(90, 0);
+    return e;
+  }
+
+  void buildStatus(SLWidget root) {
+    status = new SLStatusBar();
+    status.createIn(root);
+  }
+
+  SLButton applyButton;
+
+  // ---- the event loop (poll widgets -> issue creator intents) ------------
+
+  int loop() {
+    while (ui.active()) {
+      int dispatched = ui.pump(true);
+      if (dispatched < 0) { break; }
+      pollTools();
+      pollActions();
+      win.requestRedraw();
+    }
+    return 0;
+  }
+
+  // Selecting a tool just records which one is active.
+  void pollTools() {
+    if (toolSelect.clicked()) { activeTool = T_SELECT; note("tool: select"); }
+    if (toolLine.clicked())   { activeTool = T_LINE;   note("tool: line/wall"); }
+    if (toolRoom.clicked())   { activeTool = T_ROOM;   note("tool: room"); }
+    if (toolDim.clicked())    { activeTool = T_DIM;    note("tool: dimension"); }
+    if (toolNote.clicked())   { activeTool = T_NOTE;   note("tool: note"); }
+    if (toolMove.clicked())   { activeTool = T_MOVE;   note("tool: move"); }
+    if (toolDelete.clicked()) { activeTool = T_DELETE; note("tool: delete"); }
+    if (layerPick.changed())  { creator.setLayer(layerPick.selected()); refreshStatus(); }
+  }
+
+  // The action buttons perform the actual AutoCAD work via the creator.
+  void pollActions() {
+    if (applyButton.clicked()) { applyTool(); }
+    if (actUndo.clicked())     { creator.undo(); refreshStatus(); }
+    if (actBuild.clicked())    { buildFromPlan(); }
+    if (actSave.clicked())     { saveDocument(); }
+  }
+
+  // Run the active tool against the current field values and selection.
+  void applyTool() {
+    double x = numField(inX);
+    double y = numField(inY);
+    double w = numField(inW);
+    double h = numField(inH);
+    String text = textField(inText);
+
+    if (activeTool == T_LINE)   { creator.wall(x, y, w, h); }
+    else if (activeTool == T_ROOM) { creator.room(w, h, text); }
+    else if (activeTool == T_DIM)  { creator.dimension(x, y, w, h); }
+    else if (activeTool == T_NOTE) { creator.note(x, y, text); }
+    else if (activeTool == T_MOVE) { creator.moveSelection(x, y); }   // x,y = dx,dy
+    else if (activeTool == T_DELETE) { creator.deleteSelection(); }
+    else if (activeTool == T_SELECT) { creator.pickAt(x, y, 400.0); }
+
+    canvas.setSelected(creator.selected());
+    refreshStatus();
+  }
+
+  // ---- plan seeding -------------------------------------------------------
+
+  void buildFromPlan() {
+    creator.newDocument(creator.document().getTitle(), creator.document().getUnits());
+    int n = planView.getLineCount();
+    for (int i = 0; i < n; i = i + 1) {
+      applyPlanLine(planView.lineAt(i));
+    }
+    canvas.setSelected(-1);
+    refreshStatus();
+    note("built from plan: " + creator.document().aliveCount() + " entities");
+  }
+
+  // Parse one plan directive line (whitespace tokens) and apply it.
+  void applyPlanLine(String raw) {
+    String line = trim(raw);
+    if (line == "" || startsWith(line, "#")) { return; }
+    String op = firstToken(line);
+    String rest = afterFirst(line);
+    double n1 = tokenNum(line, 1);
+    double n2 = tokenNum(line, 2);
+    double n3 = tokenNum(line, 3);
+    double n4 = tokenNum(line, 4);
+    if (op == "title" || op == "units") {
+      creator.applyDirective(op, 0.0, 0.0, 0.0, 0.0, rest);
+    } else if (op == "note") {
+      creator.applyDirective(op, 0.0, 0.0, 0.0, 0.0, rest);
+    } else if (op == "room") {
+      // room <name> <w> <h>
+      creator.applyDirective(op, tokenNum(line, 2), tokenNum(line, 3), 0.0, 0.0, tokenAt(line, 1));
+    } else {
+      creator.applyDirective(op, n1, n2, n3, n4, rest);
+    }
+  }
+
+  // ---- save ---------------------------------------------------------------
+
+  // Produce the DXF and surface it. In this architecture SLeeLa owns the DXF
+  // text; the host writes it to a .dxf file. We print it (as the renderer does)
+  // and report in the status bar.
+  void saveDocument() {
+    String dxf = creator.save();
+    print(dxf);
+    note("saved DXF (" + creator.document().aliveCount() + " entities)");
+  }
+
+  // ---- the per-frame draw handler ----------------------------------------
+  // The VM calls this (bound to draw-handler ordinal 0) each frame with the
+  // canvas's SLDrawContext. The GUI only paints; the creator owns the model.
+  void drawFrame(SLDrawContext ctx) {
+    canvas.render(ctx);
+  }
+
+  // ---- status + helpers ---------------------------------------------------
+
+  void refreshStatus() {
+    if (status != null) { status.setText(creator.summary()); }
+  }
+  void note(String msg) {
+    if (status != null) { status.setText(msg + "  •  " + creator.summary()); }
+  }
+
+  double numField(SLEntry e) {
+    if (e == null) { return 0.0; }
+    return parseNum(e.text());
+  }
+  String textField(SLEntry e) {
+    if (e == null) { return ""; }
+    // NB: a String compares `== null` as true in the VM, so we never null-test
+    // a String; an unset/empty entry already reads back as "".
+    return e.text();
+  }
+
+  // A starter drawing so the canvas and the alter tools have something to act
+  // on the moment the window opens.
+  void seedDemo() {
+    creator.setLayer("walls");
+    creator.setAt(0.0, 0.0);
+    creator.room(6000.0, 4000.0, "Lobby");
+    creator.setAt(6000.0, 0.0);
+    creator.room(4000.0, 4000.0, "Office");
+    creator.setLayer("dims");
+    creator.dimension(0.0, -600.0, 10000.0, -600.0);
+    creator.setLayer("notes");
+    creator.note(0.0, 4600.0, "Office Floor — draft");
+    creator.setLayer("walls");
+    creator.deselect();
+  }
+
+  void loadDefaultPlan() {
+    String[] p = new String[16];
+    p[0]  = "title Office Floor";
+    p[1]  = "units mm";
+    p[2]  = "at 0 0";
+    p[3]  = "room Lobby 6000 4000";
+    p[4]  = "at 6000 0";
+    p[5]  = "room Office 4000 4000";
+    p[6]  = "door 6000 1500 900";
+    p[7]  = "dim 0 -600 10000 -600";
+    p[8]  = "dim -600 0 -600 4000";
+    p[9]  = "note Fire exit on north wall";
+    p[10] = "note All dimensions in millimetres";
+    planView.loadLines(p, 11);
+  }
+
+  // ---- headless fallback (no display) -------------------------------------
+
+  int headless() {
+    print("================================================================");
+    print("  SLeeLa AutoCAD Creator(TM) -- headless (no display)");
+    print("================================================================");
+    print("Seeded drawing: " + creator.document().aliveCount() + " entities.");
+
+    // Demonstrate ALTERATION end to end, exactly what the GUI tools issue.
+    int firstWall = -1;
+    SLCadDocument doc = creator.document();
+    for (int i = 0; i < doc.size(); i = i + 1) {
+      SLCadEntity e = doc.at(i);
+      if (e != null && e.isAlive() && e.getLayer() == "walls") { firstWall = e.getId(); break; }
+    }
+    if (firstWall >= 0) {
+      creator.select(firstWall);
+      creator.moveSelection(250.0, 0.0);           // alter: move a wall
+      print("altered wall #" + firstWall + " (+250 x); " + creator.lastDescription());
+    }
+    int noteId = creator.note(500.0, 5200.0, "Added via Creator");  // create
+    creator.relabel(noteId, "Added + relabelled");                  // alter
+    print("created note #" + noteId + ", then relabelled it.");
+    creator.undo();                                                 // undo relabel
+    print("undo -> history now " + creator.edits() + " edits.");
+
+    print("---- saved AutoCAD DXF ----");
+    print(creator.save());
+    return 0;
+  }
+
+  // ---- tiny string + number helpers (no imports needed) -------------------
+
+  double parseNum(String s) {
+    String t = trim(s);
+    if (t == "") { return 0.0; }
+    double sign = 1.0; int i = 0;
+    if (charAt(t, 0) == "-") { sign = -1.0; i = 1; }
+    else if (charAt(t, 0) == "+") { i = 1; }
+    double whole = 0.0; double frac = 0.0; double scale = 1.0; boolean dot = false;
+    for (; i < t.length(); i = i + 1) {
+      String ch = charAt(t, i);
+      if (ch == ".") { dot = true; continue; }
+      int d = digit(ch);
+      if (d < 0) { break; }
+      if (!dot) { whole = whole * 10.0 + d; }
+      else { scale = scale / 10.0; frac = frac + d * scale; }
+    }
+    return sign * (whole + frac);
+  }
+  int digit(String ch) {
+    if (ch == "0") { return 0; } if (ch == "1") { return 1; }
+    if (ch == "2") { return 2; } if (ch == "3") { return 3; }
+    if (ch == "4") { return 4; } if (ch == "5") { return 5; }
+    if (ch == "6") { return 6; } if (ch == "7") { return 7; }
+    if (ch == "8") { return 8; } if (ch == "9") { return 9; }
+    return -1;
+  }
+  String charAt(String s, int i) {
+    if (i < 0 || i >= s.length()) { return ""; }
+    return s.substring(i, i + 1);
+  }
+  String trim(String s) {
+    int a = 0; int b = s.length();
+    while (a < b && isSpace(charAt(s, a))) { a = a + 1; }
+    while (b > a && isSpace(charAt(s, b - 1))) { b = b - 1; }
+    return s.substring(a, b);
+  }
+  boolean isSpace(String ch) { return ch == " " || ch == "\t" || ch == "\r" || ch == "\n"; }
+  boolean startsWith(String s, String p) {
+    if (s.length() < p.length()) { return false; }
+    return s.substring(0, p.length()) == p;
+  }
+
+  // The op keyword (first whitespace-delimited token).
+  String firstToken(String line) { return tokenAt(line, 0); }
+  String afterFirst(String line) {
+    int sp = indexOfSpace(line, 0);
+    if (sp < 0) { return ""; }
+    return trim(line.substring(sp, line.length()));
+  }
+  // The i-th whitespace-delimited token ("" if absent).
+  String tokenAt(String line, int index) {
+    int start = 0; int seen = 0;
+    int n = line.length();
+    while (start < n) {
+      while (start < n && isSpace(charAt(line, start))) { start = start + 1; }
+      int end = start;
+      while (end < n && !isSpace(charAt(line, end))) { end = end + 1; }
+      if (end > start) {
+        if (seen == index) { return line.substring(start, end); }
+        seen = seen + 1;
+      }
+      start = end;
+    }
+    return "";
+  }
+  double tokenNum(String line, int index) { return parseNum(tokenAt(line, index)); }
+  int indexOfSpace(String s, int from) {
+    for (int i = from; i < s.length(); i = i + 1) { if (isSpace(charAt(s, i))) { return i; } }
+    return -1;
+  }
+}

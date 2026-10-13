@@ -1,0 +1,157 @@
+/*
+ * autocad/creator/cad/SLCadCanvas.sleela
+ * SLeeLa AutoCAD Creator(TM) -- drawing surface.
+ * Definition: Defines SLCadCanvas -- the SleelaUI drawing surface that paints an
+ *   editable SLCadDocument. It owns an SLCanvasView and, each frame, projects
+ *   the document's live entities into the view's SLDrawContext: it fits the
+ *   drawing extents to the canvas (with padding), flips Y so the drawing reads
+ *   right way up, strokes walls/dimension lines, fills dimension/measurement and
+ *   note text, and highlights the Creator's current selection. The canvas is
+ *   pure presentation -- it reads geometry the SLCadCreator owns and never
+ *   mutates it, upholding the project's rule: the UI presents, SLeeLa decides.
+ *
+ * Family: autocad (creator module). Built on /lib/user-interface (SLCanvasView +
+ * SLDrawContext) -- SLeeLa's OWN cross-platform toolkit, not JavaFX.
+ */
+#sleela 1.5
+class SLCadCanvas {
+  // Slick-Black-family palette as 0xRRGGBBAA words. The core lexer has no hex
+  // literal form, so (exactly like SLColor) each colour is built arithmetically
+  // from decimal channel values in configure(); the fields are filled there.
+  int COL_BG;      // deep slate background    #0F172A
+  int COL_WALL;    // wall / room lines        #E5E7EB
+  int COL_DIM;     // dimension lines          #F87171
+  int COL_DIMTX;   // measured text            #FCA5A5
+  int COL_NOTE;    // note / title text        #86EFAC
+  int COL_SEL;     // selection highlight      #3BE07A (brand green)
+  int COL_GRID;    // faint grid               #1E293B
+
+  SLCanvasView view;
+  SLCadCreator creator;        // the editing brain whose document we paint
+
+  int padPx;                   // screen padding around the drawing
+  int selectedId;              // id to highlight (-1 none); mirrors creator sel
+
+  // Pack an opaque 0xRRGGBBAA word from decimal channels (alpha forced to 255).
+  int rgb(int r, int g, int b) {
+    SLColor c = new SLColor();
+    c.rgb(r, g, b);
+    return c.value();
+  }
+  void palette() {
+    COL_BG    = rgb(15, 23, 42);
+    COL_WALL  = rgb(229, 231, 235);
+    COL_DIM   = rgb(248, 113, 113);
+    COL_DIMTX = rgb(252, 165, 165);
+    COL_NOTE  = rgb(134, 239, 172);
+    COL_SEL   = rgb(59, 224, 122);
+    COL_GRID  = rgb(30, 41, 59);
+  }
+
+  // Create the canvas inside `parent` at a pixel size, bound to a creator.
+  void createIn(SLWidget parent, int width, int height, SLCadCreator owner) {
+    palette();
+    view = new SLCanvasView();
+    view.createIn(parent, width, height);
+    view.setExpand(true, true);
+    view.setFps(30.0);
+    creator = owner;
+    padPx = 48;
+    selectedId = -1;
+  }
+
+  SLCanvasView canvas() { return view; }
+  int handle() { return (view == null) ? -1 : view.handle(); }
+
+  // Register the VM draw-handler ordinal; its body should call render(ctx).
+  void setDrawHandler(int handlerId) {
+    if (view != null) { view.setDrawHandler(handlerId); }
+  }
+
+  void setSelected(int id) { selectedId = id; }
+
+  // ---- projection ---------------------------------------------------------
+  // World (DXF) coordinates have Y up; the canvas has Y down. We fit the live
+  // extents into the view with uniform scale + padding and flip Y.
+
+  double scaleFor(SLCadDocument doc, int w, int h) {
+    double dw = doc.maxX() - doc.minX();
+    double dh = doc.maxY() - doc.minY();
+    if (dw < 1.0) { dw = 1.0; }
+    if (dh < 1.0) { dh = 1.0; }
+    double sx = (w - 2.0 * padPx) / dw;
+    double sy = (h - 2.0 * padPx) / dh;
+    return (sx < sy) ? sx : sy;
+  }
+  double sx(double x, SLCadDocument doc, double scale) {
+    return padPx + (x - doc.minX()) * scale;
+  }
+  double sy(double y, SLCadDocument doc, double scale, int h) {
+    // Flip vertically so the drawing reads the right way up.
+    return padPx + (doc.maxY() - y) * scale;
+  }
+
+  // ---- the per-frame paint ------------------------------------------------
+
+  // Paint the whole document into `ctx` (bound to the view's frame surface).
+  void render(SLDrawContext ctx) {
+    if (ctx == null || !ctx.valid() || creator == null) { return; }
+    int w = ctx.width();
+    int h = ctx.height();
+
+    ctx.clear(COL_BG);
+    SLCadDocument doc = creator.document();
+    if (doc == null || doc.aliveCount() == 0) { return; }
+
+    double scale = scaleFor(doc, w, h);
+    int n = doc.size();
+    for (int i = 0; i < n; i = i + 1) {
+      SLCadEntity e = doc.at(i);
+      if (e == null || !e.isAlive()) { continue; }
+      paintEntity(ctx, doc, e, scale, h);
+    }
+    paintSelection(ctx, doc, scale, h);
+  }
+
+  void paintEntity(SLDrawContext ctx, SLCadDocument doc, SLCadEntity e,
+                   double scale, int h) {
+    if (e.isText()) {
+      int col = (e.getLayer() == "dims") ? COL_DIMTX : COL_NOTE;
+      int tx = roundI(sx(e.getX1(), doc, scale));
+      int ty = roundI(sy(e.getY1(), doc, scale, h));
+      ctx.text(e.label(), tx, ty, col);
+      return;
+    }
+    // LINE or DIM: stroke the segment.
+    int col = (e.getLayer() == "dims") ? COL_DIM : COL_WALL;
+    double thick = (e.getLayer() == "dims") ? 1.0 : 2.0;
+    ctx.line(sx(e.getX1(), doc, scale), sy(e.getY1(), doc, scale, h),
+             sx(e.getX2(), doc, scale), sy(e.getY2(), doc, scale, h),
+             thick, col);
+    if (e.isDim()) {
+      int tx = roundI(sx(e.midX(), doc, scale));
+      int ty = roundI(sy(e.midY(), doc, scale, h));
+      ctx.text(e.label(), tx, ty, COL_DIMTX);
+    }
+  }
+
+  // Ring + endpoint markers on the Creator's current selection.
+  void paintSelection(SLDrawContext ctx, SLCadDocument doc, double scale, int h) {
+    int id = (selectedId >= 0) ? selectedId : creator.selected();
+    if (id < 0) { return; }
+    SLCadEntity e = doc.byId(id);
+    if (e == null || !e.isAlive()) { return; }
+    double ax = sx(e.getX1(), doc, scale); double ay = sy(e.getY1(), doc, scale, h);
+    ctx.strokeCircle(ax, ay, 6.0, 2.0, COL_SEL);
+    if (!e.isText()) {
+      double bx = sx(e.getX2(), doc, scale); double by = sy(e.getY2(), doc, scale, h);
+      ctx.strokeCircle(bx, by, 6.0, 2.0, COL_SEL);
+      ctx.line(ax, ay, bx, by, 2.0, COL_SEL);
+    }
+  }
+
+  int roundI(double v) {
+    if (v >= 0.0) { return (int)(v + 0.5); }
+    return (int)(v - 0.5);
+  }
+}
