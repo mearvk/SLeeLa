@@ -20,13 +20,18 @@ version = providers.gradleProperty("version").get()
 
 dependencies {
     intellijPlatform {
-        // Use the dedicated IntelliJ IDEA Community helper. The generic
-        // create("IC", version) produced a broken "idea:ideaIC:<v>" coordinate
-        // that Gradle searched for on Maven Central and could not find;
-        // intellijIdea(version) resolves the correct
-        // com.jetbrains.intellij.idea:ideaIC artifact from the IntelliJ repos.
-        // The version must be a published build (e.g. 2025.3.6.1).
-        intellijIdea(providers.gradleProperty("platformVersion").get())
+        // Two ways to supply the IntelliJ Platform:
+        //  1. localIdePath — point at an already-installed IDE (no download,
+        //     guaranteed to match that IDE's build). Set it in gradle.properties
+        //     or on the CLI: -PlocalIdePath=/path/to/idea-IU-XXX
+        //  2. otherwise download the IntelliJ IDEA Community SDK pinned by
+        //     platformVersion (needs network + a published version).
+        val localIdePath = providers.gradleProperty("localIdePath").orNull
+        if (!localIdePath.isNullOrBlank()) {
+            local(localIdePath)
+        } else {
+            intellijIdea(providers.gradleProperty("platformVersion").get())
+        }
         testFramework(TestFrameworkType.Platform)
     }
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
@@ -50,7 +55,13 @@ intellijPlatform {
         version = project.version.toString()
         ideaVersion {
             sinceBuild = providers.gradleProperty("pluginSinceBuild")
-            untilBuild = providers.gradleProperty("pluginUntilBuild")
+            // Only set untilBuild when the property is non-blank; an empty value
+            // leaves the upper bound open so patch updates of the same line keep
+            // the plugin enabled.
+            val until = providers.gradleProperty("pluginUntilBuild").orNull
+            if (!until.isNullOrBlank()) {
+                untilBuild = until
+            }
         }
     }
 }
