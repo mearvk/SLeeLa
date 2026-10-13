@@ -816,7 +816,7 @@
     },
     {
       "path": "autocad/creator/cad/CadCreatorApp.sleela",
-      "sha256": "56ea9c3e2d9a8d65fa8f973d5d2213372f7a2fc97fc01c58e24d47d067e62612"
+      "sha256": "120793405f06a7eae015cd5551162e394b6b62a23d587f07d0a4c3443e5389fa"
     },
     {
       "path": "autocad/creator/cad/SLCadCanvas.sleela",
@@ -824,7 +824,7 @@
     },
     {
       "path": "autocad/creator/creator.sleela",
-      "sha256": "2af3c94acdc5bc459a17ce29fd9025a8f84b824f1054cf6b94813175c7483ef3"
+      "sha256": "4196484163d9b7be8b800f1e4eefd6278e84db71697012669e6a62029fa3a73b"
     },
     {
       "path": "bash/CWRU/misc/errlist.c",
@@ -7188,23 +7188,23 @@
     },
     {
       "path": "lib/autocad/SLCadCommand.sleela",
-      "sha256": "3fc65806415efa01bf08fa11df064c92f14728cb534cdcf88e81234b59bb6f62"
+      "sha256": "f89f60c6d2980e196f2145f6118c1b7e8ee46b77f0bafada9164afe8b86374ad"
     },
     {
       "path": "lib/autocad/SLCadCreator.sleela",
-      "sha256": "ebd2578785b13b7412c44e0b2b5a93d930bf8ca58a2e4f1687ca69c986d81068"
+      "sha256": "1172fc62e87b063726c9d81359aa54e176196d2bec441c4dd5560d4f96e9b132"
     },
     {
       "path": "lib/autocad/SLCadDocument.sleela",
-      "sha256": "e72e88fbb9459592a81af13400278c3daaf21e6fbf142e2fc2f5262b5f4e1400"
+      "sha256": "cd69bb521e5544eed893272b762d06c7c2a2b1fb10b736102997e6abd618f429"
     },
     {
       "path": "lib/autocad/SLCadDxf.sleela",
-      "sha256": "63bd91160be4c5def4b279057296a43136db6be95e02742b9de6c6115c560c3c"
+      "sha256": "fb141be835e6445ec3bcd2d58ff3e6826875b863e03bd0b4a0221e4303712f06"
     },
     {
       "path": "lib/autocad/SLCadEntity.sleela",
-      "sha256": "e5eed7cad02276de3346b98bd0e9590393b2d9bd9eb3cd834c26c9f75a2e3cf6"
+      "sha256": "37a18fd7765abbdd1ea3f08864c8a1f13f3990baf36731866f502dd3b059a274"
     },
     {
       "path": "lib/autocad/SLCadModel.sleela",
