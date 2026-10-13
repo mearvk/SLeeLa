@@ -26,6 +26,7 @@ class SLMachine {
   SLOperatingSystem os;
   SLProgramLoader loader;
   SLInstructionSet isa;
+  SLTimingProfile timing;   // the machine's adjustable operating point (optional)
   int kernelEntry;
   int syscallHandler;
 
@@ -278,8 +279,59 @@ class SLMachine {
     return os.run(rounds);
   }
 
+  // Select the machine's adjustable timing/voltage operating point for a given
+  // expertise tier (SLTimingClass.TIER_NOVICE/BASIC/ADVANCED/EXPERT) and brand
+  // or medium. The profile owns the actual voltages, the variable bus/core/IO
+  // clocks, and the expert CPU/RAM/I/O timings; it is sealed into a manifest
+  // that every program compiled through the loader's compiler then carries.
+  SLTimingProfile selectTiming(int tier, String brandOrMedium) {
+    timing = new SLTimingProfile();
+    timing.configure(tier, brandOrMedium);
+    return timing;
+  }
+
+  // Compile a program with the machine's selected timing profile stamped into
+  // the resulting .sleela image, so the VM/loader honor the declared operating
+  // point instead of assuming hardware quality. Returns the compiled program.
+  SLProgram compileWithTiming(String path, int langId, String programName) {
+    SLCompilerDriver driver = new SLCompilerDriver(); driver.configure(isa);
+    if (timing != null) { driver.useTimingProfile(timing); }
+    return driver.compile(path, langId, programName);
+  }
+
+  // Is the machine's selected operating point internally honored — every expert
+  // timing met on every rail at the dialed speeds, with the tier's headroom?
+  boolean timingHonored() { return timing != null && timing.honored(); }
+
+  // Run a compiled program on this machine's CPU through the OS-specific native
+  // fast path (SLNativeRunner), as quickly as native code allows while every
+  // safety concern stays named and checked: the artifact is verified against a
+  // trusted SHA-256, the native core runs under a deny-by-default capability
+  // sandbox, resources are bounded VM-local handles that are deterministically
+  // torn down, and the run is deadline-bounded and cancellable. `platform` is an
+  // SLNativeTarget.OS_* ordinal; `artifactPath`/`entrySymbol` name the native
+  // core (use "@in-process" to run the built-in native executor). `sha256` is
+  // the trusted digest the artifact must match. Returns instructions executed
+  // natively, or -1 (inspect the returned runner's error()).
+  SLNativeRunner runNative(SLProgram program, int platform, String artifactPath,
+                           String entrySymbol, String sha256, int loadAddr,
+                           int budget, int deadlineMs) {
+    SLNativeTarget target = new SLNativeTarget();
+    target.configure(platform, SLNativeTarget.ARTIFACT_SHARED_LIBRARY, artifactPath, entrySymbol);
+
+    SLNativeGuard guard = new SLNativeGuard();
+    guard.configure(deadlineMs);
+    guard.expectSha256(sha256);
+
+    SLNativeRunner runner = new SLNativeRunner();
+    runner.configure(target, guard);
+    runner.runProgramOnCpu(cpu, program, loadAddr, budget);
+    return runner;
+  }
+
   SLCPU processor() { return cpu; }
   SLOperatingSystem operatingSystem() { return os; }
   SLProgramLoader programLoader() { return loader; }
   SLRAM mainMemory() { return memory; }
+  SLTimingProfile timingProfile() { return timing; }
 }

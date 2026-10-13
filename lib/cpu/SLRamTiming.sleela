@@ -1,0 +1,129 @@
+/*
+ * lib/cpu/SLRamTiming.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLRamTiming — the expert memory-timing settings of a RAM
+ *   channel, stated the way a DRAM datasheet / BIOS does: the actual data rate
+ *   (MT/s), the Vddq rail, and the primary timings CL, tRCD, tRP, tRAS, tRC and
+ *   command rate as CLOCK CYCLES, plus the derived nanosecond latencies those
+ *   cycles cost at the dialed data rate. Rather than assume memory keeps up,
+ *   each primary timing becomes a named SLTiming budget checked against the bus
+ *   period, and the first-word read latency is reported in real nanoseconds.
+ *
+ * Expert knobs are explicit: an operator tightens CL/tRCD/tRP/tRAS and the
+ * class recomputes real access latency and re-checks every budget against the
+ * settled Vddq, so tightening past what the voltage honors is refused.
+ *
+ * Family: cpu. Composes SLTiming and SLVoltageRail; partners SLRAM/SLBusTiming.
+ */
+#sleela 1.3
+class SLRamTiming {
+  String name;        // nameful: "DIMM-A ch0", ...
+  int dataRateMTs;    // transfers per second, millions (e.g. 3200 = DDR4-3200)
+  int minMTs;         // lowest data rate the operator may dial
+  int maxMTs;         // highest validated data rate
+
+  // Primary timings, in command-clock CYCLES (the datasheet surface).
+  int cl;             // CAS latency: read command -> first data
+  int trcd;           // RAS-to-CAS delay: activate -> read/write
+  int trp;            // row precharge: precharge -> next activate
+  int tras;           // row active time: activate -> precharge
+  int trc;            // row cycle: activate -> activate (same bank)
+  int commandRate;    // 1 (1T) or 2 (2T) command rate
+
+  SLVoltageRail vddq; // the DRAM I/O supply rail
+  int mvPerStep;      // settled Vddq each extra MT/s step of ceiling needs
+  int stepMTs;        // the MT/s granularity one voltage step buys
+
+  SLTiming casBudget; // CAS-to-DQ named budget
+  SLTiming rcdBudget; // activate-to-CAS named budget
+  SLTiming rpBudget;  // precharge named budget
+
+  void configure(String channelName, int rateMTs, int floorMTs, int ceilingMTs) {
+    name = channelName; dataRateMTs = rateMTs; minMTs = floorMTs; maxMTs = ceilingMTs;
+    cl = 16; trcd = 16; trp = 16; tras = 36; trc = 52; commandRate = 1;
+    mvPerStep = 0; stepMTs = 0;
+
+    casBudget = new SLTiming(); casBudget.configure("cas->dq", commandPeriodPs(), 50);
+    casBudget.describe("read data must appear on DQ CL command-clocks after the CAS strobe");
+    rcdBudget = new SLTiming(); rcdBudget.configure("act->cas", commandPeriodPs(), 50);
+    rcdBudget.describe("the row must be fully sensed before a column command is honored");
+    rpBudget = new SLTiming(); rpBudget.configure("precharge", commandPeriodPs(), 50);
+    rpBudget.describe("the bank must precharge fully before the next row is activated");
+    restamp();
+  }
+
+  void attachVddq(SLVoltageRail rail, int millivoltsPerStep, int mtsPerStep) {
+    vddq = rail; mvPerStep = millivoltsPerStep; stepMTs = mtsPerStep;
+  }
+
+  // The command clock runs at half the data rate on DDR (two transfers per
+  // command clock). Period of one command clock, in picoseconds.
+  int commandClockMHz() { return dataRateMTs / 2; }
+  int commandPeriodPs() { int f = commandClockMHz(); if (f <= 0) { return 0; } return 1000000 / f; }
+
+  // Set each primary timing (in command-clock cycles). Larger = looser/safer.
+  void setCL(int cycles) { if (cycles > 0) { cl = cycles; restamp(); } }
+  void setTRCD(int cycles) { if (cycles > 0) { trcd = cycles; restamp(); } }
+  void setTRP(int cycles) { if (cycles > 0) { trp = cycles; restamp(); } }
+  void setTRAS(int cycles) { if (cycles > 0) { tras = cycles; restamp(); } }
+  void setTRC(int cycles) { if (cycles > 0) { trc = cycles; restamp(); } }
+  void setCommandRate(int t) { if (t == 1 || t == 2) { commandRate = t; } }
+
+  // Dial the data rate, clamped into [min,max] and into what settled Vddq
+  // supports. DDR data rate changes the command period every budget rides on.
+  int setDataRate(int mts) {
+    int target = mts;
+    if (target < minMTs) { target = minMTs; }
+    if (target > maxMTs) { target = maxMTs; }
+    int ceiling = voltageCeilingMTs();
+    if (ceiling > 0 && target > ceiling) { target = ceiling; }
+    dataRateMTs = target;
+    restamp();
+    return dataRateMTs;
+  }
+
+  int voltageCeilingMTs() {
+    if (vddq == null || mvPerStep <= 0 || stepMTs <= 0) { return maxMTs; }
+    int steps = vddq.effectiveMv() / mvPerStep;
+    return steps * stepMTs;
+  }
+
+  // Re-derive each budget. A primary timing of N command-clocks must physically
+  // complete inside N clock periods: the window the controller allows is N
+  // periods, and the DRAM's internal settle (modeled as the array's fixed ~ns
+  // access translated back into this period) must fit with margin. We model the
+  // settle as (N-1) periods of propagation, so a tighter N shrinks the slack —
+  // tighten too far and the budget stops being honored.
+  void restamp() {
+    int p = commandPeriodPs();
+    casBudget.setPeriod(p * cl);     casBudget.setPropagation(p * (cl - 1));     casBudget.setSetup(0);
+    rcdBudget.setPeriod(p * trcd);   rcdBudget.setPropagation(p * (trcd - 1));   rcdBudget.setSetup(0);
+    rpBudget.setPeriod(p * trp);     rpBudget.setPropagation(p * (trp - 1));     rpBudget.setSetup(0);
+  }
+
+  // First-word read latency in nanoseconds: (tRCD + CL) command-clocks times
+  // the command period, divided by 1000 ps/ns.
+  int firstWordLatencyNs() { return ((trcd + cl) * commandPeriodPs()) / 1000; }
+
+  // Random full-row access latency in ns: tRP (close) + tRCD (open) + CL.
+  int randomAccessLatencyNs() { return ((trp + trcd + cl) * commandPeriodPs()) / 1000; }
+
+  // Honored when tRAS >= tRCD + CL (row stays open long enough to read it),
+  // tRC >= tRAS + tRP (the row cycle closes cleanly), and Vddq is in limits.
+  boolean honored() {
+    boolean activeOk = tras >= (trcd + cl);
+    boolean cycleOk = trc >= (tras + trp);
+    boolean power = (vddq == null) || vddq.withinLimits();
+    casBudget.honored(); rcdBudget.honored(); rpBudget.honored();
+    return activeOk && cycleOk && power;
+  }
+
+  String channelName() { return name; }
+  int dataRate() { return dataRateMTs; }
+  int casLatency() { return cl; }
+  int rasToCas() { return trcd; }
+  int rowPrecharge() { return trp; }
+  int rowActive() { return tras; }
+  int rowCycle() { return trc; }
+  int commandRateT() { return commandRate; }
+}

@@ -1,0 +1,105 @@
+/*
+ * lib/cpu/SLIOTiming.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLIOTiming — the expert timing settings for CONTROL of
+ *   I/O: the handshake and transfer timing of a peripheral/port link. I/O is
+ *   given the same careful, nameful treatment buses get, because an I/O link
+ *   mixes an asynchronous device clock domain with the CPU's: the class states
+ *   the link clock (variable), the setup/hold of the request/acknowledge
+ *   handshake, the turnaround (bus direction reversal) time, and a recovery gap
+ *   between transactions — each a named SLTiming budget. It also models the
+ *   synchronizer latency crossing the device clock domain into the CPU domain,
+ *   so I/O control timing is accounted honestly rather than assumed instant.
+ *
+ * The thesis "expert timings for control of I/O shall be careful and nameful"
+ * lives here: handshake, turnaround, and recovery each carry a name and reason,
+ * and the link reports whether a transaction is honored at the dialed speed.
+ *
+ * Family: cpu. Composes SLTiming and SLVoltageRail; partners SLIOBus/SLIOPort.
+ */
+#sleela 1.3
+class SLIOTiming {
+  String name;         // nameful link: "console-port", "disk-link", ...
+  int minMHz;          // lowest link clock the operator may dial
+  int maxMHz;          // highest validated link clock
+  int currentMHz;      // the variable link clock presently selected
+  int syncStages;      // flip-flops in the clock-domain-crossing synchronizer
+
+  SLVoltageRail vio;   // the I/O ring supply rail
+  int mvPerMHz;        // settled Vio each extra MHz of ceiling needs
+
+  SLTiming handshake;  // req -> ack named budget
+  SLTiming turnaround; // bus direction reversal named budget
+  SLTiming recovery;   // inter-transaction recovery gap named budget
+
+  void configure(String linkName, int floorMHz, int ceilingMHz, int synchronizerStages) {
+    name = linkName; minMHz = floorMHz; maxMHz = ceilingMHz; currentMHz = floorMHz;
+    syncStages = synchronizerStages; if (syncStages < 0) { syncStages = 0; }
+    mvPerMHz = 0;
+    int p = periodPsAt(currentMHz);
+    handshake = new SLTiming(); handshake.configure("req->ack", p, 60);
+    handshake.describe("device must acknowledge a request within one link clock of asserting it");
+    turnaround = new SLTiming(); turnaround.configure("bus-turnaround", p, 70);
+    turnaround.describe("the shared data lines must fully reverse direction before the reader drives");
+    recovery = new SLTiming(); recovery.configure("recovery", p, 50);
+    recovery.describe("the device needs a quiet gap after a transaction before the next command");
+  }
+
+  void attachVio(SLVoltageRail rail, int millivoltsPerMHz) { vio = rail; mvPerMHz = millivoltsPerMHz; }
+
+  int periodPsAt(int mhz) { if (mhz <= 0) { return 0; } return 1000000 / mhz; }
+
+  // State the measured path (propagation + setup, with hold) of each phase.
+  void setHandshake(int propPs, int setupPs, int holdPs) { handshake.setPropagation(propPs); handshake.setSetup(setupPs); handshake.setHold(holdPs); }
+  void setTurnaround(int propPs, int setupPs, int holdPs) { turnaround.setPropagation(propPs); turnaround.setSetup(setupPs); turnaround.setHold(holdPs); }
+  void setRecovery(int propPs, int setupPs, int holdPs) { recovery.setPropagation(propPs); recovery.setSetup(setupPs); recovery.setHold(holdPs); }
+
+  void setJitter(int jitterPs) { handshake.setJitter(jitterPs); turnaround.setJitter(jitterPs); recovery.setJitter(jitterPs); }
+
+  // Dial the variable link clock, clamped into [min,max] and the voltage ceiling.
+  int setClock(int mhz) {
+    int target = mhz;
+    if (target < minMHz) { target = minMHz; }
+    if (target > maxMHz) { target = maxMHz; }
+    int ceiling = voltageCeilingMHz();
+    if (ceiling > 0 && target > ceiling) { target = ceiling; }
+    currentMHz = target;
+    retime();
+    return currentMHz;
+  }
+
+  int voltageCeilingMHz() {
+    if (vio == null || mvPerMHz <= 0) { return maxMHz; }
+    return vio.effectiveMv() / mvPerMHz;
+  }
+
+  void retime() {
+    int p = periodPsAt(currentMHz);
+    handshake.setPeriod(p); turnaround.setPeriod(p); recovery.setPeriod(p);
+  }
+
+  // Latency (ps) to cross the device clock domain into the CPU domain: each
+  // synchronizer stage costs up to one link period. I/O control is not instant.
+  int synchronizerLatencyPs() { return syncStages * periodPsAt(currentMHz); }
+
+  // Total control latency of one transaction in ps: synchronizer + handshake +
+  // turnaround + recovery consumed times.
+  int transactionLatencyPs() {
+    return synchronizerLatencyPs()
+         + handshake.consumedPs()
+         + turnaround.consumedPs()
+         + recovery.consumedPs();
+  }
+
+  // Every phase honored at the dialed clock AND Vio in limits.
+  boolean honored() {
+    boolean phases = handshake.honored() && turnaround.honored() && recovery.honored();
+    boolean power = (vio == null) || vio.withinLimits();
+    return phases && power;
+  }
+
+  String linkName() { return name; }
+  int clock() { return currentMHz; }
+  int synchronizerStages() { return syncStages; }
+  SLTiming handshakeBudget() { return handshake; }
+}

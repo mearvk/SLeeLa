@@ -65,6 +65,7 @@ PATH_PLATFORM_SMOKE := $(BUILD)/path_platform_smoke
 TERMINAL_PLATFORM_SMOKE := $(BUILD)/terminal_platform_smoke
 LIBRARY_PLATFORM_SMOKE := $(BUILD)/library_platform_smoke
 TIME_PLATFORM_SMOKE := $(BUILD)/time_platform_smoke
+CPU_RUNNER_SMOKE := $(BUILD)/cpu_runner_smoke
 SYSTEM_MONITOR_SMOKE := $(BUILD)/system_monitor_smoke
 MEDIA_OBJ := $(BUILD)/sleela_media.o
 MEDIA_FORMATS_OBJ := $(BUILD)/sleela_media_formats.o
@@ -92,6 +93,7 @@ BESTOF_OBJ := $(BUILD)/sleela_bestof.o
 PATH_OBJ := $(BUILD)/sleela_path.o
 TERMINAL_OBJ := $(BUILD)/sleela_terminal.o
 LIBRARY_OBJ := $(BUILD)/sleela_library.o
+CPU_RUNNER_OBJ := $(BUILD)/sleela_cpu_runner.o
 OS_OBJ := $(BUILD)/sleela_os.o
 TIME_OBJ := $(BUILD)/sleela_time.o
 MEMORY_OBJ := $(BUILD)/sleela_memory.o
@@ -192,9 +194,9 @@ ifeq ($(OS),Windows_NT)
 else
   PYTHON ?= python3
 endif
-ALL_OBJECTS := $(CORE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
+ALL_OBJECTS := $(CORE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(CPU_RUNNER_OBJ) $(CPU_RUNNER_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer
+.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-cpu-runner test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer
 
 all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage
 
@@ -271,6 +273,8 @@ $(TERMINAL_PLATFORM_SMOKE): core/terminal_platform_smoke.c $(TERMINAL_OBJ) | $(B
 	$(CC) $(CFLAGS) -Icore core/terminal_platform_smoke.c $(TERMINAL_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(LIBRARY_PLATFORM_SMOKE): core/library_platform_smoke.c $(LIBRARY_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/library_platform_smoke.c $(LIBRARY_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(CPU_RUNNER_SMOKE): core/cpu_runner_smoke.c $(CPU_RUNNER_OBJ) $(LIBRARY_OBJ) $(PLATFORM_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/cpu_runner_smoke.c $(CPU_RUNNER_OBJ) $(LIBRARY_OBJ) $(PLATFORM_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(TIME_PLATFORM_SMOKE): core/time_platform_smoke.c $(TIME_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/time_platform_smoke.c $(TIME_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(THREAD_OBJ): core/sleela_thread.c core/sleela_thread.h | $(BUILD)
@@ -291,6 +295,8 @@ $(TERMINAL_OBJ): core/sleela_terminal.c core/sleela_terminal.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_terminal.c -o $@
 $(LIBRARY_OBJ): core/sleela_library.c core/sleela_library.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_library.c -o $@
+$(CPU_RUNNER_OBJ): core/sleela_cpu_runner.c core/sleela_cpu_runner.h core/sleela_library.h core/sleela_platform.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_cpu_runner.c -o $@
 $(OS_OBJ): core/sleela_os.c core/sleela_os.h core/sleela_platform.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_os.c -o $@
 $(TIME_OBJ): core/sleela_time.c core/sleela_time.h | $(BUILD)
@@ -476,7 +482,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr
+test: verify-security test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-cpu-runner test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
@@ -528,6 +534,8 @@ test-terminal-platform: $(TERMINAL_PLATFORM_SMOKE)
 	@echo "=== OS-aware terminal/PTY backend ==="; SLEELA_TERMINAL_PLATFORM=auto $(TERMINAL_PLATFORM_SMOKE)
 test-library-platform: $(LIBRARY_PLATFORM_SMOKE)
 	@echo "=== OS-aware native library loader ==="; $(LIBRARY_PLATFORM_SMOKE)
+test-cpu-runner: $(CPU_RUNNER_SMOKE)
+	@echo "=== OS-specific native /lib/cpu runner (verify/sandbox/run/teardown) ==="; $(CPU_RUNNER_SMOKE)
 test-time-platform: $(TIME_PLATFORM_SMOKE)
 	@echo "=== precision time platform ==="; $(TIME_PLATFORM_SMOKE)
 test-pixel-terminal: $(PIXEL_TERMINAL_SMOKE)
@@ -593,7 +601,7 @@ $(GC_MODERN_SMOKE): tests/runtime/gc_modern_smoke.c $(GC_OBJ) | verify-security 
 
 # Cross-platform source smoke suite. These tests exercise the native
 # OS abstraction layer (threads, sockets, I/O, paths, terminal, loader, time).
-test-platform: $(THREAD_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(IO_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(TIME_PLATFORM_SMOKE)
+test-platform: $(THREAD_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(IO_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(TIME_PLATFORM_SMOKE) $(CPU_RUNNER_SMOKE)
 	@echo "=== SLeeLa native platform smoke suite ($(PLATFORM)) ==="
 	@$(THREAD_PLATFORM_SMOKE)
 	@$(NET_PLATFORM_SMOKE)
@@ -602,6 +610,7 @@ test-platform: $(THREAD_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(IO_PLATFORM_SMOK
 	@$(TERMINAL_PLATFORM_SMOKE)
 	@$(LIBRARY_PLATFORM_SMOKE)
 	@$(TIME_PLATFORM_SMOKE)
+	@$(CPU_RUNNER_SMOKE)
 
 test-runtime: $(RUNTIME_SMOKE) $(GC_MODERN_SMOKE)
 	@echo "=== SLVM runtime services -- behavioral smoke ==="; $(RUNTIME_SMOKE)

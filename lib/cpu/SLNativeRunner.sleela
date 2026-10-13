@@ -1,0 +1,189 @@
+/*
+ * lib/cpu/SLNativeRunner.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLNativeRunner — the specialized, OS-specific native
+ *   runner for the /lib/cpu machine. It executes an SLCPU / SLProgram on a
+ *   native fast path (an OS-native shared library carrying the execution core),
+ *   as quickly as native code allows, while keeping every safety and security
+ *   concern named and checked: an SLNativeTarget says WHAT native artifact to
+ *   load on WHICH OS, an SLNativeGuard says under what verified, sandboxed,
+ *   bounded, time-bounded, cancellable, owned-and-torn-down terms it may run.
+ *
+ * Lifecycle, in the clear:
+ *   configure(target, guard)   bind the OS target and the safety contract
+ *   verify()                   measure the artifact and match its trusted SHA-256
+ *   load()                     dlopen/LoadLibrary the native core (sandboxed)
+ *   bind(cpu / program)        hand the model to the native core by VM handle
+ *   run(budget)                execute on the native fast path, polling safepoints
+ *   teardown()                 ordered, idempotent quiesce/close/finalize
+ *
+ * The native boundary is reached through the same bridge the rest of the
+ * standard library uses (native sleela_cpu_runner_*). When no native core is
+ * present or the guard is not satisfied, the runner refuses the fast path and
+ * falls back to the portable in-Sleela SLControlUnit — fast where it safely
+ * can, correct everywhere.
+ *
+ * Family: cpu. Composes SLNativeTarget, SLNativeGuard, SLCPU, SLProgram.
+ */
+#sleela 1.3
+class SLNativeRunner {
+  SLNativeTarget target;
+  SLNativeGuard guard;
+
+  int libHandle;      // VM-local handle to the loaded native core (0 = none)
+  int runnerHandle;   // VM-local handle to the native runner instance (0 = none)
+  int loaded;         // 1 once the native core is loaded and sandboxed
+  int ran;            // instructions executed on the native path
+  int usedFastPath;   // 1 = ran natively, 0 = fell back to the Sleela interpreter
+  int lastExit;       // exit status of the last run (0 = clean)
+  String lastError;   // nameful reason the last operation failed (empty = ok)
+
+  // Bind the OS target and the safety contract. Nothing is loaded yet.
+  void configure(SLNativeTarget nativeTarget, SLNativeGuard safety) {
+    target = nativeTarget; guard = safety;
+    libHandle = 0; runnerHandle = 0; loaded = 0; ran = 0; usedFastPath = 0;
+    lastExit = 0; lastError = "";
+  }
+
+  // Gate 1 — verification. Measure the artifact's SHA-256 at the native
+  // boundary and match it against the guard's trusted digest. Fail closed.
+  boolean verify() {
+    if (!target.valid()) { lastError = "invalid native target"; return false; }
+    String measured = native sleela_cpu_runner_sha256(target.path());
+    if (!guard.verifyDigest(measured)) {
+      lastError = "artifact failed SHA-256 verification";
+      return false;
+    }
+    return true;
+  }
+
+  // Gate 2 — load, under the capability sandbox. The native loader is handed
+  // the target path, the required ABI, and the granted capability bits; it
+  // refuses to open anything the sandbox does not authorize, and returns a
+  // bounded VM-local handle (never a raw pointer).
+  boolean load() {
+    if (!guard.satisfied()) { lastError = guard.unsatisfiedReason(); return false; }
+    if (!guard.capabilities().allows(SLNativeCapability.CAP_DYNAMIC_LIBRARY)) {
+      lastError = "sandbox denies dynamic-library capability"; return false;
+    }
+    libHandle = native sleela_cpu_runner_open(
+        target.platform(), target.path(), target.symbol(),
+        target.abiMajor(), target.abiMinor(),
+        capabilityMask());
+    if (libHandle <= 0) { lastError = "native core failed to load"; return false; }
+    runnerHandle = native sleela_cpu_runner_create(libHandle, guard.deadline());
+    if (runnerHandle <= 0) { lastError = "native runner failed to initialize"; teardown(); return false; }
+    loaded = 1; lastError = "";
+    return true;
+  }
+
+  // Collapse the granted capability set into the integer mask the native
+  // boundary expects (one bit per CAP_*). Only named grants reach native.
+  int capabilityMask() {
+    SLNativeCapability c = guard.capabilities();
+    int mask = 0; int i = SLNativeCapability.CAP_MEMORY;
+    while (i < SLNativeCapability.CAP_MAX) {
+      if (c.allows(i)) { mask = mask + bit(i); }
+      i = i + 1;
+    }
+    return mask;
+  }
+  int bit(int n) { int v = 1; int k = 0; while (k < n) { v = v * 2; k = k + 1; } return v; }
+
+  // Hand a built SLCPU to the native core by VM handle (bounded discipline).
+  // The native side mirrors the chip's cores/width/clock; it never sees Sleela
+  // objects, only the handle and the scalar configuration.
+  boolean bindCpu(SLCPU cpu) {
+    if (loaded == 0) { lastError = "native core not loaded"; return false; }
+    int rc = native sleela_cpu_runner_bind_cpu(
+        runnerHandle, cpu.cores(), cpu.wordWidth(), cpu.clock());
+    if (rc < 0) { lastError = "native core rejected the CPU binding"; return false; }
+    return true;
+  }
+
+  // Load a compiled program image into the native core, word by word through
+  // the bounded handle, honoring any timing manifest the image carries so the
+  // native path operates the DECLARED operating point (not an assumed one).
+  boolean bindProgram(SLProgram program, int loadAddr) {
+    if (loaded == 0) { lastError = "native core not loaded"; return false; }
+    int declaredCore = program.hasTiming() ? program.timingManifest().core() : 0;
+    int rc = native sleela_cpu_runner_load_program(
+        runnerHandle, loadAddr, program.size(), program.entry(), declaredCore);
+    if (rc < 0) { lastError = "native core rejected the program image"; return false; }
+    int i = 0;
+    while (i < program.size()) {
+      native sleela_cpu_runner_poke(runnerHandle, loadAddr + i, program.wordAt(i));
+      i = i + 1;
+    }
+    return true;
+  }
+
+  // Run on the native fast path for up to `budget` instructions, polling the
+  // guard's safe points so cancellation and the deadline are observable. If the
+  // guard is not satisfied or no native core is bound, return false and leave
+  // the caller to use the portable SLControlUnit path (runFallback).
+  boolean run(int budget) {
+    if (loaded == 0 || !guard.satisfied()) {
+      usedFastPath = 0;
+      lastError = (loaded == 0) ? "no native core bound" : guard.unsatisfiedReason();
+      return false;
+    }
+    int done = 0;
+    while (done < budget) {
+      int slice = sliceSize(budget - done);
+      int stepped = native sleela_cpu_runner_run(runnerHandle, slice);
+      if (stepped < 0) { lastError = "native run fault"; lastExit = stepped; teardown(); return false; }
+      done = done + stepped;
+      ran = ran + stepped;
+      if (guard.pollSafepoint()) { lastError = "run cancelled at safepoint"; teardown(); return false; }
+      if (native sleela_cpu_runner_halted(runnerHandle) == 1) { done = budget; }
+      if (stepped == 0) { done = budget; } // native core made no progress; stop
+    }
+    usedFastPath = 1;
+    lastExit = native sleela_cpu_runner_exit_status(runnerHandle);
+    return true;
+  }
+
+  // Safe points are polled between bounded slices so a long run stays
+  // cancellable; smaller slices = finer cancellation granularity.
+  int sliceSize(int remaining) { if (remaining > 4096) { return 4096; } return remaining; }
+
+  // The portable fallback: run the same program on the in-Sleela core so the
+  // model is correct on any OS even without a native fast core. The caller
+  // supplies a built core; this never crosses the native boundary.
+  int runFallback(SLCore core, int budget) {
+    usedFastPath = 0;
+    return core.controlUnit().run(budget);
+  }
+
+  // Ordered, idempotent teardown: quiesce the native runner, close the core,
+  // release the library handle. Safe to call more than once; stale handles are
+  // dropped (fail-closed), never reused.
+  void teardown() {
+    if (runnerHandle > 0) { native sleela_cpu_runner_destroy(runnerHandle); runnerHandle = 0; }
+    if (libHandle > 0) { native sleela_cpu_runner_close(libHandle); libHandle = 0; }
+    loaded = 0;
+  }
+
+  // One-call convenience: verify -> load -> bind -> run -> teardown, returning
+  // the instruction count executed natively, or -1 with lastError set.
+  int runProgramOnCpu(SLCPU cpu, SLProgram program, int loadAddr, int budget) {
+    if (!verify()) { return -1; }
+    if (!load()) { return -1; }
+    if (!bindCpu(cpu)) { teardown(); return -1; }
+    if (!bindProgram(program, loadAddr)) { teardown(); return -1; }
+    boolean ok = run(budget);
+    int executed = ran;
+    teardown();   // deterministic release regardless of outcome
+    if (!ok) { return -1; }
+    return executed;
+  }
+
+  boolean usedNativeFastPath() { return usedFastPath == 1; }
+  int instructionsRun() { return ran; }
+  int exitStatus() { return lastExit; }
+  String error() { return lastError; }
+  boolean isLoaded() { return loaded == 1; }
+  SLNativeTarget nativeTarget() { return target; }
+  SLNativeGuard safety() { return guard; }
+}

@@ -1,0 +1,92 @@
+/*
+ * lib/cpu/SLNativeTarget.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLNativeTarget — the named, OS-specific destination a
+ *   native CPU runner dispatches to. It names the host platform (Linux /
+ *   Windows / macOS), the architecture, the ABI, and the concrete native
+ *   artifact (a shared library or a binary) that carries the fast execution
+ *   core. Nothing about the target is implicit: the OS, the file, and the entry
+ *   symbol are all stated in the clear so a reviewer can see exactly what will
+ *   be loaded and run.
+ *
+ * This mirrors the native boundary the rest of the runtime uses
+ * (impl/core/sleela_platform.h, sleela_library.h): a Linux target resolves a
+ * .so via dlopen, a Windows target a .dll via LoadLibrary, a macOS target a
+ * .dylib — the same single native-library contract, selected per OS.
+ *
+ * Family: cpu. Pure Sleela descriptor; consumed by SLNativeRunner.
+ */
+#sleela 1.3
+class SLNativeTarget {
+  // Host platform ordinals, matching impl/core/sleela_platform.h SLPlatform.
+  static final int OS_UNKNOWN = 0;
+  static final int OS_LINUX   = 1;
+  static final int OS_WINDOWS = 2;
+  static final int OS_MACOS   = 3;
+
+  // The kind of native artifact the fast core lives in.
+  static final int ARTIFACT_SHARED_LIBRARY = 0;  // .so / .dll / .dylib
+  static final int ARTIFACT_EXECUTABLE      = 1;  // a standalone native binary
+
+  int os;              // one of OS_*
+  String osName;       // nameful: "Linux" / "Windows" / "macOS"
+  String architecture; // "x86_64", "arm64", ...
+  String abi;          // "sysv", "ms", "aapcs", ...
+  int artifactKind;    // ARTIFACT_*
+  String artifactPath; // the native library/binary to load/run (in the clear)
+  String entrySymbol;  // the exported symbol the runner resolves and calls
+  int minAbiMajor;     // the native ABI the artifact must present
+  int minAbiMinor;
+
+  // Describe a target: OS, artifact kind, path, and the entry symbol.
+  void configure(int platform, int kind, String path, String symbol) {
+    os = platform; artifactKind = kind; artifactPath = path; entrySymbol = symbol;
+    architecture = "x86_64"; abi = defaultAbi(platform);
+    minAbiMajor = 1; minAbiMinor = 1;
+    osName = nameOf(platform);
+  }
+
+  void setArchitecture(String arch) { architecture = arch; }
+  void setAbi(String name) { abi = name; }
+  void requireAbi(int major, int minor) { minAbiMajor = major; minAbiMinor = minor; }
+
+  String nameOf(int platform) {
+    if (platform == OS_LINUX) { return "Linux"; }
+    if (platform == OS_WINDOWS) { return "Windows"; }
+    if (platform == OS_MACOS) { return "macOS"; }
+    return "Unknown";
+  }
+
+  // The conventional system ABI of each OS, named in the clear.
+  String defaultAbi(int platform) {
+    if (platform == OS_LINUX) { return "sysv"; }
+    if (platform == OS_WINDOWS) { return "ms"; }
+    if (platform == OS_MACOS) { return "sysv"; }
+    return "unknown";
+  }
+
+  // The library-file extension this OS expects (documentary; the native loader
+  // resolves the real path). Linux .so, Windows .dll, macOS .dylib.
+  String expectedExtension() {
+    if (os == OS_WINDOWS) { return ".dll"; }
+    if (os == OS_MACOS) { return ".dylib"; }
+    return ".so";
+  }
+
+  // Is this a well-formed target a runner may attempt to load?
+  boolean valid() {
+    return os != OS_UNKNOWN && artifactPath != "" && entrySymbol != "";
+  }
+
+  boolean isSharedLibrary() { return artifactKind == ARTIFACT_SHARED_LIBRARY; }
+  boolean isExecutable() { return artifactKind == ARTIFACT_EXECUTABLE; }
+
+  int platform() { return os; }
+  String platformName() { return osName; }
+  String arch() { return architecture; }
+  String abiName() { return abi; }
+  String path() { return artifactPath; }
+  String symbol() { return entrySymbol; }
+  int abiMajor() { return minAbiMajor; }
+  int abiMinor() { return minAbiMinor; }
+}
