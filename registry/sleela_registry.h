@@ -136,6 +136,14 @@ void sl_reg_sha256_hex(const void *data, size_t len, char *out);
 sl_reg_status sl_reg_save(const sl_registry *r, const char *path);
 sl_reg_status sl_reg_load(sl_registry *r, const char *path);
 
+/* ---- SQL export ------------------------------------------------------- */
+
+/* Export the whole registry as a portable MySQL/MariaDB script (CREATE TABLE
+ * registry_entries + deterministic INSERTs), so settings/features/provenance
+ * are queryable from a database as well as the .sleelareg text store. Rows are
+ * sorted (idempotent). Writes to `path`; loads with `mysql <db> < file`. */
+sl_reg_status sl_reg_export_sql(const sl_registry *r, const char *path);
+
 /* ---- review ----------------------------------------------------------- */
 
 /* Render a human-readable review of the whole tree (or a subtree at `path`,

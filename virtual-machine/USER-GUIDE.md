@@ -95,12 +95,23 @@ sleela modium scan 1
 idea-vm-1: 80/80 ok  [sha256]
 ```
 
-**Scan everything, or verify bytes exactly:**
+**Scan everything, verify bytes exactly, or verify authenticity:**
 
 ```sh
 sleela modium status            # summary across all ten versions
 sleela modium scan 10 --exact   # SHA-256 + exact byte re-read
+sleela modium scan 10 --seal    # verify each entry's ORIGINALITY SEAL
 ```
+
+### Two kinds of check (why both matter)
+
+- **Verify** (default / `--exact`) — does each file match the SHA recorded in
+  `MODIUM.json`? Fast; the everyday "are my files intact" check.
+- **Seal** (`--seal`) — is the *record itself* authentic? Each entry carries an
+  originality seal = `SHA-256(vm | path | sha256 | author)`. If a record was
+  tampered **and regenerated** under a different identity, `--seal` catches it
+  (the seal won't recompute), where plain verify would wrongly say "ok". This is
+  the same seal concept the registry uses.
 
 **What a problem looks like** (if a file were changed or deleted):
 
@@ -140,6 +151,28 @@ python3 tools/generate-modium.py --check    # verify only (CI)
 ```
 
 ---
+
+## 3. `sleela registry` — settings, features, and provenance
+
+A Windows-style registry: a tree of keys holding settings and feature flags,
+with sealed provenance for tracked artifacts. A fresh install seeds a baseline;
+the store is a portable `.sleelareg` file (`$SLEELA_REGISTRY`, default
+`./sleela.sleelareg`).
+
+```sh
+sleela registry review                 # show the whole tree (seeds if empty)
+sleela registry review Settings        # a subtree
+sleela registry get Settings verbosity
+sleela registry set Settings verbosity verbose
+sleela registry set Settings threadCap 64 --int
+sleela registry feature modium          # query a feature flag
+sleela registry feature modium on       # toggle it
+sleela registry export registry.sql     # portable MySQL script of the registry
+```
+
+The provenance of a tracked artifact records its file, date, author, version,
+hex id, SHA-256 hash, and an **originality seal** — the same seal idea as
+`modium --seal`. Review shows `[SEALED]` or `[BROKEN]` per entry.
 
 ## How this differs from the build gate
 

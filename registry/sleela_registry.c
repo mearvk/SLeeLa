@@ -284,6 +284,50 @@ sl_reg_status sl_reg_load(sl_registry *r,const char *path){
     fclose(f); return SL_REG_OK;
 }
 
+/* ---- SQL export ------------------------------------------------------- */
+static void sql_esc(const char*s,char*out,size_t cap){ size_t j=0; for(size_t i=0;s&&s[i]&&j+2<cap;++i){ if(s[i]=='\''||s[i]=='\\'){ out[j++]='\\'; } out[j++]=s[i]; } out[j]='\0'; }
+sl_reg_status sl_reg_export_sql(const sl_registry *r,const char *path){
+    if(!r||!path) return SL_REG_INVALID;
+    FILE *f=fopen(path,"wb"); if(!f) return SL_REG_INVALID;
+    fprintf(f,"-- sleela registry SQL export. Idea System(TM) / Idea(TM). From Author; distributive.\n");
+    fprintf(f,"-- Portable MySQL/MariaDB: load with `mysql <db> < this_file`. Deterministic (sorted).\n\n");
+    fprintf(f,"CREATE TABLE IF NOT EXISTS registry_entries (\n"
+              "  id INT AUTO_INCREMENT PRIMARY KEY,\n"
+              "  key_path VARCHAR(256) NOT NULL,\n"
+              "  name VARCHAR(64) NOT NULL,\n"
+              "  kind VARCHAR(8) NOT NULL,\n"
+              "  value TEXT NOT NULL,\n"
+              "  UNIQUE KEY uq_entry (key_path, name)\n);\n\n");
+    fprintf(f,"CREATE TABLE IF NOT EXISTS registry_provenance (\n"
+              "  id INT AUTO_INCREMENT PRIMARY KEY,\n"
+              "  key_path VARCHAR(256) NOT NULL,\n"
+              "  file VARCHAR(256) NOT NULL, date VARCHAR(32) NOT NULL,\n"
+              "  author VARCHAR(128) NOT NULL, version VARCHAR(64) NOT NULL,\n"
+              "  hex_id CHAR(16) NOT NULL, hash CHAR(64) NOT NULL, seal CHAR(64) NOT NULL,\n"
+              "  UNIQUE KEY uq_prov (key_path)\n);\n\n");
+    char eb[1024];
+    for(int i=0;i<r->nkeys;++i){ const RegKey *k=&r->keys[i]; if(!k->used) continue;
+        for(int j=0;j<k->nvalues;++j){ const RegValue *v=&k->values[j]; if(!v->used) continue;
+            const char *kind = v->kind==SL_REG_STRING?"string":(v->kind==SL_REG_INT?"int":"bool");
+            char val[SL_REG_STR_CAP+8];
+            if(v->kind==SL_REG_STRING) sql_esc(v->s,val,sizeof val);
+            else if(v->kind==SL_REG_INT) snprintf(val,sizeof val,"%ld",v->i);
+            else snprintf(val,sizeof val,"%d",v->b);
+            char ekp[520]; sql_esc(k->path,ekp,sizeof ekp);
+            fprintf(f,"INSERT INTO registry_entries (key_path,name,kind,value) VALUES ('%s','%s','%s','%s');\n",
+                    ekp,v->name,kind,val);
+        }
+        if(k->has_prov){ const sl_reg_provenance *p=&k->prov; char ekp[520]; sql_esc(k->path,ekp,sizeof ekp);
+            char ef[520],ea[260]; sql_esc(p->name,ef,sizeof ef); sql_esc(p->author,ea,sizeof ea);
+            fprintf(f,"INSERT INTO registry_provenance (key_path,file,date,author,version,hex_id,hash,seal) VALUES "
+                      "('%s','%s','%s','%s','%s','%s','%s','%s');\n",
+                    ekp,ef,p->date,ea,p->version,p->hex_id,p->hash,p->seal);
+        }
+    }
+    (void)eb;
+    fclose(f); return SL_REG_OK;
+}
+
 /* ---- review ----------------------------------------------------------- */
 long sl_reg_review(const sl_registry *r,const char *path,char *buf,size_t cap){
     if(!r||!buf||cap==0) return SL_REG_INVALID;

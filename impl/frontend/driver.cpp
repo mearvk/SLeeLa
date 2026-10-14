@@ -10,6 +10,7 @@
 #include "chemistry_api.h"
 #include "financial_api.h"
 #include "version.h"
+#include "../../registry/sleela_registry.h"
 #include "../annotation/AnnotationRuntime.hpp"
 #include "../catalog/sheet_catalog.h"
 #include "../xclass/xclass_loader.h"
@@ -602,6 +603,61 @@ static std::string sha256_hex(const std::string& msg){
 }
 } // namespace sleela
 
+/* ---- `sleela registry` : review/get/set the Sleela registry --------------
+ * A terminal front end to the registry core (registry/sleela_registry.*): a
+ * Windows-style key tree of settings + feature flags with sealed provenance.
+ * A fresh install seeds a baseline; this command reviews or edits it. The
+ * backing store is a portable .sleelareg file (default ./sleela.sleelareg or
+ * $SLEELA_REGISTRY). */
+static std::string registryStorePath(){
+    const char* env=std::getenv("SLEELA_REGISTRY");
+    if(env&&*env) return std::string(env);
+    return "sleela.sleelareg";
+}
+static int registryCmd(int argc,char**argv){
+    std::string store=registryStorePath();
+    sl_registry* r=sl_reg_create();
+    if(!r){std::cerr<<"sleela registry: out of memory\n";return 1;}
+    /* load existing store, or seed a baseline if none exists */
+    if(sl_reg_load(r,store.c_str())!=SL_REG_OK) sl_reg_seed_defaults(r);
+
+    std::string sub=(argc>=3)?argv[2]:"review";
+    int rc=0;
+    if(sub=="review"||sub=="-h"||sub=="--help"){
+        std::string path=(argc>=4)?argv[3]:"";
+        std::string buf; buf.resize(1<<16);
+        long n=sl_reg_review(r, path.empty()?nullptr:path.c_str(), &buf[0], buf.size());
+        if(n>0){ buf.resize((size_t)n); std::cout<<buf; }
+    } else if(sub=="get"){
+        if(argc<5){std::cerr<<"usage: sleela registry get <key-path> <name>\n";rc=2;}
+        else { char v[512]; long iv; int bv; sl_reg_kind k;
+            if(sl_reg_value_kind(r,argv[3],argv[4],&k)!=SL_REG_OK){std::cerr<<"not found\n";rc=1;}
+            else if(k==SL_REG_STRING&&sl_reg_get_string(r,argv[3],argv[4],v,sizeof v)==SL_REG_OK) std::cout<<v<<"\n";
+            else if(k==SL_REG_INT&&sl_reg_get_int(r,argv[3],argv[4],&iv)==SL_REG_OK) std::cout<<iv<<"\n";
+            else if(k==SL_REG_BOOL&&sl_reg_get_bool(r,argv[3],argv[4],&bv)==SL_REG_OK) std::cout<<(bv?"true":"false")<<"\n";
+        }
+    } else if(sub=="set"){
+        if(argc<6){std::cerr<<"usage: sleela registry set <key-path> <name> <value> [--int|--bool]\n";rc=2;}
+        else { bool asInt=false,asBool=false; for(int i=6;i<argc;++i){std::string a=argv[i]; if(a=="--int")asInt=true; else if(a=="--bool")asBool=true;}
+            if(asInt) sl_reg_set_int(r,argv[3],argv[4],strtol(argv[5],nullptr,10));
+            else if(asBool) sl_reg_set_bool(r,argv[3],argv[4], (std::string(argv[5])=="true"||std::string(argv[5])=="1")?1:0);
+            else sl_reg_set_string(r,argv[3],argv[4],argv[5]);
+            if(sl_reg_save(r,store.c_str())==SL_REG_OK) std::cout<<"set "<<argv[3]<<"/"<<argv[4]<<"\n"; else {std::cerr<<"save failed\n";rc=1;}
+        }
+    } else if(sub=="feature"){
+        if(argc<4){std::cerr<<"usage: sleela registry feature <name> [on|off]\n";rc=2;}
+        else if(argc>=5){ int on=(std::string(argv[4])=="on"||std::string(argv[4])=="1"); sl_reg_feature_set(r,argv[3],on); sl_reg_save(r,store.c_str()); std::cout<<"feature "<<argv[3]<<" = "<<(on?"on":"off")<<"\n"; }
+        else std::cout<<"feature "<<argv[3]<<" = "<<(sl_reg_feature_enabled(r,argv[3])?"on":"off")<<"\n";
+    } else if(sub=="save"){
+        if(sl_reg_save(r,store.c_str())==SL_REG_OK) std::cout<<"saved "<<store<<"\n"; else {std::cerr<<"save failed\n";rc=1;}
+    } else if(sub=="export"){
+        const char* out=(argc>=4)?argv[3]:"registry.sql";
+        if(sl_reg_export_sql(r,out)==SL_REG_OK) std::cout<<"exported MySQL script -> "<<out<<"\n"; else {std::cerr<<"export failed\n";rc=1;}
+    } else { std::cerr<<"sleela registry: unknown subcommand '"<<sub<<"' (review|get|set|feature|save|export)\n"; rc=2; }
+    sl_reg_destroy(r);
+    return rc;
+}
+
 /* ---- `sleela modium` : scan a VM's files for resolution ------------------
  * For a selected VM version, verify every recorded file exists, sits where it
  * should, and matches its SHA-256 (the 95% hash scan) against that version's
@@ -611,7 +667,11 @@ static std::string sha256_hex(const std::string& msg){
  * Modium is a per-VM file-resolution scan the VM can run for itself — distinct
  * from the compiler's own build gate (verify-before-execution). */
 static std::string modiumDirFor(int n){char b[64];std::snprintf(b,sizeof b,"virtual-machine/vm-version/%03d",n);return std::string(b);}
-static int modiumScanOne(int n,bool exact){
+/* The author sealed into every modium entry (must match generate-modium.py). */
+static const char* kModiumAuthor = "MEARVK LLC / the Author";
+static int modiumScanOne(int n,bool exact,bool seal);
+static int modiumScanOne(int n,bool exact){ return modiumScanOne(n,exact,false); }
+static int modiumScanOne(int n,bool exact,bool seal){
     namespace fsx=std::filesystem;
     std::string dir=modiumDirFor(n);
     fsx::path manifest=fsx::path(dir)/"MODIUM.json";
@@ -622,29 +682,48 @@ static int modiumScanOne(int n,bool exact){
     fsx::path root=found.parent_path(); // the version folder
     std::string text; { std::ifstream in(found,std::ios::binary); std::stringstream ss; ss<<in.rdbuf(); text=ss.str(); }
     // minimal, dependency-free scan: pull each "path" and "sha256" pair in order.
-    int total=0,okCount=0,missing=0,moved=0,bad=0;
+    int total=0,okCount=0,missing=0,moved=0,bad=0,sealbad=0;
     size_t pos=0;
     while(true){ size_t pp=text.find("\"path\":",pos); if(pp==std::string::npos)break; size_t q1=text.find('"',pp+7); size_t q2=text.find('"',q1+1); std::string rel=text.substr(q1+1,q2-q1-1);
-        size_t sp=text.find("\"sha256\":",q2); size_t s1=text.find('"',sp+9); size_t s2=text.find('"',s1+1); std::string want=text.substr(s1+1,s2-s1-1); pos=s2+1; total++;
+        /* bound this entry: fields belong to it until the next "path" (sorted
+         * order per entry is path, seal, sha256, size). */
+        size_t nextp=text.find("\"path\":",q2); if(nextp==std::string::npos) nextp=text.size();
+        size_t sp=text.find("\"sha256\":",q2); if(sp==std::string::npos||sp>nextp){ pos=q2+1; total++; continue; }
+        size_t s1=text.find('"',sp+9); size_t s2=text.find('"',s1+1); std::string want=text.substr(s1+1,s2-s1-1); pos=q2+1; total++;
         fsx::path fp=root/rel;
         if(!fsx::exists(fp)){missing++;std::cerr<<"  MISSING  "<<rel<<"\n";continue;}
         // SHA-256 of the file
         std::ifstream f(fp,std::ios::binary); if(!f){moved++;std::cerr<<"  UNREADABLE "<<rel<<"\n";continue;}
         std::stringstream fss; fss<<f.rdbuf(); std::string body=fss.str();
         std::string got=sleela::sha256_hex(body); // helper below
-        if(got!=want){bad++;std::cerr<<"  CORRUPT  "<<rel<<" (sha mismatch"<<(exact?", exact":"")<<")\n";}
-        else okCount++;
+        if(got!=want){bad++;std::cerr<<"  CORRUPT  "<<rel<<" (sha mismatch"<<(exact?", exact":"")<<")\n";continue;}
+        if(seal){
+            // originality seal: SHA-256(vm | path | sha256 | author). Recompute
+            // from the file's ACTUAL hash + its recorded path, and compare to
+            // the recorded seal. Catches a record whose entry was re-sealed under
+            // a different identity/author, not just file-vs-hash drift.
+            // pull the recorded seal for this entry (seal sits between this
+            // entry's "path" and the next entry's "path", per sorted order).
+            size_t slp=text.find("\"seal\":",q2); std::string wantSeal;
+            if(slp!=std::string::npos && slp<nextp){ size_t a=text.find('"',slp+7); size_t b2=text.find('"',a+1); wantSeal=text.substr(a+1,b2-a-1); }
+            char vmtag[16]; std::snprintf(vmtag,sizeof vmtag,"idea-vm-%03d",n);
+            std::string sealInput=std::string(vmtag)+"|"+rel+"|"+got+"|"+kModiumAuthor;
+            std::string gotSeal=sleela::sha256_hex(sealInput);
+            if(gotSeal!=wantSeal){ sealbad++; std::cerr<<"  UNSEALED "<<rel<<" (originality seal mismatch)\n"; continue; }
+        }
+        okCount++;
     }
     std::cout<<"idea-vm-"<<n<<": "<<okCount<<"/"<<total<<" ok"
              <<(missing?(" missing="+std::to_string(missing)):"")
              <<(bad?(" corrupt="+std::to_string(bad)):"")
+             <<(sealbad?(" unsealed="+std::to_string(sealbad)):"")
              <<(moved?(" unreadable="+std::to_string(moved)):"")
-             <<(exact?"  [exact]":"  [sha256]")<<"\n";
-    return (missing||bad||moved)?1:0;
+             <<(seal?"  [seal]":(exact?"  [exact]":"  [sha256]"))<<"\n";
+    return (missing||bad||moved||sealbad)?1:0;
 }
 static int modiumCmd(int argc,char**argv){
     std::string sub=(argc>=3)?argv[2]:"status";
-    bool exact=false; for(int i=2;i<argc;++i) if(std::string(argv[i])=="--exact")exact=true;
+    bool exact=false,sealMode=false; for(int i=2;i<argc;++i){std::string a=argv[i]; if(a=="--exact")exact=true; else if(a=="--seal")sealMode=true;}
     if(sub=="-h"||sub=="--help"){
         std::cout<<"sleela modium — scan a VM's files for resolution (exist, placed, intact)\n"
                    "  sleela modium scan [native|1..10] [--exact]   verify files vs MODIUM.json\n"
@@ -655,9 +734,9 @@ static int modiumCmd(int argc,char**argv){
     if(sub=="scan"){
         std::string target=(argc>=4 && argv[3][0]!='-')?argv[3]:"";
         if(target=="native"){std::cout<<"Native VM (impl/core) is covered by the build SHA-256 gate, not modium.\n";return 0;}
-        if(target.empty()){int rc=0;for(int n=1;n<=10;++n)rc|=modiumScanOne(n,exact);return rc;}
+        if(target.empty()){int rc=0;for(int n=1;n<=10;++n)rc|=modiumScanOne(n,exact,sealMode);return rc;}
         int n=std::atoi(target.c_str()); if(n<1||n>10){std::cerr<<"sleela modium scan: '"<<target<<"' out of range (native or 1..10)\n";return 2;}
-        return modiumScanOne(n,exact);
+        return modiumScanOne(n,exact,sealMode);
     }
     if(sub=="status"){int rc=0;for(int n=1;n<=10;++n)rc|=modiumScanOne(n,false);return rc;}
     if(sub=="restore"){
@@ -687,7 +766,7 @@ static int designActivityCmd(int argc,char**argv){
     char json[1024];slda_format_json("sleela",&result,json,sizeof json);
     std::cout<<json<<"\n"; return 0;
 }
-static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela vm [list|select <native|1..10|premium 1..11>|info ...]\n  sleela modium [scan [native|1..10] [--exact]|status|restore <1..10>]\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
+static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela vm [list|select <native|1..10|premium 1..11>|info ...]\n  sleela modium [scan [native|1..10] [--exact|--seal]|status|restore <1..10>]\n  sleela registry [review [key]|get <key> <name>|set <key> <name> <val> [--int|--bool]|feature <name> [on|off]]\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";
     // Creator-document schema binding: if the source declares a #schema pragma,
     // the referenced XSD must exist and its version must be understood. Absent
@@ -928,6 +1007,7 @@ int main(int argc,char**argv){
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
     else if(cmd=="vm")return vmCmd(argc,argv);
     else if(cmd=="modium")return modiumCmd(argc,argv);
+    else if(cmd=="registry")return registryCmd(argc,argv);
     else if(cmd=="design-activity")return designActivityCmd(argc,argv);
     else if(cmd=="defender")return defenderCmd(argc,argv);
     else if(cmd=="version"){std::cout<<kVersion<<"\n";return 0;}
