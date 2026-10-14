@@ -159,6 +159,8 @@ typedef enum {
     OP_IC_MIGRATE     /* pops target,handle; migrates CPU<->GPU; pushes status int   */
     ,
     OP_VM_SELECT      /* pops vmNumber; selects+boots a registered VM version; pushes status */
+    ,
+    OP_MODIUM_SCAN    /* pops vmNumber; scans that VM version's files for resolution; pushes status */
 } SLOp;
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */

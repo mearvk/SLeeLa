@@ -171,11 +171,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "8daddb39041d30b54f1dd61069c519210ed7023ed0898628c50be8693152aa93"
+      "sha256": "d5678303e09f00e20383bf3314db6a9d8bd5901a233f0e59391be79fa7df722a"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "44e7c459b328c54ad8a8a6ea4e3d82f16e2216d34924eeed1713b171a16e2e4b"
+      "sha256": "e2b5e4862d8de413b627a2bb4b5ac3121c36f146c3e0e234e11b4bc2623bc4db"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -407,7 +407,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "1189b5ad26d51543a5f52a257d6031cf74f7244b14c57f372cff387d2c481a1c"
+      "sha256": "2fca934c5e53ca796eb55b10fd3c3af22303fe83bf25be5b6e950a42edcbb350"
     },
     {
       "path": "impl/frontend/dynamite.cpp",

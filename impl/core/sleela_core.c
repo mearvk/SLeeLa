@@ -1399,6 +1399,20 @@ static SLResult run_thread(SLThread* t) {
             PUSH(slval_int((sel>=1 && sel<=10) ? 0 : -1));
         } break;
 
+        /* ---- Modium file-resolution scan (SLVmModium seam) ----------- */
+        case OP_MODIUM_SCAN: {
+            /* pops a VM version number (1..10). The service-exit seam the Sleela
+             * SLVmModium uses to ask the host to scan that version's files
+             * (exist/placed/intact per its MODIUM.json). The core validates the
+             * request and pushes a status (0 ok, -1 out of range); the actual
+             * file scan + reconstitution from rebuild.sql is a host action
+             * signalled by this opcode. */
+            SLValue mv=POP();
+            if(mv.type!=SL_INT) TERR("modiumScan(number) requires an int version number");
+            int msel=(int)mv.as.i;
+            PUSH(slval_int((msel>=1 && msel<=10) ? 0 : -1));
+        } break;
+
         /* ---- SLVM Audio bridge --------------------------------------- */
         case OP_AUDIO_NEW: {
             SLValue outv=POP(), ratev=POP();

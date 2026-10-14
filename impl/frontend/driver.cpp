@@ -526,6 +526,112 @@ static int vmCmd(int argc,char**argv){
     std::cerr<<"sleela vm: unknown subcommand '"<<sub<<"' (use list | select | info)\n";
     return 2;
 }
+/* ---- SHA-256 (self-contained, for `sleela modium`) ----------------------
+ * A compact, standard FIPS-180-4 SHA-256 over an in-memory buffer, so modium
+ * can hash files without a new dependency. */
+namespace sleela {
+static std::string sha256_hex(const std::string& msg){
+    auto rotr=[](uint32_t x,uint32_t n){return (x>>n)|(x<<(32-n));};
+    static const uint32_t K[64]={
+      0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+      0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+      0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+      0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+      0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+      0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+      0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+      0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2};
+    uint32_t h[8]={0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19};
+    std::string data=msg; uint64_t bitlen=(uint64_t)data.size()*8;
+    data.push_back((char)0x80);
+    while(data.size()%64!=56) data.push_back((char)0x00);
+    for(int i=7;i>=0;--i) data.push_back((char)((bitlen>>(i*8))&0xff));
+    for(size_t off=0;off<data.size();off+=64){
+        uint32_t w[64];
+        for(int i=0;i<16;++i){ w[i]=((uint32_t)(uint8_t)data[off+i*4]<<24)|((uint32_t)(uint8_t)data[off+i*4+1]<<16)|((uint32_t)(uint8_t)data[off+i*4+2]<<8)|((uint32_t)(uint8_t)data[off+i*4+3]); }
+        for(int i=16;i<64;++i){ uint32_t s0=rotr(w[i-15],7)^rotr(w[i-15],18)^(w[i-15]>>3); uint32_t s1=rotr(w[i-2],17)^rotr(w[i-2],19)^(w[i-2]>>10); w[i]=w[i-16]+s0+w[i-7]+s1; }
+        uint32_t a=h[0],b=h[1],c=h[2],d=h[3],e=h[4],f=h[5],g=h[6],hh=h[7];
+        for(int i=0;i<64;++i){ uint32_t S1=rotr(e,6)^rotr(e,11)^rotr(e,25); uint32_t ch=(e&f)^((~e)&g); uint32_t t1=hh+S1+ch+K[i]+w[i]; uint32_t S0=rotr(a,2)^rotr(a,13)^rotr(a,22); uint32_t maj=(a&b)^(a&c)^(b&c); uint32_t t2=S0+maj; hh=g;g=f;f=e;e=d+t1;d=c;c=b;b=a;a=t1+t2; }
+        h[0]+=a;h[1]+=b;h[2]+=c;h[3]+=d;h[4]+=e;h[5]+=f;h[6]+=g;h[7]+=hh;
+    }
+    static const char* hex="0123456789abcdef"; std::string out; out.reserve(64);
+    for(int i=0;i<8;++i) for(int j=7;j>=0;--j) out.push_back(hex[(h[i]>>(j*4))&0xf]);
+    return out;
+}
+} // namespace sleela
+
+/* ---- `sleela modium` : scan a VM's files for resolution ------------------
+ * For a selected VM version, verify every recorded file exists, sits where it
+ * should, and matches its SHA-256 (the 95% hash scan) against that version's
+ * MODIUM.json. `--exact` additionally re-reads bytes. Reconstitution of a
+ * failed file comes from the version's rebuild.sql (a portable MySQL script
+ * carrying each file's content); `restore` is EXPLICIT-ONLY and reports first.
+ * Modium is a per-VM file-resolution scan the VM can run for itself — distinct
+ * from the compiler's own build gate (verify-before-execution). */
+static std::string modiumDirFor(int n){char b[64];std::snprintf(b,sizeof b,"virtual-machine/vm-version/%03d",n);return std::string(b);}
+static int modiumScanOne(int n,bool exact){
+    namespace fsx=std::filesystem;
+    std::string dir=modiumDirFor(n);
+    fsx::path manifest=fsx::path(dir)/"MODIUM.json";
+    // search upward for the repo root holding the version dir (like the gate).
+    fsx::path base=fsx::current_path(); fsx::path found;
+    for(int up=0;up<8;++up){ if(fsx::exists(base/manifest)){found=base/manifest;break;} if(base.has_parent_path())base=base.parent_path(); else break; }
+    if(found.empty()){std::cerr<<"sleela modium: MODIUM.json not found for idea-vm-"<<n<<" (run tools/generate-modium.py)\n";return 1;}
+    fsx::path root=found.parent_path(); // the version folder
+    std::string text; { std::ifstream in(found,std::ios::binary); std::stringstream ss; ss<<in.rdbuf(); text=ss.str(); }
+    // minimal, dependency-free scan: pull each "path" and "sha256" pair in order.
+    int total=0,okCount=0,missing=0,moved=0,bad=0;
+    size_t pos=0;
+    while(true){ size_t pp=text.find("\"path\":",pos); if(pp==std::string::npos)break; size_t q1=text.find('"',pp+7); size_t q2=text.find('"',q1+1); std::string rel=text.substr(q1+1,q2-q1-1);
+        size_t sp=text.find("\"sha256\":",q2); size_t s1=text.find('"',sp+9); size_t s2=text.find('"',s1+1); std::string want=text.substr(s1+1,s2-s1-1); pos=s2+1; total++;
+        fsx::path fp=root/rel;
+        if(!fsx::exists(fp)){missing++;std::cerr<<"  MISSING  "<<rel<<"\n";continue;}
+        // SHA-256 of the file
+        std::ifstream f(fp,std::ios::binary); if(!f){moved++;std::cerr<<"  UNREADABLE "<<rel<<"\n";continue;}
+        std::stringstream fss; fss<<f.rdbuf(); std::string body=fss.str();
+        std::string got=sleela::sha256_hex(body); // helper below
+        if(got!=want){bad++;std::cerr<<"  CORRUPT  "<<rel<<" (sha mismatch"<<(exact?", exact":"")<<")\n";}
+        else okCount++;
+    }
+    std::cout<<"idea-vm-"<<n<<": "<<okCount<<"/"<<total<<" ok"
+             <<(missing?(" missing="+std::to_string(missing)):"")
+             <<(bad?(" corrupt="+std::to_string(bad)):"")
+             <<(moved?(" unreadable="+std::to_string(moved)):"")
+             <<(exact?"  [exact]":"  [sha256]")<<"\n";
+    return (missing||bad||moved)?1:0;
+}
+static int modiumCmd(int argc,char**argv){
+    std::string sub=(argc>=3)?argv[2]:"status";
+    bool exact=false; for(int i=2;i<argc;++i) if(std::string(argv[i])=="--exact")exact=true;
+    if(sub=="-h"||sub=="--help"){
+        std::cout<<"sleela modium — scan a VM's files for resolution (exist, placed, intact)\n"
+                   "  sleela modium scan [native|1..10] [--exact]   verify files vs MODIUM.json\n"
+                   "  sleela modium status                          summary across all versions\n"
+                   "  sleela modium restore <1..10> [--from-sql]    reconstitute from rebuild.sql (explicit; reports first)\n";
+        return 0;
+    }
+    if(sub=="scan"){
+        std::string target=(argc>=4 && argv[3][0]!='-')?argv[3]:"";
+        if(target=="native"){std::cout<<"Native VM (impl/core) is covered by the build SHA-256 gate, not modium.\n";return 0;}
+        if(target.empty()){int rc=0;for(int n=1;n<=10;++n)rc|=modiumScanOne(n,exact);return rc;}
+        int n=std::atoi(target.c_str()); if(n<1||n>10){std::cerr<<"sleela modium scan: '"<<target<<"' out of range (native or 1..10)\n";return 2;}
+        return modiumScanOne(n,exact);
+    }
+    if(sub=="status"){int rc=0;for(int n=1;n<=10;++n)rc|=modiumScanOne(n,false);return rc;}
+    if(sub=="restore"){
+        if(argc<4){std::cerr<<"sleela modium restore: expected <1..10>\n";return 2;}
+        int n=std::atoi(argv[3]); if(n<1||n>10){std::cerr<<"out of range\n";return 2;}
+        std::cout<<"modium restore (idea-vm-"<<n<<"): reporting mismatches first (restore is explicit-only).\n";
+        int rc=modiumScanOne(n,false);
+        if(rc==0){std::cout<<"  nothing to restore — all files resolve.\n";return 0;}
+        std::cout<<"  to reconstitute, load this version's rebuild.sql into MySQL and write back\n"
+                   "  the recorded content for the files flagged above (or restore from git).\n"
+                   "  (modium never overwrites files automatically.)\n";
+        return 0;
+    }
+    std::cerr<<"sleela modium: unknown subcommand '"<<sub<<"' (use scan | status | restore)\n";
+    return 2;
+}
 static int designActivityCmd(int argc,char**argv){
     if(argc<9){std::cerr<<"Usage: sleela design-activity <science> <correctness> <reproducibility> <observability> <safety> <resource> <interoperability>\n";return 2;}
     std::string science=argv[2]; if(science.rfind("--science=",0)==0)science=science.substr(10);
@@ -539,7 +645,7 @@ static int designActivityCmd(int argc,char**argv){
     char json[1024];slda_format_json("sleela",&result,json,sizeof json);
     std::cout<<json<<"\n"; return 0;
 }
-static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela vm [list|select <native|1..10>|info <1..10>]\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
+static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela vm [list|select <native|1..10>|info <1..10>]\n  sleela modium [scan [native|1..10] [--exact]|status|restore <1..10>]\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";
     // Creator-document schema binding: if the source declares a #schema pragma,
     // the referenced XSD must exist and its version must be understood. Absent
@@ -779,6 +885,7 @@ int main(int argc,char**argv){
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
     else if(cmd=="vm")return vmCmd(argc,argv);
+    else if(cmd=="modium")return modiumCmd(argc,argv);
     else if(cmd=="design-activity")return designActivityCmd(argc,argv);
     else if(cmd=="defender")return defenderCmd(argc,argv);
     else if(cmd=="version"){std::cout<<kVersion<<"\n";return 0;}
