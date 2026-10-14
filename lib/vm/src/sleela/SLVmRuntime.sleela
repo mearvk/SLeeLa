@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmRuntime.sleela
+ * lib/vm/src/sleela/SLVmRuntime.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmRuntime — the OOD equivalent of the native
  *   consolidated facade (virtual-machine/vm-version/010/vm_runtime.{h,c}, v010).

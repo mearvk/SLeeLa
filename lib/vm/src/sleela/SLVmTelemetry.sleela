@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmTelemetry.sleela
+ * lib/vm/src/sleela/SLVmTelemetry.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmTelemetry — the OOD equivalent of the native
  *   observability layer (virtual-machine/vm-version/004/vm_telemetry.{h,c},

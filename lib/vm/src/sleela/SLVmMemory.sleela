@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmMemory.sleela
+ * lib/vm/src/sleela/SLVmMemory.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmMemory — the OOD equivalent of the native memory
  *   hardening layer (virtual-machine/vm-version/002/vm_memory.{h,c}, v002). It

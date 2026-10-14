@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmResult.sleela
+ * lib/vm/src/sleela/SLVmResult.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmResult — the OOD equivalent of the native typed
  *   result (virtual-machine/vm-version/003/vm_result.{h,c}, v003). One result

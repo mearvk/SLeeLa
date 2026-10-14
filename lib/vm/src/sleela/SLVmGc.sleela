@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmGc.sleela
+ * lib/vm/src/sleela/SLVmGc.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmGc — the OOD equivalent of the native GC-quality
  *   layer (virtual-machine/vm-version/005/vm_gc.{h,c}, v005). From deltas of

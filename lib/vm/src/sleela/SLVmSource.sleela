@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmSource.sleela
+ * lib/vm/src/sleela/SLVmSource.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmSource — the OOD equivalent of the native VM
  *   source-requirement validator (lib/vm/src/sleela_vm_source.c). It records

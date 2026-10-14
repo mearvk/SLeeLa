@@ -104,5 +104,5 @@ A starting list the think-tank will draw from and refine as it goes:
 **select this VM** on system start or in a conference: it declares the native
 dir + `main`, the hardening units composed through v001, and the default config
 profile, and `build()` returns a configured `SLVmRuntime`. The shared OOD
-classes it uses live in `lib/vm/src` (see its README). Selection routes through
+classes it uses live in `lib/vm/src/sleela` (see its README). Selection routes through
 the `OP_VM_SELECT` (148) opcode.

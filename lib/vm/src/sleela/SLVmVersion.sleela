@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmVersion.sleela
+ * lib/vm/src/sleela/SLVmVersion.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmVersion — the base manifest a selectable VM version
  *   (001..010) extends. A manifest is the loadable record that DESCRIBES one

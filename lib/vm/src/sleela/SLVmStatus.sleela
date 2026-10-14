@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmStatus.sleela
+ * lib/vm/src/sleela/SLVmStatus.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmStatus — the OOD equivalent of the native status
  *   readout (virtual-machine/vm-version/001/vm_status.{h,c}, v001): the

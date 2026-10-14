@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmCapability.sleela
+ * lib/vm/src/sleela/SLVmCapability.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmCapability — the OOD equivalent of the native
  *   capability-enforcement choke point (virtual-machine/vm-version/007/

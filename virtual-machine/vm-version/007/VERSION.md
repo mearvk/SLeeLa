@@ -33,5 +33,5 @@ user knows what their OS actually provides.
 **select this VM** on system start or in a conference: it declares the native
 dir + `main`, the hardening units composed through v007, and the default config
 profile, and `build()` returns a configured `SLVmRuntime`. The shared OOD
-classes it uses live in `lib/vm/src` (see its README). Selection routes through
+classes it uses live in `lib/vm/src/sleela` (see its README). Selection routes through
 the `OP_VM_SELECT` (148) opcode.

@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmPlatform.sleela
+ * lib/vm/src/sleela/SLVmPlatform.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmPlatform — the OOD equivalent of the native
  *   platform-parity readout (virtual-machine/vm-version/008/vm_platform.{h,c},

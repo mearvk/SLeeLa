@@ -10,7 +10,7 @@
  *   configured SLVmRuntime a selection resolves to.
  *
  * Mirrors the C/C++ in this folder (the 71-file core + the additive vm_* units
- * through v008). It extends SLVmVersion (lib/vm/src/SLVmVersion.sleela).
+ * through v008). It extends SLVmVersion (lib/vm/src/sleela/SLVmVersion.sleela).
  *
  * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
  */

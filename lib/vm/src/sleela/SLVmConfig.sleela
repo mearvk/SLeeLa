@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmConfig.sleela
+ * lib/vm/src/sleela/SLVmConfig.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmConfig — the OOD equivalent of the native user-level
  *   VM configuration surface (virtual-machine/vm-version/001/vm_config.{h,c},

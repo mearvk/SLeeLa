@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmProfile.sleela
+ * lib/vm/src/sleela/SLVmProfile.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmProfile — the OOD equivalent of the native dispatch
  *   profiler (virtual-machine/vm-version/006/vm_profile.{h,c}, v006). It keeps

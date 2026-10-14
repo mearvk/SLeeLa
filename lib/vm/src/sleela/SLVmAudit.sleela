@@ -1,5 +1,5 @@
 /*
- * lib/vm/src/SLVmAudit.sleela
+ * lib/vm/src/sleela/SLVmAudit.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmAudit — the OOD equivalent of the native audit trail
  *   (virtual-machine/vm-version/009/vm_audit.{h,c}, v009). It records
