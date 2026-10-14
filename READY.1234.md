@@ -330,12 +330,104 @@ dependency-correct) rather than dump a monolith.
 > this document in force for every step.
 
 **1.** "Create a new repository named `SLeeLa`. First author ONLY the normative
-specification, nothing else: `SLEELA.syntax` (the Java-like grammar: lexing,
-types, statements, expressions, conducted methods, threading, and the
-Constitution invariants system-depth 3024 and complexity-degree ≤ 4),
-`SHEET.sheet` (the system-object catalog the conducted methods address), and
-`SST.model`. Add a skeleton `README.md` and `ORGANIZATION.md`. Write no code yet.
-Keep each file single-purpose. Stop and show me the spec for review."
+specification, nothing else — no implementation, no `/lib`, no tooling yet. The
+spec must be complete and self-consistent enough to compile against
+idempotently; produce exactly these artifacts:
+
+  **1a. `SLEELA.syntax`** — the normative language grammar, as a numbered
+  Markdown spec with these sections in order (this exact structure):
+   - Header block: Language=Sleela; **Syntax version 1.11** (baseline 1.3–1.10 +
+     nested classes); Compiler **Sleelvac(TM) 0.3.29-dev** accepting syntax
+     **1.3..1.11**; Surface = Java-like; Core = Turing-complete, thread-friendly
+     C/C++ execution core; Companions = `SHEET.sheet`, `SST.model` (NS-SST-0001),
+     `lib/LIBRARY.SYMBOLS.md`, `markdown/EXTENDS.md`. State the two distinct
+     version numbers (per-file `#sleela MAJOR.MINOR` syntax version vs. the tool
+     version) and that a file must declare a supported syntax version.
+   - §1 Lexical grammar: UTF-8 source; `//` and `/* */` comments; **16 reserved
+     keywords** = `class static void struct new int double boolean String if
+     else while for return true false null print`; identifier rule
+     `(letter|_)(letter|digit|_)*`; literals (64-bit int, double, bool, string
+     with escapes `\n \t \r \\ \"`, null); operators `+ - * / %  == != < <= > >=
+     && || !  =  ( ) { }  ; ,`.
+   - §2 Program structure: `program ::= top-decl+`; top-decl = struct-decl |
+     class-decl; execution begins at the single `void main()`.
+   - §3 Types & declarations: scalar types `int double boolean String void`;
+     unsigned `U<n>` (width 1..1048576) and character-set `C<n>` (capacity
+     1..1048576) families; fields (shared, thread-safe globals, init in order at
+     top of main); methods (all behave static; locals per-thread); §3.4 structs
+     (syntax 1.2+): named aggregates, reference types, `new`, `.` access, limits
+     256 types / 64 fields / 4096 live instances.
+   - §4 Statements: block, var-decl, assign, field-assign, gc-hint (§13),
+     if/else, while, for (with the optional 4th Boolean thread-stability guard
+     and 5th Boolean heap-health guard), return, print, expr-stmt.
+   - §5 Expressions: full precedence ladder lowest→highest (logic-or, logic-and,
+     equality, comparison, additive, multiplicative, unary, primary); `+` is
+     arithmetic or String concatenation (Java-style); `new`, member access.
+   - §6 Conducted methods (address every `SHEET.sheet` object by string name):
+     the **7** built-ins `conduct role insight congruent route sysdepth
+     degreemax`, with `sysdepth()`→**3024** and `degreemax()`→**4**, and the
+     congruence/route rules.
+   - §7 Threading (bounded, ≤128 threads): the **6** built-ins `spawn join lock
+     unlock send recv`; §7.1 struct transport `structPack`/`structUnpack`.
+   - §8 The Constitution (invariants in force): system depth = **3024**,
+     complexity degree max = **4** (1 direct·2 mediated·3 brokered·4 federated),
+     the connect rule (n congruent-linear systems iff n ≤ 3024 and degree ≤ 4).
+   - §9 A complete worked example that prints depth/degree, a role/insight, a
+     route, and runs bounded concurrency with its expected output.
+   - §10 Reserved-word & built-in SUMMARY with exact counts: keywords(16),
+     conduct(7), threading(6), struct(2, 1.2+), munction(1+10: `Munction.start`
+     + `.connect .enable .send .thatch .consume .observe .propagate .latch
+     .closeWithReceipt .reception`, 1.3+), synchro(11: `synchroOpen
+     synchroDispatch synchroReport synchroClose synchroSent synchroReceived
+     synchroMean synchroMin synchroMax synchroP95 synchroLoss`, 1.3+),
+     best-of(18: the `bestOf*` family, 1.3+), gc-hint(2: contextual `gc`/`mem`),
+     system(1: contextual `ran`). State contextual built-ins are recognized in
+     call position only.
+   - §11 Library class vocabulary (informative): point to
+     `lib/LIBRARY.SYMBOLS.md` as the single authoritative source; do not inline a
+     second registry.
+   - §12 Syntax 1.8: inferred locals (`let`) and constructor arguments on
+     `new Type(args)` (and that overload resolution / `this(...)`/base delegation
+     are explicitly out of scope).
+   - §13 Syntax 1.9: the GC-hint statement `x = gc N;` / `x = mem N;` (N in
+     0..100), its contextual (not reserved) nature, semantics/limits, and §13.4
+     the `ran::` system namespace (`ran::mem`, `ran::gc`).
+   - §14 Syntax 1.11: nested classes — the "rule of two" (lexical nesting depth
+     2), the per-document limit of **42** nested classes, `Outer.Inner` naming
+     (mangled `Outer__Inner`), and the version gate.
+
+  **1b. `SHEET.sheet`** — the system-object catalog, machine-readable with its
+  OWN parse contract at the top: `#key value` header directives (`#sheet`,
+  `#kind system-object-catalog`, `#rev`, `#format`, `#machine yes`); `section
+  <name>:` opens a category; an indented bare `Word` names an Object; under an
+  Object, indented `children:`/`siblings:`/`note:` give relations (comma lists,
+  `-` = none); section-level `key: value` (e.g. depth, complexity-degree-max).
+  It must define the **16 conduct roles** exactly: root, start, idiom, highlight,
+  call, method, attention, gain, conversation, piping, transitive, completitive,
+  inheritance, smart-move, congruence, limit — and populate representative
+  objects (System as root, Pipeline as piping, etc.). The same file is parsed by
+  both the Sleela conduct registry and the Nordshrift object-compatibility list.
+
+  **1c. `SST.model`** — the Nordshrift `.sst` (Scripting Sheet) format, normative
+  edition **NS-SST-0001**: preamble/purpose (Nordshrift is the Sleela→Java
+  transpiler driver; `.sleela` files are 'Wrapper™' units), scope, the normative
+  keyword rules (must/shall/required/forbidden normative; should/may
+  non-normative), lexical conventions, block/section grammar, every directive +
+  operands + semantics, import/composition, profile resolution/override, and the
+  Nordshrift error codes.
+
+  Also add a skeleton `README.md` and `ORGANIZATION.md`. Write NO code. Keep each
+  file single-purpose and internally consistent (every count, built-in name, and
+  cross-reference must agree across the three files). Stop and show me the spec
+  for review."
+
+> Why #1 is this detailed: the real `SLEELA.syntax` is a ~790-line, 14-section
+> normative document with exact keyword/built-in counts and versioned features;
+> `SHEET.sheet` is a machine-parsed catalog with a fixed 16-role contract; and
+> `SST.model` is the normative NS-SST-0001 format. A vague "write a Java-like
+> grammar" prompt would produce a plausible-but-different language, not THIS one.
+> The spec is the single source every later stage compiles against, so it must be
+> pinned precisely enough to regenerate idempotently.
 
 **2.** "Create `impl/core/` — the C execution engine. Define `sleela_core.h`
 (the bytecode opcode enum — APPEND-ONLY — plus the value model and bounded
