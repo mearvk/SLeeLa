@@ -30,6 +30,9 @@ normative specifications from implementation notes and live validation results.
 - [Virtual-machine generations](../sleela-virtual-machine/) — generation-specific
   specifications and implementation references. A specification is not proof
   of complete runtime support.
+- [Virtual machines & Modium — hands-on user guide](../virtual-machine/USER-GUIDE.md) —
+  try-it guide for the `sleela vm` selector (Native VM is the default) and the
+  `sleela modium` file-resolution scan (SHA-256 + per-version `rebuild.sql`).
 - [General implementation architecture](../markdown/ARCHITECTURE.md) — boundary
   between the authoritative C/C++ implementation and the earlier Java prototype.
 - [Configuration guide](../config/CONFIGURATION.md) — configuration root and
