@@ -1,0 +1,26 @@
+#sleela 1.5
+// idea_canvas_smoke.sleela -- exercises the ideaCanvas* native built-ins end to
+// end through the VM. In the default build the native canvas is a stub, so
+// create returns -1 and hasRenderer is 0; the program must still run cleanly.
+class IdeaCanvasSmoke {
+  void main() {
+    print("has-renderer: " + ideaCanvasHasRenderer());
+    print("timestep: " + ideaCanvasTimestep());
+
+    int cv = ideaCanvasCreate(64, 64);
+    print("canvas handle: " + cv);
+
+    if (cv >= 0) {
+      print("count: " + ideaCanvasCount(cv));
+      ideaCanvasSetParams(cv, 0.25, 0.9, 205.0, 0.06);
+      ideaCanvasExcite(cv, 32, 32, 1.0);
+      int steps = 0;
+      while (steps < 30) { ideaCanvasStep(cv, ideaCanvasTimestep()); steps = steps + 1; }
+      print("intensity@32,32 after 30 steps: " + ideaCanvasIntensityAt(cv, 32, 32));
+      ideaCanvasDestroy(cv);
+      print("destroyed.");
+    } else {
+      print("native canvas not linked (stub build) -- VM path OK.");
+    }
+  }
+}

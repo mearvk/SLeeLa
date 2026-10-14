@@ -129,7 +129,27 @@ typedef enum {
      * (mem, gc, ...) stay free for class/variable names. `ran::mem` reads the
      * current live system memory in bytes as an int. Appended at the end of the
      * enum so existing serialized-artifact opcode numbers are unchanged. */
-    OP_RAN_MEM        /* pushes current live system memory in bytes (int)           */
+    OP_RAN_MEM,       /* pushes current live system memory in bytes (int)           */
+    /* Idea System(TM) realtime canvas (idea/realtime). The native-CPU
+     * rendering + physics module the VM can drive where it lacks it natively.
+     * A canvas is a VM-local handle into a bounded table. Appended at the end
+     * so existing serialized-artifact opcode numbers are unchanged. */
+    OP_IC_CREATE,     /* pops rows,cols; pushes canvas handle (-1 on failure)        */
+    OP_IC_DESTROY,    /* pops handle; releases the canvas; pushes null               */
+    OP_IC_COLS,       /* pops handle; pushes columns int                             */
+    OP_IC_ROWS,       /* pops handle; pushes rows int                                */
+    OP_IC_COUNT,      /* pops handle; pushes vertex count int                        */
+    OP_IC_SETPARAMS,  /* pops coupling,hueBase,flowGain,decay,handle; pushes handle  */
+    OP_IC_EXCITE,     /* pops amount,row,col,handle; pushes status int               */
+    OP_IC_STEP,       /* pops dt,handle; advances one step on native CPU; status int */
+    OP_IC_ADVANCE,    /* pops frameDt,handle; drains fixed steps; pushes step count  */
+    OP_IC_TIMESTEP,   /* pushes the fixed timestep seconds (double)                  */
+    OP_IC_INTENSITY,  /* pops row,col,handle; pushes intensity double                */
+    OP_IC_HASREND,    /* pushes 1 if the GL render layer is present, else 0          */
+    OP_IC_OPENWIN,    /* pops title,height,width,handle; pushes status int           */
+    OP_IC_SHOULDCLOSE,/* pops handle; pushes 1/0                                     */
+    OP_IC_PRESENT,    /* pops handle; presents one frame; pushes status int          */
+    OP_IC_RUN         /* pops title,height,width,handle; runs loop; pushes status int*/
 } SLOp;
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */

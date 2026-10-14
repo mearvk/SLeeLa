@@ -769,6 +769,25 @@ private:
             if(syntax_<SyntaxVersion{1,3})throw std::runtime_error("Semantic error: best-of built-ins require #sleela 1.3");
         }
         auto emitArgs=[&](const Call& call){ for(const auto& a:call.args) emitExpr(a.get()); };
+
+        // ---- Idea System(TM) realtime canvas (native-CPU render + physics) ----
+        if(n=="ideaCanvasCreate"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: ideaCanvasCreate(cols, rows) takes two arguments");emitArgs(c);emit(OP_IC_CREATE);return true;}
+        if(n=="ideaCanvasDestroy"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: ideaCanvasDestroy(handle) takes one argument");emitArgs(c);emit(OP_IC_DESTROY);return true;}
+        if(n=="ideaCanvasCols"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: ideaCanvasCols(handle) takes one argument");emitArgs(c);emit(OP_IC_COLS);return true;}
+        if(n=="ideaCanvasRows"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: ideaCanvasRows(handle) takes one argument");emitArgs(c);emit(OP_IC_ROWS);return true;}
+        if(n=="ideaCanvasCount"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: ideaCanvasCount(handle) takes one argument");emitArgs(c);emit(OP_IC_COUNT);return true;}
+        if(n=="ideaCanvasSetParams"){if(c.args.size()!=5)throw std::runtime_error("Semantic error: ideaCanvasSetParams(handle, decay, flowGain, hueBase, coupling) takes five arguments");emitArgs(c);emit(OP_IC_SETPARAMS);return true;}
+        if(n=="ideaCanvasExcite"){if(c.args.size()!=4)throw std::runtime_error("Semantic error: ideaCanvasExcite(handle, col, row, amount) takes four arguments");emitArgs(c);emit(OP_IC_EXCITE);return true;}
+        if(n=="ideaCanvasStep"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: ideaCanvasStep(handle, dt) takes two arguments");emitArgs(c);emit(OP_IC_STEP);return true;}
+        if(n=="ideaCanvasAdvance"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: ideaCanvasAdvance(handle, frameDt) takes two arguments");emitArgs(c);emit(OP_IC_ADVANCE);return true;}
+        if(n=="ideaCanvasTimestep"){if(!c.args.empty())throw std::runtime_error("Semantic error: ideaCanvasTimestep() takes no arguments");emit(OP_IC_TIMESTEP);return true;}
+        if(n=="ideaCanvasIntensityAt"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: ideaCanvasIntensityAt(handle, col, row) takes three arguments");emitArgs(c);emit(OP_IC_INTENSITY);return true;}
+        if(n=="ideaCanvasHasRenderer"){if(!c.args.empty())throw std::runtime_error("Semantic error: ideaCanvasHasRenderer() takes no arguments");emit(OP_IC_HASREND);return true;}
+        if(n=="ideaCanvasOpenWindow"){if(c.args.size()!=4)throw std::runtime_error("Semantic error: ideaCanvasOpenWindow(handle, width, height, title) takes four arguments");emitArgs(c);emit(OP_IC_OPENWIN);return true;}
+        if(n=="ideaCanvasShouldClose"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: ideaCanvasShouldClose(handle) takes one argument");emitArgs(c);emit(OP_IC_SHOULDCLOSE);return true;}
+        if(n=="ideaCanvasPresent"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: ideaCanvasPresent(handle) takes one argument");emitArgs(c);emit(OP_IC_PRESENT);return true;}
+        if(n=="ideaCanvasRun"){if(c.args.size()!=4)throw std::runtime_error("Semantic error: ideaCanvasRun(handle, width, height, title) takes four arguments");emitArgs(c);emit(OP_IC_RUN);return true;}
+
         if(n=="audioNew"){
             if(c.args.size()!=2)throw std::runtime_error("Semantic error: audioNew(sampleRate, outputPath) takes two arguments");
             emitExpr(c.args[0].get());emitExpr(c.args[1].get());emit(OP_AUDIO_NEW);return true;
