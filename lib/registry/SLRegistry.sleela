@@ -1,0 +1,115 @@
+/*
+ * lib/registry/SLRegistry.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLRegistry — the OOD equivalent of the native Sleela
+ *   Registry (registry/sleela_registry.*): a Windows-style hierarchical store
+ *   of keys (an HKEY-like path tree), each holding settings and feature-flag
+ *   values and, where relevant, a sealed provenance record (file/date/author/
+ *   version/hex-id/hash/originality-seal). A fresh SLeeLa install seeds a
+ *   baseline registry that is reviewable from a terminal (sleela registry) or
+ *   a Sleela terminal program. Persistence and SHA-256/seal computation cross
+ *   the native bridge; this class is the Sleela-side model + review.
+ *
+ * Mirrors: sl_reg_create, seed_defaults, key_create, the set_* family,
+ *   provenance_set, save, load, and review. The native OP for a registry
+ *   service is reserved for a future opcode; today the terminal
+ *   'sleela registry' is the review surface.
+ *
+ * Family: registry. Composes SLRegistryKey, SLRegistryValue,
+ *   SLRegistryProvenance.
+ */
+#sleela 1.3
+class SLRegistry {
+  static final int MAX_KEYS = 64;
+
+  String version;
+  int    count;
+  // numbered key store (surface has no arrays). A real deployment with more
+  // keys resolves them natively; this models the baseline a new install seeds.
+  SLRegistryKey k0; SLRegistryKey k1; SLRegistryKey k2; SLRegistryKey k3;
+  SLRegistryKey k4; SLRegistryKey k5; SLRegistryKey k6; SLRegistryKey k7;
+
+  void boot() { version = "1.0.0"; count = 0; }
+
+  boolean addKey(SLRegistryKey k) {
+    if (count >= 8) { return false; }   // baseline bound for the Sleela model
+    if (count == 0) { k0 = k; } else if (count == 1) { k1 = k; }
+    else if (count == 2) { k2 = k; } else if (count == 3) { k3 = k; }
+    else if (count == 4) { k4 = k; } else if (count == 5) { k5 = k; }
+    else if (count == 6) { k6 = k; } else { k7 = k; }
+    count = count + 1;
+    return true;
+  }
+  SLRegistryKey keyAt(int idx) {
+    if (idx == 0) { return k0; } if (idx == 1) { return k1; }
+    if (idx == 2) { return k2; } if (idx == 3) { return k3; }
+    if (idx == 4) { return k4; } if (idx == 5) { return k5; }
+    if (idx == 6) { return k6; } return k7;
+  }
+
+  // Seed the baseline a new install starts from (mirrors sl_reg_seed_defaults):
+  // System, System/VM, Settings, Features, Artifacts.
+  void seedDefaults() {
+    boot();
+
+    SLRegistryKey sys = new SLRegistryKey(); sys.configure("System");
+    SLRegistryValue nm = new SLRegistryValue(); nm.setString("name", "Idea System(TM) / SLeeLa"); sys.add(nm);
+    SLRegistryValue rv = new SLRegistryValue(); rv.setString("registryVersion", version); sys.add(rv);
+    addKey(sys);
+
+    SLRegistryKey vm = new SLRegistryKey(); vm.configure("System/VM");
+    SLRegistryValue dv = new SLRegistryValue(); dv.setString("default", "native"); vm.add(dv);
+    addKey(vm);
+
+    SLRegistryKey settings = new SLRegistryKey(); settings.configure("Settings");
+    SLRegistryValue mem = new SLRegistryValue(); mem.setInt("memoryLimitMiB", 2048); settings.add(mem);
+    SLRegistryValue thr = new SLRegistryValue(); thr.setInt("threadCap", 128); settings.add(thr);
+    SLRegistryValue vb  = new SLRegistryValue(); vb.setString("verbosity", "normal"); settings.add(vb);
+    addKey(settings);
+
+    SLRegistryKey feats = new SLRegistryKey(); feats.configure("Features");
+    SLRegistryValue f1 = new SLRegistryValue(); f1.setBool("modium", true); feats.add(f1);
+    SLRegistryValue f2 = new SLRegistryValue(); f2.setBool("vmSelect", true); feats.add(f2);
+    SLRegistryValue f3 = new SLRegistryValue(); f3.setBool("premiumVms", true); feats.add(f3);
+    addKey(feats);
+
+    SLRegistryKey art = new SLRegistryKey(); art.configure("Artifacts");
+    addKey(art);
+  }
+
+  boolean featureEnabled(String name) {
+    // scan Features key values
+    int i = 0;
+    while (i < count) {
+      SLRegistryKey k = keyAt(i);
+      if (k != null && k.path == "Features") {
+        int j = 0;
+        while (j < k.count) {
+          SLRegistryValue v = k.valueAt(j);
+          if (v != null && v.name == name && v.isBool()) { return v.b == 1; }
+          j = j + 1;
+        }
+      }
+      i = i + 1;
+    }
+    return false;
+  }
+
+  // Terminal review (mirrors sl_reg_review).
+  void show() {
+    print("Sleela Registry " + version + "  (keys=" + count + ")");
+    int i = 0;
+    while (i < count) {
+      SLRegistryKey kk = keyAt(i);
+      kk.show();
+      i = i + 1;
+    }
+  }
+
+  void main() {
+    SLRegistry reg = new SLRegistry();
+    reg.seedDefaults();
+    reg.show();
+    print("feature modium enabled: " + reg.featureEnabled("modium"));
+  }
+}

@@ -1,0 +1,39 @@
+/*
+ * lib/registry/SLRegistryValue.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLRegistryValue — the OOD equivalent of a native registry
+ *   value (registry/sleela_registry.* : a name -> typed scalar). A value holds
+ *   one setting or feature flag under a key: a string, an int, or a boolean,
+ *   tagged by kind. It is the leaf the registry stores and the terminal review
+ *   renders. Pure data + accessors; the native store owns persistence.
+ *
+ * Mirrors: enum sl_reg_kind (STRING/INT/BOOL) and the value cell.
+ *
+ * Family: registry. Composed by SLRegistryKey.
+ */
+#sleela 1.3
+class SLRegistryValue {
+  static final int KIND_STRING = 0;
+  static final int KIND_INT    = 1;
+  static final int KIND_BOOL   = 2;
+
+  String name;
+  int    kind;
+  String s;     // when KIND_STRING
+  int    i;     // when KIND_INT
+  int    b;     // when KIND_BOOL (0/1)
+
+  void setString(String n, String value) { name = n; kind = KIND_STRING; s = value; }
+  void setInt(String n, int value)        { name = n; kind = KIND_INT; i = value; }
+  void setBool(String n, boolean value)   { name = n; kind = KIND_BOOL; b = value ? 1 : 0; }
+
+  boolean isString() { return kind == KIND_STRING; }
+  boolean isInt()    { return kind == KIND_INT; }
+  boolean isBool()   { return kind == KIND_BOOL; }
+
+  String render() {
+    if (kind == KIND_STRING) { return name + " = \"" + s + "\""; }
+    if (kind == KIND_INT)    { return name + " = " + i; }
+    return name + " = " + (b == 1 ? "true" : "false");
+  }
+}
