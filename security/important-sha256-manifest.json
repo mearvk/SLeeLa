@@ -4,7 +4,7 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "90175921fa725c8ce9836d64e8e35b5dcb634cc77b230d4ba1a47d8d3cc5f2bc"
+      "sha256": "2cb48e516d85d3d30a953f8bd4fa6fc5f4bf449c9492b9d502c5e8b6bcfdb9ff"
     },
     {
       "path": "SLEELA.syntax",
@@ -2777,6 +2777,10 @@
     {
       "path": "build-linux.sh",
       "sha256": "2f6553d263e83c820ffbaecbc2f02d8aa4252352c223b61a0a65c6eb3e4031b5"
+    },
+    {
+      "path": "build-registry.sh",
+      "sha256": "9d204a037f26ab14ec6545355be72c19ba15b4bd0e22a1d0624e5de27668ed6f"
     },
     {
       "path": "build-windows.ps1",
