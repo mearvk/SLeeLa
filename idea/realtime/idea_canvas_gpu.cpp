@@ -29,6 +29,7 @@
  */
 #include "idea_canvas.h"
 #include "idea_canvas_internal.hpp"
+#include "idea_canvas_ctx.h"   /* platform GL context (WGL/CGL/EGL/OSMesa) */
 
 #if defined(IDEA_CANVAS_WITH_GL)
 
@@ -123,8 +124,9 @@ bool make_context(GpuState *g) {
 } // namespace
 
 int idea_canvas_gpu_available(void) {
-    /* Available in this build; actual context creation is checked at init. */
-    return 1;
+    /* A GPU backend is available iff the platform GL context layer can create a
+     * context (WGL on Windows 10+, CGL on macOS, EGL/OSMesa on Linux). */
+    return idea_ctx_supported();
 }
 
 int idea_canvas_gpu_init(idea_canvas *c) {
@@ -209,7 +211,7 @@ void idea_canvas_gpu_shutdown(idea_canvas *c) {
 
 #else /* ---- no GL build: GPU backend unavailable ---- */
 
-int  idea_canvas_gpu_available(void)                               { return 0; }
+int  idea_canvas_gpu_available(void)                               { return idea_ctx_supported(); }
 int  idea_canvas_gpu_init(idea_canvas *c)                          { (void)c; return -1; }
 int  idea_canvas_gpu_step(idea_canvas *c, const idea_sim_params *p, float dt) {
     (void)c; (void)p; (void)dt; return -1;

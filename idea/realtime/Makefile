@@ -38,7 +38,13 @@ $(BUILD)/idea_canvas_gl_stub.o: idea_canvas_gl_stub.cpp idea_canvas.h idea_canva
 $(BUILD)/idea_canvas_gpu.o: idea_canvas_gpu.cpp idea_canvas.h idea_canvas_internal.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(LIB): $(BUILD)/idea_canvas_sim.o $(BUILD)/idea_canvas_gl_stub.o $(BUILD)/idea_canvas_gpu.o
+# Platform GL context layer. On Linux the EGL file (stub without IDEA_CANVAS_WITH_GL)
+# is built here; Windows (WGL) and macOS (CGL/.mm) files are selected by their
+# native builds (build-windows.ps1 / the macOS path) and are not compiled here.
+$(BUILD)/idea_canvas_ctx_egl.o: idea_canvas_ctx_egl.cpp idea_canvas_ctx.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(LIB): $(BUILD)/idea_canvas_sim.o $(BUILD)/idea_canvas_gl_stub.o $(BUILD)/idea_canvas_gpu.o $(BUILD)/idea_canvas_ctx_egl.o
 	$(AR) rcs $@ $^
 
 $(BUILD)/idea_canvas_bench.o: idea_canvas_bench.cpp idea_canvas.h | $(BUILD)

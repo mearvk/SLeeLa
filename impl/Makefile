@@ -97,7 +97,18 @@ IDEA_CANVAS_BR_OBJ   := $(BUILD)/sleela_idea_canvas.o
 IDEA_CANVAS_SIM_OBJ  := $(BUILD)/idea_canvas_sim.o
 IDEA_CANVAS_STUB_OBJ := $(BUILD)/idea_canvas_gl_stub.o
 IDEA_CANVAS_GPU_OBJ  := $(BUILD)/idea_canvas_gpu.o
-IDEA_CANVAS_OBJS := $(IDEA_CANVAS_BR_OBJ) $(IDEA_CANVAS_SIM_OBJ) $(IDEA_CANVAS_STUB_OBJ) $(IDEA_CANVAS_GPU_OBJ)
+# Platform GL context source, selected by OS (open standards: WGL/CGL/EGL).
+ifeq ($(PLATFORM),windows)
+  IDEA_CANVAS_CTX_SRC := $(IDEA_CANVAS_DIR)/idea_canvas_ctx_wgl.cpp
+  IDEA_CANVAS_CTX_OBJ := $(BUILD)/idea_canvas_ctx_wgl.o
+else ifeq ($(PLATFORM),macos)
+  IDEA_CANVAS_CTX_SRC := $(IDEA_CANVAS_DIR)/idea_canvas_ctx_cgl.mm
+  IDEA_CANVAS_CTX_OBJ := $(BUILD)/idea_canvas_ctx_cgl.o
+else
+  IDEA_CANVAS_CTX_SRC := $(IDEA_CANVAS_DIR)/idea_canvas_ctx_egl.cpp
+  IDEA_CANVAS_CTX_OBJ := $(BUILD)/idea_canvas_ctx_egl.o
+endif
+IDEA_CANVAS_OBJS := $(IDEA_CANVAS_BR_OBJ) $(IDEA_CANVAS_SIM_OBJ) $(IDEA_CANVAS_STUB_OBJ) $(IDEA_CANVAS_GPU_OBJ) $(IDEA_CANVAS_CTX_OBJ)
 # OpenMP for the native-CPU physics step (safe no-op if the toolchain lacks it
 # only when overridden; GCC/Clang on the supported platforms provide it).
 IDEA_CANVAS_OMP ?= -fopenmp
@@ -305,6 +316,10 @@ $(IDEA_CANVAS_STUB_OBJ): $(IDEA_CANVAS_DIR)/idea_canvas_gl_stub.cpp $(IDEA_CANVA
 # to IDEA_CANVAS_OMP/LIBS to build the real offscreen GPU compute path).
 $(IDEA_CANVAS_GPU_OBJ): $(IDEA_CANVAS_DIR)/idea_canvas_gpu.cpp $(IDEA_CANVAS_DIR)/idea_canvas.h $(IDEA_CANVAS_DIR)/idea_canvas_internal.hpp | $(BUILD)
 	$(CXX) -std=c++20 -O2 $(THREADFLAG) -I$(IDEA_CANVAS_DIR) -c $(IDEA_CANVAS_DIR)/idea_canvas_gpu.cpp -o $@
+# Platform GL context layer, OS-selected (WGL on Windows, CGL on macOS, EGL on
+# Linux). Default/no-GL build is a compilable stub reporting unsupported.
+$(IDEA_CANVAS_CTX_OBJ): $(IDEA_CANVAS_CTX_SRC) $(IDEA_CANVAS_DIR)/idea_canvas_ctx.h | $(BUILD)
+	$(CXX) -std=c++20 -O2 $(THREADFLAG) -I$(IDEA_CANVAS_DIR) -c $(IDEA_CANVAS_CTX_SRC) -o $@
 $(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_bestof.c -o $@
 $(PATH_OBJ): core/sleela_path.c core/sleela_path.h | $(BUILD)

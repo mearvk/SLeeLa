@@ -79,6 +79,31 @@ CPU/native memory) as a fallback — so it runs on a server with no display. The
 step is a ping-pong FBO fragment shader; `glReadPixels` brings the field back
 into the native vertex block on readback.
 
+## Cross-platform rendering (Windows 10+, macOS, Linux)
+
+On-screen and GPU rendering use **open standards only** — OpenGL plus each OS's
+standard context binding — behind one interface (`idea_canvas_ctx.h`), selected
+at build time by OS:
+
+| Platform | Standard window + GL context | File |
+|---|---|---|
+| **Windows 10+** | Win32 + **WGL** (`wglCreateContextAttribsARB`, core profile) | `idea_canvas_ctx_wgl.cpp` |
+| **macOS** | Cocoa + **CGL / NSOpenGLContext** (4.1 core) | `idea_canvas_ctx_cgl.mm` |
+| **Linux/Unix** | **EGL** (surfaceless) / GLX, **OSMesa** software fallback | `idea_canvas_ctx_egl.cpp` |
+
+No proprietary APIs (no D3D/Metal). The only hand-written glue is the minimal
+per-OS window/context shim, for which no cross-platform standard exists. The
+Windows and macOS builds compile their file via the native toolchain
+(`build-windows.ps1` delegates to the same `impl/Makefile`; macOS uses the
+Darwin branch); the `.mm`/WGL files are guarded so they are inert on other OSes.
+`idea_canvas_gpu_available()` reflects whether the platform context layer can
+create a context.
+
+> Verified here: Linux build selects and compiles the EGL file (as the no-GL
+> stub) and the VM runs. The Windows (WGL) and macOS (CGL) context code is
+> written against the standard APIs but is **not compiled or run in this Linux
+> sandbox** — build and run it on Windows 10+ / macOS.
+
 Sleela built-ins: `ideaCanvasSetBackendPolicy`, `ideaCanvasPolicy`,
 `ideaCanvasActiveBackend`, `ideaCanvasGpuAvailable`, `ideaCanvasMeasuredHz`,
 `ideaCanvasMigrate`.
