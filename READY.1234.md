@@ -216,6 +216,107 @@ OS; steering accurately describes the toolchain and gate.
   → 8 tooling / platform / steering
 ```
 
+## Build terms (so Kiro understands how each stage is actually built)
+
+These are the **real commands** found in the repository, mapped onto the stages
+above. Run them from the **repository root** unless noted. The SHA-256 gate is
+mandatory: set `SLEELA_SHA256_MANIFEST` to the committed manifest first.
+
+```sh
+# One-time per shell: point the verified-build gate at the trusted manifest.
+export SLEELA_SHA256_MANIFEST="$PWD/security/sha256-manifest.json"
+```
+
+### Whole repo (dispatcher) — root `Makefile`
+The root Makefile is a dispatcher that delegates to each subdir with `$(MAKE) -C`.
+```sh
+make all          # core + java28 + regex + compiler + decompiler + vm +
+                  # scripting + jetbrains + install + tutorial-check + tests +
+                  # config + route + common-rails + codecs + churn + antivirus
+make core         # -> $(MAKE) -C impl all      (the native toolchain; stages 2-3)
+make compiler     # -> $(MAKE) -C lib/compiler all   (compiler library, stage 4)
+make decompiler   # -> $(MAKE) -C lib/decompiler all
+make vm           # -> $(MAKE) -C lib/vm all
+make tests        # -> $(MAKE) -C tests check
+make clean        # clean all subdirs
+make help         # list every dispatcher target
+```
+
+### Stage 2-3 — the native toolchain (`impl/`) and the SHA-256 gate (§5)
+```sh
+make -C impl all              # verify-security -> sleela + nordshrift -> stage
+# 'all' first runs the gate target:
+make -C impl verify-security  # fails closed unless every gated file matches
+                              # security/sha256-manifest.json (via
+                              # tools/verify-before-execution.py)
+# Artifacts: impl/build/sleela, impl/build/nordshrift,
+#            staged runtime under impl/build/SLeeLa/ (see impl/BUILD-LAYOUT.md)
+make -C impl clean
+```
+Regenerate the manifest **whenever gated source changes** (new/edited files in
+`impl/core`, `impl/frontend`, the compiled `idea/*` sources, etc.):
+```sh
+python3 tools/generate-sha256-manifest.py        # rewrites security/sha256-manifest.json
+```
+
+### Cross-platform convenience scripts (stage 8)
+```sh
+./build-linux.sh                       # cd impl && make clean && make all; installs to /bin
+CC=clang CXX=clang++ ./build-linux.sh  # choose compilers
+BIN_DIR="$HOME/bin" ./build-linux.sh   # choose install dir
+pwsh ./build-windows.ps1               # Windows 10+: finds mingw32-make/make, runs 'make ... all'
+```
+
+### Stage 4 & 6 — compiling / running `.sleela` (the toolchain CLI)
+```sh
+# Direct CLI (after impl is built):
+impl/build/sleela version
+impl/build/sleela check   path/to/Program.sleela                 # validate only
+impl/build/sleela run     path/to/Program.sleela                 # compile + execute
+impl/build/sleela compile path/to/Program.sleela -o build/Program.sleela
+impl/build/sleela validate-artifact build/Program.sleela
+impl/build/sleela nordshrift [--emit] [--target=sleela|java|c] file.sleela
+
+# Lifecycle driver (thin, auditable wrapper; runs the /lib inventory + ISA gate
+# before delegating to the native compiler) -- tools/sleela-build.py:
+python3 tools/sleela-build.py build                  # build the native compiler
+python3 tools/sleela-build.py inventory-lib          # /lib source + ISA coverage report
+python3 tools/sleela-build.py compile <src> <out>    # gated compile of one program
+python3 tools/sleela-build.py check | test | package | install <dir> | doctor | version
+python3 tools/sleela-build.py run -- <args...>
+```
+
+### Stage 7 — optional Idea System(TM) native modules (`idea/`)
+Each subtree has its own Makefile; the GPU/GL paths are opt-in and need a
+GPU/driver/display (write-but-unverified without one).
+```sh
+# Idea System core (C ABI + C++ facade/driver) -- pure, no graphics:
+make -C idea run        # build + run the reference driver (build/idea-system)
+make -C idea lib        # just the static C core (build/libideasystem.a)
+
+# Realtime canvas (native-CPU physics; optional offscreen GPU + GL context):
+make -C idea/realtime run                      # CPU physics benchmark (verifiable)
+cmake -S idea/realtime -B idea/realtime/build -DIDEA_CANVAS_WITH_GL=ON   # + GPU/GL
+cmake --build idea/realtime/build
+# The VM links the native canvas by default (-fopenmp); to build GPU-less:
+make -C impl IDEA_CANVAS_OMP= all
+
+# Sleela-Native clean-room renderer/model/audio (MIT; own code, no 3rd-party):
+make -C idea/sleela-native run     # headless model + audio demo -> a .wav (verifiable)
+# The OpenGL renderer needs a GL context (WGL/CGL/EGL) + GPU; see its README.
+```
+
+### The canonical from-scratch sequence, as commands
+```sh
+export SLEELA_SHA256_MANIFEST="$PWD/security/sha256-manifest.json"
+python3 tools/generate-sha256-manifest.py     # (only if gated source changed)
+make -C impl all                              # gate -> sleela + nordshrift (stages 2-3,5)
+make compiler decompiler vm                   # library/tooling (stage 4)
+impl/build/sleela run impl/examples/<example>.sleela   # prove it (stage 6)
+make -C idea run && make -C idea/sleela-native run     # optional natives (stage 7)
+make all                                      # everything the dispatcher knows (stage 8)
+```
+
 ## Invariants to hold at every stage
 
 - Conform to `SLEELA.syntax`; address only catalogued `SHEET.sheet` objects.
