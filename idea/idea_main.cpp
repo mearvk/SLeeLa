@@ -21,6 +21,7 @@
  */
 #include "idea_system.hpp"
 
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <string>
@@ -33,10 +34,17 @@
  * hex code from the Author's github.com wiki page.
  */
 static long offline_author_fetch(const std::string &url, char *buf, size_t cap) {
-    // These are numbers the Content Author / controller owns.  The leading
-    // bytes read as "IDEA" so the provenance is legible in the stream.
+    // An Idea(TM) payload the Content Author / controller owns, as hex:
+    //   49 44 = 'I''D' magic
+    //   01    = format version 1
+    //   17    = 23 hours of content (0x17)
+    //   06    = 6 seemly decisions
+    //   00    = scheme 0 (Concepts)
+    //   07 BC = depth 1980 (big-endian)
+    //   01    = flags: bit0 set -> Author-designed (else the Society)
+    //   ...   = opaque Author content bytes
     static const char *author_hex =
-        "49 44 45 41 2d 53 59 53 54 45 4d c0 ffee 2a 7f 10 99 42 13 88";
+        "49 44 01 17 06 00 07 BC 01 2a 7f 10 99 42 13 88 de ad be ef";
     (void)url;
     size_t n = std::strlen(author_hex);
     if (n >= cap) n = cap - 1;
@@ -64,15 +72,33 @@ int main() {
     std::cout << "objectives: " << sys.objectiveCount()
               << "  scheme: " << idea::System::name(sys.scheme()) << "\n";
 
+    // Canvas Hz: present at 60 Hz, simulate the live Idea(TM) System at 120 Hz.
+    std::cout << "canvas: present=" << idea::System::presentHz()
+              << "Hz  sim=" << idea::System::simHz() << "Hz"
+              << " (fixed step " << idea::System::simTimestep() << "s)\n";
+
     // 2. Receive the signal (Author-controlled hex from the resource).
-    sys.setFetcher(offline_author_fetch);
+    //    By default the System uses its built-in HTTP(S) fetcher (Option 2:
+    //    networking in the core).  Set IDEA_LIVE=1 to really contact the
+    //    resource; otherwise we use a deterministic offline payload so the
+    //    demo runs anywhere, consistently in Time.
+    const char *live = std::getenv("IDEA_LIVE");
+    if (!(live && live[0] == '1')) {
+        sys.setFetcher(offline_author_fetch);
+        std::cout << "fetch mode: offline Author payload (set IDEA_LIVE=1 for the network)\n";
+    } else {
+        std::cout << "fetch mode: live HTTP(S) via the core fetcher\n";
+    }
     idea::Status rs = sys.receiveSignal();
     if (rs != IDEA_OK) {
         std::cerr << "receive failed: " << idea::System::name(rs) << "\n";
         return 1;
     }
-    std::cout << "received signal: " << sys.signalLen() << " bytes "
-              << "(capable to receive=" << (sys.isCapable("receive") ? "yes" : "no") << ")\n";
+    std::cout << "received signal: " << sys.signalLen() << " bytes"
+              << "  payload=" << (sys.payloadValid() ? "Idea(TM) v" : "legacy raw")
+              << (sys.payloadValid() ? std::to_string(sys.payloadVersion()) : std::string())
+              << "  shows=" << (sys.isAuthored() ? "Author design" : "the Society")
+              << "  (capable to receive=" << (sys.isCapable("receive") ? "yes" : "no") << ")\n";
 
     // 3. Build the Series from the signal.
     idea::Status bs = sys.buildSeries();

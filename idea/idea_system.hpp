@@ -72,6 +72,11 @@ public:
     Status feedHex(const std::string &hex) { return idea_feed_hex(sys_, hex.c_str()); }
     size_t signalLen() const               { return idea_signal_len(sys_); }
 
+    /* ---- payload (what the Author's hex encodes) ---- */
+    bool payloadValid() const   { return idea_payload_valid(sys_) != 0; }
+    int  payloadVersion() const { return idea_payload_version(sys_); }
+    bool isAuthored() const     { return idea_is_authored(sys_) != 0; }
+
     /* ---- series / time ---- */
     Status buildSeries()                   { return idea_build_series(sys_); }
     Status tick(long deltaSeconds)         { return idea_tick(sys_, deltaSeconds); }
@@ -96,6 +101,12 @@ public:
     Scheme scheme() const                  { return idea_scheme_of(sys_); }
     Status addObjective(const std::string &o) { return idea_add_objective(sys_, o.c_str()); }
     int    objectiveCount() const          { return idea_objective_count(sys_); }
+
+    /* ---- Canvas / Hz ---- */
+    static double presentHz()   { return IDEA_CANVAS_PRESENT_HZ; }
+    static double simHz()       { return IDEA_CANVAS_SIM_HZ; }
+    static double simTimestep() { return idea_sim_timestep(); }
+    static int    fixedSteps(double dt, double &acc) { return idea_fixed_steps(dt, &acc); }
 
     /* ---- names ---- */
     static std::string name(StateKind k) { return idea_state_name(k); }

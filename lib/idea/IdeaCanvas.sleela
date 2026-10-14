@@ -1,0 +1,183 @@
+#sleela 1.5
+// Version: Idea System(TM) 1.0.0 | Main program: Sleelvac 1.5
+// IdeaCanvas.sleela -- the Sleela Canvas for the Idea(TM) System, with a
+// rounded chat pane at the bottom.
+//
+// Idea System(TM) / Idea(TM).  From Author; distributive.
+//
+// This is the presented surface of the Idea(TM) System.  It draws, with the
+// genuine SleelaUI Draw API (SLDrawContext primitives, software-rasterised and
+// pixel-identical on every OS):
+//
+//   * a header band naming the System and its known internet resource;
+//   * the live Series panel -- a forward progress rail with seemly-decision
+//     markers, advanced on a DETERMINISTIC 120 Hz fixed step while the Canvas
+//     is PRESENTED at 60 Hz (the two rates are decoupled on purpose, so Time
+//     stays consistent even when a frame seems to loop or retry);
+//   * a chat pane at the bottom -- a rounded, carefully curved card with a
+//     message area and a rounded SLEntry input, for talking to the System.
+//
+// Canvas Hz contract (mirrors idea/idea_system.h):
+//     PRESENT_HZ = 60   (what the user sees)
+//     SIM_HZ     = 120  (the live Idea(TM) System simulation; fixed step)
+
+class IdeaCanvas {
+
+  // ---- Canvas Hz (the answer: 60 present / 120 simulate) ---------------
+  static final double PRESENT_HZ = 60.0;
+  static final double SIM_HZ     = 120.0;
+
+  // ---- geometry --------------------------------------------------------
+  static final int W = 720;
+  static final int H = 480;
+  static final int CHAT_H = 150;   // height of the bottom chat pane
+  static final double PAD = 16.0;
+  static final double RADIUS = 18.0;   // careful curvature on every card
+
+  // ---- shared State (the State IS the System) --------------------------
+  int    simSteps   = 0;      // 120 Hz steps taken (forward Time)
+  double seconds    = 0.0;    // simulated seconds of the Series elapsed
+  int    totalSecs  = 82800;  // 23h, as the Author payload encodes
+  int    decisions  = 0;
+  int    maxDec     = 6;
+  String presented  = "LOADING";
+
+  // theme (rounded, calm, water-ish accents)
+  int bg; int panel; int card; int rail; int railFill; int accent; int ink; int sub;
+
+  // frame clock: paces the 120 Hz fixed-step simulation across 60 Hz frames
+  SLFrameClock clock;
+
+  void buildTheme() {
+    SLColor c = new SLColor();
+    c.rgb(13, 14, 18);   bg       = c.value();   // near-black canvas
+    c.rgb(22, 24, 31);   panel    = c.value();   // series panel
+    c.rgb(28, 31, 40);   card     = c.value();   // chat card
+    c.rgb(40, 44, 56);   rail     = c.value();   // progress rail track
+    c.rgb(94, 156, 255); railFill = c.value();   // progress fill (accent blue)
+    c.rgb(120, 200, 255);accent   = c.value();   // hairline accent
+    c.rgb(236, 240, 248);ink      = c.value();   // primary text
+    c.rgb(150, 160, 178);sub      = c.value();   // secondary text
+  }
+
+  // ---- one 120 Hz simulation step (forward, linear; Time is ultimate) --
+  void simStep() {
+    double step = 1.0 / SIM_HZ;             // the fixed timestep
+    double perStep = (double) totalSecs / (SIM_HZ * 60.0); // ~ advance rate
+    seconds = seconds + (totalSecs * step) / 60.0; // 60s of wall -> whole Series
+    simSteps = simSteps + 1;
+    if (seconds >= totalSecs) { seconds = totalSecs; presented = "FINAL"; }
+    else { presented = "SOLVING"; }
+    int due = (int) ((seconds * maxDec) / totalSecs);
+    if (due > decisions) { decisions = due; if (presented != "FINAL") presented = "DECIDING"; }
+  }
+
+  // ---- the per-frame draw routine (presented at 60 Hz) -----------------
+  // dc is bound by the VM to this Canvas View's double-buffered surface each
+  // frame (the proven draw-handler signature: a single SLDrawContext).
+  void drawFrame(SLDrawContext dc) {
+    // Advance the frame clock, then drain its FIXED 120 Hz accumulator so the
+    // Series simulation steps deterministically regardless of the frame rate.
+    clock.tick();
+    double step = 1.0 / SIM_HZ;
+    while (clock.fixedStep(step)) { simStep(); }
+
+    // ---- background ----
+    dc.clear(bg);
+
+    // ---- header band ----
+    dc.fillRoundRect(16, 16, W - 32, 56, RADIUS, panel);
+    dc.text("Idea System(TM)  -  From Author; distributive", 32, 44, ink);
+    dc.text("resource: github.com/mearvk/Senior.Senate.Attorney.E44Hrs", 32, 62, sub);
+
+    // ---- live Series panel ----
+    int py = 88;
+    int ph = H - CHAT_H - py - 16;
+    dc.fillRoundRect(16, py, W - 32, ph, RADIUS, panel);
+
+    // progress rail (rounded track + rounded fill)
+    double railX = 32.0; double railY = py + 48; double railW = W - 64;
+    dc.fillRoundRect((int) railX, (int) railY, (int) railW, 14, 7.0, rail);
+    double frac = seconds / totalSecs;
+    int fillW = (int) (railW * frac);
+    if (fillW > 0) { dc.fillRoundRect((int) railX, (int) railY, fillW, 14, 7.0, railFill); }
+
+    // seemly-decision markers along the rail
+    int i = 1;
+    while (i <= maxDec) {
+      double mx = railX + (railW * i) / (maxDec + 1);
+      dc.fillCircle(mx, railY + 7, 5.0, accent);
+      i = i + 1;
+    }
+
+    // state + time readout
+    dc.text("state: " + presented, 32, py + 24, ink);
+    dc.text("Series  " + ((int) frac * 100) + "%   decisions " + decisions
+            + "/" + maxDec + "   sim-steps " + simSteps, 32, py + 92, sub);
+    dc.text("canvas: present 60 Hz   simulate 120 Hz (fixed step)", 32, py + 112, sub);
+
+    // ---- chat pane (rounded, carefully curved card) ----
+    drawChatPane(dc, 16, H - CHAT_H - 0, W - 32, CHAT_H - 12);
+  }
+
+  // A rounded chat card: soft fill, a hairline accent border for curvature
+  // definition, a message area, and a rounded input affordance.
+  void drawChatPane(SLDrawContext dc, int x, int y, int w, int h) {
+    // card body + hairline (the "nice careful curvature")
+    dc.fillRoundRect(x, y, w, h, RADIUS, card);
+    dc.strokeRoundRect(x, y, w, h, RADIUS, 1.0, accent);
+
+    // title
+    dc.text("Chat  -  talk to the Idea(TM) System", x + 16, y + 24, ink);
+
+    // a couple of seeded message bubbles (rounded)
+    int bx = x + 16; int bw = w - 160;
+    dc.fillRoundRect(bx, y + 36, bw, 28, 12.0, panel);
+    dc.text("System: the State is the System; ask and I present.", bx + 12, y + 55, sub);
+    dc.fillRoundRect(x + w - bw - 16, y + 70, bw, 28, 12.0, rail);
+    dc.text("You: show me the Series.", x + w - bw - 4, y + 89, ink);
+
+    // rounded input affordance at the very bottom (the SLEntry sits here)
+    int iy = y + h - 40;
+    dc.fillRoundRect(x + 16, iy, w - 110, 30, 15.0, panel);
+    dc.text("Type a message...", x + 32, iy + 20, sub);
+    // send button (rounded)
+    dc.fillRoundRect(x + w - 86, iy, 70, 30, 15.0, railFill);
+    dc.text("Send", x + w - 66, iy + 20, bg);
+  }
+
+  // ---- entry point -----------------------------------------------------
+  void main() {
+    print("Constitution: depth=" + sysdepth() + " degree<=" + degreemax());
+    print("Idea(TM) Canvas: present " + PRESENT_HZ + " Hz, simulate " + SIM_HZ + " Hz");
+
+    buildTheme();
+
+    // The frame clock drives presentation at 60 Hz; the 120 Hz fixed step is
+    // drained inside drawFrame so Time stays consistent (deterministic).
+    clock = new SLFrameClock();
+    clock.create(PRESENT_HZ);
+
+    // Build the window, the canvas view, and the chat input entry.
+    SLGuiApp app = new SLGuiApp();
+    app.create("Idea System(TM)");
+    SLWindow win = new SLWindow();
+    win.createIn(app, "Idea System(TM)", W, H);
+
+    SLCanvasView canvas = new SLCanvasView();
+    canvas.createIn(win, W, H - 44);
+    canvas.setFps(PRESENT_HZ);          // present at 60 Hz
+    canvas.setDrawHandler(0);           // ordinal 0 -> drawFrame (host-bound)
+
+    // the rounded chat input lives under the canvas
+    SLEntry input = new SLEntry();
+    input.createIn(win, "Type a message to the Idea(TM) System...");
+
+    // Hand control to the window loop; it drives drawFrame at 60 Hz while the
+    // 120 Hz fixed-step simulation advances the Series inside each frame.
+    presented = "SOLVING";
+    app.run();
+
+    print("Idea System(TM): what you saw is what it presents -- its State.");
+  }
+}

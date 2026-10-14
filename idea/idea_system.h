@@ -105,8 +105,22 @@ typedef struct idea_system idea_system;
  * code (whitespace and 0x prefixes are tolerated by the decoder).
  *
  * user is the opaque pointer registered with idea_set_fetcher.
+ *
+ * NOTE: by default the System uses its OWN built-in HTTP(S) fetcher
+ * (idea_http_fetch, see below) which really contacts the internet resource.
+ * Registering a custom fetcher overrides it (useful for tests / offline runs).
  */
 typedef long (*idea_fetch_fn)(const char *url, char *buf, size_t cap, void *user);
+
+/*
+ * The built-in network fetcher (Option 2: HTTP in the core).  It performs a
+ * real HTTP/1.1 GET of `url` over a TCP socket (HTTPS URLs are fetched through
+ * the system `curl` if available, since the core carries no TLS stack).  It is
+ * the default fetcher installed by idea_create().  Returns bytes written, or a
+ * negative idea_status.  Not available on platforms without BSD sockets, in
+ * which case it returns IDEA_INPUT_UNAVAILABLE.
+ */
+long idea_http_fetch(const char *url, char *buf, size_t cap, void *user);
 
 /* ---- Lifecycle -------------------------------------------------------- */
 
@@ -146,6 +160,39 @@ idea_status idea_feed_hex(idea_system *sys, const char *hex);
 
 /* Number of decoded signal bytes currently held, or 0.                     */
 size_t idea_signal_len(const idea_system *sys);
+
+/* ---- The signal payload format (what the Author's hex encodes) -------- */
+/*
+ * The Author's hex code is not merely a size seed: it is a structured payload
+ * the Content Author / controller designs.  The decoded bytes are read as:
+ *
+ *   byte 0      : magic 'I' (0x49)   -- identifies an Idea(TM) payload
+ *   byte 1      : magic 'D' (0x44)
+ *   byte 2      : format version (currently 1)
+ *   byte 3      : hours      (1..30; clamped)   -- length of the Series
+ *   byte 4      : decisions  (1..9;  clamped)   -- seemly, important choices
+ *   byte 5      : scheme     (0..3  -> idea_scheme)
+ *   byte 6..7   : depth      (big-endian u16, 1..3024; clamped)
+ *   byte 8      : flags      (bit0 = author-designed, else "what the Society does")
+ *   byte 9..N   : opaque Author content bytes (fold into the Series seed)
+ *
+ * A payload that does not begin with the 'I''D' magic is treated as a legacy
+ * raw signal: the whole thing is folded into the seed and the Series is sized
+ * from it (the pre-format behaviour), so old hex codes still work.
+ */
+#define IDEA_PAYLOAD_MAGIC0   0x49  /* 'I' */
+#define IDEA_PAYLOAD_MAGIC1   0x44  /* 'D' */
+#define IDEA_PAYLOAD_VERSION  1
+#define IDEA_PAYLOAD_HEADER   9     /* fixed header length in bytes          */
+#define IDEA_FLAG_AUTHORED    0x01  /* bit0: Author designed; else Society    */
+
+/* Did the received signal carry a well-formed Idea(TM) payload header?       */
+int idea_payload_valid(const idea_system *sys);
+/* The format version from the payload (0 if none / legacy raw signal).       */
+int idea_payload_version(const idea_system *sys);
+/* True if the Series shows what the Author designs; false => what the Society
+ * does.  (Reads IDEA_FLAG_AUTHORED; legacy raw signals default to authored.)  */
+int idea_is_authored(const idea_system *sys);
 
 /* ---- The solution Series (forward, linear; Time is ultimate) ---------- */
 
@@ -211,6 +258,36 @@ idea_scheme idea_scheme_of(const idea_system *sys);
  */
 idea_status idea_add_objective(idea_system *sys, const char *objective);
 int idea_objective_count(const idea_system *sys);
+
+/* ---- Canvas / frame clock (the Sleela Canvas Hz rate) ----------------- */
+/*
+ * The Idea(TM) System is presented on a Sleela Canvas.  Two rates apply, and
+ * they are deliberately decoupled -- exactly as user-interface/DRAW-API.md's
+ * frame clock separates presentation from simulation:
+ *
+ *   - PRESENT_HZ : the Canvas View refresh rate the window loop honours
+ *                  (what the user sees).  Matches the SleelaUI house default.
+ *   - SIM_HZ     : the live Idea(TM) System simulation rate -- a deterministic
+ *                  fixed timestep for advancing the Series, independent of the
+ *                  display.  This is what keeps Time "consistent" even when a
+ *                  frame seems to loop or retry.
+ */
+#define IDEA_CANVAS_PRESENT_HZ  60.0   /* Canvas View FPS (presentation)      */
+#define IDEA_CANVAS_SIM_HZ      120.0  /* live Idea(TM) System sim fixed step */
+
+/* The fixed simulation timestep in seconds (1 / IDEA_CANVAS_SIM_HZ).         */
+double idea_sim_timestep(void);
+
+/*
+ * A tiny deterministic fixed-step accumulator, mirroring the DRAW-API frame
+ * clock's fixed_step: feed it the real per-frame delta (seconds) and it tells
+ * you how many 120 Hz simulation steps to run this frame.  Stateless across
+ * calls except for the accumulator you own.
+ *
+ *   double acc = 0;
+ *   int steps = idea_fixed_steps(dt, &acc);   // run this many sim ticks
+ */
+int idea_fixed_steps(double frame_dt_seconds, double *accumulator);
 
 /* Human-readable name for a state kind / status / scheme (never NULL).     */
 const char *idea_state_name(idea_state_kind k);
