@@ -53,6 +53,12 @@ STAGE_LIB := $(STAGE)/lib
 STAGE_DOCS := $(STAGE)/docs
 SLEELA_BIN := $(BUILD)/sleela$(EXE)
 NORDSHRIFT_BIN := $(BUILD)/nordshrift$(EXE)
+# Reusable static archive of the native VM Core engine + its OS-abstraction
+# backends. This is the single "base engine" the premium SLVM generations under
+# ../sleela-virtual-machine/0NN link against so each one is a real, runnable VM
+# (slvm_new/slcore_exchange/slvm_load_file/slvm_run/slvm_free) instead of a
+# parallel toy interpreter. Its public API is impl/core/sleela_core.h.
+SLCORE_LIB := $(BUILD)/libslcore.a
 THREAD_SMOKE := $(BUILD)/thread_smoke
 THREAD_PLATFORM_SMOKE := $(BUILD)/thread_platform_smoke
 SOCKET_SMOKE := $(BUILD)/socket_smoke
@@ -218,9 +224,9 @@ else
 endif
 ALL_OBJECTS := $(CORE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer
+.PHONY: all libslcore test-platform stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer
 
-all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage
+all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) $(SLCORE_LIB) stage
 
 # Build a stable, self-describing runtime layout. Build objects remain in build/;
 # the staged result contains only runtime-facing files and the default Config
@@ -407,6 +413,19 @@ $(PARAMETERS_OBJ): ../runtime/Parameters.c ../runtime/Parameters.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/Parameters.c -o $@
 $(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
+
+# The exact object set the Core engine needs at link time (the same set the
+# core smoke tests link): the engine translation unit plus every OS-abstraction
+# backend it calls into (thread/io/net/synchro/munction/bestof/idea-canvas/
+# registry/path/terminal/library/os/platform/time/memory/memmgr) and the GC.
+SLCORE_OBJS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) \
+  $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) \
+  $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TIME_OBJ) \
+  $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ)
+$(SLCORE_LIB): $(SLCORE_OBJS)
+	$(AR) rcs $@ $(SLCORE_OBJS)
+libslcore: $(SLCORE_LIB)
+	@echo "=== reusable Core engine archive: $(SLCORE_LIB) ==="
 $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/chemistry/chemistry.cpp -o $@
 $(FINANCIAL_OBJ): subjects/finance/financial.cpp subjects/finance/financial.h | $(BUILD)

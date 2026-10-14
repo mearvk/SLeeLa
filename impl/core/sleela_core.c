@@ -1387,16 +1387,19 @@ static SLResult run_thread(SLThread* t) {
 
         /* ---- VM selection service (SLVmRegistry seam) ----------------- */
         case OP_VM_SELECT: {
-            /* pops a VM version number (1..10). This is the service-exit seam a
-             * Sleela VM selector (virtual-machine/vm-version/SLVmRegistry) uses
-             * to ask the host to build+boot the chosen version's native main.
-             * The core validates the request and pushes a status (0 ok,
-             * -1 out of range); the actual native-main load is a host action
+            /* pops a VM version number. This is the service-exit seam a Sleela
+             * VM selector (virtual-machine/vm-version/SLVmRegistry) uses to ask
+             * the host to build+boot the chosen version. Valid range is 1..11:
+             * the ten standard think-tank versions (1..10) and the eleven
+             * premium SLVM generations (1..11, the broader range), each a real
+             * runnable VM under sleela-virtual-machine/0NN that links the shared
+             * Core engine. The core validates the request and pushes a status
+             * (0 ok, -1 out of range); the actual build+boot is a host action
              * signalled by this opcode (an unknown opcode is never a no-op). */
             SLValue nv=POP();
             if(nv.type!=SL_INT) TERR("vmSelect(number) requires an int version number");
             int sel=(int)nv.as.i;
-            PUSH(slval_int((sel>=1 && sel<=10) ? 0 : -1));
+            PUSH(slval_int((sel>=1 && sel<=11) ? 0 : -1));
         } break;
 
         /* ---- Modium file-resolution scan (SLVmModium seam) ----------- */

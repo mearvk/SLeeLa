@@ -30,6 +30,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <chrono>
 extern "C" {
 #include "../core/sleela_core.h"
 #include "../core/sleela_memmgr.h"
@@ -478,6 +479,9 @@ static catalog::Catalog loadCatalog(){const char*env=std::getenv("SLEELA_SHEET")
  * opcode validates it in the VM (1..10). Actually building+booting a selected
  * version's native main is a host/build action beyond the shipped `sleela`
  * binary; this subcommand resolves and reports the selection. */
+static int compileFile(const std::string&sourcePath,const std::string&outputPath);
+static int runFile(const std::string&path);
+
 static int vmCmd(int argc,char**argv){
     struct VmEntry{int n;const char*id;const char*label;const char*dir;const char*mainEntry;};
     static const VmEntry kVms[10]={
@@ -520,7 +524,56 @@ static int vmCmd(int argc,char**argv){
         for(const auto&v:kPremium)
             std::cout<<"  premium "<<v.n<<"  "<<v.id<<"  ["<<v.label<<"]  -> "<<v.dir<<"\n";
         std::cout<<"\nUse: sleela vm select <native|1..10|premium 1..11>   |   sleela vm info <1..10|premium 1..11>\n";
+        std::cout<<"     sleela vm run <premium <1..11>|native> <program.sleela>   (premium generations are real runnable VMs)\n";
         return 0;
+    }
+    // `sleela vm run premium <n> <program.sleela|artifact>` actually boots the
+    // selected premium SLVM generation (a real VM linking the shared Core
+    // engine) and runs the program on it. The generation is built on demand
+    // (make -C its dir) if its binary is missing, the source is compiled to a
+    // Core artifact via this same sleela binary, then the generation VM is
+    // exec'd on that artifact. Standard (think-tank) versions are not yet
+    // bootable this way; use the Native VM (plain `sleela run`).
+    if(sub=="run"){
+        // forms:  vm run premium <n> <prog>   |  vm run p<N> <prog>   |  vm run native <prog>
+        if(argc<4){std::cerr<<"sleela vm run: expected <premium <1..11>|p<N>|native> <program>\n";return 2;}
+        std::string sel=argv[3];
+        std::string pnum; int progIdx=-1;
+        if(sel=="premium"){ if(argc<6){std::cerr<<"sleela vm run: premium needs <n> <program>\n";return 2;} pnum=argv[4]; progIdx=5; }
+        else if(sel.size()>=2 && (sel[0]=='p'||sel[0]=='P') && std::isdigit((unsigned char)sel[1])){ pnum=sel.substr(1); progIdx=4; }
+        else if(sel=="native"){ if(argc<5){std::cerr<<"sleela vm run: native needs <program>\n";return 2;} std::cout<<"Native VM: running on impl/core (the default engine).\n"; return runFile(argv[4]); }
+        else { std::cerr<<"sleela vm run: '"<<sel<<"' is not runnable here (use premium <1..11> or native)\n"; return 2; }
+        if(progIdx>=argc){std::cerr<<"sleela vm run: missing <program>\n";return 2;}
+        int n=std::atoi(pnum.c_str());
+        if(n<1||n>11){std::cerr<<"sleela vm run: premium '"<<pnum<<"' out of range (1..11)\n";return 2;}
+        const PremiumVm&v=kPremium[n-1];
+        char nn[4]; std::snprintf(nn,sizeof(nn),"%02d",n);
+        std::string vmbin=std::string(v.dir)+"/vm-build/slvm-"+nn;
+        std::string prog=argv[progIdx];
+        // Build the generation VM on demand if its binary is not present.
+        if(!fs::exists(vmbin)){
+            std::cout<<"Building premium VM "<<v.id<<" ("<<v.dir<<")...\n";
+            if(runCommand("make -C "+shellQuote(v.dir))!=0 || !fs::exists(vmbin)){
+                std::cerr<<"sleela vm run: could not build "<<vmbin
+                         <<" (ensure the Core archive exists: make -C impl libslcore)\n";
+                return 1;
+            }
+        }
+        // Resolve the program to a Core artifact. If it is already a compiled
+        // artifact, run it directly; otherwise compile it to a temp artifact.
+        std::string artifact=prog; std::string tmp;
+        if(!slvm_is_artifact_file(prog.c_str())){
+            {
+                auto uniq=std::chrono::steady_clock::now().time_since_epoch().count();
+                tmp=(fs::temp_directory_path()/("slvm-run-"+std::to_string(uniq)+".sleela")).string();
+            }
+            if(compileFile(prog,tmp)!=0){std::cerr<<"sleela vm run: failed to compile "<<prog<<"\n";return 1;}
+            artifact=tmp;
+        }
+        std::cout<<"Running "<<prog<<" on premium VM "<<v.id<<" ["<<v.label<<"].\n";
+        int rc=runCommand(shellQuote(vmbin)+" "+shellQuote(artifact));
+        if(!tmp.empty()){ std::error_code ec; fs::remove(tmp,ec); }
+        return rc;
     }
     if(sub=="select"||sub=="info"){
         if(argc<4){std::cerr<<"sleela vm "<<sub<<": expected <native|1..10|premium 1..11>\n";return 2;}
@@ -542,8 +595,8 @@ static int vmCmd(int argc,char**argv){
             }
             std::cout<<"Selected premium VM "<<v.id<<" ["<<v.label<<"].\n"
                      <<"  Generation lives in "<<v.dir<<" (its own src/include/Makefile).\n"
-                     <<"  (OP_VM_SELECT validated; building+booting a premium generation is a\n"
-                     <<"   host/build step beyond the shipped sleela binary — build it in its dir.)\n";
+                     <<"  This is a real runnable VM (it links the shared Core engine). Run a\n"
+                     <<"  program on it with:  sleela vm run premium "<<n<<" <program.sleela>\n";
             return 0;
         }
         if(sel=="native"||sel=="0"){
@@ -766,7 +819,7 @@ static int designActivityCmd(int argc,char**argv){
     char json[1024];slda_format_json("sleela",&result,json,sizeof json);
     std::cout<<json<<"\n"; return 0;
 }
-static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela vm [list|select <native|1..10|premium 1..11>|info ...]\n  sleela modium [scan [native|1..10] [--exact|--seal]|status|restore <1..10>]\n  sleela registry [review [key]|get <key> <name>|set <key> <name> <val> [--int|--bool]|feature <name> [on|off]]\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
+static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela vm [list|select <native|1..10|premium 1..11>|info ...|run <premium <1..11>|native> <program.sleela>]\n  sleela modium [scan [native|1..10] [--exact|--seal]|status|restore <1..10>]\n  sleela registry [review [key]|get <key> <name>|set <key> <name> <val> [--int|--bool]|feature <name> [on|off]]\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";
     // Creator-document schema binding: if the source declares a #schema pragma,
     // the referenced XSD must exist and its version must be understood. Absent

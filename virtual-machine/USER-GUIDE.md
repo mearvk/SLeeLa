@@ -62,20 +62,35 @@ sleela vm select 10         # a standard think-tank version (idea-vm-010)
 sleela vm select premium 6  # a premium SLVM generation (slvm-6); or shorthand: p6
 ```
 
+**Run a program on a premium VM** (premium generations are real runnable VMs):
+
+```sh
+sleela vm run premium 6 program.sleela   # boot slvm-6 and run program.sleela on it
+sleela vm run p11 program.sleela         # shorthand for premium 11
+sleela vm run native program.sleela      # same as plain `sleela run` (Native VM)
+```
+
 ### Standard vs. premium VMs
 
 - **Standard** (`1..10`) — the think-tank versions under
   `virtual-machine/vm-version/NNN`: a layered progression of one user-level
   improvement each.
 - **Premium** (`premium 1..11`) — the SLVM generations under
-  `sleela-virtual-machine/NNN`: larger, distinct generation builds, each with
-  its own `src/`, `include/`, `Makefile`, and `LANGUAGE.SPEC.md`. Inspect one
-  with `sleela vm info premium <n>`.
+  `sleela-virtual-machine/NNN`. Each is a **real, runnable virtual machine**: it
+  links the shared native Core engine (archived as `impl/build/libslcore.a`) and
+  runs compiled `.sleela` artifacts, applying that generation's contract as a
+  pre-boot admission step. Each has its own `src/`, `include/`, `Makefile`, and
+  `LANGUAGE.SPEC.md`, and builds to `sleela-virtual-machine/NNN/build/slvm-NN`.
+  Inspect one with `sleela vm info premium <n>`.
 
-> What selection does today: it **resolves and reports** the choice (validated
-> the same way the VM's `OP_VM_SELECT` opcode validates it). Actually building
-> and booting a non-native VM's compiled `main` is a host/build step beyond the
-> shipped `sleela` binary — the command tells you so. Start on the Native VM.
+> **Selection vs. running.** `sleela vm select premium <n>` resolves and reports
+> the choice (validated the same way the VM's `OP_VM_SELECT` opcode validates
+> it, now `1..11`). `sleela vm run premium <n> <program.sleela>` goes further: it
+> builds that generation's VM on demand (if needed), compiles your program to a
+> Core artifact, and **actually boots the generation VM and runs the program on
+> it**. The premium VMs are built by the master build (`make premium-vms`, part
+> of `make all`). Standard think-tank versions (`1..10`) are not yet bootable
+> this way — use the Native VM (plain `sleela run`) for those.
 
 ---
 
@@ -187,6 +202,8 @@ intact."
 
 - `sleela modium restore` **never** rewrites files automatically — it reports,
   then you act.
-- `sleela vm select` on a non-native VM does not silently execute anything; it
-  resolves the choice and tells you what a host load would entail.
+- `sleela vm select` never executes anything; it only resolves and reports the
+  choice. Running a program on a premium VM is the explicit, separate
+  `sleela vm run premium <n> <program>` — which boots that VM and runs the
+  program on it under the usual SHA-256 build gate.
 - The Native VM remains the default and is the recommended starting point.
