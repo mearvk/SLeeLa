@@ -9,6 +9,7 @@
 
 ## Start here
 - [Build the native implementation](impl/README.md)
+- [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [Documentation index](docs/README.md)
 - [Platform support and validation matrix](docs/PLATFORM-SUPPORT.md)
 - [Brand guide](docs/BRAND-GUIDE.md)
