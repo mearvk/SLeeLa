@@ -231,7 +231,7 @@ sleela run program.sleela
 
 The first form is direct/native SLeeLa source execution: the C/C++ SLeeLa toolchain compiles the source in memory and the native C Core executes it through SLVM. The second form separates compilation from execution and loads the persistent Core artifact through the same SLVM. Neither path creates a parallel SLeeLa interpreter.
 
-See `sleela-virtual-machine/1/docs/COMMAND-LINE-EXECUTION.md`.
+See `sleela-virtual-machine/001/docs/COMMAND-LINE-EXECUTION.md`.
 
 
 ## VM Compiler Manager and native VM support

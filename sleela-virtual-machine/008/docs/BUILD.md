@@ -1,6 +1,6 @@
 # SLVM/8 Build
 
-From sleela-virtual-machine/8:
+From sleela-virtual-machine/008:
 
     make
     make test

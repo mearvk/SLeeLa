@@ -203,21 +203,21 @@ Fixed this pass:
 - **Duplicate definitions.** `debugger/debugger_backend.hpp` (duplicate
   `RegisterSnapshot` struct + duplicate virtual methods; also a name clash with
   `debug_engine.hpp`'s different `RegisterSnapshot`, renamed the backend one to
-  `BackendRegisterSnapshot`); `sleela-virtual-machine/1/src/slvm.c` (duplicate
+  `BackendRegisterSnapshot`); `sleela-virtual-machine/001/src/slvm.c` (duplicate
   `slvm_security_allow_io` / `slvm_security_reset`).
 - **Missing declarations/includes.** `logger` (`archive_segment`,
   `archive_path_for` not declared); `debugger_backend.hpp` (`<memory>`);
   `api/native/memory` (`<cstddef>` for `std::max_align_t`);
-  `sleela-virtual-machine/1/tests/test_slvm.c` (lost its `#include`s and had a
+  `sleela-virtual-machine/001/tests/test_slvm.c` (lost its `#include`s and had a
   dangling call to an undefined test function).
-- **Struct/portability.** `sleela-virtual-machine/10` (`slvm10_state_t` missing
-  `phase`); `sleela-virtual-machine/9` (`f_fsid.val` -> `__val` on glibc);
+- **Struct/portability.** `sleela-virtual-machine/010` (`slvm10_state_t` missing
+  `phase`); `sleela-virtual-machine/009` (`f_fsid.val` -> `__val` on glibc);
   `video` C++ `Frame` ctor didn't populate `raw.{width,height,format}`.
 - **C-as-C++ casts.** `api/email/sleela_email.c` (`malloc`/`calloc` casts;
   `tsend` forward declaration) since `api/bodi` compiles it as C++.
 - **Makefile defects.** missing object/platform rules
   (`telephony-skya/drivers`); missing source in a link line (`api/bodi`
-  data-analytics); wrong relative paths (`sleela-virtual-machine/1` GC);
+  data-analytics); wrong relative paths (`sleela-virtual-machine/001` GC);
   cross-module link deps (`http-3.0`, `http-4.0` -> preferred_router);
   `missing separator` / unterminated `printf` (`lib/vm`); relative manifest path
   (`lib/compiler`); and the top-level `make` + `scripts/build-{linux,macos}.sh`

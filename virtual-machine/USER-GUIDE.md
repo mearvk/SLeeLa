@@ -58,8 +58,19 @@ sleela vm info 10
 
 ```sh
 sleela vm select native     # the default; nothing to load
-sleela vm select 10         # resolves idea-vm-010 and names its native main
+sleela vm select 10         # a standard think-tank version (idea-vm-010)
+sleela vm select premium 6  # a premium SLVM generation (slvm-6); or shorthand: p6
 ```
+
+### Standard vs. premium VMs
+
+- **Standard** (`1..10`) — the think-tank versions under
+  `virtual-machine/vm-version/NNN`: a layered progression of one user-level
+  improvement each.
+- **Premium** (`premium 1..11`) — the SLVM generations under
+  `sleela-virtual-machine/NNN`: larger, distinct generation builds, each with
+  its own `src/`, `include/`, `Makefile`, and `LANGUAGE.SPEC.md`. Inspect one
+  with `sleela vm info premium <n>`.
 
 > What selection does today: it **resolves and reports** the choice (validated
 > the same way the VM's `OP_VM_SELECT` opcode validates it). Actually building

@@ -491,27 +491,69 @@ static int vmCmd(int argc,char**argv){
         {9,"idea-vm-009","audit trail","virtual-machine/vm-version/009","vm_audit_test"},
         {10,"idea-vm-010","consolidated","virtual-machine/vm-version/010","vm_runtime"},
     };
+    /* Premium VMs: the eleven SLVM generations under sleela-virtual-machine.
+     * Selected as `sleela vm select premium <1..11>` (or `pNN`). These are
+     * substantial generation builds, distinct from the think-tank versions. */
+    struct PremiumVm{int n;const char*id;const char*label;const char*dir;};
+    static const PremiumVm kPremium[11]={
+        {1,"slvm-1","dedicated VM: broker, capabilities, security, OS boundary","sleela-virtual-machine/001"},
+        {2,"slvm-2","cryptographic and VM-link evolution","sleela-virtual-machine/002"},
+        {3,"slvm-3","isolation and verification","sleela-virtual-machine/003"},
+        {4,"slvm-4","authenticated/distributed execution","sleela-virtual-machine/004"},
+        {5,"slvm-5","reproducibility, policy, recovery, assurance","sleela-virtual-machine/005"},
+        {6,"slvm-6","continuous verification, lineage, attestation, leases, migration","sleela-virtual-machine/006"},
+        {7,"slvm-7","hardened management, failure handling, recovery","sleela-virtual-machine/007"},
+        {8,"slvm-8","supervised execution, admission, leases, transactions, audit","sleela-virtual-machine/008"},
+        {9,"slvm-9","filesystem and OS adaptation","sleela-virtual-machine/009"},
+        {10,"slvm-10","verified storage execution","sleela-virtual-machine/010"},
+        {11,"slvm-11","filesystem-module hosting, schema-driven extension","sleela-virtual-machine/011"},
+    };
     std::string sub = (argc>=3)? argv[2] : "list";
     if(sub=="list"||sub=="-h"||sub=="--help"){
         std::cout<<"Available virtual machines (the Native VM is the default):\n";
         std::cout<<"  native   Native VM (impl/core) — used unless you select another   [default]\n";
+        std::cout<<"\nStandard (think-tank versions):\n";
         for(const auto&v:kVms)
             std::cout<<"  "<<v.n<<"  "<<v.id<<"  ["<<v.label<<"]  -> "<<v.dir<<"/"<<v.mainEntry<<"\n";
-        std::cout<<"\nUse: sleela vm select <native|1..10>   |   sleela vm info <1..10>\n";
+        std::cout<<"\nPremium (SLVM generations):\n";
+        for(const auto&v:kPremium)
+            std::cout<<"  premium "<<v.n<<"  "<<v.id<<"  ["<<v.label<<"]  -> "<<v.dir<<"\n";
+        std::cout<<"\nUse: sleela vm select <native|1..10|premium 1..11>   |   sleela vm info <1..10|premium 1..11>\n";
         return 0;
     }
     if(sub=="select"||sub=="info"){
-        if(argc<4){std::cerr<<"sleela vm "<<sub<<": expected <native|1..10>\n";return 2;}
+        if(argc<4){std::cerr<<"sleela vm "<<sub<<": expected <native|1..10|premium 1..11>\n";return 2;}
         std::string sel=argv[3];
+        // premium tier: `premium <n>` or `pNN`.
+        bool premium=false; std::string pnum;
+        if(sel=="premium"){ if(argc<5){std::cerr<<"sleela vm "<<sub<<": premium needs a number 1..11\n";return 2;} premium=true; pnum=argv[4]; }
+        else if(sel.size()>=2 && (sel[0]=='p'||sel[0]=='P') && std::isdigit((unsigned char)sel[1])){ premium=true; pnum=sel.substr(1); }
+        if(premium){
+            int n=std::atoi(pnum.c_str());
+            if(n<1||n>11){std::cerr<<"sleela vm "<<sub<<": premium '"<<pnum<<"' out of range (1..11)\n";return 2;}
+            const PremiumVm&v=kPremium[n-1];
+            if(sub=="info"){
+                std::cout<<v.id<<"  [premium]  ["<<v.label<<"]\n"
+                         <<"  generation dir : "<<v.dir<<"\n"
+                         <<"  spec           : "<<v.dir<<"/LANGUAGE.SPEC.md\n"
+                         <<"  build          : "<<v.dir<<"/Makefile\n";
+                return 0;
+            }
+            std::cout<<"Selected premium VM "<<v.id<<" ["<<v.label<<"].\n"
+                     <<"  Generation lives in "<<v.dir<<" (its own src/include/Makefile).\n"
+                     <<"  (OP_VM_SELECT validated; building+booting a premium generation is a\n"
+                     <<"   host/build step beyond the shipped sleela binary — build it in its dir.)\n";
+            return 0;
+        }
         if(sel=="native"||sel=="0"){
             std::cout<<"Selected: Native VM (impl/core). This is the default; no load needed.\n";
             return 0;
         }
         int n=std::atoi(sel.c_str());
-        if(n<1||n>10){std::cerr<<"sleela vm "<<sub<<": '"<<sel<<"' out of range (native or 1..10)\n";return 2;}
+        if(n<1||n>10){std::cerr<<"sleela vm "<<sub<<": '"<<sel<<"' out of range (native | 1..10 | premium 1..11)\n";return 2;}
         const VmEntry&v=kVms[n-1];
         if(sub=="info"){
-            std::cout<<v.id<<"  ["<<v.label<<"]\n"
+            std::cout<<v.id<<"  [standard]  ["<<v.label<<"]\n"
                      <<"  native dir : "<<v.dir<<"\n"
                      <<"  native main: "<<v.mainEntry<<"\n"
                      <<"  manifest   : "<<v.dir<<"/SLVmVersion"<<(n<10?"00":"0")<<n<<".sleela\n";
@@ -645,7 +687,7 @@ static int designActivityCmd(int argc,char**argv){
     char json[1024];slda_format_json("sleela",&result,json,sizeof json);
     std::cout<<json<<"\n"; return 0;
 }
-static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela vm [list|select <native|1..10>|info <1..10>]\n  sleela modium [scan [native|1..10] [--exact]|status|restore <1..10>]\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
+static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela vm [list|select <native|1..10|premium 1..11>|info ...]\n  sleela modium [scan [native|1..10] [--exact]|status|restore <1..10>]\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";
     // Creator-document schema binding: if the source declares a #schema pragma,
     // the referenced XSD must exist and its version must be understood. Absent
