@@ -5215,6 +5215,54 @@
       "sha256": "061f2255071531971392e168807151e5e4bc737afc116e22a1a3e9e3e3755bd2"
     },
     {
+      "path": "idea/idea_main.cpp",
+      "sha256": "c68acb624071cd6a7fc06cb0082ef86d09d7605fe0bfcb4b40346096c4da0599"
+    },
+    {
+      "path": "idea/idea_system.c",
+      "sha256": "2c8a77caa65158b64ce8979332850442f846e19b67ed2f83480ce6bcc45a05e0"
+    },
+    {
+      "path": "idea/idea_system.h",
+      "sha256": "dcf57b8d4d4c33dfe365811e7ce812e49d3fff53e7287f6ea68505ac13eca287"
+    },
+    {
+      "path": "idea/idea_system.hpp",
+      "sha256": "83411cd5976fbf9fbec7d259e6adcf5eb2f4a655c54c924eee3029b89a054720"
+    },
+    {
+      "path": "idea/realtime/idea_canvas.h",
+      "sha256": "003c5a600919c641a89dad3c96f699e5cab25a455bb8500a27436396946e972f"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_bench.cpp",
+      "sha256": "cffd5d3846435bdafb8b44bfe494c9ac1d52089aef173c04598a3c1539e7d8cb"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_gl.cpp",
+      "sha256": "3164f6e0ef86504fc80685fa610d6a192ad0b729c0d609efc4f76fab7a6870f4"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_gl_stub.cpp",
+      "sha256": "924c82e42b29b38810969e310dc5438c97e41b32741b3d6187de6c701714e75f"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_internal.hpp",
+      "sha256": "11af1600a534c332e6dbf97270793a73f15573b759e845ba5628a77be6328380"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_sim.cpp",
+      "sha256": "5f67249dfb5f5721c8b0a5d77bd9b89c35853227cc09c76b8394218d3350ac6c"
+    },
+    {
+      "path": "idea/tools/idea_canvas_render.cpp",
+      "sha256": "d3889ebb67363d2b77bd9f47ed5fc0ba6559b624593f7497c3d6327a979c78d8"
+    },
+    {
+      "path": "idea/tools/ppm2png.py",
+      "sha256": "0ab483206c1678c9eb55dbecc92a34594d0f51cc1cc671d15fb74cb9c2f4ec25"
+    },
+    {
       "path": "impl/annotation/Annotation.cpp",
       "sha256": "a91dc1065dc947a64809d9b8be421f56195e82065468f9bc96ba8dc235da3139"
     },
@@ -5340,11 +5388,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "de45276eef78a74fd89ab798fde5e4a42dfe2b0e0eac13c7029f4a38b3a6d020"
+      "sha256": "23ba1360a036842d280de537bdd810f1be68e526fa1cb9dab1f624fbe960b34b"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "ae205390492ae20e00d37757e2eeffed6160c65149a8c5ba77c7080cde313ee8"
+      "sha256": "790f41acb6a0754e0c17c22f57f118f693b86eaec9c99c00c5fe549565ec72a1"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -5361,6 +5409,14 @@
     {
       "path": "impl/core/sleela_events.h",
       "sha256": "25e69f5fc014b86d2213994db46fe1047c793d4047e1d874ada829ab351ff3c5"
+    },
+    {
+      "path": "impl/core/sleela_idea_canvas.c",
+      "sha256": "dc918fac6c4f767da4b80b141734d57d443cf3cb26e9468763385dae2d19995d"
+    },
+    {
+      "path": "impl/core/sleela_idea_canvas.h",
+      "sha256": "12263adcdabfeec4608da8ec96318fe489cfebdc55c1927278300fe57cde7f1e"
     },
     {
       "path": "impl/core/sleela_io.c",
@@ -5579,6 +5635,10 @@
       "sha256": "4f58ae69c7963b974b3b511b1d9dc565811c7b125a25c5e15da0c953bb35303f"
     },
     {
+      "path": "impl/examples/idea_canvas_smoke.sleela",
+      "sha256": "48f282f20f72cd390f239c167c1e6eb299417281639079d737399c5c874ce675"
+    },
+    {
       "path": "impl/examples/munction_reach.sleela",
       "sha256": "d9539b5f4857be001ab0c464829c0bb87d3847f2a35e4809a0eabe0a9d86150f"
     },
@@ -5756,7 +5816,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "4d6e4975861ed9428651a1abc3f27651f497a33afdc39fdb6e0b8d4faf273f81"
+      "sha256": "209ed32b0d88a63d2ef7e8ca1ea71daf7fc7cd632e1477231bf92fd8b17a320b"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -5812,7 +5872,7 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "cb9fa6a08ad5df50aa6bb527974b9e735fad2a6390266d2f8a0528dca54e8485"
+      "sha256": "4e3ff648e13ebf85adc188d2932d57586eefe9da146fed33d1f1e8b55a0942c2"
     },
     {
       "path": "impl/frontend/lexer.h",
@@ -5844,7 +5904,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "5bdc373f941a1479d0d95473f04f8928e017456e2162966ac20c56f4a3fa41b3"
+      "sha256": "fea5aa0ddf2b9aee67a70cd25075bd6506b5a3c95082b15c826b0e1bb4a39eba"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -12517,6 +12577,18 @@
     {
       "path": "lib/ide-workbench/ide-workbench-gui-demo.sleela",
       "sha256": "1179f802580625bda49f9e6d763b23b7d722202eb97055a773b2afd0beee1def"
+    },
+    {
+      "path": "lib/idea/IdeaCanvas.sleela",
+      "sha256": "d0aa4637385a4b388110f9b6427014a26c85987e3c13ae194ad676d3a282b385"
+    },
+    {
+      "path": "lib/idea/IdeaSystem.sleela",
+      "sha256": "6acbc73baeac1123f4c01678041897ac4015e6e727f62709d7730408b8be9209"
+    },
+    {
+      "path": "lib/idea/SLIdeaCanvas.sleela",
+      "sha256": "650660bfe3cd2761aca48d79d31fbb90c5c92f0dfa4af701b621a6b7289de491"
     },
     {
       "path": "lib/inference-model/SLPackage.sleela",
@@ -54647,6 +54719,10 @@
       "sha256": "7a3f94b9142b52ae85629c16cbc5a51fe61e3794a7a59598107800409f99cd30"
     },
     {
+      "path": "tools/idea-check.sh",
+      "sha256": "b595c06a8094b089401b466ce702f171a1334ac260bb646197dfa80a99fdba68"
+    },
+    {
       "path": "tools/migrate-network-opcodes.py",
       "sha256": "a9a72636153e8bef06a5fd3593159d63ec6ef16d257cb26147dde36cbb09aa71"
     },
@@ -54816,7 +54892,7 @@
     },
     {
       "path": "user-interface/src/backend/headless.cpp",
-      "sha256": "75572af47b1c517af6da2a955b9255386670a5d1a6143a296934c7b3859f8309"
+      "sha256": "41fcf7f51f6e87453a6df0332413a1ad3e827bb45e91430f32dd96867b1e833c"
     },
     {
       "path": "user-interface/src/backend/win32.cpp",
