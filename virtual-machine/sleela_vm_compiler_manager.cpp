@@ -1,0 +1,2 @@
+#include "../include/sleela_vm_compiler_manager.hpp"
+namespace sleela { namespace vm { bool CompilerManager::validate()const{return sleela_vm_cm_manifest_validate(&manifest_)!=0;} int CompilerManager::objectCountStatus()const{return sleela_vm_cm_object_count_status(&manifest_);} int CompilerManager::categoryStatus(unsigned c,unsigned a)const{return sleela_vm_cm_category_status(&manifest_,c,a);} std::string CompilerManager::statusName(unsigned s)const{return sleela_vm_cm_status_name(s);} }}
