@@ -317,6 +317,100 @@ make -C idea run && make -C idea/sleela-native run     # optional natives (stage
 make all                                      # everything the dispatcher knows (stage 8)
 ```
 
+## Literal prompts to drive an agent (Kiro / Claude / ChatGPT)
+
+Paste these **in order, one at a time**, into Kiro (or Claude/ChatGPT). Each
+prompt tells the agent to create one layer; the ordering guarantees every folder
+and module exists before whatever depends on it. Do **not** skip ahead — wait for
+each step's checkpoint to pass before giving the next prompt. Each step also asks
+the agent to *define the module for optimal efficiency* (minimal, cohesive,
+dependency-correct) rather than dump a monolith.
+
+> Replace nothing but the bracketed hints. Keep the invariants at the bottom of
+> this document in force for every step.
+
+**1.** "Create a new repository named `SLeeLa`. First author ONLY the normative
+specification, nothing else: `SLEELA.syntax` (the Java-like grammar: lexing,
+types, statements, expressions, conducted methods, threading, and the
+Constitution invariants system-depth 3024 and complexity-degree ≤ 4),
+`SHEET.sheet` (the system-object catalog the conducted methods address), and
+`SST.model`. Add a skeleton `README.md` and `ORGANIZATION.md`. Write no code yet.
+Keep each file single-purpose. Stop and show me the spec for review."
+
+**2.** "Create `impl/core/` — the C execution engine. Define `sleela_core.h`
+(the bytecode opcode enum — APPEND-ONLY — plus the value model and bounded
+VM-local handle tables) and `sleela_core.c` (the VM loop), then the native
+service bridges it owns, each as its own small file: threads, io, net, time,
+memory manager, synchro, best-of, os. Conform to the Constitution values from
+`SLEELA.syntax`. Make it compile standalone. Favor small cohesive translation
+units over one large file. Checkpoint: the core compiles."
+
+**3.** "Create `impl/frontend/` in this internal order, each a focused unit:
+`lexer.*` (tokens + the contextual built-in registry), `parser.*` (grammar →
+AST in `ast.h`), `semantic.*` (type/known-name checks, the `builtin()` set, the
+syntax-version gate), `compiler.*` (codegen: AST → the opcodes defined in
+`impl/core`, with arity checks), then `version.*`, `artifact.*`,
+`library_index.*`, and the driver. Add the top-level build so `impl/` links
+`sleela` and `nordshrift`. Checkpoint: `impl/build/sleela version` runs and a
+trivial `class X { void main(){ print(\"ok\"); } }` compiles and runs."
+
+**4.** "Create the integrity gate now that real source exists: write
+`tools/generate-sha256-manifest.py` (records every file the verified build
+compiles) and `tools/verify-before-execution.py`, generate
+`security/sha256-manifest.json`, and wire a `verify-security` target into
+`impl/Makefile` that fails closed unless every gated file matches. Document the
+rule: regenerate the manifest whenever gated source changes. Checkpoint:
+`SLEELA_SHA256_MANIFEST=$PWD/security/sha256-manifest.json make -C impl verify-security`
+passes, and editing a gated file then rebuilding fails until regenerated."
+
+**5.** "Create the standard library under `lib/`. First author
+`lib/LIBRARY.SYMBOLS.md` as the single authoritative vocabulary, THEN the
+package families as one class per `.sleela` file, each resolvable as
+`<package>.<ClassName>` through the shared library index: start with `core`,
+`collections`, `io`, then `crypto`, `http`, `user-interface`, `cpu`, and the
+rest. Do not create a second registry. Checkpoint: the `/lib` inventory reports
+clean counts and representative classes pass `impl/build/sleela check`."
+
+**6.** "Create example programs under `impl/examples/` and `examples/` that
+exercise the grammar and each native built-in family, plus the
+compiler-construction teaching ladder under `lib/compiler/examples/`. Checkpoint:
+`impl/build/sleela run <each example>` executes end to end under the gate."
+
+**7.** "Create the optional Idea System(TM) native modules under `idea/`, in this
+internal order so each extends a finished layer: (a) `idea/` core — the C ABI +
+C++ facade for the signal-distributed Idea System (System/State model, hex-payload
+signal input, forward Series), pure, no graphics; (b) `lib/idea/*.sleela` — the
+Sleela runnables that use the `lib/user-interface` classes and the built-ins; (c)
+`idea/realtime/` — the native-CPU OpenMP physics core, an optional offscreen GPU
+compute backend, and an OS-conditional GL context layer (WGL on Windows 10+, CGL
+on macOS, EGL on Linux — open standards only); (d) wire the `ideaCanvas*` native
+built-ins into the VM using the 5-touch sequence (lexer → semantic → compiler →
+appended opcode → core+bridge), link the module into `sleela`, and regenerate the
+manifest; (e) `idea/sleela-native/` — a clean-room ORIGINAL renderer/model/audio
+(own math, own GL loader replacing GLEW/GLAD, own GLSL, own PCM mixer) with a
+`PROVENANCE.md` (MIT, originality statement, standards-vs-copied-code table)
+committed in the same change. Mark any GPU/OS-specific code that cannot be run
+here as written-but-unverified. Checkpoint: the CPU-verifiable parts build and
+run; GPU/OS code compiles."
+
+**8.** "Create the packaging, platform scripts, and steering: `build-linux.sh`
+and `build-windows.ps1` (both delegating to `impl/Makefile`), the staged runtime
+layout (`impl/BUILD-LAYOUT.md`), the `tools/sleela-build.py` lifecycle driver
+(subcommands init/check/inventory-lib/build/test/compile/package/install/clean/
+doctor/version/run), the root `Makefile` dispatcher that builds every subdir with
+`$(MAKE) -C`, and `.kiro/steering/` notes (toolchain + build status). Checkpoint:
+`make all` builds the whole repo on a clean checkout and the gate passes."
+
+**9.** "Finalize: run `make all`, confirm `verify-security` passes, run every
+example once, and write/refresh `READY.1234.md` so it reflects the repository as
+built. Commit."
+
+> **Efficiency note the agent must honor:** at each step, define the module as the
+> *smallest cohesive set of files that satisfies that layer's checkpoint* — no
+> speculative files, no forward dependencies, no duplicated registries. If a later
+> step reveals a cleaner factoring, refactor that module in place rather than
+> bolting on. This keeps the dependency graph a clean DAG from stage 1 to 9.
+
 ## Invariants to hold at every stage
 
 - Conform to `SLEELA.syntax`; address only catalogued `SHEET.sheet` objects.
