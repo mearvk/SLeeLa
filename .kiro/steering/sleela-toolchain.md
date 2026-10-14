@@ -2,6 +2,24 @@
 
 Repo-scoped note on the native toolchain and how to compile/run SLeeLa here.
 
+## Quick-compile binary collection
+
+For now and for some time, a prebuilt binary collection lives in-tree at
+**<https://github.com/mearvk/SLeeLa/tree/master/working-binaries>**
+(local path [`/working-binaries/`](../../working-binaries/)). It lets us
+**quick-compile SLeeLa or Nordshrift** without rebuilding the toolchain:
+
+```sh
+./working-binaries/sleela check <file.sleela>     # validate
+./working-binaries/sleela run   <file.sleela>     # compile + execute
+./working-binaries/sleela compile <file.sleela> -o <out.sleela>
+./working-binaries/nordshrift [--emit] [--target=sleela|java|c] <file.sleela>
+```
+
+These are **Linux x86-64** builds; rebuild from source for any other platform
+(see "Build from source" below). They are a convenience, not a replacement for
+the integrity-gated source build.
+
 ## Binaries
 
 The toolchain is **two** native executables:
