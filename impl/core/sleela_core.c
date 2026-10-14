@@ -1385,6 +1385,20 @@ static SLResult run_thread(SLThread* t) {
             PUSH(slval_int(sl_idea_canvas_migrate(ic_get(vm,(int)hv.as.i),(int)tv.as.i)));
         } break;
 
+        /* ---- VM selection service (SLVmRegistry seam) ----------------- */
+        case OP_VM_SELECT: {
+            /* pops a VM version number (1..10). This is the service-exit seam a
+             * Sleela VM selector (virtual-machine/vm-version/SLVmRegistry) uses
+             * to ask the host to build+boot the chosen version's native main.
+             * The core validates the request and pushes a status (0 ok,
+             * -1 out of range); the actual native-main load is a host action
+             * signalled by this opcode (an unknown opcode is never a no-op). */
+            SLValue nv=POP();
+            if(nv.type!=SL_INT) TERR("vmSelect(number) requires an int version number");
+            int sel=(int)nv.as.i;
+            PUSH(slval_int((sel>=1 && sel<=10) ? 0 : -1));
+        } break;
+
         /* ---- SLVM Audio bridge --------------------------------------- */
         case OP_AUDIO_NEW: {
             SLValue outv=POP(), ratev=POP();

@@ -97,3 +97,12 @@ A starting list the think-tank will draw from and refine as it goes:
 - 71 core files carried forward from `virtual-machine/core`, unchanged.
 - 7 new ground-floor files: `vm_config.{h,c}`, `vm_report.{h,c}`,
   `vm_status.{h,c}`, `vm_ground_test.c`.
+
+## Sleela OOD manifest
+
+`SLVmVersion001.sleela` (this folder) is the loadable manifest that lets a user
+**select this VM** on system start or in a conference: it declares the native
+dir + `main`, the hardening units composed through v001, and the default config
+profile, and `build()` returns a configured `SLVmRuntime`. The shared OOD
+classes it uses live in `lib/vm/src` (see its README). Selection routes through
+the `OP_VM_SELECT` (148) opcode.

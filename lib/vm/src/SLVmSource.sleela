@@ -1,0 +1,63 @@
+/*
+ * lib/vm/src/SLVmSource.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmSource — the OOD equivalent of the native VM
+ *   source-requirement validator (lib/vm/src/sleela_vm_source.c). It records
+ *   the requirements a selected VM target must satisfy — target kind (SLVM or
+ *   SLJVM), pointer width, memory/cpu/stack limits, ABI code, module count, and
+ *   a 128-bit feature mask — and validates them before the native loader is
+ *   allowed to build and boot the chosen VM. This is the Sleela gate the VM
+ *   selector consults when a user chooses a non-native VM.
+ *
+ * Mirrors: struct sleela_vm_requirements_t + sleela_vm_requirements_validate/
+ *   _plan_modules/_feature_enabled/_option_compatible (ABI: SLJVM=32, SLVM=30/31).
+ *
+ * Family: vm. Consulted by SLVmVersion* manifests and SLVmRegistry.
+ */
+#sleela 1.3
+class SLVmSource {
+  static final int KIND_SLVM = 0;
+  static final int KIND_SLJVM = 1;
+
+  int    kind;
+  int    pointerBits;    // 32 or 64
+  int    memoryLimitMiB;
+  int    cpuLimit;
+  int    stackLimit;
+  int    abiCode;        // SLJVM=32; SLVM=30 or 31
+  int    moduleCount;
+  int    featureMaskLow;  // bits 0..30 (surface int)
+  int    featureMaskHigh; // bits 31..61
+
+  void configure(int k, int pbits, int memMiB, int cpu, int stack, int abi) {
+    kind = k; pointerBits = pbits; memoryLimitMiB = memMiB;
+    cpuLimit = cpu; stackLimit = stack; abiCode = abi;
+    moduleCount = 0; featureMaskLow = 0; featureMaskHigh = 0;
+  }
+
+  // validate (mirror sleela_vm_requirements_validate): kind + widths + ABI code.
+  boolean validate() {
+    if (kind != KIND_SLVM && kind != KIND_SLJVM) { return false; }
+    if (pointerBits != 32 && pointerBits != 64) { return false; }
+    if (memoryLimitMiB <= 0 || cpuLimit <= 0 || stackLimit <= 0) { return false; }
+    if (kind == KIND_SLJVM) { return abiCode == 32; }
+    return abiCode == 30 || abiCode == 31;   // SLVM
+  }
+
+  boolean planModules(int n) { if (n < 0) { return false; } moduleCount = n; return true; }
+
+  // feature bit 0..61 via the two halves.
+  boolean featureEnabled(int bit) {
+    if (bit < 0 || bit > 61) { return false; }
+    if (bit <= 30) { return (featureMaskLow / pow2(bit)) % 2 == 1; }
+    return (featureMaskHigh / pow2(bit - 31)) % 2 == 1;
+  }
+  void setFeature(int bit) {
+    if (bit < 0 || bit > 61) { return; }
+    if (bit <= 30) { if (!featureEnabled(bit)) { featureMaskLow = featureMaskLow + pow2(bit); } }
+    else { if (!featureEnabled(bit)) { featureMaskHigh = featureMaskHigh + pow2(bit - 31); } }
+  }
+  int pow2(int n) { int v = 1; int i = 0; while (i < n) { v = v * 2; i = i + 1; } return v; }
+
+  String target() { return (kind == KIND_SLJVM) ? "SLJVM" : "SLVM"; }
+}

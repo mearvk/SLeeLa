@@ -1,0 +1,25 @@
+/*
+ * virtual-machine/vm-version/010/SLVmVersion010.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmVersion010 — the loadable manifest for VM version 010
+ *   ("consolidated"), the OOD selector record the native VM loads on system
+ *   start or a user conference. It names this version's native directory and
+ *   the C/C++ main the loader builds and boots, declares the hardening units it
+ *   composes (cumulative through v010 of the think-tank arc), and carries the
+ *   default configuration profile a user starts from. build() returns the
+ *   configured SLVmRuntime a selection resolves to.
+ *
+ * Mirrors the C/C++ in this folder (the 71-file core + the additive vm_* units
+ * through v010). It extends SLVmVersion (lib/vm/src/SLVmVersion.sleela).
+ *
+ * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
+ */
+#sleela 1.3
+class SLVmVersion010 extends SLVmVersion {
+  void configure() {
+    base(10, "idea-vm-010", "consolidated", "virtual-machine/vm-version/010", "vm_runtime");
+    composeThrough(10);
+    // default profile tuning for this version (user-editable in setup/conference)
+    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+  }
+}

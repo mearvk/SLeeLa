@@ -1,0 +1,83 @@
+/*
+ * lib/vm/src/SLVmVersion.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmVersion — the base manifest a selectable VM version
+ *   (001..010) extends. A manifest is the loadable record that DESCRIBES one
+ *   versioned VM: its id and label, which hardening units it composes (the
+ *   additive 001->010 progression), its default configuration profile, and the
+ *   native entry it maps to (the C/C++ main the native loader builds and boots
+ *   when a user selects this VM). On system start or a user conference, the
+ *   native VM loads these .sleela into memory, lets the user pick one, then
+ *   loads that version's native main.
+ *
+ * Each concrete SLVmVersionNNN (in virtual-machine/vm-version/NNN) sets the id,
+ * label, the composed-unit flags, the config profile, and the native source
+ * list, then build() returns a configured SLVmRuntime.
+ *
+ * Family: vm. Composes SLVmConfig, SLVmRuntime, SLVmSource.
+ */
+#sleela 1.3
+class SLVmVersion {
+  String id;        // e.g. "idea-vm-001"
+  String label;     // e.g. "ground floor"
+  int    number;    // 1..10
+  String nativeDir; // e.g. "virtual-machine/vm-version/001"
+  String nativeMain;// the C/C++ entry (e.g. "vm_ground_test" / "vm_runtime")
+
+  // Which hardening units this version composes (additive 001..010).
+  int hasConfig; int hasReport; int hasStatus;   // 001
+  int hasMemory;      // 002
+  int hasResult;      // 003
+  int hasTelemetry;   // 004
+  int hasGc;          // 005
+  int hasProfile;     // 006
+  int hasCapability;  // 007
+  int hasPlatform;    // 008
+  int hasAudit;       // 009
+  int hasRuntime;     // 010
+
+  SLVmConfig profile;  // the default configuration a user starts from
+
+  // Subclasses call base() then set their specifics.
+  void base(int n, String identifier, String lbl, String dir, String mainEntry) {
+    number = n; id = identifier; label = lbl; nativeDir = dir; nativeMain = mainEntry;
+    // ground floor is present from 001.
+    hasConfig = 1; hasReport = 1; hasStatus = 1;
+    hasMemory = 0; hasResult = 0; hasTelemetry = 0; hasGc = 0; hasProfile = 0;
+    hasCapability = 0; hasPlatform = 0; hasAudit = 0; hasRuntime = 0;
+    profile = new SLVmConfig();
+    profile.defaults();
+  }
+
+  // Enable every additive unit up to version `n` (the cumulative carry-forward).
+  void composeThrough(int n) {
+    if (n >= 2)  { hasMemory = 1; }
+    if (n >= 3)  { hasResult = 1; }
+    if (n >= 4)  { hasTelemetry = 1; }
+    if (n >= 5)  { hasGc = 1; }
+    if (n >= 6)  { hasProfile = 1; }
+    if (n >= 7)  { hasCapability = 1; }
+    if (n >= 8)  { hasPlatform = 1; }
+    if (n >= 9)  { hasAudit = 1; }
+    if (n >= 10) { hasRuntime = 1; }
+  }
+
+  int unitCount() {
+    int c = hasConfig + hasReport + hasStatus + hasMemory + hasResult
+          + hasTelemetry + hasGc + hasProfile + hasCapability + hasPlatform
+          + hasAudit + hasRuntime;
+    return c;
+  }
+
+  // Build a configured runtime for this version (what selection resolves to).
+  SLVmRuntime build() {
+    SLVmRuntime rt = new SLVmRuntime();
+    rt.init(profile, id + " (" + label + ")");
+    return rt;
+  }
+
+  void describe() {
+    print(id + "  [" + label + "]  units=" + unitCount()
+          + "  native=" + nativeDir + "/" + nativeMain);
+  }
+}

@@ -40,3 +40,12 @@ Thread-safety + observability: a `vm_telemetry` layer with atomic counters and a
 saturation watch over the bounded handle tables (SL_BESTOF_MAX=32,
 SL_SYNCHRO_MAX=64, SL_MUNCTION_MAX=64, SL_AI_MAX), reporting typed results
 through v003 when a table nears exhaustion.
+
+## Sleela OOD manifest
+
+`SLVmVersion003.sleela` (this folder) is the loadable manifest that lets a user
+**select this VM** on system start or in a conference: it declares the native
+dir + `main`, the hardening units composed through v003, and the default config
+profile, and `build()` returns a configured `SLVmRuntime`. The shared OOD
+classes it uses live in `lib/vm/src` (see its README). Selection routes through
+the `OP_VM_SELECT` (148) opcode.

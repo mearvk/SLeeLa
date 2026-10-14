@@ -1,0 +1,57 @@
+/*
+ * lib/vm/src/SLVmCapability.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmCapability — the OOD equivalent of the native
+ *   capability-enforcement choke point (virtual-machine/vm-version/007/
+ *   vm_capability.{h,c}, v007). It turns the SLVmConfig capability mask into
+ *   real decisions: a bridge asks `check` before acting; a disabled capability
+ *   yields a typed DENIED result (reported, counted) and refuses the op. This
+ *   closes the gap v001 noted (the mask was recorded but not enforced).
+ *
+ * Mirrors: vm_cap_allowed/check/denials/reset, vm_cap_name.
+ *
+ * Family: vm. Composes SLVmConfig, SLVmResult, SLVmReport, SLVmTelemetry.
+ */
+#sleela 1.3
+class SLVmCapability {
+  SLVmConfig config;
+  int denials;
+
+  void bind(SLVmConfig cfg) { config = cfg; denials = 0; }
+  void reset() { denials = 0; }
+  int denialCount() { return denials; }
+
+  boolean allowed(int cap) {
+    if (config == null) { return true; }   // unconfigured -> permissive
+    return config.has(cap);
+  }
+
+  // Guard a bridge op. Returns true to proceed; on denial fills `out` with a
+  // DENIED result, reports+counts it, returns false.
+  boolean check(int cap, String subsystem, String operation,
+                SLVmResult out, SLVmReport rep, SLVmTelemetry tel) {
+    if (allowed(cap)) { return true; }
+    denials = denials + 1;
+    if (tel != null) { tel.addErrors(1); }
+    if (out != null) {
+      out.fail(out.E_DENIED, subsystem,
+               "capability '" + capName(cap) + "' denied for operation '" + operation + "'");
+      out.report(rep);
+    }
+    return false;
+  }
+
+  String capName(int cap) {
+    if (cap == SLVmConfig.CAP_MEMORY)   { return "memory"; }
+    if (cap == SLVmConfig.CAP_FILE_IO)  { return "file-io"; }
+    if (cap == SLVmConfig.CAP_NETWORK)  { return "network"; }
+    if (cap == SLVmConfig.CAP_THREADS)  { return "threads"; }
+    if (cap == SLVmConfig.CAP_DYNLIB)   { return "dynlib"; }
+    if (cap == SLVmConfig.CAP_TERMINAL) { return "terminal"; }
+    if (cap == SLVmConfig.CAP_PATHS)    { return "paths"; }
+    if (cap == SLVmConfig.CAP_PROCESS)  { return "process"; }
+    if (cap == SLVmConfig.CAP_IPC)      { return "ipc"; }
+    if (cap == SLVmConfig.CAP_TIME)     { return "time"; }
+    return "capability";
+  }
+}

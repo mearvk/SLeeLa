@@ -1,0 +1,25 @@
+/*
+ * virtual-machine/vm-version/008/SLVmVersion008.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmVersion008 — the loadable manifest for VM version 008
+ *   ("platform parity"), the OOD selector record the native VM loads on system
+ *   start or a user conference. It names this version's native directory and
+ *   the C/C++ main the loader builds and boots, declares the hardening units it
+ *   composes (cumulative through v008 of the think-tank arc), and carries the
+ *   default configuration profile a user starts from. build() returns the
+ *   configured SLVmRuntime a selection resolves to.
+ *
+ * Mirrors the C/C++ in this folder (the 71-file core + the additive vm_* units
+ * through v008). It extends SLVmVersion (lib/vm/src/SLVmVersion.sleela).
+ *
+ * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
+ */
+#sleela 1.3
+class SLVmVersion008 extends SLVmVersion {
+  void configure() {
+    base(8, "idea-vm-008", "platform parity", "virtual-machine/vm-version/008", "vm_platform_test");
+    composeThrough(8);
+    // default profile tuning for this version (user-editable in setup/conference)
+    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+  }
+}

@@ -1,0 +1,80 @@
+/*
+ * lib/vm/src/SLVmProfile.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmProfile — the OOD equivalent of the native dispatch
+ *   profiler (virtual-machine/vm-version/006/vm_profile.{h,c}, v006). It keeps
+ *   per-opcode-family execution counts and accumulated nanoseconds (arith,
+ *   control, loadstore, call, struct, bridge, print), a hot-family query, and a
+ *   ranked report, feeding the SLVmTelemetry STEPS/BRIDGE counters so totals
+ *   stay consistent. The native side reads a monotonic clock; on the Sleela
+ *   surface (no arrays) the seven families are numbered fields and timing is
+ *   supplied as a delta.
+ *
+ * Mirrors: enum VmOpFamily, vm_profile_tick/count/nanos/hot/report.
+ *
+ * Family: vm. Composes SLVmTelemetry.
+ */
+#sleela 1.3
+class SLVmProfile {
+  static final int OP_ARITH     = 0;
+  static final int OP_CONTROL   = 1;
+  static final int OP_LOADSTORE = 2;
+  static final int OP_CALL      = 3;
+  static final int OP_STRUCT    = 4;
+  static final int OP_BRIDGE    = 5;
+  static final int OP_PRINT     = 6;
+
+  // counts + nanos per family (numbered; no arrays on the surface)
+  int cArith; int cControl; int cLoad; int cCall; int cStruct; int cBridge; int cPrint;
+  int nArith; int nControl; int nLoad; int nCall; int nStruct; int nBridge; int nPrint;
+
+  void init() {
+    cArith=0;cControl=0;cLoad=0;cCall=0;cStruct=0;cBridge=0;cPrint=0;
+    nArith=0;nControl=0;nLoad=0;nCall=0;nStruct=0;nBridge=0;nPrint=0;
+  }
+
+  // attribute one dispatch of a family (nanos may be 0 for a count-only tick),
+  // and bump telemetry STEPS (and BRIDGE for native-bridge families).
+  void attribute(int family, int nanos, SLVmTelemetry tel) {
+    if (family == OP_ARITH)     { cArith=cArith+1; nArith=nArith+nanos; }
+    else if (family == OP_CONTROL)   { cControl=cControl+1; nControl=nControl+nanos; }
+    else if (family == OP_LOADSTORE) { cLoad=cLoad+1; nLoad=nLoad+nanos; }
+    else if (family == OP_CALL)      { cCall=cCall+1; nCall=nCall+nanos; }
+    else if (family == OP_STRUCT)    { cStruct=cStruct+1; nStruct=nStruct+nanos; }
+    else if (family == OP_BRIDGE)    { cBridge=cBridge+1; nBridge=nBridge+nanos; }
+    else if (family == OP_PRINT)     { cPrint=cPrint+1; nPrint=nPrint+nanos; }
+    if (tel != null) { tel.addSteps(1); if (family == OP_BRIDGE) { tel.addBridge(1); } }
+  }
+
+  int nanosOf(int family) {
+    if (family == OP_ARITH)     { return nArith; }
+    if (family == OP_CONTROL)   { return nControl; }
+    if (family == OP_LOADSTORE) { return nLoad; }
+    if (family == OP_CALL)      { return nCall; }
+    if (family == OP_STRUCT)    { return nStruct; }
+    if (family == OP_BRIDGE)    { return nBridge; }
+    return nPrint;
+  }
+
+  // the family with the most accumulated time (the hot path).
+  int hot() {
+    int best = 0; int bi = OP_ARITH;
+    int i = 0;
+    while (i <= OP_PRINT) {
+      int v = nanosOf(i);
+      if (v > best) { best = v; bi = i; }
+      i = i + 1;
+    }
+    return bi;
+  }
+
+  String familyName(int f) {
+    if (f == OP_ARITH)     { return "arith"; }
+    if (f == OP_CONTROL)   { return "control"; }
+    if (f == OP_LOADSTORE) { return "loadstore"; }
+    if (f == OP_CALL)      { return "call"; }
+    if (f == OP_STRUCT)    { return "struct"; }
+    if (f == OP_BRIDGE)    { return "bridge"; }
+    return "print";
+  }
+}

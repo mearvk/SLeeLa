@@ -26,3 +26,12 @@ re-enabling NETWORK let the same op return OK.
 Portability/platform parity readout: a `vm_platform` surface reporting the
 active backend (Win32/POSIX/Apple) and per-capability platform support, so a
 user knows what their OS actually provides.
+
+## Sleela OOD manifest
+
+`SLVmVersion007.sleela` (this folder) is the loadable manifest that lets a user
+**select this VM** on system start or in a conference: it declares the native
+dir + `main`, the hardening units composed through v007, and the default config
+profile, and `build()` returns a configured `SLVmRuntime`. The shared OOD
+classes it uses live in `lib/vm/src` (see its README). Selection routes through
+the `OP_VM_SELECT` (148) opcode.

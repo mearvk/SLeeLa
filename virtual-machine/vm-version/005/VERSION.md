@@ -25,3 +25,12 @@ telemetry showing allocs=4500 bridge=199.
 ## Next (006)
 Hot-path dispatch profiler: per-opcode-family execution counters feeding
 telemetry, so the user sees where VM time goes.
+
+## Sleela OOD manifest
+
+`SLVmVersion005.sleela` (this folder) is the loadable manifest that lets a user
+**select this VM** on system start or in a conference: it declares the native
+dir + `main`, the hardening units composed through v005, and the default config
+profile, and `build()` returns a configured `SLVmRuntime`. The shared OOD
+classes it uses live in `lib/vm/src` (see its README). Selection routes through
+the `OP_VM_SELECT` (148) opcode.

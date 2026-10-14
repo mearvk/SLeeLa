@@ -1,0 +1,49 @@
+/*
+ * lib/vm/src/SLVmStatus.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmStatus — the OOD equivalent of the native status
+ *   readout (virtual-machine/vm-version/001/vm_status.{h,c}, v001): the
+ *   "what am I running" banner that renders the VM version plus the applied
+ *   configuration (memory, threads, verbosity, capabilities). It reads an
+ *   SLVmConfig and prints a compact banner at NORMAL+ verbosity.
+ *
+ * Mirrors: VM_VERSION_STRING, vm_status_render/banner.
+ *
+ * Family: vm. Composes SLVmConfig.
+ */
+#sleela 1.3
+class SLVmStatus {
+  String versionString;   // e.g. "idea-vm v001 (ground floor)"
+  SLVmConfig config;
+
+  void bind(String version, SLVmConfig cfg) { versionString = version; config = cfg; }
+
+  void banner() {
+    if (config != null && config.verbosity == SLVmConfig.VERBOSITY_QUIET) { return; }
+    print(versionString);
+    if (config == null) { print("  (no configuration applied yet)"); return; }
+    if (config.memoryManagerOn == 1 && config.memoryLimitMiB > 0) {
+      print("  memory : " + config.memoryLimitMiB + " MiB (manager on)");
+    } else {
+      print("  memory : manager off");
+    }
+    print("  threads: " + config.threadCap + " (max " + SLVmConfig.MAX_THREADS + ")");
+    print("  verbose: " + config.verbosityName());
+    print("  caps   : " + capsLine());
+  }
+
+  String capsLine() {
+    String s = "";
+    if (config.has(SLVmConfig.CAP_MEMORY))   { s = s + "mem "; }
+    if (config.has(SLVmConfig.CAP_FILE_IO))  { s = s + "io "; }
+    if (config.has(SLVmConfig.CAP_NETWORK))  { s = s + "net "; }
+    if (config.has(SLVmConfig.CAP_THREADS))  { s = s + "thr "; }
+    if (config.has(SLVmConfig.CAP_DYNLIB))   { s = s + "dynlib "; }
+    if (config.has(SLVmConfig.CAP_TERMINAL)) { s = s + "term "; }
+    if (config.has(SLVmConfig.CAP_PATHS))    { s = s + "paths "; }
+    if (config.has(SLVmConfig.CAP_PROCESS))  { s = s + "proc "; }
+    if (config.has(SLVmConfig.CAP_IPC))      { s = s + "ipc "; }
+    if (config.has(SLVmConfig.CAP_TIME))     { s = s + "time"; }
+    return s;
+  }
+}
