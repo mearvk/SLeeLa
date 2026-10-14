@@ -54708,7 +54708,7 @@
     },
     {
       "path": "tools/generate-sha256-manifest.py",
-      "sha256": "6f870421c1fa092f0d7ce32c82ee58d2591ab9d8aa7600c7b768013b6d61a190"
+      "sha256": "621b010f532ba526c307a959bf9017ae8f8dfbe8a624919b39144641da5f6b9f"
     },
     {
       "path": "tools/generate-vocab-appendix.py",
