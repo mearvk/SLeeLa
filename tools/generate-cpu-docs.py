@@ -740,8 +740,35 @@ Do not invent DMA channel counts, descriptor registers, burst sizes, or arbitrat
     return "# %s DMA\n\n%s\n%s" % (a["identity"], body, sources_block(a["src"]))
 
 
+# Shared cross-reference appended to every per-folder TIMING.md so a reader of
+# any single CPU's timing doc can discover the package-wide expert
+# voltage/clock/bus/RAM/I/O timing system that applies across all CPU models.
+EXPERT_TIMING_FOOTER = """
+## Expert timing, voltages, and variable clocks (shared across all CPU models)
+
+The per-CPU timing above is the architectural/behavioral view for this part.
+The adjustable, quality-first timing system is shared by every CPU model in
+`lib/cpu` and is documented once, in the package guide:
+
+- [`lib/cpu/TIMING.md`](../../TIMING.md) — Voltages, Variable Clocks, and Expert
+  Timings: `SLVoltageRail` (actual voltages in mV), `SLCpuTiming`,
+  `SLBusTiming`, `SLRamTiming`, `SLIOTiming`, the Novice/Basic/Advanced/Expert
+  `SLTimingClass` tiers, and the `SLTimingProfile` -> `SLTimingManifest` a
+  compiled `.sleela` image carries so the compiler/VM honor the **declared**
+  operating point.
+- [`lib/cpu/components/README.md`](../../components/README.md) — running a CPU
+  at spec and **overclocking** it (`SLClockPolicy` / `setSpecClock` /
+  `overclock`), plus the RAM / storage / optical / system-bus parts bin and the
+  DMA / GPU / native-RAM options.
+
+Every CPU model (this one included) inherits the clock/overclock surface from
+`SLCPURuntime` and can be assembled with those shared expert-timing, voltage,
+and component options; they are a build-layer concern, not re-declared per CPU.
+"""
+
+
 def doc_timing(a):
-    return """# {identity} Timing
+    return ("""# {identity} Timing
 
 ## Clock model
 
@@ -775,7 +802,7 @@ when no external wait state is inserted.
 ## Circuit timing
 
 Internal datapath transfers are clock-sensitive. SLeeLa records this as observable/derived timing and does not claim an exact transistor simulation.
-{sources}""".format(sources=sources_block(a["src"]), **a)
+{sources}""".format(sources=sources_block(a["src"]), **a) + EXPERT_TIMING_FOOTER)
 
 
 def doc_circuit(a):
