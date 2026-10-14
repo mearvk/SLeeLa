@@ -272,6 +272,12 @@ make compiler
 
 The root `make all` target includes the compiler package before the VM package. The compiler does not silently add language features, VM objects, capabilities, or target permissions that are absent from the SLeeLa source declaration.
 
+The root `make all` target also ends with the `registry` target, which runs
+`build-registry.sh` to build the registry core and materialize the baseline
+registry table (the portable `registry/build/sleela.sleelareg` text store plus
+the `registry/build/registry.sql` MySQL script). Build it on its own with
+`make registry`, or review the table with `sleela registry`.
+
 
 ## SLeeLa Decompiler library build
 

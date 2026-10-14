@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-product tutorial-check tests server config route common-rails clean help
+.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-product tutorial-check tests server config route common-rails registry clean help
 
-all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails codecs churn antivirus
+all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails codecs churn antivirus registry
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
@@ -111,7 +111,13 @@ config:
 common-rails:
 	$(MAKE) -C common-rails check
 
+# Build the registry core and materialize the baseline registry table (text
+# store + MySQL export) a fresh install reviews. Part of `all`.
+registry:
+	./build-registry.sh
+
 clean:
+	$(MAKE) -C registry clean
 	$(MAKE) -C impl clean
 	$(MAKE) -C java28 clean
 	$(MAKE) -C regex clean

@@ -6,6 +6,11 @@ The Sleela object-oriented mirror of the native registry core
 ([`/registry`](../../registry/README.md)), so a program can model, seed, and
 review the registry from Sleela.
 
+The native core these classes mirror is built and its baseline table
+materialized by the **master build** (repo-root `make all` → `registry` target
+→ `build-registry.sh`); see [`/registry`](../../registry/README.md) for the
+build and the on-disk `.sleelareg` / MySQL table it produces.
+
 | Class | Mirrors (native) | Role |
 |-------|------------------|------|
 | `SLRegistryValue` | a registry value (`sl_reg_kind`) | one setting / feature flag: string, int, or bool |

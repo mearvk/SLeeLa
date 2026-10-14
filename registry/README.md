@@ -20,7 +20,19 @@ baseline registry that is reviewable from a terminal.
 
 ## Build & review
 
+The registry builds **as part of the master build**: the repo-root `make all`
+runs the `registry` target, which fires [`../build-registry.sh`](../build-registry.sh)
+to build this core and **materialize the baseline registry table** a fresh
+install reviews — the portable text store `build/sleela.sleelareg` plus the
+MySQL table script `build/registry.sql` (exported via `sleela registry export`).
+
 ```sh
+# from the repo root — part of the full build:
+make all                          # ... core, vm, ..., registry
+make registry                     # just the registry + table materialize
+./build-registry.sh               # the same, invoked directly
+
+# standalone, from this folder:
 cd registry && make run           # seed a demo registry and review it
 ./build/sleela-registry review build/demo.sleelareg
 ```

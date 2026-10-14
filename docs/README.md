@@ -35,6 +35,11 @@ normative specifications from implementation notes and live validation results.
   `sleela modium` file-resolution scan (SHA-256 + per-version `rebuild.sql`).
 - [General implementation architecture](../markdown/ARCHITECTURE.md) — boundary
   between the authoritative C/C++ implementation and the earlier Java prototype.
+- [Registry](../registry/README.md) — Windows-style hierarchical registry
+  (settings, feature flags, per-artifact provenance + originality seal); the
+  master build materializes its baseline table (text store + MySQL export),
+  reviewable with `sleela registry`. Sleela OOD mirror in
+  [`lib/registry`](../lib/registry/README.md).
 - [Configuration guide](../config/CONFIGURATION.md) — configuration root and
   runtime/VM settings.
 
@@ -52,6 +57,13 @@ From the repository root, run `make antivirus`, `make antivirus-test`,
 `make antivirus-integrity-check MANIFEST=build/INTEGRITY-MANIFEST.json`.
 These checks document the build and integrity process; they do not replace
 review of the exact commit's CI results or independently trusted release hashes.
+
+The repo-root `make all` finishes by building the **registry** (the `registry`
+target runs [`build-registry.sh`](../build-registry.sh)), which materializes the
+baseline registry table — the portable text store `registry/build/sleela.sleelareg`
+and the MySQL script `registry/build/registry.sql`. Build it on its own with
+`make registry` and review it with `sleela registry` or
+`registry/build/sleela-registry review`.
 
 - [GitHub Actions](https://github.com/mearvk/SLeeLa/actions) — current run results.
 

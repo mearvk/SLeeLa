@@ -24,6 +24,23 @@ make -C impl all
 bash ./test-suites/run-all.sh --all
 ```
 
+The repo-root `make all` builds every product (core, VM, codecs, churn,
+antivirus, …) and ends by building the **registry** and materializing its
+baseline table — so a built tree ships a reviewable registry out of the box:
+
+```sh
+make all                 # full build; the `registry` target runs last
+make registry            # just the registry: build + materialize the table
+./build-registry.sh      # same thing, invoked directly
+```
+
+The `registry` target runs [`build-registry.sh`](build-registry.sh): it builds
+the registry core, seeds the baseline table into the portable text store
+`registry/build/sleela.sleelareg`, and exports the MySQL table script
+`registry/build/registry.sql` (via `sleela registry export`). Review it with
+`sleela registry` or `registry/build/sleela-registry review`. See the
+[registry guide](registry/README.md).
+
 Consult the build and testing guides for prerequisites and platform-specific steps. A successful build of one component does not prove every library or platform is release-ready.
 
 ## Language and runtime
