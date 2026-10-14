@@ -21,6 +21,11 @@ struct idea_canvas {
     int rows = 0;
     std::vector<idea_vertex> verts;   /* the contiguous vertex block */
 
+    /* Stored simulation parameters, so a VM can set them once and then call
+     * step()/advance() without passing a struct across the bridge. */
+    idea_sim_params params{};
+    bool            params_set = false;
+
     /* GL render state is owned by the GL layer; kept as an opaque pointer so
      * the physics core needs no GL headers.  Null when GL is absent/unopened. */
     void *gl = nullptr;

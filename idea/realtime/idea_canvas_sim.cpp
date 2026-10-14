@@ -84,6 +84,23 @@ idea_sim_params idea_sim_defaults(void) {
     return p;
 }
 
+idea_canvas_status idea_canvas_set_params(idea_canvas *c, float decay,
+                                          float flow_gain, float hue_base,
+                                          float coupling) {
+    if (!c) return IDEA_CANVAS_INVALID;
+    c->params.decay     = decay;
+    c->params.flow_gain = flow_gain;
+    c->params.hue_base  = hue_base;
+    c->params.coupling  = coupling;
+    c->params_set = true;
+    return IDEA_CANVAS_OK;
+}
+
+float idea_canvas_intensity_at(const idea_canvas *c, int col, int row) {
+    if (!c || col < 0 || col >= c->cols || row < 0 || row >= c->rows) return 0.0f;
+    return c->verts[(size_t)row * c->cols + col].intensity;
+}
+
 idea_canvas_status idea_canvas_excite(idea_canvas *c, int col, int row,
                                       float amount) {
     if (!c) return IDEA_CANVAS_INVALID;
@@ -122,7 +139,9 @@ static inline void hsv_to_rgb(float h, float s, float v,
 idea_canvas_status idea_canvas_step(idea_canvas *c, const idea_sim_params *p,
                                     float dt) {
     if (!c || dt <= 0.0f) return IDEA_CANVAS_INVALID;
-    idea_sim_params pr = p ? *p : idea_sim_defaults();
+    /* Use the explicit params if given, else the canvas's stored params (set
+     * via idea_canvas_set_params), else the water defaults. */
+    idea_sim_params pr = p ? *p : (c->params_set ? c->params : idea_sim_defaults());
 
     const int cols = c->cols, rows = c->rows;
     idea_vertex *V = c->verts.data();

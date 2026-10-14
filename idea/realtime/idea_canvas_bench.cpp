@@ -90,7 +90,8 @@ int main(int argc, char **argv) {
                     if (v > m) m = v;
                 }
             int idx = (int)((m / peakv) * 9.0f + 0.5f);
-            if (idx > 9) idx = 9; if (idx < 0) idx = 0;
+            if (idx > 9) idx = 9;
+            if (idx < 0) idx = 0;
             std::putchar(ramp[idx]);
         }
         std::putchar('\n');

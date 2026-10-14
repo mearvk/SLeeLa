@@ -85,3 +85,32 @@ bind these entry points as native built-ins:
 
 Because the physics and render layers share one ABI, a VM can use just the
 compute core headless, or the full windowed renderer, with the same binding.
+
+## Sleela binding: `lib/idea/SLIdeaCanvas.sleela`
+
+A SLeeLa standard-library class binds this module so a runnable can drive the
+canvas **on the native CPU** directly:
+
+```
+SLIdeaCanvas cv = new SLIdeaCanvas();
+cv.create(256, 256);                       // allocate the native vertex block
+cv.setParams(0.25, 0.9, 205.0, 0.06);      // water-like flow
+cv.excite(128, 128, 1.0);                  // an importance lands
+if (cv.hasRenderer()) {
+    cv.run(720, 480, "Idea System(TM)");   // native window: 120 Hz sim / 60 Hz present
+} else {
+    cv.step(cv.timestep());                // headless: advance on the native CPU
+}
+cv.destroy();
+```
+
+Each method bottoms out in an `ideaCanvas*` native-bridge built-in. The physics
+step runs on the **native CPU** (OpenMP across every core, SIMD per row); the
+optional OpenGL layer presents the same block. Where a VM links this module,
+the built-ins bind to the entry points below; where it does not, the render
+calls return `NO_RENDERER` and the compute core still runs.
+
+The binding references these ABI entry points (the first two added for it):
+`idea_canvas_set_params`, `idea_canvas_intensity_at`, plus `create`, `destroy`,
+`cols`/`rows`/`count`, `excite`, `step`, `advance`, `timestep`, `open_window`,
+`should_close`, `present`, `run`, and `has_renderer`.

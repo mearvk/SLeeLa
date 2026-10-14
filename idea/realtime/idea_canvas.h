@@ -113,6 +113,16 @@ idea_sim_params idea_sim_defaults(void);
 idea_canvas_status idea_canvas_excite(idea_canvas *c, int col, int row,
                                       float amount);
 
+/* Store the simulation parameters used by subsequent idea_canvas_step /
+ * idea_canvas_advance calls (so a VM can configure the flow without passing a
+ * struct across the bridge each step).  NULL fields are ignored. */
+idea_canvas_status idea_canvas_set_params(idea_canvas *c, float decay,
+                                          float flow_gain, float hue_base,
+                                          float coupling);
+
+/* Read one vertex's current intensity (0..1), or 0 for an out-of-range cell. */
+float idea_canvas_intensity_at(const idea_canvas *c, int col, int row);
+
 /*
  * Advance the simulation by ONE fixed timestep (dt seconds, normally
  * 1/IDEA_CANVAS_SIM_HZ).  Parallelised with OpenMP and vectorised per row;

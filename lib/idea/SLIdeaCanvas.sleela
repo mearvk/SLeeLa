@@ -1,0 +1,133 @@
+/*
+ * lib/idea/SLIdeaCanvas.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLIdeaCanvas — the SLeeLa binding of the Idea System(TM)
+ *   realtime canvas native module (idea/realtime, C ABI idea_canvas.h). It is
+ *   the seam that lets a Sleela program drive a high-performance rendering +
+ *   physics canvas ON THE NATIVE CPU for the cases where a VM does not have
+ *   realtime canvas support natively.
+ *
+ *   The module is two layers behind one native bridge:
+ *     - a physics/compute core that advances a large contiguous vertex block
+ *       with an OpenMP + SIMD decay/diffusion/colour step — this runs on the
+ *       NATIVE CPU (every core, vectorised), not the interpreter;
+ *     - an optional OpenGL render layer (GLFW + a persistent-mapped, triple-
+ *       buffered buffer) that draws the same block with no re-upload.
+ *
+ *   Every method bottoms out in an `ideaCanvas*` built-in that crosses the
+ *   native bridge into the module. Where a VM links the module, the built-ins
+ *   are bound to its entry points; where it does not, the render calls report
+ *   that no renderer is present and the physics core still runs headless.
+ *
+ * Hz contract (mirrors idea/idea_canvas.h): present at 60 Hz; advance the live
+ *   simulation at a deterministic 120 Hz fixed timestep.
+ *
+ * An SLIdeaCanvas is a VM-local handle (-1 = none).
+ *
+ * Family: idea. Native CPU rendering/physics work crosses the explicit
+ *   `ideaCanvas*` SLVM bridge into idea/realtime.
+ */
+#sleela 1.5
+class SLIdeaCanvas {
+  // ---- status ordinals (mirror idea_canvas_status) ----
+  static final int OK          = 0;
+  static final int INVALID     = -1;
+  static final int OOM         = -2;
+  static final int NO_RENDERER = -3;
+  static final int GL_ERROR    = -4;
+
+  // ---- Hz contract (mirror idea_canvas.h) ----
+  static final double PRESENT_HZ = 60.0;
+  static final double SIM_HZ     = 120.0;
+
+  int canvas;   // VM-local canvas handle (-1 = none)
+
+  // Create a cols x rows grid of vertices (allocates the contiguous block on
+  // the native side). Does NOT open a window. Returns true on success.
+  boolean create(int cols, int rows) {
+    canvas = ideaCanvasCreate(cols, rows);
+    return canvas >= 0;
+  }
+  int handle() { return canvas; }
+  boolean valid() { return canvas >= 0; }
+
+  void destroy() { if (canvas >= 0) { ideaCanvasDestroy(canvas); canvas = -1; } }
+
+  int cols()  { if (canvas < 0) { return 0; } return ideaCanvasCols(canvas); }
+  int rows()  { if (canvas < 0) { return 0; } return ideaCanvasRows(canvas); }
+  int count() { if (canvas < 0) { return 0; } return ideaCanvasCount(canvas); }
+
+  // ---- physics / compute core (runs on the native CPU) -----------------
+
+  // Set the water-like flow parameters: multiplicative decay per second, flow
+  // gain for the colour-predictive hue, base hue (205 ~ water), and the
+  // per-step neighbour diffusion coefficient (small, e.g. 0.06).
+  void setParams(double decay, double flowGain, double hueBase, double coupling) {
+    if (canvas >= 0) { ideaCanvasSetParams(canvas, decay, flowGain, hueBase, coupling); }
+  }
+
+  // Inject energy at a grid cell (where a signal "importance" lands) so a
+  // ripple propagates on subsequent steps.
+  int excite(int col, int row, double amount) {
+    if (canvas < 0) { return INVALID; }
+    return ideaCanvasExcite(canvas, col, row, amount);
+  }
+
+  // Advance the simulation by ONE fixed timestep (dt seconds, normally
+  // 1/SIM_HZ). Parallelised across the native CPU; returns a status ordinal.
+  int step(double dt) {
+    if (canvas < 0) { return INVALID; }
+    return ideaCanvasStep(canvas, dt);
+  }
+
+  // Drain a fixed-step accumulator: pass the real per-frame delta and the
+  // number of due 120 Hz steps are run on the native CPU. Returns the step
+  // count. The accumulator is held on the native side for this canvas.
+  int advance(double frameDtSeconds) {
+    if (canvas < 0) { return 0; }
+    return ideaCanvasAdvance(canvas, frameDtSeconds);
+  }
+
+  // The fixed simulation timestep in seconds (1 / SIM_HZ).
+  double timestep() { return ideaCanvasTimestep(); }
+
+  // Read one vertex's intensity (0..1) — e.g. to drive a SLeeLa-side readout
+  // without owning the native block.
+  double intensityAt(int col, int row) {
+    if (canvas < 0) { return 0.0; }
+    return ideaCanvasIntensityAt(canvas, col, row);
+  }
+
+  // ---- render layer (optional OpenGL; present at 60 Hz) ----------------
+
+  // True if the module was built with the OpenGL render layer.
+  boolean hasRenderer() { return ideaCanvasHasRenderer() == 1; }
+
+  // Open a window + GL renderer sized width x height. Returns a status ordinal;
+  // NO_RENDERER if the module was built without GL (then run headless via step).
+  int openWindow(int width, int height, String title) {
+    if (canvas < 0) { return INVALID; }
+    return ideaCanvasOpenWindow(canvas, width, height, title);
+  }
+
+  // True once the window has been asked to close.
+  boolean shouldClose() {
+    if (canvas < 0) { return true; }
+    return ideaCanvasShouldClose(canvas) == 1;
+  }
+
+  // Present one frame (copy the block to the mapped buffer, draw, swap, poll).
+  // Call at the present rate (60 Hz). NO_RENDERER when the GL layer is absent.
+  int present() {
+    if (canvas < 0) { return INVALID; }
+    return ideaCanvasPresent(canvas);
+  }
+
+  // The full native loop: open a window, then advance at 120 Hz and present at
+  // ~60 Hz until the window closes. A program that just wants "run the canvas
+  // on the native CPU/GPU" calls this. NO_RENDERER if GL is absent.
+  int run(int width, int height, String title) {
+    if (canvas < 0) { return INVALID; }
+    return ideaCanvasRun(canvas, width, height, title);
+  }
+}
