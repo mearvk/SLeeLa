@@ -5271,6 +5271,42 @@
       "sha256": "addd4f0750c6d695546a7d88dcf55dd944cbd94993efb16b974faaa79ba84dcb"
     },
     {
+      "path": "idea/sleela-native/sln_audio.cpp",
+      "sha256": "d7cd9f0048fcbe9ff9ad2bf386dc24c09db782894203795da0fa20d1f420dd45"
+    },
+    {
+      "path": "idea/sleela-native/sln_audio.h",
+      "sha256": "d89bbe6378615155a531de7b1ec43a84c85970abef0542d1739e9854c880464b"
+    },
+    {
+      "path": "idea/sleela-native/sln_demo.cpp",
+      "sha256": "918d9d1f40a2438d69aa429fc3c2a3fedb3ce9769e29f149b53c6c6a05fa7548"
+    },
+    {
+      "path": "idea/sleela-native/sln_gl_loader.cpp",
+      "sha256": "2d6e7c952a8ffe30cf32ce549463baf410e748da757cda28544295fde145104a"
+    },
+    {
+      "path": "idea/sleela-native/sln_gl_loader.h",
+      "sha256": "89eadb6f7287998163904072ba34311a290827373fa0d5131f317425d4874340"
+    },
+    {
+      "path": "idea/sleela-native/sln_math.h",
+      "sha256": "1cf976b9cca73e572903f0cbd69ff6d3e5b00144a24270f41eb113031d9411df"
+    },
+    {
+      "path": "idea/sleela-native/sln_render_gl.cpp",
+      "sha256": "148210fe29875b34256c4a916d26bf8e0c190160167de3e68876d73aa8bbbf32"
+    },
+    {
+      "path": "idea/sleela-native/sln_render_gl.h",
+      "sha256": "cef2a8f1e8d8f366bf679ad71a2677585271b903efe0de615d84e6f11b3d6f38"
+    },
+    {
+      "path": "idea/sleela-native/sln_scene.h",
+      "sha256": "1712a4904acdb60a076a16d4b67130fdaf44c937c9e544c1304a96458b24af89"
+    },
+    {
       "path": "idea/tools/idea_canvas_render.cpp",
       "sha256": "d3889ebb67363d2b77bd9f47ed5fc0ba6559b624593f7497c3d6327a979c78d8"
     },
@@ -54728,7 +54764,7 @@
     },
     {
       "path": "tools/generate-sha256-manifest.py",
-      "sha256": "c19128025c39873fdedf72719df00d0866417fb84609d14759f89c0c540bc804"
+      "sha256": "38a16d5d01e515b1ec68a0e5f86ea10e10e1c3182b7e045d6b398ec1d4095dbb"
     },
     {
       "path": "tools/generate-vocab-appendix.py",
