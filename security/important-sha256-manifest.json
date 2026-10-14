@@ -54844,7 +54844,7 @@
     },
     {
       "path": "tools/generate-cpu-docs.py",
-      "sha256": "6664b36c3d57d7b5f10d083aa668f2440f7f70e7659454236313ea9eefcbe7fc"
+      "sha256": "a9e4c4d7bbd17cc5fee4a79b8de25934f99f9a2345267606e2065fe5184faac8"
     },
     {
       "path": "tools/generate-cpu-models.py",
