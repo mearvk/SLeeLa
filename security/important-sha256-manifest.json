@@ -51804,7 +51804,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "6c40b53641f065f8094d0f4db8d1f5868f46ebff962d014a8d0d9c5fea1ab4ba"
+      "sha256": "3fc04a479f8baf4d2ad8eac5bc66ac6b039961bbc67b896fb9bad4f796a20548"
     },
     {
       "path": "lib/vm/SLNativeMemory.sleela",
@@ -52195,60 +52195,60 @@
       "sha256": "9f08fd3ea17741abef0bfa439a9b11dd178b8c9733bbf6ce92c0a99d66fbd136"
     },
     {
-      "path": "lib/vm/src/SLVmAudit.sleela",
-      "sha256": "bb3b33b48cd9680b2b58290cef1642b12dd6b9cf3f77b19a85a5c4e5539edddc"
+      "path": "lib/vm/src/sleela/SLVmAudit.sleela",
+      "sha256": "1c1cd4c17e14975e8412301ecbca26c4c26505b3c775d85e92d7bb606a080499"
     },
     {
-      "path": "lib/vm/src/SLVmCapability.sleela",
-      "sha256": "9a613a9261413445f4a2c7ebae81fb3fc5b57449e79ab032d7aac69ee0ed0e70"
+      "path": "lib/vm/src/sleela/SLVmCapability.sleela",
+      "sha256": "88ce2a42d596f48b243bd72fe1400135adc972e237cb6ccabd72b7ce8a2f605d"
     },
     {
-      "path": "lib/vm/src/SLVmConfig.sleela",
-      "sha256": "fcd197e8f82b18e431615d73d2819288f560f6d99210e65ddf9e3a6d413fca26"
+      "path": "lib/vm/src/sleela/SLVmConfig.sleela",
+      "sha256": "95c0550b65449f9b29a9c16ca4060368fb09562ca87461cac56c3580bb57a139"
     },
     {
-      "path": "lib/vm/src/SLVmGc.sleela",
-      "sha256": "6ba6274ecc0d80611fb4b4e5bdcb3ddf7b948605e6da12424eb80146c585f828"
+      "path": "lib/vm/src/sleela/SLVmGc.sleela",
+      "sha256": "84a7a73b00bf8f64d33cf8ada593773078f39b763bae7719641eea2e3e9b620c"
     },
     {
-      "path": "lib/vm/src/SLVmMemory.sleela",
-      "sha256": "d3e7506ca5c3a51dffb6d5911262ad045efbb3a11a3a902d2e3deeeb1be7348a"
+      "path": "lib/vm/src/sleela/SLVmMemory.sleela",
+      "sha256": "16e762437b1f6a40b50743c84e91dad9a22b52ba5f278521bee2e2c232d64fca"
     },
     {
-      "path": "lib/vm/src/SLVmPlatform.sleela",
-      "sha256": "818c4226668a458959d4a6a3bad569c864c9e168153e555b637b77ffa15486a7"
+      "path": "lib/vm/src/sleela/SLVmPlatform.sleela",
+      "sha256": "7809ac903309eaa958b9b3145a94db7dfb9a94375e7b23314999af66bbd93e15"
     },
     {
-      "path": "lib/vm/src/SLVmProfile.sleela",
-      "sha256": "4e25b28944926f8f81ec755b3636c91c19e33ac4f5a00dd2eaabbc689bc41192"
+      "path": "lib/vm/src/sleela/SLVmProfile.sleela",
+      "sha256": "75baa39ad2fed0a51dadfaa3f3584858ed2d02c25d8d69d95b19fb9a7f2ff48d"
     },
     {
-      "path": "lib/vm/src/SLVmReport.sleela",
-      "sha256": "c777d004c9b30b6f30373c0d17d2d55c4a8b47186e4b2cdd520fdf4ac69dd033"
+      "path": "lib/vm/src/sleela/SLVmReport.sleela",
+      "sha256": "94e790711ab9c3bfbdcf266c789e01d8ad8d5c4d148dd3031e618314655f3399"
     },
     {
-      "path": "lib/vm/src/SLVmResult.sleela",
-      "sha256": "b3480831778eceff8f05f5054ed7e79947b088e00413f134962d04c5d8b9810b"
+      "path": "lib/vm/src/sleela/SLVmResult.sleela",
+      "sha256": "999e367e2e2bb506eff02ccdf4bcc0319ef71b0fd06a903de0b661a4ac574259"
     },
     {
-      "path": "lib/vm/src/SLVmRuntime.sleela",
-      "sha256": "25b0c4e8f12b3f2827f9ccc2161f8b1ba12543d2628e6169b28b7d0f883614d2"
+      "path": "lib/vm/src/sleela/SLVmRuntime.sleela",
+      "sha256": "af55ece153112649b89fd49c5f1859738bc84c86771a9bdfc5e33617402d4d74"
     },
     {
-      "path": "lib/vm/src/SLVmSource.sleela",
-      "sha256": "d761f51f3dd5b1a52eda42f168969cf5b7d2b1000623832956ff157fd0652d37"
+      "path": "lib/vm/src/sleela/SLVmSource.sleela",
+      "sha256": "ab2b552980bedc49957e88ecf1d71a4dd98e71c021a60d8acc50fa0dbe912cc4"
     },
     {
-      "path": "lib/vm/src/SLVmStatus.sleela",
-      "sha256": "be0e0710c4162e59719e77bbdb8ce948ba392282dbf6e695dd415140c9b6d196"
+      "path": "lib/vm/src/sleela/SLVmStatus.sleela",
+      "sha256": "32b7f45560df884bb7aa5dcf7fea0b3021989843f377ed5914080ea6f8ef6fb1"
     },
     {
-      "path": "lib/vm/src/SLVmTelemetry.sleela",
-      "sha256": "9ca694b7b0b79631c8d291b3ed444b62c0a6f806cabc41cb93ac4c30058da894"
+      "path": "lib/vm/src/sleela/SLVmTelemetry.sleela",
+      "sha256": "27e0aa2fea0d6d459865912000ecad35861ed8a8f27ab6e1be0f97087c25f119"
     },
     {
-      "path": "lib/vm/src/SLVmVersion.sleela",
-      "sha256": "76b807608666dd32b2c7241ae9d9298a46b817bad47766445c6a7ad70ebb000c"
+      "path": "lib/vm/src/sleela/SLVmVersion.sleela",
+      "sha256": "600c349048f3e9ad11128d9a3aeb36ef5b6056b21cb2ad308eb0505b97500073"
     },
     {
       "path": "lib/vm/src/sleela_vm_builder.cpp",
@@ -55632,7 +55632,7 @@
     },
     {
       "path": "virtual-machine/vm-version/001/SLVmVersion001.sleela",
-      "sha256": "a4bcfc3dd9527a986c14981e665f2983ebab0d4c178352f3eda485afb0ac11c9"
+      "sha256": "20343f0cfacf4f47c1ab27303dd7a971b7fb590ed9ef8c10b47cc92c3e365fa9"
     },
     {
       "path": "virtual-machine/vm-version/001/bestof_smoke.c",
@@ -55948,7 +55948,7 @@
     },
     {
       "path": "virtual-machine/vm-version/002/SLVmVersion002.sleela",
-      "sha256": "863b34715deabfb84afe79a326d2f31df64be77191ed101a7d44359828c328db"
+      "sha256": "43f852af6ef0ee78f3bf702c1e987a280d259267134becf35230b8fa2502fa78"
     },
     {
       "path": "virtual-machine/vm-version/002/bestof_smoke.c",
@@ -56272,7 +56272,7 @@
     },
     {
       "path": "virtual-machine/vm-version/003/SLVmVersion003.sleela",
-      "sha256": "2adde26c9fbcbee35308f731144c8d66ccb5642d438f4bf74ca1dfdb592e60b7"
+      "sha256": "0c1cc39b322a6a1541e830557205692472ee59b41ead7f6c85c894fd05722e64"
     },
     {
       "path": "virtual-machine/vm-version/003/bestof_smoke.c",
@@ -56604,7 +56604,7 @@
     },
     {
       "path": "virtual-machine/vm-version/004/SLVmVersion004.sleela",
-      "sha256": "84e9aed9d67a850cff085e11f83091a59966c7f01ead3aff89e338c567fce75e"
+      "sha256": "5e4415ac9ae637685bb5ff6188d8abd3c9c79e9444dbb2a47f66111e7d133665"
     },
     {
       "path": "virtual-machine/vm-version/004/bestof_smoke.c",
@@ -56944,7 +56944,7 @@
     },
     {
       "path": "virtual-machine/vm-version/005/SLVmVersion005.sleela",
-      "sha256": "1bc7b813333c2ae19e174102d5390259a7f18ddaf41b7599f3510cd16f426dce"
+      "sha256": "1c9cd0f84cb6ce12ff51d4ab625bb8ff5819a7988f8d19170e8c26ceaf60c8df"
     },
     {
       "path": "virtual-machine/vm-version/005/bestof_smoke.c",
@@ -57292,7 +57292,7 @@
     },
     {
       "path": "virtual-machine/vm-version/006/SLVmVersion006.sleela",
-      "sha256": "600e50210ea16b5468dac26efcf48ba27e20b8a4b5d32a876fb02e1302bf86ab"
+      "sha256": "da8148d01d3f898978f5424142c7c8d0b42fda630d07a5750f9013ea4ff0a134"
     },
     {
       "path": "virtual-machine/vm-version/006/bestof_smoke.c",
@@ -57648,7 +57648,7 @@
     },
     {
       "path": "virtual-machine/vm-version/007/SLVmVersion007.sleela",
-      "sha256": "5c05da975c1ade242597a356b071c74b850a8669f1c0cdfc0d6742b1b1b2f0dd"
+      "sha256": "8170cf72ac1b92e72d981482c69432dee2b31ceae40ac183d734c324533c7a5f"
     },
     {
       "path": "virtual-machine/vm-version/007/bestof_smoke.c",
@@ -58012,7 +58012,7 @@
     },
     {
       "path": "virtual-machine/vm-version/008/SLVmVersion008.sleela",
-      "sha256": "db1e98b182af270a55c5e84552018b15d7d44a1c725813122cfbd49cad7acb41"
+      "sha256": "18b1815c0122d9e3c9c4e3bf967ea9aa9a51571dcca27ef7e2ed06ea8c194915"
     },
     {
       "path": "virtual-machine/vm-version/008/bestof_smoke.c",
@@ -58384,7 +58384,7 @@
     },
     {
       "path": "virtual-machine/vm-version/009/SLVmVersion009.sleela",
-      "sha256": "8313cd78fcbb68bfa2806be2d03c4bbe53afd931bd0973ad94bdeb4aa1405675"
+      "sha256": "6b0b5308fe65617c8c638d15be3fb185e463e176153705b3adafbb42e1ff3bda"
     },
     {
       "path": "virtual-machine/vm-version/009/bestof_smoke.c",
@@ -58764,7 +58764,7 @@
     },
     {
       "path": "virtual-machine/vm-version/010/SLVmVersion010.sleela",
-      "sha256": "099085b05540fe5bad0cd97f866fc67b693689bb2b8d51bf49b1d1cb244969e6"
+      "sha256": "90246ad000981ddbb284f1b41c260bb6c151e2c1b95983f211f9ff9aeea76f63"
     },
     {
       "path": "virtual-machine/vm-version/010/bestof_smoke.c",
