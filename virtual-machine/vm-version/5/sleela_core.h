@@ -1,0 +1,245 @@
+/* ==========================================================================
+ * sleela_core.h  -- Sleela execution core: the Turing-complete C/C++ engine.
+ * ========================================================================== */
+#ifndef SLEELA_CORE_H
+#define SLEELA_CORE_H
+
+/* Stable VM artifact/runtime ABI identifiers. */
+#define SLEELA_VM_ABI_MAJOR 1u
+#define SLEELA_VM_ABI_MINOR 1u
+#define SLEELA_ARTIFACT_FORMAT_VERSION 2u
+#include <stdint.h>
+#include <stddef.h>
+#include "../../runtime/garbage_collector.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+typedef enum { SL_NULL = 0, SL_INT, SL_DOUBLE, SL_BOOL, SL_STR, SL_STRUCT, SL_ARRAY } SLType;
+/* SL_STRUCT is a VM-local handle (index into the struct-instance store), the
+ * same bounded-handle discipline used for sockets/files/threads. Sleela code
+ * never sees a raw pointer; a struct value carries only its instance handle. */
+typedef struct { SLType type; union { int64_t i; double d; int b; int32_t s; int32_t h; } as; } SLValue;
+typedef enum {
+    OP_NOP = 0, OP_CONST, OP_POP, OP_DUP, OP_LOADG, OP_STOREG, OP_LOADL, OP_STOREL,
+    OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_MOD, OP_NEG,
+    OP_EQ, OP_NE, OP_LT, OP_LE, OP_GT, OP_GE, OP_AND, OP_OR, OP_NOT,
+    OP_JMP, OP_JMPF, OP_CALL, OP_RET, OP_PRINT, OP_SPAWN, OP_JOINALL,
+    OP_LOCK, OP_UNLOCK, OP_SEND, OP_RECV,
+    OP_LISTEN, OP_ACCEPT, OP_CONNECT, OP_SOCKREAD, OP_SOCKWRITE, OP_SOCKCLOSE,
+    OP_PIPE, OP_PIPEPEER, OP_FIFO_MK, OP_FILEOPEN, OP_FILEREAD, OP_FILEWRITE,
+    OP_FILECLOSE, OP_FILEUNLINK,
+    OP_HALT,
+    OP_TIME_UTC_MS, OP_TIME_UTC_NS, OP_TIME_MONO_NS, OP_TIME_PRECISION_MS, OP_TIME_LOCATION,
+    OP_TIME_HTTP_DATE, OP_TIME_JSON, OP_TIME_NTP, OP_TIME_SET_LOCATION,
+    /* struct support: a=type index / field offset as noted per op */
+    OP_NEWSTRUCT,   /* a = struct-type index; pushes a fresh instance handle */
+    OP_GETFIELD,    /* a = field offset; pops instance, pushes field value    */
+    OP_SETFIELD,    /* a = field offset; pops value then instance             */
+    OP_STRUCTPACK,  /* pops instance, pushes a JSON String of its fields      */
+    OP_STRUCTUNPACK,/* a = struct-type index; pops JSON String, pushes handle */
+    /* Synchro (syntax 1.3): honest packet dispatch + measurement. Handles are
+     * VM-local integers into a bounded probe table, like sockets. */
+    OP_SYN_OPEN,    /* pops port,host; pushes probe handle (-1 on failure)     */
+    OP_SYN_DISPATCH,/* pops timeout_ms,len,handle; pushes measured RTT us / -1 */
+    OP_SYN_STAT,    /* a = stat selector; pops handle; pushes int stat         */
+    OP_SYN_REPORT,  /* pops handle; pushes a String honest report             */
+    OP_SYN_CLOSE,   /* pops handle; releases the probe; pushes null            */
+    /* Munction (syntax 1.3): the reach-composition sentence. A reach is a
+     * VM-local handle into a bounded reach table. */
+    OP_MUN_START,   /* pops name String; pushes reach handle (-1 on failure)   */
+    OP_MUN_CONNECT, /* pops uri,handle; pushes handle (passthrough) / -1       */
+    OP_MUN_ENABLE,  /* pops policy,handle; pushes handle                       */
+    OP_MUN_SEND,    /* pops datum,handle; pushes handle                        */
+    OP_MUN_THATCH,  /* pops spec,handle; pushes handle                         */
+    OP_MUN_CONSUME, /* pops handle; pushes handle (reception stored on reach)  */
+    OP_MUN_LATCH,   /* pops handle; pushes handle                              */
+    OP_MUN_RECEPTION,/* pops handle; pushes last reception String             */
+    OP_MUN_CLOSE,   /* pops handle; pushes receipt String; releases the reach  */
+    /* Best-of (syntax 1.3): configurable route/accuracy selection for Synchro
+     * and Munction/RMI packets. A selector is a VM-local handle. */
+    OP_BEST_NEW,       /* pushes best-of handle (-1 on failure)                */
+    OP_BEST_WEIGHT,    /* pops weight,axis,handle; pushes handle (passthrough) */
+    OP_BEST_MINVER,    /* pops minVersion,handle; pushes handle                */
+    OP_BEST_BUDGET,    /* pops costBudget,handle; pushes handle                */
+    OP_BEST_CAND,      /* pops replays,cost,version,flags,gap,payload,timeout,route,name,handle; pushes candidate index */
+    OP_BEST_RECORD,    /* pops rttUs,idx,handle; pushes handle                 */
+    OP_BEST_SCORE,     /* pops idx,handle; pushes score int                    */
+    OP_BEST_BEST,      /* pops handle; pushes best candidate index (-1 none)   */
+    OP_BEST_STAT,      /* a=selector; pops idx,handle; pushes measured int     */
+    OP_BEST_CHOICE,    /* pops handle; pushes winning-choice String            */
+    OP_BEST_REPORT,    /* pops handle; pushes multi-line report String         */
+    OP_BEST_ARCH,      /* pops realized,param,arch,idx,handle; pushes handle   */
+    OP_BEST_ARCH_STATE,/* pops realized,idx,handle; pushes handle              */
+    OP_BEST_CLOSE,     /* pops handle; releases the selector; pushes null      */
+    OP_AUDIO_NEW,       /* pops sampleRate, outputPath; pushes job handle */
+    OP_AUDIO_ADD,       /* pops handle,path,startSeconds,gainDb; pushes handle */
+    OP_AUDIO_CONTROLS,  /* pops handle,bass,mid,treble,master,pan,left,right; pushes handle */
+    OP_AUDIO_VALIDATE,  /* pops handle; pushes bool */
+    OP_AUDIO_RENDER,    /* pops handle; invokes host renderer; pushes bool */
+    OP_AUDIO_CLOSE,     /* pops handle; releases job; pushes null */
+    OP_AUDIO_PLATFORM,  /* pushes host platform name */
+    /* Array support (syntax 1.4): a dynamic, growable, zero-indexed sequence of
+     * SLValues. An array value carries a VM-local handle into a bounded array
+     * store, the same handle discipline as structs. Appended at the end of the
+     * opcode enum so existing serialized-artifact opcode numbers are unchanged. */
+    OP_NEWARRAY,   /* pops int size; pushes a fresh array handle with `size` null elements */
+    OP_ARRGET,     /* pops index then array; pushes element (TERR on out-of-range)              */
+    OP_ARRSET,     /* pops value then index then array; writes element; pushes value            */
+    OP_ARRLEN,     /* pops array; pushes int length                                             */
+    OP_ARRPUSH,    /* pops value then array; appends; pushes new int length                     */
+    /* Operating-system system calls (syntax 1.5). The os* built-ins reach the
+     * genuine host System API (Win32 / POSIX / Apple) through sleela_os.c. A
+     * spawned child is a VM-local handle into a bounded process table, the same
+     * handle discipline as sockets/files. Appended at the end of the enum so
+     * existing serialized-artifact opcode numbers are unchanged. */
+    OP_OS_PLATFORM,   /* pushes host OS name String                                 */
+    OP_OS_CAPABILITY, /* pops capability int; pushes 1/0                            */
+    OP_OS_GETENV,     /* pops name String; pushes value String ("" if unset)        */
+    OP_OS_SETENV,     /* pops value,name Strings; pushes 0/-1                        */
+    OP_OS_CWD,        /* pushes current working directory String                    */
+    OP_OS_CHDIR,      /* pops path String; pushes 0/-1                              */
+    OP_OS_HOSTNAME,   /* pushes host name String                                    */
+    OP_OS_USERNAME,   /* pushes current user name String                            */
+    OP_OS_TEMPDIR,    /* pushes system temp directory String                        */
+    OP_OS_PID,        /* pushes this process' id int                                */
+    OP_OS_EXISTS,     /* pops path String; pushes 1/0/-1                            */
+    OP_OS_ISDIR,      /* pops path String; pushes 1/0/-1                            */
+    OP_OS_FILESIZE,   /* pops path String; pushes size int (-1 on error)            */
+    OP_OS_MKDIR,      /* pops path String; pushes 0/-1                              */
+    OP_OS_REMOVE,     /* pops path String; pushes 0/-1                              */
+    OP_OS_RENAME,     /* pops to,from Strings; pushes 0/-1                          */
+    OP_OS_RUN,        /* pops command String; runs it; pushes exit code int         */
+    OP_OS_SPAWN,      /* pops command String; pushes process handle (-1 on failure) */
+    OP_OS_WAIT,       /* pops process handle; waits; pushes exit code int           */
+    OP_OS_KILL,       /* pops process handle; pushes 0/-1                           */
+    OP_OS_PCLOSE,     /* pops process handle; releases it; pushes null              */
+    /* GC hint (syntax 1.9): a developer-emitted request for a short-term GC
+     * cleanup of unreachable allocations after a value is done being used,
+     * written `x = gc N;` or `x = mem N;` where N is 0..100 aggressiveness.
+     * operand a = aggressiveness (0..100): 0 is a no-op; a modest level runs a
+     * young-only safepoint collection sized to the level; a top level (>=
+     * SL_GC_HINT_FULL) requests a full collection. The hint reclaims only
+     * genuinely unreachable objects; it never frees a live value, and it is
+     * deferred (like every safepoint) while worker threads are active. Appended
+     * at the end of the enum so existing serialized-artifact opcode numbers are
+     * unchanged. */
+    OP_GC_HINT,       /* operand a = aggressiveness 0..100; pushes nothing          */
+    /* ran:: system namespace (syntax 1.9). The `ran::` qualifier names the
+     * System / already-Ran-in-RAM meaning of a word, so ordinary identifiers
+     * (mem, gc, ...) stay free for class/variable names. `ran::mem` reads the
+     * current live system memory in bytes as an int. Appended at the end of the
+     * enum so existing serialized-artifact opcode numbers are unchanged. */
+    OP_RAN_MEM,       /* pushes current live system memory in bytes (int)           */
+    /* Idea System(TM) realtime canvas (idea/realtime). The native-CPU
+     * rendering + physics module the VM can drive where it lacks it natively.
+     * A canvas is a VM-local handle into a bounded table. Appended at the end
+     * so existing serialized-artifact opcode numbers are unchanged. */
+    OP_IC_CREATE,     /* pops rows,cols; pushes canvas handle (-1 on failure)        */
+    OP_IC_DESTROY,    /* pops handle; releases the canvas; pushes null               */
+    OP_IC_COLS,       /* pops handle; pushes columns int                             */
+    OP_IC_ROWS,       /* pops handle; pushes rows int                                */
+    OP_IC_COUNT,      /* pops handle; pushes vertex count int                        */
+    OP_IC_SETPARAMS,  /* pops coupling,hueBase,flowGain,decay,handle; pushes handle  */
+    OP_IC_EXCITE,     /* pops amount,row,col,handle; pushes status int               */
+    OP_IC_STEP,       /* pops dt,handle; advances one step on native CPU; status int */
+    OP_IC_ADVANCE,    /* pops frameDt,handle; drains fixed steps; pushes step count  */
+    OP_IC_TIMESTEP,   /* pushes the fixed timestep seconds (double)                  */
+    OP_IC_INTENSITY,  /* pops row,col,handle; pushes intensity double                */
+    OP_IC_HASREND,    /* pushes 1 if the GL render layer is present, else 0          */
+    OP_IC_OPENWIN,    /* pops title,height,width,handle; pushes status int           */
+    OP_IC_SHOULDCLOSE,/* pops handle; pushes 1/0                                     */
+    OP_IC_PRESENT,    /* pops handle; presents one frame; pushes status int          */
+    OP_IC_RUN,        /* pops title,height,width,handle; runs loop; pushes status int*/
+    /* Backend selection + auto GPU offload (CPU<->GPU). */
+    OP_IC_SETPOLICY,  /* pops policy,handle; pushes handle (0 auto,1 cpu,2 gpu)      */
+    OP_IC_POLICY,     /* pops handle; pushes current policy int                      */
+    OP_IC_BACKEND,    /* pops handle; pushes active backend int (0 cpu,1 gpu)        */
+    OP_IC_GPUAVAIL,   /* pushes 1 if a GPU backend is available, else 0              */
+    OP_IC_MEASHZ,     /* pops handle; pushes measured sustained steps/sec (double)   */
+    OP_IC_MIGRATE     /* pops target,handle; migrates CPU<->GPU; pushes status int   */
+} SLOp;
+/* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
+#define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
+#define SL_GC_HINT_FULL 100   /* at this level the hint requests a full collection */
+#define SL_MAX_OS_PROCESSES 64    /* live spawned child processes per VM        */
+/* Synchro stat selectors for OP_SYN_STAT (operand a). */
+#define SL_SYN_STAT_SENT 0
+#define SL_SYN_STAT_RECV 1
+#define SL_SYN_STAT_MEAN 2
+#define SL_SYN_STAT_MIN  3
+#define SL_SYN_STAT_MAX  4
+#define SL_SYN_STAT_P95  5
+#define SL_SYN_STAT_LOSS 6
+/* Best-of per-candidate stat selectors for OP_BEST_STAT (operand a). */
+#define SL_BEST_STAT_MEAN      0
+#define SL_BEST_STAT_LOSS      1
+#define SL_BEST_STAT_JITTER    2
+#define SL_BEST_STAT_CERTAINTY 3
+#define SL_BEST_STAT_ARCH      4  /* candidate architecture (SL_BESTOF_ARCH_*) */
+#define SL_BEST_STAT_ARCHPARAM 5  /* architecture parameter (DSCP/kbps/label)  */
+#define SL_BEST_STAT_ARCHSTATE 6  /* realization state (requested/realized/denied) */
+#define SL_MAX_THREADS 128
+#define SL_MAX_LOCKS 32
+#define SL_MAX_SOCKETS 128
+#define SL_MAX_FILES 256
+#define SL_MAX_STRUCT_TYPES 256   /* distinct struct declarations per program  */
+#define SL_MAX_STRUCT_FIELDS 64   /* named fields per struct type              */
+#define SL_MAX_STRUCTS 4096       /* live struct instances per VM              */
+#define SL_MAX_STRTEXT 65536      /* max bytes for a built/concatenated String */
+#define SL_MAX_ARRAYS 4096        /* live array instances per VM               */
+#define SL_MAX_ARRAY_LEN 1048576  /* maximum elements in a single array        */
+typedef enum { SLR_OK = 0, SLR_ERROR, SLR_HALT } SLResult;
+typedef struct SLVM SLVM;
+typedef int (*SLAudioNativeRenderFn)(
+    const char* output_path, uint32_t sample_rate,
+    const char* const* input_paths, const double* start_seconds,
+    const double* gain_db, size_t input_count,
+    double bass_db, double mid_db, double treble_db,
+    double master_gain_db, double pan, double left_gain, double right_gain,
+    void* user);
+typedef enum { SLX_RESET = 0, SLX_ADD_CONST, SLX_DECLARE_GLOBAL, SLX_BEGIN_FUNC, SLX_END_FUNC, SLX_EMIT, SLX_PATCH, SLX_HERE, SLX_SET_ENTRY, SLX_RUN, SLX_GET_RESULT, SLX_DECLARE_STRUCT } SLExchangeOp;
+/* For SLX_DECLARE_STRUCT: name = struct type name, names = ordered field names,
+ * i0 = field count; out receives the type index. */
+typedef struct { SLValue value; const char* name; const char* const* names; int32_t op; int32_t a; int32_t i0; int32_t i1; int32_t i2; int32_t out; } SLExchangeArg;
+SLVM* slvm_new(void);
+/* True when Sleela source values use the bounded VM-owned memory/handle model. */
+int slvm_memory_safe_mode(const SLVM* vm);
+void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* user);
+void slvm_free(SLVM* vm);
+SLResult slcore_exchange(SLVM* vm, SLExchangeOp op, SLExchangeArg* arg);
+int slvm_add_const_int(SLVM* vm, int64_t v);
+int slvm_add_const_double(SLVM* vm, double v);
+int slvm_add_const_bool(SLVM* vm, int v);
+int slvm_add_const_str(SLVM* vm, const char* s);
+int slvm_declare_global(SLVM* vm, const char* name);
+/* Register a struct type and its ordered field names. Returns the type index
+ * used by OP_NEWSTRUCT / OP_STRUCTUNPACK, or -1 on error. Field order defines
+ * the offsets used by OP_GETFIELD / OP_SETFIELD. */
+int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_names, int nfields);
+int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals);
+void slvm_end_func(SLVM* vm);
+int slvm_emit(SLVM* vm, SLOp op, int32_t a);
+int slvm_emit0(SLVM* vm, SLOp op);
+void slvm_patch(SLVM* vm, int at, int32_t a);
+int slvm_here(SLVM* vm);
+void slvm_set_entry(SLVM* vm, int func_index);
+SLResult slvm_run(SLVM* vm);
+SLValue slvm_result(SLVM* vm);
+void slvm_joinall(SLVM* vm);
+SLValue slval_null(void);
+SLValue slval_int(int64_t v);
+SLValue slval_double(double v);
+SLValue slval_bool(int v);
+const char* slvm_str(SLVM* vm, int32_t id);
+const char* slvm_error(SLVM* vm);
+int slvm_save_file(SLVM* vm, const char* path);
+SLVM* slvm_load_file(const char* path);
+int slvm_is_artifact_file(const char* path);
+/* Validate a serialized artifact against the runtime VM/ABI contract without executing it. */
+int slvm_validate_artifact_file(const char* path, char* error, size_t error_size);
+/* Returns the runtime artifact ABI version as major/minor packed in a uint32_t. */
+uint32_t slvm_artifact_abi_version(void);
+#ifdef __cplusplus
+}
+#endif
+#endif /* SLEELA_CORE_H */
