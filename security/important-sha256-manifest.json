@@ -5239,6 +5239,18 @@
       "sha256": "cffd5d3846435bdafb8b44bfe494c9ac1d52089aef173c04598a3c1539e7d8cb"
     },
     {
+      "path": "idea/realtime/idea_canvas_ctx.h",
+      "sha256": "5aef56fc5c42a23a29ebf59b7645768e7df8740304ed1a987e2d0fdfd2c1650e"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_ctx_egl.cpp",
+      "sha256": "50268b095f77f28ac27593074a0fbc656840e9ef0d86ed38997feb22ea784dde"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_ctx_wgl.cpp",
+      "sha256": "ea200b91460faf20b5bca392f22f024ecc68a8013a957850534b08278ff910ec"
+    },
+    {
       "path": "idea/realtime/idea_canvas_gl.cpp",
       "sha256": "3164f6e0ef86504fc80685fa610d6a192ad0b729c0d609efc4f76fab7a6870f4"
     },
@@ -5248,7 +5260,7 @@
     },
     {
       "path": "idea/realtime/idea_canvas_gpu.cpp",
-      "sha256": "ff06ad8fbca0751976c6d7924ed4cb847ddbaedaab8a747923e330076c38fd36"
+      "sha256": "3aea3a4e6bdaf7eb1f5aef52d1e2bb4b54333082705392907600ae75c00c22a8"
     },
     {
       "path": "idea/realtime/idea_canvas_internal.hpp",
@@ -54716,7 +54728,7 @@
     },
     {
       "path": "tools/generate-sha256-manifest.py",
-      "sha256": "872c603f94d047fedf564a662e346f784304fecf2b26c904bc5f51c03827f01a"
+      "sha256": "c19128025c39873fdedf72719df00d0866417fb84609d14759f89c0c540bc804"
     },
     {
       "path": "tools/generate-vocab-appendix.py",
