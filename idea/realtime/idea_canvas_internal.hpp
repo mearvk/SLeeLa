@@ -26,9 +26,19 @@ struct idea_canvas {
     idea_sim_params params{};
     bool            params_set = false;
 
+    /* Backend selection + auto GPU-offload state (owned by the core). */
+    idea_backend_policy policy = IDEA_POLICY_AUTO;
+    idea_backend        backend = IDEA_BACKEND_CPU;  /* currently simulating on */
+    double  measured_hz = 0.0;      /* rolling sustained steps/sec             */
+    double  ema_step_s  = 0.0;      /* EMA of one step's wall time (seconds)   */
+    long    samples     = 0;        /* steps measured so far                   */
+    int     under_budget_streak = 0;/* consecutive advances under 120 Hz (hyst)*/
+
     /* GL render state is owned by the GL layer; kept as an opaque pointer so
      * the physics core needs no GL headers.  Null when GL is absent/unopened. */
-    void *gl = nullptr;
+    void *gl  = nullptr;
+    /* GPU compute state, owned by idea_canvas_gpu.cpp (opaque here). */
+    void *gpu = nullptr;
 };
 
 /* Implemented in idea_canvas_gl.cpp when built with IDEA_CANVAS_WITH_GL;

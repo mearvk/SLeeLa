@@ -15,6 +15,7 @@
 #include "idea_canvas_internal.hpp"
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <cstring>
 #include <new>
@@ -23,6 +24,12 @@
 #if defined(_OPENMP)
 #  include <omp.h>
 #endif
+
+/* Monotonic wall-clock seconds, for throughput measurement. */
+static double now_seconds() {
+    using clk = std::chrono::steady_clock;
+    return std::chrono::duration<double>(clk::now().time_since_epoch()).count();
+}
 
 /* ---- lifecycle -------------------------------------------------------- */
 
@@ -192,6 +199,60 @@ idea_canvas_status idea_canvas_step(idea_canvas *c, const idea_sim_params *p,
     return IDEA_CANVAS_OK;
 }
 
+/* ---- backend selection + measurement ---------------------------------- */
+
+idea_canvas_status idea_canvas_set_policy(idea_canvas *c, idea_backend_policy p) {
+    if (!c) return IDEA_CANVAS_INVALID;
+    c->policy = p;
+    if (p == IDEA_POLICY_FORCE_GPU) return idea_canvas_migrate(c, IDEA_BACKEND_GPU);
+    if (p == IDEA_POLICY_FORCE_CPU) return idea_canvas_migrate(c, IDEA_BACKEND_CPU);
+    return IDEA_CANVAS_OK;
+}
+idea_backend_policy idea_canvas_policy(const idea_canvas *c) {
+    return c ? c->policy : IDEA_POLICY_AUTO;
+}
+idea_backend idea_canvas_active_backend(const idea_canvas *c) {
+    return c ? c->backend : IDEA_BACKEND_CPU;
+}
+double idea_canvas_measured_hz(const idea_canvas *c) {
+    return c ? c->measured_hz : 0.0;
+}
+
+idea_canvas_status idea_canvas_migrate(idea_canvas *c, idea_backend target) {
+    if (!c) return IDEA_CANVAS_INVALID;
+    if (target == c->backend) return IDEA_CANVAS_OK;
+    if (target == IDEA_BACKEND_GPU) {
+        if (!idea_canvas_gpu_available()) return IDEA_CANVAS_NO_RENDERER;
+        if (idea_canvas_gpu_init(c) != 0) return IDEA_CANVAS_GL_ERROR;
+        c->backend = IDEA_BACKEND_GPU;
+    } else {
+        /* GPU -> CPU: pull the latest device state back, then release it. */
+        if (c->gpu) { idea_canvas_gpu_readback(c); idea_canvas_gpu_shutdown(c); }
+        c->backend = IDEA_BACKEND_CPU;
+    }
+    /* reset the measurement window after a migration */
+    c->samples = 0; c->ema_step_s = 0.0; c->measured_hz = 0.0;
+    c->under_budget_streak = 0;
+    return IDEA_CANVAS_OK;
+}
+
+/* One measured step on the active backend; updates the throughput EMA. */
+static void measured_step(idea_canvas *c, const idea_sim_params *p, float dt) {
+    idea_sim_params pr = p ? *p : (c->params_set ? c->params : idea_sim_defaults());
+    double t0 = now_seconds();
+    if (c->backend == IDEA_BACKEND_GPU && c->gpu) {
+        idea_canvas_gpu_step(c, &pr, dt);
+    } else {
+        idea_canvas_step(c, &pr, dt);
+    }
+    double elapsed = now_seconds() - t0;
+    /* exponential moving average of per-step wall time */
+    const double a = 0.1;
+    c->ema_step_s = (c->samples == 0) ? elapsed : (a * elapsed + (1 - a) * c->ema_step_s);
+    c->samples++;
+    c->measured_hz = (c->ema_step_s > 0.0) ? (1.0 / c->ema_step_s) : 0.0;
+}
+
 int idea_canvas_advance(idea_canvas *c, const idea_sim_params *p,
                         double frame_dt_seconds, double *accumulator) {
     const double step = idea_canvas_timestep();
@@ -201,9 +262,24 @@ int idea_canvas_advance(idea_canvas *c, const idea_sim_params *p,
     if (frame_dt_seconds > 0.25) frame_dt_seconds = 0.25; /* clamp a stall */
     *accumulator += frame_dt_seconds;
     while (*accumulator >= step) {
-        idea_canvas_step(c, p, (float)step);
+        measured_step(c, p, (float)step);
         *accumulator -= step;
         ++steps;
+    }
+
+    /* ---- the VM's offload decision (AUTO policy) ---------------------- */
+    if (c->policy == IDEA_POLICY_AUTO && c->samples >= 8) {
+        const double budget = IDEA_CANVAS_SIM_HZ;        /* 120 Hz */
+        if (c->backend == IDEA_BACKEND_CPU &&
+            c->measured_hz > 0.0 && c->measured_hz < budget &&
+            idea_canvas_gpu_available()) {
+            /* require a short streak under budget to avoid flip-flopping */
+            if (++c->under_budget_streak >= 3) {
+                idea_canvas_migrate(c, IDEA_BACKEND_GPU);
+            }
+        } else {
+            c->under_budget_streak = 0;
+        }
     }
     return steps;
 }

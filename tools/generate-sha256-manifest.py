@@ -42,6 +42,7 @@ DEFAULT_EXTRA_FILES = [
     "idea/realtime/idea_canvas_internal.hpp",
     "idea/realtime/idea_canvas_sim.cpp",
     "idea/realtime/idea_canvas_gl_stub.cpp",
+    "idea/realtime/idea_canvas_gpu.cpp",
     "Parameters.c",
     "runtime/garbage_collector.c",
     "runtime/garbage_collector.h",

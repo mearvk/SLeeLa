@@ -34,7 +34,11 @@ $(BUILD)/idea_canvas_sim.o: idea_canvas_sim.cpp idea_canvas.h idea_canvas_intern
 $(BUILD)/idea_canvas_gl_stub.o: idea_canvas_gl_stub.cpp idea_canvas.h idea_canvas_internal.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(LIB): $(BUILD)/idea_canvas_sim.o $(BUILD)/idea_canvas_gl_stub.o
+# GPU backend compiled in its no-GL stub form here (GPU path needs EGL/OSMesa).
+$(BUILD)/idea_canvas_gpu.o: idea_canvas_gpu.cpp idea_canvas.h idea_canvas_internal.hpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(LIB): $(BUILD)/idea_canvas_sim.o $(BUILD)/idea_canvas_gl_stub.o $(BUILD)/idea_canvas_gpu.o
 	$(AR) rcs $@ $^
 
 $(BUILD)/idea_canvas_bench.o: idea_canvas_bench.cpp idea_canvas.h | $(BUILD)

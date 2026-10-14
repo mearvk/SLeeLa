@@ -149,7 +149,14 @@ typedef enum {
     OP_IC_OPENWIN,    /* pops title,height,width,handle; pushes status int           */
     OP_IC_SHOULDCLOSE,/* pops handle; pushes 1/0                                     */
     OP_IC_PRESENT,    /* pops handle; presents one frame; pushes status int          */
-    OP_IC_RUN         /* pops title,height,width,handle; runs loop; pushes status int*/
+    OP_IC_RUN,        /* pops title,height,width,handle; runs loop; pushes status int*/
+    /* Backend selection + auto GPU offload (CPU<->GPU). */
+    OP_IC_SETPOLICY,  /* pops policy,handle; pushes handle (0 auto,1 cpu,2 gpu)      */
+    OP_IC_POLICY,     /* pops handle; pushes current policy int                      */
+    OP_IC_BACKEND,    /* pops handle; pushes active backend int (0 cpu,1 gpu)        */
+    OP_IC_GPUAVAIL,   /* pushes 1 if a GPU backend is available, else 0              */
+    OP_IC_MEASHZ,     /* pops handle; pushes measured sustained steps/sec (double)   */
+    OP_IC_MIGRATE     /* pops target,handle; migrates CPU<->GPU; pushes status int   */
 } SLOp;
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */

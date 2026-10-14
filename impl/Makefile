@@ -96,7 +96,8 @@ IDEA_CANVAS_DIR := ../idea/realtime
 IDEA_CANVAS_BR_OBJ   := $(BUILD)/sleela_idea_canvas.o
 IDEA_CANVAS_SIM_OBJ  := $(BUILD)/idea_canvas_sim.o
 IDEA_CANVAS_STUB_OBJ := $(BUILD)/idea_canvas_gl_stub.o
-IDEA_CANVAS_OBJS := $(IDEA_CANVAS_BR_OBJ) $(IDEA_CANVAS_SIM_OBJ) $(IDEA_CANVAS_STUB_OBJ)
+IDEA_CANVAS_GPU_OBJ  := $(BUILD)/idea_canvas_gpu.o
+IDEA_CANVAS_OBJS := $(IDEA_CANVAS_BR_OBJ) $(IDEA_CANVAS_SIM_OBJ) $(IDEA_CANVAS_STUB_OBJ) $(IDEA_CANVAS_GPU_OBJ)
 # OpenMP for the native-CPU physics step (safe no-op if the toolchain lacks it
 # only when overridden; GCC/Clang on the supported platforms provide it).
 IDEA_CANVAS_OMP ?= -fopenmp
@@ -300,6 +301,10 @@ $(IDEA_CANVAS_SIM_OBJ): $(IDEA_CANVAS_DIR)/idea_canvas_sim.cpp $(IDEA_CANVAS_DIR
 	$(CXX) -std=c++20 -O2 $(THREADFLAG) $(IDEA_CANVAS_OMP) -I$(IDEA_CANVAS_DIR) -c $(IDEA_CANVAS_DIR)/idea_canvas_sim.cpp -o $@
 $(IDEA_CANVAS_STUB_OBJ): $(IDEA_CANVAS_DIR)/idea_canvas_gl_stub.cpp $(IDEA_CANVAS_DIR)/idea_canvas.h $(IDEA_CANVAS_DIR)/idea_canvas_internal.hpp | $(BUILD)
 	$(CXX) -std=c++20 -O2 $(THREADFLAG) -I$(IDEA_CANVAS_DIR) -c $(IDEA_CANVAS_DIR)/idea_canvas_gl_stub.cpp -o $@
+# GPU backend (stub form by default; define IDEA_CANVAS_WITH_GL + add EGL/OSMesa
+# to IDEA_CANVAS_OMP/LIBS to build the real offscreen GPU compute path).
+$(IDEA_CANVAS_GPU_OBJ): $(IDEA_CANVAS_DIR)/idea_canvas_gpu.cpp $(IDEA_CANVAS_DIR)/idea_canvas.h $(IDEA_CANVAS_DIR)/idea_canvas_internal.hpp | $(BUILD)
+	$(CXX) -std=c++20 -O2 $(THREADFLAG) -I$(IDEA_CANVAS_DIR) -c $(IDEA_CANVAS_DIR)/idea_canvas_gpu.cpp -o $@
 $(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_bestof.c -o $@
 $(PATH_OBJ): core/sleela_path.c core/sleela_path.h | $(BUILD)

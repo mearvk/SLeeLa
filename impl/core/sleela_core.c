@@ -1359,6 +1359,31 @@ static SLResult run_thread(SLThread* t) {
             if(hv.type!=SL_INT||wdt.type!=SL_INT||hgt.type!=SL_INT||tv.type!=SL_STR) TERR("ideaCanvasRun(handle, width, height, title) requires handle, width, height ints and a title String");
             PUSH(slval_int(sl_idea_canvas_run(ic_get(vm,(int)hv.as.i),(int)wdt.as.i,(int)hgt.as.i,slvm_str(vm,tv.as.s))));
         } break;
+        case OP_IC_SETPOLICY: {
+            SLValue pv=POP(), hv=POP();
+            if(hv.type!=SL_INT||pv.type!=SL_INT) TERR("ideaCanvasSetBackendPolicy(handle, policy) requires a handle and a policy int (0 auto,1 cpu,2 gpu)");
+            sl_idea_canvas_set_policy(ic_get(vm,(int)hv.as.i),(int)pv.as.i); PUSH(hv);
+        } break;
+        case OP_IC_POLICY: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasPolicy(handle) requires a handle");
+            PUSH(slval_int(sl_idea_canvas_policy(ic_get(vm,(int)hv.as.i))));
+        } break;
+        case OP_IC_BACKEND: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasActiveBackend(handle) requires a handle");
+            PUSH(slval_int(sl_idea_canvas_active_backend(ic_get(vm,(int)hv.as.i))));
+        } break;
+        case OP_IC_GPUAVAIL: {
+            PUSH(slval_int(sl_idea_canvas_gpu_available()));
+        } break;
+        case OP_IC_MEASHZ: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasMeasuredHz(handle) requires a handle");
+            PUSH(slval_double(sl_idea_canvas_measured_hz(ic_get(vm,(int)hv.as.i))));
+        } break;
+        case OP_IC_MIGRATE: {
+            SLValue tv=POP(), hv=POP();
+            if(hv.type!=SL_INT||tv.type!=SL_INT) TERR("ideaCanvasMigrate(handle, target) requires a handle and target int (0 cpu,1 gpu)");
+            PUSH(slval_int(sl_idea_canvas_migrate(ic_get(vm,(int)hv.as.i),(int)tv.as.i)));
+        } break;
 
         /* ---- SLVM Audio bridge --------------------------------------- */
         case OP_AUDIO_NEW: {

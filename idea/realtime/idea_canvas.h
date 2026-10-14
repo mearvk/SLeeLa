@@ -65,6 +65,30 @@ typedef struct idea_vertex {
     float velocity;      /* scalar flow speed (drives colour-predictive hue) */
 } idea_vertex;
 
+/*
+ * Compute backends the simulation step can run on.
+ *   CPU: the OpenMP + SIMD physics core (always available, verified).
+ *   GPU: an offscreen GL compute path keeping data in device/native memory
+ *        (EGL-surfaceless on a real GPU; OSMesa software fallback). Available
+ *        only when the module was built with IDEA_CANVAS_WITH_GL and a context
+ *        could be created at runtime.
+ */
+typedef enum idea_backend {
+    IDEA_BACKEND_CPU = 0,
+    IDEA_BACKEND_GPU = 1
+} idea_backend;
+
+/*
+ * Backend-selection policy.  AUTO lets the VM decide: it runs on the CPU and,
+ * if sustained throughput falls below the 120 Hz budget AND a GPU backend is
+ * available, it offloads to the GPU.  FORCE_* pin a backend.
+ */
+typedef enum idea_backend_policy {
+    IDEA_POLICY_AUTO      = 0,  /* measure; offload CPU->GPU under budget   */
+    IDEA_POLICY_FORCE_CPU = 1,
+    IDEA_POLICY_FORCE_GPU = 2
+} idea_backend_policy;
+
 /* Opaque handle to a realtime canvas (owns the vertex block + optional GL). */
 typedef struct idea_canvas idea_canvas;
 
@@ -143,6 +167,39 @@ int idea_canvas_advance(idea_canvas *c, const idea_sim_params *p,
 /* Fixed simulation timestep in seconds (1 / IDEA_CANVAS_SIM_HZ). */
 double idea_canvas_timestep(void);
 
+/* ---- backend selection + auto GPU offload ----------------------------- */
+
+/*
+ * Set the backend policy (default IDEA_POLICY_AUTO).  Under AUTO the canvas
+ * starts on the CPU; idea_canvas_advance measures sustained throughput and, if
+ * it falls below the 120 Hz budget and a GPU backend is available, migrates
+ * the canvas to the GPU (keeping its vertex state).  FORCE_GPU with no GPU
+ * available stays on CPU and reports GPU as unavailable.
+ */
+idea_canvas_status idea_canvas_set_policy(idea_canvas *c, idea_backend_policy p);
+idea_backend_policy idea_canvas_policy(const idea_canvas *c);
+
+/* The backend the canvas is currently simulating on. */
+idea_backend idea_canvas_active_backend(const idea_canvas *c);
+
+/* Is a GPU backend available in this build + at runtime? (1/0) */
+int idea_canvas_gpu_available(void);
+
+/*
+ * The measured sustained simulation rate (steps/second), a rolling average
+ * updated by idea_canvas_advance.  0 before enough samples.  This is the
+ * signal the AUTO policy compares against IDEA_CANVAS_SIM_HZ.
+ */
+double idea_canvas_measured_hz(const idea_canvas *c);
+
+/*
+ * Force a one-shot backend migration now (CPU<->GPU), copying vertex state to
+ * the target backend's memory.  Returns IDEA_CANVAS_NO_RENDERER if the GPU is
+ * requested but unavailable.  Normally you set a policy and let advance decide;
+ * this is for tests and explicit control.
+ */
+idea_canvas_status idea_canvas_migrate(idea_canvas *c, idea_backend target);
+
 /* ---- render layer (GLFW + OpenGL; optional) --------------------------- */
 
 /*
@@ -175,6 +232,15 @@ idea_canvas_status idea_canvas_run(idea_canvas *c, const idea_sim_params *p,
 
 /* Was the module built with the GL render layer? (1/0) */
 int idea_canvas_has_renderer(void);
+
+/* ---- GPU compute backend hooks (implemented in idea_canvas_gpu.cpp) ----
+ * These are called by the core when a canvas is on IDEA_BACKEND_GPU.  Without
+ * IDEA_CANVAS_WITH_GL they are stubs that report unavailable.  Not normally
+ * called directly by a VM -- use the policy/migrate API above. */
+int    idea_canvas_gpu_init(idea_canvas *c);   /* create ctx + upload; 0 ok, <0 err */
+int    idea_canvas_gpu_step(idea_canvas *c, const idea_sim_params *p, float dt);
+int    idea_canvas_gpu_readback(idea_canvas *c);  /* GPU -> native vertex block */
+void   idea_canvas_gpu_shutdown(idea_canvas *c);
 
 /* Human-readable status name (never NULL). */
 const char *idea_canvas_status_name(idea_canvas_status s);

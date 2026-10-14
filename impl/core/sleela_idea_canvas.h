@@ -41,6 +41,14 @@ int    sl_idea_canvas_advance(void *c, double frame_dt_seconds);
 double sl_idea_canvas_timestep(void);
 double sl_idea_canvas_intensity_at(void *c, int col, int row);
 
+/* Backend selection + auto GPU offload. */
+int    sl_idea_canvas_set_policy(void *c, int policy);     /* 0 auto,1 cpu,2 gpu */
+int    sl_idea_canvas_policy(void *c);
+int    sl_idea_canvas_active_backend(void *c);             /* 0 cpu, 1 gpu       */
+int    sl_idea_canvas_gpu_available(void);
+double sl_idea_canvas_measured_hz(void *c);
+int    sl_idea_canvas_migrate(void *c, int target);        /* 0 cpu, 1 gpu       */
+
 /* Render (optional GL). */
 int sl_idea_canvas_has_renderer(void);
 int sl_idea_canvas_open_window(void *c, int w, int h, const char *title);

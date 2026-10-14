@@ -787,6 +787,12 @@ private:
         if(n=="ideaCanvasShouldClose"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: ideaCanvasShouldClose(handle) takes one argument");emitArgs(c);emit(OP_IC_SHOULDCLOSE);return true;}
         if(n=="ideaCanvasPresent"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: ideaCanvasPresent(handle) takes one argument");emitArgs(c);emit(OP_IC_PRESENT);return true;}
         if(n=="ideaCanvasRun"){if(c.args.size()!=4)throw std::runtime_error("Semantic error: ideaCanvasRun(handle, width, height, title) takes four arguments");emitArgs(c);emit(OP_IC_RUN);return true;}
+        if(n=="ideaCanvasSetBackendPolicy"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: ideaCanvasSetBackendPolicy(handle, policy) takes two arguments");emitArgs(c);emit(OP_IC_SETPOLICY);return true;}
+        if(n=="ideaCanvasPolicy"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: ideaCanvasPolicy(handle) takes one argument");emitArgs(c);emit(OP_IC_POLICY);return true;}
+        if(n=="ideaCanvasActiveBackend"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: ideaCanvasActiveBackend(handle) takes one argument");emitArgs(c);emit(OP_IC_BACKEND);return true;}
+        if(n=="ideaCanvasGpuAvailable"){if(!c.args.empty())throw std::runtime_error("Semantic error: ideaCanvasGpuAvailable() takes no arguments");emit(OP_IC_GPUAVAIL);return true;}
+        if(n=="ideaCanvasMeasuredHz"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: ideaCanvasMeasuredHz(handle) takes one argument");emitArgs(c);emit(OP_IC_MEASHZ);return true;}
+        if(n=="ideaCanvasMigrate"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: ideaCanvasMigrate(handle, target) takes two arguments");emitArgs(c);emit(OP_IC_MIGRATE);return true;}
 
         if(n=="audioNew"){
             if(c.args.size()!=2)throw std::runtime_error("Semantic error: audioNew(sampleRate, outputPath) takes two arguments");

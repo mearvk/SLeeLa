@@ -50,6 +50,17 @@ double sl_idea_canvas_intensity_at(void *c, int col, int row) {
     return idea_canvas_intensity_at((idea_canvas*)c, col, row);
 }
 
+int sl_idea_canvas_set_policy(void *c, int policy) {
+    return idea_canvas_set_policy((idea_canvas*)c, (idea_backend_policy)policy);
+}
+int sl_idea_canvas_policy(void *c) { return (int)idea_canvas_policy((idea_canvas*)c); }
+int sl_idea_canvas_active_backend(void *c) { return (int)idea_canvas_active_backend((idea_canvas*)c); }
+int sl_idea_canvas_gpu_available(void) { return idea_canvas_gpu_available(); }
+double sl_idea_canvas_measured_hz(void *c) { return idea_canvas_measured_hz((idea_canvas*)c); }
+int sl_idea_canvas_migrate(void *c, int target) {
+    return idea_canvas_migrate((idea_canvas*)c, (idea_backend)target);
+}
+
 int sl_idea_canvas_has_renderer(void) { return idea_canvas_has_renderer(); }
 int sl_idea_canvas_open_window(void *c, int w, int h, const char *title) {
     return idea_canvas_open_window((idea_canvas*)c, w, h, title);
@@ -82,6 +93,13 @@ double sl_idea_canvas_timestep(void)              { return 1.0 / 120.0; }
 double sl_idea_canvas_intensity_at(void *c, int col, int row) {
     (void)c;(void)col;(void)row; return 0.0;
 }
+int sl_idea_canvas_set_policy(void *c, int policy) { (void)c;(void)policy; return 0; }
+int sl_idea_canvas_policy(void *c)                { (void)c; return 0; }
+int sl_idea_canvas_active_backend(void *c)        { (void)c; return 0; }
+int sl_idea_canvas_gpu_available(void)            { return 0; }
+double sl_idea_canvas_measured_hz(void *c)        { (void)c; return 0.0; }
+int sl_idea_canvas_migrate(void *c, int target)   { (void)c;(void)target; return -3; }
+
 int sl_idea_canvas_has_renderer(void)             { return 0; }
 int sl_idea_canvas_open_window(void *c, int w, int h, const char *t) {
     (void)c;(void)w;(void)h;(void)t; return -3;

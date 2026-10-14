@@ -60,6 +60,29 @@ headroom vs 120 Hz target: ~75x
 Three excited points produce three spreading, slowly-decaying ripples — the
 colour-predictive "water" flow field the renderer draws.
 
+## CPU / GPU backend selection (auto-offload)
+
+The VM chooses where the simulation runs and **falls back to the GPU when the
+CPU cannot sustain 120 Hz**:
+
+- `idea_canvas_set_policy(c, p)` — `AUTO` (default), `FORCE_CPU`, `FORCE_GPU`.
+- Under **AUTO**, `idea_canvas_advance` measures sustained steps/sec
+  (`idea_canvas_measured_hz`). If that drops below the 120 Hz budget for a short
+  streak **and** a GPU backend is available, the VM migrates the canvas to the
+  GPU (`idea_canvas_active_backend` becomes `GPU`), carrying its field state.
+- With no GPU available, it stays on the CPU and reports honestly (no silent
+  failure); `FORCE_GPU` returns `NO_RENDERER`.
+
+The GPU backend (`idea_canvas_gpu.cpp`) is an **offscreen, windowless** GL
+compute path: **EGL-surfaceless** on a real GPU, or **OSMesa** (software GL in
+CPU/native memory) as a fallback — so it runs on a server with no display. The
+step is a ping-pong FBO fragment shader; `glReadPixels` brings the field back
+into the native vertex block on readback.
+
+Sleela built-ins: `ideaCanvasSetBackendPolicy`, `ideaCanvasPolicy`,
+`ideaCanvasActiveBackend`, `ideaCanvasGpuAvailable`, `ideaCanvasMeasuredHz`,
+`ideaCanvasMigrate`.
+
 ## ⚠️ What is NOT verified here
 
 `idea_canvas_gl.cpp` (the GLFW/OpenGL layer) is **written but not compiled or
