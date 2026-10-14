@@ -53364,7 +53364,7 @@
     },
     {
       "path": "sleela-virtual-machine/001/src/slvm01_vm.c",
-      "sha256": "7392cbaec60a84f8d629087829d291bf44756a13d840cde6099b5c7e216bca72"
+      "sha256": "d4c6d6bc520d1556329c523bb02976a6249dae05f435849e7f3644a85183234f"
     },
     {
       "path": "sleela-virtual-machine/001/src/slvm_broker.c",
@@ -53440,7 +53440,11 @@
     },
     {
       "path": "sleela-virtual-machine/002/src/slvm02_vm.c",
-      "sha256": "ccb61b6de59d5a164c497cb2b90818de82bf2092aa9eaba3854061a723f581ff"
+      "sha256": "8b9db55a8f87445f13d70c1c88b6054b5630067f1eef85da156f7544b2f63725"
+    },
+    {
+      "path": "sleela-virtual-machine/002/src/slvm2_crypto.c",
+      "sha256": "3fdeb3c9159caee02875aabef1074f821e3eda65e973fe8f82c81ebddeb0c4ac"
     },
     {
       "path": "sleela-virtual-machine/003/include/slvm3.h",
@@ -53460,11 +53464,23 @@
     },
     {
       "path": "sleela-virtual-machine/003/src/slvm03_vm.c",
-      "sha256": "259703e99eb4f5cd2525e5b8f3b5887571982b89f5ceaadf6f140edcf2547d3f"
+      "sha256": "5322c46fc849fa343c1a757b5e6ebb88dddabac4437bf7d765fc9816391226c5"
+    },
+    {
+      "path": "sleela-virtual-machine/003/src/slvm3_isolation.c",
+      "sha256": "69a79086726a190cf09855112936ca268f1c0cf1e8d61a14fefdd8d0238a6353"
+    },
+    {
+      "path": "sleela-virtual-machine/004/include/slvm4_distributed.h",
+      "sha256": "afc1b7441f97f55d785fb55f08f1fcc173df342a8d742cb89827a8c005ccdad0"
     },
     {
       "path": "sleela-virtual-machine/004/src/slvm04_vm.c",
-      "sha256": "5a560ba8e8c7ee5694458257e9750e54432d0113105bccbb1beb6ae79fe25cc4"
+      "sha256": "3135333ebbc338680a9834aba16113794d721ce6d98761ad0d8f57e9a79138fa"
+    },
+    {
+      "path": "sleela-virtual-machine/004/src/slvm4_distributed.c",
+      "sha256": "92fed5f14a3a1fa3186d156bd8da78e705792932a47dcda7f7ef996b1b117643"
     },
     {
       "path": "sleela-virtual-machine/005/include/slvm5.h",
@@ -53488,7 +53504,11 @@
     },
     {
       "path": "sleela-virtual-machine/005/src/slvm05_vm.c",
-      "sha256": "96f783b7f5776873e9b622e9400bb019cf231d28b81d248122d92660fa6637a4"
+      "sha256": "d908c8f043adf29d387256520ad07ec2ddfa475cbc1aa646cf80f122419e149b"
+    },
+    {
+      "path": "sleela-virtual-machine/005/src/slvm5_policy.c",
+      "sha256": "80265a3c0043ffe70c7e98b00fae14268b62d61685bac35ec9e58f6b98792150"
     },
     {
       "path": "sleela-virtual-machine/006/include/slvm6.h",
@@ -53512,7 +53532,11 @@
     },
     {
       "path": "sleela-virtual-machine/006/src/slvm06_vm.c",
-      "sha256": "b29e2475194b636550545d949c3ac6c1c47f5e4fa3c40d467a8ae713134c6ba6"
+      "sha256": "620f7a0128b8e25995e781895a48bbf098818961c17c02fe804a8b4ee753ba48"
+    },
+    {
+      "path": "sleela-virtual-machine/006/src/slvm6_lease.c",
+      "sha256": "d8ff1160592f31bc6a5b887b2216ed83231af3ecc07245565daf08afdf310ee4"
     },
     {
       "path": "sleela-virtual-machine/007/include/slvm7.h",
@@ -53560,7 +53584,7 @@
     },
     {
       "path": "sleela-virtual-machine/007/src/slvm07_vm.c",
-      "sha256": "00262165d83318f1fdba4eabd834ad7c6fd9072008d3e5921697b5eb3f2da9aa"
+      "sha256": "100a3f362d3434e1c4ce51ae8442cfcba54d0c1a4ece113d20ababb54af43865"
     },
     {
       "path": "sleela-virtual-machine/007/src/slvm7.c",
@@ -53596,7 +53620,7 @@
     },
     {
       "path": "sleela-virtual-machine/008/src/slvm08_vm.c",
-      "sha256": "accea689703f9640a8324e3627c9e01e4ff0318db232985943c9d27e306b594a"
+      "sha256": "6ac7636dfab9126cb6c085482e1ba9d1dfd8c907109af104e2770fa234dcb838"
     },
     {
       "path": "sleela-virtual-machine/008/src/slvm8.c",
@@ -53648,7 +53672,7 @@
     },
     {
       "path": "sleela-virtual-machine/009/src/slvm09_vm.c",
-      "sha256": "eee3c0e4f6aa19e3496194eb1e5836cd51b0124d4765d415e743059e884f4ebe"
+      "sha256": "d87d1b10f6d04d860478f8760bdb4cf555a7ccd104f8cf7f431d9bc373df6d24"
     },
     {
       "path": "sleela-virtual-machine/009/src/slvm9.c",
@@ -53704,7 +53728,7 @@
     },
     {
       "path": "sleela-virtual-machine/010/src/slvm10_vm.c",
-      "sha256": "d55b9769ac951b4ec7498bca462a1a529fdb2ecf4e95d917f0f9065004ffcd5f"
+      "sha256": "4316f90620be6e1a8da780be53a36f0dd06f0a8c91b705817bc357760e96dfdd"
     },
     {
       "path": "sleela-virtual-machine/010/tests/slvm10_selftest.c",
@@ -53720,7 +53744,7 @@
     },
     {
       "path": "sleela-virtual-machine/011/src/slvm11_vm.c",
-      "sha256": "ea1be73096b4610df4043b920fd7b54f6f9de889b690a7e1459926af2b03fac8"
+      "sha256": "99645575018a3ec01485393d90d093eecf7fd538ff4332655ee42fabf76f664c"
     },
     {
       "path": "sleela-virtual-machine/011/tests/slvm11_filesystem_module_selftest.c",
@@ -53728,7 +53752,7 @@
     },
     {
       "path": "sleela-virtual-machine/tools/gen-premium-vm-runners.py",
-      "sha256": "2511711aebc05bf788903bbea68d14b556ea1cda9ddc7f9e2db2c91c7bcb36fd"
+      "sha256": "144e2064e66aa9e8801db163e4bb2524b7673bb1ac3b26d32e64f82f268569d6"
     },
     {
       "path": "social-model/social_model.sleela",
