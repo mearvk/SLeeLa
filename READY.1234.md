@@ -429,44 +429,120 @@ idempotently; produce exactly these artifacts:
 > The spec is the single source every later stage compiles against, so it must be
 > pinned precisely enough to regenerate idempotently.
 
-**2.** "Create `impl/core/` — the C execution engine. Define `sleela_core.h`
-(the bytecode opcode enum — APPEND-ONLY — plus the value model and bounded
-VM-local handle tables) and `sleela_core.c` (the VM loop), then the native
-service bridges it owns, each as its own small file: threads, io, net, time,
-memory manager, synchro, best-of, os. Conform to the Constitution values from
-`SLEELA.syntax`. Make it compile standalone. Favor small cohesive translation
-units over one large file. Checkpoint: the core compiles."
+**2.** "Create `impl/core/` — the C execution engine (C11). It defines the
+bytecode ISA and the VM; everything above compiles to it. Produce:
+   - `sleela_core.h` — the value model (`SLValue` tagged union: int/double/
+     bool/string/null/struct/array handles), the **canonical bytecode ISA**
+     (the opcode enum; the design target is the **124 canonical opcodes** the
+     lib `SLSleelaVM` references — the enum is strictly **APPEND-ONLY** so
+     serialized-artifact opcode numbers never shift), and the bounded VM-local
+     handle-table sizes (`SL_SYNCHRO_MAX`, `SL_BESTOF_MAX`, `SL_MUNCTION_MAX`,
+     `SL_AI_MAX`, `SL_CAP_MAX`, …) — a program never sees a raw pointer.
+   - `sleela_core.c` — the fetch-decode-execute loop, the global/stack machine,
+     struct & array stores, and the per-family opcode handlers that call the
+     native bridges.
+   - the native service bridges, each as its own small `.c/.h` pair:
+     `sleela_thread` (≤128 threads, lock table, 2-tuple mailbox),
+     `sleela_io`, `sleela_net`, `sleela_time`, `sleela_path`, `sleela_os`,
+     `sleela_memory` + `sleela_memmgr` (+ grade2/grade3; 2 GiB default,
+     256 MiB–2 GiB range), `sleela_synchro`, `sleela_munction`,
+     `sleela_bestof`, `sleela_library`, `sleela_platform` (Win32/POSIX/Apple),
+     `sleela_terminal`, plus the `*_smoke.c` self-tests per family.
+   Enforce the Constitution from `SLEELA.syntax`: `sysdepth()`=3024,
+   `degreemax()`=4. Favor many small cohesive units over one large file.
+   Checkpoint: `impl/core` compiles standalone and each `*_smoke` self-test
+   links and passes."
 
-**3.** "Create `impl/frontend/` in this internal order, each a focused unit:
-`lexer.*` (tokens + the contextual built-in registry), `parser.*` (grammar →
-AST in `ast.h`), `semantic.*` (type/known-name checks, the `builtin()` set, the
-syntax-version gate), `compiler.*` (codegen: AST → the opcodes defined in
-`impl/core`, with arity checks), then `version.*`, `artifact.*`,
-`library_index.*`, and the driver. Add the top-level build so `impl/` links
-`sleela` and `nordshrift`. Checkpoint: `impl/build/sleela version` runs and a
-trivial `class X { void main(){ print(\"ok\"); } }` compiles and runs."
+**3.** "Create `impl/frontend/` (C++17), each a focused unit, in this internal
+order so each depends only on the ones before it:
+   - `lexer.{h,cpp}` — tokens for the 16 keywords and all literals/operators,
+     plus the **contextual built-in registry** (conduct/threading/struct/
+     munction/synchro/best-of/gc-hint/ran names recognized only in call
+     position, per §10 of the spec).
+   - `parser.{h,cpp}` + `ast.h` — the grammar's productions → AST.
+   - `semantic.{h,cpp}` — type/known-name resolution, the `builtin()` set
+     (the authoritative list of recognized built-in call names), the
+     `#sleela` syntax-version gate (`version.{h,cpp}`, accept 1.3..1.11), and
+     the §12/§13/§14 feature checks (`let` inference, gc-hint band 0..100,
+     nested-class rule-of-two / 42-per-doc).
+   - `compiler.{h,cpp}` — codegen: AST → the `impl/core` opcodes, with per-call
+     ARITY CHECKS; emit the persistent `.sleela` Core artifact.
+   - `artifact.{h,cpp}` (serialize/validate artifacts), `library_index.{h,cpp}`
+     (resolve `<package>.<ClassName>` against `/lib`), `unsigned_integer.h`
+     (U<n>/C<n>), the Java-equivalence/flow/exception helpers, and `driver.cpp`
+     (the `sleela` CLI: `check`/`run`/`compile -o`/`validate-artifact`/
+     `version`/`nordshrift`).
+   Add `impl/Makefile` so it links `impl/build/sleela` and `impl/build/nordshrift`.
+   Checkpoint: `impl/build/sleela version` prints `Sleelvac(TM) 0.3.29-dev`, and
+   `class X { void main(){ print(\"ok\"); } }` compiles and runs via
+   `sleela run`.
 
-**4.** "Create the integrity gate now that real source exists: write
-`tools/generate-sha256-manifest.py` (records every file the verified build
-compiles) and `tools/verify-before-execution.py`, generate
-`security/sha256-manifest.json`, and wire a `verify-security` target into
-`impl/Makefile` that fails closed unless every gated file matches. Document the
-rule: regenerate the manifest whenever gated source changes. Checkpoint:
-`SLEELA_SHA256_MANIFEST=$PWD/security/sha256-manifest.json make -C impl verify-security`
-passes, and editing a gated file then rebuilding fails until regenerated."
+   RULE for every native built-in family added later (the 5-touch sequence,
+   applied verbatim for bestOf*, synchro*, ideaCanvas*, …): (a) names →
+   `lexer.cpp`; (b) names → the `builtin()` set in `semantic.cpp`; (c) codegen +
+   arity checks → **appended** opcodes in `compiler.cpp`; (d) define the opcodes
+   (APPEND) + any handle table in `sleela_core.h`; (e) execute them in
+   `sleela_core.c` via a native bridge. Then regenerate the manifest (step 4).
+   Never renumber existing opcodes."
 
-**5.** "Create the standard library under `lib/`. First author
-`lib/LIBRARY.SYMBOLS.md` as the single authoritative vocabulary, THEN the
-package families as one class per `.sleela` file, each resolvable as
-`<package>.<ClassName>` through the shared library index: start with `core`,
-`collections`, `io`, then `crypto`, `http`, `user-interface`, `cpu`, and the
-rest. Do not create a second registry. Checkpoint: the `/lib` inventory reports
-clean counts and representative classes pass `impl/build/sleela check`."
+**4.** "Create the integrity gate now that real source exists under
+`impl/core` and `impl/frontend`. Produce:
+   - `tools/generate-sha256-manifest.py` — scans the source dirs the verified
+     build compiles (`impl/core`, `impl/frontend`, `impl/nordshrift`,
+     `impl/catalog`, `impl/xclass`, `impl/subjects`) plus an explicit
+     extra-files list (e.g. `Parameters.c`, the runtime/*, `bash/pixel_terminal.*`,
+     and any compiled `idea/*` sources added later), and writes
+     `security/sha256-manifest.json`. Support `--root`, `--output`, `--stdout`.
+   - `tools/verify-before-execution.py` — fails closed unless every listed file
+     matches its recorded SHA-256.
+   - wire `verify-security` into `impl/Makefile` as the FIRST prerequisite of
+     `all` (so `all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage`),
+     reading the manifest from `SLEELA_SHA256_MANIFEST`/`VERIFY_MANIFEST`
+     (default `../security/sha256-manifest.json`).
+   - `security/BUILD-VERIFICATION.md` + `SHA256-VERIFICATION.md` documenting the
+     rule: **regenerate the manifest whenever any gated source is added or
+     changed** — including after every step-3 built-in addition and every
+     step-7 module.
+   Checkpoint:
+   `SLEELA_SHA256_MANIFEST=$PWD/security/sha256-manifest.json make -C impl verify-security`
+   passes; editing a gated file then rebuilding FAILS until the manifest is
+   regenerated with `python3 tools/generate-sha256-manifest.py`."
 
-**6.** "Create example programs under `impl/examples/` and `examples/` that
-exercise the grammar and each native built-in family, plus the
-compiler-construction teaching ladder under `lib/compiler/examples/`. Checkpoint:
-`impl/build/sleela run <each example>` executes end to end under the gate."
+**5.** "Create the standard library under `lib/`. FIRST author
+`lib/LIBRARY.SYMBOLS.md` as the single authoritative vocabulary (the manifest of
+every `<package>.<ClassName>` symbol; it is generated by
+`tools/generate-library-symbols.py` and is the only registry — the spec's §11
+appendix merely mirrors it). THEN create the package families as **one class per
+`.sleela` file** (syntax `#sleela 1.x`, `class <Name> { … }`), each resolvable
+through the shared `library::Index` the frontend built in step 3. Author in
+dependency order — foundational first:
+   - foundational: `core`, `collections`, `data-structures`, `io`, `text`,
+     `math`, `reflection`, `runtime`, `os`, `process`, `memory`;
+   - then: `crypto`, `net`, `http` (+ `http-1.0..9.0`, `http-servers`),
+     `filesystem`, `database`, `regex`, `config`, `logger`, `connector`, `rmi`,
+     `synchro`, `munction`, `codecs`, `audio`, `video`;
+   - then higher-level families: `user-interface`/`ui`/`gui`, `cpu`, `vm`,
+     `compiler`, `decompiler`, `debugger`, `languages`, `deliberation`,
+     `inference-model`, and the domain packages.
+   Target ~**93 package families**. Do NOT create a second registry; every class
+   must appear in `lib/LIBRARY.SYMBOLS.md`. Checkpoint:
+   `python3 tools/sleela-build.py inventory-lib` reports the source/package
+   counts with no duplicate-symbol surprises, and representative classes pass
+   `impl/build/sleela check`."
+
+**6.** "Create example programs under `impl/examples/` that exercise the grammar
+and every native built-in family, one concern per file — at minimum: `hello`,
+`fizzbuzz`, `factorial`, `fibonacci` (control flow); `struct_basic`,
+`struct_network` (structs + transport); `threads` (spawn/join/lock/send/recv);
+`conduct` (conducted methods against `SHEET.sheet`); `synchro_measure`,
+`munction_reach`, `bestof_route` (measurement/reach/route built-ins);
+`versioned`, `nested_classes`, `static-protected` (version features); `time`,
+`fileio`, `fileio-fifo`, `network_echo` (os/io/net); plus the subject demos
+(`chemistry_presumed`, `financial`, `stock_market*`). Add the compiler-
+construction teaching ladder under `lib/compiler/examples/` (Novice/Mid/Senior/
+Very-Senior, fail-closed gates). Checkpoint: `impl/build/sleela run <file>`
+executes each example end to end under the SHA-256 gate; `make -C impl test-sleela`
+runs them all."
 
 **7.** "Create the optional Idea System(TM) native modules under `idea/`, in this
 internal order so each extends a finished layer: (a) `idea/` core — the C ABI +
@@ -485,17 +561,42 @@ committed in the same change. Mark any GPU/OS-specific code that cannot be run
 here as written-but-unverified. Checkpoint: the CPU-verifiable parts build and
 run; GPU/OS code compiles."
 
-**8.** "Create the packaging, platform scripts, and steering: `build-linux.sh`
-and `build-windows.ps1` (both delegating to `impl/Makefile`), the staged runtime
-layout (`impl/BUILD-LAYOUT.md`), the `tools/sleela-build.py` lifecycle driver
-(subcommands init/check/inventory-lib/build/test/compile/package/install/clean/
-doctor/version/run), the root `Makefile` dispatcher that builds every subdir with
-`$(MAKE) -C`, and `.kiro/steering/` notes (toolchain + build status). Checkpoint:
-`make all` builds the whole repo on a clean checkout and the gate passes."
+**8.** "Create packaging, platform scripts, and steering:
+   - `build-linux.sh` — `cd impl && make clean && make all`, honoring
+     `CC`/`CXX`/`BIN_DIR` (default `/bin`), installing `sleela` + `nordshrift`.
+   - `build-windows.ps1` — resolve `mingw32-make`/`make`, then
+     `make CC=$Cc CXX=$Cxx all` (delegates to the same `impl/Makefile`; Windows
+     thus selects the WGL context automatically).
+   - `impl/BUILD-LAYOUT.md` — the staged runtime layout under
+     `impl/build/SLeeLa/` (`bin/`, `Config/sleela.conf` with the 2 GiB default /
+     256 MiB–2 GiB range, `Options/`, `lib/`, `docs/`, `README.md`).
+   - `tools/sleela-build.py` — the lifecycle driver with EXACTLY these
+     subcommands: `init check inventory-lib build test compile <src> <out>
+     package install <dir> clean doctor version run`.
+   - the root `Makefile` dispatcher whose `all` builds every subsystem via
+     `$(MAKE) -C <dir>`: `core`(→impl) `java28 regex compiler decompiler vm
+     scripting jetbrains install tutorial-check tests config route common-rails
+     codecs churn antivirus`, plus a `clean` and a `help` target.
+   - `.kiro/steering/` notes (the toolchain note: binaries are `sleela` +
+     `nordshrift`, NO separate `sleelac`; and a build-status note).
+   Checkpoint: on a clean checkout, `make all` builds the whole repo with the
+   SHA-256 gate passing, and `make help` lists every dispatcher target."
 
-**9.** "Finalize: run `make all`, confirm `verify-security` passes, run every
-example once, and write/refresh `READY.1234.md` so it reflects the repository as
-built. Commit."
+**9.** "Finalize and prove idempotency:
+   - `export SLEELA_SHA256_MANIFEST=$PWD/security/sha256-manifest.json`
+   - `python3 tools/generate-sha256-manifest.py` (ensure the manifest covers all
+     gated source, including every `idea/*` compiled file).
+   - `make all` and confirm `make -C impl verify-security` passes.
+   - `make -C impl test-sleela` (run every example) and
+     `python3 tools/sleela-build.py inventory-lib` (library coverage).
+   - build the optional natives: `make -C idea run`,
+     `make -C idea/sleela-native run`.
+   - regenerate the digest docs (`tools/generate-all-sha256-md.sh` /
+     `generate-important-sha256-manifest.py`) and write/refresh `READY.1234.md`
+     so it reflects the repository as built.
+   - commit. Re-running steps 1–9 against this spec must reproduce the same
+     repository (idempotent): same keywords/built-ins/opcode ISA, same 16 conduct
+     roles, same library symbol set, same gate."
 
 > **Efficiency note the agent must honor:** at each step, define the module as the
 > *smallest cohesive set of files that satisfies that layer's checkpoint* — no
