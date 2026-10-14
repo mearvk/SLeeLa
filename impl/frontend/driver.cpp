@@ -467,6 +467,65 @@ static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const
     slvm_free(vm);return rc;
 }
 static catalog::Catalog loadCatalog(){const char*env=std::getenv("SLEELA_SHEET");const char*candidates[]={env,"SHEET.sheet","../SHEET.sheet","../../SHEET.sheet","../../../SHEET.sheet"};for(const char*p:candidates){if(!p||!*p)continue;bool ok=false;catalog::Catalog c=catalog::parseCatalogFile(p,&ok);if(ok)return c;}return catalog::Catalog{};}
+/* ---- `sleela vm` : select the virtual machine ---------------------------
+ * The Native VM (impl/core, what every other subcommand runs on) is the
+ * default. `sleela vm` lets a user list and select one of the versioned VMs
+ * under virtual-machine/vm-version/NNN, whose Sleela manifests
+ * (SLVmVersionNNN.sleela) + registry (SLVmRegistry.sleela) describe each build
+ * and name the native main the host would load. This table mirrors those
+ * manifests; selection is validated here the same way the OP_VM_SELECT service
+ * opcode validates it in the VM (1..10). Actually building+booting a selected
+ * version's native main is a host/build action beyond the shipped `sleela`
+ * binary; this subcommand resolves and reports the selection. */
+static int vmCmd(int argc,char**argv){
+    struct VmEntry{int n;const char*id;const char*label;const char*dir;const char*mainEntry;};
+    static const VmEntry kVms[10]={
+        {1,"idea-vm-001","ground floor","virtual-machine/vm-version/001","vm_ground_test"},
+        {2,"idea-vm-002","memory hardening","virtual-machine/vm-version/002","vm_memory_test"},
+        {3,"idea-vm-003","typed results","virtual-machine/vm-version/003","vm_result_test"},
+        {4,"idea-vm-004","telemetry","virtual-machine/vm-version/004","vm_telemetry_test"},
+        {5,"idea-vm-005","gc quality","virtual-machine/vm-version/005","vm_gc_test"},
+        {6,"idea-vm-006","dispatch profiler","virtual-machine/vm-version/006","vm_profile_test"},
+        {7,"idea-vm-007","capability enforcement","virtual-machine/vm-version/007","vm_capability_test"},
+        {8,"idea-vm-008","platform parity","virtual-machine/vm-version/008","vm_platform_test"},
+        {9,"idea-vm-009","audit trail","virtual-machine/vm-version/009","vm_audit_test"},
+        {10,"idea-vm-010","consolidated","virtual-machine/vm-version/010","vm_runtime"},
+    };
+    std::string sub = (argc>=3)? argv[2] : "list";
+    if(sub=="list"||sub=="-h"||sub=="--help"){
+        std::cout<<"Available virtual machines (the Native VM is the default):\n";
+        std::cout<<"  native   Native VM (impl/core) — used unless you select another   [default]\n";
+        for(const auto&v:kVms)
+            std::cout<<"  "<<v.n<<"  "<<v.id<<"  ["<<v.label<<"]  -> "<<v.dir<<"/"<<v.mainEntry<<"\n";
+        std::cout<<"\nUse: sleela vm select <native|1..10>   |   sleela vm info <1..10>\n";
+        return 0;
+    }
+    if(sub=="select"||sub=="info"){
+        if(argc<4){std::cerr<<"sleela vm "<<sub<<": expected <native|1..10>\n";return 2;}
+        std::string sel=argv[3];
+        if(sel=="native"||sel=="0"){
+            std::cout<<"Selected: Native VM (impl/core). This is the default; no load needed.\n";
+            return 0;
+        }
+        int n=std::atoi(sel.c_str());
+        if(n<1||n>10){std::cerr<<"sleela vm "<<sub<<": '"<<sel<<"' out of range (native or 1..10)\n";return 2;}
+        const VmEntry&v=kVms[n-1];
+        if(sub=="info"){
+            std::cout<<v.id<<"  ["<<v.label<<"]\n"
+                     <<"  native dir : "<<v.dir<<"\n"
+                     <<"  native main: "<<v.mainEntry<<"\n"
+                     <<"  manifest   : "<<v.dir<<"/SLVmVersion"<<(n<10?"00":"0")<<n<<".sleela\n";
+            return 0;
+        }
+        std::cout<<"Selected VM "<<v.id<<" ["<<v.label<<"].\n"
+                 <<"  Its native main '"<<v.mainEntry<<"' lives in "<<v.dir<<".\n"
+                 <<"  (OP_VM_SELECT "<<n<<" validated; building+booting a non-native VM's main\n"
+                 <<"   is a host/build step beyond the shipped sleela binary.)\n";
+        return 0;
+    }
+    std::cerr<<"sleela vm: unknown subcommand '"<<sub<<"' (use list | select | info)\n";
+    return 2;
+}
 static int designActivityCmd(int argc,char**argv){
     if(argc<9){std::cerr<<"Usage: sleela design-activity <science> <correctness> <reproducibility> <observability> <safety> <resource> <interoperability>\n";return 2;}
     std::string science=argv[2]; if(science.rfind("--science=",0)==0)science=science.substr(10);
@@ -480,7 +539,7 @@ static int designActivityCmd(int argc,char**argv){
     char json[1024];slda_format_json("sleela",&result,json,sizeof json);
     std::cout<<json<<"\n"; return 0;
 }
-static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
+static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela vm [list|select <native|1..10>|info <1..10>]\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";
     // Creator-document schema binding: if the source declares a #schema pragma,
     // the referenced XSD must exist and its version must be understood. Absent
@@ -719,6 +778,7 @@ int main(int argc,char**argv){
     else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
+    else if(cmd=="vm")return vmCmd(argc,argv);
     else if(cmd=="design-activity")return designActivityCmd(argc,argv);
     else if(cmd=="defender")return defenderCmd(argc,argv);
     else if(cmd=="version"){std::cout<<kVersion<<"\n";return 0;}
