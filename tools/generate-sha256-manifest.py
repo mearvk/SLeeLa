@@ -36,6 +36,12 @@ DEFAULT_SOURCE_DIRS = [
 ]
 # Individual files outside those directories that the build also consumes.
 DEFAULT_EXTRA_FILES = [
+    # Idea System(TM) realtime canvas: the native-CPU render+physics core the
+    # VM links by default so `sleela <program>` can drive it.
+    "idea/realtime/idea_canvas.h",
+    "idea/realtime/idea_canvas_internal.hpp",
+    "idea/realtime/idea_canvas_sim.cpp",
+    "idea/realtime/idea_canvas_gl_stub.cpp",
     "Parameters.c",
     "runtime/garbage_collector.c",
     "runtime/garbage_collector.h",

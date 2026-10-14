@@ -14,6 +14,22 @@
       "sha256": "52f63bf1a600b156d135f6fba201f1d9f0dd250868edb2a59b0e300925bc545c"
     },
     {
+      "path": "idea/realtime/idea_canvas.h",
+      "sha256": "003c5a600919c641a89dad3c96f699e5cab25a455bb8500a27436396946e972f"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_gl_stub.cpp",
+      "sha256": "924c82e42b29b38810969e310dc5438c97e41b32741b3d6187de6c701714e75f"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_internal.hpp",
+      "sha256": "11af1600a534c332e6dbf97270793a73f15573b759e845ba5628a77be6328380"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_sim.cpp",
+      "sha256": "5f67249dfb5f5721c8b0a5d77bd9b89c35853227cc09c76b8394218d3350ac6c"
+    },
+    {
       "path": "impl/catalog/sheet_catalog.cpp",
       "sha256": "edc44715753f2fb15b1a436978d501c14e41d49956b0f459a0aae1ffaf21525f"
     },
