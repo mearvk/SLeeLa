@@ -10,6 +10,7 @@
 ## Start here
 - [Build the native implementation](impl/README.md)
 - [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
+- [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
 - [Documentation index](docs/README.md)
 - [Platform support and validation matrix](docs/PLATFORM-SUPPORT.md)
 - [Brand guide](docs/BRAND-GUIDE.md)
