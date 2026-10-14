@@ -5880,7 +5880,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "8d68480bd6aec6278de07000ca37dacc24e1f1e56d2afaa62d13bd79fed2737c"
+      "sha256": "57a6fea0f94d04b94d989de63a29fe91744847432ce0e3100844e6126a016596"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -50971,6 +50971,22 @@
       "sha256": "10fb1fbb8d8bbb3d7278a1d3f3f6e37b904a7418efced47b2aa4e1b13ec1b473"
     },
     {
+      "path": "lib/registry/SLRegistry.sleela",
+      "sha256": "2ac8e742ff87ee7d3a01480f2352f935031b679ba4f0b55080da46db8556c2cc"
+    },
+    {
+      "path": "lib/registry/SLRegistryKey.sleela",
+      "sha256": "8de846d79c854ea3c14f587a89df06cc137d9e8e17dd31d0a70ae82c93bf7d50"
+    },
+    {
+      "path": "lib/registry/SLRegistryProvenance.sleela",
+      "sha256": "a6b278e325613f556b462704ad7ca91989b6873f5f1e502ee86a8201ae2e9ae4"
+    },
+    {
+      "path": "lib/registry/SLRegistryValue.sleela",
+      "sha256": "797211dc8fc95f9657334fea2e1efea7e81a94da98893f1fb8997ef374386630"
+    },
+    {
       "path": "lib/rmi/SLPackage.sleela",
       "sha256": "2e137f16814678b2182a964a1e41cd9ecd72ade336acfe4a8972907c68d840b2"
     },
@@ -52813,6 +52829,22 @@
     {
       "path": "regex/tests/test_regex_natural.cpp",
       "sha256": "78ccb48b9413143924f68cc1795bebcf5b8a82d63bb57786012df7c4b6b79953"
+    },
+    {
+      "path": "registry/sleela_registry.c",
+      "sha256": "81d05348bf3cc20f955e3d2d65a54db0c9270ecf6a4ead4dd237397550354a0d"
+    },
+    {
+      "path": "registry/sleela_registry.h",
+      "sha256": "846e91ff14dbd49752260a07cb0003728e133c8e67d75f6590be0a123efc1cd6"
+    },
+    {
+      "path": "registry/sleela_registry.hpp",
+      "sha256": "4b790c0326b7128556ecb298e8287bed08988504fc2713b3549e44dcf9e73b39"
+    },
+    {
+      "path": "registry/sleela_registry_tool.cpp",
+      "sha256": "10938d17ba6825380a0a0c2c15a4592adec49c10354fdfa1b5bee20f71f5ab92"
     },
     {
       "path": "resolver/resolver.c",
@@ -54824,7 +54856,7 @@
     },
     {
       "path": "tools/generate-modium.py",
-      "sha256": "9eeaae19ef1a10b3df622f3e52440dddb3a6f81cd5a0bef82d2ae4de897f7e83"
+      "sha256": "3ce1f26430da1e517f3b2733b8e6d75df7104714da50cd46a3b7c7b3902e375d"
     },
     {
       "path": "tools/generate-sha256-manifest.py",
