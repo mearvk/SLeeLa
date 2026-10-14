@@ -78,10 +78,17 @@ sleela vm run native program.sleela      # same as plain `sleela run` (Native VM
 - **Premium** (`premium 1..11`) — the SLVM generations under
   `sleela-virtual-machine/NNN`. Each is a **real, runnable virtual machine**: it
   links the shared native Core engine (archived as `impl/build/libslcore.a`) and
-  runs compiled `.sleela` artifacts, applying that generation's contract as a
-  pre-boot admission step. Each has its own `src/`, `include/`, `Makefile`, and
-  `LANGUAGE.SPEC.md`, and builds to `sleela-virtual-machine/NNN/build/slvm-NN`.
-  Inspect one with `sleela vm info premium <n>`.
+  runs compiled `.sleela` artifacts. The grades **differ in source**: each grade
+  compiles and calls its own distinct feature validator at admission — e.g.
+  grade 1 a security supervisor, 2 a crypto provider, 3 an isolation policy, 4
+  authenticated distributed nodes, 5 a policy snapshot, 6 an execution lease, 7
+  manager health, 8 the admission gate, 9 a filesystem substrate, 10 verified
+  storage, 11 the TAC3 filesystem module. A program only boots once that grade's
+  validator admits a well-formed instance (and `--selfcheck` also proves the
+  validator rejects a malformed one). Each has its own `src/`, `include/`,
+  `Makefile`, and `LANGUAGE.SPEC.md`, and builds to
+  `sleela-virtual-machine/NNN/vm-build/slvm-NN`. Inspect one with
+  `sleela vm info premium <n>`.
 
 > **Selection vs. running.** `sleela vm select premium <n>` resolves and reports
 > the choice (validated the same way the VM's `OP_VM_SELECT` opcode validates

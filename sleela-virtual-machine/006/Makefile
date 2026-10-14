@@ -1,9 +1,10 @@
 # =============================================================================
 # SLVM/6 "Director" -- build.
 #
-# Builds build/slvm-06: a REAL runnable virtual machine. It links the shared
-# native Core engine (impl/build/libslcore.a) and runs a compiled .sleela
-# artifact on it, admitting this generation's contract before boot:
+# Builds vm-build/slvm-06: a REAL runnable virtual machine whose SOURCE
+# expresses this grade's distinguishing feature. It links the shared native
+# Core engine (impl/build/libslcore.a), this grade's own feature object(s), and
+# the runner; admission exercises this grade's validator before boot:
 #   continuously verified, migratable execution: lineage, attestation, leases
 #
 # The Core engine archive is produced by the impl build (`make -C impl libslcore`
@@ -39,6 +40,7 @@ endif
 # compiler and needs the platform runtime libs + OpenMP.
 CORE_LDLIBS ?= $(THREADFLAG) -fopenmp $(CORE_LIBS)
 
+FEATURE_OBJS = $(BUILD)/slvm6_lease.o
 VM = $(BUILD)/slvm-06
 
 all: $(VM)
@@ -48,9 +50,11 @@ $(BUILD):
 
 $(BUILD)/slvm06_vm.o: src/slvm06_vm.c | $(BUILD)
 	$(CC) $(CFLAGS) -I$(SLCORE_INC) -c $< -o $@
+$(BUILD)/slvm6_lease.o: src/slvm6_lease.c | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(VM): $(BUILD)/slvm06_vm.o $(SLCORE_LIB) | $(BUILD)
-	$(CXX) $(BUILD)/slvm06_vm.o $(SLCORE_LIB) -o $@ $(CORE_LDLIBS)
+$(VM): $(BUILD)/slvm06_vm.o $(FEATURE_OBJS) $(SLCORE_LIB) | $(BUILD)
+	$(CXX) $(BUILD)/slvm06_vm.o $(FEATURE_OBJS) $(SLCORE_LIB) -o $@ $(CORE_LDLIBS)
 
 test: $(VM)
 	$(VM) --selfcheck

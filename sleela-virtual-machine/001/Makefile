@@ -1,9 +1,10 @@
 # =============================================================================
 # SLVM/1 "Foundation" -- build.
 #
-# Builds build/slvm-01: a REAL runnable virtual machine. It links the shared
-# native Core engine (impl/build/libslcore.a) and runs a compiled .sleela
-# artifact on it, admitting this generation's contract before boot:
+# Builds vm-build/slvm-01: a REAL runnable virtual machine whose SOURCE
+# expresses this grade's distinguishing feature. It links the shared native
+# Core engine (impl/build/libslcore.a), this grade's own feature object(s), and
+# the runner; admission exercises this grade's validator before boot:
 #   dedicated VM foundation: broker, capabilities, security supervisor, OS boundary
 #
 # The Core engine archive is produced by the impl build (`make -C impl libslcore`
@@ -39,6 +40,7 @@ endif
 # compiler and needs the platform runtime libs + OpenMP.
 CORE_LDLIBS ?= $(THREADFLAG) -fopenmp $(CORE_LIBS)
 
+FEATURE_OBJS = $(BUILD)/slvm_security.o
 VM = $(BUILD)/slvm-01
 
 all: $(VM)
@@ -48,9 +50,11 @@ $(BUILD):
 
 $(BUILD)/slvm01_vm.o: src/slvm01_vm.c | $(BUILD)
 	$(CC) $(CFLAGS) -I$(SLCORE_INC) -c $< -o $@
+$(BUILD)/slvm_security.o: src/slvm_security.c | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(VM): $(BUILD)/slvm01_vm.o $(SLCORE_LIB) | $(BUILD)
-	$(CXX) $(BUILD)/slvm01_vm.o $(SLCORE_LIB) -o $@ $(CORE_LDLIBS)
+$(VM): $(BUILD)/slvm01_vm.o $(FEATURE_OBJS) $(SLCORE_LIB) | $(BUILD)
+	$(CXX) $(BUILD)/slvm01_vm.o $(FEATURE_OBJS) $(SLCORE_LIB) -o $@ $(CORE_LDLIBS)
 
 test: $(VM)
 	$(VM) --selfcheck

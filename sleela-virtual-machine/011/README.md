@@ -17,10 +17,10 @@ is applied as a pre-boot admission step (the baseline TAC3 module must validate
 before a program boots).
 
 ```sh
-make -C ../../impl libslcore     # once: build the shared Core engine archive
-make                             # build build/slvm-11 (and libslvm11fs.a)
-./build/slvm-11 --selfcheck      # verify the Core link + TAC3 admission
-./build/slvm-11 program.art      # run a compiled .sleela artifact on SLVM/11
+make -C ../../impl libslcore        # once: build the shared Core engine archive
+make                                # build vm-build/slvm-11
+./vm-build/slvm-11 --selfcheck      # verify the Core link + TAC3 admit/reject check
+./vm-build/slvm-11 program.art      # run a compiled .sleela artifact on SLVM/11
 ```
 
 From the repository CLI: `sleela vm run premium 11 program.sleela` builds this
