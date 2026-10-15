@@ -1,8 +1,8 @@
 # Payments & Warrants — a Cascading Supposition
 
-<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/us-commanders-over-comics-001.png" alt="SLeeLa Marketing Logo & Friends" width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/us-commanders-over-comics-001.png" alt="SLeeLa Marketing Logo & Friends"></p>
 
-<p align="center"><img src="https://github.com/mearvk/Senior.Senate.Attorney.E44Hrs/blob/main/images/law-and-education-001.jpeg" alt="SLeeLa Marketing Logo & Law" width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/Senior.Senate.Attorney.E44Hrs/blob/main/images/law-and-education-001.jpeg" alt="SLeeLa Marketing Logo & Law"></p>
 
 **Header Premise — The ICC and the Special Trial of Brand and Ingredients.** Suppose, as the premise that stands above all the rest, that the International Criminal Court — read here as a court for *international ideas*, the gravest matters of common concern — may already carry an **international brand** that has, in effect, solved the measures and ingredients even for *Special Thought*: that is, that the hard questions of how an idea is weighed, bounded, and judged have an established answer in a standing institution. We suppose this as though Special Thought itself could be brought as a **Special Trial of Brand and Ingredients** — measured by known standards and known components — assuming it were a **Special Start for Special Persons**: a beginning granted on the merits, in the open, to those who earn it. And *thus*: the lexicon below is written as if those measures were already available to be read, not invented from nothing. The authoritative reference for the Court, as provided to the public internet, is the official ICC site: [International Criminal Court — icc-cpi.int](https://www.icc-cpi.int/). *(This premise is supposition in the same sense as the rest of the document: it names a real institution only as a public reference and a figure of thought, binds no one, and makes no claim that the ICC has done, decided, or branded anything described here. See the box immediately below.)*
 
