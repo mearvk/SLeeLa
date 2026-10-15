@@ -49,9 +49,9 @@ STATION_SOURCES = \
 STATION_OBJECTS = $(STATION_SOURCES:.c=.o)
 
 .PHONY: all clean selftest kds cpp-check proto pipeline-demo demo test \
-	station station-demo station-test kernel-check port-test
+	station station-demo station-test kernel-check port-test server
 
-all: selftest kds proto station
+all: selftest kds proto station server
 
 selftest: crypto_selftest
 
@@ -113,8 +113,36 @@ station-test: station/station_demo
 kernel-check:
 	$(MAKE) -C kernel check-headers || true
 
+# SLeeLa HTTP 3.0 portable server (Linux / macOS / Windows 10+).
+# Transport: HTTP/1.x over sleela_net; H3 envelope/pipeline in the body.
+SERVER_SOURCES = \
+	http3_server.c http3_main.c \
+	http3_envelope.c http3_naming.c http3_intactx.c http3_mac.c \
+	http3_basket.c http3_profile.c http3_timing.c http3_handshake.c \
+	http3_pipeline.c http3_port.c \
+	http_negotiation.c \
+	../preferred-routers/preferred_router.c \
+	../resolver/resolver.c \
+	../impl/core/sleela_net.c
+
+SERVER_TARGET = http3_server
+
+ifeq ($(OS),Windows_NT)
+SERVER_LDLIBS += -lws2_32
+endif
+
+server: $(SERVER_TARGET)
+
+$(SERVER_TARGET): $(SERVER_SOURCES) http3_server.h http3_protocol.h
+	$(CC) $(CFLAGS) -I. -I.. $(SERVER_SOURCES) -o $@ $(SERVER_LDLIBS)
+
+server-test: $(SERVER_TARGET)
+	./$(SERVER_TARGET) --self-test
+
 clean:
 	rm -f $(C_OBJECTS) $(PROTO_OBJECTS) $(STATION_OBJECTS) http3_port_test.o crypto_selftest.o \
 	      key_distribution_server_main.o http3_pipeline_demo.o station/station_demo.o \
-	      crypto_selftest key_distribution_server http3_pipeline_demo http3_port_test station/station_demo
+	      http3_server.o http3_main.o \
+	      crypto_selftest key_distribution_server http3_pipeline_demo http3_port_test \
+	      station/station_demo $(SERVER_TARGET)
 	rm -rf station/__pycache__ __pycache__
