@@ -1,0 +1,137 @@
+#sleela 1.3
+// DatabaseBodi.sleela — query / alter / read a table through the BODI™ witness
+// layer, in SLeeLa procedural code.
+//
+// Part of the SLeeLa Native Database Connector (api/database). This is the
+// BODI™ surface over the connector vocabulary (validate, connect, ping, query,
+// execute, begin, commit, rollback, close): every database action is expressed
+// as a BODI™ middle verb against an addressed system, so the Witness records
+// what was requested, against which reference, in which sequence, by whom.
+//
+// BODI™ mapping (BODI.md §3, BODI_VERBS.md) — the DB action is the *change*;
+// the Witness records the *fact that it was addressed and observed*:
+//
+//     connector verb   BODI™ middle verb   meaning
+//     --------------   -----------------   --------------------------------
+//     connect          open                open the addressed DB resource
+//     execute (alter)  push                publish a change (CREATE/INSERT/…)
+//     query  (read)    pull                retrieve a datum/result set
+//     begin            activate            make a transaction operational
+//     commit           commit              retain the witnessed change
+//     rollback         rollback            reverse the witnessed change
+//     close            close               close the addressed DB resource
+//
+// The datum carried by push/pull is a statement string in EITHER dialect the
+// engine accepts — classic SQL or the fluent SLeeLaSQL (SLEELASQL.md). BODI™ is
+// the witness layer; the native connector (sleela_database.c + platform driver)
+// performs the actual local/network database operation.
+
+// A thin, witnessed handle on one table in one addressed database system.
+// `system` is the BODI™ semantic address (e.g. "mysql://app@db:3306/catalog");
+// `sequence` is the propagation/order id (e.g. "001"); `man` is the operator.
+struct TableBodi {
+    String system;     // BODI™ address of the database system
+    String sequence;   // propagation/order identifier
+    String man;        // declared operator identity
+    String table;      // the table this handle is bound to
+    int    open;       // 1 after open(), 0 after close()
+}
+
+class DatabaseBodi {
+
+    // Open the addressed DB resource (connector: connect -> BODI™ open).
+    //   Bodi.system(h.system).propagative(h.sequence).open(h.table)
+    TableBodi open(String system, String sequence, String man, String table) {
+        TableBodi h = new TableBodi();
+        h.system = system; h.sequence = sequence; h.man = man;
+        h.table = table; h.open = 1;
+        print("BODI open    " + witness(h) + " .open(\"" + table + "\")");
+        return h;
+    }
+
+    // READ a table — connector `query` lowered to BODI™ `pull` (retrieve datum).
+    // `statement` is SQL or SLeeLaSQL; the result set is the pulled datum.
+    // (Named readRows, not read: `read` is a reserved file-I/O built-in.)
+    void readRows(TableBodi h, String statement) {
+        guardOpen(h, "read");
+        print("BODI pull    " + witness(h) + " .pull(\"" + statement + "\")");
+        print("    -> result set witnessed from table '" + h.table + "'");
+    }
+
+    // QUERY is the explicit synonym for readRows (same BODI™ pull).
+    void query(TableBodi h, String statement) { readRows(h, statement); }
+
+    // ALTER a table — connector `execute` lowered to BODI™ `push` (publish a
+    // change: CREATE / INSERT / DROP, SQL or SLeeLaSQL).
+    void alter(TableBodi h, String statement) {
+        guardOpen(h, "alter");
+        print("BODI push    " + witness(h) + " .push(\"" + statement + "\")");
+        print("    -> change published to table '" + h.table + "'");
+    }
+
+    // Transaction build-up/teardown over the same handle (BODI.md §7):
+    //   activate (begin) -> push/pull -> commit  (or rollback to reverse)
+    void begin(TableBodi h) {
+        guardOpen(h, "begin");
+        print("BODI activate " + witness(h) + " .activate(\"txn\")");
+    }
+    void commit(TableBodi h) {
+        guardOpen(h, "commit");
+        print("BODI commit  " + witness(h) + " .commit(\"txn\")  (change retained)");
+    }
+    void rollback(TableBodi h) {
+        guardOpen(h, "rollback");
+        print("BODI rollback " + witness(h) + " .rollback(\"txn\")  (change reversed)");
+    }
+
+    // Close the addressed resource (connector: close -> BODI™ close). The
+    // negative of open; safe teardown even after a partial sequence.
+    // (Named closeTable, not close: `close` is a reserved file-I/O built-in.)
+    void closeTable(TableBodi h) {
+        if (h.open == 0) { print("BODI close   (already closed)"); return; }
+        h.open = 0;
+        print("BODI close   " + witness(h) + " .close(\"" + h.table + "\")");
+    }
+
+    // The BODI™ witness address for a handle: system + sequence + operator.
+    String witness(TableBodi h) {
+        return "system(\"" + h.system + "\").propagative(\"" + h.sequence
+               + "\")  [man=" + h.man + "]";
+    }
+
+    // A middle verb against a closed resource stops at the boundary rather than
+    // inventing meaning (BODI.md §4 — the mitigative circumference).
+    void guardOpen(TableBodi h, String verb) {
+        if (h.open == 0) {
+            print("BODI CONTAIN " + verb + " refused: resource not open (boundary stop)");
+        }
+    }
+
+    void main() {
+        print("== SLeeLa Native Database — BODI™ table surface ==");
+        print("query / alter / read a table as witnessed BODI™ changes.");
+        print("");
+
+        // Address one table in a MySQL system, operator "dba", sequence 001.
+        TableBodi games = open("mysql://app@db:3306/catalog", "001", "dba", "games");
+
+        // READ (pull) — classic SQL.
+        readRows(games, "SELECT title, year FROM games WHERE year = '1986'");
+
+        // A transaction: begin -> alter (push) x2 -> commit.
+        begin(games);
+        alter(games, "table('games').create(id, title, year)");          // SLeeLaSQL
+        alter(games, "INSERT INTO games VALUES (1, 'Metroid', 1986)");    // SQL
+        commit(games);
+
+        // READ again via the SLeeLaSQL dialect — same BODI™ pull.
+        query(games, "from('games').select(*)");
+
+        closeTable(games);
+
+        print("");
+        print("Every action above is a BODI™ middle verb (open/push/pull/");
+        print("activate/commit/rollback/close) against an addressed table; the");
+        print("Witness records the request, reference, sequence, and operator.");
+    }
+}
