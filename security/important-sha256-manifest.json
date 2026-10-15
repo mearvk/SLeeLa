@@ -4527,20 +4527,32 @@
       "sha256": "26ce5ad7b7f8d2f52c4b73494733bd9e073687623d0f50969a014c0b10b60878"
     },
     {
+      "path": "http-1.0/http1_main.c",
+      "sha256": "6622a7dd94f792cdff72c58fa057743e70d0b6810b87cc788450eb6cdb38a77c"
+    },
+    {
+      "path": "http-1.0/http1_server.c",
+      "sha256": "d3e0a726842842c14494492df05c75597b52c304b0586876647279169ac6b133"
+    },
+    {
+      "path": "http-1.0/http1_server.h",
+      "sha256": "c0116b8520c55649b3f193a6169ad424b4ed31f9a6ff0760214d9f61a848ba85"
+    },
+    {
       "path": "http-1.0/http_negotiation.c",
-      "sha256": "49775ac2a37686cdd0e2129051eca84fad1ab0e093bc5830326351b8a042d91a"
+      "sha256": "282d5064399937f165432c94ad42295de657aea1f66df03dbe5b01d9b703f586"
     },
     {
       "path": "http-1.0/http_negotiation.cpp",
-      "sha256": "3d5065aa34745b54ebc7a4425f3eedbbe83cc8ac7fb6249a1af23940b274859a"
+      "sha256": "e8d8189d6b17ae62e2229227a1490a397077df19966020319ba4cec3b2efb01d"
     },
     {
       "path": "http-1.0/http_negotiation.h",
-      "sha256": "d5f0eee6deef74e4460ee3744f7bdbca1bdef7b020f6a869e799d90258a85a4a"
+      "sha256": "ba577f6aad4bd5a91801f75e546a106bd2e6a544ffeab65ec913fc117a0ff6cd"
     },
     {
       "path": "http-1.0/http_negotiation.hpp",
-      "sha256": "c45266ceb631b9d26bb3b8f016795a2752f32f684452cb66fb73e9cd7ed79681"
+      "sha256": "aab88ee2a3b47c9e1b4c0b30c460f1c1277453cafeb846d550fdb1ac1dd53754"
     },
     {
       "path": "http-2.0/h21_envelope.c",
@@ -4555,8 +4567,12 @@
       "sha256": "5d5da7f011cada163fd2c01d1f2081531da4d92c49b494f71b6f294366f20926"
     },
     {
+      "path": "http-2.0/h21_main.c",
+      "sha256": "947948c3a218f0a4f951725e65d1fcbc0420b5901d59d78489d79e74ec409f74"
+    },
+    {
       "path": "http-2.0/h21_naming.c",
-      "sha256": "e0f1e5a64ee424d2fa2106d18208246ded37915faa4affa7e28265f21c7752f4"
+      "sha256": "c72c3eb71060e001fd7e2e92488caef4c7e3aa1d8117c5c3b10fb03be00cfa3c"
     },
     {
       "path": "http-2.0/h21_naming.h",
@@ -4564,7 +4580,7 @@
     },
     {
       "path": "http-2.0/h21_pipeline.c",
-      "sha256": "b531a20a55d4705697698da53b7e9d63f90162174701f83590ad5fca89feb11c"
+      "sha256": "ccef73160025542af71fbacbb60e1a2dc1debd2c095313790d8431c663cd8ccc"
     },
     {
       "path": "http-2.0/h21_pipeline.h",
@@ -4575,20 +4591,28 @@
       "sha256": "144a200d22a8099f99a823762f781819304127588e05d36c4747b7c4f702d213"
     },
     {
+      "path": "http-2.0/h21_server.c",
+      "sha256": "bbe444a888f5d37a44394b88a21c10c4658df3a486540a9b678b9dd270ee2573"
+    },
+    {
+      "path": "http-2.0/h21_server.h",
+      "sha256": "890a10f4f72a41785a300835b1051bdeb0e6a9fa847be92410145e63efee4814"
+    },
+    {
       "path": "http-2.0/http_negotiation.c",
-      "sha256": "0817c144e27625a37f114aa259219215a0b7e9c849e44cb4acdd137a9618079a"
+      "sha256": "0bfa56d18534f5980dc1aab5737c1b029ebaa33d2f2660162a60115e0094f1b9"
     },
     {
       "path": "http-2.0/http_negotiation.cpp",
-      "sha256": "fe2e5b32e2900d23a003ff93a7134038a3c4a9ffcda520a1a9d78a9d7ca34132"
+      "sha256": "d9b67b10db1d49a4abac92110ff0e625cddf59697251ddc1ee59d571a79d2939"
     },
     {
       "path": "http-2.0/http_negotiation.h",
-      "sha256": "d5f0eee6deef74e4460ee3744f7bdbca1bdef7b020f6a869e799d90258a85a4a"
+      "sha256": "ba577f6aad4bd5a91801f75e546a106bd2e6a544ffeab65ec913fc117a0ff6cd"
     },
     {
       "path": "http-2.0/http_negotiation.hpp",
-      "sha256": "c45266ceb631b9d26bb3b8f016795a2752f32f684452cb66fb73e9cd7ed79681"
+      "sha256": "aab88ee2a3b47c9e1b4c0b30c460f1c1277453cafeb846d550fdb1ac1dd53754"
     },
     {
       "path": "http-3.0/bonding_collar.py",
@@ -4707,6 +4731,10 @@
       "sha256": "f060d7244683d2a0f5f344d4ee46e42372679acf2b6def1c5a48752229e06bf5"
     },
     {
+      "path": "http-3.0/http3_main.c",
+      "sha256": "65026f7a6205ea237d91f1ab00759155cba523b4ae1ed6d37454b68394fad7f0"
+    },
+    {
       "path": "http-3.0/http3_naming.c",
       "sha256": "91a9416e8495a112d8639fe5507fc35c77366fb444cb80bcb5bb26fb2f363080"
     },
@@ -4751,6 +4779,14 @@
       "sha256": "4fc656ac4ddce20791d28e08d5a7a15eff94f5989e83a96d858fc49de1ec0c69"
     },
     {
+      "path": "http-3.0/http3_server.c",
+      "sha256": "12018893f26c62626ed6d161281164b28ae9d7a81080f3295a431b7925b942e8"
+    },
+    {
+      "path": "http-3.0/http3_server.h",
+      "sha256": "7c9d0bbeeccac422043d19d8ca8c1f26ebc7b6574ec32a4614e3689e162e220f"
+    },
+    {
       "path": "http-3.0/http3_timing.c",
       "sha256": "c3bfea57649609072af63c14add1dbb183f88071ba4cab93434991b664add926"
     },
@@ -4768,19 +4804,19 @@
     },
     {
       "path": "http-3.0/http_negotiation.c",
-      "sha256": "d653cf85caefb9d55c4e10f447cda4e12e802da35d69dc478b8f61fd47a37001"
+      "sha256": "71818577426998352338dd3971c0269fddd97e325eeb39447dfd50a495b5efef"
     },
     {
       "path": "http-3.0/http_negotiation.cpp",
-      "sha256": "a5bc873681ba6d35893b2a5fa789a7209b2b9c9c96d22e8be82f36d39d8c31ab"
+      "sha256": "40136c12955d2e217fd9c4294ffde76fa22073d201da59365f6a83e23022b577"
     },
     {
       "path": "http-3.0/http_negotiation.h",
-      "sha256": "d5f0eee6deef74e4460ee3744f7bdbca1bdef7b020f6a869e799d90258a85a4a"
+      "sha256": "ba577f6aad4bd5a91801f75e546a106bd2e6a544ffeab65ec913fc117a0ff6cd"
     },
     {
       "path": "http-3.0/http_negotiation.hpp",
-      "sha256": "c45266ceb631b9d26bb3b8f016795a2752f32f684452cb66fb73e9cd7ed79681"
+      "sha256": "aab88ee2a3b47c9e1b4c0b30c460f1c1277453cafeb846d550fdb1ac1dd53754"
     },
     {
       "path": "http-3.0/kernel/sleela_station.c",
@@ -4879,6 +4915,10 @@
       "sha256": "84319d28d79903a570bdc88a00c782b518c9bead55f068e7a33bdbb2ce4d61b2"
     },
     {
+      "path": "http-4.0/http4_main.c",
+      "sha256": "a0f4f19c02d409d8b8f74dc3e37b90c1e99197ab013845b1248f8385933b336d"
+    },
+    {
       "path": "http-4.0/http4_packet_context.c",
       "sha256": "cbea9ab77a786a6b0200c18bdea4d39eb6f771a323a7ba64e7bdde5472ff7d8b"
     },
@@ -4927,20 +4967,28 @@
       "sha256": "93a6e7d53a23d2ee0e6316992ab91ce84964860f4cf7702ac7da14d8a35f37ac"
     },
     {
+      "path": "http-4.0/http4_server.c",
+      "sha256": "845c234d834ccff92ce8bbcd79889192ab535f1045cf5525dc83f0043787979c"
+    },
+    {
+      "path": "http-4.0/http4_server.h",
+      "sha256": "a6f21fc2cd47ea624a098f2e764bd7c0b25db064c834def728dd2b4015384069"
+    },
+    {
       "path": "http-4.0/http_negotiation.c",
-      "sha256": "6c3dc103f5bba838de9df2b29a99edf009767d1f677644d8ad8139c590fcf431"
+      "sha256": "b99b2980647584471bdb0b155ebfcb2c114d97be2d3f48b2ffc3ad9529a7e6db"
     },
     {
       "path": "http-4.0/http_negotiation.cpp",
-      "sha256": "e4d9da88ecddef4ad363541def1cb520cf8ae46379c6af19c6cafdf86867eda9"
+      "sha256": "a2faf0334d364720b164de4d1e1c904b9aa784aab4165b9d4b2b3db01a8c89c5"
     },
     {
       "path": "http-4.0/http_negotiation.h",
-      "sha256": "d5f0eee6deef74e4460ee3744f7bdbca1bdef7b020f6a869e799d90258a85a4a"
+      "sha256": "ba577f6aad4bd5a91801f75e546a106bd2e6a544ffeab65ec913fc117a0ff6cd"
     },
     {
       "path": "http-4.0/http_negotiation.hpp",
-      "sha256": "c45266ceb631b9d26bb3b8f016795a2752f32f684452cb66fb73e9cd7ed79681"
+      "sha256": "aab88ee2a3b47c9e1b4c0b30c460f1c1277453cafeb846d550fdb1ac1dd53754"
     },
     {
       "path": "http-5.0/http5_friends_pack.cpp",
@@ -4951,52 +4999,80 @@
       "sha256": "858db92ae0958c467cba3a32c6e7f7ac701773c23d3d25ab53502acc71a8b38c"
     },
     {
+      "path": "http-5.0/http5_main.c",
+      "sha256": "b8552a5454bef00a2dfa7548eef39382bd63452008ba5b50653da0e57027de1d"
+    },
+    {
       "path": "http-5.0/http5_protocol.c",
-      "sha256": "94b1221072bd7ed960fcc5545c1b0ecc7aca5529aba65a8d5e26aa87a2a50d9e"
+      "sha256": "03a1dcf2a6cde28fa8f2de03e842276f9eabb48a677ebb403d535e726e3f5204"
     },
     {
       "path": "http-5.0/http5_protocol.h",
       "sha256": "dd528f631b7a9fe602306ced449a95553f96f66b5acf0a14f63a11027a518d08"
     },
     {
+      "path": "http-5.0/http5_server.c",
+      "sha256": "5b0ac0ba86d04003b6173842a3d50a1f6c0b61e0cd2e96b14813ff7ca586e982"
+    },
+    {
+      "path": "http-5.0/http5_server.h",
+      "sha256": "830b52fd62139f84aba4cc4f407d2e4d61d13147848f47c92ecaff0aab325d99"
+    },
+    {
       "path": "http-5.0/http_negotiation.c",
-      "sha256": "f3c788c2a3605a6686caaca9967f4fad51918a6cbe3955b71be08a63a8545da1"
+      "sha256": "eea84703d7d608db03dfe056f4837c31943b6153ed5ee28599705172b0c84cbc"
     },
     {
       "path": "http-5.0/http_negotiation.cpp",
-      "sha256": "5173334e5021d82237ece974057e9b0378cb6b7ec92c548781a6ba18f59b6e79"
+      "sha256": "7f096d4d412c8725cc8f165cb5ffd60f664fe7313013ba6b23a3fdd4690f7b31"
     },
     {
       "path": "http-5.0/http_negotiation.h",
-      "sha256": "d5f0eee6deef74e4460ee3744f7bdbca1bdef7b020f6a869e799d90258a85a4a"
+      "sha256": "ba577f6aad4bd5a91801f75e546a106bd2e6a544ffeab65ec913fc117a0ff6cd"
     },
     {
       "path": "http-5.0/http_negotiation.hpp",
-      "sha256": "c45266ceb631b9d26bb3b8f016795a2752f32f684452cb66fb73e9cd7ed79681"
+      "sha256": "aab88ee2a3b47c9e1b4c0b30c460f1c1277453cafeb846d550fdb1ac1dd53754"
     },
     {
       "path": "http-6.0/http6_consolidated_pack.hpp",
       "sha256": "b58303a780af5f574f0abd8b7b49425cda3fc0c5d60fcece2fc5300f8e880e0a"
     },
     {
+      "path": "http-6.0/http6_main.c",
+      "sha256": "a4f679a137ee0c94bcb8a04e8621267b3fd23ff75f95c48ea7e25c477e22ddad"
+    },
+    {
+      "path": "http-6.0/http6_protocol.c",
+      "sha256": "81709bd10d7d81d0d58d389e832aa7860cec3bbff30dfdbfcf526c7854802173"
+    },
+    {
       "path": "http-6.0/http6_protocol.h",
       "sha256": "263d5966f382ef6254116d97921b137242c2fb1fff34451e6b25e58162a58804"
     },
     {
+      "path": "http-6.0/http6_server.c",
+      "sha256": "b9bcb7b2d1c8d1a5f36ae187422dacda5ae0eb420d8b22fc278084a1004e067e"
+    },
+    {
+      "path": "http-6.0/http6_server.h",
+      "sha256": "d4eb491c8957c8ff0a0627b730d664e4bd3d3c481e3482b8f93f22dee68d095a"
+    },
+    {
       "path": "http-6.0/http_negotiation.c",
-      "sha256": "f5961df362ec05a03328f2c654e9fd8a3eb17bef72d1c91bc515599a2f20bc7d"
+      "sha256": "ee6b82dcfb90c968cbc6b3d4fc831dcd9e558574c57b3bfb84db4fa266570912"
     },
     {
       "path": "http-6.0/http_negotiation.cpp",
-      "sha256": "228d9af84cd518559e86c0d568a8eaf8bf19f4a5ab758136e6106b31bc3daca0"
+      "sha256": "a63b6359dce66f2d907e2dd8ce2e4d76eb1ed8f67ef6af633f630d6a608de87b"
     },
     {
       "path": "http-6.0/http_negotiation.h",
-      "sha256": "d5f0eee6deef74e4460ee3744f7bdbca1bdef7b020f6a869e799d90258a85a4a"
+      "sha256": "ba577f6aad4bd5a91801f75e546a106bd2e6a544ffeab65ec913fc117a0ff6cd"
     },
     {
       "path": "http-6.0/http_negotiation.hpp",
-      "sha256": "c45266ceb631b9d26bb3b8f016795a2752f32f684452cb66fb73e9cd7ed79681"
+      "sha256": "aab88ee2a3b47c9e1b4c0b30c460f1c1277453cafeb846d550fdb1ac1dd53754"
     },
     {
       "path": "http-7.0/http70.c",
@@ -5007,20 +5083,40 @@
       "sha256": "0caf6594c20f241ed84274f25048c9ca8786dfba8409075001619db324b53dd0"
     },
     {
+      "path": "http-7.0/http7_main.c",
+      "sha256": "0e8657f6bb317836d37b9bf436c5cafa4d4766ccd7e9dd801b932615d14ad449"
+    },
+    {
+      "path": "http-7.0/http7_protocol.c",
+      "sha256": "6ffaef270d6cf8993f9093ea6eed92aee38d42c8c75df242b3e39dea7a1ea2cc"
+    },
+    {
+      "path": "http-7.0/http7_protocol.h",
+      "sha256": "1647fd80fe0dc62c8da77a6ed4c4a8f6a6a44d6661c47d10e13e9634cb8decc6"
+    },
+    {
+      "path": "http-7.0/http7_server.c",
+      "sha256": "6f4da6a710d1d3ecac1a030b79464fb36db94f3367518f0a97cd75a056297a13"
+    },
+    {
+      "path": "http-7.0/http7_server.h",
+      "sha256": "11bd7b273298c1a3c2f89fea391ebb9334d4fc236dbf6b7085b7b57e981ca8de"
+    },
+    {
       "path": "http-7.0/http_negotiation.c",
-      "sha256": "7f2961843b591cb768e4f54008b7da5498f2fb1d4dbd453ff9e7dec3dfa4b0de"
+      "sha256": "b11db64106bb34ed30befd92033b63c50cc55d504585bcdf4cd5cacd169109e8"
     },
     {
       "path": "http-7.0/http_negotiation.cpp",
-      "sha256": "b2ea70f26ae9f1563b89c3656c0430c27f5c5dfed2ff18614a98af914058dd36"
+      "sha256": "1d9686b84f29612a6f644e4923a19ee68c03e02e38a636d3a7564c0367a816db"
     },
     {
       "path": "http-7.0/http_negotiation.h",
-      "sha256": "d5f0eee6deef74e4460ee3744f7bdbca1bdef7b020f6a869e799d90258a85a4a"
+      "sha256": "ba577f6aad4bd5a91801f75e546a106bd2e6a544ffeab65ec913fc117a0ff6cd"
     },
     {
       "path": "http-7.0/http_negotiation.hpp",
-      "sha256": "c45266ceb631b9d26bb3b8f016795a2752f32f684452cb66fb73e9cd7ed79681"
+      "sha256": "aab88ee2a3b47c9e1b4c0b30c460f1c1277453cafeb846d550fdb1ac1dd53754"
     },
     {
       "path": "http-8.0/AmericanCourtsCustodies.cpp",
@@ -5087,20 +5183,40 @@
       "sha256": "ad34b7480bf58582bccd771586d9df270a78a2af988f3d728e20d35cc0c4b69f"
     },
     {
+      "path": "http-8.0/http8_main.c",
+      "sha256": "6d00ec53c80143fea578f287ef4e2abbd9ab8a1dfe9dc67b1a74a12d0a4939aa"
+    },
+    {
+      "path": "http-8.0/http8_protocol.c",
+      "sha256": "eaecc39b07daa957ad7208e8ae5853af9d14474936afaca50e725ddba5ff1afc"
+    },
+    {
+      "path": "http-8.0/http8_protocol.h",
+      "sha256": "9a4c50f2c5f4985041ef7a8fff0060999786b87a700d07945d3b915d40cbf453"
+    },
+    {
+      "path": "http-8.0/http8_server.c",
+      "sha256": "d4f8beec051f8a855331c1e1afeba65efb235a5a1e60dcc387138c2c1ecb8d76"
+    },
+    {
+      "path": "http-8.0/http8_server.h",
+      "sha256": "69ec1b5052d56158d39f436e3b3f2090a3f5d8567f7bad2d11bfd1785c9909be"
+    },
+    {
       "path": "http-8.0/http_negotiation.c",
-      "sha256": "e71e0b9bd5076f0658ef9c17170cb406703ff93b50f7e5c3ba9a12b434fb0381"
+      "sha256": "047c8d3c14579c559a9aef70a5eea4a894b966a6c3d5046728a7cd492cdf8d47"
     },
     {
       "path": "http-8.0/http_negotiation.cpp",
-      "sha256": "adfab66bad83f7bcc5677e6de8e18d62288df461b41648b8a0e76d135676f34e"
+      "sha256": "c9c3140d179e905c345ad7594f66c730e2a43dc58aa23c4065abccb2f4a03466"
     },
     {
       "path": "http-8.0/http_negotiation.h",
-      "sha256": "d5f0eee6deef74e4460ee3744f7bdbca1bdef7b020f6a869e799d90258a85a4a"
+      "sha256": "ba577f6aad4bd5a91801f75e546a106bd2e6a544ffeab65ec913fc117a0ff6cd"
     },
     {
       "path": "http-8.0/http_negotiation.hpp",
-      "sha256": "c45266ceb631b9d26bb3b8f016795a2752f32f684452cb66fb73e9cd7ed79681"
+      "sha256": "aab88ee2a3b47c9e1b4c0b30c460f1c1277453cafeb846d550fdb1ac1dd53754"
     },
     {
       "path": "http-9.0/http90.c",
