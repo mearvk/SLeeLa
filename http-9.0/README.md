@@ -2,111 +2,45 @@
 
 <img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-logo-004.jpg" alt="SLeeLa">
 
-
-
-
-
-
 # SLeeLa HTTP 9.0
 
-**Status:** Experimental SLeeLa application/protocol generation; not an IETF HTTP/9 standard.
+**Status:** Experimental SLeeLa application-protocol generation; not an IETF HTTP/9 standard.
 
-HTTP 9.0 extends the HTTP 8.0 SLeeLa packet model. HTTP 9.0 retains the HTTP 8.0 packet metadata fields, adds structured **International Data for Security, Safety, and Police**, and adds the **Dark Band** metadata field.
+HTTP 9.0 extends the HTTP 8.0 SLeeLa metadata model with structured international security, safety, police-category, national signal/frequency, and Dark Band records. It preserves the distinction between transport behavior and application metadata: fields do not establish identity, authenticity, jurisdiction, authority, or permission to act.
 
-## Dark Band
+## Contents
 
-HTTP 9.0 defines **Dark Band** as an application metadata record with an explicit original-content hexadecimal representation.
+- `http90.c`, `http90.h`: C metadata API and validation.
+- `http90.cpp`, `http90.hpp`: C++ wrapper.
+- `http_negotiation.c/.h`, `http_negotiation.cpp/.hpp`: negotiation adapters.
+- `HTTP90.SPEC.md`: application-level specification.
+- `HTTP90.conf`: safe placeholder configuration.
+- `HTTP.NEGOTIATION.md`: shared SLeeLa negotiation contract.
+- `Makefile`, `TESTING.md`: syntax checks and conformance guidance.
 
-The default original-content value is:
+## Metadata
 
-```text
-0x4441524B42414E44
+The model carries protocol grade, sequence, prior packet metadata, identifiers, optional monitoring metadata, national signal/frequency provenance, international security/safety/police-category records, and Dark Band metadata. Applications should retain source, jurisdiction, and timestamp where relevant.
+
+The default Dark Band original-content representation is `0x4441524B42414E44`. This is a descriptive identifier, not a secret or control mechanism.
+
+## Configuration and safety
+
+Monitoring fields are disabled by default and use `DISABLED` placeholders. Do not place operational frequencies, credentials, private keys, or secrets in source control. Configure only data that the deployment is authorized to use. Labels and identifiers are descriptive and do not grant law-enforcement or other authority.
+
+## Negotiation and downgrade policy
+
+Peers must explicitly accept a requested generation. HTTP/1.1 and HTTP/1.0 fallback is application-controlled and must not silently weaken required security. SLeeLa negotiation headers are application metadata, not new HTTP standards.
+
+## Build
+
+```sh
+make syntax
+make test
 ```
 
-This hexadecimal value is an identifier/content representation for the Dark Band record. It is not a cryptographic key, credential, authorization token, radio-control instruction, or hidden operational channel.
+See [HTTP90.SPEC.md](HTTP90.SPEC.md), [HTTP.NEGOTIATION.md](HTTP.NEGOTIATION.md), [STATUS.md](STATUS.md), and [TESTING.md](TESTING.md).
 
-C/C++ expose the value through `HTTP90_DARK_BAND_ORIGINAL_CONTENT_HEX` and the `http90_dark_band` structure. Applications may replace the metadata value when their documented application format requires another hexadecimal representation.
+## Shared route-data contract
 
-## Packet Model
-
-HTTP 9.0 retains the HTTP 8.0 application-level metadata model, including:
-
-- protocol grade;
-- prior packet metadata;
-- identity and international identifiers;
-- monitoring/frequency metadata;
-- national emblem, signal, and frequency metadata;
-- sequence number.
-
-HTTP 9.0 additionally carries:
-
-- Dark Band name and original-content hexadecimal value;
-- international security, safety, and police metadata.
-
-These fields are descriptive application metadata. They do not by themselves establish legal authority, authenticity, jurisdiction, police powers, security clearance, operational control, or permission to act.
-
-## National Emblems, Signals, and Frequency
-
-HTTP 9.0 carries forward the HTTP 8.0 model for descriptive national emblem, signal, and frequency records. Frequency values are represented with units, bounded ranges, jurisdiction, source, and timestamp.
-
-Frequency and signal fields are intended for documented, authorized, or public metadata. The protocol does not provide instructions for unauthorized interception, interference, jamming, evasion, disruption, or bypass of communications controls.
-
-## International Data for Security, Safety, and Police
-
-HTTP 9.0 provides a common data container for international security, safety, and police information that an application is authorized to exchange or document.
-
-The model is provenance-oriented. Applications should identify the responsible jurisdiction or organization, preserve the source and timestamp, and distinguish descriptive records from claims of authority.
-
-The police field is a data category, not a command channel. HTTP 9.0 does not grant law-enforcement authority, provide covert surveillance capability, or authorize access to restricted systems or communications.
-
-Classification values should be handled according to the application's actual authorization and applicable law. A metadata label alone does not confer access.
-
-## Negotiation
-
-A peer must explicitly accept HTTP 9.0 before the generation is selected.
-
-Where fallback is permitted, negotiation may return to HTTP/1.1 and then HTTP/1.0. Fallback must not weaken a security requirement merely to obtain connectivity.
-
-## Logical Ports
-
-Logical ports are SLeeLa application identifiers. They are independent of native TCP/UDP socket numbering.
-
-## Large-File Download Mode
-
-Files larger than 50 MB use the common SLeeLa resume metadata:
-
-```text
-SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE
-```
-
-## Verification
-
-Conformance and deployment checks should cover:
-
-- C and C++ compilation;
-- packet-field compatibility with HTTP 8.0;
-- Dark Band default hexadecimal value preservation;
-- configuration parsing;
-- bounded metadata;
-- provenance and timestamp preservation;
-- malformed-input handling;
-- explicit generation fallback;
-- clean shutdown;
-- negotiation behavior;
-- required security-policy enforcement.
-
-## Relationship to Earlier Generations
-
-HTTP 9.0 is part of the repository's SLeeLa HTTP lineage. It preserves the architectural distinction established by earlier generations: transport mechanisms carry the exchange, while SLeeLa defines its application-level identity, metadata, and protocol behavior. HTTP 9.0 extends that model with structured international security, safety, police, and Dark Band metadata without turning descriptive records into operational authority.
-
-## Unified Route Data
-
-This implementation consumes the SLeeLa unified route-data contract in
-route/ROUTE.DATA.json and route/ROUTE.DATA.md. Route records carry protocol,
-server surface, HTTP generation, VM generation/formal VM name, canonical
-configuration root, route identifier, target/resolution mode, capability,
-transport, port, and status. VM names are architectural metadata only and do
-not grant capabilities. Dynamic targets must use the shared resolver before
-acceptance. The VM identity is: /impl Core, /1 Foundation, /2 Operator,
-/3 Specialist, /4 Supervisor, /5 Manager, /6 Director, /7 Administrator,
-/8 Executive, /9 Authority, /10 Principal, /11 Sovereign.
+This implementation follows the SLeeLa route-data contract in `route/ROUTE.DATA.json` and `route/ROUTE.DATA.md`. Dynamic targets must be validated by the shared resolver before acceptance. VM names are architectural metadata only and do not grant capabilities.
