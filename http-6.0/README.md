@@ -2,100 +2,135 @@
 
 <img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-logo-004.jpg" alt="SLeeLa">
 
-
-
-
-
-
 # SLeeLa HTTP 6.0
 
-**Status:** Experimental SLeeLa application-protocol generation; not an IETF HTTP/6 standard.
+**Status:** Internet-capable SLeeLa application-protocol server with
+Consolidated Friends' Bet and Teamster Debate extensions.
 
-HTTP 6.0 consolidates the application capabilities introduced by HTTP 5.0 into a portable **Consolidated Friends' Bet** record. The record can contain a friends list, point values, document references, a team/area label, a user-supplied consolidated IQ value, debate material, and an optional recipient label.
+**Platforms:** Linux · macOS · Windows 10+
 
-The record is ordinary application data carried through an authorized HTTP exchange.
+HTTP 6.0 consolidates the HTTP 5.0 Friends' Packs model into a portable
+**Consolidated Friends' Bet** record — friends list, point values, document
+references, team/area label, consolidated IQ value, debate material, and
+optional recipient label. It is not an IETF HTTP/6 standard.
+
+## Build and test
+
+```sh
+make            # build protocol objects + server
+make test       # run server self-test
+make server     # build just the portable server
+make syntax     # syntax-only check of all sources
+make clean
+```
+
+### Platform notes
+
+| Platform       | Socket layer                | Compiler          | Link flags         |
+|----------------|-----------------------------|--------------------|-------------------|
+| Linux          | POSIX sockets via sleela_net| `cc` / `gcc`       | (none)            |
+| macOS          | POSIX sockets via sleela_net| `cc` / `clang`     | (none)            |
+| Windows 10+    | Winsock2 via sleela_net     | MSVC / MinGW       | `-lws2_32`        |
+
+## Running the server
+
+```sh
+./http6_server --port 8085
+```
+
+Options: `--port N` (default 8085), `--self-test`, `--help`.
+
+## Frame model — 20 types
+
+32-byte big-endian header. HTTP 5.0's 13 types plus 7 new:
+
+| Type                        | Code | Description                          |
+|-----------------------------|:----:|--------------------------------------|
+| OPEN                        | 1    | Establish logical request/stream      |
+| DATA                        | 2    | Carry application payload             |
+| END                         | 3    | Complete request/stream               |
+| RESET                       | 4    | Terminate stream with error           |
+| WINDOW                      | 5    | Advertise receive capacity            |
+| PING                        | 6    | Liveness probe                        |
+| PONG                        | 7    | Liveness response                     |
+| RESUME                      | 8    | Continue interrupted transfer         |
+| CAPSULE                     | 9    | Session/capability metadata           |
+| FRIENDS_PACK                | 10   | Pack metadata + offer references      |
+| BONUS_OFFER                 | 11   | Optional offering reference           |
+| FP_UPDATE                   | 12   | FP balance update                     |
+| AUDIT                       | 13   | Conformance/audit event               |
+| **CONSOLIDATED_FRIENDS_BET**| 14   | Consolidated bet record               |
+| **TEAMSTER_DEBATE**         | 15   | Structured debate package             |
+| **CONSOLIDATE_IQ**          | 16   | User-supplied IQ value                |
+| **TEAM_AREA**               | 17   | Team/area label                       |
+| **DEBATE_TOPIC**            | 18   | Debate topic                          |
+| **DEBATE_POSITION**         | 19   | User-authored position/argument       |
+| **RECIPIENT_LABEL**         | 20   | Optional recipient/audience label     |
+
+Flags: `FIN`, `ACK`, `URGENT`, `INCREMENTAL`, `RESUMABLE`, `OPTIONAL`,
+`USER_AUTHORED` (0x40).
+
+## Built-in endpoints
+
+| Path                      | Method | Description                              |
+|---------------------------|--------|------------------------------------------|
+| `/__sleela/health`        | GET    | Returns `SLeeLa HTTP/6.0 OK`            |
+| `/__sleela/status`        | GET    | JSON: all 20 frame types, bet/debate status |
+| `/__sleela/negotiate`     | GET    | Version negotiation result (JSON)        |
+| `/__sleela/h6`            | POST   | H6 frame endpoint — binary frames       |
+
+## SLeeLa application headers
+
+```
+X-SLeeLa-Version: 6.0
+X-SLeeLa-Accept: 6.0, 5.0, 4.0, 3.0, 2.1, 1.1, 1.0
+```
 
 ## Consolidated Friends' Bet
 
-A Friends' Bet is a user-created, non-binding application record containing:
+A user-created, non-binding application record:
+- Friends list + points + document references
+- Team/area label
+- Consolidated IQ (user-supplied application data)
+- Debate topic + position
+- Recipient label
 
-- friends list;
-- optional point values;
-- assigned document references;
-- team/area label;
-- consolidated IQ value supplied by the user;
-- debate topic;
-- user-authored position or argument;
-- optional recipient label.
-
-The term **bet** identifies the application record. It is not a gambling service or financial instrument.
+The term "bet" identifies the record. It is not a gambling service or financial
+instrument.
 
 ## Teamster Debate
 
-The Teamster Debate option provides a structured communication package:
+Structured communication package: team area → IQ → topic → position → recipient.
+Recipients may accept, reject, ignore, or filter.
 
-1. Identify the team area.
-2. Supply the user's consolidated IQ value as application data.
-3. Supply a debate topic.
-4. Supply a user-authored position or argument.
-5. Identify the intended recipient or audience.
-6. Serialize the package into an HTTP 6.0 application packet.
+## Safety and authorization
 
-Recipients may accept, reject, ignore, or filter the resulting communication.
+All packet contents are ordinary application data. They do not authorize
+interference with networks, systems, persons, property, or communications.
 
-## HTTP 5.0 → HTTP 6.0
+## File inventory
 
-HTTP 6.0 carries forward:
+| File                          | Description                                    |
+|-------------------------------|------------------------------------------------|
+| `http6_server.h`             | Server API, HTTP types, frame handler           |
+| `http6_server.c`             | Full server with H6 frame endpoint + self-test  |
+| `http6_main.c`               | CLI entry point with echo handler               |
+| `http6_protocol.h`           | 20 frame types, header struct                   |
+| `http6_protocol.c`           | Frame encode/decode/validate (new)              |
+| `http6_consolidated_pack.hpp`| C++ ConsolidatedFriendsBet class                |
+| `http_negotiation.*`         | Negotiation (C + C++, reformatted)              |
+| `Makefile`                   | `all`, `server`, `proto`, `syntax`, `test`      |
 
-- Friends' Packs;
-- friends lists;
-- points;
-- document references;
-- bonus-offer references;
-- FP accounting;
-- frame/session concepts;
-- audit concepts.
+## Dependencies
 
-It adds:
+| Module              | Path                           | Role                 |
+|---------------------|--------------------------------|----------------------|
+| `sleela_net`        | `impl/core/sleela_net.{c,h}`   | Portable TCP sockets  |
+| `preferred_router`  | `preferred-routers/`            | Routing-tier policy    |
+| `resolver`          | `resolver/`                     | DNS / event policy     |
 
-- `CONSOLIDATED_FRIENDS_BET`
-- `TEAMSTER_DEBATE`
-- `CONSOLIDATE_IQ`
-- `TEAM_AREA`
-- `DEBATE_TOPIC`
-- `DEBATE_POSITION`
-- `RECIPIENT_LABEL`
+## Unified route data
 
-## Initial Pack Representation
-
-The initial representation is deliberately inspectable:
-
-```text
-friend-list + points + documents + team-area + IQ + debate
-```
-
-The binary frame layer carries a bounded serialized application payload.
-
-## Safety and Authorization
-
-HTTP 6.0 packets are application data. They do not authorize interference with networks, systems, persons, property, or communications.
-
-Application data should be transmitted only through authorized channels and subject to the receiving system's policies.
-
-## Build
-
-```sh
-make -C http-6.0
-```
-
-## Unified Route Data
-
-This implementation consumes the SLeeLa unified route-data contract in
-route/ROUTE.DATA.json and route/ROUTE.DATA.md. Route records carry protocol,
-server surface, HTTP generation, VM generation/formal VM name, canonical
-configuration root, route identifier, target/resolution mode, capability,
-transport, port, and status. VM names are architectural metadata only and do
-not grant capabilities. Dynamic targets must use the shared resolver before
-acceptance. The VM identity is: /impl Core, /1 Foundation, /2 Operator,
-/3 Specialist, /4 Supervisor, /5 Manager, /6 Director, /7 Administrator,
-/8 Executive, /9 Authority, /10 Principal, /11 Sovereign.
+VM identity: /impl Core, /1 Foundation, /2 Operator, /3 Specialist,
+/4 Supervisor, /5 Manager, /6 Director, /7 Administrator, /8 Executive,
+/9 Authority, /10 Principal, /11 Sovereign.

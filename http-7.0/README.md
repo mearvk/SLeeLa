@@ -2,82 +2,144 @@
 
 <img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-logo-004.jpg" alt="SLeeLa">
 
-
-
-
-
-
 # SLeeLa HTTP 7.0
 
-**Status:** Experimental SLeeLa application-protocol generation; not an IETF HTTP/7 standard.
+**Status:** Internet-capable SLeeLa application-protocol server with Reality
+Assertion layer.
 
-HTTP 7.0 introduces a **Reality Assertion** layer for carrying statements as explicitly classified application claims.
+**Platforms:** Linux · macOS · Windows 10+
 
-The protocol separates the fact that a statement is transmitted from the separate question of whether that statement is established by evidence.
+HTTP 7.0 introduces a **Reality Assertion** layer for carrying statements as
+explicitly classified application claims. The protocol separates the fact that
+a statement is transmitted from the separate question of whether that statement
+is established by evidence. An HTTP 7.0 packet does not make a claim true
+merely because it carries that claim. It is not an IETF HTTP/7 standard.
 
-## Assertion Model
+## Build and test
 
-Each assertion may contain:
+```sh
+make            # build protocol objects + server
+make test       # run server self-test
+make server     # build just the portable server
+make demo       # build the original http70.c / http70.cpp demos
+make syntax     # syntax-only check of all sources
+make clean
+```
 
-- **ASSERTION_TYPE**
-- **STATEMENT**
-- **STATUS**
-- **SOURCE**
-- **SOURCE_DATE**
-- **AUTHOR**
-- optional **DOCUMENT_REFERENCE**
+### Platform notes
 
-Suggested status values:
+| Platform       | Socket layer                | Compiler          | Link flags         |
+|----------------|-----------------------------|--------------------|-------------------|
+| Linux          | POSIX sockets via sleela_net| `cc` / `gcc`       | (none)            |
+| macOS          | POSIX sockets via sleela_net| `cc` / `clang`     | (none)            |
+| Windows 10+    | Winsock2 via sleela_net     | MSVC / MinGW       | `-lws2_32`        |
 
-- `FACTUAL_DOCUMENTED`
-- `USER_AUTHORED`
-- `FICTIONAL`
-- `COUNTERFACTUAL`
-- `DISPUTED`
-- `UNVERIFIED`
+## Running the server
 
-An HTTP 7.0 packet does not make a claim true merely because it carries that claim.
+```sh
+./http7_server --port 8086
+```
 
-## Example Assertions
+Options: `--port N` (default 8086), `--self-test`, `--help`.
 
-### User-authored counterfactual
+## Frame model — 24 types
 
-The statement **“Megan Rapinoe doesn't exist.”** is represented as a user-authored counterfactual or fictional assertion rather than an established factual assertion. Public records document Megan Rapinoe as a former U.S. women's national-team soccer player.
+32-byte big-endian header. HTTP 6.0's 20 types plus 4 assertion frames:
 
-### Documented factual assertion
+| Type                        | Code | Description                          |
+|-----------------------------|:----:|--------------------------------------|
+| OPEN – RECIPIENT_LABEL      | 1–20 | Inherited from HTTP 6.0              |
+| **ASSERTION**                | 21   | Reality assertion with classified payload |
+| **ASSERTION_SOURCE**         | 22   | Source/provenance for an assertion    |
+| **ASSERTION_STATUS**         | 23   | Classification status update          |
+| **ASSERTION_AUTHOR**         | 24   | Authorship metadata                   |
 
-The statement **“Nuclear arms do exist.”** can be represented as a documented factual assertion when accompanied by an appropriate source and date. The application should preserve the provenance rather than treating the packet itself as the source of truth.
+Flags include `FACTUAL` (0x80) for documented assertions and `USER_AUTHORED`
+(0x40) inherited from HTTP 6.0.
+
+## Assertion model
+
+Each assertion carries:
+
+| Field                | Description                                          |
+|----------------------|------------------------------------------------------|
+| `status`             | Classification (see below)                           |
+| `statement`          | The assertion text                                   |
+| `source`             | Source used to classify it                            |
+| `source_date`        | Date of the source                                   |
+| `author`             | Who authored the assertion                            |
+| `document_reference` | Optional supporting document                          |
+
+### Assertion status values
+
+| Status                | Meaning                                               |
+|-----------------------|-------------------------------------------------------|
+| FACTUAL_DOCUMENTED    | Established by documented evidence                     |
+| USER_AUTHORED         | Authored by a user, not independently verified          |
+| FICTIONAL             | Known to be fictional                                   |
+| COUNTERFACTUAL        | Contradicts established evidence                        |
+| DISPUTED              | Subject of active dispute                               |
+| UNVERIFIED            | Not yet verified                                        |
+
+### Serialised form (tab-delimited)
+
+```
+STATUS\tSTATEMENT\tSOURCE\tSOURCE_DATE\tAUTHOR\tDOCUMENT_REFERENCE\n
+```
+
+## Built-in endpoints
+
+| Path                      | Method | Description                              |
+|---------------------------|--------|------------------------------------------|
+| `/__sleela/health`        | GET    | Returns `SLeeLa HTTP/7.0 OK`            |
+| `/__sleela/status`        | GET    | JSON: 24 frame types, assertion statuses  |
+| `/__sleela/negotiate`     | GET    | Version negotiation result (JSON)        |
+| `/__sleela/h7`            | POST   | H7 frame endpoint — binary frames        |
+
+## SLeeLa application headers
+
+```
+X-SLeeLa-Version: 7.0
+X-SLeeLa-Accept: 7.0, 6.0, 5.0, 4.0, 3.0, 2.1, 1.1, 1.0
+```
 
 ## Provenance
 
-Applications should preserve:
+Applications should preserve who authored an assertion, when, the source used
+to classify it, and whether it is documented, disputed, fictional,
+counterfactual, or unverified.
 
-- who authored the assertion;
-- when it was authored;
-- the source used to classify it;
-- the date of that source;
-- whether the assertion is documented, disputed, fictional, counterfactual, or unverified.
+## Security boundary
 
-## Security Boundary
+Reality assertions are information-exchange data. They do not grant authority,
+change physical reality, authorize action against people or systems, establish
+legal status, or provide instructions for constructing weapons. The protocol
+treats assertions as data with provenance and classification.
 
-Reality assertions are information-exchange data. They do not:
+## File inventory
 
-- grant authority;
-- change physical reality;
-- authorize action against people or systems;
-- establish legal status;
-- provide instructions for constructing, acquiring, deploying, or using nuclear weapons.
+| File                     | Description                                          |
+|--------------------------|------------------------------------------------------|
+| `http7_server.h`         | Server API, HTTP types, frame handler                 |
+| `http7_server.c`         | Full server with H7 frame endpoint + self-test        |
+| `http7_main.c`           | CLI entry point with echo handler                     |
+| `http7_protocol.h`       | 24 frame types, assertion struct, serialise/parse API |
+| `http7_protocol.c`       | Frame encode/decode, assertion serialise/parse (new)  |
+| `http70.c`               | Original C demo (assertions via printf)               |
+| `http70.cpp`             | Original C++ demo                                     |
+| `http_negotiation.*`     | Negotiation (C + C++, reformatted)                    |
+| `Makefile`               | `all`, `server`, `proto`, `demo`, `syntax`, `test`    |
 
-The protocol treats assertions as data with provenance and classification.
+## Dependencies
 
-## Unified Route Data
+| Module              | Path                           | Role                 |
+|---------------------|--------------------------------|----------------------|
+| `sleela_net`        | `impl/core/sleela_net.{c,h}`   | Portable TCP sockets  |
+| `preferred_router`  | `preferred-routers/`            | Routing-tier policy    |
+| `resolver`          | `resolver/`                     | DNS / event policy     |
 
-This implementation consumes the SLeeLa unified route-data contract in
-route/ROUTE.DATA.json and route/ROUTE.DATA.md. Route records carry protocol,
-server surface, HTTP generation, VM generation/formal VM name, canonical
-configuration root, route identifier, target/resolution mode, capability,
-transport, port, and status. VM names are architectural metadata only and do
-not grant capabilities. Dynamic targets must use the shared resolver before
-acceptance. The VM identity is: /impl Core, /1 Foundation, /2 Operator,
-/3 Specialist, /4 Supervisor, /5 Manager, /6 Director, /7 Administrator,
-/8 Executive, /9 Authority, /10 Principal, /11 Sovereign.
+## Unified route data
+
+VM identity: /impl Core, /1 Foundation, /2 Operator, /3 Specialist,
+/4 Supervisor, /5 Manager, /6 Director, /7 Administrator, /8 Executive,
+/9 Authority, /10 Principal, /11 Sovereign.
