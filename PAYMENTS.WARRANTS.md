@@ -1,5 +1,7 @@
 # Payments & Warrants — a Cascading Supposition
 
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/eglise-and-francaise-passing-005.jpeg.jpg" alt="SLeeLa Marketing Logo & Friends"></p>
+
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/eglise-and-francaise-passing-014.jpeg.jpg" alt="SLeeLa Marketing Logo & Friends"></p>
 
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/us-commanders-over-comics-001.png" alt="SLeeLa Marketing Logo & Friends"></p>
