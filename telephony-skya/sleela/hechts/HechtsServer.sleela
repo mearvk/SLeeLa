@@ -22,7 +22,7 @@
  * Native networking (listen/accept/sockread/sockwrite) crosses the explicit
  * SLeeLa VM/OS bridge.
  */
-#sleela 1.3
+#sleela 2.1
 // Skya telephony — Hecht's always-open local server on the authorized port.
 class HechtsServer {
 

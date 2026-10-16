@@ -2,7 +2,7 @@
  * Backend contract for translating validated SLeeLa compiler IR into portable
  * C or C++ source. Unsupported constructs must be rejected, never approximated.
  */
-#sleela 1.3
+#sleela 2.1
 class SLNativeSourceEmitter {
   String target;
   String languageVersion;

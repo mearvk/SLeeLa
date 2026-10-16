@@ -20,7 +20,7 @@
  * Family: cpu. Composes SLVoltageRail, SLCpuTiming, SLBusTiming, SLIOTiming,
  *   SLRamTiming, SLTimingClass; produces SLTimingManifest.
  */
-#sleela 1.3
+#sleela 2.1
 class SLTimingProfile {
   SLTimingClass tier;   // the governing expertise Class Object
 

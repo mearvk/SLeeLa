@@ -16,7 +16,7 @@
  *
  * Family: cpu. Pure Sleela timing model (picosecond integer arithmetic).
  */
-#sleela 1.3
+#sleela 2.1
 class SLTiming {
   String signal;      // nameful path: "addr->ras", "cas->dq", "req->ack", ...
   String reason;      // why this budget exists, in words

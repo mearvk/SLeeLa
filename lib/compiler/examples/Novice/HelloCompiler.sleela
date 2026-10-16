@@ -1,5 +1,5 @@
 /* Novice lesson: recognize one quoted-string statement. Educational scaffold. */
-#sleela 1.3
+#sleela 2.1
 
 class HelloCompiler {
   String diagnostic;

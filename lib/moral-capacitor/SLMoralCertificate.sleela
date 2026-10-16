@@ -18,7 +18,7 @@
  * Family: moral-capacitor. Carries SLMoralWarranty; issued by
  *   SLMoralCertificateAuthority; verified by SLMoralCodeGuard.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralCertificate {
   static final int SCHEMA_VERSION = 1;
 

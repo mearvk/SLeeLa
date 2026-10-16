@@ -11,7 +11,7 @@
  *
  * Family: cpu. Composes SLInstructionSet, SLInstruction, SLProgram.
  */
-#sleela 1.3
+#sleela 2.1
 class SLAssembler {
   SLInstructionSet isa;
   SLProgram program;

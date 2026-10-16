@@ -17,7 +17,7 @@
  *
  * Family: cpu. Composes SLSleelaOpcode, SLStack, SLRAM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLSleelaVM {
   SLSleelaOpcode op;
   SLRAM codeOps;    // opcode of each instruction

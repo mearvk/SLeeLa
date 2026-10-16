@@ -16,7 +16,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLNotebook extends SLWidget {
   static final int MAX_PAGES = 4096;
 

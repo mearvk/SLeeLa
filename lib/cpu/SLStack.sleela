@@ -13,7 +13,7 @@
  *
  * Family: cpu. Composes SLRAM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLStack {
   SLRAM memory;
   int base;     // highest address of the stack region (SP starts here)

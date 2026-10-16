@@ -16,7 +16,7 @@
  *
  * Family: os. OS Creator(TM) stage; writes into the dev tree via SLOSDevTree.
  */
-#sleela 1.5
+#sleela 2.1
 class SLSourceDropper {
   // Drop the reconstructable SLeeLa source and a provenance README into the tree.
   void drop(SLOSModel m, SLOSDevTree tree) {

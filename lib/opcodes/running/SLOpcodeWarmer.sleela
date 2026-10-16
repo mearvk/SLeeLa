@@ -12,7 +12,7 @@
  *
  * Family: opcodes.running. Native VM/OS work crosses an explicit bridge.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa standard-library front-end object.
 class SLOpcodeWarmer {
   int frame;     // the VM frame to pre-stage against

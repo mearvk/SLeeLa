@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 class PermissibleConnector {
  String referenceName; String importPath; String domain; String configuration; String properties;
  String seraphState; String memoryState; String balanceState; String status;

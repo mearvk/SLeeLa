@@ -12,7 +12,7 @@
  *
  * Family: moral-capacitor. Machine adapter over SLMoralCapacitor.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMachineMoralGate {
   SLMoralCapacitor cap;
   SLMoralLedger ledger;

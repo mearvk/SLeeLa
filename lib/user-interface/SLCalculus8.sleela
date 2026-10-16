@@ -17,7 +17,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `calc8*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLCalculus8 {
   static final int INPUTS = 100;  // the 100 differentiables
   static final int STAGES = 8;    // the careful 8 stages

@@ -2,7 +2,7 @@
  * lib/java/JDK28SourceSet.sleela
  * Definition: Registry contract for Java class names represented by native SLeeLa source envelopes.
  */
-#sleela 1.3
+#sleela 2.1
 
 class JDK28SourceSet {
   String root = "lib/java/java";

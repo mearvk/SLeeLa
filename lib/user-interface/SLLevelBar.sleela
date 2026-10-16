@@ -13,7 +13,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLLevelBar extends SLWidget {
   // Create a level bar inside `parent` with an initial level in [0,1].
   void createIn(SLWidget parent, double level) {

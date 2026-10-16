@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 2.1
 // D05_Build.sleela — companion to Lesson 05 (The .sst sheet & Nordshrift).
 // This Wrapper is driven by tutorial/demos/build.sst; running the sheet with
 // the sleela target produces a runnable artifact (and a .ledger beside it).

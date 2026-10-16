@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 2.1
 // D04_Counter.sleela — companion to Lesson 04 (Control flow & expressions).
 // while, for, if, and arithmetic/comparison operators.
 class D04_Counter {

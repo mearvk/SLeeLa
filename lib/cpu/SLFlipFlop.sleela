@@ -10,7 +10,7 @@
  *
  * Family: cpu. Pure Sleela state; clocked.
  */
-#sleela 1.3
+#sleela 2.1
 class SLFlipFlop {
   SLLatch master;
   SLLatch slave;

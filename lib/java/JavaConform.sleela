@@ -3,7 +3,7 @@
  * Pure SLeeLa Java conformance envelope.
  * Definition: SLeeLa-side conformance coordinator for Java SE/JDK 28 source envelopes.
  */
-#sleela 1.3
+#sleela 2.1
 
 class JavaConform {
   String status = "READY";

@@ -13,7 +13,7 @@
  *
  * Family: cpu. Composed by SLWorkload; enforced by SLCPURuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLCPUResource {
   // Scheduling priority bands.
   static final int PRIORITY_IDLE   = 0;

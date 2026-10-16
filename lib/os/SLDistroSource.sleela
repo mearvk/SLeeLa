@@ -19,7 +19,7 @@
  * Family: os. Pure reference/manifest; no payload. SLDistroFetch performs the
  *   opt-in download; SLOSModel/SLOSCreator may record this as provenance.
  */
-#sleela 1.11
+#sleela 2.1
 class SLDistroSource {
   // Upstream identity.
   String name;

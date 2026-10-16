@@ -10,7 +10,7 @@
  *
  * Family: cpu. Describes the ISA an SLCPURuntime realizes.
  */
-#sleela 1.3
+#sleela 2.1
 class SLCPUArchitecture {
   static final int ENDIAN_LITTLE = 0;
   static final int ENDIAN_BIG     = 1;

@@ -13,7 +13,7 @@
  * Family: gui. The factory crosses the `ui*` SLVM bridge to the real toolkit;
  * SLeeLa still owns the node that the widget mirrors.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuiWidgetFactory {
   // Orientation ordinals (mirror SLUIOrientation / SLWidget).
   static final int ORIENT_VERTICAL   = 0;

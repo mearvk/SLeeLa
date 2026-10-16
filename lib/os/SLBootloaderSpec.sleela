@@ -15,7 +15,7 @@
  *
  * Family: os. Pure design model; no native bridge calls.
  */
-#sleela 1.5
+#sleela 2.1
 class SLBootloaderSpec {
   String firmware;    // "UEFI" or "BIOS"
   String loader;      // "GRUB" / "BOOTMGR" / "boot.efi" / "systemd-boot"

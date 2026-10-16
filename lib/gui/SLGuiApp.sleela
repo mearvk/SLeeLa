@@ -15,7 +15,7 @@
  * Family: gui. SLeeLa owns the DOM, dispatch, and script execution; SleelaUI
  * owns presentation; this object is the wiring between them.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuiApp {
   SLUserInterface ui;
   SLWindow window;

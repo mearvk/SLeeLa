@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 2.1
 // D11_Colors.sleela — companion to Lesson 11 (HTTP 3.0 & HTTP colors).
 // Models the "name a color -> get a profile" idea in plain SLeeLa: a color name
 // maps to a small integer strictness level (green<amber<red<black). The real

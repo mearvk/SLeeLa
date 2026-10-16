@@ -26,7 +26,7 @@
  *   where the interpreter/container is absent the foreign type stays unrunnable
  *   and the methods report that rather than faking success.
  */
-#sleela 1.11
+#sleela 2.1
 class SLExecutableTranslator {
   String host;   // the host OS running the file: "Linux" / "Windows" / "macOS"
 

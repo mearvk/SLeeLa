@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // site.sleela -- top level of the Website Generator. Composes a complete demo
 // site from a Design and an ordered list of Signs, then emits a single
 // self-contained HTML document. This is the entry point a CLI or the JavaFX

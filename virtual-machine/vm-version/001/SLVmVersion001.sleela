@@ -14,7 +14,7 @@
  *
  * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmVersion001 extends SLVmVersion {
   void configure() {
     base(1, "idea-vm-001", "ground floor", "virtual-machine/vm-version/001", "vm_ground_test");

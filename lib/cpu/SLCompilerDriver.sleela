@@ -13,7 +13,7 @@
  *
  * Family: cpu. Composes the frontend hierarchy, SLIR, SLLowering, SLProgram.
  */
-#sleela 1.3
+#sleela 2.1
 class SLCompilerDriver {
   SLInstructionSet isa;
   int lastLanguage;

@@ -14,7 +14,7 @@
  *
  * Family: vm. Composes SLVMClass, SLSleelaVM; composed by SLVM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVMModule {
   String name;
   int state;              // 0 unloaded, 1 loaded, 2 linked

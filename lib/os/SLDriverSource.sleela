@@ -20,7 +20,7 @@
  * Family: os. Design + policy model; the signature/presence checks that reach
  *   the host cross the os* bridge (osRun/osExists), requiring #sleela 1.5.
  */
-#sleela 1.11
+#sleela 2.1
 class SLDriverSource {
   // Origin tags.
   static final int ORIGIN_INTREE  = 0;   // shipped with the OS

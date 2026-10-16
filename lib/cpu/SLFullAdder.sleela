@@ -11,7 +11,7 @@
  *
  * Family: cpu. Pure Sleela logic.
  */
-#sleela 1.3
+#sleela 2.1
 class SLFullAdder {
   SLHalfAdder h1;
   SLHalfAdder h2;

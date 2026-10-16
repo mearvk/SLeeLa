@@ -14,7 +14,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLBox extends SLWidget {
   // Create a box inside `parent` (an SLWidget). orientation is ORIENT_VERTICAL
   // or ORIENT_HORIZONTAL; spacing is the gap between children in pixels.

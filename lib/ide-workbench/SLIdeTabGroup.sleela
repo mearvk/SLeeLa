@@ -9,7 +9,7 @@
  *   (<= SLGUI_MAX_DOCUMENTS) to be registered with the OS watch. The 1..14
  *   bound stays an OS-watch contract; the open-file count is independent of it.
  */
-#sleela 1.3
+#sleela 2.1
 // Family: ide-workbench. Owns open editors; feeds a bounded watch set to lib/gui.
 class SLIdeTabGroup {
   static final int MAX_OPEN = 4096;     // generous open-file ceiling

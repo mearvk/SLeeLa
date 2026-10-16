@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type RegexSplitter used within the regex library family.
  */
-#sleela 1.3
+#sleela 2.1
 class RegexSplitter {
   int parts;
   void clear(){parts=0;}

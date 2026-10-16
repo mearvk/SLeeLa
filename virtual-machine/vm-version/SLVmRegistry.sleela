@@ -15,7 +15,7 @@
  *
  * Family: vm. Composes SLVmVersion001..010, SLVmRuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmRegistry {
   SLVmVersion001 v1; SLVmVersion002 v2; SLVmVersion003 v3; SLVmVersion004 v4;
   SLVmVersion005 v5; SLVmVersion006 v6; SLVmVersion007 v7; SLVmVersion008 v8;

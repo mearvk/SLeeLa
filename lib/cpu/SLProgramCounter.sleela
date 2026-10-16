@@ -8,7 +8,7 @@
  *
  * Family: cpu. Specializes the register abstraction.
  */
-#sleela 1.3
+#sleela 2.1
 class SLProgramCounter {
   SLRegister reg;
   int stride;   // bytes/words advanced per sequential instruction

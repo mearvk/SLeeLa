@@ -1,4 +1,4 @@
-#sleela 1.11
+#sleela 2.1
 // nested_classes.sleela -- the "rule of two" for nested classes (syntax 1.11).
 //
 // A class body may declare one nested class (depth 2 is normal). A nested class

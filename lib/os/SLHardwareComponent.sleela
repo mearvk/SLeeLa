@@ -16,7 +16,7 @@
  *
  * Family: os. Base of the hardware-component hierarchy.
  */
-#sleela 1.5
+#sleela 2.1
 class SLHardwareComponent {
   // Device-class ordinals (what kind of part this is).
   static final int CLASS_MEMORY  = 0;

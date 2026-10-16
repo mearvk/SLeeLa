@@ -8,7 +8,7 @@
  * A concrete BusinessModel: revenue comes only from the converted fraction;
  * cost scales with the whole free-plus-paid population. Family: character.
  */
-#sleela 1.3
+#sleela 2.1
 class FreemiumModel extends BusinessModel {
 
   int freeUsers;          // the generous majority

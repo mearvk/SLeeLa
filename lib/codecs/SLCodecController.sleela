@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type SLCodecController used within the codecs library family.
  */
-#sleela 1.11
+#sleela 2.1
 // Family: codecs. The SLeeLa-facing Codec Management Controller — the single
 // surface a GUI or application drives to use codecs, mirroring the native
 // "Codec Loader / Unloader / Management Controller"

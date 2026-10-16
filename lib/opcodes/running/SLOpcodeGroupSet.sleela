@@ -11,7 +11,7 @@
  *
  * Family: opcodes.running. Native VM/OS work crosses an explicit bridge.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa standard-library front-end object.
 class SLOpcodeGroupSet {
   static final int MAX_GROUPS = 1024;

@@ -22,7 +22,7 @@
  *
  * Family: cpu. Composes the frontends, lowering, opcode map, and the Sleela VM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLTuringBridge {
   SLInstructionSet isa;
   SLInstructionDecoder decoder;

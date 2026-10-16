@@ -11,7 +11,7 @@
  *
  * Family: vm. Composes SLVmConfig.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmStatus {
   String versionString;   // e.g. "idea-vm v001 (ground floor)"
   SLVmConfig config;

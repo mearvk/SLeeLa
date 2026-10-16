@@ -27,7 +27,7 @@
  * Family: idea. Native CPU rendering/physics work crosses the explicit
  *   `ideaCanvas*` SLVM bridge into idea/realtime.
  */
-#sleela 1.5
+#sleela 2.1
 class SLIdeaCanvas {
   // ---- status ordinals (mirror idea_canvas_status) ----
   static final int OK          = 0;

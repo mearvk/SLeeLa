@@ -11,7 +11,7 @@
  *
  * Family: cpu.components. Selected via SLComponentCatalog.
  */
-#sleela 1.3
+#sleela 2.1
 class SLStorageDevice {
   // Device classes.
   static final int CLASS_FLOPPY = 0;

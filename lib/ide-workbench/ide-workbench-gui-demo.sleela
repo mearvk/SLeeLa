@@ -12,7 +12,7 @@
  * Family: ide-workbench. The user interface is SleelaUI; this file proves the
  * IDE shell is usable from the language itself.
  */
-#sleela 1.5
+#sleela 2.1
 class IdeWorkbenchGuiDemo {
 
   int run() {

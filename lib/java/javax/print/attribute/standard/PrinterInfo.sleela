@@ -4,7 +4,7 @@
  * Definition: SLeeLa source declaration for the Java type javax.print.attribute.standard.PrinterInfo.
  * Java behavior is supplied through the SLeeLa Java conformance boundary.
  */
-#sleela 1.3
+#sleela 2.1
 
 class PrinterInfo {
   String javaType = "javax.print.attribute.standard.PrinterInfo";

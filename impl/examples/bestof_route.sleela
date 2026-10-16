@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // bestof_route.sleela -- the best-of method, first-class in Sleela source
 // (syntax 1.3). It configures data/decisions/costs/versions weights, registers
 // candidate internet routes (each with settings, flags, a version and a cost),

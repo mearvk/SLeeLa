@@ -2,7 +2,7 @@
  * Result envelope for a compiler-workbench build request.
  * Success is only reported by the native bridge after validation and emission.
  */
-#sleela 1.3
+#sleela 2.1
 class SLCompilerBuildResult {
   boolean succeeded;
   String outputFile;

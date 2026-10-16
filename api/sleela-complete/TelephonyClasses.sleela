@@ -1,4 +1,4 @@
-#sleela 1.1
+#sleela 2.1
 class Call { String peer; String state; void configure(String p){peer=p;state="new";} void answer(){state="active";} void hangup(){state="closed";} }
 class SipTransaction { String method; String state; void configure(String m){method=m;state="new";} void start(){state="trying";} void complete(){state="complete";} }
 class RtpStream { int payloadType; int sequence; int timestamp; void configure(int p){payloadType=p;sequence=0;timestamp=0;} void send(){sequence=sequence+1;timestamp=timestamp+1;} }

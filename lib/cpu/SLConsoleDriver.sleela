@@ -8,7 +8,7 @@
  *
  * Family: cpu. Extends SLDeviceDriver.
  */
-#sleela 1.3
+#sleela 2.1
 class SLConsoleDriver extends SLDeviceDriver {
   int charsWritten;
 

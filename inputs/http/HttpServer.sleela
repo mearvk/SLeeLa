@@ -1,4 +1,4 @@
-#sleela 1.0
+#sleela 2.1
 // HttpServer.sleela -- a model HTTP/1.1 request-handling loop in Sleela.
 //
 // This is a toolchain INPUT (a Wrapper(TM)): it exercises the request/response

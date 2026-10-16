@@ -11,7 +11,7 @@
  *
  * Family: moral-capacitor. Held by SLMoralCapacitor.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralCharge {
   int total;          // net stored charge (may be negative before flooring)
   int maxCharge;      // capacity ceiling

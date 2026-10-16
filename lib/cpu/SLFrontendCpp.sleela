@@ -16,7 +16,7 @@
  *
  * Family: cpu. Extends SLFrontendC (C++ is a superset lowering).
  */
-#sleela 1.3
+#sleela 2.1
 class SLFrontendCpp extends SLFrontendC {
 
   void initCpp(String path) { configure("cpp", LANG_CPP, path); }

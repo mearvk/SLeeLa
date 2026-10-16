@@ -21,7 +21,7 @@
  * Family: autocad (creator module). JavaFX presents elsewhere; here SleelaUI
  * presents and SLeeLa decides.
  */
-#sleela 1.5
+#sleela 2.1
 class CadCreatorApp {
   SLUserInterface ui;
   SLWindow win;

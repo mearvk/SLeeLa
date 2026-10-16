@@ -12,7 +12,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `wash*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLWash {
   int wash;   // VM-local handle (-1 = none)
 

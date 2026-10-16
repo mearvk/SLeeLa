@@ -1,4 +1,4 @@
-#sleela 1.8
+#sleela 2.1
 class GcHintVersionInvalid {
     static void main() {
         let x = 1;

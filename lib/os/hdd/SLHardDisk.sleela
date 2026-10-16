@@ -14,7 +14,7 @@
  *
  * Family: os. Extends SLHardwareComponent.
  */
-#sleela 1.5
+#sleela 2.1
 class SLHardDisk extends SLHardwareComponent {
   // Interface ordinals.
   static final int IF_SATA3 = 0;  // 6 Gb/s

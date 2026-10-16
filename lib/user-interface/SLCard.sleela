@@ -13,7 +13,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLCard extends SLWidget {
   // Create a card inside `parent`.
   void createIn(SLWidget parent) {

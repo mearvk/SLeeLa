@@ -9,7 +9,7 @@
  *   honoring the /ide SLEELA.IDE.CONTRACT.md rule that compiler failures stay
  *   IDE-visible failures (a failed compile must not read back as success).
  */
-#sleela 1.3
+#sleela 2.1
 // Family: ide-workbench. The problems list bound to a status/list widget.
 class SLIdeDiagnosticsPanel {
   static final int MAX_DIAGNOSTICS = 65536;

@@ -1,4 +1,4 @@
-#sleela 1.10
+#sleela 2.1
 // examples/extends/inheritance.sleela
 // The OOD meaning of `extends` (syntax 1.10): a derived class inherits the
 // base class's instance fields and methods; a same-name method overrides the

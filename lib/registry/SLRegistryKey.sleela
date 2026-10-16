@@ -13,7 +13,7 @@
  * Family: registry. Composes SLRegistryValue, SLRegistryProvenance; held by
  *   SLRegistry.
  */
-#sleela 1.3
+#sleela 2.1
 class SLRegistryKey {
   static final int MAX_VALUES = 8;
 

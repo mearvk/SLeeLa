@@ -14,7 +14,7 @@
  *
  * Family: vm. Composes SLRAM; composed by SLVM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVMMemory {
   // Backing mode.
   static final int MODE_SIMULATED = 0;   // SLRAM (bridge-backed, accounted)

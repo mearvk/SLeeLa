@@ -9,7 +9,7 @@
  *
  * Family: cpu. Composes SLCPU, SLDiskDriver, SLRAM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLBootloader {
   SLCPU cpu;
   SLDiskDriver boot;

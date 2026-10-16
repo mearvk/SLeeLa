@@ -16,7 +16,7 @@
  * Family: cpu.components. Composes SLCPURuntime, SLMemoryModule,
  *   SLStorageDevice, SLOpticalDrive, SLSystemBus.
  */
-#sleela 1.3
+#sleela 2.1
 class SLExecutorBuild {
   String buildName;
   SLCPURuntime cpu;

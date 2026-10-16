@@ -1,4 +1,4 @@
-#sleela 1.0
+#sleela 2.1
 // RMI client-side model.
 // The actual remote transport is supplied by the Java RMI facade.
 class RmiClient {

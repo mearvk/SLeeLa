@@ -14,7 +14,7 @@
  *
  * Family: moral-capacitor. Evaluated by SLMoralCapacitor.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralOperation {
   String actor;       // "vm" / "os" / "machine" / library name
   String action;      // verb: "allocate" / "erase" / "spawn" / "boot" / ...

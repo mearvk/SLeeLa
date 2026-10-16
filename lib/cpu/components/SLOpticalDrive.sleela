@@ -11,7 +11,7 @@
  *
  * Family: cpu.components. Selected via SLComponentCatalog.
  */
-#sleela 1.3
+#sleela 2.1
 class SLOpticalDrive {
   static final int MEDIUM_CD = 0;
   static final int MEDIUM_DVD = 1;

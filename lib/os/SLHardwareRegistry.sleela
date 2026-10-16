@@ -15,7 +15,7 @@
  * Family: os. Composes the per-family catalogues; produces SLHardwareComponent
  *   subclasses.
  */
-#sleela 1.5
+#sleela 2.1
 class SLHardwareRegistry {
   SLDDRCatalog ddr;
   SLSSDCatalog ssds;

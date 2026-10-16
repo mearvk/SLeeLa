@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // munction_reach.sleela -- the Munction reach-composition sentence, first-class
 // in the Sleela source language (syntax 1.3). A reach is one sane sentence:
 // start -> connect -> send -> thatch -> consume -> latch -> closeWithReceipt.

@@ -16,7 +16,7 @@
  *
  * Family: cpu. Extends SLCPURuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLPlayStation4CPU extends SLCPURuntime {
   static final int R_ZERO = 0;
   static final int R_SP = 15;

@@ -1,4 +1,4 @@
-#sleela 1.10
+#sleela 2.1
 // examples/extends/document_grouping.sleela
 // The document-sheet meaning of `extends` (syntax 1.10): one .sleela document
 // naturally points to other documents, organized by a GROUPER. The grouper is

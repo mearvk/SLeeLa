@@ -15,7 +15,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLTreeView extends SLWidget {
   static final int MAX_NODES = 65536;
   static final int ROW_HEIGHT = 22;   // pixels per row (for scroll math)

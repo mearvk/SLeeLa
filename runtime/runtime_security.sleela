@@ -1,4 +1,4 @@
-#sleela 1.0
+#sleela 2.1
 class GarbageCollector {
  int liveObjects;
  int bytesAllocated;

@@ -1,4 +1,4 @@
-#sleela 1.11
+#sleela 2.1
 // Regression: static field initialisers must run for EVERY class before main,
 // not only the entry class's. A static constant read from a non-entry library
 // class must see its value, not null. (Fixed 2026-10: emitMethod initialised

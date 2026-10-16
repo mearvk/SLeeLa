@@ -1,4 +1,4 @@
-#sleela 1.1
+#sleela 2.1
 class Stream { int openState; void open(){openState=1;} void close(){openState=0;} }
 class Thread { int running; void start(){running=1;} void stop(){running=0;} }
 class Timer { int active; int interval; void configure(int i){interval=i;} void start(){active=1;} void stop(){active=0;} }

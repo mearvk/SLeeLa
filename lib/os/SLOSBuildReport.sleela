@@ -14,7 +14,7 @@
  *
  * Family: os. Collects SLOSArtifact; summarises an SLOSModel build.
  */
-#sleela 1.5
+#sleela 2.1
 class SLOSBuildReport {
   String identity;    // the model identity this build is for
   String index;       // newline-separated "kind size path" lines

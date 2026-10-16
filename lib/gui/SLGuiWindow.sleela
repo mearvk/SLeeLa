@@ -7,7 +7,7 @@
  *   (Swing/JavaFX/native) renders it and marshals updates onto the toolkit
  *   thread.
  */
-#sleela 1.3
+#sleela 2.1
 // SLeeLa gui front-end contract — a window the host renders.
 // Family: gui. State transitions and the meaning of events stay in SLeeLa; the
 // backend owns presentation and desktop lifecycle.

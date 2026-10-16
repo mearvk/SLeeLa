@@ -1,4 +1,4 @@
-#sleela 1.1
+#sleela 2.1
 class Model { String name; String version; int loaded; void configure(String n,String v){name=n;version=v;} void load(){loaded=1;} void unload(){loaded=0;} }
 class Inference { Model model; String output; void configure(Model m){model=m;} void run(String input){output=input;} }
 class XmlDocument { String root; void configure(String r){root=r;} void parse(String source){} String serialize(){return root;} }

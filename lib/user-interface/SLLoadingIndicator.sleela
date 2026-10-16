@@ -20,7 +20,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLLoadingIndicator extends SLWidget {
   // Mode ordinals.
   static final int MODE_IDLE          = 0;

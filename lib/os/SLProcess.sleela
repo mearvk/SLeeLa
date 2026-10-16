@@ -14,7 +14,7 @@
  *
  * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLProcess {
   static final int STATE_NEW     = 0;
   static final int STATE_RUNNING = 1;

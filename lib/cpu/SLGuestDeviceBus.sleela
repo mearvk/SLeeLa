@@ -14,7 +14,7 @@
  *
  * Family: cpu. Composes SLGuestTimer/Console/BlockDevice and SLInterruptController.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuestDeviceBus {
   SLGuestTimer timer;
   SLGuestConsole console;

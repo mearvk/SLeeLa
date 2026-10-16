@@ -12,7 +12,7 @@
  *
  * Family: cpu. Composes SLGuestLinux, SLGuestProgram, SLGuestTask, SLSleelaVM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuestInit {
   SLGuestLinux kernel;
   SLSleelaVM substrate;

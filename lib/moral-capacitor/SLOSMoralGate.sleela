@@ -15,7 +15,7 @@
  *
  * Family: moral-capacitor. OS adapter over SLMoralCapacitor.
  */
-#sleela 1.5
+#sleela 2.1
 class SLOSMoralGate {
   SLMoralCapacitor cap;
   SLMoralLedger ledger;

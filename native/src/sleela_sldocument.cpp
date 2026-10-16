@@ -158,7 +158,7 @@ int sleela_sldocument_emit_sleela(const char *class_name, const char *doc_title,
     src += "/* Converted from .sldocument \"";
     src += title;
     src += "\" for safekeeping. */\n";
-    src += "#sleela 1.3\n";
+    src += "#sleela 2.1\n";
     src += "class ";
     src += class_name;
     src += " {\n";

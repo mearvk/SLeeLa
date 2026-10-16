@@ -1,4 +1,4 @@
-#sleela 1.8
+#sleela 2.1
 // SqlModel.sleela -- the MODEL for the CSV-backed SQL engine, in SLeeLa.
 //
 // Part of mearvk/SLeeLa. Counterpart to the native C engine in lib/sleela-sql/native. The C

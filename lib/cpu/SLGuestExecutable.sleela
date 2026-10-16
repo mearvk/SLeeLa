@@ -16,7 +16,7 @@
  * Family: cpu. Composes SLRAM (image bytes), SLGuestFileSystem (storage),
  *   SLSleelaVM (load target).
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuestExecutable {
   static final int MAGIC = 1397113932; // 0x5345584C 'SEXL'
   static final int HDR_WORDS = 4;

@@ -14,7 +14,7 @@
  * Family: user-interface. SLeeLa owns dispatch and the meaning of events; the host only
  * raises them.
  */
-#sleela 1.5
+#sleela 2.1
 class SLGuiEventBus {
   static final int MAX_HANDLERS = 8192;
 

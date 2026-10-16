@@ -16,7 +16,7 @@
  *
  * Family: moral-capacitor. VM adapter over SLMoralCapacitor.
  */
-#sleela 1.5
+#sleela 2.1
 class SLVMMoralGuard {
   SLMoralCapacitor cap;
   SLMoralLedger ledger;

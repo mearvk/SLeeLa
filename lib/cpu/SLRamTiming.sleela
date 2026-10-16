@@ -15,7 +15,7 @@
  *
  * Family: cpu. Composes SLTiming and SLVoltageRail; partners SLRAM/SLBusTiming.
  */
-#sleela 1.3
+#sleela 2.1
 class SLRamTiming {
   String name;        // nameful: "DIMM-A ch0", ...
   int dataRateMTs;    // transfers per second, millions (e.g. 3200 = DDR4-3200)

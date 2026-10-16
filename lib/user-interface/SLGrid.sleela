@@ -13,7 +13,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLGrid extends SLWidget {
   // Create a grid inside `parent` with a column count and a spacing (px)
   // applied between both rows and columns.

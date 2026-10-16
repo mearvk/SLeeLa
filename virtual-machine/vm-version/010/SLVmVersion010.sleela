@@ -14,7 +14,7 @@
  *
  * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmVersion010 extends SLVmVersion {
   void configure() {
     base(10, "idea-vm-010", "consolidated", "virtual-machine/vm-version/010", "vm_runtime");

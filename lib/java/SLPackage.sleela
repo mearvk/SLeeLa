@@ -4,7 +4,7 @@
  * Definition: Defines the SLeeLa Java library package facade used to expose Java interoperability
  * and Java-oriented library services to the SLeeLa Compiler, Loader, and Nordshrift.
  */
-#sleela 1.3
+#sleela 2.1
 
 class SLPackage {
   String packageName = "java";

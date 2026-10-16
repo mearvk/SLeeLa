@@ -6,7 +6,7 @@
  * through the Secondary VM to the hosted CPU, and the program uses them: a DMA
  * block move without the CPU copying word by word, and a GPU kernel dispatch.
  */
-#sleela 1.3
+#sleela 2.1
 class DmaAndGpuOptionsExample {
   int moved;
   int gpuOut;

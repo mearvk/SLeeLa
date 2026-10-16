@@ -14,7 +14,7 @@
  *
  * Family: sldocument. Native VM/OS work crosses an explicit bridge.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa standard-library front-end object.
 class SLSourceNameComparison {
   static final int MAX_ROWS = 65536;

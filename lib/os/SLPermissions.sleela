@@ -13,7 +13,7 @@
  *
  * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLPermissions {
   String path;
   void configure(String p) { path = p; }

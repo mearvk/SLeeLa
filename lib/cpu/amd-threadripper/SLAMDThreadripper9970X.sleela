@@ -1,0 +1,14 @@
+/*
+ * lib/cpu/amd-threadripper/SLAMDThreadripper9970X.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: AMD Ryzen Threadripper 9970X (Zen 5 "Shimada Peak", HEDT).
+ *   32 cores / 64 threads, 4.0 GHz base / 5.4 GHz max boost, 128 MB L3,
+ *   4-channel DDR5-6400, sTR5/TRX50, 350 W. A thin SKU subclass of
+ *   SLAMDThreadripperCPU overriding only configure(). Full figures in
+ *   SPECIFICATION.md.
+ * Family: cpu. Extends SLAMDThreadripperCPU.
+ */
+#sleela 2.1
+class SLAMDThreadripper9970X extends SLAMDThreadripperCPU {
+  void configure() { bringUpModel("AMD Ryzen Threadripper 9970X (Zen 5, 32C/64T)", 5400); }
+}

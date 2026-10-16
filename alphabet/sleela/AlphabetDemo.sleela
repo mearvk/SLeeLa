@@ -8,7 +8,7 @@
  * The authoritative definitions live one level up in lib/alphabet/*.sleela.
  * Family: alphabet.
  */
-#sleela 1.3
+#sleela 2.1
 class AlphabetDemo {
 
   void main() {

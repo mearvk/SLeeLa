@@ -15,7 +15,7 @@
  *
  * Family: os. Produced by the OS Creator(TM) piece emitters.
  */
-#sleela 1.5
+#sleela 2.1
 class SLOSPiece {
   String name;        // human name, e.g. "Boot Loader"
   String directory;   // tree-relative dir, e.g. "boot/loader"

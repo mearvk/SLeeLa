@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // versioned.sleela -- demonstrates SL-META-0001 Section 4.4 syntax versioning.
 //
 // The `#sleela 1.3` pragma on the first non-blank, non-comment line declares

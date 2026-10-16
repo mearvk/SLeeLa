@@ -24,7 +24,7 @@
  * Family: os. Design + host roles; load/unload/present cross the osRun /
  *   osExists bridge (requires #sleela 1.5).
  */
-#sleela 1.11
+#sleela 2.1
 class SLCompatLayer {
   String host;        // the OS doing the running: "Linux"/"Windows"/"macOS"
   String guest;       // the OS whose executables we run: "Linux"/"Windows"/"macOS"

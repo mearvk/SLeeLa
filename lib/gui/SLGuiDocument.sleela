@@ -8,7 +8,7 @@
  *   whose revision moved; an OS event that does not move the revision is
  *   coalesced away.
  */
-#sleela 1.3
+#sleela 2.1
 // SLeeLa gui front-end contract — an immutable watched-document snapshot.
 // Family: gui. The revision is OS metadata (cheap on every OS call), not file
 // contents; it is sufficient to detect the "document changed" condition.

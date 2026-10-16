@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type SLCadRenderer used within the autocad library family.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa standard-library front-end object.
 // Family: autocad. The library facade that names the one-call entry point a
 // front end (CLI or the JavaFX AutoCAD Studio) uses to evaluate a plan

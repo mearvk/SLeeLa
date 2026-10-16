@@ -13,7 +13,7 @@
  *
  * Family: user-interface. Mirrors SLUIMaterial in the SleelaUI Lighting C ABI.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMaterial {
   // Relief-profile ordinals (mirror SLUIReliefProfile).
   static final int FLAT     = 0;

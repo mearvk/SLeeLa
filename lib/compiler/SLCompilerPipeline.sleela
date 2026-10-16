@@ -2,7 +2,7 @@
  * SLCompilerPipeline: descriptive stage names shared by compiler front ends.
  * Concrete execution is supplied by each registered compiler backend.
  */
-#sleela 1.10
+#sleela 2.1
 class SLCompilerPipeline {
     let stages;
     SLCompilerPipeline() {

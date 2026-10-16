@@ -17,7 +17,7 @@
  *
  * Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa standard-library front-end object.
 class SLGovPhase {
   static final int BEFORE = 1; // Registrar admits/rejects/pauses the program

@@ -15,7 +15,7 @@
  *
  * Family: os. Extends SLOSModel.
  */
-#sleela 1.5
+#sleela 2.1
 class SLLinuxOSModel extends SLOSModel {
   // Build a Linux-shaped model with the given product name/version on amd64.
   void build(String name, String ver) {

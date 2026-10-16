@@ -11,7 +11,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLHeading extends SLWidget {
   // Create a heading inside `parent` with text at a point size (e.g. 16, 20).
   void createIn(SLWidget parent, String text, int sizePt) {

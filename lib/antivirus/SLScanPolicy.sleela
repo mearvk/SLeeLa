@@ -2,7 +2,7 @@
  * lib/antivirus/SLScanPolicy.sleela
  * Conservative defaults for user and administrator scans.
  */
-#sleela 1.3
+#sleela 2.1
 class SLScanPolicy {
   boolean allowSystemScope;
   boolean followSymbolicLinks;

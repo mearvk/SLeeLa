@@ -8,7 +8,7 @@
  *   (Nordshrift -> .sleela -> SLeeLa compiler), see diagnostics, and save.
  *   Self-contained (inline flow + main), in the style of lib/gui/gui-demo.sleela.
  */
-#sleela 1.3
+#sleela 2.1
 // SLeeLa IDE Workbench demonstrator.
 // SLeeLa owns the IDE's meaning (open/edit/compile/save state); the Java/native
 // host owns presentation. The split per-class files (SLIdeWorkbench,

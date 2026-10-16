@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library package for character.
  */
-#sleela 1.3
+#sleela 2.1
 // Library facade for module package: character
 // Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
 // The Master Classes (Character, BusinessModel, and the twelve concrete

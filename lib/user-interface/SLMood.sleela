@@ -16,7 +16,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `mood*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMood {
   // Mood-kind ordinals (mirror SLUIMoodKind).
   static final int CALM    = 0;

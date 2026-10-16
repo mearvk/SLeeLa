@@ -1,4 +1,4 @@
-#sleela 1.9
+#sleela 2.1
 class GcHintRangeInvalid {
     static void main() {
         let x = 1;

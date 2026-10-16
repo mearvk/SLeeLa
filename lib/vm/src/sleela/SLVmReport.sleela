@@ -14,7 +14,7 @@
  * Family: vm. Composed by SLVmResult, SLVmMemory, SLVmTelemetry, SLVmAudit,
  *   SLVmRuntime; it reads an SLVmConfig for the verbosity gate.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmReport {
   static final int SEV_DEBUG  = 0;
   static final int SEV_NOTICE = 1;

@@ -9,7 +9,7 @@
  *
  * Family: cpu. Pure Sleela interconnect.
  */
-#sleela 1.3
+#sleela 2.1
 class SLBus {
   static final int CTRL_IDLE  = 0;
   static final int CTRL_READ  = 1;

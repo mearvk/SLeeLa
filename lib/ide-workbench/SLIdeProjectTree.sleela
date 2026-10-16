@@ -8,7 +8,7 @@
  *   a tree widget renders), and the currently selected entry. Opening an entry
  *   is delegated upward to the workbench, which creates/focuses an SLIdeEditor.
  */
-#sleela 1.3
+#sleela 2.1
 // Family: ide-workbench. The project explorer model behind an SLTreeView.
 class SLIdeProjectTree {
   static final int MAX_ENTRIES = 65536;

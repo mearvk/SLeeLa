@@ -14,7 +14,7 @@
  *
  * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmVersion009 extends SLVmVersion {
   void configure() {
     base(9, "idea-vm-009", "audit trail", "virtual-machine/vm-version/009", "vm_audit_test");

@@ -1,5 +1,5 @@
 /* Program mappings connect producers, languages, versions, and artifacts. */
-#sleela 1.3
+#sleela 2.1
 class DecompilerProgramMapping {
   String programName; String language; String version; String inputKind; String outputKind;
   String binaryFormats; String operatingSystems; String architectures; Boolean trustedReference;

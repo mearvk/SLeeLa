@@ -13,7 +13,7 @@
  * Family: gui. Scripts describe UI intent; SLeeLa (via SLGuiScript) executes it
  * against the SLeeLa-owned DOM and event bus.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuiScriptCommand {
   // Verb ordinals.
   static final int CREATE = 0;   // create <tag> <id> [parentId]

@@ -12,7 +12,7 @@
  *
  * Family: user-interface. SLeeLa owns the document and dispatch; SleelaUI renders it.
  */
-#sleela 1.5
+#sleela 2.1
 class GuiAppDemo {
 
   String boolToStr(boolean b) { return b ? "yes" : "no"; }

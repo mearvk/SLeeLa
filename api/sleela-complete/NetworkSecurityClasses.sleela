@@ -1,4 +1,4 @@
-#sleela 1.1
+#sleela 2.1
 class NetworkEndpoint { String host; int port; String protocol; void configure(String h,int p,String pr){host=h;port=p;protocol=pr;} }
 class UdpTransport { NetworkEndpoint endpoint; int openState; void open(NetworkEndpoint e){endpoint=e;openState=1;} void close(){openState=0;} }
 class TcpTransport { NetworkEndpoint endpoint; int openState; void connect(NetworkEndpoint e){endpoint=e;openState=1;} void close(){openState=0;} }
