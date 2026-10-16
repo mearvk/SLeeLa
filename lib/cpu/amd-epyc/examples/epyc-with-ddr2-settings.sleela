@@ -1,9 +1,16 @@
 /*
  * lib/cpu/amd-epyc/examples/epyc-with-ddr2-settings.sleela
  * A complete, runnable SLeeLa document: bring up an AMD EPYC (Zen 5 "Turin")
- * CPU, give it DDR2 memory settings two ways — a real DDR2-800 module AND a
- * DDR2 refresh-cadence Dynamite Connector in the memory interface's slot — then
- * assemble the executor and run a short program on the CPU.
+ * CPU, give it DDR2 memory settings, and exercise the full set of SLeeLa
+ * CPU-model terms — the hand-written twin of lib/xlt/examples/epyc-ddr2.xlt:
+ *
+ *   - DDR2 settings two ways: a real DDR2-800 module AND a DDR2 refresh-cadence
+ *     Dynamite Connector (SLCadenceConnector) in the memory interface's slot;
+ *   - capabilities: native GPU, DMA, and native-RAM enablement;
+ *   - PHYSICAL memory tiers: DDR2 (usual activities) + DDR5 (competency/accuracy)
+ *     with the main program defaulting to the accurate (DDR5) tier; and
+ *   - per-function tier DISPATCH: a usualmem function binds the DDR2 module, an
+ *     accuratemem function binds the DDR5 module (SLMemoryTierPolicy + router).
  *
  * "DDR2 settings" here means the modeled DDR2 operating point: the DDR2-800
  * data rate / CAS of the actual module, and a DDR2 refresh duty cycle imposed
@@ -16,6 +23,7 @@ class EpycWithDdr2Settings {
 
   void main() {
     SLComponentCatalog parts = new SLComponentCatalog();
+    SLMemoryTierPolicy policy = new SLMemoryTierPolicy();
 
     // 1) The CPU: a real EPYC SKU (Zen 5 Turin, 64C/128T, rated 5.0 GHz boost).
     SLAMDEPYC9575F cpu = new SLAMDEPYC9575F();
@@ -46,13 +54,25 @@ class EpycWithDdr2Settings {
     SLExecutorBuild build = new SLExecutorBuild();
     build.configure("epyc-9575f-ddr2");
     build.installCpu(cpu);
-    build.installMemory(ddr2);              // actual DDR2 module
+    build.installMemory(ddr2);              // actual DDR2 module (base store)
     build.installMemoryInterface(iface);    // DDR2 refresh cadence (the connector)
-    build.installBus(parts.pci33());        // period-appropriate system bus
-    build.assemble();                       // mounts the real DDR2 backing store
+    build.installBus(parts.pcieGen5x16());  // PCIe 5.0 x16 system bus
+
+    // Capabilities (the gpu/dma/nativeram terms): native GPU + DMA on the CPU.
+    build.enableGPU();                      // native GPU compute
+    build.enableDMA();                      // DMA bulk engine
+
+    // PHYSICAL memory tiers (the memtier/maintier terms): DDR2 for usual
+    // activities, DDR5 for competency/accuracy; main program -> accurate (DDR5).
+    build.installUsualTier(ddr2);                       // usual -> DDR2
+    build.installAccurateTier(parts.ddr5_6400(65536));  // accurate -> DDR5
+    build.setMainTier(policy.TIER_ACCURATE);
+
+    build.assemble();                       // mounts the real backing stores
     print("assembled '" + build.name() + "', memory BW seen by CPU = " +
           build.memoryBandwidthMBs() + " MB/s, DDR2 overlay active = " +
-          build.hasMemoryInterface());
+          build.hasMemoryInterface() + ", GPU=" + build.gpuEnabled() +
+          ", DMA=" + build.dmaEnabled() + ", two-tier=" + build.twoTierMemory());
 
     // 5) Run a short program ON the EPYC CPU, using its own instruction set.
     //    Compute (7 + 5) * 3 = 36 and store it to memory word 100.
@@ -73,9 +93,38 @@ class EpycWithDdr2Settings {
           ", instructions retired = " + cpu.instructionsRetired() +
           ", halted = " + cpu.isHalted());
 
-    // 6) A/B: disengage the DDR2 cadence to see the module's raw availability.
+    // 6) Memory-tier DISPATCH (the usualmem/accuratemem terms). A program may
+    //    flag the whole document (top-level class modifier) or any subset of
+    //    methods; each function resolves to the physical tier module it binds.
+    SLProgram prog = new SLProgram();
+    prog.configure("epyc-workload", 256);
+    prog.setDocumentTier(policy.TIER_ACCURATE);   // whole-document default: DDR5
+
+    // usualmem void logActivity()  -> usual (DDR2)
+    SLVMMethod logActivity = new SLVMMethod();
+    logActivity.configure("logActivity", "()V", 0, 3, 0, 1, true, false);
+    logActivity.setMemTier(policy.methodTierFromModifiers(policy.MOD_USUALMEM));
+    // accuratemem int settleLedger() -> accurate (DDR5)
+    SLVMMethod settleLedger = new SLVMMethod();
+    settleLedger.configure("settleLedger", "()I", 3, 5, 0, 2, true, false);
+    settleLedger.setMemTier(policy.methodTierFromModifiers(policy.MOD_ACCURATEMEM));
+
+    dispatch(build, prog, policy, logActivity);
+    dispatch(build, prog, policy, settleLedger);
+
+    // 7) A/B: disengage the DDR2 cadence to see the module's raw availability.
     iface.disengage();
     print("overlay off -> effective BW = " + iface.effectiveBandwidthMBs() +
           " MB/s, duty " + iface.availableDutyPct() + " %");
+  }
+
+  // Resolve a method's effective tier against the document default and bind it
+  // to the real physical module (usualmem->DDR2, accuratemem->DDR5).
+  void dispatch(SLExecutorBuild build, SLProgram prog, SLMemoryTierPolicy policy, SLVMMethod m) {
+    int effective = prog.effectiveTier(m.tier());
+    SLMemoryModule mod = build.memoryForTier(effective);
+    print("  " + m.methodName() + ": declared=" + policy.tierName(m.tier()) +
+          " -> effective=" + policy.tierName(effective) +
+          " -> binds " + mod.name() + " (" + mod.technologyName() + ")");
   }
 }
