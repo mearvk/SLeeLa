@@ -1,0 +1,13 @@
+/*
+ * lib/cpu/amd-epyc/SLAMDEPYC9755.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: AMD EPYC 9755 (Zen 5 "Turin", 9005 series classic-core flagship).
+ *   128 cores / 256 threads, 2.7 GHz base / 4.1 GHz max boost, 512 MB L3,
+ *   12-channel DDR5, SP5, up to 500 W. A thin SKU subclass of SLAMDEPYCCPU
+ *   overriding only configure(). Full figures in SPECIFICATION.md.
+ * Family: cpu. Extends SLAMDEPYCCPU.
+ */
+#sleela 1.3
+class SLAMDEPYC9755 extends SLAMDEPYCCPU {
+  void configure() { bringUpModel("AMD EPYC 9755 (Zen 5 Turin, 128C/256T)", 4100); }
+}

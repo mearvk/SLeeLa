@@ -28,7 +28,7 @@ The profile is a functional model: enough register, memory and timing structure 
 
 The profile composes the shared CPU objects:
 
-- SLAMDThreadripperCPU (extends SLCPURuntime)
+- SLAMDThreadripperCPU (extends SLCPURuntime) — family base: decode(), ISA, Zen 5 x86-64 programmer model
 - SLClock
 - SLRegisterFile
 - SLALU
@@ -38,6 +38,15 @@ The profile composes the shared CPU objects:
 - SLInterruptController
 
 Cache, DMA and MMU objects are instantiated only where this part actually integrates them (see CACHE.md, DMA.md).
+
+### Per-SKU classes
+
+Individual Threadripper 9000 SKUs are thin subclasses of SLAMDThreadripperCPU that override only configure() with the SKU's rated clock and identity label (via the shared bringUpModel() helper); they inherit decode() and the whole runnable substrate:
+
+- HEDT: SLAMDThreadripper9980X, SLAMDThreadripper9970X, SLAMDThreadripper9960X
+- PRO WX: SLAMDThreadripperPro9995WX, SLAMDThreadripperPro9985WX, SLAMDThreadripperPro9975WX, SLAMDThreadripperPro9965WX, SLAMDThreadripperPro9955WX, SLAMDThreadripperPro9945WX
+
+Each is selectable from SLCPUCatalog by its own key (tr-9980x, tr-9995wx, …). See SPECIFICATION.md for the per-SKU table.
 
 ## Variant rule
 

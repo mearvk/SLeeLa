@@ -1,0 +1,13 @@
+/*
+ * lib/cpu/amd-epyc/SLAMDEPYC9175F.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: AMD EPYC 9175F (Zen 5 "Turin", 9005 F-series high-frequency,
+ *   high per-core cache). 16 cores / 32 threads, 4.2 GHz base / 5.0 GHz max
+ *   boost, 512 MB L3, 12-channel DDR5, SP5, 320 W. A thin SKU subclass of
+ *   SLAMDEPYCCPU overriding only configure(). Full figures in SPECIFICATION.md.
+ * Family: cpu. Extends SLAMDEPYCCPU.
+ */
+#sleela 1.3
+class SLAMDEPYC9175F extends SLAMDEPYCCPU {
+  void configure() { bringUpModel("AMD EPYC 9175F (Zen 5 Turin, 16C/32T, 5.0 GHz)", 5000); }
+}

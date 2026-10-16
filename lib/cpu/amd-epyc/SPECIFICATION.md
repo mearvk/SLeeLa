@@ -10,7 +10,23 @@
 
 The profile exposes a programmer model while using the shared SLeeLa CPU objects (clock, register file, ALU, decoder, bus) to sequence each instruction.
 
-## 2. Programmer-visible state
+## 2. SKU roster — EPYC 9005 "Turin" (Zen 5 / Zen 5c, launched Oct 2024)
+
+Socket SP5, 12-channel DDR5, PCIe 5.0, up to 500 W. Each SKU below is its own runnable class (SLAMDEPYC&lt;model&gt;) extending SLAMDEPYCCPU; they share the Zen x86-64 programmer model and differ in rated clock and identity.
+
+| Model | Cores / Threads | Base | Max boost | L3 cache | TDP | Core type | Evidence |
+|---|---:|---:|---:|---:|---:|---|---|
+| EPYC 9965  | 192 / 384 | 2.25 GHz | 3.7 GHz | 384 MB | 500 W | Zen 5c | documented |
+| EPYC 9755  | 128 / 256 | 2.7 GHz  | 4.1 GHz | 512 MB | 500 W | Zen 5  | documented |
+| EPYC 9645  | 96 / 192  | 2.3 GHz  | 3.7 GHz | 256 MB | 400 W | Zen 5c | documented |
+| EPYC 9575F | 64 / 128  | 3.3 GHz  | 5.0 GHz | 256 MB | 400 W | Zen 5 (F) | documented |
+| EPYC 9475F | 48 / 96   | 3.65 GHz | 4.8 GHz | 256 MB | 400 W | Zen 5 (F) | documented |
+| EPYC 9355  | 32 / 64   | 3.55 GHz | 4.4 GHz | 256 MB | 280 W | Zen 5  | documented |
+| EPYC 9175F | 16 / 32   | 4.2 GHz  | 5.0 GHz | 512 MB | 320 W | Zen 5 (F) | documented |
+
+The family tops out at 192 cores / 384 threads (9965) and 5.0 GHz max boost (F-series). The runnable model carries each SKU's rated (max boost) clock; a specific base/all-core clock is a configuration of the same model via setSpecClock.
+
+## 3. Programmer-visible state
 
 x86-64 register model (Zen) with chiplet CCDs, large shared L3 and ECC/RAS.
 
@@ -72,3 +88,6 @@ The processor integrates an MMU/TLB; address translation is modeled as virtual -
 
 - https://en.wikipedia.org/wiki/Epyc
 - https://en.wikipedia.org/wiki/Zen_(microarchitecture)
+- https://en.wikipedia.org/wiki/Zen_5
+- https://en.wikipedia.org/wiki/Template:AMD_Epyc_9005_series
+- https://www.amd.com/en/products/processors/server/epyc/9005-series.html

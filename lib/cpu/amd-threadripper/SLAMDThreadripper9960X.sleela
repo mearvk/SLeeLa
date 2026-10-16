@@ -1,0 +1,14 @@
+/*
+ * lib/cpu/amd-threadripper/SLAMDThreadripper9960X.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: AMD Ryzen Threadripper 9960X (Zen 5 "Shimada Peak", HEDT).
+ *   24 cores / 48 threads, 4.2 GHz base / 5.4 GHz max boost, 128 MB L3,
+ *   4-channel DDR5-6400, sTR5/TRX50, 350 W. A thin SKU subclass of
+ *   SLAMDThreadripperCPU overriding only configure(). Full figures in
+ *   SPECIFICATION.md.
+ * Family: cpu. Extends SLAMDThreadripperCPU.
+ */
+#sleela 1.3
+class SLAMDThreadripper9960X extends SLAMDThreadripperCPU {
+  void configure() { bringUpModel("AMD Ryzen Threadripper 9960X (Zen 5, 24C/48T)", 5400); }
+}

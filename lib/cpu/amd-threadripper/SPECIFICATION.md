@@ -35,7 +35,7 @@ HEDT PCIe: up to 88 PCIe 5.0 lanes (platform-dependent).
 | Threadripper PRO 9955WX | 16 / 32  | 5.4 GHz | 64 MB  | 350 W | documented |
 | Threadripper PRO 9945WX | 12 / 24  | 5.4 GHz | 64 MB  | 350 W | documented |
 
-The runnable model rates its spec clock at the family's 5.4 GHz max boost; a specific SKU's base/boost is a configuration of the same model via setSpecClock.
+Each SKU above is its own runnable class (SLAMDThreadripper&lt;model&gt; / SLAMDThreadripperPro&lt;model&gt;) extending SLAMDThreadripperCPU; they share the Zen 5 x86-64 programmer model and decode() and differ in rated clock and identity label. All rate their spec clock at the 5.4 GHz family max boost; a specific SKU's base clock is a configuration of the same model via setSpecClock.
 
 ## 3. Programmer-visible state
 

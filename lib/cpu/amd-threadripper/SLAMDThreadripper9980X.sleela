@@ -1,0 +1,16 @@
+/*
+ * lib/cpu/amd-threadripper/SLAMDThreadripper9980X.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: AMD Ryzen Threadripper 9980X (Zen 5 "Shimada Peak", HEDT).
+ *   64 cores / 128 threads, ~3.2 GHz base / 5.4 GHz max boost, 256 MB L3,
+ *   4-channel DDR5-6400, sTR5/TRX50, 350 W. A thin SKU subclass of
+ *   SLAMDThreadripperCPU: it shares the Zen 5 x86-64 programmer model and
+ *   decode(), overriding only configure() with this SKU's rated clock/label.
+ *   Core/thread/cache/TDP figures are documented in SPECIFICATION.md; the
+ *   runnable model carries the rated clock.
+ * Family: cpu. Extends SLAMDThreadripperCPU.
+ */
+#sleela 1.3
+class SLAMDThreadripper9980X extends SLAMDThreadripperCPU {
+  void configure() { bringUpModel("AMD Ryzen Threadripper 9980X (Zen 5, 64C/128T)", 5400); }
+}

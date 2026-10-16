@@ -99,7 +99,25 @@ class SLCPUCatalog {
     if (fam == "intel-8086")  { SLIntel8086CPU c = new SLIntel8086CPU();   c.configure(); return c; }
     if (fam == "amd-ryzen")   { SLAMDRyzenCPU c = new SLAMDRyzenCPU();     c.configure(); return c; }
     if (fam == "amd-epyc")    { SLAMDEPYCCPU c = new SLAMDEPYCCPU();       c.configure(); return c; }
+    // EPYC 9005 "Turin" per-SKU classes (Zen 5 / Zen 5c)
+    if (fam == "epyc-9965")   { SLAMDEPYC9965 c = new SLAMDEPYC9965();     c.configure(); return c; }
+    if (fam == "epyc-9755")   { SLAMDEPYC9755 c = new SLAMDEPYC9755();     c.configure(); return c; }
+    if (fam == "epyc-9645")   { SLAMDEPYC9645 c = new SLAMDEPYC9645();     c.configure(); return c; }
+    if (fam == "epyc-9575f")  { SLAMDEPYC9575F c = new SLAMDEPYC9575F();   c.configure(); return c; }
+    if (fam == "epyc-9475f")  { SLAMDEPYC9475F c = new SLAMDEPYC9475F();   c.configure(); return c; }
+    if (fam == "epyc-9355")   { SLAMDEPYC9355 c = new SLAMDEPYC9355();     c.configure(); return c; }
+    if (fam == "epyc-9175f")  { SLAMDEPYC9175F c = new SLAMDEPYC9175F();   c.configure(); return c; }
     if (fam == "amd-threadripper") { SLAMDThreadripperCPU c = new SLAMDThreadripperCPU(); c.configure(); return c; }
+    // Threadripper 9000 "Shimada Peak" per-SKU classes (Zen 5)
+    if (fam == "tr-9980x")    { SLAMDThreadripper9980X c = new SLAMDThreadripper9980X(); c.configure(); return c; }
+    if (fam == "tr-9970x")    { SLAMDThreadripper9970X c = new SLAMDThreadripper9970X(); c.configure(); return c; }
+    if (fam == "tr-9960x")    { SLAMDThreadripper9960X c = new SLAMDThreadripper9960X(); c.configure(); return c; }
+    if (fam == "tr-pro-9995wx") { SLAMDThreadripperPro9995WX c = new SLAMDThreadripperPro9995WX(); c.configure(); return c; }
+    if (fam == "tr-pro-9985wx") { SLAMDThreadripperPro9985WX c = new SLAMDThreadripperPro9985WX(); c.configure(); return c; }
+    if (fam == "tr-pro-9975wx") { SLAMDThreadripperPro9975WX c = new SLAMDThreadripperPro9975WX(); c.configure(); return c; }
+    if (fam == "tr-pro-9965wx") { SLAMDThreadripperPro9965WX c = new SLAMDThreadripperPro9965WX(); c.configure(); return c; }
+    if (fam == "tr-pro-9955wx") { SLAMDThreadripperPro9955WX c = new SLAMDThreadripperPro9955WX(); c.configure(); return c; }
+    if (fam == "tr-pro-9945wx") { SLAMDThreadripperPro9945WX c = new SLAMDThreadripperPro9945WX(); c.configure(); return c; }
     if (fam == "amd-athlon")  { SLAMDAthlonCPU c = new SLAMDAthlonCPU();   c.configure(); return c; }
     if (fam == "apple-m1")    { SLAppleM1CPU c = new SLAppleM1CPU();       c.configure(); return c; }
     if (fam == "apple-m4")    { SLAppleM4CPU c = new SLAppleM4CPU();       c.configure(); return c; }
@@ -139,7 +157,25 @@ class SLCPUCatalog {
     add("athlon",    "AMD Athlon (K7)",       "amd-athlon", 1000, 32);
     add("ryzen",     "AMD Ryzen (Zen)",       "amd-ryzen",  4500, 64);
     add("epyc",      "AMD EPYC (Zen)",        "amd-epyc",   3700, 64);
+    // EPYC 9005 "Turin" individual SKUs (rated clock = max boost MHz)
+    add("epyc-9965", "AMD EPYC 9965 (192C Turin)",   "epyc-9965",  3700, 64);
+    add("epyc-9755", "AMD EPYC 9755 (128C Turin)",   "epyc-9755",  4100, 64);
+    add("epyc-9645", "AMD EPYC 9645 (96C Turin)",    "epyc-9645",  3700, 64);
+    add("epyc-9575f","AMD EPYC 9575F (64C Turin)",   "epyc-9575f", 5000, 64);
+    add("epyc-9475f","AMD EPYC 9475F (48C Turin)",   "epyc-9475f", 4800, 64);
+    add("epyc-9355", "AMD EPYC 9355 (32C Turin)",    "epyc-9355",  4400, 64);
+    add("epyc-9175f","AMD EPYC 9175F (16C Turin)",   "epyc-9175f", 5000, 64);
     add("threadripper","AMD Ryzen Threadripper 9000 (Zen 5)","amd-threadripper",5400,64);
+    // Threadripper 9000 "Shimada Peak" individual SKUs
+    add("tr-9980x",  "Threadripper 9980X (64C)",     "tr-9980x",   5400, 64);
+    add("tr-9970x",  "Threadripper 9970X (32C)",     "tr-9970x",   5400, 64);
+    add("tr-9960x",  "Threadripper 9960X (24C)",     "tr-9960x",   5400, 64);
+    add("tr-9995wx", "Threadripper PRO 9995WX (96C)","tr-pro-9995wx",5400,64);
+    add("tr-9985wx", "Threadripper PRO 9985WX (64C)","tr-pro-9985wx",5400,64);
+    add("tr-9975wx", "Threadripper PRO 9975WX (32C)","tr-pro-9975wx",5400,64);
+    add("tr-9965wx", "Threadripper PRO 9965WX (24C)","tr-pro-9965wx",5400,64);
+    add("tr-9955wx", "Threadripper PRO 9955WX (16C)","tr-pro-9955wx",5400,64);
+    add("tr-9945wx", "Threadripper PRO 9945WX (12C)","tr-pro-9945wx",5400,64);
     add("m1",        "Apple M1",              "apple-m1",   3200, 64);
     add("m4",        "Apple M4",              "apple-m4",   4400, 64);
     add("snapdragon","Qualcomm Snapdragon",   "snapdragon", 3300, 64);
