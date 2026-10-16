@@ -7,6 +7,7 @@ on:
       - 'lib/gui/**'
       - 'lib/gui/version-mual/**'
       - 'lib/gui/version-gual/**'
+      - 'lib/gui/version-thual/**'
       - '.github/workflows/gui-ci.yml'
   pull_request:
     paths:
@@ -14,6 +15,7 @@ on:
       - 'lib/gui/**'
       - 'lib/gui/version-mual/**'
       - 'lib/gui/version-gual/**'
+      - 'lib/gui/version-thual/**'
       - '.github/workflows/gui-ci.yml'
 
 jobs:
@@ -37,11 +39,19 @@ jobs:
           # SLGuiScriptCommand, SLGuiScript + gui-events-demo (9).
           # Support structure (DOM<->toolkit wiring): SLGuiWidgetFactory,
           # SLGuiMount, SLGuiHostAdapter, SLGuiApp + gui-app-demo (5). Baseline 25.
-          # mual (1.0) is the 25-file baseline; gual (2.0) adds SLGuiSettings (26).
+          # mual (1.0): 25-file baseline. gual (2.0): +SLGuiSettings (26).
+          # thual (3.0): gual + 5 effects units (SLGuiEffects, SLGuiRotationSchedule,
+          # SLGuiBranding, SLGuiAudioCues, gui-effects-demo) = 31.
           test "$(find lib/gui/version-mual -maxdepth 1 -name '*.sleela' | wc -l)" -eq 25
           test "$(find lib/gui/version-gual -maxdepth 1 -name '*.sleela' | wc -l)" -eq 26
+          test "$(find lib/gui/version-thual -maxdepth 1 -name '*.sleela' | wc -l)" -eq 31
           test -f lib/gui/version-gual/SLGuiSettings.sleela
-          for d in lib/gui/version-mual lib/gui/version-gual; do
+          test -f lib/gui/version-thual/SLGuiSettings.sleela
+          for c in SLGuiEffects SLGuiRotationSchedule SLGuiBranding SLGuiAudioCues; do
+            test -f "lib/gui/version-thual/$c.sleela"
+          done
+          test -f lib/gui/version-thual/gui-effects-demo.sleela
+          for d in lib/gui/version-mual lib/gui/version-gual lib/gui/version-thual; do
             test -f "$d/SLPackage.sleela"
             test -f "$d/gui-demo.sleela"
             test -f "$d/gui-events-demo.sleela"

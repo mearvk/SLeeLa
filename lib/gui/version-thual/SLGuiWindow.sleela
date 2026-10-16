@@ -1,0 +1,91 @@
+/*
+ * lib/gui/version-thual/SLGuiWindow.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiWindow — a toolkit-neutral window intent. Mirrors the
+ *   SleelaGui contract in gui/: show(title, width, height), setText(text), and
+ *   refresh(documentId, revision). SLeeLa describes the window; the backend
+ *   (Swing/JavaFX/native) renders it and marshals updates onto the toolkit
+ *   thread.
+ */
+#sleela 2.1
+// SLeeLa gui front-end contract — a window the host renders.
+// Family: gui. State transitions and the meaning of events stay in SLeeLa; the
+// backend owns presentation and desktop lifecycle.
+class SLGuiWindow {
+  String title;
+  int width;
+  int height;
+  String text;
+  int shown;                   // 1 once show() has been requested
+
+  // 2.0 window settings (defaults match SLGuiSettings; applySettings adopts a
+  // configured SLGuiSettings so a window honors the package's operating knobs).
+  int minWidth; int minHeight;
+  int maxWidth; int maxHeight; // 0 = unbounded
+  int resizable;
+  int decorated;
+
+  void configure(String t, int w, int h) {
+    title = t; width = w; height = h; text = ""; shown = 0;
+    minWidth = 320; minHeight = 240; maxWidth = 0; maxHeight = 0;
+    resizable = 1; decorated = 1;
+    clampExtent();
+  }
+
+  // Adopt presentation/window settings from a configured SLGuiSettings, then
+  // clamp the current extent into the new min/max window.
+  void applySettings(SLGuiSettings s) {
+    if (s == null) { return; }
+    minWidth = s.getMinWidth(); minHeight = s.getMinHeight();
+    maxWidth = s.getMaxWidth(); maxHeight = s.getMaxHeight();
+    resizable = s.resizableOn() ? 1 : 0;
+    decorated = s.decoratedOn() ? 1 : 0;
+    clampExtent();
+  }
+
+  // Keep width/height within [min, max] (max 0 = unbounded).
+  void clampExtent() {
+    if (width < minWidth) { width = minWidth; }
+    if (height < minHeight) { height = minHeight; }
+    if (maxWidth > 0 && width > maxWidth) { width = maxWidth; }
+    if (maxHeight > 0 && height > maxHeight) { height = maxHeight; }
+  }
+
+  // Resize request, honored only when the window is resizable, then clamped.
+  boolean resize(int w, int h) {
+    if (resizable == 0) { return false; }
+    if (w > 0) { width = w; }
+    if (h > 0) { height = h; }
+    clampExtent();
+    return true;
+  }
+
+  // Request the window be shown at its configured size.
+  void show() { shown = 1; }
+  boolean visible() { return shown == 1; }
+  // A window is valid once it has a title, a positive extent within its bounds,
+  // and (when bounded) a max not below its min.
+  boolean valid() {
+    boolean base = title != null && width > 0 && height > 0;
+    boolean wOk = maxWidth == 0 || maxWidth >= minWidth;
+    boolean hOk = maxHeight == 0 || maxHeight >= minHeight;
+    return base && wOk && hOk;
+  }
+  String getTitle() { return title; }
+  int getWidth() { return width; }
+  int getHeight() { return height; }
+  int getMinWidth() { return minWidth; }
+  int getMinHeight() { return minHeight; }
+  int getMaxWidth() { return maxWidth; }
+  int getMaxHeight() { return maxHeight; }
+  boolean resizableOn() { return resizable == 1; }
+  boolean decoratedOn() { return decorated == 1; }
+  // Set the window's text (the SleelaGui.setText sink).
+  void setText(String value) { text = value; }
+  String getText() { return text; }
+  // The document-change refresh sink: SleelaGui.refresh(id, revision). The
+  // default publishes a short status line, exactly like the Java default.
+  void refresh(String documentId, String revision) {
+    text = "Document '" + documentId + "' changed (" + revision + ")";
+  }
+}

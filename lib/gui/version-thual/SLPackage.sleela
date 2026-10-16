@@ -1,0 +1,36 @@
+/*
+ * lib/gui/version-thual/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for gui — the thual
+ *   line (version 3.0). It builds on the gual (2.0) settings surface and adds a
+ *   clean, professional visual-effects layer: lighting/glow/3D shine, shadow,
+ *   metal look-and-feel, component rotation (incl. scheduled "schene" rotation),
+ *   fade in/out, activation audio, and logo branding.
+ */
+#sleela 2.1
+// Library facade for module package: gui
+// Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+// This package is the SLeeLa-facing *consequence* of the top-level gui/ work
+// (the Java host, the native C ABI bridge gui/native/sleela_gui_bridge.*, and
+// the 1..14 document-change listener). The Master Classes (SLGuiBackend,
+// SLGuiWindow, SLGuiAction, SLGuiRuntime, SLGuiHost, SLGuiDocument,
+// SLGuiDocumentListener, SLGuiBridge, SLGuiIntegration) are first-class
+// one-class-per-file source units; this facade only names the package itself,
+// mirroring lib/citizen/SLPackage.sleela.
+class SLPackage {
+  // Version identity: this is the thual line — the 3.0 GUI package. mual is the
+  // 1.0 baseline, gual the 2.0 settings-first line; thual (3.0) adds the clean,
+  // professional visual-effects surface (lighting/glow/3D shine, rotation +
+  // scheduled "schene" rotation, fade in/out, activation audio, shadow, metal
+  // look-and-feel, logo branding). featureLevel() lets callers branch.
+  static final int FEATURE_LEVEL = 3;   // 3 = thual/3.0 ; 2 = gual/2.0 ; 1 = mual/1.0
+  String packageName;
+  String packageVersion;
+  void configure(String name) { packageName = name; packageVersion = "3.0"; }
+  String name() { return packageName; }
+  String version() { return packageVersion; }
+  int featureLevel() { return FEATURE_LEVEL; }
+  boolean isTwoPointZero() { return FEATURE_LEVEL >= 2; }
+  boolean isThreePointZero() { return FEATURE_LEVEL >= 3; }
+  boolean available() { return packageName != null; }
+}

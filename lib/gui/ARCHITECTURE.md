@@ -64,8 +64,30 @@ The GUI `.sleela` impl is carried in two parallel lines under `lib/gui/`:
     count into the 1..14 contract, plus debounce, a coalesce-queue cap, a
     backpressure policy (coalesce/drop-oldest/block), and `applySettings(...)`.
 
-The two lines are source-compatible: 2.0 keeps every 1.0 entry point and adds
-the settings surface on top.
+- **`version-thual` — 3.0.** The 2.0 surface plus a clean, professional
+  **visual-effects** layer. `SLPackage` reports `version() == "3.0"` /
+  `featureLevel() == 3` (`isThreePointZero()`), and the line adds:
+  - **`SLGuiEffects`** — a per-component effect bundle attached to an `SLGuiNode`:
+    lighting + **glow**, **3D shine** highlight, drop **shadow**, a **metal**
+    look-and-feel, **rotation** (fixed or scheduled), **fade** in/out, and an
+    **activation audio** cue. Every knob is clamped; `toStyle()` flattens it into
+    the node's style for the `SLGuiMount` reconciler; `honored()` checks ranges.
+  - **`SLGuiRotationSchedule` (a "schene")** — scheduled rotation on a cadence.
+    Its second role is a **cryptographic rotation cadence for an internal
+    memorandum**: the same tick that turns the visible angle advances a key
+    `epoch()`, so visible rotation is the honest external signal of an internal
+    key rotation. Carries cadence/accounting only (no cipher).
+  - **`SLGuiBranding`** — logo + brand identity (asset, placement, scale,
+    wordmark, accent/secondary colors, tagline) the host paints into the chrome.
+  - **`SLGuiAudioCues`** — the activation-audio registry (named cues → host
+    assets, master enable/mute/gain) a component's effect references by name.
+  - `SLGuiNode` gains `effects()` / `applyEffects()` / `tickEffects()`, and
+    `SLGuiApp` gains `brand()`, `audioCues()`, and an `advanceEffects()` tick in
+    its loop that drives scheduled rotations (and their memo key epochs) + fades.
+    A runnable walkthrough is `version-thual/gui-effects-demo.sleela`.
+
+The lines are source-compatible: each higher line keeps every entry point of the
+one below and adds its surface on top (1.0 → +settings → +visual effects).
 
 ## Events, DHTML-style DOM, and scripting
 

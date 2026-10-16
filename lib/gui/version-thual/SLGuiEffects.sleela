@@ -1,0 +1,170 @@
+/*
+ * lib/gui/version-thual/SLGuiEffects.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiEffects — the 3.0 (thual) per-component visual-effect
+ *   bundle. A node may carry one of these to request clean, professional
+ *   presentation the host renders onto the live widget: lighting + glow, a 3D
+ *   shine highlight, a drop shadow, a metal look-and-feel, a rotation (fixed or
+ *   on a schedule), and a fade in/out. Every knob is CLAMPED to a safe window,
+ *   so a dialed value is never out of range, and toStyle() flattens the bundle
+ *   into the node's inline-style map (effect-* properties) the SLGuiMount
+ *   reconciler pushes to the toolkit. SLeeLa owns the intent; the host owns the
+ *   pixels.
+ *
+ *   The audio-on-activation hook is intentionally a NAME here (a cue the host
+ *   plays through the audio stack); SLGuiEffects carries the cue + gain, not the
+ *   sample. Rotation scheduling ("schene") is carried as an SLGuiRotationSchedule
+ *   so a component can rotate on a cadence; see that class for the crypto-framed
+ *   internal-memorandum rationale.
+ *
+ * Family: gui. Attached to SLGuiNode; flattened to style; realized by the host.
+ */
+#sleela 2.1
+class SLGuiEffects {
+  // --- lighting / glow ---
+  int glow;             // 1 = glow enabled
+  int glowRadiusPx;     // glow spread, 0..64 px
+  int glowIntensityPct; // glow strength, 0..100 %
+  String glowColor;     // "#rrggbb" or a named accent ("accent"/"warning"/...)
+
+  // --- 3D shine highlight ---
+  int shine;            // 1 = 3D specular shine enabled
+  int shineAngleDeg;    // highlight light angle, 0..359 deg
+  int shineIntensityPct;// 0..100 %
+
+  // --- drop shadow ---
+  int shadow;           // 1 = shadow enabled
+  int shadowOffsetX;    // -32..32 px
+  int shadowOffsetY;    // -32..32 px
+  int shadowBlurPx;     // 0..64 px
+  int shadowOpacityPct; // 0..100 %
+
+  // --- metal look-and-feel ---
+  int metal;            // 1 = brushed/metal surface enabled
+  int metalSheenPct;    // 0..100 % (how reflective the surface reads)
+
+  // --- rotation ---
+  int rotationDeg;      // current fixed rotation, 0..359 deg
+  SLGuiRotationSchedule schedule;  // optional scheduled "schene" rotation (null = static)
+
+  // --- fade ---
+  int opacityPct;       // 0..100 % current opacity
+  int fadeMillis;       // transition duration for fade in/out, 0..10000 ms
+
+  // --- activation audio ---
+  String activationCue; // host audio cue name played on activation ("" = silent)
+  int activationGainPct;// 0..100 % playback gain
+
+  void configure() {
+    glow = 0; glowRadiusPx = 12; glowIntensityPct = 60; glowColor = "accent";
+    shine = 0; shineAngleDeg = 45; shineIntensityPct = 50;
+    shadow = 0; shadowOffsetX = 0; shadowOffsetY = 4; shadowBlurPx = 12; shadowOpacityPct = 35;
+    metal = 0; metalSheenPct = 40;
+    rotationDeg = 0; schedule = null;
+    opacityPct = 100; fadeMillis = 200;
+    activationCue = ""; activationGainPct = 80;
+  }
+
+  int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
+  int wrapDeg(int d) { int r = d % 360; if (r < 0) { r = r + 360; } return r; }
+
+  // ---- lighting / glow ----------------------------------------------------
+  void enableGlow(int radiusPx, int intensityPct, String color) {
+    glow = 1;
+    glowRadiusPx = clamp(radiusPx, 0, 64);
+    glowIntensityPct = clamp(intensityPct, 0, 100);
+    if (color != null) { glowColor = color; }
+  }
+  void disableGlow() { glow = 0; }
+  boolean glowOn() { return glow == 1; }
+
+  // ---- 3D shine -----------------------------------------------------------
+  void enableShine(int angleDeg, int intensityPct) {
+    shine = 1;
+    shineAngleDeg = wrapDeg(angleDeg);
+    shineIntensityPct = clamp(intensityPct, 0, 100);
+  }
+  void disableShine() { shine = 0; }
+  boolean shineOn() { return shine == 1; }
+
+  // ---- shadow -------------------------------------------------------------
+  void enableShadow(int offX, int offY, int blurPx, int opacityPct) {
+    shadow = 1;
+    shadowOffsetX = clamp(offX, -32, 32);
+    shadowOffsetY = clamp(offY, -32, 32);
+    shadowBlurPx = clamp(blurPx, 0, 64);
+    shadowOpacityPct = clamp(opacityPct, 0, 100);
+  }
+  void disableShadow() { shadow = 0; }
+  boolean shadowOn() { return shadow == 1; }
+
+  // ---- metal look-and-feel ------------------------------------------------
+  void enableMetal(int sheenPct) { metal = 1; metalSheenPct = clamp(sheenPct, 0, 100); }
+  void disableMetal() { metal = 0; }
+  boolean metalOn() { return metal == 1; }
+
+  // ---- rotation -----------------------------------------------------------
+  void rotateTo(int deg) { rotationDeg = wrapDeg(deg); }
+  void rotateBy(int deltaDeg) { rotationDeg = wrapDeg(rotationDeg + deltaDeg); }
+  int rotation() { return rotationDeg; }
+  // Attach a scheduled rotation ("schene"): the component rotates on a cadence.
+  void setSchedule(SLGuiRotationSchedule s) { schedule = s; }
+  SLGuiRotationSchedule rotationSchedule() { return schedule; }
+  boolean scheduledRotation() { return schedule != null && schedule.active(); }
+  // Advance a scheduled rotation by `elapsedMillis`; applies the schedule's step
+  // when its interval elapses. Returns true when the rotation moved this tick.
+  boolean tickRotation(int elapsedMillis) {
+    if (schedule == null) { return false; }
+    int step = schedule.advance(elapsedMillis);
+    if (step != 0) { rotateBy(step); return true; }
+    return false;
+  }
+
+  // ---- fade ---------------------------------------------------------------
+  void setOpacity(int pct) { opacityPct = clamp(pct, 0, 100); }
+  int opacity() { return opacityPct; }
+  void setFadeMillis(int ms) { fadeMillis = clamp(ms, 0, 10000); }
+  int getFadeMillis() { return fadeMillis; }
+  // Fade intents: the host animates opacity 0<->100 over fadeMillis. These set
+  // the TARGET; a reconciler/host interpolates toward it over the duration.
+  void fadeIn()  { opacityPct = 100; }
+  void fadeOut() { opacityPct = 0; }
+  boolean faded() { return opacityPct == 0; }
+
+  // ---- activation audio ---------------------------------------------------
+  void setActivationCue(String cue, int gainPct) {
+    activationCue = (cue == null) ? "" : cue;
+    activationGainPct = clamp(gainPct, 0, 100);
+  }
+  String getActivationCue() { return activationCue; }
+  int getActivationGainPct() { return activationGainPct; }
+  boolean hasActivationAudio() { return activationCue != ""; }
+
+  // Internally consistent when every knob sits in its clamped window.
+  boolean honored() {
+    boolean g = glowRadiusPx >= 0 && glowRadiusPx <= 64 && glowIntensityPct >= 0 && glowIntensityPct <= 100;
+    boolean s = shineIntensityPct >= 0 && shineIntensityPct <= 100;
+    boolean sh = shadowBlurPx >= 0 && shadowBlurPx <= 64 && shadowOpacityPct >= 0 && shadowOpacityPct <= 100;
+    boolean o = opacityPct >= 0 && opacityPct <= 100;
+    boolean a = activationGainPct >= 0 && activationGainPct <= 100;
+    boolean sc = schedule == null || schedule.honored();
+    return g && s && sh && o && a && sc;
+  }
+
+  // Flatten the enabled effects into a node's inline style map via the callback-
+  // free convention the mount reconciler reads: the caller applies each returned
+  // "effect-*" property. Here we return a single compact descriptor string the
+  // host parses; SLGuiMount copies it onto the widget.
+  String toStyle() {
+    String s = "";
+    if (glow == 1)   { s = s + "glow:" + glowRadiusPx + "/" + glowIntensityPct + "/" + glowColor + ";"; }
+    if (shine == 1)  { s = s + "shine:" + shineAngleDeg + "/" + shineIntensityPct + ";"; }
+    if (shadow == 1) { s = s + "shadow:" + shadowOffsetX + "/" + shadowOffsetY + "/" + shadowBlurPx + "/" + shadowOpacityPct + ";"; }
+    if (metal == 1)  { s = s + "metal:" + metalSheenPct + ";"; }
+    if (rotationDeg != 0 || schedule != null) { s = s + "rotate:" + rotationDeg + ";"; }
+    if (opacityPct != 100) { s = s + "opacity:" + opacityPct + ";"; }
+    if (fadeMillis != 200) { s = s + "fade:" + fadeMillis + ";"; }
+    if (activationCue != "") { s = s + "audio:" + activationCue + "/" + activationGainPct + ";"; }
+    return s;
+  }
+}

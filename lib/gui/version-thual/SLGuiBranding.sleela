@@ -1,0 +1,77 @@
+/*
+ * lib/gui/version-thual/SLGuiBranding.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiBranding — the 3.0 logo + brand-identity surface for
+ *   a SLeeLa GUI app: a logo asset (by host-resolvable name/path), a placement,
+ *   a scale, an optional wordmark, brand accent/secondary colors, and a tagline.
+ *   The host paints the logo into the chrome (title bar / splash / about / app
+ *   header) at the requested placement and scale; SLeeLa names the brand, the
+ *   host renders it. Every knob is validated/clamped.
+ *
+ * Family: gui. Owned by SLGuiApp; read by the host when it dresses the window.
+ */
+#sleela 2.1
+class SLGuiBranding {
+  // Logo placement in the app chrome.
+  static final int PLACE_TITLEBAR = 0;
+  static final int PLACE_HEADER   = 1;
+  static final int PLACE_SPLASH   = 2;
+  static final int PLACE_ABOUT    = 3;
+  static final int PLACE_WATERMARK= 4;
+
+  String logoAsset;     // host-resolvable logo name/path (e.g. "brand/logo.svg")
+  int placement;        // PLACE_*
+  int scalePct;         // logo scale, 25..400 %
+  String wordmark;      // text wordmark shown beside/instead of the logo
+  String accentColor;   // primary brand color "#rrggbb" (or named)
+  String secondaryColor;// secondary brand color
+  String tagline;       // short brand tagline
+  int shown;            // 1 = branding is active
+
+  void configure(String asset) {
+    logoAsset = (asset == null) ? "" : asset;
+    placement = PLACE_HEADER; scalePct = 100;
+    wordmark = ""; accentColor = "accent"; secondaryColor = "";
+    tagline = ""; shown = (logoAsset != "") ? 1 : 0;
+  }
+
+  int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
+
+  void setLogo(String asset) { logoAsset = (asset == null) ? "" : asset; shown = (logoAsset != "") ? 1 : 0; }
+  void setPlacement(int p) { if (p >= PLACE_TITLEBAR && p <= PLACE_WATERMARK) { placement = p; } }
+  void setScalePct(int pct) { scalePct = clamp(pct, 25, 400); }
+  void setWordmark(String w) { wordmark = (w == null) ? "" : w; }
+  void setColors(String accent, String secondary) {
+    if (accent != null) { accentColor = accent; }
+    if (secondary != null) { secondaryColor = secondary; }
+  }
+  void setTagline(String t) { tagline = (t == null) ? "" : t; }
+  void show() { shown = 1; }
+  void hide() { shown = 0; }
+
+  String logo() { return logoAsset; }
+  int getPlacement() { return placement; }
+  int getScalePct() { return scalePct; }
+  String getWordmark() { return wordmark; }
+  String getAccent() { return accentColor; }
+  String getSecondary() { return secondaryColor; }
+  String getTagline() { return tagline; }
+  boolean visible() { return shown == 1; }
+  boolean hasLogo() { return logoAsset != ""; }
+
+  String placementName() {
+    if (placement == PLACE_TITLEBAR) { return "titlebar"; }
+    if (placement == PLACE_HEADER)   { return "header"; }
+    if (placement == PLACE_SPLASH)   { return "splash"; }
+    if (placement == PLACE_ABOUT)    { return "about"; }
+    return "watermark";
+  }
+
+  boolean valid() { return scalePct >= 25 && scalePct <= 400; }
+
+  String report() {
+    return "logo='" + logoAsset + "' @" + placementName() + " " + scalePct + "%" +
+           (wordmark != "" ? " wordmark='" + wordmark + "'" : "") +
+           " accent=" + accentColor + (tagline != "" ? " tagline='" + tagline + "'" : "");
+  }
+}
