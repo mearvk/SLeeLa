@@ -12668,7 +12668,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiApp.sleela",
-      "sha256": "e7bd004809cf5e3f767a1f96d58ed15faf21fbfce0bc32ae890d367f523185db"
+      "sha256": "6a87e8f144a1e62367aab5b3063c5547e65f3180e776b6cba21d05c51221ab67"
     },
     {
       "path": "lib/gui/version-dual/SLGuiAudioCues.sleela",
@@ -12693,6 +12693,10 @@
     {
       "path": "lib/gui/version-dual/SLGuiClickObject.sleela",
       "sha256": "bc334a93bad06acce471a3d1de25a755cd41b348c3a875ae7c7221eee84f8c57"
+    },
+    {
+      "path": "lib/gui/version-dual/SLGuiCodecs.sleela",
+      "sha256": "0c94d1c1c88e70d0dd73d414fc354ffc84b4f527d45f0edf864c8ead84d56a02"
     },
     {
       "path": "lib/gui/version-dual/SLGuiDocument.sleela",
@@ -12737,6 +12741,10 @@
     {
       "path": "lib/gui/version-dual/SLGuiHostAdapter.sleela",
       "sha256": "27eb87db923699ce9f1195d3ac8c2d7cf5319e16b5ea9ebe0e7eba3b15923231"
+    },
+    {
+      "path": "lib/gui/version-dual/SLGuiHtmlRenderer.sleela",
+      "sha256": "e2e22c5968fc1c54c09ee23d3646148ff71023ee90ad7589f35f89846fce288a"
     },
     {
       "path": "lib/gui/version-dual/SLGuiIntegration.sleela",
@@ -12784,7 +12792,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiWidgetFactory.sleela",
-      "sha256": "d1e17ea18a83e15c9791f049fcc887d2b0ab3cd11835f6c25a2bea02e1e19b7d"
+      "sha256": "255fcd186068387834bc5785716a2f90211fc62f84d59e8103064833234e9fa8"
     },
     {
       "path": "lib/gui/version-dual/SLGuiWindow.sleela",
@@ -12813,6 +12821,10 @@
     {
       "path": "lib/gui/version-dual/gui-events-demo.sleela",
       "sha256": "fdc9ebda2fc2000191618ee9587b46133adc9e113e0ab461f6945c5d579f003f"
+    },
+    {
+      "path": "lib/gui/version-dual/gui-html-codecs-demo.sleela",
+      "sha256": "83b904709fb50c8c940a0fddbfb86389f7de37d28c8ae761506e30edb0d8541d"
     },
     {
       "path": "lib/gui/version-gual/SLGuiAction.sleela",
