@@ -1,0 +1,79 @@
+/*
+ * lib/xlt/SLXltRefBank.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLXltRefBank — a small fixed-capacity bank of String
+ *   values indexed by integer position, used by SLXltProducerRegistry to hold
+ *   the ref string of each registered producer (SLRAM stores words, not
+ *   strings, so the registry pages its integer attributes into SLRAM and its
+ *   ref strings into this bank at the same index). The surface language has no
+ *   arrays, so the bank is a bounded set of explicit slots selected by index,
+ *   the same idiom SLVMClass uses for its f0..f7 / m0..m7 members.
+ *
+ * Family: xlt. Internal helper for SLXltProducerRegistry.
+ */
+#sleela 2.1
+class SLXltRefBank {
+  int cap;
+  // 64 explicit slots (matches SLXltProducerRegistry.MAX). Grouped for brevity.
+  String s0;  String s1;  String s2;  String s3;  String s4;  String s5;  String s6;  String s7;
+  String s8;  String s9;  String s10; String s11; String s12; String s13; String s14; String s15;
+  String s16; String s17; String s18; String s19; String s20; String s21; String s22; String s23;
+  String s24; String s25; String s26; String s27; String s28; String s29; String s30; String s31;
+  String s32; String s33; String s34; String s35; String s36; String s37; String s38; String s39;
+  String s40; String s41; String s42; String s43; String s44; String s45; String s46; String s47;
+  String s48; String s49; String s50; String s51; String s52; String s53; String s54; String s55;
+  String s56; String s57; String s58; String s59; String s60; String s61; String s62; String s63;
+
+  void configure(int capacity) { cap = capacity; }
+
+  void put(int i, String v) {
+    if (i == 0) { s0 = v; } else if (i == 1) { s1 = v; } else if (i == 2) { s2 = v; }
+    else if (i == 3) { s3 = v; } else if (i == 4) { s4 = v; } else if (i == 5) { s5 = v; }
+    else if (i == 6) { s6 = v; } else if (i == 7) { s7 = v; } else if (i == 8) { s8 = v; }
+    else if (i == 9) { s9 = v; } else if (i == 10) { s10 = v; } else if (i == 11) { s11 = v; }
+    else if (i == 12) { s12 = v; } else if (i == 13) { s13 = v; } else if (i == 14) { s14 = v; }
+    else if (i == 15) { s15 = v; } else if (i == 16) { s16 = v; } else if (i == 17) { s17 = v; }
+    else if (i == 18) { s18 = v; } else if (i == 19) { s19 = v; } else if (i == 20) { s20 = v; }
+    else if (i == 21) { s21 = v; } else if (i == 22) { s22 = v; } else if (i == 23) { s23 = v; }
+    else if (i == 24) { s24 = v; } else if (i == 25) { s25 = v; } else if (i == 26) { s26 = v; }
+    else if (i == 27) { s27 = v; } else if (i == 28) { s28 = v; } else if (i == 29) { s29 = v; }
+    else if (i == 30) { s30 = v; } else if (i == 31) { s31 = v; } else if (i == 32) { s32 = v; }
+    else if (i == 33) { s33 = v; } else if (i == 34) { s34 = v; } else if (i == 35) { s35 = v; }
+    else if (i == 36) { s36 = v; } else if (i == 37) { s37 = v; } else if (i == 38) { s38 = v; }
+    else if (i == 39) { s39 = v; } else if (i == 40) { s40 = v; } else if (i == 41) { s41 = v; }
+    else if (i == 42) { s42 = v; } else if (i == 43) { s43 = v; } else if (i == 44) { s44 = v; }
+    else if (i == 45) { s45 = v; } else if (i == 46) { s46 = v; } else if (i == 47) { s47 = v; }
+    else if (i == 48) { s48 = v; } else if (i == 49) { s49 = v; } else if (i == 50) { s50 = v; }
+    else if (i == 51) { s51 = v; } else if (i == 52) { s52 = v; } else if (i == 53) { s53 = v; }
+    else if (i == 54) { s54 = v; } else if (i == 55) { s55 = v; } else if (i == 56) { s56 = v; }
+    else if (i == 57) { s57 = v; } else if (i == 58) { s58 = v; } else if (i == 59) { s59 = v; }
+    else if (i == 60) { s60 = v; } else if (i == 61) { s61 = v; } else if (i == 62) { s62 = v; }
+    else if (i == 63) { s63 = v; }
+  }
+
+  String get(int i) {
+    if (i == 0) { return s0; } if (i == 1) { return s1; } if (i == 2) { return s2; }
+    if (i == 3) { return s3; } if (i == 4) { return s4; } if (i == 5) { return s5; }
+    if (i == 6) { return s6; } if (i == 7) { return s7; } if (i == 8) { return s8; }
+    if (i == 9) { return s9; } if (i == 10) { return s10; } if (i == 11) { return s11; }
+    if (i == 12) { return s12; } if (i == 13) { return s13; } if (i == 14) { return s14; }
+    if (i == 15) { return s15; } if (i == 16) { return s16; } if (i == 17) { return s17; }
+    if (i == 18) { return s18; } if (i == 19) { return s19; } if (i == 20) { return s20; }
+    if (i == 21) { return s21; } if (i == 22) { return s22; } if (i == 23) { return s23; }
+    if (i == 24) { return s24; } if (i == 25) { return s25; } if (i == 26) { return s26; }
+    if (i == 27) { return s27; } if (i == 28) { return s28; } if (i == 29) { return s29; }
+    if (i == 30) { return s30; } if (i == 31) { return s31; } if (i == 32) { return s32; }
+    if (i == 33) { return s33; } if (i == 34) { return s34; } if (i == 35) { return s35; }
+    if (i == 36) { return s36; } if (i == 37) { return s37; } if (i == 38) { return s38; }
+    if (i == 39) { return s39; } if (i == 40) { return s40; } if (i == 41) { return s41; }
+    if (i == 42) { return s42; } if (i == 43) { return s43; } if (i == 44) { return s44; }
+    if (i == 45) { return s45; } if (i == 46) { return s46; } if (i == 47) { return s47; }
+    if (i == 48) { return s48; } if (i == 49) { return s49; } if (i == 50) { return s50; }
+    if (i == 51) { return s51; } if (i == 52) { return s52; } if (i == 53) { return s53; }
+    if (i == 54) { return s54; } if (i == 55) { return s55; } if (i == 56) { return s56; }
+    if (i == 57) { return s57; } if (i == 58) { return s58; } if (i == 59) { return s59; }
+    if (i == 60) { return s60; } if (i == 61) { return s61; } if (i == 62) { return s62; }
+    if (i == 63) { return s63; }
+    return "";
+  }
+}

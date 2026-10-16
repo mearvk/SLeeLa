@@ -16,12 +16,13 @@
  *     - a CONGRUENCE report of why it could not be built (a missing part, or a
  *       part not agreeable to design).
  *
- *   Resolution model: like the rest of the tree, Sleela source cannot `new` a
- *   class from a runtime string, so the compiler validates a declared ref
- *   against the set of KNOWN producer keys (the same keys SLComponentCatalog
- *   exposes and the CPU folders define) and builds the recognized parts through
- *   the catalog. An unknown ref is a "missing part" congruence; a recognized
- *   ref that conflicts with another part is a "not agreeable" congruence.
+ *   Resolution model: recognition is driven by an explicit SLXltProducerRegistry
+ *   (a new part becomes recognizable by registering it, not by editing the
+ *   compiler); the registry also supplies the channel attributes the agreement
+ *   check needs. Since the surface language cannot `new` a class from a runtime
+ *   string, once a ref is recognized the compiler maps it to the concrete
+ *   SLComponentCatalog call. An unregistered ref is a "missing part" congruence;
+ *   a registered ref that conflicts with another part is a "not agreeable" one.
  *
  * Family: xlt. Consumes SLXltSource; composes SLComponentCatalog +
  *   SLExecutorBuild; produces SLXltBuildResult. Parallels Nordshrift for SST.
@@ -29,14 +30,20 @@
 #sleela 2.1
 class SLXltCompiler {
   SLComponentCatalog parts;
+  SLXltProducerRegistry registry;   // what refs are recognized, per slot
   SLExecutorBuild build;      // the real assembly produced on success
   int memChannelsWanted;      // channels the declared memory needs (for agreement)
   int boardChannels;          // channels the declared board routes (0 = no board)
 
   void configure() {
     parts = new SLComponentCatalog();
+    registry = new SLXltProducerRegistry(); registry.configure();
     memChannelsWanted = 1; boardChannels = 0;
   }
+
+  // Allow callers to register additional producers before compiling, so a new
+  // part becomes recognizable without editing the compiler.
+  void registerProducer(int slot, String ref, int attr) { registry.register(slot, ref, attr); }
 
   // Compile an .xlt source to a build result. Ordered, orthogonal, congruent.
   SLXltBuildResult compile(SLXltSource src) {
@@ -49,30 +56,30 @@ class SLXltCompiler {
     // ---- 1. CPU (required) ----
     if (src.cpu() == "") {
       res.recordReason(res.REASON_MISSING, "no cpu declared: a model requires a CPU");
-    } else if (knownCpu(src.cpu()) == 0) {
-      res.recordReason(res.REASON_MISSING, "cpu '" + src.cpu() + "' is not a known SKU");
+    } else if (registry.known(registry.SLOT_CPU, src.cpu()) == false) {
+      res.recordReason(res.REASON_MISSING, "cpu '" + src.cpu() + "' is not a registered SKU");
     } else {
       res.recordBuilt("cpu: " + src.cpu());
     }
 
     // ---- 2. board (optional) ----
     if (src.hasBoard()) {
-      boardChannels = boardChannelsOf(src.board());
-      if (boardChannels == 0) {
-        res.recordReason(res.REASON_MISSING, "board '" + src.board() + "' is not a known motherboard");
+      if (registry.known(registry.SLOT_BOARD, src.board()) == false) {
+        res.recordReason(res.REASON_MISSING, "board '" + src.board() + "' is not a registered motherboard");
       } else {
+        boardChannels = registry.attrOf(registry.SLOT_BOARD, src.board());
         build.installBoard(boardFor(src.board()));
         res.recordBuilt("board: " + src.board() + " (" + boardChannels + "-channel)");
       }
     }
 
     // ---- 3. memory (required) ----
-    memChannelsWanted = memoryChannelsOf(src.memory());
     if (src.memory() == "") {
       res.recordReason(res.REASON_MISSING, "no memory declared: a model requires main memory");
-    } else if (knownMemory(src.memory()) == 0) {
-      res.recordReason(res.REASON_MISSING, "memory '" + src.memory() + "' is not a known module");
+    } else if (registry.known(registry.SLOT_MEMORY, src.memory()) == false) {
+      res.recordReason(res.REASON_MISSING, "memory '" + src.memory() + "' is not a registered module");
     } else {
+      memChannelsWanted = registry.attrOf(registry.SLOT_MEMORY, src.memory());
       SLMemoryModule mod = memoryFor(src.memory(), src.memoryCapacity());
       // Agreement check: memory channels must fit the board's routed channels.
       if (boardChannels > 0 && memChannelsWanted > boardChannels) {
@@ -84,10 +91,10 @@ class SLXltCompiler {
         res.recordBuilt("memory: " + src.memory() + " x" + src.memoryCapacity() + " MiB");
         // ---- 3b. cadence overlay (optional, rides the memory) ----
         if (src.hasCadence()) {
-          int tech = cadenceTechOf(src.cadence());
-          if (tech < 0) {
-            res.recordReason(res.REASON_MISSING, "cadence '" + src.cadence() + "' is not a known generation");
+          if (registry.known(registry.SLOT_CADENCE, src.cadence()) == false) {
+            res.recordReason(res.REASON_MISSING, "cadence '" + src.cadence() + "' is not a registered generation");
           } else {
+            int tech = registry.attrOf(registry.SLOT_CADENCE, src.cadence());
             SLMemoryInterface iface = parts.memInterface(src.cadence() + "-cadence", mod, tech);
             build.installMemoryInterface(iface);
             res.recordBuilt("cadence: refreshes as " + src.cadence());
@@ -98,8 +105,8 @@ class SLXltCompiler {
 
     // ---- 4. storage (optional) ----
     if (src.hasStorage()) {
-      if (knownStorage(src.storage()) == 0) {
-        res.recordReason(res.REASON_MISSING, "storage '" + src.storage() + "' is not a known device");
+      if (registry.known(registry.SLOT_STORAGE, src.storage()) == false) {
+        res.recordReason(res.REASON_MISSING, "storage '" + src.storage() + "' is not a registered device");
       } else {
         build.installStorage(storageFor(src.storage()));
         res.recordBuilt("storage: " + src.storage());
@@ -108,8 +115,8 @@ class SLXltCompiler {
 
     // ---- 5. bus (optional) ----
     if (src.hasBus()) {
-      if (knownBus(src.bus()) == 0) {
-        res.recordReason(res.REASON_MISSING, "bus '" + src.bus() + "' is not a known system bus");
+      if (registry.known(registry.SLOT_BUS, src.bus()) == false) {
+        res.recordReason(res.REASON_MISSING, "bus '" + src.bus() + "' is not a registered system bus");
       } else {
         build.installBus(busFor(src.bus()));
         res.recordBuilt("bus: " + src.bus());
@@ -122,27 +129,10 @@ class SLXltCompiler {
 
   SLExecutorBuild assembled() { return build; }
 
-  // ---------------- resolution tables (known producer keys) ----------------
-  // CPU SKU roster recognized by name (EPYC + Threadripper families).
-  int knownCpu(String ref) {
-    if (ref == "SLAMDEPYC9575F" || ref == "SLAMDEPYC9965" || ref == "SLAMDEPYC9755" ||
-        ref == "SLAMDEPYC9645"  || ref == "SLAMDEPYC9475F" || ref == "SLAMDEPYC9355" ||
-        ref == "SLAMDEPYC9175F" || ref == "SLAMDEPYCCPU") { return 1; }
-    if (ref == "SLAMDThreadripper9980X" || ref == "SLAMDThreadripper9970X" ||
-        ref == "SLAMDThreadripper9960X" || ref == "SLAMDThreadripperPro9995WX" ||
-        ref == "SLAMDThreadripperPro9985WX" || ref == "SLAMDThreadripperPro9975WX" ||
-        ref == "SLAMDThreadripperPro9965WX" || ref == "SLAMDThreadripperPro9955WX" ||
-        ref == "SLAMDThreadripperPro9945WX" || ref == "SLAMDThreadripperCPU") { return 1; }
-    return 0;
-  }
-
-  int knownMemory(String ref) {
-    if (ref == "ddr_400" || ref == "ddr2_800" || ref == "ddr3_1600" ||
-        ref == "ddr4_3200" || ref == "ddr5_6000" || ref == "ddr5_6400" ||
-        ref == "ddr5_6400_quadChannel" || ref == "ddr5_6400_octaChannel" ||
-        ref == "sdram_pc100" || ref == "dram_fpm" || ref == "sram_fast") { return 1; }
-    return 0;
-  }
+  // ---------------- ref -> real catalog producer mappings ------------------
+  // Recognition and channel attributes come from SLXltProducerRegistry; these
+  // methods only map an already-recognized ref to the concrete catalog call
+  // (the surface language cannot `new` a type from a runtime string).
   SLMemoryModule memoryFor(String ref, int capMiB) {
     if (ref == "ddr_400")    { return parts.ddr_400(capMiB); }
     if (ref == "ddr2_800")   { return parts.ddr2_800(capMiB); }
@@ -156,36 +146,12 @@ class SLXltCompiler {
     if (ref == "dram_fpm")    { return parts.dram_fpm(capMiB); }
     return parts.sram_fast(capMiB);
   }
-  int memoryChannelsOf(String ref) {
-    if (ref == "ddr5_6400_quadChannel") { return 4; }
-    if (ref == "ddr5_6400_octaChannel") { return 8; }
-    return 1;
-  }
 
-  int boardChannelsOf(String ref) {
-    if (ref == "trx50") { return 4; }
-    if (ref == "wrx90") { return 8; }
-    return 0;
-  }
   SLMotherboard boardFor(String ref) {
     if (ref == "wrx90") { return parts.wrx90(); }
     return parts.trx50();
   }
 
-  int cadenceTechOf(String ref) {
-    if (ref == "DDR")  { return 3; }
-    if (ref == "DDR2") { return 4; }
-    if (ref == "DDR3") { return 5; }
-    if (ref == "DDR4") { return 6; }
-    if (ref == "DDR5") { return 7; }
-    return -1;
-  }
-
-  int knownStorage(String ref) {
-    if (ref == "nvmeGen4" || ref == "nvmeGen3" || ref == "sataSsd" ||
-        ref == "sataHdd") { return 1; }
-    return 0;
-  }
   SLStorageDevice storageFor(String ref) {
     if (ref == "nvmeGen3") { return parts.nvmeGen3(); }
     if (ref == "sataSsd")  { return parts.sataSsd(); }
@@ -193,11 +159,6 @@ class SLXltCompiler {
     return parts.nvmeGen4();
   }
 
-  int knownBus(String ref) {
-    if (ref == "pcieGen5x16" || ref == "pcieGen4x16" || ref == "pcieGen3x16" ||
-        ref == "pci33" || ref == "isa" || ref == "agp8x") { return 1; }
-    return 0;
-  }
   SLSystemBus busFor(String ref) {
     if (ref == "pcieGen4x16") { return parts.pcieGen4x16(); }
     if (ref == "pcieGen3x16") { return parts.pcieGen3x16(); }

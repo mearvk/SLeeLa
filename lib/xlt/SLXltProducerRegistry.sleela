@@ -1,0 +1,120 @@
+/*
+ * lib/xlt/SLXltProducerRegistry.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLXltProducerRegistry — the explicit registry of part
+ *   producers the XLT compiler resolves declared refs against. Instead of the
+ *   compiler hardcoding "is this a known ref" tables inline, each recognizable
+ *   part ref (CPU SKU, memory preset, board, cadence, storage, bus) is
+ *   REGISTERED here under its slot, and the compiler asks the registry whether
+ *   a ref is known and (for memory/board) what channel count it implies for the
+ *   agreement check. A new part becomes recognizable by registering it, not by
+ *   editing the compiler — the open/closed seam the SST symbol tables have.
+ *
+ *   A registered entry carries: the slot it belongs to, the ref string, and an
+ *   integer attribute (memory channel count, or board routed channels; 0/1
+ *   otherwise). Registration order does not matter; lookup is by (slot, ref).
+ *
+ * Family: xlt. Consulted by SLXltCompiler; mirrors the resolution role of
+ *   lib/sst/SSTSymbolTable for the CPU-model format.
+ */
+#sleela 2.1
+class SLXltProducerRegistry {
+  // Slot ids the parts divide into (orthogonal document slots).
+  static final int SLOT_CPU     = 1;
+  static final int SLOT_MEMORY  = 2;
+  static final int SLOT_BOARD   = 3;
+  static final int SLOT_CADENCE = 4;
+  static final int SLOT_STORAGE = 5;
+  static final int SLOT_BUS     = 6;
+
+  // Registered entries, stored over an SLRAM-free parallel-array shape: each
+  // entry is (slot, ref, attr). Bounded; grown by register().
+  int count;
+  static final int MAX = 64;
+
+  // Parallel stores (no arrays in the surface language: use a small fixed bank
+  // backed by an SLRAM-less scheme is awkward, so we page into an SLRAM pair).
+  SLRAM slots;    // slot id per entry
+  SLRAM attrs;    // integer attribute per entry (channels, etc.)
+  SLRAM refsLo;   // ref string handles are not storable in SLRAM; see refs bank
+  SLXltRefBank refs;  // string bank holding the ref per entry
+
+  void configure() {
+    count = 0;
+    slots = new SLRAM(); slots.configure(MAX, 32); slots.allocate();
+    attrs = new SLRAM(); attrs.configure(MAX, 32); attrs.allocate();
+    refs = new SLXltRefBank(); refs.configure(MAX);
+    loadDefaults();
+  }
+
+  // Register one producer: its slot, ref string, and integer attribute.
+  boolean register(int slot, String ref, int attr) {
+    if (count >= MAX) { return false; }
+    slots.writeWord(count, slot);
+    attrs.writeWord(count, attr);
+    refs.put(count, ref);
+    count = count + 1;
+    return true;
+  }
+
+  // Is `ref` a registered producer for `slot`?
+  boolean known(int slot, String ref) {
+    int i = 0;
+    while (i < count) {
+      if (slots.readWord(i) == slot && refs.get(i) == ref) { return true; }
+      i = i + 1;
+    }
+    return false;
+  }
+
+  // The integer attribute registered for (slot, ref); 0 if not found.
+  int attrOf(int slot, String ref) {
+    int i = 0;
+    while (i < count) {
+      if (slots.readWord(i) == slot && refs.get(i) == ref) { return attrs.readWord(i); }
+      i = i + 1;
+    }
+    return 0;
+  }
+
+  int entries() { return count; }
+
+  // The default roster: every ref the SLComponentCatalog + CPU folders expose,
+  // with memory/board channel attributes for the agreement check.
+  void loadDefaults() {
+    // CPUs (attr unused -> 0): EPYC + Threadripper rosters.
+    register(SLOT_CPU, "SLAMDEPYC9575F", 0); register(SLOT_CPU, "SLAMDEPYC9965", 0);
+    register(SLOT_CPU, "SLAMDEPYC9755", 0);  register(SLOT_CPU, "SLAMDEPYC9645", 0);
+    register(SLOT_CPU, "SLAMDEPYC9475F", 0); register(SLOT_CPU, "SLAMDEPYC9355", 0);
+    register(SLOT_CPU, "SLAMDEPYC9175F", 0); register(SLOT_CPU, "SLAMDEPYCCPU", 0);
+    register(SLOT_CPU, "SLAMDThreadripper9980X", 0); register(SLOT_CPU, "SLAMDThreadripper9970X", 0);
+    register(SLOT_CPU, "SLAMDThreadripper9960X", 0); register(SLOT_CPU, "SLAMDThreadripperPro9995WX", 0);
+    register(SLOT_CPU, "SLAMDThreadripperPro9985WX", 0); register(SLOT_CPU, "SLAMDThreadripperPro9975WX", 0);
+    register(SLOT_CPU, "SLAMDThreadripperPro9965WX", 0); register(SLOT_CPU, "SLAMDThreadripperPro9955WX", 0);
+    register(SLOT_CPU, "SLAMDThreadripperPro9945WX", 0); register(SLOT_CPU, "SLAMDThreadripperCPU", 0);
+
+    // Memory (attr = channel count the preset implies).
+    register(SLOT_MEMORY, "dram_fpm", 1);    register(SLOT_MEMORY, "sdram_pc100", 1);
+    register(SLOT_MEMORY, "ddr_400", 1);     register(SLOT_MEMORY, "ddr2_800", 1);
+    register(SLOT_MEMORY, "ddr3_1600", 1);   register(SLOT_MEMORY, "ddr4_3200", 1);
+    register(SLOT_MEMORY, "ddr5_6000", 1);   register(SLOT_MEMORY, "ddr5_6400", 1);
+    register(SLOT_MEMORY, "ddr5_6400_quadChannel", 4);
+    register(SLOT_MEMORY, "ddr5_6400_octaChannel", 8);
+    register(SLOT_MEMORY, "sram_fast", 1);
+
+    // Boards (attr = routed memory channels).
+    register(SLOT_BOARD, "trx50", 4); register(SLOT_BOARD, "wrx90", 8);
+
+    // Cadences (attr = tech id used by SLCadenceConnector / SLMemoryInterface).
+    register(SLOT_CADENCE, "DDR", 3);  register(SLOT_CADENCE, "DDR2", 4);
+    register(SLOT_CADENCE, "DDR3", 5); register(SLOT_CADENCE, "DDR4", 6);
+    register(SLOT_CADENCE, "DDR5", 7);
+
+    // Storage + bus (attr unused).
+    register(SLOT_STORAGE, "nvmeGen4", 0); register(SLOT_STORAGE, "nvmeGen3", 0);
+    register(SLOT_STORAGE, "sataSsd", 0);  register(SLOT_STORAGE, "sataHdd", 0);
+    register(SLOT_BUS, "pcieGen5x16", 0); register(SLOT_BUS, "pcieGen4x16", 0);
+    register(SLOT_BUS, "pcieGen3x16", 0); register(SLOT_BUS, "pci33", 0);
+    register(SLOT_BUS, "isa", 0);         register(SLOT_BUS, "agp8x", 0);
+  }
+}

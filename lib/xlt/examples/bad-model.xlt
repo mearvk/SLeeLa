@@ -1,0 +1,11 @@
+#xlt 1.0
+// A deliberately NON-congruent model: 8-channel memory on a 4-channel board
+// (not agreeable to design) plus an unregistered bus (missing part). Compiling
+// this must yield a congruence report, not a build.
+model MismatchedRig {
+  cpu     "SLAMDThreadripper9980X";
+  board   "trx50";                       // 4-channel HEDT board
+  memory  "ddr5_6400_octaChannel" 32768; // needs 8 channels -> disagrees
+  bus     "pcieGenX";                    // not a registered bus -> missing
+  target  sleela;
+}

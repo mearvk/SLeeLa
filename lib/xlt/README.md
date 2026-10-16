@@ -62,8 +62,34 @@ mutually consistent — reusing checks like `SLExecutorBuild.boardFits()`).
 | Class | Role |
 | --- | --- |
 | `SLXltSource` | source-time representation of an `.xlt` sheet: the declared cpu/board/memory/cadence/storage/bus, each an orthogonal slot. |
-| `SLXltCompiler` | the ordered, orthogonal, congruent interpreter: resolves each part against `SLComponentCatalog` + the CPU roster and assembles an `SLExecutorBuild`. |
+| `SLXltProducerRegistry` | the explicit registry of recognizable part refs per slot (+ channel attributes for the agreement check). A new part becomes recognizable by registering it, not by editing the compiler. |
+| `SLXltCompiler` | the ordered, orthogonal, congruent interpreter: consults the registry to recognize each part, resolves it against `SLComponentCatalog` + the CPU roster, and assembles an `SLExecutorBuild`. |
 | `SLXltBuildResult` | the outcome: SUCCESS + build list, or a congruence report of missing / disagreeing parts. |
+| `SLXltRefBank` | internal fixed string-bank helper for the registry. |
+
+## Native front-end (`impl/xlt/`)
+
+A standalone C++ front-end tokenizes and parses `.xlt` files directly (the
+counterpart of `impl/nordshrift/` for SST), so an `.xlt` file is a first-class
+compilable document rather than only a source-builder API:
+
+```
+.xlt  ->  xlt_lexer  ->  xlt_parser (XltModel)  ->  xlt_resolve  ->  xltc CLI
+```
+
+- `xlt_lexer` / `xlt_parser` — brace-delimited tokenizer + recursive-descent
+  parser; enforces **orthogonality** (a duplicate slot is `XLT-E-0020`, not a
+  silent override) and emits structured `XLT-{tier}-{code}` diagnostics.
+- `xlt_resolve` — the ordered, congruent resolver (native mirror of
+  `SLXltCompiler` + the registry): SUCCESS + build list, or a congruence report
+  of `[missing]` / `[disagrees]` parts.
+- `xltc` — the CLI. Build and run:
+
+```
+make -C impl/xlt
+impl/xlt/build/xltc lib/xlt/examples/epyc-ddr2.xlt    # SUCCESS, exit 0
+impl/xlt/build/xltc lib/xlt/examples/bad-model.xlt    # congruence report, exit 1
+```
 
 ## Examples
 
