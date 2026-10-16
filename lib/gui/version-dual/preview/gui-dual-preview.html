@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SLeeLa lib/gui 4.0 (dual) — components preview</title>
+<style>
+  /* This is a FAITHFUL VISUAL PREVIEW of the dual (4.0) components demo, built
+     from the SLeeLa descriptors: aesthetic=glass, accent #2E8BFF, surface
+     #0B1E3A, corner radius 14px, elevation 55%, density comfortable. It is not
+     the live toolkit output (no renderer in the sandbox) — it mirrors the state
+     the gui-components-demo.sleela model produces. */
+  :root{
+    --accent:#2E8BFF; --accent-2:#6fb4ff; --surface:#0B1E3A; --surface-2:#12294d;
+    --glass:rgba(255,255,255,.06); --glass-brd:rgba(255,255,255,.14);
+    --text:#eaf2ff; --muted:#9bb3d6; --radius:14px; --ok:#36d399; --warn:#f6b73c;
+  }
+  *{box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+  body{margin:0;background:
+      radial-gradient(1200px 600px at 20% -10%,#1b3b6e 0%,transparent 60%),
+      radial-gradient(900px 500px at 100% 0%,#0d2c57 0%,transparent 55%),
+      var(--surface);color:var(--text);padding:28px;min-height:100vh}
+  .app{max-width:1060px;margin:0 auto}
+  /* header bar + logo branding */
+  .chrome{display:flex;align-items:center;gap:14px;padding:14px 18px;margin-bottom:22px;
+    background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.03));
+    border:1px solid var(--glass-brd);border-radius:var(--radius);
+    box-shadow:0 10px 30px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.18)}
+  .logo{width:34px;height:34px;border-radius:9px;background:
+      conic-gradient(from 210deg,var(--accent),#7a5cff,var(--accent));
+    box-shadow:0 0 16px rgba(46,139,255,.7)}
+  .wordmark{font-weight:700;font-size:20px;letter-spacing:.3px}
+  .tagline{color:var(--muted);font-size:12px;margin-left:2px}
+  .pill{margin-left:auto;font-size:12px;color:var(--accent-2);border:1px solid var(--glass-brd);
+    padding:5px 12px;border-radius:999px;background:var(--glass)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+    border:1px solid var(--glass-brd);border-radius:var(--radius);padding:16px 18px;
+    box-shadow:0 14px 34px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.14);backdrop-filter:blur(6px)}
+  .card h3{margin:0 0 12px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .btn{border:none;border-radius:10px;padding:9px 16px;color:#fff;font-weight:600;cursor:pointer;
+    background:linear-gradient(180deg,var(--accent-2),var(--accent));
+    box-shadow:0 6px 16px rgba(46,139,255,.45),inset 0 1px 0 rgba(255,255,255,.4)}
+  .btn.rec{background:linear-gradient(180deg,#ff7a7a,#e23b3b);box-shadow:0 6px 16px rgba(226,59,59,.5),inset 0 1px 0 rgba(255,255,255,.4)}
+  .row{display:flex;align-items:center;gap:12px}
+  .muted{color:var(--muted);font-size:13px}
+  /* recorder level meter */
+  .meter{height:10px;border-radius:6px;background:#0a1a33;overflow:hidden;flex:1;border:1px solid var(--glass-brd)}
+  .meter > i{display:block;height:100%;width:72%;background:linear-gradient(90deg,var(--ok),var(--warn))}
+  /* video */
+  .video{position:relative;height:150px;border-radius:10px;background:
+      repeating-linear-gradient(135deg,#0a1a33 0 14px,#0d2142 14px 28px);
+    border:1px solid var(--glass-brd);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .play{width:0;height:0;border-left:26px solid rgba(255,255,255,.92);border-top:17px solid transparent;border-bottom:17px solid transparent;filter:drop-shadow(0 0 10px rgba(46,139,255,.8))}
+  .scrub{height:6px;border-radius:4px;background:#0a1a33;margin-top:10px;border:1px solid var(--glass-brd)}
+  .scrub > i{display:block;height:100%;width:25%;background:var(--accent);border-radius:4px}
+  /* url bar */
+  .urlbar{display:flex;align-items:center;gap:8px;background:#0a1a33;border:1px solid var(--glass-brd);border-radius:10px;padding:8px 12px}
+  .nav{color:var(--muted);font-size:16px}
+  .lock{color:var(--ok)}
+  .url{flex:1;color:var(--text);font-family:ui-monospace,monospace;font-size:13px}
+  .tag{font-size:11px;color:#0b1e3a;background:var(--accent-2);border-radius:6px;padding:2px 7px;font-weight:700}
+  /* click object / graphics canvas */
+  .stage{height:150px;border-radius:10px;background:#0a1a33;border:1px solid var(--glass-brd);position:relative;overflow:hidden}
+  .orbit{position:absolute;left:50%;top:50%;width:100px;height:100px;margin:-50px 0 0 -50px;border:1px dashed rgba(155,179,214,.35);border-radius:50%}
+  .dot{position:absolute;left:50%;top:6px;width:14px;height:14px;margin-left:-7px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#bfe0ff,var(--accent));box-shadow:0 0 14px rgba(46,139,255,.9)}
+  .svgwrap{display:block}
+  /* admin */
+  .adminrow{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px}
+  .adminrow:last-child{border-bottom:none}
+  .chk{color:var(--ok);font-weight:700}
+  .sig{font-family:ui-monospace,monospace;color:var(--accent-2);font-size:12px}
+  .span2{grid-column:1 / span 2}
+  .foot{margin-top:18px;color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- SLGuiBranding: logo @header, wordmark 'SLeeLa', tagline, accent #2E8BFF -->
+  <div class="chrome">
+    <div class="logo"></div>
+    <div>
+      <div class="wordmark">SLeeLa</div>
+      <div class="tagline">built to inspire</div>
+    </div>
+    <div class="pill">lib/gui&nbsp;·&nbsp;4.0 (dual)&nbsp;·&nbsp;aesthetic: glass</div>
+  </div>
+
+  <div class="grid">
+    <!-- SLGuiAudioRecorder: stopped after a take; level 72%, dur 1.5s -->
+    <div class="card">
+      <h3>Audio Recorder</h3>
+      <div class="row" style="margin-bottom:12px">
+        <button class="btn rec">● Record</button>
+        <span class="muted">stopped · 48 kHz · stereo</span>
+      </div>
+      <div class="row"><span class="muted">level</span><div class="meter"><i></i></div><span class="muted">00:01.5</span></div>
+    </div>
+
+    <!-- SLGuiVideoCanvas: playing, 30s / 120s = 25%, vol 70% -->
+    <div class="card">
+      <h3>Video Canvas</h3>
+      <div class="video"><div class="play"></div></div>
+      <div class="scrub"><i></i></div>
+      <div class="row" style="margin-top:8px"><span class="muted">playing · 0:30 / 2:00</span><span class="muted" style="margin-left:auto">🔊 70%</span></div>
+    </div>
+
+    <!-- SLGuiUrlBar: https, loaded, html-aware -->
+    <div class="card span2">
+      <h3>URL Navigation Bar</h3>
+      <div class="urlbar">
+        <span class="nav">‹</span><span class="nav">›</span><span class="nav">⟳</span>
+        <span class="lock">🔒</span>
+        <span class="url">https://sleela.example/docs</span>
+        <span class="tag">HTML · 200</span>
+      </div>
+    </div>
+
+    <!-- SLGuiClickObject: orbit motion, apprentice ladder -->
+    <div class="card">
+      <h3>Custom Click Object — orbit + apprentice ladder</h3>
+      <div class="stage">
+        <div class="orbit"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="muted" style="margin-top:10px">motion: orbit · stage 3/3 → final call “escalate” fired</div>
+    </div>
+
+    <!-- SLGuiGraphics: command-list facility -->
+    <div class="card">
+      <h3>Graphics Facility — quality: high · AA on</h3>
+      <div class="stage">
+        <svg class="svgwrap" width="100%" height="150" viewBox="0 0 320 150">
+          <rect x="10" y="10" width="300" height="130" rx="8" fill="none" stroke="#2E8BFF" stroke-width="2"/>
+          <circle cx="160" cy="75" r="36" fill="none" stroke="#6fb4ff" stroke-width="2"/>
+          <line x1="30" y1="120" x2="290" y2="30" stroke="#36d399" stroke-width="2"/>
+          <text x="22" y="34" fill="#eaf2ff" font-size="15" font-family="Segoe UI">SLeeLa 4.0</text>
+        </svg>
+      </div>
+      <div class="muted" style="margin-top:10px">4 draw commands: clear · rect · circle · text</div>
+    </div>
+
+    <!-- SLGuiAdminAuthority: sign-in, sign-off, signature for Law -->
+    <div class="card span2">
+      <h3>Admin Authority</h3>
+      <div class="adminrow"><span class="chk">✓</span> signed in as <b>&nbsp;ada</b> &nbsp;— process <b>&nbsp;render-pipeline</b> may start</div>
+      <div class="adminrow"><span class="chk">✓</span> sign-off on operation <b>&nbsp;export-frame</b> &nbsp;<span class="muted">(QA approved)</span></div>
+      <div class="adminrow"><span class="chk">✓</span> signature for Law on <b>&nbsp;license-2026</b> &nbsp;<span class="sig">sig:9f3a…e1</span></div>
+    </div>
+  </div>
+
+  <div class="foot">Faithful visual preview of lib/gui/version-dual/gui-components-demo.sleela — rendered from the SLeeLa descriptors (not the live toolkit).</div>
+</div>
+</body>
+</html>
