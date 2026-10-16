@@ -1,0 +1,131 @@
+/*
+ * lib/cpu/components/SLMemoryInterface.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMemoryInterface — an OOD interface/adapter layer that
+ *   sits between the system and a real SLMemoryModule and imposes a REFRESH
+ *   DUTY CYCLE borrowed from a chosen target memory technology. It lets the
+ *   actual RAM (e.g. a DDR5-6400 module) be operated so that it *refreshes as
+ *   though it were* an older/newer tech (e.g. DDR2), for special-purpose runs —
+ *   compatibility testing, legacy-cadence workloads, deterministic timing.
+ *
+ *   Scope is deliberate and important: the cadence is addressed ENTIRELY in the
+ *   Sleela software layer. This class models how the Sleela stack (the modeled
+ *   memory controller / the VM's view of memory availability) treats refresh
+ *   timing; it does NOT reach the actual host operating system's memory
+ *   management, and it does NOT re-drive the underlying data rate. The wrapped
+ *   module keeps its native identity and its real backing store untouched —
+ *   only the observed refresh duty (fraction of time lost to refresh) changes.
+ *
+ *   Pattern: Decorator/Adapter over SLMemoryModule. You compose BOTH the
+ *   interface AND the module in the build's OOD slot: install a real module,
+ *   then install an interface that wraps it and declares the target cadence.
+ *
+ * Family: cpu.components. Wraps SLMemoryModule; installed in SLExecutorBuild;
+ *   selected via SLComponentCatalog.
+ */
+#sleela 2.1
+class SLMemoryInterface {
+  // Target-cadence technology ids mirror SLMemoryModule.TECH_* so the interface
+  // can present any tier's refresh discipline over any real module.
+  static final int TECH_SRAM  = 0;
+  static final int TECH_DRAM  = 1;
+  static final int TECH_SDRAM = 2;
+  static final int TECH_DDR   = 3;
+  static final int TECH_DDR2  = 4;
+  static final int TECH_DDR3  = 5;
+  static final int TECH_DDR4  = 6;
+  static final int TECH_DDR5  = 7;
+
+  String partName;          // nameful: "DDR2-cadence interface", ...
+  SLMemoryModule actual;    // the REAL module in the system (e.g. DDR5-6400)
+  int targetTech;           // the cadence to present (e.g. TECH_DDR2)
+
+  // Refresh model, in nanoseconds (the Sleela-layer cadence, not host timers):
+  //   tREFI = average refresh interval (how often a refresh is issued)
+  //   tRFC  = refresh command time (how long the array is busy per refresh)
+  // The duty the system sees available is (tREFI - tRFC) / tREFI.
+  int tREFI_ns;
+  int tRFC_ns;
+  int engaged;              // 1 = the cadence overlay is active
+
+  // Wrap a real module and present the given target technology's refresh
+  // cadence. tREFI/tRFC default to that technology's representative values.
+  void configure(String name, SLMemoryModule realModule, int cadenceTech) {
+    partName = name; actual = realModule; targetTech = cadenceTech;
+    engaged = 1;
+    applyTechCadence(cadenceTech);
+  }
+
+  // Set representative refresh cadence for a technology (ns). Older DRAM
+  // refreshes more often and/or spends longer per refresh, so its available
+  // duty is lower; DDR5 refreshes most efficiently. Representative, not exact.
+  void applyTechCadence(int tech) {
+    if (tech == TECH_DDR2)  { tREFI_ns = 7800;  tRFC_ns = 130; return; }  // classic DDR2 cadence
+    if (tech == TECH_DDR)   { tREFI_ns = 7800;  tRFC_ns = 120; return; }
+    if (tech == TECH_SDRAM) { tREFI_ns = 15600; tRFC_ns = 70;  return; }
+    if (tech == TECH_DDR3)  { tREFI_ns = 7800;  tRFC_ns = 160; return; }
+    if (tech == TECH_DDR4)  { tREFI_ns = 7800;  tRFC_ns = 260; return; }
+    if (tech == TECH_DDR5)  { tREFI_ns = 3900;  tRFC_ns = 295; return; }  // same-bank; finer interval
+    // SRAM / DRAM-FPM or unknown: treat as refresh-light.
+    tREFI_ns = 64000; tRFC_ns = 0;
+  }
+
+  // Override the cadence explicitly for a genuinely special-purpose profile.
+  void setCadence(int refreshIntervalNs, int refreshTimeNs) {
+    if (refreshIntervalNs > 0) { tREFI_ns = refreshIntervalNs; }
+    if (refreshTimeNs >= 0)    { tRFC_ns = refreshTimeNs; }
+  }
+
+  void engage()    { engaged = 1; }
+  void disengage() { engaged = 0; }   // pass the real module through untouched
+
+  // Available duty as a percentage: the share of time NOT spent refreshing.
+  // 100% when the overlay is off or the cadence is refresh-free.
+  int availableDutyPct() {
+    if (engaged == 0 || tREFI_ns <= 0) { return 100; }
+    int lost = (tRFC_ns * 100) / tREFI_ns;
+    int avail = 100 - lost;
+    if (avail < 0) { avail = 0; }
+    return avail;
+  }
+
+  // Refresh overhead the cadence costs, as a percentage of time.
+  int refreshOverheadPct() { return 100 - availableDutyPct(); }
+
+  // The module's REAL peak bandwidth, unscaled (native data rate preserved).
+  int nativeBandwidthMBs() { return (actual != null) ? actual.peakBandwidthMBs() : 0; }
+
+  // Effective bandwidth the system observes: real peak scaled by the available
+  // duty of the presented cadence. The data rate is unchanged; availability is
+  // what the refresh duty cycle shapes.
+  int effectiveBandwidthMBs() {
+    if (actual == null) { return 0; }
+    if (engaged == 0) { return actual.peakBandwidthMBs(); }
+    return (actual.peakBandwidthMBs() * availableDutyPct()) / 100;
+  }
+
+  // Pass-through identity of the REAL module (never masked by the overlay).
+  SLMemoryModule module()     { return actual; }
+  int nativeTech()            { return (actual != null) ? actual.tech() : -1; }
+  String nativeTechName()     { return (actual != null) ? actual.technologyName() : "none"; }
+  int capacityMiB()           { return (actual != null) ? actual.totalCapacityMiB() : 0; }
+  int channelCount()          { return (actual != null) ? actual.channelCount() : 0; }
+
+  String name()               { return partName; }
+  boolean active()            { return engaged == 1; }
+  int cadenceTech()           { return targetTech; }
+  int refreshIntervalNs()     { return tREFI_ns; }
+  int refreshTimeNs()         { return tRFC_ns; }
+
+  String refreshesAsName() {
+    if (targetTech == TECH_SRAM)  { return "SRAM"; }
+    if (targetTech == TECH_DRAM)  { return "DRAM"; }
+    if (targetTech == TECH_SDRAM) { return "SDRAM"; }
+    if (targetTech == TECH_DDR)   { return "DDR"; }
+    if (targetTech == TECH_DDR2)  { return "DDR2"; }
+    if (targetTech == TECH_DDR3)  { return "DDR3"; }
+    if (targetTech == TECH_DDR4)  { return "DDR4"; }
+    if (targetTech == TECH_DDR5)  { return "DDR5"; }
+    return "custom";
+  }
+}

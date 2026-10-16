@@ -29,32 +29,55 @@ class SLMemoryModule {
   String partName;      // e.g. "DDR4-3200 16GB"
   int technology;
   int capacityMiB;      // module capacity in MiB
-  int busWidthBits;     // data bus width (e.g. 64 for a DIMM)
+  int busWidthBits;     // data bus width per channel (e.g. 64 for a DIMM)
   int clockMHz;         // I/O bus clock (MT/s = clockMHz × ddrFactor)
   int casLatency;       // CL in clock cycles
   int ddrFactor;        // 1 for SDR/SRAM, 2 for DDR double-pumping
+  int channels;         // populated memory channels (1 single, 4 HEDT, 8 PRO)
 
   SLRAM backing;        // the actual word store the executor addresses
 
   void configure(String name, int tech, int capMiB, int busBits,
                  int ioClockMHz, int cl, int ddr) {
+    configureChannels(name, tech, capMiB, busBits, ioClockMHz, cl, ddr, 1);
+  }
+
+  // Full form: also state how many memory channels are populated. A platform
+  // with N channels multiplies both the addressable capacity (N modules) and
+  // the aggregate peak bandwidth by N — this is what distinguishes a 4-channel
+  // HEDT board from an 8-channel workstation board running the same DIMMs.
+  void configureChannels(String name, int tech, int capMiB, int busBits,
+                         int ioClockMHz, int cl, int ddr, int channelCount) {
     partName = name; technology = tech; capacityMiB = capMiB;
     busWidthBits = busBits; clockMHz = ioClockMHz; casLatency = cl;
     ddrFactor = (ddr < 1) ? 1 : ddr;
+    channels = (channelCount < 1) ? 1 : channelCount;
   }
 
-  // Allocate the backing store for this module as `width`-bit words.
+  // Set the populated channel count after configuration (e.g. to retarget the
+  // same DIMM spec from a 4-channel to an 8-channel platform).
+  void setChannels(int channelCount) { channels = (channelCount < 1) ? 1 : channelCount; }
+
+  // Allocate the backing store for this module as `width`-bit words. The arena
+  // spans the full populated capacity across every channel.
   SLRAM mount(int wordWidth) {
-    int words = (capacityMiB * 1048576 * 8) / wordWidth;
+    int words = (totalCapacityMiB() * 1048576 * 8) / wordWidth;
     backing = new SLRAM(); backing.configure(words, wordWidth); backing.allocate();
     return backing;
   }
 
-  // Effective data rate in mega-transfers/second (DDR double-pumps).
+  // Effective data rate in mega-transfers/second per channel (DDR double-pumps).
   int transfersPerSecMT() { return clockMHz * ddrFactor; }
 
-  // Peak bandwidth in MB/s: MT/s × bus bytes.
-  int peakBandwidthMBs() { return transfersPerSecMT() * (busWidthBits / 8); }
+  // Per-channel peak bandwidth in MB/s: MT/s × bus bytes.
+  int channelBandwidthMBs() { return transfersPerSecMT() * (busWidthBits / 8); }
+
+  // Aggregate peak bandwidth in MB/s across every populated channel. For a
+  // single-channel module this equals the per-channel figure.
+  int peakBandwidthMBs() { return channelBandwidthMBs() * channels; }
+
+  // Total installed capacity across all channels (one module per channel).
+  int totalCapacityMiB() { return capacityMiB * channels; }
 
   // First-word access latency in nanoseconds: CL / clock. (×1000 for ns.)
   int firstWordLatencyNs() { if (clockMHz <= 0) { return 0; } return (casLatency * 1000) / clockMHz; }
@@ -62,6 +85,7 @@ class SLMemoryModule {
   String name()        { return partName; }
   int tech()           { return technology; }
   int capacity()       { return capacityMiB; }
+  int channelCount()   { return channels; }
   int busWidth()       { return busWidthBits; }
   int clock()          { return clockMHz; }
   int cl()             { return casLatency; }

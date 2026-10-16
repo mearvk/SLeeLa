@@ -1,0 +1,75 @@
+/*
+ * lib/cpu/components/examples/threadripper-at-spec.sleela
+ * SLeeLa example: assemble AMD Ryzen Threadripper 9000 executors "at spec" —
+ * the CPU on its real board (TRX50 HEDT / WRX90 PRO), with DDR5-6400 populated
+ * across the platform's channels, the DDR5/SoC/core voltage rails settled, and
+ * the DDR5-6400 expert RAM timings honored. Shows both a HEDT 9980X build and a
+ * workstation PRO 9995WX build, then reports the assembled characterization.
+ */
+#sleela 2.1
+class ThreadripperAtSpecExample {
+
+  void main() {
+    SLAMDThreadripperPlatform plat = new SLAMDThreadripperPlatform();
+
+    // ---------- HEDT: Threadripper 9980X on TRX50, 4-channel DDR5-6400 -------
+    SLAMDThreadripper9980X hedtCpu = new SLAMDThreadripper9980X();
+    hedtCpu.configure();   // runs at its rated clock
+
+    SLExecutorBuild hedt = new SLExecutorBuild();
+    hedt.configure("threadripper-9980x-hedt");
+    hedt.installCpu(hedtCpu);
+    hedt.installBoard(plat.hedtBoard());                 // TRX50, sTR5, 4-ch, 88x PCIe5
+    hedt.installMemory(plat.hedtMemory(32768));          // 4 × 32 GiB DDR5-6400
+    hedt.installStorage(new SLComponentCatalog().nvmeGen4());
+    hedt.installBus(plat.pcie5x16());                    // PCIe 5.0 x16
+    boolean hedtFits = hedt.boardFits();
+    hedt.assemble();
+
+    print("=== Threadripper 9980X (HEDT / TRX50) ===");
+    print("CPU spec clock: " + hedt.cpuSpecMHz() + " MHz");
+    print("board: " + hedt.motherboard().name() + " socket=" +
+          hedt.motherboard().socketName() + " channels=" +
+          hedt.motherboard().channels() + " PCIe lanes=" +
+          hedt.motherboard().lanes() + " gen" + hedt.motherboard().pcieGeneration());
+    print("RAM: " + hedt.ram().name() + " total=" + hedt.ram().totalCapacityMiB() +
+          " MiB, aggregate BW=" + hedt.ram().peakBandwidthMBs() + " MB/s");
+    print("memory fits board: " + hedtFits);
+
+    // DDR5-6400 expert timing + rails for this channel.
+    SLRamTiming hedtRam = plat.ddr5_6400Timing("DIMM ch0 (HEDT)");
+    print("DDR5-6400 first-word latency: " + hedtRam.firstWordLatencyNs() +
+          " ns, random access: " + hedtRam.randomAccessLatencyNs() +
+          " ns, honored=" + hedtRam.honored());
+    print("Vddq settled: " + plat.vddq().effectiveMv() + " mV, Vcore settled: " +
+          plat.vcore().effectiveMv() + " mV, Vsoc settled: " + plat.vsoc().effectiveMv() + " mV");
+
+    // ---------- Workstation: PRO 9995WX on WRX90, 8-channel DDR5-6400 -------
+    SLAMDThreadripperPro9995WX proCpu = new SLAMDThreadripperPro9995WX();
+    proCpu.configure();
+
+    SLExecutorBuild pro = new SLExecutorBuild();
+    pro.configure("threadripper-pro-9995wx-ws");
+    pro.installCpu(proCpu);
+    pro.installBoard(plat.proBoard());                   // WRX90, sTR5, 8-ch, 128x PCIe5
+    pro.installMemory(plat.proMemory(32768));            // 8 × 32 GiB DDR5-6400
+    pro.installStorage(new SLComponentCatalog().nvmeGen4());
+    pro.installBus(plat.pcie5x16());
+    boolean proFits = pro.boardFits();
+    pro.assemble();
+
+    print("=== Threadripper PRO 9995WX (workstation / WRX90) ===");
+    print("board: " + pro.motherboard().name() + " channels=" +
+          pro.motherboard().channels() + " PCIe lanes=" + pro.motherboard().lanes());
+    print("RAM: " + pro.ram().name() + " total=" + pro.ram().totalCapacityMiB() +
+          " MiB, aggregate BW=" + pro.ram().peakBandwidthMBs() + " MB/s");
+    print("memory fits board: " + proFits);
+
+    // Cross-check: an 8-channel module must NOT fit a 4-channel HEDT board.
+    SLExecutorBuild mismatch = new SLExecutorBuild();
+    mismatch.configure("mismatch-check");
+    mismatch.installBoard(plat.hedtBoard());             // 4-channel TRX50
+    mismatch.installMemory(plat.proMemory(16384));       // 8-channel module
+    print("8-channel memory on 4-channel board fits (expected false): " + mismatch.boardFits());
+  }
+}

@@ -1,0 +1,75 @@
+/*
+ * lib/cpu/components/SLMotherboard.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMotherboard — the board a Sleela executor is built on:
+ *   the CPU socket, the platform chipset, the memory topology (channel count
+ *   and DIMM slots), the number of PCIe lanes the platform exposes and their
+ *   generation, and the system-bus generation the board carries. These are the
+ *   "motherboard-pertinent settings" that bound a build: a CPU only drops into
+ *   a matching socket, memory can only populate as many channels as the board
+ *   routes, and no card can use more PCIe lanes than the platform provides.
+ *
+ * The board is nameful and spec-first: every field states a real platform
+ * property (sTR5 socket, TRX50/WRX90 chipset, 4- vs 8-channel memory, PCIe 5.0
+ * lane budget) rather than assuming a generic machine. SLExecutorBuild mounts a
+ * board and can check that the chosen CPU socket and memory channels fit it.
+ *
+ * Family: cpu.components. Selected via SLComponentCatalog; mounted in
+ *   SLExecutorBuild; partners SLMemoryModule and SLSystemBus.
+ */
+#sleela 2.1
+class SLMotherboard {
+  // Socket ids (the mechanical/electrical CPU interface).
+  static final int SOCKET_UNKNOWN = 0;
+  static final int SOCKET_STR5    = 1;   // AMD sTR5 (Threadripper 9000)
+  static final int SOCKET_AM5     = 2;   // AMD AM5 (Ryzen desktop)
+  static final int SOCKET_SP5     = 3;   // AMD SP5 (EPYC)
+  static final int SOCKET_LGA1700 = 4;   // Intel LGA1700
+  static final int SOCKET_GENERIC = 5;   // non-specific / legacy
+
+  String partName;      // nameful: "ASRock WRX90 WS EVO", "TRX50 reference", ...
+  int socket;           // one of SOCKET_*
+  String chipset;       // "TRX50", "WRX90", ...
+  int memoryChannels;   // routed memory channels (4 HEDT, 8 PRO WX, ...)
+  int dimmSlots;        // physical DIMM slots
+  int pcieLanes;        // total CPU-attached PCIe lanes the board exposes
+  int pcieGen;          // PCIe generation (5 = PCIe 5.0)
+  int busType;          // the SLSystemBus type the board's primary slot is
+
+  void configure(String name, int socketId, String chipsetName,
+                 int channels, int slots, int lanes, int gen, int systemBusType) {
+    partName = name; socket = socketId; chipset = chipsetName;
+    memoryChannels = (channels < 1) ? 1 : channels;
+    dimmSlots = (slots < 1) ? 1 : slots;
+    pcieLanes = (lanes < 0) ? 0 : lanes;
+    pcieGen = (gen < 1) ? 1 : gen;
+    busType = systemBusType;
+  }
+
+  // Does a CPU that reports socket `cpuSocket` drop into this board?
+  boolean acceptsSocket(int cpuSocket) { return cpuSocket == socket; }
+
+  // Can this board populate a memory module that wants `wantChannels` channels?
+  boolean supportsChannels(int wantChannels) { return wantChannels <= memoryChannels; }
+
+  // Can a card/device asking for `wantLanes` PCIe lanes be seated here?
+  boolean supportsLanes(int wantLanes) { return wantLanes <= pcieLanes; }
+
+  String name()         { return partName; }
+  int socketId()        { return socket; }
+  String chipsetName()  { return chipset; }
+  int channels()        { return memoryChannels; }
+  int slots()           { return dimmSlots; }
+  int lanes()           { return pcieLanes; }
+  int pcieGeneration()  { return pcieGen; }
+  int systemBusType()   { return busType; }
+
+  String socketName() {
+    if (socket == SOCKET_STR5)    { return "sTR5"; }
+    if (socket == SOCKET_AM5)     { return "AM5"; }
+    if (socket == SOCKET_SP5)     { return "SP5"; }
+    if (socket == SOCKET_LGA1700) { return "LGA1700"; }
+    if (socket == SOCKET_GENERIC) { return "generic"; }
+    return "unknown";
+  }
+}

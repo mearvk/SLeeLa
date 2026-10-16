@@ -28,21 +28,63 @@ exactly the lever behind the speed/feasibility tables in
 
 | Class | What you pick | Key spec it carries |
 | --- | --- | --- |
-| `SLMemoryModule` | main memory | technology (DRAM…DDR5), capacity, bus width, clock, CAS latency ⇒ bandwidth + first-word latency |
+| `SLMotherboard` | the board | socket, chipset, memory channels, DIMM slots, PCIe lane budget + generation ⇒ what a CPU/RAM/card can seat on |
+| `SLMemoryModule` | main memory | technology (DRAM…DDR5), capacity, bus width, clock, CAS latency, **channel count** ⇒ aggregate bandwidth + first-word latency |
+| `SLMemoryInterface` | a cadence-overlay adapter over a module | target-tech **refresh duty cycle** (tREFI/tRFC) ⇒ run the real module so it *refreshes as though it were* another tech (e.g. DDR5 refreshing like DDR2); Sleela-layer only, backing store untouched |
 | `SLStorageDevice` | floppy / HDD / SSD / NVMe / tape | interface, capacity, RPM, seek, transfer ⇒ access-time model |
 | `SLOpticalDrive` | CD / DVD / Blu-ray | medium 1× base rate × speed multiplier ⇒ read rate; writer flag |
 | `SLSystemBus` | ISA / PCI / AGP / PCIe / FSB | clock, width, lanes ⇒ peak bandwidth (can bottleneck fast RAM) |
 | `SLComponentCatalog` | **named presets** | ready-configured real parts (see below) |
-| `SLExecutorBuild` | the assembled machine | CPU + RAM + storage + optical + bus, mounted and queryable |
+| `SLExecutorBuild` | the assembled machine | CPU + board + RAM + storage + optical + bus, mounted and queryable |
 
 ### Catalog presets (authentic specs)
 
 - **Memory:** `sram_fast`, `dram_fpm`, `sdram_pc100`, `ddr_400`, `ddr2_800`,
-  `ddr3_1600`, `ddr4_3200`, `ddr5_6000` (each takes a capacity in MiB).
+  `ddr3_1600`, `ddr4_3200`, `ddr5_6000`, `ddr5_6400` (each takes a capacity in
+  MiB). Channel-aware DDR5-6400 for the Threadripper platforms:
+  `ddr5_6400_quadChannel` (4-ch HEDT) and `ddr5_6400_octaChannel` (8-ch PRO WX),
+  each taking a per-module capacity and reporting N× capacity and N× bandwidth.
 - **Storage:** `floppy144`, `mfmHdd`, `ideHdd`, `sataHdd`, `sataSsd`,
   `nvmeGen3`, `nvmeGen4`, `tapeLto`.
 - **Optical:** `cdrom52`, `cdrw`, `dvd16`, `dvdrw`, `bluRay`, `bdxl`.
-- **Bus:** `isa`, `pci33`, `agp8x`, `pcieGen3x16`, `pcieGen4x16`, `fsb(mhz)`.
+- **Bus:** `isa`, `pci33`, `agp8x`, `pcieGen3x16`, `pcieGen4x16`, `pcieGen5x16`,
+  `fsb(mhz)`.
+- **Motherboard:** `trx50` (Threadripper HEDT: sTR5, 4-channel, 88 PCIe 5.0
+  lanes), `wrx90` (Threadripper PRO WX: sTR5, 8-channel, 128 PCIe 5.0 lanes).
+- **Memory interface (cadence overlay):** one per DDR generation —
+  `ddrCadenceInterface`, `ddr2CadenceInterface`, `ddr3CadenceInterface`,
+  `ddr4CadenceInterface`, `ddr5CadenceInterface` (each takes the real `module`),
+  plus the general `memInterface(name, module, tech)`. Wrap a real module so it
+  refreshes as though it were the target generation; install it alongside the
+  module via `build.installMemoryInterface(...)`.
+
+### Running a module under a different refresh cadence
+
+An `SLMemoryInterface` is an OOD adapter that sits in front of the real module
+and imposes a **refresh duty cycle** from a chosen technology — for example,
+running an actual DDR5-6400 module so it refreshes with a DDR2 cadence, for a
+special-purpose run. The cadence is modelled **entirely in the Sleela layer**
+(the modelled controller / the VM's view of memory availability); it does not
+touch the host OS, and it does not change the module's data rate or its backing
+store. Only the observed availability changes: effective bandwidth = native peak
+× available duty, where available duty = (tREFI − tRFC) / tREFI.
+
+```
+SLComponentCatalog parts = new SLComponentCatalog();
+SLMemoryModule ddr5 = parts.ddr5_6400_quadChannel(32768);  // the real RAM
+SLMemoryInterface asDdr2 = parts.ddr2CadenceInterface(ddr5);
+
+SLExecutorBuild build = new SLExecutorBuild();
+build.configure("ddr5-as-ddr2");
+build.installMemory(ddr5);                 // actual module (backing store stays DDR5)
+build.installMemoryInterface(asDdr2);      // AND the cadence overlay — compose both
+build.assemble();
+
+build.memoryBandwidthMBs();   // duty-scaled: native peak × availableDutyPct()
+asDdr2.disengage();           // pass the real DDR5 through untouched
+```
+
+See `examples/ddr5-as-ddr2-cadence.sleela` for the full A/B flow.
 
 ## Building and running an executor
 

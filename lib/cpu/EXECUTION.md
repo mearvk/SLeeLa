@@ -156,12 +156,30 @@ the same opcode stream.
      -> SLFrontend*            language -> common IR (SLIR)
      -> SLLowering             IR -> register ISA (SLInstructionSet / SLProgram)
      -> SLOpcodeMap            register ISA + OS syscalls -> SLeeLa opcodes
-     -> SLSleelaVM             execute the canonical base-98 Turing-complete substrate
+     -> SLSleelaVM             execute the canonical Turing-complete opcode substrate
 ```
+
+The native substrate (`impl/core/sleela_core.h` `SLOp`) defines **150 opcodes**
+(codes 0..149), which `SLSleelaOpcode` organizes as a **double shelf** of three
+contiguous tiers — all acceptable, each carrying its own iteration flag for the
+professional monitoring/storage layer:
+
+| Shelf | Codes | Tier flag | Contents |
+|---|---|---|---|
+| 1 — base computational/service core | 0..48 | `TIER_BASE` | arithmetic, control flow, call/return, threads, sockets, pipes, files |
+| 2 — substrate extensions | 49..97 | `TIER_SUBSTRATE` | time services, structs, Synchro / Munction / Best-of |
+| 3 — host-facing services | 98..149 | `TIER_HOST` | arrays, OS syscalls, GC hint, `ran::`, Idea realtime canvas, VM-select / Modium |
+
+`SLSleelaOpcode` exposes the shelf bounds (`BASE_COUNT` 49, `SUBSTRATE_COUNT`
+98, `NATIVE_COUNT` 150) and `tier(op)` / `tierName(op)` so each opcode can be
+tagged and each shelf iterated under its own flag; the tiers never gate
+execution. Every CPU instruction and OS syscall lowers onto the base
+computational core (plus structs); the mapping is **conservative** — it mirrors
+the native codes/mnemonics exactly rather than inventing a parallel set.
 
 | Class | Role |
 |---|---|
-| `SLSleelaOpcode` | The canonical base-98 opcode registry — exact native codes/mnemonics. The ground truth. |
+| `SLSleelaOpcode` | The canonical opcode registry — exact native codes/mnemonics (declares the base computational/service core). The ground truth. |
 | `SLSleelaVM` | A stack machine that executes the Sleela opcodes directly (mirrors the native dispatch loop). |
 | `SLOpcodeMap` | Maps each register-ISA instruction and each OS syscall onto a sequence of Sleela opcodes. |
 | `SLTuringBridge` | Reduces any-language programs to the substrate and runs them; `proveEquivalence()` checks all four give the identical result. |
@@ -173,7 +191,7 @@ A register instruction like `ADD r1, r2` maps to the opcode sequence
 OS `SYS_WRITE` maps to `LOADG arg ; OP_PRINT`; `SYS_EXIT` maps to `OP_HALT`.
 Because **every** CPU instruction and **every** syscall is defined as such a
 Sleela-opcode sequence, a whole program — whatever language it started in —
-becomes one stream of base-98 opcodes. Two programs that reduce to opcode
+becomes one stream of canonical opcodes. Two programs that reduce to opcode
 streams with the same observable effect are, by definition, equal in Turing
 effect.
 

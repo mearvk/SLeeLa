@@ -10,7 +10,7 @@ Sleela VM (`lib/vm`), which in turn runs on the Native Sleela VM substrate
 ```
   hardware model      gates -> SLALU -> SLCore -> SLCPU        (lib/cpu)
         |
-  Native Sleela VM    SLSleelaVM: the 124 canonical opcodes    (lib/cpu/SLSleelaVM.sleela)
+  Native Sleela VM    SLSleelaVM: the canonical opcode substrate (lib/cpu/SLSleelaVM.sleela)
         |
   Secondary Sleela VM SLVM: heap/frames/threads/classes/loader (lib/vm/SLVM.sleela)
         |

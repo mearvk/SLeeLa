@@ -66,7 +66,7 @@ class SLMachine {
 
   // Reduce a program in any supported language to the canonical SLeeLa opcode
   // substrate and execute it there, returning its printed result. This runs the
-  // program as a stream of the Turing-complete base-98 opcodes — the common
+  // program as a stream of the Turing-complete canonical opcodes — the common
   // ground C/C++/Java/Sleela all share.
   int runOnSubstrate(int langId, String path, String name) {
     SLTuringBridge bridge = new SLTuringBridge(); bridge.configure();

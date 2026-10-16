@@ -10,8 +10,8 @@
  *   Crucially, SLCPURuntime is the seam that lets a CPU model run ON TOP OF the
  *   secondary Sleela VM: it owns an SLSleelaVM substrate and a lowering surface
  *   (emitConst/emitBinary/emitStore/...) so a concrete CPU can translate each of
- *   its native instructions into the 124 canonical opcodes and execute them on
- *   the same engine the native Sleela VM interprets. A per-architecture model
+ *   its native instructions into the canonical SLeeLa opcodes and execute them
+ *   on the same engine the native Sleela VM interprets. A per-architecture model
  *   therefore only has to (a) declare its registers and (b) implement decode()
  *   to map its opcodes onto the ALU and the substrate — everything structural is
  *   inherited.

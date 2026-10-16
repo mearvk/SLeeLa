@@ -1,0 +1,58 @@
+/*
+ * lib/cpu/components/examples/ddr5-as-ddr2-cadence.sleela
+ * SLeeLa example: run a real DDR5-6400 module as the system's actual RAM, but
+ * place a Sleela-level memory interface in the OOD slot that imposes a DDR2
+ * refresh duty cycle — so the DDR5 "refreshes as though it were DDR2" for a
+ * special-purpose run. The backing store stays DDR5 (full capacity/data rate);
+ * only the observed availability (refresh duty) changes. The cadence is modeled
+ * entirely in the Sleela layer, not in the host OS.
+ *
+ * Shows the key property: you compose BOTH the real module AND the interface.
+ */
+#sleela 2.1
+class Ddr5AsDdr2CadenceExample {
+
+  void main() {
+    SLComponentCatalog parts = new SLComponentCatalog();
+
+    SLAMDThreadripper9980X cpu = new SLAMDThreadripper9980X();
+    cpu.configure();
+
+    // The REAL RAM in the system: DDR5-6400, 4-channel (TRX50 HEDT).
+    SLMemoryModule ddr5 = parts.ddr5_6400_quadChannel(32768);   // 4 × 32 GiB
+
+    // The OOD interface layer: wrap that DDR5 so it refreshes like DDR2.
+    SLMemoryInterface ddr2cad = parts.ddr2CadenceInterface(ddr5);
+
+    SLExecutorBuild build = new SLExecutorBuild();
+    build.configure("tr-9980x-ddr5-as-ddr2");
+    build.installCpu(cpu);
+    build.installBoard(parts.trx50());
+    build.installMemory(ddr5);                  // actual module
+    build.installMemoryInterface(ddr2cad);      // AND the cadence overlay
+    build.installBus(parts.pcieGen5x16());
+    build.assemble();                           // mounts the REAL DDR5 backing store
+
+    print("=== DDR5-6400 operated with DDR2 refresh cadence ===");
+    print("native module: " + ddr5.name() + " (" + ddr5.technologyName() +
+          "), total " + ddr5.totalCapacityMiB() + " MiB");
+    print("backing store mounted as: " + ddr2cad.nativeTechName() +
+          " (unchanged; capacity " + ddr2cad.capacityMiB() + " MiB)");
+    print("refreshes as: " + ddr2cad.refreshesAsName() +
+          "  (tREFI=" + ddr2cad.refreshIntervalNs() + " ns, tRFC=" +
+          ddr2cad.refreshTimeNs() + " ns)");
+    print("native peak BW: " + ddr2cad.nativeBandwidthMBs() + " MB/s");
+    print("available duty: " + ddr2cad.availableDutyPct() + " %  (refresh overhead " +
+          ddr2cad.refreshOverheadPct() + " %)");
+    print("effective BW under DDR2 cadence: " + ddr2cad.effectiveBandwidthMBs() +
+          " MB/s  (= native peak x available duty; the duty follows the chosen");
+    print("  cadence's tREFI/tRFC, so the figure reflects DDR2's refresh timing honestly)");
+    print("build sees memory BW: " + build.memoryBandwidthMBs() +
+          " MB/s, interface active=" + build.hasMemoryInterface());
+
+    // Disengage the overlay to pass the real DDR5 through untouched (A/B check).
+    ddr2cad.disengage();
+    print("overlay off -> effective BW back to native: " +
+          ddr2cad.effectiveBandwidthMBs() + " MB/s, duty " + ddr2cad.availableDutyPct() + " %");
+  }
+}

@@ -3,24 +3,26 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLExecutorBuild — a user-assembled Sleela executor: a CPU
  *   model (SLCPURuntime / SL<ARCH>CPU) running at its spec clock (or overclocked)
- *   plus the components the user picked from SLComponentCatalog — a memory
- *   module, a primary storage device, an optional optical drive, and a system
- *   bus. It wires the memory module's backing store into the CPU and exposes the
- *   assembled machine so the Creator/SLVM can host it and run C/C++/Java/Sleela
- *   workloads on it.
+ *   plus the components the user picked from SLComponentCatalog — a motherboard,
+ *   a memory module, a primary storage device, an optional optical drive, and a
+ *   system bus. It wires the memory module's backing store into the CPU and
+ *   exposes the assembled machine so the Creator/SLVM can host it and run
+ *   C/C++/Java/Sleela workloads on it.
  *
  * This is the "build your own machine" surface: pick a CPU, set its clock,
  * choose RAM/storage/optical/bus, and get a configured executor whose
  * performance reflects every choice.
  *
- * Family: cpu.components. Composes SLCPURuntime, SLMemoryModule,
- *   SLStorageDevice, SLOpticalDrive, SLSystemBus.
+ * Family: cpu.components. Composes SLCPURuntime, SLMotherboard, SLMemoryModule,
+ *   SLMemoryInterface, SLStorageDevice, SLOpticalDrive, SLSystemBus.
  */
 #sleela 2.1
 class SLExecutorBuild {
   String buildName;
   SLCPURuntime cpu;
+  SLMotherboard board;
   SLMemoryModule memory;
+  SLMemoryInterface memInterface;   // optional OOD cadence-overlay over `memory`
   SLStorageDevice storage;
   SLOpticalDrive optical;
   SLSystemBus bus;
@@ -30,10 +32,18 @@ class SLExecutorBuild {
 
   // Pick parts (any may be omitted; CPU and memory are required to assemble).
   void installCpu(SLCPURuntime chosenCpu)        { cpu = chosenCpu; }
+  void installBoard(SLMotherboard motherboard)   { board = motherboard; }
   void installMemory(SLMemoryModule module)      { memory = module; }
   void installStorage(SLStorageDevice device)    { storage = device; }
   void installOptical(SLOpticalDrive drive)      { optical = drive; }
   void installBus(SLSystemBus systemBus)         { bus = systemBus; }
+
+  // The OOD slot for a memory interface/adapter layer: a Sleela-level overlay
+  // that imposes a target-tech refresh duty cycle on the real module (e.g. run
+  // the DDR5 so it refreshes as though it were DDR2). Composed WITH the module:
+  // install a module first, then install an interface that wraps it. The real
+  // backing store is never replaced — only the observed availability changes.
+  void installMemoryInterface(SLMemoryInterface iface) { memInterface = iface; }
 
   // Optional accelerators: give the build's CPU direct DMA and/or native GPU
   // access, so a program on this executor can use them at any point.
@@ -60,17 +70,39 @@ class SLExecutorBuild {
   }
 
   // The effective memory bandwidth available to the CPU is the smaller of the
-  // RAM module's peak and (when present) the system bus's peak — the bus can
-  // bottleneck fast RAM.
+  // RAM module's effective peak and (when present) the system bus's peak — the
+  // bus can bottleneck fast RAM. When a memory interface is installed, the RAM
+  // figure is the interface's duty-scaled bandwidth (the refresh cadence
+  // overlay), not the module's raw peak.
   int effectiveMemoryBandwidthMBs() {
-    int ram = (memory != null) ? memory.peakBandwidthMBs() : 0;
+    int ram = memoryBandwidthMBs();
     if (bus == null) { return ram; }
     int b = bus.peakBandwidthMBs();
     return (b < ram) ? b : ram;
   }
 
-  SLCPURuntime processor()    { return cpu; }
-  SLMemoryModule ram()        { return memory; }
+  // RAM bandwidth as the system sees it: the interface's duty-scaled figure
+  // when a cadence overlay is installed, otherwise the module's raw peak.
+  int memoryBandwidthMBs() {
+    if (memInterface != null) { return memInterface.effectiveBandwidthMBs(); }
+    return (memory != null) ? memory.peakBandwidthMBs() : 0;
+  }
+
+  // When a motherboard is installed, the memory module's channel count must fit
+  // the board's routed channels (an 8-channel module can't run on a 4-channel
+  // board). No board installed = no constraint. Returns true when the build's
+  // memory topology is seatable on the board.
+  boolean boardFits() {
+    if (board == null) { return true; }
+    if (memory == null) { return true; }
+    return board.supportsChannels(memory.channelCount());
+  }
+
+  SLCPURuntime processor()         { return cpu; }
+  SLMotherboard motherboard()      { return board; }
+  SLMemoryModule ram()             { return memory; }
+  SLMemoryInterface ramInterface() { return memInterface; }
+  boolean hasMemoryInterface()     { return memInterface != null && memInterface.active(); }
   SLStorageDevice disk()      { return storage; }
   SLOpticalDrive opticalDrive(){ return optical; }
   SLSystemBus systemBus()     { return bus; }
