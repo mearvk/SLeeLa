@@ -30,7 +30,9 @@ class Greeter {
 
 ## Keywords & types
 
-**Control / declaration keywords:** `class`, `interface`, `enum`, `record`, `struct`, `static`, `final`, `abstract`, `sealed`, `non-sealed`, `const`, `public`, `private`, `protected`, `import`, `native`, `extends`, `implements`, `throws`, `transient`, `volatile`, `strictfp`.
+**Control / declaration keywords:** `class`, `interface`, `enum`, `record`, `struct`, `static`, `final`, `abstract`, `sealed`, `non-sealed`, `const`, `usualmem`, `accuratemem`, `public`, `private`, `protected`, `import`, `native`, `extends`, `implements`, `throws`, `transient`, `volatile`, `strictfp`.
+
+> **`usualmem` / `accuratemem` (Sleela memory tiers):** modifiers that designate which memory tier a function or program should run against, so the VM routes *usual activities* to a cheaper tier (e.g. DDR2) and *competency/accuracy-critical* work to a faster tier (e.g. DDR5). `usualmem` selects the usual (DDR2) tier; `accuratemem` selects the accurate (DDR5) tier. They compose with `public`/`static`/`final` like any other modifier, and are mutually exclusive by intent; an unmarked declaration inherits the program's main tier (accurate/DDR5 by default). The tiers themselves are designated in an `.xlt` model via `memtier "<preset>" usual|accurate;` and `maintier "usual|accurate";` (see `lib/xlt/README.md`).
 
 > **`const` (Sleela):** a developer-intent modifier that declares *"I intend to keep this variable constant until the System Design is complete."* It combines with `public` / `static` / `final` like any other modifier and is recorded on the declaration's modifier set. Unlike `final`, it is a **design-time intent marker**, not a hard compile-time immutability guarantee — it signals and documents stability of intent during design, rather than enforcing it.
 

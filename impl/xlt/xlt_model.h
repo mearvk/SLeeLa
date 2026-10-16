@@ -19,6 +19,9 @@
 //     gpu;                         // optional capability directive
 //     dma;                         // optional capability directive
 //     nativeram;                   // optional capability directive
+//     memtier  "ddr2_800" usual;   // optional: usual-activities tier
+//     memtier  "ddr5_6400" accurate; // optional: competency/accuracy tier
+//     maintier "accurate";         // optional: default tier for the main program
 //     target   sleela;
 //   }
 // ===========================================================================
@@ -56,6 +59,15 @@ struct XltModel {
     bool dma = false;        // `dma;`       -> enableDMA()
     bool nativeRam = false;  // `nativeram;` -> NATIVE_RAM feature bit
     int  gpuLine = 0, dmaLine = 0, nativeRamLine = 0;
+
+    // Memory-tier designation: a 'usual' tier (usual activities) and an
+    // 'accurate' tier (competency/accuracy), plus which is the main default.
+    //   memtier "ddr2_800" usual;   memtier "ddr5_6400" accurate;
+    //   maintier "accurate";
+    Slot        usualTier;      // memory preset ref for the usual tier
+    Slot        accurateTier;   // memory preset ref for the accurate tier
+    std::string mainTier;       // "usual" | "accurate" (empty = default accurate)
+    int         mainTierLine = 0;
 
     bool headerSeen = false;         // `#xlt` pragma present
     bool modelSeen = false;          // a `model { }` block was parsed

@@ -52,6 +52,13 @@ class SLXltSource {
   int dmaFlag;          // `dma;`       -> build.enableDMA()
   int nativeRamFlag;    // `nativeram;` -> declare the NATIVE_RAM feature bit
 
+  // Memory-tier designation: the model may split memory into a "usual" tier
+  // (for usual activities) and an "accurate" tier (for competency/accuracy),
+  // and name which is the default (main) tier. Each memory preset slot below.
+  String usualTierRef;    // memory preset for the usual tier, e.g. "ddr2_800"
+  String accurateTierRef; // memory preset for the accurate tier, e.g. "ddr5_6400"
+  String mainTier;        // "usual" or "accurate" — which the main program uses
+
   int validated;
 
   void configure(String sourcePath, String root) {
@@ -60,6 +67,7 @@ class SLXltSource {
     cpuRef = ""; boardRef = ""; memoryRef = ""; memoryCapMiB = 0;
     cadenceRef = ""; storageRef = ""; busRef = "";
     gpuFlag = 0; dmaFlag = 0; nativeRamFlag = 0;
+    usualTierRef = ""; accurateTierRef = ""; mainTier = "";
     validated = 0;
   }
 
@@ -83,6 +91,11 @@ class SLXltSource {
   boolean declareDma()       { if (dmaFlag == 1) { return false; } dmaFlag = 1; return true; }
   boolean declareNativeRam() { if (nativeRamFlag == 1) { return false; } nativeRamFlag = 1; return true; }
 
+  // Memory-tier designation (orthogonal: each tier declared at most once).
+  boolean declareUsualTier(String ref)    { if (usualTierRef != "") { return false; } usualTierRef = ref; return true; }
+  boolean declareAccurateTier(String ref) { if (accurateTierRef != "") { return false; } accurateTierRef = ref; return true; }
+  boolean declareMainTier(String which)   { if (mainTier != "") { return false; } mainTier = which; return true; }
+
   boolean validate() { validated = 1; return 1 == 1; }
 
   String sourcePath()  { return path; }
@@ -102,4 +115,8 @@ class SLXltSource {
   boolean wantsGpu()       { return gpuFlag == 1; }
   boolean wantsDma()       { return dmaFlag == 1; }
   boolean wantsNativeRam() { return nativeRamFlag == 1; }
+  String usualTier()       { return usualTierRef; }
+  String accurateTier()    { return accurateTierRef; }
+  String main()            { return mainTier; }
+  boolean hasTiers()       { return usualTierRef != "" || accurateTierRef != ""; }
 }

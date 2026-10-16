@@ -127,6 +127,28 @@ ResolveResult resolve(const XltModel& m, const DiagnosticBag& diags) {
     if (m.dma)       r.builtLines.push_back("capability: dma (bulk engine)");
     if (m.nativeRam) r.builtLines.push_back("capability: nativeram (NATIVE_RAM feature bit)");
 
+    // 7. memory tiers (optional): usual (DDR2-style) + accurate (DDR5-style).
+    bool hasTiers = m.usualTier.present || m.accurateTier.present;
+    if (hasTiers) {
+        if (m.usualTier.present) {
+            if (!memMap().count(m.usualTier.ref)) missing(r, "usual tier '" + m.usualTier.ref + "' is not a registered module");
+            else r.builtLines.push_back("memtier usual: " + m.usualTier.ref + " (usual activities)");
+        }
+        if (m.accurateTier.present) {
+            if (!memMap().count(m.accurateTier.ref)) missing(r, "accurate tier '" + m.accurateTier.ref + "' is not a registered module");
+            else r.builtLines.push_back("memtier accurate: " + m.accurateTier.ref + " (competency/accuracy)");
+        }
+        std::string main = m.mainTier.empty() ? "accurate" : m.mainTier;
+        if (main != "usual" && main != "accurate")
+            disagrees(r, "main tier '" + main + "' must be 'usual' or 'accurate'");
+        else if (main == "usual" && !m.usualTier.present)
+            disagrees(r, "main tier is 'usual' but no usual tier was declared");
+        else if (main == "accurate" && !m.accurateTier.present)
+            disagrees(r, "main tier is 'accurate' but no accurate tier was declared");
+        else
+            r.builtLines.push_back("main tier: " + main);
+    }
+
     r.built = (!r.builtLines.empty() && r.reasons.empty());
     return r;
 }

@@ -39,6 +39,37 @@ like every other slot) request runtime capabilities for the model:
 They appear in the build list on success (e.g. `capability: gpu (native
 compute)`).
 
+### Memory tiers (usual vs. accurate)
+
+A model may split memory into two tiers so a program can run **usual activities**
+on a cheaper tier (e.g. DDR2) and **competency/accuracy-critical** work on a
+faster tier (e.g. DDR5):
+
+```
+memtier  "ddr2_800"  usual;      // usual-activities tier
+memtier  "ddr5_6400" accurate;   // competency / accuracy tier
+maintier "accurate";             // the main program's default tier
+```
+
+- `memtier "<memory-preset>" usual|accurate;` — designate a tier (each at most
+  once; the ref must be a registered memory preset).
+- `maintier "usual|accurate";` — which tier the main program uses when a
+  function is not marked (default: `accurate`). `maintier` must name a declared
+  tier, else a `[disagrees]` congruence.
+
+At the **language** level, individual functions choose their tier with two
+modifier keywords (added alongside `const`, composing with `public`/`static`/
+`final` as normal):
+
+```
+usualmem    void   logActivity()  { ... }   // runs on the usual (DDR2) tier
+accuratemem int    settleLedger() { ... }   // runs on the accurate (DDR5) tier
+int main() { ... }                          // inherits the main tier (DDR5)
+```
+
+Unmarked declarations inherit the program's main tier. See
+`examples/epyc-tiered-memory.xlt`.
+
 It is the declarative analog of the hand-written builder in
 `lib/cpu/amd-epyc/examples/epyc-with-ddr2-settings.sleela`.
 

@@ -79,6 +79,35 @@ private:
             return;
         }
 
+        // memory tiers: `memtier "ref" usual|accurate;`
+        if (kw == "memtier") {
+            std::string ref;
+            if (is(Tok::String)) { ref = cur().text; advance(); }
+            else err("XLT-E-0023", "'memtier' expects a quoted memory reference", "XLT-TIER-01");
+            std::string which;
+            if (is(Tok::Ident)) { which = cur().text; advance(); }
+            else err("XLT-E-0024", "'memtier' expects a tier name (usual|accurate)", "XLT-TIER-01");
+            if (which == "usual") {
+                if (m.usualTier.present) err("XLT-E-0025", "duplicate 'usual' memtier breaks document orthogonality", "XLT-ORTHO-01");
+                m.usualTier.ref = ref; m.usualTier.present = true; m.usualTier.line = kwLine;
+            } else if (which == "accurate") {
+                if (m.accurateTier.present) err("XLT-E-0025", "duplicate 'accurate' memtier breaks document orthogonality", "XLT-ORTHO-01");
+                m.accurateTier.ref = ref; m.accurateTier.present = true; m.accurateTier.line = kwLine;
+            } else if (!which.empty()) {
+                err("XLT-E-0026", "memtier name must be 'usual' or 'accurate', got '" + which + "'", "XLT-TIER-01");
+            }
+            expectSemicolon();
+            return;
+        }
+        // main tier: `maintier "usual|accurate";`
+        if (kw == "maintier") {
+            if (!m.mainTier.empty()) err("XLT-E-0027", "duplicate 'maintier' breaks document orthogonality", "XLT-ORTHO-01");
+            if (is(Tok::String)) { m.mainTier = cur().text; m.mainTierLine = kwLine; advance(); }
+            else err("XLT-E-0028", "'maintier' expects a quoted tier name", "XLT-TIER-01");
+            expectSemicolon();
+            return;
+        }
+
         // bare capability directives: keyword directly followed by ';'.
         if (kw == "gpu" || kw == "dma" || kw == "nativeram") {
             bool* flag = (kw == "gpu") ? &m.gpu : (kw == "dma") ? &m.dma : &m.nativeRam;

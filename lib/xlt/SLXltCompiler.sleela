@@ -130,6 +130,41 @@ class SLXltCompiler {
     if (src.wantsDma()) { build.enableDMA(); res.recordBuilt("capability: dma (bulk engine)"); }
     if (src.wantsNativeRam()) { res.recordBuilt("capability: nativeram (NATIVE_RAM feature bit)"); }
 
+    // ---- 7. memory tiers (optional) ----
+    // The model may split memory into a 'usual' tier (usual activities) and an
+    // 'accurate' tier (competency/accuracy); `main` names the program default.
+    // Each tier ref must resolve like any memory preset; `main` must name a
+    // declared tier. Functions marked usualmem/accuratemem route to the matching
+    // tier, the rest inherit `main` (accurate/DDR5 by default).
+    if (src.hasTiers()) {
+      if (src.usualTier() != "") {
+        if (registry.known(registry.SLOT_MEMORY, src.usualTier()) == false) {
+          res.recordReason(res.REASON_MISSING, "usual tier '" + src.usualTier() + "' is not a registered module");
+        } else {
+          res.recordBuilt("memtier usual: " + src.usualTier() + " (usual activities)");
+        }
+      }
+      if (src.accurateTier() != "") {
+        if (registry.known(registry.SLOT_MEMORY, src.accurateTier()) == false) {
+          res.recordReason(res.REASON_MISSING, "accurate tier '" + src.accurateTier() + "' is not a registered module");
+        } else {
+          res.recordBuilt("memtier accurate: " + src.accurateTier() + " (competency/accuracy)");
+        }
+      }
+      // `main` must name one of the declared tiers (default accurate when unset).
+      String main = src.main();
+      if (main == "") { main = "accurate"; }
+      if (main != "usual" && main != "accurate") {
+        res.recordReason(res.REASON_DISAGREES, "main tier '" + main + "' must be 'usual' or 'accurate'");
+      } else if (main == "usual" && src.usualTier() == "") {
+        res.recordReason(res.REASON_DISAGREES, "main tier is 'usual' but no usual tier was declared");
+      } else if (main == "accurate" && src.accurateTier() == "") {
+        res.recordReason(res.REASON_DISAGREES, "main tier is 'accurate' but no accurate tier was declared");
+      } else {
+        res.recordBuilt("main tier: " + main);
+      }
+    }
+
     res.seal();
     return res;
   }

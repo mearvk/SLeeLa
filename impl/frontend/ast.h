@@ -48,7 +48,16 @@ enum JavaModifier : unsigned {
     // variable constant until the System Design is complete." It is a design-time
     // marker (recorded on the declaration's modifier set), NOT a hard immutability
     // guarantee like `final`; it composes freely with public/static/final.
-    JavaConst        = 1u << 14
+    JavaConst        = 1u << 14,
+    // Sleela memory-tier modifiers: designate which memory tier a function/
+    // program should run against, so the VM routes "usual activities" to the
+    // DDR2 tier and competency/accuracy-critical work to the DDR5 tier.
+    //   usualmem    -> DDR2 tier (usual activities)
+    //   accuratemem -> DDR5 tier (competency / accuracy)
+    // Unmarked declarations inherit the program's main tier (DDR5 by default).
+    // They compose with other modifiers and are mutually exclusive by intent.
+    JavaMemUsual     = 1u << 15,   // usualmem    (DDR2)
+    JavaMemAccurate  = 1u << 16    // accuratemem (DDR5)
 };
 
 struct JavaTypeMetadata {
