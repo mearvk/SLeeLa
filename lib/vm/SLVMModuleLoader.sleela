@@ -9,7 +9,12 @@
  *   filesystem-driven below the bridge; this object models the package lifecycle
  *   above it.
  *
- * Family: vm. Produces/consumes SLVMModule, SLVMClass; composed by SLVM.
+ * The loader can also adopt the program's access manifest (finishModuleWithAccess)
+ * so the loaded module honors the stated public/private/protected system roles
+ * and the VM realizes the per-role backdrop.
+ *
+ * Family: vm. Produces/consumes SLVMModule, SLVMClass, SLAccessManifest;
+ *   composed by SLVM.
  */
 #sleela 2.1
 class SLVMModuleLoader {
@@ -46,6 +51,22 @@ class SLVMModuleLoader {
     current.load();
     state = 1;
     return current;
+  }
+
+  // Finalise loading AND adopt the program's access manifest, so the loaded
+  // module honors the stated public/private/protected system roles (exposed hop
+  // / local / integrity-guarded) and the VM can realize the backdrop. Returns
+  // the loaded module; the old finishModule() remains for access-free images.
+  SLVMModule finishModuleWithAccess(int entryClassId, String entryMethod,
+                                    SLAccessManifest manifest) {
+    SLVMModule m = finishModule(entryClassId, entryMethod);
+    if (m != null && manifest != null) { m.adoptAccess(manifest); }
+    return m;
+  }
+
+  // Did the current module load a competent access backdrop the VM may realize?
+  boolean accessRealized() {
+    return current != null && current.accessCompetent();
   }
 
   void registerPackage(){ packages=packages+1; } void registerSymbol(){ symbols=symbols+1; }

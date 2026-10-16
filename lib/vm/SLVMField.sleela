@@ -17,17 +17,32 @@ class SLVMField {
   int slot;        // index into the owning object's field block
   int typeTag;     // one of SLVMValue.TAG_*
   boolean isStatic;
+  int accessRole;  // SLAccessSemantics.ROLE_* (0 none/1 exposed/2 local/3 guarded)
 
   void configure(String fieldName, int fieldSlot, int declaredType, boolean staticField) {
+    configureAccess(fieldName, fieldSlot, declaredType, staticField, 0);
+  }
+
+  // Full form: also record the field's access role. The old configure()
+  // delegates here with role 0, so existing callers are unchanged.
+  void configureAccess(String fieldName, int fieldSlot, int declaredType,
+                       boolean staticField, int role) {
     name = fieldName;
     slot = fieldSlot;
     typeTag = declaredType;
     isStatic = staticField;
+    accessRole = role;
   }
+
+  void setAccessRole(int role) { accessRole = role; }
 
   String fieldName()  { return name; }
   int slotIndex()     { return slot; }
   int declaredType()  { return typeTag; }
   boolean staticField(){ return isStatic; }
   boolean instanceField(){ return !isStatic; }
+  int role()          { return accessRole; }
+  boolean exposedHop(){ return accessRole == 1; }
+  boolean localOnly() { return accessRole == 2; }
+  boolean guarded()   { return accessRole == 3; }
 }

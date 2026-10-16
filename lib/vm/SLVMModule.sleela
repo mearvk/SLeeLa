@@ -27,12 +27,26 @@ class SLVMModule {
   int entryClassId;
   String entryMethod;
 
+  // Stated access semantics this module was compiled with (null until adopted
+  // from the program image). When present, the VM realizes the System backdrop
+  // and enforces role-gated resolution from it instead of guessing.
+  SLAccessManifest access;
+
   void configure(String moduleName, int codeCap, int stackCap, int globalCap) {
     name = moduleName; state = 0;
     substrate = new SLSleelaVM();
     substrate.configure(codeCap, stackCap, globalCap);
     classCount = 0; entryClassId = -1; entryMethod = "main";
+    access = null;
   }
+
+  // Adopt the access manifest the compiled image carries, so the module honors
+  // the stated public/private/protected semantics (exposed hop / local system /
+  // integrity-guarded) rather than inferring them.
+  void adoptAccess(SLAccessManifest manifest) { access = manifest; }
+  SLAccessManifest accessManifest() { return access; }
+  boolean hasAccess() { return access != null; }
+  boolean accessCompetent() { return access != null && access.competent(); }
 
   // Append one canonical opcode to the shared code store; returns its index so
   // methods can be configured with (entry,length) windows.
@@ -91,6 +105,35 @@ class SLVMModule {
       SLVMClass k = classById(cid);
       if (k == null) { return null; }
       SLVMMethod mm = k.resolveMethod(methodName);
+      if (mm != null) { return mm; }
+      cid = k.superclass();
+    }
+    return null;
+  }
+
+  // Resolve a method the way the network sees it: only an exposed (public) hop
+  // binds. This is the module-level enforcement point for "a network of files
+  // may assume a public function is reachable" — private/protected do not bind.
+  SLVMMethod resolveExposedMethod(int classId, String methodName) {
+    int cid = classId;
+    while (cid >= 0) {
+      SLVMClass k = classById(cid);
+      if (k == null) { return null; }
+      SLVMMethod mm = k.resolveExposedMethod(methodName);
+      if (mm != null) { return mm; }
+      cid = k.superclass();
+    }
+    return null;
+  }
+
+  // Resolve on behalf of a caller with a known role (local/in-system callers can
+  // reach private/protected; a network/exposed caller cannot).
+  SLVMMethod resolveMethodForCaller(int classId, String methodName, int callerRole) {
+    int cid = classId;
+    while (cid >= 0) {
+      SLVMClass k = classById(cid);
+      if (k == null) { return null; }
+      SLVMMethod mm = k.resolveMethodForCaller(methodName, callerRole);
       if (mm != null) { return mm; }
       cid = k.superclass();
     }

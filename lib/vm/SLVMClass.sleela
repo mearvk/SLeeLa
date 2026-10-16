@@ -106,6 +106,34 @@ class SLVMClass {
     return null;
   }
 
+  // --- access-gated resolution (extensible-network enforcement) -----------
+  // Resolve ONLY a network-exposed (public) method. This is what a remote hop /
+  // another file in the network may reach: a private or protected method is NOT
+  // returned here, so the network cannot bind a non-exposed symbol.
+  SLVMMethod resolveExposedMethod(String methodName) {
+    SLVMMethod mm = resolveMethod(methodName);
+    if (mm != null && mm.exposedHop()) { return mm; }
+    return null;
+  }
+
+  // Resolve on behalf of a caller whose own access role is `callerRole`
+  // (SLAccessSemantics.ROLE_*). Rules the VM enforces:
+  //   - exposed (public)   methods: reachable by anyone (including the network);
+  //   - local   (private)  methods: reachable only by a local/in-system caller
+  //                                 (callerRole local or guarded), never the net;
+  //   - guarded (protected) methods: reachable by a local or guarded caller
+  //                                 (the guard controls run before proceeding).
+  // A plain resolveMethod() with no role still works (role 0 = ungated).
+  SLVMMethod resolveMethodForCaller(String methodName, int callerRole) {
+    SLVMMethod mm = resolveMethod(methodName);
+    if (mm == null) { return null; }
+    if (mm.exposedHop()) { return mm; }                 // public: always reachable
+    if (mm.role() == 0)  { return mm; }                 // ungated member
+    // private/protected require a local (2) or guarded (3) caller.
+    if (callerRole == 2 || callerRole == 3) { return mm; }
+    return null;                                         // network/exposed caller denied
+  }
+
   int id()           { return classId; }
   String className() { return name; }
   int superclass()   { return superId; }

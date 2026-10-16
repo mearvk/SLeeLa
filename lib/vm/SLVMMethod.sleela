@@ -11,6 +11,10 @@
  * SLSleelaVM so every layer executes the same 124 canonical opcodes the native
  * engine (lib/cpu/SLSleelaVM) interprets.
  *
+ * A method also carries an access role (exposed-hop / local-system /
+ * integrity-guarded) under the extensible-network interpretation, so the VM can
+ * gate resolution by role and realize the per-role backdrop.
+ *
  * Family: vm. Composed by SLVMClass; drives SLVMFrame + SLVMModule.
  */
 #sleela 2.1
@@ -24,8 +28,23 @@ class SLVMMethod {
   boolean isStatic;
   boolean isNative;    // body is an SLVMNativeBinding instead of opcodes
 
+  // Access role under the extensible-network interpretation (mirrors
+  // SLAccessSemantics.ROLE_*): 0 none, 1 exposed-hop (public), 2 local-system
+  // (private), 3 integrity-guarded (protected). This is the first VM-level
+  // access metadata on a method; resolveMethod gates on it (see SLVMClass).
+  int accessRole;
+
   void configure(String methodName, String sig, int entryIndex, int codeLength,
                  int args, int locals, boolean staticMethod, boolean nativeMethod) {
+    configureAccess(methodName, sig, entryIndex, codeLength, args, locals,
+                    staticMethod, nativeMethod, 0);
+  }
+
+  // Full form: also record the method's access role. The old configure()
+  // delegates here with role 0 (none), so existing callers are unchanged.
+  void configureAccess(String methodName, String sig, int entryIndex, int codeLength,
+                       int args, int locals, boolean staticMethod, boolean nativeMethod,
+                       int role) {
     name = methodName;
     descriptor = sig;
     entry = entryIndex;
@@ -34,7 +53,10 @@ class SLVMMethod {
     maxLocals = locals;
     isStatic = staticMethod;
     isNative = nativeMethod;
+    accessRole = role;
   }
+
+  void setAccessRole(int role) { accessRole = role; }
 
   String methodName() { return name; }
   String signature()  { return descriptor; }
@@ -44,6 +66,12 @@ class SLVMMethod {
   int locals()        { return maxLocals; }
   boolean staticMethod(){ return isStatic; }
   boolean nativeMethod(){ return isNative; }
+
+  // Role predicates for the resolve-time access gate.
+  int role()            { return accessRole; }
+  boolean exposedHop()  { return accessRole == 1; }   // public  : REST-exposed
+  boolean localOnly()   { return accessRole == 2; }   // private : local/admin/safety
+  boolean guarded()     { return accessRole == 3; }   // protected: integrity-checked
 
   // Does the given instruction index fall inside this method's code window?
   boolean contains(int ip) { return ip >= entry && ip < entry + length; }

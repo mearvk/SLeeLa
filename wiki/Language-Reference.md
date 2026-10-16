@@ -57,6 +57,15 @@ the compiled `SLProgram` carries via `attachAccess(...)`; the VM reads it back
 (`hasAccess()` / `accessCompetent()`) and infers the same backdrop. See
 `lib/cpu/examples/extensible-network-access.sleela`.
 
+**VM-side enforcement.** The Secondary VM carries the role on each member and
+gates resolution by it — the first VM-level access check in the stack:
+`SLVMMethod` / `SLVMField` carry an `accessRole` (set via `configureAccess(...)`);
+`SLVMClass` / `SLVMModule` expose `resolveExposedMethod(...)` (binds only a
+public hop — what a network of files may reach) and `resolveMethodForCaller(...,
+callerRole)` (private/protected bind only for a local/in-system caller, never a
+network caller). `SLVMModuleLoader.finishModuleWithAccess(...)` adopts the
+manifest so a loaded module honors the stated roles (`accessRealized()`).
+
 **Statement keywords:** `if`, `else`, `while`, `do`, `for`, `switch`, `case`, `default`, `break`, `continue`, `return`, `throw`, `try`, `catch`, `finally`, `assert`, `yield`, `synchronized`, `print`, `new`, `instanceof`, `this`, `super`, `true`, `false`, `null`.
 
 **Types:**

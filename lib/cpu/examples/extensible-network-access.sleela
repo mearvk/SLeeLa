@@ -60,5 +60,43 @@ class ExtensibleNetworkAccessExample {
     print("manifest: exposed=" + man.exposed() + " local=" + man.local() +
           " guarded=" + man.guarded() + " hops=" + man.hops() +
           " ordered=" + man.ordered() + " classified=" + man.classifiedTotal());
+
+    // ------------------------------------------------------------------
+    // VM-SIDE ENFORCEMENT: build a class whose methods carry access roles,
+    // load it with the manifest adopted, and show the VM gates resolution.
+    // ------------------------------------------------------------------
+    SLVMClass svc = new SLVMClass();
+    svc.configure(1, "OrderService", -1, 0);
+
+    SLVMMethod intake = new SLVMMethod();       // public -> exposed hop (role 1)
+    intake.configureAccess("intake", "(I)I", 0, 4, 1, 2, true, false, sem.ROLE_EXPOSED);
+    SLVMMethod backup = new SLVMMethod();        // private -> local only (role 2)
+    backup.configureAccess("backup", "()V", 4, 3, 0, 1, true, false, sem.ROLE_LOCAL);
+    SLVMMethod verify = new SLVMMethod();        // protected -> integrity-guarded (role 3)
+    verify.configureAccess("verify", "(I)Z", 7, 5, 1, 2, true, false, sem.ROLE_GUARDED);
+    svc.addMethod(intake); svc.addMethod(backup); svc.addMethod(verify);
+
+    SLVMModuleLoader loader = new SLVMModuleLoader();
+    loader.configure("/lib");
+    SLVMModule mod = loader.beginModule("order-pipeline", 64, 32, 16);
+    loader.defineClass(svc);
+    loader.finishModuleWithAccess(1, "intake", man);   // adopt the manifest
+    print("module loaded, access realized = " + loader.accessRealized() +
+          ", module.hasAccess = " + mod.hasAccess());
+
+    // A NETWORK caller (exposed-role caller) resolving against the module:
+    SLVMMethod netIntake = mod.resolveExposedMethod(1, "intake");
+    SLVMMethod netBackup = mod.resolveExposedMethod(1, "backup");
+    print("network sees intake (public)  -> " + (netIntake != null) + " [reachable]");
+    print("network sees backup (private) -> " + (netBackup != null) + " [must be false]");
+
+    // A LOCAL (in-system) caller can reach the private/protected members:
+    SLVMMethod locBackup = mod.resolveMethodForCaller(1, "backup", sem.ROLE_LOCAL);
+    SLVMMethod locVerify = mod.resolveMethodForCaller(1, "verify", sem.ROLE_LOCAL);
+    SLVMMethod extBackup = mod.resolveMethodForCaller(1, "backup", sem.ROLE_EXPOSED);
+    print("local caller -> backup reachable=" + (locBackup != null) +
+          ", verify(guarded) reachable=" + (locVerify != null));
+    print("external/network caller -> backup reachable=" + (extBackup != null) +
+          " [must be false: private is local-only]");
   }
 }
