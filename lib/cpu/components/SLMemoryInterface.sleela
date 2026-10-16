@@ -20,8 +20,13 @@
  *   interface AND the module in the build's OOD slot: install a real module,
  *   then install an interface that wraps it and declares the target cadence.
  *
- * Family: cpu.components. Wraps SLMemoryModule; installed in SLExecutorBuild;
- *   selected via SLComponentCatalog.
+ *   The cadence itself is filled by a Dynamite Connector (SLCadenceConnector),
+ *   not by setters: connect() plugs a named, resolve-then-load cadence binding
+ *   into the interface's slot and reads back its refresh timings.
+ *
+ * Family: cpu.components. Wraps SLMemoryModule; fills its cadence slot with an
+ *   SLCadenceConnector; installed in SLExecutorBuild; selected via
+ *   SLComponentCatalog.
  */
 #sleela 2.1
 class SLMemoryInterface {
@@ -38,43 +43,52 @@ class SLMemoryInterface {
 
   String partName;          // nameful: "DDR2-cadence interface", ...
   SLMemoryModule actual;    // the REAL module in the system (e.g. DDR5-6400)
-  int targetTech;           // the cadence to present (e.g. TECH_DDR2)
+  int targetTech;           // the cadence presented (mirrors the slot connector)
+
+  // The cadence SLOT is filled by a Dynamite Connector, not by setters. The
+  // connector resolves a named generation (or a custom profile) into the
+  // refresh timings this interface reads back once the connector is loaded.
+  SLCadenceConnector slot;
 
   // Refresh model, in nanoseconds (the Sleela-layer cadence, not host timers):
   //   tREFI = average refresh interval (how often a refresh is issued)
   //   tRFC  = refresh command time (how long the array is busy per refresh)
-  // The duty the system sees available is (tREFI - tRFC) / tREFI.
+  // The duty the system sees available is (tREFI - tRFC) / tREFI. These are
+  // populated from the connected cadence connector, never set directly.
   int tREFI_ns;
   int tRFC_ns;
   int engaged;              // 1 = the cadence overlay is active
 
   // Wrap a real module and present the given target technology's refresh
-  // cadence. tREFI/tRFC default to that technology's representative values.
+  // cadence by building and connecting a Dynamite cadence connector for it.
   void configure(String name, SLMemoryModule realModule, int cadenceTech) {
-    partName = name; actual = realModule; targetTech = cadenceTech;
-    engaged = 1;
-    applyTechCadence(cadenceTech);
+    partName = name; actual = realModule; engaged = 1;
+    SLCadenceConnector c = new SLCadenceConnector();
+    c.initialize(cadenceTech, name);
+    c.resolve();
+    connect(c);
   }
 
-  // Set representative refresh cadence for a technology (ns). Older DRAM
-  // refreshes more often and/or spends longer per refresh, so its available
-  // duty is lower; DDR5 refreshes most efficiently. Representative, not exact.
-  void applyTechCadence(int tech) {
-    if (tech == TECH_DDR2)  { tREFI_ns = 7800;  tRFC_ns = 130; return; }  // classic DDR2 cadence
-    if (tech == TECH_DDR)   { tREFI_ns = 7800;  tRFC_ns = 120; return; }
-    if (tech == TECH_SDRAM) { tREFI_ns = 15600; tRFC_ns = 70;  return; }
-    if (tech == TECH_DDR3)  { tREFI_ns = 7800;  tRFC_ns = 160; return; }
-    if (tech == TECH_DDR4)  { tREFI_ns = 7800;  tRFC_ns = 260; return; }
-    if (tech == TECH_DDR5)  { tREFI_ns = 3900;  tRFC_ns = 295; return; }  // same-bank; finer interval
-    // SRAM / DRAM-FPM or unknown: treat as refresh-light.
-    tREFI_ns = 64000; tRFC_ns = 0;
+  // Plug a cadence connector into the slot: resolve-then-load it (if the caller
+  // has not already), then read its resolved timings. Fail-closed — a connector
+  // that will not load leaves the overlay disengaged with a refresh-free duty.
+  boolean connect(SLCadenceConnector connector) {
+    slot = connector;
+    if (connector == null) { targetTech = -1; tREFI_ns = 0; tRFC_ns = 0; return false; }
+    boolean ok = connector.load();
+    if (ok == false) {
+      // not resolved/loadable: leave cadence inert (100% duty), overlay off.
+      targetTech = connector.cadenceTech(); tREFI_ns = 0; tRFC_ns = 0;
+      return false;
+    }
+    targetTech = connector.cadenceTech();
+    tREFI_ns = connector.refreshIntervalNs();
+    tRFC_ns = connector.refreshTimeNs();
+    return true;
   }
 
-  // Override the cadence explicitly for a genuinely special-purpose profile.
-  void setCadence(int refreshIntervalNs, int refreshTimeNs) {
-    if (refreshIntervalNs > 0) { tREFI_ns = refreshIntervalNs; }
-    if (refreshTimeNs >= 0)    { tRFC_ns = refreshTimeNs; }
-  }
+  // The connector currently filling the cadence slot (null if none).
+  SLCadenceConnector cadenceSlot() { return slot; }
 
   void engage()    { engaged = 1; }
   void disengage() { engaged = 0; }   // pass the real module through untouched

@@ -54,5 +54,17 @@ class Ddr5AsDdr2CadenceExample {
     ddr2cad.disengage();
     print("overlay off -> effective BW back to native: " +
           ddr2cad.effectiveBandwidthMBs() + " MB/s, duty " + ddr2cad.availableDutyPct() + " %");
+
+    // Explicit Dynamite Connector flow: build a cadence connector, drive its
+    // lifecycle, and plug it into the interface's slot via connect() — instead
+    // of relying on setters. Re-cadence the SAME interface to DDR4.
+    SLCadenceConnector ddr4 = parts.ddr4Cadence();   // initialized + resolved
+    print("connector '" + ddr4.referenceId() + "' state after resolve: " + ddr4.state());
+    ddr2cad.engage();
+    boolean connected = ddr2cad.connect(ddr4);       // load()s then binds timings
+    print("connected DDR4 cadence: " + connected + ", slot state=" +
+          ddr2cad.cadenceSlot().state() + ", refreshes as " + ddr2cad.refreshesAsName());
+    print("effective BW under DDR4 cadence: " + ddr2cad.effectiveBandwidthMBs() +
+          " MB/s, duty " + ddr2cad.availableDutyPct() + " %");
   }
 }

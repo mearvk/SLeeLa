@@ -12,7 +12,8 @@
  * (e.g. ddr4_3200(), nvmeGen3(), bluRay()), not by filling in raw numbers.
  *
  * Family: cpu.components. Produces SLMemoryModule, SLMemoryInterface,
- *   SLStorageDevice, SLOpticalDrive, SLSystemBus, SLMotherboard.
+ *   SLCadenceConnector, SLStorageDevice, SLOpticalDrive, SLSystemBus,
+ *   SLMotherboard.
  */
 #sleela 2.1
 class SLComponentCatalog {
@@ -63,7 +64,9 @@ class SLComponentCatalog {
   // One preset per DDR generation: present any real module with that
   // generation's refresh cadence (the common special case: run a DDR5 module so
   // it refreshes like DDR2). The tech ids match SLMemoryModule.TECH_* / the
-  // cadences in SLMemoryInterface.applyTechCadence(): DDR=3 .. DDR5=7.
+  // cadences an SLCadenceConnector resolves: DDR=3 .. DDR5=7. These convenience
+  // forms build the interface and connect the cadence connector for you; for
+  // explicit control, build an SLCadenceConnector and call iface.connect(c).
   SLMemoryInterface ddrCadenceInterface(SLMemoryModule realModule) {
     return memInterface("DDR-cadence interface", realModule, 3);
   }
@@ -79,6 +82,22 @@ class SLComponentCatalog {
   SLMemoryInterface ddr5CadenceInterface(SLMemoryModule realModule) {
     return memInterface("DDR5-cadence interface", realModule, 7);
   }
+
+  // Standalone Dynamite cadence connectors (one per DDR generation), resolved
+  // and ready to plug into a memory interface's slot via iface.connect(c). Use
+  // these when you want to stage/defer the cadence explicitly rather than let a
+  // *CadenceInterface preset build and connect it in one step.
+  SLCadenceConnector cadenceConnector(int cadenceTech) {
+    SLCadenceConnector c = new SLCadenceConnector();
+    c.initialize(cadenceTech, "catalog cadence connector");
+    c.resolve();
+    return c;
+  }
+  SLCadenceConnector ddrCadence()  { return cadenceConnector(3); }
+  SLCadenceConnector ddr2Cadence() { return cadenceConnector(4); }
+  SLCadenceConnector ddr3Cadence() { return cadenceConnector(5); }
+  SLCadenceConnector ddr4Cadence() { return cadenceConnector(6); }
+  SLCadenceConnector ddr5Cadence() { return cadenceConnector(7); }
 
   // ---------------- Storage presets ----------------
   SLStorageDevice store(String name, int cls, int iface, int capMiB, int rpm, int seekUs, int mbs) {

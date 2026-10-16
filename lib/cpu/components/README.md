@@ -57,6 +57,10 @@ exactly the lever behind the speed/feasibility tables in
   plus the general `memInterface(name, module, tech)`. Wrap a real module so it
   refreshes as though it were the target generation; install it alongside the
   module via `build.installMemoryInterface(...)`.
+- **Cadence connectors (Dynamite Connectors):** `ddrCadence`, `ddr2Cadence`,
+  `ddr3Cadence`, `ddr4Cadence`, `ddr5Cadence` (and the general
+  `cadenceConnector(tech)`). Each cadence slot is filled by one of these
+  *connectors* — a named, resolve-then-load binding — rather than by setters.
 
 ### Running a module under a different refresh cadence
 
@@ -84,7 +88,20 @@ build.memoryBandwidthMBs();   // duty-scaled: native peak × availableDutyPct()
 asDdr2.disengage();           // pass the real DDR5 through untouched
 ```
 
-See `examples/ddr5-as-ddr2-cadence.sleela` for the full A/B flow.
+The cadence slot is a **Dynamite Connector** (`SLCadenceConnector`): a named,
+resolve-then-load binding, matching the connector idiom used elsewhere in the
+tree. The `*CadenceInterface` presets build and connect one in a single step;
+for explicit staging (resolve, optionally defer, then load) connect one by hand:
+
+```
+SLCadenceConnector ddr4 = parts.ddr4Cadence();   // initialize + resolve
+// ddr4.deferConstruction();                      // optional: stage without loading
+iface.connect(ddr4);                              // load()s, then binds its timings
+iface.cadenceSlot().state();                      // "loaded"
+iface.refreshesAsName();                          // "DDR4"
+```
+
+See `examples/ddr5-as-ddr2-cadence.sleela` for the full A/B + connector flow.
 
 ## Building and running an executor
 

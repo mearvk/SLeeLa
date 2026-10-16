@@ -1,0 +1,111 @@
+/*
+ * lib/cpu/components/SLCadenceConnector.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCadenceConnector — a Dynamite Connector for a memory
+ *   interface's refresh-cadence slot. Rather than dialing a cadence in through
+ *   plain setters, each cadence slot takes a *connector*: a named, allow-listed,
+ *   resolve-then-load binding that follows SLeeLa's Dynamite Connector contract
+ *   (referenceName / configuration / status lifecycle; initialize -> resolve ->
+ *   [deferConstruction] -> load). The connector resolves a generation name
+ *   ("DDR", "DDR2", ... "DDR5", or a custom profile) into the refresh timings
+ *   (tREFI / tRFC) it carries as its payload, which SLMemoryInterface reads back
+ *   once the connector is loaded.
+ *
+ *   This mirrors the Dynamite Connector idiom used elsewhere in the tree
+ *   (lib/compiler, lib/nordshrift, lib/sst, connector/): a pluggable binding
+ *   with a lifecycle, fail-closed until resolved, and deferrable — so a cadence
+ *   slot is populated by *connecting* a named cadence, not by mutating fields.
+ *
+ * Family: cpu.components. A Dynamite Connector; plugged into SLMemoryInterface;
+ *   produced by SLComponentCatalog.
+ */
+#sleela 2.1
+class SLCadenceConnector {
+  // Generation ids mirror SLMemoryModule.TECH_* / SLMemoryInterface.TECH_*.
+  static final int TECH_SRAM  = 0;
+  static final int TECH_DRAM  = 1;
+  static final int TECH_SDRAM = 2;
+  static final int TECH_DDR   = 3;
+  static final int TECH_DDR2  = 4;
+  static final int TECH_DDR3  = 5;
+  static final int TECH_DDR4  = 6;
+  static final int TECH_DDR5  = 7;
+
+  // --- Dynamite Connector contract fields ---
+  String referenceName;   // the cadence being connected, e.g. "DDR2"
+  String configuration;   // free-form config note
+  String status;          // lifecycle: imported -> resolved -> [deferred] -> loaded
+
+  // --- resolved payload (the cadence this connector binds) ---
+  int tech;               // target generation id (or -1 for a custom profile)
+  int tREFI_ns;           // resolved refresh interval
+  int tRFC_ns;            // resolved refresh command time
+  int resolved;           // 1 once resolve()/resolveCustom() has run
+
+  // Begin the connector for a named DDR generation. Fail-closed: it carries no
+  // usable cadence until resolve() runs and load() confirms it.
+  void initialize(int cadenceTech, String config) {
+    tech = cadenceTech; configuration = config;
+    referenceName = genName(cadenceTech);
+    tREFI_ns = 0; tRFC_ns = 0; resolved = 0;
+    status = "imported";
+  }
+
+  // Resolve the reference name into its representative refresh timings. These
+  // are the representative per-generation refresh timings a connected slot
+  // binds into SLMemoryInterface.
+  String resolve() {
+    if (tech == TECH_DDR2)  { tREFI_ns = 7800;  tRFC_ns = 130; }
+    else if (tech == TECH_DDR)   { tREFI_ns = 7800;  tRFC_ns = 120; }
+    else if (tech == TECH_SDRAM) { tREFI_ns = 15600; tRFC_ns = 70; }
+    else if (tech == TECH_DDR3)  { tREFI_ns = 7800;  tRFC_ns = 160; }
+    else if (tech == TECH_DDR4)  { tREFI_ns = 7800;  tRFC_ns = 260; }
+    else if (tech == TECH_DDR5)  { tREFI_ns = 3900;  tRFC_ns = 295; }
+    else { tREFI_ns = 64000; tRFC_ns = 0; }
+    resolved = 1; status = "resolved";
+    return status;
+  }
+
+  // Resolve to a genuinely special-purpose profile instead of a named gen.
+  String resolveCustom(String label, int refreshIntervalNs, int refreshTimeNs) {
+    tech = -1; referenceName = label;
+    tREFI_ns = (refreshIntervalNs > 0) ? refreshIntervalNs : 1;
+    tRFC_ns = (refreshTimeNs >= 0) ? refreshTimeNs : 0;
+    resolved = 1; status = "resolved";
+    return status;
+  }
+
+  // Defer: keep the connector staged but not yet active (the slot stays empty
+  // until a later load()). Part of the Dynamite Connector contract.
+  String deferConstruction() { status = "deferred"; return status; }
+
+  // Load: confirm the resolved cadence is ready to be read by the interface.
+  // Fail-closed — a connector that was never resolved cannot be loaded.
+  boolean load() {
+    if (resolved == 0) { status = "unresolved"; return false; }
+    status = "loaded";
+    return true;
+  }
+
+  boolean ready()        { return resolved == 1 && equalsStr(status, "loaded"); }
+  String referenceId()   { return referenceName; }
+  int cadenceTech()      { return tech; }
+  int refreshIntervalNs(){ return tREFI_ns; }
+  int refreshTimeNs()    { return tRFC_ns; }
+  String state()         { return status; }
+
+  // Tiny string equality helper (status is set only to the literals above).
+  boolean equalsStr(String a, String b) { return a == b; }
+
+  String genName(int t) {
+    if (t == TECH_SRAM)  { return "SRAM"; }
+    if (t == TECH_DRAM)  { return "DRAM"; }
+    if (t == TECH_SDRAM) { return "SDRAM"; }
+    if (t == TECH_DDR)   { return "DDR"; }
+    if (t == TECH_DDR2)  { return "DDR2"; }
+    if (t == TECH_DDR3)  { return "DDR3"; }
+    if (t == TECH_DDR4)  { return "DDR4"; }
+    if (t == TECH_DDR5)  { return "DDR5"; }
+    return "custom";
+  }
+}
