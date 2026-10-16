@@ -5988,7 +5988,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "672e9f2eb3674bca4bfd534457720a35cc64553ed2440032e4e1384ca242f0ed"
+      "sha256": "201905af2d00705adfe258cb1eca0a9145219cba0478a35175a4bf447d4e8428"
     },
     {
       "path": "impl/frontend/compiler.cpp",
@@ -6048,11 +6048,11 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "4ae24add41a655e0e4f45d569e59c001e7c326027b8e11a860c77630a978baad"
+      "sha256": "bc79a124692ac9d281b320ade4988a51ef0c6e862295c4f251b1e26ba4e748c4"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "3875a0eb86c615601d184d61c4bdd841bc3d573b129bd1c0ea754f3fa422eb34"
+      "sha256": "ac55f525f2b3bd9ab5df079a27e31940ff1c1cb194b071bf2d34b3d00404bf31"
     },
     {
       "path": "impl/frontend/library_index.cpp",
@@ -6064,7 +6064,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "c775537a409248e06fcb33b688212f6a26451a3a3ff49b8fe162fdea5d9725be"
+      "sha256": "a2489dde832dd3842dca7cef12ed5e060a6d3a27c5f718b6ae874ccd41ec188c"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -7093,6 +7093,42 @@
     {
       "path": "impl/xclass/xclass_loader.h",
       "sha256": "9eec57cae00563fd2d9e9010a40e9958bad8afdc7c18dc971a319e2bd42faae8"
+    },
+    {
+      "path": "impl/xlt/xlt_diagnostics.h",
+      "sha256": "fcbb425b19728a983c46147de583caae78e67c3754f34ce587196f7176a080bf"
+    },
+    {
+      "path": "impl/xlt/xlt_lexer.cpp",
+      "sha256": "8fd9ee644fc10b1b8ddff2118226fcb66879d3f13452b804694bd6aecf8fea97"
+    },
+    {
+      "path": "impl/xlt/xlt_lexer.h",
+      "sha256": "b5c5ebe2d04044f3ea02ed30c74ed281438edefca63d55e0c897c0b8ee78974f"
+    },
+    {
+      "path": "impl/xlt/xlt_model.h",
+      "sha256": "f57bcf07383ecc51d8aebf982244a8da8fe119ea4697b790a92053d74d6401a7"
+    },
+    {
+      "path": "impl/xlt/xlt_parser.cpp",
+      "sha256": "2c9215091a0a4fb505cbffd3f14594300910c335160c91fd79c55b9c23011200"
+    },
+    {
+      "path": "impl/xlt/xlt_parser.h",
+      "sha256": "c874c8f18d9175283c3098d3e773c1a85a8ae3e17669aa9fd96cf647de23ffa1"
+    },
+    {
+      "path": "impl/xlt/xlt_resolve.cpp",
+      "sha256": "665db49aacaeb36a3cb6ff72926d376b6d6841a87fd181ec1b80b15f3d9130b4"
+    },
+    {
+      "path": "impl/xlt/xlt_resolve.h",
+      "sha256": "c4b0c387c0ee31a11f777c57c402053fec278b35618a1447f418ce4c332d4a65"
+    },
+    {
+      "path": "impl/xlt/xltc.cpp",
+      "sha256": "bc406cb62a2bd5aaa38df6ea59db5249f17f30dd8b727d5c6453e8c4213aa8ff"
     },
     {
       "path": "include/slvm6.h",
@@ -9935,6 +9971,14 @@
       "sha256": "92cadf7ee99e0f6607dd8671eda10c6763e3b593db76b3941895b4d754e9498b"
     },
     {
+      "path": "lib/cpu/SLAccessManifest.sleela",
+      "sha256": "064447c6b3c6e77a5c664064e8d48079b7b63702790bb8a437c059967a27c240"
+    },
+    {
+      "path": "lib/cpu/SLAccessSemantics.sleela",
+      "sha256": "f419aeb6da14c3e849efc6662d640a6a23a545c211170154963618b95c8c3c55"
+    },
+    {
       "path": "lib/cpu/SLAdder.sleela",
       "sha256": "a8b2d06313479c13729c3e6d03b18812d38cd2708caeef7f8fe259782ff5ff3a"
     },
@@ -9980,7 +10024,7 @@
     },
     {
       "path": "lib/cpu/SLCPURuntime.sleela",
-      "sha256": "bd2140f6aceb05c8bf54d1503d358e29463dca1df9f1484585b9cbfccf4bbd10"
+      "sha256": "cb4ef68d82e8ff1d7d5023794ee9cb721ca8270aa322da3b5b2463770c0e5e84"
     },
     {
       "path": "lib/cpu/SLCache.sleela",
@@ -10033,6 +10077,10 @@
     {
       "path": "lib/cpu/SLDriverManager.sleela",
       "sha256": "de73a5eafcec05d29ea45d1fa42aee4e9bf83eaf1e855e6c8381ce78fbd67091"
+    },
+    {
+      "path": "lib/cpu/SLExtensibleNetwork.sleela",
+      "sha256": "26d5e35f9bcb3739bc909c2bb543fcc894af30de2355d8aa72ae9b6c44635c99"
     },
     {
       "path": "lib/cpu/SLFileSystem.sleela",
@@ -10220,7 +10268,7 @@
     },
     {
       "path": "lib/cpu/SLMachine.sleela",
-      "sha256": "b159cd1226c7feeae04e9b35ace125cd5587678d191e1a6bc39f84258b6f986e"
+      "sha256": "06ceae211374b18919f5b14ce758d6d74d27a5097e14add6998a39d94ab06ebc"
     },
     {
       "path": "lib/cpu/SLMemoryManager.sleela",
@@ -10232,7 +10280,7 @@
     },
     {
       "path": "lib/cpu/SLOpcodeMap.sleela",
-      "sha256": "a58f231e4ab74c20671a39cdd5c46f174a899756031ea4ae63bf137af458aa2f"
+      "sha256": "55c00176931ddba447eb2c307e8aa97a38e55c01bad5959aa40e79e7b76baba1"
     },
     {
       "path": "lib/cpu/SLOperatingSystem.sleela",
@@ -10244,7 +10292,7 @@
     },
     {
       "path": "lib/cpu/SLProgram.sleela",
-      "sha256": "4265ed53e8bb5666df3559114d3d2e1d04836030ccd0a2b76085f56a57d781c9"
+      "sha256": "f67e13a299d5ea38befa0be3f592633f8c7b810e006f496d9e3f0a56f610fe08"
     },
     {
       "path": "lib/cpu/SLProgramCounter.sleela",
@@ -10276,7 +10324,7 @@
     },
     {
       "path": "lib/cpu/SLSleelaOpcode.sleela",
-      "sha256": "fd331a3b69868e376501bfd39b56dac822d52071f985a5a807451eb13dd03829"
+      "sha256": "f62e926a1c188c1c79bb21ce5bd0391b7ffab9ac75e77dd49a9e68e14a4ffab5"
     },
     {
       "path": "lib/cpu/SLSleelaVM.sleela",
@@ -10363,6 +10411,10 @@
       "sha256": "e3f2407317a0602a8eb39b40c24c65402ef55c6e8843f935d94edd25c0af1c3d"
     },
     {
+      "path": "lib/cpu/amd-epyc/examples/epyc-with-ddr2-settings.sleela",
+      "sha256": "53aeca6d63e82461c964cf14694e40b11e77f5cece039671044811f25d89027e"
+    },
+    {
       "path": "lib/cpu/amd-opteron/SLAMDOpteronCPU.sleela",
       "sha256": "17d42f336609820ec6068b272e29d1e8ac7d2253232b33570dd780e0b1b37060"
     },
@@ -10385,6 +10437,10 @@
     {
       "path": "lib/cpu/amd-threadripper/SLAMDThreadripperCPU.sleela",
       "sha256": "16da39d00dc6366341c9cc3f0e8770f35601bdb1064fed8a4f1e2c2d70c72f2a"
+    },
+    {
+      "path": "lib/cpu/amd-threadripper/SLAMDThreadripperPlatform.sleela",
+      "sha256": "27139466958ccec9224dedcf473ba82c0db5d4a40a0debfd43cd6e601218ed40"
     },
     {
       "path": "lib/cpu/amd-threadripper/SLAMDThreadripperPro9945WX.sleela",
@@ -10491,16 +10547,28 @@
       "sha256": "7a7e9ee41e7eaf388d9df474c862f6cec72bc21c3cac90943ae33a03c8a7b5eb"
     },
     {
+      "path": "lib/cpu/components/SLCadenceConnector.sleela",
+      "sha256": "d209041bf6db72872a4fdbcac7d4ede721965fc5c08599be055e297b316c885e"
+    },
+    {
       "path": "lib/cpu/components/SLComponentCatalog.sleela",
-      "sha256": "5008b0cab41c25586bba1d363db12e0dbfca85ce9cf71f71baa8841b481a64f6"
+      "sha256": "04ba52f51e7d723d17ecf1bf8e8147eef47d15ac72816e5119171baffbefc09d"
     },
     {
       "path": "lib/cpu/components/SLExecutorBuild.sleela",
-      "sha256": "73ebfeedcef598365d8a4788cf82d45a0de8ceeeb118077afaaffaf3439e0ef3"
+      "sha256": "3e88f9c40614c4d322a3cf8856b3a37318690a67127afef1acc50a0b1cc7aefb"
+    },
+    {
+      "path": "lib/cpu/components/SLMemoryInterface.sleela",
+      "sha256": "03a5846a09be4bb039f33c129e14b6efcc1b0d097ac7932cc6ee4a3dcd78c4ed"
     },
     {
       "path": "lib/cpu/components/SLMemoryModule.sleela",
-      "sha256": "f7ce07eedd7c5baf808b7476986fae81b27e704917620d1ff4865dd045733e3c"
+      "sha256": "dd882af5b6eceaf640374d4629cfe866f0edcdb5f2bbf698cdb6642abccdafda"
+    },
+    {
+      "path": "lib/cpu/components/SLMotherboard.sleela",
+      "sha256": "e41c1c786fc1371e384b60fccb445fa6eccc04fab2dabc7e45598f045f7477a1"
     },
     {
       "path": "lib/cpu/components/SLOpticalDrive.sleela",
@@ -10517,6 +10585,14 @@
     {
       "path": "lib/cpu/components/examples/build-your-executor.sleela",
       "sha256": "45f572ef54446c39730bbeb3779e8bfce16c186355f191ef8aefe04164b29750"
+    },
+    {
+      "path": "lib/cpu/components/examples/ddr5-as-ddr2-cadence.sleela",
+      "sha256": "6c88c94be23891b8ee80a4b09deffc667b8ae98e72da3008d6a6abeb22a03e84"
+    },
+    {
+      "path": "lib/cpu/components/examples/threadripper-at-spec.sleela",
+      "sha256": "6e406eb00a359d36b07b32f784c91e6b21349357598a8f0098f1fc3c2c7237e4"
     },
     {
       "path": "lib/cpu/cortex-m/SLCortexMCPU.sleela",
@@ -10537,6 +10613,10 @@
     {
       "path": "lib/cpu/examples/dma-and-gpu-options.sleela",
       "sha256": "0273f3787087cd4551a27dcee455446d8f8295f4ac13ca063222885dd89a13b7"
+    },
+    {
+      "path": "lib/cpu/examples/extensible-network-access.sleela",
+      "sha256": "cec2b7e4b49b9f5e7e4e15c26481da2adbdc5b4e4d1552760bb2341fb3da5490"
     },
     {
       "path": "lib/cpu/examples/run-workloads-on-cpus.sleela",
@@ -52020,7 +52100,7 @@
     },
     {
       "path": "lib/vm/SLVMClass.sleela",
-      "sha256": "2c7e538a81f5cde7ee0470ac93a46be2f1e6d5784a1498ae48c796a77c5965ba"
+      "sha256": "f721e5f1d8ac87710dba1e4feaffec680c9da7a00ed359a70882947654a98bf8"
     },
     {
       "path": "lib/vm/SLVMComponentFetcher.sleela",
@@ -52028,7 +52108,7 @@
     },
     {
       "path": "lib/vm/SLVMField.sleela",
-      "sha256": "e88721aa7022cd88c4037e350c164a93dcda8dba35b2b564d1020fedfa7ab939"
+      "sha256": "ba08bb0ae7e4c12739c2ff80b980f130ddc02d55e14ca18b8e5e45463b798746"
     },
     {
       "path": "lib/vm/SLVMFrame.sleela",
@@ -52044,15 +52124,15 @@
     },
     {
       "path": "lib/vm/SLVMMethod.sleela",
-      "sha256": "e4241b8002b0a9df77f2be40a40d29d80bd86fff63c31e7dd7f27f39c7bfc568"
+      "sha256": "ea7892579d70f5af4fb77551db9158b7beb428260737df876d8689b4e6e0377a"
     },
     {
       "path": "lib/vm/SLVMModule.sleela",
-      "sha256": "7810a414d48f98667dac121dcb94f3867a360b38174110f632424608161ad0e2"
+      "sha256": "e75f46c62778d046bd2de0e6664ef8a201d7fc12c2ed77051d76f9bb9c76d897"
     },
     {
       "path": "lib/vm/SLVMModuleLoader.sleela",
-      "sha256": "574951016da48f4dfdcbb4f873753480d31957a87f48b6475c1bfcf8a91306b6"
+      "sha256": "d86f82ab6a756cff9eb26e75ef55488bf3b2487405d26fa2d8be123dfaf0366a"
     },
     {
       "path": "lib/vm/SLVMNativeBinding.sleela",
@@ -52733,6 +52813,30 @@
     {
       "path": "lib/website/westjet/WestJetWebsite.sleela",
       "sha256": "e7a0a288ece981b2bb045565f7525c9c610885f9cd423009c2d7b9ce825a3a86"
+    },
+    {
+      "path": "lib/xlt/SLXltBuildResult.sleela",
+      "sha256": "bb82e1dc8cb8774cdf05d621541b33688b9590aefc546d5662e4eebaac2dd1af"
+    },
+    {
+      "path": "lib/xlt/SLXltCompiler.sleela",
+      "sha256": "aecc2a8582fcbe0db0596351a32cd2aff951b3e24035a40b87e32927e70a900a"
+    },
+    {
+      "path": "lib/xlt/SLXltProducerRegistry.sleela",
+      "sha256": "5aa911d3c5b4846ed98e04bf64d9fcf964810e407eb4e55c52d8e7cc38e8b0e0"
+    },
+    {
+      "path": "lib/xlt/SLXltRefBank.sleela",
+      "sha256": "f16eeb47f1e5bc5457b7c000852eb7b5c08dcdb6e7913234e015b8ef82e2c4b5"
+    },
+    {
+      "path": "lib/xlt/SLXltSource.sleela",
+      "sha256": "4f29f985de7325f99232fffa62f2445b806543a66fd9b783db07042607b7d91f"
+    },
+    {
+      "path": "lib/xlt/examples/compile-xlt-models.sleela",
+      "sha256": "903578cd3a2514cdd35b284a4538a35527369847d819151d5d3348936dba995b"
     },
     {
       "path": "libs/download-all.sh",
