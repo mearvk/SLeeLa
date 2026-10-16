@@ -1,0 +1,100 @@
+/*
+ * lib/gui/version-military/SLGuiCryptoSelector.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiCryptoSelector — a military-line COMPONENT that lets
+ *   a program choose its cryptography: a careful catalog of named suites
+ *   (key-exchange + signature + cipher + hash), each with a security STRENGTH
+ *   class (legacy / standard / strong / top-secret) so the UI can present and
+ *   gate them. SLeeLa owns the catalog and the SELECTION; the host/crypto layer
+ *   performs the actual cryptography. The selector is fail-closed: nothing is
+ *   selected until an available suite is chosen, and a suite below a required
+ *   minimum strength cannot be selected.
+ *
+ *   The catalog names standards (not implementations) — e.g. AES-256-GCM,
+ *   ChaCha20-Poly1305, X25519, Ed25519, ML-KEM/ML-DSA (post-quantum). Listing a
+ *   suite does not imply a bundled implementation; availability is reported
+ *   separately so the component only offers what the platform can actually run.
+ *
+ * Family: gui. A "cryptoselector" node's backing model; the host supplies which
+ *   suites are actually available and performs the selected cryptography.
+ */
+#sleela 2.1
+class SLGuiCryptoSelector {
+  static final int MAX_SUITES = 32;
+
+  // Security strength classes (ascending).
+  static final int STRENGTH_LEGACY     = 0;   // deprecated, interop only
+  static final int STRENGTH_STANDARD   = 1;
+  static final int STRENGTH_STRONG     = 2;
+  static final int STRENGTH_TOPSECRET  = 3;   // suite-B / PQC grade
+
+  String[] names;       // suite name, e.g. "AES-256-GCM + X25519 + Ed25519"
+  int[] strength;       // STRENGTH_*
+  int[] available;      // 1 = the platform can actually run this suite
+  int[] pqc;            // 1 = post-quantum
+  int count;
+
+  int selected;         // index of the chosen suite (-1 = none)
+  int minStrength;      // a suite below this cannot be selected
+
+  void configure() {
+    names = new String[MAX_SUITES]; strength = new int[MAX_SUITES];
+    available = new int[MAX_SUITES]; pqc = new int[MAX_SUITES]; count = 0;
+    selected = -1; minStrength = STRENGTH_STANDARD;
+    // A careful default catalog (standards, not implementations).
+    add("AES-128-GCM + X25519 + Ed25519",        STRENGTH_STANDARD,  1, 0);
+    add("AES-256-GCM + X25519 + Ed25519",        STRENGTH_STRONG,    1, 0);
+    add("ChaCha20-Poly1305 + X25519 + Ed25519",  STRENGTH_STRONG,    1, 0);
+    add("AES-256-GCM + ML-KEM-768 + ML-DSA-65",  STRENGTH_TOPSECRET, 1, 1);
+    add("AES-256-GCM + ML-KEM-1024 + ML-DSA-87", STRENGTH_TOPSECRET, 0, 1);
+    add("3DES-CBC + RSA-2048 (legacy interop)",  STRENGTH_LEGACY,    1, 0);
+  }
+
+  void add(String name, int str, int avail, int isPqc) {
+    if (count >= MAX_SUITES) { return; }
+    names[count] = name; strength[count] = str; available[count] = avail; pqc[count] = isPqc;
+    count = count + 1;
+  }
+
+  int suiteCount() { return count; }
+  String suiteName(int i) { return (i >= 0 && i < count) ? names[i] : null; }
+  int suiteStrength(int i) { return (i >= 0 && i < count) ? strength[i] : -1; }
+  boolean suiteAvailable(int i) { return i >= 0 && i < count && available[i] == 1; }
+  boolean suitePostQuantum(int i) { return i >= 0 && i < count && pqc[i] == 1; }
+  int indexOf(String name) { for (int i = 0; i < count; i = i + 1) { if (names[i] == name) { return i; } } return -1; }
+
+  // Require a minimum strength; any current selection below it is cleared.
+  void requireMinStrength(int s) {
+    if (s >= STRENGTH_LEGACY && s <= STRENGTH_TOPSECRET) {
+      minStrength = s;
+      if (selected >= 0 && strength[selected] < minStrength) { selected = -1; }
+    }
+  }
+  // A suite is selectable when it exists, is available, and meets the minimum.
+  boolean selectable(int i) {
+    return i >= 0 && i < count && available[i] == 1 && strength[i] >= minStrength;
+  }
+
+  // Select by index or name. Fail-closed: returns false (and selects nothing)
+  // if the suite is unavailable or below the required strength.
+  boolean select(int i) {
+    if (!selectable(i)) { return false; }
+    selected = i; return true;
+  }
+  boolean selectByName(String name) { return select(indexOf(name)); }
+  void clear() { selected = -1; }
+
+  boolean hasSelection() { return selected >= 0; }
+  int selectedIndex() { return selected; }
+  String selectedSuite() { return (selected >= 0) ? names[selected] : ""; }
+  int selectedStrength() { return (selected >= 0) ? strength[selected] : -1; }
+  boolean selectedIsPostQuantum() { return selected >= 0 && pqc[selected] == 1; }
+
+  String strengthName(int s) {
+    if (s == STRENGTH_LEGACY)    { return "legacy"; }
+    if (s == STRENGTH_STANDARD)  { return "standard"; }
+    if (s == STRENGTH_STRONG)    { return "strong"; }
+    if (s == STRENGTH_TOPSECRET) { return "top-secret"; }
+    return "unknown";
+  }
+}

@@ -1,0 +1,125 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>SLeeLa lib/gui 5.0 (military) — preview</title>
+<style>
+  /* Faithful preview of version-military from the SLeeLa descriptors:
+     aesthetic=military, finish=metal-blue, 3D-lit frame @125deg, careful
+     shadows (quality 85%, soft 14px), accent #8FB7D9, surface #3A4450. */
+  :root{
+    --steel-1:#4a5666; --steel-2:#2b333d; --silver:#c7d0db; --silver-hi:#eef3f8;
+    --blue:#8FB7D9; --blue-deep:#2b4a63; --text:#e8eef5; --muted:#9fb0c2;
+    --line:rgba(200,215,230,.18); --ok:#7fd1a6; --warn:#e7b96b; --bad:#e78686;
+  }
+  *{box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif}
+  body{margin:0;min-height:100vh;color:var(--text);
+    background:linear-gradient(160deg,#1a2028,#10151b)}
+  /* 3D-LIT BASE FRAME: brushed metal with a blue hue + top-left key light */
+  .frame{max-width:1040px;margin:26px auto;padding:20px;border-radius:12px;
+    background:
+      linear-gradient(125deg,rgba(255,255,255,.14),rgba(255,255,255,0) 40%),
+      repeating-linear-gradient(100deg,#3f4a58 0 2px,#434e5d 2px 4px),
+      linear-gradient(160deg,var(--steel-1),var(--steel-2));
+    border:1px solid #566477;
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,.22),         /* top bevel (key light 125deg) */
+      inset 0 -2px 0 rgba(0,0,0,.45),               /* bottom bevel */
+      inset 0 0 60px rgba(44,74,99,.35),            /* blue hue in the metal */
+      0 24px 60px rgba(0,0,0,.6);                   /* frame drop shadow */
+  }
+  .chrome{display:flex;align-items:center;gap:14px;padding:12px 16px;margin-bottom:18px;
+    border-radius:9px;border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(0,0,0,.18));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 6px 16px rgba(0,0,0,.5)}
+  .insignia{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;
+    background:
+      linear-gradient(135deg,var(--silver-hi),var(--silver) 45%,#8a97a6);
+    box-shadow:inset 0 1px 0 #fff,inset 0 -2px 3px rgba(0,0,0,.4),0 2px 6px rgba(0,0,0,.5);
+    color:var(--blue-deep);font-weight:800;font-size:18px}
+  .wordmark{font-weight:800;letter-spacing:.4px;font-size:19px;
+    background:linear-gradient(180deg,#fff,var(--silver));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tagline{color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+  .winbtns{margin-left:auto;display:flex;gap:8px}
+  .wbtn{width:26px;height:22px;border-radius:5px;border:1px solid var(--line);
+    background:linear-gradient(180deg,#59667a,#3a4450);box-shadow:inset 0 1px 0 rgba(255,255,255,.25);
+    color:var(--muted);font-size:11px;display:grid;place-items:center}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  /* component cards carry CAREFUL quality shadows on the metal frame */
+  .card{border-radius:9px;padding:14px 16px;border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(0,0,0,.14));
+    box-shadow:0 14px 28px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.18)}
+  .card h3{margin:0 0 12px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .kind{font-size:10px;color:var(--blue);border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-left:8px;vertical-align:middle}
+  /* metal buttons with carefully placed icons */
+  .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #6a7a8e;border-radius:6px;
+    padding:8px 14px;color:var(--silver-hi);font-weight:600;cursor:pointer;
+    background:linear-gradient(180deg,#5b687c,#39424e);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 4px 10px rgba(0,0,0,.45)}
+  .btn .ic{width:20px;height:20px;border-radius:4px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--silver-hi),#9aa7b6);color:var(--blue-deep);font-size:12px;
+    box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(0,0,0,.5)}
+  .btn.primary{border-color:var(--blue);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 14px rgba(143,183,217,.4),0 4px 10px rgba(0,0,0,.45)}
+  .menu{display:flex;gap:4px;margin-bottom:8px}
+  .mi{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:6px;color:var(--muted);font-size:13px}
+  .mi .ic{width:16px;height:16px;border-radius:4px;background:linear-gradient(135deg,var(--silver),#8a97a6)}
+  .mi.on{color:var(--silver-hi);background:rgba(143,183,217,.14);border:1px solid var(--line)}
+  .row{display:flex;align-items:center;gap:10px;font-size:13px;padding:5px 0}
+  .muted{color:var(--muted)} .sel{color:var(--blue)}
+  select,.pick{width:100%;background:#2b333d;color:var(--text);border:1px solid #556;border-radius:6px;padding:8px 10px;font-size:13px;
+    box-shadow:inset 0 2px 5px rgba(0,0,0,.45)}
+  .badge{font-size:10px;border-radius:4px;padding:1px 6px;margin-left:6px}
+  .b-top{background:#2b4a63;color:#cfe4f5;border:1px solid var(--blue)}
+  .b-ok{color:var(--ok);border:1px solid rgba(127,209,166,.5)}
+  .b-bad{color:var(--bad);border:1px solid rgba(231,134,134,.5)}
+  .certrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .certrow:last-child{border-bottom:none}
+  .mono{font-family:ui-monospace,monospace;font-size:11px;color:var(--muted)}
+  .span2{grid-column:1/span 2}
+  .foot{margin-top:16px;color:var(--muted);font-size:11px;text-align:center}
+</style></head>
+<body>
+<div class="frame">
+  <div class="chrome">
+    <div class="insignia">◈</div>
+    <div>
+      <div class="wordmark">SLeeLa Command</div>
+      <div class="tagline">neutral · hardened · precise</div>
+    </div>
+    <div class="winbtns">
+      <div class="wbtn" title="minimize">—</div>
+      <div class="wbtn" title="fullscreen">⤢</div>
+      <div class="wbtn" title="minimize right (fold)">⇥</div>
+    </div>
+  </div>
+
+  <div class="menu">
+    <span class="mi on"><span class="ic"></span>File</span>
+    <span class="mi"><span class="ic"></span>Secure</span>
+    <span class="mi"><span class="ic"></span>View</span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Actions <span class="kind">container · toolbar</span></h3>
+      <div class="row">
+        <span class="btn primary"><span class="ic">⛊</span>Authorize</span>
+        <span class="btn"><span class="ic">▹</span>Run</span>
+        <span class="btn"><span class="ic">⟲</span>Reset</span>
+      </div>
+      <div class="muted" style="margin-top:10px">icons: md/20 · leading · gap 8 · optically centered</div>
+    </div>
+
+    <div class="card">
+      <h3>Cryptography Selector <span class="kind">component</span></h3>
+      <div class="pick">AES-256-GCM + ML-KEM-768 + ML-DSA-65 <span class="badge b-top">TOP-SECRET</span><span class="badge b-top">PQC</span></div>
+      <div class="muted" style="margin-top:8px">min strength: strong · legacy suites gated out</div>
+    </div>
+
+    <div class="card span2">
+      <h3>Public Key Certificate Store <span class="kind">component</span></h3>
+      <div class="certrow"><b>SLeeLa Root CA</b><span class="mono">Ed25519 · ab12..root</span><span class="badge b-ok">trusted · CA</span></div>
+      <div class="certrow"><b>cmd.sleela.mil</b><span class="mono">ECDSA-P256 · cd34..leaf</span><span class="badge b-bad">revoked</span><span class="muted">— selection cleared (fail-closed)</span></div>
+    </div>
+  </div>
+
+  <div class="foot">Faithful preview of lib/gui/version-military/gui-military-demo.sleela — metal-blue aesthetic, 3D-lit frame, careful shadows (rendered from the SLeeLa descriptors, not the live toolkit).</div>
+</div>
+</body></html>

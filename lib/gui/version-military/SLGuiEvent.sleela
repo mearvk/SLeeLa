@@ -1,0 +1,56 @@
+/*
+ * lib/gui/version-military/SLGuiEvent.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiEvent — one dispatched GUI event, the DHTML-style
+ *   event object a handler receives. It names the event type (an SLGuiEventType
+ *   ordinal), the target node id it was raised on, and the payload the kind
+ *   carries: a string value (entry text / changed value), a key name (for
+ *   key events), pointer coordinates (for pointer events), and a toggle state.
+ *   It also carries the two propagation controls a handler can set —
+ *   preventDefault() and stopPropagation() — exactly like a browser event, so
+ *   SLeeLa handlers can cancel the host's default action or halt bubbling.
+ *
+ * Family: gui. The host raises the activation; SLeeLa reads this event and
+ * decides what it means.
+ */
+#sleela 2.1
+class SLGuiEvent {
+  int type;             // SLGuiEventType ordinal
+  String targetId;      // the node id the event was raised on
+  String value;         // string payload (entry text, changed value, custom data)
+  String key;           // key name for KEYDOWN/KEYUP (e.g. "Enter", "a")
+  int x;                // pointer x within the target (pointer events)
+  int y;                // pointer y within the target (pointer events)
+  int toggleState;      // 1/0 for TOGGLE events
+  int defaultPrevented; // 1 once preventDefault() is called
+  int propagationStopped; // 1 once stopPropagation() is called
+  int timestamp;        // host-supplied monotonic tick (0 if unknown)
+
+  void configure(int eventType, String target) {
+    type = eventType; targetId = target;
+    value = ""; key = ""; x = 0; y = 0; toggleState = 0;
+    defaultPrevented = 0; propagationStopped = 0; timestamp = 0;
+  }
+
+  int getType() { return type; }
+  String target() { return targetId; }
+
+  // Payload setters (the host fills in what the kind carries).
+  void setValue(String v) { value = v; }
+  String getValue() { return value; }
+  void setKey(String k) { key = k; }
+  String getKey() { return key; }
+  void setPointer(int px, int py) { x = px; y = py; }
+  int pointerX() { return x; }
+  int pointerY() { return y; }
+  void setToggle(int on) { toggleState = on; }
+  boolean toggledOn() { return toggleState == 1; }
+  void setTimestamp(int t) { timestamp = t; }
+  int when() { return timestamp; }
+
+  // DHTML-style propagation controls.
+  void preventDefault() { defaultPrevented = 1; }
+  boolean isDefaultPrevented() { return defaultPrevented == 1; }
+  void stopPropagation() { propagationStopped = 1; }
+  boolean isPropagationStopped() { return propagationStopped == 1; }
+}

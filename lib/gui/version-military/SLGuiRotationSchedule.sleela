@@ -1,0 +1,81 @@
+/*
+ * lib/gui/version-military/SLGuiRotationSchedule.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiRotationSchedule — a "schene": a scheduled rotation
+ *   cadence for a UI component. On its face it rotates a component by a fixed
+ *   step every interval (a clean, professional motion accent). Its second,
+ *   deliberate role is a CRYPTOGRAPHIC ROTATION CADENCE for an internal
+ *   memorandum: the same tick that advances the visible angle also advances a
+ *   key epoch, so "the component is rotating" and "the memo's internal key has
+ *   rotated to a new epoch" are one observable event. The visible rotation is
+ *   the honest, external signal of an internal key rotation — rotation you can
+ *   see maps to rotation you can trust.
+ *
+ *   This class carries ONLY the cadence/accounting (interval, step, epoch,
+ *   bounded total turns); it does not implement a cipher. It states how often
+ *   the memorandum's key epoch turns and lets a consumer read epoch()/turns()
+ *   to drive the actual key schedule elsewhere. Every value is clamped.
+ *
+ * Family: gui. Carried by SLGuiEffects; advanced by the app/mount loop tick.
+ */
+#sleela 2.1
+class SLGuiRotationSchedule {
+  int intervalMillis;   // time between rotation steps, 50..3600000 ms
+  int stepDeg;          // degrees added each interval, -359..359
+  int running;          // 1 while the cadence advances
+  int accumMillis;      // elapsed time banked toward the next step
+  int epoch;            // key epoch: increments once per completed step
+  int turns;            // total steps applied
+  int maxTurns;         // 0 = unbounded; else stop after maxTurns steps
+  String memoLabel;     // the internal memorandum this cadence rotates the key for
+
+  void configure(int intervalMs, int degPerStep) {
+    intervalMillis = clampInterval(intervalMs);
+    stepDeg = clampStep(degPerStep);
+    running = 0; accumMillis = 0; epoch = 0; turns = 0; maxTurns = 0;
+    memoLabel = "";
+  }
+
+  int clampInterval(int ms) { if (ms < 50) { return 50; } if (ms > 3600000) { return 3600000; } return ms; }
+  int clampStep(int d) { if (d < -359) { return -359; } if (d > 359) { return 359; } return d; }
+
+  // Name the internal memorandum whose key epoch this schene rotates, and
+  // optionally cap how many epochs it will turn through (0 = unbounded).
+  void bindMemorandum(String label, int epochCap) {
+    memoLabel = (label == null) ? "" : label;
+    maxTurns = (epochCap < 0) ? 0 : epochCap;
+  }
+
+  void start() { running = 1; }
+  void stop()  { running = 0; }
+  boolean active() { return running == 1; }
+
+  // Advance by `elapsedMillis`. When a full interval banks (and the turn cap is
+  // not reached), apply one step: bump the epoch + turns and return the degree
+  // step to add. Returns 0 when no step fired this tick.
+  int advance(int elapsedMillis) {
+    if (running == 0 || elapsedMillis <= 0) { return 0; }
+    if (maxTurns > 0 && turns >= maxTurns) { running = 0; return 0; }
+    accumMillis = accumMillis + elapsedMillis;
+    if (accumMillis < intervalMillis) { return 0; }
+    accumMillis = accumMillis - intervalMillis;
+    epoch = epoch + 1;        // the memorandum's internal key rotates one epoch
+    turns = turns + 1;
+    if (maxTurns > 0 && turns >= maxTurns) { running = 0; }
+    return stepDeg;           // the visible component rotates by this much
+  }
+
+  int getIntervalMillis() { return intervalMillis; }
+  int getStepDeg() { return stepDeg; }
+  int epochNow() { return epoch; }
+  int totalTurns() { return turns; }
+  int getMaxTurns() { return maxTurns; }
+  String memorandum() { return memoLabel; }
+  boolean boundToMemorandum() { return memoLabel != ""; }
+
+  boolean honored() {
+    boolean iv = intervalMillis >= 50 && intervalMillis <= 3600000;
+    boolean st = stepDeg >= -359 && stepDeg <= 359;
+    return iv && st;
+  }
+}

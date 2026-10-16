@@ -1,0 +1,157 @@
+/*
+ * lib/gui/version-military/SLGuiClickObject.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiClickObject — a 4.0 custom click object: a small
+ *   circle with its own position, radius, architecturally-driven MOTION, and a
+ *   staged TIMER. The timer runs through a sequence of "System Apprentice"
+ *   stages — subtle, escalating activations — and when the final stage elapses
+ *   it fires the FINAL CALL (a named SLeeLa operation). The motion is a declared
+ *   architecture (static / drift / orbit / pulse) advanced by the app tick, so
+ *   the circle moves predictably rather than by ad-hoc animation. SLeeLa owns
+ *   position, motion, the apprentice ladder, and the final-call binding; the
+ *   host paints the circle and plays any cue.
+ *
+ *   The apprentice model: stage 0 is dormant; each interval advances one
+ *   apprentice stage (subtle visual/behaviour change); reaching apprenticeMax
+ *   triggers the final call exactly once. This gives a click object a careful,
+ *   architecturally-driven build-up to its culminating action.
+ *
+ * Family: gui. A circle node's backing model; advanced by SLGuiApp's tick.
+ */
+#sleela 2.1
+class SLGuiClickObject {
+  // Motion architectures.
+  static final int MOTION_STATIC = 0;   // fixed position
+  static final int MOTION_DRIFT  = 1;   // linear drift by (vx,vy) per interval
+  static final int MOTION_ORBIT  = 2;   // orbit a center at a radius/step
+  static final int MOTION_PULSE  = 3;   // radius pulses between min/max
+
+  String id;
+  int x; int y;          // exact position (px) of the circle's center
+  int radiusPx;          // circle radius, 2..512
+  int motion;            // MOTION_*
+  int vx; int vy;        // drift velocity (px per interval) for MOTION_DRIFT
+  int orbitCx; int orbitCy; int orbitR; int orbitDeg; int orbitStepDeg;  // MOTION_ORBIT
+  int pulseMin; int pulseMax; int pulseDir; // MOTION_PULSE radius bounds + direction
+
+  // Staged apprentice timer.
+  int intervalMs;        // time between apprentice stages, 50..600000
+  int accumMs;           // banked time toward the next stage
+  int apprentice;        // current apprentice stage (0 = dormant)
+  int apprenticeMax;     // stages before the final call fires, 1..64
+  String finalCall;      // SLeeLa operation fired at the culminating stage
+  int fired;             // 1 once the final call has fired (fires once)
+  int running;           // 1 while the timer advances
+
+  void configure(String objId, int cx, int cy, int radius) {
+    id = objId; x = cx; y = cy; radiusPx = clampRadius(radius);
+    motion = MOTION_STATIC; vx = 0; vy = 0;
+    orbitCx = cx; orbitCy = cy; orbitR = 0; orbitDeg = 0; orbitStepDeg = 6;
+    pulseMin = radiusPx; pulseMax = radiusPx; pulseDir = 1;
+    intervalMs = 1000; accumMs = 0; apprentice = 0; apprenticeMax = 3;
+    finalCall = ""; fired = 0; running = 0;
+  }
+
+  int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
+  int clampRadius(int r) { return clamp(r, 2, 512); }
+  int wrapDeg(int d) { int r = d % 360; if (r < 0) { r = r + 360; } return r; }
+
+  // ---- position ----------------------------------------------------------
+  void setPosition(int cx, int cy) { x = cx; y = cy; }
+  void setRadius(int r) { radiusPx = clampRadius(r); }
+  int posX() { return x; }
+  int posY() { return y; }
+  int radius() { return radiusPx; }
+
+  // ---- motion architecture ------------------------------------------------
+  void setStatic() { motion = MOTION_STATIC; }
+  void setDrift(int velX, int velY) { motion = MOTION_DRIFT; vx = velX; vy = velY; }
+  void setOrbit(int centerX, int centerY, int r, int stepDeg) {
+    motion = MOTION_ORBIT; orbitCx = centerX; orbitCy = centerY;
+    orbitR = (r < 0) ? 0 : r; orbitStepDeg = clamp(stepDeg, -180, 180);
+  }
+  void setPulse(int minR, int maxR) {
+    motion = MOTION_PULSE;
+    pulseMin = clampRadius(minR); pulseMax = clampRadius(maxR);
+    if (pulseMax < pulseMin) { pulseMax = pulseMin; }
+    pulseDir = 1;
+  }
+
+  // ---- apprentice ladder --------------------------------------------------
+  // Bind the culminating action and how many apprentice stages precede it.
+  void bindFinalCall(String operation, int stages) {
+    finalCall = (operation == null) ? "" : operation;
+    apprenticeMax = clamp(stages, 1, 64);
+  }
+  void setInterval(int ms) { intervalMs = clamp(ms, 50, 600000); }
+  void start() { running = 1; }
+  void stop()  { running = 0; }
+  void reset() { apprentice = 0; accumMs = 0; fired = 0; }
+  int apprenticeStage() { return apprentice; }
+  int apprenticeStages() { return apprenticeMax; }
+  boolean dormant() { return apprentice == 0; }
+  boolean finalFired() { return fired == 1; }
+  String getFinalCall() { return finalCall; }
+
+  // ---- advance (called by the app tick) -----------------------------------
+  // Advance motion and the apprentice timer by `elapsedMs`. Returns a code:
+  //   0 = nothing happened this tick
+  //   1 = moved and/or advanced an apprentice stage
+  //   2 = the FINAL CALL fired this tick (the host should invoke finalCall)
+  int advance(int elapsedMs) {
+    if (running == 0 || elapsedMs <= 0) { return 0; }
+    boolean changed = advanceMotion();
+
+    accumMs = accumMs + elapsedMs;
+    int code = changed ? 1 : 0;
+    while (accumMs >= intervalMs && fired == 0) {
+      accumMs = accumMs - intervalMs;
+      if (apprentice < apprenticeMax) {
+        apprentice = apprentice + 1;   // one more subtle System Apprentice awakens
+        code = 1;
+      }
+      if (apprentice >= apprenticeMax) {
+        fired = 1; running = 0;        // the final call lands exactly once
+        return 2;
+      }
+    }
+    return code;
+  }
+
+  // Apply one motion step according to the architecture. Returns true if moved.
+  boolean advanceMotion() {
+    if (motion == MOTION_DRIFT) {
+      if (vx == 0 && vy == 0) { return false; }
+      x = x + vx; y = y + vy; return true;
+    }
+    if (motion == MOTION_ORBIT) {
+      if (orbitR == 0) { return false; }
+      orbitDeg = wrapDeg(orbitDeg + orbitStepDeg);
+      // integer cosine/sine via a coarse step table would be ideal; here we keep
+      // the angle authoritative and let the host place the point from orbitDeg.
+      return true;
+    }
+    if (motion == MOTION_PULSE) {
+      if (pulseMin == pulseMax) { return false; }
+      radiusPx = radiusPx + pulseDir;
+      if (radiusPx >= pulseMax) { radiusPx = pulseMax; pulseDir = -1; }
+      else if (radiusPx <= pulseMin) { radiusPx = pulseMin; pulseDir = 1; }
+      return true;
+    }
+    return false;   // MOTION_STATIC
+  }
+
+  int orbitAngle() { return orbitDeg; }
+  int motionKind() { return motion; }
+  String motionName() {
+    if (motion == MOTION_DRIFT) { return "drift"; }
+    if (motion == MOTION_ORBIT) { return "orbit"; }
+    if (motion == MOTION_PULSE) { return "pulse"; }
+    return "static";
+  }
+  boolean honored() {
+    return radiusPx >= 2 && radiusPx <= 512 &&
+           intervalMs >= 50 && intervalMs <= 600000 &&
+           apprenticeMax >= 1 && apprenticeMax <= 64;
+  }
+}

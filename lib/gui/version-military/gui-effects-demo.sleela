@@ -1,0 +1,84 @@
+/*
+ * lib/gui/version-military/gui-effects-demo.sleela
+ * A runnable walkthrough of the thual (3.0) visual-effects surface: clean,
+ * professional UI components with lighting/glow, 3D shine, drop shadow, a metal
+ * look-and-feel, fixed and scheduled ("schene") rotation, fade in/out,
+ * activation audio, and logo branding. SLeeLa names every effect; the host
+ * renders the pixels and plays the cues.
+ */
+#sleela 2.1
+class GuiEffectsDemo {
+
+  void main() {
+    // Version identity: this is the 3.0 line.
+    SLPackage pkg = new SLPackage(); pkg.configure("gui");
+    print("gui package " + pkg.version() + " (featureLevel " + pkg.featureLevel() +
+          ", 3.0=" + pkg.isThreePointZero() + ")");
+
+    // ---- Branding: a logo + accent painted into the app chrome ----
+    SLGuiBranding brand = new SLGuiBranding();
+    brand.configure("brand/logo.svg");
+    brand.setPlacement(brand.PLACE_HEADER);
+    brand.setWordmark("SLeeLa");
+    brand.setColors("#2E8BFF", "#0B1E3A");
+    brand.setTagline("built to inspire");
+    print("branding: " + brand.report() + " valid=" + brand.valid());
+
+    // ---- Activation audio: the cue registry ----
+    SLGuiAudioCues audio = new SLGuiAudioCues();
+    audio.configure();
+    audio.register("whoosh", "audio/ui/whoosh.wav");
+    audio.setMasterGainPct(90);
+    print("audio cues=" + audio.cues() + " enabled=" + audio.isEnabled() +
+          " master=" + audio.getMasterGainPct() + "%");
+
+    // ---- A button with the full clean/professional effect stack ----
+    SLGuiEffects fx = new SLGuiEffects();
+    fx.configure();
+    fx.enableGlow(16, 70, "#2E8BFF");       // lighting + glow
+    fx.enableShine(60, 55);                  // 3D specular shine
+    fx.enableShadow(0, 6, 18, 40);           // soft drop shadow
+    fx.enableMetal(65);                      // brushed-metal surface
+    fx.setActivationCue("whoosh", 85);       // audio on activation
+    print("button fx -> " + fx.toStyle());
+    print("  effects honored=" + fx.honored());
+
+    // Play the activation cue through the registry (host gets the effective gain).
+    int gain = audio.play(fx.getActivationCue(), fx.getActivationGainPct());
+    print("  activation '" + fx.getActivationCue() + "' -> effective gain " + gain + "%");
+
+    // ---- Fade in, then fade out ----
+    fx.setFadeMillis(250);
+    fx.fadeOut(); print("  faded out: opacity=" + fx.opacity() + "% (faded=" + fx.faded() + ")");
+    fx.fadeIn();  print("  faded in:  opacity=" + fx.opacity() + "%");
+
+    // ---- Fixed rotation ----
+    fx.rotateTo(90); print("  rotateTo(90) -> " + fx.rotation() + " deg");
+    fx.rotateBy(300); print("  rotateBy(300) -> " + fx.rotation() + " deg (wrapped)");
+
+    // ---- Scheduled "schene" rotation bound to an internal memorandum ----
+    // The visible component rotates 45 deg every 1000 ms; each step also rotates
+    // the bound memorandum's internal key by one epoch (visible rotation is the
+    // honest external signal of an internal key rotation).
+    SLGuiRotationSchedule schene = new SLGuiRotationSchedule();
+    schene.configure(1000, 45);
+    schene.bindMemorandum("quarterly-keys", 8);   // cap at 8 epochs
+    schene.start();
+    fx.setSchedule(schene);
+    print("schene: every " + schene.getIntervalMillis() + "ms step " +
+          schene.getStepDeg() + " deg, memo='" + schene.memorandum() + "'");
+
+    // Drive 3 seconds of ticks at 250 ms; a step (and key epoch) lands each 1000 ms.
+    int t = 0;
+    while (t < 3000) {
+      boolean moved = fx.tickRotation(250);
+      t = t + 250;
+      if (moved) {
+        print("  t=" + t + "ms: rotated to " + fx.rotation() +
+              " deg, memo key epoch=" + schene.epochNow() + " (turn " + schene.totalTurns() + ")");
+      }
+    }
+    print("final: angle=" + fx.rotation() + " deg, key epoch=" + schene.epochNow() +
+          ", schedule honored=" + schene.honored());
+  }
+}

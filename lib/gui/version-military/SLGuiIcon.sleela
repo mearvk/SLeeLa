@@ -1,0 +1,92 @@
+/*
+ * lib/gui/version-military/SLGuiIcon.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiIcon — a carefully sized, precisely placed icon that
+ *   can be attached to a button, a menu item, or any clickable component. It
+ *   carries an asset name, a size TIER (a small set of calm, matched sizes so
+ *   icons read consistently across the UI rather than at arbitrary pixel
+ *   sizes), a POSITION relative to the label (leading / trailing / top / icon-
+ *   only), a gap between icon and label, a tint, and an optical-alignment nudge
+ *   so an icon sits visually centred (not just geometrically). The point is
+ *   aesthetic calm: every icon is one of a few matched sizes, placed perfectly
+ *   for the component it rides on.
+ *
+ * Family: gui. Attached to a node (via SLGuiIconHost / effects) on buttons,
+ *   menu items, and clickables; the host paints the asset at the computed rect.
+ */
+#sleela 2.1
+class SLGuiIcon {
+  // Matched size tiers (px) — a calm, consistent scale, not arbitrary sizes.
+  static final int SIZE_XS = 0;   // 12 px  (dense toolbars / inline)
+  static final int SIZE_SM = 1;   // 16 px  (menu items)
+  static final int SIZE_MD = 2;   // 20 px  (standard buttons)
+  static final int SIZE_LG = 3;   // 28 px  (primary actions)
+  static final int SIZE_XL = 4;   // 40 px  (feature tiles)
+
+  // Placement of the icon relative to the component's label.
+  static final int POS_LEADING  = 0;   // before the label (default LTR)
+  static final int POS_TRAILING = 1;   // after the label
+  static final int POS_TOP      = 2;   // above the label (stacked)
+  static final int POS_ONLY     = 3;   // icon only, no label
+
+  String asset;        // host-resolvable icon name/path
+  int sizeTier;        // SIZE_*
+  int position;        // POS_*
+  int gapPx;           // gap between icon and label, 0..24
+  String tint;         // color tint ("accent"/"#rrggbb"/"" = asset's own color)
+  int opticalDx;       // horizontal optical-centering nudge, -6..6 px
+  int opticalDy;       // vertical optical-centering nudge, -6..6 px
+
+  void configure(String iconAsset) {
+    asset = (iconAsset == null) ? "" : iconAsset;
+    sizeTier = SIZE_MD; position = POS_LEADING; gapPx = 8;
+    tint = ""; opticalDx = 0; opticalDy = 0;
+  }
+
+  int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
+
+  void setSizeTier(int t) { if (t >= SIZE_XS && t <= SIZE_XL) { sizeTier = t; } }
+  void setPosition(int p) { if (p >= POS_LEADING && p <= POS_ONLY) { position = p; } }
+  void setGapPx(int px) { gapPx = clamp(px, 0, 24); }
+  void setTint(String color) { tint = (color == null) ? "" : color; }
+  // Nudge the icon a few px for true optical centering (not just geometric).
+  void setOpticalNudge(int dx, int dy) { opticalDx = clamp(dx, -6, 6); opticalDy = clamp(dy, -6, 6); }
+
+  // The matched pixel size for the tier.
+  int sizePx() {
+    if (sizeTier == SIZE_XS) { return 12; }
+    if (sizeTier == SIZE_SM) { return 16; }
+    if (sizeTier == SIZE_LG) { return 28; }
+    if (sizeTier == SIZE_XL) { return 40; }
+    return 20;   // SIZE_MD
+  }
+
+  String asset_() { return asset; }
+  boolean hasAsset() { return asset != ""; }
+  int getSizeTier() { return sizeTier; }
+  int getPosition() { return position; }
+  int getGapPx() { return gapPx; }
+  String getTint() { return tint; }
+  boolean iconOnly() { return position == POS_ONLY; }
+
+  String positionName() {
+    if (position == POS_TRAILING) { return "trailing"; }
+    if (position == POS_TOP)      { return "top"; }
+    if (position == POS_ONLY)     { return "icon-only"; }
+    return "leading";
+  }
+  String sizeName() {
+    if (sizeTier == SIZE_XS) { return "xs/12"; }
+    if (sizeTier == SIZE_SM) { return "sm/16"; }
+    if (sizeTier == SIZE_LG) { return "lg/28"; }
+    if (sizeTier == SIZE_XL) { return "xl/40"; }
+    return "md/20";
+  }
+  // Serialize to a node style descriptor the reconciler applies ("icon:...").
+  String toStyle() {
+    return "icon:" + asset + "/" + sizePx() + "/" + positionName() + "/gap" + gapPx +
+           (tint != "" ? "/tint" + tint : "") +
+           (opticalDx != 0 || opticalDy != 0 ? "/nudge" + opticalDx + "," + opticalDy : "") + ";";
+  }
+  boolean valid() { return asset != "" && gapPx >= 0 && gapPx <= 24; }
+}

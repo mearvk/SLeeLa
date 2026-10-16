@@ -1,0 +1,156 @@
+/*
+ * lib/gui/version-military/SLGuiCodecs.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiCodecs — the GUI-facing view of the SLeeLa codec
+ *   registry in /codecs. It mirrors codecs/include/sleela_codecs.h exactly (the
+ *   20 audio-codec ids, their capability STATE — native/backend/recognized/
+ *   container/event — MIME type, and file extensions) so GUI components can SEE
+ *   what the system supports before offering media: a video canvas or audio
+ *   recorder asks "can we play/record this?" and the URL bar / HTML renderer
+ *   asks "is this <audio>/<source> type supported?". SLeeLa names the codecs
+ *   here; the native /codecs backend (sleela_codec_* C ABI) does the actual
+ *   encode/decode.
+ *
+ *   Capability semantics (from codecs/CODECS.md): native = in-tree encode/
+ *   decode; backend = handler contract needs an approved library; recognized =
+ *   identified only; container = carries audio but is not a codec; event =
+ *   musical events, not PCM. "supported for playback" means native or backend.
+ *
+ * Family: gui. The SLeeLa-source mirror of /codecs; consulted by SLGuiVideoCanvas,
+ *   SLGuiAudioRecorder, and SLGuiHtmlRenderer media elements.
+ */
+#sleela 2.1
+class SLGuiCodecs {
+  // Capability state (mirrors sleela_codec_state).
+  static final int STATE_NATIVE     = 0;
+  static final int STATE_BACKEND    = 1;
+  static final int STATE_RECOGNIZED = 2;
+  static final int STATE_CONTAINER  = 3;
+  static final int STATE_EVENT      = 4;
+
+  static final int CODEC_COUNT = 20;   // == SLEELA_CODEC_COUNT
+
+  // Parallel registry arrays (the surface language has no record arrays). Index
+  // is the sleela_codec_id ordinal, so by-id lookup is O(1).
+  String[] names;
+  String[] mimes;
+  String[] exts;
+  int[] states;
+  int[] decode;     // 1 = can decode
+  int[] encode;     // 1 = can encode
+  int count;
+
+  void configure() {
+    names = new String[CODEC_COUNT]; mimes = new String[CODEC_COUNT];
+    exts = new String[CODEC_COUNT]; states = new int[CODEC_COUNT];
+    decode = new int[CODEC_COUNT]; encode = new int[CODEC_COUNT]; count = 0;
+    // Order and values mirror sleela_codecs.h / CODECS.md exactly.
+    add("PCM_WAV", "audio/wav",  ".wav",        STATE_NATIVE,     1, 1);
+    add("AIFF",    "audio/aiff", ".aif,.aiff",  STATE_RECOGNIZED, 1, 0);
+    add("FLAC",    "audio/flac", ".flac",       STATE_BACKEND,    1, 1);
+    add("ALAC",    "audio/mp4",  ".m4a,.caf",   STATE_BACKEND,    1, 1);
+    add("MP3",     "audio/mpeg", ".mp3",        STATE_BACKEND,    1, 0);
+    add("AAC",     "audio/aac",  ".aac,.m4a",   STATE_BACKEND,    1, 1);
+    add("HE_AAC",  "audio/aac",  ".aac,.m4a",   STATE_BACKEND,    1, 1);
+    add("VORBIS",  "audio/ogg",  ".ogg",        STATE_BACKEND,    1, 1);
+    add("OPUS",    "audio/opus", ".opus,.ogg,.webm", STATE_BACKEND, 1, 1);
+    add("SPEEX",   "audio/ogg",  ".spx,.ogg",   STATE_BACKEND,    1, 1);
+    add("WMA",     "audio/x-ms-wma", ".wma",    STATE_BACKEND,    1, 0);
+    add("AC3",     "audio/ac3",  ".ac3",        STATE_BACKEND,    1, 0);
+    add("EAC3",    "audio/eac3", ".eac3,.ec3",  STATE_BACKEND,    1, 0);
+    add("AMR_NB",  "audio/amr",  ".amr",        STATE_BACKEND,    1, 1);
+    add("AMR_WB",  "audio/amr-wb", ".awb",      STATE_BACKEND,    1, 1);
+    add("G711_MULAW", "audio/basic", ".au,.ulaw", STATE_BACKEND,  1, 1);
+    add("G711_ALAW",  "audio/basic", ".au,.alaw", STATE_BACKEND,  1, 1);
+    add("MIDI",    "audio/midi", ".mid,.midi",  STATE_EVENT,      0, 0);
+    add("MATROSKA_AUDIO", "audio/x-matroska", ".mka", STATE_CONTAINER, 1, 0);
+    add("WEBM_AUDIO", "audio/webm", ".webm",    STATE_CONTAINER,  1, 0);
+  }
+
+  void add(String name, String mime, String ext, int state, int dec, int enc) {
+    if (count >= CODEC_COUNT) { return; }
+    names[count] = name; mimes[count] = mime; exts[count] = ext;
+    states[count] = state; decode[count] = dec; encode[count] = enc;
+    count = count + 1;
+  }
+
+  int codecCount() { return count; }
+
+  // ---- lookup (mirrors sleela_codec_by_id / _by_extension) ----------------
+  int idOf(String name) {
+    for (int i = 0; i < count; i = i + 1) { if (names[i] == name) { return i; } }
+    return -1;
+  }
+  String nameAt(int id) { return (id >= 0 && id < count) ? names[id] : null; }
+  String mimeAt(int id) { return (id >= 0 && id < count) ? mimes[id] : null; }
+  int stateAt(int id)   { return (id >= 0 && id < count) ? states[id] : -1; }
+  boolean has(String name) { return idOf(name) >= 0; }
+
+  // Find the codec id whose extension list contains `ext` (e.g. ".mp3"); -1 none.
+  int byExtension(String ext) {
+    if (ext == null) { return -1; }
+    for (int i = 0; i < count; i = i + 1) {
+      if (contains(exts[i], ext)) { return i; }
+    }
+    return -1;
+  }
+  // Find a codec id by MIME type; -1 if none matches.
+  int byMime(String mime) {
+    if (mime == null) { return -1; }
+    for (int i = 0; i < count; i = i + 1) { if (mimes[i] == mime) { return i; } }
+    return -1;
+  }
+  boolean contains(String csv, String token) {
+    if (csv == null || token == null) { return false; }
+    // csv is a comma-separated extension list; match a whole entry.
+    String padded = "," + csv + ",";
+    return padded.length() > token.length() + 1 &&
+           indexOfSub(padded, "," + token + ",") >= 0;
+  }
+  int indexOfSub(String hay, String needle) {
+    int hl = hay.length(); int nl = needle.length();
+    if (nl == 0 || nl > hl) { return -1; }
+    for (int i = 0; i <= hl - nl; i = i + 1) {
+      if (hay.substring(i, i + nl) == needle) { return i; }
+    }
+    return -1;
+  }
+
+  // ---- capability questions GUI components ask ----------------------------
+  boolean canDecode(String name) { int i = idOf(name); return i >= 0 && decode[i] == 1; }
+  boolean canEncode(String name) { int i = idOf(name); return i >= 0 && encode[i] == 1; }
+  // "Playable" = the system can actually decode it (native or backend).
+  boolean playable(String name) {
+    int i = idOf(name);
+    if (i < 0) { return false; }
+    return decode[i] == 1 && (states[i] == STATE_NATIVE || states[i] == STATE_BACKEND ||
+                              states[i] == STATE_CONTAINER);
+  }
+  // "Recordable" = the system can encode it to capture audio.
+  boolean recordable(String name) {
+    int i = idOf(name);
+    return i >= 0 && encode[i] == 1 && (states[i] == STATE_NATIVE || states[i] == STATE_BACKEND);
+  }
+  // Can a media file with this extension be played?
+  boolean playableExtension(String ext) {
+    int i = byExtension(ext);
+    if (i < 0) { return false; }
+    return playable(names[i]);
+  }
+
+  String stateName(int state) {
+    if (state == STATE_NATIVE)     { return "native"; }
+    if (state == STATE_BACKEND)    { return "backend"; }
+    if (state == STATE_RECOGNIZED) { return "recognized"; }
+    if (state == STATE_CONTAINER)  { return "container"; }
+    if (state == STATE_EVENT)      { return "event"; }
+    return "unknown";
+  }
+
+  // How many codecs are actually playable (native/backend/container decode).
+  int playableCount() {
+    int n = 0;
+    for (int i = 0; i < count; i = i + 1) { if (playable(names[i])) { n = n + 1; } }
+    return n;
+  }
+}

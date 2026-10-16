@@ -127,9 +127,37 @@ The GUI `.sleela` impl is carried in two parallel lines under `lib/gui/`:
   Runnable walkthroughs: `version-dual/gui-components-demo.sleela` and
   `version-dual/gui-html-codecs-demo.sleela`.
 
+- **`version-military` — 5.0.** The 4.0 surface hardened for a neutral,
+  professional military build. `SLPackage` reports `version() == "5.0-military"`
+  / `featureLevel() == 5` (`isMilitary()`), and the line adds:
+  - **Metal/blue aesthetic** — `SLGuiSettings` gains `AESTHETIC_MILITARY` with a
+    metal finish (neutral / metal-silver / metal-blue), a blue-hue strength, a
+    **3D-lit base frame** (bevel + key-light angle), and careful **quality
+    component shadows** (shadow quality % + softness).
+  - **Explicit Component vs Container taxonomy** — `SLGuiKind` classifies every
+    tag as a container or a component, and says which are clickable and
+    icon-eligible.
+  - **Icons** — `SLGuiIcon`: matched size tiers, leading/trailing/top/icon-only
+    placement, gap, tint, and an optical-centering nudge; `SLGuiApp.setIcon()`
+    attaches one only to icon-eligible nodes (buttons, menu items, clickables).
+  - **`SLGuiCryptoSelector`** — choose the program's cryptography suite from a
+    careful catalog (classical + post-quantum) with a required minimum strength;
+    fail-closed (unavailable / below-minimum suites can't be selected).
+  - **`SLGuiCertificateStore`** — an X.509-style public-key store: import,
+    trust/untrust, revoke/expire, select; a cert is valid only when explicitly
+    trusted (fail-closed).
+  - **`SLGuiWindowState`** — window key-listeners: resize, minimize, fullscreen,
+    maximize, and **fold to a desktop side** ("minimize right"), remembering the
+    previous norm so a **double-click restores** it exactly.
+  - Strong facile branding is on by default; `SLGuiWidgetFactory` registers the
+    new tags (`cryptoselector`, `certstore`, `menuitem`, `menu`, `toolbar`,
+    `panel`, `grid`, `icon`). A runnable walkthrough is
+    `version-military/gui-military-demo.sleela`; a visual preview is in
+    `version-military/preview/`.
+
 The lines are source-compatible: each higher line keeps every entry point of the
 one below and adds its surface on top (1.0 → +settings → +visual effects →
-+professional components).
++professional components → +military hardening).
 
 ## Events, DHTML-style DOM, and scripting
 

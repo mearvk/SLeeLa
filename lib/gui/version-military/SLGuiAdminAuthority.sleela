@@ -1,0 +1,132 @@
+/*
+ * lib/gui/version-military/SLGuiAdminAuthority.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiAdminAuthority — the 4.0 admin authority surface. It
+ *   gates three careful, auditable things:
+ *     1. admin SIGN-IN to START a process (a session an authorised admin opens
+ *        before a guarded process may run);
+ *     2. admin SIGN-OFF on a component OPERATION (an authorised approval that a
+ *        specific operation may proceed); and
+ *     3. an admin SIGNATURE FOR LAW (a legal attestation binding an admin to a
+ *        document/record with a signature token).
+ *
+ *   This class models the authority STATE and a bounded audit trail of the
+ *   approvals/signatures granted; it is fail-closed (no identity => no authority)
+ *   and does not implement a credential check or a cryptographic signature — it
+ *   records WHO authorised WHAT, and leaves verification to the host/security
+ *   layer. The point is that a guarded operation cannot proceed, a guarded
+ *   process cannot start, and a legal record cannot be signed, without an
+ *   explicit, recorded admin act.
+ *
+ * Family: gui. Consulted by components before a guarded action; the host
+ * supplies authenticated admin identities.
+ */
+#sleela 2.1
+class SLGuiAdminAuthority {
+  static final int MAX_AUDIT = 128;
+
+  // Audit entry kinds.
+  static final int ACT_SIGNIN   = 1;   // started a process session
+  static final int ACT_SIGNOFF  = 2;   // approved an operation
+  static final int ACT_SIGNATURE= 3;   // legal signature on a record
+  static final int ACT_SIGNOUT  = 4;
+
+  String adminId;        // the authenticated admin currently signed in ("" = none)
+  int signedIn;          // 1 while a signed-in process session is open
+  String processName;    // the process this session was opened to start
+
+  // Audit trail (parallel arrays): act kind, admin, subject, token/reason.
+  int[] auditAct;
+  String[] auditAdmin;
+  String[] auditSubject;
+  String[] auditToken;
+  int auditCount;
+
+  void configure() {
+    adminId = ""; signedIn = 0; processName = "";
+    auditAct = new int[MAX_AUDIT]; auditAdmin = new String[MAX_AUDIT];
+    auditSubject = new String[MAX_AUDIT]; auditToken = new String[MAX_AUDIT];
+    auditCount = 0;
+  }
+
+  // ---- 1. sign-in to start a process --------------------------------------
+  // An authorised admin opens a session to start a guarded process. Fail-closed:
+  // a blank admin id or process name is refused.
+  boolean signIn(String admin, String process) {
+    if (admin == null || admin == "" || process == null || process == "") { return false; }
+    adminId = admin; processName = process; signedIn = 1;
+    record(ACT_SIGNIN, admin, process, "");
+    return true;
+  }
+  void signOut() {
+    if (signedIn == 1) { record(ACT_SIGNOUT, adminId, processName, ""); }
+    signedIn = 0; adminId = ""; processName = "";
+  }
+  boolean isSignedIn() { return signedIn == 1; }
+  String currentAdmin() { return adminId; }
+  String currentProcess() { return processName; }
+
+  // A guarded process may start only while an admin session is open.
+  boolean mayStartProcess(String process) {
+    return signedIn == 1 && process != null && process == processName;
+  }
+
+  // ---- 2. sign-off on a component operation -------------------------------
+  // Approve a specific operation. Requires a signed-in admin (fail-closed); the
+  // approval is recorded against that admin. Returns false without authority.
+  boolean signOff(String operation, String reason) {
+    if (signedIn == 0 || operation == null || operation == "") { return false; }
+    record(ACT_SIGNOFF, adminId, operation, (reason == null) ? "" : reason);
+    return true;
+  }
+  // Was `operation` signed off by an admin (searching the audit trail)?
+  boolean isSignedOff(String operation) {
+    for (int i = 0; i < auditCount; i = i + 1) {
+      if (auditAct[i] == ACT_SIGNOFF && auditSubject[i] == operation) { return true; }
+    }
+    return false;
+  }
+
+  // ---- 3. admin signature for Law -----------------------------------------
+  // Attach a legal signature token to a record. Requires a signed-in admin; the
+  // token is host-supplied (e.g. a signed hash). Fail-closed on missing inputs.
+  boolean signForLaw(String record, String signatureToken) {
+    if (signedIn == 0 || record == null || record == "" ||
+        signatureToken == null || signatureToken == "") { return false; }
+    this.record(ACT_SIGNATURE, adminId, record, signatureToken);
+    return true;
+  }
+  boolean isLegallySigned(String record) {
+    for (int i = 0; i < auditCount; i = i + 1) {
+      if (auditAct[i] == ACT_SIGNATURE && auditSubject[i] == record &&
+          auditToken[i] != null && auditToken[i] != "") { return true; }
+    }
+    return false;
+  }
+  String signatureOf(String record) {
+    for (int i = auditCount - 1; i >= 0; i = i - 1) {
+      if (auditAct[i] == ACT_SIGNATURE && auditSubject[i] == record) { return auditToken[i]; }
+    }
+    return "";
+  }
+
+  // ---- audit trail --------------------------------------------------------
+  void record(int act, String admin, String subject, String token) {
+    if (auditCount >= MAX_AUDIT) { return; }
+    auditAct[auditCount] = act; auditAdmin[auditCount] = admin;
+    auditSubject[auditCount] = subject; auditToken[auditCount] = token;
+    auditCount = auditCount + 1;
+  }
+  int auditEntries() { return auditCount; }
+  int auditActAt(int i) { return (i >= 0 && i < auditCount) ? auditAct[i] : 0; }
+  String auditAdminAt(int i) { return (i >= 0 && i < auditCount) ? auditAdmin[i] : null; }
+  String auditSubjectAt(int i) { return (i >= 0 && i < auditCount) ? auditSubject[i] : null; }
+
+  String actName(int act) {
+    if (act == ACT_SIGNIN)    { return "sign-in"; }
+    if (act == ACT_SIGNOFF)   { return "sign-off"; }
+    if (act == ACT_SIGNATURE) { return "signature"; }
+    if (act == ACT_SIGNOUT)   { return "sign-out"; }
+    return "none";
+  }
+}

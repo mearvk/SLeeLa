@@ -1,0 +1,52 @@
+/*
+ * lib/gui/version-military/gui-html-codecs-demo.sleela
+ * A runnable walkthrough of the dual (4.0) HTML renderer and codec awareness:
+ * a quick-responsive HTML/CSS/JS render pipeline, and GUI components that can
+ * SEE the codecs the system supports (/codecs) before offering media.
+ */
+#sleela 2.1
+class GuiHtmlCodecsDemo {
+
+  void main() {
+    // ---- Codec awareness: the GUI can see what /codecs supports ----
+    SLGuiCodecs codecs = new SLGuiCodecs(); codecs.configure();
+    print("codecs known=" + codecs.codecCount() + ", playable=" + codecs.playableCount());
+    print("  PCM_WAV: " + codecs.stateName(codecs.stateAt(codecs.idOf("PCM_WAV"))) +
+          " playable=" + codecs.playable("PCM_WAV"));
+    print("  OPUS:    " + codecs.stateName(codecs.stateAt(codecs.idOf("OPUS"))) +
+          " playable=" + codecs.playable("OPUS"));
+    print("  MIDI:    " + codecs.stateName(codecs.stateAt(codecs.idOf("MIDI"))) +
+          " playable=" + codecs.playable("MIDI") + " (event format)");
+    print("  .mp3 extension -> " + codecs.nameAt(codecs.byExtension(".mp3")) +
+          " playable=" + codecs.playableExtension(".mp3"));
+
+    // A video canvas / recorder can gate on real capability.
+    SLGuiVideoCanvas vid = new SLGuiVideoCanvas(); vid.configure("movies/clip.webm");
+    print("video 'clip.webm' extension playable=" + codecs.playableExtension(".webm"));
+    SLGuiAudioRecorder rec = new SLGuiAudioRecorder(); rec.configure("default", "take.flac");
+    print("recorder can encode FLAC=" + codecs.recordable("FLAC") +
+          ", MP3=" + codecs.recordable("MP3") + " (MP3 decode-only)");
+
+    // ---- HTML renderer: quick-responsive, CSS + JavaScript ----
+    SLGuiHtmlRenderer r = new SLGuiHtmlRenderer(); r.configure();
+    r.setQuickResponse(true); r.setQuickPaintMs(100);
+    r.setCssEnabled(true); r.setJsEnabled(true); r.setJsTimeoutMs(4000);
+    print("renderer: css=" + r.cssOn() + " js=" + r.jsOn() +
+          " quick<=" + r.getQuickPaintMs() + "ms honored=" + r.honored());
+
+    // Drive the pipeline the way the host reports progress for an HTML 200.
+    r.render();                 print("  phase: " + r.phaseName());
+    r.onParsed(214);            print("  parsed " + r.nodes() + " nodes -> " + r.phaseName());
+    r.onStyled(96);             print("  styled " + r.rules() + " CSS rules -> " + r.phaseName());
+    r.onFirstPaint(72);         print("  first paint @" + r.firstPaint() + "ms (quick) -> " + r.phaseName());
+    r.runScript(); r.runScript();print("  ran " + r.scripts() + " scripts -> " + r.phaseName());
+    r.onPainted();              print("  " + r.phaseName() + " · responsive=" + r.responsive());
+
+    // The renderer is codec-aware for <video>/<audio>/<source>.
+    print("  page <video> opus accepted=" + r.acceptMediaCodec("OPUS"));
+    print("  page <audio> amr-wb mime canPlayType=" + r.canPlayType("audio/amr-wb"));
+    print("  page <video> theora (unknown) accepted=" + r.acceptMediaCodec("THEORA") +
+          " -> blockedMedia=" + r.blockedMedia());
+    print("  renderer supportedCodecCount=" + r.supportedCodecCount());
+  }
+}

@@ -1,0 +1,98 @@
+/*
+ * lib/gui/version-military/SLGuiAudioRecorder.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiAudioRecorder — the 4.0 standard audio-input record
+ *   control: a record button with the transport states a professional recorder
+ *   needs (idle -> recording <-> paused -> stopped), an input device + format
+ *   (sample rate, channels), a live input level, an elapsed duration, and an
+ *   armed/monitoring flag. SLeeLa owns the recorder's STATE and the meaning of
+ *   each transition; the host owns the actual capture device and writes the
+ *   output asset. Every setting is validated/clamped.
+ *
+ * Family: gui. A control node's backing model; the host captures audio and
+ * reports level/duration back through this object.
+ */
+#sleela 2.1
+class SLGuiAudioRecorder {
+  static final int STATE_IDLE      = 0;
+  static final int STATE_ARMED     = 1;   // monitoring input, not yet recording
+  static final int STATE_RECORDING = 2;
+  static final int STATE_PAUSED    = 3;
+  static final int STATE_STOPPED   = 4;
+
+  int state;
+  String inputDevice;    // host-resolvable capture device ("default" = system)
+  int sampleRate;        // Hz, 8000..192000
+  int channels;          // 1 mono / 2 stereo
+  String outputAsset;    // where the host writes the capture
+  int levelPct;          // live input level 0..100 (host-reported)
+  int durationMs;        // elapsed recording time
+  int clipping;          // 1 if level hit the ceiling since last clear
+
+  void configure(String device, String output) {
+    state = STATE_IDLE;
+    inputDevice = (device == null || device == "") ? "default" : device;
+    sampleRate = 48000; channels = 2;
+    outputAsset = (output == null) ? "" : output;
+    levelPct = 0; durationMs = 0; clipping = 0;
+  }
+
+  int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
+  void setSampleRate(int hz) { sampleRate = clamp(hz, 8000, 192000); }
+  void setChannels(int ch) { channels = (ch == 1 || ch == 2) ? ch : channels; }
+  void setOutputAsset(String a) { outputAsset = (a == null) ? "" : a; }
+
+  // ---- transport ----------------------------------------------------------
+  // Arm (begin monitoring the input without capturing).
+  boolean arm() { if (state == STATE_IDLE || state == STATE_STOPPED) { state = STATE_ARMED; return true; } return false; }
+  // The record button: start capturing from idle/armed/stopped, or resume paused.
+  boolean record() {
+    if (state == STATE_PAUSED) { state = STATE_RECORDING; return true; }
+    if (state == STATE_IDLE || state == STATE_ARMED || state == STATE_STOPPED) {
+      state = STATE_RECORDING; durationMs = 0; clipping = 0; return true;
+    }
+    return false;
+  }
+  boolean pause() { if (state == STATE_RECORDING) { state = STATE_PAUSED; return true; } return false; }
+  boolean stop()  {
+    if (state == STATE_RECORDING || state == STATE_PAUSED) { state = STATE_STOPPED; return true; }
+    return false;
+  }
+  void reset() { state = STATE_IDLE; levelPct = 0; durationMs = 0; clipping = 0; }
+
+  // Host feeds the live input level + elapsed time while recording.
+  void onLevel(int pct) {
+    levelPct = clamp(pct, 0, 100);
+    if (levelPct >= 100) { clipping = 1; }
+  }
+  void onElapsed(int deltaMs) { if (state == STATE_RECORDING && deltaMs > 0) { durationMs = durationMs + deltaMs; } }
+  void clearClipping() { clipping = 0; }
+
+  // ---- state readers ------------------------------------------------------
+  int getState() { return state; }
+  boolean isRecording() { return state == STATE_RECORDING; }
+  boolean isPaused() { return state == STATE_PAUSED; }
+  boolean isActive() { return state == STATE_RECORDING || state == STATE_PAUSED || state == STATE_ARMED; }
+  int level() { return levelPct; }
+  int durationMillis() { return durationMs; }
+  boolean clipped() { return clipping == 1; }
+  String device() { return inputDevice; }
+  int getSampleRate() { return sampleRate; }
+  int getChannels() { return channels; }
+  String output() { return outputAsset; }
+
+  String stateName() {
+    if (state == STATE_ARMED)     { return "armed"; }
+    if (state == STATE_RECORDING) { return "recording"; }
+    if (state == STATE_PAUSED)    { return "paused"; }
+    if (state == STATE_STOPPED)   { return "stopped"; }
+    return "idle";
+  }
+  // The record button's label follows the transport state.
+  String buttonLabel() {
+    if (state == STATE_RECORDING) { return "Stop"; }
+    if (state == STATE_PAUSED)    { return "Resume"; }
+    return "Record";
+  }
+  boolean valid() { return sampleRate >= 8000 && sampleRate <= 192000 && (channels == 1 || channels == 2); }
+}

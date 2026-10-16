@@ -1,0 +1,75 @@
+/*
+ * lib/gui/version-military/SLGuiKind.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiKind — the explicit CONTAINER vs COMPONENT taxonomy
+ *   for the military GUI line. Every node tag is classified as either a
+ *   CONTAINER (it holds and lays out children — window, box, frame, header,
+ *   status, grid) or a COMPONENT (a leaf control the user interacts with or
+ *   reads — button, label, entry, toggle, recorder, video, urlbar, circle,
+ *   canvas, html, crypto selector, certificate store, menu item). It also
+ *   states which kinds may carry an ICON (buttons, menu items, and clickable
+ *   components), so icons are only offered where they belong. This makes the
+ *   distinction a first-class, queryable fact rather than something implied by
+ *   the widget factory's construction branch.
+ *
+ * Family: gui. Pure classification; consulted by the factory, mount, and the
+ *   icon system to decide layout role and icon eligibility.
+ */
+#sleela 2.1
+class SLGuiKind {
+  static final int KIND_UNKNOWN   = 0;
+  static final int KIND_CONTAINER = 1;   // holds + lays out children
+  static final int KIND_COMPONENT = 2;   // a leaf control
+
+  // Classify a tag as a container or a component.
+  int kindOf(String tag) {
+    if (isContainer(tag)) { return KIND_CONTAINER; }
+    if (isComponent(tag)) { return KIND_COMPONENT; }
+    return KIND_UNKNOWN;
+  }
+
+  boolean isContainer(String tag) {
+    return tag == "window" || tag == "box" || tag == "vbox" || tag == "hbox"
+        || tag == "row" || tag == "header" || tag == "headerbar"
+        || tag == "status" || tag == "statusbar" || tag == "frame"
+        || tag == "group" || tag == "grid" || tag == "menu" || tag == "toolbar"
+        || tag == "panel";
+  }
+
+  boolean isComponent(String tag) {
+    return tag == "label" || tag == "text" || tag == "button" || tag == "entry"
+        || tag == "input" || tag == "toggle" || tag == "switch" || tag == "spacer"
+        || tag == "separator" || tag == "hr"
+        || tag == "recorder" || tag == "record" || tag == "urlbar" || tag == "addressbar"
+        || tag == "video" || tag == "movie" || tag == "canvas" || tag == "graphics"
+        || tag == "circle" || tag == "clickobject" || tag == "html" || tag == "webview"
+        || tag == "cryptoselector" || tag == "certstore" || tag == "menuitem"
+        || tag == "icon";
+  }
+
+  // Interactive = a component the user activates (not a static label/spacer).
+  boolean isClickable(String tag) {
+    return tag == "button" || tag == "menuitem" || tag == "toggle" || tag == "switch"
+        || tag == "recorder" || tag == "record" || tag == "urlbar" || tag == "addressbar"
+        || tag == "video" || tag == "movie" || tag == "circle" || tag == "clickobject"
+        || tag == "cryptoselector" || tag == "certstore";
+  }
+
+  // Icons are allowed on buttons, menu items, and clickable components.
+  boolean iconEligible(String tag) {
+    return tag == "button" || tag == "menuitem" || isClickable(tag);
+  }
+
+  String kindName(int kind) {
+    if (kind == KIND_CONTAINER) { return "container"; }
+    if (kind == KIND_COMPONENT) { return "component"; }
+    return "unknown";
+  }
+  String describe(String tag) {
+    int k = kindOf(tag);
+    String s = tag + " -> " + kindName(k);
+    if (isClickable(tag)) { s = s + " (clickable)"; }
+    if (iconEligible(tag)) { s = s + " (icon-eligible)"; }
+    return s;
+  }
+}

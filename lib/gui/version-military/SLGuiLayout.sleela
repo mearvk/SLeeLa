@@ -1,0 +1,132 @@
+/*
+ * lib/gui/version-military/SLGuiLayout.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiLayout — the 4.0 layout + exact-positioning surface.
+ *   It lets a component be placed EXACTLY (absolute x/y/width/height in px) or
+ *   be governed by a layout MODE (flow / grid / anchor / dock) with alignment,
+ *   padding, and inter-child gap. It also carries anchor edges (left/top/right/
+ *   bottom) and a dock side so a child tracks its parent's resize predictably.
+ *   SLeeLa declares the geometry intent precisely; the host realises it on the
+ *   toolkit. Every value is validated/clamped; honored() checks consistency.
+ *
+ * Family: gui. Attached to a node (or a container) to drive placement; read by
+ * SLGuiMount when it positions the widget.
+ */
+#sleela 2.1
+class SLGuiLayout {
+  // Layout mode for a container's children.
+  static final int MODE_FLOW   = 0;   // pack children in order (box-like)
+  static final int MODE_GRID   = 1;   // rows x cols grid
+  static final int MODE_ANCHOR = 2;   // anchor edges to the parent
+  static final int MODE_ABSOLUTE = 3; // exact x/y/w/h, no auto layout
+  static final int MODE_DOCK   = 4;   // dock to a parent side
+
+  // Alignment within the available space.
+  static final int ALIGN_START  = 0;
+  static final int ALIGN_CENTER = 1;
+  static final int ALIGN_END    = 2;
+  static final int ALIGN_STRETCH= 3;
+
+  // Dock sides.
+  static final int DOCK_NONE = 0;
+  static final int DOCK_LEFT = 1; static final int DOCK_TOP = 2;
+  static final int DOCK_RIGHT = 3; static final int DOCK_BOTTOM = 4;
+  static final int DOCK_FILL = 5;
+
+  int mode;
+  // Exact position / size (used in MODE_ABSOLUTE; also the measured rect).
+  int x; int y; int width; int height;
+  // Flow/grid parameters.
+  int rows; int cols;    // grid dimensions (MODE_GRID)
+  int gapPx;             // gap between children, 0..256
+  int padLeft; int padTop; int padRight; int padBottom;  // container padding
+  int alignH; int alignV;
+  // Anchor edges (1 = edge pinned to the parent) for MODE_ANCHOR.
+  int anchorLeft; int anchorTop; int anchorRight; int anchorBottom;
+  int dock;              // DOCK_* for MODE_DOCK
+
+  void configure() {
+    mode = MODE_FLOW;
+    x = 0; y = 0; width = 0; height = 0;
+    rows = 1; cols = 1; gapPx = 8;
+    padLeft = 8; padTop = 8; padRight = 8; padBottom = 8;
+    alignH = ALIGN_START; alignV = ALIGN_START;
+    anchorLeft = 1; anchorTop = 1; anchorRight = 0; anchorBottom = 0;
+    dock = DOCK_NONE;
+  }
+
+  int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
+
+  // ---- exact positioning --------------------------------------------------
+  // Place a component exactly (switches the mode to ABSOLUTE).
+  void placeExact(int px, int py, int w, int h) {
+    mode = MODE_ABSOLUTE;
+    x = px; y = py;
+    width = (w < 0) ? 0 : w; height = (h < 0) ? 0 : h;
+  }
+  void moveTo(int px, int py) { x = px; y = py; }
+  void resizeTo(int w, int h) { if (w >= 0) { width = w; } if (h >= 0) { height = h; } }
+  int getX() { return x; }
+  int getY() { return y; }
+  int getWidth() { return width; }
+  int getHeight() { return height; }
+
+  // ---- layout modes -------------------------------------------------------
+  void flow(int horizontalAlign, int verticalAlign) {
+    mode = MODE_FLOW; alignH = validAlign(horizontalAlign); alignV = validAlign(verticalAlign);
+  }
+  void grid(int r, int c) { mode = MODE_GRID; rows = (r < 1) ? 1 : r; cols = (c < 1) ? 1 : c; }
+  void anchor(boolean left, boolean top, boolean right, boolean bottom) {
+    mode = MODE_ANCHOR;
+    anchorLeft = left ? 1 : 0; anchorTop = top ? 1 : 0;
+    anchorRight = right ? 1 : 0; anchorBottom = bottom ? 1 : 0;
+  }
+  void dockTo(int side) { mode = MODE_DOCK; if (side >= DOCK_NONE && side <= DOCK_FILL) { dock = side; } }
+  int validAlign(int a) { return (a >= ALIGN_START && a <= ALIGN_STRETCH) ? a : ALIGN_START; }
+
+  // ---- spacing ------------------------------------------------------------
+  void setGap(int px) { gapPx = clamp(px, 0, 256); }
+  void setPadding(int l, int t, int r, int b) {
+    padLeft = clamp(l, 0, 512); padTop = clamp(t, 0, 512);
+    padRight = clamp(r, 0, 512); padBottom = clamp(b, 0, 512);
+  }
+  void setPaddingAll(int p) { setPadding(p, p, p, p); }
+
+  // ---- readers ------------------------------------------------------------
+  int getMode() { return mode; }
+  int getRows() { return rows; }
+  int getCols() { return cols; }
+  int getGap() { return gapPx; }
+  int getAlignH() { return alignH; }
+  int getAlignV() { return alignV; }
+  int getDock() { return dock; }
+  boolean absolute() { return mode == MODE_ABSOLUTE; }
+
+  String modeName() {
+    if (mode == MODE_GRID)     { return "grid"; }
+    if (mode == MODE_ANCHOR)   { return "anchor"; }
+    if (mode == MODE_ABSOLUTE) { return "absolute"; }
+    if (mode == MODE_DOCK)     { return "dock"; }
+    return "flow";
+  }
+
+  // Serialize to a style descriptor the reconciler applies ("layout:...").
+  String toStyle() {
+    if (mode == MODE_ABSOLUTE) {
+      return "layout:absolute/" + x + "/" + y + "/" + width + "/" + height + ";";
+    }
+    if (mode == MODE_GRID) { return "layout:grid/" + rows + "x" + cols + "/gap" + gapPx + ";"; }
+    if (mode == MODE_ANCHOR) {
+      return "layout:anchor/" + anchorLeft + anchorTop + anchorRight + anchorBottom + ";";
+    }
+    if (mode == MODE_DOCK) { return "layout:dock/" + dock + ";"; }
+    return "layout:flow/a" + alignH + alignV + "/gap" + gapPx + ";";
+  }
+
+  boolean honored() {
+    boolean grid = mode != MODE_GRID || (rows >= 1 && cols >= 1);
+    boolean size = width >= 0 && height >= 0;
+    boolean gap = gapPx >= 0 && gapPx <= 256;
+    return grid && size && gap;
+  }
+}

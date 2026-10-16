@@ -1,0 +1,97 @@
+/*
+ * lib/gui/version-military/SLGuiCertificateStore.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiCertificateStore — a military-line COMPONENT that
+ *   holds and presents public-key certificates (an X.509-style store). Each
+ *   entry carries a subject, an issuer, a key algorithm, a fingerprint, a trust
+ *   state (trusted / untrusted / revoked / expired), and whether it is a CA. The
+ *   store lets the program import a certificate, mark trust, select one for use,
+ *   and query validity. SLeeLa owns the store CONTENTS and trust STATE; the
+ *   host/crypto layer performs chain building and signature verification and
+ *   reports the result back as a trust state. It is fail-closed: a certificate
+ *   is untrusted until explicitly trusted, and a revoked/expired certificate is
+ *   never reported valid.
+ *
+ * Family: gui. A "certstore" node's backing model; partners SLGuiCryptoSelector
+ *   and SLGuiAdminAuthority (an admin signature for Law may reference a cert).
+ */
+#sleela 2.1
+class SLGuiCertificateStore {
+  static final int MAX_CERTS = 64;
+
+  // Trust state of an entry.
+  static final int TRUST_UNTRUSTED = 0;   // present but not trusted (default)
+  static final int TRUST_TRUSTED   = 1;   // explicitly trusted by the operator
+  static final int TRUST_REVOKED   = 2;   // on a revocation list
+  static final int TRUST_EXPIRED   = 3;   // past its validity window
+
+  String[] subject;     // certificate subject (CN/O)
+  String[] issuer;      // issuing authority
+  String[] keyAlg;      // e.g. "RSA-2048", "ECDSA-P256", "Ed25519", "ML-DSA-65"
+  String[] fingerprint; // host-supplied hash (e.g. SHA-256 hex)
+  int[] trust;          // TRUST_*
+  int[] isCa;           // 1 = certificate authority
+  int count;
+
+  int selected;         // selected entry index (-1 = none)
+
+  void configure() {
+    subject = new String[MAX_CERTS]; issuer = new String[MAX_CERTS];
+    keyAlg = new String[MAX_CERTS]; fingerprint = new String[MAX_CERTS];
+    trust = new int[MAX_CERTS]; isCa = new int[MAX_CERTS]; count = 0; selected = -1;
+  }
+
+  // Import a certificate. Fail-closed: blank subject/fingerprint is refused, and
+  // a new entry starts UNTRUSTED. Returns the new index, or -1 on refusal/full.
+  int importCert(String subj, String iss, String alg, String fp, boolean ca) {
+    if (subj == null || subj == "" || fp == null || fp == "") { return -1; }
+    if (count >= MAX_CERTS) { return -1; }
+    subject[count] = subj; issuer[count] = (iss == null) ? "" : iss;
+    keyAlg[count] = (alg == null) ? "" : alg; fingerprint[count] = fp;
+    trust[count] = TRUST_UNTRUSTED; isCa[count] = ca ? 1 : 0;
+    int idx = count; count = count + 1;
+    return idx;
+  }
+
+  int certCount() { return count; }
+  String subjectAt(int i) { return (i >= 0 && i < count) ? subject[i] : null; }
+  String issuerAt(int i) { return (i >= 0 && i < count) ? issuer[i] : null; }
+  String keyAlgAt(int i) { return (i >= 0 && i < count) ? keyAlg[i] : null; }
+  String fingerprintAt(int i) { return (i >= 0 && i < count) ? fingerprint[i] : null; }
+  int trustAt(int i) { return (i >= 0 && i < count) ? trust[i] : -1; }
+  boolean isCaAt(int i) { return i >= 0 && i < count && isCa[i] == 1; }
+  int indexOfFingerprint(String fp) {
+    for (int i = 0; i < count; i = i + 1) { if (fingerprint[i] == fp) { return i; } }
+    return -1;
+  }
+
+  // ---- trust (the operator / host chain-verifier sets these) --------------
+  boolean trustCert(int i) { if (i < 0 || i >= count) { return false; } if (trust[i] == TRUST_REVOKED || trust[i] == TRUST_EXPIRED) { return false; } trust[i] = TRUST_TRUSTED; return true; }
+  boolean untrustCert(int i) { if (i < 0 || i >= count) { return false; } trust[i] = TRUST_UNTRUSTED; return true; }
+  // Host reports a revocation / expiry (irreversible trust downgrade).
+  void markRevoked(int i) { if (i >= 0 && i < count) { trust[i] = TRUST_REVOKED; if (selected == i) { selected = -1; } } }
+  void markExpired(int i) { if (i >= 0 && i < count) { trust[i] = TRUST_EXPIRED; if (selected == i) { selected = -1; } } }
+
+  // A certificate is VALID for use only when explicitly trusted (never when
+  // untrusted, revoked, or expired) — fail-closed.
+  boolean valid(int i) { return i >= 0 && i < count && trust[i] == TRUST_TRUSTED; }
+
+  // ---- selection ----------------------------------------------------------
+  // Select a certificate for use; only a valid (trusted) entry may be selected.
+  boolean select(int i) { if (!valid(i)) { return false; } selected = i; return true; }
+  void clearSelection() { selected = -1; }
+  boolean hasSelection() { return selected >= 0; }
+  int selectedIndex() { return selected; }
+  String selectedSubject() { return (selected >= 0) ? subject[selected] : ""; }
+  String selectedFingerprint() { return (selected >= 0) ? fingerprint[selected] : ""; }
+
+  // Count of certificates that are currently valid for use.
+  int validCount() { int n = 0; for (int i = 0; i < count; i = i + 1) { if (valid(i)) { n = n + 1; } } return n; }
+
+  String trustName(int t) {
+    if (t == TRUST_TRUSTED)   { return "trusted"; }
+    if (t == TRUST_REVOKED)   { return "revoked"; }
+    if (t == TRUST_EXPIRED)   { return "expired"; }
+    return "untrusted";
+  }
+}

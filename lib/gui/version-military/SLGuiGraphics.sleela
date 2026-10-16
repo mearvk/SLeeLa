@@ -1,0 +1,124 @@
+/*
+ * lib/gui/version-military/SLGuiGraphics.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiGraphics — the 4.0 graphics facility AND its control
+ *   layer for a canvas node. The facility is a bounded, auditable DRAW-COMMAND
+ *   list (clear / line / rect / circle / arc / text / image) with stroke-width,
+ *   fill/stroke colors, and opacity state; a command records the current state
+ *   so the host replays the list deterministically. The control layer carries
+ *   render quality, antialiasing, a layer index, and a dirty redraw region, so
+ *   a program can tune how the facility is realised. SLeeLa owns the command
+ *   list + control state; the host rasterises onto the real surface. This is a
+ *   graphics *description*, not a general interpreter — a fixed verb set that
+ *   can do no more than the canvas API allows.
+ *
+ * Family: gui. Backs a "canvas"/"graphics" node; replayed by the host renderer.
+ */
+#sleela 2.1
+class SLGuiGraphics {
+  static final int MAX_COMMANDS = 1024;
+
+  // Draw verbs.
+  static final int OP_CLEAR  = 0;
+  static final int OP_LINE   = 1;
+  static final int OP_RECT   = 2;
+  static final int OP_CIRCLE = 3;
+  static final int OP_ARC    = 4;
+  static final int OP_TEXT   = 5;
+  static final int OP_IMAGE  = 6;
+
+  // Render quality (control layer).
+  static final int QUALITY_LOW  = 0;
+  static final int QUALITY_MED  = 1;
+  static final int QUALITY_HIGH = 2;
+
+  int width; int height;   // surface size in px
+
+  // Command list (parallel arrays; the surface language has no record arrays).
+  int[] op;
+  int[] a; int[] b; int[] c; int[] d;   // up to four integer operands per verb
+  String[] arg;                          // string operand (text / image asset / color)
+  int count;
+
+  // Current pen/brush state applied to each appended command.
+  int strokeWidth;         // 1..64
+  String strokeColor;      // "#rrggbb" / named
+  String fillColor;        // "#rrggbb" / named / "" = no fill
+  int opacityPct;          // 0..100
+
+  // Control layer.
+  int quality;
+  int antialias;           // 1 = AA on
+  int layer;               // z layer, 0..15
+  int dirty;               // 1 when the command list changed since last replay
+  // Dirty redraw region (host may clip to it); 0-size = whole surface.
+  int regionX; int regionY; int regionW; int regionH;
+
+  void configure(int w, int h) {
+    width = (w < 0) ? 0 : w; height = (h < 0) ? 0 : h;
+    op = new int[MAX_COMMANDS]; a = new int[MAX_COMMANDS]; b = new int[MAX_COMMANDS];
+    c = new int[MAX_COMMANDS]; d = new int[MAX_COMMANDS]; arg = new String[MAX_COMMANDS];
+    count = 0;
+    strokeWidth = 1; strokeColor = "#ffffff"; fillColor = ""; opacityPct = 100;
+    quality = QUALITY_HIGH; antialias = 1; layer = 0; dirty = 1;
+    regionX = 0; regionY = 0; regionW = 0; regionH = 0;
+  }
+
+  int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
+
+  // ---- pen / brush state --------------------------------------------------
+  void setStrokeWidth(int px) { strokeWidth = clamp(px, 1, 64); }
+  void setStrokeColor(String color) { if (color != null) { strokeColor = color; } }
+  void setFillColor(String color) { fillColor = (color == null) ? "" : color; }
+  void setOpacity(int pct) { opacityPct = clamp(pct, 0, 100); }
+
+  // ---- control layer ------------------------------------------------------
+  void setQuality(int q) { if (q >= QUALITY_LOW && q <= QUALITY_HIGH) { quality = q; } }
+  void setAntialias(boolean on) { antialias = on ? 1 : 0; }
+  void setLayer(int z) { layer = clamp(z, 0, 15); }
+  void markRegion(int rx, int ry, int rw, int rh) { regionX = rx; regionY = ry; regionW = rw; regionH = rh; }
+  void clearRegion() { regionX = 0; regionY = 0; regionW = 0; regionH = 0; }
+
+  // ---- draw commands ------------------------------------------------------
+  boolean push(int verb, int p0, int p1, int p2, int p3, String s) {
+    if (count >= MAX_COMMANDS) { return false; }
+    op[count] = verb; a[count] = p0; b[count] = p1; c[count] = p2; d[count] = p3; arg[count] = s;
+    count = count + 1; dirty = 1;
+    return true;
+  }
+  boolean clear() { return push(OP_CLEAR, 0, 0, 0, 0, fillColor); }
+  boolean line(int x1, int y1, int x2, int y2) { return push(OP_LINE, x1, y1, x2, y2, strokeColor); }
+  boolean rect(int rx, int ry, int rw, int rh) { return push(OP_RECT, rx, ry, rw, rh, ""); }
+  boolean circle(int cx, int cy, int r) { return push(OP_CIRCLE, cx, cy, r, strokeWidth, ""); }
+  boolean arc(int cx, int cy, int r, int sweepDeg) { return push(OP_ARC, cx, cy, r, sweepDeg, strokeColor); }
+  boolean text(int tx, int ty, String s) { return push(OP_TEXT, tx, ty, opacityPct, 0, s); }
+  boolean image(int ix, int iy, int iw, int ih, String asset) { return push(OP_IMAGE, ix, iy, iw, ih, asset); }
+
+  void reset() { count = 0; dirty = 1; }
+
+  // ---- readers (host replays these) ---------------------------------------
+  int commands() { return count; }
+  int opAt(int i) { return (i >= 0 && i < count) ? op[i] : -1; }
+  int aAt(int i) { return (i >= 0 && i < count) ? a[i] : 0; }
+  int bAt(int i) { return (i >= 0 && i < count) ? b[i] : 0; }
+  int cAt(int i) { return (i >= 0 && i < count) ? c[i] : 0; }
+  int dAt(int i) { return (i >= 0 && i < count) ? d[i] : 0; }
+  String argAt(int i) { return (i >= 0 && i < count) ? arg[i] : null; }
+  int getQuality() { return quality; }
+  boolean antialiasOn() { return antialias == 1; }
+  int getLayer() { return layer; }
+  boolean isDirty() { return dirty == 1; }
+  void clearDirty() { dirty = 0; }
+  int getWidth() { return width; }
+  int getHeight() { return height; }
+
+  String qualityName() {
+    if (quality == QUALITY_LOW) { return "low"; }
+    if (quality == QUALITY_MED) { return "medium"; }
+    return "high";
+  }
+  boolean honored() {
+    return width >= 0 && height >= 0 && strokeWidth >= 1 && strokeWidth <= 64 &&
+           opacityPct >= 0 && opacityPct <= 100 && count <= MAX_COMMANDS;
+  }
+}

@@ -1,0 +1,104 @@
+/*
+ * lib/gui/version-military/SLGuiDocumentListener.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiDocumentListener — the SLeeLa GUI document-change
+ *   listener option. Mirrors DocumentListener in gui/: watch 1..14 documents
+ *   and refresh the running GUI whenever any changes on an OS call. Detection
+ *   is OS-driven (WatchService over inotify / ReadDirectoryChangesW /
+ *   kqueue/FSEvents), not polling; an OS event that does not move a document's
+ *   revision is coalesced away. The 1..14 bound is a hard contract.
+ */
+#sleela 2.1
+// SLeeLa gui front-end contract — the OS-backed 1..14 document watch.
+// Family: gui. The watch wakes on an OS call, re-reads each document's
+// revision, and emits only real changes; a host may also force a refresh.
+class SLGuiDocumentListener {
+  int MIN_DOCUMENTS = 1;       // lower bound (inclusive)
+  int MAX_DOCUMENTS = 14;      // upper bound (inclusive)
+  int watched;                 // how many documents are attached (1..14)
+  int running;                 // 1 while the OS watch loop is active
+  int changes;                 // total real changes emitted
+  int coalesced;               // total OS wakes coalesced away (no revision move)
+  int pollMillis;              // OS wake cadence / coalescing window
+  int debounceMillis;          // settle window after a change before emitting
+  int coalesceQueueMax;        // max pending changes before backpressure applies
+  int backpressure;            // 0 coalesce / 1 drop-oldest / 2 block
+  int dropped;                 // changes shed by backpressure
+
+  // 2.0: configure CLAMPS the attached count to the 1..14 contract rather than
+  // trusting the caller — withinBound() then always holds after configure().
+  void configure(int documentCount) {
+    watched = clampCount(documentCount);
+    running = 0; changes = 0; coalesced = 0; dropped = 0;
+    pollMillis = 500; debounceMillis = 50; coalesceQueueMax = 64; backpressure = 0;
+  }
+  int clampCount(int n) {
+    if (n < MIN_DOCUMENTS) { return MIN_DOCUMENTS; }
+    if (n > MAX_DOCUMENTS) { return MAX_DOCUMENTS; }
+    return n;
+  }
+
+  // Adopt the package settings' listener-timing knobs (poll/debounce/queue/bp).
+  void applySettings(SLGuiSettings s) {
+    if (s == null) { return; }
+    pollMillis = s.getPollMillis();
+    debounceMillis = s.getDebounceMillis();
+    coalesceQueueMax = s.getCoalesceQueueMax();
+    backpressure = s.getBackpressure();
+  }
+
+  int count() { return watched; }
+  int minDocuments() { return MIN_DOCUMENTS; }
+  int maxDocuments() { return MAX_DOCUMENTS; }
+  // The hard 1..14 contract, enforced at construction and on watch().
+  boolean withinBound() {
+    return watched >= MIN_DOCUMENTS && watched <= MAX_DOCUMENTS;
+  }
+  // Start the OS-backed watch; a no-op unless the bound holds and not running.
+  boolean watch() {
+    if (!withinBound()) { return false; }
+    if (running == 1) { return true; }
+    running = 1;
+    return true;
+  }
+  boolean isRunning() { return running == 1; }
+  // One OS-call wake delivered `realChanges` revision moves (0 is coalesced
+  // away and emits nothing). Returns the number emitted this wake, after the
+  // queue cap / backpressure policy is applied. A wake with no revision move is
+  // counted as a coalesced no-op.
+  int onOsCall(int realChanges) {
+    if (running == 0) { return 0; }
+    if (realChanges <= 0) { coalesced = coalesced + 1; return 0; }
+    int emit = realChanges;
+    // Backpressure when a single wake exceeds the coalesce-queue cap.
+    if (emit > coalesceQueueMax) {
+      if (backpressure == 1) {            // drop-oldest: shed the overflow
+        dropped = dropped + (emit - coalesceQueueMax);
+        emit = coalesceQueueMax;
+      } else if (backpressure == 0) {     // coalesce: merge overflow into the cap
+        dropped = dropped + (emit - coalesceQueueMax);
+        emit = coalesceQueueMax;
+      }
+      // backpressure == 2 (block): the producer waits; the full batch emits.
+    }
+    changes = changes + emit;
+    return emit;
+  }
+  // Force an immediate re-evaluation (an explicit OS/lifecycle refresh).
+  int refreshNow(int realChanges) { return onOsCall(realChanges); }
+  int totalChanges() { return changes; }
+  int totalCoalesced() { return coalesced; }
+  int totalDropped() { return dropped; }
+
+  void setPollMillis(int ms) { if (ms > 0) { pollMillis = ms; } }
+  int getPollMillis() { return pollMillis; }
+  void setDebounceMillis(int ms) { if (ms >= 0) { debounceMillis = ms; } }
+  int getDebounceMillis() { return debounceMillis; }
+  void setCoalesceQueueMax(int n) { if (n >= 1) { coalesceQueueMax = n; } }
+  int getCoalesceQueueMax() { return coalesceQueueMax; }
+  void setBackpressure(int policy) { if (policy >= 0 && policy <= 2) { backpressure = policy; } }
+  int getBackpressure() { return backpressure; }
+
+  // Stop the watch and release the OS watch handle. Idempotent.
+  void close() { running = 0; }
+}

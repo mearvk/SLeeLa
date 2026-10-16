@@ -1,0 +1,43 @@
+/*
+ * lib/gui/version-military/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for gui — the MILITARY
+ *   line (version 5.0). It builds on dual (4.0) and hardens it for a neutral,
+ *   professional military aesthetic: metal / metal-silver / blue-hue surfaces, a
+ *   3D-lit base frame with careful quality component shadows, strong facile user
+ *   branding, carefully sized/placed icons on buttons/menus/clickables, an
+ *   explicit Component vs Container taxonomy, a cryptography selector and a
+ *   public-key certificate store, and window key-listeners (resize / minimize /
+ *   fullscreen / fold-to-side-of-desktop with double-click restore).
+ */
+#sleela 2.1
+// Library facade for module package: gui
+// Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+// This package is the SLeeLa-facing *consequence* of the top-level gui/ work
+// (the Java host, the native C ABI bridge gui/native/sleela_gui_bridge.*, and
+// the 1..14 document-change listener). The Master Classes (SLGuiBackend,
+// SLGuiWindow, SLGuiAction, SLGuiRuntime, SLGuiHost, SLGuiDocument,
+// SLGuiDocumentListener, SLGuiBridge, SLGuiIntegration) are first-class
+// one-class-per-file source units; this facade only names the package itself,
+// mirroring lib/citizen/SLPackage.sleela.
+class SLPackage {
+  // Version identity: this is the MILITARY line — the 5.0 GUI package, a
+  // hardened, strongly-branded build on the dual (4.0) component set. It renders
+  // in a neutral metal / metal-silver / blue-hue aesthetic with a 3D-lit base
+  // frame and careful component shadows, an explicit Component vs Container
+  // taxonomy, icons on buttons/menus/clickables, a cryptography selector and a
+  // public-key certificate store, and window key-listeners (resize / minimize /
+  // fullscreen / fold-to-side with double-click restore). featureLevel()=5.
+  static final int FEATURE_LEVEL = 5;   // 5 military ; 4 dual ; 3 thual ; 2 gual ; 1 mual
+  String packageName;
+  String packageVersion;
+  void configure(String name) { packageName = name; packageVersion = "5.0-military"; }
+  String name() { return packageName; }
+  String version() { return packageVersion; }
+  int featureLevel() { return FEATURE_LEVEL; }
+  boolean isTwoPointZero() { return FEATURE_LEVEL >= 2; }
+  boolean isThreePointZero() { return FEATURE_LEVEL >= 3; }
+  boolean isFourPointZero() { return FEATURE_LEVEL >= 4; }
+  boolean isMilitary() { return FEATURE_LEVEL >= 5; }
+  boolean available() { return packageName != null; }
+}
