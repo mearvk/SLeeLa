@@ -5,7 +5,7 @@
  *   CPU ISA (SLInstructionSet) and the OS system calls (SLSystemCall) ONTO the
  *   canonical SLeeLa opcode substrate (SLSleelaOpcode), emitting the result into
  *   an SLSleelaVM. This is the pivot of the whole design: every CPU instruction
- *   and every OS service is expressed as a sequence of base-98 Sleela opcodes.
+ *   and every OS service is expressed as a sequence of canonical Sleela opcodes.
  *
  * Because the Sleela opcodes are Turing complete and already executed by the
  * native VM, mapping the CPU ISA + syscalls onto them means the register

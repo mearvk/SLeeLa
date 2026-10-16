@@ -167,3 +167,46 @@ the real structure and semantics (combinational logic, clocked state, the
 fetch-decode-execute cycle, the memory hierarchy, interrupts, DMA, drivers,
 scheduling, syscalls, and loading) at a level that stays readable as SLeeLa
 source.
+
+### What the model does and does not claim
+
+Being explicit about the guarantees, since the point of the stack is that it is
+honest about its own boundaries:
+
+1. **Running a CPU as a model models that CPU, its codes, and its features.**
+   Each `SL<ARCH>CPU` (including the AMD Threadripper 9000 SKUs) extends
+   `SLCPURuntime` and supplies the architecture's real programmer model — its
+   register set, data/address widths, flags — and a genuine `decode()` that maps
+   the architecture's own instruction encoding onto the ALU and the substrate.
+   `SLControlUnit.step()` is a real fetch-decode-execute cycle. Cache levels,
+   the MMU/TLB, the bus, and the interrupt controller are modeled as that part's
+   actual features (see each arch folder's `CPU.md`/`CACHE.md`/`BUS.md`). So the
+   **instruction semantics** — the result and observable effect of executing
+   each instruction — are faithfully represented.
+
+2. **Instruction timing is a behavioral, conservative estimate — not
+   cycle-accurate.** The model states this plainly: `instruction latency !=
+   clock period`, and per-instruction cost depends on addressing mode, operand
+   transfers, read/write sequence, branch outcome, and wait/interrupt state
+   (see [`TIMING.md`](TIMING.md)). Clock rate, the per-stage/bus/RAM/I-O timing
+   budgets (`SLCpuTiming`, `SLBusTiming`, `SLRamTiming`, `SLIOTiming`), and cycle
+   counts are **timing hints and net-result accounting**, recorded as
+   observable/derived values. They are deliberately *not* presented as a
+   cycle-accurate or transistor-level count; the model never claims an exact
+   per-cycle silicon reproduction.
+
+3. **The opcode mapping (Sleela → model CPU → native VM) is careful,
+   conservative, and verified — it invents nothing.** Every register-ISA
+   instruction and every OS syscall is lowered onto the **canonical opcode
+   substrate** (`SLSleelaOpcode`), whose codes and mnemonics mirror the native
+   enum exactly (`impl/core/sleela_core.h` `SLOp`). The native substrate
+   currently defines **150 opcodes** (codes 0..149): a Turing-complete base
+   computational/service core plus extended host-facing ranges; the CPU model
+   lowers onto the base core and does not fabricate a parallel instruction set.
+   Because that substrate is already executed by the native VM and is Turing
+   complete, the mapping is a **reduction**, not an invention — and it is
+   checkable: `SLTuringBridge.proveEquivalence(c, cpp, java, sleela)` lowers the
+   same computation from all four frontends to the substrate, runs each, and
+   returns true only when every one produces the identical result. That is what
+   makes "a program on the model CPU" and "a program on the native VM" 1:1 in
+   Turing effect rather than an unverified assertion.

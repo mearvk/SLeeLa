@@ -4,8 +4,18 @@
  * Definition: Defines SLSleelaOpcode — the canonical SLeeLa VM opcode registry,
  *   the Turing-complete substrate that the whole CPU model reduces to. The
  *   codes and mnemonics mirror the native enum exactly (impl/core/sleela_core.h
- *   and lib/vm/InstructionSet.sleela): the base-98 computational core, codes
- *   0..97, dispatched one-at-a-time by the native VM.
+ *   `SLOp` and lib/vm/InstructionSet.sleela). The native enum currently defines
+ *   150 opcodes (codes 0..149), dispatched one-at-a-time by the native VM: a
+ *   base computational/service core (arithmetic, control flow, call/return,
+ *   threads, sockets, pipes, files, time, structs) followed by extended
+ *   host-facing ranges (Synchro/Munction/Best-of, audio, arrays, OS syscalls,
+ *   GC hint, `ran::`, the Idea realtime canvas, VM-select/Modium).
+ *
+ *   This registry declares the base computational/service core (codes 0..60),
+ *   which is the Turing-complete subset every CPU instruction and OS syscall is
+ *   lowered onto; the extended opcodes above it are host services the model
+ *   does not need to re-declare to realize a CPU. Codes are conservative: they
+ *   match the native numbering exactly rather than inventing a parallel set.
  *
  * This is the ground truth. The register-style SLInstructionSet, the OS system
  * calls, and every language frontend ultimately map onto THESE opcodes. Because
@@ -18,7 +28,9 @@
  */
 #sleela 2.1
 class SLSleelaOpcode {
-  // Base-98 canonical opcodes (exact native numeric order).
+  // Base computational/service core, in exact native numeric order. These are
+  // the Turing-complete subset the CPU ISA and OS syscalls lower onto; the
+  // native enum continues past them with extended host-facing opcodes.
   static final int OP_NOP=0;    static final int OP_CONST=1;  static final int OP_POP=2;    static final int OP_DUP=3;
   static final int OP_LOADG=4;  static final int OP_STOREG=5; static final int OP_LOADL=6;  static final int OP_STOREL=7;
   static final int OP_ADD=8;    static final int OP_SUB=9;    static final int OP_MUL=10;   static final int OP_DIV=11;
@@ -35,7 +47,11 @@ class SLSleelaOpcode {
   // Time services 49..57, structs 58..62 (available to the substrate).
   static final int OP_NEWSTRUCT=58; static final int OP_GETFIELD=59; static final int OP_SETFIELD=60;
 
-  static final int BASE_COUNT = 98;  // canonical base-98 computational core
+  // Upper bound of the base computational/service core this registry declares
+  // and validates. The native substrate (impl/core/sleela_core.h `SLOp`)
+  // defines 150 opcodes in total (0..149); codes at/above BASE_COUNT are the
+  // extended host-facing services the CPU model does not lower onto.
+  static final int BASE_COUNT = 98;
 
   int code;
   String mnemonic;

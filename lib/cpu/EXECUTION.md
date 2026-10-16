@@ -156,12 +156,21 @@ the same opcode stream.
      -> SLFrontend*            language -> common IR (SLIR)
      -> SLLowering             IR -> register ISA (SLInstructionSet / SLProgram)
      -> SLOpcodeMap            register ISA + OS syscalls -> SLeeLa opcodes
-     -> SLSleelaVM             execute the canonical base-98 Turing-complete substrate
+     -> SLSleelaVM             execute the canonical Turing-complete opcode substrate
 ```
+
+The native substrate (`impl/core/sleela_core.h` `SLOp`) defines **150 opcodes**
+(codes 0..149): a Turing-complete base computational/service core (arithmetic,
+control flow, call/return, threads, sockets, pipes, files, time, structs)
+followed by extended host-facing ranges (Synchro/Munction/Best-of, audio,
+arrays, OS syscalls, GC hint, `ran::`, the Idea realtime canvas, VM-select).
+Every CPU instruction and OS syscall lowers onto the base computational core;
+the mapping is **conservative** — it mirrors the native codes/mnemonics exactly
+rather than inventing a parallel set.
 
 | Class | Role |
 |---|---|
-| `SLSleelaOpcode` | The canonical base-98 opcode registry — exact native codes/mnemonics. The ground truth. |
+| `SLSleelaOpcode` | The canonical opcode registry — exact native codes/mnemonics (declares the base computational/service core). The ground truth. |
 | `SLSleelaVM` | A stack machine that executes the Sleela opcodes directly (mirrors the native dispatch loop). |
 | `SLOpcodeMap` | Maps each register-ISA instruction and each OS syscall onto a sequence of Sleela opcodes. |
 | `SLTuringBridge` | Reduces any-language programs to the substrate and runs them; `proveEquivalence()` checks all four give the identical result. |
@@ -173,7 +182,7 @@ A register instruction like `ADD r1, r2` maps to the opcode sequence
 OS `SYS_WRITE` maps to `LOADG arg ; OP_PRINT`; `SYS_EXIT` maps to `OP_HALT`.
 Because **every** CPU instruction and **every** syscall is defined as such a
 Sleela-opcode sequence, a whole program — whatever language it started in —
-becomes one stream of base-98 opcodes. Two programs that reduce to opcode
+becomes one stream of canonical opcodes. Two programs that reduce to opcode
 streams with the same observable effect are, by definition, equal in Turing
 effect.
 
