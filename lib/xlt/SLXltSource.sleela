@@ -19,6 +19,9 @@
  *         cadence  "DDR2";             // SLCadenceConnector cadence to present
  *         storage  "nvmeGen4";         // optional
  *         bus      "pcieGen5x16";      // optional
+ *         gpu;                         // optional capability: native GPU
+ *         dma;                         // optional capability: DMA engine
+ *         nativeram;                   // optional capability: NATIVE_RAM bit
  *         target   sleela;
  *       }
  *
@@ -44,6 +47,11 @@ class SLXltSource {
   String storageRef;    // SLStorageDevice preset (empty = none)
   String busRef;        // SLSystemBus preset (empty = none)
 
+  // Capability directives: bare orthogonal flags (declared at most once each).
+  int gpuFlag;          // `gpu;`       -> build.enableGPU()
+  int dmaFlag;          // `dma;`       -> build.enableDMA()
+  int nativeRamFlag;    // `nativeram;` -> declare the NATIVE_RAM feature bit
+
   int validated;
 
   void configure(String sourcePath, String root) {
@@ -51,6 +59,7 @@ class SLXltSource {
     modelName = ""; target = "sleela";
     cpuRef = ""; boardRef = ""; memoryRef = ""; memoryCapMiB = 0;
     cadenceRef = ""; storageRef = ""; busRef = "";
+    gpuFlag = 0; dmaFlag = 0; nativeRamFlag = 0;
     validated = 0;
   }
 
@@ -69,6 +78,11 @@ class SLXltSource {
   boolean declareStorage(String ref) { if (storageRef != "") { return false; } storageRef = ref; return true; }
   boolean declareBus(String ref)     { if (busRef != "") { return false; } busRef = ref; return true; }
 
+  // Capability directives: each may be declared at most once (orthogonal).
+  boolean declareGpu()       { if (gpuFlag == 1) { return false; } gpuFlag = 1; return true; }
+  boolean declareDma()       { if (dmaFlag == 1) { return false; } dmaFlag = 1; return true; }
+  boolean declareNativeRam() { if (nativeRamFlag == 1) { return false; } nativeRamFlag = 1; return true; }
+
   boolean validate() { validated = 1; return 1 == 1; }
 
   String sourcePath()  { return path; }
@@ -85,4 +99,7 @@ class SLXltSource {
   boolean hasCadence() { return cadenceRef != ""; }
   boolean hasStorage() { return storageRef != ""; }
   boolean hasBus()     { return busRef != ""; }
+  boolean wantsGpu()       { return gpuFlag == 1; }
+  boolean wantsDma()       { return dmaFlag == 1; }
+  boolean wantsNativeRam() { return nativeRamFlag == 1; }
 }

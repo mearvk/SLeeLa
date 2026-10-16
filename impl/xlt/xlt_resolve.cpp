@@ -122,6 +122,11 @@ ResolveResult resolve(const XltModel& m, const DiagnosticBag& diags) {
         else r.builtLines.push_back("bus: " + m.bus.ref);
     }
 
+    // 6. capabilities (optional, bare directives)
+    if (m.gpu)       r.builtLines.push_back("capability: gpu (native compute)");
+    if (m.dma)       r.builtLines.push_back("capability: dma (bulk engine)");
+    if (m.nativeRam) r.builtLines.push_back("capability: nativeram (NATIVE_RAM feature bit)");
+
     r.built = (!r.builtLines.empty() && r.reasons.empty());
     return r;
 }

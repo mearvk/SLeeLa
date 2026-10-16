@@ -79,6 +79,16 @@ private:
             return;
         }
 
+        // bare capability directives: keyword directly followed by ';'.
+        if (kw == "gpu" || kw == "dma" || kw == "nativeram") {
+            bool* flag = (kw == "gpu") ? &m.gpu : (kw == "dma") ? &m.dma : &m.nativeRam;
+            int*  fln  = (kw == "gpu") ? &m.gpuLine : (kw == "dma") ? &m.dmaLine : &m.nativeRamLine;
+            if (*flag) err("XLT-E-0022", "duplicate '" + kw + "' capability breaks document orthogonality", "XLT-ORTHO-01");
+            *flag = true; *fln = kwLine;
+            expectSemicolon();
+            return;
+        }
+
         // part slots take a quoted ref.
         Slot* slot = slotFor(m, kw);
         if (slot == nullptr) {

@@ -26,6 +26,9 @@ class CompileXltModelsExample {
     m1.declareCadence("DDR2");
     m1.declareStorage("nvmeGen4");
     m1.declareBus("pci33");
+    m1.declareGpu();          // native GPU compute
+    m1.declareDma();          // DMA bulk engine
+    m1.declareNativeRam();    // NATIVE_RAM feature bit
 
     SLXltBuildResult r1 = xlt.compile(m1);
     printResult(r1);

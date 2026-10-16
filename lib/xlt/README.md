@@ -18,9 +18,26 @@ model EpycWithDdr2 {
   cadence  "DDR2";             // present a DDR2 refresh cadence (SLCadenceConnector)
   storage  "nvmeGen4";         // optional
   bus      "pci33";            // optional
+  gpu;                         // optional capability
+  dma;                         // optional capability
+  nativeram;                   // optional capability
   target   sleela;
 }
 ```
+
+### Capability directives
+
+Three optional **bare** directives (no quoted ref; each declared at most once,
+like every other slot) request runtime capabilities for the model:
+
+| Directive | Effect |
+| --- | --- |
+| `gpu;` | native GPU compute — wires to `SLExecutorBuild.enableGPU()`. |
+| `dma;` | a DMA bulk-move engine — wires to `SLExecutorBuild.enableDMA()`. |
+| `nativeram;` | run the VM's linear memory on real host RAM — records the `NATIVE_RAM` feature bit the VM creator (`SleelaVMCreator.requestNativeRam()`) honors when it hosts the build. |
+
+They appear in the build list on success (e.g. `capability: gpu (native
+compute)`).
 
 It is the declarative analog of the hand-written builder in
 `lib/cpu/amd-epyc/examples/epyc-with-ddr2-settings.sleela`.

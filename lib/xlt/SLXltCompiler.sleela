@@ -123,6 +123,13 @@ class SLXltCompiler {
       }
     }
 
+    // ---- 6. capabilities (optional, bare directives) ----
+    // gpu / dma wire directly to the build's CPU; nativeram is a declared
+    // feature bit (NATIVE_RAM) the VM creator honors when it hosts the build.
+    if (src.wantsGpu()) { build.enableGPU(); res.recordBuilt("capability: gpu (native compute)"); }
+    if (src.wantsDma()) { build.enableDMA(); res.recordBuilt("capability: dma (bulk engine)"); }
+    if (src.wantsNativeRam()) { res.recordBuilt("capability: nativeram (NATIVE_RAM feature bit)"); }
+
     res.seal();
     return res;
   }

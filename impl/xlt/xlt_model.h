@@ -16,6 +16,9 @@
 //     cadence  "DDR2";
 //     storage  "nvmeGen4";
 //     bus      "pcieGen5x16";
+//     gpu;                         // optional capability directive
+//     dma;                         // optional capability directive
+//     nativeram;                   // optional capability directive
 //     target   sleela;
 //   }
 // ===========================================================================
@@ -47,6 +50,12 @@ struct XltModel {
     Slot cadence;
     Slot storage;
     Slot bus;
+
+    // Bare capability directives (no quoted ref), each declared at most once.
+    bool gpu = false;        // `gpu;`       -> enableGPU()
+    bool dma = false;        // `dma;`       -> enableDMA()
+    bool nativeRam = false;  // `nativeram;` -> NATIVE_RAM feature bit
+    int  gpuLine = 0, dmaLine = 0, nativeRamLine = 0;
 
     bool headerSeen = false;         // `#xlt` pragma present
     bool modelSeen = false;          // a `model { }` block was parsed

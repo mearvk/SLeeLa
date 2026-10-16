@@ -13,5 +13,8 @@ model EpycWithDdr2 {
   cadence  "DDR2";             // present a DDR2 refresh cadence (SLCadenceConnector)
   storage  "nvmeGen4";
   bus      "pci33";            // period-appropriate system bus
+  gpu;                         // native GPU compute (build.enableGPU)
+  dma;                         // DMA bulk engine (build.enableDMA)
+  nativeram;                   // run on real host RAM (NATIVE_RAM feature bit)
   target   sleela;
 }
