@@ -22,7 +22,7 @@
  * Family: vm.creator. Composes SleelaVMGenerationCatalog; builds SLVM; hosts
  *   SLCPURuntime; runs SLWorkload (SLCPUResource-bounded).
  */
-#sleela 1.3
+#sleela 2.1
 class SleelaVMCreator {
   SleelaVMGenerationCatalog catalog;
   int generation;         // selected SLVM generation (0 = /impl Core .. 11 Sovereign)

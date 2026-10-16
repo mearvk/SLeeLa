@@ -15,7 +15,7 @@
  *
  * Family: vm. Composes SLVMFrame; composed by SLVM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVMThread {
   static final int STATE_NEW     = 0;
   static final int STATE_RUNNING = 1;

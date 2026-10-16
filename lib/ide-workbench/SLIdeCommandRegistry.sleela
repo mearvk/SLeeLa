@@ -9,7 +9,7 @@
  *   (menus from lib/ui/SLMenu, toolbars, shortcuts) to the services:
  *   compile -> lib/nordshrift + lib/compiler, save/load -> lib/sldocument.
  */
-#sleela 1.3
+#sleela 2.1
 // Family: ide-workbench. Named commands bound to SLeeLa operations.
 class SLIdeCommandRegistry {
   static final int MAX_COMMANDS = 1024;

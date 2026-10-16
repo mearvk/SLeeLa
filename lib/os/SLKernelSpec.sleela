@@ -20,7 +20,7 @@
  *
  * Family: os. Pure design model; no native bridge calls.
  */
-#sleela 1.5
+#sleela 2.1
 class SLKernelSpec {
   String kernelName;    // "NT", "Linux", "XNU"
   String version;       // e.g. "6.18.27"

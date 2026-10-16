@@ -15,7 +15,7 @@
  * Family: user-interface. The reconciler crosses the `ui*` SLVM bridge; SLeeLa owns the
  * document it mirrors.
  */
-#sleela 1.5
+#sleela 2.1
 class SLGuiMount {
   static final int MAX_NODES = 65536;
 

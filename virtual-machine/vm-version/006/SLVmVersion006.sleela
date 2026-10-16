@@ -14,7 +14,7 @@
  *
  * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmVersion006 extends SLVmVersion {
   void configure() {
     base(6, "idea-vm-006", "dispatch profiler", "virtual-machine/vm-version/006", "vm_profile_test");

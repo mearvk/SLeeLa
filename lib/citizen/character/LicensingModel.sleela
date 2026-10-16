@@ -8,7 +8,7 @@
  * A concrete BusinessModel: wonderfully cheap to run, entirely dependent on the
  * licensee's hustle. Family: character.
  */
-#sleela 1.3
+#sleela 2.1
 class LicensingModel extends BusinessModel {
 
   int licensedUnits;      // units the licensees sold this month

@@ -15,7 +15,7 @@
  *
  * Family: vm. Composes SLVmReport.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmMemory {
   static final int NORMAL   = 0;
   static final int PRESSURE = 1;

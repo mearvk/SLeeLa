@@ -17,7 +17,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*`/`draw*`
  * SLVM bridges.
  */
-#sleela 1.5
+#sleela 2.1
 class SLTextView extends SLWidget {
   static final int MAX_LINES = 1048576;
   static final int LINE_HEIGHT = 18;   // px per text row

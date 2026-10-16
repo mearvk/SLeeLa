@@ -1,4 +1,4 @@
-#sleela 1.1
+#sleela 2.1
 class PlatformSpecification { String os; String architecture; String minimumVersion; void configure(String o,String a,String v){os=o;architecture=a;minimumVersion=v;} }
 class BackendSpecification { String name; String language; String target; void configure(String n,String l,String t){name=n;language=l;target=t;} }
 class AdapterSpecification { String name; String platform; String backend; void configure(String n,String p,String b){name=n;platform=p;backend=b;} }

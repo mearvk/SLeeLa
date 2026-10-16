@@ -14,7 +14,7 @@
  *
  * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmVersion005 extends SLVmVersion {
   void configure() {
     base(5, "idea-vm-005", "gc quality", "virtual-machine/vm-version/005", "vm_gc_test");

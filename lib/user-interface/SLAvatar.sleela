@@ -11,7 +11,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLAvatar extends SLWidget {
   // Create an avatar inside `parent` with an initial and a diameter (px).
   void createIn(SLWidget parent, String initial, int diameter) {

@@ -14,7 +14,7 @@
  *
  * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmVersion002 extends SLVmVersion {
   void configure() {
     base(2, "idea-vm-002", "memory hardening", "virtual-machine/vm-version/002", "vm_memory_test");

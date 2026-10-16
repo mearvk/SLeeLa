@@ -8,7 +8,7 @@
  *   SPECIFICATION.md.
  * Family: cpu. Extends SLAMDEPYCCPU.
  */
-#sleela 1.3
+#sleela 2.1
 class SLAMDEPYC9575F extends SLAMDEPYCCPU {
   void configure() { bringUpModel("AMD EPYC 9575F (Zen 5 Turin, 64C/128T, 5.0 GHz)", 5000); }
 }

@@ -1,4 +1,4 @@
-#sleela 1.5
+#sleela 2.1
 // os-build.sleela -- the self-contained, runnable demonstrator of the SLeeLa
 // OS-construction family (lib/os/SL*OS*, SL*Spec, SL*Emitter, SLISOBuilder,
 // SLInstallerGenerator). The SLeeLa compiler's `run` compiles one file as a

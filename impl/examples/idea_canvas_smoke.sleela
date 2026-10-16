@@ -1,4 +1,4 @@
-#sleela 1.5
+#sleela 2.1
 // idea_canvas_smoke.sleela -- exercises the ideaCanvas* native built-ins end to
 // end through the VM. In the default build the native canvas is a stub, so
 // create returns -1 and hasRenderer is 0; the program must still run cleanly.

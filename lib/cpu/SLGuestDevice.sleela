@@ -13,7 +13,7 @@
  *
  * Family: cpu. Base of the guest device hierarchy.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuestDevice {
   String name;
   int mmioBase;

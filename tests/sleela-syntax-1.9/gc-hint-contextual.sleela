@@ -1,4 +1,4 @@
-#sleela 1.9
+#sleela 2.1
 class GcHintContextual {
     static void main() {
         // `gc` and `mem` remain ordinary identifiers everywhere except as the

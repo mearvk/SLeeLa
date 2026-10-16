@@ -22,7 +22,7 @@
  * Family: os. Design model; the reachability probe crosses the osRun bridge
  *   (requires #sleela 1.5).
  */
-#sleela 1.11
+#sleela 2.1
 class SLDownloadSet {
   // Phase tags: when a download must be present.
   static final int PHASE_COMPILE = 0;   // before compiling the OS (sources/toolchain)

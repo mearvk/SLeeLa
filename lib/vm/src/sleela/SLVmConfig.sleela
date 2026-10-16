@@ -17,7 +17,7 @@
  *   applied through SLVmRuntime. Native application crosses the SLVMNativeBinding
  *   VM-exit seam (never a direct C call).
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmConfig {
   // Verbosity ordinals (mirror VmVerbosity).
   static final int VERBOSITY_QUIET   = 0;

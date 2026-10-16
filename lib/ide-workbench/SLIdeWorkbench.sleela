@@ -9,7 +9,7 @@
  *   compilation, and lib/sldocument for load/save. SLeeLa owns the IDE's
  *   meaning; the Java/native host owns presentation and desktop lifecycle.
  */
-#sleela 1.3
+#sleela 2.1
 // Family: ide-workbench. The IDE shell that wires every existing contract.
 class SLIdeWorkbench {
   SLGuiBackend backend;             // lib/gui: toolkit selection

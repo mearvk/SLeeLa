@@ -11,7 +11,7 @@
  *
  * Family: cpu. Composes SLRegister.
  */
-#sleela 1.3
+#sleela 2.1
 class SLRegisterFile {
   int count;
   int width;

@@ -6,7 +6,7 @@
  *   program reconstructs, inline, the HEAD (result) + CARRY (caveat) reading of
  *   Boolean/Binary syllable words at depth 8, 16, and 32.
  */
-#sleela 1.3
+#sleela 2.1
 // SLeeLa boolean package demonstrator.
 // A word is BOOLEAN.<syllable>.<syllable>...  The HEAD syllable is the RESULT;
 // every trailing syllable is CARRY (a caveat structure) that must be observed

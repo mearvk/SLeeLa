@@ -13,7 +13,7 @@
  *
  * Family: vm. Composed by SLVMClass; drives SLVMFrame + SLVMModule.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVMMethod {
   String name;
   String descriptor;   // e.g. "(II)I" style signature summary

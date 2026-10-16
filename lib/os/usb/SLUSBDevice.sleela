@@ -12,7 +12,7 @@
  *
  * Family: os. Extends SLHardwareComponent.
  */
-#sleela 1.5
+#sleela 2.1
 class SLUSBDevice extends SLHardwareComponent {
   // Specification-generation ordinals.
   static final int USB_1_1   = 0;  // Full Speed, 12 Mb/s

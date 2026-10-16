@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type SLIterable used within the core library family.
  */
-#sleela 1.3
+#sleela 2.1
 // SLeeLa core/base language contract.
 class SLIterable {
   int state;

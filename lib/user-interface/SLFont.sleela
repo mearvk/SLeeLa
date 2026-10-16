@@ -19,7 +19,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `font*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLFont {
   // Weight ordinals (mirror SLUIFontWeight).
   static final int THIN     = 100;

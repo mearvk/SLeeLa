@@ -11,7 +11,7 @@
  *
  * Family: registry. Composed by SLRegistryKey.
  */
-#sleela 1.3
+#sleela 2.1
 class SLRegistryValue {
   static final int KIND_STRING = 0;
   static final int KIND_INT    = 1;

@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library package for inference-model.
  */
-#sleela 1.3
+#sleela 2.1
 // Library facade for module package: inference-model
 // Original module sources remain authoritative in the package source tree.
 class nationalSeries {

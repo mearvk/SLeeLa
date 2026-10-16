@@ -10,7 +10,7 @@
  *   runnable model carries the rated clock.
  * Family: cpu. Extends SLAMDThreadripperCPU.
  */
-#sleela 1.3
+#sleela 2.1
 class SLAMDThreadripper9980X extends SLAMDThreadripperCPU {
   void configure() { bringUpModel("AMD Ryzen Threadripper 9980X (Zen 5, 64C/128T)", 5400); }
 }

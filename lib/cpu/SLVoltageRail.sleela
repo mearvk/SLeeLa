@@ -16,7 +16,7 @@
  *
  * Family: cpu. Pure Sleela electrical model (millivolt integer arithmetic).
  */
-#sleela 1.3
+#sleela 2.1
 class SLVoltageRail {
   String name;        // nameful rail: "Vcore", "Vsoc", "Vddq", "Vio", ...
   int nominalMv;      // nominal operating voltage in millivolts

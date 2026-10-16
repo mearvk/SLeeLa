@@ -19,7 +19,7 @@
  * Family: vm. Composes SLVmResult, SLVmReport; selected per version via
  *   SLVmVersion/SLVmRegistry. Native work crosses the SLVMNativeBinding VM-exit.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmModium {
   // scan modes
   static final int MODE_SHA   = 0;   // ~95% case: existence + location + SHA-256

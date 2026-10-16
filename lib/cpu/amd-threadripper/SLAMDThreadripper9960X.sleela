@@ -8,7 +8,7 @@
  *   SPECIFICATION.md.
  * Family: cpu. Extends SLAMDThreadripperCPU.
  */
-#sleela 1.3
+#sleela 2.1
 class SLAMDThreadripper9960X extends SLAMDThreadripperCPU {
   void configure() { bringUpModel("AMD Ryzen Threadripper 9960X (Zen 5, 24C/48T)", 5400); }
 }

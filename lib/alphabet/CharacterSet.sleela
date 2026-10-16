@@ -5,7 +5,7 @@
  * This is the SLeeLa-facing API contract; compiler/VM binding remains explicit
  * integration work until native calls are connected and tested end-to-end.
  */
-#sleela 1.9
+#sleela 2.1
 class CharacterSet {
   String name;
   int capacity;

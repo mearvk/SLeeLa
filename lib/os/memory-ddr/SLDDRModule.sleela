@@ -16,7 +16,7 @@
  *
  * Family: os. Extends SLHardwareComponent.
  */
-#sleela 1.5
+#sleela 2.1
 class SLDDRModule extends SLHardwareComponent {
   // Generation ordinals.
   static final int GEN_DDR  = 1;

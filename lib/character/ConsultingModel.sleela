@@ -9,7 +9,7 @@
  * alone; cost is the consultants' salaries whether or not they billed. Family:
  * character.
  */
-#sleela 1.3
+#sleela 2.1
 class ConsultingModel extends BusinessModel {
 
   int consultants;         // people who can bill

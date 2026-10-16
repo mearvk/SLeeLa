@@ -18,7 +18,7 @@
  *
  * Family: os. Design model; emit* produce config text. No native bridge calls.
  */
-#sleela 1.11
+#sleela 2.1
 class SLSwapConfig {
   String kind;        // "file" / "partition" / "zram" / "zswap" / "pagefile" / "dynamic" / "none"
   String host;        // the OS family this swap belongs to

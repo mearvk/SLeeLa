@@ -17,7 +17,7 @@
  *   SLVmResult, SLVmTelemetry, SLVmGc, SLVmProfile, SLVmCapability,
  *   SLVmPlatform, SLVmAudit. Native effects route via SLVMNativeBinding.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmRuntime {
   String versionString;        // e.g. "idea-vm v010 (consolidated)"
   SLVmConfig      config;

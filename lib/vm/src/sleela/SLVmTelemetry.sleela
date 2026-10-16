@@ -16,7 +16,7 @@
  * Family: vm. Composes SLVmResult, SLVmReport. Tables use numbered fields in
  *   place of arrays, matching the SLVM binding-table convention.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmTelemetry {
   // counters (mirror VmCounter)
   int steps; int allocs; int bridge; int errors;

@@ -15,7 +15,7 @@
  *
  * Family: cpu. Composes SLTiming and SLVoltageRail; partners SLCore/SLClock.
  */
-#sleela 1.3
+#sleela 2.1
 class SLCpuTiming {
   String name;        // nameful: "core0-pipeline", ...
   int minMHz;         // lowest core clock the operator may dial

@@ -18,7 +18,7 @@
  *
  * Family: cpu. Serialization layer over SLTimingProfile; embedded in SLProgram.
  */
-#sleela 1.3
+#sleela 2.1
 class SLTimingManifest {
   // --- magic / identity ---
   static final int MAGIC = 5213;   // "SL-TIMING" marker word in a program header

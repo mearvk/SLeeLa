@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library package for ide-workbench.
  */
-#sleela 1.3
+#sleela 2.1
 // Library facade for module package: ide-workbench
 // Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
 // This package is the IDE *composition* layer: it wires together lib/gui

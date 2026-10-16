@@ -12,7 +12,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLInfoBar extends SLWidget {
   // Severity ordinals (mirror InfoBar::Severity in the toolkit).
   static final int INFO    = 0;

@@ -13,7 +13,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLScrollBar extends SLWidget {
   // Create a scroll bar inside `parent`. orientation is ORIENT_VERTICAL or
   // ORIENT_HORIZONTAL; value is the initial position in [0,1]; page is the

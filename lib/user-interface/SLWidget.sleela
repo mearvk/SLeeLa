@@ -15,7 +15,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLWidget {
   // Alignment ordinals (mirror SLUIAlign in the toolkit C ABI).
   static final int ALIGN_START  = 0;

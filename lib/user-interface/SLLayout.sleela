@@ -18,7 +18,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `layout*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLLayout {
   // Flow ordinals (mirror SLUIFlowKind) — several layout solutions.
   static final int FLOW_STACK   = 0;  // one row/column (the box model)

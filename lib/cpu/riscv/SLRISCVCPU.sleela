@@ -14,7 +14,7 @@
  *
  * Family: cpu. Extends SLCPURuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLRISCVCPU extends SLCPURuntime {
   static final int ADD  = 1;
   static final int SUB  = 2;

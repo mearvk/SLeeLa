@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // Source-time view of the canonical /lib collection for SST consumers.
 // Discovery is recursive and must agree with the compiler/Nordshrift index.
 class SSTLibrary {

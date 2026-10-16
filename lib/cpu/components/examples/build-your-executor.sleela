@@ -3,7 +3,7 @@
  * SLeeLa example: build a custom Sleela executor from catalog parts, overclock
  * the CPU, upgrade the RAM/storage, and run a program on it under the SLVM.
  */
-#sleela 1.3
+#sleela 2.1
 class BuildYourExecutorExample {
   int result;
 

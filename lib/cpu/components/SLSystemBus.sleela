@@ -10,7 +10,7 @@
  *
  * Family: cpu.components. Selected via SLComponentCatalog.
  */
-#sleela 1.3
+#sleela 2.1
 class SLSystemBus {
   static final int BUS_ISA  = 0;
   static final int BUS_PCI  = 1;

@@ -15,7 +15,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `light*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLLightScene {
   int scene;   // VM-local scene handle (-1 = none)
 

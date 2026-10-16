@@ -22,7 +22,7 @@
  *
  * Family: cpu. Pure Sleela policy object; governs SLTimingProfile.
  */
-#sleela 1.3
+#sleela 2.1
 class SLTimingClass {
   static final int TIER_NOVICE   = 0;
   static final int TIER_BASIC    = 1;

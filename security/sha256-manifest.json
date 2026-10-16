@@ -503,7 +503,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "505c6ab161762d0b4ce923e700c8a8b2cc906c8c6cbf73f5fda48f446fb64837"
+      "sha256": "026699f8049fde45a26ee6196d9a34f6640edeae0daa797e3ba89251f8273bb2"
     },
     {
       "path": "impl/nordshrift/complete/class_bindings.cpp",

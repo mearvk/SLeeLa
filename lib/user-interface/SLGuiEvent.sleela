@@ -13,7 +13,7 @@
  * Family: user-interface. The host raises the activation; SLeeLa reads this event and
  * decides what it means.
  */
-#sleela 1.5
+#sleela 2.1
 class SLGuiEvent {
   int type;             // SLGuiEventType ordinal
   String targetId;      // the node id the event was raised on

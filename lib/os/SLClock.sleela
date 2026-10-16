@@ -11,7 +11,7 @@
  *
  * Family: os. Native VM/OS work crosses the explicit time/`os*` SLVM bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLClock {
   int monoStart;   // monotonic reference captured at reset (nanoseconds)
   void configure() { monoStart = 0; }

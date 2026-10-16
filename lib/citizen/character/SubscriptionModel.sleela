@@ -9,7 +9,7 @@
  * the revenue/cost hooks. Revenue is subscribers x price, minus the ones who
  * quietly cancelled this month. Family: character.
  */
-#sleela 1.3
+#sleela 2.1
 class SubscriptionModel extends BusinessModel {
 
   int subscribers;        // paying seats right now

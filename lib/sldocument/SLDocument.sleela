@@ -20,7 +20,7 @@
  *
  * Family: sldocument. Native VM/OS work crosses an explicit bridge.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa standard-library front-end object.
 class SLDocument {
   static final int MAX_STEPS = 65536;

@@ -11,7 +11,7 @@
  *
  * Family: vm. Composed by SLVMClass.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVMField {
   String name;
   int slot;        // index into the owning object's field block

@@ -17,7 +17,7 @@
  * Family: moral-capacitor. Composes SLMoralCapacitor, SLMoralCertificate,
  *   SLMoralCertificateAuthority, SLMoralCodeGuard.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralCertified {
   String product;
   SLMoralCapacitor cap;

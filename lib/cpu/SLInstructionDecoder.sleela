@@ -8,7 +8,7 @@
  *
  * Family: cpu. Pure Sleela decode logic.
  */
-#sleela 1.3
+#sleela 2.1
 class SLInstructionDecoder {
   SLInstructionSet isa;
   int decoded;

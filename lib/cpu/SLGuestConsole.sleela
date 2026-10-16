@@ -11,7 +11,7 @@
  *
  * Family: cpu. Extends SLGuestDevice.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuestConsole extends SLGuestDevice {
   int charsOut;
 

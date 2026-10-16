@@ -13,7 +13,7 @@
  * Family: autocad (creator module). Built on /lib/user-interface (SLCanvasView +
  * SLDrawContext) -- SLeeLa's OWN cross-platform toolkit, not JavaFX.
  */
-#sleela 1.5
+#sleela 2.1
 class SLCadCanvas {
   // Slick-Black-family palette as 0xRRGGBBAA words. The core lexer has no hex
   // literal form, so (exactly like SLColor) each colour is built arithmetically

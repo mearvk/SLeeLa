@@ -11,7 +11,7 @@
  *
  * Family: gui. Java/native raise typed activations; SLeeLa owns their meaning.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuiEventType {
   // Ordinals (stable; used as table indices).
   static final int CLICK      = 0;   // a primary activation (click / Enter / Space)

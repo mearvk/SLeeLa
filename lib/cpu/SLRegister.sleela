@@ -11,7 +11,7 @@
  *
  * Family: cpu. Clocked storage.
  */
-#sleela 1.3
+#sleela 2.1
 class SLRegister {
   String name;
   int width;

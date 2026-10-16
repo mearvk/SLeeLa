@@ -9,7 +9,7 @@
  * A concrete BusinessModel: the fixed cost is the drama; volume is the cure.
  * Family: character.
  */
-#sleela 1.3
+#sleela 2.1
 class ManufacturingModel extends BusinessModel {
 
   int unitsProduced;        // units shipped this month

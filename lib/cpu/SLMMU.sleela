@@ -20,7 +20,7 @@
  *
  * Family: cpu. Composes SLRAM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLMMU {
   static final int PERM_PRESENT = 1;
   static final int PERM_WRITE   = 2;

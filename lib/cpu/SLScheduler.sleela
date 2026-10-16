@@ -11,7 +11,7 @@
  *
  * Family: cpu. Composes SLProcess.
  */
-#sleela 1.3
+#sleela 2.1
 class SLScheduler {
   static final int MAX_PROC = 8;
   SLProcess p0; SLProcess p1; SLProcess p2; SLProcess p3;

@@ -9,7 +9,7 @@
  *
  * Family: cpu. Composes SLOperatingSystem, SLRAM, SLProgram, SLProcess.
  */
-#sleela 1.3
+#sleela 2.1
 class SLProgramLoader {
   SLOperatingSystem os;
   SLRAM memory;

@@ -18,7 +18,7 @@
  * Family: ide-workbench. The GUI is SleelaUI driven through the lib/gui DOM;
  * SLeeLa owns meaning and dispatch.
  */
-#sleela 1.5
+#sleela 2.1
 class SLIdeWorkbenchUI {
   SLGuiApp app;                 // the /lib/gui support structure (app+window+DOM)
   SLGuiDom dom;

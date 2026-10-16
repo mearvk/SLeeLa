@@ -17,7 +17,7 @@
  *
  * Family: cpu. Top-level composition of the whole package.
  */
-#sleela 1.3
+#sleela 2.1
 class SLMachine {
   SLRAM memory;
   SLHardDrive drive;

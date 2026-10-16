@@ -14,7 +14,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLButton extends SLWidget {
   // Create a button inside `parent` with a label.
   void createIn(SLWidget parent, String label) {

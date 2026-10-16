@@ -1,4 +1,4 @@
-#sleela 1.11
+#sleela 2.1
 // video-codec-pipeline.sleela -- the self-contained, runnable build of the
 // SLeeLa video codec Controller/Verifier/Processor pipeline, parallel to the
 // audio codecs/codec-pipeline.sleela. The split per-class files

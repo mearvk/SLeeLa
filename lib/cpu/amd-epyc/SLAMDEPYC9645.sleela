@@ -7,7 +7,7 @@
  *   configure(). Full figures in SPECIFICATION.md.
  * Family: cpu. Extends SLAMDEPYCCPU.
  */
-#sleela 1.3
+#sleela 2.1
 class SLAMDEPYC9645 extends SLAMDEPYCCPU {
   void configure() { bringUpModel("AMD EPYC 9645 (Zen 5c Turin, 96C/192T)", 3700); }
 }

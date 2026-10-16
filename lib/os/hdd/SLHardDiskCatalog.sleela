@@ -12,7 +12,7 @@
  *
  * Family: os. Produces SLHardDisk.
  */
-#sleela 1.5
+#sleela 2.1
 class SLHardDiskCatalog {
   void configure() {}
 

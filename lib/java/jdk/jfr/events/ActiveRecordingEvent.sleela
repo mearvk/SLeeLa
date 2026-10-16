@@ -4,7 +4,7 @@
  * Definition: SLeeLa source declaration for the Java type jdk.jfr.events.ActiveRecordingEvent.
  * Java behavior is supplied through the SLeeLa Java conformance boundary.
  */
-#sleela 1.3
+#sleela 2.1
 
 class ActiveRecordingEvent {
   String javaType = "jdk.jfr.events.ActiveRecordingEvent";

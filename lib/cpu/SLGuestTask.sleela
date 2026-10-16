@@ -10,7 +10,7 @@
  *
  * Family: cpu. Pure Sleela guest OS data structure.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuestTask {
   static final int READY   = 0;
   static final int RUNNING = 1;

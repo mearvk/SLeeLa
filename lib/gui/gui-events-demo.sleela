@@ -14,7 +14,7 @@
  * Family: gui. SLeeLa owns dispatch and the meaning of events; a host only
  * raises them and mirrors the DOM onto widgets.
  */
-#sleela 1.3
+#sleela 2.1
 class GuiEventsDemo {
 
   String boolToStr(boolean b) { return b ? "yes" : "no"; }

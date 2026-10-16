@@ -11,7 +11,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLImage extends SLWidget {
   // Create an image tile inside `parent` with a centred glyph and a size.
   void createIn(SLWidget parent, String glyph, int width, int height) {

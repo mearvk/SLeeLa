@@ -13,7 +13,7 @@
  *
  * Family: cpu. Pure Sleela structure.
  */
-#sleela 1.3
+#sleela 2.1
 class SLCircuit {
   String name;
   int gateCount;        // gates directly in this circuit

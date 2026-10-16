@@ -4,7 +4,7 @@
 // input file to a front end by extension, and plan a compile toward a target.
 // Each language is an independent SLLanguageCompiler subclass under
 // lib/compiler/frontends/<language>/.
-#sleela 1.3
+#sleela 2.1
 class MultiLanguageRegistryExample {
 
   function main() {

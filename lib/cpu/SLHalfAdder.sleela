@@ -10,7 +10,7 @@
  *
  * Family: cpu. Pure Sleela logic composed from SLGate semantics.
  */
-#sleela 1.3
+#sleela 2.1
 class SLHalfAdder {
   SLGate xorGate;
   SLGate andGate;

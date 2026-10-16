@@ -14,7 +14,7 @@
  *
  * Family: vm. Consulted by SLVmVersion* manifests and SLVmRegistry.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmSource {
   static final int KIND_SLVM = 0;
   static final int KIND_SLJVM = 1;

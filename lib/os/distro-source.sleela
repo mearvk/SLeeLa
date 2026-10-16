@@ -1,4 +1,4 @@
-#sleela 1.11
+#sleela 2.1
 // distro-source.sleela -- the self-contained, runnable demonstrator of the
 // upstream OS-parts reference + opt-in downloader (lib/os/SLDistroSource and
 // SLDistroFetch). The SLeeLa compiler's `run` compiles one file as a single

@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type SLCodecLoader used within the codecs library family.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa standard-library front-end object.
 // Family: codecs. The SLeeLa-facing handle to the native Codec Loader /
 // Unloader / Management Controller (codecs/include/sleela_codec_manager.h).

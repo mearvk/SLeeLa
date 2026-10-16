@@ -15,7 +15,7 @@
  * Family: user-interface. The adapter crosses the `ui*` SLVM bridge inbound; dispatch and
  * meaning stay SLeeLa-owned.
  */
-#sleela 1.5
+#sleela 2.1
 class SLGuiHostAdapter {
   SLGuiDom dom;
   SLGuiMount mount;

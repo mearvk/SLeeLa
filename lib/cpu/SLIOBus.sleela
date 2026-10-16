@@ -11,7 +11,7 @@
  *
  * Family: cpu. Composes SLIOPort.
  */
-#sleela 1.3
+#sleela 2.1
 class SLIOBus {
   static final int MAX_PORTS = 16;
   SLIOPort p0; SLIOPort p1; SLIOPort p2; SLIOPort p3;

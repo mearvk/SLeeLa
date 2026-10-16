@@ -8,7 +8,7 @@
  *   only configure(). Full figures in SPECIFICATION.md.
  * Family: cpu. Extends SLAMDThreadripperCPU.
  */
-#sleela 1.3
+#sleela 2.1
 class SLAMDThreadripperPro9995WX extends SLAMDThreadripperCPU {
   void configure() { bringUpModel("AMD Ryzen Threadripper PRO 9995WX (Zen 5, 96C/192T)", 5400); }
 }

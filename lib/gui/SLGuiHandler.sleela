@@ -13,7 +13,7 @@
  * Family: gui. The host raises activations; this binding maps them to a SLeeLa
  * operation whose meaning SLeeLa owns.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuiHandler {
   int type;             // SLGuiEventType ordinal this handler listens for
   String targetId;      // node id it is bound to ("*" matches any target)

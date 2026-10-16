@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library package for churn.
  */
-#sleela 1.3
+#sleela 2.1
 // Library facade for module package: churn
 // Original module sources remain authoritative in the package source tree.
 class Churn1assumptions {

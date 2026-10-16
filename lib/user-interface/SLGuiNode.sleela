@@ -13,7 +13,7 @@
  *
  * Family: user-interface. The DOM is SLeeLa-owned; the host mirrors it onto widgets.
  */
-#sleela 1.5
+#sleela 2.1
 class SLGuiNode {
   static final int MAX_CHILDREN = 4096;
   static final int MAX_PAIRS = 64;      // attributes / style entries per node

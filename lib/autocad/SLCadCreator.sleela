@@ -16,7 +16,7 @@
  * Family: autocad. SLeeLa owns the document, the edits, and the history; a front
  * end selects, creates, alters, and saves through this object.
  */
-#sleela 1.5
+#sleela 2.1
 class SLCadCreator {
   static final int MAX_HISTORY = 4096;
 

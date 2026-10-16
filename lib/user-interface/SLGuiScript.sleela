@@ -14,7 +14,7 @@
  *
  * Family: user-interface. SLeeLa owns execution; scripts express UI intent declaratively.
  */
-#sleela 1.5
+#sleela 2.1
 class SLGuiScript {
   static final int MAX_COMMANDS = 65536;
 

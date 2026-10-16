@@ -8,7 +8,7 @@
  * A concrete BusinessModel: revenue is cases x case-price; the per-case margin
  * is slim by design. Family: character.
  */
-#sleela 1.3
+#sleela 2.1
 class WholesaleModel extends BusinessModel {
 
   int cases;              // cases moved this month

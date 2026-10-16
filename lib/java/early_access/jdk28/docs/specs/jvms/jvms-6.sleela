@@ -9,7 +9,7 @@
  *
  * This file is additive-only generated output. Existing files are preserved.
  */
-#sleela 1.3
+#sleela 2.1
 
 class jvms-6 {
   String javaType = "early_access.jdk28.docs.specs.jvms.jvms-6";

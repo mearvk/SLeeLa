@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 2.1
 // D06_Triplet.sleela — companion to Lesson 06 (The triplet: Java, Sleela, C).
 // The SAME source renders to java | sleela | c by switching target-language in
 // the sheet. square() is the classic method that reads identically in all three.

@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // codecs.sleela -- the self-contained, runnable build of the SLeeLa codec
 // Loader demonstration. The compiler's `run` compiles one file as a single
 // unit, so this aggregate inlines the Loader contract (mirroring

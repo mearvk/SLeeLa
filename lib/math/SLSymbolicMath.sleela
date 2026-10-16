@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type SLSymbolicMath used within the math library family.
  */
-#sleela 1.3
+#sleela 2.1
 // SLeeLa mathematics front-end contract.
 // Native numerical kernels cross an explicit VM bridge.
 class SLSymbolicMath {

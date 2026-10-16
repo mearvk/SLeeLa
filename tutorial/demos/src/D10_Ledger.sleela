@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 2.1
 // D10_Ledger.sleela — companion to Lesson 10 (The .ledger class).
 // When built for the sleela target, Nordshrift emits this artifact PLUS a
 // <artifact>.ledger (QR insignia + SHA-256 chain + ISO-8601 timestamp) beside

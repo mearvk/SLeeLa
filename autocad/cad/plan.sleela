@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // plan.sleela -- parses the line-oriented plan (description, dimensions, plan,
 // notes) into a geometry Model. Each directive line is one instruction. This is
 // where a human's words and numbers become something SLeeLa can evaluate and

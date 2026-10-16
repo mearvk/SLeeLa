@@ -7,7 +7,7 @@
  *   SLAMDEPYCCPU overriding only configure(). Full figures in SPECIFICATION.md.
  * Family: cpu. Extends SLAMDEPYCCPU.
  */
-#sleela 1.3
+#sleela 2.1
 class SLAMDEPYC9175F extends SLAMDEPYCCPU {
   void configure() { bringUpModel("AMD EPYC 9175F (Zen 5 Turin, 16C/32T, 5.0 GHz)", 5000); }
 }

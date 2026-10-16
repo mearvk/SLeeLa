@@ -15,7 +15,7 @@
  *
  * Family: cpu. Composed by SLCPURuntime; refines SLClock.
  */
-#sleela 1.3
+#sleela 2.1
 class SLClockPolicy {
   int baseClockMHz;     // reference/base clock (e.g. FSB/BCLK), MHz
   int multiplier;       // clock multiplier (effective = base × multiplier)

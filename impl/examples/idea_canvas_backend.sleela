@@ -1,4 +1,4 @@
-#sleela 1.5
+#sleela 2.1
 // idea_canvas_backend.sleela -- exercises the VM's CPU/GPU backend selection
 // and the auto-offload decision. The VM runs on the CPU and, under AUTO policy,
 // would migrate to the GPU if sustained throughput drops below 120 Hz AND a GPU

@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 2.1
 // D08_Subject.sleela — companion to Lesson 08 (Subjects & the sheet model).
 // Mirrors the "throughput = completed / window" relation the demo sheet declares
 // as an economics subject. The code computes what the subject block describes.

@@ -9,7 +9,7 @@
  *   reconciled. Presentation (actual glyphs, syntax colors) is still owned by
  *   the Java/native host; SLeeLa owns the buffer and the meaning of edits.
  */
-#sleela 1.3
+#sleela 2.1
 // Family: ide-workbench. One editor == one open document buffer.
 class SLIdeEditor {
   String documentId;           // stable IDE-facing identity (matches SLGuiDocument.id)

@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type RegexMatcher used within the regex library family.
  */
-#sleela 1.3
+#sleela 2.1
 class RegexMatcher {
   boolean matched;
   int start;

@@ -2,7 +2,7 @@
  * lib/antivirus/SLQuarantineManager.sleela
  * Safe quarantine workflow contract; no deletion is performed here.
  */
-#sleela 1.3
+#sleela 2.1
 class SLQuarantineManager {
   String quarantineRoot;
   boolean enabled;

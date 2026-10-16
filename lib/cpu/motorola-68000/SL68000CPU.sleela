@@ -15,7 +15,7 @@
  *
  * Family: cpu. Extends SLCPURuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SL68000CPU extends SLCPURuntime {
   // D0..D7 => 0..7, A0..A7 => 8..15 (A7 == stack pointer).
   static final int D0 = 0;

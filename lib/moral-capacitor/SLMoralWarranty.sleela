@@ -16,7 +16,7 @@
  *
  * Family: moral-capacitor. Carried by SLMoralCertificate.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralWarranty {
   String warrantor;   // the issuing party (e.g. "MEARVK LLC")
   String product;     // the covered product / software unit

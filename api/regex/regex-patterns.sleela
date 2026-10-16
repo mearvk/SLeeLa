@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // SLeeLa Regex API 1.0.0 — source-level design draft.
 // Main program: Sleelvac 1.5.
 // These calls define the proposed source vocabulary; they are not yet compiler intrinsics.

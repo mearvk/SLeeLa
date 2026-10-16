@@ -14,7 +14,7 @@
  *
  * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmVersion004 extends SLVmVersion {
   void configure() {
     base(4, "idea-vm-004", "telemetry", "virtual-machine/vm-version/004", "vm_telemetry_test");

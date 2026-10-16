@@ -25,7 +25,7 @@
  *
  * Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa standard-library front-end object.
 class SLOpcodeEventObserver {
   // Canonical opcodes this observer reasons about by code.

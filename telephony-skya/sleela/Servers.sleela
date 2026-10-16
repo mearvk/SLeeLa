@@ -14,7 +14,7 @@
  * same portable VM socket primitives as SkyaServer (`listen`/`accept`/
  * `sockread`/`sockwrite`) across the explicit SLeeLa VM/OS bridge.
  */
-#sleela 1.3
+#sleela 2.1
 // Skya telephony — server-side listeners and roles (loadable module / natural).
 class Servers {
 

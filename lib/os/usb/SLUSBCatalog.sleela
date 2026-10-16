@@ -10,7 +10,7 @@
  *
  * Family: os. Produces SLUSBDevice.
  */
-#sleela 1.5
+#sleela 2.1
 class SLUSBCatalog {
   void configure() {}
 

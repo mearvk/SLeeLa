@@ -21,7 +21,7 @@
  *
  * Family: os. Pure design model; no native bridge calls.
  */
-#sleela 1.5
+#sleela 2.1
 class SLOSShape {
   // Canonical shape ordinals.
   static final int SHAPE_LINUX   = 0;

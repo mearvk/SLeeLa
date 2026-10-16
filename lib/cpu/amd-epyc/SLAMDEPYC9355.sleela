@@ -7,7 +7,7 @@
  *   overriding only configure(). Full figures in SPECIFICATION.md.
  * Family: cpu. Extends SLAMDEPYCCPU.
  */
-#sleela 1.3
+#sleela 2.1
 class SLAMDEPYC9355 extends SLAMDEPYCCPU {
   void configure() { bringUpModel("AMD EPYC 9355 (Zen 5 Turin, 32C/64T)", 4400); }
 }

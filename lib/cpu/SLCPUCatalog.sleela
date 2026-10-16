@@ -15,7 +15,7 @@
  * Family: cpu. Selects/instantiates models that extend SLCPURuntime; consumed by
  *   SLCPUFleet and any "choose a CPU" surface.
  */
-#sleela 1.3
+#sleela 2.1
 class SLCPUCatalog {
   static final int MAX = 128;
 

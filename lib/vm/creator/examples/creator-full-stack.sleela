@@ -13,7 +13,7 @@
  * The same workload produces the same result whichever source language it came
  * from (1:1 Turing effect) and whichever Sleela CPU hosts it.
  */
-#sleela 1.3
+#sleela 2.1
 class CreatorFullStackExample {
   int cResult;
   int javaResult;

@@ -19,7 +19,7 @@
  *
  * Family: cpu. Composes SLInstructionSet, SLSystemCall, SLSleelaOpcode, SLSleelaVM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLOpcodeMap {
   SLInstructionSet isa;
   SLSystemCall sys;

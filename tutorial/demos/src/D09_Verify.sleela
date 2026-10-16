@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 2.1
 // D09_Verify.sleela — companion to Lesson 09 (Verification & the SHA-256 gate).
 // The program itself is ordinary; the lesson is that building it required the
 // verified, fail-closed toolchain. This Wrapper just reports that it ran under

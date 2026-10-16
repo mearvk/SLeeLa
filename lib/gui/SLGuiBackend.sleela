@@ -6,7 +6,7 @@
  *   (alias "fx"), or "native" (the C ABI bridge). SLeeLa names the backend; the
  *   Java host or the native bridge supplies the actual desktop controls.
  */
-#sleela 1.3
+#sleela 2.1
 // SLeeLa gui front-end contract — toolkit-neutral backend selector.
 // Family: gui. The chosen backend is realized by the Java host (Swing/JavaFX)
 // or by the native bridge; SLeeLa only expresses the intent.

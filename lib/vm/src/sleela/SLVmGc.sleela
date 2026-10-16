@@ -15,7 +15,7 @@
  * Family: vm. Composes SLVmResult, SLVmReport; reads the collector stats a
  *   GarbageCollector record carries.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVmGc {
   static final int HEALTHY  = 0;
   static final int BUSY     = 1;

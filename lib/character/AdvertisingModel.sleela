@@ -8,7 +8,7 @@
  * A concrete BusinessModel: revenue = (impressions / 1000) x CPM. Family:
  * character.
  */
-#sleela 1.3
+#sleela 2.1
 class AdvertisingModel extends BusinessModel {
 
   int impressions;       // ad views this month
