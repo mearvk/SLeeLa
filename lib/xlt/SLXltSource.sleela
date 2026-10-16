@@ -1,0 +1,88 @@
+/*
+ * lib/xlt/SLXltSource.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLXltSource — the canonical source-time representation of
+ *   an XLT (.xlt) CPU-model sheet, the exact counterpart of SSTSource for the
+ *   SST (.sst) layer. Where SST declaratively authors a SYSTEM of library
+ *   symbols, XLT declaratively authors a CPU MODEL: a chosen CPU SKU plus the
+ *   board, memory, cadence, storage, and bus parts that assemble it. The format
+ *   needs no new keyword and no setters — the document's ORTHOGONALITY (each
+ *   part declared once, in order, non-overlapping) is itself what guarantees
+ *   the model's integrity and a clear compilation.
+ *
+ *   An .xlt sheet reads:
+ *       #xlt 1.0
+ *       model Name {
+ *         cpu      "SLAMDEPYC9575F";   // a real CPU SKU class
+ *         board    "wrx90";            // a real SLMotherboard preset (optional)
+ *         memory   "ddr2_800" 4096;    // a real SLMemoryModule preset + capacity
+ *         cadence  "DDR2";             // SLCadenceConnector cadence to present
+ *         storage  "nvmeGen4";         // optional
+ *         bus      "pcieGen5x16";      // optional
+ *         target   sleela;
+ *       }
+ *
+ *   The compile path parallels SST's:
+ *       .xlt -> SLXltCompiler -> SLExecutorBuild (real parts) -> SLProgram/VM
+ *
+ * Family: xlt. Source-time contract; resolved by SLXltCompiler into a real
+ *   SLExecutorBuild. Mirrors lib/sst/SSTSource.
+ */
+#sleela 2.1
+class SLXltSource {
+  String path;          // the .xlt file path
+  String modelName;     // the `model Name { ... }` identifier
+  String target;        // `target sleela;`
+  String libraryRoot;   // the /lib root parts resolve against
+
+  // The declared parts, one per orthogonal slot (each may be set at most once).
+  String cpuRef;        // CPU SKU class name, e.g. "SLAMDEPYC9575F"
+  String boardRef;      // SLMotherboard preset, e.g. "wrx90" (empty = none)
+  String memoryRef;     // SLMemoryModule preset, e.g. "ddr2_800"
+  int    memoryCapMiB;  // capacity argument for the memory preset
+  String cadenceRef;    // cadence to present, e.g. "DDR2" (empty = native)
+  String storageRef;    // SLStorageDevice preset (empty = none)
+  String busRef;        // SLSystemBus preset (empty = none)
+
+  int validated;
+
+  void configure(String sourcePath, String root) {
+    path = sourcePath; libraryRoot = root;
+    modelName = ""; target = "sleela";
+    cpuRef = ""; boardRef = ""; memoryRef = ""; memoryCapMiB = 0;
+    cadenceRef = ""; storageRef = ""; busRef = "";
+    validated = 0;
+  }
+
+  void setModelName(String name) { modelName = name; }
+  void setTarget(String t)       { target = t; }
+
+  // Orthogonal part declarations: each returns false if the slot was already
+  // filled (a duplicate breaks document orthogonality and must be reported).
+  boolean declareCpu(String ref)     { if (cpuRef != "") { return false; } cpuRef = ref; return true; }
+  boolean declareBoard(String ref)   { if (boardRef != "") { return false; } boardRef = ref; return true; }
+  boolean declareMemory(String ref, int capMiB) {
+    if (memoryRef != "") { return false; }
+    memoryRef = ref; memoryCapMiB = capMiB; return true;
+  }
+  boolean declareCadence(String ref) { if (cadenceRef != "") { return false; } cadenceRef = ref; return true; }
+  boolean declareStorage(String ref) { if (storageRef != "") { return false; } storageRef = ref; return true; }
+  boolean declareBus(String ref)     { if (busRef != "") { return false; } busRef = ref; return true; }
+
+  boolean validate() { validated = 1; return 1 == 1; }
+
+  String sourcePath()  { return path; }
+  String name()        { return modelName; }
+  String targetName()  { return target; }
+  String cpu()         { return cpuRef; }
+  String board()       { return boardRef; }
+  String memory()      { return memoryRef; }
+  int    memoryCapacity() { return memoryCapMiB; }
+  String cadence()     { return cadenceRef; }
+  String storage()     { return storageRef; }
+  String bus()         { return busRef; }
+  boolean hasBoard()   { return boardRef != ""; }
+  boolean hasCadence() { return cadenceRef != ""; }
+  boolean hasStorage() { return storageRef != ""; }
+  boolean hasBus()     { return busRef != ""; }
+}

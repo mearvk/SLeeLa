@@ -1,0 +1,17 @@
+#xlt 1.0
+// EPYC CPU model with DDR2 settings, declared as an XLT sheet — the .xlt
+// counterpart of the SST .sst system sheets and of the hand-written
+// lib/cpu/amd-epyc/examples/epyc-with-ddr2-settings.sleela builder.
+//
+// No new keyword and no setters: each part is declared once, in order; the
+// document's orthogonality is what guarantees the model's integrity. The
+// compiler (SLXltCompiler) resolves every part and reports either SUCCESS with
+// a build list, or a congruence of why it could not be built.
+model EpycWithDdr2 {
+  cpu      "SLAMDEPYC9575F";   // real EPYC SKU (Zen 5 Turin, 64C/128T)
+  memory   "ddr2_800" 4096;    // real DDR2-800 module, 4 GiB
+  cadence  "DDR2";             // present a DDR2 refresh cadence (SLCadenceConnector)
+  storage  "nvmeGen4";
+  bus      "pci33";            // period-appropriate system bus
+  target   sleela;
+}

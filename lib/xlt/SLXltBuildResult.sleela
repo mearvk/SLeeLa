@@ -1,0 +1,84 @@
+/*
+ * lib/xlt/SLXltBuildResult.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLXltBuildResult — the outcome of compiling an .xlt
+ *   CPU-model sheet. Per the format's contract, compilation yields exactly one
+ *   of two things:
+ *     (a) SUCCESS: the model was built, with a list of what was built (the CPU
+ *         SKU and each part that resolved and was installed), or
+ *     (b) a CONGRUENCE report: an ordered list of reasons the model could NOT
+ *         be built — a missing part (a declared ref resolved to nothing) or a
+ *         part that is "not agreeable to design" (resolves, but does not agree
+ *         with another declared part, e.g. memory channels exceeding the board).
+ *
+ *   The result is deliberately like a diagnostics bag: structured, ordered, and
+ *   human-readable, so the author sees precisely why integrity failed, in the
+ *   document order the parts were declared.
+ *
+ * Family: xlt. Produced by SLXltCompiler. Mirrors the role of Nordshrift's
+ *   diagnostics + component manifest for the SST path.
+ */
+#sleela 2.1
+class SLXltBuildResult {
+  String modelName;
+  int success;          // 1 = built; 0 = congruence failure
+
+  // What was built (success path) — one line per installed part, in order.
+  int builtCount;
+  String b0; String b1; String b2; String b3; String b4; String b5;
+
+  // Why it could not be built (failure path) — one reason per line, in order.
+  int reasonCount;
+  String c0; String c1; String c2; String c3; String c4; String c5;
+
+  static final int MAX_LINES = 6;
+
+  // Reason kinds, so a consumer can distinguish the two failure classes.
+  static final int REASON_MISSING     = 1;  // a declared part resolved to nothing
+  static final int REASON_DISAGREES   = 2;  // a part is not agreeable to design
+
+  void configure(String name) {
+    modelName = name; success = 0;
+    builtCount = 0; reasonCount = 0;
+    b0 = ""; b1 = ""; b2 = ""; b3 = ""; b4 = ""; b5 = "";
+    c0 = ""; c1 = ""; c2 = ""; c3 = ""; c4 = ""; c5 = "";
+  }
+
+  void recordBuilt(String line) {
+    if (builtCount == 0) { b0 = line; } else if (builtCount == 1) { b1 = line; }
+    else if (builtCount == 2) { b2 = line; } else if (builtCount == 3) { b3 = line; }
+    else if (builtCount == 4) { b4 = line; } else if (builtCount == 5) { b5 = line; }
+    if (builtCount < MAX_LINES) { builtCount = builtCount + 1; }
+  }
+
+  // Record a congruence reason. `kind` is REASON_MISSING or REASON_DISAGREES;
+  // the recorded line is prefixed so the report reads clearly.
+  void recordReason(int kind, String detail) {
+    String tag = "disagrees";
+    if (kind == REASON_MISSING) { tag = "missing"; }
+    String line = "[" + tag + "] " + detail;
+    if (reasonCount == 0) { c0 = line; } else if (reasonCount == 1) { c1 = line; }
+    else if (reasonCount == 2) { c2 = line; } else if (reasonCount == 3) { c3 = line; }
+    else if (reasonCount == 4) { c4 = line; } else if (reasonCount == 5) { c5 = line; }
+    if (reasonCount < MAX_LINES) { reasonCount = reasonCount + 1; }
+  }
+
+  // Seal the outcome: success iff at least one part was built AND no congruence
+  // reason was recorded (every declared part resolved and agreed).
+  void seal() { success = (builtCount > 0 && reasonCount == 0) ? 1 : 0; }
+
+  boolean built()   { return success == 1; }
+  int builtLines()  { return builtCount; }
+  int reasonLines() { return reasonCount; }
+  String builtLine(int i) {
+    if (i == 0) { return b0; } if (i == 1) { return b1; } if (i == 2) { return b2; }
+    if (i == 3) { return b3; } if (i == 4) { return b4; } if (i == 5) { return b5; }
+    return "";
+  }
+  String reasonLine(int i) {
+    if (i == 0) { return c0; } if (i == 1) { return c1; } if (i == 2) { return c2; }
+    if (i == 3) { return c3; } if (i == 4) { return c4; } if (i == 5) { return c5; }
+    return "";
+  }
+  String model() { return modelName; }
+}

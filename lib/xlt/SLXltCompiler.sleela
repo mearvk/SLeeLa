@@ -1,0 +1,209 @@
+/*
+ * lib/xlt/SLXltCompiler.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLXltCompiler — the compiler for the XLT (.xlt) CPU-model
+ *   format. It gives XLT the "comprehensive, ordered, orthogonal, system
+ *   interpretation" the format requires: it reads an SLXltSource's declared
+ *   parts IN DOCUMENT ORDER, resolves each against the real parts bin
+ *   (SLComponentCatalog) and CPU SKU roster, checks that each part both EXISTS
+ *   (resolves) and is AGREEABLE to the rest of the design (orthogonal, mutually
+ *   consistent), and — when everything is congruent — assembles a real
+ *   SLExecutorBuild. No new keyword and no setters are involved: document
+ *   orthogonality alone carries the integrity.
+ *
+ *   Compilation returns an SLXltBuildResult that is exactly one of:
+ *     - SUCCESS + a list of what was built, or
+ *     - a CONGRUENCE report of why it could not be built (a missing part, or a
+ *       part not agreeable to design).
+ *
+ *   Resolution model: like the rest of the tree, Sleela source cannot `new` a
+ *   class from a runtime string, so the compiler validates a declared ref
+ *   against the set of KNOWN producer keys (the same keys SLComponentCatalog
+ *   exposes and the CPU folders define) and builds the recognized parts through
+ *   the catalog. An unknown ref is a "missing part" congruence; a recognized
+ *   ref that conflicts with another part is a "not agreeable" congruence.
+ *
+ * Family: xlt. Consumes SLXltSource; composes SLComponentCatalog +
+ *   SLExecutorBuild; produces SLXltBuildResult. Parallels Nordshrift for SST.
+ */
+#sleela 2.1
+class SLXltCompiler {
+  SLComponentCatalog parts;
+  SLExecutorBuild build;      // the real assembly produced on success
+  int memChannelsWanted;      // channels the declared memory needs (for agreement)
+  int boardChannels;          // channels the declared board routes (0 = no board)
+
+  void configure() {
+    parts = new SLComponentCatalog();
+    memChannelsWanted = 1; boardChannels = 0;
+  }
+
+  // Compile an .xlt source to a build result. Ordered, orthogonal, congruent.
+  SLXltBuildResult compile(SLXltSource src) {
+    SLXltBuildResult res = new SLXltBuildResult();
+    res.configure(src.name());
+    build = new SLExecutorBuild();
+    build.configure(src.name());
+    memChannelsWanted = 1; boardChannels = 0;
+
+    // ---- 1. CPU (required) ----
+    if (src.cpu() == "") {
+      res.recordReason(res.REASON_MISSING, "no cpu declared: a model requires a CPU");
+    } else if (knownCpu(src.cpu()) == 0) {
+      res.recordReason(res.REASON_MISSING, "cpu '" + src.cpu() + "' is not a known SKU");
+    } else {
+      res.recordBuilt("cpu: " + src.cpu());
+    }
+
+    // ---- 2. board (optional) ----
+    if (src.hasBoard()) {
+      boardChannels = boardChannelsOf(src.board());
+      if (boardChannels == 0) {
+        res.recordReason(res.REASON_MISSING, "board '" + src.board() + "' is not a known motherboard");
+      } else {
+        build.installBoard(boardFor(src.board()));
+        res.recordBuilt("board: " + src.board() + " (" + boardChannels + "-channel)");
+      }
+    }
+
+    // ---- 3. memory (required) ----
+    memChannelsWanted = memoryChannelsOf(src.memory());
+    if (src.memory() == "") {
+      res.recordReason(res.REASON_MISSING, "no memory declared: a model requires main memory");
+    } else if (knownMemory(src.memory()) == 0) {
+      res.recordReason(res.REASON_MISSING, "memory '" + src.memory() + "' is not a known module");
+    } else {
+      SLMemoryModule mod = memoryFor(src.memory(), src.memoryCapacity());
+      // Agreement check: memory channels must fit the board's routed channels.
+      if (boardChannels > 0 && memChannelsWanted > boardChannels) {
+        res.recordReason(res.REASON_DISAGREES,
+          "memory '" + src.memory() + "' needs " + memChannelsWanted +
+          " channels but board '" + src.board() + "' routes only " + boardChannels);
+      } else {
+        build.installMemory(mod);
+        res.recordBuilt("memory: " + src.memory() + " x" + src.memoryCapacity() + " MiB");
+        // ---- 3b. cadence overlay (optional, rides the memory) ----
+        if (src.hasCadence()) {
+          int tech = cadenceTechOf(src.cadence());
+          if (tech < 0) {
+            res.recordReason(res.REASON_MISSING, "cadence '" + src.cadence() + "' is not a known generation");
+          } else {
+            SLMemoryInterface iface = parts.memInterface(src.cadence() + "-cadence", mod, tech);
+            build.installMemoryInterface(iface);
+            res.recordBuilt("cadence: refreshes as " + src.cadence());
+          }
+        }
+      }
+    }
+
+    // ---- 4. storage (optional) ----
+    if (src.hasStorage()) {
+      if (knownStorage(src.storage()) == 0) {
+        res.recordReason(res.REASON_MISSING, "storage '" + src.storage() + "' is not a known device");
+      } else {
+        build.installStorage(storageFor(src.storage()));
+        res.recordBuilt("storage: " + src.storage());
+      }
+    }
+
+    // ---- 5. bus (optional) ----
+    if (src.hasBus()) {
+      if (knownBus(src.bus()) == 0) {
+        res.recordReason(res.REASON_MISSING, "bus '" + src.bus() + "' is not a known system bus");
+      } else {
+        build.installBus(busFor(src.bus()));
+        res.recordBuilt("bus: " + src.bus());
+      }
+    }
+
+    res.seal();
+    return res;
+  }
+
+  SLExecutorBuild assembled() { return build; }
+
+  // ---------------- resolution tables (known producer keys) ----------------
+  // CPU SKU roster recognized by name (EPYC + Threadripper families).
+  int knownCpu(String ref) {
+    if (ref == "SLAMDEPYC9575F" || ref == "SLAMDEPYC9965" || ref == "SLAMDEPYC9755" ||
+        ref == "SLAMDEPYC9645"  || ref == "SLAMDEPYC9475F" || ref == "SLAMDEPYC9355" ||
+        ref == "SLAMDEPYC9175F" || ref == "SLAMDEPYCCPU") { return 1; }
+    if (ref == "SLAMDThreadripper9980X" || ref == "SLAMDThreadripper9970X" ||
+        ref == "SLAMDThreadripper9960X" || ref == "SLAMDThreadripperPro9995WX" ||
+        ref == "SLAMDThreadripperPro9985WX" || ref == "SLAMDThreadripperPro9975WX" ||
+        ref == "SLAMDThreadripperPro9965WX" || ref == "SLAMDThreadripperPro9955WX" ||
+        ref == "SLAMDThreadripperPro9945WX" || ref == "SLAMDThreadripperCPU") { return 1; }
+    return 0;
+  }
+
+  int knownMemory(String ref) {
+    if (ref == "ddr_400" || ref == "ddr2_800" || ref == "ddr3_1600" ||
+        ref == "ddr4_3200" || ref == "ddr5_6000" || ref == "ddr5_6400" ||
+        ref == "ddr5_6400_quadChannel" || ref == "ddr5_6400_octaChannel" ||
+        ref == "sdram_pc100" || ref == "dram_fpm" || ref == "sram_fast") { return 1; }
+    return 0;
+  }
+  SLMemoryModule memoryFor(String ref, int capMiB) {
+    if (ref == "ddr_400")    { return parts.ddr_400(capMiB); }
+    if (ref == "ddr2_800")   { return parts.ddr2_800(capMiB); }
+    if (ref == "ddr3_1600")  { return parts.ddr3_1600(capMiB); }
+    if (ref == "ddr4_3200")  { return parts.ddr4_3200(capMiB); }
+    if (ref == "ddr5_6000")  { return parts.ddr5_6000(capMiB); }
+    if (ref == "ddr5_6400")  { return parts.ddr5_6400(capMiB); }
+    if (ref == "ddr5_6400_quadChannel") { return parts.ddr5_6400_quadChannel(capMiB); }
+    if (ref == "ddr5_6400_octaChannel") { return parts.ddr5_6400_octaChannel(capMiB); }
+    if (ref == "sdram_pc100") { return parts.sdram_pc100(capMiB); }
+    if (ref == "dram_fpm")    { return parts.dram_fpm(capMiB); }
+    return parts.sram_fast(capMiB);
+  }
+  int memoryChannelsOf(String ref) {
+    if (ref == "ddr5_6400_quadChannel") { return 4; }
+    if (ref == "ddr5_6400_octaChannel") { return 8; }
+    return 1;
+  }
+
+  int boardChannelsOf(String ref) {
+    if (ref == "trx50") { return 4; }
+    if (ref == "wrx90") { return 8; }
+    return 0;
+  }
+  SLMotherboard boardFor(String ref) {
+    if (ref == "wrx90") { return parts.wrx90(); }
+    return parts.trx50();
+  }
+
+  int cadenceTechOf(String ref) {
+    if (ref == "DDR")  { return 3; }
+    if (ref == "DDR2") { return 4; }
+    if (ref == "DDR3") { return 5; }
+    if (ref == "DDR4") { return 6; }
+    if (ref == "DDR5") { return 7; }
+    return -1;
+  }
+
+  int knownStorage(String ref) {
+    if (ref == "nvmeGen4" || ref == "nvmeGen3" || ref == "sataSsd" ||
+        ref == "sataHdd") { return 1; }
+    return 0;
+  }
+  SLStorageDevice storageFor(String ref) {
+    if (ref == "nvmeGen3") { return parts.nvmeGen3(); }
+    if (ref == "sataSsd")  { return parts.sataSsd(); }
+    if (ref == "sataHdd")  { return parts.sataHdd(); }
+    return parts.nvmeGen4();
+  }
+
+  int knownBus(String ref) {
+    if (ref == "pcieGen5x16" || ref == "pcieGen4x16" || ref == "pcieGen3x16" ||
+        ref == "pci33" || ref == "isa" || ref == "agp8x") { return 1; }
+    return 0;
+  }
+  SLSystemBus busFor(String ref) {
+    if (ref == "pcieGen4x16") { return parts.pcieGen4x16(); }
+    if (ref == "pcieGen3x16") { return parts.pcieGen3x16(); }
+    if (ref == "pci33")       { return parts.pci33(); }
+    if (ref == "isa")         { return parts.isa(); }
+    if (ref == "agp8x")       { return parts.agp8x(); }
+    return parts.pcieGen5x16();
+  }
+}
