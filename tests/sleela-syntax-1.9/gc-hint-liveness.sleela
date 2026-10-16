@@ -1,4 +1,4 @@
-#sleela 1.9
+#sleela 2.1
 // Liveness: a GC hint must never reclaim a still-reachable object. `keep` is
 // used after the hint, so a full `gc 100` collection must preserve it.
 struct Box { int v; }

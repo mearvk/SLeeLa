@@ -1,0 +1,58 @@
+#sleela 2.1
+/*
+ * CitizenEducationAndKnowledgeStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Education and knowledge.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenEducationAndKnowledgeStats {
+    int educationLevel;
+    int yearsOfEducation;
+    int literacy;
+    int numeracy;
+    int digitalLiteracy;
+    int financialLiteracy;
+    int civicLiteracy;
+    int scientificLiteracy;
+    int highestQualification;
+    int schoolAttendanceRate;
+    int academicPerformance;
+    int vocationalTraining;
+    int apprenticeshipProgress;
+    int certifications;
+    int skillsCount;
+    int languagesSpoken;
+    int readingProficiency;
+    int writingProficiency;
+    int mathematicsProficiency;
+    int researchSkill;
+    int teachingSkill;
+    int lifelongLearning;
+    int educationDebtCents;
+
+    CitizenEducationAndKnowledgeStats() {
+        educationLevel = 0;
+        yearsOfEducation = 0;
+        literacy = 0;
+        numeracy = 0;
+        digitalLiteracy = 0;
+        financialLiteracy = 0;
+        civicLiteracy = 0;
+        scientificLiteracy = 0;
+        highestQualification = 0;
+        schoolAttendanceRate = 0;
+        academicPerformance = 0;
+        vocationalTraining = 0;
+        apprenticeshipProgress = 0;
+        certifications = 0;
+        skillsCount = 0;
+        languagesSpoken = 1;
+        readingProficiency = 0;
+        writingProficiency = 0;
+        mathematicsProficiency = 0;
+        researchSkill = 0;
+        teachingSkill = 0;
+        lifelongLearning = 0;
+        educationDebtCents = 0;
+    }
+}

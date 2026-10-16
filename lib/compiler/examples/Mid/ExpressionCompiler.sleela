@@ -1,5 +1,5 @@
 /* Mid lesson: separate lexing, parsing, semantics, and IR emission. */
-#sleela 1.3
+#sleela 2.1
 
 class ExpressionCompiler {
   String diagnostic;

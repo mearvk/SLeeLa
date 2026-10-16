@@ -9,7 +9,7 @@
  *
  * This file is additive-only generated output. Existing files are preserved.
  */
-#sleela 1.3
+#sleela 2.1
 
 class LineNumberInfo {
   String javaType = "early_access.jdk28.docs.api.java.base.java.lang.classfile.attribute.LineNumberInfo";

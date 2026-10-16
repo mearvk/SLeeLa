@@ -15,7 +15,7 @@
  *
  * Family: os. Produced by SLOSCompiler, SLISOBuilder, SLInstallerGenerator.
  */
-#sleela 1.5
+#sleela 2.1
 class SLOSArtifact {
   // Kind tags.
   static final int KIND_C_HEADER = 0;

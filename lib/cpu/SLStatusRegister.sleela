@@ -8,7 +8,7 @@
  *
  * Family: cpu. Pure Sleela state.
  */
-#sleela 1.3
+#sleela 2.1
 class SLStatusRegister {
   int zero;
   int negative;

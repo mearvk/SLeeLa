@@ -2,7 +2,7 @@
  * lib/antivirus/SLScanRequest.sleela
  * Request model for local and system-wide antivirus scans.
  */
-#sleela 1.3
+#sleela 2.1
 class SLScanRequest {
   String targetPath;
   String scope;

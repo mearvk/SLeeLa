@@ -13,7 +13,7 @@
  *
  * Family: cpu. Base of the frontend hierarchy; composes SLIR.
  */
-#sleela 1.3
+#sleela 2.1
 class SLFrontend {
   static final int LANG_SLEELA = 0;
   static final int LANG_C      = 1;

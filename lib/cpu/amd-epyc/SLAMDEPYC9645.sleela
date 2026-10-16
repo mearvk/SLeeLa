@@ -1,0 +1,13 @@
+/*
+ * lib/cpu/amd-epyc/SLAMDEPYC9645.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: AMD EPYC 9645 (Zen 5c "Turin Dense", 9005 series).
+ *   96 cores / 192 threads, 2.3 GHz base / 3.7 GHz max boost, 256 MB L3,
+ *   12-channel DDR5, SP5. A thin SKU subclass of SLAMDEPYCCPU overriding only
+ *   configure(). Full figures in SPECIFICATION.md.
+ * Family: cpu. Extends SLAMDEPYCCPU.
+ */
+#sleela 2.1
+class SLAMDEPYC9645 extends SLAMDEPYCCPU {
+  void configure() { bringUpModel("AMD EPYC 9645 (Zen 5c Turin, 96C/192T)", 3700); }
+}

@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type SLLibrary used within the core library family.
  */
-#sleela 1.3
+#sleela 2.1
 // Canonical SLeeLa standard-library inventory facade.
 // The authoritative source collection is the repository /lib tree.
 // Max Rupplin - MEARVK LLC - 2026

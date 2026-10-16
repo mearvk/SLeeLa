@@ -9,4 +9,4 @@ This is an evidence-backed inventory, not a speculative list of desired system m
 
 ## Adding a reference
 
-For each new name, record its exact spelling, result type, units, sampling behavior, supported platforms, and failure behavior. Add one positive fixture and at least one negative/type-boundary test where applicable. Update this file only after those checks exist.
+For each new name, record its exact spelling, result type, units, sampling behavior, supported platforms, failure behavior, and implementation location. Add one positive fixture and at least one negative/type-boundary test where applicable. Update this file only after those checks exist.

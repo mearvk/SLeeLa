@@ -15,7 +15,7 @@
  * Family: autocad. SLeeLa owns the geometry and every edit to it; a front end
  * only issues create/alter/move/delete intents.
  */
-#sleela 1.5
+#sleela 2.1
 import math;
 class SLCadEntity {
   // Entity-kind ordinals. A front end and the renderer agree on these.

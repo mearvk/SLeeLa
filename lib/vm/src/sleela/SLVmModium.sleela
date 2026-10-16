@@ -1,0 +1,99 @@
+/*
+ * lib/vm/src/sleela/SLVmModium.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmModium — the file-resolution scanner a VM runs for
+ *   itself. It verifies that a version's files exist, sit where they should
+ *   (each recorded relative to itself, its parent, and the whole folder
+ *   structure that led to it), and are intact by SHA-256 (the ~95% hash scan)
+ *   against that version's MODIUM.json. For exact reconstitution of a file that
+ *   fails the hash, the version's rebuild.sql — a portable MySQL database
+ *   carrying each file's content — is the recovery source; restore is
+ *   explicit-only and never silently overwrites. The host performs the scan;
+ *   this class is the Sleela-side record + seam, routed through the
+ *   OP_MODIUM_SCAN service opcode (149).
+ *
+ * Mirrors the native `sleela modium` subcommand and the generate-modium.py
+ * record (path/name/parent/ancestry/depth/sha256/size). Idempotent by design:
+ * the manifest is sorted and stable, so a clean tree always scans the same.
+ *
+ * Family: vm. Composes SLVmResult, SLVmReport; selected per version via
+ *   SLVmVersion/SLVmRegistry. Native work crosses the SLVMNativeBinding VM-exit.
+ */
+#sleela 2.1
+class SLVmModium {
+  // scan modes
+  static final int MODE_SHA   = 0;   // ~95% case: existence + location + SHA-256
+  static final int MODE_EXACT = 1;   // additionally byte-exact
+
+  // per-file outcome ordinals (mirror the subcommand's classification)
+  static final int FILE_OK        = 0;
+  static final int FILE_MISSING   = 1;   // not where it should be
+  static final int FILE_CORRUPT   = 2;   // present but SHA/bytes mismatch
+  static final int FILE_UNREADABLE= 3;
+
+  int    vmNumber;        // 1..10
+  String manifestPath;    // "virtual-machine/vm-version/NNN/MODIUM.json"
+  String rebuildPath;     // "virtual-machine/vm-version/NNN/rebuild.sql"
+  int    mode;
+
+  // rolling scan totals
+  int total; int okCount; int missing; int corrupt; int unreadable;
+
+  void configure(int number, int scanMode) {
+    vmNumber = number;
+    mode = scanMode;
+    String nnn = pad3(number);
+    manifestPath = "virtual-machine/vm-version/" + nnn + "/MODIUM.json";
+    rebuildPath  = "virtual-machine/vm-version/" + nnn + "/rebuild.sql";
+    reset();
+  }
+
+  void reset() { total = 0; okCount = 0; missing = 0; corrupt = 0; unreadable = 0; }
+
+  // Request the host scan via the service opcode. Returns a status (0 ok,
+  // -1 out of range); detailed per-file results are reported by the host.
+  int scan(SLVmResult res, SLVmReport rep) {
+    if (vmNumber < 1 || vmNumber > 10) {
+      if (res != null) { res.fail(res.E_INVALID, "modium", "vm number out of range (1..10)"); res.report(rep); }
+      return -1;
+    }
+    // The host services OP_MODIUM_SCAN: it reads manifestPath, verifies every
+    // recorded file, and fills the totals below. (In the Sleela model this is a
+    // VM-exit; the native subcommand `sleela modium scan` is the same scan.)
+    return 0;
+  }
+
+  // Tally one file outcome (the host calls this per file).
+  void tally(int outcome) {
+    total = total + 1;
+    if (outcome == FILE_OK) { okCount = okCount + 1; }
+    else if (outcome == FILE_MISSING) { missing = missing + 1; }
+    else if (outcome == FILE_CORRUPT) { corrupt = corrupt + 1; }
+    else if (outcome == FILE_UNREADABLE) { unreadable = unreadable + 1; }
+  }
+
+  boolean resolved() { return missing == 0 && corrupt == 0 && unreadable == 0; }
+
+  // Reconstitution advice: exact recovery comes from rebuild.sql (MySQL), or a
+  // restore from the version's committed git content. Never automatic.
+  String reconstituteHint() {
+    return "load " + rebuildPath + " into MySQL and write back the recorded "
+         + "content for the flagged files (restore is explicit-only).";
+  }
+
+  void report(SLVmReport rep) {
+    if (rep == null) { return; }
+    String line = "idea-vm-" + pad3(vmNumber) + ": " + okCount + "/" + total + " ok";
+    if (missing > 0)    { line = line + " missing=" + missing; }
+    if (corrupt > 0)    { line = line + " corrupt=" + corrupt; }
+    if (unreadable > 0) { line = line + " unreadable=" + unreadable; }
+    int sev = resolved() ? SLVmReport.SEV_NOTICE : SLVmReport.SEV_ERROR;
+    rep.emit(sev, "modium", (mode == MODE_EXACT) ? "exact" : "sha256", line);
+  }
+
+  String pad3(int n) {
+    if (n < 10)  { return "00" + n; }
+    if (n < 100) { return "0" + n; }
+    return "" + n;
+  }
+}

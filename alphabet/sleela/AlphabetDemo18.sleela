@@ -13,7 +13,7 @@
  * The authoritative definitions live one level up in lib/alphabet/*.sleela.
  * Family: alphabet.
  */
-#sleela 1.8
+#sleela 2.1
 class AlphabetDemo18 {
 
   static void main() {

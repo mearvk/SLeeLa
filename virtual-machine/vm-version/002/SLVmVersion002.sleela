@@ -1,0 +1,25 @@
+/*
+ * virtual-machine/vm-version/002/SLVmVersion002.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmVersion002 — the loadable manifest for VM version 002
+ *   ("memory hardening"), the OOD selector record the native VM loads on system
+ *   start or a user conference. It names this version's native directory and
+ *   the C/C++ main the loader builds and boots, declares the hardening units it
+ *   composes (cumulative through v002 of the think-tank arc), and carries the
+ *   default configuration profile a user starts from. build() returns the
+ *   configured SLVmRuntime a selection resolves to.
+ *
+ * Mirrors the C/C++ in this folder (the 71-file core + the additive vm_* units
+ * through v002). It extends SLVmVersion (lib/vm/src/sleela/SLVmVersion.sleela).
+ *
+ * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
+ */
+#sleela 2.1
+class SLVmVersion002 extends SLVmVersion {
+  void configure() {
+    base(2, "idea-vm-002", "memory hardening", "virtual-machine/vm-version/002", "vm_memory_test");
+    composeThrough(2);
+    // default profile tuning for this version (user-editable in setup/conference)
+    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+  }
+}

@@ -1,8 +1,10 @@
-#sleela 1.3
+#sleela 2.1
 /* Source-side canonical SLeeLa VM ISA registry. Numeric order is canonical. */
 /* Canonical opcode order follows the native enum exactly. */
 /* Runtime services (networking, files, sockets, threading, GC, cancellation, ownership, and teardown) are specified in /lib/vm/RUNTIME-SERVICES.md. GC is a runtime mechanism, not a hidden opcode. */
-/* Runtime support: all 126 entries are dispatched by /impl/core. Unknown values are rejected and logged. */
+/* Runtime support: all 150 entries are dispatched by /impl/core. Unknown values are rejected and logged.
+ * (0..123 canonical; 124 OP_GC_HINT, 125 OP_RAN_MEM; 126..147 OP_IC_* idea-canvas;
+ *  148 OP_VM_SELECT; 149 OP_MODIUM_SCAN.) */
 /* Operating-system system calls (OP_OS_*, syntax 1.5) are a runtime-service family like sockets/files: a spawned process is a VM-local bounded handle. See /lib/vm/RUNTIME-SERVICES.md and /lib/os/OS.md. */
 // OP_NOP
 // OP_CONST
@@ -130,6 +132,30 @@
 // OP_OS_PCLOSE
 // OP_GC_HINT
 // OP_RAN_MEM
+// OP_IC_CREATE
+// OP_IC_DESTROY
+// OP_IC_COLS
+// OP_IC_ROWS
+// OP_IC_COUNT
+// OP_IC_SETPARAMS
+// OP_IC_EXCITE
+// OP_IC_STEP
+// OP_IC_ADVANCE
+// OP_IC_TIMESTEP
+// OP_IC_INTENSITY
+// OP_IC_HASREND
+// OP_IC_OPENWIN
+// OP_IC_SHOULDCLOSE
+// OP_IC_PRESENT
+// OP_IC_RUN
+// OP_IC_SETPOLICY
+// OP_IC_POLICY
+// OP_IC_BACKEND
+// OP_IC_GPUAVAIL
+// OP_IC_MEASHZ
+// OP_IC_MIGRATE
+// OP_VM_SELECT
+// OP_MODIUM_SCAN
 class SLISANop { String name; int code; }
 class SLISAConst { String name; int code; }
 class SLISAPop { String name; int code; }
@@ -256,3 +282,34 @@ class SLISAOsKill { String name; int code; }
 class SLISAOsPClose { String name; int code; }
 class SLISAGcHint { String name; int code; }
 class SLISARanMem { String name; int code; }
+// Idea-canvas native-bridge opcodes (idea/realtime), codes 126..147. These
+// mirror the native OP_IC_* group appended to the SLOp enum; previously a
+// known lag, now represented so the source ISA matches the native enum.
+class SLISAIcCreate { String name; int code; }       // OP_IC_CREATE 126
+class SLISAIcDestroy { String name; int code; }      // OP_IC_DESTROY 127
+class SLISAIcCols { String name; int code; }         // OP_IC_COLS 128
+class SLISAIcRows { String name; int code; }         // OP_IC_ROWS 129
+class SLISAIcCount { String name; int code; }        // OP_IC_COUNT 130
+class SLISAIcSetParams { String name; int code; }    // OP_IC_SETPARAMS 131
+class SLISAIcExcite { String name; int code; }       // OP_IC_EXCITE 132
+class SLISAIcStep { String name; int code; }         // OP_IC_STEP 133
+class SLISAIcAdvance { String name; int code; }      // OP_IC_ADVANCE 134
+class SLISAIcTimestep { String name; int code; }     // OP_IC_TIMESTEP 135
+class SLISAIcIntensity { String name; int code; }    // OP_IC_INTENSITY 136
+class SLISAIcHasRend { String name; int code; }      // OP_IC_HASREND 137
+class SLISAIcOpenWin { String name; int code; }      // OP_IC_OPENWIN 138
+class SLISAIcShouldClose { String name; int code; }  // OP_IC_SHOULDCLOSE 139
+class SLISAIcPresent { String name; int code; }      // OP_IC_PRESENT 140
+class SLISAIcRun { String name; int code; }          // OP_IC_RUN 141
+class SLISAIcSetPolicy { String name; int code; }    // OP_IC_SETPOLICY 142
+class SLISAIcPolicy { String name; int code; }       // OP_IC_POLICY 143
+class SLISAIcBackend { String name; int code; }      // OP_IC_BACKEND 144
+class SLISAIcGpuAvail { String name; int code; }     // OP_IC_GPUAVAIL 145
+class SLISAIcMeasHz { String name; int code; }       // OP_IC_MEASHZ 146
+class SLISAIcMigrate { String name; int code; }      // OP_IC_MIGRATE 147
+// VM-selection service opcode (code 148): the seam the Sleela VM selector
+// (virtual-machine/vm-version/SLVmRegistry + SLVmVersion manifests) binds to,
+// so choosing a non-native VM parks a VM-exit that the native loader services
+// by building and booting the chosen version's C/C++ main. Append-only.
+class SLISAVmSelect { String name; int code; }        // OP_VM_SELECT 148
+class SLISAModiumScan { String name; int code; }        // OP_MODIUM_SCAN 149

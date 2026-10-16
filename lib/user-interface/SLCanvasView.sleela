@@ -21,7 +21,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLCanvasView extends SLWidget {
   // Create a canvas view inside `parent` with an initial pixel size.
   void createIn(SLWidget parent, int width, int height) {

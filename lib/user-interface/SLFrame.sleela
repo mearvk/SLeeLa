@@ -14,7 +14,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLFrame extends SLWidget {
   // Create a frame inside `parent` with a title (pass "" for no title).
   void createIn(SLWidget parent, String title) {

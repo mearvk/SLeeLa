@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // SLeeLa Standard Library package facade for SST.
 class SLPackage {
  String name;

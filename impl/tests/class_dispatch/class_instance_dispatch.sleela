@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // Regression: class fields must be stored per object and instance methods
 // must receive the target object as their hidden first argument.
 class DispatchCounter {

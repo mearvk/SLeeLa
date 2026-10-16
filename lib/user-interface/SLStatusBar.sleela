@@ -13,7 +13,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLStatusBar extends SLWidget {
   // Create a status bar inside `parent` (normally the window root).
   void createIn(SLWidget parent) {

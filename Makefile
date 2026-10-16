@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-product tutorial-check tests server config route common-rails clean help
+.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-product tutorial-check tests server config route common-rails registry premium-vms clean help
 
-all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails codecs churn antivirus
+all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails codecs churn antivirus registry premium-vms
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
@@ -111,7 +111,25 @@ config:
 common-rails:
 	$(MAKE) -C common-rails check
 
+# Build the registry core and materialize the baseline registry table (text
+# store + MySQL export) a fresh install reviews. Part of `all`.
+registry:
+	./build-registry.sh
+
+# Build the eleven premium SLVM generations as real runnable VMs. Each links
+# the shared native Core engine archive (impl/build/libslcore.a, produced by
+# `core`) and runs compiled .sleela artifacts; `sleela vm run premium <n> <prog>`
+# boots the chosen generation. Depends on `core` for the Core archive.
+premium-vms: core
+	@for n in 001 002 003 004 005 006 007 008 009 010 011; do \
+	  echo "=== premium SLVM $$n ==="; \
+	  $(MAKE) -C sleela-virtual-machine/$$n all || exit 1; \
+	done
+	@echo "SLeeLa premium VMs built: sleela-virtual-machine/0NN/vm-build/slvm-NN"
+
 clean:
+	@for n in 001 002 003 004 005 006 007 008 009 010 011; do $(MAKE) -C sleela-virtual-machine/$$n clean; done
+	$(MAKE) -C registry clean
 	$(MAKE) -C impl clean
 	$(MAKE) -C java28 clean
 	$(MAKE) -C regex clean
@@ -155,6 +173,7 @@ help:
 	@echo "  make route     Validate unified route data"
 	@echo "  make config    Validate configuration policy and run location/VM smoke tests"
 	@echo "  make common-rails Build and run CommonRails C/C++/Java/Sleela/SST checks"
+	@echo "  make premium-vms Build the 11 premium SLVM generations as real runnable VMs"
 	@echo "  make clean     Remove outputs from dispatched build systems"
 	@echo ""
 	@echo "Product-specific build folders and Makefiles remain authoritative."

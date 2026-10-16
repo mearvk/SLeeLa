@@ -12,7 +12,7 @@
  *
  * Family: os. Extends SLHardwareComponent.
  */
-#sleela 1.5
+#sleela 2.1
 class SLVideoCard extends SLHardwareComponent {
   // GPU vendor ordinals.
   static final int GPU_NVIDIA = 0;

@@ -16,7 +16,7 @@
  *
  * Family: os. Extends SLHardwareComponent.
  */
-#sleela 1.5
+#sleela 2.1
 class SLUEFIFirmware extends SLHardwareComponent {
   String specRevision;  // UEFI spec revision, e.g. "2.10"
   int secureBoot;       // 1 if Secure Boot is supported

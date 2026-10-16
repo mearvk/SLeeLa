@@ -2,7 +2,7 @@
  * SLNativeCompiler: declarative capability metadata for the native prototype.
  * It does not execute native code and explicitly marks this backend experimental.
  */
-#sleela 1.10
+#sleela 2.1
 class SLNativeCompiler {
     let name;
     let version;

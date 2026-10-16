@@ -2,7 +2,7 @@
  * lib/antivirus/SLScanResult.sleela
  * Structured result; errors must never be interpreted as a clean scan.
  */
-#sleela 1.3
+#sleela 2.1
 class SLScanResult {
   String targetPath;
   String verdict;

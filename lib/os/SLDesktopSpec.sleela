@@ -16,7 +16,7 @@
  *
  * Family: os. Pure design model; no native bridge calls.
  */
-#sleela 1.5
+#sleela 2.1
 class SLDesktopSpec {
   int enabled;        // 1 if the OS has a desktop at all (0 = server/headless)
   String displayServer; // "Wayland" / "DWM" / "WindowServer"

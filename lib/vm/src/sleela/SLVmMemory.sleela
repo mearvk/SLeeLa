@@ -1,0 +1,88 @@
+/*
+ * lib/vm/src/sleela/SLVmMemory.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmMemory — the OOD equivalent of the native memory
+ *   hardening layer (virtual-machine/vm-version/002/vm_memory.{h,c}, v002). It
+ *   adds WARNING and CRITICAL pressure watermarks over the memory manager's
+ *   live/limit accounting and classifies a condition (NORMAL/PRESSURE/CRITICAL/
+ *   LIMIT), edge-triggering a report through SLVmReport only when a watermark is
+ *   crossed (not per allocation) and a recovery notice when it returns to
+ *   normal. The native side samples sleela_memmgr; this class holds the
+ *   watermarks + the fed live/limit sample and the edge-trigger latch.
+ *
+ * Mirrors: enum VmMemCondition, vm_memory_set_watermarks/poll/condition/
+ *   usage_fraction/report.
+ *
+ * Family: vm. Composes SLVmReport.
+ */
+#sleela 2.1
+class SLVmMemory {
+  static final int NORMAL   = 0;
+  static final int PRESSURE = 1;
+  static final int CRITICAL = 2;
+  static final int LIMIT    = 3;
+
+  // watermarks as percent of the hard limit (defaults 80 / 95).
+  int warnPct;
+  int critPct;
+  // the latest sampled numbers (fed from the native memmgr stats).
+  int liveMiB;
+  int limitMiB;
+  int refused;
+  int last;           // last classified condition
+  int peakReported;   // highest condition already announced (edge-trigger)
+
+  void defaults() { warnPct = 80; critPct = 95; peakReported = NORMAL; last = NORMAL; }
+
+  void setWatermarks(int warning, int critical) {
+    if (warning < 0) { warning = 0; }
+    if (warning > 100) { warning = 100; }
+    if (critical < warning) { critical = warning; }
+    if (critical > 100) { critical = 100; }
+    warnPct = warning; critPct = critical;
+  }
+
+  // Feed a fresh memmgr sample (live/limit MiB + cumulative refused).
+  void sample(int live, int limit, int refusedCount) {
+    liveMiB = live; limitMiB = limit; refused = refusedCount;
+  }
+
+  int usagePct() {
+    if (limitMiB <= 0) { return 0; }
+    return (liveMiB * 100) / limitMiB;
+  }
+
+  int classify() {
+    if (refused > 0) { return LIMIT; }
+    if (limitMiB <= 0) { return NORMAL; }
+    int f = usagePct();
+    if (f >= critPct) { return CRITICAL; }
+    if (f >= warnPct) { return PRESSURE; }
+    return NORMAL;
+  }
+
+  // Poll + edge-triggered report through SLVmReport. Returns the condition.
+  int poll(SLVmReport r) {
+    int c = classify();
+    if (c > peakReported) {
+      if (r != null) {
+        if (c == LIMIT)         { r.error("memory", "LIMIT", "allocation refused: hard limit reached"); }
+        else if (c == CRITICAL) { r.warn("memory", "CRITICAL", "usage above critical watermark"); }
+        else if (c == PRESSURE) { r.warn("memory", "PRESSURE", "usage above warning watermark"); }
+      }
+      peakReported = c;
+    } else if (c == NORMAL && peakReported != NORMAL) {
+      if (r != null) { r.notice("memory", "pressure cleared -- usage back to normal"); }
+      peakReported = NORMAL;
+    }
+    last = c;
+    return c;
+  }
+
+  String conditionName(int c) {
+    if (c == PRESSURE) { return "PRESSURE"; }
+    if (c == CRITICAL) { return "CRITICAL"; }
+    if (c == LIMIT)    { return "LIMIT"; }
+    return "NORMAL";
+  }
+}

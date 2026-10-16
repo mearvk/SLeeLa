@@ -25,7 +25,7 @@
  *
  * Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa standard-library front-end object.
 class SLOpcodeListener {
   static final int OP_CALL   = 25;

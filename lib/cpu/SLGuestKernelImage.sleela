@@ -16,7 +16,7 @@
  *
  * Family: cpu. Composes SLSleelaVM (the opcode store it loads into).
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuestKernelImage {
   String name;
   String version;

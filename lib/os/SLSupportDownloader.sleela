@@ -24,7 +24,7 @@
  * Family: os. Design model; reachability/fetch cross the osRun bridge
  *   (requires #sleela 1.5 for curl probing).
  */
-#sleela 1.11
+#sleela 2.1
 class SLSupportDownloader {
   // Priority ordinals (lower = tried first; by likelihood of a final/edu ref).
   static final int PRIO_AUTHORITATIVE   = 0;

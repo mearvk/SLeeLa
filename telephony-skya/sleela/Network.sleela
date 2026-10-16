@@ -14,7 +14,7 @@
  * SLeeLa port-awareness subsystem. The actual sockets live in the Servers and
  * Communication modules; Network only describes the shape of reach.
  */
-#sleela 1.3
+#sleela 2.1
 // Skya telephony — transport reachability (loadable module / natural).
 class Network {
 

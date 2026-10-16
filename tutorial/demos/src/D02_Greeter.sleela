@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 2.1
 // D02_Greeter.sleela — companion to Lesson 02 (Your first Wrapper).
 // A pure helper method plus a main() that uses it; string concatenation with +.
 class D02_Greeter {

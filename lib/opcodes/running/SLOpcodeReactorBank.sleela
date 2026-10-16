@@ -13,7 +13,7 @@
  *
  * Family: opcodes.running. Native VM/OS work crosses an explicit bridge.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa standard-library front-end object.
 class SLOpcodeReactorBank {
   static final int MAX_REACTIVES = 1024;

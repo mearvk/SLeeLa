@@ -18,7 +18,7 @@
  * Family: moral-capacitor. Issues/verifies SLMoralCertificate; reads
  *   SLMoralCapacitor + SLMoralPolicy.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralCertificateAuthority {
   String authority;   // the issuing party name
   String key;         // the authority's seal key (keeps the fold authority-specific)

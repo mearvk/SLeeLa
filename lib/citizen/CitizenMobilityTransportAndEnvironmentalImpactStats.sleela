@@ -1,0 +1,42 @@
+#sleela 2.1
+/*
+ * CitizenMobilityTransportAndEnvironmentalImpactStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Mobility, transport, and environmental impact.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenMobilityTransportAndEnvironmentalImpactStats {
+    string primaryTransportMode;
+    int hasDrivingLicense;
+    int hasVehicle;
+    int commuteMinutes;
+    int commuteDistanceMeters;
+    int walkingAbility;
+    int cyclingAbility;
+    int transitUseDaysPerWeek;
+    int transportReliability;
+    int mobilityAccess;
+    int travelIndependence;
+    int estimatedCarbonKgPerMonth;
+    int energyConservation;
+    int recyclingParticipation;
+    int environmentalStewardship;
+
+    CitizenMobilityTransportAndEnvironmentalImpactStats() {
+        primaryTransportMode = "unknown";
+        hasDrivingLicense = 0;
+        hasVehicle = 0;
+        commuteMinutes = 0;
+        commuteDistanceMeters = 0;
+        walkingAbility = 100;
+        cyclingAbility = 0;
+        transitUseDaysPerWeek = 0;
+        transportReliability = 0;
+        mobilityAccess = 0;
+        travelIndependence = 0;
+        estimatedCarbonKgPerMonth = 0;
+        energyConservation = 0;
+        recyclingParticipation = 0;
+        environmentalStewardship = 0;
+    }
+}

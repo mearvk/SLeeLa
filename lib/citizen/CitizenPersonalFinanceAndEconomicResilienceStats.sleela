@@ -1,0 +1,66 @@
+#sleela 2.1
+/*
+ * CitizenPersonalFinanceAndEconomicResilienceStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Personal finance and economic resilience.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenPersonalFinanceAndEconomicResilienceStats {
+    long cashBalanceCents;
+    long bankBalanceCents;
+    long savingsCents;
+    long investmentValueCents;
+    long debtBalanceCents;
+    long monthlyDebtPaymentCents;
+    long monthlyExpensesCents;
+    long monthlyHousingCostCents;
+    long monthlyFoodCostCents;
+    long monthlyTransportCostCents;
+    long monthlyHealthcareCostCents;
+    long monthlyUtilityCostCents;
+    long creditLimitCents;
+    int creditScore;
+    int financialStress;
+    int emergencyFundMonths;
+    int povertyRisk;
+    int foodSecurity;
+    int economicResilience;
+    int taxCompliance;
+    int taxBracket;
+    int taxRateBasisPoints;
+    int receivesPublicBenefits;
+    long publicBenefitsCentsPerMonth;
+    int pensionEligibility;
+    int retirementReadiness;
+    int financialDependents;
+
+    CitizenPersonalFinanceAndEconomicResilienceStats() {
+        cashBalanceCents = 0;
+        bankBalanceCents = 0;
+        savingsCents = 0;
+        investmentValueCents = 0;
+        debtBalanceCents = 0;
+        monthlyDebtPaymentCents = 0;
+        monthlyExpensesCents = 0;
+        monthlyHousingCostCents = 0;
+        monthlyFoodCostCents = 0;
+        monthlyTransportCostCents = 0;
+        monthlyHealthcareCostCents = 0;
+        monthlyUtilityCostCents = 0;
+        creditLimitCents = 0;
+        creditScore = 0;
+        financialStress = 0;
+        emergencyFundMonths = 0;
+        povertyRisk = 0;
+        foodSecurity = 100;
+        economicResilience = 0;
+        taxCompliance = 100;
+        taxBracket = 0;
+        taxRateBasisPoints = 0;
+        receivesPublicBenefits = 0;
+        publicBenefitsCentsPerMonth = 0;
+        pensionEligibility = 0;
+        retirementReadiness = 0;
+        financialDependents = 0;
+    }
+}

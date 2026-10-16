@@ -2,7 +2,7 @@
  * Unified route metadata for Server Edition, HTTP 1.0–9.0, and standalone servers.
  * Capability is explicit; VM generation is metadata and does not grant authority.
  */
-#sleela 1.3
+#sleela 2.1
 class SLRouteData {
   Integer vmGeneration;
   String vmName;

@@ -18,7 +18,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge, the same discipline as /lib/os's `os*` bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLUserInterface {
   // Backend ordinals (mirror SLUIBackend in the toolkit C ABI).
   static final int BACKEND_UNKNOWN = 0;

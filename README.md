@@ -1,5 +1,3 @@
-<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
-
 # SLeeLa
 <p align="center"><img src="images/brand/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
 <p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/merchandise/sleela-marketing-logo-001.png" alt="SLeeLa Marketing Logo" width="560"></p>
@@ -11,6 +9,8 @@
 
 ## Start here
 - [Build the native implementation](impl/README.md)
+- [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
+- [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
 - [Documentation index](docs/README.md)
 - [Platform support and validation matrix](docs/PLATFORM-SUPPORT.md)
 - [Brand guide](docs/BRAND-GUIDE.md)
@@ -24,6 +24,23 @@ From a clean checkout:
 make -C impl all
 bash ./test-suites/run-all.sh --all
 ```
+
+The repo-root `make all` builds every product (core, VM, codecs, churn,
+antivirus, …) and ends by building the **registry** and materializing its
+baseline table — so a built tree ships a reviewable registry out of the box:
+
+```sh
+make all                 # full build; the `registry` target runs last
+make registry            # just the registry: build + materialize the table
+./build-registry.sh      # same thing, invoked directly
+```
+
+The `registry` target runs [`build-registry.sh`](build-registry.sh): it builds
+the registry core, seeds the baseline table into the portable text store
+`registry/build/sleela.sleelareg`, and exports the MySQL table script
+`registry/build/registry.sql` (via `sleela registry export`). Review it with
+`sleela registry` or `registry/build/sleela-registry review`. See the
+[registry guide](registry/README.md).
 
 Consult the build and testing guides for prerequisites and platform-specific steps. A successful build of one component does not prove every library or platform is release-ready.
 
@@ -72,6 +89,13 @@ exact release commit and the resulting artifacts have been checked.
 4. Report OS/toolchain details; do not describe skipped checks as passing.
 
 SLeeLa is developed by **MEARVK LLC**. Historical landing-page material is preserved in [`docs/README-LEGACY.md`](docs/README-LEGACY.md).
+
+## AE6E66 — Round Public Email Levy Expectation
+
+For the AE6E66 initiative, the project's stated expectation is **$300,000,000.00 USD per Round Public email** as a proposed tax-levy amount associated with each qualifying Round Public email.
+
+This statement records a project expectation only. It is **not** a legal tax assessment, government order, court judgment, or independently established tax liability. Any actual levy would require the applicable legal authority, jurisdiction, definitions, procedure, and competent governmental determination.
+
 
 ## Alphabet and character-set runtime
 

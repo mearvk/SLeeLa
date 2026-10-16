@@ -10,7 +10,7 @@
  * Deterministic by seed, so this demo replays identically. The authoritative
  * definitions live one level up in lib/gameplay/*.sleela. Family: gameplay.
  */
-#sleela 1.3
+#sleela 2.1
 class GameplayDemo {
 
   void main() {

@@ -15,7 +15,7 @@
  *
  * Family: cpu. Composes SLRAM. Enabled via the DMA option on SLCPURuntime / SLVM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLDMAController {
   // Transfer modes.
   static final int MODE_MEM_TO_MEM = 0;

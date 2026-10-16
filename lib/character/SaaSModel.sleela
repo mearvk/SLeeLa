@@ -8,7 +8,7 @@
  *
  * A concrete BusinessModel. Family: character.
  */
-#sleela 1.3
+#sleela 2.1
 class SaaSModel extends BusinessModel {
 
   int basicSeats;         // seats on the basic tier

@@ -13,7 +13,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLRadioButton extends SLWidget {
   // Create a radio inside `parent`, in exclusivity `group`, with a label and
   // initial selected state.

@@ -231,7 +231,7 @@ sleela run program.sleela
 
 The first form is direct/native SLeeLa source execution: the C/C++ SLeeLa toolchain compiles the source in memory and the native C Core executes it through SLVM. The second form separates compilation from execution and loads the persistent Core artifact through the same SLVM. Neither path creates a parallel SLeeLa interpreter.
 
-See `sleela-virtual-machine/1/docs/COMMAND-LINE-EXECUTION.md`.
+See `sleela-virtual-machine/001/docs/COMMAND-LINE-EXECUTION.md`.
 
 
 ## VM Compiler Manager and native VM support
@@ -271,6 +271,12 @@ make compiler
 ```
 
 The root `make all` target includes the compiler package before the VM package. The compiler does not silently add language features, VM objects, capabilities, or target permissions that are absent from the SLeeLa source declaration.
+
+The root `make all` target also ends with the `registry` target, which runs
+`build-registry.sh` to build the registry core and materialize the baseline
+registry table (the portable `registry/build/sleela.sleelareg` text store plus
+the `registry/build/registry.sql` MySQL script). Build it on its own with
+`make registry`, or review the table with `sleela registry`.
 
 
 ## SLeeLa Decompiler library build

@@ -24,7 +24,7 @@
  * Family: os. Design + host roles; markExecutable()/isHostExecutable() cross
  *   the osRun / osPlatform bridge (requires #sleela 1.5).
  */
-#sleela 1.11
+#sleela 2.1
 class SLExecutableTypes {
   String shape;   // "Linux" / "Windows" / "macOS"
 

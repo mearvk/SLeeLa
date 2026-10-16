@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 2.1
 // D07_Conducted.sleela — companion to Lesson 07 (Conducted methods).
 // Asks the model about the roles of objects it names. role(...) resolves against
 // the catalogued objects for the build; unknown names resolve to a default.

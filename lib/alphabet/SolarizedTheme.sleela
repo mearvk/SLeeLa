@@ -8,7 +8,7 @@
  * A concrete Theme: override dress() to fill the palette and role colors. Call
  * begin("Solarized") to build it. Family: alphabet.
  */
-#sleela 1.3
+#sleela 2.1
 class SolarizedTheme extends Theme {
 
   void dress() {

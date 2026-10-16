@@ -17,7 +17,7 @@
  *
  * Family: os. Consumes SLOSModel + SLOSCompiler; produces an SLOSArtifact.
  */
-#sleela 1.5
+#sleela 2.1
 class SLISOBuilder {
   String stagingRoot;   // where the rootfs is assembled
   int configured;

@@ -16,7 +16,7 @@
  * Family: moral-capacitor. Composes SLMoralCharge, SLMoralVeto, SLMoralFramework,
  *   SLMoralPolicy; returns SLMoralVerdict.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralCapacitor {
   SLMoralCharge storedCharge;
   SLMoralVeto vetoes;

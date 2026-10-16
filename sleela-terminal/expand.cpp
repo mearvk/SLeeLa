@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
-#include <exception>
 #include <limits>
 #include <dirent.h>
 #include <pwd.h>
@@ -21,13 +20,13 @@ namespace {
 constexpr std::size_t kMaxBraceResults = 4096;
 constexpr std::size_t kMaxBraceDepth = 64;
 
-// Recursive brace expansion is user-controlled input; bound memory and stack.
+// Recursive brace expansion is deliberately bounded: expansion is user input
+// and must not be able to exhaust memory or the process stack.
 thread_local std::size_t braceDepth = 0;
 struct BraceDepthGuard {
     BraceDepthGuard() { ++braceDepth; }
     ~BraceDepthGuard() { --braceDepth; }
 };
-
 
 bool isNameStart(char c) {
     return std::isalpha(static_cast<unsigned char>(c)) || c == '_';
@@ -401,7 +400,8 @@ std::vector<std::string> braceExpand(const std::string& word) {
                     }
                 }
             } catch (const std::exception&) {
-                // Out-of-range numeric syntax must not escape as an uncaught exception.
+                // Out-of-range numeric syntax is not allowed to escape as an
+                // uncaught exception from a shell expansion.
                 return {word};
             }
         }

@@ -24,7 +24,7 @@
  * Family: cpu. Composes SLRAM, SLALU, SLSleelaVM, SLSleelaOpcode. Extended by
  *   SL6502CPU, SLZ80CPU, SLX86CPU, SLARMCPU, SLMIPSCPU, SLRISCVCPU, SLM68000CPU.
  */
-#sleela 1.3
+#sleela 2.1
 class SLCPURuntime {
   String archName;
   int width;            // data path width in bits

@@ -15,7 +15,7 @@
  *
  * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLOperatingSystem {
   // Capability ordinals (mirror SLPlatformCapability in the VM).
   static final int CAP_MEMORY  = 0;

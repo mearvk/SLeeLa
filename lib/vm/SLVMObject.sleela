@@ -11,7 +11,7 @@
  *
  * Family: vm. Composes SLVMHeap, SLVMValue.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVMObject {
   SLVMHeap heap;
   int handle;      // -1 == null object

@@ -13,7 +13,7 @@
  * Family: cpu. Composes SLCPUResource, SLCompilerDriver, SLProgram; consumed by
  *   SLCPURuntime.runWorkload().
  */
-#sleela 1.3
+#sleela 2.1
 class SLWorkload {
   // Language ids (match SLCompilerDriver / SLFrontend).
   static final int LANG_SLEELA = 0;

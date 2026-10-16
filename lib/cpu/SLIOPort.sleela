@@ -8,7 +8,7 @@
  *
  * Family: cpu. Pure Sleela I/O element.
  */
-#sleela 1.3
+#sleela 2.1
 class SLIOPort {
   static final int DIR_IN    = 0;
   static final int DIR_OUT   = 1;

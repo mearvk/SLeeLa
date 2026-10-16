@@ -1,6 +1,6 @@
 # Runtime Garbage-Collection API
 
-This directory describes the language-level GC hint introduced in syntax 1.9 and links it to the native collector tests. It does not replace the implementation contract in `impl/` or the tracked native allocation API in [ `api/native/memory/` ](../../native/memory/README.md).
+This directory describes the language-level GC hint introduced in syntax 1.9 and links it to the native collector tests. It does not replace the implementation contract in `impl/` or the tracked native allocation API in [`api/native/memory/`](../../native/memory/README.md).
 
 - [GC-hint API](GC-HINT-API.md) — accepted forms and range.
 - [Semantics](SEMANTICS.md) — safety and behavior boundaries.

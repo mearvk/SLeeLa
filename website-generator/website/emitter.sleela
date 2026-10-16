@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // emitter.sleela -- assembles an ordered list of signs under a Design into a
 // complete, self-contained HTML document (markup + an embedded style sheet).
 // No external CSS/JS is required to view the result. This is the authoritative

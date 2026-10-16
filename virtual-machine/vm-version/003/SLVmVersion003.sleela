@@ -1,0 +1,25 @@
+/*
+ * virtual-machine/vm-version/003/SLVmVersion003.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmVersion003 — the loadable manifest for VM version 003
+ *   ("typed results"), the OOD selector record the native VM loads on system
+ *   start or a user conference. It names this version's native directory and
+ *   the C/C++ main the loader builds and boots, declares the hardening units it
+ *   composes (cumulative through v003 of the think-tank arc), and carries the
+ *   default configuration profile a user starts from. build() returns the
+ *   configured SLVmRuntime a selection resolves to.
+ *
+ * Mirrors the C/C++ in this folder (the 71-file core + the additive vm_* units
+ * through v003). It extends SLVmVersion (lib/vm/src/sleela/SLVmVersion.sleela).
+ *
+ * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
+ */
+#sleela 2.1
+class SLVmVersion003 extends SLVmVersion {
+  void configure() {
+    base(3, "idea-vm-003", "typed results", "virtual-machine/vm-version/003", "vm_result_test");
+    composeThrough(3);
+    // default profile tuning for this version (user-editable in setup/conference)
+    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+  }
+}

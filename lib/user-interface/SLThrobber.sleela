@@ -19,7 +19,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLThrobber extends SLWidget {
   // Create a throbber inside `parent` with an initial pixel width.
   void createIn(SLWidget parent, int widthPx) {

@@ -18,7 +18,7 @@
  * Family: moral-capacitor. Verifies SLMoralCertificate via
  *   SLMoralCertificateAuthority; inspects SLMoralCapacitor.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralCodeGuard {
   // Guard outcome ordinals.
   static final int ADMIT   = 1;  // the product includes the moral code: admit

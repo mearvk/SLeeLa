@@ -11,7 +11,7 @@
  *
  * Family: cpu. Extends SLCPURuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLPDP8CPU extends SLCPURuntime {
     String machineModel = "";
     Boolean strictProfile = true;

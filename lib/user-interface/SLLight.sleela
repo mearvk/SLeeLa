@@ -15,7 +15,7 @@
  * Family: user-interface. Mirrors SLUILight in the SleelaUI Lighting C ABI
  * (sleela_ui_light.h).
  */
-#sleela 1.5
+#sleela 2.1
 class SLLight {
   // Kind ordinals (mirror SLUILightKind).
   static final int POINT       = 0;

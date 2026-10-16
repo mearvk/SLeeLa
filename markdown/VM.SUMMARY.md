@@ -38,17 +38,17 @@ The numbered generations preserve the architectural development of SLVM. The `/i
 | Generation | Repository location | Present characterization | Primary architectural emphasis |
 |---|---|---|---|
 | **Current Core** | `/impl` | Operational/authoritative execution implementation | Core bytecode execution, runtime services, C ABI, OS/runtime integration |
-| **SLVM/1** | `/sleela-virtual-machine/1` | Substantial dedicated VM implementation | Broker, capabilities, security, memory security, observation, OS adapters |
-| **SLVM/2** | `/sleela-virtual-machine/2` | Architectural/security generation | Cryptography, linking, observation, security evolution |
-| **SLVM/3** | `/sleela-virtual-machine/3` | Architectural verification generation | Isolation, verification, observation, attestation/certification |
-| **SLVM/4** | `/sleela-virtual-machine/4` | Architectural generation/specification | Authenticated and distributed execution direction |
-| **SLVM/5** | `/sleela-virtual-machine/5` | Architectural generation with extended policy/reliability model | Reproducibility, policy verification, recovery, replay, quotas, compatibility |
-| **SLVM/6** | `/sleela-virtual-machine/6` | Advanced architectural generation | Continuous verification, execution lineage, multi-party attestation, leases, migration |
-| **SLVM/7** | `/sleela-virtual-machine/7` | Hardened management/recovery generation | Log and memory managers, watchdog health, manager dependency validation, bounded recovery, quarantine, resource pressure handling |
-| **SLVM/8** | `/sleela-virtual-machine/8` | Supervised execution generation | Admission gate, immutable policy, capability leases, transaction control, lifecycle supervisor, chained audit evidence |
-| **SLVM/9** | `/sleela-virtual-machine/9` | Filesystem and OS adaptation generation | Filesystem Abstraction Layer, native OS adapters, capability negotiation, TAC3 profile |
-| **SLVM/10** | `/sleela-virtual-machine/10` | Verified storage generation | Storage identity, filesystem generation verification, adapter qualification, quiesce/recovery |
-| **SLVM/11** | `/sleela-virtual-machine/11` | Filesystem-module host generation | Schema-driven filesystem modules, module discovery, validation, capability qualification |
+| **SLVM/1** | `/sleela-virtual-machine/001` | Substantial dedicated VM implementation | Broker, capabilities, security, memory security, observation, OS adapters |
+| **SLVM/2** | `/sleela-virtual-machine/002` | Architectural/security generation | Cryptography, linking, observation, security evolution |
+| **SLVM/3** | `/sleela-virtual-machine/003` | Architectural verification generation | Isolation, verification, observation, attestation/certification |
+| **SLVM/4** | `/sleela-virtual-machine/004` | Architectural generation/specification | Authenticated and distributed execution direction |
+| **SLVM/5** | `/sleela-virtual-machine/005` | Architectural generation with extended policy/reliability model | Reproducibility, policy verification, recovery, replay, quotas, compatibility |
+| **SLVM/6** | `/sleela-virtual-machine/006` | Advanced architectural generation | Continuous verification, execution lineage, multi-party attestation, leases, migration |
+| **SLVM/7** | `/sleela-virtual-machine/007` | Hardened management/recovery generation | Log and memory managers, watchdog health, manager dependency validation, bounded recovery, quarantine, resource pressure handling |
+| **SLVM/8** | `/sleela-virtual-machine/008` | Supervised execution generation | Admission gate, immutable policy, capability leases, transaction control, lifecycle supervisor, chained audit evidence |
+| **SLVM/9** | `/sleela-virtual-machine/009` | Filesystem and OS adaptation generation | Filesystem Abstraction Layer, native OS adapters, capability negotiation, TAC3 profile |
+| **SLVM/10** | `/sleela-virtual-machine/010` | Verified storage generation | Storage identity, filesystem generation verification, adapter qualification, quiesce/recovery |
+| **SLVM/11** | `/sleela-virtual-machine/011` | Filesystem-module host generation | Schema-driven filesystem modules, module discovery, validation, capability qualification |
 
 The distinction between **implementation** and **architecture** is intentional. A generation can define a VM contract, security model, execution boundary, or compatibility model before it has an execution implementation equivalent in size to `/impl`.
 
@@ -494,17 +494,17 @@ VM generation tree:
 
 Generation directories:
 
-- `/sleela-virtual-machine/1` — Foundation
-- `/sleela-virtual-machine/2` — Operator
-- `/sleela-virtual-machine/3` — Specialist
-- `/sleela-virtual-machine/4` — Supervisor
-- `/sleela-virtual-machine/5` — Manager
-- `/sleela-virtual-machine/6` — Director
-- `/sleela-virtual-machine/7` — Administrator
-- `/sleela-virtual-machine/8` — Executive
-- `/sleela-virtual-machine/9` — Authority
-- `/sleela-virtual-machine/10` — Principal
-- `/sleela-virtual-machine/11` — Sovereign
+- `/sleela-virtual-machine/001` — Foundation
+- `/sleela-virtual-machine/002` — Operator
+- `/sleela-virtual-machine/003` — Specialist
+- `/sleela-virtual-machine/004` — Supervisor
+- `/sleela-virtual-machine/005` — Manager
+- `/sleela-virtual-machine/006` — Director
+- `/sleela-virtual-machine/007` — Administrator
+- `/sleela-virtual-machine/008` — Executive
+- `/sleela-virtual-machine/009` — Authority
+- `/sleela-virtual-machine/010` — Principal
+- `/sleela-virtual-machine/011` — Sovereign
 
 **Max Rupplin - MEARVK LLC - 2026**
 
@@ -712,7 +712,7 @@ Its filesystem-module contract is shared with SLVM/9 and SLVM/11. TAC3 is the fi
 
 ## XXII. SLVM/11 — Filesystem-Module Host
 
-SLVM/11 establishes a dedicated extension point for filesystem definitions and structures at `/sleela-virtual-machine/11/file-system/modules/<module-id>/`. Modules are discovered by versioned module ID and schema rather than by pathname or guessed filesystem family. Module presence does not grant SLeeLa capability.
+SLVM/11 establishes a dedicated extension point for filesystem definitions and structures at `/sleela-virtual-machine/011/file-system/modules/<module-id>/`. Modules are discovered by versioned module ID and schema rather than by pathname or guessed filesystem family. Module presence does not grant SLeeLa capability.
 
 ## XXIII. Standardized TAC3 Module
 
@@ -743,17 +743,17 @@ The complete formal naming system is:
 | VM | Formal Name | Repository Path | Primary Role |
 |---|---|---|---|
 | **/impl** | **Core** | `/impl` | Authoritative operational execution substrate |
-| **SLVM/1** | **Foundation** | `/sleela-virtual-machine/1` | Complete VM foundation, broker, capabilities, security, OS boundary |
-| **SLVM/2** | **Operator** | `/sleela-virtual-machine/2` | Cryptographic identity, secure linking, observation |
-| **SLVM/3** | **Specialist** | `/sleela-virtual-machine/3` | Isolation, verification, observation, attestation |
-| **SLVM/4** | **Supervisor** | `/sleela-virtual-machine/4` | Authenticated and distributed execution |
-| **SLVM/5** | **Manager** | `/sleela-virtual-machine/5` | Reproducibility, policy, recovery, replay, quotas |
-| **SLVM/6** | **Director** | `/sleela-virtual-machine/6` | Continuous verification, lineage, leases, migration |
-| **SLVM/7** | **Administrator** | `/sleela-virtual-machine/7` | Hardened management, recovery, watchdogs, quarantine |
-| **SLVM/8** | **Executive** | `/sleela-virtual-machine/8` | Admission, supervised execution, capability leases, transactions, audit |
-| **SLVM/9** | **Authority** | `/sleela-virtual-machine/9` | Filesystem and operating-system adaptation |
-| **SLVM/10** | **Principal** | `/sleela-virtual-machine/10` | Verified storage execution and storage identity |
-| **SLVM/11** | **Sovereign** | `/sleela-virtual-machine/11` | Filesystem-module hosting and schema-driven extension |
+| **SLVM/1** | **Foundation** | `/sleela-virtual-machine/001` | Complete VM foundation, broker, capabilities, security, OS boundary |
+| **SLVM/2** | **Operator** | `/sleela-virtual-machine/002` | Cryptographic identity, secure linking, observation |
+| **SLVM/3** | **Specialist** | `/sleela-virtual-machine/003` | Isolation, verification, observation, attestation |
+| **SLVM/4** | **Supervisor** | `/sleela-virtual-machine/004` | Authenticated and distributed execution |
+| **SLVM/5** | **Manager** | `/sleela-virtual-machine/005` | Reproducibility, policy, recovery, replay, quotas |
+| **SLVM/6** | **Director** | `/sleela-virtual-machine/006` | Continuous verification, lineage, leases, migration |
+| **SLVM/7** | **Administrator** | `/sleela-virtual-machine/007` | Hardened management, recovery, watchdogs, quarantine |
+| **SLVM/8** | **Executive** | `/sleela-virtual-machine/008` | Admission, supervised execution, capability leases, transactions, audit |
+| **SLVM/9** | **Authority** | `/sleela-virtual-machine/009` | Filesystem and operating-system adaptation |
+| **SLVM/10** | **Principal** | `/sleela-virtual-machine/010` | Verified storage execution and storage identity |
+| **SLVM/11** | **Sovereign** | `/sleela-virtual-machine/011` | Filesystem-module hosting and schema-driven extension |
 
 The names are architectural identifiers, not permissions. A higher-numbered generation does not automatically grant OS, filesystem, network, storage, security, or administrative authority. Capabilities remain explicit and validated.
 
@@ -796,7 +796,7 @@ Principal adds verified storage execution, requiring storage identity, filesyste
 
 ### SLVM/11 Sovereign
 
-Sovereign hosts schema-driven filesystem modules under `/sleela-virtual-machine/11/file-system/modules/<module-id>/`. Module discovery does not itself grant capability.
+Sovereign hosts schema-driven filesystem modules under `/sleela-virtual-machine/011/file-system/modules/<module-id>/`. Module discovery does not itself grant capability.
 
 ### Documentation consistency
 

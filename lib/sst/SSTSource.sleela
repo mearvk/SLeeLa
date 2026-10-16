@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // Canonical source-time representation of an SST (.sst) sheet.
 // SST remains declarative input; Nordshrift resolves it into SLeeLa source.
 class SSTSource {

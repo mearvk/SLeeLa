@@ -18,7 +18,7 @@
  * Family: vm. Composes SLVM + SLSupportDownloader; fetch/probe cross the osRun
  *   bridge (requires #sleela 1.5).
  */
-#sleela 1.11
+#sleela 2.1
 class SLVMComponentFetcher {
   SLVM vm;                     // the VM this fetcher serves
   SLSupportDownloader support; // the shared resilient downloader

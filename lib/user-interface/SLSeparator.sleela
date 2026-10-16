@@ -12,7 +12,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLSeparator extends SLWidget {
   // Create a separator inside `parent`. orientation is ORIENT_HORIZONTAL
   // (a horizontal rule) or ORIENT_VERTICAL (a vertical rule).

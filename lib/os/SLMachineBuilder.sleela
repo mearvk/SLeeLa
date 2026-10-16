@@ -18,7 +18,7 @@
  * Family: os. Consumes SLMachineModel; composes lib/cpu (SLMachine, SLRAM,
  *   SLHardDrive, SLCPU, SLInstructionSet).
  */
-#sleela 1.5
+#sleela 2.1
 class SLMachineBuilder {
   SLMachine machine;      // the composed lib/cpu machine
   int built;

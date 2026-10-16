@@ -5,9 +5,9 @@
 # =============================================================================
 # 
 # Usage:
-#   ./build-linux.sh              # Build with default flags
+#   ./build-linux.sh              # Build only (no install)
 #   CC=clang CXX=clang++ ./build-linux.sh
-#   BIN_DIR=/usr/local/bin ./build-linux.sh
+#   BIN_DIR="$HOME/bin" ./build-linux.sh
 #
 # Environment variables (optional):
 #   CC              C compiler (default: gcc)

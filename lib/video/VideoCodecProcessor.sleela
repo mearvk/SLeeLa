@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type VideoCodecProcessor used within the video library family.
  */
-#sleela 1.3
+#sleela 2.1
 // Family: video. The decode/encode dispatch layer for video codecs — the
 // SLeeLa mirror of the audio SLCodecProcessor, applied to the native video
 // registry (video/codecs/). It dispatches a decode/encode request against the

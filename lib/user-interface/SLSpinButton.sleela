@@ -13,7 +13,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLSpinButton extends SLWidget {
   // Create a spin button inside `parent` spanning [min, max], stepping by
   // `step`, with an initial value.

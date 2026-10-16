@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // dxf.sleela -- emits a geometry Model as AutoCAD DXF (R12 text). R12 is the
 // most interoperable DXF level: group-code/value pairs, no handles, no object
 // database -- it opens directly in AutoCAD and LibreCAD. This is the

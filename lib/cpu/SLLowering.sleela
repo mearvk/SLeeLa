@@ -15,7 +15,7 @@
  *
  * Family: cpu. Composes SLIR, SLAssembler, SLProgram, SLInstructionSet.
  */
-#sleela 1.3
+#sleela 2.1
 class SLLowering {
   SLInstructionSet isa;
   SLAssembler asm;

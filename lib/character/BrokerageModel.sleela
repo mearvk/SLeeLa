@@ -8,7 +8,7 @@
  *
  * A concrete BusinessModel. Family: character.
  */
-#sleela 1.3
+#sleela 2.1
 class BrokerageModel extends BusinessModel {
 
   int trades;             // trades executed this month

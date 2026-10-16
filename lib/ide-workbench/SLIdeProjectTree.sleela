@@ -1,0 +1,91 @@
+/*
+ * lib/ide-workbench/SLIdeProjectTree.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLIdeProjectTree — the project / file explorer
+ *   composition. lib/ui and lib/user-interface provide an SLTreeView widget but
+ *   nothing binds it to a project model; this class is that binding. It holds
+ *   the project root, a flat ordered list of entries (path + kind + depth that
+ *   a tree widget renders), and the currently selected entry. Opening an entry
+ *   is delegated upward to the workbench, which creates/focuses an SLIdeEditor.
+ */
+#sleela 2.1
+// Family: ide-workbench. The project explorer model behind an SLTreeView.
+class SLIdeProjectTree {
+  static final int MAX_ENTRIES = 65536;
+
+  String rootPath;             // the opened project / workspace root
+  String[] paths;              // resolved host paths, one per visible entry
+  int[] kinds;                 // 0 = directory, 1 = file
+  int[] depths;                // indentation depth for tree rendering
+  int count;
+  int selected;                // index of the selected entry, -1 when none
+
+  void init(String root) {
+    rootPath = root;
+    paths = new String[MAX_ENTRIES];
+    kinds = new int[MAX_ENTRIES];
+    depths = new int[MAX_ENTRIES];
+    count = 0; selected = -1;
+  }
+
+  String root() { return rootPath; }
+  int size() { return count; }
+
+  // Add a visible entry (the host enumerates the filesystem; SLeeLa models it).
+  boolean addEntry(String path, int kind, int depth) {
+    if (count >= MAX_ENTRIES) { return false; }
+    paths[count] = path; kinds[count] = kind; depths[count] = depth;
+    count = count + 1;
+    return true;
+  }
+
+  boolean isDirectory(int index) {
+    return index >= 0 && index < count && kinds[index] == 0;
+  }
+  boolean isFile(int index) {
+    return index >= 0 && index < count && kinds[index] == 1;
+  }
+  String pathAt(int index) {
+    if (index < 0 || index >= count) { return ""; }
+    return paths[index];
+  }
+  int depthAt(int index) {
+    if (index < 0 || index >= count) { return 0; }
+    return depths[index];
+  }
+
+  boolean select(int index) {
+    if (index < 0 || index >= count) { return false; }
+    selected = index;
+    return true;
+  }
+  int selection() { return selected; }
+  String selectedPath() { return pathAt(selected); }
+
+  // The selected entry is openable in an editor only when it is a file.
+  boolean selectionOpenable() { return isFile(selected); }
+
+  // Classify a path's editor language from its extension (drives SLIdeEditor
+  // and the compile route: .sst goes through Nordshrift, .sleela goes direct).
+  String languageFor(String path) {
+    if (endsWith(path, ".sst")) { return "sst"; }
+    if (endsWith(path, ".sleela")) { return "sleela"; }
+    if (endsWith(path, ".sldocument")) { return "sldocument"; }
+    if (endsWith(path, ".cpp") || endsWith(path, ".cc") || endsWith(path, ".hpp")) { return "cpp"; }
+    if (endsWith(path, ".c") || endsWith(path, ".h")) { return "c"; }
+    if (endsWith(path, ".java")) { return "java"; }
+    return "text";
+  }
+
+  boolean endsWith(String s, String suffix) {
+    if (s == null || suffix == null) { return false; }
+    int sl = len(s); int ql = len(suffix);
+    if (ql > sl) { return false; }
+    return substr(s, sl - ql, sl) == suffix;
+  }
+
+  // Thin wrappers over the host string services (kept explicit so the model is
+  // self-describing; the Java/native host supplies the implementations).
+  int len(String s) { return s.length(); }
+  String substr(String s, int from, int to) { return s.substring(from, to); }
+}

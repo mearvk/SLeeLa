@@ -14,7 +14,7 @@
  *
  * Family: cpu.components. Composes SLRAM; selected via SLComponentCatalog.
  */
-#sleela 1.3
+#sleela 2.1
 class SLMemoryModule {
   // Memory technology ids.
   static final int TECH_SRAM   = 0;

@@ -49,7 +49,12 @@ static bool builtin(const std::string&n){
  "arrayNew","arrayLength","arrayGet","arraySet","arrayPush",
  "osPlatform","osCapability","osGetEnv","osSetEnv","osCurrentDir","osChangeDir","osHostName","osUserName","osTempDir","osProcessId",
  "osExists","osIsDir","osFileSize","osMakeDir","osRemove","osRename","osRun","osSpawn","osWait","osKill","osProcessClose",
- "conduct","role","insight","congruent","route","sysdepth","degreemax"};
+ "conduct","role","insight","congruent","route","sysdepth","degreemax",
+ "ideaCanvasCreate","ideaCanvasDestroy","ideaCanvasCols","ideaCanvasRows","ideaCanvasCount",
+ "ideaCanvasSetParams","ideaCanvasExcite","ideaCanvasStep","ideaCanvasAdvance","ideaCanvasTimestep",
+ "ideaCanvasIntensityAt","ideaCanvasHasRenderer","ideaCanvasOpenWindow","ideaCanvasShouldClose",
+ "ideaCanvasPresent","ideaCanvasRun",
+ "ideaCanvasSetBackendPolicy","ideaCanvasPolicy","ideaCanvasActiveBackend","ideaCanvasGpuAvailable","ideaCanvasMeasuredHz","ideaCanvasMigrate"};
  return s.count(n)!=0;
 }
 struct MethodSig{const Method* m=nullptr;std::string owner;};

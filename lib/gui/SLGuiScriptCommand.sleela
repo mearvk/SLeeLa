@@ -1,0 +1,68 @@
+/*
+ * lib/gui/SLGuiScriptCommand.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiScriptCommand — one instruction of a /lib/gui UI
+ *   script. The scripting support is a small, safe, declarative command list
+ *   (not an arbitrary interpreter): each command is a verb plus up to four
+ *   string operands. The verbs mirror the DOM/event API so a script can build
+ *   and drive an interface without native code — create, append, text, attr,
+ *   style, show, hide, enable, on (bind a handler), fire (raise an event), and
+ *   call (cross the native bridge to a SLeeLa operation). An ordinal verb keeps
+ *   dispatch cheap; the operands are interpreted per verb by SLGuiScript.
+ *
+ * Family: gui. Scripts describe UI intent; SLeeLa (via SLGuiScript) executes it
+ * against the SLeeLa-owned DOM and event bus.
+ */
+#sleela 2.1
+class SLGuiScriptCommand {
+  // Verb ordinals.
+  static final int CREATE = 0;   // create <tag> <id> [parentId]
+  static final int APPEND = 1;   // append <parentId> <childId>
+  static final int TEXT   = 2;   // text   <id> <value>
+  static final int ATTR   = 3;   // attr   <id> <name> <value>
+  static final int STYLE  = 4;   // style  <id> <prop> <value>
+  static final int SHOW   = 5;   // show   <id>
+  static final int HIDE   = 6;   // hide   <id>
+  static final int ENABLE = 7;   // enable <id> <"1"|"0">
+  static final int ON     = 8;   // on     <id> <eventName> <operation>
+  static final int FIRE   = 9;   // fire   <id> <eventName> [value]
+  static final int CALL   =10;   // call   <operation> [arguments]
+  static final int REMOVE =11;   // remove <id>
+  static final int NOP    =12;   // no-op / comment
+
+  int verb;
+  String a;    // operand 1
+  String b;    // operand 2
+  String c;    // operand 3
+  String d;    // operand 4
+
+  void configure(int v, String o1, String o2, String o3, String o4) {
+    verb = v; a = o1; b = o2; c = o3; d = o4;
+  }
+
+  int getVerb() { return verb; }
+  String op1() { return a; }
+  String op2() { return b; }
+  String op3() { return c; }
+  String op4() { return d; }
+
+  // Map a verb keyword to its ordinal (-1 when unknown).
+  int verbOf(String word) {
+    if (word == "create") { return CREATE; }
+    if (word == "append") { return APPEND; }
+    if (word == "text")   { return TEXT; }
+    if (word == "attr")   { return ATTR; }
+    if (word == "style")  { return STYLE; }
+    if (word == "show")   { return SHOW; }
+    if (word == "hide")   { return HIDE; }
+    if (word == "enable") { return ENABLE; }
+    if (word == "on")     { return ON; }
+    if (word == "fire")   { return FIRE; }
+    if (word == "call")   { return CALL; }
+    if (word == "remove") { return REMOVE; }
+    if (word == "nop")    { return NOP; }
+    return -1;
+  }
+
+  boolean valid() { return verb >= CREATE && verb <= NOP; }
+}

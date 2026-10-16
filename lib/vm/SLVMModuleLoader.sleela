@@ -11,7 +11,7 @@
  *
  * Family: vm. Produces/consumes SLVMModule, SLVMClass; composed by SLVM.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVMModuleLoader {
   String root; String packageName; int state; int packages; int symbols;
   SLVMModule current;

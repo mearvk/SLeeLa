@@ -14,6 +14,78 @@
       "sha256": "52f63bf1a600b156d135f6fba201f1d9f0dd250868edb2a59b0e300925bc545c"
     },
     {
+      "path": "idea/realtime/idea_canvas.h",
+      "sha256": "1c5104a7cd764b978996b3233fa901f66c6051c240fe9add8d3b5ffa9ad3b5e3"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_ctx.h",
+      "sha256": "5aef56fc5c42a23a29ebf59b7645768e7df8740304ed1a987e2d0fdfd2c1650e"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_ctx_cgl.mm",
+      "sha256": "e3d4c0cd84c3758db1ba6b723172bbb24c60954b3022191745a12109c411315d"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_ctx_egl.cpp",
+      "sha256": "50268b095f77f28ac27593074a0fbc656840e9ef0d86ed38997feb22ea784dde"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_ctx_wgl.cpp",
+      "sha256": "ea200b91460faf20b5bca392f22f024ecc68a8013a957850534b08278ff910ec"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_gl_stub.cpp",
+      "sha256": "924c82e42b29b38810969e310dc5438c97e41b32741b3d6187de6c701714e75f"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_gpu.cpp",
+      "sha256": "3aea3a4e6bdaf7eb1f5aef52d1e2bb4b54333082705392907600ae75c00c22a8"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_internal.hpp",
+      "sha256": "2cc976f772fac41903c5f65bd14676a696b77d1840cd3954577d444f615c4ba9"
+    },
+    {
+      "path": "idea/realtime/idea_canvas_sim.cpp",
+      "sha256": "addd4f0750c6d695546a7d88dcf55dd944cbd94993efb16b974faaa79ba84dcb"
+    },
+    {
+      "path": "idea/sleela-native/sln_audio.cpp",
+      "sha256": "d7cd9f0048fcbe9ff9ad2bf386dc24c09db782894203795da0fa20d1f420dd45"
+    },
+    {
+      "path": "idea/sleela-native/sln_audio.h",
+      "sha256": "d89bbe6378615155a531de7b1ec43a84c85970abef0542d1739e9854c880464b"
+    },
+    {
+      "path": "idea/sleela-native/sln_demo.cpp",
+      "sha256": "918d9d1f40a2438d69aa429fc3c2a3fedb3ce9769e29f149b53c6c6a05fa7548"
+    },
+    {
+      "path": "idea/sleela-native/sln_gl_loader.cpp",
+      "sha256": "2d6e7c952a8ffe30cf32ce549463baf410e748da757cda28544295fde145104a"
+    },
+    {
+      "path": "idea/sleela-native/sln_gl_loader.h",
+      "sha256": "89eadb6f7287998163904072ba34311a290827373fa0d5131f317425d4874340"
+    },
+    {
+      "path": "idea/sleela-native/sln_math.h",
+      "sha256": "1cf976b9cca73e572903f0cbd69ff6d3e5b00144a24270f41eb113031d9411df"
+    },
+    {
+      "path": "idea/sleela-native/sln_render_gl.cpp",
+      "sha256": "148210fe29875b34256c4a916d26bf8e0c190160167de3e68876d73aa8bbbf32"
+    },
+    {
+      "path": "idea/sleela-native/sln_render_gl.h",
+      "sha256": "cef2a8f1e8d8f366bf679ad71a2677585271b903efe0de615d84e6f11b3d6f38"
+    },
+    {
+      "path": "idea/sleela-native/sln_scene.h",
+      "sha256": "1712a4904acdb60a076a16d4b67130fdaf44c937c9e544c1304a96458b24af89"
+    },
+    {
       "path": "impl/catalog/sheet_catalog.cpp",
       "sha256": "edc44715753f2fb15b1a436978d501c14e41d49956b0f459a0aae1ffaf21525f"
     },
@@ -99,11 +171,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "de45276eef78a74fd89ab798fde5e4a42dfe2b0e0eac13c7029f4a38b3a6d020"
+      "sha256": "dab9ba2aed5082cbe06650ed2941250eda9340f5615e42082105eb4a82cf45ec"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "ae205390492ae20e00d37757e2eeffed6160c65149a8c5ba77c7080cde313ee8"
+      "sha256": "e2b5e4862d8de413b627a2bb4b5ac3121c36f146c3e0e234e11b4bc2623bc4db"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -120,6 +192,14 @@
     {
       "path": "impl/core/sleela_events.h",
       "sha256": "25e69f5fc014b86d2213994db46fe1047c793d4047e1d874ada829ab351ff3c5"
+    },
+    {
+      "path": "impl/core/sleela_idea_canvas.c",
+      "sha256": "e09a6cc97df57347288acafddf4425ac2f798b25f7c10599524a9e6aed6d393f"
+    },
+    {
+      "path": "impl/core/sleela_idea_canvas.h",
+      "sha256": "102fda7f89eef99fa215d0259efe6daaeb376542586f1d1135b0af9a530acfa2"
     },
     {
       "path": "impl/core/sleela_io.c",
@@ -319,7 +399,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "4d6e4975861ed9428651a1abc3f27651f497a33afdc39fdb6e0b8d4faf273f81"
+      "sha256": "396fbff526c2642b6123f94220d03d25e5da069dc252ade451c99bd74f70a2a5"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -327,7 +407,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "cedeac734a14350db11b9ed3aa516851682c40ae718895fcb220a74679d10149"
+      "sha256": "c80b18cc7db28d6d942fe85c9421361ec4fa5f3dc3af27f7ff7db1500f9d52ef"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -375,7 +455,7 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "cb9fa6a08ad5df50aa6bb527974b9e735fad2a6390266d2f8a0528dca54e8485"
+      "sha256": "4ae24add41a655e0e4f45d569e59c001e7c326027b8e11a860c77630a978baad"
     },
     {
       "path": "impl/frontend/lexer.h",
@@ -407,7 +487,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "5bdc373f941a1479d0d95473f04f8928e017456e2162966ac20c56f4a3fa41b3"
+      "sha256": "5ea1b4e7d273e68973dbd5e605a31034a6564a417111c80391eab3428cccd7b5"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -423,7 +503,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "505c6ab161762d0b4ce923e700c8a8b2cc906c8c6cbf73f5fda48f446fb64837"
+      "sha256": "026699f8049fde45a26ee6196d9a34f6640edeae0daa797e3ba89251f8273bb2"
     },
     {
       "path": "impl/nordshrift/complete/class_bindings.cpp",

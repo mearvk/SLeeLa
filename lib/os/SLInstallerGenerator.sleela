@@ -16,7 +16,7 @@
  *
  * Family: os. Consumes SLOSModel; produces an SLOSArtifact (KIND_SCRIPT).
  */
-#sleela 1.5
+#sleela 2.1
 class SLInstallerGenerator {
   int configured;
   void configure() { configured = 1; }

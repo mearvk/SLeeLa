@@ -14,7 +14,7 @@
  *
  * Family: cpu. Composes SLGuestScheduler for delivery/termination effects.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuestSignal {
   static final int SIG_LINES = 16;
   static final int SIGKILL = 9;

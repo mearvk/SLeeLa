@@ -1,0 +1,92 @@
+/*
+ * lib/ide-workbench/SLIdeCommandRegistry.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLIdeCommandRegistry — the IDE command system lib/gui
+ *   lacks. SLGuiAction models a single named, take-the-latch action; an IDE
+ *   needs a registry of commands (Open, Save, Save All, Compile, Run, Close)
+ *   each mapped to a stable id, a menu/toolbar label, and a SLeeLa operation
+ *   name the host invokes. This is the single place that binds UI affordances
+ *   (menus from lib/ui/SLMenu, toolbars, shortcuts) to the services:
+ *   compile -> lib/nordshrift + lib/compiler, save/load -> lib/sldocument.
+ */
+#sleela 2.1
+// Family: ide-workbench. Named commands bound to SLeeLa operations.
+class SLIdeCommandRegistry {
+  static final int MAX_COMMANDS = 1024;
+
+  String[] ids;                // stable command id, e.g. "ide.compile"
+  String[] labels;             // human label, e.g. "Compile"
+  String[] operations;         // SLeeLa operation the host invokes
+  int[] enabled;               // 1 when the command is currently invokable
+  int count;
+
+  void init() {
+    ids = new String[MAX_COMMANDS];
+    labels = new String[MAX_COMMANDS];
+    operations = new String[MAX_COMMANDS];
+    enabled = new int[MAX_COMMANDS];
+    count = 0;
+  }
+
+  // Register the standard IDE command set wired to its service operations.
+  void installDefaults() {
+    register("ide.open",     "Open",      "onOpen");
+    register("ide.save",     "Save",      "onSave");
+    register("ide.saveAll",  "Save All",  "onSaveAll");
+    register("ide.compile",  "Compile",   "onCompile");
+    register("ide.run",      "Run",       "onRun");
+    register("ide.close",    "Close",     "onClose");
+  }
+
+  boolean register(String id, String label, String operation) {
+    if (count >= MAX_COMMANDS) { return false; }
+    if (indexOf(id) >= 0) { return false; } // ids are unique
+    ids[count] = id; labels[count] = label;
+    operations[count] = operation; enabled[count] = 1;
+    count = count + 1;
+    return true;
+  }
+
+  int indexOf(String id) {
+    for (int i = 0; i < count; i = i + 1) {
+      if (ids[i] == id) { return i; }
+    }
+    return -1;
+  }
+
+  int size() { return count; }
+  boolean has(String id) { return indexOf(id) >= 0; }
+
+  String labelOf(String id) {
+    int i = indexOf(id);
+    if (i < 0) { return ""; }
+    return labels[i];
+  }
+  String operationOf(String id) {
+    int i = indexOf(id);
+    if (i < 0) { return ""; }
+    return operations[i];
+  }
+
+  // Enable/disable a command (e.g. "Save" is disabled when nothing is dirty).
+  boolean setEnabled(String id, boolean on) {
+    int i = indexOf(id);
+    if (i < 0) { return false; }
+    enabled[i] = on ? 1 : 0;
+    return true;
+  }
+  boolean isEnabled(String id) {
+    int i = indexOf(id);
+    return i >= 0 && enabled[i] == 1;
+  }
+
+  // Build a bound lib/gui SLGuiAction for a command so a Path 1/Path 2 host can
+  // raise it; returns null for an unknown command.
+  SLGuiAction toAction(String id) {
+    int i = indexOf(id);
+    if (i < 0) { return null; }
+    SLGuiAction a = new SLGuiAction();
+    a.configure(ids[i], operations[i]);
+    return a;
+  }
+}

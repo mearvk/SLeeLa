@@ -1,0 +1,74 @@
+/*
+ * lib/vm/src/sleela/SLVmResult.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmResult — the OOD equivalent of the native typed
+ *   result (virtual-machine/vm-version/003/vm_result.{h,c}, v003). One result
+ *   the whole VM shares: a stable category code + the subsystem + a message,
+ *   replacing per-family raw status ints. It reports itself through SLVmReport
+ *   at the severity its code implies, and maps the legacy sleela_* ABI status
+ *   convention (0 ok / negative error) onto the stable categories so existing
+ *   bridges adopt it without changing their return values.
+ *
+ * Mirrors: enum VmResultCode, struct VmResult { code; subsystem; message },
+ *   vm_ok/vm_fail/vm_is_ok/vm_result_report/vm_result_from_status.
+ *
+ * Family: vm. Composes SLVmReport; folded into SLVmAudit.
+ */
+#sleela 2.1
+class SLVmResult {
+  static final int E_OK          = 0;
+  static final int E_INVALID     = 1;
+  static final int E_LIMIT       = 2;
+  static final int E_NOT_FOUND   = 3;
+  static final int E_UNAVAILABLE = 4;
+  static final int E_MALFORMED   = 5;
+  static final int E_EXHAUSTED   = 6;
+  static final int E_DENIED      = 7;
+  static final int E_INTERNAL    = 8;
+
+  int    code;
+  String subsystem;
+  String message;
+
+  void ok() { code = E_OK; subsystem = ""; message = ""; }
+  void fail(int c, String sub, String msg) {
+    code = c;
+    subsystem = (sub == null) ? "vm" : sub;
+    message = (msg == null) ? "" : msg;
+  }
+  boolean isOk() { return code == E_OK; }
+
+  String codeName() {
+    if (code == E_OK)          { return "OK"; }
+    if (code == E_INVALID)     { return "INVALID"; }
+    if (code == E_LIMIT)       { return "LIMIT"; }
+    if (code == E_NOT_FOUND)   { return "NOT_FOUND"; }
+    if (code == E_UNAVAILABLE) { return "UNAVAILABLE"; }
+    if (code == E_MALFORMED)   { return "MALFORMED"; }
+    if (code == E_EXHAUSTED)   { return "EXHAUSTED"; }
+    if (code == E_DENIED)      { return "DENIED"; }
+    return "INTERNAL";
+  }
+
+  // Report through SLVmReport at the severity the code implies.
+  int report(SLVmReport r) {
+    if (r == null || code == E_OK) { return 0; }
+    if (code == E_LIMIT || code == E_DENIED || code == E_INTERNAL) {
+      return r.error(subsystem, codeName(), message);
+    }
+    return r.warn(subsystem, codeName(), message);
+  }
+
+  // Map a legacy sleela_* ABI status onto a stable category (mirror
+  // vm_result_from_status): 0 ok, negatives per the common convention.
+  int fromStatus(int status) {
+    if (status == 0)  { return E_OK; }
+    if (status == -1) { return E_INVALID; }
+    if (status == -2) { return E_LIMIT; }
+    if (status == -3) { return E_UNAVAILABLE; }
+    if (status == -4) { return E_MALFORMED; }
+    if (status == -5) { return E_MALFORMED; }
+    if (status == -6) { return E_EXHAUSTED; }
+    return E_INTERNAL;
+  }
+}

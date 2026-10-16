@@ -14,7 +14,7 @@
  * Family: autocad. SLeeLa owns the edit history; a command is a plain record,
  * replayed/reversed against an SLCadDocument.
  */
-#sleela 1.5
+#sleela 2.1
 class SLCadCommand {
   // Verb ordinals.
   static final int CREATE  = 0;   // an entity was created (undo = delete it)

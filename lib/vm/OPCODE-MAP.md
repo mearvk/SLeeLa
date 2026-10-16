@@ -4,7 +4,16 @@ Max Rupplin - MEARVK LLC - 2026
 
 This is the human-readable support map for the canonical source-defined SLeeLa ISA in `lib/vm/InstructionSet.sleela`.
 
-**Verified master-tree state:** 124 source ISA entries, 124 native `SLOp` entries, and 124 native dispatch cases. There are no missing native dispatch cases. The tail groups are the array ops (98–102) and the operating-system system calls (103–123, `OP_OS_*`), both appended to the end of the enum so earlier opcode numbers are unchanged.
+**Verified master-tree state:** 150 source ISA entries, 150 native `SLOp` entries, and 150 native dispatch cases. There are no missing native dispatch cases. The tail groups are the array ops (98–102), the operating-system system calls (103–123, `OP_OS_*`), the GC/system ops (124 `OP_GC_HINT`, 125 `OP_RAN_MEM`), the idea-canvas native-bridge ops (126–147, `OP_IC_*`, from `idea/realtime`), the VM-selection service op (148, `OP_VM_SELECT`), and the Modium file-resolution scan op (149, `OP_MODIUM_SCAN`) — all appended to the end of the enum so earlier opcode numbers are unchanged.
+
+> Sync note: entries 126–148 were previously a lag in the source ISA (the
+> `OP_IC_*` group existed in the native enum but not in `InstructionSet.sleela`
+> / this map). They are now represented as `SLISAIc*` classes plus
+> `SLISAVmSelect`, so the source ISA, native enum, and this map agree.
+> `OP_VM_SELECT` (148) is the service-exit seam the Sleela VM selector
+> (`virtual-machine/vm-version/SLVmRegistry` + the `SLVmVersionNNN` manifests)
+> binds to, so choosing a VM parks a VM-exit the host services by building and
+> booting the chosen version's native main.
 
 | Code | Opcode | Runtime status | Native dispatch |
 |---:|---|---|---|

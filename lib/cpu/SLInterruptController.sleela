@@ -11,7 +11,7 @@
  *
  * Family: cpu. Pure Sleela controller.
  */
-#sleela 1.3
+#sleela 2.1
 class SLInterruptController {
   static final int LINES = 16;
   static final int IRQ_TIMER = 0;

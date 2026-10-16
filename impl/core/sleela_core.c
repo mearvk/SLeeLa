@@ -21,6 +21,11 @@
 #include "sleela_audio_mixer.h"
 #include "sleela_os.h"
 #include "sleela_memmgr.h"
+#include "sleela_idea_canvas.h"
+
+#ifndef SL_IDEA_CANVAS_MAX
+#define SL_IDEA_CANVAS_MAX 16   /* bounded VM-local realtime-canvas table */
+#endif
 
 #include <math.h>
 #include <stdio.h>
@@ -142,6 +147,8 @@ struct SLVM {
     SLMunction* munction[SL_MUNCTION_MAX];
     pthread_mutex_t bestof_mtx;
     SLBestOf* bestof[SL_BESTOF_MAX];
+    pthread_mutex_t idea_canvas_mtx;
+    void* idea_canvas[SL_IDEA_CANVAS_MAX];   /* Idea System(TM) realtime canvases */
     SLStructType struct_types[SL_MAX_STRUCT_TYPES];
     int nstruct_types;
     SLStructInstance* structs;   /* SL_MAX_STRUCTS instances, lazily allocated */
@@ -357,6 +364,7 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->synchro_mtx, NULL);
     pthread_mutex_init(&vm->munction_mtx, NULL);
     pthread_mutex_init(&vm->bestof_mtx, NULL);
+    pthread_mutex_init(&vm->idea_canvas_mtx, NULL);
     pthread_mutex_init(&vm->audio_mtx, NULL);
     pthread_mutex_init(&vm->os_mtx, NULL);
     for (int i = 0; i < SL_MAX_OS_PROCESSES; i++) vm->os_proc[i] = SLOS_INVALID_PROCESS;
@@ -421,6 +429,10 @@ void slvm_free(SLVM* vm) {
         if (vm->bestof[i]) { slbestof_close(vm->bestof[i]); vm->bestof[i] = NULL; }
     }
     pthread_mutex_destroy(&vm->bestof_mtx);
+    for (int i = 0; i < SL_IDEA_CANVAS_MAX; i++) {
+        if (vm->idea_canvas[i]) { sl_idea_canvas_destroy(vm->idea_canvas[i]); vm->idea_canvas[i] = NULL; }
+    }
+    pthread_mutex_destroy(&vm->idea_canvas_mtx);
     /* Release any still-live spawned child processes (reap without blocking). */
     for (int i = 0; i < SL_MAX_OS_PROCESSES; i++) {
         if (vm->os_proc[i] != SLOS_INVALID_PROCESS) { slos_release(vm->os_proc[i]); vm->os_proc[i] = SLOS_INVALID_PROCESS; }
@@ -532,6 +544,24 @@ static void bestof_release(SLVM* vm, int h) {
     if (h < 0 || h >= SL_BESTOF_MAX) return;
     pthread_mutex_lock(&vm->bestof_mtx); SLBestOf* b = vm->bestof[h]; vm->bestof[h] = NULL; pthread_mutex_unlock(&vm->bestof_mtx);
     if (b) slbestof_close(b);
+}
+
+/* ---- Idea System(TM) realtime canvas table (VM-owned, bounded) ----------- */
+static int ic_alloc(SLVM* vm, void* c) {
+    pthread_mutex_lock(&vm->idea_canvas_mtx);
+    for (int i = 0; i < SL_IDEA_CANVAS_MAX; i++) if (!vm->idea_canvas[i]) {
+        vm->idea_canvas[i] = c; pthread_mutex_unlock(&vm->idea_canvas_mtx); return i;
+    }
+    pthread_mutex_unlock(&vm->idea_canvas_mtx); return -1;
+}
+static void* ic_get(SLVM* vm, int h) {
+    if (h < 0 || h >= SL_IDEA_CANVAS_MAX) return NULL;
+    pthread_mutex_lock(&vm->idea_canvas_mtx); void* c = vm->idea_canvas[h]; pthread_mutex_unlock(&vm->idea_canvas_mtx); return c;
+}
+static void ic_release(SLVM* vm, int h) {
+    if (h < 0 || h >= SL_IDEA_CANVAS_MAX) return;
+    pthread_mutex_lock(&vm->idea_canvas_mtx); void* c = vm->idea_canvas[h]; vm->idea_canvas[h] = NULL; pthread_mutex_unlock(&vm->idea_canvas_mtx);
+    if (c) sl_idea_canvas_destroy(c);
 }
 
 static int file_alloc(SLVM* vm, SLIOHandle fd) {
@@ -1248,6 +1278,142 @@ static SLResult run_thread(SLThread* t) {
         case OP_BEST_CLOSE: {
             SLValue hv=POP(); if(hv.type!=SL_INT) TERR("bestOfClose(handle) requires a handle");
             bestof_release(vm,(int)hv.as.i); PUSH(slval_null());
+        } break;
+
+        /* ---- Idea System(TM) realtime canvas (native-CPU render+physics) --- */
+        case OP_IC_CREATE: {
+            SLValue rowsv=POP(), colsv=POP();
+            if(colsv.type!=SL_INT||rowsv.type!=SL_INT) TERR("ideaCanvasCreate(cols, rows) requires two integers");
+            void* c=sl_idea_canvas_create((int)colsv.as.i,(int)rowsv.as.i);
+            if(!c){PUSH(slval_int(-1));break;}
+            int h=ic_alloc(vm,c); if(h<0){sl_idea_canvas_destroy(c);PUSH(slval_int(-1));break;}
+            PUSH(slval_int(h));
+        } break;
+        case OP_IC_DESTROY: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasDestroy(handle) requires a handle");
+            ic_release(vm,(int)hv.as.i); PUSH(slval_null());
+        } break;
+        case OP_IC_COLS: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasCols(handle) requires a handle");
+            PUSH(slval_int(sl_idea_canvas_cols(ic_get(vm,(int)hv.as.i))));
+        } break;
+        case OP_IC_ROWS: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasRows(handle) requires a handle");
+            PUSH(slval_int(sl_idea_canvas_rows(ic_get(vm,(int)hv.as.i))));
+        } break;
+        case OP_IC_COUNT: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasCount(handle) requires a handle");
+            PUSH(slval_int(sl_idea_canvas_count(ic_get(vm,(int)hv.as.i))));
+        } break;
+        case OP_IC_SETPARAMS: {
+            SLValue kv=POP(), hbv=POP(), fgv=POP(), dcv=POP(), hv=POP();
+            if(hv.type!=SL_INT) TERR("ideaCanvasSetParams(handle, decay, flowGain, hueBase, coupling) requires a handle and four numbers");
+            double dc=(dcv.type==SL_DOUBLE)?dcv.as.d:(double)dcv.as.i;
+            double fg=(fgv.type==SL_DOUBLE)?fgv.as.d:(double)fgv.as.i;
+            double hb=(hbv.type==SL_DOUBLE)?hbv.as.d:(double)hbv.as.i;
+            double k =(kv.type==SL_DOUBLE)?kv.as.d:(double)kv.as.i;
+            sl_idea_canvas_set_params(ic_get(vm,(int)hv.as.i),dc,fg,hb,k); PUSH(hv);
+        } break;
+        case OP_IC_EXCITE: {
+            SLValue av=POP(), rv=POP(), cv=POP(), hv=POP();
+            if(hv.type!=SL_INT||cv.type!=SL_INT||rv.type!=SL_INT) TERR("ideaCanvasExcite(handle, col, row, amount) requires handle, col, row integers and an amount");
+            double amt=(av.type==SL_DOUBLE)?av.as.d:(double)av.as.i;
+            PUSH(slval_int(sl_idea_canvas_excite(ic_get(vm,(int)hv.as.i),(int)cv.as.i,(int)rv.as.i,amt)));
+        } break;
+        case OP_IC_STEP: {
+            SLValue dtv=POP(), hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasStep(handle, dt) requires a handle and dt");
+            double dt=(dtv.type==SL_DOUBLE)?dtv.as.d:(double)dtv.as.i;
+            PUSH(slval_int(sl_idea_canvas_step(ic_get(vm,(int)hv.as.i),dt)));
+        } break;
+        case OP_IC_ADVANCE: {
+            SLValue dtv=POP(), hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasAdvance(handle, frameDt) requires a handle and frameDt");
+            double dt=(dtv.type==SL_DOUBLE)?dtv.as.d:(double)dtv.as.i;
+            PUSH(slval_int(sl_idea_canvas_advance(ic_get(vm,(int)hv.as.i),dt)));
+        } break;
+        case OP_IC_TIMESTEP: {
+            PUSH(slval_double(sl_idea_canvas_timestep()));
+        } break;
+        case OP_IC_INTENSITY: {
+            SLValue rv=POP(), cv=POP(), hv=POP();
+            if(hv.type!=SL_INT||cv.type!=SL_INT||rv.type!=SL_INT) TERR("ideaCanvasIntensityAt(handle, col, row) requires three integers");
+            PUSH(slval_double(sl_idea_canvas_intensity_at(ic_get(vm,(int)hv.as.i),(int)cv.as.i,(int)rv.as.i)));
+        } break;
+        case OP_IC_HASREND: {
+            PUSH(slval_int(sl_idea_canvas_has_renderer()));
+        } break;
+        case OP_IC_OPENWIN: {
+            SLValue tv=POP(), hgt=POP(), wdt=POP(), hv=POP();
+            if(hv.type!=SL_INT||wdt.type!=SL_INT||hgt.type!=SL_INT||tv.type!=SL_STR) TERR("ideaCanvasOpenWindow(handle, width, height, title) requires handle, width, height ints and a title String");
+            PUSH(slval_int(sl_idea_canvas_open_window(ic_get(vm,(int)hv.as.i),(int)wdt.as.i,(int)hgt.as.i,slvm_str(vm,tv.as.s))));
+        } break;
+        case OP_IC_SHOULDCLOSE: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasShouldClose(handle) requires a handle");
+            PUSH(slval_int(sl_idea_canvas_should_close(ic_get(vm,(int)hv.as.i))));
+        } break;
+        case OP_IC_PRESENT: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasPresent(handle) requires a handle");
+            PUSH(slval_int(sl_idea_canvas_present(ic_get(vm,(int)hv.as.i))));
+        } break;
+        case OP_IC_RUN: {
+            SLValue tv=POP(), hgt=POP(), wdt=POP(), hv=POP();
+            if(hv.type!=SL_INT||wdt.type!=SL_INT||hgt.type!=SL_INT||tv.type!=SL_STR) TERR("ideaCanvasRun(handle, width, height, title) requires handle, width, height ints and a title String");
+            PUSH(slval_int(sl_idea_canvas_run(ic_get(vm,(int)hv.as.i),(int)wdt.as.i,(int)hgt.as.i,slvm_str(vm,tv.as.s))));
+        } break;
+        case OP_IC_SETPOLICY: {
+            SLValue pv=POP(), hv=POP();
+            if(hv.type!=SL_INT||pv.type!=SL_INT) TERR("ideaCanvasSetBackendPolicy(handle, policy) requires a handle and a policy int (0 auto,1 cpu,2 gpu)");
+            sl_idea_canvas_set_policy(ic_get(vm,(int)hv.as.i),(int)pv.as.i); PUSH(hv);
+        } break;
+        case OP_IC_POLICY: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasPolicy(handle) requires a handle");
+            PUSH(slval_int(sl_idea_canvas_policy(ic_get(vm,(int)hv.as.i))));
+        } break;
+        case OP_IC_BACKEND: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasActiveBackend(handle) requires a handle");
+            PUSH(slval_int(sl_idea_canvas_active_backend(ic_get(vm,(int)hv.as.i))));
+        } break;
+        case OP_IC_GPUAVAIL: {
+            PUSH(slval_int(sl_idea_canvas_gpu_available()));
+        } break;
+        case OP_IC_MEASHZ: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("ideaCanvasMeasuredHz(handle) requires a handle");
+            PUSH(slval_double(sl_idea_canvas_measured_hz(ic_get(vm,(int)hv.as.i))));
+        } break;
+        case OP_IC_MIGRATE: {
+            SLValue tv=POP(), hv=POP();
+            if(hv.type!=SL_INT||tv.type!=SL_INT) TERR("ideaCanvasMigrate(handle, target) requires a handle and target int (0 cpu,1 gpu)");
+            PUSH(slval_int(sl_idea_canvas_migrate(ic_get(vm,(int)hv.as.i),(int)tv.as.i)));
+        } break;
+
+        /* ---- VM selection service (SLVmRegistry seam) ----------------- */
+        case OP_VM_SELECT: {
+            /* pops a VM version number. This is the service-exit seam a Sleela
+             * VM selector (virtual-machine/vm-version/SLVmRegistry) uses to ask
+             * the host to build+boot the chosen version. Valid range is 1..11:
+             * the ten standard think-tank versions (1..10) and the eleven
+             * premium SLVM generations (1..11, the broader range), each a real
+             * runnable VM under sleela-virtual-machine/0NN that links the shared
+             * Core engine. The core validates the request and pushes a status
+             * (0 ok, -1 out of range); the actual build+boot is a host action
+             * signalled by this opcode (an unknown opcode is never a no-op). */
+            SLValue nv=POP();
+            if(nv.type!=SL_INT) TERR("vmSelect(number) requires an int version number");
+            int sel=(int)nv.as.i;
+            PUSH(slval_int((sel>=1 && sel<=11) ? 0 : -1));
+        } break;
+
+        /* ---- Modium file-resolution scan (SLVmModium seam) ----------- */
+        case OP_MODIUM_SCAN: {
+            /* pops a VM version number (1..10). The service-exit seam the Sleela
+             * SLVmModium uses to ask the host to scan that version's files
+             * (exist/placed/intact per its MODIUM.json). The core validates the
+             * request and pushes a status (0 ok, -1 out of range); the actual
+             * file scan + reconstitution from rebuild.sql is a host action
+             * signalled by this opcode. */
+            SLValue mv=POP();
+            if(mv.type!=SL_INT) TERR("modiumScan(number) requires an int version number");
+            int msel=(int)mv.as.i;
+            PUSH(slval_int((msel>=1 && msel<=10) ? 0 : -1));
         } break;
 
         /* ---- SLVM Audio bridge --------------------------------------- */

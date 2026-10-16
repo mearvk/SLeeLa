@@ -13,7 +13,7 @@
  *
  * Family: moral-capacitor. Written by SLMoralCapacitor / the adapters.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralLedger {
   String entries;     // newline-separated verdict summaries
   int total;

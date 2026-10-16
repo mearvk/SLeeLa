@@ -1,4 +1,4 @@
-#sleela 1.0
+#sleela 2.1
 // RMI server-side business logic.
 // Java provides the RMI/JRMP transport; this Wrapper owns the service meaning.
 class RmiServer {

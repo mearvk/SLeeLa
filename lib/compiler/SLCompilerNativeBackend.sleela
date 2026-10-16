@@ -2,7 +2,7 @@
  * Fail-closed native backend selection. C/C++ are generated outputs; SLeeLa
  * remains the source-level contract and language semantics authority.
  */
-#sleela 1.3
+#sleela 2.1
 class SLCompilerNativeBackend {
   SLNativeSourceEmitter emitter;
   SLCompilerToolchain toolchain;

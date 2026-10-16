@@ -14,7 +14,7 @@
  *
  * Family: cpu. Extends SLCPURuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SLMIPSCPU extends SLCPURuntime {
   static final int R_HI = 32;
   static final int R_LO = 33;

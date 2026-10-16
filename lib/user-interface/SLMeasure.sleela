@@ -11,7 +11,7 @@
  *
  * Family: user-interface.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMeasure {
   // Unit ordinals (mirror SLUIUnitKind).
   static final int PX   = 0;   // device pixels

@@ -5,6 +5,7 @@ CFLAGS ?= -O2 -Wall -Wextra -Wpedantic
 CXXFLAGS ?= -O2 -Wall -Wextra -Wpedantic -std=c++17
 MQTT_CFLAGS ?= $(shell pkg-config --cflags libmosquitto 2>/dev/null) $(shell pkg-config --cflags libcjson 2>/dev/null)
 MQTT_LIBS ?= $(shell pkg-config --libs libmosquitto 2>/dev/null || echo -lmosquitto)
+
 .PHONY: all build test clean
 all: libsleela_mqtt.a mqtt_connector_cpp.o
 mqtt_connector.o: mqtt_connector.c mqtt_connector.h

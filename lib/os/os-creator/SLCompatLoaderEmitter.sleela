@@ -18,7 +18,7 @@
  * Family: os. OS Creator(TM) piece emitter; consumes SLOSModel's SLCompatSet,
  *   fills SLOSPiece.
  */
-#sleela 1.11
+#sleela 2.1
 class SLCompatLoaderEmitter {
   SLOSPiece emit(SLOSModel m) {
     SLOSPiece p = new SLOSPiece();

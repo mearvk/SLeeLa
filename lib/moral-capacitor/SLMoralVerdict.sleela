@@ -11,7 +11,7 @@
  *
  * Family: moral-capacitor. Returned by SLMoralCapacitor.evaluate.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralVerdict {
   // Decision ordinals.
   static final int PERMIT = 1;

@@ -1,0 +1,53 @@
+/*
+ * lib/registry/SLRegistryProvenance.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLRegistryProvenance — the OOD equivalent of a native
+ *   registry provenance record (registry/sleela_registry.* struct
+ *   sl_reg_provenance). It makes a registry entry self-describing and
+ *   verifiable: the tracked file's name, date, author, version, a stable hex
+ *   id, the SHA-256 of its content, and an ORIGINALITY SEAL. The seal is a
+ *   SHA-256 over (hexId | version | hash | author); if any of those is altered,
+ *   verify() reports the seal broken. The actual hashing crosses the native
+ *   bridge (the host computes SHA-256); this class is the record + seal check.
+ *
+ * Mirrors: sl_reg_provenance + sl_reg_seal/sl_reg_seal_verify.
+ *
+ * Family: registry. Attached to an SLRegistryKey.
+ */
+#sleela 2.1
+class SLRegistryProvenance {
+  String name;      // tracked file name
+  String date;      // ISO-8601 recorded date/time
+  String author;    // authoring party
+  String version;   // artifact version
+  String hexId;     // 16 hex chars, stable identity
+  String hash;      // SHA-256 of the file content (64 hex)
+  String seal;      // originality seal (64 hex)
+
+  void configure(String fileName, String recordedDate, String by,
+                 String ver, String id, String contentHash) {
+    name = fileName; date = recordedDate; author = by;
+    version = ver; hexId = id; hash = contentHash; seal = "";
+  }
+
+  // The seal input: the four identity-and-content fields, order fixed.
+  String sealInput() { return hexId + "|" + version + "|" + hash + "|" + author; }
+
+  // The host computes SHA-256 of sealInput() and sets it here (native bridge).
+  void setSeal(String computed) { seal = computed; }
+  boolean isSealed() {
+    if (seal == null) { return false; }
+    return seal != "";
+  }
+
+  // Verify requires the host to recompute SHA-256(sealInput()) and compare.
+  // expected = that recomputation; returns true if it matches the stored seal.
+  boolean verify(String expected) { return isSealed() && seal == expected; }
+
+  String render() {
+    return "<provenance> file=" + name + " author=" + author
+         + " version=" + version + " hexid=" + hexId
+         + " hash=" + hash + " seal=" + seal
+         + " [" + (isSealed() ? "SEALED" : "UNSEALED") + "]";
+  }
+}

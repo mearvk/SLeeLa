@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // languages.sleela -- the self-contained, runnable build of the SLeeLa
 // localization library. The compiler's `run` compiles one file as a single
 // unit, so this aggregate carries the translations inline and a `main` that

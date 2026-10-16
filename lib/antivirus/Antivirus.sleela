@@ -2,7 +2,7 @@
  * lib/antivirus/Antivirus.sleela
  * Public facade for the SLeeLa antivirus component package.
  */
-#sleela 1.3
+#sleela 2.1
 class Antivirus {
   SLScanPolicy policy;
   SLClamAVAdapter adapter;

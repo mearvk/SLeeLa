@@ -1,4 +1,4 @@
-#sleela 1.9
+#sleela 2.1
 // The ran:: system namespace: `ran::mem` reads live system memory, and the
 // GC hint has an explicit, system-scoped spelling `x = ran::gc N;` /
 // `x = ran::mem N;`. Crucially, `mem`, `gc`, and even `ran` remain usable as

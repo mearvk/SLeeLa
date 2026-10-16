@@ -16,7 +16,7 @@
  *
  * Family: os. Composes SLHardwareRegistry parts; consumed by SLMachineBuilder.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMachineModel {
   String machineName;
   // CPU identity (the processor itself is modeled by lib/cpu/SLCPU at build).

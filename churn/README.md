@@ -4,6 +4,9 @@ Churn organizes five complementary ways to model a magnitude. Each numbered set
 has a distinct primary dimension, but all sets share provenance and quality
 rules, the three-domain grouping (math, physics, social), and a constraint layer.
 
+See [DATA-CATALOG.md](DATA-CATALOG.md) for the cross-dimensional data catalog,
+shared record contract, import policy, and integration roadmap.
+
 ## Set index
 
 | Set | Dimension | Core model | Question |
@@ -64,10 +67,9 @@ make churn-test
 
 Or from this directory: `make all`, `make test`, `make clean`.
 
-The data check parses JSON and XML, checks CSV column consistency, and ensures
-text files are non-empty. It does not establish scientific correctness or that
-sources are still current. Java constraint reports are generated outputs and
-remain ignored by Git.
+The data check parses JSON/XML/CSV/TXT, checks CSV headers and row widths, detects duplicate IDs in supported record arrays/CSV ID columns, validates evidence-kind values, and enforces the opt-in `churn-1` JSON contract. It does not establish scientific correctness, unit compatibility, referential integrity, or that sources are still current. Java
+constraint reports are generated outputs and remain ignored by Git. See
+[DATA-CATALOG.md](DATA-CATALOG.md) for the recommended validation roadmap.
 
 ## Evidence discipline
 

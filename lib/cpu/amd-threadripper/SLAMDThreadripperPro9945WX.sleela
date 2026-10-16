@@ -1,0 +1,14 @@
+/*
+ * lib/cpu/amd-threadripper/SLAMDThreadripperPro9945WX.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: AMD Ryzen Threadripper PRO 9945WX (Zen 5 "Shimada Peak",
+ *   workstation WX-Series, entry). 12 cores / 24 threads, 5.4 GHz max boost,
+ *   64 MB L3, 8-channel DDR5-6400, up to 128 PCIe 5.0 lanes, sTR5/WRX90,
+ *   350 W. A thin SKU subclass of SLAMDThreadripperCPU overriding only
+ *   configure(). Full figures in SPECIFICATION.md.
+ * Family: cpu. Extends SLAMDThreadripperCPU.
+ */
+#sleela 2.1
+class SLAMDThreadripperPro9945WX extends SLAMDThreadripperCPU {
+  void configure() { bringUpModel("AMD Ryzen Threadripper PRO 9945WX (Zen 5, 12C/24T)", 5400); }
+}

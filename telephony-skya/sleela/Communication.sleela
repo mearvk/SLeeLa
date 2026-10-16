@@ -13,7 +13,7 @@
  * portable VM socket primitives as SkyaClient (`connect`/`sockwrite`/
  * `sockread`/`sockclose`) across the explicit SLeeLa VM/OS bridge.
  */
-#sleela 1.3
+#sleela 2.1
 // Skya telephony — message exchange (loadable module / natural).
 class Communication {
 

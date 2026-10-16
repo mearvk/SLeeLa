@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // synchro_measure.sleela -- Synchro honest packet dispatch + measurement,
 // first-class in the Sleela source language (syntax 1.3). Synchro measures
 // what actually happened; it makes no delivery-time guarantee. A dispatch to a

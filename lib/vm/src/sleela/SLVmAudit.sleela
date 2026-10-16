@@ -1,0 +1,86 @@
+/*
+ * lib/vm/src/sleela/SLVmAudit.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmAudit — the OOD equivalent of the native audit trail
+ *   (virtual-machine/vm-version/009/vm_audit.{h,c}, v009). It records
+ *   structured events (CONFIG/DENIAL/PRESSURE/SATURATE/PLATFORM/ERROR/INFO)
+ *   with a monotonic sequence number and a running FNV-1a chain hash so the
+ *   trail is ordered and tamper-evident, mirroring each event to SLVmReport.
+ *   The native side is a 256-entry ring; the Sleela surface keeps the counters,
+ *   the running chain hash, and the last event (the ring body is native).
+ *
+ * Mirrors: enum VmAuditKind, vm_audit_record/result/total/count/chain/report.
+ *
+ * Family: vm. Composes SLVmReport, SLVmResult.
+ */
+#sleela 2.1
+class SLVmAudit {
+  static final int INFO     = 0;
+  static final int CONFIG   = 1;
+  static final int DENIAL   = 2;
+  static final int PRESSURE = 3;
+  static final int SATURATE = 4;
+  static final int PLATFORM = 5;
+  static final int ERROR    = 6;
+
+  int    total;        // ever recorded
+  int    chainLow;     // low 31 bits of the running chain hash (surface int)
+  int    lastSeq;
+  int    lastKind;
+  String lastSubsystem;
+  String lastMessage;
+
+  void init() { total = 0; chainLow = 0; lastSeq = 0; lastKind = INFO; lastSubsystem = ""; lastMessage = ""; }
+
+  int severityFor(int kind) {
+    if (kind == DENIAL || kind == ERROR)   { return SLVmReport.SEV_ERROR; }
+    if (kind == PRESSURE || kind == SATURATE || kind == PLATFORM) { return SLVmReport.SEV_WARN; }
+    if (kind == CONFIG)  { return SLVmReport.SEV_NOTICE; }
+    return SLVmReport.SEV_DEBUG;
+  }
+
+  // simple positive-int FNV-1a fold step (surface has no unsigned/xor; use
+  // multiply+add+mod to keep a stable, order-sensitive running value).
+  int fold(int h, int v) {
+    int x = (h * 131 + v) % 2147483647;
+    if (x < 0) { x = x + 2147483647; }
+    return x;
+  }
+
+  // record an event (mirror vm_audit_record): seq++, fold the chain, mirror to report.
+  int log(int kind, String subsystem, String message, SLVmReport rep) {
+    total = total + 1;
+    lastSeq = total; lastKind = kind;
+    lastSubsystem = (subsystem == null) ? "vm" : subsystem;
+    lastMessage = (message == null) ? "" : message;
+    chainLow = fold(fold(chainLow, total), kind);
+    if (rep != null) { rep.emit(severityFor(kind), lastSubsystem, kindName(kind), lastMessage); }
+    return lastSeq;
+  }
+
+  // fold a typed result into the trail (mirror vm_audit_result).
+  int logResult(SLVmResult r, SLVmReport rep) {
+    if (r == null) { return total; }
+    int k;
+    if (r.code == r.E_DENIED)         { k = DENIAL; }
+    else if (r.code == r.E_EXHAUSTED) { k = SATURATE; }
+    else if (r.code == r.E_LIMIT)     { k = PRESSURE; }
+    else if (r.code == r.E_UNAVAILABLE) { k = PLATFORM; }
+    else if (r.code == r.E_OK)        { k = INFO; }
+    else { k = ERROR; }
+    return log(k, r.subsystem, r.message, rep);
+  }
+
+  int totalEvents() { return total; }
+  int chain() { return chainLow; }
+
+  String kindName(int k) {
+    if (k == CONFIG)   { return "CONFIG"; }
+    if (k == DENIAL)   { return "DENIAL"; }
+    if (k == PRESSURE) { return "PRESSURE"; }
+    if (k == SATURATE) { return "SATURATE"; }
+    if (k == PLATFORM) { return "PLATFORM"; }
+    if (k == ERROR)    { return "ERROR"; }
+    return "INFO";
+  }
+}

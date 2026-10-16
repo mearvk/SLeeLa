@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 2.1
 // churn/1/relevances.sleela  --  "Longs": relevances among US economic length series.
 //
 // Each `Long` is a length series (a magnitude that runs over 2019..2024). The

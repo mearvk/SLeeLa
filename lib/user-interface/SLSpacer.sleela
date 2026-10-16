@@ -12,7 +12,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLSpacer extends SLWidget {
   // Create a flexible spacer inside `parent`.
   void createIn(SLWidget parent) {

@@ -1,0 +1,33 @@
+#sleela 2.1
+// idea_canvas_backend.sleela -- exercises the VM's CPU/GPU backend selection
+// and the auto-offload decision. The VM runs on the CPU and, under AUTO policy,
+// would migrate to the GPU if sustained throughput drops below 120 Hz AND a GPU
+// backend is available. (In a GPU-less build gpuAvailable() is 0, so it stays
+// on CPU and reports honestly.)
+class IdeaCanvasBackend {
+  void main() {
+    print("gpu-available: " + ideaCanvasGpuAvailable());
+
+    int cv = ideaCanvasCreate(128, 128);
+    print("backend at start: " + ideaCanvasActiveBackend(cv));   // 0 = CPU
+    print("policy at start:  " + ideaCanvasPolicy(cv));           // 0 = AUTO
+
+    ideaCanvasSetParams(cv, 0.25, 0.9, 205.0, 0.06);
+    ideaCanvasExcite(cv, 64, 64, 1.0);
+
+    // advance ~0.5 s of frames; the VM measures sustained throughput and
+    // decides CPU vs GPU each advance.
+    int frame = 0;
+    while (frame < 30) { ideaCanvasAdvance(cv, 0.016666); frame = frame + 1; }
+
+    print("measured-hz: " + ideaCanvasMeasuredHz(cv));
+    print("backend after advancing: " + ideaCanvasActiveBackend(cv));
+
+    // Explicitly request the GPU: honest result depends on availability.
+    int rc = ideaCanvasMigrate(cv, 1);
+    print("force-gpu migrate rc: " + rc + "  backend now: " + ideaCanvasActiveBackend(cv));
+
+    ideaCanvasDestroy(cv);
+    print("done.");
+  }
+}

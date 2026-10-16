@@ -5,6 +5,7 @@ CFLAGS ?= -O2 -Wall -Wextra -Wpedantic
 CXXFLAGS ?= -O2 -Wall -Wextra -Wpedantic -std=c++17
 CURL_CFLAGS ?= $(shell pkg-config --cflags libcurl 2>/dev/null)
 CURL_LIBS ?= $(shell pkg-config --libs libcurl 2>/dev/null || echo -lcurl)
+
 .PHONY: all build test clean
 all: libsleela_rest.a rest_connector_cpp.o
 rest_connector.o: rest_connector.c rest_connector.h

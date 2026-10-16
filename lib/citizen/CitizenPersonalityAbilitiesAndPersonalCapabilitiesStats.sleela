@@ -1,0 +1,62 @@
+#sleela 2.1
+/*
+ * CitizenPersonalityAbilitiesAndPersonalCapabilitiesStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Personality, abilities, and personal capabilities.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenPersonalityAbilitiesAndPersonalCapabilitiesStats {
+    int INT;
+    int CON;
+    int WIS;
+    int CHA;
+    int STR;
+    int DEX;
+    int EMP;
+    int WILL;
+    int LCK;
+    int creativity;
+    int adaptability;
+    int reliability;
+    int conscientiousness;
+    int curiosity;
+    int patience;
+    int emotionalStability;
+    int conflictResolution;
+    int civicMindedness;
+    int trustworthiness;
+    int riskTolerance;
+    int leadership;
+    int teamwork;
+    int communication;
+    int negotiation;
+    int problemSolving;
+
+    CitizenPersonalityAbilitiesAndPersonalCapabilitiesStats() {
+        INT = 10;
+        CON = 10;
+        WIS = 10;
+        CHA = 10;
+        STR = 10;
+        DEX = 10;
+        EMP = 10;
+        WILL = 10;
+        LCK = 10;
+        creativity = 50;
+        adaptability = 50;
+        reliability = 50;
+        conscientiousness = 50;
+        curiosity = 50;
+        patience = 50;
+        emotionalStability = 50;
+        conflictResolution = 50;
+        civicMindedness = 50;
+        trustworthiness = 50;
+        riskTolerance = 50;
+        leadership = 50;
+        teamwork = 50;
+        communication = 50;
+        negotiation = 50;
+        problemSolving = 50;
+    }
+}

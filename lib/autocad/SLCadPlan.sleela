@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type SLCadPlan used within the autocad library family.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa standard-library front-end object.
 // Family: autocad. Documents the plan directive vocabulary (description,
 // dimensions, plan, notes) that the renderer evaluates into geometry. Each

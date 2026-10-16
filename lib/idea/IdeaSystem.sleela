@@ -1,0 +1,130 @@
+#sleela 2.1
+// Version: Idea System(TM) 1.0.0 | Main program: Sleelvac 1.5
+// IdeaSystem.sleela -- the Sleela "Sleela runnable" for the Idea(TM) System.
+//
+// Idea System(TM) / Idea(TM).  From Author; distributive.
+//
+// This is the Sleela surface of everything /idea implements in C/C++.  It:
+//   1. Loads the signal-distributed System and names it against the catalog.
+//   2. Receives signal input from the known internet resource -- a hex code
+//      the Content Author controls, served from github.com -- selecting the
+//      part of the internet to use with the first-class best-of* method.
+//   3. Declares the AI model/objectives that fold the signal into a forward,
+//      linear solution Series (<= 30h of content, <= 9 seemly decisions).
+//   4. Lets Time progress; the System presents its State.  The State IS the
+//      System -- a user cannot really know which is the difference.
+//
+// It honors the Constitution (system depth 3024, complexity degree <= 4) and
+// uses honest Synchro measurement, exactly as the language intends.
+
+class IdeaSystem {
+
+    // ---- shared State (thread-safe globals) ----------------------------
+    // The System is prevaricated upon its State; these fields ARE the System.
+    String sourceUrl = "https://github.com/mearvk/Senior.Senate.Attorney.E44Hrs/wiki/US-Title-Brands";
+
+    int maxHours     = 30;    // design goal: <= 30 hours of content
+    int maxDecisions = 9;     // design goal: <= 9 seemly, important decisions
+
+    int elapsed      = 0;     // forward Time, in simulated hours
+    int decisions    = 0;     // seemly decisions reached so far
+    String state     = "LOADING";
+
+    // ---- organization: present what is present/capable in the State ----
+    void present() {
+        print("Idea System(TM) [" + state + "] hour=" + elapsed + "/" + maxHours
+              + " decisions=" + decisions + "/" + maxDecisions);
+    }
+
+    // ---- 2. choose the part of the internet to receive the signal from --
+    // The signal is an Author-controlled hex code from github.com.  best-of*
+    // weighs data/decisions/costs/versions/architecture and picks the route.
+    int chooseResource() {
+        int b = bestOfNew();
+        bestOfWeight(b, 0, 55);   // data      (measured latency/loss/jitter)
+        bestOfWeight(b, 1, 25);   // decisions (the <= 9 seemly choices)
+        bestOfWeight(b, 2, 10);   // costs
+        bestOfWeight(b, 3, 5);    // versions
+        bestOfWeight(b, 4, 5);    // architecture
+        bestOfMinVersion(b, 1);
+        bestOfCostBudget(b, 50);
+
+        // The known internet resource: the Author's github.com wiki page.
+        // (b, name, route, timeoutMs, payloadLen, gapMs, flags, version, cost, replays)
+        int author = bestOfCandidate(b, "author-wiki", "https://github.com", 2000, 256, 0, 3, 1, 20, 2);
+        bestOfCandidateArch(b, author, 1, 46, 1);   // DiffServ, DSCP 46 (EF), realized
+
+        // Honest Synchro measurement folded into the candidate (loopback
+        // discard keeps the runnable deterministic; a deployment probes live).
+        int p = synchroOpen("127.0.0.1", 9);
+        if (p >= 0) {
+            int i = 0;
+            while (i < 4) {
+                bestOfRecord(b, author, synchroDispatch(p, 256, 30));
+                i = i + 1;
+            }
+            synchroClose(p);
+        }
+
+        int winner = bestOfBest(b);
+        print("received-from: " + bestOfChoice(b) + " (" + sourceUrl + ")");
+        bestOfClose(b);
+        return winner;
+    }
+
+    // ---- 3. declare the AI-driven solution Series ----------------------
+    // The native AI VM bridge (ai* built-ins) is a separate API layer and is
+    // NOT part of the verified core semantic set in this compiler build, so
+    // the runnable models the AI objectives with core-verified constructs:
+    // conducted-method catalog lookups and the Constitution limits.  The
+    // native /idea C/C++ core carries the actual AI objective structures.
+    void declareModel() {
+        print("ai-objectives (bounded to " + maxDecisions + "):");
+        print("  receive : " + insight("System"));   // receive signal input
+        print("  solve   : " + role("Pipeline"));     // advance the Series
+        print("  decide  : seemly, important choices within degree<=" + degreemax());
+        print("  present : present only what is present and capable");
+        print("instruction: fold the Author hex code into a forward linear "
+              + "Series bounded to " + maxHours + "h and " + maxDecisions
+              + " decisions.");
+    }
+
+    // ---- 4. let Time progress; present the State at each hour -----------
+    // Time is ultimate and company to the Series.  It may SEEM to loop/retry
+    // but it is consistent in Time -- a forward, linear Series.
+    void advance() {
+        state = "SOLVING";
+        while (elapsed < maxHours) {
+            elapsed = elapsed + 1;
+
+            // Spread the <= 9 seemly decisions evenly across the Series.
+            int due = (elapsed * maxDecisions) / maxHours;
+            if (due > decisions) {
+                decisions = due;
+                state = "DECIDING";
+            } else {
+                state = "SOLVING";
+            }
+            present();
+        }
+        state = "FINAL";   // Finality: end of Time for this Series
+        present();
+    }
+
+    void main() {
+        // The Constitution the System runs under (read directly).
+        print("Constitution: depth=" + sysdepth() + " degree<=" + degreemax());
+
+        // Name the System against the conducted catalog -- the System IS a
+        // root object; the Series routes through the piping role.
+        print("conduct(System)=" + conduct("System")
+              + " role(Pipeline)=" + role("Pipeline"));
+
+        state = "RECEIVING";
+        chooseResource();   // 2. choose + receive from the internet resource
+        declareModel();     // 3. declare the AI-driven Series
+
+        advance();          // 4. forward Time to Finality
+        print("Idea System(TM): the State is the System; what you saw is what it presents.");
+    }
+}

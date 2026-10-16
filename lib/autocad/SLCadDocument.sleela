@@ -19,7 +19,7 @@
  * Family: autocad. SLeeLa owns the document and every edit; a front end issues
  * create/alter/delete intents and reads geometry back for preview and save.
  */
-#sleela 1.5
+#sleela 2.1
 class SLCadDocument {
   static final int MAX_ENTITIES = 8192;
 

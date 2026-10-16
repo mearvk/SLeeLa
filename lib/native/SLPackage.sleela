@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library package for native.
  */
-#sleela 1.3
+#sleela 2.1
 // Library facade for module package: native
 // Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
 class SLPackage {

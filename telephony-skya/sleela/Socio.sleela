@@ -14,7 +14,7 @@
  * every emblematic Skya module the same way. It holds no socket; it models the
  * social layer the networking classes serve.
  */
-#sleela 1.3
+#sleela 2.1
 // Skya telephony — social fabric (loadable module / natural).
 class Socio {
 

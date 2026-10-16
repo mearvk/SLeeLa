@@ -10,7 +10,7 @@
  *
  * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLFileSystem {
   int ops;
   void configure() { ops = 0; }

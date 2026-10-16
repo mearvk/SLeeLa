@@ -25,7 +25,7 @@
  *   SLKernelSpec, SLFilesystemLayout, SLDriverSet, SLPackageSet, SLServiceSet,
  *   SLDesktopSpec. Pure design model; no native bridge calls.
  */
-#sleela 1.5
+#sleela 2.1
 class SLOSModel {
   String osName;      // product name, e.g. "Determinant"
   String edition;     // "Desktop" / "Server"

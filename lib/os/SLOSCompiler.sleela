@@ -18,7 +18,7 @@
  * Family: os. Consumes SLOSModel; composes SLCEmitter, SLCppEmitter,
  *   SLOSArtifact, SLOSBuildReport, SLISOBuilder, SLInstallerGenerator.
  */
-#sleela 1.5
+#sleela 2.1
 class SLOSCompiler {
   SLCEmitter cEmit;
   SLCppEmitter cppEmit;

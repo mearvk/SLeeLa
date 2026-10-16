@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // website.sleela -- the self-contained, runnable build of the SLeeLa Website
 // Generator. The SLeeLa compiler's `run` compiles one file as a single unit,
 // so this aggregate inlines every class the generator needs (design, sign,

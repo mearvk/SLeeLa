@@ -1,0 +1,98 @@
+/*
+ * lib/ide-workbench/SLIdeTabGroup.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLIdeTabGroup — the multi-document (tabbed) model lib/gui
+ *   lacks. SLGuiWindow is a single-text window and SLGuiDocumentListener is
+ *   hard-bounded to 1..14 watched documents; a real IDE opens many files. This
+ *   group owns an unbounded set of SLIdeEditor buffers and tracks the active
+ *   one, while exposing only the active + most-recently-focused editors
+ *   (<= SLGUI_MAX_DOCUMENTS) to be registered with the OS watch. The 1..14
+ *   bound stays an OS-watch contract; the open-file count is independent of it.
+ */
+#sleela 2.1
+// Family: ide-workbench. Owns open editors; feeds a bounded watch set to lib/gui.
+class SLIdeTabGroup {
+  static final int MAX_OPEN = 4096;     // generous open-file ceiling
+  static final int SLGUI_MAX_DOCUMENTS = 14; // mirrors lib/gui's hard watch bound
+
+  SLIdeEditor[] editors;
+  int count;
+  int active;                  // index of the active editor, -1 when none
+
+  void init() {
+    editors = new SLIdeEditor[MAX_OPEN];
+    count = 0; active = -1;
+  }
+
+  int size() { return count; }
+  boolean empty() { return count == 0; }
+
+  // Find an already-open editor for a document id (-1 when not open).
+  int indexOf(String documentId) {
+    for (int i = 0; i < count; i = i + 1) {
+      if (editors[i].getId() == documentId) { return i; }
+    }
+    return -1;
+  }
+
+  // Open (or focus, if already open) an editor; returns its index or -1 if full.
+  int open(SLIdeEditor editor) {
+    int existing = indexOf(editor.getId());
+    if (existing >= 0) { active = existing; return existing; }
+    if (count >= MAX_OPEN) { return -1; }
+    editors[count] = editor;
+    active = count;
+    count = count + 1;
+    return active;
+  }
+
+  SLIdeEditor activeEditor() {
+    if (active < 0 || active >= count) { return null; }
+    return editors[active];
+  }
+
+  // Focus an open tab by index; makes it the active (and most-recent) editor.
+  boolean focus(int index) {
+    if (index < 0 || index >= count) { return false; }
+    active = index;
+    return true;
+  }
+
+  // Close a tab; shifts the array down and keeps a valid active index.
+  boolean close(int index) {
+    if (index < 0 || index >= count) { return false; }
+    for (int i = index; i < count - 1; i = i + 1) {
+      editors[i] = editors[i + 1];
+    }
+    count = count - 1;
+    editors[count] = null;
+    if (count == 0) { active = -1; }
+    else if (active >= count) { active = count - 1; }
+    return true;
+  }
+
+  // How many editors have unsaved changes.
+  int dirtyCount() {
+    int n = 0;
+    for (int i = 0; i < count; i = i + 1) {
+      if (editors[i].isDirty()) { n = n + 1; }
+    }
+    return n;
+  }
+  boolean anyDirty() { return dirtyCount() > 0; }
+
+  // The number of editors the OS watch should register this moment: the active
+  // one plus as many others as fit under the 1..14 lib/gui contract. Never 0
+  // when at least one editor is open (so the watch has a valid 1..14 count).
+  int watchSetSize() {
+    if (count == 0) { return 0; }
+    if (count > SLGUI_MAX_DOCUMENTS) { return SLGUI_MAX_DOCUMENTS; }
+    return count;
+  }
+
+  // True when the OS-watch registration must respect the 1..14 bound.
+  boolean watchSetWithinGuiBound() {
+    int w = watchSetSize();
+    return w >= 1 && w <= SLGUI_MAX_DOCUMENTS;
+  }
+}

@@ -1,0 +1,84 @@
+/*
+ * lib/ide-workbench/ide-workbench-demo.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Runnable demonstrator for the ide-workbench package — the IDE
+ *   composition over lib/gui, lib/user-interface/lib/ui, lib/nordshrift,
+ *   lib/compiler, and lib/sldocument. It walks the core worker journey: open a
+ *   project, open a .sst sheet, edit it, compile it through "SST Nordshrit"
+ *   (Nordshrift -> .sleela -> SLeeLa compiler), see diagnostics, and save.
+ *   Self-contained (inline flow + main), in the style of lib/gui/gui-demo.sleela.
+ */
+#sleela 2.1
+// SLeeLa IDE Workbench demonstrator.
+// SLeeLa owns the IDE's meaning (open/edit/compile/save state); the Java/native
+// host owns presentation. The split per-class files (SLIdeWorkbench,
+// SLIdeEditor, SLIdeTabGroup, SLIdeProjectTree, SLIdeCommandRegistry,
+// SLIdeDiagnosticsPanel) are the full vocabulary; this file is the walkthrough.
+class IdeWorkbenchDemo {
+
+  String boolToStr(boolean b) { return b ? "yes" : "no"; }
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa IDE Workbench: open -> edit -> SST Nordshrit compile -> save");
+
+    SLIdeWorkbench ide = new SLIdeWorkbench();
+    ide.boot("swing", "SLeeLa IDE", 1280, 800, "/work/project");
+    print("workbench ready -> " + boolToStr(ide.isReady()));
+
+    banner("Project tree (behind an SLTreeView)");
+    SLIdeProjectTree tree = ide.projectTree();
+    tree.addEntry("/work/project", 0, 0);
+    tree.addEntry("/work/project/main.sst", 1, 1);
+    tree.addEntry("/work/project/util.sleela", 1, 1);
+    print("entries: " + tree.size());
+    print("main.sst language -> " + tree.languageFor("/work/project/main.sst"));
+    print("util.sleela language -> " + tree.languageFor("/work/project/util.sleela"));
+
+    banner("Open a .sst sheet into a tab");
+    int tab = ide.openFile("doc-1", "/work/project/main.sst",
+        "system Demo { symbol Greeting }", "1739981000:31");
+    print("opened tab index -> " + tab);
+    print("open editors -> " + ide.tabGroup().size()
+        + "; watch set within 1..14 bound -> "
+        + boolToStr(ide.tabGroup().watchSetWithinGuiBound()));
+
+    banner("Edit the buffer");
+    ide.editActive("system Demo { symbol Greeting; symbol Farewell }");
+    print("active dirty -> " + boolToStr(ide.tabGroup().activeEditor().isDirty()));
+    print("Save command enabled -> " + boolToStr(ide.commandRegistry().isEnabled("ide.save")));
+
+    banner("Compile via SST Nordshrit (.sst -> Nordshrift -> .sleela -> compiler)");
+    NordshriftSource src = new NordshriftSource();
+    src.configure("/work/project/main.sst", "/lib", "sleela");
+    src.recordResolution(2, 2);
+    src.emitSleela("/work/project/.build/main.sleela");
+    NordshriftCompilerBridge bridge = new NordshriftCompilerBridge();
+    bridge.load(src);
+    bridge.selectCompilerProfile("release");
+    SLCompiler compiler = new SLCompiler();
+    compiler.configure("sleela-compiler");
+    boolean ok = ide.compileActive(bridge, compiler);
+    print("compile succeeded -> " + boolToStr(ok));
+    print("diagnostics -> " + ide.diagnosticsPanel().statusLine());
+
+    banner("Save the file (lib/sldocument persists; buffer marked clean)");
+    ide.saveActive("1739981500:52");
+    print("active dirty after save -> " + boolToStr(ide.tabGroup().activeEditor().isDirty()));
+    print("Save command enabled after save -> "
+        + boolToStr(ide.commandRegistry().isEnabled("ide.save")));
+
+    banner("External change (OS watch, 1..14 contract)");
+    int emitted = ide.onDocumentChange("doc-1", "1739982000:60", 1);
+    print("refreshes emitted this OS call -> " + emitted);
+
+    banner("Done");
+    print("SLeeLa owns IDE meaning; Nordshrift transpiles .sst; the SLeeLa");
+    print("compiler is authoritative; lib/sldocument persists; the host renders.");
+  }
+}

@@ -20,7 +20,7 @@
  *
  * Family: cpu. Composes SLCPU/SLCore, SLRAM, SLGuestVM, SLMMU, SLGuestDeviceBus.
  */
-#sleela 1.3
+#sleela 2.1
 class SLHypervisor {
   SLCPU host;
   SLRAM hostMemory;

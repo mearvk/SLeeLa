@@ -13,7 +13,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLToggle extends SLWidget {
   // Create a toggle inside `parent` with a label and initial state.
   void createIn(SLWidget parent, String label, boolean initialOn) {

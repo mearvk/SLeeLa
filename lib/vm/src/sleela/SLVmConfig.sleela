@@ -1,0 +1,93 @@
+/*
+ * lib/vm/src/sleela/SLVmConfig.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmConfig — the OOD equivalent of the native user-level
+ *   VM configuration surface (virtual-machine/vm-version/001/vm_config.{h,c},
+ *   VM v001). It is the single place a user tunes a selected VM before start:
+ *   the memory limit (256 MiB..2 GiB, 0 = manager off), the thread cap (1..128),
+ *   the report verbosity, and the capability mask. The native side binds these
+ *   fields to the sleela_memmgr limit and the bridge capability gate; on the
+ *   Sleela side this class is the loadable record a user edits in setup or a
+ *   conference and that the native VM reads when it boots the chosen VM.
+ *
+ * Mirrors: struct VmConfig { memory_limit_bytes; thread_cap; verbosity;
+ *   capabilities; memory_manager_on }, enums VmVerbosity and VmCapability.
+ *
+ * Family: vm. A data+policy record; composed by SLVmVersion* manifests and
+ *   applied through SLVmRuntime. Native application crosses the SLVMNativeBinding
+ *   VM-exit seam (never a direct C call).
+ */
+#sleela 2.1
+class SLVmConfig {
+  // Verbosity ordinals (mirror VmVerbosity).
+  static final int VERBOSITY_QUIET   = 0;
+  static final int VERBOSITY_NORMAL  = 1;
+  static final int VERBOSITY_VERBOSE = 2;
+  static final int VERBOSITY_DEBUG   = 3;
+
+  // Capability bits (mirror VmCapability; OR together).
+  static final int CAP_MEMORY   = 1;
+  static final int CAP_FILE_IO  = 2;
+  static final int CAP_NETWORK  = 4;
+  static final int CAP_THREADS  = 8;
+  static final int CAP_DYNLIB   = 16;
+  static final int CAP_TERMINAL = 32;
+  static final int CAP_PATHS    = 64;
+  static final int CAP_PROCESS  = 128;
+  static final int CAP_IPC      = 256;
+  static final int CAP_TIME     = 512;
+  static final int CAP_ALL      = 1023;   // 0x3FF
+
+  // Bounds (mirror the native #defines).
+  static final int MIN_MEMORY_MIB = 256;
+  static final int MAX_MEMORY_MIB  = 2048;
+  static final int MAX_THREADS     = 128;
+
+  // ---- the configuration (mirror struct VmConfig) ----
+  int memoryLimitMiB;    // 256..2048; 0 = manager off
+  int threadCap;         // 1..128
+  int verbosity;         // VERBOSITY_*
+  int capabilities;      // CAP_* bitset
+  int memoryManagerOn;   // 1/0
+
+  // Sensible default: 2 GiB, 128 threads, NORMAL, all caps, manager on.
+  void defaults() {
+    memoryLimitMiB  = MAX_MEMORY_MIB;
+    threadCap       = MAX_THREADS;
+    verbosity       = VERBOSITY_NORMAL;
+    capabilities    = CAP_ALL;
+    memoryManagerOn = 1;
+  }
+
+  // Clamping setters (mirror vm_config_set_*).
+  void setMemoryMiB(int mib) {
+    if (mib == 0) { memoryManagerOn = 0; memoryLimitMiB = 0; return; }
+    if (mib < MIN_MEMORY_MIB) { mib = MIN_MEMORY_MIB; }
+    if (mib > MAX_MEMORY_MIB) { mib = MAX_MEMORY_MIB; }
+    memoryLimitMiB = mib;
+    memoryManagerOn = 1;
+  }
+  void setThreads(int n) {
+    if (n < 1) { n = 1; }
+    if (n > MAX_THREADS) { n = MAX_THREADS; }
+    threadCap = n;
+  }
+  void setVerbosity(int v) {
+    if (v < VERBOSITY_QUIET) { v = VERBOSITY_QUIET; }
+    if (v > VERBOSITY_DEBUG) { v = VERBOSITY_DEBUG; }
+    verbosity = v;
+  }
+  void enable(int cap)  { capabilities = capabilities | cap; }
+  void disable(int cap) {
+    // clear the bit without a bitwise-not (surface has no ~): subtract if set.
+    if ((capabilities / cap) % 2 == 1) { capabilities = capabilities - cap; }
+  }
+  boolean has(int cap) { return (capabilities / cap) % 2 == 1; }
+
+  String verbosityName() {
+    if (verbosity == VERBOSITY_QUIET)   { return "quiet"; }
+    if (verbosity == VERBOSITY_VERBOSE) { return "verbose"; }
+    if (verbosity == VERBOSITY_DEBUG)   { return "debug"; }
+    return "normal";
+  }
+}

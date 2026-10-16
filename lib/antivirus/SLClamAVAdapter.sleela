@@ -2,7 +2,7 @@
  * lib/antivirus/SLClamAVAdapter.sleela
  * ClamAV integration contract. Native process/socket bridge is required.
  */
-#sleela 1.3
+#sleela 2.1
 class SLClamAVAdapter {
   String executable;
   String mode;

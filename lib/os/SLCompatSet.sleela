@@ -17,7 +17,7 @@
  * Family: os. Composes SLCompatLayer (up to three guests). Pure design model
  *   for composition/validity; the layers' own load/unload cross the os* bridge.
  */
-#sleela 1.11
+#sleela 2.1
 class SLCompatSet {
   String host;              // the built OS's own family
   // Up to three guest layers (Linux/Windows/macOS). Fixed slots keep the model

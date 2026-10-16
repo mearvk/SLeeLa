@@ -16,7 +16,7 @@
  *
  * Family: moral-capacitor. Bridges coorenagraph; charges SLMoralCapacitor.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralFramework {
   // Framework ordinals.
   static final int DEONTOLOGY     = 1;  // duties / rules

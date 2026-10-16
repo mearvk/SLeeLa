@@ -5,9 +5,9 @@
 # =============================================================================
 # 
 # Usage:
-#   ./build-macos.sh              # Build with default flags
+#   ./build-macos.sh              # Build only (no install)
 #   CC=clang CXX=clang++ ./build-macos.sh
-#   BIN_DIR=/usr/local/bin ./build-macos.sh
+#   BIN_DIR="$HOME/bin" ./build-macos.sh
 #
 # Environment variables (optional):
 #   CC              C compiler (default: clang)

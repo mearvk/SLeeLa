@@ -8,7 +8,7 @@
  * language (C, C++, Sleela) and regardless of which architecture it runs on,
  * because each CPU maps the compiled image onto the canonical opcode substrate.
  */
-#sleela 1.3
+#sleela 2.1
 class RunWorkloadsExample {
   int cOut;
   int sleelaOut;

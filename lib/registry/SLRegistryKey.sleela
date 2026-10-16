@@ -1,0 +1,64 @@
+/*
+ * lib/registry/SLRegistryKey.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLRegistryKey — the OOD equivalent of a native registry
+ *   key (a node in the HKEY-style path tree). A key is named by its full path
+ *   ("A/B/C"), holds a bounded set of SLRegistryValue entries (settings and
+ *   feature flags), and may carry one SLRegistryProvenance record. The surface
+ *   has no arrays, so the value set is numbered fields (the SLVM binding-table
+ *   convention).
+ *
+ * Mirrors: the native RegKey (path + values + optional provenance).
+ *
+ * Family: registry. Composes SLRegistryValue, SLRegistryProvenance; held by
+ *   SLRegistry.
+ */
+#sleela 2.1
+class SLRegistryKey {
+  static final int MAX_VALUES = 8;
+
+  String path;              // full key path, e.g. "Settings"
+  int    count;             // live values
+  SLRegistryValue v0; SLRegistryValue v1; SLRegistryValue v2; SLRegistryValue v3;
+  SLRegistryValue v4; SLRegistryValue v5; SLRegistryValue v6; SLRegistryValue v7;
+  int hasProvenance;
+  SLRegistryProvenance provenance;
+
+  void configure(String keyPath) { path = keyPath; count = 0; hasProvenance = 0; }
+
+  // append a value (numbered-field store in place of an array)
+  boolean add(SLRegistryValue val) {
+    if (count >= MAX_VALUES) { return false; }
+    if (count == 0) { v0 = val; }
+    else if (count == 1) { v1 = val; }
+    else if (count == 2) { v2 = val; }
+    else if (count == 3) { v3 = val; }
+    else if (count == 4) { v4 = val; }
+    else if (count == 5) { v5 = val; }
+    else if (count == 6) { v6 = val; }
+    else { v7 = val; }
+    count = count + 1;
+    return true;
+  }
+
+  SLRegistryValue valueAt(int idx) {
+    if (idx == 0) { return v0; } if (idx == 1) { return v1; }
+    if (idx == 2) { return v2; } if (idx == 3) { return v3; }
+    if (idx == 4) { return v4; } if (idx == 5) { return v5; }
+    if (idx == 6) { return v6; } return v7;
+  }
+
+  void attachProvenance(SLRegistryProvenance p) { provenance = p; hasProvenance = 1; }
+  boolean tracked() { return hasProvenance == 1; }
+
+  void show() {
+    print("[" + (path == "" ? "(root)" : path) + "]");
+    int i = 0;
+    while (i < count) {
+      SLRegistryValue vv = valueAt(i);
+      print("    " + vv.render());
+      i = i + 1;
+    }
+    if (hasProvenance == 1) { print("    " + provenance.render()); }
+  }
+}

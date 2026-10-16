@@ -8,7 +8,7 @@
  *
  * Family: cpu. Pure Sleela timing source.
  */
-#sleela 1.3
+#sleela 2.1
 class SLClock {
   int frequencyMHz;
   int level;    // current clock level, 0 or 1

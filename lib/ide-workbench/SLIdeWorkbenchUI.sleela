@@ -1,0 +1,375 @@
+/*
+ * lib/ide-workbench/SLIdeWorkbenchUI.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLIdeWorkbenchUI — the IDE shell rendered as a REAL
+ *   SleelaUI graphical interface, built on the /lib/gui support structure. The
+ *   shell's chrome (the window, header bar, and the Open/Compile/Save/Close
+ *   command buttons) is expressed as an SLGuiApp DOM: each command is a DOM
+ *   button node with an onClick handler bound through the event bus, so a real
+ *   click flows widget -> SLGuiHostAdapter -> SLGuiEvent -> handler -> command,
+ *   instead of ad-hoc .clicked() polling. The rich content controls (the
+ *   SLTreeView project explorer, the SLNotebook of SLTextView code editors, and
+ *   the SLLoadingIndicator) are specialised SleelaUI widgets mounted into the
+ *   DOM's body/status container handles. SLGuiApp runs the loop (pump -> poll
+ *   activations -> dispatch -> reconcile); this class only reads the command
+ *   handler latches and acts. The IDE is the first full consumer of the
+ *   event/DOM/support stack.
+ *
+ * Family: ide-workbench. The GUI is SleelaUI driven through the lib/gui DOM;
+ * SLeeLa owns meaning and dispatch.
+ */
+#sleela 2.1
+class SLIdeWorkbenchUI {
+  SLGuiApp app;                 // the /lib/gui support structure (app+window+DOM)
+  SLGuiDom dom;
+
+  // Command handlers (bound through the DOM event bus; polled for latches).
+  SLGuiHandler openH;
+  SLGuiHandler compileH;
+  SLGuiHandler saveH;
+  SLGuiHandler closeH;
+
+  // Content-control handlers: tree selection (CHANGE) and tab switch (TOGGLE),
+  // routed through the SAME event bus so the content controls are DOM-driven
+  // too, not polled ad hoc.
+  SLGuiHandler treeSelectH;
+  SLGuiHandler tabChangeH;
+
+  // Rich content controls mounted into DOM container handles.
+  SLTreeView tree;
+  SLNotebook notebook;
+  SLStatusBar status;
+  SLLoadingIndicator loading;
+
+  // State models (the SLeeLa logic layer).
+  SLIdeTabGroup tabs;
+  SLIdeProjectTree projectModel;
+  SLIdeDiagnosticsPanel diagnostics;
+
+  // Per-page editor views, index-aligned with the notebook pages.
+  SLTextView[] editors;
+  int editorCount;
+
+  String lastTreeSelection;     // debounce: only fire CHANGE when it moves
+  boolean ready;
+
+  // Build and show the IDE. Returns true when the toolkit came up.
+  boolean boot(String appId, String title, int width, int height, String root) {
+    app = new SLGuiApp();
+    if (!app.boot(appId, title, width, height)) { ready = false; return false; }
+    dom = app.document();
+
+    buildChromeDom();     // header + command buttons as DOM nodes
+    buildContent();       // tree + notebook + status mounted into DOM handles
+
+    // State models.
+    tabs = new SLIdeTabGroup();  tabs.init();
+    projectModel = new SLIdeProjectTree(); projectModel.init(root);
+    diagnostics = new SLIdeDiagnosticsPanel(); diagnostics.init();
+
+    editors = new SLTextView[SLIdeTabGroup.SLGUI_MAX_DOCUMENTS * 8];
+    editorCount = 0;
+    lastTreeSelection = "";
+
+    app.refresh();        // mount the DOM chrome onto real widgets
+    ready = true;
+    refreshStatus();
+    return true;
+  }
+
+  // The window chrome, expressed as a DOM: a header bar holding a brand label,
+  // a spacer, and the four command buttons. Each command button binds an
+  // onClick handler through the event bus.
+  void buildChromeDom() {
+    SLGuiNode header = dom.appendElement("root", "header", "ide-header");
+    SLGuiNode brand = dom.appendElement("ide-header", "label", "ide-brand");
+    brand.setText("SLeeLa IDE");
+    dom.appendElement("ide-header", "spacer", "ide-gap");
+
+    SLGuiNode open = dom.appendElement("ide-header", "button", "cmd-open");
+    open.setText("Open");
+    SLGuiNode compile = dom.appendElement("ide-header", "button", "cmd-compile");
+    compile.setText("Compile");
+    compile.setStyle("accent", "suggested");
+    SLGuiNode save = dom.appendElement("ide-header", "button", "cmd-save");
+    save.setText("Save");
+    SLGuiNode close = dom.appendElement("ide-header", "button", "cmd-close");
+    close.setText("Close");
+
+    // Bind the command callbacks (DHTML onClick). The handler latches each fire;
+    // the loop reads the latch and runs the matching command.
+    openH = dom.onClick("cmd-open", "onOpenSelected");
+    compileH = dom.onClick("cmd-compile", "onCompile");
+    saveH = dom.onClick("cmd-save", "onSave");
+    closeH = dom.onClick("cmd-close", "onClose");
+  }
+
+  // The body + status, as DOM containers whose mounted widget handles host the
+  // specialised controls (tree / notebook / status bar / loading indicator).
+  void buildContent() {
+    SLGuiNode body = dom.appendElement("root", "hbox", "ide-body");
+
+    SLGuiNode leftN = dom.appendElement("ide-body", "frame", "ide-left");
+    leftN.setText("Project");
+    leftN.setStyle("min-width", "260");
+
+    SLGuiNode rightN = dom.appendElement("ide-body", "frame", "ide-right");
+
+    SLGuiNode statusN = dom.appendElement("root", "status", "ide-status");
+
+    // DOM proxy nodes for the two content controls, so their interactions
+    // (a tree selection, a tab switch) dispatch through the event bus like the
+    // commands do. These are logical nodes: the specialised SleelaUI widgets
+    // live inside the ide-left / ide-right handles, but their events route here.
+    dom.appendElement("ide-left", "treeview", "ide-tree");
+    dom.appendElement("ide-right", "notebook", "ide-notebook");
+
+    // CHANGE on the tree carries the selected node id; TOGGLE on the notebook
+    // carries the newly-active tab index (as a string).
+    treeSelectH = dom.addEventListener("ide-tree", "change", "onTreeActivate");
+    tabChangeH = dom.addEventListener("ide-notebook", "toggle", "onTabChange");
+
+    // Mount the DOM so the container handles exist, then attach specialised
+    // SleelaUI widgets into those handles.
+    app.refresh();
+
+    SLWidget left = adopt(dom.getElementById("ide-left").widgetHandle());
+    tree = new SLTreeView();
+    tree.createIn(left, 40);
+
+    SLWidget right = adopt(dom.getElementById("ide-right").widgetHandle());
+    right.setExpand(true, true);
+    notebook = new SLNotebook();
+    notebook.createIn(right);
+
+    SLWidget statusW = adopt(dom.getElementById("ide-status").widgetHandle());
+    status = new SLStatusBar();
+    status.adopt(statusW.handle());
+    status.setText("Ready");
+
+    loading = new SLLoadingIndicator();
+    loading.createIn(statusW, SLLoadingIndicator.STYLE_SPINNER, 0);
+  }
+
+  // Wrap a raw widget handle as an SLWidget so specialised controls can attach.
+  SLWidget adopt(int handle) {
+    SLWidget w = new SLBox();
+    w.adopt(handle);
+    return w;
+  }
+
+  boolean isReady() { return ready; }
+
+  // ---- opening / editing --------------------------------------------------
+
+  void addTreeNode(String id, String label, String parentId, boolean isLeaf) {
+    tree.addNode(id, label, parentId, isLeaf);
+  }
+  void rebuildTree() { tree.rebuild(); }
+
+  int openFile(String documentId, String path, String[] lines, int lineCount, String revision) {
+    SLIdeEditor model = new SLIdeEditor();
+    model.configure(documentId, path, projectModel.languageFor(path));
+    model.loadText(joinLines(lines, lineCount), revision);
+    int tabIndex = tabs.open(model);
+
+    int page = notebook.addPage(fileName(path));
+    SLTextView view = new SLTextView();
+    view.createIn(notebook.pageContent(page), 800, 600);
+    view.loadLines(lines, lineCount);
+    editors[page] = view;
+    if (page >= editorCount) { editorCount = page + 1; }
+
+    rearmWatchCheck();
+    refreshStatus();
+    return page;
+  }
+
+  SLTextView activeEditorView() {
+    int i = notebook.activeIndex();
+    if (i < 0 || i >= editorCount) { return null; }
+    return editors[i];
+  }
+
+  // ---- commands (driven by the event-bus handler latches) -----------------
+
+  // Read the command handler latches once per loop turn and act. The latches
+  // are raised by SLGuiHostAdapter when the real buttons fire, so there is no
+  // direct widget polling here. Returns false when Close emptied the tabs.
+  boolean pollCommands() {
+    // Content-control interactions are translated into DOM events first, so
+    // their handlers run through the same bus as the commands.
+    routeContentEvents();
+
+    if (openH != null && openH.take())           { onOpenSelected(); }
+    if (compileH != null && compileH.take())     { onCompile(); }
+    if (saveH != null && saveH.take())           { onSave(); }
+    if (treeSelectH != null && treeSelectH.take()) { onTreeActivate(treeSelectH.value()); }
+    if (tabChangeH != null && tabChangeH.take())   { onTabChange(tabChangeH.value()); }
+    if (closeH != null && closeH.take())         { return onClose(); }
+    return true;
+  }
+
+  // Translate raw content-control state changes into DOM events on the bus.
+  // A tab click raises TOGGLE("ide-notebook", <index>); a tree row selection
+  // raises CHANGE("ide-tree", <nodeId>). The host adapter already turns command
+  // button presses into events; these two controls are specialised widgets, so
+  // the shell bridges their state into the same dispatch path here.
+  void routeContentEvents() {
+    int clickedTab = notebook.takeClickedTab();
+    if (clickedTab >= 0) {
+      dom.fire(SLGuiEventType.TOGGLE, "ide-notebook", "" + clickedTab);
+    }
+    String sel = tree.selectedId();
+    if (sel != null && sel != lastTreeSelection) {
+      lastTreeSelection = sel;
+      dom.fire(SLGuiEventType.CHANGE, "ide-tree", sel);
+    }
+  }
+
+  // Handler for a tree CHANGE: the selected id is the DOM event's value.
+  // Returns the id of a selected leaf (a file the host should open), else null.
+  String onTreeActivate(String nodeId) {
+    if (!tree.selectionIsLeaf()) { return null; }
+    return nodeId;   // host reads this id, loads the file, calls openFile(...)
+  }
+
+  // Handler for a notebook TOGGLE: focus the newly-active tab.
+  void onTabChange(String indexStr) {
+    int idx = parseInt(indexStr);
+    if (idx >= 0) { tabs.focus(idx); notebook.select(idx); refreshStatus(); }
+  }
+
+  // Backward-compatible entry: the Open command selects whatever the tree has.
+  String onOpenSelected() {
+    if (!tree.selectionIsLeaf()) { return null; }
+    return tree.selectedId();   // host reads this id, loads the file, calls openFile
+  }
+
+  void onCompile() {
+    SLIdeEditor model = tabs.active();
+    if (model == null) { return; }
+    diagnostics.clearDocument(model.getId());
+    loading.beginIndeterminate("Compiling " + fileName(model.getPath()) + " ...");
+  }
+
+  void onSave() {
+    SLTextView view = activeEditorView();
+    SLIdeEditor model = tabs.active();
+    if (view != null) { view.markSaved(); }
+    if (model != null) { model.markSaved(currentRevision()); }
+    int i = notebook.activeIndex();
+    if (i >= 0) { notebook.setDirty(i, false); }
+    refreshStatus();
+  }
+
+  boolean onClose() {
+    int i = notebook.activeIndex();
+    if (i < 0) { return true; }
+    tabs.close(i);
+    rearmWatchCheck();
+    refreshStatus();
+    return tabs.size() > 0;
+  }
+
+  void syncDirtyFromEditor() {
+    SLTextView view = activeEditorView();
+    int i = notebook.activeIndex();
+    if (view != null && i >= 0) { notebook.setDirty(i, view.isDirty()); }
+    refreshStatus();
+  }
+
+  // ---- diagnostics --------------------------------------------------------
+
+  void publishDiagnostic(String documentId, int severity, int line, int col, String message) {
+    diagnostics.publish(documentId, severity, line, col, message);
+    refreshStatus();
+  }
+  void finishCompile() {
+    if (diagnostics.compileSucceeded()) { loading.done("Build succeeded"); }
+    else { loading.fail(diagnostics.statusLine()); }
+    refreshStatus();
+  }
+  void reportCompileProgress(double fraction) {
+    if (loading.currentMode() != SLLoadingIndicator.MODE_DETERMINATE) {
+      loading.beginDeterminate("Compiling", fraction);
+    } else {
+      loading.setFraction(fraction);
+    }
+  }
+
+  // ---- loop ---------------------------------------------------------------
+
+  // Run via the SLGuiApp support loop: each turn it pumps the toolkit, lets
+  // SLGuiHostAdapter poll widget activations into the event bus (firing the
+  // bound command handlers), and reconciles the DOM. We then read the command
+  // latches and advance IDE state.
+  int runLoop() {
+    while (app.ui.active()) {
+      int raised = app.step(true);     // pump + poll activations + reconcile
+      if (!pollCommands()) { app.quit(0); }
+      syncDirtyFromEditor();
+      if (loading.busy()) { loading.tick(0.03); }
+    }
+    return 0;
+  }
+
+  // ---- helpers ------------------------------------------------------------
+
+  void refreshStatus() {
+    String watch = "watch " + tabs.watchSetSize() + "/" + SLIdeTabGroup.SLGUI_MAX_DOCUMENTS;
+    if (status != null) {
+      status.setText(diagnostics.statusLine() + "  |  " + tabs.size() + " open  |  " + watch);
+    }
+  }
+
+  void rearmWatchCheck() { refreshStatus(); }
+
+  String fileName(String path) {
+    if (path == null) { return "untitled"; }
+    int slash = lastIndexOf(path, "/");
+    if (slash < 0) { return path; }
+    return path.substring(slash + 1, path.length());
+  }
+
+  int lastIndexOf(String s, String ch) {
+    int found = -1;
+    for (int i = 0; i < s.length(); i = i + 1) {
+      if (s.substring(i, i + 1) == ch) { found = i; }
+    }
+    return found;
+  }
+
+  String joinLines(String[] lines, int n) {
+    String s = "";
+    for (int i = 0; i < n; i = i + 1) {
+      s = s + lines[i];
+      if (i < n - 1) { s = s + "\n"; }
+    }
+    return s;
+  }
+
+  String currentRevision() { return "saved"; }
+
+  // Parse a non-negative integer from a decimal string ("" / null -> -1).
+  int parseInt(String s) {
+    if (s == null || s == "") { return -1; }
+    int value = 0;
+    for (int i = 0; i < s.length(); i = i + 1) {
+      int d = digit(s.substring(i, i + 1));
+      if (d < 0) { return -1; }
+      value = value * 10 + d;
+    }
+    return value;
+  }
+  int digit(String ch) {
+    if (ch == "0") { return 0; } if (ch == "1") { return 1; }
+    if (ch == "2") { return 2; } if (ch == "3") { return 3; }
+    if (ch == "4") { return 4; } if (ch == "5") { return 5; }
+    if (ch == "6") { return 6; } if (ch == "7") { return 7; }
+    if (ch == "8") { return 8; } if (ch == "9") { return 9; }
+    return -1;
+  }
+
+  void shutdown() { if (app != null) { app.shutdown(); } }
+}

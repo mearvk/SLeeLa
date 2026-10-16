@@ -1,0 +1,86 @@
+/*
+ * lib/vm/src/sleela/SLVmPlatform.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmPlatform — the OOD equivalent of the native
+ *   platform-parity readout (virtual-machine/vm-version/008/vm_platform.{h,c},
+ *   v008). It names the host (Win32/POSIX/Apple) and, per capability, reports
+ *   parity: supported by the OS AND permitted by config. A capability a user
+ *   permits but the OS does not support raises a typed UNAVAILABLE result once.
+ *   The native side reads sleela_platform; this class holds the detected
+ *   platform + the per-capability OS-support bits fed to it.
+ *
+ * Mirrors: enum VmPlatform, vm_platform_supports/parity/audit/report.
+ *
+ * Family: vm. Composes SLVmConfig, SLVmCapability, SLVmResult, SLVmReport.
+ */
+#sleela 2.1
+class SLVmPlatform {
+  static final int UNKNOWN = 0;
+  static final int LINUX   = 1;
+  static final int WINDOWS = 2;
+  static final int MACOS   = 3;
+
+  int    platform;
+  String osVersion;
+  String arch;
+  // OS support bits per capability, numbered 0..9 (1=supported). Default all 1.
+  int supMemory; int supFileIo; int supNetwork; int supThreads; int supDynlib;
+  int supTerminal; int supPaths; int supProcess; int supIpc; int supTime;
+
+  void init(int detected, String version, String architecture) {
+    platform = detected; osVersion = version; arch = architecture;
+    supMemory=1; supFileIo=1; supNetwork=1; supThreads=1; supDynlib=1;
+    supTerminal=1; supPaths=1; supProcess=1; supIpc=1; supTime=1;
+  }
+
+  // Caller may mark a capability unsupported on this OS (e.g. ipc/dynlib variance).
+  void setSupport(int cap, boolean supported) {
+    int v = supported ? 1 : 0;
+    if (cap == SLVmConfig.CAP_MEMORY)   { supMemory = v; }
+    else if (cap == SLVmConfig.CAP_FILE_IO)  { supFileIo = v; }
+    else if (cap == SLVmConfig.CAP_NETWORK)  { supNetwork = v; }
+    else if (cap == SLVmConfig.CAP_THREADS)  { supThreads = v; }
+    else if (cap == SLVmConfig.CAP_DYNLIB)   { supDynlib = v; }
+    else if (cap == SLVmConfig.CAP_TERMINAL) { supTerminal = v; }
+    else if (cap == SLVmConfig.CAP_PATHS)    { supPaths = v; }
+    else if (cap == SLVmConfig.CAP_PROCESS)  { supProcess = v; }
+    else if (cap == SLVmConfig.CAP_IPC)      { supIpc = v; }
+    else if (cap == SLVmConfig.CAP_TIME)     { supTime = v; }
+  }
+
+  boolean supports(int cap) {
+    if (cap == SLVmConfig.CAP_MEMORY)   { return supMemory == 1; }
+    if (cap == SLVmConfig.CAP_FILE_IO)  { return supFileIo == 1; }
+    if (cap == SLVmConfig.CAP_NETWORK)  { return supNetwork == 1; }
+    if (cap == SLVmConfig.CAP_THREADS)  { return supThreads == 1; }
+    if (cap == SLVmConfig.CAP_DYNLIB)   { return supDynlib == 1; }
+    if (cap == SLVmConfig.CAP_TERMINAL) { return supTerminal == 1; }
+    if (cap == SLVmConfig.CAP_PATHS)    { return supPaths == 1; }
+    if (cap == SLVmConfig.CAP_PROCESS)  { return supProcess == 1; }
+    if (cap == SLVmConfig.CAP_IPC)      { return supIpc == 1; }
+    if (cap == SLVmConfig.CAP_TIME)     { return supTime == 1; }
+    return false;
+  }
+
+  // 1 if (OS supports) AND (config permits); warns once if permitted-but-not-supported.
+  boolean parity(int cap, SLVmCapability caps, SLVmResult res, SLVmReport rep) {
+    boolean os = supports(cap);
+    boolean permitted = (caps == null) ? true : caps.allowed(cap);
+    if (permitted && !os) {
+      if (res != null) {
+        res.fail(res.E_UNAVAILABLE, "platform",
+                 "capability '" + (caps==null?"?":caps.capName(cap)) + "' permitted but not supported on " + platformName());
+        res.report(rep);
+      }
+      return false;
+    }
+    return permitted && os;
+  }
+
+  String platformName() {
+    if (platform == LINUX)   { return "linux"; }
+    if (platform == WINDOWS) { return "windows"; }
+    if (platform == MACOS)   { return "macos"; }
+    return "unknown";
+  }
+}

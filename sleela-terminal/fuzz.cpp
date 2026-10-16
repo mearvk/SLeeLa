@@ -10,8 +10,8 @@
 #include <vector>
 
 extern "C" int LLVMFuzzerTestOneInput(const std::uint8_t* data, std::size_t size) {
-    // Keep fuzz cases bounded so pathological inputs test parser safety rather
-    // than consume unbounded resources.
+    // Keep each fuzz case bounded so pathological inputs test implementation
+    // safety rather than consume unbounded resources.
     if (size > (1u << 16)) size = (1u << 16);
     std::string source(reinterpret_cast<const char*>(data), size);
 
@@ -21,7 +21,9 @@ extern "C" int LLVMFuzzerTestOneInput(const std::uint8_t* data, std::size_t size
         sleela::sh::ParseError parseError;
         (void)sleela::sh::parse(tokens, parseError);
     }
-    // Exercise expansion with command substitution disabled, so fuzz input cannot execute code.
+
+    // Exercise expansion with a fresh bounded environment. Command substitution
+    // is disabled in this harness so arbitrary fuzz input cannot execute code.
     sleela::sh::Environment env;
     (void)sleela::sh::expandWord(source, env, nullptr);
     return 0;

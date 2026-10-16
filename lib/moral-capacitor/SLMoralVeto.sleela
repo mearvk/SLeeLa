@@ -16,7 +16,7 @@
  *
  * Family: moral-capacitor. Consulted by SLMoralCapacitor.
  */
-#sleela 1.5
+#sleela 2.1
 class SLMoralVeto {
   // Red-line ordinals.
   static final int CHILD_SAFETY        = 1;

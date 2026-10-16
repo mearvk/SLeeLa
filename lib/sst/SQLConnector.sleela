@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 2.1
 // Source-level SQL connector contract for SST.
 class SQLConnector {
  String provider;

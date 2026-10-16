@@ -1,0 +1,99 @@
+/*
+ * lib/vm/src/sleela/SLVmRuntime.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmRuntime — the OOD equivalent of the native
+ *   consolidated facade (virtual-machine/vm-version/010/vm_runtime.{h,c}, v010).
+ *   It composes the whole hardened VM — config, report, status, memory, result,
+ *   telemetry, gc, profile, capability, platform, audit — and wires them in
+ *   dependency order behind a four-call surface: init / poll / permit / report
+ *   / shutdown. This is the Sleela object a VM selection resolves to: the native
+ *   VM holds this record in memory after loading the chosen version's .sleela
+ *   and uses it to configure and observe the loaded C/C++ VM.
+ *
+ * Mirrors: VM_RUNTIME_VERSION, vm_runtime_init/register_table/poll/permit/
+ *   note/report/shutdown.
+ *
+ * Family: vm. Composes SLVmConfig, SLVmReport, SLVmStatus, SLVmMemory,
+ *   SLVmResult, SLVmTelemetry, SLVmGc, SLVmProfile, SLVmCapability,
+ *   SLVmPlatform, SLVmAudit. Native effects route via SLVMNativeBinding.
+ */
+#sleela 2.1
+class SLVmRuntime {
+  String versionString;        // e.g. "idea-vm v010 (consolidated)"
+  SLVmConfig      config;
+  SLVmReport      report;
+  SLVmStatus      status;
+  SLVmMemory      memory;
+  SLVmResult      result;       // a reusable scratch result
+  SLVmTelemetry   telemetry;
+  SLVmGc          gc;
+  SLVmProfile     profile;
+  SLVmCapability  capability;
+  SLVmPlatform    platform;
+  SLVmAudit       audit;
+  int up;                       // 0 down, 1 running
+
+  // init in dependency order (mirror vm_runtime_init).
+  void init(SLVmConfig cfg, String version) {
+    versionString = version;
+    config = cfg;
+
+    report = new SLVmReport();      report.bind(cfg);
+    status = new SLVmStatus();      status.bind(version, cfg);
+    memory = new SLVmMemory();      memory.defaults();
+    result = new SLVmResult();      result.ok();
+    telemetry = new SLVmTelemetry();telemetry.init();
+    gc = new SLVmGc();              gc.init();
+    profile = new SLVmProfile();    profile.init();
+    capability = new SLVmCapability(); capability.bind(cfg);
+    platform = new SLVmPlatform();  platform.init(SLVmPlatform.UNKNOWN, "", "");
+    audit = new SLVmAudit();        audit.init();
+
+    audit.log(SLVmAudit.CONFIG, "runtime",
+      "init: " + cfg.memoryLimitMiB + " MiB, " + cfg.threadCap
+      + " threads, verbosity=" + cfg.verbosityName(), report);
+    up = 1;
+  }
+
+  // register a bounded-table capacity for saturation watching.
+  void registerTable(int table, int capacity) {
+    if (telemetry != null) { telemetry.setCapacity(table, capacity); }
+  }
+
+  // periodic health sample: memory pressure (+ gc if fresh stats supplied).
+  void poll(int gcAllocated, int gcReclaimed, int gcCollections, boolean haveGc) {
+    if (up == 0) { return; }
+    int m = memory.poll(report);
+    if (m == SLVmMemory.CRITICAL || m == SLVmMemory.LIMIT) {
+      audit.log(SLVmAudit.PRESSURE, "memory", "condition=" + memory.conditionName(m), report);
+    }
+    if (haveGc) {
+      int g = gc.observe(gcAllocated, gcReclaimed, gcCollections, result, report);
+      if (g == SLVmGc.PRESSURE || g == SLVmGc.THRASH) {
+        audit.log(SLVmAudit.PRESSURE, "gc", gc.conditionName(g), report);
+      }
+    }
+  }
+
+  // guard a native operation by capability; records a denial to the trail.
+  boolean permit(int cap, String subsystem, String operation) {
+    if (capability.check(cap, subsystem, operation, result, report, telemetry)) { return true; }
+    audit.logResult(result, report);
+    return false;
+  }
+
+  // the status banner + totals (mirror the consolidated report).
+  void reportStatus() {
+    status.banner();
+    print("telemetry: steps=" + telemetry.steps + " allocs=" + telemetry.allocs
+          + " bridge=" + telemetry.bridge + " errors=" + telemetry.errors);
+    print("audit: " + audit.totalEvents() + " events (chain " + audit.chain() + ")");
+  }
+
+  void shutdown() {
+    if (up == 0) { return; }
+    audit.log(SLVmAudit.INFO, "runtime",
+      "shutdown: " + telemetry.steps + " steps, " + telemetry.errors + " errors", report);
+    up = 0;
+  }
+}

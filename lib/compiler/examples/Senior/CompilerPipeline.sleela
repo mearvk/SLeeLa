@@ -1,5 +1,5 @@
 /* Senior lesson: phase orchestration with fail-closed boundaries. */
-#sleela 1.3
+#sleela 2.1
 
 class CompilerPipeline {
   String diagnostic;

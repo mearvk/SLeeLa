@@ -17,7 +17,7 @@
  *
  * Family: cpu. Extends SLCPURuntime.
  */
-#sleela 1.3
+#sleela 2.1
 class SL6502CPU extends SLCPURuntime {
   // Register file indices (into the inherited SLRAM register store).
   static final int R_A  = 0;   // accumulator

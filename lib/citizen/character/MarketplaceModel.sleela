@@ -8,7 +8,7 @@
  * A concrete BusinessModel: revenue = GMV x take-rate; cost scales with the
  * number of transactions it has to shepherd. Family: character.
  */
-#sleela 1.3
+#sleela 2.1
 class MarketplaceModel extends BusinessModel {
 
   int transactions;      // deals brokered this month

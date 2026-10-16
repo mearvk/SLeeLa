@@ -12,7 +12,7 @@
  *
  * Family: cpu. Composes SLIRInstruction; the IR container.
  */
-#sleela 1.3
+#sleela 2.1
 class SLIR {
   String language;    // "sleela" | "c" | "cpp" | "java" (provenance only)
   SLRAM nodeStore;    // encoded IR nodes, one per word-group (modeled)

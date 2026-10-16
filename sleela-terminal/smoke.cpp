@@ -156,7 +156,8 @@ int main() {
             auto b4 = expandWord("noalt{single}", env, none); // no comma -> literal
             assert(b4.size() == 1 && b4[0] == "noalt{single}");
 
-            // Resource limits: large ranges and cartesian products remain bounded.
+            // Resource limits: large ranges and cartesian products remain
+            // literal rather than allocating an unbounded number of fields.
             auto hugeRange = expandWord("{1..5000}", env, none);
             assert(hugeRange.size() == 1 && hugeRange[0] == "{1..5000}");
             auto hugeProduct = expandWord("{a,b,c,d}{1,2,3,4}{x,y,z}", env, none);

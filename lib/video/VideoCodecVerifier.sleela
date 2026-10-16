@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type VideoCodecVerifier used within the video library family.
  */
-#sleela 1.3
+#sleela 2.1
 // Family: video. The verification layer for video codecs — the SLeeLa mirror
 // of sleela_video_codec_by_extension (video/codecs/src/sleela_video_codecs.c).
 // A GUI or app uses it to answer "which video codec is this file?" and to turn

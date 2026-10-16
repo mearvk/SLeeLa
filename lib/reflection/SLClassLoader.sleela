@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type SLClassLoader used within the reflection library family.
  */
-#sleela 1.3
+#sleela 2.1
 // Unified SLeeLa reflection/class-loader front-end.
 class SLClassLoader {
   String name; String type; String libraryRoot; int count;

@@ -18,7 +18,7 @@
  *
  * Family: cpu. Composes SLCore, SLSleelaVM, SLRAM, SLMMU.
  */
-#sleela 1.3
+#sleela 2.1
 class SLGuestVM {
   String name;
   SLCore vcpu;          // virtual CPU (the guest's modeled hardware core)

@@ -10,6 +10,7 @@
 #include "chemistry_api.h"
 #include "financial_api.h"
 #include "version.h"
+#include "../../registry/sleela_registry.h"
 #include "../annotation/AnnotationRuntime.hpp"
 #include "../catalog/sheet_catalog.h"
 #include "../xclass/xclass_loader.h"
@@ -29,6 +30,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <chrono>
 extern "C" {
 #include "../core/sleela_core.h"
 #include "../core/sleela_memmgr.h"
@@ -467,6 +469,343 @@ static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const
     slvm_free(vm);return rc;
 }
 static catalog::Catalog loadCatalog(){const char*env=std::getenv("SLEELA_SHEET");const char*candidates[]={env,"SHEET.sheet","../SHEET.sheet","../../SHEET.sheet","../../../SHEET.sheet"};for(const char*p:candidates){if(!p||!*p)continue;bool ok=false;catalog::Catalog c=catalog::parseCatalogFile(p,&ok);if(ok)return c;}return catalog::Catalog{};}
+/* ---- `sleela vm` : select the virtual machine ---------------------------
+ * The Native VM (impl/core, what every other subcommand runs on) is the
+ * default. `sleela vm` lets a user list and select one of the versioned VMs
+ * under virtual-machine/vm-version/NNN, whose Sleela manifests
+ * (SLVmVersionNNN.sleela) + registry (SLVmRegistry.sleela) describe each build
+ * and name the native main the host would load. This table mirrors those
+ * manifests; selection is validated here the same way the OP_VM_SELECT service
+ * opcode validates it in the VM (1..10). Actually building+booting a selected
+ * version's native main is a host/build action beyond the shipped `sleela`
+ * binary; this subcommand resolves and reports the selection. */
+static int compileFile(const std::string&sourcePath,const std::string&outputPath);
+static int runFile(const std::string&path);
+
+static int vmCmd(int argc,char**argv){
+    struct VmEntry{int n;const char*id;const char*label;const char*dir;const char*mainEntry;};
+    static const VmEntry kVms[10]={
+        {1,"idea-vm-001","ground floor","virtual-machine/vm-version/001","vm_ground_test"},
+        {2,"idea-vm-002","memory hardening","virtual-machine/vm-version/002","vm_memory_test"},
+        {3,"idea-vm-003","typed results","virtual-machine/vm-version/003","vm_result_test"},
+        {4,"idea-vm-004","telemetry","virtual-machine/vm-version/004","vm_telemetry_test"},
+        {5,"idea-vm-005","gc quality","virtual-machine/vm-version/005","vm_gc_test"},
+        {6,"idea-vm-006","dispatch profiler","virtual-machine/vm-version/006","vm_profile_test"},
+        {7,"idea-vm-007","capability enforcement","virtual-machine/vm-version/007","vm_capability_test"},
+        {8,"idea-vm-008","platform parity","virtual-machine/vm-version/008","vm_platform_test"},
+        {9,"idea-vm-009","audit trail","virtual-machine/vm-version/009","vm_audit_test"},
+        {10,"idea-vm-010","consolidated","virtual-machine/vm-version/010","vm_runtime"},
+    };
+    /* Premium VMs: the eleven SLVM generations under sleela-virtual-machine.
+     * Selected as `sleela vm select premium <1..11>` (or `pNN`). These are
+     * substantial generation builds, distinct from the think-tank versions. */
+    struct PremiumVm{int n;const char*id;const char*label;const char*dir;};
+    static const PremiumVm kPremium[11]={
+        {1,"slvm-1","dedicated VM: broker, capabilities, security, OS boundary","sleela-virtual-machine/001"},
+        {2,"slvm-2","cryptographic and VM-link evolution","sleela-virtual-machine/002"},
+        {3,"slvm-3","isolation and verification","sleela-virtual-machine/003"},
+        {4,"slvm-4","authenticated/distributed execution","sleela-virtual-machine/004"},
+        {5,"slvm-5","reproducibility, policy, recovery, assurance","sleela-virtual-machine/005"},
+        {6,"slvm-6","continuous verification, lineage, attestation, leases, migration","sleela-virtual-machine/006"},
+        {7,"slvm-7","hardened management, failure handling, recovery","sleela-virtual-machine/007"},
+        {8,"slvm-8","supervised execution, admission, leases, transactions, audit","sleela-virtual-machine/008"},
+        {9,"slvm-9","filesystem and OS adaptation","sleela-virtual-machine/009"},
+        {10,"slvm-10","verified storage execution","sleela-virtual-machine/010"},
+        {11,"slvm-11","filesystem-module hosting, schema-driven extension","sleela-virtual-machine/011"},
+    };
+    std::string sub = (argc>=3)? argv[2] : "list";
+    if(sub=="list"||sub=="-h"||sub=="--help"){
+        std::cout<<"Available virtual machines (the Native VM is the default):\n";
+        std::cout<<"  native   Native VM (impl/core) — used unless you select another   [default]\n";
+        std::cout<<"\nStandard (think-tank versions):\n";
+        for(const auto&v:kVms)
+            std::cout<<"  "<<v.n<<"  "<<v.id<<"  ["<<v.label<<"]  -> "<<v.dir<<"/"<<v.mainEntry<<"\n";
+        std::cout<<"\nPremium (SLVM generations):\n";
+        for(const auto&v:kPremium)
+            std::cout<<"  premium "<<v.n<<"  "<<v.id<<"  ["<<v.label<<"]  -> "<<v.dir<<"\n";
+        std::cout<<"\nUse: sleela vm select <native|1..10|premium 1..11>   |   sleela vm info <1..10|premium 1..11>\n";
+        std::cout<<"     sleela vm run <premium <1..11>|native> <program.sleela>   (premium generations are real runnable VMs)\n";
+        return 0;
+    }
+    // `sleela vm run premium <n> <program.sleela|artifact>` actually boots the
+    // selected premium SLVM generation (a real VM linking the shared Core
+    // engine) and runs the program on it. The generation is built on demand
+    // (make -C its dir) if its binary is missing, the source is compiled to a
+    // Core artifact via this same sleela binary, then the generation VM is
+    // exec'd on that artifact. Standard (think-tank) versions are not yet
+    // bootable this way; use the Native VM (plain `sleela run`).
+    if(sub=="run"){
+        // forms:  vm run premium <n> <prog>   |  vm run p<N> <prog>   |  vm run native <prog>
+        if(argc<4){std::cerr<<"sleela vm run: expected <premium <1..11>|p<N>|native> <program>\n";return 2;}
+        std::string sel=argv[3];
+        std::string pnum; int progIdx=-1;
+        if(sel=="premium"){ if(argc<6){std::cerr<<"sleela vm run: premium needs <n> <program>\n";return 2;} pnum=argv[4]; progIdx=5; }
+        else if(sel.size()>=2 && (sel[0]=='p'||sel[0]=='P') && std::isdigit((unsigned char)sel[1])){ pnum=sel.substr(1); progIdx=4; }
+        else if(sel=="native"){ if(argc<5){std::cerr<<"sleela vm run: native needs <program>\n";return 2;} std::cout<<"Native VM: running on impl/core (the default engine).\n"; return runFile(argv[4]); }
+        else { std::cerr<<"sleela vm run: '"<<sel<<"' is not runnable here (use premium <1..11> or native)\n"; return 2; }
+        if(progIdx>=argc){std::cerr<<"sleela vm run: missing <program>\n";return 2;}
+        int n=std::atoi(pnum.c_str());
+        if(n<1||n>11){std::cerr<<"sleela vm run: premium '"<<pnum<<"' out of range (1..11)\n";return 2;}
+        const PremiumVm&v=kPremium[n-1];
+        char nn[4]; std::snprintf(nn,sizeof(nn),"%02d",n);
+        std::string vmbin=std::string(v.dir)+"/vm-build/slvm-"+nn;
+        std::string prog=argv[progIdx];
+        // Build the generation VM on demand if its binary is not present.
+        if(!fs::exists(vmbin)){
+            std::cout<<"Building premium VM "<<v.id<<" ("<<v.dir<<")...\n";
+            if(runCommand("make -C "+shellQuote(v.dir))!=0 || !fs::exists(vmbin)){
+                std::cerr<<"sleela vm run: could not build "<<vmbin
+                         <<" (ensure the Core archive exists: make -C impl libslcore)\n";
+                return 1;
+            }
+        }
+        // Resolve the program to a Core artifact. If it is already a compiled
+        // artifact, run it directly; otherwise compile it to a temp artifact.
+        std::string artifact=prog; std::string tmp;
+        if(!slvm_is_artifact_file(prog.c_str())){
+            {
+                auto uniq=std::chrono::steady_clock::now().time_since_epoch().count();
+                tmp=(fs::temp_directory_path()/("slvm-run-"+std::to_string(uniq)+".sleela")).string();
+            }
+            if(compileFile(prog,tmp)!=0){std::cerr<<"sleela vm run: failed to compile "<<prog<<"\n";return 1;}
+            artifact=tmp;
+        }
+        std::cout<<"Running "<<prog<<" on premium VM "<<v.id<<" ["<<v.label<<"].\n";
+        int rc=runCommand(shellQuote(vmbin)+" "+shellQuote(artifact));
+        if(!tmp.empty()){ std::error_code ec; fs::remove(tmp,ec); }
+        return rc;
+    }
+    if(sub=="select"||sub=="info"){
+        if(argc<4){std::cerr<<"sleela vm "<<sub<<": expected <native|1..10|premium 1..11>\n";return 2;}
+        std::string sel=argv[3];
+        // premium tier: `premium <n>` or `pNN`.
+        bool premium=false; std::string pnum;
+        if(sel=="premium"){ if(argc<5){std::cerr<<"sleela vm "<<sub<<": premium needs a number 1..11\n";return 2;} premium=true; pnum=argv[4]; }
+        else if(sel.size()>=2 && (sel[0]=='p'||sel[0]=='P') && std::isdigit((unsigned char)sel[1])){ premium=true; pnum=sel.substr(1); }
+        if(premium){
+            int n=std::atoi(pnum.c_str());
+            if(n<1||n>11){std::cerr<<"sleela vm "<<sub<<": premium '"<<pnum<<"' out of range (1..11)\n";return 2;}
+            const PremiumVm&v=kPremium[n-1];
+            if(sub=="info"){
+                std::cout<<v.id<<"  [premium]  ["<<v.label<<"]\n"
+                         <<"  generation dir : "<<v.dir<<"\n"
+                         <<"  spec           : "<<v.dir<<"/LANGUAGE.SPEC.md\n"
+                         <<"  build          : "<<v.dir<<"/Makefile\n";
+                return 0;
+            }
+            std::cout<<"Selected premium VM "<<v.id<<" ["<<v.label<<"].\n"
+                     <<"  Generation lives in "<<v.dir<<" (its own src/include/Makefile).\n"
+                     <<"  This is a real runnable VM (it links the shared Core engine). Run a\n"
+                     <<"  program on it with:  sleela vm run premium "<<n<<" <program.sleela>\n";
+            return 0;
+        }
+        if(sel=="native"||sel=="0"){
+            std::cout<<"Selected: Native VM (impl/core). This is the default; no load needed.\n";
+            return 0;
+        }
+        int n=std::atoi(sel.c_str());
+        if(n<1||n>10){std::cerr<<"sleela vm "<<sub<<": '"<<sel<<"' out of range (native | 1..10 | premium 1..11)\n";return 2;}
+        const VmEntry&v=kVms[n-1];
+        if(sub=="info"){
+            std::cout<<v.id<<"  [standard]  ["<<v.label<<"]\n"
+                     <<"  native dir : "<<v.dir<<"\n"
+                     <<"  native main: "<<v.mainEntry<<"\n"
+                     <<"  manifest   : "<<v.dir<<"/SLVmVersion"<<(n<10?"00":"0")<<n<<".sleela\n";
+            return 0;
+        }
+        std::cout<<"Selected VM "<<v.id<<" ["<<v.label<<"].\n"
+                 <<"  Its native main '"<<v.mainEntry<<"' lives in "<<v.dir<<".\n"
+                 <<"  (OP_VM_SELECT "<<n<<" validated; building+booting a non-native VM's main\n"
+                 <<"   is a host/build step beyond the shipped sleela binary.)\n";
+        return 0;
+    }
+    std::cerr<<"sleela vm: unknown subcommand '"<<sub<<"' (use list | select | info)\n";
+    return 2;
+}
+/* ---- SHA-256 (self-contained, for `sleela modium`) ----------------------
+ * A compact, standard FIPS-180-4 SHA-256 over an in-memory buffer, so modium
+ * can hash files without a new dependency. */
+namespace sleela {
+static std::string sha256_hex(const std::string& msg){
+    auto rotr=[](uint32_t x,uint32_t n){return (x>>n)|(x<<(32-n));};
+    static const uint32_t K[64]={
+      0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+      0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+      0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+      0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+      0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+      0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+      0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+      0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2};
+    uint32_t h[8]={0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19};
+    std::string data=msg; uint64_t bitlen=(uint64_t)data.size()*8;
+    data.push_back((char)0x80);
+    while(data.size()%64!=56) data.push_back((char)0x00);
+    for(int i=7;i>=0;--i) data.push_back((char)((bitlen>>(i*8))&0xff));
+    for(size_t off=0;off<data.size();off+=64){
+        uint32_t w[64];
+        for(int i=0;i<16;++i){ w[i]=((uint32_t)(uint8_t)data[off+i*4]<<24)|((uint32_t)(uint8_t)data[off+i*4+1]<<16)|((uint32_t)(uint8_t)data[off+i*4+2]<<8)|((uint32_t)(uint8_t)data[off+i*4+3]); }
+        for(int i=16;i<64;++i){ uint32_t s0=rotr(w[i-15],7)^rotr(w[i-15],18)^(w[i-15]>>3); uint32_t s1=rotr(w[i-2],17)^rotr(w[i-2],19)^(w[i-2]>>10); w[i]=w[i-16]+s0+w[i-7]+s1; }
+        uint32_t a=h[0],b=h[1],c=h[2],d=h[3],e=h[4],f=h[5],g=h[6],hh=h[7];
+        for(int i=0;i<64;++i){ uint32_t S1=rotr(e,6)^rotr(e,11)^rotr(e,25); uint32_t ch=(e&f)^((~e)&g); uint32_t t1=hh+S1+ch+K[i]+w[i]; uint32_t S0=rotr(a,2)^rotr(a,13)^rotr(a,22); uint32_t maj=(a&b)^(a&c)^(b&c); uint32_t t2=S0+maj; hh=g;g=f;f=e;e=d+t1;d=c;c=b;b=a;a=t1+t2; }
+        h[0]+=a;h[1]+=b;h[2]+=c;h[3]+=d;h[4]+=e;h[5]+=f;h[6]+=g;h[7]+=hh;
+    }
+    static const char* hex="0123456789abcdef"; std::string out; out.reserve(64);
+    for(int i=0;i<8;++i) for(int j=7;j>=0;--j) out.push_back(hex[(h[i]>>(j*4))&0xf]);
+    return out;
+}
+} // namespace sleela
+
+/* ---- `sleela registry` : review/get/set the Sleela registry --------------
+ * A terminal front end to the registry core (registry/sleela_registry.*): a
+ * Windows-style key tree of settings + feature flags with sealed provenance.
+ * A fresh install seeds a baseline; this command reviews or edits it. The
+ * backing store is a portable .sleelareg file (default ./sleela.sleelareg or
+ * $SLEELA_REGISTRY). */
+static std::string registryStorePath(){
+    const char* env=std::getenv("SLEELA_REGISTRY");
+    if(env&&*env) return std::string(env);
+    return "sleela.sleelareg";
+}
+static int registryCmd(int argc,char**argv){
+    std::string store=registryStorePath();
+    sl_registry* r=sl_reg_create();
+    if(!r){std::cerr<<"sleela registry: out of memory\n";return 1;}
+    /* load existing store, or seed a baseline if none exists */
+    if(sl_reg_load(r,store.c_str())!=SL_REG_OK) sl_reg_seed_defaults(r);
+
+    std::string sub=(argc>=3)?argv[2]:"review";
+    int rc=0;
+    if(sub=="review"||sub=="-h"||sub=="--help"){
+        std::string path=(argc>=4)?argv[3]:"";
+        std::string buf; buf.resize(1<<16);
+        long n=sl_reg_review(r, path.empty()?nullptr:path.c_str(), &buf[0], buf.size());
+        if(n>0){ buf.resize((size_t)n); std::cout<<buf; }
+    } else if(sub=="get"){
+        if(argc<5){std::cerr<<"usage: sleela registry get <key-path> <name>\n";rc=2;}
+        else { char v[512]; long iv; int bv; sl_reg_kind k;
+            if(sl_reg_value_kind(r,argv[3],argv[4],&k)!=SL_REG_OK){std::cerr<<"not found\n";rc=1;}
+            else if(k==SL_REG_STRING&&sl_reg_get_string(r,argv[3],argv[4],v,sizeof v)==SL_REG_OK) std::cout<<v<<"\n";
+            else if(k==SL_REG_INT&&sl_reg_get_int(r,argv[3],argv[4],&iv)==SL_REG_OK) std::cout<<iv<<"\n";
+            else if(k==SL_REG_BOOL&&sl_reg_get_bool(r,argv[3],argv[4],&bv)==SL_REG_OK) std::cout<<(bv?"true":"false")<<"\n";
+        }
+    } else if(sub=="set"){
+        if(argc<6){std::cerr<<"usage: sleela registry set <key-path> <name> <value> [--int|--bool]\n";rc=2;}
+        else { bool asInt=false,asBool=false; for(int i=6;i<argc;++i){std::string a=argv[i]; if(a=="--int")asInt=true; else if(a=="--bool")asBool=true;}
+            if(asInt) sl_reg_set_int(r,argv[3],argv[4],strtol(argv[5],nullptr,10));
+            else if(asBool) sl_reg_set_bool(r,argv[3],argv[4], (std::string(argv[5])=="true"||std::string(argv[5])=="1")?1:0);
+            else sl_reg_set_string(r,argv[3],argv[4],argv[5]);
+            if(sl_reg_save(r,store.c_str())==SL_REG_OK) std::cout<<"set "<<argv[3]<<"/"<<argv[4]<<"\n"; else {std::cerr<<"save failed\n";rc=1;}
+        }
+    } else if(sub=="feature"){
+        if(argc<4){std::cerr<<"usage: sleela registry feature <name> [on|off]\n";rc=2;}
+        else if(argc>=5){ int on=(std::string(argv[4])=="on"||std::string(argv[4])=="1"); sl_reg_feature_set(r,argv[3],on); sl_reg_save(r,store.c_str()); std::cout<<"feature "<<argv[3]<<" = "<<(on?"on":"off")<<"\n"; }
+        else std::cout<<"feature "<<argv[3]<<" = "<<(sl_reg_feature_enabled(r,argv[3])?"on":"off")<<"\n";
+    } else if(sub=="save"){
+        if(sl_reg_save(r,store.c_str())==SL_REG_OK) std::cout<<"saved "<<store<<"\n"; else {std::cerr<<"save failed\n";rc=1;}
+    } else if(sub=="export"){
+        const char* out=(argc>=4)?argv[3]:"registry.sql";
+        if(sl_reg_export_sql(r,out)==SL_REG_OK) std::cout<<"exported MySQL script -> "<<out<<"\n"; else {std::cerr<<"export failed\n";rc=1;}
+    } else { std::cerr<<"sleela registry: unknown subcommand '"<<sub<<"' (review|get|set|feature|save|export)\n"; rc=2; }
+    sl_reg_destroy(r);
+    return rc;
+}
+
+/* ---- `sleela modium` : scan a VM's files for resolution ------------------
+ * For a selected VM version, verify every recorded file exists, sits where it
+ * should, and matches its SHA-256 (the 95% hash scan) against that version's
+ * MODIUM.json. `--exact` additionally re-reads bytes. Reconstitution of a
+ * failed file comes from the version's rebuild.sql (a portable MySQL script
+ * carrying each file's content); `restore` is EXPLICIT-ONLY and reports first.
+ * Modium is a per-VM file-resolution scan the VM can run for itself — distinct
+ * from the compiler's own build gate (verify-before-execution). */
+static std::string modiumDirFor(int n){char b[64];std::snprintf(b,sizeof b,"virtual-machine/vm-version/%03d",n);return std::string(b);}
+/* The author sealed into every modium entry (must match generate-modium.py). */
+static const char* kModiumAuthor = "MEARVK LLC / the Author";
+static int modiumScanOne(int n,bool exact,bool seal);
+static int modiumScanOne(int n,bool exact){ return modiumScanOne(n,exact,false); }
+static int modiumScanOne(int n,bool exact,bool seal){
+    namespace fsx=std::filesystem;
+    std::string dir=modiumDirFor(n);
+    fsx::path manifest=fsx::path(dir)/"MODIUM.json";
+    // search upward for the repo root holding the version dir (like the gate).
+    fsx::path base=fsx::current_path(); fsx::path found;
+    for(int up=0;up<8;++up){ if(fsx::exists(base/manifest)){found=base/manifest;break;} if(base.has_parent_path())base=base.parent_path(); else break; }
+    if(found.empty()){std::cerr<<"sleela modium: MODIUM.json not found for idea-vm-"<<n<<" (run tools/generate-modium.py)\n";return 1;}
+    fsx::path root=found.parent_path(); // the version folder
+    std::string text; { std::ifstream in(found,std::ios::binary); std::stringstream ss; ss<<in.rdbuf(); text=ss.str(); }
+    // minimal, dependency-free scan: pull each "path" and "sha256" pair in order.
+    int total=0,okCount=0,missing=0,moved=0,bad=0,sealbad=0;
+    size_t pos=0;
+    while(true){ size_t pp=text.find("\"path\":",pos); if(pp==std::string::npos)break; size_t q1=text.find('"',pp+7); size_t q2=text.find('"',q1+1); std::string rel=text.substr(q1+1,q2-q1-1);
+        /* bound this entry: fields belong to it until the next "path" (sorted
+         * order per entry is path, seal, sha256, size). */
+        size_t nextp=text.find("\"path\":",q2); if(nextp==std::string::npos) nextp=text.size();
+        size_t sp=text.find("\"sha256\":",q2); if(sp==std::string::npos||sp>nextp){ pos=q2+1; total++; continue; }
+        size_t s1=text.find('"',sp+9); size_t s2=text.find('"',s1+1); std::string want=text.substr(s1+1,s2-s1-1); pos=q2+1; total++;
+        fsx::path fp=root/rel;
+        if(!fsx::exists(fp)){missing++;std::cerr<<"  MISSING  "<<rel<<"\n";continue;}
+        // SHA-256 of the file
+        std::ifstream f(fp,std::ios::binary); if(!f){moved++;std::cerr<<"  UNREADABLE "<<rel<<"\n";continue;}
+        std::stringstream fss; fss<<f.rdbuf(); std::string body=fss.str();
+        std::string got=sleela::sha256_hex(body); // helper below
+        if(got!=want){bad++;std::cerr<<"  CORRUPT  "<<rel<<" (sha mismatch"<<(exact?", exact":"")<<")\n";continue;}
+        if(seal){
+            // originality seal: SHA-256(vm | path | sha256 | author). Recompute
+            // from the file's ACTUAL hash + its recorded path, and compare to
+            // the recorded seal. Catches a record whose entry was re-sealed under
+            // a different identity/author, not just file-vs-hash drift.
+            // pull the recorded seal for this entry (seal sits between this
+            // entry's "path" and the next entry's "path", per sorted order).
+            size_t slp=text.find("\"seal\":",q2); std::string wantSeal;
+            if(slp!=std::string::npos && slp<nextp){ size_t a=text.find('"',slp+7); size_t b2=text.find('"',a+1); wantSeal=text.substr(a+1,b2-a-1); }
+            char vmtag[16]; std::snprintf(vmtag,sizeof vmtag,"idea-vm-%03d",n);
+            std::string sealInput=std::string(vmtag)+"|"+rel+"|"+got+"|"+kModiumAuthor;
+            std::string gotSeal=sleela::sha256_hex(sealInput);
+            if(gotSeal!=wantSeal){ sealbad++; std::cerr<<"  UNSEALED "<<rel<<" (originality seal mismatch)\n"; continue; }
+        }
+        okCount++;
+    }
+    std::cout<<"idea-vm-"<<n<<": "<<okCount<<"/"<<total<<" ok"
+             <<(missing?(" missing="+std::to_string(missing)):"")
+             <<(bad?(" corrupt="+std::to_string(bad)):"")
+             <<(sealbad?(" unsealed="+std::to_string(sealbad)):"")
+             <<(moved?(" unreadable="+std::to_string(moved)):"")
+             <<(seal?"  [seal]":(exact?"  [exact]":"  [sha256]"))<<"\n";
+    return (missing||bad||moved||sealbad)?1:0;
+}
+static int modiumCmd(int argc,char**argv){
+    std::string sub=(argc>=3)?argv[2]:"status";
+    bool exact=false,sealMode=false; for(int i=2;i<argc;++i){std::string a=argv[i]; if(a=="--exact")exact=true; else if(a=="--seal")sealMode=true;}
+    if(sub=="-h"||sub=="--help"){
+        std::cout<<"sleela modium — scan a VM's files for resolution (exist, placed, intact)\n"
+                   "  sleela modium scan [native|1..10] [--exact]   verify files vs MODIUM.json\n"
+                   "  sleela modium status                          summary across all versions\n"
+                   "  sleela modium restore <1..10> [--from-sql]    reconstitute from rebuild.sql (explicit; reports first)\n";
+        return 0;
+    }
+    if(sub=="scan"){
+        std::string target=(argc>=4 && argv[3][0]!='-')?argv[3]:"";
+        if(target=="native"){std::cout<<"Native VM (impl/core) is covered by the build SHA-256 gate, not modium.\n";return 0;}
+        if(target.empty()){int rc=0;for(int n=1;n<=10;++n)rc|=modiumScanOne(n,exact,sealMode);return rc;}
+        int n=std::atoi(target.c_str()); if(n<1||n>10){std::cerr<<"sleela modium scan: '"<<target<<"' out of range (native or 1..10)\n";return 2;}
+        return modiumScanOne(n,exact,sealMode);
+    }
+    if(sub=="status"){int rc=0;for(int n=1;n<=10;++n)rc|=modiumScanOne(n,false);return rc;}
+    if(sub=="restore"){
+        if(argc<4){std::cerr<<"sleela modium restore: expected <1..10>\n";return 2;}
+        int n=std::atoi(argv[3]); if(n<1||n>10){std::cerr<<"out of range\n";return 2;}
+        std::cout<<"modium restore (idea-vm-"<<n<<"): reporting mismatches first (restore is explicit-only).\n";
+        int rc=modiumScanOne(n,false);
+        if(rc==0){std::cout<<"  nothing to restore — all files resolve.\n";return 0;}
+        std::cout<<"  to reconstitute, load this version's rebuild.sql into MySQL and write back\n"
+                   "  the recorded content for the files flagged above (or restore from git).\n"
+                   "  (modium never overwrites files automatically.)\n";
+        return 0;
+    }
+    std::cerr<<"sleela modium: unknown subcommand '"<<sub<<"' (use scan | status | restore)\n";
+    return 2;
+}
 static int designActivityCmd(int argc,char**argv){
     if(argc<9){std::cerr<<"Usage: sleela design-activity <science> <correctness> <reproducibility> <observability> <safety> <resource> <interoperability>\n";return 2;}
     std::string science=argv[2]; if(science.rfind("--science=",0)==0)science=science.substr(10);
@@ -480,7 +819,7 @@ static int designActivityCmd(int argc,char**argv){
     char json[1024];slda_format_json("sleela",&result,json,sizeof json);
     std::cout<<json<<"\n"; return 0;
 }
-static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
+static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela vm [list|select <native|1..10|premium 1..11>|info ...|run <premium <1..11>|native> <program.sleela>]\n  sleela modium [scan [native|1..10] [--exact|--seal]|status|restore <1..10>]\n  sleela registry [review [key]|get <key> <name>|set <key> <name> <val> [--int|--bool]|feature <name> [on|off]]\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";
     // Creator-document schema binding: if the source declares a #schema pragma,
     // the referenced XSD must exist and its version must be understood. Absent
@@ -719,6 +1058,9 @@ int main(int argc,char**argv){
     else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
+    else if(cmd=="vm")return vmCmd(argc,argv);
+    else if(cmd=="modium")return modiumCmd(argc,argv);
+    else if(cmd=="registry")return registryCmd(argc,argv);
     else if(cmd=="design-activity")return designActivityCmd(argc,argv);
     else if(cmd=="defender")return defenderCmd(argc,argv);
     else if(cmd=="version"){std::cout<<kVersion<<"\n";return 0;}

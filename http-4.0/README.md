@@ -2,30 +2,48 @@
 
 <img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-logo-004.jpg" alt="SLeeLa">
 
-
-
-
-
-
 # SLeeLa HTTP 4.0
 
-**Status:** Experimental SLeeLa next-generation protocol; not an IETF HTTP/4 standard.
+**Status:** Internet-capable SLeeLa next-generation frame-based protocol server.
 
-There is no published IETF HTTP/4 specification corresponding to this SLeeLa generation. HTTP 4.0 is therefore documented as a SLeeLa experimental protocol layer that can be carried by HTTP/3 or another supported transport.
+**Platforms:** Linux · macOS · Windows 10+
 
-## Purpose
+HTTP 4.0 moves the SLeeLa model toward an explicit message and frame lifecycle.
+It is not an IETF HTTP/4 standard — it is a SLeeLa experimental protocol layer
+that can be carried by HTTP/3 or another supported transport.
 
-HTTP 4.0 moves the SLeeLa model toward an explicit message and frame lifecycle. It adds protocol-level treatment of:
+## Build and test
 
-- stream and request identity;
-- authenticated sequence handling;
-- resumable delivery;
-- flow control and backpressure;
-- incremental delivery;
-- capability negotiation;
-- session migration;
-- typed reset and retry behavior;
-- observability.
+```sh
+make            # build selftests + server
+make test       # run protocol, segmentation, and server self-tests
+make server     # build just the portable server
+make server-test# run the server self-test
+make protocol-test     # run the frame protocol self-test
+make segmentation-test # run the segmentation/reassembly self-test
+make clean
+```
+
+### Platform notes
+
+| Platform       | Socket layer                | Compiler          | Link flags         |
+|----------------|-----------------------------|--------------------|-------------------|
+| Linux          | POSIX sockets via sleela_net| `cc` / `gcc`       | (none)            |
+| macOS          | POSIX sockets via sleela_net| `cc` / `clang`     | (none)            |
+| Windows 10+    | Winsock2 via sleela_net     | MSVC / MinGW       | `-lws2_32`        |
+
+No external dependencies. Pure C11 with libc only.
+
+## Running the server
+
+```sh
+./http4_server_bin --port 8083
+```
+
+Options:
+- `--port N` — TCP listen port (default 8083)
+- `--self-test` — run the built-in test suite and exit
+- `--help` — show usage
 
 ## Architecture
 
@@ -34,98 +52,137 @@ Application
     |
 SLeeLa HTTP 4.0 semantic API
     |
-HTTP 4.0 message/frame model
+HTTP 4.0 frame model                ← OPEN/DATA/END/RESET/WINDOW/PING/PONG/RESUME/CAPSULE
     |
 Capability + session control
     |
-Integrity / replay / resumability
+Segmentation / reassembly           ← large payloads split across MTU-sized frames
     |
-Carrier adapter
+Packet context (education + basket)
+    |
+Carrier adapter                     ← sleela_net portable sockets (Linux/macOS/Windows)
     +-- HTTP/3 / QUIC
     +-- Future native carrier
     +-- Test / in-memory carrier
 ```
 
-## Frame Model
+## Frame model
 
-Initial frame representation:
+Fixed-width 32-byte header, big-endian:
 
 ```text
 VERSION | TYPE | FLAGS | STREAM-ID | REQUEST-ID | SEQUENCE | PAYLOAD-LENGTH | PAYLOAD
+  1B      1B     2B       8B          8B           8B          4B             N bytes
 ```
 
-Defined frame types:
+Frame types:
 
-- `OPEN` — establish a logical request or stream.
-- `DATA` — carry application payload.
-- `END` — complete a request or stream.
-- `RESET` — terminate a stream.
-- `WINDOW` — advertise receive capacity.
-- `PING` / `PONG` — liveness.
-- `RESUME` — continue an interrupted transfer.
-- `CAPSULE` — carry negotiated or session metadata.
+| Type      | Code | Description                          |
+|-----------|:----:|--------------------------------------|
+| OPEN      | 1    | Establish a logical request or stream|
+| DATA      | 2    | Carry application payload            |
+| END       | 3    | Complete a request or stream          |
+| RESET     | 4    | Terminate a stream with error         |
+| WINDOW    | 5    | Advertise receive capacity            |
+| PING      | 6    | Liveness probe                        |
+| PONG      | 7    | Liveness response                     |
+| RESUME    | 8    | Continue an interrupted transfer      |
+| CAPSULE   | 9    | Carry negotiated/session metadata     |
+
+Flags: `FIN` (0x01), `ACK` (0x02), `URGENT` (0x04), `INCREMENTAL` (0x08),
+`RESUMABLE` (0x10).
+
+## Built-in endpoints
+
+| Path                      | Method | Description                              |
+|---------------------------|--------|------------------------------------------|
+| `/__sleela/health`        | GET    | Returns `SLeeLa HTTP/4.0 OK`            |
+| `/__sleela/status`        | GET    | JSON: server, generation, VM, platform, frame types, capabilities |
+| `/__sleela/negotiate`     | GET    | Version negotiation result (JSON)        |
+| `/__sleela/h4`            | POST   | H4 frame endpoint — accepts binary frames (32-byte header + payload), dispatches to frame handler, returns response frame or JSON metadata |
+
+## SLeeLa application headers
+
+Every response includes:
+
+```
+X-SLeeLa-Version: 4.0
+X-SLeeLa-Accept: 4.0, 3.0, 2.1, 1.1, 1.0
+```
+
+## Core capabilities
+
+| Capability                      | Status        | Notes                                     |
+|---------------------------------|---------------|-------------------------------------------|
+| Fixed-width frame header        | Implemented   | 32 bytes, big-endian                      |
+| 9 frame types                   | Implemented   | OPEN through CAPSULE                      |
+| Stream/request/sequence IDs     | Implemented   | Explicit protocol fields                   |
+| Deterministic encode/decode     | Implemented   | Round-trip tested                          |
+| Segmentation                    | Implemented   | Large payloads → MTU-sized frames          |
+| Reassembly                      | Implemented   | Bitmap-tracked, out-of-order tolerant      |
+| Packet context                  | Implemented   | Education token + basket                   |
+| Payload wrapping                | Implemented   | Context-prefixed wire payloads             |
+| Resumable delivery              | Implemented   | RESUME frame type                          |
+| Incremental delivery            | Implemented   | INCREMENTAL flag                           |
+| Flow control                    | Frame-level   | WINDOW frame type                          |
+| Capability negotiation          | Frame-level   | CAPSULE frame type                         |
 
 ## HTTP 3.0 → HTTP 4.0
 
-| Concern | HTTP 3.0 | HTTP 4.0 |
-|---|---|---|
-| Application envelope | Central | Retained as semantic payload |
-| Stream identity | Carrier-oriented | Explicit protocol field |
-| Sequence handling | Request/integrity layer | Authenticated frame sequence |
-| Resume | Application convention | Explicit frame |
-| Flow control | Advisory/application layer | Explicit WINDOW frames |
-| Incremental delivery | Application/carrier behavior | Explicit DATA lifecycle |
-| Capability negotiation | Handshake | Session capability model |
-| Carrier | Primarily HTTP/3 | Pluggable carrier |
-| Migration | Carrier-dependent | Protocol session model |
-| Errors | Response/pipeline | Typed stream/session reset |
+| Concern                  | HTTP 3.0                  | HTTP 4.0                          |
+|--------------------------|---------------------------|-----------------------------------|
+| Application envelope     | Central                   | Retained as semantic payload      |
+| Stream identity          | Carrier-oriented          | Explicit protocol field           |
+| Sequence handling        | Request/integrity layer   | Authenticated frame sequence      |
+| Resume                   | Application convention    | Explicit RESUME frame             |
+| Flow control             | Advisory/application      | Explicit WINDOW frames            |
+| Incremental delivery     | Application/carrier       | Explicit DATA lifecycle           |
+| Capability negotiation   | Handshake                 | Session capability model          |
+| Carrier                  | Primarily HTTP/3          | Pluggable carrier                 |
+| Migration                | Carrier-dependent         | Protocol session model            |
+| Errors                   | Response/pipeline         | Typed stream/session RESET        |
 
-## Security Boundary
+## Large-file download mode
 
-HTTP 4.0 does not replace TLS or invent a substitute for authenticated transport. Deployments should use an authenticated carrier and may add SLeeLa application integrity.
+Files larger than 50 MB use the shared SLeeLa **DOWNLOAD** resume contract:
 
-The reference implementation provides deterministic frame validation and sequence checks. Cryptographic key management remains a separate concern.
-
-## Compatibility
-
-HTTP 4.0 can initially be transported as an application payload over HTTP/3. This provides an implementation path without representing SLeeLa HTTP 4.0 as an Internet-standard HTTP version.
-
-## Build
-
-```sh
-make -C http-4.0
-make -C http-4.0 test
+```
+SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE
 ```
 
-The implementation is dependency-light and uses C11.
+## Security boundary
 
-## Planned Implementation Areas
+HTTP 4.0 does not replace TLS or invent a substitute for authenticated
+transport. Frame validation and sequence checks are deterministic. Cryptographic
+key management remains a separate concern.
 
-1. HTTP/3 carrier adapter.
-2. Resumable upload/download state.
-3. Incremental forwarding.
-4. Authenticated session keys.
-5. Path-migration policy.
-6. C++ / Python API parity.
-7. Linux, Windows 10+, and macOS builds.
-8. Interoperability fixtures and conformance tests.
+## File inventory (server additions)
 
-## Unified Route Data
+| File                     | Description                                          |
+|--------------------------|------------------------------------------------------|
+| `http4_server.h`         | Server API, HTTP types, frame handler, download state|
+| `http4_server.c`         | Full server: parse, route, H4 frame endpoint, self-test |
+| `http4_main.c`           | CLI entry point with echo frame handler               |
+| `http_negotiation.h`     | C negotiation API (reformatted)                       |
+| `http_negotiation.c`     | Version negotiation (reformatted)                     |
+| `http_negotiation.hpp`   | C++ negotiation wrapper (reformatted)                 |
+| `http_negotiation.cpp`   | C++ wrapper implementation (reformatted)              |
 
-This implementation consumes the SLeeLa unified route-data contract in
-route/ROUTE.DATA.json and route/ROUTE.DATA.md. Route records carry protocol,
-server surface, HTTP generation, VM generation/formal VM name, canonical
-configuration root, route identifier, target/resolution mode, capability,
-transport, port, and status. VM names are architectural metadata only and do
-not grant capabilities. Dynamic targets must use the shared resolver before
-acceptance. The VM identity is: /impl Core, /1 Foundation, /2 Operator,
-/3 Specialist, /4 Supervisor, /5 Manager, /6 Director, /7 Administrator,
-/8 Executive, /9 Authority, /10 Principal, /11 Sovereign.
+The existing protocol core (`http4_protocol`), packet context, packet payload,
+segmentation, reassembly, and their self-tests are unchanged.
 
-## Corrections
+## Dependencies
 
-Fixed a literal-`\n` corruption in `http4_protocol.c` and a link failure: the
-protocol references `sleela_preferred_router_packet_policy` from
-`../preferred-routers/preferred_router.c`, which was added to the build so
-`make` links cleanly. See the 2026-10-03 entry in
-[`../REVISIONS.md`](../REVISIONS.md).
+| Module                      | Path                           | Role                          |
+|-----------------------------|--------------------------------|-------------------------------|
+| `sleela_net`                | `impl/core/sleela_net.{c,h}`   | Portable TCP sockets           |
+| `preferred_router`          | `preferred-routers/`            | Routing-tier policy             |
+| `resolver`                  | `resolver/`                     | DNS / path / event policy       |
+
+## Unified route data
+
+This server consumes the SLeeLa unified route-data contract in
+`route/ROUTE.DATA.json` and `route/ROUTE.DATA.md`. VM identity: /impl Core,
+/1 Foundation, /2 Operator, /3 Specialist, /4 Supervisor, /5 Manager,
+/6 Director, /7 Administrator, /8 Executive, /9 Authority, /10 Principal,
+/11 Sovereign.

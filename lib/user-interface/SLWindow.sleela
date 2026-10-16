@@ -16,7 +16,7 @@
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
  */
-#sleela 1.5
+#sleela 2.1
 class SLWindow {
   int window;   // VM-local window handle (-1 = none)
   int root;     // VM-local handle of the window's root container widget

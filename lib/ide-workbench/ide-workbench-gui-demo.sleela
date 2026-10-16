@@ -1,0 +1,63 @@
+/*
+ * lib/ide-workbench/ide-workbench-gui-demo.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Runnable demonstrator that raises the SLeeLa IDE as a REAL
+ *   SleelaUI window — the whole GUI authored in SLeeLa. It boots
+ *   SLIdeWorkbenchUI, populates the project tree, opens a couple of files into
+ *   SLTextView code editors inside the SLNotebook, publishes a sample
+ *   diagnostic, and runs the SleelaUI event loop. On a headless host (no X11
+ *   display) boot() returns false and the demo exits cleanly, exactly like
+ *   SLGalleryDemo.
+ *
+ * Family: ide-workbench. The user interface is SleelaUI; this file proves the
+ * IDE shell is usable from the language itself.
+ */
+#sleela 2.1
+class IdeWorkbenchGuiDemo {
+
+  int run() {
+    SLIdeWorkbenchUI ide = new SLIdeWorkbenchUI();
+    if (!ide.boot("com.mearvk.SleelaIDE", "SLeeLa IDE - MEARVK LLC",
+                  1280, 800, "/work/project")) {
+      return 1;   // headless: no display
+    }
+
+    // Project explorer: a root with two source files (SST Nordshrit + SLeeLa).
+    ide.addTreeNode("root", "project", null, false);
+    ide.addTreeNode("f1", "main.sst", "root", true);
+    ide.addTreeNode("f2", "util.sleela", "root", true);
+    ide.tree.toggle("root");         // expand the root so children show
+    ide.rebuildTree();
+
+    // Open main.sst into a code editor tab.
+    String[] sst = new String[3];
+    sst[0] = "system Demo {";
+    sst[1] = "  symbol Greeting";
+    sst[2] = "}";
+    ide.openFile("f1", "/work/project/main.sst", sst, 3, "r1");
+
+    // Open util.sleela into a second tab.
+    String[] sl = new String[4];
+    sl[0] = "#sleela 1.5";
+    sl[1] = "class Util {";
+    sl[2] = "  int answer() { return 42; }";
+    sl[3] = "}";
+    ide.openFile("f2", "/work/project/util.sleela", sl, 4, "r1");
+
+    // A sample diagnostic from a compile (host would publish real ones).
+    ide.publishDiagnostic("f1", SLIdeDiagnosticsPanel.SEV_WARNING, 2, 3,
+                          "symbol 'Greeting' is never referenced");
+    ide.finishCompile();
+
+    // Content-control interactions now flow through the DOM event bus too: a
+    // tab switch raises TOGGLE("ide-notebook", idx) and a tree selection raises
+    // CHANGE("ide-tree", id), handled by onTabChange / onTreeActivate.
+    ide.onTabChange("0");                 // focus the first editor tab
+    String opened = ide.onTreeActivate("f2");  // selecting a leaf names a file
+
+    // Hand control to the SleelaUI event loop (polls the command buttons).
+    int code = ide.runLoop();
+    ide.shutdown();
+    return code;
+  }
+}

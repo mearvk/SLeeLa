@@ -1,4 +1,4 @@
-#sleela 1.5
+#sleela 2.1
 // moral-capacitor.sleela -- the self-contained, runnable demonstrator of the
 // Moral Capacitor(TM) (lib/moral-capacitor/SLMoralCapacitor and friends). The
 // SLeeLa compiler's `run` compiles one file as a single unit, so this aggregate

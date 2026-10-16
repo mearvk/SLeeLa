@@ -1,0 +1,70 @@
+/*
+ * lib/ide-workbench/SLIdeEditor.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLIdeEditor — a real code-editor buffer for one open
+ *   source file. Where lib/ui/SLTextArea is a visibility stub, SLIdeEditor adds
+ *   the editor state an IDE needs: a text buffer, a dirty (unsaved) flag, a
+ *   caret offset, a selection span, and a revision marker that mirrors the
+ *   lib/gui SLGuiDocument revision fingerprint so external changes can be
+ *   reconciled. Presentation (actual glyphs, syntax colors) is still owned by
+ *   the Java/native host; SLeeLa owns the buffer and the meaning of edits.
+ */
+#sleela 2.1
+// Family: ide-workbench. One editor == one open document buffer.
+class SLIdeEditor {
+  String documentId;           // stable IDE-facing identity (matches SLGuiDocument.id)
+  String path;                 // resolved host path, "" when untitled
+  String language;             // "sleela" | "sst" | "c" | "cpp" | "java"
+  String text;                 // the live buffer contents
+  String savedRevision;        // on-disk revision last synced ("lastModified:size" | "absent")
+  int dirty;                   // 1 when the buffer differs from the saved revision
+  int caret;                   // caret offset into text
+  int selStart;                // selection start offset (== selEnd when no selection)
+  int selEnd;                  // selection end offset
+
+  void configure(String docId, String docPath, String lang) {
+    documentId = docId; path = docPath; language = lang;
+    text = ""; savedRevision = "absent";
+    dirty = 0; caret = 0; selStart = 0; selEnd = 0;
+  }
+
+  String getId() { return documentId; }
+  String getPath() { return path; }
+  String getLanguage() { return language; }
+  boolean untitled() { return path == null || path == ""; }
+
+  // Replace the buffer (a load or a programmatic set); not itself a user edit.
+  void loadText(String value, String revision) {
+    text = value; savedRevision = revision; dirty = 0;
+    caret = 0; selStart = 0; selEnd = 0;
+  }
+
+  // A user edit: set the buffer text and mark it dirty.
+  void setText(String value) {
+    if (value != text) { text = value; dirty = 1; }
+  }
+  String getText() { return text; }
+
+  boolean isDirty() { return dirty == 1; }
+
+  // Mark the buffer clean against the revision the host just wrote to disk.
+  void markSaved(String revision) { savedRevision = revision; dirty = 0; }
+
+  // Caret / selection (offsets are clamped to the buffer by the host).
+  void moveCaret(int offset) { caret = offset; selStart = offset; selEnd = offset; }
+  int getCaret() { return caret; }
+  void select(int start, int end) {
+    selStart = start; selEnd = end; caret = end;
+  }
+  boolean hasSelection() { return selStart != selEnd; }
+
+  // True when an external (on-disk) revision no longer matches what we loaded,
+  // i.e. the file changed underneath us (reconcile via the document listener).
+  boolean staleAgainst(String diskRevision) {
+    if (diskRevision == null) { return false; }
+    return diskRevision != savedRevision;
+  }
+
+  boolean isSst() { return language == "sst"; }
+  boolean isSleela() { return language == "sleela"; }
+}

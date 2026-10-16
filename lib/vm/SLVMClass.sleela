@@ -15,7 +15,7 @@
  *
  * Family: vm. Composes SLVMField, SLVMMethod; composed by SLVMModule.
  */
-#sleela 1.3
+#sleela 2.1
 class SLVMClass {
   int classId;
   String name;

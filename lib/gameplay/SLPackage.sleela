@@ -3,7 +3,7 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library package for gameplay.
  */
-#sleela 1.3
+#sleela 2.1
 // Library facade for module package: gameplay
 // Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
 // The Master Classes (DiceRoll, Player, ManagementCourtroom, MoveOutcome,

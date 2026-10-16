@@ -1,4 +1,4 @@
-#sleela 1.6
+#sleela 2.1
 public class EquivalenceBasic {
   private int value;
   public EquivalenceBasic(int value) { this.value = value; }

@@ -15,7 +15,7 @@
  *
  * Family: os. Writes via the os*/file I/O bridge; records a manifest.
  */
-#sleela 1.5
+#sleela 2.1
 class SLOSDevTree {
   String root;        // absolute output root, e.g. "/os-development"
   String manifest;    // newline-separated "bytes path" index

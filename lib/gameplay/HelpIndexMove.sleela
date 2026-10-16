@@ -11,7 +11,7 @@
  * A concrete GameMove: override resolve() to roll and fill a MoveOutcome.
  * Family: gameplay.
  */
-#sleela 1.3
+#sleela 2.1
 class HelpIndexMove extends GameMove {
 
   void setUp() {

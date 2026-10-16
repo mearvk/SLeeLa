@@ -1,0 +1,122 @@
+/*
+ * lib/user-interface/SLNotebook.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLNotebook — a SleelaUI tabbed container. It is a
+ *   composite widget (no new C ABI): a vertical box holding a horizontal tab
+ *   strip of SLButtons above a content area in which exactly one page's widget
+ *   is visible at a time. Adding a page registers a tab button and a content
+ *   container (a vertical SLBox) child widgets attach to; selecting a tab shows
+ *   that page and hides the others, and the active tab button is drawn as the
+ *   suggested (accent) action so the selection reads clearly. A dirty marker can
+ *   be shown per tab (e.g. an unsaved editor). This is the multi-document
+ *   surface an IDE needs, written entirely in SLeeLa over SleelaUI primitives.
+ *
+ * An SLNotebook IS an SLWidget container.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 2.1
+class SLNotebook extends SLWidget {
+  static final int MAX_PAGES = 4096;
+
+  SLBox column;      // vertical: tab strip over the content area
+  SLBox strip;       // horizontal tab strip
+  SLBox stack;       // the content area (one page visible at a time)
+
+  SLButton[] tabs;   // one tab button per page
+  SLBox[] pages;     // one content container per page
+  String[] titles;   // base tab titles (without the dirty marker)
+  boolean[] dirty;   // per-page dirty flag (adds a '*' to the tab)
+  int count;
+  int active;        // active page index, -1 when empty
+
+  void createIn(SLWidget parent) {
+    column = new SLBox();
+    column.vertical(parent, 0);
+    column.setExpand(true, true);
+    widget = column.handle();
+
+    strip = new SLBox();
+    strip.horizontal(column, 4);
+    strip.setSizeRequest(0, 32);
+
+    stack = new SLBox();
+    stack.vertical(column, 0);
+    stack.setExpand(true, true);
+
+    tabs = new SLButton[MAX_PAGES];
+    pages = new SLBox[MAX_PAGES];
+    titles = new String[MAX_PAGES];
+    dirty = new boolean[MAX_PAGES];
+    count = 0; active = -1;
+  }
+
+  // Add a page with a tab title; returns the page index. The returned page's
+  // content() is the container child widgets attach to.
+  int addPage(String title) {
+    if (count >= MAX_PAGES) { return -1; }
+    SLButton tab = new SLButton();
+    tab.createIn(strip, title);
+    tabs[count] = tab;
+
+    SLBox page = new SLBox();
+    page.vertical(stack, 0);
+    page.setExpand(true, true);
+    pages[count] = page;
+
+    titles[count] = title;
+    dirty[count] = false;
+
+    int idx = count;
+    count = count + 1;
+    select(idx);          // newly added page becomes active
+    return idx;
+  }
+
+  // The content container for page `index` (attach children with createIn).
+  SLWidget pageContent(int index) {
+    if (index < 0 || index >= count) { return null; }
+    return pages[index];
+  }
+
+  // Show page `index`, hide the rest, accent its tab.
+  void select(int index) {
+    if (index < 0 || index >= count) { return; }
+    active = index;
+    for (int i = 0; i < count; i = i + 1) {
+      pages[i].setVisible(i == index);
+      tabs[i].setSuggested(i == index);
+    }
+  }
+
+  int activeIndex() { return active; }
+
+  // Poll the tab strip: if a tab was clicked since the last check, make it
+  // active and return its index; otherwise return -1.
+  int takeClickedTab() {
+    for (int i = 0; i < count; i = i + 1) {
+      if (tabs[i].clicked()) { select(i); return i; }
+    }
+    return -1;
+  }
+
+  // Mark a page dirty/clean; refreshes its tab label with a '*' suffix.
+  void setDirty(int index, boolean isDirty) {
+    if (index < 0 || index >= count) { return; }
+    dirty[index] = isDirty;
+    tabs[index].setText(isDirty ? (titles[index] + " *") : titles[index]);
+  }
+  boolean isDirty(int index) {
+    return index >= 0 && index < count && dirty[index];
+  }
+
+  // Rename a tab (keeps the current dirty marker).
+  void setTitle(int index, String title) {
+    if (index < 0 || index >= count) { return; }
+    titles[index] = title;
+    setDirty(index, dirty[index]);
+  }
+
+  int pageCount() { return count; }
+}

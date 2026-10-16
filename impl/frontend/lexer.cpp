@@ -41,6 +41,11 @@ static const std::unordered_map<std::string,int> kContextualBuiltins13={
     {"synchroOpen",1},{"synchroDispatch",1},{"synchroReport",1},{"synchroClose",1},{"synchroSent",1},{"synchroReceived",1},{"synchroMean",1},{"synchroMin",1},{"synchroMax",1},{"synchroP95",1},{"synchroLoss",1},
     {"bestOfNew",1},{"bestOfWeight",1},{"bestOfMinVersion",1},{"bestOfCostBudget",1},{"bestOfCandidate",1},{"bestOfRecord",1},{"bestOfScore",1},{"bestOfBest",1},{"bestOfChoice",1},{"bestOfReport",1},{"bestOfClose",1},
     {"bestOfMean",1},{"bestOfLoss",1},{"bestOfJitter",1},{"bestOfCertainty",1},{"bestOfCandidateArch",1},{"bestOfArchRealized",1},{"bestOfArch",1},{"bestOfArchParam",1},{"bestOfArchState",1},
+    /* Idea System(TM) realtime canvas (idea/realtime) native-bridge built-ins. */
+    {"ideaCanvasCreate",1},{"ideaCanvasDestroy",1},{"ideaCanvasCols",1},{"ideaCanvasRows",1},{"ideaCanvasCount",1},
+    {"ideaCanvasSetParams",1},{"ideaCanvasExcite",1},{"ideaCanvasStep",1},{"ideaCanvasAdvance",1},{"ideaCanvasTimestep",1},
+    {"ideaCanvasIntensityAt",1},{"ideaCanvasHasRenderer",1},{"ideaCanvasOpenWindow",1},{"ideaCanvasShouldClose",1},{"ideaCanvasPresent",1},{"ideaCanvasRun",1},
+    {"ideaCanvasSetBackendPolicy",1},{"ideaCanvasPolicy",1},{"ideaCanvasActiveBackend",1},{"ideaCanvasGpuAvailable",1},{"ideaCanvasMeasuredHz",1},{"ideaCanvasMigrate",1},
     /* GC-hint words (syntax 1.9). `gc` and `mem` are CONTEXTUAL, not reserved:
      * they tokenize as ordinary identifiers and are only special as the whole
      * right-hand side of an assignment (`x = gc N;` / `x = mem N;`), so they

@@ -6,6 +6,9 @@
 # Build outputs
 impl/build/
 **/build/
+# Premium SLVM runnable-VM build output (kept separate from committed
+# build/<platform>/ entry points under sleela-virtual-machine/0NN).
+**/vm-build/
 *.o
 *.obj
 *.a

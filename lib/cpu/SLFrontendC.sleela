@@ -16,7 +16,7 @@
  *
  * Family: cpu. Extends SLFrontend.
  */
-#sleela 1.3
+#sleela 2.1
 class SLFrontendC extends SLFrontend {
 
   void init(String path) { configure("c", LANG_C, path); }

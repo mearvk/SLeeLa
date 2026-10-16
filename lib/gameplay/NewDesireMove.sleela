@@ -11,7 +11,7 @@
  * A concrete GameMove: override resolve() to offer the slate, grant courtroom
  * standing, and resolve the chosen bet into profit. Family: gameplay.
  */
-#sleela 1.3
+#sleela 2.1
 class NewDesireMove extends GameMove {
 
   PortfolioDecision chosen;   // the decision the player backed

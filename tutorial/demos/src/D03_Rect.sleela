@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 2.1
 // D03_Rect.sleela — companion to Lesson 03 (Types, structs & classes).
 // A struct holds plain data (constructed with new + field assignment); a class
 // holds the behavior and main(). This mirrors the real struct/new pattern used

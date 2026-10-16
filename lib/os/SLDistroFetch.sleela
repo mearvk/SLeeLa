@@ -21,7 +21,7 @@
  * Family: os. Opt-in network fetch via the osRun / osMakeDir / osExists bridge;
  *   requires #sleela 1.5 for the os* built-ins.
  */
-#sleela 1.11
+#sleela 2.1
 class SLDistroFetch {
   // Fetch depth/mode tags.
   static final int MODE_SHALLOW = 0;   // --depth 1 --single-branch (default)
