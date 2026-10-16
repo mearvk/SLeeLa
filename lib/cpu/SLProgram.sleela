@@ -31,10 +31,30 @@ class SLProgram {
   SLTimingManifest timing;   // stated operating point (null until attached)
   SLAccessManifest access;   // stated access semantics (null until attached)
 
+  // Document-level memory tier: flags the WHOLE program with a default tier
+  // (SLMemoryTierRouter.TIER_*): 0 none (accurate/DDR5 default), 1 usual (DDR2),
+  // 2 accurate (DDR5). A method's own usualmem/accuratemem tier overrides this;
+  // any method that declares no tier inherits this document default. This is
+  // the "flag the entire document" lever; per-method flags handle any subset.
+  int docMemTier;
+
   void configure(String programName, int capacityWords) {
     name = programName; entryPoint = 0; length = 0;
     image = new SLRAM(); image.configure(capacityWords, 32); image.allocate();
-    timing = null; access = null;
+    timing = null; access = null; docMemTier = 0;
+  }
+
+  // Flag the entire document's default tier. `usualmem` on the program means
+  // "everything is usual unless a method says otherwise"; likewise accurate.
+  void setDocumentTier(int tier) { docMemTier = tier; }
+  int documentTier() { return docMemTier; }
+
+  // The EFFECTIVE tier for a method: the method's own tier when it declares one
+  // (usualmem/accuratemem), else the document default, else accurate (2).
+  int effectiveTier(int methodTier) {
+    if (methodTier == 1 || methodTier == 2) { return methodTier; }
+    if (docMemTier == 1 || docMemTier == 2) { return docMemTier; }
+    return 2;   // accurate / DDR5 default
   }
 
   void setEntryPoint(int addr) { entryPoint = addr; }

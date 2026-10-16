@@ -23,6 +23,7 @@ class SLExecutorBuild {
   SLMotherboard board;
   SLMemoryModule memory;
   SLMemoryInterface memInterface;   // optional OOD cadence-overlay over `memory`
+  SLMemoryTierRouter tiers;         // optional two-tier (usual/accurate) router
   SLStorageDevice storage;
   SLOpticalDrive optical;
   SLSystemBus bus;
@@ -45,6 +46,25 @@ class SLExecutorBuild {
   // backing store is never replaced — only the observed availability changes.
   void installMemoryInterface(SLMemoryInterface iface) { memInterface = iface; }
 
+  // Designate PHYSICAL memory tiers: a usual-activities module and an
+  // accuracy/competency module, plus which is the main (document default). A
+  // function marked usualmem/accuratemem binds to the matching module; the rest
+  // inherit the main tier. The accurate tier doubles as the base `memory` the
+  // CPU mounts, so single-tier builds are unaffected.
+  void installUsualTier(SLMemoryModule m) {
+    if (tiers == null) { tiers = new SLMemoryTierRouter(); tiers.configure(); }
+    tiers.installUsual(m);
+  }
+  void installAccurateTier(SLMemoryModule m) {
+    if (tiers == null) { tiers = new SLMemoryTierRouter(); tiers.configure(); }
+    tiers.installAccurate(m);
+    if (memory == null) { memory = m; }   // the accurate tier is the base store
+  }
+  void setMainTier(int tier) {
+    if (tiers == null) { tiers = new SLMemoryTierRouter(); tiers.configure(); }
+    tiers.setMainTier(tier);
+  }
+
   // Optional accelerators: give the build's CPU direct DMA and/or native GPU
   // access, so a program on this executor can use them at any point.
   void enableDMA() { if (cpu != null) { cpu.enableDMA(); } }
@@ -65,6 +85,13 @@ class SLExecutorBuild {
   boolean assemble() {
     if (cpu == null || memory == null) { return false; }
     memory.mount(cpu.dataWidth());   // allocate RAM backing at the CPU word width
+    // Mount the usual tier too, when a two-tier router is present, so both
+    // physical modules have backing a dispatched function can bind to. (The
+    // accurate tier is `memory`, already mounted above.)
+    if (tiers != null && tiers.hasUsual()) {
+      SLMemoryModule u = tiers.moduleFor(tiers.TIER_USUAL);
+      if (u != null && u != memory) { u.mount(cpu.dataWidth()); }
+    }
     assembled = 1;
     return true;
   }
@@ -103,6 +130,16 @@ class SLExecutorBuild {
   SLMemoryModule ram()             { return memory; }
   SLMemoryInterface ramInterface() { return memInterface; }
   boolean hasMemoryInterface()     { return memInterface != null && memInterface.active(); }
+
+  // Two-tier memory access. memoryForTier(t) returns the physical module a
+  // function with declared tier t (SLMemoryTierRouter.TIER_*) binds to; the VM
+  // dispatcher calls this per function so usualmem/accuratemem actually route.
+  SLMemoryTierRouter tierRouter() { return tiers; }
+  boolean twoTierMemory()         { return tiers != null && tiers.twoTier(); }
+  SLMemoryModule memoryForTier(int declaredTier) {
+    if (tiers == null) { return memory; }
+    return tiers.moduleFor(declaredTier);
+  }
   SLStorageDevice disk()      { return storage; }
   SLOpticalDrive opticalDrive(){ return optical; }
   SLSystemBus systemBus()     { return bus; }

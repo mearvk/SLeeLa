@@ -1,0 +1,72 @@
+/*
+ * lib/cpu/examples/memory-tiers-dispatch.sleela
+ * A runnable SLeeLa document proving memory tiers end to end:
+ *   1. a PHYSICAL two-tier build — DDR2 (usual) + DDR5 (accurate) both mounted;
+ *   2. a WHOLE-DOCUMENT default tier flag on the program;
+ *   3. PER-METHOD tier flags (usualmem/accuratemem) overriding the default; and
+ *   4. per-function DISPATCH — each method resolves to the real memory module
+ *      it binds to, via SLMemoryTierRouter.
+ *
+ * It models the modifier bits the frontend emits for:
+ *     accuratemem class OrderPipeline {      // document default: accurate (DDR5)
+ *       usualmem    void logActivity()  {...} // overrides -> usual (DDR2)
+ *       accuratemem int  settleLedger() {...} // -> accurate (DDR5)
+ *       int main()                      {...} // inherits document default (DDR5)
+ *     }
+ */
+#sleela 2.1
+class MemoryTiersDispatchExample {
+
+  void main() {
+    SLComponentCatalog parts = new SLComponentCatalog();
+    SLMemoryTierPolicy policy = new SLMemoryTierPolicy();
+
+    // 1. PHYSICAL two-tier build: DDR2 usual + DDR5 accurate on an EPYC.
+    SLAMDEPYC9575F cpu = new SLAMDEPYC9575F();
+    cpu.configure();
+    SLExecutorBuild build = new SLExecutorBuild();
+    build.configure("tiered-epyc");
+    build.installCpu(cpu);
+    build.installUsualTier(parts.ddr2_800(4096));        // DDR2 -> usual
+    build.installAccurateTier(parts.ddr5_6400(65536));   // DDR5 -> accurate (base)
+    build.setMainTier(policy.TIER_ACCURATE);             // document default = DDR5
+    build.installBus(parts.pcieGen5x16());
+    build.assemble();
+    print("two-tier memory = " + build.twoTierMemory() +
+          ", main tier = " + build.tierRouter().tierName(policy.TIER_INHERIT));
+
+    // 2. WHOLE-DOCUMENT default, as the top-level class modifier would set it.
+    //    accuratemem on the class -> document default accurate (DDR5).
+    int classMods = policy.MOD_ACCURATEMEM;
+    SLProgram prog = new SLProgram();
+    prog.configure("order-pipeline", 256);
+    prog.setDocumentTier(policy.documentTierFromModifiers(classMods));
+    print("document default tier = " + policy.tierName(prog.documentTier()) + " (whole program)");
+
+    // 3. PER-METHOD flags (the modifier bits the frontend emits per method).
+    //    logActivity: usualmem ; settleLedger: accuratemem ; mainFn: unflagged.
+    SLVMMethod logActivity = new SLVMMethod();
+    logActivity.configure("logActivity", "()V", 0, 3, 0, 1, true, false);
+    logActivity.setMemTier(policy.methodTierFromModifiers(policy.MOD_USUALMEM));
+    SLVMMethod settleLedger = new SLVMMethod();
+    settleLedger.configure("settleLedger", "()I", 3, 5, 0, 2, true, false);
+    settleLedger.setMemTier(policy.methodTierFromModifiers(policy.MOD_ACCURATEMEM));
+    SLVMMethod mainFn = new SLVMMethod();
+    mainFn.configure("main", "()I", 8, 6, 0, 2, true, false);   // no tier modifier
+    mainFn.setMemTier(policy.methodTierFromModifiers(0));
+
+    // 4. DISPATCH: resolve each method's effective tier against the document
+    //    default, then bind it to the real physical module.
+    dispatch(build, prog, policy, logActivity);
+    dispatch(build, prog, policy, settleLedger);
+    dispatch(build, prog, policy, mainFn);
+  }
+
+  void dispatch(SLExecutorBuild build, SLProgram prog, SLMemoryTierPolicy policy, SLVMMethod m) {
+    int effective = prog.effectiveTier(m.tier());          // method tier else document default
+    SLMemoryModule mod = build.memoryForTier(effective);   // the PHYSICAL module
+    print("  " + m.methodName() + ": declared=" + policy.tierName(m.tier()) +
+          " -> effective=" + policy.tierName(effective) +
+          " -> binds " + mod.name() + " (" + mod.technologyName() + ")");
+  }
+}

@@ -1,0 +1,71 @@
+/*
+ * lib/cpu/components/SLMemoryTierRouter.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMemoryTierRouter — the piece that makes memory tiers
+ *   PHYSICAL. A build can carry two real memory modules: a "usual" tier (for
+ *   usual activities, e.g. DDR2) and an "accurate" tier (for competency/
+ *   accuracy-critical work, e.g. DDR5). This router holds both, knows the
+ *   program's default (main) tier, and — given a function's declared tier —
+ *   returns the actual SLMemoryModule that function should bind its memory
+ *   accesses to. The VM/dispatcher consults it per function so a program marked
+ *   `usualmem`/`accuratemem` (or defaulted at the document level) runs against
+ *   the matching module, not a single shared store.
+ *
+ *   Tier ids mirror the Sleela memory-tier modifiers and SLAccessSemantics
+ *   shape: 0 = inherit (use the main tier), 1 = usual (DDR2), 2 = accurate
+ *   (DDR5). A function that declares neither inherits the main tier.
+ *
+ * Family: cpu.components. Composes SLMemoryModule; held by SLExecutorBuild;
+ *   consulted by the VM dispatch path.
+ */
+#sleela 2.1
+class SLMemoryTierRouter {
+  static final int TIER_INHERIT  = 0;   // no per-function tier -> use main
+  static final int TIER_USUAL    = 1;   // usualmem    (DDR2)
+  static final int TIER_ACCURATE = 2;   // accuratemem (DDR5)
+
+  SLMemoryModule usual;      // the usual-activities tier module (may be null)
+  SLMemoryModule accurate;   // the accuracy/competency tier module (may be null)
+  int mainTier;              // TIER_USUAL or TIER_ACCURATE (default accurate)
+
+  void configure() { usual = null; accurate = null; mainTier = TIER_ACCURATE; }
+
+  void installUsual(SLMemoryModule m)    { usual = m; }
+  void installAccurate(SLMemoryModule m) { accurate = m; }
+  void setMainTier(int tier) {
+    if (tier == TIER_USUAL || tier == TIER_ACCURATE) { mainTier = tier; }
+  }
+
+  // Resolve a function's declared tier to the concrete tier it runs on:
+  // TIER_INHERIT folds to the main tier; otherwise the declared tier stands.
+  int resolveTier(int declaredTier) {
+    if (declaredTier == TIER_USUAL || declaredTier == TIER_ACCURATE) { return declaredTier; }
+    return mainTier;
+  }
+
+  // The actual memory module a function with `declaredTier` binds to. Falls
+  // back to whichever tier IS installed if the resolved one is absent, so a
+  // model that declared only one tier still runs (the router never returns
+  // null when at least one tier is present).
+  SLMemoryModule moduleFor(int declaredTier) {
+    int t = resolveTier(declaredTier);
+    if (t == TIER_USUAL) {
+      if (usual != null) { return usual; }
+      return accurate;
+    }
+    if (accurate != null) { return accurate; }
+    return usual;
+  }
+
+  // Human-readable tier a function resolves to (for reports/diagnostics).
+  String tierName(int declaredTier) {
+    int t = resolveTier(declaredTier);
+    if (t == TIER_USUAL) { return "usual"; }
+    return "accurate";
+  }
+
+  boolean hasUsual()    { return usual != null; }
+  boolean hasAccurate() { return accurate != null; }
+  int main()            { return mainTier; }
+  boolean twoTier()     { return usual != null && accurate != null; }
+}

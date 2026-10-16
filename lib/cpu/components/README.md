@@ -31,6 +31,7 @@ exactly the lever behind the speed/feasibility tables in
 | `SLMotherboard` | the board | socket, chipset, memory channels, DIMM slots, PCIe lane budget + generation ⇒ what a CPU/RAM/card can seat on |
 | `SLMemoryModule` | main memory | technology (DRAM…DDR5), capacity, bus width, clock, CAS latency, **channel count** ⇒ aggregate bandwidth + first-word latency |
 | `SLMemoryInterface` | a cadence-overlay adapter over a module | target-tech **refresh duty cycle** (tREFI/tRFC) ⇒ run the real module so it *refreshes as though it were* another tech (e.g. DDR5 refreshing like DDR2); Sleela-layer only, backing store untouched |
+| `SLMemoryTierRouter` | physical two-tier memory | holds a **usual** module (DDR2) and an **accurate** module (DDR5) + the main (document default) tier; `moduleFor(tier)` returns the real module a function binds to, so `usualmem`/`accuratemem` route physically |
 | `SLStorageDevice` | floppy / HDD / SSD / NVMe / tape | interface, capacity, RPM, seek, transfer ⇒ access-time model |
 | `SLOpticalDrive` | CD / DVD / Blu-ray | medium 1× base rate × speed multiplier ⇒ read rate; writer flag |
 | `SLSystemBus` | ISA / PCI / AGP / PCIe / FSB | clock, width, lanes ⇒ peak bandwidth (can bottleneck fast RAM) |
@@ -142,3 +143,34 @@ Three capabilities toggled when the VM Creator builds the Secondary VM
   (`SLNativeMemory`) instead of the simulated `SLRAM` store, for running outside
   simulation for procedural layment. Corresponds to the `NATIVE_RAM` feature bit;
   see `lib/vm/creator/examples/native-ram-vm.sleela`.
+
+## Physical memory tiers (usual / accurate) and per-function dispatch
+
+A build can carry **two physical memory modules** and route each function to the
+one matching its memory tier — so `usualmem`-flagged work runs on a DDR2 module
+and `accuratemem`-flagged work on a DDR5 module, not a single shared store:
+
+```
+SLExecutorBuild b = new SLExecutorBuild(); b.configure("tiered");
+b.installCpu(cpu);
+b.installUsualTier(parts.ddr2_800(4096));       // usual activities -> DDR2
+b.installAccurateTier(parts.ddr5_6400(65536));  // competency/accuracy -> DDR5 (base store)
+b.setMainTier(SLMemoryTierRouter.TIER_ACCURATE);// document default
+b.assemble();                                   // mounts BOTH tiers
+
+SLMemoryModule m = b.memoryForTier(methodTier); // the physical module to bind
+```
+
+**Flagging scope** — a Sleela program flags tiers at two granularities:
+
+- **Whole document:** put `usualmem` / `accuratemem` on the **top-level class**
+  (class-level modifiers are parsed), which becomes the program's default tier
+  (`SLProgram.setDocumentTier` / `documentTier`).
+- **Any subset of methods:** put `usualmem` / `accuratemem` on **each method**;
+  it overrides the document default (`SLVMMethod.setMemTier` / `tier`).
+
+`SLMemoryTierPolicy` turns the frontend's modifier bits into tier ids and
+resolves a method's **effective tier** (method tier → document default →
+accurate/DDR5). `SLProgram.effectiveTier(methodTier)` does the same at runtime,
+and `SLExecutorBuild.memoryForTier(effective)` returns the physical module. See
+`../examples/memory-tiers-dispatch.sleela` for the full chain.

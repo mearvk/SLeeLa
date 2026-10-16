@@ -34,6 +34,12 @@ class SLVMMethod {
   // access metadata on a method; resolveMethod gates on it (see SLVMClass).
   int accessRole;
 
+  // Memory tier this method runs against (SLMemoryTierRouter.TIER_*):
+  // 0 inherit (use the program/document default), 1 usual (DDR2), 2 accurate
+  // (DDR5). Set from the usualmem/accuratemem modifiers; the dispatcher uses it
+  // to pick the physical memory module the method binds to.
+  int memTier;
+
   void configure(String methodName, String sig, int entryIndex, int codeLength,
                  int args, int locals, boolean staticMethod, boolean nativeMethod) {
     configureAccess(methodName, sig, entryIndex, codeLength, args, locals,
@@ -54,9 +60,11 @@ class SLVMMethod {
     isStatic = staticMethod;
     isNative = nativeMethod;
     accessRole = role;
+    memTier = 0;
   }
 
   void setAccessRole(int role) { accessRole = role; }
+  void setMemTier(int tier)    { memTier = tier; }
 
   String methodName() { return name; }
   String signature()  { return descriptor; }
@@ -72,6 +80,11 @@ class SLVMMethod {
   boolean exposedHop()  { return accessRole == 1; }   // public  : REST-exposed
   boolean localOnly()   { return accessRole == 2; }   // private : local/admin/safety
   boolean guarded()     { return accessRole == 3; }   // protected: integrity-checked
+
+  // Memory-tier accessors (SLMemoryTierRouter.TIER_*).
+  int tier()            { return memTier; }
+  boolean usualTier()   { return memTier == 1; }
+  boolean accurateTier(){ return memTier == 2; }
 
   // Does the given instruction index fall inside this method's code window?
   boolean contains(int ip) { return ip >= entry && ip < entry + length; }

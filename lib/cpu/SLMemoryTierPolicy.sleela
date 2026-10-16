@@ -1,0 +1,67 @@
+/*
+ * lib/cpu/SLMemoryTierPolicy.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMemoryTierPolicy — the bridge from the SOURCE memory-tier
+ *   flags to the RUNTIME tier a method binds to. The frontend records the
+ *   usualmem / accuratemem modifiers as bits on each declaration
+ *   (impl/frontend/ast.h: JavaMemUsual 1<<15, JavaMemAccurate 1<<16); this policy
+ *   turns a modifier bitset into a tier id (SLMemoryTierRouter.TIER_*) for a
+ *   method, and resolves a method's EFFECTIVE tier against the document default
+ *   so:
+ *     - a method flagged usualmem/accuratemem uses that tier;
+ *     - an unflagged method inherits the document (whole-program) default;
+ *     - a document with no default resolves to accurate (DDR5).
+ *
+ *   Flagging scope (answers "can a program flag the whole document or a subset"):
+ *     - WHOLE DOCUMENT: put usualmem/accuratemem on the top-level class — the
+ *       frontend parses class-level modifiers, so the bit flags every method
+ *       that does not override it. documentTierFromModifiers() reads that.
+ *     - ANY SUBSET: put usualmem/accuratemem on each method — methodTierFrom
+ *       Modifiers() reads that and overrides the document default.
+ *
+ * Family: cpu. Pure policy; pairs SLProgram (document default) with
+ *   SLMemoryTierRouter (physical modules) and SLVMMethod (per-method tier).
+ */
+#sleela 2.1
+class SLMemoryTierPolicy {
+  // Modifier bits as emitted by the frontend (mirror impl/frontend/ast.h).
+  static final int MOD_USUALMEM    = 32768;   // JavaMemUsual    = 1 << 15
+  static final int MOD_ACCURATEMEM = 65536;   // JavaMemAccurate = 1 << 16
+
+  // Tier ids (mirror SLMemoryTierRouter.TIER_*).
+  static final int TIER_INHERIT  = 0;
+  static final int TIER_USUAL    = 1;
+  static final int TIER_ACCURATE = 2;
+
+  // Read a declaration's modifier bitset and return the tier it flags.
+  // usualmem wins only if accuratemem is absent (they are mutually exclusive by
+  // intent); neither bit => TIER_INHERIT.
+  int tierFromModifiers(int modifiers) {
+    boolean acc = (modifiers / MOD_ACCURATEMEM) % 2 == 1;
+    boolean usu = (modifiers / MOD_USUALMEM) % 2 == 1;
+    if (acc) { return TIER_ACCURATE; }
+    if (usu) { return TIER_USUAL; }
+    return TIER_INHERIT;
+  }
+
+  // The tier a method declares (TIER_INHERIT when it declares none).
+  int methodTierFromModifiers(int methodModifiers) { return tierFromModifiers(methodModifiers); }
+
+  // The document (whole-program) default tier from the top-level class's
+  // modifiers (TIER_INHERIT when the class declares none).
+  int documentTierFromModifiers(int classModifiers) { return tierFromModifiers(classModifiers); }
+
+  // Resolve a method's EFFECTIVE tier: its own tier, else the document default,
+  // else accurate (DDR5). Mirrors SLProgram.effectiveTier.
+  int effectiveTier(int methodTier, int documentTier) {
+    if (methodTier == TIER_USUAL || methodTier == TIER_ACCURATE) { return methodTier; }
+    if (documentTier == TIER_USUAL || documentTier == TIER_ACCURATE) { return documentTier; }
+    return TIER_ACCURATE;
+  }
+
+  String tierName(int tier) {
+    if (tier == TIER_USUAL) { return "usual"; }
+    if (tier == TIER_ACCURATE) { return "accurate"; }
+    return "inherit";
+  }
+}
