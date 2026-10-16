@@ -51,10 +51,12 @@ exactly the lever behind the speed/feasibility tables in
   `fsb(mhz)`.
 - **Motherboard:** `trx50` (Threadripper HEDT: sTR5, 4-channel, 88 PCIe 5.0
   lanes), `wrx90` (Threadripper PRO WX: sTR5, 8-channel, 128 PCIe 5.0 lanes).
-- **Memory interface (cadence overlay):** `ddr2CadenceInterface(module)`,
-  `ddr3CadenceInterface(module)` (and the general `memInterface(name, module,
-  tech)`). Wrap a real module so it refreshes as though it were the target tech;
-  install it alongside the module via `build.installMemoryInterface(...)`.
+- **Memory interface (cadence overlay):** one per DDR generation —
+  `ddrCadenceInterface`, `ddr2CadenceInterface`, `ddr3CadenceInterface`,
+  `ddr4CadenceInterface`, `ddr5CadenceInterface` (each takes the real `module`),
+  plus the general `memInterface(name, module, tech)`. Wrap a real module so it
+  refreshes as though it were the target generation; install it alongside the
+  module via `build.installMemoryInterface(...)`.
 
 ### Running a module under a different refresh cadence
 

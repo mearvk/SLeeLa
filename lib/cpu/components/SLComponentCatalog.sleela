@@ -60,14 +60,24 @@ class SLComponentCatalog {
     i.configure(name, realModule, cadenceTech);
     return i;
   }
-  // Present any real module with DDR2 refresh cadence (the common special case:
-  // run a DDR5 module so it refreshes like DDR2).
+  // One preset per DDR generation: present any real module with that
+  // generation's refresh cadence (the common special case: run a DDR5 module so
+  // it refreshes like DDR2). The tech ids match SLMemoryModule.TECH_* / the
+  // cadences in SLMemoryInterface.applyTechCadence(): DDR=3 .. DDR5=7.
+  SLMemoryInterface ddrCadenceInterface(SLMemoryModule realModule) {
+    return memInterface("DDR-cadence interface", realModule, 3);
+  }
   SLMemoryInterface ddr2CadenceInterface(SLMemoryModule realModule) {
     return memInterface("DDR2-cadence interface", realModule, 4);
   }
-  // Present any real module with DDR3 refresh cadence.
   SLMemoryInterface ddr3CadenceInterface(SLMemoryModule realModule) {
     return memInterface("DDR3-cadence interface", realModule, 5);
+  }
+  SLMemoryInterface ddr4CadenceInterface(SLMemoryModule realModule) {
+    return memInterface("DDR4-cadence interface", realModule, 6);
+  }
+  SLMemoryInterface ddr5CadenceInterface(SLMemoryModule realModule) {
+    return memInterface("DDR5-cadence interface", realModule, 7);
   }
 
   // ---------------- Storage presets ----------------
