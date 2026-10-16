@@ -149,6 +149,23 @@ ResolveResult resolve(const XltModel& m, const DiagnosticBag& diags) {
             r.builtLines.push_back("main tier: " + main);
     }
 
+    // 8. program (optional): validate the declared workload + grant. The native
+    //    front-end checks congruence (it does not host a VM); the Sleela-side
+    //    SLXltCompiler actually runs it via SleelaVMCreator.
+    if (!m.programPath.empty()) {
+        static const std::set<std::string> langs = {"sleela","c","cpp","java"};
+        if (!langs.count(m.programLang)) {
+            missing(r, "program language '" + m.programLang + "' is not one of sleela/c/cpp/java");
+        } else if (!r.reasons.empty()) {
+            disagrees(r, "program '" + m.programPath + "' not run: the hardware model is not congruent");
+        } else {
+            std::string g = (m.grantWords > 0 || m.grantBudget > 0)
+                ? (" [grant " + std::to_string(m.grantWords) + " words, " + std::to_string(m.grantBudget) + " cycles]")
+                : " [grant: compiler default]";
+            r.builtLines.push_back("program: " + m.programPath + " (" + m.programLang + ") ready to run on build.processor()" + g);
+        }
+    }
+
     r.built = (!r.builtLines.empty() && r.reasons.empty());
     return r;
 }

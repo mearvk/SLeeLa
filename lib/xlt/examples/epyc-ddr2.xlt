@@ -16,5 +16,7 @@ model EpycWithDdr2 {
   gpu;                         // native GPU compute (build.enableGPU)
   dma;                         // DMA bulk engine (build.enableDMA)
   nativeram;                   // run on real host RAM (NATIVE_RAM feature bit)
+  program  "examples/hello.sleela" sleela;  // run this program on the built CPU
+  grant    65536 1000000;      // admitted under 64Ki words / 1,000,000 cycles
   target   sleela;
 }

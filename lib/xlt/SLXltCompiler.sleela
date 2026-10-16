@@ -165,11 +165,69 @@ class SLXltCompiler {
       }
     }
 
+    // ---- 8. program (optional): politely RUN it on the built CPU ----
+    // Only when the model declared a program AND the build is congruent so far
+    // (no reasons): we assemble the machine, admit an SLWorkload under an
+    // SLCPUResource grant, and run it on build.processor() via SleelaVMCreator —
+    // the sanctioned path, never reaching around the CPU model.
+    if (src.hasProgram()) {
+      int lang = languageOf(src.programLanguage());
+      if (lang < 0) {
+        res.recordReason(res.REASON_MISSING, "program language '" + src.programLanguage() +
+          "' is not one of sleela/c/cpp/java");
+      } else if (res.reasonLines() > 0) {
+        // hardware not congruent -> do not run; the build reasons already explain why.
+        res.recordReason(res.REASON_DISAGREES, "program '" + src.program() +
+          "' not run: the hardware model is not congruent");
+      } else {
+        runProgram(src, lang, res);
+      }
+    }
+
     res.seal();
     return res;
   }
 
   SLExecutorBuild assembled() { return build; }
+
+  // Map an .xlt language token to the SLWorkload.LANG_* id (-1 if unknown).
+  int languageOf(String lang) {
+    if (lang == "sleela") { return 0; }   // LANG_SLEELA
+    if (lang == "c")      { return 1; }   // LANG_C
+    if (lang == "cpp")    { return 2; }   // LANG_CPP
+    if (lang == "java")   { return 3; }   // LANG_JAVA
+    return -1;
+  }
+
+  // Assemble the machine and politely run the declared program on it: a grant,
+  // an SLWorkload, and SleelaVMCreator.run on build.processor(). The capability
+  // flags (nativeram/gpu/dma) are requested on the creator so the run honors
+  // what the model declared.
+  void runProgram(SLXltSource src, int lang, SLXltBuildResult res) {
+    build.assemble();   // mount the chosen RAM into the CPU (idempotent to set up)
+
+    int words = src.grantWordsRequested();
+    int budget = src.grantBudgetRequested();
+    if (words <= 0)  { words = 4096; }      // polite defaults when unstated
+    if (budget <= 0) { budget = 1000000; }
+
+    SLCPUResource grant = new SLCPUResource();
+    grant.configure(words, budget, grant.PRIORITY_NORMAL);
+
+    SLWorkload job = new SLWorkload();
+    job.configure(src.name(), src.program(), lang, grant);
+
+    SleelaVMCreator creator = new SleelaVMCreator();
+    creator.configure();
+    if (src.wantsNativeRam()) { creator.requestNativeRam(); }
+    if (src.wantsGpu())       { creator.requestGPU(); }
+    if (src.wantsDma())       { creator.requestDMA(); }
+
+    int out = creator.run(5, build.processor(), job, budget);
+    res.setRun(out);
+    res.recordBuilt("program: " + src.program() + " (" + src.programLanguage() +
+                    ") -> output " + out);
+  }
 
   // ---------------- ref -> real catalog producer mappings ------------------
   // Recognition and channel attributes come from SLXltProducerRegistry; these

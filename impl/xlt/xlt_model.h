@@ -22,6 +22,8 @@
 //     memtier  "ddr2_800" usual;   // optional: usual-activities tier
 //     memtier  "ddr5_6400" accurate; // optional: competency/accuracy tier
 //     maintier "accurate";         // optional: default tier for the main program
+//     program  "app.sleela" sleela; // optional: run this program on the build
+//     grant    65536 1000000;      // optional: memory words + cycle budget
 //     target   sleela;
 //   }
 // ===========================================================================
@@ -68,6 +70,15 @@ struct XltModel {
     Slot        accurateTier;   // memory preset ref for the accurate tier
     std::string mainTier;       // "usual" | "accurate" (empty = default accurate)
     int         mainTierLine = 0;
+
+    // Optional workload to run on the built CPU, and its resource grant.
+    //   program "app.sleela" sleela;   grant 65536 1000000;
+    std::string programPath;    // empty = build hardware only
+    std::string programLang;    // "sleela" | "c" | "cpp" | "java"
+    int         programLine = 0;
+    long long   grantWords = 0; // 0 = compiler default
+    long long   grantBudget = 0;
+    int         grantLine = 0;
 
     bool headerSeen = false;         // `#xlt` pragma present
     bool modelSeen = false;          // a `model { }` block was parsed

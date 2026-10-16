@@ -39,6 +39,7 @@ class SLXltBuildResult {
 
   void configure(String name) {
     modelName = name; success = 0;
+    ranProgram = 0; programOutput = 0;
     builtCount = 0; reasonCount = 0;
     b0 = ""; b1 = ""; b2 = ""; b3 = ""; b4 = ""; b5 = "";
     c0 = ""; c1 = ""; c2 = ""; c3 = ""; c4 = ""; c5 = "";
@@ -62,6 +63,14 @@ class SLXltBuildResult {
     else if (reasonCount == 4) { c4 = line; } else if (reasonCount == 5) { c5 = line; }
     if (reasonCount < MAX_LINES) { reasonCount = reasonCount + 1; }
   }
+
+  // Optional program-run outcome (set when the model declared a `program`).
+  int ranProgram;     // 1 = a workload was run on the built CPU
+  int programOutput;  // the program's observable output
+
+  void setRun(int output) { ranProgram = 1; programOutput = output; }
+  boolean programRan()  { return ranProgram == 1; }
+  int output()          { return programOutput; }
 
   // Seal the outcome: success iff at least one part was built AND no congruence
   // reason was recorded (every declared part resolved and agreed).

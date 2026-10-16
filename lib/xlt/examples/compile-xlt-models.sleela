@@ -29,9 +29,12 @@ class CompileXltModelsExample {
     m1.declareGpu();          // native GPU compute
     m1.declareDma();          // DMA bulk engine
     m1.declareNativeRam();    // NATIVE_RAM feature bit
+    m1.declareProgram("examples/hello.sleela", "sleela");  // run on the built CPU
+    m1.declareGrant(65536, 1000000);                       // under this resource grant
 
     SLXltBuildResult r1 = xlt.compile(m1);
     printResult(r1);
+    if (r1.programRan()) { print("  program output on the built CPU -> " + r1.output()); }
 
     // ---- Model 2: NON-congruent — 8-channel memory on a 4-channel board ----
     // Shows the "part not agreeable to design" congruence, plus a missing part.

@@ -22,8 +22,16 @@
  *         gpu;                         // optional capability: native GPU
  *         dma;                         // optional capability: DMA engine
  *         nativeram;                   // optional capability: NATIVE_RAM bit
+ *         program  "app.sleela" sleela; // optional: run this program on the build
+ *         grant    65536 1000000;      // optional: memory words + cycle budget
  *         target   sleela;
  *       }
+ *
+ *   When a `program` is declared, a congruent build is politely RUN: the
+ *   compiler admits an SLWorkload (source + language) under an SLCPUResource
+ *   grant and executes it on build.processor() via SleelaVMCreator — the
+ *   sanctioned path (admission-checked, through the model's fetch-decode-execute
+ *   loop), never reaching around the CPU model.
  *
  *   The compile path parallels SST's:
  *       .xlt -> SLXltCompiler -> SLExecutorBuild (real parts) -> SLProgram/VM
@@ -59,6 +67,13 @@ class SLXltSource {
   String accurateTierRef; // memory preset for the accurate tier, e.g. "ddr5_6400"
   String mainTier;        // "usual" or "accurate" — which the main program uses
 
+  // Optional workload: the program this model should politely run on the built
+  // CPU (source path + language), and the resource grant it is admitted under.
+  String programPath;     // e.g. "app.sleela" (empty = build hardware only)
+  String programLang;     // "sleela" | "c" | "cpp" | "java"
+  int    grantWords;      // memory words requested (0 = compiler default)
+  int    grantBudget;     // cycle budget requested (0 = compiler default)
+
   int validated;
 
   void configure(String sourcePath, String root) {
@@ -68,6 +83,7 @@ class SLXltSource {
     cadenceRef = ""; storageRef = ""; busRef = "";
     gpuFlag = 0; dmaFlag = 0; nativeRamFlag = 0;
     usualTierRef = ""; accurateTierRef = ""; mainTier = "";
+    programPath = ""; programLang = ""; grantWords = 0; grantBudget = 0;
     validated = 0;
   }
 
@@ -96,6 +112,16 @@ class SLXltSource {
   boolean declareAccurateTier(String ref) { if (accurateTierRef != "") { return false; } accurateTierRef = ref; return true; }
   boolean declareMainTier(String which)   { if (mainTier != "") { return false; } mainTier = which; return true; }
 
+  // Workload + grant (each declared at most once; orthogonal).
+  boolean declareProgram(String path, String lang) {
+    if (programPath != "") { return false; }
+    programPath = path; programLang = lang; return true;
+  }
+  boolean declareGrant(int words, int budget) {
+    if (grantWords != 0 || grantBudget != 0) { return false; }
+    grantWords = words; grantBudget = budget; return true;
+  }
+
   boolean validate() { validated = 1; return 1 == 1; }
 
   String sourcePath()  { return path; }
@@ -119,4 +145,9 @@ class SLXltSource {
   String accurateTier()    { return accurateTierRef; }
   String main()            { return mainTier; }
   boolean hasTiers()       { return usualTierRef != "" || accurateTierRef != ""; }
+  String program()         { return programPath; }
+  String programLanguage() { return programLang; }
+  boolean hasProgram()     { return programPath != ""; }
+  int grantWordsRequested(){ return grantWords; }
+  int grantBudgetRequested(){ return grantBudget; }
 }

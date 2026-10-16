@@ -70,6 +70,33 @@ int main() { ... }                          // inherits the main tier (DDR5)
 Unmarked declarations inherit the program's main tier. See
 `examples/epyc-tiered-memory.xlt`.
 
+### Running a program on the built model
+
+An `.xlt` model can both **build the machine and politely run a program on it**,
+so the user "calls their program" from the one declarative document:
+
+```
+program  "app.sleela" sleela;   // source path + language (sleela|c|cpp|java)
+grant    65536 1000000;          // memory words + cycle budget it is admitted under
+```
+
+When a congruent build declares a `program`, `SLXltCompiler` takes the sanctioned
+path: it assembles the build, creates an `SLCPUResource` grant and an
+`SLWorkload` (source + language), and runs it on `build.processor()` via
+`SleelaVMCreator` — admission-checked, through the model's fetch-decode-execute
+loop, never reaching around the CPU model. The declared capabilities flow into
+the run (`nativeram`→`requestNativeRam()`, `gpu`→`requestGPU()`,
+`dma`→`requestDMA()`), and the program's `usualmem`/`accuratemem` functions
+dispatch to the DDR2/DDR5 tiers the model declared.
+
+On success the build list gains `program: <path> (<lang>) -> output N`
+(`SLXltBuildResult.programRan()` / `output()`); a missing source, an unknown
+language, or a non-congruent machine yields a congruence reason instead. `grant`
+is optional — the compiler uses polite defaults (4096 words / 1,000,000 cycles)
+when it is omitted. The native `xltc` validates the program/grant and reports it
+as ready-to-run (it does not host a VM); the Sleela-side compiler performs the
+actual run.
+
 It is the declarative analog of the hand-written builder in
 `lib/cpu/amd-epyc/examples/epyc-with-ddr2-settings.sleela`.
 

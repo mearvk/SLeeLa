@@ -108,6 +108,28 @@ private:
             return;
         }
 
+        // program: `program "path" <sleela|c|cpp|java>;`
+        if (kw == "program") {
+            if (!m.programPath.empty()) err("XLT-E-0029", "duplicate 'program' breaks document orthogonality", "XLT-ORTHO-01");
+            if (is(Tok::String)) { m.programPath = cur().text; m.programLine = kwLine; advance(); }
+            else err("XLT-E-0030", "'program' expects a quoted source path", "XLT-PROG-01");
+            if (is(Tok::Ident)) { m.programLang = cur().text; advance(); }
+            else err("XLT-E-0031", "'program' expects a language (sleela|c|cpp|java)", "XLT-PROG-01");
+            expectSemicolon();
+            return;
+        }
+        // grant: `grant <words:int> <budget:int>;`
+        if (kw == "grant") {
+            if (m.grantWords != 0 || m.grantBudget != 0) err("XLT-E-0032", "duplicate 'grant' breaks document orthogonality", "XLT-ORTHO-01");
+            m.grantLine = kwLine;
+            if (is(Tok::Integer)) { m.grantWords = std::stoll(cur().text); advance(); }
+            else err("XLT-E-0033", "'grant' expects a memory-words integer", "XLT-PROG-02");
+            if (is(Tok::Integer)) { m.grantBudget = std::stoll(cur().text); advance(); }
+            else err("XLT-E-0034", "'grant' expects a cycle-budget integer", "XLT-PROG-02");
+            expectSemicolon();
+            return;
+        }
+
         // bare capability directives: keyword directly followed by ';'.
         if (kw == "gpu" || kw == "dma" || kw == "nativeram") {
             bool* flag = (kw == "gpu") ? &m.gpu : (kw == "dma") ? &m.dma : &m.nativeRam;
