@@ -7,7 +7,7 @@
     "iso_alpha3": 186,
     "currency": 0,
     "gdp": 185,
-    "gdp_per_capita": 185,
+    "gdp_per_capita": 162,
     "inflation": 168,
     "unemployment": 164,
     "trade": 171,
@@ -59,9 +59,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 416.871146273728,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": -6.60118564073725,
@@ -260,9 +261,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 18017.4589383973,
-          "year": 2022,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -804,9 +806,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 38590.5650288641,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": 4.25746204335427,
@@ -1611,9 +1614,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 142250.433195123,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -2756,9 +2760,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 104292.900672109,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": -0.62525835861814,
@@ -3700,9 +3705,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 9605.27914559614,
-          "year": 2020,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -4577,9 +4583,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 688.68165957684,
-          "year": 2011,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -4914,9 +4921,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 74175.2776311377,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -5252,9 +5260,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 22439.8838746025,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -5863,9 +5872,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 58498.9707973609,
-          "year": 2023,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -6069,9 +6079,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 41833.1517132825,
-          "year": 2022,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -7281,9 +7292,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 90015.2074234398,
-          "year": 2023,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -8363,9 +8375,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 4473.27134441128,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": 14.597595869611,
@@ -8632,9 +8645,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 220167.225473557,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -9847,9 +9861,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 288001.574856495,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -10590,9 +10605,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 29213.1923192946,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": 0.578317435520754,
@@ -11128,9 +11144,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 23785.754590043,
-          "year": 2022,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -13018,9 +13035,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 59871.3288101478,
-          "year": 2023,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": 2.29519525025037,
@@ -14029,9 +14047,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 1080.14718624765,
-          "year": 2015,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": 91.4408220769045,
@@ -14566,9 +14585,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 1056.78264718197,
-          "year": 2022,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": 13.417565322857,
@@ -15442,9 +15462,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 37506.7798431288,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
@@ -15715,9 +15736,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 50273.5126243239,
-          "year": 2024,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": 1.250865245598,
@@ -16388,9 +16410,10 @@
           "source": "World Bank API"
         },
         "gdp_per_capita_usd": {
-          "value": 44320.909185774,
-          "year": 2022,
-          "source": "World Bank API"
+          "value": null,
+          "year": null,
+          "source": "World Bank API",
+          "error": "No matched World Bank observation."
         },
         "inflation_pct": {
           "value": null,
