@@ -11,8 +11,8 @@
  * This is the user-facing selection surface: build an executor by naming parts
  * (e.g. ddr4_3200(), nvmeGen3(), bluRay()), not by filling in raw numbers.
  *
- * Family: cpu.components. Produces SLMemoryModule, SLStorageDevice,
- *   SLOpticalDrive, SLSystemBus.
+ * Family: cpu.components. Produces SLMemoryModule, SLMemoryInterface,
+ *   SLStorageDevice, SLOpticalDrive, SLSystemBus, SLMotherboard.
  */
 #sleela 2.1
 class SLComponentCatalog {
@@ -48,6 +48,26 @@ class SLComponentCatalog {
   // DDR5-6400 on an 8-channel workstation board (Threadripper PRO WX, WRX90).
   SLMemoryModule ddr5_6400_octaChannel(int capMiBPerModule) {
     return memChannels("DDR5-6400 (8-channel)", 7, capMiBPerModule, 64, 3200, 40, 2, 8);
+  }
+
+  // ---------------- Memory interface (cadence overlay) presets ----------------
+  // An OOD adapter that wraps a REAL module and makes it refresh as though it
+  // were `cadenceTech`. The module keeps its native data rate, capacity, and
+  // backing store; only the observed refresh duty cycle changes. Compose BOTH:
+  // pick a module, then wrap it with one of these.
+  SLMemoryInterface memInterface(String name, SLMemoryModule realModule, int cadenceTech) {
+    SLMemoryInterface i = new SLMemoryInterface();
+    i.configure(name, realModule, cadenceTech);
+    return i;
+  }
+  // Present any real module with DDR2 refresh cadence (the common special case:
+  // run a DDR5 module so it refreshes like DDR2).
+  SLMemoryInterface ddr2CadenceInterface(SLMemoryModule realModule) {
+    return memInterface("DDR2-cadence interface", realModule, 4);
+  }
+  // Present any real module with DDR3 refresh cadence.
+  SLMemoryInterface ddr3CadenceInterface(SLMemoryModule realModule) {
+    return memInterface("DDR3-cadence interface", realModule, 5);
   }
 
   // ---------------- Storage presets ----------------
