@@ -25,6 +25,8 @@ class SLGuiApp {
   SLGuiScript script;
   SLGuiBranding branding;   // 3.0 logo/brand identity painted into the chrome
   SLGuiAudioCues audio;     // 3.0 activation-audio cue registry
+  SLGuiCodecs codecs;       // 4.0 codec registry (mirror of /codecs) GUI can see
+  SLGuiHtmlRenderer html;   // 4.0 HTML/CSS/JS renderer (quick-responsive)
   int frameMillis;          // nominal per-loop tick for scheduled effects
   int ready;
 
@@ -50,11 +52,25 @@ class SLGuiApp {
     // 3.0 surfaces: a brand identity and the activation-audio cue registry.
     branding = new SLGuiBranding(); branding.configure("");
     audio = new SLGuiAudioCues(); audio.configure();
+    // 4.0 surfaces: the codec registry (so GUI components can SEE what /codecs
+    // supports) and the quick-responsive HTML/CSS/JS renderer, which shares the
+    // same codec registry for its media gate.
+    codecs = new SLGuiCodecs(); codecs.configure();
+    html = new SLGuiHtmlRenderer(); html.configure();
     frameMillis = 16;   // ~60 fps nominal tick for scheduled rotation/fade
 
     ready = 1;
     return true;
   }
+
+  // ---- 4.0 codecs + HTML renderer access ----------------------------------
+  // The codec registry every GUI media component can consult.
+  SLGuiCodecs codecRegistry() { return codecs; }
+  SLGuiHtmlRenderer htmlRenderer() { return html; }
+  // Convenience capability questions for GUI implementations.
+  boolean canPlayCodec(String codecName) { return codecs.playable(codecName); }
+  boolean canPlayExtension(String ext) { return codecs.playableExtension(ext); }
+  int supportedCodecs() { return codecs.playableCount(); }
 
   // ---- 3.0 branding + audio access ----------------------------------------
   SLGuiBranding brand() { return branding; }

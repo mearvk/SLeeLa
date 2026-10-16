@@ -53,6 +53,7 @@ class SLGuiWidgetFactory {
     if (tag == "video" || tag == "movie")        { return uiCanvas(parentHandle, 0, 0); }
     if (tag == "canvas" || tag == "graphics")    { return uiCanvas(parentHandle, 0, 0); }
     if (tag == "circle" || tag == "clickobject") { return uiCanvas(parentHandle, 0, 0); }
+    if (tag == "html" || tag == "webview")       { return uiCanvas(parentHandle, 0, 0); }
 
     // Unknown tag: give it a vertical box so children still have a container.
     return uiBox(parentHandle, ORIENT_VERTICAL, 8);

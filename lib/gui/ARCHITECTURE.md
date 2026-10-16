@@ -106,10 +106,26 @@ The GUI `.sleela` impl is carried in two parallel lines under `lib/gui/`:
   - **`SLGuiAdminAuthority`** — admin **sign-in** to start a process, **sign-off**
     on a component operation, and a **signature for Law**, with a fail-closed,
     audited authority trail.
+  - **`SLGuiHtmlRenderer`** — a quick-responsive HTML renderer: a parse → style
+    (CSS) → layout → script (JavaScript) → paint pipeline with a configurable
+    time-to-first-paint budget (`quickResponse` / `quickPaintMs`), incremental
+    parsing, and a JS timeout. It is **codec-aware**: `<video>`/`<audio>`/
+    `<source>` elements are gated through `SLGuiCodecs` so the renderer never
+    offers media the system cannot play.
+  - **`SLGuiCodecs`** — the GUI-facing mirror of the [`/codecs`](../../codecs)
+    registry (all 20 audio codecs in `sleela_codecs.h` order, with each codec's
+    capability state — native/backend/recognized/container/event — MIME, and
+    extensions). GUI media components (`SLGuiVideoCanvas`, `SLGuiAudioRecorder`,
+    `SLGuiHtmlRenderer`) consult it with `playable()` / `recordable()` /
+    `canPlayType()` / `playableExtension()` before offering a control, so the UI
+    can **see what the system supports**.
   - **`SLGuiSettings`** gains an aesthetic surface (preset flat/soft/glass/metal/
     neon, corner radius, elevation, density, type scale, accent/surface, high
-    contrast); `SLGuiWidgetFactory` registers the new component tags.
-  A runnable walkthrough is `version-dual/gui-components-demo.sleela`.
+    contrast); `SLGuiWidgetFactory` registers the new component tags (incl.
+    `html`/`webview`); `SLGuiApp` exposes `codecRegistry()` / `htmlRenderer()`
+    and `canPlayCodec()` / `canPlayExtension()`.
+  Runnable walkthroughs: `version-dual/gui-components-demo.sleela` and
+  `version-dual/gui-html-codecs-demo.sleela`.
 
 The lines are source-compatible: each higher line keeps every entry point of the
 one below and adds its surface on top (1.0 → +settings → +visual effects →

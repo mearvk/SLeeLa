@@ -1,0 +1,143 @@
+/*
+ * lib/gui/version-dual/SLGuiHtmlRenderer.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiHtmlRenderer — the 4.0 HTML renderer surface: a
+ *   quick-responsive view that loads HTML, applies CSS, and runs JavaScript,
+ *   driven by the SLGuiUrlBar when an HTML response arrives. It models the
+ *   render pipeline SLeeLa owns the intent of — parse -> style (CSS) -> layout
+ *   -> paint, with an optional JS engine step and an incremental "quick
+ *   response" fast-path that paints first meaningful content before full layout.
+ *   It is codec-AWARE: before honoring an <audio>/<video>/<source> element it
+ *   asks SLGuiCodecs whether the system can actually play the media, so the
+ *   renderer never offers a control it cannot back.
+ *
+ *   Division of authority (as elsewhere in lib/gui): SLeeLa owns the pipeline
+ *   STATE, the CSS/JS enable policy, and the codec gate; the host owns the real
+ *   HTML/CSS layout engine and the JS runtime, feeding progress + results back.
+ *   This class carries settings/state and capability gates, not a DOM parser.
+ *
+ * Family: gui. Backs an "html"/"webview" node; partners SLGuiUrlBar and
+ *   SLGuiCodecs; realized by the host web engine.
+ */
+#sleela 2.1
+class SLGuiHtmlRenderer {
+  // Pipeline phases.
+  static final int PHASE_IDLE    = 0;
+  static final int PHASE_PARSE   = 1;   // parsing HTML into a document
+  static final int PHASE_STYLE   = 2;   // applying CSS
+  static final int PHASE_LAYOUT  = 3;   // computing geometry
+  static final int PHASE_SCRIPT  = 4;   // running JavaScript
+  static final int PHASE_PAINT   = 5;   // painting
+  static final int PHASE_DONE    = 6;
+
+  SLGuiCodecs codecs;    // the codec registry the renderer consults for media
+
+  // Capability/policy settings.
+  int cssEnabled;        // 1 = apply author CSS
+  int jsEnabled;         // 1 = run page JavaScript
+  int quickResponse;     // 1 = paint first meaningful content before full layout
+  int quickPaintMs;      // target time-to-first-paint budget (ms), 1..5000
+  int jsTimeoutMs;       // per-script budget before the host aborts it, 0..60000
+  int incremental;       // 1 = stream/parse incrementally for responsiveness
+
+  // Pipeline state (host-reported progress).
+  int phase;
+  int domNodes;          // host-reported element count
+  int styleRules;        // host-reported CSS rule count
+  int scriptsRun;        // JS scripts executed
+  int firstPaintMs;      // measured time to first paint (0 until painted)
+  int mediaBlocked;      // count of media elements refused for missing codec
+
+  void configure() {
+    codecs = new SLGuiCodecs(); codecs.configure();
+    cssEnabled = 1; jsEnabled = 1; quickResponse = 1; quickPaintMs = 100;
+    jsTimeoutMs = 5000; incremental = 1;
+    phase = PHASE_IDLE; domNodes = 0; styleRules = 0; scriptsRun = 0;
+    firstPaintMs = 0; mediaBlocked = 0;
+  }
+
+  int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
+
+  // ---- policy -------------------------------------------------------------
+  void setCssEnabled(boolean on) { cssEnabled = on ? 1 : 0; }
+  void setJsEnabled(boolean on) { jsEnabled = on ? 1 : 0; }
+  void setQuickResponse(boolean on) { quickResponse = on ? 1 : 0; }
+  void setQuickPaintMs(int ms) { quickPaintMs = clamp(ms, 1, 5000); }
+  void setJsTimeoutMs(int ms) { jsTimeoutMs = clamp(ms, 0, 60000); }
+  void setIncremental(boolean on) { incremental = on ? 1 : 0; }
+
+  boolean cssOn() { return cssEnabled == 1; }
+  boolean jsOn() { return jsEnabled == 1; }
+  boolean quickResponseOn() { return quickResponse == 1; }
+  int getQuickPaintMs() { return quickPaintMs; }
+  int getJsTimeoutMs() { return jsTimeoutMs; }
+  SLGuiCodecs codecRegistry() { return codecs; }
+
+  // ---- the render pipeline ------------------------------------------------
+  // Begin rendering an HTML document (called by the URL bar on an HTML 200).
+  void render() { phase = PHASE_PARSE; domNodes = 0; styleRules = 0; scriptsRun = 0; firstPaintMs = 0; mediaBlocked = 0; }
+
+  // Host progress callbacks as it works the pipeline.
+  void onParsed(int nodeCount) { domNodes = nodeCount; phase = cssEnabled == 1 ? PHASE_STYLE : PHASE_LAYOUT; }
+  void onStyled(int ruleCount) { styleRules = cssEnabled == 1 ? ruleCount : 0; phase = PHASE_LAYOUT; }
+  // Quick-response fast path: the host reports first meaningful paint early.
+  void onFirstPaint(int atMs) {
+    firstPaintMs = atMs;
+    if (quickResponse == 1 && phase == PHASE_LAYOUT) { phase = PHASE_PAINT; }
+  }
+  // Run one script (gated by jsEnabled); the host enforces jsTimeoutMs.
+  boolean runScript() {
+    if (jsEnabled == 0) { return false; }
+    phase = PHASE_SCRIPT; scriptsRun = scriptsRun + 1; return true;
+  }
+  void onPainted() { phase = PHASE_DONE; }
+
+  // Is first paint within the quick-response budget? (responsiveness check)
+  boolean responsive() { return firstPaintMs > 0 && firstPaintMs <= quickPaintMs; }
+
+  // ---- codec-aware media gate ---------------------------------------------
+  // Before the host builds a media control for a <video>/<audio>/<source>, the
+  // renderer asks whether the system can play the named codec. A refused media
+  // element increments mediaBlocked so the page can show a graceful fallback.
+  boolean acceptMediaCodec(String codecName) {
+    if (codecs.playable(codecName)) { return true; }
+    mediaBlocked = mediaBlocked + 1;
+    return false;
+  }
+  // Same, resolved from a source URL/file extension (e.g. ".opus").
+  boolean acceptMediaExtension(String ext) {
+    if (codecs.playableExtension(ext)) { return true; }
+    mediaBlocked = mediaBlocked + 1;
+    return false;
+  }
+  // Expose the codec list to the page's capability query (navigator-style).
+  int supportedCodecCount() { return codecs.playableCount(); }
+  boolean canPlayType(String mime) {
+    int id = codecs.byMime(mime);
+    if (id < 0) { return false; }
+    return codecs.playable(codecs.nameAt(id));
+  }
+
+  // ---- readers ------------------------------------------------------------
+  int getPhase() { return phase; }
+  boolean rendering() { return phase != PHASE_IDLE && phase != PHASE_DONE; }
+  boolean done() { return phase == PHASE_DONE; }
+  int nodes() { return domNodes; }
+  int rules() { return styleRules; }
+  int scripts() { return scriptsRun; }
+  int firstPaint() { return firstPaintMs; }
+  int blockedMedia() { return mediaBlocked; }
+
+  String phaseName() {
+    if (phase == PHASE_PARSE)  { return "parse"; }
+    if (phase == PHASE_STYLE)  { return "style"; }
+    if (phase == PHASE_LAYOUT) { return "layout"; }
+    if (phase == PHASE_SCRIPT) { return "script"; }
+    if (phase == PHASE_PAINT)  { return "paint"; }
+    if (phase == PHASE_DONE)   { return "done"; }
+    return "idle";
+  }
+  boolean honored() {
+    return quickPaintMs >= 1 && quickPaintMs <= 5000 && jsTimeoutMs >= 0 && jsTimeoutMs <= 60000;
+  }
+}

@@ -47,9 +47,13 @@ jobs:
           test "$(find lib/gui/version-mual -maxdepth 1 -name '*.sleela' | wc -l)" -eq 25
           test "$(find lib/gui/version-gual -maxdepth 1 -name '*.sleela' | wc -l)" -eq 26
           test "$(find lib/gui/version-thual -maxdepth 1 -name '*.sleela' | wc -l)" -eq 31
-          # dual (4.0): thual + 8 component units (recorder, video, urlbar, click
-          # object, layout, graphics, admin authority, components demo) = 39.
-          test "$(find lib/gui/version-dual -maxdepth 1 -name '*.sleela' | wc -l)" -eq 39
+          # dual (4.0): thual + component units (recorder, video, urlbar, click
+          # object, layout, graphics, admin authority, components demo) + the
+          # HTML renderer / codec registry / html-codecs demo = 42.
+          test "$(find lib/gui/version-dual -maxdepth 1 -name '*.sleela' | wc -l)" -eq 42
+          for c in SLGuiCodecs SLGuiHtmlRenderer; do
+            test -f "lib/gui/version-dual/$c.sleela"
+          done
           test -f lib/gui/version-gual/SLGuiSettings.sleela
           test -f lib/gui/version-thual/SLGuiSettings.sleela
           for c in SLGuiEffects SLGuiRotationSchedule SLGuiBranding SLGuiAudioCues; do
