@@ -36,7 +36,9 @@ implementation.
 | `SLGuiBridge` | `sleela_gui_bridge.h` | **Path 3** — the shared native ABI (create/call/refresh/destroy) |
 | `SLGuiIntegration` | `gui/INTEGRATION.md` | the recommended three-path posture |
 
-A runnable, self-contained walkthrough is `gui-demo.sleela`.
+A runnable, self-contained walkthrough is `version-mual/gui-demo.sleela` (the
+GUI `.sleela` impl now lives in `version-mual/`, with an identical copy in
+`version-gual/`; `lib/gui/` keeps these docs).
 
 ## Events, DHTML-style DOM, and scripting
 
@@ -56,8 +58,8 @@ raises activations and mirrors the DOM onto SleelaUI widgets.
 | `SLGuiScriptCommand` | One script instruction (verb + operands). |
 | `SLGuiScript` | The command-list engine that drives the DOM/events. |
 
-The full contract and a runnable walkthrough (`gui-events-demo.sleela`) are in
-[`EVENTS-DOM-SCRIPTING.md`](EVENTS-DOM-SCRIPTING.md).
+The full contract and a runnable walkthrough (`version-mual/gui-events-demo.sleela`)
+are in [`EVENTS-DOM-SCRIPTING.md`](EVENTS-DOM-SCRIPTING.md).
 
 ## The three integration paths
 
@@ -95,13 +97,14 @@ SLGuiWindow.refresh(id, revision)   (marshaled onto the toolkit thread)
 
 ## Building and verifying
 
-- SLeeLa source: every `lib/gui/*.sleela` passes `impl/build/sleela check` at
-  library parity (cross-file field types resolve through the library index at
-  build/program time, as elsewhere in `/lib`). The demo runs:
-  `impl/build/sleela run lib/gui/gui-demo.sleela`.
+- SLeeLa source: every `version-mual/*.sleela` (and its `version-gual/` copy)
+  passes `impl/build/sleela check` at library parity (cross-file field types
+  resolve through the library index at build/program time, as elsewhere in
+  `/lib`). The demo runs: `impl/build/sleela run version-mual/gui-demo.sleela`.
 - Native bridge: `cd gui/native && make clean all test` builds the Path 3 ABI
   and runs the round-trip test (`slgui_bridge_test.cpp`).
 - CI: `.github/workflows/gui-ci.yml` builds/tests the native bridge and
-  validates this source layer on every change under `gui/**` or `lib/gui/**`.
+  validates this source layer on every change under `gui/**`, `lib/gui/**`,
+  `version-mual/**`, or `version-gual/**`.
 
 **SLeeLa — MEARVK LLC — 2026**

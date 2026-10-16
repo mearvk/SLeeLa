@@ -1,0 +1,181 @@
+/*
+ * version-mual/SLGuiMount.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiMount — the reconciler that reflects the SLeeLa-owned
+ *   DOM (SLGuiDom / SLGuiNode) onto real SleelaUI widgets. It mounts the tree
+ *   depth-first (a parent is constructed before its children so each child has a
+ *   real parent handle), records an id->widget-handle map, and on each pass
+ *   applies every dirty node's state to its widget through the `ui*` built-ins:
+ *   text (uiWidgetSetText), visibility (uiWidgetVisible), sensitivity
+ *   (uiWidgetSensitive), and the style-derived accents (suggested/destructive)
+ *   and minimum size. This is the one-way SLeeLa->toolkit half of the loop
+ *   (SLGuiHostAdapter is the toolkit->SLeeLa half). The DOM stays the single
+ *   source of truth; the widgets are its projection.
+ *
+ * Family: gui. The reconciler crosses the `ui*` SLVM bridge; SLeeLa owns the
+ * document it mirrors.
+ */
+#sleela 2.1
+class SLGuiMount {
+  static final int MAX_NODES = 65536;
+
+  SLGuiDom dom;
+  SLGuiWidgetFactory factory;
+
+  // id -> widget handle map (parallel arrays).
+  String[] ids;
+  int[] handles;
+  int mapCount;
+
+  int rootHandle;       // the host-supplied root container the window gives us
+  int mounted;          // total nodes mounted so far
+  int applied;          // dirty nodes applied on the last reconcile pass
+
+  void init(SLGuiDom document, int windowRootHandle) {
+    dom = document;
+    factory = new SLGuiWidgetFactory();
+    ids = new String[MAX_NODES];
+    handles = new int[MAX_NODES];
+    mapCount = 0;
+    rootHandle = windowRootHandle;
+    mounted = 0; applied = 0;
+  }
+
+  // ---- id -> handle map ---------------------------------------------------
+
+  int handleOf(String id) {
+    for (int i = 0; i < mapCount; i = i + 1) { if (ids[i] == id) { return handles[i]; } }
+    return -1;
+  }
+  void record(String id, int handle) {
+    int existing = indexOf(id);
+    if (existing >= 0) { handles[existing] = handle; return; }
+    if (mapCount >= MAX_NODES) { return; }
+    ids[mapCount] = id; handles[mapCount] = handle; mapCount = mapCount + 1;
+  }
+  int indexOf(String id) {
+    for (int i = 0; i < mapCount; i = i + 1) { if (ids[i] == id) { return i; } }
+    return -1;
+  }
+  boolean isMounted(String id) { return handleOf(id) >= 0; }
+
+  // ---- full mount ---------------------------------------------------------
+
+  // Mount the whole document under the window root, depth-first.
+  void mountAll() {
+    SLGuiNode root = dom.root();
+    if (root == null) { return; }
+    // The root element adopts the window's existing root container handle.
+    root.mount(rootHandle);
+    record(root.getId(), rootHandle);
+    mounted = mounted + 1;
+    mountChildren(root);
+    reconcile();
+  }
+
+  // Recursively construct and mount every child of `parent`.
+  void mountChildren(SLGuiNode parent) {
+    int ph = handleOf(parent.getId());
+    if (ph < 0) { return; }
+    for (int i = 0; i < parent.children(); i = i + 1) {
+      String childId = parent.childAt(i);
+      SLGuiNode child = dom.getElementById(childId);
+      if (child == null) { continue; }
+      if (!isMounted(childId)) {
+        String label = labelFor(child);
+        int wh = factory.construct(ph, child.getTag(), label);
+        child.mount(wh);
+        record(childId, wh);
+        mounted = mounted + 1;
+      }
+      mountChildren(child);
+    }
+  }
+
+  // Mount any nodes added since the last pass (nodes the DOM grew via script
+  // or SLeeLa after the initial mountAll).
+  void mountNew() {
+    SLGuiNode root = dom.root();
+    if (root != null) { mountChildren(root); }
+  }
+
+  // ---- reconcile (apply dirty node state to widgets) ----------------------
+
+  // Push every dirty node's state onto its widget, then clear the dirty flag.
+  // Returns how many nodes were applied this pass.
+  int reconcile() {
+    applied = 0;
+    int n = dom.size();
+    for (int i = 0; i < n; i = i + 1) {
+      SLGuiNode node = dom.nodeAt(i);
+      if (node == null || !node.isDirty()) { continue; }
+      apply(node);
+      node.clearDirty();
+      applied = applied + 1;
+    }
+    return applied;
+  }
+
+  // Apply one node's state to its live widget via the `ui*` built-ins.
+  void apply(SLGuiNode node) {
+    int wh = node.widgetHandle();
+    if (wh < 0) { wh = handleOf(node.getId()); }
+    if (wh < 0) { return; }
+
+    // Text (labels/buttons/entries).
+    String t = node.text();
+    if (t != null && t != "") { uiWidgetSetText(wh, t); }
+
+    // Visibility and sensitivity.
+    uiWidgetVisible(wh, node.isVisible() ? 1 : 0);
+    uiWidgetSensitive(wh, node.isEnabled() ? 1 : 0);
+
+    // Style-derived accents: style "accent" = "suggested" | "destructive".
+    String accent = node.getStyle("accent");
+    if (accent != null) {
+      uiWidgetSuggested(wh, accent == "suggested" ? 1 : 0);
+      uiWidgetDestructive(wh, accent == "destructive" ? 1 : 0);
+    }
+
+    // Style-derived minimum size: style "min-width" / "min-height" (integers
+    // as decimal strings; absent -> 0).
+    int minW = intAttr(node.getStyle("min-width"));
+    int minH = intAttr(node.getStyle("min-height"));
+    if (minW > 0 || minH > 0) { uiWidgetSizeRequest(wh, minW, minH); }
+  }
+
+  int mountedCount() { return mounted; }
+  int appliedLast() { return applied; }
+
+  // ---- helpers ------------------------------------------------------------
+
+  // The construction label for a node: its text, or its "placeholder" attr for
+  // entries, or empty.
+  String labelFor(SLGuiNode node) {
+    String t = node.text();
+    if (t != null && t != "") { return t; }
+    String ph = node.getAttribute("placeholder");
+    if (ph != null) { return ph; }
+    return "";
+  }
+
+  // Parse a non-negative integer from a decimal string ("" / null -> 0).
+  int intAttr(String s) {
+    if (s == null || s == "") { return 0; }
+    int value = 0;
+    for (int i = 0; i < s.length(); i = i + 1) {
+      int d = digit(s.substring(i, i + 1));
+      if (d < 0) { return 0; }
+      value = value * 10 + d;
+    }
+    return value;
+  }
+  int digit(String ch) {
+    if (ch == "0") { return 0; } if (ch == "1") { return 1; }
+    if (ch == "2") { return 2; } if (ch == "3") { return 3; }
+    if (ch == "4") { return 4; } if (ch == "5") { return 5; }
+    if (ch == "6") { return 6; } if (ch == "7") { return 7; }
+    if (ch == "8") { return 8; } if (ch == "9") { return 9; }
+    return -1;
+  }
+}

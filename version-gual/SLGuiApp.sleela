@@ -1,0 +1,115 @@
+/*
+ * version-gual/SLGuiApp.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiApp — the top-level support structure that ties the
+ *   whole /lib/gui dynamic stack together into one object: it opens a SleelaUI
+ *   application and window (via /lib/user-interface), owns the SLeeLa DOM
+ *   (SLGuiDom), the reconciler (SLGuiMount) that projects the DOM onto widgets,
+ *   the host adapter (SLGuiHostAdapter) that raises widget activations back as
+ *   events, and an optional script engine (SLGuiScript). Its run loop pumps the
+ *   toolkit event loop, polls widget activations into the event bus, re-mounts
+ *   any newly-created nodes, and reconciles dirty nodes each turn. This is the
+ *   "basic support structure" a program (or the IDE) builds on: construct the
+ *   DOM declaratively or by script, bind callbacks, and call run().
+ *
+ * Family: gui. SLeeLa owns the DOM, dispatch, and script execution; SleelaUI
+ * owns presentation; this object is the wiring between them.
+ */
+#sleela 2.1
+class SLGuiApp {
+  SLUserInterface ui;
+  SLWindow window;
+  SLGuiDom dom;
+  SLGuiMount mount;
+  SLGuiHostAdapter host;
+  SLGuiScript script;
+  int ready;
+
+  // Open the application + window and stand up the DOM/mount/host wiring.
+  // Returns true when the toolkit came up (false on a headless host).
+  boolean boot(String appId, String title, int width, int height) {
+    ui = new SLUserInterface();
+    ui.configure(appId);
+    if (!ui.open()) { ready = 0; return false; }
+
+    SLTheme theme = new SLTheme();
+    theme.slickBlack();
+    window = ui.openWindow(title, width, height, theme.handle());
+
+    dom = new SLGuiDom(); dom.init();
+    // The document root mirrors the window's existing root container.
+    dom.createRoot("window", "root");
+
+    mount = new SLGuiMount(); mount.init(dom, window.rootHandle());
+    host = new SLGuiHostAdapter(); host.init(dom, mount);
+    script = new SLGuiScript(); script.init(dom);
+
+    ready = 1;
+    return true;
+  }
+
+  boolean isReady() { return ready == 1; }
+
+  // ---- document access ----------------------------------------------------
+
+  SLGuiDom document() { return dom; }
+  SLGuiScript scripting() { return script; }
+  SLWindow hostWindow() { return window; }
+
+  // Convenience: append an element to a parent in the DOM (then mount+show on
+  // the next loop turn, or immediately via refresh()).
+  SLGuiNode add(String parentId, String tag, String id) {
+    return dom.appendElement(parentId, tag, id);
+  }
+
+  // Bind a click callback (DHTML onClick) by node id.
+  SLGuiHandler onClick(String id, String operation) { return dom.onClick(id, operation); }
+
+  // Run a UI script against the DOM (build + bind + fire), then refresh.
+  int runScript() {
+    int n = script.run();
+    refresh();
+    return n;
+  }
+
+  // ---- the loop -----------------------------------------------------------
+
+  // Mount everything, show the window, then run the toolkit event loop:
+  // pump -> poll activations -> mount new nodes -> reconcile. Returns the
+  // process-style exit code.
+  int run() {
+    if (ready == 0) { return 1; }
+    mount.mountAll();
+    window.show();
+    while (ui.active()) {
+      int dispatched = ui.pump(true);
+      if (dispatched < 0) { break; }
+      host.poll();        // widget activations -> SLGuiEvents -> handlers
+      mount.mountNew();   // pick up nodes added by handlers/scripts
+      mount.reconcile();  // push dirty DOM state onto widgets
+      window.requestRedraw();
+    }
+    return 0;
+  }
+
+  // A single synchronous refresh (mount new + reconcile) without the loop,
+  // for building a UI up front or driving it from a test/host step.
+  void refresh() {
+    if (ready == 0) { return; }
+    mount.mountNew();
+    mount.reconcile();
+  }
+
+  // Pump one turn (pump + poll + refresh); returns events raised this turn.
+  int step(boolean block) {
+    if (ready == 0) { return 0; }
+    ui.pump(block);
+    int raised = host.poll();
+    refresh();
+    window.requestRedraw();
+    return raised;
+  }
+
+  void quit(int code) { if (ui != null) { ui.quit(code); } }
+  void shutdown() { if (ui != null) { ui.close(); } ready = 0; }
+}
