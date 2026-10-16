@@ -1,7 +1,10 @@
 /*
  * lib/gui/version-gual/SLPackage.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library package for gui.
+ * Definition: Defines the SLeeLa standard-library package for gui — the gual
+ *   line (version 2.0). It adds a version identity and a settings surface
+ *   (SLGuiSettings) over the 1.0 baseline (the mual line), and hardens the
+ *   backend / document-listener / window with validated, nameful settings.
  */
 #sleela 2.1
 // Library facade for module package: gui
@@ -14,8 +17,16 @@
 // one-class-per-file source units; this facade only names the package itself,
 // mirroring lib/citizen/SLPackage.sleela.
 class SLPackage {
+  // Version identity: this is the gual line — the 2.0 GUI package. The mual line
+  // is the 1.0 baseline. featureLevel() lets callers branch on the line without
+  // string-parsing the version.
+  static final int FEATURE_LEVEL = 2;   // 2 = gual/2.0 ; 1 = mual/1.0
   String packageName;
-  void configure(String name) { packageName = name; }
+  String packageVersion;
+  void configure(String name) { packageName = name; packageVersion = "2.0"; }
   String name() { return packageName; }
+  String version() { return packageVersion; }
+  int featureLevel() { return FEATURE_LEVEL; }
+  boolean isTwoPointZero() { return FEATURE_LEVEL >= 2; }
   boolean available() { return packageName != null; }
 }

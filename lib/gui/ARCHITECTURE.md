@@ -40,6 +40,33 @@ A runnable, self-contained walkthrough is `lib/gui/version-mual/gui-demo.sleela`
 GUI `.sleela` impl now lives in `lib/gui/version-mual/`, with an identical copy in
 `lib/gui/version-gual/`; `lib/gui/` keeps these docs).
 
+## Versioned lines: `version-mual` (1.0) and `version-gual` (2.0)
+
+The GUI `.sleela` impl is carried in two parallel lines under `lib/gui/`:
+
+- **`version-mual` — 1.0 (baseline).** The original 25-class surface. `SLPackage`
+  reports `version() == "1.0"` / `featureLevel() == 1`.
+- **`version-gual` — 2.0.** The 1.0 surface plus a hardened, settings-first
+  posture. `SLPackage` reports `version() == "2.0"` / `featureLevel() == 2`, and
+  the line adds:
+  - **`SLGuiSettings`** — one validated, nameful settings object gathering the
+    operating knobs: theme (`system`/`light`/`dark`), DPI scale, reduced-motion
+    / accessibility, vsync, window min/max size + resizable/decorations, and the
+    document-listener poll / debounce / coalesce-queue cap / backpressure policy.
+    Every setter **clamps to a safe window**; `honored()` / `report()` state
+    whether the configuration is internally consistent (the clamp-to-window
+    discipline of the `lib/cpu` timing/voltage layer).
+  - **Hardened `SLGuiBackend`** — `configureStrict()` refuses an unknown backend
+    (fail-closed) and capability flags (`supportsHiDpi/Themes/Vsync/Accessibility/NativeMenus`).
+  - **Hardened `SLGuiWindow`** — min/max size, `resizable`/`decorated`, a clamped
+    `resize()`, and `applySettings(SLGuiSettings)`.
+  - **Hardened `SLGuiDocumentListener`** — `configure()` clamps the attached
+    count into the 1..14 contract, plus debounce, a coalesce-queue cap, a
+    backpressure policy (coalesce/drop-oldest/block), and `applySettings(...)`.
+
+The two lines are source-compatible: 2.0 keeps every 1.0 entry point and adds
+the settings surface on top.
+
 ## Events, DHTML-style DOM, and scripting
 
 On top of the integration layer, `lib/gui` provides the backing API for

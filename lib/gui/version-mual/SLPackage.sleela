@@ -14,8 +14,16 @@
 // one-class-per-file source units; this facade only names the package itself,
 // mirroring lib/citizen/SLPackage.sleela.
 class SLPackage {
+  // Version identity: this is the mual line — the 1.0 GUI baseline. The gual
+  // line is the 2.0 package (version(), featureLevel()); mual stays the stable
+  // baseline. featureLevel() lets callers branch on the line.
+  static final int FEATURE_LEVEL = 1;   // 1 = mual/1.0 ; 2 = gual/2.0
   String packageName;
-  void configure(String name) { packageName = name; }
+  String packageVersion;
+  void configure(String name) { packageName = name; packageVersion = "1.0"; }
   String name() { return packageName; }
+  String version() { return packageVersion; }
+  int featureLevel() { return FEATURE_LEVEL; }
+  boolean isTwoPointZero() { return FEATURE_LEVEL >= 2; }
   boolean available() { return packageName != null; }
 }

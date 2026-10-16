@@ -12,15 +12,36 @@
 // or by the native bridge; SLeeLa only expresses the intent.
 class SLGuiBackend {
   String kind;                 // "swing" | "javafx" | "fx" | "native"
-  void configure(String k) { kind = k; }
+  int valid;                   // 1 once configure() accepted a known kind
+
+  // 2.0: validated configuration — an unknown kind is REFUSED (fail-closed)
+  // rather than stored and only caught later by supported(). Returns true when
+  // the kind was accepted. configure(String) keeps the lenient 1.0 behavior for
+  // source compatibility; configureStrict() is the 2.0 guarded form.
+  void configure(String k) { kind = k; valid = known(k) ? 1 : 0; }
+  boolean configureStrict(String k) {
+    if (!known(k)) { kind = null; valid = 0; return false; }
+    kind = k; valid = 1; return true;
+  }
+  boolean known(String k) {
+    return k == "swing" || k == "javafx" || k == "fx" || k == "native";
+  }
+
   String name() { return kind; }
   // A backend is supported when it is one of the known toolkits/bridges.
-  boolean supported() {
-    return kind == "swing" || kind == "javafx" || kind == "fx" || kind == "native";
-  }
+  boolean supported() { return valid == 1; }
   boolean isSwing() { return kind == "swing"; }
   boolean isJavaFx() { return kind == "javafx" || kind == "fx"; }
   boolean isNative() { return kind == "native"; }
   // Normalized label: the "fx" alias resolves to "javafx".
   String resolved() { return kind == "fx" ? "javafx" : kind; }
+
+  // 2.0 capability flags — what the chosen backend can honor from SLGuiSettings.
+  // The native bridge and JavaFX expose the richest surface; Swing is HiDPI- and
+  // theme-capable but has no vsync concept and weaker native menus.
+  boolean supportsHiDpi()      { return valid == 1; }                 // all backends scale
+  boolean supportsThemes()     { return valid == 1; }                 // light/dark/system
+  boolean supportsVsync()      { return isJavaFx() || isNative(); }   // swing has no vsync
+  boolean supportsAccessibility() { return valid == 1; }             // a11y tree on all
+  boolean supportsNativeMenus(){ return isNative() || isJavaFx(); }   // richer native menus
 }
