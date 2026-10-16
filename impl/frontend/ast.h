@@ -43,7 +43,12 @@ enum JavaModifier : unsigned {
     JavaStrictfp     = 1u << 10,
     JavaSealed       = 1u << 11,
     JavaNonSealed    = 1u << 12,
-    JavaDefault      = 1u << 13
+    JavaDefault      = 1u << 13,
+    // Sleela `const`: a developer-intent modifier meaning "I intend to keep this
+    // variable constant until the System Design is complete." It is a design-time
+    // marker (recorded on the declaration's modifier set), NOT a hard immutability
+    // guarantee like `final`; it composes freely with public/static/final.
+    JavaConst        = 1u << 14
 };
 
 struct JavaTypeMetadata {

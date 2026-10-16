@@ -22,7 +22,7 @@ unsigned Parser::parseJavaModifiers(){
         case Tok::KwNative:m|=JavaNative;break; case Tok::KwSynchronized:m|=JavaSynchronized;break;
         case Tok::KwVolatile:m|=JavaVolatile;break; case Tok::KwTransient:m|=JavaTransient;break;
         case Tok::KwStrictfp:m|=JavaStrictfp;break; case Tok::KwSealed:m|=JavaSealed;break;
-        case Tok::KwNonSealed:m|=JavaNonSealed;break; case Tok::KwDefault:m|=JavaDefault;break;
+        case Tok::KwNonSealed:m|=JavaNonSealed;break; case Tok::KwConst:m|=JavaConst;break; case Tok::KwDefault:m|=JavaDefault;break;
         default: continue;
     } i_++; again=true;}
     return m;

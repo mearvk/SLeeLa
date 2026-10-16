@@ -30,7 +30,9 @@ class Greeter {
 
 ## Keywords & types
 
-**Control / declaration keywords:** `class`, `interface`, `enum`, `record`, `struct`, `static`, `final`, `abstract`, `sealed`, `non-sealed`, `public`, `private`, `protected`, `import`, `native`, `extends`, `implements`, `throws`, `transient`, `volatile`, `strictfp`.
+**Control / declaration keywords:** `class`, `interface`, `enum`, `record`, `struct`, `static`, `final`, `abstract`, `sealed`, `non-sealed`, `const`, `public`, `private`, `protected`, `import`, `native`, `extends`, `implements`, `throws`, `transient`, `volatile`, `strictfp`.
+
+> **`const` (Sleela):** a developer-intent modifier that declares *"I intend to keep this variable constant until the System Design is complete."* It combines with `public` / `static` / `final` like any other modifier and is recorded on the declaration's modifier set. Unlike `final`, it is a **design-time intent marker**, not a hard compile-time immutability guarantee — it signals and documents stability of intent during design, rather than enforcing it.
 
 **Statement keywords:** `if`, `else`, `while`, `do`, `for`, `switch`, `case`, `default`, `break`, `continue`, `return`, `throw`, `try`, `catch`, `finally`, `assert`, `yield`, `synchronized`, `print`, `new`, `instanceof`, `this`, `super`, `true`, `false`, `null`.
 
