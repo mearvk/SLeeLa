@@ -12863,6 +12863,130 @@
       "sha256": "1b6f27e1b395fc633fc911bed026a1478782b98cb2ac78402866ea555eba0350"
     },
     {
+      "path": "lib/gui/version-thual/SLGuiAction.sleela",
+      "sha256": "4792d43024e6501c5751b8d9498b11e70a67bb83a3bf5f08a38fa4f07bb8c658"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiApp.sleela",
+      "sha256": "457909f6c7f534e57aa90530ca238b7277615083a1f738fc376e9a17b13affe3"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiAudioCues.sleela",
+      "sha256": "7c59596761efd016e32611ddb80695c5097312283fea3bb7c2c67707367ca7c4"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiBackend.sleela",
+      "sha256": "aefc239f3e7131cea60fb43da666857d0ccd3e1094b09f6123e70f554057218e"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiBranding.sleela",
+      "sha256": "c9fd142aa0a899c7e9054e1cf7ccb7e431ca2ae6bbcc2825f06e22ef3532ead1"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiBridge.sleela",
+      "sha256": "6045d2617b3bc3ec222d4aff3c5efa4f1a384b22737eaaec80c02324fef881e2"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiDocument.sleela",
+      "sha256": "38ebc95e71f21eedb988763f1fb62fe85e917528de6b938f90bfd32facf1f639"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiDocumentListener.sleela",
+      "sha256": "1cabe32bd62240aaff0fe182771d81a61f62ca707d1e61c409c57e9ce8231a15"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiDom.sleela",
+      "sha256": "a26e98035570fc8278ba34f861f5bcae0b8cc0c3176befecbe60657a098a06b3"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiEffects.sleela",
+      "sha256": "20d38e484167eb31d9732647ff7b9926fc091e52862c47389cf00bdb8c460235"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiEvent.sleela",
+      "sha256": "46e21916f3856d0728a158fcdc553bc9449668290214a941b693faf56d2fb495"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiEventBus.sleela",
+      "sha256": "96851e4169b45e44756343db3d451a275f5313c68a03d61d404bdcafc7bcba68"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiEventType.sleela",
+      "sha256": "414c868051ab49a2f58d01defdeb4e832911c8bfbed49e5e706d5831bc1f7903"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiHandler.sleela",
+      "sha256": "87077805a34aff15cee78be76ad9c39113c87a54af4aa2a21c2bd4ec00a58500"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiHost.sleela",
+      "sha256": "94e3001b207bc31087b6d219b18e877b34f453733872408f414aa3e91acb4571"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiHostAdapter.sleela",
+      "sha256": "fa3531122c40887cc35069bb01287cd074037aedadeed7072211a62496151ab0"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiIntegration.sleela",
+      "sha256": "2e0736e741eb2f1a7f6575495e649ada7d0741b32abf40cb379b004964923985"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiMount.sleela",
+      "sha256": "af93f02e9d47f6eacabb3bbfaea0914cd13cc024cf3043df016601df6989a540"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiNode.sleela",
+      "sha256": "c63c5d79ca0f0789ca9b7e02458ee6fbb7782847609e985a00554b1319a85189"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiRotationSchedule.sleela",
+      "sha256": "527b0dfecf6f8f0db3b861293cb050b8355a7b0d4d03b0a0c820fa01146689c6"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiRuntime.sleela",
+      "sha256": "9d69b9cdf15a6a2a7c28f09b1bdc56bb225146dd1d0be9e04e5e2b8483ecd111"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiScript.sleela",
+      "sha256": "fbd8a4d7b7455f7c1ce48cbcf57cc69a97c89bf9d919df54d9c8dc2fe20efa9a"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiScriptCommand.sleela",
+      "sha256": "c481f30c0b1856a00306004381fd612f6256768179643f0117203c7cc2c994a5"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiSettings.sleela",
+      "sha256": "82e7644cd3ce6b64938b5392502ddc07bf2c616bb45066a9c07764767e461f27"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiWidgetFactory.sleela",
+      "sha256": "482b661549e60d213cbaf4c4f3983869906891822880f1b1c8f67409827dd500"
+    },
+    {
+      "path": "lib/gui/version-thual/SLGuiWindow.sleela",
+      "sha256": "80a103177d15e95b52e7a8863bad2217cea743c83b6083915623469fc8bdab9b"
+    },
+    {
+      "path": "lib/gui/version-thual/SLPackage.sleela",
+      "sha256": "8bd2919506f317ab5aa0e36a1b6188e2da4a46a327164a905695069f5ddb3694"
+    },
+    {
+      "path": "lib/gui/version-thual/gui-app-demo.sleela",
+      "sha256": "e5a3d4791ad0b466854e998fe45a40f0d829d5b8440a315f7589e8bcacd2846d"
+    },
+    {
+      "path": "lib/gui/version-thual/gui-demo.sleela",
+      "sha256": "c72457b2f0c46b4900b2942286dc7a7db01f35a75c6a7201934bf32e89966de8"
+    },
+    {
+      "path": "lib/gui/version-thual/gui-effects-demo.sleela",
+      "sha256": "d8d67d469cb83264399e385a753912478848bb58fb229b93ecf658f3728ebf4d"
+    },
+    {
+      "path": "lib/gui/version-thual/gui-events-demo.sleela",
+      "sha256": "56251475483f5397d75653829c0bea32a6f7e9638c0421b12a90bd54e78318cb"
+    },
+    {
       "path": "lib/html/SLPackage.sleela",
       "sha256": "348152553d4baef991737cd3eed6b02d7e50feaeeeb2066d7d0ba2b71a5ea0de"
     },
