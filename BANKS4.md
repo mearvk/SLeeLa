@@ -6,10 +6,10 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 
 | ID | Country/Jurisdiction | ISO | Currency | GDP | GDP/Capita | Inflation | Trade/GDP | World Bank Income | Banking | Constitutional Socialism Reference |
 |---:|---|---|---|---:|---:|---:|---:|---|---|---|
-| 001 | Afghanistan | AF / AFG | AF / AFG | AFN | $17.78B | N/A | -6.60 | 83.76 | Da Afghanistan Bank | PENDING | PARTIAL | $17.78B | N/A | -6.60 | 83.76 | Low income | PENDING | PARTIAL |
+| 001 | Afghanistan | AF / AFG | AF / AFG | AFN | $17.78B | 416.87 | -6.60 | 83.76 | Da Afghanistan Bank | PENDING | PARTIAL | $17.78B | 416.87 | -6.60 | 83.76 | Low income | PENDING | PARTIAL |
 | 002 | Albania | AL / ALB | AL / ALB | ALL | $30.54B | $12,998 | 2.15 | 79.53 | Bank of Albania | PENDING | PARTIAL | $30.54B | $12,998 | 2.15 | 79.53 | Upper middle income | PENDING | PARTIAL |
 | 003 | Algeria | DZ / DZA | DZ / DZA | DZD | $287.03B | $6,051 | 1.42 | 38.98 | Bank of Algeria | PENDING | PARTIAL | $287.03B | $6,051 | 1.42 | 38.98 | Upper middle income | PENDING | PARTIAL |
-| 004 | American Samoa | AS / ASM | AS / ASM | USD | $871.00M | N/A | N/A | 124.68 | Federal Reserve System / American Samoa banking institutions | PENDING | PARTIAL | $871.00M | N/A | N/A | 124.68 | High income | PENDING | PARTIAL |
+| 004 | American Samoa | AS / ASM | AS / ASM | USD | $871.00M | $18,017 | N/A | 124.68 | Federal Reserve System / American Samoa banking institutions | PENDING | PARTIAL | $871.00M | $18,017 | N/A | 124.68 | High income | PENDING | PARTIAL |
 | 005 | Andorra | AD / AND | AD / AND | EUR | $4.50B | $54,292 | N/A | N/A | Andorran Financial Authority (AFA) | PENDING | PARTIAL | $4.50B | $54,292 | N/A | N/A | High income | PENDING | PARTIAL |
 | 006 | Angola | AO / AGO | AO / AGO | AOA | $122.17B | $3,129 | 20.16 | 34.65 | National Bank of Angola | PENDING | PARTIAL | $122.17B | $3,129 | 20.16 | 34.65 | Lower middle income | PENDING | PARTIAL |
 | 007 | Anguilla | N/A / N/A | N/A / N/A | XCD | N/A | N/A | N/A | N/A | Eastern Caribbean Central Bank (ECCB) | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
@@ -17,7 +17,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 009 | Antigua and Barbuda | AG / ATG | AG / ATG | XCD | $2.34B | $24,819 | 1.37 | 118.30 | Eastern Caribbean Central Bank (ECCB) | PENDING | PARTIAL | $2.34B | $24,819 | 1.37 | 118.30 | High income | PENDING | PARTIAL |
 | 010 | Argentina | AR / ARG | AR / ARG | ARS | $683.10B | $14,898 | 219.88 | 30.36 | Central Bank of Argentina | PENDING | PARTIAL | $683.10B | $14,898 | 219.88 | 30.36 | Upper middle income | PENDING | PARTIAL |
 | 011 | Armenia | AM / ARM | AM / ARM | AMD | $29.24B | $9,474 | 3.31 | 101.71 | Central Bank of Armenia | PENDING | PARTIAL | $29.24B | $9,474 | 3.31 | 101.71 | Upper middle income | PENDING | PARTIAL |
-| 012 | Aruba | AW / ABW | AW / ABW | AWG | $4.17B | N/A | 4.26 | 164.14 | Central Bank of Aruba | PENDING | PARTIAL | $4.17B | N/A | 4.26 | 164.14 | High income | PENDING | PARTIAL |
+| 012 | Aruba | AW / ABW | AW / ABW | AWG | $4.17B | $38,591 | 4.26 | 164.14 | Central Bank of Aruba | PENDING | PARTIAL | $4.17B | $38,591 | 4.26 | 164.14 | High income | PENDING | PARTIAL |
 | 013 | Australia | AU / AUS | AU / AUS | AUD | $1798.52B | $65,130 | 2.87 | 45.90 | Reserve Bank of Australia | PENDING | PARTIAL | $1798.52B | $65,130 | 2.87 | 45.90 | High income | PENDING | PARTIAL |
 | 014 | Austria | AT / AUT | AT / AUT | EUR | $579.47B | $62,930 | 3.53 | 107.02 | Oesterreichische Nationalbank | PENDING | PARTIAL | $579.47B | $62,930 | 3.53 | 107.02 | High income | PENDING | PARTIAL |
 | 015 | Azerbaijan | AZ / AZE | AZ / AZE | AZN | $75.94B | $7,411 | 5.62 | 79.83 | Central Bank of Azerbaijan | PENDING | PARTIAL | $75.94B | $7,411 | 5.62 | 79.83 | Upper middle income | PENDING | PARTIAL |
@@ -29,7 +29,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 021 | Belgium | BE / BEL | BE / BEL | EUR | $725.47B | $60,750 | 2.47 | 152.92 | National Bank of Belgium / European Central Bank | PENDING | PARTIAL | $725.47B | $60,750 | 2.47 | 152.92 | High income | PENDING | PARTIAL |
 | 022 | Belize | BZ / BLZ | BZ / BLZ | BZD | $3.33B | $7,865 | 1.06 | 108.97 | Central Bank of Belize | PENDING | PARTIAL | $3.33B | $7,865 | 1.06 | 108.97 | Upper middle income | PENDING | PARTIAL |
 | 023 | Benin | BJ / BEN | BJ / BEN | XOF | $24.57B | $1,658 | 1.10 | 37.12 | National banking and monetary authority — Benin (BIS Central Bank Hub reference) | PENDING | PARTIAL | $24.57B | $1,658 | 1.10 | 37.12 | Lower middle income | PENDING | PARTIAL |
-| 024 | Bermuda | BM / BMU | BM / BMU | BMD | $9.19B | N/A | N/A | 80.21 | Bermuda Monetary Authority | PENDING | PARTIAL | $9.19B | N/A | N/A | 80.21 | High income | PENDING | PARTIAL |
+| 024 | Bermuda | BM / BMU | BM / BMU | BMD | $9.19B | $142,250 | N/A | 80.21 | Bermuda Monetary Authority | PENDING | PARTIAL | $9.19B | $142,250 | N/A | 80.21 | High income | PENDING | PARTIAL |
 | 025 | Bhutan | BT / BTN | BT / BTN | INR,BTN | $3.58B | $4,493 | 3.56 | 79.36 | Royal Monetary Authority of Bhutan | PENDING | PARTIAL | $3.58B | $4,493 | 3.56 | 79.36 | Lower middle income | PENDING | PARTIAL |
 | 026 | Bolivia | BO / BOL | BO / BOL | BOB | $64.77B | $5,148 | 19.52 | 46.98 | Central Bank of Bolivia | PENDING | PARTIAL | $64.77B | $5,148 | 19.52 | 46.98 | Lower middle income | PENDING | PARTIAL |
 | 027 | Bonaire, Sint Eustatius and Saba | N/A / N/A | N/A / N/A | USD | N/A | N/A | N/A | N/A | National banking and monetary authority — Bonaire, Sint Eustatius and Saba (BIS Central Bank Hub reference) | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
@@ -46,7 +46,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 038 | Cambodia | KH / KHM | KH / KHM | KHR | $51.27B | $2,872 | 2.35 | 136.09 | National Bank of Cambodia | PENDING | PARTIAL | $51.27B | $2,872 | 2.35 | 136.09 | Lower middle income | PENDING | PARTIAL |
 | 039 | Cameroon | CM / CMR | CM / CMR | XAF | $58.93B | $1,972 | 3.40 | 33.38 | Bank of Central African States (BEAC) | PENDING | PARTIAL | $58.93B | $1,972 | 3.40 | 33.38 | Lower middle income | PENDING | PARTIAL |
 | 040 | Canada | CA / CAN | CA / CAN | CAD | $2319.90B | $55,698 | 2.07 | 63.51 | Bank of Canada | PENDING | PARTIAL | $2319.90B | $55,698 | 2.07 | 63.51 | High income | PENDING | PARTIAL |
-| 041 | Cayman Islands | KY / CYM | KY / CYM | KYD | $7.77B | N/A | -0.63 | 105.47 | Cayman Islands Monetary Authority | PENDING | PARTIAL | $7.77B | N/A | -0.63 | 105.47 | High income | PENDING | PARTIAL |
+| 041 | Cayman Islands | KY / CYM | KY / CYM | KYD | $7.77B | $104,293 | -0.63 | 105.47 | Cayman Islands Monetary Authority | PENDING | PARTIAL | $7.77B | $104,293 | -0.63 | 105.47 | High income | PENDING | PARTIAL |
 | 042 | Central African Republic | CF / CAF | CF / CAF | XAF | $3.07B | 556.13 | 1.00 | 52.91 | Bank of Central African States (BEAC) | PENDING | PARTIAL | $3.07B | 556.13 | 1.00 | 52.91 | Low income | PENDING | PARTIAL |
 | 043 | Chad | TD / TCD | TD / TCD | XAF | $21.47B | $1,022 | -3.91 | 46.13 | Bank of Central African States (BEAC) | PENDING | PARTIAL | $21.47B | $1,022 | -3.91 | 46.13 | Low income | PENDING | PARTIAL |
 | 044 | Chile | CL / CHL | CL / CHL | CLP | $357.37B | $17,995 | 4.21 | 64.98 | Central Bank of Chile | PENDING | PARTIAL | $357.37B | $17,995 | 4.21 | 64.98 | High income | PENDING | PARTIAL |
@@ -60,7 +60,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 052 | Costa Rica | CR / CRI | CR / CRI | CRC | $102.90B | $19,970 | -0.07 | 71.49 | Central Bank of Costa Rica | PENDING | PARTIAL | $102.90B | $19,970 | -0.07 | 71.49 | High income | PENDING | PARTIAL |
 | 053 | Côte d'Ivoire | N/A / N/A | N/A / N/A | N/A | N/A | N/A | N/A | N/A | Central Bank of West African States (BCEAO) | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 054 | Croatia | HR / HRV | HR / HRV | EUR | $105.06B | $27,104 | 3.69 | 100.99 | Croatian National Bank / European Central Bank | PENDING | PARTIAL | $105.06B | $27,104 | 3.69 | 100.99 | High income | PENDING | PARTIAL |
-| 055 | Cuba | CU / CUB | CU / CUB | CUP | $107.35B | N/A | N/A | 124.86 | Central Bank of Cuba | PENDING | PARTIAL | $107.35B | N/A | N/A | 124.86 | Upper middle income | PENDING | PARTIAL |
+| 055 | Cuba | CU / CUB | CU / CUB | CUP | $107.35B | $9,605 | N/A | 124.86 | Central Bank of Cuba | PENDING | PARTIAL | $107.35B | $9,605 | N/A | 124.86 | Upper middle income | PENDING | PARTIAL |
 | 056 | Curaçao | N/A / N/A | N/A / N/A | XCG | N/A | N/A | N/A | N/A | Central Bank of Curaçao and Sint Maarten | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 057 | Cyprus | CY / CYP | CY / CYP | EUR | $41.23B | $41,783 | 0.13 | 189.50 | Central Bank of Cyprus / European Central Bank | PENDING | PARTIAL | $41.23B | $41,783 | 0.13 | 189.50 | High income | PENDING | PARTIAL |
 | 058 | Czechia | CZ / CZE | CZ / CZE | CZK | $391.03B | $35,917 | 2.46 | 128.04 | Czech National Bank | PENDING | PARTIAL | $391.03B | $35,917 | 2.46 | 128.04 | High income | PENDING | PARTIAL |
@@ -73,17 +73,17 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 065 | Egypt | N/A / N/A | N/A / N/A | EGP | N/A | N/A | N/A | N/A | Central Bank of Egypt | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 066 | El Salvador | SV / SLV | SV / SLV | SVC,USD | $36.71B | $5,767 | 0.26 | 88.16 | Central Reserve Bank of El Salvador | PENDING | PARTIAL | $36.71B | $5,767 | 0.26 | 88.16 | Upper middle income | PENDING | PARTIAL |
 | 067 | Equatorial Guinea | GQ / GNQ | GQ / GNQ | XAF | $12.82B | $6,615 | 2.92 | 74.93 | Bank of Central African States (BEAC) | PENDING | PARTIAL | $12.82B | $6,615 | 2.92 | 74.93 | Upper middle income | PENDING | PARTIAL |
-| 068 | Eritrea | ER / ERI | ER / ERI | ERN | $2.07B | N/A | N/A | 47.39 | Bank of Eritrea | PENDING | PARTIAL | $2.07B | N/A | N/A | 47.39 | Low income | PENDING | PARTIAL |
+| 068 | Eritrea | ER / ERI | ER / ERI | ERN | $2.07B | 688.68 | N/A | 47.39 | Bank of Eritrea | PENDING | PARTIAL | $2.07B | 688.68 | N/A | 47.39 | Low income | PENDING | PARTIAL |
 | 069 | Estonia | EE / EST | EE / EST | EUR | $47.03B | $34,418 | 4.83 | 155.76 | Eesti Pank / European Central Bank | PENDING | PARTIAL | $47.03B | $34,418 | 4.83 | 155.76 | High income | PENDING | PARTIAL |
 | 070 | Eswatini | SZ / SWZ | SZ / SWZ | SZL | $5.16B | $4,108 | 2.60 | 107.48 | Central Bank of Eswatini | PENDING | PARTIAL | $5.16B | $4,108 | 2.60 | 107.48 | Lower middle income | PENDING | PARTIAL |
 | 071 | Ethiopia | ET / ETH | ET / ETH | ETB | $126.36B | 932.73 | 13.23 | 33.46 | National Bank of Ethiopia | PENDING | PARTIAL | $126.36B | 932.73 | 13.23 | 33.46 | Low income | PENDING | PARTIAL |
 | 072 | Falkland Islands | N/A / N/A | N/A / N/A | FKP | N/A | N/A | N/A | N/A | Government of the Falkland Islands / currency linked to pound sterling | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
-| 073 | Faroe Islands | FO / FRO | FO / FRO | DKK | $4.05B | N/A | N/A | 105.75 | Danmarks Nationalbank / local banking authority | PENDING | PARTIAL | $4.05B | N/A | N/A | 105.75 | High income | PENDING | PARTIAL |
+| 073 | Faroe Islands | FO / FRO | FO / FRO | DKK | $4.05B | $74,175 | N/A | 105.75 | Danmarks Nationalbank / local banking authority | PENDING | PARTIAL | $4.05B | $74,175 | N/A | 105.75 | High income | PENDING | PARTIAL |
 | 074 | Fiji | FJ / FJI | FJ / FJI | FJD | $6.20B | $6,642 | -1.38 | 118.96 | Reserve Bank of Fiji | PENDING | PARTIAL | $6.20B | $6,642 | -1.38 | 118.96 | Upper middle income | PENDING | PARTIAL |
 | 075 | Finland | FI / FIN | FI / FIN | EUR | $317.04B | $56,149 | 0.33 | 83.40 | Bank of Finland / European Central Bank | PENDING | PARTIAL | $317.04B | $56,149 | 0.33 | 83.40 | High income | PENDING | PARTIAL |
 | 076 | France | FR / FRA | FR / FRA | EUR | $3366.32B | $48,986 | 0.94 | 67.19 | Banque de France / European Central Bank | PENDING | PARTIAL | $3366.32B | $48,986 | 0.94 | 67.19 | High income | PENDING | PARTIAL |
 | 077 | French Guiana | N/A / N/A | N/A / N/A | EUR | N/A | N/A | N/A | N/A | Banque de France / European Central Bank | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
-| 078 | French Polynesia | PF / PYF | PF / PYF | XPF | $6.32B | N/A | N/A | 64.47 | Institut d'émission d'outre-mer (IEOM) | PENDING | PARTIAL | $6.32B | N/A | N/A | 64.47 | High income | PENDING | PARTIAL |
+| 078 | French Polynesia | PF / PYF | PF / PYF | XPF | $6.32B | $22,440 | N/A | 64.47 | Institut d'émission d'outre-mer (IEOM) | PENDING | PARTIAL | $6.32B | $22,440 | N/A | 64.47 | High income | PENDING | PARTIAL |
 | 079 | French Southern Territories | N/A / N/A | N/A / N/A | EUR | N/A | N/A | N/A | N/A | Institut d'émission d'outre-mer (IEOM) | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 080 | Gabon | GA / GAB | GA / GAB | XAF | $21.43B | $8,263 | 1.77 | 84.89 | Bank of Central African States (BEAC) | PENDING | PARTIAL | $21.43B | $8,263 | 1.77 | 84.89 | Upper middle income | PENDING | PARTIAL |
 | 081 | Gambia | N/A / N/A | N/A / N/A | GMD | N/A | N/A | N/A | N/A | Central Bank of The Gambia | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
@@ -92,10 +92,10 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 084 | Ghana | GH / GHA | GH / GHA | GHS | $114.21B | $3,257 | 14.20 | 68.97 | Bank of Ghana | PENDING | PARTIAL | $114.21B | $3,257 | 14.20 | 68.97 | Lower middle income | PENDING | PARTIAL |
 | 085 | Gibraltar | GI / GIB | GI / GIB | GIP | N/A | N/A | N/A | N/A | Gibraltar Financial Services Commission / Bank of England sterling system | PENDING | PARTIAL | N/A | N/A | N/A | N/A | High income | PENDING | PARTIAL |
 | 086 | Greece | GR / GRC | GR / GRC | EUR | $280.64B | $26,948 | 2.48 | 83.45 | Bank of Greece / European Central Bank | PENDING | PARTIAL | $280.64B | $26,948 | 2.48 | 83.45 | High income | PENDING | PARTIAL |
-| 087 | Greenland | GL / GRL | GL / GRL | DKK | $3.33B | N/A | N/A | 91.89 | Danmarks Nationalbank / local banking authority | PENDING | PARTIAL | $3.33B | N/A | N/A | 91.89 | High income | PENDING | PARTIAL |
+| 087 | Greenland | GL / GRL | GL / GRL | DKK | $3.33B | $58,499 | N/A | 91.89 | Danmarks Nationalbank / local banking authority | PENDING | PARTIAL | $3.33B | $58,499 | N/A | 91.89 | High income | PENDING | PARTIAL |
 | 088 | Grenada | GD / GRD | GD / GRD | XCD | $1.42B | $12,107 | 0.61 | N/A | Eastern Caribbean Central Bank (ECCB) | PENDING | PARTIAL | $1.42B | $12,107 | 0.61 | N/A | Upper middle income | PENDING | PARTIAL |
 | 089 | Guadeloupe | N/A / N/A | N/A / N/A | EUR | N/A | N/A | N/A | N/A | Banque de France / European Central Bank | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
-| 090 | Guam | GU / GUM | GU / GUM | USD | $6.91B | N/A | N/A | 71.87 | Federal Reserve System / Guam banking institutions | PENDING | PARTIAL | $6.91B | N/A | N/A | 71.87 | High income | PENDING | PARTIAL |
+| 090 | Guam | GU / GUM | GU / GUM | USD | $6.91B | $41,833 | N/A | 71.87 | Federal Reserve System / Guam banking institutions | PENDING | PARTIAL | $6.91B | $41,833 | N/A | 71.87 | High income | PENDING | PARTIAL |
 | 091 | Guatemala | GT / GTM | GT / GTM | GTQ | $123.31B | $6,598 | 1.49 | 46.53 | Bank of Guatemala | PENDING | PARTIAL | $123.31B | $6,598 | 1.49 | 46.53 | Upper middle income | PENDING | PARTIAL |
 | 092 | Guernsey | N/A / N/A | N/A / N/A | GBP | N/A | N/A | N/A | N/A | Guernsey Financial Services Commission / sterling banking system | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 093 | Guinea | GN / GIN | GN / GIN | GNF | $28.35B | $1,877 | 3.57 | 103.68 | Central Bank of the Republic of Guinea | PENDING | PARTIAL | $28.35B | $1,877 | 3.57 | 103.68 | Lower middle income | PENDING | PARTIAL |
@@ -113,7 +113,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 105 | Iran | N/A / N/A | N/A / N/A | IRR | N/A | N/A | N/A | N/A | Central Bank of the Islamic Republic of Iran | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 106 | Iraq | IQ / IRQ | IQ / IRQ | IQD | $254.37B | $5,410 | 0.30 | 77.14 | Central Bank of Iraq | PENDING | PARTIAL | $254.37B | $5,410 | 0.30 | 77.14 | Upper middle income | PENDING | PARTIAL |
 | 107 | Ireland | IE / IRL | IE / IRL | EUR | $721.70B | $131,592 | 2.21 | 239.96 | Central Bank of Ireland / European Central Bank | PENDING | PARTIAL | $721.70B | $131,592 | 2.21 | 239.96 | High income | PENDING | PARTIAL |
-| 108 | Isle of Man | IM / IMN | IM / IMN | GBP | $7.58B | N/A | N/A | N/A | Isle of Man Financial Services Authority / sterling banking system | PENDING | PARTIAL | $7.58B | N/A | N/A | N/A | High income | PENDING | PARTIAL |
+| 108 | Isle of Man | IM / IMN | IM / IMN | GBP | $7.58B | $90,015 | N/A | N/A | Isle of Man Financial Services Authority / sterling banking system | PENDING | PARTIAL | $7.58B | $90,015 | N/A | N/A | High income | PENDING | PARTIAL |
 | 109 | Israel | IL / ISR | IL / ISR | ILS | $610.78B | $60,337 | 3.04 | 52.99 | Bank of Israel | PENDING | PARTIAL | $610.78B | $60,337 | 3.04 | 52.99 | High income | PENDING | PARTIAL |
 | 110 | Italy | IT / ITA | IT / ITA | EUR | $2551.56B | $43,309 | 1.53 | 62.52 | Banca d'Italia / European Central Bank | PENDING | PARTIAL | $2551.56B | $43,309 | 1.53 | 62.52 | High income | PENDING | PARTIAL |
 | 111 | Jamaica | JM / JAM | JM / JAM | JMD | $22.70B | $8,003 | 4.00 | N/A | Bank of Jamaica | PENDING | PARTIAL | $22.70B | $8,003 | 4.00 | N/A | Upper middle income | PENDING | PARTIAL |
@@ -129,11 +129,11 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 121 | Kyrgyzstan | N/A / N/A | N/A / N/A | KGS | N/A | N/A | N/A | N/A | National Bank of the Kyrgyz Republic | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 122 | Lao People's Democratic Republic | N/A / N/A | N/A / N/A | LAK | N/A | N/A | N/A | N/A | Bank of the Lao P.D.R. | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 123 | Latvia | LV / LVA | LV / LVA | EUR | $48.62B | $26,312 | 3.75 | 129.72 | Bank of Latvia / European Central Bank | PENDING | PARTIAL | $48.62B | $26,312 | 3.75 | 129.72 | High income | PENDING | PARTIAL |
-| 124 | Lebanon | LB / LBN | LB / LBN | LBP | $25.97B | N/A | 14.60 | 82.23 | Banque du Liban | PENDING | PARTIAL | $25.97B | N/A | 14.60 | 82.23 | Lower middle income | PENDING | PARTIAL |
+| 124 | Lebanon | LB / LBN | LB / LBN | LBP | $25.97B | $4,473 | 14.60 | 82.23 | Banque du Liban | PENDING | PARTIAL | $25.97B | $4,473 | 14.60 | 82.23 | Lower middle income | PENDING | PARTIAL |
 | 125 | Lesotho | LS / LSO | LS / LSO | LSL,ZAR | $2.57B | $1,089 | 4.27 | 153.98 | Central Bank of Lesotho | PENDING | PARTIAL | $2.57B | $1,089 | 4.27 | 153.98 | Lower middle income | PENDING | PARTIAL |
 | 126 | Liberia | LR / LBR | LR / LBR | LRD | $5.25B | 915.33 | 8.32 | N/A | Central Bank of Liberia | PENDING | PARTIAL | $5.25B | 915.33 | 8.32 | N/A | Low income | PENDING | PARTIAL |
 | 127 | Libya | LY / LBY | LY / LBY | LYD | $48.10B | $6,449 | 1.84 | 137.66 | Central Bank of Libya | PENDING | PARTIAL | $48.10B | $6,449 | 1.84 | 137.66 | Upper middle income | PENDING | PARTIAL |
-| 128 | Liechtenstein | LI / LIE | LI / LIE | CHF | $8.91B | N/A | N/A | N/A | Financial Market Authority Liechtenstein / Swiss franc banking system | PENDING | PARTIAL | $8.91B | N/A | N/A | N/A | High income | PENDING | PARTIAL |
+| 128 | Liechtenstein | LI / LIE | LI / LIE | CHF | $8.91B | $220,167 | N/A | N/A | Financial Market Authority Liechtenstein / Swiss franc banking system | PENDING | PARTIAL | $8.91B | $220,167 | N/A | N/A | High income | PENDING | PARTIAL |
 | 129 | Lithuania | LT / LTU | LT / LTU | EUR | $95.21B | $32,959 | 3.79 | 142.11 | Bank of Lithuania / European Central Bank | PENDING | PARTIAL | $95.21B | $32,959 | 3.79 | 142.11 | High income | PENDING | PARTIAL |
 | 130 | Luxembourg | LU / LUX | LU / LUX | EUR | $101.16B | $147,252 | 2.26 | 349.89 | Central Bank of Luxembourg / European Central Bank | PENDING | PARTIAL | $101.16B | $147,252 | 2.26 | 349.89 | High income | PENDING | PARTIAL |
 | 131 | Macao | N/A / N/A | N/A / N/A | N/A | N/A | N/A | N/A | N/A | Monetary Authority of Macao | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
@@ -151,7 +151,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 143 | Mexico | MX / MEX | MX / MEX | MXN | $1832.64B | $13,889 | 3.81 | 79.92 | Bank of Mexico | PENDING | PARTIAL | $1832.64B | $13,889 | 3.81 | 79.92 | Upper middle income | PENDING | PARTIAL |
 | 144 | Micronesia | N/A / N/A | N/A / N/A | N/A | N/A | N/A | N/A | N/A | U.S. Federal Reserve System / Federated States of Micronesia banking institutions | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 145 | Moldova | MD / MDA | MD / MDA | N/A | $20.35B | $8,622 | 7.76 | 92.67 | National Bank of Moldova | PENDING | PARTIAL | $20.35B | $8,622 | 7.76 | 92.67 | Upper middle income | PENDING | PARTIAL |
-| 146 | Monaco | MC / MCO | MC / MCO | EUR | $11.13B | N/A | N/A | N/A | European Central Bank / French monetary and banking system | PENDING | PARTIAL | $11.13B | N/A | N/A | N/A | High income | PENDING | PARTIAL |
+| 146 | Monaco | MC / MCO | MC / MCO | EUR | $11.13B | $288,002 | N/A | N/A | European Central Bank / French monetary and banking system | PENDING | PARTIAL | $11.13B | $288,002 | N/A | N/A | High income | PENDING | PARTIAL |
 | 147 | Mongolia | MN / MNG | MN / MNG | MNT | $25.37B | $7,108 | 8.61 | 130.71 | Bank of Mongolia | PENDING | PARTIAL | $25.37B | $7,108 | 8.61 | 130.71 | Upper middle income | PENDING | PARTIAL |
 | 148 | Montenegro | ME / MNE | ME / MNE | EUR | $9.23B | $14,817 | 3.90 | 105.77 | Central Bank of Montenegro / euro system | PENDING | PARTIAL | $9.23B | $14,817 | 3.90 | 105.77 | Upper middle income | PENDING | PARTIAL |
 | 149 | Montserrat | N/A / N/A | N/A / N/A | XCD | N/A | N/A | N/A | N/A | Eastern Caribbean Central Bank (ECCB) | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
@@ -162,7 +162,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 154 | Nauru | N/A / N/A | N/A / N/A | AUD | N/A | N/A | N/A | N/A | Australian dollar banking system / Reserve Bank of Australia framework | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 155 | Nepal | NP / NPL | NP / NPL | NPR | $45.49B | $1,536 | 2.65 | 42.55 | Nepal Rastra Bank | PENDING | PARTIAL | $45.49B | $1,536 | 2.65 | 42.55 | Lower middle income | PENDING | PARTIAL |
 | 156 | Netherlands | NL / NLD | NL / NLD | EUR | $1332.77B | $73,684 | 3.20 | 150.12 | De Nederlandsche Bank / European Central Bank | PENDING | PARTIAL | $1332.77B | $73,684 | 3.20 | 150.12 | High income | PENDING | PARTIAL |
-| 157 | New Caledonia | NC / NCL | NC / NCL | XPF | $8.55B | N/A | 0.58 | 40.37 | Institut d'émission d'outre-mer (IEOM) | PENDING | PARTIAL | $8.55B | N/A | 0.58 | 40.37 | High income | PENDING | PARTIAL |
+| 157 | New Caledonia | NC / NCL | NC / NCL | XPF | $8.55B | $29,213 | 0.58 | 40.37 | Institut d'émission d'outre-mer (IEOM) | PENDING | PARTIAL | $8.55B | $29,213 | 0.58 | 40.37 | High income | PENDING | PARTIAL |
 | 158 | New Zealand | NZ / NZL | NZ / NZL | NZD | $264.06B | $49,591 | 2.84 | 50.66 | Reserve Bank of New Zealand | PENDING | PARTIAL | $264.06B | $49,591 | 2.84 | 50.66 | High income | PENDING | PARTIAL |
 | 159 | Nicaragua | NI / NIC | NI / NIC | NIO | $22.24B | $3,173 | 2.08 | 96.45 | Central Bank of Nicaragua | PENDING | PARTIAL | $22.24B | $3,173 | 2.08 | 96.45 | Lower middle income | PENDING | PARTIAL |
 | 160 | Niger | NE / NER | NE / NER | XOF | $21.65B | 775.35 | -4.45 | 33.91 | Central Bank of West African States (BCEAO) | PENDING | PARTIAL | $21.65B | 775.35 | -4.45 | 33.91 | Low income | PENDING | PARTIAL |
@@ -170,7 +170,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 162 | Niue | N/A / N/A | N/A / N/A | NZD | N/A | N/A | N/A | N/A | Reserve Bank of New Zealand / Niue government banking system | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 163 | Norfolk Island | N/A / N/A | N/A / N/A | AUD | N/A | N/A | N/A | N/A | Reserve Bank of Australia / Australian banking system | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 164 | North Macedonia | MK / MKD | MK / MKD | MKD | $19.10B | $10,490 | 4.07 | 133.04 | National Bank of the Republic of North Macedonia | PENDING | PARTIAL | $19.10B | $10,490 | 4.07 | 133.04 | Upper middle income | PENDING | PARTIAL |
-| 165 | Northern Mariana Islands | MP / MNP | MP / MNP | USD | $1.10B | N/A | N/A | 93.16 | Federal Reserve System / U.S. banking system | PENDING | PARTIAL | $1.10B | N/A | N/A | 93.16 | High income | PENDING | PARTIAL |
+| 165 | Northern Mariana Islands | MP / MNP | MP / MNP | USD | $1.10B | $23,786 | N/A | 93.16 | Federal Reserve System / U.S. banking system | PENDING | PARTIAL | $1.10B | $23,786 | N/A | 93.16 | High income | PENDING | PARTIAL |
 | 166 | Norway | NO / NOR | NO / NOR | NOK | $530.76B | $94,594 | 3.04 | 79.05 | Norges Bank | PENDING | PARTIAL | $530.76B | $94,594 | 3.04 | 79.05 | High income | PENDING | PARTIAL |
 | 167 | Oman | OM / OMN | OM / OMN | OMR | $109.60B | $19,947 | 0.97 | 114.85 | Central Bank of Oman | PENDING | PARTIAL | $109.60B | $19,947 | 0.97 | 114.85 | High income | PENDING | PARTIAL |
 | 168 | Pakistan | PK / PAK | PK / PAK | PKR | $407.31B | $1,596 | 3.55 | 27.19 | State Bank of Pakistan | PENDING | PARTIAL | $407.31B | $1,596 | 3.55 | 27.19 | Lower middle income | PENDING | PARTIAL |
@@ -198,7 +198,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 190 | Saint Pierre and Miquelon | N/A / N/A | N/A / N/A | EUR | N/A | N/A | N/A | N/A | Banque de France / European Central Bank | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 191 | Saint Vincent and the Grenadines | N/A / N/A | N/A / N/A | XCD | N/A | N/A | N/A | N/A | Eastern Caribbean Central Bank (ECCB) | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 192 | Samoa | WS / WSM | WS / WSM | WST | $1.29B | $5,873 | 2.21 | 70.63 | Central Bank of Samoa | PENDING | PARTIAL | $1.29B | $5,873 | 2.21 | 70.63 | Upper middle income | PENDING | PARTIAL |
-| 193 | San Marino | SM / SMR | SM / SMR | EUR | $2.03B | N/A | 2.30 | 340.98 | Central Bank of the Republic of San Marino / euro system | PENDING | PARTIAL | $2.03B | N/A | 2.30 | 340.98 | High income | PENDING | PARTIAL |
+| 193 | San Marino | SM / SMR | SM / SMR | EUR | $2.03B | $59,871 | 2.30 | 340.98 | Central Bank of the Republic of San Marino / euro system | PENDING | PARTIAL | $2.03B | $59,871 | 2.30 | 340.98 | High income | PENDING | PARTIAL |
 | 194 | Sao Tome and Principe | ST / STP | ST / STP | STN | $981.29M | $4,084 | 11.05 | 46.57 | Central Bank of São Tomé and Príncipe | PENDING | PARTIAL | $981.29M | $4,084 | 11.05 | 46.57 | Lower middle income | PENDING | PARTIAL |
 | 195 | Saudi Arabia | SA / SAU | SA / SAU | SAR | $1276.94B | $34,537 | 2.04 | 57.92 | Saudi Central Bank (SAMA) | PENDING | PARTIAL | $1276.94B | $34,537 | 2.04 | 57.92 | High income | PENDING | PARTIAL |
 | 196 | Senegal | SN / SEN | SN / SEN | XOF | $37.01B | $1,955 | 1.46 | 71.07 | Central Bank of West African States (BCEAO) | PENDING | PARTIAL | $37.01B | $1,955 | 1.46 | 71.07 | Lower middle income | PENDING | PARTIAL |
@@ -213,7 +213,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 205 | Somalia | N/A / N/A | N/A / N/A | SOS | N/A | N/A | N/A | N/A | Central Bank of Somalia | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 206 | South Africa | ZA / ZAF | ZA / ZAF | ZAR | $427.18B | $6,598 | 3.21 | 60.91 | South African Reserve Bank | PENDING | PARTIAL | $427.18B | $6,598 | 3.21 | 60.91 | Upper middle income | PENDING | PARTIAL |
 | 207 | South Georgia and the South Sandwich Islands | N/A / N/A | N/A / N/A | N/A | N/A | N/A | N/A | N/A | Bank of England / sterling banking system | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
-| 208 | South Sudan | SS / SSD | SS / SSD | SSP | $12.00B | N/A | 91.44 | 65.55 | Bank of South Sudan | PENDING | PARTIAL | $12.00B | N/A | 91.44 | 65.55 | Low income | PENDING | PARTIAL |
+| 208 | South Sudan | SS / SSD | SS / SSD | SSP | $12.00B | $1,080 | 91.44 | 65.55 | Bank of South Sudan | PENDING | PARTIAL | $12.00B | $1,080 | 91.44 | 65.55 | Low income | PENDING | PARTIAL |
 | 209 | Spain | ES / ESP | ES / ESP | EUR | $1906.45B | $38,627 | 2.67 | 69.45 | Banco de España / European Central Bank | PENDING | PARTIAL | $1906.45B | $38,627 | 2.67 | 69.45 | High income | PENDING | PARTIAL |
 | 210 | Sri Lanka | LK / LKA | LK / LKA | LKR | $108.83B | $5,002 | -4.76 | 41.81 | Central Bank of Sri Lanka | PENDING | PARTIAL | $108.83B | $5,002 | -4.76 | 41.81 | Upper middle income | PENDING | PARTIAL |
 | 211 | Sudan | SD / SDN | SD / SDN | SDG | $60.16B | $1,165 | 138.81 | 2.38 | Central Bank of Sudan | PENDING | PARTIAL | $60.16B | $1,165 | 138.81 | 2.38 | Low income | PENDING | PARTIAL |
@@ -221,7 +221,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 213 | Svalbard and Jan Mayen | N/A / N/A | N/A / N/A | N/A | N/A | N/A | N/A | N/A | Norges Bank / Norwegian banking system | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 214 | Sweden | SE / SWE | SE / SWE | SEK | $669.00B | $63,133 | 0.68 | 104.34 | Sveriges Riksbank | PENDING | PARTIAL | $669.00B | $63,133 | 0.68 | 104.34 | High income | PENDING | PARTIAL |
 | 215 | Switzerland | CH / CHE | CH / CHE | CHF | $1043.53B | $114,769 | 0.15 | 147.16 | Swiss National Bank | PENDING | PARTIAL | $1043.53B | $114,769 | 0.15 | 147.16 | High income | PENDING | PARTIAL |
-| 216 | Syrian Arab Republic | SY / SYR | SY / SYR | SYP | $23.74B | N/A | 13.42 | 35.44 | Central Bank of Syria | PENDING | PARTIAL | $23.74B | N/A | 13.42 | 35.44 | Low income | PENDING | PARTIAL |
+| 216 | Syrian Arab Republic | SY / SYR | SY / SYR | SYP | $23.74B | $1,057 | 13.42 | 35.44 | Central Bank of Syria | PENDING | PARTIAL | $23.74B | $1,057 | 13.42 | 35.44 | Low income | PENDING | PARTIAL |
 | 217 | Taiwan | N/A / N/A | N/A / N/A | TWD | N/A | N/A | N/A | N/A | Central Bank of the Republic of China (Taiwan) | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 218 | Tajikistan | TJ / TJK | TJ / TJK | TJS | $17.66B | $1,637 | 3.39 | 59.09 | National Bank of Tajikistan | PENDING | PARTIAL | $17.66B | $1,637 | 3.39 | 59.09 | Lower middle income | PENDING | PARTIAL |
 | 219 | Tanzania | TZ / TZA | TZ / TZA | N/A | $90.14B | $1,319 | 3.33 | 38.97 | Bank of Tanzania | PENDING | PARTIAL | $90.14B | $1,319 | 3.33 | 38.97 | Lower middle income | PENDING | PARTIAL |
@@ -234,11 +234,11 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 226 | Tunisia | TN / TUN | TN / TUN | TND | $57.50B | $4,657 | 5.15 | 101.45 | Central Bank of Tunisia | PENDING | PARTIAL | $57.50B | $4,657 | 5.15 | 101.45 | Lower middle income | PENDING | PARTIAL |
 | 227 | Türkiye | N/A / N/A | N/A / N/A | N/A | N/A | N/A | N/A | N/A | Central Bank of the Republic of Türkiye | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 228 | Turkmenistan | TM / TKM | TM / TKM | TMT | $49.83B | $6,540 | N/A | 28.17 | Central Bank of Turkmenistan | PENDING | PARTIAL | $49.83B | $6,540 | N/A | 28.17 | Upper middle income | PENDING | PARTIAL |
-| 229 | Turks and Caicos Islands | TC / TCA | TC / TCA | USD | $1.75B | N/A | N/A | N/A | Turks and Caicos Islands Financial Services Commission / U.S. dollar system | PENDING | PARTIAL | $1.75B | N/A | N/A | N/A | High income | PENDING | PARTIAL |
+| 229 | Turks and Caicos Islands | TC / TCA | TC / TCA | USD | $1.75B | $37,507 | N/A | N/A | Turks and Caicos Islands Financial Services Commission / U.S. dollar system | PENDING | PARTIAL | $1.75B | $37,507 | N/A | N/A | High income | PENDING | PARTIAL |
 | 230 | Tuvalu | TV / TUV | TV / TUV | AUD | $57.35M | $6,041 | 0.50 | N/A | Australian dollar banking system / Reserve Bank of Australia framework | PENDING | PARTIAL | $57.35M | $6,041 | 0.50 | N/A | Upper middle income | PENDING | PARTIAL |
 | 231 | Uganda | UG / UGA | UG / UGA | UGX | $61.99B | $1,206 | 3.58 | 50.20 | Bank of Uganda | PENDING | PARTIAL | $61.99B | $1,206 | 3.58 | 50.20 | Low income | PENDING | PARTIAL |
 | 232 | Ukraine | UA / UKR | UA / UKR | UAH | $214.23B | $5,866 | 12.73 | 77.18 | National Bank of Ukraine | PENDING | PARTIAL | $214.23B | $5,866 | 12.73 | 77.18 | Upper middle income | PENDING | PARTIAL |
-| 233 | United Arab Emirates | AE / ARE | AE / ARE | AED | $552.32B | N/A | 1.25 | 199.04 | Central Bank of the United Arab Emirates | PENDING | PARTIAL | $552.32B | N/A | 1.25 | 199.04 | High income | PENDING | PARTIAL |
+| 233 | United Arab Emirates | AE / ARE | AE / ARE | AED | $552.32B | $50,274 | 1.25 | 199.04 | Central Bank of the United Arab Emirates | PENDING | PARTIAL | $552.32B | $50,274 | 1.25 | 199.04 | High income | PENDING | PARTIAL |
 | 234 | United Kingdom | GB / GBR | GB / GBR | N/A | $4002.59B | $57,602 | 3.88 | 62.46 | Bank of England | PENDING | PARTIAL | $4002.59B | $57,602 | 3.88 | 62.46 | High income | PENDING | PARTIAL |
 | 235 | United States | US / USA | US / USA | N/A | $30769.70B | $90,027 | 2.95 | 25.02 | Board of Governors of the Federal Reserve System | PENDING | PARTIAL | $30769.70B | $90,027 | 2.95 | 25.02 | High income | PENDING | PARTIAL |
 | 236 | United States Minor Outlying Islands | N/A / N/A | N/A / N/A | USD | N/A | N/A | N/A | N/A | Federal Reserve System / U.S. banking system | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
@@ -248,7 +248,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 240 | Venezuela | N/A / N/A | N/A / N/A | VES,VED | N/A | N/A | N/A | N/A | Central Bank of Venezuela | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 241 | Vietnam | VN / VNM | VN / VNM | N/A | $514.70B | $5,066 | 3.31 | 190.34 | State Bank of Viet Nam | PENDING | PARTIAL | $514.70B | $5,066 | 3.31 | 190.34 | Upper middle income | PENDING | PARTIAL |
 | 242 | Virgin Islands, British | N/A / N/A | N/A / N/A | N/A | N/A | N/A | N/A | N/A | British Virgin Islands Financial Services Commission / U.S. dollar system | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
-| 243 | Virgin Islands, U.S. | VI / VIR | VI / VIR | N/A | $4.67B | N/A | N/A | 205.63 | Federal Reserve System / U.S. banking system | PENDING | PARTIAL | $4.67B | N/A | N/A | 205.63 | High income | PENDING | PARTIAL |
+| 243 | Virgin Islands, U.S. | VI / VIR | VI / VIR | N/A | $4.67B | $44,321 | N/A | 205.63 | Federal Reserve System / U.S. banking system | PENDING | PARTIAL | $4.67B | $44,321 | N/A | 205.63 | High income | PENDING | PARTIAL |
 | 244 | Wallis and Futuna | N/A / N/A | N/A / N/A | N/A | N/A | N/A | N/A | N/A | Institut d'émission d'outre-mer (IEOM) | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 245 | Western Sahara | N/A / N/A | N/A / N/A | MAD | N/A | N/A | N/A | N/A | Bank Al-Maghrib / Moroccan banking system | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 246 | Yemen | N/A / N/A | N/A / N/A | YER | N/A | N/A | N/A | N/A | Central Bank of Yemen | PENDING | MISSING | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
