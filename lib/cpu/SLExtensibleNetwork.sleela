@@ -1,0 +1,172 @@
+/*
+ * lib/cpu/SLExtensibleNetwork.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLExtensibleNetwork — the language feature that lets the
+ *   compiler and VM reinterpret the access modifiers public / private /
+ *   protected as SYSTEM ROLES across a network of files, and stand up a clean
+ *   system backdrop for them. It is a Dynamite Connector: a named,
+ *   resolve-then-load, fail-closed binding (initialize -> resolve ->
+ *   [deferConstruction] -> load) following the connector idiom used across the
+ *   tree (lib/compiler, lib/sst, lib/nordshrift, lib/cpu/components).
+ *
+ *   The redefined meanings (authoritative catalog in SLAccessSemantics):
+ *     public    -> a NETWORK-EXPOSED HOP: exposed like a REST API endpoint, able
+ *                  to act as a Hop Controller for a System; the network of files
+ *                  may assume it is reachable. Public members form an ORDERED
+ *                  hop chain (registered doc 1, doc 2, doc 3 communicate 1->2->3).
+ *     private   -> LOCAL to the System itself, or an admin / safety / security /
+ *                  data-backup concern; never exposed to the network.
+ *     protected -> an INTEGRITY-GUARDED connection: before proceeding it applies
+ *                  controls (double-input verification, virus scan, system- and
+ *                  database-integrity checks, heuristics, admin involvement, ...).
+ *
+ *   Use: initialize the network for a System, register each member under its
+ *   modifier, resolve (classify + order the hop chain + choose backdrops), then
+ *   load (fail-closed) to realize it. toManifest() flattens the result into an
+ *   SLAccessManifest the compiled image carries; the VM reads that back and
+ *   infers the same backdrop without guessing.
+ *
+ * Family: cpu. A Dynamite Connector; composes SLAccessSemantics; produces
+ *   SLAccessManifest; realized backdrop mirrors lib/net + lib/os services.
+ */
+#sleela 2.1
+class SLExtensibleNetwork {
+  // --- Dynamite Connector contract ---
+  String referenceName;   // the System this network fronts
+  String configuration;   // free-form config note
+  String status;          // imported -> resolved -> [deferred] -> loaded
+
+  SLAccessSemantics sem;  // the role/catalog source of truth
+
+  // Registered members, bounded like the VM's fixed slot tables. Each member
+  // carries its modifier role and (for public) its position in the hop chain.
+  int memberCount;
+  int r0; int r1; int r2; int r3; int r4; int r5; int r6; int r7;   // role per member
+  int h0; int h1; int h2; int h3; int h4; int h5; int h6; int h7;   // hop order (public only; 0 = n/a)
+  static final int MAX_MEMBERS = 8;
+
+  // Resolved summary.
+  int exposedCount; int localCount; int guardedCount;
+  int hopChainLength;
+  int resolved;           // 1 once resolve() has run
+
+  void initialize(String systemName, String config) {
+    referenceName = systemName; configuration = config;
+    sem = new SLAccessSemantics();
+    memberCount = 0;
+    r0 = 0; r1 = 0; r2 = 0; r3 = 0; r4 = 0; r5 = 0; r6 = 0; r7 = 0;
+    h0 = 0; h1 = 0; h2 = 0; h3 = 0; h4 = 0; h5 = 0; h6 = 0; h7 = 0;
+    exposedCount = 0; localCount = 0; guardedCount = 0; hopChainLength = 0;
+    resolved = 0; status = "imported";
+  }
+
+  // Register one member by its access modifier (SLAccessSemantics.MOD_*). The
+  // compiler calls this for each classified member of each file in the network.
+  boolean registerMember(int modifierBit) {
+    if (memberCount >= MAX_MEMBERS) { return false; }
+    int role = sem.roleOfModifier(modifierBit);
+    setRoleAt(memberCount, role);
+    memberCount = memberCount + 1;
+    return true;
+  }
+
+  void setRoleAt(int idx, int role) {
+    if (idx == 0) { r0 = role; } else if (idx == 1) { r1 = role; }
+    else if (idx == 2) { r2 = role; } else if (idx == 3) { r3 = role; }
+    else if (idx == 4) { r4 = role; } else if (idx == 5) { r5 = role; }
+    else if (idx == 6) { r6 = role; } else if (idx == 7) { r7 = role; }
+  }
+  int roleAt(int idx) {
+    if (idx == 0) { return r0; } if (idx == 1) { return r1; }
+    if (idx == 2) { return r2; } if (idx == 3) { return r3; }
+    if (idx == 4) { return r4; } if (idx == 5) { return r5; }
+    if (idx == 6) { return r6; } if (idx == 7) { return r7; }
+    return 0;
+  }
+  void setHopAt(int idx, int order) {
+    if (idx == 0) { h0 = order; } else if (idx == 1) { h1 = order; }
+    else if (idx == 2) { h2 = order; } else if (idx == 3) { h3 = order; }
+    else if (idx == 4) { h4 = order; } else if (idx == 5) { h5 = order; }
+    else if (idx == 6) { h6 = order; } else if (idx == 7) { h7 = order; }
+  }
+  int hopAt(int idx) {
+    if (idx == 0) { return h0; } if (idx == 1) { return h1; }
+    if (idx == 2) { return h2; } if (idx == 3) { return h3; }
+    if (idx == 4) { return h4; } if (idx == 5) { return h5; }
+    if (idx == 6) { return h6; } if (idx == 7) { return h7; }
+    return 0;
+  }
+
+  // Resolve: count roles and assign the ordered hop chain to public members in
+  // registration order (doc 1 -> doc 2 -> doc 3 ...). Part of the connector
+  // lifecycle; after this the backdrop is decided but not yet realized.
+  String resolve() {
+    exposedCount = 0; localCount = 0; guardedCount = 0; hopChainLength = 0;
+    int i = 0;
+    while (i < memberCount) {
+      int role = roleAt(i);
+      if (role == sem.ROLE_EXPOSED) {
+        hopChainLength = hopChainLength + 1;
+        setHopAt(i, hopChainLength);        // 1-based position in the hop chain
+        exposedCount = exposedCount + 1;
+      } else {
+        setHopAt(i, 0);
+        if (role == sem.ROLE_LOCAL)   { localCount = localCount + 1; }
+        if (role == sem.ROLE_GUARDED) { guardedCount = guardedCount + 1; }
+      }
+      i = i + 1;
+    }
+    resolved = 1; status = "resolved";
+    return status;
+  }
+
+  // Defer realization (stage the network without standing the backdrop up yet).
+  String deferConstruction() { status = "deferred"; return status; }
+
+  // Load: realize the backdrop. Fail-closed — refuses if not resolved.
+  boolean load() {
+    if (resolved == 0) { status = "unresolved"; return false; }
+    status = "loaded";
+    return true;
+  }
+
+  boolean ready() { return resolved == 1 && equalsStr(status, "loaded"); }
+
+  // --- backdrop the VM sets up per role (defaults from SLAccessSemantics) ---
+  // Exposure components the public hop surface is stood up with.
+  int exposureBackdrop() { return (exposedCount > 0) ? sem.defaultExposeForExposed() : 0; }
+  // Local concerns the private surface declares.
+  int localBackdrop()    { return (localCount > 0) ? sem.defaultConcernForLocal() : 0; }
+  // Integrity controls the protected surface enforces.
+  int guardBackdrop()    { return (guardedCount > 0) ? sem.defaultGuardsForGuarded() : 0; }
+
+  // Is the resolved network a competent, complete backdrop to realize? It is
+  // competent when it classified at least one member and every public member
+  // got a hop-chain position (the ordered communication is well-formed).
+  boolean competent() {
+    int classified = exposedCount + localCount + guardedCount;
+    return classified > 0 && hopChainLength == exposedCount;
+  }
+
+  // Flatten the resolved network into the serializable manifest the compiled
+  // image carries and the VM reads back.
+  SLAccessManifest toManifest() {
+    SLAccessManifest m = new SLAccessManifest();
+    m.configure();
+    m.setCounts(exposedCount, localCount, guardedCount);
+    m.setHopChain(hopChainLength, hopChainLength > 1);   // ordered when 2+ hops
+    m.setBackdrop(exposureBackdrop(), localBackdrop(), guardBackdrop());
+    m.seal(competent());
+    return m;
+  }
+
+  String referenceId()   { return referenceName; }
+  String state()         { return status; }
+  int members()          { return memberCount; }
+  int exposed()          { return exposedCount; }
+  int localMembers()     { return localCount; }
+  int guardedMembers()   { return guardedCount; }
+  int hopCount()         { return hopChainLength; }
+
+  boolean equalsStr(String a, String b) { return a == b; }
+}

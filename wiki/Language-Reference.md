@@ -34,6 +34,29 @@ class Greeter {
 
 > **`const` (Sleela):** a developer-intent modifier that declares *"I intend to keep this variable constant until the System Design is complete."* It combines with `public` / `static` / `final` like any other modifier and is recorded on the declaration's modifier set. Unlike `final`, it is a **design-time intent marker**, not a hard compile-time immutability guarantee — it signals and documents stability of intent during design, rather than enforcing it.
 
+### Extensible-network access semantics (`SLExtensibleNetwork`)
+
+A program may opt into the extensible-network interpretation, in which the
+compiler records — and the VM reads back from the compiled image — a
+**system-role meaning** for `public` / `private` / `protected`, so the VM stands
+up a clean System backdrop instead of guessing a file-network topology. The
+roles (full catalog in `lib/cpu/SLAccessSemantics.sleela`):
+
+| Modifier | System role | Meaning |
+|---|---|---|
+| `public` | **exposed hop** | The function is exposed like a REST API endpoint and may act as a **Hop Controller** for a System; a network of files may assume it is reachable. Public members form an **ordered hop chain** — registered doc 1, doc 2, doc 3 communicate in order 1 → 2 → 3. |
+| `private` | **local system** | Relates to the local System itself or to **admin / safety / security / data-backup** (also audit, config) concerns; never exposed to the network. |
+| `protected` | **integrity-guarded** | The connection carries inherent safety concerns and applies integrity controls before proceeding: **double-input verification, virus scan, system-integrity check, heuristics, admin involvement, database-integrity check** (also checksum, rate-limit, schema validation). |
+
+`SLExtensibleNetwork` is a Dynamite Connector (`initialize → resolve →
+[deferConstruction] → load`, fail-closed): register each file's members under
+their modifier, `resolve()` to classify them and order the public hop chain,
+`load()` to realize the backdrop. `toManifest()` flattens the result into an
+`SLAccessManifest` (the counterpart of `SLTimingManifest`, MAGIC `5214`) that
+the compiled `SLProgram` carries via `attachAccess(...)`; the VM reads it back
+(`hasAccess()` / `accessCompetent()`) and infers the same backdrop. See
+`lib/cpu/examples/extensible-network-access.sleela`.
+
 **Statement keywords:** `if`, `else`, `while`, `do`, `for`, `switch`, `case`, `default`, `break`, `continue`, `return`, `throw`, `try`, `catch`, `finally`, `assert`, `yield`, `synchronized`, `print`, `new`, `instanceof`, `this`, `super`, `true`, `false`, `null`.
 
 **Types:**

@@ -1,0 +1,64 @@
+/*
+ * lib/cpu/examples/extensible-network-access.sleela
+ * A runnable SLeeLa document for the SLExtensibleNetwork feature: a System of
+ * files whose public / private / protected members are reinterpreted as system
+ * roles, and whose backdrop the VM can infer from the compiled image.
+ *
+ *   public    -> exposed hop (REST endpoint / hop controller); the three public
+ *                members form an ordered chain doc 1 -> doc 2 -> doc 3.
+ *   private   -> local/admin/safety/security/backup concern (not exposed).
+ *   protected -> integrity-guarded connection (double-input, virus-scan, ...).
+ *
+ * It registers the members, resolves (classify + order the hop chain), loads
+ * (fail-closed) to realize the backdrop, then flattens to an SLAccessManifest
+ * and attaches it to a program image — exactly how the VM reads it back.
+ */
+#sleela 2.1
+class ExtensibleNetworkAccessExample {
+
+  void main() {
+    SLExtensibleNetwork net = new SLExtensibleNetwork();
+    net.initialize("OrderPipeline", "three-file ordered system");
+    SLAccessSemantics sem = new SLAccessSemantics();
+
+    // Register each file's surface member under its access modifier.
+    // Three public members -> the ordered hop chain doc1 -> doc2 -> doc3.
+    net.registerMember(sem.MOD_PUBLIC);     // doc 1 : intake endpoint (hop 1)
+    net.registerMember(sem.MOD_PUBLIC);     // doc 2 : process endpoint (hop 2)
+    net.registerMember(sem.MOD_PUBLIC);     // doc 3 : dispatch endpoint (hop 3)
+    net.registerMember(sem.MOD_PRIVATE);    // admin/backup concern (local)
+    net.registerMember(sem.MOD_PROTECTED);  // integrity-guarded intake check
+
+    // Dynamite Connector lifecycle: resolve -> load (fail-closed).
+    print("state after initialize: " + net.state());
+    net.resolve();
+    print("state after resolve:    " + net.state());
+    boolean realized = net.load();
+    print("state after load:       " + net.state() + ", realized=" + realized +
+          ", ready=" + net.ready());
+
+    // What the network classified.
+    print("members=" + net.members() + " -> exposed(public)=" + net.exposed() +
+          ", local(private)=" + net.localMembers() +
+          ", guarded(protected)=" + net.guardedMembers());
+    print("ordered hop chain length = " + net.hopCount() +
+          " (doc 1 -> doc 2 -> doc 3), competent=" + net.competent());
+
+    // The backdrop the VM stands up per role (default bundles).
+    print("exposed backdrop  = " + sem.exposeComponentName(net.exposureBackdrop()));
+    print("local backdrop    = " + sem.localConcernName(net.localBackdrop()));
+    print("guard backdrop    = " + sem.guardName(net.guardBackdrop()));
+
+    // Flatten to the manifest the compiled image carries, and attach it to a
+    // program — the VM reads this back and sets up the same System backdrop.
+    SLAccessManifest man = net.toManifest();
+    SLProgram prog = new SLProgram();
+    prog.configure("order-pipeline", 256);
+    prog.attachAccess(man);
+    print("program carries access semantics = " + prog.hasAccess() +
+          ", competent = " + prog.accessCompetent());
+    print("manifest: exposed=" + man.exposed() + " local=" + man.local() +
+          " guarded=" + man.guarded() + " hops=" + man.hops() +
+          " ordered=" + man.ordered() + " classified=" + man.classifiedTotal());
+  }
+}

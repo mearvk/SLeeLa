@@ -15,7 +15,12 @@
  * quality of the hardware ("rather than inherently to expect the quality of
  * these operating as confidences of how CPUs operate").
  *
- * Family: cpu. Composes SLInstruction, SLRAM, and SLTimingManifest.
+ * A program may likewise carry an SLAccessManifest — the stated meaning of its
+ * public / private / protected members as system roles (exposed hop / local /
+ * integrity-guarded), so the VM stands up a clean System backdrop from the
+ * declared semantics instead of inferring a file-network topology.
+ *
+ * Family: cpu. Composes SLInstruction, SLRAM, SLTimingManifest, SLAccessManifest.
  */
 #sleela 2.1
 class SLProgram {
@@ -24,11 +29,12 @@ class SLProgram {
   int length;        // instruction count
   SLRAM image;       // staging buffer holding the encoded words
   SLTimingManifest timing;   // stated operating point (null until attached)
+  SLAccessManifest access;   // stated access semantics (null until attached)
 
   void configure(String programName, int capacityWords) {
     name = programName; entryPoint = 0; length = 0;
     image = new SLRAM(); image.configure(capacityWords, 32); image.allocate();
-    timing = null;
+    timing = null; access = null;
   }
 
   void setEntryPoint(int addr) { entryPoint = addr; }
@@ -41,6 +47,16 @@ class SLProgram {
   // True only when the image declares an operating point AND that point was
   // sealed honored at compile time — the consumer may trust it as stated.
   boolean timingHonored() { return timing != null && timing.honored(); }
+
+  // Attach the stated access-semantics manifest (public/private/protected as
+  // system roles). The VM reads it to stand up the System backdrop instead of
+  // guessing a file-network topology.
+  void attachAccess(SLAccessManifest manifest) { access = manifest; }
+  SLAccessManifest accessManifest() { return access; }
+  boolean hasAccess() { return access != null; }
+  // True only when the image declares access semantics AND they were sealed as
+  // a competent backdrop the consumer may realize as stated.
+  boolean accessCompetent() { return access != null && access.competent(); }
 
   // Append one encoded instruction word to the image.
   int append(int encodedWord) {

@@ -1,0 +1,132 @@
+/*
+ * lib/cpu/SLAccessSemantics.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLAccessSemantics — the authoritative, enumerated meaning
+ *   the SLeeLa compiler and VM give to the access modifiers public / private /
+ *   protected when a program opts into the extensible-network interpretation
+ *   (via SLExtensibleNetwork). These modifiers normally describe member
+ *   visibility; under this interpretation they additionally declare a SYSTEM
+ *   ROLE the VM can read back from the compiled image (SLAccessManifest) and use
+ *   to stand up a clean system backdrop:
+ *
+ *     public    -> a NETWORK-EXPOSED HOP. The function is exposed like a REST
+ *                  API endpoint and is meant to communicate as part of a System
+ *                  or as a Hop Controller for a System. A network of files can
+ *                  assume a public function is reachable, and public members
+ *                  participate in an ORDERED hop chain (doc 1 -> doc 2 -> doc 3
+ *                  communicate in that order).
+ *     private   -> LOCAL / SYSTEM-INTERNAL. Relates to the local System itself
+ *                  or to admin, safety, security, or data-backup concerns. Not
+ *                  exposed to the network.
+ *     protected -> INTEGRITY-GUARDED. The connection carries inherent safety
+ *                  concerns and must pass integrity controls before proceeding
+ *                  (input doubling/verification, virus scanning, system-integrity
+ *                  checks, heuristics, admin involvement, database-integrity).
+ *
+ *   This class is the single source of truth for those role ids and for the
+ *   named concern/control catalogs each role implies. SLAccessManifest records
+ *   them per member; SLExtensibleNetwork realizes them; the VM infers the
+ *   backdrop from them.
+ *
+ * Family: cpu. Pure declaration/catalog; read by SLAccessManifest,
+ *   SLExtensibleNetwork, and the VM backdrop.
+ */
+#sleela 2.1
+class SLAccessSemantics {
+
+  // --- the three roles (one per access modifier) -------------------------
+  static final int ROLE_NONE      = 0;
+  static final int ROLE_EXPOSED   = 1;  // public    : REST-exposed hop / hop controller
+  static final int ROLE_LOCAL     = 2;  // private   : local system / admin / safety / backup
+  static final int ROLE_GUARDED   = 3;  // protected : integrity-checked connection
+
+  // Map the frontend modifier (mirrors impl/frontend/ast.h JavaModifier bits)
+  // to the role this interpretation assigns it.
+  static final int MOD_PUBLIC    = 1;   // JavaPublic    (1u<<0)
+  static final int MOD_PROTECTED = 2;   // JavaProtected (1u<<1)
+  static final int MOD_PRIVATE   = 4;   // JavaPrivate   (1u<<2)
+
+  int roleOfModifier(int modifierBit) {
+    if (modifierBit == MOD_PUBLIC)    { return ROLE_EXPOSED; }
+    if (modifierBit == MOD_PRIVATE)   { return ROLE_LOCAL; }
+    if (modifierBit == MOD_PROTECTED) { return ROLE_GUARDED; }
+    return ROLE_NONE;
+  }
+
+  String roleName(int role) {
+    if (role == ROLE_EXPOSED) { return "exposed-hop (public)"; }
+    if (role == ROLE_LOCAL)   { return "local-system (private)"; }
+    if (role == ROLE_GUARDED) { return "integrity-guarded (protected)"; }
+    return "none";
+  }
+
+  // --- PUBLIC role: network-exposed hop ----------------------------------
+  // The transport/exposure components a public member is stood up with.
+  static final int EXPOSE_REST_ENDPOINT   = 1;   // exposed like a REST API endpoint
+  static final int EXPOSE_HOP_CONTROLLER  = 2;   // acts as a hop controller for a System
+  static final int EXPOSE_ORDERED_CHAIN   = 3;   // participates in ordered doc1->doc2->doc3 flow
+  static final int EXPOSE_SERVICE_MEMBER  = 4;   // a member of a System's service set
+  static final int EXPOSE_HEALTH_PROBE    = 5;   // reachability/health advertised to the network
+
+  // --- PRIVATE role: local / admin / safety / security / backup ----------
+  static final int LOCAL_SYSTEM_INTERNAL  = 1;   // relates to the local System itself
+  static final int LOCAL_ADMIN            = 2;   // admin concern
+  static final int LOCAL_SAFETY           = 3;   // safety concern
+  static final int LOCAL_SECURITY         = 4;   // security concern
+  static final int LOCAL_DATA_BACKUP      = 5;   // data-backup concern
+  static final int LOCAL_AUDIT            = 6;   // local audit/log concern
+  static final int LOCAL_CONFIG           = 7;   // local configuration/secrets
+
+  // --- PROTECTED role: integrity controls --------------------------------
+  // The named checks a protected connection applies before proceeding.
+  static final int GUARD_DOUBLE_INPUT     = 1;   // double the input to confirm correctness
+  static final int GUARD_VIRUS_SCAN       = 2;   // run a virus scanner over the inputs
+  static final int GUARD_SYSTEM_INTEGRITY = 3;   // check System integrity before continuing
+  static final int GUARD_HEURISTICS       = 4;   // heuristic plausibility checks
+  static final int GUARD_ADMIN_INVOLVED   = 5;   // require admin involvement/approval
+  static final int GUARD_DB_INTEGRITY     = 6;   // database integrity checks
+  static final int GUARD_CHECKSUM         = 7;   // checksum/hash verification of payload
+  static final int GUARD_RATE_LIMIT       = 8;   // throttle to resist abuse
+  static final int GUARD_SCHEMA_VALIDATE  = 9;   // validate input against a declared schema
+
+  // Human-readable names for the control ids (used in reports/backdrops).
+  String guardName(int guard) {
+    if (guard == GUARD_DOUBLE_INPUT)     { return "double-input-verification"; }
+    if (guard == GUARD_VIRUS_SCAN)       { return "virus-scan"; }
+    if (guard == GUARD_SYSTEM_INTEGRITY) { return "system-integrity-check"; }
+    if (guard == GUARD_HEURISTICS)       { return "heuristics"; }
+    if (guard == GUARD_ADMIN_INVOLVED)   { return "admin-involvement"; }
+    if (guard == GUARD_DB_INTEGRITY)     { return "database-integrity-check"; }
+    if (guard == GUARD_CHECKSUM)         { return "checksum-verification"; }
+    if (guard == GUARD_RATE_LIMIT)       { return "rate-limit"; }
+    if (guard == GUARD_SCHEMA_VALIDATE)  { return "schema-validation"; }
+    return "none";
+  }
+
+  String localConcernName(int concern) {
+    if (concern == LOCAL_SYSTEM_INTERNAL) { return "system-internal"; }
+    if (concern == LOCAL_ADMIN)           { return "admin"; }
+    if (concern == LOCAL_SAFETY)          { return "safety"; }
+    if (concern == LOCAL_SECURITY)        { return "security"; }
+    if (concern == LOCAL_DATA_BACKUP)     { return "data-backup"; }
+    if (concern == LOCAL_AUDIT)           { return "audit"; }
+    if (concern == LOCAL_CONFIG)          { return "config"; }
+    return "none";
+  }
+
+  String exposeComponentName(int component) {
+    if (component == EXPOSE_REST_ENDPOINT)  { return "rest-endpoint"; }
+    if (component == EXPOSE_HOP_CONTROLLER) { return "hop-controller"; }
+    if (component == EXPOSE_ORDERED_CHAIN)  { return "ordered-chain"; }
+    if (component == EXPOSE_SERVICE_MEMBER) { return "service-member"; }
+    if (component == EXPOSE_HEALTH_PROBE)   { return "health-probe"; }
+    return "none";
+  }
+
+  // The DEFAULT backdrop each role implies, as a representative bundle of the
+  // ids above. A program may override per member via SLAccessManifest, but the
+  // VM can stand up a competent default from the role alone.
+  int defaultGuardsForGuarded()  { return GUARD_DOUBLE_INPUT; }        // at least input doubling
+  int defaultExposeForExposed()  { return EXPOSE_REST_ENDPOINT; }      // at least a REST endpoint
+  int defaultConcernForLocal()   { return LOCAL_SYSTEM_INTERNAL; }     // at least system-internal
+}
