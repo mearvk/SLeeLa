@@ -8892,6 +8892,9 @@ d1648472e6244baedccc29ee08b41e42bd88bb83c3605264e95af1fac0ae384d  lib/gui/versio
 3774ae08c7374c0ee12f9fd7a888dabb852557780fb048bef8542aeb77f59397  lib/gui/version-dual/gui-demo.sleela
 d4edca3d298ff53e88c8d56684a5b27235a414f8a789aa31f18335ae8e65f3b3  lib/gui/version-dual/gui-effects-demo.sleela
 fdc9ebda2fc2000191618ee9587b46133adc9e113e0ab461f6945c5d579f003f  lib/gui/version-dual/gui-events-demo.sleela
+ef49f10a5dd068e06bfb128d8eb2ba52d88cee2ae328d9357b2f30896eb86130  lib/gui/version-dual/preview/README.md
+0e33f4080b922fa7a1df5aa70dbe3a8c77498ba92d0b49055b955a9c52032691  lib/gui/version-dual/preview/gui-dual-preview.html
+802fd45c1b3c41410d0c744c817a5b9bf7ba9c27c7201128ab3622ff9c83cdd7  lib/gui/version-dual/preview/gui-dual-preview.png
 114d13dcf19255fca8946e2ff447fe7e4b12b9a3d2069c915069a45cb9472a86  lib/gui/version-gual/SLGuiAction.sleela
 93b4cb070a7ab71a152575eacf0191fd696f4cb83adbc3e74823c0ba4761caec  lib/gui/version-gual/SLGuiApp.sleela
 aead938929ce8fd66bc4daddc11f21e4e40ee83cd2c161faf0cdfccee24ab888  lib/gui/version-gual/SLGuiBackend.sleela
