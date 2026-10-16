@@ -59,3 +59,26 @@ The adjustable, quality-first timing system is shared by every CPU model in
 Every CPU model (this one included) inherits the clock/overclock surface from
 `SLCPURuntime` and can be assembled with those shared expert-timing, voltage,
 and component options; they are a build-layer concern, not re-declared per CPU.
+
+## Threadripper 9000 ancillary presets (board, RAM timings, voltages)
+
+The shared layer is wired to this family's actual operating point in
+[`SLAMDThreadripperPlatform`](SLAMDThreadripperPlatform.sleela). It hands back
+ready-configured objects so you can build a rig **at spec** without re-entering
+raw numbers:
+
+- **DDR5-6400 RAM timings** — `ddr5_6400Timing(name)` returns an `SLRamTiming`
+  at JEDEC primaries (CL46-46-46, tRAS 104, tRC 150, 2T) on the Vddq rail, with
+  `firstWordLatencyNs()` / `randomAccessLatencyNs()` derived and `honored()`
+  enforcing the row invariants.
+- **Voltage rails** (actual mV) — `vcore()` (nominal 1200 mV, 950–1450),
+  `vsoc()` (1200 mV, 1050–1300, AMD's SoC cap), `vddq()` (DDR5's 1100 mV,
+  1067–1166).
+- **Boards** — `hedtBoard()` = TRX50 (sTR5, 4-channel, 88 PCIe 5.0 lanes),
+  `proBoard()` = WRX90 (sTR5, 8-channel, 128 PCIe 5.0 lanes).
+- **Populated memory** — `hedtMemory(capPerModule)` (4-channel DDR5-6400),
+  `proMemory(capPerModule)` (8-channel DDR5-6400); `pcie5x16()` for the bus.
+
+A complete assembly (CPU + board + DDR5-6400 + rails, HEDT and PRO WX) is shown
+in
+[`components/examples/threadripper-at-spec.sleela`](../components/examples/threadripper-at-spec.sleela).

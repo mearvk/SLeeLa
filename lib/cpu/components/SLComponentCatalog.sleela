@@ -31,6 +31,24 @@ class SLComponentCatalog {
   SLMemoryModule ddr3_1600(int capMiB)   { return mem("DDR3-1600", 5, capMiB, 64, 800, 9, 2); }
   SLMemoryModule ddr4_3200(int capMiB)   { return mem("DDR4-3200", 6, capMiB, 64, 1600, 16, 2); }
   SLMemoryModule ddr5_6000(int capMiB)   { return mem("DDR5-6000", 7, capMiB, 64, 3000, 36, 2); }
+  SLMemoryModule ddr5_6400(int capMiB)   { return mem("DDR5-6400", 7, capMiB, 64, 3200, 40, 2); }
+
+  // Channel-aware memory: same DIMM spec populated across N channels. `capMiB`
+  // is the per-module capacity; the module reports N× capacity and N× aggregate
+  // bandwidth. These match the AMD Threadripper 9000 platforms directly.
+  SLMemoryModule memChannels(String name, int tech, int capMiB, int bus, int clk, int cl, int ddr, int channels) {
+    SLMemoryModule m = new SLMemoryModule();
+    m.configureChannels(name, tech, capMiB, bus, clk, cl, ddr, channels);
+    return m;
+  }
+  // DDR5-6400 on a 4-channel HEDT board (Threadripper 9980X/9970X/9960X, TRX50).
+  SLMemoryModule ddr5_6400_quadChannel(int capMiBPerModule) {
+    return memChannels("DDR5-6400 (4-channel)", 7, capMiBPerModule, 64, 3200, 40, 2, 4);
+  }
+  // DDR5-6400 on an 8-channel workstation board (Threadripper PRO WX, WRX90).
+  SLMemoryModule ddr5_6400_octaChannel(int capMiBPerModule) {
+    return memChannels("DDR5-6400 (8-channel)", 7, capMiBPerModule, 64, 3200, 40, 2, 8);
+  }
 
   // ---------------- Storage presets ----------------
   SLStorageDevice store(String name, int cls, int iface, int capMiB, int rpm, int seekUs, int mbs) {
@@ -71,5 +89,22 @@ class SLComponentCatalog {
   SLSystemBus agp8x()     { return bus("AGP 8x", 2, 533, 32, 1, 0); }
   SLSystemBus pcieGen3x16(){ return bus("PCIe 3.0 x16", 3, 8000, 1, 16, 985); }
   SLSystemBus pcieGen4x16(){ return bus("PCIe 4.0 x16", 3, 16000, 1, 16, 1969); }
+  SLSystemBus pcieGen5x16(){ return bus("PCIe 5.0 x16", 3, 32000, 1, 16, 3938); }
   SLSystemBus fsb(int mhz){ return bus("Front-side bus", 4, mhz, 64, 1, 0); }
+
+  // ---------------- Motherboard presets ----------------
+  SLMotherboard board(String name, int socket, String chipset, int channels,
+                      int slots, int lanes, int gen, int busType) {
+    SLMotherboard b = new SLMotherboard();
+    b.configure(name, socket, chipset, channels, slots, lanes, gen, busType);
+    return b;
+  }
+  // AMD Threadripper 9000 HEDT: sTR5 + TRX50, 4-channel DDR5, up to 88 PCIe 5.0 lanes.
+  SLMotherboard trx50() {
+    return board("TRX50 (Threadripper HEDT)", 1, "TRX50", 4, 4, 88, 5, 3);
+  }
+  // AMD Threadripper PRO 9000 WX: sTR5 + WRX90, 8-channel DDR5, up to 128 PCIe 5.0 lanes.
+  SLMotherboard wrx90() {
+    return board("WRX90 (Threadripper PRO WX)", 1, "WRX90", 8, 8, 128, 5, 3);
+  }
 }

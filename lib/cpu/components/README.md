@@ -28,21 +28,28 @@ exactly the lever behind the speed/feasibility tables in
 
 | Class | What you pick | Key spec it carries |
 | --- | --- | --- |
-| `SLMemoryModule` | main memory | technology (DRAM…DDR5), capacity, bus width, clock, CAS latency ⇒ bandwidth + first-word latency |
+| `SLMotherboard` | the board | socket, chipset, memory channels, DIMM slots, PCIe lane budget + generation ⇒ what a CPU/RAM/card can seat on |
+| `SLMemoryModule` | main memory | technology (DRAM…DDR5), capacity, bus width, clock, CAS latency, **channel count** ⇒ aggregate bandwidth + first-word latency |
 | `SLStorageDevice` | floppy / HDD / SSD / NVMe / tape | interface, capacity, RPM, seek, transfer ⇒ access-time model |
 | `SLOpticalDrive` | CD / DVD / Blu-ray | medium 1× base rate × speed multiplier ⇒ read rate; writer flag |
 | `SLSystemBus` | ISA / PCI / AGP / PCIe / FSB | clock, width, lanes ⇒ peak bandwidth (can bottleneck fast RAM) |
 | `SLComponentCatalog` | **named presets** | ready-configured real parts (see below) |
-| `SLExecutorBuild` | the assembled machine | CPU + RAM + storage + optical + bus, mounted and queryable |
+| `SLExecutorBuild` | the assembled machine | CPU + board + RAM + storage + optical + bus, mounted and queryable |
 
 ### Catalog presets (authentic specs)
 
 - **Memory:** `sram_fast`, `dram_fpm`, `sdram_pc100`, `ddr_400`, `ddr2_800`,
-  `ddr3_1600`, `ddr4_3200`, `ddr5_6000` (each takes a capacity in MiB).
+  `ddr3_1600`, `ddr4_3200`, `ddr5_6000`, `ddr5_6400` (each takes a capacity in
+  MiB). Channel-aware DDR5-6400 for the Threadripper platforms:
+  `ddr5_6400_quadChannel` (4-ch HEDT) and `ddr5_6400_octaChannel` (8-ch PRO WX),
+  each taking a per-module capacity and reporting N× capacity and N× bandwidth.
 - **Storage:** `floppy144`, `mfmHdd`, `ideHdd`, `sataHdd`, `sataSsd`,
   `nvmeGen3`, `nvmeGen4`, `tapeLto`.
 - **Optical:** `cdrom52`, `cdrw`, `dvd16`, `dvdrw`, `bluRay`, `bdxl`.
-- **Bus:** `isa`, `pci33`, `agp8x`, `pcieGen3x16`, `pcieGen4x16`, `fsb(mhz)`.
+- **Bus:** `isa`, `pci33`, `agp8x`, `pcieGen3x16`, `pcieGen4x16`, `pcieGen5x16`,
+  `fsb(mhz)`.
+- **Motherboard:** `trx50` (Threadripper HEDT: sTR5, 4-channel, 88 PCIe 5.0
+  lanes), `wrx90` (Threadripper PRO WX: sTR5, 8-channel, 128 PCIe 5.0 lanes).
 
 ## Building and running an executor
 

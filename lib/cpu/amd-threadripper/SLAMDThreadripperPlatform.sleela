@@ -1,0 +1,100 @@
+/*
+ * lib/cpu/amd-threadripper/SLAMDThreadripperPlatform.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLAMDThreadripperPlatform — the ancillary, board-level
+ *   operating point for the AMD Ryzen Threadripper 9000 (Zen 5 "Shimada Peak")
+ *   family: the DDR5-6400 memory timings, the actual Vcore / Vsoc / Vddq supply
+ *   rails in millivolts, and the HEDT (TRX50, 4-channel) vs PRO WX (WRX90,
+ *   8-channel) board topology. Where SLAMDThreadripperCPU is the runnable core,
+ *   this class carries the "everything around the core" the shared expert-timing
+ *   layer (SLRamTiming / SLVoltageRail) needs to characterize a real rig.
+ *
+ * Nothing here is invented: DDR5's I/O rail is 1.1 V (1100 mV) and the roster
+ * runs DDR5-6400 (JEDEC ~CL46); the Zen 5 core/SoC rails use AMD's documented
+ * nominal/limit points. Each getter hands back a configured object ready to
+ * drop into an SLTimingProfile or an SLExecutorBuild.
+ *
+ * Family: cpu. Composes SLRamTiming, SLVoltageRail, SLMotherboard,
+ *   SLMemoryModule (via SLComponentCatalog); partners SLAMDThreadripperCPU.
+ */
+#sleela 2.1
+class SLAMDThreadripperPlatform {
+
+  // ---- Supply rails (actual voltages in millivolts) -----------------------
+
+  // Vcore: Zen 5 core rail. Nominal ~1.20 V, safe window ~0.95–1.45 V.
+  SLVoltageRail vcore() {
+    SLVoltageRail r = new SLVoltageRail();
+    r.configure("Vcore", 1200, 950, 1450);
+    r.setLoadLine(400);     // 0.4 mOhm load line (micro-ohms)
+    r.setLoad(120000);      // heavy all-core draw (120 A), modeled
+    return r;
+  }
+
+  // Vsoc: SoC / memory-controller rail. AMD caps SoC at ~1.30 V; nominal ~1.20 V.
+  SLVoltageRail vsoc() {
+    SLVoltageRail r = new SLVoltageRail();
+    r.configure("Vsoc", 1200, 1050, 1300);
+    r.setLoadLine(300);
+    r.setLoad(30000);       // ~30 A
+    return r;
+  }
+
+  // Vddq: DDR5 I/O rail. DDR5 standard is 1.1 V (1100 mV), window ~1.067–1.166 V.
+  SLVoltageRail vddq() {
+    SLVoltageRail r = new SLVoltageRail();
+    r.configure("Vddq", 1100, 1067, 1166);
+    return r;
+  }
+
+  // ---- DDR5-6400 memory timings (JEDEC-spec baseline) ---------------------
+
+  // An SLRamTiming configured for one DDR5-6400 channel at JEDEC primaries
+  // (CL46-46-46, tRAS 104, tRC 150, 2T), riding the Vddq rail. tRAS and tRC
+  // satisfy the honored() invariants (tRAS >= tRCD+CL, tRC >= tRAS+tRP).
+  SLRamTiming ddr5_6400Timing(String channelName) {
+    SLRamTiming t = new SLRamTiming();
+    t.configure(channelName, 6400, 4800, 6400);   // rate / floor / ceiling (MT/s)
+    t.setCL(46);
+    t.setTRCD(46);
+    t.setTRP(46);
+    t.setTRAS(104);
+    t.setTRC(150);
+    t.setCommandRate(2);
+    t.attachVddq(vddq(), 10, 64);   // 10 mV per 64 MT/s of ceiling headroom
+    return t;
+  }
+
+  // ---- Boards and populated memory ----------------------------------------
+
+  // HEDT board: sTR5 + TRX50, 4-channel DDR5, up to 88 PCIe 5.0 lanes.
+  SLMotherboard hedtBoard() {
+    SLComponentCatalog parts = new SLComponentCatalog();
+    return parts.trx50();
+  }
+
+  // Workstation board: sTR5 + WRX90, 8-channel DDR5, up to 128 PCIe 5.0 lanes.
+  SLMotherboard proBoard() {
+    SLComponentCatalog parts = new SLComponentCatalog();
+    return parts.wrx90();
+  }
+
+  // 4-channel DDR5-6400 populated for the HEDT platform; capMiBPerModule is the
+  // per-DIMM capacity (e.g. 32768 for 32 GiB modules -> 128 GiB across 4).
+  SLMemoryModule hedtMemory(int capMiBPerModule) {
+    SLComponentCatalog parts = new SLComponentCatalog();
+    return parts.ddr5_6400_quadChannel(capMiBPerModule);
+  }
+
+  // 8-channel DDR5-6400 populated for the PRO WX platform.
+  SLMemoryModule proMemory(int capMiBPerModule) {
+    SLComponentCatalog parts = new SLComponentCatalog();
+    return parts.ddr5_6400_octaChannel(capMiBPerModule);
+  }
+
+  // PCIe 5.0 x16 system bus, as both Threadripper platforms carry.
+  SLSystemBus pcie5x16() {
+    SLComponentCatalog parts = new SLComponentCatalog();
+    return parts.pcieGen5x16();
+  }
+}
