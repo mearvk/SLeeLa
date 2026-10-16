@@ -5,17 +5,22 @@
  *   the Turing-complete substrate that the whole CPU model reduces to. The
  *   codes and mnemonics mirror the native enum exactly (impl/core/sleela_core.h
  *   `SLOp` and lib/vm/InstructionSet.sleela). The native enum currently defines
- *   150 opcodes (codes 0..149), dispatched one-at-a-time by the native VM: a
- *   base computational/service core (arithmetic, control flow, call/return,
- *   threads, sockets, pipes, files, time, structs) followed by extended
- *   host-facing ranges (Synchro/Munction/Best-of, audio, arrays, OS syscalls,
- *   GC hint, `ran::`, the Idea realtime canvas, VM-select/Modium).
+ *   150 opcodes (codes 0..149), dispatched one-at-a-time by the native VM, and
+ *   organized here as a DOUBLE SHELF of three contiguous tiers:
+ *     - shelf 1, base computational/service core (codes 0..48): arithmetic,
+ *       control flow, call/return, threads, sockets, pipes, files;
+ *     - shelf 2, substrate extensions (codes 49..97): time services, structs,
+ *       Synchro / Munction / Best-of;
+ *     - shelf 3, host-facing services (codes 98..149): arrays, OS syscalls, GC
+ *       hint, `ran::`, the Idea realtime canvas, VM-select / Modium.
+ *   All three shelves are acceptable opcodes; the tiers (BASE_COUNT /
+ *   SUBSTRATE_COUNT / NATIVE_COUNT and the TIER_* flags) do not gate execution,
+ *   they let the professional monitoring/storage layer tag and iterate each
+ *   shelf under its own flag. Every CPU instruction and OS syscall lowers onto
+ *   shelf 1 (plus structs on shelf 2).
  *
- *   This registry declares the base computational/service core (codes 0..60),
- *   which is the Turing-complete subset every CPU instruction and OS syscall is
- *   lowered onto; the extended opcodes above it are host services the model
- *   does not need to re-declare to realize a CPU. Codes are conservative: they
- *   match the native numbering exactly rather than inventing a parallel set.
+ *   Codes are conservative: they match the native numbering exactly rather than
+ *   inventing a parallel set.
  *
  * This is the ground truth. The register-style SLInstructionSet, the OS system
  * calls, and every language frontend ultimately map onto THESE opcodes. Because
@@ -47,18 +52,64 @@ class SLSleelaOpcode {
   // Time services 49..57, structs 58..62 (available to the substrate).
   static final int OP_NEWSTRUCT=58; static final int OP_GETFIELD=59; static final int OP_SETFIELD=60;
 
-  // Upper bound of the base computational/service core this registry declares
-  // and validates. The native substrate (impl/core/sleela_core.h `SLOp`)
-  // defines 150 opcodes in total (0..149); codes at/above BASE_COUNT are the
-  // extended host-facing services the CPU model does not lower onto.
-  static final int BASE_COUNT = 98;
+  // --- Double-shelf opcode tiers --------------------------------------------
+  // The native substrate (impl/core/sleela_core.h `SLOp`) defines 150 opcodes
+  // (codes 0..149). All are acceptable; the tiers below do not gate execution,
+  // they let the professional monitoring/storage layer tag each opcode by the
+  // SHELF it belongs to and iterate each shelf under its own flag.
+  //
+  // The three shelves are contiguous half-open ranges [prev, COUNT):
+  //   Shelf 1  codes   0..48  base computational/service core (through OP_HALT):
+  //            arithmetic, control flow, call/return, threads, sockets, pipes,
+  //            files. The Turing-complete subset the CPU ISA + syscalls lower onto.
+  //   Shelf 2  codes  49..97  substrate extensions: time services, structs,
+  //            Synchro / Munction / Best-of. Part of the canonical substrate.
+  //   Shelf 3  codes 98..149  host-facing services: arrays, OS syscalls, GC
+  //            hint, `ran::`, the Idea realtime canvas, VM-select / Modium.
+  static final int BASE_COUNT      = 49;    // end of shelf 1 (base core), exclusive
+  static final int SUBSTRATE_COUNT = 98;    // end of shelf 2 (substrate), exclusive
+  static final int NATIVE_COUNT    = 150;   // end of shelf 3 (full native enum), exclusive
+
+  // Tier ids the monitoring/storage layer pivots on (the "iteration flags").
+  static final int TIER_NONE      = 0;   // not a native opcode (out of range)
+  static final int TIER_BASE      = 1;   // shelf 1: base computational/service core
+  static final int TIER_SUBSTRATE = 2;   // shelf 2: substrate extensions
+  static final int TIER_HOST      = 3;   // shelf 3: host-facing services
 
   int code;
   String mnemonic;
 
   void configure(int opcode, String name) { code = opcode; mnemonic = name; }
 
-  boolean valid(int opcode) { return opcode >= 0 && opcode < BASE_COUNT; }
+  // Any native opcode is acceptable; validity is the full 0..NATIVE_COUNT range.
+  boolean valid(int opcode) { return opcode >= 0 && opcode < NATIVE_COUNT; }
+
+  // Per-shelf acceptance checks (all acceptable; these name WHICH shelf).
+  boolean isBase(int opcode)      { return opcode >= 0 && opcode < BASE_COUNT; }
+  boolean isSubstrate(int opcode) { return opcode >= BASE_COUNT && opcode < SUBSTRATE_COUNT; }
+  boolean isHost(int opcode)      { return opcode >= SUBSTRATE_COUNT && opcode < NATIVE_COUNT; }
+
+  // The shelf an opcode sits on, as a TIER_* flag — the value the professional
+  // monitoring/storage layer records per opcode and iterates each shelf under.
+  int tier(int opcode) {
+    if (isBase(opcode))      { return TIER_BASE; }
+    if (isSubstrate(opcode)) { return TIER_SUBSTRATE; }
+    if (isHost(opcode))      { return TIER_HOST; }
+    return TIER_NONE;
+  }
+
+  String tierName(int opcode) {
+    int t = tier(opcode);
+    if (t == TIER_BASE)      { return "base-core"; }
+    if (t == TIER_SUBSTRATE) { return "substrate-ext"; }
+    if (t == TIER_HOST)      { return "host-service"; }
+    return "none";
+  }
+
+  // Count of opcodes on each shelf, for sizing per-shelf monitoring/storage.
+  int baseShelfCount()      { return BASE_COUNT; }                    // 49
+  int substrateShelfCount() { return SUBSTRATE_COUNT - BASE_COUNT; }  // 49
+  int hostShelfCount()      { return NATIVE_COUNT - SUBSTRATE_COUNT; }// 52
 
   // Classification used by the mapping/equivalence layers.
   boolean isStackPush(int op) { return op == OP_CONST || op == OP_DUP || op == OP_LOADG || op == OP_LOADL; }
@@ -92,5 +143,8 @@ class SLSleelaOpcode {
     return "OP_?";
   }
 
-  int baseCount() { return BASE_COUNT; }
+  // Shelf-boundary reporters (exclusive upper bounds).
+  int baseCount()      { return BASE_COUNT; }       // base core:      0..48
+  int substrateCount() { return SUBSTRATE_COUNT; }  // + substrate:    0..97
+  int nativeCount()    { return NATIVE_COUNT; }     // full native set: 0..149
 }

@@ -200,9 +200,12 @@ honest about its own boundaries:
    instruction and every OS syscall is lowered onto the **canonical opcode
    substrate** (`SLSleelaOpcode`), whose codes and mnemonics mirror the native
    enum exactly (`impl/core/sleela_core.h` `SLOp`). The native substrate
-   currently defines **150 opcodes** (codes 0..149): a Turing-complete base
-   computational/service core plus extended host-facing ranges; the CPU model
-   lowers onto the base core and does not fabricate a parallel instruction set.
+   currently defines **150 opcodes** (codes 0..149), organized in `SLSleelaOpcode`
+   as a double shelf of three tiers — base computational/service core (0..48),
+   substrate extensions (49..97), and host-facing services (98..149) — each with
+   its own `TIER_*` flag and `*_COUNT` bound for the monitoring/storage layer.
+   All are acceptable opcodes; the CPU model lowers onto the Turing-complete base
+   core and does not fabricate a parallel instruction set.
    Because that substrate is already executed by the native VM and is Turing
    complete, the mapping is a **reduction**, not an invention — and it is
    checkable: `SLTuringBridge.proveEquivalence(c, cpp, java, sleela)` lowers the
