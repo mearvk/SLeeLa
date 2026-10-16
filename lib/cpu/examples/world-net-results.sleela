@@ -184,6 +184,7 @@ class CpuCatalog {
     add("xeon",  "Intel Xeon",        "x86-64", 3800,64,  16777216);
     add("ryzen", "AMD Ryzen (Zen)",   "x86-64", 4500,64,  16777216);
     add("epyc",  "AMD EPYC (Zen)",    "x86-64", 3700,64,  16777216);
+    add("threadripper","AMD Ryzen Threadripper 9000 (Zen 5)","x86-64",5400,64,16777216);
     add("m1",    "Apple M1",          "arm64",  3200,64,  16777216);
     add("m4",    "Apple M4",          "arm64",  4400,64,  16777216);
     add("snapdragon","Qualcomm Snapdragon","arm64",3300,64,16777216);

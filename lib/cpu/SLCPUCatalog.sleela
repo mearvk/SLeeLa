@@ -99,6 +99,7 @@ class SLCPUCatalog {
     if (fam == "intel-8086")  { SLIntel8086CPU c = new SLIntel8086CPU();   c.configure(); return c; }
     if (fam == "amd-ryzen")   { SLAMDRyzenCPU c = new SLAMDRyzenCPU();     c.configure(); return c; }
     if (fam == "amd-epyc")    { SLAMDEPYCCPU c = new SLAMDEPYCCPU();       c.configure(); return c; }
+    if (fam == "amd-threadripper") { SLAMDThreadripperCPU c = new SLAMDThreadripperCPU(); c.configure(); return c; }
     if (fam == "amd-athlon")  { SLAMDAthlonCPU c = new SLAMDAthlonCPU();   c.configure(); return c; }
     if (fam == "apple-m1")    { SLAppleM1CPU c = new SLAppleM1CPU();       c.configure(); return c; }
     if (fam == "apple-m4")    { SLAppleM4CPU c = new SLAppleM4CPU();       c.configure(); return c; }
@@ -138,6 +139,7 @@ class SLCPUCatalog {
     add("athlon",    "AMD Athlon (K7)",       "amd-athlon", 1000, 32);
     add("ryzen",     "AMD Ryzen (Zen)",       "amd-ryzen",  4500, 64);
     add("epyc",      "AMD EPYC (Zen)",        "amd-epyc",   3700, 64);
+    add("threadripper","AMD Ryzen Threadripper 9000 (Zen 5)","amd-threadripper",5400,64);
     add("m1",        "Apple M1",              "apple-m1",   3200, 64);
     add("m4",        "Apple M4",              "apple-m4",   4400, 64);
     add("snapdragon","Qualcomm Snapdragon",   "snapdragon", 3300, 64);
