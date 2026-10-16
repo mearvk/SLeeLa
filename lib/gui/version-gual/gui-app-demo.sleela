@@ -1,0 +1,74 @@
+/*
+ * lib/gui/version-gual/gui-app-demo.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Runnable demonstrator for the /lib/gui support structure. It boots
+ *   an SLGuiApp (application + window + DOM + reconciler + host adapter + script
+ *   engine), builds a small interface in the SLeeLa DOM, binds an onClick
+ *   callback, drives part of the UI from a script, refreshes once to project the
+ *   DOM onto real SleelaUI widgets, and (on a display) hands control to the run
+ *   loop. On a headless host boot() returns false and it exits cleanly, like
+ *   gui-demo.sleela. This proves the architectural wiring end to end:
+ *   DOM -> reconcile -> widgets, and widget activations -> events -> handlers.
+ *
+ * Family: gui. SLeeLa owns the document and dispatch; SleelaUI renders it.
+ */
+#sleela 2.1
+class GuiAppDemo {
+
+  String boolToStr(boolean b) { return b ? "yes" : "no"; }
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  int run() {
+    banner("SLeeLa GUI support structure: DOM -> widgets, widgets -> events");
+
+    SLGuiApp app = new SLGuiApp();
+    if (!app.boot("com.mearvk.SleelaUI.AppDemo", "SLeeLa App - MEARVK LLC",
+                  640, 420)) {
+      print("headless host (no display): wiring constructed, loop skipped.");
+      return 0;
+    }
+
+    SLGuiDom dom = app.document();
+
+    // Build an interface in the SLeeLa DOM (declarative).
+    SLGuiNode header = app.add("root", "header", "bar");
+    SLGuiNode brand = app.add("bar", "label", "brand");
+    brand.setText("SLeeLa");
+    SLGuiNode save = app.add("root", "button", "save");
+    save.setText("Save");
+    save.setStyle("accent", "suggested");
+
+    // Bind a callback the DHTML way.
+    app.onClick("save", "doSave");
+
+    // Drive the rest from a script (build a status row + bind + fire).
+    SLGuiScript s = app.scripting();
+    s.create("status", "foot", "root");
+    s.create("label", "msg", "foot");
+    s.text("msg", "Ready");
+    s.on("save", "click", "doSaveToo");
+    int ran = app.runScript();
+    print("script executed -> " + ran + "/" + s.size()
+        + "; nodes -> " + dom.size());
+
+    // Project the DOM onto real widgets.
+    app.refresh();
+    print("mounted nodes -> " + app.mount.mountedCount()
+        + "; applied last pass -> " + app.mount.appliedLast());
+
+    // Simulate the host raising a click (what the toolkit would do on a real
+    // press): the host adapter would normally poll the widget latch.
+    int fired = dom.fire(SLGuiEventType.CLICK, "save", "");
+    print("click 'save' -> handlers fired: " + fired);
+
+    banner("Done (entering run loop on a display)");
+    int code = app.run();
+    app.shutdown();
+    return code;
+  }
+}

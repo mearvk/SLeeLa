@@ -5,15 +5,15 @@ on:
     paths:
       - 'gui/**'
       - 'lib/gui/**'
-      - 'version-mual/**'
-      - 'version-gual/**'
+      - 'lib/gui/version-mual/**'
+      - 'lib/gui/version-gual/**'
       - '.github/workflows/gui-ci.yml'
   pull_request:
     paths:
       - 'gui/**'
       - 'lib/gui/**'
-      - 'version-mual/**'
-      - 'version-gual/**'
+      - 'lib/gui/version-mual/**'
+      - 'lib/gui/version-gual/**'
       - '.github/workflows/gui-ci.yml'
 
 jobs:
@@ -29,15 +29,15 @@ jobs:
       - name: Validate the SLeeLa gui source layer (version-mual / version-gual)
         run: |
           set -eu
-          # The GUI SLeeLa impl now lives in version-mual/ (moved from lib/gui/),
-          # with an identical copy in version-gual/. lib/gui/ keeps the docs.
+          # The GUI SLeeLa impl now lives in lib/gui/version-mual/ (moved from lib/gui/),
+          # with an identical copy in lib/gui/version-gual/. lib/gui/ keeps the docs.
           # Integration layer: 9 Master Classes + SLPackage + gui-demo (11).
           # Event/DHTML/scripting layer: SLGuiEventType, SLGuiEvent,
           # SLGuiHandler, SLGuiEventBus, SLGuiNode, SLGuiDom,
           # SLGuiScriptCommand, SLGuiScript + gui-events-demo (9).
           # Support structure (DOM<->toolkit wiring): SLGuiWidgetFactory,
           # SLGuiMount, SLGuiHostAdapter, SLGuiApp + gui-app-demo (5). Total 25.
-          for d in version-mual version-gual; do
+          for d in lib/gui/version-mual lib/gui/version-gual; do
             test "$(find "$d" -maxdepth 1 -name '*.sleela' | wc -l)" -eq 25
             test -f "$d/SLPackage.sleela"
             test -f "$d/gui-demo.sleela"

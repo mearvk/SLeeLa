@@ -76,8 +76,8 @@ s.run();
 ```
 
 A runnable walkthrough of all three sub-layers is
-[`version-mual/gui-events-demo.sleela`](../../version-mual/gui-events-demo.sleela)
-(the GUI `.sleela` impl moved to `version-mual/`, copied to `version-gual/`).
+[`lib/gui/version-mual/gui-events-demo.sleela`](lib/gui/version-mual/gui-events-demo.sleela)
+(the GUI `.sleela` impl moved to `lib/gui/version-mual/`, copied to `lib/gui/version-gual/`).
 
 ## The support structure (DOM ↔ toolkit wiring)
 
@@ -116,7 +116,7 @@ if (app.boot("com.mearvk.App", "App", 640, 420)) {
 ```
 
 A runnable walkthrough is
-[`version-mual/gui-app-demo.sleela`](../../version-mual/gui-app-demo.sleela).
+[`lib/gui/version-mual/gui-app-demo.sleela`](lib/gui/version-mual/gui-app-demo.sleela).
 
 ## Relationship to the toolkit
 

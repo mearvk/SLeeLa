@@ -1,0 +1,125 @@
+/*
+ * lib/gui/version-mual/SLGuiScript.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiScript — the scripting engine for /lib/gui. It holds
+ *   an ordered list of SLGuiScriptCommands and runs them against an SLGuiDom
+ *   (and, for the `call` verb, across the native boundary via SLGuiBridge). This
+ *   is the "support for scripting" layer: a UI can be described and driven by a
+ *   command list rather than hand-written SLeeLa, which is what makes
+ *   DHTML-style authoring and tooling (serialising a UI, replaying interactions,
+ *   data-driven screens) possible. The engine is deliberately NOT a general
+ *   interpreter — it is a bounded, auditable verb list that only touches the
+ *   SLeeLa-owned DOM/event bus and the documented operation bridge, so a script
+ *   can never do more than the DOM API already allows.
+ *
+ * Family: gui. SLeeLa owns execution; scripts express UI intent declaratively.
+ */
+#sleela 2.1
+class SLGuiScript {
+  static final int MAX_COMMANDS = 65536;
+
+  SLGuiScriptCommand[] commands;
+  int count;
+  SLGuiDom dom;             // the document the script manipulates
+  SLGuiBridge bridge;       // native boundary for the `call` verb (may be null)
+  SLGuiEventType types;     // event-name -> ordinal
+  int pc;                   // program counter of the last executed command
+  int executed;             // total commands executed
+  String lastError;
+
+  void init(SLGuiDom document) {
+    commands = new SLGuiScriptCommand[MAX_COMMANDS];
+    count = 0; dom = document; bridge = null;
+    types = new SLGuiEventType();
+    pc = -1; executed = 0; lastError = "";
+  }
+
+  // Attach a created native bridge so `call` can cross to a SLeeLa operation.
+  void attachBridge(SLGuiBridge b) { bridge = b; }
+
+  int size() { return count; }
+
+  // ---- building the script ------------------------------------------------
+
+  SLGuiScriptCommand add(int verb, String a, String b, String c, String d) {
+    if (count >= MAX_COMMANDS) { return null; }
+    SLGuiScriptCommand cmd = new SLGuiScriptCommand();
+    cmd.configure(verb, a, b, c, d);
+    commands[count] = cmd; count = count + 1;
+    return cmd;
+  }
+
+  // Typed builders (the common verbs) for readable script assembly.
+  void create(String tag, String id, String parentId) { add(SLGuiScriptCommand.CREATE, tag, id, parentId, null); }
+  void append(String parentId, String childId)        { add(SLGuiScriptCommand.APPEND, parentId, childId, null, null); }
+  void text(String id, String value)                  { add(SLGuiScriptCommand.TEXT, id, value, null, null); }
+  void attr(String id, String name, String value)     { add(SLGuiScriptCommand.ATTR, id, name, value, null); }
+  void style(String id, String prop, String value)    { add(SLGuiScriptCommand.STYLE, id, prop, value, null); }
+  void show(String id)                                 { add(SLGuiScriptCommand.SHOW, id, null, null, null); }
+  void hide(String id)                                 { add(SLGuiScriptCommand.HIDE, id, null, null, null); }
+  void enable(String id, boolean on)                   { add(SLGuiScriptCommand.ENABLE, id, on ? "1" : "0", null, null); }
+  void on(String id, String eventName, String op)      { add(SLGuiScriptCommand.ON, id, eventName, op, null); }
+  void fire(String id, String eventName, String value) { add(SLGuiScriptCommand.FIRE, id, eventName, value, null); }
+  void call(String operation, String arguments)        { add(SLGuiScriptCommand.CALL, operation, arguments, null, null); }
+  void remove(String id)                               { add(SLGuiScriptCommand.REMOVE, id, null, null, null); }
+
+  // ---- execution ----------------------------------------------------------
+
+  // Run the whole script top-down against the DOM. Returns the number of
+  // commands that executed successfully; stops and records lastError on the
+  // first command that fails.
+  int run() {
+    executed = 0; lastError = "";
+    for (int i = 0; i < count; i = i + 1) {
+      pc = i;
+      if (!step(commands[i])) { return executed; }
+      executed = executed + 1;
+    }
+    return executed;
+  }
+
+  // Execute one command against the DOM / bridge. Returns false on failure.
+  boolean step(SLGuiScriptCommand cmd) {
+    if (cmd == null || dom == null) { lastError = "no command or dom"; return false; }
+    int v = cmd.getVerb();
+
+    if (v == SLGuiScriptCommand.CREATE) {
+      SLGuiNode n = dom.createElement(cmd.op1(), cmd.op2());
+      if (n == null) { lastError = "create failed"; return false; }
+      if (cmd.op3() != null && cmd.op3() != "") { dom.appendChild(cmd.op3(), n.getId()); }
+      return true;
+    }
+    if (v == SLGuiScriptCommand.APPEND) { return dom.appendChild(cmd.op1(), cmd.op2()); }
+    if (v == SLGuiScriptCommand.TEXT)   { dom.setText(cmd.op1(), cmd.op2()); return true; }
+    if (v == SLGuiScriptCommand.ATTR)   { dom.setAttribute(cmd.op1(), cmd.op2(), cmd.op3()); return true; }
+    if (v == SLGuiScriptCommand.STYLE)  { dom.setStyle(cmd.op1(), cmd.op2(), cmd.op3()); return true; }
+    if (v == SLGuiScriptCommand.SHOW)   { dom.show(cmd.op1()); return true; }
+    if (v == SLGuiScriptCommand.HIDE)   { dom.hide(cmd.op1()); return true; }
+    if (v == SLGuiScriptCommand.ENABLE) { dom.setEnabled(cmd.op1(), cmd.op2() == "1"); return true; }
+    if (v == SLGuiScriptCommand.ON) {
+      SLGuiHandler h = dom.addEventListener(cmd.op1(), cmd.op2(), cmd.op3());
+      if (h == null) { lastError = "unknown event '" + cmd.op2() + "'"; return false; }
+      return true;
+    }
+    if (v == SLGuiScriptCommand.FIRE) {
+      int t = types.typeOf(cmd.op2());
+      if (t < 0) { lastError = "unknown event '" + cmd.op2() + "'"; return false; }
+      dom.fire(t, cmd.op1(), cmd.op3());
+      return true;
+    }
+    if (v == SLGuiScriptCommand.CALL) {
+      if (bridge == null) { lastError = "no bridge for call"; return false; }
+      return bridge.call(cmd.op1());
+    }
+    if (v == SLGuiScriptCommand.REMOVE) { return dom.removeChild(cmd.op1()); }
+    if (v == SLGuiScriptCommand.NOP)    { return true; }
+
+    lastError = "unknown verb";
+    return false;
+  }
+
+  int programCounter() { return pc; }
+  int executedCount() { return executed; }
+  String error() { return lastError; }
+  boolean ok() { return lastError == ""; }
+}
