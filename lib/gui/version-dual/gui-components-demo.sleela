@@ -1,0 +1,89 @@
+/*
+ * lib/gui/version-dual/gui-components-demo.sleela
+ * A runnable walkthrough of the dual (4.0) professional component set: an audio
+ * recorder, a video canvas with transport, an HTML-aware HTTP URL bar, a custom
+ * click object (motion + apprentice timer -> final call), exact positioning +
+ * layout, a graphics facility, the admin authority surface, and the upgraded
+ * aesthetic. SLeeLa names and gates each component; the host renders/plays them.
+ */
+#sleela 2.1
+class GuiComponentsDemo {
+
+  void main() {
+    SLPackage pkg = new SLPackage(); pkg.configure("gui");
+    print("gui package " + pkg.version() + " (featureLevel " + pkg.featureLevel() +
+          ", 4.0=" + pkg.isFourPointZero() + ")");
+
+    // ---- Upgraded aesthetic ----
+    SLGuiSettings s = new SLGuiSettings(); s.configure();
+    s.setAesthetic(s.AESTHETIC_GLASS);
+    s.setCornerRadiusPx(14); s.setElevationPct(55); s.setDensity(s.DENSITY_COMFORT);
+    s.setTypeScalePct(110); s.setAccentColor("#2E8BFF");
+    print("aesthetic honored=" + s.honored() + " -> " + s.report());
+
+    // ---- Audio recorder (standard record button) ----
+    SLGuiAudioRecorder rec = new SLGuiAudioRecorder();
+    rec.configure("default", "takes/take1.wav");
+    rec.record(); rec.onLevel(72); rec.onElapsed(1500);
+    print("recorder: " + rec.stateName() + " btn='" + rec.buttonLabel() +
+          "' level=" + rec.level() + "% dur=" + rec.durationMillis() + "ms");
+    rec.stop(); print("  -> " + rec.stateName());
+
+    // ---- Video canvas with controls ----
+    SLGuiVideoCanvas vid = new SLGuiVideoCanvas();
+    vid.configure("movies/intro.mp4");
+    vid.onDuration(120000); vid.play(); vid.onPosition(30000); vid.setVolume(70);
+    print("video: " + vid.stateName() + " " + vid.position() + "/" + vid.duration() +
+          "ms (" + vid.progressPct() + "%) vol=" + vid.getVolume());
+
+    // ---- HTML-aware HTTP URL bar ----
+    SLGuiUrlBar bar = new SLGuiUrlBar(); bar.configure("about:home");
+    bar.navigate("https://sleela.example/docs");
+    bar.onResponse(200, "text/html; charset=utf-8");
+    print("urlbar: " + bar.url() + " [" + bar.loadStateName() + "] http=" + bar.httpStatus() +
+          " html=" + bar.isHtmlAware() + " secure=" + bar.isSecure() +
+          " back=" + bar.canGoBack());
+
+    // ---- Custom click object (motion + apprentice ladder -> final call) ----
+    SLGuiClickObject dot = new SLGuiClickObject();
+    dot.configure("pulse-dot", 100, 100, 6);
+    dot.setOrbit(100, 100, 40, 12);          // architecturally-driven motion
+    dot.bindFinalCall("escalate", 3);        // 3 apprentice stages -> final call
+    dot.setInterval(1000); dot.start();
+    int t = 0;
+    while (t < 3500) {
+      int code = dot.advance(500); t = t + 500;
+      if (code == 2) { print("  t=" + t + "ms: FINAL CALL '" + dot.getFinalCall() + "' fired"); }
+      else if (code == 1 && dot.apprenticeStage() > 0) {
+        print("  t=" + t + "ms: apprentice stage " + dot.apprenticeStage() +
+              "/" + dot.apprenticeStages() + " (orbit " + dot.orbitAngle() + " deg)");
+      }
+    }
+
+    // ---- Exact positioning + layout ----
+    SLGuiLayout lay = new SLGuiLayout(); lay.configure();
+    lay.placeExact(24, 24, 320, 200);        // exact component position
+    print("layout(exact): " + lay.modeName() + " -> " + lay.toStyle());
+    lay.grid(3, 4); lay.setGap(12); lay.setPaddingAll(16);
+    print("layout(grid):  " + lay.toStyle() + " honored=" + lay.honored());
+
+    // ---- Graphics facility + control ----
+    SLGuiGraphics g = new SLGuiGraphics(); g.configure(320, 200);
+    g.setQuality(g.QUALITY_HIGH); g.setAntialias(true);
+    g.setStrokeColor("#2E8BFF"); g.setStrokeWidth(2);
+    g.clear(); g.rect(10, 10, 300, 180); g.circle(160, 100, 40); g.text(20, 30, "SLeeLa 4.0");
+    print("graphics: " + g.commands() + " cmds, quality=" + g.qualityName() +
+          " aa=" + g.antialiasOn() + " honored=" + g.honored());
+
+    // ---- Admin authority: sign-in, sign-off, signature for Law ----
+    SLGuiAdminAuthority admin = new SLGuiAdminAuthority(); admin.configure();
+    boolean started = admin.signIn("ada", "render-pipeline");
+    boolean mayStart = admin.mayStartProcess("render-pipeline");
+    admin.signOff("export-frame", "QA approved");
+    admin.signForLaw("license-2026", "sig:9f3a...e1");
+    print("admin: signedIn=" + admin.isSignedIn() + " start-process=" + mayStart +
+          " signed-off(export-frame)=" + admin.isSignedOff("export-frame") +
+          " legally-signed(license-2026)=" + admin.isLegallySigned("license-2026") +
+          " audit=" + admin.auditEntries());
+  }
+}

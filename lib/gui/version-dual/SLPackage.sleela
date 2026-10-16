@@ -1,0 +1,41 @@
+/*
+ * lib/gui/version-dual/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for gui — the dual
+ *   line (version 4.0). It builds on thual (3.0) and adds a rich, professional
+ *   component set: an audio-input recorder, a video canvas with transport
+ *   controls, an HTML-aware HTTP-driven URL navigation bar, custom click
+ *   objects (motion + timers that escalate to System Apprentices), exact
+ *   component positioning + strong layout support, a graphics facility and
+ *   control, and an admin authority surface (sign-off on operations, sign-in to
+ *   start a process, legal signature), with a substantially upgraded aesthetic.
+ */
+#sleela 2.1
+// Library facade for module package: gui
+// Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+// This package is the SLeeLa-facing *consequence* of the top-level gui/ work
+// (the Java host, the native C ABI bridge gui/native/sleela_gui_bridge.*, and
+// the 1..14 document-change listener). The Master Classes (SLGuiBackend,
+// SLGuiWindow, SLGuiAction, SLGuiRuntime, SLGuiHost, SLGuiDocument,
+// SLGuiDocumentListener, SLGuiBridge, SLGuiIntegration) are first-class
+// one-class-per-file source units; this facade only names the package itself,
+// mirroring lib/citizen/SLPackage.sleela.
+class SLPackage {
+  // Version identity: this is the dual line — the 4.0 GUI package. mual=1.0
+  // baseline, gual=2.0 settings, thual=3.0 visual effects; dual (4.0) adds the
+  // rich professional component set (audio recorder, video canvas, HTML/HTTP URL
+  // bar, custom click objects, exact positioning + layout, graphics facility,
+  // admin sign-off / sign-in / legal signature) and a substantially upgraded
+  // aesthetic. featureLevel() lets callers branch.
+  static final int FEATURE_LEVEL = 4;   // 4 dual ; 3 thual ; 2 gual ; 1 mual
+  String packageName;
+  String packageVersion;
+  void configure(String name) { packageName = name; packageVersion = "4.0"; }
+  String name() { return packageName; }
+  String version() { return packageVersion; }
+  int featureLevel() { return FEATURE_LEVEL; }
+  boolean isTwoPointZero() { return FEATURE_LEVEL >= 2; }
+  boolean isThreePointZero() { return FEATURE_LEVEL >= 3; }
+  boolean isFourPointZero() { return FEATURE_LEVEL >= 4; }
+  boolean available() { return packageName != null; }
+}

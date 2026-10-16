@@ -1,0 +1,84 @@
+/*
+ * lib/gui/version-dual/SLGuiAudioCues.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiAudioCues — the 3.0 activation-audio registry. UI
+ *   components in the thual line may play a short audio CUE when activated
+ *   (click/submit/toggle); this registry is the single place that names the
+ *   available cues and the master audio settings, so an SLGuiEffects on a node
+ *   references a cue by name and the host plays it through the audio stack. It
+ *   holds a small bank of named cues (name -> host asset), a master
+ *   enabled/mute flag, and a master gain. SLeeLa names and gates the cues; the
+ *   host owns actual playback.
+ *
+ * Family: gui. Consulted by the host when a component with an activation cue
+ * fires; owned by SLGuiApp.
+ */
+#sleela 2.1
+class SLGuiAudioCues {
+  static final int MAX_CUES = 32;
+
+  String[] cueNames;    // cue name, e.g. "click", "confirm", "error"
+  String[] cueAssets;   // host-resolvable audio asset for the cue
+  int cueCount;
+
+  int enabled;          // 1 = activation audio is on globally
+  int muted;            // 1 = temporarily silenced (enabled stays as-is)
+  int masterGainPct;    // 0..100 % master playback gain
+  int played;           // total cues dispatched to the host
+
+  void configure() {
+    cueNames = new String[MAX_CUES]; cueAssets = new String[MAX_CUES]; cueCount = 0;
+    enabled = 1; muted = 0; masterGainPct = 80; played = 0;
+    // A small, sensible default cue set (host maps the assets).
+    register("click",   "audio/ui/click.wav");
+    register("confirm", "audio/ui/confirm.wav");
+    register("toggle",  "audio/ui/toggle.wav");
+    register("error",   "audio/ui/error.wav");
+  }
+
+  int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
+
+  // Register (or re-point) a named cue. Returns false when the bank is full.
+  boolean register(String name, String asset) {
+    if (name == null) { return false; }
+    int i = indexOf(name);
+    if (i >= 0) { cueAssets[i] = asset; return true; }
+    if (cueCount >= MAX_CUES) { return false; }
+    cueNames[cueCount] = name; cueAssets[cueCount] = asset; cueCount = cueCount + 1;
+    return true;
+  }
+  int indexOf(String name) {
+    for (int i = 0; i < cueCount; i = i + 1) { if (cueNames[i] == name) { return i; } }
+    return -1;
+  }
+  boolean has(String name) { return indexOf(name) >= 0; }
+  String assetFor(String name) {
+    int i = indexOf(name);
+    if (i < 0) { return null; }
+    return cueAssets[i];
+  }
+  int cues() { return cueCount; }
+
+  // Master controls.
+  void setEnabled(boolean on) { enabled = on ? 1 : 0; }
+  boolean isEnabled() { return enabled == 1; }
+  void mute() { muted = 1; }
+  void unmute() { muted = 0; }
+  boolean isMuted() { return muted == 1; }
+  void setMasterGainPct(int pct) { masterGainPct = clamp(pct, 0, 100); }
+  int getMasterGainPct() { return masterGainPct; }
+
+  // Whether a given cue would actually sound now (registered, on, not muted).
+  boolean audible(String name) { return enabled == 1 && muted == 0 && has(name); }
+
+  // Dispatch a cue for the host to play at the given node-level gain, scaled by
+  // the master gain. Returns the effective gain (0..100), or -1 when silent.
+  int play(String name, int nodeGainPct) {
+    if (!audible(name)) { return -1; }
+    int g = clamp(nodeGainPct, 0, 100);
+    int effective = (g * masterGainPct) / 100;
+    played = played + 1;
+    return effective;
+  }
+  int totalPlayed() { return played; }
+}

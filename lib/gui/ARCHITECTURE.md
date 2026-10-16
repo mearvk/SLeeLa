@@ -86,8 +86,34 @@ The GUI `.sleela` impl is carried in two parallel lines under `lib/gui/`:
     its loop that drives scheduled rotations (and their memo key epochs) + fades.
     A runnable walkthrough is `version-thual/gui-effects-demo.sleela`.
 
+- **`version-dual` — 4.0.** The 3.0 surface plus a rich, professional
+  **component set** and a substantially upgraded aesthetic. `SLPackage` reports
+  `version() == "4.0"` / `featureLevel() == 4` (`isFourPointZero()`), and the
+  line adds:
+  - **`SLGuiAudioRecorder`** — a standard audio-input record control (idle →
+    armed → recording ↔ paused → stopped, level/duration/clip, device + format).
+  - **`SLGuiVideoCanvas`** — a movie surface with full transport (play/pause/
+    stop/seek, position+duration, volume/mute, loop, rate, fullscreen, buffer).
+  - **`SLGuiUrlBar`** — an HTML-aware, HTTP-driven URL navigation bar (go/back/
+    forward/reload/stop, bounded history, HTTP status/content-type, HTML-aware).
+  - **`SLGuiClickObject`** — a custom click object: a small circle with
+    architecturally-driven motion (static/drift/orbit/pulse) and a staged
+    "System Apprentice" timer that escalates to a bound **final call**.
+  - **`SLGuiLayout`** — exact positioning (absolute x/y/w/h) + layout modes
+    (flow/grid/anchor/dock) with alignment, padding, gap, anchors.
+  - **`SLGuiGraphics`** — a graphics facility (bounded draw-command list) **and**
+    its control layer (quality, antialiasing, layer, dirty region).
+  - **`SLGuiAdminAuthority`** — admin **sign-in** to start a process, **sign-off**
+    on a component operation, and a **signature for Law**, with a fail-closed,
+    audited authority trail.
+  - **`SLGuiSettings`** gains an aesthetic surface (preset flat/soft/glass/metal/
+    neon, corner radius, elevation, density, type scale, accent/surface, high
+    contrast); `SLGuiWidgetFactory` registers the new component tags.
+  A runnable walkthrough is `version-dual/gui-components-demo.sleela`.
+
 The lines are source-compatible: each higher line keeps every entry point of the
-one below and adds its surface on top (1.0 → +settings → +visual effects).
+one below and adds its surface on top (1.0 → +settings → +visual effects →
++professional components).
 
 ## Events, DHTML-style DOM, and scripting
 

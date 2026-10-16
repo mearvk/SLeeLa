@@ -1,0 +1,197 @@
+/*
+ * lib/gui/version-dual/SLGuiSettings.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiSettings — the 2.0 (gual) settings surface for the
+ *   SLeeLa GUI package. Where the 1.0 (mual) line scattered a few tunables
+ *   across classes, 2.0 gathers the operating knobs into one validated,
+ *   nameful object: presentation (theme, DPI scale, reduced-motion /
+ *   accessibility, vsync), window defaults (min/max size, resizable,
+ *   decorations), and the document-listener timing (poll cadence, debounce
+ *   window, coalesce-queue cap, backpressure policy).
+ *
+ *   Every setting is CLAMPED to a safe window when applied — a dialed value is
+ *   never accepted outside its stated range, and honored()/report() say whether
+ *   the configuration is internally consistent. This mirrors the quality-first,
+ *   clamp-to-window discipline used by the lib/cpu timing/voltage layer.
+ *
+ * Family: gui. A plain settings object; read by SLGuiBackend / SLGuiWindow /
+ *   SLGuiDocumentListener and by SLGuiApp at boot.
+ */
+#sleela 2.1
+class SLGuiSettings {
+  // --- theme ---
+  static final int THEME_SYSTEM = 0;   // follow the OS theme
+  static final int THEME_LIGHT  = 1;
+  static final int THEME_DARK   = 2;
+
+  // --- document-listener backpressure policy ---
+  static final int BACKPRESSURE_COALESCE = 0;  // merge overflow into the latest (default)
+  static final int BACKPRESSURE_DROP     = 1;  // drop oldest when the queue is full
+  static final int BACKPRESSURE_BLOCK    = 2;  // block the producer until drained
+
+  // --- presentation ---
+  int theme;            // THEME_*
+  int dpiScalePct;      // display scale percentage, 50..400 (100 = 1x)
+  int reducedMotion;    // 1 = minimize animation (accessibility)
+  int accessible;       // 1 = expose accessibility tree / larger hit targets
+  int vsync;            // 1 = present synchronized to the display refresh
+
+  // --- window defaults ---
+  int minWidth; int minHeight;
+  int maxWidth; int maxHeight;
+  int resizable;        // 1 = user may resize
+  int decorated;        // 1 = OS title bar / borders
+
+  // --- document-listener timing ---
+  int pollMillis;       // OS wake cadence (ms), 10..60000
+  int debounceMillis;   // settle window after a change before emitting, 0..10000
+  int coalesceQueueMax; // max pending change events before backpressure, 1..4096
+  int backpressure;     // BACKPRESSURE_*
+
+  // --- 4.0 aesthetic (substantially upgraded look) ---
+  // Named aesthetic presets the host maps to a polished design language.
+  static final int AESTHETIC_FLAT    = 0;  // minimal, flat
+  static final int AESTHETIC_SOFT    = 1;  // soft shadows, rounded (default)
+  static final int AESTHETIC_GLASS   = 2;  // translucent/blurred "glass"
+  static final int AESTHETIC_METAL   = 3;  // brushed metal + specular
+  static final int AESTHETIC_NEON     = 4; // dark + accent glow
+  // Spacing density.
+  static final int DENSITY_COMPACT   = 0;
+  static final int DENSITY_COMFORT   = 1;  // default
+  static final int DENSITY_SPACIOUS  = 2;
+
+  int aesthetic;        // AESTHETIC_*
+  int cornerRadiusPx;   // widget corner radius, 0..48
+  int elevationPct;     // shadow/elevation strength, 0..100
+  int density;          // DENSITY_*
+  int typeScalePct;     // typography scale, 75..200 % (relative to base)
+  String accentColor;   // primary accent "#rrggbb" / named
+  String surfaceColor;  // base surface color
+  int contrastHigh;     // 1 = high-contrast mode (accessibility aesthetic)
+
+  // Apply the documented, careful defaults. Everything here is already in range.
+  void configure() {
+    theme = THEME_SYSTEM; dpiScalePct = 100; reducedMotion = 0; accessible = 1; vsync = 1;
+    minWidth = 320; minHeight = 240; maxWidth = 0; maxHeight = 0;   // 0 = unbounded
+    resizable = 1; decorated = 1;
+    pollMillis = 500; debounceMillis = 50; coalesceQueueMax = 64;
+    backpressure = BACKPRESSURE_COALESCE;
+    // 4.0 aesthetic: a polished, soft default — rounded, gentle elevation,
+    // comfortable density, a confident accent on a deep surface.
+    aesthetic = AESTHETIC_SOFT; cornerRadiusPx = 10; elevationPct = 35;
+    density = DENSITY_COMFORT; typeScalePct = 100;
+    accentColor = "#2E8BFF"; surfaceColor = "#0B1E3A"; contrastHigh = 0;
+  }
+
+  // --- clamped setters: a value out of range is pulled to the nearest bound ---
+  int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
+
+  void setTheme(int t) { if (t >= THEME_SYSTEM && t <= THEME_DARK) { theme = t; } }
+  void setDpiScalePct(int pct) { dpiScalePct = clamp(pct, 50, 400); }
+  void setReducedMotion(boolean on) { reducedMotion = on ? 1 : 0; }
+  void setAccessible(boolean on) { accessible = on ? 1 : 0; }
+  void setVsync(boolean on) { vsync = on ? 1 : 0; }
+
+  void setMinSize(int w, int h) { if (w > 0) { minWidth = w; } if (h > 0) { minHeight = h; } }
+  // Max of 0 means unbounded; a positive max must not fall below the min.
+  void setMaxSize(int w, int h) {
+    if (w == 0 || w >= minWidth)  { maxWidth = (w < 0) ? 0 : w; }
+    if (h == 0 || h >= minHeight) { maxHeight = (h < 0) ? 0 : h; }
+  }
+  void setResizable(boolean on) { resizable = on ? 1 : 0; }
+  void setDecorated(boolean on) { decorated = on ? 1 : 0; }
+
+  void setPollMillis(int ms) { pollMillis = clamp(ms, 10, 60000); }
+  void setDebounceMillis(int ms) { debounceMillis = clamp(ms, 0, 10000); }
+  void setCoalesceQueueMax(int n) { coalesceQueueMax = clamp(n, 1, 4096); }
+  void setBackpressure(int policy) {
+    if (policy >= BACKPRESSURE_COALESCE && policy <= BACKPRESSURE_BLOCK) { backpressure = policy; }
+  }
+
+  // --- 4.0 aesthetic setters (clamped/validated) ---
+  void setAesthetic(int a) { if (a >= AESTHETIC_FLAT && a <= AESTHETIC_NEON) { aesthetic = a; } }
+  void setCornerRadiusPx(int px) { cornerRadiusPx = clamp(px, 0, 48); }
+  void setElevationPct(int pct) { elevationPct = clamp(pct, 0, 100); }
+  void setDensity(int d) { if (d >= DENSITY_COMPACT && d <= DENSITY_SPACIOUS) { density = d; } }
+  void setTypeScalePct(int pct) { typeScalePct = clamp(pct, 75, 200); }
+  void setAccentColor(String c) { if (c != null) { accentColor = c; } }
+  void setSurfaceColor(String c) { if (c != null) { surfaceColor = c; } }
+  void setContrastHigh(boolean on) { contrastHigh = on ? 1 : 0; }
+
+  int getAesthetic() { return aesthetic; }
+  int getCornerRadiusPx() { return cornerRadiusPx; }
+  int getElevationPct() { return elevationPct; }
+  int getDensity() { return density; }
+  int getTypeScalePct() { return typeScalePct; }
+  String getAccentColor() { return accentColor; }
+  String getSurfaceColor() { return surfaceColor; }
+  boolean contrastHighOn() { return contrastHigh == 1; }
+  String aestheticName() {
+    if (aesthetic == AESTHETIC_FLAT)  { return "flat"; }
+    if (aesthetic == AESTHETIC_GLASS) { return "glass"; }
+    if (aesthetic == AESTHETIC_METAL) { return "metal"; }
+    if (aesthetic == AESTHETIC_NEON)  { return "neon"; }
+    return "soft";
+  }
+  String densityName() {
+    if (density == DENSITY_COMPACT)  { return "compact"; }
+    if (density == DENSITY_SPACIOUS) { return "spacious"; }
+    return "comfortable";
+  }
+
+  // --- readers ---
+  int getTheme() { return theme; }
+  int getDpiScalePct() { return dpiScalePct; }
+  boolean reducedMotionOn() { return reducedMotion == 1; }
+  boolean accessibleOn() { return accessible == 1; }
+  boolean vsyncOn() { return vsync == 1; }
+  int getMinWidth() { return minWidth; }
+  int getMinHeight() { return minHeight; }
+  int getMaxWidth() { return maxWidth; }
+  int getMaxHeight() { return maxHeight; }
+  boolean resizableOn() { return resizable == 1; }
+  boolean decoratedOn() { return decorated == 1; }
+  int getPollMillis() { return pollMillis; }
+  int getDebounceMillis() { return debounceMillis; }
+  int getCoalesceQueueMax() { return coalesceQueueMax; }
+  int getBackpressure() { return backpressure; }
+
+  String themeName() {
+    if (theme == THEME_LIGHT) { return "light"; }
+    if (theme == THEME_DARK)  { return "dark"; }
+    return "system";
+  }
+  String backpressureName() {
+    if (backpressure == BACKPRESSURE_DROP)  { return "drop-oldest"; }
+    if (backpressure == BACKPRESSURE_BLOCK) { return "block"; }
+    return "coalesce";
+  }
+
+  // Internally consistent when every clamped field sits in range and a bounded
+  // max is not below its min (0 = unbounded always passes).
+  boolean honored() {
+    boolean scaleOk = dpiScalePct >= 50 && dpiScalePct <= 400;
+    boolean pollOk = pollMillis >= 10 && pollMillis <= 60000;
+    boolean debounceOk = debounceMillis >= 0 && debounceMillis <= 10000;
+    boolean queueOk = coalesceQueueMax >= 1 && coalesceQueueMax <= 4096;
+    boolean widthOk = maxWidth == 0 || maxWidth >= minWidth;
+    boolean heightOk = maxHeight == 0 || maxHeight >= minHeight;
+    boolean radiusOk = cornerRadiusPx >= 0 && cornerRadiusPx <= 48;
+    boolean elevOk = elevationPct >= 0 && elevationPct <= 100;
+    boolean typeOk = typeScalePct >= 75 && typeScalePct <= 200;
+    return scaleOk && pollOk && debounceOk && queueOk && widthOk && heightOk &&
+           radiusOk && elevOk && typeOk;
+  }
+
+  String report() {
+    return "theme=" + themeName() + " dpi=" + dpiScalePct + "% vsync=" + vsync +
+           " a11y=" + accessible + " motion-" + (reducedMotion == 1 ? "reduced" : "full") +
+           " window[min " + minWidth + "x" + minHeight + " max " + maxWidth + "x" + maxHeight +
+           " resizable=" + resizable + " decorated=" + decorated + "]" +
+           " listener[poll=" + pollMillis + "ms debounce=" + debounceMillis +
+           "ms queue<=" + coalesceQueueMax + " bp=" + backpressureName() + "]" +
+           " aesthetic[" + aestheticName() + " radius=" + cornerRadiusPx + "px elev=" +
+           elevationPct + "% density=" + densityName() + " type=" + typeScalePct +
+           "% accent=" + accentColor + " contrast=" + (contrastHigh == 1 ? "high" : "normal") + "]";
+  }
+}

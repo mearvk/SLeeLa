@@ -1,0 +1,91 @@
+/*
+ * lib/gui/version-dual/gui-events-demo.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Runnable demonstrator for the /lib/gui event + DHTML + scripting
+ *   layer. It builds a small document (a window with a button and an entry),
+ *   binds callbacks (onClick / onInput) the DHTML way, raises events and shows
+ *   the dispatcher routing them to operations with the take-the-latch latch,
+ *   demonstrates preventDefault/stopPropagation, mutates the DOM live
+ *   (setText/setStyle/hide), and finally drives the SAME interface from an
+ *   SLGuiScript command list — proving the UI can be authored and driven by
+ *   scripting. Self-contained (inline flow + main), in the style of
+ *   gui-demo.sleela.
+ *
+ * Family: gui. SLeeLa owns dispatch and the meaning of events; a host only
+ * raises them and mirrors the DOM onto widgets.
+ */
+#sleela 2.1
+class GuiEventsDemo {
+
+  String boolToStr(boolean b) { return b ? "yes" : "no"; }
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa GUI events: callbacks, DHTML DOM, and scripting");
+
+    // --- Build a document (DHTML-style) ------------------------------------
+    SLGuiDom dom = new SLGuiDom();
+    dom.init();
+    SLGuiNode win = dom.createRoot("window", "app");
+    SLGuiNode button = dom.appendElement("app", "button", "save");
+    button.setText("Save");
+    SLGuiNode entry = dom.appendElement("app", "entry", "name");
+    entry.setAttribute("placeholder", "Your name");
+    print("document nodes -> " + dom.size()
+        + "; root children -> " + dom.getElementById("app").children());
+
+    // --- Bind callbacks the DHTML way --------------------------------------
+    SLGuiHandler onSave = dom.onClick("save", "doSave");
+    SLGuiHandler onType = dom.onInput("name", "doValidate");
+    print("bound click 'save' -> doSave; input 'name' -> doValidate");
+
+    // --- Raise events; the dispatcher routes them --------------------------
+    int fired = dom.fire(SLGuiEventType.CLICK, "save", "");
+    print("click 'save' -> handlers fired: " + fired
+        + "; onSave latched: " + boolToStr(onSave.take()));
+
+    dom.fire(SLGuiEventType.INPUT, "name", "Ada");
+    print("input 'name'='Ada' -> onType value: '" + onType.value() + "'");
+
+    // --- preventDefault / stopPropagation ----------------------------------
+    SLGuiEvent key = new SLGuiEvent();
+    key.configure(SLGuiEventType.KEYDOWN, "name");
+    key.setKey("Enter");
+    dom.addEventListener("name", "keydown", "doSubmit");
+    dom.dispatchEvent(key);
+    key.preventDefault();
+    print("keydown Enter -> defaultPrevented: " + boolToStr(key.isDefaultPrevented()));
+
+    // --- Mutate the DOM live -----------------------------------------------
+    dom.setText("save", "Saved!");
+    dom.setStyle("save", "accent", "suggested");
+    dom.setEnabled("save", false);
+    print("live mutate -> save.text='" + dom.getElementById("save").text()
+        + "', enabled=" + boolToStr(dom.getElementById("save").isEnabled()));
+
+    // --- Drive the SAME DOM from a script ----------------------------------
+    banner("Scripting: build + drive a panel from a command list");
+    SLGuiScript script = new SLGuiScript();
+    script.init(dom);
+    script.create("box", "panel", "app");
+    script.create("label", "status", "panel");
+    script.text("status", "Ready");
+    script.style("status", "color", "dim");
+    script.on("panel", "click", "doPanelClick");
+    script.fire("panel", "click", "from-script");
+    int ran = script.run();
+    print("script commands executed -> " + ran + "/" + script.size()
+        + "; ok: " + boolToStr(script.ok()));
+    print("status node text -> '" + dom.getElementById("status").text()
+        + "'; total nodes -> " + dom.size());
+
+    banner("Done");
+    print("SLeeLa owns the DOM, dispatch, and script execution; the host raises");
+    print("events and mirrors the dirty nodes onto real SleelaUI widgets.");
+  }
+}
