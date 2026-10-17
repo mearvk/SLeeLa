@@ -4,6 +4,9 @@
 # build-linux.sh — Build SLeeLa for Linux; optional install when BIN_DIR is set
 # =============================================================================
 # 
+# Builds the core binaries (sleela, nordshrift) and the XLT CPU-model compiler
+# (xltc, from impl/xlt). When BIN_DIR is set, all three are installed there.
+#
 # Usage:
 #   ./build-linux.sh              # Build only (no install)
 #   CC=clang CXX=clang++ ./build-linux.sh
@@ -32,6 +35,8 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 IMPL_DIR="$REPO_ROOT/impl"
 BUILD_DIR="$IMPL_DIR/build"
+XLT_DIR="$IMPL_DIR/xlt"
+XLT_BUILD_DIR="$XLT_DIR/build"
 
 # Set default compilers if not already set
 export CC="${CC:-gcc}"
@@ -94,6 +99,18 @@ if [ ! -f "$BUILD_DIR/sleela" ] || [ ! -f "$BUILD_DIR/nordshrift" ]; then
     exit 1
 fi
 
+# Build the XLT (.xlt) CPU-model compiler. It is self-contained (own Makefile,
+# no dependency on the Nordshrift build) and produces impl/xlt/build/xltc.
+echo ""
+echo "Building XLT compiler (xltc)..."
+make -C "$XLT_DIR" clean
+make -C "$XLT_DIR"
+
+if [ ! -f "$XLT_BUILD_DIR/xltc" ]; then
+    echo "ERROR: XLT build failed. 'xltc' not found in $XLT_BUILD_DIR."
+    exit 1
+fi
+
 echo ""
 echo "Build completed successfully!"
 echo ""
@@ -102,7 +119,7 @@ echo ""
 echo "=========================================="
 echo "Generated Binaries"
 echo "=========================================="
-ls -lh "$BUILD_DIR/sleela" "$BUILD_DIR/nordshrift"
+ls -lh "$BUILD_DIR/sleela" "$BUILD_DIR/nordshrift" "$XLT_BUILD_DIR/xltc"
 echo ""
 
 # Check if we have write permission to BIN_DIR
@@ -123,26 +140,31 @@ if [ -n "$BIN_DIR" ] && [ "$BIN_DIR" != "$BUILD_DIR" ]; then
     echo "Installing binaries to $BIN_DIR..."
     cp "$BUILD_DIR/sleela" "$BIN_DIR/sleela"
     cp "$BUILD_DIR/nordshrift" "$BIN_DIR/nordshrift"
-    chmod +x "$BIN_DIR/sleela" "$BIN_DIR/nordshrift"
+    cp "$XLT_BUILD_DIR/xltc" "$BIN_DIR/xltc"
+    chmod +x "$BIN_DIR/sleela" "$BIN_DIR/nordshrift" "$BIN_DIR/xltc"
     
     echo "=========================================="
     echo "Installation Complete"
     echo "=========================================="
     echo "sleela:     $BIN_DIR/sleela"
     echo "nordshrift: $BIN_DIR/nordshrift"
+    echo "xltc:       $BIN_DIR/xltc"
     echo ""
     echo "Verify installation:"
     echo "  $BIN_DIR/sleela version"
     echo "  $BIN_DIR/nordshrift version"
+    echo "  $BIN_DIR/xltc $REPO_ROOT/lib/xlt/examples/epyc-ddr2.xlt"
 else
     echo "=========================================="
     echo "Build Complete (no separate install)"
     echo "=========================================="
-    echo "Binaries remain in: $BUILD_DIR"
+    echo "Binaries remain in: $BUILD_DIR (sleela, nordshrift)"
+    echo "XLT compiler remains in: $XLT_BUILD_DIR (xltc)"
     echo ""
     echo "To use globally, copy them to a directory in \$PATH:"
     echo "  sudo cp $BUILD_DIR/sleela /usr/local/bin/"
     echo "  sudo cp $BUILD_DIR/nordshrift /usr/local/bin/"
+    echo "  sudo cp $XLT_BUILD_DIR/xltc /usr/local/bin/"
     echo ""
     echo "Or set BIN_DIR and run again:"
     echo "  BIN_DIR=/usr/local/bin ./build-linux.sh"
