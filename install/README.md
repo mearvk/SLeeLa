@@ -50,3 +50,30 @@ install\\quick-safe-install.cmd
 ```
 
 **SLeeLa — MEARVK LLC — 2026**
+
+## Conventional `make install`
+
+The conventional installation target is non-interactive and installs the built
+native commands plus runtime libraries, verification tooling, documentation,
+examples, and a default configuration. It does not replace the interactive
+Quick and Safe installer above.
+
+From the repository root:
+
+```sh
+make -C impl all
+sudo make install                         # default prefix: /usr/local
+make install PREFIX="$HOME/.local"         # user-local; no sudo
+make install DESTDIR="$PWD/package-root"  # staged package installation
+make install-check                        # verify installer entry points
+make -C install uninstall                 # remove installed files, preserve config
+```
+
+The default executable directory is `$(PREFIX)/bin`, runtime support files are
+under `$(PREFIX)/lib/sleela`, and shared documentation/examples are under
+`$(PREFIX)/share/sleela`. The default configuration is
+`/etc/sleela/startup.conf`; an existing configuration is never overwritten.
+Use `BINDIR`, `LIBDIR`, `DATADIR`, and `SYSCONFDIR` to override the
+corresponding destinations. On Linux, `/usr/local/bin` is preferred to
+`/usr/bin` for a source installation so system package-manager files are not
+overwritten. The uninstall target deliberately preserves configuration.
