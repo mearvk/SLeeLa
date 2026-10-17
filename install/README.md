@@ -18,7 +18,7 @@ The Linux/macOS user-local destination can be overridden with `SLEELA_INSTALL_RO
 1. Choose user-local or system-wide scope.
 2. Select SLeeLa System/server, HTTP servers 1–9, VM edition, and Port Authority startup options.
 3. Build SLeeLa before deployment unless the Windows `-NoBuild` option is used.
-4. Stage the runtime, including the compiled `sleela` and `nordshrift` products.
+4. Stage the runtime, including the compiled `sleela`, `sleelvac`, and `nordshrift` products.
 5. Back up an existing destination before updating it.
 6. Install binaries, libraries, and `config/startup.conf`.
 7. Configure only the PATH scope corresponding to the selected installation mode.
@@ -54,7 +54,7 @@ install\\quick-safe-install.cmd
 ## Conventional `make install`
 
 The conventional installation target is non-interactive and installs the built
-native commands plus runtime libraries, verification tooling, documentation,
+native commands (`sleela`, `sleelvac`, and `nordshrift`) plus runtime libraries, verification tooling, documentation,
 examples, and a default configuration. It does not replace the interactive
 Quick and Safe installer above.
 
