@@ -59,7 +59,7 @@ static bool builtin(const std::string&n){
 }
 struct MethodSig{const Method* m=nullptr;std::string owner;};
 class Analyzer{
- const Program&p; const SyntaxVersion&syntax; SemanticResult r;
+ const Program&p; const SyntaxVersion&syntax; const bool requireMain; SemanticResult r;
  std::set<std::string> structs; std::set<std::string> classNames; std::map<std::string,std::map<std::string,Type>> fields;
  std::map<std::string,MethodSig> methods; std::map<std::string,Type> globals; std::map<std::string,std::string> owners;
  std::map<std::string,std::string> superOf; // derived class -> resolved base (syntax 1.10)
@@ -170,7 +170,7 @@ class Analyzer{
  bool declare(const std::string&n,const Type&t){auto&v=scopes.back().vars;if(v.count(n)){err("duplicate local variable '"+n+"'");return false;}v[n]=t;return true;}
  Type lookup(const std::string&n)const{for(auto i=scopes.rbegin();i!=scopes.rend();++i){auto x=i->vars.find(n);if(x!=i->vars.end())return x->second;}auto cf=fields.find(cls);if(cf!=fields.end()){auto x=cf->second.find(n);if(x!=cf->second.end())return x->second;}auto g=globals.find(cls+"::"+n);if(g!=globals.end())return g->second;g=globals.find(n);if(g!=globals.end())return g->second;if(n=="next")return{Kind::Int,{}};return{Kind::Error,n};}
  void declarations(){
-  if(!methods.count("main"))err("no 'main' method found");
+  if(requireMain&&!methods.count("main"))err("no 'main' method found");
   for(const auto&c:p.classes){for(const auto&f:c.fields){if(f.isProtected&&!f.isStatic)err("protected field '"+f.name+"' must also be static");}
    for(const auto&m:c.methods){std::set<std::string> seen;for(const auto&x:m.params){if(!known(x.type))err("unknown parameter type '"+x.type+"'");if(x.type=="void")err("parameter '"+x.name+"' cannot be void");if(!seen.insert(x.name).second)err("duplicate parameter '"+x.name+"' in method '"+m.name+"'");}}}
  }
@@ -360,7 +360,7 @@ class Analyzer{
   return tn(target.retType);
 }
 public:
- Analyzer(const Program&x,const SyntaxVersion&s):p(x),syntax(s){}
+ Analyzer(const Program&x,const SyntaxVersion&s,bool needMain):p(x),syntax(s),requireMain(needMain){}
  SemanticResult run(){
   collect();
   declarations();
@@ -373,5 +373,5 @@ public:
 }
 };
 }
-SemanticResult analyzeSemantics(const Program&p,const SyntaxVersion&s){return Analyzer(p,s).run();}
+SemanticResult analyzeSemantics(const Program&p,const SyntaxVersion&s,bool requireMain){return Analyzer(p,s,requireMain).run();}
 }
