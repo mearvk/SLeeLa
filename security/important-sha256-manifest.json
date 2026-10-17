@@ -4320,7 +4320,7 @@
     },
     {
       "path": "example/gui-military-command-console.sleela",
-      "sha256": "cebb6fe50f0b0c8f734a61ac23ab70a6620e739e0026b6cd38da3b0047ae3da2"
+      "sha256": "89402898dcccbd563daf7e05a8a0fcb3c11968bb18034a026e04285ec25bec94"
     },
     {
       "path": "example/run-gui-military.sh",
@@ -6008,7 +6008,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "03a3946c70ec4cb28c5dd4c81dff1276f8e8cfcecbb31b88f7702ae525e5ac08"
+      "sha256": "cbec6a8dbd4b03a3b41197b5ae08bc5c6ef643bddb4b1808de795c1279135369"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -6064,7 +6064,7 @@
     },
     {
       "path": "impl/frontend/library_index.cpp",
-      "sha256": "64ecdd3f0e6cd9b2ed2a43744ef45204611546c26be37e3e12d146afbdd71805"
+      "sha256": "1de5e6b4ae98dcf4eaf74c09d9d776bc6fb4f1b037d460657e03e2ac7a2d895a"
     },
     {
       "path": "impl/frontend/library_index.h",
@@ -6072,7 +6072,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "b714b03dbc171a1e6202bea044e1139a7979b40277efc7f26fcc2918bdbf99c4"
+      "sha256": "de80274155cd06ea51c7399a1835de3ab7713d8c820cb10f0793d96082e4147d"
     },
     {
       "path": "impl/frontend/parser.h",
