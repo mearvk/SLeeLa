@@ -6008,7 +6008,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "cbec6a8dbd4b03a3b41197b5ae08bc5c6ef643bddb4b1808de795c1279135369"
+      "sha256": "32fc2c2a527c88e541fc04a7a30b0ffb20d8aeb28921b513a176087cfa692dcd"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -7200,7 +7200,7 @@
     },
     {
       "path": "install/install-runtime.py",
-      "sha256": "04058ad03f0f8cef1a1893820d24d9e0395aacd738b64ae6a6dd6041ebd76bf0"
+      "sha256": "4143d0a2385820ee28d78481f51405e94aca71589975859fdc11b1f9c211661b"
     },
     {
       "path": "install/quick-safe-install-macos.sh",
