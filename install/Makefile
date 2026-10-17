@@ -42,11 +42,13 @@ install-check:
 
 install:
 	@test -x "$(REPO_ROOT)/impl/build/sleela" || { echo "Missing impl/build/sleela; run make -C impl all first." >&2; exit 1; }
+	@test -x "$(REPO_ROOT)/impl/build/sleelvac" || { echo "Missing impl/build/sleelvac; run make -C impl all first." >&2; exit 1; }
 	@test -x "$(REPO_ROOT)/impl/build/nordshrift" || { echo "Missing impl/build/nordshrift; run make -C impl all first." >&2; exit 1; }
-	@if { [ -e "$(DESTDIR)$(BINDIR)/sleela" ] || [ -e "$(DESTDIR)$(BINDIR)/nordshrift" ]; } && [ ! -f "$(RUNTIME_DIR)/.sleela-install-manifest.json" ]; then echo "Refusing to overwrite existing command(s) not tracked as a SLeeLa install. Inspect them or choose another PREFIX." >&2; exit 1; fi
+	@if { [ -e "$(DESTDIR)$(BINDIR)/sleela" ] || [ -e "$(DESTDIR)$(BINDIR)/sleelvac" ] || [ -e "$(DESTDIR)$(BINDIR)/nordshrift" ]; } && [ ! -f "$(RUNTIME_DIR)/.sleela-install-manifest.json" ]; then echo "Refusing to overwrite existing command(s) not tracked as a SLeeLa install. Inspect them or choose another PREFIX." >&2; exit 1; fi
 	@echo "Installing SLeeLa to prefix $(PREFIX) (DESTDIR=$(DESTDIR))"
 	install -d "$(DESTDIR)$(BINDIR)" "$(RUNTIME_DIR)/lib" "$(RUNTIME_DIR)/tools" "$(RUNTIME_DIR)/security" "$(DATA_DIR)/docs" "$(DATA_DIR)/examples" "$(CONFIG_DIR)"
 	install -m 755 "$(REPO_ROOT)/impl/build/sleela" "$(DESTDIR)$(BINDIR)/sleela"
+	install -m 755 "$(REPO_ROOT)/impl/build/sleelvac" "$(DESTDIR)$(BINDIR)/sleelvac"
 	install -m 755 "$(REPO_ROOT)/impl/build/nordshrift" "$(DESTDIR)$(BINDIR)/nordshrift"
 	cp -a "$(REPO_ROOT)/lib/." "$(RUNTIME_DIR)/lib/"
 	install -m 644 "$(REPO_ROOT)/tools/verify-before-execution.py" "$(RUNTIME_DIR)/tools/"
@@ -57,9 +59,9 @@ install:
 	install -m 644 "$(REPO_ROOT)/README.md" "$(DATA_DIR)/README.md"
 	if [ ! -e "$(CONFIG_DIR)/startup.conf" ]; then install -m 644 "$(REPO_ROOT)/install/startup.conf.example" "$(CONFIG_DIR)/startup.conf"; fi
 	printf '%s\n' "$(PREFIX)" > "$(RUNTIME_DIR)/install-prefix"
-	printf '%s\n' "$(BINDIR)/sleela" "$(BINDIR)/nordshrift" > "$(RUNTIME_DIR)/installed-binaries"
+	printf '%s\n' "$(BINDIR)/sleela" "$(BINDIR)/sleelvac" "$(BINDIR)/nordshrift" > "$(RUNTIME_DIR)/installed-binaries"
 	python3 "$(REPO_ROOT)/install/install-runtime.py" record "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"
-	@echo "SLeeLa installed. Commands: $(BINDIR)/sleela and $(BINDIR)/nordshrift"
+	@echo "SLeeLa installed. Commands: $(BINDIR)/sleela, $(BINDIR)/sleelvac, and $(BINDIR)/nordshrift"
 	@echo "Runtime: $(RUNTIME_DIR)"
 	@echo "Configuration: $(CONFIG_DIR)/startup.conf (existing configuration preserved)"
 
