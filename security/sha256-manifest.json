@@ -395,7 +395,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "672e9f2eb3674bca4bfd534457720a35cc64553ed2440032e4e1384ca242f0ed"
+      "sha256": "11d6ce8a454b8ae40618fb49c1a9ff825290a432e87182c214791d58a9c9ba7e"
     },
     {
       "path": "impl/frontend/compiler.cpp",
@@ -455,11 +455,11 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "4ae24add41a655e0e4f45d569e59c001e7c326027b8e11a860c77630a978baad"
+      "sha256": "28f9f1fabbf1808b4c61249a3483c32667c0949488d33cd78b077e8a9daabb7d"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "3875a0eb86c615601d184d61c4bdd841bc3d573b129bd1c0ea754f3fa422eb34"
+      "sha256": "1b07efbd2cc7ad395685aa3fd593a5c0b8649b86d89f642ed3a23383026061b0"
     },
     {
       "path": "impl/frontend/library_index.cpp",
@@ -471,7 +471,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "c775537a409248e06fcb33b688212f6a26451a3a3ff49b8fe162fdea5d9725be"
+      "sha256": "b714b03dbc171a1e6202bea044e1139a7979b40277efc7f26fcc2918bdbf99c4"
     },
     {
       "path": "impl/frontend/parser.h",
