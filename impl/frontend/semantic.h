@@ -10,6 +10,6 @@ struct SemanticResult {
     std::vector<std::string> warnings;
     bool ok() const { return errors.empty(); }
 };
-SemanticResult analyzeSemantics(const Program& program, const SyntaxVersion& syntax = SyntaxVersion{1,0});
+SemanticResult analyzeSemantics(const Program& program, const SyntaxVersion& syntax = SyntaxVersion{1,0}, bool requireMain = true);
 }
 #endif
