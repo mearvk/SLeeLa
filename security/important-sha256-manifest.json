@@ -4319,6 +4319,14 @@
       "sha256": "8a3c56c0766d53078656b24f21c5dc8d39ebf0cba00aa70403ed808abe21a387"
     },
     {
+      "path": "example/gui-military-command-console.sleela",
+      "sha256": "cebb6fe50f0b0c8f734a61ac23ab70a6620e739e0026b6cd38da3b0047ae3da2"
+    },
+    {
+      "path": "example/run-gui-military.sh",
+      "sha256": "a4d172f0eda34b37b753c2909e7d512208f500347312927bf8152307c03862ef"
+    },
+    {
       "path": "examples/extends/document_grouping.sleela",
       "sha256": "7ff0a86b30efe172abc69c60da2089ef63b4fe819c6f49af5511b76a9137eb06"
     },
@@ -55800,7 +55808,7 @@
     },
     {
       "path": "tools/check-math-accuracy.py",
-      "sha256": "13f969a1047b10bdd01531454a6578a42d89ad1b943f7db1e0e6ffab253f32db"
+      "sha256": "110d12bbf56cee250a6cbf60ce8f31b774411b0bec4c2be5ff7a841ac76ec76c"
     },
     {
       "path": "tools/country-network-enclosure.py",
