@@ -910,7 +910,7 @@ static int runJavaFrameworkSource(const std::string&path){
              <<" -> "<<probe.java_executable<<" -> "<<path<<"\n";
     return nativeCmd(static_cast<int>(args.size()),argv.data());
 }
-static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
+static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
 // Combine several parsed Programs into one compilation unit by concatenating
 // their classes/structs/imports (and merging document annotations). This lets a
 // user split a program across multiple .sleela files passed at run/compile time;
