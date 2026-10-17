@@ -916,6 +916,7 @@ static int runSource(const std::string&path){std::string src;sleela::Program pro
 // user split a program across multiple .sleela files passed at run/compile time;
 // downstream stages already treat the whole Program as one unit and will report
 // any duplicate struct/class/method across files.
+static void mergeProgram(sleela::Program& into,sleela::Program&& from);
 static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::Program& program){
     // Source libraries are compiled into the same Program/artifact as the client.
     // This deliberately resolves only class-like unit names referenced by source,
@@ -1012,6 +1013,7 @@ static int compileFilesMulti(const std::vector<std::string>& paths,const std::st
     for(const auto& path:paths){
         std::string src; sleela::Program prog; sleela::VersionResolution syntax;
         if(!parseSource(path,src,prog,syntax))return 1;
+        if(!loadReferencedLibraryUnits(src,prog))return 1;
         if(!haveSyntax){firstSyntax=syntax;haveSyntax=true;}
         mergeProgram(merged,std::move(prog));
     }
