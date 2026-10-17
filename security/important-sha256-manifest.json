@@ -53844,19 +53844,19 @@
     },
     {
       "path": "scripts/autocheck-toolchain.sh",
-      "sha256": "b05b958889803fe4a36b95c3db0ab3151d47196f32a4ab4ac737a3324543a5f0"
+      "sha256": "d8447ce3f3e9f251398047e3cdb3846733caef4c3d7d3ba81cec4ec336ecad21"
     },
     {
       "path": "scripts/build-linux.sh",
-      "sha256": "5e9373beaf3cbdc994d05d00f4b7a68ab95c242a4823c85c88cb10b716b97fca"
+      "sha256": "8e6872053c326d600425b601d6da7a0cb56c45db7d551a88e32dc2a4acf361bd"
     },
     {
       "path": "scripts/build-macos.sh",
-      "sha256": "0ebe9c0a18105ddac3d070d9c3864f2794ddf470e9a4405608b604ef313e2b36"
+      "sha256": "5e678e99c12b27d77530f6c9e8c15d3492daccea113d218f1b363b75a97cc4c1"
     },
     {
       "path": "scripts/clean-build.sh",
-      "sha256": "ddef050f7edc1f5a859605d0bf6b0d22130e1c1005a346adfe1ee3efd9637486"
+      "sha256": "0b84f5a1268543578a55d58b0d3d08a7216e6bad2e4d83e3501993743b236b04"
     },
     {
       "path": "scripts/install-linux-h3.sh",
@@ -53877,6 +53877,10 @@
     {
       "path": "scripts/validate-config.py",
       "sha256": "3654a3c91818a66f302d0b2464eb5e8ce971cd5a8363841626fad22f6dfa0be6"
+    },
+    {
+      "path": "scripts/xlt-check.sh",
+      "sha256": "4052ada66fa05d948ae53863187346b8d6f60f7332e06e62088412b32415d330"
     },
     {
       "path": "security/BUILD-VERIFICATION.md",
