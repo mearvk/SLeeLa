@@ -9256,7 +9256,7 @@
     },
     {
       "path": "lib/compiler/examples/check_examples.py",
-      "sha256": "8cf4520506818fdde2a89c6a2a08eba1a326611da12fda9b1f56e91459fd2802"
+      "sha256": "d881eea7bd8e237d6142b89bb3ddec3818f7fc6170ef8037f2757a9d3f0e881e"
     },
     {
       "path": "lib/compiler/frontends/c/CLanguageCompiler.sleela",
@@ -53856,7 +53856,7 @@
     },
     {
       "path": "runtime/vm_config_smoke.c",
-      "sha256": "26801772d36a26450bfdfe06feb36a50d623240c3f46e9b6c6c8d3fe8ff50647"
+      "sha256": "5dba9f2e899ba02e14a51562e5edf3e05e82e855be90788f06271a1aa308d73e"
     },
     {
       "path": "scripts/autocheck-toolchain.sh",
@@ -55912,7 +55912,7 @@
     },
     {
       "path": "tools/sleela-build.py",
-      "sha256": "18c3af0d830035e72c2fb4840b5ea29f476a353e6b7fea470cc9aa782b334351"
+      "sha256": "3400368c81f602dec6bfc4ab587adfc575b2ffe9571e13247e97768141f4f277"
     },
     {
       "path": "tools/sleela-character-scan.py",
