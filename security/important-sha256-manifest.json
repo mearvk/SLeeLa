@@ -53871,6 +53871,10 @@
       "sha256": "b30c014deb41cd78840467760510a418560181e2fc93bbcd71a8ffe835da2258"
     },
     {
+      "path": "scripts/regen-manifest.sh",
+      "sha256": "2564e52afe29340485813e5733ad1829d8b3c5fb93be3cc95118c83728157127"
+    },
+    {
       "path": "scripts/tutorial-check.sh",
       "sha256": "c5c146a9cc9c33b12c9abcf05430d4ea5b2ae98f6d4fe1e55403cfc42386b061"
     },
