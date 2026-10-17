@@ -166,8 +166,15 @@ Program Parser::parseProgram(){
                 if(!parsedDynamite)i_=save;
             }
             if(!parsedDynamite) {
-                p.imports.push_back(expect(Tok::Ident,"module name").text);
+                std::string module=expect(Tok::Ident,"module name").text;
+                // Permit qualified library roots (for example
+                // gui.version-military) as well as simple native modules.
+                while(!check(Tok::Semicolon)&&!check(Tok::Eof)){
+                    module += cur().text;
+                    ++i_;
+                }
                 expect(Tok::Semicolon,"';'");
+                p.imports.push_back(std::move(module));
             }
         }
         else if(check(Tok::KwExtends)){ contentStarted=true; p.documentExtensions.push_back(parseDocumentExtension()); }
