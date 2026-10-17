@@ -41,6 +41,25 @@ install-check:
 	@echo "Installer entry points and compiled-product installation checks present for Linux, macOS, and Windows 10+."
 
 install:
+	@if [ -z "$(DESTDIR)" ] && [ "$$(id -u)" -ne 0 ] && { \
+		case "$(BINDIR) $(LIBDIR) $(DATADIR) $(SYSCONFDIR)" in \
+			*/usr/*|*/usr|*/opt/*|*/opt|*/etc/*|*/etc|*/var/*|*/var) exit 0 ;; \
+			*) exit 1 ;; \
+		esac; \
+	}; then \
+		if command -v sudo >/dev/null 2>&1; then \
+			echo "System installation requires administrator privileges; requesting sudo for system paths only."; \
+			exec sudo $(MAKE) --no-print-directory -C "$(CURDIR)" install \
+				PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" BINDIR="$(BINDIR)" \
+				LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)" \
+				SLEELA_INSTALL_ELEVATED=1; \
+		else echo "System installation needs root privileges; install sudo or run this target as root." >&2; exit 1; fi; \
+	fi
+	@if [ "$$(id -u)" -eq 0 ] && [ -z "$(DESTDIR)" ] && [ -n "$SUDO_USER" ] && { \
+		case "$(PREFIX)" in "/home/$SUDO_USER"/*|"/Users/$SUDO_USER"/*) exit 0 ;; *) exit 1 ;; esac; \
+	}; then \
+		echo "Refusing to install into a user's home directory as root. Run make install as that user without sudo." >&2; exit 1; \
+	fi
 	@test -x "$(REPO_ROOT)/impl/build/sleela" || { echo "Missing impl/build/sleela; run make -C impl all first." >&2; exit 1; }
 	@test -x "$(REPO_ROOT)/impl/build/sleelvac" || { echo "Missing impl/build/sleelvac; run make -C impl all first." >&2; exit 1; }
 	@test -x "$(REPO_ROOT)/impl/build/nordshrift" || { echo "Missing impl/build/nordshrift; run make -C impl all first." >&2; exit 1; }
@@ -58,13 +77,12 @@ install:
 	if [ -d "$(REPO_ROOT)/examples" ]; then cp -a "$(REPO_ROOT)/examples/." "$(DATA_DIR)/examples/"; fi
 	install -m 644 "$(REPO_ROOT)/README.md" "$(DATA_DIR)/README.md"
 	if [ ! -e "$(CONFIG_DIR)/startup.conf" ]; then install -m 644 "$(REPO_ROOT)/install/startup.conf.example" "$(CONFIG_DIR)/startup.conf"; fi
-	printf '%s\n' "$(PREFIX)" > "$(RUNTIME_DIR)/install-prefix"
-	printf '%s\n' "$(BINDIR)/sleela" "$(BINDIR)/sleelvac" "$(BINDIR)/nordshrift" > "$(RUNTIME_DIR)/installed-binaries"
+	printf '%s\\n' "$(PREFIX)" > "$(RUNTIME_DIR)/install-prefix"
+	printf '%s\\n' "$(BINDIR)/sleela" "$(BINDIR)/sleelvac" "$(BINDIR)/nordshrift" > "$(RUNTIME_DIR)/installed-binaries"
 	python3 "$(REPO_ROOT)/install/install-runtime.py" record "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"
 	@echo "SLeeLa installed. Commands: $(BINDIR)/sleela, $(BINDIR)/sleelvac, and $(BINDIR)/nordshrift"
 	@echo "Runtime: $(RUNTIME_DIR)"
 	@echo "Configuration: $(CONFIG_DIR)/startup.conf (existing configuration preserved)"
-
 uninstall:
 	@echo "Removing tracked SLeeLa files while preserving configuration and untracked data."
 	python3 "$(REPO_ROOT)/install/install-runtime.py" uninstall "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"
