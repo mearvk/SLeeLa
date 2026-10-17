@@ -37,7 +37,7 @@ The Court has no independent police force. Arrests, transfers, evidence gatherin
 
 Principal sources: [ICC official website](https://www.icc-cpi.int/), [Core Legal Texts](https://www.icc-cpi.int/publications/core-legal-texts), [Cases](https://www.icc-cpi.int/cases), and [Situations under investigation](https://www.icc-cpi.int/situations-under-investigations).
 
-## 2. What the Icc Is and Is Not
+## 2. What the ICC Is and Is Not
 
 | Question | Explanation |
 |---|---|
@@ -209,7 +209,7 @@ The [ASP Rome Statute and other agreements page](https://asp.icc-cpi.int/RomeSta
 
 The ASP page lists amendments, including amendments relating to Article 8, aggression, and Article 124. Do not assume every amendment binds every State Party identically.
 
-## 12. Relationship with the Un and Other Courts
+## 12. Relationship with the UN and Other Courts
 
 The ICC is not a UN organ. The Statute provides for a relationship agreement with the UN. The Security Council can refer situations under Chapter VII, and the Court interacts with UN bodies under specific legal and institutional arrangements.
 
@@ -272,7 +272,7 @@ Cite documents with title, issuing body, date, case/situation, document number w
 - Avoid sensationalism and unsupported claims about motive, guilt, or institutional independence.
 - For disputed legal conclusions, identify the source and relevant counter-position and cite the primary record.
 
-## 15. Sleela Library Recommendations
+## 15. SLeeLa Library Recommendations
 
 The SLeeLa international-criminal-court library should be a neutral legal-information and source-management module, not a replacement for judicial authority or legal counsel.
 
