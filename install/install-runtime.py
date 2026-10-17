@@ -45,7 +45,7 @@ def record(runtime, data, bindir):
                     continue
                 files.append({"root": label, "path": os.path.relpath(path, root)})
     payload = {"files": files, "binaries": [
-        os.path.join(bindir, "sleela"), os.path.join(bindir, "nordshrift")
+        os.path.join(bindir, "sleela"), os.path.join(bindir, "sleelvac"), os.path.join(bindir, "nordshrift")
     ], "bindir": bindir}
     with open(marker, "w", encoding="utf-8") as stream:
         json.dump(payload, stream, indent=2)
@@ -70,7 +70,7 @@ def uninstall(runtime, data, bindir):
         if os.path.isfile(path) or os.path.islink(path):
             os.remove(path)
     for binary in manifest.get("binaries", []):
-        if os.path.dirname(os.path.abspath(binary)) != bindir or os.path.basename(binary) not in ("sleela", "nordshrift"):
+        if os.path.dirname(os.path.abspath(binary)) != bindir or os.path.basename(binary) not in ("sleela", "sleelvac", "nordshrift"):
             raise SystemExit("Refusing unsafe binary uninstall path: " + repr(binary))
         if os.path.isfile(binary) or os.path.islink(binary):
             os.remove(binary)
