@@ -62,12 +62,20 @@ From the repository root:
 
 ```sh
 make -C impl all
-sudo make install                         # default prefix: /usr/local
-make install PREFIX="$HOME/.local"         # user-local; no sudo
+make install                              # auto-requests sudo for system paths
+make install PREFIX="$HOME/.local"         # user-local; stays as current user
+sudo make install                         # optional explicit system install
 make install DESTDIR="$PWD/package-root"  # staged package installation
 make install-check                        # verify installer entry points
 make -C install uninstall                 # remove installed files, preserve config
 ```
+
+Privilege handling is scope-aware: when the destinations are system locations
+and `DESTDIR` is empty, `make install` requests `sudo` automatically if needed.
+For user-local destinations such as `PREFIX="$HOME/.local"`, installation runs
+as the current user and does not elevate. Staged package installs using
+`DESTDIR` do not request elevation. Avoid running `sudo make install` with a
+user-home prefix; run it as the target user instead.
 
 The default executable directory is `$(PREFIX)/bin`, runtime support files are
 under `$(PREFIX)/lib/sleela`, and shared documentation/examples are under
