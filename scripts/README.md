@@ -119,6 +119,50 @@ Verifies the `tutorial/` lesson inventory and the `examples/*.xml` projects
 Validates the SLeeLa configuration policy (`config/*.conf`) and the
 `*.properties.example` templates without modifying them.
 
+### `regen-manifest.sh` — Regenerate / Check the SHA-256 Manifest
+Convenience wrapper around `tools/generate-sha256-manifest.py`.
+
+**Usage:**
+```bash
+./scripts/regen-manifest.sh            # regenerate security/sha256-manifest.json
+./scripts/regen-manifest.sh --check    # drift check only; never rewrites
+```
+Equivalent `make` targets (run from `impl/`):
+```bash
+make regen-manifest    # rewrite the manifest from current source
+make check-manifest    # fail if the committed manifest is out of sync (no rewrite)
+```
+
+---
+
+## The SHA-256 build gate and manifest
+
+The verified build fails closed: `make all` runs `verify-security` first and
+refuses to build unless every file in `security/sha256-manifest.json` matches
+its recorded SHA-256. This protects the interpreter/toolchain source (not the
+arbitrary programs it runs) from unexpected changes.
+
+When you **intentionally** edit verified source (the interpreter core, front
+end, Nordshrift driver, catalog, xclass, subject libraries, and the extra files
+the build consumes), regenerate the manifest so source and manifest agree again,
+then commit both together:
+
+```bash
+git status                 # confirm the only changed files are ones you meant to change
+git diff impl/frontend/    # review the actual edits
+./scripts/regen-manifest.sh
+```
+
+If you add a brand-new source file/directory that the build compiles, add it to
+`DEFAULT_SOURCE_DIRS`/`DEFAULT_EXTRA_FILES` in
+`tools/generate-sha256-manifest.py` before regenerating.
+
+Use `make check-manifest` (or `./scripts/regen-manifest.sh --check`) in CI or a
+pre-commit hook to catch a stale manifest *before* it blocks a build — it
+reports drift without rewriting anything, so the fail-closed guarantee is
+preserved. Regenerating blindly to silence a verification failure defeats the
+gate; regenerate because the edits were intended.
+
 ---
 
 ## XLT CPU-model compiler (`xltc`)
