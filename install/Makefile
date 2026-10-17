@@ -5,7 +5,15 @@ DESTDIR ?=
 BINDIR ?= $(PREFIX)/bin
 LIBDIR ?= $(PREFIX)/lib
 DATADIR ?= $(PREFIX)/share
-SYSCONFDIR ?= /etc
+# Keep the system default conventional, but make a custom/user prefix safe
+# without root by defaulting its configuration to the user's config directory.
+ifeq ($(origin SYSCONFDIR),undefined)
+  ifeq ($(PREFIX),/usr/local)
+    SYSCONFDIR := /etc
+  else
+    SYSCONFDIR := $(HOME)/.config
+  endif
+endif
 RUNTIME_NAME := sleela
 RUNTIME_DIR := $(DESTDIR)$(LIBDIR)/$(RUNTIME_NAME)
 DATA_DIR := $(DESTDIR)$(DATADIR)/$(RUNTIME_NAME)
