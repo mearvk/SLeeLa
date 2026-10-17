@@ -373,5 +373,6 @@ public:
 }
 };
 }
+SemanticResult analyzeSemantics(const Program&p,const SyntaxVersion&s){return analyzeSemantics(p,s,true);}
 SemanticResult analyzeSemantics(const Program&p,const SyntaxVersion&s,bool requireMain){return Analyzer(p,s,requireMain).run();}
 }
