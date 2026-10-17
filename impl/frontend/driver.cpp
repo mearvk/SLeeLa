@@ -944,11 +944,28 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
         for(const auto& name:names){
             if(loadedPaths.count(name)) continue;
             const sleela::library::Symbol* match=nullptr;
+            // A versioned library import such as `import gui.version-military;`
+            // selects that source subtree for duplicate class names.
+            std::vector<std::string> preferredRoots;
+            for(const auto& imported : program.imports){
+                std::string root=imported;
+                std::replace(root.begin(),root.end(),'.','/');
+                if(root.find('/')!=std::string::npos) preferredRoots.push_back(root);
+            }
+            auto underPreferredRoot=[&](const sleela::library::Symbol& symbol){
+                for(const auto& root:preferredRoots)
+                    if(symbol.path.rfind(root + "/",0)==0) return true;
+                return false;
+            };
+            bool hasPreferredMatch=false;
+            for(const auto& symbol:index.symbols())
+                if(symbol.name==name && underPreferredRoot(symbol)) hasPreferredMatch=true;
             for(const auto& symbol:index.symbols()){
                 if(symbol.name!=name) continue;
+                if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
                 if(match && match->path!=symbol.path){
                     std::cerr<<"sleelvac: ambiguous library symbol '"<<name<<"' in /lib ("
-                             <<match->path<<" and "<<symbol.path<<"); qualify the package/import or rename the unit.\n";
+                             <<match->path<<" and "<<symbol.path<<"); add a versioned import such as 'import gui.version-military;' to select the intended library line.\n";
                     return false;
                 }
                 match=&symbol;
