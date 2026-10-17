@@ -41,6 +41,22 @@ install:
 	cp -a "$(REPO_ROOT)/lib/." "$(RUNTIME_DIR)/lib/"
 	install -m 644 "$(REPO_ROOT)/tools/verify-before-execution.py" "$(RUNTIME_DIR)/tools/"
 	install -m 644 "$(REPO_ROOT)/security/sha256-manifest.json" "$(RUNTIME_DIR)/security/"
+	# Copy every manifest-listed source at its repository-relative path so the installed verifier has a complete source root.
+	python3 - "$(REPO_ROOT)" "$(RUNTIME_DIR)" <<'PY_MANIFEST_COPY'
+import json, os, shutil, sys
+repo, runtime = map(os.path.abspath, sys.argv[1:3])
+manifest = os.path.join(repo, "security", "sha256-manifest.json")
+with open(manifest, encoding="utf-8") as stream:
+    entries = json.load(stream).get("files", [])
+for entry in entries:
+    rel = entry["path"]
+    src = os.path.abspath(os.path.join(repo, rel))
+    if os.path.commonpath((repo, src)) != repo or not os.path.isfile(src):
+        raise SystemExit("Invalid or missing manifest source: " + rel)
+    dst = os.path.join(runtime, rel)
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    shutil.copy2(src, dst)
+PY_MANIFEST_COPY
 	cp -a "$(REPO_ROOT)/docs/." "$(DATA_DIR)/docs/"
 	if [ -d "$(REPO_ROOT)/examples" ]; then cp -a "$(REPO_ROOT)/examples/." "$(DATA_DIR)/examples/"; fi
 	install -m 644 "$(REPO_ROOT)/README.md" "$(DATA_DIR)/README.md"
