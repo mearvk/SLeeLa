@@ -822,7 +822,27 @@ static int designActivityCmd(int argc,char**argv){
     char json[1024];slda_format_json("sleela",&result,json,sizeof json);
     std::cout<<json<<"\n"; return 0;
 }
-static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela vm [list|select <native|1..10|premium 1..11>|info ...|run <premium <1..11>|native> <program.sleela>]\n  sleela modium [scan [native|1..10] [--exact|--seal]|status|restore <1..10>]\n  sleela registry [review [key]|get <key> <name>|set <key> <name> <val> [--int|--bool]|feature <name> [on|off]]\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
+static std::string cliProgramName = "sleela";
+static int usage(){
+    const std::string &n = cliProgramName;
+    std::cerr << "Usage:\n"
+              << "  " << n << " [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n"
+              << "  " << n << " run <file.sleela> [more.sleela ...]\n"
+              << "  " << n << " validate-artifact <file.sleela>\n"
+              << "  " << n << " check <file.sleela>\n"
+              << "  " << n << " http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n"
+              << "  " << n << " xclass [--run|--emit|--info] <file.xclass>\n"
+              << "  " << n << " langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n"
+              << "  " << n << " nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n"
+              << "  " << n << " vm [list|select <native|1..10|premium 1..11>|info ...|run <premium <1..11>|native> <program.sleela>]\n"
+              << "  " << n << " modium [scan [native|1..10] [--exact|--seal]|status|restore <1..10>]\n"
+              << "  " << n << " registry [review [key]|get <key> <name>|set <key> <name> <val> [--int|--bool]|feature <name> [on|off]]\n"
+              << "  " << n << " native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n"
+              << "  " << n << " exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n"
+              << "  " << n << " version\n"
+              << "  " << n << " defender <detect|fetch|build|install|provision> ...\n";
+    return 2;
+}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";
     // Creator-document schema binding: if the source declares a #schema pragma,
     // the referenced XSD must exist and its version must be understood. Absent
@@ -1118,6 +1138,7 @@ static int nordshriftCmd(int argc,char**argv){
     return compileAndRun(back,cat,ver.declared);
 }
 int main(int argc,char**argv){
+    if(argc>0 && argv[0] && *argv[0]) cliProgramName = fs::path(argv[0]).filename().string();
     if(argc<2)return usage();
     bool mmEnabled=true; size_t mmLimit=kDefaultMemoryLimit; std::string memoryConfig;
     if(const char*cfg=std::getenv("SLEELA_CONFIG_FILE"))memoryConfig=cfg; else if(fs::exists("sleela.conf"))memoryConfig="sleela.conf";
