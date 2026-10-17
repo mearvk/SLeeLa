@@ -10,6 +10,9 @@ struct SemanticResult {
     std::vector<std::string> warnings;
     bool ok() const { return errors.empty(); }
 };
-SemanticResult analyzeSemantics(const Program& program, const SyntaxVersion& syntax = SyntaxVersion{1,0}, bool requireMain = true);
+// Preserve the original two-argument symbol for existing callers and objects.
+SemanticResult analyzeSemantics(const Program& program, const SyntaxVersion& syntax = SyntaxVersion{1,0});
+// Library/SST validation may opt out of the executable-entry-point requirement.
+SemanticResult analyzeSemantics(const Program& program, const SyntaxVersion& syntax, bool requireMain);
 }
 #endif
