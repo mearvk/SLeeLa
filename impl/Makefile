@@ -52,6 +52,7 @@ STAGE_OPTIONS := $(STAGE)/Options
 STAGE_LIB := $(STAGE)/lib
 STAGE_DOCS := $(STAGE)/docs
 SLEELA_BIN := $(BUILD)/sleela$(EXE)
+SLEELAVC_BIN := $(BUILD)/sleelvac$(EXE)
 NORDSHRIFT_BIN := $(BUILD)/nordshrift$(EXE)
 # Reusable static archive of the native VM Core engine + its OS-abstraction
 # backends. This is the single "base engine" the premium SLVM generations under
@@ -226,18 +227,19 @@ else
 endif
 ALL_OBJECTS := $(CORE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all libslcore test-platform stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer
+.PHONY: all sleelvac libslcore test-platform stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer
 
-all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) $(SLCORE_LIB) stage
+all: verify-security $(SLEELA_BIN) $(SLEELAVC_BIN) $(NORDSHRIFT_BIN) $(SLCORE_LIB) stage
 
 # Build a stable, self-describing runtime layout. Build objects remain in build/;
 # the staged result contains only runtime-facing files and the default Config
 # and Options sets. Config is intentionally consolidated so a fresh build has
 # one authoritative default configuration set.
-stage: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
+stage: verify-security $(SLEELA_BIN) $(SLEELAVC_BIN) $(NORDSHRIFT_BIN)
 	@rm -rf $(STAGE)
 	@mkdir -p $(STAGE_BIN) $(STAGE_CONFIG) $(STAGE_OPTIONS) $(STAGE_LIB) $(STAGE_DOCS)
 	@cp $(SLEELA_BIN) $(STAGE_BIN)/
+	@cp $(SLEELAVC_BIN) $(STAGE_BIN)/
 	@cp $(NORDSHRIFT_BIN) $(STAGE_BIN)/
 	@cp ../sleela.conf.example $(STAGE_CONFIG)/sleela.conf
 	@cp ../config/vm.conf $(STAGE_CONFIG)/vm.conf
@@ -251,7 +253,7 @@ stage: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 
 package: stage
 	@echo "=== SLeeLa package layout ready: $(STAGE) ==="
-build-verified: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage
+build-verified: verify-security $(SLEELA_BIN) $(SLEELAVC_BIN) $(NORDSHRIFT_BIN) stage
 rebuild-verified:
 	$(MAKE) clean
 	$(MAKE) build-verified
@@ -297,6 +299,14 @@ check-manifest:
 # artifact is produced, but must never appear in $^ (some smoke-test link
 # rules link with $^, and a phony target name would leak onto the link line).
 $(ALL_OBJECTS): | verify-security
+
+# Sleelvac is the named compiler executable. The current front-end driver exposes
+# both compile and run subcommands, so create the separately named compiler command
+# from the verified `sleela` executable without duplicating the native link step.
+$(SLEELAVC_BIN): $(SLEELA_BIN)
+	@cp $(SLEELA_BIN) $@
+
+sleelvac: $(SLEELAVC_BIN)
 
 $(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(NGHTTP2_LIB)
