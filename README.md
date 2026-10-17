@@ -44,6 +44,24 @@ the registry core, seeds the baseline table into the portable text store
 
 Consult the build and testing guides for prerequisites and platform-specific steps. A successful build of one component does not prove every library or platform is release-ready.
 
+## Install
+
+After building the native products, install the commands and runtime support files:
+
+```sh
+sudo make install
+make install PREFIX="$HOME/.local"       # user-local install, no sudo
+make install DESTDIR="$PWD/package-root" # staged package install
+make install-check
+```
+
+The conventional installer uses `/usr/local/bin`, `/usr/local/lib/sleela`,
+and `/usr/local/share/sleela` by default. It preserves an existing startup
+configuration and refuses to overwrite untracked existing commands. Uninstall
+removes only files recorded by the installer, preserving configuration and
+untracked runtime data. For the interactive deployment workflow and all
+installation options, see [Quick and Safe Install](install/README.md).
+
 ## Language and runtime
 The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **1.10**; compiler/tool version and source syntax version are distinct. Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
 
