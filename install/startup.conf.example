@@ -1,0 +1,17 @@
+# SLeeLa startup defaults. Copy to startup.conf and adjust for your system.
+install.mode=system
+system.startup=false
+server.startup=false
+http.1.startup=false
+http.2.startup=false
+http.3.startup=false
+http.4.startup=false
+http.5.startup=false
+http.6.startup=false
+http.7.startup=false
+http.8.startup=false
+http.9.startup=false
+vm.edition=managed
+port-authority.startup=false
+port-authority.pause=true
+port-authority.shutdown=true
