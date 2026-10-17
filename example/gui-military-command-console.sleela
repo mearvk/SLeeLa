@@ -22,6 +22,10 @@
  *   SLEELA_SHEET=./SHEET.sheet sleela run example/gui-military-command-console.sleela
  */
 #sleela 2.1
+
+// Select the GUI 5.0 military source line; other GUI lines intentionally reuse
+// class names such as SLPackage and SLGuiSettings.
+import gui.version-military;
 class GuiMilitaryCommandConsole {
 
   void banner(String t) {
