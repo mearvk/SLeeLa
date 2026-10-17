@@ -73,7 +73,7 @@ The ICC is designed to complement genuine national investigations and prosecutio
 
 Do not infer jurisdiction merely because a country is in the news, is or was a State Party, or is geographically close to an affected state. Verify conduct dates, treaty status, declarations, amendments, referrals, and official decisions. Withdrawal from the Statute does not automatically erase all jurisdiction over prior conduct; the effect depends on the Statute and facts.
 
-## 4. the Four Core Crimes
+## 4. The Four Core Crimes
 
 The authoritative definitions and elements are in the Rome Statute and the official *Elements of Crimes*. These summaries are not substitutes for the legal text.
 
@@ -166,7 +166,7 @@ The Statute provides guarantees including the presumption of innocence, notice o
 ### Victim Participation and Protection
 Victims may present views and concerns through legal representatives when their personal interests are affected and procedures permit. Participation is not the same as being a party to a national civil action and does not remove the Prosecution’s burden of proof. Protective measures and confidentiality may apply.
 
-### Reparations and the Tfv
+### Reparations and the TFV
 Distinguish a judicial reparations order, a TFV assistance programme, a proposed or pending reparations plan, an award or eligibility decision, and actual delivery of assistance. Do not state that a victim received compensation unless an authoritative source supports it.
 
 ### Age and Responsibility
