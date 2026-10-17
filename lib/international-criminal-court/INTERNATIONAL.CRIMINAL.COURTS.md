@@ -1,4 +1,4 @@
-# INTERNATIONAL CRIMINAL COURTS
+# International Criminal Courts
 
 **Status:** COMPLETE — reference edition  
 **Information reviewed through:** 17 October 2026  
@@ -37,7 +37,7 @@ The Court has no independent police force. Arrests, transfers, evidence gatherin
 
 Principal sources: [ICC official website](https://www.icc-cpi.int/), [Core Legal Texts](https://www.icc-cpi.int/publications/core-legal-texts), [Cases](https://www.icc-cpi.int/cases), and [Situations under investigation](https://www.icc-cpi.int/situations-under-investigations).
 
-## 2. What the ICC is and is not
+## 2. What the Icc Is and Is Not
 
 | Question | Explanation |
 |---|---|
@@ -52,7 +52,7 @@ Principal sources: [ICC official website](https://www.icc-cpi.int/), [Core Legal
 | Does an investigation mean guilt? | No. Allegations, investigations, warrants, confirmed charges, judgments, and convictions are different statuses. |
 | Does a warrant prove guilt? | No. A warrant is a judicial measure based on a legal threshold, not a conviction. |
 
-## 3. Jurisdiction and admissibility
+## 3. Jurisdiction and Admissibility
 
 A serious allegation alone does not automatically give the ICC jurisdiction. Each matter must be assessed under the Rome Statute and relevant judicial decisions.
 
@@ -67,13 +67,13 @@ A serious allegation alone does not automatically give the ICC jurisdiction. Eac
 | Admissibility | Consider gravity and whether genuine national proceedings render the case inadmissible under complementarity. |
 | Interests of justice | Apply the Statute and relevant prosecutorial framework, not personal opinion. |
 
-### Complementarity and withdrawal
+### Complementarity and Withdrawal
 
 The ICC is designed to complement genuine national investigations and prosecutions. A case may be inadmissible where a state with jurisdiction is genuinely investigating or prosecuting it, or has genuinely investigated and made a qualifying decision, subject to statutory exceptions. Unwillingness or inability genuinely to carry out proceedings can change the analysis. Complementarity is a legal test, not a general rating of a national justice system.
 
 Do not infer jurisdiction merely because a country is in the news, is or was a State Party, or is geographically close to an affected state. Verify conduct dates, treaty status, declarations, amendments, referrals, and official decisions. Withdrawal from the Statute does not automatically erase all jurisdiction over prior conduct; the effect depends on the Statute and facts.
 
-## 4. The four core crimes
+## 4. the Four Core Crimes
 
 The authoritative definitions and elements are in the Rome Statute and the official *Elements of Crimes*. These summaries are not substitutes for the legal text.
 
@@ -82,22 +82,22 @@ Genocide requires specified acts committed with the specific intent to destroy, 
 
 **Distinction:** Mass killing or another grave atrocity is not automatically genocide. The required intent and other legal elements must be established.
 
-### Crimes against humanity
+### Crimes Against Humanity
 These involve specified acts committed as part of a widespread or systematic attack directed against a civilian population, with the required knowledge of the attack. Listed acts include murder, extermination, enslavement, deportation or forcible transfer, imprisonment or severe deprivation of liberty, torture, certain sexual crimes, persecution, enforced disappearance, apartheid, and other inhumane acts, subject to the Statute’s definitions.
 
 **Distinction:** The contextual element matters. A serious offence is not automatically a crime against humanity simply because it is grave.
 
-### War crimes
+### War Crimes
 War crimes are serious violations of applicable law in an international or non-international armed conflict, as defined by the Statute. Provisions include grave breaches and other serious violations, with detailed rules concerning victims, conduct, protected objects, mental elements, and conflict classification. Examples include murder or torture of protected persons, intentionally directing attacks against civilians, certain attacks on protected buildings, pillage, certain sexual crimes, and conscripting or enlisting children under 15 or using them to participate actively in hostilities.
 
 **Distinction:** The armed conflict and applicable legal classification must be established. Not every unlawful act during wartime meets the elements of an ICC war crime.
 
-### Crime of aggression
+### Crime of Aggression
 This concerns planning, preparation, initiation, or execution by a person effectively able to control or direct a state’s political or military action of an act of aggression that, by its character, gravity, and scale, constitutes a manifest violation of the UN Charter. The Statute defines acts of aggression by reference to a state’s use of armed force against another state’s sovereignty, territorial integrity, or political independence, or otherwise inconsistently with the Charter.
 
 **Distinction:** Aggression has special jurisdictional and procedural conditions. Verify them independently.
 
-## 5. Applicable law
+## 5. Applicable Law
 
 The official [Core Legal Texts collection](https://www.icc-cpi.int/publications/core-legal-texts) provides the central instruments and related codes. Check the current official edition and amendments.
 
@@ -115,7 +115,7 @@ The official [Core Legal Texts collection](https://www.icc-cpi.int/publications/
 
 The Statute is the primary treaty. Supporting instruments operate within their prescribed hierarchy and amendment procedures.
 
-## 6. Institutional structure
+## 6. Institutional Structure
 
 | Institution | Principal role |
 |---|---|
@@ -128,7 +128,7 @@ The Statute is the primary treaty. Supporting instruments operate within their p
 
 Officeholders, staff, budgets, and organizational arrangements can change. Use official current pages rather than old rosters.
 
-## 7. Procedure and case stages
+## 7. Procedure and Case Stages
 
 Not every situation follows an identical path. This outline is general:
 
@@ -158,21 +158,21 @@ Not every situation follows an identical path. This outline is general:
 | Proceedings terminated | Proceedings ended on a stated legal or factual basis; not automatically equivalent to conviction or acquittal. |
 | Case closed | Database status that must be read alongside the underlying decision and later appeal or reopening information. |
 
-## 8. Rights, victims, witnesses, and reparations
+## 8. Rights, Victims, Witnesses, and Reparations
 
-### Fair-trial protections
+### Fair-trial Protections
 The Statute provides guarantees including the presumption of innocence, notice of charges, time and facilities to prepare a defence, counsel, interpretation and translation where necessary, rights concerning witnesses subject to the rules, and protection against compelled self-incrimination. The Prosecution bears the burden of proving guilt beyond reasonable doubt.
 
-### Victim participation and protection
+### Victim Participation and Protection
 Victims may present views and concerns through legal representatives when their personal interests are affected and procedures permit. Participation is not the same as being a party to a national civil action and does not remove the Prosecution’s burden of proof. Protective measures and confidentiality may apply.
 
-### Reparations and the TFV
+### Reparations and the Tfv
 Distinguish a judicial reparations order, a TFV assistance programme, a proposed or pending reparations plan, an award or eligibility decision, and actual delivery of assistance. Do not state that a victim received compensation unless an authoritative source supports it.
 
-### Age and responsibility
+### Age and Responsibility
 The ICC does not have jurisdiction over a person who was under 18 at the time of the alleged crime. This is distinct from rules concerning recruitment or use of children in armed conflict.
 
-## 9. Cooperation and enforcement
+## 9. Cooperation and Enforcement
 
 The ICC relies on states and partners for arrest and surrender, evidence and witness assistance, service of documents, protection, asset measures, sentence enforcement, and other judicial assistance.
 
@@ -185,7 +185,7 @@ The ICC relies on states and partners for arrest and surrender, evidence and wit
 | Confidential material | Do not expose sealed or protected information; record only lawfully public information. |
 | Sanctions or diplomatic measures | Attribute statements to the issuing authority and date; distinguish government action from judicial findings and jurisdictional change. |
 
-## 10. Current cases and situations
+## 10. Current Cases and Situations
 
 The [official cases index](https://www.icc-cpi.int/cases) provides live case records and filters such as warrant/summons, alleged crime, procedural stage, and defendant status. The [situations index](https://www.icc-cpi.int/situations-under-investigations) provides situation-level information.
 
@@ -193,7 +193,7 @@ Official public pages include matters such as Afghanistan, Darfur (Sudan), the D
 
 For each case record the official situation name; case and person name; alleged conduct dates and place; current stage; charges and statutory provisions; warrant/summons dates; arrest or appearance confirmation; chamber and decision details; appeal status; outcome; last verification date; and source URL. Prefer the underlying judgment, order, or filing over a summary entry.
 
-## 11. States Parties and amendments
+## 11. States Parties and Amendments
 
 The [ASP Rome Statute and other agreements page](https://asp.icc-cpi.int/RomeStatute) provides treaty texts, amendments, and participation information. The official page observed for this research reported **125 States Parties**, with a displayed update date of 10 July 2026. Recheck the figure before publication or legal use.
 
@@ -209,7 +209,7 @@ The [ASP Rome Statute and other agreements page](https://asp.icc-cpi.int/RomeSta
 
 The ASP page lists amendments, including amendments relating to Article 8, aggression, and Article 124. Do not assume every amendment binds every State Party identically.
 
-## 12. Relationship with the UN and other courts
+## 12. Relationship with the Un and Other Courts
 
 The ICC is not a UN organ. The Statute provides for a relationship agreement with the UN. The Security Council can refer situations under Chapter VII, and the Court interacts with UN bodies under specific legal and institutional arrangements.
 
@@ -222,9 +222,9 @@ The ICC is not a UN organ. The Statute provides for a relationship agreement wit
 
 The ICC is distinct from the ICTY, ICTR, IRMCT, hybrid or internationalized courts, and national courts. Their mandates, jurisdiction, legal instruments, and current status differ; consult each institution’s official records.
 
-## 13. Research and evidence handling
+## 13. Research and Evidence Handling
 
-### Source hierarchy
+### Source Hierarchy
 Use sources in this general order, depending on the question:
 1. Rome Statute and applicable treaty amendments.
 2. Rules of Procedure and Evidence and other core legal texts.
@@ -238,7 +238,7 @@ Use sources in this general order, depending on the question:
 
 An official source may contain a party’s allegation rather than a judicial finding. A Prosecutor’s filing is not automatically a court determination.
 
-### Evidence metadata and chain of custody
+### Evidence Metadata and Chain of Custody
 
 | Field | Purpose |
 |---|---|
@@ -258,7 +258,7 @@ A cryptographic hash can help show that a file has not changed since it was hash
 
 Cite documents with title, issuing body, date, case/situation, document number where available, pinpoint paragraph or page, URL, and access date. Preserve the version consulted. If a document is amended, superseded, corrected, or translated, retain the earlier citation and identify the version supporting each claim.
 
-## 14. Responsible reporting
+## 14. Responsible Reporting
 
 - Presume innocence unless and until guilt is established by a competent court.
 - Describe conduct as “alleged” while it remains an allegation.
@@ -272,7 +272,7 @@ Cite documents with title, issuing body, date, case/situation, document number w
 - Avoid sensationalism and unsupported claims about motive, guilt, or institutional independence.
 - For disputed legal conclusions, identify the source and relevant counter-position and cite the primary record.
 
-## 15. SLeeLa library recommendations
+## 15. Sleela Library Recommendations
 
 The SLeeLa international-criminal-court library should be a neutral legal-information and source-management module, not a replacement for judicial authority or legal counsel.
 
@@ -302,7 +302,7 @@ Minimum acceptance tests:
 - Source updates do not silently overwrite prior status snapshots.
 - Public pages identify the software as independent and not an official ICC service.
 
-## 16. Security and integrity
+## 16. Security and Integrity
 
 “Secure” is a system property requiring implemented controls and testing; a heading or signature in Markdown does not make a file secure.
 
@@ -319,7 +319,7 @@ Minimum acceptance tests:
 
 No claim is made that this repository, document, or software has undergone an independent security audit or received ICC approval.
 
-## 17. Official source register
+## 17. Official Source Register
 
 Principal sources consulted for this edition. These are official institutional sources and should be checked again before relying on dynamic information. Access date: **17 October 2026**.
 
@@ -340,13 +340,13 @@ Principal sources consulted for this edition. These are official institutional s
 | [ICC annual report to the UN on activities in 2024/25](https://www.icc-cpi.int/news/annual-report-international-criminal-court-united-nations-its-activities-2024/25) | Institutional report published 18 August 2025. |
 | [ASP press releases for 2026](https://asp.icc-cpi.int/press-releases/2026) | Official Assembly statements; verify date and context. |
 
-### Source-use notes
+### Source-use Notes
 - Cases and situations pages are dynamic; check them directly when updating a record.
 - The ASP page observed for this edition showed an update date of 10 July 2026 and 125 States Parties. Do not reuse that number without checking the latest list.
 - An OTP report or party filing does not make every statement in it a judicial finding.
 - Secondary sources may explain context, but primary legal sources control the description of ICC rules.
 
-## 18. Limitations and maintenance
+## 18. Limitations and Maintenance
 
 This document is complete as a **general reference edition** based on the official sources listed above, not an exhaustive database of every ICC document, case, filing, statement, academic article, media report, or Internet page. No static file can truthfully guarantee that it contains “all information on the Internet.”
 
@@ -366,13 +366,13 @@ Recommended maintenance:
 - Links and schemas: run periodic link, metadata, and test validation.
 - Annual review: review this reference at least once per year and record changes in Git history.
 
-## 19. Completion and signature
+## 19. Completion and Signature
 
 I, **Max Rupplin**, identify this document as the completed research-reference edition for the scope stated above, reviewed through **17 October 2026**. It consolidates the principal official public sources identified for the International Criminal Court and provides a structured framework for continued verification and responsible use.
 
 **Signed:** Max Rupplin  
 **Date:** 17 October 2026  
-**Document status:** **COMPLETE — REFERENCE EDITION**  
+**Document Status:** **Complete — Reference Edition**  
 **Security note:** **SECURITY HANDLING GUIDANCE INCLUDED; NO INDEPENDENT SECURITY CERTIFICATION CLAIMED**  
 **Signature note:** This typed name is an attribution statement, not a cryptographic digital signature, notarization, or certification by the ICC.
 
