@@ -184,7 +184,13 @@ def repo_lib_inventory() -> tuple[list[Path], dict[str, list[Path]]]:
             source = path.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
-        for match in re.finditer(r"\bclass\s+([A-Za-z_][A-Za-z0-9_]*)", source):
+        # Count actual class declarations, not prose such as "class one" in
+        # comments or documentation. Anchoring the keyword to a declaration line
+        # also keeps ordinary English from polluting the global duplicate report.
+        for match in re.finditer(
+            r"(?m)^\s*(?:(?:public|private|protected|abstract|final|static)\s+)*class\s+([A-Za-z_][A-Za-z0-9_]*)\b",
+            source,
+        ):
             symbols.setdefault(match.group(1), []).append(path)
     return files, symbols
 
