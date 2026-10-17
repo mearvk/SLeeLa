@@ -4,7 +4,7 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "5702fdaac11dc5df1996a936201987df19c9dccd1def22f7318077870a25ab72"
+      "sha256": "bb7ee74d8e1ef1eb4a7ec0406a60f191ab83d9c31bbbfb83bf8c9cc4c65e5d25"
     },
     {
       "path": "SLEELA.syntax",
@@ -6088,11 +6088,11 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "95d2b0d634bfb1453bc03609a21a684eaa8b8d35bbc305c11995ad60367c6455"
+      "sha256": "518ea09a3e2e78f7e23893985c5f2f0e5820ac1bd77d3c737c0db3543983e85a"
     },
     {
       "path": "impl/frontend/semantic.h",
-      "sha256": "9dc97decea0020a89c94f89f817d1916c25fcdb390f685916f102c21aef73e87"
+      "sha256": "58e8be6b084f0dc6506f041f41ee8c4bfafeefed682d74ef2bb3834bd230cbcc"
     },
     {
       "path": "impl/frontend/unsigned_integer.h",
@@ -7197,6 +7197,10 @@
     {
       "path": "inputs/ssh/ssh_server.c",
       "sha256": "4c48172c1ec16b6657ede014f77dce243c2e470797a10442b0cbd5e1a3ea3ba0"
+    },
+    {
+      "path": "install/install-runtime.py",
+      "sha256": "04058ad03f0f8cef1a1893820d24d9e0395aacd738b64ae6a6dd6041ebd76bf0"
     },
     {
       "path": "install/quick-safe-install-macos.sh",
