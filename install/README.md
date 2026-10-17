@@ -72,8 +72,10 @@ make -C install uninstall                 # remove installed files, preserve con
 The default executable directory is `$(PREFIX)/bin`, runtime support files are
 under `$(PREFIX)/lib/sleela`, and shared documentation/examples are under
 `$(PREFIX)/share/sleela`. The default configuration is
-`/etc/sleela/startup.conf`; an existing configuration is never overwritten.
-Use `BINDIR`, `LIBDIR`, `DATADIR`, and `SYSCONFDIR` to override the
-corresponding destinations. On Linux, `/usr/local/bin` is preferred to
+`/etc/sleela/startup.conf` for the default `/usr/local` prefix. For a custom
+prefix, configuration defaults to `$HOME/.config/sleela/startup.conf`, so a
+user-local install does not need root privileges. An existing configuration
+is never overwritten. Use `BINDIR`, `LIBDIR`, `DATADIR`, and `SYSCONFDIR` to
+override the corresponding destinations. On Linux, `/usr/local/bin` is preferred to
 `/usr/bin` for a source installation so system package-manager files are not
 overwritten. The uninstall target deliberately preserves configuration.
