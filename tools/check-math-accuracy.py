@@ -86,7 +86,7 @@ def build_cases() -> list[tuple[str, str, float]]:
 
 
 def generate_program(cases: list[tuple[str, str, float]]) -> str:
-    lines = ["#sleela 1.0", "import math;", "class MathAccuracy {", "    void main() {"]
+    lines = ["#sleela 2.1", "import math;", "class MathAccuracy {", "    void main() {"]
     for name, expr, _ref in cases:
         lines.append(f'        print("{name}=" + {expr});')
     lines.append("    }")
