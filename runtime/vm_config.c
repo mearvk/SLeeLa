@@ -53,11 +53,18 @@ int sleela_vm_config_load(const char *path, SLEELA_VM_CONFIG *config) {
     while (fgets(line, sizeof(line), file)) {
         size_t length = strlen(line);
         char *entry, *equals, *key, *value;
-        entry = trim(line);
-        if (length && line[length - 1] != '\n' && !feof(file)) {
-            fclose(file);
-            return -3;
+        if (length && line[length - 1] != '\n') {
+            int next = fgetc(file);
+            if (next != EOF) {
+                fclose(file);
+                return -3;
+            }
+            if (ferror(file)) {
+                fclose(file);
+                return -7;
+            }
         }
+        entry = trim(line);
         if (!*entry || *entry == '#' || *entry == ';') continue;
         equals = strchr(entry, '=');
         if (!equals) { fclose(file); return -3; }
