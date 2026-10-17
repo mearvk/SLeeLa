@@ -43,8 +43,8 @@ install-check:
 install:
 	@if [ -z "$(DESTDIR)" ] && [ "$$(id -u)" -ne 0 ] && { \
 		case "$(BINDIR) $(LIBDIR) $(DATADIR) $(SYSCONFDIR)" in \
-			*/usr/*|*/usr|*/opt/*|*/opt|*/etc/*|*/etc|*/var/*|*/var) exit 0 ;; \
-			*) exit 1 ;; \
+			*/usr/*|*/usr|*/opt/*|*/opt|*/etc/*|*/etc|*/var/*|*/var) true ;; \
+			*) false ;; \
 		esac; \
 	}; then \
 		if command -v sudo >/dev/null 2>&1; then \
@@ -56,7 +56,7 @@ install:
 		else echo "System installation needs root privileges; install sudo or run this target as root." >&2; exit 1; fi; \
 	fi
 	@if [ "$$(id -u)" -eq 0 ] && [ -z "$(DESTDIR)" ] && [ -n "$SUDO_USER" ] && { \
-		case "$(PREFIX)" in "/home/$SUDO_USER"/*|"/Users/$SUDO_USER"/*) exit 0 ;; *) exit 1 ;; esac; \
+		case "$(PREFIX)" in "/home/$SUDO_USER"/*|"/Users/$SUDO_USER"/*) true ;; *) false ;; esac; \
 	}; then \
 		echo "Refusing to install into a user's home directory as root. Run make install as that user without sudo." >&2; exit 1; \
 	fi
