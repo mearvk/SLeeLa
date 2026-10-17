@@ -49,5 +49,14 @@ static bool isNativeSubjectImport(const std::string&x){
            x=="astrophysics"||x=="sociology"||x=="excel"||x=="json"||
            x=="crypto"||x=="net";
 }
-void validateImports(const std::vector<std::string>&is,const Index&i){for(const auto&x:is)if(!isNativeSubjectImport(x)&&!i.hasPackage(x))throw std::runtime_error("Library import '"+x+"' is not present under /lib");}
+void validateImports(const std::vector<std::string>&is,const Index&i){
+ for(const auto&x:is){
+  if(isNativeSubjectImport(x)||i.hasPackage(x)) continue;
+  // Versioned source roots use dotted imports, e.g. gui.version-military.
+  std::string rel=x;
+  std::replace(rel.begin(),rel.end(),'.','/');
+  if(rel.find('/')!=std::string::npos && fs::is_directory(fs::path(i.root())/rel)) continue;
+  throw std::runtime_error("Library import '"+x+"' is not present under /lib");
+ }
+}
 }}
