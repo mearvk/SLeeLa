@@ -186,7 +186,7 @@ def repo_lib_inventory() -> tuple[list[Path], dict[str, list[Path]]]:
             continue
         # Remove source comments before scanning for declarations so examples in
         # documentation cannot become false class symbols.
-        source = re.sub(r"/\\*.*?\\*/|//[^\\n]*", "", source, flags=re.DOTALL)
+        source = re.sub(r"/\*.*?\*/|//[^\n]*", "", source, flags=re.DOTALL)
         # Count actual class declarations, not prose such as "class one" in
         # comments or documentation. Anchoring the keyword to a declaration line
         # also keeps ordinary English from polluting the global duplicate report.
