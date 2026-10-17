@@ -10,6 +10,7 @@
 #include "chemistry_api.h"
 #include "financial_api.h"
 #include "version.h"
+#include "library_index.h"
 #include "../../registry/sleela_registry.h"
 #include "../annotation/AnnotationRuntime.hpp"
 #include "../catalog/sheet_catalog.h"
@@ -30,6 +31,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <regex>
+#include <set>
 #include <chrono>
 extern "C" {
 #include "../core/sleela_core.h"
@@ -830,10 +833,12 @@ static bool checkSyntaxVersion(const std::string& path,const std::string& src){s
     if(s.present())std::cerr<<"sleelvac: "<<path<<": "<<s.message<<"\n";
     return true;}
 static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation;validation.imports=prog.imports;validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"chemistry"),validation.imports.end());validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"financial"),validation.imports.end());sleela::native::validateImports(validation);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
+static bool loadReferencedLibraryUnits(const std::string& source, sleela::Program& program);
 static int checkFile(const std::string&path){
     if(verifyBeforeExecution(fs::current_path()))return 1;
     std::string src;sleela::Program prog;sleela::VersionResolution v;
     if(!parseSource(path,src,prog,v))return 1;
+    if(!loadReferencedLibraryUnits(src,prog))return 1;
     try{
         sleela::SemanticResult sem=sleela::analyzeSemantics(prog,v.declared);
         for(const auto&w:sem.warnings) std::cerr<<"sleelvac: "<<path<<": warning: "<<w<<"\n";
@@ -842,7 +847,7 @@ static int checkFile(const std::string&path){
     }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}
     std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;
 }
-static int compileFile(const std::string&sourcePath,const std::string&outputPath){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
+static int compileFile(const std::string&sourcePath,const std::string&outputPath){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static int validateArtifact(const std::string&path){
     char error[256]={0};
     if(!slvm_validate_artifact_file(path.c_str(),error,sizeof(error))){
@@ -905,12 +910,78 @@ static int runJavaFrameworkSource(const std::string&path){
              <<" -> "<<probe.java_executable<<" -> "<<path<<"\n";
     return nativeCmd(static_cast<int>(args.size()),argv.data());
 }
-static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
+static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
 // Combine several parsed Programs into one compilation unit by concatenating
 // their classes/structs/imports (and merging document annotations). This lets a
 // user split a program across multiple .sleela files passed at run/compile time;
 // downstream stages already treat the whole Program as one unit and will report
 // any duplicate struct/class/method across files.
+static void mergeProgram(sleela::Program& into,sleela::Program&& from);
+static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::Program& program){
+    // Source libraries are compiled into the same Program/artifact as the client.
+    // This deliberately resolves only class-like unit names referenced by source,
+    // rather than blindly parsing every file under /lib (which can introduce
+    // unrelated duplicate declarations and incompatible syntax editions).
+    fs::path repo=findRepoRoot(fs::current_path());
+    std::string libRoot;
+    if(const char* configured=std::getenv("SLEELA_LIB"); configured&&*configured) libRoot=configured;
+    else if(!repo.empty()) libRoot=(repo/"lib").string();
+    sleela::library::Index index=sleela::library::Index::discover(libRoot);
+    if(index.empty()) return true; // standalone installations may intentionally have no source library
+    std::set<std::string> loadedPaths;
+    std::string source=initialSource;
+    for(const auto& c:program.classes) loadedPaths.insert(c.name);
+    for(const auto& s:program.structs) loadedPaths.insert(s.name);
+    std::regex identifier(R"(\b[A-Za-z_][A-Za-z0-9_]*\b)");
+    // Resolve in passes so a loaded unit can pull in its own referenced units.
+    for(size_t pass=0;pass<64;++pass){
+        std::set<std::string> names;
+        for(std::sregex_iterator it(source.begin(),source.end(),identifier),end;it!=end;++it){
+            const std::string name=it->str();
+            if(!name.empty() && std::isupper(static_cast<unsigned char>(name[0]))) names.insert(name);
+        }
+        bool changed=false;
+        for(const auto& name:names){
+            if(loadedPaths.count(name)) continue;
+            const sleela::library::Symbol* match=nullptr;
+            for(const auto& symbol:index.symbols()){
+                if(symbol.name!=name) continue;
+                if(match && match->path!=symbol.path){
+                    std::cerr<<"sleelvac: ambiguous library symbol '"<<name<<"' in /lib ("
+                             <<match->path<<" and "<<symbol.path<<"); qualify the package/import or rename the unit.\n";
+                    return false;
+                }
+                match=&symbol;
+            }
+            if(!match) continue;
+            const std::string path=(fs::path(index.root())/match->path).string();
+            std::string unitSource;
+            if(!readFile(path,unitSource)){
+                std::cerr<<"sleelvac: cannot read library unit '"<<path<<"'\n";
+                return false;
+            }
+            try{
+                sleela::Lexer lexer(unitSource);
+                sleela::Parser parser(lexer.tokenize());
+                sleela::Program unit=parser.parseProgram();
+                // Mark the path before merging to prevent dependency cycles.
+                loadedPaths.insert(name);
+                for(const auto& cls:unit.classes) loadedPaths.insert(cls.name);
+                for(const auto& st:unit.structs) loadedPaths.insert(st.name);
+                source += "\n" + unitSource;
+                mergeProgram(program,std::move(unit));
+                changed=true;
+            }catch(const std::exception& ex){
+                std::cerr<<"sleelvac: library unit '"<<path<<"': "<<ex.what()<<"\n";
+                return false;
+            }
+        }
+        if(!changed) return true;
+    }
+    std::cerr<<"sleelvac: library dependency expansion exceeded 64 passes; possible dependency cycle.\n";
+    return false;
+}
+
 static void mergeProgram(sleela::Program& into,sleela::Program&& from){
     for(auto& s:from.structs) into.structs.push_back(std::move(s));
     for(auto& c:from.classes) into.classes.push_back(std::move(c));
@@ -927,6 +998,7 @@ static int runSourceMulti(const std::vector<std::string>& paths){
     for(const auto& path:paths){
         std::string src; sleela::Program prog; sleela::VersionResolution syntax;
         if(!parseSource(path,src,prog,syntax))return 1;
+        if(!loadReferencedLibraryUnits(src,prog))return 1;
         if(!haveSyntax){firstSyntax=syntax;haveSyntax=true;}
         mergeProgram(merged,std::move(prog));
     }
@@ -941,6 +1013,7 @@ static int compileFilesMulti(const std::vector<std::string>& paths,const std::st
     for(const auto& path:paths){
         std::string src; sleela::Program prog; sleela::VersionResolution syntax;
         if(!parseSource(path,src,prog,syntax))return 1;
+        if(!loadReferencedLibraryUnits(src,prog))return 1;
         if(!haveSyntax){firstSyntax=syntax;haveSyntax=true;}
         mergeProgram(merged,std::move(prog));
     }
