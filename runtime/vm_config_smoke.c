@@ -13,11 +13,20 @@ static int set_env(const char *k, const char *v) { return v ? setenv(k, v, 1) : 
 #define CHECK(c, n) do { if (!(c)) { fprintf(stderr, "VM config smoke failed: %d\n", (n)); return (n); } } while (0)
 int main(void) {
     SLEELA_VM_CONFIG c;
+    int load_result;
     sleela_vm_config_defaults(&c);
     CHECK(c.version == 11 && c.strict, 1);
     CHECK(sleela_vm_config_set_version(&c, 1) == 0 && c.version == 1, 2);
     CHECK(sleela_vm_config_set_version(&c, 12) != 0, 3);
-    CHECK(sleela_vm_config_load("config/vm.conf", &c) == 0 && c.version == 11, 4);
+    load_result = sleela_vm_config_load("config/vm.conf", &c);
+    if (load_result != 0) {
+        fprintf(stderr, "VM config smoke failed: 4 (load returned %d; expected config/vm.conf from repository root)\n", load_result);
+        return 4;
+    }
+    if (c.version != 11) {
+        fprintf(stderr, "VM config smoke failed: 4 (loaded version %d; expected 11)\n", c.version);
+        return 4;
+    }
     CHECK(set_env("SLEELA_VM_VERSION", "7") == 0, 5);
     CHECK(sleela_vm_config_apply_environment(&c) == 0 && c.version == 7, 6);
     CHECK(set_env("SLEELA_VM_VERSION", "99999999999999999999999999999999") == 0, 7);
