@@ -953,10 +953,41 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
     for(const auto& c:program.classes) loadedPaths.insert(c.name);
     for(const auto& s:program.structs) loadedPaths.insert(s.name);
     std::regex identifier(R"(\b[A-Za-z_][A-Za-z0-9_]*\b)");
+    // Ignore comments and string/character literals during dependency discovery.
+    // Documentation text must not trigger unrelated library loads (for example,
+    // the word "Certificate" in a comment must not resolve Java API classes).
+    auto dependencyScanText = [](const std::string& input) {
+        std::string output = input;
+        enum class State { Code, LineComment, BlockComment, String, Character };
+        State state = State::Code;
+        bool escaped = false;
+        for (size_t i = 0; i < input.size(); ++i) {
+            const char c = input[i];
+            const char next = (i + 1 < input.size()) ? input[i + 1] : '\\0';
+            if (state == State::Code) {
+                if (c == '/' && next == '/') { output[i] = output[i + 1] = ' '; ++i; state = State::LineComment; }
+                else if (c == '/' && next == '*') { output[i] = output[i + 1] = ' '; ++i; state = State::BlockComment; }
+                else if (c == '"') { output[i] = ' '; state = State::String; escaped = false; }
+                else if (c == '\\'') { output[i] = ' '; state = State::Character; escaped = false; }
+            } else if (state == State::LineComment) {
+                if (c == '\\n') state = State::Code; else output[i] = ' ';
+            } else if (state == State::BlockComment) {
+                if (c == '*' && next == '/') { output[i] = output[i + 1] = ' '; ++i; state = State::Code; }
+                else if (c != '\\n') output[i] = ' ';
+            } else {
+                if (c != '\\n') output[i] = ' ';
+                if (escaped) escaped = false;
+                else if (c == '\\\\') escaped = true;
+                else if ((state == State::String && c == '"') || (state == State::Character && c == '\\'')) state = State::Code;
+            }
+        }
+        return output;
+    };
     // Resolve in passes so a loaded unit can pull in its own referenced units.
     for(size_t pass=0;pass<64;++pass){
         std::set<std::string> names;
-        for(std::sregex_iterator it(source.begin(),source.end(),identifier),end;it!=end;++it){
+        const std::string scanSource = dependencyScanText(source);
+        for(std::sregex_iterator it(scanSource.begin(),scanSource.end(),identifier),end;it!=end;++it){
             const std::string name=it->str();
             if(!name.empty() && std::isupper(static_cast<unsigned char>(name[0]))) names.insert(name);
         }
