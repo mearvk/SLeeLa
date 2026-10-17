@@ -71,12 +71,64 @@ PY_MANIFEST_COPY
 	if [ ! -e "$(CONFIG_DIR)/startup.conf" ]; then install -m 644 "$(REPO_ROOT)/install/startup.conf.example" "$(CONFIG_DIR)/startup.conf"; fi
 	printf '%s\n' "$(PREFIX)" > "$(RUNTIME_DIR)/install-prefix"
 	printf '%s\n' "$(BINDIR)/sleela" "$(BINDIR)/nordshrift" > "$(RUNTIME_DIR)/installed-binaries"
+	# Record only files deployed by this installation. Uninstall leaves any later-added user files untouched.
+	python3 - "$(RUNTIME_DIR)" "$(DATA_DIR)" <<'PY_INSTALL_RECORD'
+import json, os, sys
+runtime, data = map(os.path.abspath, sys.argv[1:3])
+marker = os.path.join(runtime, ".sleela-install-manifest.json")
+files = []
+for label, root in (("runtime", runtime), ("data", data)):
+    for current, dirs, names in os.walk(root, followlinks=False):
+        dirs[:] = [d for d in dirs if not os.path.islink(os.path.join(current, d))]
+        for name in names:
+            path = os.path.join(current, name)
+            if path == marker:
+                continue
+            files.append({"root": label, "path": os.path.relpath(path, root)})
+with open(marker, "w", encoding="utf-8") as stream:
+    json.dump({"files": files}, stream, indent=2)
+    stream.write("\\n")
+PY_INSTALL_RECORD
 	@echo "SLeeLa installed. Commands: $(BINDIR)/sleela and $(BINDIR)/nordshrift"
 	@echo "Runtime: $(RUNTIME_DIR)"
 	@echo "Configuration: $(CONFIG_DIR)/startup.conf (existing configuration preserved)"
 
 uninstall:
-	@echo "Removing SLeeLa executables and files installed under $(LIBDIR)/sleela and $(DATADIR)/sleela."
+	@echo "Removing tracked SLeeLa files while preserving configuration and untracked data."
 	rm -f "$(DESTDIR)$(BINDIR)/sleela" "$(DESTDIR)$(BINDIR)/nordshrift"
-	rm -rf "$(RUNTIME_DIR)" "$(DATA_DIR)"
+	python3 - "$(RUNTIME_DIR)" "$(DATA_DIR)" <<'PY_UNINSTALL'
+import json, os, shutil, sys
+runtime, data = map(os.path.abspath, sys.argv[1:3])
+marker = os.path.join(runtime, ".sleela-install-manifest.json")
+if os.path.isfile(marker):
+    with open(marker, encoding="utf-8") as stream:
+        manifest = json.load(stream)
+    roots = {"runtime": runtime, "data": data}
+    for item in manifest.get("files", []):
+        root = roots.get(item.get("root"))
+        rel = item.get("path", "")
+        if root is None or not rel or os.path.isabs(rel) or ".." in rel.split(os.sep):
+            raise SystemExit("Refusing unsafe uninstall manifest entry: " + repr(item))
+        path = os.path.abspath(os.path.join(root, rel))
+        if os.path.commonpath((root, path)) != root:
+            raise SystemExit("Refusing uninstall path outside installation: " + path)
+        if os.path.isfile(path) or os.path.islink(path):
+            os.remove(path)
+    os.remove(marker)
+for root in (runtime, data):
+    if not os.path.isdir(root):
+        continue
+    for current, dirs, files in os.walk(root, topdown=False, followlinks=False):
+        for name in dirs:
+            path = os.path.join(current, name)
+            try:
+                if not os.path.islink(path):
+                    os.rmdir(path)
+            except OSError:
+                pass
+    try:
+        os.rmdir(root)
+    except OSError:
+        pass
+PY_UNINSTALL
 	@echo "Configuration under $(CONFIG_DIR) is intentionally preserved; remove it manually if no longer needed."
