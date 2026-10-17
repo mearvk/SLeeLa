@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  physical-lengths.xml  --  Physical Lines: real distances that reach across
+  physical-lengths.xml -  Physical Lines: real distances that reach across
   space, in metres. Where the mathematical lengths are EXACT (defined by a
   formula), these are MEASURED or OBSERVED physical extents. A Line here is a
   distance a thing spans or a length light or a body travels.
