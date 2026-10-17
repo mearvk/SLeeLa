@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-product tutorial-check tests server config route common-rails registry premium-vms clean help
+.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-check install-product tutorial-check tests server config route common-rails registry premium-vms clean help
 
-all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails codecs churn antivirus registry premium-vms
+PREFIX ?= /usr/local\nDESTDIR ?=\n\nall: core java28 regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs churn antivirus registry premium-vms
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
@@ -165,7 +165,7 @@ help:
 	@echo "  make connector Build all optional native database/data-source connectors"
 	@echo "  make connector-test Run available offline connector tests"
 	@echo "  make connector-check-deps Report native connector dependencies"
-	@echo "  make install     Verify Quick and Safe installer entry points"
+	@echo "  make install-check Verify Quick and Safe installer entry points"\n\t@echo "  make install [PREFIX=/usr/local] [DESTDIR=...] Install binaries and runtime files"\n\t@echo "  make install PREFIX=$HOME/.local Install for the current user"
 	@echo "  make install-product  Build and interactively install compiled products (user-local or system-wide)"
 	@echo "  make tutorial-check Verify tutorial lesson sequence, example XML, and expected-evidence pairing"
 	@echo "  make tests     Build and run tests/"
