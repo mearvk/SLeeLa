@@ -5,7 +5,10 @@
 
 .PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-check install-product tutorial-check tests server config route common-rails registry premium-vms clean help
 
-PREFIX ?= /usr/local\nDESTDIR ?=\n\nall: core java28 regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs churn antivirus registry premium-vms
+PREFIX ?= /usr/local
+DESTDIR ?=
+
+all: core java28 regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs churn antivirus registry premium-vms
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
@@ -85,8 +88,13 @@ antivirus-integrity-check:
 	@test -n "$(MANIFEST)" || { echo "Usage: make antivirus-integrity-check MANIFEST=build/INTEGRITY-MANIFEST.json" >&2; exit 2; }
 	$(MAKE) -C antivirus integrity-check MANIFEST="$(MANIFEST)"
 
-install:
-	$(MAKE) -C install all
+install-check:
+	$(MAKE) -C install install-check
+
+# Conventional, non-interactive installation. Override PREFIX for user-local
+# installs (for example PREFIX=$HOME/.local); DESTDIR supports package staging.
+install: core
+	$(MAKE) -C install install PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)"
 
 # Interactive deployment of the compiled binaries; choose user-local or system-wide.
 install-product: autocheck
