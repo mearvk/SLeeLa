@@ -75,7 +75,9 @@ for entry in entries:
     shutil.copy2(src, dst)
 PY_MANIFEST_COPY
 if [ -d "$REPO_ROOT/bin" ]; then cp -a "$REPO_ROOT/bin/." "$STAGE_DIR/bin/"; fi
-for product in sleela nordshrift; do
+# sleelvac is now an INDEPENDENT binary (not a copy of sleela), so it must be
+# installed too -- otherwise a stale or missing sleelvac is left behind.
+for product in sleela sleelvac nordshrift; do
   built="$REPO_ROOT/impl/build/$product"
   [ -x "$built" ] || { echo "Required compiled product missing: $built" >&2; exit 1; }
   install -m 755 "$built" "$STAGE_DIR/bin/$product"
@@ -125,7 +127,7 @@ else
   sudo mkdir -p "$INSTALL_ROOT" "$BIN_DEST" "$CONFIG_DIR" /etc/profile.d
   sudo cp -a "$STAGE_DIR/." "$INSTALL_ROOT/"
   sudo cp "$STAGE_DIR/config/startup.conf" "$CONFIG_DIR/startup.conf"
-  for product in sleela nordshrift; do sudo ln -sfn "$INSTALL_ROOT/bin/$product" "$BIN_DEST/$product"; done
+  for product in sleela sleelvac nordshrift; do sudo ln -sfn "$INSTALL_ROOT/bin/$product" "$BIN_DEST/$product"; done
   printf 'export SLEELA_HOME="%s"\n' "$INSTALL_ROOT" | sudo tee /etc/profile.d/sleela.sh >/dev/null
   echo "System PATH: $BIN_DEST (standard /usr/local/bin location; /etc/profile.d/sleela.sh sets SLEELA_HOME)"
 fi

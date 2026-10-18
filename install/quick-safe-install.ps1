@@ -66,7 +66,7 @@ foreach ($Entry in $Manifest.files) {
   New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Target) | Out-Null
   Copy-Item -Force $Source $Target
 }
-foreach ($Product in @("sleela.exe","nordshrift.exe")) {
+foreach ($Product in @("sleela.exe","sleelvac.exe","nordshrift.exe")) {
   $Built = Join-Path $RepoRoot ("impl\build\" + $Product)
   if (-not (Test-Path $Built)) { throw "Required compiled product missing: $Built" }
   Copy-Item -Force $Built (Join-Path $Stage ("bin\" + $Product))
