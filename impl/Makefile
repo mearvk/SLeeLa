@@ -259,8 +259,9 @@ package: stage
 # are installed together. PREFIX and DESTDIR match the root Makefile interface.
 PREFIX ?= /usr/local
 DESTDIR ?=
+SLEELA_MANIFEST_CONSENT ?=
 install: all
-	$(MAKE) -C .. install PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)"
+	$(MAKE) -C .. install PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)"
 
 # Remove the installed products via the repository-level tracked uninstaller.
 uninstall:

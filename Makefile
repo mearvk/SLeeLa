@@ -3,7 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all uninstall autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-check install-product tutorial-check tests server config route common-rails registry premium-vms clean help
+.PHONY: all uninstall autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-local install-system install-check install-product tutorial-check tests server config route common-rails registry premium-vms clean help
+
+SLEELA_MANIFEST_CONSENT ?=
 
 PREFIX ?= /usr/local
 DESTDIR ?=
@@ -91,10 +93,24 @@ antivirus-integrity-check:
 install-check:
 	$(MAKE) -C install install-check
 
-# Conventional, non-interactive installation. Override PREFIX for user-local
-# installs (for example PREFIX=$HOME/.local); DESTDIR supports package staging.
+# Conventional installation. Scope-aware: a user-local PREFIX stays as the
+# current user; a system PREFIX (with no DESTDIR) elevates via sudo for the
+# system copy only. Every variant first offers to (re)generate and verify the
+# base-code SHA-256 manifest (yes/no; answer non-interactively with
+# SLEELA_MANIFEST_CONSENT=yes|no|skip).
 install: core
-	$(MAKE) -C install install PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)"
+	$(MAKE) -C install install PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" \
+		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)"
+
+# User-local install that never uses sudo (defaults PREFIX to $HOME/.local).
+install-local: core
+	$(MAKE) -C install install-local PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" \
+		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)"
+
+# System-wide install via the dedicated sudo script (system paths only).
+install-system: core
+	$(MAKE) -C install install-system PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" \
+		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)"
 
 # Remove files recorded by the conventional installer for this PREFIX.
 # The installer removes only tracked SLeeLa files and preserves configuration.
@@ -179,8 +195,10 @@ help:
 	@echo "  make connector-test Run available offline connector tests"
 	@echo "  make connector-check-deps Report native connector dependencies"
 	@echo "  make install-check Verify Quick and Safe installer entry points"
-	@echo "  make install [PREFIX=/usr/local] [DESTDIR=...] Install binaries and runtime files"
-	@echo "  make install PREFIX=$HOME/.local Install for the current user"
+	@echo "  make install [PREFIX=/usr/local] [DESTDIR=...] Scope-aware install (local prefix stays local; system prefix elevates)"
+	@echo "  make install-local [PREFIX=$HOME/.local] User-local install; never uses sudo"
+	@echo "  make install-system [PREFIX=/usr/local] System install; uses sudo for system paths only"
+	@echo "      (every variant first offers the base-code SHA-256 manifest step; SLEELA_MANIFEST_CONSENT=yes|no|skip answers it)"
 	@echo "  make install-product  Build and interactively install compiled products (user-local or system-wide)"
 	@echo "  make tutorial-check Verify tutorial lesson sequence, example XML, and expected-evidence pairing"
 	@echo "  make tests     Build and run tests/"

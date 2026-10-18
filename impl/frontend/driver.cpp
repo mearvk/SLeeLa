@@ -833,10 +833,53 @@ static int designActivityCmd(int argc,char**argv){
     std::cout<<json<<"\n"; return 0;
 }
 static std::string cliProgramName = "sleela";
-static int usage(){
+// Usage for the `sleelvac` compiler command. Sleelvac shares the native driver
+// with `sleela`, but it is the SLeeLa *compiler*: its job is to turn source into
+// a runnable Core artifact and to check/validate that artifact. This text
+// describes only that compiler surface, so `sleelvac --help` is truly about
+// sleelvac and not a verbatim copy of the full `sleela` front-end listing.
+static int sleelvacUsage(){
     const std::string &n = cliProgramName;
     std::cerr
-        << "Sleelvac - SLeeLa compiler and runtime front end\n"
+        << "Sleelvac - the SLeeLa compiler\n"
+        << "\n"
+        << "Compiles SLeeLa source into runnable Core artifacts and checks them.\n"
+        << "(For running programs, servers, the VM, the registry and JVM-family\n"
+        << " input, use the `sleela` front end.)\n"
+        << "\n"
+        << "Global options (before the command):\n"
+        << "  --memory-manager, --mm       Enable the Memory Manager with the default 2 GiB limit\n"
+        << "  --memory-manager=SIZE        Enable it with a byte limit; K, M, and G suffixes are accepted\n"
+        << "  --mm=SIZE                    Short form of --memory-manager=SIZE\n"
+        << "\n"
+        << "Compiler commands:\n"
+        << "  " << n << " [global-options] compile <file.sleela> [more.sleela ...] -o <output.sleela>\n"
+        << "                               Compile one or more Sleela source files to a runnable Core artifact\n"
+        << "  " << n << " check <file.sleela>\n"
+        << "                               Parse, resolve referenced library units, and check semantics (no output artifact)\n"
+        << "  " << n << " validate-artifact <file.sleela>\n"
+        << "                               Validate a compiled artifact's Core ABI and format\n"
+        << "  " << n << " version\n"
+        << "                               Print the Sleelvac compiler version string\n"
+        << "\n"
+        << "Notes:\n"
+        << "  - `compile` writes a persistent <output.sleela> Core artifact plus a sibling\n"
+        << "    <output.sleela>.annotations metadata file.\n"
+        << "  - Native math/physics/economics/chemistry/financial module calls are lowered at compile time.\n"
+        << "  - Execution is gated by SHA-256 verification; the trusted manifest must verify before a build runs.\n"
+        << "  - The global memory limit may also be set by the SLeeLa configuration/environment.\n";
+    return 2;
+}
+static int usage(){
+    const std::string &n = cliProgramName;
+    // When invoked as `sleelvac`, present the compiler's own surface rather than
+    // the full `sleela` front end. Sleelvac is the SLeeLa *compiler*: it turns
+    // source into runnable Core artifacts and checks/validates them. The run,
+    // server, VM, registry and framework-input commands belong to the `sleela`
+    // front end; sleelvac only documents what it is actually for.
+    if(fs::path(cliProgramName).stem().string()=="sleelvac") return sleelvacUsage();
+    std::cerr
+        << "Sleela - SLeeLa compiler and runtime front end\n"
         << "\n"
         << "Global options (before the command):\n"
         << "  --memory-manager, --mm       Enable the Memory Manager with the default 2 GiB limit\n"

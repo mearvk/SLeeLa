@@ -20,15 +20,57 @@ DATA_DIR := $(DESTDIR)$(DATADIR)/$(RUNTIME_NAME)
 CONFIG_DIR := $(DESTDIR)$(SYSCONFDIR)/$(RUNTIME_NAME)
 REPO_ROOT := ..
 
-.PHONY: all install install-check install-help uninstall
+# Non-interactive consent for the base-code SHA-256 manifest step. Set
+# SLEELA_MANIFEST_CONSENT=yes|no|skip to answer the prompt without a TTY (CI,
+# package builds). When unset and a terminal is attached, the user is asked.
+SLEELA_MANIFEST_CONSENT ?=
+
+.PHONY: all install install-local install-system do-install install-check install-help uninstall manifest-prompt
 all: install-check
 
 install-help:
 	@echo "SLeeLa installation targets"
-	@echo "  make -C install install [PREFIX=/usr/local] [DESTDIR=...]"
-	@echo "  make install PREFIX=\$$HOME/.local"
-	@echo "  make -C install uninstall [PREFIX=/usr/local]"
+	@echo "  make -C install install-local  [PREFIX=\$$HOME/.local]   User-local install; never uses sudo"
+	@echo "  make -C install install-system [PREFIX=/usr/local]      System install; uses sudo for system paths only"
+	@echo "  make -C install install        [PREFIX=... DESTDIR=...]  Scope-aware: local prefix stays local, system prefix elevates"
+	@echo "  make -C install uninstall      [PREFIX=/usr/local]"
 	@echo "  BINDIR, LIBDIR, DATADIR, SYSCONFDIR may be overridden."
+	@echo
+	@echo "Every install variant first offers to (re)generate and verify the base"
+	@echo "SLeeLa code SHA-256 manifest (yes/no). Answer non-interactively with"
+	@echo "SLEELA_MANIFEST_CONSENT=yes|no|skip."
+
+# manifest-prompt: before any install variant, offer to (re)generate and verify
+# the trusted base-code SHA-256 manifest. This is the integrity baseline the
+# runtime's execution gate checks against, so the operator decides -- per
+# install -- whether to refresh it from the current source tree. Declining
+# keeps the committed manifest as-is; a subsequent verify still runs so a
+# tampered tree is caught. The prompt is a plain yes/no; non-interactive callers
+# set SLEELA_MANIFEST_CONSENT.
+manifest-prompt:
+	@consent="$(SLEELA_MANIFEST_CONSENT)"; \
+	if [ -z "$$consent" ]; then \
+	  if [ -t 0 ]; then \
+	    printf 'Regenerate and verify the base SLeeLa code SHA-256 manifest before installing? [yes/no]: '; \
+	    read consent || consent=no; \
+	  else \
+	    consent=skip; \
+	    echo "No terminal for the SHA-256 manifest prompt; skipping regeneration (set SLEELA_MANIFEST_CONSENT=yes to force)."; \
+	  fi; \
+	fi; \
+	case "$$consent" in \
+	  y|Y|yes|YES|Yes) \
+	    echo "Regenerating the base-code SHA-256 manifest from the current source tree..."; \
+	    $(MAKE) --no-print-directory -C "$(REPO_ROOT)/impl" regen-manifest && \
+	    echo "Verifying the regenerated manifest against the source tree..." && \
+	    $(MAKE) --no-print-directory -C "$(REPO_ROOT)/impl" verify-security ;; \
+	  n|N|no|NO|No) \
+	    echo "Keeping the committed SHA-256 manifest; verifying the source tree against it..."; \
+	    $(MAKE) --no-print-directory -C "$(REPO_ROOT)/impl" verify-security ;; \
+	  skip|SKIP|Skip) \
+	    echo "Skipping the SHA-256 manifest step for this install." ;; \
+	  *) echo "Unrecognized answer '$$consent'; expected yes, no, or skip." >&2; exit 2 ;; \
+	esac
 
 install-check:
 	@test -f quick-safe-install.sh
@@ -36,11 +78,20 @@ install-check:
 	@test -f quick-safe-install.ps1
 	@test -f quick-safe-install.cmd
 	@test -f install-runtime.py
+	@test -f system-install.sh
 	@grep -q 'Required compiled product missing' quick-safe-install.sh
 	@grep -q 'System-wide' README.md
 	@echo "Installer entry points and compiled-product installation checks present for Linux, macOS, and Windows 10+."
 
+# install: scope-aware entry point. Offers the SHA-256 manifest step, then
+# installs. A user-local prefix stays as the current user; a system prefix with
+# no DESTDIR elevates via sudo (system paths only) and re-enters so the manifest
+# prompt has already run as the invoking user.
 install:
+	@if [ "$(origin SLEELA_INSTALL_ELEVATED)" = "undefined" ] || [ -z "$(SLEELA_INSTALL_ELEVATED)" ]; then \
+		$(MAKE) --no-print-directory -C "$(CURDIR)" manifest-prompt \
+			SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)"; \
+	fi
 	@if [ -z "$(DESTDIR)" ] && [ "$$(id -u)" -ne 0 ] && { \
 		case "$(BINDIR) $(LIBDIR) $(DATADIR) $(SYSCONFDIR)" in \
 			*/usr/*|*/usr|*/opt/*|*/opt|*/etc/*|*/etc|*/var/*|*/var) true ;; \
@@ -49,16 +100,60 @@ install:
 	}; then \
 		if command -v sudo >/dev/null 2>&1; then \
 			echo "System installation requires administrator privileges; requesting sudo for system paths only."; \
-			exec sudo $(MAKE) --no-print-directory -C "$(CURDIR)" install \
+			echo "Note: sudo is used ONLY to copy SLeeLa into system locations as the trusted"; \
+			echo "      system account. Your own files keep their current owner, group and"; \
+			echo "      permissions -- this install does not chown, rewrite, or take ownership"; \
+			echo "      of any file you already own; it only writes new files under the system"; \
+			echo "      prefix ($(PREFIX))."; \
+			exec sudo $(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 				PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" BINDIR="$(BINDIR)" \
 				LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)" \
 				SLEELA_INSTALL_ELEVATED=1; \
 		else echo "System installation needs root privileges; install sudo or run this target as root." >&2; exit 1; fi; \
 	fi
-	@if [ "$$(id -u)" -eq 0 ] && [ -z "$(DESTDIR)" ] && [ -n "$SUDO_USER" ] && { \
-		case "$(PREFIX)" in "/home/$SUDO_USER"/*|"/Users/$SUDO_USER"/*) true ;; *) false ;; esac; \
+	@$(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
+		PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" BINDIR="$(BINDIR)" \
+		LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)" \
+		SLEELA_INSTALL_ELEVATED="$(SLEELA_INSTALL_ELEVATED)"
+
+# install-local: user-local install that NEVER uses sudo. Defaults the prefix to
+# the user's ~/.local when the default system prefix is in effect, and refuses a
+# system prefix outright (directing the user to install-system) so a local
+# install can never silently try to elevate.
+install-local:
+	@prefix="$(PREFIX)"; \
+	if [ "$$prefix" = "/usr/local" ]; then prefix="$$HOME/.local"; \
+		echo "User-local install: defaulting PREFIX to $$prefix (override with PREFIX=...)."; fi; \
+	case "$$prefix" in \
+		/usr/*|/usr|/opt/*|/opt|/etc/*|/etc|/var/*|/var) \
+			echo "PREFIX '$$prefix' is a system location; use 'make install-system' for that." >&2; exit 1 ;; \
+	esac; \
+	if [ "$$(id -u)" -eq 0 ]; then \
+		echo "install-local must not run as root; run it as the target user without sudo." >&2; exit 1; fi; \
+	$(MAKE) --no-print-directory -C "$(CURDIR)" manifest-prompt \
+		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)" && \
+	$(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
+		PREFIX="$$prefix" DESTDIR="$(DESTDIR)" \
+		BINDIR="$$prefix/bin" LIBDIR="$$prefix/lib" DATADIR="$$prefix/share" \
+		SYSCONFDIR="$$HOME/.config" SLEELA_INSTALL_ELEVATED=1
+
+# install-system: system-wide install via the dedicated sudo script. The script
+# runs the manifest prompt as the invoking user first, then elevates only for
+# the privileged copy into system locations.
+install-system:
+	@PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" BINDIR="$(BINDIR)" \
+		LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)" \
+		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)" \
+		sh "$(CURDIR)/system-install.sh"
+
+# do-install: the actual copy work. No prompting and no elevation decision --
+# callers (install / install-local / install-system) have already handled scope,
+# consent and privileges. Runs under whatever account invoked it.
+do-install:
+	@if [ "$$(id -u)" -eq 0 ] && [ -z "$(DESTDIR)" ] && [ -n "$$SUDO_USER" ] && { \
+		case "$(PREFIX)" in "/home/$$SUDO_USER"/*|"/Users/$$SUDO_USER"/*) true ;; *) false ;; esac; \
 	}; then \
-		echo "Refusing to install into a user's home directory as root. Run make install as that user without sudo." >&2; exit 1; \
+		echo "Refusing to install into a user's home directory as root. Run make install-local as that user without sudo." >&2; exit 1; \
 	fi
 	@test -x "$(REPO_ROOT)/impl/build/sleela" || { echo "Missing impl/build/sleela; run make -C impl all first." >&2; exit 1; }
 	@test -x "$(REPO_ROOT)/impl/build/sleelvac" || { echo "Missing impl/build/sleelvac; run make -C impl all first." >&2; exit 1; }
@@ -83,6 +178,16 @@ install:
 	@echo "SLeeLa installed. Commands: $(BINDIR)/sleela, $(BINDIR)/sleelvac, and $(BINDIR)/nordshrift"
 	@echo "Runtime: $(RUNTIME_DIR)"
 	@echo "Configuration: $(CONFIG_DIR)/startup.conf (existing configuration preserved)"
+	@if [ "$$(id -u)" -eq 0 ] && [ -z "$(DESTDIR)" ] && { \
+		case "$(PREFIX)" in /usr/*|/usr|/opt/*|/opt|/etc/*|/etc|/var/*|/var) true ;; *) false ;; esac; \
+	}; then \
+		echo; \
+		echo "Privilege note: this system install ran as the trusted system account only"; \
+		echo "to place new files under $(PREFIX). It did not change the ownership, group,"; \
+		echo "or permissions of any file you already owned, and it did not modify files in"; \
+		echo "your home directory. The newly written system files are owned by the system"; \
+		echo "account (root), as is conventional for $(PREFIX); your own files are untouched."; \
+	fi
 uninstall:
 	@if [ -z "$(DESTDIR)" ] && [ "$$(id -u)" -ne 0 ] && { \
 		case "$(BINDIR) $(LIBDIR) $(DATADIR) $(SYSCONFDIR)" in \
