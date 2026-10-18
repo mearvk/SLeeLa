@@ -1,5 +1,5 @@
 ================================================================
-  SLeeLa Science — Astrophysics (formulas on import math;)
+  SLeeLa Science — Astrophysics (import astrophysics;)
 ================================================================
 [radiation]
   flux at 1 AU from the Sun            = 1361.17 W/m^2
@@ -16,4 +16,4 @@
 ================================================================
   Done
 ================================================================
-Astrophysics builds on Math (pi, tau, sqrt) as the subject library does.
+Astrophysics is a native subject library (import astrophysics;); it builds on math.

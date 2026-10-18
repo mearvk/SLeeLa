@@ -25,6 +25,10 @@ void add(Program&p){ClassDecl c;c.name="__NativeFinancial";
  m=M("double","__native_financial_quadratic_discriminant",{{"double","a"},{"double","b"},{"double","c"}});m.body->stmts.push_back(Ret(B("-",B("*",V("b"),V("b")),B("*",D(4),B("*",V("a"),V("c"))))));c.methods.push_back(std::move(m));
  m=M("double","__native_financial_quadratic_root_plus",{{"double","a"},{"double","b"},{"double","c"}});m.body->stmts.push_back(Ret(B("/",B("+",B("-",D(0),V("b")),C1("__native_math_sqrt",C3("__native_financial_quadratic_discriminant",V("a"),V("b"),V("c")))),B("*",D(2),V("a")))));c.methods.push_back(std::move(m));
  m=M("double","__native_financial_quadratic_root_minus",{{"double","a"},{"double","b"},{"double","c"}});m.body->stmts.push_back(Ret(B("/",B("-",B("-",D(0),V("b")),C1("__native_math_sqrt",C3("__native_financial_quadratic_discriminant",V("a"),V("b"),V("c")))),B("*",D(2),V("a")))));c.methods.push_back(std::move(m));
+ // Pure functions, no instance state: mark static so a qualified call
+ // (financial.future_value(...)) matches the parameter count and the VM call
+ // frame stays aligned across calls (as math does at the end of addMath).
+ for(auto& method:c.methods)method.isStatic=true;
  p.classes.push_back(std::move(c));}
 } // namespace
 void lowerProgram(Program&program){bool imported=false;bool math=false;for(const auto&m:program.imports){if(m=="financial")imported=true;if(m=="math")math=true;}if(!imported)return;if(!math)throw std::runtime_error("Semantic error: financial requires 'import math;' for its numerical kernels");bool helper=false;for(const auto&c:program.classes)if(c.name=="__NativeFinancial")helper=true;if(!helper)add(program);for(auto&c:program.classes){if(c.name=="__NativeFinancial")continue;for(auto&m:c.methods)for(auto&s:m.body->stmts)lowerStmt(s);for(auto&f:c.fields)lowerExpr(f.init);}for(auto&c:program.classes)if(c.java.qualifiedName.empty())c.java.qualifiedName=c.name;}

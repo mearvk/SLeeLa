@@ -20,6 +20,14 @@ m=M4("double","__native_physics_neutrino_oscillation_probability","double","thet
 m.body->stmts.push_back(Decl("double","s1",C1("__native_math_sin",Bn("*",D(2),V("theta")))));
 m.body->stmts.push_back(Decl("double","s2",C1("__native_math_sin",Bn("/",Bn("*",D(1.267),Bn("*",V("dm2"),V("L"))),V("E")))));
 m.body->stmts.push_back(Ret(Bn("*",Bn("*",V("s1"),V("s1")),Bn("*",V("s2"),V("s2")))));
-c.methods.push_back(std::move(m));p.classes.push_back(std::move(c));}
+c.methods.push_back(std::move(m));
+ // The synthesized physics helpers are pure functions with no instance state;
+ // mark them static so a qualified call (physics.velocity(...)) matches the
+ // method's parameter count exactly. Without this they are instance methods
+ // that expect a `this` receiver the call site never pushes, which misaligns
+ // the VM call frame and corrupts the operand stack on the 2nd+ call. (Math
+ // already does this at the end of addMath.)
+ for(auto& method:c.methods)method.isStatic=true;
+ p.classes.push_back(std::move(c));}
 
 }} // namespace sleela::native

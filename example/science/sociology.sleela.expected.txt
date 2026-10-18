@@ -1,5 +1,5 @@
 ================================================================
-  SLeeLa Science — Sociology (formulas on import math;)
+  SLeeLa Science — Sociology (import sociology;)
 ================================================================
 All figures are OBSERVED (BLS / Census). ASSOCIATION != CAUSATION.
 [proportion]
@@ -16,4 +16,4 @@ All figures are OBSERVED (BLS / Census). ASSOCIATION != CAUSATION.
 ================================================================
   Done
 ================================================================
-Sociology builds on Math; every input here is a dated, sourced published figure.
+Sociology is a native subject library (import sociology;); it builds on math.

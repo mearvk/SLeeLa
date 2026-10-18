@@ -24,20 +24,19 @@ every non-math subject depends on math, so each program begins with
 | File | Imports | What it shows |
 |---|---|---|
 | [`math.sleela`](math.sleela) | `math` | The full math facade: constants (`pi`/`e`/`tau`), unary (`abs`/`sqrt`/`exp`/`log`/`log10`/`sin`/`cos`/`tan`/`floor`/`ceil`/`trunc`/`sign`), binary (`pow`/`hypot`/`min`/`max`/`fmod`), and `clamp`. |
-| [`physics.sleela`](physics.sleela) | `math` | The physics subject library's formula families — mechanics, gravitation, special relativity, electricity, waves — with CODATA constants and Earth data. Earth escape velocity ≈ 11,178 m/s. |
+| [`physics.sleela`](physics.sleela) | `math`, `physics` | The native `physics` facade — mechanics, gravitation, special relativity, electricity, waves (`physics.velocity(…)`, `physics.escape_velocity(…)`, …), with CODATA constants and Earth data. Earth escape velocity ≈ 11,178 m/s. |
 | [`chemistry.sleela`](chemistry.sleela) | `math`, `chemistry` | The native `chemistry` facade — `chemistry.ratio(a,b)` and `chemistry.similarity(a,b)` — over IUPAC standard atomic weights. |
-| [`astrophysics.sleela`](astrophysics.sleela) | `math` | The astrophysics subject library's formulas — flux, redshift, Wien peak, Kepler period, escape velocity. Solar constant ≈ 1361 W/m²; 1-AU Kepler period ≈ 1 year. |
-| [`sociology.sleela`](sociology.sleela) | `math` | The sociology subject library's measures — proportion, rate, growth rate, transition probability — over real US labor/population figures. |
+| [`astrophysics.sleela`](astrophysics.sleela) | `math`, `astrophysics` | The native `astrophysics` facade — flux, redshift, Wien peak, Kepler period, escape velocity (`astrophysics.redshift(…)`, …). Solar constant ≈ 1361 W/m²; 1-AU Kepler period ≈ 1 year. |
+| [`sociology.sleela`](sociology.sleela) | `math`, `sociology` | The native `sociology` facade — proportion, rate, growth rate, transition probability (`sociology.rate(…)`, …) — over real US labor/population figures. |
 
-> **Why some subjects compute on `import math;`.** `math` and `chemistry` call
-> their native facades directly (`math.sqrt(…)`, `chemistry.ratio(…)`). The
-> `physics`, `astrophysics`, and `sociology` programs reproduce their subject
-> library's formula families on top of `import math;` — the same math-first
-> approach the repository's own churn models use (e.g.
-> [`churn/2/structures.sleela`](../../churn/2/structures.sleela)) — so every
-> program runs cleanly on the toolchain as it is today. The formulas and
-> constants match the native subject sources under
-> [`impl/subjects/`](../../impl/subjects) exactly.
+> **Every program calls its subject library's native facade directly** —
+> `math.sqrt(…)`, `physics.velocity(…)`, `chemistry.ratio(…)`,
+> `astrophysics.redshift(…)`, `sociology.rate(…)`. Each non-math subject
+> depends on math, which is why every program also `import math;`. The facades
+> are the executable native subject libraries under
+> [`impl/subjects/`](../../impl/subjects); these programs are exercised by the
+> same engine as the repository's subject tests
+> ([`impl/tests/subjects`](../../impl/tests/subjects)).
 
 ### Running the SLeeLa programs
 

@@ -1,15 +1,15 @@
 /*
  * example/science/sociology.sleela
- * A runnable SLeeLa SOCIOLOGY program. It reproduces the sociology subject
- * library's quantitative measures (impl/subjects/sociology/sociology_native.cpp)
- * on top of the `math` subject library — the subject library itself requires
- * `import math;`.
+ * A runnable SLeeLa SOCIOLOGY program on the native `sociology` subject library
+ * (import sociology;). It exercises the subject library's measures directly via
+ * qualified calls like sociology.rate(...). Sociology depends on Math, so the
+ * subject library requires `import math;`.
  *
- * Measures (matching the native library):
- *   proportion(part, total)              = part / total
- *   rate(events, population, scale)       = events / population * scale
- *   growth_rate(oldValue, newValue)       = (newValue - oldValue) / oldValue
- *   transition_probability(transitions, origin) = transitions / origin
+ * Facade (impl/subjects/sociology/sociology_native.cpp):
+ *   proportion(part, total)                      part / total
+ *   rate(events, population, scale)              events / population * scale
+ *   growth_rate(oldValue, newValue)              (new - old) / old
+ *   transition_probability(transitions, origin)  transitions / origin
  *
  * Inputs are real, dated, sourced US figures from the churn datasets
  * (churn/2/data/social-labor-us.json, churn/4/data/social-density-us.json):
@@ -24,13 +24,9 @@
  */
 #sleela 2.1
 import math;
+import sociology;
 
 class ScienceSociology {
-
-  double proportion(double part, double total)              { return part / total; }
-  double rate(double events, double population, double scale) { return events / population * scale; }
-  double growthRate(double oldValue, double newValue)       { return (newValue - oldValue) / oldValue; }
-  double transitionProbability(double transitions, double origin) { return transitions / origin; }
 
   void banner(String t) {
     print("================================================================");
@@ -39,42 +35,38 @@ class ScienceSociology {
   }
 
   void main() {
-    banner("SLeeLa Science — Sociology (formulas on import math;)");
+    banner("SLeeLa Science — Sociology (import sociology;)");
     print("All figures are OBSERVED (BLS / Census). ASSOCIATION != CAUSATION.");
 
     // US resident population and labor force (churn social datasets).
     double population = 341784857.0;  // Census, 2025-07-01
     double laborForce = 168000000.0;  // ~168M, BLS civilian labor force (approx.)
+    double landAreaKm2 = 9147420.0;   // CIA World Factbook (US land area)
+    double unemployed = 0.042 * laborForce;  // unemployment_rate 4.2% of labor force
 
     print("[proportion]");
     print("  labor force as a proportion of population = "
-        + proportion(laborForce, population));
+        + sociology.proportion(laborForce, population));
 
     print("[rate]  per 100,000");
-    // Illustrative: unemployed persons ~ unemployment_rate 4.2% of the labor force.
-    double unemployed = 0.042 * laborForce;
     print("  unemployed per 100,000 of the labor force = "
-        + rate(unemployed, laborForce, 100000.0));
+        + sociology.rate(unemployed, laborForce, 100000.0));
 
     print("[growth_rate]");
-    // Unemployment rate rose from 3.8% (a year earlier) to 4.2% (2024 Q4).
     print("  unemployment rate 3.8 -> 4.2 percent      = "
-        + growthRate(3.8, 4.2));
-    // Real median household income reference step (illustrative year-on-year).
+        + sociology.growth_rate(3.8, 4.2));
     print("  median household income 80610 -> 83730    = "
-        + growthRate(80610.0, 83730.0));
+        + sociology.growth_rate(80610.0, 83730.0));
 
     print("[transition_probability]");
-    // Of 100 people in a state, 30 transition out.
     print("  transition_probability(30 of 100)         = "
-        + transitionProbability(30.0, 100.0));
+        + sociology.transition_probability(30.0, 100.0));
 
     print("[density]  population / land area (persons per km^2)");
-    double landAreaKm2 = 9147420.0;   // CIA World Factbook (US land area)
     print("  US population density                     = "
-        + proportion(population, landAreaKm2));
+        + sociology.proportion(population, landAreaKm2));
 
     banner("Done");
-    print("Sociology builds on Math; every input here is a dated, sourced published figure.");
+    print("Sociology is a native subject library (import sociology;); it builds on math.");
   }
 }

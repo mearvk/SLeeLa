@@ -12,6 +12,10 @@ void addSociology(Program&p){
  m.body->stmts.push_back(Ret(Bn("/",Bn("-",V("newValue"),V("oldValue")),V("oldValue"))));c.methods.push_back(std::move(m));
  m=M2("double","__native_sociology_transition_probability","double","transitions","double","origin");
  m.body->stmts.push_back(Ret(Bn("/",V("transitions"),V("origin"))));c.methods.push_back(std::move(m));
+ // Pure functions, no instance state: mark static so a qualified call
+ // (sociology.rate(...)) matches the parameter count and the VM call frame
+ // stays aligned across calls (as math does at the end of addMath).
+ for(auto& method:c.methods)method.isStatic=true;
  p.classes.push_back(std::move(c));
 }
 }}

@@ -1,21 +1,21 @@
 /*
  * example/science/astrophysics.sleela
- * A runnable SLeeLa ASTROPHYSICS program. It reproduces the astrophysics subject
- * library's formula family (impl/subjects/astrophysics/astrophysics_native.cpp)
- * on top of the `math` subject library — the subject library itself requires
- * `import math;`.
+ * A runnable SLeeLa ASTROPHYSICS program on the native `astrophysics` subject
+ * library (import astrophysics;). It exercises the subject library's formula
+ * family directly via qualified calls like astrophysics.redshift(...).
+ * Astrophysics depends on Math, so the subject library requires `import math;`.
  *
- * Formulas (matching the native library):
- *   flux_from_luminosity(L, r)   = L / (4 pi r^2)            inverse-square flux
- *   redshift(observed, rest)     = (observed - rest) / rest  dimensionless z
- *   observed_wavelength(rest, z) = rest * (1 + z)
- *   wien_peak(temperature)       = b / T   (b = 2.897771955e-3 m K)
- *   kepler_period(a, mass)       = 2 pi sqrt(a^3 / (G mass))  orbital period, s
- *   escape_velocity(mass, radius)= sqrt(2 G mass / radius)
+ * Facade (impl/subjects/astrophysics/astrophysics_native.cpp):
+ *   flux_from_luminosity(L, r)   inverse-square flux, W/m^2
+ *   redshift(observed, rest)     dimensionless z
+ *   observed_wavelength(rest, z) rest * (1 + z)
+ *   wien_peak(temperature)       peak wavelength, m
+ *   kepler_period(a, mass)       orbital period, s
+ *   escape_velocity(mass, radius) m/s
  *
- * Inputs are grounded in churn/2/data/solar-system.json (Earth) and standard
- * public astronomical figures (the Sun's luminosity, radius, and surface
- * temperature; the hydrogen-alpha line at 656.3 nm).
+ * Inputs are grounded in churn/2/data/solar-system.json (Earth, 1 AU) and
+ * standard public astronomical figures (the Sun's luminosity, radius, and
+ * surface temperature; the hydrogen-alpha line at 656.3 nm).
  *
  * Run:
  *   SLEELA_SHEET=./SHEET.sheet \
@@ -24,18 +24,9 @@
  */
 #sleela 2.1
 import math;
+import astrophysics;
 
 class ScienceAstrophysics {
-
-  double G() { return 6.6743 * math.pow(10.0, -11.0); }   // m^3/kg/s^2
-  double WIEN_B() { return 2.897771955 * math.pow(10.0, -3.0); } // m K
-
-  double fluxFromLuminosity(double l, double r) { return l / (4.0 * math.pi() * r * r); }
-  double redshift(double observed, double rest) { return (observed - rest) / rest; }
-  double observedWavelength(double rest, double z) { return rest * (1.0 + z); }
-  double wienPeak(double temperature) { return WIEN_B() / temperature; }
-  double keplerPeriod(double a, double mass) { return math.tau() * math.sqrt(a * a * a / (G() * mass)); }
-  double escapeVelocity(double mass, double radius) { return math.sqrt(2.0 * G() * mass / radius); }
 
   void banner(String t) {
     print("================================================================");
@@ -44,38 +35,39 @@ class ScienceAstrophysics {
   }
 
   void main() {
-    banner("SLeeLa Science — Astrophysics (formulas on import math;)");
+    banner("SLeeLa Science — Astrophysics (import astrophysics;)");
 
     // The Sun (public reference values).
     double lSun = 3.828 * math.pow(10.0, 26.0);  // W, IAU nominal solar luminosity
-    double rSun = 6.957 * math.pow(10.0, 8.0);   // m, nominal solar radius
     double tSun = 5772.0;                          // K, effective temperature
     double mSun = 1.989 * math.pow(10.0, 30.0);  // kg
 
     // Earth's orbit, from churn/2/data/solar-system.json (1 AU).
     double au = 1.495978707 * math.pow(10.0, 11.0); // m
+    double mEarth = 5.97 * math.pow(10.0, 24.0);     // kg
+    double rEarth = 6.3781 * math.pow(10.0, 6.0);    // m
+
+    // H-alpha line.
+    double rest = 656.3 * math.pow(10.0, -9.0);
+    double observed = 660.0 * math.pow(10.0, -9.0);
+    double z = astrophysics.redshift(observed, rest);
 
     print("[radiation]");
-    print("  flux at 1 AU from the Sun            = " + fluxFromLuminosity(lSun, au) + " W/m^2");
+    print("  flux at 1 AU from the Sun            = " + astrophysics.flux_from_luminosity(lSun, au) + " W/m^2");
     print("    (the solar constant, ~1361 W/m^2)");
-    print("  wien_peak(Sun, 5772 K)               = " + wienPeak(tSun) + " m");
+    print("  wien_peak(Sun, 5772 K)               = " + astrophysics.wien_peak(tSun) + " m");
     print("    (~502 nm, green-peaked visible light)");
 
     print("[spectroscopy]  H-alpha rest = 656.3 nm");
-    double rest = 656.3 * math.pow(10.0, -9.0);
-    double observed = 660.0 * math.pow(10.0, -9.0);
-    double z = redshift(observed, rest);
     print("  redshift(observed 660 nm, rest)      = " + z);
-    print("  observed_wavelength(rest, z)         = " + observedWavelength(rest, z) + " m");
+    print("  observed_wavelength(rest, z)         = " + astrophysics.observed_wavelength(rest, z) + " m");
 
     print("[orbits & gravity]");
-    print("  kepler_period(1 AU, Sun)             = " + keplerPeriod(au, mSun) + " s");
+    print("  kepler_period(1 AU, Sun)             = " + astrophysics.kepler_period(au, mSun) + " s");
     print("    (~3.156e7 s, i.e. one year)");
-    double mEarth = 5.97 * math.pow(10.0, 24.0);
-    double rEarth = 6.3781 * math.pow(10.0, 6.0);
-    print("  escape_velocity(Earth)               = " + escapeVelocity(mEarth, rEarth) + " m/s");
+    print("  escape_velocity(Earth)               = " + astrophysics.escape_velocity(mEarth, rEarth) + " m/s");
 
     banner("Done");
-    print("Astrophysics builds on Math (pi, tau, sqrt) as the subject library does.");
+    print("Astrophysics is a native subject library (import astrophysics;); it builds on math.");
   }
 }

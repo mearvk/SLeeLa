@@ -1,5 +1,5 @@
 ================================================================
-  SLeeLa Science — Physics (formulas on import math;)
+  SLeeLa Science — Physics (import physics;)
 ================================================================
 [mechanics]
   velocity(100 m, 5 s)                 = 20 m/s
@@ -24,4 +24,4 @@
 ================================================================
   Done
 ================================================================
-Physics builds on Math (sqrt, tau, ...) exactly as the subject library does.
+Physics is a native subject library (import physics;); it builds on math.

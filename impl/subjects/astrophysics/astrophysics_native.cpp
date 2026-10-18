@@ -16,6 +16,10 @@ void addAstrophysics(Program&p){
  m.body->stmts.push_back(Ret(Bn("*",D(6.283185307179586),C1("__native_math_sqrt",Bn("/",Bn("*",V("a"),Bn("*",V("a"),V("a"))),Bn("*",D(6.67430e-11),V("mass")))))));c.methods.push_back(std::move(m));
  m=M2("double","__native_astrophysics_escape_velocity","double","mass","double","radius");
  m.body->stmts.push_back(Ret(C1("__native_math_sqrt",Bn("/",Bn("*",D(1.33486e-10),V("mass")),V("radius")))));c.methods.push_back(std::move(m));
+ // Pure functions, no instance state: mark static so a qualified call
+ // (astrophysics.redshift(...)) matches the parameter count and the VM call
+ // frame stays aligned across calls (as math does at the end of addMath).
+ for(auto& method:c.methods)method.isStatic=true;
  p.classes.push_back(std::move(c));
 }
 }}

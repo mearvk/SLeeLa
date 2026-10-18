@@ -179,6 +179,10 @@ void addInference(Program& p) {
     }
     c.methods.push_back(std::move(m));
 
+    // Pure functions, no instance state: mark static so a qualified call
+    // matches the parameter count and the VM call frame stays aligned across
+    // calls (as math does at the end of addMath).
+    for(auto& method:c.methods)method.isStatic=true;
     p.classes.push_back(std::move(c));
 }
 

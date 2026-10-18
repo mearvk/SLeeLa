@@ -7,17 +7,16 @@
 # this directory. Each is a runnable .sleela program built on the science
 # subject libraries:
 #
-#   math.sleela          import math;                 (the math facade)
-#   physics.sleela       import math;                 (physics formula families)
-#   chemistry.sleela     import math; import chemistry; (the chemistry facade)
-#   astrophysics.sleela  import math;                 (astrophysics formulas)
-#   sociology.sleela     import math;                 (sociology measures)
+#   math.sleela          import math;                    (the math facade)
+#   physics.sleela       import math; import physics;     (the physics facade)
+#   chemistry.sleela     import math; import chemistry;   (the chemistry facade)
+#   astrophysics.sleela  import math; import astrophysics; (the astrophysics facade)
+#   sociology.sleela     import math; import sociology;   (the sociology facade)
 #
-# math and chemistry call the native subject facades directly (math.sqrt(...),
-# chemistry.ratio(...)). physics / astrophysics / sociology reproduce their
-# subject library's formula families on top of `import math;` — the same
-# math-first approach the repository's churn models use (e.g.
-# churn/2/structures.sleela) — so every program runs on the toolchain as-is.
+# Every program calls its subject library's native facade directly
+# (math.sqrt(...), physics.velocity(...), chemistry.ratio(...),
+# astrophysics.redshift(...), sociology.rate(...)). Each non-math subject
+# depends on math, so every program also imports math.
 #
 # Usage:
 #   ./example/science/run-science-sleela.sh

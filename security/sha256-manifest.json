@@ -639,7 +639,7 @@
     },
     {
       "path": "impl/subjects/astrophysics/astrophysics_native.cpp",
-      "sha256": "7a8c2509b1c6cdc2f55f8acce131761b908aa87c40f520bcd8d6b83dcee45f16"
+      "sha256": "bcf904097a05112d3f7b5b2e54f1d74ef5aa499d7ea1262a0459166689ccb705"
     },
     {
       "path": "impl/subjects/astrophysics/observation_store.c",
@@ -667,7 +667,7 @@
     },
     {
       "path": "impl/subjects/economics/economics_native.cpp",
-      "sha256": "aa3cb4fe097cf03e3672b453a0e8d54771510a8d91dff3681c53c0ac1e93b4e3"
+      "sha256": "f45eb9a3837a308f6501df5b3b648b5a83b33172b3d5fbc2eb4f5e201cfee5c9"
     },
     {
       "path": "impl/subjects/finance/financial.cpp",
@@ -679,7 +679,7 @@
     },
     {
       "path": "impl/subjects/finance/financial_api.cpp",
-      "sha256": "7513633ea094fcf27dd893e7dd9a07728be7f8dbe6e1e1426c8ec9e67b87efc9"
+      "sha256": "fe24383132f601e949c1ada22417f2ee9948958a062df8dc8ac3b7e753f0299e"
     },
     {
       "path": "impl/subjects/finance/financial_api.h",
@@ -687,7 +687,7 @@
     },
     {
       "path": "impl/subjects/inference/inference_native.cpp",
-      "sha256": "58eedd0761f06576ecd924d5ce4d9e39c5f319049b2e1436ddbe2ed863185a8c"
+      "sha256": "9bb716ead5269e94c59457f8243c708c5de6b0acbc0617e400f5fce262ccad0b"
     },
     {
       "path": "impl/subjects/math/math_native.cpp",
@@ -711,7 +711,7 @@
     },
     {
       "path": "impl/subjects/physics/physics_native.cpp",
-      "sha256": "b23c82c437213ba4f2636764e8ffe00b23571ae0ee56088f78f77c1bac1eb95c"
+      "sha256": "c1812c21db2253b9c231d24752a04bc09a1b8ebd6b097675d701de91caa41f29"
     },
     {
       "path": "impl/subjects/sociology/sociology.cpp",
@@ -731,7 +731,7 @@
     },
     {
       "path": "impl/subjects/sociology/sociology_native.cpp",
-      "sha256": "90cab01419f11f35355d19f59c245323e74518e357b853a560a9540582cb7baa"
+      "sha256": "91997b48f3dfb1d8cfb11f24bd4c6bd526ab1fb17644e5fa7240fe3f4742a316"
     },
     {
       "path": "impl/xclass/xclass_loader.cpp",
