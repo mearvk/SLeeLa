@@ -84,6 +84,19 @@ install:
 	@echo "Runtime: $(RUNTIME_DIR)"
 	@echo "Configuration: $(CONFIG_DIR)/startup.conf (existing configuration preserved)"
 uninstall:
+	@if [ -z "$(DESTDIR)" ] && [ "$$(id -u)" -ne 0 ] && { \
+		case "$(BINDIR) $(LIBDIR) $(DATADIR) $(SYSCONFDIR)" in \
+			*/usr/*|*/usr|*/opt/*|*/opt|*/var/*|*/var|*/etc/*|*/etc) true ;; \
+			*) false ;; \
+		esac; \
+	}; then \
+		if command -v sudo >/dev/null 2>&1; then \
+			echo "System uninstall requires administrator privileges; requesting sudo."; \
+			exec sudo $(MAKE) --no-print-directory -C "$(CURDIR)" uninstall \
+				PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" BINDIR="$(BINDIR)" \
+				LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)"; \
+		else echo "System uninstall needs root privileges; install sudo or run this target as root." >&2; exit 1; fi; \
+	fi
 	@echo "Removing tracked SLeeLa files while preserving configuration and untracked data."
-	python3 "$(REPO_ROOT)/install/install-runtime.py" uninstall "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"
+	python3 "$(REPO_ROOT)/install-runtime.py" uninstall "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"
 	@echo "Configuration under $(CONFIG_DIR) is intentionally preserved; remove it manually if no longer needed."
