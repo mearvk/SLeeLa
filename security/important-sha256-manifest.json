@@ -6008,7 +6008,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "9115006cf37b2fc66ccb6100e4e97b4972a36e16563db2af54e579b809516ec1"
+      "sha256": "5b247f5cc499d2057f77f8c02f9f21d09d8df6d73246d7159049398695fbce5a"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -7213,6 +7213,10 @@
     {
       "path": "install/quick-safe-install.sh",
       "sha256": "e8d40902a51e9ee2cd1b2b7d1726fdc92b7543de01d6a3229c79c3750ca544b7"
+    },
+    {
+      "path": "install/system-install.sh",
+      "sha256": "60ed04952e578faeb35628254ad78878b6823adc996ae56dc86f6afe2ba30eb8"
     },
     {
       "path": "international-criminal-court/ABOUT-THE-COURT.md",
