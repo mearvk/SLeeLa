@@ -6052,7 +6052,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "a14432537e858155173143d01a962dd24da179af2526ed78543d2d28ab1052b1"
+      "sha256": "d3bf167c69bcc557f4055ac9db67656607999950528d88a5612946b9c399dd67"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -6148,7 +6148,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "026699f8049fde45a26ee6196d9a34f6640edeae0daa797e3ba89251f8273bb2"
+      "sha256": "63bd49369092362353ad7753e8af615e028045324a86dd615b950ed16e51ded2"
     },
     {
       "path": "impl/fundamental/Buffer.cpp",
@@ -7116,7 +7116,15 @@
     },
     {
       "path": "impl/tests/version/run_version_tests.sh",
-      "sha256": "8816c2e4594b0a0d097c65656ec5770328011582b58bb18f007405f8fea1a2c9"
+      "sha256": "1d339491307c47cd925847928584dbd91da485510c270a0aa5f861e23731f2fb"
+    },
+    {
+      "path": "impl/tests/version/syntax_0_9.sleela",
+      "sha256": "2def75407a35f6b7cfb477279660c9ec8c43b69b171a8988b0360ad90d9615eb"
+    },
+    {
+      "path": "impl/tests/version/syntax_1_0.sleela",
+      "sha256": "e29e643de2df3c7bc58cde6ccb15530ca431b90ace0ddce8a5a9dbc7db8af2c1"
     },
     {
       "path": "impl/tests/version/syntax_1_2.sleela",
