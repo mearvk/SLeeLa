@@ -5988,7 +5988,7 @@
     },
     {
       "path": "impl/frontend/artifact.cpp",
-      "sha256": "3bdad9c60ab2763354650302b55b0f5127d08f2acae7af10e94ef630f5a73c75"
+      "sha256": "8b11428db6ce6c66bf717e767f59ff2ae1596201ca8441534475bcaf9d284383"
     },
     {
       "path": "impl/frontend/artifact.h",
@@ -6008,7 +6008,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "4d553ecdea8d5c8ce98d0c60b83b7fb9ed5abfe074530c8a33248fbcf75eabdc"
+      "sha256": "9115006cf37b2fc66ccb6100e4e97b4972a36e16563db2af54e579b809516ec1"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -53864,7 +53864,7 @@
     },
     {
       "path": "scripts/autocheck-toolchain.sh",
-      "sha256": "d8447ce3f3e9f251398047e3cdb3846733caef4c3d7d3ba81cec4ec336ecad21"
+      "sha256": "4c492e9abd9deecc3436edc0379f127956bb69ddcdde0859fde6fc6bf41daeb7"
     },
     {
       "path": "scripts/build-linux.sh",
