@@ -2,7 +2,7 @@
 
 ## Constitutional Socialism Reference — neutral, sourced registry indicator
 
-This companion document specifies the final column of `BANKS4.md` for the
+This companion document specifies the final column of `BANK.INFORMATION.PANAMANIAN.004.md` for the
 project's 391-country/jurisdiction registry. It records **one observable,
 citable fact** about each jurisdiction and is deliberately *descriptive*, not
 evaluative.
@@ -224,18 +224,18 @@ opinion. Absent a cited source, the value is `UNASSESSED`.
 
 The column is populated by
 [`tools/banking/update_banks4_socialism.py`](tools/banking/update_banks4_socialism.py)
-and titled **"Constitutional Socialism Reference"** in `BANKS4.md`
+and titled **"Constitutional Socialism Reference"** in `BANK.INFORMATION.PANAMANIAN.004.md`
 (via [`tools/banking/update_banks4.py`](tools/banking/update_banks4.py)). See
 [`tools/banking/CONSTITUTIONAL_SOCIALISM_REFERENCE.md`](tools/banking/CONSTITUTIONAL_SOCIALISM_REFERENCE.md)
 for the full description and how to extend the sourced table. The
 `Annotate BANKS4 Constitutional Socialism Reference` workflow applies it and
 validates that every row holds one of the three permitted values.
 
-### Relationship to BANKS.md
+### Relationship to BANK.INFORMATION.PANAMANIAN.001.md
 
-`BANKS.md` remains the principal national banking, economic and historical
+`BANK.INFORMATION.PANAMANIAN.001.md` remains the principal national banking, economic and historical
 registry. This document specifies only the neutral constitutional-reference
-indicator carried in the final `BANKS4.md` column, preserving all existing
+indicator carried in the final `BANK.INFORMATION.PANAMANIAN.004.md` column, preserving all existing
 banking, currency, GDP, trade, supervision and other registry fields.
 
 ### Related registries

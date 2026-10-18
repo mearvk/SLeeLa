@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create BANKS4.md from BANKS3.md without changing the 391-row dataset.
+"""Create BANK.INFORMATION.PANAMANIAN.004.md from BANKS3.md without changing the 391-row dataset.
 
 Only the Banking column is replaced.  Current jurisdictions receive a
 central-bank/monetary-authority description; historical entities receive an
@@ -12,7 +12,7 @@ import re
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "BANKS3.md"
-OUTPUT = ROOT / "BANKS4.md"
+OUTPUT = ROOT / "BANK.INFORMATION.PANAMANIAN.004.md"
 EXPECTED = 391
 
 EXACT = {

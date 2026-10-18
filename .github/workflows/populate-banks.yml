@@ -73,7 +73,7 @@ jobs:
           python3 .github/workflows/populate_banks.py \
             --registry data/banking/registry.json \
             --output data/banking/national_banking.json \
-            --table BANKS.md
+            --table BANK.INFORMATION.PANAMANIAN.001.md
 
       - name: Create additive BANKS2 currency table
         run: |
@@ -96,7 +96,7 @@ jobs:
         run: |
           git config user.name "SLeeLa Data Workflow"
           git config user.email "actions@users.noreply.github.com"
-          git add BANKS.md BANKS2.md data/banking/registry.json data/banking/national_banking.json tools/banking/populate_banks.py
+          git add BANK.INFORMATION.PANAMANIAN.001.md BANK.INFORMATION.PANAMANIAN.002.md data/banking/registry.json data/banking/national_banking.json tools/banking/populate_banks.py
           if git diff --cached --quiet; then
             echo "No generated changes."
           else

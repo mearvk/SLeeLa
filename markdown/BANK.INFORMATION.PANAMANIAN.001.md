@@ -1,4 +1,4 @@
-# SLeeLa — BANKS.md
+# SLeeLa — BANK.INFORMATION.PANAMANIAN.001.md
 
 ## HTTP 3.0 National Banking, Economic & Historical Registry
 
@@ -257,15 +257,15 @@ Suggested operations:
 
 ## 14. Implementation Status
 
-**BANKS.md is now the national banking, economic and historical partition contract.** The schema is expanded to include economic influence, founding/state formation, corporate structure and struggles, crises, trade, resources, ownership, labor, institutions and verified socialist-period history.
+**BANK.INFORMATION.PANAMANIAN.001.md is now the national banking, economic and historical partition contract.** The schema is expanded to include economic influence, founding/state formation, corporate structure and struggles, crises, trade, resources, ownership, labor, institutions and verified socialist-period history.
 
 The next data pass should populate all 391 individual records from SLeeLa's canonical registry and independently verify the values. No placeholder should be promoted to COMPLETE without provenance.
 
-# SLeeLa — BANKS.md
+# SLeeLa — BANK.INFORMATION.PANAMANIAN.001.md
 
 ## HTTP 3.0 National Banking, Economic & Historical Registry — Combined 391-Country Table
 
-This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the canonical three-digit registry ID and country/jurisdiction. Economic, banking and status fields come from `BANKS.md`; Currency comes from `BANKS2.md`.
+This is the materialized union of `BANK.INFORMATION.PANAMANIAN.001.md` and `BANK.INFORMATION.PANAMANIAN.002.md`, joined by the canonical three-digit registry ID and country/jurisdiction. Economic, banking and status fields come from `BANK.INFORMATION.PANAMANIAN.001.md`; Currency comes from `BANK.INFORMATION.PANAMANIAN.002.md`.
 
 | ID | Country/Jurisdiction | ISO | Currency | GDP | GDP/Capita | Inflation | Trade/GDP | World Bank Income | Banking | Status |
 |---:|---|---|---|---:|---:|---:|---:|---|---|---|

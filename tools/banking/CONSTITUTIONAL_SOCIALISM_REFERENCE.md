@@ -1,6 +1,6 @@
 # BANKS4 — "Constitutional Socialism Reference" column
 
-The final column of `BANKS4.md` records a single, neutral, observable fact for
+The final column of `BANK.INFORMATION.PANAMANIAN.004.md` records a single, neutral, observable fact for
 each jurisdiction, populated by
 [`update_banks4_socialism.py`](update_banks4_socialism.py):
 
@@ -21,7 +21,7 @@ An earlier version assigned every one of the 391 rows one of four opaque,
 editorializing labels (`YES` / `NO` / `CONVINCED` / `INDEED`) from a hardcoded,
 uncited country list. That was subjective, non-neutral, and — because it invented
 a value for every jurisdiction with no source — it contradicted the registry's
-own evidence discipline (see [`BANKS.md`](../../BANKS.md): political and
+own evidence discipline (see [`BANK.INFORMATION.PANAMANIAN.001.md`](../../BANK.INFORMATION.PANAMANIAN.001.md): political and
 historical values are not invented unless present in the registry or an
 explicitly sourced enrichment).
 

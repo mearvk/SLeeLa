@@ -22,7 +22,7 @@ if any(not r[9] for r in rows):
     raise SystemExit("Every row must have a Banking value")
 
 out = [
-    "# SLeeLa — BANKS4.md", "",
+    "# SLeeLa — BANK.INFORMATION.PANAMANIAN.004.md", "",
     "## HTTP 3.0 National Banking, Economic & Historical Registry — Banking-Enriched 391-Country Table", "",
     "This is the 391-row BANKS3 registry with the Banking field explicitly retained for every canonical country/jurisdiction.", "",
     "| ID | Country/Jurisdiction | ISO | Currency | GDP | GDP/Capita | Inflation | Trade/GDP | World Bank Income | Banking | Constitutional Socialism Reference |",
@@ -31,5 +31,5 @@ out = [
 for r in rows:
     out.append("| " + " | ".join(r) + " |")
 out += ["", "### Validation", "", "- Expected rows: **391**.", "- Canonical join key: three-digit `ID`.", "- Banking field: column 10 from `BANKS3.md`."]
-(ROOT / "BANKS4.md").write_text("\n".join(out) + "\n", encoding="utf-8")
-print("BANKS4.md generated with 391 rows and Banking column")
+(ROOT / "BANK.INFORMATION.PANAMANIAN.004.md").write_text("\n".join(out) + "\n", encoding="utf-8")
+print("BANK.INFORMATION.PANAMANIAN.004.md generated with 391 rows and Banking column")

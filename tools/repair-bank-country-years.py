@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Repair and normalize BANKS.md country-year columns.
+"""Repair and normalize BANK.INFORMATION.PANAMANIAN.001.md country-year columns.
 
 This pass is deliberately defensive: it reconstructs ISO 3166 identifiers
 from the public country-code dataset and restores the intended table layout:
@@ -17,7 +17,7 @@ from io import StringIO
 from pathlib import Path
 from urllib.request import Request, urlopen
 
-BANKS = Path("BANKS.md")
+BANKS = Path("BANK.INFORMATION.PANAMANIAN.001.md")
 CODES_URL = "https://raw.githubusercontent.com/datasets/country-codes/main/data/country-codes.csv"
 INDEPENDENCE_URL = "https://raw.githubusercontent.com/samayo/country-json/master/src/country-by-independence-date.json"
 

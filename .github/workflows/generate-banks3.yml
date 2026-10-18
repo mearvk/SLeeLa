@@ -4,8 +4,8 @@ on:
   push:
     branches: [master]
     paths:
-      - 'BANKS.md'
-      - 'BANKS2.md'
+      - 'BANK.INFORMATION.PANAMANIAN.001.md'
+      - 'BANK.INFORMATION.PANAMANIAN.002.md'
       - 'tools/banking/generate_banks3.py'
       - '.github/workflows/generate-banks3.yml'
 

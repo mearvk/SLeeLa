@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Restore BANKS.md Currency Code values from the known-good prior commit.
+"""Restore BANK.INFORMATION.PANAMANIAN.001.md Currency Code values from the known-good prior commit.
 
 This is deliberately a restoration pass, not a fresh currency lookup.  The
 currency column from commit 181127615bf06bb1bec79f778255183a3bb1ec13 is the
-source of truth.  All other BANKS.md fields are preserved byte-for-byte except
+source of truth.  All other BANK.INFORMATION.PANAMANIAN.001.md fields are preserved byte-for-byte except
 for the Currency Code cell in the generated 391-row table.
 
 Max Rupplin - MEARVK LLC - 2026
@@ -15,7 +15,7 @@ import re
 from pathlib import Path
 from urllib.request import Request, urlopen
 
-BANKS = Path("BANKS.md")
+BANKS = Path("BANK.INFORMATION.PANAMANIAN.001.md")
 SOURCE_URL = (
     "https://raw.githubusercontent.com/mearvk/SLeeLa/"
     "181127615bf06bb1bec79f778255183a3bb1ec13/BANKS.md"

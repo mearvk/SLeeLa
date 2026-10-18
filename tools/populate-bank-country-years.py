@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Populate BANKS.md country start/end years from free public sources.
+"""Populate BANK.INFORMATION.PANAMANIAN.001.md country start/end years from free public sources.
 
 Primary current-country source:
   samayo/country-json country-by-independence-date.json
@@ -14,7 +14,7 @@ import re
 import urllib.request
 from pathlib import Path
 
-BANKS = Path("BANKS.md")
+BANKS = Path("BANK.INFORMATION.PANAMANIAN.001.md")
 SOURCE = "https://raw.githubusercontent.com/samayo/country-json/master/src/country-by-independence-date.json"
 
 ALIASES = {
@@ -27,7 +27,7 @@ ALIASES = {
     "Cabo Verde": "Cape Verde",
 }
 
-# Historical rows already present in BANKS.md.
+# Historical rows already present in BANK.INFORMATION.PANAMANIAN.001.md.
 # Values are conventional historical ranges and should be reviewed against
 # Wikidata/primary historical sources before being treated as definitive.
 HISTORICAL = {

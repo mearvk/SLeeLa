@@ -20,7 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_REGISTRY = ROOT / "data" / "banking" / "registry.json"
 DEFAULT_OUTPUT = ROOT / "data" / "banking" / "national_banking.json"
-DEFAULT_TABLE = ROOT / "BANKS.md"
+DEFAULT_TABLE = ROOT / "BANK.INFORMATION.PANAMANIAN.001.md"
 
 EXPECTED = 391
 WB_BASE = "https://api.worldbank.org/v2"
@@ -430,7 +430,7 @@ def write_outputs(records, output, table):
     }
     output.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
-    existing = table.read_text(encoding="utf-8") if table.exists() else "# SLeeLa — BANKS.md\n"
+    existing = table.read_text(encoding="utf-8") if table.exists() else "# SLeeLa — BANK.INFORMATION.PANAMANIAN.001.md\n"
     marker = "## 391-Country National Economic Table"
     if marker in existing:
         existing = existing.split(marker)[0].rstrip() + "\n\n"

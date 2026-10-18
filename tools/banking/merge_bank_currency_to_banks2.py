@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Create BANKS2.md by preserving BANKS.md and filling only missing Currency cells.
+"""Create BANK.INFORMATION.PANAMANIAN.002.md by preserving BANK.INFORMATION.PANAMANIAN.001.md and filling only missing Currency cells.
 
-The existing BANKS.md table is treated as authoritative for all existing data.
+The existing BANK.INFORMATION.PANAMANIAN.001.md table is treated as authoritative for all existing data.
 Only Currency cells containing N/A or an empty value are populated. Currency
 values are taken from the known-good SLeeLa currency table at commit
 181127615bf06bb1bec79f778255183a3bb1ec13.
@@ -15,8 +15,8 @@ import re
 from pathlib import Path
 from urllib.request import Request, urlopen
 
-INPUT = Path("BANKS.md")
-OUTPUT = Path("BANKS2.md")
+INPUT = Path("BANK.INFORMATION.PANAMANIAN.001.md")
+OUTPUT = Path("BANK.INFORMATION.PANAMANIAN.002.md")
 SOURCE_URL = (
     "https://raw.githubusercontent.com/mearvk/SLeeLa/"
     "181127615bf06bb1bec79f778255183a3bb1ec13/BANKS.md"
@@ -95,7 +95,7 @@ def main() -> None:
         added += 1
 
     OUTPUT.write_text("\n".join(current_lines) + "\n", encoding="utf-8")
-    print(f"BANKS2.md created from BANKS.md: added={added}, preserved={preserved}")
+    print(f"BANK.INFORMATION.PANAMANIAN.002.md created from BANK.INFORMATION.PANAMANIAN.001.md: added={added}, preserved={preserved}")
 
 
 if __name__ == "__main__":

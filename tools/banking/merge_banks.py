@@ -1,8 +1,8 @@
 import re
 from pathlib import Path
 
-banks = Path('BANKS.md').read_text(encoding='utf-8')
-banks2 = Path('BANKS2.md').read_text(encoding='utf-8')
+banks = Path('BANK.INFORMATION.PANAMANIAN.001.md').read_text(encoding='utf-8')
+banks2 = Path('BANK.INFORMATION.PANAMANIAN.002.md').read_text(encoding='utf-8')
 
 currency = {}
 for m in re.finditer(r'^\|\s*(\d{3})\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*$', banks2, re.M):
@@ -28,5 +28,5 @@ for line in lines:
     out.append(line)
 
 newtable = '\n'.join(out) + '\n'
-Path('BANKS.md').write_text(banks[:m.start(1)] + newtable + banks[m.end(1):], encoding='utf-8')
-print(f'Merged {len(currency)} currency records into BANKS.md')
+Path('BANK.INFORMATION.PANAMANIAN.001.md').write_text(banks[:m.start(1)] + newtable + banks[m.end(1):], encoding='utf-8')
+print(f'Merged {len(currency)} currency records into BANK.INFORMATION.PANAMANIAN.001.md')

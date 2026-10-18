@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Normalize and populate BANKS.md country, currency-code columns.
+Normalize and populate BANK.INFORMATION.PANAMANIAN.001.md country, currency-code columns.
 
 Canonical national-table columns:
     ISO Alpha-2
@@ -23,8 +23,8 @@ from io import StringIO
 from pathlib import Path
 from urllib.request import Request, urlopen
 
-# Currency restoration pass: this script is the source of truth for BANKS.md.
-BANKS = Path("BANKS.md")
+# Currency restoration pass: this script is the source of truth for BANK.INFORMATION.PANAMANIAN.001.md.
+BANKS = Path("BANK.INFORMATION.PANAMANIAN.001.md")
 COUNTRY_CODES_URL = (
     "https://raw.githubusercontent.com/datasets/country-codes/main/data/country-codes.csv"
 )
@@ -109,7 +109,7 @@ def parse_existing_iso(value):
 
 def main():
     if not BANKS.exists():
-        raise SystemExit("BANKS.md was not found.")
+        raise SystemExit("BANK.INFORMATION.PANAMANIAN.001.md was not found.")
 
     records = load_country_codes()
     lines = BANKS.read_text(encoding="utf-8").splitlines()
@@ -256,9 +256,9 @@ def main():
 
     if changed:
         BANKS.write_text("\n".join(lines) + "\n", encoding="utf-8")
-        print("BANKS.md country, ISO, and currency-code columns normalized and populated.")
+        print("BANK.INFORMATION.PANAMANIAN.001.md country, ISO, and currency-code columns normalized and populated.")
     else:
-        print("BANKS.md country, ISO, and currency-code columns already normalized.")
+        print("BANK.INFORMATION.PANAMANIAN.001.md country, ISO, and currency-code columns already normalized.")
 
 
 if __name__ == "__main__":

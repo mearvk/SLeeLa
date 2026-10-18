@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Populate BANKS4.md's final column with a NEUTRAL, SOURCED indicator.
+"""Populate BANK.INFORMATION.PANAMANIAN.004.md's final column with a NEUTRAL, SOURCED indicator.
 
 This replaces an earlier four-value "Socialism Status" heuristic
 ({YES, NO, CONVINCED, INDEED}) that assigned an opaque, editorializing label to
 every one of the 391 rows from a hardcoded, uncited country list. That approach
-contradicted the registry's own evidence discipline (see BANKS.md: "No ...
+contradicted the registry's own evidence discipline (see BANK.INFORMATION.PANAMANIAN.001.md: "No ...
 political, historical ... value is invented when not present in the registry or
 an explicitly sourced enrichment").
 
@@ -26,13 +26,13 @@ Every other row is left UNASSESSED rather than guessed. This is a descriptive
 constitutional-text indicator, NOT a judgment about a country's economy, policy,
 or political character.
 
-The column is titled "Constitutional Socialism Reference" in BANKS4.md.
+The column is titled "Constitutional Socialism Reference" in BANK.INFORMATION.PANAMANIAN.004.md.
 """
 from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[2]
-PATH = ROOT / "BANKS4.md"
+PATH = ROOT / "BANK.INFORMATION.PANAMANIAN.004.md"
 
 VALID = {"CONSTITUTIONAL", "NONE", "UNASSESSED"}
 
@@ -76,7 +76,7 @@ def value_for(country: str) -> str:
 
 def main() -> None:
     if not PATH.exists():
-        raise SystemExit("BANKS4.md not found; generate it first (tools/banking/update_banks4.py).")
+        raise SystemExit("BANK.INFORMATION.PANAMANIAN.004.md not found; generate it first (tools/banking/update_banks4.py).")
     text = PATH.read_text(encoding="utf-8")
     lines = []
     rows = 0

@@ -3,8 +3,8 @@ name: Merge BANKS currency data
 on:
   push:
     paths:
-      - BANKS.md
-      - BANKS2.md
+      - BANK.INFORMATION.PANAMANIAN.001.md
+      - BANK.INFORMATION.PANAMANIAN.002.md
       - tools/banking/merge_banks.py
 
 permissions:
@@ -24,9 +24,9 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add BANKS.md
+          git add BANK.INFORMATION.PANAMANIAN.001.md
           if git diff --cached --quiet; then
-            echo 'BANKS.md already contains the merged currency data.'
+            echo 'BANK.INFORMATION.PANAMANIAN.001.md already contains the merged currency data.'
           else
             git commit -m 'Merge BANKS2 currency data into BANKS'
             git push

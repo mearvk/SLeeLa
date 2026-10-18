@@ -1,4 +1,4 @@
-# SLeeLa — BANKS.md
+# SLeeLa — BANK.INFORMATION.PANAMANIAN.001.md
 <p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/merchandise/sleela-marketing-logo-001.png" alt="SLeeLa Marketing Logo" width="560"></p>
 
 ## 391-Country National Economic Table

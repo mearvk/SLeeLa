@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 1
 
       - name: Generate BANKS3 (input to BANKS4)
-        # BANKS3.md is a derived join of BANKS.md + BANKS2.md and is not
+        # BANKS3.md is a derived join of BANK.INFORMATION.PANAMANIAN.001.md + BANK.INFORMATION.PANAMANIAN.002.md and is not
         # committed, so regenerate it here before deriving BANKS4. This makes
         # the workflow self-sufficient rather than depending on a separate
         # Generate-BANKS3 run having landed first.
@@ -39,7 +39,7 @@ jobs:
           from pathlib import Path
           import re
           source = Path('BANKS3.md').read_text(encoding='utf-8')
-          output = Path('BANKS4.md').read_text(encoding='utf-8')
+          output = Path('BANK.INFORMATION.PANAMANIAN.004.md').read_text(encoding='utf-8')
           pat = re.compile(r'^\| (\d{3}) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \|$', re.M)
           a = pat.findall(source)
           b = pat.findall(output)
@@ -57,7 +57,7 @@ jobs:
         run: |
           git config user.name "SLeeLa Data Workflow"
           git config user.email "actions@users.noreply.github.com"
-          git add BANKS4.md
+          git add BANK.INFORMATION.PANAMANIAN.004.md
           if git diff --cached --quiet; then
             echo "BANKS4 already current."
           else

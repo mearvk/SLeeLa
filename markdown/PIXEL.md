@@ -127,7 +127,7 @@ These documents describe intended contracts, compatibility models, implementatio
 
 ### Data and Experimental Material
 
-- `BANKS.md`, `BANKS2.md`, `BANKS4.md`, and related generated data.
+- `BANK.INFORMATION.PANAMANIAN.001.md`, `BANK.INFORMATION.PANAMANIAN.002.md`, `BANK.INFORMATION.PANAMANIAN.004.md`, and related generated data.
 - XML subject models and observation stores.
 - Economic and infrastructure examples.
 - Inference-model inputs and outputs.
