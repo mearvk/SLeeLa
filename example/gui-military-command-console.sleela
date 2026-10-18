@@ -54,13 +54,9 @@ class GuiMilitaryCommandConsole {
     banner("Branding");
     SLGuiBranding b = new SLGuiBranding(); b.configure("brand/insignia.svg");
     b.setPlacement(1); b.setScalePct(115);   // 1 = PLACE_HEADER
-    // Populate the string-bearing fields directly. (The current compiler drops
-    // String arguments on the configure()/setWordmark()/setColors() paths, so
-    // we assign the fields that back them to keep the rendered scene faithful.)
-    b.logoAsset = "brand/insignia.svg"; b.shown = 1;
-    b.wordmark = "SLeeLa Command Console";
-    b.accentColor = "#8FB7D9"; b.secondaryColor = "#2E3744";
-    b.tagline = "neutral · hardened · precise";
+    b.setWordmark("SLeeLa Command Console");
+    b.setColors("#8FB7D9", "#2E3744");
+    b.setTagline("neutral · hardened · precise");
     print("branding: " + b.report());
 
     // ---- Component vs Container taxonomy ----
@@ -76,8 +72,7 @@ class GuiMilitaryCommandConsole {
     SLGuiIcon icon = new SLGuiIcon(); icon.configure("icons/shield.svg");
     icon.setSizeTier(2); icon.setPosition(0); icon.setGapPx(8);  // 2 = SIZE_MD, 0 = POS_LEADING
     icon.setOpticalNudge(0, -1);
-    // Set the string-bearing fields directly (see the branding note above).
-    icon.asset = "icons/shield.svg"; icon.tint = "#8FB7D9";
+    icon.setTint("#8FB7D9");
     print("  action icon: " + icon.sizeName() + " " + icon.positionName() +
           " valid=" + icon.valid() + " -> " + icon.toStyle());
 
@@ -95,17 +90,11 @@ class GuiMilitaryCommandConsole {
     // ---- Public-key certificate store ----
     banner("Certificate store");
     SLGuiCertificateStore store = new SLGuiCertificateStore(); store.configure();
-    // importCert(...) null-checks its String params, which the current compiler
-    // drops, so populate the entries by hand (trust 0 = TRUST_UNTRUSTED). This
-    // is exactly what importCert does internally; indices 0 (root) and 1 (leaf).
-    int root = 0; int leaf = 1;
-    store.subject[root] = "SLeeLa Root CA"; store.issuer[root] = "SLeeLa Root CA";
-    store.keyAlg[root] = "Ed25519"; store.fingerprint[root] = "ab12..root";
-    store.trust[root] = 0; store.isCa[root] = 1;
-    store.subject[leaf] = "console.sleela.mil"; store.issuer[leaf] = "SLeeLa Root CA";
-    store.keyAlg[leaf] = "ECDSA-P256"; store.fingerprint[leaf] = "cd34..leaf";
-    store.trust[leaf] = 0; store.isCa[leaf] = 0;
-    store.count = 2;
+    // importCert(...) is fail-closed: a new entry starts TRUST_UNTRUSTED and it
+    // refuses a blank subject/fingerprint. It returns the new index (root=0,
+    // leaf=1).
+    int root = store.importCert("SLeeLa Root CA", "SLeeLa Root CA", "Ed25519", "ab12..root", true);
+    int leaf = store.importCert("console.sleela.mil", "SLeeLa Root CA", "ECDSA-P256", "cd34..leaf", false);
     print("  imported " + store.certCount() + " (both start " + store.trustName(store.trustAt(leaf)) + ")");
     store.trustCert(root); store.trustCert(leaf);
     boolean sel = store.select(leaf);
