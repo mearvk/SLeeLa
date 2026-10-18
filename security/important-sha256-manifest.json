@@ -4320,7 +4320,7 @@
     },
     {
       "path": "example/gui-military-command-console.sleela",
-      "sha256": "89402898dcccbd563daf7e05a8a0fcb3c11968bb18034a026e04285ec25bec94"
+      "sha256": "83d73e2e96eb4298feaf8df52be2be10b59e36d5b098509049d6177de6108c5d"
     },
     {
       "path": "example/run-gui-military.sh",
@@ -5568,7 +5568,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "dab9ba2aed5082cbe06650ed2941250eda9340f5615e42082105eb4a82cf45ec"
+      "sha256": "cc0ba1f7ee6017b3b2ff32b566e7a4936255d1ee040c492ff6e841532a4d0e46"
     },
     {
       "path": "impl/core/sleela_core.h",
