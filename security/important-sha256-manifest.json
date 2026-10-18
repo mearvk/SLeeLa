@@ -53951,6 +53951,10 @@
       "sha256": "3654a3c91818a66f302d0b2464eb5e8ce971cd5a8363841626fad22f6dfa0be6"
     },
     {
+      "path": "scripts/which-sleela.sh",
+      "sha256": "436b03b74eb95a6fc216f84bb88d72933f4d950b88c47a3db5100c33bdbfe2a3"
+    },
+    {
       "path": "scripts/xlt-check.sh",
       "sha256": "4052ada66fa05d948ae53863187346b8d6f60f7332e06e62088412b32415d330"
     },
