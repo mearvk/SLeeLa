@@ -12,6 +12,8 @@
 #include <set>
 #include <functional>
 #include "library_index.h"
+#include "../core/sleela_ui_ids.h"
+#include "../core/sleela_ui_vm.h"
 
 namespace sleela {
 
@@ -652,8 +654,60 @@ private:
         emitExpr(b.lhs.get());emitExpr(b.rhs.get());
         if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
 
+    // SleelaUI (ui*) built-ins: map the SLeeLa-facing name to its bridge id,
+    // arity-check, emit the args, then OP_UI_CALL<id>. Returns true if handled.
+    bool tryEmitUiBuiltin(const Call& c){
+        const std::string& n=c.callee;
+        static const std::map<std::string,int> uiIds = {
+            {"uiAppCreate",SLUI_FN_APP_CREATE},{"uiAppRun",SLUI_FN_APP_RUN},{"uiAppPump",SLUI_FN_APP_PUMP},
+            {"uiAppQuit",SLUI_FN_APP_QUIT},{"uiAppDestroy",SLUI_FN_APP_DESTROY},{"uiBackend",SLUI_FN_BACKEND},
+            {"uiBackendName",SLUI_FN_BACKEND_NAME},{"uiVersion",SLUI_FN_VERSION},
+            {"uiWindowCreate",SLUI_FN_WINDOW_CREATE},{"uiWindowShow",SLUI_FN_WINDOW_SHOW},{"uiWindowHide",SLUI_FN_WINDOW_HIDE},
+            {"uiWindowRoot",SLUI_FN_WINDOW_ROOT},{"uiWindowSetTitle",SLUI_FN_WINDOW_SET_TITLE},
+            {"uiWindowSetTheme",SLUI_FN_WINDOW_SET_THEME},{"uiWindowRedraw",SLUI_FN_WINDOW_REDRAW},
+            {"uiBox",SLUI_FN_BOX},{"uiGrid",SLUI_FN_GRID},{"uiFrame",SLUI_FN_FRAME},{"uiCard",SLUI_FN_CARD},
+            {"uiHeaderBar",SLUI_FN_HEADER_BAR},{"uiStatusBar",SLUI_FN_STATUS_BAR},{"uiSeparator",SLUI_FN_SEPARATOR},
+            {"uiSpacer",SLUI_FN_SPACER},{"uiButton",SLUI_FN_BUTTON},{"uiLinkButton",SLUI_FN_LINK_BUTTON},
+            {"uiToggle",SLUI_FN_TOGGLE},{"uiCheckBox",SLUI_FN_CHECK_BOX},{"uiRadioButton",SLUI_FN_RADIO_BUTTON},
+            {"uiComboBox",SLUI_FN_COMBO_BOX},{"uiComboBoxAdd",SLUI_FN_COMBO_BOX_ADD},{"uiSpinButton",SLUI_FN_SPIN_BUTTON},
+            {"uiEntry",SLUI_FN_ENTRY},{"uiSearchEntry",SLUI_FN_SEARCH_ENTRY},{"uiPasswordEntry",SLUI_FN_PASSWORD_ENTRY},
+            {"uiSlider",SLUI_FN_SLIDER},{"uiScrollBar",SLUI_FN_SCROLL_BAR},{"uiProgressBar",SLUI_FN_PROGRESS_BAR},
+            {"uiLevelBar",SLUI_FN_LEVEL_BAR},{"uiSpinner",SLUI_FN_SPINNER},{"uiLabel",SLUI_FN_LABEL},
+            {"uiHeading",SLUI_FN_HEADING},{"uiImage",SLUI_FN_IMAGE},{"uiAvatar",SLUI_FN_AVATAR},
+            {"uiBadge",SLUI_FN_BADGE},{"uiChip",SLUI_FN_CHIP},{"uiInfoBar",SLUI_FN_INFO_BAR},{"uiTooltip",SLUI_FN_TOOLTIP},
+            {"uiThrobber",SLUI_FN_THROBBER},{"uiThrobberSetWidth",SLUI_FN_THROBBER_SET_WIDTH},
+            {"uiThrobberSetIntensity",SLUI_FN_THROBBER_SET_INTENSITY},{"uiThrobberSetHue",SLUI_FN_THROBBER_SET_HUE},
+            {"uiWidgetMargin",SLUI_FN_WIDGET_SET_MARGIN},{"uiWidgetAlign",SLUI_FN_WIDGET_SET_ALIGN},
+            {"uiWidgetExpand",SLUI_FN_WIDGET_SET_EXPAND},{"uiWidgetSizeRequest",SLUI_FN_WIDGET_SET_SIZE_REQ},
+            {"uiWidgetSensitive",SLUI_FN_WIDGET_SET_SENSITIVE},{"uiWidgetVisible",SLUI_FN_WIDGET_SET_VISIBLE},
+            {"uiWidgetSuggested",SLUI_FN_WIDGET_SET_SUGGESTED},{"uiWidgetDestructive",SLUI_FN_WIDGET_SET_DESTRUCT},
+            {"uiWidgetSetText",SLUI_FN_WIDGET_SET_TEXT},{"uiWidgetSetToggle",SLUI_FN_WIDGET_SET_TOGGLE},
+            {"uiWidgetSetValue",SLUI_FN_WIDGET_SET_VALUE},{"uiWidgetGetText",SLUI_FN_WIDGET_GET_TEXT},
+            {"uiWidgetGetToggle",SLUI_FN_WIDGET_GET_TOGGLE},{"uiWidgetGetValue",SLUI_FN_WIDGET_GET_VALUE},
+            {"uiWidgetTakeActivated",SLUI_FN_WIDGET_TAKE_ACTIVATED},{"uiThemePreset",SLUI_FN_THEME_PRESET},
+            {"uiThemeDestroy",SLUI_FN_THEME_DESTROY},{"uiThemeLoadConfig",SLUI_FN_THEME_LOAD_CONFIG},
+            {"uiThemeSetBaseColor",SLUI_FN_THEME_SET_BASE},{"uiThemeSetBg",SLUI_FN_THEME_SET_BG},
+            {"uiThemeSetSurface",SLUI_FN_THEME_SET_SURFACE},{"uiThemeSetSurfaceHi",SLUI_FN_THEME_SET_SURFACE_HI},
+            {"uiThemeSetChrome",SLUI_FN_THEME_SET_CHROME},{"uiThemeSetBorder",SLUI_FN_THEME_SET_BORDER},
+            {"uiThemeSetFg",SLUI_FN_THEME_SET_FG},{"uiThemeSetFgDim",SLUI_FN_THEME_SET_FG_DIM},
+            {"uiThemeSetAccent",SLUI_FN_THEME_SET_ACCENT},{"uiThemeSetAccentFg",SLUI_FN_THEME_SET_ACCENT_FG},
+            {"uiThemeSetDanger",SLUI_FN_THEME_SET_DANGER},{"uiThemeSetRadius",SLUI_FN_THEME_SET_RADIUS},
+            {"uiThemeSetControlHeight",SLUI_FN_THEME_SET_CONTROL_H},{"uiThemeSetFont",SLUI_FN_THEME_SET_FONT},
+        };
+        auto it=uiIds.find(n);
+        if(it==uiIds.end())return false;
+        int id=it->second;
+        int want=sleela_ui_arity(id);
+        if((int)c.args.size()!=want)
+            throw std::runtime_error("Semantic error: "+n+"() expects "+std::to_string(want)+" argument(s), got "+std::to_string(c.args.size()));
+        for(const auto& a:c.args) emitExpr(a.get());
+        emit(OP_UI_CALL,id);
+        return true;
+    }
+
     bool tryEmitBuiltin(const Call& c){
         const std::string& n=c.callee;
+        if(n.size()>2 && n[0]=='u' && n[1]=='i' && n[2]>='A' && n[2]<='Z'){ if(tryEmitUiBuiltin(c)) return true; }
         auto litInt=[&](const Expr*e,const char*what)->int{auto il=dynamic_cast<const IntLit*>(e);if(!il)throw std::runtime_error("Semantic error: "+std::string(what)+" must be an integer literal");return(int)il->value;};
         if(n=="spawn"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: spawn(method) takes exactly one argument");auto var=dynamic_cast<const VarExpr*>(c.args[0].get());if(!var)throw std::runtime_error("Semantic error: spawn(method) argument must be a method name");auto it=funcIndex_.find(var->name);if(it==funcIndex_.end())it=funcIndex_.find(currentClass_+"::"+var->name);if(it==funcIndex_.end())throw std::runtime_error("Semantic error: spawn of unknown method '"+var->name+"'");if(!methods_[it->second].method->isStatic)throw std::runtime_error("Semantic error: spawn target '"+var->name+"' must be static because a thread has no instance receiver");if(!methods_[it->second].method->params.empty())throw std::runtime_error("Semantic error: spawn target '"+var->name+"' must take no parameters");emit(OP_SPAWN,it->second);return true;}
         if(n=="join"){if(!c.args.empty())throw std::runtime_error("Semantic error: join() takes no arguments");emit(OP_JOINALL);emit(OP_CONST,addNullConst());return true;}

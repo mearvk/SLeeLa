@@ -55,7 +55,13 @@ static bool builtin(const std::string&n){
  "ideaCanvasIntensityAt","ideaCanvasHasRenderer","ideaCanvasOpenWindow","ideaCanvasShouldClose",
  "ideaCanvasPresent","ideaCanvasRun",
  "ideaCanvasSetBackendPolicy","ideaCanvasPolicy","ideaCanvasActiveBackend","ideaCanvasGpuAvailable","ideaCanvasMeasuredHz","ideaCanvasMigrate"};
- return s.count(n)!=0;
+ if(s.count(n)!=0) return true;
+ // SleelaUI (ui*) bridge built-ins: any ui<Capital>... name is a native UI
+ // call lowered by the compiler to OP_UI_CALL (see sleela_ui_ids.h / the
+ // tryEmitUiBuiltin table). Accept the whole family here so the analyzer does
+ // not reject a valid toolkit call as an unknown method.
+ if(n.size()>2 && n[0]=='u' && n[1]=='i' && n[2]>='A' && n[2]<='Z') return true;
+ return false;
 }
 struct MethodSig{const Method* m=nullptr;std::string owner;};
 class Analyzer{
@@ -344,6 +350,11 @@ class Analyzer{
   if(n=="sysdepth"||n=="degreemax"||n=="timeUtcMillis"||n=="timeUtcNanos"||n=="timeMonotonicNanos"||n=="timePrecisionMillis"){return{Kind::Int,{}};}
   if(n=="synchroMean"||n=="synchroMin"||n=="synchroMax"||n=="synchroP95"||n=="synchroLoss"||n=="bestOfMean"||n=="bestOfLoss"||n=="bestOfJitter"||n=="bestOfCertainty"){return{Kind::Double,{}};}
   if(n=="Munction.start"||n=="read"||n=="recv"||n=="sockread"||n=="timeNtp"){return{Kind::Unknown,{}};}
+  // SleelaUI (ui*) bridge return types: string getters, one double getter, the
+  // rest return int handles/counts/status.
+  if(n=="uiVersion"||n=="uiBackendName"||n=="uiWidgetGetText"){return{Kind::String,{}};}
+  if(n=="uiWidgetGetValue"){return{Kind::Double,{}};}
+  if(n.size()>2 && n[0]=='u' && n[1]=='i' && n[2]>='A' && n[2]<='Z'){return{Kind::Int,{}};}
   return{Kind::Unknown,{}};
  }
  Type fluent(const MethodCall&m){

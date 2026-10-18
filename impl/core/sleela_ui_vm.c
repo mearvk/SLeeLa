@@ -1,0 +1,277 @@
+/* ===========================================================================
+ * sleela_ui_vm.c -- the ui* SLVM -> SleelaUI C ABI bridge.
+ *
+ * This is the live wire that connects the SLeeLa GUI object model
+ * (/lib/user-interface SL* classes and /lib/gui decoration) to SleelaUI, the
+ * project's OWN native C/C++ toolkit (user-interface/, slui_* C ABI, X11/Cocoa/
+ * Win32 backends). The compiler lowers each ui* built-in to OP_UI_CALL<id>; the
+ * VM pops the arguments and hands them here, and this file calls the genuine
+ * slui_* functions, so a SLeeLa program raises a real host window.
+ *
+ * SleelaUI objects are pointers; SLeeLa handles are integers, so this bridge
+ * keeps small handle tables (apps / windows / widgets / themes) and translates
+ * int<->pointer at the boundary, the same discipline the VM uses for sockets,
+ * files, and idea canvases.
+ *
+ * Arguments arrive as SLUIArg (a tiny tagged union the core fills from the
+ * operand stack); the result is returned the same way so the core can PUSH it.
+ * =========================================================================== */
+#include "sleela_ui_vm.h"
+#include "sleela_ui_ids.h"
+
+#include "../../user-interface/include/sleela_ui.h"
+
+#include <stdlib.h>
+#include <string.h>
+
+/* ---- handle tables: int handle <-> SleelaUI pointer ---------------------- */
+#define SLUI_VM_MAX_APPS    8
+#define SLUI_VM_MAX_WINDOWS 64
+#define SLUI_VM_MAX_WIDGETS 8192
+#define SLUI_VM_MAX_THEMES  64
+
+static SLUIApp*    g_apps[SLUI_VM_MAX_APPS];
+static SLUIWindow* g_windows[SLUI_VM_MAX_WINDOWS];
+static SLUIWidget* g_widgets[SLUI_VM_MAX_WIDGETS];
+static SLUITheme*  g_themes[SLUI_VM_MAX_THEMES];
+static int g_nwidgets; /* widgets are append-only within a process run */
+
+static int app_put(SLUIApp* p) {
+    if (!p) return -1;
+    for (int i = 0; i < SLUI_VM_MAX_APPS; i++) if (!g_apps[i]) { g_apps[i] = p; return i; }
+    return -1;
+}
+static SLUIApp* app_get(long h) {
+    return (h >= 0 && h < SLUI_VM_MAX_APPS) ? g_apps[(int)h] : NULL;
+}
+static int win_put(SLUIWindow* p) {
+    if (!p) return -1;
+    for (int i = 0; i < SLUI_VM_MAX_WINDOWS; i++) if (!g_windows[i]) { g_windows[i] = p; return i; }
+    return -1;
+}
+static SLUIWindow* win_get(long h) {
+    return (h >= 0 && h < SLUI_VM_MAX_WINDOWS) ? g_windows[(int)h] : NULL;
+}
+static int widget_put(SLUIWidget* p) {
+    if (!p) return -1;
+    /* Reuse an existing handle if the toolkit returned a pointer we already
+     * know (window roots are stable), else append. */
+    for (int i = 0; i < g_nwidgets; i++) if (g_widgets[i] == p) return i;
+    if (g_nwidgets >= SLUI_VM_MAX_WIDGETS) return -1;
+    g_widgets[g_nwidgets] = p; return g_nwidgets++;
+}
+static SLUIWidget* widget_get(long h) {
+    return (h >= 0 && h < g_nwidgets) ? g_widgets[(int)h] : NULL;
+}
+static int theme_put(SLUITheme* p) {
+    if (!p) return -1;
+    for (int i = 0; i < SLUI_VM_MAX_THEMES; i++) if (!g_themes[i]) { g_themes[i] = p; return i; }
+    return -1;
+}
+static SLUITheme* theme_get(long h) {
+    return (h >= 0 && h < SLUI_VM_MAX_THEMES) ? g_themes[(int)h] : NULL;
+}
+
+/* ---- argument / result helpers ------------------------------------------- */
+static long ai(const SLUIArg* a, int n, int k) { return (k < n && a[k].kind != SLUI_ARG_STR) ? a[k].i : 0; }
+static double ad(const SLUIArg* a, int n, int k) {
+    if (k >= n) return 0.0;
+    return a[k].kind == SLUI_ARG_DOUBLE ? a[k].d : (double)a[k].i;
+}
+static const char* as_(const SLUIArg* a, int n, int k) {
+    return (k < n && a[k].kind == SLUI_ARG_STR && a[k].s) ? a[k].s : "";
+}
+static SLUIArg r_int(long v)    { SLUIArg r; r.kind = SLUI_ARG_INT; r.i = v; r.d = 0; r.s = NULL; return r; }
+static SLUIArg r_dbl(double v)  { SLUIArg r; r.kind = SLUI_ARG_DOUBLE; r.d = v; r.i = 0; r.s = NULL; return r; }
+static SLUIArg r_str(const char* v) { SLUIArg r; r.kind = SLUI_ARG_STR; r.s = v; r.i = 0; r.d = 0; return r; }
+static SLUIArg r_null(void)     { SLUIArg r; r.kind = SLUI_ARG_INT; r.i = 0; r.d = 0; r.s = NULL; return r; }
+
+/* The SLeeLa-facing arity per id (how many values the core pops). These match
+ * the ui* call signatures in /lib/user-interface exactly. */
+int sleela_ui_arity(int id) {
+    switch (id) {
+        /* 0 args */
+        case SLUI_FN_BACKEND: case SLUI_FN_VERSION:
+            return 0;
+        /* 1 arg */
+        case SLUI_FN_APP_CREATE: case SLUI_FN_APP_RUN: case SLUI_FN_APP_DESTROY:
+        case SLUI_FN_BACKEND_NAME: case SLUI_FN_WINDOW_SHOW: case SLUI_FN_WINDOW_HIDE:
+        case SLUI_FN_WINDOW_ROOT: case SLUI_FN_WINDOW_REDRAW: case SLUI_FN_CARD:
+        case SLUI_FN_HEADER_BAR: case SLUI_FN_STATUS_BAR: case SLUI_FN_SPACER:
+        case SLUI_FN_SPINNER: case SLUI_FN_COMBO_BOX: case SLUI_FN_THEME_PRESET:
+        case SLUI_FN_THEME_DESTROY: case SLUI_FN_WIDGET_GET_TEXT:
+        case SLUI_FN_WIDGET_GET_TOGGLE: case SLUI_FN_WIDGET_GET_VALUE:
+        case SLUI_FN_WIDGET_TAKE_ACTIVATED:
+            return 1;
+        /* 2 args */
+        case SLUI_FN_APP_PUMP: case SLUI_FN_APP_QUIT: case SLUI_FN_WINDOW_SET_TITLE:
+        case SLUI_FN_WINDOW_SET_THEME: case SLUI_FN_FRAME: case SLUI_FN_SEPARATOR:
+        case SLUI_FN_BUTTON: case SLUI_FN_LINK_BUTTON: case SLUI_FN_LABEL:
+        case SLUI_FN_BADGE: case SLUI_FN_CHIP: case SLUI_FN_TOOLTIP:
+        case SLUI_FN_ENTRY: case SLUI_FN_SEARCH_ENTRY: case SLUI_FN_PASSWORD_ENTRY:
+        case SLUI_FN_COMBO_BOX_ADD: case SLUI_FN_PROGRESS_BAR: case SLUI_FN_LEVEL_BAR:
+        case SLUI_FN_THROBBER: case SLUI_FN_THROBBER_SET_WIDTH:
+        case SLUI_FN_THROBBER_SET_INTENSITY: case SLUI_FN_THROBBER_SET_HUE:
+        case SLUI_FN_WIDGET_SET_TEXT: case SLUI_FN_WIDGET_SET_TOGGLE:
+        case SLUI_FN_WIDGET_SET_VALUE: case SLUI_FN_WIDGET_SET_SENSITIVE:
+        case SLUI_FN_WIDGET_SET_VISIBLE: case SLUI_FN_WIDGET_SET_SUGGESTED:
+        case SLUI_FN_WIDGET_SET_DESTRUCT:
+        case SLUI_FN_THEME_LOAD_CONFIG: case SLUI_FN_THEME_SET_BASE:
+        case SLUI_FN_THEME_SET_BG: case SLUI_FN_THEME_SET_SURFACE:
+        case SLUI_FN_THEME_SET_SURFACE_HI: case SLUI_FN_THEME_SET_CHROME:
+        case SLUI_FN_THEME_SET_BORDER: case SLUI_FN_THEME_SET_FG:
+        case SLUI_FN_THEME_SET_FG_DIM: case SLUI_FN_THEME_SET_ACCENT:
+        case SLUI_FN_THEME_SET_ACCENT_FG: case SLUI_FN_THEME_SET_DANGER:
+        case SLUI_FN_THEME_SET_RADIUS: case SLUI_FN_THEME_SET_CONTROL_H:
+            return 2;
+        /* 3 args */
+        case SLUI_FN_BOX: case SLUI_FN_GRID: case SLUI_FN_TOGGLE:
+        case SLUI_FN_CHECK_BOX: case SLUI_FN_HEADING: case SLUI_FN_INFO_BAR:
+        case SLUI_FN_WIDGET_SET_ALIGN: case SLUI_FN_WIDGET_SET_EXPAND:
+        case SLUI_FN_WIDGET_SET_SIZE_REQ: case SLUI_FN_AVATAR:
+        case SLUI_FN_THEME_SET_FONT:
+            return 3;
+        /* 4 args */
+        case SLUI_FN_IMAGE: case SLUI_FN_RADIO_BUTTON: case SLUI_FN_SCROLL_BAR:
+        case SLUI_FN_SLIDER:
+            return 4;
+        /* 5 args */
+        case SLUI_FN_WINDOW_CREATE: case SLUI_FN_SPIN_BUTTON:
+        case SLUI_FN_WIDGET_SET_MARGIN:
+            return 5;
+        default: return 0;
+    }
+}
+
+/* Dispatch one ui* call. Args are popped by the core (left-to-right in a[]).
+ * Returns the result as an SLUIArg; the core PUSHes it. */
+SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
+    switch (id) {
+        /* --- application / process --- */
+        case SLUI_FN_APP_CREATE:  return r_int(app_put(slui_app_create(as_(a,n,0))));
+        case SLUI_FN_APP_RUN:     return r_int(slui_app_run(app_get(ai(a,n,0))));
+        case SLUI_FN_APP_PUMP:    return r_int(slui_app_pump(app_get(ai(a,n,0)), (int)ai(a,n,1)));
+        case SLUI_FN_APP_QUIT:    slui_app_quit(app_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
+        case SLUI_FN_APP_DESTROY: { int h=(int)ai(a,n,0); SLUIApp* p=app_get(h); if(p){slui_app_destroy(p); if(h>=0&&h<SLUI_VM_MAX_APPS)g_apps[h]=NULL;} return r_null(); }
+        case SLUI_FN_BACKEND:     return r_int((long)slui_backend());
+        case SLUI_FN_BACKEND_NAME:return r_str(slui_backend_name((SLUIBackend)ai(a,n,0)));
+        case SLUI_FN_VERSION:     return r_str(slui_version_string());
+
+        /* --- window --- */
+        case SLUI_FN_WINDOW_CREATE: {
+            SLUIApp* app = app_get(ai(a,n,0));
+            SLUITheme* th = theme_get(ai(a,n,4));
+            SLUIWindowConfig cfg; memset(&cfg,0,sizeof(cfg));
+            cfg.title = as_(a,n,1); cfg.width = (int)ai(a,n,2); cfg.height = (int)ai(a,n,3);
+            cfg.resizable = 1; cfg.theme = th;
+            return r_int(win_put(slui_window_create(app, &cfg)));
+        }
+        case SLUI_FN_WINDOW_SHOW:   slui_window_show(win_get(ai(a,n,0))); return r_null();
+        case SLUI_FN_WINDOW_HIDE:   slui_window_hide(win_get(ai(a,n,0))); return r_null();
+        case SLUI_FN_WINDOW_ROOT:   return r_int(widget_put(slui_window_root(win_get(ai(a,n,0)))));
+        case SLUI_FN_WINDOW_SET_TITLE: slui_window_set_title(win_get(ai(a,n,0)), as_(a,n,1)); return r_null();
+        case SLUI_FN_WINDOW_SET_THEME: slui_window_set_theme(win_get(ai(a,n,0)), theme_get(ai(a,n,1))); return r_null();
+        case SLUI_FN_WINDOW_REDRAW:  slui_window_request_redraw(win_get(ai(a,n,0))); return r_null();
+
+        /* --- containers --- */
+        case SLUI_FN_BOX:        return r_int(widget_put(slui_box(widget_get(ai(a,n,0)), (SLUIOrientation)ai(a,n,1), (int)ai(a,n,2))));
+        case SLUI_FN_GRID:       return r_int(widget_put(slui_grid(widget_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2))));
+        case SLUI_FN_FRAME:      return r_int(widget_put(slui_frame(widget_get(ai(a,n,0)), as_(a,n,1))));
+        case SLUI_FN_CARD:       return r_int(widget_put(slui_card(widget_get(ai(a,n,0)))));
+        case SLUI_FN_HEADER_BAR: return r_int(widget_put(slui_header_bar(widget_get(ai(a,n,0)))));
+        case SLUI_FN_STATUS_BAR: return r_int(widget_put(slui_status_bar(widget_get(ai(a,n,0)))));
+        case SLUI_FN_SEPARATOR:  return r_int(widget_put(slui_separator(widget_get(ai(a,n,0)), (SLUIOrientation)ai(a,n,1))));
+        case SLUI_FN_SPACER:     return r_int(widget_put(slui_spacer(widget_get(ai(a,n,0)))));
+
+        /* --- buttons / actions --- */
+        case SLUI_FN_BUTTON:      return r_int(widget_put(slui_button(widget_get(ai(a,n,0)), as_(a,n,1))));
+        case SLUI_FN_LINK_BUTTON: return r_int(widget_put(slui_link_button(widget_get(ai(a,n,0)), as_(a,n,1))));
+        case SLUI_FN_TOGGLE:      return r_int(widget_put(slui_toggle(widget_get(ai(a,n,0)), as_(a,n,1), (int)ai(a,n,2))));
+
+        /* --- selection / boolean --- */
+        case SLUI_FN_CHECK_BOX:    return r_int(widget_put(slui_check_box(widget_get(ai(a,n,0)), as_(a,n,1), (int)ai(a,n,2))));
+        case SLUI_FN_RADIO_BUTTON: return r_int(widget_put(slui_radio_button(widget_get(ai(a,n,0)), as_(a,n,1), (int)ai(a,n,2), (int)ai(a,n,3))));
+        case SLUI_FN_COMBO_BOX:    return r_int(widget_put(slui_combo_box(widget_get(ai(a,n,0)))));
+        case SLUI_FN_COMBO_BOX_ADD:slui_combo_box_add(widget_get(ai(a,n,0)), as_(a,n,1)); return r_null();
+        case SLUI_FN_SPIN_BUTTON:  return r_int(widget_put(slui_spin_button(widget_get(ai(a,n,0)), ad(a,n,1), ad(a,n,2), ad(a,n,3), ad(a,n,4))));
+
+        /* --- text input --- */
+        case SLUI_FN_ENTRY:          return r_int(widget_put(slui_entry(widget_get(ai(a,n,0)), as_(a,n,1))));
+        case SLUI_FN_SEARCH_ENTRY:   return r_int(widget_put(slui_search_entry(widget_get(ai(a,n,0)), as_(a,n,1))));
+        case SLUI_FN_PASSWORD_ENTRY: return r_int(widget_put(slui_password_entry(widget_get(ai(a,n,0)), as_(a,n,1))));
+
+        /* --- ranges / indicators --- */
+        case SLUI_FN_SLIDER:       return r_int(widget_put(slui_slider(widget_get(ai(a,n,0)), ad(a,n,1), ad(a,n,2), ad(a,n,3))));
+        case SLUI_FN_SCROLL_BAR:   return r_int(widget_put(slui_scroll_bar(widget_get(ai(a,n,0)), (SLUIOrientation)ai(a,n,1), ad(a,n,2), ad(a,n,3))));
+        case SLUI_FN_PROGRESS_BAR: return r_int(widget_put(slui_progress_bar(widget_get(ai(a,n,0)), ad(a,n,1))));
+        case SLUI_FN_LEVEL_BAR:    return r_int(widget_put(slui_level_bar(widget_get(ai(a,n,0)), ad(a,n,1))));
+        case SLUI_FN_SPINNER:      return r_int(widget_put(slui_spinner(widget_get(ai(a,n,0)))));
+
+        /* --- text / display --- */
+        case SLUI_FN_LABEL:   return r_int(widget_put(slui_label(widget_get(ai(a,n,0)), as_(a,n,1))));
+        case SLUI_FN_HEADING: return r_int(widget_put(slui_heading(widget_get(ai(a,n,0)), as_(a,n,1), (int)ai(a,n,2))));
+        case SLUI_FN_IMAGE:   return r_int(widget_put(slui_image(widget_get(ai(a,n,0)), as_(a,n,1), (int)ai(a,n,2), (int)ai(a,n,3))));
+        case SLUI_FN_AVATAR:  return r_int(widget_put(slui_avatar(widget_get(ai(a,n,0)), as_(a,n,1), (int)ai(a,n,2))));
+
+        /* --- tags / feedback --- */
+        case SLUI_FN_BADGE:    return r_int(widget_put(slui_badge(widget_get(ai(a,n,0)), as_(a,n,1))));
+        case SLUI_FN_CHIP:     return r_int(widget_put(slui_chip(widget_get(ai(a,n,0)), as_(a,n,1))));
+        case SLUI_FN_INFO_BAR: return r_int(widget_put(slui_info_bar(widget_get(ai(a,n,0)), as_(a,n,1), (int)ai(a,n,2))));
+        case SLUI_FN_TOOLTIP:  return r_int(widget_put(slui_tooltip(widget_get(ai(a,n,0)), as_(a,n,1))));
+
+        /* --- motion / drawing --- */
+        case SLUI_FN_THROBBER:               return r_int(widget_put(slui_throbber(widget_get(ai(a,n,0)), (int)ai(a,n,1))));
+        case SLUI_FN_THROBBER_SET_WIDTH:     slui_throbber_set_width(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
+        case SLUI_FN_THROBBER_SET_INTENSITY: slui_throbber_set_intensity(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();
+        case SLUI_FN_THROBBER_SET_HUE:       slui_throbber_set_hue(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();
+
+        /* --- widget setters --- */
+        case SLUI_FN_WIDGET_SET_MARGIN:    slui_widget_set_margin(widget_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2), (int)ai(a,n,3), (int)ai(a,n,4)); return r_null();
+        case SLUI_FN_WIDGET_SET_ALIGN:     slui_widget_set_align(widget_get(ai(a,n,0)), (SLUIAlign)ai(a,n,1), (SLUIAlign)ai(a,n,2)); return r_null();
+        case SLUI_FN_WIDGET_SET_EXPAND:    slui_widget_set_expand(widget_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2)); return r_null();
+        case SLUI_FN_WIDGET_SET_SIZE_REQ:  slui_widget_set_size_request(widget_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2)); return r_null();
+        case SLUI_FN_WIDGET_SET_SENSITIVE: slui_widget_set_sensitive(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
+        case SLUI_FN_WIDGET_SET_VISIBLE:   slui_widget_set_visible(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
+        case SLUI_FN_WIDGET_SET_SUGGESTED: slui_widget_set_suggested(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
+        case SLUI_FN_WIDGET_SET_DESTRUCT:  slui_widget_set_destructive(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
+        case SLUI_FN_WIDGET_SET_TEXT:      slui_widget_set_text(widget_get(ai(a,n,0)), as_(a,n,1)); return r_null();
+        case SLUI_FN_WIDGET_SET_TOGGLE:    slui_widget_set_toggle(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
+        case SLUI_FN_WIDGET_SET_VALUE:     slui_widget_set_value(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();
+
+        /* --- widget getters --- */
+        case SLUI_FN_WIDGET_GET_TEXT: {
+            static char buf[1024];
+            buf[0] = '\0';
+            slui_widget_get_text(widget_get(ai(a,n,0)), buf, sizeof(buf));
+            return r_str(buf);
+        }
+        case SLUI_FN_WIDGET_GET_TOGGLE:    return r_int(slui_widget_get_toggle(widget_get(ai(a,n,0))));
+        case SLUI_FN_WIDGET_GET_VALUE:     return r_dbl(slui_widget_get_value(widget_get(ai(a,n,0))));
+        case SLUI_FN_WIDGET_TAKE_ACTIVATED:return r_int(slui_widget_take_activated(widget_get(ai(a,n,0))));
+
+        /* --- theme --- */
+        case SLUI_FN_THEME_PRESET: {
+            SLUITheme* t = (SLUITheme*)calloc(1, sizeof(SLUITheme));
+            if (t) slui_theme_preset(t, (SLUIThemeId)ai(a,n,0));
+            return r_int(theme_put(t));
+        }
+        case SLUI_FN_THEME_DESTROY: { int h=(int)ai(a,n,0); SLUITheme* t=theme_get(h); if(t){free(t); if(h>=0&&h<SLUI_VM_MAX_THEMES)g_themes[h]=NULL;} return r_null(); }
+        case SLUI_FN_THEME_LOAD_CONFIG: { SLUITheme* t=theme_get(ai(a,n,0)); return r_int(t?(long)slui_theme_load_config(t, as_(a,n,1)):-1); }
+        case SLUI_FN_THEME_SET_BASE:       { SLUITheme* t=theme_get(ai(a,n,0)); if(t) slui_theme_set_base_color(t,(SLUIColor)ai(a,n,1)); return r_null(); }
+        case SLUI_FN_THEME_SET_BG:         { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->bg=(SLUIColor)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_SURFACE:    { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->surface=(SLUIColor)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_SURFACE_HI: { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->surface_hi=(SLUIColor)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_CHROME:     { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->chrome=(SLUIColor)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_BORDER:     { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->border=(SLUIColor)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_FG:         { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->fg=(SLUIColor)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_FG_DIM:     { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->fg_dim=(SLUIColor)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_ACCENT:     { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->accent=(SLUIColor)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_ACCENT_FG:  { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->accent_fg=(SLUIColor)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_DANGER:     { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->danger=(SLUIColor)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_RADIUS:     { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->radius=(int)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_CONTROL_H:  { SLUITheme* t=theme_get(ai(a,n,0)); if(t) t->control_height=(int)ai(a,n,1); return r_null(); }
+        case SLUI_FN_THEME_SET_FONT:       { SLUITheme* t=theme_get(ai(a,n,0)); if(t){ const char* fam=as_(a,n,1); strncpy(t->font_family,fam,sizeof(t->font_family)-1); t->font_family[sizeof(t->font_family)-1]='\0'; t->font_size=(int)ai(a,n,2);} return r_null(); }
+
+        default: return r_null();
+    }
+}

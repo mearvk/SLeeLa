@@ -75,13 +75,14 @@ endif
 
 LIB      := $(BUILD)/libsleelaui.a
 GALLERY  := $(BUILD)/slui-gallery$(EXE)
+MILITARY := $(BUILD)/slui-military-console$(EXE)
 SMOKE    := $(BUILD)/slui-smoke$(EXE)
 
 CORE_OBJ    := $(CORE_SRC:%.cpp=$(BUILD)/%.o)
 BACKEND_OBJ := $(BUILD)/$(basename $(BACKEND_SRC)).o
 HEADLESS_OBJ := $(BUILD)/src/backend/headless.o
 
-.PHONY: all lib example smoke snapshot throbber-snapshot relief-snapshot font-snapshot mood-snapshot install install-strip uninstall clean help
+.PHONY: all lib example military smoke snapshot throbber-snapshot relief-snapshot font-snapshot mood-snapshot install install-strip uninstall clean help
 
 all: lib
 
@@ -117,6 +118,15 @@ $(GALLERY): examples/gallery.c $(LIB)
 	$(CC) $(CFLAGS) $(INCLUDES) -c examples/gallery.c -o $(BUILD)/gallery.o
 	$(CXX) $(CXXFLAGS) $(BUILD)/gallery.o $(LIB) $(BACKEND_LIBS) -o $@
 	@echo "SleelaUI gallery: $@"
+
+# ---- military console (the designed SLeeLa military GUI, pure C) -----------
+military: $(MILITARY)
+
+$(MILITARY): examples/military-console.c $(LIB)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INCLUDES) -c examples/military-console.c -o $(BUILD)/military-console.o
+	$(CXX) $(CXXFLAGS) $(BUILD)/military-console.o $(LIB) $(BACKEND_LIBS) -o $@
+	@echo "SleelaUI military console: $@"
 
 # ---- headless smoke test (no window system) --------------------------------
 # Built against the headless backend so it runs on CI with no display on any OS.

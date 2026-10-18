@@ -22,6 +22,8 @@
 #include "sleela_os.h"
 #include "sleela_memmgr.h"
 #include "sleela_idea_canvas.h"
+#include "sleela_ui_vm.h"
+#include "sleela_ui_ids.h"
 
 #ifndef SL_IDEA_CANVAS_MAX
 #define SL_IDEA_CANVAS_MAX 16   /* bounded VM-local realtime-canvas table */
@@ -1414,6 +1416,25 @@ static SLResult run_thread(SLThread* t) {
             if(mv.type!=SL_INT) TERR("modiumScan(number) requires an int version number");
             int msel=(int)mv.as.i;
             PUSH(slval_int((msel>=1 && msel<=10) ? 0 : -1));
+        } break;
+
+        /* ---- SleelaUI bridge: ui* built-ins -> native toolkit --------- */
+        case OP_UI_CALL: {
+            int ui_id = in.a;
+            int ui_n = sleela_ui_arity(ui_id);
+            if (ui_n < 0 || ui_n > 6) TERR("ui call: bad arity");
+            SLUIArg ui_args[6];
+            /* Args were pushed left-to-right, so pop into reverse slots. */
+            for (int k = ui_n - 1; k >= 0; --k) {
+                SLValue v = POP();
+                if (v.type == SL_STR)       { ui_args[k].kind = SLUI_ARG_STR;    ui_args[k].s = slvm_str(vm, v.as.s); ui_args[k].i = 0; ui_args[k].d = 0; }
+                else if (v.type == SL_DOUBLE){ ui_args[k].kind = SLUI_ARG_DOUBLE; ui_args[k].d = v.as.d; ui_args[k].i = 0; ui_args[k].s = NULL; }
+                else                         { ui_args[k].kind = SLUI_ARG_INT;    ui_args[k].i = (long)v.as.i; ui_args[k].d = 0; ui_args[k].s = NULL; }
+            }
+            SLUIArg ui_r = sleela_ui_dispatch(ui_id, ui_args, ui_n);
+            if (ui_r.kind == SLUI_ARG_STR) { SLValue o; o.type = SL_STR; o.as.s = intern(vm, ui_r.s ? ui_r.s : ""); PUSH(o); }
+            else if (ui_r.kind == SLUI_ARG_DOUBLE) { PUSH(slval_double(ui_r.d)); }
+            else { PUSH(slval_int(ui_r.i)); }
         } break;
 
         /* ---- SLVM Audio bridge --------------------------------------- */

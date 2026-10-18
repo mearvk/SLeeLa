@@ -117,6 +117,38 @@ else
   IDEA_CANVAS_CTX_OBJ := $(BUILD)/idea_canvas_ctx_egl.o
 endif
 IDEA_CANVAS_OBJS := $(IDEA_CANVAS_BR_OBJ) $(IDEA_CANVAS_SIM_OBJ) $(IDEA_CANVAS_STUB_OBJ) $(IDEA_CANVAS_GPU_OBJ) $(IDEA_CANVAS_CTX_OBJ)
+
+# ---- SleelaUI (user-interface/) native toolkit + the ui* VM bridge ----------
+# The ui* SLVM built-ins (uiAppCreate/uiButton/...) lower to OP_UI_CALL and
+# route through core/sleela_ui_vm.c into SleelaUI's C ABI, so a SLeeLa program
+# raises a real host window. We compile the toolkit core here and select the
+# native backend + its system libraries per OS (X11/FreeType/Fontconfig on
+# Linux, GDI/user32 on Windows, Cocoa/CoreText on macOS).
+SLUI_DIR      := ../user-interface
+SLUI_CORE_SRC := $(wildcard $(SLUI_DIR)/src/*.cpp)
+SLUI_CORE_OBJ := $(patsubst $(SLUI_DIR)/src/%.cpp,$(BUILD)/slui/%.o,$(SLUI_CORE_SRC))
+SLUI_VM_OBJ   := $(BUILD)/sleela_ui_vm.o
+ifeq ($(PLATFORM),windows)
+  SLUI_BACKEND_SRC := $(SLUI_DIR)/src/backend/win32.cpp
+  SLUI_BACKEND_DEF := -DSLUI_BACKEND_WIN32_BUILD
+  SLUI_BACKEND_CFLAGS :=
+  SLUI_LIBS := -lgdi32 -luser32
+else ifeq ($(PLATFORM),macos)
+  SLUI_BACKEND_SRC := $(SLUI_DIR)/src/backend/cocoa.mm
+  SLUI_BACKEND_DEF := -DSLUI_BACKEND_COCOA_BUILD
+  SLUI_BACKEND_CFLAGS :=
+  SLUI_LIBS := -framework Cocoa -framework CoreText -framework CoreGraphics
+else
+  SLUI_BACKEND_SRC := $(SLUI_DIR)/src/backend/x11.cpp
+  SLUI_BACKEND_DEF := -DSLUI_BACKEND_X11_BUILD
+  SLUI_BACKEND_CFLAGS := $(shell pkg-config --cflags freetype2 fontconfig 2>/dev/null)
+  SLUI_LIBS := -lX11 $(shell pkg-config --libs freetype2 fontconfig 2>/dev/null)
+  ifeq ($(strip $(SLUI_LIBS)),-lX11)
+    SLUI_LIBS := -lX11 -lfreetype -lfontconfig
+  endif
+endif
+SLUI_BACKEND_OBJ := $(BUILD)/slui/backend.o
+SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ)
 # OpenMP for the native-CPU physics step (safe no-op if the toolchain lacks it
 # only when overridden; GCC/Clang on the supported platforms provide it).
 IDEA_CANVAS_OMP ?= -fopenmp
@@ -230,7 +262,7 @@ ifeq ($(OS),Windows_NT)
 else
   PYTHON ?= python3
 endif
-ALL_OBJECTS := $(CORE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
+ALL_OBJECTS := $(CORE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
 .PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer
 
@@ -332,21 +364,21 @@ $(ALL_OBJECTS): | verify-security
 # shares the whole front end with `sleela` but links its own driver object
 # (compiled with -DSLEELA_PRODUCT_SLEELVAC), so its `version` identity is fixed
 # at compile time and `sleela version` can never surface the Sleelvac banner.
-$(SLEELAVC_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
-	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(NGHTTP2_LIB)
+$(SLEELAVC_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
 
 sleelvac: $(SLEELAVC_BIN)
 
-$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
-	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(NGHTTP2_LIB)
+$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
 $(AUDIO_NATIVE_OBJ): core/sleela_audio_bridge.cpp core/sleela_audio_bridge.h ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
 
 $(AUDIO_CPP_OBJ): ../audio/cpp/src/sleela_audio.cpp ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -I../audio/cpp/include -c $< -o $@
 
-$(NORDSHRIFT_BIN): $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
-	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS)
+$(NORDSHRIFT_BIN): $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 $(THREAD_PLATFORM_SMOKE): core/thread_platform_smoke.c $(THREAD_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/thread_platform_smoke.c $(THREAD_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 # sleela_core.o (sleela_artifact.c) calls into the OS-abstraction backends
@@ -400,6 +432,15 @@ $(IDEA_CANVAS_GPU_OBJ): $(IDEA_CANVAS_DIR)/idea_canvas_gpu.cpp $(IDEA_CANVAS_DIR
 # Linux). Default/no-GL build is a compilable stub reporting unsupported.
 $(IDEA_CANVAS_CTX_OBJ): $(IDEA_CANVAS_CTX_SRC) $(IDEA_CANVAS_DIR)/idea_canvas_ctx.h | $(BUILD)
 	$(CXX) -std=c++20 -O2 $(THREADFLAG) -I$(IDEA_CANVAS_DIR) -c $(IDEA_CANVAS_CTX_SRC) -o $@
+# ---- SleelaUI toolkit objects + the ui* VM bridge --------------------------
+$(BUILD)/slui/%.o: $(SLUI_DIR)/src/%.cpp | $(BUILD)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) -c $< -o $@
+$(SLUI_BACKEND_OBJ): $(SLUI_BACKEND_SRC) | $(BUILD)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) $(SLUI_BACKEND_CFLAGS) -c $< -o $@
+$(SLUI_VM_OBJ): core/sleela_ui_vm.c core/sleela_ui_vm.h core/sleela_ui_ids.h $(SLUI_DIR)/include/sleela_ui.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_ui_vm.c -o $@
 $(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_bestof.c -o $@
 $(PATH_OBJ): core/sleela_path.c core/sleela_path.h | $(BUILD)

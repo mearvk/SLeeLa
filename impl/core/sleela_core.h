@@ -162,6 +162,11 @@ typedef enum {
     ,
     OP_MODIUM_SCAN    /* pops vmNumber; scans that VM version's files for resolution; pushes status */
     ,
+    /* SleelaUI bridge: a = ui* function id (see sleela_ui_ids.h). Pops that
+     * function's arguments (arity from sleela_ui_arity) left-to-right and
+     * pushes its result, routing to the SleelaUI C ABI (real host window). */
+    OP_UI_CALL
+    ,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */

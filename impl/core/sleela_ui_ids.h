@@ -1,0 +1,132 @@
+/* ===========================================================================
+ * sleela_ui_ids.h -- stable integer ids for the ui* SLVM->SleelaUI bridge.
+ *
+ * The SLeeLa /lib/user-interface and /lib/gui classes call ui* built-ins
+ * (uiAppCreate, uiWindowCreate, uiButton, uiWidgetTakeActivated, ...). The
+ * compiler lowers each ui* call to a single OP_UI_CALL opcode whose operand is
+ * one of these ids; the VM bridge (sleela_ui_vm.c) routes the id to the genuine
+ * SleelaUI C ABI (user-interface/include/sleela_ui.h), which drives the real
+ * host window system (X11/Cocoa/Win32). Keeping the id table in one header
+ * shared by the compiler and the VM guarantees they stay in lock-step.
+ *
+ * Each entry's comment records the SLeeLa-facing arity and argument shape so
+ * the compiler can arity-check and the VM knows how many values to pop.
+ * (i = int handle/number, s = string, d = double)
+ * =========================================================================== */
+#ifndef SLEELA_UI_IDS_H
+#define SLEELA_UI_IDS_H
+
+typedef enum {
+    /* --- application + process (SLUIApp) --- */
+    SLUI_FN_APP_CREATE = 1,   /* uiAppCreate(appId:s) -> app handle            */
+    SLUI_FN_APP_RUN,          /* uiAppRun(app:i) -> exit code                  */
+    SLUI_FN_APP_PUMP,         /* uiAppPump(app:i, block:i) -> dispatched count */
+    SLUI_FN_APP_QUIT,         /* uiAppQuit(app:i, code:i) -> null              */
+    SLUI_FN_APP_DESTROY,      /* uiAppDestroy(app:i) -> null                   */
+    SLUI_FN_BACKEND,          /* uiBackend() -> backend id                     */
+    SLUI_FN_BACKEND_NAME,     /* uiBackendName(id:i) -> name string            */
+    SLUI_FN_VERSION,          /* uiVersion() -> version string                 */
+
+    /* --- window (SLUIWindow) --- */
+    SLUI_FN_WINDOW_CREATE,    /* uiWindowCreate(app:i,title:s,w:i,h:i,theme:i) -> window */
+    SLUI_FN_WINDOW_SHOW,      /* uiWindowShow(window:i) -> null                 */
+    SLUI_FN_WINDOW_HIDE,      /* uiWindowHide(window:i) -> null                 */
+    SLUI_FN_WINDOW_ROOT,      /* uiWindowRoot(window:i) -> root widget          */
+    SLUI_FN_WINDOW_SET_TITLE, /* uiWindowSetTitle(window:i, title:s) -> null    */
+    SLUI_FN_WINDOW_SET_THEME, /* uiWindowSetTheme(window:i, theme:i) -> null    */
+    SLUI_FN_WINDOW_REDRAW,    /* uiWindowRedraw(window:i) -> null               */
+
+    /* --- containers / structure --- */
+    SLUI_FN_BOX,              /* uiBox(parent:i, orient:i, spacing:i) -> widget */
+    SLUI_FN_GRID,             /* uiGrid(parent:i, cols:i, spacing:i) -> widget  */
+    SLUI_FN_FRAME,            /* uiFrame(parent:i, title:s) -> widget           */
+    SLUI_FN_CARD,             /* uiCard(parent:i) -> widget                     */
+    SLUI_FN_HEADER_BAR,       /* uiHeaderBar(parent:i) -> widget                */
+    SLUI_FN_STATUS_BAR,       /* uiStatusBar(parent:i) -> widget                */
+    SLUI_FN_SEPARATOR,        /* uiSeparator(parent:i, orient:i) -> widget      */
+    SLUI_FN_SPACER,           /* uiSpacer(parent:i) -> widget                   */
+
+    /* --- buttons / actions --- */
+    SLUI_FN_BUTTON,           /* uiButton(parent:i, text:s) -> widget           */
+    SLUI_FN_LINK_BUTTON,      /* uiLinkButton(parent:i, text:s) -> widget       */
+    SLUI_FN_TOGGLE,           /* uiToggle(parent:i, text:s, on:i) -> widget     */
+
+    /* --- selection / boolean --- */
+    SLUI_FN_CHECK_BOX,        /* uiCheckBox(parent:i, text:s, on:i) -> widget   */
+    SLUI_FN_RADIO_BUTTON,     /* uiRadioButton(parent:i, text:s, group:i, on:i) -> widget */
+    SLUI_FN_COMBO_BOX,        /* uiComboBox(parent:i) -> widget                 */
+    SLUI_FN_COMBO_BOX_ADD,    /* uiComboBoxAdd(combo:i, option:s) -> null       */
+    SLUI_FN_SPIN_BUTTON,      /* uiSpinButton(parent:i, min:d, max:d, step:d, val:d) -> widget */
+
+    /* --- text input --- */
+    SLUI_FN_ENTRY,            /* uiEntry(parent:i, placeholder:s) -> widget     */
+    SLUI_FN_SEARCH_ENTRY,     /* uiSearchEntry(parent:i, placeholder:s) -> widget */
+    SLUI_FN_PASSWORD_ENTRY,   /* uiPasswordEntry(parent:i, placeholder:s) -> widget */
+
+    /* --- ranges / indicators --- */
+    SLUI_FN_SLIDER,           /* uiSlider(parent:i, min:d, max:d, val:d) -> widget */
+    SLUI_FN_SCROLL_BAR,       /* uiScrollBar(parent:i, orient:i, min:d,max:d,val:d) -> widget */
+    SLUI_FN_PROGRESS_BAR,     /* uiProgressBar(parent:i, fraction:d) -> widget  */
+    SLUI_FN_LEVEL_BAR,        /* uiLevelBar(parent:i, fraction:d) -> widget     */
+    SLUI_FN_SPINNER,          /* uiSpinner(parent:i) -> widget                  */
+
+    /* --- text / display --- */
+    SLUI_FN_LABEL,            /* uiLabel(parent:i, text:s) -> widget            */
+    SLUI_FN_HEADING,          /* uiHeading(parent:i, text:s, size:i) -> widget  */
+    SLUI_FN_IMAGE,            /* uiImage(parent:i, glyph:s, w:i, h:i) -> widget */
+    SLUI_FN_AVATAR,           /* uiAvatar(parent:i, initial:s, diameter:i) -> widget */
+
+    /* --- tags / feedback --- */
+    SLUI_FN_BADGE,            /* uiBadge(parent:i, text:s) -> widget            */
+    SLUI_FN_CHIP,             /* uiChip(parent:i, text:s) -> widget             */
+    SLUI_FN_INFO_BAR,         /* uiInfoBar(parent:i, text:s, severity:i) -> widget */
+    SLUI_FN_TOOLTIP,          /* uiTooltip(parent:i, text:s) -> widget          */
+
+    /* --- motion / drawing --- */
+    SLUI_FN_THROBBER,         /* uiThrobber(parent:i, width:i) -> widget        */
+    SLUI_FN_THROBBER_SET_WIDTH,     /* uiThrobberSetWidth(w:i, px:i) -> null    */
+    SLUI_FN_THROBBER_SET_INTENSITY, /* uiThrobberSetIntensity(w:i, v:d) -> null */
+    SLUI_FN_THROBBER_SET_HUE,       /* uiThrobberSetHue(w:i, deg:d) -> null     */
+
+    /* --- widget configuration (setters) --- */
+    SLUI_FN_WIDGET_SET_MARGIN,   /* uiWidgetMargin(w:i, top:i,right:i,bottom:i,left:i) -> null */
+    SLUI_FN_WIDGET_SET_ALIGN,    /* uiWidgetAlign(w:i, h:i, v:i) -> null        */
+    SLUI_FN_WIDGET_SET_EXPAND,   /* uiWidgetExpand(w:i, h:i, v:i) -> null       */
+    SLUI_FN_WIDGET_SET_SIZE_REQ, /* uiWidgetSizeRequest(w:i, minW:i, minH:i) -> null */
+    SLUI_FN_WIDGET_SET_SENSITIVE,/* uiWidgetSensitive(w:i, on:i) -> null        */
+    SLUI_FN_WIDGET_SET_VISIBLE,  /* uiWidgetVisible(w:i, on:i) -> null          */
+    SLUI_FN_WIDGET_SET_SUGGESTED,/* uiWidgetSuggested(w:i, on:i) -> null        */
+    SLUI_FN_WIDGET_SET_DESTRUCT, /* uiWidgetDestructive(w:i, on:i) -> null      */
+    SLUI_FN_WIDGET_SET_TEXT,     /* uiWidgetSetText(w:i, text:s) -> null        */
+    SLUI_FN_WIDGET_SET_TOGGLE,   /* uiWidgetSetToggle(w:i, on:i) -> null        */
+    SLUI_FN_WIDGET_SET_VALUE,    /* uiWidgetSetValue(w:i, val:d) -> null        */
+
+    /* --- widget readback (getters) --- */
+    SLUI_FN_WIDGET_GET_TEXT,     /* uiWidgetGetText(w:i) -> string              */
+    SLUI_FN_WIDGET_GET_TOGGLE,   /* uiWidgetGetToggle(w:i) -> int               */
+    SLUI_FN_WIDGET_GET_VALUE,    /* uiWidgetGetValue(w:i) -> double             */
+    SLUI_FN_WIDGET_TAKE_ACTIVATED, /* uiWidgetTakeActivated(w:i) -> int         */
+
+    /* --- theme (SLUITheme) --- */
+    SLUI_FN_THEME_PRESET,        /* uiThemePreset(presetId:i) -> theme handle   */
+    SLUI_FN_THEME_DESTROY,       /* uiThemeDestroy(theme:i) -> null             */
+    SLUI_FN_THEME_LOAD_CONFIG,   /* uiThemeLoadConfig(theme:i, path:s) -> status int */
+    SLUI_FN_THEME_SET_BASE,      /* uiThemeSetBaseColor(theme:i, color:i) -> null */
+    SLUI_FN_THEME_SET_BG,        /* uiThemeSetBg(theme:i, color:i) -> null      */
+    SLUI_FN_THEME_SET_SURFACE,   /* uiThemeSetSurface(theme:i, color:i) -> null */
+    SLUI_FN_THEME_SET_SURFACE_HI,/* uiThemeSetSurfaceHi(theme:i, color:i) -> null */
+    SLUI_FN_THEME_SET_CHROME,    /* uiThemeSetChrome(theme:i, color:i) -> null  */
+    SLUI_FN_THEME_SET_BORDER,    /* uiThemeSetBorder(theme:i, color:i) -> null  */
+    SLUI_FN_THEME_SET_FG,        /* uiThemeSetFg(theme:i, color:i) -> null      */
+    SLUI_FN_THEME_SET_FG_DIM,    /* uiThemeSetFgDim(theme:i, color:i) -> null   */
+    SLUI_FN_THEME_SET_ACCENT,    /* uiThemeSetAccent(theme:i, color:i) -> null  */
+    SLUI_FN_THEME_SET_ACCENT_FG, /* uiThemeSetAccentFg(theme:i, color:i) -> null */
+    SLUI_FN_THEME_SET_DANGER,    /* uiThemeSetDanger(theme:i, color:i) -> null  */
+    SLUI_FN_THEME_SET_RADIUS,    /* uiThemeSetRadius(theme:i, px:i) -> null     */
+    SLUI_FN_THEME_SET_CONTROL_H, /* uiThemeSetControlHeight(theme:i, px:i) -> null */
+    SLUI_FN_THEME_SET_FONT,      /* uiThemeSetFont(theme:i, family:s, sizePt:i) -> null */
+
+    SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
+} SleelaUiFnId;
+
+#endif /* SLEELA_UI_IDS_H */
