@@ -106,11 +106,21 @@ static fs::path installRootFromExecutable(){
     }
     return fs::path();
 }
-// The runtime (`sleela`) and the compiler (`sleelvac`) are the same build, so
-// both banners carry the same release number. `sleela version` must specify the
-// version of the runnable, not merely its supported syntax levels.
+// The runtime (`sleela`) and the compiler (`sleelvac`) share this front-end
+// source, but each binary is built as an INDEPENDENT executable with its
+// product identity baked in at compile time (SLEELA_PRODUCT_SLEELVAC is defined
+// only for the sleelvac object). `sleela version` therefore always reports the
+// SLeeLa Language/Runtime, independent of argv[0], launchers, symlinks, or
+// aliases. Both banners carry the same release number.
 static const char* kSleelaVersion="SLeeLa™ Language/Runtime 0.3.29-dev (syntax level 2.1; supported source syntax 1.3-2.1; native C/C++ Core VM)";
 static const char* kSleelvacVersion="Sleelvac™ 0.3.29-dev (SLeeLa compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; JVM-family langin input: Java/Kotlin/Scala/Groovy/Clojure; Nordshrift round-trip (SLeeLa->Nordshrift->back); OS Defender provisioning; SHA-256 execution gate)";
+// Compile-time product identity. The sleelvac object is compiled with
+// -DSLEELA_PRODUCT_SLEELVAC; every other build is the runtime (`sleela`).
+#if defined(SLEELA_PRODUCT_SLEELVAC)
+static const bool kBuiltAsCompiler=true;
+#else
+static const bool kBuiltAsCompiler=false;
+#endif
 static bool readFile(const std::string& path,std::string& out);
 static int runLangin(const std::vector<std::string>&paths);
 static bool hasExt(const std::string& path,const std::string& ext){return path.size()>=ext.size()&&path.compare(path.size()-ext.size(),ext.size(),ext)==0;}
@@ -1434,15 +1444,14 @@ int main(int argc,char**argv){
     else if(cmd=="design-activity")return designActivityCmd(argc,argv);
     else if(cmd=="defender")return defenderCmd(argc,argv);
     else if(cmd=="version"){
-        // Which identity to print. By default it follows how the binary was
-        // invoked (argv[0] stem): `sleela` -> runtime, `sleelvac` -> compiler.
-        // But an explicit flag is authoritative, so a user can always get a
-        // deterministic answer regardless of launchers, symlinks, aliases, or
-        // an argv[0] the environment rewrote:
-        //     sleela version --runtime    (force the Language/Runtime banner)
-        //     sleela version --compiler   (force the Sleelvac compiler banner)
-        const std::string product=fs::path(cliProgramName).stem().string();
-        bool compiler = (product=="sleelvac");
+        // The identity is baked in at compile time: the `sleela` binary always
+        // reports the Language/Runtime; the `sleelvac` binary always reports the
+        // compiler. This does NOT depend on argv[0], so a launcher, symlink, or
+        // alias can never make `sleela version` surface the Sleelvac banner.
+        // Explicit flags still allow forcing either banner from either binary:
+        //     version --runtime    (force the Language/Runtime banner)
+        //     version --compiler   (force the Sleelvac compiler banner)
+        bool compiler = kBuiltAsCompiler;
         for(int i=2;i<argc;i++){
             const std::string a=argv[i];
             if(a=="--runtime"||a=="--sleela")      compiler=false;
