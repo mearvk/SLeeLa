@@ -1433,7 +1433,24 @@ int main(int argc,char**argv){
     else if(cmd=="registry")return registryCmd(argc,argv);
     else if(cmd=="design-activity")return designActivityCmd(argc,argv);
     else if(cmd=="defender")return defenderCmd(argc,argv);
-    else if(cmd=="version"){const std::string product=fs::path(cliProgramName).stem().string();std::cout<<(product=="sleelvac"?kSleelvacVersion:kSleelaVersion)<<"\n";return 0;}
+    else if(cmd=="version"){
+        // Which identity to print. By default it follows how the binary was
+        // invoked (argv[0] stem): `sleela` -> runtime, `sleelvac` -> compiler.
+        // But an explicit flag is authoritative, so a user can always get a
+        // deterministic answer regardless of launchers, symlinks, aliases, or
+        // an argv[0] the environment rewrote:
+        //     sleela version --runtime    (force the Language/Runtime banner)
+        //     sleela version --compiler   (force the Sleelvac compiler banner)
+        const std::string product=fs::path(cliProgramName).stem().string();
+        bool compiler = (product=="sleelvac");
+        for(int i=2;i<argc;i++){
+            const std::string a=argv[i];
+            if(a=="--runtime"||a=="--sleela")      compiler=false;
+            else if(a=="--compiler"||a=="--sleelvac") compiler=true;
+        }
+        std::cout<<(compiler?kSleelvacVersion:kSleelaVersion)<<"\n";
+        return 0;
+    }
     else if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")||isLangInput(cmd)){if(verifyBeforeExecution(fs::current_path()))return 1;rc=runFile(cmd);}
     else return usage();
     if(mmEnabled){reportMemoryManager();}
