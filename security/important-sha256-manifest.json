@@ -4319,8 +4319,28 @@
       "sha256": "8a3c56c0766d53078656b24f21c5dc8d39ebf0cba00aa70403ed808abe21a387"
     },
     {
+      "path": "example/gui-dual-media-studio.sleela",
+      "sha256": "7561e207f8a8a683d9f64d585f309e5c73b8a718f101783e5813f8df3c847f06"
+    },
+    {
+      "path": "example/gui-gual-settings-console.sleela",
+      "sha256": "e9e768efc85c0ea50aed8442c13da13ca872d085d4c424f7fe2576b3f4e13b1f"
+    },
+    {
       "path": "example/gui-military-command-console.sleela",
       "sha256": "83d73e2e96eb4298feaf8df52be2be10b59e36d5b098509049d6177de6108c5d"
+    },
+    {
+      "path": "example/gui-mual-text-editor.sleela",
+      "sha256": "b534e09fb141c687fe04330883d7c3e0ffdcad09edcbf6a099712b46fb8f5208"
+    },
+    {
+      "path": "example/gui-thual-effects-showcase.sleela",
+      "sha256": "6c6b162f12c80ec8bed1980071c7f4cc1f975ce4c56b98c0836f044e27a6e3e3"
+    },
+    {
+      "path": "example/run-gui-examples.sh",
+      "sha256": "c0d30676e3fcb8aaed0bec8138164c7d498e31a910ce4e091f1af2435df4d9fa"
     },
     {
       "path": "example/run-gui-military.sh",
@@ -6008,7 +6028,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "5b247f5cc499d2057f77f8c02f9f21d09d8df6d73246d7159049398695fbce5a"
+      "sha256": "b0ac1477f1da786a3994fd289e3b5b70b779a47a10aa7518a4b90d1030f44802"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -6064,7 +6084,7 @@
     },
     {
       "path": "impl/frontend/library_index.cpp",
-      "sha256": "1de5e6b4ae98dcf4eaf74c09d9d776bc6fb4f1b037d460657e03e2ac7a2d895a"
+      "sha256": "032752e7dc77bee2822e58dd381b1f2eb9a2b53610f36b5b8f0b39fcdbb56311"
     },
     {
       "path": "impl/frontend/library_index.h",
@@ -7200,7 +7220,7 @@
     },
     {
       "path": "install/install-runtime.py",
-      "sha256": "4143d0a2385820ee28d78481f51405e94aca71589975859fdc11b1f9c211661b"
+      "sha256": "a72d31926ed2bc89f827e407476c1aac53769d34c0e08c8d7433ee114995d01e"
     },
     {
       "path": "install/quick-safe-install-macos.sh",
