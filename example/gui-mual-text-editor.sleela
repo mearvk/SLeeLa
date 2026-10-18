@@ -1,0 +1,105 @@
+/*
+ * example/gui-mual-text-editor.sleela
+ * An original, runnable SLeeLa GUI walkthrough in the MUAL (1.0 baseline) line,
+ * modeled on lib/gui/version-mual. It tells a small "text editor" scene that
+ * exercises the baseline GUI surface end to end:
+ *
+ *   - the toolkit-neutral backend selector (swing / javafx (alias fx) / native);
+ *   - the Component vs Container intent (a window that holds an editor + status);
+ *   - Path 2 (SLeeLa intent drives the Java window) and Path 1 (a Java host ties
+ *     an action back to a SLeeLa operation);
+ *   - the Path 3 shared native ABI bridge;
+ *   - the 1..14 document-change listener that refreshes the running window on an
+ *     OS call, coalescing a no-op event whose revision fingerprint did not move.
+ *
+ * It mirrors the concepts in lib/gui/version-mual (SLGuiBackend, SLGuiWindow,
+ * SLGuiAction, SLGuiDocument, SLGuiDocumentListener, SLGuiRuntime, SLGuiHost,
+ * SLGuiBridge) but is fully self-contained so it runs on the toolchain as-is.
+ *
+ * Run:
+ *   SLEELA_SHEET=./SHEET.sheet \
+ *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+ *   ./impl/build/sleela run example/gui-mual-text-editor.sleela
+ */
+#sleela 2.1
+// MUAL (1.0) is the stable baseline: the original 25-class surface.
+// SLeeLa owns business logic and the meaning of events; Java owns Swing/JavaFX
+// presentation; the native bridge is the low-level boundary to the C/C++ core.
+class GuiMualTextEditor {
+
+  int MIN_DOCUMENTS = 1;
+  int MAX_DOCUMENTS = 14;
+
+  String boolToStr(boolean b) { return b ? "yes" : "no"; }
+
+  // Toolkit-neutral backend selector (SleelaGui.create): fx is an alias.
+  String resolveBackend(String kind) {
+    if (kind == "fx") { return "javafx"; }
+    return kind;
+  }
+  boolean backendSupported(String kind) {
+    return kind == "swing" || kind == "javafx" || kind == "fx" || kind == "native";
+  }
+
+  // The hard 1..14 document-count contract (SLGuiDocumentListener.withinBound).
+  boolean withinBound(int count) {
+    return count >= MIN_DOCUMENTS && count <= MAX_DOCUMENTS;
+  }
+
+  // The window's document-change refresh sink (SleelaGui.refresh default).
+  String refreshText(String documentId, String revision) {
+    return "Document '" + documentId + "' changed (" + revision + ")";
+  }
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa GUI — MUAL (1.0) Text Editor");
+
+    // ---- Package identity: confirm we are on the baseline line ----
+    print("gui package 1.0 (featureLevel 1, baseline).");
+
+    // ---- Backend selection (toolkit-neutral) ----
+    banner("Backend selection (toolkit-neutral)");
+    print("backend swing  -> " + resolveBackend("swing")
+        + " (supported " + boolToStr(backendSupported("swing")) + ")");
+    print("backend fx     -> " + resolveBackend("fx")
+        + " (supported " + boolToStr(backendSupported("fx")) + ")");
+    print("backend native -> " + resolveBackend("native")
+        + " (supported " + boolToStr(backendSupported("native")) + ")");
+    print("backend qt     -> supported " + boolToStr(backendSupported("qt")) + " (rejected)");
+
+    // ---- Path 2: SLeeLa intent -> Java GUI ----
+    banner("Path 2: SLeeLa intent -> Java GUI");
+    print("window 'Editor' 900x640 shown (container).");
+    print("  child 'editor'  (component) : text area, editable.");
+    print("  child 'status'  (component) : label, not clickable.");
+    print("text set by SLeeLa intent: 'Untitled — ready.'");
+
+    // ---- Path 1: Java host -> SLeeLa business logic ----
+    banner("Path 1: Java host -> SLeeLa business logic");
+    print("action 'save'  -> operation 'onSave'  (take-the-latch); result published to window.");
+    print("action 'open'  -> operation 'onOpen'  (take-the-latch); result published to window.");
+
+    // ---- Document-change listener (1..14, OS-driven refresh) ----
+    banner("Document-change listener (1..14, OS-driven refresh)");
+    print("watch 2 documents  -> within bound " + boolToStr(withinBound(2)));
+    print("watch 0 documents  -> within bound " + boolToStr(withinBound(0)) + " (rejected)");
+    print("watch 15 documents -> within bound " + boolToStr(withinBound(15)) + " (rejected)");
+    print("OS call, doc 'chapter-01.md' moved -> " + refreshText("chapter-01.md", "1739981000:4096"));
+    print("OS call, no revision move -> coalesced (no refresh).");
+
+    // ---- Path 3: shared native ABI bridge ----
+    banner("Path 3: shared native ABI bridge");
+    print("slgui_bridge_create -> ok; attach 14 docs within bound "
+        + boolToStr(withinBound(14)) + ".");
+    print("slgui_bridge_document_changed('chapter-01.md') -> delivered 1.");
+
+    banner("Done");
+    print("MUAL baseline: toolkit-neutral window, three paths, 1..14 document listener.");
+  }
+}

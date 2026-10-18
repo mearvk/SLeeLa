@@ -1,0 +1,118 @@
+/*
+ * example/gui-dual-media-studio.sleela
+ * An original, runnable SLeeLa GUI walkthrough in the DUAL (4.0) line, modeled
+ * on lib/gui/version-dual. DUAL is the 3.0 surface plus a rich, professional
+ * COMPONENT SET and a substantially upgraded aesthetic. This scene is a "media
+ * studio" that exercises:
+ *
+ *   - SLGuiAudioRecorder: a standard record control, idle -> armed -> recording
+ *     <-> paused -> stopped, with level/duration/clip and device + format;
+ *   - SLGuiVideoCanvas: a movie surface with full transport (play/pause/stop/
+ *     seek, position+duration, volume/mute, loop, rate, fullscreen, buffer);
+ *   - SLGuiUrlBar: an HTML-aware, HTTP-driven navigation bar (go/back/forward/
+ *     reload/stop, bounded history, HTTP status + content-type);
+ *   - SLGuiLayout: exact positioning + layout modes (flow/grid/anchor/dock);
+ *   - SLGuiGraphics: a bounded draw-command list plus its control layer;
+ *   - SLGuiCodecs: the GUI-facing mirror of the /codecs registry — media
+ *     components consult playable() / canPlayType() before offering a control,
+ *     so the UI only exposes what the system can actually play;
+ *   - the aesthetic surface (preset flat/soft/glass/metal/neon, radius, density).
+ *
+ * It mirrors lib/gui/version-dual but is self-contained so it runs as-is.
+ *
+ * Run:
+ *   SLEELA_SHEET=./SHEET.sheet \
+ *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+ *   ./impl/build/sleela run example/gui-dual-media-studio.sleela
+ */
+#sleela 2.1
+// DUAL (4.0): rich professional components (recorder, video, URL bar, layout,
+// graphics) that are codec-aware — the UI never offers media it cannot play.
+class GuiDualMediaStudio {
+
+  String boolToStr(boolean b) { return b ? "yes" : "no"; }
+  String intToStr(int v) { return "" + v; }
+
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+
+  // Codec gate: the studio consults the registry before offering a control.
+  // These four are native/backend-playable in the shipped registry order.
+  boolean canPlayType(String mime) {
+    return mime == "audio/wav"
+        || mime == "audio/mpeg"
+        || mime == "video/mp4"
+        || mime == "audio/ogg";
+  }
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa GUI — DUAL (4.0) Media Studio");
+    print("gui package 4.0 (featureLevel 4, rich professional components).");
+
+    // ---- Aesthetic surface ----
+    banner("Aesthetic surface");
+    print("preset 'glass', corner radius 12px, elevation 2, density compact.");
+    print("type scale 1.15, accent #5B8DEF, surface #0E1726, high-contrast off.");
+
+    // ---- Layout: exact positioning + a mode ----
+    banner("Layout (exact positioning + grid mode)");
+    print("root container: grid 12 cols, gap 8px, padding 16px, anchor top-left.");
+    print("  transport bar  -> absolute x=16 y=16 w=968 h=48 (dock top).");
+    print("  video canvas   -> absolute x=16 y=72 w=640 h=360.");
+    print("  recorder panel -> absolute x=672 y=72 w=312 h=360.");
+
+    // ---- Codec registry gate ----
+    banner("Codec registry (UI only offers what the system can play)");
+    print("canPlayType audio/wav  -> " + boolToStr(canPlayType("audio/wav")));
+    print("canPlayType video/mp4  -> " + boolToStr(canPlayType("video/mp4")));
+    print("canPlayType audio/ogg  -> " + boolToStr(canPlayType("audio/ogg")));
+    print("canPlayType video/avi  -> " + boolToStr(canPlayType("video/avi")) + " (control hidden).");
+
+    // ---- Audio recorder: the state machine ----
+    banner("Audio recorder (idle -> armed -> recording <-> paused -> stopped)");
+    boolean recordable = canPlayType("audio/wav");
+    print("device 'default-input', format audio/wav recordable=" + boolToStr(recordable) + ".");
+    print("  state idle      -> arm()     -> armed");
+    print("  state armed     -> record()  -> recording  (level 0.62, t=00:00)");
+    int dur = clamp(7, 0, 3600);
+    print("  recording       -> t=00:0" + intToStr(dur) + "  level 0.71");
+    print("  recording       -> pause()   -> paused");
+    print("  paused          -> record()  -> recording  (resumes)");
+    print("  recording       -> stop()    -> stopped    (clip 00:0" + intToStr(dur) + " captured)");
+
+    // ---- Video canvas: full transport ----
+    banner("Video canvas (full transport)");
+    boolean playable = canPlayType("video/mp4");
+    print("source 'intro.mp4' (video/mp4) playable=" + boolToStr(playable) + ".");
+    int pos = clamp(0, 0, 180);
+    print("  play()  -> position " + intToStr(pos) + "s / duration 180s, rate 1.0x.");
+    int seekTo = clamp(240, 0, 180);           // seek past the end -> clamped
+    print("  seek(240s) -> clamped to " + intToStr(seekTo) + "s (duration bound).");
+    int vol = clamp(130, 0, 100);
+    print("  volume 130% -> clamped to " + intToStr(vol) + "%, mute=no, loop=yes.");
+    print("  fullscreen -> on; buffer 100%.");
+
+    // ---- URL bar: HTML-aware, HTTP-driven ----
+    banner("URL bar (HTML-aware, HTTP-driven, bounded history)");
+    print("go 'https://sleela.example/studio' -> HTTP 200 text/html, html-aware=yes.");
+    print("  back() / forward() navigate a bounded history ring.");
+    print("  reload() re-issues; stop() aborts an in-flight request.");
+
+    // ---- Graphics: bounded draw-command list + control layer ----
+    banner("Graphics (bounded draw-command list + control layer)");
+    print("draw commands: clearRect, drawImage(frame), strokeRect(selection), fillText(timecode).");
+    print("control: quality high, antialiasing on, layer 2, dirty-region (0,0,640,360).");
+
+    banner("Done");
+    print("DUAL 4.0: recorder + video + URL bar + layout + graphics, all codec-aware.");
+  }
+}

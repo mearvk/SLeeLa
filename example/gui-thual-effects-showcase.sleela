@@ -1,0 +1,107 @@
+/*
+ * example/gui-thual-effects-showcase.sleela
+ * An original, runnable SLeeLa GUI walkthrough in the THUAL (3.0) line, modeled
+ * on lib/gui/version-thual. THUAL is the 2.0 surface plus a clean, professional
+ * VISUAL-EFFECTS layer. This scene is an "effects showcase" that exercises:
+ *
+ *   - SLGuiEffects: a per-component effect bundle — lighting + glow, a 3D shine
+ *     highlight, a drop shadow, a metal look-and-feel, rotation (fixed or
+ *     scheduled), fade in/out, and an activation-audio cue. Every knob clamps;
+ *     toStyle() flattens it for the SLGuiMount reconciler; honored() checks it;
+ *   - SLGuiRotationSchedule (a "schene"): scheduled rotation on a cadence whose
+ *     every visible tick also advances an internal memorandum key epoch() — the
+ *     visible rotation is the honest external signal of an internal key
+ *     rotation (cadence/accounting only; no cipher);
+ *   - SLGuiBranding: logo + brand identity painted into the chrome;
+ *   - SLGuiAudioCues: the named activation-audio registry a component references.
+ *
+ * It mirrors lib/gui/version-thual but is self-contained so it runs as-is.
+ *
+ * Run:
+ *   SLEELA_SHEET=./SHEET.sheet \
+ *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+ *   ./impl/build/sleela run example/gui-thual-effects-showcase.sleela
+ */
+#sleela 2.1
+// THUAL (3.0): a clamped visual-effects layer on top of the GUAL settings
+// posture. Rotation does double duty as a key-rotation cadence for a memo.
+class GuiThualEffectsShowcase {
+
+  String boolToStr(boolean b) { return b ? "yes" : "no"; }
+  String intToStr(int v) { return "" + v; }
+
+  // Every effect knob clamps to a safe window (the THUAL discipline).
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+
+  // Normalize a rotation angle into [0, 360) so a schedule tick stays bounded.
+  int wrapAngle(int deg) {
+    int d = deg;
+    while (d < 0) { d = d + 360; }
+    while (d >= 360) { d = d - 360; }
+    return d;
+  }
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa GUI — THUAL (3.0) Effects Showcase");
+    print("gui package 3.0 (featureLevel 3, professional visual effects).");
+
+    // ---- Branding painted into the chrome ----
+    banner("Branding");
+    print("brand asset 'brand/logo.svg', placement header, scale 110%.");
+    print("wordmark 'SLeeLa Studio', accent #4F8EF7, secondary #1B2430.");
+    print("tagline 'bright · dimensional · alive'.");
+
+    // ---- Activation-audio cue registry ----
+    banner("Audio cues (named activation registry)");
+    print("registered cues: 'tap'->assets/tap.wav, 'confirm'->assets/confirm.wav.");
+    print("master enabled=yes muted=no gain=80% (a component references a cue by name).");
+
+    // ---- Per-component effect bundle ----
+    banner("Effects bundle on the primary button (every knob clamps)");
+    int glow = clamp(140, 0, 100);
+    print("glow intensity 140% -> clamped to " + intToStr(glow) + "% (window 0..100), color #4F8EF7.");
+    int glowRadius = clamp(24, 0, 64);
+    print("glow radius 24px (window 0..64) kept at " + intToStr(glowRadius) + "px.");
+    int shine = clamp(70, 0, 100);
+    print("3D shine " + intToStr(shine) + "% at 35deg highlight angle.");
+    int shadowBlur = clamp(18, 0, 48);
+    int shadowOpacity = clamp(60, 0, 100);
+    print("drop shadow blur " + intToStr(shadowBlur) + "px, opacity " + intToStr(shadowOpacity)
+        + "%, offset (0,3).");
+    int sheen = clamp(85, 0, 100);
+    print("metal look-and-feel on, sheen " + intToStr(sheen) + "%.");
+    int fadeMs = clamp(50, 60, 2000);          // fade duration ms, window 60..2000
+    print("fade-in request 50ms -> clamped to " + intToStr(fadeMs) + "ms (window 60..2000).");
+    print("activation audio cue -> 'confirm'.");
+    print("bundle internally consistent, so honored=yes; toStyle() flattens for the reconciler.");
+
+    // ---- Scheduled rotation drives an internal memo key epoch ----
+    banner("Rotation schedule (a 'schene' — visible tick == memo key epoch)");
+    int step = 90;                 // degrees per tick
+    int angle = 0;
+    int epoch = 0;
+    print("cadence: " + intToStr(step) + "deg per tick; each tick advances the memo key epoch.");
+    int i = 0;
+    while (i < 4) {
+      angle = wrapAngle(angle + step);
+      epoch = epoch + 1;
+      print("  tick " + intToStr(i + 1) + " -> angle=" + intToStr(angle)
+          + "deg, memo key epoch=" + intToStr(epoch));
+      i = i + 1;
+    }
+    print("visible rotation is the honest external signal of the internal key rotation.");
+
+    banner("Done");
+    print("THUAL 3.0: clamped glow/shine/shadow/metal/rotation/fade + branding + audio cues.");
+  }
+}

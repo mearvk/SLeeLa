@@ -1,0 +1,110 @@
+/*
+ * example/gui-gual-settings-console.sleela
+ * An original, runnable SLeeLa GUI walkthrough in the GUAL (2.0) line, modeled
+ * on lib/gui/version-gual. GUAL is the 1.0 surface plus a hardened,
+ * settings-first posture. This scene is a "preferences console" that exercises:
+ *
+ *   - SLGuiSettings: one validated, nameful settings object whose every setter
+ *     CLAMPS to a safe window (theme, DPI scale, reduced-motion, vsync, window
+ *     min/max + resizable/decorations, and the document-listener poll /
+ *     debounce / coalesce-queue cap / backpressure policy). honored() states
+ *     whether the configuration is internally consistent;
+ *   - hardened SLGuiBackend: configureStrict() refuses an unknown backend
+ *     (fail-closed) and exposes capability flags;
+ *   - hardened SLGuiWindow: min/max size, resizable/decorated, clamped resize;
+ *   - hardened SLGuiDocumentListener: the 1..14 contract plus debounce, a
+ *     coalesce-queue cap, and a backpressure policy.
+ *
+ * It mirrors lib/gui/version-gual but is self-contained so it runs as-is.
+ *
+ * Run:
+ *   SLEELA_SHEET=./SHEET.sheet \
+ *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+ *   ./impl/build/sleela run example/gui-gual-settings-console.sleela
+ */
+#sleela 2.1
+// GUAL (2.0): the clamp-to-a-safe-window discipline borrowed from the lib/cpu
+// timing/voltage layer, applied to GUI settings. Every knob is validated.
+class GuiGualSettingsConsole {
+
+  int MIN_DOCUMENTS = 1;
+  int MAX_DOCUMENTS = 14;
+
+  String boolToStr(boolean b) { return b ? "yes" : "no"; }
+  String intToStr(int v) { return "" + v; }
+
+  // Clamp an int into [lo, hi] — the heart of GUAL's settings discipline.
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+
+  // Theme is an allow-list; anything else falls back to 'system' (fail-safe).
+  String resolveTheme(String t) {
+    if (t == "light" || t == "dark" || t == "system") { return t; }
+    return "system";
+  }
+
+  // configureStrict(): an unknown backend is refused (fail-closed).
+  boolean backendStrictOk(String kind) {
+    return kind == "swing" || kind == "javafx" || kind == "native";
+  }
+
+  boolean withinBound(int count) {
+    return count >= MIN_DOCUMENTS && count <= MAX_DOCUMENTS;
+  }
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa GUI — GUAL (2.0) Preferences Console");
+    print("gui package 2.0 (featureLevel 2, hardened settings-first).");
+
+    // ---- SLGuiSettings: validated, clamp-to-window knobs ----
+    banner("Settings (every setter clamps to a safe window)");
+    String theme = resolveTheme("midnight");   // not in allow-list -> falls back
+    print("theme 'midnight' -> '" + theme + "' (fail-safe fallback to system).");
+    int dpi = clamp(400, 50, 300);             // DPI scale percent, window 50..300
+    print("dpiScale 400% -> clamped to " + intToStr(dpi) + "% (window 50..300).");
+    int poll = clamp(5, 50, 5000);             // listener poll ms, window 50..5000
+    print("pollMs 5 -> clamped to " + intToStr(poll) + "ms (window 50..5000).");
+    int debounce = clamp(2000, 0, 1000);       // debounce ms, window 0..1000
+    print("debounceMs 2000 -> clamped to " + intToStr(debounce) + "ms (window 0..1000).");
+    int queueCap = clamp(0, 1, 256);           // coalesce-queue cap, window 1..256
+    print("coalesceQueueCap 0 -> clamped to " + intToStr(queueCap) + " (window 1..256).");
+    boolean reducedMotion = true;
+    boolean vsync = true;
+    print("reducedMotion=" + boolToStr(reducedMotion) + " vsync=" + boolToStr(vsync)
+        + " -> consistent, so honored=yes.");
+
+    // ---- Hardened backend: configureStrict() is fail-closed ----
+    banner("Backend (configureStrict is fail-closed)");
+    print("configureStrict('javafx') -> accepted " + boolToStr(backendStrictOk("javafx")) + ".");
+    print("configureStrict('qt')     -> accepted " + boolToStr(backendStrictOk("qt")) + " (refused).");
+    print("capabilities: hiDpi=yes themes=yes vsync=yes accessibility=yes nativeMenus=yes");
+
+    // ---- Hardened window: min/max + clamped resize ----
+    banner("Window (min/max size + clamped resize)");
+    print("window min 640x480, max 3840x2160, resizable=yes decorated=yes.");
+    int reqW = clamp(80, 640, 3840);
+    int reqH = clamp(80, 480, 2160);
+    print("resize request 80x80 -> clamped to " + intToStr(reqW) + "x" + intToStr(reqH)
+        + " (respects min size).");
+
+    // ---- Hardened document listener: 1..14 + backpressure ----
+    banner("Document listener (1..14 + backpressure policy)");
+    int attached = clamp(20, MIN_DOCUMENTS, MAX_DOCUMENTS);
+    print("attach 20 documents -> clamped to " + intToStr(attached)
+        + " (hard 1..14 contract).");
+    print("backpressure policy: coalesce (drop-oldest / block also available).");
+    print("watch 0 docs -> within bound " + boolToStr(withinBound(0)) + " (rejected).");
+
+    banner("Done");
+    print("GUAL 2.0: one validated settings object; every knob clamps; backend fail-closed.");
+  }
+}
