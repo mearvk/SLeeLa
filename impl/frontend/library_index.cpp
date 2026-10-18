@@ -5,11 +5,48 @@
 #include <stdexcept>
 #include <algorithm>
 #include <set>
+#if defined(_WIN32)
+#  include <windows.h>
+#elif defined(__APPLE__)
+#  include <mach-o/dyld.h>
+#  include <climits>
+#else
+#  include <unistd.h>
+#  include <climits>
+#endif
 namespace fs=std::filesystem;
 namespace sleela { namespace library {
+// The installed /lib tree, derived from the running executable's own location
+// (<prefix>/bin/<cmd> -> <prefix>/lib/sleela/lib). This keeps the import
+// validator and every other Index::discover() caller finding the SAME library
+// root as the driver: an installed binary resolves /lib from its install
+// location, not just from the current working directory. Returns empty when the
+// executable cannot be located or the installed layout is not present.
+static fs::path installedLibraryRoot(){
+    std::error_code ec; fs::path exe;
+#if defined(_WIN32)
+    wchar_t buf[MAX_PATH]; DWORD n=GetModuleFileNameW(nullptr,buf,MAX_PATH);
+    if(n==0||n>=MAX_PATH) return fs::path();
+    exe=fs::path(std::wstring(buf,buf+n));
+#elif defined(__APPLE__)
+    char buf[PATH_MAX]; uint32_t size=sizeof(buf);
+    if(_NSGetExecutablePath(buf,&size)!=0) return fs::path();
+    exe=fs::path(buf);
+#else
+    char buf[PATH_MAX]; ssize_t n=::readlink("/proc/self/exe",buf,sizeof(buf)-1);
+    if(n<=0) return fs::path();
+    buf[n]='\0'; exe=fs::path(buf);
+#endif
+    fs::path c=fs::weakly_canonical(exe,ec); if(!ec) exe=c; else ec.clear();
+    fs::path prefix=exe.parent_path().parent_path();   // <prefix>
+    fs::path lib=prefix/"lib"/"sleela"/"lib";
+    if(fs::is_directory(lib,ec)) return lib;
+    return fs::path();
+}
 Index Index::discover(const std::string& preferredRoot){
  Index o; std::vector<fs::path> roots; if(!preferredRoot.empty())roots.emplace_back(preferredRoot);
  if(const char*e=std::getenv("SLEELA_LIB");e&&*e)roots.emplace_back(e);
+ if(fs::path installed=installedLibraryRoot(); !installed.empty())roots.emplace_back(installed);
  roots.emplace_back("lib"); roots.emplace_back("../lib"); roots.emplace_back("../../lib");
  for(const auto&p:roots)if(fs::is_directory(p)){o.root_=fs::weakly_canonical(p).string();break;}
  if(o.root_.empty())return o;

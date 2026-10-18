@@ -19,6 +19,11 @@ RUNTIME_DIR := $(DESTDIR)$(LIBDIR)/$(RUNTIME_NAME)
 DATA_DIR := $(DESTDIR)$(DATADIR)/$(RUNTIME_NAME)
 CONFIG_DIR := $(DESTDIR)$(SYSCONFDIR)/$(RUNTIME_NAME)
 REPO_ROOT := ..
+# Where a reinstall snapshots the previous install before overwriting it. Old
+# files are kept here (never deleted automatically) so the user can roll back or
+# delete them on their own schedule. Kept OUTSIDE the runtime tree so a snapshot
+# is never copied into itself.
+BACKUP_ROOT ?= $(DESTDIR)$(LIBDIR)/$(RUNTIME_NAME)-backups
 
 # Non-interactive consent for the base-code SHA-256 manifest step. Set
 # SLEELA_MANIFEST_CONSENT=yes|no|skip to answer the prompt without a TTY (CI,
@@ -160,6 +165,11 @@ do-install:
 	@test -x "$(REPO_ROOT)/impl/build/nordshrift" || { echo "Missing impl/build/nordshrift; run make -C impl all first." >&2; exit 1; }
 	@if { [ -e "$(DESTDIR)$(BINDIR)/sleela" ] || [ -e "$(DESTDIR)$(BINDIR)/sleelvac" ] || [ -e "$(DESTDIR)$(BINDIR)/nordshrift" ]; } && [ ! -f "$(RUNTIME_DIR)/.sleela-install-manifest.json" ]; then echo "Refusing to overwrite existing command(s) not tracked as a SLeeLa install. Inspect them or choose another PREFIX." >&2; exit 1; fi
 	@echo "Installing SLeeLa to prefix $(PREFIX) (DESTDIR=$(DESTDIR))"
+	@if [ -z "$(DESTDIR)" ]; then \
+		python3 "$(REPO_ROOT)/install/install-runtime.py" backup "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)" "$(BACKUP_ROOT)"; \
+	else \
+		echo "Staged (DESTDIR) install into a fresh package root; skipping backup of the live system."; \
+	fi
 	install -d "$(DESTDIR)$(BINDIR)" "$(RUNTIME_DIR)/lib" "$(RUNTIME_DIR)/tools" "$(RUNTIME_DIR)/security" "$(DATA_DIR)/docs" "$(DATA_DIR)/examples" "$(CONFIG_DIR)"
 	install -m 755 "$(REPO_ROOT)/impl/build/sleela" "$(DESTDIR)$(BINDIR)/sleela"
 	install -m 755 "$(REPO_ROOT)/impl/build/sleelvac" "$(DESTDIR)$(BINDIR)/sleelvac"
@@ -167,6 +177,7 @@ do-install:
 	cp -a "$(REPO_ROOT)/lib/." "$(RUNTIME_DIR)/lib/"
 	install -m 644 "$(REPO_ROOT)/tools/verify-before-execution.py" "$(RUNTIME_DIR)/tools/"
 	install -m 644 "$(REPO_ROOT)/security/sha256-manifest.json" "$(RUNTIME_DIR)/security/"
+	if [ -f "$(REPO_ROOT)/SHEET.sheet" ]; then install -m 644 "$(REPO_ROOT)/SHEET.sheet" "$(RUNTIME_DIR)/SHEET.sheet"; fi
 	python3 "$(REPO_ROOT)/install/install-runtime.py" copy-manifest "$(REPO_ROOT)" "$(RUNTIME_DIR)"
 	cp -a "$(REPO_ROOT)/docs/." "$(DATA_DIR)/docs/"
 	if [ -d "$(REPO_ROOT)/examples" ]; then cp -a "$(REPO_ROOT)/examples/." "$(DATA_DIR)/examples/"; fi

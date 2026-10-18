@@ -41,7 +41,71 @@ extern "C" {
 #include "../core/sleela_design_activity.h"
 #include "../../runtime/java_runtime_bridge.h"
 }
+#if defined(_WIN32)
+#  include <windows.h>
+#elif defined(__APPLE__)
+#  include <mach-o/dyld.h>
+#  include <climits>
+#else
+#  include <unistd.h>
+#  include <climits>
+#endif
 namespace fs=std::filesystem;
+
+// Absolute path of the running executable, or empty if it cannot be determined.
+// Used to make an *installed* binary find its support files (the /lib tree, the
+// SHA-256 manifest + verifier, the SHEET.sheet catalog) relative to its own
+// install location rather than only relative to the current working directory.
+static fs::path executablePath(){
+    std::error_code ec;
+#if defined(_WIN32)
+    wchar_t buf[MAX_PATH];
+    DWORD n=GetModuleFileNameW(nullptr,buf,MAX_PATH);
+    if(n==0||n>=MAX_PATH) return fs::path();
+    fs::path p(std::wstring(buf,buf+n));
+    fs::path c=fs::weakly_canonical(p,ec); return ec?p:c;
+#elif defined(__APPLE__)
+    char buf[PATH_MAX]; uint32_t size=sizeof(buf);
+    if(_NSGetExecutablePath(buf,&size)!=0) return fs::path();
+    fs::path p(buf);
+    fs::path c=fs::weakly_canonical(p,ec); return ec?p:c;
+#else
+    char buf[PATH_MAX];
+    ssize_t n=::readlink("/proc/self/exe",buf,sizeof(buf)-1);
+    if(n<=0) return fs::path();
+    buf[n]='\0';
+    fs::path p(buf);
+    fs::path c=fs::weakly_canonical(p,ec); return ec?p:c;
+#endif
+}
+
+// Derive the SLeeLa runtime root from the installed layout, where the binary
+// lives at <prefix>/bin/<cmd> and its support tree at <prefix>/lib/sleela. A
+// directory is accepted only when it carries the verifier the gate needs, so a
+// non-installed (build-tree) binary falls through to the env var / upward
+// search instead of guessing. Returns empty when no install root is found.
+static fs::path installRootFromExecutable(){
+    fs::path exe=executablePath();
+    if(exe.empty()) return fs::path();
+    std::error_code ec;
+    fs::path bindir=exe.parent_path();                 // <prefix>/bin
+    fs::path prefix=bindir.parent_path();               // <prefix>
+    // Primary installed layout: <prefix>/lib/sleela.
+    fs::path candidates[]={
+        prefix/"lib"/"sleela",
+        // Fallbacks for less conventional layouts (bin and runtime side by side,
+        // or the runtime tree sitting next to the executable).
+        bindir/".."/"lib"/"sleela",
+        bindir/"sleela",
+    };
+    for(const auto& c:candidates){
+        fs::path d=fs::weakly_canonical(c,ec); if(ec){ec.clear();d=c;}
+        if(fs::is_directory(d,ec) &&
+           fs::is_regular_file(d/"tools"/"verify-before-execution.py",ec)) return d;
+        ec.clear();
+    }
+    return fs::path();
+}
 static const char* kSleelaVersion="SLeeLa™ Language/Runtime (syntax level 2.1; supported source syntax 1.3-2.1; native C/C++ Core VM)";
 static const char* kSleelvacVersion="Sleelvac™ 0.3.29-dev (SLeeLa compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; JVM-family langin input: Java/Kotlin/Scala/Groovy/Clojure; Nordshrift round-trip (SLeeLa->Nordshrift->back); OS Defender provisioning; SHA-256 execution gate)";
 static bool readFile(const std::string& path,std::string& out);
@@ -128,6 +192,15 @@ static fs::path findRepoRoot(const fs::path&start){
         ec.clear();
     }
 
+    // Next, prefer the installed layout derived from the executable's own
+    // location (<prefix>/bin/<cmd> -> <prefix>/lib/sleela). This lets an
+    // installed `sleela`/`sleelvac` find its support tree from the final install
+    // location regardless of the current working directory or environment, which
+    // is what a user expects when running the installed command rather than from
+    // the git checkout. SLEELA_HOME above still wins as an explicit override.
+    if(fs::path installed=installRootFromExecutable(); !installed.empty())
+        return installed;
+
     fs::path dir=fs::absolute(start,ec);
     if(ec){ec.clear();dir=start;}
     for(;;){
@@ -141,6 +214,29 @@ static fs::path findRepoRoot(const fs::path&start){
         dir=parent;
     }
     return fs::path();
+}
+
+// Resolve the authoritative /lib source-library root for the current invocation,
+// honoring (in order): $SLEELA_LIB, the installed <prefix>/lib/sleela/lib, the
+// SLeeLa root found by findRepoRoot (SLEELA_HOME or the checkout), and finally
+// an empty string so Index::discover falls back to its cwd-relative search.
+// Centralizing this keeps the import validator (compiler.cpp) and the source
+// unit loader (loadReferencedLibraryUnits) in agreement about where /lib is.
+static std::string resolveLibraryRoot(){
+    if(const char* configured=std::getenv("SLEELA_LIB"); configured&&*configured) return configured;
+    std::error_code ec;
+    if(fs::path installed=installRootFromExecutable(); !installed.empty()){
+        fs::path lib=installed/"lib";
+        if(fs::is_directory(lib,ec)) return lib.string();
+        ec.clear();
+    }
+    fs::path repo=findRepoRoot(fs::current_path());
+    if(!repo.empty()){
+        fs::path lib=repo/"lib";
+        if(fs::is_directory(lib,ec)) return lib.string();
+        ec.clear();
+    }
+    return std::string();
 }
 static int verifyBeforeExecution(const fs::path&cwd){
     // Resolve the SLeeLa root first so a configured installation works even
@@ -481,7 +577,28 @@ static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const
     }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";rc=1;}
     slvm_free(vm);return rc;
 }
-static catalog::Catalog loadCatalog(){const char*env=std::getenv("SLEELA_SHEET");const char*candidates[]={env,"SHEET.sheet","../SHEET.sheet","../../SHEET.sheet","../../../SHEET.sheet"};for(const char*p:candidates){if(!p||!*p)continue;bool ok=false;catalog::Catalog c=catalog::parseCatalogFile(p,&ok);if(ok)return c;}return catalog::Catalog{};}
+static catalog::Catalog loadCatalog(){
+    // Try, in order: $SLEELA_SHEET; the catalog shipped under the installed
+    // runtime root (so an installed binary finds SHEET.sheet from its install
+    // location, not only from the checkout); the SLeeLa root resolved by
+    // findRepoRoot; then cwd-relative fallbacks for working inside the checkout.
+    std::vector<std::string> candidates;
+    if(const char* env=std::getenv("SLEELA_SHEET"); env&&*env) candidates.emplace_back(env);
+    if(fs::path installed=installRootFromExecutable(); !installed.empty())
+        candidates.emplace_back((installed/"SHEET.sheet").string());
+    if(fs::path repo=findRepoRoot(fs::current_path()); !repo.empty())
+        candidates.emplace_back((repo/"SHEET.sheet").string());
+    candidates.emplace_back("SHEET.sheet");
+    candidates.emplace_back("../SHEET.sheet");
+    candidates.emplace_back("../../SHEET.sheet");
+    candidates.emplace_back("../../../SHEET.sheet");
+    for(const auto& p:candidates){
+        if(p.empty())continue;
+        bool ok=false; catalog::Catalog c=catalog::parseCatalogFile(p.c_str(),&ok);
+        if(ok)return c;
+    }
+    return catalog::Catalog{};
+}
 /* ---- `sleela vm` : select the virtual machine ---------------------------
  * The Native VM (impl/core, what every other subcommand runs on) is the
  * default. `sleela vm` lets a user list and select one of the versioned VMs
@@ -1021,10 +1138,7 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
     // This deliberately resolves only class-like unit names referenced by source,
     // rather than blindly parsing every file under /lib (which can introduce
     // unrelated duplicate declarations and incompatible syntax editions).
-    fs::path repo=findRepoRoot(fs::current_path());
-    std::string libRoot;
-    if(const char* configured=std::getenv("SLEELA_LIB"); configured&&*configured) libRoot=configured;
-    else if(!repo.empty()) libRoot=(repo/"lib").string();
+    std::string libRoot=resolveLibraryRoot();
     sleela::library::Index index=sleela::library::Index::discover(libRoot);
     if(index.empty()) return true; // standalone installations may intentionally have no source library
     std::set<std::string> loadedPaths;

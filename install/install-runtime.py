@@ -30,6 +30,47 @@ def copy_manifest(repo, runtime):
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         shutil.copy2(src, dst)
 
+def _timestamp():
+    import datetime
+    return datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+
+def backup(runtime, data, bindir, backup_root):
+    """Snapshot the currently installed binaries and runtime/data trees before a
+    reinstall overwrites them, so older files are retained (not clobbered) until
+    the user removes them deliberately. Only runs when a prior tracked install is
+    present; otherwise it is a no-op. Returns quietly if there is nothing to back
+    up."""
+    runtime, data, bindir = map(os.path.abspath, (runtime, data, bindir))
+    marker = os.path.join(runtime, MARKER)
+    # Nothing tracked yet -> first install -> nothing to preserve.
+    have_marker = os.path.isfile(marker)
+    have_bins = any(os.path.exists(os.path.join(bindir, b)) for b in ("sleela", "sleelvac", "nordshrift"))
+    if not have_marker and not have_bins:
+        print("No previous SLeeLa install detected; nothing to back up.")
+        return
+    backup_root = os.path.abspath(backup_root)
+    # Guard against a snapshot living inside the trees it copies (which would
+    # recurse). The Makefile keeps backups beside, not under, the runtime tree.
+    for tree in (runtime, data):
+        if os.path.commonpath((backup_root, tree)) == os.path.abspath(tree):
+            raise SystemExit("Refusing backup root inside the install tree: " + backup_root)
+    dest = os.path.join(backup_root, _timestamp())
+    os.makedirs(dest, exist_ok=True)
+    # Preserve the previous binaries.
+    bin_dest = os.path.join(dest, "bin")
+    for name in ("sleela", "sleelvac", "nordshrift"):
+        src = os.path.join(bindir, name)
+        if os.path.isfile(src) and not os.path.islink(src):
+            os.makedirs(bin_dest, exist_ok=True)
+            shutil.copy2(src, os.path.join(bin_dest, name))
+    # Preserve the previous runtime and data trees.
+    for label, root in (("runtime", runtime), ("data", data)):
+        if os.path.isdir(root):
+            shutil.copytree(root, os.path.join(dest, label), symlinks=True, dirs_exist_ok=True)
+    print("Backed up the existing SLeeLa install to: " + dest)
+    print("Older files are retained there and are not removed automatically;")
+    print("delete that directory yourself when you no longer need the rollback.")
+
 def record(runtime, data, bindir):
     runtime, data, bindir = map(os.path.abspath, (runtime, data, bindir))
     marker = os.path.join(runtime, MARKER)
@@ -94,10 +135,12 @@ def uninstall(runtime, data, bindir):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        raise SystemExit("usage: install-runtime.py copy-manifest REPO RUNTIME | record RUNTIME DATA BINDIR | uninstall RUNTIME DATA BINDIR")
+        raise SystemExit("usage: install-runtime.py copy-manifest REPO RUNTIME | backup RUNTIME DATA BINDIR BACKUP_ROOT | record RUNTIME DATA BINDIR | uninstall RUNTIME DATA BINDIR")
     command = sys.argv[1]
     if command == "copy-manifest" and len(sys.argv) == 4:
         copy_manifest(sys.argv[2], sys.argv[3])
+    elif command == "backup" and len(sys.argv) == 6:
+        backup(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
     elif command == "record" and len(sys.argv) == 5:
         record(sys.argv[2], sys.argv[3], sys.argv[4])
     elif command == "uninstall" and len(sys.argv) == 5:

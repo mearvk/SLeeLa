@@ -82,6 +82,46 @@ Answer non-interactively (CI, package builds) with
 `SLEELA_MANIFEST_CONSENT=yes|no|skip`. When no terminal is attached and the
 variable is unset, the step is skipped safely.
 
+### How installed commands find their libraries (standard resolution)
+
+You are expected to run the **installed** `sleela`/`sleelvac`, not the copy in a
+git checkout. An installed command finds its support files from the **install
+location**, derived from the command's own path, so it works from any working
+directory and without setting environment variables:
+
+- command: `<prefix>/bin/sleela`
+- runtime root: `<prefix>/lib/sleela` — holds the `lib/` source-library tree,
+  the `security/sha256-manifest.json` integrity manifest, the
+  `tools/verify-before-execution.py` gate, and `SHEET.sheet`.
+
+Resolution order for each resource (first match wins):
+
+1. the matching environment variable, if set — `SLEELA_LIB` (library tree),
+   `SLEELA_SHEET` (catalog), `SLEELA_HOME` / `SLEELA_SHA256_MANIFEST` (verify
+   gate) — these remain available as explicit overrides;
+2. the installed runtime root derived from the executable's own location
+   (`<prefix>/bin` → `<prefix>/lib/sleela`);
+3. the SLeeLa root found by searching upward from the current directory — this
+   is what lets a developer run the build-tree binary from inside the checkout.
+
+So after `make install` / `make install-system`, running `sleela run foo.sleela`
+from anywhere resolves `/lib`, the manifest, and the catalog from
+`<prefix>/lib/sleela` — not from the clone, and not from the current directory.
+The clone is only used when you run the uninstalled build-tree binary.
+
+### Reinstall safety: existing files are backed up, not clobbered
+
+A reinstall over an existing install first **snapshots** the previous binaries
+and the runtime/data trees into a timestamped directory beside the runtime tree
+(`<prefix>/lib/sleela-backups/<YYYYmmdd-HHMMSS>/`) before writing the new files.
+Old files are **retained there and never removed automatically** — delete a
+snapshot yourself when you no longer need the rollback. The install tracker does
+not record the backups, so `make uninstall` leaves them in place. (Override the
+location with `BACKUP_ROOT=...`; staged `DESTDIR` package builds skip the backup
+because they target a fresh package root, not a live system.) The installer also
+still refuses to overwrite same-named commands that are not tracked as a SLeeLa
+install.
+
 ### What `sudo` does and does not touch
 
 When `make install-system` (or a system-scoped `make install`) elevates, `sudo`
