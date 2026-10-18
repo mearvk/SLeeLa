@@ -76,6 +76,16 @@ reason to elevate:
   `$HOME/.local/sleela`, same as `install-local`); a system prefix (with no
   `DESTDIR`) elevates automatically for the system copy only; an explicit
   `PREFIX=...` or a `DESTDIR` staged build installs to that single prefix.
+- **`make install-all`** refreshes **every** standard SLeeLa location in one
+  command, so a single run updates all the directories `whereis sleela`
+  reports. Run it as your normal user (it invokes `sudo` itself for system
+  paths). It performs, in order:
+  1. the user-local **dual** install (`$HOME/.local` and `$HOME/.local/sleela`);
+  2. the system install at **`/usr/local`** (sudo, system paths only);
+  3. an **in-place refresh** of any `sleela`/`sleelvac`/`nordshrift` already
+     present in `EXTRA_BINDIRS` (default `/usr/bin`) so stray copies never go
+     stale. It never *creates* a new stray command — it only overwrites one that
+     already exists. Override the set with `EXTRA_BINDIRS="/usr/bin /opt/bin"`.
 
 ### Base-code integrity prompt on every install
 

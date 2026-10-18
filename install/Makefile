@@ -30,7 +30,14 @@ BACKUP_ROOT ?= $(DESTDIR)$(LIBDIR)/$(RUNTIME_NAME)-backups
 # package builds). When unset and a terminal is attached, the user is asked.
 SLEELA_MANIFEST_CONSENT ?=
 
-.PHONY: all install install-local install-system do-install install-check install-help uninstall manifest-prompt
+.PHONY: all install install-all install-local install-system do-install refresh-extra-bins install-check install-help uninstall manifest-prompt
+
+# Extra standard bin directories that may hold a SLeeLa command from a prior or
+# packaged install but are not a prefix this Makefile installs a full runtime
+# into (e.g. /usr/bin alongside the /usr/local system prefix). install-all
+# refreshes any sleela/sleelvac/nordshrift ALREADY present in these dirs so they
+# stop going stale, without inventing a new runtime tree for them.
+EXTRA_BINDIRS ?= /usr/bin
 all: install-check
 
 install-help:
@@ -38,8 +45,10 @@ install-help:
 	@echo "  make -C install install-local  [PREFIX=\$$HOME/.local]   User-local install; never uses sudo"
 	@echo "  make -C install install-system [PREFIX=/usr/local]      System install; uses sudo for system paths only"
 	@echo "  make -C install install        [PREFIX=... DESTDIR=...]  Scope-aware: local prefix stays local, system prefix elevates"
+	@echo "  make -C install install-all                             Refresh EVERY location: user-local (both layouts) +"
+	@echo "                                                          /usr/local + any present EXTRA_BINDIRS (default /usr/bin)"
 	@echo "  make -C install uninstall      [PREFIX=/usr/local]"
-	@echo "  BINDIR, LIBDIR, DATADIR, SYSCONFDIR may be overridden."
+	@echo "  BINDIR, LIBDIR, DATADIR, SYSCONFDIR, EXTRA_BINDIRS may be overridden."
 	@echo
 	@echo "Every install variant first offers to (re)generate and verify the base"
 	@echo "SLeeLa code SHA-256 manifest (yes/no). Answer non-interactively with"
@@ -180,6 +189,52 @@ install-system:
 		LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)" \
 		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)" \
 		sh "$(CURDIR)/system-install.sh"
+
+# install-all: refresh EVERY standard SLeeLa install location in one command,
+# so a single invocation updates all the directories `whereis sleela` reports.
+# It performs, in order:
+#   1. the user-local DUAL install ($HOME/.local and $HOME/.local/sleela);
+#   2. the system install at /usr/local (via sudo, system paths only);
+#   3. an in-place refresh of any stray binaries already present in the
+#      EXTRA_BINDIRS (e.g. /usr/bin), so none are left stale.
+# Directories are created on first install. No environment variables required.
+install-all:
+	@if [ "$$(id -u)" -eq 0 ]; then \
+		echo "Run 'make install-all' as your normal user; it invokes sudo itself for system paths." >&2; exit 1; fi
+	@echo "== install-all: refreshing every standard SLeeLa location =="
+	@echo
+	@echo "-- (1/3) user-local layouts ($$HOME/.local and $$HOME/.local/sleela) --"
+	@$(MAKE) --no-print-directory -C "$(CURDIR)" install-local \
+		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)" || exit 1
+	@echo
+	@echo "-- (2/3) system prefix /usr/local (sudo for system paths only) --"
+	@$(MAKE) --no-print-directory -C "$(CURDIR)" install-system \
+		PREFIX=/usr/local SLEELA_MANIFEST_CONSENT=skip || exit 1
+	@echo
+	@echo "-- (3/3) refresh stray binaries in $(EXTRA_BINDIRS) --"
+	@$(MAKE) --no-print-directory -C "$(CURDIR)" refresh-extra-bins || exit 1
+	@echo
+	@echo "install-all complete. Updated user-local, /usr/local, and any present $(EXTRA_BINDIRS) copies."
+	@echo "Tip: run ../scripts/which-sleela.sh to confirm which 'sleela' your PATH resolves."
+
+# refresh-extra-bins: overwrite sleela/sleelvac/nordshrift in EXTRA_BINDIRS, but
+# ONLY where that command already exists (never create a new stray command).
+# Uses sudo for system-owned directories. This keeps e.g. /usr/bin/sleela from
+# lingering at an old version after a newer compile.
+refresh-extra-bins:
+	@test -x "$(REPO_ROOT)/impl/build/sleela" || { echo "Missing impl/build/sleela; run make -C impl all first." >&2; exit 1; }
+	@for d in $(EXTRA_BINDIRS); do \
+		for p in sleela sleelvac nordshrift; do \
+			if [ -e "$$d/$$p" ]; then \
+				src="$(REPO_ROOT)/impl/build/$$p"; \
+				if [ -w "$$d" ] && [ "$$(id -u)" -eq 0 -o -w "$$d/$$p" ]; then SUDO=""; else SUDO="sudo"; fi; \
+				echo "==> refreshing $$d/$$p"; \
+				$$SUDO install -m 755 "$$src" "$$d/$$p" || exit 1; \
+			else \
+				echo "==> $$d/$$p not present; leaving it absent (install-all never creates a new stray command)"; \
+			fi; \
+		done; \
+	done
 
 # do-install: the actual copy work. No prompting and no elevation decision --
 # callers (install / install-local / install-system) have already handled scope,
