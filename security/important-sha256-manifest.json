@@ -4331,6 +4331,10 @@
       "sha256": "83d73e2e96eb4298feaf8df52be2be10b59e36d5b098509049d6177de6108c5d"
     },
     {
+      "path": "example/gui-military-window.sleela",
+      "sha256": "f6829054c222bb4b9b7e2c73a2dbcc31cd452e604d838f490cbd945d2c1c5b04"
+    },
+    {
       "path": "example/gui-mual-text-editor.sleela",
       "sha256": "b534e09fb141c687fe04330883d7c3e0ffdcad09edcbf6a099712b46fb8f5208"
     },
@@ -5612,11 +5616,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "cc0ba1f7ee6017b3b2ff32b566e7a4936255d1ee040c492ff6e841532a4d0e46"
+      "sha256": "cc6c4d854b825f386127c76bff5647e5928149f111528c86b95996cab3a18991"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "98b38702158dced1ebf1b07235081acca8b032f582d546d7e3399196825a7f1a"
+      "sha256": "14ed8e1e0be86c1ef637389e02eda708160f89308c91197ffa1c3c91214838d8"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -5793,6 +5797,18 @@
     {
       "path": "impl/core/sleela_time.h",
       "sha256": "6c3de19a70be690219d635b9090d27894a0478e77eb12e682b3708391381d1b3"
+    },
+    {
+      "path": "impl/core/sleela_ui_ids.h",
+      "sha256": "07a4829378b9604d8b66fed473b3172cef650c672b1855a437584d657b8ba5ca"
+    },
+    {
+      "path": "impl/core/sleela_ui_vm.c",
+      "sha256": "19f27f467dbda9aed202198f7d6d614d7fc00b8205fec1d960197dfab847d7c6"
+    },
+    {
+      "path": "impl/core/sleela_ui_vm.h",
+      "sha256": "945c76130d356cdfbb45f53f315d4808c85f289b12d79cc40f38c41536eb9b3a"
     },
     {
       "path": "impl/core/socket_smoke.c",
@@ -6044,7 +6060,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "396fbff526c2642b6123f94220d03d25e5da069dc252ade451c99bd74f70a2a5"
+      "sha256": "78befbfab7fb95570905f6bf413f0bf98a349e78c3841925857322225d40985c"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -6132,7 +6148,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "518ea09a3e2e78f7e23893985c5f2f0e5820ac1bd77d3c737c0db3543983e85a"
+      "sha256": "26175c6d18d6159b9b77442988f01cf46290ae878db8d88c727cb6658601a598"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -56073,6 +56089,10 @@
     {
       "path": "user-interface/examples/gallery.c",
       "sha256": "36100b2df353b2c2428020e2628f3f1d3541e1e79bbaafe821a80369e0f05e00"
+    },
+    {
+      "path": "user-interface/examples/military-console.c",
+      "sha256": "2e954430da8fed7bd7bfdae04e5e668cc7cdae0d042be5cc130a37a94999ac14"
     },
     {
       "path": "user-interface/include/sleela_ui.h",
