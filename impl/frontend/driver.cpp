@@ -106,7 +106,10 @@ static fs::path installRootFromExecutable(){
     }
     return fs::path();
 }
-static const char* kSleelaVersion="SLeeLa™ Language/Runtime (syntax level 2.1; supported source syntax 1.3-2.1; native C/C++ Core VM)";
+// The runtime (`sleela`) and the compiler (`sleelvac`) are the same build, so
+// both banners carry the same release number. `sleela version` must specify the
+// version of the runnable, not merely its supported syntax levels.
+static const char* kSleelaVersion="SLeeLa™ Language/Runtime 0.3.29-dev (syntax level 2.1; supported source syntax 1.3-2.1; native C/C++ Core VM)";
 static const char* kSleelvacVersion="Sleelvac™ 0.3.29-dev (SLeeLa compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; JVM-family langin input: Java/Kotlin/Scala/Groovy/Clojure; Nordshrift round-trip (SLeeLa->Nordshrift->back); OS Defender provisioning; SHA-256 execution gate)";
 static bool readFile(const std::string& path,std::string& out);
 static int runLangin(const std::vector<std::string>&paths);
