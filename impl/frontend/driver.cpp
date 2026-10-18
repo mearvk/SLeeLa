@@ -1001,30 +1001,6 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
         }
         return output;
     };
-        State state = State::Code;
-        bool escaped = false;
-        for (size_t i = 0; i < input.size(); ++i) {
-            const char c = input[i];
-            const char next = (i + 1 < input.size()) ? input[i + 1] : '\\0';
-            if (state == State::Code) {
-                if (c == '/' && next == '/') { output[i] = output[i + 1] = ' '; ++i; state = State::LineComment; }
-                else if (c == '/' && next == '*') { output[i] = output[i + 1] = ' '; ++i; state = State::BlockComment; }
-                else if (c == '"') { output[i] = ' '; state = State::String; escaped = false; }
-                else if (c == '\\'') { output[i] = ' '; state = State::Character; escaped = false; }
-            } else if (state == State::LineComment) {
-                if (c == '\\n') state = State::Code; else output[i] = ' ';
-            } else if (state == State::BlockComment) {
-                if (c == '*' && next == '/') { output[i] = output[i + 1] = ' '; ++i; state = State::Code; }
-                else if (c != '\\n') output[i] = ' ';
-            } else {
-                if (c != '\\n') output[i] = ' ';
-                if (escaped) escaped = false;
-                else if (c == '\\\\') escaped = true;
-                else if ((state == State::String && c == '"') || (state == State::Character && c == '\\'')) state = State::Code;
-            }
-        }
-        return output;
-    };
     // Resolve in passes so a loaded unit can pull in its own referenced units.
     for(size_t pass=0;pass<64;++pass){
         std::set<std::string> names;
