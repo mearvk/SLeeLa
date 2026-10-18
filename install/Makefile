@@ -98,5 +98,5 @@ uninstall:
 		else echo "System uninstall needs root privileges; install sudo or run this target as root." >&2; exit 1; fi; \
 	fi
 	@echo "Removing tracked SLeeLa files while preserving configuration and untracked data."
-	python3 "$(REPO_ROOT)/install-runtime.py" uninstall "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"
+	python3 "$(REPO_ROOT)/install/install-runtime.py" uninstall "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"
 	@echo "Configuration under $(CONFIG_DIR) is intentionally preserved; remove it manually if no longer needed."
