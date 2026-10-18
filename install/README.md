@@ -58,15 +58,24 @@ The two scopes are deliberately separated so a user-local install never has any
 reason to elevate:
 
 - **`make install-local`** installs for the current user and **never uses
-  `sudo`**. It defaults the prefix to `$HOME/.local`, refuses a system prefix
-  (pointing you at `install-system`), and refuses to run as root.
+  `sudo`**. With no `PREFIX` given it installs to **both** conventional
+  user-local layouts, creating any missing directories on first install and
+  requiring no environment variables:
+  - `$HOME/.local` (FHS-style: `$HOME/.local/bin`, `$HOME/.local/lib/sleela`, …)
+  - `$HOME/.local/sleela` (self-contained: `$HOME/.local/sleela/bin`, …)
+
+  Passing an explicit `PREFIX=...` installs to that single prefix only. It
+  refuses a system prefix (pointing you at `install-system`) and refuses to run
+  as root.
 - **`make install-system`** performs the system-wide install through
   [`system-install.sh`](system-install.sh). It runs the integrity step as the
   invoking (unprivileged) user first, then uses `sudo` **only** for the
   privileged copy into system locations.
-- **`make install`** remains scope-aware: a user-local prefix stays as the
-  current user, a system prefix (with no `DESTDIR`) elevates automatically for
-  the system copy only.
+- **`make install`** remains scope-aware: run with no `PREFIX` as a normal
+  user it installs to **both** user-local layouts (`$HOME/.local` and
+  `$HOME/.local/sleela`, same as `install-local`); a system prefix (with no
+  `DESTDIR`) elevates automatically for the system copy only; an explicit
+  `PREFIX=...` or a `DESTDIR` staged build installs to that single prefix.
 
 ### Base-code integrity prompt on every install
 

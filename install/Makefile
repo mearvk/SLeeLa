@@ -92,6 +92,15 @@ install-check:
 # installs. A user-local prefix stays as the current user; a system prefix with
 # no DESTDIR elevates via sudo (system paths only) and re-enters so the manifest
 # prompt has already run as the invoking user.
+#
+# User-local installs (no explicit PREFIX, not a system path) go to BOTH
+# conventional layouts so the commands are present wherever a user expects them,
+# with no environment variables required on a first install:
+#   * $HOME/.local          (FHS-style: $HOME/.local/bin, $HOME/.local/lib/sleela)
+#   * $HOME/.local/sleela    (self-contained: $HOME/.local/sleela/bin, .../lib/sleela)
+# Every target directory is created on first install (install -d). A system
+# prefix, an explicit PREFIX=, or a DESTDIR staged build installs to that single
+# prefix only (unchanged behavior).
 install:
 	@if [ "$(origin SLEELA_INSTALL_ELEVATED)" = "undefined" ] || [ -z "$(SLEELA_INSTALL_ELEVATED)" ]; then \
 		$(MAKE) --no-print-directory -C "$(CURDIR)" manifest-prompt \
@@ -116,18 +125,30 @@ install:
 				SLEELA_INSTALL_ELEVATED=1; \
 		else echo "System installation needs root privileges; install sudo or run this target as root." >&2; exit 1; fi; \
 	fi
-	@$(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
-		PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" BINDIR="$(BINDIR)" \
-		LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)" \
-		SLEELA_INSTALL_ELEVATED="$(SLEELA_INSTALL_ELEVATED)"
+	@if [ -z "$(DESTDIR)" ] && [ "$(PREFIX)" = "/usr/local" ] && [ "$$(id -u)" -ne 0 ]; then \
+		base="$$HOME/.local"; \
+		echo "User-local install: installing to both $$base and $$base/sleela (no PREFIX given)."; \
+		for prefix in "$$base" "$$base/sleela"; do \
+			echo "==> installing into $$prefix"; \
+			$(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
+				PREFIX="$$prefix" DESTDIR="$(DESTDIR)" \
+				BINDIR="$$prefix/bin" LIBDIR="$$prefix/lib" DATADIR="$$prefix/share" \
+				SYSCONFDIR="$$HOME/.config" SLEELA_INSTALL_ELEVATED=1 || exit 1; \
+		done; \
+	else \
+		$(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
+			PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" BINDIR="$(BINDIR)" \
+			LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)" \
+			SLEELA_INSTALL_ELEVATED="$(SLEELA_INSTALL_ELEVATED)"; \
+	fi
 
 # install-local: user-local install that NEVER uses sudo. Defaults the prefix to
 # the user's ~/.local when the default system prefix is in effect, and refuses a
 # system prefix outright (directing the user to install-system) so a local
 # install can never silently try to elevate.
 install-local:
-	@prefix="$(PREFIX)"; \
-	if [ "$$prefix" = "/usr/local" ]; then prefix="$$HOME/.local"; \
+	@prefix="$(PREFIX)"; dual=no; \
+	if [ "$$prefix" = "/usr/local" ]; then prefix="$$HOME/.local"; dual=yes; \
 		echo "User-local install: defaulting PREFIX to $$prefix (override with PREFIX=...)."; fi; \
 	case "$$prefix" in \
 		/usr/*|/usr|/opt/*|/opt|/etc/*|/etc|/var/*|/var) \
@@ -136,11 +157,20 @@ install-local:
 	if [ "$$(id -u)" -eq 0 ]; then \
 		echo "install-local must not run as root; run it as the target user without sudo." >&2; exit 1; fi; \
 	$(MAKE) --no-print-directory -C "$(CURDIR)" manifest-prompt \
-		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)" && \
-	$(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
-		PREFIX="$$prefix" DESTDIR="$(DESTDIR)" \
-		BINDIR="$$prefix/bin" LIBDIR="$$prefix/lib" DATADIR="$$prefix/share" \
-		SYSCONFDIR="$$HOME/.config" SLEELA_INSTALL_ELEVATED=1
+		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)" || exit 1; \
+	if [ "$$dual" = yes ]; then \
+		set -- "$$prefix" "$$prefix/sleela"; \
+		echo "User-local install: installing to both $$prefix and $$prefix/sleela (no PREFIX given)."; \
+	else \
+		set -- "$$prefix"; \
+	fi; \
+	for p in "$$@"; do \
+		echo "==> installing into $$p"; \
+		$(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
+			PREFIX="$$p" DESTDIR="$(DESTDIR)" \
+			BINDIR="$$p/bin" LIBDIR="$$p/lib" DATADIR="$$p/share" \
+			SYSCONFDIR="$$HOME/.config" SLEELA_INSTALL_ELEVATED=1 || exit 1; \
+	done
 
 # install-system: system-wide install via the dedicated sudo script. The script
 # runs the manifest prompt as the invoking user first, then elevates only for
@@ -214,5 +244,19 @@ uninstall:
 		else echo "System uninstall needs root privileges; install sudo or run this target as root." >&2; exit 1; fi; \
 	fi
 	@echo "Removing tracked SLeeLa files while preserving configuration and untracked data."
-	python3 "$(REPO_ROOT)/install/install-runtime.py" uninstall "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"
+	@if [ -z "$(DESTDIR)" ] && [ "$(PREFIX)" = "/usr/local" ] && [ "$$(id -u)" -ne 0 ]; then \
+		base="$$HOME/.local"; \
+		echo "User-local uninstall: removing from both $$base and $$base/sleela (no PREFIX given)."; \
+		for prefix in "$$base" "$$base/sleela"; do \
+			rt="$$prefix/lib/$(RUNTIME_NAME)"; dt="$$prefix/share/$(RUNTIME_NAME)"; bd="$$prefix/bin"; \
+			if [ -f "$$rt/.sleela-install-manifest.json" ]; then \
+				echo "==> removing install under $$prefix"; \
+				python3 "$(REPO_ROOT)/install/install-runtime.py" uninstall "$$rt" "$$dt" "$$bd" || exit 1; \
+			else \
+				echo "==> no tracked install under $$prefix; skipping"; \
+			fi; \
+		done; \
+	else \
+		python3 "$(REPO_ROOT)/install/install-runtime.py" uninstall "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"; \
+	fi
 	@echo "Configuration under $(CONFIG_DIR) is intentionally preserved; remove it manually if no longer needed."
