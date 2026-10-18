@@ -1,0 +1,6 @@
+#sleela 1.0
+class Syntax10 {
+    void main() {
+        print("syntax 1.0 is the floor; this must run");
+    }
+}

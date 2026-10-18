@@ -1,0 +1,6 @@
+#sleela 0.9
+class Syntax09 {
+    void main() {
+        print("0.9 is older than the 1.0 floor; this must be rejected");
+    }
+}

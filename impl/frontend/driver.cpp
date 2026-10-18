@@ -112,8 +112,26 @@ static fs::path installRootFromExecutable(){
 // only for the sleelvac object). `sleela version` therefore always reports the
 // SLeeLa Language/Runtime, independent of argv[0], launchers, symlinks, or
 // aliases. Both banners carry the same release number.
-static const char* kSleelaVersion="SLeeLa™ Language/Runtime 0.3.29-dev (syntax level 2.1; supported source syntax 1.3-2.1; native C/C++ Core VM)";
-static const char* kSleelvacVersion="Sleelvac™ 0.3.29-dev (SLeeLa compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; JVM-family langin input: Java/Kotlin/Scala/Groovy/Clojure; Nordshrift round-trip (SLeeLa->Nordshrift->back); OS Defender provisioning; SHA-256 execution gate)";
+// The shared release number for both tools.
+static const char* kReleaseVersion="0.3.29-dev";
+// Both banners derive the supported source-syntax range from the single source
+// of truth in version.h (minSupportedSyntax()/maxSupportedSyntax()), so the
+// reported range always matches what the toolchain actually drives.
+static std::string sleelaVersionBanner(){
+    return std::string("SLeeLa\u2122 Language/Runtime ")+kReleaseVersion
+         +" (supported source syntax "+sleela::minSupportedSyntax().str()
+         +" \u2013 "+sleela::maxSupportedSyntax().str()
+         +"; native C/C++ Core VM)";
+}
+static std::string sleelvacVersionBanner(){
+    return std::string("Sleelvac\u2122 ")+kReleaseVersion
+         +" (SLeeLa compiler; compiles source syntax "+sleela::minSupportedSyntax().str()
+         +" \u2013 "+sleela::maxSupportedSyntax().str()
+         +"; executable native math/physics/economics/chemistry/financial modules;"
+          " persistent .sleela Core artifacts; .xclass input; JVM-family langin input:"
+          " Java/Kotlin/Scala/Groovy/Clojure; Nordshrift round-trip"
+          " (SLeeLa->Nordshrift->back); OS Defender provisioning; SHA-256 execution gate)";
+}
 // Compile-time product identity. The sleelvac object is compiled with
 // -DSLEELA_PRODUCT_SLEELVAC; every other build is the runtime (`sleela`).
 #if defined(SLEELA_PRODUCT_SLEELVAC)
@@ -1457,7 +1475,7 @@ int main(int argc,char**argv){
             if(a=="--runtime"||a=="--sleela")      compiler=false;
             else if(a=="--compiler"||a=="--sleelvac") compiler=true;
         }
-        std::cout<<(compiler?kSleelvacVersion:kSleelaVersion)<<"\n";
+        std::cout<<(compiler?sleelvacVersionBanner():sleelaVersionBanner())<<"\n";
         return 0;
     }
     else if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")||isLangInput(cmd)){if(verifyBeforeExecution(fs::current_path()))return 1;rc=runFile(cmd);}

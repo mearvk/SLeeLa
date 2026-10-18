@@ -491,7 +491,11 @@ $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/chemistry/chemistry.cpp -o $@
 $(FINANCIAL_OBJ): subjects/finance/financial.cpp subjects/finance/financial.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/finance/financial.cpp -o $@
-$(BUILD)/%.o: frontend/%.cpp | $(BUILD)
+# version.h carries the supported-syntax range (minSupportedSyntax/
+# maxSupportedSyntax) that several front-end units bake in; list it as a
+# prerequisite so changing the range forces a rebuild rather than leaving stale
+# objects that report the old range.
+$(BUILD)/%.o: frontend/%.cpp frontend/version.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/native_api.o: subjects/native/native_api.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
@@ -591,11 +595,11 @@ $(JAVA_RUNTIME_PROBE_OBJ): ../runtime/java_runtime_probe.c ../runtime/java_runti
 	$(CC) $(CFLAGS) -c $< -o $@
 $(JAVA_RUNTIME_BRIDGE_OBJ): ../runtime/java_runtime_bridge.c ../runtime/java_runtime_bridge.h ../runtime/java_runtime_probe.h | $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
-$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h | $(BUILD)
+$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/version.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 # Same source, compiled with the compiler product identity for the independent
 # sleelvac binary. Keeps driver.o (runtime) untouched.
-$(BUILD)/driver_sleelvac.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h | $(BUILD)
+$(BUILD)/driver_sleelvac.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/version.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -DSLEELA_PRODUCT_SLEELVAC -c $< -o $@
 $(BUILD):
 	mkdir -p $(BUILD)
