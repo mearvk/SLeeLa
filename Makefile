@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-check install-product tutorial-check tests server config route common-rails registry premium-vms clean help
+.PHONY: all uninstall autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-check install-product tutorial-check tests server config route common-rails registry premium-vms clean help
 
 PREFIX ?= /usr/local
 DESTDIR ?=
@@ -95,6 +95,11 @@ install-check:
 # installs (for example PREFIX=$HOME/.local); DESTDIR supports package staging.
 install: core
 	$(MAKE) -C install install PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)"
+
+# Remove files recorded by the conventional installer for this PREFIX.
+# The installer removes only tracked SLeeLa files and preserves configuration.
+uninstall:
+	$(MAKE) -C install uninstall PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)"
 
 # Interactive deployment of the compiled binaries; choose user-local or system-wide.
 install-product: autocheck
