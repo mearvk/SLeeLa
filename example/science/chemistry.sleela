@@ -1,0 +1,60 @@
+/*
+ * example/science/chemistry.sleela
+ * A runnable SLeeLa CHEMISTRY program built on the native `chemistry` subject
+ * library (import chemistry;). Chemistry is an independent compiled subject
+ * library (impl/subjects/chemistry) that requires `import math;` for its
+ * numerical inference kernels.
+ *
+ * Its executable facade exposes these allow-listed calls (see
+ * impl/subjects/chemistry/chemistry_api.cpp):
+ *   ratio(a, b)          dimensionless a / b
+ *   similarity(a, b)     1 - |a-b| / max(|a|,|b|), in [0, 1]
+ *   stochastic(...)      stochastic inference kernels
+ *   inference_level(...) / confidence(...) / uncertainty(...)
+ *
+ * The inputs are standard atomic weights (IUPAC 2021) from the churn dataset
+ * churn/2/data/chemical-elements.txt: H=1.008, He=4.0026, C=12.011, N=14.007,
+ * O=15.999. So ratio(O, C) is the oxygen/carbon mass ratio, and similarity(N, O)
+ * compares two neighboring second-period elements.
+ *
+ * Run:
+ *   SLEELA_SHEET=./SHEET.sheet \
+ *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+ *   ./impl/build/sleela run example/science/chemistry.sleela
+ */
+#sleela 2.1
+import math;
+import chemistry;
+
+class ScienceChemistry {
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa Science — Chemistry (import chemistry;)");
+
+    // Standard atomic weights (u), IUPAC 2021 — churn chemical-elements.txt.
+    double h  = 1.008;
+    double he = 4.0026;
+    double c  = 12.011;
+    double n  = 14.007;
+    double o  = 15.999;
+
+    print("[mass ratios]  ratio(a, b) = a / b");
+    print("  O / C   = " + chemistry.ratio(o, c));
+    print("  C / H   = " + chemistry.ratio(c, h));
+    print("  He / H  = " + chemistry.ratio(he, h));
+
+    print("[similarity]  similarity(a, b) = 1 - |a-b| / max(|a|,|b|)");
+    print("  N vs O  = " + chemistry.similarity(n, o));
+    print("  C vs N  = " + chemistry.similarity(c, n));
+    print("  H vs He = " + chemistry.similarity(h, he));
+
+    banner("Done");
+    print("Chemistry is an independent subject library; it needs import math; for its kernels.");
+  }
+}

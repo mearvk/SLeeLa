@@ -1,0 +1,19 @@
+================================================================
+  SLeeLa Science — Astrophysics (formulas on import math;)
+================================================================
+[radiation]
+  flux at 1 AU from the Sun            = 1361.17 W/m^2
+    (the solar constant, ~1361 W/m^2)
+  wien_peak(Sun, 5772 K)               = 5.02039e-07 m
+    (~502 nm, green-peaked visible light)
+[spectroscopy]  H-alpha rest = 656.3 nm
+  redshift(observed 660 nm, rest)      = 0.00563767
+  observed_wavelength(rest, z)         = 6.6e-07 m
+[orbits & gravity]
+  kepler_period(1 AU, Sun)             = 3.15535e+07 s
+    (~3.156e7 s, i.e. one year)
+  escape_velocity(Earth)               = 11177.9 m/s
+================================================================
+  Done
+================================================================
+Astrophysics builds on Math (pi, tau, sqrt) as the subject library does.

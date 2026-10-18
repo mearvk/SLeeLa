@@ -1,0 +1,19 @@
+================================================================
+  SLeeLa Science — Sociology (formulas on import math;)
+================================================================
+All figures are OBSERVED (BLS / Census). ASSOCIATION != CAUSATION.
+[proportion]
+  labor force as a proportion of population = 0.491537
+[rate]  per 100,000
+  unemployed per 100,000 of the labor force = 4200
+[growth_rate]
+  unemployment rate 3.8 -> 4.2 percent      = 0.105263
+  median household income 80610 -> 83730    = 0.0387049
+[transition_probability]
+  transition_probability(30 of 100)         = 0.3
+[density]  population / land area (persons per km^2)
+  US population density                     = 37.3641
+================================================================
+  Done
+================================================================
+Sociology builds on Math; every input here is a dated, sourced published figure.

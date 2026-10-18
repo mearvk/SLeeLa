@@ -1,0 +1,68 @@
+/*
+ * example/science/math.sleela
+ * A runnable SLeeLa MATH program built on the native `math` subject library
+ * (import math;). It tours the math facade — the same executable vocabulary the
+ * churn models use (churn/2/structures.sleela) — and reports each result.
+ *
+ * The math facade (see impl/subjects/math/math_native.cpp) exposes:
+ *   constants: pi(), e(), tau()
+ *   unary:     abs, sqrt, exp, log, log10, sin, cos, tan, floor, ceil, trunc, sign
+ *   binary:    pow, hypot, min, max, fmod
+ *   ternary:   clamp
+ *
+ * Run (a built sleela binary is required — ./scripts/build-linux.sh):
+ *   SLEELA_SHEET=./SHEET.sheet \
+ *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+ *   ./impl/build/sleela run example/science/math.sleela
+ */
+#sleela 2.1
+import math;
+
+class ScienceMath {
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa Science — Mathematics (import math;)");
+
+    // --- constants ---
+    print("[constants]");
+    print("  pi  = " + math.pi());
+    print("  e   = " + math.e());
+    print("  tau = " + math.tau() + "   (2*pi)");
+
+    // --- unary ---
+    print("[unary]");
+    print("  abs(-12.5)   = " + math.abs(0.0 - 12.5));
+    print("  sqrt(144)    = " + math.sqrt(144.0));
+    print("  exp(1)       = " + math.exp(1.0) + "   (== e)");
+    print("  log(e)       = " + math.log(math.e()));
+    print("  log10(1000)  = " + math.log10(1000.0));
+    print("  sin(pi/2)    = " + math.sin(math.pi() / 2.0));
+    print("  cos(0)       = " + math.cos(0.0));
+    print("  tan(pi/4)    = " + math.tan(math.pi() / 4.0));
+    print("  floor(3.7)   = " + math.floor(3.7));
+    print("  ceil(3.2)    = " + math.ceil(3.2));
+    print("  trunc(-3.7)  = " + math.trunc(0.0 - 3.7));
+    print("  sign(-9)     = " + math.sign(0.0 - 9.0));
+
+    // --- binary ---
+    print("[binary]");
+    print("  pow(2, 8)    = " + math.pow(2.0, 8.0));
+    print("  hypot(3, 4)  = " + math.hypot(3.0, 4.0));
+    print("  min(42, 17)  = " + math.min(42.0, 17.0));
+    print("  max(42, 17)  = " + math.max(42.0, 17.0));
+    print("  fmod(10, 3)  = " + math.fmod(10.0, 3.0));
+
+    // --- ternary ---
+    print("[ternary]");
+    print("  clamp(400, 50, 300) = " + math.clamp(400.0, 50.0, 300.0));
+
+    banner("Done");
+    print("Math is the base subject; physics / astrophysics / sociology all build on it.");
+  }
+}

@@ -5,10 +5,11 @@ and adapt. It now covers three things:
 
 1. **One GUI example per `lib/gui` version line** — the full spread of known UI
    lines, from the 1.0 baseline to the 5.0 military build.
-2. **A full set of science examples** — one per executable BODI discipline
-   (math, physics, chemistry, data-analytics) plus a social-science example and
-   a grand tour, all grounded in the real [`churn/`](../churn) datasets. These
-   live in [`example/science/`](science/).
+2. **A full set of science examples** — runnable SLeeLa programs on the science
+   subject libraries (math, physics, chemistry, astrophysics, sociology) **and**
+   BODI XML projects for every executable runner discipline, all grounded in the
+   real [`churn/`](../churn) datasets. These live in
+   [`example/science/`](science/).
 3. **A worked XLT CPU-model sheet.**
 
 | File | What it is |
@@ -20,7 +21,7 @@ and adapt. It now covers three things:
 | [`gui-military-command-console.sleela`](gui-military-command-console.sleela) | GUI **MILITARY (5.0)** — the hardened military build: metal/blue surface, strong branding, Component-vs-Container taxonomy, icons, a crypto selector, a certificate store, and window key-listeners. |
 | [`run-gui-examples.sh`](run-gui-examples.sh) | Runs the four self-contained GUI-line examples (MUAL→DUAL) in one go. |
 | [`run-gui-military.sh`](run-gui-military.sh) | Runs the military-line example with its one-class-per-file Master Classes. |
-| [`science/`](science/) | Runnable BODI science examples for **every executable discipline** — see [`science/README.md`](science/README.md). |
+| [`science/`](science/) | Science examples for **every discipline** — runnable SLeeLa programs (`*.sleela`) on the subject libraries **and** BODI XML projects. See [`science/README.md`](science/README.md). |
 | [`threadripper-workstation.xlt`](threadripper-workstation.xlt) | An **XLT (`.xlt`) CPU-model sheet** — declaratively authors a CPU, board, tiered memory, capabilities, and a program to run on the assembled machine. |
 
 ---
@@ -79,34 +80,56 @@ military Master Classes, so it has its own wrapper that lists them:
 
 ---
 
-## 2. Science examples — every executable BODI discipline
+## 2. Science examples — SLeeLa programs **and** BODI XML, for every discipline
 
-[`example/science/`](science/) contains one deterministic BODI XML project per
-executable science discipline, grounded in the real, sourced
-[`churn/`](../churn) datasets, each with a recorded `*.expected.txt` witness:
+[`example/science/`](science/) holds two kinds of science example, both grounded
+in the real, sourced [`churn/`](../churn) datasets, each with a recorded
+expected-output evidence file:
+
+### SLeeLa programs (`*.sleela`) — on the science subject libraries
+
+Runnable `.sleela` programs on the science subject libraries
+(`import math;`, `import chemistry;`, …): **Mathematics, Physics, Chemistry,
+Astrophysics, Sociology**.
+
+- [`math.sleela`](science/math.sleela) — the full `math` facade.
+- [`physics.sleela`](science/physics.sleela) — mechanics, gravitation, special
+  relativity, electricity, waves (CODATA constants + Earth data).
+- [`chemistry.sleela`](science/chemistry.sleela) — the native `chemistry` facade
+  (`ratio`, `similarity`) over IUPAC atomic weights.
+- [`astrophysics.sleela`](science/astrophysics.sleela) — flux, redshift, Wien
+  peak, Kepler period, escape velocity (solar constant ≈ 1361 W/m²).
+- [`sociology.sleela`](science/sociology.sleela) — proportion, rate, growth
+  rate, transition probability over real US labor/population figures.
+
+```sh
+./example/science/run-science-sleela.sh    # run all five
+# or: cd example/science && make sleela-check
+```
+
+### BODI XML projects (`*.xml`) — on the BODI XML runner
+
+One deterministic BODI XML project per executable runner discipline:
 
 - [`math.xml`](science/math.xml) — every math op (`abs`, `sqrt`, `exp`, `log`,
   `log10`, `sin`, `cos`, `tan`, `pow`, `hypot`, `min`, `max`, `clamp`).
 - [`physics.xml`](science/physics.xml) — kinematics, dynamics, gravitation,
-  special relativity, electricity, waves, neutrino oscillation; inputs from the
-  CODATA physics constants and the Solar System datasets.
-- [`chemistry.xml`](science/chemistry.xml) — `ratio` and `similarity` over
-  IUPAC standard atomic weights.
+  special relativity, electricity, waves, neutrino oscillation.
+- [`chemistry.xml`](science/chemistry.xml) — `ratio` and `similarity`.
 - [`data-analytics.xml`](science/data-analytics.xml) — `sum`/`mean`/`min`/`max`/
   `variance`/`stddev`/`correlation` of planetary distance vs. orbital period.
-- [`social.xml`](science/social.xml) — descriptive statistics over real US
-  labor figures plus population density; the social face of the runner.
-- [`all-disciplines.xml`](science/all-disciplines.xml) — a grand tour across all
-  four executable disciplines.
+- [`social.xml`](science/social.xml) — descriptive statistics over US labor
+  figures plus population density; the social face of the runner.
+- [`all-disciplines.xml`](science/all-disciplines.xml) — a grand tour.
 
 ```sh
 cd api/bodi && make                # builds bodi-xml-runner
 cd ../../example/science
-make                               # run every example, print witnesses
-make check                         # run every example and diff vs *.expected.txt
+make                               # run every XML example, print witnesses
+make check-all                     # check BOTH the XML and .sleela examples
 ```
 
-See [`science/README.md`](science/README.md) for the full table and data
+See [`science/README.md`](science/README.md) for the full tables and data
 provenance.
 
 ---
