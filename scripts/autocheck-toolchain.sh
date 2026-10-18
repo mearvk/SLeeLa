@@ -34,9 +34,15 @@ else
   echo "WARN: python3 not found; skipped manifest JSON parse"
 fi
 echo "== Search: stale verifier-discovery diagnostics and hard-coded paths =="
-if grep -R -n --include='Makefile' --include='*.mk' --include='*.cpp' --include='*.h' --include='*.py'   -E 'searched upward from|verification tool not found|SLEELA_HOME.*security/sha256-manifest' impl tools . 2>/dev/null; then
-  echo "INFO: matches above; review for stale path assumptions"
+# Search the repository once (not overlapping impl/tools/. roots), and only flag
+# obsolete discovery wording or verifier diagnostics that embed fixed paths.
+# A generic runtime message such as "verification tool not found: <computed path>"
+# is valid and must not be treated as a stale hard-coded path.
+if grep -R -n --exclude-dir=.git --exclude-dir=build \
+    --include='Makefile' --include='*.mk' --include='*.cpp' --include='*.h' --include='*.py' \
+    -E 'searched upward from|verification tool not found: (/home/|/usr/local/|/path/to/)|SLEELA_HOME.*security/sha256-manifest' . 2>/dev/null; then
+  echo "WARN: matches above may contain obsolete verifier-path assumptions"
 else
-  echo "INFO: no matching stale verifier diagnostics found"
+  echo "PASS: no stale verifier diagnostics or hard-coded verifier paths found"
 fi
 exit "$fail"
