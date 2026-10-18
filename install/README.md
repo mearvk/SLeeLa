@@ -90,6 +90,14 @@ reason to elevate:
   `install-all` and `uninstall-all` resolve the invoking user's home via
   `$SUDO_USER` when elevated, so the `$HOME/.local` layouts are found whether
   you run them as the user or under `sudo`.
+
+  If a location already holds an **untracked** SLeeLa install (binaries but no
+  `.sleela-install-manifest.json` — e.g. one left by `quick-safe-install.sh`),
+  a plain per-prefix install refuses to clobber it. `install-all` passes
+  `SLEELA_INSTALL_FORCE=1` so it **adopts** such an install — overwrites the
+  binaries and starts tracking it — instead of aborting. You can set
+  `SLEELA_INSTALL_FORCE=1` yourself on a single-prefix `install`/`do-install`
+  to get the same adopt-and-overwrite behavior.
 - **`make uninstall-all`** is the mirror of `install-all`: it removes the
   tracked SLeeLa install from **every** standard location — the user-local dual
   layout (`$HOME/.local` and `$HOME/.local/sleela`), the `/usr/local` system

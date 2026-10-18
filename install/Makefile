@@ -35,6 +35,12 @@ BACKUP_ROOT ?= $(DESTDIR)$(LIBDIR)/$(RUNTIME_NAME)-backups
 # package builds). When unset and a terminal is attached, the user is asked.
 SLEELA_MANIFEST_CONSENT ?=
 
+# When set (e.g. SLEELA_INSTALL_FORCE=1), do-install adopts and overwrites an
+# existing *untracked* SLeeLa install under the target prefix (one with binaries
+# but no .sleela-install-manifest.json, e.g. from quick-safe-install) instead of
+# refusing. install-all sets this so it can refresh every location in one run.
+SLEELA_INSTALL_FORCE ?=
+
 .PHONY: all install install-all install-local install-system do-install refresh-extra-bins install-check install-help uninstall uninstall-all remove-extra-bins manifest-prompt
 
 # Extra standard bin directories that may hold a SLeeLa command from a prior or
@@ -217,7 +223,7 @@ install-all:
 		$$RUNAS $(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 			PREFIX="$$p" DESTDIR="" \
 			BINDIR="$$p/bin" LIBDIR="$$p/lib" DATADIR="$$p/share" \
-			SYSCONFDIR="$$uh/.config" SLEELA_INSTALL_ELEVATED=1 || exit 1; \
+			SYSCONFDIR="$$uh/.config" SLEELA_INSTALL_ELEVATED=1 SLEELA_INSTALL_FORCE=1 || exit 1; \
 	done; \
 	echo; \
 	echo "-- (2/3) system prefix /usr/local --"; \
@@ -225,7 +231,7 @@ install-all:
 	$$SUDO $(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 		PREFIX=/usr/local DESTDIR="" BINDIR=/usr/local/bin \
 		LIBDIR=/usr/local/lib DATADIR=/usr/local/share SYSCONFDIR=/etc \
-		SLEELA_INSTALL_ELEVATED=1 || exit 1; \
+		SLEELA_INSTALL_ELEVATED=1 SLEELA_INSTALL_FORCE=1 || exit 1; \
 	echo; \
 	echo "-- (3/3) refresh stray binaries in $(EXTRA_BINDIRS) --"; \
 	$(MAKE) --no-print-directory -C "$(CURDIR)" refresh-extra-bins || exit 1; \
@@ -319,7 +325,13 @@ do-install:
 	@test -x "$(REPO_ROOT)/impl/build/sleela" || { echo "Missing impl/build/sleela; run make -C impl all first." >&2; exit 1; }
 	@test -x "$(REPO_ROOT)/impl/build/sleelvac" || { echo "Missing impl/build/sleelvac; run make -C impl all first." >&2; exit 1; }
 	@test -x "$(REPO_ROOT)/impl/build/nordshrift" || { echo "Missing impl/build/nordshrift; run make -C impl all first." >&2; exit 1; }
-	@if { [ -e "$(DESTDIR)$(BINDIR)/sleela" ] || [ -e "$(DESTDIR)$(BINDIR)/sleelvac" ] || [ -e "$(DESTDIR)$(BINDIR)/nordshrift" ]; } && [ ! -f "$(RUNTIME_DIR)/.sleela-install-manifest.json" ]; then echo "Refusing to overwrite existing command(s) not tracked as a SLeeLa install. Inspect them or choose another PREFIX." >&2; exit 1; fi
+	@if { [ -e "$(DESTDIR)$(BINDIR)/sleela" ] || [ -e "$(DESTDIR)$(BINDIR)/sleelvac" ] || [ -e "$(DESTDIR)$(BINDIR)/nordshrift" ]; } && [ ! -f "$(RUNTIME_DIR)/.sleela-install-manifest.json" ]; then \
+		if [ -n "$(SLEELA_INSTALL_FORCE)" ]; then \
+			echo "Note: adopting an existing untracked SLeeLa install under $(PREFIX) (SLEELA_INSTALL_FORCE set); it will be overwritten and tracked from now on."; \
+		else \
+			echo "Refusing to overwrite existing command(s) not tracked as a SLeeLa install. Inspect them, choose another PREFIX, or re-run with SLEELA_INSTALL_FORCE=1 to adopt and overwrite them (install-all does this automatically)." >&2; exit 1; \
+		fi; \
+	fi
 	@echo "Installing SLeeLa to prefix $(PREFIX) (DESTDIR=$(DESTDIR))"
 	@if [ -z "$(DESTDIR)" ]; then \
 		python3 "$(REPO_ROOT)/install/install-runtime.py" backup "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)" "$(BACKUP_ROOT)"; \
