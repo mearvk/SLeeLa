@@ -7260,11 +7260,11 @@
     },
     {
       "path": "install/quick-safe-install.ps1",
-      "sha256": "f792c3044186d4370e5574fc6c293af76dd49c3eeff236aa1c685766f5c30b96"
+      "sha256": "3d05f11dcd8bcccbba6195bc63d9f7d7828231ff7e92af333e36ecbe909c6831"
     },
     {
       "path": "install/quick-safe-install.sh",
-      "sha256": "e8d40902a51e9ee2cd1b2b7d1726fdc92b7543de01d6a3229c79c3750ca544b7"
+      "sha256": "c75fda8bf126fc28248cbfbb3d0e39ae797927fa7a761ec4a1d484797abe1ac5"
     },
     {
       "path": "install/system-install.sh",
