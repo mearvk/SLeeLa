@@ -47,21 +47,16 @@ export SLEELA_SHEET="${SLEELA_SHEET:-$REPO_ROOT/SHEET.sheet}"
 export SLEELA_SHA256_MANIFEST="${SLEELA_SHA256_MANIFEST:-$REPO_ROOT/security/sha256-manifest.json}"
 
 PROGRAM="example/gui-military-command-console.sleela"
-M="lib/gui/version-military"
-DEPS="$M/SLPackage.sleela \
-$M/SLGuiSettings.sleela \
-$M/SLGuiBranding.sleela \
-$M/SLGuiKind.sleela \
-$M/SLGuiIcon.sleela \
-$M/SLGuiCryptoSelector.sleela \
-$M/SLGuiCertificateStore.sleela \
-$M/SLGuiWindowState.sleela"
 
 echo "run-gui-military: sleela=$SLEELA"
 echo "run-gui-military: SLEELA_SHEET=$SLEELA_SHEET"
 echo "run-gui-military: SLEELA_SHA256_MANIFEST=$SLEELA_SHA256_MANIFEST"
-echo "run-gui-military: running $PROGRAM + 8 military-line classes ..."
+echo "run-gui-military: running $PROGRAM ..."
 echo
 
+# The program's `import gui.version-military;` already resolves the military-line
+# Master Classes (SLPackage, SLGuiSettings, ...) through the library index, so we
+# must NOT also pass those files on the command line. Doing so defined every
+# class twice and failed with "duplicate static field 'SLPackage::FEATURE_LEVEL'".
 # shellcheck disable=SC2086
-exec "$SLEELA" run "$PROGRAM" $DEPS "$@"
+exec "$SLEELA" run "$PROGRAM" "$@"

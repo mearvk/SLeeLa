@@ -107,7 +107,7 @@ static int validate_loaded_vm(const SLVM* vm, char* error, size_t error_size) {
     }
     for (int i=0;i<vm->codelen;i++) {
         const SLInstr* in=&vm->code[i];
-        if ((unsigned)in->op > (unsigned)OP_BEST_CLOSE) { abi_error(error,error_size,"unknown opcode in artifact"); return 0; }
+        if ((unsigned)in->op >= (unsigned)OP__COUNT) { abi_error(error,error_size,"unknown opcode in artifact"); return 0; }
         switch (in->op) {
             case OP_CONST:
                 if (in->a < 0 || in->a >= vm->nconst) { abi_error(error,error_size,"constant index outside constant table"); return 0; }

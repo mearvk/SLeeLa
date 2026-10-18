@@ -161,6 +161,11 @@ typedef enum {
     OP_VM_SELECT      /* pops vmNumber; selects+boots a registered VM version; pushes status */
     ,
     OP_MODIUM_SCAN    /* pops vmNumber; scans that VM version's files for resolution; pushes status */
+    ,
+    /* Sentinel: one past the last real opcode. Artifact validation uses this so
+     * every defined opcode is accepted and adding a new opcode above never
+     * requires updating the validator's upper bound again. KEEP LAST. */
+    OP__COUNT
 } SLOp;
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */

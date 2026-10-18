@@ -20,7 +20,7 @@ and adapt. It now covers three things:
 | [`gui-dual-media-studio.sleela`](gui-dual-media-studio.sleela) | GUI **DUAL (4.0)** — the rich component set: audio recorder, video canvas, URL bar, layout, graphics, all codec-aware. |
 | [`gui-military-command-console.sleela`](gui-military-command-console.sleela) | GUI **MILITARY (5.0)** — the hardened military build: metal/blue surface, strong branding, Component-vs-Container taxonomy, icons, a crypto selector, a certificate store, and window key-listeners. |
 | [`run-gui-examples.sh`](run-gui-examples.sh) | Runs the four self-contained GUI-line examples (MUAL→DUAL) in one go. |
-| [`run-gui-military.sh`](run-gui-military.sh) | Runs the military-line example with its one-class-per-file Master Classes. |
+| [`run-gui-military.sh`](run-gui-military.sh) | Runs the military-line example (its `import gui.version-military;` pulls in the Master Classes — no dep files needed). |
 | [`science/`](science/) | Science examples for **every discipline** — runnable SLeeLa programs (`*.sleela`) on the subject libraries **and** BODI XML projects. See [`science/README.md`](science/README.md). |
 | [`threadripper-workstation.xlt`](threadripper-workstation.xlt) | An **XLT (`.xlt`) CPU-model sheet** — declaratively authors a CPU, board, tiered memory, capabilities, and a program to run on the assembled machine. |
 
@@ -63,20 +63,27 @@ export SLEELA_SHA256_MANIFEST="$PWD/security/sha256-manifest.json"
 > `SLEELA_SHA256_MANIFEST` points at the trusted manifest, and it also needs
 > `SLEELA_SHEET`. Both wrappers set these for you.
 
-The MILITARY (5.0) example is modeled directly on the one-class-per-file
-military Master Classes, so it has its own wrapper that lists them:
+The MILITARY (5.0) example uses the military-line Master Classes
+(`SLPackage`, `SLGuiSettings`, …) via its `import gui.version-military;` — the
+import resolves them through the library index, so you do **not** pass those
+files on the command line. Run it with its wrapper, or directly:
 
 ```sh
 ./example/run-gui-military.sh
+# or, equivalently:
+./impl/build/sleela run example/gui-military-command-console.sleela
 ```
 
+> Do NOT also pass `lib/gui/version-military/*.sleela` on the command line: the
+> import already defines those classes, so listing them again defined every
+> class twice and failed with `duplicate static field 'SLPackage::FEATURE_LEVEL'`.
+> The wrapper relies on the import alone.
+
 > Toolchain note: the self-contained MUAL→DUAL examples use an inline model +
-> `main`, in the style of [`lib/gui/version-mual/gui-demo.sleela`](../lib/gui/version-mual/gui-demo.sleela),
-> so they run faithfully on the toolchain as it is today. The MILITARY example
-> follows the same compiler caveats documented for the military line (a
-> `String` argument passed to a null-checking method does not thread through,
-> and a `static final` constant accessed via an instance is rejected), so it
-> uses the constants' literal values and sets string fields directly.
+> `main`, in the style of [`lib/gui/version-mual/gui-demo.sleela`](../lib/gui/version-mual/gui-demo.sleela).
+> The MILITARY example instead pulls its classes in through
+> `import gui.version-military;`. All run faithfully on the toolchain as it is
+> today.
 
 ---
 
