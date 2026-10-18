@@ -67,7 +67,9 @@ make install PREFIX="$HOME/.local"         # user-local; stays as current user
 sudo make install                         # optional explicit system install
 make install DESTDIR="$PWD/package-root"  # staged package installation
 make install-check                        # verify installer entry points
-make -C install uninstall                 # remove installed files, preserve config
+make uninstall                            # remove tracked executables/runtime; preserve config
+make uninstall PREFIX="$HOME/.local"       # remove a tracked user-local install
+make -C install uninstall                  # lower-level equivalent
 ```
 
 Privilege handling is scope-aware: when the destinations are system locations
@@ -86,4 +88,4 @@ user-local install does not need root privileges. An existing configuration
 is never overwritten. Use `BINDIR`, `LIBDIR`, `DATADIR`, and `SYSCONFDIR` to
 override the corresponding destinations. On Linux, `/usr/local/bin` is preferred to
 `/usr/bin` for a source installation so system package-manager files are not
-overwritten. The uninstall target deliberately preserves configuration.
+overwritten. The uninstall target removes the three tracked executables (`sleela`, `sleelvac`, and `nordshrift`) and the tracked runtime/shared-data files for the selected prefix. It preserves configuration and refuses to remove untracked same-named binaries. Use the same `PREFIX`, `BINDIR`, `LIBDIR`, `DATADIR`, `SYSCONFDIR`, and `DESTDIR` values used during installation.
