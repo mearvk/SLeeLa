@@ -13,7 +13,16 @@
 #include <utility>
 #include <fstream>
 namespace sleela {
-static void lowerNativeModules(Program&prog){chemistry::lowerProgram(prog);financial::lowerProgram(prog);auto saved=prog.imports;prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"chemistry"),prog.imports.end());prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"financial"),prog.imports.end());native::lowerProgram(prog);prog.imports=std::move(saved);}
+static void lowerNativeModules(Program&prog){chemistry::lowerProgram(prog);financial::lowerProgram(prog);auto saved=prog.imports;
+    // native::lowerProgram validates every remaining import against its own
+    // fixed set of quantitative subject modules. chemistry/financial have their
+    // own lowering above, and library imports (e.g. a versioned source line such
+    // as `gui.version-military`, or any /lib package) are resolved by the library
+    // pipeline -- not the native dispatcher. Hand native::lowerProgram only the
+    // imports it actually owns so a valid library import is not misreported as an
+    // "unknown native module", then restore the full import list.
+    prog.imports.erase(std::remove_if(prog.imports.begin(),prog.imports.end(),[](const std::string&m){return !native::isModuleAvailable(m);}),prog.imports.end());
+    native::lowerProgram(prog);prog.imports=std::move(saved);}
 int compileToArtifact(Program&prog,const std::string&outputPath,const catalog::Catalog*cat,const SyntaxVersion&syntax){
     if(outputPath.empty()) throw std::runtime_error("artifact output path must not be empty");
     lowerNativeModules(prog);

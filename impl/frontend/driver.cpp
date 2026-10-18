@@ -452,7 +452,16 @@ static int nativeCmd(int argc,char**argv){
     reportMemoryManager();
     return closeRc==0?0:1;
 }
-static void lowerNativeModules(sleela::Program& prog){sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);auto saved=prog.imports;prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"chemistry"),prog.imports.end());prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"financial"),prog.imports.end());sleela::native::lowerProgram(prog);prog.imports=std::move(saved);}
+static void lowerNativeModules(sleela::Program& prog){sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);auto saved=prog.imports;
+    // native::lowerProgram validates every remaining import against its own fixed
+    // set of quantitative subject modules. chemistry/financial have their own
+    // lowering above, and library imports (e.g. a versioned source line such as
+    // `gui.version-military`, or any /lib package) are resolved by the library
+    // pipeline -- not the native dispatcher. Hand native::lowerProgram only the
+    // imports it actually owns so a valid library import is not misreported as an
+    // "unknown native module", then restore the full import list.
+    prog.imports.erase(std::remove_if(prog.imports.begin(),prog.imports.end(),[](const std::string&m){return !sleela::native::isModuleAvailable(m);}),prog.imports.end());
+    sleela::native::lowerProgram(prog);prog.imports=std::move(saved);}
 static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const sleela::SyntaxVersion& syntax={1,3}){
     SLVM*vm=slvm_new();if(!vm){std::cerr<<"sleelvac: unable to allocate Sleela VM\n";return 1;}
     slvm_set_audio_native_renderer(vm,sleela_audio_native_render_bridge,nullptr);
