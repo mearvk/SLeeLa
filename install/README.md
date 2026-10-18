@@ -87,6 +87,17 @@ reason to elevate:
      stale. It never *creates* a new stray command — it only overwrites one that
      already exists. Override the set with `EXTRA_BINDIRS="/usr/bin /opt/bin"`.
 
+  `install-all` and `uninstall-all` resolve the invoking user's home via
+  `$SUDO_USER` when elevated, so the `$HOME/.local` layouts are found whether
+  you run them as the user or under `sudo`.
+- **`make uninstall-all`** is the mirror of `install-all`: it removes the
+  tracked SLeeLa install from **every** standard location — the user-local dual
+  layout (`$HOME/.local` and `$HOME/.local/sleela`), the `/usr/local` system
+  prefix, and any stray binaries in `EXTRA_BINDIRS` — skipping any location that
+  has no tracked install. Prefer it over plain `uninstall` when SLeeLa is
+  installed in more than one place. (Plain `make uninstall` removes a single
+  prefix only, which is why it can leave copies behind in other locations.)
+
 ### Base-code integrity prompt on every install
 
 Before any install variant copies files, it offers to **(re)generate and verify

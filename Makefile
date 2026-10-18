@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all uninstall autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-local install-system install-check install-product tutorial-check tests server config route common-rails registry premium-vms clean help
+.PHONY: all uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-all install-local install-system install-check install-product tutorial-check tests server config route common-rails registry premium-vms clean help
 
 SLEELA_MANIFEST_CONSENT ?=
 
@@ -112,10 +112,19 @@ install-system: core
 	$(MAKE) -C install install-system PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" \
 		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)"
 
+# Refresh EVERY standard location in one command: user-local (both layouts),
+# /usr/local, and any stray binaries in EXTRA_BINDIRS (default /usr/bin).
+install-all: core
+	$(MAKE) -C install install-all SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)"
+
 # Remove files recorded by the conventional installer for this PREFIX.
 # The installer removes only tracked SLeeLa files and preserves configuration.
 uninstall:
 	$(MAKE) -C install uninstall PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)"
+
+# Remove SLeeLa from EVERY standard location (mirror of install-all).
+uninstall-all:
+	$(MAKE) -C install uninstall-all
 
 # Interactive deployment of the compiled binaries; choose user-local or system-wide.
 install-product: autocheck

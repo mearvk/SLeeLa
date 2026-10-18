@@ -14,6 +14,11 @@ ifeq ($(origin SYSCONFDIR),undefined)
     SYSCONFDIR := $(HOME)/.config
   endif
 endif
+# The invoking user's home, resolved correctly even under sudo (where $HOME is
+# root's). install-all / uninstall-all use this so the user-local layouts under
+# ~/.local are always found, whether the target is run as the user or elevated.
+USER_HOME := $(shell if [ "$$(id -u)" -eq 0 ] && [ -n "$$SUDO_USER" ]; then getent passwd "$$SUDO_USER" | cut -d: -f6; else printf '%s' "$$HOME"; fi)
+
 RUNTIME_NAME := sleela
 RUNTIME_DIR := $(DESTDIR)$(LIBDIR)/$(RUNTIME_NAME)
 DATA_DIR := $(DESTDIR)$(DATADIR)/$(RUNTIME_NAME)
@@ -30,7 +35,7 @@ BACKUP_ROOT ?= $(DESTDIR)$(LIBDIR)/$(RUNTIME_NAME)-backups
 # package builds). When unset and a terminal is attached, the user is asked.
 SLEELA_MANIFEST_CONSENT ?=
 
-.PHONY: all install install-all install-local install-system do-install refresh-extra-bins install-check install-help uninstall manifest-prompt
+.PHONY: all install install-all install-local install-system do-install refresh-extra-bins install-check install-help uninstall uninstall-all remove-extra-bins manifest-prompt
 
 # Extra standard bin directories that may hold a SLeeLa command from a prior or
 # packaged install but are not a prefix this Makefile installs a full runtime
@@ -47,7 +52,8 @@ install-help:
 	@echo "  make -C install install        [PREFIX=... DESTDIR=...]  Scope-aware: local prefix stays local, system prefix elevates"
 	@echo "  make -C install install-all                             Refresh EVERY location: user-local (both layouts) +"
 	@echo "                                                          /usr/local + any present EXTRA_BINDIRS (default /usr/bin)"
-	@echo "  make -C install uninstall      [PREFIX=/usr/local]"
+	@echo "  make -C install uninstall      [PREFIX=/usr/local]      Remove one tracked install (single prefix)"
+	@echo "  make -C install uninstall-all                           Remove from EVERY location (mirror of install-all)"
 	@echo "  BINDIR, LIBDIR, DATADIR, SYSCONFDIR, EXTRA_BINDIRS may be overridden."
 	@echo
 	@echo "Every install variant first offers to (re)generate and verify the base"
@@ -199,23 +205,88 @@ install-system:
 #      EXTRA_BINDIRS (e.g. /usr/bin), so none are left stale.
 # Directories are created on first install. No environment variables required.
 install-all:
-	@if [ "$$(id -u)" -eq 0 ]; then \
-		echo "Run 'make install-all' as your normal user; it invokes sudo itself for system paths." >&2; exit 1; fi
-	@echo "== install-all: refreshing every standard SLeeLa location =="
-	@echo
-	@echo "-- (1/3) user-local layouts ($$HOME/.local and $$HOME/.local/sleela) --"
-	@$(MAKE) --no-print-directory -C "$(CURDIR)" install-local \
-		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)" || exit 1
-	@echo
-	@echo "-- (2/3) system prefix /usr/local (sudo for system paths only) --"
-	@$(MAKE) --no-print-directory -C "$(CURDIR)" install-system \
-		PREFIX=/usr/local SLEELA_MANIFEST_CONSENT=skip || exit 1
-	@echo
-	@echo "-- (3/3) refresh stray binaries in $(EXTRA_BINDIRS) --"
-	@$(MAKE) --no-print-directory -C "$(CURDIR)" refresh-extra-bins || exit 1
-	@echo
-	@echo "install-all complete. Updated user-local, /usr/local, and any present $(EXTRA_BINDIRS) copies."
-	@echo "Tip: run ../scripts/which-sleela.sh to confirm which 'sleela' your PATH resolves."
+	@uh="$(USER_HOME)"; \
+	if [ -z "$$uh" ]; then echo "Could not resolve the user's home directory." >&2; exit 1; fi; \
+	echo "== install-all: refreshing every standard SLeeLa location =="; \
+	echo "   user home: $$uh (root=$$( [ "$$(id -u)" -eq 0 ] && echo yes || echo no ))"; \
+	echo; \
+	echo "-- (1/3) user-local layouts $$uh/.local and $$uh/.local/sleela --"; \
+	for p in "$$uh/.local" "$$uh/.local/sleela"; do \
+		echo "==> installing into $$p"; \
+		if [ "$$(id -u)" -eq 0 ] && [ -n "$$SUDO_USER" ]; then RUNAS="sudo -u $$SUDO_USER"; else RUNAS=""; fi; \
+		$$RUNAS $(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
+			PREFIX="$$p" DESTDIR="" \
+			BINDIR="$$p/bin" LIBDIR="$$p/lib" DATADIR="$$p/share" \
+			SYSCONFDIR="$$uh/.config" SLEELA_INSTALL_ELEVATED=1 || exit 1; \
+	done; \
+	echo; \
+	echo "-- (2/3) system prefix /usr/local --"; \
+	if [ "$$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo"; fi; \
+	$$SUDO $(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
+		PREFIX=/usr/local DESTDIR="" BINDIR=/usr/local/bin \
+		LIBDIR=/usr/local/lib DATADIR=/usr/local/share SYSCONFDIR=/etc \
+		SLEELA_INSTALL_ELEVATED=1 || exit 1; \
+	echo; \
+	echo "-- (3/3) refresh stray binaries in $(EXTRA_BINDIRS) --"; \
+	$(MAKE) --no-print-directory -C "$(CURDIR)" refresh-extra-bins || exit 1; \
+	echo; \
+	echo "install-all complete. Updated user-local (both layouts), /usr/local, and any present $(EXTRA_BINDIRS) copies."; \
+	echo "Tip: run ../scripts/which-sleela.sh to confirm which 'sleela' your PATH resolves."
+
+# uninstall-all: the mirror of install-all. Removes the tracked SLeeLa install
+# from EVERY standard location -- the user-local dual layout ($HOME/.local and
+# $HOME/.local/sleela), the /usr/local system prefix, and any stray binaries in
+# EXTRA_BINDIRS -- regardless of whether it is run as the user or under sudo
+# (the user's home is resolved via SUDO_USER when elevated). Each location is
+# skipped cleanly if it has no tracked install.
+uninstall-all:
+	@uh="$(USER_HOME)"; \
+	if [ -z "$$uh" ]; then echo "Could not resolve the user's home directory." >&2; exit 1; fi; \
+	echo "== uninstall-all: removing SLeeLa from every standard location =="; \
+	echo "   user home: $$uh"; \
+	echo; \
+	echo "-- user-local layouts --"; \
+	for p in "$$uh/.local" "$$uh/.local/sleela"; do \
+		rt="$$p/lib/$(RUNTIME_NAME)"; dt="$$p/share/$(RUNTIME_NAME)"; bd="$$p/bin"; \
+		if [ -f "$$rt/.sleela-install-manifest.json" ]; then \
+			echo "==> removing install under $$p"; \
+			if [ "$$(id -u)" -eq 0 ] && [ -n "$$SUDO_USER" ]; then RUNAS="sudo -u $$SUDO_USER"; else RUNAS=""; fi; \
+			$$RUNAS python3 "$(REPO_ROOT)/install/install-runtime.py" uninstall "$$rt" "$$dt" "$$bd" || exit 1; \
+		else \
+			echo "==> no tracked install under $$p; skipping"; \
+		fi; \
+	done; \
+	echo; \
+	echo "-- /usr/local system prefix --"; \
+	rt=/usr/local/lib/$(RUNTIME_NAME); dt=/usr/local/share/$(RUNTIME_NAME); bd=/usr/local/bin; \
+	if [ -f "$$rt/.sleela-install-manifest.json" ]; then \
+		if [ "$$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo"; fi; \
+		echo "==> removing install under /usr/local"; \
+		$$SUDO python3 "$(REPO_ROOT)/install/install-runtime.py" uninstall "$$rt" "$$dt" "$$bd" || exit 1; \
+	else \
+		echo "==> no tracked install under /usr/local; skipping"; \
+	fi; \
+	echo; \
+	echo "-- stray binaries in $(EXTRA_BINDIRS) --"; \
+	$(MAKE) --no-print-directory -C "$(CURDIR)" remove-extra-bins || exit 1; \
+	echo; \
+	echo "uninstall-all complete. Configuration dirs are preserved; remove them manually if desired."
+
+# remove-extra-bins: delete sleela/sleelvac/nordshrift from EXTRA_BINDIRS when
+# present. These are stray commands with no tracked runtime tree, so they are
+# removed directly (with sudo for system-owned dirs). Mirrors refresh-extra-bins.
+remove-extra-bins:
+	@for d in $(EXTRA_BINDIRS); do \
+		for p in sleela sleelvac nordshrift; do \
+			if [ -e "$$d/$$p" ]; then \
+				if [ "$$(id -u)" -eq 0 ] || [ -w "$$d" ]; then SUDO=""; else SUDO="sudo"; fi; \
+				echo "==> removing $$d/$$p"; \
+				$$SUDO rm -f "$$d/$$p" || exit 1; \
+			else \
+				echo "==> $$d/$$p not present; nothing to remove"; \
+			fi; \
+		done; \
+	done
 
 # refresh-extra-bins: overwrite sleela/sleelvac/nordshrift in EXTRA_BINDIRS, but
 # ONLY where that command already exists (never create a new stray command).
