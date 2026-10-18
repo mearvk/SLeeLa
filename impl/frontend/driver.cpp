@@ -1029,9 +1029,23 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
             bool hasPreferredMatch=false;
             for(const auto& symbol:index.symbols())
                 if(symbol.name==name && underPreferredRoot(symbol)) hasPreferredMatch=true;
+            // Generated JDK API documentation contains .sleela envelopes whose
+            // class names duplicate the actual library classes (for example,
+            // java/early_access/jdk28/docs/api/.../String.sleela vs
+            // java/java/lang/String.sleela). Prefer a real source unit whenever
+            // one exists; only consider docs/api envelopes as a last resort.
+            bool hasNonDocumentationMatch=false;
             for(const auto& symbol:index.symbols()){
                 if(symbol.name!=name) continue;
                 if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
+                if(symbol.path.find("/docs/api/")==std::string::npos)
+                    hasNonDocumentationMatch=true;
+            }
+            for(const auto& symbol:index.symbols()){
+                if(symbol.name!=name) continue;
+                if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
+                if(hasNonDocumentationMatch &&
+                   symbol.path.find("/docs/api/")!=std::string::npos) continue;
                 if(match && match->path!=symbol.path){
                     std::cerr<<"sleelvac: ambiguous library symbol '"<<name<<"' in /lib ("
                              <<match->path<<" and "<<symbol.path<<"); add a versioned import such as 'import gui.version-military;' to select the intended library line.\n";
