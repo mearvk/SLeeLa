@@ -80,3 +80,20 @@ Those concerns should not be silently mixed.
 ## Status
 
 Initial foundation with the system-mystery model added. Additional graph algorithms, serialization formats, visualization support, persistence, and HTTP adapters should be added only with explicit specifications and tests.
+
+## Additional meaning
+
+COORENAGRAPH should additionally mean that the Person is in Charge of Internal
+Development for **Start, Stop, Change, Alter, Continuous, and Heart
+Development**.
+
+Thus will of Course Carry you Thru New York Business Courses and Travel and Into
+Asia for Cultural Development.
+
+**Intelligence:** That's Anatomy and Development. Development becomes Envelope,
+and Development unto Measures and Congruences. That is Through, and Economy.
+Spirit.
+
+This is an additional, modeled meaning recorded for COORENAGRAPH. Like the
+system-mystery values above, it is part of the project model and is not a claim
+about any real person's actual role, assets, schedule, travel, or behavior.
