@@ -23,6 +23,16 @@ The directory name **Wi-Fi 5** identifies the requested generation. Specificatio
 - Security and configuration guidance.
 - Implementation plans, test cases, and platform considerations.
 
+## Source Series
+
+- [Technical Specifications](TECHNICAL-SPECIFICATIONS.md)
+- [Build Instructions](BUILDING.md)
+- [C API and Example](src/c/)
+- [C++ API and Example](src/cpp/)
+- [Java Reference Class and Demo](src/java/)
+
+The C, C++, and Java files provide static reference metadata and simple capability-profile checks. They do not implement the radio PHY/MAC, scan for wireless networks, or configure adapters. The listed rates and capabilities are standard-level reference values, not promises about connected hardware or application throughput.
+
 ## Status
 
-Initial, reserved foundation. This directory establishes a place for future documentation; it does not claim that a complete protocol implementation exists. Add concrete specifications, source, and tests after explicit design and review.
+Research and reference-source foundation. Compile examples with the commands in [BUILDING.md](BUILDING.md). Hardware-level implementation requires operating-system and driver integration, compatible certified radios, regulatory controls, and conformance testing.
