@@ -6,9 +6,8 @@ public final class WifiProfileDemo {
         WifiProfile profile = new WifiProfile();
         profile.print();
         System.out.println();
-        System.out.println("Reference check: 40 MHz channel "
-                + (profile.supportsWidth(40) ? "is listed as supported" : "is not listed as supported")
-                + " by this generation profile.");
-        System.out.println("Note: query the operating system/driver for actual adapter capabilities.");
+        System.out.println("40 MHz profile support: "
+                + (profile.supportsWidth(40) ? "yes" : "no"));
+        System.out.println("Query the operating system/driver for actual adapter capabilities.");
     }
 }
