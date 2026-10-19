@@ -7,9 +7,14 @@ namespace sleela::wifi {
 
 Profile profile() {
     return Profile{
-        "Wi-Fi 4", "IEEE 802.11n", "2.4 GHz and 5 GHz (hardware/regulatory dependent)",
+        "Wi-Fi 4", "IEEE 802.11n", "2.4 GHz and 5 GHz, subject to hardware and regulatory support",
         {20, 40}, 4u, 64u, 600u,
-        {"MIMO spatial streams", "OFDM", "A-MPDU/A-MSDU aggregation", "Short guard interval"}
+        {
+        "MIMO spatial streams",
+        "OFDM",
+        "A-MPDU/A-MSDU aggregation",
+        "Short guard interval"
+        }
     };
 }
 
