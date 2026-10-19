@@ -1,0 +1,50 @@
+#sleela 2.1
+// Wifi4Model.sleela
+// SLeeLa reference metadata for Wi-Fi 4 / IEEE 802.11n.
+// This model does not control a radio or configure the operating system.
+
+struct Wifi4Profile {
+    String generation;
+    String ieee;
+    int supports24GHz;
+    int supports5GHz;
+    int maxChannelWidthMHz;
+    int maxSpatialStreams;
+    int maxQamOrder;
+    int theoreticalPeakMbps;
+    int requiresRuntimeCapabilityDiscovery;
+}
+
+class Wifi4Model {
+    Wifi4Profile standardProfile() {
+        Wifi4Profile p;
+        p.generation = "Wi-Fi 4";
+        p.ieee = "IEEE 802.11n-2009";
+        p.supports24GHz = 1;
+        p.supports5GHz = 1;
+        p.maxChannelWidthMHz = 40;
+        p.maxSpatialStreams = 4;
+        p.maxQamOrder = 64;
+        p.theoreticalPeakMbps = 600;
+        p.requiresRuntimeCapabilityDiscovery = 1;
+        return p;
+    }
+
+    int isValidChannelWidth(int widthMHz) {
+        if (widthMHz == 20 || widthMHz == 40) {
+            return 1;
+        }
+        return 0;
+    }
+
+    int isValidSpatialStreamCount(int streams) {
+        if (streams >= 1 && streams <= 4) {
+            return 1;
+        }
+        return 0;
+    }
+
+    int needsRuntimeDiscovery() {
+        return 1;
+    }
+}
