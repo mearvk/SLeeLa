@@ -1,0 +1,19 @@
+{
+  "profile": "wifi4-802.11n",
+  "generation": "Wi-Fi 4",
+  "ieee_amendment": "802.11n-2009",
+  "bands_ghz": [2.4, 5],
+  "channel_widths_mhz": [20, 40],
+  "max_spatial_streams_standard": 4,
+  "max_qam_order_reference": 64,
+  "theoretical_peak_phy_mbps": 600,
+  "peak_rate_conditions": "Four spatial streams, 40 MHz channel, short guard interval and supported highest-rate mode",
+  "runtime_capability_discovery_required": true,
+  "regulatory_domain": "must be supplied by platform/runtime",
+  "hardware_controlled": false,
+  "notes": [
+    "Reference profile only; not a radio or MAC implementation.",
+    "Actual support varies by adapter, access point, firmware, channel and jurisdiction.",
+    "Use operating-system network APIs for connection management."
+  ]
+}
