@@ -1,0 +1,25 @@
+{
+  "profile": "wifi6-802.11ax",
+  "generation": "Wi-Fi 6",
+  "ieee_amendment": "802.11ax",
+  "bands_ghz": [2.4, 5],
+  "wifi6e_6ghz_included_by_default": false,
+  "channel_widths_mhz": [20, 40, 80, 160],
+  "max_spatial_streams_standard": 8,
+  "max_qam_order_reference": 1024,
+  "theoretical_peak_phy_mbps_approx": 9600,
+  "features": {
+    "ofdma": true,
+    "uplink_downlink_mu_mimo": true,
+    "bss_coloring_spatial_reuse": true,
+    "target_wake_time": true
+  },
+  "runtime_capability_discovery_required": true,
+  "regulatory_domain": "must be supplied by platform/runtime",
+  "hardware_controlled": false,
+  "notes": [
+    "6 GHz operation is associated with Wi-Fi 6E and varies by region and device.",
+    "Feature support depends on implementation and negotiated link configuration.",
+    "Use operating-system network APIs for connection management."
+  ]
+}
