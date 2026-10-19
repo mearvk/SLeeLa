@@ -1,3 +1,12 @@
 #include "wifi_profile.hpp"
+
 #include <iostream>
-int main(){const auto p=sleela::wifi::profile();p.print();std::cout<<"\n80 MHz profile support: "<<(p.supportsWidth(80)?"yes":"no")<<"\nActual adapter capabilities must be queried from the operating system/driver.\n";return 0;}
+
+int main() {
+    const auto profile = sleela::wifi::profile();
+    profile.print();
+    std::cout << "\n80 MHz profile support: "
+              << (profile.supportsWidth(80u) ? "yes" : "no") << '\n'
+              << "Query the operating system/driver for actual adapter capabilities.\n";
+    return 0;
+}
