@@ -2,11 +2,11 @@
 
 <p align="center"><img src="https://github.com/mearvk/Senior.Senate.Attorney.E44Hrs/blob/main/images/law-and-education-001.jpeg" alt="SLeeLa Marketing Logo & Law"></p>
 
-<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/eglise-and-francaise-passing-005.jpeg.jpg" alt="SLeeLa Marketing Logo & Friends"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/ethics/eglise-and-francaise-passing-005.jpeg.jpg" alt="SLeeLa Marketing Logo & Friends"></p>
 
-<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/eglise-and-francaise-passing-014.jpeg.jpg" alt="SLeeLa Marketing Logo & Friends"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/ethics/eglise-and-francaise-passing-014.jpeg.jpg" alt="SLeeLa Marketing Logo & Friends"></p>
 
-<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/us-commanders-over-comics-001.png" alt="SLeeLa Marketing Logo & Friends"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/film-products/us-commanders-over-comics-001.png" alt="SLeeLa Marketing Logo & Friends"></p>
 
 <p align="center"><img src="https://github.com/mearvk/Senior.Senate.Attorney.E44Hrs/blob/main/images/law-and-education-001.jpeg" alt="SLeeLa Marketing Logo & Law"></p>
 

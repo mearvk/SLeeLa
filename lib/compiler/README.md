@@ -1,6 +1,6 @@
-<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian/debian-logo.png" width="75" height="75" alt="SLeeLa">
 
-<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-compiler-logo-001.jpeg" alt="SLeeLa Compiler" width="100%"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela/sleela-compiler-logo-001.jpeg" alt="SLeeLa Compiler" width="100%"></p>
 
 
 # SLeeLa Compiler
