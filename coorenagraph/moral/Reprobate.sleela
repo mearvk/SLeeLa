@@ -14,6 +14,57 @@ class Reprobate {
     }
 
     String definition() {
-        return "A person characterized as rejecting moral constraints or acting without principle.";
+        return "A person characterized in this vocabulary as rejecting moral constraints or acting without principle.";
+    }
+
+    // --- COORENAGRAPH linguistic / graph members, specific to "Reprobate" ---
+
+    // Related adverb form(s) of this object.
+    int adverbCount() { return 1; }
+    String[] adverbs() {
+        String[] a = new String[1];
+        a[0] = "reprobately";
+        return a;
+    }
+
+    // Related verb form(s) of this object.
+    int verbCount() { return 1; }
+    String[] verbs() {
+        String[] v = new String[1];
+        v[0] = "reprobate";
+        return v;
+    }
+
+    // Related noun form(s) of this object.
+    int nounCount() { return 2; }
+    String[] nouns() {
+        String[] n = new String[2];
+        n[0] = "reprobate";
+        n[1] = "reprobation";
+        return n;
+    }
+
+    // Co-sections: sibling concepts co-located with this object in the graph.
+    int cosectCount() { return 3; }
+    String[] cosects() {
+        String[] c = new String[3];
+        c[0] = "Unscrupulous";
+        c[1] = "Amoral";
+        c[2] = "Pernicious";
+        return c;
+    }
+
+    // The moral dimension / axis this object occupies.
+    String dimension() {
+        return "vice";
+    }
+
+    // Interchangeable (near-synonym) terms for this object.
+    int interchangeCount() { return 2; }
+    String[] interchanges() {
+        String[] i = new String[2];
+        i[0] = "scoundrel";
+        i[1] = "miscreant";
+        return i;
     }
 }

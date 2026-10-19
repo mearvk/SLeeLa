@@ -2971,31 +2971,31 @@
     },
     {
       "path": "lib/coorenagraph/moral/Amoral.sleela",
-      "sha256": "5c08f130e303394de825efcd713808e0be0d8e379147adc1151e9077c3b5ed12"
+      "sha256": "38b807e697eda3afcaef91ddfc690d5bb5b11325a85a202d3061c0034dac3c1d"
     },
     {
       "path": "lib/coorenagraph/moral/Beneficence.sleela",
-      "sha256": "26cdedb0e3413d9579034dc655afdc86b65e62333a025740fda2db7ea05653ef"
+      "sha256": "27bc4f714147ad079207e8de4b8c68f674272296ef388ed319111887c38bcf7b"
     },
     {
       "path": "lib/coorenagraph/moral/Deontology.sleela",
-      "sha256": "c8aad1d71074589d718aab5d7a62fc472048e53932f0a7f55e341123f24dcbea"
+      "sha256": "a7afc3e5388fb8620c3d33b2fce4c72f8ee2c9007d7aa3729771960c050d7966"
     },
     {
       "path": "lib/coorenagraph/moral/Ethics.sleela",
-      "sha256": "01592b40a0881ffd71fddbcedd4bbcf71c905d7b6f1a953c402652328c0a8d3f"
+      "sha256": "c748f16c0d799bca6a4b217ba7dc8496af5770a915c3db76e3ca9b5760e4e4be"
     },
     {
       "path": "lib/coorenagraph/moral/Magnanimous.sleela",
-      "sha256": "60f90792c8b060e129fef3ffdad632d9c3ce2cb1719a516957dfc5c6dfc75ee9"
+      "sha256": "22640d72f64f9cc5051d683615e7bba1ad8cba9dec0365f2f338dc4cf0aa9e56"
     },
     {
       "path": "lib/coorenagraph/moral/Moral.sleela",
-      "sha256": "b3c43d520bfdb4183a16a730c5017cb91c5644256f0ed4e35e1870bc9574ed24"
+      "sha256": "c122a5eb12c29f3ade7b35c12e1d49856e5ef6c01f506924804bd4b02e10ac5b"
     },
     {
       "path": "lib/coorenagraph/moral/MoralDeliberation.sleela",
-      "sha256": "91b729c68219b13187832f42d59f23abd32c06163627d28348dee097d6089716"
+      "sha256": "6544aa9b97c26fea3e2037feb42ec58a194d5a5aa4bd1872adcce4f75ad18ad9"
     },
     {
       "path": "lib/coorenagraph/moral/MoralVocabulary.sleela",
@@ -3003,43 +3003,43 @@
     },
     {
       "path": "lib/coorenagraph/moral/Morale.sleela",
-      "sha256": "ccf32446828086d320375841ba9ff31bfc28262257da0c179199aaf4c04a1bd3"
+      "sha256": "6628f81718ea1ae47802ec3cf1d89dcd49db42915fcebf3aaa2d78a4553f68bf"
     },
     {
       "path": "lib/coorenagraph/moral/Morals.sleela",
-      "sha256": "376d6150bc1c10ba25d36a11359ed5e65c3a1b3488482eb8933f4d68120edc61"
+      "sha256": "a737b24e8a19358202c942ad3055881f5acb2f484f94aa21ccdc8a6f90755be0"
     },
     {
       "path": "lib/coorenagraph/moral/Pernicious.sleela",
-      "sha256": "36926421f52460623d18bfc0a669183b032ecbe4e62eb758815f7bd8c27e2392"
+      "sha256": "aa4d9905afdc07055d8c595a7c22a3393d63563bf03b102eeb1c54d7118d4f8e"
     },
     {
       "path": "lib/coorenagraph/moral/Principled.sleela",
-      "sha256": "93a6e9fdbf2922fd246af06860045f05375fb2734fd3c1957ece15dafb92695a"
+      "sha256": "dcb0ccc23b5ed339bf23e545bb0170688af4511fc99252a174425498889ec643"
     },
     {
       "path": "lib/coorenagraph/moral/Probity.sleela",
-      "sha256": "10cbc3e3d5e491fdfb22a772fad983acf313d55466ad46a2ce53cd18a6915fc6"
+      "sha256": "d359c3104ec16b1ce1489e346ed24c36e1d0a90f9f7b4b3819e1560bf4222470"
     },
     {
       "path": "lib/coorenagraph/moral/Reprobate.sleela",
-      "sha256": "cce8bc49450204ff254b60a8eba26b6c1a2a845c65f42884246e67452114bc1a"
+      "sha256": "35e42a87c309c4646c72d38df963aa01860d1d78d844463f817ea89134fd8745"
     },
     {
       "path": "lib/coorenagraph/moral/Unscrupulous.sleela",
-      "sha256": "61a9a0089e24874762f67ab642b16d51735f27de58d1bacd20f72008e4e4a74a"
+      "sha256": "19d90204facf5a0c181fb8b57e45d60a039f9a01f021aa6a1af87b2003e393ea"
     },
     {
       "path": "lib/coorenagraph/moral/Upright.sleela",
-      "sha256": "e31b8ddc8257cef6acd761d4a62dad8c62139088eb156f666f0a0df31ebdb71c"
+      "sha256": "a5393d8aa596e29c7468da51203fbe825cca73b3a1d52d20706840d46b38f561"
     },
     {
       "path": "lib/coorenagraph/moral/Utilitarianism.sleela",
-      "sha256": "dd0b19cfaf2edfda7e5be623c646a2e0663929a2c6c3e0096e6f377b13fd3065"
+      "sha256": "9c4620da3a310315f0472f20ed7ec353aa7775a10d6ad3a0d9c3acc931a02133"
     },
     {
       "path": "lib/coorenagraph/moral/VirtueEthics.sleela",
-      "sha256": "184df141a891d3381db11444bd2dccee021aeac0520aec2744728f1e69f24917"
+      "sha256": "a6ad5ab2675ba90a17effedc717cf8cb24e0877df63562d063e4f66b8ba4e5c7"
     },
     {
       "path": "lib/core/SLAnnotation.sleela",

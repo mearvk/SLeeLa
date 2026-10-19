@@ -16,4 +16,56 @@ class Morale {
     String definition() {
         return "The collective emotional state, confidence, or spirit of a group.";
     }
+
+    // --- COORENAGRAPH linguistic / graph members, specific to "Morale" ------
+
+    // Related adverb form(s) of this object.
+    int adverbCount() { return 1; }
+    String[] adverbs() {
+        String[] a = new String[1];
+        a[0] = "spiritedly";
+        return a;
+    }
+
+    // Related verb form(s) of this object.
+    int verbCount() { return 1; }
+    String[] verbs() {
+        String[] v = new String[1];
+        v[0] = "hearten";
+        return v;
+    }
+
+    // Related noun form(s) of this object.
+    int nounCount() { return 3; }
+    String[] nouns() {
+        String[] n = new String[3];
+        n[0] = "morale";
+        n[1] = "spirit";
+        n[2] = "confidence";
+        return n;
+    }
+
+    // Co-sections: sibling concepts co-located with this object in the graph.
+    // NOTE: distinct from Moral (right/wrong); see MoralVocabulary.
+    int cosectCount() { return 2; }
+    String[] cosects() {
+        String[] c = new String[2];
+        c[0] = "Beneficence";
+        c[1] = "Magnanimous";
+        return c;
+    }
+
+    // The moral dimension / axis this object occupies.
+    String dimension() {
+        return "disposition";
+    }
+
+    // Interchangeable (near-synonym) terms for this object.
+    int interchangeCount() { return 2; }
+    String[] interchanges() {
+        String[] i = new String[2];
+        i[0] = "spirit";
+        i[1] = "esprit de corps";
+        return i;
+    }
 }

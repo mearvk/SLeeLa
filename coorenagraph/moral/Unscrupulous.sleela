@@ -16,4 +16,55 @@ class Unscrupulous {
     String definition() {
         return "Lacking moral principles or ethical restraint in pursuit of a goal.";
     }
+
+    // --- COORENAGRAPH linguistic / graph members, specific to "Unscrupulous"
+
+    // Related adverb form(s) of this object.
+    int adverbCount() { return 1; }
+    String[] adverbs() {
+        String[] a = new String[1];
+        a[0] = "unscrupulously";
+        return a;
+    }
+
+    // Related verb form(s) of this object.
+    int verbCount() { return 1; }
+    String[] verbs() {
+        String[] v = new String[1];
+        v[0] = "exploit";
+        return v;
+    }
+
+    // Related noun form(s) of this object.
+    int nounCount() { return 2; }
+    String[] nouns() {
+        String[] n = new String[2];
+        n[0] = "unscrupulousness";
+        n[1] = "scruple";
+        return n;
+    }
+
+    // Co-sections: sibling concepts co-located with this object in the graph.
+    int cosectCount() { return 3; }
+    String[] cosects() {
+        String[] c = new String[3];
+        c[0] = "Pernicious";
+        c[1] = "Amoral";
+        c[2] = "Reprobate";
+        return c;
+    }
+
+    // The moral dimension / axis this object occupies.
+    String dimension() {
+        return "vice";
+    }
+
+    // Interchangeable (near-synonym) terms for this object.
+    int interchangeCount() { return 2; }
+    String[] interchanges() {
+        String[] i = new String[2];
+        i[0] = "unprincipled";
+        i[1] = "dishonest";
+        return i;
+    }
 }

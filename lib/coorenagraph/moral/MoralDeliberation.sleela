@@ -17,4 +17,56 @@ class MoralDeliberation {
     String definition() {
         return "The process of applying ethical principles to facts to reach a responsible, consent-filled decision.";
     }
+
+    // --- COORENAGRAPH linguistic / graph members, specific to "MoralDeliberation"
+
+    // Related adverb form(s) of this object.
+    int adverbCount() { return 1; }
+    String[] adverbs() {
+        String[] a = new String[1];
+        a[0] = "deliberately";
+        return a;
+    }
+
+    // Related verb form(s) of this object.
+    int verbCount() { return 2; }
+    String[] verbs() {
+        String[] v = new String[2];
+        v[0] = "deliberate";
+        v[1] = "weigh";
+        return v;
+    }
+
+    // Related noun form(s) of this object.
+    int nounCount() { return 2; }
+    String[] nouns() {
+        String[] n = new String[2];
+        n[0] = "deliberation";
+        n[1] = "judgment";
+        return n;
+    }
+
+    // Co-sections: sibling concepts co-located with this object in the graph.
+    int cosectCount() { return 3; }
+    String[] cosects() {
+        String[] c = new String[3];
+        c[0] = "Ethics";
+        c[1] = "Principled";
+        c[2] = "Probity";
+        return c;
+    }
+
+    // The moral dimension / axis this object occupies.
+    String dimension() {
+        return "process";
+    }
+
+    // Interchangeable (near-synonym) terms for this object.
+    int interchangeCount() { return 2; }
+    String[] interchanges() {
+        String[] i = new String[2];
+        i[0] = "moral reasoning";
+        i[1] = "ethical judgment";
+        return i;
+    }
 }

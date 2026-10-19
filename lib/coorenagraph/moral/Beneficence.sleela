@@ -17,4 +17,57 @@ class Beneficence {
     String definition() {
         return "The practice of doing good, showing kindness, and acting to benefit others.";
     }
+
+    // --- COORENAGRAPH linguistic / graph members, specific to "Beneficence" -
+
+    // Related adverb form(s) of this object.
+    int adverbCount() { return 1; }
+    String[] adverbs() {
+        String[] a = new String[1];
+        a[0] = "beneficently";
+        return a;
+    }
+
+    // Related verb form(s) of this object.
+    int verbCount() { return 2; }
+    String[] verbs() {
+        String[] v = new String[2];
+        v[0] = "benefit";
+        v[1] = "aid";
+        return v;
+    }
+
+    // Related noun form(s) of this object.
+    int nounCount() { return 3; }
+    String[] nouns() {
+        String[] n = new String[3];
+        n[0] = "beneficence";
+        n[1] = "benefactor";
+        n[2] = "kindness";
+        return n;
+    }
+
+    // Co-sections: sibling concepts co-located with this object in the graph.
+    int cosectCount() { return 3; }
+    String[] cosects() {
+        String[] c = new String[3];
+        c[0] = "Magnanimous";
+        c[1] = "Utilitarianism";
+        c[2] = "Upright";
+        return c;
+    }
+
+    // The moral dimension / axis this object occupies.
+    String dimension() {
+        return "virtue";
+    }
+
+    // Interchangeable (near-synonym) terms for this object.
+    int interchangeCount() { return 2; }
+    String[] interchanges() {
+        String[] i = new String[2];
+        i[0] = "benevolence";
+        i[1] = "charity";
+        return i;
+    }
 }

@@ -17,4 +17,57 @@ class Moral {
     String definition() {
         return "Relating to principles of right and wrong behavior.";
     }
+
+    // --- COORENAGRAPH linguistic / graph members, specific to "Moral" -------
+
+    // Related adverb form(s) of this object.
+    int adverbCount() { return 1; }
+    String[] adverbs() {
+        String[] a = new String[1];
+        a[0] = "morally";
+        return a;
+    }
+
+    // Related verb form(s) of this object.
+    int verbCount() { return 1; }
+    String[] verbs() {
+        String[] v = new String[1];
+        v[0] = "moralize";
+        return v;
+    }
+
+    // Related noun form(s) of this object.
+    int nounCount() { return 3; }
+    String[] nouns() {
+        String[] n = new String[3];
+        n[0] = "moral";
+        n[1] = "morality";
+        n[2] = "morals";
+        return n;
+    }
+
+    // Co-sections: sibling concepts co-located with this object in the graph.
+    // NOTE: distinct from Morale (group spirit); see MoralVocabulary.
+    int cosectCount() { return 3; }
+    String[] cosects() {
+        String[] c = new String[3];
+        c[0] = "Morals";
+        c[1] = "Ethics";
+        c[2] = "Principled";
+        return c;
+    }
+
+    // The moral dimension / axis this object occupies.
+    String dimension() {
+        return "quality";
+    }
+
+    // Interchangeable (near-synonym) terms for this object.
+    int interchangeCount() { return 2; }
+    String[] interchanges() {
+        String[] i = new String[2];
+        i[0] = "ethical";
+        i[1] = "virtuous";
+        return i;
+    }
 }
