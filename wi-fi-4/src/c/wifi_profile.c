@@ -10,16 +10,9 @@ static const char *const FEATURES[] = {
 };
 
 static const wifi_profile_t PROFILE = {
-    "Wi-Fi 4",
-    "IEEE 802.11n",
-    "2.4 GHz and 5 GHz (hardware/regulatory dependent)",
-    3u,
-    3u,
-    4u,
-    64u,
-    600u,
-    FEATURES,
-    sizeof(FEATURES) / sizeof(FEATURES[0])
+    "Wi-Fi 4", "IEEE 802.11n", "2.4 GHz and 5 GHz, subject to hardware and regulatory support",
+    3u, 3u, 4u, 64u, 600u,
+    FEATURES, sizeof(FEATURES) / sizeof(FEATURES[0])
 };
 
 const wifi_profile_t *wifi_profile_get(void) { return &PROFILE; }
@@ -31,10 +24,10 @@ int wifi_profile_supports_band(wifi_band_t band) {
 int wifi_profile_supports_width_mhz(unsigned width_mhz) {
     unsigned bit;
     switch (width_mhz) {
-        case 20u: bit = 1u << 0; break;
-        case 40u: bit = 1u << 1; break;
-        case 80u: bit = 1u << 2; break;
-        case 160u: bit = 1u << 3; break;
+        case 20u: bit = 1u; break;
+        case 40u: bit = 2u; break;
+        case 80u: bit = 4u; break;
+        case 160u: bit = 8u; break;
         default: return 0;
     }
     return (PROFILE.supported_width_mask & bit) != 0u;
