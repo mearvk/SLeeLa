@@ -52,6 +52,25 @@ class GuiMualTextEditor {
   int btnAbout;
   int btnSave;
   int btnNew;
+  // Menubar strip and its dropdown panels (built from existing ui* widgets).
+  int openMenuIndex = -1;
+  int menuFileButton;
+  int menuFilePanel;
+  int menuFileItem1;
+  int menuFileItem2;
+  int menuEditButton;
+  int menuEditPanel;
+  int menuEditItem1;
+  int menuEditItem2;
+  int menuViewButton;
+  int menuViewPanel;
+  int menuViewItem1;
+  int menuViewItem2;
+  int menuHelpButton;
+  int menuHelpPanel;
+  int menuHelpItem1;
+  int menuHelpItem2;
+
 
   int rgba(int r, int g, int b, int a) { return r * 16777216 + g * 65536 + b * 256 + a; }
   int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
@@ -83,6 +102,17 @@ class GuiMualTextEditor {
     uiWidgetSuggested(btnAbout,  which == 2 ? 1 : 0);
   }
 
+
+  // Show one dropdown at a time; selecting the open menu closes it.
+  void openMenu(int which) {
+    int next = openMenuIndex == which ? -1 : which;
+    openMenuIndex = next;
+    uiWidgetVisible(menuFilePanel, next == 0 ? 1 : 0);
+    uiWidgetVisible(menuEditPanel, next == 1 ? 1 : 0);
+    uiWidgetVisible(menuViewPanel, next == 2 ? 1 : 0);
+    uiWidgetVisible(menuHelpPanel, next == 3 ? 1 : 0);
+  }
+
   void main() {
     print("SLeeLa MUAL Text Editor (native SleelaUI) — backend "
         + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
@@ -97,6 +127,35 @@ class GuiMualTextEditor {
     int theme = baselineTheme();
     int win = uiWindowCreate(app, "SLeeLa Editor — MUAL 1.0", 900, 640, theme);
     int root = uiWindowRoot(win);
+
+    // --- Functional menubar strip and dropdowns ---
+    int menuStrip = uiBox(root, 0, 4);
+    uiWidgetMargin(menuStrip, 4, 8, 4, 8);
+    menuFileButton = uiButton(menuStrip, "File");
+    menuEditButton = uiButton(menuStrip, "Edit");
+    menuViewButton = uiButton(menuStrip, "View");
+    menuHelpButton = uiButton(menuStrip, "Help");
+    menuFilePanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
+    menuFileItem1 = uiButton(menuFilePanel, "New Document");
+    menuFileItem2 = uiButton(menuFilePanel, "Save Document");
+    uiWidgetVisible(menuFilePanel, 0);
+    menuEditPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuEditPanel, 4, 10, 4, 10);
+    menuEditItem1 = uiButton(menuEditPanel, "Undo Edit");
+    menuEditItem2 = uiButton(menuEditPanel, "Select All");
+    uiWidgetVisible(menuEditPanel, 0);
+    menuViewPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuViewPanel, 4, 10, 4, 10);
+    menuViewItem1 = uiButton(menuViewPanel, "Editor Panel");
+    menuViewItem2 = uiButton(menuViewPanel, "Document List");
+    uiWidgetVisible(menuViewPanel, 0);
+    menuHelpPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
+    menuHelpItem1 = uiButton(menuHelpPanel, "About SLeeLa");
+    menuHelpItem2 = uiButton(menuHelpPanel, "Keyboard Shortcuts");
+    uiWidgetVisible(menuHelpPanel, 0);
+
 
     // --- Toolbar: the Path-1 actions bound to SLeeLa operations ---
     int menu = uiHeaderBar(root);
@@ -168,6 +227,45 @@ class GuiMualTextEditor {
       int dispatched = uiAppPump(app, 1);       // block for the next event
       if (dispatched < 0) { running = false; }
       else {
+
+        // Menubar top-level buttons toggle their dropdown panels.
+        if (uiWidgetTakeActivated(menuFileButton) == 1) { openMenu(0); }
+        if (uiWidgetTakeActivated(menuEditButton) == 1) { openMenu(1); }
+        if (uiWidgetTakeActivated(menuViewButton) == 1) { openMenu(2); }
+        if (uiWidgetTakeActivated(menuHelpButton) == 1) { openMenu(3); }
+        // Menu items announce the selected command, then dismiss the dropdown.
+        if (uiWidgetTakeActivated(menuFileItem1) == 1) {
+          uiWidgetSetText(statusLabel, "File · New Document");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuFileItem2) == 1) {
+          uiWidgetSetText(statusLabel, "File · Save Document");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuEditItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Edit · Undo Edit");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuEditItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Edit · Select All");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuViewItem1) == 1) {
+          uiWidgetSetText(statusLabel, "View · Editor Panel");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuViewItem2) == 1) {
+          uiWidgetSetText(statusLabel, "View · Document List");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Help · About SLeeLa");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Help · Keyboard Shortcuts");
+          openMenu(-1);
+        }
         if (uiWidgetTakeActivated(btnEditor) == 1) {
           showPanel(0); uiWidgetSetText(statusLabel, "Editor \u00B7 editing the current document");
         }
