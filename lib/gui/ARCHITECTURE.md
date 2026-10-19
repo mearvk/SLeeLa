@@ -203,6 +203,47 @@ host reports 0 and `SLGuiScreenFit` falls back to a modeled 1920×1080.
 (horizontal) tags. A runnable walkthrough is each line's
 `gui-scroll-screenfit-demo.sleela`.
 
+### Automatic scrollbars on overflow — the `ScrolledView` (all lines)
+
+`SLGuiScrollbar` is the *geometry brain*; the **native `slui::ScrolledView`**
+(in `user-interface/`) is the *muscle* that makes scrolling automatic. It is a
+real container widget that **measures its content, clips it to the viewport, and
+reveals a scrollbar on its own when the content overflows** — so a component
+dimensionally larger than its frame scrolls instead of spilling off-screen.
+
+- **Native widget (`user-interface/src/slui_widget.{hpp,cpp}`).** `ScrolledView`
+  treats its first child as the scroll content and owns a vertical + horizontal
+  `ScrollBar`. On each `arrange()` it compares the content's natural size with
+  the viewport and, per a per-axis policy — **auto** (bar only on overflow),
+  **always** (reserve the gutter), **never** (clip, no bar) — shows or hides each
+  bar, reserving a gutter and re-checking the other axis. `paint()` pushes a clip
+  rect (the Canvas clip stack) so the content never draws past the frame, and
+  arranges the content at a clamped negative offset. Dragging a bar drives the
+  offset (and `scroll_by`/`scroll_to` do it programmatically). Validated by the
+  toolkit smoke test (`user-interface/tests/smoke.c`).
+- **C ABI + built-in.** `slui_scrolled_view(parent, policy_h, policy_v)` plus
+  `slui_scrolled_view_scroll_to/by/x/y`, surfaced to SLeeLa as the
+  `uiScrolledView` / `uiScrolledScrollTo` / `uiScrolledScrollBy` /
+  `uiScrolledScrollX` / `uiScrolledScrollY` built-ins
+  (`impl/core/sleela_ui_ids.h`, `sleela_ui_vm.c`, `impl/frontend/compiler.cpp`).
+  A new `slui_window_render()` forces one layout+paint pass (used by headless
+  tests to settle geometry).
+- **SLeeLa surface (every line).** `SLGuiWidgetFactory` registers the
+  `scrolled` / `scrollview` / `scrollarea` tags (→ a native scrolled viewport,
+  auto/auto) and an `overflowPolicy()` keyword map (`auto`/`scroll`/`always` vs.
+  `hidden`/`visible`/`clip`/`none`). **`SLGuiMount` is overflow-aware**:
+  `constructWithOverflow()` promotes **any** plain container carrying an
+  `overflow` (or per-axis `overflow-x` / `overflow-y`) attribute to a native
+  scrolled viewport — so "frame smaller than content ⇒ scrollbars appear" is a
+  declarative, automatic behaviour, not a manual wiring step. `SLGuiApp` adds
+  `addScrolled(parentId, id)` and `addOverflowBox(parentId, id, overflow)`.
+  A runnable walkthrough is each line's `gui-overflow-scroll-demo.sleela`.
+
+So the earlier "overflow never auto-scrolls" limitation is resolved: the native
+viewport clips + scrolls + shows bars automatically, `SLGuiScrollbar` remains the
+pure geometry model behind it, and the SLeeLa layer makes it available both as an
+explicit element and as an `overflow` attribute on any container.
+
 ### Fade transitions + notification surfaces (all lines)
 
 Four line-agnostic **fade / transition** surfaces ship in **every** version line

@@ -58,6 +58,7 @@ enum class WidgetKind {
     PasswordEntry,
     Heading,
     ScrollBar,
+    ScrolledView,
     StatusBar,
     InfoBar,
     Tooltip,
@@ -641,11 +642,70 @@ public:
     bool wants_focus() const override { return true; }
     void set_value(double v) override;
     double value() const override { return value_; }
+    /* Set the thumb size (fraction of content visible), [0,1]. */
+    void set_page(double p) { page_ = std::clamp(p, 0.0, 1.0); invalidate(); }
+    double page() const { return page_; }
+    /* Set the position without emitting value_changed -- used when an owner
+     * (e.g. ScrolledView) drives the bar to reflect a scroll offset, to avoid a
+     * feedback loop back into the owner. */
+    void set_value_silent(double v) { value_ = std::clamp(v, 0.0, 1.0); invalidate(); }
 
 private:
     SLUIOrientation orient_;
     double value_, page_;
     bool dragging_ = false;
+};
+
+/* A scrolled viewport: a container that clips its content to its own bounds and
+ * scrolls it when the content is larger than the viewport. The FIRST child
+ * added becomes the scroll content (the programmer fills it like any box); the
+ * view owns two ScrollBars (vertical + horizontal) it manages itself.
+ *
+ * Per axis a policy decides whether the bar is shown:
+ *   SCROLL_AUTO   (0) -- shown only while the content overflows that axis;
+ *   SCROLL_ALWAYS (1) -- always shown (the gutter is reserved);
+ *   SCROLL_NEVER  (2) -- never shown (that axis does not scroll).
+ *
+ * This is the native muscle behind the SLeeLa "implied scrollbar": overflow is
+ * detected here (content natural size vs. the viewport) and the bars appear
+ * automatically; dragging a bar (or set_scroll_*) moves a clamped content
+ * offset, and painting is clipped to the viewport via the Canvas clip stack. */
+class ScrolledView : public Widget {
+public:
+    enum Policy { SCROLL_AUTO = 0, SCROLL_ALWAYS = 1, SCROLL_NEVER = 2 };
+    ScrolledView(int policy_h, int policy_v);
+    SLUISize measure(const PaintContext& ctx) override;
+    void arrange(const PaintContext& ctx, const Rect& area) override;
+    void paint(PaintContext& ctx) override;
+    bool on_event(const SLUIEvent& ev) override;
+
+    /* The content child (first non-scrollbar child), or nullptr when empty. */
+    Widget* content_child() const;
+
+    /* Overflow questions (valid after an arrange()). */
+    bool overflow_x() const { return content_w_ > view_w_; }
+    bool overflow_y() const { return content_h_ > view_h_; }
+    bool bar_visible_x() const;
+    bool bar_visible_y() const;
+
+    /* Clamped content offset in px. */
+    int max_offset_x() const { return content_w_ > view_w_ ? content_w_ - view_w_ : 0; }
+    int max_offset_y() const { return content_h_ > view_h_ ? content_h_ - view_h_ : 0; }
+    void set_scroll_x(int px);
+    void set_scroll_y(int px);
+    void scroll_by(int dx, int dy) { set_scroll_x(offset_x_ + dx); set_scroll_y(offset_y_ + dy); }
+    int scroll_x() const { return offset_x_; }
+    int scroll_y() const { return offset_y_; }
+
+private:
+    void sync_bars();           /* push offset/page onto the owned ScrollBars */
+    int policy_h_, policy_v_;
+    int offset_x_ = 0, offset_y_ = 0;
+    /* Geometry captured at the last arrange() so overflow/offset math is live. */
+    int view_w_ = 0, view_h_ = 0;      /* inner viewport (minus reserved gutters) */
+    int content_w_ = 0, content_h_ = 0;/* content natural size */
+    ScrollBar* vbar_ = nullptr;        /* owned children (also in children_) */
+    ScrollBar* hbar_ = nullptr;
 };
 
 /* A footer status bar: chrome strip + top hairline, lays children horizontally. */

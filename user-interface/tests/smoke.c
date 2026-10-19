@@ -168,6 +168,25 @@ int main(void) {
     CHECK(slui_scroll_bar(col, SLUI_ORIENT_VERTICAL, 0.0, 0.3) != NULL,
           "scroll bar created");
 
+    /* --- scrolled view: overflow detection + clamped offset ------------ */
+    {
+        SLUIWidget* sv = slui_scrolled_view(col, 0, 0); /* auto/auto */
+        CHECK(sv != NULL, "scrolled view created");
+        /* Pin the viewport small, then add a tall content box so it overflows. */
+        slui_widget_set_size_request(sv, 200, 100);
+        SLUIWidget* content = slui_box(sv, SLUI_ORIENT_VERTICAL, 4);
+        for (int i = 0; i < 40; ++i) slui_label(content, "scrolling line");
+        slui_window_show(win);
+        slui_window_render(win); /* force a layout+paint so arrange() runs */
+        /* Programmatic scroll clamps into range and is read back. */
+        slui_scrolled_view_scroll_to(sv, 0, 100000);
+        CHECK(slui_scrolled_view_scroll_y(sv) > 0, "scrolled view scrolls on overflow");
+        slui_scrolled_view_scroll_to(sv, 0, -50);
+        CHECK(slui_scrolled_view_scroll_y(sv) == 0, "scroll offset clamps at zero");
+        slui_scrolled_view_scroll_by(sv, 0, 30);
+        CHECK(slui_scrolled_view_scroll_y(sv) == 30, "scroll_by advances the offset");
+    }
+
     /* The activation latch returns an activation at most once. */
     slui_widget_set_toggle(chk, 0); /* state change, not an activation */
     CHECK(slui_widget_take_activated(btn) == 0, "no spurious activation latched");

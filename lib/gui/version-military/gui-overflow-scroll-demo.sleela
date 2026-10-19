@@ -1,0 +1,76 @@
+/*
+ * lib/gui/version-military/gui-overflow-scroll-demo.sleela
+ * A runnable walkthrough of AUTOMATIC scrollbars on overflow.
+ *
+ * Architecture: when a component is dimensionally larger than its frame, a
+ * SCROLLED VIEWPORT clips it and shows scrollbars automatically. This is a real
+ * native container in the SleelaUI toolkit (slui::ScrolledView, built via the
+ * uiScrolledView built-in): it measures its content and, when the content
+ * overflows the viewport, reveals a vertical and/or horizontal bar (per-axis
+ * auto/always/never policy), CLIPS the content to the viewport, and SCROLLS it.
+ * The decision "content > viewport -> bar is implied" is the same one the
+ * SLGuiScrollbar model computes; the native viewport makes it automatic.
+ *
+ * The SLeeLa DOM exposes it two ways (both wired here into SLGuiWidgetFactory /
+ * SLGuiMount):
+ *   1. an explicit element: tag "scrolled"/"scrollview"/"scrollarea"
+ *      (SLGuiApp.addScrolled), and
+ *   2. an `overflow` attribute on ANY container (SLGuiApp.addOverflowBox),
+ *      which SLGuiMount promotes to a native scrolled viewport.
+ *
+ * This walkthrough drives the SLGuiScrollbar geometry model directly (the same
+ * math the native viewport uses to size/position its thumb) so it is
+ * deterministic and headless; the native ScrolledView's live overflow handling
+ * is exercised by the toolkit's own smoke test.
+ */
+#sleela 2.1
+import gui.version-military;
+class GuiOverflowScrollDemo {
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  // Report the implied-scroll decision for a viewport vs. content extent.
+  void axis(String name, int viewport, int content, boolean horizontal) {
+    SLGuiScrollbar bar = new SLGuiScrollbar();
+    bar.configure(horizontal ? 1 : 0, viewport, content);   // 0=vertical,1=horizontal
+    print(name + " -> viewport=" + viewport + "px content=" + content + "px"
+        + " overflow=" + bar.overflow()
+        + " implied(bar shown automatically)=" + bar.implied());
+    if (bar.implied()) {
+      bar.scrollToEnd();
+      print("    scrolled to end: value=" + bar.valuePermille() + "/1000"
+          + " thumb(page)=" + bar.pagePermille() + "/1000"
+          + " offset=" + bar.getOffset() + "/" + bar.maxOffset() + "px");
+    }
+  }
+
+  void main() {
+    banner("Automatic scrollbars on overflow: the SleelaUI ScrolledView");
+    SLPackage pkg = new SLPackage(); pkg.configure("gui");
+    print("gui package " + pkg.version() + " (featureLevel " + pkg.featureLevel() + ")");
+    print("");
+    print("A scrolled viewport (tag \"scrolled\", or any container with an");
+    print("overflow=\"auto\" attribute) shows scrollbars AUTOMATICALLY once its");
+    print("content is larger than the frame. The decision per axis:");
+    print("");
+
+    // A 120px-tall frame holding 40 rows (~800px): vertical scroll appears.
+    axis("TALL CONTENT ", 120, 40 * 20, false);
+    // A 260px-wide frame holding 860px of content: horizontal scroll appears.
+    axis("WIDE CONTENT ", 260, 860, true);
+    // A frame that already contains its content: NO bar (auto policy hides it).
+    axis("FITS IN FRAME", 400, 300, false);
+
+    print("");
+    print("Policy per axis: auto (bar only on overflow), always (reserve the");
+    print("gutter), never (clip, no bar). A programmer pins the viewport smaller");
+    print("than its content (e.g. style \"min-height\") to force scrolling, or");
+    print("just lets a fixed-size frame overflow — the viewport handles the rest:");
+    print("it clips the content and reveals the bar on its own.");
+    banner("Done: overflow implies a scrollbar; the native ScrolledView draws it");
+  }
+}

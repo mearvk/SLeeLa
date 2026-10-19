@@ -19,6 +19,33 @@ class SLGuiWidgetFactory {
   static final int ORIENT_VERTICAL   = 0;
   static final int ORIENT_HORIZONTAL = 1;
 
+  // Scroll-visibility policy ordinals (mirror native ScrolledView::Policy and
+  // SLGuiScrollbar.SHOW_*): a scrolled viewport shows each axis' bar AUTO (only
+  // on overflow), ALWAYS, or NEVER.
+  static final int SCROLL_AUTO   = 0;
+  static final int SCROLL_ALWAYS = 1;
+  static final int SCROLL_NEVER  = 2;
+
+  // Map a CSS-style overflow keyword to a scroll policy. "auto"/"" -> AUTO,
+  // "scroll"/"always" -> ALWAYS, "hidden"/"visible"/"clip"/"none" -> NEVER.
+  int overflowPolicy(String kw) {
+    if (kw == null || kw == "" || kw == "auto") { return SCROLL_AUTO; }
+    if (kw == "scroll" || kw == "always")       { return SCROLL_ALWAYS; }
+    return SCROLL_NEVER;                          // hidden / visible / clip / none
+  }
+
+  // Construct a scrolled viewport directly with explicit per-axis policies.
+  // SLGuiMount calls this to promote a container carrying an `overflow` attr.
+  int constructScrolled(int parentHandle, int policyH, int policyV) {
+    if (parentHandle < 0) { return -1; }
+    return uiScrolledView(parentHandle, policyH, policyV);
+  }
+
+  // Does this tag build a native scrolled viewport (first child = content)?
+  boolean isScrolled(String tag) {
+    return tag == "scrolled" || tag == "scrollview" || tag == "scrollarea";
+  }
+
   // Construct the widget for `node` inside `parentHandle`. Returns the new
   // widget handle, or -1 when it could not be created. `label` is the node's
   // initial text/placeholder (empty string when it has none).
@@ -54,6 +81,15 @@ class SLGuiWidgetFactory {
     }
     if (tag == "hscroll" || tag == "hscrollbar") {
       return uiScrollBar(parentHandle, ORIENT_HORIZONTAL, 0.0, 1.0);
+    }
+
+    // A SCROLLED VIEW: a viewport that clips its content and shows scrollbars
+    // AUTOMATICALLY when the content overflows it (both axes, auto policy). The
+    // first DOM child mounted into it becomes the scroll content. This is the
+    // native overflow->scrollbar container; SLGuiMount also promotes any plain
+    // container carrying an `overflow` attribute to one of these.
+    if (tag == "scrolled" || tag == "scrollview" || tag == "scrollarea") {
+      return uiScrolledView(parentHandle, SCROLL_AUTO, SCROLL_AUTO);
     }
 
     // 4.0 rich components. Each is hosted on a canvas/box surface the component's
@@ -132,6 +168,7 @@ class SLGuiWidgetFactory {
         || tag == "toast" || tag == "snackbar"
         || tag == "modal" || tag == "dialog" || tag == "overlay"
         || tag == "skeleton" || tag == "placeholder"
-        || tag == "transition" || tag == "fade";
+        || tag == "transition" || tag == "fade"
+        || tag == "scrolled" || tag == "scrollview" || tag == "scrollarea";
   }
 }

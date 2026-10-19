@@ -115,6 +115,24 @@ class SLGuiApp {
     return sb;
   }
 
+  // Add a SCROLLED VIEWPORT node to the DOM under `parentId`. Its children
+  // become the scroll content and native scrollbars appear AUTOMATICALLY when
+  // that content is larger than the viewport. Pin the viewport smaller than its
+  // content (e.g. style "min-height") to force scrolling. Equivalent to adding a
+  // "scrolled" element; returns the node so the caller can append content to it.
+  SLGuiNode addScrolled(String parentId, String id) {
+    return dom.appendElement(parentId, "scrolled", id);
+  }
+  // Add a plain container that scrolls on overflow by setting its `overflow`
+  // intent (auto|scroll|always|hidden). SLGuiMount promotes it to a native
+  // scrolled viewport. Returns the node for appending content.
+  SLGuiNode addOverflowBox(String parentId, String id, String overflow) {
+    SLGuiNode n = dom.appendElement(parentId, "box", id);
+    if (n != null && overflow != null) { n.setAttribute("overflow", overflow); }
+    return n;
+  }
+
+
   // ---- fade / transition helpers ------------------------------------------
   // A reusable enter/exit fade primitive (the shared tween). Returns a default
   // 200ms ease-out fade-in the caller can retarget with fadeIn/fadeOut/between.

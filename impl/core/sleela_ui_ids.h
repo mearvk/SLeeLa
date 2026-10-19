@@ -45,6 +45,11 @@ typedef enum {
     SLUI_FN_STATUS_BAR,       /* uiStatusBar(parent:i) -> widget                */
     SLUI_FN_SEPARATOR,        /* uiSeparator(parent:i, orient:i) -> widget      */
     SLUI_FN_SPACER,           /* uiSpacer(parent:i) -> widget                   */
+    SLUI_FN_SCROLLED_VIEW,    /* uiScrolledView(parent:i, polH:i, polV:i) -> widget; 1st child = content */
+    SLUI_FN_SCROLLED_SCROLL_TO, /* uiScrolledScrollTo(view:i, x:i, y:i) -> 0     */
+    SLUI_FN_SCROLLED_SCROLL_BY, /* uiScrolledScrollBy(view:i, dx:i, dy:i) -> 0   */
+    SLUI_FN_SCROLLED_SCROLL_X,  /* uiScrolledScrollX(view:i) -> offset px        */
+    SLUI_FN_SCROLLED_SCROLL_Y,  /* uiScrolledScrollY(view:i) -> offset px        */
 
     /* --- buttons / actions --- */
     SLUI_FN_BUTTON,           /* uiButton(parent:i, text:s) -> widget           */

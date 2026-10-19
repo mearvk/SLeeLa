@@ -1249,6 +1249,200 @@ bool ScrollBar::on_event(const SLUIEvent& ev) {
 }
 
 /* ======================================================================== */
+/* ScrolledView                                                             */
+/* ======================================================================== */
+ScrolledView::ScrolledView(int policy_h, int policy_v)
+    : Widget(WidgetKind::ScrolledView),
+      policy_h_(policy_h), policy_v_(policy_v) {
+    /* Own two scroll bars. They live in children_ (so they paint and route
+     * events like any child) but are NOT the scroll content. Each bar drives
+     * the matching content offset through its value_changed handler. */
+    auto v = std::make_unique<ScrollBar>(SLUI_ORIENT_VERTICAL, 0.0, 1.0);
+    vbar_ = v.get();
+    add_child(std::move(v));
+    auto h = std::make_unique<ScrollBar>(SLUI_ORIENT_HORIZONTAL, 0.0, 1.0);
+    hbar_ = h.get();
+    add_child(std::move(h));
+
+    vbar_->on_value_changed(
+        [](SLUIWidget*, double val, void* u) {
+            auto* self = static_cast<ScrolledView*>(u);
+            self->set_scroll_y(
+                static_cast<int>(val * self->max_offset_y() + 0.5));
+        },
+        this);
+    hbar_->on_value_changed(
+        [](SLUIWidget*, double val, void* u) {
+            auto* self = static_cast<ScrolledView*>(u);
+            self->set_scroll_x(
+                static_cast<int>(val * self->max_offset_x() + 0.5));
+        },
+        this);
+}
+
+Widget* ScrolledView::content_child() const {
+    for (auto& c : children_) {
+        if (c.get() == vbar_ || c.get() == hbar_) continue;
+        return c.get();
+    }
+    return nullptr;
+}
+
+bool ScrolledView::bar_visible_x() const {
+    if (policy_h_ == SCROLL_NEVER) return false;
+    if (policy_h_ == SCROLL_ALWAYS) return true;
+    return overflow_x();
+}
+bool ScrolledView::bar_visible_y() const {
+    if (policy_v_ == SCROLL_NEVER) return false;
+    if (policy_v_ == SCROLL_ALWAYS) return true;
+    return overflow_y();
+}
+
+void ScrolledView::set_scroll_x(int px) {
+    int mx = max_offset_x();
+    offset_x_ = std::clamp(px, 0, mx);
+    invalidate();
+}
+void ScrolledView::set_scroll_y(int px) {
+    int my = max_offset_y();
+    offset_y_ = std::clamp(px, 0, my);
+    invalidate();
+}
+
+SLUISize ScrolledView::measure(const PaintContext& ctx) {
+    /* A viewport reports the size it wants to OCCUPY, which is intentionally
+     * decoupled from its content's (possibly larger) size -- that decoupling is
+     * what makes scrolling happen. So when the programmer pins a size request on
+     * an axis, report that fixed size (the viewport is that big and its content
+     * scrolls inside it). On an un-pinned axis fall back to the content's
+     * natural size so an unconstrained viewport simply fits its content and
+     * nothing scrolls. The parent box still decides the final allocation. */
+    SLUISize cs{0, 0};
+    if (Widget* c = content_child()) cs = c->measure(ctx);
+    SLUISize s;
+    s.w = (min_w_ > 0 ? min_w_ : cs.w) + margin_.left + margin_.right;
+    s.h = (min_h_ > 0 ? min_h_ : cs.h) + margin_.top + margin_.bottom;
+    return s;
+}
+
+void ScrolledView::arrange(const PaintContext& ctx, const Rect& area) {
+    bounds_ = area;
+    Rect box = content();           /* viewport minus this widget's margin */
+    const Theme& t = *ctx.theme;
+    int gutter = t.unit * 3;         /* matches ScrollBar::measure thickness */
+
+    Widget* child = content_child();
+    SLUISize cs{0, 0};
+    if (child) cs = child->measure(ctx);
+    content_w_ = cs.w;
+    content_h_ = cs.h;
+
+    /* Decide bar visibility. Reserving a gutter for one bar reduces the other
+     * axis' viewport, which can itself trigger overflow; resolve in two passes
+     * so a corner case (content just fits until a gutter appears) settles. */
+    bool showV = false, showH = false;
+    for (int pass = 0; pass < 2; ++pass) {
+        int vw = box.w - (showV ? gutter : 0);
+        int vh = box.h - (showH ? gutter : 0);
+        bool ofx = content_w_ > vw;
+        bool ofy = content_h_ > vh;
+        showV = (policy_v_ == SCROLL_ALWAYS) ||
+                (policy_v_ == SCROLL_AUTO && ofy);
+        showH = (policy_h_ == SCROLL_ALWAYS) ||
+                (policy_h_ == SCROLL_AUTO && ofx);
+    }
+
+    view_w_ = box.w - (showV ? gutter : 0);
+    view_h_ = box.h - (showH ? gutter : 0);
+    if (view_w_ < 0) view_w_ = 0;
+    if (view_h_ < 0) view_h_ = 0;
+
+    /* Re-clamp the offsets to the (possibly new) max and place the content at
+     * the negative offset so scrolling reveals material below/right. */
+    offset_x_ = std::clamp(offset_x_, 0, max_offset_x());
+    offset_y_ = std::clamp(offset_y_, 0, max_offset_y());
+
+    if (child) {
+        int cw = std::max(content_w_, view_w_);   /* fill the viewport if smaller */
+        int ch = std::max(content_h_, view_h_);
+        Rect placed{box.x - offset_x_, box.y - offset_y_, cw, ch};
+        child->arrange(ctx, placed);
+    }
+
+    /* Place the bars in their gutters along the inner edges. */
+    vbar_->set_visible(showV);
+    hbar_->set_visible(showH);
+    if (showV) {
+        vbar_->arrange(ctx, Rect{box.right() - gutter, box.y, gutter, view_h_});
+    }
+    if (showH) {
+        hbar_->arrange(ctx, Rect{box.x, box.bottom() - gutter, view_w_, gutter});
+    }
+    sync_bars();
+}
+
+void ScrolledView::sync_bars() {
+    /* page = fraction of content visible (thumb size); value = offset fraction. */
+    if (content_h_ > 0) {
+        double page = std::clamp(view_h_ / static_cast<double>(content_h_), 0.05, 1.0);
+        double val = max_offset_y() > 0
+                         ? offset_y_ / static_cast<double>(max_offset_y())
+                         : 0.0;
+        vbar_->set_page(page);
+        vbar_->set_value_silent(val);
+    }
+    if (content_w_ > 0) {
+        double page = std::clamp(view_w_ / static_cast<double>(content_w_), 0.05, 1.0);
+        double val = max_offset_x() > 0
+                         ? offset_x_ / static_cast<double>(max_offset_x())
+                         : 0.0;
+        hbar_->set_page(page);
+        hbar_->set_value_silent(val);
+    }
+}
+
+void ScrolledView::paint(PaintContext& ctx) {
+    Rect box = content();
+    /* Clip the content to the viewport (minus any reserved gutters) so the
+     * overflow is hidden rather than spilling past the frame. */
+    ctx.canvas->push_clip(Rect{box.x, box.y, view_w_, view_h_});
+    if (Widget* child = content_child()) {
+        if (child->visible()) child->paint(ctx);
+    }
+    ctx.canvas->pop_clip();
+    /* The bars paint unclipped in their gutters. */
+    if (vbar_->visible()) vbar_->paint(ctx);
+    if (hbar_->visible()) hbar_->paint(ctx);
+}
+
+bool ScrolledView::on_event(const SLUIEvent& ev) {
+    /* Give the scroll bars first refusal (they sit in the gutters), then route
+     * positional events into the clipped content with the scroll offset applied
+     * so hit-testing matches what the user sees. */
+    bool positional = ev.type == SLUI_EVENT_POINTER_DOWN ||
+                      ev.type == SLUI_EVENT_POINTER_UP ||
+                      ev.type == SLUI_EVENT_POINTER_MOVE;
+    if (vbar_->visible() && (!positional || vbar_->bounds().contains(ev.x, ev.y))) {
+        if (vbar_->on_event(ev)) return true;
+    }
+    if (hbar_->visible() && (!positional || hbar_->bounds().contains(ev.x, ev.y))) {
+        if (hbar_->on_event(ev)) return true;
+    }
+    Widget* child = content_child();
+    if (child && child->visible()) {
+        if (positional) {
+            Rect box = content();
+            /* Only deliver pointer events that fall inside the visible viewport. */
+            if (!Rect{box.x, box.y, view_w_, view_h_}.contains(ev.x, ev.y))
+                return false;
+        }
+        return child->on_event(ev);
+    }
+    return false;
+}
+
+/* ======================================================================== */
 /* StatusBar                                                                */
 /* ======================================================================== */
 SLUISize StatusBar::measure(const PaintContext& ctx) {

@@ -265,6 +265,11 @@ SLUIWidget *slui_window_root(SLUIWindow *window);
 const SLUITheme *slui_window_theme(const SLUIWindow *window);
 void slui_window_set_theme(SLUIWindow *window, const SLUITheme *theme);
 void slui_window_request_redraw(SLUIWindow *window);
+/* Force one synchronous layout + paint pass now (measure -> arrange -> paint
+ * into the window's canvas). The app loop does this every frame; this entry
+ * point lets a headless host or a test settle widget geometry (so e.g. a
+ * scrolled view's overflow is computed) without spinning the event loop. */
+void slui_window_render(SLUIWindow *window);
 
 /* A per-window event callback, called for events the widget tree did not fully
  * consume (e.g. window CLOSE). Return non-zero to mark the event handled. */
@@ -329,6 +334,21 @@ SLUIWidget *slui_frame(SLUIWidget *parent, const char *title);
 SLUIWidget *slui_card(SLUIWidget *parent);
 SLUIWidget *slui_grid(SLUIWidget *parent, int columns, int spacing);
 SLUIWidget *slui_status_bar(SLUIWidget *parent);
+
+/* A scrolled viewport: clips and scrolls its content when the content is larger
+ * than the viewport. The FIRST child attached to the returned widget is the
+ * scroll content (fill it like a box); the view owns its own scroll bars and
+ * shows them automatically per the per-axis policy (0=auto shown only on
+ * overflow, 1=always, 2=never). This is the native overflow->scrollbar muscle.
+ * `policy_h` governs the horizontal bar, `policy_v` the vertical. */
+SLUIWidget *slui_scrolled_view(SLUIWidget *parent, int policy_h, int policy_v);
+/* Programmatic scroll control / query for a scrolled view (no-op / 0 for a
+ * widget that is not a scrolled view). Offsets are in content pixels, clamped
+ * to the scrollable range. */
+void slui_scrolled_view_scroll_to(SLUIWidget *view, int x, int y);
+void slui_scrolled_view_scroll_by(SLUIWidget *view, int dx, int dy);
+int slui_scrolled_view_scroll_x(SLUIWidget *view);
+int slui_scrolled_view_scroll_y(SLUIWidget *view);
 
 /* Display / ornament. */
 SLUIWidget *slui_image(SLUIWidget *parent, const char *glyph, int w, int h);

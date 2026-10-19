@@ -83,7 +83,12 @@ class SLGuiMount {
       if (child == null) { continue; }
       if (!isMounted(childId)) {
         String label = labelFor(child);
-        int wh = factory.construct(ph, child.getTag(), label);
+        // Overflow-aware construction: a plain container carrying an `overflow`
+        // (or `overflow-x`/`overflow-y`) attribute is promoted to a native
+        // scrolled viewport, so scrollbars appear AUTOMATICALLY when its content
+        // is larger than the frame. Explicit scrolled/scrollview tags already
+        // build one via the factory.
+        int wh = constructWithOverflow(ph, child, label);
         child.mount(wh);
         record(childId, wh);
         mounted = mounted + 1;
@@ -148,6 +153,35 @@ class SLGuiMount {
   int appliedLast() { return applied; }
 
   // ---- helpers ------------------------------------------------------------
+
+  // Construct a child's widget, honouring an `overflow` intent. A container
+  // whose tag is already a scrolled view (scrolled/scrollview/scrollarea) is
+  // built by the factory as usual. Otherwise, if the node carries an `overflow`
+  // attribute (or per-axis `overflow-x` / `overflow-y`), build a native
+  // scrolled viewport with the mapped policy instead of a plain container, so
+  // the content scrolls and scrollbars appear automatically on overflow. The
+  // node's children then mount inside the viewport as its scroll content.
+  //   overflow / overflow-x / overflow-y : auto | scroll | always | hidden |
+  //   visible | clip | none  (auto is the default when the attr is present
+  //   without a value). A per-axis attr overrides the shorthand for that axis.
+  int constructWithOverflow(int parentHandle, SLGuiNode child, String label) {
+    String tag = child.getTag();
+    if (factory.isScrolled(tag)) {
+      return factory.construct(parentHandle, tag, label);
+    }
+    String ov = child.getAttribute("overflow");
+    String ox = child.getAttribute("overflow-x");
+    String oy = child.getAttribute("overflow-y");
+    if (ov == null && ox == null && oy == null) {
+      return factory.construct(parentHandle, tag, label);   // no overflow intent
+    }
+    // Resolve each axis: a per-axis attr wins; else the shorthand; else auto.
+    String hx = (ox != null) ? ox : ov;
+    String hy = (oy != null) ? oy : ov;
+    int policyH = factory.overflowPolicy(hx);
+    int policyV = factory.overflowPolicy(hy);
+    return factory.constructScrolled(parentHandle, policyH, policyV);
+  }
 
   // The construction label for a node: its text, or its "placeholder" attr for
   // entries, or empty.

@@ -103,6 +103,7 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_WIDGET_GET_TOGGLE: case SLUI_FN_WIDGET_GET_VALUE:
         case SLUI_FN_WIDGET_TAKE_ACTIVATED:
         case SLUI_FN_SCREEN_WIDTH: case SLUI_FN_SCREEN_HEIGHT:
+        case SLUI_FN_SCROLLED_SCROLL_X: case SLUI_FN_SCROLLED_SCROLL_Y:
             return 1;
         /* 2 args */
         case SLUI_FN_APP_PUMP: case SLUI_FN_APP_QUIT: case SLUI_FN_WINDOW_SET_TITLE:
@@ -131,6 +132,8 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_WIDGET_SET_ALIGN: case SLUI_FN_WIDGET_SET_EXPAND:
         case SLUI_FN_WIDGET_SET_SIZE_REQ: case SLUI_FN_AVATAR:
         case SLUI_FN_THEME_SET_FONT:
+        case SLUI_FN_SCROLLED_VIEW:
+        case SLUI_FN_SCROLLED_SCROLL_TO: case SLUI_FN_SCROLLED_SCROLL_BY:
             return 3;
         /* 4 args */
         case SLUI_FN_IMAGE: case SLUI_FN_RADIO_BUTTON: case SLUI_FN_SCROLL_BAR:
@@ -187,6 +190,11 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_STATUS_BAR: return r_int(widget_put(slui_status_bar(widget_get(ai(a,n,0)))));
         case SLUI_FN_SEPARATOR:  return r_int(widget_put(slui_separator(widget_get(ai(a,n,0)), (SLUIOrientation)ai(a,n,1))));
         case SLUI_FN_SPACER:     return r_int(widget_put(slui_spacer(widget_get(ai(a,n,0)))));
+        case SLUI_FN_SCROLLED_VIEW: return r_int(widget_put(slui_scrolled_view(widget_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2))));
+        case SLUI_FN_SCROLLED_SCROLL_TO: slui_scrolled_view_scroll_to(widget_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2)); return r_int(0);
+        case SLUI_FN_SCROLLED_SCROLL_BY: slui_scrolled_view_scroll_by(widget_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2)); return r_int(0);
+        case SLUI_FN_SCROLLED_SCROLL_X:  return r_int(slui_scrolled_view_scroll_x(widget_get(ai(a,n,0))));
+        case SLUI_FN_SCROLLED_SCROLL_Y:  return r_int(slui_scrolled_view_scroll_y(widget_get(ai(a,n,0))));
 
         /* --- buttons / actions --- */
         case SLUI_FN_BUTTON:      return r_int(widget_put(slui_button(widget_get(ai(a,n,0)), as_(a,n,1))));
