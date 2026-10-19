@@ -1,0 +1,19 @@
+{
+  "profile": "wifi5-802.11ac",
+  "generation": "Wi-Fi 5",
+  "ieee_amendment": "802.11ac",
+  "bands_ghz": [5],
+  "channel_widths_mhz": [20, 40, 80, 160],
+  "max_spatial_streams_standard": 8,
+  "max_qam_order_reference": 256,
+  "theoretical_peak_phy_mbps_approx": 6933,
+  "peak_rate_conditions": "Wide channel, eight spatial streams and highest supported modulation/coding/guard-interval combination",
+  "runtime_capability_discovery_required": true,
+  "regulatory_domain": "must be supplied by platform/runtime",
+  "hardware_controlled": false,
+  "notes": [
+    "Wi-Fi 5 is primarily a 5 GHz generation.",
+    "Actual support varies by adapter, access point, firmware, channel and jurisdiction.",
+    "Use operating-system network APIs for connection management."
+  ]
+}
