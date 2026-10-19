@@ -175,6 +175,34 @@ The lines are source-compatible: each higher line keeps every entry point of the
 one below and adds its surface on top (1.0 → +settings → +visual effects →
 +professional components → +military hardening).
 
+### Scrolling + screen-aware sizing (all lines)
+
+Two line-agnostic helpers ship in **every** version line (1.0 → 5.0):
+
+- **`SLGuiScrollbar`** — an **implied scrollbar** for a scrolled surface in both
+  axes (vertical + horizontal). From a viewport vs. content extent it decides
+  whether scrolling is implied (`overflow()`) under an auto / always / never
+  policy and computes the normalized `value` (thumb position) + `page` (thumb
+  size) the drawn `uiScrollBar(parent, orient, value, page)` needs; it tracks a
+  clamped scroll offset (`scrollBy`/`scrollTo`/…).
+- **`SLGuiScreenFit`** — sizes a window from the **actual screen size /
+  resolution** at three tiers: **basic** (clamped fraction of the screen),
+  **moderate** (fraction of the work area, margin + centered), and **advanced**
+  (resolution-CLASS buckets ≤720p / 1080p / 1440p / 4K+, each with its own
+  fraction and cap).
+
+`SLGuiApp` wires both in: `boot()` primes a `SLGuiScreenFit` from the live
+display and feeds the desktop size to `SLGuiWindowState` (military); `bootFitted(appId,
+title, tier)` opens the app, queries the real screen, and sizes the window to it;
+`screenFit()` and `scrollbarFor(viewport, content, horizontal)` expose the two
+helpers. The real screen comes from the new `uiScreenWidth(app)` /
+`uiScreenHeight(app)` built-ins (C ABI `slui_screen_size`), surfaced on the
+shared `SLUserInterface` facade as `screenWidth()` / `screenHeight()`; a headless
+host reports 0 and `SLGuiScreenFit` falls back to a modeled 1920×1080.
+`SLGuiWidgetFactory` registers the `scrollbar`/`vscroll` (vertical) and `hscroll`
+(horizontal) tags. A runnable walkthrough is each line's
+`gui-scroll-screenfit-demo.sleela`.
+
 ## Events, DHTML-style DOM, and scripting
 
 On top of the integration layer, `lib/gui` provides the backing API for

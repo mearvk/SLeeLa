@@ -1,0 +1,74 @@
+/*
+ * lib/gui/version-thual/gui-scroll-screenfit-demo.sleela
+ * A runnable walkthrough of the two new version-thual sizing/scrolling helpers:
+ *
+ *   - SLGuiScreenFit  — sizes a window from the ACTUAL screen size / resolution
+ *                       at three support tiers (basic / moderate / advanced).
+ *   - SLGuiScrollbar  — an IMPLIED scrollbar for a scrolled surface in BOTH
+ *                       axes (vertical and horizontal), computing the [0,1]
+ *                       value/page the drawn uiScrollBar needs.
+ *
+ * SLeeLa owns the geometry + policy; the host feeds in the real screen (from
+ * the native uiScreenWidth / uiScreenHeight built-ins) and the viewport/content
+ * extents, and reads the resolved sizes back out. Tier/axis/policy ordinals are
+ * passed as small ints (documented in each class) — the house style for callers.
+ */
+#sleela 2.1
+// Select the GUI 5.0 military source line so SLPackage, SLGuiScreenFit, and
+// SLGuiScrollbar resolve to this line's classes through the library index.
+import gui.version-thual;
+class GuiScrollScreenFitDemo {
+
+  void main() {
+    SLPackage pkg = new SLPackage(); pkg.configure("gui");
+    print("gui package " + pkg.version() + " (featureLevel " + pkg.featureLevel() + ")");
+
+    // ---- Screen-based window sizing, three tiers --------------------------
+    // In a live program the host passes uiScreenWidth(app)/uiScreenHeight(app)
+    // here; a headless host passes 0 and the model falls back to 1920x1080.
+    int screenW = 2560; int screenH = 1440;
+
+    SLGuiScreenFit basic = new SLGuiScreenFit();
+    basic.configure(0);                      // 0 = TIER_BASIC
+    basic.setScreen(screenW, screenH); basic.fit();
+    print("BASIC    -> " + basic.report() + " honored=" + basic.honored());
+
+    SLGuiScreenFit moderate = new SLGuiScreenFit();
+    moderate.configure(1);                   // 1 = TIER_MODERATE
+    moderate.setScreen(screenW, screenH); moderate.setMargin(64); moderate.fit();
+    print("MODERATE -> " + moderate.report() + " honored=" + moderate.honored());
+
+    SLGuiScreenFit advanced = new SLGuiScreenFit();
+    advanced.configure(2);                   // 2 = TIER_ADVANCED
+    advanced.setScreen(screenW, screenH); advanced.fit();
+    print("ADVANCED -> " + advanced.report() + " honored=" + advanced.honored());
+    print("  (advanced buckets the screen by class: " + advanced.resolutionClassName() + ")");
+
+    // ---- Implied scrollbars, both axes ------------------------------------
+    // Use the advanced window as the viewport; pretend the content is larger.
+    int viewW = advanced.width(); int viewH = advanced.height();
+    int contentW = viewW + 600;        // wider than the viewport -> h-scroll
+    int contentH = viewH * 3;          // three screens tall  -> v-scroll
+
+    SLGuiScrollbar vbar = new SLGuiScrollbar();
+    vbar.configure(0, viewH, contentH);      // 0 = AXIS_VERTICAL
+    vbar.scrollBy(viewH);                     // page down once
+    print("V-SCROLL -> " + vbar.report());
+    print("  uiScrollBar(parent, " + vbar.orient() + ", "
+        + (vbar.valuePermille() / 1000.0) + ", " + (vbar.pagePermille() / 1000.0) + ")");
+
+    SLGuiScrollbar hbar = new SLGuiScrollbar();
+    hbar.configure(1, viewW, contentW);      // 1 = AXIS_HORIZONTAL
+    hbar.scrollToEnd();
+    print("H-SCROLL -> " + hbar.report());
+    print("  uiScrollBar(parent, " + hbar.orient() + ", "
+        + (hbar.valuePermille() / 1000.0) + ", " + (hbar.pagePermille() / 1000.0) + ")");
+
+    // A surface that fits needs no bar (auto policy hides it).
+    SLGuiScrollbar fits = new SLGuiScrollbar();
+    fits.configure(0, 800, 600);             // content < viewport
+    print("NO-SCROLL-> implied=" + fits.implied() + " (content fits the viewport)");
+
+    print("done: screen-fit sizing + implied scrollbars, version-thual line.");
+  }
+}

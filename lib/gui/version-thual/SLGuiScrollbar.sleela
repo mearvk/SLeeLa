@@ -1,0 +1,138 @@
+/*
+ * lib/gui/version-thual/SLGuiScrollbar.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiScrollbar — the IMPLIED scrollbar
+ *   model for a scrolled surface, in BOTH axes (vertical and horizontal). It is
+ *   a pure model: given a viewport extent and the content extent on an axis, it
+ *   decides whether a scrollbar is IMPLIED (content overflows the viewport),
+ *   and computes the two normalized [0,1] values the toolkit's drawn scroll bar
+ *   needs — `page` (the fraction of content the viewport shows, i.e. the thumb
+ *   size) and `value` (the thumb position from the current scroll offset). It
+ *   also resolves a visibility policy (auto / always / never) so a host can
+ *   show the bar only when scrolling is actually implied. SLeeLa owns the
+ *   geometry + policy; the host paints it with `uiScrollBar(parent, orient,
+ *   value, page)` and feeds scroll gestures back through `scrollBy` / `scrollTo`.
+ *
+ * Family: gui. The companion of SLGuiLayout for overflow; the drawn bar is the
+ *   existing SleelaUI scroll-bar control — this class is the implied geometry.
+ */
+#sleela 2.1
+class SLGuiScrollbar {
+  // Axis ordinals (mirror SLUIOrientation: VERTICAL=0, HORIZONTAL=1).
+  static final int AXIS_VERTICAL   = 0;
+  static final int AXIS_HORIZONTAL = 1;
+
+  // Visibility policy for an implied scrollbar.
+  static final int SHOW_AUTO   = 0;   // shown only while content overflows
+  static final int SHOW_ALWAYS = 1;   // always shown (reserves the gutter)
+  static final int SHOW_NEVER  = 2;   // never shown (overflow still scrolls)
+
+  int axis;        // AXIS_VERTICAL / AXIS_HORIZONTAL
+  int policy;      // SHOW_*
+  int viewport;    // visible extent on this axis (px)
+  int content;     // total content extent on this axis (px)
+  int offset;      // current scroll offset from the start (px), clamped
+  int thicknessPx; // drawn gutter thickness (px)
+
+  // Fixed-point scale for the normalized [0,1] value/page (SLeeLa ints only):
+  // we report value/page in PERMILLE (0..1000) so callers can divide by 1000.0
+  // to get the [0,1] double the toolkit wants, with no float fields here.
+  static final int UNIT = 1000;
+
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+
+  // Install safe defaults for an axis; a zero/negative extent is treated as 0.
+  void configure(int whichAxis, int viewportPx, int contentPx) {
+    axis = (whichAxis == AXIS_HORIZONTAL) ? AXIS_HORIZONTAL : AXIS_VERTICAL;
+    policy = SHOW_AUTO;
+    viewport = (viewportPx > 0) ? viewportPx : 0;
+    content  = (contentPx  > 0) ? contentPx  : 0;
+    offset = 0;
+    thicknessPx = 12;
+  }
+
+  void setPolicy(int p) { if (p >= SHOW_AUTO && p <= SHOW_NEVER) { policy = p; } }
+  void setThickness(int px) { if (px > 0) { thicknessPx = clamp(px, 4, 64); } }
+
+  // The host reports a new viewport (on resize) and/or content (on relayout).
+  void setViewport(int px) { if (px > 0) { viewport = px; } clampOffset(); }
+  void setContent(int px)  { content = (px > 0) ? px : 0; clampOffset(); }
+
+  // The maximum scrollable offset (0 when content fits the viewport).
+  int maxOffset() {
+    int over = content - viewport;
+    return (over > 0) ? over : 0;
+  }
+  void clampOffset() { offset = clamp(offset, 0, maxOffset()); }
+
+  // ---- scroll gestures (the host raises these) ----------------------------
+  void scrollTo(int px) { offset = clamp(px, 0, maxOffset()); }
+  void scrollBy(int deltaPx) { scrollTo(offset + deltaPx); }
+  void scrollToStart() { offset = 0; }
+  void scrollToEnd() { offset = maxOffset(); }
+
+  // ---- the IMPLIED decision -----------------------------------------------
+  // Scrolling is implied exactly when the content overflows the viewport.
+  boolean overflow() { return content > viewport && viewport > 0; }
+
+  // Should the drawn bar be shown, given the policy?
+  boolean implied() {
+    if (policy == SHOW_ALWAYS) { return true; }
+    if (policy == SHOW_NEVER)  { return false; }
+    return overflow();                       // SHOW_AUTO
+  }
+
+  // ---- normalized geometry for uiScrollBar(parent, orient, value, page) ----
+  // page = fraction of content currently visible (thumb size), in [0,1].
+  int pagePermille() {
+    if (content <= 0 || viewport <= 0) { return UNIT; }   // nothing to scroll
+    if (viewport >= content) { return UNIT; }
+    return clamp((viewport * UNIT) / content, 1, UNIT);
+  }
+  // value = thumb position from the scroll offset, in [0,1].
+  int valuePermille() {
+    int mx = maxOffset();
+    if (mx <= 0) { return 0; }
+    return clamp((offset * UNIT) / mx, 0, UNIT);
+  }
+
+  // Convenience: scaled to an arbitrary resolution (e.g. 100 for a percent).
+  int pageScaled(int scale)  { return (pagePermille()  * scale) / UNIT; }
+  int valueScaled(int scale) { return (valuePermille() * scale) / UNIT; }
+
+  // ---- readers ------------------------------------------------------------
+  int getAxis() { return axis; }
+  int getOffset() { return offset; }
+  int getViewport() { return viewport; }
+  int getContent() { return content; }
+  int getThickness() { return thicknessPx; }
+  int getPolicy() { return policy; }
+  int orient() { return axis; }               // the SLUIOrientation to pass
+
+  String axisName()   { return (axis == AXIS_HORIZONTAL) ? "horizontal" : "vertical"; }
+  String policyName() {
+    if (policy == SHOW_ALWAYS) { return "always"; }
+    if (policy == SHOW_NEVER)  { return "never"; }
+    return "auto";
+  }
+
+  // Internally consistent: non-negative extents, offset within range, and a
+  // page/value pair that stay inside [0,1].
+  boolean honored() {
+    if (viewport < 0 || content < 0 || offset < 0) { return false; }
+    if (offset > maxOffset()) { return false; }
+    int p = pagePermille(); int v = valuePermille();
+    return p >= 0 && p <= UNIT && v >= 0 && v <= UNIT;
+  }
+
+  String report() {
+    return axisName() + " scrollbar: viewport=" + viewport + "px content=" + content
+        + "px offset=" + offset + "px (max " + maxOffset() + ") "
+        + "implied=" + implied() + " policy=" + policyName()
+        + " value=" + valuePermille() + "/1000 page=" + pagePermille() + "/1000";
+  }
+}

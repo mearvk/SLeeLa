@@ -25,6 +25,7 @@ class SLGuiApp {
   SLGuiScript script;
   SLGuiBranding branding;   // 3.0 logo/brand identity painted into the chrome
   SLGuiAudioCues audio;     // 3.0 activation-audio cue registry
+  SLGuiScreenFit screenFitter;  // sizes the window from the actual screen size
   int frameMillis;          // nominal per-loop tick for scheduled effects
   int ready;
 
@@ -50,10 +51,45 @@ class SLGuiApp {
     // 3.0 surfaces: a brand identity and the activation-audio cue registry.
     branding = new SLGuiBranding(); branding.configure("");
     audio = new SLGuiAudioCues(); audio.configure();
+    // A screen-fit helper, primed with the ACTUAL screen size (0 headless).
+    screenFitter = new SLGuiScreenFit(); screenFitter.configure(1);   // moderate
+    screenFitter.setScreen(ui.screenWidth(), ui.screenHeight());
     frameMillis = 16;   // ~60 fps nominal tick for scheduled rotation/fade
 
     ready = 1;
     return true;
+  }
+
+  // Open the application and size the window to the ACTUAL screen / resolution,
+  // at a support tier (0=basic, 1=moderate, 2=advanced; see SLGuiScreenFit).
+  // Queries uiScreenWidth/uiScreenHeight through the facade; a headless host
+  // falls back to a modeled 1920x1080. Returns true when the toolkit came up.
+  boolean bootFitted(String appId, String title, int tier) {
+    SLUserInterface probe = new SLUserInterface();
+    probe.configure(appId);
+    if (!probe.open()) { ready = 0; return false; }
+    SLGuiScreenFit fit = new SLGuiScreenFit();
+    fit.configure(tier);
+    fit.setScreen(probe.screenWidth(), probe.screenHeight());
+    fit.fit();
+    probe.close();   // reopened inside boot() with the resolved size
+    boolean ok = boot(appId, title, fit.width(), fit.height());
+    if (ok) { screenFitter = fit; }
+    return ok;
+  }
+
+  // The screen-fit helper (primed with the real screen). Call setScreen()/fit()
+  // to recompute, then read width()/height()/x()/y() for a resize or re-center.
+  SLGuiScreenFit screenFit() { return screenFitter; }
+
+  // Build an IMPLIED scrollbar model for a scrolled surface. `horizontal`
+  // selects the axis; `viewport`/`content` are the extents on that axis. The
+  // returned SLGuiScrollbar yields orient()/valuePermille()/pagePermille() to
+  // paint with uiScrollBar (or an SLScrollBar), and tracks the scroll offset.
+  SLGuiScrollbar scrollbarFor(int viewport, int content, boolean horizontal) {
+    SLGuiScrollbar sb = new SLGuiScrollbar();
+    sb.configure(horizontal ? 1 : 0, viewport, content);
+    return sb;
   }
 
   // ---- 3.0 branding + audio access ----------------------------------------

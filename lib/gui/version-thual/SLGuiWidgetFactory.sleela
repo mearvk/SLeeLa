@@ -44,6 +44,18 @@ class SLGuiWidgetFactory {
     if (tag == "spacer")                    { return uiSpacer(parentHandle); }
     if (tag == "separator" || tag == "hr")  { return uiSeparator(parentHandle, ORIENT_HORIZONTAL); }
 
+    // Scrollbars (the IMPLIED scroll surface; geometry comes from
+    // SLGuiScrollbar, which the host passes as the value/page here). A plain
+    // "scrollbar"/"vscroll" is vertical; "hscroll" is horizontal. The initial
+    // value/page are start-of-content with a full thumb; SLGuiScrollbar then
+    // drives them each pass through uiWidgetSetValue.
+    if (tag == "scrollbar" || tag == "vscroll" || tag == "vscrollbar") {
+      return uiScrollBar(parentHandle, ORIENT_VERTICAL, 0.0, 1.0);
+    }
+    if (tag == "hscroll" || tag == "hscrollbar") {
+      return uiScrollBar(parentHandle, ORIENT_HORIZONTAL, 0.0, 1.0);
+    }
+
     // Unknown tag: give it a vertical box so children still have a container.
     return uiBox(parentHandle, ORIENT_VERTICAL, 8);
   }

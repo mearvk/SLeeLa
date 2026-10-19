@@ -1,0 +1,193 @@
+/*
+ * lib/gui/version-thual/SLGuiScreenFit.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiScreenFit — the helper that sizes a
+ *   window from the ACTUAL screen size / resolution. It offers three support
+ *   tiers so a host can ask for as much or as little cleverness as it wants:
+ *
+ *     BASIC    — a fixed fraction of the screen, clamped to a sane min/max.
+ *     MODERATE — a fraction plus a work-area margin and a centered position.
+ *     ADVANCED — resolution-CLASS buckets (≤720p / 1080p / 1440p / 4K+), each
+ *                with its own target fraction and a cap, aspect-ratio aware,
+ *                honoring the min/max window window and the work-area inset.
+ *
+ *   It is a pure model. The host feeds in the real screen via setScreen(w,h)
+ *   — sourced from the native `uiScreenWidth(app)` / `uiScreenHeight(app)`
+ *   built-ins — and reads the resolved width/height/x/y back out to pass to
+ *   `uiWindowCreate`. When the screen is unknown (0, e.g. a headless host) it
+ *   falls back to a modeled 1920×1080 so sizing is always defined. Every knob
+ *   clamps to a safe window, the GUAL/MILITARY clamp-to-a-window discipline.
+ *
+ * Family: gui. Companion to the window geometry (SLGuiWindowState, where the
+ *   line provides it); this class decides the initial, screen-relative size.
+ */
+#sleela 2.1
+class SLGuiScreenFit {
+  // Support tiers.
+  static final int TIER_BASIC    = 0;
+  static final int TIER_MODERATE = 1;
+  static final int TIER_ADVANCED = 2;
+
+  // Resolution classes (ADVANCED tier buckets), by the SHORTER screen edge.
+  static final int RES_SD    = 0;   // ≤  720  (SD / small)
+  static final int RES_HD    = 1;   // ≤ 1080  (Full HD)
+  static final int RES_QHD   = 2;   // ≤ 1440  (QHD)
+  static final int RES_UHD   = 3;   //  > 1440  (4K+ / ultra)
+
+  int tier;
+  int screenW; int screenH;     // actual screen px (modeled fallback if unknown)
+  int screenKnown;              // 1 when a real screen was reported
+  int marginPx;                 // work-area inset kept clear on every side
+  int minW; int minH;           // smallest window we will ever propose
+  int maxW; int maxH;           // largest window we will ever propose
+  int fillPct;                  // BASIC/MODERATE: % of screen to occupy
+
+  // Resolved result (filled by fit()).
+  int outW; int outH; int outX; int outY;
+
+  static final int MODEL_W = 1920;   // modeled fallback resolution
+  static final int MODEL_H = 1080;
+
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+  int imin(int a, int b) { return (a < b) ? a : b; }
+  int imax(int a, int b) { return (a > b) ? a : b; }
+
+  // Install documented defaults. `supportTier` picks basic/moderate/advanced.
+  void configure(int supportTier) {
+    tier = clamp(supportTier, TIER_BASIC, TIER_ADVANCED);
+    screenW = MODEL_W; screenH = MODEL_H; screenKnown = 0;
+    marginPx = 48;
+    minW = 640;  minH = 480;
+    maxW = 7680; maxH = 4320;      // allow up to 8K; real cap is the screen
+    fillPct = 75;                   // occupy 75% of the screen by default
+  }
+
+  // Feed the ACTUAL screen from uiScreenWidth/uiScreenHeight. A non-positive
+  // value means "unknown" (headless), so we keep the modeled fallback.
+  void setScreen(int w, int h) {
+    if (w > 0 && h > 0) { screenW = w; screenH = h; screenKnown = 1; }
+    else { screenW = MODEL_W; screenH = MODEL_H; screenKnown = 0; }
+  }
+
+  void setFillPct(int pct)   { fillPct = clamp(pct, 20, 100); }
+  void setMargin(int px)     { marginPx = clamp(px, 0, 400); }
+  void setMinSize(int w, int h) { if (w > 0) { minW = w; } if (h > 0) { minH = h; } }
+  void setMaxSize(int w, int h) {
+    // A max below the min is refused (kept at least at min) — fail-safe.
+    if (w >= minW) { maxW = w; }
+    if (h >= minH) { maxH = h; }
+  }
+
+  // The usable work area = screen minus the margin on each side.
+  int workW() { return imax(minW, screenW - 2 * marginPx); }
+  int workH() { return imax(minH, screenH - 2 * marginPx); }
+
+  // ADVANCED: classify the screen by its shorter edge.
+  int resolutionClass() {
+    int shortEdge = imin(screenW, screenH);
+    if (shortEdge <= 720)  { return RES_SD; }
+    if (shortEdge <= 1080) { return RES_HD; }
+    if (shortEdge <= 1440) { return RES_QHD; }
+    return RES_UHD;
+  }
+
+  // ADVANCED: the target fill % for a resolution class — larger screens give
+  // the window proportionally LESS of the glass (a 4K window at 90% is huge).
+  int classFillPct() {
+    int rc = resolutionClass();
+    if (rc == RES_SD)  { return 92; }   // small screens: nearly full
+    if (rc == RES_HD)  { return 80; }
+    if (rc == RES_QHD) { return 70; }
+    return 60;                          // UHD/4K: a comfortable 60%
+  }
+  // ADVANCED: an absolute cap per class so a window never becomes unwieldy.
+  int classCapW() {
+    int rc = resolutionClass();
+    if (rc == RES_SD)  { return 1280; }
+    if (rc == RES_HD)  { return 1760; }
+    if (rc == RES_QHD) { return 2240; }
+    return 2880;
+  }
+  int classCapH() {
+    int rc = resolutionClass();
+    if (rc == RES_SD)  { return 800; }
+    if (rc == RES_HD)  { return 1080; }
+    if (rc == RES_QHD) { return 1440; }
+    return 1800;
+  }
+
+  // Compute the window size+position for the configured tier. Returns the
+  // resolved width; outW/outH/outX/outY hold the full result.
+  int fit() {
+    int w; int h;
+    if (tier == TIER_BASIC) {
+      // Fraction of the raw screen, clamped to the hard min/max.
+      w = (screenW * fillPct) / 100;
+      h = (screenH * fillPct) / 100;
+    } else if (tier == TIER_MODERATE) {
+      // Fraction of the WORK area (screen minus margins).
+      w = (workW() * fillPct) / 100;
+      h = (workH() * fillPct) / 100;
+    } else {
+      // ADVANCED: resolution-class fraction of the work area, then the class cap.
+      int pct = classFillPct();
+      w = (workW() * pct) / 100;
+      h = (workH() * pct) / 100;
+      w = imin(w, classCapW());
+      h = imin(h, classCapH());
+    }
+
+    // Never exceed the work area, nor the hard min/max window.
+    w = imin(w, workW());
+    h = imin(h, workH());
+    w = clamp(w, minW, maxW);
+    h = clamp(h, minH, maxH);
+
+    // Center within the full screen.
+    int x = (screenW - w) / 2; if (x < 0) { x = 0; }
+    int y = (screenH - h) / 2; if (y < 0) { y = 0; }
+
+    outW = w; outH = h; outX = x; outY = y;
+    return outW;
+  }
+
+  // ---- readers ------------------------------------------------------------
+  int width()  { return outW; }
+  int height() { return outH; }
+  int x()      { return outX; }
+  int y()      { return outY; }
+  int getTier() { return tier; }
+  boolean screenIsKnown() { return screenKnown == 1; }
+
+  String tierName() {
+    if (tier == TIER_BASIC)    { return "basic"; }
+    if (tier == TIER_MODERATE) { return "moderate"; }
+    return "advanced";
+  }
+  String resolutionClassName() {
+    int rc = resolutionClass();
+    if (rc == RES_SD)  { return "SD(≤720)"; }
+    if (rc == RES_HD)  { return "HD(1080)"; }
+    if (rc == RES_QHD) { return "QHD(1440)"; }
+    return "UHD(4K+)";
+  }
+
+  // Internally consistent: a positive, in-range result that fits the screen.
+  boolean honored() {
+    if (outW < minW || outH < minH) { return false; }
+    if (outW > maxW || outH > maxH) { return false; }
+    if (outW > screenW || outH > screenH) { return false; }
+    return maxW >= minW && maxH >= minH;
+  }
+
+  String report() {
+    return "screenfit[" + tierName() + "]: screen " + screenW + "x" + screenH
+        + (screenKnown == 1 ? " (actual) " : " (modeled) ")
+        + "class=" + resolutionClassName()
+        + " -> window " + outW + "x" + outH + " @(" + outX + "," + outY + ")";
+  }
+}
