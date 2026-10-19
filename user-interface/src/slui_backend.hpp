@@ -50,6 +50,12 @@ public:
 
     /* Push the Canvas pixels to the window surface now. */
     virtual void present(const Canvas& canvas) = 0;
+
+    /* Select the presentation buffering mode (SLUIBufferingMode). The default
+     * is a no-op so a backend that only blits directly (headless, or a port
+     * that has not implemented buffering yet) degrades gracefully; a backend
+     * that supports off-screen buffering overrides this to switch strategy. */
+    virtual void set_buffering(SLUIBufferingMode /*mode*/) {}
 };
 
 /* A backend owns the application connection (display/dispatcher) and the font

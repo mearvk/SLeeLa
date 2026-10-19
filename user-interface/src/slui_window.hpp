@@ -50,6 +50,11 @@ public:
     NativeWindow* native() { return native_.get(); }
     bool closed() const { return closed_; }
 
+    /* Presentation buffering: remembered on the window and pushed to the native
+     * surface, so it is re-applied if the native window is ever recreated. */
+    void set_buffering(SLUIBufferingMode mode);
+    SLUIBufferingMode buffering() const { return buffering_; }
+
 private:
     void relayout();
     static void invalidate_thunk(void* self) {
@@ -61,6 +66,7 @@ private:
     bool custom_titlebar_ = false;
     bool dirty_ = true;
     bool closed_ = false;
+    SLUIBufferingMode buffering_ = SLUI_BUFFERING_DOUBLE;
 
     std::unique_ptr<Widget> root_;
     std::unique_ptr<NativeWindow> native_;

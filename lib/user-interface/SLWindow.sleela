@@ -60,5 +60,14 @@ class SLWindow {
   // Ask the toolkit to repaint this window on the next turn.
   void requestRedraw() { if (window >= 0) { uiWindowRedraw(window); } }
 
+  // Presentation buffering: how a painted frame reaches the screen.
+  //   0 = single (direct blit; may tear on resize)
+  //   1 = double (one off-screen back buffer; frame lands atomically — default)
+  //   2 = triple (a ring of two back buffers; smoother rapid resize/animation)
+  // The toolkit defaults a window to double buffering; this lets a program
+  // override it (e.g. from an SLGuiSettings.getBufferingMode()).
+  void setBuffering(int mode) { if (window >= 0) { uiWindowSetBuffering(window, mode); } }
+  int buffering() { return (window >= 0) ? uiWindowBuffering(window) : 0; }
+
   int handle() { return window; }
 }

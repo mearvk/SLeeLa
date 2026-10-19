@@ -169,6 +169,17 @@ void slui_window_request_redraw(SLUIWindow* window) {
 void slui_window_render(SLUIWindow* window) {
     if (window) as_window(window)->render();
 }
+void slui_window_set_buffering(SLUIWindow* window, int mode) {
+    if (!window) return;
+    if (mode < SLUI_BUFFERING_SINGLE) mode = SLUI_BUFFERING_SINGLE;
+    if (mode > SLUI_BUFFERING_TRIPLE) mode = SLUI_BUFFERING_TRIPLE;
+    as_window(window)->set_buffering(static_cast<SLUIBufferingMode>(mode));
+}
+int slui_window_buffering(const SLUIWindow* window) {
+    if (!window) return SLUI_BUFFERING_SINGLE;
+    return static_cast<int>(
+        as_window(const_cast<SLUIWindow*>(window))->buffering());
+}
 void slui_window_set_event_handler(SLUIWindow* window, SLUIEventHandler handler,
                                    void* user) {
     if (window) as_window(window)->set_event_handler(handler, user);

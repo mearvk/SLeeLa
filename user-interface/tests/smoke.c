@@ -200,6 +200,20 @@ int main(void) {
         CHECK(slui_scrolled_view_scroll_x(sh) > 0, "wide content scrolls horizontally");
     }
 
+    /* --- presentation buffering: default + mode round-trip --------------- */
+    CHECK(slui_window_buffering(win) == SLUI_BUFFERING_DOUBLE,
+          "window defaults to double buffering");
+    slui_window_set_buffering(win, SLUI_BUFFERING_TRIPLE);
+    CHECK(slui_window_buffering(win) == SLUI_BUFFERING_TRIPLE,
+          "buffering set to triple");
+    slui_window_set_buffering(win, SLUI_BUFFERING_SINGLE);
+    CHECK(slui_window_buffering(win) == SLUI_BUFFERING_SINGLE,
+          "buffering set to single");
+    slui_window_set_buffering(win, 99); /* out of range -> clamped to triple */
+    CHECK(slui_window_buffering(win) == SLUI_BUFFERING_TRIPLE,
+          "out-of-range buffering clamps to triple");
+    slui_window_render(win); /* present once under triple to exercise the ring */
+
     /* The activation latch returns an activation at most once. */
     slui_widget_set_toggle(chk, 0); /* state change, not an activation */
     CHECK(slui_widget_take_activated(btn) == 0, "no spurious activation latched");

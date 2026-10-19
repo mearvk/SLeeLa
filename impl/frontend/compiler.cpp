@@ -665,6 +665,7 @@ private:
             {"uiWindowCreate",SLUI_FN_WINDOW_CREATE},{"uiWindowShow",SLUI_FN_WINDOW_SHOW},{"uiWindowHide",SLUI_FN_WINDOW_HIDE},
             {"uiWindowRoot",SLUI_FN_WINDOW_ROOT},{"uiWindowSetTitle",SLUI_FN_WINDOW_SET_TITLE},
             {"uiWindowSetTheme",SLUI_FN_WINDOW_SET_THEME},{"uiWindowRedraw",SLUI_FN_WINDOW_REDRAW},
+            {"uiWindowSetBuffering",SLUI_FN_WINDOW_SET_BUFFERING},{"uiWindowBuffering",SLUI_FN_WINDOW_BUFFERING},
             {"uiBox",SLUI_FN_BOX},{"uiGrid",SLUI_FN_GRID},{"uiFrame",SLUI_FN_FRAME},{"uiCard",SLUI_FN_CARD},
             {"uiHeaderBar",SLUI_FN_HEADER_BAR},{"uiStatusBar",SLUI_FN_STATUS_BAR},{"uiSeparator",SLUI_FN_SEPARATOR},
             {"uiScrolledView",SLUI_FN_SCROLLED_VIEW},{"uiScrolledScrollTo",SLUI_FN_SCROLLED_SCROLL_TO},

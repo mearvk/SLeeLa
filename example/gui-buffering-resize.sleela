@@ -1,0 +1,146 @@
+/*
+ * example/gui-buffering-resize.sleela
+ * DOUBLE / TRIPLE BUFFERING for smooth resize, as a real SleelaUI window and as
+ * a SLeeLa configuration choice.
+ *
+ * SleelaUI now renders each frame through a presentation buffering mode:
+ *   0 = SINGLE  -- blit the Canvas straight to the window (cheapest; a resize
+ *                  can show a half-drawn frame / tear).
+ *   1 = DOUBLE  -- paint into one off-screen back buffer, then copy the whole
+ *                  finished frame to the window in a single operation, so a
+ *                  resize/redraw lands atomically with no tearing. (default)
+ *   2 = TRIPLE  -- a ring of two back buffers, so the next frame can be prepared
+ *                  without waiting on the previous blit -- smoother under rapid
+ *                  resize / animation, at a little more memory.
+ *
+ * Here we open a resizable window, select TRIPLE buffering via the
+ * uiWindowSetBuffering built-in, read it back, and run the loop so you can drag
+ * the window edges and watch the resize stay clean. Headless (no display) it
+ * reports the default and exits 0 — the built-ins still resolve at compile time.
+ *
+ * In the lib/gui package this is also a validated setting: SLGuiSettings
+ * (2.0+) carries bufferingMode (BUFFERING_SINGLE/DOUBLE/TRIPLE) with a
+ * range-checked setter and honored()/report(), and SLGuiApp.setBuffering(mode)
+ * / SLWindow.setBuffering(mode) apply it to the live window.
+ *
+ * Run (needs a display: X on Linux, native on macOS/Windows):
+ *   SLEELA_SHEET=./SHEET.sheet \
+ *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+ *   ./impl/build/sleela run example/gui-buffering-resize.sleela
+ */
+#sleela 2.1
+class GuiBufferingResize {
+
+  int THEME_CUSTOM = 2;
+  int VERTICAL = 1;
+  int SCROLL_AUTO = 0;
+  int BUFFERING_SINGLE = 0;
+  int BUFFERING_DOUBLE = 1;
+  int BUFFERING_TRIPLE = 2;
+
+  int statusLabel;
+  int win;
+
+  int rgba(int r, int g, int b, int a) { return r * 16777216 + g * 65536 + b * 256 + a; }
+  int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
+
+  int theme() {
+    int t = uiThemePreset(THEME_CUSTOM);
+    uiThemeSetBg(t, rgb(24, 28, 34));
+    uiThemeSetSurface(t, rgb(38, 44, 52));
+    uiThemeSetSurfaceHi(t, rgb(52, 60, 70));
+    uiThemeSetChrome(t, rgb(44, 51, 60));
+    uiThemeSetBorder(t, rgba(200, 212, 226, 44));
+    uiThemeSetFg(t, rgb(230, 236, 244));
+    uiThemeSetFgDim(t, rgb(150, 162, 176));
+    uiThemeSetAccent(t, rgb(96, 150, 246));
+    uiThemeSetAccentFg(t, rgb(14, 20, 30));
+    uiThemeSetRadius(t, 8);
+    uiThemeSetControlHeight(t, 32);
+    return t;
+  }
+
+  String bufferingName(int mode) {
+    if (mode == BUFFERING_TRIPLE) { return "triple"; }
+    if (mode == BUFFERING_SINGLE) { return "single"; }
+    return "double";
+  }
+
+  void main() {
+    print("SLeeLa Buffering/Resize (native SleelaUI) — backend "
+        + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
+
+    int app = uiAppCreate("com.mearvk.SleelaUI.BufferingResize");
+    if (app < 0) {
+      print("No display available (headless): the buffering built-ins are wired");
+      print("(uiWindowSetBuffering / uiWindowBuffering); run on a desktop to see");
+      print("a window resize smoothly under double/triple buffering.");
+      return;
+    }
+
+    int th = theme();
+    win = uiWindowCreate(app, "SLeeLa Buffering — resize me", 720, 480, th);
+    int root = uiWindowRoot(win);
+
+    // A window opens double-buffered by default; read it, then switch to triple.
+    int initial = uiWindowBuffering(win);
+    uiWindowSetBuffering(win, BUFFERING_TRIPLE);
+    int now = uiWindowBuffering(win);
+
+    int header = uiHeaderBar(root);
+    int title = uiLabel(header, "\u25A3  Buffered presentation");
+    uiWidgetMargin(title, 0, 10, 0, 12);
+    uiSpacer(header);
+    int btnSingle = uiButton(header, "Single");
+    int btnDouble = uiButton(header, "Double");
+    int btnTriple = uiButton(header, "Triple");
+    uiWidgetSuggested(btnTriple, 1);
+
+    // Scrollable body so resizing exercises layout + present together.
+    int scroller = uiScrolledView(root, SCROLL_AUTO, SCROLL_AUTO);
+    uiWidgetExpand(scroller, 1, 1);
+    int body = uiBox(scroller, VERTICAL, 8);
+    uiWidgetMargin(body, 16, 16, 16, 16);
+    uiHeading(body, "Resize the window — the frame stays clean", 18);
+    int i = 0;
+    while (i < 24) {
+      uiLabel(body, "row " + i + " \u00B7 drag an edge; double/triple buffering presents each frame atomically");
+      i = i + 1;
+    }
+
+    int status = uiStatusBar(root);
+    statusLabel = uiLabel(status, "buffering: default " + bufferingName(initial)
+        + " \u2192 now " + bufferingName(now) + " \u00B7 resize to compare");
+    uiWidgetMargin(statusLabel, 0, 12, 0, 12);
+
+    uiWindowShow(win);
+    print("Window shown (triple-buffered). Buttons switch mode; resize to compare.");
+
+    boolean running = true;
+    while (running) {
+      int dispatched = uiAppPump(app, 1);
+      if (dispatched < 0) { running = false; }
+      else {
+        if (uiWidgetTakeActivated(btnSingle) == 1) {
+          uiWindowSetBuffering(win, BUFFERING_SINGLE);
+          uiWidgetSuggested(btnSingle, 1); uiWidgetSuggested(btnDouble, 0); uiWidgetSuggested(btnTriple, 0);
+          uiWidgetSetText(statusLabel, "buffering: single \u00B7 direct blit (may tear on resize)");
+        }
+        if (uiWidgetTakeActivated(btnDouble) == 1) {
+          uiWindowSetBuffering(win, BUFFERING_DOUBLE);
+          uiWidgetSuggested(btnSingle, 0); uiWidgetSuggested(btnDouble, 1); uiWidgetSuggested(btnTriple, 0);
+          uiWidgetSetText(statusLabel, "buffering: double \u00B7 one back buffer, atomic frame");
+        }
+        if (uiWidgetTakeActivated(btnTriple) == 1) {
+          uiWindowSetBuffering(win, BUFFERING_TRIPLE);
+          uiWidgetSuggested(btnSingle, 0); uiWidgetSuggested(btnDouble, 0); uiWidgetSuggested(btnTriple, 1);
+          uiWidgetSetText(statusLabel, "buffering: triple \u00B7 two-buffer ring, smoothest resize");
+        }
+      }
+    }
+
+    uiThemeDestroy(th);
+    uiAppDestroy(app);
+    print("event loop exited.");
+  }
+}

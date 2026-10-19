@@ -85,6 +85,12 @@ class SLGuiApp {
     return sb;
   }
 
+  // Presentation buffering for the live window: 0=single, 1=double (the
+  // toolkit default, flicker-free resize), 2=triple (smoother rapid resize).
+  // Pass SLGuiSettings.getBufferingMode() here to honor the configured knob.
+  void setBuffering(int mode) { if (window != null) { window.setBuffering(mode); } }
+  int buffering() { return (window != null) ? window.buffering() : 0; }
+
   // Add a SCROLLED VIEWPORT node to the DOM under `parentId`. Its children
   // become the scroll content and native scrollbars appear AUTOMATICALLY when
   // that content is larger than the viewport. Pin the viewport smaller than its

@@ -104,9 +104,11 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_WIDGET_TAKE_ACTIVATED:
         case SLUI_FN_SCREEN_WIDTH: case SLUI_FN_SCREEN_HEIGHT:
         case SLUI_FN_SCROLLED_SCROLL_X: case SLUI_FN_SCROLLED_SCROLL_Y:
+        case SLUI_FN_WINDOW_BUFFERING:
             return 1;
         /* 2 args */
         case SLUI_FN_APP_PUMP: case SLUI_FN_APP_QUIT: case SLUI_FN_WINDOW_SET_TITLE:
+        case SLUI_FN_WINDOW_SET_BUFFERING:
         case SLUI_FN_WINDOW_SET_THEME: case SLUI_FN_FRAME: case SLUI_FN_SEPARATOR:
         case SLUI_FN_BUTTON: case SLUI_FN_LINK_BUTTON: case SLUI_FN_LABEL:
         case SLUI_FN_BADGE: case SLUI_FN_CHIP: case SLUI_FN_TOOLTIP:
@@ -178,6 +180,8 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_WINDOW_HIDE:   slui_window_hide(win_get(ai(a,n,0))); return r_null();
         case SLUI_FN_WINDOW_ROOT:   return r_int(widget_put(slui_window_root(win_get(ai(a,n,0)))));
         case SLUI_FN_WINDOW_SET_TITLE: slui_window_set_title(win_get(ai(a,n,0)), as_(a,n,1)); return r_null();
+        case SLUI_FN_WINDOW_SET_BUFFERING: slui_window_set_buffering(win_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
+        case SLUI_FN_WINDOW_BUFFERING: return r_int(slui_window_buffering(win_get(ai(a,n,0))));
         case SLUI_FN_WINDOW_SET_THEME: slui_window_set_theme(win_get(ai(a,n,0)), theme_get(ai(a,n,1))); return r_null();
         case SLUI_FN_WINDOW_REDRAW:  slui_window_request_redraw(win_get(ai(a,n,0))); return r_null();
 

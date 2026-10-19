@@ -244,6 +244,37 @@ viewport clips + scrolls + shows bars automatically, `SLGuiScrollbar` remains th
 pure geometry model behind it, and the SLeeLa layer makes it available both as an
 explicit element and as an `overflow` attribute on any container.
 
+### Double / triple buffering for smooth resize (all lines)
+
+How a painted frame reaches the screen is now a selectable **presentation
+buffering mode** in the native toolkit, so a resize/redraw lands cleanly instead
+of tearing:
+
+- **Native (`user-interface/`).** `SLUIBufferingMode` = `SINGLE` / `DOUBLE` /
+  `TRIPLE`. A `Window` defaults to **double**: the backend paints the whole
+  Canvas into an off-screen buffer and copies the finished frame to the window
+  in one operation (on X11, an off-screen `Pixmap` + a single `XCopyArea`), so a
+  mid-repaint frame is never visible. **Triple** rings two back buffers so the
+  next frame can be prepared without waiting on the previous blit — smoother
+  under rapid resize/animation. **Single** restores the original direct blit.
+  The mode is remembered on the `Window` and re-applied if the native surface is
+  recreated; a backend that can't honor it (headless) ignores it gracefully.
+- **C ABI + built-ins.** `slui_window_set_buffering` / `slui_window_buffering`,
+  surfaced to SLeeLa as `uiWindowSetBuffering(window, mode)` /
+  `uiWindowBuffering(window)` and wrapped on the `SLWindow` facade as
+  `setBuffering(mode)` / `buffering()`. `SLGuiApp.setBuffering(mode)` passes it
+  through to the live window on every line.
+- **Validated setting (2.0+ lines).** `SLGuiSettings` gains `bufferingMode`
+  (`BUFFERING_SINGLE` / `BUFFERING_DOUBLE` / `BUFFERING_TRIPLE`) with a
+  range-checked `setBufferingMode()`, `getBufferingMode()` / `bufferingName()`,
+  an `honored()` clause, and a `report()` entry — the same clamp-to-a-safe-window
+  discipline as the `vsync` / backpressure knobs. A program reads
+  `settings.getBufferingMode()` and calls `app.setBuffering(...)` to apply it.
+  (The 1.0 `mual` line has no `SLGuiSettings`, but still gets the native default
+  and the `uiWindowSetBuffering` built-in / `SLGuiApp.setBuffering` passthrough.)
+
+A runnable walkthrough is `example/gui-buffering-resize.sleela`.
+
 ### Fade transitions + notification surfaces (all lines)
 
 Four line-agnostic **fade / transition** surfaces ship in **every** version line

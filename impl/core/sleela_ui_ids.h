@@ -35,6 +35,8 @@ typedef enum {
     SLUI_FN_WINDOW_SET_TITLE, /* uiWindowSetTitle(window:i, title:s) -> null    */
     SLUI_FN_WINDOW_SET_THEME, /* uiWindowSetTheme(window:i, theme:i) -> null    */
     SLUI_FN_WINDOW_REDRAW,    /* uiWindowRedraw(window:i) -> null               */
+    SLUI_FN_WINDOW_SET_BUFFERING, /* uiWindowSetBuffering(window:i, mode:i) -> null (0 single/1 double/2 triple) */
+    SLUI_FN_WINDOW_BUFFERING, /* uiWindowBuffering(window:i) -> mode int        */
 
     /* --- containers / structure --- */
     SLUI_FN_BOX,              /* uiBox(parent:i, orient:i, spacing:i) -> widget */

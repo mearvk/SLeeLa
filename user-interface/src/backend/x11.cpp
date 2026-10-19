@@ -78,6 +78,7 @@ public:
     int height() const override { return height_; }
     void request_redraw() override { dirty_ = true; }
     void present(const Canvas& canvas) override;
+    void set_buffering(SLUIBufferingMode mode) override;
 
     ::Window handle() const { return win_; }
     void set_size(int w, int h) {
@@ -91,6 +92,15 @@ public:
     }
 
 private:
+    /* Number of off-screen back pixmaps for the current mode: 0 (single,
+     * direct blit), 1 (double), or 2 (triple, a small ring). */
+    int back_count() const {
+        if (mode_ == SLUI_BUFFERING_TRIPLE) return 2;
+        if (mode_ == SLUI_BUFFERING_DOUBLE) return 1;
+        return 0;
+    }
+    void free_backbuffers();
+
     Display* dpy_;
     ::Window win_;
     GC gc_;
@@ -98,6 +108,15 @@ private:
     bool dirty_ = true;
     XImage* image_ = nullptr;
     std::vector<uint32_t> buffer_;
+
+    /* Off-screen back buffers (Pixmaps) for double/triple buffering. The Canvas
+     * is drawn into the current back pixmap via XPutImage, then copied to the
+     * window in one XCopyArea so a resize/redraw lands atomically. A ring of 2
+     * (triple) lets the next frame start without waiting on the last copy. */
+    SLUIBufferingMode mode_ = SLUI_BUFFERING_DOUBLE;
+    Pixmap backbuf_[2] = {0, 0};
+    int back_w_ = 0, back_h_ = 0;
+    int back_idx_ = 0;
 };
 
 class X11Backend : public Backend {
@@ -459,8 +478,29 @@ X11Window::~X11Window() {
         image_->data = nullptr; /* buffer_ owns the storage */
         XDestroyImage(image_);
     }
+    free_backbuffers();
     if (gc_) XFreeGC(dpy_, gc_);
     if (win_) XDestroyWindow(dpy_, win_);
+}
+
+void X11Window::free_backbuffers() {
+    for (int i = 0; i < 2; ++i) {
+        if (backbuf_[i]) {
+            XFreePixmap(dpy_, backbuf_[i]);
+            backbuf_[i] = 0;
+        }
+    }
+    back_w_ = back_h_ = 0;
+    back_idx_ = 0;
+}
+
+void X11Window::set_buffering(SLUIBufferingMode mode) {
+    if (mode == mode_) return;
+    mode_ = mode;
+    /* Drop any existing back pixmaps; present() lazily (re)creates the right
+     * number for the new mode at the current size. */
+    free_backbuffers();
+    dirty_ = true;
 }
 
 void X11Window::set_title(const std::string& title) {
@@ -481,6 +521,7 @@ void X11Window::present(const Canvas& canvas) {
     size_t count = static_cast<size_t>(w) * h;
     buffer_.assign(canvas.pixels(), canvas.pixels() + count);
 
+    int depth = DefaultDepth(dpy_, DefaultScreen(dpy_));
     if (!image_ || image_->width != w || image_->height != h) {
         if (image_) {
             image_->data = nullptr;
@@ -488,18 +529,48 @@ void X11Window::present(const Canvas& canvas) {
             image_ = nullptr;
         }
         ::Visual* vis = DefaultVisual(dpy_, DefaultScreen(dpy_));
-        int depth = DefaultDepth(dpy_, DefaultScreen(dpy_));
         image_ = XCreateImage(dpy_, vis, static_cast<unsigned>(depth), ZPixmap, 0,
                               reinterpret_cast<char*>(buffer_.data()), w, h, 32,
                               w * 4);
     } else {
         image_->data = reinterpret_cast<char*>(buffer_.data());
     }
-    /* Canvas packs 0xAARRGGBB; on little-endian X with a 24/32-bit TrueColor
-     * visual the ZPixmap byte order is BGRA, which matches our word layout. */
-    XPutImage(dpy_, win_, gc_, image_, 0, 0, 0, 0, static_cast<unsigned>(w),
-              static_cast<unsigned>(h));
+
+    int backs = back_count();
+    if (backs == 0) {
+        /* SINGLE buffering: blit the Canvas straight to the window. Cheapest,
+         * but a partially-copied frame can be visible during a resize.
+         * Canvas packs 0xAARRGGBB; on little-endian X with a 24/32-bit
+         * TrueColor visual the ZPixmap byte order is BGRA, which matches. */
+        XPutImage(dpy_, win_, gc_, image_, 0, 0, 0, 0,
+                  static_cast<unsigned>(w), static_cast<unsigned>(h));
+        XFlush(dpy_);
+        return;
+    }
+
+    /* DOUBLE / TRIPLE buffering: render the whole frame into an off-screen
+     * Pixmap, then copy it to the window in a single XCopyArea so the window
+     * never shows a half-drawn frame (no tearing on resize/redraw). TRIPLE
+     * rings two pixmaps so consecutive frames reuse alternate buffers. */
+    if (back_w_ != w || back_h_ != h) {
+        free_backbuffers();
+        back_w_ = w;
+        back_h_ = h;
+    }
+    if (back_idx_ >= backs) back_idx_ = 0;
+    if (!backbuf_[back_idx_]) {
+        backbuf_[back_idx_] =
+            XCreatePixmap(dpy_, win_, static_cast<unsigned>(w),
+                          static_cast<unsigned>(h), static_cast<unsigned>(depth));
+    }
+    Pixmap target = backbuf_[back_idx_];
+    XPutImage(dpy_, target, gc_, image_, 0, 0, 0, 0,
+              static_cast<unsigned>(w), static_cast<unsigned>(h));
+    XCopyArea(dpy_, target, win_, gc_, 0, 0, static_cast<unsigned>(w),
+              static_cast<unsigned>(h), 0, 0);
     XFlush(dpy_);
+    /* Advance the ring for triple buffering (no-op for double, backs==1). */
+    back_idx_ = (backs > 1) ? ((back_idx_ + 1) % backs) : 0;
 }
 
 } // namespace

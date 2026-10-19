@@ -355,11 +355,11 @@
     },
     {
       "path": "impl/core/sleela_ui_ids.h",
-      "sha256": "5ac59bb96eaec453f68400cb79882b720af9e9590af4c6593c666908a38d4669"
+      "sha256": "f5a671db44e3487e7670a83e8b7edc2b7ff4fb081d8c610c57066ddfdafa0453"
     },
     {
       "path": "impl/core/sleela_ui_vm.c",
-      "sha256": "39942b7fbf3a110a4a70ddb6bfb58f9c35e7cb12dc79a7cdb832bfd68290f112"
+      "sha256": "e71a13ad0b1a98c564169e537fa37e47d9aa2babe458d8e8980524f1da24326e"
     },
     {
       "path": "impl/core/sleela_ui_vm.h",
@@ -411,7 +411,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "07a414af9d6159967cf4a64a0f1b6720ed70538464ec44241422fc24749065db"
+      "sha256": "e922c68ea06923198347fbc97246b849c311306afc43b4f51f0e04368c1df556"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -6179,7 +6179,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiApp.sleela",
-      "sha256": "7696363b548b04c5619b84cc060ac0722e0372ba7b4d4950ec8d6aa6beeca424"
+      "sha256": "b8d6c53a4d067367163dcf04e04390fdc28ec20866eee3cc219b7b0f81d4da0d"
     },
     {
       "path": "lib/gui/version-dual/SLGuiAudioCues.sleela",
@@ -6303,7 +6303,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiSettings.sleela",
-      "sha256": "da539eea47b04118914b2757cd1a44dd882e52201c22ec971abdda11ab2d1af2"
+      "sha256": "5cb06ce4515cce0da27ce965d77717926cac86c1988d7472435023635d1bde6b"
     },
     {
       "path": "lib/gui/version-dual/SLGuiSkeleton.sleela",
@@ -6379,7 +6379,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiApp.sleela",
-      "sha256": "341a74ca8037200ff64f038dfc17e618ba8d1dc567d245ea7ce83e5f33fa63af"
+      "sha256": "06a0e3b37021e555ed09500eff97b57fab3016a06a961afd62a38548e52dd54c"
     },
     {
       "path": "lib/gui/version-gual/SLGuiBackend.sleela",
@@ -6463,7 +6463,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiSettings.sleela",
-      "sha256": "a7757f588a393066065f8cca2a2dba508e978aeb52149f322c41530eab84bef3"
+      "sha256": "60cfc3e42070f1d562d8e3369fd0da4398b86cb496361ffbca92acd638ef1d99"
     },
     {
       "path": "lib/gui/version-gual/SLGuiSkeleton.sleela",
@@ -6523,7 +6523,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiApp.sleela",
-      "sha256": "d462ebe18911cd65fa0de6dd181d10c8a628ebd2d5c66d07236800ec22c75980"
+      "sha256": "c64e551594c83ade852859085010a77c93808fe8230303f468583ddb47625ff8"
     },
     {
       "path": "lib/gui/version-military/SLGuiAudioCues.sleela",
@@ -6663,7 +6663,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiSettings.sleela",
-      "sha256": "2e56c9915aa72ca88f710edb3d8616eefa55cf94b7659429d96f017b6d04ab3c"
+      "sha256": "277732bf7acbf6f2ebc98aface5070557665508ffc75aa3769dd91d68e0ae94d"
     },
     {
       "path": "lib/gui/version-military/SLGuiSkeleton.sleela",
@@ -6747,7 +6747,7 @@
     },
     {
       "path": "lib/gui/version-mual/SLGuiApp.sleela",
-      "sha256": "943723a343eb37ab2c8f92b7dabebcde649c5135ce3ff928b2462ca55af5fc29"
+      "sha256": "c1a79951a80dcc06b17bb15a943ecebaeb8f19b204a206e211aa74a4056b9eaf"
     },
     {
       "path": "lib/gui/version-mual/SLGuiBackend.sleela",
@@ -6883,7 +6883,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiApp.sleela",
-      "sha256": "0e64bbf1e380b607b251732792f48c3ac69b98d7cbae36bfd41c30cefc08692b"
+      "sha256": "8fcd26a5bb688acc5409d98e100477bddbf6601b0c09bf42c8b7a49f3c7fac46"
     },
     {
       "path": "lib/gui/version-thual/SLGuiAudioCues.sleela",
@@ -6983,7 +6983,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiSettings.sleela",
-      "sha256": "82e7644cd3ce6b64938b5392502ddc07bf2c616bb45066a9c07764767e461f27"
+      "sha256": "ab892f002736b97b79378115e33dbe594bd4c9cb3a233922f9c39b0ab6263a8a"
     },
     {
       "path": "lib/gui/version-thual/SLGuiSkeleton.sleela",
@@ -46143,7 +46143,7 @@
     },
     {
       "path": "lib/user-interface/SLWindow.sleela",
-      "sha256": "a24ea81319131efcdbe9287bf3c988e31a2e457c25340499f5b48d86949a2251"
+      "sha256": "2a00f4b3b29a104bf2a5c41e214b2fe71eee80f99ac9f774bfa7f3397c87eb1e"
     },
     {
       "path": "lib/user-interface/gui-app-demo.sleela",

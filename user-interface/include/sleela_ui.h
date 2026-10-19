@@ -248,6 +248,21 @@ SLUIStatus slui_screen_size(SLUIApp *app, int *w, int *h);
 /* --------------------------------------------------------------------------
  * Windows. A window owns a root container widget; add children to it.
  * ------------------------------------------------------------------------- */
+
+/* Presentation buffering mode -- how a freshly painted Canvas reaches the
+ * screen. SINGLE blits the Canvas straight to the live window (the original
+ * behavior; cheapest, but a mid-repaint frame can tear, and a resize repaints
+ * visibly). DOUBLE paints into one off-screen back buffer and copies the whole
+ * finished frame to the window in a single operation, so a resize/redraw lands
+ * atomically with no tearing. TRIPLE adds a second back buffer in a small ring
+ * so the next frame can be prepared without waiting on the previous blit --
+ * smoother under rapid resize / animation at a little more memory. */
+typedef enum {
+    SLUI_BUFFERING_SINGLE = 0,
+    SLUI_BUFFERING_DOUBLE = 1,
+    SLUI_BUFFERING_TRIPLE = 2
+} SLUIBufferingMode;
+
 typedef struct {
     const char *title;
     int width, height;
@@ -270,6 +285,15 @@ void slui_window_request_redraw(SLUIWindow *window);
  * point lets a headless host or a test settle widget geometry (so e.g. a
  * scrolled view's overflow is computed) without spinning the event loop. */
 void slui_window_render(SLUIWindow *window);
+
+/* Choose how painted frames reach the screen (SLUIBufferingMode). DOUBLE (the
+ * default from SleelaUI's side once set) presents a complete frame in one blit
+ * so resizes and redraws do not tear; TRIPLE rings a second back buffer for
+ * smoother rapid resize/animation; SINGLE restores the direct-blit path. The
+ * mode is remembered on the window and survives backend resurface; a backend
+ * that cannot honor it (headless) ignores it gracefully. */
+void slui_window_set_buffering(SLUIWindow *window, int mode);
+int slui_window_buffering(const SLUIWindow *window);
 
 /* A per-window event callback, called for events the widget tree did not fully
  * consume (e.g. window CLOSE). Return non-zero to mark the event handled. */
