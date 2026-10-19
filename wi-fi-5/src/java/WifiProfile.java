@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/** Static reference metadata for Wi-Fi 5; not a hardware probe or Wi-Fi PHY/MAC implementation. */
+/** Static reference metadata for Wi-Fi 5, not a hardware probe or PHY/MAC implementation. */
 public final class WifiProfile {
     public final String generation = "Wi-Fi 5";
     public final String ieeeStandard = "IEEE 802.11ac";
