@@ -1,0 +1,12 @@
+#sleela 2.1
+// Demonstration of Wi-Fi 4 profile validation.
+
+Wifi4Model model;
+
+print("SLeeLa Wi-Fi 4 reference profile");
+print("20 MHz accepted: " + model.isValidChannelWidth(20));
+print("40 MHz accepted: " + model.isValidChannelWidth(40));
+print("80 MHz accepted: " + model.isValidChannelWidth(80));
+print("4 spatial streams accepted: " + model.isValidSpatialStreamCount(4));
+print("5 spatial streams accepted: " + model.isValidSpatialStreamCount(5));
+print("Discover real adapter capabilities at runtime: " + model.needsRuntimeDiscovery());
