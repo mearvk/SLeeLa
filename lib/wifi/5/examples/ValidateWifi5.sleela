@@ -1,0 +1,13 @@
+#sleela 2.1
+// Demonstration of Wi-Fi 5 profile validation.
+
+Wifi5Model model;
+
+print("SLeeLa Wi-Fi 5 reference profile");
+print("20 MHz accepted: " + model.isValidChannelWidth(20));
+print("80 MHz accepted: " + model.isValidChannelWidth(80));
+print("160 MHz accepted: " + model.isValidChannelWidth(160));
+print("320 MHz accepted: " + model.isValidChannelWidth(320));
+print("8 spatial streams accepted: " + model.isValidSpatialStreamCount(8));
+print("9 spatial streams accepted: " + model.isValidSpatialStreamCount(9));
+print("Discover real adapter capabilities at runtime: " + model.needsRuntimeDiscovery());
