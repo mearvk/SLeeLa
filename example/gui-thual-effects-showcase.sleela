@@ -37,6 +37,25 @@ class GuiThualEffectsShowcase {
   int btnFade;
   int spin;          // the throbber (rotation made visible)
   int statusLabel;
+  // Menubar strip and its dropdown panels (built from existing ui* widgets).
+  int openMenuIndex = -1;
+  int menuFileButton;
+  int menuFilePanel;
+  int menuFileItem1;
+  int menuFileItem2;
+  int menuEffectsButton;
+  int menuEffectsPanel;
+  int menuEffectsItem1;
+  int menuEffectsItem2;
+  int menuViewButton;
+  int menuViewPanel;
+  int menuViewItem1;
+  int menuViewItem2;
+  int menuHelpButton;
+  int menuHelpPanel;
+  int menuHelpItem1;
+  int menuHelpItem2;
+
 
   int rgba(int r, int g, int b, int a) {
     return r * 16777216 + g * 65536 + b * 256 + a;
@@ -68,6 +87,17 @@ class GuiThualEffectsShowcase {
     return t;
   }
 
+
+  // Show one dropdown at a time; selecting the open menu closes it.
+  void openMenu(int which) {
+    int next = openMenuIndex == which ? -1 : which;
+    openMenuIndex = next;
+    uiWidgetVisible(menuFilePanel, next == 0 ? 1 : 0);
+    uiWidgetVisible(menuEffectsPanel, next == 1 ? 1 : 0);
+    uiWidgetVisible(menuViewPanel, next == 2 ? 1 : 0);
+    uiWidgetVisible(menuHelpPanel, next == 3 ? 1 : 0);
+  }
+
   void main() {
     print("SLeeLa THUAL Effects Showcase (native SleelaUI) — backend "
         + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
@@ -82,6 +112,35 @@ class GuiThualEffectsShowcase {
     int theme = studioTheme();
     int win = uiWindowCreate(app, "SLeeLa Studio — THUAL 3.0 Effects", 1000, 640, theme);
     int root = uiWindowRoot(win);
+
+    // --- Functional menubar strip and dropdowns ---
+    int menuStrip = uiBox(root, 0, 4);
+    uiWidgetMargin(menuStrip, 4, 8, 4, 8);
+    menuFileButton = uiButton(menuStrip, "File");
+    menuEffectsButton = uiButton(menuStrip, "Effects");
+    menuViewButton = uiButton(menuStrip, "View");
+    menuHelpButton = uiButton(menuStrip, "Help");
+    menuFilePanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
+    menuFileItem1 = uiButton(menuFilePanel, "Save Preset");
+    menuFileItem2 = uiButton(menuFilePanel, "Load Preset");
+    uiWidgetVisible(menuFilePanel, 0);
+    menuEffectsPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuEffectsPanel, 4, 10, 4, 10);
+    menuEffectsItem1 = uiButton(menuEffectsPanel, "Glow And Shine");
+    menuEffectsItem2 = uiButton(menuEffectsPanel, "Fade Controls");
+    uiWidgetVisible(menuEffectsPanel, 0);
+    menuViewPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuViewPanel, 4, 10, 4, 10);
+    menuViewItem1 = uiButton(menuViewPanel, "Rotation Schedule");
+    menuViewItem2 = uiButton(menuViewPanel, "Effect Status");
+    uiWidgetVisible(menuViewPanel, 0);
+    menuHelpPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
+    menuHelpItem1 = uiButton(menuHelpPanel, "Effects Guide");
+    menuHelpItem2 = uiButton(menuHelpPanel, "About THUAL");
+    uiWidgetVisible(menuHelpPanel, 0);
+
 
     // --- Chrome: branding painted into the header ---
     int header = uiHeaderBar(root);
@@ -173,6 +232,45 @@ class GuiThualEffectsShowcase {
       int dispatched = uiAppPump(app, 1);
       if (dispatched < 0) { running = false; }
       else {
+
+        // Menubar top-level buttons toggle their dropdown panels.
+        if (uiWidgetTakeActivated(menuFileButton) == 1) { openMenu(0); }
+        if (uiWidgetTakeActivated(menuEffectsButton) == 1) { openMenu(1); }
+        if (uiWidgetTakeActivated(menuViewButton) == 1) { openMenu(2); }
+        if (uiWidgetTakeActivated(menuHelpButton) == 1) { openMenu(3); }
+        // Menu items announce the selected command, then dismiss the dropdown.
+        if (uiWidgetTakeActivated(menuFileItem1) == 1) {
+          uiWidgetSetText(statusLabel, "File · Save Preset");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuFileItem2) == 1) {
+          uiWidgetSetText(statusLabel, "File · Load Preset");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuEffectsItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Effects · Glow And Shine");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuEffectsItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Effects · Fade Controls");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuViewItem1) == 1) {
+          uiWidgetSetText(statusLabel, "View · Rotation Schedule");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuViewItem2) == 1) {
+          uiWidgetSetText(statusLabel, "View · Effect Status");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Help · Effects Guide");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Help · About THUAL");
+          openMenu(-1);
+        }
         if (uiWidgetTakeActivated(btnConfirm) == 1) {
           confirms = confirms + 1;
           // Advance the schene: rotate the throbber hue a quarter-turn and
