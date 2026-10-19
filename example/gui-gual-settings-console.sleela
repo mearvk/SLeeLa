@@ -38,6 +38,25 @@ class GuiGualSettingsConsole {
   int btnNative;
   int btnQt;
   int statusLabel;
+  // Menubar strip and its dropdown panels (built from existing ui* widgets).
+  int openMenuIndex = -1;
+  int menuFileButton;
+  int menuFilePanel;
+  int menuFileItem1;
+  int menuFileItem2;
+  int menuSettingsButton;
+  int menuSettingsPanel;
+  int menuSettingsItem1;
+  int menuSettingsItem2;
+  int menuBackendButton;
+  int menuBackendPanel;
+  int menuBackendItem1;
+  int menuBackendItem2;
+  int menuHelpButton;
+  int menuHelpPanel;
+  int menuHelpItem1;
+  int menuHelpItem2;
+
 
   int rgba(int r, int g, int b, int a) {
     return r * 16777216 + g * 65536 + b * 256 + a;
@@ -77,6 +96,17 @@ class GuiGualSettingsConsole {
     return t;
   }
 
+
+  // Show one dropdown at a time; selecting the open menu closes it.
+  void openMenu(int which) {
+    int next = openMenuIndex == which ? -1 : which;
+    openMenuIndex = next;
+    uiWidgetVisible(menuFilePanel, next == 0 ? 1 : 0);
+    uiWidgetVisible(menuSettingsPanel, next == 1 ? 1 : 0);
+    uiWidgetVisible(menuBackendPanel, next == 2 ? 1 : 0);
+    uiWidgetVisible(menuHelpPanel, next == 3 ? 1 : 0);
+  }
+
   void main() {
     print("SLeeLa GUAL Preferences Console (native SleelaUI) — backend "
         + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
@@ -91,6 +121,35 @@ class GuiGualSettingsConsole {
     int theme = settingsTheme();
     int win = uiWindowCreate(app, "SLeeLa Preferences — GUAL 2.0", 960, 620, theme);
     int root = uiWindowRoot(win);
+
+    // --- Functional menubar strip and dropdowns ---
+    int menuStrip = uiBox(root, 0, 4);
+    uiWidgetMargin(menuStrip, 4, 8, 4, 8);
+    menuFileButton = uiButton(menuStrip, "File");
+    menuSettingsButton = uiButton(menuStrip, "Settings");
+    menuBackendButton = uiButton(menuStrip, "Backend");
+    menuHelpButton = uiButton(menuStrip, "Help");
+    menuFilePanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
+    menuFileItem1 = uiButton(menuFilePanel, "Export Settings");
+    menuFileItem2 = uiButton(menuFilePanel, "Reset Defaults");
+    uiWidgetVisible(menuFilePanel, 0);
+    menuSettingsPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuSettingsPanel, 4, 10, 4, 10);
+    menuSettingsItem1 = uiButton(menuSettingsPanel, "Appearance");
+    menuSettingsItem2 = uiButton(menuSettingsPanel, "Listener Timing");
+    uiWidgetVisible(menuSettingsPanel, 0);
+    menuBackendPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuBackendPanel, 4, 10, 4, 10);
+    menuBackendItem1 = uiButton(menuBackendPanel, "Select JavaFX");
+    menuBackendItem2 = uiButton(menuBackendPanel, "Backend Policy");
+    uiWidgetVisible(menuBackendPanel, 0);
+    menuHelpPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
+    menuHelpItem1 = uiButton(menuHelpPanel, "Preferences Help");
+    menuHelpItem2 = uiButton(menuHelpPanel, "About GUAL");
+    uiWidgetVisible(menuHelpPanel, 0);
+
 
     // --- Chrome ---
     int header = uiHeaderBar(root);
@@ -177,6 +236,45 @@ class GuiGualSettingsConsole {
       int dispatched = uiAppPump(app, 1);
       if (dispatched < 0) { running = false; }
       else {
+
+        // Menubar top-level buttons toggle their dropdown panels.
+        if (uiWidgetTakeActivated(menuFileButton) == 1) { openMenu(0); }
+        if (uiWidgetTakeActivated(menuSettingsButton) == 1) { openMenu(1); }
+        if (uiWidgetTakeActivated(menuBackendButton) == 1) { openMenu(2); }
+        if (uiWidgetTakeActivated(menuHelpButton) == 1) { openMenu(3); }
+        // Menu items announce the selected command, then dismiss the dropdown.
+        if (uiWidgetTakeActivated(menuFileItem1) == 1) {
+          uiWidgetSetText(statusLabel, "File · Export Settings");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuFileItem2) == 1) {
+          uiWidgetSetText(statusLabel, "File · Reset Defaults");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuSettingsItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Settings · Appearance");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuSettingsItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Settings · Listener Timing");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuBackendItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Backend · Select JavaFX");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuBackendItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Backend · Backend Policy");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Help · Preferences Help");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Help · About GUAL");
+          openMenu(-1);
+        }
         if (uiWidgetTakeActivated(btnJfx) == 1) {
           selectBackend(0); uiWidgetSetText(statusLabel, "backend selected: javafx \u2713 (configureStrict accepted)");
         }
