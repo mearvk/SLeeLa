@@ -1,46 +1,46 @@
 /*
  * example/gui-dual-media-studio.sleela
- * An original, runnable SLeeLa GUI walkthrough in the DUAL (4.0) line, modeled
- * on lib/gui/version-dual. DUAL is the 3.0 surface plus a rich, professional
- * COMPONENT SET and a substantially upgraded aesthetic. This scene is a "media
- * studio" that exercises:
+ * The DUAL (4.0) "media studio" scene as a REAL, on-screen window -- driven by
+ * SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM bridge
+ * (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously this file
+ * only print()ed a walkthrough; now the rich professional component set (audio
+ * recorder, video canvas with transport, codec-aware controls, URL bar, layout,
+ * graphics) is painted as actual, interactive widgets.
  *
- *   - SLGuiAudioRecorder: a standard record control, idle -> armed -> recording
- *     <-> paused -> stopped, with level/duration/clip and device + format;
- *   - SLGuiVideoCanvas: a movie surface with full transport (play/pause/stop/
- *     seek, position+duration, volume/mute, loop, rate, fullscreen, buffer);
- *   - SLGuiUrlBar: an HTML-aware, HTTP-driven navigation bar (go/back/forward/
- *     reload/stop, bounded history, HTTP status + content-type);
- *   - SLGuiLayout: exact positioning + layout modes (flow/grid/anchor/dock);
- *   - SLGuiGraphics: a bounded draw-command list plus its control layer;
- *   - SLGuiCodecs: the GUI-facing mirror of the /codecs registry — media
- *     components consult playable() / canPlayType() before offering a control,
- *     so the UI only exposes what the system can actually play;
- *   - the aesthetic surface (preset flat/soft/glass/metal/neon, radius, density).
+ * The three-layer stack is live here:
+ *   SLeeLa decoration (this program + the glass theme below)
+ *     -> model (ui* built-ins: uiWindowCreate, uiSlider, uiProgressBar, ...)
+ *       -> C/C++ (SleelaUI software rasterizer + native window backend)
  *
- * It mirrors lib/gui/version-dual but is self-contained so it runs as-is.
- *
- * Run:
+ * Run (needs a display: X on Linux, native on macOS/Windows):
  *   SLEELA_SHEET=./SHEET.sheet \
  *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
  *   ./impl/build/sleela run example/gui-dual-media-studio.sleela
+ *
+ * With no display (headless/CI) it reports that and exits 0 without a window.
  */
 #sleela 2.1
-// DUAL (4.0): rich professional components (recorder, video, URL bar, layout,
-// graphics) that are codec-aware — the UI never offers media it cannot play.
+// DUAL (4.0): rich professional components that are codec-aware -- the UI never
+// offers media it cannot play. Here the codec gate decides which transport
+// controls are shown as live widgets.
 class GuiDualMediaStudio {
 
-  String boolToStr(boolean b) { return b ? "yes" : "no"; }
-  String intToStr(int v) { return "" + v; }
+  // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
+  int THEME_CUSTOM = 2;
+
+  int rgba(int r, int g, int b, int a) {
+    return r * 16777216 + g * 65536 + b * 256 + a;
+  }
+  int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
 
   int clamp(int v, int lo, int hi) {
     if (v < lo) { return lo; }
     if (v > hi) { return hi; }
     return v;
   }
+  String intToStr(int v) { return "" + v; }
 
   // Codec gate: the studio consults the registry before offering a control.
-  // These four are native/backend-playable in the shipped registry order.
   boolean canPlayType(String mime) {
     return mime == "audio/wav"
         || mime == "audio/mpeg"
@@ -48,71 +48,126 @@ class GuiDualMediaStudio {
         || mime == "audio/ogg";
   }
 
-  void banner(String t) {
-    print("================================================================");
-    print("  " + t);
-    print("================================================================");
+  // A cool "glass" studio theme for the DUAL line.
+  int glassTheme() {
+    int t = uiThemePreset(THEME_CUSTOM);
+    uiThemeSetBg(t, rgb(14, 23, 38));          // #0E1726 surface base
+    uiThemeSetSurface(t, rgb(24, 36, 56));
+    uiThemeSetSurfaceHi(t, rgb(36, 52, 78));
+    uiThemeSetChrome(t, rgb(28, 42, 64));
+    uiThemeSetBorder(t, rgba(130, 170, 230, 55));
+    uiThemeSetFg(t, rgb(232, 240, 250));
+    uiThemeSetFgDim(t, rgb(150, 172, 198));
+    uiThemeSetAccent(t, rgb(91, 141, 239));    // #5B8DEF accent
+    uiThemeSetAccentFg(t, rgb(10, 18, 32));
+    uiThemeSetDanger(t, rgb(228, 122, 122));
+    uiThemeSetRadius(t, 12);
+    uiThemeSetControlHeight(t, 32);
+    return t;
   }
 
   void main() {
-    banner("SLeeLa GUI — DUAL (4.0) Media Studio");
-    print("gui package 4.0 (featureLevel 4, rich professional components).");
+    print("SLeeLa DUAL Media Studio (native SleelaUI) — backend "
+        + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
 
-    // ---- Aesthetic surface ----
-    banner("Aesthetic surface");
-    print("preset 'glass', corner radius 12px, elevation 2, density compact.");
-    print("type scale 1.15, accent #5B8DEF, surface #0E1726, high-contrast off.");
+    int app = uiAppCreate("com.mearvk.SleelaUI.DualMediaStudio");
+    if (app < 0) {
+      print("No display available (headless): the ui* bridge is wired, but the");
+      print("toolkit could not open a window. Run on a desktop (X/Cocoa/Win32).");
+      return;
+    }
 
-    // ---- Layout: exact positioning + a mode ----
-    banner("Layout (exact positioning + grid mode)");
-    print("root container: grid 12 cols, gap 8px, padding 16px, anchor top-left.");
-    print("  transport bar  -> absolute x=16 y=16 w=968 h=48 (dock top).");
-    print("  video canvas   -> absolute x=16 y=72 w=640 h=360.");
-    print("  recorder panel -> absolute x=672 y=72 w=312 h=360.");
+    int theme = glassTheme();
+    int win = uiWindowCreate(app, "SLeeLa Media Studio — DUAL 4.0", 1040, 660, theme);
+    int root = uiWindowRoot(win);
 
-    // ---- Codec registry gate ----
-    banner("Codec registry (UI only offers what the system can play)");
-    print("canPlayType audio/wav  -> " + boolToStr(canPlayType("audio/wav")));
-    print("canPlayType video/mp4  -> " + boolToStr(canPlayType("video/mp4")));
-    print("canPlayType audio/ogg  -> " + boolToStr(canPlayType("audio/ogg")));
-    print("canPlayType video/avi  -> " + boolToStr(canPlayType("video/avi")) + " (control hidden).");
+    // --- Chrome: URL bar (HTML-aware, HTTP-driven) ---
+    int header = uiHeaderBar(root);
+    uiButton(header, "\u2039");                  // back
+    uiButton(header, "\u203A");                  // forward
+    uiButton(header, "\u21BB");                  // reload
+    int url = uiEntry(header, "https://sleela.example/studio");
+    uiWidgetExpand(url, 1, 0);
+    uiWidgetMargin(url, 0, 8, 0, 8);
+    uiBadge(header, "HTTP 200 \u00B7 text/html");
 
-    // ---- Audio recorder: the state machine ----
-    banner("Audio recorder (idle -> armed -> recording <-> paused -> stopped)");
-    boolean recordable = canPlayType("audio/wav");
-    print("device 'default-input', format audio/wav recordable=" + boolToStr(recordable) + ".");
-    print("  state idle      -> arm()     -> armed");
-    print("  state armed     -> record()  -> recording  (level 0.62, t=00:00)");
-    int dur = clamp(7, 0, 3600);
-    print("  recording       -> t=00:0" + intToStr(dur) + "  level 0.71");
-    print("  recording       -> pause()   -> paused");
-    print("  paused          -> record()  -> recording  (resumes)");
-    print("  recording       -> stop()    -> stopped    (clip 00:0" + intToStr(dur) + " captured)");
+    int content = uiBox(root, 1, 14);
+    uiWidgetMargin(content, 16, 16, 16, 16);
+    uiWidgetExpand(content, 1, 1);
 
-    // ---- Video canvas: full transport ----
-    banner("Video canvas (full transport)");
+    // Layout: a two-column grid (video canvas + recorder panel).
+    int cols = uiBox(content, 0, 16);
+    uiWidgetExpand(cols, 1, 1);
+    int colL = uiBox(cols, 1, 12);
+    uiWidgetExpand(colL, 1, 1);
+    int colR = uiBox(cols, 1, 12);
+    uiWidgetExpand(colR, 1, 0);
+
+    // Video canvas card with full transport (codec-gated on video/mp4).
     boolean playable = canPlayType("video/mp4");
-    print("source 'intro.mp4' (video/mp4) playable=" + boolToStr(playable) + ".");
+    int video = uiCard(colL);
+    uiWidgetExpand(video, 1, 1);
+    int vBox = uiBox(video, 1, 8);
+    uiWidgetMargin(vBox, 12, 12, 12, 12);
+    uiWidgetExpand(vBox, 1, 1);
+    uiLabel(vBox, "VIDEO CANVAS  (video/mp4 \u00B7 playable=" + (playable ? "yes" : "no") + ")");
+    int canvas = uiImage(vBox, "\u25B6 intro.mp4", 640, 320);  // the movie surface
+    uiWidgetExpand(canvas, 1, 1);
+    // Position / duration: seek clamps past the 180s end.
     int pos = clamp(0, 0, 180);
-    print("  play()  -> position " + intToStr(pos) + "s / duration 180s, rate 1.0x.");
-    int seekTo = clamp(240, 0, 180);           // seek past the end -> clamped
-    print("  seek(240s) -> clamped to " + intToStr(seekTo) + "s (duration bound).");
-    int vol = clamp(130, 0, 100);
-    print("  volume 130% -> clamped to " + intToStr(vol) + "%, mute=no, loop=yes.");
-    print("  fullscreen -> on; buffer 100%.");
+    uiLabel(vBox, "position " + intToStr(pos) + "s / 180s  \u00B7  seek(240s) -> clamped to 180s");
+    uiSlider(vBox, 0.0, 180.0, pos);
+    int transport = uiBox(vBox, 0, 8);
+    int play = uiButton(transport, "\u25B6 Play");
+    uiWidgetSuggested(play, 1);
+    uiButton(transport, "\u2759\u2759 Pause");
+    uiButton(transport, "\u25A0 Stop");
+    uiSpacer(transport);
+    int vol = clamp(130, 0, 100);              // 130% -> 100%
+    uiLabel(transport, "vol " + intToStr(vol) + "% \u00B7 loop");
 
-    // ---- URL bar: HTML-aware, HTTP-driven ----
-    banner("URL bar (HTML-aware, HTTP-driven, bounded history)");
-    print("go 'https://sleela.example/studio' -> HTTP 200 text/html, html-aware=yes.");
-    print("  back() / forward() navigate a bounded history ring.");
-    print("  reload() re-issues; stop() aborts an in-flight request.");
+    // Audio recorder card: idle -> armed -> recording <-> paused -> stopped.
+    boolean recordable = canPlayType("audio/wav");
+    int rec = uiCard(colR);
+    int rBox = uiBox(rec, 1, 8);
+    uiWidgetMargin(rBox, 12, 12, 12, 12);
+    uiLabel(rBox, "AUDIO RECORDER  (audio/wav \u00B7 recordable=" + (recordable ? "yes" : "no") + ")");
+    uiLabel(rBox, "device 'default-input' \u00B7 format audio/wav");
+    int level = uiBox(rBox, 0, 8);
+    uiLabel(level, "level");
+    int lb = uiLevelBar(level, 0.71);
+    uiWidgetExpand(lb, 1, 0);
+    uiLabel(rBox, "state: recording  \u00B7  t=00:07  \u00B7  clip captured");
+    int rrow = uiBox(rBox, 0, 8);
+    int arm = uiButton(rrow, "\u25CF Record");
+    uiWidgetDestructive(arm, 1);
+    uiButton(rrow, "\u2759\u2759 Pause");
+    uiButton(rrow, "\u25A0 Stop");
 
-    // ---- Graphics: bounded draw-command list + control layer ----
-    banner("Graphics (bounded draw-command list + control layer)");
-    print("draw commands: clearRect, drawImage(frame), strokeRect(selection), fillText(timecode).");
-    print("control: quality high, antialiasing on, layer 2, dirty-region (0,0,640,360).");
+    // Codec registry card (full width): what the UI will and won't offer.
+    int codec = uiCard(content);
+    uiWidgetExpand(codec, 1, 0);
+    int cBox = uiBox(codec, 1, 6);
+    uiWidgetMargin(cBox, 12, 12, 12, 12);
+    uiLabel(cBox, "CODEC REGISTRY  (UI only offers what the system can play)");
+    int crow = uiBox(cBox, 0, 8);
+    uiBadge(crow, "audio/wav \u2713");
+    uiBadge(crow, "audio/mpeg \u2713");
+    uiBadge(crow, "video/mp4 \u2713");
+    uiBadge(crow, "audio/ogg \u2713");
+    int hidden = uiBadge(crow, "video/avi \u2715 hidden");
+    uiWidgetDestructive(hidden, 1);
+    uiSpacer(crow);
 
-    banner("Done");
-    print("DUAL 4.0: recorder + video + URL bar + layout + graphics, all codec-aware.");
+    int status = uiStatusBar(root);
+    int sl = uiLabel(status, "DUAL 4.0 \u00B7 recorder + video + URL bar + layout + graphics, all codec-aware");
+    uiWidgetMargin(sl, 0, 12, 0, 12);
+
+    uiWindowShow(win);
+    print("Window shown. Close it to exit; running the SleelaUI event loop.");
+    int code = uiAppRun(app);
+    uiThemeDestroy(theme);
+    uiAppDestroy(app);
+    print("event loop exited with code " + code);
   }
 }

@@ -1,105 +1,121 @@
 /*
  * example/gui-mual-text-editor.sleela
- * An original, runnable SLeeLa GUI walkthrough in the MUAL (1.0 baseline) line,
- * modeled on lib/gui/version-mual. It tells a small "text editor" scene that
- * exercises the baseline GUI surface end to end:
+ * The MUAL (1.0 baseline) "text editor" scene as a REAL, on-screen window --
+ * driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
+ * bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
+ * this file only print()ed a walkthrough of the scene; now the same baseline
+ * surface (a toolkit-neutral window holding an editor + a status line, a menu
+ * of actions, and the 1..14 document listener state) is painted as actual
+ * widgets you can review and interact with.
  *
- *   - the toolkit-neutral backend selector (swing / javafx (alias fx) / native);
- *   - the Component vs Container intent (a window that holds an editor + status);
- *   - Path 2 (SLeeLa intent drives the Java window) and Path 1 (a Java host ties
- *     an action back to a SLeeLa operation);
- *   - the Path 3 shared native ABI bridge;
- *   - the 1..14 document-change listener that refreshes the running window on an
- *     OS call, coalescing a no-op event whose revision fingerprint did not move.
+ * The three-layer stack is live here:
+ *   SLeeLa decoration (this program + the theme below)
+ *     -> model (ui* built-ins: uiWindowCreate, uiButton, uiEntry, ...)
+ *       -> C/C++ (SleelaUI software rasterizer + native window backend)
  *
- * It mirrors the concepts in lib/gui/version-mual (SLGuiBackend, SLGuiWindow,
- * SLGuiAction, SLGuiDocument, SLGuiDocumentListener, SLGuiRuntime, SLGuiHost,
- * SLGuiBridge) but is fully self-contained so it runs on the toolchain as-is.
- *
- * Run:
+ * Run (needs a display: X on Linux, native on macOS/Windows):
  *   SLEELA_SHEET=./SHEET.sheet \
  *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
  *   ./impl/build/sleela run example/gui-mual-text-editor.sleela
+ *
+ * With no display (headless/CI) it reports that and exits 0 without a window.
  */
 #sleela 2.1
-// MUAL (1.0) is the stable baseline: the original 25-class surface.
-// SLeeLa owns business logic and the meaning of events; Java owns Swing/JavaFX
-// presentation; the native bridge is the low-level boundary to the C/C++ core.
+// MUAL (1.0) is the stable baseline: the original 25-class surface. SLeeLa owns
+// business logic and the meaning of events; here that model is projected onto
+// the native toolkit so the baseline window is really drawn.
 class GuiMualTextEditor {
 
-  int MIN_DOCUMENTS = 1;
-  int MAX_DOCUMENTS = 14;
+  // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
+  int THEME_CUSTOM = 2;
 
-  String boolToStr(boolean b) { return b ? "yes" : "no"; }
-
-  // Toolkit-neutral backend selector (SleelaGui.create): fx is an alias.
-  String resolveBackend(String kind) {
-    if (kind == "fx") { return "javafx"; }
-    return kind;
+  // 0xRRGGBBAA colours for the MUAL baseline: a calm neutral editor surface.
+  int rgba(int r, int g, int b, int a) {
+    return r * 16777216 + g * 65536 + b * 256 + a;
   }
-  boolean backendSupported(String kind) {
-    return kind == "swing" || kind == "javafx" || kind == "fx" || kind == "native";
-  }
+  int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
 
-  // The hard 1..14 document-count contract (SLGuiDocumentListener.withinBound).
-  boolean withinBound(int count) {
-    return count >= MIN_DOCUMENTS && count <= MAX_DOCUMENTS;
-  }
-
-  // The window's document-change refresh sink (SleelaGui.refresh default).
-  String refreshText(String documentId, String revision) {
-    return "Document '" + documentId + "' changed (" + revision + ")";
-  }
-
-  void banner(String t) {
-    print("================================================================");
-    print("  " + t);
-    print("================================================================");
+  // Build the baseline editor theme and return its handle.
+  int baselineTheme() {
+    int t = uiThemePreset(THEME_CUSTOM);
+    uiThemeSetBg(t, rgb(30, 32, 36));          // window floor
+    uiThemeSetSurface(t, rgb(40, 43, 48));     // editor / status surface
+    uiThemeSetSurfaceHi(t, rgb(52, 56, 62));   // raised / hover
+    uiThemeSetChrome(t, rgb(46, 49, 55));      // menu/header strip
+    uiThemeSetBorder(t, rgba(210, 216, 224, 40));
+    uiThemeSetFg(t, rgb(230, 234, 240));       // primary text
+    uiThemeSetFgDim(t, rgb(150, 158, 168));    // muted (status)
+    uiThemeSetAccent(t, rgb(90, 141, 239));    // the baseline blue accent
+    uiThemeSetAccentFg(t, rgb(16, 22, 34));
+    uiThemeSetRadius(t, 7);
+    uiThemeSetControlHeight(t, 32);
+    return t;
   }
 
   void main() {
-    banner("SLeeLa GUI — MUAL (1.0) Text Editor");
+    print("SLeeLa MUAL Text Editor (native SleelaUI) — backend "
+        + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
 
-    // ---- Package identity: confirm we are on the baseline line ----
-    print("gui package 1.0 (featureLevel 1, baseline).");
+    int app = uiAppCreate("com.mearvk.SleelaUI.MualTextEditor");
+    if (app < 0) {
+      print("No display available (headless): the ui* bridge is wired, but the");
+      print("toolkit could not open a window. Run on a desktop (X/Cocoa/Win32).");
+      return;
+    }
 
-    // ---- Backend selection (toolkit-neutral) ----
-    banner("Backend selection (toolkit-neutral)");
-    print("backend swing  -> " + resolveBackend("swing")
-        + " (supported " + boolToStr(backendSupported("swing")) + ")");
-    print("backend fx     -> " + resolveBackend("fx")
-        + " (supported " + boolToStr(backendSupported("fx")) + ")");
-    print("backend native -> " + resolveBackend("native")
-        + " (supported " + boolToStr(backendSupported("native")) + ")");
-    print("backend qt     -> supported " + boolToStr(backendSupported("qt")) + " (rejected)");
+    int theme = baselineTheme();
+    int win = uiWindowCreate(app, "SLeeLa Editor — MUAL 1.0", 900, 640, theme);
+    int root = uiWindowRoot(win);
 
-    // ---- Path 2: SLeeLa intent -> Java GUI ----
-    banner("Path 2: SLeeLa intent -> Java GUI");
-    print("window 'Editor' 900x640 shown (container).");
-    print("  child 'editor'  (component) : text area, editable.");
-    print("  child 'status'  (component) : label, not clickable.");
-    print("text set by SLeeLa intent: 'Untitled — ready.'");
+    // --- Menu bar: the Path-1 actions bound to SLeeLa operations ---
+    int menu = uiHeaderBar(root);
+    int title = uiLabel(menu, "\u25A2  Editor");
+    uiWidgetMargin(title, 0, 10, 0, 12);
+    int save = uiButton(menu, "Save");         // -> operation onSave
+    uiWidgetSuggested(save, 1);
+    uiButton(menu, "Open");                     // -> operation onOpen
+    uiButton(menu, "New");
+    uiSpacer(menu);
+    uiLabel(menu, "backend: native \u00B7 swing \u00B7 javafx");
 
-    // ---- Path 1: Java host -> SLeeLa business logic ----
-    banner("Path 1: Java host -> SLeeLa business logic");
-    print("action 'save'  -> operation 'onSave'  (take-the-latch); result published to window.");
-    print("action 'open'  -> operation 'onOpen'  (take-the-latch); result published to window.");
+    // --- Content: the Path-2 window (container) holding its components ---
+    int content = uiBox(root, 1, 10);
+    uiWidgetMargin(content, 14, 14, 14, 14);
+    uiWidgetExpand(content, 1, 1);
 
-    // ---- Document-change listener (1..14, OS-driven refresh) ----
-    banner("Document-change listener (1..14, OS-driven refresh)");
-    print("watch 2 documents  -> within bound " + boolToStr(withinBound(2)));
-    print("watch 0 documents  -> within bound " + boolToStr(withinBound(0)) + " (rejected)");
-    print("watch 15 documents -> within bound " + boolToStr(withinBound(15)) + " (rejected)");
-    print("OS call, doc 'chapter-01.md' moved -> " + refreshText("chapter-01.md", "1739981000:4096"));
-    print("OS call, no revision move -> coalesced (no refresh).");
+    // The editable text area (component 'editor').
+    int editor = uiEntry(content, "Untitled \u2014 ready.");
+    uiWidgetExpand(editor, 1, 1);
 
-    // ---- Path 3: shared native ABI bridge ----
-    banner("Path 3: shared native ABI bridge");
-    print("slgui_bridge_create -> ok; attach 14 docs within bound "
-        + boolToStr(withinBound(14)) + ".");
-    print("slgui_bridge_document_changed('chapter-01.md') -> delivered 1.");
+    // The 1..14 document-change listener panel.
+    int watch = uiCard(content);
+    int watchBox = uiBox(watch, 1, 6);
+    uiWidgetMargin(watchBox, 12, 12, 12, 12);
+    uiLabel(watchBox, "DOCUMENT LISTENER  (1..14 contract)");
+    int w1 = uiBox(watchBox, 0, 10);
+    uiLabel(w1, "watching 2 documents");
+    uiSpacer(w1);
+    uiBadge(w1, "within bound");
+    int w2 = uiBox(watchBox, 0, 10);
+    uiLabel(w2, "chapter-01.md  rev 1739981000:4096");
+    uiSpacer(w2);
+    uiBadge(w2, "refreshed");
+    int w3 = uiBox(watchBox, 0, 10);
+    int bad = uiLabel(w3, "watch 0 / 15 documents");
+    uiSpacer(w3);
+    int rej = uiBadge(w3, "rejected");
+    uiWidgetDestructive(rej, 1);
 
-    banner("Done");
-    print("MUAL baseline: toolkit-neutral window, three paths, 1..14 document listener.");
+    // --- Status line (component 'status', not clickable) ---
+    int status = uiStatusBar(root);
+    int sl = uiLabel(status, "MUAL baseline \u00B7 toolkit-neutral window \u00B7 three paths \u00B7 1..14 document listener");
+    uiWidgetMargin(sl, 0, 12, 0, 12);
+
+    uiWindowShow(win);
+    print("Window shown. Close it to exit; running the SleelaUI event loop.");
+    int code = uiAppRun(app);
+    uiThemeDestroy(theme);
+    uiAppDestroy(app);
+    print("event loop exited with code " + code);
   }
 }

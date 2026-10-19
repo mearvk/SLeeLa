@@ -5,15 +5,16 @@
 # =============================================================================
 #
 # Convenience wrapper so you don't have to remember the environment the
-# fail-closed security gate requires, or list the one-class-per-file military
-# dependencies by hand.
+# fail-closed security gate requires.
 #
 # It sets, relative to the repository root:
 #   SLEELA_SHEET            -> SHEET.sheet          (compiler system sheet)
 #   SLEELA_SHA256_MANIFEST  -> the trusted manifest (REQUIRED by the gate;
 #                              without it sleela refuses to run)
-# and then runs example/gui-military-command-console.sleela together with the
-# lib/gui/version-military Master Classes it references.
+# and then runs example/gui-military-command-console.sleela, which now renders a
+# REAL, on-screen window through SleelaUI (the native ui* toolkit) rather than
+# printing a walkthrough. It is self-contained (only ui* built-ins), so no
+# dependency classes are passed on the command line.
 #
 # Usage:
 #   ./example/run-gui-military.sh                 # auto-locate the sleela binary
@@ -54,9 +55,8 @@ echo "run-gui-military: SLEELA_SHA256_MANIFEST=$SLEELA_SHA256_MANIFEST"
 echo "run-gui-military: running $PROGRAM ..."
 echo
 
-# The program's `import gui.version-military;` already resolves the military-line
-# Master Classes (SLPackage, SLGuiSettings, ...) through the library index, so we
-# must NOT also pass those files on the command line. Doing so defined every
-# class twice and failed with "duplicate static field 'SLPackage::FEATURE_LEVEL'".
+# The program is self-contained (only ui* built-ins driving SleelaUI), so no
+# dependency classes are listed here. On a host with a display it opens a real
+# window; headless it reports "no display" and exits 0.
 # shellcheck disable=SC2086
 exec "$SLEELA" run "$PROGRAM" "$@"

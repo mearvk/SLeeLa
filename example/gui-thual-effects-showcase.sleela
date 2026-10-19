@@ -1,34 +1,38 @@
 /*
  * example/gui-thual-effects-showcase.sleela
- * An original, runnable SLeeLa GUI walkthrough in the THUAL (3.0) line, modeled
- * on lib/gui/version-thual. THUAL is the 2.0 surface plus a clean, professional
- * VISUAL-EFFECTS layer. This scene is an "effects showcase" that exercises:
+ * The THUAL (3.0) "effects showcase" scene as a REAL, on-screen window --
+ * driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
+ * bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
+ * this file only print()ed a walkthrough; now the visual-effects layer (glow /
+ * shine / shadow / metal / rotation / fade + branding + audio cues, with a
+ * scheduled rotation that advances a memo key epoch) is painted as actual
+ * widgets, including a live throbber that drives the SleelaUI event loop.
  *
- *   - SLGuiEffects: a per-component effect bundle — lighting + glow, a 3D shine
- *     highlight, a drop shadow, a metal look-and-feel, rotation (fixed or
- *     scheduled), fade in/out, and an activation-audio cue. Every knob clamps;
- *     toStyle() flattens it for the SLGuiMount reconciler; honored() checks it;
- *   - SLGuiRotationSchedule (a "schene"): scheduled rotation on a cadence whose
- *     every visible tick also advances an internal memorandum key epoch() — the
- *     visible rotation is the honest external signal of an internal key
- *     rotation (cadence/accounting only; no cipher);
- *   - SLGuiBranding: logo + brand identity painted into the chrome;
- *   - SLGuiAudioCues: the named activation-audio registry a component references.
+ * The three-layer stack is live here:
+ *   SLeeLa decoration (this program + the bright "studio" theme below)
+ *     -> model (ui* built-ins: uiWindowCreate, uiThrobber, uiProgressBar, ...)
+ *       -> C/C++ (SleelaUI software rasterizer + native window backend)
  *
- * It mirrors lib/gui/version-thual but is self-contained so it runs as-is.
- *
- * Run:
+ * Run (needs a display: X on Linux, native on macOS/Windows):
  *   SLEELA_SHEET=./SHEET.sheet \
  *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
  *   ./impl/build/sleela run example/gui-thual-effects-showcase.sleela
+ *
+ * With no display (headless/CI) it reports that and exits 0 without a window.
  */
 #sleela 2.1
-// THUAL (3.0): a clamped visual-effects layer on top of the GUAL settings
-// posture. Rotation does double duty as a key-rotation cadence for a memo.
+// THUAL (3.0): a clamped visual-effects layer. Every knob clamps to a safe
+// window; here those clamped values drive real level/progress controls and a
+// live, hue-tinted throbber (the "rotation" made visible).
 class GuiThualEffectsShowcase {
 
-  String boolToStr(boolean b) { return b ? "yes" : "no"; }
-  String intToStr(int v) { return "" + v; }
+  // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
+  int THEME_CUSTOM = 2;
+
+  int rgba(int r, int g, int b, int a) {
+    return r * 16777216 + g * 65536 + b * 256 + a;
+  }
+  int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
 
   // Every effect knob clamps to a safe window (the THUAL discipline).
   int clamp(int v, int lo, int hi) {
@@ -36,72 +40,118 @@ class GuiThualEffectsShowcase {
     if (v > hi) { return hi; }
     return v;
   }
+  String intToStr(int v) { return "" + v; }
 
-  // Normalize a rotation angle into [0, 360) so a schedule tick stays bounded.
-  int wrapAngle(int deg) {
-    int d = deg;
-    while (d < 0) { d = d + 360; }
-    while (d >= 360) { d = d - 360; }
-    return d;
-  }
-
-  void banner(String t) {
-    print("================================================================");
-    print("  " + t);
-    print("================================================================");
+  // A bright, dimensional "studio" theme for the effects line.
+  int studioTheme() {
+    int t = uiThemePreset(THEME_CUSTOM);
+    uiThemeSetBg(t, rgb(27, 36, 48));          // deep studio backdrop
+    uiThemeSetSurface(t, rgb(39, 50, 66));     // panel surface
+    uiThemeSetSurfaceHi(t, rgb(54, 68, 88));   // shine / hover
+    uiThemeSetChrome(t, rgb(46, 60, 80));
+    uiThemeSetBorder(t, rgba(120, 170, 255, 60));
+    uiThemeSetFg(t, rgb(234, 240, 248));
+    uiThemeSetFgDim(t, rgb(158, 176, 198));
+    uiThemeSetAccent(t, rgb(79, 142, 247));    // #4F8EF7 studio accent
+    uiThemeSetAccentFg(t, rgb(12, 20, 34));
+    uiThemeSetRadius(t, 12);
+    uiThemeSetControlHeight(t, 34);
+    return t;
   }
 
   void main() {
-    banner("SLeeLa GUI — THUAL (3.0) Effects Showcase");
-    print("gui package 3.0 (featureLevel 3, professional visual effects).");
+    print("SLeeLa THUAL Effects Showcase (native SleelaUI) — backend "
+        + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
 
-    // ---- Branding painted into the chrome ----
-    banner("Branding");
-    print("brand asset 'brand/logo.svg', placement header, scale 110%.");
-    print("wordmark 'SLeeLa Studio', accent #4F8EF7, secondary #1B2430.");
-    print("tagline 'bright · dimensional · alive'.");
-
-    // ---- Activation-audio cue registry ----
-    banner("Audio cues (named activation registry)");
-    print("registered cues: 'tap'->assets/tap.wav, 'confirm'->assets/confirm.wav.");
-    print("master enabled=yes muted=no gain=80% (a component references a cue by name).");
-
-    // ---- Per-component effect bundle ----
-    banner("Effects bundle on the primary button (every knob clamps)");
-    int glow = clamp(140, 0, 100);
-    print("glow intensity 140% -> clamped to " + intToStr(glow) + "% (window 0..100), color #4F8EF7.");
-    int glowRadius = clamp(24, 0, 64);
-    print("glow radius 24px (window 0..64) kept at " + intToStr(glowRadius) + "px.");
-    int shine = clamp(70, 0, 100);
-    print("3D shine " + intToStr(shine) + "% at 35deg highlight angle.");
-    int shadowBlur = clamp(18, 0, 48);
-    int shadowOpacity = clamp(60, 0, 100);
-    print("drop shadow blur " + intToStr(shadowBlur) + "px, opacity " + intToStr(shadowOpacity)
-        + "%, offset (0,3).");
-    int sheen = clamp(85, 0, 100);
-    print("metal look-and-feel on, sheen " + intToStr(sheen) + "%.");
-    int fadeMs = clamp(50, 60, 2000);          // fade duration ms, window 60..2000
-    print("fade-in request 50ms -> clamped to " + intToStr(fadeMs) + "ms (window 60..2000).");
-    print("activation audio cue -> 'confirm'.");
-    print("bundle internally consistent, so honored=yes; toStyle() flattens for the reconciler.");
-
-    // ---- Scheduled rotation drives an internal memo key epoch ----
-    banner("Rotation schedule (a 'schene' — visible tick == memo key epoch)");
-    int step = 90;                 // degrees per tick
-    int angle = 0;
-    int epoch = 0;
-    print("cadence: " + intToStr(step) + "deg per tick; each tick advances the memo key epoch.");
-    int i = 0;
-    while (i < 4) {
-      angle = wrapAngle(angle + step);
-      epoch = epoch + 1;
-      print("  tick " + intToStr(i + 1) + " -> angle=" + intToStr(angle)
-          + "deg, memo key epoch=" + intToStr(epoch));
-      i = i + 1;
+    int app = uiAppCreate("com.mearvk.SleelaUI.ThualEffectsShowcase");
+    if (app < 0) {
+      print("No display available (headless): the ui* bridge is wired, but the");
+      print("toolkit could not open a window. Run on a desktop (X/Cocoa/Win32).");
+      return;
     }
-    print("visible rotation is the honest external signal of the internal key rotation.");
 
-    banner("Done");
-    print("THUAL 3.0: clamped glow/shine/shadow/metal/rotation/fade + branding + audio cues.");
+    int theme = studioTheme();
+    int win = uiWindowCreate(app, "SLeeLa Studio — THUAL 3.0 Effects", 1000, 640, theme);
+    int root = uiWindowRoot(win);
+
+    // --- Chrome: branding painted into the header ---
+    int header = uiHeaderBar(root);
+    int logo = uiLabel(header, "\u2756");                 // the studio mark
+    uiWidgetMargin(logo, 0, 10, 0, 14);
+    int brand = uiBox(header, 1, 0);
+    uiLabel(brand, "SLeeLa Studio");
+    uiLabel(brand, "bright \u00B7 dimensional \u00B7 alive");
+    uiSpacer(header);
+    uiBadge(header, "effects honored");
+
+    int content = uiBox(root, 1, 14);
+    uiWidgetMargin(content, 18, 18, 18, 18);
+    uiWidgetExpand(content, 1, 1);
+
+    int cols = uiBox(content, 0, 16);
+    uiWidgetExpand(cols, 1, 0);
+    int colL = uiBox(cols, 1, 14);
+    uiWidgetExpand(colL, 1, 0);
+    int colR = uiBox(cols, 1, 14);
+    uiWidgetExpand(colR, 1, 0);
+
+    // Effects bundle card: each clamped knob shown on a level/progress bar.
+    int fx = uiCard(colL);
+    int fxBox = uiBox(fx, 1, 8);
+    uiWidgetMargin(fxBox, 14, 14, 14, 14);
+    uiLabel(fxBox, "EFFECTS BUNDLE  (every knob clamps)");
+    int glow = clamp(140, 0, 100);             // 140% -> 100%
+    uiLabel(fxBox, "glow: 140% -> " + intToStr(glow) + "% @24px, #4F8EF7");
+    uiLevelBar(fxBox, glow / 100.0);
+    int shine = clamp(70, 0, 100);
+    uiLabel(fxBox, "3D shine: " + intToStr(shine) + "% @35deg");
+    uiLevelBar(fxBox, shine / 100.0);
+    int sheen = clamp(85, 0, 100);
+    uiLabel(fxBox, "metal sheen: " + intToStr(sheen) + "%");
+    uiLevelBar(fxBox, sheen / 100.0);
+    int fadeMs = clamp(50, 60, 2000);          // 50 -> 60ms
+    uiLabel(fxBox, "fade-in: 50ms -> " + intToStr(fadeMs) + "ms (window 60..2000)");
+
+    // The primary button carrying the effect bundle, plus its audio cues.
+    int demo = uiCard(colR);
+    int demoBox = uiBox(demo, 1, 10);
+    uiWidgetMargin(demoBox, 14, 14, 14, 14);
+    uiLabel(demoBox, "PRIMARY ACTION  (bundle + audio cue)");
+    int glowBtn = uiButton(demoBox, "\u2756 Confirm");
+    uiWidgetSuggested(glowBtn, 1);
+    int cues = uiBox(demoBox, 0, 8);
+    uiChip(cues, "cue: tap");
+    uiChip(cues, "cue: confirm");
+    uiSpacer(cues);
+    uiLabel(demoBox, "master audio: enabled \u00B7 gain 80%");
+
+    // Scheduled-rotation card (full width): the 'schene' == memo key epoch,
+    // made visible by a live, accent-hued throbber.
+    int rot = uiCard(content);
+    uiWidgetExpand(rot, 1, 0);
+    int rotBox = uiBox(rot, 1, 8);
+    uiWidgetMargin(rotBox, 14, 14, 14, 14);
+    uiLabel(rotBox, "ROTATION SCHEDULE  (visible tick == memo key epoch)");
+    int rrow = uiBox(rotBox, 0, 12);
+    int spin = uiThrobber(rrow, 1);            // 1 = active/spinning
+    uiThrobberSetHue(spin, 215.0);             // blue accent hue
+    uiThrobberSetIntensity(spin, 0.9);
+    uiThrobberSetWidth(spin, 4);
+    int epochBox = uiBox(rrow, 1, 2);
+    uiLabel(epochBox, "cadence 90deg / tick");
+    uiLabel(epochBox, "each visible tick advances the memo key epoch");
+    uiSpacer(rrow);
+    uiBadge(rrow, "schene running");
+
+    int status = uiStatusBar(root);
+    int sl = uiLabel(status, "THUAL 3.0 \u00B7 clamped glow/shine/shadow/metal/rotation/fade + branding + audio cues");
+    uiWidgetMargin(sl, 0, 12, 0, 12);
+
+    uiWindowShow(win);
+    print("Window shown (throbber animating). Close it to exit; running the event loop.");
+    int code = uiAppRun(app);
+    uiThemeDestroy(theme);
+    uiAppDestroy(app);
+    print("event loop exited with code " + code);
   }
 }

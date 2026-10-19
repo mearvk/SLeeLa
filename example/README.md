@@ -4,7 +4,9 @@ This folder holds hands-on, self-contained starting points you can read, run,
 and adapt. It now covers three things:
 
 1. **One GUI example per `lib/gui` version line** — the full spread of known UI
-   lines, from the 1.0 baseline to the 5.0 military build.
+   lines, from the 1.0 baseline to the 5.0 military build. Each one now renders
+   a **real, on-screen window** through SleelaUI (SLeeLa's own native C/C++
+   toolkit) via the `ui*` SLVM bridge — it no longer merely prints a walkthrough.
 2. **A full set of science examples** — runnable SLeeLa programs on the science
    subject libraries (math, physics, chemistry, astrophysics, sociology) **and**
    BODI XML projects for every executable runner discipline, all grounded in the
@@ -14,13 +16,14 @@ and adapt. It now covers three things:
 
 | File | What it is |
 | --- | --- |
-| [`gui-mual-text-editor.sleela`](gui-mual-text-editor.sleela) | GUI **MUAL (1.0 baseline)** — toolkit-neutral window, the three integration paths, the 1..14 document listener. |
-| [`gui-gual-settings-console.sleela`](gui-gual-settings-console.sleela) | GUI **GUAL (2.0)** — a hardened, settings-first preferences console; every knob clamps to a safe window, backend is fail-closed. |
-| [`gui-thual-effects-showcase.sleela`](gui-thual-effects-showcase.sleela) | GUI **THUAL (3.0)** — the visual-effects layer: glow / shine / shadow / metal / rotation / fade + branding + audio cues, with a scheduled rotation that drives an internal memo key epoch. |
-| [`gui-dual-media-studio.sleela`](gui-dual-media-studio.sleela) | GUI **DUAL (4.0)** — the rich component set: audio recorder, video canvas, URL bar, layout, graphics, all codec-aware. |
-| [`gui-military-command-console.sleela`](gui-military-command-console.sleela) | GUI **MILITARY (5.0)** — the hardened military build: metal/blue surface, strong branding, Component-vs-Container taxonomy, icons, a crypto selector, a certificate store, and window key-listeners. |
-| [`run-gui-examples.sh`](run-gui-examples.sh) | Runs the four self-contained GUI-line examples (MUAL→DUAL) in one go. |
-| [`run-gui-military.sh`](run-gui-military.sh) | Runs the military-line example (its `import gui.version-military;` pulls in the Master Classes — no dep files needed). |
+| [`gui-mual-text-editor.sleela`](gui-mual-text-editor.sleela) | GUI **MUAL (1.0 baseline)** — a real window: toolkit-neutral editor + status line, a menu of actions, and the 1..14 document-listener panel. |
+| [`gui-gual-settings-console.sleela`](gui-gual-settings-console.sleela) | GUI **GUAL (2.0)** — a real preferences window; every clamped knob is shown on a live slider / toggle / combo, backend is fail-closed. |
+| [`gui-thual-effects-showcase.sleela`](gui-thual-effects-showcase.sleela) | GUI **THUAL (3.0)** — a real window with the visual-effects layer on live level bars plus a hue-tinted **throbber** (the scheduled rotation / memo key epoch, made visible). |
+| [`gui-dual-media-studio.sleela`](gui-dual-media-studio.sleela) | GUI **DUAL (4.0)** — a real window: codec-aware video canvas + transport, an audio recorder, a URL bar, and the codec registry, all rendered as widgets. |
+| [`gui-military-command-console.sleela`](gui-military-command-console.sleela) | GUI **MILITARY (5.0)** — a real window: metal/blue surface, strong branding, Component-vs-Container taxonomy, icons, a crypto selector, a certificate store, and window key-listeners. |
+| [`gui-military-window.sleela`](gui-military-window.sleela) | GUI **MILITARY (5.0)** — the designed command console as a real, on-screen window (the original native `ui*` showcase these examples now all follow). |
+| [`run-gui-examples.sh`](run-gui-examples.sh) | Runs all five GUI-line examples (MUAL→MILITARY) in one go. |
+| [`run-gui-military.sh`](run-gui-military.sh) | Runs just the military-line command console (self-contained `ui*` program — no dep files needed). |
 | [`science/`](science/) | Science examples for **every discipline** — runnable SLeeLa programs (`*.sleela`) on the subject libraries **and** BODI XML projects. See [`science/README.md`](science/README.md). |
 | [`threadripper-workstation.xlt`](threadripper-workstation.xlt) | An **XLT (`.xlt`) CPU-model sheet** — declaratively authors a CPU, board, tiered memory, capabilities, and a program to run on the assembled machine. |
 
@@ -45,7 +48,15 @@ every entry point of the one below and adds its surface on top:
 A built `sleela` binary is required — `./scripts/build-linux.sh` (or
 `make -C impl`) produces one at `impl/build/sleela`.
 
-The four self-contained lines (MUAL → DUAL) run with no dependency classes:
+**These examples now draw real windows.** Each one is self-contained (an inline
+model + `main` using only `ui*` built-ins) and paints its scene through
+SleelaUI — the project's own native C/C++ toolkit — via the `ui*` SLVM bridge
+(`OP_UI_CALL` → [`user-interface/`](../user-interface/) C ABI → X11 / Cocoa /
+Win32), the same path as [`gui-military-window.sleela`](gui-military-window.sleela).
+On a host with a display they open a window and render the widgets; with no
+display (headless/CI) each prints a one-line "no display" notice and exits 0.
+
+Run all five at once:
 
 ```sh
 ./example/run-gui-examples.sh
@@ -59,31 +70,23 @@ export SLEELA_SHA256_MANIFEST="$PWD/security/sha256-manifest.json"
 ./impl/build/sleela run example/gui-thual-effects-showcase.sleela
 ```
 
+> **A display is needed to see the window.** On Linux that means an X server
+> (`DISPLAY` set) plus the runtime libs the toolkit links (`libX11`,
+> `libfreetype`, `libfontconfig`); macOS/Windows use the native backend. Without
+> one, the programs still run and exit cleanly — they just report "no display".
+
 > **The SHA-256 security gate is fail-closed.** `sleela` refuses to run unless
 > `SLEELA_SHA256_MANIFEST` points at the trusted manifest, and it also needs
 > `SLEELA_SHEET`. Both wrappers set these for you.
 
-The MILITARY (5.0) example uses the military-line Master Classes
-(`SLPackage`, `SLGuiSettings`, …) via its `import gui.version-military;` — the
-import resolves them through the library index, so you do **not** pass those
-files on the command line. Run it with its wrapper, or directly:
+The MILITARY (5.0) command console runs the same way; its wrapper is just a
+convenience:
 
 ```sh
 ./example/run-gui-military.sh
 # or, equivalently:
 ./impl/build/sleela run example/gui-military-command-console.sleela
 ```
-
-> Do NOT also pass `lib/gui/version-military/*.sleela` on the command line: the
-> import already defines those classes, so listing them again defined every
-> class twice and failed with `duplicate static field 'SLPackage::FEATURE_LEVEL'`.
-> The wrapper relies on the import alone.
-
-> Toolchain note: the self-contained MUAL→DUAL examples use an inline model +
-> `main`, in the style of [`lib/gui/version-mual/gui-demo.sleela`](../lib/gui/version-mual/gui-demo.sleela).
-> The MILITARY example instead pulls its classes in through
-> `import gui.version-military;`. All run faithfully on the toolchain as it is
-> today.
 
 ---
 

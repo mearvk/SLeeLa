@@ -3,17 +3,22 @@
 # run-gui-examples.sh — run every GUI-line example in the SLeeLa runtime
 # =============================================================================
 #
-# This workspace ships one self-contained GUI example per lib/gui version line:
+# This workspace ships one GUI example per lib/gui version line. Each one now
+# renders a REAL, on-screen window through SleelaUI (SLeeLa's own native C/C++
+# toolkit) via the ui* SLVM bridge -- it no longer merely prints a walkthrough:
 #
-#   gui-mual-text-editor.sleela        MUAL      1.0  (baseline)
-#   gui-gual-settings-console.sleela   GUAL      2.0  (hardened settings-first)
-#   gui-thual-effects-showcase.sleela  THUAL     3.0  (visual effects)
-#   gui-dual-media-studio.sleela       DUAL      4.0  (rich components)
-#   gui-military-command-console.sleela MILITARY 5.0  (military hardening)
+#   gui-mual-text-editor.sleela         MUAL      1.0  (baseline)
+#   gui-gual-settings-console.sleela    GUAL      2.0  (hardened settings-first)
+#   gui-thual-effects-showcase.sleela   THUAL     3.0  (visual effects)
+#   gui-dual-media-studio.sleela        DUAL      4.0  (rich components)
+#   gui-military-command-console.sleela MILITARY  5.0  (military hardening)
 #
-# Each is self-contained (inline model + main), so it runs on the toolchain as
-# it is today without passing any dependency classes. This wrapper sets the
-# environment the fail-closed SHA-256 security gate requires and runs them all.
+# Each is self-contained (inline model + main, only ui* built-ins), so it runs
+# on the toolchain as it is today without passing any dependency classes. On a
+# host with a display (X on Linux, native on macOS/Windows) each opens a window
+# and paints its widgets; headless/CI it reports "no display" and exits 0.
+# This wrapper sets the environment the fail-closed SHA-256 security gate
+# requires and runs them all.
 #
 # Usage:
 #   ./example/run-gui-examples.sh
@@ -53,6 +58,7 @@ EXAMPLES=(
   "example/gui-gual-settings-console.sleela"
   "example/gui-thual-effects-showcase.sleela"
   "example/gui-dual-media-studio.sleela"
+  "example/gui-military-command-console.sleela"
 )
 
 for prog in "${EXAMPLES[@]}"; do
@@ -63,7 +69,7 @@ for prog in "${EXAMPLES[@]}"; do
   echo
 done
 
-echo "run-gui-examples: all self-contained GUI-line examples ran."
-echo "Note: the MILITARY 5.0 example (gui-military-command-console.sleela) uses"
-echo "the one-class-per-file military Master Classes; run it with"
-echo "./example/run-gui-military.sh."
+echo "run-gui-examples: all GUI-line examples ran."
+echo "On a host with a display each opens a real SleelaUI window; headless they"
+echo "report 'no display' and exit 0. The DESIGNED military window variant"
+echo "example/gui-military-window.sleela renders the same native path too."
