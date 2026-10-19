@@ -1,0 +1,19 @@
+/* Deterministic scheduler scaffold; protocol-specific MAC rules are separate. */
+#sleela 2.1
+class CDMAMultiUserScheduler {
+  int maximumUsers; int requestedUsers; int scheduledUsers; boolean configured; String diagnostic;
+  void configure(int capacity) {
+    maximumUsers = 0; requestedUsers = 0; scheduledUsers = 0; configured = false; diagnostic = "";
+    if (capacity <= 0) { diagnostic = "E_CAPACITY: maximum users must be positive"; return; }
+    maximumUsers = capacity; configured = true;
+  }
+  boolean schedule(int users) {
+    requestedUsers = users; scheduledUsers = 0;
+    if (!configured) { diagnostic = "E_STATE: scheduler not configured"; return false; }
+    if (users <= 0) { diagnostic = "E_RANGE: requested users must be positive"; return false; }
+    if (users > maximumUsers) { diagnostic = "E_CAPACITY: request exceeds capacity"; return false; }
+    scheduledUsers = users; diagnostic = ""; return true;
+  }
+  int scheduledCount() { return scheduledUsers; }
+  String message() { return diagnostic; }
+}

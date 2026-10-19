@@ -1,0 +1,18 @@
+/* Code identity metadata; does not generate air-interface sequences. */
+#sleela 2.1
+class CDMASpreadingCode {
+  String codeId;
+  String family;
+  int lengthChips;
+  int chipRateChipsPerSecond;
+  boolean configured;
+  String diagnostic;
+  void configure(String id, String protocolFamily, int length, int chipRate) {
+    codeId = ""; family = ""; lengthChips = 0; chipRateChipsPerSecond = 0; configured = false; diagnostic = "";
+    if (id == "" || protocolFamily == "") { diagnostic = "E_EMPTY: code ID and family required"; return; }
+    if (length <= 0 || chipRate <= 0) { diagnostic = "E_RANGE: length and chip rate must be positive"; return; }
+    codeId = id; family = protocolFamily; lengthChips = length; chipRateChipsPerSecond = chipRate; configured = true;
+  }
+  boolean isConfigured() { return configured; }
+  String message() { return diagnostic; }
+}

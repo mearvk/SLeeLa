@@ -1,0 +1,23 @@
+/* High-level orchestration facade for validated CDMA model components. */
+#sleela 2.1
+class CDMAEngine {
+  String engineId; String family; String state; String diagnostic; boolean configured;
+  void configure(String id, String protocolFamily) {
+    engineId = ""; family = ""; state = "UNCONFIGURED"; diagnostic = ""; configured = false;
+    if (id == "" || protocolFamily == "") { diagnostic = "E_EMPTY: engine ID and family required"; return; }
+    if (protocolFamily != "IS-95" && protocolFamily != "CDMA2000-1X" && protocolFamily != "EV-DO" && protocolFamily != "W-CDMA") {
+      diagnostic = "E_FAMILY: unsupported modeled family"; return;
+    }
+    engineId = id; family = protocolFamily; state = "READY"; configured = true;
+  }
+  boolean start() {
+    if (!configured || state != "READY") { diagnostic = "E_STATE: engine must be configured and READY"; return false; }
+    state = "RUNNING"; return true;
+  }
+  boolean stop() {
+    if (state != "RUNNING") { diagnostic = "E_STATE: only a running engine can stop"; return false; }
+    state = "STOPPED"; return true;
+  }
+  String currentState() { return state; }
+  String message() { return diagnostic; }
+}

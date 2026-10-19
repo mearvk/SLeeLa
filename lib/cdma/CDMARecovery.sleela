@@ -1,0 +1,19 @@
+/* Bounded retry policy with explicit exhaustion. */
+#sleela 2.1
+class CDMARecovery {
+  int maximumRetries; int retriesUsed; boolean configured; boolean exhausted; String diagnostic;
+  void configure(int retryLimit) {
+    configured = false; exhausted = false; retriesUsed = 0; diagnostic = "";
+    if (retryLimit < 0) { diagnostic = "E_RANGE: retry limit cannot be negative"; return; }
+    maximumRetries = retryLimit; configured = true;
+  }
+  boolean requestRetry() {
+    if (!configured) { diagnostic = "E_STATE: recovery policy not configured"; return false; }
+    if (retriesUsed >= maximumRetries) { exhausted = true; diagnostic = "E_RETRY_LIMIT: retry budget exhausted"; return false; }
+    retriesUsed = retriesUsed + 1; diagnostic = ""; return true;
+  }
+  void reset() { retriesUsed = 0; exhausted = false; diagnostic = ""; }
+  int retriesRemaining() { return maximumRetries - retriesUsed; }
+  boolean isExhausted() { return exhausted; }
+  String message() { return diagnostic; }
+}

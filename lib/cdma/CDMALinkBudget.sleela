@@ -1,0 +1,17 @@
+/* Simplified dB arithmetic for education; not a complete RF model. */
+#sleela 2.1
+class CDMALinkBudget {
+  double transmitPowerDbm; double antennaGainDb; double feederLossDb; double pathLossDb; double receiverGainDb;
+  double receivedPowerDbm; boolean calculated; String diagnostic;
+  void configure(double txDbm, double txGainDb, double feederLoss, double pathLoss, double rxGainDb) {
+    calculated = false; diagnostic = "";
+    if (feederLoss < 0.0 || pathLoss < 0.0 || txGainDb < 0.0 || rxGainDb < 0.0) {
+      diagnostic = "E_RANGE: gains and losses must be nonnegative"; return;
+    }
+    transmitPowerDbm = txDbm; antennaGainDb = txGainDb; feederLossDb = feederLoss; pathLossDb = pathLoss; receiverGainDb = rxGainDb;
+    receivedPowerDbm = txDbm + txGainDb - feederLoss - pathLoss + rxGainDb; calculated = true;
+  }
+  boolean isCalculated() { return calculated; }
+  double receivedDbm() { return receivedPowerDbm; }
+  String message() { return diagnostic; }
+}

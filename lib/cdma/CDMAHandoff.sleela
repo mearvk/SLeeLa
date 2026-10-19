@@ -1,0 +1,20 @@
+/* Guarded handoff state machine; success requires explicit target readiness. */
+#sleela 2.1
+class CDMAHandoff {
+  String state; String sourceCell; String targetCell; String diagnostic;
+  void configure(String source) { sourceCell = source; targetCell = ""; diagnostic = ""; if (source == "") state = "INVALID"; else state = "CONNECTED"; }
+  boolean prepare(String target) {
+    if (state != "CONNECTED" || target == "" || target == sourceCell) { diagnostic = "E_HANDOFF_PREPARE: invalid state or target"; return false; }
+    targetCell = target; state = "PREPARED"; return true;
+  }
+  boolean complete(boolean targetReady) {
+    if (state != "PREPARED" || !targetReady) { diagnostic = "E_HANDOFF_COMPLETE: target must be prepared and ready"; return false; }
+    sourceCell = targetCell; targetCell = ""; state = "CONNECTED"; diagnostic = ""; return true;
+  }
+  boolean abort() {
+    if (state != "PREPARED") { diagnostic = "E_HANDOFF_ABORT: no prepared handoff"; return false; }
+    targetCell = ""; state = "CONNECTED"; diagnostic = ""; return true;
+  }
+  String currentState() { return state; }
+  String message() { return diagnostic; }
+}

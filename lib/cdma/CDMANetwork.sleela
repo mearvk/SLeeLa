@@ -1,0 +1,22 @@
+/* Network identity and admission-capacity guard. */
+#sleela 2.1
+class CDMANetwork {
+  String networkId; String family; int maximumSessions; int activeSessions; boolean configured; String diagnostic;
+  void configure(String id, String protocolFamily, int capacity) {
+    configured = false; diagnostic = "";
+    if (id == "" || protocolFamily == "") { diagnostic = "E_EMPTY: network ID and family required"; return; }
+    if (capacity <= 0) { diagnostic = "E_CAPACITY: capacity must be positive"; return; }
+    networkId = id; family = protocolFamily; maximumSessions = capacity; activeSessions = 0; configured = true;
+  }
+  boolean admitSession() {
+    if (!configured) { diagnostic = "E_STATE: network not configured"; return false; }
+    if (activeSessions >= maximumSessions) { diagnostic = "E_CAPACITY: session capacity reached"; return false; }
+    activeSessions = activeSessions + 1; return true;
+  }
+  boolean releaseSession() {
+    if (activeSessions <= 0) { diagnostic = "E_STATE: no active session to release"; return false; }
+    activeSessions = activeSessions - 1; return true;
+  }
+  int availableSessions() { return maximumSessions - activeSessions; }
+  String message() { return diagnostic; }
+}

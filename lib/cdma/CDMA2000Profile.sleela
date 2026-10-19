@@ -1,0 +1,12 @@
+/* CDMA2000 1xRTT profile metadata, not an air-interface implementation. */
+#sleela 2.1
+class CDMA2000Profile {
+  String name; String generation; String radioAccess; int nominalChipRate; boolean configured; String diagnostic;
+  void configure() { name = "CDMA2000 1xRTT"; generation = "3G family"; radioAccess = "direct-sequence CDMA"; nominalChipRate = 1228800; configured = true; diagnostic = ""; }
+  boolean validate() {
+    if (nominalChipRate <= 0 || radioAccess == "") { diagnostic = "E_PROFILE: missing radio-access metadata"; configured = false; return false; }
+    return configured;
+  }
+  String technologyName() { return name; }
+  String message() { return diagnostic; }
+}

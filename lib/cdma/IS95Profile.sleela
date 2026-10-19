@@ -1,0 +1,13 @@
+/* IS-95 / cdmaOne profile metadata. */
+#sleela 2.1
+class IS95Profile {
+  String name; String generation; String duplex; int nominalChipRate; boolean configured; String diagnostic;
+  void configure() { name = "IS-95 / cdmaOne"; generation = "2G"; duplex = "FDD profile"; nominalChipRate = 1228800; configured = true; diagnostic = ""; }
+  boolean validate() {
+    if (nominalChipRate <= 0) { diagnostic = "E_PROFILE: chip rate must be positive"; configured = false; return false; }
+    return configured;
+  }
+  String technologyName() { return name; }
+  int chipRateChipsPerSecond() { return nominalChipRate; }
+  String message() { return diagnostic; }
+}

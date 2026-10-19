@@ -1,0 +1,12 @@
+/* EV-DO packet-data family profile metadata. */
+#sleela 2.1
+class EVDOProfile {
+  String name; String serviceType; String duplex; boolean configured; String diagnostic;
+  void configure() { name = "CDMA2000 EV-DO"; serviceType = "packet data"; duplex = "FDD profile"; configured = true; diagnostic = ""; }
+  boolean validate() {
+    if (name == "" || serviceType == "") { diagnostic = "E_PROFILE: incomplete EV-DO metadata"; configured = false; return false; }
+    return configured;
+  }
+  String technologyName() { return name; }
+  String message() { return diagnostic; }
+}

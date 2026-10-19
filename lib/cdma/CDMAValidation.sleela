@@ -1,0 +1,24 @@
+/* Reusable fail-closed validation diagnostics. */
+#sleela 2.1
+class CDMAValidation {
+  String diagnostic;
+  String code;
+  boolean valid;
+  void configure() { diagnostic = ""; code = "OK"; valid = true; }
+  boolean requireText(String value, String fieldName) {
+    if (value == "") { valid = false; code = "E_EMPTY"; diagnostic = fieldName + " must not be empty"; return false; }
+    return true;
+  }
+  boolean requirePositive(int value, String fieldName) {
+    if (value <= 0) { valid = false; code = "E_RANGE"; diagnostic = fieldName + " must be positive"; return false; }
+    return true;
+  }
+  boolean requireNonNegative(int value, String fieldName) {
+    if (value < 0) { valid = false; code = "E_RANGE"; diagnostic = fieldName + " must not be negative"; return false; }
+    return true;
+  }
+  void reset() { diagnostic = ""; code = "OK"; valid = true; }
+  String message() { return diagnostic; }
+  String errorCode() { return code; }
+  boolean isValid() { return valid; }
+}

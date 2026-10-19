@@ -1,0 +1,33 @@
+/* Source-level tour of the CDMA model objects. */
+#sleela 2.1
+class CDMADemo {
+  String report;
+  boolean passed;
+  void runModelChecks() {
+    CDMAConstants constants;
+    constants.configure();
+    CDMAChannel channel;
+    channel.configure("pilot-forward-1", "forward", constants.FAMILY_CDMA2000, 850000, 1);
+    CDMAFrame frame;
+    frame.configure("frame-1", constants.FAMILY_CDMA2000, 0, 128, 512);
+    CDMAPowerControl power;
+    power.configure(-20.0, 10.0, 0.0, 1.0);
+    power.adjust(true);
+    CDMAHandoff handoff;
+    handoff.configure("cell-A");
+    handoff.prepare("cell-B");
+    handoff.complete(true);
+    CDMANetwork network;
+    network.configure("demo-network", constants.FAMILY_CDMA2000, 8);
+    boolean admitted = network.admitSession();
+    CDMAMultiUserScheduler scheduler;
+    scheduler.configure(8);
+    boolean scheduled = scheduler.schedule(4);
+    passed = channel.isEnabled() && frame.isValid() && power.isConfigured() &&
+      handoff.currentState() == "CONNECTED" && admitted && scheduled;
+    if (passed) report = "CDMA model smoke checks passed";
+    else report = "CDMA model smoke checks failed";
+  }
+  String result() { return report; }
+  boolean isPassed() { return passed; }
+}

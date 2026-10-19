@@ -1,0 +1,28 @@
+/* Shared CDMA identifiers and limits. */
+#sleela 2.1
+class CDMAConstants {
+  String FAMILY_IS95;
+  String FAMILY_CDMA2000;
+  String FAMILY_EVDO;
+  String FAMILY_WCDMA;
+  String DIRECTION_FORWARD;
+  String DIRECTION_REVERSE;
+  int DEFAULT_MAX_RETRIES;
+  int DEFAULT_MAX_USERS;
+  void configure() {
+    FAMILY_IS95 = "IS-95";
+    FAMILY_CDMA2000 = "CDMA2000-1X";
+    FAMILY_EVDO = "EV-DO";
+    FAMILY_WCDMA = "W-CDMA";
+    DIRECTION_FORWARD = "forward";
+    DIRECTION_REVERSE = "reverse";
+    DEFAULT_MAX_RETRIES = 3;
+    DEFAULT_MAX_USERS = 32;
+  }
+  boolean isKnownFamily(String family) {
+    return family == FAMILY_IS95 || family == FAMILY_CDMA2000 || family == FAMILY_EVDO || family == FAMILY_WCDMA;
+  }
+  boolean isKnownDirection(String direction) {
+    return direction == DIRECTION_FORWARD || direction == DIRECTION_REVERSE;
+  }
+}

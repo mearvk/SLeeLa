@@ -1,0 +1,13 @@
+/* Counters for test and simulation observability. */
+#sleela 2.1
+class CDMAMetrics {
+  int attempts; int successes; int failures; String diagnostic;
+  void configure() { attempts = 0; successes = 0; failures = 0; diagnostic = ""; }
+  boolean recordSuccess() { attempts = attempts + 1; successes = successes + 1; return true; }
+  boolean recordFailure(String reason) { attempts = attempts + 1; failures = failures + 1; diagnostic = reason; return true; }
+  double successRatio() { if (attempts == 0) return 0.0; return successes * 1.0 / attempts; }
+  int attemptCount() { return attempts; }
+  int successCount() { return successes; }
+  int failureCount() { return failures; }
+  String message() { return diagnostic; }
+}

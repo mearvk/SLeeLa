@@ -1,0 +1,15 @@
+/* Frame envelope with payload bounds; not a bit-level encoder. */
+#sleela 2.1
+class CDMAFrame {
+  String frameId; String family; int sequenceNumber; int payloadBytes; int maximumPayloadBytes;
+  boolean valid; String diagnostic;
+  void configure(String id, String protocolFamily, int sequence, int payloadSize, int maxPayloadSize) {
+    frameId = ""; family = ""; sequenceNumber = 0; payloadBytes = 0; maximumPayloadBytes = 0; valid = false; diagnostic = "";
+    if (id == "" || protocolFamily == "") { diagnostic = "E_EMPTY: frame ID and family required"; return; }
+    if (sequence < 0 || payloadSize < 0 || maxPayloadSize <= 0) { diagnostic = "E_RANGE: invalid sequence or payload bounds"; return; }
+    if (payloadSize > maxPayloadSize) { diagnostic = "E_PAYLOAD_LIMIT: payload exceeds maximum"; return; }
+    frameId = id; family = protocolFamily; sequenceNumber = sequence; payloadBytes = payloadSize; maximumPayloadBytes = maxPayloadSize; valid = true;
+  }
+  boolean isValid() { return valid; }
+  String message() { return diagnostic; }
+}

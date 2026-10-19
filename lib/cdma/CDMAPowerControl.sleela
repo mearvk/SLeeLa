@@ -1,0 +1,21 @@
+/* Bounded discrete power-control controller for simulation. */
+#sleela 2.1
+class CDMAPowerControl {
+  double minimumDbm; double maximumDbm; double currentDbm; double stepDb; boolean configured; String diagnostic;
+  void configure(double minimum, double maximum, double initial, double step) {
+    configured = false; diagnostic = "";
+    if (minimum >= maximum || step <= 0.0) { diagnostic = "E_RANGE: require min < max and positive step"; return; }
+    if (initial < minimum || initial > maximum) { diagnostic = "E_RANGE: initial power outside bounds"; return; }
+    minimumDbm = minimum; maximumDbm = maximum; currentDbm = initial; stepDb = step; configured = true;
+  }
+  double adjust(boolean increasePower) {
+    if (!configured) { diagnostic = "E_STATE: controller not configured"; return currentDbm; }
+    if (increasePower) currentDbm = currentDbm + stepDb; else currentDbm = currentDbm - stepDb;
+    if (currentDbm > maximumDbm) currentDbm = maximumDbm;
+    if (currentDbm < minimumDbm) currentDbm = minimumDbm;
+    return currentDbm;
+  }
+  double currentPowerDbm() { return currentDbm; }
+  boolean isConfigured() { return configured; }
+  String message() { return diagnostic; }
+}

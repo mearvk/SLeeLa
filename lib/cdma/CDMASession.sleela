@@ -1,0 +1,22 @@
+/* Subscriber/session lifecycle model; no real subscriber credentials. */
+#sleela 2.1
+class CDMASession {
+  String sessionId; String subscriberRef; String state; String diagnostic;
+  void configure(String id, String subscriberReference) {
+    sessionId = ""; subscriberRef = ""; state = "CLOSED"; diagnostic = "";
+    if (id == "" || subscriberReference == "") { diagnostic = "E_EMPTY: session and subscriber reference required"; return; }
+    sessionId = id; subscriberRef = subscriberReference; state = "CREATED";
+  }
+  boolean register(boolean accepted) {
+    if (state != "CREATED") { diagnostic = "E_STATE: registration requires CREATED"; return false; }
+    if (!accepted) { state = "REJECTED"; diagnostic = "E_REGISTRATION: network rejected registration"; return false; }
+    state = "REGISTERED"; diagnostic = ""; return true;
+  }
+  boolean activate() {
+    if (state != "REGISTERED") { diagnostic = "E_STATE: activation requires REGISTERED"; return false; }
+    state = "ACTIVE"; return true;
+  }
+  boolean close() { state = "CLOSED"; return true; }
+  String currentState() { return state; }
+  String message() { return diagnostic; }
+}

@@ -1,0 +1,16 @@
+/* Forward/reverse channel metadata, independent of radio hardware. */
+#sleela 2.1
+class CDMAChannel {
+  String channelId; String direction; String family;
+  int frequencyKHz; int codeChannel; boolean enabled; String diagnostic;
+  void configure(String id, String channelDirection, String protocolFamily, int frequency, int codeNumber) {
+    channelId = ""; direction = ""; family = ""; frequencyKHz = 0; codeChannel = 0; enabled = false; diagnostic = "";
+    if (id == "" || protocolFamily == "") { diagnostic = "E_EMPTY: channel ID and family required"; return; }
+    if (channelDirection != "forward" && channelDirection != "reverse") { diagnostic = "E_DIRECTION: invalid direction"; return; }
+    if (frequency <= 0 || codeNumber < 0) { diagnostic = "E_RANGE: frequency must be positive and code nonnegative"; return; }
+    channelId = id; direction = channelDirection; family = protocolFamily; frequencyKHz = frequency; codeChannel = codeNumber; enabled = true;
+  }
+  boolean isEnabled() { return enabled; }
+  boolean matchesFamily(String requestedFamily) { return enabled && family == requestedFamily; }
+  String message() { return diagnostic; }
+}

@@ -1,0 +1,13 @@
+/* W-CDMA / UMTS profile metadata, not a complete 3GPP stack. */
+#sleela 2.1
+class WCDMAProfile {
+  String name; String generation; String duplexOptions; int nominalChipRate; boolean configured; String diagnostic;
+  void configure() { name = "W-CDMA / UMTS"; generation = "3G"; duplexOptions = "FDD and TDD profile families"; nominalChipRate = 3840000; configured = true; diagnostic = ""; }
+  boolean validate() {
+    if (nominalChipRate <= 0 || duplexOptions == "") { diagnostic = "E_PROFILE: incomplete W-CDMA metadata"; configured = false; return false; }
+    return configured;
+  }
+  String technologyName() { return name; }
+  int chipRateChipsPerSecond() { return nominalChipRate; }
+  String message() { return diagnostic; }
+}
