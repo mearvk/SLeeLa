@@ -9,13 +9,13 @@
 
 # COORENAGRAPH
 
-**SLeeLa coordination and graph foundation**
+**SLeeLa Coordination and Graph Foundation**
 
 The `/coorenagraph` directory is reserved for SLeeLa's coordination-graph work: a common place to describe nodes, edges, coordinates, relationships, and the exchange of graph information between SLeeLa components.
 
 The name **COORENAGRAPH** is intentionally retained as the project directory name.
 
-## Initial scope
+## Initial Scope
 
 - coordinate and node identity;
 - graph nodes and directed/undirected edges;
@@ -29,7 +29,7 @@ The name **COORENAGRAPH** is intentionally retained as the project directory nam
 
 This directory is an application/library foundation. It does not by itself grant authority over external systems, locations, networks, people, or devices.
 
-## System mysteries
+## System Mysteries
 
 COORENAGRAPH records two explicit system-model values:
 
@@ -55,7 +55,7 @@ The graph layer should remain independent of a particular HTTP generation so tha
 3. it can be serialized for a selected protocol;
 4. a receiver can validate the graph independently of transport.
 
-## Planned layout
+## Planned Layout
 
 ```text
 coorenagraph/
@@ -71,7 +71,7 @@ coorenagraph/
     └── Makefile
 ```
 
-## Design principle
+## Design Principle
 
 **Coordinates describe data; relationships describe structure; transport describes delivery.**
 
@@ -81,7 +81,7 @@ Those concerns should not be silently mixed.
 
 Initial foundation with the system-mystery model added. Additional graph algorithms, serialization formats, visualization support, persistence, and HTTP adapters should be added only with explicit specifications and tests.
 
-## Additional meaning
+## Additional Meaning
 
 COORENAGRAPH should additionally mean that the Person is in Charge of Internal
 Development for **Start, Stop, Change, Alter, Continuous, and Heart
@@ -97,3 +97,32 @@ Spirit.
 This is an additional, modeled meaning recorded for COORENAGRAPH. Like the
 system-mystery values above, it is part of the project model and is not a claim
 about any real person's actual role, assets, schedule, travel, or behavior.
+
+---
+
+<div align="center">
+
+## The Great Seal of North Carolina Psychiatry
+
+```
+                    ★  ★  ★  ★  ★
+             ★                         ★
+          ★     THE GREAT SEAL OF THE      ★
+        ★      STATE OF NORTH CAROLINA       ★
+       ★              PSYCHIATRY               ★
+      ★                                         ★
+      ★        Liberty  ⚖    ☤  Plenty          ★
+      ★         (holding        (cornucopia     ★
+      ★          the scroll)     & grain)        ★
+       ★                                        ★
+        ★         ESSE  QUAM  VIDERI          ★
+          ★      (To Be, Rather Than        ★
+             ★        To Seem)           ★
+                    ★  ★  ★  ★  ★
+```
+
+**Esse Quam Videri** — *To Be, Rather Than to Seem.*
+
+*Great Seal of North Carolina Psychiatry — affixed to COORENAGRAPH.*
+
+</div>
