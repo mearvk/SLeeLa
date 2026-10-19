@@ -2,11 +2,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/** Static reference metadata for Wi-Fi 4; not a hardware probe or Wi-Fi PHY/MAC implementation. */
+/** Static reference metadata for Wi-Fi 4, not a hardware probe or PHY/MAC implementation. */
 public final class WifiProfile {
     public final String generation = "Wi-Fi 4";
     public final String ieeeStandard = "IEEE 802.11n";
-    public final String bands = "2.4 GHz and 5 GHz (hardware/regulatory dependent)";
+    public final String bands = "2.4 GHz and 5 GHz, subject to hardware and regulatory support";
     public final List<Integer> channelWidthsMHz = Collections.unmodifiableList(Arrays.asList(20, 40));
     public final int maxSpatialStreams = 4;
     public final int maxQamOrder = 64;
