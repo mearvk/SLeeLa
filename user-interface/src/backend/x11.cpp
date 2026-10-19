@@ -122,6 +122,14 @@ public:
 
     SLUIBackend id() const override { return SLUI_BACKEND_X11; }
 
+    /* Primary display size, straight from the open X connection. */
+    bool screen_size(int* w, int* h) const override {
+        if (!dpy_) return false;
+        if (w) *w = DisplayWidth(dpy_, screen_);
+        if (h) *h = DisplayHeight(dpy_, screen_);
+        return true;
+    }
+
     std::unique_ptr<NativeWindow> create_window(Window* owner,
                                                 const std::string& title,
                                                 int width, int height,

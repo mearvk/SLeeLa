@@ -102,6 +102,7 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_THEME_DESTROY: case SLUI_FN_WIDGET_GET_TEXT:
         case SLUI_FN_WIDGET_GET_TOGGLE: case SLUI_FN_WIDGET_GET_VALUE:
         case SLUI_FN_WIDGET_TAKE_ACTIVATED:
+        case SLUI_FN_SCREEN_WIDTH: case SLUI_FN_SCREEN_HEIGHT:
             return 1;
         /* 2 args */
         case SLUI_FN_APP_PUMP: case SLUI_FN_APP_QUIT: case SLUI_FN_WINDOW_SET_TITLE:
@@ -156,6 +157,10 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_BACKEND:     return r_int((long)slui_backend());
         case SLUI_FN_BACKEND_NAME:return r_str(slui_backend_name((SLUIBackend)ai(a,n,0)));
         case SLUI_FN_VERSION:     return r_str(slui_version_string());
+
+        /* --- screen / display geometry (0 when the backend cannot report) --- */
+        case SLUI_FN_SCREEN_WIDTH:  { int w=0,h=0; return r_int(slui_screen_size(app_get(ai(a,n,0)),&w,&h)==SLUI_OK ? w : 0); }
+        case SLUI_FN_SCREEN_HEIGHT: { int w=0,h=0; return r_int(slui_screen_size(app_get(ai(a,n,0)),&w,&h)==SLUI_OK ? h : 0); }
 
         /* --- window --- */
         case SLUI_FN_WINDOW_CREATE: {

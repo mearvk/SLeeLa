@@ -149,10 +149,26 @@ The GUI `.sleela` impl is carried in two parallel lines under `lib/gui/`:
   - **`SLGuiWindowState`** — window key-listeners: resize, minimize, fullscreen,
     maximize, and **fold to a desktop side** ("minimize right"), remembering the
     previous norm so a **double-click restores** it exactly.
+  - **`SLGuiScreenFit`** — sizes a window from the **actual screen size /
+    resolution** at three support tiers: **basic** (a clamped fraction of the
+    screen), **moderate** (fraction of the work area, with a margin and a
+    centered position), and **advanced** (resolution-CLASS buckets — ≤720p /
+    1080p / 1440p / 4K+ — each with its own target fraction and cap). The host
+    feeds the real screen via `setScreen(w,h)` from the new `uiScreenWidth(app)`
+    / `uiScreenHeight(app)` built-ins, and reads `width()/height()/x()/y()`
+    back; an unknown (headless) screen falls back to a modeled 1920×1080.
+  - **`SLGuiScrollbar`** — an **implied scrollbar** for a scrolled surface in
+    **both axes** (vertical and horizontal). Given a viewport and content extent
+    it decides whether scrolling is implied (`overflow()`) under an auto /
+    always / never policy, and computes the normalized `value` (thumb position)
+    and `page` (thumb size) the drawn `uiScrollBar(parent, orient, value, page)`
+    needs; the host paints the bar and feeds gestures back via
+    `scrollBy`/`scrollTo`.
   - Strong facile branding is on by default; `SLGuiWidgetFactory` registers the
     new tags (`cryptoselector`, `certstore`, `menuitem`, `menu`, `toolbar`,
-    `panel`, `grid`, `icon`). A runnable walkthrough is
-    `version-military/gui-military-demo.sleela`; a visual preview is in
+    `panel`, `grid`, `icon`, `scrollbar`/`vscroll`, `hscroll`). Runnable
+    walkthroughs are `version-military/gui-military-demo.sleela` and
+    `version-military/gui-scroll-screenfit-demo.sleela`; a visual preview is in
     `version-military/preview/`.
 
 The lines are source-compatible: each higher line keeps every entry point of the

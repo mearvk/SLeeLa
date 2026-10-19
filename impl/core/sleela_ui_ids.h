@@ -65,7 +65,7 @@ typedef enum {
 
     /* --- ranges / indicators --- */
     SLUI_FN_SLIDER,           /* uiSlider(parent:i, min:d, max:d, val:d) -> widget */
-    SLUI_FN_SCROLL_BAR,       /* uiScrollBar(parent:i, orient:i, min:d,max:d,val:d) -> widget */
+    SLUI_FN_SCROLL_BAR,       /* uiScrollBar(parent:i, orient:i, value:d, page:d) -> widget */
     SLUI_FN_PROGRESS_BAR,     /* uiProgressBar(parent:i, fraction:d) -> widget  */
     SLUI_FN_LEVEL_BAR,        /* uiLevelBar(parent:i, fraction:d) -> widget     */
     SLUI_FN_SPINNER,          /* uiSpinner(parent:i) -> widget                  */
@@ -125,6 +125,10 @@ typedef enum {
     SLUI_FN_THEME_SET_RADIUS,    /* uiThemeSetRadius(theme:i, px:i) -> null     */
     SLUI_FN_THEME_SET_CONTROL_H, /* uiThemeSetControlHeight(theme:i, px:i) -> null */
     SLUI_FN_THEME_SET_FONT,      /* uiThemeSetFont(theme:i, family:s, sizePt:i) -> null */
+
+    /* --- screen / display geometry --- */
+    SLUI_FN_SCREEN_WIDTH,        /* uiScreenWidth(app:i)  -> display width px, or 0  */
+    SLUI_FN_SCREEN_HEIGHT,       /* uiScreenHeight(app:i) -> display height px, or 0 */
 
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;

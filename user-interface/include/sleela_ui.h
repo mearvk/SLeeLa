@@ -238,6 +238,13 @@ int slui_app_pump(SLUIApp *app, int block);
 int slui_app_run(SLUIApp *app);
 void slui_app_quit(SLUIApp *app, int exit_code);
 
+/* Primary screen / display size in pixels. On success returns SLUI_OK and
+ * writes the dimensions through *w,*h; returns SLUI_ERR_INVALID (and leaves
+ * the outputs untouched) when the backend cannot report a size -- e.g. the
+ * headless build with no display -- so callers can fall back to a modeled
+ * resolution. Either pointer may be NULL to ignore that dimension. */
+SLUIStatus slui_screen_size(SLUIApp *app, int *w, int *h);
+
 /* --------------------------------------------------------------------------
  * Windows. A window owns a root container widget; add children to it.
  * ------------------------------------------------------------------------- */

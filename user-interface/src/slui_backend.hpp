@@ -75,6 +75,12 @@ public:
     virtual void quit(int exit_code) = 0;
     virtual bool should_quit(int* exit_code) const = 0;
 
+    /* Report the primary screen / display size in pixels. Returns true and
+     * fills *w,*h on success; the DEFAULT returns false so a backend that does
+     * not know its display (headless, or a port that has not implemented it)
+     * degrades gracefully and callers fall back to a modeled size. */
+    virtual bool screen_size(int* w, int* h) const { (void)w; (void)h; return false; }
+
     /* Font: resolve a family+size once, then rasterize glyphs on demand.
      * `family` is a hint ("Inter", "Cantarell", "system"...); the backend maps
      * it to the closest real face and remembers metrics. */

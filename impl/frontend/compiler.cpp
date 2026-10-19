@@ -693,6 +693,7 @@ private:
             {"uiThemeSetAccent",SLUI_FN_THEME_SET_ACCENT},{"uiThemeSetAccentFg",SLUI_FN_THEME_SET_ACCENT_FG},
             {"uiThemeSetDanger",SLUI_FN_THEME_SET_DANGER},{"uiThemeSetRadius",SLUI_FN_THEME_SET_RADIUS},
             {"uiThemeSetControlHeight",SLUI_FN_THEME_SET_CONTROL_H},{"uiThemeSetFont",SLUI_FN_THEME_SET_FONT},
+            {"uiScreenWidth",SLUI_FN_SCREEN_WIDTH},{"uiScreenHeight",SLUI_FN_SCREEN_HEIGHT},
         };
         auto it=uiIds.find(n);
         if(it==uiIds.end())return false;

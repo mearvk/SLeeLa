@@ -355,11 +355,11 @@
     },
     {
       "path": "impl/core/sleela_ui_ids.h",
-      "sha256": "07a4829378b9604d8b66fed473b3172cef650c672b1855a437584d657b8ba5ca"
+      "sha256": "81c5f347866e2ea85af39a1cca47a4411a3b7aea4d98ff8a4f0f59b68d547fcd"
     },
     {
       "path": "impl/core/sleela_ui_vm.c",
-      "sha256": "19f27f467dbda9aed202198f7d6d614d7fc00b8205fec1d960197dfab847d7c6"
+      "sha256": "e2eda9953d6f0685c9cc621965b1dcfcda500a9774aac5f91eedaf26e32a6473"
     },
     {
       "path": "impl/core/sleela_ui_vm.h",
@@ -411,7 +411,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "78befbfab7fb95570905f6bf413f0bf98a349e78c3841925857322225d40985c"
+      "sha256": "c7be9cfa7ae9495e4ff6eae1f6c6435086964d4848f14a492917e0acff355431"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -6494,12 +6494,20 @@
       "sha256": "8b9972e7db249f0baf7d33666173a884534a05750da098ec844abcd7ce8c650e"
     },
     {
+      "path": "lib/gui/version-military/SLGuiScreenFit.sleela",
+      "sha256": "3f0fa275a313d9a9164cc94fab6b5488e82119992893fae4901fe565d4fa483b"
+    },
+    {
       "path": "lib/gui/version-military/SLGuiScript.sleela",
       "sha256": "0a598745b357cabf5015ed5851b6054f21837820d95ceb947844a6b0e1c071c5"
     },
     {
       "path": "lib/gui/version-military/SLGuiScriptCommand.sleela",
       "sha256": "dc6b4f84524b249458da19ac51943ed2bad3e9b0f81fcb690e6a058a9da18f9e"
+    },
+    {
+      "path": "lib/gui/version-military/SLGuiScrollbar.sleela",
+      "sha256": "ddef5d5e9cfe156c34c3b33c130cc461c52c0d866d84959eb4836028193b695b"
     },
     {
       "path": "lib/gui/version-military/SLGuiSettings.sleela",
@@ -6515,7 +6523,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiWidgetFactory.sleela",
-      "sha256": "d34f17d851d7d011bf311fac81aec0da5145a0c7100571385443712be0faa03a"
+      "sha256": "bf12cf9321835ec04c9dc54ecb808087c9c043fd0596342b0636ba47151bb938"
     },
     {
       "path": "lib/gui/version-military/SLGuiWindow.sleela",
@@ -6556,6 +6564,10 @@
     {
       "path": "lib/gui/version-military/gui-military-demo.sleela",
       "sha256": "009f5898b7eee5e89b2b79fac7fa71e94b0f25a23916a653ad1b6941a557f0ea"
+    },
+    {
+      "path": "lib/gui/version-military/gui-scroll-screenfit-demo.sleela",
+      "sha256": "84ee1d2e9086b1c7a1d7271c1f580e55d28b7d8ee33032c611a8d2eef1ae4d03"
     },
     {
       "path": "lib/gui/version-mual/SLGuiAction.sleela",

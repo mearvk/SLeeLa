@@ -115,6 +115,15 @@ void slui_app_quit(SLUIApp* app, int exit_code) {
     if (app && app->backend) app->backend->quit(exit_code);
 }
 
+SLUIStatus slui_screen_size(SLUIApp* app, int* w, int* h) {
+    if (!app || !app->backend) return SLUI_ERR_INVALID;
+    int sw = 0, sh = 0;
+    if (!app->backend->screen_size(&sw, &sh)) return SLUI_ERR_INVALID;
+    if (w) *w = sw;
+    if (h) *h = sh;
+    return SLUI_OK;
+}
+
 /* ---- Window -------------------------------------------------------------- */
 SLUIWindow* slui_window_create(SLUIApp* app, const SLUIWindowConfig* config) {
     if (!app || !config) return nullptr;
