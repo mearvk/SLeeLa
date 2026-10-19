@@ -1,2 +1,13 @@
 /** Runnable demonstration of the Wi-Fi 6 reference profile. */
-public final class WifiProfileDemo { private WifiProfileDemo(){} public static void main(String[] args){WifiProfile p=new WifiProfile();p.print();System.out.println("\n80 MHz profile support: "+(p.supportsWidth(80)?"yes":"no"));System.out.println("Actual adapter capabilities must be queried from the operating system/driver.");} }
+public final class WifiProfileDemo {
+    private WifiProfileDemo() { }
+
+    public static void main(String[] args) {
+        WifiProfile profile = new WifiProfile();
+        profile.print();
+        System.out.println();
+        System.out.println("80 MHz profile support: "
+                + (profile.supportsWidth(80) ? "yes" : "no"));
+        System.out.println("Query the operating system/driver for actual adapter capabilities.");
+    }
+}
