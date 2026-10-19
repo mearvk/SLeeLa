@@ -1,0 +1,65 @@
+#sleela 2.1
+// Wifi6Model.sleela
+// SLeeLa reference metadata for Wi-Fi 6 / IEEE 802.11ax.
+// 6 GHz operation is a Wi-Fi 6E extension and is not assumed by this profile.
+// This model does not control a radio or configure the operating system.
+
+struct Wifi6Profile {
+    String generation;
+    String ieee;
+    int supports24GHz;
+    int supports5GHz;
+    int supports6GHzByDefault;
+    int maxChannelWidthMHz;
+    int maxSpatialStreams;
+    int maxQamOrder;
+    int theoreticalPeakMbps;
+    int supportsOfdma;
+    int supportsMuMimo;
+    int supportsBssColoring;
+    int supportsTargetWakeTime;
+    int requiresRuntimeCapabilityDiscovery;
+}
+
+class Wifi6Model {
+    Wifi6Profile standardProfile() {
+        Wifi6Profile p;
+        p.generation = "Wi-Fi 6";
+        p.ieee = "IEEE 802.11ax";
+        p.supports24GHz = 1;
+        p.supports5GHz = 1;
+        p.supports6GHzByDefault = 0;
+        p.maxChannelWidthMHz = 160;
+        p.maxSpatialStreams = 8;
+        p.maxQamOrder = 1024;
+        p.theoreticalPeakMbps = 9600;
+        p.supportsOfdma = 1;
+        p.supportsMuMimo = 1;
+        p.supportsBssColoring = 1;
+        p.supportsTargetWakeTime = 1;
+        p.requiresRuntimeCapabilityDiscovery = 1;
+        return p;
+    }
+
+    int isValidChannelWidth(int widthMHz) {
+        if (widthMHz == 20 || widthMHz == 40 || widthMHz == 80 || widthMHz == 160) {
+            return 1;
+        }
+        return 0;
+    }
+
+    int isValidSpatialStreamCount(int streams) {
+        if (streams >= 1 && streams <= 8) {
+            return 1;
+        }
+        return 0;
+    }
+
+    int needsRuntimeDiscovery() {
+        return 1;
+    }
+
+    int allows6GHzAsGenericWifi6() {
+        return 0;
+    }
+}
