@@ -1,0 +1,50 @@
+#sleela 2.1
+// Wifi5Model.sleela
+// SLeeLa reference metadata for Wi-Fi 5 / IEEE 802.11ac.
+// This model does not control a radio or configure the operating system.
+
+struct Wifi5Profile {
+    String generation;
+    String ieee;
+    int supports24GHz;
+    int supports5GHz;
+    int maxChannelWidthMHz;
+    int maxSpatialStreams;
+    int maxQamOrder;
+    int theoreticalPeakMbps;
+    int requiresRuntimeCapabilityDiscovery;
+}
+
+class Wifi5Model {
+    Wifi5Profile standardProfile() {
+        Wifi5Profile p;
+        p.generation = "Wi-Fi 5";
+        p.ieee = "IEEE 802.11ac";
+        p.supports24GHz = 0;
+        p.supports5GHz = 1;
+        p.maxChannelWidthMHz = 160;
+        p.maxSpatialStreams = 8;
+        p.maxQamOrder = 256;
+        p.theoreticalPeakMbps = 6933;
+        p.requiresRuntimeCapabilityDiscovery = 1;
+        return p;
+    }
+
+    int isValidChannelWidth(int widthMHz) {
+        if (widthMHz == 20 || widthMHz == 40 || widthMHz == 80 || widthMHz == 160) {
+            return 1;
+        }
+        return 0;
+    }
+
+    int isValidSpatialStreamCount(int streams) {
+        if (streams >= 1 && streams <= 8) {
+            return 1;
+        }
+        return 0;
+    }
+
+    int needsRuntimeDiscovery() {
+        return 1;
+    }
+}
