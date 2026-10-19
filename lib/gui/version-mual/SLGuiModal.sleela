@@ -1,0 +1,168 @@
+/*
+ * lib/gui/version-mual/SLGuiModal.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiModal — the MODAL / OVERLAY component: a dialog that
+ *   sits on top of the main application view and fades IN alongside a DARKENED
+ *   backdrop (the scrim), then fades OUT on close. It is a pure model +
+ *   lifecycle state machine: closed -> opening -> open -> closing -> closed,
+ *   driven by tick(elapsed). The dialog and the scrim each fade through an
+ *   SLGuiTransition (the scrim only to its target dim level, never fully
+ *   opaque). SLeeLa owns the title, the dismiss policy, and the timing; the host
+ *   paints the scrim over the view and the dialog over the scrim.
+ *
+ * Family: gui. A view-blocking overlay; this model decides when the dialog and
+ * its backdrop are visible and how opaque each is.
+ */
+#sleela 2.1
+class SLGuiModal {
+  // Lifecycle states.
+  static final int STATE_CLOSED  = 0;
+  static final int STATE_OPENING = 1;   // enter transition running
+  static final int STATE_OPEN    = 2;   // fully shown, awaiting dismissal
+  static final int STATE_CLOSING = 3;   // exit transition running
+
+  String title;
+  int state;          // STATE_*
+  int scrimDimPct;    // backdrop darkness target, 0..100 % (how dark it gets)
+  int dismissOnBackdrop;  // 1 = clicking the darkened backdrop closes it
+  int dismissOnEscape;    // 1 = pressing Escape closes it
+
+  SLGuiTransition dialogFx;  // the dialog's enter/exit fade (and scale feel)
+  SLGuiTransition scrimFx;   // the backdrop's fade (0 -> scrimDimPct)
+
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+
+  // Safe defaults: a 220ms ease-out dialog fade-in, a 55% dark scrim fading in
+  // with it, dismissable by backdrop click and Escape.
+  void configure(String dialogTitle) {
+    title = (dialogTitle == null) ? "" : dialogTitle;
+    state = STATE_CLOSED;
+    scrimDimPct = 55;
+    dismissOnBackdrop = 1;
+    dismissOnEscape = 1;
+    dialogFx = new SLGuiTransition(); dialogFx.configure();
+    dialogFx.fadeIn(220, 2);   // 2 = SLGuiTransition.EASE_OUT
+    scrimFx = new SLGuiTransition(); scrimFx.configure();
+    // 0 = KIND_ENTER, 2 = EASE_OUT (SLGuiTransition ordinals)
+    scrimFx.between(0, 0, scrimDimPct, 220, 2);
+  }
+
+  void setTitle(String t) { title = (t == null) ? "" : t; }
+  void setScrimDim(int pct) {
+    scrimDimPct = clamp(pct, 0, 100);
+    // Keep the scrim tween's target in sync (only matters before opening).
+    if (state == STATE_CLOSED) {
+      scrimFx.between(0, 0, scrimDimPct, scrimFx.getDuration(), scrimFx.getEasing());   // 0 = KIND_ENTER
+    }
+  }
+  void setDismissOnBackdrop(boolean on) { dismissOnBackdrop = on ? 1 : 0; }
+  void setDismissOnEscape(boolean on)   { dismissOnEscape = on ? 1 : 0; }
+  void setFadeMillis(int ms) { dialogFx.setDuration(ms); scrimFx.setDuration(ms); }
+  void setFadeEasing(int ease) { dialogFx.setEasing(ease); scrimFx.setEasing(ease); }
+
+  // ---- lifecycle ----------------------------------------------------------
+  void open() {
+    state = STATE_OPENING;
+    dialogFx.fadeIn(dialogFx.getDuration(), dialogFx.getEasing());
+    scrimFx.between(0, 0, scrimDimPct, scrimFx.getDuration(), scrimFx.getEasing());   // 0 = KIND_ENTER
+    dialogFx.reset(); scrimFx.reset();
+  }
+  // Begin closing (named requestClose, not close: `close` is a reserved
+  // SLeeLa built-in — the OS/pipe handle close — so a method named close()
+  // would collide with it).
+  void requestClose() {
+    if (state == STATE_CLOSED || state == STATE_CLOSING) { return; }
+    state = STATE_CLOSING;
+    dialogFx.fadeOut(dialogFx.getDuration(), dialogFx.getEasing());
+    scrimFx.between(1, scrimDimPct, 0, scrimFx.getDuration(), scrimFx.getEasing());   // 1 = KIND_EXIT
+    dialogFx.reset(); scrimFx.reset();
+  }
+  void closeNow() { state = STATE_CLOSED; }
+
+  // Host input hooks: return true when the event actually dismissed the modal.
+  boolean onBackdropClick() {
+    if (state == STATE_OPEN && dismissOnBackdrop == 1) { requestClose(); return true; }
+    return false;
+  }
+  boolean onEscape() {
+    if (state == STATE_OPEN && dismissOnEscape == 1) { requestClose(); return true; }
+    return false;
+  }
+
+  // Advance the lifecycle by `deltaMs`. Returns true while the modal still
+  // occupies the screen (any non-closed state), false once fully closed.
+  boolean tick(int deltaMs) {
+    if (deltaMs < 0) { deltaMs = 0; }
+    if (state == STATE_OPENING) {
+      dialogFx.advance(deltaMs); scrimFx.advance(deltaMs);
+      if (dialogFx.done() && scrimFx.done()) { state = STATE_OPEN; }
+      return true;
+    }
+    if (state == STATE_OPEN) { return true; }
+    if (state == STATE_CLOSING) {
+      dialogFx.advance(deltaMs); scrimFx.advance(deltaMs);
+      if (dialogFx.done() && scrimFx.done()) { state = STATE_CLOSED; return false; }
+      return true;
+    }
+    return false;   // STATE_CLOSED
+  }
+
+  // ---- presentation -------------------------------------------------------
+  // Opacity (0..100 %) to paint the DIALOG surface at right now.
+  int dialogOpacityPct() {
+    if (state == STATE_OPENING) { return dialogFx.opacityPct(); }
+    if (state == STATE_OPEN)    { return 100; }
+    if (state == STATE_CLOSING) { return dialogFx.opacityPct(); }
+    return 0;
+  }
+  // Opacity (0..100 %) to paint the darkened BACKDROP/scrim at right now; this
+  // tops out at scrimDimPct, never fully opaque.
+  int scrimOpacityPct() {
+    if (state == STATE_OPENING) { return scrimFx.opacityPct(); }
+    if (state == STATE_OPEN)    { return scrimDimPct; }
+    if (state == STATE_CLOSING) { return scrimFx.opacityPct(); }
+    return 0;
+  }
+  boolean onScreen() { return state != STATE_CLOSED; }
+  boolean isOpen() { return state == STATE_OPEN; }
+
+  // ---- readers ------------------------------------------------------------
+  String getTitle() { return title; }
+  int getState() { return state; }
+  int getScrimDim() { return scrimDimPct; }
+  boolean dismissableByBackdrop() { return dismissOnBackdrop == 1; }
+  boolean dismissableByEscape() { return dismissOnEscape == 1; }
+  SLGuiTransition dialogTransition() { return dialogFx; }
+  SLGuiTransition scrimTransition()  { return scrimFx; }
+
+  String stateName() {
+    if (state == STATE_OPENING) { return "opening"; }
+    if (state == STATE_OPEN)    { return "open"; }
+    if (state == STATE_CLOSING) { return "closing"; }
+    return "closed";
+  }
+
+  boolean honored() {
+    if (scrimDimPct < 0 || scrimDimPct > 100) { return false; }
+    int d = dialogOpacityPct(); int s = scrimOpacityPct();
+    return d >= 0 && d <= 100 && s >= 0 && s <= scrimDimPct
+        && dialogFx.honored() && scrimFx.honored();
+  }
+
+  // Flatten into the reconciler's style descriptor. Shape:
+  //   "modal:\"<title>\";scrim:<dim>%;dialog-<fade>;scrim-<fade>"
+  String toStyle() {
+    return "modal:\"" + title + "\";scrim:" + scrimDimPct + "%;"
+        + "dialog-" + dialogFx.toStyle() + ";scrim-" + scrimFx.toStyle();
+  }
+
+  String report() {
+    return "modal \"" + title + "\": " + stateName()
+        + " dialog=" + dialogOpacityPct() + "% scrim=" + scrimOpacityPct()
+        + "% (dim target " + scrimDimPct + "%)";
+  }
+}

@@ -1,0 +1,197 @@
+/*
+ * lib/gui/version-mual/SLGuiTransition.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiTransition — the FADING-ACTION model (an "enter" /
+ *   "exit" transition, a.k.a. intro/outro animation). It is a pure model: given
+ *   a start and end opacity (the CSS `opacity` property, 0..100 %), a duration
+ *   (the tween window), an easing curve, and an optional start delay, it tweens
+ *   ("in-betweens") the current opacity for a given elapsed time. SLeeLa owns
+ *   the curve + timing; the host realizes it with a CSS `transition` /
+ *   `@keyframes` (or a toolkit animator) using the descriptor from toStyle().
+ *
+ *   Terms (documentation labels): the component that fades is a Toast/Snackbar,
+ *   Modal/Overlay, Transition-wrapper, or Skeleton; the ACTION here is the enter
+ *   transition / tween / dissolve; the CSS surface is opacity + transition +
+ *   @keyframes. This class is the reusable fade primitive the GUI components
+ *   (SLGuiToast / SLGuiModal / SLGuiSkeleton) embed.
+ *
+ * Family: gui. A pure tween model (ints only); the host paints the pixels.
+ */
+#sleela 2.1
+class SLGuiTransition {
+  // Direction of the transition.
+  static final int KIND_ENTER = 0;   // fade/scale IN  (opacity rises to target)
+  static final int KIND_EXIT  = 1;   // fade/scale OUT (opacity falls to target)
+
+  // Easing curves (how the tween accelerates). Mirrors the common CSS set plus
+  // a film/game "dissolve" (a smooth cross-fade feel == ease-in-out here).
+  static final int EASE_LINEAR      = 0;   // constant rate
+  static final int EASE_IN          = 1;   // starts slow, speeds up
+  static final int EASE_OUT         = 2;   // starts fast, slows down
+  static final int EASE_IN_OUT      = 3;   // slow, fast, slow
+  static final int EASE_DISSOLVE    = 4;   // seamless cross-fade (== in-out feel)
+
+  // Opacity is carried in PERCENT (0..100); progress in PERMILLE (0..1000) so
+  // the model stays integer-only (SLeeLa ints). Callers divide by 100.0 / 1000.0
+  // when they need the [0,1] double a toolkit wants.
+  static final int PCT  = 100;
+  static final int UNIT = 1000;
+
+  int kind;          // KIND_ENTER / KIND_EXIT
+  int easing;        // EASE_*
+  int fromPct;       // start opacity, 0..100
+  int toPct;         // end opacity, 0..100
+  int durationMs;    // tween duration, 0..60000 ms
+  int delayMs;       // start delay before the tween begins, 0..60000 ms
+  int elapsedMs;     // time advanced so far (clamped to delay+duration)
+
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+
+  // Safe defaults: a 200 ms ease-out fade-in from fully transparent to opaque.
+  void configure() {
+    kind = KIND_ENTER;
+    easing = EASE_OUT;
+    fromPct = 0; toPct = 100;
+    durationMs = 200; delayMs = 0; elapsedMs = 0;
+  }
+
+  // Configure a fade-IN (enter): 0 -> 100 % over `ms` with `ease`.
+  void fadeIn(int ms, int ease) {
+    kind = KIND_ENTER;
+    fromPct = 0; toPct = 100;
+    durationMs = clamp(ms, 0, 60000);
+    setEasing(ease);
+    delayMs = 0; elapsedMs = 0;
+  }
+  // Configure a fade-OUT (exit): 100 -> 0 % over `ms` with `ease`.
+  void fadeOut(int ms, int ease) {
+    kind = KIND_EXIT;
+    fromPct = 100; toPct = 0;
+    durationMs = clamp(ms, 0, 60000);
+    setEasing(ease);
+    delayMs = 0; elapsedMs = 0;
+  }
+  // A general enter/exit between arbitrary opacities.
+  void between(int kindVal, int fromOpacityPct, int toOpacityPct, int ms, int ease) {
+    kind = (kindVal == KIND_EXIT) ? KIND_EXIT : KIND_ENTER;
+    fromPct = clamp(fromOpacityPct, 0, 100);
+    toPct = clamp(toOpacityPct, 0, 100);
+    durationMs = clamp(ms, 0, 60000);
+    setEasing(ease);
+    delayMs = 0; elapsedMs = 0;
+  }
+
+  void setEasing(int ease) {
+    if (ease >= EASE_LINEAR && ease <= EASE_DISSOLVE) { easing = ease; }
+  }
+  void setDelay(int ms) { delayMs = clamp(ms, 0, 60000); }
+  void setDuration(int ms) { durationMs = clamp(ms, 0, 60000); }
+
+  // ---- playback -----------------------------------------------------------
+  void reset() { elapsedMs = 0; }
+  // Advance the tween by `deltaMs`; clamps to the delay+duration window.
+  void advance(int deltaMs) {
+    if (deltaMs < 0) { deltaMs = 0; }
+    elapsedMs = clamp(elapsedMs + deltaMs, 0, delayMs + durationMs);
+  }
+  // The tween is finished once the whole delay+duration window has elapsed.
+  boolean done() { return elapsedMs >= delayMs + durationMs; }
+
+  // Linear progress through the active (post-delay) window, in permille 0..1000.
+  int rawProgressPermille() {
+    if (durationMs <= 0) { return UNIT; }
+    int active = elapsedMs - delayMs;
+    if (active <= 0) { return 0; }
+    if (active >= durationMs) { return UNIT; }
+    return clamp((active * UNIT) / durationMs, 0, UNIT);
+  }
+
+  // Apply the easing curve to a linear permille progress. Integer-only:
+  //   ease-in  : p^2                 (slow start)
+  //   ease-out : 1-(1-p)^2           (slow end)
+  //   in-out   : piecewise quadratic (slow start & end)
+  //   dissolve : == in-out (seamless cross-fade feel)
+  int easeProgress(int p) {
+    if (easing == EASE_LINEAR) { return p; }
+    if (easing == EASE_IN) {
+      return (p * p) / UNIT;                       // p^2
+    }
+    if (easing == EASE_OUT) {
+      int inv = UNIT - p;
+      return UNIT - (inv * inv) / UNIT;            // 1-(1-p)^2
+    }
+    // EASE_IN_OUT / EASE_DISSOLVE: symmetric quadratic ease.
+    if (p < UNIT / 2) {
+      return (2 * p * p) / UNIT;                    // 2p^2
+    }
+    int inv = UNIT - p;
+    return UNIT - (2 * inv * inv) / UNIT;           // 1-2(1-p)^2
+  }
+
+  // The eased progress (permille) at the current elapsed time.
+  int progressPermille() { return easeProgress(rawProgressPermille()); }
+
+  // The current tweened opacity in PERCENT (0..100), interpolating from->to by
+  // the eased progress. This is the value the host writes to CSS `opacity`.
+  int opacityPct() {
+    int p = progressPermille();
+    int span = toPct - fromPct;                     // may be negative (exit)
+    return clamp(fromPct + (span * p) / UNIT, 0, 100);
+  }
+  // Convenience: the opacity at an explicit elapsed time (does not mutate state).
+  int opacityAt(int atElapsedMs) {
+    int save = elapsedMs;
+    elapsedMs = clamp(atElapsedMs, 0, delayMs + durationMs);
+    int o = opacityPct();
+    elapsedMs = save;
+    return o;
+  }
+
+  // ---- readers ------------------------------------------------------------
+  int getKind() { return kind; }
+  int getEasing() { return easing; }
+  int getFrom() { return fromPct; }
+  int getTo() { return toPct; }
+  int getDuration() { return durationMs; }
+  int getDelay() { return delayMs; }
+  int getElapsed() { return elapsedMs; }
+
+  String kindName() { return (kind == KIND_EXIT) ? "exit" : "enter"; }
+  String easingName() {
+    if (easing == EASE_IN)       { return "ease-in"; }
+    if (easing == EASE_OUT)      { return "ease-out"; }
+    if (easing == EASE_IN_OUT)   { return "ease-in-out"; }
+    if (easing == EASE_DISSOLVE) { return "dissolve"; }
+    return "linear";
+  }
+
+  // Internally consistent: opacities and timings within their clamped windows.
+  boolean honored() {
+    if (fromPct < 0 || fromPct > 100 || toPct < 0 || toPct > 100) { return false; }
+    if (durationMs < 0 || durationMs > 60000) { return false; }
+    if (delayMs < 0 || delayMs > 60000) { return false; }
+    int o = opacityPct();
+    return o >= 0 && o <= 100;
+  }
+
+  // Flatten into the descriptor the SLGuiMount reconciler copies onto the widget
+  // style; the host maps it to a CSS `transition` + `@keyframes` (or a toolkit
+  // animator). Shape: "fade:<from>-><to>/<ms>ms/<easing>[+delay<ms>]".
+  String toStyle() {
+    String s = "fade:" + fromPct + "->" + toPct + "/" + durationMs + "ms/" + easingName();
+    if (delayMs > 0) { s = s + "+delay" + delayMs; }
+    return s;
+  }
+
+  String report() {
+    return kindName() + " transition: opacity " + fromPct + "%->" + toPct + "% over "
+        + durationMs + "ms (" + easingName() + ")"
+        + (delayMs > 0 ? (" after " + delayMs + "ms delay") : "")
+        + " now=" + opacityPct() + "% progress=" + progressPermille() + "/1000"
+        + " done=" + done();
+  }
+}

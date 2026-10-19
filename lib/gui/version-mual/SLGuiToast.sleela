@@ -1,0 +1,170 @@
+/*
+ * lib/gui/version-mual/SLGuiToast.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiToast — the TOAST / SNACKBAR component: a small
+ *   notification panel that fades IN at a corner/edge of the screen, DWELLS for
+ *   a few seconds, then fades OUT. It is a pure model + lifecycle state machine:
+ *   hidden -> fadingIn -> shown -> fadingOut -> hidden, driven by tick(elapsed).
+ *   The fade in and fade out are each an SLGuiTransition (the shared enter/exit
+ *   tween); the dwell is a plain timer. SLeeLa owns the message, placement,
+ *   severity, and timing; the host paints the panel at the resolved opacity and
+ *   anchors it to the chosen corner.
+ *
+ * Family: gui. A self-dismissing notification; the host renders it, this model
+ * decides when it is visible and how opaque.
+ */
+#sleela 2.1
+class SLGuiToast {
+  // Lifecycle states.
+  static final int STATE_HIDDEN     = 0;   // not on screen
+  static final int STATE_FADING_IN  = 1;   // enter transition running
+  static final int STATE_SHOWN      = 2;   // fully visible, dwelling
+  static final int STATE_FADING_OUT = 3;   // exit transition running
+
+  // Severity (tints the panel; the host maps to accent/warning/danger/success).
+  static final int SEV_INFO    = 0;
+  static final int SEV_SUCCESS = 1;
+  static final int SEV_WARNING = 2;
+  static final int SEV_DANGER  = 3;
+
+  // Placement anchors (which screen corner/edge the toast docks to).
+  static final int POS_TOP_LEFT      = 0;
+  static final int POS_TOP_RIGHT     = 1;
+  static final int POS_TOP_CENTER    = 2;
+  static final int POS_BOTTOM_LEFT   = 3;
+  static final int POS_BOTTOM_RIGHT  = 4;
+  static final int POS_BOTTOM_CENTER = 5;
+
+  String message;
+  int severity;      // SEV_*
+  int position;      // POS_*
+  int state;         // STATE_*
+  int dwellMs;       // how long STATE_SHOWN lasts, 0..60000 ms
+  int dwellElapsed;  // time spent in STATE_SHOWN so far
+
+  SLGuiTransition enterFx;  // fade-in tween
+  SLGuiTransition exitFx;   // fade-out tween
+
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+
+  // Safe defaults: an info toast, bottom-right, 250ms fade-in, ~3s dwell,
+  // 250ms fade-out (the classic snackbar cadence).
+  void configure(String text) {
+    message = (text == null) ? "" : text;
+    severity = SEV_INFO;
+    position = POS_BOTTOM_RIGHT;
+    state = STATE_HIDDEN;
+    dwellMs = 3000; dwellElapsed = 0;
+    enterFx = new SLGuiTransition(); enterFx.configure();
+    enterFx.fadeIn(250, 2);    // 2 = SLGuiTransition.EASE_OUT
+    exitFx = new SLGuiTransition(); exitFx.configure();
+    exitFx.fadeOut(250, 1);    // 1 = SLGuiTransition.EASE_IN
+  }
+
+  void setMessage(String text) { message = (text == null) ? "" : text; }
+  void setSeverity(int sev) { if (sev >= SEV_INFO && sev <= SEV_DANGER) { severity = sev; } }
+  void setPosition(int pos) { if (pos >= POS_TOP_LEFT && pos <= POS_BOTTOM_CENTER) { position = pos; } }
+  void setDwell(int ms) { dwellMs = clamp(ms, 0, 60000); }
+  void setFadeInMillis(int ms)  { enterFx.setDuration(ms); }
+  void setFadeOutMillis(int ms) { exitFx.setDuration(ms); }
+  void setFadeEasing(int ease)  { enterFx.setEasing(ease); exitFx.setEasing(ease); }
+
+  // ---- lifecycle ----------------------------------------------------------
+  // Begin showing the toast: start the enter transition from the top.
+  void show() {
+    state = STATE_FADING_IN;
+    enterFx.reset();
+    dwellElapsed = 0;
+  }
+  // Begin dismissing early (before the dwell elapses): start the exit tween.
+  void dismiss() {
+    if (state == STATE_HIDDEN || state == STATE_FADING_OUT) { return; }
+    state = STATE_FADING_OUT;
+    exitFx.reset();
+  }
+  void hideNow() { state = STATE_HIDDEN; dwellElapsed = 0; }
+
+  // Advance the lifecycle by `deltaMs`. Returns true while the toast still
+  // occupies the screen (any non-hidden state), false once fully hidden.
+  boolean tick(int deltaMs) {
+    if (deltaMs < 0) { deltaMs = 0; }
+    if (state == STATE_FADING_IN) {
+      enterFx.advance(deltaMs);
+      if (enterFx.done()) { state = STATE_SHOWN; dwellElapsed = 0; }
+      return true;
+    }
+    if (state == STATE_SHOWN) {
+      dwellElapsed = dwellElapsed + deltaMs;
+      if (dwellElapsed >= dwellMs) { state = STATE_FADING_OUT; exitFx.reset(); }
+      return true;
+    }
+    if (state == STATE_FADING_OUT) {
+      exitFx.advance(deltaMs);
+      if (exitFx.done()) { state = STATE_HIDDEN; return false; }
+      return true;
+    }
+    return false;   // STATE_HIDDEN
+  }
+
+  // ---- presentation -------------------------------------------------------
+  // The opacity (0..100 %) the host should paint the panel at right now.
+  int opacityPct() {
+    if (state == STATE_FADING_IN)  { return enterFx.opacityPct(); }
+    if (state == STATE_SHOWN)      { return 100; }
+    if (state == STATE_FADING_OUT) { return exitFx.opacityPct(); }
+    return 0;   // STATE_HIDDEN
+  }
+  boolean onScreen() { return state != STATE_HIDDEN; }
+  boolean fullyShown() { return state == STATE_SHOWN; }
+
+  // ---- readers ------------------------------------------------------------
+  String getMessage() { return message; }
+  int getSeverity() { return severity; }
+  int getPosition() { return position; }
+  int getState() { return state; }
+  SLGuiTransition enterTransition() { return enterFx; }
+  SLGuiTransition exitTransition()  { return exitFx; }
+
+  String severityName() {
+    if (severity == SEV_SUCCESS) { return "success"; }
+    if (severity == SEV_WARNING) { return "warning"; }
+    if (severity == SEV_DANGER)  { return "danger"; }
+    return "info";
+  }
+  String positionName() {
+    if (position == POS_TOP_LEFT)      { return "top-left"; }
+    if (position == POS_TOP_RIGHT)     { return "top-right"; }
+    if (position == POS_TOP_CENTER)    { return "top-center"; }
+    if (position == POS_BOTTOM_LEFT)   { return "bottom-left"; }
+    if (position == POS_BOTTOM_CENTER) { return "bottom-center"; }
+    return "bottom-right";
+  }
+  String stateName() {
+    if (state == STATE_FADING_IN)  { return "fading-in"; }
+    if (state == STATE_SHOWN)      { return "shown"; }
+    if (state == STATE_FADING_OUT) { return "fading-out"; }
+    return "hidden";
+  }
+
+  boolean honored() {
+    if (dwellMs < 0 || dwellMs > 60000) { return false; }
+    int o = opacityPct();
+    return o >= 0 && o <= 100 && enterFx.honored() && exitFx.honored();
+  }
+
+  // Flatten into the reconciler's style descriptor. Shape:
+  //   "toast:<severity>@<position>;dwell:<ms>;<enter-fade>;<exit-fade>"
+  String toStyle() {
+    return "toast:" + severityName() + "@" + positionName() + ";"
+        + "dwell:" + dwellMs + ";in-" + enterFx.toStyle() + ";out-" + exitFx.toStyle();
+  }
+
+  String report() {
+    return "toast [" + severityName() + " @" + positionName() + "]: \"" + message + "\" "
+        + stateName() + " opacity=" + opacityPct() + "% dwell=" + dwellMs + "ms";
+  }
+}

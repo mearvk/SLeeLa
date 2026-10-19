@@ -1,0 +1,162 @@
+/*
+ * lib/gui/version-military/SLGuiSkeleton.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiSkeleton — the SKELETON SCREEN / PLACEHOLDER
+ *   component: a subtle panel that fades IN to stand in for content that is
+ *   still loading, animates a gentle shimmer/pulse while it waits, and then
+ *   DISSOLVES to reveal the real content once loading completes. It is a pure
+ *   model + lifecycle state machine: idle -> loading(shimmer) -> revealing ->
+ *   revealed, driven by tick(elapsed). The initial appearance and the reveal
+ *   cross-fade are SLGuiTransitions; the shimmer is a looping 0..100..0 pulse.
+ *   SLeeLa owns the shape (how many placeholder lines/blocks) and the timing;
+ *   the host paints the grey blocks, the moving shimmer, and the reveal.
+ *
+ * Family: gui. A loading placeholder; this model decides shimmer phase, panel
+ * opacity, and when the real content is revealed.
+ */
+#sleela 2.1
+class SLGuiSkeleton {
+  // Lifecycle states.
+  static final int STATE_IDLE      = 0;   // not shown
+  static final int STATE_LOADING   = 1;   // placeholder visible, shimmering
+  static final int STATE_REVEALING = 2;   // cross-fading placeholder -> content
+  static final int STATE_REVEALED  = 3;   // real content shown, placeholder gone
+
+  // Placeholder shape presets (host maps to a block layout).
+  static final int SHAPE_TEXT   = 0;   // stacked text lines
+  static final int SHAPE_CARD   = 1;   // media block + text lines
+  static final int SHAPE_AVATAR = 2;   // circle + two short lines
+  static final int SHAPE_LIST   = 3;   // repeated rows
+
+  int shape;          // SHAPE_*
+  int lines;          // number of placeholder blocks/rows, 1..32
+  int state;          // STATE_*
+  int shimmerPeriodMs;// one full shimmer sweep, 200..10000 ms
+  int shimmerElapsed; // position within the current sweep
+
+  SLGuiTransition appearFx;  // the placeholder's initial fade-in
+  SLGuiTransition revealFx;  // the placeholder -> content dissolve (cross-fade)
+
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+
+  // Safe defaults: a 3-line text skeleton, 180ms fade-in, a 1.2s shimmer sweep,
+  // a 260ms dissolve reveal.
+  void configure(int shapeVal, int lineCount) {
+    shape = (shapeVal >= SHAPE_TEXT && shapeVal <= SHAPE_LIST) ? shapeVal : SHAPE_TEXT;
+    lines = clamp(lineCount, 1, 32);
+    state = STATE_IDLE;
+    shimmerPeriodMs = 1200; shimmerElapsed = 0;
+    appearFx = new SLGuiTransition(); appearFx.configure();
+    appearFx.fadeIn(180, 2);   // 2 = SLGuiTransition.EASE_OUT
+    revealFx = new SLGuiTransition(); revealFx.configure();
+    revealFx.fadeIn(260, 4);   // 4 = SLGuiTransition.EASE_DISSOLVE
+  }
+
+  void setShape(int shapeVal) { if (shapeVal >= SHAPE_TEXT && shapeVal <= SHAPE_LIST) { shape = shapeVal; } }
+  void setLines(int n) { lines = clamp(n, 1, 32); }
+  void setShimmerPeriod(int ms) { shimmerPeriodMs = clamp(ms, 200, 10000); }
+  void setAppearMillis(int ms) { appearFx.setDuration(ms); }
+  void setRevealMillis(int ms) { revealFx.setDuration(ms); }
+
+  // ---- lifecycle ----------------------------------------------------------
+  // Begin loading: fade the placeholder in and start shimmering.
+  void beginLoading() {
+    state = STATE_LOADING;
+    appearFx.reset();
+    shimmerElapsed = 0;
+  }
+  // Content is ready: start the dissolve reveal.
+  void complete() {
+    if (state == STATE_IDLE || state == STATE_REVEALED) { return; }
+    state = STATE_REVEALING;
+    revealFx.reset();
+  }
+  void reset() { state = STATE_IDLE; shimmerElapsed = 0; }
+
+  // Advance by `deltaMs`. Returns true while the placeholder is still visible
+  // (loading or revealing), false once the real content is fully revealed/idle.
+  boolean tick(int deltaMs) {
+    if (deltaMs < 0) { deltaMs = 0; }
+    if (state == STATE_LOADING) {
+      if (!appearFx.done()) { appearFx.advance(deltaMs); }
+      shimmerElapsed = shimmerElapsed + deltaMs;
+      while (shimmerElapsed >= shimmerPeriodMs) { shimmerElapsed = shimmerElapsed - shimmerPeriodMs; }
+      return true;
+    }
+    if (state == STATE_REVEALING) {
+      revealFx.advance(deltaMs);
+      if (revealFx.done()) { state = STATE_REVEALED; return false; }
+      return true;
+    }
+    return false;   // STATE_IDLE / STATE_REVEALED
+  }
+
+  // ---- presentation -------------------------------------------------------
+  // Opacity (0..100 %) to paint the PLACEHOLDER panel at. During the reveal the
+  // placeholder fades OUT as the content fades in (1 - reveal progress).
+  int placeholderOpacityPct() {
+    if (state == STATE_LOADING)   { return appearFx.opacityPct(); }
+    if (state == STATE_REVEALING) { return 100 - revealFx.opacityPct(); }
+    return 0;
+  }
+  // Opacity (0..100 %) to paint the real CONTENT at. Rises during the reveal.
+  int contentOpacityPct() {
+    if (state == STATE_REVEALING) { return revealFx.opacityPct(); }
+    if (state == STATE_REVEALED)  { return 100; }
+    return 0;
+  }
+  // Shimmer phase as a 0..100 % sweep position (host sweeps a highlight band).
+  int shimmerPhasePct() {
+    if (shimmerPeriodMs <= 0) { return 0; }
+    return clamp((shimmerElapsed * 100) / shimmerPeriodMs, 0, 100);
+  }
+  boolean onScreen() { return state == STATE_LOADING || state == STATE_REVEALING; }
+  boolean revealed() { return state == STATE_REVEALED; }
+
+  // ---- readers ------------------------------------------------------------
+  int getShape() { return shape; }
+  int getLines() { return lines; }
+  int getState() { return state; }
+  int getShimmerPeriod() { return shimmerPeriodMs; }
+  SLGuiTransition appearTransition() { return appearFx; }
+  SLGuiTransition revealTransition() { return revealFx; }
+
+  String shapeName() {
+    if (shape == SHAPE_CARD)   { return "card"; }
+    if (shape == SHAPE_AVATAR) { return "avatar"; }
+    if (shape == SHAPE_LIST)   { return "list"; }
+    return "text";
+  }
+  String stateName() {
+    if (state == STATE_LOADING)   { return "loading"; }
+    if (state == STATE_REVEALING) { return "revealing"; }
+    if (state == STATE_REVEALED)  { return "revealed"; }
+    return "idle";
+  }
+
+  boolean honored() {
+    if (lines < 1 || lines > 32) { return false; }
+    if (shimmerPeriodMs < 200 || shimmerPeriodMs > 10000) { return false; }
+    int p = placeholderOpacityPct(); int c = contentOpacityPct();
+    return p >= 0 && p <= 100 && c >= 0 && c <= 100
+        && appearFx.honored() && revealFx.honored();
+  }
+
+  // Flatten into the reconciler's style descriptor. Shape:
+  //   "skeleton:<shape>x<lines>;shimmer:<ms>;<appear>;reveal-<dissolve>"
+  String toStyle() {
+    return "skeleton:" + shapeName() + "x" + lines + ";"
+        + "shimmer:" + shimmerPeriodMs + ";" + appearFx.toStyle()
+        + ";reveal-" + revealFx.toStyle();
+  }
+
+  String report() {
+    return "skeleton [" + shapeName() + " x" + lines + "]: " + stateName()
+        + " placeholder=" + placeholderOpacityPct() + "% content=" + contentOpacityPct()
+        + "% shimmer=" + shimmerPhasePct() + "%";
+  }
+}

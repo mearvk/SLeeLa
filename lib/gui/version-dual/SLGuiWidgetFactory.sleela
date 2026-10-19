@@ -67,6 +67,27 @@ class SLGuiWidgetFactory {
     if (tag == "circle" || tag == "clickobject") { return uiCanvas(parentHandle, 0, 0); }
     if (tag == "html" || tag == "webview")       { return uiCanvas(parentHandle, 0, 0); }
 
+    // Fade/transition surfaces. The animation (opacity over time) is owned by
+    // the SLeeLa models (SLGuiTransition / SLGuiToast / SLGuiModal /
+    // SLGuiSkeleton), which drive the live widget's opacity each tick; the
+    // factory just gives each a plain container to host its content:
+    //  - toast/snackbar  -> a horizontal strip docked to a screen corner;
+    //  - modal/dialog/overlay -> a vertical dialog box painted over a scrim;
+    //  - skeleton/placeholder -> a vertical stack of placeholder blocks;
+    //  - transition      -> a neutral wrapper whose children fade in/out.
+    if (tag == "toast" || tag == "snackbar") {
+      return uiBox(parentHandle, ORIENT_HORIZONTAL, 8);
+    }
+    if (tag == "modal" || tag == "dialog" || tag == "overlay") {
+      return uiBox(parentHandle, ORIENT_VERTICAL, 12);
+    }
+    if (tag == "skeleton" || tag == "placeholder") {
+      return uiBox(parentHandle, ORIENT_VERTICAL, 8);
+    }
+    if (tag == "transition" || tag == "fade") {
+      return uiBox(parentHandle, ORIENT_VERTICAL, 8);
+    }
+
     // Unknown tag: give it a vertical box so children still have a container.
     return uiBox(parentHandle, ORIENT_VERTICAL, 8);
   }
@@ -98,6 +119,10 @@ class SLGuiWidgetFactory {
     return tag == "window" || tag == "box" || tag == "vbox" || tag == "hbox"
         || tag == "row" || tag == "header" || tag == "headerbar"
         || tag == "status" || tag == "statusbar" || tag == "frame"
-        || tag == "group";
+        || tag == "group"
+        || tag == "toast" || tag == "snackbar"
+        || tag == "modal" || tag == "dialog" || tag == "overlay"
+        || tag == "skeleton" || tag == "placeholder"
+        || tag == "transition" || tag == "fade";
   }
 }

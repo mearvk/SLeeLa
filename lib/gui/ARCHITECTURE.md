@@ -203,6 +203,51 @@ host reports 0 and `SLGuiScreenFit` falls back to a modeled 1920×1080.
 (horizontal) tags. A runnable walkthrough is each line's
 `gui-scroll-screenfit-demo.sleela`.
 
+### Fade transitions + notification surfaces (all lines)
+
+Four line-agnostic **fade / transition** surfaces ship in **every** version line
+(1.0 → 5.0). They answer the three ways UI fading is named: the *component* that
+fades (toast/snackbar, modal/overlay, skeleton/placeholder, transition wrapper),
+the *action* of fading (an enter/exit transition — tween + easing + dissolve),
+and the *CSS surface* it maps to (`opacity`, `transition`, `@keyframes`). Each is
+a pure, integer-only model with `honored()` / `report()` and a `toStyle()` that
+flattens into the descriptor the `SLGuiMount` reconciler copies onto the widget;
+SLeeLa owns the curve, timing, and lifecycle, and the host paints the pixels at
+the opacity the model reports.
+
+- **`SLGuiTransition`** — the **fading action**: an `enter` / `exit` transition
+  (intro/outro) that tweens `opacity` from one percent to another over a
+  duration with an **easing** curve — `linear` / `ease-in` / `ease-out` /
+  `ease-in-out` / `dissolve`. `advance(deltaMs)` steps the tween and
+  `opacityPct()` / `opacityAt(ms)` read the eased value (integer math:
+  ease-in ≈ p², ease-out ≈ 1−(1−p)², in-out/dissolve a symmetric quadratic). It
+  is the reusable primitive the other three embed. `toStyle()` →
+  `fade:<from>-><to>/<ms>ms/<easing>`.
+- **`SLGuiToast`** — a **toast / snackbar**: a small self-dismissing
+  notification that fades **in** at a screen corner, **dwells** a few seconds,
+  then fades **out**. A lifecycle machine (`hidden → fading-in → shown →
+  fading-out → hidden`) driven by `tick(deltaMs)`; severity + corner placement;
+  `opacityPct()` is what the host paints.
+- **`SLGuiModal`** — a **modal / overlay**: a dialog that fades in over a
+  **darkened backdrop** (scrim) and fades out on close (`closed → opening → open
+  → closing → closed`). The dialog and the scrim each fade through their own
+  `SLGuiTransition` (the scrim only to its dim target, never fully opaque), with
+  a backdrop-click / Escape dismiss policy. (`requestClose()` is named so because
+  bare `close` is a reserved SLeeLa built-in.)
+- **`SLGuiSkeleton`** — a **skeleton screen / placeholder**: a subtle panel that
+  fades in to stand in for loading content, runs a looping **shimmer** pulse, and
+  then **dissolves** to reveal the real content (`idle → loading → revealing →
+  revealed`). Reports placeholder vs. content opacity and the shimmer phase.
+
+`SLGuiApp` exposes them as `transition()`, `toast(message)`, `modal(title)`, and
+`skeleton(shape, lines)`. `SLGuiWidgetFactory` registers the `toast`/`snackbar`,
+`modal`/`dialog`/`overlay`, `skeleton`/`placeholder`, and `transition`/`fade`
+container tags. A runnable walkthrough is each line's
+`gui-transitions-demo.sleela`. (In the 3.0+ lines these complement the per-node
+`SLGuiEffects` fade knob: `SLGuiEffects` sets a static opacity/fade target on a
+node, while `SLGuiTransition` et al. are full self-contained enter/exit tweens
+with a lifecycle.)
+
 ## Events, DHTML-style DOM, and scripting
 
 On top of the integration layer, `lib/gui` provides the backing API for

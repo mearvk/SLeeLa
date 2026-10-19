@@ -85,6 +85,32 @@ class SLGuiApp {
     return sb;
   }
 
+  // ---- fade / transition helpers ------------------------------------------
+  // A reusable enter/exit fade primitive (the shared tween). Returns a default
+  // 200ms ease-out fade-in the caller can retarget with fadeIn/fadeOut/between.
+  SLGuiTransition transition() {
+    SLGuiTransition t = new SLGuiTransition(); t.configure();
+    return t;
+  }
+  // A TOAST / SNACKBAR: a small self-dismissing notification that fades in,
+  // dwells, and fades out. Driven by tick(); read opacityPct() to paint it.
+  SLGuiToast toast(String message) {
+    SLGuiToast t = new SLGuiToast(); t.configure(message);
+    return t;
+  }
+  // A MODAL / OVERLAY: a dialog that fades in over a darkened backdrop (scrim).
+  SLGuiModal modal(String title) {
+    SLGuiModal m = new SLGuiModal(); m.configure(title);
+    return m;
+  }
+  // A SKELETON SCREEN / PLACEHOLDER: a shimmering loading placeholder that
+  // dissolves to reveal real content (shape 0=text/1=card/2=avatar/3=list).
+  SLGuiSkeleton skeleton(int shape, int lines) {
+    SLGuiSkeleton s = new SLGuiSkeleton(); s.configure(shape, lines);
+    return s;
+  }
+
+
   boolean isReady() { return ready == 1; }
 
   // ---- document access ----------------------------------------------------

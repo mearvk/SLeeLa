@@ -1,0 +1,77 @@
+/*
+ * lib/gui/version-thual/gui-transitions-demo.sleela
+ * A runnable walkthrough of the four fade/transition surfaces that ship in
+ * every /lib/gui version line:
+ *
+ *   - SLGuiTransition — the FADING ACTION: an enter/exit tween (opacity over
+ *                       time) with an easing curve (linear / ease-in /
+ *                       ease-out / ease-in-out / dissolve).
+ *   - SLGuiToast      — a TOAST / SNACKBAR: fades in at a corner, dwells a few
+ *                       seconds, fades out.
+ *   - SLGuiModal      — a MODAL / OVERLAY: a dialog that fades in over a
+ *                       darkened backdrop (scrim).
+ *   - SLGuiSkeleton   — a SKELETON SCREEN / PLACEHOLDER: shimmers while loading,
+ *                       then dissolves to reveal content.
+ *
+ * SLeeLa owns the curve + timing + lifecycle; the host paints each surface at
+ * the opacity these models report. We drive them here with explicit elapsed-
+ * time ticks so the walkthrough is deterministic and headless. Ordinals
+ * (easing / severity / position / shape) are passed as small ints — the house
+ * style for callers, documented inline and in each class.
+ */
+#sleela 2.1
+import gui.version-thual;
+class GuiTransitionsDemo {
+
+  void main() {
+    SLPackage pkg = new SLPackage(); pkg.configure("gui");
+    print("gui package " + pkg.version() + " (featureLevel " + pkg.featureLevel() + ")");
+
+    // ---- 1. The fading action: an enter transition (tween + easing) --------
+    // easing: 0=linear 1=ease-in 2=ease-out 3=ease-in-out 4=dissolve
+    SLGuiTransition fade = new SLGuiTransition(); fade.configure();
+    fade.fadeIn(400, 2);                            // 0 -> 100% over 400ms, ease-out
+    print("TRANSITION -> " + fade.report());
+    print("  opacity at 0ms="   + fade.opacityAt(0)   + "%");
+    print("  opacity at 100ms=" + fade.opacityAt(100) + "%");
+    print("  opacity at 200ms=" + fade.opacityAt(200) + "%  (ease-out: past half already)");
+    print("  opacity at 400ms=" + fade.opacityAt(400) + "%");
+    print("  css -> " + fade.toStyle());
+
+    // ---- 2. Toast / snackbar lifecycle -------------------------------------
+    // severity: 0=info 1=success 2=warning 3=danger ; position: 4=bottom-right
+    SLGuiToast toast = new SLGuiToast(); toast.configure("Saved your changes.");
+    toast.setSeverity(1);
+    toast.setPosition(4);
+    toast.setFadeInMillis(200); toast.setDwell(1000); toast.setFadeOutMillis(200);
+    toast.show();
+    print("TOAST -> " + toast.report());
+    toast.tick(200);  print("  after fade-in  : " + toast.stateName() + " " + toast.opacityPct() + "%");
+    toast.tick(1000); print("  after dwell    : " + toast.stateName() + " " + toast.opacityPct() + "%");
+    toast.tick(200);  print("  after fade-out : " + toast.stateName() + " " + toast.opacityPct() + "%");
+
+    // ---- 3. Modal / overlay over a darkened backdrop -----------------------
+    SLGuiModal modal = new SLGuiModal(); modal.configure("Confirm deletion");
+    modal.setScrimDim(60); modal.setFadeMillis(200);
+    modal.open();
+    print("MODAL -> " + modal.report());
+    modal.tick(200); print("  opened   : dialog=" + modal.dialogOpacityPct() + "% scrim=" + modal.scrimOpacityPct() + "%");
+    boolean dismissed = modal.onBackdropClick();   // user clicks the dim backdrop
+    print("  backdrop click dismissed=" + dismissed + " -> " + modal.stateName());
+    modal.tick(200); print("  closed   : dialog=" + modal.dialogOpacityPct() + "% scrim=" + modal.scrimOpacityPct() + "%");
+
+    // ---- 4. Skeleton screen -> content dissolve ----------------------------
+    // shape: 0=text 1=card 2=avatar 3=list
+    SLGuiSkeleton sk = new SLGuiSkeleton();
+    sk.configure(1, 4);
+    sk.setShimmerPeriod(600); sk.setRevealMillis(260);
+    sk.beginLoading();
+    print("SKELETON -> " + sk.report());
+    sk.tick(300); print("  loading  : placeholder=" + sk.placeholderOpacityPct() + "% shimmer=" + sk.shimmerPhasePct() + "%");
+    sk.complete();                                  // content arrived
+    sk.tick(130); print("  reveal 1/2: placeholder=" + sk.placeholderOpacityPct() + "% content=" + sk.contentOpacityPct() + "%");
+    sk.tick(130); print("  reveal 2/2: placeholder=" + sk.placeholderOpacityPct() + "% content=" + sk.contentOpacityPct() + "% revealed=" + sk.revealed());
+
+    print("done: fade transitions, toast/snackbar, modal/overlay, skeleton — thual line.");
+  }
+}
