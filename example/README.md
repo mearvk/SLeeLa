@@ -4,9 +4,17 @@ This folder holds hands-on, self-contained starting points you can read, run,
 and adapt. It now covers three things:
 
 1. **One GUI example per `lib/gui` version line** — the full spread of known UI
-   lines, from the 1.0 baseline to the 5.0 military build. Each one now renders
-   a **real, on-screen window** through SleelaUI (SLeeLa's own native C/C++
-   toolkit) via the `ui*` SLVM bridge — it no longer merely prints a walkthrough.
+   lines, from the 1.0 baseline to the 5.0 military build. Each one renders a
+   **real, on-screen window** through SleelaUI (SLeeLa's own native C/C++
+   toolkit) via the `ui*` SLVM bridge, and each is now **interactive**: the
+   buttons actually function. Instead of calling the toolkit's own
+   `uiAppRun()` (which just waits for the window to close), each example runs
+   its **own event loop** — every turn it pumps the toolkit and then polls each
+   control's one-shot activation latch (`uiWidgetTakeActivated`) and reacts, so
+   clicking a button **switches the visible panel** (`uiWidgetVisible`) and
+   **updates the status line** (`uiWidgetSetText`) live. The MUAL editor's
+   document panel is a `uiScrolledView`, so its long watch-list scrolls and a
+   scrollbar appears **automatically** on overflow — the newest GUI feature.
 2. **A full set of science examples** — runnable SLeeLa programs on the science
    subject libraries (math, physics, chemistry, astrophysics, sociology) **and**
    BODI XML projects for every executable runner discipline, all grounded in the
@@ -16,11 +24,11 @@ and adapt. It now covers three things:
 
 | File | What it is |
 | --- | --- |
-| [`gui-mual-text-editor.sleela`](gui-mual-text-editor.sleela) | GUI **MUAL (1.0 baseline)** — a real window: toolkit-neutral editor + status line, a menu of actions, and the 1..14 document-listener panel. |
-| [`gui-gual-settings-console.sleela`](gui-gual-settings-console.sleela) | GUI **GUAL (2.0)** — a real preferences window; every clamped knob is shown on a live slider / toggle / combo, backend is fail-closed. |
-| [`gui-thual-effects-showcase.sleela`](gui-thual-effects-showcase.sleela) | GUI **THUAL (3.0)** — a real window with the visual-effects layer on live level bars plus a hue-tinted **throbber** (the scheduled rotation / memo key epoch, made visible). |
-| [`gui-dual-media-studio.sleela`](gui-dual-media-studio.sleela) | GUI **DUAL (4.0)** — a real window: codec-aware video canvas + transport, an audio recorder, a URL bar, and the codec registry, all rendered as widgets. |
-| [`gui-military-command-console.sleela`](gui-military-command-console.sleela) | GUI **MILITARY (5.0)** — a real window: metal/blue surface, strong branding, Component-vs-Container taxonomy, icons, a crypto selector, a certificate store, and window key-listeners. |
+| [`gui-mual-text-editor.sleela`](gui-mual-text-editor.sleela) | GUI **MUAL (1.0 baseline)** — interactive: the **Editor / Documents / About** buttons switch the visible panel, **Save / New** update the status line, and the Documents panel is a `uiScrolledView` whose 1..14 watch-list **scrolls with an automatic scrollbar** on overflow. |
+| [`gui-gual-settings-console.sleela`](gui-gual-settings-console.sleela) | GUI **GUAL (2.0)** — interactive: clicking an accepted backend (**javafx / swing / native**) selects it live (suggested highlight + status), while **qt** is refused on click (fail-closed `configureStrict`). Clamped knobs ride live sliders/toggles/combo. |
+| [`gui-thual-effects-showcase.sleela`](gui-thual-effects-showcase.sleela) | GUI **THUAL (3.0)** — interactive: **Confirm** fires the audio cue and advances the schene (rotating the live throbber hue a quarter-turn per the memo key epoch); **Toggle fade** fades the primary action in/out. |
+| [`gui-dual-media-studio.sleela`](gui-dual-media-studio.sleela) | GUI **DUAL (4.0)** — interactive: the **Play / Pause / Stop** transport and **Record / Stop** controls change the player + recorder state live, all codec-gated (the UI only offers media it can play). |
+| [`gui-military-command-console.sleela`](gui-military-command-console.sleela) | GUI **MILITARY (5.0)** — interactive and **fail-closed**: **Run** is locked until **Authorize** is clicked (then it executes under authority), and **Reset** clears authority and re-locks Run — `SLGuiAdminAuthority` made tangible. Metal/blue surface, strong branding, taxonomy, crypto selector, certificate store. |
 | [`gui-military-window.sleela`](gui-military-window.sleela) | GUI **MILITARY (5.0)** — the designed command console as a real, on-screen window (the original native `ui*` showcase these examples now all follow). |
 | [`run-gui-examples.sh`](run-gui-examples.sh) | Runs all five GUI-line examples (MUAL→MILITARY) in one go. |
 | [`run-gui-military.sh`](run-gui-military.sh) | Runs just the military-line command console (self-contained `ui*` program — no dep files needed). |

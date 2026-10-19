@@ -29,10 +29,24 @@ class GuiGualSettingsConsole {
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
   int THEME_CUSTOM = 2;
 
+  // Live handles the event loop reacts on/to.
+  int btnJfx;
+  int btnSwing;
+  int btnNative;
+  int btnQt;
+  int statusLabel;
+
   int rgba(int r, int g, int b, int a) {
     return r * 16777216 + g * 65536 + b * 256 + a;
   }
   int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
+
+  // Mark one accepted backend button as selected (fail-closed: qt stays off).
+  void selectBackend(int which) {
+    uiWidgetSuggested(btnJfx,    which == 0 ? 1 : 0);
+    uiWidgetSuggested(btnSwing,  which == 1 ? 1 : 0);
+    uiWidgetSuggested(btnNative, which == 2 ? 1 : 0);
+  }
 
   // Clamp an int into [lo, hi] — the heart of GUAL's settings discipline.
   int clamp(int v, int lo, int hi) {
@@ -130,12 +144,12 @@ class GuiGualSettingsConsole {
     uiWidgetMargin(sysBox, 14, 14, 14, 14);
     uiLabel(sysBox, "BACKEND & WINDOW  (configureStrict is fail-closed)");
     int brow = uiBox(sysBox, 0, 8);
-    int jfx = uiButton(brow, "javafx  \u2713 accepted");
-    uiWidgetSuggested(jfx, 1);
-    uiButton(brow, "swing  \u2713");
-    uiButton(brow, "native  \u2713");
-    int qt = uiButton(brow, "qt  \u2715 refused");
-    uiWidgetDestructive(qt, 1);
+    btnJfx = uiButton(brow, "javafx");
+    uiWidgetSuggested(btnJfx, 1);              // selected by default
+    btnSwing = uiButton(brow, "swing");
+    btnNative = uiButton(brow, "native");
+    btnQt = uiButton(brow, "qt  \u2715 refused");
+    uiWidgetDestructive(btnQt, 1);
     uiSpacer(brow);
     int wrow = uiBox(sysBox, 0, 10);
     uiLabel(wrow, "window: min 640x480, max 3840x2160, resizable");
@@ -144,14 +158,36 @@ class GuiGualSettingsConsole {
 
     // --- Status bar ---
     int status = uiStatusBar(root);
-    int sl = uiLabel(status, "GUAL 2.0 \u00B7 one validated settings object \u00B7 every knob clamps \u00B7 backend fail-closed");
-    uiWidgetMargin(sl, 0, 12, 0, 12);
+    statusLabel = uiLabel(status, "GUAL 2.0 \u00B7 backend: javafx \u00B7 every knob clamps \u00B7 qt is refused (fail-closed)");
+    uiWidgetMargin(statusLabel, 0, 12, 0, 12);
 
     uiWindowShow(win);
-    print("Window shown. Close it to exit; running the SleelaUI event loop.");
-    int code = uiAppRun(app);
+    print("Window shown. Click an accepted backend to select it; qt is refused.");
+
+    // --- Interactive event loop: pump, then poll the backend buttons. ---
+    boolean running = true;
+    while (running) {
+      int dispatched = uiAppPump(app, 1);
+      if (dispatched < 0) { running = false; }
+      else {
+        if (uiWidgetTakeActivated(btnJfx) == 1) {
+          selectBackend(0); uiWidgetSetText(statusLabel, "backend selected: javafx \u2713 (configureStrict accepted)");
+        }
+        if (uiWidgetTakeActivated(btnSwing) == 1) {
+          selectBackend(1); uiWidgetSetText(statusLabel, "backend selected: swing \u2713 (configureStrict accepted)");
+        }
+        if (uiWidgetTakeActivated(btnNative) == 1) {
+          selectBackend(2); uiWidgetSetText(statusLabel, "backend selected: native \u2713 (configureStrict accepted)");
+        }
+        if (uiWidgetTakeActivated(btnQt) == 1) {
+          // Fail-closed: refused. Selection does not change.
+          uiWidgetSetText(statusLabel, "backend 'qt' REFUSED \u2715 \u00B7 configureStrict is fail-closed; selection unchanged");
+        }
+      }
+    }
+
     uiThemeDestroy(theme);
     uiAppDestroy(app);
-    print("event loop exited with code " + code);
+    print("event loop exited.");
   }
 }

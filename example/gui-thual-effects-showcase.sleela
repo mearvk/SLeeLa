@@ -29,6 +29,12 @@ class GuiThualEffectsShowcase {
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
   int THEME_CUSTOM = 2;
 
+  // Live handles the event loop reacts on/to.
+  int btnConfirm;
+  int btnFade;
+  int spin;          // the throbber (rotation made visible)
+  int statusLabel;
+
   int rgba(int r, int g, int b, int a) {
     return r * 16777216 + g * 65536 + b * 256 + a;
   }
@@ -117,8 +123,9 @@ class GuiThualEffectsShowcase {
     int demoBox = uiBox(demo, 1, 10);
     uiWidgetMargin(demoBox, 14, 14, 14, 14);
     uiLabel(demoBox, "PRIMARY ACTION  (bundle + audio cue)");
-    int glowBtn = uiButton(demoBox, "\u2756 Confirm");
-    uiWidgetSuggested(glowBtn, 1);
+    btnConfirm = uiButton(demoBox, "\u2756 Confirm");
+    uiWidgetSuggested(btnConfirm, 1);
+    btnFade = uiButton(demoBox, "Toggle fade");
     int cues = uiBox(demoBox, 0, 8);
     uiChip(cues, "cue: tap");
     uiChip(cues, "cue: confirm");
@@ -133,7 +140,7 @@ class GuiThualEffectsShowcase {
     uiWidgetMargin(rotBox, 14, 14, 14, 14);
     uiLabel(rotBox, "ROTATION SCHEDULE  (visible tick == memo key epoch)");
     int rrow = uiBox(rotBox, 0, 12);
-    int spin = uiThrobber(rrow, 1);            // 1 = active/spinning
+    spin = uiThrobber(rrow, 1);                // 1 = active/spinning
     uiThrobberSetHue(spin, 215.0);             // blue accent hue
     uiThrobberSetIntensity(spin, 0.9);
     uiThrobberSetWidth(spin, 4);
@@ -144,14 +151,43 @@ class GuiThualEffectsShowcase {
     uiBadge(rrow, "schene running");
 
     int status = uiStatusBar(root);
-    int sl = uiLabel(status, "THUAL 3.0 \u00B7 clamped glow/shine/shadow/metal/rotation/fade + branding + audio cues");
-    uiWidgetMargin(sl, 0, 12, 0, 12);
+    statusLabel = uiLabel(status, "THUAL 3.0 \u00B7 effects honored \u00B7 click Confirm to fire the cue");
+    uiWidgetMargin(statusLabel, 0, 12, 0, 12);
 
     uiWindowShow(win);
-    print("Window shown (throbber animating). Close it to exit; running the event loop.");
-    int code = uiAppRun(app);
+    print("Window shown (throbber animating). Buttons fire the cue and toggle fade.");
+
+    // --- Interactive event loop: pump, then poll the effect buttons. ---
+    int confirms = 0;
+    int hue = 215;
+    boolean faded = false;
+    boolean running = true;
+    while (running) {
+      int dispatched = uiAppPump(app, 1);
+      if (dispatched < 0) { running = false; }
+      else {
+        if (uiWidgetTakeActivated(btnConfirm) == 1) {
+          confirms = confirms + 1;
+          // Advance the schene: rotate the throbber hue a quarter-turn and
+          // report the memo key epoch stepping with it.
+          hue = hue + 90; if (hue >= 360) { hue = hue - 360; }
+          uiThrobberSetHue(spin, hue);
+          uiWidgetSetText(statusLabel, "cue: confirm \u2713 \u00B7 schene tick " + confirms
+              + " (memo key epoch advanced; hue " + hue + "deg)");
+        }
+        if (uiWidgetTakeActivated(btnFade) == 1) {
+          faded = !faded;
+          // Fade the primary action out/in (visible-toggle stands in for opacity).
+          uiWidgetVisible(btnConfirm, faded ? 0 : 1);
+          uiWidgetSetText(statusLabel, faded
+              ? "fade-out: primary action faded (SLGuiEffects.fadeOut)"
+              : "fade-in: primary action restored (SLGuiEffects.fadeIn)");
+        }
+      }
+    }
+
     uiThemeDestroy(theme);
     uiAppDestroy(app);
-    print("event loop exited with code " + code);
+    print("event loop exited; confirms this session: " + confirms);
   }
 }

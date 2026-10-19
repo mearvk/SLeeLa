@@ -30,6 +30,12 @@ class GuiMilitaryCommandConsole {
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
   int THEME_CUSTOM = 2;
 
+  // Live handles the event loop reacts on/to.
+  int btnAuthorize;
+  int btnRun;
+  int btnReset;
+  int statusLabel;
+
   // 0xRRGGBBAA colours for the military "metal / blue-hue" palette.
   int rgba(int r, int g, int b, int a) {
     return r * 16777216 + g * 65536 + b * 256 + a;
@@ -108,10 +114,11 @@ class GuiMilitaryCommandConsole {
     uiWidgetMargin(actBox, 12, 14, 12, 14);
     uiLabel(actBox, "ACTIONS  (container \u00B7 toolbar)");
     int arow = uiBox(actBox, 0, 8);
-    int authorize = uiButton(arow, "\u26CA Authorize");  // md icon, leading, gap 8
-    uiWidgetSuggested(authorize, 1);
-    uiButton(arow, "\u25B9 Run");
-    uiButton(arow, "\u27F2 Reset");
+    btnAuthorize = uiButton(arow, "\u26CA Authorize");   // md icon, leading, gap 8
+    uiWidgetSuggested(btnAuthorize, 1);
+    btnRun = uiButton(arow, "\u25B9 Run");
+    uiWidgetSensitive(btnRun, 0);                        // fail-closed: locked until authorized
+    btnReset = uiButton(arow, "\u27F2 Reset");
     uiSpacer(arow);
     uiLabel(actBox, "icons: md/20 \u00B7 leading \u00B7 gap 8 \u00B7 optically centered");
 
@@ -159,14 +166,48 @@ class GuiMilitaryCommandConsole {
     uiSpacer(wrow);
 
     int status = uiStatusBar(root);
-    int sl = uiLabel(status, "military line \u00B7 metal/blue surface \u00B7 strong branding \u00B7 hardened crypto + certs");
-    uiWidgetMargin(sl, 0, 12, 0, 12);
+    statusLabel = uiLabel(status, "military line \u00B7 fail-closed \u00B7 Authorize to unlock Run");
+    uiWidgetMargin(statusLabel, 0, 12, 0, 12);
 
     uiWindowShow(win);
-    print("Window shown. Close it to exit; running the SleelaUI event loop.");
-    int code = uiAppRun(app);
+    print("Window shown. Authorize unlocks Run; Reset re-locks it (fail-closed).");
+
+    // --- Interactive event loop: pump, then poll the command actions. ---
+    // Fail-closed authority: Run is sensitive only after Authorize, and Reset
+    // returns the console to the locked state. This is the hardened posture of
+    // SLGuiAdminAuthority made tangible: sign in to start a process, sign off,
+    // and a clear audit of the current authority state in the status line.
+    boolean authorized = false;
+    int runs = 0;
+    boolean running = true;
+    while (running) {
+      int dispatched = uiAppPump(app, 1);
+      if (dispatched < 0) { running = false; }
+      else {
+        if (uiWidgetTakeActivated(btnAuthorize) == 1) {
+          authorized = true;
+          uiWidgetSensitive(btnRun, 1);              // unlock Run
+          uiWidgetSetText(statusLabel, "AUTHORIZED \u2713 \u00B7 PQC suite \u00B7 Run unlocked");
+        }
+        if (uiWidgetTakeActivated(btnRun) == 1) {
+          if (authorized) {
+            runs = runs + 1;
+            uiWidgetSetText(statusLabel, "RUN \u25B9 executed under authority (" + runs + " this session)");
+          } else {
+            // Defence in depth: refuse even if somehow fired while locked.
+            uiWidgetSetText(statusLabel, "RUN refused \u2715 \u00B7 not authorized (fail-closed)");
+          }
+        }
+        if (uiWidgetTakeActivated(btnReset) == 1) {
+          authorized = false;
+          uiWidgetSensitive(btnRun, 0);              // re-lock Run
+          uiWidgetSetText(statusLabel, "RESET \u27F2 \u00B7 authority cleared \u00B7 Run locked again");
+        }
+      }
+    }
+
     uiThemeDestroy(theme);
     uiAppDestroy(app);
-    print("event loop exited with code " + code);
+    print("event loop exited; authorized runs this session: " + runs);
   }
 }
