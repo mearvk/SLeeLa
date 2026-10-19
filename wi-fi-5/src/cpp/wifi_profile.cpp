@@ -9,7 +9,13 @@ Profile profile() {
     return Profile{
         "Wi-Fi 5", "IEEE 802.11ac", "Primarily 5 GHz",
         {20, 40, 80, 160}, 8u, 256u, 6933u,
-        {"Wide channels", "256-QAM", "Downlink MU-MIMO", "Beamforming", "A-MPDU/A-MSDU aggregation"}
+        {
+        "Wide channels",
+        "256-QAM",
+        "Downlink MU-MIMO",
+        "Beamforming",
+        "A-MPDU/A-MSDU aggregation"
+        }
     };
 }
 
