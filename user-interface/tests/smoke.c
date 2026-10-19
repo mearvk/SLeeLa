@@ -187,6 +187,19 @@ int main(void) {
         CHECK(slui_scrolled_view_scroll_y(sv) == 30, "scroll_by advances the offset");
     }
 
+    /* --- scrolled view: horizontal overflow of a wide row ------------- */
+    {
+        SLUIWidget* sh = slui_scrolled_view(col, 0, 0); /* auto/auto */
+        CHECK(sh != NULL, "wide scrolled view created");
+        slui_widget_set_size_request(sh, 200, 60);      /* narrow viewport */
+        SLUIWidget* row = slui_box(sh, SLUI_ORIENT_HORIZONTAL, 8);
+        for (int i = 0; i < 20; ++i) slui_button(row, "a wide button label");
+        slui_window_show(win);
+        slui_window_render(win);
+        slui_scrolled_view_scroll_to(sh, 100000, 0);
+        CHECK(slui_scrolled_view_scroll_x(sh) > 0, "wide content scrolls horizontally");
+    }
+
     /* The activation latch returns an activation at most once. */
     slui_widget_set_toggle(chk, 0); /* state change, not an activation */
     CHECK(slui_widget_take_activated(btn) == 0, "no spurious activation latched");

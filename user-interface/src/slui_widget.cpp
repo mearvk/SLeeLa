@@ -1312,17 +1312,27 @@ void ScrolledView::set_scroll_y(int px) {
 
 SLUISize ScrolledView::measure(const PaintContext& ctx) {
     /* A viewport reports the size it wants to OCCUPY, which is intentionally
-     * decoupled from its content's (possibly larger) size -- that decoupling is
-     * what makes scrolling happen. So when the programmer pins a size request on
-     * an axis, report that fixed size (the viewport is that big and its content
-     * scrolls inside it). On an un-pinned axis fall back to the content's
-     * natural size so an unconstrained viewport simply fits its content and
-     * nothing scrolls. The parent box still decides the final allocation. */
+     * decoupled from its content's (possibly larger) size -- reporting the
+     * content size here is exactly what would make the viewport overflow its
+     * own parent, defeating the point. So:
+     *   - a pinned axis (uiWidgetSizeRequest) reports that fixed size;
+     *   - an un-pinned axis reports a MODEST default viewport, capped so it is
+     *     never larger than a sane window region, and never the full content.
+     * Set hexpand/vexpand (uiWidgetExpand) to have the parent grow the viewport
+     * to fill the available space; the content then scrolls inside whatever the
+     * parent allocates. The parent box still decides the final allocation. */
     SLUISize cs{0, 0};
     if (Widget* c = content_child()) cs = c->measure(ctx);
+    /* Default viewport extents: large enough to be useful, small enough to fit
+     * inside a typical window so the view does not push its parent wider/taller
+     * than the screen. Content beyond these scrolls. */
+    const int kDefaultViewW = 320;
+    const int kDefaultViewH = 240;
+    int wantW = (min_w_ > 0) ? min_w_ : std::min(cs.w, kDefaultViewW);
+    int wantH = (min_h_ > 0) ? min_h_ : std::min(cs.h, kDefaultViewH);
     SLUISize s;
-    s.w = (min_w_ > 0 ? min_w_ : cs.w) + margin_.left + margin_.right;
-    s.h = (min_h_ > 0 ? min_h_ : cs.h) + margin_.top + margin_.bottom;
+    s.w = wantW + margin_.left + margin_.right;
+    s.h = wantH + margin_.top + margin_.bottom;
     return s;
 }
 

@@ -28,6 +28,9 @@ class GuiDualMediaStudio {
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
   int THEME_CUSTOM = 2;
 
+  // Scroll-policy ordinal (mirror the toolkit C ABI: 0=auto on overflow).
+  int SCROLL_AUTO = 0;
+
   // Live handles the event loop reacts on/to.
   int btnPlay;
   int btnPause;
@@ -101,7 +104,11 @@ class GuiDualMediaStudio {
     uiWidgetMargin(url, 0, 8, 0, 8);
     uiBadge(header, "HTTP 200 \u00B7 text/html");
 
-    int content = uiBox(root, 1, 14);
+    // The content lives inside a scrolled view so it scrolls (with automatic
+    // scrollbars) instead of spilling past the frame on a small window.
+    int scroller = uiScrolledView(root, SCROLL_AUTO, SCROLL_AUTO);
+    uiWidgetExpand(scroller, 1, 1);
+    int content = uiBox(scroller, 1, 14);     // the scroll CONTENT (1st child)
     uiWidgetMargin(content, 16, 16, 16, 16);
     uiWidgetExpand(content, 1, 1);
 

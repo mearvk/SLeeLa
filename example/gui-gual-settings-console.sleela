@@ -29,6 +29,9 @@ class GuiGualSettingsConsole {
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
   int THEME_CUSTOM = 2;
 
+  // Scroll-policy ordinal (mirror the toolkit C ABI: 0=auto on overflow).
+  int SCROLL_AUTO = 0;
+
   // Live handles the event loop reacts on/to.
   int btnJfx;
   int btnSwing;
@@ -96,8 +99,12 @@ class GuiGualSettingsConsole {
     uiSpacer(header);
     uiBadge(header, "settings honored");
 
-    // --- Content: two columns of validated settings ---
-    int content = uiBox(root, 1, 14);
+    // --- Content: two columns of validated settings, inside a scrolled view so
+    //     the panel scrolls (and shows scrollbars automatically) rather than
+    //     spilling past the frame when the window is smaller than the content. ---
+    int scroller = uiScrolledView(root, SCROLL_AUTO, SCROLL_AUTO);
+    uiWidgetExpand(scroller, 1, 1);
+    int content = uiBox(scroller, 1, 14);     // the scroll CONTENT (1st child)
     uiWidgetMargin(content, 16, 16, 16, 16);
     uiWidgetExpand(content, 1, 1);
 
