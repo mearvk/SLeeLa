@@ -40,3 +40,5 @@ The supporting palette is a shared default. Products may add semantic tokens, bu
 ## Verification
 
 Run make clean all test from gui/native. The native test checks required colors, lookup bounds, null handling, and every registered token. GUI CI should validate the source library for all five version lines before release.
+
+**Source-of-Truth Rule:** The five GUI examples and `SLGuiTheme.sleela` define the palette directly in SLeeLa source code. The `SLGuiApp` implementations apply those tokens to the live window theme. Do not depend on external theme files, environment variables, or generated settings to select these colors; editing the source palette is the authoritative change.
