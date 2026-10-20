@@ -102,7 +102,7 @@ class GuiMilitaryCommandConsole {
     uiWidgetExpand(content, 1, 0); // content grows to its natural height inside the scroller
 
     // Taxonomy row: Component vs Container, shown as chips.
-    int tax = uiBox(content, 0, 8);
+    int tax = uiBox(content, 1, 8); // stack taxonomy chips so the row cannot exceed the frame
     uiWidgetExpand(tax, 1, 0);
     uiLabel(tax, "taxonomy:");
     uiChip(tax, "window \u00B7 container");
@@ -111,7 +111,7 @@ class GuiMilitaryCommandConsole {
     uiChip(tax, "label \u00B7 component");
     uiSpacer(tax);
 
-    int cols = uiBox(content, 0, 16);
+    int cols = uiBox(content, 1, 16); // stack cards vertically to fit the available width
     uiWidgetExpand(cols, 1, 0);
     int colL = uiBox(cols, 1, 16);
     uiWidgetExpand(colL, 1, 0);
@@ -125,7 +125,7 @@ class GuiMilitaryCommandConsole {
     uiWidgetExpand(actBox, 1, 0);
     uiWidgetMargin(actBox, 12, 14, 12, 14);
     uiLabel(actBox, "ACTIONS  (container \u00B7 toolbar)");
-    int arow = uiBox(actBox, 0, 8);
+    int arow = uiBox(actBox, 1, 8);
     uiWidgetExpand(arow, 1, 0);
     btnAuthorize = uiButton(arow, "\u26CA Authorize");   // md icon, leading, gap 8
     uiWidgetSuggested(btnAuthorize, 1);
@@ -156,13 +156,13 @@ class GuiMilitaryCommandConsole {
     uiWidgetExpand(certBox, 1, 0);
     uiWidgetMargin(certBox, 12, 14, 12, 14);
     uiLabel(certBox, "PUBLIC KEY CERTIFICATE STORE  (fail-closed import)");
-    int r1 = uiBox(certBox, 0, 10);
+    int r1 = uiBox(certBox, 1, 10);
     uiLabel(r1, "SLeeLa Root CA");
     uiLabel(r1, "Ed25519 \u00B7 ab12..root");
     uiSpacer(r1);
     uiBadge(r1, "trusted \u00B7 CA");
     uiSeparator(certBox, 0);
-    int r2 = uiBox(certBox, 0, 10);
+    int r2 = uiBox(certBox, 1, 10);
     uiLabel(r2, "console.sleela.mil");
     uiLabel(r2, "ECDSA-P256 \u00B7 cd34..leaf");
     uiSpacer(r2);
@@ -176,7 +176,7 @@ class GuiMilitaryCommandConsole {
     uiWidgetExpand(wBox, 1, 0);
     uiWidgetMargin(wBox, 12, 12, 12, 12);
     uiLabel(wBox, "WINDOW KEY-LISTENERS");
-    int wrow = uiBox(wBox, 0, 10);
+    int wrow = uiBox(wBox, 1, 10);
     uiWidgetExpand(wrow, 1, 0);
     uiChip(wrow, "normal 1280x800 @(160,96)");
     uiChip(wrow, "minimize-right \u2192 folded");
