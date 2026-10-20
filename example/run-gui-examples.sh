@@ -54,11 +54,11 @@ echo "run-gui-examples: SLEELA_SHA256_MANIFEST=$SLEELA_SHA256_MANIFEST"
 echo
 
 EXAMPLES=(
-  "example/gui-mual-text-editor.sleela"
-  "example/gui-gual-settings-console.sleela"
-  "example/gui-thual-effects-showcase.sleela"
-  "example/gui-dual-media-studio.sleela"
-  "example/gui-military-command-console.sleela"
+  "example/mual/gui-mual-text-editor.sleela"
+  "example/gual/gui-gual-settings-console.sleela"
+  "example/thual/gui-thual-effects-showcase.sleela"
+  "example/dual/gui-dual-media-studio.sleela"
+  "example/military/gui-military-command-console.sleela"
 )
 
 for prog in "${EXAMPLES[@]}"; do
@@ -72,4 +72,7 @@ done
 echo "run-gui-examples: all GUI-line examples ran."
 echo "On a host with a display each opens a real SleelaUI window; headless they"
 echo "report 'no display' and exit 0. The DESIGNED military window variant"
-echo "example/gui-military-window.sleela renders the same native path too."
+echo "Running the additional native-window demos..."
+"$SLEELA" run "military/gui-military-window.sleela"
+"$SLEELA" run "demo/gui-buffering-resize.sleela"
+echo "run-gui-examples: all GUI and native-window examples ran."
