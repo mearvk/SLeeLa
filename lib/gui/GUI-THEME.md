@@ -9,6 +9,7 @@ The five GUI lines are related, progressively extended implementations—not fiv
 | Token | Value | Purpose |
 |---|---|---|
 | title-bar | #1D2025 | Base title-bar background |
+| menu-bar | #1D2025 | Menu-bar background |
 | url-bar | #383C47 | URL/navigation field background |
 
 These values are fixed across all five GUI lines. Do not fork or silently reinterpret them per version.
