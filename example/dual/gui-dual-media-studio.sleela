@@ -170,28 +170,28 @@ class GuiDualMediaStudio {
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
-    int menuStrip = uiBox(root, 0, 4);
+    int menuStrip = uiBox(root, 1, 4);
     uiWidgetMargin(menuStrip, 4, 8, 4, 8);
     menuFileButton = uiButton(menuStrip, "File");
     menuMediaButton = uiButton(menuStrip, "Media");
     menuPlaybackButton = uiButton(menuStrip, "Playback");
     menuHelpButton = uiButton(menuStrip, "Help");
-    menuFilePanel = uiBox(root, 1, 2);
+    menuFilePanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
     menuFileItem1 = uiButton(menuFilePanel, "Open Media");
     menuFileItem2 = uiButton(menuFilePanel, "Media Information");
     uiWidgetVisible(menuFilePanel, 0);
-    menuMediaPanel = uiBox(root, 1, 2);
+    menuMediaPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuMediaPanel, 4, 10, 4, 10);
     menuMediaItem1 = uiButton(menuMediaPanel, "Audio Recorder");
     menuMediaItem2 = uiButton(menuMediaPanel, "Codec Registry");
     uiWidgetVisible(menuMediaPanel, 0);
-    menuPlaybackPanel = uiBox(root, 1, 2);
+    menuPlaybackPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuPlaybackPanel, 4, 10, 4, 10);
     menuPlaybackItem1 = uiButton(menuPlaybackPanel, "Play Media");
     menuPlaybackItem2 = uiButton(menuPlaybackPanel, "Stop Playback");
     uiWidgetVisible(menuPlaybackPanel, 0);
-    menuHelpPanel = uiBox(root, 1, 2);
+    menuHelpPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
     menuHelpItem1 = uiButton(menuHelpPanel, "Media Guide");
     menuHelpItem2 = uiButton(menuHelpPanel, "About DUAL");
