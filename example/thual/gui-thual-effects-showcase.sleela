@@ -134,28 +134,28 @@ class GuiThualEffectsShowcase {
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
-    int menuStrip = uiBox(root, 0, 4);
+    int menuStrip = uiBox(root, 1, 4);
     uiWidgetMargin(menuStrip, 4, 8, 4, 8);
     menuFileButton = uiButton(menuStrip, "File");
     menuEffectsButton = uiButton(menuStrip, "Effects");
     menuViewButton = uiButton(menuStrip, "View");
     menuHelpButton = uiButton(menuStrip, "Help");
-    menuFilePanel = uiBox(root, 1, 2);
+    menuFilePanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
     menuFileItem1 = uiButton(menuFilePanel, "Save Preset");
     menuFileItem2 = uiButton(menuFilePanel, "Load Preset");
     uiWidgetVisible(menuFilePanel, 0);
-    menuEffectsPanel = uiBox(root, 1, 2);
+    menuEffectsPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuEffectsPanel, 4, 10, 4, 10);
     menuEffectsItem1 = uiButton(menuEffectsPanel, "Glow And Shine");
     menuEffectsItem2 = uiButton(menuEffectsPanel, "Fade Controls");
     uiWidgetVisible(menuEffectsPanel, 0);
-    menuViewPanel = uiBox(root, 1, 2);
+    menuViewPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuViewPanel, 4, 10, 4, 10);
     menuViewItem1 = uiButton(menuViewPanel, "Rotation Schedule");
     menuViewItem2 = uiButton(menuViewPanel, "Effect Status");
     uiWidgetVisible(menuViewPanel, 0);
-    menuHelpPanel = uiBox(root, 1, 2);
+    menuHelpPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
     menuHelpItem1 = uiButton(menuHelpPanel, "Effects Guide");
     menuHelpItem2 = uiButton(menuHelpPanel, "About THUAL");
