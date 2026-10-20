@@ -29,6 +29,7 @@ class SLGuiTheme {
   static final int SUCCESS_COLOR = 0x3FA776FF;
 
   String titleBar() { return TITLE_BAR; }
+  String menuBar() { return MENU_BAR; }
   String urlBar() { return URL_BAR; }
   String panel() { return PANEL; }
   String surface() { return SURFACE; }
