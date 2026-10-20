@@ -18,6 +18,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(SLEELA_IMPL "${CMAKE_CURRENT_LIST_DIR}/../../impl")
 set(SLEELA_CORE "${SLEELA_IMPL}/core")
 
+include(CTest)
+find_package(Threads REQUIRED)
+
 function(sleela_platform_smoke target test_source implementation_source)
   add_executable(${target}
     "${SLEELA_CORE}/${test_source}"
@@ -30,25 +33,23 @@ function(sleela_platform_smoke target test_source implementation_source)
     _CRT_SECURE_NO_WARNINGS
     _WINSOCK_DEPRECATED_NO_WARNINGS
   )
-  if(target STREQUAL "net_platform_smoke")
-    target_link_libraries(${target} PRIVATE ws2_32)
-  endif()
-  if(target STREQUAL "thread_platform_smoke")
-    target_link_libraries(${target} PRIVATE Threads::Threads)
-  endif()
   add_test(NAME ${target} COMMAND ${target})
 endfunction()
 
-include(CTest)
-find_package(Threads REQUIRED)
-
 sleela_platform_smoke(thread_platform_smoke thread_platform_smoke.c sleela_thread.c)
+target_link_libraries(thread_platform_smoke PRIVATE Threads::Threads)
+
 sleela_platform_smoke(io_platform_smoke io_platform_smoke.c sleela_io.c)
+
 sleela_platform_smoke(net_platform_smoke net_platform_smoke.c sleela_net.c)
 target_link_libraries(net_platform_smoke PRIVATE ws2_32)
+
 sleela_platform_smoke(path_platform_smoke path_platform_smoke.c sleela_path.c)
+
 sleela_platform_smoke(terminal_platform_smoke terminal_platform_smoke.c sleela_terminal.c)
+
 sleela_platform_smoke(library_platform_smoke library_platform_smoke.c sleela_library.c)
+
 sleela_platform_smoke(time_platform_smoke time_platform_smoke.c sleela_time.c)
 
 message(STATUS "SLeeLa MSVC slice: OS abstraction smoke tests only; full runtime is not yet an MSVC target.")
