@@ -1,0 +1,33 @@
+/*
+ * SLeeLa Standard Library Definition: SLGuiMenuBar
+ * Toolkit-neutral menu-bar model. Rendering belongs to the selected GUI host.
+ */
+#sleela 2.1
+class SLGuiMenuBar {
+  String name;
+  int menuCount;
+  int visible;
+  int focused;
+  int openedIndex;
+
+  void configure(String id) {
+    name = id; menuCount = 0; visible = 1; focused = 0; openedIndex = -1;
+  }
+  String getName() { return name; }
+  void setMenuCount(int count) { menuCount = count < 0 ? 0 : count; }
+  int count() { return menuCount; }
+  void setVisible(boolean value) { visible = value ? 1 : 0; if (visible == 0) { close(); } }
+  boolean isVisible() { return visible == 1; }
+  void focus() { if (visible == 1) { focused = 1; } }
+  void blur() { focused = 0; close(); }
+  boolean hasFocus() { return focused == 1; }
+  void open(int index) { if (visible == 1 && index >= 0 && index < menuCount) { openedIndex = index; focused = 1; } }
+  void close() { openedIndex = -1; }
+  boolean isOpen() { return openedIndex >= 0; }
+  int activeIndex() { return openedIndex; }
+  void next(int direction) {
+    if (menuCount <= 0 || visible == 0) { return; }
+    if (openedIndex < 0) { openedIndex = 0; return; }
+    openedIndex = (openedIndex + direction + menuCount) % menuCount;
+  }
+}
