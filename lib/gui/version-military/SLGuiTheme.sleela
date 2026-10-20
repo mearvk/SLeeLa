@@ -13,6 +13,19 @@ class SLGuiTheme {
   static final String DANGER = "#D9534F";
   static final String SUCCESS = "#3FA776";
 
+  // Typed SLColor words (0xRRGGBBAA) used by SLTheme at runtime.
+  static final int TITLE_BAR_COLOR = 0x1D2025FF;
+  static final int URL_BAR_COLOR = 0x383C47FF;
+  static final int PANEL_COLOR = 0x292D35FF;
+  static final int SURFACE_COLOR = 0x22262DFF;
+  static final int TEXT_COLOR = 0xE8EAEDFF;
+  static final int MUTED_TEXT_COLOR = 0xB0B7C3FF;
+  static final int BORDER_COLOR = 0x444A56FF;
+  static final int ACCENT_COLOR = 0x4F8CFFFF;
+  static final int FOCUS_COLOR = 0x8AB4F8FF;
+  static final int DANGER_COLOR = 0xD9534FFF;
+  static final int SUCCESS_COLOR = 0x3FA776FF;
+
   String titleBar() { return TITLE_BAR; }
   String urlBar() { return URL_BAR; }
   String panel() { return PANEL; }
