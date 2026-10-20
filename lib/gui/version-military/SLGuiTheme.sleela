@@ -1,0 +1,27 @@
+/* Shared SLeeLa GUI family palette. Keep chrome tokens identical across lines. */
+#sleela 2.1
+class SLGuiTheme {
+  static final String TITLE_BAR = "#1D2025";
+  static final String URL_BAR = "#383C47";
+  static final String PANEL = "#292D35";
+  static final String SURFACE = "#22262D";
+  static final String TEXT = "#E8EAED";
+  static final String MUTED_TEXT = "#B0B7C3";
+  static final String BORDER = "#444A56";
+  static final String ACCENT = "#4F8CFF";
+  static final String FOCUS = "#8AB4F8";
+  static final String DANGER = "#D9534F";
+  static final String SUCCESS = "#3FA776";
+
+  String titleBar() { return TITLE_BAR; }
+  String urlBar() { return URL_BAR; }
+  String panel() { return PANEL; }
+  String surface() { return SURFACE; }
+  String text() { return TEXT; }
+  String mutedText() { return MUTED_TEXT; }
+  String border() { return BORDER; }
+  String accent() { return ACCENT; }
+  String focus() { return FOCUS; }
+  String danger() { return DANGER; }
+  String success() { return SUCCESS; }
+}
