@@ -5,9 +5,15 @@
 
 int main(void) {
     SLTerminalHandle terminal = 0;
+#ifdef _WIN32
+    /* Windows ConPTY accepts a process command line, not a POSIX shell snippet. */
+    const char* command = "cmd.exe /C echo terminal-ok";
+#else
     const char* command = "printf terminal-ok";
+#endif
     char buffer[128];
-    SLTerminalCount n;
+    size_t used = 0;
+    int found = 0;
     int rc;
 
     rc = slterminal_spawn(&terminal, command, 80, 24);
@@ -20,10 +26,23 @@ int main(void) {
         slterminal_close(terminal);
         return 1;
     }
+
+    /* PTYs may emit terminal initialization sequences before the command
+     * output. Read incrementally until the marker appears or the child exits. */
     memset(buffer, 0, sizeof(buffer));
-    n = slterminal_read(terminal, buffer, sizeof(buffer) - 1);
-    if (n <= 0 || strstr(buffer, "terminal-ok") == NULL) {
-        fprintf(stderr, "terminal read failed: n=%td output=%s\n", n, buffer);
+    while (used < sizeof(buffer) - 1) {
+        SLTerminalCount n = slterminal_read(terminal, buffer + used,
+                                             sizeof(buffer) - 1 - used);
+        if (n <= 0) break;
+        used += (size_t)n;
+        buffer[used] = '\0';
+        if (strstr(buffer, "terminal-ok") != NULL) {
+            found = 1;
+            break;
+        }
+    }
+    if (!found) {
+        fprintf(stderr, "terminal read failed: bytes=%zu output=%s\n", used, buffer);
         slterminal_close(terminal);
         return 1;
     }
