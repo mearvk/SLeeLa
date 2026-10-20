@@ -33,6 +33,22 @@ class SLGuiApp {
     ui.configure(appId);
     if (!ui.open()) { ready = 0; return false; }
 
+    // Enforce the physical screen as a hard upper bound even when callers
+    // use boot() directly instead of bootFitted(). Keep a small decoration/
+    // taskbar margin where possible; never let a requested size win over screen.
+    int screenW = ui.screenWidth();
+    int screenH = ui.screenHeight();
+    if (screenW > 0) {
+      int maxWindowW = screenW - 32;
+      if (maxWindowW < 1) { maxWindowW = screenW; }
+      if (width <= 0 || width > maxWindowW) { width = maxWindowW; }
+    }
+    if (screenH > 0) {
+      int maxWindowH = screenH - 64;
+      if (maxWindowH < 1) { maxWindowH = screenH; }
+      if (height <= 0 || height > maxWindowH) { height = maxWindowH; }
+    }
+
     SLTheme theme = new SLTheme();
     theme.slickBlack();
     window = ui.openWindow(title, width, height, theme.handle());
