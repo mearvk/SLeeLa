@@ -123,71 +123,103 @@ void Box::arrange(const PaintContext& ctx, const Rect& area) {
     bounds_ = area;
     Rect box = content();
 
-    /* First pass: natural sizes and count expanders along the main axis. */
+    /* Measure natural sizes, then fit every visible child into the parent's
+     * available main-axis extent. Natural measurements are preferences, not
+     * permission to allocate beyond the parent's frame. */
     std::vector<SLUISize> nat;
     std::vector<Widget*> vis;
-    int natural_main = 0, expanders = 0, count = 0;
+    int natural_main = 0, expanders = 0;
     for (auto& c : children_) {
         if (!c->visible()) continue;
         SLUISize cs = c->measure(ctx);
         nat.push_back(cs);
         vis.push_back(c.get());
-        bool exp = (orient_ == SLUI_ORIENT_HORIZONTAL) ? c->hexpand() : c->vexpand();
-        natural_main += (orient_ == SLUI_ORIENT_HORIZONTAL) ? cs.w : cs.h;
+        const int child_main = orient_ == SLUI_ORIENT_HORIZONTAL ? cs.w : cs.h;
+        natural_main += std::max(0, child_main);
+        const bool exp = orient_ == SLUI_ORIENT_HORIZONTAL ? c->hexpand() : c->vexpand();
         if (exp) ++expanders;
-        ++count;
     }
+    const int count = static_cast<int>(vis.size());
     if (count == 0) return;
 
-    int avail_main = (orient_ == SLUI_ORIENT_HORIZONTAL) ? box.w : box.h;
-    int spacing_total = spacing_ * (count - 1);
-    int extra = avail_main - natural_main - spacing_total;
-    int per_expander = (expanders > 0 && extra > 0) ? extra / expanders : 0;
-    int remainder = (expanders > 0 && extra > 0) ? extra % expanders : 0;
+    const int avail_main = std::max(0, orient_ == SLUI_ORIENT_HORIZONTAL ? box.w : box.h);
+    /* If the requested gaps themselves cannot fit, reduce them before sizing
+     * children. This keeps every assigned rectangle inside the parent. */
+    const int requested_spacing = std::max(0, spacing_);
+    const int effective_spacing = count > 1
+        ? std::min(requested_spacing, avail_main / (count - 1)) : 0;
+    const int spacing_total = effective_spacing * (count - 1);
+    const int content_main = std::max(0, avail_main - spacing_total);
 
-    int pos = (orient_ == SLUI_ORIENT_HORIZONTAL) ? box.x : box.y;
-    for (size_t i = 0; i < vis.size(); ++i) {
-        Widget* c = vis[i];
-        SLUISize cs = nat[i];
-        bool exp = (orient_ == SLUI_ORIENT_HORIZONTAL) ? c->hexpand() : c->vexpand();
-        int main_size = (orient_ == SLUI_ORIENT_HORIZONTAL) ? cs.w : cs.h;
-        if (exp && extra > 0) {
-            main_size += per_expander;
-            if (remainder > 0) {
-                main_size += 1;
+    std::vector<int> main_sizes(static_cast<size_t>(count), 0);
+    int assigned_main = 0;
+    if (natural_main > content_main && natural_main > 0) {
+        /* Compress proportionally when natural content cannot fit. Distribute
+         * rounding pixels deterministically without exceeding the parent. */
+        for (int i = 0; i < count; ++i) {
+            const int natural = std::max(0, orient_ == SLUI_ORIENT_HORIZONTAL ? nat[i].w : nat[i].h);
+            main_sizes[static_cast<size_t>(i)] =
+                static_cast<int>((static_cast<long long>(natural) * content_main) / natural_main);
+            assigned_main += main_sizes[static_cast<size_t>(i)];
+        }
+        int remainder = content_main - assigned_main;
+        for (int i = 0; i < count && remainder > 0; ++i) {
+            const int natural = std::max(0, orient_ == SLUI_ORIENT_HORIZONTAL ? nat[i].w : nat[i].h);
+            if (natural > 0) {
+                ++main_sizes[static_cast<size_t>(i)];
                 --remainder;
             }
         }
-        Rect cell;
-        if (orient_ == SLUI_ORIENT_HORIZONTAL) {
-            cell = Rect{pos, box.y, main_size, box.h};
-        } else {
-            cell = Rect{box.x, pos, box.w, main_size};
+    } else {
+        for (int i = 0; i < count; ++i)
+            main_sizes[static_cast<size_t>(i)] =
+                std::max(0, orient_ == SLUI_ORIENT_HORIZONTAL ? nat[i].w : nat[i].h);
+        int extra = content_main - natural_main;
+        if (expanders > 0 && extra > 0) {
+            const int per_expander = extra / expanders;
+            int remainder = extra % expanders;
+            for (int i = 0; i < count; ++i) {
+                Widget* child = vis[static_cast<size_t>(i)];
+                const bool exp = orient_ == SLUI_ORIENT_HORIZONTAL ? child->hexpand() : child->vexpand();
+                if (!exp) continue;
+                main_sizes[static_cast<size_t>(i)] += per_expander;
+                if (remainder > 0) {
+                    ++main_sizes[static_cast<size_t>(i)];
+                    --remainder;
+                }
+            }
         }
-        /* Cross-axis alignment: shrink the cell to the child's natural cross
-         * size unless the child fills, then offset for start/center/end. */
+    }
+
+    int pos = orient_ == SLUI_ORIENT_HORIZONTAL ? box.x : box.y;
+    for (int i = 0; i < count; ++i) {
+        Widget* child = vis[static_cast<size_t>(i)];
+        const SLUISize cs = nat[static_cast<size_t>(i)];
+        const int main_size = main_sizes[static_cast<size_t>(i)];
+        Rect cell = orient_ == SLUI_ORIENT_HORIZONTAL
+            ? Rect{pos, box.y, main_size, std::max(0, box.h)}
+            : Rect{box.x, pos, std::max(0, box.w), main_size};
+
+        /* Cross-axis alignment can reduce a child, never enlarge it past the
+         * allocated cell. If its natural size is too large, the cell wins. */
         Rect placed = cell;
         if (orient_ == SLUI_ORIENT_HORIZONTAL) {
-            SLUIAlign va = c->valign();
+            const SLUIAlign va = child->valign();
             if (va != SLUI_ALIGN_FILL && cs.h < cell.h) {
-                placed.h = cs.h;
-                if (va == SLUI_ALIGN_CENTER)
-                    placed.y = cell.y + (cell.h - cs.h) / 2;
-                else if (va == SLUI_ALIGN_END)
-                    placed.y = cell.bottom() - cs.h;
+                placed.h = std::max(0, cs.h);
+                if (va == SLUI_ALIGN_CENTER) placed.y = cell.y + (cell.h - placed.h) / 2;
+                else if (va == SLUI_ALIGN_END) placed.y = cell.bottom() - placed.h;
             }
         } else {
-            SLUIAlign ha = c->halign();
+            const SLUIAlign ha = child->halign();
             if (ha != SLUI_ALIGN_FILL && cs.w < cell.w) {
-                placed.w = cs.w;
-                if (ha == SLUI_ALIGN_CENTER)
-                    placed.x = cell.x + (cell.w - cs.w) / 2;
-                else if (ha == SLUI_ALIGN_END)
-                    placed.x = cell.right() - cs.w;
+                placed.w = std::max(0, cs.w);
+                if (ha == SLUI_ALIGN_CENTER) placed.x = cell.x + (cell.w - placed.w) / 2;
+                else if (ha == SLUI_ALIGN_END) placed.x = cell.right() - placed.w;
             }
         }
-        c->arrange(ctx, placed);
-        pos += main_size + spacing_;
+        child->arrange(ctx, placed);
+        pos += main_size + effective_spacing;
     }
 }
 
