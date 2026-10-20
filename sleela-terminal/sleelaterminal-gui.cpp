@@ -253,8 +253,8 @@ void install_css(AppState *state) {
         @define-color sl_border      #7f56aa;
         @define-color sl_fg          #ffffff;
         @define-color sl_accent      #6fa5ff;
-        @define-color sl_menu_bg     #16244f;
-        @define-color sl_menu_mid    #203b78;
+        @define-color sl_menu_bg     #2b2f32;
+        @define-color sl_menu_mid    #2b2f32;
         @define-color sl_menu_edge   #4f74c8;
         @define-color sl_menu_hover  #31569a;
         @define-color sl_menu_active #426fc0;
@@ -264,12 +264,13 @@ void install_css(AppState *state) {
            dark-purple / blue family along the horizontal or vertical axis. These are the only places these shades are
            used, so they live here as named tokens (principle 2: one palette,
            one source of truth) and are composed into .sleela-titlebar below. */
-        @define-color sl_tb_deep_purple  #2a0f45;   /* deep purple        */
-        @define-color sl_tb_near_black   #0d0a12;   /* dark gray / black  */
-        @define-color sl_tb_light_blue   #4f74c8;   /* light blue accent  */
-        @define-color sl_tb_dark_blue    #16244f;   /* dark blue          */
-        @define-color sl_tb_dark_purple  #1e0e33;   /* dark purple        */
-        @define-color sl_tb_black        #060409;   /* black              */
+        @define-color sl_titlebar_bg    #1d2025;   /* requested title-bar base */
+        @define-color sl_tb_deep_purple  #2a0f45;   /* retained accent token */
+        @define-color sl_tb_near_black   #0d0a12;   /* retained accent token */
+        @define-color sl_tb_light_blue   #4f74c8;   /* retained accent token */
+        @define-color sl_tb_dark_blue    #16244f;   /* retained accent token */
+        @define-color sl_tb_dark_purple  #1e0e33;   /* retained accent token */
+        @define-color sl_tb_black        #060409;   /* retained accent token */
 
         window { background: @sl_bg; }
 
@@ -279,20 +280,9 @@ void install_css(AppState *state) {
            organic update). A transparent 1px border keeps the bar's height
            identical to before. */
         headerbar.sleela-titlebar {
-            /* Deep purple -> dark gray/black -> deep purple -> light blue -> dark blue ->
-               dark purple -> black. The active preset determines whether the stops
-               are distributed left-to-right or top-to-bottom. Stops are eased unevenly
-               so the light-blue highlight sits a little past centre and the ends settle
-               into near black, giving the bar depth without competing with the terminal
-               (principle 1). Colours are the named sl_tb_* tokens above. */
-            background: linear-gradient(to right,
-                @sl_tb_deep_purple  0%,
-                @sl_tb_near_black   16%,
-                @sl_tb_deep_purple  33%,
-                @sl_tb_light_blue   52%,
-                @sl_tb_dark_blue    68%,
-                @sl_tb_dark_purple  85%,
-                @sl_tb_black        100%);
+            /* Shared title-bar base colour. Accent colours remain available for
+               controls and focus states; the bar itself uses the requested solid base. */
+            background: @sl_titlebar_bg;
             color: @sl_fg;
             min-height: 38px;
             border-bottom: 1px solid transparent;
