@@ -1,0 +1,125 @@
+/*
+ * lib/gui/version-gual/SLGuiUrlBar.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiUrlBar — the 4.0 HTML-aware, HTTP-driven URL
+ *   navigation bar: an address field with go / back / forward / reload / stop,
+ *   a bounded navigation history, the current load state, and the HTTP facts of
+ *   the last navigation (method, status, content-type, secure flag). It is
+ *   "HTML-aware" in that it recognises an HTML response (so the host renders it
+ *   into the DOM/canvas) vs. a non-HTML resource. SLeeLa owns the navigation
+ *   STATE and history; the host performs the actual HTTP fetch and reports the
+ *   result back. URLs are validated (scheme + non-empty host).
+ *
+ * Family: gui. Backs a URL-bar node; the host fetches and feeds back status.
+ */
+#sleela 2.1
+class SLGuiUrlBar {
+  // Shared URL/address bar presentation default.
+  static final String BACKGROUND_COLOR = "#383c47";
+
+  static final int MAX_HISTORY = 64;
+
+  static final int LOAD_IDLE    = 0;
+  static final int LOAD_LOADING = 1;
+  static final int LOAD_DONE    = 2;
+  static final int LOAD_ERROR   = 3;
+
+  String current;        // the address shown in the bar
+  String[] history;      // visited URLs (back/forward stack)
+  int histCount;
+  int histIndex;         // position within history (-1 = empty)
+
+  int loadState;
+  String method;         // last HTTP method ("GET" default)
+  int status;            // last HTTP status code (0 until a response)
+  String contentType;    // last response content-type
+  int secure;            // 1 when the current scheme is https
+  int htmlAware;         // 1 when the last response was HTML (host renders DOM)
+
+  void configure(String home) {
+    history = new String[MAX_HISTORY]; histCount = 0; histIndex = -1;
+    current = ""; loadState = LOAD_IDLE; method = "GET";
+    status = 0; contentType = ""; secure = 0; htmlAware = 0;
+    if (home != null && valid(home)) { navigate(home); }
+  }
+
+  // A URL is acceptable with a known scheme and a non-empty remainder.
+  boolean valid(String url) {
+    if (url == null || url == "") { return false; }
+    return startsWith(url, "http://") || startsWith(url, "https://") ||
+           startsWith(url, "file://") || startsWith(url, "about:");
+  }
+  boolean startsWith(String s, String p) {
+    if (s == null || p == null) { return false; }
+    return s.length() >= p.length() && s.substring(0, p.length()) == p;
+  }
+
+  // ---- navigation ---------------------------------------------------------
+  // Go to a URL: validate, push onto history (truncating any forward entries),
+  // and enter the loading state. Returns false on an invalid URL.
+  boolean navigate(String url) {
+    if (!valid(url)) { loadState = LOAD_ERROR; return false; }
+    // Drop any forward history past the current index.
+    histCount = histIndex + 1;
+    if (histCount < MAX_HISTORY) {
+      history[histCount] = url; histCount = histCount + 1; histIndex = histCount - 1;
+    } else {
+      // History full: shift out the oldest.
+      for (int i = 0; i < MAX_HISTORY - 1; i = i + 1) { history[i] = history[i + 1]; }
+      history[MAX_HISTORY - 1] = url; histIndex = MAX_HISTORY - 1;
+    }
+    current = url;
+    secure = startsWith(url, "https://") ? 1 : 0;
+    beginLoad();
+    return true;
+  }
+  void beginLoad() { loadState = LOAD_LOADING; status = 0; contentType = ""; htmlAware = 0; }
+
+  boolean canGoBack() { return histIndex > 0; }
+  boolean canGoForward() { return histIndex >= 0 && histIndex < histCount - 1; }
+  boolean back() {
+    if (!canGoBack()) { return false; }
+    histIndex = histIndex - 1; current = history[histIndex];
+    secure = startsWith(current, "https://") ? 1 : 0; beginLoad(); return true;
+  }
+  boolean forward() {
+    if (!canGoForward()) { return false; }
+    histIndex = histIndex + 1; current = history[histIndex];
+    secure = startsWith(current, "https://") ? 1 : 0; beginLoad(); return true;
+  }
+  boolean reload() { if (current == "") { return false; } beginLoad(); return true; }
+  void stop() { if (loadState == LOAD_LOADING) { loadState = LOAD_IDLE; } }
+
+  // Host reports the HTTP outcome; HTML content-types mark the bar HTML-aware.
+  void onResponse(int httpStatus, String type) {
+    status = httpStatus;
+    contentType = (type == null) ? "" : type;
+    htmlAware = isHtml(contentType) ? 1 : 0;
+    loadState = (httpStatus >= 200 && httpStatus < 400) ? LOAD_DONE : LOAD_ERROR;
+  }
+  boolean isHtml(String type) {
+    return startsWith(type, "text/html") || startsWith(type, "application/xhtml");
+  }
+  void setMethod(String m) { if (m != null && m != "") { method = m; } }
+
+  // ---- readers ------------------------------------------------------------
+  String url() { return current; }
+  int getLoadState() { return loadState; }
+  boolean loading() { return loadState == LOAD_LOADING; }
+  boolean loaded() { return loadState == LOAD_DONE; }
+  boolean errored() { return loadState == LOAD_ERROR; }
+  int httpStatus() { return status; }
+  String getContentType() { return contentType; }
+  String getMethod() { return method; }
+  boolean isSecure() { return secure == 1; }
+  boolean isHtmlAware() { return htmlAware == 1; }
+  int historyDepth() { return histCount; }
+  int historyIndex() { return histIndex; }
+
+  String loadStateName() {
+    if (loadState == LOAD_LOADING) { return "loading"; }
+    if (loadState == LOAD_DONE)    { return "done"; }
+    if (loadState == LOAD_ERROR)   { return "error"; }
+    return "idle";
+  }
+}
