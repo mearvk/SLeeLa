@@ -42,7 +42,6 @@ target_link_libraries(thread_platform_smoke PRIVATE Threads::Threads)
 sleela_platform_smoke(io_platform_smoke io_platform_smoke.c sleela_io.c)
 
 sleela_platform_smoke(net_platform_smoke net_platform_smoke.c sleela_net.c)
-target_link_libraries(net_platform_smoke PRIVATE ws2_32)
 
 sleela_platform_smoke(path_platform_smoke path_platform_smoke.c sleela_path.c)
 
