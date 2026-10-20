@@ -75,7 +75,13 @@ class SLGuiScreenFit {
 
   void setFillPct(int pct)   { fillPct = clamp(pct, 20, 100); }
   void setMargin(int px)     { marginPx = clamp(px, 0, 400); }
-  void setMinSize(int w, int h) { if (w > 0) { minW = w; } if (h > 0) { minH = h; } }
+  // Keep the min/max interval valid when a caller raises the minimum.
+  // The minimum is authoritative: if it overtakes the old maximum, advance
+  // the maximum with it instead of leaving fit()/honored() contradictory.
+  void setMinSize(int w, int h) {
+    if (w > 0) { minW = w; if (maxW < minW) { maxW = minW; } }
+    if (h > 0) { minH = h; if (maxH < minH) { maxH = minH; } }
+  }
   void setMaxSize(int w, int h) {
     // A max below the min is refused (kept at least at min) — fail-safe.
     if (w >= minW) { maxW = w; }
