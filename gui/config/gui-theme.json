@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "family": "sleela-gui",
+  "required": {
+    "title-bar": "#1D2025",
+    "url-bar": "#383C47"
+  },
+  "palette": {
+    "panel": "#292D35",
+    "surface": "#22262D",
+    "text": "#E8EAED",
+    "muted-text": "#B0B7C3",
+    "border": "#444A56",
+    "accent": "#4F8CFF",
+    "focus": "#8AB4F8",
+    "danger": "#D9534F",
+    "success": "#3FA776"
+  },
+  "appliesTo": ["version-mual", "version-gual", "version-thual", "version-dual", "version-military"]
+}
