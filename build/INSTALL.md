@@ -33,6 +33,8 @@ Never install Linux binaries on macOS.
 
 ## Windows 10+
 
+### GNU Make / MinGW-w64 runtime path
+
 Install Git, PowerShell 5.1 or newer, Python 3, and the MSYS2 UCRT64 MinGW-w64
 toolchain (including GNU Make and GCC/G++). From a PowerShell terminal at the
 repository root, run:
@@ -57,6 +59,20 @@ executable, `-SkipOptionalProducts` skips the compiler and Nordshrift while
 still requiring the core `sleela.exe`. Windows packaging remains dependent on
 building and testing each product natively; do not install Linux binaries on
 Windows. The `.cmd` wrapper is also available at `install\quick-safe-install.cmd`.
+
+### Visual Studio / MSVC development path
+
+The initial MSVC project is for developers validating the existing platform
+abstraction layer, not for installing the full SLeeLa runtime. With Visual
+Studio 2022's Desktop development with C++ workload and CMake installed, run:
+
+```powershell
+.\build\windows\build-msvc.ps1 -Test
+```
+
+This builds the existing platform smoke tests with MSVC. It does not yet produce
+`sleela.exe`, `sleelvac.exe`, or `nordshrift.exe`; use the MinGW-w64 runtime
+path above for the current complete Windows build.
 
 ## Verification
 
