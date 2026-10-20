@@ -3,7 +3,8 @@
 
 namespace {
 const SLGuiColor kColors[] = {
-    {"title-bar", SLGUI_COLOR_TITLE_BAR}, {"url-bar", SLGUI_COLOR_URL_BAR},
+    {"title-bar", SLGUI_COLOR_TITLE_BAR}, {"menu-bar", SLGUI_COLOR_MENU_BAR},
+    {"url-bar", SLGUI_COLOR_URL_BAR},
     {"panel", SLGUI_COLOR_PANEL}, {"surface", SLGUI_COLOR_SURFACE},
     {"text", SLGUI_COLOR_TEXT}, {"muted-text", SLGUI_COLOR_MUTED_TEXT},
     {"border", SLGUI_COLOR_BORDER}, {"accent", SLGUI_COLOR_ACCENT},
