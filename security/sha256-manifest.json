@@ -111,7 +111,7 @@
     },
     {
       "path": "impl/core/library_platform_smoke.c",
-      "sha256": "9587217b42d114b13f67cb9aa5d322dcb6d036537e02ef3d95644ab31301052b"
+      "sha256": "f541fc84bea0f46012c013c6d3959ea2f24d275de651489fd4f448be0915a777"
     },
     {
       "path": "impl/core/memory_platform_smoke.c",
