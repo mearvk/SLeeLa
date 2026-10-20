@@ -40,6 +40,25 @@ class GuiDualMediaStudio {
   int videoLabel;    // the movie surface caption (player state)
   int recState;      // the recorder state label
   int statusLabel;
+  // Menubar strip and its dropdown panels (built from existing ui* widgets).
+  int openMenuIndex = -1;
+  int menuFileButton;
+  int menuFilePanel;
+  int menuFileItem1;
+  int menuFileItem2;
+  int menuMediaButton;
+  int menuMediaPanel;
+  int menuMediaItem1;
+  int menuMediaItem2;
+  int menuPlaybackButton;
+  int menuPlaybackPanel;
+  int menuPlaybackItem1;
+  int menuPlaybackItem2;
+  int menuHelpButton;
+  int menuHelpPanel;
+  int menuHelpItem1;
+  int menuHelpItem2;
+
 
   int rgba(int r, int g, int b, int a) {
     return r * 16777216 + g * 65536 + b * 256 + a;
@@ -79,6 +98,17 @@ class GuiDualMediaStudio {
     return t;
   }
 
+
+  // Show one dropdown at a time; selecting the open menu closes it.
+  void openMenu(int which) {
+    int next = openMenuIndex == which ? -1 : which;
+    openMenuIndex = next;
+    uiWidgetVisible(menuFilePanel, next == 0 ? 1 : 0);
+    uiWidgetVisible(menuMediaPanel, next == 1 ? 1 : 0);
+    uiWidgetVisible(menuPlaybackPanel, next == 2 ? 1 : 0);
+    uiWidgetVisible(menuHelpPanel, next == 3 ? 1 : 0);
+  }
+
   void main() {
     print("SLeeLa DUAL Media Studio (native SleelaUI) — backend "
         + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
@@ -93,6 +123,35 @@ class GuiDualMediaStudio {
     int theme = glassTheme();
     int win = uiWindowCreate(app, "SLeeLa Media Studio — DUAL 4.0", 1040, 660, theme);
     int root = uiWindowRoot(win);
+
+    // --- Functional menubar strip and dropdowns ---
+    int menuStrip = uiBox(root, 0, 4);
+    uiWidgetMargin(menuStrip, 4, 8, 4, 8);
+    menuFileButton = uiButton(menuStrip, "File");
+    menuMediaButton = uiButton(menuStrip, "Media");
+    menuPlaybackButton = uiButton(menuStrip, "Playback");
+    menuHelpButton = uiButton(menuStrip, "Help");
+    menuFilePanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
+    menuFileItem1 = uiButton(menuFilePanel, "Open Media");
+    menuFileItem2 = uiButton(menuFilePanel, "Media Information");
+    uiWidgetVisible(menuFilePanel, 0);
+    menuMediaPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuMediaPanel, 4, 10, 4, 10);
+    menuMediaItem1 = uiButton(menuMediaPanel, "Audio Recorder");
+    menuMediaItem2 = uiButton(menuMediaPanel, "Codec Registry");
+    uiWidgetVisible(menuMediaPanel, 0);
+    menuPlaybackPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuPlaybackPanel, 4, 10, 4, 10);
+    menuPlaybackItem1 = uiButton(menuPlaybackPanel, "Play Media");
+    menuPlaybackItem2 = uiButton(menuPlaybackPanel, "Stop Playback");
+    uiWidgetVisible(menuPlaybackPanel, 0);
+    menuHelpPanel = uiBox(root, 1, 2);
+    uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
+    menuHelpItem1 = uiButton(menuHelpPanel, "Media Guide");
+    menuHelpItem2 = uiButton(menuHelpPanel, "About DUAL");
+    uiWidgetVisible(menuHelpPanel, 0);
+
 
     // --- Chrome: URL bar (HTML-aware, HTTP-driven) ---
     int header = uiHeaderBar(root);
@@ -189,6 +248,45 @@ class GuiDualMediaStudio {
       int dispatched = uiAppPump(app, 1);
       if (dispatched < 0) { running = false; }
       else {
+
+        // Menubar top-level buttons toggle their dropdown panels.
+        if (uiWidgetTakeActivated(menuFileButton) == 1) { openMenu(0); }
+        if (uiWidgetTakeActivated(menuMediaButton) == 1) { openMenu(1); }
+        if (uiWidgetTakeActivated(menuPlaybackButton) == 1) { openMenu(2); }
+        if (uiWidgetTakeActivated(menuHelpButton) == 1) { openMenu(3); }
+        // Menu items announce the selected command, then dismiss the dropdown.
+        if (uiWidgetTakeActivated(menuFileItem1) == 1) {
+          uiWidgetSetText(statusLabel, "File · Open Media");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuFileItem2) == 1) {
+          uiWidgetSetText(statusLabel, "File · Media Information");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuMediaItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Media · Audio Recorder");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuMediaItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Media · Codec Registry");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuPlaybackItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Playback · Play Media");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuPlaybackItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Playback · Stop Playback");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Help · Media Guide");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Help · About DUAL");
+          openMenu(-1);
+        }
         if (uiWidgetTakeActivated(btnPlay) == 1) {
           uiWidgetSetText(videoLabel, "transport: playing \u25B6");
           uiWidgetSetText(statusLabel, "video/mp4 playing (codec gate passed)");
