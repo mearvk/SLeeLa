@@ -207,18 +207,18 @@ class GuiMualTextEditor {
     int watchBox = uiBox(docsPanel, VERTICAL, 6); // the scroll CONTENT (1st child)
     uiWidgetExpand(watchBox, 1, 0); // fill viewport width; retain natural scroll height
     uiWidgetMargin(watchBox, 12, 12, 12, 12);
-    uiLabel(watchBox, "DOCUMENT LISTENER  (1..14 contract)");
+    
     int i = 0;
     while (i < 14) {
       int rowId = i + 1;
       int rowBox = uiBox(watchBox, HORIZONTAL, 10);
-      uiLabel(rowBox, "chapter-" + rowId + ".md  rev 1739981000:" + (4096 + i));
+      
       uiSpacer(rowBox);
-      uiBadge(rowBox, i < 2 ? "refreshed" : "within bound");
+      
       i = i + 1;
     }
     int overRow = uiBox(watchBox, VERTICAL, 10); // controls wrap vertically instead of exceeding the viewport width
-    uiLabel(overRow, "watch 0 / 15 documents");
+    
     uiSpacer(overRow);
     int rej = uiBadge(overRow, "rejected");
     uiWidgetDestructive(rej, 1);
@@ -228,8 +228,8 @@ class GuiMualTextEditor {
     uiWidgetExpand(aboutPanel, 1, 1);
     uiHeading(aboutPanel, "SLeeLa Editor — MUAL 1.0", 18);
     uiLabel(aboutPanel, "The 1.0 baseline: backend selector, window intent,");
-    uiLabel(aboutPanel, "actions, the 1..14 document listener, three integration paths.");
-    uiLabel(aboutPanel, "Click Editor / Documents / About above to switch panels.");
+    
+    
 
     // --- Status line (component 'status', not clickable) ---
     int status = uiStatusBar(root);
