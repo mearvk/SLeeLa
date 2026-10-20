@@ -8,6 +8,7 @@ extern "C" {
 
 typedef struct SLGuiColor { const char *name; const char *hex; } SLGuiColor;
 #define SLGUI_COLOR_TITLE_BAR  "#1D2025"
+#define SLGUI_COLOR_MENU_BAR   "#1D2025"
 #define SLGUI_COLOR_URL_BAR    "#383C47"
 #define SLGUI_COLOR_PANEL      "#292D35"
 #define SLGUI_COLOR_SURFACE    "#22262D"
