@@ -99,10 +99,11 @@ class GuiMilitaryCommandConsole {
     uiWidgetExpand(scroller, 1, 1);
     int content = uiBox(scroller, 1, 14);     // the scroll CONTENT (1st child)
     uiWidgetMargin(content, 18, 18, 18, 18);
-    uiWidgetExpand(content, 1, 1);
+    uiWidgetExpand(content, 1, 0); // content grows to its natural height inside the scroller
 
     // Taxonomy row: Component vs Container, shown as chips.
     int tax = uiBox(content, 0, 8);
+    uiWidgetExpand(tax, 1, 0);
     uiLabel(tax, "taxonomy:");
     uiChip(tax, "window \u00B7 container");
     uiChip(tax, "button \u00B7 component \u00B7 clickable");
@@ -119,10 +120,13 @@ class GuiMilitaryCommandConsole {
 
     // Actions toolbar card: icon on the primary clickable.
     int actions = uiCard(colL);
+    uiWidgetExpand(actions, 1, 0);
     int actBox = uiBox(actions, 1, 8);
+    uiWidgetExpand(actBox, 1, 0);
     uiWidgetMargin(actBox, 12, 14, 12, 14);
     uiLabel(actBox, "ACTIONS  (container \u00B7 toolbar)");
     int arow = uiBox(actBox, 0, 8);
+    uiWidgetExpand(arow, 1, 0);
     btnAuthorize = uiButton(arow, "\u26CA Authorize");   // md icon, leading, gap 8
     uiWidgetSuggested(btnAuthorize, 1);
     btnRun = uiButton(arow, "\u25B9 Run");
@@ -133,10 +137,13 @@ class GuiMilitaryCommandConsole {
 
     // Cryptography selector card: gated to strong / post-quantum.
     int crypto = uiCard(colR);
+    uiWidgetExpand(crypto, 1, 0);
     int cryBox = uiBox(crypto, 1, 8);
+    uiWidgetExpand(cryBox, 1, 0);
     uiWidgetMargin(cryBox, 12, 14, 12, 14);
     uiLabel(cryBox, "CRYPTOGRAPHY SELECTOR  (min strength: strong)");
     int pick = uiComboBox(cryBox);
+    uiWidgetExpand(pick, 1, 0);
     uiComboBoxAdd(pick, "AES-256-GCM + ML-KEM-768 + ML-DSA-65  [PQC, accepted]");
     uiComboBoxAdd(pick, "AES-256-GCM + X25519 (strong)");
     int gated = uiLabel(cryBox, "3DES-CBC + RSA-2048 (legacy)  \u2715 below min, gated out");
@@ -146,6 +153,7 @@ class GuiMilitaryCommandConsole {
     int certs = uiCard(content);
     uiWidgetExpand(certs, 1, 0);
     int certBox = uiBox(certs, 1, 6);
+    uiWidgetExpand(certBox, 1, 0);
     uiWidgetMargin(certBox, 12, 14, 12, 14);
     uiLabel(certBox, "PUBLIC KEY CERTIFICATE STORE  (fail-closed import)");
     int r1 = uiBox(certBox, 0, 10);
@@ -165,9 +173,11 @@ class GuiMilitaryCommandConsole {
     int wstate = uiCard(content);
     uiWidgetExpand(wstate, 1, 0);
     int wBox = uiBox(wstate, 1, 6);
+    uiWidgetExpand(wBox, 1, 0);
     uiWidgetMargin(wBox, 12, 12, 12, 12);
     uiLabel(wBox, "WINDOW KEY-LISTENERS");
     int wrow = uiBox(wBox, 0, 10);
+    uiWidgetExpand(wrow, 1, 0);
     uiChip(wrow, "normal 1280x800 @(160,96)");
     uiChip(wrow, "minimize-right \u2192 folded");
     uiChip(wrow, "double-click \u2192 restore");
