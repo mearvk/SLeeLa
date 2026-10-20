@@ -38,8 +38,8 @@ class GuiMualTextEditor {
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
   int THEME_CUSTOM = 2;
   // Orientation + scroll-policy ordinals (mirror the toolkit C ABI).
-  int VERTICAL = 1;
-  int HORIZONTAL = 0;
+  int VERTICAL = 0;
+  int HORIZONTAL = 1;
   int SCROLL_AUTO = 0;
 
   // --- live widget handles the event loop reacts on/to ---
@@ -149,28 +149,28 @@ class GuiMualTextEditor {
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
-    int menuStrip = uiBox(root, 0, 4);
+    int menuStrip = uiBox(root, 1, 4);
     uiWidgetMargin(menuStrip, 4, 8, 4, 8);
     menuFileButton = uiButton(menuStrip, "File");
     menuEditButton = uiButton(menuStrip, "Edit");
     menuViewButton = uiButton(menuStrip, "View");
     menuHelpButton = uiButton(menuStrip, "Help");
-    menuFilePanel = uiBox(root, 1, 2);
+    menuFilePanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
     menuFileItem1 = uiButton(menuFilePanel, "New Document");
     menuFileItem2 = uiButton(menuFilePanel, "Save Document");
     uiWidgetVisible(menuFilePanel, 0);
-    menuEditPanel = uiBox(root, 1, 2);
+    menuEditPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuEditPanel, 4, 10, 4, 10);
     menuEditItem1 = uiButton(menuEditPanel, "Undo Edit");
     menuEditItem2 = uiButton(menuEditPanel, "Select All");
     uiWidgetVisible(menuEditPanel, 0);
-    menuViewPanel = uiBox(root, 1, 2);
+    menuViewPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuViewPanel, 4, 10, 4, 10);
     menuViewItem1 = uiButton(menuViewPanel, "Editor Panel");
     menuViewItem2 = uiButton(menuViewPanel, "Document List");
     uiWidgetVisible(menuViewPanel, 0);
-    menuHelpPanel = uiBox(root, 1, 2);
+    menuHelpPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
     menuHelpItem1 = uiButton(menuHelpPanel, "About SLeeLa");
     menuHelpItem2 = uiButton(menuHelpPanel, "Keyboard Shortcuts");
