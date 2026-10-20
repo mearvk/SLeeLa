@@ -149,9 +149,13 @@ else
 endif
 SLUI_BACKEND_OBJ := $(BUILD)/slui/backend.o
 SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ)
-# OpenMP for the native-CPU physics step (safe no-op if the toolchain lacks it
-# only when overridden; GCC/Clang on the supported platforms provide it).
-IDEA_CANVAS_OMP ?= -fopenmp
+# OpenMP for native-CPU physics. Stock Apple Clang lacks OpenMP by default;
+# keep the macOS baseline portable and allow an explicit libomp override.
+ifeq ($(PLATFORM),macos)
+  IDEA_CANVAS_OMP ?=
+else
+  IDEA_CANVAS_OMP ?= -fopenmp
+endif
 PATH_OBJ := $(BUILD)/sleela_path.o
 TERMINAL_OBJ := $(BUILD)/sleela_terminal.o
 LIBRARY_OBJ := $(BUILD)/sleela_library.o
