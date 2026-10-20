@@ -1,0 +1,58 @@
+/*
+ * SLeeLa GUI Menu Model Demo
+ * Demonstrates portable menu state and guarded named-action activation.
+ */
+#sleela 2.1
+class GuiMenuModelDemo {
+  String boolToStr(boolean b) { return b ? "yes" : "no"; }
+
+  void main() {
+    SLGuiMenuBar bar = new SLGuiMenuBar();
+    bar.configure("main-menubar");
+    bar.setMenuCount(3);
+    bar.focus();
+    bar.open(0);
+    print("menu bar visible=" + boolToStr(bar.isVisible())
+        + "; focused=" + boolToStr(bar.hasFocus())
+        + "; active menu=" + bar.activeIndex());
+
+    SLGuiMenu file = new SLGuiMenu();
+    file.configure("file", "File");
+    file.setItemCount(3);
+    file.open();
+    file.move(1);
+    print("menu '" + file.getLabel() + "' open=" + boolToStr(file.isOpen())
+        + "; selected item=" + file.selectedIndex());
+
+    SLGuiMenuItem save = new SLGuiMenuItem();
+    save.configure("save", "Save", "document.save", "saveDocument");
+    save.setShortcut("Ctrl+S");
+    save.setIcon("document-save");
+    print("save action configured=" + boolToStr(save.getActionName() == "document.save")
+        + "; activated=" + boolToStr(save.activate())
+        + "; pending latch=" + boolToStr(save.takeActivation())
+        + "; consumed again=" + boolToStr(save.takeActivation()));
+
+    SLGuiMenuItem check = new SLGuiMenuItem();
+    check.configure("show-status", "Show Status Bar", "view.status", "toggleStatusBar");
+    check.setCheckable(true);
+    check.setChecked(false);
+    check.activate();
+    print("checkable item after activation checked=" + boolToStr(check.isChecked()));
+
+    SLGuiMenuItem disabled = new SLGuiMenuItem();
+    disabled.configure("delete", "Delete", "document.delete", "deleteDocument");
+    disabled.setEnabled(false);
+    print("disabled action refused=" + boolToStr(!disabled.activate()));
+
+    SLGuiMenuItem separator = new SLGuiMenuItem();
+    separator.configure("sep", "", "", "");
+    separator.makeSeparator();
+    print("separator activation refused=" + boolToStr(!separator.activate()));
+
+    file.dismiss();
+    bar.close();
+    print("dismissed menu=" + boolToStr(!file.isOpen())
+        + "; no menu remains open=" + boolToStr(!bar.isOpen()));
+  }
+}
