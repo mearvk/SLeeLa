@@ -6287,7 +6287,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiScreenFit.sleela",
-      "sha256": "a622f66b44d5b060850064ae9fefc2dfcc783c9d2ad05004c4a81f4187323010"
+      "sha256": "5ef5e6148e74a6917f35be7691c9d9e16d09742f154155214334453bc6cdfa50"
     },
     {
       "path": "lib/gui/version-dual/SLGuiScript.sleela",
@@ -6447,7 +6447,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiScreenFit.sleela",
-      "sha256": "df271b1c1d9f793ff44eeb495804f9c886fb1734451bd503a4d12f25fc469f8d"
+      "sha256": "6cdf51351752ab3ab982c73a9bfcc49301305e7826818215a0133217cf0c0c3a"
     },
     {
       "path": "lib/gui/version-gual/SLGuiScript.sleela",
@@ -6647,7 +6647,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiScreenFit.sleela",
-      "sha256": "0a7cba93aa89ecb2c3398bcec6362e6499272712bf4309dac306a7e8fe3d5adb"
+      "sha256": "d586bfecbb8f233b939ed2c0baee4df7fc240a83245428d2b0f9e12d8d0cf674"
     },
     {
       "path": "lib/gui/version-military/SLGuiScript.sleela",
@@ -6815,7 +6815,7 @@
     },
     {
       "path": "lib/gui/version-mual/SLGuiScreenFit.sleela",
-      "sha256": "c42cc70bbb8e06608b437e072d4b6921ebfa01bc3fb9b2ede5ce974fd8795915"
+      "sha256": "3fc34754ab1d110a3ec1258fa27a2f1530f408e035341e43cd9b23e20fb65cae"
     },
     {
       "path": "lib/gui/version-mual/SLGuiScript.sleela",
@@ -6967,7 +6967,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiScreenFit.sleela",
-      "sha256": "934c31fc0e2cdb355a4c84208bd33969ff4881437d4030beec26b1279d75a3b8"
+      "sha256": "923a85fd63295216804a5faacd5f5692591dc99d2ceaf213fefa6a3c9b9d406e"
     },
     {
       "path": "lib/gui/version-thual/SLGuiScript.sleela",
