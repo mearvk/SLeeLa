@@ -30,7 +30,7 @@ class GuiDualMediaStudio {
 
   // Static build policy: default keeps the normal layout within its parent width.
   // Set to 1 only in builds that intentionally permit horizontal overflow.
-  int ALLOW_HORIZONTAL_OVERFLOW = 0;
+  static final int ALLOW_HORIZONTAL_OVERFLOW = 0;
 
   // Scroll-policy ordinal (mirror the toolkit C ABI: 0=auto on overflow).
   int SCROLL_AUTO = 0;
