@@ -29,6 +29,10 @@ class GuiGualSettingsConsole {
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
   int THEME_CUSTOM = 2;
 
+  // Static build policy: default keeps the normal layout within its parent width.
+  // Set to 1 only in builds that intentionally permit horizontal overflow.
+  int ALLOW_HORIZONTAL_OVERFLOW = 0;
+
   // Scroll-policy ordinal (mirror the toolkit C ABI: 0=auto on overflow).
   int SCROLL_AUTO = 0;
 
