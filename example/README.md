@@ -181,3 +181,16 @@ tiers, `program`/`grant`), see [`lib/xlt/README.md`](../lib/xlt/README.md).
 > part name reports a congruence on your tree, swap it for one used in the
 > shipped examples under [`lib/xlt/examples`](../lib/xlt/examples) (e.g.
 > `"SLAMDEPYC9575F"`, `"ddr5_6400"`, `"pcieGen5x16"`).
+
+
+## Cross-Platform Launchers
+
+Each GUI folder includes a dedicated launcher for **Linux and macOS** (`run-*-gui.sh`), **Windows PowerShell** (`run-*-gui.ps1`), and **Windows Command Prompt** (`run-*-gui.cmd`). From the repository root, the launchers locate the built SLeeLa executable and set the default sheet and SHA-256 manifest environment variables.
+
+Run all five GUI examples:
+
+- Linux/macOS: `./example/run-gui-examples.sh`
+- Windows PowerShell: `./example/run-gui-examples.ps1`
+- Windows Command Prompt: `example\run-gui-examples.cmd`
+
+Set `SLEELA_BIN` to override executable discovery. The GUI examples require a desktop session for their native windows; the scripts do not install the compiler or GUI dependencies.
