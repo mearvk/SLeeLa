@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.16)
+project(sleela_gui_native LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_library(sleela_gui_bridge STATIC sleela_gui_bridge.cpp)
+target_include_directories(sleela_gui_bridge PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_executable(slgui_bridge_test slgui_bridge_test.cpp)
+target_link_libraries(slgui_bridge_test PRIVATE sleela_gui_bridge)
+
+add_library(sleela_gui_theme STATIC sleela_gui_theme.cpp)
+target_include_directories(sleela_gui_theme PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_executable(slgui_theme_test slgui_theme_test.cpp)
+target_link_libraries(slgui_theme_test PRIVATE sleela_gui_theme)
+
+if(MSVC)
+  target_compile_options(sleela_gui_bridge PRIVATE /W4 /WX)
+  target_compile_options(sleela_gui_theme PRIVATE /W4 /WX)
+  target_compile_options(slgui_bridge_test PRIVATE /W4 /WX)
+  target_compile_options(slgui_theme_test PRIVATE /W4 /WX)
+else()
+  foreach(target sleela_gui_bridge sleela_gui_theme slgui_bridge_test slgui_theme_test)
+    target_compile_options(${target} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+  endforeach()
+endif()
+
+enable_testing()
+add_test(NAME native_bridge_contract COMMAND slgui_bridge_test)
+add_test(NAME native_theme_contract COMMAND slgui_theme_test)
