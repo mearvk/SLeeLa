@@ -19,10 +19,17 @@ automation, set `SLEELA_MANIFEST_CONSENT=yes`, `no`, or `skip` deliberately.
 
 ## macOS
 
-Install Xcode Command Line Tools first, then build native products using their
-macOS build scripts. For the SLeeLa runtime, use the root install Makefile only
-after verifying the selected install target and its dependencies on the target
-macOS version. Do not use Linux binaries on macOS.
+Install Xcode Command Line Tools first. From the repository root, run
+`./install/quick-safe-install-macos.sh`. The installer defaults to a
+user-local runtime at `~/.local/sleela`, backs up an existing destination,
+stages the library and integrity-manifest source files, installs native
+executables, and can add the runtime's `bin` directory to `~/.zprofile`.
+It builds through `build/native-macos.sh` unless `--no-build` is supplied.
+Use `--system` for an administrator-approved install under `/usr/local`,
+`--destination PATH` to choose a runtime root, and
+`--skip-optional-products` if only `sleela` is built. The default requires
+native executable files `impl/build/sleela`, `sleelvac`, and `nordshrift`.
+Never install Linux binaries on macOS.
 
 ## Windows 10+
 
