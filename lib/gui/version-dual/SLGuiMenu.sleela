@@ -1,0 +1,35 @@
+/*
+ * SLeeLa Standard Library Definition: SLGuiMenu
+ * Menu state model with stable action names and predictable dismissal.
+ */
+#sleela 2.1
+class SLGuiMenu {
+  String id;
+  String label;
+  int itemCount;
+  int visible;
+  int opened;
+  int activeIndex;
+
+  void configure(String menuId, String menuLabel) {
+    id = menuId; label = menuLabel; itemCount = 0; visible = 1; opened = 0; activeIndex = -1;
+  }
+  String getId() { return id; }
+  String getLabel() { return label; }
+  void setItemCount(int count) { itemCount = count < 0 ? 0 : count; if (activeIndex >= itemCount) { activeIndex = itemCount - 1; } }
+  int count() { return itemCount; }
+  void setVisible(boolean value) { visible = value ? 1 : 0; if (visible == 0) { dismiss(); } }
+  boolean isVisible() { return visible == 1; }
+  void open() { if (visible == 1) { opened = 1; activeIndex = itemCount > 0 ? 0 : -1; } }
+  void dismiss() { opened = 0; activeIndex = -1; }
+  boolean isOpen() { return opened == 1; }
+  void move(int direction) {
+    if (opened == 0 || itemCount <= 0) { return; }
+    activeIndex = (activeIndex + direction + itemCount) % itemCount;
+  }
+  int selectedIndex() { return activeIndex; }
+  boolean select(int index) {
+    if (opened == 0 || visible == 0 || index < 0 || index >= itemCount) { return false; }
+    activeIndex = index; return true;
+  }
+}
