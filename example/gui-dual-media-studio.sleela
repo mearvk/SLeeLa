@@ -80,6 +80,28 @@ class GuiDualMediaStudio {
         || mime == "audio/ogg";
   }
 
+  // Shared action helpers keep menu commands and transport buttons consistent.
+  void playMedia() {
+    uiWidgetSetText(videoLabel, "transport: playing \u25B6");
+    uiWidgetSetText(statusLabel, "video/mp4 playing (codec gate passed)");
+  }
+  void pauseMedia() {
+    uiWidgetSetText(videoLabel, "transport: paused \u2759\u2759");
+    uiWidgetSetText(statusLabel, "video paused");
+  }
+  void stopMedia() {
+    uiWidgetSetText(videoLabel, "transport: stopped \u25A0");
+    uiWidgetSetText(statusLabel, "video stopped (position reset to 0s)");
+  }
+  void startRecording() {
+    uiWidgetSetText(recState, "state: recording \u25CF  \u00B7  capturing audio/wav");
+    uiWidgetSetText(statusLabel, "recorder armed -> recording (audio/wav recordable)");
+  }
+  void stopRecording() {
+    uiWidgetSetText(recState, "state: stopped  \u00B7  clip captured");
+    uiWidgetSetText(statusLabel, "recording stopped; clip captured");
+  }
+
   // A cool "glass" studio theme for the DUAL line.
   int glassTheme() {
     int t = uiThemePreset(THEME_CUSTOM);
@@ -272,11 +294,11 @@ class GuiDualMediaStudio {
           openMenu(-1);
         }
         if (uiWidgetTakeActivated(menuPlaybackItem1) == 1) {
-          uiWidgetSetText(statusLabel, "Playback · Play Media");
+          playMedia();
           openMenu(-1);
         }
         if (uiWidgetTakeActivated(menuPlaybackItem2) == 1) {
-          uiWidgetSetText(statusLabel, "Playback · Stop Playback");
+          stopMedia();
           openMenu(-1);
         }
         if (uiWidgetTakeActivated(menuHelpItem1) == 1) {
@@ -288,24 +310,19 @@ class GuiDualMediaStudio {
           openMenu(-1);
         }
         if (uiWidgetTakeActivated(btnPlay) == 1) {
-          uiWidgetSetText(videoLabel, "transport: playing \u25B6");
-          uiWidgetSetText(statusLabel, "video/mp4 playing (codec gate passed)");
+          playMedia();
         }
         if (uiWidgetTakeActivated(btnPause) == 1) {
-          uiWidgetSetText(videoLabel, "transport: paused \u2759\u2759");
-          uiWidgetSetText(statusLabel, "video paused");
+          pauseMedia();
         }
         if (uiWidgetTakeActivated(btnStop) == 1) {
-          uiWidgetSetText(videoLabel, "transport: stopped \u25A0");
-          uiWidgetSetText(statusLabel, "video stopped (position reset to 0s)");
+          stopMedia();
         }
         if (uiWidgetTakeActivated(btnRec) == 1) {
-          uiWidgetSetText(recState, "state: recording \u25CF  \u00B7  capturing audio/wav");
-          uiWidgetSetText(statusLabel, "recorder armed -> recording (audio/wav recordable)");
+          startRecording();
         }
         if (uiWidgetTakeActivated(btnRecStop) == 1) {
-          uiWidgetSetText(recState, "state: stopped  \u00B7  clip captured");
-          uiWidgetSetText(statusLabel, "recording stopped; clip captured");
+          stopRecording();
         }
       }
     }
