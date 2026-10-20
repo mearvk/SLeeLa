@@ -10,6 +10,10 @@ int main(void) {
 #ifdef _WIN32
     target = "kernel32.dll";
     symbol = NULL;
+#elif defined(__APPLE__)
+    /* macOS exports the standard math functions through libSystem. */
+    target = "libSystem.B.dylib";
+    symbol = NULL;
 #else
     target = "libm.so.6";
     symbol = NULL;
