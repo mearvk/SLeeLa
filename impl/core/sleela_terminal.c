@@ -184,14 +184,43 @@ int slterminal_resize(SLTerminalHandle terminal, unsigned cols, unsigned rows) {
 
 int slterminal_close(SLTerminalHandle terminal) {
     SLWinTerminal* t = as_terminal(terminal);
+    DWORD wait_result;
+    int rc = 0;
     if (!t) return EINVAL;
-    CloseHandle(t->input_write);
-    CloseHandle(t->output_read);
-    WaitForSingleObject(t->process, INFINITE);
-    CloseHandle(t->process);
-    ClosePseudoConsole(t->console);
+
+    /* Closing the input pipe signals EOF to the hosted command. Do not wait
+     * forever here: a child or ConPTY teardown regression must not hang the
+     * caller (or CI). */
+    if (t->input_write && !CloseHandle(t->input_write)) rc = (int)GetLastError();
+    t->input_write = NULL;
+
+    wait_result = WaitForSingleObject(t->process, 3000);
+    if (wait_result == WAIT_TIMEOUT) {
+        /* ConPTY children can remain alive when shutdown sequencing fails.
+         * Terminate only this process, then always reap it before releasing
+         * the process handle. */
+        if (!TerminateProcess(t->process, ERROR_PROCESS_ABORTED)) {
+            DWORD error_code = GetLastError();
+            if (error_code != ERROR_ACCESS_DENIED && rc == 0) rc = (int)error_code;
+        }
+        wait_result = WaitForSingleObject(t->process, 2000);
+    }
+    if (wait_result != WAIT_OBJECT_0 && rc == 0) {
+        rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
+    }
+
+    /* The hosted process is now exited or forcibly stopped. Release ConPTY
+     * before closing the parent's remaining output handle. */
+    if (t->console) ClosePseudoConsole(t->console);
+    t->console = NULL;
+    if (t->output_read && !CloseHandle(t->output_read) && rc == 0)
+        rc = (int)GetLastError();
+    t->output_read = NULL;
+    if (t->process && !CloseHandle(t->process) && rc == 0)
+        rc = (int)GetLastError();
+    t->process = NULL;
     free(t);
-    return 0;
+    return rc;
 }
 
 int slterminal_valid(SLTerminalHandle terminal) { return as_terminal(terminal) != NULL; }
