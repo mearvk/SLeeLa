@@ -56,7 +56,6 @@ class GuiThualEffectsShowcase {
   int menuHelpItem1;
   int menuHelpItem2;
 
-
   int rgba(int r, int g, int b, int a) {
     return r * 16777216 + g * 65536 + b * 256 + a;
   }
@@ -90,7 +89,6 @@ class GuiThualEffectsShowcase {
     uiThemeSetControlHeight(t, 32);
     return t;
   }
-
 
   // Show one dropdown at a time; selecting the open menu closes it.
   void openMenu(int which) {
@@ -161,16 +159,13 @@ class GuiThualEffectsShowcase {
     menuHelpItem2 = uiButton(menuHelpPanel, "About THUAL");
     uiWidgetVisible(menuHelpPanel, 0);
 
-
     // --- Chrome: branding painted into the header ---
     int header = uiHeaderBar(root);
     int logo = uiLabel(header, "\u2756");                 // the studio mark
     uiWidgetMargin(logo, 0, 10, 0, 14);
     int brand = uiBox(header, 1, 0);
-    uiLabel(brand, "Sleela™ GUI - Version 1.0");
-    uiLabel(brand, "Sleela™ GUI - Version 1.0");
+
     uiSpacer(header);
-    uiBadge(header, "effects honored");
 
     // The content lives inside a scrolled view so it scrolls (with automatic
     // scrollbars) instead of spilling past the frame on a small window.
@@ -193,21 +188,20 @@ class GuiThualEffectsShowcase {
     int fxBox = uiBox(fx, 1, 8);
     uiWidgetExpand(fxBox, 1, 0);
     uiWidgetMargin(fxBox, 14, 14, 14, 14);
-    uiLabel(fxBox, "EFFECTS BUNDLE  (every knob clamps)");
+
     int glow = clamp(140, 0, 100);             // 140% -> 100%
-    uiLabel(fxBox, "glow: 140% -> " + intToStr(glow) + "% @24px, #4F8EF7");
+
     int glowBar = uiLevelBar(fxBox, glow / 100.0);
     uiWidgetExpand(glowBar, 1, 0);
     int shine = clamp(70, 0, 100);
-    uiLabel(fxBox, "3D shine: " + intToStr(shine) + "% @35deg");
+
     int shineBar = uiLevelBar(fxBox, shine / 100.0);
     uiWidgetExpand(shineBar, 1, 0);
     int sheen = clamp(85, 0, 100);
-    uiLabel(fxBox, "metal sheen: " + intToStr(sheen) + "%");
+
     int sheenBar = uiLevelBar(fxBox, sheen / 100.0);
     uiWidgetExpand(sheenBar, 1, 0);
     int fadeMs = clamp(50, 60, 2000);          // 50 -> 60ms
-    uiLabel(fxBox, "fade-in: 50ms -> " + intToStr(fadeMs) + "ms (window 60..2000)");
 
     // The primary button carrying the effect bundle, plus its audio cues.
     int demo = uiCard(colR);
@@ -215,16 +209,14 @@ class GuiThualEffectsShowcase {
     int demoBox = uiBox(demo, 1, 10);
     uiWidgetExpand(demoBox, 1, 0);
     uiWidgetMargin(demoBox, 14, 14, 14, 14);
-    uiLabel(demoBox, "PRIMARY ACTION  (bundle + audio cue)");
+
     btnConfirm = uiButton(demoBox, "\u2756 Confirm");
     uiWidgetSuggested(btnConfirm, 1);
     btnFade = uiButton(demoBox, "Toggle fade");
     int cues = uiBox(demoBox, 1, 8);
     uiWidgetExpand(cues, 1, 0);
-    uiChip(cues, "cue: tap");
-    uiChip(cues, "cue: confirm");
+
     uiSpacer(cues);
-    uiLabel(demoBox, "master audio: enabled \u00B7 gain 80%");
 
     // Scheduled-rotation card (full width): the 'schene' == memo key epoch,
     // made visible by a live, accent-hued throbber.
@@ -233,7 +225,7 @@ class GuiThualEffectsShowcase {
     int rotBox = uiBox(rot, 1, 8);
     uiWidgetExpand(rotBox, 1, 0);
     uiWidgetMargin(rotBox, 14, 14, 14, 14);
-    uiLabel(rotBox, "ROTATION SCHEDULE  (visible tick == memo key epoch)");
+
     int rrow = uiBox(rotBox, 1, 12);
     spin = uiThrobber(rrow, 1);                // 1 = active/spinning
     uiThrobberSetHue(spin, 215.0);             // blue accent hue
@@ -241,10 +233,8 @@ class GuiThualEffectsShowcase {
     uiThrobberSetWidth(spin, 4);
     int epochBox = uiBox(rrow, 1, 2);
     uiWidgetExpand(epochBox, 1, 0);
-    uiLabel(epochBox, "cadence 90deg / tick");
-    uiLabel(epochBox, "each visible tick advances the memo key epoch");
+
     uiSpacer(rrow);
-    uiBadge(rrow, "schene running");
 
     int status = uiStatusBar(root);
     statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
