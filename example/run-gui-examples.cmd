@@ -11,10 +11,16 @@ if "%SLEELA%"=="" if exist "%ROOT%\bin\sleela.exe" set "SLEELA=%ROOT%\bin\sleela
 if "%SLEELA%"=="" echo SLeeLa executable not found. Build it or set SLEELA_BIN. 1>&2 & exit /b 1
 if "%SLEELA_SHEET%"=="" set "SLEELA_SHEET=%ROOT%\SHEET.sheet"
 if "%SLEELA_SHA256_MANIFEST%"=="" set "SLEELA_SHA256_MANIFEST=%ROOT%\security\sha256-manifest.json"
-for %%P in (example\mual\gui-mual-text-editor.sleela example\gual\gui-gual-settings-console.sleela example\thual\gui-thual-effects-showcase.sleela example\dual\gui-dual-media-studio.sleela example\military\gui-military-command-console.sleela) do (
-  echo ======================================================================
-  echo Running %%P
-  "%SLEELA%" run "%%P"
-  if errorlevel 1 exit /b %ERRORLEVEL%
-)
+call :run example\mual\gui-mual-text-editor.sleela || exit /b 1
+call :run example\gual\gui-gual-settings-console.sleela || exit /b 1
+call :run example\thual\gui-thual-effects-showcase.sleela || exit /b 1
+call :run example\dual\gui-dual-media-studio.sleela || exit /b 1
+call :run example\military\gui-military-command-console.sleela || exit /b 1
 echo All five GUI examples completed.
+exit /b 0
+:run
+echo ======================================================================
+echo Running %~1
+"%SLEELA%" run "%~1"
+if errorlevel 1 exit /b 1
+exit /b 0
