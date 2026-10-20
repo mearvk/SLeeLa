@@ -219,7 +219,8 @@ class GuiDualMediaStudio {
     // Layout: a two-column grid (video canvas + recorder panel).
     // MUAL-style responsive hierarchy: vertical subslots only; later panels
     // flow below earlier panels instead of competing for horizontal width.
-    int cols = uiBox(content, 1, 16);
+    int contentAxis = ALLOW_HORIZONTAL_OVERFLOW == 1 ? 0 : 1;
+    int cols = uiBox(content, contentAxis, 16);
     uiWidgetExpand(cols, 1, 0);
     int colL = uiBox(cols, 1, 12);
     uiWidgetExpand(colL, 1, 0);
@@ -234,7 +235,14 @@ class GuiDualMediaStudio {
     uiWidgetMargin(vBox, 12, 12, 12, 12);
     uiWidgetExpand(vBox, 1, 1);
     uiLabel(vBox, "VIDEO CANVAS  (video/mp4 \u00B7 playable=" + (playable ? "yes" : "no") + ")");
-    int canvas = uiImage(vBox, "\u25B6 intro.mp4", 320, 180);  // aspect-preserving request fits the two-column card
+    // Default: the media canvas must not impose a fixed width on a compact frame.
+    int canvasW = 320;
+    if (ALLOW_HORIZONTAL_OVERFLOW == 0 && screenW > 0 && canvasW > screenW - 96) {
+      canvasW = screenW - 96;
+    }
+    if (canvasW < 1) { canvasW = 1; }
+    int canvasH = canvasW * 9 / 16;
+    int canvas = uiImage(vBox, "\\u25B6 intro.mp4", canvasW, canvasH);
     uiWidgetExpand(canvas, 1, 0); // fit width to the card without vertical expansion
     videoLabel = uiLabel(vBox, "transport: stopped");
     // Position / duration: seek clamps past the 180s end.
