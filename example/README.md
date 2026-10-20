@@ -38,6 +38,31 @@ and adapt. It now covers three things:
 
 ---
 
+## Shared GUI Color Theme
+
+All five runnable GUI examples now use the same SLeeLa family palette, matching
+`lib/gui/GUI-THEME.md` and the `SLGuiTheme` classes:
+
+| Role | Color |
+|---|---|
+| Title/menu/header chrome | `#1D2025` |
+| URL-entry / raised surface | `#383C47` |
+| Application background | `#22262D` |
+| Panels and cards | `#292D35` |
+| Primary text | `#E8EAED` |
+| Muted text | `#B0B7C3` |
+| Borders | `#444A56` |
+| Accent | `#4F8CFF` |
+| Focus | `#8AB4F8` |
+| Danger | `#D9534F` |
+| Success | `#3FA776` |
+
+The example theme builders configure the SleelaUI theme tokens consistently.
+Native operating-system title-bar tinting is platform/window-manager dependent;
+the `#1D2025` token is applied to the toolkit's chrome/header surface.
+
+---
+
 ## 1. GUI examples — one per `lib/gui` version line
 
 SLeeLa's GUI vocabulary ships as five source-compatible version lines (see
