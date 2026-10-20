@@ -3,6 +3,17 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef _WIN32
+#include <windows.h>
+static void terminal_test_pause(void) { Sleep(10); }
+#else
+#include <time.h>
+static void terminal_test_pause(void) {
+    const struct timespec delay = { 0, 10 * 1000 * 1000 };
+    (void)nanosleep(&delay, NULL);
+}
+#endif
+
 int main(void) {
     SLTerminalHandle terminal = 0;
 #ifdef _WIN32
@@ -17,6 +28,7 @@ int main(void) {
 #endif
     char buffer[4096];
     size_t used = 0;
+    unsigned empty_reads = 0;
     int found = 0;
     int rc;
 
@@ -32,12 +44,18 @@ int main(void) {
     }
 
     /* PTYs may emit terminal initialization sequences before the command
-     * output. Read incrementally until the marker appears or the child exits. */
+     * output. Some Darwin PTY masters briefly report zero bytes while the
+     * child is attaching its slave; retry those transient empty reads. */
     memset(buffer, 0, sizeof(buffer));
     while (used < sizeof(buffer) - 1) {
         SLTerminalCount n = slterminal_read(terminal, buffer + used,
                                              sizeof(buffer) - 1 - used);
-        if (n <= 0) break;
+        if (n < 0) break;
+        if (n == 0) {
+            if (++empty_reads >= 200) break;
+            terminal_test_pause();
+            continue;
+        }
         used += (size_t)n;
         buffer[used] = '\0';
         if (strstr(buffer, "terminal-ok") != NULL) {
