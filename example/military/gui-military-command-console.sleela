@@ -94,7 +94,7 @@ class GuiMilitaryCommandConsole {
       if (maxH < 1) { maxH = screenH; }
       if (winH > maxH) { winH = maxH; }
     }
-    int win = uiWindowCreate(app, "SLeeLa Command Console — MILITARY 5.0", winW, winH, theme);
+    int win = uiWindowCreate(app, "Sleela™ GUI - Version 1.0", winW, winH, theme);
     int root = uiWindowRoot(win);
 
     // --- Chrome: insignia + strong branding, then window buttons ---
@@ -103,8 +103,8 @@ class GuiMilitaryCommandConsole {
     int insignia = uiLabel(header, "\u25C8");            // the diamond insignia
     uiWidgetMargin(insignia, 0, 10, 0, 14);
     int brand = uiBox(header, 1, 0);
-    uiLabel(brand, "SLeeLa Command Console");
-    uiLabel(brand, "NEUTRAL \u00B7 HARDENED \u00B7 PRECISE");
+    uiLabel(brand, "Sleela™ GUI - Version 1.0");
+    uiLabel(brand, "Sleela™ GUI - Version 1.0");
     uiSpacer(header);
     uiButton(header, "\u2014");                           // minimize-right fold
     uiButton(header, "\u2922");                           // fullscreen
@@ -202,7 +202,7 @@ class GuiMilitaryCommandConsole {
     uiSpacer(wrow);
 
     int status = uiStatusBar(root);
-    statusLabel = uiLabel(status, "military line \u00B7 fail-closed \u00B7 Authorize to unlock Run");
+    statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
     uiWidgetMargin(statusLabel, 0, 12, 0, 12);
 
     uiWindowShow(win);
