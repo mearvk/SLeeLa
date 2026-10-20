@@ -167,7 +167,7 @@ class GuiGualSettingsConsole {
     uiWidgetExpand(scroller, 1, 1);
     int content = uiBox(scroller, 1, 14);     // the scroll CONTENT (1st child)
     uiWidgetMargin(content, 16, 16, 16, 16);
-    uiWidgetExpand(content, 1, 1);
+    uiWidgetExpand(content, 1, 0); // let content grow vertically so the scroller can scroll
 
     int cols = uiBox(content, 0, 16);
     uiWidgetExpand(cols, 1, 0);
@@ -178,30 +178,38 @@ class GuiGualSettingsConsole {
 
     // Appearance card: theme allow-list + clamped DPI scale.
     int appear = uiCard(colL);
+    uiWidgetExpand(appear, 1, 0);
     int appBox = uiBox(appear, 1, 8);
+    uiWidgetExpand(appBox, 1, 0);
     uiWidgetMargin(appBox, 14, 14, 14, 14);
     uiLabel(appBox, "APPEARANCE  (allow-list + clamp)");
     int themePick = uiComboBox(appBox);
+    uiWidgetExpand(themePick, 1, 0);
     uiComboBoxAdd(themePick, "system  (fail-safe fallback for 'midnight')");
     uiComboBoxAdd(themePick, "dark");
     uiComboBoxAdd(themePick, "light");
     int dpi = clamp(400, 50, 300);             // 400% requested -> clamped to 300
     uiLabel(appBox, "DPI scale: 400% requested -> " + intToStr(dpi) + "% (window 50..300)");
-    uiSlider(appBox, 50.0, 300.0, dpi);
+    int dpiSlider = uiSlider(appBox, 50.0, 300.0, dpi);
+    uiWidgetExpand(dpiSlider, 1, 0);
     uiToggle(appBox, "reduced motion", 1);
     uiToggle(appBox, "vsync", 1);
 
     // Listener timing card: clamped poll / debounce / queue cap.
     int timing = uiCard(colR);
+    uiWidgetExpand(timing, 1, 0);
     int timBox = uiBox(timing, 1, 8);
+    uiWidgetExpand(timBox, 1, 0);
     uiWidgetMargin(timBox, 14, 14, 14, 14);
     uiLabel(timBox, "LISTENER TIMING  (every setter clamps)");
     int poll = clamp(5, 50, 5000);             // 5 -> 50ms
     uiLabel(timBox, "poll: 5ms -> " + intToStr(poll) + "ms (window 50..5000)");
-    uiSlider(timBox, 50.0, 5000.0, poll);
+    int pollSlider = uiSlider(timBox, 50.0, 5000.0, poll);
+    uiWidgetExpand(pollSlider, 1, 0);
     int debounce = clamp(2000, 0, 1000);       // 2000 -> 1000ms
     uiLabel(timBox, "debounce: 2000ms -> " + intToStr(debounce) + "ms (window 0..1000)");
-    uiSlider(timBox, 0.0, 1000.0, debounce);
+    int debounceSlider = uiSlider(timBox, 0.0, 1000.0, debounce);
+    uiWidgetExpand(debounceSlider, 1, 0);
     int queueCap = clamp(0, 1, 256);           // 0 -> 1
     uiLabel(timBox, "coalesce queue cap: 0 -> " + intToStr(queueCap) + " (window 1..256)");
 
@@ -209,9 +217,11 @@ class GuiGualSettingsConsole {
     int sys = uiCard(content);
     uiWidgetExpand(sys, 1, 0);
     int sysBox = uiBox(sys, 1, 8);
+    uiWidgetExpand(sysBox, 1, 0);
     uiWidgetMargin(sysBox, 14, 14, 14, 14);
     uiLabel(sysBox, "BACKEND & WINDOW  (configureStrict is fail-closed)");
     int brow = uiBox(sysBox, 0, 8);
+    uiWidgetExpand(brow, 1, 0);
     btnJfx = uiButton(brow, "javafx");
     uiWidgetSuggested(btnJfx, 1);              // selected by default
     btnSwing = uiButton(brow, "swing");
@@ -220,6 +230,7 @@ class GuiGualSettingsConsole {
     uiWidgetDestructive(btnQt, 1);
     uiSpacer(brow);
     int wrow = uiBox(sysBox, 0, 10);
+    uiWidgetExpand(wrow, 1, 0);
     uiLabel(wrow, "window: min 640x480, max 3840x2160, resizable");
     uiSpacer(wrow);
     uiLabel(wrow, "resize 80x80 -> clamped to 640x480");
