@@ -29,6 +29,9 @@ implementation.
 | `SLGuiBackend` | `SleelaGui.create(backend)` | toolkit-neutral backend selector: `swing` / `javafx` (alias `fx`) / `native` |
 | `SLGuiWindow` | `SleelaGui` | window intent: `show`, `setText`, and the `refresh(id, revision)` document sink |
 | `SLGuiAction` | `SleelaGuiRuntime.action` / `SleelaGui.onAction` | a named action bound to a SLeeLa operation; take-the-latch activation |
+| `SLGuiMenuBar` | host menu-bar surface | ordered menu-bar state, visibility, focus, and active-menu navigation |
+| `SLGuiMenu` | host menu surface | menu visibility/open state, active item navigation, and selection bounds |
+| `SLGuiMenuItem` | host menu-item surface | enabled/checkable/checked/separator state, icon + shortcut metadata, and one-shot activation latch |
 | `SLGuiDocument` | `SleelaDocument` | immutable watched-document snapshot: id, path, OS revision (`lastModified:size` / `absent`) |
 | `SLGuiDocumentListener` | `DocumentListener` | the 1..14 document watch; OS-driven refresh; revision coalescing |
 | `SLGuiRuntime` | `SleelaGuiRuntime` | **Path 2** — SLeeLa intent drives the window directly |
@@ -39,6 +42,14 @@ implementation.
 A runnable, self-contained walkthrough is `lib/gui/version-mual/gui-demo.sleela` (the
 GUI `.sleela` impl now lives in `lib/gui/version-mual/`, with an identical copy in
 `lib/gui/version-gual/`; `lib/gui/` keeps these docs).
+
+## Menu Contract (MUAL 1.0 Through Military 5.0)
+
+All five versioned lines now carry `SLGuiMenuBar`, `SLGuiMenu`, and `SLGuiMenuItem` model classes. These are toolkit-neutral state contracts: SLeeLa owns labels, action names, enabled/checked state, focus/navigation state, and activation latches; the Java/native host owns actual drawing, pointer/keyboard events, accessibility integration, and any native-menu API calls.
+
+The widget factories recognize `menubar`/`menu-bar`, `menu`, `menuitem`/`menu-item`, and `menuseparator`/`menu-separator`. The factory currently constructs these using existing box/button/separator primitives, which gives a portable custom-widget fallback. `SLGuiBackend.supportsNativeMenus()` reports whether a backend is eligible to request native menus (`javafx`/`fx` or `native`); this capability flag is not a claim that every host has already wired native menu rendering. The Swing fallback remains custom-rendered.
+
+`SLGuiMenuItem.activate()` refuses disabled items, separators, and items without a named action; valid activations toggle checkable state and set a one-shot latch for the host/runtime to consume with `takeActivation()`. The host must dispatch the configured action name/operation, close the menu after ordinary activation, and preserve keyboard focus/navigation semantics.
 
 ## Versioned lines: `version-mual` (1.0) and `version-gual` (2.0)
 
