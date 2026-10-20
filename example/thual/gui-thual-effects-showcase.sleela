@@ -161,7 +161,7 @@ class GuiThualEffectsShowcase {
     uiWidgetExpand(scroller, 1, 1);
     int content = uiBox(scroller, 1, 14);     // the scroll CONTENT (1st child)
     uiWidgetMargin(content, 18, 18, 18, 18);
-    uiWidgetExpand(content, 1, 1);
+    uiWidgetExpand(content, 1, 0); // preserve natural height for vertical scrolling
 
     int cols = uiBox(content, 0, 16);
     uiWidgetExpand(cols, 1, 0);
@@ -172,30 +172,38 @@ class GuiThualEffectsShowcase {
 
     // Effects bundle card: each clamped knob shown on a level/progress bar.
     int fx = uiCard(colL);
+    uiWidgetExpand(fx, 1, 0);
     int fxBox = uiBox(fx, 1, 8);
+    uiWidgetExpand(fxBox, 1, 0);
     uiWidgetMargin(fxBox, 14, 14, 14, 14);
     uiLabel(fxBox, "EFFECTS BUNDLE  (every knob clamps)");
     int glow = clamp(140, 0, 100);             // 140% -> 100%
     uiLabel(fxBox, "glow: 140% -> " + intToStr(glow) + "% @24px, #4F8EF7");
-    uiLevelBar(fxBox, glow / 100.0);
+    int glowBar = uiLevelBar(fxBox, glow / 100.0);
+    uiWidgetExpand(glowBar, 1, 0);
     int shine = clamp(70, 0, 100);
     uiLabel(fxBox, "3D shine: " + intToStr(shine) + "% @35deg");
-    uiLevelBar(fxBox, shine / 100.0);
+    int shineBar = uiLevelBar(fxBox, shine / 100.0);
+    uiWidgetExpand(shineBar, 1, 0);
     int sheen = clamp(85, 0, 100);
     uiLabel(fxBox, "metal sheen: " + intToStr(sheen) + "%");
-    uiLevelBar(fxBox, sheen / 100.0);
+    int sheenBar = uiLevelBar(fxBox, sheen / 100.0);
+    uiWidgetExpand(sheenBar, 1, 0);
     int fadeMs = clamp(50, 60, 2000);          // 50 -> 60ms
     uiLabel(fxBox, "fade-in: 50ms -> " + intToStr(fadeMs) + "ms (window 60..2000)");
 
     // The primary button carrying the effect bundle, plus its audio cues.
     int demo = uiCard(colR);
+    uiWidgetExpand(demo, 1, 0);
     int demoBox = uiBox(demo, 1, 10);
+    uiWidgetExpand(demoBox, 1, 0);
     uiWidgetMargin(demoBox, 14, 14, 14, 14);
     uiLabel(demoBox, "PRIMARY ACTION  (bundle + audio cue)");
     btnConfirm = uiButton(demoBox, "\u2756 Confirm");
     uiWidgetSuggested(btnConfirm, 1);
     btnFade = uiButton(demoBox, "Toggle fade");
     int cues = uiBox(demoBox, 0, 8);
+    uiWidgetExpand(cues, 1, 0);
     uiChip(cues, "cue: tap");
     uiChip(cues, "cue: confirm");
     uiSpacer(cues);
@@ -206,6 +214,7 @@ class GuiThualEffectsShowcase {
     int rot = uiCard(content);
     uiWidgetExpand(rot, 1, 0);
     int rotBox = uiBox(rot, 1, 8);
+    uiWidgetExpand(rotBox, 1, 0);
     uiWidgetMargin(rotBox, 14, 14, 14, 14);
     uiLabel(rotBox, "ROTATION SCHEDULE  (visible tick == memo key epoch)");
     int rrow = uiBox(rotBox, 0, 12);
@@ -214,6 +223,7 @@ class GuiThualEffectsShowcase {
     uiThrobberSetIntensity(spin, 0.9);
     uiThrobberSetWidth(spin, 4);
     int epochBox = uiBox(rrow, 1, 2);
+    uiWidgetExpand(epochBox, 1, 0);
     uiLabel(epochBox, "cadence 90deg / tick");
     uiLabel(epochBox, "each visible tick advances the memo key epoch");
     uiSpacer(rrow);
