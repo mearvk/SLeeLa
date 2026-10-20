@@ -211,7 +211,7 @@ class GuiDualMediaStudio {
     uiWidgetMargin(vBox, 12, 12, 12, 12);
     uiWidgetExpand(vBox, 1, 1);
     uiLabel(vBox, "VIDEO CANVAS  (video/mp4 \u00B7 playable=" + (playable ? "yes" : "no") + ")");
-    int canvas = uiImage(vBox, "\u25B6 intro.mp4", 480, 270);  // aspect-preserving request fits the two-column card
+    int canvas = uiImage(vBox, "\u25B6 intro.mp4", 440, 248);  // aspect-preserving request fits the two-column card
     uiWidgetExpand(canvas, 1, 1);
     videoLabel = uiLabel(vBox, "transport: stopped");
     // Position / duration: seek clamps past the 180s end.
