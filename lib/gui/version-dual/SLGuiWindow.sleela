@@ -12,6 +12,11 @@
 // Family: gui. State transitions and the meaning of events stay in SLeeLa; the
 // backend owns presentation and desktop lifecycle.
 class SLGuiWindow {
+  // Shared chrome colour defaults for every SLeeLa GUI variant.
+  static final String TITLE_BAR_BACKGROUND = "#1d2025";
+  static final String MENU_BAR_BACKGROUND = "#2b2f32";
+  static final String URL_BAR_BACKGROUND = "#383c47";
+
   String title;
   int width;
   int height;
