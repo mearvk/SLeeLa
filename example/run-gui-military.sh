@@ -47,7 +47,7 @@ fi
 export SLEELA_SHEET="${SLEELA_SHEET:-$REPO_ROOT/SHEET.sheet}"
 export SLEELA_SHA256_MANIFEST="${SLEELA_SHA256_MANIFEST:-$REPO_ROOT/security/sha256-manifest.json}"
 
-PROGRAM="example/gui-military-command-console.sleela"
+PROGRAM="example/military/gui-military-command-console.sleela"
 
 echo "run-gui-military: sleela=$SLEELA"
 echo "run-gui-military: SLEELA_SHEET=$SLEELA_SHEET"
