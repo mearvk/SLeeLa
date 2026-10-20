@@ -209,13 +209,15 @@ int slterminal_close(SLTerminalHandle terminal) {
         rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
     }
 
-    /* The hosted process is now exited or forcibly stopped. Release ConPTY
-     * before closing the parent's remaining output handle. */
-    if (t->console) ClosePseudoConsole(t->console);
-    t->console = NULL;
+    /* Closing the output pipe first is important on Windows: ConPTY can
+     * have an internal output worker blocked on this pipe. ClosePseudoConsole
+     * waits for that worker, so calling it while the read handle is still open
+     * can deadlock teardown even after the hosted process has exited. */
     if (t->output_read && !CloseHandle(t->output_read) && rc == 0)
         rc = (int)GetLastError();
     t->output_read = NULL;
+    if (t->console) ClosePseudoConsole(t->console);
+    t->console = NULL;
     if (t->process && !CloseHandle(t->process) && rc == 0)
         rc = (int)GetLastError();
     t->process = NULL;
