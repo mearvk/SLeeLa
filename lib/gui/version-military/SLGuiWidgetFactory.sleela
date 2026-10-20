@@ -60,6 +60,12 @@ class SLGuiWidgetFactory {
       return uiBox(parentHandle, ORIENT_HORIZONTAL, 8);
     }
     if (tag == "header" || tag == "headerbar") { return uiHeaderBar(parentHandle); }
+    // Menus use the same host-backed widget seam as other controls. The model
+    // classes own menu state and named actions; the host owns rendering/input.
+    if (tag == "menubar" || tag == "menu-bar") { return uiBox(parentHandle, ORIENT_HORIZONTAL, 2); }
+    if (tag == "menu") { return uiBox(parentHandle, ORIENT_VERTICAL, 2); }
+    if (tag == "menuitem" || tag == "menu-item") { return uiButton(parentHandle, label); }
+    if (tag == "menuseparator" || tag == "menu-separator") { return uiSeparator(parentHandle, ORIENT_HORIZONTAL); }
     if (tag == "status" || tag == "statusbar") { return uiStatusBar(parentHandle); }
     if (tag == "frame" || tag == "group")      { return uiFrame(parentHandle, label); }
 
@@ -105,8 +111,7 @@ class SLGuiWidgetFactory {
     // 5.0 military components.
     if (tag == "cryptoselector") { return uiBox(parentHandle, ORIENT_VERTICAL, 6); }
     if (tag == "certstore")      { return uiBox(parentHandle, ORIENT_VERTICAL, 6); }
-    if (tag == "menuitem")       { return uiButton(parentHandle, label); }
-    if (tag == "menu" || tag == "toolbar" || tag == "panel") { return uiBox(parentHandle, ORIENT_HORIZONTAL, 6); }
+    if (tag == "toolbar" || tag == "panel") { return uiBox(parentHandle, ORIENT_HORIZONTAL, 6); }
     if (tag == "grid")           { return uiBox(parentHandle, ORIENT_VERTICAL, 8); }
     if (tag == "icon")           { return uiLabel(parentHandle, label); }
 
