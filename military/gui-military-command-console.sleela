@@ -1,0 +1,220 @@
+/*
+ * military/gui-military-command-console.sleela
+ * The MILITARY (5.0) "command console" scene as a REAL, on-screen window --
+ * driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
+ * bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
+ * this file only print()ed a walkthrough of the hardened military surface; now
+ * that scene (metal/blue 3D-lit frame, strong branding, Component-vs-Container
+ * taxonomy, icons on clickables, a post-quantum crypto selector, and the public
+ * key certificate store) is painted as actual, interactive widgets.
+ *
+ * It is the console-flavoured companion to gui-military-window.sleela: both
+ * render through the same native path, this one foregrounding the crypto
+ * selector + certificate store workflow.
+ *
+ * The three-layer stack is live here:
+ *   SLeeLa decoration (this program + the metal/blue theme below)
+ *     -> model (ui* built-ins: uiWindowCreate, uiComboBox, uiBadge, ...)
+ *       -> C/C++ (SleelaUI software rasterizer + native window backend)
+ *
+ * Run (needs a display: X on Linux, native on macOS/Windows):
+ *   SLEELA_SHEET=./SHEET.sheet \
+ *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+ *   ./impl/build/sleela run military/gui-military-command-console.sleela
+ *
+ * With no display (headless/CI) it reports that and exits 0 without a window.
+ */
+#sleela 2.1
+class GuiMilitaryCommandConsole {
+
+  // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
+  int THEME_CUSTOM = 2;
+
+  // Scroll-policy ordinal (mirror the toolkit C ABI: 0=auto on overflow).
+  int SCROLL_AUTO = 0;
+
+  // Live handles the event loop reacts on/to.
+  int btnAuthorize;
+  int btnRun;
+  int btnReset;
+  int statusLabel;
+
+  // 0xRRGGBBAA colours for the military "metal / blue-hue" palette.
+  int rgba(int r, int g, int b, int a) {
+    return r * 16777216 + g * 65536 + b * 256 + a;
+  }
+  int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
+
+  // Build the hardened metal/blue military theme and return its handle.
+  int militaryTheme() {
+    int t = uiThemePreset(THEME_CUSTOM);
+    uiThemeSetBg(t, rgb(22, 28, 36));          // deep steel backdrop
+    uiThemeSetSurface(t, rgb(43, 51, 61));     // card / panel surface
+    uiThemeSetSurfaceHi(t, rgb(58, 68, 80));   // raised / hover (metal-silver)
+    uiThemeSetChrome(t, rgb(57, 69, 85));      // brushed-metal header
+    uiThemeSetBorder(t, rgba(200, 215, 230, 46));
+    uiThemeSetFg(t, rgb(232, 238, 245));       // silver text
+    uiThemeSetFgDim(t, rgb(159, 176, 194));    // muted
+    uiThemeSetAccent(t, rgb(143, 183, 217));   // the one blue accent (#8FB7D9)
+    uiThemeSetAccentFg(t, rgb(18, 26, 36));
+    uiThemeSetDanger(t, rgb(231, 134, 134));
+    uiThemeSetRadius(t, 9);
+    uiThemeSetControlHeight(t, 34);
+    return t;
+  }
+
+  void main() {
+    print("SLeeLa Military Command Console (native SleelaUI) — backend "
+        + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
+
+    int app = uiAppCreate("com.mearvk.SleelaUI.MilitaryCommandConsole");
+    if (app < 0) {
+      print("No display available (headless): the ui* bridge is wired, but the");
+      print("toolkit could not open a window. Run on a desktop (X/Cocoa/Win32).");
+      return;
+    }
+
+    int theme = militaryTheme();
+    int win = uiWindowCreate(app, "SLeeLa Command Console — MILITARY 5.0", 1040, 640, theme);
+    int root = uiWindowRoot(win);
+
+    // --- Chrome: insignia + strong branding, then window buttons ---
+    int header = uiHeaderBar(root);
+    uiWidgetSizeRequest(header, 0, 56);
+    int insignia = uiLabel(header, "\u25C8");            // the diamond insignia
+    uiWidgetMargin(insignia, 0, 10, 0, 14);
+    int brand = uiBox(header, 1, 0);
+    uiLabel(brand, "SLeeLa Command Console");
+    uiLabel(brand, "NEUTRAL \u00B7 HARDENED \u00B7 PRECISE");
+    uiSpacer(header);
+    uiButton(header, "\u2014");                           // minimize-right fold
+    uiButton(header, "\u2922");                           // fullscreen
+    uiButton(header, "\u21E5");                           // double-click restore
+
+    // The content lives inside a scrolled view so it scrolls (with automatic
+    // scrollbars) instead of spilling past the frame on a small window.
+    int scroller = uiScrolledView(root, SCROLL_AUTO, SCROLL_AUTO);
+    uiWidgetExpand(scroller, 1, 1);
+    int content = uiBox(scroller, 1, 14);     // the scroll CONTENT (1st child)
+    uiWidgetMargin(content, 18, 18, 18, 18);
+    uiWidgetExpand(content, 1, 1);
+
+    // Taxonomy row: Component vs Container, shown as chips.
+    int tax = uiBox(content, 0, 8);
+    uiLabel(tax, "taxonomy:");
+    uiChip(tax, "window \u00B7 container");
+    uiChip(tax, "button \u00B7 component \u00B7 clickable");
+    uiChip(tax, "cryptoselector \u00B7 component");
+    uiChip(tax, "label \u00B7 component");
+    uiSpacer(tax);
+
+    int cols = uiBox(content, 0, 16);
+    uiWidgetExpand(cols, 1, 0);
+    int colL = uiBox(cols, 1, 16);
+    uiWidgetExpand(colL, 1, 0);
+    int colR = uiBox(cols, 1, 16);
+    uiWidgetExpand(colR, 1, 0);
+
+    // Actions toolbar card: icon on the primary clickable.
+    int actions = uiCard(colL);
+    int actBox = uiBox(actions, 1, 8);
+    uiWidgetMargin(actBox, 12, 14, 12, 14);
+    uiLabel(actBox, "ACTIONS  (container \u00B7 toolbar)");
+    int arow = uiBox(actBox, 0, 8);
+    btnAuthorize = uiButton(arow, "\u26CA Authorize");   // md icon, leading, gap 8
+    uiWidgetSuggested(btnAuthorize, 1);
+    btnRun = uiButton(arow, "\u25B9 Run");
+    uiWidgetSensitive(btnRun, 0);                        // fail-closed: locked until authorized
+    btnReset = uiButton(arow, "\u27F2 Reset");
+    uiSpacer(arow);
+    uiLabel(actBox, "icons: md/20 \u00B7 leading \u00B7 gap 8 \u00B7 optically centered");
+
+    // Cryptography selector card: gated to strong / post-quantum.
+    int crypto = uiCard(colR);
+    int cryBox = uiBox(crypto, 1, 8);
+    uiWidgetMargin(cryBox, 12, 14, 12, 14);
+    uiLabel(cryBox, "CRYPTOGRAPHY SELECTOR  (min strength: strong)");
+    int pick = uiComboBox(cryBox);
+    uiComboBoxAdd(pick, "AES-256-GCM + ML-KEM-768 + ML-DSA-65  [PQC, accepted]");
+    uiComboBoxAdd(pick, "AES-256-GCM + X25519 (strong)");
+    int gated = uiLabel(cryBox, "3DES-CBC + RSA-2048 (legacy)  \u2715 below min, gated out");
+    uiLabel(cryBox, "selected: PQC suite \u00B7 strength=strong \u00B7 post-quantum=yes");
+
+    // Certificate store card (full width): import -> trust -> select -> revoke.
+    int certs = uiCard(content);
+    uiWidgetExpand(certs, 1, 0);
+    int certBox = uiBox(certs, 1, 6);
+    uiWidgetMargin(certBox, 12, 14, 12, 14);
+    uiLabel(certBox, "PUBLIC KEY CERTIFICATE STORE  (fail-closed import)");
+    int r1 = uiBox(certBox, 0, 10);
+    uiLabel(r1, "SLeeLa Root CA");
+    uiLabel(r1, "Ed25519 \u00B7 ab12..root");
+    uiSpacer(r1);
+    uiBadge(r1, "trusted \u00B7 CA");
+    uiSeparator(certBox, 0);
+    int r2 = uiBox(certBox, 0, 10);
+    uiLabel(r2, "console.sleela.mil");
+    uiLabel(r2, "ECDSA-P256 \u00B7 cd34..leaf");
+    uiSpacer(r2);
+    int revoked = uiBadge(r2, "revoked \u00B7 selection cleared");
+    uiWidgetDestructive(revoked, 1);
+
+    // Window state card: minimize-right fold, double-click restore, fullscreen.
+    int wstate = uiCard(content);
+    uiWidgetExpand(wstate, 1, 0);
+    int wBox = uiBox(wstate, 1, 6);
+    uiWidgetMargin(wBox, 12, 12, 12, 12);
+    uiLabel(wBox, "WINDOW KEY-LISTENERS");
+    int wrow = uiBox(wBox, 0, 10);
+    uiChip(wrow, "normal 1280x800 @(160,96)");
+    uiChip(wrow, "minimize-right \u2192 folded");
+    uiChip(wrow, "double-click \u2192 restore");
+    uiChip(wrow, "fullscreen 1920x1080");
+    uiSpacer(wrow);
+
+    int status = uiStatusBar(root);
+    statusLabel = uiLabel(status, "military line \u00B7 fail-closed \u00B7 Authorize to unlock Run");
+    uiWidgetMargin(statusLabel, 0, 12, 0, 12);
+
+    uiWindowShow(win);
+    print("Window shown. Authorize unlocks Run; Reset re-locks it (fail-closed).");
+
+    // --- Interactive event loop: pump, then poll the command actions. ---
+    // Fail-closed authority: Run is sensitive only after Authorize, and Reset
+    // returns the console to the locked state. This is the hardened posture of
+    // SLGuiAdminAuthority made tangible: sign in to start a process, sign off,
+    // and a clear audit of the current authority state in the status line.
+    boolean authorized = false;
+    int runs = 0;
+    boolean running = true;
+    while (running) {
+      int dispatched = uiAppPump(app, 1);
+      if (dispatched < 0) { running = false; }
+      else {
+        if (uiWidgetTakeActivated(btnAuthorize) == 1) {
+          authorized = true;
+          uiWidgetSensitive(btnRun, 1);              // unlock Run
+          uiWidgetSetText(statusLabel, "AUTHORIZED \u2713 \u00B7 PQC suite \u00B7 Run unlocked");
+        }
+        if (uiWidgetTakeActivated(btnRun) == 1) {
+          if (authorized) {
+            runs = runs + 1;
+            uiWidgetSetText(statusLabel, "RUN \u25B9 executed under authority (" + runs + " this session)");
+          } else {
+            // Defence in depth: refuse even if somehow fired while locked.
+            uiWidgetSetText(statusLabel, "RUN refused \u2715 \u00B7 not authorized (fail-closed)");
+          }
+        }
+        if (uiWidgetTakeActivated(btnReset) == 1) {
+          authorized = false;
+          uiWidgetSensitive(btnRun, 0);              // re-lock Run
+          uiWidgetSetText(statusLabel, "RESET \u27F2 \u00B7 authority cleared \u00B7 Run locked again");
+        }
+      }
+    }
+
+    uiThemeDestroy(theme);
+    uiAppDestroy(app);
+    print("event loop exited; authorized runs this session: " + runs);
+  }
+}
