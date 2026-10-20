@@ -192,7 +192,11 @@ void Box::arrange(const PaintContext& ctx, const Rect& area) {
 }
 
 void Box::paint(PaintContext& ctx) {
+    // A container is a hard paint boundary: descendants may measure naturally,
+    // but their pixels must never escape the allocated parent rectangle.
+    if (ctx.canvas) ctx.canvas->push_clip(bounds_);
     paint_children(ctx);
+    if (ctx.canvas) ctx.canvas->pop_clip();
 }
 
 void HeaderBar::paint(PaintContext& ctx) {
@@ -201,7 +205,10 @@ void HeaderBar::paint(PaintContext& ctx) {
     ctx.canvas->fill_rect(b, t.chrome);
     /* 1px bottom hairline -- the quiet frame edge. */
     ctx.canvas->hline(b.x, b.right() - 1, b.bottom() - 1, t.border);
+    // Header-bar children obey the same hard boundary as ordinary boxes.
+    ctx.canvas->push_clip(b);
     paint_children(ctx);
+    ctx.canvas->pop_clip();
 }
 
 /* ======================================================================== */
