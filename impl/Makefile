@@ -61,6 +61,8 @@ NORDSHRIFT_BIN := $(BUILD)/nordshrift$(EXE)
 # parallel toy interpreter. Its public API is impl/core/sleela_core.h.
 SLCORE_LIB := $(BUILD)/libslcore.a
 THREAD_SMOKE := $(BUILD)/thread_smoke
+THREAD_SMOKE_OBJ := $(BUILD)/thread_smoke_test.o
+SOCKET_SMOKE_OBJ := $(BUILD)/socket_smoke_test.o
 THREAD_PLATFORM_SMOKE := $(BUILD)/thread_platform_smoke
 SOCKET_SMOKE := $(BUILD)/socket_smoke
 SYNCHRO_SMOKE := $(BUILD)/synchro_smoke
@@ -151,7 +153,12 @@ SLUI_BACKEND_OBJ := $(BUILD)/slui/backend.o
 SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ)
 # OpenMP for the native-CPU physics step (safe no-op if the toolchain lacks it
 # only when overridden; GCC/Clang on the supported platforms provide it).
-IDEA_CANVAS_OMP ?= -fopenmp
+ifeq ($(PLATFORM),windows)
+  # MinGW runners may not ship libgomp; OpenMP pragmas fall back to serial code.
+  IDEA_CANVAS_OMP ?=
+else
+  IDEA_CANVAS_OMP ?= -fopenmp
+endif
 PATH_OBJ := $(BUILD)/sleela_path.o
 TERMINAL_OBJ := $(BUILD)/sleela_terminal.o
 LIBRARY_OBJ := $(BUILD)/sleela_library.o
@@ -384,10 +391,14 @@ $(THREAD_PLATFORM_SMOKE): core/thread_platform_smoke.c $(THREAD_OBJ) | $(BUILD)
 # sleela_core.o (sleela_artifact.c) calls into the OS-abstraction backends
 # (net/io/path/library/terminal), so any target that links the core must also
 # link those objects, not just the core + time.
-$(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(GC_OBJ)
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
-$(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(GC_OBJ)
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
+$(THREAD_SMOKE_OBJ): core/thread_smoke.c | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(SOCKET_SMOKE_OBJ): core/socket_smoke.c | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(THREAD_SMOKE): $(THREAD_SMOKE_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(SOCKET_SMOKE): $(SOCKET_SMOKE_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 $(SYNCHRO_SMOKE): core/synchro_smoke.c $(SYNCHRO_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/synchro_smoke.c $(SYNCHRO_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(BESTOF_SMOKE): core/bestof_smoke.c $(BESTOF_OBJ) | $(BUILD)
