@@ -146,28 +146,28 @@ class GuiGualSettingsConsole {
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
-    int menuStrip = uiBox(root, 0, 4);
+    int menuStrip = uiBox(root, 1, 4);
     uiWidgetMargin(menuStrip, 4, 8, 4, 8);
     menuFileButton = uiButton(menuStrip, "File");
     menuSettingsButton = uiButton(menuStrip, "Settings");
     menuBackendButton = uiButton(menuStrip, "Backend");
     menuHelpButton = uiButton(menuStrip, "Help");
-    menuFilePanel = uiBox(root, 1, 2);
+    menuFilePanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
     menuFileItem1 = uiButton(menuFilePanel, "Export Settings");
     menuFileItem2 = uiButton(menuFilePanel, "Reset Defaults");
     uiWidgetVisible(menuFilePanel, 0);
-    menuSettingsPanel = uiBox(root, 1, 2);
+    menuSettingsPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuSettingsPanel, 4, 10, 4, 10);
     menuSettingsItem1 = uiButton(menuSettingsPanel, "Appearance");
     menuSettingsItem2 = uiButton(menuSettingsPanel, "Listener Timing");
     uiWidgetVisible(menuSettingsPanel, 0);
-    menuBackendPanel = uiBox(root, 1, 2);
+    menuBackendPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuBackendPanel, 4, 10, 4, 10);
     menuBackendItem1 = uiButton(menuBackendPanel, "Select JavaFX");
     menuBackendItem2 = uiButton(menuBackendPanel, "Backend Policy");
     uiWidgetVisible(menuBackendPanel, 0);
-    menuHelpPanel = uiBox(root, 1, 2);
+    menuHelpPanel = uiBox(root, 0, 2);
     uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
     menuHelpItem1 = uiButton(menuHelpPanel, "Preferences Help");
     menuHelpItem2 = uiButton(menuHelpPanel, "About GUAL");
