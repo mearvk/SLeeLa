@@ -6,12 +6,16 @@
 int main(void) {
     SLTerminalHandle terminal = 0;
 #ifdef _WIN32
-    /* Windows ConPTY accepts a process command line, not a POSIX shell snippet. */
+    /* ConPTY accepts a Windows command line. The larger buffer below allows
+     * initial VT-mode sequences to arrive before the command's visible output. */
     const char* command = "cmd.exe /C echo terminal-ok";
 #else
-    const char* command = "printf terminal-ok";
+    /* Keep the slave open briefly after writing. On Darwin, an immediately
+     * exiting PTY child can race the master read and expose EOF before output
+     * is observed by this smoke test. */
+    const char* command = "printf 'terminal-ok\\n'; sleep 1";
 #endif
-    char buffer[128];
+    char buffer[4096];
     size_t used = 0;
     int found = 0;
     int rc;
