@@ -14,6 +14,9 @@
  */
 #sleela 2.1
 class SLGuiUrlBar {
+  // Shared URL/address bar presentation default.
+  static final String BACKGROUND_COLOR = "#383c47";
+
   static final int MAX_HISTORY = 64;
 
   static final int LOAD_IDLE    = 0;
