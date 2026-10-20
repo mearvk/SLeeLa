@@ -121,7 +121,23 @@ class GuiGualSettingsConsole {
     }
 
     int theme = settingsTheme();
-    int win = uiWindowCreate(app, "SLeeLa Preferences — GUAL 2.0", 960, 620, theme);
+    // Derive the initial frame from the real screen. Requested design dimensions
+    // are preferences only; the physical screen is the hard upper bound.
+    int screenW = uiScreenWidth(app);
+    int screenH = uiScreenHeight(app);
+    int winW = 960;
+    int winH = 620;
+    if (screenW > 0) {
+      int maxW = screenW - 32;
+      if (maxW < 1) { maxW = screenW; }
+      if (winW > maxW) { winW = maxW; }
+    }
+    if (screenH > 0) {
+      int maxH = screenH - 64;
+      if (maxH < 1) { maxH = screenH; }
+      if (winH > maxH) { winH = maxH; }
+    }
+    int win = uiWindowCreate(app, "SLeeLa Preferences — GUAL 2.0", winW, winH, theme);
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
