@@ -11,7 +11,7 @@
 #   SLEELA_SHEET            -> SHEET.sheet          (compiler system sheet)
 #   SLEELA_SHA256_MANIFEST  -> the trusted manifest (REQUIRED by the gate;
 #                              without it sleela refuses to run)
-# and then runs example/gui-military-command-console.sleela, which now renders a
+# and then runs example/military/gui-military-command-console.sleela, which now renders a
 # REAL, on-screen window through SleelaUI (the native ui* toolkit) rather than
 # printing a walkthrough. It is self-contained (only ui* built-ins), so no
 # dependency classes are passed on the command line.
