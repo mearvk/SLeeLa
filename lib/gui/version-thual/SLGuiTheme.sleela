@@ -2,6 +2,7 @@
 #sleela 2.1
 class SLGuiTheme {
   static final String TITLE_BAR = "#1D2025";
+  static final String MENU_BAR = "#1D2025";
   static final String URL_BAR = "#383C47";
   static final String PANEL = "#292D35";
   static final String SURFACE = "#22262D";
@@ -15,6 +16,7 @@ class SLGuiTheme {
 
   // Typed SLColor words (0xRRGGBBAA) used by SLTheme at runtime.
   static final int TITLE_BAR_COLOR = 0x1D2025FF;
+  static final int MENU_BAR_COLOR = 0x1D2025FF;
   static final int URL_BAR_COLOR = 0x383C47FF;
   static final int PANEL_COLOR = 0x292D35FF;
   static final int SURFACE_COLOR = 0x22262DFF;
