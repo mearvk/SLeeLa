@@ -190,7 +190,8 @@ class GuiGualSettingsConsole {
     uiWidgetMargin(content, 16, 16, 16, 16);
     uiWidgetExpand(content, 1, 0); // let content grow vertically so the scroller can scroll
 
-    int cols = uiBox(content, 1, 16); // stack cards vertically to keep them within the frame width
+    int contentAxis = ALLOW_HORIZONTAL_OVERFLOW == 1 ? 0 : 1;
+    int cols = uiBox(content, contentAxis, 16); // stack cards vertically to keep them within the frame width
     uiWidgetExpand(cols, 1, 0);
     int colL = uiBox(cols, 1, 14);
     uiWidgetExpand(colL, 1, 0);
