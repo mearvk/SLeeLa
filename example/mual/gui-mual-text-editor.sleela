@@ -76,18 +76,21 @@ class GuiMualTextEditor {
   int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
 
   // Build the baseline editor theme and return its handle.
+  // Shared SLeeLa family palette: chrome/title bar #1D2025,
+  // URL-entry surface #383C47; keep these tokens aligned across all five lines.
   int baselineTheme() {
     int t = uiThemePreset(THEME_CUSTOM);
-    uiThemeSetBg(t, rgb(30, 32, 36));          // window floor
-    uiThemeSetSurface(t, rgb(40, 43, 48));     // editor / status surface
-    uiThemeSetSurfaceHi(t, rgb(52, 56, 62));   // raised / hover
-    uiThemeSetChrome(t, rgb(46, 49, 55));      // menu/header strip
-    uiThemeSetBorder(t, rgba(210, 216, 224, 40));
-    uiThemeSetFg(t, rgb(230, 234, 240));       // primary text
-    uiThemeSetFgDim(t, rgb(150, 158, 168));    // muted (status)
-    uiThemeSetAccent(t, rgb(90, 141, 239));    // the baseline blue accent
-    uiThemeSetAccentFg(t, rgb(16, 22, 34));
-    uiThemeSetRadius(t, 7);
+    uiThemeSetBg(t, rgb(34, 38, 45));           // #22262D application floor
+    uiThemeSetSurface(t, rgb(41, 45, 53));      // #292D35 panels and cards
+    uiThemeSetSurfaceHi(t, rgb(56, 60, 71));    // #383C47 URL-entry / raised surface
+    uiThemeSetChrome(t, rgb(29, 32, 37));       // #1D2025 title/menu/header chrome
+    uiThemeSetBorder(t, rgba(68, 74, 86, 255)); // #444A56
+    uiThemeSetFg(t, rgb(232, 234, 237));        // #E8EAED
+    uiThemeSetFgDim(t, rgb(176, 183, 195));     // #B0B7C3
+    uiThemeSetAccent(t, rgb(79, 140, 255));     // #4F8CFF
+    uiThemeSetAccentFg(t, rgb(18, 24, 36));
+    uiThemeSetDanger(t, rgb(217, 83, 79));      // #D9534F
+    uiThemeSetRadius(t, 8);
     uiThemeSetControlHeight(t, 32);
     return t;
   }
