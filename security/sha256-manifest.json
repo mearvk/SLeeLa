@@ -331,7 +331,7 @@
     },
     {
       "path": "impl/core/sleela_terminal.c",
-      "sha256": "2d7ac4de40afcca18c18e022b5cb3e09dd5fde48e280e5bd777e2ba264890b27"
+      "sha256": "2f01ad6d4111a41e1ded4baa2ab2c8325162ad66b030efe45174929b3e7c34fa"
     },
     {
       "path": "impl/core/sleela_terminal.h",
@@ -375,7 +375,7 @@
     },
     {
       "path": "impl/core/terminal_platform_smoke.c",
-      "sha256": "6845c9c1bd67a874f7d965fba82b52c3f4bbb43ac08b854ca75d9bf58154dcf9"
+      "sha256": "ff1c2a225b00bfff45b06e44ab7d9633c33e2e8a9bea232b2fa367d73ad1a26e"
     },
     {
       "path": "impl/core/thread_platform_smoke.c",
