@@ -103,8 +103,7 @@ class GuiMilitaryCommandConsole {
     int insignia = uiLabel(header, "\u25C8");            // the diamond insignia
     uiWidgetMargin(insignia, 0, 10, 0, 14);
     int brand = uiBox(header, 1, 0);
-    uiLabel(brand, "Sleela™ GUI - Version 1.0");
-    uiLabel(brand, "Sleela™ GUI - Version 1.0");
+
     uiSpacer(header);
     uiButton(header, "\u2014");                           // minimize-right fold
     uiButton(header, "\u2922");                           // fullscreen
@@ -121,11 +120,7 @@ class GuiMilitaryCommandConsole {
     // Taxonomy row: Component vs Container, shown as chips.
     int tax = uiBox(content, 1, 8); // stack taxonomy chips so the row cannot exceed the frame
     uiWidgetExpand(tax, 1, 0);
-    uiLabel(tax, "taxonomy:");
-    uiChip(tax, "window \u00B7 container");
-    uiChip(tax, "button \u00B7 component \u00B7 clickable");
-    uiChip(tax, "cryptoselector \u00B7 component");
-    uiChip(tax, "label \u00B7 component");
+
     uiSpacer(tax);
 
     int cols = uiBox(content, 1, 16); // stack cards vertically to fit the available width
@@ -141,7 +136,7 @@ class GuiMilitaryCommandConsole {
     int actBox = uiBox(actions, 1, 8);
     uiWidgetExpand(actBox, 1, 0);
     uiWidgetMargin(actBox, 12, 14, 12, 14);
-    uiLabel(actBox, "ACTIONS  (container \u00B7 toolbar)");
+
     int arow = uiBox(actBox, 1, 8);
     uiWidgetExpand(arow, 1, 0);
     btnAuthorize = uiButton(arow, "\u26CA Authorize");   // md icon, leading, gap 8
@@ -150,7 +145,6 @@ class GuiMilitaryCommandConsole {
     uiWidgetSensitive(btnRun, 0);                        // fail-closed: locked until authorized
     btnReset = uiButton(arow, "\u27F2 Reset");
     uiSpacer(arow);
-    uiLabel(actBox, "icons: md/20 \u00B7 leading \u00B7 gap 8 \u00B7 optically centered");
 
     // Cryptography selector card: gated to strong / post-quantum.
     int crypto = uiCard(colR);
@@ -158,13 +152,12 @@ class GuiMilitaryCommandConsole {
     int cryBox = uiBox(crypto, 1, 8);
     uiWidgetExpand(cryBox, 1, 0);
     uiWidgetMargin(cryBox, 12, 14, 12, 14);
-    uiLabel(cryBox, "CRYPTOGRAPHY SELECTOR  (min strength: strong)");
+
     int pick = uiComboBox(cryBox);
     uiWidgetExpand(pick, 1, 0);
     uiComboBoxAdd(pick, "AES-256-GCM + ML-KEM-768 + ML-DSA-65  [PQC, accepted]");
     uiComboBoxAdd(pick, "AES-256-GCM + X25519 (strong)");
     int gated = uiLabel(cryBox, "3DES-CBC + RSA-2048 (legacy)  \u2715 below min, gated out");
-    uiLabel(cryBox, "selected: PQC suite \u00B7 strength=strong \u00B7 post-quantum=yes");
 
     // Certificate store card (full width): import -> trust -> select -> revoke.
     int certs = uiCard(content);
@@ -172,16 +165,14 @@ class GuiMilitaryCommandConsole {
     int certBox = uiBox(certs, 1, 6);
     uiWidgetExpand(certBox, 1, 0);
     uiWidgetMargin(certBox, 12, 14, 12, 14);
-    uiLabel(certBox, "PUBLIC KEY CERTIFICATE STORE  (fail-closed import)");
+
     int r1 = uiBox(certBox, 1, 10);
-    uiLabel(r1, "SLeeLa Root CA");
-    uiLabel(r1, "Ed25519 \u00B7 ab12..root");
+
     uiSpacer(r1);
-    uiBadge(r1, "trusted \u00B7 CA");
+
     uiSeparator(certBox, 0);
     int r2 = uiBox(certBox, 1, 10);
-    uiLabel(r2, "console.sleela.mil");
-    uiLabel(r2, "ECDSA-P256 \u00B7 cd34..leaf");
+
     uiSpacer(r2);
     int revoked = uiBadge(r2, "revoked \u00B7 selection cleared");
     uiWidgetDestructive(revoked, 1);
@@ -192,13 +183,10 @@ class GuiMilitaryCommandConsole {
     int wBox = uiBox(wstate, 1, 6);
     uiWidgetExpand(wBox, 1, 0);
     uiWidgetMargin(wBox, 12, 12, 12, 12);
-    uiLabel(wBox, "WINDOW KEY-LISTENERS");
+
     int wrow = uiBox(wBox, 1, 10);
     uiWidgetExpand(wrow, 1, 0);
-    uiChip(wrow, "normal 1280x800 @(160,96)");
-    uiChip(wrow, "minimize-right \u2192 folded");
-    uiChip(wrow, "double-click \u2192 restore");
-    uiChip(wrow, "fullscreen 1920x1080");
+
     uiSpacer(wrow);
 
     int status = uiStatusBar(root);
