@@ -69,9 +69,6 @@ for prog in "${EXAMPLES[@]}"; do
   echo
 done
 
-echo "run-gui-examples: all GUI-line examples ran."
-echo "On a host with a display each opens a real SleelaUI window; headless they"
-echo "report 'no display' and exit 0. The DESIGNED military window variant"
 echo "Running the additional native-window demos..."
 "$SLEELA" run "military/gui-military-window.sleela"
 "$SLEELA" run "demo/gui-buffering-resize.sleela"
