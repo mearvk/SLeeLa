@@ -83,8 +83,18 @@ class SLGuiScreenFit {
   }
 
   // The usable work area = screen minus the margin on each side.
-  int workW() { return imax(minW, screenW - 2 * marginPx); }
-  int workH() { return imax(minH, screenH - 2 * marginPx); }
+  int workW() {
+    // A minimum preference must never force a window wider than the real screen.
+    int available = screenW - 2 * marginPx;
+    if (available < 1) { available = screenW; }
+    return imin(screenW, available);
+  }
+  int workH() {
+    // On short screens, prefer a smaller window over violating screen bounds.
+    int available = screenH - 2 * marginPx;
+    if (available < 1) { available = screenH; }
+    return imin(screenH, available);
+  }
 
   // ADVANCED: classify the screen by its shorter edge.
   int resolutionClass() {
@@ -141,11 +151,16 @@ class SLGuiScreenFit {
       h = imin(h, classCapH());
     }
 
-    // Never exceed the work area, nor the hard min/max window.
-    w = imin(w, workW());
-    h = imin(h, workH());
-    w = clamp(w, minW, maxW);
-    h = clamp(h, minH, maxH);
+    // The actual available area is a HARD upper bound. On small screens,
+    // reduce the configured minimum rather than allowing minW/minH to win.
+    int availW = workW();
+    int availH = workH();
+    int effectiveMinW = imin(minW, availW);
+    int effectiveMinH = imin(minH, availH);
+    int effectiveMaxW = imax(effectiveMinW, imin(maxW, availW));
+    int effectiveMaxH = imax(effectiveMinH, imin(maxH, availH));
+    w = clamp(imin(w, availW), effectiveMinW, effectiveMaxW);
+    h = clamp(imin(h, availH), effectiveMinH, effectiveMaxH);
 
     // Center within the full screen.
     int x = (screenW - w) / 2; if (x < 0) { x = 0; }
@@ -178,10 +193,11 @@ class SLGuiScreenFit {
 
   // Internally consistent: a positive, in-range result that fits the screen.
   boolean honored() {
-    if (outW < minW || outH < minH) { return false; }
-    if (outW > maxW || outH > maxH) { return false; }
+    // Effective minimums shrink on small screens; viewport fit always wins.
+    if (outW < imin(minW, workW()) || outH < imin(minH, workH())) { return false; }
+    if (outW > imin(maxW, workW()) || outH > imin(maxH, workH())) { return false; }
     if (outW > screenW || outH > screenH) { return false; }
-    return maxW >= minW && maxH >= minH;
+    return outW > 0 && outH > 0 && maxW >= minW && maxH >= minH;
   }
 
   String report() {
