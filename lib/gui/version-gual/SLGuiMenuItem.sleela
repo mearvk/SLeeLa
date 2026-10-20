@@ -1,0 +1,48 @@
+/*
+ * SLeeLa Standard Library Definition: SLGuiMenuItem
+ * A menu entry binds presentation state to a named SLGuiAction operation.
+ */
+#sleela 2.1
+class SLGuiMenuItem {
+  String id;
+  String label;
+  String actionName;
+  String operation;
+  String shortcut;
+  String iconName;
+  int enabled;
+  int checked;
+  int checkable;
+  int separator;
+  int pending;
+  int activationCount;
+
+  void configure(String itemId, String itemLabel, String action, String op) {
+    id = itemId; label = itemLabel; actionName = action; operation = op;
+    shortcut = ""; iconName = ""; enabled = 1; checked = 0; checkable = 0;
+    separator = 0; pending = 0; activationCount = 0;
+  }
+  String getId() { return id; }
+  String getLabel() { return label; }
+  String getActionName() { return actionName; }
+  String getOperation() { return operation; }
+  void setShortcut(String value) { shortcut = value == null ? "" : value; }
+  String getShortcut() { return shortcut; }
+  void setIcon(String value) { iconName = value == null ? "" : value; }
+  String getIcon() { return iconName; }
+  void setEnabled(boolean value) { enabled = value ? 1 : 0; if (enabled == 0) { pending = 0; } }
+  boolean isEnabled() { return enabled == 1 && separator == 0; }
+  void setCheckable(boolean value) { checkable = value ? 1 : 0; if (checkable == 0) { checked = 0; } }
+  boolean isCheckable() { return checkable == 1; }
+  void setChecked(boolean value) { if (checkable == 1) { checked = value ? 1 : 0; } }
+  boolean isChecked() { return checked == 1; }
+  void makeSeparator() { separator = 1; enabled = 0; actionName = ""; operation = ""; pending = 0; }
+  boolean isSeparator() { return separator == 1; }
+  boolean activate() {
+    if (enabled == 0 || separator == 1 || actionName == null || actionName == "") { return false; }
+    if (checkable == 1) { checked = checked == 1 ? 0 : 1; }
+    pending = 1; activationCount = activationCount + 1; return true;
+  }
+  boolean takeActivation() { if (pending == 1) { pending = 0; return true; } return false; }
+  int activations() { return activationCount; }
+}
