@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-SCRIPT_DIR="$(cd -- "$(dirname -- "\${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 DESTINATION=""
 NO_BUILD=0
@@ -27,11 +27,11 @@ done
 if [[ -z "$SCOPE" ]]; then
   printf 'Installation scope:\n  1) User-local (recommended; no administrator access)\n  2) System-wide (/usr/local; administrator approval required)\n'
   read -r -p 'Choose scope (1|2) [1]: ' answer
-  case "\${answer:-1}" in 1) SCOPE=user ;; 2) SCOPE=system ;; *) echo "Choose 1 or 2." >&2; exit 2 ;; esac
+  case "${answer:-1}" in 1) SCOPE=user ;; 2) SCOPE=system ;; *) echo "Choose 1 or 2." >&2; exit 2 ;; esac
 fi
 if [[ -z "$DESTINATION" ]]; then
-  if [[ "$SCOPE" == user ]]; then DESTINATION="\${SLEELA_INSTALL_ROOT:-$HOME/.local/sleela}"
-  else DESTINATION="\${SLEELA_SYSTEM_ROOT:-/usr/local/lib/sleela}"; fi
+  if [[ "$SCOPE" == user ]]; then DESTINATION="${SLEELA_INSTALL_ROOT:-$HOME/.local/sleela}"
+  else DESTINATION="${SLEELA_SYSTEM_ROOT:-/usr/local/lib/sleela}"; fi
 fi
 if [[ "$SCOPE" == system && "$DESTINATION" != /usr/local/* && "$DESTINATION" != /opt/* ]]; then
   echo "Refusing a system install destination outside /usr/local or /opt: $DESTINATION" >&2; exit 2
@@ -45,7 +45,7 @@ if (( NO_BUILD == 0 )); then
   echo "Building native macOS products and selected smoke tests..."
   /bin/sh "$REPO_ROOT/build/native-macos.sh"
 fi
-STAGE="$(mktemp -d "\${TMPDIR:-/tmp}/sleela-macos-install.XXXXXX")"
+STAGE="$(mktemp -d "${TMPDIR:-/tmp}/sleela-macos-install.XXXXXX")"
 cleanup() { rm -rf "$STAGE"; }
 trap cleanup EXIT
 mkdir -p "$STAGE/lib" "$STAGE/bin" "$STAGE/config" "$STAGE/tools" "$STAGE/security"
@@ -69,7 +69,7 @@ for entry in entries:
 PY_MANIFEST_COPY
 products=(sleela)
 if (( SKIP_OPTIONAL == 0 )); then products+=(sleelvac nordshrift); fi
-for product in "\${products[@]}"; do
+for product in "${products[@]}"; do
   built="$REPO_ROOT/impl/build/$product"
   [[ -f "$built" && -x "$built" ]] || { echo "Required compiled product missing or not executable: $built" >&2; exit 1; }
   install -m 755 "$built" "$STAGE/bin/$product"
@@ -109,7 +109,7 @@ else
   fi
   sudo mkdir -p "$DESTINATION" /usr/local/bin
   sudo ditto "$STAGE" "$DESTINATION"
-  for product in "\${products[@]}"; do sudo ln -sfn "$DESTINATION/bin/$product" "/usr/local/bin/$product"; done
+  for product in "${products[@]}"; do sudo ln -sfn "$DESTINATION/bin/$product" "/usr/local/bin/$product"; done
 fi
 echo "SLeeLa macOS installation complete."
 echo "Install root: $DESTINATION"
