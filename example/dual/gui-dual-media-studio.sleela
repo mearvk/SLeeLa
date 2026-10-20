@@ -145,7 +145,23 @@ class GuiDualMediaStudio {
     }
 
     int theme = glassTheme();
-    int win = uiWindowCreate(app, "SLeeLa Media Studio — DUAL 4.0", 1040, 660, theme);
+    // Derive the initial frame from the real screen. Requested design dimensions
+    // are preferences only; the physical screen is the hard upper bound.
+    int screenW = uiScreenWidth(app);
+    int screenH = uiScreenHeight(app);
+    int winW = 1040;
+    int winH = 660;
+    if (screenW > 0) {
+      int maxW = screenW - 32;
+      if (maxW < 1) { maxW = screenW; }
+      if (winW > maxW) { winW = maxW; }
+    }
+    if (screenH > 0) {
+      int maxH = screenH - 64;
+      if (maxH < 1) { maxH = screenH; }
+      if (winH > maxH) { winH = maxH; }
+    }
+    int win = uiWindowCreate(app, "SLeeLa Media Studio — DUAL 4.0", winW, winH, theme);
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
@@ -219,7 +235,7 @@ class GuiDualMediaStudio {
     uiLabel(vBox, "position " + intToStr(pos) + "s / 180s  \u00B7  seek(240s) -> clamped to 180s");
     int seek = uiSlider(vBox, 0.0, 180.0, pos);
     uiWidgetExpand(seek, 1, 0);
-    int transport = uiBox(vBox, 0, 8);
+    int transport = uiBox(vBox, 1, 8); // stack transport controls within the card width
     btnPlay = uiButton(transport, "\u25B6 Play");
     uiWidgetSuggested(btnPlay, 1);
     btnPause = uiButton(transport, "\u2759\u2759 Pause");
@@ -237,12 +253,12 @@ class GuiDualMediaStudio {
     uiWidgetMargin(rBox, 12, 12, 12, 12);
     uiLabel(rBox, "AUDIO RECORDER  (audio/wav \u00B7 recordable=" + (recordable ? "yes" : "no") + ")");
     uiLabel(rBox, "device 'default-input' \u00B7 format audio/wav");
-    int level = uiBox(rBox, 0, 8);
+    int level = uiBox(rBox, 1, 8);
     uiLabel(level, "level");
     int lb = uiLevelBar(level, 0.71);
     uiWidgetExpand(lb, 1, 0);
     recState = uiLabel(rBox, "state: idle  \u00B7  press Record to arm");
-    int rrow = uiBox(rBox, 0, 8);
+    int rrow = uiBox(rBox, 1, 8);
     uiWidgetExpand(rrow, 1, 0);
     btnRec = uiButton(rrow, "\u25CF Record");
     uiWidgetDestructive(btnRec, 1);
