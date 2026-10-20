@@ -181,14 +181,14 @@ class GuiMualTextEditor {
     editorPanel = uiBox(content, VERTICAL, 8);
     uiWidgetExpand(editorPanel, 1, 1);
     int editor = uiEntry(editorPanel, "Untitled \u2014 ready.");
-    uiWidgetExpand(editor, 1, 1);
+    uiWidgetExpand(editor, 1, 0); // single-line entry follows its parent width, not its height
 
     // Panel 1: the 1..14 document-change listener, inside a SCROLLED VIEW so a
     // long watch-list scrolls and a scrollbar appears automatically on overflow.
     docsPanel = uiScrolledView(content, SCROLL_AUTO, SCROLL_AUTO);
     uiWidgetExpand(docsPanel, 1, 1);
-    uiWidgetSizeRequest(docsPanel, 0, 260);     // pin the viewport short
     int watchBox = uiBox(docsPanel, VERTICAL, 6); // the scroll CONTENT (1st child)
+    uiWidgetExpand(watchBox, 1, 0); // fill viewport width; retain natural scroll height
     uiWidgetMargin(watchBox, 12, 12, 12, 12);
     uiLabel(watchBox, "DOCUMENT LISTENER  (1..14 contract)");
     int i = 0;
