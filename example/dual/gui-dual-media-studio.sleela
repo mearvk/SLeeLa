@@ -63,7 +63,6 @@ class GuiDualMediaStudio {
   int menuHelpItem1;
   int menuHelpItem2;
 
-
   int rgba(int r, int g, int b, int a) {
     return r * 16777216 + g * 65536 + b * 256 + a;
   }
@@ -127,7 +126,6 @@ class GuiDualMediaStudio {
     return t;
   }
 
-
   // Show one dropdown at a time; selecting the open menu closes it.
   void openMenu(int which) {
     int next = openMenuIndex == which ? -1 : which;
@@ -166,7 +164,7 @@ class GuiDualMediaStudio {
       if (maxH < 1) { maxH = screenH; }
       if (winH > maxH) { winH = maxH; }
     }
-    int win = uiWindowCreate(app, "SLeeLa Media Studio — DUAL 4.0", winW, winH, theme);
+    int win = uiWindowCreate(app, "Sleela™ GUI - Version 1.0", winW, winH, theme);
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
@@ -197,7 +195,6 @@ class GuiDualMediaStudio {
     menuHelpItem2 = uiButton(menuHelpPanel, "About DUAL");
     uiWidgetVisible(menuHelpPanel, 0);
 
-
     // --- Chrome: URL bar (HTML-aware, HTTP-driven) ---
     int header = uiHeaderBar(root);
     uiButton(header, "\u2039");                  // back
@@ -206,7 +203,6 @@ class GuiDualMediaStudio {
     int url = uiEntry(header, "https://sleela.example/studio");
     uiWidgetExpand(url, 1, 0);
     uiWidgetMargin(url, 0, 8, 0, 8);
-    uiBadge(header, "HTTP 200 \u00B7 text/html");
 
     // The content lives inside a scrolled view so it scrolls (with automatic
     // scrollbars) instead of spilling past the frame on a small window.
@@ -234,7 +230,7 @@ class GuiDualMediaStudio {
     int vBox = uiBox(video, 1, 8);
     uiWidgetMargin(vBox, 12, 12, 12, 12);
     uiWidgetExpand(vBox, 1, 1);
-    uiLabel(vBox, "VIDEO CANVAS  (video/mp4 \u00B7 playable=" + (playable ? "yes" : "no") + ")");
+
     // Default: the media canvas must not impose a fixed width on a compact frame.
     int canvasW = 320;
     if (ALLOW_HORIZONTAL_OVERFLOW == 0 && screenW > 0 && canvasW > screenW - 96) {
@@ -247,7 +243,7 @@ class GuiDualMediaStudio {
     videoLabel = uiLabel(vBox, "transport: stopped");
     // Position / duration: seek clamps past the 180s end.
     int pos = clamp(0, 0, 180);
-    uiLabel(vBox, "position " + intToStr(pos) + "s / 180s  \u00B7  seek(240s) -> clamped to 180s");
+
     int seek = uiSlider(vBox, 0.0, 180.0, pos);
     uiWidgetExpand(seek, 1, 0);
     int transport = uiBox(vBox, 1, 8); // stack transport controls within the card width
@@ -257,7 +253,6 @@ class GuiDualMediaStudio {
     btnStop = uiButton(transport, "\u25A0 Stop");
     uiSpacer(transport);
     int vol = clamp(130, 0, 100);              // 130% -> 100%
-    uiLabel(transport, "vol " + intToStr(vol) + "% \u00B7 loop");
 
     // Audio recorder card: idle -> armed -> recording <-> paused -> stopped.
     boolean recordable = canPlayType("audio/wav");
@@ -266,10 +261,9 @@ class GuiDualMediaStudio {
     int rBox = uiBox(rec, 1, 8);
     uiWidgetExpand(rBox, 1, 0);
     uiWidgetMargin(rBox, 12, 12, 12, 12);
-    uiLabel(rBox, "AUDIO RECORDER  (audio/wav \u00B7 recordable=" + (recordable ? "yes" : "no") + ")");
-    uiLabel(rBox, "device 'default-input' \u00B7 format audio/wav");
+
     int level = uiBox(rBox, 1, 8);
-    uiLabel(level, "level");
+
     int lb = uiLevelBar(level, 0.71);
     uiWidgetExpand(lb, 1, 0);
     recState = uiLabel(rBox, "state: idle  \u00B7  press Record to arm");
@@ -285,19 +279,16 @@ class GuiDualMediaStudio {
     int cBox = uiBox(codec, 1, 6);
     uiWidgetExpand(cBox, 1, 0);
     uiWidgetMargin(cBox, 12, 12, 12, 12);
-    uiLabel(cBox, "CODEC REGISTRY  (UI only offers what the system can play)");
+
     int crow = uiBox(cBox, 1, 8);
     uiWidgetExpand(crow, 1, 0);
-    uiBadge(crow, "audio/wav \u2713");
-    uiBadge(crow, "audio/mpeg \u2713");
-    uiBadge(crow, "video/mp4 \u2713");
-    uiBadge(crow, "audio/ogg \u2713");
+
     int hidden = uiBadge(crow, "video/avi \u2715 hidden");
     uiWidgetDestructive(hidden, 1);
     uiSpacer(crow);
 
     int status = uiStatusBar(root);
-    statusLabel = uiLabel(status, "DUAL 4.0 \u00B7 codec-aware \u00B7 use the transport / recorder controls");
+    statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
     uiWidgetMargin(statusLabel, 0, 12, 0, 12);
 
     uiWindowShow(win);
