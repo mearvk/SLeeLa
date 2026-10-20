@@ -219,3 +219,5 @@ Run all five GUI examples:
 - Windows Command Prompt: `example\run-gui-examples.cmd`
 
 Set `SLEELA_BIN` to override executable discovery. The GUI examples require a desktop session for their native windows; the scripts do not install the compiler or GUI dependencies.
+
+**Source-of-Truth Rule:** The five GUI examples and `SLGuiTheme.sleela` define the palette directly in SLeeLa source code. The `SLGuiApp` implementations apply those tokens to the live window theme. Do not depend on external theme files, environment variables, or generated settings to select these colors; editing the source palette is the authoritative change.
