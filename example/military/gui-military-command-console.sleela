@@ -77,7 +77,23 @@ class GuiMilitaryCommandConsole {
     }
 
     int theme = militaryTheme();
-    int win = uiWindowCreate(app, "SLeeLa Command Console — MILITARY 5.0", 1040, 640, theme);
+    // Derive the initial frame from the real screen. Requested design dimensions
+    // are preferences only; the physical screen is the hard upper bound.
+    int screenW = uiScreenWidth(app);
+    int screenH = uiScreenHeight(app);
+    int winW = 1040;
+    int winH = 640;
+    if (screenW > 0) {
+      int maxW = screenW - 32;
+      if (maxW < 1) { maxW = screenW; }
+      if (winW > maxW) { winW = maxW; }
+    }
+    if (screenH > 0) {
+      int maxH = screenH - 64;
+      if (maxH < 1) { maxH = screenH; }
+      if (winH > maxH) { winH = maxH; }
+    }
+    int win = uiWindowCreate(app, "SLeeLa Command Console — MILITARY 5.0", winW, winH, theme);
     int root = uiWindowRoot(win);
 
     // --- Chrome: insignia + strong branding, then window buttons ---
