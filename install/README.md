@@ -17,19 +17,19 @@ The Linux/macOS user-local destination can be overridden with `SLEELA_INSTALL_RO
 
 1. Choose user-local or system-wide scope.
 2. Select SLeeLa System/server, HTTP servers 1–9, VM edition, and Port Authority startup options.
-3. On Windows, the default build path runs `build/native-windows.ps1`; use `-NoBuild` when binaries are already built.
+3. On macOS, the dedicated installer builds with `build/native-macos.sh` unless `--no-build` is supplied. On Windows, the installer runs `build/native-windows.ps1` unless `-NoBuild` is supplied.
 4. Stage the runtime, including the compiled `sleela`, `sleelvac`, and `nordshrift` products.
 5. Back up an existing destination before updating it.
 6. Install binaries, libraries, and `config/startup.conf`.
 7. Configure only the PATH scope corresponding to the selected installation mode.
 8. Report the installation and configuration locations.
 
-A missing required compiled product or failed build stops installation before deployment. Windows installs require `impl\\build\\sleela.exe`; the compiler and Nordshrift executables are required unless `-SkipOptionalProducts` is supplied. The installer backs up the destination before copying staged files.
+A missing required compiled product or failed build stops installation before deployment. The macOS installer uses native binaries without `.exe` extensions and is independent of the Linux installer. It stages the manifest-listed source files, backs up an existing destination, and configures only the current user's `~/.zprofile` in user-local mode. Windows installs require `impl\\build\\sleela.exe`; the compiler and Nordshrift executables are required unless `-SkipOptionalProducts` is supplied. The installer backs up the destination before copying staged files.
 
 ## Platform entry points
 
 - Linux: `./install/quick-safe-install.sh`
-- macOS: `./install/quick-safe-install-macos.sh`
+- macOS: `./install/quick-safe-install-macos.sh` (user-local by default; `--system`, `--destination PATH`, `--no-build`, and `--skip-optional-products` are supported)
 - Windows 10+: `install\\quick-safe-install.cmd` or `install\\quick-safe-install.ps1` (PowerShell 5.1+; MSYS2 UCRT64 MinGW-w64 toolchain for native builds)
 
 ## Safety model
