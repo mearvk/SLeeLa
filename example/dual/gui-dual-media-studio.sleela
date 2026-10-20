@@ -28,6 +28,10 @@ class GuiDualMediaStudio {
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
   int THEME_CUSTOM = 2;
 
+  // Static build policy: default keeps the normal layout within its parent width.
+  // Set to 1 only in builds that intentionally permit horizontal overflow.
+  int ALLOW_HORIZONTAL_OVERFLOW = 0;
+
   // Scroll-policy ordinal (mirror the toolkit C ABI: 0=auto on overflow).
   int SCROLL_AUTO = 0;
 
@@ -213,7 +217,9 @@ class GuiDualMediaStudio {
     uiWidgetExpand(content, 1, 0); // let the content height drive vertical scrolling
 
     // Layout: a two-column grid (video canvas + recorder panel).
-    int cols = uiBox(content, 1, 16); // stack media cards vertically to prevent width overflow
+    // MUAL-style responsive hierarchy: vertical subslots only; later panels
+    // flow below earlier panels instead of competing for horizontal width.
+    int cols = uiBox(content, 1, 16);
     uiWidgetExpand(cols, 1, 0);
     int colL = uiBox(cols, 1, 12);
     uiWidgetExpand(colL, 1, 0);
