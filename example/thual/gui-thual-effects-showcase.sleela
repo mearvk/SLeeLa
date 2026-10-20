@@ -163,7 +163,7 @@ class GuiThualEffectsShowcase {
     uiWidgetMargin(content, 18, 18, 18, 18);
     uiWidgetExpand(content, 1, 0); // preserve natural height for vertical scrolling
 
-    int cols = uiBox(content, 0, 16);
+    int cols = uiBox(content, 1, 16); // stack cards vertically so they fit the available width
     uiWidgetExpand(cols, 1, 0);
     int colL = uiBox(cols, 1, 14);
     uiWidgetExpand(colL, 1, 0);
@@ -202,7 +202,7 @@ class GuiThualEffectsShowcase {
     btnConfirm = uiButton(demoBox, "\u2756 Confirm");
     uiWidgetSuggested(btnConfirm, 1);
     btnFade = uiButton(demoBox, "Toggle fade");
-    int cues = uiBox(demoBox, 0, 8);
+    int cues = uiBox(demoBox, 1, 8);
     uiWidgetExpand(cues, 1, 0);
     uiChip(cues, "cue: tap");
     uiChip(cues, "cue: confirm");
@@ -217,7 +217,7 @@ class GuiThualEffectsShowcase {
     uiWidgetExpand(rotBox, 1, 0);
     uiWidgetMargin(rotBox, 14, 14, 14, 14);
     uiLabel(rotBox, "ROTATION SCHEDULE  (visible tick == memo key epoch)");
-    int rrow = uiBox(rotBox, 0, 12);
+    int rrow = uiBox(rotBox, 1, 12);
     spin = uiThrobber(rrow, 1);                // 1 = active/spinning
     uiThrobberSetHue(spin, 215.0);             // blue accent hue
     uiThrobberSetIntensity(spin, 0.9);
