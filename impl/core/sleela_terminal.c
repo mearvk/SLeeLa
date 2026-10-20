@@ -188,17 +188,22 @@ int slterminal_close(SLTerminalHandle terminal) {
     int rc = 0;
     if (!t) return EINVAL;
 
-    /* Closing the input pipe signals EOF to the hosted command. Do not wait
-     * forever here: a child or ConPTY teardown regression must not hang the
-     * caller (or CI). */
+    /* Disconnect both pipe ends before closing ConPTY. The ConPTY API's
+     * shutdown contract is to close the pseudoconsole first, then reap the
+     * hosted process; waiting for the process while the pseudoconsole remains
+     * active can leave cmd.exe attached to a live console and stall teardown. */
     if (t->input_write && !CloseHandle(t->input_write)) rc = (int)GetLastError();
     t->input_write = NULL;
+    if (t->output_read && !CloseHandle(t->output_read) && rc == 0)
+        rc = (int)GetLastError();
+    t->output_read = NULL;
 
+    if (t->console) ClosePseudoConsole(t->console);
+    t->console = NULL;
+
+    /* Never wait indefinitely for a child after the console is disconnected. */
     wait_result = WaitForSingleObject(t->process, 3000);
     if (wait_result == WAIT_TIMEOUT) {
-        /* ConPTY children can remain alive when shutdown sequencing fails.
-         * Terminate only this process, then always reap it before releasing
-         * the process handle. */
         if (!TerminateProcess(t->process, ERROR_PROCESS_ABORTED)) {
             DWORD error_code = GetLastError();
             if (error_code != ERROR_ACCESS_DENIED && rc == 0) rc = (int)error_code;
@@ -209,15 +214,6 @@ int slterminal_close(SLTerminalHandle terminal) {
         rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
     }
 
-    /* Closing the output pipe first is important on Windows: ConPTY can
-     * have an internal output worker blocked on this pipe. ClosePseudoConsole
-     * waits for that worker, so calling it while the read handle is still open
-     * can deadlock teardown even after the hosted process has exited. */
-    if (t->output_read && !CloseHandle(t->output_read) && rc == 0)
-        rc = (int)GetLastError();
-    t->output_read = NULL;
-    if (t->console) ClosePseudoConsole(t->console);
-    t->console = NULL;
     if (t->process && !CloseHandle(t->process) && rc == 0)
         rc = (int)GetLastError();
     t->process = NULL;
