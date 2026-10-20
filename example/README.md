@@ -24,17 +24,17 @@ and adapt. It now covers three things:
 
 | File | What it is |
 | --- | --- |
-| [`gui-mual-text-editor.sleela`](gui-mual-text-editor.sleela) | GUI **MUAL (1.0 baseline)** — interactive: the **Editor / Documents / About** buttons switch the visible panel, **Save / New** update the status line, and the Documents panel is a `uiScrolledView` whose 1..14 watch-list **scrolls with an automatic scrollbar** on overflow. |
-| [`gui-gual-settings-console.sleela`](gui-gual-settings-console.sleela) | GUI **GUAL (2.0)** — interactive: clicking an accepted backend (**javafx / swing / native**) selects it live (suggested highlight + status), while **qt** is refused on click (fail-closed `configureStrict`). Clamped knobs ride live sliders/toggles/combo. |
-| [`gui-thual-effects-showcase.sleela`](gui-thual-effects-showcase.sleela) | GUI **THUAL (3.0)** — interactive: **Confirm** fires the audio cue and advances the schene (rotating the live throbber hue a quarter-turn per the memo key epoch); **Toggle fade** fades the primary action in/out. |
-| [`gui-dual-media-studio.sleela`](gui-dual-media-studio.sleela) | GUI **DUAL (4.0)** — interactive: the **Play / Pause / Stop** transport and **Record / Stop** controls change the player + recorder state live, all codec-gated (the UI only offers media it can play). |
-| [`gui-military-command-console.sleela`](gui-military-command-console.sleela) | GUI **MILITARY (5.0)** — interactive and **fail-closed**: **Run** is locked until **Authorize** is clicked (then it executes under authority), and **Reset** clears authority and re-locks Run — `SLGuiAdminAuthority` made tangible. Metal/blue surface, strong branding, taxonomy, crypto selector, certificate store. |
-| [`gui-military-window.sleela`](gui-military-window.sleela) | GUI **MILITARY (5.0)** — the designed command console as a real, on-screen window (the original native `ui*` showcase these examples now all follow). |
-| [`gui-buffering-resize.sleela`](gui-buffering-resize.sleela) | **Double / triple buffering** — a resizable window that selects a presentation buffering mode (`uiWindowSetBuffering`) so a resize lands atomically with no tearing; buttons switch single/double/triple live. Also a validated `SLGuiSettings.bufferingMode` knob (2.0+). |
-| [`run-gui-examples.sh`](run-gui-examples.sh) | Runs all five GUI-line examples (MUAL→MILITARY) in one go. |
+| [`gui-mual-text-editor.sleela`](mual/gui-mual-text-editor.sleela) | GUI **MUAL (1.0 baseline)** — interactive: the **Editor / Documents / About** buttons switch the visible panel, **Save / New** update the status line, and the Documents panel is a `uiScrolledView` whose 1..14 watch-list **scrolls with an automatic scrollbar** on overflow. |
+| [`gui-gual-settings-console.sleela`](gual/gui-gual-settings-console.sleela) | GUI **GUAL (2.0)** — interactive: clicking an accepted backend (**javafx / swing / native**) selects it live (suggested highlight + status), while **qt** is refused on click (fail-closed `configureStrict`). Clamped knobs ride live sliders/toggles/combo. |
+| [`gui-thual-effects-showcase.sleela`](thual/gui-thual-effects-showcase.sleela) | GUI **THUAL (3.0)** — interactive: **Confirm** fires the audio cue and advances the schene (rotating the live throbber hue a quarter-turn per the memo key epoch); **Toggle fade** fades the primary action in/out. |
+| [`gui-dual-media-studio.sleela`](dual/gui-dual-media-studio.sleela) | GUI **DUAL (4.0)** — interactive: the **Play / Pause / Stop** transport and **Record / Stop** controls change the player + recorder state live, all codec-gated (the UI only offers media it can play). |
+| [`gui-military-command-console.sleela`](military/gui-military-command-console.sleela) | GUI **MILITARY (5.0)** — interactive and **fail-closed**: **Run** is locked until **Authorize** is clicked (then it executes under authority), and **Reset** clears authority and re-locks Run — `SLGuiAdminAuthority` made tangible. Metal/blue surface, strong branding, taxonomy, crypto selector, certificate store. |
+| [`gui-military-window.sleela`](../military/gui-military-window.sleela) | GUI **MILITARY (5.0)** — the designed command console as a real, on-screen window (the original native `ui*` showcase these examples now all follow). |
+| [`gui-buffering-resize.sleela`](../demo/gui-buffering-resize.sleela) | **Double / triple buffering** — a resizable window that selects a presentation buffering mode (`uiWindowSetBuffering`) so a resize lands atomically with no tearing; buttons switch single/double/triple live. Also a validated `SLGuiSettings.bufferingMode` knob (2.0+). |
+| [`run-gui-examples.sh`](run-gui-examples.sh) | Runs all five version-line examples plus the military-window and buffering-resize demos. |
 | [`run-gui-military.sh`](run-gui-military.sh) | Runs just the military-line command console (self-contained `ui*` program — no dep files needed). |
 | [`science/`](science/) | Science examples for **every discipline** — runnable SLeeLa programs (`*.sleela`) on the subject libraries **and** BODI XML projects. See [`science/README.md`](science/README.md). |
-| [`threadripper-workstation.xlt`](threadripper-workstation.xlt) | An **XLT (`.xlt`) CPU-model sheet** — declaratively authors a CPU, board, tiered memory, capabilities, and a program to run on the assembled machine. |
+| [`threadripper-workstation.xlt`](xlt/threadripper-workstation.xlt) | An **XLT (`.xlt`) CPU-model sheet** — declaratively authors a CPU, board, tiered memory, capabilities, and a program to run on the assembled machine. |
 
 ---
 
@@ -65,7 +65,7 @@ Win32), the same path as [`gui-military-window.sleela`](gui-military-window.slee
 On a host with a display they open a window and render the widgets; with no
 display (headless/CI) each prints a one-line "no display" notice and exits 0.
 
-Run all five at once:
+Run the five version-line examples plus the two additional native-window demos at once:
 
 ```sh
 ./example/run-gui-examples.sh
@@ -76,7 +76,7 @@ or one at a time:
 ```sh
 export SLEELA_SHEET="$PWD/SHEET.sheet"
 export SLEELA_SHA256_MANIFEST="$PWD/security/sha256-manifest.json"
-./impl/build/sleela run example/gui-thual-effects-showcase.sleela
+./impl/build/sleela run example/thual/gui-thual-effects-showcase.sleela
 ```
 
 > **A display is needed to see the window.** On Linux that means an X server
@@ -94,7 +94,7 @@ convenience:
 ```sh
 ./example/run-gui-military.sh
 # or, equivalently:
-./impl/build/sleela run example/gui-military-command-console.sleela
+./impl/build/sleela run example/military/gui-military-command-console.sleela
 ```
 
 ---
@@ -170,7 +170,7 @@ Build the compiler and compile the model:
 
 ```bash
 make -C impl/xlt                                   # produces impl/xlt/build/xltc
-./impl/xlt/build/xltc example/threadripper-workstation.xlt
+./impl/xlt/build/xltc example/xlt/threadripper-workstation.xlt
 ```
 
 `xltc` reports `SUCCESS` with a build list, or a *congruence* explaining why a
