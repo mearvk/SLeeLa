@@ -142,7 +142,7 @@ class GuiGualSettingsConsole {
       if (maxH < 1) { maxH = screenH; }
       if (winH > maxH) { winH = maxH; }
     }
-    int win = uiWindowCreate(app, "SLeeLa Preferences — GUAL 2.0", winW, winH, theme);
+    int win = uiWindowCreate(app, "Sleela™ GUI - Version 1.0", winW, winH, theme);
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
@@ -259,7 +259,7 @@ class GuiGualSettingsConsole {
 
     // --- Status bar ---
     int status = uiStatusBar(root);
-    statusLabel = uiLabel(status, "GUAL 2.0 \u00B7 backend: javafx \u00B7 every knob clamps \u00B7 qt is refused (fail-closed)");
+    statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
     uiWidgetMargin(statusLabel, 0, 12, 0, 12);
 
     uiWindowShow(win);
