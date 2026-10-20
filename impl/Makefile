@@ -151,13 +151,13 @@ else
 endif
 SLUI_BACKEND_OBJ := $(BUILD)/slui/backend.o
 SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ)
-# OpenMP for the native-CPU physics step (safe no-op if the toolchain lacks it
-# only when overridden; GCC/Clang on the supported platforms provide it).
-ifeq ($(PLATFORM),windows)
-  # MinGW runners may not ship libgomp; OpenMP pragmas fall back to serial code.
-  IDEA_CANVAS_OMP ?=
-else
+# OpenMP is opt-in on macOS/Windows because Apple clang and some MinGW
+# distributions do not ship a compatible OpenMP runtime. Linux GCC enables it
+# by default; callers can override IDEA_CANVAS_OMP explicitly on any platform.
+ifeq ($(PLATFORM),linux)
   IDEA_CANVAS_OMP ?= -fopenmp
+else
+  IDEA_CANVAS_OMP ?=
 endif
 PATH_OBJ := $(BUILD)/sleela_path.o
 TERMINAL_OBJ := $(BUILD)/sleela_terminal.o
@@ -395,9 +395,9 @@ $(THREAD_SMOKE_OBJ): core/thread_smoke.c | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(SOCKET_SMOKE_OBJ): core/socket_smoke.c | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
-$(THREAD_SMOKE): $(THREAD_SMOKE_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ)
+$(THREAD_SMOKE): $(THREAD_SMOKE_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
-$(SOCKET_SMOKE): $(SOCKET_SMOKE_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ)
+$(SOCKET_SMOKE): $(SOCKET_SMOKE_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 $(SYNCHRO_SMOKE): core/synchro_smoke.c $(SYNCHRO_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/synchro_smoke.c $(SYNCHRO_OBJ) -o $@ $(LDFLAGS) $(LIBS)
