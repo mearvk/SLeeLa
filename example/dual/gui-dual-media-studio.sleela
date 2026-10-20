@@ -196,10 +196,10 @@ class GuiDualMediaStudio {
     uiWidgetExpand(content, 1, 0); // let the content height drive vertical scrolling
 
     // Layout: a two-column grid (video canvas + recorder panel).
-    int cols = uiBox(content, 0, 16);
+    int cols = uiBox(content, 1, 16); // stack media cards vertically to prevent width overflow
     uiWidgetExpand(cols, 1, 0);
     int colL = uiBox(cols, 1, 12);
-    uiWidgetExpand(colL, 1, 1);
+    uiWidgetExpand(colL, 1, 0);
     int colR = uiBox(cols, 1, 12);
     uiWidgetExpand(colR, 1, 0);
 
@@ -211,8 +211,8 @@ class GuiDualMediaStudio {
     uiWidgetMargin(vBox, 12, 12, 12, 12);
     uiWidgetExpand(vBox, 1, 1);
     uiLabel(vBox, "VIDEO CANVAS  (video/mp4 \u00B7 playable=" + (playable ? "yes" : "no") + ")");
-    int canvas = uiImage(vBox, "\u25B6 intro.mp4", 440, 248);  // aspect-preserving request fits the two-column card
-    uiWidgetExpand(canvas, 1, 1);
+    int canvas = uiImage(vBox, "\u25B6 intro.mp4", 320, 180);  // aspect-preserving request fits the two-column card
+    uiWidgetExpand(canvas, 1, 0); // fit width to the card without vertical expansion
     videoLabel = uiLabel(vBox, "transport: stopped");
     // Position / duration: seek clamps past the 180s end.
     int pos = clamp(0, 0, 180);
@@ -255,7 +255,7 @@ class GuiDualMediaStudio {
     uiWidgetExpand(cBox, 1, 0);
     uiWidgetMargin(cBox, 12, 12, 12, 12);
     uiLabel(cBox, "CODEC REGISTRY  (UI only offers what the system can play)");
-    int crow = uiBox(cBox, 0, 8);
+    int crow = uiBox(cBox, 1, 8);
     uiWidgetExpand(crow, 1, 0);
     uiBadge(crow, "audio/wav \u2713");
     uiBadge(crow, "audio/mpeg \u2713");
