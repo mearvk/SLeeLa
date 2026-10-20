@@ -69,7 +69,4 @@ for prog in "${EXAMPLES[@]}"; do
   echo
 done
 
-echo "Running the additional native-window demos..."
-"$SLEELA" run "military/gui-military-window.sleela"
-"$SLEELA" run "demo/gui-buffering-resize.sleela"
-echo "run-gui-examples: all GUI and native-window examples ran."
+echo "run-gui-examples: all five GUI examples ran."
