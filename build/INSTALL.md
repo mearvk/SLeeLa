@@ -26,11 +26,30 @@ macOS version. Do not use Linux binaries on macOS.
 
 ## Windows 10+
 
-Install Git and the MSYS2 UCRT64 MinGW-w64 toolchain for GNU Make-based native
-targets. Build using `build/native-windows.ps1` from PowerShell. Install each
-product using its documented Windows installer or deployment procedure; no
-generic Windows installer is advertised until a Windows-native packaging target
-is implemented and tested.
+Install Git, PowerShell 5.1 or newer, Python 3, and the MSYS2 UCRT64 MinGW-w64
+toolchain (including GNU Make and GCC/G++). From a PowerShell terminal at the
+repository root, run:
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+.\install\quick-safe-install.ps1
+```
+
+The installer defaults to a per-user destination under `%LOCALAPPDATA%\SLeeLa`
+and does not require administrator rights. Choose system-wide installation only
+from an elevated PowerShell. It stages files before changing the destination,
+backs up an existing installation, installs the runtime binaries, writes
+`config\startup.conf`, and can add the install's `bin` directory to PATH.
+Use `-Destination 'D:\Apps\SLeeLa'` to specify a location. Use `-NoBuild`
+when the Windows binaries have already been built; the default build path runs
+`build/native-windows.ps1` rather than the Unix-oriented root Makefile.
+
+The installer requires `impl\build\sleela.exe`, `sleelvac.exe`, and
+`nordshrift.exe` by default. If a product is not yet available as a Windows
+executable, `-SkipOptionalProducts` skips the compiler and Nordshrift while
+still requiring the core `sleela.exe`. Windows packaging remains dependent on
+building and testing each product natively; do not install Linux binaries on
+Windows. The `.cmd` wrapper is also available at `install\quick-safe-install.cmd`.
 
 ## Verification
 
