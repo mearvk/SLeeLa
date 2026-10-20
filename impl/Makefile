@@ -21,7 +21,7 @@ ifeq ($(OS),Windows_NT)
   PLATFORM := windows
   EXE := .exe
   THREADFLAG :=
-  PLATFORM_LIBS := -lws2_32 -lm
+  PLATFORM_LIBS := -lws2_32 -lopengl32 -lgdi32 -lm
 else
   EXE :=
   THREADFLAG := -pthread
