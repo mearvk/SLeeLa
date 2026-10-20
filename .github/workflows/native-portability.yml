@@ -78,7 +78,8 @@ jobs:
 
   windows-msvc:
     name: Native platform slice (Windows 10+ / MSVC)
-    runs-on: windows-latest
+    # Pin to the image with Visual Studio 2022 and the MSVC C++ workload.
+    runs-on: windows-2022
     steps:
       - name: Check out source
         uses: actions/checkout@v4
