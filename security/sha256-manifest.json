@@ -6331,7 +6331,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiWindow.sleela",
-      "sha256": "4c8a399edce8b809b2b73f09c531ff476b8e57df74b85c143d8d5d3e48b1905f"
+      "sha256": "1f86b06b5ba8de1938ae5bd5ab4802ca6e3d95609b204b1a14006d46665d3616"
     },
     {
       "path": "lib/gui/version-dual/SLPackage.sleela",
@@ -6483,7 +6483,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiWindow.sleela",
-      "sha256": "696216eed8a8d390c43b96c5714f372a89f7505c9d8e34933a2a34a2ec70f19c"
+      "sha256": "13410b7241262d3c6f47bdaecd6504ee385be40312d4a2ade31107f4627aa0b9"
     },
     {
       "path": "lib/gui/version-gual/SLPackage.sleela",
@@ -6691,7 +6691,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiWindow.sleela",
-      "sha256": "935fec601f18fe0be18671ffecc8d4d8ddbed75f4d51ad9a6beb0fc93d483998"
+      "sha256": "69622a6ec7dd982240e4d7b0cc9c7b81470954761bfe38b7571fc0eac1dbf3d1"
     },
     {
       "path": "lib/gui/version-military/SLGuiWindowState.sleela",
@@ -6847,7 +6847,7 @@
     },
     {
       "path": "lib/gui/version-mual/SLGuiWindow.sleela",
-      "sha256": "77c208296d90101791d41bc8eb4b8fb186f2137bb224d9af6e4ee63fd21e0cad"
+      "sha256": "21690956e7a9b05d819d5133ea9dad56c6624f0f5f7c31d8097a16e4e170c62c"
     },
     {
       "path": "lib/gui/version-mual/SLPackage.sleela",
@@ -7003,7 +7003,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiWindow.sleela",
-      "sha256": "827213df3b60564eeb2dcb407c26454a8326c458afe8d90dd88f7135c65fd1e3"
+      "sha256": "754a435a89720b302cdc24f8546292ffa0398b175b5f4d4269e5fab674d1cdde"
     },
     {
       "path": "lib/gui/version-thual/SLPackage.sleela",
