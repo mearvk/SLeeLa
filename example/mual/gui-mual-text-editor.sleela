@@ -145,7 +145,7 @@ class GuiMualTextEditor {
       if (maxH < 1) { maxH = screenH; }
       if (winH > maxH) { winH = maxH; }
     }
-    int win = uiWindowCreate(app, "SLeeLa Editor — MUAL 1.0", winW, winH, theme);
+    int win = uiWindowCreate(app, "Sleela™ GUI - Version 1.0", winW, winH, theme);
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
@@ -233,7 +233,7 @@ class GuiMualTextEditor {
 
     // --- Status line (component 'status', not clickable) ---
     int status = uiStatusBar(root);
-    statusLabel = uiLabel(status, "MUAL baseline \u00B7 ready");
+    statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
     uiWidgetMargin(statusLabel, 0, 12, 0, 12);
 
     showPanel(0);   // start on the editor
