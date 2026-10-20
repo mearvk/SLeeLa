@@ -103,19 +103,21 @@ class GuiDualMediaStudio {
   }
 
   // A cool "glass" studio theme for the DUAL line.
+  // Shared SLeeLa family palette: chrome/title bar #1D2025,
+  // URL-entry surface #383C47; keep these tokens aligned across all five lines.
   int glassTheme() {
     int t = uiThemePreset(THEME_CUSTOM);
-    uiThemeSetBg(t, rgb(14, 23, 38));          // #0E1726 surface base
-    uiThemeSetSurface(t, rgb(24, 36, 56));
-    uiThemeSetSurfaceHi(t, rgb(36, 52, 78));
-    uiThemeSetChrome(t, rgb(28, 42, 64));
-    uiThemeSetBorder(t, rgba(130, 170, 230, 55));
-    uiThemeSetFg(t, rgb(232, 240, 250));
-    uiThemeSetFgDim(t, rgb(150, 172, 198));
-    uiThemeSetAccent(t, rgb(91, 141, 239));    // #5B8DEF accent
-    uiThemeSetAccentFg(t, rgb(10, 18, 32));
-    uiThemeSetDanger(t, rgb(228, 122, 122));
-    uiThemeSetRadius(t, 12);
+    uiThemeSetBg(t, rgb(34, 38, 45));           // #22262D application floor
+    uiThemeSetSurface(t, rgb(41, 45, 53));      // #292D35 panels and cards
+    uiThemeSetSurfaceHi(t, rgb(56, 60, 71));    // #383C47 URL-entry / raised surface
+    uiThemeSetChrome(t, rgb(29, 32, 37));       // #1D2025 title/menu/header chrome
+    uiThemeSetBorder(t, rgba(68, 74, 86, 255)); // #444A56
+    uiThemeSetFg(t, rgb(232, 234, 237));        // #E8EAED
+    uiThemeSetFgDim(t, rgb(176, 183, 195));     // #B0B7C3
+    uiThemeSetAccent(t, rgb(79, 140, 255));     // #4F8CFF
+    uiThemeSetAccentFg(t, rgb(18, 24, 36));
+    uiThemeSetDanger(t, rgb(217, 83, 79));      // #D9534F
+    uiThemeSetRadius(t, 8);
     uiThemeSetControlHeight(t, 32);
     return t;
   }
