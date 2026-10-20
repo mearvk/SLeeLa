@@ -130,7 +130,7 @@ class GuiThualEffectsShowcase {
       if (maxH < 1) { maxH = screenH; }
       if (winH > maxH) { winH = maxH; }
     }
-    int win = uiWindowCreate(app, "SLeeLa Studio — THUAL 3.0 Effects", winW, winH, theme);
+    int win = uiWindowCreate(app, "Sleela™ GUI - Version 1.0", winW, winH, theme);
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
@@ -167,8 +167,8 @@ class GuiThualEffectsShowcase {
     int logo = uiLabel(header, "\u2756");                 // the studio mark
     uiWidgetMargin(logo, 0, 10, 0, 14);
     int brand = uiBox(header, 1, 0);
-    uiLabel(brand, "SLeeLa Studio");
-    uiLabel(brand, "bright \u00B7 dimensional \u00B7 alive");
+    uiLabel(brand, "Sleela™ GUI - Version 1.0");
+    uiLabel(brand, "Sleela™ GUI - Version 1.0");
     uiSpacer(header);
     uiBadge(header, "effects honored");
 
@@ -247,7 +247,7 @@ class GuiThualEffectsShowcase {
     uiBadge(rrow, "schene running");
 
     int status = uiStatusBar(root);
-    statusLabel = uiLabel(status, "THUAL 3.0 \u00B7 effects honored \u00B7 click Confirm to fire the cue");
+    statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
     uiWidgetMargin(statusLabel, 0, 12, 0, 12);
 
     uiWindowShow(win);
