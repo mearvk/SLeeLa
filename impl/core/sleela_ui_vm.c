@@ -92,7 +92,8 @@ static SLUIArg r_null(void)     { SLUIArg r; r.kind = SLUI_ARG_INT; r.i = 0; r.d
 int sleela_ui_arity(int id) {
     switch (id) {
         /* 0 args */
-        case SLUI_FN_BACKEND: case SLUI_FN_VERSION: case SLUI_FN_WIFI_OPEN_SETTINGS:\n        case SLUI_FN_WIFI_SCAN: case SLUI_FN_WIFI_NETWORK_COUNT: case SLUI_FN_WIFI_DISCONNECT:
+        case SLUI_FN_BACKEND: case SLUI_FN_VERSION: case SLUI_FN_WIFI_OPEN_SETTINGS:
+        case SLUI_FN_WIFI_SCAN: case SLUI_FN_WIFI_NETWORK_COUNT: case SLUI_FN_WIFI_DISCONNECT:
             return 0;
         /* 1 arg */
         case SLUI_FN_APP_CREATE: case SLUI_FN_APP_RUN: case SLUI_FN_APP_DESTROY:
@@ -105,7 +106,10 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_WIDGET_TAKE_ACTIVATED:
         case SLUI_FN_SCREEN_WIDTH: case SLUI_FN_SCREEN_HEIGHT:
         case SLUI_FN_SCROLLED_SCROLL_X: case SLUI_FN_SCROLLED_SCROLL_Y:
-        case SLUI_FN_POPUP_CREATE: case SLUI_FN_POPUP_IS_OPEN:\n        case SLUI_FN_WIFI_NETWORK_SSID: case SLUI_FN_WIFI_NETWORK_BSSID:\n        case SLUI_FN_WIFI_NETWORK_SIGNAL: case SLUI_FN_WIFI_NETWORK_SECURITY:\n        case SLUI_FN_WIFI_STATUS_NAME:
+        case SLUI_FN_POPUP_CREATE: case SLUI_FN_POPUP_IS_OPEN:
+        case SLUI_FN_WIFI_NETWORK_SSID: case SLUI_FN_WIFI_NETWORK_BSSID:
+        case SLUI_FN_WIFI_NETWORK_SIGNAL: case SLUI_FN_WIFI_NETWORK_SECURITY:
+        case SLUI_FN_WIFI_STATUS_NAME:
         case SLUI_FN_WINDOW_BUFFERING:
             return 1;
         /* 2 args */
@@ -263,7 +267,16 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_POPUP_CREATE:        return r_int(widget_put(slui_popup_create(widget_get(ai(a,n,0)))));
         case SLUI_FN_POPUP_SET_OPEN:       slui_popup_set_open(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_POPUP_IS_OPEN:        return r_int(slui_popup_is_open(widget_get(ai(a,n,0))));
-        case SLUI_FN_WIFI_OPEN_SETTINGS:    return r_int(slui_wifi_open_settings());\n        case SLUI_FN_WIFI_SCAN: return r_int(sleela_wifi_vm_scan());\n        case SLUI_FN_WIFI_NETWORK_COUNT: return r_int(sleela_wifi_vm_network_count());\n        case SLUI_FN_WIFI_NETWORK_SSID: return r_str(sleela_wifi_vm_ssid((int)ai(a,n,0)));\n        case SLUI_FN_WIFI_NETWORK_BSSID: return r_str(sleela_wifi_vm_bssid((int)ai(a,n,0)));\n        case SLUI_FN_WIFI_NETWORK_SIGNAL: return r_int(sleela_wifi_vm_signal((int)ai(a,n,0)));\n        case SLUI_FN_WIFI_NETWORK_SECURITY: return r_str(sleela_wifi_vm_security((int)ai(a,n,0)));\n        case SLUI_FN_WIFI_CONNECT: return r_int(sleela_wifi_vm_connect((int)ai(a,n,0), as_(a,n,1)));\n        case SLUI_FN_WIFI_DISCONNECT: return r_int(sleela_wifi_vm_disconnect());\n        case SLUI_FN_WIFI_STATUS_NAME: return r_str(sleela_wifi_vm_status_name((int)ai(a,n,0)));
+        case SLUI_FN_WIFI_OPEN_SETTINGS:    return r_int(slui_wifi_open_settings());
+        case SLUI_FN_WIFI_SCAN: return r_int(sleela_wifi_vm_scan());
+        case SLUI_FN_WIFI_NETWORK_COUNT: return r_int(sleela_wifi_vm_network_count());
+        case SLUI_FN_WIFI_NETWORK_SSID: return r_str(sleela_wifi_vm_ssid((int)ai(a,n,0)));
+        case SLUI_FN_WIFI_NETWORK_BSSID: return r_str(sleela_wifi_vm_bssid((int)ai(a,n,0)));
+        case SLUI_FN_WIFI_NETWORK_SIGNAL: return r_int(sleela_wifi_vm_signal((int)ai(a,n,0)));
+        case SLUI_FN_WIFI_NETWORK_SECURITY: return r_str(sleela_wifi_vm_security((int)ai(a,n,0)));
+        case SLUI_FN_WIFI_CONNECT: return r_int(sleela_wifi_vm_connect((int)ai(a,n,0), as_(a,n,1)));
+        case SLUI_FN_WIFI_DISCONNECT: return r_int(sleela_wifi_vm_disconnect());
+        case SLUI_FN_WIFI_STATUS_NAME: return r_str(sleela_wifi_vm_status_name((int)ai(a,n,0)));
         case SLUI_FN_WIDGET_SET_TOGGLE:    slui_widget_set_toggle(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_VALUE:     slui_widget_set_value(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();
 
