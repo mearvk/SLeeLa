@@ -24,6 +24,16 @@ class SLButton extends SLWidget {
     widget = uiButton(parentHandle, label);
   }
 
+  // Create a labelled button and attach an icon descriptor in one operation.
+  void createInWithIcon(SLWidget parent, String label, SLIcon icon) {
+    createIn(parent, label);
+    setIcon(icon);
+  }
+  void createInHandleWithIcon(int parentHandle, String label, SLIcon icon) {
+    createInHandle(parentHandle, label);
+    setIcon(icon);
+  }
+
   // Attach a JPEG icon plus a named fallback symbol (for example, Wifi).
   void setIcon(SLIcon icon) {
     if (widget >= 0 && icon != null) {

@@ -45875,7 +45875,7 @@
     },
     {
       "path": "lib/user-interface/SLButton.sleela",
-      "sha256": "03741ef87756cc1823771e4e57ec7405ca489e7a75acc3b343f6c8937b38c2c5"
+      "sha256": "6159d6dde2d85b712500cfda6b3a61d5d1b2770216132a4a36c878dd25fa95f7"
     },
     {
       "path": "lib/user-interface/SLCalculus8.sleela",
@@ -45995,7 +45995,7 @@
     },
     {
       "path": "lib/user-interface/SLIcon.sleela",
-      "sha256": "63407dc45da5b026fd029d52268873ded7d318c0a7994d1e2ce7d6378c4910cb"
+      "sha256": "193a8f9fedd04ff1706937194c811e03cc610ef6cc45f20d52945024d7825f91"
     },
     {
       "path": "lib/user-interface/SLImage.sleela",
