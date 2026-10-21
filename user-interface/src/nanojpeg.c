@@ -283,6 +283,8 @@ int main(int argc, char* argv[]) {
 
 #ifndef _NJ_INCLUDE_HEADER_ONLY
 
+#include <stdint.h>
+
 #ifdef _MSC_VER
     #define NJ_INLINE static __inline
     #define NJ_FORCE_INLINE static __forceinline
