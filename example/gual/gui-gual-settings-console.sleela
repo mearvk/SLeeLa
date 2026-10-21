@@ -140,7 +140,7 @@ class GuiGualSettingsConsole {
       if (maxH < 1) { maxH = screenH; }
       if (winH > maxH) { winH = maxH; }
     }
-    int win = uiWindowCreate(app, "Sleela™ GUI - Version 1.0", winW, winH, theme);
+    int win = uiWindowCreate(app, "International Criminal Court - GR3+ Grades", winW, winH, theme);
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
