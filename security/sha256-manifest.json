@@ -387,7 +387,7 @@
     },
     {
       "path": "impl/core/wifi_vm_bridge.c",
-      "sha256": "cf1630c6ee768eed9a1d50a705f7188bed821576c46a2db34e456cc09d496d74"
+      "sha256": "2163eb4ae90062d960fa9b71bdef7d53645cf3579d0afee6712fee9827f40a56"
     },
     {
       "path": "impl/core/wifi_vm_bridge.h",
@@ -46155,7 +46155,7 @@
     },
     {
       "path": "lib/user-interface/SLWidget.sleela",
-      "sha256": "c6dfea5dec3fd55d31465e64ff51f0b94dabdeaa6e5dc24b54105c8bdcb8b651"
+      "sha256": "8f52c1e17fd864fb63cb2d8da36b098167ed6f179afa9e6ee921944fb6a02a07"
     },
     {
       "path": "lib/user-interface/SLWindow.sleela",
