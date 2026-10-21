@@ -137,6 +137,8 @@ typedef enum {
     SLUI_FN_SCREEN_WIDTH,        /* uiScreenWidth(app:i)  -> display width px, or 0  */
     SLUI_FN_SCREEN_HEIGHT,       /* uiScreenHeight(app:i) -> display height px, or 0 */
 
+    SLUI_FN_WIDGET_SET_ICON,    /* uiWidgetSetIcon(w:i, assetPath:s, symbol:s) */
+
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;
 

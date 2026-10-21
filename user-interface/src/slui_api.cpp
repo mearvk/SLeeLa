@@ -402,6 +402,14 @@ void slui_widget_set_visible(SLUIWidget* w, int visible) {
 void slui_widget_set_text(SLUIWidget* w, const char* text) {
     if (w) as_widget(w)->set_text(text ? text : "");
 }
+void slui_widget_set_icon(SLUIWidget* w, const char* asset_path,
+                          const char* symbol_name) {
+    if (!w) return;
+    auto* button = dynamic_cast<slui::Button*>(as_widget(w));
+    if (button)
+        button->set_icon(asset_path ? asset_path : "",
+                         symbol_name ? symbol_name : "");
+}
 size_t slui_widget_get_text(const SLUIWidget* w, char* out, size_t cap) {
     if (!w) return 0;
     std::string s = as_widget(w)->text();

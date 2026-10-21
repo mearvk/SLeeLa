@@ -275,7 +275,8 @@ class GuiThualEffectsShowcase {
     statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
     uiWidgetMargin(statusLabel, 0, 12, 0, 12);
     uiSpacer(status);
-    wifiButton = uiButton(status, "📶 Wi-Fi");
+    wifiButton = uiButton(status, "Wi-Fi");
+    uiWidgetSetIcon(wifiButton, "user-interface/icons/wifi.jpg", "Wifi");
     uiWidgetMargin(wifiButton, 0, 8, 0, 8);
     uiWidgetSuggested(wifiButton, 1);
 

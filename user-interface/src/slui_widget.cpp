@@ -5,10 +5,14 @@
 #include "slui_widget.hpp"
 
 #include "slui_backend.hpp"
+#include "nanojpeg.h"
 
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <fstream>
+#include <iterator>
+#include <mutex>
 
 namespace slui {
 
@@ -273,12 +277,119 @@ void Label::paint(PaintContext& ctx) {
 /* ======================================================================== */
 /* Button                                                                   */
 /* ======================================================================== */
+namespace {
+std::mutex g_nanojpeg_mutex;
+
+/* Decode a baseline JPEG to packed RGB. NanoJPEG has global state, so its
+ * init/decode/copy/cleanup sequence is serialized. */
+bool load_button_jpeg(const std::string& path,
+                      std::vector<unsigned char>& rgb, int& width, int& height) {
+    if (path.empty()) return false;
+    std::ifstream file(path.c_str(), std::ios::binary);
+    if (!file) return false;
+    file.seekg(0, std::ios::end);
+    const std::streamoff length = file.tellg();
+    if (length <= 0 || length > 16 * 1024 * 1024) return false;
+    file.seekg(0, std::ios::beg);
+    std::vector<unsigned char> encoded(static_cast<size_t>(length));
+    file.read(reinterpret_cast<char*>(encoded.data()),
+              static_cast<std::streamsize>(encoded.size()));
+    if (!file) return false;
+
+    std::lock_guard<std::mutex> lock(g_nanojpeg_mutex);
+    njInit();
+    const nj_result_t status = njDecode(encoded.data(),
+                                        static_cast<int>(encoded.size()));
+    bool loaded = false;
+    if (status == NJ_OK) {
+        const int w = njGetWidth();
+        const int h = njGetHeight();
+        const int precision = njGetPrecision();
+        const bool color = njIsColor() != 0;
+        const size_t pixel_count = (w > 0 && h > 0)
+            ? static_cast<size_t>(w) * static_cast<size_t>(h) : 0;
+        const size_t channels = color ? 3u : 1u;
+        const unsigned char* source = njGetImage();
+        const int byte_count = njGetImageSize();
+        if (source && w > 0 && h > 0 && w <= 2048 && h <= 2048 &&
+            pixel_count <= 4u * 1024u * 1024u && precision == 8 &&
+            byte_count >= 0 &&
+            static_cast<size_t>(byte_count) == pixel_count * channels) {
+            rgb.resize(pixel_count * 3u);
+            if (color) {
+                std::copy(source, source + pixel_count * 3u, rgb.begin());
+            } else {
+                for (size_t i = 0; i < pixel_count; ++i) {
+                    rgb[i * 3u] = source[i];
+                    rgb[i * 3u + 1u] = source[i];
+                    rgb[i * 3u + 2u] = source[i];
+                }
+            }
+            width = w;
+            height = h;
+            loaded = true;
+        }
+    }
+    njDone();
+    return loaded;
+}
+
+bool has_button_icon(const std::vector<unsigned char>& pixels,
+                     const std::string& symbol) {
+    return !pixels.empty() || !symbol.empty();
+}
+
+/* Portable vector fallback for named symbols when the JPEG is unavailable. */
+void paint_button_symbol(PaintContext& ctx, const Rect& r,
+                         const std::string& symbol, const Color& color) {
+    std::string normalized = symbol;
+    for (char& ch : normalized)
+        if (ch >= 'A' && ch <= 'Z') ch = static_cast<char>(ch - 'A' + 'a');
+
+    if (normalized == "wifi" || normalized == "wi-fi" ||
+        normalized == "wireless" || normalized == "network" ||
+        normalized == "wlan") {
+        const double cx = r.x + r.w / 2.0;
+        const double cy = r.bottom() - 3.0;
+        const double pi = 3.14159265358979323846;
+        ctx.canvas->arc(cx, cy, std::min(7.2, r.w * 0.43), pi, pi, 1.7, color);
+        ctx.canvas->arc(cx, cy, std::min(4.8, r.w * 0.29), pi, pi, 1.7, color);
+        ctx.canvas->arc(cx, cy, std::min(2.4, r.w * 0.15), pi, pi, 1.5, color);
+        ctx.canvas->fill_circle(cx, cy, 1.5, color);
+        return;
+    }
+
+    const std::string glyph = symbol.empty() ? "?" : symbol.substr(0, 1);
+    const double tw = measure_text(ctx.backend, glyph);
+    const int baseline = centered_baseline(ctx, r);
+    draw_text(ctx, glyph,
+              r.x + static_cast<int>((r.w - tw) / 2.0 + 0.5),
+              baseline, color);
+}
+} // namespace
+
+void Button::set_icon(const std::string& asset_path,
+                      const std::string& symbol_name) {
+    icon_asset_path_ = asset_path;
+    icon_symbol_ = symbol_name;
+    icon_rgb_.clear();
+    icon_width_ = 0;
+    icon_height_ = 0;
+    if (!icon_asset_path_.empty())
+        load_button_jpeg(icon_asset_path_, icon_rgb_, icon_width_, icon_height_);
+    invalidate();
+}
+
 SLUISize Button::measure(const PaintContext& ctx) {
-    double tw = measure_text(ctx.backend, text_);
+    const double tw = measure_text(ctx.backend, text_);
     const Theme& t = *ctx.theme;
-    int pad_x = t.unit * 4; /* 16px horizontal padding */
-    int w = static_cast<int>(tw + 0.5) + pad_x * 2 + margin_.left + margin_.right;
-    int h = t.control_height + margin_.top + margin_.bottom;
+    const bool icon = has_button_icon(icon_rgb_, icon_symbol_);
+    const int icon_gap = icon && !text_.empty() ? t.unit * 2 : 0;
+    const int icon_width = icon ? 18 + icon_gap : 0;
+    const int pad_x = t.unit * 4;
+    const int w = static_cast<int>(tw + 0.5) + icon_width + pad_x * 2 +
+                  margin_.left + margin_.right;
+    const int h = t.control_height + margin_.top + margin_.bottom;
     return SLUISize{std::max(w, min_w_), std::max(h, min_h_)};
 }
 
@@ -294,8 +405,6 @@ void Button::paint(PaintContext& ctx) {
         text_col = t.fg_dim;
     }
 
-    /* Draw base, then layer the small hover/active tint (restraint over
-     * effects: a single background-opacity step, no glows). */
     ctx.canvas->fill_round_rect(c, t.radius, fill);
     if (vis == Visual::Hover) {
         Color tint = destructive_ ? t.danger.with_alpha(0x24) : t.hover;
@@ -306,19 +415,58 @@ void Button::paint(PaintContext& ctx) {
     if (!suggested_)
         ctx.canvas->stroke_round_rect(c, t.radius, 1.0, t.border);
 
-    /* Focus ring: accent hairline just outside the fill. */
     if (focused_ && vis != Visual::Disabled) {
         Rect ring = c.inset(-1);
         ctx.canvas->stroke_round_rect(ring, t.radius + 1, 1.0, t.accent);
     }
 
-    double asc = ctx.backend->font_ascent();
-    double lh = ctx.backend->font_line_height();
-    double tw = measure_text(ctx.backend, text_);
-    int tx = c.x + static_cast<int>((c.w - tw) / 2.0 + 0.5);
-    int baseline = c.y + static_cast<int>((c.h - lh) / 2.0 + asc + 0.5);
-    if (destructive_ && vis != Visual::Disabled && !suggested_) text_col = t.danger;
-    draw_text(ctx, text_, tx, baseline, text_col);
+    const bool icon = has_button_icon(icon_rgb_, icon_symbol_);
+    const int icon_size = std::min(18, std::max(8, c.h - 8));
+    const double tw = measure_text(ctx.backend, text_);
+    const int gap = icon && !text_.empty() ? t.unit * 2 : 0;
+    const double group_width = tw + (icon ? icon_size + gap : 0);
+    const int group_x = c.x + static_cast<int>((c.w - group_width) / 2.0 + 0.5);
+    int text_x = group_x;
+
+    if (icon) {
+        Rect icon_rect{group_x, c.y + (c.h - icon_size) / 2,
+                       icon_size, icon_size};
+        if (!icon_rgb_.empty() && icon_width_ > 0 && icon_height_ > 0) {
+            const double scale = std::min(
+                static_cast<double>(icon_size) / icon_width_,
+                static_cast<double>(icon_size) / icon_height_);
+            const int dw = std::max(1, static_cast<int>(icon_width_ * scale + 0.5));
+            const int dh = std::max(1, static_cast<int>(icon_height_ * scale + 0.5));
+            const int dx = icon_rect.x + (icon_rect.w - dw) / 2;
+            const int dy = icon_rect.y + (icon_rect.h - dh) / 2;
+            for (int y = 0; y < dh; ++y) {
+                const int sy = std::min(icon_height_ - 1,
+                    static_cast<int>((static_cast<long long>(y) * icon_height_) / dh));
+                for (int x = 0; x < dw; ++x) {
+                    const int sx = std::min(icon_width_ - 1,
+                        static_cast<int>((static_cast<long long>(x) * icon_width_) / dw));
+                    const size_t p = (static_cast<size_t>(sy) * icon_width_ + sx) * 3u;
+                    ctx.canvas->blend(dx + x, dy + y,
+                        Color{icon_rgb_[p], icon_rgb_[p + 1u],
+                              icon_rgb_[p + 2u], 255}, 1.0);
+                }
+            }
+        } else {
+            paint_button_symbol(ctx, icon_rect, icon_symbol_, text_col);
+        }
+        text_x += icon_size + gap;
+    }
+
+    if (!text_.empty()) {
+        const double asc = ctx.backend->font_ascent();
+        const double lh = ctx.backend->font_line_height();
+        const int baseline = c.y + static_cast<int>((c.h - lh) / 2.0 + asc + 0.5);
+        if (!icon)
+            text_x = c.x + static_cast<int>((c.w - tw) / 2.0 + 0.5);
+        if (destructive_ && vis != Visual::Disabled && !suggested_)
+            text_col = t.danger;
+        draw_text(ctx, text_, text_x, baseline, text_col);
+    }
 }
 
 bool Button::on_event(const SLUIEvent& ev) {

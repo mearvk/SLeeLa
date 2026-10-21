@@ -106,6 +106,7 @@ int main(void) {
     SLUIWidget* btn = slui_button(col, "Click");
     slui_widget_on_activate(btn, on_click, NULL);
     slui_widget_set_suggested(btn, 1);
+    slui_widget_set_icon(btn, "icons/wifi.jpg", "Wifi"); /* exercise JPEG icons */
 
     SLUIWidget* tog = slui_toggle(col, "Flag", 0);
     CHECK(slui_widget_get_toggle(tog) == 0, "toggle starts off");

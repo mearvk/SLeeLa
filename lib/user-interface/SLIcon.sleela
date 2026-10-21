@@ -1,0 +1,19 @@
+/*
+ * lib/user-interface/SLIcon.sleela
+ * SLeeLa Standard Library Definition.
+ * A portable icon descriptor for widgets. The native UI bridge attempts to
+ * load the JPEG asset and uses its symbolic name as the vector fallback.
+ */
+#sleela 2.1
+class SLIcon {
+  String pathValue;
+  String symbolValue;
+
+  void configure(String assetPath, String symbolName) {
+    pathValue = assetPath;
+    symbolValue = symbolName;
+  }
+
+  String assetPath() { return pathValue; }
+  String symbolName() { return symbolValue; }
+}

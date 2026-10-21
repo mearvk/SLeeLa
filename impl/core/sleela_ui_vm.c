@@ -136,6 +136,7 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_THEME_SET_FONT:
         case SLUI_FN_SCROLLED_VIEW:
         case SLUI_FN_SCROLLED_SCROLL_TO: case SLUI_FN_SCROLLED_SCROLL_BY:
+        case SLUI_FN_WIDGET_SET_ICON:
             return 3;
         /* 4 args */
         case SLUI_FN_IMAGE: case SLUI_FN_RADIO_BUTTON: case SLUI_FN_SCROLL_BAR:
@@ -255,6 +256,7 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_WIDGET_SET_SUGGESTED: slui_widget_set_suggested(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_DESTRUCT:  slui_widget_set_destructive(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_TEXT:      slui_widget_set_text(widget_get(ai(a,n,0)), as_(a,n,1)); return r_null();
+        case SLUI_FN_WIDGET_SET_ICON:      slui_widget_set_icon(widget_get(ai(a,n,0)), as_(a,n,1), as_(a,n,2)); return r_null();
         case SLUI_FN_WIDGET_SET_TOGGLE:    slui_widget_set_toggle(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_VALUE:     slui_widget_set_value(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();
 

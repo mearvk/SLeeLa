@@ -431,6 +431,10 @@ void slui_widget_set_visible(SLUIWidget *w, int visible);
 /* Text accessors (label/button/entry). text buffers are copied in; `out`/`cap`
  * read the current value and return the full length (even if truncated). */
 void slui_widget_set_text(SLUIWidget *w, const char *text);
+/* Attach a JPEG icon to a button. If loading fails, a named vector fallback
+ * such as "Wifi" is drawn instead. The asset path is relative to the process. */
+void slui_widget_set_icon(SLUIWidget *w, const char *asset_path,
+                          const char *symbol_name);
 size_t slui_widget_get_text(const SLUIWidget *w, char *out, size_t cap);
 
 /* State accessors. */

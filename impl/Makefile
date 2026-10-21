@@ -129,6 +129,7 @@ IDEA_CANVAS_OBJS := $(IDEA_CANVAS_BR_OBJ) $(IDEA_CANVAS_SIM_OBJ) $(IDEA_CANVAS_S
 SLUI_DIR      := ../user-interface
 SLUI_CORE_SRC := $(wildcard $(SLUI_DIR)/src/*.cpp)
 SLUI_CORE_OBJ := $(patsubst $(SLUI_DIR)/src/%.cpp,$(BUILD)/slui/%.o,$(SLUI_CORE_SRC))
+SLUI_NANOJPEG_OBJ := $(BUILD)/slui/nanojpeg.o
 SLUI_VM_OBJ   := $(BUILD)/sleela_ui_vm.o
 ifeq ($(PLATFORM),windows)
   SLUI_BACKEND_SRC := $(SLUI_DIR)/src/backend/win32.cpp
@@ -150,7 +151,7 @@ else
   endif
 endif
 SLUI_BACKEND_OBJ := $(BUILD)/slui/backend.o
-SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ)
+SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_NANOJPEG_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ)
 # OpenMP is opt-in on macOS/Windows because Apple clang and some MinGW
 # distributions do not ship a compatible OpenMP runtime. Linux GCC enables it
 # by default; callers can override IDEA_CANVAS_OMP explicitly on any platform.
@@ -447,6 +448,10 @@ $(IDEA_CANVAS_CTX_OBJ): $(IDEA_CANVAS_CTX_SRC) $(IDEA_CANVAS_DIR)/idea_canvas_ct
 $(BUILD)/slui/%.o: $(SLUI_DIR)/src/%.cpp | $(BUILD)
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) -c $< -o $@
+$(SLUI_NANOJPEG_OBJ): $(SLUI_DIR)/src/nanojpeg.c $(SLUI_DIR)/src/nanojpeg.h | $(BUILD)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -Wno-shift-negative-value -I$(SLUI_DIR)/src -c $< -o $@
+
 $(SLUI_BACKEND_OBJ): $(SLUI_BACKEND_SRC) | $(BUILD)
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) $(SLUI_BACKEND_CFLAGS) -c $< -o $@

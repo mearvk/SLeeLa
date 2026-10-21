@@ -24,6 +24,16 @@ class SLButton extends SLWidget {
     widget = uiButton(parentHandle, label);
   }
 
+  // Attach a JPEG icon plus a named fallback symbol (for example, Wifi).
+  void setIcon(SLIcon icon) {
+    if (widget >= 0 && icon != null) {
+      uiWidgetSetIcon(widget, icon.assetPath(), icon.symbolName());
+    }
+  }
+  void setIconPath(String assetPath, String symbolName) {
+    if (widget >= 0) { uiWidgetSetIcon(widget, assetPath, symbolName); }
+  }
+
   // True if this button has an activation pending since the last check; the
   // VM clears the latch on read, so each click is observed exactly once.
   boolean clicked() {

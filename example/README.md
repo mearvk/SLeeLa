@@ -15,6 +15,8 @@ and adapt. It now covers three things:
    **updates the status line** (`uiWidgetSetText`) live. The MUAL editor's
    document panel is a `uiScrolledView`, so its long watch-list scrolls and a
    scrollbar appears **automatically** on overflow — the newest GUI feature.
+   Buttons also support JPEG assets with named vector fallbacks through
+   `uiWidgetSetIcon`; the five GUI examples use this for the Wi-Fi control.
 2. **A full set of science examples** — runnable SLeeLa programs on the science
    subject libraries (math, physics, chemistry, astrophysics, sociology) **and**
    BODI XML projects for every executable runner discipline, all grounded in the

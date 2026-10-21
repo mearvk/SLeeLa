@@ -308,8 +308,16 @@ public:
     void set_text(const std::string& t) override { text_ = t; invalidate(); }
     std::string text() const override { return text_; }
 
+    /* Attach a JPEG asset with a named-symbol fallback (e.g. "Wifi"). */
+    void set_icon(const std::string& asset_path, const std::string& symbol_name);
+
 private:
     std::string text_;
+    std::string icon_asset_path_;
+    std::string icon_symbol_;
+    std::vector<unsigned char> icon_rgb_;
+    int icon_width_ = 0;
+    int icon_height_ = 0;
 };
 
 class Toggle : public Widget {

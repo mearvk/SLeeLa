@@ -54,6 +54,7 @@ implements the same surface.
 | `uiHeaderBar(parent)` → int | A title-bar strip | `slui_header_bar` |
 | `uiLabel(parent,text)` → int | A text label | `slui_label` |
 | `uiButton(parent,text)` → int | A push button | `slui_button` |
+| `uiWidgetSetIcon(widget,path,symbol)` | Add a JPEG icon with a named vector fallback (for example, `Wifi`) | `slui_widget_set_icon` |
 | `uiToggle(parent,text,on)` → int | A toggle switch | `slui_toggle` |
 | `uiEntry(parent,placeholder)` → int | A single-line text field | `slui_entry` |
 | `uiSlider(parent,min,max,val)` → int | A slider | `slui_slider` |
