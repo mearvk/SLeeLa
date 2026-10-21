@@ -260,9 +260,9 @@ class GuiMualTextEditor {
     uiWidgetMargin(wifiBox, 8, 10, 8, 10);
     int wifiHeading = uiHeading(wifiBox, "Connectivity", 18);
     wifiStatusLabel = uiLabel(wifiBox, "Scan to list nearby networks; connect with an OS-saved profile.");
-    wifiProfileEntry = uiEntry(wifiBox, "Saved Wi-Fi profile name");
+    wifiProfileEntry = uiEntry(wifiBox, "Optional saved profile (blank = OS authentication)");
     wifiScanButton = uiButton(wifiBox, "Scan for Networks");
-    wifiConnectButton = uiButton(wifiBox, "Connect to Selected Network");
+    wifiConnectButton = uiButton(wifiBox, "Connect to First Listed Network");
     wifiDisconnectButton = uiButton(wifiBox, "Disconnect");
     wifiSettingsButton = uiButton(wifiBox, "Network Settings");
     wifiInfoButton = uiButton(wifiBox, "Connection Details");
