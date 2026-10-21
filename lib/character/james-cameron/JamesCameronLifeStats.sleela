@@ -1,28 +1,24 @@
 /*
- * James Cameron life-capability profile for SLeeLa simulation.
- * Every 1..30 value below is a hypothetical modeling input, NOT a measured
- * IQ, diagnosis, personality test, private-life fact, or verified statistic.
- * Unknown real-world measures remain explicitly unavailable.
+ * User-configurable simulation inputs for a public-career case study.
+ * Scores are scenario knobs, not measured attributes of the named person.
+ * A value of zero for sustainability means unknown.
  */
 #sleela 2.1
-
 class JamesCameronLifeStats {
   String subjectName;
   String scaleDefinition;
   String profileStatus;
   String evidenceNote;
   String sourceUrl;
-
-  int intelligence;
-  int creativity;
-  int systemsThinking;
-  int technicalInnovation;
-  int execution;
-  int exploration;
-  int collaboration;
-  int resilience;
+  int scenarioIntelligence;
+  int scenarioCreativity;
+  int scenarioSystemsThinking;
+  int scenarioTechnicalInnovation;
+  int scenarioExecution;
+  int scenarioExploration;
+  int scenarioCollaboration;
+  int scenarioResilience;
   int sustainability;
-
   int publicCareerYears;
   int majorProfessionalDomains;
   int academyAwardsPersonallyWon;
@@ -31,23 +27,19 @@ class JamesCameronLifeStats {
 
   void load() {
     subjectName = "James Cameron";
-    scaleDefinition = "1..30 illustrative capability scale; 0 means unknown";
-    profileStatus = "hypothetical-scenario";
-    evidenceNote = "Capability scores are simulation assumptions, not measured facts. Public career counts require source verification.";
-    sourceUrl = "";
-
-    // Scenario values requested for modeling; not claims about actual cognition.
-    intelligence = 19;
-    creativity = 20;
-    systemsThinking = 19;
-    technicalInnovation = 19;
-    execution = 18;
-    exploration = 18;
-    collaboration = 16;
-    resilience = 18;
-    sustainability = 0; // unknown; never infer health or private-life efficiency
-
-    // Public-career indicators default to unknown until a dated source is attached.
+    scaleDefinition = "1..30 simulation scale; 0 means unknown";
+    profileStatus = "user-specified-hypothetical-scenario";
+    evidenceNote = "Capability values are scenario inputs only. Career counts use public sources.";
+    sourceUrl = "https://explorers.nationalgeographic.org/directory/james-cameron";
+    scenarioIntelligence = 19;
+    scenarioCreativity = 20;
+    scenarioSystemsThinking = 19;
+    scenarioTechnicalInnovation = 19;
+    scenarioExecution = 18;
+    scenarioExploration = 18;
+    scenarioCollaboration = 16;
+    scenarioResilience = 18;
+    sustainability = 0;
     publicCareerYears = 48;
     majorProfessionalDomains = 5;
     academyAwardsPersonallyWon = 3;
@@ -67,37 +59,30 @@ class JamesCameronLifeStats {
     if (source != null) { sourceUrl = source; }
     return true;
   }
-
   int intelligenceModifier() {
-    if (intelligence == 0) { return 0; }
-    return floorHalf(intelligence - 10);
+    if (scenarioIntelligence == 0) { return 0; }
+    return floorHalf(scenarioIntelligence - 10);
   }
-
-  // Game-like normalized index: INT 10 -> 100; each point adds five.
-  // This is a scenario throughput index, not real-world cognition or output.
   int intelligencePlanningIndex() {
-    if (intelligence == 0) { return 0; }
-    return 100 + (intelligence - 10) * 5;
+    if (scenarioIntelligence == 0) { return 0; }
+    return 100 + (scenarioIntelligence - 10) * 5;
   }
-
   int creativeSystemsIndex() {
-    if (creativity == 0 || systemsThinking == 0 || technicalInnovation == 0) { return 0; }
-    return (creativity + systemsThinking + technicalInnovation) * 100 / 90;
+    if (scenarioCreativity == 0 || scenarioSystemsThinking == 0
+        || scenarioTechnicalInnovation == 0) { return 0; }
+    return (scenarioCreativity + scenarioSystemsThinking + scenarioTechnicalInnovation) * 100 / 90;
   }
-
   int floorHalf(int value) {
     if (value >= 0) { return value / 2; }
     return (value - 1) / 2;
   }
-
   boolean hasVerifiedCareerMetrics() {
     return dataConfidence >= 80 && sourceUrl != null && sourceUrl.length() > 0;
   }
-
   String report() {
-    return subjectName + " life-capability profile"
+    return subjectName + " life-capability scenario"
       + " status=" + profileStatus
-      + " INT=" + intelligence
+      + " scenario_INT=" + scenarioIntelligence
       + " INT_modifier=" + intelligenceModifier()
       + " INT_planning_index=" + intelligencePlanningIndex()
       + " creative_systems_index=" + creativeSystemsIndex()
