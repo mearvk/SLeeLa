@@ -53,7 +53,7 @@ ifeq ($(OS),Windows_NT)
   BACKEND_SRC := src/backend/win32.cpp
   BACKEND_DEF := -DSLUI_BACKEND_WIN32_BUILD
   BACKEND_CFLAGS :=
-  BACKEND_LIBS := -lgdi32 -luser32
+  BACKEND_LIBS := -lgdi32 -luser32 -lshell32
 else
   EXE :=
   UNAME_S := $(shell uname -s)
