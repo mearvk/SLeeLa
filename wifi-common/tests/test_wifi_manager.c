@@ -39,7 +39,7 @@ int main(void) {
         open_policy.minimum_security_rank = 0;
         open_policy.allow_open_networks = 1;
         assert(wifi_manager_init(&open_manager, &FAKE, NULL, &open_policy) == WIFI_STATUS_OK);
-        assert(wifi_manager_scan(&open_manager, out, 1u, &count) == WIFI_STATUS_OK);
+        assert(wifi_manager_scan(&open_manager, networks, 1u, &count) == WIFI_STATUS_OK);
         assert(wifi_manager_select(&open_manager, 0u, &open_network) == WIFI_STATUS_OK);
         assert(wifi_manager_connect(&open_manager, &open_network, &bad_auth) == WIFI_STATUS_INVALID_ARGUMENT);
         fake_security = WIFI_SECURITY_WPA2_PERSONAL;
