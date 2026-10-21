@@ -135,7 +135,7 @@ ifeq ($(PLATFORM),windows)
   SLUI_BACKEND_SRC := $(SLUI_DIR)/src/backend/win32.cpp
   SLUI_BACKEND_DEF := -DSLUI_BACKEND_WIN32_BUILD
   SLUI_BACKEND_CFLAGS :=
-  SLUI_LIBS := -lgdi32 -luser32
+  SLUI_LIBS := -lgdi32 -luser32 -lshell32
 else ifeq ($(PLATFORM),macos)
   SLUI_BACKEND_SRC := $(SLUI_DIR)/src/backend/cocoa.mm
   SLUI_BACKEND_DEF := -DSLUI_BACKEND_COCOA_BUILD
