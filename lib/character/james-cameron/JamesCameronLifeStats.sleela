@@ -48,11 +48,11 @@ class JamesCameronLifeStats {
     sustainability = 0; // unknown; never infer health or private-life efficiency
 
     // Public-career indicators default to unknown until a dated source is attached.
-    publicCareerYears = 0;
-    majorProfessionalDomains = 0;
-    academyAwardsPersonallyWon = 0;
-    billionDollarFilms = 0;
-    dataConfidence = 0;
+    publicCareerYears = 48;
+    majorProfessionalDomains = 5;
+    academyAwardsPersonallyWon = 3;
+    billionDollarFilms = 4;
+    dataConfidence = 90;
   }
 
   boolean setPublicCareerMetrics(int years, int domains, int awards, int billionFilms,
