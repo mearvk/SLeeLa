@@ -1,0 +1,36 @@
+/*
+ * lib/character/james-cameron/JamesCameronHuman.sleela
+ * SLeeLa public-figure profile model.
+ * Scope: minimal public biographical and professional information only.
+ * No private identifiers, contact details, or live-location data.
+ */
+#sleela 2.1
+
+class JamesCameronHuman {
+  String fullName;
+  String profession;
+  String publicProfileNote;
+  String sourceUrl;
+  boolean verified;
+
+  void load() {
+    fullName = "James Cameron";
+    profession = "Filmmaker";
+    publicProfileNote = "Public professional profile; confirm facts against cited sources.";
+    sourceUrl = "";
+    verified = false;
+  }
+
+  void setSource(String url) {
+    if (url != null) { sourceUrl = url; }
+  }
+
+  void setVerification(boolean value) {
+    verified = value;
+  }
+
+  String name() { return fullName; }
+  String occupation() { return profession; }
+  boolean hasSource() { return sourceUrl != null && sourceUrl.length() > 0; }
+  boolean isVerified() { return verified && hasSource(); }
+}
