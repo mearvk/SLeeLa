@@ -15,8 +15,11 @@ and adapt. It now covers three things:
    **updates the status line** (`uiWidgetSetText`) live. The MUAL editor's
    document panel is a `uiScrolledView`, so its long watch-list scrolls and a
    scrollbar appears **automatically** on overflow — the newest GUI feature.
-   Buttons also support JPEG assets with named vector fallbacks through
-   `uiWidgetSetIcon`; the five GUI examples use this for the Wi-Fi control.
+   All five GUI examples share the permanent Wi-Fi identity `Wifi` through
+   `uiWidgetSetIcon`, using `user-interface/icons/wifi.png` as the primary
+   lossless raster asset. `wifi.svg` is retained for scalable vector rendering
+   and `wifi.jpeg` for compatibility; the connectivity action and popup behavior
+   remain the same across all five examples.
 2. **A full set of science examples** — runnable SLeeLa programs on the science
    subject libraries (math, physics, chemistry, astrophysics, sociology) **and**
    BODI XML projects for every executable runner discipline, all grounded in the
