@@ -92,7 +92,7 @@ class SLWidget {
   String wifiNetworkBssid(int index) { return uiWifiNetworkBssid(index); }
   int wifiNetworkSignal(int index) { return uiWifiNetworkSignal(index); }
   String wifiNetworkSecurity(int index) { return uiWifiNetworkSecurity(index); }
-  // Connect only through a trusted OS-saved profile. The bridge never accepts
+  // Connect through OS-managed authentication or a trusted saved profile. The bridge never accepts
   // raw passwords from Sleela source or places credentials on command lines.
   int wifiConnect(int index, String profileName) {
     return uiWifiConnect(index, profileName);
