@@ -6,6 +6,12 @@
 
 #include "slui_backend.hpp"
 #include "nanojpeg.h"
+#ifdef SLUI_HAVE_LIBPNG
+#include <png.h>
+#endif
+#ifdef SLUI_HAVE_LIBAVIF
+#include <avif/avif.h>
+#endif
 
 #include <algorithm>
 #include <cmath>
@@ -334,6 +340,54 @@ bool load_button_jpeg(const std::string& path,
     return loaded;
 }
 
+#ifdef SLUI_HAVE_LIBPNG
+bool load_button_png(const std::string& path, std::vector<unsigned char>& rgb, int& width, int& height) {
+    png_image image{}; image.version = PNG_IMAGE_VERSION;
+    if (!png_image_begin_read_from_file(&image, path.c_str())) return false;
+    if (!image.width || !image.height || image.width > 2048 || image.height > 2048 ||
+        static_cast<size_t>(image.width) * image.height > 4u * 1024u * 1024u) { png_image_free(&image); return false; }
+    image.format = PNG_FORMAT_RGB; rgb.resize(PNG_IMAGE_SIZE(image));
+    if (!png_image_finish_read(&image, nullptr, rgb.data(), 0, nullptr)) { rgb.clear(); png_image_free(&image); return false; }
+    width = static_cast<int>(image.width); height = static_cast<int>(image.height); png_image_free(&image); return true;
+}
+#endif
+#ifdef SLUI_HAVE_LIBAVIF
+bool load_button_avif(const std::string& path, std::vector<unsigned char>& rgb, int& width, int& height) {
+    avifDecoder* decoder = avifDecoderCreate(); if (!decoder) return false;
+    avifResult result = avifDecoderSetIOFile(decoder, path.c_str());
+    if (result == AVIF_RESULT_OK) result = avifDecoderParse(decoder);
+    if (result == AVIF_RESULT_OK) result = avifDecoderNextImage(decoder);
+    bool loaded = false;
+    if (result == AVIF_RESULT_OK && decoder->image && decoder->image->width && decoder->image->height &&
+        decoder->image->width <= 2048 && decoder->image->height <= 2048 &&
+        static_cast<size_t>(decoder->image->width) * decoder->image->height <= 4u * 1024u * 1024u) {
+        avifRGBImage image; avifRGBImageSetDefaults(&image, decoder->image);
+        image.format = AVIF_RGB_FORMAT_RGB; image.depth = 8; avifRGBImageAllocatePixels(&image);
+        if (image.pixels && avifImageYUVToRGB(decoder->image, &image) == AVIF_RESULT_OK) {
+            const size_t bytes = static_cast<size_t>(image.width) * image.height * 3u;
+            rgb.assign(image.pixels, image.pixels + bytes); width = static_cast<int>(image.width);
+            height = static_cast<int>(image.height); loaded = true;
+        }
+        avifRGBImageFreePixels(&image);
+    }
+    avifDecoderDestroy(decoder); return loaded;
+}
+#endif
+bool load_button_image(const std::string& path, std::vector<unsigned char>& rgb, int& width, int& height) {
+    if (path.empty()) return false;
+    const size_t dot = path.find_last_of('.');
+    std::string ext = dot == std::string::npos ? "" : path.substr(dot + 1);
+    for (char& ch : ext) if (ch >= 'A' && ch <= 'Z') ch = static_cast<char>(ch - 'A' + 'a');
+#ifdef SLUI_HAVE_LIBPNG
+    if (ext == "png" && load_button_png(path, rgb, width, height)) return true;
+#endif
+#ifdef SLUI_HAVE_LIBAVIF
+    if ((ext == "avif" || ext == "avifs") && load_button_avif(path, rgb, width, height)) return true;
+#endif
+    if (ext == "jpg" || ext == "jpeg" || ext.empty()) return load_button_jpeg(path, rgb, width, height);
+    return false;
+}
+
 bool has_button_icon(const std::vector<unsigned char>& pixels,
                      const std::string& symbol) {
     return !pixels.empty() || !symbol.empty();
@@ -379,7 +433,7 @@ void Button::set_icon(const std::string& asset_path,
     icon_width_ = 0;
     icon_height_ = 0;
     if (!icon_asset_path_.empty())
-        load_button_jpeg(icon_asset_path_, icon_rgb_, icon_width_, icon_height_);
+        load_button_image(icon_asset_path_, icon_rgb_, icon_width_, icon_height_);
     invalidate();
 }
 
