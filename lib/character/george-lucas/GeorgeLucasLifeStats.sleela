@@ -1,0 +1,116 @@
+/*
+ * GeorgeLucasLifeStats.sleela
+ * Public-career case study with explicitly hypothetical capability scores.
+ * Scores are simulation inputs, not measured IQ, clinical findings, or claims
+ * about George Lucas's private attributes. Scale: 1..30; zero means unknown.
+ */
+#sleela 2.1
+class GeorgeLucasLifeStats {
+  String subjectName;
+  String scaleDefinition;
+  String profileStatus;
+  String evidenceNote;
+  String sourceUrl;
+  int scenarioIntelligence;
+  int scenarioCreativity;
+  int scenarioSystemsThinking;
+  int scenarioTechnicalInnovation;
+  int scenarioExecution;
+  int scenarioExploration;
+  int scenarioCollaboration;
+  int scenarioResilience;
+  int sustainability;
+  int publicCareerYears;
+  int majorProfessionalDomains;
+  int dataConfidence;
+
+  void load() {
+    subjectName = "George Lucas";
+    scaleDefinition = "1..30 simulation scale; 0 means unknown";
+    profileStatus = "user-requested-hypothetical-brilliant-career";
+    evidenceNote = "INT 21+ and related abilities are hypothetical scenario values. Career context is based on public film and technology achievements.";
+    sourceUrl = "https://www.lucasfilm.com/who-we-are/our-story/";
+    scenarioIntelligence = 21;
+    scenarioCreativity = 23;
+    scenarioSystemsThinking = 22;
+    scenarioTechnicalInnovation = 22;
+    scenarioExecution = 21;
+    scenarioExploration = 20;
+    scenarioCollaboration = 19;
+    scenarioResilience = 21;
+    sustainability = 0;
+    publicCareerYears = 60;
+    majorProfessionalDomains = 7;
+    dataConfidence = 85;
+  }
+
+  int intelligenceModifier() {
+    if (scenarioIntelligence == 0) { return 0; }
+    return floorHalf(scenarioIntelligence - 10);
+  }
+
+  int intelligencePlanningIndex() {
+    if (scenarioIntelligence == 0) { return 0; }
+    return 100 + (scenarioIntelligence - 10) * 5;
+  }
+
+  int creativeSystemsIndex() {
+    if (scenarioCreativity == 0 || scenarioSystemsThinking == 0
+        || scenarioTechnicalInnovation == 0) { return 0; }
+    return (scenarioCreativity + scenarioSystemsThinking
+      + scenarioTechnicalInnovation) * 100 / 90;
+  }
+
+  // Weighted scenario index, not a validated real-world measurement.
+  // Weights: creativity 25%, systems 20%, innovation 20%, execution 20%,
+  // exploration 10%, collaboration 5%; components use a 1..30 scale.
+  int careerLeverageIndex() {
+    if (scenarioCreativity == 0 || scenarioSystemsThinking == 0
+        || scenarioTechnicalInnovation == 0 || scenarioExecution == 0
+        || scenarioExploration == 0 || scenarioCollaboration == 0) { return 0; }
+    int weighted = scenarioCreativity * 25 + scenarioSystemsThinking * 20
+      + scenarioTechnicalInnovation * 20 + scenarioExecution * 20
+      + scenarioExploration * 10 + scenarioCollaboration * 5;
+    return weighted / 30;
+  }
+
+  int floorHalf(int value) {
+    if (value >= 0) { return value / 2; }
+    return (value - 1) / 2;
+  }
+
+  boolean validStat(int value) { return value >= 0 && value <= 30; }
+
+  boolean setScenarioStats(int intel, int create, int systems, int innovation,
+                           int execute, int explore, int collaborate,
+                           int recover, int sustain) {
+    if (!validStat(intel) || !validStat(create) || !validStat(systems)
+        || !validStat(innovation) || !validStat(execute) || !validStat(explore)
+        || !validStat(collaborate) || !validStat(recover) || !validStat(sustain)) {
+      return false;
+    }
+    scenarioIntelligence = intel;
+    scenarioCreativity = create;
+    scenarioSystemsThinking = systems;
+    scenarioTechnicalInnovation = innovation;
+    scenarioExecution = execute;
+    scenarioExploration = explore;
+    scenarioCollaboration = collaborate;
+    scenarioResilience = recover;
+    sustainability = sustain;
+    return true;
+  }
+
+  String report() {
+    return subjectName + " life-capability scenario"
+      + " status=" + profileStatus
+      + " scenario_INT=" + scenarioIntelligence
+      + " INT_modifier=" + intelligenceModifier()
+      + " INT_planning_index=" + intelligencePlanningIndex()
+      + " creative_systems_index=" + creativeSystemsIndex()
+      + " career_leverage_index=" + careerLeverageIndex()
+      + " career_years=" + publicCareerYears
+      + " domains=" + majorProfessionalDomains
+      + " confidence=" + dataConfidence;
+  }
+}
