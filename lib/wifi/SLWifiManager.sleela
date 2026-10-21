@@ -17,6 +17,7 @@ class SLWifiManager {
   static final int STATE_CONNECTED = 5;
   static final int STATE_DISCONNECTED = 6;
   static final int STATE_FAILED = 7;
+  static final int STATE_DISCONNECTING = 8;
 
   int nativeHandle;
   int state;
@@ -118,6 +119,10 @@ class SLWifiManager {
     return lastStatus;
   }
 
+  int beginConnectRequest(SLWifiCredentials credentials) {
+    return authorizeConnection(credentials);
+  }
+
   int acceptConnectionResult(int statusCode) {
     if (state != STATE_CONNECTING) {
       lastStatus = SLWifiStatus.INVALID_ARGUMENT;
@@ -125,6 +130,20 @@ class SLWifiManager {
     }
     lastStatus = statusCode;
     state = statusCode == SLWifiStatus.OK ? STATE_CONNECTED : STATE_SCANNED;
+    return lastStatus;
+  }
+
+  int beginDisconnectRequest() {
+    if (!nativeReady()) {
+      lastStatus = SLWifiStatus.BRIDGE_REQUIRED;
+      return lastStatus;
+    }
+    if (state != STATE_CONNECTED) {
+      lastStatus = SLWifiStatus.NOT_CONNECTED;
+      return lastStatus;
+    }
+    state = STATE_DISCONNECTING;
+    lastStatus = SLWifiStatus.OK;
     return lastStatus;
   }
 

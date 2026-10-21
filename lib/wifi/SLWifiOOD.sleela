@@ -27,6 +27,10 @@ class SLWifiOOD {
     return manager.beginScanRequest();
   }
 
+  int disconnect() {
+    return manager.beginDisconnectRequest();
+  }
+
   boolean chooseNetwork(int index, SLWifiNetwork network) {
     if (index < 0 || network == null) { return false; }
     if (!manager.selectNetwork(network)) { return false; }
