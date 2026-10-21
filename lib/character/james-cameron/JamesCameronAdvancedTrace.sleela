@@ -1,7 +1,6 @@
 /*
- * lib/character/james-cameron/JamesCameronAdvancedTrace.sleela
- * Advanced Trace: chronology and provenance for public event records only.
- * This model does not locate or monitor a person.
+ * Advanced Trace for public career chronology and hypothetical life-stat model.
+ * This is a provenance ledger, not a live-person monitoring system.
  */
 #sleela 2.1
 
@@ -9,6 +8,8 @@ class JamesCameronAdvancedTrace {
   int recordCount;
   int sourcedCount;
   int verifiedCount;
+  int hypotheticalStatCount;
+  int unknownMetricCount;
   String traceLabel;
   String scopeNote;
 
@@ -16,8 +17,10 @@ class JamesCameronAdvancedTrace {
     recordCount = 0;
     sourcedCount = 0;
     verifiedCount = 0;
-    traceLabel = "James Cameron — public professional event trace";
-    scopeNote = "Public sources only; no live tracking or private data.";
+    hypotheticalStatCount = 0;
+    unknownMetricCount = 0;
+    traceLabel = "James Cameron — public career and life-capability trace";
+    scopeNote = "Public professional sources only; no private tracking. Hypothetical capability scores are not verified facts.";
   }
 
   void addRecord(boolean hasSource, boolean verified) {
@@ -26,6 +29,9 @@ class JamesCameronAdvancedTrace {
     if (hasSource && verified) { verifiedCount = verifiedCount + 1; }
   }
 
+  void addHypotheticalStat() { hypotheticalStatCount = hypotheticalStatCount + 1; }
+  void addUnknownMetric() { unknownMetricCount = unknownMetricCount + 1; }
+
   boolean readyForReview() {
     return recordCount > 0 && sourcedCount == recordCount;
   }
@@ -33,11 +39,15 @@ class JamesCameronAdvancedTrace {
   int records() { return recordCount; }
   int sourcedRecords() { return sourcedCount; }
   int verifiedRecords() { return verifiedCount; }
+  int hypotheticalStats() { return hypotheticalStatCount; }
+  int unknownMetrics() { return unknownMetricCount; }
 
   String report() {
     return traceLabel + ": records=" + recordCount
       + ", sourced=" + sourcedCount
       + ", verified=" + verifiedCount
+      + ", hypotheticalStats=" + hypotheticalStatCount
+      + ", unknownMetrics=" + unknownMetricCount
       + ". " + scopeNote;
   }
 }
