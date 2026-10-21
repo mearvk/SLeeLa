@@ -48,6 +48,7 @@ class GuiMilitaryCommandConsole {
   int wifiDisconnectButton;
   int wifiSettingsButton;
   int wifiInfoButton;
+  int wifiProfileEntry;
   int wifiCloseButton;
 
   // 0xRRGGBBAA colours for the military "metal / blue-hue" palette.
@@ -217,7 +218,7 @@ class GuiMilitaryCommandConsole {
     uiSpacer(wrow);
 
     // --- Connectivity popover: opened from the lower-right Wi-Fi status icon. ---
-    // Keep the status honest until a native Wi-Fi provider is bound into the SLVM.
+    // Native Wi-Fi scan/connect/disconnect are backed by wifi-common via the SLVM.
     wifiPanel = uiPopupCreate(root);
     uiWidgetExpand(wifiPanel, 1, 0);
     uiWidgetMargin(wifiPanel, 4, 8, 4, 8);
@@ -225,7 +226,8 @@ class GuiMilitaryCommandConsole {
     uiWidgetExpand(wifiBox, 1, 0);
     uiWidgetMargin(wifiBox, 8, 10, 8, 10);
     int wifiHeading = uiHeading(wifiBox, "Connectivity", 18);
-    wifiStatusLabel = uiLabel(wifiBox, "Radio status unavailable; native Wi-Fi host bridge required.");
+    wifiStatusLabel = uiLabel(wifiBox, "Scan to list nearby networks; connect with an OS-saved profile.");
+    wifiProfileEntry = uiEntry(wifiBox, "Saved Wi-Fi profile name");
     wifiScanButton = uiButton(wifiBox, "Scan for Networks");
     wifiConnectButton = uiButton(wifiBox, "Connect to Selected Network");
     wifiDisconnectButton = uiButton(wifiBox, "Disconnect");
@@ -260,9 +262,26 @@ class GuiMilitaryCommandConsole {
       else {
         // Connectivity actions are deliberately fail-closed until SLVM can call
         // the native Wi-Fi provider; a menu click never invents a radio result.
-        if (uiWidgetTakeActivated(wifiScanButton) == 1) { wifiActionUnavailable("Scan for networks"); }
-        if (uiWidgetTakeActivated(wifiConnectButton) == 1) { wifiActionUnavailable("Connect"); }
-        if (uiWidgetTakeActivated(wifiDisconnectButton) == 1) { wifiActionUnavailable("Disconnect"); }
+        if (uiWidgetTakeActivated(wifiScanButton) == 1) {
+          int scanResult = uiWifiScan();
+          int networkCount = uiWifiNetworkCount();
+          if (scanResult == 0 && networkCount > 0) {
+            uiWidgetSetText(wifiStatusLabel, "Found " + networkCount + " network(s). First: " + uiWifiNetworkSsid(0) + " · " + uiWifiNetworkSignal(0) + "% · " + uiWifiNetworkSecurity(0));
+            uiWidgetSetText(statusLabel, "Connectivity · scan complete");
+          } else {
+            uiWidgetSetText(wifiStatusLabel, "Wi-Fi scan: " + uiWifiStatusName(scanResult) + " (" + networkCount + " networks)");
+          }
+        }
+        if (uiWidgetTakeActivated(wifiConnectButton) == 1) {
+          String profileName = uiWidgetGetText(wifiProfileEntry);
+          int connectResult = uiWifiConnect(0, profileName);
+          uiWidgetSetText(wifiStatusLabel, "Connect: " + uiWifiStatusName(connectResult));
+          uiWidgetSetText(statusLabel, "Connectivity · " + uiWifiStatusName(connectResult));
+        }
+        if (uiWidgetTakeActivated(wifiDisconnectButton) == 1) {
+          int disconnectResult = uiWifiDisconnect();
+          uiWidgetSetText(wifiStatusLabel, "Disconnect: " + uiWifiStatusName(disconnectResult));
+        }
         if (uiWidgetTakeActivated(wifiSettingsButton) == 1) {
           int settingsResult = uiWifiOpenSettings();
           if (settingsResult == 0) {
@@ -273,7 +292,13 @@ class GuiMilitaryCommandConsole {
             wifiActionUnavailable("Opening network settings");
           }
         }
-        if (uiWidgetTakeActivated(wifiInfoButton) == 1) { wifiActionUnavailable("Connection details"); }
+        if (uiWidgetTakeActivated(wifiInfoButton) == 1) {
+          if (uiWifiNetworkCount() > 0) {
+            uiWidgetSetText(wifiStatusLabel, uiWifiNetworkSsid(0) + " · " + uiWifiNetworkBssid(0) + " · " + uiWifiNetworkSignal(0) + "% · " + uiWifiNetworkSecurity(0));
+          } else {
+            uiWidgetSetText(wifiStatusLabel, "Scan before requesting connection details.");
+          }
+        }
         if (uiWidgetTakeActivated(wifiCloseButton) == 1) { closeWifiMenu(); }
 
         if (uiWidgetTakeActivated(wifiButton) == 1) { toggleWifiMenu(); }
