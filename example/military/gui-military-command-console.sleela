@@ -38,6 +38,17 @@ class GuiMilitaryCommandConsole {
   int btnRun;
   int btnReset;
   int statusLabel;
+  boolean wifiMenuOpen = false;
+  // Lower-right status-bar connectivity control and its dismissible menu.
+  int wifiButton;
+  int wifiPanel;
+  int wifiStatusLabel;
+  int wifiScanButton;
+  int wifiConnectButton;
+  int wifiDisconnectButton;
+  int wifiSettingsButton;
+  int wifiInfoButton;
+  int wifiCloseButton;
 
   // 0xRRGGBBAA colours for the military "metal / blue-hue" palette.
   int rgba(int r, int g, int b, int a) {
@@ -64,6 +75,22 @@ class GuiMilitaryCommandConsole {
     uiThemeSetRadius(t, 8);
     uiThemeSetControlHeight(t, 32);
     return t;
+  }
+
+  void toggleWifiMenu() {
+    wifiMenuOpen = !wifiMenuOpen;
+    uiWidgetVisible(wifiPanel, wifiMenuOpen ? 1 : 0);
+  }
+
+  void closeWifiMenu() {
+    wifiMenuOpen = false;
+    uiWidgetVisible(wifiPanel, 0);
+  }
+
+  void wifiActionUnavailable(String action) {
+    uiWidgetSetText(wifiStatusLabel, action + " requires the native Wi-Fi host bridge.");
+    uiWidgetSetText(statusLabel, "Connectivity · " + action + " unavailable (host bridge required)");
+    closeWifiMenu();
   }
 
   void main() {
@@ -189,9 +216,31 @@ class GuiMilitaryCommandConsole {
 
     uiSpacer(wrow);
 
+    // --- Connectivity popover: opened from the lower-right Wi-Fi status icon. ---
+    // Keep the status honest until a native Wi-Fi provider is bound into the SLVM.
+    wifiPanel = uiCard(root);
+    uiWidgetExpand(wifiPanel, 1, 0);
+    uiWidgetMargin(wifiPanel, 4, 8, 4, 8);
+    int wifiBox = uiBox(wifiPanel, 1, 5);
+    uiWidgetExpand(wifiBox, 1, 0);
+    uiWidgetMargin(wifiBox, 8, 10, 8, 10);
+    int wifiHeading = uiHeading(wifiBox, "Connectivity", 18);
+    wifiStatusLabel = uiLabel(wifiBox, "Radio status unavailable; native Wi-Fi host bridge required.");
+    wifiScanButton = uiButton(wifiBox, "Scan for Networks");
+    wifiConnectButton = uiButton(wifiBox, "Connect to Selected Network");
+    wifiDisconnectButton = uiButton(wifiBox, "Disconnect");
+    wifiSettingsButton = uiButton(wifiBox, "Network Settings");
+    wifiInfoButton = uiButton(wifiBox, "Connection Details");
+    wifiCloseButton = uiButton(wifiBox, "Close Menu");
+    uiWidgetVisible(wifiPanel, 0);
+
     int status = uiStatusBar(root);
     statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
     uiWidgetMargin(statusLabel, 0, 12, 0, 12);
+    uiSpacer(status);
+    wifiButton = uiButton(status, "📶 Wi-Fi");
+    uiWidgetMargin(wifiButton, 0, 8, 0, 8);
+    uiWidgetSuggested(wifiButton, 1);
 
     uiWindowShow(win);
     print("Window shown. Authorize unlocks Run; Reset re-locks it (fail-closed).");
@@ -208,12 +257,24 @@ class GuiMilitaryCommandConsole {
       int dispatched = uiAppPump(app, 1);
       if (dispatched < 0) { running = false; }
       else {
+        // Connectivity actions are deliberately fail-closed until SLVM can call
+        // the native Wi-Fi provider; a menu click never invents a radio result.
+        if (uiWidgetTakeActivated(wifiScanButton) == 1) { wifiActionUnavailable("Scan for networks"); }
+        if (uiWidgetTakeActivated(wifiConnectButton) == 1) { wifiActionUnavailable("Connect"); }
+        if (uiWidgetTakeActivated(wifiDisconnectButton) == 1) { wifiActionUnavailable("Disconnect"); }
+        if (uiWidgetTakeActivated(wifiSettingsButton) == 1) { wifiActionUnavailable("Network settings"); }
+        if (uiWidgetTakeActivated(wifiInfoButton) == 1) { wifiActionUnavailable("Connection details"); }
+        if (uiWidgetTakeActivated(wifiCloseButton) == 1) { closeWifiMenu(); }
+
+        if (uiWidgetTakeActivated(wifiButton) == 1) { toggleWifiMenu(); }
         if (uiWidgetTakeActivated(btnAuthorize) == 1) {
+          closeWifiMenu();
           authorized = true;
           uiWidgetSensitive(btnRun, 1);              // unlock Run
           uiWidgetSetText(statusLabel, "AUTHORIZED \u2713 \u00B7 PQC suite \u00B7 Run unlocked");
         }
         if (uiWidgetTakeActivated(btnRun) == 1) {
+          closeWifiMenu();
           if (authorized) {
             runs = runs + 1;
             uiWidgetSetText(statusLabel, "RUN \u25B9 executed under authority (" + runs + " this session)");
@@ -223,6 +284,7 @@ class GuiMilitaryCommandConsole {
           }
         }
         if (uiWidgetTakeActivated(btnReset) == 1) {
+          closeWifiMenu();
           authorized = false;
           uiWidgetSensitive(btnRun, 0);              // re-lock Run
           uiWidgetSetText(statusLabel, "RESET \u27F2 \u00B7 authority cleared \u00B7 Run locked again");

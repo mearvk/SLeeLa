@@ -37,6 +37,16 @@ class GuiThualEffectsShowcase {
   int btnFade;
   int spin;          // the throbber (rotation made visible)
   int statusLabel;
+  // Lower-right status-bar connectivity control and its dismissible menu.
+  int wifiButton;
+  int wifiPanel;
+  int wifiStatusLabel;
+  int wifiScanButton;
+  int wifiConnectButton;
+  int wifiDisconnectButton;
+  int wifiSettingsButton;
+  int wifiInfoButton;
+  int wifiCloseButton;
   // Menubar strip and its dropdown panels (built from existing ui* widgets).
   int openMenuIndex = -1;
   int menuFileButton;
@@ -98,6 +108,13 @@ class GuiThualEffectsShowcase {
     uiWidgetVisible(menuEffectsPanel, next == 1 ? 1 : 0);
     uiWidgetVisible(menuViewPanel, next == 2 ? 1 : 0);
     uiWidgetVisible(menuHelpPanel, next == 3 ? 1 : 0);
+    uiWidgetVisible(wifiPanel, next == 4 ? 1 : 0);
+  }
+
+  void wifiActionUnavailable(String action) {
+    uiWidgetSetText(wifiStatusLabel, action + " requires the native Wi-Fi host bridge.");
+    uiWidgetSetText(statusLabel, "Connectivity · " + action + " unavailable (host bridge required)");
+    openMenu(-1);
   }
 
   void main() {
@@ -236,9 +253,31 @@ class GuiThualEffectsShowcase {
 
     uiSpacer(rrow);
 
+    // --- Connectivity popover: opened from the lower-right Wi-Fi status icon. ---
+    // Keep the status honest until a native Wi-Fi provider is bound into the SLVM.
+    wifiPanel = uiCard(root);
+    uiWidgetExpand(wifiPanel, 1, 0);
+    uiWidgetMargin(wifiPanel, 4, 8, 4, 8);
+    int wifiBox = uiBox(wifiPanel, 1, 5);
+    uiWidgetExpand(wifiBox, 1, 0);
+    uiWidgetMargin(wifiBox, 8, 10, 8, 10);
+    int wifiHeading = uiHeading(wifiBox, "Connectivity", 18);
+    wifiStatusLabel = uiLabel(wifiBox, "Radio status unavailable; native Wi-Fi host bridge required.");
+    wifiScanButton = uiButton(wifiBox, "Scan for Networks");
+    wifiConnectButton = uiButton(wifiBox, "Connect to Selected Network");
+    wifiDisconnectButton = uiButton(wifiBox, "Disconnect");
+    wifiSettingsButton = uiButton(wifiBox, "Network Settings");
+    wifiInfoButton = uiButton(wifiBox, "Connection Details");
+    wifiCloseButton = uiButton(wifiBox, "Close Menu");
+    uiWidgetVisible(wifiPanel, 0);
+
     int status = uiStatusBar(root);
     statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
     uiWidgetMargin(statusLabel, 0, 12, 0, 12);
+    uiSpacer(status);
+    wifiButton = uiButton(status, "📶 Wi-Fi");
+    uiWidgetMargin(wifiButton, 0, 8, 0, 8);
+    uiWidgetSuggested(wifiButton, 1);
 
     uiWindowShow(win);
     print("Window shown (throbber animating). Buttons fire the cue and toggle fade.");
@@ -258,6 +297,7 @@ class GuiThualEffectsShowcase {
         if (uiWidgetTakeActivated(menuEffectsButton) == 1) { openMenu(1); }
         if (uiWidgetTakeActivated(menuViewButton) == 1) { openMenu(2); }
         if (uiWidgetTakeActivated(menuHelpButton) == 1) { openMenu(3); }
+        if (uiWidgetTakeActivated(wifiButton) == 1) { openMenu(4); }
         // Menu items announce the selected command, then dismiss the dropdown.
         if (uiWidgetTakeActivated(menuFileItem1) == 1) {
           uiWidgetSetText(statusLabel, "File · Save Preset");
@@ -291,7 +331,18 @@ class GuiThualEffectsShowcase {
           uiWidgetSetText(statusLabel, "Help · About THUAL");
           openMenu(-1);
         }
+        // Connectivity menu actions are interactive and fail honestly when no SLVM
+        // Wi-Fi provider is bound; no radio state or nearby network is fabricated.
+        if (uiWidgetTakeActivated(wifiScanButton) == 1) { wifiActionUnavailable("Scan for networks"); }
+        if (uiWidgetTakeActivated(wifiConnectButton) == 1) { wifiActionUnavailable("Connect"); }
+        if (uiWidgetTakeActivated(wifiDisconnectButton) == 1) { wifiActionUnavailable("Disconnect"); }
+        if (uiWidgetTakeActivated(wifiSettingsButton) == 1) { wifiActionUnavailable("Network settings"); }
+        if (uiWidgetTakeActivated(wifiInfoButton) == 1) { wifiActionUnavailable("Connection details"); }
+        if (uiWidgetTakeActivated(wifiCloseButton) == 1) { openMenu(-1); }
+
         if (uiWidgetTakeActivated(btnConfirm) == 1) {
+
+          openMenu(-1);
           confirms = confirms + 1;
           // Advance the schene: rotate the throbber hue a quarter-turn and
           // report the memo key epoch stepping with it.
@@ -301,6 +352,7 @@ class GuiThualEffectsShowcase {
               + " (memo key epoch advanced; hue " + hue + "deg)");
         }
         if (uiWidgetTakeActivated(btnFade) == 1) {
+          openMenu(-1);
           faded = !faded;
           // Fade the primary action out/in (visible-toggle stands in for opacity).
           uiWidgetVisible(btnConfirm, faded ? 0 : 1);
