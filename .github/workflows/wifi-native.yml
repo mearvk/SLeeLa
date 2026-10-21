@@ -1,0 +1,100 @@
+name: Wi-Fi native core
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'wifi-common/**'
+      - 'wi-fi-4/src/c/**'
+      - 'wi-fi-4/src/cpp/**'
+      - 'wi-fi-5/src/c/**'
+      - 'wi-fi-5/src/cpp/**'
+      - 'wi-fi-6/src/c/**'
+      - 'wi-fi-6/src/cpp/**'
+      - 'lib/wifi/**'
+      - '.github/workflows/wifi-native.yml'
+  pull_request:
+    branches: [master, main]
+    paths:
+      - 'wifi-common/**'
+      - 'wi-fi-4/src/c/**'
+      - 'wi-fi-4/src/cpp/**'
+      - 'wi-fi-5/src/c/**'
+      - 'wi-fi-5/src/cpp/**'
+      - 'wi-fi-6/src/c/**'
+      - 'wi-fi-6/src/cpp/**'
+      - 'lib/wifi/**'
+      - '.github/workflows/wifi-native.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    name: Shared core and Linux C/C++ adapters
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Test portable management contract
+        run: make -C wifi-common clean test all
+      - name: Compile C/C++ providers and every generation example
+        shell: bash
+        run: |
+          set -eu
+          for version in 4 5 6; do
+            cc -std=c11 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -Wpedantic -I wifi-common/include \
+              wifi-common/src/wifi_manager.c wifi-common/src/wifi_backend_nmcli.c \
+              wi-fi-$version/src/c/wifi_profile.c wi-fi-$version/src/c/wifi_manager.c \
+              wi-fi-$version/src/c/wifi_manager_example.c -o "$RUNNER_TEMP/wifi-$version-c"
+            cc -std=c11 -D_POSIX_C_SOURCE=200809L -I wifi-common/include \
+              -c wifi-common/src/wifi_manager.c -o "$RUNNER_TEMP/wifi-$version-core.o"
+            cc -std=c11 -D_POSIX_C_SOURCE=200809L -I wifi-common/include \
+              -c wifi-common/src/wifi_backend_nmcli.c -o "$RUNNER_TEMP/wifi-$version-backend.o"
+            c++ -std=c++17 -Wall -Wextra -Wpedantic -I wifi-common/include \
+              wifi-common/src/wifi_manager_cpp.cpp \
+              wi-fi-$version/src/cpp/wifi_profile.cpp wi-fi-$version/src/cpp/wifi_manager.cpp \
+              wi-fi-$version/src/cpp/wifi_manager_example.cpp \
+              "$RUNNER_TEMP/wifi-$version-core.o" "$RUNNER_TEMP/wifi-$version-backend.o" \
+              -o "$RUNNER_TEMP/wifi-$version-cpp"
+            cc -std=c11 -Wall -Wextra -Wpedantic -I wifi-common/include \
+              -c "lib/wifi/$version/src/c/Wifi${version}Manager.c" -o "$RUNNER_TEMP/lib-wifi-$version-c.o"
+            c++ -std=c++17 -Wall -Wextra -Wpedantic -I wifi-common/include \
+              -c "lib/wifi/$version/src/cpp/Wifi${version}Manager.cpp" -o "$RUNNER_TEMP/lib-wifi-$version-cpp.o"
+          done
+
+  macos:
+    name: macOS CoreWLAN provider compile
+    runs-on: macos-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Compile CoreWLAN provider
+        run: clang++ -std=c++17 -Wall -Wextra -Wpedantic -I wifi-common/include -c wifi-common/src/wifi_backend_macos.mm -o "$RUNNER_TEMP/wifi_backend_macos.o"
+      - name: Test portable management contract
+        run: make -C wifi-common clean test all
+
+  windows:
+    name: Windows Native Wi-Fi provider compile
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Set up MSYS2 UCRT64
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            git
+            make
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-g++
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Compile Native Wi-Fi provider
+        run: gcc -std=c11 -Wall -Wextra -Wpedantic -I wifi-common/include -c wifi-common/src/wifi_backend_windows.c -o "$RUNNER_TEMP/wifi_backend_windows.o"
+      - name: Test portable management contract
+        run: make -C wifi-common clean test all
