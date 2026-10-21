@@ -66,7 +66,7 @@ private:
     bool custom_titlebar_ = false;
     bool dirty_ = true;
     bool closed_ = false;
-    SLUIBufferingMode buffering_ = SLUI_BUFFERING_DOUBLE;
+    SLUIBufferingMode buffering_ = SLUI_BUFFERING_TRIPLE;
 
     std::unique_ptr<Widget> root_;
     std::unique_ptr<NativeWindow> native_;
