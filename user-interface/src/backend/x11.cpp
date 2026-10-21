@@ -35,6 +35,31 @@
 namespace slui {
 namespace {
 
+/* Set both the ICCCM title and the EWMH UTF-8 title properties.
+ * XStoreName alone writes WM_NAME using the legacy STRING convention; a
+ * UTF-8 title containing characters such as U+2122 TRADE MARK SIGN can then
+ * be decoded incorrectly by the window manager. Keep the ICCCM properties
+ * for compatibility, and explicitly publish UTF8_STRING EWMH properties for
+ * modern window managers. */
+void set_utf8_window_title(Display* display, ::Window window,
+                           const std::string& title) {
+    Xutf8SetWMProperties(display, window, title.c_str(), title.c_str(),
+                         nullptr, 0, nullptr, nullptr, nullptr);
+
+    const Atom utf8_string = XInternAtom(display, "UTF8_STRING", False);
+    const Atom net_wm_name = XInternAtom(display, "_NET_WM_NAME", False);
+    const Atom net_wm_icon_name =
+        XInternAtom(display, "_NET_WM_ICON_NAME", False);
+    const auto* bytes =
+        reinterpret_cast<const unsigned char*>(title.data());
+    const int length = static_cast<int>(title.size());
+
+    XChangeProperty(display, window, net_wm_name, utf8_string, 8,
+                    PropModeReplace, bytes, length);
+    XChangeProperty(display, window, net_wm_icon_name, utf8_string, 8,
+                    PropModeReplace, bytes, length);
+}
+
 /* Translate an X11 KeySym into one of SleelaUI's normalised key codes. */
 uint32_t map_keysym(KeySym ks) {
     switch (ks) {
@@ -166,7 +191,7 @@ public:
             static_cast<unsigned>(height), 0, CopyFromParent, InputOutput,
             CopyFromParent, CWBackPixel | CWEventMask, &attrs);
 
-        XStoreName(dpy_, win, title.c_str());
+        set_utf8_window_title(dpy_, win, title);
         XSetWMProtocols(dpy_, win, &wm_delete_, 1);
 
         if (!resizable) {
@@ -504,7 +529,7 @@ void X11Window::set_buffering(SLUIBufferingMode mode) {
 }
 
 void X11Window::set_title(const std::string& title) {
-    XStoreName(dpy_, win_, title.c_str());
+    set_utf8_window_title(dpy_, win_, title);
 }
 void X11Window::show() {
     XMapWindow(dpy_, win_);
