@@ -29,6 +29,8 @@ class SLWindow {
     title = windowTitle;
     window = uiWindowCreate(app, windowTitle, width, height, themeHandle);
     root = (window >= 0) ? uiWindowRoot(window) : -1;
+    // Sleela GUI setup defaults to triple buffering for smoother redraws.
+    if (window >= 0) { uiWindowSetBuffering(window, 2); }
   }
 
   boolean valid() { return window >= 0; }
@@ -62,10 +64,9 @@ class SLWindow {
 
   // Presentation buffering: how a painted frame reaches the screen.
   //   0 = single (direct blit; may tear on resize)
-  //   1 = double (one off-screen back buffer; frame lands atomically — default)
-  //   2 = triple (a ring of two back buffers; smoother rapid resize/animation)
-  // The toolkit defaults a window to double buffering; this lets a program
-  // override it (e.g. from an SLGuiSettings.getBufferingMode()).
+  //   1 = double (one off-screen back buffer; frame lands atomically)
+  //   2 = triple (two back buffers; default for SLeeLa GUI setup)
+  // Programs can override this with setBuffering(mode).
   void setBuffering(int mode) { if (window >= 0) { uiWindowSetBuffering(window, mode); } }
   int buffering() { return (window >= 0) ? uiWindowBuffering(window) : 0; }
 
