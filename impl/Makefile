@@ -473,8 +473,20 @@ $(SLUI_NANOJPEG_OBJ): $(SLUI_DIR)/src/nanojpeg.c $(SLUI_DIR)/src/nanojpeg.h | $(
 $(SLUI_BACKEND_OBJ): $(SLUI_BACKEND_SRC) | $(BUILD)
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) $(SLUI_BACKEND_CFLAGS) -c $< -o $@
-$(SLUI_VM_OBJ): core/sleela_ui_vm.c core/sleela_ui_vm.h core/sleela_ui_ids.h $(SLUI_DIR)/include/sleela_ui.h | $(BUILD)
+$(SLUI_VM_OBJ): core/sleela_ui_vm.c core/sleela_ui_vm.h core/sleela_ui_ids.h core/wifi_vm_bridge.h $(SLUI_DIR)/include/sleela_ui.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_ui_vm.c -o $@
+
+$(WIFI_MANAGER_OBJ): $(WIFI_DIR)/src/wifi_manager.c $(WIFI_DIR)/include/sleela_wifi/wifi_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(WIFI_DIR)/include -c $< -o $@
+$(WIFI_VM_BRIDGE_OBJ): core/wifi_vm_bridge.c core/wifi_vm_bridge.h $(WIFI_DIR)/include/sleela_wifi/wifi_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(WIFI_DIR)/include -Icore -c $< -o $@
+ifeq ($(PLATFORM),macos)
+$(WIFI_BACKEND_OBJ): $(WIFI_BACKEND_SRC) $(WIFI_DIR)/include/sleela_wifi/wifi_manager.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -I$(WIFI_DIR)/include -c $< -o $@
+else
+$(WIFI_BACKEND_OBJ): $(WIFI_BACKEND_SRC) $(WIFI_DIR)/include/sleela_wifi/wifi_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(WIFI_DIR)/include -c $< -o $@
+endif
 $(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_bestof.c -o $@
 $(PATH_OBJ): core/sleela_path.c core/sleela_path.h | $(BUILD)
