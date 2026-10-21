@@ -141,6 +141,7 @@ typedef enum {
     SLUI_FN_POPUP_CREATE,       /* uiPopupCreate(parent:i) -> hidden popup panel */
     SLUI_FN_POPUP_SET_OPEN,     /* uiPopupSetOpen(popup:i, open:i) -> null */
     SLUI_FN_POPUP_IS_OPEN,      /* uiPopupIsOpen(popup:i) -> int */
+    SLUI_FN_WIFI_OPEN_SETTINGS, /* uiWifiOpenSettings() -> status */
 
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;
