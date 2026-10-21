@@ -1,0 +1,43 @@
+/*
+ * lib/character/james-cameron/JamesCameronAdvancedTrace.sleela
+ * Advanced Trace: chronology and provenance for public event records only.
+ * This model does not locate or monitor a person.
+ */
+#sleela 2.1
+
+class JamesCameronAdvancedTrace {
+  int recordCount;
+  int sourcedCount;
+  int verifiedCount;
+  String traceLabel;
+  String scopeNote;
+
+  void load() {
+    recordCount = 0;
+    sourcedCount = 0;
+    verifiedCount = 0;
+    traceLabel = "James Cameron — public professional event trace";
+    scopeNote = "Public sources only; no live tracking or private data.";
+  }
+
+  void addRecord(boolean hasSource, boolean verified) {
+    recordCount = recordCount + 1;
+    if (hasSource) { sourcedCount = sourcedCount + 1; }
+    if (hasSource && verified) { verifiedCount = verifiedCount + 1; }
+  }
+
+  boolean readyForReview() {
+    return recordCount > 0 && sourcedCount == recordCount;
+  }
+
+  int records() { return recordCount; }
+  int sourcedRecords() { return sourcedCount; }
+  int verifiedRecords() { return verifiedCount; }
+
+  String report() {
+    return traceLabel + ": records=" + recordCount
+      + ", sourced=" + sourcedCount
+      + ", verified=" + verifiedCount
+      + ". " + scopeNote;
+  }
+}
