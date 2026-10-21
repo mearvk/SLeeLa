@@ -52,6 +52,11 @@ typedef enum {
 
 /* The backend that was compiled in and is driving this process. */
 SLUIBackend slui_backend(void);
+
+/* Open the host operating system's network settings. This does not claim to
+ * scan, connect, or disconnect networks; those require a native radio provider.
+ * Returns SLUI_OK when the settings launcher was started, otherwise an error. */
+int slui_wifi_open_settings(void);
 const char *slui_backend_name(SLUIBackend backend);
 const char *slui_version_string(void);
 
