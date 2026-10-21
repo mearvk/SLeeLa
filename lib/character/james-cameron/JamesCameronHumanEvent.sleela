@@ -1,8 +1,6 @@
 /*
- * lib/character/james-cameron/JamesCameronHumanEvent.sleela
  * Record for a publicly documented professional event.
- * Event means a published appearance, premiere, interview, award, or work
- * announcement—not inferred private activity or real-time whereabouts.
+ * Not for inferred private activity or real-time whereabouts.
  */
 #sleela 2.1
 
@@ -36,9 +34,7 @@ class JamesCameronHumanEvent {
     verificationStatus = "needs-review";
   }
 
-  boolean hasSource() {
-    return sourceUrl != null && sourceUrl.length() > 0;
-  }
+  boolean hasSource() { return sourceUrl != null && sourceUrl.length() > 0; }
 
   boolean markVerified() {
     if (!hasSource()) { return false; }
