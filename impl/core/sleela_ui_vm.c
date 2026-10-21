@@ -174,7 +174,10 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
             SLUIWindowConfig cfg; memset(&cfg,0,sizeof(cfg));
             cfg.title = as_(a,n,1); cfg.width = (int)ai(a,n,2); cfg.height = (int)ai(a,n,3);
             cfg.resizable = 1; cfg.theme = th;
-            return r_int(win_put(slui_window_create(app, &cfg)));
+            SLUIWindow* created = slui_window_create(app, &cfg);
+            /* SLeeLa-created GUI windows default to triple buffering. */
+            if (created) slui_window_set_buffering(created, SLUI_BUFFERING_TRIPLE);
+            return r_int(win_put(created));
         }
         case SLUI_FN_WINDOW_SHOW:   slui_window_show(win_get(ai(a,n,0))); return r_null();
         case SLUI_FN_WINDOW_HIDE:   slui_window_hide(win_get(ai(a,n,0))); return r_null();
