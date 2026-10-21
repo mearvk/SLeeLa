@@ -11,6 +11,18 @@
 
 This directory contains clear, runnable examples for the SLeeLa BODI XML project system. The examples are also evidence artifacts: each XML project has a corresponding expected BODI witness output where the result is deterministic and does not require external network access.
 
+## GUI connectivity examples
+
+The interactive native GUI examples in [../example/](../example/README.md) demonstrate the shared Wi-Fi control. Each of the five GUI versions — DUAL, GUAL, MUAL, THUAL, and MILITARY — uses an icon-backed **Wi-Fi** button and a dismissible connectivity panel with actions for scanning, connecting, disconnecting, network settings, and connection details.
+
+- [DUAL media studio](../example/dual/gui-dual-media-studio.sleela)
+- [GUAL settings console](../example/gual/gui-gual-settings-console.sleela)
+- [MUAL text editor](../example/mual/gui-mual-text-editor.sleela)
+- [THUAL effects showcase](../example/thual/gui-thual-effects-showcase.sleela)
+- [MILITARY command console](../example/military/gui-military-command-console.sleela)
+
+These are GUI examples, not BODI XML projects, so they remain in /example rather than being represented as XML entries here. The menu reports when the native Wi-Fi host bridge is unavailable; it does not fabricate scan results or claim to change the real network connection. The JPEG icon uses the named Wifi vector fallback if the asset cannot be loaded.
+
 ## Example families
 
 | Example | Purpose | Expected evidence |
