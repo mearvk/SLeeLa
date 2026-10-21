@@ -91,7 +91,7 @@ static SLUIArg r_null(void)     { SLUIArg r; r.kind = SLUI_ARG_INT; r.i = 0; r.d
 int sleela_ui_arity(int id) {
     switch (id) {
         /* 0 args */
-        case SLUI_FN_BACKEND: case SLUI_FN_VERSION:
+        case SLUI_FN_BACKEND: case SLUI_FN_VERSION: case SLUI_FN_WIFI_OPEN_SETTINGS:
             return 0;
         /* 1 arg */
         case SLUI_FN_APP_CREATE: case SLUI_FN_APP_RUN: case SLUI_FN_APP_DESTROY:
@@ -262,6 +262,7 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_POPUP_CREATE:        return r_int(widget_put(slui_popup_create(widget_get(ai(a,n,0)))));
         case SLUI_FN_POPUP_SET_OPEN:       slui_popup_set_open(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_POPUP_IS_OPEN:        return r_int(slui_popup_is_open(widget_get(ai(a,n,0))));
+        case SLUI_FN_WIFI_OPEN_SETTINGS:    return r_int(slui_wifi_open_settings());
         case SLUI_FN_WIDGET_SET_TOGGLE:    slui_widget_set_toggle(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_VALUE:     slui_widget_set_value(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();
 
