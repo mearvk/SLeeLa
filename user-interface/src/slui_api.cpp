@@ -18,6 +18,19 @@
 #include <memory>
 #include <string>
 #include <vector>
+#if defined(_WIN32)
+#  include <windows.h>
+#  include <shellapi.h>
+#elif defined(__APPLE__)
+#  include <spawn.h>
+#  include <sys/wait.h>
+#  include <unistd.h>
+extern char **environ;
+#else
+#  include <spawn.h>
+#  include <unistd.h>
+extern char **environ;
+#endif
 
 /* ---- App ----------------------------------------------------------------- */
 struct SLUIApp {
@@ -42,6 +55,34 @@ static const slui::Widget* as_widget(const SLUIWidget* w) {
 extern "C" {
 
 const char* slui_version_string(void) { return SLUI_VERSION_STRING; }
+
+int slui_wifi_open_settings(void) {
+#if defined(_WIN32)
+    HINSTANCE result = ShellExecuteA(NULL, "open", "ms-settings:network-wifi",
+                                     NULL, NULL, SW_SHOWNORMAL);
+    return reinterpret_cast<intptr_t>(result) > 32 ? SLUI_OK : SLUI_ERR_BACKEND;
+#elif defined(__APPLE__)
+    pid_t pid = 0;
+    char *const argv[] = {const_cast<char *>("open"),
+                          const_cast<char *>("x-apple.systempreferences:com.apple.wifi"),
+                          nullptr};
+    if (posix_spawnp(&pid, "open", nullptr, nullptr, argv, environ) != 0)
+        return SLUI_ERR_BACKEND;
+    return SLUI_OK;
+#else
+    /* Launch only fixed executable/argument pairs; never pass user text to a
+     * shell. Prefer NetworkManager's editor, then GNOME network settings. */
+    pid_t pid = 0;
+    char *const nm_argv[] = {const_cast<char *>("nm-connection-editor"), nullptr};
+    if (posix_spawnp(&pid, "nm-connection-editor", nullptr, nullptr, nm_argv, environ) == 0)
+        return SLUI_OK;
+    char *const cc_argv[] = {const_cast<char *>("gnome-control-center"),
+                             const_cast<char *>("wifi"), nullptr};
+    if (posix_spawnp(&pid, "gnome-control-center", nullptr, nullptr, cc_argv, environ) == 0)
+        return SLUI_OK;
+    return SLUI_ERR_UNSUPPORTED;
+#endif
+}
 
 SLUIBackend slui_backend(void) {
 #if defined(SLUI_BACKEND_WIN32_BUILD)
