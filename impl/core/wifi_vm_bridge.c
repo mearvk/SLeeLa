@@ -54,12 +54,11 @@ int sleela_wifi_vm_connect(int index, const char *profile_name) {
     wifi_auth_t auth;
     int init = ensure_manager();
     if (init != WIFI_STATUS_OK) return init;
-    if (!profile_name || !*profile_name) return WIFI_STATUS_AUTH_REQUIRED;
     if (index < 0 || wifi_manager_select(&g_manager, (size_t)index, &selected) != WIFI_STATUS_OK)
         return WIFI_STATUS_NETWORK_NOT_FOUND;
     memset(&auth, 0, sizeof(auth));
-    auth.mode = WIFI_AUTH_SAVED_PROFILE;
-    auth.profile_name = profile_name;
+    auth.mode = profile_name && *profile_name ? WIFI_AUTH_SAVED_PROFILE : WIFI_AUTH_OS_MANAGED;
+    auth.profile_name = profile_name && *profile_name ? profile_name : NULL;
     return (int)wifi_manager_connect(&g_manager, &selected, &auth);
 }
 int sleela_wifi_vm_disconnect(void) {
