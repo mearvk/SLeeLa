@@ -306,7 +306,7 @@ class GuiDualMediaStudio {
 
     // --- Connectivity popover: opened from the lower-right Wi-Fi status icon. ---
     // Keep the status honest until a native Wi-Fi provider is bound into the SLVM.
-    wifiPanel = uiCard(root);
+    wifiPanel = uiPopupCreate(root);
     uiWidgetExpand(wifiPanel, 1, 0);
     uiWidgetMargin(wifiPanel, 4, 8, 4, 8);
     int wifiBox = uiBox(wifiPanel, 1, 5);
@@ -385,7 +385,16 @@ class GuiDualMediaStudio {
         if (uiWidgetTakeActivated(wifiScanButton) == 1) { wifiActionUnavailable("Scan for networks"); }
         if (uiWidgetTakeActivated(wifiConnectButton) == 1) { wifiActionUnavailable("Connect"); }
         if (uiWidgetTakeActivated(wifiDisconnectButton) == 1) { wifiActionUnavailable("Disconnect"); }
-        if (uiWidgetTakeActivated(wifiSettingsButton) == 1) { wifiActionUnavailable("Network settings"); }
+        if (uiWidgetTakeActivated(wifiSettingsButton) == 1) {
+          int settingsResult = uiWifiOpenSettings();
+          if (settingsResult == 0) {
+            uiWidgetSetText(wifiStatusLabel, "Opened the operating system's network settings.");
+            uiWidgetSetText(statusLabel, "Connectivity · opened system network settings");
+            openMenu(-1);
+          } else {
+            wifiActionUnavailable("Opening network settings");
+          }
+        }
         if (uiWidgetTakeActivated(wifiInfoButton) == 1) { wifiActionUnavailable("Connection details"); }
         if (uiWidgetTakeActivated(wifiCloseButton) == 1) { openMenu(-1); }
 
