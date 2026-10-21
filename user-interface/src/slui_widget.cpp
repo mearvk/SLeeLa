@@ -361,7 +361,10 @@ void paint_button_symbol(PaintContext& ctx, const Rect& r,
 
     const std::string glyph = symbol.empty() ? "?" : symbol.substr(0, 1);
     const double tw = measure_text(ctx.backend, glyph);
-    const int baseline = centered_baseline(ctx, r);
+    const double asc = ctx.backend->font_ascent();
+    const double line_height = ctx.backend->font_line_height();
+    const int baseline = r.y +
+        static_cast<int>((r.h - line_height) / 2.0 + asc + 0.5);
     draw_text(ctx, glyph,
               r.x + static_cast<int>((r.w - tw) / 2.0 + 0.5),
               baseline, color);
