@@ -1,10 +1,8 @@
 /*
- * lib/character/james-cameron/JamesCameronHuman.sleela
- * Public professional profile and optional capability-simulation fields.
- * Hypothetical stats are kept separate from verified biography.
+ * Public professional profile and optional capability-simulation metadata.
+ * Scenario inputs are separate from verified biography.
  */
 #sleela 2.1
-
 class JamesCameronHuman {
   String fullName;
   String profession;
@@ -13,21 +11,16 @@ class JamesCameronHuman {
   boolean verified;
   String capabilityModelStatus;
   String capabilityModelNote;
-
   void load() {
     fullName = "James Cameron";
     profession = "Filmmaker, screenwriter, producer and explorer";
-    publicProfileNote = "Public professional profile; cite sources for all factual claims.";
+    publicProfileNote = "Public professional profile; cite sources for factual claims.";
     sourceUrl = "";
     verified = false;
-    capabilityModelStatus = "hypothetical-scenario";
-    capabilityModelNote = "Capability scores are illustrative simulation inputs, not measured intelligence or private-life data.";
+    capabilityModelStatus = "user-specified-hypothetical-scenario";
+    capabilityModelNote = "Optional scenario inputs are not measured personal attributes or private-life data.";
   }
-
-  void setSource(String url) {
-    if (url != null) { sourceUrl = url; }
-  }
-
+  void setSource(String url) { if (url != null) { sourceUrl = url; } }
   void setVerification(boolean value) { verified = value; }
   String name() { return fullName; }
   String occupation() { return profession; }
