@@ -104,7 +104,6 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_WIDGET_TAKE_ACTIVATED:
         case SLUI_FN_SCREEN_WIDTH: case SLUI_FN_SCREEN_HEIGHT:
         case SLUI_FN_SCROLLED_SCROLL_X: case SLUI_FN_SCROLLED_SCROLL_Y:
-        case SLUI_FN_POPUP_CREATE: case SLUI_FN_POPUP_IS_OPEN:
         case SLUI_FN_WINDOW_BUFFERING:
             return 1;
         /* 2 args */
@@ -119,8 +118,7 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_THROBBER_SET_INTENSITY: case SLUI_FN_THROBBER_SET_HUE:
         case SLUI_FN_WIDGET_SET_TEXT: case SLUI_FN_WIDGET_SET_TOGGLE:
         case SLUI_FN_WIDGET_SET_VALUE: case SLUI_FN_WIDGET_SET_SENSITIVE:
-        case SLUI_FN_WIDGET_SET_VISIBLE: case SLUI_FN_POPUP_SET_OPEN:
-        case SLUI_FN_WIDGET_SET_SUGGESTED:
+        case SLUI_FN_WIDGET_SET_VISIBLE: case SLUI_FN_WIDGET_SET_SUGGESTED:
         case SLUI_FN_WIDGET_SET_DESTRUCT:
         case SLUI_FN_THEME_LOAD_CONFIG: case SLUI_FN_THEME_SET_BASE:
         case SLUI_FN_THEME_SET_BG: case SLUI_FN_THEME_SET_SURFACE:
@@ -259,9 +257,6 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_WIDGET_SET_DESTRUCT:  slui_widget_set_destructive(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_TEXT:      slui_widget_set_text(widget_get(ai(a,n,0)), as_(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_ICON:      slui_widget_set_icon(widget_get(ai(a,n,0)), as_(a,n,1), as_(a,n,2)); return r_null();
-        case SLUI_FN_POPUP_CREATE:        return r_int(widget_put(slui_popup_create(widget_get(ai(a,n,0)))));
-        case SLUI_FN_POPUP_SET_OPEN:       slui_popup_set_open(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
-        case SLUI_FN_POPUP_IS_OPEN:        return r_int(slui_popup_is_open(widget_get(ai(a,n,0))));
         case SLUI_FN_WIDGET_SET_TOGGLE:    slui_widget_set_toggle(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_VALUE:     slui_widget_set_value(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();
 
