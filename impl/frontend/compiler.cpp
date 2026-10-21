@@ -686,6 +686,7 @@ private:
             {"uiWidgetSensitive",SLUI_FN_WIDGET_SET_SENSITIVE},{"uiWidgetVisible",SLUI_FN_WIDGET_SET_VISIBLE},
             {"uiWidgetSuggested",SLUI_FN_WIDGET_SET_SUGGESTED},{"uiWidgetDestructive",SLUI_FN_WIDGET_SET_DESTRUCT},
             {"uiWidgetSetText",SLUI_FN_WIDGET_SET_TEXT},{"uiWidgetSetIcon",SLUI_FN_WIDGET_SET_ICON},
+            {"uiPopupCreate",SLUI_FN_POPUP_CREATE},{"uiPopupSetOpen",SLUI_FN_POPUP_SET_OPEN},{"uiPopupIsOpen",SLUI_FN_POPUP_IS_OPEN},
             {"uiWidgetSetToggle",SLUI_FN_WIDGET_SET_TOGGLE},
             {"uiWidgetSetValue",SLUI_FN_WIDGET_SET_VALUE},{"uiWidgetGetText",SLUI_FN_WIDGET_GET_TEXT},
             {"uiWidgetGetToggle",SLUI_FN_WIDGET_GET_TOGGLE},{"uiWidgetGetValue",SLUI_FN_WIDGET_GET_VALUE},
