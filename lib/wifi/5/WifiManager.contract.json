@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "nativeApi": "sleela_wifi/wifi_manager.h",
+  "oodOperations": [
+    "scan",
+    "select",
+    "connect",
+    "disconnect"
+  ],
+  "selectionKey": [
+    "ssid",
+    "bssid",
+    "security"
+  ],
+  "authentication": [
+    "os-managed",
+    "saved-profile",
+    "personal-passphrase",
+    "enterprise-username-password"
+  ],
+  "defaultSecurityPolicy": {
+    "minimumRank": 4,
+    "allowOpen": false,
+    "allowWEP": false,
+    "requireEnterpriseCertificateValidation": true,
+    "requireProtectedManagementFrames": false
+  },
+  "notes": [
+    "A generation profile is not proof of adapter capability.",
+    "Authentication is performed by a native OS provider."
+  ],
+  "technology": "Wi-Fi 5",
+  "standard": "IEEE 802.11ac"
+}

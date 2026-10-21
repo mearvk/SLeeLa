@@ -4,28 +4,20 @@
 
 # SLeeLa Wi-Fi Library
 
-This library provides SLeeLa-native reference models and static capability profiles for Wi-Fi 4, Wi-Fi 5, and Wi-Fi 6, aligned with the companion documentation and C, C++, and Java references in `/wi-fi-4`, `/wi-fi-5`, and `/wi-fi-6`.
+The SLeeLa Wi-Fi library combines static reference models for Wi-Fi 4, Wi-Fi 5 and Wi-Fi 6 with a shared C/C++ operating-system management API.
 
 ## Packages
 
-- [Wi-Fi 4 / IEEE 802.11n](4/README.md)
-- [Wi-Fi 5 / IEEE 802.11ac](5/README.md)
-- [Wi-Fi 6 / IEEE 802.11ax](6/README.md)
+- [Wi-Fi 4 / IEEE 802.11n](4/README.md) — [OOD contract](4/WifiManager.contract.json)
+- [Wi-Fi 5 / IEEE 802.11ac](5/README.md) — [OOD contract](5/WifiManager.contract.json)
+- [Wi-Fi 6 / IEEE 802.11ax](6/README.md) — [OOD contract](6/WifiManager.contract.json)
 
-Each version contains a `.sleela` model, a static `wifi.conf` profile, a machine-readable `capabilities.json`, and a small SLeeLa validation example. These are declarative capability/reference layers; they do not drive radio hardware, scan nearby networks, join an access point, or replace operating-system Wi-Fi services.
+Each version retains its .sleela model, static wifi.conf, capabilities.json and validation example. Those files are descriptive metadata. The shared manager in [wifi-common](../../wifi-common/README.md) supplies scan, select, connect and disconnect methods over a native OS provider. It is designed as the control layer for a SLeeLa Wi-Fi OOD; it does not implement the 802.11 PHY/MAC.
 
-## Safety And Correctness
+## Safety and correctness
 
-Capability maxima are theoretical standard-level limits, not promises about a specific adapter or network. Runtime software must discover actual adapter/AP capabilities, honor the device's regulatory domain, and delegate connection management to supported operating-system APIs. Wi-Fi 6 at 6 GHz is specifically Wi-Fi 6E and must not be inferred from generic Wi-Fi 6 support.
+The C ABI and C++17 wrapper return SSID, BSSID, signal, channel and security classification. The manager validates a selection against the most recent scan and applies a fail-closed default policy: WPA2/OWE or stronger, with open networks and WEP rejected. Credentials are not written to logs or process arguments. Linux uses NetworkManager's secret agent or a saved profile; Windows and macOS use OS-managed profiles for protected/enterprise authentication.
 
-## Running
+A Wi-Fi generation label does not guarantee a device's adapter capabilities. Honor the adapter, driver, firmware and local regulatory domain. Wi-Fi 6 at 6 GHz is Wi-Fi 6E and must not be inferred from generic Wi-Fi 6 support.
 
-From the repository root, use the SLeeLa runtime/compiler supported by your checkout, for example:
-
-```sh
-sleela run lib/wifi/4/Wifi4Model.sleela
-sleela run lib/wifi/5/Wifi5Model.sleela
-sleela run lib/wifi/6/Wifi6Model.sleela
-```
-
-The validation examples are standalone demonstrations of the model contract. Confirm syntax and runtime behavior against the compiler version installed in your build environment.
+See [security and authorized test guidance](../../wifi-common/SECURITY.md).

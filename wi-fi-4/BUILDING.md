@@ -2,49 +2,54 @@
 
 ## Scope
 
-This source series is a small, portable reference library for the known capabilities associated with IEEE 802.11n. It is intended to compile with ordinary C, C++, and Java toolchains and to give downstream SLeeLa code a consistent place to read generation metadata and validate common channel-width inputs.
-
-It is **not** an IEEE 802.11 PHY/MAC implementation, does not scan for networks, does not configure a radio, and does not claim that a particular adapter supports every standard capability. Real capabilities must come from the operating system, driver, firmware, and certified hardware. Regulatory decisions must remain with those components.
+The Wi-Fi 4 profile describes IEEE 802.11n capabilities. The new management API adds actual adapter discovery and connection requests through native operating-system providers. It is not a Wi-Fi PHY/MAC implementation, packet sniffer, or guarantee that every adapter supports every feature.
 
 ## Layout
 
-- `src/c/wifi_profile.h`, `src/c/wifi_profile.c`: C reference API and metadata.
-- `src/c/example.c`: C demonstration.
-- `src/cpp/wifi_profile.hpp`, `src/cpp/wifi_profile.cpp`: C++ reference API and metadata.
-- `src/cpp/example.cpp`: C++ demonstration.
-- `src/java/WifiProfile.java`: Java reference class.
-- `src/java/WifiProfileDemo.java`: Java demonstration.
+- src/c/wifi_profile.h and wifi_profile.c: C capability metadata.
+- src/c/wifi_manager.h and wifi_manager.c: Wi-Fi 4 C integration shim for the shared control API.
+- src/c/wifi_manager_example.c: scan, display, select and request a connection.
+- src/cpp/wifi_profile.hpp and wifi_profile.cpp: C++ profile.
+- src/cpp/wifi_manager.hpp and wifi_manager.cpp: C++ Wi-Fi 4 integration shim.
+- src/cpp/wifi_manager_example.cpp: C++ management example.
+- ../wifi-common: shared C/C++ API, security policy and native providers.
+- src/java: Java reference profile.
 
-## Build And Run
+## Profile-only builds
 
-From this directory:
+From this directory, the original metadata demonstrations remain available.
 
-### C (C11)
+    cc -std=c11 -Wall -Wextra -Wpedantic -Werror -Isrc/c src/c/wifi_profile.c src/c/example.c -o wifi-profile-c
+    ./wifi-profile-c
 
-```sh
-cc -std=c11 -Wall -Wextra -Wpedantic -Werror -Isrc/c src/c/wifi_profile.c src/c/example.c -o wifi-profile-c
-./wifi-profile-c
-```
+    c++ -std=c++17 -Wall -Wextra -Wpedantic -Werror -Isrc/cpp src/cpp/wifi_profile.cpp src/cpp/example.cpp -o wifi-profile-cpp
+    ./wifi-profile-cpp
 
-### C++ (C++17)
+    mkdir -p build/java
+    javac -Xlint:all -Werror -d build/java src/java/WifiProfile.java src/java/WifiProfileDemo.java
+    java -cp build/java WifiProfileDemo
 
-```sh
-c++ -std=c++17 -Wall -Wextra -Wpedantic -Werror -Isrc/cpp src/cpp/wifi_profile.cpp src/cpp/example.cpp -o wifi-profile-cpp
-./wifi-profile-cpp
-```
+## Linux Wi-Fi management example
 
-### Java (Java 8+)
+Build the control API with the NetworkManager provider (requires nmcli/NetworkManager):
 
-```sh
-mkdir -p build/java
-javac -Xlint:all -Werror -d build/java src/java/WifiProfile.java src/java/WifiProfileDemo.java
-java -cp build/java WifiProfileDemo
-```
+    cc -std=c11 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -Wpedantic -I../wifi-common/include -Isrc/c ../wifi-common/src/wifi_manager.c ../wifi-common/src/wifi_backend_nmcli.c src/c/wifi_profile.c src/c/wifi_manager.c src/c/wifi_manager_example.c -o wifi-manager-c
+    ./wifi-manager-c
+
+For C++, compile the C core/provider as C objects, then link them using the C++ driver:
+
+    mkdir -p build
+    cc -std=c11 -D_POSIX_C_SOURCE=200809L -I../wifi-common/include -c ../wifi-common/src/wifi_manager.c -o build/wifi-manager-core.o
+    cc -std=c11 -D_POSIX_C_SOURCE=200809L -I../wifi-common/include -c ../wifi-common/src/wifi_backend_nmcli.c -o build/wifi-manager-backend.o
+    c++ -std=c++17 -Wall -Wextra -Wpedantic -I../wifi-common/include -Isrc/cpp src/cpp/wifi_profile.cpp src/cpp/wifi_manager.cpp ../wifi-common/src/wifi_manager_cpp.cpp src/cpp/wifi_manager_example.cpp build/wifi-manager-core.o build/wifi-manager-backend.o -o wifi-manager-cpp
+    ./wifi-manager-cpp
+
+Windows builds use src/wifi_backend_windows.c and link wlanapi/ole32. macOS builds use src/wifi_backend_macos.mm and link CoreWLAN/Foundation/Security; link the final C++ application with clang++. The OS-managed providers use saved profiles or native credential prompts. See ../wifi-common/README.md for provider limits and the shared API.
 
 ## Engineering Notes
 
-- The peak rate is a theoretical PHY-layer reference, not promised user throughput.
-- Supported widths in this profile describe generation-level capabilities, not a specific adapter or country.
-- Wi-Fi 4 features are listed for documentation and planning; enabling them requires hardware and driver support.
-- Keep credentials out of source, logs, and diagnostics. Application data should use correctly validated TLS.
-- Check the current IEEE 802.11 base standard and relevant amendments for normative requirements. The active consolidated IEEE standard is listed at https://standards.ieee.org/ieee/802.11/10548/.
+- The 600 Mbit/s peak is theoretical PHY rate, not application throughput.
+- Adapter capability and channel availability depend on hardware, firmware, driver and regulatory domain.
+- Wi-Fi management uses the latest scan result, including SSID/BSSID/security, to validate selection.
+- Passwords must never enter source control, logs or process arguments. Enterprise authentication must validate the authentication server certificate.
+- See ../wifi-common/SECURITY.md for defensible defaults and authorized test guidance.

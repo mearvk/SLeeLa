@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "nativeApi": "sleela_wifi/wifi_manager.h",
+  "oodOperations": [
+    "scan",
+    "select",
+    "connect",
+    "disconnect"
+  ],
+  "selectionKey": [
+    "ssid",
+    "bssid",
+    "security"
+  ],
+  "authentication": [
+    "os-managed",
+    "saved-profile",
+    "personal-passphrase",
+    "enterprise-username-password"
+  ],
+  "defaultSecurityPolicy": {
+    "minimumRank": 4,
+    "allowOpen": false,
+    "allowWEP": false,
+    "requireEnterpriseCertificateValidation": true,
+    "requireProtectedManagementFrames": false
+  },
+  "notes": [
+    "Wi-Fi 6E is not inferred from Wi-Fi 6; 6 GHz also depends on adapter, AP and local regulatory permission.",
+    "Authentication is performed by a native OS provider."
+  ],
+  "technology": "Wi-Fi 6",
+  "standard": "IEEE 802.11ax"
+}
