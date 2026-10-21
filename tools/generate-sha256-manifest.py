@@ -40,6 +40,7 @@ DEFAULT_SOURCE_DIRS = [
     "impl/catalog",
     "impl/xclass",
     "impl/subjects",
+    "wifi-common",
 ]
 # The SLeeLa standard library the runtime loads and executes. Every *.sleela
 # library class plus its native C/C++ helpers is a trusted input (a program's
@@ -95,7 +96,7 @@ DEFAULT_EXTRA_FILES = [
     # gate protects the interpreter, not the arbitrary programs it runs.)
     "SHEET.sheet",
 ]
-SOURCE_SUFFIXES = {".c", ".h", ".cpp", ".hpp", ".cc", ".hh"}
+SOURCE_SUFFIXES = {".c", ".h", ".cpp", ".hpp", ".cc", ".hh", ".mm"}
 
 
 def sha256_of(path: Path) -> str:
