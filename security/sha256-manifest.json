@@ -355,7 +355,7 @@
     },
     {
       "path": "impl/core/sleela_ui_vm.c",
-      "sha256": "8c8097ac5b93506206ec1039673fe64ebc894f5223d8f48a886c16b944f2c760"
+      "sha256": "769104d33ab847433ed9786c1b7c9791af51e231730ed5a4f15f7fd60732e86d"
     },
     {
       "path": "impl/core/sleela_ui_vm.h",
