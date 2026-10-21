@@ -188,20 +188,17 @@ int slterminal_close(SLTerminalHandle terminal) {
     int rc = 0;
     if (!t) return EINVAL;
 
-    /* Disconnect both pipe ends before closing ConPTY. The ConPTY API's
-     * shutdown contract is to close the pseudoconsole first, then reap the
-     * hosted process; waiting for the process while the pseudoconsole remains
-     * active can leave cmd.exe attached to a live console and stall teardown. */
+    /* Close the input writer first so the child observes EOF. Keep the
+     * output reader open while ConPTY shuts down: ClosePseudoConsole may need
+     * to drain final console output, and closing the read end first can stall
+     * teardown inside the ConPTY shutdown path. */
     if (t->input_write && !CloseHandle(t->input_write)) rc = (int)GetLastError();
     t->input_write = NULL;
-    if (t->output_read && !CloseHandle(t->output_read) && rc == 0)
-        rc = (int)GetLastError();
-    t->output_read = NULL;
 
     if (t->console) ClosePseudoConsole(t->console);
     t->console = NULL;
 
-    /* Never wait indefinitely for a child after the console is disconnected. */
+    /* Reap the child only after disconnecting the pseudoconsole. */
     wait_result = WaitForSingleObject(t->process, 3000);
     if (wait_result == WAIT_TIMEOUT) {
         if (!TerminateProcess(t->process, ERROR_PROCESS_ABORTED)) {
@@ -213,6 +210,10 @@ int slterminal_close(SLTerminalHandle terminal) {
     if (wait_result != WAIT_OBJECT_0 && rc == 0) {
         rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
     }
+
+    if (t->output_read && !CloseHandle(t->output_read) && rc == 0)
+        rc = (int)GetLastError();
+    t->output_read = NULL;
 
     if (t->process && !CloseHandle(t->process) && rc == 0)
         rc = (int)GetLastError();
