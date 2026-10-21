@@ -142,6 +142,15 @@ typedef enum {
     SLUI_FN_POPUP_SET_OPEN,     /* uiPopupSetOpen(popup:i, open:i) -> null */
     SLUI_FN_POPUP_IS_OPEN,      /* uiPopupIsOpen(popup:i) -> int */
     SLUI_FN_WIFI_OPEN_SETTINGS, /* uiWifiOpenSettings() -> status */
+    SLUI_FN_WIFI_SCAN,          /* uiWifiScan() -> status */
+    SLUI_FN_WIFI_NETWORK_COUNT, /* uiWifiNetworkCount() -> int */
+    SLUI_FN_WIFI_NETWORK_SSID,  /* uiWifiNetworkSsid(index:i) -> string */
+    SLUI_FN_WIFI_NETWORK_BSSID, /* uiWifiNetworkBssid(index:i) -> string */
+    SLUI_FN_WIFI_NETWORK_SIGNAL,/* uiWifiNetworkSignal(index:i) -> int */
+    SLUI_FN_WIFI_NETWORK_SECURITY,/* uiWifiNetworkSecurity(index:i) -> string */
+    SLUI_FN_WIFI_CONNECT,       /* uiWifiConnect(index:i, profile:s) -> status */
+    SLUI_FN_WIFI_DISCONNECT,    /* uiWifiDisconnect() -> status */
+    SLUI_FN_WIFI_STATUS_NAME,   /* uiWifiStatusName(status:i) -> string */
 
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;
