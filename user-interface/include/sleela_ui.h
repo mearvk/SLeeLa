@@ -428,6 +428,15 @@ void slui_widget_set_size_request(SLUIWidget *w, int min_w, int min_h);
 void slui_widget_set_sensitive(SLUIWidget *w, int sensitive); /* grey out     */
 void slui_widget_set_visible(SLUIWidget *w, int visible);
 
+/* Popup panel primitive. Creates a themed card under parent, initially hidden.
+ * Call slui_popup_set_open(panel, 1) to show it and 0 to dismiss it. The panel
+ * is owned by its parent like every other widget; set_open never frees it.
+ * This is a layout-hosted popup surface (not a separate native window), so the
+ * caller should place it in an appropriate overlay/stack container. */
+SLUIWidget *slui_popup_create(SLUIWidget *parent);
+void slui_popup_set_open(SLUIWidget *popup, int open);
+int slui_popup_is_open(const SLUIWidget *popup);
+
 /* Text accessors (label/button/entry). text buffers are copied in; `out`/`cap`
  * read the current value and return the full length (even if truncated). */
 void slui_widget_set_text(SLUIWidget *w, const char *text);
