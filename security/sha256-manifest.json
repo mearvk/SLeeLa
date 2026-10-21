@@ -359,7 +359,7 @@
     },
     {
       "path": "impl/core/sleela_ui_vm.c",
-      "sha256": "e71a13ad0b1a98c564169e537fa37e47d9aa2babe458d8e8980524f1da24326e"
+      "sha256": "f9d7753e7504a6906f83e36d3bd29e6e43dc3b2744626bb3779a96168c8c3c34"
     },
     {
       "path": "impl/core/sleela_ui_vm.h",
@@ -46143,7 +46143,7 @@
     },
     {
       "path": "lib/user-interface/SLWindow.sleela",
-      "sha256": "2a00f4b3b29a104bf2a5c41e214b2fe71eee80f99ac9f774bfa7f3397c87eb1e"
+      "sha256": "ae8d6d2f56b4ac29613336727d342045dfe82490a52651577ee14db7247328ca"
     },
     {
       "path": "lib/user-interface/gui-app-demo.sleela",
