@@ -1,0 +1,51 @@
+/*
+ * lib/character/james-cameron/JamesCameronHumanEvent.sleela
+ * Record for a publicly documented professional event.
+ * Event means a published appearance, premiere, interview, award, or work
+ * announcement—not inferred private activity or real-time whereabouts.
+ */
+#sleela 2.1
+
+class JamesCameronHumanEvent {
+  String eventId;
+  String eventType;
+  String eventDate;
+  String publicDescription;
+  String sourceUrl;
+  String publicationDate;
+  String verificationStatus;
+
+  void load() {
+    eventId = "";
+    eventType = "unspecified";
+    eventDate = "";
+    publicDescription = "";
+    sourceUrl = "";
+    publicationDate = "";
+    verificationStatus = "unverified";
+  }
+
+  void configure(String id, String type, String date, String description,
+                 String source, String published) {
+    if (id != null) { eventId = id; }
+    if (type != null) { eventType = type; }
+    if (date != null) { eventDate = date; }
+    if (description != null) { publicDescription = description; }
+    if (source != null) { sourceUrl = source; }
+    if (published != null) { publicationDate = published; }
+    verificationStatus = "needs-review";
+  }
+
+  boolean hasSource() {
+    return sourceUrl != null && sourceUrl.length() > 0;
+  }
+
+  boolean markVerified() {
+    if (!hasSource()) { return false; }
+    verificationStatus = "verified";
+    return true;
+  }
+
+  String status() { return verificationStatus; }
+  String date() { return eventDate; }
+}
