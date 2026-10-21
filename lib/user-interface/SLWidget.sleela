@@ -70,6 +70,19 @@ class SLWidget {
   }
 
   // ---- Accents -----------------------------------------------------------
+  // Create a reusable hidden popup panel within a parent layout. The caller
+  // should place it in a stack/overlay-capable container and manage visibility.
+  int createPopupPanel() {
+    if (widget < 0) return -1;
+    return uiPopupCreate(widget);
+  }
+  void setPopupOpen(int popupHandle, boolean open) {
+    if (popupHandle >= 0) uiPopupSetOpen(popupHandle, open ? 1 : 0);
+  }
+  boolean isPopupOpen(int popupHandle) {
+    return popupHandle >= 0 && uiPopupIsOpen(popupHandle) != 0;
+  }
+
   // Mark this as the SINGLE suggested (accent) action in its group.
   void setSuggested(boolean suggested) {
     if (widget >= 0) { uiWidgetSuggested(widget, suggested ? 1 : 0); }
