@@ -355,11 +355,11 @@
     },
     {
       "path": "impl/core/sleela_ui_ids.h",
-      "sha256": "f5a671db44e3487e7670a83e8b7edc2b7ff4fb081d8c610c57066ddfdafa0453"
+      "sha256": "e1e5e890523b17f4769077fd8bd102c23d8a24c2857aae4682847184a7082f07"
     },
     {
       "path": "impl/core/sleela_ui_vm.c",
-      "sha256": "f9d7753e7504a6906f83e36d3bd29e6e43dc3b2744626bb3779a96168c8c3c34"
+      "sha256": "c77723e770ea818ba16a2fcdc8cdc0860e205171af8a6f139f77eb75b205dd72"
     },
     {
       "path": "impl/core/sleela_ui_vm.h",
@@ -411,7 +411,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "e922c68ea06923198347fbc97246b849c311306afc43b4f51f0e04368c1df556"
+      "sha256": "7d42213e71c729f8f3d210e5b2acd4b53020f2c254524bd0274a34baa8255055"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -45875,7 +45875,7 @@
     },
     {
       "path": "lib/user-interface/SLButton.sleela",
-      "sha256": "1e6f30265c65235f0498470472078921282c50514079c582c9f4efb19276f26d"
+      "sha256": "03741ef87756cc1823771e4e57ec7405ca489e7a75acc3b343f6c8937b38c2c5"
     },
     {
       "path": "lib/user-interface/SLCalculus8.sleela",
@@ -45992,6 +45992,10 @@
     {
       "path": "lib/user-interface/SLHeading.sleela",
       "sha256": "bbbc4cab6964150a7446b419e4c68e2d360f73c0e2bd33c79ea38928deb30446"
+    },
+    {
+      "path": "lib/user-interface/SLIcon.sleela",
+      "sha256": "63407dc45da5b026fd029d52268873ded7d318c0a7994d1e2ce7d6378c4910cb"
     },
     {
       "path": "lib/user-interface/SLImage.sleela",
