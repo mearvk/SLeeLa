@@ -1,0 +1,21 @@
+/*
+ * Generation-specific SLeeLa Wi-Fi 4 profile facade.
+ */
+#sleela 2.1
+class SLWifi4Manager {
+  Wifi4Model model;
+  SLWifiManager manager;
+
+  void configure() {
+    model = new Wifi4Model();
+    manager = new SLWifiManager();
+    manager.configure();
+  }
+
+  String generation() { return "Wi-Fi 4"; }
+  String standard() { return "IEEE 802.11n"; }
+  boolean supportsChannelWidth(int widthMHz) { return model.isValidChannelWidth(widthMHz); }
+  boolean supportsSpatialStreams(int streams) { return model.isValidSpatialStreamCount(streams); }
+  boolean needsRuntimeDiscovery() { return model.needsRuntimeDiscovery() == 1; }
+  SLWifiManager wifiManager() { return manager; }
+}

@@ -1,0 +1,53 @@
+/*
+ * lib/wifi/SLWifiSecurity.sleela
+ * Security identifiers match wifi_security_t in wifi_manager.h.
+ */
+#sleela 2.1
+class SLWifiSecurity {
+  static final int UNKNOWN = 0;
+  static final int OPEN = 1;
+  static final int WEP = 2;
+  static final int WPA_PERSONAL = 3;
+  static final int WPA2_PERSONAL = 4;
+  static final int WPA3_PERSONAL = 5;
+  static final int OWE = 6;
+  static final int WPA_ENTERPRISE = 7;
+  static final int WPA2_ENTERPRISE = 8;
+  static final int WPA3_ENTERPRISE = 9;
+
+  int rank(int security) {
+    if (security == OPEN) { return 0; }
+    if (security == WEP) { return 1; }
+    if (security == WPA_PERSONAL || security == WPA_ENTERPRISE) { return 3; }
+    if (security == WPA2_PERSONAL || security == WPA2_ENTERPRISE || security == OWE) { return 4; }
+    if (security == WPA3_PERSONAL || security == WPA3_ENTERPRISE) { return 5; }
+    return -1;
+  }
+
+  String name(int security) {
+    if (security == OPEN) { return "Open"; }
+    if (security == WEP) { return "WEP (legacy)"; }
+    if (security == WPA_PERSONAL) { return "WPA-Personal"; }
+    if (security == WPA2_PERSONAL) { return "WPA2-Personal"; }
+    if (security == WPA3_PERSONAL) { return "WPA3-Personal"; }
+    if (security == OWE) { return "Enhanced Open (OWE)"; }
+    if (security == WPA_ENTERPRISE) { return "WPA-Enterprise"; }
+    if (security == WPA2_ENTERPRISE) { return "WPA2-Enterprise"; }
+    if (security == WPA3_ENTERPRISE) { return "WPA3-Enterprise"; }
+    return "Unknown";
+  }
+
+  boolean isEnterprise(int security) {
+    return security == WPA_ENTERPRISE || security == WPA2_ENTERPRISE ||
+           security == WPA3_ENTERPRISE;
+  }
+
+  boolean isPersonal(int security) {
+    return security == WPA_PERSONAL || security == WPA2_PERSONAL ||
+           security == WPA3_PERSONAL;
+  }
+
+  boolean isLegacy(int security) {
+    return security == WEP || security == WPA_PERSONAL || security == WPA_ENTERPRISE;
+  }
+}

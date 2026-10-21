@@ -1,0 +1,154 @@
+/*
+ * lib/wifi/SLWifiManager.sleela
+ * SLeeLa object model/facade for the native wifi_manager_t C API.
+ *
+ * Bridge boundary: this class owns request/state/policy semantics; it does not
+ * simulate a live radio. A host SLVM binding must connect its scan/select/connect/
+ * disconnect methods to wifi_manager_scan/select/connect/disconnect. Until that
+ * binding is installed operations return BRIDGE_REQUIRED or BACKEND_UNAVAILABLE.
+ */
+#sleela 2.1
+class SLWifiManager {
+  static final int STATE_NEW = 0;
+  static final int STATE_BRIDGE_READY = 1;
+  static final int STATE_SCANNING = 2;
+  static final int STATE_SCANNED = 3;
+  static final int STATE_CONNECTING = 4;
+  static final int STATE_CONNECTED = 5;
+  static final int STATE_DISCONNECTED = 6;
+  static final int STATE_FAILED = 7;
+
+  int nativeHandle;
+  int state;
+  int lastStatus;
+  int lastScanCount;
+  SLWifiNetwork selectedNetwork;
+  SLWifiSecurityPolicy policy;
+
+  void configure() {
+    nativeHandle = -1;
+    state = STATE_NEW;
+    lastStatus = SLWifiStatus.BRIDGE_REQUIRED;
+    lastScanCount = 0;
+    selectedNetwork = null;
+    policy = new SLWifiSecurityPolicy();
+    policy.configureDefaults();
+  }
+
+  boolean bindNativeHandle(int handle) {
+    if (handle < 0) {
+      nativeHandle = -1;
+      state = STATE_NEW;
+      lastStatus = SLWifiStatus.BACKEND_UNAVAILABLE;
+      return false;
+    }
+    nativeHandle = handle;
+    state = STATE_BRIDGE_READY;
+    lastStatus = SLWifiStatus.OK;
+    return true;
+  }
+
+  boolean nativeReady() { return nativeHandle >= 0 && state != STATE_FAILED; }
+  int handle() { return nativeHandle; }
+  int managerState() { return state; }
+  int status() { return lastStatus; }
+  int scanCount() { return lastScanCount; }
+  SLWifiSecurityPolicy securityPolicy() { return policy; }
+
+  int beginScanRequest() {
+    if (!nativeReady()) {
+      lastStatus = SLWifiStatus.BRIDGE_REQUIRED;
+      return lastStatus;
+    }
+    state = STATE_SCANNING;
+    lastScanCount = 0;
+    return SLWifiStatus.OK;
+  }
+
+  int acceptScanResult(int statusCode, int count) {
+    if (state != STATE_SCANNING) {
+      lastStatus = SLWifiStatus.INVALID_ARGUMENT;
+      return lastStatus;
+    }
+    if (statusCode != SLWifiStatus.OK && statusCode != SLWifiStatus.BUFFER_TOO_SMALL) {
+      state = STATE_FAILED;
+      lastStatus = statusCode;
+      return lastStatus;
+    }
+    if (count < 0) {
+      state = STATE_FAILED;
+      lastStatus = SLWifiStatus.INVALID_ARGUMENT;
+      return lastStatus;
+    }
+    lastScanCount = count;
+    state = STATE_SCANNED;
+    lastStatus = statusCode;
+    return lastStatus;
+  }
+
+  boolean selectNetwork(SLWifiNetwork network) {
+    if (state != STATE_SCANNED || network == null || !network.hasIdentity()) {
+      lastStatus = SLWifiStatus.INVALID_ARGUMENT;
+      return false;
+    }
+    selectedNetwork = network;
+    lastStatus = SLWifiStatus.OK;
+    return true;
+  }
+
+  int authorizeConnection(SLWifiCredentials credentials) {
+    if (!nativeReady()) {
+      lastStatus = SLWifiStatus.BRIDGE_REQUIRED;
+      return lastStatus;
+    }
+    if (selectedNetwork == null) {
+      lastStatus = SLWifiStatus.NETWORK_NOT_FOUND;
+      return lastStatus;
+    }
+    if (!policy.allowsNetwork(selectedNetwork)) {
+      lastStatus = SLWifiStatus.POLICY_BLOCKED;
+      return lastStatus;
+    }
+    if (credentials == null || !credentials.isValid()) {
+      lastStatus = SLWifiStatus.AUTH_REQUIRED;
+      return lastStatus;
+    }
+    state = STATE_CONNECTING;
+    lastStatus = SLWifiStatus.OK;
+    return lastStatus;
+  }
+
+  int acceptConnectionResult(int statusCode) {
+    if (state != STATE_CONNECTING) {
+      lastStatus = SLWifiStatus.INVALID_ARGUMENT;
+      return lastStatus;
+    }
+    lastStatus = statusCode;
+    state = statusCode == SLWifiStatus.OK ? STATE_CONNECTED : STATE_FAILED;
+    return lastStatus;
+  }
+
+  int acceptDisconnectResult(int statusCode) {
+    lastStatus = statusCode;
+    if (statusCode == SLWifiStatus.OK || statusCode == SLWifiStatus.NOT_CONNECTED) {
+      state = STATE_DISCONNECTED;
+      selectedNetwork = null;
+    } else {
+      state = STATE_FAILED;
+    }
+    return lastStatus;
+  }
+
+  void clearCredentials(SLWifiCredentials credentials) {
+    if (credentials != null) { credentials.clear(); }
+  }
+
+  void reset() {
+    nativeHandle = -1;
+    state = STATE_NEW;
+    lastStatus = SLWifiStatus.BRIDGE_REQUIRED;
+    lastScanCount = 0;
+    selectedNetwork = null;
+    policy.configureDefaults();
+  }
+}

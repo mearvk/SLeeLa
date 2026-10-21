@@ -11,6 +11,16 @@ extern "C" {
 #define WIFI_SSID_MAX_BYTES 32u
 #define WIFI_BSSID_TEXT_SIZE 18u
 #define WIFI_MAX_SCAN_RESULTS 128u
+#define WIFI_SIGNAL_PERCENT_MAX 100u
+#define WIFI_MIN_PERSONAL_PASSPHRASE_BYTES 8u
+#define WIFI_MAX_PERSONAL_PASSPHRASE_BYTES 63u
+#define WIFI_RAW_PSK_HEX_BYTES 64u
+
+#define WIFI_DEFAULT_MINIMUM_SECURITY_RANK 4
+#define WIFI_DEFAULT_ALLOW_OPEN_NETWORKS 0
+#define WIFI_DEFAULT_ALLOW_LEGACY_WEP 0
+#define WIFI_DEFAULT_REQUIRE_ENTERPRISE_TLS_VALIDATION 1
+#define WIFI_DEFAULT_REQUIRE_PROTECTED_MANAGEMENT_FRAMES 0
 
 typedef enum {
     WIFI_STATUS_OK = 0, WIFI_STATUS_INVALID_ARGUMENT,
@@ -54,7 +64,7 @@ typedef struct {
 } wifi_auth_t;
 
 typedef struct {
-    int minimum_security_rank; /* default 4: WPA2/OWE or stronger */
+    int minimum_security_rank;
     int allow_open_networks;
     int allow_legacy_wep;
     int require_enterprise_tls_validation;

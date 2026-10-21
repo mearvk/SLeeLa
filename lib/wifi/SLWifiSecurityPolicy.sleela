@@ -1,0 +1,50 @@
+/*
+ * lib/wifi/SLWifiSecurityPolicy.sleela
+ * Defaults align with wifi_security_policy_default() in wifi_manager.c.
+ */
+#sleela 2.1
+class SLWifiSecurityPolicy {
+  static final int DEFAULT_MINIMUM_SECURITY_RANK = 4;
+  int minimumSecurityRank;
+  int allowOpenNetworks;
+  int allowLegacyWep;
+  int requireEnterpriseTlsValidation;
+  int requireProtectedManagementFrames;
+
+  void configureDefaults() {
+    minimumSecurityRank = DEFAULT_MINIMUM_SECURITY_RANK;
+    allowOpenNetworks = 0;
+    allowLegacyWep = 0;
+    requireEnterpriseTlsValidation = 1;
+    requireProtectedManagementFrames = 0;
+  }
+
+  boolean valid() {
+    return minimumSecurityRank >= 0 && minimumSecurityRank <= 5 &&
+           binaryValue(allowOpenNetworks) && binaryValue(allowLegacyWep) &&
+           binaryValue(requireEnterpriseTlsValidation) &&
+           binaryValue(requireProtectedManagementFrames);
+  }
+
+  boolean binaryValue(int value) { return value == 0 || value == 1; }
+
+  boolean allows(int security) {
+    SLWifiSecurity catalogue = new SLWifiSecurity();
+    int rank = catalogue.rank(security);
+    if (!valid() || rank < 0 || rank < minimumSecurityRank) { return false; }
+    if (security == SLWifiSecurity.OPEN && allowOpenNetworks != 1) { return false; }
+    if (security == SLWifiSecurity.WEP && allowLegacyWep != 1) { return false; }
+    return true;
+  }
+
+  boolean allowsNetwork(SLWifiNetwork network) {
+    if (network == null || !network.hasIdentity() || !network.signalIsValid()) { return false; }
+    if (!allows(network.securityKind())) { return false; }
+    if (requireProtectedManagementFrames == 1 && !network.pmfIsEnabled()) { return false; }
+    return true;
+  }
+
+  void setMinimumSecurityRank(int rank) {
+    if (rank >= 0 && rank <= 5) { minimumSecurityRank = rank; }
+  }
+}

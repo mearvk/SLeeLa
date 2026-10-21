@@ -1,0 +1,42 @@
+/*
+ * lib/wifi/SLWifiOOD.sleela
+ * UI-independent OOD entry point for Wi-Fi connectivity surfaces.
+ */
+#sleela 2.1
+class SLWifiOOD {
+  String title;
+  SLWifiManager manager;
+  int visible;
+  int selectedIndex;
+
+  void configure(String panelTitle) {
+    title = panelTitle;
+    manager = new SLWifiManager();
+    manager.configure();
+    visible = 0;
+    selectedIndex = -1;
+  }
+
+  void open() { visible = 1; }
+  void close() { visible = 0; }
+  boolean isVisible() { return visible == 1; }
+  String panelTitle() { return title; }
+  SLWifiManager wifiManager() { return manager; }
+
+  int beginRefresh() {
+    return manager.beginScanRequest();
+  }
+
+  boolean chooseNetwork(int index, SLWifiNetwork network) {
+    if (index < 0 || network == null) { return false; }
+    if (!manager.selectNetwork(network)) { return false; }
+    selectedIndex = index;
+    return true;
+  }
+
+  int selectedNetworkIndex() { return selectedIndex; }
+
+  void resetSelection() {
+    selectedIndex = -1;
+  }
+}

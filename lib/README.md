@@ -15,7 +15,7 @@ SLeeLa is treated as a Turing-complete language whose front end should be expres
 
 The library uses one SLeeLa source file per front-end object. This makes the object inventory measurable and gives the project a path toward a roughly 2,000-object standard library without hiding declarations inside aggregate files.
 
-Families: `core/`, `collections/`, `text/`, `io/`, `vm/`, `os/`, `net/`, `security/`, `opcodes/`, `sldocument/`, `coorenagraph/`, `moral-capacitor/`.
+Families: `core/`, `collections/`, `text/`, `io/`, `vm/`, `os/`, `net/`, `wifi/`, `security/`, `opcodes/`, `sldocument/`, `coorenagraph/`, `moral-capacitor/`.
 
 ### Moral Capacitor™ — the ethical gate for every family
 
@@ -87,6 +87,10 @@ The /lib tree is recursively indexed by the compiler and Nordshrift loader. Curr
 The `sldocument` family defines the `.sldocument` format: an ordered, top-down SLeeLa document that compiles against and with standard `.sleela` source. Its annotated method steps run in order (`@order` / `@function` / bare method name), and each step usually returns a single binary **veritable-and-kind** value (`SLVeritable`). These documents suit tasks more sophisticated than bash scripting and clear national-program work where order is already established. The compile/invoke primitives sit below the explicit VM/OS bridge in `native/src/sleela_sldocument.cpp`. See `sldocument/SLDOCUMENT.md`.
 
 `.sldocument` is a selectable **compile choice** from the SLeeLa compiler: `lib/compiler/SLSourceForm` and `lib/compiler/SLCompileChoice` let the compiler be told (explicitly or by extension) to compile a `.sleela` program or a `.sldocument`. Because a `.sldocument` may leave steps anonymous while a `.sleela` names every method, `sldocument/SLDocumentNaming`, `sldocument/SLSourceNameComparison`, and `sldocument/SLDocumentConverter` provide a deterministic naming convention (keep explicit names, derive from `@function` roles, else synthesize `step003`-style names) so an engineer can convert a `.sldocument` to a fully named `.sleela` for safekeeping without losing its established order.
+
+## Wi-Fi OOD and native connectivity
+
+The `wifi/` package contains the SLeeLa source object model for access-point records, credential modes, security policy, manager state, OOD state, and generation-specific Wi-Fi 4/5/6 facades. Its native counterpart in `wifi-common/` provides the C11 and C++17 operating-system providers for live scanning and connection operations. The SLVM bridge contract is documented in `wifi/WIFI.VM.BRIDGE.md`; a live SLeeLa OOD must bind that native API explicitly and must not report success while the bridge is unavailable. See `wifi/README.md`.
 
 The compiler and Nordshrift share recursive `/lib` discovery; new package directories and source units require no compiler allow-list update.
 

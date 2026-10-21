@@ -21,6 +21,9 @@ int main(void) {
     wifi_manager_t m; wifi_network_t networks[1], selected, forged;
     wifi_security_policy_t policy; wifi_auth_t auth = { WIFI_AUTH_OS_MANAGED, NULL, NULL, NULL, NULL, NULL };
     size_t count = 0u; wifi_security_policy_default(&policy);
+    assert(policy.minimum_security_rank == WIFI_DEFAULT_MINIMUM_SECURITY_RANK);
+    assert(policy.allow_open_networks == WIFI_DEFAULT_ALLOW_OPEN_NETWORKS);
+    assert(policy.allow_legacy_wep == WIFI_DEFAULT_ALLOW_LEGACY_WEP);
     assert(wifi_manager_init(&m, &FAKE, NULL, &policy) == WIFI_STATUS_OK);
     assert(wifi_manager_scan(&m, networks, 1u, &count) == WIFI_STATUS_OK && count == 1u);
     assert(wifi_manager_select(&m, 0u, &selected) == WIFI_STATUS_OK);
@@ -28,6 +31,13 @@ int main(void) {
     forged = selected; (void)snprintf(forged.bssid, sizeof(forged.bssid), "%s", "02:AA:BB:CC:DD:EE");
     assert(wifi_manager_connect(&m, &forged, &auth) == WIFI_STATUS_NETWORK_NOT_FOUND);
     assert(wifi_manager_disconnect(&m) == WIFI_STATUS_OK);
+
+    {
+        wifi_security_policy_t invalid = policy;
+        invalid.allow_open_networks = 2;
+        assert(wifi_manager_init(&m, &FAKE, NULL, &invalid) == WIFI_STATUS_INVALID_ARGUMENT);
+        assert(wifi_manager_scan(&m, networks, 1u, &count) == WIFI_STATUS_INVALID_ARGUMENT);
+    }
 
     {
         wifi_manager_t open_manager;

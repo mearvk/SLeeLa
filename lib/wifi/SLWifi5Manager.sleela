@@ -1,0 +1,21 @@
+/*
+ * Generation-specific SLeeLa Wi-Fi 5 profile facade.
+ */
+#sleela 2.1
+class SLWifi5Manager {
+  Wifi5Model model;
+  SLWifiManager manager;
+
+  void configure() {
+    model = new Wifi5Model();
+    manager = new SLWifiManager();
+    manager.configure();
+  }
+
+  String generation() { return "Wi-Fi 5"; }
+  String standard() { return "IEEE 802.11ac"; }
+  boolean supportsChannelWidth(int widthMHz) { return model.isValidChannelWidth(widthMHz); }
+  boolean supportsSpatialStreams(int streams) { return model.isValidSpatialStreamCount(streams); }
+  boolean needsRuntimeDiscovery() { return model.needsRuntimeDiscovery() == 1; }
+  SLWifiManager wifiManager() { return manager; }
+}

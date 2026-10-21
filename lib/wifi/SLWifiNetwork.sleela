@@ -1,0 +1,44 @@
+/*
+ * lib/wifi/SLWifiNetwork.sleela
+ * One discovered access-point record. The native provider validates again at connect time.
+ */
+#sleela 2.1
+class SLWifiNetwork {
+  String ssid;
+  String bssid;
+  int channel;
+  int frequencyMHz;
+  int signalPercent;
+  int security;
+  int inUse;
+  int protectedManagementFrames;
+
+  void configure(String networkSsid, String accessPointBssid, int channelNumber,
+                 int frequency, int signal, int securityKind, int connected,
+                 int pmfStatus) {
+    ssid = networkSsid;
+    bssid = accessPointBssid;
+    channel = channelNumber;
+    frequencyMHz = frequency;
+    signalPercent = signal;
+    security = securityKind;
+    inUse = connected;
+    protectedManagementFrames = pmfStatus;
+  }
+
+  boolean hasIdentity() {
+    return ssid != null && ssid != "" && bssid != null && bssid != "";
+  }
+
+  boolean signalIsValid() { return signalPercent >= 0 && signalPercent <= 100; }
+  boolean pmfIsKnown() { return protectedManagementFrames == 0 || protectedManagementFrames == 1; }
+  boolean pmfIsEnabled() { return protectedManagementFrames == 1; }
+  boolean connected() { return inUse == 1; }
+
+  String networkName() { return ssid; }
+  String accessPointAddress() { return bssid; }
+  int securityKind() { return security; }
+  int signalStrengthPercent() { return signalPercent; }
+  int channelNumber() { return channel; }
+  int frequencyInMHz() { return frequencyMHz; }
+}

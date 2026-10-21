@@ -1,0 +1,46 @@
+#sleela 2.1
+/*
+ * A model/policy smoke example. It does not access a physical radio.
+ * The live OOD must bind SLWifiManager to a native SLVM bridge.
+ */
+class WifiOODPolicySmoke {
+  int run() {
+    SLWifiSecurityPolicy policy = new SLWifiSecurityPolicy();
+    policy.configureDefaults();
+    if (!policy.valid()) { return 1; }
+    if (policy.minimumSecurityRank != 4) { return 2; }
+    if (policy.allowOpenNetworks != 0 || policy.allowLegacyWep != 0) { return 3; }
+
+    SLWifiNetwork secureNetwork = new SLWifiNetwork();
+    secureNetwork.configure("SLeeLa-Lab", "02:11:22:33:44:55", 36, 5180, 80,
+                            SLWifiSecurity.WPA2_PERSONAL, 0, 1);
+    if (!policy.allowsNetwork(secureNetwork)) { return 4; }
+
+    SLWifiNetwork openNetwork = new SLWifiNetwork();
+    openNetwork.configure("Unprotected-Lab", "02:11:22:33:44:66", 1, 2412, 60,
+                          SLWifiSecurity.OPEN, 0, 0);
+    if (policy.allowsNetwork(openNetwork)) { return 5; }
+
+    SLWifiCredentials credentials = new SLWifiCredentials();
+    credentials.configureOSManaged();
+    if (!credentials.isValid()) { return 6; }
+
+    SLWifiManager manager = new SLWifiManager();
+    manager.configure();
+    if (manager.beginScanRequest() != SLWifiStatus.BRIDGE_REQUIRED) { return 7; }
+
+    SLWifi4Manager wifi4 = new SLWifi4Manager();
+    wifi4.configure();
+    if (!wifi4.supportsChannelWidth(40)) { return 8; }
+
+    SLWifi5Manager wifi5 = new SLWifi5Manager();
+    wifi5.configure();
+    if (!wifi5.supportsChannelWidth(80)) { return 9; }
+
+    SLWifi6Manager wifi6 = new SLWifi6Manager();
+    wifi6.configure();
+    if (wifi6.allows6GHzAsGenericWifi6()) { return 10; }
+
+    return 0;
+  }
+}

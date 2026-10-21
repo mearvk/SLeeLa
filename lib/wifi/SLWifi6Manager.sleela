@@ -1,0 +1,22 @@
+/*
+ * Generation-specific SLeeLa Wi-Fi 6 profile facade.
+ */
+#sleela 2.1
+class SLWifi6Manager {
+  Wifi6Model model;
+  SLWifiManager manager;
+
+  void configure() {
+    model = new Wifi6Model();
+    manager = new SLWifiManager();
+    manager.configure();
+  }
+
+  String generation() { return "Wi-Fi 6"; }
+  String standard() { return "IEEE 802.11ax"; }
+  boolean supportsChannelWidth(int widthMHz) { return model.isValidChannelWidth(widthMHz); }
+  boolean supportsSpatialStreams(int streams) { return model.isValidSpatialStreamCount(streams); }
+  boolean needsRuntimeDiscovery() { return model.needsRuntimeDiscovery() == 1; }
+  boolean allows6GHzAsGenericWifi6() { return model.allows6GHzAsGenericWifi6() == 1; }
+  SLWifiManager wifiManager() { return manager; }
+}

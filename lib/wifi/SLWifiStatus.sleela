@@ -1,0 +1,34 @@
+/*
+ * lib/wifi/SLWifiStatus.sleela
+ * Stable SLeeLa status values matching wifi_status_t in the native API.
+ */
+#sleela 2.1
+class SLWifiStatus {
+  static final int OK = 0;
+  static final int INVALID_ARGUMENT = 1;
+  static final int BACKEND_UNAVAILABLE = 2;
+  static final int BACKEND_ERROR = 3;
+  static final int BUFFER_TOO_SMALL = 4;
+  static final int NETWORK_NOT_FOUND = 5;
+  static final int POLICY_BLOCKED = 6;
+  static final int AUTH_REQUIRED = 7;
+  static final int NOT_CONNECTED = 8;
+  static final int BRIDGE_REQUIRED = 9;
+
+  String name(int code) {
+    if (code == OK) { return "ok"; }
+    if (code == INVALID_ARGUMENT) { return "invalid argument"; }
+    if (code == BACKEND_UNAVAILABLE) { return "native Wi-Fi provider unavailable"; }
+    if (code == BACKEND_ERROR) { return "native Wi-Fi operation failed"; }
+    if (code == BUFFER_TOO_SMALL) { return "output buffer too small"; }
+    if (code == NETWORK_NOT_FOUND) { return "network is not in the latest scan"; }
+    if (code == POLICY_BLOCKED) { return "blocked by security policy"; }
+    if (code == AUTH_REQUIRED) { return "OS-managed authentication or a saved profile is required"; }
+    if (code == NOT_CONNECTED) { return "no active Wi-Fi connection"; }
+    if (code == BRIDGE_REQUIRED) { return "SLVM native Wi-Fi bridge is not bound"; }
+    return "unknown Wi-Fi status";
+  }
+
+  boolean succeeded(int code) { return code == OK; }
+  boolean failed(int code) { return code != OK; }
+}

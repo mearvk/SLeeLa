@@ -34,22 +34,31 @@ static int valid_bssid(const char *s) {
     }
     return 1;
 }
+static int is_binary_value(int value) { return value == 0 || value == 1; }
 static int same_network(const wifi_network_t *a, const wifi_network_t *b) {
     return a && b && strcmp(a->ssid, b->ssid) == 0 &&
            bssid_equal_ci(a->bssid, b->bssid) && a->security == b->security;
 }
 static int valid_network(const wifi_network_t *n) {
     return n && valid_ssid(n->ssid) && valid_bssid(n->bssid) &&
-           n->signal_percent <= 100u && n->security != WIFI_SECURITY_UNKNOWN;
+           n->signal_percent <= WIFI_SIGNAL_PERCENT_MAX &&
+           n->security > WIFI_SECURITY_UNKNOWN && n->security <= WIFI_SECURITY_WPA3_ENTERPRISE;
+}
+static int valid_policy(const wifi_security_policy_t *p) {
+    return p && p->minimum_security_rank >= 0 && p->minimum_security_rank <= 5 &&
+           is_binary_value(p->allow_open_networks) &&
+           is_binary_value(p->allow_legacy_wep) &&
+           is_binary_value(p->require_enterprise_tls_validation) &&
+           is_binary_value(p->require_protected_management_frames);
 }
 
 void wifi_security_policy_default(wifi_security_policy_t *p) {
     if (!p) return;
-    p->minimum_security_rank = 4;
-    p->allow_open_networks = 0;
-    p->allow_legacy_wep = 0;
-    p->require_enterprise_tls_validation = 1;
-    p->require_protected_management_frames = 0;
+    p->minimum_security_rank = WIFI_DEFAULT_MINIMUM_SECURITY_RANK;
+    p->allow_open_networks = WIFI_DEFAULT_ALLOW_OPEN_NETWORKS;
+    p->allow_legacy_wep = WIFI_DEFAULT_ALLOW_LEGACY_WEP;
+    p->require_enterprise_tls_validation = WIFI_DEFAULT_REQUIRE_ENTERPRISE_TLS_VALIDATION;
+    p->require_protected_management_frames = WIFI_DEFAULT_REQUIRE_PROTECTED_MANAGEMENT_FRAMES;
 }
 
 wifi_status_t wifi_manager_init(wifi_manager_t *m, const wifi_backend_t *b,
@@ -59,10 +68,15 @@ wifi_status_t wifi_manager_init(wifi_manager_t *m, const wifi_backend_t *b,
         return WIFI_STATUS_INVALID_ARGUMENT;
     memset(m, 0, sizeof(*m));
     wifi_security_policy_default(&defaults);
-    m->backend = b; m->backend_context = context;
+    m->backend = b;
+    m->backend_context = context;
     m->policy = policy ? *policy : defaults;
-    if (m->policy.minimum_security_rank < 0 || m->policy.minimum_security_rank > 5)
+    if (!valid_policy(&m->policy)) {
+        m->backend = NULL;
+        m->backend_context = NULL;
+        memset(&m->policy, 0, sizeof(m->policy));
         return WIFI_STATUS_INVALID_ARGUMENT;
+    }
     m->initialized = 1;
     return WIFI_STATUS_OK;
 }
@@ -78,7 +92,7 @@ wifi_status_t wifi_manager_scan(wifi_manager_t *m, wifi_network_t *out,
     m->last_scan_count = 0u;
     s = m->backend->scan(m->backend_context, m->last_scan, WIFI_MAX_SCAN_RESULTS, &n);
     if (s != WIFI_STATUS_OK && s != WIFI_STATUS_BUFFER_TOO_SMALL) return s;
-    /* A provider can discover more APs than the bounded OOD cache can retain. */
+    /* The OOD deliberately retains at most the bounded native scan cache. */
     if (n > WIFI_MAX_SCAN_RESULTS) n = WIFI_MAX_SCAN_RESULTS;
     for (i = 0u; i < n; ++i) {
         if (!valid_network(&m->last_scan[i])) continue;
@@ -150,12 +164,15 @@ wifi_status_t wifi_manager_connect(wifi_manager_t *m, const wifi_network_t *sele
             selected->security != WIFI_SECURITY_WPA2_PERSONAL &&
             selected->security != WIFI_SECURITY_WPA3_PERSONAL)
             return WIFI_STATUS_INVALID_ARGUMENT;
-        len = strlen(a->password); hex64 = len == 64u;
+        len = strlen(a->password);
+        hex64 = len == WIFI_RAW_PSK_HEX_BYTES;
         for (j = 0u; hex64 && j < len; ++j)
             if (!isxdigit((unsigned char)a->password[j])) hex64 = 0;
         if (selected->security == WIFI_SECURITY_WPA3_PERSONAL && hex64)
             return WIFI_STATUS_INVALID_ARGUMENT;
-        if ((len < 8u || len > 63u) && !hex64) return WIFI_STATUS_INVALID_ARGUMENT;
+        if ((len < WIFI_MIN_PERSONAL_PASSPHRASE_BYTES ||
+             len > WIFI_MAX_PERSONAL_PASSPHRASE_BYTES) && !hex64)
+            return WIFI_STATUS_INVALID_ARGUMENT;
     } else if (a->mode == WIFI_AUTH_ENTERPRISE_PASSWORD) {
         if (!is_enterprise(selected->security) || !a->username || !*a->username ||
             !a->password || !*a->password) return WIFI_STATUS_AUTH_REQUIRED;
