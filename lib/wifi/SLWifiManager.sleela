@@ -48,7 +48,7 @@ class SLWifiManager {
     return true;
   }
 
-  boolean nativeReady() { return nativeHandle >= 0 && state != STATE_FAILED; }
+  boolean nativeReady() { return nativeHandle >= 0; }
   int handle() { return nativeHandle; }
   int managerState() { return state; }
   int status() { return lastStatus; }
@@ -124,7 +124,7 @@ class SLWifiManager {
       return lastStatus;
     }
     lastStatus = statusCode;
-    state = statusCode == SLWifiStatus.OK ? STATE_CONNECTED : STATE_FAILED;
+    state = statusCode == SLWifiStatus.OK ? STATE_CONNECTED : STATE_SCANNED;
     return lastStatus;
   }
 

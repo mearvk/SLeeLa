@@ -1,6 +1,6 @@
 /*
  * lib/wifi/SLWifiStatus.sleela
- * Stable SLeeLa status values matching wifi_status_t in the native API.
+ * Status values 0-8 match wifi_status_t; 9 is a SLeeLa-only bridge state.
  */
 #sleela 2.1
 class SLWifiStatus {
