@@ -299,6 +299,21 @@ SLUIWidget* slui_frame(SLUIWidget* parent, const char* title) {
 SLUIWidget* slui_card(SLUIWidget* parent) {
     return attach(parent, std::make_unique<slui::Card>());
 }
+
+/* Shared popup surface: a normal themed card with explicit open/close state.
+ * It remains owned by the parent widget tree, so dismissal is safe and does
+ * not invalidate a handle retained by the SLeeLa VM. */
+SLUIWidget* slui_popup_create(SLUIWidget* parent) {
+    SLUIWidget* popup = slui_card(parent);
+    if (popup) slui_widget_set_visible(popup, 0);
+    return popup;
+}
+void slui_popup_set_open(SLUIWidget* popup, int open) {
+    slui_widget_set_visible(popup, open != 0);
+}
+int slui_popup_is_open(const SLUIWidget* popup) {
+    return popup ? as_widget(popup)->visible() : 0;
+}
 SLUIWidget* slui_grid(SLUIWidget* parent, int columns, int spacing) {
     return attach(parent, std::make_unique<slui::Grid>(columns, spacing));
 }
