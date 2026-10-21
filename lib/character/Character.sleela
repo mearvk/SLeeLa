@@ -1,41 +1,38 @@
 /*
  * lib/character/Character.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines Character, the central Master Class of the character
- *   package — a named actor in the Sleela economy who adopts exactly one
- *   BusinessModel and lives or dies by its monthly profit. A Character is
- *   classful by design: it is one class that composes any one of the many,
- *   many business-model classes in this package.
+ * SLeeLa Character base model.
  *
- * Character is a NATURAL / LOADABLE MODULE sharing the common module contract
- * (load / loaded / moduleName / describe). It holds a BusinessModel reference
- * typed to the base class, so it can carry a Subscription, Freemium,
- * Marketplace, Advertising, Retail, Wholesale, Franchise, Licensing, SaaS,
- * Consulting, Manufacturing, or Brokerage model interchangeably and ask it, each
- * month, the only question that matters. The polymorphism follows the exact
- * base/subclass pattern used by lib/compiler's SLLanguageCompiler front ends.
- *
- * It also carries a little personality — grit and reputation — because a
- * business model is only as good as the Character running it.
- *
- * Family: character. Settlement crosses an explicit bridge to the ledger.
+ * Character retains its existing optional BusinessModel/economy behavior and
+ * also exposes a neutral, optional life-capability profile for human or
+ * fictional character simulations. Capability values are scenario inputs, not
+ * clinical, psychometric, or factual assessments. Zero means unknown/unset.
  */
 #sleela 2.1
-// Unified SLeeLa SDK front-end object.
 class Character {
 
   static final String MODULE = "Character";
 
-  int loadedFlag;        // 1 once the module is loaded
-  String name;           // who this Character is
-  String tagline;        // their elevator pitch, mercifully short
-  int grit;              // 0..100 — how many bad months they can stomach
-  int reputation;        // 0..100 — grows with profit, bruises with loss
-  int cashCents;         // running cash on hand
+  int loadedFlag;
+  String name;
+  String tagline;
+  int grit;
+  int reputation;
+  int cashCents;
+  BusinessModel model;
 
-  BusinessModel model;   // the one model they live by (any concrete subclass)
+  // Optional life-capability profile. Scale: 1..30; 0 = unknown.
+  int intelligence;
+  int creativity;
+  int systemsThinking;
+  int technicalInnovation;
+  int execution;
+  int exploration;
+  int collaboration;
+  int resilience;
+  int sustainability;
+  String capabilityProfileStatus;
+  String capabilityProfileSource;
 
-  // --- loadable-module contract ------------------------------------------
   void load() {
     loadedFlag = 1;
     name = "Nameless Founder";
@@ -44,11 +41,22 @@ class Character {
     reputation = 50;
     cashCents = 0;
     model = null;
+    intelligence = 0;
+    creativity = 0;
+    systemsThinking = 0;
+    technicalInnovation = 0;
+    execution = 0;
+    exploration = 0;
+    collaboration = 0;
+    resilience = 0;
+    sustainability = 0;
+    capabilityProfileStatus = "unknown";
+    capabilityProfileSource = "";
   }
+
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // Introduce the Character and give them a little personality.
   void introduce(String who, String pitch, int startingGrit, int startingCash) {
     if (who != null) { name = who; }
     if (pitch != null) { tagline = pitch; }
@@ -57,17 +65,9 @@ class Character {
     if (startingCash >= 0) { cashCents = startingCash; }
   }
 
-  // Adopt a business model. Any concrete BusinessModel subclass will do — the
-  // Character does not care which, only whether it makes money. This is the
-  // whole point of a base-typed reference holding a subclass instance.
-  void adopt(BusinessModel chosen) {
-    model = chosen;
-  }
-
+  void adopt(BusinessModel chosen) { model = chosen; }
   boolean hasModel() { return model != null && model.ready(); }
 
-  // Live one month: realize the model's profit into cash and let it move the
-  // Character's reputation and grit. Returns the profit for the month.
   int liveAMonth() {
     if (!hasModel()) { return 0; }
     int profit = model.monthlyProfit();
@@ -77,12 +77,11 @@ class Character {
       grit = clamp(grit + 1);
     } else {
       reputation = clamp(reputation - 2);
-      grit = clamp(grit - 5);   // a losing month really takes it out of you
+      grit = clamp(grit - 5);
     }
     return profit;
   }
 
-  // Run several months and report the total profit realized.
   int runMonths(int months) {
     int total = 0;
     int i = 0;
@@ -93,10 +92,57 @@ class Character {
     return total;
   }
 
-  // The question every Character secretly asks at 3am.
+  // Zero explicitly represents an unknown stat; populated scores use 1..30.
+  boolean setLifeCapabilities(int intel, int create, int systems, int innovation,
+                              int execute, int explore, int collaborate,
+                              int recover, int sustain, String status, String source) {
+    if (!validStat(intel) || !validStat(create) || !validStat(systems)
+        || !validStat(innovation) || !validStat(execute) || !validStat(explore)
+        || !validStat(collaborate) || !validStat(recover) || !validStat(sustain)) {
+      return false;
+    }
+    intelligence = intel;
+    creativity = create;
+    systemsThinking = systems;
+    technicalInnovation = innovation;
+    execution = execute;
+    exploration = explore;
+    collaboration = collaborate;
+    resilience = recover;
+    sustainability = sustain;
+    if (status != null) { capabilityProfileStatus = status; }
+    if (source != null) { capabilityProfileSource = source; }
+    return true;
+  }
+
+  boolean validStat(int value) { return value >= 0 && value <= 30; }
+
+  // Classic ability-score modifier; a game/simulation convention only.
+  int intelligenceModifier() {
+    if (intelligence == 0) { return 0; }
+    return floorHalf(intelligence - 10);
+  }
+
+  // Normalized planning index, not measured human cognitive throughput.
+  // INT 10 -> 100; each point above/below 10 shifts index by five.
+  int intelligencePlanningIndex() {
+    if (intelligence == 0) { return 0; }
+    return 100 + (intelligence - 10) * 5;
+  }
+
+  int floorHalf(int value) {
+    if (value >= 0) { return value / 2; }
+    return (value - 1) / 2;
+  }
+
+  boolean hasLifeCapabilities() {
+    return intelligence > 0 || creativity > 0 || systemsThinking > 0
+        || technicalInnovation > 0 || execution > 0 || exploration > 0
+        || collaboration > 0 || resilience > 0 || sustainability > 0;
+  }
+
   boolean stillStanding() { return cashCents >= 0 && grit > 0; }
   boolean thriving() { return hasModel() && model.profitable() && reputation >= 60; }
-
   int cash() { return cashCents; }
   int reputationScore() { return reputation; }
   int gritScore() { return grit; }
@@ -115,7 +161,7 @@ class Character {
   String describe() {
     return MODULE + " name=" + name + " model=" + modelName()
          + " cash=" + cashCents + " reputation=" + reputation
-         + " grit=" + grit + " thriving=" + yn(thriving())
-         + " standing=" + yn(stillStanding());
+         + " grit=" + grit + " lifeCapabilities=" + yn(hasLifeCapabilities())
+         + " thriving=" + yn(thriving()) + " standing=" + yn(stillStanding());
   }
 }
