@@ -152,7 +152,14 @@ public:
     void set_expand(bool h, bool v) { hexpand_ = h; vexpand_ = v; }
     void set_size_request(int w, int h) { min_w_ = w; min_h_ = h; }
     void set_sensitive(bool s) { sensitive_ = s; invalidate(); }
-    void set_visible(bool v) { visible_ = v; }
+    /* Visibility affects both layout and paint; invalidate only on a real
+     * transition so dropdowns/popovers appear immediately without redraw loops. */
+    void set_visible(bool v) {
+        if (visible_ != v) {
+            visible_ = v;
+            invalidate();
+        }
+    }
     bool visible() const { return visible_; }
     bool hexpand() const { return hexpand_; }
     bool vexpand() const { return vexpand_; }
