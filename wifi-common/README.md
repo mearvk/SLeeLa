@@ -16,13 +16,13 @@ This shared control layer sits above the Wi-Fi 4/5/6 reference profiles. It prov
 
 Linux: compile src/wifi_manager.c and src/wifi_backend_nmcli.c with C11, -D_POSIX_C_SOURCE=200809L, -Iinclude.
 
-Windows: compile src/wifi_manager.c and src/wifi_backend_windows.c with the Windows SDK; link wlanapi and ole32.
+Windows: compile src/wifi_manager.c and src/wifi_backend_windows.c with the Windows SDK; link wlanapi and ole32. The native provider uses an in-memory temporary profile for WPA-Personal/WPA2-Personal/WPA3-Personal connection requests, supports the Windows credential prompt when no passphrase is supplied, wipes the temporary profile buffer after WlanConnect returns, and requires a trusted OS-managed profile for enterprise 802.1X.
 
-macOS: compile src/wifi_manager.c as C and src/wifi_backend_macos.mm as Objective-C++; link CoreWLAN, Foundation and Security frameworks, and link the final app with clang++.
+macOS: compile src/wifi_manager.c as C and src/wifi_backend_macos.mm as Objective-C++; link CoreWLAN, Foundation and Security frameworks, and link the final app with clang++. Personal passphrases use CoreWLAN directly; enterprise 802.1X should use a managed profile with server validation.
 
 Other targets: compile src/wifi_backend_unavailable.c to receive an explicit unsupported-provider status rather than a false success. A downstream OS adapter may implement the public wifi_backend_t contract.
 
-Run the portable contract tests with make test. The Linux provider deliberately does not accept raw PSKs or EAP passwords: use a saved NetworkManager profile or its trusted secret agent / interactive prompt. The Windows provider also uses OS-managed profiles. This avoids exposing secrets in process arguments. Direct credential modes are available only to providers that can safely consume them.
+Run the portable contract tests with make test. The Linux provider deliberately does not accept raw PSKs or EAP passwords: use a saved NetworkManager profile or its trusted secret agent / interactive prompt. No password is passed in command-line arguments. Windows personal passphrases are submitted to the Native Wi-Fi API through a temporary in-memory profile, which is wiped after the connection request; enterprise authentication remains with a trusted Windows profile. macOS personal passphrases are accepted by CoreWLAN, while enterprise authentication remains profile-managed.
 
 ## OOD flow
 

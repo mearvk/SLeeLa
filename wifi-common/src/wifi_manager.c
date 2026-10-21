@@ -146,6 +146,10 @@ wifi_status_t wifi_manager_connect(wifi_manager_t *m, const wifi_network_t *sele
         size_t len, j;
         int hex64;
         if (!a->password) return WIFI_STATUS_AUTH_REQUIRED;
+        if (selected->security != WIFI_SECURITY_WPA_PERSONAL &&
+            selected->security != WIFI_SECURITY_WPA2_PERSONAL &&
+            selected->security != WIFI_SECURITY_WPA3_PERSONAL)
+            return WIFI_STATUS_INVALID_ARGUMENT;
         len = strlen(a->password); hex64 = len == 64u;
         for (j = 0u; hex64 && j < len; ++j)
             if (!isxdigit((unsigned char)a->password[j])) hex64 = 0;
