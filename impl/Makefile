@@ -151,7 +151,25 @@ else
   endif
 endif
 SLUI_BACKEND_OBJ := $(BUILD)/slui/backend.o
-SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_NANOJPEG_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ)
+# Shared native Wi-Fi manager plus the selected platform provider. The VM bridge
+# calls this C API directly; the same source is used by the C++ wrapper.
+WIFI_DIR := ../wifi-common
+WIFI_MANAGER_OBJ := $(BUILD)/wifi_manager.o
+WIFI_VM_BRIDGE_OBJ := $(BUILD)/wifi_vm_bridge.o
+ifeq ($(PLATFORM),windows)
+  WIFI_BACKEND_SRC := $(WIFI_DIR)/src/wifi_backend_windows.c
+  WIFI_BACKEND_OBJ := $(BUILD)/wifi_backend_windows.o
+  SLUI_LIBS += -lwlanapi -lole32
+else ifeq ($(PLATFORM),macos)
+  WIFI_BACKEND_SRC := $(WIFI_DIR)/src/wifi_backend_macos.mm
+  WIFI_BACKEND_OBJ := $(BUILD)/wifi_backend_macos.o
+  SLUI_LIBS += -framework CoreWLAN -framework Foundation -framework Security
+else
+  WIFI_BACKEND_SRC := $(WIFI_DIR)/src/wifi_backend_nmcli.c
+  WIFI_BACKEND_OBJ := $(BUILD)/wifi_backend_nmcli.o
+endif
+WIFI_OBJS := $(WIFI_MANAGER_OBJ) $(WIFI_BACKEND_OBJ) $(WIFI_VM_BRIDGE_OBJ)
+SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_NANOJPEG_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ) $(WIFI_OBJS)
 # OpenMP is opt-in on macOS/Windows because Apple clang and some MinGW
 # distributions do not ship a compatible OpenMP runtime. Linux GCC enables it
 # by default; callers can override IDEA_CANVAS_OMP explicitly on any platform.
