@@ -91,7 +91,6 @@ jobs:
             git
             make
             mingw-w64-ucrt-x86_64-gcc
-            mingw-w64-ucrt-x86_64-g++
       - name: Check out source
         uses: actions/checkout@v4
       - name: Compile Native Wi-Fi provider

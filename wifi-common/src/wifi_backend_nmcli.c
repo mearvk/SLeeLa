@@ -75,8 +75,8 @@ static wifi_status_t nmcli_scan(void *context, wifi_network_t *out, size_t capac
         if (split_fields(line, fields, 6) != 6 || !fields[0][0] || !fields[1][0]) continue;
         if (strlen(fields[0]) > WIFI_SSID_MAX_BYTES || strlen(fields[1]) >= WIFI_BSSID_TEXT_SIZE) continue;
         memset(&n, 0, sizeof(n));
-        (void)snprintf(n.ssid, sizeof(n.ssid), "%s", fields[0]);
-        (void)snprintf(n.bssid, sizeof(n.bssid), "%s", fields[1]);
+        memcpy(n.ssid, fields[0], strlen(fields[0]) + 1u);
+        memcpy(n.bssid, fields[1], strlen(fields[1]) + 1u);
         n.channel = parse_unsigned(fields[2], 233u);
         n.signal_percent = parse_unsigned(fields[3], 100u);
         n.security = classify_security(fields[4]);

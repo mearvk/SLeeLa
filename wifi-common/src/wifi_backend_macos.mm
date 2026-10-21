@@ -5,20 +5,20 @@
 #include <string.h>
 #include <strings.h>
 
-static wifi_security_t classify_security(CWSecurity s) {
-    switch (s) {
-        case kCWSecurityNone: return WIFI_SECURITY_OPEN;
-        case kCWSecurityWEP: return WIFI_SECURITY_WEP;
-        case kCWSecurityWPAPersonal:
-        case kCWSecurityWPAPersonalMixed: return WIFI_SECURITY_WPA_PERSONAL;
-        case kCWSecurityWPA2Personal: return WIFI_SECURITY_WPA2_PERSONAL;
-        case kCWSecurityWPA3Personal: return WIFI_SECURITY_WPA3_PERSONAL;
-        case kCWSecurityOWE: return WIFI_SECURITY_OWE;
-        case kCWSecurityWPAEnterprise: return WIFI_SECURITY_WPA_ENTERPRISE;
-        case kCWSecurityWPA2Enterprise: return WIFI_SECURITY_WPA2_ENTERPRISE;
-        case kCWSecurityWPA3Enterprise: return WIFI_SECURITY_WPA3_ENTERPRISE;
-        default: return WIFI_SECURITY_UNKNOWN;
-    }
+static wifi_security_t classify_security(CWNetwork *network) {
+    if (!network) return WIFI_SECURITY_UNKNOWN;
+    /* Test strongest advertised mode first: an AP may support transition modes. */
+    if ([network supportsSecurity:kCWSecurityWPA3Enterprise]) return WIFI_SECURITY_WPA3_ENTERPRISE;
+    if ([network supportsSecurity:kCWSecurityWPA3Personal]) return WIFI_SECURITY_WPA3_PERSONAL;
+    if ([network supportsSecurity:kCWSecurityOWE]) return WIFI_SECURITY_OWE;
+    if ([network supportsSecurity:kCWSecurityWPA2Enterprise]) return WIFI_SECURITY_WPA2_ENTERPRISE;
+    if ([network supportsSecurity:kCWSecurityWPAEnterprise]) return WIFI_SECURITY_WPA_ENTERPRISE;
+    if ([network supportsSecurity:kCWSecurityWPA2Personal]) return WIFI_SECURITY_WPA2_PERSONAL;
+    if ([network supportsSecurity:kCWSecurityWPAPersonalMixed] ||
+        [network supportsSecurity:kCWSecurityWPAPersonal]) return WIFI_SECURITY_WPA_PERSONAL;
+    if ([network supportsSecurity:kCWSecurityWEP]) return WIFI_SECURITY_WEP;
+    if ([network supportsSecurity:kCWSecurityNone]) return WIFI_SECURITY_OPEN;
+    return WIFI_SECURITY_UNKNOWN;
 }
 static CWInterface *wifi_interface(void) { return [[CWWiFiClient sharedWiFiClient] interface]; }
 static wifi_status_t mac_scan(void *ctx, wifi_network_t *out, size_t cap, size_t *count) {
@@ -39,7 +39,7 @@ static wifi_status_t mac_scan(void *ctx, wifi_network_t *out, size_t cap, size_t
             n.ssid[[utf8 length]] = '\0';
             if (strlen([bssid UTF8String]) >= sizeof(n.bssid)) continue;
             (void)snprintf(n.bssid, sizeof(n.bssid), "%s", [bssid UTF8String]);
-            n.security = classify_security(ap.security);
+            n.security = classify_security(ap);
             rssi = (long)ap.rssiValue; if (rssi < -90) rssi = -90; if (rssi > -30) rssi = -30;
             n.signal_percent = (unsigned)((rssi + 90) * 100 / 60);
             n.channel = (unsigned)ap.wlanChannel.channelNumber; n.frequency_mhz = 0u;
