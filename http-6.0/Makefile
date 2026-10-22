@@ -16,7 +16,7 @@ ifeq ($(OS),Windows_NT)
 SERVER_LDLIBS += -lws2_32
 endif
 
-.PHONY: all server proto syntax test server-test pack-test clean
+.PHONY: all server proto syntax test server-test pack-test logger-test clean
 all: proto server
 proto: http6_protocol.o http6_consolidated_pack.o
 server: $(SERVER_TARGET)
@@ -48,13 +48,19 @@ http6_pack_test: http6_pack_test.cpp http6_consolidated_pack.cpp http6_consolida
 	$(CXX) $(CXXFLAGS) -I. $< http6_consolidated_pack.cpp -o $@
 pack-test: http6_pack_test
 	./http6_pack_test
+
+http6_logger_test: http6_logger_test.cpp http6_logger_bridge.cpp ../logger/sleela_logger.cpp http6_logger_bridge.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) http6_logger_test.cpp http6_logger_bridge.cpp ../logger/sleela_logger.cpp -o $@
+
+logger-test: http6_logger_test
+	./http6_logger_test
 syntax:
 	$(CC) $(CFLAGS) $(INCLUDES) -fsyntax-only http6_protocol.c http6_server.c http6_main.c http_negotiation.c
 	$(CC) $(CFLAGS) $(INCLUDES) -fsyntax-only $(ROUTER_DIR)/preferred_router.c $(RESOLVER_DIR)/resolver.c $(SLNET_DIR)/sleela_net.c
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -fsyntax-only http_negotiation.cpp http6_consolidated_pack.cpp http6_logger_bridge.cpp ../logger/sleela_logger.cpp
-test: all pack-test
+test: all pack-test logger-test
 	./$(SERVER_TARGET) --self-test
 server-test: $(SERVER_TARGET)
 	./$(SERVER_TARGET) --self-test
 clean:
-	rm -f $(C_OBJECTS) $(CXX_OBJECTS) $(SERVER_TARGET) http6_pack_test
+	rm -f $(C_OBJECTS) $(CXX_OBJECTS) $(SERVER_TARGET) http6_pack_test http6_logger_test
