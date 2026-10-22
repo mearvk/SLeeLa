@@ -18,6 +18,7 @@ that can be carried by HTTP/3 or another supported transport.
 make            # build selftests + server
 make test       # run protocol, segmentation, session-state, and server self-tests
 make session-test # run bounded per-stream state self-test
+make resume-test  # run authenticated-resume policy gate self-test
 make fuzz        # optional Clang libFuzzer + ASan/UBSan parser harness
 make server     # build just the portable server
 make server-test# run the server self-test
