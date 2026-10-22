@@ -1,14 +1,23 @@
 /*
  * lib/http-4.0/SLPackage.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library package for http-4.0.
+ * SLeeLa Standard Library Definition for HTTP 4.0 application models.
  */
 #sleela 2.1
-// Library facade for module package: http-4.0
-// Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+// This package facade advertises model capabilities only; native implementation
+// and transport interoperability must be independently verified.
 class SLPackage {
   String packageName;
   void configure(String name){packageName=name;}
   String name(){return packageName;}
+  String generation(){return "4.0";}
+  boolean envelopeModelAvailable(){return true;}
+  boolean sessionStreamModelAvailable(){return true;}
+  boolean integrityGateModelAvailable(){return true;}
+  boolean authorizationGateModelAvailable(){return true;}
+  boolean resumableDownloadModelAvailable(){return true;}
+  boolean boundedStreamPolicyAvailable(){return true;}
+  boolean nativeHttp40TransportAvailable(){return false;}
+  boolean iETFHttp3TransportAvailable(){return false;}
+  boolean requiresProtectedTransport(){return true;}
   boolean available(){return packageName!=null;}
 }
