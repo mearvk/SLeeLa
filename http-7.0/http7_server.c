@@ -33,7 +33,7 @@ static void str_lower(char *s){for(;*s;++s)*s=(char)tolower((unsigned char)*s);}
 static const char *str_ltrim(const char *s){while(*s==' '||*s=='\t')++s;return s;}
 static const char *reason_phrase(int c){
     switch(c){case 200:return"OK";case 400:return"Bad Request";case 404:return"Not Found";
-    case 413:return"Content Too Large";case 500:return"Internal Server Error";default:return"Error";}}
+    case 405:return"Method Not Allowed";case 413:return"Content Too Large";case 500:return"Internal Server Error";default:return"Error";}}
 
 static int recv_headers(SLNetHandle fd,char*buf,size_t cap){
     size_t t=0;while(t<cap){SLNetCount n=slnet_read(fd,buf+t,cap-t);if(n<=0)return t>0?(int)t:-1;
@@ -302,14 +302,27 @@ static void handle_connection(SLNetHandle fd,const h7s_server_config*cfg){
     }
     free(raw);raw=NULL;
     int handled=0;
-    if(strcmp(req.uri,"/__sleela/health")==0){builtin_health(&resp);handled=1;}
-    else if(strcmp(req.uri,"/__sleela/status")==0){builtin_status(&resp);handled=1;}
-    else if(strcmp(req.uri,"/__sleela/negotiate")==0){builtin_negotiate(&req,&resp,cfg->allow_negotiation_fallback);handled=1;}
-    else if(strcmp(req.uri,"/__sleela/h7")==0&&strcmp(req.method,"POST")==0){builtin_h7_frame(&req,&resp,cfg->frame_handler,cfg->user_data);handled=1;}
+    if(strcmp(req.uri,"/__sleela/health")==0||strcmp(req.uri,"/__sleela/status")==0||strcmp(req.uri,"/__sleela/negotiate")==0){
+        if(strcmp(req.method,"GET")!=0){
+            resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+            resp.header_count=1;snprintf(resp.headers[0].name,sizeof(resp.headers[0].name),"Allow");
+            snprintf(resp.headers[0].value,sizeof(resp.headers[0].value),"GET");
+        }else if(strcmp(req.uri,"/__sleela/health")==0)builtin_health(&resp);
+        else if(strcmp(req.uri,"/__sleela/status")==0)builtin_status(&resp);
+        else builtin_negotiate(&req,&resp,cfg->allow_negotiation_fallback);
+        handled=1;
+    } else if(strcmp(req.uri,"/__sleela/h7")==0){
+        if(strcmp(req.method,"POST")!=0){
+            resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+            resp.header_count=1;snprintf(resp.headers[0].name,sizeof(resp.headers[0].name),"Allow");
+            snprintf(resp.headers[0].value,sizeof(resp.headers[0].value),"POST");
+        }else builtin_h7_frame(&req,&resp,cfg->frame_handler,cfg->user_data);
+        handled=1;
+    }
     if(!handled&&cfg->handler){if(cfg->handler(&req,&resp,cfg->user_data)!=0){
         resp.status_code=500;resp.content_type="text/plain";resp.body="Internal Server Error\n";resp.body_length=22;}}
     else if(!handled){resp.status_code=404;resp.content_type="text/plain";resp.body="Not Found\n";resp.body_length=10;}
-    send_response(fd,&req,&resp,cfg->server_name);free(req.body);slnet_close(fd);}
+    send_response(fd,&req,&resp,cfg->server_name?cfg->server_name:"SLeeLa-HTTP/7.0");free(req.body);slnet_close(fd);}
 
 static int portable_poll_readable(SLNetHandle fd,int ms){
 #ifdef _WIN32
@@ -324,7 +337,7 @@ void h7s_server_config_init(h7s_server_config*cfg){
     cfg->bind_address="127.0.0.1";cfg->server_name="SLeeLa-HTTP/7.0";cfg->allow_negotiation_fallback=0;}
 
 int h7s_server_run(const h7s_server_config*cfg){
-    if(!cfg)return -1;g_stop=0;
+    if(!cfg||cfg->port==0||cfg->backlog<1)return -1;g_stop=0;
     if(slnet_startup()!=0){fprintf(stderr,"h7s: slnet_startup failed\n");return -1;}
     sleela_preferred_router_startup(NULL,"HTTP/7.0");
     const char*bind_host=(cfg->bind_address&&*cfg->bind_address)?cfg->bind_address:"127.0.0.1";
