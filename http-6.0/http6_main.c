@@ -49,10 +49,14 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "invalid port (expected 1..65535)\n");
                 return 2;
             }
+        } else if (strcmp(argv[i], "--bind") == 0 && i+1 < argc) {
+            const char *host = argv[++i];
+            if (!host[0]) { fprintf(stderr, "invalid bind host\n"); return 2; }
+            cfg.bind_address = host;
         } else if (strcmp(argv[i], "--allow-fallback") == 0)
             cfg.allow_negotiation_fallback = 1;
         else if (strcmp(argv[i], "--help") == 0) {
-            printf("Usage: %s [--port N] [--allow-fallback] [--self-test] [--help]\n", argv[0]); return 0;
+            printf("Usage: %s [--port N] [--bind HOST] [--allow-fallback] [--self-test] [--help]\n", argv[0]); return 0;
         } else { fprintf(stderr, "unknown option: %s\n", argv[i]); return 2; }
     }
     return h6s_server_run(&cfg);
