@@ -132,6 +132,16 @@ static int safe_header_name(const char*s){
     return 1;
 }
 
+static int send_all(SLNetHandle fd,const char*d,size_t l){
+    while (l > 0) {
+        SLNetCount n = slnet_write(fd, d, l);
+        if (n <= 0) return -1;
+        d += n;
+        l -= (size_t)n;
+    }
+    return 0;
+}
+
 static int send_response(SLNetHandle fd,const h7s_request*req,const h7s_response*resp,const char*sn){
  if(!req||!resp||resp->status_code<100||resp->status_code>599||
     resp->header_count<0||resp->header_count>H7S_MAX_HEADERS||
