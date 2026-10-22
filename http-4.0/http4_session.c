@@ -36,7 +36,8 @@ int http4_session_accept(http4_session_state_t *s,
     }
 
     if (h->type == HTTP4_FRAME_OPEN) {
-        if (st || free_slot == HTTP4_SESSION_MAX_STREAMS || h->sequence != 0)
+        if (st || free_slot == HTTP4_SESSION_MAX_STREAMS || h->sequence != 0 ||
+            h->stream_id == 0 || h->stream_id <= s->last_opened_stream_id)
             return -3;
         if (s->active_streams >= HTTP4_SESSION_MAX_STREAMS) return -4;
         st = &s->streams[free_slot];
@@ -45,6 +46,7 @@ int http4_session_accept(http4_session_state_t *s,
         st->stream_id = h->stream_id;
         st->request_id = h->request_id;
         st->next_sequence = 1;
+        s->last_opened_stream_id = h->stream_id;
         ++s->active_streams;
         return 0;
     }
@@ -66,9 +68,13 @@ int http4_session_accept(http4_session_state_t *s,
         s->total_received_bytes += n;
     } else if (h->type == HTTP4_FRAME_END) {
         st->receive_closed = 1;
+        st->active = 0;
+        --s->active_streams;
     } else if (h->type == HTTP4_FRAME_RESET) {
         st->reset = 1;
         st->receive_closed = 1;
+        st->active = 0;
+        --s->active_streams;
     }
     ++st->next_sequence;
     return 0;
