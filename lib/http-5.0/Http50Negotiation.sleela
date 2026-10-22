@@ -1,0 +1,30 @@
+#sleela 2.1
+/* Project-generation negotiation. Caller flags are not cryptographic proof. */
+class Http50Negotiation {
+  int localGeneration = 5;
+  int peerGeneration = 0;
+  int localCapabilities = 0;
+  int peerCapabilities = 0;
+  int selectedGeneration = 0;
+  boolean authenticatedCarrier = false;
+  boolean allowLegacyFallback = false;
+  boolean completed = false;
+  void setPeer(int generation, int capabilities) {
+    peerGeneration = generation; peerCapabilities = capabilities;
+  }
+  void setLocalCapabilities(int capabilities) { localCapabilities = capabilities; }
+  void markAuthenticatedCarrier(boolean value) { authenticatedCarrier = value; }
+  int negotiate() {
+    int common = localCapabilities & peerCapabilities;
+    selectedGeneration = 0; completed = false;
+    if (!authenticatedCarrier || peerGeneration < 1 || peerGeneration > 5) return 0;
+    if (peerGeneration == 5 && common != 0) selectedGeneration = 5;
+    else if (allowLegacyFallback && peerGeneration >= 1 && common != 0)
+      selectedGeneration = peerGeneration;
+    completed = selectedGeneration > 0;
+    return selectedGeneration;
+  }
+  boolean isComplete() { return completed; }
+  boolean selectedHttp50() { return completed && selectedGeneration == 5; }
+  boolean requiresTranscriptBinding() { return true; }
+}
