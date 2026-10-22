@@ -50,6 +50,21 @@ static int valid_header_value(const char *s){
     return 1;
 }
 
+static int header_name_equal_ci(const char*a,const char*b){
+    if(!a||!b)return 0;
+    while(*a&&*b){if(tolower((unsigned char)*a)!=tolower((unsigned char)*b))return 0;++a;++b;}
+    return *a=='\\0'&&*b=='\\0';
+}
+static int response_header_reserved(const char*n){
+    return header_name_equal_ci(n,"content-length")||
+           header_name_equal_ci(n,"transfer-encoding")||
+           header_name_equal_ci(n,"connection")||
+           header_name_equal_ci(n,"server")||
+           header_name_equal_ci(n,"content-type")||
+           header_name_equal_ci(n,"x-sleela-version")||
+           header_name_equal_ci(n,"x-sleela-accept");
+}
+
 static int recv_headers(SLNetHandle fd,char *buf,size_t cap){
     size_t t=0;while(t<cap){SLNetCount n=slnet_read(fd,buf+t,cap-t);
         if(n<=0)return t>0?(int)t:-1;t+=(size_t)n;
@@ -98,6 +113,12 @@ static int parse_request(const char*raw,size_t raw_len,h6s_request*req,const cha
     if(p+1>=end||p[0]!='\r'||p[1]!='\n')return -1;
     p+=2;
     *hb=(size_t)(p-raw);*bs=p;
+    if((strcmp(req->version,"HTTP/1.1")==0 &&
+        (count_hdr(req,"host")!=1 || !get_hdr(req,"host") || !get_hdr(req,"host")[0])) ||
+       count_hdr(req,"host")>1 ||
+       count_hdr(req,"x-sleela-version")>1 || count_hdr(req,"x-sleela-accept")>1 ||
+       count_hdr(req,"x-sleela-port")>1 || count_hdr(req,"x-sleela-service-id")>1 ||
+       count_hdr(req,"x-sleela-op-id")>1)return -1;
     {const char*v;
      v=get_hdr(req,"x-sleela-version");if(v)snprintf(req->sleela_version,sizeof(req->sleela_version),"%s",v);
      v=get_hdr(req,"x-sleela-accept");if(v)snprintf(req->sleela_accept,sizeof(req->sleela_accept),"%s",v);
@@ -108,7 +129,7 @@ static int parse_request(const char*raw,size_t raw_len,h6s_request*req,const cha
 }
 
 int h6s_response_add_header(h6s_response*r,const char*n,const char*v){
-    if(!r||!n||!v||r->header_count<0||r->header_count>=H6S_MAX_HEADERS)return -1;
+    if(!r||!n||!v||r->header_count<0||r->header_count>=H6S_MAX_HEADERS||response_header_reserved(n))return -1;
     size_t nl=strlen(n),vl=strlen(v);
     if(nl==0||nl>=H6S_MAX_HNAME||vl>=H6S_MAX_HVALUE||!valid_header_value(v))return -1;
     for(size_t i=0;i<nl;++i)if(!is_token_char((unsigned char)n[i]))return -1;
@@ -144,7 +165,7 @@ static int send_response(SLNetHandle fd,const h6s_request*req,const h6s_response
     if(appendf(buf,sizeof(buf),&used,"Content-Length: %zu\r\n",resp->body_length)!=0)return -1;
     for(int i=0;i<resp->header_count;++i){
         const h6s_header*h=&resp->headers[i];
-        if(!h->name[0]||!valid_header_value(h->value))return -1;
+        if(!h->name[0]||response_header_reserved(h->name)||!valid_header_value(h->value))return -1;
         for(const unsigned char*p=(const unsigned char*)h->name;*p;++p)if(!is_token_char(*p))return -1;
         if(appendf(buf,sizeof(buf),&used,"%s: %s\r\n",h->name,h->value)!=0)return -1;
     }
