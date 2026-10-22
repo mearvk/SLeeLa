@@ -1,6 +1,5 @@
 #include "http6_logger_bridge.h"
 #include "../logger/sleela_logger.hpp"
-#include <cstdlib>
 #include <mutex>
 #include <string>
 
@@ -17,11 +16,6 @@ extern "C" int h6_logger_open(void) {
     logic.log_sent = true;
     logic.minimum_severity = sleela::LogSeverity::Info;
     logic.include_payload = false;
-    const char *dir = std::getenv("SLEELA_HTTP6_LOG_DIR");
-    if (dir && *dir) {
-        /* Directory is fixed when the Logger is constructed; use default if unset. */
-        (void)dir;
-    }
     logger.set_logic(logic);
     opened = logger.open();
     return opened ? 1 : 0;
