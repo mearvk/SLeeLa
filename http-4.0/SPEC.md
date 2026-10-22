@@ -45,7 +45,7 @@ Defined flags: FIN=0x01, ACK=0x02, URGENT=0x04, INCREMENTAL=0x08, RESUMABLE=0x10
 
 ## 4. Sequence and stream invariants
 
-Sequence numbers are scoped to (authenticated session, stream ID, direction). A receiver MUST verify the exact next sequence for an ordered stream profile before state changes or dispatch. It MUST NOT use a single connection-wide high-water mark for multiplexed streams. Sequence state resets only for a new authenticated stream/session; identifiers MUST NOT be reused while old state can still be accepted.
+Sequence numbers are scoped to (authenticated session, stream ID, direction). A receiver MUST verify the exact next sequence for an ordered stream profile before state changes or dispatch. It MUST NOT use a single connection-wide high-water mark for multiplexed streams. Sequence state resets only for a new authenticated stream/session; identifiers MUST NOT be reused while old state can still be accepted. The current bounded native reference profile additionally requires stream IDs to increase monotonically within a session, allowing closed slots to be reclaimed without retaining an unbounded tombstone set.
 
 Implementations MUST enforce active-stream, per-stream byte, global queued-byte, idle-timeout, and cleanup limits. Counters and additions MUST be checked for overflow. Flow-control credit MUST be consumed before accepting DATA and returned only when the application releases buffer capacity.
 
