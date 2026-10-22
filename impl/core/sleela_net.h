@@ -26,7 +26,7 @@ int slnet_platform_is_available(SLNetPlatform platform);
 /* TCP lifecycle. Handles are SLeeLa-owned opaque values, never raw SOCKETs. */
 int slnet_startup(void);
 void slnet_shutdown(void);
-SLNetHandle slnet_listen(uint16_t port, int backlog);
+SLNetHandle slnet_listen(uint16_t port, int backlog);\n/* Host-specific listener; NULL host means wildcard (legacy slnet_listen remains unchanged). */\nSLNetHandle slnet_listen_on(const char* host, uint16_t port, int backlog);\n/* Per-operation socket inactivity timeouts, milliseconds; zero is invalid. */\nint slnet_set_timeouts(SLNetHandle handle, uint32_t receive_ms, uint32_t send_ms);
 SLNetHandle slnet_accept(SLNetHandle listener);
 SLNetHandle slnet_connect(const char* host, uint16_t port);
 SLNetCount slnet_read(SLNetHandle handle, char* buffer, size_t capacity);
