@@ -1,5 +1,8 @@
 #sleela 2.1
-/* SLeeLa generation negotiation is distinct from IETF HTTP/3 negotiation. */
+/* SLeeLa generation negotiation is distinct from IETF HTTP/3 negotiation.
+ * authenticatedOffer is only a caller-supplied policy signal; it is not itself
+ * a cryptographic transcript proof. The native authenticated carrier must bind
+ * both offers and the selected profile before dispatch. */
 class Http40Negotiation {
   int localCapabilities = 1;
   int peerCapabilities = 1;
@@ -7,7 +10,8 @@ class Http40Negotiation {
   int peerGeneration = 3;
   boolean authenticatedOffer = false;
   boolean completed = false;
-  boolean allowLegacy = true;
+  // Fail closed by default; callers must explicitly authorize legacy fallback.
+  boolean allowLegacy = false;
   void setCapabilities(int localValue, int peerValue) {
     localCapabilities = localValue; peerCapabilities = peerValue;
   }
