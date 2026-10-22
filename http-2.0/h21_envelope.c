@@ -7,6 +7,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
+#include <limits.h>
 
 int h21_envelope_init(h21_envelope_t *env,
                       uint32_t service_id,
@@ -61,37 +63,29 @@ int h21_envelope_pack_text(const h21_envelope_t *env, char *out, size_t out_cap,
     return 0;
 }
 
-int h21_envelope_unpack_text(const char *in, size_t in_len, h21_envelope_t *env)
+int h21_envelope_unpack_text(const char *in,size_t in_len,h21_envelope_t *env)
 {
-    unsigned version, flags, service_id, op_id;
-    unsigned long long request_id;
-    unsigned long payload_len;
-    int consumed = 0;
-    const char *p;
-    (void)in_len;
-
-    if (in == NULL || env == NULL) {
-        return -1;
-    }
-    if (sscanf(in, "H21 %u %u %u %u %llu %lu:%n",
-               &version, &flags, &service_id, &op_id, &request_id,
-               &payload_len, &consumed) != 6 || consumed <= 0) {
-        return -1;
-    }
-    if (payload_len > H21_ENVELOPE_MAX_PAYLOAD) {
-        return -1;
-    }
-    p = in + consumed;
-    memset(env, 0, sizeof(*env));
-    env->version = (uint8_t)version;
-    env->flags = (uint8_t)flags;
-    env->service_id = (uint32_t)service_id;
-    env->op_id = (uint32_t)op_id;
-    env->request_id = (uint64_t)request_id;
-    env->payload_len = (size_t)payload_len;
-    if (payload_len > 0U) {
-        memcpy(env->payload, p, payload_len);
-    }
+    char header[160]; unsigned long long ver,flags,sid,oid,rid,plen; int used=0;
+    if(!in||!env||!in_len)return -1;
+    const char *colon=(const char *)memchr(in,':',in_len);
+    if(!colon)return -1;
+    size_t hlen=(size_t)(colon-in);
+    if(!hlen||hlen>=sizeof(header))return -1;
+    memcpy(header,in,hlen);header[hlen]='\0';
+    if(sscanf(header,"H21 %llu %llu %llu %llu %llu %llu%n",&ver,&flags,&sid,&oid,&rid,&plen,&used)!=6||
+       used<=0||(size_t)used!=hlen)return -1;
+    const char *p=header+4; char *end=NULL;
+    while(*p){while(*p==' ')++p;if(!*p)break;(void)strtoull(p,&end,10);
+        if(end==p||(*end!=' '&&*end!='\0'))return -1;
+        for(const char *q=p;q<end;++q)if(*q<'0'||*q>'9')return -1;p=end;}
+    if(ver!=H21_ENVELOPE_VERSION||flags>UINT8_MAX||
+       (flags&~(unsigned long long)(H21_FLAG_BINARY|H21_FLAG_COMPRESSED|H21_FLAG_IDEMPOTENT))||
+       sid>UINT32_MAX||oid>UINT32_MAX||plen>H21_ENVELOPE_MAX_PAYLOAD)return -1;
+    size_t rem=in_len-hlen-1u;
+    if(rem!=(size_t)plen&&!(rem==(size_t)plen+1u&&in[in_len-1u]=='\n'))return -1;
+    memset(env,0,sizeof(*env));env->version=(uint8_t)ver;env->flags=(uint8_t)flags;
+    env->service_id=(uint32_t)sid;env->op_id=(uint32_t)oid;env->request_id=(uint64_t)rid;
+    env->payload_len=(size_t)plen;if(plen)memcpy(env->payload,colon+1,(size_t)plen);
     return 0;
 }
 
@@ -141,27 +135,17 @@ int h21_envelope_pack_binary(const h21_envelope_t *env, uint8_t *out, size_t out
     return 0;
 }
 
-int h21_envelope_unpack_binary(const uint8_t *in, size_t in_len, h21_envelope_t *env)
+int h21_envelope_unpack_binary(const uint8_t *in,size_t in_len,h21_envelope_t *env)
 {
-    uint32_t payload_len;
-    if (in == NULL || env == NULL || in_len < H21_ENVELOPE_BIN_HEADER) {
-        return -1;
-    }
-    payload_len = get_u32(in + 18);
-    if (payload_len > H21_ENVELOPE_MAX_PAYLOAD ||
-        in_len < (size_t)H21_ENVELOPE_BIN_HEADER + payload_len) {
-        return -1;
-    }
-    memset(env, 0, sizeof(*env));
-    env->version = in[0];
-    env->flags = in[1];
-    env->service_id = get_u32(in + 2);
-    env->op_id = get_u32(in + 6);
-    env->request_id = get_u64(in + 10);
-    env->payload_len = payload_len;
-    if (payload_len > 0U) {
-        memcpy(env->payload, in + H21_ENVELOPE_BIN_HEADER, payload_len);
-    }
+    uint32_t n;
+    if(!in||!env||in_len<H21_ENVELOPE_BIN_HEADER||in[0]!=H21_ENVELOPE_VERSION||
+       (in[1]&(uint8_t)~(H21_FLAG_BINARY|H21_FLAG_COMPRESSED|H21_FLAG_IDEMPOTENT)))return -1;
+    n=get_u32(in+18);
+    if(n>H21_ENVELOPE_MAX_PAYLOAD||in_len!=(size_t)H21_ENVELOPE_BIN_HEADER+(size_t)n)return -1;
+    memset(env,0,sizeof(*env));env->version=in[0];
+    env->flags=(uint8_t)(in[1]&(uint8_t)~H21_FLAG_BINARY);
+    env->service_id=get_u32(in+2);env->op_id=get_u32(in+6);env->request_id=get_u64(in+10);
+    env->payload_len=n;if(n)memcpy(env->payload,in+H21_ENVELOPE_BIN_HEADER,n);
     return 0;
 }
 
@@ -192,27 +176,20 @@ int h21_response_pack_text(const h21_response_t *resp, char *out, size_t out_cap
     return 0;
 }
 
-int h21_response_unpack_text(const char *in, size_t in_len, h21_response_t *resp)
+int h21_response_unpack_text(const char *in,size_t in_len,h21_response_t *resp)
 {
-    int status;
-    unsigned long long request_id;
-    unsigned long result_len;
-    int consumed = 0;
-    (void)in_len;
-    if (in == NULL || resp == NULL) {
-        return -1;
-    }
-    if (sscanf(in, "H21R %d %llu %lu:%n", &status, &request_id, &result_len, &consumed) != 3 ||
-        consumed <= 0 || result_len > H21_ENVELOPE_MAX_PAYLOAD) {
-        return -1;
-    }
-    memset(resp, 0, sizeof(*resp));
-    resp->status = (h21_status_t)status;
-    resp->request_id = (uint64_t)request_id;
-    resp->result_len = (size_t)result_len;
-    if (result_len > 0U) {
-        memcpy(resp->result, in + consumed, result_len);
-    }
+    char header[128];unsigned long long status,rid,n;int used=0;
+    if(!in||!resp||!in_len)return -1;
+    const char *colon=(const char *)memchr(in,':',in_len);if(!colon)return -1;
+    size_t hlen=(size_t)(colon-in);if(!hlen||hlen>=sizeof(header))return -1;
+    memcpy(header,in,hlen);header[hlen]='\0';
+    if(sscanf(header,"H21R %llu %llu %llu%n",&status,&rid,&n,&used)!=3||
+       used<=0||(size_t)used!=hlen||status>H21_STATUS_RETRY_DENIED||n>H21_ENVELOPE_MAX_PAYLOAD)return -1;
+    size_t rem=in_len-hlen-1u;
+    if(rem!=(size_t)n&&!(rem==(size_t)n+1u&&in[in_len-1u]=='\n'))return -1;
+    memset(resp,0,sizeof(*resp));resp->status=(h21_status_t)status;
+    resp->request_id=(uint64_t)rid;resp->result_len=(size_t)n;
+    if(n)memcpy(resp->result,colon+1,(size_t)n);
     return 0;
 }
 
