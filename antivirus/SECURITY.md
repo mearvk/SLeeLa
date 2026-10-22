@@ -90,3 +90,7 @@ Release checklist:
 Use `make -C antivirus integrity-manifest` to inventory the source tree, then verify with `make -C antivirus integrity-check MANIFEST=build/INTEGRITY-MANIFEST.json`. The manifest includes ordinary source and documentation files as well as signature-index files, but excludes generated build/dist output and the mutable ClamAV cache, whose snapshots have their own validated manifests.
 
 Platform release archives include an `INTEGRITY-MANIFEST.json`, a `SHA256SUMS` file, and a separate `.sha256` sidecar for the ZIP. CI verifies the package manifest before creating the archive. Keep an independently trusted copy of the archive digest or use a detached signature whose public key was obtained independently; hashes stored next to the files they describe do not provide publisher authentication.
+
+## Six-workstream hardening plan
+
+Track the concrete workstreams and release criteria in [HARDENING-PLAN.md](HARDENING-PLAN.md). The plan distinguishes documented requirements from controls that have actually been implemented and tested. Do not mark release signing, SLeeLa execution gating, or platform coverage complete without corresponding code and exact-commit CI evidence.
