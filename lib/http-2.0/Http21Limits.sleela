@@ -1,0 +1,15 @@
+#sleela 2.1
+/* Limits mirror the native h21_server and H21 envelope constants. */
+class Http21Limits {
+  int maxHeaderBytes = 65536;
+  int maxHeaders = 100;
+  int maxHeaderNameBytes = 255;
+  int maxHeaderValueBytes = 8191;
+  int maxBodyBytes = 8388608;
+  int maxEnvelopePayloadBytes = 4096;
+  int maxNameBytes = 63;
+  int maxServices = 64;
+  int maxOperationsPerService = 64;
+  long downloadResumeThresholdBytes = 52428800;
+  boolean limitsEnabled() { return maxHeaderBytes > 0 && maxBodyBytes > 0 && maxEnvelopePayloadBytes > 0; }
+}
