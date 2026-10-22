@@ -27,9 +27,13 @@ uint32_t h21_naming_intern_service(h21_naming_t *dict, const char *service_name)
     if (!dict || !service_name || !*service_name)
         return 0u;
 
+    if (strlen(service_name) >= H21_NAME_MAX) return 0u;
+    for (const unsigned char *p=(const unsigned char *)service_name; *p; ++p)
+        if (*p < 0x21u || *p == 0x7fu) return 0u;
+
     /* Cache hit: already interned. */
     for (size_t i = 0; i < dict->service_count; ++i) {
-        if (strncmp(dict->services[i].name, service_name, H21_NAME_MAX) == 0)
+        if (strcmp(dict->services[i].name, service_name) == 0)
             return dict->services[i].service_id;
     }
 
@@ -73,9 +77,13 @@ uint32_t h21_naming_intern_op(h21_naming_t *dict,
     if (!svc)
         return 0u;
 
+    if (strlen(op_name) >= H21_NAME_MAX) return 0u;
+    for (const unsigned char *p=(const unsigned char *)op_name; *p; ++p)
+        if (*p < 0x21u || *p == 0x7fu) return 0u;
+
     /* Cache hit: already interned. */
     for (size_t i = 0; i < svc->op_count; ++i) {
-        if (strncmp(svc->ops[i].name, op_name, H21_NAME_MAX) == 0)
+        if (strcmp(svc->ops[i].name, op_name) == 0)
             return svc->ops[i].op_id;
     }
 
