@@ -66,7 +66,7 @@ static int response_header_reserved(const char*n){
 }
 
 static const char *reason_phrase(int c){
-    switch(c){case 200:return "OK";case 400:return "Bad Request";case 404:return "Not Found";
+    switch(c){case 200:return "OK";case 400:return "Bad Request";case 404:return "Not Found";case 405:return "Method Not Allowed";
     case 413:return "Content Too Large";case 500:return "Internal Server Error";default:return "Error";}
 }
 
@@ -358,10 +358,27 @@ static void handle_connection(SLNetHandle fd,const h6s_server_config*cfg){
     }
     free(raw);raw=NULL;
     int handled=0;
-    if(strcmp(req.uri,"/__sleela/health")==0){builtin_health(&resp);handled=1;}
-    else if(strcmp(req.uri,"/__sleela/status")==0){builtin_status(&resp);handled=1;}
-    else if(strcmp(req.uri,"/__sleela/negotiate")==0){builtin_negotiate(&req,&resp,cfg->allow_negotiation_fallback);handled=1;}
-    else if(strcmp(req.uri,"/__sleela/h6")==0&&strcmp(req.method,"POST")==0){builtin_h6_frame(&req,&resp,cfg->frame_handler,cfg->user_data);handled=1;}
+    if(strcmp(req.uri,"/__sleela/health")==0){
+        if(strcmp(req.method,"GET")==0)builtin_health(&resp);
+        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+             h6s_response_add_header(&resp,"Allow","GET");}
+        handled=1;
+    } else if(strcmp(req.uri,"/__sleela/status")==0){
+        if(strcmp(req.method,"GET")==0)builtin_status(&resp);
+        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+             h6s_response_add_header(&resp,"Allow","GET");}
+        handled=1;
+    } else if(strcmp(req.uri,"/__sleela/negotiate")==0){
+        if(strcmp(req.method,"GET")==0)builtin_negotiate(&req,&resp,cfg->allow_negotiation_fallback);
+        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+             h6s_response_add_header(&resp,"Allow","GET");}
+        handled=1;
+    } else if(strcmp(req.uri,"/__sleela/h6")==0){
+        if(strcmp(req.method,"POST")==0)builtin_h6_frame(&req,&resp,cfg->frame_handler,cfg->user_data);
+        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+             h6s_response_add_header(&resp,"Allow","POST");}
+        handled=1;
+    }
     if(!handled&&cfg->handler){if(cfg->handler(&req,&resp,cfg->user_data)!=0){
         resp.status_code=500;resp.content_type="text/plain";resp.body="Internal Server Error\n";resp.body_length=22;}}
     else if(!handled){resp.status_code=404;resp.content_type="text/plain";resp.body="Not Found\n";resp.body_length=10;}
