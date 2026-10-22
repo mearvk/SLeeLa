@@ -195,16 +195,16 @@ static int builtin_h7_frame(const h7s_request*req,h7s_response*resp,h7s_frame_ha
     if(!req->body||req->body_length<HTTP7_FRAME_HEADER_SIZE){
         resp->status_code=400;resp->content_type="text/plain";resp->body="Frame body required\n";resp->body_length=20;return 0;}
     http7_frame_view_t frame;size_t consumed;
-    if(http7_frame_decode((const uint8_t*)req->body,req->body_length,&frame,&consumed)!=0){
+    if(http7_frame_decode((const uint8_t*)req->body,req->body_length,&frame,&consumed)!=0||consumed!=req->body_length){
         resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid H7 frame\n";resp->body_length=17;return 0;}
     if(fh){
         static uint8_t rp[4096];size_t rl=0;
-        if(fh(&frame,rp,sizeof(rp),&rl,ud)!=0){resp->status_code=500;resp->content_type="text/plain";
+        if(fh(&frame,rp,sizeof(rp),&rl,ud)!=0||rl>sizeof(rp)){resp->status_code=500;resp->content_type="text/plain";
             resp->body="Frame handler error\n";resp->body_length=20;return 0;}
         http7_frame_header_t rh={0};rh.version=HTTP7_VERSION;
         rh.type=(frame.header.type==HTTP7_FRAME_PING)?HTTP7_FRAME_PONG:HTTP7_FRAME_DATA;
         rh.flags=HTTP7_FLAG_FIN;rh.stream_id=frame.header.stream_id;
-        rh.request_id=frame.header.request_id;rh.sequence=frame.header.sequence+1;
+        rh.request_id=frame.header.request_id;if(frame.header.sequence==UINT64_MAX){resp->status_code=400;resp->content_type="text/plain";resp->body="Sequence overflow\\n";resp->body_length=18;return 0;}rh.sequence=frame.header.sequence+1;
         rh.payload_length=(uint32_t)rl;
         static uint8_t wire[4096+HTTP7_FRAME_HEADER_SIZE];size_t written;
         if(http7_frame_encode(&rh,rp,wire,sizeof(wire),&written)!=0){
@@ -230,19 +230,37 @@ static void handle_connection(SLNetHandle fd,const h7s_server_config*cfg){
         resp.status_code=400;resp.content_type="text/plain";resp.body="Bad Request\n";resp.body_length=12;
         h7s_request bad;memset(&bad,0,sizeof(bad));memcpy(bad.version,"HTTP/1.0",9);
         send_response(fd,&bad,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
-    {const char*cl=get_hdr(&req,"content-length");
-     if(cl){size_t clen=(size_t)strtoull(cl,NULL,10);
-         if(clen>H7S_MAX_BODY){resp.status_code=413;resp.content_type="text/plain";
-             resp.body="Content Too Large\n";resp.body_length=18;
+    {
+     const char*cl=get_hdr(&req,"content-length");
+     size_t already=(size_t)got-hb,clen=0;
+     if(!cl&&already>0){
+         resp.status_code=400;resp.content_type="text/plain";resp.body="Unexpected bytes after headers\\n";resp.body_length=30;
+         send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
+     }
+     if(cl){
+         if(parse_content_length(cl,&clen)!=0){
+             resp.status_code=400;resp.content_type="text/plain";resp.body="Invalid Content-Length\\n";resp.body_length=24;
+             send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
+         }
+         if(clen>H7S_MAX_BODY){
+             resp.status_code=413;resp.content_type="text/plain";resp.body="Content Too Large\\n";resp.body_length=18;
+             send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
+         }
+         if(already>clen){
+             resp.status_code=400;resp.content_type="text/plain";resp.body="Extra bytes after body\\n";resp.body_length=23;
+             send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
+         }
+         req.body=(char*)malloc(clen+1);
+         if(!req.body){resp.status_code=500;resp.content_type="text/plain";resp.body="Internal Server Error\\n";resp.body_length=22;
              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
-         size_t already=(size_t)got-hb;req.body=malloc(clen+1);
-         if(!req.body){resp.status_code=500;resp.content_type="text/plain";
-             resp.body="Internal Server Error\n";resp.body_length=22;
-             send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
-         if(already>0&&already<=clen)memcpy(req.body,bs,already);
-         size_t rem=already<clen?clen-already:0,filled=already<clen?already:clen;
+         if(already)memcpy(req.body,bs,already);
+         size_t rem=clen-already,filled=already;
          while(rem>0){SLNetCount n=slnet_read(fd,req.body+filled,rem);if(n<=0)break;filled+=(size_t)n;rem-=(size_t)n;}
-         req.body_length=filled;req.body[filled]='\0';}}
+         if(rem>0){resp.status_code=400;resp.content_type="text/plain";resp.body="Incomplete request body\\n";resp.body_length=24;
+             send_response(fd,&req,&resp,cfg->server_name);free(req.body);free(raw);slnet_close(fd);return;}
+         req.body_length=filled;req.body[filled]='\\0';
+     }
+    }
     free(raw);raw=NULL;
     int handled=0;
     if(strcmp(req.uri,"/__sleela/health")==0){builtin_health(&resp);handled=1;}
