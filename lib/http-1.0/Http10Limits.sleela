@@ -3,11 +3,11 @@
 class Http10Limits {
   int maxHeaderBytes = 65536;
   long maxBodyBytes = 8388608;
-  int maxHeaders = 100;
+  int maxHeaders = 64;
   int maxMethodBytes = 16;
   int maxTargetBytes = 8192;
-  int maxHeaderNameBytes = 256;
-  int maxHeaderValueBytes = 8192;
+  int maxHeaderNameBytes = 128;
+  int maxHeaderValueBytes = 2048;
   int requestTimeoutMillis = 10000;
   int idleTimeoutMillis = 5000;
   int maxConcurrentConnections = 1;
