@@ -108,6 +108,7 @@ static int parse_request(const char*raw,size_t raw_len,h6s_request*req,const cha
         for(const char*q=p;q<c;++q)if(!is_token_char((unsigned char)*q))return -1;
         memcpy(h->name,p,nl);h->name[nl]='\0';str_lower(h->name);
         const char*v=str_ltrim(c+1);size_t vl=(size_t)(le-v);if(vl>=sizeof(h->value))return -1;
+        for(const char*q=v;q<le;++q){unsigned char ch=(unsigned char)*q;if((ch<0x20&&ch!='\t')||ch==0x7f)return -1;}
         memcpy(h->value,v,vl);h->value[vl]='\0';if(!valid_header_value(h->value))return -1;
         ++req->header_count;p=le+2;}
     if(p+1>=end||p[0]!='\r'||p[1]!='\n')return -1;
@@ -165,7 +166,8 @@ static int send_response(SLNetHandle fd,const h6s_request*req,const h6s_response
     if(appendf(buf,sizeof(buf),&used,"Content-Length: %zu\r\n",resp->body_length)!=0)return -1;
     for(int i=0;i<resp->header_count;++i){
         const h6s_header*h=&resp->headers[i];
-        if(!h->name[0]||response_header_reserved(h->name)||!valid_header_value(h->value))return -1;
+        if(!memchr(h->name,'\0',sizeof(h->name))||!memchr(h->value,'\0',sizeof(h->value))||
+           !h->name[0]||response_header_reserved(h->name)||!valid_header_value(h->value))return -1;
         for(const unsigned char*p=(const unsigned char*)h->name;*p;++p)if(!is_token_char(*p))return -1;
         if(appendf(buf,sizeof(buf),&used,"%s: %s\r\n",h->name,h->value)!=0)return -1;
     }
