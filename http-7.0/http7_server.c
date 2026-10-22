@@ -234,12 +234,12 @@ static void handle_connection(SLNetHandle fd,const h7s_server_config*cfg){
      const char*cl=get_hdr(&req,"content-length");
      size_t already=(size_t)got-hb,clen=0;
      if(!cl&&already>0){
-         resp.status_code=400;resp.content_type="text/plain";resp.body="Unexpected bytes after headers\\n";resp.body_length=30;
+         resp.status_code=400;resp.content_type="text/plain";resp.body="Unexpected bytes after headers\\n";resp.body_length=31;
          send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
      }
      if(cl){
          if(parse_content_length(cl,&clen)!=0){
-             resp.status_code=400;resp.content_type="text/plain";resp.body="Invalid Content-Length\\n";resp.body_length=24;
+             resp.status_code=400;resp.content_type="text/plain";resp.body="Invalid Content-Length\\n";resp.body_length=23;
              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
          }
          if(clen>H7S_MAX_BODY){
