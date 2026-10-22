@@ -152,7 +152,7 @@ int h7s_download_should_resume(uint64_t cl){return cl>H7S_DOWNLOAD_THRESHOLD;}
 static int h7s_download_text(const char*s,size_t cap,int leaf){
  if(!s||!s[0])return 0;size_t n=0;
  for(;s[n];++n){unsigned char c=(unsigned char)s[n];if(n+1>=cap||c<0x20||c==0x7f||c=='|'||c=='\r'||c=='\n')return 0;
-  if(leaf&&(c=='/'||c=='\\\\'||c==':'))return 0;}
+  if(leaf&&(c=='/'||c=='\\'||c==':'))return 0;}
  if(leaf&&(!strcmp(s,".")||!strcmp(s,"..")))return 0;return 1;
 }
 static int h7s_parse_u64(const char*s,uint64_t*out){
