@@ -198,6 +198,11 @@ static int download_field_ok(const char*s,size_t cap,int nonempty,size_t*length)
     if(length)*length=n;
     return 1;
 }
+static int download_leaf_name_ok(const char*s,size_t cap){
+    if(!download_field_ok(s,cap,1,NULL))return 0;
+    if(strcmp(s,".")==0||strcmp(s,"..")==0||strchr(s,'/')||strchr(s,92)||strchr(s,':'))return 0;
+    return 1;
+}
 static int parse_u64_field(const char*s,uint64_t*out){
     char*end=NULL;unsigned long long value;
     if(!s||!*s||!out||*s=='-'||*s=='+')return -1;
@@ -211,7 +216,7 @@ int h6s_download_serialise(const h6s_download_state*st,char*buf,size_t cap){
        !download_field_ok(st->session_id,sizeof(st->session_id),1,NULL)||
        !download_field_ok(st->datetime,sizeof(st->datetime),1,NULL)||
        !download_field_ok(st->file_id,sizeof(st->file_id),1,NULL)||
-       !download_field_ok(st->file_name,sizeof(st->file_name),1,NULL))return -1;
+       !download_leaf_name_ok(st->file_name,sizeof(st->file_name)))return -1;
     n=snprintf(buf,cap,"%s | %s | %s | %s | %llu | %llu | %llu",
         st->session_id,st->datetime,st->file_id,st->file_name,
         (unsigned long long)st->index,(unsigned long long)st->offset,
@@ -240,7 +245,7 @@ int h6s_download_parse(const char*line,h6s_download_state*out){
     if(!download_field_ok(fields[0],sizeof(out->session_id),1,NULL)||
        !download_field_ok(fields[1],sizeof(out->datetime),1,NULL)||
        !download_field_ok(fields[2],sizeof(out->file_id),1,NULL)||
-       !download_field_ok(fields[3],sizeof(out->file_name),1,NULL)||
+       !download_leaf_name_ok(fields[3],sizeof(out->file_name))||
        parse_u64_field(fields[4],&index)!=0||parse_u64_field(fields[5],&offset)!=0||
        parse_u64_field(fields[6],&total)!=0||offset>total)return -1;
     memset(out,0,sizeof(*out));
@@ -488,6 +493,7 @@ int h6s_self_test(void){
     /* 7. Download parser rejects malformed numbers, delimiters, and offsets. */
     {h6s_download_state st;
      if(h6s_download_parse("session | date | file | name | 4x | 2 | 10",&st)==0 ||
+        h6s_download_parse("session | date | file | ../secret | 4 | 2 | 10",&st)==0 ||
         h6s_download_parse("session | date | file | name | 4 | 11 | 10",&st)==0 ||
         h6s_download_parse("session | date | file | name | 4 | 2 | 10 | extra",&st)==0 ||
         h6s_download_parse("session | date | bad|file | name | 4 | 2 | 10",&st)==0){
