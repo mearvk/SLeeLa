@@ -22,12 +22,12 @@ extern "C" {
 
 #define HTTP1_MAX_HEADER_SIZE   (64 * 1024)
 #define HTTP1_MAX_BODY_SIZE     (8 * 1024 * 1024)
-#define HTTP1_MAX_HEADERS       100
+#define HTTP1_MAX_HEADERS       64
 #define HTTP1_MAX_METHOD_LEN    16
 #define HTTP1_MAX_URI_LEN       8192
 #define HTTP1_MAX_VERSION_LEN   16
-#define HTTP1_MAX_HEADER_NAME   256
-#define HTTP1_MAX_HEADER_VALUE  8192
+#define HTTP1_MAX_HEADER_NAME   128
+#define HTTP1_MAX_HEADER_VALUE  2048
 
 /* ── download-mode threshold (FLOW.md / README.md) ─────────────────── */
 
