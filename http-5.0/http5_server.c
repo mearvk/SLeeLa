@@ -453,6 +453,20 @@ int h5s_self_test(void) {
           else if(v.header.type!=HTTP5_FRAME_FRIENDS_PACK||v.header.request_id!=42||
                   v.header.payload_length!=5||memcmp(v.payload,"alice",5)!=0){
               fprintf(stderr,"FAIL: round-trip\n");++f;}}}
+    /* 3. Reject reserved flag bits and preserve output metadata on failure. */
+    {
+        http5_frame_header_t h={0};
+        uint8_t wire[64];
+        size_t written=777;
+        h.version=HTTP5_VERSION;h.type=HTTP5_FRAME_DATA;h.flags=0x8000;
+        if(http5_frame_encode(&h,NULL,wire,sizeof(wire),&written)==0||written!=777){
+            fprintf(stderr,"FAIL: reserved flag rejection\\n");++f;
+        }
+        h.flags=0;h.type=255;
+        if(http5_frame_validate(&h,0)==0){
+            fprintf(stderr,"FAIL: unknown frame type rejection\\n");++f;
+        }
+    }
     /* 3. FP consume */
     { http5_friends_pack_t fp={100,10,2};
       if(!http5_fp_can_offer(&fp)){fprintf(stderr,"FAIL: fp_can_offer\n");++f;}
