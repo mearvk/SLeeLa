@@ -183,7 +183,7 @@ static int h4s_download_fields_valid(const h4s_download_state *st)
         !st->file_id[0] || !st->file_name[0] || st->offset > st->total_size)
         return 0;
     /* A filename is a leaf name, never a path supplied by the peer. */
-    if (strchr(st->file_name, '/') || strchr(st->file_name, '\\\\') ||
+    if (strchr(st->file_name, '/') || strchr(st->file_name, '\\') ||
         strstr(st->file_name, "..")) return 0;
     return 1;
 }
@@ -196,7 +196,7 @@ static int h4s_parse_u64(const char *s, uint64_t *out)
     errno = 0;
     char *end = NULL;
     unsigned long long v = strtoull(s, &end, 10);
-    if (errno == ERANGE || !end || *end != '\\0') return -1;
+    if (errno == ERANGE || !end || *end != '\0') return -1;
     *out = (uint64_t)v;
     return 0;
 }
@@ -225,15 +225,15 @@ int h4s_download_parse(const char *line, h4s_download_state *out)
         char *sep = strchr(p, '|');
         if (i < 6) {
             if (!sep) return -1;
-            *sep = '\\0';
+            *sep = '\0';
             p = sep + 1;
         } else if (sep) {
-            return -1; /* extra field is not ignored */
+            return -1;
         }
-        while (*fields[i] == ' ' || *fields[i] == '\\t') ++fields[i];
+        while (*fields[i] == ' ' || *fields[i] == '\t') ++fields[i];
         size_t fl = strlen(fields[i]);
-        while (fl > 0 && (fields[i][fl-1] == ' ' || fields[i][fl-1] == '\\t'))
-            fields[i][--fl] = '\\0';
+        while (fl > 0 && (fields[i][fl-1] == ' ' || fields[i][fl-1] == '\t'))
+            fields[i][--fl] = '\0';
         if (fl == 0) return -1;
     }
     h4s_download_state tmp;
