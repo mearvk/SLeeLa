@@ -377,15 +377,16 @@ static int portable_poll_readable(SLNetHandle fd,int ms){
 
 void h6s_server_config_init(h6s_server_config*cfg){
     if(!cfg)return;memset(cfg,0,sizeof(*cfg));cfg->port=8085;cfg->backlog=128;
-    cfg->server_name="SLeeLa-HTTP/6.0";cfg->allow_negotiation_fallback=0;}
+    cfg->bind_address="127.0.0.1";cfg->server_name="SLeeLa-HTTP/6.0";cfg->allow_negotiation_fallback=0;}
 
 int h6s_server_run(const h6s_server_config*cfg){
     if(!cfg)return -1;g_stop=0;
     if(slnet_startup()!=0){fprintf(stderr,"h6s: slnet_startup failed\n");return -1;}
     sleela_preferred_router_startup(NULL,"HTTP/6.0");
-    SLNetHandle listener=slnet_listen(cfg->port,cfg->backlog);
+    const char*bind_host=(cfg->bind_address&&cfg->bind_address[0])?cfg->bind_address:"127.0.0.1";
+    SLNetHandle listener=slnet_listen_on(bind_host,cfg->port,cfg->backlog);
     if(!slnet_valid(listener)){fprintf(stderr,"h6s: listen failed on port %u\n",(unsigned)cfg->port);slnet_shutdown();return -1;}
-    fprintf(stderr,"SLeeLa HTTP/6.0 listening on port %u  [%s]\n",(unsigned)cfg->port,slnet_platform_name());
+    fprintf(stderr,"SLeeLa HTTP/6.0 listening on %s:%u  [%s]\n",bind_host,(unsigned)cfg->port,slnet_platform_name());
 #ifndef _WIN32
     signal(SIGINT,h6s_sig);signal(SIGTERM,h6s_sig);
 #endif
