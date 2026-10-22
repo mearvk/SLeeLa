@@ -1,8 +1,8 @@
 /* http4_server.h — SLeeLa HTTP 4.0 portable server (Linux · macOS · Windows 10+)
  *
- * Internet-facing server for the HTTP 4.0 frame-based application protocol.
- * Transport is HTTP/1.x over sleela_net portable sockets; H4 frames ride
- * inside the HTTP request body at /__sleela/h4 (POST).
+ * Portable reference server for the HTTP 4.0 frame-based application protocol.
+ * It defaults to IPv4 loopback; explicitly binding elsewhere requires a trusted
+ * authenticated transport boundary because this server does not provide TLS.
  */
 #ifndef SLEELA_HTTP4_SERVER_H
 #define SLEELA_HTTP4_SERVER_H
