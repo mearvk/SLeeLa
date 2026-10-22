@@ -26,6 +26,7 @@ typedef struct {
     uint64_t max_stream_bytes;
     uint64_t max_total_received_bytes;
     uint64_t total_received_bytes;
+    uint64_t last_opened_stream_id;
 } http4_session_state_t;
 
 void http4_session_init(http4_session_state_t *s, uint64_t max_stream_bytes,
