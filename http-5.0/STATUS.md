@@ -31,7 +31,7 @@
 
 1. Run `make -C http-5.0 clean all syntax test` on Linux, macOS, and Windows/MinGW and fix all failures.
 2. Add golden wire vectors and adversarial tests for each type, flag, parser, and boundary.
-3. Reconcile the 8 MiB HTTP-body limit with the 16 MiB frame limit or document a lower server-profile maximum in code and tests.
+3. Add boundary tests for the 16 MiB payload and 16 MiB + 32-byte HTTP-body limits, including overflow and allocation-failure paths.
 4. Integrate bounded stream lifecycle and actual send/receive flow-control accounting.
 5. Define all frame payload schemas and reject unsupported semantic operations.
 6. Bind negotiation to an authenticated carrier/session; no implicit downgrade.
