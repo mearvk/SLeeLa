@@ -110,18 +110,41 @@ static int parse_content_length(const char*s,size_t*out){
 static int send_all(SLNetHandle fd,const char*d,size_t l){
     while(l>0){SLNetCount n=slnet_write(fd,d,l);if(n<=0)return -1;d+=n;l-=(size_t)n;}return 0;}
 
+static int safe_value(const char*s,size_t max){
+ if(!s)return 0;size_t n=0;
+ for(;s[n];++n){unsigned char c=(unsigned char)s[n];if(n>=max||c=='\r'||c=='\n'||c==0x7f||(c<0x20&&c!='\t'))return 0;}
+ return 1;
+}
+static int safe_header_name(const char*s){
+ if(!s||!*s)return 0;for(;*s;++s)if(!is_token_char((unsigned char)*s))return 0;return 1;
+}
 static int send_response(SLNetHandle fd,const h7s_request*req,const h7s_response*resp,const char*sn){
-    char buf[H7S_MAX_HEADER];int off=0;
-    const char*reason=resp->reason?resp->reason:reason_phrase(resp->status_code);
-    off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"%s %d %s\r\n",req->version[0]?req->version:"HTTP/1.0",resp->status_code,reason);
-    off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"Server: %s\r\n",sn);
-    if(resp->content_type)off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"Content-Type: %s\r\n",resp->content_type);
-    off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"Content-Length: %zu\r\n",resp->body_length);
-    for(int i=0;i<resp->header_count;++i)off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"%s: %s\r\n",resp->headers[i].name,resp->headers[i].value);
-    off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"X-SLeeLa-Version: 7.0\r\nX-SLeeLa-Accept: 7.0, 6.0, 5.0, 4.0, 3.0, 2.1, 1.1, 1.0\r\nConnection: close\r\n\r\n");
-    if(off<=0||(size_t)off>=sizeof(buf))return -1;
-    if(send_all(fd,buf,(size_t)off)!=0)return -1;
-    if(resp->body&&resp->body_length>0)return send_all(fd,resp->body,resp->body_length);return 0;}
+ if(!req||!resp||resp->status_code<100||resp->status_code>599||
+    resp->header_count<0||resp->header_count>H7S_MAX_HEADERS||
+    resp->body_length>H7S_MAX_BODY||(resp->body_length&&!resp->body)||
+    !safe_value(sn,200))return -1;
+ const char*reason=resp->reason?resp->reason:reason_phrase(resp->status_code);
+ if(!safe_value(reason,100)||(resp->content_type&&!safe_value(resp->content_type,200)))return -1;
+ for(int i=0;i<resp->header_count;++i){
+  const h7s_header*h=&resp->headers[i];
+  if(!safe_header_name(h->name)||!safe_value(h->value,sizeof(h->value)-1))return -1;
+  if(strcmp(h->name,"content-length")==0||strcmp(h->name,"transfer-encoding")==0||
+     strcmp(h->name,"connection")==0||strcmp(h->name,"server")==0||
+     strcmp(h->name,"x-sleela-version")==0||strcmp(h->name,"x-sleela-accept")==0||
+     strcmp(h->name,"content-type")==0)return -1;
+ }
+ char buf[H7S_MAX_HEADER];size_t off=0;
+ #define H7_APPEND(...) do { int z=snprintf(buf+off,sizeof(buf)-off,__VA_ARGS__); if(z<0||(size_t)z>=sizeof(buf)-off)return -1;off+=(size_t)z; } while(0)
+ H7_APPEND("%s %d %s\r\n",req->version[0]?req->version:"HTTP/1.0",resp->status_code,reason);
+ H7_APPEND("Server: %s\r\n",sn);
+ if(resp->content_type)H7_APPEND("Content-Type: %s\r\n",resp->content_type);
+ H7_APPEND("Content-Length: %zu\r\n",resp->body_length);
+ for(int i=0;i<resp->header_count;++i)H7_APPEND("%s: %s\r\n",resp->headers[i].name,resp->headers[i].value);
+ H7_APPEND("X-SLeeLa-Version: 7.0\r\nX-SLeeLa-Accept: 7.0, 6.0, 5.0, 4.0, 3.0, 2.1, 1.1, 1.0\r\nConnection: close\r\n\r\n");
+ #undef H7_APPEND
+ if(send_all(fd,buf,off)!=0)return -1;
+ return resp->body_length?send_all(fd,resp->body,resp->body_length):0;
+}
 
 int h7s_download_should_resume(uint64_t cl){return cl>H7S_DOWNLOAD_THRESHOLD;}
 int h7s_download_serialise(const h7s_download_state*st,char*buf,size_t cap){
