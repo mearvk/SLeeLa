@@ -360,22 +360,22 @@ static void handle_connection(SLNetHandle fd,const h6s_server_config*cfg){
     int handled=0;
     if(strcmp(req.uri,"/__sleela/health")==0){
         if(strcmp(req.method,"GET")==0)builtin_health(&resp);
-        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\n";resp.body_length=19;
              h6s_response_add_header(&resp,"Allow","GET");}
         handled=1;
     } else if(strcmp(req.uri,"/__sleela/status")==0){
         if(strcmp(req.method,"GET")==0)builtin_status(&resp);
-        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\n";resp.body_length=19;
              h6s_response_add_header(&resp,"Allow","GET");}
         handled=1;
     } else if(strcmp(req.uri,"/__sleela/negotiate")==0){
         if(strcmp(req.method,"GET")==0)builtin_negotiate(&req,&resp,cfg->allow_negotiation_fallback);
-        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\n";resp.body_length=19;
              h6s_response_add_header(&resp,"Allow","GET");}
         handled=1;
     } else if(strcmp(req.uri,"/__sleela/h6")==0){
         if(strcmp(req.method,"POST")==0)builtin_h6_frame(&req,&resp,cfg->frame_handler,cfg->user_data);
-        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+        else{resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\n";resp.body_length=19;
              h6s_response_add_header(&resp,"Allow","POST");}
         handled=1;
     }
