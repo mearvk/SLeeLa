@@ -1,0 +1,20 @@
+#sleela 2.1
+class Http40Response {
+  int status = 200;
+  long requestId = 0;
+  String contentType = "text/plain; charset=utf-8";
+  String result = "";
+  String sessionId = "";
+  long streamId = 0;
+  long sequence = 0;
+  boolean endStream = true;
+  boolean integrityVerified = false;
+  void setResult(int code, String body) { status = code; result = body; }
+  void correlate(long request, String session, long stream) {
+    requestId = request; sessionId = session; streamId = stream;
+  }
+  boolean isValid() {
+    return status >= 100 && status <= 599 && requestId >= 0 &&
+      sessionId != "" && streamId >= 0 && sequence >= 0 && result != null;
+  }
+}
