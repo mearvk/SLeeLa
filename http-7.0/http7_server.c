@@ -197,6 +197,23 @@ static int builtin_h7_frame(const h7s_request*req,h7s_response*resp,h7s_frame_ha
     http7_frame_view_t frame;size_t consumed;
     if(http7_frame_decode((const uint8_t*)req->body,req->body_length,&frame,&consumed)!=0||consumed!=req->body_length){
         resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid H7 frame\n";resp->body_length=17;return 0;}
+    if(frame.header.type==HTTP7_FRAME_ASSERTION){
+        http7_assertion_t assertion;
+        if(http7_assertion_parse((const char*)frame.payload,frame.header.payload_length,&assertion)!=0||
+           (((frame.header.flags&HTTP7_FLAG_FACTUAL)!=0)!=(assertion.status==HTTP7_ASSERT_FACTUAL_DOCUMENTED))||
+           (((frame.header.flags&HTTP7_FLAG_USER_AUTHORED)!=0)!=(assertion.status==HTTP7_ASSERT_USER_AUTHORED))){
+            resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid assertion classification\\n";resp->body_length=32;return 0;
+        }
+    } else if(frame.header.type==HTTP7_FRAME_ASSERTION_STATUS){
+        int valid=0;for(int i=0;i<=5;++i)if(strlen(http7_assertion_status_name((http7_assertion_status_t)i))==frame.header.payload_length&&
+            memcmp(frame.payload,http7_assertion_status_name((http7_assertion_status_t)i),frame.header.payload_length)==0)valid=1;
+        if(!valid){resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid assertion status\\n";resp->body_length=25;return 0;}
+    } else if(frame.header.type==HTTP7_FRAME_ASSERTION_SOURCE||frame.header.type==HTTP7_FRAME_ASSERTION_AUTHOR){
+        if(frame.header.payload_length==0||memchr(frame.payload,'\\0',frame.header.payload_length)||
+           memchr(frame.payload,'\\r',frame.header.payload_length)||memchr(frame.payload,'\\n',frame.header.payload_length)){
+            resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid assertion metadata\\n";resp->body_length=27;return 0;
+        }
+    }
     if(fh){
         static uint8_t rp[4096];size_t rl=0;
         if(fh(&frame,rp,sizeof(rp),&rl,ud)!=0||rl>sizeof(rp)){resp->status_code=500;resp->content_type="text/plain";
