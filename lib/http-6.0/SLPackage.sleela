@@ -14,6 +14,11 @@ class SLPackage {
   boolean strictFrameFlagValidationAvailable(){return true;}
   boolean strictHttpFramingValidationAvailable(){return true;}
   boolean strictDownloadMetadataParserAvailable(){return true;}
+  boolean sharedLoggerBridgeAvailable(){return true;}
+  boolean payloadLoggingDisabledByDefault(){return true;}
+  boolean socketInactivityTimeoutsAvailable(){return true;}
+  boolean totalRequestDeadlineAvailable(){return false;}
+  boolean configurableRateLimitingAvailable(){return false;}
   boolean completeFramePayloadSchemasAvailable(){return false;}
   boolean integratedStreamStateMachineAvailable(){return false;}
   boolean enforcedFlowControlAvailable(){return false;}
