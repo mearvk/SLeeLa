@@ -71,12 +71,15 @@ static const char *reason_phrase(int code)
     }
 }
 
+static int portable_poll_readable(SLNetHandle fd, int timeout_ms);
+
 /* ── request parsing ────────────────────────────────────────────────── */
 
 static int recv_headers(SLNetHandle fd, char *buf, size_t cap)
 {
     size_t total = 0;
     while (total < cap) {
+        if (!portable_poll_readable(fd, 5000)) return -1;
         SLNetCount n = slnet_read(fd, buf + total, cap - total);
         if (n <= 0) return total > 0 ? (int)total : -1;
         total += (size_t)n;
@@ -137,15 +140,16 @@ static int parse_request(const char *raw,size_t raw_len,h21_http_request *req,
     while(p+1<end&&!(p[0]=='\r'&&p[1]=='\n')){
         const char *e=NULL;for(const char *q=p;q+1<end;++q)if(q[0]=='\r'&&q[1]=='\n'){e=q;break;}
         if(!e||e==p||*p==' '||*p=='\t'||req->header_count>=H21_SERVER_MAX_HEADERS)return -1;
+        const char *line_next=e+2;
         const char *colon=memchr(p,':',(size_t)(e-p));if(!colon||colon==p)return -1;
         for(const unsigned char *q=(const unsigned char *)p;q<(const unsigned char *)colon;++q)
             if(!is_token_char(*q))return -1;
         h21_http_header *h=&req->headers[req->header_count];size_t nl=(size_t)(colon-p);
         if(nl>=sizeof(h->name))return -1;
         memcpy(h->name,p,nl);h->name[nl]='\0';str_lower(h->name);
-        const char *v=str_trim_left(colon+1);while(e>v&&(e[-1]==' '||e[-1]=='\t'))--e;
-        size_t vl=(size_t)(e-v);if(vl>=sizeof(h->value))return -1;
-        for(const unsigned char *q=(const unsigned char *)v;q<(const unsigned char *)e;++q)
+        const char *v=str_trim_left(colon+1);const char *value_end=e;while(value_end>v&&(value_end[-1]==' '||value_end[-1]=='\t'))--value_end;
+        size_t vl=(size_t)(value_end-v);if(vl>=sizeof(h->value))return -1;
+        for(const unsigned char *q=(const unsigned char *)v;q<(const unsigned char *)value_end;++q)
             if((*q<0x20&&*q!='\t')||*q==0x7f)return -1;
         memcpy(h->value,v,vl);h->value[vl]='\0';
         if(!strcmp(h->name,"content-length")){
@@ -153,7 +157,7 @@ static int parse_request(const char *raw,size_t raw_len,h21_http_request *req,
             for(size_t k=0;k<vl;++k)if(h->value[k]<'0'||h->value[k]>'9')return -1;
         }
         if(!strcmp(h->name,"transfer-encoding"))return -1;
-        ++req->header_count;p=e+2;
+        ++req->header_count;p=line_next;
     }
     if(p+1>=end||p[0]!='\r'||p[1]!='\n')return -1;
     p+=2;*header_bytes=(size_t)(p-raw);*body_start=p;
@@ -400,7 +404,17 @@ static void handle_connection(SLNetHandle fd, const h21_server_config *cfg)
     {
         const char *cl = get_header(&req, "content-length");
         if (cl) {
-            size_t content_len = (size_t)strtoull(cl, NULL, 10);
+            uint64_t parsed_length = 0;
+            if (parse_u64_strict(cl, &parsed_length) != 0 ||
+                parsed_length > H21_SERVER_MAX_BODY || parsed_length > (uint64_t)SIZE_MAX) {
+                resp.status_code = 400;
+                resp.content_type = "text/plain";
+                resp.body = "Bad Content-Length\n";
+                resp.body_length = strlen(resp.body);
+                send_response(fd, &req, &resp, cfg->server_name);
+                free(raw); slnet_close(fd); return;
+            }
+            size_t content_len = (size_t)parsed_length;
             if (content_len > H21_SERVER_MAX_BODY) {
                 resp.status_code  = 413;
                 resp.content_type = "text/plain";
@@ -410,6 +424,12 @@ static void handle_connection(SLNetHandle fd, const h21_server_config *cfg)
                 free(raw); slnet_close(fd); return;
             }
             size_t already = (size_t)got - header_bytes;
+            if (already > content_len) {
+                resp.status_code = 400; resp.content_type = "text/plain";
+                resp.body = "Unexpected bytes after request body\n"; resp.body_length = strlen(resp.body);
+                send_response(fd, &req, &resp, cfg->server_name);
+                free(raw); slnet_close(fd); return;
+            }
             req.body = malloc(content_len + 1);
             if (!req.body) {
                 resp.status_code  = 500;
@@ -424,10 +444,18 @@ static void handle_connection(SLNetHandle fd, const h21_server_config *cfg)
             size_t remaining = already < content_len ? content_len - already : 0;
             size_t filled    = already < content_len ? already : content_len;
             while (remaining > 0) {
+                if (!portable_poll_readable(fd, 5000)) break;
                 SLNetCount n = slnet_read(fd, req.body + filled, remaining);
                 if (n <= 0) break;
                 filled    += (size_t)n;
                 remaining -= (size_t)n;
+            }
+            if (remaining != 0) {
+                free(req.body); req.body = NULL;
+                resp.status_code = 400; resp.content_type = "text/plain";
+                resp.body = "Incomplete request body\n"; resp.body_length = strlen(resp.body);
+                send_response(fd, &req, &resp, cfg->server_name);
+                free(raw); slnet_close(fd); return;
             }
             req.body_length = filled;
             req.body[filled] = '\0';
