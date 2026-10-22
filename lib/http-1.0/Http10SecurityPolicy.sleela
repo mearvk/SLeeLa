@@ -1,0 +1,14 @@
+#sleela 2.1
+/* Declarative posture only; this class does not implement TLS or authentication. */
+class Http10SecurityPolicy {
+  boolean plaintextAllowed = false;
+  boolean trustedReverseProxy = false;
+  boolean trustForwardedHeaders = false;
+  boolean redactCredentialsInLogs = true;
+  boolean requireAuthorizationForProtectedRoutes = true;
+  boolean validateRouteIdentifiers = true;
+  boolean requireSha256ForDownloadedArtifacts = true;
+  String tlsTermination = "external-or-native-tls-adapter";
+  boolean isSafeForPublicExposure() { return !plaintextAllowed && redactCredentialsInLogs && requireAuthorizationForProtectedRoutes && validateRouteIdentifiers; }
+  boolean mayTrustForwardedHeaders() { return trustedReverseProxy && trustForwardedHeaders; }
+}
