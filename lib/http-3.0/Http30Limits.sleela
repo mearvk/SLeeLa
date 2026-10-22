@@ -1,0 +1,19 @@
+#sleela 2.1
+/* Values mirror documented HTTP 3.0 protocol constants; verify against native headers on change. */
+class Http30Limits {
+  int maxEnvelopePayloadBytes = 4096;
+  int maxTextEnvelopeBytes = 16384;
+  int maxServices = 64;
+  int maxOperationsPerService = 64;
+  int maxNameBytes = 63;
+  int maxBasketItems = 14;
+  int macKeyBytes = 16;
+  int digestBytes = 8;
+  int intactxBytes = 8;
+  int nonceBytes = 8;
+  int basketBlockBytes = 172;
+  int requestTimeoutMillis = 10000;
+  long downloadResumeThresholdBytes = 52428800;
+  boolean validPayloadLength(long n) { return n >= 0 && n <= maxEnvelopePayloadBytes; }
+  boolean validDictionarySize(int services, int operations) { return services >= 0 && services <= maxServices && operations >= 0 && operations <= maxOperationsPerService; }
+}
