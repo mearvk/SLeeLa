@@ -44,28 +44,68 @@ static int recv_headers(SLNetHandle fd,char*buf,size_t cap){
 static const char*get_hdr(const h7s_request*r,const char*n){
     for(int i=0;i<r->header_count;++i)if(strcmp(r->headers[i].name,n)==0)return r->headers[i].value;return NULL;}
 
+static int is_token_char(unsigned char c){
+    if((c>='0'&&c<='9')||(c>='A'&&c<='Z')||(c>='a'&&c<='z'))return 1;
+    return strchr("!#$%&'*+-.^_`|~",(int)c)!=NULL;
+}
 static int parse_request(const char*raw,size_t raw_len,h7s_request*req,const char**bs,size_t*hb){
-    const char*p=raw,*end=raw+raw_len,*le;memset(req,0,sizeof(*req));
-    le=strstr(p,"\r\n");if(!le)return -1;
-    {const char*sp=memchr(p,' ',(size_t)(le-p));if(!sp||(size_t)(sp-p)>=sizeof(req->method))return -1;memcpy(req->method,p,(size_t)(sp-p));p=sp+1;}
-    {const char*sp=memchr(p,' ',(size_t)(le-p));if(!sp||(size_t)(sp-p)>=sizeof(req->uri))return -1;memcpy(req->uri,p,(size_t)(sp-p));p=sp+1;}
-    {size_t vl=(size_t)(le-p);if(vl>=sizeof(req->version))return -1;memcpy(req->version,p,vl);}
-    p=le+2;
-    while(p+1<end&&!(p[0]=='\r'&&p[1]=='\n')){le=strstr(p,"\r\n");if(!le)break;
-        const char*c=memchr(p,':',(size_t)(le-p));if(!c||c==p||req->header_count>=H7S_MAX_HEADERS)return -1;
-        h7s_header*h=&req->headers[req->header_count];size_t nl=(size_t)(c-p);
-        if(nl>=sizeof(h->name))return -1;memcpy(h->name,p,nl);h->name[nl]='\0';str_lower(h->name);
-        const char*v=str_ltrim(c+1);size_t vl=(size_t)(le-v);if(vl>=sizeof(h->value))return -1;
-        memcpy(h->value,v,vl);h->value[vl]='\0';++req->header_count;p=le+2;}
-    if(p+1<end&&p[0]=='\r'&&p[1]=='\n')p+=2;
+    if(!raw||!req||!bs||!hb||raw_len>H7S_MAX_HEADER+H7S_MAX_BODY)return -1;
+    const char *p=raw,*end=raw+raw_len,*le;
+    memset(req,0,sizeof(*req));
+    le=NULL;
+    for(const char*q=p;q+1<end;++q)if(q[0]=='\r'&&q[1]=='\n'){le=q;break;}
+    if(!le)return -1;
+    const char*sp=memchr(p,' ',(size_t)(le-p));if(!sp||sp==p)return -1;
+    size_t ml=(size_t)(sp-p);if(ml>=sizeof(req->method))return -1;
+    for(size_t i=0;i<ml;++i)if(!is_token_char((unsigned char)p[i]))return -1;
+    memcpy(req->method,p,ml);p=sp+1;
+    sp=memchr(p,' ',(size_t)(le-p));if(!sp||sp==p)return -1;
+    size_t ul=(size_t)(sp-p);if(ul>=sizeof(req->uri))return -1;
+    for(size_t i=0;i<ul;++i)if((unsigned char)p[i]<=0x20||(unsigned char)p[i]==0x7f)return -1;
+    memcpy(req->uri,p,ul);p=sp+1;
+    size_t vl=(size_t)(le-p);if(vl>=sizeof(req->version))return -1;
+    if(!((vl==8&&memcmp(p,"HTTP/1.1",8)==0)||(vl==8&&memcmp(p,"HTTP/1.0",8)==0)))return -1;
+    memcpy(req->version,p,vl);p=le+2;
+    int host_count=0,cl_count=0,te_count=0;
+    while(p<end){
+        if(p+1<end&&p[0]=='\r'&&p[1]=='\n'){p+=2;break;}
+        le=NULL;for(const char*q=p;q+1<end;++q)if(q[0]=='\r'&&q[1]=='\n'){le=q;break;}
+        if(!le||le==p||req->header_count>=H7S_MAX_HEADERS)return -1;
+        const char*colon=memchr(p,':',(size_t)(le-p));if(!colon||colon==p)return -1;
+        size_t nl=(size_t)(colon-p);if(nl>=sizeof(req->headers[0].name))return -1;
+        for(size_t i=0;i<nl;++i)if(!is_token_char((unsigned char)p[i]))return -1;
+        h7s_header*h=&req->headers[req->header_count];
+        memcpy(h->name,p,nl);h->name[nl]='\0';str_lower(h->name);
+        const char*v=colon+1;while(v<le&&(*v==' '||*v=='\t'))++v;
+        const char*ve=le;while(ve>v&&(ve[-1]==' '||ve[-1]=='\t'))--ve;
+        size_t vv=(size_t)(ve-v);if(vv>=sizeof(h->value))return -1;
+        for(const char*q=v;q<ve;++q)if(((unsigned char)*q<0x20&&*q!='\t')||(unsigned char)*q==0x7f)return -1;
+        memcpy(h->value,v,vv);h->value[vv]='\0';
+        for(int i=0;i<req->header_count;++i)if(strcmp(req->headers[i].name,h->name)==0)return -1;
+        if(strcmp(h->name,"host")==0){if(vv==0)return -1;++host_count;}
+        if(strcmp(h->name,"content-length")==0)++cl_count;
+        if(strcmp(h->name,"transfer-encoding")==0)++te_count;
+        ++req->header_count;p=le+2;
+    }
+    if(p>end|| (strcmp(req->version,"HTTP/1.1")==0&&host_count!=1)||cl_count>1||te_count>0)return -1;
     *hb=(size_t)(p-raw);*bs=p;
-    {const char*v;
-     v=get_hdr(req,"x-sleela-version");if(v)snprintf(req->sleela_version,sizeof(req->sleela_version),"%s",v);
-     v=get_hdr(req,"x-sleela-accept");if(v)snprintf(req->sleela_accept,sizeof(req->sleela_accept),"%s",v);
-     v=get_hdr(req,"x-sleela-port");if(v)snprintf(req->sleela_port,sizeof(req->sleela_port),"%s",v);
-     v=get_hdr(req,"x-sleela-service-id");if(v)snprintf(req->service_id,sizeof(req->service_id),"%s",v);
-     v=get_hdr(req,"x-sleela-op-id");if(v)snprintf(req->op_id,sizeof(req->op_id),"%s",v);}
-    return 0;}
+    const char*v;
+    v=get_hdr(req,"x-sleela-version");if(v)snprintf(req->sleela_version,sizeof(req->sleela_version),"%s",v);
+    v=get_hdr(req,"x-sleela-accept");if(v)snprintf(req->sleela_accept,sizeof(req->sleela_accept),"%s",v);
+    v=get_hdr(req,"x-sleela-port");if(v)snprintf(req->sleela_port,sizeof(req->sleela_port),"%s",v);
+    v=get_hdr(req,"x-sleela-service-id");if(v)snprintf(req->service_id,sizeof(req->service_id),"%s",v);
+    v=get_hdr(req,"x-sleela-op-id");if(v)snprintf(req->op_id,sizeof(req->op_id),"%s",v);
+    return 0;
+}
+
+static int parse_content_length(const char*s,size_t*out){
+    if(!s||!*s||!out)return -1;size_t n=0;
+    for(const unsigned char*p=(const unsigned char*)s;*p;++p){
+        if(*p<'0'||*p>'9')return -1;unsigned d=(unsigned)(*p-'0');
+        if(n>(SIZE_MAX-d)/10u)return -1;n=n*10u+d;
+    }
+    *out=n;return 0;
+}
 
 static int send_all(SLNetHandle fd,const char*d,size_t l){
     while(l>0){SLNetCount n=slnet_write(fd,d,l);if(n<=0)return -1;d+=n;l-=(size_t)n;}return 0;}
