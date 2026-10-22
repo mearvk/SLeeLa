@@ -1,0 +1,28 @@
+#sleela 2.1
+/* Request model; carrier protocol is negotiated separately. */
+class Http40Request {
+  String method = "GET";
+  String target = "/";
+  String carrierProtocol = "HTTP/1.1";
+  String logicalPort = "";
+  String sessionId = "";
+  long streamId = 0;
+  long requestId = 0;
+  long serviceId = 0;
+  long operationId = 0;
+  String contentType = "";
+  long bodyLength = 0;
+  boolean valid = true;
+  void setMethod(String value) { method = value; }
+  void setTarget(String value) { target = value; }
+  void setLogicalPort(String value) { logicalPort = value; }
+  void setSession(String value, long stream) { sessionId = value; streamId = stream; }
+  void setOperation(long service, long operation) { serviceId = service; operationId = operation; }
+  void setBody(String type, long length) { contentType = type; bodyLength = length; }
+  void reject() { valid = false; }
+  boolean isValid() {
+    return valid && target != "" && logicalPort != "" && sessionId != "" &&
+      streamId >= 0 && bodyLength >= 0 && serviceId > 0 && operationId > 0;
+  }
+  boolean isReadOnly() { return method == "GET" || method == "HEAD"; }
+}
