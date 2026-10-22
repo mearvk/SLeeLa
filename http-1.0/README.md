@@ -201,7 +201,9 @@ Run the expanded checks with:
 - `make fuzz-download` (Clang/libFuzzer)
 
 The server remains serial (one connection at a time), and this code does not
-implement TLS or application authentication. Do not expose plaintext HTTP to
+implement TLS or identity verification. Applications can configure the optional
+native `authorize` callback: return 0 to allow a request and non-zero to deny it.
+When configured, it protects all routes except GET/HEAD `/__sleela/health`. Do not expose plaintext HTTP to
 untrusted networks without a trusted TLS-terminating proxy. Protect non-health
 routes at the application layer, never treat X-SLeeLa routing IDs or download
 session IDs as credentials, and bind resume state to an authenticated principal
