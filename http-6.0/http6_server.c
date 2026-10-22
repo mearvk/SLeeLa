@@ -397,7 +397,7 @@ int h6s_self_test(void){
          fprintf(stderr,"FAIL: HTTP parse\n");++f;}}
     /* 1a. Reject malformed HTTP headers and ambiguous message framing. */
     {
-        const char duplicate_cl[]="POST /__sleela/h6 HTTP/1.1\r\nContent-Length: 0\r\nContent-Length: 0\r\n\r\n";
+        const char duplicate_cl[]="POST /__sleela/h6 HTTP/1.1\r\nHost: localhost\r\nContent-Length: 0\r\nContent-Length: 0\r\n\r\n";
         h6s_request req;const char*bs;size_t hb;
         if(parse_request(duplicate_cl,sizeof(duplicate_cl)-1,&req,&bs,&hb)!=0 ||
            count_hdr(&req,"content-length")!=2){
