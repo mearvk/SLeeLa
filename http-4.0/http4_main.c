@@ -71,14 +71,15 @@ int main(int argc, char **argv)
             return h4s_self_test();
         else if (strcmp(argv[i], "--port") == 0 && i + 1 < argc) {
             if (parse_port(argv[++i], &cfg.port) != 0) {
-                fprintf(stderr, "invalid port: %s\\n", argv[i]);
+                fprintf(stderr, "invalid port: %s\n", argv[i]);
                 return 2;
             }
         }
         else if (strcmp(argv[i], "--bind-address") == 0 && i + 1 < argc)
             cfg.bind_address = argv[++i];
         else if (strcmp(argv[i], "--help") == 0) {
-            printf("Usage: %s [--port N] [--self-test] [--help]\n", argv[0]);
+            printf("Usage: %s [--bind-address IPv4] [--port N] [--self-test] [--help]\n", argv[0]);
+            printf("Default bind is 127.0.0.1; public binding requires a trusted security boundary.\n");
             return 0;
         } else {
             fprintf(stderr, "unknown option: %s\n", argv[i]);
