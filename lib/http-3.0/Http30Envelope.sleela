@@ -1,0 +1,21 @@
+#sleela 2.1
+/* H3 application envelope model; this is not the IETF HTTP/3 frame format. */
+class Http30Envelope {
+  int version = 3;
+  int flags = 0;
+  long serviceId = 0;
+  long operationId = 0;
+  long requestId = 0;
+  long nonce = 0;
+  String digest = "";
+  long intactx = 0;
+  String basketHex = "";
+  String payload = "";
+  boolean textual = true;
+  boolean isValid() {
+    return version == 3 && serviceId > 0 && operationId > 0 &&
+      requestId >= 0 && nonce > 0 && digest != "" &&
+      basketHex != "" && payload != null;
+  }
+  boolean requiresIntegrityGate() { return true; }
+}
