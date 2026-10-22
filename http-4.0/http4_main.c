@@ -6,6 +6,8 @@
 #include "http4_server.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
+#include <stdint.h>
 #include <string.h>
 
 /* Echo frame handler: returns the payload back in a response frame. */
@@ -43,6 +45,20 @@ static int demo_http(const h4s_request *req, h4s_response *resp, void *ud)
     return 0;
 }
 
+static int parse_port(const char *text, uint16_t *port)
+{
+    if (!text || !*text || !port) return -1;
+    for (const unsigned char *p = (const unsigned char *)text; *p; ++p)
+        if (*p < '0' || *p > '9') return -1;
+    errno = 0;
+    char *end = NULL;
+    unsigned long value = strtoul(text, &end, 10);
+    if (errno == ERANGE || !end || *end != '\0' || value == 0 || value > 65535)
+        return -1;
+    *port = (uint16_t)value;
+    return 0;
+}
+
 int main(int argc, char **argv)
 {
     h4s_server_config cfg;
@@ -53,8 +69,12 @@ int main(int argc, char **argv)
     for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "--self-test") == 0)
             return h4s_self_test();
-        else if (strcmp(argv[i], "--port") == 0 && i + 1 < argc)
-            cfg.port = (uint16_t)atoi(argv[++i]);
+        else if (strcmp(argv[i], "--port") == 0 && i + 1 < argc) {
+            if (parse_port(argv[++i], &cfg.port) != 0) {
+                fprintf(stderr, "invalid port: %s\\n", argv[i]);
+                return 2;
+            }
+        }
         else if (strcmp(argv[i], "--bind-address") == 0 && i + 1 < argc)
             cfg.bind_address = argv[++i];
         else if (strcmp(argv[i], "--help") == 0) {
