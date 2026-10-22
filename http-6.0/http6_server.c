@@ -409,18 +409,18 @@ int h6s_self_test(void){
         h6s_request req;const char*bs;size_t hb;
         if(parse_request(duplicate_cl,sizeof(duplicate_cl)-1,&req,&bs,&hb)!=0 ||
            count_hdr(&req,"content-length")!=2){
-            fprintf(stderr,"FAIL: duplicate Content-Length fixture parse\\n");++f;
+            fprintf(stderr,"FAIL: duplicate Content-Length fixture parse\n");++f;
         }
         size_t length_value=0;
         if(parse_content_length("12x",&length_value)==0 ||
            parse_content_length("-1",&length_value)==0 ||
            parse_content_length("184467440737095516160000",&length_value)==0 ||
            parse_content_length("12",&length_value)!=0 || length_value!=12){
-            fprintf(stderr,"FAIL: strict Content-Length parser\\n");++f;
+            fprintf(stderr,"FAIL: strict Content-Length parser\n");++f;
         }
         const char invalid_value[]="GET / HTTP/1.1\r\nHost: localhost\r\nX-Test: bad\001value\r\n\r\n";
         if(parse_request(invalid_value,sizeof(invalid_value)-1,&req,&bs,&hb)==0){
-            fprintf(stderr,"FAIL: control character in header accepted\\n");++f;
+            fprintf(stderr,"FAIL: control character in header accepted\n");++f;
         }
     }
     /* Response headers cannot override framing or inject new lines. */
@@ -428,7 +428,7 @@ int h6s_self_test(void){
      if(h6s_response_add_header(&response,"X-Trace","safe")!=0 ||
         h6s_response_add_header(&response,"Content-Length","999")==0 ||
         h6s_response_add_header(&response,"X-Trace","ok\r\nInjected: yes")==0){
-         fprintf(stderr,"FAIL: response header validation\\n");++f;}}
+         fprintf(stderr,"FAIL: response header validation\n");++f;}}
     /* 2. Frame encode/decode — CONSOLIDATED_FRIENDS_BET */
     {http6_frame_header_t h={0};h.version=HTTP6_VERSION;h.type=HTTP6_FRAME_CONSOLIDATED_FRIENDS_BET;
      h.flags=HTTP6_FLAG_USER_AUTHORED;h.stream_id=1;h.request_id=42;h.sequence=1;h.payload_length=7;
@@ -454,13 +454,13 @@ int h6s_self_test(void){
     {http6_frame_header_t h={0};h.version=HTTP6_VERSION;h.type=HTTP6_FRAME_DATA;
      h.flags=0x80;h.payload_length=0;uint8_t wire[64];size_t written=0;
      if(http6_frame_encode(&h,NULL,wire,sizeof(wire),&written)==0){
-         fprintf(stderr,"FAIL: reserved flag accepted\\n");++f;}
+         fprintf(stderr,"FAIL: reserved flag accepted\n");++f;}
      h.flags=0;h.payload_length=1;const uint8_t payload[]={'x'};
      if(http6_frame_encode(&h,payload,wire,sizeof(wire),&written)!=0){
-         fprintf(stderr,"FAIL: truncated fixture encode\\n");++f;}
+         fprintf(stderr,"FAIL: truncated fixture encode\n");++f;}
      else{http6_frame_view_t v;size_t consumed;
          if(http6_frame_decode(wire,written-1,&v,&consumed)==0){
-             fprintf(stderr,"FAIL: truncated payload accepted\\n");++f;}}}
+             fprintf(stderr,"FAIL: truncated payload accepted\n");++f;}}}
     /* 6. Download round-trip */
     {h6s_download_state st={0};snprintf(st.session_id,sizeof(st.session_id),"h6-s");
      snprintf(st.datetime,sizeof(st.datetime),"2026-10-15");
@@ -474,7 +474,7 @@ int h6s_self_test(void){
         h6s_download_parse("session | date | file | name | 4 | 11 | 10",&st)==0 ||
         h6s_download_parse("session | date | file | name | 4 | 2 | 10 | extra",&st)==0 ||
         h6s_download_parse("session | date | bad|file | name | 4 | 2 | 10",&st)==0){
-         fprintf(stderr,"FAIL: malformed download state accepted\\n");++f;}}
+         fprintf(stderr,"FAIL: malformed download state accepted\n");++f;}}
     /* 8. Negotiation */
     {const char*r=sleela_http_negotiate("6.0","6.0, 5.0, 1.1",1);
      if(!r||strcmp(r,"6.0")!=0){fprintf(stderr,"FAIL: negotiate\n");++f;}
