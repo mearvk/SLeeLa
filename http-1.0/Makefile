@@ -26,7 +26,7 @@ ifeq ($(OS),Windows_NT)
 LDLIBS += -lws2_32
 endif
 
-.PHONY: all server syntax test clean
+.PHONY: all server syntax test sanitize fuzz-download clean
 
 all: server $(NEG_OBJECTS)
 
