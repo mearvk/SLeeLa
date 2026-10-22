@@ -21,7 +21,8 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>
-#include <sys/socket.h>\n#include <sys/time.h>
+#include <sys/socket.h>
+#include <sys/time.h>
 #include <unistd.h>
 #endif
 
