@@ -82,30 +82,57 @@ static int valid_port(uint16_t port) {
     return 1;
 }
 
-SLNetHandle slnet_listen(uint16_t port, int backlog) {
-    if (!valid_port(port) || backlog < 1) return SL_NET_INVALID;
+SLNetHandle slnet_listen_on(const char* host, uint16_t port, int backlog) {
+    if (!valid_port(port) || backlog < 1 || (host && !*host)) return SL_NET_INVALID;
+    char service[16];
+    snprintf(service, sizeof(service), "%u", (unsigned)port);
+    struct addrinfo hints;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_protocol = IPPROTO_TCP;
+    if (!host) hints.ai_flags = AI_PASSIVE;
+    struct addrinfo* list = NULL;
+    if (getaddrinfo(host, service, &hints, &list) != 0) return SL_NET_INVALID;
+    SLNetHandle result = SL_NET_INVALID;
+    for (struct addrinfo* p = list; p; p = p->ai_next) {
 #ifdef _WIN32
-    SOCKET s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (s == INVALID_SOCKET) return SL_NET_INVALID;
+        SOCKET s = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+        if (s == INVALID_SOCKET) continue;
 #else
-    int s = socket(AF_INET, SOCK_STREAM, 0);
-    if (s < 0) return SL_NET_INVALID;
+        int s = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+        if (s < 0) continue;
 #endif
-    int yes = 1;
-    if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (const char*)&yes, sizeof(yes)) < 0) {
-        slnet_close((SLNetHandle)s);
-        return SL_NET_INVALID;
+        int yes = 1;
+        if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (const char*)&yes, sizeof(yes)) < 0) {
+#ifdef _WIN32
+            closesocket(s);
+#else
+            close(s);
+#endif
+            continue;
+        }
+#ifdef _WIN32
+        int bound = bind(s, p->ai_addr, (int)p->ai_addrlen);
+#else
+        int bound = bind(s, p->ai_addr, (socklen_t)p->ai_addrlen);
+#endif
+        if (bound == 0 && listen(s, backlog) == 0) {
+            result = (SLNetHandle)s;
+            break;
+        }
+#ifdef _WIN32
+        closesocket(s);
+#else
+        close(s);
+#endif
     }
-    struct sockaddr_in addr;
-    memset(&addr, 0, sizeof(addr));
-    addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    addr.sin_port = htons(port);
-    if (bind(s, (struct sockaddr*)&addr, sizeof(addr)) < 0 || listen(s, backlog) < 0) {
-        slnet_close((SLNetHandle)s);
-        return SL_NET_INVALID;
-    }
-    return (SLNetHandle)s;
+    freeaddrinfo(list);
+    return result;
+}
+
+SLNetHandle slnet_listen(uint16_t port, int backlog) {
+    return slnet_listen_on(NULL, port, backlog);
 }
 
 SLNetHandle slnet_accept(SLNetHandle listener) {
