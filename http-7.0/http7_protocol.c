@@ -71,7 +71,7 @@ int http7_assertion_serialise(const http7_assertion_t*a,char*buf,size_t cap){
  if(!valid_field(a->statement,sizeof(a->statement),1)||
     !valid_field(a->source,sizeof(a->source),a->status==HTTP7_ASSERT_FACTUAL_DOCUMENTED)||
     !valid_field(a->source_date,sizeof(a->source_date),0)||
-    !valid_field(a->author,sizeof(a->author),0)||
+    !valid_field(a->author,sizeof(a->author),a->status==HTTP7_ASSERT_USER_AUTHORED)||
     !valid_field(a->document_reference,sizeof(a->document_reference),0))return -3;
  int n=snprintf(buf,cap,"%s\t%s\t%s\t%s\t%s\t%s\n",http7_assertion_status_name(a->status),
  a->statement,a->source,a->source_date,a->author,a->document_reference);
@@ -100,6 +100,6 @@ int http7_assertion_parse(const char*line,size_t len,http7_assertion_t*out){
  char*dst[5]={out->statement,out->source,out->source_date,out->author,out->document_reference};
  size_t caps[5]={sizeof(out->statement),sizeof(out->source),sizeof(out->source_date),sizeof(out->author),sizeof(out->document_reference)};
  for(int i=0;i<5;++i){size_t n=lengths[i+1];if(n>=caps[i])return -8;memcpy(dst[i],fields[i+1],n);dst[i][n]='\0';}
- if(!out->statement[0]||(st==HTTP7_ASSERT_FACTUAL_DOCUMENTED&&!out->source[0]))return -9;
+ if(!out->statement[0]||(st==HTTP7_ASSERT_FACTUAL_DOCUMENTED&&!out->source[0])||(st==HTTP7_ASSERT_USER_AUTHORED&&!out->author[0]))return -9;
  return 0;
 }
