@@ -1,0 +1,60 @@
+name: SLeeLa HTTP 5.0 Conformance
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - "http-5.0/**"
+      - "lib/http-5.0/**"
+      - ".github/workflows/http5-conformance.yml"
+  pull_request:
+    branches: [master, main]
+    paths:
+      - "http-5.0/**"
+      - "lib/http-5.0/**"
+      - ".github/workflows/http5-conformance.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  posix:
+    name: HTTP 5.0 (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Build, syntax-check, and run self-tests
+        run: |
+          make -C http-5.0 clean all
+          make -C http-5.0 syntax
+          make -C http-5.0 test
+
+  windows:
+    name: HTTP 5.0 (Windows / MinGW-w64)
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Set up MSYS2 UCRT64
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            make
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-g++
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Build, syntax-check, and run self-tests
+        run: |
+          make -C http-5.0 clean all
+          make -C http-5.0 syntax
+          make -C http-5.0 test
