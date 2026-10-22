@@ -1,14 +1,23 @@
 /*
  * lib/http-3.0/SLPackage.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library package for http-3.0.
+ * SLeeLa Standard Library Definition for the HTTP 3.0 application protocol.
  */
 #sleela 2.1
-// Library facade for module package: http-3.0
-// Original module sources remain authoritative in the package source tree.
-class httpColorsExample {
-  String source;
-  void configure(String path){source=path;}
-  String path(){return source;}
-  boolean available(){return source!=null;}
+// H3 is a project-specific application protocol generation, not the IETF HTTP/3 wire protocol.
+// Native core includes compact envelopes, keyed integrity checks and a pipeline.
+// Native server transport and QUIC/HTTP/3 interoperability must be verified separately.
+class SLPackage {
+  String packageName;
+  void configure(String name){packageName=name;}
+  String name(){return packageName;}
+  String generation(){return "3.0";}
+  String nativeTransport(){return "HTTP/1.x carrier in current reference server";}
+  boolean applicationEnvelopeAvailable(){return true;}
+  boolean keyedDigestAvailable(){return true;}
+  boolean nonceReplayGuardAvailable(){return true;}
+  boolean intactxCheckAvailable(){return true;}
+  boolean basketSchemaAvailable(){return true;}
+  boolean iETFHttp3TransportAvailable(){return false;}
+  boolean requiresProtectedTransport(){return true;}
+  boolean available(){return packageName!=null;}
 }
