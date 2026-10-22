@@ -4,8 +4,9 @@
 
 # SLeeLa HTTP 6.0
 
-**Status:** Internet-capable SLeeLa application-protocol server with
-Consolidated Friends' Bet and Teamster Debate extensions.
+**Status:** Experimental SLeeLa application-protocol server; not production-certified and not an IETF HTTP/6 standard. The reference server uses cleartext TCP and does not itself provide TLS, peer authentication, or application authorization.
+
+HTTP 6.0 extends the HTTP 5.0 frame model with Consolidated Friends' Bet and Teamster Debate application data. Do not expose the reference server directly to untrusted networks or send sensitive data without a reviewed TLS/authentication boundary.
 
 **Platforms:** Linux · macOS · Windows 10+
 
@@ -106,7 +107,9 @@ Recipients may accept, reject, ignore, or filter.
 ## Safety and authorization
 
 All packet contents are ordinary application data. They do not authorize
-interference with networks, systems, persons, property, or communications.
+interference with networks, systems, persons, property, or communications. Recipient labels are not identity claims; points and IQ fields do not grant privileges; document references do not authorize dereferencing.
+
+See [SPEC.md](SPEC.md) for the normative project draft and [SECURITY.md](SECURITY.md) for implemented controls, deployment limits, and required release gates. The hardening workflow runs syntax/build tests across Linux, Windows, macOS Intel, and macOS ARM64; only a successful run on the exact commit counts as validation.
 
 ## File inventory
 
@@ -117,7 +120,9 @@ interference with networks, systems, persons, property, or communications.
 | `http6_main.c`               | CLI entry point with echo handler               |
 | `http6_protocol.h`           | 20 frame types, header struct                   |
 | `http6_protocol.c`           | Frame encode/decode/validate (new)              |
-| `http6_consolidated_pack.hpp`| C++ ConsolidatedFriendsBet class                |
+| `http6_consolidated_pack.hpp`| Bounded C++ ConsolidatedFriendsBet model         |
+| `http6_consolidated_pack.cpp`| UTF-8 validation + deterministic JSON serialization |
+| `http6_pack_test.cpp`        | C++ model/serialization regression tests         |
 | `http_negotiation.*`         | Negotiation (C + C++, reformatted)              |
 | `Makefile`                   | `all`, `server`, `proto`, `syntax`, `test`      |
 
