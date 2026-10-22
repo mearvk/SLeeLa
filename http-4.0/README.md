@@ -175,6 +175,16 @@ key management remains a separate concern.
 The existing protocol core (`http4_protocol`), packet context, packet payload,
 segmentation, reassembly, and their self-tests are unchanged.
 
+## Hardening additions
+
+- `http4_session.h/.c` — bounded per-stream sequencing and byte-accounting reference state, with duplicate OPEN rejection and monotonic stream IDs.
+- `http4_resume.h/.c` — resume authorization/checkpoint policy that requires verifier callbacks for tokens, chunks, and final digests.
+- `http4_fuzz.c` — optional Clang libFuzzer harness for frame, segment, and packet-context parsing.
+- `TEST-VECTORS.md` — canonical binary frame vectors; protocol self-test asserts the first golden header.
+- `SPEC.md`, `CONFORMANCE.md`, and `CAPABILITY-MATRIX.md` — normative requirements, adversarial test plan, and evidence-based capability state.
+
+The stream and resume policy modules are currently testable reference components, not yet connected to the server dispatch path. The resume test uses fake verifier callbacks; production must supply cryptographic verification and durable atomic storage.
+
 ## Dependencies
 
 | Module                      | Path                           | Role                          |
