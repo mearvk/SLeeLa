@@ -784,7 +784,8 @@ int http1_self_test(void)
         const char *bad[] = {
             "POST / HTTP/1.0\\r\\nContent-Length: 1\\r\\nContent-Length: 1\\r\\n\\r\\nX",
             "POST / HTTP/1.0\\r\\nTransfer-Encoding: chunked\\r\\n\\r\\n0\\r\\n\\r\\n",
-            "GET / HTTP/1.0\\r\\nX-Test: safe\\r\\nInjected: yes\\r\\n\\r\\n"
+            "POST / HTTP/1.0\\r\\nContent-Length: +1\\r\\n\\r\\nX",
+            "GET / HTTP/1.0\\r\\nX-Test: safe\\001bad\\r\\n\\r\\n"
         };
         for (size_t i = 0; i < sizeof(bad) / sizeof(bad[0]); ++i) {
             http1_request req;
