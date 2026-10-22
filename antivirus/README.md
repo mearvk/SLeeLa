@@ -333,3 +333,17 @@ The checksum list and manifest are integrity checks, not independent publisher a
 ## Security hardening and release criteria
 
 See [HARDENING-PLAN.md](HARDENING-PLAN.md) for the six-workstream plan covering authenticated release metadata, quarantine/restore, adversarial tests, SLeeLa execution policy, cross-platform release gates, and explicit coverage/resource reporting. The cross-platform hardening workflow is [antivirus-hardening.yml](../.github/workflows/antivirus-hardening.yml). It is a CI test gate, not a publisher-signing system and not a substitute for independent security review.
+
+### Verify signed release metadata
+
+The release verifier checks a detached OpenSSL SHA-256 signature over the exact release-manifest bytes, then checks each declared artifact's size and SHA-256. Obtain the public key through an independent trusted channel; a key shipped only inside the same archive does not establish trust.
+
+```sh
+python3 antivirus/tools/sleelavirin_verify_release.py \
+  --public-key /trusted/path/release-public.pem \
+  --signature release-manifest.json.sig \
+  --manifest release-manifest.json \
+  --root ./release-artifacts
+```
+
+The signed JSON manifest schema is `sleelavirin-release-manifest-v1` with a non-empty `artifacts` array. Each entry has `path`, `size`, and `sha256`. Paths must be canonical relative paths; symlinks, duplicate paths, path traversal, missing files, and mismatched sizes or hashes are rejected. Key custody, rotation, and revocation remain release-operator responsibilities.
