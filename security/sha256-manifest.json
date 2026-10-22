@@ -475,7 +475,7 @@
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "1b07efbd2cc7ad395685aa3fd593a5c0b8649b86d89f642ed3a23383026061b0"
+      "sha256": "a0154237b030655ef1053210a733cdb5e2e48b90c24e484f80f146025be72801"
     },
     {
       "path": "impl/frontend/library_index.cpp",
