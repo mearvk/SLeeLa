@@ -29,3 +29,25 @@ INDEX, OFFSET, and TOTAL-SIZE metadata.
 
 See [`/http-1.0`](../../http-1.0/README.md) for the portable C/C++ server,
 negotiation implementation, build targets, and native self-test.
+
+## Validation, authorization, and deployment policy
+
+The SLeeLa policy models are declarative counterparts to the native C/C++ HTTP
+transport. Native parsing is authoritative for wire-level syntax and bounds.
+Application routing must validate logical port/service/operation identifiers
+and authorize each protected operation; those identifiers are not credentials.
+Download resume state must be tied to an authenticated principal and stable file
+identity, with offset bounds checked and the final artifact digest verified.
+
+Plain HTTP provides no confidentiality. TLS must be implemented in the native
+transport or terminated by a trusted proxy. Forwarded identity headers are
+trusted only when the connection is known to originate from that configured
+proxy. The native server enforces 10-second total header/body read deadlines and
+closes each connection after one response; it is currently single-connection
+and does not provide native TLS or built-in application authentication.
+
+The native regression and fuzzing entry points live under `tests/http-1.0`.
+Use `make -C http-1.0 syntax test`, `make -C http-1.0 sanitize`, and (with
+Clang/libFuzzer) `make -C http-1.0 fuzz-download`. Keep the generated SHA-256
+manifest synchronized with changes to trusted `.sleela` library files by
+running `python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json`.
