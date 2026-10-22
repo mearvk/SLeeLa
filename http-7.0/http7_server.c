@@ -151,7 +151,7 @@ static int send_response(SLNetHandle fd,const h7s_request*req,const h7s_response
 int h7s_download_should_resume(uint64_t cl){return cl>H7S_DOWNLOAD_THRESHOLD;}
 static int h7s_download_text(const char*s,size_t cap,int leaf){
  if(!s||!s[0])return 0;size_t n=0;
- for(;s[n];++n){unsigned char c=(unsigned char)s[n];if(n+1>=cap||c<0x20||c==0x7f||c=='|'||c=='\\r'||c=='\\n')return 0;
+ for(;s[n];++n){unsigned char c=(unsigned char)s[n];if(n+1>=cap||c<0x20||c==0x7f||c=='|'||c=='\r'||c=='\n')return 0;
   if(leaf&&(c=='/'||c=='\\\\'||c==':'))return 0;}
  if(leaf&&(!strcmp(s,".")||!strcmp(s,"..")))return 0;return 1;
 }
@@ -174,8 +174,8 @@ int h7s_download_parse(const char*line,h7s_download_state*out){
  if(!line||!out)return -1;size_t len=0;while(len<2048&&line[len])++len;if(len==0||len>=2048)return -1;
  char c[2048];memcpy(c,line,len+1);char*f[7];size_t fl[7];int count=0;size_t start=0;
  for(size_t i=0;i<=len;++i){if(i<len&&c[i]!='|')continue;if(count>=7)return -1;
-  size_t a=start,b=i;while(a<b&&(c[a]==' '||c[a]=='\\t'))++a;while(b>a&&(c[b-1]==' '||c[b-1]=='\\t'))--b;
-  if(a==b)return -1;c[b]='\\0';f[count]=c+a;fl[count]=b-a;++count;start=i+1;}
+  size_t a=start,b=i;while(a<b&&(c[a]==' '||c[a]=='\t'))++a;while(b>a&&(c[b-1]==' '||c[b-1]=='\t'))--b;
+  if(a==b)return -1;c[b]='\0';f[count]=c+a;fl[count]=b-a;++count;start=i+1;}
  if(count!=7)return -1;
  if(fl[0]>=sizeof(out->session_id)||fl[1]>=sizeof(out->datetime)||fl[2]>=sizeof(out->file_id)||fl[3]>=sizeof(out->file_name))return -1;
  memset(out,0,sizeof(*out));
@@ -226,16 +226,16 @@ static int builtin_h7_frame(const h7s_request*req,h7s_response*resp,h7s_frame_ha
         if(http7_assertion_parse((const char*)frame.payload,frame.header.payload_length,&assertion)!=0||
            (((frame.header.flags&HTTP7_FLAG_FACTUAL)!=0)!=(assertion.status==HTTP7_ASSERT_FACTUAL_DOCUMENTED))||
            (((frame.header.flags&HTTP7_FLAG_USER_AUTHORED)!=0)!=(assertion.status==HTTP7_ASSERT_USER_AUTHORED))){
-            resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid assertion classification\\n";resp->body_length=32;return 0;
+            resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid assertion classification\n";resp->body_length=32;return 0;
         }
     } else if(frame.header.type==HTTP7_FRAME_ASSERTION_STATUS){
         int valid=0;for(int i=0;i<=5;++i)if(strlen(http7_assertion_status_name((http7_assertion_status_t)i))==frame.header.payload_length&&
             memcmp(frame.payload,http7_assertion_status_name((http7_assertion_status_t)i),frame.header.payload_length)==0)valid=1;
-        if(!valid){resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid assertion status\\n";resp->body_length=25;return 0;}
+        if(!valid){resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid assertion status\n";resp->body_length=25;return 0;}
     } else if(frame.header.type==HTTP7_FRAME_ASSERTION_SOURCE||frame.header.type==HTTP7_FRAME_ASSERTION_AUTHOR){
-        if(frame.header.payload_length==0||memchr(frame.payload,'\\0',frame.header.payload_length)||
-           memchr(frame.payload,'\\r',frame.header.payload_length)||memchr(frame.payload,'\\n',frame.header.payload_length)){
-            resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid assertion metadata\\n";resp->body_length=27;return 0;
+        if(frame.header.payload_length==0||memchr(frame.payload,'\0',frame.header.payload_length)||
+           memchr(frame.payload,'\r',frame.header.payload_length)||memchr(frame.payload,'\n',frame.header.payload_length)){
+            resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid assertion metadata\n";resp->body_length=27;return 0;
         }
     }
     if(fh){
@@ -245,7 +245,7 @@ static int builtin_h7_frame(const h7s_request*req,h7s_response*resp,h7s_frame_ha
         http7_frame_header_t rh={0};rh.version=HTTP7_VERSION;
         rh.type=(frame.header.type==HTTP7_FRAME_PING)?HTTP7_FRAME_PONG:HTTP7_FRAME_DATA;
         rh.flags=HTTP7_FLAG_FIN;rh.stream_id=frame.header.stream_id;
-        rh.request_id=frame.header.request_id;if(frame.header.sequence==UINT64_MAX){resp->status_code=400;resp->content_type="text/plain";resp->body="Sequence overflow\\n";resp->body_length=18;return 0;}rh.sequence=frame.header.sequence+1;
+        rh.request_id=frame.header.request_id;if(frame.header.sequence==UINT64_MAX){resp->status_code=400;resp->content_type="text/plain";resp->body="Sequence overflow\n";resp->body_length=18;return 0;}rh.sequence=frame.header.sequence+1;
         rh.payload_length=(uint32_t)rl;
         static uint8_t wire[4096+HTTP7_FRAME_HEADER_SIZE];size_t written;
         if(http7_frame_encode(&rh,rp,wire,sizeof(wire),&written)!=0){
@@ -275,38 +275,38 @@ static void handle_connection(SLNetHandle fd,const h7s_server_config*cfg){
      const char*cl=get_hdr(&req,"content-length");
      size_t already=(size_t)got-hb,clen=0;
      if(!cl&&already>0){
-         resp.status_code=400;resp.content_type="text/plain";resp.body="Unexpected bytes after headers\\n";resp.body_length=31;
+         resp.status_code=400;resp.content_type="text/plain";resp.body="Unexpected bytes after headers\n";resp.body_length=31;
          send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
      }
      if(cl){
          if(parse_content_length(cl,&clen)!=0){
-             resp.status_code=400;resp.content_type="text/plain";resp.body="Invalid Content-Length\\n";resp.body_length=23;
+             resp.status_code=400;resp.content_type="text/plain";resp.body="Invalid Content-Length\n";resp.body_length=23;
              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
          }
          if(clen>H7S_MAX_BODY){
-             resp.status_code=413;resp.content_type="text/plain";resp.body="Content Too Large\\n";resp.body_length=18;
+             resp.status_code=413;resp.content_type="text/plain";resp.body="Content Too Large\n";resp.body_length=18;
              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
          }
          if(already>clen){
-             resp.status_code=400;resp.content_type="text/plain";resp.body="Extra bytes after body\\n";resp.body_length=23;
+             resp.status_code=400;resp.content_type="text/plain";resp.body="Extra bytes after body\n";resp.body_length=23;
              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
          }
          req.body=(char*)malloc(clen+1);
-         if(!req.body){resp.status_code=500;resp.content_type="text/plain";resp.body="Internal Server Error\\n";resp.body_length=22;
+         if(!req.body){resp.status_code=500;resp.content_type="text/plain";resp.body="Internal Server Error\n";resp.body_length=22;
              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
          if(already)memcpy(req.body,bs,already);
          size_t rem=clen-already,filled=already;
          while(rem>0){SLNetCount n=slnet_read(fd,req.body+filled,rem);if(n<=0)break;filled+=(size_t)n;rem-=(size_t)n;}
-         if(rem>0){resp.status_code=400;resp.content_type="text/plain";resp.body="Incomplete request body\\n";resp.body_length=24;
+         if(rem>0){resp.status_code=400;resp.content_type="text/plain";resp.body="Incomplete request body\n";resp.body_length=24;
              send_response(fd,&req,&resp,cfg->server_name);free(req.body);free(raw);slnet_close(fd);return;}
-         req.body_length=filled;req.body[filled]='\\0';
+         req.body_length=filled;req.body[filled]='\0';
      }
     }
     free(raw);raw=NULL;
     int handled=0;
     if(strcmp(req.uri,"/__sleela/health")==0||strcmp(req.uri,"/__sleela/status")==0||strcmp(req.uri,"/__sleela/negotiate")==0){
         if(strcmp(req.method,"GET")!=0){
-            resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+            resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\n";resp.body_length=19;
             resp.header_count=1;snprintf(resp.headers[0].name,sizeof(resp.headers[0].name),"Allow");
             snprintf(resp.headers[0].value,sizeof(resp.headers[0].value),"GET");
         }else if(strcmp(req.uri,"/__sleela/health")==0)builtin_health(&resp);
@@ -315,7 +315,7 @@ static void handle_connection(SLNetHandle fd,const h7s_server_config*cfg){
         handled=1;
     } else if(strcmp(req.uri,"/__sleela/h7")==0){
         if(strcmp(req.method,"POST")!=0){
-            resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\\n";resp.body_length=19;
+            resp.status_code=405;resp.content_type="text/plain";resp.body="Method Not Allowed\n";resp.body_length=19;
             resp.header_count=1;snprintf(resp.headers[0].name,sizeof(resp.headers[0].name),"Allow");
             snprintf(resp.headers[0].value,sizeof(resp.headers[0].value),"POST");
         }else builtin_h7_frame(&req,&resp,cfg->frame_handler,cfg->user_data);
@@ -343,7 +343,8 @@ int h7s_server_run(const h7s_server_config*cfg){
     if(slnet_startup()!=0){fprintf(stderr,"h7s: slnet_startup failed\n");return -1;}
     sleela_preferred_router_startup(NULL,"HTTP/7.0");
     const char*bind_host=(cfg->bind_address&&*cfg->bind_address)?cfg->bind_address:"127.0.0.1";
-    if(!h7_logger_open())fprintf(stderr,"h7s: warning: shared packet logger unavailable; continuing without runtime logs\\n");\n    SLNetHandle listener=slnet_listen_on(bind_host,cfg->port,cfg->backlog);
+    if(!h7_logger_open())fprintf(stderr,"h7s: warning: shared packet logger unavailable; continuing without runtime logs\n");
+    SLNetHandle listener=slnet_listen_on(bind_host,cfg->port,cfg->backlog);
     if(!slnet_valid(listener)){fprintf(stderr,"h7s: listen failed on %s:%u\n",bind_host,(unsigned)cfg->port);slnet_shutdown();return -1;}
     fprintf(stderr,"SLeeLa HTTP/7.0 listening on %s:%u  [%s]\n",bind_host,(unsigned)cfg->port,slnet_platform_name());
 #ifndef _WIN32
@@ -410,24 +411,24 @@ int h7s_self_test(void){
 
     /* 8. Frame parser rejects reserved bits and truncation. */
     {http7_frame_header_t h={0};h.version=HTTP7_VERSION;h.type=HTTP7_FRAME_ASSERTION;h.payload_length=1;
-     if(http7_frame_validate(&h,0)==0){fprintf(stderr,"FAIL: truncated frame accepted\\n");++f;}
+     if(http7_frame_validate(&h,0)==0){fprintf(stderr,"FAIL: truncated frame accepted\n");++f;}
      h.payload_length=0;h.flags=0x0100;
-     if(http7_frame_validate(&h,0)==0){fprintf(stderr,"FAIL: reserved flag accepted\\n");++f;}}
+     if(http7_frame_validate(&h,0)==0){fprintf(stderr,"FAIL: reserved flag accepted\n");++f;}}
     /* 9. Assertion parser rejects unknown status, missing provenance, and field injection. */
-    {http7_assertion_t a;const char bad1[]="MADE_UP\\tclaim\\tsource\\tdate\\tauthor\\tref\\n";
-     const char bad2[]="FACTUAL_DOCUMENTED\\tclaim\\t\\tdate\\tauthor\\tref\\n";
-     if(http7_assertion_parse(bad1,sizeof(bad1)-1,&a)==0){fprintf(stderr,"FAIL: unknown assertion status accepted\\n");++f;}
-     if(http7_assertion_parse(bad2,sizeof(bad2)-1,&a)==0){fprintf(stderr,"FAIL: factual assertion without source accepted\\n");++f;}
+    {http7_assertion_t a;const char bad1[]="MADE_UP\tclaim\tsource\tdate\tauthor\tref\n";
+     const char bad2[]="FACTUAL_DOCUMENTED\tclaim\t\tdate\tauthor\tref\n";
+     if(http7_assertion_parse(bad1,sizeof(bad1)-1,&a)==0){fprintf(stderr,"FAIL: unknown assertion status accepted\n");++f;}
+     if(http7_assertion_parse(bad2,sizeof(bad2)-1,&a)==0){fprintf(stderr,"FAIL: factual assertion without source accepted\n");++f;}
      memset(&a,0,sizeof(a));a.status=HTTP7_ASSERT_USER_AUTHORED;
-     snprintf(a.statement,sizeof(a.statement),"claim\\tInjected: yes");snprintf(a.author,sizeof(a.author),"tester");char out[512];
-     if(http7_assertion_serialise(&a,out,sizeof(out))>=0){fprintf(stderr,"FAIL: assertion field injection accepted\\n");++f;}}
+     snprintf(a.statement,sizeof(a.statement),"claim\tInjected: yes");snprintf(a.author,sizeof(a.author),"tester");char out[512];
+     if(http7_assertion_serialise(&a,out,sizeof(out))>=0){fprintf(stderr,"FAIL: assertion field injection accepted\n");++f;}}
     /* 10. HTTP parser rejects duplicate framing and missing HTTP/1.1 Host. */
-    {const char raw[]="POST /__sleela/h7 HTTP/1.1\\r\\nHost: localhost\\r\\nContent-Length: 0\\r\\nContent-Length: 0\\r\\n\\r\\n";
+    {const char raw[]="POST /__sleela/h7 HTTP/1.1\r\nHost: localhost\r\nContent-Length: 0\r\nContent-Length: 0\r\n\r\n";
      h7s_request req;const char*bs;size_t hb;
-     if(parse_request(raw,sizeof(raw)-1,&req,&bs,&hb)==0){fprintf(stderr,"FAIL: duplicate Content-Length accepted\\n");++f;}}
-    {const char raw[]="GET / HTTP/1.1\\r\\nX-SLeeLa-Version: 7.0\\r\\n\\r\\n";
+     if(parse_request(raw,sizeof(raw)-1,&req,&bs,&hb)==0){fprintf(stderr,"FAIL: duplicate Content-Length accepted\n");++f;}}
+    {const char raw[]="GET / HTTP/1.1\r\nX-SLeeLa-Version: 7.0\r\n\r\n";
      h7s_request req;const char*bs;size_t hb;
-     if(parse_request(raw,sizeof(raw)-1,&req,&bs,&hb)==0){fprintf(stderr,"FAIL: missing Host accepted\\n");++f;}}
+     if(parse_request(raw,sizeof(raw)-1,&req,&bs,&hb)==0){fprintf(stderr,"FAIL: missing Host accepted\n");++f;}}
     if(f==0)fprintf(stderr,"h7s_self_test: all tests passed\n");
     else fprintf(stderr,"h7s_self_test: %d test(s) FAILED\n",f);
     return f;}
