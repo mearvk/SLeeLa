@@ -370,10 +370,11 @@ static int builtin_h4_frame(const h4s_request *req, h4s_response *resp,
 static void handle_connection(SLNetHandle fd, const h4s_server_config *cfg)
 {
     size_t raw_cap=H4S_MAX_HEADER+4096;
-    char *raw=malloc(raw_cap);
+    char *raw=malloc(raw_cap + 1u);
     if(!raw){slnet_close(fd);return;}
     int got=recv_headers(fd,raw,raw_cap);
     if(got<=0){free(raw);slnet_close(fd);return;}
+    raw[(size_t)got] = '\0';
 
     h4s_request req; h4s_response resp;
     const char *bs=NULL; size_t hb=0;
@@ -385,21 +386,66 @@ static void handle_connection(SLNetHandle fd, const h4s_server_config *cfg)
         h4s_request bad;memset(&bad,0,sizeof(bad));memcpy(bad.version,"HTTP/1.0",9);
         send_response(fd,&bad,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
     }
-    { const char *cl=get_header(&req,"content-length");
-      if(cl){
-          size_t clen=(size_t)strtoull(cl,NULL,10);
-          if(clen>H4S_MAX_BODY){resp.status_code=413;resp.content_type="text/plain";
-              resp.body="Content Too Large\n";resp.body_length=18;
-              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
-          size_t already=(size_t)got-hb;
-          req.body=malloc(clen+1);
-          if(!req.body){resp.status_code=500;resp.content_type="text/plain";
-              resp.body="Internal Server Error\n";resp.body_length=22;
-              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
-          if(already>0&&already<=clen)memcpy(req.body,bs,already);
-          size_t rem=already<clen?clen-already:0,filled=already<clen?already:clen;
-          while(rem>0){SLNetCount n=slnet_read(fd,req.body+filled,rem);if(n<=0)break;filled+=(size_t)n;rem-=(size_t)n;}
-          req.body_length=filled;req.body[filled]='\0';
+    {
+      const char *cl = get_header(&req, "content-length");
+      int cl_count = 0, te_count = 0;
+      for (int i = 0; i < req.header_count; ++i) {
+          if (strcmp(req.headers[i].name, "content-length") == 0) ++cl_count;
+          if (strcmp(req.headers[i].name, "transfer-encoding") == 0) ++te_count;
+      }
+      /* This server implements Content-Length only, never ambiguous framing. */
+      if (cl_count > 1 || te_count > 0) {
+          resp.status_code=400; resp.content_type="text/plain";
+          resp.body="Invalid message framing\n"; resp.body_length=23;
+          send_response(fd,&req,&resp,cfg->server_name);
+          free(raw); slnet_close(fd); return;
+      }
+      if (cl) {
+          uint64_t clen64 = 0;
+          if (h4s_parse_u64(cl, &clen64) != 0 || clen64 > H4S_MAX_BODY) {
+              resp.status_code = clen64 > H4S_MAX_BODY ? 413 : 400;
+              resp.content_type = "text/plain";
+              resp.body = resp.status_code == 413 ? "Content Too Large\n" : "Invalid Content-Length\n";
+              resp.body_length = strlen(resp.body);
+              send_response(fd,&req,&resp,cfg->server_name);
+              free(raw); slnet_close(fd); return;
+          }
+          size_t clen = (size_t)clen64;
+          size_t already = (size_t)got - hb;
+          if (already > clen) {
+              resp.status_code=400; resp.content_type="text/plain";
+              resp.body="Body exceeds Content-Length\n"; resp.body_length=29;
+              send_response(fd,&req,&resp,cfg->server_name);
+              free(raw); slnet_close(fd); return;
+          }
+          req.body = malloc(clen + 1u);
+          if (!req.body) {
+              resp.status_code=500; resp.content_type="text/plain";
+              resp.body="Internal Server Error\n"; resp.body_length=22;
+              send_response(fd,&req,&resp,cfg->server_name);
+              free(raw); slnet_close(fd); return;
+          }
+          if (already) memcpy(req.body, bs, already);
+          size_t filled = already, rem = clen - already;
+          while (rem > 0) {
+              SLNetCount n = slnet_read(fd, req.body + filled, rem);
+              if (n <= 0) break;
+              filled += (size_t)n; rem -= (size_t)n;
+          }
+          req.body_length = filled;
+          req.body[filled] = '\0';
+          if (rem != 0) {
+              free(req.body);
+              resp.status_code=400; resp.content_type="text/plain";
+              resp.body="Truncated request body\n"; resp.body_length=23;
+              send_response(fd,&req,&resp,cfg->server_name);
+              free(raw); slnet_close(fd); return;
+          }
+      } else if ((size_t)got > hb) {
+          resp.status_code=400; resp.content_type="text/plain";
+          resp.body="Body requires Content-Length\n"; resp.body_length=28;
+          send_response(fd,&req,&resp,cfg->server_name);
+          free(raw); slnet_close(fd); return;
       }
     }
     free(raw);raw=NULL;
