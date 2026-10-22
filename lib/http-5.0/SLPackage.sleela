@@ -10,9 +10,14 @@ class SLPackage {
   String name(){return packageName;}
   String generation(){return "5.0";}
   boolean frameEnvelopeModelAvailable(){return true;}
+  boolean requestResponseModelsAvailable(){return true;}
+  boolean negotiationPolicyModelAvailable(){return true;}
+  boolean streamStateAndWindowModelAvailable(){return true;}
+  boolean downloadMetadataModelAvailable(){return true;}
   boolean friendsPackModelAvailable(){return true;}
   boolean strictFrameFlagValidationAvailable(){return true;}
   boolean strictDownloadMetadataParserAvailable(){return true;}
+  boolean explicitResourceLimitsModelAvailable(){return true;}
   boolean completeFramePayloadSchemasAvailable(){return false;}
   boolean integratedStreamStateMachineAvailable(){return false;}
   boolean enforcedFlowControlAvailable(){return false;}
