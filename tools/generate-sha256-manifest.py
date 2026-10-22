@@ -41,6 +41,7 @@ DEFAULT_SOURCE_DIRS = [
     "impl/xclass",
     "impl/subjects",
     "wifi-common",
+    "http-1.0",
 ]
 # The SLeeLa standard library the runtime loads and executes. Every *.sleela
 # library class plus its native C/C++ helpers is a trusted input (a program's
