@@ -1,79 +1,74 @@
-# SLeeLa HTTP 5.0 — Core Specification (Draft 0.1)
+# SLeeLa HTTP 5.0 — Core Specification (Draft 0.2)
 
-**Protocol status:** Experimental SLeeLa project specification; not an IETF standard. Normative terms MUST, MUST NOT, SHOULD, and MAY apply only to this draft.
+**Status:** Experimental SLeeLa application protocol. Not an IETF HTTP/5 standard. Normative terms apply only to this project draft.
 
-## 1. Scope
+## 1. Scope and current implementation
 
-This draft specifies the initial fixed frame envelope and invariants. It does not define a complete web server, TLS, QUIC, browser compatibility, HTTP/1.1 syntax, or HTTP/2/3 interoperability. The current implementation is an envelope codec only.
+HTTP 5.0 is a SLeeLa-specific application protocol carried by an HTTP/1.x server in the current reference implementation. Its frame codec is not HTTP/3 or QUIC. The current code includes a portable HTTP server, a frame envelope, Friends' Packs application helpers, and a basic negotiation path. It is not production-ready and does not provide transport encryption or peer authentication.
 
-## 2. Wire header
+## 2. Wire format
 
-Every frame begins with a 40-byte header. All multibyte integers are unsigned, big-endian.
+Every frame has a 32-byte header followed by exactly PAYLOAD-LENGTH bytes. Multibyte values are unsigned big-endian.
 
-| Offset | Width | Field | Rule |
-|---:|---:|---|---|
-| 0 | 1 | VERSION | MUST equal 5 |
-| 1 | 1 | TYPE | 1 through 11 |
-| 2 | 2 | FLAGS | Only defined bits accepted |
-| 4 | 4 | PAYLOAD-LENGTH | Payload bytes, excluding header |
-| 8 | 8 | SESSION-ID | Session correlation; not an authentication credential |
-| 16 | 8 | STREAM-ID | Logical stream identifier |
-| 24 | 8 | REQUEST-ID | Request correlation identifier |
-| 32 | 8 | SEQUENCE | Per-stream, per-direction sequence number |
+| Offset | Width | Field |
+|---:|---:|---|
+| 0 | 1 | VERSION (must equal 5) |
+| 1 | 1 | TYPE (1–13) |
+| 2 | 2 | FLAGS |
+| 4 | 8 | STREAM-ID |
+| 12 | 8 | REQUEST-ID |
+| 20 | 8 | SEQUENCE |
+| 28 | 4 | PAYLOAD-LENGTH |
+| 32 | N | PAYLOAD |
 
-The maximum payload in the initial C codec is 16 MiB. Deployments SHOULD choose a lower cap based on their memory budget. A decoder MUST reject unsupported versions, unknown types, reserved flags, over-limit payloads, truncated frames, and size arithmetic overflow before reading payload bytes.
+The maximum frame payload in the current codec is 16 MiB. The HTTP server's request-body limit is currently lower (8 MiB), so the endpoint cannot carry every codec-valid maximum-size frame. The limits must be reconciled before claiming full-size server support.
 
-The frame decoder is a single-frame primitive. A stream carrier must implement a bounded incremental parser that retains partial input and consumes exactly one frame at a time; that adapter is not yet supplied.
+The codec rejects an unsupported version, unknown type, undefined flag bits, payloads above the codec limit, and truncated payloads. Decode consumes one frame and reports the number of bytes consumed. The HTTP endpoint MUST reject trailing bytes because it accepts one frame per HTTP request.
 
-## 3. Initial frame types
+## 3. Frame types
 
-| Code | Name | Intended semantics |
+| Code | Type | Current intent |
 |---:|---|---|
-| 1 | OPEN | Establish stream context |
-| 2 | DATA | Application bytes on an open stream |
-| 3 | END | Close a direction or stream according to the negotiated profile |
-| 4 | RESET | Terminate a stream with a defined error |
-| 5 | WINDOW | Advertise receive credit |
+| 1 | OPEN | Open logical stream |
+| 2 | DATA | Application payload |
+| 3 | END | End stream or message |
+| 4 | RESET | Terminate stream |
+| 5 | WINDOW | Flow-control advertisement |
 | 6 | PING | Liveness probe |
-| 7 | PONG | PING response |
-| 8 | META | Typed metadata/capability record |
-| 9 | RESUME | Continue from an authenticated durable checkpoint |
-| 10 | COMMIT | Confirm transfer completion after integrity validation and durable publication |
-| 11 | ERROR | Structured error code and bounded diagnostic metadata |
+| 7 | PONG | Liveness response |
+| 8 | RESUME | Resume-transfer metadata |
+| 9 | CAPSULE | Session/capability metadata |
+| 10 | FRIENDS_PACK | Friends' Pack application data |
+| 11 | BONUS_OFFER | Optional offer reference |
+| 12 | FP_UPDATE | Application quota update |
+| 13 | AUDIT | Defensive conformance/audit event |
 
-This table is semantic intent, not a complete control-payload schema. Until each payload is formally defined and covered by vectors, a server MUST reject unsupported frame types rather than process guessed payload layouts.
+The envelope does not define every frame's complete payload grammar. Until the type-specific schemas and canonical vectors exist, the presence of a type code does not mean that the associated semantic behavior is complete. State-mutating handlers must explicitly reject unsupported or malformed payloads.
 
 ## 4. Flags
 
-Initial flags: FIN = 0x0001, ACK = 0x0002, URGENT = 0x0004, IDEMPOTENT = 0x0008, RESUMABLE = 0x0010. All other bits are reserved and MUST be rejected. The implementation currently validates the bit mask but does not yet enforce all type-specific flag combinations; that is a conformance gap.
+The currently defined mask is FIN (0x01), ACK (0x02), URGENT (0x04), INCREMENTAL (0x08), RESUMABLE (0x10), and OPTIONAL (0x20). All other bits are reserved and are rejected by the C codec. Type-specific flag legality still needs a complete table and tests.
 
-## 5. Session, stream, and sequence invariants
+## 5. Friends' Packs
 
-- SESSION-ID identifies protocol state and MUST NOT be treated as a secret or bearer token.
-- STREAM-ID and REQUEST-ID are correlation fields, not proof of authorization.
-- Sequence numbers are scoped to authenticated session, stream, and direction.
-- State-changing frame processing MUST validate sequence and authorization before mutating durable or externally visible state.
-- Implementations MUST cap active streams, total buffered bytes, per-stream bytes, idle lifetime, and frame rate.
-- Counter additions and length arithmetic MUST be checked for overflow.
-- WINDOW updates MUST be bounded and cannot grant more credit than the negotiated maximum.
-- RESET and END semantics must be explicit and tested before a production server accepts them.
+Friends' Packs are ordinary user-controlled application data. Friend entries and document references are not authorization credentials. FP is an application quota only; it is not a trust score, identity proof, or permission to access a system. Bonus-offer references must be independently authorized by application policy.
 
-## 6. Negotiation
+## 6. Session, flow control, and negotiation
 
-A future negotiation record MUST bind both peers' offers, selected protocol generation, required capabilities, and authenticated-session transcript. If a required capability or security property is missing, negotiation MUST fail closed. No implicit downgrade to HTTP 4.0 or other generations is permitted. Any compatibility bridge must be explicitly configured and separately reviewed.
+STREAM-ID, REQUEST-ID, and SEQUENCE are correlation/order fields, not authentication. The current server does not integrate a complete per-stream state machine or enforce WINDOW credit in a persistent multiplexed transport. Negotiation fallback is configurable in code; production deployment must explicitly disable fallback unless a reviewed compatibility policy permits it. Offers and selection are not yet cryptographically bound to an authenticated handshake transcript.
 
-## 7. Security boundary
+## 7. DOWNLOAD and resumability
 
-The codec does not encrypt or authenticate frames. Network deployments MUST use a maintained authenticated transport and MUST authorize the authenticated principal for every operation. The codec MUST NOT implement a home-grown TLS or QUIC replacement. See SECURITY.md.
+For transfers over the project threshold (currently greater than 50 MiB), the metadata contract is:
 
-## 8. Resumability and COMMIT
+`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
 
-RESUME metadata is not authorization. Production resumption requires a cryptographically authenticated token bound to principal, transfer ID, immutable object version, expected size, digest, offset, and expiry. Checkpoints must be durable and atomic with data writes. COMMIT may be accepted only after recomputing the full-object digest and atomically publishing the completed object. None of those storage operations is implemented by the current codec.
+These fields are metadata, not authorization. The parser must reject malformed numbers, overflow, extra fields, path-like filenames, and offsets above total size. A production resume implementation additionally requires authenticated tokens, durable atomic checkpoints, chunk integrity checks, final full-object digest verification, and atomic publication. Those guarantees are not supplied by the metadata parser.
 
-## 9. Error behavior
+## 8. Security boundary
 
-A complete implementation must distinguish malformed envelope, unsupported type/version/flags, sequence violation, flow-control violation, authentication failure, authorization failure, integrity failure, resource exhaustion, expired checkpoint, and internal failure. Error diagnostics must not reveal tokens, keys, private payloads, or sensitive identity data.
+The current server carries HTTP 5.0 frames inside HTTP/1.x over TCP. It does not implement TLS, QUIC, HTTP/3, frame MACs, certificate verification, or a complete authorization engine. Untrusted-network deployments require an independently maintained authenticated transport and explicit application authorization. Do not describe the server as Internet-safe merely because it can accept TCP connections.
 
-## 10. Conformance and release
+## 9. Conformance and release criteria
 
-The initial codec must pass deterministic round-trip, golden-byte, truncation, reserved-bit, unsupported-version/type, maximum-length, overflow, and sanitizer tests. Production status additionally requires full payload schemas, C/SLeeLa shared vectors, integrated stream dispatch and flow control, authenticated carrier tests, durable resume/recovery tests, fuzzing, and independent security review.
+Required tests include golden-byte vectors; all frame types; reserved flags; unsupported version/type; truncation and trailing bytes; maximum-length boundaries; strict Content-Length; duplicate Content-Length and Transfer-Encoding rejection; malformed DOWNLOAD metadata; response-header injection; and sanitizer/fuzz runs. Production status additionally requires complete payload schemas, integrated stream lifecycle and flow control, authenticated transport, durable resume, cross-platform CI, and independent security review.
