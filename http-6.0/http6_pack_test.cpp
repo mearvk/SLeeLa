@@ -31,7 +31,7 @@ int main() {
     assert(rejected);
 
     rejected = false;
-    try { pack.setDebateTopic(std::string("\\xff", 1)); }
+    try { pack.setDebateTopic(std::string(1, static_cast<char>(0xff))); }
     catch (const std::invalid_argument&) { rejected = true; }
     assert(rejected);
 
