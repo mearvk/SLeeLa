@@ -38,9 +38,14 @@ static const char *find_crlf(const char *p, const char *end){
 }
 static int is_token_char(unsigned char c){
     if((c>='0'&&c<='9')||(c>='A'&&c<='Z')||(c>='a'&&c<='z'))return 1;
-    switch(c){case '!':case '#':case 'static const char *reason_phrase(int c){
-    switch(c){case 200:return"OK";case 400:return"Bad Request";case 404:return"Not Found";
-    case 413:return"Content Too Large";case 500:return"Internal Server Error";default:return"Error";}
+    /* RFC token punctuation, expressed numerically to keep quoting unambiguous. */
+    switch(c){case 33:case 35:case 36:case 37:case 38:case 39:case 42:
+    case 43:case 45:case 46:case 94:case 95:case 96:case 124:case 126:return 1;
+    default:return 0;}
+}
+static int valid_header_value(const char *s){
+    for(;*s;++s){unsigned char c=(unsigned char)*s;if((c<0x20&&c!='\t')||c==0x7f)return 0;}
+    return 1;
 }
 
 static int recv_headers(SLNetHandle fd,char *buf,size_t cap){
