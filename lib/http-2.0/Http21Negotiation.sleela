@@ -1,11 +1,11 @@
 /*
- * SLeeLa HTTP generation negotiation policy for the HTTP/1.0 module.
- * Negotiation is explicit; SLeeLa-specific generations are not Internet HTTP versions.
+ * SLeeLa HTTP 2.0/2.1 application-generation negotiation.
+ * These generation labels are not Internet HTTP protocol versions.
  */
 #sleela 2.1
 
 class Http21Negotiation {
-  String localGeneration = "1.0";
+  String localGeneration = "2.1";
   String peerGeneration = "";
   String peerAccept = "";
   boolean fallbackAllowed = true;
@@ -16,23 +16,23 @@ class Http21Negotiation {
   String generation() { return localGeneration; }
 
   boolean acceptsHttp21() {
-    return peerGeneration == "" || peerGeneration == "1.0"
-      || peerAccept == "1.0" || peerAccept == "1.0, 1.1"
-      || peerAccept == "1.1, 1.0";
+    return peerGeneration == "" || peerGeneration == "2.1" || peerGeneration == "2.0"
+      || peerAccept == "2.1" || peerAccept == "2.0"
+      || peerAccept == "2.1, 2.0" || peerAccept == "2.0, 2.1";
   }
-  boolean acceptsHttp11() {
-    return peerGeneration == "1.1" || peerAccept == "1.1"
-      || peerAccept == "1.0, 1.1" || peerAccept == "1.1, 1.0";
+  boolean acceptsHttp20() {
+    return peerGeneration == "2.0" || peerAccept == "2.0"
+      || peerAccept == "2.1, 2.0" || peerAccept == "2.0, 2.1";
   }
   boolean canFallback() { return fallbackAllowed; }
 
   String selectedGeneration() {
-    if (peerGeneration == "1.0") return "1.0";
-    if (peerGeneration == "1.1") return "1.1";
-    if (peerAccept == "1.0") return "1.0";
-    if (peerAccept == "1.1") return "1.1";
-    if (peerAccept == "1.0, 1.1" || peerAccept == "1.1, 1.0") return "1.0";
-    if (fallbackAllowed) return "1.0";
+    if (peerGeneration == "2.1") return "2.1";
+    if (peerGeneration == "2.0") return "2.0";
+    if (peerAccept == "2.1") return "2.1";
+    if (peerAccept == "2.0") return "2.0";
+    if (peerAccept == "2.1, 2.0" || peerAccept == "2.0, 2.1") return "2.1";
+    if (fallbackAllowed) return "2.0";
     return "";
   }
   boolean isNegotiated() { return selectedGeneration() != ""; }
