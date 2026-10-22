@@ -31,6 +31,9 @@ int http4_frame_validate(const http4_frame_header_t *h, size_t available_payload
     if (!h) return -1;
     if (h->version != HTTP4_VERSION) return -2;
     if (h->type < HTTP4_FRAME_OPEN || h->type > HTTP4_FRAME_CAPSULE) return -3;
+    /* Reject reserved flag bits so peers cannot silently disagree on semantics. */
+    if ((h->flags & (uint16_t)~(HTTP4_FLAG_FIN | HTTP4_FLAG_ACK | HTTP4_FLAG_URGENT |\
+                                HTTP4_FLAG_INCREMENTAL | HTTP4_FLAG_RESUMABLE)) != 0) return -7;
     if (h->payload_length > HTTP4_MAX_PAYLOAD) return -4;
     if ((size_t)h->payload_length > available_payload) return -5;
     return 0;
