@@ -18,6 +18,7 @@
 #include "../resolver/resolver.h"
 
 #include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -176,9 +177,33 @@ static int send_response(SLNetHandle fd, const h4s_request *req,
 
 int h4s_download_should_resume(uint64_t cl){return cl>H4S_DOWNLOAD_THRESHOLD;}
 
+static int h4s_download_fields_valid(const h4s_download_state *st)
+{
+    if (!st || !st->session_id[0] || !st->datetime[0] ||
+        !st->file_id[0] || !st->file_name[0] || st->offset > st->total_size)
+        return 0;
+    /* A filename is a leaf name, never a path supplied by the peer. */
+    if (strchr(st->file_name, '/') || strchr(st->file_name, '\\\\') ||
+        strstr(st->file_name, "..")) return 0;
+    return 1;
+}
+
+static int h4s_parse_u64(const char *s, uint64_t *out)
+{
+    if (!s || !*s || !out) return -1;
+    for (const unsigned char *p = (const unsigned char *)s; *p; ++p)
+        if (*p < '0' || *p > '9') return -1;
+    errno = 0;
+    char *end = NULL;
+    unsigned long long v = strtoull(s, &end, 10);
+    if (errno == ERANGE || !end || *end != '\\0') return -1;
+    *out = (uint64_t)v;
+    return 0;
+}
+
 int h4s_download_serialise(const h4s_download_state *st,char *buf,size_t cap)
 {
-    if(!st||!buf||cap<512)return -1;
+    if (!h4s_download_fields_valid(st) || !buf || cap == 0) return -1;
     int n=snprintf(buf,cap,"%s | %s | %s | %s | %llu | %llu | %llu",
                    st->session_id,st->datetime,st->file_id,st->file_name,
                    (unsigned long long)st->index,(unsigned long long)st->offset,
@@ -188,19 +213,44 @@ int h4s_download_serialise(const h4s_download_state *st,char *buf,size_t cap)
 
 int h4s_download_parse(const char *line, h4s_download_state *out)
 {
-    if(!line||!out)return -1; memset(out,0,sizeof(*out));
-    char c[2048]; snprintf(c,sizeof(c),"%s",line);
-    char *f[7]; int cnt=0; char *t=strtok(c,"|");
-    while(t&&cnt<7){while(*t==' '||*t=='\t')++t;size_t l=strlen(t);
-        while(l>0&&(t[l-1]==' '||t[l-1]=='\t'))t[--l]='\0';f[cnt++]=t;t=strtok(NULL,"|");}
-    if(cnt!=7)return -1;
-    snprintf(out->session_id,sizeof(out->session_id),"%s",f[0]);
-    snprintf(out->datetime,sizeof(out->datetime),"%s",f[1]);
-    snprintf(out->file_id,sizeof(out->file_id),"%s",f[2]);
-    snprintf(out->file_name,sizeof(out->file_name),"%s",f[3]);
-    out->index=(uint64_t)strtoull(f[4],NULL,10);
-    out->offset=(uint64_t)strtoull(f[5],NULL,10);
-    out->total_size=(uint64_t)strtoull(f[6],NULL,10);
+    if (!line || !out) return -1;
+    size_t n = strlen(line);
+    if (n == 0 || n >= 2048) return -1;
+    char copy[2048];
+    memcpy(copy, line, n + 1);
+    char *fields[7];
+    char *p = copy;
+    for (int i = 0; i < 7; ++i) {
+        fields[i] = p;
+        char *sep = strchr(p, '|');
+        if (i < 6) {
+            if (!sep) return -1;
+            *sep = '\\0';
+            p = sep + 1;
+        } else if (sep) {
+            return -1; /* extra field is not ignored */
+        }
+        while (*fields[i] == ' ' || *fields[i] == '\\t') ++fields[i];
+        size_t fl = strlen(fields[i]);
+        while (fl > 0 && (fields[i][fl-1] == ' ' || fields[i][fl-1] == '\\t'))
+            fields[i][--fl] = '\\0';
+        if (fl == 0) return -1;
+    }
+    h4s_download_state tmp;
+    memset(&tmp, 0, sizeof(tmp));
+    if (strlen(fields[0]) >= sizeof(tmp.session_id) ||
+        strlen(fields[1]) >= sizeof(tmp.datetime) ||
+        strlen(fields[2]) >= sizeof(tmp.file_id) ||
+        strlen(fields[3]) >= sizeof(tmp.file_name)) return -1;
+    memcpy(tmp.session_id, fields[0], strlen(fields[0]) + 1);
+    memcpy(tmp.datetime, fields[1], strlen(fields[1]) + 1);
+    memcpy(tmp.file_id, fields[2], strlen(fields[2]) + 1);
+    memcpy(tmp.file_name, fields[3], strlen(fields[3]) + 1);
+    if (h4s_parse_u64(fields[4], &tmp.index) != 0 ||
+        h4s_parse_u64(fields[5], &tmp.offset) != 0 ||
+        h4s_parse_u64(fields[6], &tmp.total_size) != 0 ||
+        !h4s_download_fields_valid(&tmp)) return -1;
+    *out = tmp;
     return 0;
 }
 
