@@ -108,7 +108,9 @@ Applications should preserve who authored an assertion, when, the source used
 to classify it, and whether it is documented, disputed, fictional,
 counterfactual, or unverified.
 
-See [SPEC.md](SPEC.md) for the wire contract and [SECURITY.md](SECURITY.md) for implemented controls and release blockers. The server rejects malformed framing and assertion metadata, defaults to loopback, and applies socket inactivity timeouts. It remains experimental: TLS, authentication/authorization, total request deadlines, rate limiting, a complete stream state machine, and runtime `/logger` integration remain incomplete.\n\n## Security boundary
+See [SPEC.md](SPEC.md) for the wire contract and [SECURITY.md](SECURITY.md) for implemented controls and release blockers. The server rejects malformed framing and assertion metadata, defaults to loopback, and applies socket inactivity timeouts. It remains experimental: TLS, authentication/authorization, total request deadlines, rate limiting, a complete stream state machine, and runtime `/logger` integration remain incomplete.
+
+## Security boundary
 
 Reality assertions are information-exchange data. They do not grant authority,
 change physical reality, authorize action against people or systems, establish
