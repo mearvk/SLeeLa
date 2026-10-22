@@ -1,0 +1,53 @@
+#sleela 2.1
+/* State model only; native server must enforce it atomically per stream. */
+class Http50StreamState {
+  String sessionId = "";
+  long streamId = 0;
+  long nextReceiveSequence = 0;
+  long nextSendSequence = 0;
+  long receivedBytes = 0;
+  long sentBytes = 0;
+  long receiveWindow = 0;
+  long sendWindow = 0;
+  boolean opened = false;
+  boolean receiveClosed = false;
+  boolean sendClosed = false;
+  boolean reset = false;
+  void open(String session, long id, long receiveLimit, long sendLimit) {
+    sessionId = session; streamId = id;
+    receiveWindow = receiveLimit; sendWindow = sendLimit;
+    opened = session != "" && id >= 0 && receiveLimit >= 0 && sendLimit >= 0;
+  }
+  boolean acceptReceiveSequence(long value) {
+    if (!opened || reset || receiveClosed || value != nextReceiveSequence ||
+        nextReceiveSequence == 9223372036854775807) return false;
+    nextReceiveSequence = nextReceiveSequence + 1; return true;
+  }
+  boolean acceptSendSequence(long value) {
+    if (!opened || reset || sendClosed || value != nextSendSequence ||
+        nextSendSequence == 9223372036854775807) return false;
+    nextSendSequence = nextSendSequence + 1; return true;
+  }
+  boolean addReceivedBytes(long count) {
+    if (!opened || reset || receiveClosed || count < 0 || count > receiveWindow ||
+        count > 9223372036854775807 - receivedBytes) return false;
+    receivedBytes = receivedBytes + count; receiveWindow = receiveWindow - count; return true;
+  }
+  boolean addSentBytes(long count) {
+    if (!opened || reset || sendClosed || count < 0 || count > sendWindow ||
+        count > 9223372036854775807 - sentBytes) return false;
+    sentBytes = sentBytes + count; sendWindow = sendWindow - count; return true;
+  }
+  boolean updateReceiveWindow(long amount) {
+    if (!opened || reset || amount <= 0 || amount > 268435456 - receiveWindow) return false;
+    receiveWindow = receiveWindow + amount; return true;
+  }
+  boolean updateSendWindow(long amount) {
+    if (!opened || reset || amount <= 0 || amount > 268435456 - sendWindow) return false;
+    sendWindow = sendWindow + amount; return true;
+  }
+  void closeReceive() { receiveClosed = true; }
+  void closeSend() { sendClosed = true; }
+  void resetStream() { reset = true; receiveClosed = true; sendClosed = true; }
+  boolean isClosed() { return reset || (receiveClosed && sendClosed); }
+}
