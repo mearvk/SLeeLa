@@ -60,6 +60,29 @@ const char*http7_assertion_status_name(http7_assertion_status_t s){
  case HTTP7_ASSERT_FICTIONAL:return"FICTIONAL";case HTTP7_ASSERT_COUNTERFACTUAL:return"COUNTERFACTUAL";
  case HTTP7_ASSERT_DISPUTED:return"DISPUTED";case HTTP7_ASSERT_UNVERIFIED:return"UNVERIFIED";default:return"UNKNOWN";}
 }
+static int valid_utf8(const unsigned char *s, size_t n) {
+ size_t i = 0;
+ while (i < n) {
+  unsigned char c = s[i++];
+  if (c <= 0x7f) continue;
+  uint32_t cp;
+  size_t need;
+  if (c >= 0xc2 && c <= 0xdf) { cp = c & 0x1fu; need = 1; }
+  else if (c >= 0xe0 && c <= 0xef) { cp = c & 0x0fu; need = 2; }
+  else if (c >= 0xf0 && c <= 0xf4) { cp = c & 0x07u; need = 3; }
+  else return 0;
+  if (need > n - i) return 0;
+  for (size_t j = 0; j < need; ++j) {
+   unsigned char t = s[i++];
+   if ((t & 0xc0u) != 0x80u) return 0;
+   cp = (cp << 6) | (uint32_t)(t & 0x3fu);
+  }
+  if ((need == 1 && cp < 0x80u) || (need == 2 && cp < 0x800u) ||
+      (need == 3 && cp < 0x10000u) || cp > 0x10ffffu ||
+      (cp >= 0xd800u && cp <= 0xdfffu)) return 0;
+ }
+ return 1;
+}
 static int valid_field(const char*s,size_t cap,int required){
  if (!s) return 0;
  size_t n = 0;
@@ -69,7 +92,7 @@ static int valid_field(const char*s,size_t cap,int required){
   unsigned char c = (unsigned char)s[i];
   if (c == '\t' || c == '\r' || c == '\n' || c == 0) return 0;
  }
- return 1;
+ return valid_utf8((const unsigned char*)s, n);
 }
 int http7_assertion_serialise(const http7_assertion_t*a,char*buf,size_t cap){
  if(!a||!buf||cap==0)return -1;
@@ -106,7 +129,11 @@ int http7_assertion_parse(const char*line,size_t len,http7_assertion_t*out){
  memset(out,0,sizeof(*out));out->status=st;
  char*dst[5]={out->statement,out->source,out->source_date,out->author,out->document_reference};
  size_t caps[5]={sizeof(out->statement),sizeof(out->source),sizeof(out->source_date),sizeof(out->author),sizeof(out->document_reference)};
- for(int i=0;i<5;++i){size_t n=lengths[i+1];if(n>=caps[i])return -8;memcpy(dst[i],fields[i+1],n);dst[i][n]='\0';}
- if(!out->statement[0]||(st==HTTP7_ASSERT_FACTUAL_DOCUMENTED&&!out->source[0])||(st==HTTP7_ASSERT_USER_AUTHORED&&!out->author[0]))return -9;
+ for(int i=0;i<5;++i){
+  size_t n=lengths[i+1];if(n>=caps[i])return -8;
+  memcpy(dst[i],fields[i+1],n);dst[i][n]='\0';
+  int required=(i==0)||(i==1&&st==HTTP7_ASSERT_FACTUAL_DOCUMENTED)||(i==3&&st==HTTP7_ASSERT_USER_AUTHORED);
+  if(!valid_field(dst[i],caps[i],required))return -9;
+ }
  return 0;
 }
