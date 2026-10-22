@@ -1,6 +1,5 @@
 #include "http6_consolidated_pack.hpp"
 
-#include <iomanip>
 #include <sstream>
 #include <stdexcept>
 #include <utility>
