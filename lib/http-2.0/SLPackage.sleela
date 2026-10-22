@@ -1,14 +1,18 @@
 /*
  * lib/http-2.0/SLPackage.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library package for http-2.0.
+ * SLeeLa Standard Library Definition for the HTTP 2.0 / 2.1 application protocol.
  */
 #sleela 2.1
-// Library facade for module package: http-2.0
-// Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+// H21 is an application protocol. Native h21_server currently uses HTTP/1.x;
+// it does not provide IETF HTTP/2 transport, TLS, authentication, or packet integrity.
 class SLPackage {
   String packageName;
   void configure(String name){packageName=name;}
   String name(){return packageName;}
+  String generation(){return "2.1";}
+  String nativeTransport(){return "HTTP/1.x";}
+  boolean iETFHttp2TransportAvailable(){return false;}
+  boolean packetIntegrityAvailable(){return false;}
+  boolean requiresProtectedTransport(){return true;}
   boolean available(){return packageName!=null;}
 }
