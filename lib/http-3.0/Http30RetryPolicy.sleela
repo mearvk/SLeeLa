@@ -1,0 +1,15 @@
+#sleela 2.1
+class Http30RetryPolicy {
+  String retryClass = "READ";
+  boolean idempotencyKeyPresent = false;
+  boolean streamResumable = false;
+  void setRetryClass(String value) { retryClass = value; }
+  void setIdempotencyKeyPresent(boolean value) { idempotencyKeyPresent = value; }
+  void setStreamResumable(boolean value) { streamResumable = value; }
+  boolean mayRetryAfterUncertainFailure() {
+    if (retryClass == "READ" || retryClass == "IDEMPOTENT") return true;
+    if (retryClass == "MUTATING") return idempotencyKeyPresent;
+    if (retryClass == "STREAM") return streamResumable;
+    return false;
+  }
+}
