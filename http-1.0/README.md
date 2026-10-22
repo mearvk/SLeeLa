@@ -200,7 +200,7 @@ Run the expanded checks with:
 - `make sanitize` (GCC/Clang with AddressSanitizer and UBSan)
 - `make fuzz-download` (Clang/libFuzzer)
 
-The server remains serial (one connection at a time), and this code does not
+The current portable listener binds all interfaces; the `bind_address` config field is reserved and is not yet enforced by `sleela_net`. Use host firewall rules and a trusted TLS-terminating proxy until address-specific binding is implemented.\n\nThe server remains serial (one connection at a time), and this code does not
 implement TLS or identity verification. Applications can configure the optional
 native `authorize` callback: return 0 to allow a request and non-zero to deny it.
 When configured, it protects all routes except GET/HEAD `/__sleela/health`. Do not expose plaintext HTTP to
