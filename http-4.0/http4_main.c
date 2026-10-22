@@ -1,6 +1,6 @@
 /* http4_main.c — SLeeLa HTTP 4.0 server entry point
  *
- * Usage:  http4_server [--port N] [--self-test] [--help]
+ * Usage:  http4_server [--bind-address IPv4] [--port N] [--self-test] [--help]
  * Platforms: Linux, macOS, Windows 10+
  */
 #include "http4_server.h"
@@ -55,6 +55,8 @@ int main(int argc, char **argv)
             return h4s_self_test();
         else if (strcmp(argv[i], "--port") == 0 && i + 1 < argc)
             cfg.port = (uint16_t)atoi(argv[++i]);
+        else if (strcmp(argv[i], "--bind-address") == 0 && i + 1 < argc)
+            cfg.bind_address = argv[++i];
         else if (strcmp(argv[i], "--help") == 0) {
             printf("Usage: %s [--port N] [--self-test] [--help]\n", argv[0]);
             return 0;
