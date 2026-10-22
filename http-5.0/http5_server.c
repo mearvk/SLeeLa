@@ -467,7 +467,7 @@ int h5s_self_test(void) {
             fprintf(stderr,"FAIL: unknown frame type rejection\n");++f;
         }
     }
-    /* 3. FP consume */
+    /* 4. FP consume */
     { http5_friends_pack_t fp={100,10,2};
       if(!http5_fp_can_offer(&fp)){fprintf(stderr,"FAIL: fp_can_offer\n");++f;}
       http5_fp_consume(&fp);
@@ -475,11 +475,11 @@ int h5s_self_test(void) {
       fp.fp_remaining=0;
       if(http5_fp_can_offer(&fp)){fprintf(stderr,"FAIL: zero fp\n");++f;}
       if(http5_fp_consume(&fp)!=-1){fprintf(stderr,"FAIL: consume at zero\n");++f;}}
-    /* 4. All 13 frame types */
+    /* 5. All 13 frame types */
     { for(int t=1;t<=13;++t){
           const char *n=http5_frame_type_name((http5_frame_type_t)t);
           if(!n||strcmp(n,"UNKNOWN")==0){fprintf(stderr,"FAIL: type %d\n",t);++f;}}}
-    /* 5. Download round-trip */
+    /* 6. Download round-trip */
     { h5s_download_state st={0};
       snprintf(st.session_id,sizeof(st.session_id),"h5-sess");
       snprintf(st.datetime,sizeof(st.datetime),"2026-10-15");
