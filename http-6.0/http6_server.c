@@ -467,7 +467,9 @@ int h6s_self_test(void){
     {const char*r=sleela_http_negotiate("6.0","6.0, 5.0, 1.1",1);
      if(!r||strcmp(r,"6.0")!=0){fprintf(stderr,"FAIL: negotiate\n");++f;}
      r=sleela_http_negotiate("7.0","6.0, 1.1",1);
-     if(!r||strcmp(r,"1.1")!=0){fprintf(stderr,"FAIL: fallback\n");++f;}}
+     if(!r||strcmp(r,"1.1")!=0){fprintf(stderr,"FAIL: fallback\n");++f;}
+     r=sleela_http_negotiate("6.0x","6.0x",0);
+     if(r){fprintf(stderr,"FAIL: unsupported version accepted\n");++f;}}
 
     if(f==0)fprintf(stderr,"h6s_self_test: all tests passed\n");
     else fprintf(stderr,"h6s_self_test: %d test(s) FAILED\n",f);
