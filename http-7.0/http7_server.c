@@ -6,6 +6,7 @@
 #define _POSIX_C_SOURCE 200809L
 #endif
 #include "http7_server.h"
+#include "http7_logger_bridge.h"
 #include "http_negotiation.h"
 #include "../impl/core/sleela_net.h"
 #include "../preferred-routers/preferred_router.h"
@@ -142,6 +143,7 @@ static int send_response(SLNetHandle fd,const h7s_request*req,const h7s_response
  for(int i=0;i<resp->header_count;++i)H7_APPEND("%s: %s\r\n",resp->headers[i].name,resp->headers[i].value);
  H7_APPEND("X-SLeeLa-Version: 7.0\r\nX-SLeeLa-Accept: 7.0, 6.0, 5.0, 4.0, 3.0, 2.1, 1.1, 1.0\r\nConnection: close\r\n\r\n");
  #undef H7_APPEND
+ (void)h7_logger_record(1,resp->status_code>=500?2:(resp->status_code>=400?1:0),off+resp->body_length,"http_response_before_socket_write");
  if(send_all(fd,buf,off)!=0)return -1;
  return resp->body_length?send_all(fd,resp->body,resp->body_length):0;
 }
@@ -341,7 +343,7 @@ int h7s_server_run(const h7s_server_config*cfg){
     if(slnet_startup()!=0){fprintf(stderr,"h7s: slnet_startup failed\n");return -1;}
     sleela_preferred_router_startup(NULL,"HTTP/7.0");
     const char*bind_host=(cfg->bind_address&&*cfg->bind_address)?cfg->bind_address:"127.0.0.1";
-    SLNetHandle listener=slnet_listen_on(bind_host,cfg->port,cfg->backlog);
+    if(!h7_logger_open())fprintf(stderr,"h7s: warning: shared packet logger unavailable; continuing without runtime logs\\n");\n    SLNetHandle listener=slnet_listen_on(bind_host,cfg->port,cfg->backlog);
     if(!slnet_valid(listener)){fprintf(stderr,"h7s: listen failed on %s:%u\n",bind_host,(unsigned)cfg->port);slnet_shutdown();return -1;}
     fprintf(stderr,"SLeeLa HTTP/7.0 listening on %s:%u  [%s]\n",bind_host,(unsigned)cfg->port,slnet_platform_name());
 #ifndef _WIN32
