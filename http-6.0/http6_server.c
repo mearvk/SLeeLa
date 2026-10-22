@@ -69,7 +69,7 @@ static int recv_headers(SLNetHandle fd,char *buf,size_t cap){
     size_t t=0;while(t<cap){SLNetCount n=slnet_read(fd,buf+t,cap-t);
         if(n<=0)return t>0?(int)t:-1;t+=(size_t)n;
         if(t>=4){const char*lim=buf+(t>H6S_MAX_HEADER?H6S_MAX_HEADER:t);
-            for(const char*p=buf+(t-n>3?t-n-3:0);p+3<lim;++p)
+            for(const char*p=buf+(t-(size_t)n>3?t-(size_t)n-3:0);(size_t)(lim-p)>=4;++p)
                 if(p[0]=='\r'&&p[1]=='\n'&&p[2]=='\r'&&p[3]=='\n')return(int)t;}}
     return -1;
 }
