@@ -1,0 +1,30 @@
+#sleela 2.1
+/* SLeeLa generation negotiation is distinct from IETF HTTP/3 negotiation. */
+class Http40Negotiation {
+  int localCapabilities = 1;
+  int peerCapabilities = 1;
+  int selectedLevel = 0;
+  int peerGeneration = 3;
+  boolean authenticatedOffer = false;
+  boolean completed = false;
+  boolean allowLegacy = true;
+  void setCapabilities(int localValue, int peerValue) {
+    localCapabilities = localValue; peerCapabilities = peerValue;
+  }
+  void setPeerGeneration(int value) { peerGeneration = value; }
+  void authenticateOffer(boolean value) { authenticatedOffer = value; }
+  int negotiate() {
+    int common = localCapabilities & peerCapabilities;
+    if (!authenticatedOffer || peerGeneration < 1 || peerGeneration > 4) {
+      selectedLevel = 0; completed = false; return 0;
+    }
+    if (peerGeneration == 4 && (common & 8) != 0) selectedLevel = 4;
+    else if (allowLegacy && peerGeneration >= 3 && (common & 4) != 0) selectedLevel = 3;
+    else if (allowLegacy && peerGeneration >= 2 && (common & 2) != 0) selectedLevel = 2;
+    else if (allowLegacy && (common & 1) != 0) selectedLevel = 1;
+    else selectedLevel = 0;
+    completed = selectedLevel > 0; return selectedLevel;
+  }
+  boolean isComplete() { return completed; }
+  boolean selectedHttp40() { return completed && selectedLevel == 4 && peerGeneration == 4; }
+}
