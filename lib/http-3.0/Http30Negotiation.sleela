@@ -1,0 +1,21 @@
+/* SLeeLa application-generation negotiation; distinct from IETF HTTP/3. */
+#sleela 2.1
+class Http30Negotiation {
+  String localGeneration = "3.0";
+  String peerGeneration = "";
+  String peerAccept = "";
+  boolean fallbackAllowed = true;
+  boolean requireIntegrityForUpgrade = true;
+  void setPeerGeneration(String value) { peerGeneration = value; }
+  void setPeerAccept(String value) { peerAccept = value; }
+  void allowFallback(boolean value) { fallbackAllowed = value; }
+  String selectedGeneration() {
+    if (peerGeneration == "3.0" || peerAccept == "3.0") return "3.0";
+    if (fallbackAllowed && (peerGeneration == "2.1" || peerAccept == "2.1")) return "2.1";
+    if (fallbackAllowed && (peerGeneration == "2.0" || peerAccept == "2.0")) return "2.0";
+    if (fallbackAllowed) return "1.1";
+    return "";
+  }
+  boolean isNegotiated() { return selectedGeneration() != ""; }
+  boolean mayUpgradeWithIntegrity(boolean integrityReady) { return !requireIntegrityForUpgrade || integrityReady; }
+}
