@@ -5,6 +5,6 @@ class Http21Validation {
   boolean validTarget(String value) { return value != null && value != ""; }
   boolean validProtocol(String value) { return value == "HTTP/1.0" || value == "HTTP/1.1"; }
   boolean validBodyLength(long value) { return value >= 0 && value <= 8388608; }
-  boolean validHeaderCount(int value) { return value >= 0 && value <= 64; }
+  boolean validHeaderCount(int value) { return value >= 0 && value <= 100; }
   boolean requiresNativeValidation() { return true; }
 }
