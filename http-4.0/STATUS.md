@@ -21,16 +21,16 @@
 
 ## Not yet established
 
-- The repository changes in this status update have **not been compiled or executed in this interaction**. Do not infer that the tests pass.
+- CI evidence: commit `c44aabd82310f33ca878de0ffc1cdb2664607d4b` passed the HTTP 4.0 build/test jobs on Linux, macOS, and Windows/MinGW-w64, plus the 10,000-run Clang libFuzzer smoke job. Later changes—including the resume-policy module, loopback bind implementation, body-limit alignment, and final single-frame checks—were committed afterward; their latest CI run is queued, so those newest changes are not yet verified.
 - The new stream-state model is not yet wired into the server's frame-dispatch path.
 - WINDOW credit enforcement and a complete bidirectional stream/session state machine are not integrated.
 - The server still uses HTTP/1.x over TCP and does not provide TLS/QUIC itself.
-- No authenticated HTTP/3/QUIC carrier adapter.
+- No authenticated HTTP/3/QUIC carrier adapter. The native server now defaults to IPv4 loopback; explicit non-loopback binding is opt-in and still requires a trusted authenticated transport boundary.
 - No durable authenticated resume store, production token/chunk/final-digest verifier, or crash-safe final publication; the resume policy module relies on externally supplied verification callbacks.
 - No native application-frame MAC/key-rotation implementation.
 - Capability negotiation is not yet bound to an authenticated transcript.
 - No completed C/SLeeLa shared conformance vectors.
-- No recorded cross-platform CI results, sanitizer results, fuzz corpus, or independent security review.
+- Cross-platform CI and fuzz-smoke evidence exists for the earlier commit noted above; latest commits are awaiting CI. No long-duration fuzz corpus, production threat-model validation, or independent security review is complete.
 
 ## Documents
 
