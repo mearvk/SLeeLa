@@ -18,8 +18,8 @@ permissions:
 
 jobs:
   protocol:
-    name: HTTP 4.0 tests (\${{ matrix.os }})
-    runs-on: \${{ matrix.os }}
+    name: HTTP 4.0 tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
