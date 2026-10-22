@@ -28,7 +28,9 @@ static int demo_http(const h6s_request *req, h6s_response *resp, void *ud) {
 static int parse_port(const char *s, uint16_t *port) {
     char *end = NULL;
     unsigned long value;
-    if (!s || !*s || !port || *s == '-' || *s == '+') return -1;
+    if (!s || !*s || !port) return -1;
+    for (const unsigned char *p = (const unsigned char *)s; *p; ++p)
+        if (*p < '0' || *p > '9') return -1;
     errno = 0;
     value = strtoul(s, &end, 10);
     if (errno == ERANGE || end == s || !end || *end != '\0' ||
