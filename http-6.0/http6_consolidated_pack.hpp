@@ -1,5 +1,6 @@
 #ifndef SLEELA_HTTP6_CONSOLIDATED_PACK_HPP
 #define SLEELA_HTTP6_CONSOLIDATED_PACK_HPP
+#include <cstddef>
 #include <cstdint>
 #include <string>
 #include <vector>
