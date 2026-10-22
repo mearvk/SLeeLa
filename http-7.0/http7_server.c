@@ -268,6 +268,7 @@ static void handle_connection(SLNetHandle fd,const h7s_server_config*cfg){
     h7s_request req;h7s_response resp;const char*bs=NULL;size_t hb=0;
     memset(&resp,0,sizeof(resp));resp.status_code=200;
     if(parse_request(raw,(size_t)got,&req,&bs,&hb)!=0){
+        (void)h7_logger_record(0,1,(size_t)got,"http_request_parse_rejected");
         resp.status_code=400;resp.content_type="text/plain";resp.body="Bad Request\n";resp.body_length=12;
         h7s_request bad;memset(&bad,0,sizeof(bad));memcpy(bad.version,"HTTP/1.0",9);
         send_response(fd,&bad,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
@@ -302,6 +303,7 @@ static void handle_connection(SLNetHandle fd,const h7s_server_config*cfg){
          req.body_length=filled;req.body[filled]='\0';
      }
     }
+    (void)h7_logger_record(0,0,hb+req.body_length,"http_request_received");
     free(raw);raw=NULL;
     int handled=0;
     if(strcmp(req.uri,"/__sleela/health")==0||strcmp(req.uri,"/__sleela/status")==0||strcmp(req.uri,"/__sleela/negotiate")==0){
@@ -345,7 +347,7 @@ int h7s_server_run(const h7s_server_config*cfg){
     const char*bind_host=(cfg->bind_address&&*cfg->bind_address)?cfg->bind_address:"127.0.0.1";
     if(!h7_logger_open())fprintf(stderr,"h7s: warning: shared packet logger unavailable; continuing without runtime logs\n");
     SLNetHandle listener=slnet_listen_on(bind_host,cfg->port,cfg->backlog);
-    if(!slnet_valid(listener)){fprintf(stderr,"h7s: listen failed on %s:%u\n",bind_host,(unsigned)cfg->port);slnet_shutdown();return -1;}
+    if(!slnet_valid(listener)){fprintf(stderr,"h7s: listen failed on %s:%u\n",bind_host,(unsigned)cfg->port);h7_logger_close();slnet_shutdown();return -1;}
     fprintf(stderr,"SLeeLa HTTP/7.0 listening on %s:%u  [%s]\n",bind_host,(unsigned)cfg->port,slnet_platform_name());
 #ifndef _WIN32
     signal(SIGINT,h7s_sig);signal(SIGTERM,h7s_sig);
@@ -354,7 +356,7 @@ int h7s_server_run(const h7s_server_config*cfg){
         SLNetHandle c=slnet_accept(listener);if(!slnet_valid(c))continue;
         if(slnet_set_timeouts(c,5000,5000)!=0){slnet_close(c);continue;}
         handle_connection(c,cfg);}
-    slnet_close(listener);slnet_shutdown();fprintf(stderr,"SLeeLa HTTP/7.0 stopped.\n");return 0;}
+    h7_logger_close();slnet_close(listener);slnet_shutdown();fprintf(stderr,"SLeeLa HTTP/7.0 stopped.\n");return 0;}
 
 /* ── self-test ──────────────────────────────────────────────────────── */
 
