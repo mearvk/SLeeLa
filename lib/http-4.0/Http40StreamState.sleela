@@ -1,0 +1,35 @@
+#sleela 2.1
+/* Per-stream model; native transport must enforce concurrency and ordering. */
+class Http40StreamState {
+  String sessionId = "";
+  long streamId = 0;
+  long nextReceiveSequence = 0;
+  long nextSendSequence = 0;
+  long receivedBytes = 0;
+  long sentBytes = 0;
+  boolean opened = false;
+  boolean receiveClosed = false;
+  boolean sendClosed = false;
+  boolean reset = false;
+  void open(String session, long id) {
+    sessionId = session; streamId = id; opened = session != "" && id >= 0;
+  }
+  boolean acceptReceiveSequence(long sequence) {
+    if (!opened || reset || receiveClosed || sequence != nextReceiveSequence) return false;
+    nextReceiveSequence = nextReceiveSequence + 1; return true;
+  }
+  boolean acceptSendSequence(long sequence) {
+    if (!opened || reset || sendClosed || sequence != nextSendSequence) return false;
+    nextSendSequence = nextSendSequence + 1; return true;
+  }
+  boolean addReceivedBytes(long count) {
+    if (count < 0) return false; receivedBytes = receivedBytes + count; return true;
+  }
+  boolean addSentBytes(long count) {
+    if (count < 0) return false; sentBytes = sentBytes + count; return true;
+  }
+  void closeReceive() { receiveClosed = true; }
+  void closeSend() { sendClosed = true; }
+  void resetStream() { reset = true; receiveClosed = true; sendClosed = true; }
+  boolean isClosed() { return reset || (receiveClosed && sendClosed); }
+}
