@@ -18,6 +18,10 @@ class SLPackage {
   boolean tlsAvailable(){return false;}
   boolean authenticatedCarrierAvailable(){return false;}
   boolean totalRequestDeadlineAvailable(){return false;}
-  boolean runtimeLoggerBridgeAvailable(){return false;}
+  boolean runtimeLoggerBridgeAvailable(){return true;}
+  boolean payloadLoggingDisabledByDefault(){return true;}
+  boolean socketInactivityTimeoutsAvailable(){return true;}
+  boolean configurableRateLimitingAvailable(){return false;}
+  boolean completeStreamStateMachineAvailable(){return false;}
   boolean productionReady(){return false;}
 }
