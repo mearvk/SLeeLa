@@ -1,0 +1,22 @@
+#sleela 2.1
+/* Timing/carrier certainty is advisory telemetry, not a security decision. */
+class Http30TimingPolicy {
+  long minimumGapNanos = 0;
+  long latenessNanos = 0;
+  long balanceNanos = 0;
+  long observedPackets = 0;
+  long latePackets = 0;
+  long overRatePackets = 0;
+  long unbalancedPackets = 0;
+  boolean timingIsAdvisory = true;
+  void configure(long minGap, long lateness, long balance) {
+    minimumGapNanos = minGap; latenessNanos = lateness; balanceNanos = balance;
+  }
+  void record(long lateCount, long rateCount, long balanceCount) {
+    observedPackets = observedPackets + 1;
+    if (lateCount > 0) latePackets = latePackets + 1;
+    if (rateCount > 0) overRatePackets = overRatePackets + 1;
+    if (balanceCount > 0) unbalancedPackets = unbalancedPackets + 1;
+  }
+  boolean mayRejectOnTimingAlone() { return false; }
+}
