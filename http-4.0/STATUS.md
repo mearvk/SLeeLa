@@ -1,47 +1,44 @@
-# HTTP 4.0 Source — Initial Status
+# HTTP 4.0 Source — Current Engineering Status
 
-As of: 2026-09-25  
-Status: Experimental foundation.
+**Status:** Experimental foundation; not production-ready.  
+**Protocol name:** SLeeLa HTTP 4.0, not an IETF HTTP/4 standard.  
+**Carrier currently implemented:** HTTP/1.x over TCP in the reference server. No HTTP/3/QUIC adapter is present.
 
-## Important standards note
+## Present in source
 
-There is no IETF HTTP/4 standard to implement at this time. The IETF HTTP working group remains active on HTTP semantics and extensions. This repository therefore calls this implementation SLeeLa HTTP 4.0, meaning a proposed next-generation SLeeLa protocol generation rather than an official HTTP version.
+- 32-byte big-endian frame header and nine frame types.
+- Bounded frame payload validation and deterministic encode/decode.
+- Segmentation and out-of-order reassembly primitives.
+- Packet context and basket metadata.
+- HTTP server endpoint and built-in self-tests.
+- Strict DOWNLOAD metadata parsing now rejects malformed unsigned integers, extra fields, unsafe path-like filenames, empty fields, and offset greater than total size.
+- Frame decoder now rejects undefined flag bits.
+- New bounded per-stream reference state model enforces per-stream sequence, stream byte, aggregate byte, duplicate OPEN, and stream-ID non-reuse rules.
+- New normative draft specification, conformance plan, capability matrix, and optional libFuzzer harness.
 
-## Implemented
+## Not yet established
 
-- fixed-width HTTP 4.0 frame header;
-- bounded payload validation;
-- explicit stream/request/sequence identifiers;
-- OPEN/DATA/END/RESET/WINDOW/PING/PONG/RESUME/CAPSULE frame taxonomy;
-- incremental and resumable flags;
-- deterministic encode/decode;
-- C11 self-test;
-- capability model;
-- flow-control, resumability, migration, and carrier-boundary documentation.
+- The repository changes in this status update have **not been compiled or executed in this interaction**. Do not infer that the tests pass.
+- The new stream-state model is not yet wired into the server's frame-dispatch path.
+- WINDOW credit enforcement and a complete bidirectional stream/session state machine are not integrated.
+- The server still uses HTTP/1.x over TCP and does not provide TLS/QUIC itself.
+- No authenticated HTTP/3/QUIC carrier adapter.
+- No durable authenticated resume store, trusted checkpoint, per-chunk digest, or final whole-file digest enforcement.
+- No native application-frame MAC/key-rotation implementation.
+- Capability negotiation is not yet bound to an authenticated transcript.
+- No completed C/SLeeLa shared conformance vectors.
+- No recorded cross-platform CI results, sanitizer results, fuzz corpus, or independent security review.
 
-## Not yet implemented
+## Documents
 
-- HTTP/3/QUIC carrier;
-- native network socket transport;
-- cryptographic session authentication;
-- persistent resume store;
-- complete stream state machine;
-- multi-path scheduling;
-- congestion-control integration;
-- browser interoperability;
-- formal conformance corpus;
-- Windows/macOS/Linux CI for the HTTP 4.0 directory.
+- SPEC.md — normative frame and security rules.
+- CONFORMANCE.md — required deterministic/adversarial tests.
+- CAPABILITY-MATRIX.md — implementation evidence and release gates.
+- SECURITY.md — carrier boundary and security requirements.
+- RESUME.md — resumability semantics.
+- HANDSHAKE.md — capability bits and negotiation direction.
+- FLOW.md — processing order.
 
-## Relationship to HTTP 3.0
+## Release gate
 
-HTTP 3.0 remains the existing SLeeLa application protocol. HTTP 4.0 does not overwrite it. The new generation is additive and can initially be carried through HTTP/3 infrastructure.
-
-## Immediate next work
-
-1. Build a complete session state machine.
-2. Add C/Python parity.
-3. Add an HTTP/3 carrier adapter.
-4. Add resumable transfer state.
-5. Add authenticated sequence protection.
-6. Add conformance fixtures.
-7. Add platform build scripts and CI.
+HTTP 4.0 must remain experimental until the conformance suite passes on Linux, macOS, and Windows; parser and reassembly fuzzing is performed; memory and queue limits are enforced in the live server; the transport security contract is implemented and verified; resume checkpoints and file integrity are enforced; and an independent security review is recorded.
