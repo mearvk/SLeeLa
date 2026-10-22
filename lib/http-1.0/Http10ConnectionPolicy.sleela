@@ -1,0 +1,15 @@
+#sleela 2.1
+/* HTTP/1.0 connection lifecycle defaults. */
+class Http10ConnectionPolicy {
+  boolean closeAfterResponse = true;
+  boolean rejectIncompleteBody = true;
+  boolean rejectUnsupportedTransferEncoding = true;
+  boolean rejectDuplicateContentLength = true;
+  boolean honorHeadWithoutSendingBody = true;
+  boolean suppressBodyFor204 = true;
+  boolean suppressBodyFor304 = true;
+  int requestTimeoutMillis = 10000;
+  int bodyTimeoutMillis = 10000;
+  int idleTimeoutMillis = 5000;
+  boolean safeDefaults() { return closeAfterResponse && rejectIncompleteBody && rejectUnsupportedTransferEncoding && rejectDuplicateContentLength && requestTimeoutMillis > 0 && bodyTimeoutMillis > 0; }
+}
