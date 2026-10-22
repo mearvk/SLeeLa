@@ -594,7 +594,7 @@ int h4s_self_test(void)
     { h4s_server_config cfg;
       h4s_server_config_init(&cfg);
       if (!cfg.bind_address || strcmp(cfg.bind_address,"127.0.0.1") != 0) {
-          fprintf(stderr,"FAIL: server bind default is not loopback\\n"); ++failures;
+          fprintf(stderr,"FAIL: server bind default is not loopback\n"); ++failures;
       }
     }
 
