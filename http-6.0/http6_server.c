@@ -433,7 +433,14 @@ int h6s_self_test(void){
      st.index=4;st.offset=200000000ULL;st.total_size=600000000ULL;
      char buf[512];if(h6s_download_serialise(&st,buf,sizeof(buf))!=0){fprintf(stderr,"FAIL: dl ser\n");++f;}
      else{h6s_download_state p;if(h6s_download_parse(buf,&p)!=0||p.index!=4){fprintf(stderr,"FAIL: dl parse\n");++f;}}}
-    /* 6. Negotiation */
+    /* 7. Download parser rejects malformed numbers, delimiters, and offsets. */
+    {h6s_download_state st;
+     if(h6s_download_parse("session | date | file | name | 4x | 2 | 10",&st)==0 ||
+        h6s_download_parse("session | date | file | name | 4 | 11 | 10",&st)==0 ||
+        h6s_download_parse("session | date | file | name | 4 | 2 | 10 | extra",&st)==0 ||
+        h6s_download_parse("session | date | bad|file | name | 4 | 2 | 10",&st)==0){
+         fprintf(stderr,"FAIL: malformed download state accepted\\n");++f;}}
+    /* 8. Negotiation */
     {const char*r=sleela_http_negotiate("6.0","6.0, 5.0, 1.1",1);
      if(!r||strcmp(r,"6.0")!=0){fprintf(stderr,"FAIL: negotiate\n");++f;}
      r=sleela_http_negotiate("7.0","6.0, 1.1",1);
