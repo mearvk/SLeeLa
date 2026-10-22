@@ -1,14 +1,25 @@
 /*
  * lib/http-5.0/SLPackage.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library package for http-5.0.
+ * SLeeLa Standard Library Definition for HTTP 5.0.
  */
 #sleela 2.1
-// Library facade for module package: http-5.0
-// Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+// Capability flags describe source models, not production runtime guarantees.
 class SLPackage {
   String packageName;
   void configure(String name){packageName=name;}
   String name(){return packageName;}
+  String generation(){return "5.0";}
+  boolean frameEnvelopeModelAvailable(){return true;}
+  boolean friendsPackModelAvailable(){return true;}
+  boolean strictFrameFlagValidationAvailable(){return true;}
+  boolean strictDownloadMetadataParserAvailable(){return true;}
+  boolean completeFramePayloadSchemasAvailable(){return false;}
+  boolean integratedStreamStateMachineAvailable(){return false;}
+  boolean enforcedFlowControlAvailable(){return false;}
+  boolean authenticatedCarrierAvailable(){return false;}
+  boolean nativeHttp3QuicAvailable(){return false;}
+  boolean durableResumeAvailable(){return false;}
+  boolean productionReady(){return false;}
+  boolean requiresProtectedTransport(){return true;}
   boolean available(){return packageName!=null;}
 }
