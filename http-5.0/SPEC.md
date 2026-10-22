@@ -21,7 +21,7 @@ Every frame has a 32-byte header followed by exactly PAYLOAD-LENGTH bytes. Multi
 | 28 | 4 | PAYLOAD-LENGTH |
 | 32 | N | PAYLOAD |
 
-The maximum frame payload in the current codec is 16 MiB. The HTTP server's request-body limit is currently lower (8 MiB), so the endpoint cannot carry every codec-valid maximum-size frame. The limits must be reconciled before claiming full-size server support.
+The maximum frame payload in the current codec is 16 MiB. The HTTP server request-body ceiling is `HTTP5_MAX_PAYLOAD + HTTP5_FRAME_HEADER_SIZE` (16 MiB + 32 bytes), allowing one maximum-size frame envelope per request. This limit does not imply support for multi-frame request bodies; the endpoint rejects trailing bytes.
 
 The codec rejects an unsupported version, unknown type, undefined flag bits, payloads above the codec limit, and truncated payloads. Decode consumes one frame and reports the number of bytes consumed. The HTTP endpoint MUST reject trailing bytes because it accepts one frame per HTTP request.
 
