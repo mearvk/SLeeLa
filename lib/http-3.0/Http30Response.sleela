@@ -1,0 +1,28 @@
+/*
+ * SLeeLa HTTP 3.0 response model; protocol field records the HTTP/1.x transport version.
+ * The C/C++ transport implementation serializes responses to the wire.
+ */
+#sleela 2.1
+
+class Http30Response {
+  String protocol = "HTTP/1.0";
+  int statusCode = 200;
+  String reason = "OK";
+  String contentType = "text/plain; charset=utf-8";
+  String body = "";
+  String generation = "3.0";
+  String acceptedGenerations = "3.0, 2.1, 2.0";
+  boolean closeConnection = true;
+
+  void setStatus(int code, String phrase) {
+    statusCode = code;
+    reason = phrase;
+  }
+  void setContentType(String value) { contentType = value; }
+  void setBody(String value) { body = value; }
+  void setGeneration(String value) { generation = value; }
+  void setAcceptedGenerations(String value) { acceptedGenerations = value; }
+  void keepConnectionOpen(boolean value) { closeConnection = !value; }
+  boolean isSuccessful() { return statusCode >= 200 && statusCode < 300; }
+  boolean mustCloseConnection() { return closeConnection; }
+}
