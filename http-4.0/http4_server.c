@@ -542,7 +542,17 @@ int h4s_self_test(void)
           fprintf(stderr,"FAIL: download serialise\n");++failures;}
       else{h4s_download_state p2;
           if(h4s_download_parse(buf,&p2)!=0||p2.index!=3||p2.offset!=150000000ULL){
-              fprintf(stderr,"FAIL: download round-trip\n");++failures;}}
+              fprintf(stderr,"FAIL: download round-trip\n");++failures;}
+          if(h4s_download_parse("s | t | id | ../secret | 1 | 0 | 2",&p2)==0){
+              fprintf(stderr,"FAIL: traversal filename accepted\n");++failures;}
+          if(h4s_download_parse("s | t | id | f | -1 | 0 | 2",&p2)==0){
+              fprintf(stderr,"FAIL: negative index accepted\n");++failures;}
+          if(h4s_download_parse("s | t | id | f | 1x | 0 | 2",&p2)==0){
+              fprintf(stderr,"FAIL: malformed integer accepted\n");++failures;}
+          if(h4s_download_parse("s | t | id | f | 1 | 3 | 2",&p2)==0){
+              fprintf(stderr,"FAIL: offset beyond total accepted\n");++failures;}
+          if(h4s_download_parse("s | t | id | f | 1 | 0 | 2 | extra",&p2)==0){
+              fprintf(stderr,"FAIL: extra DOWNLOAD field accepted\n");++failures;}}
     }
 
     /* 6. Negotiation */
