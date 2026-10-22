@@ -19,7 +19,8 @@ int main(void) {
                                  7, 42, 9001) == 0);
 
     uint8_t wire[128];
-    for (uint32_t i = 0; i < (uint32_t)count; ++i) {
+    /* Reverse arrival order verifies out-of-order reassembly. */
+    for (uint32_t i = (uint32_t)count; i-- > 0;) {
         size_t written = 0, consumed = 0;
         http4_frame_view_t frame;
         http4_segment_view_t segment;
