@@ -214,6 +214,22 @@ SLNetHandle slnet_connect(const char* host, uint16_t port) {
     return result;
 }
 
+int slnet_set_timeouts(SLNetHandle handle, uint32_t receive_ms, uint32_t send_ms) {
+    if (!slnet_valid(handle) || receive_ms == 0 || send_ms == 0) return -1;
+#ifdef _WIN32
+    DWORD rcv = (DWORD)receive_ms, snd = (DWORD)send_ms;
+    if (setsockopt((SOCKET)handle, SOL_SOCKET, SO_RCVTIMEO, (const char*)&rcv, sizeof(rcv)) != 0) return -1;
+    if (setsockopt((SOCKET)handle, SOL_SOCKET, SO_SNDTIMEO, (const char*)&snd, sizeof(snd)) != 0) return -1;
+#else
+    struct timeval rcv, snd;
+    rcv.tv_sec = (time_t)(receive_ms / 1000U); rcv.tv_usec = (suseconds_t)((receive_ms % 1000U) * 1000U);
+    snd.tv_sec = (time_t)(send_ms / 1000U); snd.tv_usec = (suseconds_t)((send_ms % 1000U) * 1000U);
+    if (setsockopt((int)handle, SOL_SOCKET, SO_RCVTIMEO, &rcv, sizeof(rcv)) != 0) return -1;
+    if (setsockopt((int)handle, SOL_SOCKET, SO_SNDTIMEO, &snd, sizeof(snd)) != 0) return -1;
+#endif
+    return 0;
+}
+
 SLNetCount slnet_read(SLNetHandle handle, char* buffer, size_t capacity) {
     if (!buffer || capacity == 0 || !slnet_valid(handle)) return -1;
 #ifdef _WIN32
