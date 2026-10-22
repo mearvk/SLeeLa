@@ -65,11 +65,9 @@ segmentation-test: http4_segmentation_selftest
 session-test: http4_session_selftest
 	./http4_session_selftest
 
-# Optional Clang libFuzzer target; requires a Clang build with libFuzzer support.
+# Optional Clang libFuzzer target; requires Clang with libFuzzer support.
 fuzz:
-	clang -std=c11 -O1 -g -fsanitize=fuzzer,address,undefined -fno-omit-frame-pointer $(INCLUDES) \\
-		http4_fuzz.c http4_protocol.c http4_segmentation.c http4_packet_context.c \\
-		$(ROUTER_DIR)/preferred_router.c -o http4_fuzz
+	clang -std=c11 -O1 -g -fsanitize=fuzzer,address,undefined -fno-omit-frame-pointer $(INCLUDES) http4_fuzz.c http4_protocol.c http4_segmentation.c http4_packet_context.c $(ROUTER_DIR)/preferred_router.c -o http4_fuzz
 
 server-test: $(SERVER_TARGET)
 	./$(SERVER_TARGET) --self-test
