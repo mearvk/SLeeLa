@@ -7,6 +7,11 @@ class Http40DownloadState {
   String fileId = "";
   String fileName = "";
   String contentDigest = "";
+  String expectedFileVersion = "";
+  String authorizedPrincipalId = "";
+  String authenticatedResumeToken = "";
+  boolean allChunksVerified = false;
+  boolean finalDigestVerified = false;
   long index = 0;
   long offset = 0;
   long totalSize = 0;
@@ -24,4 +29,15 @@ class Http40DownloadState {
   }
   long remainingBytes() { return totalSize - offset; }
   boolean isComplete() { return isValid() && offset == totalSize; }
+  boolean hasResumeAuthorizationMetadata() {
+    return isValid() && expectedFileVersion != "" &&
+      authorizedPrincipalId != "" && authenticatedResumeToken != "" &&
+      contentDigest != "";
+  }
+  // These flags are policy inputs, not cryptographic proof. Native code must
+  // verify token, principal, chunk hashes, and final digest before setting them.
+  boolean mayCommit() {
+    return hasResumeAuthorizationMetadata() && isComplete() &&
+      allChunksVerified && finalDigestVerified;
+  }
 }
