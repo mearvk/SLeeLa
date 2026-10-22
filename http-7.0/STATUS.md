@@ -10,7 +10,8 @@ HTTP 7.0 is an experimental SLeeLa application-protocol generation, not an IETF 
 - H7 endpoint checks classification flags against assertion status and validates status/source/author frames.
 - Bounded HTTP request parsing, strict decimal Content-Length, duplicate framing/header rejection, Transfer-Encoding rejection, incomplete-body rejection, response-header validation and endpoint method policy.
 - Loopback binding by default, explicit `--bind`, five-second per-operation socket inactivity timeout and opt-in negotiation fallback.
-- Download-state overflow and leaf filename validation.\n- Shared SLeeLa-PacketLog-1 logger bridge at ingress/egress with payload logging disabled; persisted-record regression test.
+- Download-state overflow and leaf filename validation.
+- Shared SLeeLa-PacketLog-1 logger bridge at ingress/egress with payload logging disabled; persisted-record regression test.
 - Negative self-tests and four-platform CI workflow.
 
 ## Not production-ready
