@@ -1,0 +1,30 @@
+#sleela 2.1
+/* Model of the H3 integrity gate. Native implementation is authoritative. */
+class Http30Integrity {
+  boolean digestVerified = false;
+  boolean nonceFresh = false;
+  boolean intactxWithinThreshold = false;
+  boolean basketCanonical = false;
+  boolean replayWindowInitialized = false;
+  long nonceHighWater = 0;
+  long acceptedPackets = 0;
+  long rejectedDigest = 0;
+  long rejectedReplay = 0;
+  long rejectedIntegrity = 0;
+  void recordDigest(boolean ok) { digestVerified = ok; if (!ok) rejectedDigest = rejectedDigest + 1; }
+  void recordNonce(long nonce) { nonceFresh = replayWindowInitialized ? nonce > nonceHighWater : nonce > 0; }
+  boolean acceptNonce(long nonce) {
+    if (nonce <= 0 || (replayWindowInitialized && nonce <= nonceHighWater)) {
+      nonceFresh = false; rejectedReplay = rejectedReplay + 1; return false;
+    }
+    nonceHighWater = nonce; replayWindowInitialized = true; nonceFresh = true; return true;
+  }
+  void recordIntactx(boolean ok) { intactxWithinThreshold = ok; }
+  void recordBasket(boolean ok) { basketCanonical = ok; }
+  boolean permitsDispatch() {
+    boolean ok = digestVerified && nonceFresh && intactxWithinThreshold && basketCanonical;
+    if (ok) acceptedPackets = acceptedPackets + 1;
+    else rejectedIntegrity = rejectedIntegrity + 1;
+    return ok;
+  }
+}
