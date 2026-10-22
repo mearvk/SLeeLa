@@ -94,7 +94,7 @@ def verify(root, manifest_path):
             continue
         rel = item["path"]
         posix = PurePosixPath(rel)
-        if (not rel or posix.is_absolute() or "\\" in rel
+        if (not rel or ":" in rel or any(ord(ch) < 32 for ch in rel) or posix.is_absolute() or "\\" in rel
                 or any(part in ("", ".", "..") for part in rel.split("/"))):
             errors.append(f"invalid/non-canonical manifest path: {rel}")
             continue
