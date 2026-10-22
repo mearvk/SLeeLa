@@ -1,0 +1,14 @@
+#sleela 2.1
+/* Fixed H3 basket schema metadata. Canonicalization is enforced by native code. */
+class Http30BasketPolicy {
+  int itemCount = 14;
+  int isoNumericCurrency = 840;
+  int blockBytes = 172;
+  boolean requireCanonicalEncoding = true;
+  boolean requireMacCoverage = true;
+  boolean valuesAreApplicationMetadata = true;
+  boolean validBlock(int count, int bytes, int currency) {
+    return count == itemCount && bytes == blockBytes && currency == isoNumericCurrency;
+  }
+  boolean safeDefaults() { return requireCanonicalEncoding && requireMacCoverage; }
+}
