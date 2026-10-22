@@ -1,5 +1,5 @@
 #sleela 2.1
-/* HTTP 1.x carrier connection lifecycle defaults. */
+/* HTTP/1.0 connection lifecycle defaults. */
 class Http30ConnectionPolicy {
   boolean closeAfterResponse = true;
   boolean rejectIncompleteBody = true;
