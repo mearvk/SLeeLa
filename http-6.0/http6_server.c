@@ -197,14 +197,14 @@ int h6s_download_parse(const char*line,h6s_download_state*out){
     memcpy(copy,line,len+1);fields[0]=copy;p=copy;
     for(int i=1;i<7;++i){
         char*sep=strchr(p,'|');if(!sep)return -1;
-        *sep='\\0';p=sep+1;while(*p==' '||*p=='\\t')++p;fields[i]=p;
-        /* Trim only the field's right edge; reject empty fields below. */
-        if(i<7){char*right=fields[i];char*next=strchr(right,'|');
-            if(next){while(next>right&&(next[-1]==' '||next[-1]=='\\t'))*--next='\\0';}}
+        *sep='\\0';p=sep+1;fields[i]=p;
     }
     if(strchr(p,'|'))return -1;
     for(int i=0;i<7;++i){
         while(*fields[i]==' '||*fields[i]=='\\t')++fields[i];
+        size_t field_len=strlen(fields[i]);
+        while(field_len>0&&(fields[i][field_len-1]==' '||fields[i][field_len-1]=='\\t'))
+            fields[i][--field_len]='\\0';
         if(!*fields[i])return -1;
         for(const unsigned char*q=(const unsigned char*)fields[i];*q;++q)
             if(*q<0x20||*q==0x7f)return -1;
