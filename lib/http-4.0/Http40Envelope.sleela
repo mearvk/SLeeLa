@@ -1,0 +1,28 @@
+#sleela 2.1
+/* HTTP 4.0 logical envelope; not an IETF HTTP/3 frame. */
+class Http40Envelope {
+  int version = 4;
+  int flags = 0;
+  long serviceId = 0;
+  long operationId = 0;
+  long requestId = 0;
+  long nonce = 0;
+  String logicalPort = "";
+  String digestAlgorithm = "SIPHASH-2-4";
+  String digest = "";
+  long intactx = 0;
+  String basketHex = "";
+  String sessionId = "";
+  long streamId = 0;
+  long sequence = 0;
+  long payloadLength = 0;
+  String payload = "";
+  boolean isValid() {
+    return version == 4 && serviceId > 0 && operationId > 0 &&
+      requestId >= 0 && nonce > 0 && logicalPort != "" &&
+      digestAlgorithm != "" && digest != "" && basketHex != "" &&
+      sessionId != "" && streamId >= 0 && sequence >= 0 &&
+      payloadLength >= 0 && payload != null;
+  }
+  boolean requiresIntegrityGate() { return true; }
+}
