@@ -61,8 +61,14 @@ const char*http7_assertion_status_name(http7_assertion_status_t s){
  case HTTP7_ASSERT_DISPUTED:return"DISPUTED";case HTTP7_ASSERT_UNVERIFIED:return"UNVERIFIED";default:return"UNKNOWN";}
 }
 static int valid_field(const char*s,size_t cap,int required){
- if(!s)return 0;size_t n=0;while(n<cap&&s[n]!='\0')++n;if(n==cap||(required&&n==0))return 0;
- for(size_t i=0;i<n;++i){unsigned char c=(unsigned char)s[i];if(c=='\t'||c=='\r'||c=='\n'||c==0)return 0;}
+ if (!s) return 0;
+ size_t n = 0;
+ while (n < cap && s[n] != '\0') ++n;
+ if (n == cap || (required && n == 0)) return 0;
+ for (size_t i = 0; i < n; ++i) {
+  unsigned char c = (unsigned char)s[i];
+  if (c == '\t' || c == '\r' || c == '\n' || c == 0) return 0;
+ }
  return 1;
 }
 int http7_assertion_serialise(const http7_assertion_t*a,char*buf,size_t cap){
