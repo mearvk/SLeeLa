@@ -54,3 +54,15 @@ A release candidate must pass the exact commit's CI on Linux x86-64, Windows x86
 - [ ] No YARA/archive capability is claimed unless implemented and tested.
 
 **Status:** planning and release criteria only. Mark each item complete only after code, tests, and CI evidence support it.
+
+
+## Implementation status for this change set
+
+| Workstream | Change included | Still required before calling complete |
+|---|---|---|
+| 1. Authenticated releases | Added sleelavirin_verify_release.py to verify a detached signature over release metadata, then verify artifact paths, sizes, and SHA-256 values. Added synthetic positive/negative tests. | Configure a real release process, independently distribute the trusted public key, and document/key-operate rotation and revocation. |
+| 2. Quarantine/restore | Existing quarantine code copies with exclusive destination creation, verifies copied bytes, and refuses changed/symlink sources; existing tests cover collisions and changed files. Requirements added for restore. | No restore command is claimed by this change. Add explicit restore workflow and platform-specific failure/recovery tests before enabling it. |
+| 3. Adversarial tests | Added manifest traversal and symlink regression tests, plus signed-release tamper/path/signature tests. | Run the complete suite and extend mutation, disk-full, interrupted update, and archive-limit tests where missing. |
+| 4. SLeeLa execution policy | Updated the component contract and documentation to keep NO_MATCH distinct from a policy authorization. | The native SLeeLa host bridge and actual execution gate remain unimplemented; this is not yet an end-to-end runtime control. |
+| 5. Platform gates | Added a four-target GitHub Actions workflow for Linux x86-64, Windows x86-64, macOS x86-64, and macOS arm64. | The workflow must run successfully on the exact PR/release commit. The new workflow has not yet produced CI evidence in this change set. |
+| 6. Coverage/resources | Documented engine/version/provenance reporting, finite limits, skipped-file semantics, and optional archive/YARA scope. | Do not claim archive inspection or YARA detection unless an engine integration and its tests are added. |
