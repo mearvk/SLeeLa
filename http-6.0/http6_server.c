@@ -427,7 +427,7 @@ int h6s_self_test(void){
     {h6s_response response;memset(&response,0,sizeof(response));
      if(h6s_response_add_header(&response,"X-Trace","safe")!=0 ||
         h6s_response_add_header(&response,"Content-Length","999")==0 ||
-        h6s_response_add_header(&response,"X-Trace","ok\\r\\nInjected: yes")==0){
+        h6s_response_add_header(&response,"X-Trace","ok\r\nInjected: yes")==0){
          fprintf(stderr,"FAIL: response header validation\\n");++f;}}
     /* 2. Frame encode/decode — CONSOLIDATED_FRIENDS_BET */
     {http6_frame_header_t h={0};h.version=HTTP6_VERSION;h.type=HTTP6_FRAME_CONSOLIDATED_FRIENDS_BET;
