@@ -1,0 +1,10 @@
+#sleela 2.1
+/* Model-level validation only; native parser remains authoritative. */
+class Http30Validation {
+  boolean validMethod(String value) { return value != null && value != ""; }
+  boolean validTarget(String value) { return value != null && value != ""; }
+  boolean validProtocol(String value) { return value == "HTTP/1.0" || value == "HTTP/1.1"; }
+  boolean validBodyLength(long value) { return value >= 0 && value <= 8388608; }
+  boolean validHeaderCount(int value) { return value >= 0 && value <= 100; }
+  boolean requiresNativeValidation() { return true; }
+}
