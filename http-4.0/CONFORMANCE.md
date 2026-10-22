@@ -4,7 +4,7 @@ This is the required conformance plan for the experimental protocol. A test is n
 
 ## Required deterministic tests
 
-1. Encode/decode a valid frame and compare all 32 header bytes against SPEC.md.
+1. Encode/decode a valid frame and compare all 32 header bytes against TEST-VECTORS.md.
 2. Reject unknown version, type 0, type 10, undefined flag bits, and payload length greater than configured maximum.
 3. Reject headers shorter than 32 bytes and payloads truncated by one byte.
 4. Accept a complete frame followed by another frame while reporting the exact first-frame byte count.
