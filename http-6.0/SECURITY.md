@@ -10,6 +10,8 @@ HTTP 6.0 is experimental SLeeLa application protocol code, not an IETF protocol 
 - Strict decimal Content-Length; duplicate content-length and all transfer-encoding headers are rejected because chunked transfer is not implemented.
 - Incomplete request bodies fail rather than being dispatched to application handlers.
 - The H6 HTTP endpoint accepts exactly one frame, checks the decoded byte count, and bounds handler response length and sequence increment.
+- The shared `/logger` implementation is linked into the server. Request metadata is recorded at ingress (including HTTP parse rejection) and response metadata before socket writes; payloads are never passed to the logger by this bridge.
+- Accepted sockets have 5-second read/write inactivity timeouts. The server processes one connection at a time, so active connection concurrency is bounded to one; this is not a hard wall-clock deadline, and a client that trickles data may still extend a request.
 - Reserved frame flag bits are rejected.
 - Response headers are validated and serialized through a bounded append helper to prevent response-header injection and buffer-offset overflow.
 - Consolidated Friends' Bet JSON serialization enforces byte limits, validates UTF-8, and escapes JSON special/control characters.
@@ -30,9 +32,9 @@ The built-in server uses cleartext TCP. It does not implement TLS, client/server
 
 - Run exact-commit CI on Linux x86-64, Windows x86-64, macOS x86-64, and macOS arm64.
 - Add fuzzing for HTTP request parsing, frame decode, and download-state parsing.
-- Wire and test the shared /logger bridge at ingress and egress using SLeeLa-PacketLog-1, with payload logging disabled by default.
-- Add socket read deadlines, bounded connection/concurrency controls, rate limiting, and graceful cancellation.
-- Complete strict validation of download-state fields and numeric parsing.
+- Add integration tests that prove ingress/egress records and rejection records appear in SLeeLa-PacketLog-1 JSON Lines output; test logger write failures and 240 MiB segment rotation under HTTP 6.0 load.
+- Replace inactivity timeouts with a total request deadline; add configurable rate limiting and graceful cancellation. The current single-threaded server bounds active request concurrency to one but serializes all clients.
+- Strict download-state field and numeric parsing is implemented; add fuzzing and property-based coverage for these parsers.
 - Add an authenticated TLS deployment path, authorization hooks, and end-to-end tests.
 - Add protocol state validation for sequence/replay, stream lifecycle, window accounting, and per-frame semantics.
 - Perform independent security review and interoperability tests.
