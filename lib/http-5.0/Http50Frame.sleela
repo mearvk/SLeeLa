@@ -30,7 +30,7 @@ class Http50Frame {
   int TYPE_FP_UPDATE = 12;
   int TYPE_AUDIT = 13;
   boolean hasKnownType() { return type >= TYPE_OPEN && type <= TYPE_AUDIT; }
-  boolean hasOnlyDefinedFlags() { return flags >= 0 && (flags & 65472) == 0; }
+  boolean hasOnlyDefinedFlags() { return flags >= 0 && flags <= DEFINED_FLAGS; }
   boolean isValid() {
     return version == 5 && hasKnownType() && hasOnlyDefinedFlags() &&
       streamId >= 0 && requestId >= 0 && sequence >= 0 &&
