@@ -1,0 +1,35 @@
+/*
+ * SLeeLa HTTP generation negotiation policy for the HTTP/1.0 module.
+ * Negotiation is explicit; SLeeLa-specific generations are not Internet HTTP versions.
+ */
+#sleela 2.1
+
+class Http10Negotiation {
+  String localGeneration = "1.0";
+  String peerGeneration = "";
+  String peerAccept = "";
+  boolean fallbackAllowed = true;
+
+  void setPeerGeneration(String value) { peerGeneration = value; }
+  void setPeerAccept(String value) { peerAccept = value; }
+  void allowFallback(boolean value) { fallbackAllowed = value; }
+  String generation() { return localGeneration; }
+
+  boolean acceptsHttp10() {
+    return peerGeneration == "" || peerGeneration == "1.0";
+  }
+  boolean acceptsHttp11() {
+    return peerGeneration == "1.1" || peerAccept == "1.1";
+  }
+  boolean canFallback() { return fallbackAllowed; }
+
+  String selectedGeneration() {
+    if (peerGeneration == "1.0") return "1.0";
+    if (peerGeneration == "1.1") return "1.1";
+    if (peerAccept == "1.0") return "1.0";
+    if (peerAccept == "1.1") return "1.1";
+    if (fallbackAllowed) return "1.0";
+    return "";
+  }
+  boolean isNegotiated() { return selectedGeneration() != ""; }
+}
