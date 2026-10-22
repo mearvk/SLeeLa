@@ -109,8 +109,12 @@ static int parse_request(const char *raw, size_t raw_len, h5s_request *req,
 
 int h5s_response_add_header(h5s_response *r, const char *n, const char *v) {
     if(!r||!n||!v||r->header_count>=H5S_MAX_HEADERS)return -1;
-    h5s_header *h=&r->headers[r->header_count++];
+    /* Reject header injection and values that would be silently truncated. */
+    if(strchr(n,'\\r')||strchr(n,'\\n')||strchr(v,'\\r')||strchr(v,'\\n'))return -1;
+    if(strlen(n)>=sizeof(r->headers[0].name)||strlen(v)>=sizeof(r->headers[0].value))return -1;
+    h5s_header *h=&r->headers[r->header_count];
     snprintf(h->name,sizeof(h->name),"%s",n); snprintf(h->value,sizeof(h->value),"%s",v);
+    ++r->header_count;
     return 0;
 }
 
@@ -218,6 +222,11 @@ static int builtin_h5_frame(const h5s_request *req, h5s_response *resp,
     if(http5_frame_decode((const uint8_t*)req->body,req->body_length,&frame,&consumed)!=0){
         resp->status_code=400;resp->content_type="text/plain";
         resp->body="Invalid H5 frame\n";resp->body_length=17;return 0;}
+    /* This endpoint accepts exactly one frame; never silently ignore a suffix. */
+    if(consumed != req->body_length){
+        resp->status_code=400;resp->content_type="text/plain";
+        resp->body="Trailing bytes after H5 frame\n";resp->body_length=30;return 0;
+    }
     if(fh){
         static uint8_t rp[4096]; size_t rl=0;
         if(fh(&frame,rp,sizeof(rp),&rl,ud)!=0){
