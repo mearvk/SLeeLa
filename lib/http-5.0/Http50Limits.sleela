@@ -1,0 +1,26 @@
+#sleela 2.1
+/* Documented policy defaults; values are not enforced until native code applies them. */
+class Http50Limits {
+  int frameHeaderBytes = 32;
+  long maxFramePayloadBytes = 16777216;
+  long maxHttpBodyBytes = 16777248;
+  int maxHeaderBytes = 32768;
+  int maxConcurrentStreams = 128;
+  int maxQueuedRequests = 512;
+  int requestTimeoutMillis = 10000;
+  long maxStreamBytes = 268435456;
+  long maxTotalBufferedBytes = 67108864;
+  int maxActiveTransfers = 8;
+  long maxReassemblyBytes = 16777216;
+  long maxWindowBytes = 268435456;
+  boolean validFramePayload(long n) { return n >= 0 && n <= maxFramePayloadBytes; }
+  boolean validHttpBody(long n) { return n >= 0 && n <= maxHttpBodyBytes; }
+  boolean validHeaderLength(int n) { return n >= 0 && n <= maxHeaderBytes; }
+  boolean validStreamCount(int n) { return n >= 0 && n <= maxConcurrentStreams; }
+  boolean validQueuedRequests(int n) { return n >= 0 && n <= maxQueuedRequests; }
+  boolean validStreamBytes(long n) { return n >= 0 && n <= maxStreamBytes; }
+  boolean validBufferedBytes(long n) { return n >= 0 && n <= maxTotalBufferedBytes; }
+  boolean validActiveTransfers(int n) { return n >= 0 && n <= maxActiveTransfers; }
+  boolean validReassemblyBytes(long n) { return n >= 0 && n <= maxReassemblyBytes; }
+  boolean validWindow(long n) { return n >= 0 && n <= maxWindowBytes; }
+}
