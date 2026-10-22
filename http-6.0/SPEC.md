@@ -62,7 +62,7 @@ Strings must be valid UTF-8. JSON control characters, quotes and backslashes are
 - GET /__sleela/negotiate — version negotiation based on X-SLeeLa-Version and X-SLeeLa-Accept.
 - POST /__sleela/h6 — exactly one binary H6 frame in the request body.
 
-Request body length is bounded at 8 MiB. The server binds to 127.0.0.1 by default; a wildcard or external interface must be selected explicitly with --bind. The reference implementation accepts decimal Content-Length only; it rejects duplicate Content-Length, Transfer-Encoding, malformed lengths, and incomplete bodies. It closes each connection after one response. It does not implement chunked transfer coding or keep-alive.
+Request body length is bounded at 8 MiB. The server binds to 127.0.0.1 by default; a wildcard or external interface must be selected explicitly with --bind. The reference implementation accepts decimal Content-Length only; it rejects duplicate Content-Length, Transfer-Encoding, malformed lengths, and incomplete bodies. It closes each connection after one response. It does not implement chunked transfer coding or keep-alive. The current reference server handles one accepted connection at a time and applies 5-second per-operation socket inactivity timeouts; this is not an absolute request deadline. Request and response metadata are submitted to the shared SLeeLa logger in JSON Lines segments capped at 240 MiB, with payload logging disabled.
 
 Negotiation is capability selection, not authentication. Lower-version fallback must be explicitly enabled by server policy and must not be used to bypass security requirements. Preferred-router and resolver policies are project hooks, not substitutes for transport security or authorization.
 
