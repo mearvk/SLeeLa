@@ -1,0 +1,41 @@
+#sleela 2.1
+/* DOWNLOAD metadata model; not an authenticated or durable resume service. */
+class Http50DownloadState {
+  long LARGE_FILE_THRESHOLD = 52428800;
+  String sessionId = "";
+  String dateTime = "";
+  String fileId = "";
+  String fileName = "";
+  String contentDigest = "";
+  String expectedFileVersion = "";
+  String authorizedPrincipalId = "";
+  String authenticatedResumeToken = "";
+  long index = 0;
+  long offset = 0;
+  long totalSize = 0;
+  long chunkSize = 0;
+  boolean allChunksVerified = false;
+  boolean finalDigestVerified = false;
+  void configure(String session, String timestamp, String id, String name,
+                 long partIndex, long byteOffset, long completeSize, long chunk) {
+    sessionId = session; dateTime = timestamp; fileId = id; fileName = name;
+    index = partIndex; offset = byteOffset; totalSize = completeSize; chunkSize = chunk;
+  }
+  boolean requiresDownloadMode(long size) { return size > LARGE_FILE_THRESHOLD; }
+  boolean isValid() {
+    return sessionId != "" && fileId != "" && fileName != "" &&
+      index >= 0 && offset >= 0 && totalSize >= 0 && offset <= totalSize &&
+      chunkSize >= 0 && (chunkSize == 0 || chunkSize <= totalSize - offset);
+  }
+  long remainingBytes() { return totalSize - offset; }
+  boolean isComplete() { return isValid() && offset == totalSize; }
+  boolean hasResumeAuthorizationMetadata() {
+    return isValid() && expectedFileVersion != "" &&
+      authorizedPrincipalId != "" && authenticatedResumeToken != "" && contentDigest != "";
+  }
+  boolean mayCommit() {
+    return hasResumeAuthorizationMetadata() && isComplete() &&
+      allChunksVerified && finalDigestVerified;
+  }
+  boolean requiresNativeAuthenticationAndPersistence() { return true; }
+}
