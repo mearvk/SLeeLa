@@ -396,7 +396,7 @@ static void handle_connection(SLNetHandle fd, const h4s_server_config *cfg)
       /* This server implements Content-Length only, never ambiguous framing. */
       if (cl_count > 1 || te_count > 0) {
           resp.status_code=400; resp.content_type="text/plain";
-          resp.body="Invalid message framing\n"; resp.body_length=23;
+          resp.body="Invalid message framing\n"; resp.body_length=strlen(resp.body);
           send_response(fd,&req,&resp,cfg->server_name);
           free(raw); slnet_close(fd); return;
       }
@@ -414,7 +414,7 @@ static void handle_connection(SLNetHandle fd, const h4s_server_config *cfg)
           size_t already = (size_t)got - hb;
           if (already > clen) {
               resp.status_code=400; resp.content_type="text/plain";
-              resp.body="Body exceeds Content-Length\n"; resp.body_length=29;
+              resp.body="Body exceeds Content-Length\n"; resp.body_length=strlen(resp.body);
               send_response(fd,&req,&resp,cfg->server_name);
               free(raw); slnet_close(fd); return;
           }
@@ -443,7 +443,7 @@ static void handle_connection(SLNetHandle fd, const h4s_server_config *cfg)
           }
       } else if ((size_t)got > hb) {
           resp.status_code=400; resp.content_type="text/plain";
-          resp.body="Body requires Content-Length\n"; resp.body_length=28;
+          resp.body="Body requires Content-Length\n"; resp.body_length=strlen(resp.body);
           send_response(fd,&req,&resp,cfg->server_name);
           free(raw); slnet_close(fd); return;
       }
