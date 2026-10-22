@@ -1,0 +1,15 @@
+#sleela 2.1
+/* Defaults mirror http1_server.h. Timeout values are targets until enforced by socket adapter. */
+class Http10Limits {
+  int maxHeaderBytes = 65536;
+  long maxBodyBytes = 8388608;
+  int maxHeaders = 100;
+  int maxMethodBytes = 16;
+  int maxTargetBytes = 8192;
+  int maxHeaderNameBytes = 256;
+  int maxHeaderValueBytes = 8192;
+  int requestTimeoutMillis = 10000;
+  int idleTimeoutMillis = 5000;
+  int maxConcurrentConnections = 1;
+  boolean isBounded() { return maxHeaderBytes > 0 && maxBodyBytes > 0 && maxHeaders > 0 && requestTimeoutMillis > 0 && idleTimeoutMillis > 0 && maxConcurrentConnections > 0; }
+}
