@@ -23,7 +23,7 @@ int http4_resume_authorize(const http4_resume_state_t *s,
     if (http4_resume_state_validate(s) != 0 || !s->active || s->committed ||
         !principal || !version || !token || token_len == 0 || !verify)
         return -1;
-    if (now > s->expires_at_unix) return -2;
+    if (now >= s->expires_at_unix) return -2;
     if (strcmp(principal, s->principal_id) != 0 ||
         strcmp(version, s->file_version) != 0 || total != s->total_size ||
         offset != s->committed_offset) return -3;
