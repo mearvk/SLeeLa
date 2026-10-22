@@ -490,7 +490,20 @@ int h5s_self_test(void) {
       if(h5s_download_serialise(&st,buf,sizeof(buf))!=0){fprintf(stderr,"FAIL: dl ser\n");++f;}
       else{h5s_download_state p;if(h5s_download_parse(buf,&p)!=0||p.index!=2){
               fprintf(stderr,"FAIL: dl parse\n");++f;}}}
-    /* 6. Negotiation */
+    /* 6. Reject unsafe or malformed resume metadata. */
+    {
+        h5s_download_state bad;
+        if(h5s_download_parse("sess | date | id | ../secret | 0 | 0 | 10",&bad)==0){
+            fprintf(stderr,"FAIL: path traversal filename accepted\n");++f;
+        }
+        if(h5s_download_parse("sess | date | id | safe.dat | 0 | nope | 10",&bad)==0){
+            fprintf(stderr,"FAIL: invalid offset accepted\n");++f;
+        }
+        if(h5s_download_parse("sess | date | id | safe.dat | 0 | 11 | 10",&bad)==0){
+            fprintf(stderr,"FAIL: offset beyond total accepted\n");++f;
+        }
+    }
+    /* 7. Negotiation */
     { const char *r=sleela_http_negotiate("5.0","5.0, 4.0, 1.1",1);
       if(!r||strcmp(r,"5.0")!=0){fprintf(stderr,"FAIL: negotiate\n");++f;}
       r=sleela_http_negotiate("6.0","5.0, 1.1",1);
