@@ -4,8 +4,7 @@
 
 # SLeeLa HTTP 2.0 / 2.1
 
-**Status:** Internet-capable SLeeLa application-protocol server with compact
-envelope, fast naming, and processing pipeline.
+**Status:** SLeeLa HTTP 2.0/2.1 application-protocol implementation and reference server. Public internet deployment requires a protected transport, authentication, authorization, and a hardened front proxy.
 
 **Platforms:** Linux · macOS · Windows 10+
 
@@ -21,6 +20,7 @@ DIGEST, INTACTX, NONCE, or BASKET).
 ```sh
 make            # build the h21_server binary, protocol objects, negotiation objects
 make test       # run the built-in self-test suite
+make test-python # run strict Python protocol regression tests
 make syntax     # syntax-only check of all sources
 make proto      # build protocol-core objects only
 make clean      # remove build artefacts
@@ -53,14 +53,12 @@ POSIX; Ctrl-C on Windows).
 ## Architecture
 
 ```text
-Native transport endpoint (TCP, any platform)
+TCP endpoint (HTTP/1.0 or HTTP/1.1; no TLS in this server)
         |
 HTTP/1.x request / connection       ← sleela_net portable sockets
         |
-SLeeLa envelope / route             ← X-SLeeLa-* application headers
+SLeeLa envelope / route             ← X-SLeeLa-* untrusted hints
         |                               or H2.1 compact envelope in body
-HTTP/2 stream (logical)
-        |
 SLeeLa logical PORT
         |
 SERVICE-ID / OP-ID
@@ -83,7 +81,7 @@ TCP/UDP socket numbering.
 | Retry classification        | Implemented   | READ / IDEMPOTENT / MUTATING          |
 | Processing pipeline         | Implemented   | Register, dispatch, wire handling     |
 | Request correlation         | Implemented   | REQUEST-ID echo                       |
-| Stream-aware multiplexing   | By design     | Logical ports above HTTP/2 streams    |
+| HTTP/2 transport/multiplexing | Not implemented | Current native server uses HTTP/1.x |
 | Per-packet integrity gate   | Not in 2.1    | Added by HTTP 3.0                     |
 
 ## Wire forms
@@ -115,7 +113,7 @@ X-SLeeLa-Version: 2.1
 X-SLeeLa-Accept: 2.1, 2.0, 1.1, 1.0
 ```
 
-Clients may set the following request headers for SLeeLa logical routing:
+These are untrusted routing hints, not authentication or authorization. The server must authorize every operation. Clients may set the following request headers for SLeeLa logical routing:
 
 | Header                   | Purpose                                |
 |--------------------------|----------------------------------------|
@@ -136,9 +134,9 @@ curl -X POST -d 'H21 2 0 1 1 42 4:ping' http://localhost:8081/__sleela/h21
 # Response: H21R 0 42 4:ping
 ```
 
-## Port and stream multiplexing
+## Port and stream multiplexing (design model, not current transport)
 
-HTTP 2.1 defines three independent addressing layers:
+The current native server uses HTTP/1.x and does not implement IETF HTTP/2 framing, HPACK, HTTP/2 streams, or TLS. The following describes the intended future transport model, not a current capability. HTTP 2.1 defines three independent addressing layers:
 
 | Layer                       | Purpose                                    |
 |-----------------------------|--------------------------------------------|
@@ -201,6 +199,10 @@ security property. See `HTTP.NEGOTIATION.md`.
 | `FLOW.md`                | Data-flow diagram and wire-form specification         |
 | `HTTP.NEGOTIATION.md`    | Negotiation protocol for SLeeLa HTTP 1–9              |
 | `STATUS.md`              | Design-goal parity table and implementation status    |
+
+## Security and deployment
+
+Read [`HTTP21.SECURITY.md`](HTTP21.SECURITY.md) before exposing the server. In particular, H21 2.1 has no packet integrity or replay protection; `X-SLeeLa-*` headers are not identity; and the synchronous server is not intended to be an internet-facing edge server by itself.
 
 ## Dependencies
 
