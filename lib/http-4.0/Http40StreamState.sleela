@@ -15,18 +15,24 @@ class Http40StreamState {
     sessionId = session; streamId = id; opened = session != "" && id >= 0;
   }
   boolean acceptReceiveSequence(long sequence) {
-    if (!opened || reset || receiveClosed || sequence != nextReceiveSequence) return false;
+    if (!opened || reset || receiveClosed || sequence != nextReceiveSequence ||
+        nextReceiveSequence == 9223372036854775807) return false;
     nextReceiveSequence = nextReceiveSequence + 1; return true;
   }
   boolean acceptSendSequence(long sequence) {
-    if (!opened || reset || sendClosed || sequence != nextSendSequence) return false;
+    if (!opened || reset || sendClosed || sequence != nextSendSequence ||
+        nextSendSequence == 9223372036854775807) return false;
     nextSendSequence = nextSendSequence + 1; return true;
   }
   boolean addReceivedBytes(long count) {
-    if (count < 0) return false; receivedBytes = receivedBytes + count; return true;
+    if (!opened || reset || receiveClosed || count < 0 ||
+        count > 9223372036854775807 - receivedBytes) return false;
+    receivedBytes = receivedBytes + count; return true;
   }
   boolean addSentBytes(long count) {
-    if (count < 0) return false; sentBytes = sentBytes + count; return true;
+    if (!opened || reset || sendClosed || count < 0 ||
+        count > 9223372036854775807 - sentBytes) return false;
+    sentBytes = sentBytes + count; return true;
   }
   void closeReceive() { receiveClosed = true; }
   void closeSend() { sendClosed = true; }
