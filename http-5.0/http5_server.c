@@ -110,7 +110,7 @@ static int parse_request(const char *raw, size_t raw_len, h5s_request *req,
 int h5s_response_add_header(h5s_response *r, const char *n, const char *v) {
     if(!r||!n||!v||r->header_count>=H5S_MAX_HEADERS)return -1;
     /* Reject header injection and values that would be silently truncated. */
-    if(strchr(n,'\\r')||strchr(n,'\n')||strchr(v,'\\r')||strchr(v,'\n'))return -1;
+    if(strchr(n,'\r')||strchr(n,'\n')||strchr(v,'\r')||strchr(v,'\n'))return -1;
     if(strlen(n)>=sizeof(r->headers[0].name)||strlen(v)>=sizeof(r->headers[0].value))return -1;
     h5s_header *h=&r->headers[r->header_count];
     snprintf(h->name,sizeof(h->name),"%s",n); snprintf(h->value,sizeof(h->value),"%s",v);
@@ -194,9 +194,9 @@ int h5s_download_parse(const char *line, h5s_download_state *out) {
         if (*p == '|' || *p == '\0') {
             char delimiter = *p;
             *p = '\0';
-            while (*field == ' ' || *field == '\\t') ++field;
+            while (*field == ' ' || *field == '\t') ++field;
             size_t n = strlen(field);
-            while (n > 0 && (field[n - 1] == ' ' || field[n - 1] == '\\t'))
+            while (n > 0 && (field[n - 1] == ' ' || field[n - 1] == '\t'))
                 field[--n] = '\0';
             if (n == 0 || count >= 7) return -1;
             fields[count++] = field;
@@ -216,7 +216,7 @@ int h5s_download_parse(const char *line, h5s_download_state *out) {
 
     /* File names are leaf names, never paths or traversal expressions. */
     if (strcmp(parsed.file_name, ".") == 0 || strcmp(parsed.file_name, "..") == 0 ||
-        strchr(parsed.file_name, '/') || strchr(parsed.file_name, '\\\\'))
+        strchr(parsed.file_name, '/') || strchr(parsed.file_name, '\\'))
         return -1;
     for (const unsigned char *p = (const unsigned char *)parsed.file_name; *p; ++p)
         if (*p < 0x20 || *p == 0x7f) return -1;
