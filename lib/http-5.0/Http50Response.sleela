@@ -1,0 +1,18 @@
+#sleela 2.1
+class Http50Response {
+  int status = 200;
+  String contentType = "application/octet-stream";
+  String sessionId = "";
+  long requestId = 0;
+  long bodyLength = 0;
+  boolean frameAccepted = false;
+  boolean integrityVerified = false;
+  boolean endStream = true;
+  void correlate(String session, long request) { sessionId = session; requestId = request; }
+  void setResult(int code, long length) { status = code; bodyLength = length; }
+  boolean isValid() {
+    return status >= 100 && status <= 599 && sessionId != "" &&
+      requestId >= 0 && bodyLength >= 0 && bodyLength <= 16777248;
+  }
+  boolean mayClaimIntegrityVerified() { return frameAccepted && integrityVerified; }
+}
