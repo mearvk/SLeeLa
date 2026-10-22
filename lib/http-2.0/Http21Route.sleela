@@ -1,0 +1,12 @@
+#sleela 2.1
+/* Logical route IDs are application identifiers, not native OS ports. */
+class Http21Route {
+  String logicalPort = "";
+  String serviceId = "";
+  String operationId = "";
+  String routeName = "";
+  boolean enabled = true;
+  void configure(String port, String service, String operation, String name) { logicalPort = port; serviceId = service; operationId = operation; routeName = name; }
+  boolean isComplete() { return enabled && logicalPort != "" && serviceId != "" && operationId != "" && routeName != ""; }
+  boolean matches(String port, String service, String operation) { return isComplete() && logicalPort == port && serviceId == service && operationId == operation; }
+}
