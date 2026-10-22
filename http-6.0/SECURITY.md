@@ -4,6 +4,7 @@ HTTP 6.0 is experimental SLeeLa application protocol code, not an IETF protocol 
 
 ## Implemented in this hardening branch
 
+- Loopback-only listener by default; explicit bind-host selection for other interfaces.
 - Bounded CRLF scanning instead of unbounded strstr on socket input.
 - Request-line, header-name, header-value, and HTTP-version validation.
 - Strict decimal Content-Length; duplicate content-length and all transfer-encoding headers are rejected because chunked transfer is not implemented.
