@@ -15,7 +15,8 @@
 - HTTP request framing now rejects duplicate Content-Length, Transfer-Encoding (unsupported by this parser), malformed/oversized Content-Length, undeclared request bodies, body bytes beyond the declared length, and truncated bodies; raw header buffers are explicitly NUL-terminated before string parsing.
 - HTTP body limit is aligned with one maximum-size native frame (header plus 16 MiB payload).
 - Frame decoder now rejects undefined flag bits.
-- New bounded per-stream reference state model enforces per-stream sequence, stream byte, aggregate byte, duplicate OPEN, and stream-ID non-reuse rules.
+- New bounded per-stream reference state model enforces per-stream sequence, stream byte, aggregate byte, duplicate OPEN, and monotonic/non-reused stream-ID rules.
+- New resume-policy gate validates principal/file-version/size/offset/expiry bindings and requires chunk/final-digest verifier callbacks; this is policy enforcement, not a cryptographic verifier or durable store.
 - New normative draft specification, conformance plan, capability matrix, and optional libFuzzer harness.
 
 ## Not yet established
@@ -25,7 +26,7 @@
 - WINDOW credit enforcement and a complete bidirectional stream/session state machine are not integrated.
 - The server still uses HTTP/1.x over TCP and does not provide TLS/QUIC itself.
 - No authenticated HTTP/3/QUIC carrier adapter.
-- No durable authenticated resume store, trusted checkpoint, per-chunk digest, or final whole-file digest enforcement.
+- No durable authenticated resume store, production token/chunk/final-digest verifier, or crash-safe final publication; the resume policy module relies on externally supplied verification callbacks.
 - No native application-frame MAC/key-rotation implementation.
 - Capability negotiation is not yet bound to an authenticated transcript.
 - No completed C/SLeeLa shared conformance vectors.
