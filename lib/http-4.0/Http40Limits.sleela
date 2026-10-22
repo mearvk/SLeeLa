@@ -17,7 +17,10 @@ class Http40Limits {
   int maxHeaderBytes = 32768;
   int maxQueuedRequests = 1024;
   long downloadResumeThresholdBytes = 52428800;
-  long maxStreamBytes = 0;
+  long maxStreamBytes = 268435456;
+  long maxTotalBufferedBytes = 67108864;
+  int maxActiveTransfers = 8;
+  long maxReassemblyBytes = 16777216;
   boolean validPayloadLength(long n) { return n >= 0 && n <= maxEnvelopePayloadBytes; }
   boolean validDictionarySize(int services, int operations) {
     return services >= 0 && services <= maxServices &&
@@ -25,4 +28,8 @@ class Http40Limits {
   }
   boolean validStreamCount(int streams) { return streams >= 0 && streams <= maxConcurrentStreams; }
   boolean validHeaderLength(int bytes) { return bytes >= 0 && bytes <= maxHeaderBytes; }
+  boolean validStreamBytes(long bytes) { return bytes >= 0 && bytes <= maxStreamBytes; }
+  boolean validBufferedBytes(long bytes) { return bytes >= 0 && bytes <= maxTotalBufferedBytes; }
+  boolean validActiveTransfers(int count) { return count >= 0 && count <= maxActiveTransfers; }
+  boolean validReassemblyBytes(long bytes) { return bytes >= 0 && bytes <= maxReassemblyBytes; }
 }
