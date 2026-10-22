@@ -637,16 +637,26 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
     free(raw);
     raw = NULL;
 
-    /* ---- built-in routes ---- */
+    /* ---- authorization and built-in routes ---- */
     int handled = 0;
+    int public_health = strcmp(req->uri, "/__sleela/health") == 0 &&
+        (strcmp(req->method, "GET") == 0 || strcmp(req->method, "HEAD") == 0);
+    if (cfg->authorize && !public_health &&
+        cfg->authorize(req, cfg->user_data) != 0) {
+        resp->status_code = 403;
+        resp->content_type = "text/plain";
+        resp->body = "Forbidden\\n";
+        resp->body_length = strlen(resp->body);
+        handled = 1;
+    }
 
-    if (strcmp(req->uri, "/__sleela/health") == 0) {
+    if (!handled && strcmp(req->uri, "/__sleela/health") == 0) {
         builtin_health(req, resp);
         handled = 1;
-    } else if (strcmp(req->uri, "/__sleela/status") == 0) {
+    } else if (!handled && strcmp(req->uri, "/__sleela/status") == 0) {
         builtin_status(req, resp);
         handled = 1;
-    } else if (strcmp(req->uri, "/__sleela/negotiate") == 0) {
+    } else if (!handled && strcmp(req->uri, "/__sleela/negotiate") == 0) {
         builtin_negotiate(req, resp, cfg->allow_negotiation_fallback);
         handled = 1;
     }
