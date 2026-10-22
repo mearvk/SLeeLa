@@ -70,6 +70,7 @@ static const char *reason_phrase(int code)
     case 200: return "OK";
     case 204: return "No Content";
     case 206: return "Partial Content";
+    case 304: return "Not Modified";
     case 400: return "Bad Request";
     case 403: return "Forbidden";
     case 404: return "Not Found";
@@ -313,7 +314,7 @@ static int send_response(SLNetHandle fd, const http1_request *req,
     size_t estimate = 256 + strlen(reason) + strlen(server_name);
     if (resp->content_type) estimate += strlen(resp->content_type) + 32;
     for (int i = 0; i < resp->header_count; ++i) {
-        if (!http1_safe_value(resp->headers[i].value)) return -1;
+        if (!resp->headers[i].name[0] || !http1_safe_value(resp->headers[i].value)) return -1;
         for (const char *q = resp->headers[i].name; *q; ++q)
             if (!http1_token_char((unsigned char)*q)) return -1;
         estimate += strlen(resp->headers[i].name) + strlen(resp->headers[i].value) + 4;
@@ -335,8 +336,13 @@ static int send_response(SLNetHandle fd, const http1_request *req,
         off += snprintf(buf + off, sizeof(buf) - (size_t)off,
                         "Content-Type: %s\r\n", resp->content_type);
 
+    size_t wire_body_length = resp->body_length;
+    int suppress_body = (strcmp(req->method, "HEAD") == 0 ||
+                         resp->status_code == 204 || resp->status_code == 304);
+    if (resp->status_code == 204 || resp->status_code == 304)
+        wire_body_length = 0;
     off += snprintf(buf + off, sizeof(buf) - (size_t)off,
-                    "Content-Length: %zu\r\n", resp->body_length);
+                    "Content-Length: %zu\r\n", wire_body_length);
 
     /* Application headers from the handler */
     for (int i = 0; i < resp->header_count; ++i)
@@ -358,8 +364,8 @@ static int send_response(SLNetHandle fd, const http1_request *req,
 
     if (send_all(fd, buf, (size_t)off) != 0) return -1;
 
-    if (resp->body && resp->body_length > 0)
-        return send_all(fd, resp->body, resp->body_length);
+    if (!suppress_body && resp->body && wire_body_length > 0)
+        return send_all(fd, resp->body, wire_body_length);
 
     return 0;
 }
