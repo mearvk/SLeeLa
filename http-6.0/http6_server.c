@@ -422,13 +422,14 @@ int h6s_server_run(const h6s_server_config*cfg){
     const char*bind_host=(cfg->bind_address&&cfg->bind_address[0])?cfg->bind_address:"127.0.0.1";
     SLNetHandle listener=slnet_listen_on(bind_host,cfg->port,cfg->backlog);
     if(!slnet_valid(listener)){fprintf(stderr,"h6s: listen failed on port %u\n",(unsigned)cfg->port);slnet_shutdown();return -1;}
+    if(!h6_logger_open())fprintf(stderr,"h6s: warning: shared packet logger unavailable; continuing without runtime logs\n");
     fprintf(stderr,"SLeeLa HTTP/6.0 listening on %s:%u  [%s]\n",bind_host,(unsigned)cfg->port,slnet_platform_name());
 #ifndef _WIN32
     signal(SIGINT,h6s_sig);signal(SIGTERM,h6s_sig);
 #endif
     while(!g_stop){if(!portable_poll_readable(listener,500))continue;
         SLNetHandle c=slnet_accept(listener);if(!slnet_valid(c))continue;handle_connection(c,cfg);}
-    slnet_close(listener);slnet_shutdown();fprintf(stderr,"SLeeLa HTTP/6.0 stopped.\n");return 0;}
+    h6_logger_close();    slnet_close(listener);slnet_shutdown();fprintf(stderr,"SLeeLa HTTP/6.0 stopped.\n");return 0;}
 
 /* ── self-test ──────────────────────────────────────────────────────── */
 
