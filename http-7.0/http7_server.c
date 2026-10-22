@@ -363,7 +363,7 @@ int h7s_server_run(const h7s_server_config*cfg){
 int h7s_self_test(void){
     int f=0;
     /* 1. HTTP parse */
-    {const char raw[]="GET / HTTP/1.1\r\nX-SLeeLa-Version: 7.0\r\n\r\n";
+    {const char raw[]="GET / HTTP/1.1\r\nHost: localhost\r\nX-SLeeLa-Version: 7.0\r\n\r\n";
      h7s_request req;const char*bs;size_t hb;
      if(parse_request(raw,sizeof(raw)-1,&req,&bs,&hb)!=0||strcmp(req.sleela_version,"7.0")!=0){
          fprintf(stderr,"FAIL: HTTP parse\n");++f;}}
