@@ -9,19 +9,17 @@
 static int echo_frame(const http7_frame_view_t *f, uint8_t *rp, size_t rc,
                       size_t *rl, void *ud) {
     (void)ud;
-    size_t n = f->header.payload_length < rc ? f->header.payload_length : rc;
+    if (f->header.payload_length > rc) return -1;
+    size_t n = f->header.payload_length;
     if (n > 0) memcpy(rp, f->payload, n);
     *rl = n; return 0;
 }
 
 static int demo_http(const h7s_request *req, h7s_response *resp, void *ud) {
-    (void)ud;
-    static char body[1024];
-    int n = snprintf(body, sizeof(body),
-        "{\"method\":\"%s\",\"uri\":\"%s\",\"sleela_version\":\"%s\"}\n",
-        req->method, req->uri, req->sleela_version);
+    (void)req; (void)ud;
+    static const char body[] = "{\"server\":\"SLeeLa\",\"http_generation\":\"7.0\",\"reality_assertion\":true}\n";
     resp->status_code = 200; resp->content_type = "application/json";
-    resp->body = body; resp->body_length = (size_t)n; return 0;
+    resp->body = body; resp->body_length = sizeof(body) - 1; return 0;
 }
 
 static int parse_port(const char *s,uint16_t *out){
@@ -49,7 +47,7 @@ int main(int argc, char **argv) {
         } else if(strcmp(argv[i],"--bind")==0&&i+1<argc){
             cfg.bind_address=argv[++i];
         } else if(strcmp(argv[i],"--allow-fallback")==0){cfg.allow_negotiation_fallback=1;
-        else if (strcmp(argv[i], "--help") == 0) {
+        } else if (strcmp(argv[i], "--help") == 0) {
             printf("Usage: %s [--port N] [--bind HOST] [--allow-fallback] [--self-test] [--help]\n", argv[0]); return 0;
         } else { fprintf(stderr, "unknown option: %s\n", argv[i]); return 2; }
     }
