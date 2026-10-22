@@ -55,5 +55,18 @@ syntax:
 test: $(SERVER_TARGET)
 	./$(SERVER_TARGET) --self-test
 
+# --- sanitizer run (GCC or Clang) ---
+sanitize:
+	$(MAKE) clean
+	$(MAKE) test CFLAGS="-std=c11 -O1 -g -Wall -Wextra -Wpedantic -fsanitize=address,undefined -fno-omit-frame-pointer"
+
+# --- optional Clang libFuzzer target ---
+FUZZ_CC ?= clang
+FUZZ_SOURCES = ../tests/http-1.0/fuzz_download_metadata.c http1_server.c http_negotiation.c \
+               $(ROUTER_DIR)/preferred_router.c $(RESOLVER_DIR)/resolver.c $(SLNET_DIR)/sleela_net.c
+fuzz-download:
+	$(FUZZ_CC) -std=c11 -O1 -g -Wall -Wextra -Wpedantic -fsanitize=fuzzer,address,undefined \
+	  $(INCLUDES) $(FUZZ_SOURCES) -o http1_fuzz_download $(LDLIBS)
+
 clean:
-	rm -f $(NEG_OBJECTS) $(SERVER_TARGET)
+	rm -f $(NEG_OBJECTS) $(SERVER_TARGET) http1_fuzz_download
