@@ -350,6 +350,11 @@ static void handle_connection(SLNetHandle fd,const h6s_server_config*cfg){
         }
         if(te){resp.status_code=400;resp.content_type="text/plain";resp.body="Transfer-Encoding unsupported\n";resp.body_length=30;
             send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
+        if(!cl && (size_t)got>hb){
+            (void)h6_logger_record(0,1,(size_t)got,"body_without_content_length_rejected");
+            resp.status_code=400;resp.content_type="text/plain";resp.body="Unexpected bytes after headers\\n";resp.body_length=30;
+            send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
+        }
         if(cl){
             if(clen>H6S_MAX_BODY){resp.status_code=413;resp.content_type="text/plain";
                 resp.body="Content Too Large\n";resp.body_length=18;
