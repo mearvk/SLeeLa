@@ -32,7 +32,7 @@ ifeq ($(OS),Windows_NT)
 LDLIBS += -lws2_32
 endif
 
-.PHONY: all server proto syntax test clean
+.PHONY: all server proto syntax test test-python clean
 
 all: server proto $(NEG_C_OBJ) $(NEG_CXX_OBJ)
 
@@ -68,6 +68,9 @@ syntax:
 # --- self-test ---
 test: $(SERVER_TARGET)
 	./$(SERVER_TARGET) --self-test
+
+test-python:
+	python3 -m unittest -v test_h21_flow.py
 
 clean:
 	rm -f $(PROTO_OBJECTS) $(NEG_C_OBJ) $(NEG_CXX_OBJ) $(SERVER_TARGET)
