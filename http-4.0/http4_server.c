@@ -113,6 +113,7 @@ static int parse_request(const char *raw, size_t raw_len, h4s_request *req,
         memcpy(h->name,p,nl); h->name[nl]='\0'; str_lower(h->name);
         const char *v = str_ltrim(colon+1);
         size_t vl=(size_t)(le-v);
+        while (vl > 0 && (v[vl-1] == ' ' || v[vl-1] == '\t')) --vl;
         if (vl>=sizeof(h->value)) return -1;
         memcpy(h->value,v,vl); h->value[vl]='\0';
         ++req->header_count; p=le+2;
