@@ -1,0 +1,35 @@
+#sleela 2.1
+/* Policy model only: native code must perform cryptographic verification. */
+class Http40Integrity {
+  boolean digestVerified = false;
+  boolean nonceFresh = false;
+  boolean intactxWithinThreshold = false;
+  boolean basketCanonical = false;
+  boolean identityAuthorized = false;
+  boolean replayWindowInitialized = false;
+  long nonceHighWater = 0;
+  long acceptedPackets = 0;
+  long rejectedDigest = 0;
+  long rejectedReplay = 0;
+  long rejectedIntegrity = 0;
+  long rejectedAuthorization = 0;
+  void recordDigest(boolean ok) { digestVerified = ok; if (!ok) rejectedDigest = rejectedDigest + 1; }
+  boolean acceptNonce(long nonce) {
+    if (nonce <= 0 || (replayWindowInitialized && nonce <= nonceHighWater)) {
+      nonceFresh = false; rejectedReplay = rejectedReplay + 1; return false;
+    }
+    nonceHighWater = nonce; replayWindowInitialized = true; nonceFresh = true; return true;
+  }
+  void recordIntactx(boolean ok) { intactxWithinThreshold = ok; }
+  void recordBasket(boolean ok) { basketCanonical = ok; }
+  void recordAuthorization(boolean ok) {
+    identityAuthorized = ok; if (!ok) rejectedAuthorization = rejectedAuthorization + 1;
+  }
+  boolean permitsDispatch() {
+    boolean ok = digestVerified && nonceFresh && intactxWithinThreshold &&
+      basketCanonical && identityAuthorized;
+    if (ok) acceptedPackets = acceptedPackets + 1;
+    else rejectedIntegrity = rejectedIntegrity + 1;
+    return ok;
+  }
+}
