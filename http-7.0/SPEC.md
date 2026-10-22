@@ -42,4 +42,4 @@ The current server uses one HTTP request per TCP connection, bounded body/header
 
 ## 5. Current limits and production requirements
 
-This is a reference implementation, not a production-secure internet server. It does not yet implement TLS, peer identity/authentication, application authorization, total request deadlines, rate limiting, multiplexed stream lifecycle, flow control, replay protection, durable resumable transfer, or a full logger ingress/egress bridge. Do not expose it directly to untrusted networks. See SECURITY.md.
+This is a reference implementation, not a production-secure internet server. It does not yet implement TLS, peer identity/authentication, application authorization, total request deadlines, rate limiting, multiplexed stream lifecycle, flow control, replay protection, durable resumable transfer, or complete peer/request/stream attribution in the logger. The metadata-only shared logger bridge is wired, and its persisted-record test is part of the HTTP 7.0 test suite. Do not expose it directly to untrusted networks. See SECURITY.md.
