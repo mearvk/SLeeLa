@@ -16,10 +16,13 @@ class Http10Negotiation {
   String generation() { return localGeneration; }
 
   boolean acceptsHttp10() {
-    return peerGeneration == "" || peerGeneration == "1.0";
+    return peerGeneration == "" || peerGeneration == "1.0"
+      || peerAccept == "1.0" || peerAccept == "1.0, 1.1"
+      || peerAccept == "1.1, 1.0";
   }
   boolean acceptsHttp11() {
-    return peerGeneration == "1.1" || peerAccept == "1.1";
+    return peerGeneration == "1.1" || peerAccept == "1.1"
+      || peerAccept == "1.0, 1.1" || peerAccept == "1.1, 1.0";
   }
   boolean canFallback() { return fallbackAllowed; }
 
@@ -28,6 +31,7 @@ class Http10Negotiation {
     if (peerGeneration == "1.1") return "1.1";
     if (peerAccept == "1.0") return "1.0";
     if (peerAccept == "1.1") return "1.1";
+    if (peerAccept == "1.0, 1.1" || peerAccept == "1.1, 1.0") return "1.0";
     if (fallbackAllowed) return "1.0";
     return "";
   }
