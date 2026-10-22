@@ -1,0 +1,20 @@
+#sleela 2.1
+/* Policy declaration only; it is not a cryptographic implementation. */
+class Http30SecurityPolicy {
+  boolean requireProtectedTransport = true;
+  boolean requireAuthenticatedPeer = true;
+  boolean requireAuthorizationForProtectedRoutes = true;
+  boolean requireKeyedDigest = true;
+  boolean requireNonceReplayGuard = true;
+  boolean requireIntegrityCheck = true;
+  boolean rejectUnknownCapabilities = true;
+  boolean failClosedOnDowngrade = true;
+  boolean trustForwardedHeaders = false;
+  boolean redactCredentialsInLogs = true;
+  boolean requireBasketValidation = true;
+  String mac = "SipHash-2-4 per-connection keyed MAC (as currently documented)";
+  boolean permitsProtectedRoute(boolean authenticated, boolean authorized, boolean digestValid, boolean nonceFresh, boolean intactxValid, boolean basketValid) {
+    return authenticated && authorized && digestValid && nonceFresh && intactxValid && basketValid;
+  }
+  boolean safeDefaults() { return requireProtectedTransport && requireAuthenticatedPeer && requireKeyedDigest && requireNonceReplayGuard && requireIntegrityCheck && failClosedOnDowngrade; }
+}
