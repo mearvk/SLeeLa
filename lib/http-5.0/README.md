@@ -28,10 +28,11 @@ flag is not proof of a cryptographically authenticated handshake; modeled stream
 windows are not enforced flow control until native server dispatch applies them;
 and DOWNLOAD fields are not a durable authenticated resume service.
 
-The native server currently carries frames over HTTP/1.x on TCP. It does not
-provide native HTTP/3/QUIC or TLS, and this package is not production-ready for
-untrusted network exposure. Use a separately maintained authenticated transport,
-perform authorization in native dispatch, and retain the repository SHA-256
-integrity verification gate.
+The HTTP request-body ceiling is 16 MiB + 32 bytes, matching the codec's maximum
+payload plus its 32-byte header. The native server carries frames over HTTP/1.x
+on TCP; it does not provide native HTTP/3/QUIC or TLS. This package is experimental
+and is not production-ready for untrusted network exposure. Use a separately
+maintained authenticated transport, perform authorization in native dispatch,
+and retain the repository SHA-256 integrity verification gate.
 
 Native specifications and test vectors are in `../../http-5.0/`.
