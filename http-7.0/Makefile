@@ -53,6 +53,7 @@ syntax:
 	$(CC) $(CFLAGS) $(INCLUDES) -fsyntax-only http7_server.c
 	$(CC) $(CFLAGS) $(INCLUDES) -fsyntax-only http7_main.c
 	$(CC) $(CFLAGS) $(INCLUDES) -fsyntax-only http_negotiation.c
+	$(CC) $(CFLAGS) $(INCLUDES) -fsyntax-only $(SLNET_DIR)/sleela_net.c
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -fsyntax-only http_negotiation.cpp
 	$(CC) $(CFLAGS) -I. -fsyntax-only http70.c
 	$(CXX) $(CXXFLAGS) -I. -fsyntax-only http70.cpp
