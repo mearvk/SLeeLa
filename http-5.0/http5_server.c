@@ -158,20 +158,76 @@ int h5s_download_serialise(const h5s_download_state *st, char *buf, size_t cap) 
     return(n>0&&(size_t)n<cap)?0:-1;
 }
 
+static int h5s_parse_u64(const char *s, uint64_t *out) {
+    if (!s || !*s || !out) return -1;
+    uint64_t v = 0;
+    for (const unsigned char *p = (const unsigned char *)s; *p; ++p) {
+        if (*p < '0' || *p > '9') return -1;
+        unsigned digit = (unsigned)(*p - '0');
+        if (v > (UINT64_MAX - digit) / 10u) return -1;
+        v = v * 10u + digit;
+    }
+    *out = v;
+    return 0;
+}
+
+static int h5s_copy_field(char *dst, size_t cap, const char *src) {
+    if (!dst || cap == 0 || !src) return -1;
+    size_t n = strlen(src);
+    if (n == 0 || n >= cap) return -1;
+    memcpy(dst, src, n + 1);
+    return 0;
+}
+
 int h5s_download_parse(const char *line, h5s_download_state *out) {
-    if(!line||!out)return -1; memset(out,0,sizeof(*out));
-    char c[2048]; snprintf(c,sizeof(c),"%s",line);
-    char *f[7]; int cnt=0; char *t=strtok(c,"|");
-    while(t&&cnt<7){while(*t==' '||*t=='\t')++t;size_t l=strlen(t);
-        while(l>0&&(t[l-1]==' '||t[l-1]=='\t'))t[--l]='\0';f[cnt++]=t;t=strtok(NULL,"|");}
-    if(cnt!=7)return -1;
-    snprintf(out->session_id,sizeof(out->session_id),"%s",f[0]);
-    snprintf(out->datetime,sizeof(out->datetime),"%s",f[1]);
-    snprintf(out->file_id,sizeof(out->file_id),"%s",f[2]);
-    snprintf(out->file_name,sizeof(out->file_name),"%s",f[3]);
-    out->index=(uint64_t)strtoull(f[4],NULL,10);
-    out->offset=(uint64_t)strtoull(f[5],NULL,10);
-    out->total_size=(uint64_t)strtoull(f[6],NULL,10);
+    if (!line || !out) return -1;
+    size_t line_len = strlen(line);
+    if (line_len == 0 || line_len >= 2048) return -1;
+
+    char copy[2048];
+    memcpy(copy, line, line_len + 1);
+    char *fields[7];
+    size_t count = 0;
+    char *field = copy;
+
+    for (char *p = copy;; ++p) {
+        if (*p == '|' || *p == '\\0') {
+            char delimiter = *p;
+            *p = '\\0';
+            while (*field == ' ' || *field == '\\t') ++field;
+            size_t n = strlen(field);
+            while (n > 0 && (field[n - 1] == ' ' || field[n - 1] == '\\t'))
+                field[--n] = '\\0';
+            if (n == 0 || count >= 7) return -1;
+            fields[count++] = field;
+            if (delimiter == '\\0') break;
+            field = p + 1;
+        }
+    }
+    if (count != 7) return -1;
+
+    h5s_download_state parsed;
+    memset(&parsed, 0, sizeof(parsed));
+    if (h5s_copy_field(parsed.session_id, sizeof(parsed.session_id), fields[0]) ||
+        h5s_copy_field(parsed.datetime, sizeof(parsed.datetime), fields[1]) ||
+        h5s_copy_field(parsed.file_id, sizeof(parsed.file_id), fields[2]) ||
+        h5s_copy_field(parsed.file_name, sizeof(parsed.file_name), fields[3]))
+        return -1;
+
+    /* File names are leaf names, never paths or traversal expressions. */
+    if (strcmp(parsed.file_name, ".") == 0 || strcmp(parsed.file_name, "..") == 0 ||
+        strchr(parsed.file_name, '/') || strchr(parsed.file_name, '\\\\'))
+        return -1;
+    for (const unsigned char *p = (const unsigned char *)parsed.file_name; *p; ++p)
+        if (*p < 0x20 || *p == 0x7f) return -1;
+
+    if (h5s_parse_u64(fields[4], &parsed.index) != 0 ||
+        h5s_parse_u64(fields[5], &parsed.offset) != 0 ||
+        h5s_parse_u64(fields[6], &parsed.total_size) != 0 ||
+        parsed.offset > parsed.total_size)
+        return -1;
+
+    *out = parsed;
     return 0;
 }
 
