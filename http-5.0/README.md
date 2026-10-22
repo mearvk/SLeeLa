@@ -67,6 +67,7 @@ Do not expose the current server directly to an untrusted network. Use an indepe
 ## Current status
 
 - [Core specification](SPEC.md)
+- [Canonical envelope test vectors](TEST-VECTORS.md)
 - [Security boundary](SECURITY.md)
 - [Implementation status and release gates](STATUS.md)
 - [Processing flow](FLOW.md)
