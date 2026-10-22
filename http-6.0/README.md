@@ -37,7 +37,9 @@ make clean
 
 ```sh
 ./http6_server --port 8085
-# To intentionally expose the service on all IPv4 interfaces, pass: --bind 0.0.0.0
+
+# Alternative only when a reviewed network/TLS boundary is in place:
+./http6_server --port 8085 --bind 0.0.0.0
 ```
 
 The server binds to `127.0.0.1` by default. Use `--bind HOST` only when you intentionally choose another interface; `0.0.0.0` exposes all IPv4 interfaces and should only be used with an appropriate network/TLS boundary.
@@ -120,7 +122,7 @@ See [SPEC.md](SPEC.md) for the normative project draft and [SECURITY.md](SECURIT
 |-------------------------------|------------------------------------------------|
 | `http6_server.h`             | Server API, HTTP types, frame handler           |
 | `http6_server.c`             | Full server with H6 frame endpoint + self-test  |
-| `http6_main.c`               | CLI entry point with echo handler               |
+| `http6_main.c`               | CLI entry point with safe static demo handler               |
 | `http6_protocol.h`           | 20 frame types, header struct                   |
 | `http6_protocol.c`           | Frame encode/decode/validate (new)              |
 | `http6_consolidated_pack.hpp`| Bounded C++ ConsolidatedFriendsBet model         |
