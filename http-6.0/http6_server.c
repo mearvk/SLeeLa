@@ -35,7 +35,7 @@ static void str_lower(char *s){for(;*s;++s)*s=(char)tolower((unsigned char)*s);}
 static const char *str_ltrim(const char *s){while(*s==' '||*s=='\t')++s;return s;}
 static const char *find_crlf(const char *p, const char *end){
     if(!p||!end||p>end)return NULL;
-    while(p+1<end){if(p[0]=='\r'&&p[1]=='\n')return p;++p;}
+    while((size_t)(end-p)>=2){if(p[0]=='\r'&&p[1]=='\n')return p;++p;}
     return NULL;
 }
 static int is_token_char(unsigned char c){
@@ -53,7 +53,7 @@ static int valid_header_value(const char *s){
 static int header_name_equal_ci(const char*a,const char*b){
     if(!a||!b)return 0;
     while(*a&&*b){if(tolower((unsigned char)*a)!=tolower((unsigned char)*b))return 0;++a;++b;}
-    return *a=='\\0'&&*b=='\\0';
+    return *a=='\0'&&*b=='\0';
 }
 static int response_header_reserved(const char*n){
     return header_name_equal_ci(n,"content-length")||
@@ -63,6 +63,11 @@ static int response_header_reserved(const char*n){
            header_name_equal_ci(n,"content-type")||
            header_name_equal_ci(n,"x-sleela-version")||
            header_name_equal_ci(n,"x-sleela-accept");
+}
+
+static const char *reason_phrase(int c){
+    switch(c){case 200:return "OK";case 400:return "Bad Request";case 404:return "Not Found";
+    case 413:return "Content Too Large";case 500:return "Internal Server Error";default:return "Error";}
 }
 
 static int recv_headers(SLNetHandle fd,char *buf,size_t cap){
@@ -101,7 +106,7 @@ static int parse_request(const char*raw,size_t raw_len,h6s_request*req,const cha
      if(!((vl==8&&memcmp(p,"HTTP/1.0",8)==0)||(vl==8&&memcmp(p,"HTTP/1.1",8)==0)))return -1;
      memcpy(req->version,p,vl);req->version[vl]='\0';}
     p=le+2;
-    while(p+1<end&&!(p[0]=='\r'&&p[1]=='\n')){le=find_crlf(p,end);if(!le)return -1;
+    while((size_t)(end-p)>=2&&!(p[0]=='\r'&&p[1]=='\n')){le=find_crlf(p,end);if(!le)return -1;
         const char*c=memchr(p,':',(size_t)(le-p));if(!c||c==p||req->header_count>=H6S_MAX_HEADERS)return -1;
         h6s_header*h=&req->headers[req->header_count];size_t nl=(size_t)(c-p);
         if(nl>=sizeof(h->name))return -1;
@@ -111,7 +116,7 @@ static int parse_request(const char*raw,size_t raw_len,h6s_request*req,const cha
         for(const char*q=v;q<le;++q){unsigned char ch=(unsigned char)*q;if((ch<0x20&&ch!='\t')||ch==0x7f)return -1;}
         memcpy(h->value,v,vl);h->value[vl]='\0';if(!valid_header_value(h->value))return -1;
         ++req->header_count;p=le+2;}
-    if(p+1>=end||p[0]!='\r'||p[1]!='\n')return -1;
+    if((size_t)(end-p)<2||p[0]!='\r'||p[1]!='\n')return -1;
     p+=2;
     *hb=(size_t)(p-raw);*bs=p;
     if((strcmp(req->version,"HTTP/1.1")==0 &&
@@ -182,13 +187,13 @@ int h6s_download_should_resume(uint64_t cl){return cl>H6S_DOWNLOAD_THRESHOLD;}
 static int download_field_ok(const char*s,size_t cap,int nonempty,size_t*length){
     const char*z;
     if(!s||!cap)return 0;
-    z=(const char*)memchr(s,'\\0',cap);
+    z=(const char*)memchr(s,'\0',cap);
     if(!z)return 0;
     size_t n=(size_t)(z-s);
     if(nonempty&&n==0)return 0;
     for(size_t i=0;i<n;++i){
         unsigned char ch=(unsigned char)s[i];
-        if(ch=='|'||ch=='\\r'||ch=='\\n'||ch<0x20||ch==0x7f)return 0;
+        if(ch=='|'||ch=='\r'||ch=='\n'||ch<0x20||ch==0x7f)return 0;
     }
     if(length)*length=n;
     return 1;
@@ -197,7 +202,7 @@ static int parse_u64_field(const char*s,uint64_t*out){
     char*end=NULL;unsigned long long value;
     if(!s||!*s||!out||*s=='-'||*s=='+')return -1;
     errno=0;value=strtoull(s,&end,10);
-    if(errno==ERANGE||end==s||!end||*end!='\\0')return -1;
+    if(errno==ERANGE||end==s||!end||*end!='\0')return -1;
     *out=(uint64_t)value;return 0;
 }
 int h6s_download_serialise(const h6s_download_state*st,char*buf,size_t cap){
@@ -220,14 +225,14 @@ int h6s_download_parse(const char*line,h6s_download_state*out){
     memcpy(copy,line,len+1);fields[0]=copy;p=copy;
     for(int i=1;i<7;++i){
         char*sep=strchr(p,'|');if(!sep)return -1;
-        *sep='\\0';p=sep+1;fields[i]=p;
+        *sep='\0';p=sep+1;fields[i]=p;
     }
     if(strchr(p,'|'))return -1;
     for(int i=0;i<7;++i){
-        while(*fields[i]==' '||*fields[i]=='\\t')++fields[i];
+        while(*fields[i]==' '||*fields[i]=='\t')++fields[i];
         size_t field_len=strlen(fields[i]);
-        while(field_len>0&&(fields[i][field_len-1]==' '||fields[i][field_len-1]=='\\t'))
-            fields[i][--field_len]='\\0';
+        while(field_len>0&&(fields[i][field_len-1]==' '||fields[i][field_len-1]=='\t'))
+            fields[i][--field_len]='\0';
         if(!*fields[i])return -1;
         for(const unsigned char*q=(const unsigned char*)fields[i];*q;++q)
             if(*q<0x20||*q==0x7f)return -1;
