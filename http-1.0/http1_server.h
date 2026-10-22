@@ -121,6 +121,10 @@ int http1_server_run(const http1_server_config *cfg);
  */
 void http1_server_stop(void);
 
+/* Parse one bounded request header block; raw_len must stop at CRLFCRLF. */
+int http1_request_parse_headers(const char *raw, size_t raw_len,
+                                http1_request *req, size_t *header_bytes);
+
 /*
  * Convenience: add a header to a response being built by a handler.
  */
