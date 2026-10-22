@@ -40,7 +40,7 @@ def verify_manifest(root, manifest_path):
         if not isinstance(rel, str) or not rel:
             return fail("artifact path must be a non-empty string")
         posix = PurePosixPath(rel)
-        if posix.is_absolute() or "\\" in rel or any(p in ("", ".", "..") for p in rel.split("/")):
+        if ":" in rel or any(ord(ch) < 32 for ch in rel) or posix.is_absolute() or "\\" in rel or any(p in ("", ".", "..") for p in rel.split("/")):
             return fail(f"non-canonical artifact path: {rel}")
         if rel in seen:
             return fail(f"duplicate artifact path: {rel}")
