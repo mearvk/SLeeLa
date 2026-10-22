@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 #define H5S_MAX_HEADER   (64 * 1024)
-#define H5S_MAX_BODY     (8 * 1024 * 1024)
+#define H5S_MAX_BODY     (HTTP5_MAX_PAYLOAD + HTTP5_FRAME_HEADER_SIZE)
 #define H5S_MAX_HEADERS  100
 #define H5S_MAX_METHOD   16
 #define H5S_MAX_URI      8192
