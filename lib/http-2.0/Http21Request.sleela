@@ -1,5 +1,5 @@
 /*
- * SLeeLa HTTP/1.0 request model.
+ * SLeeLa HTTP 2.1 request model; protocol field records the HTTP/1.x transport version.
  * Protocol model only; native socket and wire parsing stay in /http-2.0.
  */
 #sleela 2.1
