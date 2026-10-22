@@ -23,7 +23,7 @@ extern "C" {
 /* ── limits ─────────────────────────────────────────────────────────── */
 
 #define H4S_MAX_HEADER   (64 * 1024)
-#define H4S_MAX_BODY     (8 * 1024 * 1024)
+#define H4S_MAX_BODY     (HTTP4_MAX_PAYLOAD + HTTP4_FRAME_HEADER_SIZE)
 #define H4S_MAX_HEADERS  100
 #define H4S_MAX_METHOD   16
 #define H4S_MAX_URI      8192
