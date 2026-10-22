@@ -19,7 +19,7 @@ extern "C" int h7_logger_open(void){
 }
 extern "C" void h7_logger_close(void){
  std::lock_guard<std::mutex> lock(bridge_mutex);
- if(opened)logger.close();opened=false;
+ if (opened) logger.close();\n opened=false;
 }
 extern "C" int h7_logger_record(int sent,int admission,size_t bytes,const char*reason){
  std::lock_guard<std::mutex> lock(bridge_mutex);
