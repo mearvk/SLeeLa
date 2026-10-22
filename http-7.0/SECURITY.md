@@ -20,7 +20,7 @@
 - Inactivity timeout is not a total request deadline; slow-trickle behavior remains a concern.
 - Server is single-threaded, so one slow client can delay all other clients.
 - No configurable rate limits, graceful cancellation protocol, complete stream/replay/flow-control state machine, or durable resume.
-- Shared logger has not yet been wired into HTTP 7.0 ingress/egress; packet metadata observability is an outstanding task.
-- Add end-to-end logger tests, fuzz/property-based tests, sanitizer runs, interoperability tests and independent security review before production use.
+- Shared logger bridge records request ingress, parse rejection and response egress metadata with payload logging disabled. Dedicated test covers persisted records; disk failure, rotation under HTTP load, and peer/request/stream identifier population still need testing.
+- Add fuzz/property-based tests, sanitizer runs, interoperability tests and independent security review before production use.
 
 Assertion status and provenance are metadata supplied by applications. A status label is not a cryptographic signature, source validation, identity proof, or a guarantee that a statement is true.
