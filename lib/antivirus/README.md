@@ -64,3 +64,7 @@ References:
 ## Implementation boundary
 
 The current `.sleela` files are baseline-syntax component definitions and contracts. Methods that return `NOT_CONNECTED`, `NOT_IMPLEMENTED`, or equivalent status are deliberate: they prevent a stub from being misrepresented as an operating scanner. The next implementation step is a tested native host bridge for filesystem enumeration, process execution without shell interpolation, result parsing, cancellation, and OS-specific service/event integration.
+
+## Execution gate and implementation status
+
+The runtime integration boundary remains explicit: no `NO_MATCH` result alone may authorize execution, and missing engines, untrusted release metadata, detections, timeouts, and incomplete scans must remain non-success outcomes when scanning is required by policy. Do not wire the SLeeLa contracts to execution until the filesystem walker, shell-free host process bridge, result parser, cancellation, and platform event/service adapters are tested end to end. See [`../../antivirus/HARDENING-PLAN.md`](../../antivirus/HARDENING-PLAN.md) for release criteria.
