@@ -4,7 +4,7 @@
 
 # SLeeLa HTTP 4.0
 
-**Status:** Internet-capable SLeeLa next-generation frame-based protocol server.
+**Status:** Experimental SLeeLa frame-based protocol foundation. Not production-ready; see STATUS.md and CAPABILITY-MATRIX.md.
 
 **Platforms:** Linux · macOS · Windows 10+
 
@@ -16,7 +16,9 @@ that can be carried by HTTP/3 or another supported transport.
 
 ```sh
 make            # build selftests + server
-make test       # run protocol, segmentation, and server self-tests
+make test       # run protocol, segmentation, session-state, and server self-tests
+make session-test # run bounded per-stream state self-test
+make fuzz        # optional Clang libFuzzer + ASan/UBSan parser harness
 make server     # build just the portable server
 make server-test# run the server self-test
 make protocol-test     # run the frame protocol self-test
@@ -66,7 +68,7 @@ Carrier adapter                     ← sleela_net portable sockets (Linux/macOS
     +-- Test / in-memory carrier
 ```
 
-## Frame model
+## Engineering specification and verification\n\n- [Normative core specification](SPEC.md)\n- [Conformance and adversarial test plan](CONFORMANCE.md)\n- [Evidence-based capability matrix](CAPABILITY-MATRIX.md)\n- [Current implementation status](STATUS.md)\n\nThe reference server currently carries frames in HTTP/1.x over TCP. HTTP/3/QUIC support is not implemented by this directory. The added session-state model is not yet wired into the server dispatch path. Tests added in source must be run in CI before being described as passing.\n\n## Frame model
 
 Fixed-width 32-byte header, big-endian:
 
