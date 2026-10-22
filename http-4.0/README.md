@@ -41,10 +41,13 @@ No external dependencies. Pure C11 with libc only.
 
 ```sh
 ./http4_server_bin --port 8083
+# To listen on another IPv4 interface, explicitly opt in:
+./http4_server_bin --bind-address 192.0.2.10 --port 8083
 ```
 
 Options:
-- `--port N` — TCP listen port (default 8083)
+- `--port N` — TCP listen port (default 8083; must be 1–65535)
+- `--bind-address IPv4` — explicit IPv4 bind address (default `127.0.0.1`)
 - `--self-test` — run the built-in test suite and exit
 - `--help` — show usage
 
@@ -70,7 +73,7 @@ Carrier adapter                     ← sleela_net portable sockets (Linux/macOS
 ```
 
 ## Engineering specification and verification\n\n- [Normative core specification](SPEC.md)\n- [Conformance and adversarial test plan](CONFORMANCE.md)
-- [Canonical binary test vectors](TEST-VECTORS.md)\n- [Evidence-based capability matrix](CAPABILITY-MATRIX.md)\n- [Current implementation status](STATUS.md)\n\nThe reference server currently carries frames in HTTP/1.x over TCP. HTTP/3/QUIC support is not implemented by this directory. The added session-state model is not yet wired into the server dispatch path. Tests added in source must be run in CI before being described as passing.\n\n## Frame model
+- [Canonical binary test vectors](TEST-VECTORS.md)\n- [Evidence-based capability matrix](CAPABILITY-MATRIX.md)\n- [Current implementation status](STATUS.md)\n\nThe reference server currently carries frames in HTTP/1.x over TCP and binds to loopback by default. `--bind-address` can opt into another IPv4 interface, but the server does not provide TLS; do not expose it to untrusted networks without a properly authenticated, integrity-protected deployment boundary. HTTP/3/QUIC support is not implemented by this directory. The added session-state model is not yet wired into the server dispatch path. Tests added in source must be run in CI before being described as passing.\n\n## Frame model
 
 Fixed-width 32-byte header, big-endian:
 
