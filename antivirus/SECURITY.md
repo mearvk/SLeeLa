@@ -94,3 +94,5 @@ Platform release archives include an `INTEGRITY-MANIFEST.json`, a `SHA256SUMS` f
 ## Six-workstream hardening plan
 
 Track the concrete workstreams and release criteria in [HARDENING-PLAN.md](HARDENING-PLAN.md). The plan distinguishes documented requirements from controls that have actually been implemented and tested. Do not mark release signing, SLeeLa execution gating, or platform coverage complete without corresponding code and exact-commit CI evidence.
+
+The helper `tools/sleelavirin_verify_release.py` verifies a detached signature over release metadata before validating each artifact's size and SHA-256. The manifest signature must be verified against a public key obtained independently; the helper cannot determine whether a supplied key is trusted. Its schema and failure cases are documented in [README.md](README.md#verify-signed-release-metadata).
