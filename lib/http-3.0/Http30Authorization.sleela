@@ -1,0 +1,13 @@
+#sleela 2.1
+/* Client-supplied route IDs are not credentials. Identity verification belongs to security adapter. */
+class Http30Authorization {
+  String principalId = "";
+  String capability = "";
+  boolean authenticated = false;
+  boolean authorized = false;
+  boolean allowAnonymousHealth = true;
+  void setPrincipal(String id, boolean verified) { principalId = id; authenticated = verified && id != ""; authorized = false; }
+  void grantCapability(String value) { capability = value; authorized = authenticated && value != ""; }
+  boolean permitsProtectedRoute() { return authenticated && authorized; }
+  boolean permitsHealthRoute() { return allowAnonymousHealth; }
+}
