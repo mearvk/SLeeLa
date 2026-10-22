@@ -600,10 +600,10 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
                 slnet_close(fd);
                 return;
             }
-            if (already > 0 && already <= content_len)
-                memcpy(req.body, body_start, already);
-            size_t remaining = already < content_len ? content_len - already : 0;
-            size_t filled    = already < content_len ? already : content_len;
+            size_t filled = already < content_len ? already : content_len;
+            if (filled > 0)
+                memcpy(req.body, body_start, filled);
+            size_t remaining = content_len - filled;
             time_t body_deadline = time(NULL) + HTTP1_READ_TIMEOUT_SECONDS;
             while (remaining > 0) {
                 if (time(NULL) >= body_deadline) break;
