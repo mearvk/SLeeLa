@@ -15,15 +15,14 @@ static int echo_frame(const http6_frame_view_t *f, uint8_t *rp, size_t rc,
 }
 
 static int demo_http(const h6s_request *req, h6s_response *resp, void *ud) {
+    (void)req;
     (void)ud;
-    static char body[1024];
-    int n = snprintf(body, sizeof(body),
-        "{\"method\":\"%s\",\"uri\":\"%s\",\"sleela_port\":\"%s\","
-         "\"service_id\":\"%s\",\"op_id\":\"%s\",\"sleela_version\":\"%s\"}\n",
-        req->method, req->uri, req->sleela_port,
-        req->service_id, req->op_id, req->sleela_version);
-    resp->status_code = 200; resp->content_type = "application/json";
-    resp->body = body; resp->body_length = (size_t)n; return 0;
+    static const char body[] = "{\"status\":\"ok\",\"http_generation\":\"6.0\"}\\n";
+    resp->status_code = 200;
+    resp->content_type = "application/json";
+    resp->body = body;
+    resp->body_length = sizeof(body) - 1;
+    return 0;
 }
 
 static int parse_port(const char *s, uint16_t *port) {
