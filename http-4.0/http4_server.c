@@ -580,6 +580,16 @@ int h4s_self_test(void)
       uint8_t resp_payload[64];size_t resp_len=0;
       if(test_echo_frame(&fv,resp_payload,sizeof(resp_payload),&resp_len,NULL)!=0){
           fprintf(stderr,"FAIL: echo frame handler\n");++failures;}
+      {
+          h4s_request rq; h4s_response rs;
+          memset(&rq,0,sizeof(rq)); memset(&rs,0,sizeof(rs));
+          rq.body=(char*)wire; rq.body_length=written+1;
+          if(builtin_h4_frame(&rq,&rs,NULL,NULL)!=0 || rs.status_code!=400){
+              fprintf(stderr,"FAIL: trailing frame bytes accepted\n");++failures;}
+          memset(&rs,0,sizeof(rs)); rq.body_length=written;
+          if(builtin_h4_frame(&rq,&rs,NULL,NULL)!=0 || rs.status_code!=200){
+              fprintf(stderr,"FAIL: exact single frame rejected\n");++failures;}
+      }
     }
 
     /* 4. Segmentation count */
