@@ -110,7 +110,7 @@ static int parse_request(const char *raw, size_t raw_len, h5s_request *req,
 int h5s_response_add_header(h5s_response *r, const char *n, const char *v) {
     if(!r||!n||!v||r->header_count>=H5S_MAX_HEADERS)return -1;
     /* Reject header injection and values that would be silently truncated. */
-    if(strchr(n,'\\r')||strchr(n,'\\n')||strchr(v,'\\r')||strchr(v,'\\n'))return -1;
+    if(strchr(n,'\\r')||strchr(n,'\n')||strchr(v,'\\r')||strchr(v,'\n'))return -1;
     if(strlen(n)>=sizeof(r->headers[0].name)||strlen(v)>=sizeof(r->headers[0].value))return -1;
     h5s_header *h=&r->headers[r->header_count];
     snprintf(h->name,sizeof(h->name),"%s",n); snprintf(h->value,sizeof(h->value),"%s",v);
@@ -191,16 +191,16 @@ int h5s_download_parse(const char *line, h5s_download_state *out) {
     char *field = copy;
 
     for (char *p = copy;; ++p) {
-        if (*p == '|' || *p == '\\0') {
+        if (*p == '|' || *p == '\0') {
             char delimiter = *p;
-            *p = '\\0';
+            *p = '\0';
             while (*field == ' ' || *field == '\\t') ++field;
             size_t n = strlen(field);
             while (n > 0 && (field[n - 1] == ' ' || field[n - 1] == '\\t'))
-                field[--n] = '\\0';
+                field[--n] = '\0';
             if (n == 0 || count >= 7) return -1;
             fields[count++] = field;
-            if (delimiter == '\\0') break;
+            if (delimiter == '\0') break;
             field = p + 1;
         }
     }
@@ -322,7 +322,7 @@ static void handle_connection(SLNetHandle fd, const h5s_server_config *cfg) {
     int got=recv_headers(fd,raw,rc);
     if(got<=0){free(raw);slnet_close(fd);return;}
     if((size_t)got>=rc){free(raw);slnet_close(fd);return;}
-    raw[got]='\\0';
+    raw[got]='\0';
     h5s_request req; h5s_response resp; const char *bs=NULL; size_t hb=0;
     memset(&resp,0,sizeof(resp)); resp.status_code=200;
     if(parse_request(raw,(size_t)got,&req,&bs,&hb)!=0){
@@ -339,31 +339,31 @@ static void handle_connection(SLNetHandle fd, const h5s_server_config *cfg) {
       }
       if(cl_count>1||te_count>0){
           resp.status_code=400;resp.content_type="text/plain";
-          resp.body="Ambiguous request framing\\n";resp.body_length=26;
+          resp.body="Ambiguous request framing\n";resp.body_length=26;
           send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
       }
       if(cl){
           uint64_t parsed_len=0;
           if(h5s_parse_u64(cl,&parsed_len)!=0){
               resp.status_code=400;resp.content_type="text/plain";
-              resp.body="Invalid Content-Length\\n";resp.body_length=24;
+              resp.body="Invalid Content-Length\n";resp.body_length=24;
               send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
           }
           if(parsed_len>H5S_MAX_BODY||parsed_len>SIZE_MAX-1){
               resp.status_code=413;resp.content_type="text/plain";
-              resp.body="Content Too Large\\n";resp.body_length=18;
+              resp.body="Content Too Large\n";resp.body_length=18;
               send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
           }
           size_t clen=(size_t)parsed_len;
           size_t already=(size_t)got-hb;
           if(already>clen){
               resp.status_code=400;resp.content_type="text/plain";
-              resp.body="Bytes exceed Content-Length\\n";resp.body_length=28;
+              resp.body="Bytes exceed Content-Length\n";resp.body_length=28;
               send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
           }
           req.body=malloc(clen+1);
           if(!req.body){resp.status_code=500;resp.content_type="text/plain";
-              resp.body="Internal Server Error\\n";resp.body_length=22;
+              resp.body="Internal Server Error\n";resp.body_length=22;
               send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
           if(already>0)memcpy(req.body,bs,already);
           size_t rem=clen-already,filled=already;
@@ -371,15 +371,15 @@ static void handle_connection(SLNetHandle fd, const h5s_server_config *cfg) {
           if(rem>0){
               free(req.body);req.body=NULL;
               resp.status_code=400;resp.content_type="text/plain";
-              resp.body="Truncated request body\\n";resp.body_length=22;
+              resp.body="Truncated request body\n";resp.body_length=22;
               send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
           }
-          req.body_length=filled;req.body[filled]='\\0';
+          req.body_length=filled;req.body[filled]='\0';
       } else {
           size_t already=(size_t)got-hb;
           if(already!=0){
               resp.status_code=400;resp.content_type="text/plain";
-              resp.body="Body without Content-Length\\n";resp.body_length=28;
+              resp.body="Body without Content-Length\n";resp.body_length=28;
               send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
           }
       }
