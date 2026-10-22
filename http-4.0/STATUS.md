@@ -11,26 +11,44 @@
 - Segmentation and out-of-order reassembly primitives.
 - Packet context and basket metadata.
 - HTTP server endpoint and built-in self-tests.
-- Strict DOWNLOAD metadata parsing now rejects malformed unsigned integers, extra fields, unsafe path-like filenames, unterminated fixed-size strings, empty fields, and offset greater than total size.
-- HTTP request framing now rejects duplicate Content-Length, Transfer-Encoding (unsupported by this parser), malformed/oversized Content-Length, undeclared request bodies, body bytes beyond the declared length, and truncated bodies; raw header buffers are explicitly NUL-terminated before string parsing.
+- Strict DOWNLOAD metadata parsing rejects malformed unsigned integers, extra fields, unsafe path-like filenames, unterminated fixed-size strings, empty fields, and offset greater than total size.
+- HTTP request framing rejects duplicate Content-Length, Transfer-Encoding (unsupported by this parser), malformed/oversized Content-Length, undeclared request bodies, body bytes beyond the declared length, and truncated bodies.
 - HTTP body limit is aligned with one maximum-size native frame (header plus 16 MiB payload).
-- Frame decoder now rejects undefined flag bits.
-- New bounded per-stream reference state model enforces per-stream sequence, stream byte, aggregate byte, duplicate OPEN, and monotonic/non-reused stream-ID rules.
-- New resume-policy gate validates principal/file-version/size/offset/expiry bindings and requires chunk/final-digest verifier callbacks; this is policy enforcement, not a cryptographic verifier or durable store.
-- New normative draft specification, conformance plan, capability matrix, and optional libFuzzer harness.
+- Frame decoder rejects undefined flag bits.
+- Bounded per-stream reference state model enforces per-stream sequence, stream byte, aggregate byte, duplicate OPEN, and monotonic/non-reused stream-ID rules.
+- Resume-policy gate validates principal/file-version/size/offset/expiry bindings and requires chunk/final-digest verifier callbacks; it is not itself a cryptographic verifier or durable store.
+- Normative draft specification, conformance plan, capability matrix, and optional libFuzzer harness.
+
+## Latest CI evidence
+
+- HTTP 4.0 Conformance run **passed** on commit `7a1b867148b039b66b50ae1604e2e005d33da6bf`: Linux, macOS, Windows/MinGW-w64, and the bounded parser fuzz smoke job. See [run 39711902337](https://github.com/mearvk/SLeeLa/actions/runs/39711902337).
+- Native C/C++ Portability run **failed** on the same commit on Linux, macOS, and Windows/MinGW-w64. The failure occurred at the repository-wide SHA-256 integrity gate before compilation: mismatches were reported for `impl/frontend/lexer.cpp`, `lib/character/Character.sleela`, and the HTTP 2.0, 3.0, and 4.0 `SLPackage.sleela` files. See [run 39711902376](https://github.com/mearvk/SLeeLa/actions/runs/39711902376).
+- Do not regenerate or bless the repository integrity manifest blindly. Each mismatched file must be reviewed against its intended change, then the manifest updated only for approved content and the native workflow rerun.
 
 ## Not yet established
 
-- CI evidence: commit `c44aabd82310f33ca878de0ffc1cdb2664607d4b` passed the HTTP 4.0 build/test jobs on Linux, macOS, and Windows/MinGW-w64, plus the 10,000-run Clang libFuzzer smoke job. Later changes—including the resume-policy module, loopback bind implementation, body-limit alignment, and final single-frame checks—were committed afterward; their latest CI run is queued, so those newest changes are not yet verified.
-- The new stream-state model is not yet wired into the server's frame-dispatch path.
-- WINDOW credit enforcement and a complete bidirectional stream/session state machine are not integrated.
-- The server still uses HTTP/1.x over TCP and does not provide TLS/QUIC itself.
-- No authenticated HTTP/3/QUIC carrier adapter. The native server now defaults to IPv4 loopback; explicit non-loopback binding is opt-in and still requires a trusted authenticated transport boundary.
-- No durable authenticated resume store, production token/chunk/final-digest verifier, or crash-safe final publication; the resume policy module relies on externally supplied verification callbacks.
-- No native application-frame MAC/key-rotation implementation.
-- Capability negotiation is not yet bound to an authenticated transcript.
-- No completed C/SLeeLa shared conformance vectors.
-- Cross-platform CI and fuzz-smoke evidence exists for the earlier commit noted above; latest commits are awaiting CI. No long-duration fuzz corpus, production threat-model validation, or independent security review is complete.
+- The stream-state model is not wired into the server's frame-dispatch path; the reference endpoint currently handles one frame per HTTP request.
+- WINDOW credit enforcement and a complete bidirectional stream/session state machine are not integrated into live dispatch.
+- Control-frame payload schemas are not yet comprehensively validated for all nine frame types.
+- The server uses HTTP/1.x over TCP and does not provide TLS/QUIC itself. No authenticated HTTP/3/QUIC carrier adapter exists.
+- Public binding is opt-in and still requires an authenticated transport boundary; loopback is the safe default.
+- No durable authenticated resume store, production token/chunk/final-digest verifier, or crash-safe final publication exists. The resume policy relies on externally supplied verification callbacks.
+- No native application-frame MAC/key-rotation implementation exists.
+- Capability negotiation is not bound to an authenticated transcript.
+- No completed C/SLeeLa shared conformance vectors, long-duration fuzz corpus, production threat-model validation, or independent security review is recorded.
+
+## Release gate
+
+Keep HTTP 4.0 experimental until all of the following are demonstrated:
+
+1. Review and resolve every repository SHA-256 manifest mismatch without bypassing the integrity check.
+2. Pass native repository CI and HTTP 4.0 conformance CI on Linux, macOS, and Windows.
+3. Integrate per-stream state and receive/send flow-control into the actual persistent server dispatch path, with overflow, reset, duplicate, ordering, and allocation-failure tests.
+4. Define and validate exact payload schemas and state rules for every frame type.
+5. Implement an authenticated carrier adapter backed by a maintained HTTP/3/QUIC implementation, or explicitly limit deployment to a separately authenticated carrier. Do not claim native QUIC support until it exists and passes interoperability tests.
+6. Implement durable, authenticated resume checkpoints, atomic persistence, crash-safe publication, and end-to-end final digest verification using vetted cryptographic primitives.
+7. Run sustained coverage-guided fuzzing and attach reproducible logs.
+8. Complete an independent security review and publish its scope and findings.
 
 ## Documents
 
@@ -41,7 +59,4 @@
 - RESUME.md — resumability semantics.
 - HANDSHAKE.md — capability bits and negotiation direction.
 - FLOW.md — processing order.
-
-## Release gate
-
-HTTP 4.0 must remain experimental until the conformance suite passes on Linux, macOS, and Windows; parser and reassembly fuzzing is performed; memory and queue limits are enforced in the live server; the transport security contract is implemented and verified; resume checkpoints and file integrity are enforced; and an independent security review is recorded.
+- PRODUCTION-GATES.md — implementation plan for the remaining production requirements.
