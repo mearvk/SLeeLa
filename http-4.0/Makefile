@@ -29,15 +29,18 @@ ifeq ($(OS),Windows_NT)
 SERVER_LDLIBS += -lws2_32
 endif
 
-.PHONY: all clean test protocol-test segmentation-test server server-test
+.PHONY: all clean test protocol-test segmentation-test session-test server server-test
 
-all: http4_selftest http4_segmentation_selftest server
+all: http4_selftest http4_segmentation_selftest http4_session_selftest server
 
 http4_selftest: $(PROTOCOL_OBJECTS) http4_selftest.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 http4_segmentation_selftest: $(SEGMENTATION_OBJECTS) http4_segmentation_selftest.o
 	$(CC) $(CFLAGS) -o $@ $^
+
+http4_session_selftest: http4_protocol.c http4_session.c http4_session_selftest.c $(ROUTER_DIR)/preferred_router.c
+	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
 
 server: $(SERVER_TARGET)
 
@@ -50,6 +53,7 @@ $(SERVER_TARGET): $(SERVER_SOURCES) http4_server.h http4_protocol.h
 test: all
 	./http4_selftest
 	./http4_segmentation_selftest
+	./http4_session_selftest
 	./$(SERVER_TARGET) --self-test
 
 protocol-test: http4_selftest
@@ -58,11 +62,14 @@ protocol-test: http4_selftest
 segmentation-test: http4_segmentation_selftest
 	./http4_segmentation_selftest
 
+session-test: http4_session_selftest
+	./http4_session_selftest
+
 server-test: $(SERVER_TARGET)
 	./$(SERVER_TARGET) --self-test
 
 clean:
 	rm -f $(PROTOCOL_OBJECTS) $(SEGMENTATION_OBJECTS) \
 	      http4_selftest.o http4_segmentation_selftest.o \
-	      http4_selftest http4_segmentation_selftest \
+	      http4_selftest http4_segmentation_selftest http4_session_selftest \
 	      $(SERVER_TARGET)
