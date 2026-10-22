@@ -27,6 +27,8 @@ int slnet_platform_is_available(SLNetPlatform platform);
 int slnet_startup(void);
 void slnet_shutdown(void);
 SLNetHandle slnet_listen(uint16_t port, int backlog);
+/* Bind to a specific numeric/DNS host; NULL preserves the wildcard bind. */
+SLNetHandle slnet_listen_on(const char* host, uint16_t port, int backlog);
 SLNetHandle slnet_accept(SLNetHandle listener);
 SLNetHandle slnet_connect(const char* host, uint16_t port);
 SLNetCount slnet_read(SLNetHandle handle, char* buffer, size_t capacity);
