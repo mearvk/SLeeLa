@@ -460,11 +460,11 @@ int h5s_self_test(void) {
         size_t written=777;
         h.version=HTTP5_VERSION;h.type=HTTP5_FRAME_DATA;h.flags=0x8000;
         if(http5_frame_encode(&h,NULL,wire,sizeof(wire),&written)==0||written!=777){
-            fprintf(stderr,"FAIL: reserved flag rejection\\n");++f;
+            fprintf(stderr,"FAIL: reserved flag rejection\n");++f;
         }
         h.flags=0;h.type=255;
         if(http5_frame_validate(&h,0)==0){
-            fprintf(stderr,"FAIL: unknown frame type rejection\\n");++f;
+            fprintf(stderr,"FAIL: unknown frame type rejection\n");++f;
         }
     }
     /* 3. FP consume */
