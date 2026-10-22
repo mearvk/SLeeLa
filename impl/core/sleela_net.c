@@ -132,7 +132,42 @@ SLNetHandle slnet_listen_on(const char* host, uint16_t port, int backlog) {
 }
 
 SLNetHandle slnet_listen(uint16_t port, int backlog) {
-    return slnet_listen_on(NULL, port, backlog);
+    if (!valid_port(port) || backlog < 1) return SL_NET_INVALID;
+#ifdef _WIN32
+    SOCKET s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (s == INVALID_SOCKET) return SL_NET_INVALID;
+#else
+    int s = socket(AF_INET, SOCK_STREAM, 0);
+    if (s < 0) return SL_NET_INVALID;
+#endif
+    int yes = 1;
+    if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (const char*)&yes, sizeof(yes)) < 0) {
+#ifdef _WIN32
+        closesocket(s);
+#else
+        close(s);
+#endif
+        return SL_NET_INVALID;
+    }
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_port = htons(port);
+#ifdef _WIN32
+    int bind_result = bind(s, (struct sockaddr*)&addr, sizeof(addr));
+#else
+    int bind_result = bind(s, (struct sockaddr*)&addr, sizeof(addr));
+#endif
+    if (bind_result < 0 || listen(s, backlog) < 0) {
+#ifdef _WIN32
+        closesocket(s);
+#else
+        close(s);
+#endif
+        return SL_NET_INVALID;
+    }
+    return (SLNetHandle)s;
 }
 
 SLNetHandle slnet_accept(SLNetHandle listener) {
