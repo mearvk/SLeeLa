@@ -16,6 +16,16 @@ int main(void) {
     http4_frame_view_t view;
 
     assert(http4_frame_encode(&h, payload, wire, sizeof(wire), &written) == 0);
+    {
+        const uint8_t expected_header[HTTP4_FRAME_HEADER_SIZE] = {
+            0x04,0x02,0x00,0x18,
+            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x07,
+            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x2a,
+            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x03,
+            0x00,0x00,0x00,0x13
+        };
+        assert(memcmp(wire, expected_header, sizeof(expected_header)) == 0);
+    }
     assert(written == HTTP4_FRAME_HEADER_SIZE + sizeof(payload) - 1);
     assert(http4_frame_decode(wire, written, &view, &consumed) == 0);
     assert(consumed == written);
