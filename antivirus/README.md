@@ -329,3 +329,7 @@ python tools/sleelavirin_manifest.py --root . --verify INTEGRITY-MANIFEST.json
 ```
 
 The checksum list and manifest are integrity checks, not independent publisher authentication. An attacker who can replace both files and their checksums can recompute them. For tamper evidence, compare the archive's SHA-256 with a trusted value obtained independently, or authenticate a release signature using a public key distributed through a separate trusted channel. The release workflow checks its manifest before packaging.
+
+## Security hardening and release criteria
+
+See [HARDENING-PLAN.md](HARDENING-PLAN.md) for the six-workstream plan covering authenticated release metadata, quarantine/restore, adversarial tests, SLeeLa execution policy, cross-platform release gates, and explicit coverage/resource reporting. The cross-platform hardening workflow is [antivirus-hardening.yml](../.github/workflows/antivirus-hardening.yml). It is a CI test gate, not a publisher-signing system and not a substitute for independent security review.
