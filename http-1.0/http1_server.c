@@ -889,7 +889,24 @@ int http1_self_test(void)
         }
     }
 
-    /* 5. Download threshold */
+    /* 5. Reject unsafe and inconsistent download metadata. */
+    {
+        http1_download_state parsed;
+        if (http1_download_parse("sess | 2026-10-15T00:00:00Z | file | ../secret | 0 | 0 | 10", &parsed) == 0) {
+            fprintf(stderr, "FAIL: unsafe download filename accepted\\n");
+            ++failures;
+        }
+        if (http1_download_parse("sess | date | file | safe.bin | 0 | 11 | 10", &parsed) == 0) {
+            fprintf(stderr, "FAIL: download offset past end accepted\\n");
+            ++failures;
+        }
+        if (http1_download_parse("sess | date | file | safe.bin | 184467440737095516160 | 0 | 1", &parsed) == 0) {
+            fprintf(stderr, "FAIL: overflowing download index accepted\\n");
+            ++failures;
+        }
+    }
+
+    /* 6. Download threshold */
     {
         if (http1_download_should_resume(49 * 1024 * 1024)) {
             fprintf(stderr, "FAIL: 49 MB should not trigger resume\n");
@@ -901,7 +918,7 @@ int http1_self_test(void)
         }
     }
 
-    /* 5. Negotiation smoke */
+    /* 7. Negotiation smoke */
     {
         const char *r = sleela_http_negotiate("1.0", "1.0, 1.1", 1);
         if (!r || strcmp(r, "1.0") != 0) {
@@ -921,12 +938,16 @@ int http1_self_test(void)
         }
     }
 
-    /* 6. Response header builder */
+    /* 8. Response header builder */
     {
         http1_response resp;
         memset(&resp, 0, sizeof(resp));
         http1_response_add_header(&resp, "X-Test", "value1");
         http1_response_add_header(&resp, "X-Other", "value2");
+        if (http1_response_add_header(&resp, "X-Bad", "ok\\r\\nInjected: yes") == 0) {
+            fprintf(stderr, "FAIL: response header CRLF injection accepted\\n");
+            ++failures;
+        }
         if (resp.header_count != 2) {
             fprintf(stderr, "FAIL: header_count = %d\n", resp.header_count);
             ++failures;
