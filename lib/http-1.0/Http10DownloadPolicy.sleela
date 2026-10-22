@@ -1,0 +1,13 @@
+#sleela 2.1
+/* Resume metadata policy; session IDs are not authorization tokens. */
+class Http10DownloadPolicy {
+  long largeFileThreshold = 52428800;
+  boolean requireAuthenticatedSession = true;
+  boolean bindResumeToFileIdentity = true;
+  boolean rejectPathSeparators = true;
+  boolean rejectOffsetPastEnd = true;
+  boolean verifyArtifactDigest = true;
+  boolean requiresDownloadMode(long size) { return size > largeFileThreshold; }
+  boolean validRange(long offset, long totalSize) { return offset >= 0 && totalSize >= 0 && offset <= totalSize; }
+  boolean safeDefaults() { return requireAuthenticatedSession && bindResumeToFileIdentity && rejectPathSeparators && rejectOffsetPastEnd && verifyArtifactDigest; }
+}
