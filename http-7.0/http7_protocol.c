@@ -80,6 +80,7 @@ int http7_assertion_serialise(const http7_assertion_t*a,char*buf,size_t cap){
 int http7_assertion_parse(const char*line,size_t len,http7_assertion_t*out){
  if(!line||!out||len==0||len>=HTTP7_MAX_FIELD*5u+512u)return -1;
  if(memchr(line,'\0',len)!=NULL)return -2;
+ for(size_t i=0;i<len;++i){unsigned char ch=(unsigned char)line[i];if((ch<0x20&&ch!='\t'&&ch!='\n')||ch==0x7f)return -3;}
  char copy[HTTP7_MAX_FIELD*5u+513u];memcpy(copy,line,len);copy[len]='\0';
  if(len&&copy[len-1]=='\n')copy[--len]='\0';
  if(len&&copy[len-1]=='\r')return -3;
