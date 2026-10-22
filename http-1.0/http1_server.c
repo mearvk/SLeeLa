@@ -315,6 +315,7 @@ static int send_response(SLNetHandle fd, const http1_request *req,
         resp->status_code < 100 || resp->status_code > 599 ||
         !http1_safe_value(reason) || !http1_safe_value(server_name) ||
         (resp->content_type && !http1_safe_value(resp->content_type)) ||
+        resp->body_length > HTTP1_MAX_BODY_SIZE ||
         (resp->body_length && !resp->body))
         return -1;
     size_t estimate = 256 + strlen(reason) + strlen(server_name);
