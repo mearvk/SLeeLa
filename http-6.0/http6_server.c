@@ -369,7 +369,7 @@ static void handle_connection(SLNetHandle fd,const h6s_server_config*cfg){
             req.body_length=clen;req.body[clen]='\0';
         }
     }
-    (void)h6_logger_record(0,0,(size_t)got+req.body_length,"http_request_received");
+    (void)h6_logger_record(0,0,hb+req.body_length,"http_request_received");
     free(raw);raw=NULL;
     int handled=0;
     if(strcmp(req.uri,"/__sleela/health")==0){
