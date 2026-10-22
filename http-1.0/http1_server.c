@@ -342,55 +342,80 @@ int http1_download_should_resume(uint64_t content_length)
     return content_length > HTTP1_DOWNLOAD_THRESHOLD ? 1 : 0;
 }
 
+static int http1_download_field_safe(const char *s, size_t cap, int filename)
+{
+    if (!s || !*s || strlen(s) >= cap) return 0;
+    for (const unsigned char *p = (const unsigned char *)s; *p; ++p) {
+        if (*p < 32 || *p == 127 || *p == '|') return 0;
+        if (filename && (*p == '/' || *p == '\\\\' || *p == ':')) return 0;
+    }
+    if (filename && (strstr(s, "..") != NULL || strcmp(s, ".") == 0)) return 0;
+    return 1;
+}
+
+int http1_download_should_resume(uint64_t content_length)
+{
+    return content_length > HTTP1_DOWNLOAD_THRESHOLD ? 1 : 0;
+}
+
 int http1_download_serialise(const http1_download_state *st,
                              char *buf, size_t buf_size)
 {
-    if (!st || !buf || buf_size < 512) return -1;
-
-    int n = snprintf(buf, buf_size,
-                     "%s | %s | %s | %s | %llu | %llu | %llu",
-                     st->session_id, st->datetime,
-                     st->file_id, st->file_name,
-                     (unsigned long long)st->index,
-                     (unsigned long long)st->offset,
+    if (!st || !buf || buf_size < 512 ||
+        !http1_download_field_safe(st->session_id, sizeof(st->session_id), 0) ||
+        !http1_download_field_safe(st->datetime, sizeof(st->datetime), 0) ||
+        !http1_download_field_safe(st->file_id, sizeof(st->file_id), 0) ||
+        !http1_download_field_safe(st->file_name, sizeof(st->file_name), 1) ||
+        st->offset > st->total_size)
+        return -1;
+    int n = snprintf(buf, buf_size, "%s | %s | %s | %s | %llu | %llu | %llu",
+                     st->session_id, st->datetime, st->file_id, st->file_name,
+                     (unsigned long long)st->index, (unsigned long long)st->offset,
                      (unsigned long long)st->total_size);
-
     return (n > 0 && (size_t)n < buf_size) ? 0 : -1;
 }
 
 int http1_download_parse(const char *line, http1_download_state *out)
 {
-    if (!line || !out) return -1;
+    if (!line || !out || strlen(line) >= 2048) return -1;
     memset(out, 0, sizeof(*out));
-
-    /* Fields: SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE */
-    const char *p = line;
-    char *fields[7];
     char copy[2048];
-    snprintf(copy, sizeof(copy), "%s", line);
-
+    memcpy(copy, line, strlen(line) + 1);
+    char *fields[7];
     int count = 0;
-    char *tok = strtok(copy, "|");
-    while (tok && count < 7) {
-        while (*tok == ' ' || *tok == '\t') ++tok;
-        /* trim trailing whitespace */
-        size_t len = strlen(tok);
-        while (len > 0 && (tok[len - 1] == ' ' || tok[len - 1] == '\t'))
-            tok[--len] = '\0';
-        fields[count++] = tok;
-        tok = strtok(NULL, "|");
+    char *cursor = copy;
+    fields[count++] = cursor;
+    for (char *p = copy; *p; ++p) {
+        if (*p == '|') {
+            *p = '\\0';
+            if (count >= 7) return -1;
+            fields[count++] = p + 1;
+        }
     }
-
     if (count != 7) return -1;
-
-    (void)p;
+    for (int i = 0; i < 7; ++i) {
+        while (*fields[i] == ' ' || *fields[i] == '\\t') ++fields[i];
+        size_t n = strlen(fields[i]);
+        while (n && (fields[i][n-1] == ' ' || fields[i][n-1] == '\\t')) fields[i][--n] = '\\0';
+    }
+    if (!http1_download_field_safe(fields[0], sizeof(out->session_id), 0) ||
+        !http1_download_field_safe(fields[1], sizeof(out->datetime), 0) ||
+        !http1_download_field_safe(fields[2], sizeof(out->file_id), 0) ||
+        !http1_download_field_safe(fields[3], sizeof(out->file_name), 1))
+        return -1;
+    size_t index_value, offset_value, total_value;
+    if (http1_parse_size(fields[4], &index_value) != 0 ||
+        http1_parse_size(fields[5], &offset_value) != 0 ||
+        http1_parse_size(fields[6], &total_value) != 0 ||
+        offset_value > total_value)
+        return -1;
     snprintf(out->session_id, sizeof(out->session_id), "%s", fields[0]);
-    snprintf(out->datetime,   sizeof(out->datetime),   "%s", fields[1]);
-    snprintf(out->file_id,    sizeof(out->file_id),    "%s", fields[2]);
-    snprintf(out->file_name,  sizeof(out->file_name),  "%s", fields[3]);
-    out->index      = (uint64_t)strtoull(fields[4], NULL, 10);
-    out->offset     = (uint64_t)strtoull(fields[5], NULL, 10);
-    out->total_size = (uint64_t)strtoull(fields[6], NULL, 10);
+    snprintf(out->datetime, sizeof(out->datetime), "%s", fields[1]);
+    snprintf(out->file_id, sizeof(out->file_id), "%s", fields[2]);
+    snprintf(out->file_name, sizeof(out->file_name), "%s", fields[3]);
+    out->index = (uint64_t)index_value;
+    out->offset = (uint64_t)offset_value;
+    out->total_size = (uint64_t)total_value;
     return 0;
 }
 
