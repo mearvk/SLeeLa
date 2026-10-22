@@ -30,7 +30,57 @@
 #else
 #include <poll.h>
 #include <unistd.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
 #endif
+
+/* Bind explicitly. The safe default is loopback; public binding is opt-in. */
+static SLNetHandle h4s_listen_on(const char *address, uint16_t port, int backlog)
+{
+    if (!address || !*address) address = "127.0.0.1";
+    if (port == 0 || backlog < 1) return SL_NET_INVALID;
+#ifdef _WIN32
+    SOCKET raw = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (raw == INVALID_SOCKET) return SL_NET_INVALID;
+#else
+    int raw = socket(AF_INET, SOCK_STREAM, 0);
+    if (raw < 0) return SL_NET_INVALID;
+#endif
+    int yes = 1;
+#ifdef _WIN32
+    if (setsockopt(raw, SOL_SOCKET, SO_REUSEADDR, (const char *)&yes,
+                   (int)sizeof(yes)) == SOCKET_ERROR) {
+#else
+    if (setsockopt(raw, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
+#endif
+        slnet_close((SLNetHandle)raw);
+        return SL_NET_INVALID;
+    }
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+#ifdef _WIN32
+    if (InetPtonA(AF_INET, address, &addr.sin_addr) != 1) {
+#else
+    if (inet_pton(AF_INET, address, &addr.sin_addr) != 1) {
+#endif
+        slnet_close((SLNetHandle)raw);
+        return SL_NET_INVALID;
+    }
+#ifdef _WIN32
+    if (bind(raw, (struct sockaddr *)&addr, (int)sizeof(addr)) == SOCKET_ERROR ||
+        listen(raw, backlog) == SOCKET_ERROR) {
+#else
+    if (bind(raw, (struct sockaddr *)&addr, sizeof(addr)) < 0 ||
+        listen(raw, backlog) < 0) {
+#endif
+        slnet_close((SLNetHandle)raw);
+        return SL_NET_INVALID;
+    }
+    return (SLNetHandle)raw;
+}
 
 /* ── signal-safe stop ───────────────────────────────────────────────── */
 
@@ -496,6 +546,7 @@ void h4s_server_config_init(h4s_server_config *cfg)
 {
     if(!cfg)return; memset(cfg,0,sizeof(*cfg));
     cfg->port=8083; cfg->backlog=128;
+    cfg->bind_address="127.0.0.1";
     cfg->server_name="SLeeLa-HTTP/4.0";
     cfg->allow_negotiation_fallback=1;
 }
@@ -508,9 +559,9 @@ int h4s_server_run(const h4s_server_config *cfg)
         fprintf(stderr,"h4s: preferred-router policy unavailable, continuing\n");
     sleela_preferred_router_startup(NULL,"HTTP/4.0");
 
-    SLNetHandle listener=slnet_listen(cfg->port,cfg->backlog);
-    if(!slnet_valid(listener)){fprintf(stderr,"h4s: listen failed on port %u\n",(unsigned)cfg->port);slnet_shutdown();return -1;}
-    fprintf(stderr,"SLeeLa HTTP/4.0 listening on port %u  [%s]\n",(unsigned)cfg->port,slnet_platform_name());
+    SLNetHandle listener=h4s_listen_on(cfg->bind_address,cfg->port,cfg->backlog);
+    if(!slnet_valid(listener)){fprintf(stderr,"h4s: listen failed on %s:%u\n",cfg->bind_address?cfg->bind_address:"127.0.0.1",(unsigned)cfg->port);slnet_shutdown();return -1;}
+    fprintf(stderr,"SLeeLa HTTP/4.0 listening on %s:%u  [%s]\n",cfg->bind_address?cfg->bind_address:"127.0.0.1",(unsigned)cfg->port,slnet_platform_name());
 
 #ifndef _WIN32
     signal(SIGINT,h4s_sig);signal(SIGTERM,h4s_sig);
