@@ -321,6 +321,8 @@ static void handle_connection(SLNetHandle fd, const h5s_server_config *cfg) {
     if(!raw){slnet_close(fd);return;}
     int got=recv_headers(fd,raw,rc);
     if(got<=0){free(raw);slnet_close(fd);return;}
+    if((size_t)got>=rc){free(raw);slnet_close(fd);return;}
+    raw[got]='\\0';
     h5s_request req; h5s_response resp; const char *bs=NULL; size_t hb=0;
     memset(&resp,0,sizeof(resp)); resp.status_code=200;
     if(parse_request(raw,(size_t)got,&req,&bs,&hb)!=0){
@@ -328,20 +330,60 @@ static void handle_connection(SLNetHandle fd, const h5s_server_config *cfg) {
         resp.body="Bad Request\n";resp.body_length=12;
         h5s_request bad;memset(&bad,0,sizeof(bad));memcpy(bad.version,"HTTP/1.0",9);
         send_response(fd,&bad,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
-    { const char *cl=get_hdr(&req,"content-length");
-      if(cl){ size_t clen=(size_t)strtoull(cl,NULL,10);
-          if(clen>H5S_MAX_BODY){resp.status_code=413;resp.content_type="text/plain";
-              resp.body="Content Too Large\n";resp.body_length=18;
-              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
+    {
+      const char *cl=NULL;
+      int cl_count=0, te_count=0;
+      for(int i=0;i<req.header_count;++i){
+          if(strcmp(req.headers[i].name,"content-length")==0){cl=req.headers[i].value;++cl_count;}
+          if(strcmp(req.headers[i].name,"transfer-encoding")==0)++te_count;
+      }
+      if(cl_count>1||te_count>0){
+          resp.status_code=400;resp.content_type="text/plain";
+          resp.body="Ambiguous request framing\\n";resp.body_length=26;
+          send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
+      }
+      if(cl){
+          uint64_t parsed_len=0;
+          if(h5s_parse_u64(cl,&parsed_len)!=0){
+              resp.status_code=400;resp.content_type="text/plain";
+              resp.body="Invalid Content-Length\\n";resp.body_length=24;
+              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
+          }
+          if(parsed_len>H5S_MAX_BODY||parsed_len>SIZE_MAX-1){
+              resp.status_code=413;resp.content_type="text/plain";
+              resp.body="Content Too Large\\n";resp.body_length=18;
+              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
+          }
+          size_t clen=(size_t)parsed_len;
           size_t already=(size_t)got-hb;
+          if(already>clen){
+              resp.status_code=400;resp.content_type="text/plain";
+              resp.body="Bytes exceed Content-Length\\n";resp.body_length=28;
+              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
+          }
           req.body=malloc(clen+1);
           if(!req.body){resp.status_code=500;resp.content_type="text/plain";
-              resp.body="Internal Server Error\n";resp.body_length=22;
+              resp.body="Internal Server Error\\n";resp.body_length=22;
               send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
-          if(already>0&&already<=clen)memcpy(req.body,bs,already);
-          size_t rem=already<clen?clen-already:0,filled=already<clen?already:clen;
+          if(already>0)memcpy(req.body,bs,already);
+          size_t rem=clen-already,filled=already;
           while(rem>0){SLNetCount n=slnet_read(fd,req.body+filled,rem);if(n<=0)break;filled+=(size_t)n;rem-=(size_t)n;}
-          req.body_length=filled;req.body[filled]='\0';}}
+          if(rem>0){
+              free(req.body);req.body=NULL;
+              resp.status_code=400;resp.content_type="text/plain";
+              resp.body="Truncated request body\\n";resp.body_length=22;
+              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
+          }
+          req.body_length=filled;req.body[filled]='\\0';
+      } else {
+          size_t already=(size_t)got-hb;
+          if(already!=0){
+              resp.status_code=400;resp.content_type="text/plain";
+              resp.body="Body without Content-Length\\n";resp.body_length=28;
+              send_response(fd,&req,&resp,cfg->server_name);free(raw);slnet_close(fd);return;
+          }
+      }
+    }
     free(raw);raw=NULL;
     int handled=0;
     if(strcmp(req.uri,"/__sleela/health")==0){builtin_health(&resp);handled=1;}
