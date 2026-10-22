@@ -34,6 +34,10 @@ Large-file mode begins above 52,428,800 bytes; this is not a file-size cap.
 5. Header and queue limits in addition to HTTP 3.0 payload/dictionary bounds.
 6. Explicit authenticated-offer and legacy-fallback decisions.
 
+## Specification and implementation boundaries
+
+The normative draft, adversarial test plan, and evidence-based capability matrix live in [`../../http-4.0/`](../../http-4.0/): SPEC.md, CONFORMANCE.md, CAPABILITY-MATRIX.md, and STATUS.md. The C reference now has a bounded per-stream state model and stricter DOWNLOAD metadata parsing, but the session model is not yet wired into server dispatch and the changes have not been run through the full build in this interaction.
+
 ## Security and implementation boundaries
 
 The SLeeLa generation label is not the IETF HTTP/3 version. Do not claim QUIC,
