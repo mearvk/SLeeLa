@@ -103,7 +103,7 @@ typedef int (*http1_authorize_handler)(const http1_request *req,
 
 typedef struct {
     uint16_t            port;           /* TCP listen port (default 8080)      */
-    const char         *bind_address;   /* NULL or "0.0.0.0" for any           */
+    const char         *bind_address;   /* reserved: current slnet listener binds all interfaces */
     int                 backlog;        /* listen backlog    (default 128)     */
     http1_route_handler handler;        /* application route handler           */
     http1_authorize_handler authorize;   /* optional: 0 allow, nonzero deny       */
