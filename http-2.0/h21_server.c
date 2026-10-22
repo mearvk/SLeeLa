@@ -114,7 +114,7 @@ static const char *get_header(const h21_http_request *req, const char *name)
 static int is_token_char(unsigned char c)
 {
     if(isalnum(c))return 1;
-    return strchr("!#$%&'*+-.^_\`|~",(int)c)!=NULL;
+    return strchr("!#$%&'*+-.^_`|~", (int)c) != NULL;
 }
 
 static int parse_request(const char *raw,size_t raw_len,h21_http_request *req,
