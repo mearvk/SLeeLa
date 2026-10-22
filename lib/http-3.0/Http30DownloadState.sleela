@@ -1,0 +1,36 @@
+/*
+ * Resumable DOWNLOAD metadata shared by SLeeLa HTTP generations.
+ * Large-file mode begins above 50 MB; this is a mode threshold, not a size cap.
+ */
+#sleela 2.1
+
+class Http30DownloadState {
+  long LARGE_FILE_THRESHOLD = 52428800;
+  String sessionId = "";
+  String dateTime = "";
+  String fileId = "";
+  String fileName = "";
+  long index = 0;
+  long offset = 0;
+  long totalSize = 0;
+
+  void configure(String session, String timestamp, String id,
+                 String name, long segmentIndex, long byteOffset,
+                 long completeSize) {
+    sessionId = session;
+    dateTime = timestamp;
+    fileId = id;
+    fileName = name;
+    index = segmentIndex;
+    offset = byteOffset;
+    totalSize = completeSize;
+  }
+  boolean requiresDownloadMode(long size) {
+    return size > LARGE_FILE_THRESHOLD;
+  }
+  boolean isValid() {
+    return sessionId != "" && fileId != "" && fileName != ""
+      && offset >= 0 && totalSize >= 0 && offset <= totalSize;
+  }
+  long remainingBytes() { return totalSize - offset; }
+}
