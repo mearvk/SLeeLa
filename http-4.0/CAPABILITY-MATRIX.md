@@ -10,6 +10,7 @@ Status terms: **Modelled** means a design/data type exists; **Implemented** mean
 | Stream/queue/flow-control enforcement | WINDOW frame taxonomy only; no integrated credit scheduler | Partial | Enforce credit and global buffered-byte limits in production path |
 | Segmentation/reassembly | http4_segmentation.c and http4_reassembly.c | Implemented | Fuzz and bound aggregate active reassembly memory |
 | DOWNLOAD metadata parsing | http4_server.c | Strict parser changes added | Run regression tests; authenticated resume store and digest checks remain |
+| Resume authorization/checkpoint policy | http4_resume.c | Implemented policy gate with external verifier callbacks | Bind real cryptographic verifiers and durable atomic persistence; fake test callbacks are not security evidence |
 | Persistent resume checkpoints | RESUME documentation only | Not implemented | Authenticated durable store, expiry, crash consistency |
 | Peer authentication / transport security | SECURITY.md | External contract only | Authenticated TLS/QUIC adapter and integration evidence |
 | Frame MAC / key rotation | Not present in native frame codec | Not implemented | Only add if needed above authenticated carrier; independently specify and review |
