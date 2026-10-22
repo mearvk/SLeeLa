@@ -476,6 +476,8 @@ int h7s_self_test(void){
      const char bad2[]="FACTUAL_DOCUMENTED\tclaim\t\tdate\tauthor\tref\n";
      if(http7_assertion_parse(bad1,sizeof(bad1)-1,&a)==0){fprintf(stderr,"FAIL: unknown assertion status accepted\n");++f;}
      if(http7_assertion_parse(bad2,sizeof(bad2)-1,&a)==0){fprintf(stderr,"FAIL: factual assertion without source accepted\n");++f;}
+     const char bad3[]="UNVERIFIED\\tbad\\xC0\\xAF\\tsource\\tdate\\tauthor\\tref\\n";
+     if(http7_assertion_parse(bad3,sizeof(bad3)-1,&a)==0){fprintf(stderr,"FAIL: invalid UTF-8 accepted\\n");++f;}
      memset(&a,0,sizeof(a));a.status=HTTP7_ASSERT_USER_AUTHORED;
      snprintf(a.statement,sizeof(a.statement),"claim\tInjected: yes");snprintf(a.author,sizeof(a.author),"tester");char out[512];
      if(http7_assertion_serialise(&a,out,sizeof(out))>=0){fprintf(stderr,"FAIL: assertion field injection accepted\n");++f;}}
