@@ -27,8 +27,7 @@ int http7_frame_encode(const http7_frame_header_t*h,const uint8_t*payload,uint8_
  *written=0;
  if(http7_frame_validate(h,h->payload_length)!=0)return -2;
  if(h->payload_length&&!payload)return -3;
- if((size_t)h->payload_length>SIZE_MAX-HTTP7_FRAME_HEADER_SIZE||
-    cap<HTTP7_FRAME_HEADER_SIZE+(size_t)h->payload_length)return -4;
+ if(cap<HTTP7_FRAME_HEADER_SIZE+(size_t)h->payload_length)return -4;
  out[0]=h->version;out[1]=h->type;p16(out+2,h->flags);p64(out+4,h->stream_id);
  p64(out+12,h->request_id);p64(out+20,h->sequence);p32(out+28,h->payload_length);
  if(h->payload_length)memcpy(out+HTTP7_FRAME_HEADER_SIZE,payload,h->payload_length);
