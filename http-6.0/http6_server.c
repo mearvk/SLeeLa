@@ -326,6 +326,9 @@ static int builtin_h6_frame(const h6s_request*req,h6s_response*resp,h6s_frame_ha
 /* ── connection handler ─────────────────────────────────────────────── */
 
 static void handle_connection(SLNetHandle fd,const h6s_server_config*cfg){
+    /* One connection is handled at a time; bound read/write inactivity to 5s.
+       This is not an absolute request deadline and is documented as such. */
+    if(slnet_set_timeouts(fd,5000,5000)!=0){slnet_close(fd);return;}
     size_t rc=H6S_MAX_HEADER+4096;char*raw=malloc(rc);if(!raw){slnet_close(fd);return;}
     int got=recv_headers(fd,raw,rc);if(got<=0){free(raw);slnet_close(fd);return;}
     h6s_request req;h6s_response resp;const char*bs=NULL;size_t hb=0;
