@@ -1,0 +1,67 @@
+name: SLeeLa HTTP 4.0 Conformance
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'http-4.0/**'
+      - '.github/workflows/http4-conformance.yml'
+  pull_request:
+    branches: [master, main]
+    paths:
+      - 'http-4.0/**'
+      - '.github/workflows/http4-conformance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  protocol:
+    name: HTTP 4.0 tests (\${{ matrix.os }})
+    runs-on: \${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build tools (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y build-essential
+      - name: Build and test HTTP 4.0
+        timeout-minutes: 10
+        run: make -C http-4.0 clean test
+
+  windows:
+    name: HTTP 4.0 tests (Windows / MinGW-w64)
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            git
+            make
+            mingw-w64-ucrt-x86_64-gcc
+      - uses: actions/checkout@v4
+      - name: Build and test HTTP 4.0
+        timeout-minutes: 10
+        run: make -C http-4.0 clean test
+
+  fuzz-smoke:
+    name: HTTP 4.0 parser fuzz smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Clang
+        run: sudo apt-get update && sudo apt-get install -y clang make build-essential
+      - name: Build sanitizer-enabled fuzz harness
+        run: make -C http-4.0 fuzz
+      - name: Run bounded fuzz smoke test
+        timeout-minutes: 5
+        run: ./http-4.0/http4_fuzz -runs=10000 -max_len=4096
