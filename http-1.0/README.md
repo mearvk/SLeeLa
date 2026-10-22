@@ -181,3 +181,29 @@ canonical configuration root, route identifier, target/resolution mode,
 capability, transport, port, and status. VM names are architectural metadata
 only and do not grant capabilities. Dynamic targets must use the shared
 resolver before acceptance.
+
+## Security and validation
+
+The native parser applies bounded header/body sizes, validates request-line and
+header token syntax, rejects control characters, duplicate header fields,
+duplicate or malformed Content-Length, and unsupported Transfer-Encoding. It
+requires complete request bodies and applies a 10-second total deadline to
+header and body reads. Response headers are validated and bounded before
+serialization. Resumable-download metadata rejects malformed decimal fields,
+offsets beyond the file size, delimiters/control characters, and path-like
+file names.
+
+Run the expanded checks with:
+
+- `make syntax`
+- `make test`
+- `make sanitize` (GCC/Clang with AddressSanitizer and UBSan)
+- `make fuzz-download` (Clang/libFuzzer)
+
+The server remains serial (one connection at a time), and this code does not
+implement TLS or application authentication. Do not expose plaintext HTTP to
+untrusted networks without a trusted TLS-terminating proxy. Protect non-health
+routes at the application layer, never treat X-SLeeLa routing IDs or download
+session IDs as credentials, and bind resume state to an authenticated principal
+and stable file identity. The declarative classes under `lib/http-1.0` document
+these contracts; they do not replace native enforcement.
