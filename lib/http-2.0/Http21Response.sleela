@@ -1,5 +1,5 @@
 /*
- * SLeeLa HTTP/1.0 response model.
+ * SLeeLa HTTP 2.1 response model; protocol field records the HTTP/1.x transport version.
  * The C/C++ transport implementation serializes responses to the wire.
  */
 #sleela 2.1
@@ -10,8 +10,8 @@ class Http21Response {
   String reason = "OK";
   String contentType = "text/plain; charset=utf-8";
   String body = "";
-  String generation = "1.0";
-  String acceptedGenerations = "1.0, 1.1";
+  String generation = "2.1";
+  String acceptedGenerations = "2.1, 2.0";
   boolean closeConnection = true;
 
   void setStatus(int code, String phrase) {
