@@ -179,7 +179,12 @@ int h4s_download_should_resume(uint64_t cl){return cl>H4S_DOWNLOAD_THRESHOLD;}
 
 static int h4s_download_fields_valid(const h4s_download_state *st)
 {
-    if (!st || !st->session_id[0] || !st->datetime[0] ||
+    if (!st ||
+        !memchr(st->session_id, '\0', sizeof(st->session_id)) ||
+        !memchr(st->datetime, '\0', sizeof(st->datetime)) ||
+        !memchr(st->file_id, '\0', sizeof(st->file_id)) ||
+        !memchr(st->file_name, '\0', sizeof(st->file_name)) ||
+        !st->session_id[0] || !st->datetime[0] ||
         !st->file_id[0] || !st->file_name[0] || st->offset > st->total_size)
         return 0;
     /* A filename is a leaf name, never a path supplied by the peer. */
