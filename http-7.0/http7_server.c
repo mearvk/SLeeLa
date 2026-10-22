@@ -299,20 +299,23 @@ static int portable_poll_readable(SLNetHandle fd,int ms){
 
 void h7s_server_config_init(h7s_server_config*cfg){
     if(!cfg)return;memset(cfg,0,sizeof(*cfg));cfg->port=8086;cfg->backlog=128;
-    cfg->server_name="SLeeLa-HTTP/7.0";cfg->allow_negotiation_fallback=1;}
+    cfg->bind_address="127.0.0.1";cfg->server_name="SLeeLa-HTTP/7.0";cfg->allow_negotiation_fallback=0;}
 
 int h7s_server_run(const h7s_server_config*cfg){
     if(!cfg)return -1;g_stop=0;
     if(slnet_startup()!=0){fprintf(stderr,"h7s: slnet_startup failed\n");return -1;}
     sleela_preferred_router_startup(NULL,"HTTP/7.0");
-    SLNetHandle listener=slnet_listen(cfg->port,cfg->backlog);
-    if(!slnet_valid(listener)){fprintf(stderr,"h7s: listen failed on port %u\n",(unsigned)cfg->port);slnet_shutdown();return -1;}
-    fprintf(stderr,"SLeeLa HTTP/7.0 listening on port %u  [%s]\n",(unsigned)cfg->port,slnet_platform_name());
+    const char*bind_host=(cfg->bind_address&&*cfg->bind_address)?cfg->bind_address:"127.0.0.1";
+    SLNetHandle listener=slnet_listen_on(bind_host,cfg->port,cfg->backlog);
+    if(!slnet_valid(listener)){fprintf(stderr,"h7s: listen failed on %s:%u\n",bind_host,(unsigned)cfg->port);slnet_shutdown();return -1;}
+    fprintf(stderr,"SLeeLa HTTP/7.0 listening on %s:%u  [%s]\n",bind_host,(unsigned)cfg->port,slnet_platform_name());
 #ifndef _WIN32
     signal(SIGINT,h7s_sig);signal(SIGTERM,h7s_sig);
 #endif
     while(!g_stop){if(!portable_poll_readable(listener,500))continue;
-        SLNetHandle c=slnet_accept(listener);if(!slnet_valid(c))continue;handle_connection(c,cfg);}
+        SLNetHandle c=slnet_accept(listener);if(!slnet_valid(c))continue;
+        if(slnet_set_timeouts(c,5000,5000)!=0){slnet_close(c);continue;}
+        handle_connection(c,cfg);}
     slnet_close(listener);slnet_shutdown();fprintf(stderr,"SLeeLa HTTP/7.0 stopped.\n");return 0;}
 
 /* ── self-test ──────────────────────────────────────────────────────── */
