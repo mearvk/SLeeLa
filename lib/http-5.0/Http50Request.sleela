@@ -1,0 +1,28 @@
+#sleela 2.1
+/* Request metadata for the HTTP/1.x carrier endpoint. */
+class Http50Request {
+  String method = "POST";
+  String target = "/__sleela/h5";
+  String carrierProtocol = "HTTP/1.1";
+  String contentType = "application/octet-stream";
+  String sessionId = "";
+  long requestId = 0;
+  long bodyLength = 0;
+  boolean valid = true;
+  boolean contentLengthPresent = false;
+  boolean transferEncodingPresent = false;
+  boolean duplicateContentLength = false;
+  void setTarget(String value) { target = value; }
+  void setSession(String value, long request) { sessionId = value; requestId = request; }
+  void setBody(long length, boolean hasLength) { bodyLength = length; contentLengthPresent = hasLength; }
+  void setTransferEncoding(boolean value) { transferEncodingPresent = value; }
+  void markDuplicateContentLength() { duplicateContentLength = true; }
+  void reject() { valid = false; }
+  boolean isValid() {
+    return valid && method == "POST" && target == "/__sleela/h5" &&
+      sessionId != "" && requestId >= 0 && bodyLength >= 0 &&
+      bodyLength <= 16777248 && contentLengthPresent &&
+      !transferEncodingPresent && !duplicateContentLength;
+  }
+  boolean requiresNativeHttpParser() { return true; }
+}
