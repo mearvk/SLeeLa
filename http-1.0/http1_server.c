@@ -140,6 +140,7 @@ static int parse_request(const char *raw, size_t raw_len, http1_request *req,
     const char *end = raw + raw_len;
     const char *line_end;
 
+    if (!raw || !req || !body_start || !header_bytes || raw_len > HTTP1_MAX_HEADER_SIZE || memchr(raw, 0, raw_len) != NULL) return -1;
     memset(req, 0, sizeof(*req));
 
     /* ---- request line: METHOD SP URI SP HTTP/x.y CRLF ---- */
@@ -150,6 +151,8 @@ static int parse_request(const char *raw, size_t raw_len, http1_request *req,
     {
         const char *sp = memchr(p, ' ', (size_t)(line_end - p));
         if (!sp || (size_t)(sp - p) >= sizeof(req->method)) return -1;
+        if (sp == p) return -1;
+        for (const char *q = p; q < sp; ++q) if (!http1_token_char((unsigned char)*q)) return -1;
         memcpy(req->method, p, (size_t)(sp - p));
         p = sp + 1;
     }
@@ -158,6 +161,8 @@ static int parse_request(const char *raw, size_t raw_len, http1_request *req,
     {
         const char *sp = memchr(p, ' ', (size_t)(line_end - p));
         if (!sp || (size_t)(sp - p) >= sizeof(req->uri)) return -1;
+        if (sp == p) return -1;
+        for (const char *q = p; q < sp; ++q) { unsigned char c = (unsigned char)*q; if (c <= 32 || c == 127) return -1; }
         memcpy(req->uri, p, (size_t)(sp - p));
         p = sp + 1;
     }
@@ -166,18 +171,21 @@ static int parse_request(const char *raw, size_t raw_len, http1_request *req,
     {
         size_t vlen = (size_t)(line_end - p);
         if (vlen >= sizeof(req->version)) return -1;
-        memcpy(req->version, p, vlen);
+        memcpy(req->version, p, vlen); req->version[vlen] = 0;
+        if (strcmp(req->version, "HTTP/1.0") != 0 && strcmp(req->version, "HTTP/1.1") != 0) return -1;
     }
 
     p = line_end + 2; /* skip CRLF */
 
     /* ---- headers ---- */
+    int content_length_seen = 0, transfer_encoding_seen = 0;
     while (p + 1 < end && !(p[0] == '\r' && p[1] == '\n')) {
         line_end = strstr(p, "\r\n");
         if (!line_end) break;
 
         const char *colon = memchr(p, ':', (size_t)(line_end - p));
-        if (!colon || colon == p) return -1;
+        if (!colon || colon == p || *p == ' ' || *p == 9) return -1;
+        for (const char *q = p; q < colon; ++q) if (!http1_token_char((unsigned char)*q)) return -1;
 
         if (req->header_count >= HTTP1_MAX_HEADERS) return -1;
 
@@ -193,13 +201,17 @@ static int parse_request(const char *raw, size_t raw_len, http1_request *req,
         if (vlen >= sizeof(h->value)) return -1;
         memcpy(h->value, val, vlen);
         h->value[vlen] = '\0';
+        if (!http1_safe_value(h->value)) return -1;
+        if (strcmp(h->name, "content-length") == 0) { size_t ignored; if (content_length_seen++ || http1_parse_size(h->value, &ignored) != 0) return -1; }
+        if (strcmp(h->name, "transfer-encoding") == 0) transfer_encoding_seen = 1;
 
         ++req->header_count;
         p = line_end + 2;
     }
 
-    if (p + 1 < end && p[0] == '\r' && p[1] == '\n')
-        p += 2; /* skip blank line */
+    if (transfer_encoding_seen) return -1;
+    if (p + 1 >= end || p[0] != '\r' || p[1] != '\n') return -1;
+    p += 2; /* skip blank line */
 
     *header_bytes = (size_t)(p - raw);
     *body_start   = p;
@@ -233,12 +245,12 @@ int http1_response_add_header(http1_response *resp,
                               const char     *name,
                               const char     *value)
 {
-    if (!resp || !name || !value) return -1;
-    if (resp->header_count >= HTTP1_MAX_HEADERS) return -1;
-
+    if (!resp || !name || !value || !*name || !http1_safe_value(value)) return -1;
+    for (const char *p = name; *p; ++p) if (!http1_token_char((unsigned char)*p)) return -1;
+    if (resp->header_count < 0 || resp->header_count >= HTTP1_MAX_HEADERS) return -1;
+    if (strlen(name) >= sizeof(resp->headers[0].name) || strlen(value) >= sizeof(resp->headers[0].value)) return -1;
     http1_header *h = &resp->headers[resp->header_count++];
-    snprintf(h->name,  sizeof(h->name),  "%s", name);
-    snprintf(h->value, sizeof(h->value), "%s", value);
+    memcpy(h->name, name, strlen(name) + 1); memcpy(h->value, value, strlen(value) + 1);
     return 0;
 }
 
@@ -448,8 +460,8 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
 {
     /* Heap-allocate the receive buffer — it can be up to ~8 MB, too large
      * for the default thread stack on most platforms. */
-    size_t raw_cap = HTTP1_MAX_HEADER_SIZE + 4096; /* header phase only */
-    char  *raw = malloc(raw_cap);
+    size_t raw_cap = HTTP1_MAX_HEADER_SIZE + 4096; /* bounded header phase */
+    char  *raw = malloc(raw_cap + 1);
     if (!raw) { slnet_close(fd); return; }
 
     int got = recv_headers(fd, raw, raw_cap);
@@ -458,6 +470,7 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
         slnet_close(fd);
         return;
     }
+    raw[got] = '\0';
 
     http1_request  req;
     http1_response resp;
@@ -486,7 +499,8 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
     {
         const char *cl = get_header(&req, "content-length");
         if (cl) {
-            size_t content_len = (size_t)strtoull(cl, NULL, 10);
+            size_t content_len = 0;
+            if (http1_parse_size(cl, &content_len) != 0) { resp.status_code = 400; resp.content_type = "text/plain"; resp.body = "Bad Content-Length\\n"; resp.body_length = strlen(resp.body); send_response(fd, &req, &resp, cfg->server_name); free(raw); slnet_close(fd); return; }
             if (content_len > HTTP1_MAX_BODY_SIZE) {
                 resp.status_code  = 413;
                 resp.content_type = "text/plain";
@@ -519,6 +533,7 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
                 filled    += (size_t)n;
                 remaining -= (size_t)n;
             }
+            if (remaining != 0) { free(req.body); req.body = NULL; resp.status_code = 400; resp.content_type = "text/plain"; resp.body = "Incomplete Request Body\\n"; resp.body_length = strlen(resp.body); send_response(fd, &req, &resp, cfg->server_name); free(raw); slnet_close(fd); return; }
             req.body_length = filled;
             req.body[filled] = '\0';
         }
