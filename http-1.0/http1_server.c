@@ -347,7 +347,7 @@ static int http1_download_field_safe(const char *s, size_t cap, int filename)
     if (!s || !*s || strlen(s) >= cap) return 0;
     for (const unsigned char *p = (const unsigned char *)s; *p; ++p) {
         if (*p < 32 || *p == 127 || *p == '|') return 0;
-        if (filename && (*p == '/' || *p == '\\\\' || *p == ':')) return 0;
+        if (filename && (*p == '/' || *p == '\\' || *p == ':')) return 0;
     }
     if (filename && (strstr(s, "..") != NULL || strcmp(s, ".") == 0)) return 0;
     return 1;
