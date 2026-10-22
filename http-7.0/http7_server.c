@@ -371,6 +371,26 @@ int h7s_self_test(void){
      r=sleela_http_negotiate("8.0","7.0, 1.1",1);
      if(!r||strcmp(r,"1.1")!=0){fprintf(stderr,"FAIL: fallback\n");++f;}}
 
+    /* 8. Frame parser rejects reserved bits and truncation. */
+    {http7_frame_header_t h={0};h.version=HTTP7_VERSION;h.type=HTTP7_FRAME_ASSERTION;h.payload_length=1;
+     if(http7_frame_validate(&h,0)==0){fprintf(stderr,"FAIL: truncated frame accepted\\n");++f;}
+     h.payload_length=0;h.flags=0x0100;
+     if(http7_frame_validate(&h,0)==0){fprintf(stderr,"FAIL: reserved flag accepted\\n");++f;}}
+    /* 9. Assertion parser rejects unknown status, missing provenance, and field injection. */
+    {http7_assertion_t a;const char bad1[]="MADE_UP\\tclaim\\tsource\\tdate\\tauthor\\tref\\n";
+     const char bad2[]="FACTUAL_DOCUMENTED\\tclaim\\t\\tdate\\tauthor\\tref\\n";
+     if(http7_assertion_parse(bad1,sizeof(bad1)-1,&a)==0){fprintf(stderr,"FAIL: unknown assertion status accepted\\n");++f;}
+     if(http7_assertion_parse(bad2,sizeof(bad2)-1,&a)==0){fprintf(stderr,"FAIL: factual assertion without source accepted\\n");++f;}
+     memset(&a,0,sizeof(a));a.status=HTTP7_ASSERT_USER_AUTHORED;
+     snprintf(a.statement,sizeof(a.statement),"claim\\tInjected: yes");snprintf(a.author,sizeof(a.author),"tester");char out[512];
+     if(http7_assertion_serialise(&a,out,sizeof(out))>=0){fprintf(stderr,"FAIL: assertion field injection accepted\\n");++f;}}
+    /* 10. HTTP parser rejects duplicate framing and missing HTTP/1.1 Host. */
+    {const char raw[]="POST /__sleela/h7 HTTP/1.1\\r\\nHost: localhost\\r\\nContent-Length: 0\\r\\nContent-Length: 0\\r\\n\\r\\n";
+     h7s_request req;const char*bs;size_t hb;
+     if(parse_request(raw,sizeof(raw)-1,&req,&bs,&hb)==0){fprintf(stderr,"FAIL: duplicate Content-Length accepted\\n");++f;}}
+    {const char raw[]="GET / HTTP/1.1\\r\\nX-SLeeLa-Version: 7.0\\r\\n\\r\\n";
+     h7s_request req;const char*bs;size_t hb;
+     if(parse_request(raw,sizeof(raw)-1,&req,&bs,&hb)==0){fprintf(stderr,"FAIL: missing Host accepted\\n");++f;}}
     if(f==0)fprintf(stderr,"h7s_self_test: all tests passed\n");
     else fprintf(stderr,"h7s_self_test: %d test(s) FAILED\n",f);
     return f;}
