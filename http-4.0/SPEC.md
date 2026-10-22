@@ -43,6 +43,8 @@ The native default maximum frame payload is 16 MiB. Deployments SHOULD configure
 
 Defined flags: FIN=0x01, ACK=0x02, URGENT=0x04, INCREMENTAL=0x08, RESUMABLE=0x10. Unknown bits MUST be rejected. Undefined type/flag combinations MUST be rejected.
 
+**Control-schema limitation:** this draft defines the frame envelope and high-level frame lifecycle, but the payload grammars for OPEN, WINDOW, RESUME, and CAPSULE are not yet fully standardized in code. This is an explicit interoperability gap: implementations MUST NOT claim complete semantic conformance until those payload schemas and corresponding vectors are added. The current reference server handles one frame per HTTP request and rejects trailing bytes.
+
 ## 4. Sequence and stream invariants
 
 Sequence numbers are scoped to (authenticated session, stream ID, direction). A receiver MUST verify the exact next sequence for an ordered stream profile before state changes or dispatch. It MUST NOT use a single connection-wide high-water mark for multiplexed streams. Sequence state resets only for a new authenticated stream/session; identifiers MUST NOT be reused while old state can still be accepted. The current bounded native reference profile additionally requires stream IDs to increase monotonically within a session, allowing closed slots to be reclaimed without retaining an unbounded tombstone set.
