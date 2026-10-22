@@ -535,7 +535,7 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
         const char *cl = get_header(&req, "content-length");
         if (cl) {
             size_t content_len = 0;
-            if (http1_parse_size(cl, &content_len) != 0) { resp.status_code = 400; resp.content_type = "text/plain"; resp.body = "Bad Content-Length\\n"; resp.body_length = strlen(resp.body); send_response(fd, &req, &resp, cfg->server_name); free(raw); slnet_close(fd); return; }
+            if (http1_parse_size(cl, &content_len) != 0) { resp.status_code = 400; resp.content_type = "text/plain"; resp.body = "Bad Content-Length\n"; resp.body_length = strlen(resp.body); send_response(fd, &req, &resp, cfg->server_name); free(raw); slnet_close(fd); return; }
             if (content_len > HTTP1_MAX_BODY_SIZE) {
                 resp.status_code  = 413;
                 resp.content_type = "text/plain";
@@ -568,7 +568,7 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
                 filled    += (size_t)n;
                 remaining -= (size_t)n;
             }
-            if (remaining != 0) { free(req.body); req.body = NULL; resp.status_code = 400; resp.content_type = "text/plain"; resp.body = "Incomplete Request Body\\n"; resp.body_length = strlen(resp.body); send_response(fd, &req, &resp, cfg->server_name); free(raw); slnet_close(fd); return; }
+            if (remaining != 0) { free(req.body); req.body = NULL; resp.status_code = 400; resp.content_type = "text/plain"; resp.body = "Incomplete Request Body\n"; resp.body_length = strlen(resp.body); send_response(fd, &req, &resp, cfg->server_name); free(raw); slnet_close(fd); return; }
             req.body_length = filled;
             req.body[filled] = '\0';
         }
