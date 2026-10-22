@@ -31,6 +31,8 @@ SLNetHandle slnet_listen(uint16_t port, int backlog);
 SLNetHandle slnet_listen_on(const char* host, uint16_t port, int backlog);
 SLNetHandle slnet_accept(SLNetHandle listener);
 SLNetHandle slnet_connect(const char* host, uint16_t port);
+/* Set per-operation socket inactivity timeouts in milliseconds. */
+int slnet_set_timeouts(SLNetHandle handle, uint32_t receive_ms, uint32_t send_ms);
 SLNetCount slnet_read(SLNetHandle handle, char* buffer, size_t capacity);
 SLNetCount slnet_write(SLNetHandle handle, const char* data, size_t length);
 int slnet_close(SLNetHandle handle);
