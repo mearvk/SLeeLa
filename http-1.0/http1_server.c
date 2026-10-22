@@ -86,6 +86,28 @@ static const char *reason_phrase(int code)
 #define HTTP1_READ_TIMEOUT_SECONDS 10
 static int portable_poll_readable(SLNetHandle fd, int timeout_ms);
 
+/* Strict token/value helpers used at the untrusted HTTP boundary. */
+static int http1_token_char(unsigned char c) {
+    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) return 1;
+    switch (c) {
+    case '!': case '#': case '$': case '%': case '&': case 39: case '*':
+    case '+': case '-': case '.': case '^': case '_': case 96: case '|':
+    case '~': return 1;
+    default: return 0;
+    }
+}
+static int http1_safe_value(const char *s) {
+    if (!s) return 0;
+    for (; *s; ++s) { unsigned char c = (unsigned char)*s; if ((c < 32 && c != 9) || c == 127) return 0; }
+    return 1;
+}
+static int http1_parse_size(const char *s, size_t *out) {
+    size_t n = 0;
+    if (!s || !*s || !out) return -1;
+    for (; *s; ++s) { unsigned char c = (unsigned char)*s; if (c < '0' || c > '9') return -1; if (n > (SIZE_MAX - (size_t)(c - '0')) / 10) return -1; n = n * 10 + (size_t)(c - '0'); }
+    *out = n; return 0;
+}
+
 /* ── request parsing ────────────────────────────────────────────────── */
 
 /*
@@ -394,7 +416,7 @@ int http1_download_parse(const char *line, http1_download_state *out)
     fields[count++] = cursor;
     for (char *p = copy; *p; ++p) {
         if (*p == '|') {
-            *p = '\\0';
+            *p = 0;
             if (count >= 7) return -1;
             fields[count++] = p + 1;
         }
@@ -403,7 +425,7 @@ int http1_download_parse(const char *line, http1_download_state *out)
     for (int i = 0; i < 7; ++i) {
         while (*fields[i] == ' ' || *fields[i] == '\\t') ++fields[i];
         size_t n = strlen(fields[i]);
-        while (n && (fields[i][n-1] == ' ' || fields[i][n-1] == '\\t')) fields[i][--n] = '\\0';
+        while (n && (fields[i][n-1] == ' ' || fields[i][n-1] == 9)) fields[i][--n] = 0;
     }
     if (!http1_download_field_safe(fields[0], sizeof(out->session_id), 0) ||
         !http1_download_field_safe(fields[1], sizeof(out->datetime), 0) ||
@@ -515,8 +537,8 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
     /* recv may coalesce body bytes with headers; parse only through CRLFCRLF. */
     size_t header_block_len = 0;
     for (size_t i = 0; i + 3 < (size_t)got; ++i) {
-        if (raw[i] == '\\r' && raw[i+1] == '\\n' &&
-            raw[i+2] == '\\r' && raw[i+3] == '\\n') {
+        if (raw[i] == 13 && raw[i+1] == 10 &&
+            raw[i+2] == 13 && raw[i+3] == 10) {
             header_block_len = i + 4;
             break;
         }
@@ -802,17 +824,17 @@ int http1_self_test(void)
     /* 3. Reject ambiguous and malformed framing before body allocation. */
     {
         const char *bad[] = {
-            "POST / HTTP/1.0\\r\\nContent-Length: 1\\r\\nContent-Length: 1\\r\\n\\r\\nX",
-            "POST / HTTP/1.0\\r\\nTransfer-Encoding: chunked\\r\\n\\r\\n0\\r\\n\\r\\n",
-            "POST / HTTP/1.0\\r\\nContent-Length: +1\\r\\n\\r\\nX",
-            "GET / HTTP/1.0\\r\\nX-Test: safe\\001bad\\r\\n\\r\\n"
+            "POST / HTTP/1.0\r\nContent-Length: 1\r\nContent-Length: 1\r\n\r\nX",
+            "POST / HTTP/1.0\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\n",
+            "POST / HTTP/1.0\r\nContent-Length: +1\r\n\r\nX",
+            "GET / HTTP/1.0\r\nX-Test: safe\001bad\r\n\r\n"
         };
         for (size_t i = 0; i < sizeof(bad) / sizeof(bad[0]); ++i) {
             http1_request req;
             const char *body_start = NULL;
             size_t header_bytes = 0;
             if (parse_request(bad[i], strlen(bad[i]), &req, &body_start, &header_bytes) == 0) {
-                fprintf(stderr, "FAIL: malformed framing test %zu accepted\\n", i);
+                fprintf(stderr, "FAIL: malformed framing test %zu accepted\n", i);
                 ++failures;
             }
         }
