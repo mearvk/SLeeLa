@@ -39,7 +39,7 @@ make clean
 ./http6_server --port 8085
 ```
 
-Options: `--port N` (default 8085), `--self-test`, `--help`.
+Options: `--port N` (default 8085), `--allow-fallback` (opt in to HTTP/1.1 or HTTP/1.0 fallback), `--self-test`, `--help`. Version fallback is disabled by default.
 
 ## Frame model — 20 types
 
