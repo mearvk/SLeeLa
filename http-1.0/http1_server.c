@@ -536,7 +536,7 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
 
     int got = recv_headers(fd, raw, raw_cap);
     if (got <= 0) {
-        free(req->body); free(req); free(resp); free(req->body); free(req); free(resp); free(raw);
+        free(req->body); free(req); free(resp); free(raw);
  slnet_close(fd);
  return;
     }
