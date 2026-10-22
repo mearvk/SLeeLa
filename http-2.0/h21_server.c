@@ -21,6 +21,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+#include <limits.h>
 #include <signal.h>
 
 #ifdef _WIN32
@@ -106,101 +108,74 @@ static const char *get_header(const h21_http_request *req, const char *name)
     return i >= 0 ? req->headers[i].value : NULL;
 }
 
-static int parse_request(const char *raw, size_t raw_len,
-                         h21_http_request *req,
-                         const char **body_start, size_t *header_bytes)
+static int is_token_char(unsigned char c)
 {
-    const char *p = raw;
-    const char *end = raw + raw_len;
-    const char *line_end;
+    if(isalnum(c))return 1;
+    return strchr("!#$%&'*+-.^_\`|~",(int)c)!=NULL;
+}
 
-    memset(req, 0, sizeof(*req));
-
-    /* Request line */
-    line_end = strstr(p, "\r\n");
-    if (!line_end) return -1;
-
-    { /* method */
-        const char *sp = memchr(p, ' ', (size_t)(line_end - p));
-        if (!sp || (size_t)(sp - p) >= sizeof(req->method)) return -1;
-        memcpy(req->method, p, (size_t)(sp - p));
-        p = sp + 1;
+static int parse_request(const char *raw,size_t raw_len,h21_http_request *req,
+                         const char **body_start,size_t *header_bytes)
+{
+    const char *p=raw,*end=raw+raw_len,*line_end=NULL,*sp1,*sp2;int cl_seen=0;
+    if(!raw||!req||!body_start||!header_bytes)return -1;
+    memset(req,0,sizeof(*req));
+    for(const char *q=raw;q+1<end;++q)if(q[0]=='\r'&&q[1]=='\n'){line_end=q;break;}
+    if(!line_end||line_end==p)return -1;
+    sp1=memchr(p,' ',(size_t)(line_end-p));if(!sp1||sp1==p)return -1;
+    sp2=memchr(sp1+1,' ',(size_t)(line_end-sp1-1));
+    if(!sp2||sp2==sp1+1||memchr(sp2+1,' ',(size_t)(line_end-sp2-1)))return -1;
+    if((size_t)(sp1-p)>=sizeof(req->method)||(size_t)(sp2-sp1-1)>=sizeof(req->uri)||
+       (size_t)(line_end-sp2-1)>=sizeof(req->version))return -1;
+    for(const unsigned char *q=(const unsigned char *)p;q<(const unsigned char *)sp1;++q)
+        if(!is_token_char(*q))return -1;
+    memcpy(req->method,p,(size_t)(sp1-p));memcpy(req->uri,sp1+1,(size_t)(sp2-sp1-1));
+    memcpy(req->version,sp2+1,(size_t)(line_end-sp2-1));
+    if(strcmp(req->version,"HTTP/1.0")&&strcmp(req->version,"HTTP/1.1"))return -1;
+    for(const unsigned char *q=(const unsigned char *)req->uri;*q;++q)if(*q<=0x20||*q==0x7f)return -1;
+    p=line_end+2;
+    while(p+1<end&&!(p[0]=='\r'&&p[1]=='\n')){
+        const char *e=NULL;for(const char *q=p;q+1<end;++q)if(q[0]=='\r'&&q[1]=='\n'){e=q;break;}
+        if(!e||e==p||*p==' '||*p=='\t'||req->header_count>=H21_SERVER_MAX_HEADERS)return -1;
+        const char *colon=memchr(p,':',(size_t)(e-p));if(!colon||colon==p)return -1;
+        for(const unsigned char *q=(const unsigned char *)p;q<(const unsigned char *)colon;++q)
+            if(!is_token_char(*q))return -1;
+        h21_http_header *h=&req->headers[req->header_count];size_t nl=(size_t)(colon-p);
+        if(nl>=sizeof(h->name))return -1;
+        memcpy(h->name,p,nl);h->name[nl]='\0';str_lower(h->name);
+        const char *v=str_trim_left(colon+1);while(e>v&&(e[-1]==' '||e[-1]=='\t'))--e;
+        size_t vl=(size_t)(e-v);if(vl>=sizeof(h->value))return -1;
+        for(const unsigned char *q=(const unsigned char *)v;q<(const unsigned char *)e;++q)
+            if((*q<0x20&&*q!='\t')||*q==0x7f)return -1;
+        memcpy(h->value,v,vl);h->value[vl]='\0';
+        if(!strcmp(h->name,"content-length")){
+            if(cl_seen++||!vl)return -1;
+            for(size_t k=0;k<vl;++k)if(h->value[k]<'0'||h->value[k]>'9')return -1;
+        }
+        if(!strcmp(h->name,"transfer-encoding"))return -1;
+        ++req->header_count;p=e+2;
     }
-    { /* URI */
-        const char *sp = memchr(p, ' ', (size_t)(line_end - p));
-        if (!sp || (size_t)(sp - p) >= sizeof(req->uri)) return -1;
-        memcpy(req->uri, p, (size_t)(sp - p));
-        p = sp + 1;
-    }
-    { /* version */
-        size_t vlen = (size_t)(line_end - p);
-        if (vlen >= sizeof(req->version)) return -1;
-        memcpy(req->version, p, vlen);
-    }
-
-    p = line_end + 2;
-
-    /* Headers */
-    while (p + 1 < end && !(p[0] == '\r' && p[1] == '\n')) {
-        line_end = strstr(p, "\r\n");
-        if (!line_end) break;
-
-        const char *colon = memchr(p, ':', (size_t)(line_end - p));
-        if (!colon || colon == p) return -1;
-        if (req->header_count >= H21_SERVER_MAX_HEADERS) return -1;
-
-        h21_http_header *h = &req->headers[req->header_count];
-        size_t nlen = (size_t)(colon - p);
-        if (nlen >= sizeof(h->name)) return -1;
-        memcpy(h->name, p, nlen);
-        h->name[nlen] = '\0';
-        str_lower(h->name);
-
-        const char *val = str_trim_left(colon + 1);
-        size_t vlen = (size_t)(line_end - val);
-        if (vlen >= sizeof(h->value)) return -1;
-        memcpy(h->value, val, vlen);
-        h->value[vlen] = '\0';
-
-        ++req->header_count;
-        p = line_end + 2;
-    }
-
-    if (p + 1 < end && p[0] == '\r' && p[1] == '\n')
-        p += 2;
-
-    *header_bytes = (size_t)(p - raw);
-    *body_start   = p;
-
-    /* SLeeLa application headers */
-    {
-        const char *v;
-        v = get_header(req, "x-sleela-version");
-        if (v) snprintf(req->sleela_version, sizeof(req->sleela_version), "%s", v);
-        v = get_header(req, "x-sleela-accept");
-        if (v) snprintf(req->sleela_accept, sizeof(req->sleela_accept), "%s", v);
-        v = get_header(req, "x-sleela-port");
-        if (v) snprintf(req->sleela_port, sizeof(req->sleela_port), "%s", v);
-        v = get_header(req, "x-sleela-service-id");
-        if (v) snprintf(req->service_id, sizeof(req->service_id), "%s", v);
-        v = get_header(req, "x-sleela-op-id");
-        if (v) snprintf(req->op_id, sizeof(req->op_id), "%s", v);
-    }
-
+    if(p+1>=end||p[0]!='\r'||p[1]!='\n')return -1;
+    p+=2;*header_bytes=(size_t)(p-raw);*body_start=p;
+    const char *v;
+    v=get_header(req,"x-sleela-version");if(v)snprintf(req->sleela_version,sizeof(req->sleela_version),"%s",v);
+    v=get_header(req,"x-sleela-accept");if(v)snprintf(req->sleela_accept,sizeof(req->sleela_accept),"%s",v);
+    v=get_header(req,"x-sleela-port");if(v)snprintf(req->sleela_port,sizeof(req->sleela_port),"%s",v);
+    v=get_header(req,"x-sleela-service-id");if(v)snprintf(req->service_id,sizeof(req->service_id),"%s",v);
+    v=get_header(req,"x-sleela-op-id");if(v)snprintf(req->op_id,sizeof(req->op_id),"%s",v);
     return 0;
 }
 
 /* ── response serialisation ─────────────────────────────────────────── */
 
-int h21_http_response_add_header(h21_http_response *resp,
-                                 const char *name, const char *value)
+int h21_http_response_add_header(h21_http_response *resp,const char *name,const char *value)
 {
-    if (!resp || !name || !value) return -1;
-    if (resp->header_count >= H21_SERVER_MAX_HEADERS) return -1;
-    h21_http_header *h = &resp->headers[resp->header_count++];
-    snprintf(h->name,  sizeof(h->name),  "%s", name);
-    snprintf(h->value, sizeof(h->value), "%s", value);
-    return 0;
+    if(!resp||!name||!value||resp->header_count<0||resp->header_count>=H21_SERVER_MAX_HEADERS)return -1;
+    size_t nl=strlen(name),vl=strlen(value);if(!nl||nl>=H21_SERVER_MAX_HNAME||vl>=H21_SERVER_MAX_HVALUE)return -1;
+    for(size_t i=0;i<nl;++i)if(!is_token_char((unsigned char)name[i]))return -1;
+    for(size_t i=0;i<vl;++i){unsigned char c=(unsigned char)value[i];if((c<0x20&&c!='\t')||c==0x7f)return -1;}
+    h21_http_header *h=&resp->headers[resp->header_count];memcpy(h->name,name,nl+1);memcpy(h->value,value,vl+1);
+    ++resp->header_count;return 0;
 }
 
 static int send_all(SLNetHandle fd, const char *data, size_t len)
@@ -214,46 +189,35 @@ static int send_all(SLNetHandle fd, const char *data, size_t len)
     return 0;
 }
 
-static int send_response(SLNetHandle fd, const h21_http_request *req,
-                         const h21_http_response *resp,
-                         const char *server_name)
+static int valid_header_text(const char *s,int name)
 {
-    char buf[H21_SERVER_MAX_HEADER];
-    int off = 0;
-    const char *reason = resp->reason ? resp->reason
-                                      : reason_phrase(resp->status_code);
-
-    off += snprintf(buf + off, sizeof(buf) - (size_t)off,
-                    "%s %d %s\r\n",
-                    req->version[0] ? req->version : "HTTP/1.0",
-                    resp->status_code, reason);
-
-    off += snprintf(buf + off, sizeof(buf) - (size_t)off,
-                    "Server: %s\r\n", server_name);
-
-    if (resp->content_type)
-        off += snprintf(buf + off, sizeof(buf) - (size_t)off,
-                        "Content-Type: %s\r\n", resp->content_type);
-
-    off += snprintf(buf + off, sizeof(buf) - (size_t)off,
-                    "Content-Length: %zu\r\n", resp->body_length);
-
-    for (int i = 0; i < resp->header_count; ++i)
-        off += snprintf(buf + off, sizeof(buf) - (size_t)off,
-                        "%s: %s\r\n",
-                        resp->headers[i].name, resp->headers[i].value);
-
-    off += snprintf(buf + off, sizeof(buf) - (size_t)off,
-                    "X-SLeeLa-Version: 2.1\r\n"
-                    "X-SLeeLa-Accept: 2.1, 2.0, 1.1, 1.0\r\n"
-                    "Connection: close\r\n\r\n");
-
-    if (off <= 0 || (size_t)off >= sizeof(buf)) return -1;
-    if (send_all(fd, buf, (size_t)off) != 0) return -1;
-
-    if (resp->body && resp->body_length > 0)
-        return send_all(fd, resp->body, resp->body_length);
-
+    if(!s||!*s)return 0;
+    for(const unsigned char *p=(const unsigned char *)s;*p;++p)
+        if(name?!is_token_char(*p):((*p<0x20&&*p!='\t')||*p==0x7f))return 0;
+    return 1;
+}
+static int send_response(SLNetHandle fd,const h21_http_request *req,const h21_http_response *resp,const char *server_name)
+{
+    char buf[H21_SERVER_MAX_HEADER];size_t off=0;
+    const char *reason=resp->reason?resp->reason:reason_phrase(resp->status_code);
+#define APPEND_FMT(...) do{if(off>=sizeof(buf))return -1;int z=snprintf(buf+off,sizeof(buf)-off,__VA_ARGS__);if(z<0||(size_t)z>=sizeof(buf)-off)return -1;off+=(size_t)z;}while(0)
+    if(!req||!resp||resp->status_code<100||resp->status_code>599||!valid_header_text(reason,0)||
+       !valid_header_text(server_name,0)||(resp->body_length&&!resp->body)||resp->body_length>H21_SERVER_MAX_BODY||
+       resp->header_count<0||resp->header_count>H21_SERVER_MAX_HEADERS||
+       (resp->content_type&&!valid_header_text(resp->content_type,0)))return -1;
+    APPEND_FMT("%s %d %s\r\n",req->version[0]?req->version:"HTTP/1.0",resp->status_code,reason);
+    APPEND_FMT("Server: %s\r\n",server_name);
+    if(resp->content_type)APPEND_FMT("Content-Type: %s\r\n",resp->content_type);
+    APPEND_FMT("Content-Length: %zu\r\n",resp->body_length);
+    for(int i=0;i<resp->header_count;++i){
+        if(!valid_header_text(resp->headers[i].name,1)||!valid_header_text(resp->headers[i].value,0))return -1;
+        if(!strcmp(resp->headers[i].name,"Content-Length")||!strcmp(resp->headers[i].name,"Transfer-Encoding")||!strcmp(resp->headers[i].name,"Connection"))return -1;
+        APPEND_FMT("%s: %s\r\n",resp->headers[i].name,resp->headers[i].value);
+    }
+    APPEND_FMT("X-SLeeLa-Version: 2.1\r\nX-SLeeLa-Accept: 2.1, 2.0, 1.1, 1.0\r\nConnection: close\r\n\r\n");
+#undef APPEND_FMT
+    if(send_all(fd,buf,off))return -1;
+    if(resp->body_length)return send_all(fd,resp->body,resp->body_length);
     return 0;
 }
 
@@ -264,48 +228,41 @@ int h21_download_should_resume(uint64_t content_length)
     return content_length > H21_DOWNLOAD_THRESHOLD ? 1 : 0;
 }
 
-int h21_download_serialise(const h21_download_state *st,
-                           char *buf, size_t buf_size)
+int h21_download_serialise(const h21_download_state *st,char *buf,size_t cap)
 {
-    if (!st || !buf || buf_size < 512) return -1;
-    int n = snprintf(buf, buf_size,
-                     "%s | %s | %s | %s | %llu | %llu | %llu",
-                     st->session_id, st->datetime,
-                     st->file_id, st->file_name,
-                     (unsigned long long)st->index,
-                     (unsigned long long)st->offset,
-                     (unsigned long long)st->total_size);
-    return (n > 0 && (size_t)n < buf_size) ? 0 : -1;
+    if(!st||!buf||cap<512)return -1;
+    const char *v[]={st->session_id,st->datetime,st->file_id,st->file_name};
+    for(size_t i=0;i<4;++i){if(!v[i][0]||strchr(v[i],'|')||strchr(v[i],'/')||strchr(v[i],'\\')||strstr(v[i],".."))return -1;
+        for(const unsigned char *p=(const unsigned char *)v[i];*p;++p)if(*p<0x20||*p==0x7f)return -1;}
+    if(st->offset>st->total_size)return -1;
+    int n=snprintf(buf,cap,"%s | %s | %s | %s | %llu | %llu | %llu",v[0],v[1],v[2],v[3],
+       (unsigned long long)st->index,(unsigned long long)st->offset,(unsigned long long)st->total_size);
+    return n>0&&(size_t)n<cap?0:-1;
 }
-
-int h21_download_parse(const char *line, h21_download_state *out)
+static int parse_u64_strict(const char *s,uint64_t *out)
 {
-    if (!line || !out) return -1;
-    memset(out, 0, sizeof(*out));
-
-    char copy[2048];
-    snprintf(copy, sizeof(copy), "%s", line);
-
-    char *fields[7];
-    int count = 0;
-    char *tok = strtok(copy, "|");
-    while (tok && count < 7) {
-        while (*tok == ' ' || *tok == '\t') ++tok;
-        size_t len = strlen(tok);
-        while (len > 0 && (tok[len - 1] == ' ' || tok[len - 1] == '\t'))
-            tok[--len] = '\0';
-        fields[count++] = tok;
-        tok = strtok(NULL, "|");
-    }
-    if (count != 7) return -1;
-
-    snprintf(out->session_id, sizeof(out->session_id), "%s", fields[0]);
-    snprintf(out->datetime,   sizeof(out->datetime),   "%s", fields[1]);
-    snprintf(out->file_id,    sizeof(out->file_id),    "%s", fields[2]);
-    snprintf(out->file_name,  sizeof(out->file_name),  "%s", fields[3]);
-    out->index      = (uint64_t)strtoull(fields[4], NULL, 10);
-    out->offset     = (uint64_t)strtoull(fields[5], NULL, 10);
-    out->total_size = (uint64_t)strtoull(fields[6], NULL, 10);
+    char *end=NULL;unsigned long long n;if(!s||!*s||!out)return -1;
+    for(const unsigned char *p=(const unsigned char *)s;*p;++p)if(*p<'0'||*p>'9')return -1;
+    errno=0;n=strtoull(s,&end,10);if(errno==ERANGE||!end||*end)return -1;*out=(uint64_t)n;return 0;
+}
+int h21_download_parse(const char *line,h21_download_state *out)
+{
+    if(!line||!out||strlen(line)>=2048)return -1;
+    char copy[2048];memcpy(copy,line,strlen(line)+1);char *fields[7];size_t count=0;char *p=copy;
+    while(count<7){char *sep=strchr(p,'|');if(sep)*sep='\0';while(*p==' '||*p=='\t')++p;
+        size_t n=strlen(p);while(n&&(p[n-1]==' '||p[n-1]=='\t'))p[--n]='\0';if(!n)return -1;
+        fields[count++]=p;if(!sep)break;if(count==7)return -1;p=sep+1;}
+    if(count!=7)return -1;
+    memset(out,0,sizeof(*out));
+    if(strlen(fields[0])>=sizeof(out->session_id)||strlen(fields[1])>=sizeof(out->datetime)||
+       strlen(fields[2])>=sizeof(out->file_id)||strlen(fields[3])>=sizeof(out->file_name))return -1;
+    const char *v[]={fields[0],fields[1],fields[2],fields[3]};
+    for(size_t i=0;i<4;++i){if(strchr(v[i],'/')||strchr(v[i],'\\')||strchr(v[i],'|')||strstr(v[i],".."))return -1;
+        for(const unsigned char *q=(const unsigned char *)v[i];*q;++q)if(*q<0x20||*q==0x7f)return -1;}
+    if(parse_u64_strict(fields[4],&out->index)||parse_u64_strict(fields[5],&out->offset)||
+       parse_u64_strict(fields[6],&out->total_size)||out->offset>out->total_size)return -1;
+    memcpy(out->session_id,fields[0],strlen(fields[0])+1);memcpy(out->datetime,fields[1],strlen(fields[1])+1);
+    memcpy(out->file_id,fields[2],strlen(fields[2])+1);memcpy(out->file_name,fields[3],strlen(fields[3])+1);
     return 0;
 }
 
