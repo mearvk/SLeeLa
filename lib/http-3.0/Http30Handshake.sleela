@@ -1,0 +1,24 @@
+#sleela 2.1
+/* Capability levels are project-specific; not HTTP/3 or QUIC negotiation. */
+class Http30Handshake {
+  int localCapabilities = 1;
+  int peerCapabilities = 1;
+  int selectedLevel = 1;
+  boolean macVerified = false;
+  boolean complete = false;
+  void setLocalCapabilities(int value) { localCapabilities = value; }
+  void setPeerCapabilities(int value) { peerCapabilities = value; }
+  void verifyOffer(boolean verified) { macVerified = verified; }
+  int negotiate() {
+    int common = localCapabilities & peerCapabilities;
+    if (!macVerified) { selectedLevel = 0; complete = false; return 0; }
+    if ((common & 8) != 0) selectedLevel = 4;
+    else if ((common & 4) != 0) selectedLevel = 3;
+    else if ((common & 2) != 0) selectedLevel = 2;
+    else if ((common & 1) != 0) selectedLevel = 1;
+    else selectedLevel = 0;
+    complete = selectedLevel > 0;
+    return selectedLevel;
+  }
+  boolean isComplete() { return complete; }
+}
