@@ -42,7 +42,7 @@ make clean
 ./http6_server --port 8085 --bind 0.0.0.0
 ```
 
-The server binds to `127.0.0.1` by default. Use `--bind HOST` only when you intentionally choose another interface; `0.0.0.0` exposes all IPv4 interfaces and should only be used with an appropriate network/TLS boundary.
+The server binds to `127.0.0.1` by default. Accepted sockets use 5-second read/write inactivity timeouts; the server handles one connection at a time. The shared `/logger` implementation records request and response metadata in `logs/http6/` using the existing 240 MiB JSON Lines segment policy. Payload bytes are not passed to the logger. These inactivity timeouts are not absolute request deadlines, and the server remains experimental. Use `--bind HOST` only when you intentionally choose another interface; `0.0.0.0` exposes all IPv4 interfaces and should only be used with an appropriate network/TLS boundary.
 
 Options: `--port N` (default 8085), `--bind HOST` (default `127.0.0.1`), `--allow-fallback` (opt in to HTTP/1.1 or HTTP/1.0 fallback), `--self-test`, `--help`. Version fallback is disabled by default.
 
