@@ -61,7 +61,7 @@ const char*http7_assertion_status_name(http7_assertion_status_t s){
  case HTTP7_ASSERT_DISPUTED:return"DISPUTED";case HTTP7_ASSERT_UNVERIFIED:return"UNVERIFIED";default:return"UNKNOWN";}
 }
 static int valid_field(const char*s,size_t cap,int required){
- if(!s)return 0;size_t n=strnlen(s,cap);if(n==cap||(required&&n==0))return 0;
+ if(!s)return 0;size_t n=0;while(n<cap&&s[n]!='\0')++n;if(n==cap||(required&&n==0))return 0;
  for(size_t i=0;i<n;++i){unsigned char c=(unsigned char)s[i];if(c=='\t'||c=='\r'||c=='\n'||c==0)return 0;}
  return 1;
 }
@@ -78,9 +78,9 @@ int http7_assertion_serialise(const http7_assertion_t*a,char*buf,size_t cap){
  return n>=0&&(size_t)n<cap?n:-4;
 }
 int http7_assertion_parse(const char*line,size_t len,http7_assertion_t*out){
- if(!line||!out||len==0||len>HTTP7_MAX_FIELD*5u+512u)return -1;
+ if(!line||!out||len==0||len>=HTTP7_MAX_FIELD*5u+512u)return -1;
  if(memchr(line,'\0',len)!=NULL)return -2;
- char copy[HTTP7_MAX_FIELD*5u+512u];memcpy(copy,line,len);copy[len]='\0';
+ char copy[HTTP7_MAX_FIELD*5u+513u];memcpy(copy,line,len);copy[len]='\0';
  if(len&&copy[len-1]=='\n')copy[--len]='\0';
  if(len&&copy[len-1]=='\r')return -3;
  char*fields[6];size_t lengths[6];size_t start=0;int count=0;
