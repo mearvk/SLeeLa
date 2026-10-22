@@ -1,0 +1,33 @@
+/*
+ * SLeeLa HTTP 3.0 request model; protocol field records the HTTP/1.x transport version.
+ * Protocol model only; native socket and wire parsing stay in /http-2.0.
+ */
+#sleela 2.1
+
+class Http30Request {
+  String method = "GET";
+  String target = "/";
+  String protocol = "HTTP/1.0";
+  String logicalPort = "";
+  String serviceId = "";
+  String operationId = "";
+  String bodyContentType = "";
+  long bodyLength = 0;
+  boolean valid = true;
+
+  void setMethod(String value) { method = value; }
+  void setTarget(String value) { target = value; }
+  void setLogicalPort(String value) { logicalPort = value; }
+  void setServiceId(String value) { serviceId = value; }
+  void setOperationId(String value) { operationId = value; }
+  void setBody(String contentType, long length) {
+    bodyContentType = contentType;
+    bodyLength = length;
+  }
+  void reject() { valid = false; }
+  boolean isValid() { return valid && target != ""; }
+  boolean isGet() { return method == "GET"; }
+  boolean isHead() { return method == "HEAD"; }
+  boolean isPost() { return method == "POST"; }
+  String version() { return protocol; }
+}
