@@ -811,7 +811,9 @@ int http1_self_test(void)
         const char *body_start;
         size_t header_bytes;
 
-        if (parse_request(raw, sizeof(raw) - 1, &req,
+        const char *header_end = strstr(raw, "\r\n\r\n");
+        size_t only_headers = header_end ? (size_t)(header_end - raw) + 4 : 0;
+        if (only_headers == 0 || parse_request(raw, only_headers, &req,
                           &body_start, &header_bytes) != 0) {
             fprintf(stderr, "FAIL: POST parse failed\n");
             ++failures;
