@@ -6,6 +6,7 @@
 #define _POSIX_C_SOURCE 200809L
 #endif
 #include "http6_server.h"
+#include "http6_logger_bridge.h"
 #include "http_negotiation.h"
 #include "../impl/core/sleela_net.h"
 #include "../preferred-routers/preferred_router.h"
@@ -177,6 +178,9 @@ static int send_response(SLNetHandle fd,const h6s_request*req,const h6s_response
         if(appendf(buf,sizeof(buf),&used,"%s: %s\r\n",h->name,h->value)!=0)return -1;
     }
     if(appendf(buf,sizeof(buf),&used,"X-SLeeLa-Version: 6.0\r\nX-SLeeLa-Accept: 6.0, 5.0, 4.0, 3.0, 2.1, 1.1, 1.0\r\nConnection: close\r\n\r\n")!=0)return -1;
+    if(h6_logger_record(1, resp->status_code>=500?2:(resp->status_code>=400?1:0), used+resp->body_length, "http_response_before_socket_write")!=1) {
+        /* Logging is best-effort; do not let disk failure change protocol behavior. */
+    }
     if(send_all(fd,buf,used)!=0)return -1;
     if(resp->body_length>0)return send_all(fd,resp->body,resp->body_length);
     return 0;
@@ -327,6 +331,7 @@ static void handle_connection(SLNetHandle fd,const h6s_server_config*cfg){
     h6s_request req;h6s_response resp;const char*bs=NULL;size_t hb=0;
     memset(&resp,0,sizeof(resp));resp.status_code=200;
     if(parse_request(raw,(size_t)got,&req,&bs,&hb)!=0){
+        (void)h6_logger_record(0,1,(size_t)got,"http_request_parse_rejected");
         resp.status_code=400;resp.content_type="text/plain";resp.body="Bad Request\n";resp.body_length=12;
         h6s_request bad;memset(&bad,0,sizeof(bad));memcpy(bad.version,"HTTP/1.0",9);
         send_response(fd,&bad,&resp,cfg->server_name);free(raw);slnet_close(fd);return;}
@@ -361,6 +366,7 @@ static void handle_connection(SLNetHandle fd,const h6s_server_config*cfg){
             req.body_length=clen;req.body[clen]='\0';
         }
     }
+    (void)h6_logger_record(0,0,(size_t)got+req.body_length,"http_request_received");
     free(raw);raw=NULL;
     int handled=0;
     if(strcmp(req.uri,"/__sleela/health")==0){
