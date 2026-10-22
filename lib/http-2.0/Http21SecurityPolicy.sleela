@@ -1,0 +1,22 @@
+#sleela 2.1
+/* Declarative deployment posture only; this does not implement TLS/authentication. */
+class Http21SecurityPolicy {
+  boolean plaintextAllowed = false;
+  boolean requireAuthenticatedTransport = true;
+  boolean requireAuthorizationForProtectedRoutes = true;
+  boolean validateRouteIdentifiers = true;
+  boolean trustForwardedHeaders = false;
+  boolean trustedReverseProxy = false;
+  boolean allowTransferEncoding = false;
+  boolean allowDuplicateContentLength = false;
+  boolean http2TransportImplemented = false;
+  boolean packetIntegrityImplemented = false;
+  boolean redactCredentialsInLogs = true;
+  String tlsTermination = "external-protected-proxy";
+  boolean mayTrustForwardedHeaders() { return trustedReverseProxy && trustForwardedHeaders; }
+  boolean isSafeForPublicExposure() {
+    return !plaintextAllowed && requireAuthenticatedTransport &&
+      requireAuthorizationForProtectedRoutes && validateRouteIdentifiers &&
+      redactCredentialsInLogs;
+  }
+}
