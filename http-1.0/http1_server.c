@@ -82,6 +82,10 @@ static const char *reason_phrase(int code)
     }
 }
 
+/* Read deadlines prevent a single slow peer from monopolising the serial server. */
+#define HTTP1_READ_TIMEOUT_SECONDS 10
+static int portable_poll_readable(SLNetHandle fd, int timeout_ms);
+
 /* ── request parsing ────────────────────────────────────────────────── */
 
 /*
@@ -92,8 +96,11 @@ static const char *reason_phrase(int code)
 static int recv_headers(SLNetHandle fd, char *buf, size_t cap)
 {
     size_t total = 0;
+    time_t deadline = time(NULL) + HTTP1_READ_TIMEOUT_SECONDS;
 
     while (total < cap) {
+        if (time(NULL) >= deadline) return -1;
+        if (!portable_poll_readable(fd, 1000)) continue;
         SLNetCount n = slnet_read(fd, buf + total, cap - total);
         if (n <= 0)
             return total > 0 ? (int)total : -1;
@@ -562,7 +569,10 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
                 memcpy(req.body, body_start, already);
             size_t remaining = already < content_len ? content_len - already : 0;
             size_t filled    = already < content_len ? already : content_len;
+            time_t body_deadline = time(NULL) + HTTP1_READ_TIMEOUT_SECONDS;
             while (remaining > 0) {
+                if (time(NULL) >= body_deadline) break;
+                if (!portable_poll_readable(fd, 1000)) continue;
                 SLNetCount n = slnet_read(fd, req.body + filled, remaining);
                 if (n <= 0) break;
                 filled    += (size_t)n;
