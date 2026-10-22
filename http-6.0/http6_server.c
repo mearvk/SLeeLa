@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <errno.h>
 #include <signal.h>
 #ifdef _WIN32
 #include <winsock2.h>
@@ -154,24 +155,73 @@ static int send_response(SLNetHandle fd,const h6s_request*req,const h6s_response
 }
 
 int h6s_download_should_resume(uint64_t cl){return cl>H6S_DOWNLOAD_THRESHOLD;}
+
+static int download_field_ok(const char*s,size_t cap,int nonempty,size_t*length){
+    const char*z;
+    if(!s||!cap)return 0;
+    z=(const char*)memchr(s,'\\0',cap);
+    if(!z)return 0;
+    size_t n=(size_t)(z-s);
+    if(nonempty&&n==0)return 0;
+    for(size_t i=0;i<n;++i){
+        unsigned char ch=(unsigned char)s[i];
+        if(ch=='|'||ch=='\\r'||ch=='\\n'||ch<0x20||ch==0x7f)return 0;
+    }
+    if(length)*length=n;
+    return 1;
+}
+static int parse_u64_field(const char*s,uint64_t*out){
+    char*end=NULL;unsigned long long value;
+    if(!s||!*s||!out||*s=='-'||*s=='+')return -1;
+    errno=0;value=strtoull(s,&end,10);
+    if(errno==ERANGE||end==s||!end||*end!='\\0')return -1;
+    *out=(uint64_t)value;return 0;
+}
 int h6s_download_serialise(const h6s_download_state*st,char*buf,size_t cap){
-    if(!st||!buf||cap<512)return -1;
-    int n=snprintf(buf,cap,"%s | %s | %s | %s | %llu | %llu | %llu",st->session_id,st->datetime,st->file_id,st->file_name,
-        (unsigned long long)st->index,(unsigned long long)st->offset,(unsigned long long)st->total_size);
-    return(n>0&&(size_t)n<cap)?0:-1;}
+    int n;
+    if(!st||!buf||cap<512||st->offset>st->total_size||
+       !download_field_ok(st->session_id,sizeof(st->session_id),1,NULL)||
+       !download_field_ok(st->datetime,sizeof(st->datetime),1,NULL)||
+       !download_field_ok(st->file_id,sizeof(st->file_id),1,NULL)||
+       !download_field_ok(st->file_name,sizeof(st->file_name),1,NULL))return -1;
+    n=snprintf(buf,cap,"%s | %s | %s | %s | %llu | %llu | %llu",
+        st->session_id,st->datetime,st->file_id,st->file_name,
+        (unsigned long long)st->index,(unsigned long long)st->offset,
+        (unsigned long long)st->total_size);
+    return(n>0&&(size_t)n<cap)?0:-1;
+}
 int h6s_download_parse(const char*line,h6s_download_state*out){
-    if(!line||!out)return -1;memset(out,0,sizeof(*out));
-    char c[2048];snprintf(c,sizeof(c),"%s",line);
-    char*f[7];int cnt=0;char*t=strtok(c,"|");
-    while(t&&cnt<7){while(*t==' '||*t=='\t')++t;size_t l=strlen(t);
-        while(l>0&&(t[l-1]==' '||t[l-1]=='\t'))t[--l]='\0';f[cnt++]=t;t=strtok(NULL,"|");}
-    if(cnt!=7)return -1;
-    snprintf(out->session_id,sizeof(out->session_id),"%s",f[0]);
-    snprintf(out->datetime,sizeof(out->datetime),"%s",f[1]);
-    snprintf(out->file_id,sizeof(out->file_id),"%s",f[2]);
-    snprintf(out->file_name,sizeof(out->file_name),"%s",f[3]);
-    out->index=(uint64_t)strtoull(f[4],NULL,10);out->offset=(uint64_t)strtoull(f[5],NULL,10);
-    out->total_size=(uint64_t)strtoull(f[6],NULL,10);return 0;}
+    char copy[2048];char*fields[7];char*p;size_t len;uint64_t index,offset,total;
+    if(!line||!out)return -1;
+    len=strlen(line);if(len==0||len>=sizeof(copy))return -1;
+    memcpy(copy,line,len+1);fields[0]=copy;p=copy;
+    for(int i=1;i<7;++i){
+        char*sep=strchr(p,'|');if(!sep)return -1;
+        *sep='\\0';p=sep+1;while(*p==' '||*p=='\\t')++p;fields[i]=p;
+        /* Trim only the field's right edge; reject empty fields below. */
+        if(i<7){char*right=fields[i];char*next=strchr(right,'|');
+            if(next){while(next>right&&(next[-1]==' '||next[-1]=='\\t'))*--next='\\0';}}
+    }
+    if(strchr(p,'|'))return -1;
+    for(int i=0;i<7;++i){
+        while(*fields[i]==' '||*fields[i]=='\\t')++fields[i];
+        if(!*fields[i])return -1;
+        for(const unsigned char*q=(const unsigned char*)fields[i];*q;++q)
+            if(*q<0x20||*q==0x7f)return -1;
+    }
+    if(!download_field_ok(fields[0],sizeof(out->session_id),1,NULL)||
+       !download_field_ok(fields[1],sizeof(out->datetime),1,NULL)||
+       !download_field_ok(fields[2],sizeof(out->file_id),1,NULL)||
+       !download_field_ok(fields[3],sizeof(out->file_name),1,NULL)||
+       parse_u64_field(fields[4],&index)!=0||parse_u64_field(fields[5],&offset)!=0||
+       parse_u64_field(fields[6],&total)!=0||offset>total)return -1;
+    memset(out,0,sizeof(*out));
+    if(snprintf(out->session_id,sizeof(out->session_id),"%s",fields[0])>=(int)sizeof(out->session_id)||
+       snprintf(out->datetime,sizeof(out->datetime),"%s",fields[1])>=(int)sizeof(out->datetime)||
+       snprintf(out->file_id,sizeof(out->file_id),"%s",fields[2])>=(int)sizeof(out->file_id)||
+       snprintf(out->file_name,sizeof(out->file_name),"%s",fields[3])>=(int)sizeof(out->file_name))return -1;
+    out->index=index;out->offset=offset;out->total_size=total;return 0;
+}
 
 /* ── built-in routes ────────────────────────────────────────────────── */
 
