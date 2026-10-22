@@ -30,6 +30,7 @@ The built-in server uses cleartext TCP. It does not implement TLS, client/server
 
 - Run exact-commit CI on Linux x86-64, Windows x86-64, macOS x86-64, and macOS arm64.
 - Add fuzzing for HTTP request parsing, frame decode, and download-state parsing.
+- Wire and test the shared /logger bridge at ingress and egress using SLeeLa-PacketLog-1, with payload logging disabled by default.
 - Add socket read deadlines, bounded connection/concurrency controls, rate limiting, and graceful cancellation.
 - Complete strict validation of download-state fields and numeric parsing.
 - Add an authenticated TLS deployment path, authorization hooks, and end-to-end tests.
