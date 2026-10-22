@@ -22,6 +22,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <unistd.h>
 #endif
 
@@ -106,6 +107,59 @@ SLNetHandle slnet_listen(uint16_t port, int backlog) {
         return SL_NET_INVALID;
     }
     return (SLNetHandle)s;
+}
+
+SLNetHandle slnet_listen_on(const char* host, uint16_t port, int backlog) {
+    if (port == 0 || backlog < 1) return SL_NET_INVALID;
+    char service[16];
+    snprintf(service, sizeof(service), "%u", (unsigned)port);
+    struct addrinfo hints;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = host && *host ? 0 : AI_PASSIVE;
+    struct addrinfo* list = NULL;
+    if (getaddrinfo(host && *host ? host : NULL, service, &hints, &list) != 0) return SL_NET_INVALID;
+    SLNetHandle result = SL_NET_INVALID;
+    for (struct addrinfo* p = list; p; p = p->ai_next) {
+#ifdef _WIN32
+        SOCKET s = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+        if (s == INVALID_SOCKET) continue;
+        int yes = 1;
+        (void)setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (const char*)&yes, sizeof(yes));
+        if (bind(s, p->ai_addr, (int)p->ai_addrlen) == 0 && listen(s, backlog) == 0) {
+            result = (SLNetHandle)s; break;
+        }
+        closesocket(s);
+#else
+        int s = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+        if (s < 0) continue;
+        int yes = 1;
+        (void)setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+        if (bind(s, p->ai_addr, p->ai_addrlen) == 0 && listen(s, backlog) == 0) {
+            result = (SLNetHandle)s; break;
+        }
+        close(s);
+#endif
+    }
+    freeaddrinfo(list);
+    return result;
+}
+
+int slnet_set_timeouts(SLNetHandle handle, uint32_t receive_ms, uint32_t send_ms) {
+    if (!slnet_valid(handle) || receive_ms == 0 || send_ms == 0) return -1;
+#ifdef _WIN32
+    DWORD rcv = (DWORD)receive_ms, snd = (DWORD)send_ms;
+    if (setsockopt((SOCKET)handle, SOL_SOCKET, SO_RCVTIMEO, (const char*)&rcv, sizeof(rcv)) != 0) return -1;
+    if (setsockopt((SOCKET)handle, SOL_SOCKET, SO_SNDTIMEO, (const char*)&snd, sizeof(snd)) != 0) return -1;
+#else
+    struct timeval rcv, snd;
+    rcv.tv_sec = (time_t)(receive_ms / 1000U); rcv.tv_usec = (suseconds_t)((receive_ms % 1000U) * 1000U);
+    snd.tv_sec = (time_t)(send_ms / 1000U); snd.tv_usec = (suseconds_t)((send_ms % 1000U) * 1000U);
+    if (setsockopt((int)handle, SOL_SOCKET, SO_RCVTIMEO, &rcv, sizeof(rcv)) != 0) return -1;
+    if (setsockopt((int)handle, SOL_SOCKET, SO_SNDTIMEO, &snd, sizeof(snd)) != 0) return -1;
+#endif
+    return 0;
 }
 
 SLNetHandle slnet_accept(SLNetHandle listener) {

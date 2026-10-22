@@ -4,8 +4,7 @@
 
 # SLeeLa HTTP 7.0
 
-**Status:** Internet-capable SLeeLa application-protocol server with Reality
-Assertion layer.
+**Status:** Experimental SLeeLa application-protocol reference server with Reality Assertion layer; not production-ready.
 
 **Platforms:** Linux · macOS · Windows 10+
 
@@ -40,7 +39,7 @@ make clean
 ./http7_server --port 8086
 ```
 
-Options: `--port N` (default 8086), `--self-test`, `--help`.
+Options: `--port N` (default 8086), `--bind HOST` (default `127.0.0.1`), `--allow-fallback` (off by default), `--self-test`, `--help`.
 
 ## Frame model — 24 types
 
@@ -108,6 +107,8 @@ X-SLeeLa-Accept: 7.0, 6.0, 5.0, 4.0, 3.0, 2.1, 1.1, 1.0
 Applications should preserve who authored an assertion, when, the source used
 to classify it, and whether it is documented, disputed, fictional,
 counterfactual, or unverified.
+
+See [SPEC.md](SPEC.md) for the wire contract and [SECURITY.md](SECURITY.md) for implemented controls and release blockers. The server rejects malformed framing and assertion metadata, defaults to loopback, and applies socket inactivity timeouts. It remains experimental: TLS, authentication/authorization, total request deadlines, rate limiting, a complete stream state machine, and runtime `/logger` integration remain incomplete.
 
 ## Security boundary
 

@@ -26,6 +26,13 @@ static int has_version(const char *list, const char *version)
     return 0;
 }
 
+static int known_version(const char *v) {
+    static const char *const versions[] = {"7.0","6.0","5.0","4.0","3.0","2.1","1.1","1.0"};
+    if (!v) return 0;
+    for (size_t i=0;i<sizeof(versions)/sizeof(versions[0]);++i) if (strcmp(v,versions[i])==0) return 1;
+    return 0;
+}
+
 const char *sleela_http_negotiate(const char *requested,
                                   const char *peer_accept,
                                   int         allow_fallback)
@@ -33,7 +40,7 @@ const char *sleela_http_negotiate(const char *requested,
     if (!sleela_resolver_event_policy("HTTP/7.0", 0))
         return 0;
 
-    if (requested && peer_accept && has_version(peer_accept, requested))
+    if (requested && known_version(requested) && peer_accept && has_version(peer_accept, requested))
         return requested;
 
     if (allow_fallback && peer_accept) {

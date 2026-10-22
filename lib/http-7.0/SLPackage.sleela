@@ -11,4 +11,17 @@ class SLPackage {
   void configure(String name){packageName=name;}
   String name(){return packageName;}
   boolean available(){return packageName!=null;}
+  boolean realityAssertionFramesAvailable(){return true;}
+  boolean assertionStatusValidationAvailable(){return true;}
+  boolean strictFrameAndHttpParsingAvailable(){return true;}
+  boolean loopbackDefaultAvailable(){return true;}
+  boolean tlsAvailable(){return false;}
+  boolean authenticatedCarrierAvailable(){return false;}
+  boolean totalRequestDeadlineAvailable(){return false;}
+  boolean runtimeLoggerBridgeAvailable(){return true;}
+  boolean payloadLoggingDisabledByDefault(){return true;}
+  boolean socketInactivityTimeoutsAvailable(){return true;}
+  boolean configurableRateLimitingAvailable(){return false;}
+  boolean completeStreamStateMachineAvailable(){return false;}
+  boolean productionReady(){return false;}
 }

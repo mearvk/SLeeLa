@@ -271,11 +271,11 @@
     },
     {
       "path": "impl/core/sleela_net.c",
-      "sha256": "ac49a63055bcfe76dbea7600f5b81fe575419d0092319155cd02405289a23b4d"
+      "sha256": "9c13706eb47cdc50ee0a8be201c615e87be09bd3edc39613fc112770ff4b3228"
     },
     {
       "path": "impl/core/sleela_net.h",
-      "sha256": "2c1e8595cac2fb802fc741c3ec0f164b86510f7efd8be960e60818b107739960"
+      "sha256": "2257631d4863e4a77f7521ab1740b4d365a5f9c5b6ae5ee29838c760dc8d04f6"
     },
     {
       "path": "impl/core/sleela_os.c",
@@ -471,11 +471,11 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "28f9f1fabbf1808b4c61249a3483c32667c0949488d33cd78b077e8a9daabb7d"
+      "sha256": "71ab5085e3d7f463387d699edf1ff1a2c3438e781709c8f37d26214c2a9c060a"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "1b07efbd2cc7ad395685aa3fd593a5c0b8649b86d89f642ed3a23383026061b0"
+      "sha256": "a0154237b030655ef1053210a733cdb5e2e48b90c24e484f80f146025be72801"
     },
     {
       "path": "impl/frontend/library_index.cpp",
@@ -2119,7 +2119,7 @@
     },
     {
       "path": "lib/character/Character.sleela",
-      "sha256": "3e31ec39e630c572007ff93e816f8ea446b14f37056cbb0be2f7d7262b6be56e"
+      "sha256": "7db6940cc84060efe15b3d7d0bf030b7508ae070c80fd519b06703fe6bdff6ed"
     },
     {
       "path": "lib/character/CharacterAbilityStats.sleela",
@@ -7051,19 +7051,19 @@
     },
     {
       "path": "lib/http-2.0/SLPackage.sleela",
-      "sha256": "429fec7d5133bd70f3e0fb784ff467a4442e07b0ba32d1070f39ca1368dda247"
+      "sha256": "818a694d582df2cbdeea793b617606128f7345e90e537bba6c885655952ec172"
     },
     {
       "path": "lib/http-3.0/SLPackage.sleela",
-      "sha256": "627eee0dd4119f5f3e8ea2160e4b65c6244f06461c73265c4dde63ccf9fec879"
+      "sha256": "92f32dadde6917f9e6e4015495c82da33b5f47b93c45e2b2ee2cb104ea5b3c24"
     },
     {
       "path": "lib/http-4.0/SLPackage.sleela",
-      "sha256": "8119ab0025593edb36d429550ef058d936a7347a5c33c0d70145aab0d6bb6ff3"
+      "sha256": "86117a6614bbbe89d8cf68b1082214eb845edfa595fa1da5553992b8492af7f3"
     },
     {
       "path": "lib/http-5.0/SLPackage.sleela",
-      "sha256": "1fed19bdea18b8b6445b20c876eb0bc113cc01f94f9a0f833f5a773bcdce926a"
+      "sha256": "9fe22c9336268c7d045c8f29861597e9cd37994ce2ac0bb5c599a291beed97e8"
     },
     {
       "path": "lib/http-6.0/SLPackage.sleela",
@@ -7071,7 +7071,7 @@
     },
     {
       "path": "lib/http-7.0/SLPackage.sleela",
-      "sha256": "7928fbda747d87f26ff324ab9379865ed151695e644d633409ff23d556c4a340"
+      "sha256": "56f0de128b9e5a1fcbdc3c7b4a3352634c763c7c99d39ccca1c45c49b9abd003"
     },
     {
       "path": "lib/http-8.0/SLPackage.sleela",
