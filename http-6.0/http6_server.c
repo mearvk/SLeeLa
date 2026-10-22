@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 #include <signal.h>
 #ifdef _WIN32
 #include <winsock2.h>
@@ -106,25 +107,51 @@ static int parse_request(const char*raw,size_t raw_len,h6s_request*req,const cha
 }
 
 int h6s_response_add_header(h6s_response*r,const char*n,const char*v){
-    if(!r||!n||!v||r->header_count>=H6S_MAX_HEADERS)return -1;
-    h6s_header*h=&r->headers[r->header_count++];
-    snprintf(h->name,sizeof(h->name),"%s",n);snprintf(h->value,sizeof(h->value),"%s",v);return 0;}
+    if(!r||!n||!v||r->header_count<0||r->header_count>=H6S_MAX_HEADERS)return -1;
+    size_t nl=strlen(n),vl=strlen(v);
+    if(nl==0||nl>=H6S_MAX_HNAME||vl>=H6S_MAX_HVALUE||!valid_header_value(v))return -1;
+    for(size_t i=0;i<nl;++i)if(!is_token_char((unsigned char)n[i]))return -1;
+    h6s_header*h=&r->headers[r->header_count];
+    memcpy(h->name,n,nl+1);memcpy(h->value,v,vl+1);++r->header_count;return 0;
+}
 
 static int send_all(SLNetHandle fd,const char*d,size_t l){
     while(l>0){SLNetCount n=slnet_write(fd,d,l);if(n<=0)return -1;d+=n;l-=(size_t)n;}return 0;}
 
+static int appendf(char *buf,size_t cap,size_t *used,const char *fmt,...){
+    va_list ap;int n;
+    if(!buf||!used||*used>=cap)return -1;
+    va_start(ap,fmt);n=vsnprintf(buf+*used,cap-*used,fmt,ap);va_end(ap);
+    if(n<0||(size_t)n>=cap-*used)return -1;
+    *used+=(size_t)n;return 0;
+}
+
 static int send_response(SLNetHandle fd,const h6s_request*req,const h6s_response*resp,const char*sn){
-    char buf[H6S_MAX_HEADER];int off=0;
-    const char*reason=resp->reason?resp->reason:reason_phrase(resp->status_code);
-    off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"%s %d %s\r\n",req->version[0]?req->version:"HTTP/1.0",resp->status_code,reason);
-    off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"Server: %s\r\n",sn);
-    if(resp->content_type)off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"Content-Type: %s\r\n",resp->content_type);
-    off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"Content-Length: %zu\r\n",resp->body_length);
-    for(int i=0;i<resp->header_count;++i)off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"%s: %s\r\n",resp->headers[i].name,resp->headers[i].value);
-    off+=snprintf(buf+off,sizeof(buf)-(size_t)off,"X-SLeeLa-Version: 6.0\r\nX-SLeeLa-Accept: 6.0, 5.0, 4.0, 3.0, 2.1, 1.1, 1.0\r\nConnection: close\r\n\r\n");
-    if(off<=0||(size_t)off>=sizeof(buf))return -1;
-    if(send_all(fd,buf,(size_t)off)!=0)return -1;
-    if(resp->body&&resp->body_length>0)return send_all(fd,resp->body,resp->body_length);return 0;}
+    char buf[H6S_MAX_HEADER];size_t used=0;
+    const char*version=(req&&req->version[0])?req->version:"HTTP/1.0";
+    const char*reason;
+    if(!req||!resp||resp->status_code<100||resp->status_code>599||
+       resp->header_count<0||resp->header_count>H6S_MAX_HEADERS||
+       resp->body_length>H6S_MAX_BODY||(!resp->body&&resp->body_length>0))return -1;
+    if(strcmp(version,"HTTP/1.0")!=0&&strcmp(version,"HTTP/1.1")!=0)return -1;
+    reason=resp->reason?resp->reason:reason_phrase(resp->status_code);
+    if(!sn||!valid_header_value(sn)||!valid_header_value(reason)||
+       (resp->content_type&&!valid_header_value(resp->content_type)))return -1;
+    if(appendf(buf,sizeof(buf),&used,"%s %d %s\r\n",version,resp->status_code,reason)!=0||
+       appendf(buf,sizeof(buf),&used,"Server: %s\r\n",sn)!=0)return -1;
+    if(resp->content_type&&appendf(buf,sizeof(buf),&used,"Content-Type: %s\r\n",resp->content_type)!=0)return -1;
+    if(appendf(buf,sizeof(buf),&used,"Content-Length: %zu\r\n",resp->body_length)!=0)return -1;
+    for(int i=0;i<resp->header_count;++i){
+        const h6s_header*h=&resp->headers[i];
+        if(!h->name[0]||!valid_header_value(h->value))return -1;
+        for(const unsigned char*p=(const unsigned char*)h->name;*p;++p)if(!is_token_char(*p))return -1;
+        if(appendf(buf,sizeof(buf),&used,"%s: %s\r\n",h->name,h->value)!=0)return -1;
+    }
+    if(appendf(buf,sizeof(buf),&used,"X-SLeeLa-Version: 6.0\r\nX-SLeeLa-Accept: 6.0, 5.0, 4.0, 3.0, 2.1, 1.1, 1.0\r\nConnection: close\r\n\r\n")!=0)return -1;
+    if(send_all(fd,buf,used)!=0)return -1;
+    if(resp->body_length>0)return send_all(fd,resp->body,resp->body_length);
+    return 0;
+}
 
 int h6s_download_should_resume(uint64_t cl){return cl>H6S_DOWNLOAD_THRESHOLD;}
 int h6s_download_serialise(const h6s_download_state*st,char*buf,size_t cap){
