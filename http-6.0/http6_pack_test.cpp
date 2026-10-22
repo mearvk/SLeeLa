@@ -43,6 +43,6 @@ int main() {
     catch (const std::invalid_argument&) { rejected = true; }
     assert(rejected);
 
-    std::cout << "http6_pack_test: all tests passed\\n";
+    std::cout << "http6_pack_test: all tests passed\n";
     return 0;
 }
