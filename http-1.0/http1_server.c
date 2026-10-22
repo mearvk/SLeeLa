@@ -530,22 +530,23 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
     size_t raw_cap = HTTP1_MAX_HEADER_SIZE + 4096; /* bounded header phase */
     char  *raw = malloc(raw_cap + 1);
     if (!raw) { slnet_close(fd); return; }
+    http1_request *req = (http1_request *)calloc(1, sizeof(*req));
+    http1_response *resp = (http1_response *)calloc(1, sizeof(*resp));
+    if (!req || !resp) { free(req); free(resp); free(raw); slnet_close(fd); return; }
 
     int got = recv_headers(fd, raw, raw_cap);
     if (got <= 0) {
-        free(raw);
-        slnet_close(fd);
-        return;
+        free(req->body); free(req); free(resp); free(req->body); free(req); free(resp); free(raw);
+ slnet_close(fd);
+ return;
     }
     raw[got] = '\0';
 
-    http1_request  req;
-    http1_response resp;
     const char    *body_start = NULL;
     size_t         header_bytes = 0;
 
-    memset(&resp, 0, sizeof(resp));
-    resp.status_code = 200;
+    memset(resp, 0, sizeof(*resp));
+    resp->status_code = 200;
 
     /* recv may coalesce body bytes with headers; parse only through CRLFCRLF. */
     size_t header_block_len = 0;
@@ -557,65 +558,70 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
         }
     }
     if (header_block_len == 0 || header_block_len > HTTP1_MAX_HEADER_SIZE ||
-        parse_request(raw, header_block_len, &req, &body_start, &header_bytes) != 0) {
-        resp.status_code  = 400;
-        resp.content_type = "text/plain";
-        resp.body         = "Bad Request\n";
-        resp.body_length  = 12;
+        parse_request(raw, header_block_len, req, &body_start, &header_bytes) != 0) {
+        resp->status_code  = 400;
+        resp->content_type = "text/plain";
+        resp->body         = "Bad Request\n";
+        resp->body_length  = 12;
 
-        http1_request bad;
-        memset(&bad, 0, sizeof(bad));
-        memcpy(bad.version, "HTTP/1.0", 9);
-        send_response(fd, &bad, &resp, cfg->server_name);
-        free(raw);
+        memset(req, 0, sizeof(*req));
+        memcpy(req->version, "HTTP/1.0", 9);
+        send_response(fd, req, resp, cfg->server_name);
+        free(req->body); free(req); free(resp); free(raw);
+
         slnet_close(fd);
+
         return;
     }
 
     /* Read body if Content-Length is present. */
     {
-        const char *cl = get_header(&req, "content-length");
+        const char *cl = get_header(req, "content-length");
         if (cl) {
             size_t content_len = 0;
-            if (http1_parse_size(cl, &content_len) != 0) { resp.status_code = 400; resp.content_type = "text/plain"; resp.body = "Bad Content-Length\n"; resp.body_length = strlen(resp.body); send_response(fd, &req, &resp, cfg->server_name); free(raw); slnet_close(fd); return; }
+            if (http1_parse_size(cl, &content_len) != 0) { resp->status_code = 400; resp->content_type = "text/plain"; resp->body = "Bad Content-Length\n"; resp->body_length = strlen(resp->body); send_response(fd, req, resp, cfg->server_name); free(req->body); free(req); free(resp); free(raw); slnet_close(fd); return; }
             if (content_len > HTTP1_MAX_BODY_SIZE) {
-                resp.status_code  = 413;
-                resp.content_type = "text/plain";
-                resp.body         = "Content Too Large\n";
-                resp.body_length  = 18;
-                send_response(fd, &req, &resp, cfg->server_name);
-                free(raw);
+                resp->status_code  = 413;
+                resp->content_type = "text/plain";
+                resp->body         = "Content Too Large\n";
+                resp->body_length  = 18;
+                send_response(fd, req, resp, cfg->server_name);
+                free(req->body); free(req); free(resp); free(raw);
+
                 slnet_close(fd);
+
                 return;
             }
             size_t already = (size_t)(got) - header_bytes;
-            req.body = malloc(content_len + 1);
-            if (!req.body) {
-                resp.status_code  = 500;
-                resp.content_type = "text/plain";
-                resp.body         = "Internal Server Error\n";
-                resp.body_length  = 22;
-                send_response(fd, &req, &resp, cfg->server_name);
-                free(raw);
+            req->body = malloc(content_len + 1);
+            if (!req->body) {
+                resp->status_code  = 500;
+                resp->content_type = "text/plain";
+                resp->body         = "Internal Server Error\n";
+                resp->body_length  = 22;
+                send_response(fd, req, resp, cfg->server_name);
+                free(req->body); free(req); free(resp); free(raw);
+
                 slnet_close(fd);
+
                 return;
             }
             size_t filled = already < content_len ? already : content_len;
             if (filled > 0)
-                memcpy(req.body, body_start, filled);
+                memcpy(req->body, body_start, filled);
             size_t remaining = content_len - filled;
             time_t body_deadline = time(NULL) + HTTP1_READ_TIMEOUT_SECONDS;
             while (remaining > 0) {
                 if (time(NULL) >= body_deadline) break;
                 if (!portable_poll_readable(fd, 1000)) continue;
-                SLNetCount n = slnet_read(fd, req.body + filled, remaining);
+                SLNetCount n = slnet_read(fd, req->body + filled, remaining);
                 if (n <= 0) break;
                 filled    += (size_t)n;
                 remaining -= (size_t)n;
             }
-            if (remaining != 0) { free(req.body); req.body = NULL; resp.status_code = 400; resp.content_type = "text/plain"; resp.body = "Incomplete Request Body\n"; resp.body_length = strlen(resp.body); send_response(fd, &req, &resp, cfg->server_name); free(raw); slnet_close(fd); return; }
-            req.body_length = filled;
-            req.body[filled] = '\0';
+            if (remaining != 0) { free(req->body); req->body = NULL; resp->status_code = 400; resp->content_type = "text/plain"; resp->body = "Incomplete Request Body\n"; resp->body_length = strlen(resp->body); send_response(fd, req, resp, cfg->server_name); free(req->body); free(req); free(resp); free(raw); slnet_close(fd); return; }
+            req->body_length = filled;
+            req->body[filled] = '\0';
         }
     }
 
@@ -626,36 +632,37 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
     /* ---- built-in routes ---- */
     int handled = 0;
 
-    if (strcmp(req.uri, "/__sleela/health") == 0) {
-        builtin_health(&req, &resp);
+    if (strcmp(req->uri, "/__sleela/health") == 0) {
+        builtin_health(req, resp);
         handled = 1;
-    } else if (strcmp(req.uri, "/__sleela/status") == 0) {
-        builtin_status(&req, &resp);
+    } else if (strcmp(req->uri, "/__sleela/status") == 0) {
+        builtin_status(req, resp);
         handled = 1;
-    } else if (strcmp(req.uri, "/__sleela/negotiate") == 0) {
-        builtin_negotiate(&req, &resp, cfg->allow_negotiation_fallback);
+    } else if (strcmp(req->uri, "/__sleela/negotiate") == 0) {
+        builtin_negotiate(req, resp, cfg->allow_negotiation_fallback);
         handled = 1;
     }
 
     /* ---- application handler ---- */
     if (!handled && cfg->handler) {
-        int rc = cfg->handler(&req, &resp, cfg->user_data);
+        int rc = cfg->handler(req, resp, cfg->user_data);
         if (rc != 0) {
-            resp.status_code  = 500;
-            resp.content_type = "text/plain";
-            resp.body         = "Internal Server Error\n";
-            resp.body_length  = 22;
+            resp->status_code  = 500;
+            resp->content_type = "text/plain";
+            resp->body         = "Internal Server Error\n";
+            resp->body_length  = 22;
         }
     } else if (!handled) {
-        resp.status_code  = 404;
-        resp.content_type = "text/plain";
-        resp.body         = "Not Found\n";
-        resp.body_length  = 10;
+        resp->status_code  = 404;
+        resp->content_type = "text/plain";
+        resp->body         = "Not Found\n";
+        resp->body_length  = 10;
     }
 
-    send_response(fd, &req, &resp, cfg->server_name);
+    send_response(fd, req, resp, cfg->server_name);
 
-    free(req.body);
+    free(req->body);
+    free(req); free(resp);
     slnet_close(fd);
 }
 
