@@ -261,6 +261,23 @@ static int send_response(SLNetHandle fd, const http1_request *req,
 
     const char *reason = resp->reason ? resp->reason
                                       : reason_phrase(resp->status_code);
+    /* Validate every handler-controlled field and bound the total header block
+       before any snprintf arithmetic can advance beyond buf. */
+    if (resp->header_count < 0 || resp->header_count > HTTP1_MAX_HEADERS ||
+        resp->status_code < 100 || resp->status_code > 599 ||
+        !http1_safe_value(reason) || !http1_safe_value(server_name) ||
+        (resp->content_type && !http1_safe_value(resp->content_type)) ||
+        (resp->body_length && !resp->body))
+        return -1;
+    size_t estimate = 256 + strlen(reason) + strlen(server_name);
+    if (resp->content_type) estimate += strlen(resp->content_type) + 32;
+    for (int i = 0; i < resp->header_count; ++i) {
+        if (!http1_safe_value(resp->headers[i].value)) return -1;
+        for (const char *q = resp->headers[i].name; *q; ++q)
+            if (!http1_token_char((unsigned char)*q)) return -1;
+        estimate += strlen(resp->headers[i].name) + strlen(resp->headers[i].value) + 4;
+        if (estimate >= sizeof(buf)) return -1;
+    }
 
     /* Status line */
     off += snprintf(buf + off, sizeof(buf) - (size_t)off,
