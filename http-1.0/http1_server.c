@@ -893,15 +893,15 @@ int http1_self_test(void)
     {
         http1_download_state parsed;
         if (http1_download_parse("sess | 2026-10-15T00:00:00Z | file | ../secret | 0 | 0 | 10", &parsed) == 0) {
-            fprintf(stderr, "FAIL: unsafe download filename accepted\\n");
+            fprintf(stderr, "FAIL: unsafe download filename accepted\n");
             ++failures;
         }
         if (http1_download_parse("sess | date | file | safe.bin | 0 | 11 | 10", &parsed) == 0) {
-            fprintf(stderr, "FAIL: download offset past end accepted\\n");
+            fprintf(stderr, "FAIL: download offset past end accepted\n");
             ++failures;
         }
         if (http1_download_parse("sess | date | file | safe.bin | 184467440737095516160 | 0 | 1", &parsed) == 0) {
-            fprintf(stderr, "FAIL: overflowing download index accepted\\n");
+            fprintf(stderr, "FAIL: overflowing download index accepted\n");
             ++failures;
         }
     }
@@ -944,8 +944,8 @@ int http1_self_test(void)
         memset(&resp, 0, sizeof(resp));
         http1_response_add_header(&resp, "X-Test", "value1");
         http1_response_add_header(&resp, "X-Other", "value2");
-        if (http1_response_add_header(&resp, "X-Bad", "ok\\r\\nInjected: yes") == 0) {
-            fprintf(stderr, "FAIL: response header CRLF injection accepted\\n");
+        if (http1_response_add_header(&resp, "X-Bad", "ok\r\nInjected: yes") == 0) {
+            fprintf(stderr, "FAIL: response header CRLF injection accepted\n");
             ++failures;
         }
         if (resp.header_count != 2) {
