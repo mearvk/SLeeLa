@@ -779,7 +779,26 @@ int http1_self_test(void)
         }
     }
 
-    /* 3. Download state round-trip */
+    /* 3. Reject ambiguous and malformed framing before body allocation. */
+    {
+        const char *bad[] = {
+            "POST / HTTP/1.0\\r\\nContent-Length: 1\\r\\nContent-Length: 1\\r\\n\\r\\nX",
+            "POST / HTTP/1.0\\r\\nTransfer-Encoding: chunked\\r\\n\\r\\n0\\r\\n\\r\\n",
+            "GET / HTTP/1.0\\r\\nX-Test: safe\\r\\nInjected: yes\\r\\n\\r\\n"
+        };
+        for (size_t i = 0; i < sizeof(bad) / sizeof(bad[0]); ++i) {
+            http1_request req;
+            const char *body_start = NULL;
+            size_t header_bytes = 0;
+            if (parse_request(bad[i], strlen(bad[i]), &req, &body_start, &header_bytes) == 0) {
+                fprintf(stderr, "FAIL: malformed framing test %zu accepted\\n", i);
+                ++failures;
+            }
+        }
+    }
+
+    /* 4. Download state round-trip */
+
     {
         http1_download_state st = {0};
         snprintf(st.session_id, sizeof(st.session_id), "sess-001");
@@ -812,7 +831,7 @@ int http1_self_test(void)
         }
     }
 
-    /* 4. Download threshold */
+    /* 5. Download threshold */
     {
         if (http1_download_should_resume(49 * 1024 * 1024)) {
             fprintf(stderr, "FAIL: 49 MB should not trigger resume\n");
