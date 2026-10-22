@@ -1,6 +1,8 @@
 /* http6_main.c — SLeeLa HTTP 6.0 server entry point */
 #include "http6_server.h"
 #include <stdio.h>
+#include <errno.h>
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -24,6 +26,18 @@ static int demo_http(const h6s_request *req, h6s_response *resp, void *ud) {
     resp->body = body; resp->body_length = (size_t)n; return 0;
 }
 
+static int parse_port(const char *s, uint16_t *port) {
+    char *end = NULL;
+    unsigned long value;
+    if (!s || !*s || !port || *s == '-' || *s == '+') return -1;
+    errno = 0;
+    value = strtoul(s, &end, 10);
+    if (errno == ERANGE || end == s || !end || *end != '\0' ||
+        value < 1 || value > 65535 || value > UINT16_MAX) return -1;
+    *port = (uint16_t)value;
+    return 0;
+}
+
 int main(int argc, char **argv) {
     h6s_server_config cfg;
     h6s_server_config_init(&cfg);
@@ -31,10 +45,15 @@ int main(int argc, char **argv) {
     cfg.frame_handler = echo_frame;
     for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "--self-test") == 0) return h6s_self_test();
-        else if (strcmp(argv[i], "--port") == 0 && i+1 < argc)
-            cfg.port = (uint16_t)atoi(argv[++i]);
+        else if (strcmp(argv[i], "--port") == 0 && i+1 < argc) {
+            if (parse_port(argv[++i], &cfg.port) != 0) {
+                fprintf(stderr, "invalid port (expected 1..65535)\n");
+                return 2;
+            }
+        } else if (strcmp(argv[i], "--allow-fallback") == 0)
+            cfg.allow_negotiation_fallback = 1;
         else if (strcmp(argv[i], "--help") == 0) {
-            printf("Usage: %s [--port N] [--self-test] [--help]\n", argv[0]); return 0;
+            printf("Usage: %s [--port N] [--allow-fallback] [--self-test] [--help]\n", argv[0]); return 0;
         } else { fprintf(stderr, "unknown option: %s\n", argv[i]); return 2; }
     }
     return h6s_server_run(&cfg);
