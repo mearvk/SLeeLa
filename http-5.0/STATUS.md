@@ -19,7 +19,7 @@
 ## Important limitations
 
 - The latest changes have not yet been compiled or run in CI; no new test result is claimed.
-- The codec allows up to 16 MiB payloads, while the HTTP server body cap is 8 MiB.
+- The native HTTP request-body ceiling is `HTTP5_MAX_PAYLOAD + HTTP5_FRAME_HEADER_SIZE` (16 MiB + 32 bytes), matching one maximum-size frame envelope.
 - The server's HTTP/1.x carrier does not provide TLS or QUIC and must not be advertised as native HTTP/3.
 - No complete type-specific payload grammar or shared canonical vectors for all 13 frame types.
 - No integrated persistent per-stream state machine, bidirectional sequence handling, or enforced WINDOW credit.
