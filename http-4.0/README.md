@@ -68,7 +68,8 @@ Carrier adapter                     ← sleela_net portable sockets (Linux/macOS
     +-- Test / in-memory carrier
 ```
 
-## Engineering specification and verification\n\n- [Normative core specification](SPEC.md)\n- [Conformance and adversarial test plan](CONFORMANCE.md)\n- [Evidence-based capability matrix](CAPABILITY-MATRIX.md)\n- [Current implementation status](STATUS.md)\n\nThe reference server currently carries frames in HTTP/1.x over TCP. HTTP/3/QUIC support is not implemented by this directory. The added session-state model is not yet wired into the server dispatch path. Tests added in source must be run in CI before being described as passing.\n\n## Frame model
+## Engineering specification and verification\n\n- [Normative core specification](SPEC.md)\n- [Conformance and adversarial test plan](CONFORMANCE.md)
+- [Canonical binary test vectors](TEST-VECTORS.md)\n- [Evidence-based capability matrix](CAPABILITY-MATRIX.md)\n- [Current implementation status](STATUS.md)\n\nThe reference server currently carries frames in HTTP/1.x over TCP. HTTP/3/QUIC support is not implemented by this directory. The added session-state model is not yet wired into the server dispatch path. Tests added in source must be run in CI before being described as passing.\n\n## Frame model
 
 Fixed-width 32-byte header, big-endian:
 
