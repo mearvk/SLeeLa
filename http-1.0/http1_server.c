@@ -505,7 +505,17 @@ static void handle_connection(SLNetHandle fd, const http1_server_config *cfg)
     memset(&resp, 0, sizeof(resp));
     resp.status_code = 200;
 
-    if (parse_request(raw, (size_t)got, &req, &body_start, &header_bytes) != 0) {
+    /* recv may coalesce body bytes with headers; parse only through CRLFCRLF. */
+    size_t header_block_len = 0;
+    for (size_t i = 0; i + 3 < (size_t)got; ++i) {
+        if (raw[i] == '\\r' && raw[i+1] == '\\n' &&
+            raw[i+2] == '\\r' && raw[i+3] == '\\n') {
+            header_block_len = i + 4;
+            break;
+        }
+    }
+    if (header_block_len == 0 || header_block_len > HTTP1_MAX_HEADER_SIZE ||
+        parse_request(raw, header_block_len, &req, &body_start, &header_bytes) != 0) {
         resp.status_code  = 400;
         resp.content_type = "text/plain";
         resp.body         = "Bad Request\n";
