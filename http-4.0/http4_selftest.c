@@ -26,8 +26,22 @@ int main(void) {
     assert(memcmp(view.payload, payload, sizeof(payload) - 1) == 0);
     assert(strcmp(http4_frame_type_name(HTTP4_FRAME_RESUME), "RESUME") == 0);
 
+    /* Truncated header and payload must fail closed. */
+    assert(http4_frame_decode(wire, HTTP4_FRAME_HEADER_SIZE - 1, &view, &consumed) != 0);
+    assert(http4_frame_decode(wire, written - 1, &view, &consumed) != 0);
+
+    /* Unknown version and reserved flags are rejected. */
     wire[0] = 3;
     assert(http4_frame_decode(wire, written, &view, &consumed) != 0);
+    wire[0] = HTTP4_VERSION;
+    wire[3] |= 0x80; /* high bit of FLAGS */
+    assert(http4_frame_decode(wire, written, &view, &consumed) != 0);
+
+    /* Decoder consumes one frame, not trailing bytes. */
+    wire[3] &= 0x1f;
+    wire[written] = 0xAA;
+    assert(http4_frame_decode(wire, written + 1, &view, &consumed) == 0);
+    assert(consumed == written);
 
     puts("SLeeLa HTTP 4.0 frame self-test: PASS");
     return 0;
