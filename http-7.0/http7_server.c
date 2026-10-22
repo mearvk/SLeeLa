@@ -161,7 +161,7 @@ static int h7s_parse_u64(const char*s,uint64_t*out){
   if(v>(UINT64_MAX-d)/10u)return -1;v=v*10u+d;}
  *out=v;return 0;
 }
-int h7s_download_should_resume(uint64_t cl){return cl>H7S_DOWNLOAD_THRESHOLD;}
+
 int h7s_download_serialise(const h7s_download_state*st,char*buf,size_t cap){
  if(!st||!buf||cap<2||!h7s_download_text(st->session_id,sizeof(st->session_id),0)||
     !h7s_download_text(st->datetime,sizeof(st->datetime),0)||!h7s_download_text(st->file_id,sizeof(st->file_id),0)||
