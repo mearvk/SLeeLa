@@ -11,7 +11,9 @@
 - Segmentation and out-of-order reassembly primitives.
 - Packet context and basket metadata.
 - HTTP server endpoint and built-in self-tests.
-- Strict DOWNLOAD metadata parsing now rejects malformed unsigned integers, extra fields, unsafe path-like filenames, empty fields, and offset greater than total size.
+- Strict DOWNLOAD metadata parsing now rejects malformed unsigned integers, extra fields, unsafe path-like filenames, unterminated fixed-size strings, empty fields, and offset greater than total size.
+- HTTP request framing now rejects duplicate Content-Length, Transfer-Encoding (unsupported by this parser), malformed/oversized Content-Length, undeclared request bodies, body bytes beyond the declared length, and truncated bodies; raw header buffers are explicitly NUL-terminated before string parsing.
+- HTTP body limit is aligned with one maximum-size native frame (header plus 16 MiB payload).
 - Frame decoder now rejects undefined flag bits.
 - New bounded per-stream reference state model enforces per-stream sequence, stream byte, aggregate byte, duplicate OPEN, and stream-ID non-reuse rules.
 - New normative draft specification, conformance plan, capability matrix, and optional libFuzzer harness.
