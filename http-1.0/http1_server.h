@@ -91,6 +91,14 @@ typedef int (*http1_route_handler)(const http1_request *req,
                                    http1_response      *resp,
                                    void                *user_data);
 
+/*
+ * Optional application authorization hook. Return 0 to allow, non-zero to deny.
+ * When configured, non-health routes (including status/negotiate) are checked
+ * before dispatch. Identity verification remains application-defined.
+ */
+typedef int (*http1_authorize_handler)(const http1_request *req,
+                                       void *user_data);
+
 /* ── server configuration ──────────────────────────────────────────── */
 
 typedef struct {
@@ -98,6 +106,7 @@ typedef struct {
     const char         *bind_address;   /* NULL or "0.0.0.0" for any           */
     int                 backlog;        /* listen backlog    (default 128)     */
     http1_route_handler handler;        /* application route handler           */
+    http1_authorize_handler authorize;   /* optional: 0 allow, nonzero deny       */
     void               *user_data;      /* opaque context for the handler      */
     const char         *server_name;    /* Server header     (default "SLeeLa-HTTP/1.0") */
     int                 allow_negotiation_fallback; /* negotiate down to 1.0   */
