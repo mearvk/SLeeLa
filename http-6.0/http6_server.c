@@ -287,10 +287,10 @@ static int builtin_h6_frame(const h6s_request*req,h6s_response*resp,h6s_frame_ha
         resp->status_code=400;resp->content_type="text/plain";resp->body="Invalid H6 frame\n";resp->body_length=17;return 0;}
     if(fh){
         static uint8_t rp[4096];size_t rl=0;
-        if(fh(&frame,rp,sizeof(rp),&rl,ud)!=0 || rl>sizeof(rp)){resp->status_code=500;resp->content_type="text/plain";
-            resp->body="Frame handler error\n";resp->body_length=20;return 0;}
         if(frame.header.sequence==UINT64_MAX){resp->status_code=400;resp->content_type="text/plain";
             resp->body="Invalid sequence\n";resp->body_length=17;return 0;}
+        if(fh(&frame,rp,sizeof(rp),&rl,ud)!=0 || rl>sizeof(rp)){resp->status_code=500;resp->content_type="text/plain";
+            resp->body="Frame handler error\n";resp->body_length=20;return 0;}
         http6_frame_header_t rh={0};rh.version=HTTP6_VERSION;
         rh.type=(frame.header.type==HTTP6_FRAME_PING)?HTTP6_FRAME_PONG:HTTP6_FRAME_DATA;
         rh.flags=HTTP6_FLAG_FIN;rh.stream_id=frame.header.stream_id;
@@ -372,7 +372,7 @@ static int portable_poll_readable(SLNetHandle fd,int ms){
 
 void h6s_server_config_init(h6s_server_config*cfg){
     if(!cfg)return;memset(cfg,0,sizeof(*cfg));cfg->port=8085;cfg->backlog=128;
-    cfg->server_name="SLeeLa-HTTP/6.0";cfg->allow_negotiation_fallback=1;}
+    cfg->server_name="SLeeLa-HTTP/6.0";cfg->allow_negotiation_fallback=0;}
 
 int h6s_server_run(const h6s_server_config*cfg){
     if(!cfg)return -1;g_stop=0;
