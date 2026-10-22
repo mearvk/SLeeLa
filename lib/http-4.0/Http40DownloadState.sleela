@@ -1,0 +1,27 @@
+#sleela 2.1
+/* Shared resumable DOWNLOAD contract; 50 MiB is a mode threshold, not a cap. */
+class Http40DownloadState {
+  long LARGE_FILE_THRESHOLD = 52428800;
+  String sessionId = "";
+  String dateTime = "";
+  String fileId = "";
+  String fileName = "";
+  String contentDigest = "";
+  long index = 0;
+  long offset = 0;
+  long totalSize = 0;
+  long chunkSize = 0;
+  void configure(String session, String timestamp, String id, String name,
+                 long segmentIndex, long byteOffset, long completeSize, long chunk) {
+    sessionId = session; dateTime = timestamp; fileId = id; fileName = name;
+    index = segmentIndex; offset = byteOffset; totalSize = completeSize; chunkSize = chunk;
+  }
+  boolean requiresDownloadMode(long size) { return size > LARGE_FILE_THRESHOLD; }
+  boolean isValid() {
+    return sessionId != "" && fileId != "" && fileName != "" &&
+      index >= 0 && offset >= 0 && totalSize >= 0 && offset <= totalSize &&
+      chunkSize >= 0 && (chunkSize == 0 || chunkSize <= totalSize - offset);
+  }
+  long remainingBytes() { return totalSize - offset; }
+  boolean isComplete() { return isValid() && offset == totalSize; }
+}
