@@ -1,5 +1,8 @@
 #sleela 2.1
-/* Policy model only: native code must perform cryptographic verification. */
+/* Policy model only: native code must perform cryptographic verification.
+ * Use one instance per authenticated stream/direction. This scalar nonce
+ * high-water model is NOT safe as a shared connection-wide replay window for
+ * multiplexed or out-of-order traffic. */
 class Http40Integrity {
   boolean digestVerified = false;
   boolean nonceFresh = false;
@@ -30,6 +33,12 @@ class Http40Integrity {
       basketCanonical && identityAuthorized;
     if (ok) acceptedPackets = acceptedPackets + 1;
     else rejectedIntegrity = rejectedIntegrity + 1;
+    // One packet's evidence must never authorize a later packet.
+    digestVerified = false;
+    nonceFresh = false;
+    intactxWithinThreshold = false;
+    basketCanonical = false;
+    identityAuthorized = false;
     return ok;
   }
 }
