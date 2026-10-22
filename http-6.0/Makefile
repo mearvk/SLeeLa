@@ -11,6 +11,7 @@ INCLUDES = -I. -I..
 
 # --- protocol objects ---
 PROTO_OBJECTS = http6_protocol.o
+PACK_OBJECTS = http6_consolidated_pack.o
 
 # --- server ---
 SERVER_SOURCES = \
@@ -27,14 +28,23 @@ ifeq ($(OS),Windows_NT)
 SERVER_LDLIBS += -lws2_32
 endif
 
-.PHONY: all server proto syntax test server-test clean
+.PHONY: all server proto syntax test server-test pack-test clean
 
 all: proto server
 
-proto: $(PROTO_OBJECTS)
+proto: $(PROTO_OBJECTS) $(PACK_OBJECTS)
 
 http6_protocol.o: http6_protocol.c http6_protocol.h
 	$(CC) $(CFLAGS) -I. -c http6_protocol.c -o $@
+
+http6_consolidated_pack.o: http6_consolidated_pack.cpp http6_consolidated_pack.hpp
+	$(CXX) $(CXXFLAGS) -I. -c http6_consolidated_pack.cpp -o $@
+
+http6_pack_test: http6_pack_test.cpp http6_consolidated_pack.cpp http6_consolidated_pack.hpp
+	$(CXX) $(CXXFLAGS) -I. http6_pack_test.cpp http6_consolidated_pack.cpp -o $@
+
+pack-test: http6_pack_test
+	./http6_pack_test
 
 server: $(SERVER_TARGET)
 
@@ -47,12 +57,13 @@ syntax:
 	$(CC) $(CFLAGS) $(INCLUDES) -fsyntax-only http6_main.c
 	$(CC) $(CFLAGS) $(INCLUDES) -fsyntax-only http_negotiation.c
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -fsyntax-only http_negotiation.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -fsyntax-only http6_consolidated_pack.cpp
 
-test: all
+test: all pack-test
 	./$(SERVER_TARGET) --self-test
 
 server-test: $(SERVER_TARGET)
 	./$(SERVER_TARGET) --self-test
 
 clean:
-	rm -f $(PROTO_OBJECTS) $(SERVER_TARGET)
+	rm -f $(PROTO_OBJECTS) $(PACK_OBJECTS) $(SERVER_TARGET) http6_pack_test
