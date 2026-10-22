@@ -275,6 +275,14 @@ static int parse_request(const char *raw, size_t raw_len, http1_request *req,
     return 0;
 }
 
+/* Public bounded parser entry point for conformance tests and fuzzers. */
+int http1_request_parse_headers(const char *raw, size_t raw_len,
+                                http1_request *req, size_t *header_bytes)
+{
+    const char *body_start = NULL;
+    return parse_request(raw, raw_len, req, &body_start, header_bytes);
+}
+
 /* ── response serialisation ─────────────────────────────────────────── */
 
 int http1_response_add_header(http1_response *resp,
