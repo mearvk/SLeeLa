@@ -418,11 +418,17 @@ int h6s_self_test(void){
            parse_content_length("12",&length_value)!=0 || length_value!=12){
             fprintf(stderr,"FAIL: strict Content-Length parser\\n");++f;
         }
-        const char invalid_value[]="GET / HTTP/1.1\r\nX-Test: bad\001value\r\n\r\n";
+        const char invalid_value[]="GET / HTTP/1.1\r\nHost: localhost\r\nX-Test: bad\001value\r\n\r\n";
         if(parse_request(invalid_value,sizeof(invalid_value)-1,&req,&bs,&hb)==0){
             fprintf(stderr,"FAIL: control character in header accepted\\n");++f;
         }
     }
+    /* Response headers cannot override framing or inject new lines. */
+    {h6s_response response;memset(&response,0,sizeof(response));
+     if(h6s_response_add_header(&response,"X-Trace","safe")!=0 ||
+        h6s_response_add_header(&response,"Content-Length","999")==0 ||
+        h6s_response_add_header(&response,"X-Trace","ok\\r\\nInjected: yes")==0){
+         fprintf(stderr,"FAIL: response header validation\\n");++f;}}
     /* 2. Frame encode/decode — CONSOLIDATED_FRIENDS_BET */
     {http6_frame_header_t h={0};h.version=HTTP6_VERSION;h.type=HTTP6_FRAME_CONSOLIDATED_FRIENDS_BET;
      h.flags=HTTP6_FLAG_USER_AUTHORED;h.stream_id=1;h.request_id=42;h.sequence=1;h.payload_length=7;
