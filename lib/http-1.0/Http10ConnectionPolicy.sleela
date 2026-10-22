@@ -10,6 +10,6 @@ class Http10ConnectionPolicy {
   boolean suppressBodyFor304 = true;
   int requestTimeoutMillis = 10000;
   int bodyTimeoutMillis = 10000;
-  int idleTimeoutMillis = 5000;
+  int idleTimeoutMillis = 10000;
   boolean safeDefaults() { return closeAfterResponse && rejectIncompleteBody && rejectUnsupportedTransferEncoding && rejectDuplicateContentLength && requestTimeoutMillis > 0 && bodyTimeoutMillis > 0; }
 }
