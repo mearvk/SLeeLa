@@ -590,6 +590,14 @@ int h4s_self_test(void)
 {
     int failures=0;
 
+    /* 0. Safe default: do not listen on all interfaces implicitly. */
+    { h4s_server_config cfg;
+      h4s_server_config_init(&cfg);
+      if (!cfg.bind_address || strcmp(cfg.bind_address,"127.0.0.1") != 0) {
+          fprintf(stderr,"FAIL: server bind default is not loopback\\n"); ++failures;
+      }
+    }
+
     /* 1. HTTP parse */
     { const char raw[]="POST /__sleela/h4 HTTP/1.1\r\nHost: localhost\r\n"
           "Content-Length: 0\r\nX-SLeeLa-Version: 4.0\r\n\r\n";
