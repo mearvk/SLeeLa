@@ -1,0 +1,28 @@
+#sleela 2.1
+/* Friends' Packs are application data; never an identity or authorization grant. */
+class Http50FriendsPack {
+  String ownerId = "";
+  String friendId = "";
+  long points = 0;
+  long fpRemaining = 0;
+  long bonusOfferId = 0;
+  boolean ownerAuthorized = false;
+  boolean auditRequired = true;
+  void configure(String owner, String friend, long value, long remaining) {
+    ownerId = owner; friendId = friend; points = value; fpRemaining = remaining;
+  }
+  boolean canOffer(long cost) {
+    return ownerAuthorized && ownerId != "" && friendId != "" &&
+      cost >= 0 && fpRemaining >= cost;
+  }
+  boolean consume(long cost) {
+    if (!canOffer(cost)) return false;
+    fpRemaining = fpRemaining - cost; return true;
+  }
+  boolean isValid() {
+    return ownerId != "" && friendId != "" && points >= 0 &&
+      fpRemaining >= 0 && bonusOfferId >= 0;
+  }
+  boolean grantsAuthorization() { return false; }
+  boolean requiresNativeAuditAndAuthorization() { return true; }
+}
