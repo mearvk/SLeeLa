@@ -316,9 +316,15 @@ static int builtin_h4_frame(const h4s_request *req, h4s_response *resp,
     }
     http4_frame_view_t frame; size_t consumed;
     if(http4_frame_decode((const uint8_t*)req->body,req->body_length,
-                          &frame,&consumed)!=0){
+                          &frame,&consumed)!=0 || consumed != req->body_length){
         resp->status_code=400;resp->content_type="text/plain";
-        resp->body="Invalid H4 frame\n";resp->body_length=17;return 0;
+        resp->body="Invalid H4 frame or trailing bytes\n";
+        resp->body_length=strlen(resp->body);return 0;
+    }
+    if (frame.header.sequence == UINT64_MAX) {
+        resp->status_code=400;resp->content_type="text/plain";
+        resp->body="Frame sequence exhausted\n";
+        resp->body_length=strlen(resp->body);return 0;
     }
 
     /* If no frame handler, echo frame info as JSON. */
@@ -326,9 +332,10 @@ static int builtin_h4_frame(const h4s_request *req, h4s_response *resp,
     if(fh){
         static uint8_t resp_payload[4096]; size_t resp_len=0;
         int rc=fh(&frame,resp_payload,sizeof(resp_payload),&resp_len,ud);
-        if(rc!=0){
+        if(rc!=0 || resp_len > sizeof(resp_payload) || resp_len > UINT32_MAX){
             resp->status_code=500;resp->content_type="text/plain";
-            resp->body="Frame handler error\n";resp->body_length=20;return 0;
+            resp->body="Frame handler error or oversized response\n";
+            resp->body_length=strlen(resp->body);return 0;
         }
         /* Encode a response frame (PONG for PING, DATA for DATA/OPEN). */
         http4_frame_header_t rh;
