@@ -55,13 +55,15 @@ envelope (binary) :  [ver:1][flags:1][service_id:4][op_id:4][request_id:8][paylo
 Unlike HTTP 3.0, there is **no integrity gate** between parse and dispatch: 2.1
 has no per-packet MAC, host-identity, replay, or basket checks.
 
-## Status of this sketch
+## Implementation status
 
-- **Implemented:** the envelope and response pack/unpack (textual + binary) in
-  both C (`h21_envelope.c`) and Python (`h21_flow.py`).
-- **Stubs (TODO):** `h21_naming.c` and `h21_pipeline.c` bodies, and the Python
-  `Naming`/`Pipeline` methods — sketched with signatures and TODO markers to be
-  filled in to mirror the HTTP 3.0 core (minus the integrity substrate).
+- C envelope/response pack/unpack is implemented with strict version, flag,
+  and exact-length checks; Python text envelope/response parsing and naming/
+  pipeline dispatch are implemented and covered by regression tests.
+- Native server parsing/serialization is hardened but still synchronous, has no
+  built-in TLS/authentication, and must be deployed behind a protected edge.
+- HTTP/2 stream multiplexing is a design target only. The native server uses
+  HTTP/1.x transport.
 
 ## Build
 
@@ -74,7 +76,7 @@ make syntax    # syntax-only check of all C sources
 
 ## Port and Stream Multiplexing
 
-HTTP 2.1 uses the SLeeLa logical-port model above the HTTP/2 stream layer.
+The logical-port model can sit above an HTTP/2 stream layer in a future transport implementation. The current server does not implement that layer.
 
 ```text
 one transport connection
@@ -98,7 +100,7 @@ HTTP/2 stream identifiers and SLeeLa logical ports are different namespaces and 
 
 ## Download Mode for Files > 50 MB
 
-HTTP 2.0/2.1 uses HTTP/2 streams for transport multiplexing while SLeeLa DOWNLOAD mode provides resumable transfer for files larger than 50 MB. A stream carries FILE-ID and transfer index; resume state survives stream completion.
+The design proposes HTTP/2 streams for multiplexing, while SLeeLa DOWNLOAD metadata describes resumable transfers for files larger than 50 MB. The current server does not implement an HTTP/2 stream engine or filesystem-backed transfer manager. A stream carries FILE-ID and transfer index; resume state survives stream completion.
 
 `SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
 
