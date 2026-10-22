@@ -1,6 +1,6 @@
 # SLeeLa HTTP 6.0 — Status
 
-HTTP 6.0 is an experimental SLeeLa application protocol, not an IETF HTTP/6 standard and not production-certified. The reference server uses cleartext TCP; TLS, peer authentication, application authorization, request deadlines, rate limits, and a complete multiplexed stream state machine are not implemented.
+HTTP 6.0 is an experimental SLeeLa application protocol, not an IETF HTTP/6 standard and not production-certified. The reference server uses cleartext TCP and now binds to loopback by default; TLS, peer authentication, application authorization, request deadlines, rate limits, and a complete multiplexed stream state machine are not implemented.
 
 ## Implemented/documented
 
