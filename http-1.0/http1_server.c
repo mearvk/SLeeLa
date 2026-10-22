@@ -225,6 +225,7 @@ static int parse_request(const char *raw, size_t raw_len, http1_request *req,
         memcpy(h->name, p, nlen);
         h->name[nlen] = '\0';
         str_lower(h->name);
+        if (find_header(req, h->name) >= 0) return -1; /* reject ambiguous duplicate fields */
 
         const char *val = str_trim_left(colon + 1);
         size_t vlen = (size_t)(line_end - val);
@@ -251,18 +252,23 @@ static int parse_request(const char *raw, size_t raw_len, http1_request *req,
         const char *v;
 
         v = get_header(req, "x-sleela-version");
+        if (v && strlen(v) >= sizeof(req->sleela_version)) return -1;
         if (v) snprintf(req->sleela_version, sizeof(req->sleela_version), "%s", v);
 
         v = get_header(req, "x-sleela-accept");
+        if (v && strlen(v) >= sizeof(req->sleela_accept)) return -1;
         if (v) snprintf(req->sleela_accept, sizeof(req->sleela_accept), "%s", v);
 
         v = get_header(req, "x-sleela-port");
+        if (v && strlen(v) >= sizeof(req->sleela_port)) return -1;
         if (v) snprintf(req->sleela_port, sizeof(req->sleela_port), "%s", v);
 
         v = get_header(req, "x-sleela-service-id");
+        if (v && strlen(v) >= sizeof(req->service_id)) return -1;
         if (v) snprintf(req->service_id, sizeof(req->service_id), "%s", v);
 
         v = get_header(req, "x-sleela-op-id");
+        if (v && strlen(v) >= sizeof(req->op_id)) return -1;
         if (v) snprintf(req->op_id, sizeof(req->op_id), "%s", v);
     }
 
