@@ -147,21 +147,43 @@ static int send_response(SLNetHandle fd,const h7s_request*req,const h7s_response
 }
 
 int h7s_download_should_resume(uint64_t cl){return cl>H7S_DOWNLOAD_THRESHOLD;}
+static int h7s_download_text(const char*s,size_t cap,int leaf){
+ if(!s||!s[0])return 0;size_t n=0;
+ for(;s[n];++n){unsigned char c=(unsigned char)s[n];if(n+1>=cap||c<0x20||c==0x7f||c=='|'||c=='\\r'||c=='\\n')return 0;
+  if(leaf&&(c=='/'||c=='\\\\'||c==':'))return 0;}
+ if(leaf&&(!strcmp(s,".")||!strcmp(s,"..")))return 0;return 1;
+}
+static int h7s_parse_u64(const char*s,uint64_t*out){
+ if(!s||!*s||!out)return -1;uint64_t v=0;
+ for(const unsigned char*p=(const unsigned char*)s;*p;++p){if(*p<'0'||*p>'9')return -1;unsigned d=(unsigned)(*p-'0');
+  if(v>(UINT64_MAX-d)/10u)return -1;v=v*10u+d;}
+ *out=v;return 0;
+}
+int h7s_download_should_resume(uint64_t cl){return cl>H7S_DOWNLOAD_THRESHOLD;}
 int h7s_download_serialise(const h7s_download_state*st,char*buf,size_t cap){
-    if(!st||!buf||cap<512)return -1;
-    int n=snprintf(buf,cap,"%s | %s | %s | %s | %llu | %llu | %llu",st->session_id,st->datetime,st->file_id,st->file_name,
-        (unsigned long long)st->index,(unsigned long long)st->offset,(unsigned long long)st->total_size);
-    return(n>0&&(size_t)n<cap)?0:-1;}
+ if(!st||!buf||cap<2||!h7s_download_text(st->session_id,sizeof(st->session_id),0)||
+    !h7s_download_text(st->datetime,sizeof(st->datetime),0)||!h7s_download_text(st->file_id,sizeof(st->file_id),0)||
+    !h7s_download_text(st->file_name,sizeof(st->file_name),1)||st->offset>st->total_size)return -1;
+ int n=snprintf(buf,cap,"%s | %s | %s | %s | %llu | %llu | %llu",st->session_id,st->datetime,st->file_id,st->file_name,
+ (unsigned long long)st->index,(unsigned long long)st->offset,(unsigned long long)st->total_size);
+ return n>0&&(size_t)n<cap?0:-1;
+}
 int h7s_download_parse(const char*line,h7s_download_state*out){
-    if(!line||!out)return -1;memset(out,0,sizeof(*out));
-    char c[2048];snprintf(c,sizeof(c),"%s",line);char*f[7];int cnt=0;char*t=strtok(c,"|");
-    while(t&&cnt<7){while(*t==' '||*t=='\t')++t;size_t l=strlen(t);
-        while(l>0&&(t[l-1]==' '||t[l-1]=='\t'))t[--l]='\0';f[cnt++]=t;t=strtok(NULL,"|");}
-    if(cnt!=7)return -1;
-    snprintf(out->session_id,sizeof(out->session_id),"%s",f[0]);snprintf(out->datetime,sizeof(out->datetime),"%s",f[1]);
-    snprintf(out->file_id,sizeof(out->file_id),"%s",f[2]);snprintf(out->file_name,sizeof(out->file_name),"%s",f[3]);
-    out->index=(uint64_t)strtoull(f[4],NULL,10);out->offset=(uint64_t)strtoull(f[5],NULL,10);
-    out->total_size=(uint64_t)strtoull(f[6],NULL,10);return 0;}
+ if(!line||!out)return -1;size_t len=0;while(len<2048&&line[len])++len;if(len==0||len>=2048)return -1;
+ char c[2048];memcpy(c,line,len+1);char*f[7];size_t fl[7];int count=0;size_t start=0;
+ for(size_t i=0;i<=len;++i){if(i<len&&c[i]!='|')continue;if(count>=7)return -1;
+  size_t a=start,b=i;while(a<b&&(c[a]==' '||c[a]=='\\t'))++a;while(b>a&&(c[b-1]==' '||c[b-1]=='\\t'))--b;
+  if(a==b)return -1;c[b]='\\0';f[count]=c+a;fl[count]=b-a;++count;start=i+1;}
+ if(count!=7)return -1;
+ if(fl[0]>=sizeof(out->session_id)||fl[1]>=sizeof(out->datetime)||fl[2]>=sizeof(out->file_id)||fl[3]>=sizeof(out->file_name))return -1;
+ memset(out,0,sizeof(*out));
+ memcpy(out->session_id,f[0],fl[0]);memcpy(out->datetime,f[1],fl[1]);memcpy(out->file_id,f[2],fl[2]);memcpy(out->file_name,f[3],fl[3]);
+ if(!h7s_download_text(out->session_id,sizeof(out->session_id),0)||!h7s_download_text(out->datetime,sizeof(out->datetime),0)||
+    !h7s_download_text(out->file_id,sizeof(out->file_id),0)||!h7s_download_text(out->file_name,sizeof(out->file_name),1)||
+    h7s_parse_u64(f[4],&out->index)!=0||h7s_parse_u64(f[5],&out->offset)!=0||
+    h7s_parse_u64(f[6],&out->total_size)!=0||out->offset>out->total_size)return -1;
+ return 0;
+}
 
 /* ── built-in routes ────────────────────────────────────────────────── */
 
