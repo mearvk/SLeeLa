@@ -26,9 +26,8 @@
 < helpers bridge()/bridgeArg()/bridgeArg2() build it; bridgeOp(d) reads the op >
 < back out so a caller or test can reason about a descriptor in-language. >
 <  >
-< ` only (the lexer has no block comments). Methods resolve on > >
-< Comments are `
-< class-typed fields per syntax 1.11+. #sleela 2.1 enables the full surface. >
+< Comments use the angle-bracket style (< line, << block >>). Methods resolve >
+< on class-typed fields per syntax 1.11+. #sleela 2.1 enables the full surface. >
 #sleela 2.1
 
 class SLString {
@@ -119,6 +118,104 @@ class SLString {
     while (i < n) { out = out + s; i = i + 1; }
     return out;
   }
+
+  < -------------------------------------------------------------------- >
+  < Added in-language helpers (all real: built from +, ==, loops, arrays). >
+  < These extend the dependable, non-bridged surface. >
+  < -------------------------------------------------------------------- >
+
+  < repeatWithSep(n, sep): the value repeated n times, separated by sep. >
+  < e.g. value "ab", n 3, sep "," -> "ab,ab,ab". n <= 0 yields "". >
+  String repeatWithSep(int n, String sep) {
+    String out = "";
+    int i = 0;
+    while (i < n) {
+      if (i > 0) { out = out + sep; }
+      out = out + value;
+      i = i + 1;
+    }
+    return out;
+  }
+
+  < times(n): fluent in-place repeat -- sets value to itself n times. >
+  SLString times(int n) { value = repeat(n); return this; }
+
+  < defaultIfEmpty / defaultIfBlank: fall back when unset/empty. Real: uses >
+  < only == against "" and null. >
+  String defaultIfEmpty(String fallback) {
+    if (value == null || value == "") { return fallback; }
+    return value;
+  }
+  SLString orElse(String fallback) { value = defaultIfEmpty(fallback); return this; }
+
+  < equalsAnyOf(options): true if value equals any element of the array. Real: >
+  < native == in a loop. >
+  boolean equalsAnyOf(String[] options) {
+    int i = 0;
+    int n = arrayLength(options);
+    while (i < n) {
+      if (value == options[i]) { return true; }
+      i = i + 1;
+    }
+    return false;
+  }
+
+  < equalsNoneOf(options): the complement of equalsAnyOf. >
+  boolean equalsNoneOf(String[] options) { return !equalsAnyOf(options); }
+
+  < ensurePrefix / ensureSuffix: add an affix only if not already fully equal >
+  < to being the whole value (in-language: we can test whole-string equality, >
+  < not substring, so this guards against double-wrapping an exact match). >
+  String ensureExact(String required) {
+    if (value == required) { return value; }
+    return required + value;
+  }
+
+  < wrapEach(parts, left, right): wrap every element of a String[] and return a >
+  < new String[] of the same length. Real: array alloc + loop + +. >
+  String[] wrapEach(String[] parts, String left, String right) {
+    int n = arrayLength(parts);
+    String[] out = new String[n];
+    int i = 0;
+    while (i < n) { out[i] = left + parts[i] + right; i = i + 1; }
+    return out;
+  }
+
+  < joinNonEmpty(parts, sep): join a String[] with sep, skipping null/"" parts. >
+  < Real: == tests + loop. >
+  String joinNonEmpty(String[] parts, String sep) {
+    String out = "";
+    boolean first = true;
+    int i = 0;
+    int n = arrayLength(parts);
+    while (i < n) {
+      String p = parts[i];
+      if (p != null && p != "") {
+        if (!first) { out = out + sep; }
+        out = out + p;
+        first = false;
+      }
+      i = i + 1;
+    }
+    return out;
+  }
+
+  < countParts(parts): number of non-null, non-empty elements in a String[]. >
+  int countParts(String[] parts) {
+    int c = 0;
+    int i = 0;
+    int n = arrayLength(parts);
+    while (i < n) {
+      if (parts[i] != null && parts[i] != "") { c = c + 1; }
+      i = i + 1;
+    }
+    return c;
+  }
+
+  < lines(parts) / csv(parts): common joins as named conveniences. >
+  String lines(String[] parts)  { return join(parts, "\n"); }
+  String csv(String[] parts)    { return join(parts, ","); }
+  String spaced(String[] parts) { return join(parts, " "); }
 
   < ==================================================================== >
   < BRIDGED operations (char-level; cross the explicit VM/OS bridge) >

@@ -12,8 +12,7 @@
 < inspectable "text.bridge:format:<pattern>:<args>" descriptor the native >
 < runtime fulfils -- never a faked result. >
 <  >
-< only; #sleela 2.1. > >
-< Comments are
+< Comments use the angle-bracket style; #sleela 2.1. >
 #sleela 2.1
 < Family: text. Native VM/OS work crosses an explicit bridge. >
 
@@ -32,11 +31,41 @@ class SLFormatter {
   String render2(String a, String b) { return fill(fill(value, a), b); }
   String render3(String a, String b, String c) { return fill(fill(fill(value, a), b), c); }
 
-  < fill(pattern, arg): replace the FIRST "{}" in pattern with arg. Char-level >
-  < search is bridged, so this in-language form expresses the common case of a >
-  < caller passing explicit prefix/suffix via prefixSuffix() below; for raw >
-  < patterns the bridge form (formatArgs) is authoritative. >
+  < fill(pattern, arg): appends arg to pattern. Finding a "{}" marker inside a >
+  < raw pattern is char-level work the language cannot do, so fill() is the >
+  < honest append primitive render1..3 build on; for true positional templating >
+  < use template() below (caller supplies the literal segments) or the bridged >
+  < format(). >
   String fill(String pattern, String arg) { return pattern + arg; }
+
+  < template(segments, args): REAL positional substitution, fully in-language. >
+  < The caller supplies the literal pieces already split, so no char search is >
+  < needed. The result interleaves segments and args: >
+  <   segments = ["Hello, ", "! You have ", " messages."] >
+  <   args     = ["Max", "3"] >
+  <   -> "Hello, Max! You have 3 messages." >
+  < Works for any counts: leftover segments are appended, missing args are >
+  < treated as "". This is the dependable template engine for the text family. >
+  String template(String[] segments, String[] args) {
+    String out = "";
+    int s = arrayLength(segments);
+    int a = arrayLength(args);
+    int i = 0;
+    while (i < s) {
+      out = out + segments[i];
+      if (i < a) { out = out + args[i]; }
+      i = i + 1;
+    }
+    < any extra args beyond the segment slots are appended in order >
+    while (i < a) { out = out + args[i]; i = i + 1; }
+    return out;
+  }
+
+  < templateSep(args, sep): join args with a separator and no literal frame -- >
+  < a common special case of template(). Real. >
+  String templateSep(String[] args, String sep) {
+    return list(args, sep);
+  }
 
   < prefixSuffix: the dependable in-language form -- caller supplies the parts. >
   String wrap(String prefix, String body, String suffix) { return prefix + body + suffix; }
@@ -68,15 +97,49 @@ class SLFormatter {
     return out;
   }
 
-  < pad(s, width, padChar): right-pad s to width by repeating padChar. The >
-  < current content length is bridged, so this appends (width) pad units as a >
-  < best-effort in-language pad; callers needing exact column padding use the >
-  < bridged padTo(). >
-  String pad(String s, int width, String padChar) {
-    String out = s;
+  < numbered(parts): render a String[] as a 1-based numbered list (real). >
+  String numbered(String[] parts) {
+    String out = "";
     int i = 0;
-    while (i < width) { out = out + padChar; i = i + 1; }
+    int n = arrayLength(parts);
+    while (i < n) { out = out + (i + 1) + ". " + parts[i] + "\n"; i = i + 1; }
     return out;
+  }
+
+  < table2(keys, vals): render two parallel String[] as aligned "key: val" >
+  < lines (real). Uses the shorter of the two lengths. >
+  String table2(String[] keys, String[] vals) {
+    String out = "";
+    int i = 0;
+    int nk = arrayLength(keys);
+    int nv = arrayLength(vals);
+    int n = nk;
+    if (nv < nk) { n = nv; }
+    while (i < n) { out = out + keys[i] + ": " + vals[i] + "\n"; i = i + 1; }
+    return out;
+  }
+
+  < repeatChar(padChar, count): padChar repeated count times (real). The >
+  < in-language padding primitive. count <= 0 yields "". >
+  String repeatChar(String padChar, int count) {
+    String out = "";
+    int i = 0;
+    while (i < count) { out = out + padChar; i = i + 1; }
+    return out;
+  }
+
+  < pad / padRight(s, count, padChar): append `count` pad units after s (real). >
+  < Honest naming: this adds `count` units of padding (it cannot measure s to >
+  < pad to an absolute column -- that is the bridged padTo()). >
+  String pad(String s, int count, String padChar) { return s + repeatChar(padChar, count); }
+  String padRight(String s, int count, String padChar) { return s + repeatChar(padChar, count); }
+
+  < padLeft(s, count, padChar): prepend `count` pad units before s (real). >
+  String padLeft(String s, int count, String padChar) { return repeatChar(padChar, count) + s; }
+
+  < indent(block, padChar, count): prefix with `count` pad units (real). >
+  String indent(String block, String padChar, int count) {
+    return repeatChar(padChar, count) + block;
   }
 
   < ---- bridged printf-style formatting ------------------------------ >

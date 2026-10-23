@@ -14,36 +14,61 @@
 < inspectable "text.bridge:op:args" descriptor for the native runtime -- >
 < never a faked result. >
 <  >
-< Unlike the opaque built-in String, this builder DOES know its own length, >
-< only; #sleela 2.1. > >
-< because it counts what it appends. Comments are
+< Unlike the opaque built-in String, this builder tracks how many segments it >
+< has appended; exact character length is char-level and stays bridged. >
+< Comments use the angle-bracket style; #sleela 2.1. >
 #sleela 2.1
 < Family: text. Native VM/OS work crosses an explicit bridge. >
 
 class SLStringBuilder {
 
-  < Accumulated text and a running length of the appended content. >
+  < Accumulated text. >
   String value = "";
-  < characters appended through this builder >
-  int    len   = 0;
+  < number of segments appended through this builder (real, in-language count). >
+  < NOT the character length -- character length is char-level and bridged via >
+  < length()/lengthValue(). >
+  int    segments = 0;
   < number of mutations (append/insert/clear...) >
   int    edits = 0;
 
   < ---- lifecycle ----------------------------------------------------- >
-  void clear()        { value = ""; len = 0; edits = edits + 1; }
+  void clear()        { value = ""; segments = 0; edits = edits + 1; }
   boolean isEmpty()   { return value == ""; }
-  < real: own tracked length >
-  int length()        { return len; }
+  boolean notEmpty()  { return value != ""; }
+  < real, in-language: how many segments have been appended. >
+  int segmentCount()  { return segments; }
   int editCount()     { return edits; }
+  < character length is char-level -> bridged, returned as an honest descriptor. >
+  String length()      { return bridge("length"); }
+  String lengthValue() { return bridge("lengthValue"); }
 
   < ---- in-language appends (return this for fluent chaining) --------- >
-  SLStringBuilder append(String s) { value = value + s; len = len + bridgeLen(s); edits = edits + 1; return this; }
-  SLStringBuilder appendInt(int n) { value = value + n; edits = edits + 1; return this; }
-  SLStringBuilder appendBool(boolean b) { value = value + b; edits = edits + 1; return this; }
-  SLStringBuilder appendLine(String s)  { value = value + s + "\n"; edits = edits + 1; return this; }
+  SLStringBuilder append(String s) { value = value + s; segments = segments + 1; edits = edits + 1; return this; }
+  SLStringBuilder appendInt(int n) { value = value + n; segments = segments + 1; edits = edits + 1; return this; }
+  SLStringBuilder appendBool(boolean b) { value = value + b; segments = segments + 1; edits = edits + 1; return this; }
+  SLStringBuilder appendLine(String s)  { value = value + s + "\n"; segments = segments + 1; edits = edits + 1; return this; }
   SLStringBuilder newline()             { value = value + "\n"; edits = edits + 1; return this; }
-  SLStringBuilder prepend(String s)     { value = s + value; edits = edits + 1; return this; }
+  SLStringBuilder prepend(String s)     { value = s + value; segments = segments + 1; edits = edits + 1; return this; }
   SLStringBuilder space()               { value = value + " "; edits = edits + 1; return this; }
+
+  < appendIf(cond, s): append only when cond is true (real, fluent). >
+  SLStringBuilder appendIf(boolean cond, String s) {
+    if (cond) { value = value + s; segments = segments + 1; edits = edits + 1; }
+    return this;
+  }
+  < appendJoined(parts, sep): append a String[] joined by sep as one segment. >
+  SLStringBuilder appendJoined(String[] parts, String sep) {
+    int i = 0;
+    int n = arrayLength(parts);
+    while (i < n) {
+      if (i > 0) { value = value + sep; }
+      value = value + parts[i];
+      i = i + 1;
+    }
+    segments = segments + 1;
+    edits = edits + 1;
+    return this;
+  }
 
   < repeat(s, n): append s n times (n <= 0 is a no-op). >
   SLStringBuilder repeat(String s, int n) {
@@ -88,11 +113,9 @@ class SLStringBuilder {
     return "text.bridge:" + op + ":" + value + ":" + a + ":" + b;
   }
 
-  < bridgeLen(s): the exact length of an arbitrary string is char-level, so it >
-  < is bridged; append() uses it to keep len approximately honest for literals >
-  < the caller tracks, and callers can request the authoritative value. >
-  < native runtime supplies real len >
-  int bridgeLen(String s) { return 0; }
+  < charLength(s): the exact character length of a string is char-level, so it >
+  < is bridged and returned as an honest descriptor -- never a faked integer. >
+  String charLength(String s) { return "text.bridge:length:" + s; }
 
   String charAt(String idx)                 { return bridgeArg("charAt", idx); }
   String substring(String from, String to)  { return bridgeArg2("substring", from, to); }
@@ -107,7 +130,7 @@ class SLStringBuilder {
 
   < SLCloneable / SLDisposable intent. >
   SLStringBuilder copy() { SLStringBuilder c = new SLStringBuilder(); c.set(value); return c; }
-  void dispose() { value = ""; len = 0; edits = 0; }
+  void dispose() { value = ""; segments = 0; edits = 0; }
 
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, >
