@@ -44,7 +44,7 @@ private:
     std::string parseType(std::vector<annotation::Annotation>* typeAnnotations=nullptr);
     StmtP parseStatement(); std::unique_ptr<Block> parseBlock(); StmtP parseSimpleStatement();
     ExprP parseExpr();
-    StmtP parseIf(); StmtP parseWhile(); StmtP parseDo(); StmtP parseFor(); StmtP parseSwitch(); StmtP parseTry(); StmtP parseSynchronized(); ExprP parseAssignment(); ExprP parseConditional(); ExprP parseOr(); ExprP parseAnd(); ExprP parseBitOr(); ExprP parseBitXor(); ExprP parseBitAnd(); ExprP parseEquality();
+    StmtP parseIf(); StmtP parseWhile(); StmtP parseDo(); StmtP parseFor(); StmtP parseSwitch(); StmtP parseTry(); StmtP parseSynchronized(); ExprP parseAssignment(); ExprP parseStructOffload(); ExprP parseConditional(); ExprP parseOr(); ExprP parseAnd(); ExprP parseBitOr(); ExprP parseBitXor(); ExprP parseBitAnd(); ExprP parseEquality();
     ExprP parseComparison(); ExprP parseShift(); ExprP parseAdditive(); ExprP parseMultiplicative();
     ExprP parseUnary(); ExprP parsePostfix(ExprP base); ExprP parsePrimary();
 };

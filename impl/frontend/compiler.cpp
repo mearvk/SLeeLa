@@ -361,7 +361,14 @@ private:
         if(auto x=dynamic_cast<const BoolLit*>(e)){emit(OP_CONST,slvm_add_const_bool(vm_,x->value?1:0));return;} if(auto x=dynamic_cast<const StrLit*>(e)){emit(OP_CONST,slvm_add_const_str(vm_,x->value.c_str()));return;}
         if(dynamic_cast<const NullLit*>(e)){emit(OP_CONST,addNullConst());return;} if(auto x=dynamic_cast<const VarExpr*>(e)){emitVar(*x);return;} if(auto x=dynamic_cast<const Unary*>(e)){emitUnary(*x);return;}
         if(auto x=dynamic_cast<const RanRefExpr*>(e)){emitRanRef(*x);return;}
-        if(auto x=dynamic_cast<const Binary*>(e)){emitBinary(*x);return;} if(auto x=dynamic_cast<const Call*>(e)){emitCall(*x);return;}
+        if(auto x=dynamic_cast<const Binary*>(e)){
+            // ::: structural-offload send: lower source then receiver, then the
+            // OP_SSEND transport opcode (the VM frames the source element-by-
+            // element into the receiver). The receiver expression evaluates to a
+            // reach handle; OP_SSEND pushes it back so a ::: chain stays fluent.
+            if(x->op==":::"){emitExpr(x->lhs.get());emitExpr(x->rhs.get());emit(OP_SSEND);return;}
+            emitBinary(*x);return;
+        } if(auto x=dynamic_cast<const Call*>(e)){emitCall(*x);return;}
         if(auto x=dynamic_cast<const NewExpr*>(e)){emitNew(*x);return;} if(auto x=dynamic_cast<const MemberAccess*>(e)){emitMember(*x);return;}
         if(auto x=dynamic_cast<const MethodCall*>(e)){emitMethodCall(*x);return;}
         if(auto x=dynamic_cast<const AssignmentExpr*>(e)){emitAssignmentExpr(*x);return;}

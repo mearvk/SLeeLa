@@ -109,8 +109,13 @@ class SLSleelaOpcode {
   static final int BASE_COUNT      = 49;
   < end of shelf 2 (substrate), exclusive >
   static final int SUBSTRATE_COUNT = 98;
-  < end of shelf 3 (full native enum), exclusive >
-  static final int NATIVE_COUNT    = 150;
+  < end of shelf 3 (full native enum), exclusive. Grew to admit OP_UI_CALL (150) >
+  < and OP_SSEND (151): the real opcodes are 0..151, so the count is 152. >
+  static final int NATIVE_COUNT    = 152;
+
+  < OP_SSEND (151): the ::: structural-offload send. A host-shelf service opcode >
+  < that frames a String source element-by-element into a receiver reach. >
+  static final int OP_SSEND = 151;
 
   < Tier ids the monitoring/storage layer pivots on (the "iteration flags"). >
   < not a native opcode (out of range) >

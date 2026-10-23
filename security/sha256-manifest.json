@@ -239,11 +239,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "cc6c4d854b825f386127c76bff5647e5928149f111528c86b95996cab3a18991"
+      "sha256": "0b6ebe4c11076f3e09f45d70fc45d7d5fc62ba055ca5313004cc8926e40caf1c"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "14ed8e1e0be86c1ef637389e02eda708160f89308c91197ffa1c3c91214838d8"
+      "sha256": "47ac2e54aae73529a859d9a80a13c25a9797ffbf3d940a5ca0af388c08cf58b9"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -487,7 +487,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "89deca7f3c1dd4ff54bdd7c3b137180aab1f3cf1eb1003a2a6ee5ad0549f68b9"
+      "sha256": "97ad4671123d6c5a01f830fa8d60561c9f25914dfcc20ee169fca187efda1fcf"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -543,11 +543,11 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "22e3dc3d7e27d0fb89cbff5286b5c85c55a0cd8a097ffb98bdbd031a208ef8de"
+      "sha256": "2706905a186cc8afbd24b2a8bf198a6b9adbfa442413e2fceb3649b9d83016f0"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "a0154237b030655ef1053210a733cdb5e2e48b90c24e484f80f146025be72801"
+      "sha256": "c822044183e4dd11e7061ef9e67abd3b2eea0a88eadf653f47e3079287b9bdec"
     },
     {
       "path": "impl/frontend/library_index.cpp",
@@ -559,11 +559,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "9f6170b568c99a2961cdefb49f7f9ef787b7a724f57db2d6c68af51cf36b2002"
+      "sha256": "d2b058d58ac2ec5020634bb816a80d55b15aa3445310a47234326d4093c8e0e4"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "cd8aa1280b8b3e029777e6a68663256cebf00bea8b44652cfb7628e32925988f"
+      "sha256": "58acd96423993631775d888f59d8ca9d6823515aaa26ef456b4d061e9dc5d280"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -575,7 +575,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "26175c6d18d6159b9b77442988f01cf46290ae878db8d88c727cb6658601a598"
+      "sha256": "1531301f4af525a76ea5bc72b2bc04f00a45b70f0d5d73c5af4c9fe6886c5717"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -4091,7 +4091,7 @@
     },
     {
       "path": "lib/cpu/SLSleelaOpcode.sleela",
-      "sha256": "18e550ff7ffb7813764de1c7d73aa36e2087494a6e70118c28fb14e8dc55039c"
+      "sha256": "8d1f344c0239831132dfbe4cb3437498517b743a639d793b20cfcfbba3ea88f8"
     },
     {
       "path": "lib/cpu/SLSleelaVM.sleela",
@@ -46843,7 +46843,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "e2539ae8db481b5c512a230465749da30ddd5cb84d92e4df1eb232496de7d8d8"
+      "sha256": "e8c9425f5283fc11a211fc1f9ec646a1717a7b5d99b1f6437c55627e48473b34"
     },
     {
       "path": "lib/vm/SLNativeMemory.sleela",

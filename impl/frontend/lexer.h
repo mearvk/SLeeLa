@@ -21,7 +21,7 @@ enum class Tok {
     Assign, Plus, Minus, Star, Slash, Percent, PlusAssign, MinusAssign, StarAssign, SlashAssign, PercentAssign,
     Increment, Decrement, ShiftLeft, ShiftRight, UnsignedShiftRight,
     EqEq, NotEq, Lt, Le, Gt, Ge, AndAnd, OrOr, BitAnd, BitOr, BitXor, Not, BitNot,
-    Question, Colon, DoubleColon, Arrow,
+    Question, Colon, DoubleColon, TripleColon, Arrow,
     Eof
 };
 struct Token { Tok kind; std::string text; int line; int col; };

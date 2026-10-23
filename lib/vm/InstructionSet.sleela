@@ -378,3 +378,9 @@ class SLISAIcMigrate { String name; int code; }
 class SLISAVmSelect { String name; int code; }
 < OP_MODIUM_SCAN 149 >
 class SLISAModiumScan { String name; int code; }
+
+< OP_UI_CALL 150 >
+class SLISAUiCall { String name; int code; }
+
+< OP_SSEND 151 -- the ::: structural-offload send (String source -> receiver reach) >
+class SLISASSend { String name; int code; }
