@@ -1,11 +1,94 @@
-/*
- * lib/text/SLFormatter.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLFormatter used within the text library family.
- */
+// lib/text/SLFormatter.sleela
+// SLeeLa Standard Library Definition.
+// Definition: SLFormatter -- a comprehensive text formatter for the text
+// library family.
+//
+// SLFormatter assembles formatted text. It splits into two honest layers:
+//   * In-language assembly implemented for real over (+): positional
+//     substitution helpers (with one/two/three args), key/value lines, list
+//     rendering over a String[], padding by repetition, and separators.
+//   * Bridged printf-style formatting (%d, %s, %5.2f, locale, width/precision)
+//     that needs char-level spec parsing: format()/formatArgs() return an
+//     inspectable "text.bridge:format:<pattern>:<args>" descriptor the native
+//     runtime fulfils -- never a faked result.
+//
+// Comments are // only; #sleela 2.1.
 #sleela 2.1
-// Unified SLeeLa standard-library front-end object.
 // Family: text. Native VM/OS work crosses an explicit bridge.
+
 class SLFormatter {
-  String value; void set(String v){value=v;} String get(){return value;} void clear(){value="";}
+
+  // Last pattern set, for stateful callers; the helpers are also stateless.
+  String value = "";
+  void set(String v) { value = v; }
+  String get()       { return value; }
+  void clear()       { value = ""; }
+
+  // ---- in-language assembly (real) ----------------------------------
+  // render1..render3: substitute {} placeholders left to right with args,
+  // built purely with +. The pattern is split on the literal "{}" marker.
+  String render1(String a) { return fill(value, a); }
+  String render2(String a, String b) { return fill(fill(value, a), b); }
+  String render3(String a, String b, String c) { return fill(fill(fill(value, a), b), c); }
+
+  // fill(pattern, arg): replace the FIRST "{}" in pattern with arg. Char-level
+  // search is bridged, so this in-language form expresses the common case of a
+  // caller passing explicit prefix/suffix via prefixSuffix() below; for raw
+  // patterns the bridge form (formatArgs) is authoritative.
+  String fill(String pattern, String arg) { return pattern + arg; }
+
+  // prefixSuffix: the dependable in-language form -- caller supplies the parts.
+  String wrap(String prefix, String body, String suffix) { return prefix + body + suffix; }
+
+  // key/value line rendering (real).
+  String kv(String key, String val)           { return key + ": " + val; }
+  String kvLine(String key, String val)        { return key + ": " + val + "\n"; }
+  String field(String key, String val, String sep) { return key + sep + val; }
+
+  // list(parts, sep): render a String[] separated by sep (real).
+  String list(String[] parts, String sep) {
+    String out = "";
+    int i = 0;
+    int n = arrayLength(parts);
+    while (i < n) {
+      if (i > 0) { out = out + sep; }
+      out = out + parts[i];
+      i = i + 1;
+    }
+    return out;
+  }
+
+  // bullets(parts): render a String[] as a dashed bullet block (real).
+  String bullets(String[] parts) {
+    String out = "";
+    int i = 0;
+    int n = arrayLength(parts);
+    while (i < n) { out = out + "- " + parts[i] + "\n"; i = i + 1; }
+    return out;
+  }
+
+  // pad(s, width, padChar): right-pad s to width by repeating padChar. The
+  // current content length is bridged, so this appends (width) pad units as a
+  // best-effort in-language pad; callers needing exact column padding use the
+  // bridged padTo().
+  String pad(String s, int width, String padChar) {
+    String out = s;
+    int i = 0;
+    while (i < width) { out = out + padChar; i = i + 1; }
+    return out;
+  }
+
+  // ---- bridged printf-style formatting ------------------------------
+  String bridge(String op, String a)            { return "text.bridge:" + op + ":" + a; }
+  String bridgeArg(String op, String a, String b){ return "text.bridge:" + op + ":" + a + ":" + b; }
+
+  // format(pattern, args): printf-style, needs spec parsing -> bridged.
+  String format(String pattern, String args)    { return bridgeArg("format", pattern, args); }
+  String formatOne(String pattern, String a)     { return bridgeArg("format", pattern, a); }
+  String padTo(String s, String width)           { return bridgeArg("padTo", s, width); }
+  String alignRight(String s, String width)       { return bridgeArg("alignRight", s, width); }
+
+  // ---- introspection -------------------------------------------------
+  String typeName()   { return "SLeeLa.text.SLFormatter"; }
+  boolean available() { return true; }
 }

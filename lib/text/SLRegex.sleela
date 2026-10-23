@@ -1,11 +1,65 @@
-/*
- * lib/text/SLRegex.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLRegex used within the text library family.
- */
+// lib/text/SLRegex.sleela
+// SLeeLa Standard Library Definition.
+// Definition: SLRegex -- a comprehensive regular-expression contract for the
+// text library family.
+//
+// SLRegex holds a compiled-by-the-runtime pattern and exposes matching through
+// the engine. Regex matching is inherently char-level, so almost all of the
+// real work is bridged; the in-language layer manages the pattern/flags value
+// and the honest result-reporting contract.
+//   * In-language: pattern/flags management, equality of patterns, anchoring
+//     helpers that assemble a new pattern string with +, and flag bookkeeping.
+//   * Bridged: compile, matches, find, findAll, replaceAll, split, groupCount,
+//     group -- each returns an inspectable "text.bridge:re:<op>:..." descriptor
+//     the native regex engine fulfils; never a faked match.
+//
+// Comments are // only; #sleela 2.1.
 #sleela 2.1
-// Unified SLeeLa standard-library front-end object.
 // Family: text. Native VM/OS work crosses an explicit bridge.
+
 class SLRegex {
-  String value; void set(String v){value=v;} String get(){return value;} void clear(){value="";}
+
+  String value = "";       // the pattern source
+  String flags = "";       // e.g. "i", "m", "s", "ix"
+  int    compiled = 0;     // 1 once the runtime has compiled it (via bridge)
+
+  // ---- pattern management (in-language) ------------------------------
+  void set(String v)   { value = v; compiled = 0; }
+  String get()         { return value; }
+  void clear()         { value = ""; flags = ""; compiled = 0; }
+  void setFlags(String f) { flags = f; compiled = 0; }
+  String getFlags()    { return flags; }
+  boolean equals(String other) { return value == other; }
+  boolean isEmpty()    { return value == ""; }
+
+  // Pattern assembly helpers (real, built with +): anchor / group / alternate.
+  String anchored()           { return "^" + value + "$"; }
+  String startAnchored()      { return "^" + value; }
+  String endAnchored()        { return value + "$"; }
+  String grouped()            { return "(" + value + ")"; }
+  String optional()           { return "(?:" + value + ")?"; }
+  String alternate(String other) { return value + "|" + other; }
+  String withFlags()          { return "(?" + flags + ")" + value; }
+
+  // ---- bridged matching (the real engine) ----------------------------
+  String bridge(String op)              { return "text.bridge:re:" + op + ":" + value; }
+  String bridgeArg(String op, String a) { return "text.bridge:re:" + op + ":" + value + ":" + a; }
+  String bridgeArg2(String op, String a, String b) {
+    return "text.bridge:re:" + op + ":" + value + ":" + a + ":" + b;
+  }
+
+  String compile()                        { compiled = 1; return bridge("compile"); }
+  boolean isCompiled()                     { return compiled == 1; }
+  String matches(String input)             { return bridgeArg("matches", input); }
+  String find(String input)                { return bridgeArg("find", input); }
+  String findAll(String input)             { return bridgeArg("findAll", input); }
+  String group(String input, String idx)   { return bridgeArg2("group", input, idx); }
+  String groupCount()                      { return bridge("groupCount"); }
+  String replaceAll(String input, String to){ return bridgeArg2("replaceAll", input, to); }
+  String replaceFirst(String input, String to){ return bridgeArg2("replaceFirst", input, to); }
+  String split(String input)               { return bridgeArg("split", input); }
+
+  // ---- introspection -------------------------------------------------
+  String typeName()   { return "SLeeLa.text.SLRegex"; }
+  boolean available() { return true; }
 }

@@ -46223,15 +46223,15 @@
     },
     {
       "path": "lib/text/SLCharset.sleela",
-      "sha256": "ce91b033dddc46e2277eb116502da222bcf210c849007f944ac05bbebd5599f9"
+      "sha256": "0afa3b7e1e470736b32026f8991f5816877c90e48057ee785892c710cee6b89d"
     },
     {
       "path": "lib/text/SLFormatter.sleela",
-      "sha256": "72a12ffc52dbddb9e4304dde38f89be1256a8d0695fe80c9682ed194c10286c0"
+      "sha256": "efb685440f74399d9bfeb696d8a0839d844150836d1f3b7a4c2c4371e959449a"
     },
     {
       "path": "lib/text/SLRegex.sleela",
-      "sha256": "f65a80df87562659242799bdfd142ec0ba6a185f4abf3b45efb984b5c47ce8a4"
+      "sha256": "89e58bd3deb7e3f48017976d83bae89706f4f2559eda9e8c9f9d40e0c66b70c7"
     },
     {
       "path": "lib/text/SLString.sleela",
@@ -46239,19 +46239,19 @@
     },
     {
       "path": "lib/text/SLStringBuffer.sleela",
-      "sha256": "4dc3e51c233aabb1f5584039634515928b85f890d52dc1161e2383d7259b2534"
+      "sha256": "45f57e34da4b1d3999599b9ffe43d301a1654c31f5cc29fad991e912d1bbfa11"
     },
     {
       "path": "lib/text/SLStringBuilder.sleela",
-      "sha256": "cec34c193d9c4e0476687b48b9675200721e61750817e10cef236b4cb4a19c5a"
+      "sha256": "0c8c2507772762328fcb3b55a4ddd6968d35e0b05843f7038d8ddbd40ccd61c6"
     },
     {
       "path": "lib/text/SLTextReader.sleela",
-      "sha256": "d8fce3edbadd9c9b3f97b4f857c4812b9a9574fc6b9149b9d499c2c20e5ccbda"
+      "sha256": "0671d548c7568434612ec84ff67ee6fbc26ae28096c00c3a824c50ab0ecdb39c"
     },
     {
       "path": "lib/text/SLTextWriter.sleela",
-      "sha256": "5365a67bf3b3a1f5693040aa5eb63c571b8e6b456f4f0228d86f72590e10ac0d"
+      "sha256": "e598c9c0ed85a3bef8fa94413c99023e87e9475d7923b50647cabcd1cb6f2868"
     },
     {
       "path": "lib/ui/SLApplication.sleela",
