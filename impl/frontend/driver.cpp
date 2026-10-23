@@ -989,7 +989,9 @@ static std::string cliProgramName = "sleela";
 static int sleelvacUsage(){
     const std::string &n = cliProgramName;
     std::cerr
-        << "Sleelvac - the SLeeLa compiler\n"
+        << "Sleelvac - the SLeeLa compiler"
+        << " (syntax spec " << sleela::minSupportedSyntax().str()
+        << " - " << sleela::maxSupportedSyntax().str() << ")\n"
         << "\n"
         << "Compiles SLeeLa source into runnable Core artifacts and checks them.\n"
         << "(For running programs, servers, the VM, the registry and JVM-family\n"
@@ -1027,7 +1029,9 @@ static int usage(){
     // front end; sleelvac only documents what it is actually for.
     if(fs::path(cliProgramName).stem().string()=="sleelvac") return sleelvacUsage();
     std::cerr
-        << "Sleela - SLeeLa compiler and runtime front end\n"
+        << "Sleela - SLeeLa compiler and runtime front end"
+        << " (syntax spec " << sleela::minSupportedSyntax().str()
+        << " - " << sleela::maxSupportedSyntax().str() << ")\n"
         << "\n"
         << "Global options (before the command):\n"
         << "  --memory-manager, --mm       Enable the Memory Manager with the default 2 GiB limit\n"

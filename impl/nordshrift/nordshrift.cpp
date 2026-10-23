@@ -48,10 +48,12 @@ extern "C" {
 using namespace nordshrift;
 
 static const char* kVersion =
-    "Nordshrift 2.7.1-dev (NS-SST-0001; source validation; semantic analysis; semantic subject model; Sleelvac™ runnable .sleela target)";
+    "Nordshrift 2.7.1-dev (NS-SST-0001 spec 2.2; source validation; semantic analysis; semantic subject model; Sleelvac™ runnable .sleela target)";
 
 static int usage() {
     std::cerr <<
+        "Nordshrift - the SLeeLa .sst transpiler driver (NS-SST-0001 spec 2.2)\n"
+        "\n"
         "Usage:\n"
         "  nordshrift check <sheet.sst>              validate a sheet; print diagnostics\n"
         "  nordshrift build <sheet.sst>              compile the sheet's sources to its target\n"

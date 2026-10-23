@@ -1,19 +1,23 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  1.11  (1.3..1.10 baseline plus nested classes)
-    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.3 .. 1.11)
+    Syntax version:  2.2  (1.3..1.11 baseline carried forward)
+    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.0 .. 2.2)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.3..1.11 surface
+    Status:          Normative for the syntax 1.3..2.2 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 1.11`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.3 .. 1.11).
+    `#sleela 2.2`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.2).
+    Syntax 2.2 is the current spec level: it adds **generic type signatures**
+    (type parameters on classes and methods, parameterized types, and
+    wildcards — section 16), with the 1.3..1.11 feature surface described below
+    carried forward unchanged.
     Syntax 1.11 adds **nested classes** (section 14): a class body may declare
     one level of nested class. The "rule of two" bounds lexical nesting to
     depth 2 (the enclosing class and one nested class); to go deeper, declare
@@ -46,7 +50,7 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax 1.3..1.8 surface the front end accepts.
+This document is normative for the syntax 1.3..2.2 surface the front end accepts.
 Every production and built-in below is implemented in `impl/frontend` and
 executes on `impl/core`.
 
@@ -147,7 +151,7 @@ SLeeLa source only states the framing intent. Example (x already has a value):
     program     ::= top-decl+
     top-decl    ::= struct-decl | class-decl
     struct-decl ::= "struct" ident "{" struct-field* "}"   // §3.4 (syntax 1.2+)
-    class-decl  ::= "class" ident "{" member* "}"
+    class-decl  ::= "class" ident [type-params] "{" member* "}"   // type-params: §16 (2.2+)
     member      ::= field-decl | method-decl | nested-class   // nested: §14 (syntax 1.11+)
     nested-class::= "class" ident "{" (field-decl | method-decl)* "}"  // one level only
 
@@ -164,12 +168,21 @@ A program is one or more classes, optionally preceded or interleaved with
                  | unsigned-type
                  | character-set-type
                  | struct-name                      // any declared struct (1.2+)
+                 | generic-type                      // §16 (syntax 2.2+)
 
     unsigned-type ::= ident                        // if it matches U[1-9][0-9]*
     character-set-type ::= ident                   // if it matches C[1-9][0-9]*
     // U<n>: value-bit width 1..1048576.
     // C<n>: character-entry capacity 1..1048576.
     // Both forms are lexed as identifiers; type resolution validates the whole name.
+
+    // generic-type: a reference type applied to type arguments (§16, 2.2+),
+    // e.g. Class<?>, Box<Thing>, Collection<? extends java.lang.Number>.
+    // A type argument is a reference-type name or a wildcard — NOT a keyword
+    // primitive/String (so List<String> is rejected; see §16.4).
+    generic-type   ::= qualified-name "<" type-arg ("," type-arg)* ">"
+    type-arg       ::= generic-type | qualified-name | wildcard
+    wildcard       ::= "?" [("extends" | "super") (generic-type | qualified-name)]
 
 `U<n>` is an unsigned, fixed-width integer type whose width `n` is a decimal integer in the inclusive range `1..1048576`; leading zeroes, zero, non-decimal characters, and widths above `1048576` are invalid. Its value range is `0..(2^n - 1)`. For example, `U1`, `U8`, `U16`, `U32`, `U64`, and `U1048576` are valid type names. Width and unsignedness must be preserved in compiler signatures and VM/module metadata; implementations must not silently lower values to signed or fixed 64-bit host integers. A runtime operation not yet supported for a width must produce an explicit diagnostic. `int` remains 64-bit. `void` is a return type only. The core is dynamically typed
 underneath; syntax 1.2 scalar type annotations are surface-level (parsed, not
@@ -207,9 +220,16 @@ that spawned threads (§7) read or write.
     method-decl ::= ["static"] type ident "(" params? ")" block
     params      ::= param ("," param)*
     param       ::= type ident
+    // type-params: a class (not a method) may carry a leading type-parameter
+    // list — §16.2 (2.2+). Method-level type parameters are NOT accepted (§16.4).
+    type-params ::= "<" type-param ("," type-param)* ">"
+    type-param  ::= ident ["extends" type ("&" type)*]
 
 `static` is accepted and optional; all methods behave as static (bound to the
 class, not an instance). Method **locals** are per-thread; **fields** are shared.
+A **class** declaration may carry leading type parameters
+(`class Box<T extends Number> { ... }`); they parse as a signature-level
+annotation (§16.2). Method-level type parameters are not accepted (§16.4).
 
 ### 3.4 Structs (syntax 1.2+)
 
@@ -975,3 +995,79 @@ It may be overridden by a caller, summarized by a catalog, or left at baseline
 by a worker-class author — but it must never assert a false author, a
 fabricated schedule, or an inflated scope. Honesty of the record is what lets
 the higher classes of Sleela intellect rely on it to set the pace.
+
+## 16. Syntax 2.2 — generic type signatures
+
+Syntax 2.2 is the normative home of **generic type signatures**: parameterized
+reference types and wildcards in type positions. The feature carries the
+Java-family authorship surface (the `java.*` transition corpus under
+`impl/tests/java_transition/`) into the Sleela grammar so that JDK-mirrored
+declarations — most visibly `java.lang.Object` itself (`Class<?> getClass()`) —
+have a defined form here. This section states exactly what the front end
+accepts; the forms it does **not** yet accept are listed in §16.4 so that a
+document relying on 2.2 does not mistake planned surface for implemented
+surface.
+
+### 16.1 Parameterized reference types (use side)
+
+A declared or qualified reference type may be **applied to type arguments** in a
+type position — a field, parameter, return, or local *type*. A type argument is
+either a **reference-type name** (a bare or dotted class name, which may itself
+be parameterized) or a **wildcard** `?`, optionally bounded with `extends`
+(upper) or `super` (lower):
+
+    Class<?>                                  raw;      // return/param/field type
+    Box<Thing>                                boxed;
+    java.util.Collection<? extends java.lang.Number>  reading;
+
+The grammar is given in §3.1 (`generic-type`, `type-arg`, `wildcard`). Nesting a
+parameterized argument is permitted (`Holder<Box<Thing>>`). The angle brackets
+here are part of a type and are distinct from the `<`/`>` comparison operators
+(§1.5) and from the scalar `U<n>`/`C<n>` parameterized families (§3.1), which
+take a decimal parameter rather than a type argument.
+
+### 16.2 Class type parameters (declaration side)
+
+A class may declare leading **type parameters** (§3.3 `type-params`):
+
+    class Box<T extends java.lang.Number> { ... }
+
+The declaration parses and the parameter list is retained in the class's Java
+metadata. A type variable (`T`) is **not**, however, resolved as a usable type
+inside the body in this release: a field or local declared with type `T` is
+reported as an unknown type. Treat class type parameters as a **parsed,
+signature-level** annotation — useful for JDK-mirrored authorship and
+round-trip — not as a type you can name in member declarations yet.
+
+### 16.3 Semantics — erasure
+
+The analyzer treats generics by **type erasure**, as on the JVM: a parameterized
+type is judged by its **erased raw head** — the name to the left of `<` — and
+the type arguments do **not** participate in known-ness or assignability
+decisions. `Class<?>` erases to `Class`, `Box<Thing>` to `Box`. Generics are
+therefore a **surface-level** contract in the same spirit as the syntax 1.2
+scalar annotations (§3.1): they are parsed, checked for well-formedness, and
+carried in signatures/metadata, but they do not introduce a reified runtime
+type. This is what lets `Class<?> getClass()` type-check without a
+generic-instantiation model.
+
+### 16.4 Not yet accepted (explicitly out of scope)
+
+The following Java generic forms are recognized as intended surface but are
+**rejected** by this front end; do not infer their support from §16.1–16.2:
+
+- **Method-level type parameters** — a leading `<R ...>` on a *method* (as in
+  `<R extends Object> R convert(...)`) is a syntax error. Only class type
+  parameters parse (§16.2).
+- **Keyword primitives / `String` as a type argument** — `List<String>`,
+  `Map<String, int>` and the like are rejected, because a type argument is
+  parsed as a reference-type name, not a keyword type. Use the reference form
+  the library exposes, or an unparameterized type, until this is lifted.
+- **Instantiation-aware checking** — type arguments are erased (§16.3); there
+  is no checking that an argument satisfies a declared bound at a use site.
+
+### 16.5 Version gate
+
+Generic type signatures are specified by `#sleela 2.2`. They are accepted across
+the 2.x surface the front end drives (documented supported range 1.0 .. 2.2);
+2.2 is the version a document should declare to rely on them normatively.
