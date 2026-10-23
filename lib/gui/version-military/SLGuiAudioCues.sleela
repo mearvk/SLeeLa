@@ -56,19 +56,25 @@ class SLGuiAudioCues {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_CUES = 32;
 
-  String[] cueNames;    // cue name, e.g. "click", "confirm", "error"
-  String[] cueAssets;   // host-resolvable audio asset for the cue
+  < cue name, e.g. "click", "confirm", "error" >
+  String[] cueNames;
+  < host-resolvable audio asset for the cue >
+  String[] cueAssets;
   int cueCount;
 
-  int enabled;          // 1 = activation audio is on globally
-  int muted;            // 1 = temporarily silenced (enabled stays as-is)
-  int masterGainPct;    // 0..100 % master playback gain
-  int played;           // total cues dispatched to the host
+  < 1 = activation audio is on globally >
+  int enabled;
+  < 1 = temporarily silenced (enabled stays as-is) >
+  int muted;
+  < 0..100 % master playback gain >
+  int masterGainPct;
+  < total cues dispatched to the host >
+  int played;
 
   void configure() {
     cueNames = new String[MAX_CUES]; cueAssets = new String[MAX_CUES]; cueCount = 0;
     enabled = 1; muted = 0; masterGainPct = 80; played = 0;
-    // A small, sensible default cue set (host maps the assets).
+    < A small, sensible default cue set (host maps the assets). >
     register("click",   "audio/ui/click.wav");
     register("confirm", "audio/ui/confirm.wav");
     register("toggle",  "audio/ui/toggle.wav");
@@ -77,7 +83,7 @@ class SLGuiAudioCues {
 
   int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
 
-  // Register (or re-point) a named cue. Returns false when the bank is full.
+  < Register (or re-point) a named cue. Returns false when the bank is full. >
   boolean register(String name, String asset) {
     if (name == null) { return false; }
     int i = indexOf(name);
@@ -98,7 +104,7 @@ class SLGuiAudioCues {
   }
   int cues() { return cueCount; }
 
-  // Master controls.
+  < Master controls. >
   void setEnabled(boolean on) { enabled = on ? 1 : 0; }
   boolean isEnabled() { return enabled == 1; }
   void mute() { muted = 1; }
@@ -107,11 +113,11 @@ class SLGuiAudioCues {
   void setMasterGainPct(int pct) { masterGainPct = clamp(pct, 0, 100); }
   int getMasterGainPct() { return masterGainPct; }
 
-  // Whether a given cue would actually sound now (registered, on, not muted).
+  < Whether a given cue would actually sound now (registered, on, not muted). >
   boolean audible(String name) { return enabled == 1 && muted == 0 && has(name); }
 
-  // Dispatch a cue for the host to play at the given node-level gain, scaled by
-  // the master gain. Returns the effective gain (0..100), or -1 when silent.
+  < Dispatch a cue for the host to play at the given node-level gain, scaled by >
+  < the master gain. Returns the effective gain (0..100), or -1 when silent. >
   int play(String name, int nodeGainPct) {
     if (!audible(name)) { return -1; }
     int g = clamp(nodeGainPct, 0, 100);

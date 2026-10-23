@@ -68,10 +68,14 @@ class SLControlUnit {
   SLStack stack;
   int halted;
   int executed;
-  int syscallVector;   // address the OS installed for SYSCALL
-  int trapVector;      // address installed for TRAP (faults / guest exits)
-  int lastSyscall;     // last syscall number requested (for the kernel to read)
-  int lastTrap;        // last trap number requested
+  < address the OS installed for SYSCALL >
+  int syscallVector;
+  < address installed for TRAP (faults / guest exits) >
+  int trapVector;
+  < last syscall number requested (for the kernel to read) >
+  int lastSyscall;
+  < last trap number requested >
+  int lastTrap;
 
   void configure(SLInstructionSet instructionSet, SLInstructionDecoder dec,
                  SLRegisterFile registers, SLALU unit, SLProgramCounter counter,
@@ -91,8 +95,8 @@ class SLControlUnit {
   void clearSyscall() { lastSyscall = -1; }
   void clearTrap() { lastTrap = -1; }
 
-  // Execute exactly one instruction at the current PC. Returns the opcode run,
-  // or -1 if the core is halted.
+  < Execute exactly one instruction at the current PC. Returns the opcode run, >
+  < or -1 if the core is halted. >
   int step() {
     if (halted == 1) { return -1; }
     int word = memory.readWord(pc.value());
@@ -106,7 +110,7 @@ class SLControlUnit {
     if (op == isa.HALT) { halted = 1; return op; }
     if (op == isa.NOP)  { pc.increment(); return op; }
 
-    // ---- data movement ----
+    < ---- data movement ---- >
     if (op == isa.MOV)    { regs.write(rd, imm); pc.increment(); return op; }
     if (op == isa.MOVR)   { regs.write(rd, regs.read(rs)); pc.increment(); return op; }
     if (op == isa.LOAD)   { regs.write(rd, memory.readWord(imm)); pc.increment(); return op; }
@@ -116,7 +120,7 @@ class SLControlUnit {
     if (op == isa.STORER) { memory.writeWord(regs.read(rd), regs.read(rs)); pc.increment(); return op; }
     if (op == isa.STOREX) { memory.writeWord(regs.read(rd) + imm, regs.read(rs)); pc.increment(); return op; }
 
-    // ---- arithmetic / logic (register-register, result in rd) ----
+    < ---- arithmetic / logic (register-register, result in rd) ---- >
     if (isa.isArithmetic(op)) {
       int a = regs.read(rd);
       int b = regs.read(rs);
@@ -127,7 +131,7 @@ class SLControlUnit {
       return op;
     }
 
-    // ---- compare (sets flags only) ----
+    < ---- compare (sets flags only) ---- >
     if (op == isa.CMP) {
       alu.execute(regs.read(rd), regs.read(rs), alu.OP_SUB);
       status.setFromALU(alu);
@@ -135,29 +139,31 @@ class SLControlUnit {
       return op;
     }
 
-    // ---- branches ----
+    < ---- branches ---- >
     if (op == isa.JMP) { pc.branchTo(imm); return op; }
     if (op == isa.JZ)  { if (status.zeroFlag() == 1) { pc.branchTo(imm); } else { pc.increment(); } return op; }
     if (op == isa.JNZ) { if (status.zeroFlag() == 0) { pc.branchTo(imm); } else { pc.increment(); } return op; }
     if (op == isa.JLT) { if (status.negativeFlag() == 1) { pc.branchTo(imm); } else { pc.increment(); } return op; }
     if (op == isa.JGE) { if (status.negativeFlag() == 0) { pc.branchTo(imm); } else { pc.increment(); } return op; }
 
-    // ---- call / return / stack ----
+    < ---- call / return / stack ---- >
     if (op == isa.CALL) {
-      stack.push(pc.value() + 1);   // return address = instruction after CALL
+      < return address = instruction after CALL >
+      stack.push(pc.value() + 1);
       pc.branchTo(imm);
       return op;
     }
     if (op == isa.RET) {
       int ret = stack.pop();
-      if (ret < 0) { raiseTrap(1); return op; } // stack underflow fault
+      < stack underflow fault >
+      if (ret < 0) { raiseTrap(1); return op; }
       pc.branchTo(ret);
       return op;
     }
     if (op == isa.PUSH) { stack.push(regs.read(rs)); pc.increment(); return op; }
     if (op == isa.POP)  { regs.write(rd, stack.pop()); pc.increment(); return op; }
 
-    // ---- system ----
+    < ---- system ---- >
     if (op == isa.SYSCALL) {
       lastSyscall = imm;
       status.enterSupervisorMode();
@@ -166,19 +172,19 @@ class SLControlUnit {
     }
     if (op == isa.TRAP) { raiseTrap(imm); return op; }
 
-    // Unknown opcode: fault.
+    < Unknown opcode: fault. >
     raiseTrap(2);
     return op;
   }
 
-  // Deliver a trap: record it and vector to the handler (or just advance).
+  < Deliver a trap: record it and vector to the handler (or just advance). >
   void raiseTrap(int number) {
     lastTrap = number;
     status.enterSupervisorMode();
     if (trapVector != 0) { stack.push(pc.value() + 1); pc.branchTo(trapVector); } else { pc.increment(); }
   }
 
-  // Map ISA arithmetic opcodes onto SLALU operation selectors.
+  < Map ISA arithmetic opcodes onto SLALU operation selectors. >
   int toAluOp(int op) {
     if (op == isa.ADD) { return alu.OP_ADD; }
     if (op == isa.SUB) { return alu.OP_SUB; }
@@ -195,7 +201,7 @@ class SLControlUnit {
     return alu.OP_PASS;
   }
 
-  // Run until HALT or until the instruction budget is exhausted (safety bound).
+  < Run until HALT or until the instruction budget is exhausted (safety bound). >
   int run(int budget) {
     int ran = 0;
     while (halted == 0 && ran < budget) { step(); ran = ran + 1; }

@@ -63,7 +63,7 @@ class SLVmProfile {
   static final int OP_BRIDGE    = 5;
   static final int OP_PRINT     = 6;
 
-  // counts + nanos per family (numbered; no arrays on the surface)
+  < counts + nanos per family (numbered; no arrays on the surface) >
   int cArith; int cControl; int cLoad; int cCall; int cStruct; int cBridge; int cPrint;
   int nArith; int nControl; int nLoad; int nCall; int nStruct; int nBridge; int nPrint;
 
@@ -72,8 +72,8 @@ class SLVmProfile {
     nArith=0;nControl=0;nLoad=0;nCall=0;nStruct=0;nBridge=0;nPrint=0;
   }
 
-  // attribute one dispatch of a family (nanos may be 0 for a count-only tick),
-  // and bump telemetry STEPS (and BRIDGE for native-bridge families).
+  < attribute one dispatch of a family (nanos may be 0 for a count-only tick), >
+  < and bump telemetry STEPS (and BRIDGE for native-bridge families). >
   void attribute(int family, int nanos, SLVmTelemetry tel) {
     if (family == OP_ARITH)     { cArith=cArith+1; nArith=nArith+nanos; }
     else if (family == OP_CONTROL)   { cControl=cControl+1; nControl=nControl+nanos; }
@@ -95,7 +95,7 @@ class SLVmProfile {
     return nPrint;
   }
 
-  // the family with the most accumulated time (the hot path).
+  < the family with the most accumulated time (the hot path). >
   int hot() {
     int best = 0; int bi = OP_ARITH;
     int i = 0;

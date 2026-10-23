@@ -54,18 +54,18 @@ class SLMacOSModel extends SLOSModel {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Build a macOS-shaped model with the given product name/version on arm64.
+  < Build a macOS-shaped model with the given product name/version on arm64. >
   void build(String name, String ver) {
     configure(name, ver);
     shapeAs("macOS", "arm64");
-    // Layer the Apple frameworks and shell components.
+    < Layer the Apple frameworks and shell components. >
     packageSet().add("Foundation", "24.0");
     packageSet().add("AppKit", "24.0");
     packageSet().add("Finder", "24.0");
     packageSet().add("Dock", "24.0");
   }
 
-  // Build a universal macOS model (adds the x86_64 target alongside arm64).
+  < Build a universal macOS model (adds the x86_64 target alongside arm64). >
   void buildUniversal(String name, String ver) {
     build(name, ver);
     architectures().addTarget("amd64");

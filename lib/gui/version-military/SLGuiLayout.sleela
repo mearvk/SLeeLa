@@ -53,36 +53,45 @@ class SLGuiLayout {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Layout mode for a container's children.
-  static final int MODE_FLOW   = 0;   // pack children in order (box-like)
-  static final int MODE_GRID   = 1;   // rows x cols grid
-  static final int MODE_ANCHOR = 2;   // anchor edges to the parent
-  static final int MODE_ABSOLUTE = 3; // exact x/y/w/h, no auto layout
-  static final int MODE_DOCK   = 4;   // dock to a parent side
+  < Layout mode for a container's children. >
+  < pack children in order (box-like) >
+  static final int MODE_FLOW   = 0;
+  < rows x cols grid >
+  static final int MODE_GRID   = 1;
+  < anchor edges to the parent >
+  static final int MODE_ANCHOR = 2;
+  < exact x/y/w/h, no auto layout >
+  static final int MODE_ABSOLUTE = 3;
+  < dock to a parent side >
+  static final int MODE_DOCK   = 4;
 
-  // Alignment within the available space.
+  < Alignment within the available space. >
   static final int ALIGN_START  = 0;
   static final int ALIGN_CENTER = 1;
   static final int ALIGN_END    = 2;
   static final int ALIGN_STRETCH= 3;
 
-  // Dock sides.
+  < Dock sides. >
   static final int DOCK_NONE = 0;
   static final int DOCK_LEFT = 1; static final int DOCK_TOP = 2;
   static final int DOCK_RIGHT = 3; static final int DOCK_BOTTOM = 4;
   static final int DOCK_FILL = 5;
 
   int mode;
-  // Exact position / size (used in MODE_ABSOLUTE; also the measured rect).
+  < Exact position / size (used in MODE_ABSOLUTE; also the measured rect). >
   int x; int y; int width; int height;
-  // Flow/grid parameters.
-  int rows; int cols;    // grid dimensions (MODE_GRID)
-  int gapPx;             // gap between children, 0..256
-  int padLeft; int padTop; int padRight; int padBottom;  // container padding
+  < Flow/grid parameters. >
+  < grid dimensions (MODE_GRID) >
+  int rows; int cols;
+  < gap between children, 0..256 >
+  int gapPx;
+  < container padding >
+  int padLeft; int padTop; int padRight; int padBottom;
   int alignH; int alignV;
-  // Anchor edges (1 = edge pinned to the parent) for MODE_ANCHOR.
+  < Anchor edges (1 = edge pinned to the parent) for MODE_ANCHOR. >
   int anchorLeft; int anchorTop; int anchorRight; int anchorBottom;
-  int dock;              // DOCK_* for MODE_DOCK
+  < DOCK_* for MODE_DOCK >
+  int dock;
 
   void configure() {
     mode = MODE_FLOW;
@@ -96,8 +105,8 @@ class SLGuiLayout {
 
   int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
 
-  // ---- exact positioning --------------------------------------------------
-  // Place a component exactly (switches the mode to ABSOLUTE).
+  < ---- exact positioning -------------------------------------------------- >
+  < Place a component exactly (switches the mode to ABSOLUTE). >
   void placeExact(int px, int py, int w, int h) {
     mode = MODE_ABSOLUTE;
     x = px; y = py;
@@ -110,7 +119,7 @@ class SLGuiLayout {
   int getWidth() { return width; }
   int getHeight() { return height; }
 
-  // ---- layout modes -------------------------------------------------------
+  < ---- layout modes ------------------------------------------------------- >
   void flow(int horizontalAlign, int verticalAlign) {
     mode = MODE_FLOW; alignH = validAlign(horizontalAlign); alignV = validAlign(verticalAlign);
   }
@@ -123,7 +132,7 @@ class SLGuiLayout {
   void dockTo(int side) { mode = MODE_DOCK; if (side >= DOCK_NONE && side <= DOCK_FILL) { dock = side; } }
   int validAlign(int a) { return (a >= ALIGN_START && a <= ALIGN_STRETCH) ? a : ALIGN_START; }
 
-  // ---- spacing ------------------------------------------------------------
+  < ---- spacing ------------------------------------------------------------ >
   void setGap(int px) { gapPx = clamp(px, 0, 256); }
   void setPadding(int l, int t, int r, int b) {
     padLeft = clamp(l, 0, 512); padTop = clamp(t, 0, 512);
@@ -131,7 +140,7 @@ class SLGuiLayout {
   }
   void setPaddingAll(int p) { setPadding(p, p, p, p); }
 
-  // ---- readers ------------------------------------------------------------
+  < ---- readers ------------------------------------------------------------ >
   int getMode() { return mode; }
   int getRows() { return rows; }
   int getCols() { return cols; }
@@ -149,7 +158,7 @@ class SLGuiLayout {
     return "flow";
   }
 
-  // Serialize to a style descriptor the reconciler applies ("layout:...").
+  < Serialize to a style descriptor the reconciler applies ("layout:..."). >
   String toStyle() {
     if (mode == MODE_ABSOLUTE) {
       return "layout:absolute/" + x + "/" + y + "/" + width + "/" + height + ";";

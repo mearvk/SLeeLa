@@ -1,38 +1,42 @@
-// lib/text/SLStringBuilder.sleela
-// SLeeLa Standard Library Definition.
-// Definition: SLStringBuilder -- a comprehensive mutable text builder for the
-// text library family.
-//
-// SLStringBuilder accumulates text efficiently through the one native
-// text-producing operator (+). It is organised like the rest of the text
-// surface in two honest layers:
-//   * In-language ops implemented for real: append (String/int/boolean),
-//     appendLine, prepend, insertAt via split-join over a String[] of chunks,
-//     repeat, join, clear, length-of-own-contents (tracked), toString.
-//   * Bridged char-level ops (charAt, substring, reverse, indexOf, deleteRange)
-//     that need raw code units the language cannot index: each returns an
-//     inspectable "text.bridge:op:args" descriptor for the native runtime --
-//     never a faked result.
-//
-// Unlike the opaque built-in String, this builder DOES know its own length,
-// because it counts what it appends. Comments are // only; #sleela 2.1.
+< lib/text/SLStringBuilder.sleela >
+< SLeeLa Standard Library Definition. >
+< Definition: SLStringBuilder -- a comprehensive mutable text builder for the >
+< text library family. >
+<  >
+< SLStringBuilder accumulates text efficiently through the one native >
+< text-producing operator (+). It is organised like the rest of the text >
+< surface in two honest layers: >
+< * In-language ops implemented for real: append (String/int/boolean), >
+< appendLine, prepend, insertAt via split-join over a String[] of chunks, >
+< repeat, join, clear, length-of-own-contents (tracked), toString. >
+< * Bridged char-level ops (charAt, substring, reverse, indexOf, deleteRange) >
+< that need raw code units the language cannot index: each returns an >
+< inspectable "text.bridge:op:args" descriptor for the native runtime -- >
+< never a faked result. >
+<  >
+< Unlike the opaque built-in String, this builder DOES know its own length, >
+< only; #sleela 2.1. > >
+< because it counts what it appends. Comments are
 #sleela 2.1
-// Family: text. Native VM/OS work crosses an explicit bridge.
+< Family: text. Native VM/OS work crosses an explicit bridge. >
 
 class SLStringBuilder {
 
-  // Accumulated text and a running length of the appended content.
+  < Accumulated text and a running length of the appended content. >
   String value = "";
-  int    len   = 0;        // characters appended through this builder
-  int    edits = 0;        // number of mutations (append/insert/clear...)
+  < characters appended through this builder >
+  int    len   = 0;
+  < number of mutations (append/insert/clear...) >
+  int    edits = 0;
 
-  // ---- lifecycle -----------------------------------------------------
+  < ---- lifecycle ----------------------------------------------------- >
   void clear()        { value = ""; len = 0; edits = edits + 1; }
   boolean isEmpty()   { return value == ""; }
-  int length()        { return len; }        // real: own tracked length
+  < real: own tracked length >
+  int length()        { return len; }
   int editCount()     { return edits; }
 
-  // ---- in-language appends (return this for fluent chaining) ---------
+  < ---- in-language appends (return this for fluent chaining) --------- >
   SLStringBuilder append(String s) { value = value + s; len = len + bridgeLen(s); edits = edits + 1; return this; }
   SLStringBuilder appendInt(int n) { value = value + n; edits = edits + 1; return this; }
   SLStringBuilder appendBool(boolean b) { value = value + b; edits = edits + 1; return this; }
@@ -41,7 +45,7 @@ class SLStringBuilder {
   SLStringBuilder prepend(String s)     { value = s + value; edits = edits + 1; return this; }
   SLStringBuilder space()               { value = value + " "; edits = edits + 1; return this; }
 
-  // repeat(s, n): append s n times (n <= 0 is a no-op).
+  < repeat(s, n): append s n times (n <= 0 is a no-op). >
   SLStringBuilder repeat(String s, int n) {
     int i = 0;
     while (i < n) { value = value + s; i = i + 1; }
@@ -49,7 +53,7 @@ class SLStringBuilder {
     return this;
   }
 
-  // join(parts, sep): append a String[] joined by sep.
+  < join(parts, sep): append a String[] joined by sep. >
   SLStringBuilder join(String[] parts, String sep) {
     int i = 0;
     int n = arrayLength(parts);
@@ -62,7 +66,7 @@ class SLStringBuilder {
     return this;
   }
 
-  // appendAll(parts): append every element of a String[].
+  < appendAll(parts): append every element of a String[]. >
   SLStringBuilder appendAll(String[] parts) {
     int i = 0;
     int n = arrayLength(parts);
@@ -71,23 +75,24 @@ class SLStringBuilder {
     return this;
   }
 
-  // ---- result --------------------------------------------------------
+  < ---- result -------------------------------------------------------- >
   String toString()  { return value; }
   String get()       { return value; }
   void set(String v) { value = v; edits = edits + 1; }
 
-  // ---- bridged char-level operations ---------------------------------
-  // Need the raw code units; cross the VM/OS bridge with an honest descriptor.
+  < ---- bridged char-level operations --------------------------------- >
+  < Need the raw code units; cross the VM/OS bridge with an honest descriptor. >
   String bridge(String op)              { return "text.bridge:" + op + ":" + value; }
   String bridgeArg(String op, String a) { return "text.bridge:" + op + ":" + value + ":" + a; }
   String bridgeArg2(String op, String a, String b) {
     return "text.bridge:" + op + ":" + value + ":" + a + ":" + b;
   }
 
-  // bridgeLen(s): the exact length of an arbitrary string is char-level, so it
-  // is bridged; append() uses it to keep len approximately honest for literals
-  // the caller tracks, and callers can request the authoritative value.
-  int bridgeLen(String s) { return 0; }      // native runtime supplies real len
+  < bridgeLen(s): the exact length of an arbitrary string is char-level, so it >
+  < is bridged; append() uses it to keep len approximately honest for literals >
+  < the caller tracks, and callers can request the authoritative value. >
+  < native runtime supplies real len >
+  int bridgeLen(String s) { return 0; }
 
   String charAt(String idx)                 { return bridgeArg("charAt", idx); }
   String substring(String from, String to)  { return bridgeArg2("substring", from, to); }
@@ -96,18 +101,18 @@ class SLStringBuilder {
   String reverse()                          { return bridge("reverse"); }
   String indexOf(String needle)             { return bridgeArg("indexOf", needle); }
 
-  // ---- introspection -------------------------------------------------
+  < ---- introspection ------------------------------------------------- >
   String typeName()   { return "SLeeLa.text.SLStringBuilder"; }
   boolean available() { return true; }
 
-  // SLCloneable / SLDisposable intent.
+  < SLCloneable / SLDisposable intent. >
   SLStringBuilder copy() { SLStringBuilder c = new SLStringBuilder(); c.set(value); return c; }
   void dispose() { value = ""; len = 0; edits = 0; }
 
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override each record.
-  // Values are faithful to the subject's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, >
+  < or catalog can read and (where appropriate) override each record. >
+  < Values are faithful to the subject's real origin where publicly known. >
   String metaVersion = "1.0.0";
   int metaId = 1;
   String metaAuthor = "SLeeLa standard library";

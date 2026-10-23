@@ -56,8 +56,10 @@ class SLVMModule {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
-  int state;              // 0 unloaded, 1 loaded, 2 linked
-  SLSleelaVM substrate;   // the canonical-opcode engine shared by all methods
+  < 0 unloaded, 1 loaded, 2 linked >
+  int state;
+  < the canonical-opcode engine shared by all methods >
+  SLSleelaVM substrate;
 
   int classCount;
   SLVMClass k0; SLVMClass k1; SLVMClass k2; SLVMClass k3;
@@ -66,9 +68,9 @@ class SLVMModule {
   int entryClassId;
   String entryMethod;
 
-  // Stated access semantics this module was compiled with (null until adopted
-  // from the program image). When present, the VM realizes the System backdrop
-  // and enforces role-gated resolution from it instead of guessing.
+  < Stated access semantics this module was compiled with (null until adopted >
+  < from the program image). When present, the VM realizes the System backdrop >
+  < and enforces role-gated resolution from it instead of guessing. >
   SLAccessManifest access;
 
   void configure(String moduleName, int codeCap, int stackCap, int globalCap) {
@@ -79,16 +81,16 @@ class SLVMModule {
     access = null;
   }
 
-  // Adopt the access manifest the compiled image carries, so the module honors
-  // the stated public/private/protected semantics (exposed hop / local system /
-  // integrity-guarded) rather than inferring them.
+  < Adopt the access manifest the compiled image carries, so the module honors >
+  < the stated public/private/protected semantics (exposed hop / local system / >
+  < integrity-guarded) rather than inferring them. >
   void adoptAccess(SLAccessManifest manifest) { access = manifest; }
   SLAccessManifest accessManifest() { return access; }
   boolean hasAccess() { return access != null; }
   boolean accessCompetent() { return access != null && access.competent(); }
 
-  // Append one canonical opcode to the shared code store; returns its index so
-  // methods can be configured with (entry,length) windows.
+  < Append one canonical opcode to the shared code store; returns its index so >
+  < methods can be configured with (entry,length) windows. >
   int emit(int opcode, int arg) { return substrate.emit(opcode, arg); }
   int codeLength() { return substrate.programLength(); }
 
@@ -116,7 +118,7 @@ class SLVMModule {
     return null;
   }
 
-  // Look a class up by the id stored in object headers.
+  < Look a class up by the id stored in object headers. >
   SLVMClass classById(int id) {
     int i = 0;
     while (i < classCount) {
@@ -137,7 +139,7 @@ class SLVMModule {
     return null;
   }
 
-  // Resolve a method with a superclass walk using the module's class table.
+  < Resolve a method with a superclass walk using the module's class table. >
   SLVMMethod resolveMethod(int classId, String methodName) {
     int cid = classId;
     while (cid >= 0) {
@@ -150,9 +152,9 @@ class SLVMModule {
     return null;
   }
 
-  // Resolve a method the way the network sees it: only an exposed (public) hop
-  // binds. This is the module-level enforcement point for "a network of files
-  // may assume a public function is reachable" — private/protected do not bind.
+  < Resolve a method the way the network sees it: only an exposed (public) hop >
+  < binds. This is the module-level enforcement point for "a network of files >
+  < may assume a public function is reachable" — private/protected do not bind. >
   SLVMMethod resolveExposedMethod(int classId, String methodName) {
     int cid = classId;
     while (cid >= 0) {
@@ -165,8 +167,8 @@ class SLVMModule {
     return null;
   }
 
-  // Resolve on behalf of a caller with a known role (local/in-system callers can
-  // reach private/protected; a network/exposed caller cannot).
+  < Resolve on behalf of a caller with a known role (local/in-system callers can >
+  < reach private/protected; a network/exposed caller cannot). >
   SLVMMethod resolveMethodForCaller(int classId, String methodName, int callerRole) {
     int cid = classId;
     while (cid >= 0) {

@@ -66,23 +66,23 @@ class SleelaVMSystemCallBridge {
   void stop() { state = 0; }
   boolean active() { return state == 1; }
 
-  // ---- Host identity ------------------------------------------------------
+  < ---- Host identity ------------------------------------------------------ >
   String platform() { calls = calls + 1; return osPlatform(); }
   String hostName() { calls = calls + 1; return osHostName(); }
   String userName() { calls = calls + 1; return osUserName(); }
   int processId()   { calls = calls + 1; return osProcessId(); }
   boolean supports(int capability) { calls = calls + 1; return osCapability(capability) == 1; }
 
-  // ---- Environment --------------------------------------------------------
+  < ---- Environment -------------------------------------------------------- >
   String getEnv(String key) { calls = calls + 1; return osGetEnv(key); }
   boolean setEnv(String key, String value) { calls = calls + 1; return osSetEnv(key, value) == 0; }
 
-  // ---- Working directory --------------------------------------------------
+  < ---- Working directory -------------------------------------------------- >
   String currentDir() { calls = calls + 1; return osCurrentDir(); }
   boolean changeDir(String path) { calls = calls + 1; return osChangeDir(path) == 0; }
   String tempDir() { calls = calls + 1; return osTempDir(); }
 
-  // ---- Filesystem metadata ------------------------------------------------
+  < ---- Filesystem metadata ------------------------------------------------ >
   boolean exists(String path) { calls = calls + 1; return osExists(path) == 1; }
   boolean isDir(String path) { calls = calls + 1; return osIsDir(path) == 1; }
   int fileSize(String path) { calls = calls + 1; return osFileSize(path); }
@@ -90,16 +90,16 @@ class SleelaVMSystemCallBridge {
   boolean remove(String path) { calls = calls + 1; return osRemove(path) == 0; }
   boolean rename(String from, String to) { calls = calls + 1; return osRename(from, to) == 0; }
 
-  // ---- Process execution (bounded VM-local handles) -----------------------
-  // Synchronous run; returns the command's exit code.
+  < ---- Process execution (bounded VM-local handles) ----------------------- >
+  < Synchronous run; returns the command's exit code. >
   int run(String command) { calls = calls + 1; return osRun(command); }
-  // Background start; returns a VM-local process handle (-1 on failure).
+  < Background start; returns a VM-local process handle (-1 on failure). >
   int spawn(String command) { calls = calls + 1; return osSpawn(command); }
-  // Wait for a spawned process; returns its exit code and frees the handle.
+  < Wait for a spawned process; returns its exit code and frees the handle. >
   int waitFor(int processHandle) { calls = calls + 1; return osWait(processHandle); }
-  // Terminate a spawned process.
+  < Terminate a spawned process. >
   boolean kill(int processHandle) { calls = calls + 1; return osKill(processHandle) == 0; }
-  // Release a spawned process without waiting.
+  < Release a spawned process without waiting. >
   void closeProcess(int processHandle) { calls = calls + 1; osProcessClose(processHandle); }
 
   int callCount() { return calls; }

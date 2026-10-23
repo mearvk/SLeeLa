@@ -53,7 +53,7 @@ class SLSpacer extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a flexible spacer inside `parent`.
+  < Create a flexible spacer inside `parent`. >
   void createIn(SLWidget parent) {
     widget = uiSpacer(parent.handle());
   }

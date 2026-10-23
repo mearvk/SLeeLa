@@ -66,10 +66,11 @@ class GuiTransitionsDemo {
     SLPackage pkg = new SLPackage(); pkg.configure("gui");
     print("gui package " + pkg.version() + " (featureLevel " + pkg.featureLevel() + ")");
 
-    // ---- 1. The fading action: an enter transition (tween + easing) --------
-    // easing: 0=linear 1=ease-in 2=ease-out 3=ease-in-out 4=dissolve
+    < ---- 1. The fading action: an enter transition (tween + easing) -------- >
+    < easing: 0=linear 1=ease-in 2=ease-out 3=ease-in-out 4=dissolve >
     SLGuiTransition fade = new SLGuiTransition(); fade.configure();
-    fade.fadeIn(400, 2);                            // 0 -> 100% over 400ms, ease-out
+    < 0 -> 100% over 400ms, ease-out >
+    fade.fadeIn(400, 2);
     print("TRANSITION -> " + fade.report());
     print("  opacity at 0ms="   + fade.opacityAt(0)   + "%");
     print("  opacity at 100ms=" + fade.opacityAt(100) + "%");
@@ -77,8 +78,8 @@ class GuiTransitionsDemo {
     print("  opacity at 400ms=" + fade.opacityAt(400) + "%");
     print("  css -> " + fade.toStyle());
 
-    // ---- 2. Toast / snackbar lifecycle -------------------------------------
-    // severity: 0=info 1=success 2=warning 3=danger ; position: 4=bottom-right
+    < ---- 2. Toast / snackbar lifecycle ------------------------------------- >
+    < severity: 0=info 1=success 2=warning 3=danger ; position: 4=bottom-right >
     SLGuiToast toast = new SLGuiToast(); toast.configure("Saved your changes.");
     toast.setSeverity(1);
     toast.setPosition(4);
@@ -89,25 +90,27 @@ class GuiTransitionsDemo {
     toast.tick(1000); print("  after dwell    : " + toast.stateName() + " " + toast.opacityPct() + "%");
     toast.tick(200);  print("  after fade-out : " + toast.stateName() + " " + toast.opacityPct() + "%");
 
-    // ---- 3. Modal / overlay over a darkened backdrop -----------------------
+    < ---- 3. Modal / overlay over a darkened backdrop ----------------------- >
     SLGuiModal modal = new SLGuiModal(); modal.configure("Confirm deletion");
     modal.setScrimDim(60); modal.setFadeMillis(200);
     modal.open();
     print("MODAL -> " + modal.report());
     modal.tick(200); print("  opened   : dialog=" + modal.dialogOpacityPct() + "% scrim=" + modal.scrimOpacityPct() + "%");
-    boolean dismissed = modal.onBackdropClick();   // user clicks the dim backdrop
+    < user clicks the dim backdrop >
+    boolean dismissed = modal.onBackdropClick();
     print("  backdrop click dismissed=" + dismissed + " -> " + modal.stateName());
     modal.tick(200); print("  closed   : dialog=" + modal.dialogOpacityPct() + "% scrim=" + modal.scrimOpacityPct() + "%");
 
-    // ---- 4. Skeleton screen -> content dissolve ----------------------------
-    // shape: 0=text 1=card 2=avatar 3=list
+    < ---- 4. Skeleton screen -> content dissolve ---------------------------- >
+    < shape: 0=text 1=card 2=avatar 3=list >
     SLGuiSkeleton sk = new SLGuiSkeleton();
     sk.configure(1, 4);
     sk.setShimmerPeriod(600); sk.setRevealMillis(260);
     sk.beginLoading();
     print("SKELETON -> " + sk.report());
     sk.tick(300); print("  loading  : placeholder=" + sk.placeholderOpacityPct() + "% shimmer=" + sk.shimmerPhasePct() + "%");
-    sk.complete();                                  // content arrived
+    < content arrived >
+    sk.complete();
     sk.tick(130); print("  reveal 1/2: placeholder=" + sk.placeholderOpacityPct() + "% content=" + sk.contentOpacityPct() + "%");
     sk.tick(130); print("  reveal 2/2: placeholder=" + sk.placeholderOpacityPct() + "% content=" + sk.contentOpacityPct() + "% revealed=" + sk.revealed());
 

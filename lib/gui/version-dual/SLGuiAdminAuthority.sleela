@@ -64,17 +64,23 @@ class SLGuiAdminAuthority {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_AUDIT = 128;
 
-  // Audit entry kinds.
-  static final int ACT_SIGNIN   = 1;   // started a process session
-  static final int ACT_SIGNOFF  = 2;   // approved an operation
-  static final int ACT_SIGNATURE= 3;   // legal signature on a record
+  < Audit entry kinds. >
+  < started a process session >
+  static final int ACT_SIGNIN   = 1;
+  < approved an operation >
+  static final int ACT_SIGNOFF  = 2;
+  < legal signature on a record >
+  static final int ACT_SIGNATURE= 3;
   static final int ACT_SIGNOUT  = 4;
 
-  String adminId;        // the authenticated admin currently signed in ("" = none)
-  int signedIn;          // 1 while a signed-in process session is open
-  String processName;    // the process this session was opened to start
+  < the authenticated admin currently signed in ("" = none) >
+  String adminId;
+  < 1 while a signed-in process session is open >
+  int signedIn;
+  < the process this session was opened to start >
+  String processName;
 
-  // Audit trail (parallel arrays): act kind, admin, subject, token/reason.
+  < Audit trail (parallel arrays): act kind, admin, subject, token/reason. >
   int[] auditAct;
   String[] auditAdmin;
   String[] auditSubject;
@@ -88,9 +94,9 @@ class SLGuiAdminAuthority {
     auditCount = 0;
   }
 
-  // ---- 1. sign-in to start a process --------------------------------------
-  // An authorised admin opens a session to start a guarded process. Fail-closed:
-  // a blank admin id or process name is refused.
+  < ---- 1. sign-in to start a process -------------------------------------- >
+  < An authorised admin opens a session to start a guarded process. Fail-closed: >
+  < a blank admin id or process name is refused. >
   boolean signIn(String admin, String process) {
     if (admin == null || admin == "" || process == null || process == "") { return false; }
     adminId = admin; processName = process; signedIn = 1;
@@ -105,20 +111,20 @@ class SLGuiAdminAuthority {
   String currentAdmin() { return adminId; }
   String currentProcess() { return processName; }
 
-  // A guarded process may start only while an admin session is open.
+  < A guarded process may start only while an admin session is open. >
   boolean mayStartProcess(String process) {
     return signedIn == 1 && process != null && process == processName;
   }
 
-  // ---- 2. sign-off on a component operation -------------------------------
-  // Approve a specific operation. Requires a signed-in admin (fail-closed); the
-  // approval is recorded against that admin. Returns false without authority.
+  < ---- 2. sign-off on a component operation ------------------------------- >
+  < Approve a specific operation. Requires a signed-in admin (fail-closed); the >
+  < approval is recorded against that admin. Returns false without authority. >
   boolean signOff(String operation, String reason) {
     if (signedIn == 0 || operation == null || operation == "") { return false; }
     record(ACT_SIGNOFF, adminId, operation, (reason == null) ? "" : reason);
     return true;
   }
-  // Was `operation` signed off by an admin (searching the audit trail)?
+  < Was `operation` signed off by an admin (searching the audit trail)? >
   boolean isSignedOff(String operation) {
     for (int i = 0; i < auditCount; i = i + 1) {
       if (auditAct[i] == ACT_SIGNOFF && auditSubject[i] == operation) { return true; }
@@ -126,9 +132,9 @@ class SLGuiAdminAuthority {
     return false;
   }
 
-  // ---- 3. admin signature for Law -----------------------------------------
-  // Attach a legal signature token to a record. Requires a signed-in admin; the
-  // token is host-supplied (e.g. a signed hash). Fail-closed on missing inputs.
+  < ---- 3. admin signature for Law ----------------------------------------- >
+  < Attach a legal signature token to a record. Requires a signed-in admin; the >
+  < token is host-supplied (e.g. a signed hash). Fail-closed on missing inputs. >
   boolean signForLaw(String record, String signatureToken) {
     if (signedIn == 0 || record == null || record == "" ||
         signatureToken == null || signatureToken == "") { return false; }
@@ -149,7 +155,7 @@ class SLGuiAdminAuthority {
     return "";
   }
 
-  // ---- audit trail --------------------------------------------------------
+  < ---- audit trail -------------------------------------------------------- >
   void record(int act, String admin, String subject, String token) {
     if (auditCount >= MAX_AUDIT) { return; }
     auditAct[auditCount] = act; auditAdmin[auditCount] = admin;

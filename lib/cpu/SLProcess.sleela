@@ -61,13 +61,14 @@ class SLProcess {
   int state;
   int priority;
 
-  // Saved context (restored on dispatch).
+  < Saved context (restored on dispatch). >
   int savedPC;
   int savedR1; int savedR2; int savedR3;
   int memoryBase;
   int entryPoint;
 
-  int quantaUsed;   // scheduler accounting
+  < scheduler accounting >
+  int quantaUsed;
 
   void configure(int id, String procName, int entry, int base, int prio) {
     pid = id; name = procName; entryPoint = entry; memoryBase = base; priority = prio;
@@ -79,15 +80,16 @@ class SLProcess {
   void markBlocked() { state = BLOCKED; }
   void terminate() { state = TERMINATED; }
 
-  // Save the live core state into the PCB (context switch out).
+  < Save the live core state into the PCB (context switch out). >
   void saveContext(SLCore core) {
-    savedPC = core.controlUnit().instructionsRetired(); // modeled resume marker
+    < modeled resume marker >
+    savedPC = core.controlUnit().instructionsRetired();
     savedR1 = core.registers().read(1);
     savedR2 = core.registers().read(2);
     savedR3 = core.registers().read(3);
   }
 
-  // Restore this PCB into the live core (context switch in).
+  < Restore this PCB into the live core (context switch in). >
   void restoreContext(SLCore core) {
     core.registers().write(1, savedR1);
     core.registers().write(2, savedR2);

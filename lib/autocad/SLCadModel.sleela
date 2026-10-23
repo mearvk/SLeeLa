@@ -56,9 +56,12 @@ class SLCadModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String title; String units;
-  double curX; double curY;                      // insertion point for next room
-  double minX; double minY; double maxX; double maxY; // extents
-  String walls; String dims; String notes;       // accumulated DXF entity text
+  < insertion point for next room >
+  double curX; double curY;
+  < extents >
+  double minX; double minY; double maxX; double maxY;
+  < accumulated DXF entity text >
+  String walls; String dims; String notes;
   int noteCount;
 
   void begin(String t, String u) {
@@ -98,13 +101,17 @@ class SLCadModel {
     grow(x1, y1); grow(x2, y2);
   }
 
-  // Expand a room into its four wall segments at the current insertion point.
+  < Expand a room into its four wall segments at the current insertion point. >
   void addRoom(double w, double h) {
     double ox = curX; double oy = curY;
-    addWall(ox,     oy,     ox + w, oy);        // south
-    addWall(ox + w, oy,     ox + w, oy + h);    // east
-    addWall(ox + w, oy + h, ox,     oy + h);    // north
-    addWall(ox,     oy + h, ox,     oy);        // west
+    < south >
+    addWall(ox,     oy,     ox + w, oy);
+    < east >
+    addWall(ox + w, oy,     ox + w, oy + h);
+    < north >
+    addWall(ox + w, oy + h, ox,     oy + h);
+    < west >
+    addWall(ox,     oy + h, ox,     oy);
   }
 
   void addDim(double x1, double y1, double x2, double y2) {
@@ -117,7 +124,7 @@ class SLCadModel {
     noteCount = noteCount + 1;
   }
 
-  // Straight-line distance -- used to compute dimension labels.
+  < Straight-line distance -- used to compute dimension labels. >
   double distance(double x1, double y1, double x2, double y2) {
     return math.hypot(x2 - x1, y2 - y1);
   }

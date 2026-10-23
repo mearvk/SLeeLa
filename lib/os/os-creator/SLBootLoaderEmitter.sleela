@@ -92,7 +92,7 @@ class SLBootLoaderEmitter {
     cpp = cpp + "};\n} // namespace oscreator\n";
     p.setCpp(cpp);
 
-    // Loader menu file in the loader's native idiom.
+    < Loader menu file in the loader's native idiom. >
     String conf = loaderMenu(loader, m);
     p.setConfig("loader.conf", conf);
 
@@ -122,7 +122,7 @@ class SLBootLoaderEmitter {
       a = a + "Timeout = " + m.bootloader().menuTimeout() + "\n";
       return a;
     }
-    // BOOTMGR / BCD-style.
+    < BOOTMGR / BCD-style. >
     String b = "# BCD-style boot entry (loader.conf) - OS Creator(TM)\n";
     b = b + "description = " + title + "\n";
     b = b + "path = \\\\Windows\\\\system32\\\\winload.efi\n";

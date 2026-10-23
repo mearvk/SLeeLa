@@ -50,9 +50,12 @@ class AdvertisingModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int impressions;       // ad views this month
-  int cpmCents;          // revenue per 1000 impressions
-  int contentCostCents;  // monthly cost of making the audience show up
+  < ad views this month >
+  int impressions;
+  < revenue per 1000 impressions >
+  int cpmCents;
+  < monthly cost of making the audience show up >
+  int contentCostCents;
 
   void setUp(int views, int cpm, int contentCost) {
     load();

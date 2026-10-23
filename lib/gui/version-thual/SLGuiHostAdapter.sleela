@@ -59,8 +59,10 @@ class SLGuiHostAdapter {
   SLGuiDom dom;
   SLGuiMount mount;
   SLGuiWidgetFactory factory;
-  int tick;             // monotonic frame counter stamped onto events
-  int raisedLast;       // events raised on the last poll pass
+  < monotonic frame counter stamped onto events >
+  int tick;
+  < events raised on the last poll pass >
+  int raisedLast;
 
   void init(SLGuiDom document, SLGuiMount mountEngine) {
     dom = document; mount = mountEngine;
@@ -68,8 +70,8 @@ class SLGuiHostAdapter {
     tick = 0; raisedLast = 0;
   }
 
-  // Poll every mounted interactive node once; raise an SLGuiEvent for each that
-  // fired since the last poll. Returns the number of events dispatched.
+  < Poll every mounted interactive node once; raise an SLGuiEvent for each that >
+  < fired since the last poll. Returns the number of events dispatched. >
   int poll() {
     raisedLast = 0;
     tick = tick + 1;
@@ -86,19 +88,20 @@ class SLGuiHostAdapter {
     return raisedLast;
   }
 
-  // Build and dispatch the event a fired widget implies.
+  < Build and dispatch the event a fired widget implies. >
   void raiseFor(SLGuiNode node, int widgetHandle) {
     int type = factory.activationEvent(node.getTag());
     SLGuiEvent e = new SLGuiEvent();
     e.configure(type, node.getId());
     e.setTimestamp(tick);
 
-    // Carry the widget's live value so the handler sees it. For an entry, the
-    // committed text; for a toggle, the on/off state; for a button, its label.
+    < Carry the widget's live value so the handler sees it. For an entry, the >
+    < committed text; for a toggle, the on/off state; for a button, its label. >
     if (node.getTag() == "entry" || node.getTag() == "input") {
       String text = uiWidgetGetText(widgetHandle);
       e.setValue(text);
-      node.setText(text);              // keep the DOM in sync with the widget
+      < keep the DOM in sync with the widget >
+      node.setText(text);
     } else if (node.getTag() == "toggle" || node.getTag() == "switch") {
       int on = uiWidgetGetToggle(widgetHandle);
       e.setToggle(on);
@@ -111,8 +114,8 @@ class SLGuiHostAdapter {
     raisedLast = raisedLast + 1;
   }
 
-  // Also feed a synthetic input event (per-keystroke) for an entry, used by a
-  // host that wants live INPUT handlers in addition to the committed SUBMIT.
+  < Also feed a synthetic input event (per-keystroke) for an entry, used by a >
+  < host that wants live INPUT handlers in addition to the committed SUBMIT. >
   int raiseInput(String nodeId, String text) {
     SLGuiNode node = dom.getElementById(nodeId);
     if (node == null) { return 0; }

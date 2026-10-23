@@ -60,23 +60,26 @@ class SLCadCreator {
   static final int MAX_HISTORY = 4096;
 
   SLCadDocument doc;
-  int selection;                 // currently selected entity id (-1 = none)
-  String activeLayer;            // layer new geometry lands on by default
+  < currently selected entity id (-1 = none) >
+  int selection;
+  < layer new geometry lands on by default >
+  String activeLayer;
 
-  SLCadCommand[] history;        // recorded edits (for undo + audit)
+  < recorded edits (for undo + audit) >
+  SLCadCommand[] history;
   int historyCount;
 
-  // ---- clock (host-supplied) ----------------------------------------------
-  // The runtime has no live wall-clock, so the host feeds time in. `nowJulian`
-  // is the current time as a Julian date (AutoCAD's $TDCREATE/$TDUPDATE unit)
-  // and `nowLabel` a readable form; every edit stamps the document and the
-  // command it records. Left at 0/"" (the default), timestamping is inert and
-  // output is byte-identical to the pre-timestamp Creator.
+  < ---- clock (host-supplied) ---------------------------------------------- >
+  < The runtime has no live wall-clock, so the host feeds time in. `nowJulian` >
+  < is the current time as a Julian date (AutoCAD's $TDCREATE/$TDUPDATE unit) >
+  < and `nowLabel` a readable form; every edit stamps the document and the >
+  < command it records. Left at 0/"" (the default), timestamping is inert and >
+  < output is byte-identical to the pre-timestamp Creator. >
   double nowJulian;
   String nowLabel;
 
-  // Advance the Creator's clock. A host calls this before an edit (or once per
-  // UI frame) so subsequent edits carry the given time.
+  < Advance the Creator's clock. A host calls this before an edit (or once per >
+  < UI frame) so subsequent edits carry the given time. >
   void setClock(double whenJulian, String whenText) {
     nowJulian = whenJulian;
     nowLabel = whenText;
@@ -84,14 +87,14 @@ class SLCadCreator {
   double clock() { return nowJulian; }
   String clockLabel() { return nowLabel; }
 
-  // ---- lifecycle ----------------------------------------------------------
+  < ---- lifecycle ---------------------------------------------------------- >
 
-  // Start a fresh, empty document (no creation timestamp).
+  < Start a fresh, empty document (no creation timestamp). >
   void newDocument(String title, String units) {
     newDocumentAt(title, units, 0.0, "");
   }
 
-  // Start a fresh document stamped with a host-supplied creation time.
+  < Start a fresh document stamped with a host-supplied creation time. >
   void newDocumentAt(String title, String units, double createdJulian, String createdText) {
     doc = new SLCadDocument();
     doc.beginAt(title, units, createdJulian, createdText);
@@ -112,7 +115,7 @@ class SLCadCreator {
   void setLayer(String lyr) { activeLayer = lyr; }
   void setAt(double x, double y) { doc.setAt(x, y); }
 
-  // ---- creation (each records a CREATE command and selects the result) ----
+  < ---- creation (each records a CREATE command and selects the result) ---- >
 
   int line(double x1, double y1, double x2, double y2) {
     int id = doc.addLine(activeLayer, x1, y1, x2, y2);
@@ -146,9 +149,9 @@ class SLCadCreator {
     return id;
   }
 
-  // ---- alteration (snapshot the prior state, then mutate, then record) ----
+  < ---- alteration (snapshot the prior state, then mutate, then record) ---- >
 
-  // Move the current selection (or a specific id) by (dx,dy).
+  < Move the current selection (or a specific id) by (dx,dy). >
   boolean move(int id, double dx, double dy) {
     if (!doc.move(id, dx, dy)) { return false; }
     logEdit(makeMove(id, dx, dy));
@@ -159,7 +162,7 @@ class SLCadCreator {
     return move(selection, dx, dy);
   }
 
-  // Re-point a line/dim's endpoints (prior endpoints captured for undo).
+  < Re-point a line/dim's endpoints (prior endpoints captured for undo). >
   boolean reshape(int id, double x1, double y1, double x2, double y2) {
     SLCadEntity e = doc.byId(id);
     if (e == null || !e.isAlive()) { return false; }
@@ -170,7 +173,7 @@ class SLCadCreator {
     return true;
   }
 
-  // Change a text/dim label (prior value captured for undo).
+  < Change a text/dim label (prior value captured for undo). >
   boolean relabel(int id, String text) {
     SLCadEntity e = doc.byId(id);
     if (e == null || !e.isAlive()) { return false; }
@@ -180,7 +183,7 @@ class SLCadCreator {
     return true;
   }
 
-  // Move an entity onto a different layer (prior layer captured for undo).
+  < Move an entity onto a different layer (prior layer captured for undo). >
   boolean restyle(int id, String layer) {
     SLCadEntity e = doc.byId(id);
     if (e == null || !e.isAlive()) { return false; }
@@ -190,7 +193,7 @@ class SLCadCreator {
     return true;
   }
 
-  // Delete (tombstone) an entity; clears the selection if it was selected.
+  < Delete (tombstone) an entity; clears the selection if it was selected. >
   boolean delete(int id) {
     if (!doc.remove(id)) { return false; }
     logEdit(makeDelete(id));
@@ -202,14 +205,14 @@ class SLCadCreator {
     return delete(selection);
   }
 
-  // Turn a canvas click (model coordinates) into a selection.
+  < Turn a canvas click (model coordinates) into a selection. >
   int pickAt(double x, double y, double radius) {
     int id = doc.pick(x, y, radius);
     if (id >= 0) { selection = id; }
     return id;
   }
 
-  // ---- history ------------------------------------------------------------
+  < ---- history ------------------------------------------------------------ >
 
   int edits() { return historyCount; }
   SLCadCommand lastCommand() {
@@ -221,13 +224,13 @@ class SLCadCreator {
     return (c == null) ? "" : c.describe();
   }
 
-  // Reverse the most recent recorded edit. Returns true if one was undone.
+  < Reverse the most recent recorded edit. Returns true if one was undone. >
   boolean undo() {
     if (historyCount == 0) { return false; }
     SLCadCommand c = history[historyCount - 1];
     historyCount = historyCount - 1;
     boolean ok = c.undo(doc);
-    // If we undid a create, nothing should stay selected on the removed id.
+    < If we undid a create, nothing should stay selected on the removed id. >
     if (c.getVerb() == SLCadCommand.CREATE && selection == c.getEntityId()) {
       selection = -1;
     }
@@ -237,12 +240,12 @@ class SLCadCreator {
   void logEdit(SLCadCommand c) {
     if (c == null) { return; }
     if (historyCount >= MAX_HISTORY) {
-      // Drop the oldest to keep the window bounded.
+      < Drop the oldest to keep the window bounded. >
       for (int i = 0; i < historyCount - 1; i = i + 1) { history[i] = history[i + 1]; }
       historyCount = historyCount - 1;
     }
-    // Stamp the edit with its order + the host clock, and advance the
-    // document's $TDUPDATE so a saved DXF reflects this change's time.
+    < Stamp the edit with its order + the host clock, and advance the >
+    < document's $TDUPDATE so a saved DXF reflects this change's time. >
     c.stamp(historyCount + 1, nowJulian, nowLabel);
     doc.touch(nowJulian, nowLabel);
     history[historyCount] = c;
@@ -264,25 +267,25 @@ class SLCadCreator {
   }
   SLCadCommand makeDelete(int id)  { SLCadCommand c = new SLCadCommand(); c.deleted(id); return c; }
 
-  // ---- inspection ---------------------------------------------------------
+  < ---- inspection --------------------------------------------------------- >
 
-  // One-line description of an entity by id ("" if there is no such entity).
-  // The GUI property strip and any audit view read this to show WHAT a given
-  // id is -- its kind, layer, geometry, and label.
+  < One-line description of an entity by id ("" if there is no such entity). >
+  < The GUI property strip and any audit view read this to show WHAT a given >
+  < id is -- its kind, layer, geometry, and label. >
   String inspect(int id) {
     SLCadEntity e = doc.byId(id);
     if (e == null) { return ""; }
     return e.describe();
   }
-  // The currently selected entity, described (or a hint when nothing is picked).
+  < The currently selected entity, described (or a hint when nothing is picked). >
   String inspectSelection() {
     if (selection < 0) { return "(no selection)"; }
     String s = inspect(selection);
     return (s == "") ? ("(stale selection #" + selection + ")") : s;
   }
 
-  // A newline-separated listing of every entity currently in the document
-  // (alive and tombstoned), newest slots last. Suitable for a report pane.
+  < A newline-separated listing of every entity currently in the document >
+  < (alive and tombstoned), newest slots last. Suitable for a report pane. >
   String listEntities() {
     String s = "";
     for (int i = 0; i < doc.size(); i = i + 1) {
@@ -293,8 +296,8 @@ class SLCadCreator {
     return s;
   }
 
-  // A newline-separated listing of the recorded edit history, each line
-  // carrying its sequence number and timestamp -- the time-ordered audit trail.
+  < A newline-separated listing of the recorded edit history, each line >
+  < carrying its sequence number and timestamp -- the time-ordered audit trail. >
   String listHistory() {
     String s = "";
     for (int i = 0; i < historyCount; i = i + 1) {
@@ -303,9 +306,9 @@ class SLCadCreator {
     return s;
   }
 
-  // A full inspection report: document metadata (title, units, timestamps,
-  // counts) followed by the entity listing and the edit history. This is the
-  // "inspect the AutoCAD content" surface a report pane or a headless run dumps.
+  < A full inspection report: document metadata (title, units, timestamps, >
+  < counts) followed by the entity listing and the edit history. This is the >
+  < "inspect the AutoCAD content" surface a report pane or a headless run dumps. >
   String report() {
     String s = "AutoCAD Creator report\n";
     s = s + "  title    : " + doc.getTitle() + "\n";
@@ -320,19 +323,19 @@ class SLCadCreator {
     return s;
   }
 
-  // Render a timestamp for the report: prefer the readable label, fall back to
-  // the Julian value, and say "unset" when the host supplied no time.
+  < Render a timestamp for the report: prefer the readable label, fall back to >
+  < the Julian value, and say "unset" when the host supplied no time. >
   String stampText(String label, double julian) {
     if (label != "") { return label; }
     if (julian > 0.0) { return "JD " + julian; }
     return "unset";
   }
 
-  // ---- plan import (text directives -> geometry) -------------------------
+  < ---- plan import (text directives -> geometry) ------------------------- >
 
-  // Apply one FORMAT.md directive to the document, so a .plan or the GUI's plan
-  // editor can seed a drawing the creator then edits. Mirrors the directive
-  // vocabulary of lib/autocad/SLCadPlan + autocad/cad/plan.sleela.
+  < Apply one FORMAT.md directive to the document, so a .plan or the GUI's plan >
+  < editor can seed a drawing the creator then edits. Mirrors the directive >
+  < vocabulary of lib/autocad/SLCadPlan + autocad/cad/plan.sleela. >
   void applyDirective(String op, double n1, double n2, double n3, double n4, String text) {
     if (op == "title") { doc.setTitle(text); note(doc.minX(), doc.maxY() + 500.0, text); return; }
     if (op == "units") { doc.setUnits(text); return; }
@@ -344,14 +347,14 @@ class SLCadCreator {
     if (op == "note")  { note(doc.minX(), doc.minY() - 500.0, text); return; }
   }
 
-  // ---- save ---------------------------------------------------------------
+  < ---- save --------------------------------------------------------------- >
 
-  // Produce the full AutoCAD DXF for the current document. The GUI's Save
-  // action hands this to the host to write to a .dxf file; the runnable build
-  // prints it (exactly as the one-shot renderer persists its output).
+  < Produce the full AutoCAD DXF for the current document. The GUI's Save >
+  < action hands this to the host to write to a .dxf file; the runnable build >
+  < prints it (exactly as the one-shot renderer persists its output). >
   String save() { return doc.toDxf(); }
 
-  // A one-line status summary for a GUI status bar.
+  < A one-line status summary for a GUI status bar. >
   String summary() {
     String s = doc.aliveCount() + " entities • " + historyCount + " edits • layer "
              + activeLayer + (selection >= 0 ? (" • sel #" + selection) : "");

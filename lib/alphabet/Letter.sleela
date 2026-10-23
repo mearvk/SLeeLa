@@ -65,13 +65,16 @@ class Letter {
   static final String MODULE = "Letter";
 
   int loadedFlag;
-  String glyph;     // the character itself, e.g. "A"
-  int order;        // 1-based position within its alphabet
-  boolean vowel;    // true for vowels, false otherwise
+  < the character itself, e.g. "A" >
+  String glyph;
+  < 1-based position within its alphabet >
+  int order;
+  < true for vowels, false otherwise >
+  boolean vowel;
 
-  // --- syntax 1.8 constructor --------------------------------------------
-  // Build a fully formed Letter in one expression. Marks the module loaded, so
-  // a constructed Letter satisfies loaded() just like a load()+set() one.
+  < --- syntax 1.8 constructor -------------------------------------------- >
+  < Build a fully formed Letter in one expression. Marks the module loaded, so >
+  < a constructed Letter satisfies loaded() just like a load()+set() one. >
   Letter(String symbol, int position, boolean isVowel) {
     this.loadedFlag = 1;
     this.glyph = symbol;
@@ -79,9 +82,9 @@ class Letter {
     this.vowel = isVowel;
   }
 
-  // --- loadable-module contract (zero-arg path, unchanged) ----------------
-  // A zero-argument `new Letter()` remains valid under 1.8; load() initialises
-  // an empty glyph for the classic two-step build used by Alphabet.append().
+  < --- loadable-module contract (zero-arg path, unchanged) ---------------- >
+  < A zero-argument `new Letter()` remains valid under 1.8; load() initialises >
+  < an empty glyph for the classic two-step build used by Alphabet.append(). >
   void load() { loadedFlag = 1; glyph = ""; order = 0; vowel = false; }
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }

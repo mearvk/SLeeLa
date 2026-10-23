@@ -66,11 +66,14 @@ class SLOpcodeRegistrar {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int HALT_CODE = 48; // canonical OP_HALT
+  < canonical OP_HALT >
+  static final int HALT_CODE = 48;
 
-  String sourceName;   // the .sleela source this registrar was added to
+  < the .sleela source this registrar was added to >
+  String sourceName;
   int state;
-  boolean allowOpenEnded; // true when the source is a composable fragment
+  < true when the source is a composable fragment >
+  boolean allowOpenEnded;
   SLGovVerdict lastVerdict;
 
   void configure(String source) {
@@ -84,8 +87,8 @@ class SLOpcodeRegistrar {
   void disable() { state = 0; }
   boolean active() { return state == 1; }
 
-  // Consider the whole program A -> B before any opcode runs. Returns the
-  // discretionary verdict; the orchestrator honours it before DURING begins.
+  < Consider the whole program A -> B before any opcode runs. Returns the >
+  < discretionary verdict; the orchestrator honours it before DURING begins. >
   SLGovVerdict consider(SLOpcodeStream stream) {
     SLGovVerdict v = new SLGovVerdict();
     if (!active() || stream == null) {
@@ -104,7 +107,7 @@ class SLOpcodeRegistrar {
     int haltAt = -1;
     for (int i = 0; i < n; i = i + 1) {
       SLOpcodeBase op = stream.ops[i];
-      // (1) validity + armed
+      < (1) validity + armed >
       if (op == null || !op.armed()) {
         v.configure(SLGovVerdict.REJECT, "unarmed or missing opcode", i, SLGovPhase.BEFORE);
         lastVerdict = v;
@@ -116,7 +119,7 @@ class SLOpcodeRegistrar {
         lastVerdict = v;
         return v;
       }
-      // (3) nothing after the terminal
+      < (3) nothing after the terminal >
       if (haltAt >= 0) {
         v.configure(SLGovVerdict.REJECT, "opcode present after OP_HALT", i, SLGovPhase.BEFORE);
         lastVerdict = v;
@@ -125,12 +128,12 @@ class SLOpcodeRegistrar {
       if (code == HALT_CODE) { haltAt = i; }
     }
 
-    // (2) termination discipline
+    < (2) termination discipline >
     if (haltAt < 0) {
       if (allowOpenEnded) {
         v.configure(SLGovVerdict.ADMIT, "open-ended fragment admitted for composition", -1, SLGovPhase.BEFORE);
       } else {
-        // A program with no terminal is held as unrest, not rejected outright.
+        < A program with no terminal is held as unrest, not rejected outright. >
         v.configure(SLGovVerdict.PAUSE, "no OP_HALT: program does not terminate (unrest)", n - 1, SLGovPhase.BEFORE);
       }
       lastVerdict = v;

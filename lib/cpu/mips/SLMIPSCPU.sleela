@@ -68,17 +68,19 @@ class SLMIPSCPU extends SLCPURuntime {
   static final int J    = 8;
   static final int SYSCALL = 9;
 
-  int cp0Status;        // CP0 (system control) status register
+  < CP0 (system control) status register >
+  int cp0Status;
   int inDelaySlot;
 
   void configure() {
-    // 32-bit, 32-bit addressing (capped), 34 regs (32 GPR + HI + LO).
-    setSpecClock(33);   // MIPS R3000 at ~33 MHz; overclockable
+    < 32-bit, 32-bit addressing (capped), 34 regs (32 GPR + HI + LO). >
+    < MIPS R3000 at ~33 MHz; overclockable >
+    setSpecClock(33);
     bringUp("MIPS R3000", 32, 32, 34, 262144);
     cp0Status = 0; inDelaySlot = 0;
   }
 
-  // R0 is hardwired to zero.
+  < R0 is hardwired to zero. >
   int gpr(int i)            { if (i == 0) { return 0; } return readReg(i); }
   void setGpr(int i, int v) { if (i == 0) { return; } writeReg(i, v); }
 
@@ -102,12 +104,12 @@ class SLMIPSCPU extends SLCPURuntime {
     if (opcode == SYSCALL) { exception(8); halted = 1; return; }
   }
 
-  // The classic MIPS branch-delay slot: the instruction after a taken branch
-  // still executes. Modelled by letting fetch run one more time before the new
-  // PC takes effect (hook retained for callers reasoning about pipeline order).
+  < The classic MIPS branch-delay slot: the instruction after a taken branch >
+  < still executes. Modelled by letting fetch run one more time before the new >
+  < PC takes effect (hook retained for callers reasoning about pipeline order). >
   void branchDelaySlot() { inDelaySlot = 1; }
 
-  // CP0 exception entry (SYSCALL, overflow, etc.).
+  < CP0 exception entry (SYSCALL, overflow, etc.). >
   void exception(int cause) { cp0Status = cause; }
   void interrupt(int vector) { exception(vector); }
 

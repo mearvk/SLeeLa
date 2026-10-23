@@ -60,7 +60,8 @@ class SLLowering {
   SLAssembler asm;
   SLProgram program;
   SLIR ir;
-  SLRAM labelAddr;   // label id -> emitted instruction address
+  < label id -> emitted instruction address >
+  SLRAM labelAddr;
   int emitted;
 
   void configure(SLInstructionSet instructionSet, SLProgram target, SLIR irModule) {
@@ -70,13 +71,13 @@ class SLLowering {
     emitted = 0;
   }
 
-  // Map an IR temporary id to a machine register (r1..r15).
+  < Map an IR temporary id to a machine register (r1..r15). >
   int reg(int temp) { if (temp < 0) { return 0; } return (temp % 15) + 1; }
 
-  // Pass 1: record the address each IR_LABEL will occupy. Because every IR node
-  // lowers to a bounded number of machine ops, we pre-scan to assign label
-  // addresses; here each non-label node lowers to exactly one or two ops and we
-  // account for that when resolving.
+  < Pass 1: record the address each IR_LABEL will occupy. Because every IR node >
+  < lowers to a bounded number of machine ops, we pre-scan to assign label >
+  < addresses; here each non-label node lowers to exactly one or two ops and we >
+  < account for that when resolving. >
   void resolveLabels() {
     int addr = 0;
     int i = 0;
@@ -91,7 +92,7 @@ class SLLowering {
     }
   }
 
-  // How many machine instructions a given IR node expands to.
+  < How many machine instructions a given IR node expands to. >
   int opcodeFootprint(SLIRInstruction n) {
     int op = n.operation();
     if (op == n.IR_LABEL) { return 0; }
@@ -99,13 +100,13 @@ class SLLowering {
     if (op == n.IR_MOVE)  { return 1; }
     if (op == n.IR_CALL)  { return 1; }
     if (op == n.IR_PARAM) { return 1; }
-    // binary ops: move a into dst reg, then op with b
+    < binary ops: move a into dst reg, then op with b >
     if (op == n.IR_ADD || op == n.IR_SUB || op == n.IR_MUL || op == n.IR_DIV ||
         op == n.IR_MOD || op == n.IR_AND || op == n.IR_OR || op == n.IR_XOR) { return 2; }
     return 1;
   }
 
-  // Pass 2: emit machine code for the whole IR module.
+  < Pass 2: emit machine code for the whole IR module. >
   SLProgram lower() {
     resolveLabels();
     int i = 0;

@@ -61,7 +61,8 @@ class SLProcess {
   static final int STATE_FAILED  = 3;
 
   String command;
-  int handle;      // VM-local process handle (-1 = none)
+  < VM-local process handle (-1 = none) >
+  int handle;
   int state;
   int exitCode;
 
@@ -69,17 +70,17 @@ class SLProcess {
     command = cmd; handle = -1; state = STATE_NEW; exitCode = -1;
   }
 
-  // Run synchronously: block until the process exits, recording the exit code.
-  // Returns the exit code (0 == success).
+  < Run synchronously: block until the process exits, recording the exit code. >
+  < Returns the exit code (0 == success). >
   int runSync() {
     exitCode = osRun(command);
     state = (exitCode == 0) ? STATE_EXITED : STATE_FAILED;
     return exitCode;
   }
 
-  // Start the process in the background. Returns true if it launched. After a
-  // successful start the process is RUNNING and must be reaped with wait()
-  // (or released with close()).
+  < Start the process in the background. Returns true if it launched. After a >
+  < successful start the process is RUNNING and must be reaped with wait() >
+  < (or released with close()). >
   boolean start() {
     handle = osSpawn(command);
     if (handle < 0) { state = STATE_FAILED; return false; }
@@ -87,28 +88,30 @@ class SLProcess {
     return true;
   }
 
-  // Block for a started process and collect its exit code; releases the handle.
+  < Block for a started process and collect its exit code; releases the handle. >
   int wait() {
     if (handle < 0) { return -1; }
     exitCode = osWait(handle);
-    handle = -1;                       // osWait consumes the handle
+    < osWait consumes the handle >
+    handle = -1;
     state = (exitCode == 0) ? STATE_EXITED : STATE_FAILED;
     return exitCode;
   }
 
-  // Terminate a running process and release its handle (reaping it), so a
-  // kill-only path does not leak a VM process-table slot. After kill() the
-  // process is FAILED and the handle is gone.
+  < Terminate a running process and release its handle (reaping it), so a >
+  < kill-only path does not leak a VM process-table slot. After kill() the >
+  < process is FAILED and the handle is gone. >
   boolean kill() {
     if (handle < 0) { return false; }
     boolean ok = osKill(handle) == 0;
-    osProcessClose(handle);            // release the slot (reap the child)
+    < release the slot (reap the child) >
+    osProcessClose(handle);
     handle = -1;
     state = STATE_FAILED;
     return ok;
   }
 
-  // Release a started-but-unwaited process without blocking.
+  < Release a started-but-unwaited process without blocking. >
   void close() {
     if (handle >= 0) { osProcessClose(handle); handle = -1; }
   }

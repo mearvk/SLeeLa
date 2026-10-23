@@ -69,9 +69,12 @@ class SLGovVerdict {
   static final int REJECT = 4;
 
   int disposition;
-  String reason;      // human-readable justification
-  int atIndex;        // opcode index the verdict concerns (-1 = whole program)
-  int phase;          // SLGovPhase value in which it was issued
+  < human-readable justification >
+  String reason;
+  < opcode index the verdict concerns (-1 = whole program) >
+  int atIndex;
+  < SLGovPhase value in which it was issued >
+  int phase;
 
   void configure(int d, String why, int index, int govPhase) {
     disposition = d;
@@ -90,8 +93,8 @@ class SLGovVerdict {
   boolean isUnrest() { return disposition == PAUSE; }
   boolean patched() { return disposition == PATCH; }
 
-  // Combine two verdicts: the more restrictive disposition wins, so a single
-  // REJECT or PAUSE anywhere governs the sequence.
+  < Combine two verdicts: the more restrictive disposition wins, so a single >
+  < REJECT or PAUSE anywhere governs the sequence. >
   SLGovVerdict mostRestrictive(SLGovVerdict other) {
     if (other == null) { return this; }
     if (other.value() > disposition) { return other; }

@@ -65,7 +65,8 @@ class WindowsCreator {
     Model m = new Model();
     m.name = name; m.version = version; m.arch = "amd64";
     m.triple = "x86_64-pc-windows-msvc";
-    m.loader = "BOOTMGR"; m.kernel = "NT"; m.kernelVer = "10.0.26100";  // Windows 11 24H2
+    < Windows 11 24H2 >
+    m.loader = "BOOTMGR"; m.kernel = "NT"; m.kernelVer = "10.0.26100";
     m.cmdline = "ro quiet"; m.rootfs = "NTFS"; m.init = "ServiceControlManager";
     m.desktop = "Explorer/DWM";
     return m;
@@ -118,7 +119,7 @@ class WindowsCreator {
     return s;
   }
 
-  // Windows has no FS-level interpreter; it runs a Linux guest via WSL2.
+  < Windows has no FS-level interpreter; it runs a Linux guest via WSL2. >
   String compat(Model m) { return "Windows runs Linux via wsl2 + linux-userland"; }
 
   void banner(String t) {

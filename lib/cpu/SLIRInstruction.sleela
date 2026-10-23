@@ -55,10 +55,13 @@ class SLIRInstruction {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Language-neutral IR operations.
-  static final int IR_CONST  = 0;   // dst = imm
-  static final int IR_MOVE   = 1;   // dst = a
-  static final int IR_ADD    = 2;   // dst = a + b
+  < Language-neutral IR operations. >
+  < dst = imm >
+  static final int IR_CONST  = 0;
+  < dst = a >
+  static final int IR_MOVE   = 1;
+  < dst = a + b >
+  static final int IR_ADD    = 2;
   static final int IR_SUB    = 3;
   static final int IR_MUL    = 4;
   static final int IR_DIV    = 5;
@@ -66,25 +69,40 @@ class SLIRInstruction {
   static final int IR_AND    = 7;
   static final int IR_OR     = 8;
   static final int IR_XOR    = 9;
-  static final int IR_CMP    = 10;  // compare a, b (sets condition)
-  static final int IR_LABEL  = 11;  // branch target marker (imm = label id)
-  static final int IR_JUMP   = 12;  // goto label imm
-  static final int IR_JZ     = 13;  // if last compare == 0 goto label imm
+  < compare a, b (sets condition) >
+  static final int IR_CMP    = 10;
+  < branch target marker (imm = label id) >
+  static final int IR_LABEL  = 11;
+  < goto label imm >
+  static final int IR_JUMP   = 12;
+  < if last compare == 0 goto label imm >
+  static final int IR_JZ     = 13;
   static final int IR_JNZ    = 14;
-  static final int IR_LOAD   = 15;  // dst = mem[a]
-  static final int IR_STORE  = 16;  // mem[a] = b
-  static final int IR_PARAM  = 17;  // stage argument a for the next call
-  static final int IR_CALL   = 18;  // dst = call label imm (function entry)
-  static final int IR_RET    = 19;  // return a
-  static final int IR_SYSCALL= 20;  // dst = syscall imm with arg a
+  < dst = mem[a] >
+  static final int IR_LOAD   = 15;
+  < mem[a] = b >
+  static final int IR_STORE  = 16;
+  < stage argument a for the next call >
+  static final int IR_PARAM  = 17;
+  < dst = call label imm (function entry) >
+  static final int IR_CALL   = 18;
+  < return a >
+  static final int IR_RET    = 19;
+  < dst = syscall imm with arg a >
+  static final int IR_SYSCALL= 20;
   static final int IR_HALT   = 21;
 
   int op;
-  int dst;    // destination temporary id (-1 if none)
-  int a;      // first source temporary id (-1 if none)
-  int b;      // second source temporary id (-1 if none)
-  int imm;    // immediate / label id / syscall number
-  boolean aIsImm; // when true, `a` carries an immediate value, not a temp id
+  < destination temporary id (-1 if none) >
+  int dst;
+  < first source temporary id (-1 if none) >
+  int a;
+  < second source temporary id (-1 if none) >
+  int b;
+  < immediate / label id / syscall number >
+  int imm;
+  < when true, `a` carries an immediate value, not a temp id >
+  boolean aIsImm;
 
   void configure(int operation, int dstTemp, int srcA, int srcB, int immediate) {
     op = operation; dst = dstTemp; a = srcA; b = srcB; imm = immediate; aIsImm = false;

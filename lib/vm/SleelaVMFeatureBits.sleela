@@ -49,22 +49,22 @@ class SleelaVMFeatureBits {
  Integer RESOLVER = 16777216; Integer BROKER = 33554432; Integer CERTIFICATES = 67108864; Integer SANDBOX = 134217728;
  Integer LINK_OBSERVATION = 268435456; Integer LINK_TRANSACTIONS = 536870912; Integer LINK_MEMORY = 1073741824; Integer LINK_ATTESTATION = 2147483648;
  Integer CHALLENGE_EVENTS = 4294967296; Integer CHALLENGE_REMOTE = 8589934592; Integer REPORTS_INPUT = 17179869184; Integer REPORTS_OUTPUT = 34359738368; Integer REPORTS_MESSAGES = 68719476736; Integer REPORTS_IQ = 137438953472;
- // Operating-system system-call capability (syntax 1.5). PROCESS covers process
- // execution (osRun/osSpawn/osWait/osKill); OS_SYSCALLS covers the full host
- // System API surface (environment, identity, cwd, filesystem metadata) exposed
- // via the os* built-ins and OP_OS_* opcodes. Backed by impl/core/sleela_os.c
- // on Windows/Linux/macOS; a spawned process is a VM-local bounded handle.
+ < Operating-system system-call capability (syntax 1.5). PROCESS covers process >
+ < execution (osRun/osSpawn/osWait/osKill); OS_SYSCALLS covers the full host >
+ < System API surface (environment, identity, cwd, filesystem metadata) exposed >
+ < via the os* built-ins and OP_OS_* opcodes. Backed by impl/core/sleela_os.c >
+ < on Windows/Linux/macOS; a spawned process is a VM-local bounded handle. >
  Integer PROCESS = 274877906944; Integer OS_SYSCALLS = 549755813888;
- // Direct hardware acceleration (syntax 1.6). DMA grants a direct memory-access
- // engine (bulk transfers without the CPU copying word by word); GPU grants
- // native GPU access (offload parallel/compute kernels to a host GPU over the
- // bridge, or a modelled SIMT engine when none is present). Both are opt-in and
- // flow from the VM through a hosted CPU to the running program.
+ < Direct hardware acceleration (syntax 1.6). DMA grants a direct memory-access >
+ < engine (bulk transfers without the CPU copying word by word); GPU grants >
+ < native GPU access (offload parallel/compute kernels to a host GPU over the >
+ < bridge, or a modelled SIMT engine when none is present). Both are opt-in and >
+ < flow from the VM through a hosted CPU to the running program. >
  Integer DMA = 1099511627776; Integer GPU = 2199023255552;
- // Native-RAM residency (syntax 1.6). When set, the Secondary VM's linear memory
- // runs on REAL host RAM (SLNativeMemory) instead of the simulated SLRAM store —
- // for running outside simulation for procedural layment. Backed by the native
- // host allocator (sleela_native_ram_*). Opt-in via the VM Creator.
+ < Native-RAM residency (syntax 1.6). When set, the Secondary VM's linear memory >
+ < runs on REAL host RAM (SLNativeMemory) instead of the simulated SLRAM store — >
+ < for running outside simulation for procedural layment. Backed by the native >
+ < host allocator (sleela_native_ram_*). Opt-in via the VM Creator. >
  Integer NATIVE_RAM = 4398046511104;
  function contains(mask, bit); function add(mask, bit); function remove(mask, bit); function validate(mask);
 }

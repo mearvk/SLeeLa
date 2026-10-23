@@ -55,7 +55,7 @@ class SLComboBox extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a combo box inside `parent`; add options afterwards.
+  < Create a combo box inside `parent`; add options afterwards. >
   void createIn(SLWidget parent) {
     widget = uiComboBox(parent.handle());
   }
@@ -63,13 +63,13 @@ class SLComboBox extends SLWidget {
     widget = uiComboBox(parentHandle);
   }
 
-  // Append a selectable option.
+  < Append a selectable option. >
   void addOption(String option) {
     if (widget >= 0) { uiComboBoxAdd(widget, option); }
   }
 
-  // The currently-selected option index (0-based), as a value. The VM carries
-  // the index as a numeric; callers typically use selected() for the text.
+  < The currently-selected option index (0-based), as a value. The VM carries >
+  < the index as a numeric; callers typically use selected() for the text. >
   double selectedIndex() {
     if (widget < 0) { return -1.0; }
     return uiWidgetGetValue(widget);
@@ -78,13 +78,13 @@ class SLComboBox extends SLWidget {
     if (widget >= 0) { uiWidgetSetValue(widget, index); }
   }
 
-  // The currently-selected option text.
+  < The currently-selected option text. >
   String selected() {
     if (widget < 0) { return null; }
     return uiWidgetGetText(widget);
   }
 
-  // True if the selection changed since the last check (latch cleared on read).
+  < True if the selection changed since the last check (latch cleared on read). >
   boolean changed() {
     if (widget < 0) { return false; }
     return uiWidgetTakeActivated(widget) == 1;

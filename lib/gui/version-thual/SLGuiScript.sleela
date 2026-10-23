@@ -59,11 +59,16 @@ class SLGuiScript {
 
   SLGuiScriptCommand[] commands;
   int count;
-  SLGuiDom dom;             // the document the script manipulates
-  SLGuiBridge bridge;       // native boundary for the `call` verb (may be null)
-  SLGuiEventType types;     // event-name -> ordinal
-  int pc;                   // program counter of the last executed command
-  int executed;             // total commands executed
+  < the document the script manipulates >
+  SLGuiDom dom;
+  < native boundary for the `call` verb (may be null) >
+  SLGuiBridge bridge;
+  < event-name -> ordinal >
+  SLGuiEventType types;
+  < program counter of the last executed command >
+  int pc;
+  < total commands executed >
+  int executed;
   String lastError;
 
   void init(SLGuiDom document) {
@@ -73,12 +78,12 @@ class SLGuiScript {
     pc = -1; executed = 0; lastError = "";
   }
 
-  // Attach a created native bridge so `call` can cross to a SLeeLa operation.
+  < Attach a created native bridge so `call` can cross to a SLeeLa operation. >
   void attachBridge(SLGuiBridge b) { bridge = b; }
 
   int size() { return count; }
 
-  // ---- building the script ------------------------------------------------
+  < ---- building the script ------------------------------------------------ >
 
   SLGuiScriptCommand add(int verb, String a, String b, String c, String d) {
     if (count >= MAX_COMMANDS) { return null; }
@@ -88,7 +93,7 @@ class SLGuiScript {
     return cmd;
   }
 
-  // Typed builders (the common verbs) for readable script assembly.
+  < Typed builders (the common verbs) for readable script assembly. >
   void create(String tag, String id, String parentId) { add(SLGuiScriptCommand.CREATE, tag, id, parentId, null); }
   void append(String parentId, String childId)        { add(SLGuiScriptCommand.APPEND, parentId, childId, null, null); }
   void text(String id, String value)                  { add(SLGuiScriptCommand.TEXT, id, value, null, null); }
@@ -102,11 +107,11 @@ class SLGuiScript {
   void call(String operation, String arguments)        { add(SLGuiScriptCommand.CALL, operation, arguments, null, null); }
   void remove(String id)                               { add(SLGuiScriptCommand.REMOVE, id, null, null, null); }
 
-  // ---- execution ----------------------------------------------------------
+  < ---- execution ---------------------------------------------------------- >
 
-  // Run the whole script top-down against the DOM. Returns the number of
-  // commands that executed successfully; stops and records lastError on the
-  // first command that fails.
+  < Run the whole script top-down against the DOM. Returns the number of >
+  < commands that executed successfully; stops and records lastError on the >
+  < first command that fails. >
   int run() {
     executed = 0; lastError = "";
     for (int i = 0; i < count; i = i + 1) {
@@ -117,7 +122,7 @@ class SLGuiScript {
     return executed;
   }
 
-  // Execute one command against the DOM / bridge. Returns false on failure.
+  < Execute one command against the DOM / bridge. Returns false on failure. >
   boolean step(SLGuiScriptCommand cmd) {
     if (cmd == null || dom == null) { lastError = "no command or dom"; return false; }
     int v = cmd.getVerb();

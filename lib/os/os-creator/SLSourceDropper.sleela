@@ -57,14 +57,14 @@ class SLSourceDropper {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Drop the reconstructable SLeeLa source and a provenance README into the tree.
+  < Drop the reconstructable SLeeLa source and a provenance README into the tree. >
   void drop(SLOSModel m, SLOSDevTree tree) {
     tree.writeFile("/src/sleela/os-model.sleela", modelSource(m));
     tree.writeFile("/src/README.md", provenance(m));
   }
 
-  // A minimal, runnable SLeeLa program that reconstructs this model and re-runs
-  // OS Creator(TM) to regenerate the tree.
+  < A minimal, runnable SLeeLa program that reconstructs this model and re-runs >
+  < OS Creator(TM) to regenerate the tree. >
   String modelSource(SLOSModel m) {
     String shape = m.osShape().name();
     String preset = "SLLinuxOSModel";

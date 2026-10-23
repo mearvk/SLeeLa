@@ -62,29 +62,40 @@ class SLGuiScreenFit {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Support tiers.
+  < Support tiers. >
   static final int TIER_BASIC    = 0;
   static final int TIER_MODERATE = 1;
   static final int TIER_ADVANCED = 2;
 
-  // Resolution classes (ADVANCED tier buckets), by the SHORTER screen edge.
-  static final int RES_SD    = 0;   // ≤  720  (SD / small)
-  static final int RES_HD    = 1;   // ≤ 1080  (Full HD)
-  static final int RES_QHD   = 2;   // ≤ 1440  (QHD)
-  static final int RES_UHD   = 3;   //  > 1440  (4K+ / ultra)
+  < Resolution classes (ADVANCED tier buckets), by the SHORTER screen edge. >
+  < ≤  720  (SD / small) >
+  static final int RES_SD    = 0;
+  < ≤ 1080  (Full HD) >
+  static final int RES_HD    = 1;
+  < ≤ 1440  (QHD) >
+  static final int RES_QHD   = 2;
+  < > 1440  (4K+ / ultra) >
+  static final int RES_UHD   = 3;
 
   int tier;
-  int screenW; int screenH;     // actual screen px (modeled fallback if unknown)
-  int screenKnown;              // 1 when a real screen was reported
-  int marginPx;                 // work-area inset kept clear on every side
-  int minW; int minH;           // smallest window we will ever propose
-  int maxW; int maxH;           // largest window we will ever propose
-  int fillPct;                  // BASIC/MODERATE: % of screen to occupy
+  < actual screen px (modeled fallback if unknown) >
+  int screenW; int screenH;
+  < 1 when a real screen was reported >
+  int screenKnown;
+  < work-area inset kept clear on every side >
+  int marginPx;
+  < smallest window we will ever propose >
+  int minW; int minH;
+  < largest window we will ever propose >
+  int maxW; int maxH;
+  < BASIC/MODERATE: % of screen to occupy >
+  int fillPct;
 
-  // Resolved result (filled by fit()).
+  < Resolved result (filled by fit()). >
   int outW; int outH; int outX; int outY;
 
-  static final int MODEL_W = 1920;   // modeled fallback resolution
+  < modeled fallback resolution >
+  static final int MODEL_W = 1920;
   static final int MODEL_H = 1080;
 
   int clamp(int v, int lo, int hi) {
@@ -95,18 +106,20 @@ class SLGuiScreenFit {
   int imin(int a, int b) { return (a < b) ? a : b; }
   int imax(int a, int b) { return (a > b) ? a : b; }
 
-  // Install documented defaults. `supportTier` picks basic/moderate/advanced.
+  < Install documented defaults. `supportTier` picks basic/moderate/advanced. >
   void configure(int supportTier) {
     tier = clamp(supportTier, TIER_BASIC, TIER_ADVANCED);
     screenW = MODEL_W; screenH = MODEL_H; screenKnown = 0;
     marginPx = 48;
     minW = 640;  minH = 480;
-    maxW = 7680; maxH = 4320;      // allow up to 8K; real cap is the screen
-    fillPct = 75;                   // occupy 75% of the screen by default
+    < allow up to 8K; real cap is the screen >
+    maxW = 7680; maxH = 4320;
+    < occupy 75% of the screen by default >
+    fillPct = 75;
   }
 
-  // Feed the ACTUAL screen from uiScreenWidth/uiScreenHeight. A non-positive
-  // value means "unknown" (headless), so we keep the modeled fallback.
+  < Feed the ACTUAL screen from uiScreenWidth/uiScreenHeight. A non-positive >
+  < value means "unknown" (headless), so we keep the modeled fallback. >
   void setScreen(int w, int h) {
     if (w > 0 && h > 0) { screenW = w; screenH = h; screenKnown = 1; }
     else { screenW = MODEL_W; screenH = MODEL_H; screenKnown = 0; }
@@ -114,34 +127,34 @@ class SLGuiScreenFit {
 
   void setFillPct(int pct)   { fillPct = clamp(pct, 20, 100); }
   void setMargin(int px)     { marginPx = clamp(px, 0, 400); }
-  // Keep the min/max interval valid when a caller raises the minimum.
-  // The minimum is authoritative: if it overtakes the old maximum, advance
-  // the maximum with it instead of leaving fit()/honored() contradictory.
+  < Keep the min/max interval valid when a caller raises the minimum. >
+  < The minimum is authoritative: if it overtakes the old maximum, advance >
+  < the maximum with it instead of leaving fit()/honored() contradictory. >
   void setMinSize(int w, int h) {
     if (w > 0) { minW = w; if (maxW < minW) { maxW = minW; } }
     if (h > 0) { minH = h; if (maxH < minH) { maxH = minH; } }
   }
   void setMaxSize(int w, int h) {
-    // A max below the min is refused (kept at least at min) — fail-safe.
+    < A max below the min is refused (kept at least at min) — fail-safe. >
     if (w >= minW) { maxW = w; }
     if (h >= minH) { maxH = h; }
   }
 
-  // The usable work area = screen minus the margin on each side.
+  < The usable work area = screen minus the margin on each side. >
   int workW() {
-    // A minimum preference must never force a window wider than the real screen.
+    < A minimum preference must never force a window wider than the real screen. >
     int available = screenW - 2 * marginPx;
     if (available < 1) { available = screenW; }
     return imin(screenW, available);
   }
   int workH() {
-    // On short screens, prefer a smaller window over violating screen bounds.
+    < On short screens, prefer a smaller window over violating screen bounds. >
     int available = screenH - 2 * marginPx;
     if (available < 1) { available = screenH; }
     return imin(screenH, available);
   }
 
-  // ADVANCED: classify the screen by its shorter edge.
+  < ADVANCED: classify the screen by its shorter edge. >
   int resolutionClass() {
     int shortEdge = imin(screenW, screenH);
     if (shortEdge <= 720)  { return RES_SD; }
@@ -150,16 +163,18 @@ class SLGuiScreenFit {
     return RES_UHD;
   }
 
-  // ADVANCED: the target fill % for a resolution class — larger screens give
-  // the window proportionally LESS of the glass (a 4K window at 90% is huge).
+  < ADVANCED: the target fill % for a resolution class — larger screens give >
+  < the window proportionally LESS of the glass (a 4K window at 90% is huge). >
   int classFillPct() {
     int rc = resolutionClass();
-    if (rc == RES_SD)  { return 92; }   // small screens: nearly full
+    < small screens: nearly full >
+    if (rc == RES_SD)  { return 92; }
     if (rc == RES_HD)  { return 80; }
     if (rc == RES_QHD) { return 70; }
-    return 60;                          // UHD/4K: a comfortable 60%
+    < UHD/4K: a comfortable 60% >
+    return 60;
   }
-  // ADVANCED: an absolute cap per class so a window never becomes unwieldy.
+  < ADVANCED: an absolute cap per class so a window never becomes unwieldy. >
   int classCapW() {
     int rc = resolutionClass();
     if (rc == RES_SD)  { return 1280; }
@@ -175,20 +190,20 @@ class SLGuiScreenFit {
     return 1800;
   }
 
-  // Compute the window size+position for the configured tier. Returns the
-  // resolved width; outW/outH/outX/outY hold the full result.
+  < Compute the window size+position for the configured tier. Returns the >
+  < resolved width; outW/outH/outX/outY hold the full result. >
   int fit() {
     int w; int h;
     if (tier == TIER_BASIC) {
-      // Fraction of the raw screen, clamped to the hard min/max.
+      < Fraction of the raw screen, clamped to the hard min/max. >
       w = (screenW * fillPct) / 100;
       h = (screenH * fillPct) / 100;
     } else if (tier == TIER_MODERATE) {
-      // Fraction of the WORK area (screen minus margins).
+      < Fraction of the WORK area (screen minus margins). >
       w = (workW() * fillPct) / 100;
       h = (workH() * fillPct) / 100;
     } else {
-      // ADVANCED: resolution-class fraction of the work area, then the class cap.
+      < ADVANCED: resolution-class fraction of the work area, then the class cap. >
       int pct = classFillPct();
       w = (workW() * pct) / 100;
       h = (workH() * pct) / 100;
@@ -196,8 +211,8 @@ class SLGuiScreenFit {
       h = imin(h, classCapH());
     }
 
-    // The actual available area is a HARD upper bound. On small screens,
-    // reduce the configured minimum rather than allowing minW/minH to win.
+    < The actual available area is a HARD upper bound. On small screens, >
+    < reduce the configured minimum rather than allowing minW/minH to win. >
     int availW = workW();
     int availH = workH();
     int effectiveMinW = imin(minW, availW);
@@ -207,7 +222,7 @@ class SLGuiScreenFit {
     w = clamp(imin(w, availW), effectiveMinW, effectiveMaxW);
     h = clamp(imin(h, availH), effectiveMinH, effectiveMaxH);
 
-    // Center within the full screen.
+    < Center within the full screen. >
     int x = (screenW - w) / 2; if (x < 0) { x = 0; }
     int y = (screenH - h) / 2; if (y < 0) { y = 0; }
 
@@ -215,7 +230,7 @@ class SLGuiScreenFit {
     return outW;
   }
 
-  // ---- readers ------------------------------------------------------------
+  < ---- readers ------------------------------------------------------------ >
   int width()  { return outW; }
   int height() { return outH; }
   int x()      { return outX; }
@@ -236,9 +251,9 @@ class SLGuiScreenFit {
     return "UHD(4K+)";
   }
 
-  // Internally consistent: a positive, in-range result that fits the screen.
+  < Internally consistent: a positive, in-range result that fits the screen. >
   boolean honored() {
-    // Effective minimums shrink on small screens; viewport fit always wins.
+    < Effective minimums shrink on small screens; viewport fit always wins. >
     if (outW < imin(minW, workW()) || outH < imin(minH, workH())) { return false; }
     if (outW > imin(maxW, workW()) || outH > imin(maxH, workH())) { return false; }
     if (outW > screenW || outH > screenH) { return false; }

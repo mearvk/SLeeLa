@@ -54,27 +54,28 @@ class SLGuiHost {
   SLGuiWindow window;
   SLGuiAction action;
   SLGuiDocumentListener listener;
-  String changeOperation;      // SLeeLa operation invoked on each doc change
+  < SLeeLa operation invoked on each doc change >
+  String changeOperation;
   int listening;
   void configure(SLGuiWindow w, SLGuiAction a) {
     window = w; action = a; listening = 0; changeOperation = "";
   }
-  // Show the window and bind its action to a SLeeLa operation.
+  < Show the window and bind its action to a SLeeLa operation. >
   void show(String title, int width, int height, String actionOperation) {
     window.configure(title, width, height);
     action.configure("primary", actionOperation);
     window.show();
   }
-  // The host raised the window's action; it maps to the SLeeLa operation whose
-  // (non-null) result is published to the window.
+  < The host raised the window's action; it maps to the SLeeLa operation whose >
+  < (non-null) result is published to the window. >
   boolean onAction(String result) {
     action.raise();
     if (!action.take()) { return false; }
     if (result != null) { window.setText(result); }
     return true;
   }
-  // Enable the document-change listener option on the Java host path: SLeeLa
-  // stays authoritative for what a change means.
+  < Enable the document-change listener option on the Java host path: SLeeLa >
+  < stays authoritative for what a change means. >
   boolean listen(SLGuiDocumentListener l, String operation) {
     listener = l; changeOperation = operation;
     if (!listener.watch()) { listening = 0; return false; }
@@ -82,8 +83,8 @@ class SLGuiHost {
     return true;
   }
   boolean isListening() { return listening == 1 && listener != null && listener.isRunning(); }
-  // On a change the host calls `changeOperation`; its result is published, or
-  // the window's default refresh is used when the operation returns null.
+  < On a change the host calls `changeOperation`; its result is published, or >
+  < the window's default refresh is used when the operation returns null. >
   int onDocumentChange(String documentId, String revision, int realChanges, String operationResult) {
     if (!isListening()) { return 0; }
     int emitted = listener.onOsCall(realChanges);

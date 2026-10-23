@@ -60,7 +60,7 @@ struct WebDesign {
     int radius; int energy; int grammar;
 }
 
-// --- Sign: a semantic content block -------------------------------------
+< --- Sign: a semantic content block ------------------------------------- >
 struct WebSign { int kind; String a; String b; String c; }
 
 class WebsiteGenerator {

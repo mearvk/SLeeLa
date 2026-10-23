@@ -76,17 +76,17 @@ class SleelaVMDynamicMemoryGuard {
     function observeUsage(currentBytes, peakBytes);
     function reset();
 
-    // HARD:
-    //   Never exceed hardLimit. A request beyond the limit is rejected.
-    //
-    // SLOW_CAREFUL:
-    //   Grow only in bounded steps, after pressure/GC checks and the configured
-    //   growth delay. The guard never exceeds maximumLimit.
-    //
-    // AGGRESSIVE:
-    //   Grow promptly when capacity is required, subject to maximumLimit and
-    //   physical VM limits. The guard still refuses an impossible request.
-    //
-    // The guard controls VM memory policy; it does not grant unrestricted host
-    // memory or OS authority. Physical/resource fitment remains authoritative.
+    < HARD: >
+    < Never exceed hardLimit. A request beyond the limit is rejected. >
+    <  >
+    < SLOW_CAREFUL: >
+    < Grow only in bounded steps, after pressure/GC checks and the configured >
+    < growth delay. The guard never exceeds maximumLimit. >
+    <  >
+    < AGGRESSIVE: >
+    < Grow promptly when capacity is required, subject to maximumLimit and >
+    < physical VM limits. The guard still refuses an impossible request. >
+    <  >
+    < The guard controls VM memory policy; it does not grant unrestricted host >
+    < memory or OS authority. Physical/resource fitment remains authoritative. >
 }

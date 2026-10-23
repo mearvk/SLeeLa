@@ -59,18 +59,18 @@ class SLPermissions {
 
   boolean exists() { return osExists(path) == 1; }
 
-  // Portable access questions. Existence is authoritative (from the host); the
-  // finer read/write/execute distinctions are conservatively derived here and
-  // refined by SLWindowsOS / SLLinuxOS / SLMacOS where the native model allows.
+  < Portable access questions. Existence is authoritative (from the host); the >
+  < finer read/write/execute distinctions are conservatively derived here and >
+  < refined by SLWindowsOS / SLLinuxOS / SLMacOS where the native model allows. >
   boolean readable() { return osExists(path) == 1; }
   boolean writable() { return osExists(path) == 1; }
   boolean executable() {
-    // On POSIX a directory is "executable" (searchable); files need the x bit,
-    // which this portable view cannot see yet, so report false for files.
+    < On POSIX a directory is "executable" (searchable); files need the x bit, >
+    < which this portable view cannot see yet, so report false for files. >
     if (osPlatform() == "Windows") { return osExists(path) == 1; }
     return osIsDir(path) == 1;
   }
 
-  // Whether the host uses the POSIX mode-bit model (vs. Windows ACLs).
+  < Whether the host uses the POSIX mode-bit model (vs. Windows ACLs). >
   boolean posixModel() { return osPlatform() != "Windows"; }
 }

@@ -67,8 +67,8 @@ class JavaLanguageCompiler extends SLLanguageCompiler {
   }
 
   boolean runParse(SLCompileRequest request) {
-    // Java parsing: compilation units, package/imports, class/interface/record
-    // declarations, members, and statements.
+    < Java parsing: compilation units, package/imports, class/interface/record >
+    < declarations, members, and statements. >
     return provides(PHASE_PARSE);
   }
 }

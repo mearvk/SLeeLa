@@ -57,16 +57,19 @@ class SLVeritable {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  boolean veritable; // the binary truth: did the step hold?
-  boolean kind;      // is the result well-formed and benign?
-  String label;      // the symbol this value answers for
+  < the binary truth: did the step hold? >
+  boolean veritable;
+  < is the result well-formed and benign? >
+  boolean kind;
+  < the symbol this value answers for >
+  String label;
   int state;
 
-  // The two canonical constructions.
+  < The two canonical constructions. >
   void affirm(String forSymbol) { veritable = true;  kind = true;  label = forSymbol; state = 1; }
   void deny(String forSymbol)   { veritable = false; kind = true;  label = forSymbol; state = 1; }
 
-  // General construction from an explicit pair.
+  < General construction from an explicit pair. >
   void configure(boolean isVeritable, boolean isKind, String forSymbol) {
     veritable = isVeritable;
     kind = isKind;
@@ -79,15 +82,15 @@ class SLVeritable {
   boolean isKind() { return kind; }
   String symbol() { return label; }
 
-  // Sound == veritable AND kind: a true result of the right kind.
+  < Sound == veritable AND kind: a true result of the right kind. >
   boolean sound() { return state == 1 && veritable && kind; }
 
-  // The binary item itself, as a single bit (1 = veritable, 0 = not), which is
-  // what the step hands back by default.
+  < The binary item itself, as a single bit (1 = veritable, 0 = not), which is >
+  < what the step hands back by default. >
   int bit() { return veritable ? 1 : 0; }
 
-  // Logical composition, preserving kindness: an unkind operand makes the
-  // result unkind, so faults propagate rather than hide.
+  < Logical composition, preserving kindness: an unkind operand makes the >
+  < result unkind, so faults propagate rather than hide. >
   SLVeritable and(SLVeritable other) {
     SLVeritable r = new SLVeritable();
     if (other == null) { r.configure(false, false, label); return r; }

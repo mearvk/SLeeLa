@@ -57,31 +57,31 @@ class SLCodecLoader {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Per-codec loaded flag (1 loaded, 0 not), indexed by codec id. Backed by the
-  // first-class array type; call init() before use.
+  < Per-codec loaded flag (1 loaded, 0 not), indexed by codec id. Backed by the >
+  < first-class array type; call init() before use. >
   int[] loaded;
 
-  // The number of codecs the native manager knows (SLEELA_CODEC_COUNT).
+  < The number of codecs the native manager knows (SLEELA_CODEC_COUNT). >
   int codecCount() { return 20; }
 
-  // Allocate the loaded-flag table with every codec unloaded.
+  < Allocate the loaded-flag table with every codec unloaded. >
   void init() { loaded = new int[20]; }
 
-  // load(id): mark a codec loaded. Mirrors sleela_codec_manager_load.
+  < load(id): mark a codec loaded. Mirrors sleela_codec_manager_load. >
   void load(int id) { loaded[id] = 1; }
 
-  // unload(id): mark a codec unloaded. Mirrors sleela_codec_manager_unload.
+  < unload(id): mark a codec unloaded. Mirrors sleela_codec_manager_unload. >
   void unload(int id) { loaded[id] = 0; }
 
   boolean isLoaded(int id) { return loaded[id] == 1; }
 
-  // unloadAll(): release every loaded codec. Mirrors sleela_codec_manager_unload_all.
+  < unloadAll(): release every loaded codec. Mirrors sleela_codec_manager_unload_all. >
   void unloadAll() {
     int i = 0;
     while (i < 20) { loaded[i] = 0; i = i + 1; }
   }
 
-  // Human-readable codec name by id, matching the native registry.
+  < Human-readable codec name by id, matching the native registry. >
   String nameOf(int id) {
     if (id == 0) { return "PCM/WAV"; }
     if (id == 1) { return "AIFF"; }
@@ -105,8 +105,8 @@ class SLCodecLoader {
     return "WebM Audio";
   }
 
-  // Native codecs implement encode/decode in-package (no external backend):
-  // PCM/WAV (0), AIFF (1), G.711 mu-law (15), G.711 A-law (16). The rest are
-  // backend handlers until an approved library adapter is registered.
+  < Native codecs implement encode/decode in-package (no external backend): >
+  < PCM/WAV (0), AIFF (1), G.711 mu-law (15), G.711 A-law (16). The rest are >
+  < backend handlers until an approved library adapter is registered. >
   boolean isNative(int id) { return id == 0 || id == 1 || id == 15 || id == 16; }
 }

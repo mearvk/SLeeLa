@@ -51,10 +51,14 @@ class ManufacturingModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int unitsProduced;        // units shipped this month
-  int wholesalePriceCents;  // price per unit to the buyer
-  int variableCostCents;    // material + labor per unit
-  int fixedPlantCents;      // monthly fixed factory cost (regardless of volume)
+  < units shipped this month >
+  int unitsProduced;
+  < price per unit to the buyer >
+  int wholesalePriceCents;
+  < material + labor per unit >
+  int variableCostCents;
+  < monthly fixed factory cost (regardless of volume) >
+  int fixedPlantCents;
 
   void setUp(int produced, int wholesalePrice, int variableCost, int fixedPlant) {
     load();
@@ -70,7 +74,7 @@ class ManufacturingModel extends BusinessModel {
     setUnits(produced);
   }
 
-  // Break-even volume: units needed to cover the fixed plant cost alone.
+  < Break-even volume: units needed to cover the fixed plant cost alone. >
   int breakEvenUnits() {
     int contribution = wholesalePriceCents - variableCostCents;
     if (contribution <= 0) { return 0; }

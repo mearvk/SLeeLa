@@ -52,16 +52,21 @@ class SLMoralVerdict {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Decision ordinals.
+  < Decision ordinals. >
   static final int PERMIT = 1;
   static final int DEFER  = 2;
   static final int DENY   = 3;
 
-  int decision;       // PERMIT / DEFER / DENY
-  int charge;         // stored moral charge at decision time
-  int threshold;      // the threshold compared against
-  String basis;       // deciding framework or tripped red line
-  String reason;      // human-readable explanation
+  < PERMIT / DEFER / DENY >
+  int decision;
+  < stored moral charge at decision time >
+  int charge;
+  < the threshold compared against >
+  int threshold;
+  < deciding framework or tripped red line >
+  String basis;
+  < human-readable explanation >
+  String reason;
   int configured;
 
   void configure(int d, int chargeLevel, int thresh, String decidingBasis, String why) {
@@ -85,7 +90,7 @@ class SLMoralVerdict {
     return "DENY";
   }
 
-  // A one-line summary for logs/ledger.
+  < A one-line summary for logs/ledger. >
   String summary() {
     return decisionName() + " (charge " + intToStr(charge) + "/" + intToStr(threshold)
          + "; " + basis + "): " + reason;

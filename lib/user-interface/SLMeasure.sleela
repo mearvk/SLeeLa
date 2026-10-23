@@ -52,24 +52,35 @@ class SLMeasure {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Unit ordinals (mirror SLUIUnitKind).
-  static final int PX   = 0;   // device pixels
-  static final int MM   = 1;   // millimetre (metric)
-  static final int CM   = 2;   // centimetre (metric)
-  static final int M    = 3;   // metre (metric)
-  static final int IN   = 4;   // inch (US)
-  static final int FT   = 5;   // foot (US)
-  static final int PT   = 6;   // typographic point (US, 1/72in)
-  static final int PICA = 7;   // pica (US, 12pt)
-  static final int PCT  = 8;   // percent of the reference extent
-  static final int FR   = 9;   // flexible fraction / weight share
-  static final int EM   = 10;  // multiples of the base font size
+  < Unit ordinals (mirror SLUIUnitKind). >
+  < device pixels >
+  static final int PX   = 0;
+  < millimetre (metric) >
+  static final int MM   = 1;
+  < centimetre (metric) >
+  static final int CM   = 2;
+  < metre (metric) >
+  static final int M    = 3;
+  < inch (US) >
+  static final int IN   = 4;
+  < foot (US) >
+  static final int FT   = 5;
+  < typographic point (US, 1/72in) >
+  static final int PT   = 6;
+  < pica (US, 12pt) >
+  static final int PICA = 7;
+  < percent of the reference extent >
+  static final int PCT  = 8;
+  < flexible fraction / weight share >
+  static final int FR   = 9;
+  < multiples of the base font size >
+  static final int EM   = 10;
 
   double value;
   int unit;
 
   void of(double v, int u) { value = v; unit = u; }
-  // US customary + metric + device + relative builders.
+  < US customary + metric + device + relative builders. >
   void px(double v)   { of(v, PX); }
   void mm(double v)   { of(v, MM); }
   void cm(double v)   { of(v, CM); }
@@ -82,8 +93,8 @@ class SLMeasure {
   void fraction(double v){ of(v, FR); }
   void em(double v)   { of(v, EM); }
 
-  // Resolve to device pixels at `dpi`, with a reference extent (for percent)
-  // and em size (for em).
+  < Resolve to device pixels at `dpi`, with a reference extent (for percent) >
+  < and em size (for em). >
   double toPixels(double dpi, double referencePx, double emPx) {
     return measureToPx(value, unit, dpi, referencePx, emPx);
   }

@@ -67,8 +67,8 @@ class RustLanguageCompiler extends SLLanguageCompiler {
   }
 
   boolean runSemantic(SLCompileRequest request) {
-    // Rust semantics: trait resolution, type checking, and ownership /
-    // borrow / lifetime analysis before IR construction.
+    < Rust semantics: trait resolution, type checking, and ownership / >
+    < borrow / lifetime analysis before IR construction. >
     return provides(PHASE_SEMANTIC);
   }
 }

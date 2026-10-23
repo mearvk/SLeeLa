@@ -52,7 +52,7 @@ class SLImage extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create an image tile inside `parent` with a centred glyph and a size.
+  < Create an image tile inside `parent` with a centred glyph and a size. >
   void createIn(SLWidget parent, String glyph, int width, int height) {
     widget = uiImage(parent.handle(), glyph, width, height);
   }

@@ -51,10 +51,14 @@ class ConsultingModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int consultants;         // people who can bill
-  int billableHours;       // total hours actually billed this month
-  int rateCents;           // billing rate per hour
-  int salaryPerHeadCents;  // monthly salary cost per consultant
+  < people who can bill >
+  int consultants;
+  < total hours actually billed this month >
+  int billableHours;
+  < billing rate per hour >
+  int rateCents;
+  < monthly salary cost per consultant >
+  int salaryPerHeadCents;
 
   void setUp(int heads, int hours, int rate, int salaryPerHead) {
     load();
@@ -70,7 +74,7 @@ class ConsultingModel extends BusinessModel {
     setUnits(hours);
   }
 
-  // Utilization as a percent of a nominal 160-hour month across all heads.
+  < Utilization as a percent of a nominal 160-hour month across all heads. >
   int utilizationPercent() {
     int capacity = consultants * 160;
     if (capacity <= 0) { return 0; }

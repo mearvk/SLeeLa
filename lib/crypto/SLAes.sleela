@@ -51,21 +51,26 @@ class SLAes {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Status codes mirror slcrypto_status in crypto/include/slcrypto.h.
+  < Status codes mirror slcrypto_status in crypto/include/slcrypto.h. >
   static final int OK = 0;
   static final int ERR_PARAM = -1;
   static final int ERR_AUTH = -2;
   static final int ERR_UNIMPL = -3;
 
-  // AES block size in bytes (FIPS 197).
+  < AES block size in bytes (FIPS 197). >
   static final int BLOCK_BYTES = 16;
 
   String algorithm;
-  int keyBits;       // 128, 192, or 256
-  int state;         // 1 = enabled, 0 = disabled
-  int configured;    // 1 once a supported algorithm name has been accepted
-  int keySet;        // 1 once a valid key size has been accepted
-  int backend;       // 1 when the native /crypto backend is linked and ready
+  < 128, 192, or 256 >
+  int keyBits;
+  < 1 = enabled, 0 = disabled >
+  int state;
+  < 1 once a supported algorithm name has been accepted >
+  int configured;
+  < 1 once a valid key size has been accepted >
+  int keySet;
+  < 1 when the native /crypto backend is linked and ready >
+  int backend;
 
   int configure(String a) {
     if (a == null) { configured = 0; return ERR_PARAM; }
@@ -74,7 +79,7 @@ class SLAes {
     return ERR_PARAM;
   }
 
-  // key_bits must be 128, 192, or 256 (FIPS 197).
+  < key_bits must be 128, 192, or 256 (FIPS 197). >
   int keySize(int b) {
     if (b == 128 || b == 192 || b == 256) { keyBits = b; keySet = 1; return OK; }
     keySet = 0;
@@ -87,12 +92,12 @@ class SLAes {
   void enable() { state = 1; }
   void disable() { state = 0; }
 
-  // active() requires enable + a valid algorithm + a valid key size + a ready backend.
+  < active() requires enable + a valid algorithm + a valid key size + a ready backend. >
   boolean active() { return state == 1 && configured == 1 && keySet == 1 && backend == 1; }
 
   int blockSize() { return BLOCK_BYTES; }
 
-  // Single-block ECB primitive (FIPS 197). Models slc_aes_encrypt_block()/slc_aes_decrypt_block().
+  < Single-block ECB primitive (FIPS 197). Models slc_aes_encrypt_block()/slc_aes_decrypt_block(). >
   int encryptBlock(String in) {
     if (active() == false) { return ERR_UNIMPL; }
     if (in == null) { return ERR_PARAM; }

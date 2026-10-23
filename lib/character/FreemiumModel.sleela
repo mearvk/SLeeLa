@@ -50,10 +50,14 @@ class FreemiumModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int freeUsers;          // the generous majority
-  int conversionPercent;  // share of free users who go paid (0..100)
-  int priceCents;         // monthly price for a converted user
-  int serveCostCents;     // cost to serve ONE user (free or paid) per month
+  < the generous majority >
+  int freeUsers;
+  < share of free users who go paid (0..100) >
+  int conversionPercent;
+  < monthly price for a converted user >
+  int priceCents;
+  < cost to serve ONE user (free or paid) per month >
+  int serveCostCents;
 
   void setUp(int free, int conversion, int price, int serveCost) {
     load();

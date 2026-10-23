@@ -75,25 +75,25 @@ class SLTuringBridge {
     runs = 0;
   }
 
-  // Compile a given language id to the register ISA, then reduce to the Sleela
-  // opcode substrate, then execute. Returns the value the program PRINTed.
+  < Compile a given language id to the register ISA, then reduce to the Sleela >
+  < opcode substrate, then execute. Returns the value the program PRINTed. >
   int runLanguage(int langId, String path, String name) {
-    // 1. frontend: source -> common IR
+    < 1. frontend: source -> common IR >
     SLCompilerDriver driver = new SLCompilerDriver(); driver.configure(isa);
     SLProgram prog = driver.compile(path, langId, name);
 
-    // 2. map register ISA -> Sleela opcode substrate, into a fresh VM
+    < 2. map register ISA -> Sleela opcode substrate, into a fresh VM >
     SLSleelaVM vm = new SLSleelaVM(); vm.configure(8192, 4096, 1024);
     SLOpcodeMap map = new SLOpcodeMap(); map.configure(isa, sys, vm);
     map.mapProgram(prog, decoder);
 
-    // 3. execute the Turing-complete substrate
+    < 3. execute the Turing-complete substrate >
     vm.run(100000);
     runs = runs + 1;
     return vm.printed();
   }
 
-  // Reduce ONE already-built register-ISA program to the substrate and run it.
+  < Reduce ONE already-built register-ISA program to the substrate and run it. >
   int runProgram(SLProgram prog) {
     SLSleelaVM vm = new SLSleelaVM(); vm.configure(8192, 4096, 1024);
     SLOpcodeMap map = new SLOpcodeMap(); map.configure(isa, sys, vm);
@@ -103,9 +103,9 @@ class SLTuringBridge {
     return vm.printed();
   }
 
-  // Prove 1:1 Turing effect: compile the SAME computation from all four
-  // languages, reduce each to the Sleela opcode substrate, run each, and return
-  // true iff every language produced the identical observable result.
+  < Prove 1:1 Turing effect: compile the SAME computation from all four >
+  < languages, reduce each to the Sleela opcode substrate, run each, and return >
+  < true iff every language produced the identical observable result. >
   boolean proveEquivalence(String cPath, String cppPath, String javaPath, String sleelaPath) {
     int rc = runLanguage(SLFrontend_LANG_C(), cPath, "c-prog");
     int rcpp = runLanguage(SLFrontend_LANG_CPP(), cppPath, "cpp-prog");
@@ -114,7 +114,7 @@ class SLTuringBridge {
     return rc == rcpp && rcpp == rj && rj == rs;
   }
 
-  // Language-id helpers (mirror SLFrontend constants without an instance).
+  < Language-id helpers (mirror SLFrontend constants without an instance). >
   int SLFrontend_LANG_SLEELA() { SLFrontend f = new SLFrontend(); return f.LANG_SLEELA; }
   int SLFrontend_LANG_C() { SLFrontend f = new SLFrontend(); return f.LANG_C; }
   int SLFrontend_LANG_CPP() { SLFrontend f = new SLFrontend(); return f.LANG_CPP; }

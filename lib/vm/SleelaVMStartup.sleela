@@ -124,14 +124,14 @@ class SleelaVMStartup {
     }
 }
 
-// Bootstrap policy:
-// - The Startup Module is selected by the SLeeLa System configuration.
-// - Native C/C++ execution is selected only when both the compiled SLeeLa C ABI
-//   and required C++ runtime/orchestration path are present.
-// - Otherwise a compatible .sleela VM module is selected through the VM module loader.
-// - The System Harness is the controlled boundary for startup system calls.
-// - Bootstrap calls are capability-scoped and bounded; calls requiring a fully
-//   ready VM remain queued until readiness is published.
-// - The startup path does not grant unrestricted operating-system authority.
-// - A VM is READY only after its core, memory, scheduler, module graph, dispatch
-//   path, and System Harness connection have all reached the required state.
+< Bootstrap policy: >
+< - The Startup Module is selected by the SLeeLa System configuration. >
+< - Native C/C++ execution is selected only when both the compiled SLeeLa C ABI >
+< and required C++ runtime/orchestration path are present. >
+< - Otherwise a compatible .sleela VM module is selected through the VM module loader. >
+< - The System Harness is the controlled boundary for startup system calls. >
+< - Bootstrap calls are capability-scoped and bounded; calls requiring a fully >
+< ready VM remain queued until readiness is published. >
+< - The startup path does not grant unrestricted operating-system authority. >
+< - A VM is READY only after its core, memory, scheduler, module graph, dispatch >
+< path, and System Harness connection have all reached the required state. >

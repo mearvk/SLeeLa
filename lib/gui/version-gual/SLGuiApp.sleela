@@ -62,19 +62,20 @@ class SLGuiApp {
   SLGuiMount mount;
   SLGuiHostAdapter host;
   SLGuiScript script;
-  SLGuiScreenFit screenFitter;  // sizes the window from the actual screen size
+  < sizes the window from the actual screen size >
+  SLGuiScreenFit screenFitter;
   int ready;
 
-  // Open the application + window and stand up the DOM/mount/host wiring.
-  // Returns true when the toolkit came up (false on a headless host).
+  < Open the application + window and stand up the DOM/mount/host wiring. >
+  < Returns true when the toolkit came up (false on a headless host). >
   boolean boot(String appId, String title, int width, int height) {
     ui = new SLUserInterface();
     ui.configure(appId);
     if (!ui.open()) { ready = 0; return false; }
 
-    // Enforce the physical screen as a hard upper bound even when callers
-    // use boot() directly instead of bootFitted(). Keep a small decoration/
-    // taskbar margin where possible; never let a requested size win over screen.
+    < Enforce the physical screen as a hard upper bound even when callers >
+    < use boot() directly instead of bootFitted(). Keep a small decoration/ >
+    < taskbar margin where possible; never let a requested size win over screen. >
     int screenW = ui.screenWidth();
     int screenH = ui.screenHeight();
     if (screenW > 0) {
@@ -105,25 +106,26 @@ class SLGuiApp {
     window = ui.openWindow(title, width, height, theme.handle());
 
     dom = new SLGuiDom(); dom.init();
-    // The document root mirrors the window's existing root container.
+    < The document root mirrors the window's existing root container. >
     dom.createRoot("window", "root");
 
     mount = new SLGuiMount(); mount.init(dom, window.rootHandle());
     host = new SLGuiHostAdapter(); host.init(dom, mount);
     script = new SLGuiScript(); script.init(dom);
 
-    // A screen-fit helper, primed with the ACTUAL screen size (0 headless).
-    screenFitter = new SLGuiScreenFit(); screenFitter.configure(1);   // moderate
+    < A screen-fit helper, primed with the ACTUAL screen size (0 headless). >
+    < moderate >
+    screenFitter = new SLGuiScreenFit(); screenFitter.configure(1);
     screenFitter.setScreen(ui.screenWidth(), ui.screenHeight());
 
     ready = 1;
     return true;
   }
 
-  // Open the application and size the window to the ACTUAL screen / resolution,
-  // at a support tier (0=basic, 1=moderate, 2=advanced; see SLGuiScreenFit).
-  // Queries uiScreenWidth/uiScreenHeight through the facade; a headless host
-  // falls back to a modeled 1920x1080. Returns true when the toolkit came up.
+  < Open the application and size the window to the ACTUAL screen / resolution, >
+  < at a support tier (0=basic, 1=moderate, 2=advanced; see SLGuiScreenFit). >
+  < Queries uiScreenWidth/uiScreenHeight through the facade; a headless host >
+  < falls back to a modeled 1920x1080. Returns true when the toolkit came up. >
   boolean bootFitted(String appId, String title, int tier) {
     SLUserInterface probe = new SLUserInterface();
     probe.configure(appId);
@@ -132,43 +134,44 @@ class SLGuiApp {
     fit.configure(tier);
     fit.setScreen(probe.screenWidth(), probe.screenHeight());
     fit.fit();
-    probe.close();   // reopened inside boot() with the resolved size
+    < reopened inside boot() with the resolved size >
+    probe.close();
     boolean ok = boot(appId, title, fit.width(), fit.height());
     if (ok) { screenFitter = fit; }
     return ok;
   }
 
-  // The screen-fit helper (primed with the real screen). Call setScreen()/fit()
-  // to recompute, then read width()/height()/x()/y() for a resize or re-center.
+  < The screen-fit helper (primed with the real screen). Call setScreen()/fit() >
+  < to recompute, then read width()/height()/x()/y() for a resize or re-center. >
   SLGuiScreenFit screenFit() { return screenFitter; }
 
-  // Build an IMPLIED scrollbar model for a scrolled surface. `horizontal`
-  // selects the axis; `viewport`/`content` are the extents on that axis. The
-  // returned SLGuiScrollbar yields orient()/valuePermille()/pagePermille() to
-  // paint with uiScrollBar (or an SLScrollBar), and tracks the scroll offset.
+  < Build an IMPLIED scrollbar model for a scrolled surface. `horizontal` >
+  < selects the axis; `viewport`/`content` are the extents on that axis. The >
+  < returned SLGuiScrollbar yields orient()/valuePermille()/pagePermille() to >
+  < paint with uiScrollBar (or an SLScrollBar), and tracks the scroll offset. >
   SLGuiScrollbar scrollbarFor(int viewport, int content, boolean horizontal) {
     SLGuiScrollbar sb = new SLGuiScrollbar();
     sb.configure(horizontal ? 1 : 0, viewport, content);
     return sb;
   }
 
-  // Presentation buffering for the live window: 0=single, 1=double (the
-  // toolkit default, flicker-free resize), 2=triple (smoother rapid resize).
-  // Pass SLGuiSettings.getBufferingMode() here to honor the configured knob.
+  < Presentation buffering for the live window: 0=single, 1=double (the >
+  < toolkit default, flicker-free resize), 2=triple (smoother rapid resize). >
+  < Pass SLGuiSettings.getBufferingMode() here to honor the configured knob. >
   void setBuffering(int mode) { if (window != null) { window.setBuffering(mode); } }
   int buffering() { return (window != null) ? window.buffering() : 0; }
 
-  // Add a SCROLLED VIEWPORT node to the DOM under `parentId`. Its children
-  // become the scroll content and native scrollbars appear AUTOMATICALLY when
-  // that content is larger than the viewport. Pin the viewport smaller than its
-  // content (e.g. style "min-height") to force scrolling. Equivalent to adding a
-  // "scrolled" element; returns the node so the caller can append content to it.
+  < Add a SCROLLED VIEWPORT node to the DOM under `parentId`. Its children >
+  < become the scroll content and native scrollbars appear AUTOMATICALLY when >
+  < that content is larger than the viewport. Pin the viewport smaller than its >
+  < content (e.g. style "min-height") to force scrolling. Equivalent to adding a >
+  < "scrolled" element; returns the node so the caller can append content to it. >
   SLGuiNode addScrolled(String parentId, String id) {
     return dom.appendElement(parentId, "scrolled", id);
   }
-  // Add a plain container that scrolls on overflow by setting its `overflow`
-  // intent (auto|scroll|always|hidden). SLGuiMount promotes it to a native
-  // scrolled viewport. Returns the node for appending content.
+  < Add a plain container that scrolls on overflow by setting its `overflow` >
+  < intent (auto|scroll|always|hidden). SLGuiMount promotes it to a native >
+  < scrolled viewport. Returns the node for appending content. >
   SLGuiNode addOverflowBox(String parentId, String id, String overflow) {
     SLGuiNode n = dom.appendElement(parentId, "box", id);
     if (n != null && overflow != null) { n.setAttribute("overflow", overflow); }
@@ -176,26 +179,26 @@ class SLGuiApp {
   }
 
 
-  // ---- fade / transition helpers ------------------------------------------
-  // A reusable enter/exit fade primitive (the shared tween). Returns a default
-  // 200ms ease-out fade-in the caller can retarget with fadeIn/fadeOut/between.
+  < ---- fade / transition helpers ------------------------------------------ >
+  < A reusable enter/exit fade primitive (the shared tween). Returns a default >
+  < 200ms ease-out fade-in the caller can retarget with fadeIn/fadeOut/between. >
   SLGuiTransition transition() {
     SLGuiTransition t = new SLGuiTransition(); t.configure();
     return t;
   }
-  // A TOAST / SNACKBAR: a small self-dismissing notification that fades in,
-  // dwells, and fades out. Driven by tick(); read opacityPct() to paint it.
+  < A TOAST / SNACKBAR: a small self-dismissing notification that fades in, >
+  < dwells, and fades out. Driven by tick(); read opacityPct() to paint it. >
   SLGuiToast toast(String message) {
     SLGuiToast t = new SLGuiToast(); t.configure(message);
     return t;
   }
-  // A MODAL / OVERLAY: a dialog that fades in over a darkened backdrop (scrim).
+  < A MODAL / OVERLAY: a dialog that fades in over a darkened backdrop (scrim). >
   SLGuiModal modal(String title) {
     SLGuiModal m = new SLGuiModal(); m.configure(title);
     return m;
   }
-  // A SKELETON SCREEN / PLACEHOLDER: a shimmering loading placeholder that
-  // dissolves to reveal real content (shape 0=text/1=card/2=avatar/3=list).
+  < A SKELETON SCREEN / PLACEHOLDER: a shimmering loading placeholder that >
+  < dissolves to reveal real content (shape 0=text/1=card/2=avatar/3=list). >
   SLGuiSkeleton skeleton(int shape, int lines) {
     SLGuiSkeleton s = new SLGuiSkeleton(); s.configure(shape, lines);
     return s;
@@ -204,33 +207,33 @@ class SLGuiApp {
 
   boolean isReady() { return ready == 1; }
 
-  // ---- document access ----------------------------------------------------
+  < ---- document access ---------------------------------------------------- >
 
   SLGuiDom document() { return dom; }
   SLGuiScript scripting() { return script; }
   SLWindow hostWindow() { return window; }
 
-  // Convenience: append an element to a parent in the DOM (then mount+show on
-  // the next loop turn, or immediately via refresh()).
+  < Convenience: append an element to a parent in the DOM (then mount+show on >
+  < the next loop turn, or immediately via refresh()). >
   SLGuiNode add(String parentId, String tag, String id) {
     return dom.appendElement(parentId, tag, id);
   }
 
-  // Bind a click callback (DHTML onClick) by node id.
+  < Bind a click callback (DHTML onClick) by node id. >
   SLGuiHandler onClick(String id, String operation) { return dom.onClick(id, operation); }
 
-  // Run a UI script against the DOM (build + bind + fire), then refresh.
+  < Run a UI script against the DOM (build + bind + fire), then refresh. >
   int runScript() {
     int n = script.run();
     refresh();
     return n;
   }
 
-  // ---- the loop -----------------------------------------------------------
+  < ---- the loop ----------------------------------------------------------- >
 
-  // Mount everything, show the window, then run the toolkit event loop:
-  // pump -> poll activations -> mount new nodes -> reconcile. Returns the
-  // process-style exit code.
+  < Mount everything, show the window, then run the toolkit event loop: >
+  < pump -> poll activations -> mount new nodes -> reconcile. Returns the >
+  < process-style exit code. >
   int run() {
     if (ready == 0) { return 1; }
     mount.mountAll();
@@ -238,23 +241,26 @@ class SLGuiApp {
     while (ui.active()) {
       int dispatched = ui.pump(true);
       if (dispatched < 0) { break; }
-      host.poll();        // widget activations -> SLGuiEvents -> handlers
-      mount.mountNew();   // pick up nodes added by handlers/scripts
-      mount.reconcile();  // push dirty DOM state onto widgets
+      < widget activations -> SLGuiEvents -> handlers >
+      host.poll();
+      < pick up nodes added by handlers/scripts >
+      mount.mountNew();
+      < push dirty DOM state onto widgets >
+      mount.reconcile();
       window.requestRedraw();
     }
     return 0;
   }
 
-  // A single synchronous refresh (mount new + reconcile) without the loop,
-  // for building a UI up front or driving it from a test/host step.
+  < A single synchronous refresh (mount new + reconcile) without the loop, >
+  < for building a UI up front or driving it from a test/host step. >
   void refresh() {
     if (ready == 0) { return; }
     mount.mountNew();
     mount.reconcile();
   }
 
-  // Pump one turn (pump + poll + refresh); returns events raised this turn.
+  < Pump one turn (pump + poll + refresh); returns events raised this turn. >
   int step(boolean block) {
     if (ready == 0) { return 0; }
     ui.pump(block);

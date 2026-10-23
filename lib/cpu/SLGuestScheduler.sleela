@@ -60,15 +60,17 @@ class SLGuestScheduler {
   SLGuestTask t4; SLGuestTask t5; SLGuestTask t6; SLGuestTask t7;
   int count;
   int current;
-  int quantum;      // timer ticks per slice
-  int tickAccum;    // ticks since the last switch
+  < timer ticks per slice >
+  int quantum;
+  < ticks since the last switch >
+  int tickAccum;
   int switches;
 
   void configure(int timerTicksPerSlice) {
     count = 0; current = -1; quantum = timerTicksPerSlice; tickAccum = 0; switches = 0;
   }
 
-  // Place a task into a specific slot (no bookkeeping beyond the slot write).
+  < Place a task into a specific slot (no bookkeeping beyond the slot write). >
   void putAt(int idx, SLGuestTask t) {
     if (idx == 0) { t0 = t; } if (idx == 1) { t1 = t; }
     if (idx == 2) { t2 = t; } if (idx == 3) { t3 = t; }
@@ -76,10 +78,10 @@ class SLGuestScheduler {
     if (idx == 6) { t6 = t; } if (idx == 7) { t7 = t; }
   }
 
-  // Find a slot occupied by a reaped-and-DONE task (a zombie a parent has
-  // already collected) that can be recycled for a new task, or -1 if none.
-  // The scheduler's current running slot is never recycled, so reusing a slot
-  // can't leave `current` pointing at a fresh task that never went RUNNING.
+  < Find a slot occupied by a reaped-and-DONE task (a zombie a parent has >
+  < already collected) that can be recycled for a new task, or -1 if none. >
+  < The scheduler's current running slot is never recycled, so reusing a slot >
+  < can't leave `current` pointing at a fresh task that never went RUNNING. >
   int freeReapedSlot() {
     int i = 0;
     while (i < count) {
@@ -93,12 +95,14 @@ class SLGuestScheduler {
   int admit(SLGuestTask t) {
     int idx = count;
     if (idx >= MAX) {
-      // Table full: recycle a slot whose task was reaped (its TCB is free).
+      < Table full: recycle a slot whose task was reaped (its TCB is free). >
       idx = freeReapedSlot();
-      if (idx < 0) { return -1; }   // genuinely out of slots
+      < genuinely out of slots >
+      if (idx < 0) { return -1; }
       putAt(idx, t);
       t.markReady();
-      return idx;                   // reused slot: count is unchanged
+      < reused slot: count is unchanged >
+      return idx;
     }
     putAt(idx, t);
     t.markReady();
@@ -114,7 +118,7 @@ class SLGuestScheduler {
     return null;
   }
 
-  // Find the scheduler slot holding the task with the given tid, or -1.
+  < Find the scheduler slot holding the task with the given tid, or -1. >
   int slotOfTid(int tid) {
     int i = 0;
     while (i < count) {
@@ -125,28 +129,29 @@ class SLGuestScheduler {
     return -1;
   }
 
-  // fork(): clone a running parent task into a fresh ready task that resumes at
-  // the SAME guest instruction pointer as the parent (classic Unix fork — both
-  // parent and child return from the syscall at the same point, distinguished
-  // only by the return value the kernel pushes to each). Because the guest
-  // substrate is a shared single code store, parent and child share text and
-  // resume IP; the child gets its own TCB, tid, and scheduling slot. Returns the
-  // admitted child task, or null if the task table is full.
+  < fork(): clone a running parent task into a fresh ready task that resumes at >
+  < the SAME guest instruction pointer as the parent (classic Unix fork — both >
+  < parent and child return from the syscall at the same point, distinguished >
+  < only by the return value the kernel pushes to each). Because the guest >
+  < substrate is a shared single code store, parent and child share text and >
+  < resume IP; the child gets its own TCB, tid, and scheduling slot. Returns the >
+  < admitted child task, or null if the task table is full. >
   SLGuestTask fork(SLGuestTask parent, int childTid) {
     if (count >= MAX) { return null; }
     SLGuestTask child = new SLGuestTask();
     child.configure(childTid, parent.taskName(), parent.resumeIP());
     child.setParent(parent.taskId());
-    child.saveIP(parent.resumeIP());   // child resumes where the parent forked
+    < child resumes where the parent forked >
+    child.saveIP(parent.resumeIP());
     admit(child);
     return child;
   }
 
-  // wait()-style reap: find a finished-but-unreaped (zombie) child of the given
-  // parent tid, reap it, and return it so the kernel can hand the parent the
-  // child's tid + exit status. Matches any zombie whose parent is the given tid
-  // (models wait(NULL) — reap whichever child is ready). Returns null if the
-  // parent has no reapable child yet (the parent would block / retry).
+  < wait()-style reap: find a finished-but-unreaped (zombie) child of the given >
+  < parent tid, reap it, and return it so the kernel can hand the parent the >
+  < child's tid + exit status. Matches any zombie whose parent is the given tid >
+  < (models wait(NULL) — reap whichever child is ready). Returns null if the >
+  < parent has no reapable child yet (the parent would block / retry). >
   SLGuestTask reapChild(int parentTid) {
     int i = 0;
     while (i < count) {
@@ -160,8 +165,8 @@ class SLGuestScheduler {
     return null;
   }
 
-  // True if the given parent still has at least one live (not-yet-DONE) child —
-  // i.e. a wait() could still eventually succeed.
+  < True if the given parent still has at least one live (not-yet-DONE) child — >
+  < i.e. a wait() could still eventually succeed. >
   boolean hasLiveChild(int parentTid) {
     int i = 0;
     while (i < count) {
@@ -183,9 +188,9 @@ class SLGuestScheduler {
     return -1;
   }
 
-  // Called on each guest timer IRQ. Charge the running task; when its quantum
-  // expires, preempt it and switch to the next ready task. Returns the task now
-  // selected to run (or null if none).
+  < Called on each guest timer IRQ. Charge the running task; when its quantum >
+  < expires, preempt it and switch to the next ready task. Returns the task now >
+  < selected to run (or null if none). >
   SLGuestTask onTimerTick() {
     tickAccum = tickAccum + 1;
     if (current >= 0) {
@@ -194,9 +199,10 @@ class SLGuestScheduler {
     }
     if (tickAccum < quantum && current >= 0) {
       SLGuestTask cur = at(current);
-      if (cur != null && cur.runnable()) { return cur; } // keep running
+      < keep running >
+      if (cur != null && cur.runnable()) { return cur; }
     }
-    // Quantum expired (or nothing running): preempt and rotate.
+    < Quantum expired (or nothing running): preempt and rotate. >
     tickAccum = 0;
     if (current >= 0) {
       SLGuestTask prev = at(current);
@@ -211,10 +217,10 @@ class SLGuestScheduler {
     return sel;
   }
 
-  // Force the running slot to a specific task (used to model a deterministic
-  // context switch between a parent and its fork()'d child when demonstrating
-  // the fork/exec/wait cycle outside the timer-driven path). Marks the selected
-  // task RUNNING and the previously-running task READY.
+  < Force the running slot to a specific task (used to model a deterministic >
+  < context switch between a parent and its fork()'d child when demonstrating >
+  < the fork/exec/wait cycle outside the timer-driven path). Marks the selected >
+  < task RUNNING and the previously-running task READY. >
   void markRunningSlot(int slot) {
     if (slot < 0 || slot >= count) { return; }
     if (current >= 0 && current != slot) {

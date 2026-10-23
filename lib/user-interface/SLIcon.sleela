@@ -48,7 +48,7 @@ class SLIcon {
   String pathValue;
   String symbolValue;
 
-  // Constructor form: new SLIcon("icons/wifi.jpg", "Wifi").
+  < Constructor form: new SLIcon("icons/wifi.jpg", "Wifi"). >
   SLIcon(String assetPath, String symbolName) {
     pathValue = assetPath;
     symbolValue = symbolName;

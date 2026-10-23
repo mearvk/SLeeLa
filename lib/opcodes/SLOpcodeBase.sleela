@@ -63,12 +63,17 @@ class SLOpcodeBase {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int CANONICAL_COUNT = 103; // codes 0..102; 0..97 are the base 98
+  < codes 0..102; 0..97 are the base 98 >
+  static final int CANONICAL_COUNT = 103;
 
-  int code;        // canonical opcode number, 0..102
-  String mnemonic; // canonical mnemonic, e.g. "OP_ADD"
-  int state;       // 0 = idle, 1 = armed
-  int fired;       // number of times this single opcode has executed
+  < canonical opcode number, 0..102 >
+  int code;
+  < canonical mnemonic, e.g. "OP_ADD" >
+  String mnemonic;
+  < 0 = idle, 1 = armed >
+  int state;
+  < number of times this single opcode has executed >
+  int fired;
 
   void configure(int opcodeCode, String opcodeMnemonic) {
     code = opcodeCode;
@@ -84,25 +89,25 @@ class SLOpcodeBase {
   String name() { return mnemonic; }
   int fireCount() { return fired; }
 
-  // Step 1 of the contract: carefully move the VM to the next instruction.
-  // Returns the VM's resulting instruction-pointer. The VM owns the pointer;
-  // this only requests the advance across the bridge.
+  < Step 1 of the contract: carefully move the VM to the next instruction. >
+  < Returns the VM's resulting instruction-pointer. The VM owns the pointer; >
+  < this only requests the advance across the bridge. >
   int advance(int frame) {
     if (!armed()) { return -1; }
     return native sleela_opcode_vm_next(frame);
   }
 
-  // Step 2 of the contract: execute THIS single opcode against the VM frame at
-  // the pointer produced by advance(). Concrete classes rely on this base entry;
-  // the native side dispatches exactly `code` and nothing else.
+  < Step 2 of the contract: execute THIS single opcode against the VM frame at >
+  < the pointer produced by advance(). Concrete classes rely on this base entry; >
+  < the native side dispatches exactly `code` and nothing else. >
   int fire(int frame, int ip) {
     if (!armed()) { return -1; }
     fired = fired + 1;
     return native sleela_opcode_execute_one(frame, code, ip);
   }
 
-  // The full ordered contract: next-instruction fetch, then single execute.
-  // Returns the next instruction pointer for the following opcode object.
+  < The full ordered contract: next-instruction fetch, then single execute. >
+  < Returns the next instruction pointer for the following opcode object. >
   int step(int frame) {
     int ip = advance(frame);
     if (ip < 0) { return -1; }

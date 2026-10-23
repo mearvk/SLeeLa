@@ -54,13 +54,13 @@ class SLWorkload {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Language ids (match SLCompilerDriver / SLFrontend).
+  < Language ids (match SLCompilerDriver / SLFrontend). >
   static final int LANG_SLEELA = 0;
   static final int LANG_C      = 1;
   static final int LANG_CPP    = 2;
   static final int LANG_JAVA   = 3;
 
-  // Lifecycle states.
+  < Lifecycle states. >
   static final int STATE_NEW      = 0;
   static final int STATE_COMPILED = 1;
   static final int STATE_ADMITTED = 2;
@@ -73,18 +73,21 @@ class SLWorkload {
   int language;
   int state;
 
-  SLCPUResource resource;    // the grant this workload runs within
-  SLProgram program;         // compiled register-ISA image (language-independent)
-  int result;                // last observable output (printed value)
+  < the grant this workload runs within >
+  SLCPUResource resource;
+  < compiled register-ISA image (language-independent) >
+  SLProgram program;
+  < last observable output (printed value) >
+  int result;
 
   void configure(String workloadName, String path, int langId, SLCPUResource grant) {
     name = workloadName; sourcePath = path; language = langId;
     resource = grant; state = STATE_NEW; result = 0;
   }
 
-  // Compile the source (any supported language) to the shared register-ISA
-  // image via the multi-language driver. After this the image is language-
-  // independent, so the CPU runs it the same regardless of source language.
+  < Compile the source (any supported language) to the shared register-ISA >
+  < image via the multi-language driver. After this the image is language- >
+  < independent, so the CPU runs it the same regardless of source language. >
   SLProgram compile(SLInstructionSet isa) {
     SLCompilerDriver driver = new SLCompilerDriver();
     driver.configure(isa);

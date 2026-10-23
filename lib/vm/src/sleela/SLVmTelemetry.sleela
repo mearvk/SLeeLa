@@ -57,17 +57,18 @@ class SLVmTelemetry {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // counters (mirror VmCounter)
+  < counters (mirror VmCounter) >
   int steps; int allocs; int bridge; int errors;
 
-  // per-table gauges, numbered (mirror VmTable: bestof, synchro, munction, ai, canvas)
+  < per-table gauges, numbered (mirror VmTable: bestof, synchro, munction, ai, canvas) >
   int capBestof;  int liveBestof;  int peakBestof;  int warnedBestof;
   int capSynchro; int liveSynchro; int peakSynchro; int warnedSynchro;
   int capMunction;int liveMunction;int peakMunction;int warnedMunction;
   int capAi;      int liveAi;      int peakAi;      int warnedAi;
   int capCanvas;  int liveCanvas;  int peakCanvas;  int warnedCanvas;
 
-  int watermarkPct;   // default 80
+  < default 80 >
+  int watermarkPct;
 
   void init() {
     steps = 0; allocs = 0; bridge = 0; errors = 0;
@@ -85,13 +86,13 @@ class SLVmTelemetry {
     watermarkPct = pct;
   }
 
-  // counter bumps (mirror vm_telemetry_add)
+  < counter bumps (mirror vm_telemetry_add) >
   void addSteps(int n)  { steps = steps + n; }
   void addAllocs(int n) { allocs = allocs + n; }
   void addBridge(int n) { bridge = bridge + n; }
   void addErrors(int n) { errors = errors + n; }
 
-  // register a table capacity (0=bestof 1=synchro 2=munction 3=ai 4=canvas)
+  < register a table capacity (0=bestof 1=synchro 2=munction 3=ai 4=canvas) >
   void setCapacity(int table, int cap) {
     if (table == 0) { capBestof = cap; }
     else if (table == 1) { capSynchro = cap; }
@@ -100,7 +101,7 @@ class SLVmTelemetry {
     else if (table == 4) { capCanvas = cap; }
   }
 
-  // update a gauge; edge-trigger an EXHAUSTED result on crossing the watermark.
+  < update a gauge; edge-trigger an EXHAUSTED result on crossing the watermark. >
   void gauge(int table, int live, SLVmResult res, SLVmReport rep) {
     if (live < 0) { live = 0; }
     int cap = 0; int peak = 0; int warned = 0; String name = "table";

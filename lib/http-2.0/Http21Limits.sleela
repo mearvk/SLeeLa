@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Limits mirror the native h21_server and H21 envelope constants. */
+< Limits mirror the native h21_server and H21 envelope constants. >
 class Http21Limits {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

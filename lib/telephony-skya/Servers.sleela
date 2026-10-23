@@ -60,10 +60,14 @@ class Servers {
   static final String MODULE = "Servers";
 
   int loadedFlag;
-  int commListener;    // always-open local comm listener handle (-1 = none)
-  int commPort;        // port the comm listener holds open
-  int openCount;       // listeners currently held open
-  int served;          // requests served
+  < always-open local comm listener handle (-1 = none) >
+  int commListener;
+  < port the comm listener holds open >
+  int commPort;
+  < listeners currently held open >
+  int openCount;
+  < requests served >
+  int served;
 
   void load() {
     loadedFlag = 1;

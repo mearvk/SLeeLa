@@ -83,16 +83,20 @@ class Codecs {
 
   void main() {
     init();
-    // SLeeLa drives the Loader: load a native codec and a backend codec, use
-    // them, then unload. The Loader -- not the program -- owns each plugin.
-    load(0);    // PCM/WAV (native)
-    load(15);   // G.711 mu-law (native)
-    load(2);    // FLAC (backend)
+    < SLeeLa drives the Loader: load a native codec and a backend codec, use >
+    < them, then unload. The Loader -- not the program -- owns each plugin. >
+    < PCM/WAV (native) >
+    load(0);
+    < G.711 mu-law (native) >
+    load(15);
+    < FLAC (backend) >
+    load(2);
 
     report(0);
     report(15);
     report(2);
-    report(8);  // Opus: never loaded
+    < Opus: never loaded >
+    report(8);
 
     print("loaded native PCM/WAV? " + isLoaded(0));
     print("FLAC is native? " + isNative(2));

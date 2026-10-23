@@ -55,8 +55,8 @@ class SLEventSignal {
   int delivered;
   void configure() { delivered = 0; }
 
-  // Ask the process behind the given handle to terminate (SIGTERM /
-  // TerminateProcess). Returns true if the request was accepted.
+  < Ask the process behind the given handle to terminate (SIGTERM / >
+  < TerminateProcess). Returns true if the request was accepted. >
   boolean terminate(int processHandle) {
     if (processHandle < 0) { return false; }
     boolean ok = osKill(processHandle) == 0;
@@ -64,7 +64,7 @@ class SLEventSignal {
     return ok;
   }
 
-  // Convenience: terminate the process wrapped by an SLProcess.
+  < Convenience: terminate the process wrapped by an SLProcess. >
   boolean terminateProcess(SLProcess p) {
     if (p == null) { return false; }
     boolean ok = p.kill();

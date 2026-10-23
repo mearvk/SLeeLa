@@ -69,21 +69,26 @@ class MoralCapacitorDemo {
         return o;
     }
 
-    // Charge the capacitor from the frameworks' reading of the operation.
+    < Charge the capacitor from the frameworks' reading of the operation. >
     int chargeFor(Op o) {
         int charge = 0;
-        if (o.consented == 1) { charge = charge + 2; }   // consent
+        < consent >
+        if (o.consented == 1) { charge = charge + 2; }
         else { charge = charge - 2; }
-        if (o.reversible == 1) { charge = charge + 2; }   // beneficence
+        < beneficence >
+        if (o.reversible == 1) { charge = charge + 2; }
         else { charge = charge - 1; }
-        if (o.consented == 1) { charge = charge + 1; }   // deontology
-        if (o.reversible == 1) { charge = charge + 1; }  // utilitarianism
-        if (o.consented == 1 && o.reversible == 1) { charge = charge + 1; } // virtue
+        < deontology >
+        if (o.consented == 1) { charge = charge + 1; }
+        < utilitarianism >
+        if (o.reversible == 1) { charge = charge + 1; }
+        < virtue >
+        if (o.consented == 1 && o.reversible == 1) { charge = charge + 1; }
         if (charge < 0) { charge = 0; }
         return charge;
     }
 
-    // Is an absolute red line tripped for this operation?
+    < Is an absolute red line tripped for this operation? >
     String veto(Op o) {
         if (o.action == "weaponize") { return "weapons / CBRN enablement"; }
         if (o.action == "surveil" && o.consented == 0) { return "non-consensual surveillance"; }
@@ -94,7 +99,7 @@ class MoralCapacitorDemo {
         return "";
     }
 
-    // Evaluate: DENY on veto, PERMIT if charge >= threshold, else DEFER/DENY.
+    < Evaluate: DENY on veto, PERMIT if charge >= threshold, else DEFER/DENY. >
     String evaluate(Op o, int threshold, int allowDefer) {
         int charge = chargeFor(o);
         String v = veto(o);
@@ -115,19 +120,19 @@ class MoralCapacitorDemo {
     void main() {
         banner("Moral Capacitor(TM): gating VM / OS / Machine operations");
 
-        // VM: routine reversible memory growth, threshold 2 -> permit.
+        < VM: routine reversible memory growth, threshold 2 -> permit. >
         print(evaluate(op("vm", "allocate", "guest-memory", 1, 1), 2, 1));
 
-        // OS: delete a path with consent, reversible=0, strict threshold 6, no defer.
+        < OS: delete a path with consent, reversible=0, strict threshold 6, no defer. >
         print(evaluate(op("os", "erase", "/tmp/build-cache", 0, 1), 6, 0));
 
-        // OS: wipe a disk WITHOUT consent, irreversible -> veto -> deny.
+        < OS: wipe a disk WITHOUT consent, irreversible -> veto -> deny. >
         print(evaluate(op("os", "erase", "/dev/sda", 0, 0), 6, 0));
 
-        // Machine: boot a guest with consent, threshold 5 -> permit.
+        < Machine: boot a guest with consent, threshold 5 -> permit. >
         print(evaluate(op("machine", "boot", "linux-guest", 1, 1), 5, 1));
 
-        // Machine: execute a prohibited purpose -> veto -> deny.
+        < Machine: execute a prohibited purpose -> veto -> deny. >
         print(evaluate(op("machine", "surveil", "target-host", 1, 0), 3, 1));
 
         banner("Done");

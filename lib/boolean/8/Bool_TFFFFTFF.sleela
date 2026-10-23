@@ -52,19 +52,19 @@ class Bool_TFFFFTFF {
   String word() { return "BOOLEAN.TRUE.FALSE.FALSE.FALSE.FALSE.TRUE.FALSE.FALSE"; }
   String glyphs() { return "TFFFFTFF"; }
   int depth() { return 8; }
-  // Head syllable = the asserted result.
+  < Head syllable = the asserted result. >
   boolean head() { return true; }
   String headSyllable() { return "TRUE"; }
-  // Carry = the trailing syllables, read as a caveat structure.
+  < Carry = the trailing syllables, read as a caveat structure. >
   String carry() { return "FFFFTFF"; }
   int carryDepth() { return 7; }
-  // A caveat exists when any carried syllable disagrees (a FALSE is carried).
+  < A caveat exists when any carried syllable disagrees (a FALSE is carried). >
   boolean caveat() { return true; }
-  // Agreement: the whole word is uniform (all syllables equal the head).
+  < Agreement: the whole word is uniform (all syllables equal the head). >
   boolean agrees() { return false; }
   int trueCount() { return 2; }
   int falseCount() { return 6; }
-  // Binary reading: TRUE=1, FALSE=0, head syllable most significant.
+  < Binary reading: TRUE=1, FALSE=0, head syllable most significant. >
   String bits() { return "10000100"; }
   int value() { return 132; }
 }

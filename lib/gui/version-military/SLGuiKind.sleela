@@ -57,10 +57,12 @@ class SLGuiKind {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int KIND_UNKNOWN   = 0;
-  static final int KIND_CONTAINER = 1;   // holds + lays out children
-  static final int KIND_COMPONENT = 2;   // a leaf control
+  < holds + lays out children >
+  static final int KIND_CONTAINER = 1;
+  < a leaf control >
+  static final int KIND_COMPONENT = 2;
 
-  // Classify a tag as a container or a component.
+  < Classify a tag as a container or a component. >
   int kindOf(String tag) {
     if (isContainer(tag)) { return KIND_CONTAINER; }
     if (isComponent(tag)) { return KIND_COMPONENT; }
@@ -86,7 +88,7 @@ class SLGuiKind {
         || tag == "icon";
   }
 
-  // Interactive = a component the user activates (not a static label/spacer).
+  < Interactive = a component the user activates (not a static label/spacer). >
   boolean isClickable(String tag) {
     return tag == "button" || tag == "menuitem" || tag == "toggle" || tag == "switch"
         || tag == "recorder" || tag == "record" || tag == "urlbar" || tag == "addressbar"
@@ -94,7 +96,7 @@ class SLGuiKind {
         || tag == "cryptoselector" || tag == "certstore";
   }
 
-  // Icons are allowed on buttons, menu items, and clickable components.
+  < Icons are allowed on buttons, menu items, and clickable components. >
   boolean iconEligible(String tag) {
     return tag == "button" || tag == "menuitem" || isClickable(tag);
   }

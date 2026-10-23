@@ -56,7 +56,7 @@ class SLOperatingSystem {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Capability ordinals (mirror SLPlatformCapability in the VM).
+  < Capability ordinals (mirror SLPlatformCapability in the VM). >
   static final int CAP_MEMORY  = 0;
   static final int CAP_FILE_IO = 1;
   static final int CAP_NETWORK = 2;
@@ -68,7 +68,8 @@ class SLOperatingSystem {
   static final int CAP_IPC     = 8;
   static final int CAP_TIME    = 9;
 
-  String name;        // human label chosen by the caller
+  < human label chosen by the caller >
+  String name;
   int opened;
 
   void configure(String label) { name = label; opened = 0; }
@@ -76,8 +77,8 @@ class SLOperatingSystem {
   void close() { opened = 0; }
   boolean active() { return opened == 1; }
 
-  // ---- Identity -----------------------------------------------------------
-  // The host OS name as reported by the VM: "Windows", "Linux", or "macOS".
+  < ---- Identity ----------------------------------------------------------- >
+  < The host OS name as reported by the VM: "Windows", "Linux", or "macOS". >
   String platform() { return osPlatform(); }
   boolean isWindows() { return equalsString(osPlatform(), "Windows"); }
   boolean isLinux()   { return equalsString(osPlatform(), "Linux"); }
@@ -87,24 +88,24 @@ class SLOperatingSystem {
   String userName() { return osUserName(); }
   int processId()   { return osProcessId(); }
 
-  // True if the host advertises a capability class (process/ipc/network/...).
+  < True if the host advertises a capability class (process/ipc/network/...). >
   boolean supports(int capability) { return osCapability(capability) == 1; }
 
-  // ---- Environment --------------------------------------------------------
+  < ---- Environment -------------------------------------------------------- >
   String getEnv(String key) { return osGetEnv(key); }
   boolean setEnv(String key, String value) { return osSetEnv(key, value) == 0; }
 
-  // ---- Working directory --------------------------------------------------
+  < ---- Working directory -------------------------------------------------- >
   String currentDir() { return osCurrentDir(); }
   boolean changeDir(String path) { return osChangeDir(path) == 0; }
   String tempDir() { return osTempDir(); }
 
-  // ---- Process execution --------------------------------------------------
-  // Run a shell command synchronously; returns its exit code (0 == success).
+  < ---- Process execution -------------------------------------------------- >
+  < Run a shell command synchronously; returns its exit code (0 == success). >
   int run(String command) { return osRun(command); }
-  // True if the command ran and exited 0.
+  < True if the command ran and exited 0. >
   boolean runOk(String command) { return osRun(command) == 0; }
 
-  // String equality helper (SLeeLa compares value by ==, but keep intent clear).
+  < String equality helper (SLeeLa compares value by ==, but keep intent clear). >
   boolean equalsString(String a, String b) { return a == b; }
 }

@@ -52,7 +52,7 @@ class SLTooltip extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a tooltip inside `parent` with a message.
+  < Create a tooltip inside `parent` with a message. >
   void createIn(SLWidget parent, String text) {
     widget = uiTooltip(parent.handle(), text);
   }

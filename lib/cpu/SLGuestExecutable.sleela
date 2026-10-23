@@ -57,11 +57,14 @@ class SLGuestExecutable {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int MAGIC = 1397113932; // 0x5345584C 'SEXL'
+  < 0x5345584C 'SEXL' >
+  static final int MAGIC = 1397113932;
   static final int HDR_WORDS = 4;
 
-  SLRAM store;      // the serialized image
-  int words;        // total words written
+  < the serialized image >
+  SLRAM store;
+  < total words written >
+  int words;
   int opcodeCount;
   int entry;
 
@@ -72,20 +75,20 @@ class SLGuestExecutable {
 
   int put(int w) { store.writeWord(words, w); int at = words; words = words + 1; return at; }
 
-  // Serialize a compiled program (op/arg stream) into the executable format.
+  < Serialize a compiled program (op/arg stream) into the executable format. >
   void serialize(SLGuestProgram prog, int entryOffset) {
     entry = entryOffset; opcodeCount = prog.size();
     put(MAGIC); put(1); put(entry); put(opcodeCount);
     int i = 0;
     while (i < opcodeCount) {
-      // SLGuestProgram stores op/arg in parallel; re-read via a scratch load.
-      // Here we mirror its public op/arg accessors.
+      < SLGuestProgram stores op/arg in parallel; re-read via a scratch load. >
+      < Here we mirror its public op/arg accessors. >
       put(prog.opcodeAt(i)); put(prog.argAt(i));
       i = i + 1;
     }
   }
 
-  // Validate the header: correct magic and a sane opcode count.
+  < Validate the header: correct magic and a sane opcode count. >
   boolean valid() {
     if (words < HDR_WORDS) { return false; }
     return store.readWord(0) == MAGIC && store.readWord(3) >= 0;
@@ -94,9 +97,9 @@ class SLGuestExecutable {
   int headerEntry() { return store.readWord(2); }
   int headerOpcodeCount() { return store.readWord(3); }
 
-  // Load the executable into a guest substrate: validate the header, then emit
-  // each op/arg pair. Returns the load base (substrate index), or -1 if the
-  // image is invalid.
+  < Load the executable into a guest substrate: validate the header, then emit >
+  < each op/arg pair. Returns the load base (substrate index), or -1 if the >
+  < image is invalid. >
   int loadInto(SLSleelaVM vm) {
     if (!valid()) { return -1; }
     int base = vm.programLength();
@@ -111,9 +114,9 @@ class SLGuestExecutable {
     return base;
   }
 
-  // Write this image to the guest filesystem under integer file id `fileId`,
-  // one byte-per-word through the file's byte stream (so it persists on the
-  // block device and can be read back by another boot/loader).
+  < Write this image to the guest filesystem under integer file id `fileId`, >
+  < one byte-per-word through the file's byte stream (so it persists on the >
+  < block device and can be read back by another boot/loader). >
   int writeToFile(SLGuestFileSystem fs, int fileId) {
     int fd = fs.openByName(fileId);
     if (fd < 0) { return -1; }

@@ -87,7 +87,7 @@ class Verifier {
   }
 }
 
-// ---- Processor: pure decode/encode dispatch over the facts -------------
+< ---- Processor: pure decode/encode dispatch over the facts ------------- >
 class Processor {
   int decode(boolean loaded, boolean nativeCodec, boolean backendReady) {
     if (!loaded) { return -5; }
@@ -103,11 +103,12 @@ class Processor {
   }
 }
 
-// ---- Controller: owns lifecycle + wires the collaborators as fields ----
+< ---- Controller: owns lifecycle + wires the collaborators as fields ---- >
 class Controller {
   int[] loaded;
   int[] backend;
-  Verifier verifier;      // wired by create(), called via the field (1.11)
+  < wired by create(), called via the field (1.11) >
+  Verifier verifier;
   Processor processor;
 
   void create() {
@@ -137,7 +138,7 @@ class Controller {
     return n;
   }
 
-  // Clean facade methods: delegate to the wired collaborators.
+  < Clean facade methods: delegate to the wired collaborators. >
   int resolveExtension(String ext) { return verifier.resolveExtension(ext); }
   int probeMagic(String tag) { return verifier.probeMagic(tag); }
   String resultText(int code) { return verifier.resultText(code); }
@@ -149,29 +150,29 @@ class Controller {
     create();
     print("codecs known: " + count());
 
-    // Resolve a file the way a GUI would when the user opens it.
+    < Resolve a file the way a GUI would when the user opens it. >
     int wav = resolveExtension(".wav");
     int flac = resolveExtension(".flac");
     print("resolve .wav  -> " + wav + " (" + nameOf(wav) + ")");
     print("resolve .flac -> " + flac + " (" + nameOf(flac) + ")");
 
-    // Decode before load: honest state error (-5).
+    < Decode before load: honest state error (-5). >
     print("decode .wav before load: " + resultText(decode(wav)));
 
-    // Load the native WAV codec and process it.
+    < Load the native WAV codec and process it. >
     load(wav);
     print("decode .wav loaded:      " + resultText(decode(wav)));
     print("encode .wav loaded:      " + resultText(encode(wav)));
 
-    // Load backend FLAC with no backend wired: unsupported (-1), not a false ok.
+    < Load backend FLAC with no backend wired: unsupported (-1), not a false ok. >
     load(flac);
     print("decode .flac no backend: " + resultText(decode(flac)));
 
-    // Wire a FLAC backend adapter, then it processes.
+    < Wire a FLAC backend adapter, then it processes. >
     registerBackend(flac);
     print("decode .flac backend:    " + resultText(decode(flac)));
 
-    // Verifier content probe for a GUI pre-classify.
+    < Verifier content probe for a GUI pre-classify. >
     print("probe 'MThd' -> id " + probeMagic("MThd") + " (" + nameOf(17) + ")");
 
     print("loaded count=" + loadedCount());

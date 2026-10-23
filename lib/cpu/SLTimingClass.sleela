@@ -68,28 +68,36 @@ class SLTimingClass {
   static final int TIER_ADVANCED = 2;
   static final int TIER_EXPERT   = 3;
 
-  int tier;            // one of TIER_*
-  String label;        // nameful: tier name, e.g. "Expert"
-  String medium;       // the "brand or medium" this tier is applied to/for
-  int guardbandPs;     // timing guardband this tier demands on every budget
-  int headroomMv;      // voltage headroom (above floor) this tier insists on
-  int clockHeadroomPct;// how far below the honest ceiling this tier dials (%)
-  int knobsWritable;   // 1 = expert timing/voltage knobs may be changed
-  int railsUnlockable; // 1 = rails may be unlocked (uncapped adjustment)
+  < one of TIER_* >
+  int tier;
+  < nameful: tier name, e.g. "Expert" >
+  String label;
+  < the "brand or medium" this tier is applied to/for >
+  String medium;
+  < timing guardband this tier demands on every budget >
+  int guardbandPs;
+  < voltage headroom (above floor) this tier insists on >
+  int headroomMv;
+  < how far below the honest ceiling this tier dials (%) >
+  int clockHeadroomPct;
+  < 1 = expert timing/voltage knobs may be changed >
+  int knobsWritable;
+  < 1 = rails may be unlocked (uncapped adjustment) >
+  int railsUnlockable;
 
-  // Build the tier object for a given tier id and brand/medium label.
+  < Build the tier object for a given tier id and brand/medium label. >
   void configure(int tierId, String brandOrMedium) {
     tier = tierId; medium = brandOrMedium;
     applyPolicy();
   }
 
-  // Convenience constructors by name — each returns this configured object.
+  < Convenience constructors by name — each returns this configured object. >
   void novice(String brandOrMedium)   { tier = TIER_NOVICE;   medium = brandOrMedium; applyPolicy(); }
   void basic(String brandOrMedium)    { tier = TIER_BASIC;    medium = brandOrMedium; applyPolicy(); }
   void advanced(String brandOrMedium) { tier = TIER_ADVANCED; medium = brandOrMedium; applyPolicy(); }
   void expert(String brandOrMedium)   { tier = TIER_EXPERT;   medium = brandOrMedium; applyPolicy(); }
 
-  // The heart of the object: a tier IS its policy.
+  < The heart of the object: a tier IS its policy. >
   void applyPolicy() {
     if (tier == TIER_NOVICE) {
       label = "Novice";
@@ -110,27 +118,27 @@ class SLTimingClass {
     }
   }
 
-  // May the operator change an expert timing/voltage knob at this tier?
+  < May the operator change an expert timing/voltage knob at this tier? >
   boolean allowsKnob() { return knobsWritable == 1; }
-  // May a rail be unlocked (adjustment uncapped) at this tier?
+  < May a rail be unlocked (adjustment uncapped) at this tier? >
   boolean allowsUnlock() { return railsUnlockable == 1; }
 
-  // Given an honest ceiling frequency, the speed this tier is willing to dial
-  // to: pulled back by its clock headroom. Novice leaves 30% on the table;
-  // Expert takes it all.
+  < Given an honest ceiling frequency, the speed this tier is willing to dial >
+  < to: pulled back by its clock headroom. Novice leaves 30% on the table; >
+  < Expert takes it all. >
   int dialableMHz(int ceilingMHz) {
     return ceilingMHz - ((ceilingMHz * clockHeadroomPct) / 100);
   }
 
-  // Does a candidate budget slack satisfy this tier's guardband demand? (The
-  // SLTiming guardband is set from this value, so a passing budget already
-  // honors the tier; this reports extra margin beyond the demand.)
+  < Does a candidate budget slack satisfy this tier's guardband demand? (The >
+  < SLTiming guardband is set from this value, so a passing budget already >
+  < honors the tier; this reports extra margin beyond the demand.) >
   boolean satisfiesSlack(int slackPs) { return slackPs >= 0; }
 
-  // Does a rail's headroom satisfy this tier's insistence?
+  < Does a rail's headroom satisfy this tier's insistence? >
   boolean satisfiesHeadroom(int railHeadroomMv) { return railHeadroomMv >= headroomMv; }
 
-  // Promote/demote to another tier (re-applies policy). Returns the new label.
+  < Promote/demote to another tier (re-applies policy). Returns the new label. >
   String retier(int tierId) { tier = tierId; applyPolicy(); return label; }
 
   int tierId() { return tier; }

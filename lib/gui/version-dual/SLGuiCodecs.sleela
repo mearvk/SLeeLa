@@ -60,30 +60,33 @@ class SLGuiCodecs {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Capability state (mirrors sleela_codec_state).
+  < Capability state (mirrors sleela_codec_state). >
   static final int STATE_NATIVE     = 0;
   static final int STATE_BACKEND    = 1;
   static final int STATE_RECOGNIZED = 2;
   static final int STATE_CONTAINER  = 3;
   static final int STATE_EVENT      = 4;
 
-  static final int CODEC_COUNT = 20;   // == SLEELA_CODEC_COUNT
+  < == SLEELA_CODEC_COUNT >
+  static final int CODEC_COUNT = 20;
 
-  // Parallel registry arrays (the surface language has no record arrays). Index
-  // is the sleela_codec_id ordinal, so by-id lookup is O(1).
+  < Parallel registry arrays (the surface language has no record arrays). Index >
+  < is the sleela_codec_id ordinal, so by-id lookup is O(1). >
   String[] names;
   String[] mimes;
   String[] exts;
   int[] states;
-  int[] decode;     // 1 = can decode
-  int[] encode;     // 1 = can encode
+  < 1 = can decode >
+  int[] decode;
+  < 1 = can encode >
+  int[] encode;
   int count;
 
   void configure() {
     names = new String[CODEC_COUNT]; mimes = new String[CODEC_COUNT];
     exts = new String[CODEC_COUNT]; states = new int[CODEC_COUNT];
     decode = new int[CODEC_COUNT]; encode = new int[CODEC_COUNT]; count = 0;
-    // Order and values mirror sleela_codecs.h / CODECS.md exactly.
+    < Order and values mirror sleela_codecs.h / CODECS.md exactly. >
     add("PCM_WAV", "audio/wav",  ".wav",        STATE_NATIVE,     1, 1);
     add("AIFF",    "audio/aiff", ".aif,.aiff",  STATE_RECOGNIZED, 1, 0);
     add("FLAC",    "audio/flac", ".flac",       STATE_BACKEND,    1, 1);
@@ -115,7 +118,7 @@ class SLGuiCodecs {
 
   int codecCount() { return count; }
 
-  // ---- lookup (mirrors sleela_codec_by_id / _by_extension) ----------------
+  < ---- lookup (mirrors sleela_codec_by_id / _by_extension) ---------------- >
   int idOf(String name) {
     for (int i = 0; i < count; i = i + 1) { if (names[i] == name) { return i; } }
     return -1;
@@ -125,7 +128,7 @@ class SLGuiCodecs {
   int stateAt(int id)   { return (id >= 0 && id < count) ? states[id] : -1; }
   boolean has(String name) { return idOf(name) >= 0; }
 
-  // Find the codec id whose extension list contains `ext` (e.g. ".mp3"); -1 none.
+  < Find the codec id whose extension list contains `ext` (e.g. ".mp3"); -1 none. >
   int byExtension(String ext) {
     if (ext == null) { return -1; }
     for (int i = 0; i < count; i = i + 1) {
@@ -133,7 +136,7 @@ class SLGuiCodecs {
     }
     return -1;
   }
-  // Find a codec id by MIME type; -1 if none matches.
+  < Find a codec id by MIME type; -1 if none matches. >
   int byMime(String mime) {
     if (mime == null) { return -1; }
     for (int i = 0; i < count; i = i + 1) { if (mimes[i] == mime) { return i; } }
@@ -141,7 +144,7 @@ class SLGuiCodecs {
   }
   boolean contains(String csv, String token) {
     if (csv == null || token == null) { return false; }
-    // csv is a comma-separated extension list; match a whole entry.
+    < csv is a comma-separated extension list; match a whole entry. >
     String padded = "," + csv + ",";
     return padded.length() > token.length() + 1 &&
            indexOfSub(padded, "," + token + ",") >= 0;
@@ -155,22 +158,22 @@ class SLGuiCodecs {
     return -1;
   }
 
-  // ---- capability questions GUI components ask ----------------------------
+  < ---- capability questions GUI components ask ---------------------------- >
   boolean canDecode(String name) { int i = idOf(name); return i >= 0 && decode[i] == 1; }
   boolean canEncode(String name) { int i = idOf(name); return i >= 0 && encode[i] == 1; }
-  // "Playable" = the system can actually decode it (native or backend).
+  < "Playable" = the system can actually decode it (native or backend). >
   boolean playable(String name) {
     int i = idOf(name);
     if (i < 0) { return false; }
     return decode[i] == 1 && (states[i] == STATE_NATIVE || states[i] == STATE_BACKEND ||
                               states[i] == STATE_CONTAINER);
   }
-  // "Recordable" = the system can encode it to capture audio.
+  < "Recordable" = the system can encode it to capture audio. >
   boolean recordable(String name) {
     int i = idOf(name);
     return i >= 0 && encode[i] == 1 && (states[i] == STATE_NATIVE || states[i] == STATE_BACKEND);
   }
-  // Can a media file with this extension be played?
+  < Can a media file with this extension be played? >
   boolean playableExtension(String ext) {
     int i = byExtension(ext);
     if (i < 0) { return false; }
@@ -186,7 +189,7 @@ class SLGuiCodecs {
     return "unknown";
   }
 
-  // How many codecs are actually playable (native/backend/container decode).
+  < How many codecs are actually playable (native/backend/container decode). >
   int playableCount() {
     int n = 0;
     for (int i = 0; i < count; i = i + 1) { if (playable(names[i])) { n = n + 1; } }

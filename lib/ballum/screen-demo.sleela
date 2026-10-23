@@ -69,7 +69,7 @@ class ScreenDemo {
     return uiBallumStatusName(code);
   }
 
-  // Open the primary display and cache its facts.
+  < Open the primary display and cache its facts. >
   int open() {
     int st = uiBallumEnumerate();
     if (st != 0) { return st; }
@@ -85,7 +85,7 @@ class ScreenDemo {
     return 0;
   }
 
-  // plot(x,y,...): one pixel-accurate write, validated before dispatch.
+  < plot(x,y,...): one pixel-accurate write, validated before dispatch. >
   int plot(int x, int y, int r, int g, int b) {
     if (!capHas(1)) { return 7; }
     if (!inBounds(x, y)) { return 5; }
@@ -104,16 +104,16 @@ class ScreenDemo {
             + " perPixel=" + capHas(1) + " brightness=" + capHas(4)
             + " warmth=" + capHas(8) + " gamma=" + capHas(16));
 
-      // Exact placements: one in range, one deliberately out of range.
+      < Exact placements: one in range, one deliberately out of range. >
       print("plot(0,0 red):        " + statusText(plot(0, 0, 255, 0, 0)));
       print("plot(w,h off-screen): " + statusText(plot(w, h, 0, 255, 0)));
 
-      // Whole-display controls.
+      < Whole-display controls. >
       print("brightness 70%:       " + statusText(uiBallumSetBrightness(boundId, 70)));
       print("warmth 3400K:         " + statusText(uiBallumSetWarmth(boundId, 3400)));
       print("gamma 2.20:           " + statusText(uiBallumSetGamma(boundId, 220)));
     } else {
-      // Headless: prove the API still refuses cleanly and precisely.
+      < Headless: prove the API still refuses cleanly and precisely. >
       print("no screen; plot refuses: " + statusText(plot(0, 0, 255, 255, 255)));
     }
     print("done");

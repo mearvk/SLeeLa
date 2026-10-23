@@ -55,29 +55,35 @@ class SLGuiNode {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_CHILDREN = 4096;
-  static final int MAX_PAIRS = 64;      // attributes / style entries per node
+  < attributes / style entries per node >
+  static final int MAX_PAIRS = 64;
 
   String id;
   String tag;
   String textContent;
-  String parentId;      // "" for the root
+  < "" for the root >
+  String parentId;
   String[] childIds;
   int childCount;
 
-  // Attribute map (name -> value).
+  < Attribute map (name -> value). >
   String[] attrNames;
   String[] attrValues;
   int attrCount;
 
-  // Style map (property -> value), the DHTML inline-style equivalent.
+  < Style map (property -> value), the DHTML inline-style equivalent. >
   String[] styleProps;
   String[] styleValues;
   int styleCount;
 
-  int visible;          // 1 = shown
-  int enabled;          // 1 = sensitive
-  int widget;           // live SleelaUI widget handle (-1 = not mounted)
-  int dirty;            // 1 when the host must re-sync this node
+  < 1 = shown >
+  int visible;
+  < 1 = sensitive >
+  int enabled;
+  < live SleelaUI widget handle (-1 = not mounted) >
+  int widget;
+  < 1 when the host must re-sync this node >
+  int dirty;
 
   void configure(String nodeId, String nodeTag, String parent) {
     id = nodeId; tag = nodeTag; parentId = (parent == null) ? "" : parent;
@@ -93,7 +99,7 @@ class SLGuiNode {
   String getParent() { return parentId; }
   void setParent(String p) { parentId = (p == null) ? "" : p; }
 
-  // ---- children -----------------------------------------------------------
+  < ---- children ----------------------------------------------------------- >
   boolean appendChild(String childId) {
     if (childCount >= MAX_CHILDREN) { return false; }
     childIds[childCount] = childId; childCount = childCount + 1;
@@ -118,11 +124,11 @@ class SLGuiNode {
     return childIds[i];
   }
 
-  // ---- text ---------------------------------------------------------------
+  < ---- text --------------------------------------------------------------- >
   void setText(String t) { textContent = (t == null) ? "" : t; dirty = 1; }
   String text() { return textContent; }
 
-  // ---- attributes ---------------------------------------------------------
+  < ---- attributes --------------------------------------------------------- >
   void setAttribute(String name, String value) {
     int i = attrIndex(name);
     if (i >= 0) { attrValues[i] = value; dirty = 1; return; }
@@ -141,7 +147,7 @@ class SLGuiNode {
     return -1;
   }
 
-  // ---- style (DHTML inline style) -----------------------------------------
+  < ---- style (DHTML inline style) ----------------------------------------- >
   void setStyle(String prop, String value) {
     int i = styleIndex(prop);
     if (i >= 0) { styleValues[i] = value; dirty = 1; return; }
@@ -160,14 +166,14 @@ class SLGuiNode {
   }
   int styleEntries() { return styleCount; }
 
-  // ---- visibility / enabled -----------------------------------------------
+  < ---- visibility / enabled ----------------------------------------------- >
   void show() { visible = 1; dirty = 1; }
   void hide() { visible = 0; dirty = 1; }
   boolean isVisible() { return visible == 1; }
   void setEnabled(boolean on) { enabled = on ? 1 : 0; dirty = 1; }
   boolean isEnabled() { return enabled == 1; }
 
-  // ---- host mount ---------------------------------------------------------
+  < ---- host mount --------------------------------------------------------- >
   void mount(int widgetHandle) { widget = widgetHandle; dirty = 1; }
   int widgetHandle() { return widget; }
   boolean mounted() { return widget >= 0; }

@@ -63,16 +63,19 @@ class SLGate {
   static final int XNOR = 6;
   static final int BUF  = 7;
 
-  int kind;        // one of the constants above
-  int lastOutput;  // most recent evaluated output bit
-  int evaluations; // how many times this gate has been evaluated
+  < one of the constants above >
+  int kind;
+  < most recent evaluated output bit >
+  int lastOutput;
+  < how many times this gate has been evaluated >
+  int evaluations;
 
   void configure(int gateKind) { kind = gateKind; lastOutput = 0; evaluations = 0; }
 
   int clampBit(int v) { if (v != 0) { return 1; } return 0; }
 
-  // Evaluate the gate for the given input bits. For unary gates (NOT, BUF),
-  // only `a` is used.
+  < Evaluate the gate for the given input bits. For unary gates (NOT, BUF), >
+  < only `a` is used. >
   int eval(int a, int b) {
     int x = clampBit(a);
     int y = clampBit(b);

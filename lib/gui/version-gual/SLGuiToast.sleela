@@ -54,19 +54,23 @@ class SLGuiToast {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Lifecycle states.
-  static final int STATE_HIDDEN     = 0;   // not on screen
-  static final int STATE_FADING_IN  = 1;   // enter transition running
-  static final int STATE_SHOWN      = 2;   // fully visible, dwelling
-  static final int STATE_FADING_OUT = 3;   // exit transition running
+  < Lifecycle states. >
+  < not on screen >
+  static final int STATE_HIDDEN     = 0;
+  < enter transition running >
+  static final int STATE_FADING_IN  = 1;
+  < fully visible, dwelling >
+  static final int STATE_SHOWN      = 2;
+  < exit transition running >
+  static final int STATE_FADING_OUT = 3;
 
-  // Severity (tints the panel; the host maps to accent/warning/danger/success).
+  < Severity (tints the panel; the host maps to accent/warning/danger/success). >
   static final int SEV_INFO    = 0;
   static final int SEV_SUCCESS = 1;
   static final int SEV_WARNING = 2;
   static final int SEV_DANGER  = 3;
 
-  // Placement anchors (which screen corner/edge the toast docks to).
+  < Placement anchors (which screen corner/edge the toast docks to). >
   static final int POS_TOP_LEFT      = 0;
   static final int POS_TOP_RIGHT     = 1;
   static final int POS_TOP_CENTER    = 2;
@@ -75,14 +79,21 @@ class SLGuiToast {
   static final int POS_BOTTOM_CENTER = 5;
 
   String message;
-  int severity;      // SEV_*
-  int position;      // POS_*
-  int state;         // STATE_*
-  int dwellMs;       // how long STATE_SHOWN lasts, 0..60000 ms
-  int dwellElapsed;  // time spent in STATE_SHOWN so far
+  < SEV_* >
+  int severity;
+  < POS_* >
+  int position;
+  < STATE_* >
+  int state;
+  < how long STATE_SHOWN lasts, 0..60000 ms >
+  int dwellMs;
+  < time spent in STATE_SHOWN so far >
+  int dwellElapsed;
 
-  SLGuiTransition enterFx;  // fade-in tween
-  SLGuiTransition exitFx;   // fade-out tween
+  < fade-in tween >
+  SLGuiTransition enterFx;
+  < fade-out tween >
+  SLGuiTransition exitFx;
 
   int clamp(int v, int lo, int hi) {
     if (v < lo) { return lo; }
@@ -90,8 +101,8 @@ class SLGuiToast {
     return v;
   }
 
-  // Safe defaults: an info toast, bottom-right, 250ms fade-in, ~3s dwell,
-  // 250ms fade-out (the classic snackbar cadence).
+  < Safe defaults: an info toast, bottom-right, 250ms fade-in, ~3s dwell, >
+  < 250ms fade-out (the classic snackbar cadence). >
   void configure(String text) {
     message = (text == null) ? "" : text;
     severity = SEV_INFO;
@@ -99,9 +110,11 @@ class SLGuiToast {
     state = STATE_HIDDEN;
     dwellMs = 3000; dwellElapsed = 0;
     enterFx = new SLGuiTransition(); enterFx.configure();
-    enterFx.fadeIn(250, 2);    // 2 = SLGuiTransition.EASE_OUT
+    < 2 = SLGuiTransition.EASE_OUT >
+    enterFx.fadeIn(250, 2);
     exitFx = new SLGuiTransition(); exitFx.configure();
-    exitFx.fadeOut(250, 1);    // 1 = SLGuiTransition.EASE_IN
+    < 1 = SLGuiTransition.EASE_IN >
+    exitFx.fadeOut(250, 1);
   }
 
   void setMessage(String text) { message = (text == null) ? "" : text; }
@@ -112,14 +125,14 @@ class SLGuiToast {
   void setFadeOutMillis(int ms) { exitFx.setDuration(ms); }
   void setFadeEasing(int ease)  { enterFx.setEasing(ease); exitFx.setEasing(ease); }
 
-  // ---- lifecycle ----------------------------------------------------------
-  // Begin showing the toast: start the enter transition from the top.
+  < ---- lifecycle ---------------------------------------------------------- >
+  < Begin showing the toast: start the enter transition from the top. >
   void show() {
     state = STATE_FADING_IN;
     enterFx.reset();
     dwellElapsed = 0;
   }
-  // Begin dismissing early (before the dwell elapses): start the exit tween.
+  < Begin dismissing early (before the dwell elapses): start the exit tween. >
   void dismiss() {
     if (state == STATE_HIDDEN || state == STATE_FADING_OUT) { return; }
     state = STATE_FADING_OUT;
@@ -127,8 +140,8 @@ class SLGuiToast {
   }
   void hideNow() { state = STATE_HIDDEN; dwellElapsed = 0; }
 
-  // Advance the lifecycle by `deltaMs`. Returns true while the toast still
-  // occupies the screen (any non-hidden state), false once fully hidden.
+  < Advance the lifecycle by `deltaMs`. Returns true while the toast still >
+  < occupies the screen (any non-hidden state), false once fully hidden. >
   boolean tick(int deltaMs) {
     if (deltaMs < 0) { deltaMs = 0; }
     if (state == STATE_FADING_IN) {
@@ -146,21 +159,23 @@ class SLGuiToast {
       if (exitFx.done()) { state = STATE_HIDDEN; return false; }
       return true;
     }
-    return false;   // STATE_HIDDEN
+    < STATE_HIDDEN >
+    return false;
   }
 
-  // ---- presentation -------------------------------------------------------
-  // The opacity (0..100 %) the host should paint the panel at right now.
+  < ---- presentation ------------------------------------------------------- >
+  < The opacity (0..100 %) the host should paint the panel at right now. >
   int opacityPct() {
     if (state == STATE_FADING_IN)  { return enterFx.opacityPct(); }
     if (state == STATE_SHOWN)      { return 100; }
     if (state == STATE_FADING_OUT) { return exitFx.opacityPct(); }
-    return 0;   // STATE_HIDDEN
+    < STATE_HIDDEN >
+    return 0;
   }
   boolean onScreen() { return state != STATE_HIDDEN; }
   boolean fullyShown() { return state == STATE_SHOWN; }
 
-  // ---- readers ------------------------------------------------------------
+  < ---- readers ------------------------------------------------------------ >
   String getMessage() { return message; }
   int getSeverity() { return severity; }
   int getPosition() { return position; }
@@ -195,8 +210,8 @@ class SLGuiToast {
     return o >= 0 && o <= 100 && enterFx.honored() && exitFx.honored();
   }
 
-  // Flatten into the reconciler's style descriptor. Shape:
-  //   "toast:<severity>@<position>;dwell:<ms>;<enter-fade>;<exit-fade>"
+  < Flatten into the reconciler's style descriptor. Shape: >
+  < "toast:<severity>@<position>;dwell:<ms>;<enter-fade>;<exit-fade>" >
   String toStyle() {
     return "toast:" + severityName() + "@" + positionName() + ";"
         + "dwell:" + dwellMs + ";in-" + enterFx.toStyle() + ";out-" + exitFx.toStyle();

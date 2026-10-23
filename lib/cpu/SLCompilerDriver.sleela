@@ -56,19 +56,20 @@ class SLCompilerDriver {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLInstructionSet isa;
   int lastLanguage;
-  SLTimingProfile profile;   // the operating point stamped into compiled output
+  < the operating point stamped into compiled output >
+  SLTimingProfile profile;
 
   void configure(SLInstructionSet instructionSet) {
     isa = instructionSet; lastLanguage = -1; profile = null;
   }
 
-  // Give the driver a timing/voltage/expertise profile. Every program it
-  // compiles from here on carries that profile's sealed manifest, so the VM
-  // and loader operate the STATED timings rather than guessing hardware
-  // quality. Without a profile, output compiles exactly as before (no header).
+  < Give the driver a timing/voltage/expertise profile. Every program it >
+  < compiles from here on carries that profile's sealed manifest, so the VM >
+  < and loader operate the STATED timings rather than guessing hardware >
+  < quality. Without a profile, output compiles exactly as before (no header). >
   void useTimingProfile(SLTimingProfile p) { profile = p; }
 
-  // Build the appropriate frontend for a language id.
+  < Build the appropriate frontend for a language id. >
   SLFrontend frontendFor(int langId, String path) {
     if (langId == 1) { SLFrontendC f = new SLFrontendC(); f.init(path); return f; }
     if (langId == 2) { SLFrontendCpp f = new SLFrontendCpp(); f.initCpp(path); return f; }
@@ -76,12 +77,13 @@ class SLCompilerDriver {
     SLFrontendSleela f = new SLFrontendSleela(); f.init(path); return f;
   }
 
-  // Infer the language from a file extension.
+  < Infer the language from a file extension. >
   int languageOf(String path) {
     if (endsWith(path, ".c")) { return 1; }
     if (endsWith(path, ".cpp") || endsWith(path, ".cc") || endsWith(path, ".cxx")) { return 2; }
     if (endsWith(path, ".java") || endsWith(path, ".class")) { return 3; }
-    return 0; // .sleela / default
+    < .sleela / default >
+    return 0;
   }
 
   boolean endsWith(String s, String suffix) {
@@ -92,7 +94,7 @@ class SLCompilerDriver {
   int length(String s) { return native sleela_str_length(s); }
   String substring(String s, int a, int b) { return native sleela_str_substring(s, a, b); }
 
-  // Compile a source file in the given language into a runnable SLProgram.
+  < Compile a source file in the given language into a runnable SLProgram. >
   SLProgram compile(String path, int langId, String programName) {
     lastLanguage = langId;
     SLFrontend fe = frontendFor(langId, path);
@@ -104,13 +106,13 @@ class SLCompilerDriver {
     backend.configure(isa, prog, ir);
     backend.lower();
 
-    // Stamp the stated operating point into the compiled image so downstream
-    // consumers honor declared timings instead of assuming hardware quality.
+    < Stamp the stated operating point into the compiled image so downstream >
+    < consumers honor declared timings instead of assuming hardware quality. >
     if (profile != null) { prog.attachTiming(profile.toManifest()); }
     return prog;
   }
 
-  // Convenience: infer language from the path extension.
+  < Convenience: infer language from the path extension. >
   SLProgram compileFile(String path, String programName) {
     return compile(path, languageOf(path), programName);
   }

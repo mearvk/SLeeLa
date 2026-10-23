@@ -57,18 +57,28 @@ class SLTiming {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String signal;      // nameful path: "addr->ras", "cas->dq", "req->ack", ...
-  String reason;      // why this budget exists, in words
-  int periodPs;       // the clock/strobe period this path must fit inside (ps)
-  int setupPs;        // required setup before the capturing edge (ps)
-  int holdPs;         // required hold after the capturing edge (ps)
-  int propagationPs;  // combinational / flight time along the path (ps)
-  int jitterPs;       // peak cycle-to-cycle jitter to subtract from the period
-  int guardbandPs;    // extra margin demanded on top of a bare pass (ps)
-  int checks;         // how many times this budget has been evaluated
-  int violations;     // how many of those failed
+  < nameful path: "addr->ras", "cas->dq", "req->ack", ... >
+  String signal;
+  < why this budget exists, in words >
+  String reason;
+  < the clock/strobe period this path must fit inside (ps) >
+  int periodPs;
+  < required setup before the capturing edge (ps) >
+  int setupPs;
+  < required hold after the capturing edge (ps) >
+  int holdPs;
+  < combinational / flight time along the path (ps) >
+  int propagationPs;
+  < peak cycle-to-cycle jitter to subtract from the period >
+  int jitterPs;
+  < extra margin demanded on top of a bare pass (ps) >
+  int guardbandPs;
+  < how many times this budget has been evaluated >
+  int checks;
+  < how many of those failed >
+  int violations;
 
-  // Name a path and give it a period and a guardband.
+  < Name a path and give it a period and a guardband. >
   void configure(String name, int period, int guardband) {
     signal = name; reason = ""; periodPs = period;
     setupPs = 0; holdPs = 0; propagationPs = 0; jitterPs = 0;
@@ -77,7 +87,7 @@ class SLTiming {
 
   void describe(String why) { reason = why; }
 
-  // State the path's electrical constraints.
+  < State the path's electrical constraints. >
   void setSetup(int ps) { if (ps >= 0) { setupPs = ps; } }
   void setHold(int ps) { if (ps >= 0) { holdPs = ps; } }
   void setPropagation(int ps) { if (ps >= 0) { propagationPs = ps; } }
@@ -85,20 +95,20 @@ class SLTiming {
   void setPeriod(int ps) { if (ps > 0) { periodPs = ps; } }
   void setGuardband(int ps) { if (ps >= 0) { guardbandPs = ps; } }
 
-  // Time consumed along the path before data is stable at the capture point.
+  < Time consumed along the path before data is stable at the capture point. >
   int consumedPs() { return propagationPs + setupPs; }
 
-  // The usable period after jitter is removed from the raw period.
+  < The usable period after jitter is removed from the raw period. >
   int effectivePeriodPs() { return periodPs - jitterPs; }
 
-  // Setup slack: usable period minus consumed time minus the demanded
-  // guardband. Non-negative = the path is honored.
+  < Setup slack: usable period minus consumed time minus the demanded >
+  < guardband. Non-negative = the path is honored. >
   int setupSlackPs() { return effectivePeriodPs() - consumedPs() - guardbandPs; }
 
-  // Hold slack: propagation must out-last the required hold window.
+  < Hold slack: propagation must out-last the required hold window. >
   int holdSlackPs() { return propagationPs - holdPs; }
 
-  // Does this budget hold, counting setup, hold, and guardband together?
+  < Does this budget hold, counting setup, hold, and guardband together? >
   boolean honored() {
     checks = checks + 1;
     boolean ok = setupSlackPs() >= 0 && holdSlackPs() >= 0;
@@ -106,8 +116,8 @@ class SLTiming {
     return ok;
   }
 
-  // The highest strobe frequency (MHz) this path can be run at and still meet
-  // setup with its guardband: f = 1e6 / (consumed + guardband + jitter) ps.
+  < The highest strobe frequency (MHz) this path can be run at and still meet >
+  < setup with its guardband: f = 1e6 / (consumed + guardband + jitter) ps. >
   int maxFrequencyMHz() {
     int floorPs = consumedPs() + guardbandPs + jitterPs;
     if (floorPs <= 0) { return 0; }

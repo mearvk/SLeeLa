@@ -61,14 +61,17 @@ class SLGuiMount {
   SLGuiDom dom;
   SLGuiWidgetFactory factory;
 
-  // id -> widget handle map (parallel arrays).
+  < id -> widget handle map (parallel arrays). >
   String[] ids;
   int[] handles;
   int mapCount;
 
-  int rootHandle;       // the host-supplied root container the window gives us
-  int mounted;          // total nodes mounted so far
-  int applied;          // dirty nodes applied on the last reconcile pass
+  < the host-supplied root container the window gives us >
+  int rootHandle;
+  < total nodes mounted so far >
+  int mounted;
+  < dirty nodes applied on the last reconcile pass >
+  int applied;
 
   void init(SLGuiDom document, int windowRootHandle) {
     dom = document;
@@ -80,7 +83,7 @@ class SLGuiMount {
     mounted = 0; applied = 0;
   }
 
-  // ---- id -> handle map ---------------------------------------------------
+  < ---- id -> handle map --------------------------------------------------- >
 
   int handleOf(String id) {
     for (int i = 0; i < mapCount; i = i + 1) { if (ids[i] == id) { return handles[i]; } }
@@ -98,13 +101,13 @@ class SLGuiMount {
   }
   boolean isMounted(String id) { return handleOf(id) >= 0; }
 
-  // ---- full mount ---------------------------------------------------------
+  < ---- full mount --------------------------------------------------------- >
 
-  // Mount the whole document under the window root, depth-first.
+  < Mount the whole document under the window root, depth-first. >
   void mountAll() {
     SLGuiNode root = dom.root();
     if (root == null) { return; }
-    // The root element adopts the window's existing root container handle.
+    < The root element adopts the window's existing root container handle. >
     root.mount(rootHandle);
     record(root.getId(), rootHandle);
     mounted = mounted + 1;
@@ -112,7 +115,7 @@ class SLGuiMount {
     reconcile();
   }
 
-  // Recursively construct and mount every child of `parent`.
+  < Recursively construct and mount every child of `parent`. >
   void mountChildren(SLGuiNode parent) {
     int ph = handleOf(parent.getId());
     if (ph < 0) { return; }
@@ -122,11 +125,11 @@ class SLGuiMount {
       if (child == null) { continue; }
       if (!isMounted(childId)) {
         String label = labelFor(child);
-        // Overflow-aware construction: a plain container carrying an `overflow`
-        // (or `overflow-x`/`overflow-y`) attribute is promoted to a native
-        // scrolled viewport, so scrollbars appear AUTOMATICALLY when its content
-        // is larger than the frame. Explicit scrolled/scrollview tags already
-        // build one via the factory.
+        < Overflow-aware construction: a plain container carrying an `overflow` >
+        < (or `overflow-x`/`overflow-y`) attribute is promoted to a native >
+        < scrolled viewport, so scrollbars appear AUTOMATICALLY when its content >
+        < is larger than the frame. Explicit scrolled/scrollview tags already >
+        < build one via the factory. >
         int wh = constructWithOverflow(ph, child, label);
         child.mount(wh);
         record(childId, wh);
@@ -136,17 +139,17 @@ class SLGuiMount {
     }
   }
 
-  // Mount any nodes added since the last pass (nodes the DOM grew via script
-  // or SLeeLa after the initial mountAll).
+  < Mount any nodes added since the last pass (nodes the DOM grew via script >
+  < or SLeeLa after the initial mountAll). >
   void mountNew() {
     SLGuiNode root = dom.root();
     if (root != null) { mountChildren(root); }
   }
 
-  // ---- reconcile (apply dirty node state to widgets) ----------------------
+  < ---- reconcile (apply dirty node state to widgets) ---------------------- >
 
-  // Push every dirty node's state onto its widget, then clear the dirty flag.
-  // Returns how many nodes were applied this pass.
+  < Push every dirty node's state onto its widget, then clear the dirty flag. >
+  < Returns how many nodes were applied this pass. >
   int reconcile() {
     applied = 0;
     int n = dom.size();
@@ -160,29 +163,29 @@ class SLGuiMount {
     return applied;
   }
 
-  // Apply one node's state to its live widget via the `ui*` built-ins.
+  < Apply one node's state to its live widget via the `ui*` built-ins. >
   void apply(SLGuiNode node) {
     int wh = node.widgetHandle();
     if (wh < 0) { wh = handleOf(node.getId()); }
     if (wh < 0) { return; }
 
-    // Text (labels/buttons/entries).
+    < Text (labels/buttons/entries). >
     String t = node.text();
     if (t != null && t != "") { uiWidgetSetText(wh, t); }
 
-    // Visibility and sensitivity.
+    < Visibility and sensitivity. >
     uiWidgetVisible(wh, node.isVisible() ? 1 : 0);
     uiWidgetSensitive(wh, node.isEnabled() ? 1 : 0);
 
-    // Style-derived accents: style "accent" = "suggested" | "destructive".
+    < Style-derived accents: style "accent" = "suggested" | "destructive". >
     String accent = node.getStyle("accent");
     if (accent != null) {
       uiWidgetSuggested(wh, accent == "suggested" ? 1 : 0);
       uiWidgetDestructive(wh, accent == "destructive" ? 1 : 0);
     }
 
-    // Style-derived minimum size: style "min-width" / "min-height" (integers
-    // as decimal strings; absent -> 0).
+    < Style-derived minimum size: style "min-width" / "min-height" (integers >
+    < as decimal strings; absent -> 0). >
     int minW = intAttr(node.getStyle("min-width"));
     int minH = intAttr(node.getStyle("min-height"));
     if (minW > 0 || minH > 0) { uiWidgetSizeRequest(wh, minW, minH); }
@@ -191,18 +194,18 @@ class SLGuiMount {
   int mountedCount() { return mounted; }
   int appliedLast() { return applied; }
 
-  // ---- helpers ------------------------------------------------------------
+  < ---- helpers ------------------------------------------------------------ >
 
-  // Construct a child's widget, honouring an `overflow` intent. A container
-  // whose tag is already a scrolled view (scrolled/scrollview/scrollarea) is
-  // built by the factory as usual. Otherwise, if the node carries an `overflow`
-  // attribute (or per-axis `overflow-x` / `overflow-y`), build a native
-  // scrolled viewport with the mapped policy instead of a plain container, so
-  // the content scrolls and scrollbars appear automatically on overflow. The
-  // node's children then mount inside the viewport as its scroll content.
-  //   overflow / overflow-x / overflow-y : auto | scroll | always | hidden |
-  //   visible | clip | none  (auto is the default when the attr is present
-  //   without a value). A per-axis attr overrides the shorthand for that axis.
+  < Construct a child's widget, honouring an `overflow` intent. A container >
+  < whose tag is already a scrolled view (scrolled/scrollview/scrollarea) is >
+  < built by the factory as usual. Otherwise, if the node carries an `overflow` >
+  < attribute (or per-axis `overflow-x` / `overflow-y`), build a native >
+  < scrolled viewport with the mapped policy instead of a plain container, so >
+  < the content scrolls and scrollbars appear automatically on overflow. The >
+  < node's children then mount inside the viewport as its scroll content. >
+  < overflow / overflow-x / overflow-y : auto | scroll | always | hidden | >
+  < visible | clip | none  (auto is the default when the attr is present >
+  < without a value). A per-axis attr overrides the shorthand for that axis. >
   int constructWithOverflow(int parentHandle, SLGuiNode child, String label) {
     String tag = child.getTag();
     if (factory.isScrolled(tag)) {
@@ -212,9 +215,10 @@ class SLGuiMount {
     String ox = child.getAttribute("overflow-x");
     String oy = child.getAttribute("overflow-y");
     if (ov == null && ox == null && oy == null) {
-      return factory.construct(parentHandle, tag, label);   // no overflow intent
+      < no overflow intent >
+      return factory.construct(parentHandle, tag, label);
     }
-    // Resolve each axis: a per-axis attr wins; else the shorthand; else auto.
+    < Resolve each axis: a per-axis attr wins; else the shorthand; else auto. >
     String hx = (ox != null) ? ox : ov;
     String hy = (oy != null) ? oy : ov;
     int policyH = factory.overflowPolicy(hx);
@@ -222,8 +226,8 @@ class SLGuiMount {
     return factory.constructScrolled(parentHandle, policyH, policyV);
   }
 
-  // The construction label for a node: its text, or its "placeholder" attr for
-  // entries, or empty.
+  < The construction label for a node: its text, or its "placeholder" attr for >
+  < entries, or empty. >
   String labelFor(SLGuiNode node) {
     String t = node.text();
     if (t != null && t != "") { return t; }
@@ -232,7 +236,7 @@ class SLGuiMount {
     return "";
   }
 
-  // Parse a non-negative integer from a decimal string ("" / null -> 0).
+  < Parse a non-negative integer from a decimal string ("" / null -> 0). >
   int intAttr(String s) {
     if (s == null || s == "") { return 0; }
     int value = 0;

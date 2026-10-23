@@ -82,7 +82,7 @@ class InputDemo {
       }
       return MOVE;
     }
-    // raw == 3 (up)
+    < raw == 3 (up) >
     if (pressed == 1 && dragging == 1) { pressed = 0; dragging = 0; return DRAG_END; }
     if (pressed == 1) { pressed = 0; return CLICK; }
     return NONE;
@@ -103,7 +103,7 @@ class InputDemo {
     print("backend: " + uiBallumBackendName() + "  input available=" + uiBallumHasInput());
     init();
 
-    // Drain a bounded number of polls so the demo never blocks.
+    < Drain a bounded number of polls so the demo never blocks. >
     int budget = 64;
     int handled = 0;
     int i = 0;

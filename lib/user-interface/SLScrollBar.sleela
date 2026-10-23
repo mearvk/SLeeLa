@@ -54,9 +54,9 @@ class SLScrollBar extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a scroll bar inside `parent`. orientation is ORIENT_VERTICAL or
-  // ORIENT_HORIZONTAL; value is the initial position in [0,1]; page is the
-  // visible fraction the thumb covers (0..1).
+  < Create a scroll bar inside `parent`. orientation is ORIENT_VERTICAL or >
+  < ORIENT_HORIZONTAL; value is the initial position in [0,1]; page is the >
+  < visible fraction the thumb covers (0..1). >
   void createIn(SLWidget parent, int orientation, double value, double page) {
     widget = uiScrollBar(parent.handle(), orientation, value, page);
   }
@@ -73,7 +73,7 @@ class SLScrollBar extends SLWidget {
     if (widget >= 0) { uiWidgetSetValue(widget, value); }
   }
 
-  // True if the position changed since the last check (latch cleared on read).
+  < True if the position changed since the last check (latch cleared on read). >
   boolean changed() {
     if (widget < 0) { return false; }
     return uiWidgetTakeActivated(widget) == 1;

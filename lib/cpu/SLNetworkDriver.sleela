@@ -54,13 +54,15 @@ class SLNetworkDriver extends SLDeviceDriver {
   int framesRx;
 
   void init(SLIOBus bus, int port, SLDMAController dmaEngine) {
-    configure("net", port, 3, bus); // IRQ_NETWORK = 3
+    < IRQ_NETWORK = 3 >
+    configure("net", port, 3, bus);
     dma = dmaEngine; framesTx = 0; framesRx = 0;
   }
 
   int transmit(int memWord, int words) {
     if (!ready() || dma == null) { return -1; }
-    dma.program(memWord, memWord, words); // model: stage frame for the device
+    < model: stage frame for the device >
+    dma.program(memWord, memWord, words);
     framesTx = framesTx + 1;
     return dma.runTransfer();
   }

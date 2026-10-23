@@ -55,27 +55,38 @@ class SLHardDisk extends SLHardwareComponent {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Interface ordinals.
-  static final int IF_SATA3 = 0;  // 6 Gb/s
-  static final int IF_SAS   = 1;  // 12 Gb/s enterprise
-  // Recording technology.
-  static final int REC_CMR = 0;   // conventional (preferred)
-  static final int REC_SMR = 1;   // shingled (higher density, slower random writes)
+  < Interface ordinals. >
+  < 6 Gb/s >
+  static final int IF_SATA3 = 0;
+  < 12 Gb/s enterprise >
+  static final int IF_SAS   = 1;
+  < Recording technology. >
+  < conventional (preferred) >
+  static final int REC_CMR = 0;
+  < shingled (higher density, slower random writes) >
+  static final int REC_SMR = 1;
 
-  int iface;          // IF_*
-  String formFactor;  // "3.5\"" / "2.5\""
-  int rpm;            // spindle speed
-  int recording;      // REC_*
-  int cacheMb;        // DRAM cache
+  < IF_* >
+  int iface;
+  < "3.5\"" / "2.5\"" >
+  String formFactor;
+  < spindle speed >
+  int rpm;
+  < REC_* >
+  int recording;
+  < DRAM cache >
+  int cacheMb;
   int capacityGb;
-  int sustainedMBps;  // representative sustained transfer rate
-  int blockBytes;     // logical block size
+  < representative sustained transfer rate >
+  int sustainedMBps;
+  < logical block size >
+  int blockBytes;
 
   void configure(String manufacturer, String partName, int interfaceKind, int rpmSpeed, int capacityGigabytes) {
     configureComponent(manufacturer, partName, CLASS_HDD);
     iface = interfaceKind; rpm = rpmSpeed; capacityGb = capacityGigabytes;
     recording = REC_CMR; cacheMb = 256; blockBytes = 4096; formFactor = "3.5\"";
-    // Sustained rate scales roughly with areal density + spindle speed.
+    < Sustained rate scales roughly with areal density + spindle speed. >
     if (rpm >= 15000)      { sustainedMBps = 300; }
     else if (rpm >= 10000) { sustainedMBps = 250; }
     else if (rpm >= 7200)  { sustainedMBps = 260; }

@@ -61,19 +61,28 @@ class BankAccount {
 
   static final String MODULE = "BankAccount";
 
-  // Account flavors, ranked by how guilty each one makes you feel.
-  static final int TYPE_CHECKING = 0;   // where money passes through, briefly
-  static final int TYPE_SAVINGS  = 1;    // where money goes to be forgotten
-  static final int TYPE_CREDIT   = 2;    // where money you don't have lives
+  < Account flavors, ranked by how guilty each one makes you feel. >
+  < where money passes through, briefly >
+  static final int TYPE_CHECKING = 0;
+  < where money goes to be forgotten >
+  static final int TYPE_SAVINGS  = 1;
+  < where money you don't have lives >
+  static final int TYPE_CREDIT   = 2;
 
   int loadedFlag;
   boolean isOpen;
-  String holder;         // whose signature is on the dotted line
-  String bankName;       // the institution with the marble lobby
-  String routingNumber;  // 9-digit ABA number: Fed District + bank + checkdigit
-  String accountNumber;  // the long one you can never remember
-  int type;              // one of TYPE_*
-  int balanceCents;      // the truth, in cents
+  < whose signature is on the dotted line >
+  String holder;
+  < the institution with the marble lobby >
+  String bankName;
+  < 9-digit ABA number: Fed District + bank + checkdigit >
+  String routingNumber;
+  < the long one you can never remember >
+  String accountNumber;
+  < one of TYPE_* >
+  int type;
+  < the truth, in cents >
+  int balanceCents;
 
   void load() {
     loadedFlag = 1;
@@ -88,17 +97,17 @@ class BankAccount {
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // Open an account. Comes with a free pen on a chain you cannot steal.
+  < Open an account. Comes with a free pen on a chain you cannot steal. >
   void openFor(String accountHolder) {
     holder = accountHolder;
     isOpen = true;
-    // Deterministic, obviously-fake demo numbers. 021 = NY Fed District.
+    < Deterministic, obviously-fake demo numbers. 021 = NY Fed District. >
     routingNumber = "021000021";
     accountNumber = "1000000001";
     balanceCents = 0;
   }
 
-  // Point the account at a specific bank + numbers (the grown-up setup).
+  < Point the account at a specific bank + numbers (the grown-up setup). >
   void configure(String bank, String routing, String account, int acctType) {
     if (bank != null) { bankName = bank; }
     if (routing != null) { routingNumber = routing; }
@@ -108,12 +117,12 @@ class BankAccount {
     }
   }
 
-  // Money arrives. A rare and beautiful event.
+  < Money arrives. A rare and beautiful event. >
   void deposit(int cents) {
     if (cents > 0 && isOpen) { balanceCents = balanceCents + cents; }
   }
 
-  // Money departs. Returns false if the account politely declines.
+  < Money departs. Returns false if the account politely declines. >
   boolean withdraw(int cents) {
     if (!isOpen || cents <= 0) { return false; }
     if (type != TYPE_CREDIT && cents > balanceCents) { return false; }
@@ -121,7 +130,7 @@ class BankAccount {
     return true;
   }
 
-  // Close the account. The pen is yours to keep. It was always yours.
+  < Close the account. The pen is yours to keep. It was always yours. >
   void close() {
     isOpen = false;
   }
@@ -132,11 +141,11 @@ class BankAccount {
   String account() { return accountNumber; }
   String institution() { return bankName; }
 
-  // The Federal Reserve District is encoded in the first two routing digits
-  // (01..12). This is how your checking account quietly knows its home office.
+  < The Federal Reserve District is encoded in the first two routing digits >
+  < (01..12). This is how your checking account quietly knows its home office. >
   int fedDistrict() {
     if (routingNumber == null) { return 0; }
-    // Lean on FederalReserveID so the mapping lives in exactly one place.
+    < Lean on FederalReserveID so the mapping lives in exactly one place. >
     FederalReserveID fed = new FederalReserveID();
     fed.load();
     return fed.districtOfRouting(routingNumber);

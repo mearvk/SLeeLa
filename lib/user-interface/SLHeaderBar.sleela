@@ -55,7 +55,7 @@ class SLHeaderBar extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a header bar inside `parent` (normally the window root).
+  < Create a header bar inside `parent` (normally the window root). >
   void createIn(SLWidget parent) {
     widget = uiHeaderBar(parent.handle());
   }

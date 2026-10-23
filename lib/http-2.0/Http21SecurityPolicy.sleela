@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Declarative deployment posture only; this does not implement TLS/authentication. */
+< Declarative deployment posture only; this does not implement TLS/authentication. >
 class Http21SecurityPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

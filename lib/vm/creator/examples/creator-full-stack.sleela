@@ -58,25 +58,25 @@ class CreatorFullStackExample {
   int javaResult;
 
   void main() {
-    // A resource grant bounding the guest program.
+    < A resource grant bounding the guest program. >
     SLCPUResource grant = new SLCPUResource();
     grant.configure(4096, 100000, grant.PRIORITY_NORMAL);
 
-    // The executor: a Sleela CPU model.
+    < The executor: a Sleela CPU model. >
     SL6502CPU cpu = new SL6502CPU();
     cpu.configure();
 
-    // Build the whole stack with the creator and run a C program through it.
+    < Build the whole stack with the creator and run a C program through it. >
     SleelaVMCreator creator = new SleelaVMCreator();
     creator.configure();
     SLWorkload cJob = new SLWorkload();
     cJob.configure("hello-c", "examples/hello.c", cJob.LANG_C, grant);
-    // run(generation, cpu, workload, budget): generation 5 == "Manager".
+    < run(generation, cpu, workload, budget): generation 5 == "Manager". >
     cResult = creator.run(5, cpu, cJob, 1000000);
     print("C via Creator->SLVM->6502 -> " + cResult +
           " (VM generation: " + creator.generationName() + ")");
 
-    // Reuse the booted VM + CPU for a Java program (fresh grant).
+    < Reuse the booted VM + CPU for a Java program (fresh grant). >
     SLCPUResource grant2 = new SLCPUResource();
     grant2.configure(4096, 100000, grant2.PRIORITY_NORMAL);
     SLWorkload javaJob = new SLWorkload();

@@ -54,16 +54,23 @@ class SLVMFrame {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLVMMethod method;
-  int returnIp;        // caller ip to resume on RET
-  int callerClassId;   // caller's "this" class, for RET context
-  int ip;              // current instruction index (within method window)
+  < caller ip to resume on RET >
+  int returnIp;
+  < caller's "this" class, for RET context >
+  int callerClassId;
+  < current instruction index (within method window) >
+  int ip;
 
-  SLRAM locals;        // local slots: 2 words each (tag,payload)
+  < local slots: 2 words each (tag,payload) >
+  SLRAM locals;
   int localCount;
 
-  SLRAM operands;      // operand stack: 2 words each (tag,payload)
-  int sp;              // operand count (not word index)
-  int capacity;        // max operands
+  < operand stack: 2 words each (tag,payload) >
+  SLRAM operands;
+  < operand count (not word index) >
+  int sp;
+  < max operands >
+  int capacity;
 
   void configure(SLVMMethod m, int retIp, int callerClass, int operandCap) {
     method = m;
@@ -77,7 +84,7 @@ class SLVMFrame {
     sp = 0;
   }
 
-  // --- locals ---
+  < --- locals --- >
   void setLocal(int index, SLVMValue v) {
     int slot = index * 2;
     locals.writeWord(slot, v.packedTag());
@@ -88,7 +95,7 @@ class SLVMFrame {
     out.unpack(locals.readWord(slot), locals.readWord(slot + 1));
   }
 
-  // --- operand stack ---
+  < --- operand stack --- >
   void push(SLVMValue v) {
     if (sp >= capacity) { return; }
     int slot = sp * 2;
@@ -108,7 +115,7 @@ class SLVMFrame {
     out.unpack(operands.readWord(slot), operands.readWord(slot + 1));
   }
 
-  // --- ip control ---
+  < --- ip control --- >
   int instructionPointer() { return ip; }
   void setIp(int newIp)     { ip = newIp; }
   void advance()            { ip = ip + 1; }

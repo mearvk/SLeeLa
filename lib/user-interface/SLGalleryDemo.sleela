@@ -60,14 +60,15 @@ class SLGalleryDemo {
   SLToggle dark;
   SLSlider opacity;
 
-  // Build the whole interface and return the application exit code.
+  < Build the whole interface and return the application exit code. >
   int run() {
     ui = new SLUserInterface();
     ui.configure("com.mearvk.SleelaUI.Gallery");
-    if (!ui.open()) { return 1; }    // no display (e.g. headless X11)
+    < no display (e.g. headless X11) >
+    if (!ui.open()) { return 1; }
 
-    // The Slick Black default theme (pass -1 to openWindow for it, or build it
-    // explicitly so a program could customise it first).
+    < The Slick Black default theme (pass -1 to openWindow for it, or build it >
+    < explicitly so a program could customise it first). >
     SLTheme theme = new SLTheme();
     theme.slickBlack();
 
@@ -75,7 +76,7 @@ class SLGalleryDemo {
                         theme.handle());
     SLWidget root = win.rootWidget();
 
-    // Header bar: brand on the left, a settings action on the right.
+    < Header bar: brand on the left, a settings action on the right. >
     SLHeaderBar header = new SLHeaderBar();
     header.createIn(root);
     header.setSizeRequest(0, 44);
@@ -89,7 +90,7 @@ class SLGalleryDemo {
     gear.createIn(header, "Settings");
     gear.setMargin(6, 12, 6, 0);
 
-    // Content column.
+    < Content column. >
     SLBox content = new SLBox();
     content.vertical(root, 12);
     content.setMarginAll(20);
@@ -103,7 +104,7 @@ class SLGalleryDemo {
     entry.createIn(content, "Type here");
     entry.setExpand(true, false);
 
-    // A row of actions: one suggested (accent), one destructive.
+    < A row of actions: one suggested (accent), one destructive. >
     SLBox row = new SLBox();
     row.horizontal(content, 8);
     save = new SLButton();

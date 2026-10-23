@@ -57,45 +57,56 @@ class SLCadEntity {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Entity-kind ordinals. A front end and the renderer agree on these.
-  static final int KIND_LINE = 0;   // a straight segment (walls/dims geometry)
-  static final int KIND_TEXT = 1;   // a point-anchored text label (notes/title)
-  static final int KIND_DIM  = 2;   // a linear dimension: segment + measured label
+  < Entity-kind ordinals. A front end and the renderer agree on these. >
+  < a straight segment (walls/dims geometry) >
+  static final int KIND_LINE = 0;
+  < a point-anchored text label (notes/title) >
+  static final int KIND_TEXT = 1;
+  < a linear dimension: segment + measured label >
+  static final int KIND_DIM  = 2;
 
-  int id;            // stable identity, assigned by the document
-  int kind;          // KIND_LINE / KIND_TEXT / KIND_DIM
-  String layer;      // "walls" / "dims" / "notes"
-  double x1; double y1;   // first point (anchor for TEXT)
-  double x2; double y2;   // second point (ignored for TEXT)
-  String value;      // text payload (TEXT content; "" for a bare LINE)
-  double height;     // text height (for TEXT / DIM label)
-  int alive;         // 1 = present, 0 = tombstoned (deleted but id reserved)
+  < stable identity, assigned by the document >
+  int id;
+  < KIND_LINE / KIND_TEXT / KIND_DIM >
+  int kind;
+  < "walls" / "dims" / "notes" >
+  String layer;
+  < first point (anchor for TEXT) >
+  double x1; double y1;
+  < second point (ignored for TEXT) >
+  double x2; double y2;
+  < text payload (TEXT content; "" for a bare LINE) >
+  String value;
+  < text height (for TEXT / DIM label) >
+  double height;
+  < 1 = present, 0 = tombstoned (deleted but id reserved) >
+  int alive;
 
-  // ---- construction -------------------------------------------------------
+  < ---- construction ------------------------------------------------------- >
 
-  // Configure as a straight segment on `lyr` from (ax,ay) to (bx,by).
+  < Configure as a straight segment on `lyr` from (ax,ay) to (bx,by). >
   void asLine(int entityId, String lyr, double ax, double ay, double bx, double by) {
     id = entityId; kind = KIND_LINE; layer = lyr;
     x1 = ax; y1 = ay; x2 = bx; y2 = by;
     value = ""; height = 0.0; alive = 1;
   }
 
-  // Configure as a text label anchored at (ax,ay) with content `text`.
+  < Configure as a text label anchored at (ax,ay) with content `text`. >
   void asText(int entityId, String lyr, double ax, double ay, String text, double h) {
     id = entityId; kind = KIND_TEXT; layer = lyr;
     x1 = ax; y1 = ay; x2 = ax; y2 = ay;
     value = text; height = h; alive = 1;
   }
 
-  // Configure as a linear dimension between (ax,ay) and (bx,by); the measured
-  // label is derived on demand (see measured()).
+  < Configure as a linear dimension between (ax,ay) and (bx,by); the measured >
+  < label is derived on demand (see measured()). >
   void asDim(int entityId, String lyr, double ax, double ay, double bx, double by, double h) {
     id = entityId; kind = KIND_DIM; layer = lyr;
     x1 = ax; y1 = ay; x2 = bx; y2 = by;
     value = ""; height = h; alive = 1;
   }
 
-  // ---- queries ------------------------------------------------------------
+  < ---- queries ------------------------------------------------------------ >
 
   int getId() { return id; }
   int getKind() { return kind; }
@@ -112,36 +123,36 @@ class SLCadEntity {
   String getValue() { return value; }
   double getHeight() { return height; }
 
-  // The measured length of a dimension (and the natural label for a DIM).
+  < The measured length of a dimension (and the natural label for a DIM). >
   double length() { return math.hypot(x2 - x1, y2 - y1); }
 
-  // The label text for this entity: its value, or the measured length for a
-  // DIM with no explicit override.
+  < The label text for this entity: its value, or the measured length for a >
+  < DIM with no explicit override. >
   String label() {
-    // NB: in the SLeeLa VM a String compares `== null` as true regardless of
-    // content, so emptiness is tested with `== ""` (which also covers unset).
+    < NB: in the SLeeLa VM a String compares `== null` as true regardless of >
+    < content, so emptiness is tested with `== ""` (which also covers unset). >
     if (kind == KIND_DIM && value == "") { return num(length()); }
     return value;
   }
 
-  // The midpoint, where a DIM measurement/label sits.
+  < The midpoint, where a DIM measurement/label sits. >
   double midX() { return (x1 + x2) / 2.0; }
   double midY() { return (y1 + y2) / 2.0; }
 
-  // ---- inspection ---------------------------------------------------------
+  < ---- inspection --------------------------------------------------------- >
 
-  // The entity kind as a word, for reports and the GUI readout.
+  < The entity kind as a word, for reports and the GUI readout. >
   String kindName() {
     if (kind == KIND_TEXT) { return "text"; }
     if (kind == KIND_DIM)  { return "dim"; }
     return "line";
   }
 
-  // A one-line, human-readable summary of this entity's current state, e.g.
-  //   "#7 line walls (0,0)->(6000,0)"            (a wall)
-  //   "#9 text notes (3000,2000) \"Lobby\""      (a label)
-  //   "#4 dim dims (0,-600)->(10000,-600) =10000" (a dimension + measure)
-  // A tombstoned entity is flagged so an audit sees deletions too.
+  < A one-line, human-readable summary of this entity's current state, e.g. >
+  < "#7 line walls (0,0)->(6000,0)"            (a wall) >
+  < "#9 text notes (3000,2000) \"Lobby\""      (a label) >
+  < "#4 dim dims (0,-600)->(10000,-600) =10000" (a dimension + measure) >
+  < A tombstoned entity is flagged so an audit sees deletions too. >
   String describe() {
     String s = "#" + id + " " + kindName() + " " + layer;
     if (kind == KIND_TEXT) {
@@ -154,25 +165,25 @@ class SLCadEntity {
     return s;
   }
 
-  // ---- alteration (the editable half) -------------------------------------
+  < ---- alteration (the editable half) ------------------------------------- >
 
-  // Move the whole entity by (dx,dy).
+  < Move the whole entity by (dx,dy). >
   void translate(double dx, double dy) {
     x1 = x1 + dx; y1 = y1 + dy;
     x2 = x2 + dx; y2 = y2 + dy;
   }
 
-  // Set the first point (and, for TEXT, keep the second coincident).
+  < Set the first point (and, for TEXT, keep the second coincident). >
   void setP1(double ax, double ay) {
     x1 = ax; y1 = ay;
     if (kind == KIND_TEXT) { x2 = ax; y2 = ay; }
   }
-  // Set the second point (ignored for TEXT, which is point-anchored).
+  < Set the second point (ignored for TEXT, which is point-anchored). >
   void setP2(double bx, double by) {
     if (kind == KIND_TEXT) { return; }
     x2 = bx; y2 = by;
   }
-  // Re-point both ends at once.
+  < Re-point both ends at once. >
   void setEndpoints(double ax, double ay, double bx, double by) {
     setP1(ax, ay); setP2(bx, by);
   }
@@ -181,13 +192,13 @@ class SLCadEntity {
   void setValue(String text) { value = text; }
   void setHeight(double h) { height = h; }
 
-  // Soft-delete: keep the id reserved so other entities keep their identity.
+  < Soft-delete: keep the id reserved so other entities keep their identity. >
   void kill() { alive = 0; }
   void revive() { alive = 1; }
 
-  // ---- DXF ----------------------------------------------------------------
+  < ---- DXF ---------------------------------------------------------------- >
 
-  // Emit just this entity's DXF group-code/value records (empty when dead).
+  < Emit just this entity's DXF group-code/value records (empty when dead). >
   String toDxf() {
     if (alive == 0) { return ""; }
     if (kind == KIND_TEXT) { return textRecord(layer, x1, y1, height, label()); }

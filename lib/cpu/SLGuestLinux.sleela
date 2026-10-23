@@ -59,7 +59,7 @@ class SLGuestLinux {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // A small, Linux-like syscall ABI (numbers chosen for the model).
+  < A small, Linux-like syscall ABI (numbers chosen for the model). >
   static final int LINUX_READ   = 0;
   static final int LINUX_WRITE  = 1;
   static final int LINUX_OPEN   = 2;
@@ -72,10 +72,14 @@ class SLGuestLinux {
 
   String distro;
   SLGuestVM vm;
-  SLGuestKernelImage kernelImage;   // compiled kernel image (step 4), if built
-  SLGuestScheduler scheduler;       // guest task scheduler, timer-driven (step 6)
-  SLGuestFileSystem filesystem;     // in-guest filesystem over the block device
-  SLGuestSyscall syscalls2;         // guest syscall ABI dispatcher (lazy)
+  < compiled kernel image (step 4), if built >
+  SLGuestKernelImage kernelImage;
+  < guest task scheduler, timer-driven (step 6) >
+  SLGuestScheduler scheduler;
+  < in-guest filesystem over the block device >
+  SLGuestFileSystem filesystem;
+  < guest syscall ABI dispatcher (lazy) >
+  SLGuestSyscall syscalls2;
   int kernelEntry;
   int initEntry;
   int booted;
@@ -85,9 +89,10 @@ class SLGuestLinux {
   void configure(String distroName, SLGuestVM guest) {
     distro = distroName; vm = guest; booted = 0; syscalls = 0;
     kernelEntry = 0; initEntry = 0; timerTicks = 0;
-    scheduler = new SLGuestScheduler(); scheduler.configure(4); // 4-tick quantum
-    // Mount a filesystem on the guest block device (data region after the
-    // kernel/boot blocks) if the guest has one.
+    < 4-tick quantum >
+    scheduler = new SLGuestScheduler(); scheduler.configure(4);
+    < Mount a filesystem on the guest block device (data region after the >
+    < kernel/boot blocks) if the guest has one. >
     SLGuestDeviceBus bus = guest.deviceBus();
     if (bus != null && bus.blockDevice() != null) {
       filesystem = new SLGuestFileSystem();
@@ -97,8 +102,8 @@ class SLGuestLinux {
 
   SLGuestFileSystem fileSystem() { return filesystem; }
 
-  // Deliver any pending signal to the currently-running task's slot. Called at
-  // scheduling points so signals (e.g. SIGKILL/SIGTERM) take effect.
+  < Deliver any pending signal to the currently-running task's slot. Called at >
+  < scheduling points so signals (e.g. SIGKILL/SIGTERM) take effect. >
   void deliverSignals() {
     SLGuestSyscall sys = syscallTable();
     SLGuestTask run = scheduler.running();
@@ -108,8 +113,8 @@ class SLGuestLinux {
     }
   }
 
-  // The guest syscall dispatcher, wired to this guest's devices, filesystem,
-  // and scheduler. Lazily built on first use.
+  < The guest syscall dispatcher, wired to this guest's devices, filesystem, >
+  < and scheduler. Lazily built on first use. >
   SLGuestSyscall syscallTable() {
     if (syscalls2 == null) {
       syscalls2 = new SLGuestSyscall();
@@ -118,23 +123,23 @@ class SLGuestLinux {
     return syscalls2;
   }
 
-  // Create and admit a guest task (a guest thread). The guest init process
-  // (PID 1) spawns these; the timer then schedules them preemptively.
+  < Create and admit a guest task (a guest thread). The guest init process >
+  < (PID 1) spawns these; the timer then schedules them preemptively. >
   SLGuestTask spawnTask(int tid, String name, int entryIndex) {
     SLGuestTask t = new SLGuestTask(); t.configure(tid, name, entryIndex);
     scheduler.admit(t);
     return t;
   }
 
-  // Program the guest timer and start preemptive scheduling: set the timer
-  // reload and enable it so each expiry drives scheduler.onTimerTick().
+  < Program the guest timer and start preemptive scheduling: set the timer >
+  < reload and enable it so each expiry drives scheduler.onTimerTick(). >
   void startScheduling(int reload) {
     SLGuestDeviceBus bus = vm.deviceBus();
     if (bus != null) { bus.programTimer(reload); }
   }
 
-  // The guest timer-IRQ handler (the preemption point): advance the scheduler,
-  // save the current task's resume IP, and select the next task to run.
+  < The guest timer-IRQ handler (the preemption point): advance the scheduler, >
+  < save the current task's resume IP, and select the next task to run. >
   SLGuestTask onTimerInterrupt(int currentIP) {
     timerTicks = timerTicks + 1;
     SLGuestTask prev = scheduler.running();
@@ -145,54 +150,55 @@ class SLGuestLinux {
   SLGuestScheduler taskScheduler() { return scheduler; }
   int timerTickCount() { return timerTicks; }
 
-  // Start the guest init process (PID 1), which loads and spawns user programs.
-  // Returns the init object so the caller can exec() programs on it.
+  < Start the guest init process (PID 1), which loads and spawns user programs. >
+  < Returns the init object so the caller can exec() programs on it. >
   SLGuestInit startInit() {
     SLGuestInit init = new SLGuestInit();
     init.configure(this, vm.guestSubstrate());
-    // Give the syscall layer access to init so execve() can reach the shared
-    // compile->load toolchain, and so fork()/wait() route through the same
-    // process table init manages.
+    < Give the syscall layer access to init so execve() can reach the shared >
+    < compile->load toolchain, and so fork()/wait() route through the same >
+    < process table init manages. >
     syscallTable().attachInit(init);
     return init;
   }
 
-  // Install a genuinely-compiled kernel image to boot (step 4). When set,
-  // boot() loads this image into the guest substrate instead of the inline stub.
+  < Install a genuinely-compiled kernel image to boot (step 4). When set, >
+  < boot() loads this image into the guest substrate instead of the inline stub. >
   void installKernelImage(SLGuestKernelImage image) { kernelImage = image; }
 
-  // Build and install a compiled guest kernel from source in any supported
-  // language, via the real toolchain (SLGuestKernelBuilder).
+  < Build and install a compiled guest kernel from source in any supported >
+  < language, via the real toolchain (SLGuestKernelBuilder). >
   void buildKernel(String sourcePath, int langId) {
     SLGuestKernelBuilder builder = new SLGuestKernelBuilder(); builder.configure();
     kernelImage = builder.build(sourcePath, langId, "slk", "0.1");
   }
 
-  // Boot protocol: load a minimal guest-kernel opcode image into the guest VM's
-  // substrate, record the entry points, and enter the guest. The image is a
-  // real stream of canonical SLeeLa opcodes that the substrate executes (step
-  // 1): the "kernel" computes a value and prints it (its init banner), then
-  // halts — a stand-in for a real kernel image until step 4 loads a compiled
-  // guest kernel. A real boot copies bzImage + initrd into guest memory.
+  < Boot protocol: load a minimal guest-kernel opcode image into the guest VM's >
+  < substrate, record the entry points, and enter the guest. The image is a >
+  < real stream of canonical SLeeLa opcodes that the substrate executes (step >
+  < 1): the "kernel" computes a value and prints it (its init banner), then >
+  < halts — a stand-in for a real kernel image until step 4 loads a compiled >
+  < guest kernel. A real boot copies bzImage + initrd into guest memory. >
   int boot(int kernelImageEntry, int initImageEntry) {
     kernelEntry = kernelImageEntry;
     initEntry = initImageEntry;
     loadKernelImage();
-    vm.enter();           // guest substrate ip at 0; vCPU records entry
+    < guest substrate ip at 0; vCPU records entry >
+    vm.enter();
     booted = 1;
     return kernelEntry;
   }
 
-  // Load the guest kernel into the substrate. If a compiled image was installed
-  // (step 4), load that genuinely-compiled kernel; otherwise fall back to a
-  // minimal inline opcode heartbeat so an unconfigured guest still boots.
+  < Load the guest kernel into the substrate. If a compiled image was installed >
+  < (step 4), load that genuinely-compiled kernel; otherwise fall back to a >
+  < minimal inline opcode heartbeat so an unconfigured guest still boots. >
   void loadKernelImage() {
     if (kernelImage != null) {
       kernelImage.loadInto(vm.guestSubstrate());
       return;
     }
     SLSleelaOpcode op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
-    // Fallback inline "init": print 2 + 3 (a boot heartbeat), then halt.
+    < Fallback inline "init": print 2 + 3 (a boot heartbeat), then halt. >
     vm.loadOpcode(op.OP_CONST, 2);
     vm.loadOpcode(op.OP_CONST, 3);
     vm.loadOpcode(op.OP_ADD, 0);
@@ -200,38 +206,45 @@ class SLGuestLinux {
     vm.loadOpcode(op.OP_HALT, 0);
   }
 
-  // Translate a guest Linux syscall number to the host SleelaOS syscall the
-  // hypervisor emulates it with (the VM-exit handler's job).
-  // Host-syscall mapping constants (SLSystemCall surface: write/read/open/close/
-  // exit/spawn/yield = 0..6). Process creation is modeled thus: a guest fork()
-  // leans on the host's SYS_SPAWN primitive, while execve()/wait() have no host
-  // equivalent and are serviced entirely in-guest (SLGuestSyscall against the
-  // guest scheduler/process table). The actual in-guest routing happens in
-  // SLGuestVM.handleExit() off the OP_SPAWN/OP_JOINALL service opcodes;
-  // emulateSyscall() is the ABI-classification view, so it returns the
-  // GUEST_EMULATED tag (not a host syscall number) for those two to make the
-  // "no host delegate" distinction explicit to callers that classify a syscall.
+  < Translate a guest Linux syscall number to the host SleelaOS syscall the >
+  < hypervisor emulates it with (the VM-exit handler's job). >
+  < Host-syscall mapping constants (SLSystemCall surface: write/read/open/close/ >
+  < exit/spawn/yield = 0..6). Process creation is modeled thus: a guest fork() >
+  < leans on the host's SYS_SPAWN primitive, while execve()/wait() have no host >
+  < equivalent and are serviced entirely in-guest (SLGuestSyscall against the >
+  < guest scheduler/process table). The actual in-guest routing happens in >
+  < SLGuestVM.handleExit() off the OP_SPAWN/OP_JOINALL service opcodes; >
+  < emulateSyscall() is the ABI-classification view, so it returns the >
+  < GUEST_EMULATED tag (not a host syscall number) for those two to make the >
+  < "no host delegate" distinction explicit to callers that classify a syscall. >
   static final int GUEST_EMULATED = 100;
 
-  // True if the given guest Linux syscall is serviced in-guest (no host
-  // delegate): execve/wait are emulated against the guest process table rather
-  // than mapped to a host SleelaOS syscall. (A pure predicate — unlike
-  // emulateSyscall(), it does not count the call.)
+  < True if the given guest Linux syscall is serviced in-guest (no host >
+  < delegate): execve/wait are emulated against the guest process table rather >
+  < than mapped to a host SleelaOS syscall. (A pure predicate — unlike >
+  < emulateSyscall(), it does not count the call.) >
   boolean isGuestEmulated(int linuxNumber) {
     return linuxNumber == LINUX_EXECVE || linuxNumber == LINUX_WAIT;
   }
 
   int emulateSyscall(int linuxNumber) {
     syscalls = syscalls + 1;
-    if (linuxNumber == LINUX_WRITE)  { return 0; }  // host SYS_WRITE
-    if (linuxNumber == LINUX_READ)   { return 1; }  // host SYS_READ
+    < host SYS_WRITE >
+    if (linuxNumber == LINUX_WRITE)  { return 0; }
+    < host SYS_READ >
+    if (linuxNumber == LINUX_READ)   { return 1; }
     if (linuxNumber == LINUX_OPEN)   { return 2; }
     if (linuxNumber == LINUX_CLOSE)  { return 3; }
-    if (linuxNumber == LINUX_EXIT)   { return 4; }  // host SYS_EXIT
-    if (linuxNumber == LINUX_FORK)   { return 5; }  // host SYS_SPAWN (process create)
-    if (linuxNumber == LINUX_EXECVE) { return GUEST_EMULATED; } // emulated in-guest
-    if (linuxNumber == LINUX_WAIT)   { return GUEST_EMULATED; } // emulated in-guest
-    return -1; // unsupported (e.g. LINUX_MMAP): delivered as a guest fault
+    < host SYS_EXIT >
+    if (linuxNumber == LINUX_EXIT)   { return 4; }
+    < host SYS_SPAWN (process create) >
+    if (linuxNumber == LINUX_FORK)   { return 5; }
+    < emulated in-guest >
+    if (linuxNumber == LINUX_EXECVE) { return GUEST_EMULATED; }
+    < emulated in-guest >
+    if (linuxNumber == LINUX_WAIT)   { return GUEST_EMULATED; }
+    < unsupported (e.g. LINUX_MMAP): delivered as a guest fault >
+    return -1;
   }
 
   boolean isBooted() { return booted == 1; }

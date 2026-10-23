@@ -57,27 +57,34 @@ class SLSSD extends SLHardwareComponent {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Interface ordinals.
-  static final int IF_SATA3    = 0;  // 6 Gb/s
+  < Interface ordinals. >
+  < 6 Gb/s >
+  static final int IF_SATA3    = 0;
   static final int IF_NVME_PCIE3 = 1;
   static final int IF_NVME_PCIE4 = 2;
   static final int IF_NVME_PCIE5 = 3;
-  // NAND cell types.
+  < NAND cell types. >
   static final int NAND_SLC = 1;
   static final int NAND_MLC = 2;
   static final int NAND_TLC = 3;
   static final int NAND_QLC = 4;
 
-  int iface;          // IF_*
-  String formFactor;  // "2.5\"", "M.2 2280", "U.2", "AIC"
-  int nand;           // NAND_*
+  < IF_* >
+  int iface;
+  < "2.5\"", "M.2 2280", "U.2", "AIC" >
+  String formFactor;
+  < NAND_* >
+  int nand;
   int capacityGb;
-  int seqReadMBps;    // representative sequential read
-  int seqWriteMBps;   // representative sequential write
-  int blockBytes;     // logical block size (typically 512 or 4096)
+  < representative sequential read >
+  int seqReadMBps;
+  < representative sequential write >
+  int seqWriteMBps;
+  < logical block size (typically 512 or 4096) >
+  int blockBytes;
 
-  // Configure from manufacturer, model, interface, and capacity. The interface
-  // preset fills representative throughput and form factor; refine afterward.
+  < Configure from manufacturer, model, interface, and capacity. The interface >
+  < preset fills representative throughput and form factor; refine afterward. >
   void configure(String manufacturer, String partName, int interfaceKind, int capacityGigabytes) {
     configureComponent(manufacturer, partName, CLASS_SSD);
     iface = interfaceKind; capacityGb = capacityGigabytes;
@@ -88,7 +95,7 @@ class SLSSD extends SLHardwareComponent {
     if (iface == IF_NVME_PCIE5) { seqReadMBps = 14000; seqWriteMBps = 12000; }
   }
 
-  // Configure by interface name ("SATA", "PCIe3", "PCIe4", "PCIe5").
+  < Configure by interface name ("SATA", "PCIe3", "PCIe4", "PCIe5"). >
   void configureByName(String manufacturer, String partName, String ifName, int capacityGb) {
     if (ifName == "PCIe5") { configure(manufacturer, partName, IF_NVME_PCIE5, capacityGb); return; }
     if (ifName == "PCIe4") { configure(manufacturer, partName, IF_NVME_PCIE4, capacityGb); return; }
@@ -119,8 +126,8 @@ class SLSSD extends SLHardwareComponent {
   int writeMBps()         { return seqWriteMBps; }
   int blockSize()         { return blockBytes; }
 
-  // Capacity as VM block count for the given block size — what SLMachineModel
-  // hands the block store when this SSD is the boot disk.
+  < Capacity as VM block count for the given block size — what SLMachineModel >
+  < hands the block store when this SSD is the boot disk. >
   int capacityBlocks() {
     int bytes = capacityGb * 1073741824;
     return bytes / blockBytes;

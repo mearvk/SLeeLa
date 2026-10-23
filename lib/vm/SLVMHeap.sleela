@@ -55,19 +55,25 @@ class SLVMHeap {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Per-object header layout (words), then fieldCount field slots follow.
-  static final int H_CLASS  = 0;   // classId of this object
-  static final int H_FIELDS = 1;   // number of field slots
-  static final int H_MARK   = 2;   // GC mark bit (0 = white, 1 = reachable)
-  static final int HEADER   = 3;   // header size in words
-  // Each field slot is a packed SLVMValue: 2 words (tag, payload).
+  < Per-object header layout (words), then fieldCount field slots follow. >
+  < classId of this object >
+  static final int H_CLASS  = 0;
+  < number of field slots >
+  static final int H_FIELDS = 1;
+  < GC mark bit (0 = white, 1 = reachable) >
+  static final int H_MARK   = 2;
+  < header size in words >
+  static final int HEADER   = 3;
+  < Each field slot is a packed SLVMValue: 2 words (tag, payload). >
   static final int SLOT     = 2;
 
   SLRAM arena;
   int capacityWords;
-  int next;        // bump pointer (word index of next free cell)
+  < bump pointer (word index of next free cell) >
+  int next;
   int liveObjects;
-  int allocated;   // total objects ever allocated
+  < total objects ever allocated >
+  int allocated;
 
   void configure(int words) {
     capacityWords = words;
@@ -75,11 +81,12 @@ class SLVMHeap {
     next = 0; liveObjects = 0; allocated = 0;
   }
 
-  // Allocate an object of classId with fieldCount fields; returns its handle
-  // (the word index of its header). All fields start as NULL.
+  < Allocate an object of classId with fieldCount fields; returns its handle >
+  < (the word index of its header). All fields start as NULL. >
   int allocate(int classId, int fieldCount) {
     int size = HEADER + (fieldCount * SLOT);
-    if (next + size > capacityWords) { return -1; }   // out of heap; GC must run
+    < out of heap; GC must run >
+    if (next + size > capacityWords) { return -1; }
     int handle = next;
     arena.writeWord(handle + H_CLASS, classId);
     arena.writeWord(handle + H_FIELDS, fieldCount);
@@ -87,8 +94,10 @@ class SLVMHeap {
     int i = 0;
     while (i < fieldCount) {
       int slot = handle + HEADER + (i * SLOT);
-      arena.writeWord(slot, 0);      // TAG_NULL
-      arena.writeWord(slot + 1, 0);  // payload 0
+      < TAG_NULL >
+      arena.writeWord(slot, 0);
+      < payload 0 >
+      arena.writeWord(slot + 1, 0);
       i = i + 1;
     }
     next = next + size;
@@ -100,20 +109,20 @@ class SLVMHeap {
   int classOf(int handle)   { return arena.readWord(handle + H_CLASS); }
   int fieldCount(int handle){ return arena.readWord(handle + H_FIELDS); }
 
-  // Read field i of an object into the provided SLVMValue carrier.
+  < Read field i of an object into the provided SLVMValue carrier. >
   void getField(int handle, int index, SLVMValue out) {
     int slot = handle + HEADER + (index * SLOT);
     out.unpack(arena.readWord(slot), arena.readWord(slot + 1));
   }
 
-  // Write a value into field i of an object.
+  < Write a value into field i of an object. >
   void setField(int handle, int index, SLVMValue v) {
     int slot = handle + HEADER + (index * SLOT);
     arena.writeWord(slot, v.packedTag());
     arena.writeWord(slot + 1, v.packedPayload());
   }
 
-  // --- GC surface (drives / mirrors the native collector) ---
+  < --- GC surface (drives / mirrors the native collector) --- >
   void mark(int handle)    { if (handle >= 0) { arena.writeWord(handle + H_MARK, 1); } }
   boolean marked(int handle){ return arena.readWord(handle + H_MARK) == 1; }
   void clearMarks() {

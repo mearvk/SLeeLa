@@ -62,43 +62,48 @@ class SLTheme {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
-  static final int SLICK_BLACK = 0;   // the original matte-black theme
-  static final int GRAPHITE    = 1;   // a lighter neutral alternative
-  static final int CUSTOM      = 2;   // fully host-defined via the setters
-  static final int SLEELA_BASE = 3;   // THE DEFAULT: base colour #2B1608
+  < Preset ordinals (mirror SLUIThemeId in the toolkit C ABI). >
+  < the original matte-black theme >
+  static final int SLICK_BLACK = 0;
+  < a lighter neutral alternative >
+  static final int GRAPHITE    = 1;
+  < fully host-defined via the setters >
+  static final int CUSTOM      = 2;
+  < THE DEFAULT: base colour #2B1608 >
+  static final int SLEELA_BASE = 3;
 
-  // Sleela's base colour, #2B1608 opaque, as a 0xRRGGBBAA word.
+  < Sleela's base colour, #2B1608 opaque, as a 0xRRGGBBAA word. >
   static final int BASE_COLOR_DEFAULT = 0x2B1608FF;
 
-  int theme;   // VM-local theme handle (-1 = none)
+  < VM-local theme handle (-1 = none) >
+  int theme;
 
-  // Build a theme pre-filled from a built-in preset. Start from SLEELA_BASE for
-  // the warm default, SLICK_BLACK for the matte-black look, or GRAPHITE.
+  < Build a theme pre-filled from a built-in preset. Start from SLEELA_BASE for >
+  < the warm default, SLICK_BLACK for the matte-black look, or GRAPHITE. >
   void preset(int presetId) {
     theme = uiThemePreset(presetId);
   }
-  // Shorthand for the signature default (the #2B1608 warm family).
+  < Shorthand for the signature default (the #2B1608 warm family). >
   void sleelaBase() { preset(SLEELA_BASE); }
-  // Shorthand for the original matte-black theme.
+  < Shorthand for the original matte-black theme. >
   void slickBlack() { preset(SLICK_BLACK); }
 
   int handle() { return theme; }
   boolean valid() { return theme >= 0; }
 
-  // Re-derive the whole warm palette from a new base colour (0xRRGGBBAA; the
-  // alpha is ignored). The configuration/code-time base-colour hook.
+  < Re-derive the whole warm palette from a new base colour (0xRRGGBBAA; the >
+  < alpha is ignored). The configuration/code-time base-colour hook. >
   void setBaseColor(int baseColor) {
     if (theme >= 0) { uiThemeSetBaseColor(theme, baseColor); }
   }
-  // Load base_color (and optional accent/font/radius) from a key=value config
-  // file into this theme. Returns true on success.
+  < Load base_color (and optional accent/font/radius) from a key=value config >
+  < file into this theme. Returns true on success. >
   boolean loadConfig(String path) {
     if (theme < 0) { return false; }
     return uiThemeLoadConfig(theme, path) == 0;
   }
 
-  // ---- Role colours (each takes an SLColor word, 0xRRGGBBAA) -------------
+  < ---- Role colours (each takes an SLColor word, 0xRRGGBBAA) ------------- >
   void setBackground(int color) { if (theme >= 0) { uiThemeSetBg(theme, color); } }
   void setSurface(int color)    { if (theme >= 0) { uiThemeSetSurface(theme, color); } }
   void setSurfaceHi(int color)  { if (theme >= 0) { uiThemeSetSurfaceHi(theme, color); } }
@@ -110,14 +115,14 @@ class SLTheme {
   void setAccentForeground(int color) { if (theme >= 0) { uiThemeSetAccentFg(theme, color); } }
   void setDanger(int color)     { if (theme >= 0) { uiThemeSetDanger(theme, color); } }
 
-  // ---- Metrics and typography --------------------------------------------
+  < ---- Metrics and typography -------------------------------------------- >
   void setRadius(int px)        { if (theme >= 0) { uiThemeSetRadius(theme, px); } }
   void setControlHeight(int px) { if (theme >= 0) { uiThemeSetControlHeight(theme, px); } }
   void setFont(String family, int sizePt) {
     if (theme >= 0) { uiThemeSetFont(theme, family, sizePt); }
   }
 
-  // Convenience: set a role colour from an SLColor object.
+  < Convenience: set a role colour from an SLColor object. >
   void setAccentColor(SLColor c) { setAccent(c.value()); }
 
   void close() { if (theme >= 0) { uiThemeDestroy(theme); theme = -1; } }

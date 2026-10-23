@@ -51,24 +51,32 @@ class SLAesGcm {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Status codes mirror slcrypto_status in crypto/include/slcrypto.h.
+  < Status codes mirror slcrypto_status in crypto/include/slcrypto.h. >
   static final int OK = 0;
   static final int ERR_PARAM = -1;
-  static final int ERR_AUTH = -2;      // tag verification failed on decrypt
+  < tag verification failed on decrypt >
+  static final int ERR_AUTH = -2;
   static final int ERR_UNIMPL = -3;
 
-  // SP 800-38D recommends a 96-bit (12-byte) nonce and a 16-byte tag.
+  < SP 800-38D recommends a 96-bit (12-byte) nonce and a 16-byte tag. >
   static final int RECOMMENDED_IV_BYTES = 12;
   static final int MAX_TAG_BYTES = 16;
 
   String algorithm;
-  int keyBits;       // 128, 192, or 256
-  int tagBytes;      // 1..16 (16 recommended)
-  int state;         // 1 = enabled, 0 = disabled
-  int configured;    // 1 once a supported algorithm name has been accepted
-  int keySet;        // 1 once a valid key size has been accepted
-  int tagSet;        // 1 once a valid tag size has been accepted
-  int backend;       // 1 when the native /crypto backend is linked and ready
+  < 128, 192, or 256 >
+  int keyBits;
+  < 1..16 (16 recommended) >
+  int tagBytes;
+  < 1 = enabled, 0 = disabled >
+  int state;
+  < 1 once a supported algorithm name has been accepted >
+  int configured;
+  < 1 once a valid key size has been accepted >
+  int keySet;
+  < 1 once a valid tag size has been accepted >
+  int tagSet;
+  < 1 when the native /crypto backend is linked and ready >
+  int backend;
 
   int configure(String a) {
     if (a == null) { configured = 0; return ERR_PARAM; }
@@ -77,14 +85,14 @@ class SLAesGcm {
     return ERR_PARAM;
   }
 
-  // key_bits must be 128, 192, or 256.
+  < key_bits must be 128, 192, or 256. >
   int keySize(int b) {
     if (b == 128 || b == 192 || b == 256) { keyBits = b; keySet = 1; return OK; }
     keySet = 0;
     return ERR_PARAM;
   }
 
-  // tag_len must be 1..16 (SP 800-38D); 16 recommended.
+  < tag_len must be 1..16 (SP 800-38D); 16 recommended. >
   int tagSize(int t) {
     if (t >= 1 && t <= MAX_TAG_BYTES) { tagBytes = t; tagSet = 1; return OK; }
     tagSet = 0;
@@ -101,7 +109,7 @@ class SLAesGcm {
     return state == 1 && configured == 1 && keySet == 1 && tagSet == 1 && backend == 1;
   }
 
-  // AEAD encrypt. Models slc_aes_gcm_encrypt(); validates the nonce before dispatch.
+  < AEAD encrypt. Models slc_aes_gcm_encrypt(); validates the nonce before dispatch. >
   int encrypt(String iv, int ivLen, String aad, String pt) {
     if (active() == false) { return ERR_UNIMPL; }
     if (iv == null || pt == null) { return ERR_PARAM; }
@@ -109,8 +117,8 @@ class SLAesGcm {
     return OK;
   }
 
-  // AEAD decrypt. Models slc_aes_gcm_decrypt(); a bad tag yields ERR_AUTH and
-  // the native layer releases no plaintext.
+  < AEAD decrypt. Models slc_aes_gcm_decrypt(); a bad tag yields ERR_AUTH and >
+  < the native layer releases no plaintext. >
   int decrypt(String iv, int ivLen, String aad, String ct, String tag) {
     if (active() == false) { return ERR_UNIMPL; }
     if (iv == null || ct == null || tag == null) { return ERR_PARAM; }

@@ -66,17 +66,17 @@ class SLCodecProcessor {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // canProcess: can this codec encode/decode right now, given the facts?
-  // True for a loaded native codec, or a loaded backend codec with a backend
-  // registered — what a GUI checks before enabling a convert action.
+  < canProcess: can this codec encode/decode right now, given the facts? >
+  < True for a loaded native codec, or a loaded backend codec with a backend >
+  < registered — what a GUI checks before enabling a convert action. >
   boolean canProcess(boolean loaded, boolean nativeCodec, boolean backendReady) {
     if (!loaded) { return false; }
     if (nativeCodec) { return true; }
     return backendReady;
   }
 
-  // decode: dispatch a decode against the given facts. Returns a result code:
-  //   -5 not loaded, 0 ok (native or backend ready), -1 backend absent.
+  < decode: dispatch a decode against the given facts. Returns a result code: >
+  < -5 not loaded, 0 ok (native or backend ready), -1 backend absent. >
   int decode(boolean loaded, boolean nativeCodec, boolean backendReady) {
     if (!loaded) { return -5; }
     if (nativeCodec) { return 0; }
@@ -84,7 +84,7 @@ class SLCodecProcessor {
     return -1;
   }
 
-  // encode: same result-code contract as decode.
+  < encode: same result-code contract as decode. >
   int encode(boolean loaded, boolean nativeCodec, boolean backendReady) {
     if (!loaded) { return -5; }
     if (nativeCodec) { return 0; }

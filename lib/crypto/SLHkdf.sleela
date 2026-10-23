@@ -51,21 +51,27 @@ class SLHkdf {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Status codes mirror slcrypto_status in crypto/include/slcrypto.h.
+  < Status codes mirror slcrypto_status in crypto/include/slcrypto.h. >
   static final int OK = 0;
   static final int ERR_PARAM = -1;
   static final int ERR_AUTH = -2;
   static final int ERR_UNIMPL = -3;
 
-  // RFC 5869 caps expand output at 255 * HashLen; HashLen is 32 for SHA-256.
-  static final int MAX_OUT_BYTES = 8160;   // 255 * 32
+  < RFC 5869 caps expand output at 255 * HashLen; HashLen is 32 for SHA-256. >
+  < 255 * 32 >
+  static final int MAX_OUT_BYTES = 8160;
 
   String algorithm;
-  int outBytes;      // requested output keying material length
-  int state;         // 1 = enabled, 0 = disabled
-  int configured;    // 1 once a supported algorithm name has been accepted
-  int outSet;        // 1 once a valid output size has been accepted
-  int backend;       // 1 when the native /crypto backend is linked and ready
+  < requested output keying material length >
+  int outBytes;
+  < 1 = enabled, 0 = disabled >
+  int state;
+  < 1 once a supported algorithm name has been accepted >
+  int configured;
+  < 1 once a valid output size has been accepted >
+  int outSet;
+  < 1 when the native /crypto backend is linked and ready >
+  int backend;
 
   int configure(String a) {
     if (a == null) { configured = 0; return ERR_PARAM; }
@@ -74,7 +80,7 @@ class SLHkdf {
     return ERR_PARAM;
   }
 
-  // outputSize must be in 1 .. 255*HashLen (RFC 5869).
+  < outputSize must be in 1 .. 255*HashLen (RFC 5869). >
   int outputSize(int n) {
     if (n >= 1 && n <= MAX_OUT_BYTES) { outBytes = n; outSet = 1; return OK; }
     outSet = 0;
@@ -93,7 +99,7 @@ class SLHkdf {
 
   int outputLength() { return outBytes; }
 
-  // Extract-and-expand in one call. Models slc_hkdf_sha256(salt, ikm, info -> okm).
+  < Extract-and-expand in one call. Models slc_hkdf_sha256(salt, ikm, info -> okm). >
   int derive(String salt, String ikm, String info) {
     if (active() == false) { return ERR_UNIMPL; }
     if (ikm == null) { return ERR_PARAM; }

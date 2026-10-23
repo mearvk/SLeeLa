@@ -1,10 +1,8 @@
 #sleela 2.1
-/*
- * CitizenPhysicalHealthAndDailyWellbeingStats.sleela
- * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
- * Source category: Physical health and daily wellbeing (game-defined scales).
- * Monetary values use integer minor units where the field name says Cents.
- */
+<< CitizenPhysicalHealthAndDailyWellbeingStats.sleela
+   Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+   Source category: Physical health and daily wellbeing (game-defined scales).
+   Monetary values use integer minor units where the field name says Cents. >>
 class CitizenPhysicalHealthAndDailyWellbeingStats {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

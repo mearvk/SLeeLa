@@ -109,7 +109,7 @@ class SLOSLoaderEmitter {
     return p;
   }
 
-  // One start_service() call per boot-mode unit in the manifest.
+  < One start_service() call per boot-mode unit in the manifest. >
   String emitServiceStarts(String units) {
     String out = "";
     String line = "";

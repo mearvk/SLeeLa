@@ -59,19 +59,27 @@ class GameMove {
 
   static final String MODULE = "GameMove";
 
-  // The three move choices a turn offers.
-  static final int CHOICE_HELP_INDEX = 1;  // (a) create a help index / friend
-  static final int CHOICE_ASK_HELP   = 2;  // (b) ask for help or new routes
-  static final int CHOICE_NEW_DESIRE = 3;  // (c) create a new desire
+  < The three move choices a turn offers. >
+  < (a) create a help index / friend >
+  static final int CHOICE_HELP_INDEX = 1;
+  < (b) ask for help or new routes >
+  static final int CHOICE_ASK_HELP   = 2;
+  < (c) create a new desire >
+  static final int CHOICE_NEW_DESIRE = 3;
 
   int loadedFlag;
-  String moveName;      // human-readable move name
-  int choice;           // one of CHOICE_*
-  DiceRoll dice;        // the shared roller for this turn
-  InferenceEngine engine; // the shared modeler for this turn
-  int turnNumber;       // which turn this move is being played on
+  < human-readable move name >
+  String moveName;
+  < one of CHOICE_* >
+  int choice;
+  < the shared roller for this turn >
+  DiceRoll dice;
+  < the shared modeler for this turn >
+  InferenceEngine engine;
+  < which turn this move is being played on >
+  int turnNumber;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() {
     loadedFlag = 1;
     moveName = "GameMove";
@@ -83,21 +91,21 @@ class GameMove {
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // A subclass calls this to declare its identity.
+  < A subclass calls this to declare its identity. >
   void declare(String name, int whichChoice) {
     moveName = name;
     choice = whichChoice;
   }
 
-  // Bind the shared turn context before resolve().
+  < Bind the shared turn context before resolve(). >
   void bind(DiceRoll roller, InferenceEngine inf, int turn) {
     dice = roller;
     engine = inf;
     turnNumber = turn;
   }
 
-  // Overridable: run the move and return its outcome. The base move does
-  // nothing and reports failure, so an un-overridden move is honest.
+  < Overridable: run the move and return its outcome. The base move does >
+  < nothing and reports failure, so an un-overridden move is honest. >
   MoveOutcome resolve(Player p) {
     MoveOutcome out = new MoveOutcome();
     out.begin(moveName);

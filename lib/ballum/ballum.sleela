@@ -51,21 +51,24 @@ class Ballum {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // --- a single display's facts ---
+  < --- a single display's facts --- >
   int width;
   int height;
   int caps;
 
-  // --- manager state ---
-  int handle;        // VM-local bridge index; <0 means no bridge
+  < --- manager state --- >
+  < VM-local bridge index; <0 means no bridge >
+  int handle;
   int lastStatus;
 
   void init() {
     width = 1920;
     height = 1080;
-    caps = 1 + 2 + 4 + 8 + 16;   // all capabilities
+    < all capabilities >
+    caps = 1 + 2 + 4 + 8 + 16;
     handle = -1;
-    lastStatus = 100;            // BRIDGE_REQUIRED until bound
+    < BRIDGE_REQUIRED until bound >
+    lastStatus = 100;
   }
 
   boolean nativeReady() { return handle >= 0; }
@@ -112,20 +115,20 @@ class Ballum {
     print("=== Ballum pixel-level display control ===");
     init();
 
-    // Before the host installs the native bridge, operations are honest about it.
+    < Before the host installs the native bridge, operations are honest about it. >
     print("set pixel before bridge: " + statusText(setPixel(10, 10)));
 
-    // The host binds the VM-side native handle (ballum_backend_default present).
+    < The host binds the VM-side native handle (ballum_backend_default present). >
     bind(7);
     print("bound native handle: " + handle);
     print("display: " + width + "x" + height);
 
-    // A valid pixel on a per-pixel-capable display.
+    < A valid pixel on a per-pixel-capable display. >
     print("set pixel (10,10): " + statusText(setPixel(10, 10)));
-    // Out of bounds is rejected before touching the device.
+    < Out of bounds is rejected before touching the device. >
     print("set pixel (5000,0): " + statusText(setPixel(5000, 0)));
 
-    // Whole-display controls, clamped to their documented ranges.
+    < Whole-display controls, clamped to their documented ranges. >
     int b = clampBrightness(250);
     print("brightness 250 -> clamp " + b + " : " + statusText(setBrightness(b)));
     int k = clampWarmth(3400);

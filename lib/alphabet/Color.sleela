@@ -58,17 +58,21 @@ class Color {
 
   static final String MODULE = "Color";
 
-  int loadedFlag;   // 1 once the module is loaded
-  int r;            // red   channel, 0..255
-  int g;            // green channel, 0..255
-  int b;            // blue  channel, 0..255
+  < 1 once the module is loaded >
+  int loadedFlag;
+  < red   channel, 0..255 >
+  int r;
+  < green channel, 0..255 >
+  int g;
+  < blue  channel, 0..255 >
+  int b;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() { loadedFlag = 1; r = 0; g = 0; b = 0; }
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // Set the three channels, each clamped to the honest 0..255 range.
+  < Set the three channels, each clamped to the honest 0..255 range. >
   void set(int red, int green, int blue) {
     r = channel(red);
     g = channel(green);
@@ -85,13 +89,13 @@ class Color {
   int green() { return g; }
   int blue() { return b; }
 
-  // Perceived luminance, 0..255 (ITU-R BT.601 weights, integer math).
+  < Perceived luminance, 0..255 (ITU-R BT.601 weights, integer math). >
   int luminance() { return (r * 299 + g * 587 + b * 114) / 1000; }
 
-  // Is this a "dark" color? Useful for deciding what text to put on top.
+  < Is this a "dark" color? Useful for deciding what text to put on top. >
   boolean isDark() { return luminance() < 128; }
 
-  // Blend halfway toward another color — the diplomacy of design.
+  < Blend halfway toward another color — the diplomacy of design. >
   Color blendHalf(Color other) {
     Color out = new Color();
     out.load();
@@ -100,16 +104,16 @@ class Color {
     return out;
   }
 
-  // Two colors are equal when all three channels agree.
+  < Two colors are equal when all three channels agree. >
   boolean equalsColor(Color other) {
     if (other == null) { return false; }
     return r == other.red() && g == other.green() && b == other.blue();
   }
 
-  // Lowercase hex like "#1e90ff". Built with substring math — no char type.
+  < Lowercase hex like "#1e90ff". Built with substring math — no char type. >
   String hex() { return "#" + hex2(r) + hex2(g) + hex2(b); }
 
-  // One byte (0..255) to a two-digit lowercase hex string.
+  < One byte (0..255) to a two-digit lowercase hex string. >
   String hex2(int v) { return hexDigit(v / 16) + hexDigit(v - (v / 16) * 16); }
 
   String hexDigit(int d) {

@@ -55,26 +55,42 @@ class SLGuiIcon {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Matched size tiers (px) — a calm, consistent scale, not arbitrary sizes.
-  static final int SIZE_XS = 0;   // 12 px  (dense toolbars / inline)
-  static final int SIZE_SM = 1;   // 16 px  (menu items)
-  static final int SIZE_MD = 2;   // 20 px  (standard buttons)
-  static final int SIZE_LG = 3;   // 28 px  (primary actions)
-  static final int SIZE_XL = 4;   // 40 px  (feature tiles)
+  < Matched size tiers (px) — a calm, consistent scale, not arbitrary sizes. >
+  < 12 px  (dense toolbars / inline) >
+  static final int SIZE_XS = 0;
+  < 16 px  (menu items) >
+  static final int SIZE_SM = 1;
+  < 20 px  (standard buttons) >
+  static final int SIZE_MD = 2;
+  < 28 px  (primary actions) >
+  static final int SIZE_LG = 3;
+  < 40 px  (feature tiles) >
+  static final int SIZE_XL = 4;
 
-  // Placement of the icon relative to the component's label.
-  static final int POS_LEADING  = 0;   // before the label (default LTR)
-  static final int POS_TRAILING = 1;   // after the label
-  static final int POS_TOP      = 2;   // above the label (stacked)
-  static final int POS_ONLY     = 3;   // icon only, no label
+  < Placement of the icon relative to the component's label. >
+  < before the label (default LTR) >
+  static final int POS_LEADING  = 0;
+  < after the label >
+  static final int POS_TRAILING = 1;
+  < above the label (stacked) >
+  static final int POS_TOP      = 2;
+  < icon only, no label >
+  static final int POS_ONLY     = 3;
 
-  String asset;        // host-resolvable icon name/path
-  int sizeTier;        // SIZE_*
-  int position;        // POS_*
-  int gapPx;           // gap between icon and label, 0..24
-  String tint;         // color tint ("accent"/"#rrggbb"/"" = asset's own color)
-  int opticalDx;       // horizontal optical-centering nudge, -6..6 px
-  int opticalDy;       // vertical optical-centering nudge, -6..6 px
+  < host-resolvable icon name/path >
+  String asset;
+  < SIZE_* >
+  int sizeTier;
+  < POS_* >
+  int position;
+  < gap between icon and label, 0..24 >
+  int gapPx;
+  < color tint ("accent"/"#rrggbb"/"" = asset's own color) >
+  String tint;
+  < horizontal optical-centering nudge, -6..6 px >
+  int opticalDx;
+  < vertical optical-centering nudge, -6..6 px >
+  int opticalDy;
 
   void configure(String iconAsset) {
     asset = (iconAsset == null) ? "" : iconAsset;
@@ -88,16 +104,17 @@ class SLGuiIcon {
   void setPosition(int p) { if (p >= POS_LEADING && p <= POS_ONLY) { position = p; } }
   void setGapPx(int px) { gapPx = clamp(px, 0, 24); }
   void setTint(String color) { tint = (color == null) ? "" : color; }
-  // Nudge the icon a few px for true optical centering (not just geometric).
+  < Nudge the icon a few px for true optical centering (not just geometric). >
   void setOpticalNudge(int dx, int dy) { opticalDx = clamp(dx, -6, 6); opticalDy = clamp(dy, -6, 6); }
 
-  // The matched pixel size for the tier.
+  < The matched pixel size for the tier. >
   int sizePx() {
     if (sizeTier == SIZE_XS) { return 12; }
     if (sizeTier == SIZE_SM) { return 16; }
     if (sizeTier == SIZE_LG) { return 28; }
     if (sizeTier == SIZE_XL) { return 40; }
-    return 20;   // SIZE_MD
+    < SIZE_MD >
+    return 20;
   }
 
   String asset_() { return asset; }
@@ -121,7 +138,7 @@ class SLGuiIcon {
     if (sizeTier == SIZE_XL) { return "xl/40"; }
     return "md/20";
   }
-  // Serialize to a node style descriptor the reconciler applies ("icon:...").
+  < Serialize to a node style descriptor the reconciler applies ("icon:..."). >
   String toStyle() {
     return "icon:" + asset + "/" + sizePx() + "/" + positionName() + "/gap" + gapPx +
            (tint != "" ? "/tint" + tint : "") +

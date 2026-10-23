@@ -56,37 +56,48 @@ class SL68000CPU extends SLCPURuntime {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // D0..D7 => 0..7, A0..A7 => 8..15 (A7 == stack pointer).
+  < D0..D7 => 0..7, A0..A7 => 8..15 (A7 == stack pointer). >
   static final int D0 = 0;
   static final int A0 = 8;
-  static final int SP = 15;   // A7
+  < A7 >
+  static final int SP = 15;
 
-  static final int MOVE_RR  = 1;   // MOVE Dsrc,Ddst
-  static final int MOVEQ    = 2;   // MOVEQ #imm,Dn
-  static final int MOVE_RM  = 3;   // MOVE Dn,(An)
-  static final int MOVE_MR  = 4;   // MOVE (An),Dn
+  < MOVE Dsrc,Ddst >
+  static final int MOVE_RR  = 1;
+  < MOVEQ #imm,Dn >
+  static final int MOVEQ    = 2;
+  < MOVE Dn,(An) >
+  static final int MOVE_RM  = 3;
+  < MOVE (An),Dn >
+  static final int MOVE_MR  = 4;
   static final int ADD_RR   = 5;
   static final int SUB_RR   = 6;
-  static final int ADDQ     = 7;   // ADDQ #imm,Dn
-  static final int LEA_IMM  = 8;   // LEA #imm,An
+  < ADDQ #imm,Dn >
+  static final int ADDQ     = 7;
+  < LEA #imm,An >
+  static final int LEA_IMM  = 8;
   static final int JMP_ABS  = 9;
   static final int BEQ      = 10;
   static final int BNE      = 11;
   static final int RTS      = 12;
 
-  int busHeld;    // bus-arbitration state (BR/BG)
+  < bus-arbitration state (BR/BG) >
+  int busHeld;
 
   void configure() {
-    // 32-bit data path, 24-bit address bus, 16 registers, 16 MiW model memory.
-    setSpecClock(8);   // Motorola 68000 at 8 MHz; overclockable
+    < 32-bit data path, 24-bit address bus, 16 registers, 16 MiW model memory. >
+    < Motorola 68000 at 8 MHz; overclockable >
+    setSpecClock(8);
     bringUp("Motorola 68000", 32, 24, 16, 1048576);
     busHeld = 0;
     writeReg(SP, 0x100000 - 4);
   }
 
   int opOf(int w)   { return (w / 256) % 256; }
-  int dstOf(int w)  { return (w % 256) / 16; }    // high nibble of low byte
-  int srcOf(int w)  { return w % 16; }            // low nibble
+  < high nibble of low byte >
+  int dstOf(int w)  { return (w % 256) / 16; }
+  < low nibble >
+  int srcOf(int w)  { return w % 16; }
   int immOf(int w)  { return w % 256; }
 
   void decode(int word) {
@@ -106,10 +117,10 @@ class SL68000CPU extends SLCPURuntime {
     if (opcode == RTS)     { halted = 1; return; }
   }
 
-  // Effective-address computation hook (immediate/absolute in this model).
+  < Effective-address computation hook (immediate/absolute in this model). >
   int effectiveAddress(int operand) { return operand; }
 
-  // Bus arbitration hooks the skeleton named (BR / BG handshake).
+  < Bus arbitration hooks the skeleton named (BR / BG handshake). >
   void busRequest() { busHeld = 1; }
   void busGrant()   { busHeld = 0; }
   boolean busBusy() { return busHeld == 1; }

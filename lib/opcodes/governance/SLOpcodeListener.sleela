@@ -77,13 +77,19 @@ class SLOpcodeListener {
   static final int OP_SOCKWRITE = 38;
   static final int OP_SOCKCLOSE = 39;
 
-  String channel;    // the VM code channel being listened to
+  < the VM code channel being listened to >
+  String channel;
   int state;
-  int callDepth;     // open CALL frames
-  int lockDepth;     // held LOCKs
-  int openSockets;   // opened sockets (CONNECT/ACCEPT minus SOCKCLOSE)
-  int lastIp;        // last live instruction pointer the VM reported
-  int seen;          // opcodes observed so far
+  < open CALL frames >
+  int callDepth;
+  < held LOCKs >
+  int lockDepth;
+  < opened sockets (CONNECT/ACCEPT minus SOCKCLOSE) >
+  int openSockets;
+  < last live instruction pointer the VM reported >
+  int lastIp;
+  < opcodes observed so far >
+  int seen;
   SLGovVerdict lastVerdict;
 
   void configure(String vmChannel) {
@@ -100,9 +106,9 @@ class SLOpcodeListener {
   void disable() { state = 0; }
   boolean active() { return state == 1; }
 
-  // Observe one opcode as the VM reaches it. `liveIp` is the instruction pointer
-  // the VM reports for this step; `expectedIndex` is the opcode's position in the
-  // admitted sequence. Returns the DURING verdict for this opcode.
+  < Observe one opcode as the VM reaches it. `liveIp` is the instruction pointer >
+  < the VM reports for this step; `expectedIndex` is the opcode's position in the >
+  < admitted sequence. Returns the DURING verdict for this opcode. >
   SLGovVerdict observe(SLOpcodeBase op, int liveIp, int expectedIndex) {
     SLGovVerdict v = new SLGovVerdict();
     if (!active() || op == null) {
@@ -113,9 +119,9 @@ class SLOpcodeListener {
 
     int code = op.opcode();
 
-    // respectively: the live ip must advance monotonically and track the
-    // admitted sequence as it comes. A backwards or stalled ip (outside the
-    // sanctioned branch opcodes) means the running program diverged.
+    < respectively: the live ip must advance monotonically and track the >
+    < admitted sequence as it comes. A backwards or stalled ip (outside the >
+    < sanctioned branch opcodes) means the running program diverged. >
     if (liveIp >= 0 && lastIp >= 0 && liveIp < lastIp) {
       if (code != 23 /*OP_JMP*/ && code != 24 /*OP_JMPF*/) {
         v.configure(SLGovVerdict.PAUSE, "live ip moved backwards outside a branch (unrest)", expectedIndex, SLGovPhase.DURING);
@@ -124,7 +130,7 @@ class SLOpcodeListener {
       }
     }
 
-    // relatively: paired opcodes must respect their partners.
+    < relatively: paired opcodes must respect their partners. >
     if (code == OP_RET) {
       if (callDepth <= 0) {
         v.configure(SLGovVerdict.REJECT, "OP_RET with no open CALL frame", expectedIndex, SLGovPhase.DURING);
@@ -162,7 +168,7 @@ class SLOpcodeListener {
     return v;
   }
 
-  // Called when the program finishes DURING: unresolved pairings are unrest.
+  < Called when the program finishes DURING: unresolved pairings are unrest. >
   SLGovVerdict settle() {
     SLGovVerdict v = new SLGovVerdict();
     if (callDepth != 0) {

@@ -51,22 +51,27 @@ class SLHmac {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Status codes mirror slcrypto_status in crypto/include/slcrypto.h.
+  < Status codes mirror slcrypto_status in crypto/include/slcrypto.h. >
   static final int OK = 0;
   static final int ERR_PARAM = -1;
-  static final int ERR_AUTH = -2;      // MAC verification failed
+  < MAC verification failed >
+  static final int ERR_AUTH = -2;
   static final int ERR_UNIMPL = -3;
 
   static final int SHA256_MAC_LEN = 32;
   static final int SHA512_MAC_LEN = 64;
 
   String algorithm;
-  int outBytes;      // MAC length for the selected hash
-  int state;         // 1 = enabled, 0 = disabled
-  int configured;    // 1 once a supported algorithm name has been accepted
-  int backend;       // 1 when the native /crypto backend is linked and ready
+  < MAC length for the selected hash >
+  int outBytes;
+  < 1 = enabled, 0 = disabled >
+  int state;
+  < 1 once a supported algorithm name has been accepted >
+  int configured;
+  < 1 when the native /crypto backend is linked and ready >
+  int backend;
 
-  // Accept only the two HMAC variants the native layer provides.
+  < Accept only the two HMAC variants the native layer provides. >
   int configure(String a) {
     if (a == null) { configured = 0; return ERR_PARAM; }
     if (a == "HMAC-SHA-256") { algorithm = a; outBytes = SHA256_MAC_LEN; configured = 1; return OK; }
@@ -84,15 +89,15 @@ class SLHmac {
 
   int macLength() { return outBytes; }
 
-  // Compute a MAC over msg with key. Models slc_hmac_sha256()/slc_hmac_sha512().
+  < Compute a MAC over msg with key. Models slc_hmac_sha256()/slc_hmac_sha512(). >
   int sign(String key, String msg) {
     if (active() == false) { return ERR_UNIMPL; }
     if (key == null || msg == null) { return ERR_PARAM; }
     return OK;
   }
 
-  // Verify a MAC. The native layer compares in constant time (slc_ct_equal);
-  // a mismatch yields ERR_AUTH.
+  < Verify a MAC. The native layer compares in constant time (slc_ct_equal); >
+  < a mismatch yields ERR_AUTH. >
   int verify(String key, String msg, String mac) {
     if (active() == false) { return ERR_UNIMPL; }
     if (key == null || msg == null || mac == null) { return ERR_PARAM; }

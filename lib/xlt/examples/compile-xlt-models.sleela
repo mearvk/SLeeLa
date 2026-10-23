@@ -56,7 +56,7 @@ class CompileXltModelsExample {
     SLXltCompiler xlt = new SLXltCompiler();
     xlt.configure();
 
-    // ---- Model 1: the congruent EPYC + DDR2 model (epyc-ddr2.xlt) ----
+    < ---- Model 1: the congruent EPYC + DDR2 model (epyc-ddr2.xlt) ---- >
     SLXltSource m1 = new SLXltSource();
     m1.configure("examples/epyc-ddr2.xlt", "/lib");
     m1.setModelName("EpycWithDdr2");
@@ -65,25 +65,33 @@ class CompileXltModelsExample {
     m1.declareCadence("DDR2");
     m1.declareStorage("nvmeGen4");
     m1.declareBus("pci33");
-    m1.declareGpu();          // native GPU compute
-    m1.declareDma();          // DMA bulk engine
-    m1.declareNativeRam();    // NATIVE_RAM feature bit
-    m1.declareProgram("examples/hello.sleela", "sleela");  // run on the built CPU
-    m1.declareGrant(65536, 1000000);                       // under this resource grant
+    < native GPU compute >
+    m1.declareGpu();
+    < DMA bulk engine >
+    m1.declareDma();
+    < NATIVE_RAM feature bit >
+    m1.declareNativeRam();
+    < run on the built CPU >
+    m1.declareProgram("examples/hello.sleela", "sleela");
+    < under this resource grant >
+    m1.declareGrant(65536, 1000000);
 
     SLXltBuildResult r1 = xlt.compile(m1);
     printResult(r1);
     if (r1.programRan()) { print("  program output on the built CPU -> " + r1.output()); }
 
-    // ---- Model 2: NON-congruent — 8-channel memory on a 4-channel board ----
-    // Shows the "part not agreeable to design" congruence, plus a missing part.
+    < ---- Model 2: NON-congruent — 8-channel memory on a 4-channel board ---- >
+    < Shows the "part not agreeable to design" congruence, plus a missing part. >
     SLXltSource m2 = new SLXltSource();
     m2.configure("examples/bad-model.xlt", "/lib");
     m2.setModelName("MismatchedRig");
     m2.declareCpu("SLAMDThreadripper9980X");
-    m2.declareBoard("trx50");                        // 4-channel HEDT board
-    m2.declareMemory("ddr5_6400_octaChannel", 32768);// needs 8 channels -> disagrees
-    m2.declareBus("pcieGenX");                        // not a known bus -> missing
+    < 4-channel HEDT board >
+    m2.declareBoard("trx50");
+    < needs 8 channels -> disagrees >
+    m2.declareMemory("ddr5_6400_octaChannel", 32768);
+    < not a known bus -> missing >
+    m2.declareBus("pcieGenX");
 
     SLXltBuildResult r2 = xlt.compile(m2);
     printResult(r2);

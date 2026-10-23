@@ -51,21 +51,29 @@ class SLGuiBranding {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Logo placement in the app chrome.
+  < Logo placement in the app chrome. >
   static final int PLACE_TITLEBAR = 0;
   static final int PLACE_HEADER   = 1;
   static final int PLACE_SPLASH   = 2;
   static final int PLACE_ABOUT    = 3;
   static final int PLACE_WATERMARK= 4;
 
-  String logoAsset;     // host-resolvable logo name/path (e.g. "brand/logo.svg")
-  int placement;        // PLACE_*
-  int scalePct;         // logo scale, 25..400 %
-  String wordmark;      // text wordmark shown beside/instead of the logo
-  String accentColor;   // primary brand color "#rrggbb" (or named)
-  String secondaryColor;// secondary brand color
-  String tagline;       // short brand tagline
-  int shown;            // 1 = branding is active
+  < host-resolvable logo name/path (e.g. "brand/logo.svg") >
+  String logoAsset;
+  < PLACE_* >
+  int placement;
+  < logo scale, 25..400 % >
+  int scalePct;
+  < text wordmark shown beside/instead of the logo >
+  String wordmark;
+  < primary brand color "#rrggbb" (or named) >
+  String accentColor;
+  < secondary brand color >
+  String secondaryColor;
+  < short brand tagline >
+  String tagline;
+  < 1 = branding is active >
+  int shown;
 
   void configure(String asset) {
     logoAsset = (asset == null) ? "" : asset;

@@ -60,7 +60,7 @@ class ManagedHeap {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   int limitKb; int liveKb; int allocs; int frees;
   void configure(int limit) { limitKb = limit; liveKb = 0; allocs = 0; frees = 0; }
-  // Returns 1 on success, 0 if the allocation would exceed the limit.
+  < Returns 1 on success, 0 if the allocation would exceed the limit. >
   int alloc(int kb) {
     if (liveKb + kb > limitKb) { return 0; }
     liveKb = liveKb + kb; allocs = allocs + 1; return 1;
@@ -70,7 +70,7 @@ class ManagedHeap {
   String summary() { return "heap " + liveKb + "/" + limitKb + "KB (allocs=" + allocs + " frees=" + frees + ")"; }
 }
 
-// ---- Memory manager: owns the heap, enforces the managed-memory scheme --
+< ---- Memory manager: owns the heap, enforces the managed-memory scheme -- >
 class MemoryManager {
   ManagedHeap heap; int ready;
   void boot(int limitKb) { heap = new ManagedHeap(); heap.configure(limitKb); ready = 1; }
@@ -78,17 +78,17 @@ class MemoryManager {
   ManagedHeap managedHeap() { return heap; }
 }
 
-// ---- Security manager: a tier + an enforce/permissive policy -----------
+< ---- Security manager: a tier + an enforce/permissive policy ----------- >
 class SecurityManager {
   String tier; String policy; int ready;
   void boot(String t, String p) { tier = t; policy = p; ready = 1; }
   boolean up() { return ready == 1; }
-  // A load is admitted when the policy is permissive, or enforce + trusted.
+  < A load is admitted when the policy is permissive, or enforce + trusted. >
   boolean admit(boolean trusted) { if (policy == "permissive") { return true; } return trusted; }
   String summary() { return "security tier=" + tier + " policy=" + policy; }
 }
 
-// ---- Linking manager: resolve a module's symbols -----------------------
+< ---- Linking manager: resolve a module's symbols ----------------------- >
 class LinkingManager {
   int resolved; int unresolved; int ready;
   void boot() { resolved = 0; unresolved = 0; ready = 1; }
@@ -98,11 +98,11 @@ class LinkingManager {
   String summary() { return "linker resolved=" + resolved + " unresolved=" + unresolved; }
 }
 
-// ---- Garbage collector: one reclaim pass over the heap -----------------
+< ---- Garbage collector: one reclaim pass over the heap ----------------- >
 class Collector {
   int cycles;
   void configure() { cycles = 0; }
-  // Reclaim `kb` of dead objects from the heap, counting the cycle.
+  < Reclaim `kb` of dead objects from the heap, counting the cycle. >
   void collect(ManagedHeap heap, int kb) { heap.free(kb); cycles = cycles + 1; }
   int ran() { return cycles; }
 }
@@ -118,8 +118,9 @@ class SeniorVMManagers {
     LinkingManager link = new LinkingManager();
     Collector gc = new Collector();
 
-    // Bring the subsystems up in order; gate on all being ready.
-    mem.boot(1024);                 // 1 MB managed heap
+    < Bring the subsystems up in order; gate on all being ready. >
+    < 1 MB managed heap >
+    mem.boot(1024);
     sec.boot("managed", "enforce");
     link.boot();
     gc.configure();
@@ -129,13 +130,14 @@ class SeniorVMManagers {
     print(sec.summary());
     print("");
 
-    // Load a (trusted) module: security admits it, the linker resolves it,
-    // and it allocates working memory on the managed heap.
+    < Load a (trusted) module: security admits it, the linker resolves it, >
+    < and it allocates working memory on the managed heap. >
     banner("load module 'kernel-core' (trusted)");
     boolean admitted = sec.admit(true);
     print("security admit = " + admitted);
     if (admitted) {
-      link.resolve(42, 0);          // 42 symbols, none missing
+      < 42 symbols, none missing >
+      link.resolve(42, 0);
       ManagedHeap heap = mem.managedHeap();
       int ok1 = heap.alloc(256);
       int ok2 = heap.alloc(512);
@@ -144,13 +146,15 @@ class SeniorVMManagers {
     }
     print("");
 
-    // Run a step that over-allocates past the limit (handled, not crashed),
-    // then a GC pass reclaims dead objects.
+    < Run a step that over-allocates past the limit (handled, not crashed), >
+    < then a GC pass reclaims dead objects. >
     banner("execute + reclaim");
     ManagedHeap heap = mem.managedHeap();
-    int over = heap.alloc(512);     // 256+512+512 = 1280 > 1024 -> refused
+    < 256+512+512 = 1280 > 1024 -> refused >
+    int over = heap.alloc(512);
     print("over-limit alloc refused? " + (over == 0));
-    gc.collect(heap, 256);          // reclaim the first 256 KB
+    < reclaim the first 256 KB >
+    gc.collect(heap, 256);
     print("after gc (" + gc.ran() + " cycle): " + heap.summary());
 
     print("done");

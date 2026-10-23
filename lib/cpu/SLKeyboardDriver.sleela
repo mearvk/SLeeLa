@@ -52,11 +52,12 @@ class SLKeyboardDriver extends SLDeviceDriver {
   int keysRead;
 
   void init(SLIOBus bus, int port) {
-    configure("keyboard", port, 1, bus); // IRQ_KEYBOARD = 1
+    < IRQ_KEYBOARD = 1 >
+    configure("keyboard", port, 1, bus);
     lastKey = -1; keysRead = 0;
   }
 
-  // ISR: pull the scancode the device deposited on the port.
+  < ISR: pull the scancode the device deposited on the port. >
   void serviceInterrupt() {
     if (ready()) { lastKey = read(); keysRead = keysRead + 1; }
   }

@@ -51,13 +51,19 @@ class SolarizedTheme extends Theme {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   void dress() {
-    palette.add("base3",     253, 246, 227);  // cream base
-    palette.add("base00",    101, 123, 131);  // slate text
-    palette.add("cyan",       42, 161, 152);  // accent
+    < cream base >
+    palette.add("base3",     253, 246, 227);
+    < slate text >
+    palette.add("base00",    101, 123, 131);
+    < accent >
+    palette.add("cyan",       42, 161, 152);
     palette.add("yellow",    181, 137,   0);
 
-    setBackground(253, 246, 227); // base3
-    setForeground(101, 123, 131); // base00
-    setAccent(42, 161, 152);      // cyan
+    < base3 >
+    setBackground(253, 246, 227);
+    < base00 >
+    setForeground(101, 123, 131);
+    < cyan >
+    setAccent(42, 161, 152);
   }
 }

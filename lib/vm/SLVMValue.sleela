@@ -54,13 +54,15 @@ class SLVMValue {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Type tags. NULL is the canonical empty reference.
+  < Type tags. NULL is the canonical empty reference. >
   static final int TAG_NULL = 0;
   static final int TAG_INT  = 1;
   static final int TAG_BOOL = 2;
   static final int TAG_CHAR = 3;
-  static final int TAG_REF  = 4;   // payload is a heap handle (object/array)
-  static final int TAG_STR  = 5;   // payload is a heap handle to a string blob
+  < payload is a heap handle (object/array) >
+  static final int TAG_REF  = 4;
+  < payload is a heap handle to a string blob >
+  static final int TAG_STR  = 5;
 
   int tag;
   int payload;
@@ -82,14 +84,14 @@ class SLVMValue {
   boolean isScalar()    { return tag == TAG_INT || tag == TAG_BOOL || tag == TAG_CHAR; }
   boolean isReference() { return tag == TAG_REF || tag == TAG_STR; }
 
-  // Truthiness used by control-flow opcodes (JMPF): null and 0 are false.
+  < Truthiness used by control-flow opcodes (JMPF): null and 0 are false. >
   boolean truthy() {
     if (tag == TAG_NULL) { return false; }
     return payload != 0;
   }
 
-  // Pack/unpack the (tag,payload) pair as a single word so a value can be
-  // stored in one SLRAM slot when a frame stack is laid out two words apart.
+  < Pack/unpack the (tag,payload) pair as a single word so a value can be >
+  < stored in one SLRAM slot when a frame stack is laid out two words apart. >
   int packedTag()     { return tag; }
   int packedPayload() { return payload; }
   void unpack(int t, int p) { tag = t; payload = p; }

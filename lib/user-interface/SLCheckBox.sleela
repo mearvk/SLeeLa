@@ -54,7 +54,7 @@ class SLCheckBox extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a check box inside `parent` with a label and initial state.
+  < Create a check box inside `parent` with a label and initial state. >
   void createIn(SLWidget parent, String label, boolean checked) {
     widget = uiCheckBox(parent.handle(), label, checked ? 1 : 0);
   }
@@ -70,7 +70,7 @@ class SLCheckBox extends SLWidget {
     if (widget >= 0) { uiWidgetSetToggle(widget, checked ? 1 : 0); }
   }
 
-  // True if the check box flipped since the last check (latch cleared on read).
+  < True if the check box flipped since the last check (latch cleared on read). >
   boolean changed() {
     if (widget < 0) { return false; }
     return uiWidgetTakeActivated(widget) == 1;

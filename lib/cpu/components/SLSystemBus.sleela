@@ -60,17 +60,20 @@ class SLSystemBus {
   String partName;
   int busType;
   int clockMHz;
-  int widthBits;       // data path width
-  int lanes;           // for PCIe (1 otherwise)
-  int perLaneMBs;      // per-lane rate for serial buses (PCIe), 0 for parallel
+  < data path width >
+  int widthBits;
+  < for PCIe (1 otherwise) >
+  int lanes;
+  < per-lane rate for serial buses (PCIe), 0 for parallel >
+  int perLaneMBs;
 
   void configure(String name, int type, int clock, int width, int laneCount, int laneMBs) {
     partName = name; busType = type; clockMHz = clock; widthBits = width;
     lanes = (laneCount < 1) ? 1 : laneCount; perLaneMBs = laneMBs;
   }
 
-  // Peak bandwidth in MB/s. Serial buses (PCIe) use per-lane × lanes; parallel
-  // buses use clock × bus bytes.
+  < Peak bandwidth in MB/s. Serial buses (PCIe) use per-lane × lanes; parallel >
+  < buses use clock × bus bytes. >
   int peakBandwidthMBs() {
     if (perLaneMBs > 0) { return perLaneMBs * lanes; }
     return clockMHz * (widthBits / 8);

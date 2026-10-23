@@ -25,7 +25,8 @@
      vm = new SLVM(); vm.configure("edition"); vm.boot(1<<16, 1<<16);
      SL6502CPU cpu = new SL6502CPU(); cpu.configure();
      vm.hostCpu(cpu);
-     int out = vm.runGuestWorkload(job, 1000000);   // job wraps a .c/.cpp/.java/.sleela source
+     < job wraps a .c/.cpp/.java/.sleela source >
+     int out = vm.runGuestWorkload(job, 1000000);
    (SleelaVMCreator builds and boots the SLVM for this flow.)
    
    Family: vm. Composes SLVMHeap, SLVMMemory, SLVMModuleLoader, SLVMThread,
@@ -74,52 +75,58 @@ class SLVM {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
-  int state;              // 0 off, 1 booted, 2 running, 3 halted
+  < 0 off, 1 booted, 2 running, 3 halted >
+  int state;
 
   SLVMHeap heap;
   SLVMMemory memory;
   SLVMModuleLoader moduleLoader;
-  SLVMModule module;      // the currently installed module
-  SLSleelaVM substrate;   // == module.engine(); the native-opcode engine we drive
+  < the currently installed module >
+  SLVMModule module;
+  < == module.engine(); the native-opcode engine we drive >
+  SLSleelaVM substrate;
   SLVMThread main;
 
-  // Bounded native-binding table (SLeeLa surface has no arrays).
+  < Bounded native-binding table (SLeeLa surface has no arrays). >
   int bindingCount;
   SLVMNativeBinding b0; SLVMNativeBinding b1; SLVMNativeBinding b2; SLVMNativeBinding b3;
 
-  int steps;              // opcodes executed through this VM
-  int lastExit;           // last serviced VM-exit opcode (-1 if none)
+  < opcodes executed through this VM >
+  int steps;
+  < last serviced VM-exit opcode (-1 if none) >
+  int lastExit;
 
-  // --- guest-CPU hosting (Creator -> SLVM -> CPU -> program stack) ---
-  // When SLVM hosts a Sleela CPU model as its executor, the CPU is pinned here
-  // and SLVM lends it the substrate so the CPU's lowered program runs nested on
-  // the Secondary VM rather than on a private engine.
+  < --- guest-CPU hosting (Creator -> SLVM -> CPU -> program stack) --- >
+  < When SLVM hosts a Sleela CPU model as its executor, the CPU is pinned here >
+  < and SLVM lends it the substrate so the CPU's lowered program runs nested on >
+  < the Secondary VM rather than on a private engine. >
   SLCPURuntime guestCpu;
-  int guestResult;        // last observable output of a guest workload
+  < last observable output of a guest workload >
+  int guestResult;
 
-  // --- optional capabilities propagated to a hosted guest CPU ---
-  // When set before hostCpu(), the guest CPU is granted direct DMA and/or native
-  // GPU access, so a program running under this VM can use them at any point.
+  < --- optional capabilities propagated to a hosted guest CPU --- >
+  < When set before hostCpu(), the guest CPU is granted direct DMA and/or native >
+  < GPU access, so a program running under this VM can use them at any point. >
   int dmaOption;
   int gpuOption;
 
-  // --- native-RAM option ---
-  // When set before boot(), the VM's linear memory runs on REAL host RAM
-  // (SLNativeMemory) instead of the simulated SLRAM store, for running outside
-  // simulation for procedural layment. Off (simulated) by default.
+  < --- native-RAM option --- >
+  < When set before boot(), the VM's linear memory runs on REAL host RAM >
+  < (SLNativeMemory) instead of the simulated SLRAM store, for running outside >
+  < simulation for procedural layment. Off (simulated) by default. >
   int nativeRamOption;
 
   void configure(String vmName) { name = vmName; state = 0; }
 
-  // Native-RAM option: when set before boot(), the VM's linear memory runs on
-  // REAL host RAM (SLNativeMemory) instead of the simulated SLRAM store — for
-  // running outside simulation for procedural layment. Off by default.
+  < Native-RAM option: when set before boot(), the VM's linear memory runs on >
+  < REAL host RAM (SLNativeMemory) instead of the simulated SLRAM store — for >
+  < running outside simulation for procedural layment. Off by default. >
   void useNativeRam()  { nativeRamOption = 1; }
   void useSimulatedRam(){ nativeRamOption = 0; }
   boolean nativeRam()  { return nativeRamOption == 1; }
 
-  // Boot: build the heap, linear memory, loader and main thread. The linear
-  // memory honors the native-RAM option.
+  < Boot: build the heap, linear memory, loader and main thread. The linear >
+  < memory honors the native-RAM option. >
   void boot(int heapWords, int memoryWords) {
     heap = new SLVMHeap(); heap.configure(heapWords);
     memory = new SLVMMemory();
@@ -132,7 +139,7 @@ class SLVM {
     state = 1;
   }
 
-  // Convenience: boot directly onto native host RAM.
+  < Convenience: boot directly onto native host RAM. >
   void bootNative(int heapWords, int memoryWords) {
     nativeRamOption = 1;
     boot(heapWords, memoryWords);
@@ -140,7 +147,7 @@ class SLVM {
 
   SLVMModuleLoader loader() { return moduleLoader; }
 
-  // Register a native binding (e.g. print). Up to 4 in this bounded surface.
+  < Register a native binding (e.g. print). Up to 4 in this bounded surface. >
   void bindNative(SLVMNativeBinding binding) {
     binding.resolve();
     if (bindingCount == 0) { b0 = binding; }
@@ -158,11 +165,12 @@ class SLVM {
     return null;
   }
 
-  // Install a loaded module and prime its entry method as the first frame.
+  < Install a loaded module and prime its entry method as the first frame. >
   void install(SLVMModule m) {
     module = m;
     substrate = m.engine();
-    substrate.setHosted();   // service opcodes become VM-exits we route
+    < service opcodes become VM-exits we route >
+    substrate.setHosted();
     SLVMMethod entry = m.resolveMethod(m.entryClass(), m.entryName());
     if (entry != null) {
       SLVMFrame frame = new SLVMFrame();
@@ -175,7 +183,7 @@ class SLVM {
     state = 1;
   }
 
-  // Run up to budget opcodes, servicing VM-exits (native bindings) inline.
+  < Run up to budget opcodes, servicing VM-exits (native bindings) inline. >
   int run(int budget) {
     if (state == 0) { return 0; }
     state = 2;
@@ -190,8 +198,8 @@ class SLVM {
     return ran;
   }
 
-  // Route a parked VM-exit: a bound native service runs and returns a value;
-  // an unbound service is acknowledged so the guest can proceed.
+  < Route a parked VM-exit: a bound native service runs and returns a value; >
+  < an unbound service is acknowledged so the guest can proceed. >
   void serviceExit() {
     int opcode = substrate.exitReasonOpcode();
     int payload = substrate.exitReasonPayload();
@@ -199,54 +207,59 @@ class SLVM {
     SLVMNativeBinding binding = bindingFor(opcode);
     int result = 0;
     if (binding != null) {
-      binding.recordResult(payload);  // host would perform real work here
+      < host would perform real work here >
+      binding.recordResult(payload);
       result = payload;
     }
     substrate.resolveExit();
     substrate.pushResult(result);
   }
 
-  // --- guest-CPU hosting: run a Sleela CPU model as SLVM's executor ---
-  // Pin a Sleela CPU model (any SLCPURuntime / SL<ARCH>CPU) as the guest this VM
-  // executes, and lend it a hosted substrate so the CPU runs nested on the
-  // Secondary VM. The substrate is sized generously; the CPU's workload grant
-  // bounds actual use.
+  < --- guest-CPU hosting: run a Sleela CPU model as SLVM's executor --- >
+  < Pin a Sleela CPU model (any SLCPURuntime / SL<ARCH>CPU) as the guest this VM >
+  < executes, and lend it a hosted substrate so the CPU runs nested on the >
+  < Secondary VM. The substrate is sized generously; the CPU's workload grant >
+  < bounds actual use. >
   void hostCpu(SLCPURuntime cpu) {
     guestCpu = cpu;
     substrate = new SLSleelaVM();
     substrate.configure(1 << 16, 4096, 1024);
-    substrate.setHosted();           // the CPU's service opcodes become our VM-exits
-    cpu.attachSubstrate(substrate);  // CPU lowers onto OUR substrate => true nesting
-    if (dmaOption == 1) { cpu.enableDMA(); }   // grant the enabled options to the guest
+    < the CPU's service opcodes become our VM-exits >
+    substrate.setHosted();
+    < CPU lowers onto OUR substrate => true nesting >
+    cpu.attachSubstrate(substrate);
+    < grant the enabled options to the guest >
+    if (dmaOption == 1) { cpu.enableDMA(); }
     if (gpuOption == 1) { cpu.enableGPU(); }
     state = 1;
   }
 
-  // --- optional capabilities: enable BEFORE hostCpu() so the guest inherits them ---
-  // Direct DMA: the hosted CPU gets a direct memory-access engine, so a program
-  // under this VM can move bulk data without the CPU copying it word by word.
+  < --- optional capabilities: enable BEFORE hostCpu() so the guest inherits them --- >
+  < Direct DMA: the hosted CPU gets a direct memory-access engine, so a program >
+  < under this VM can move bulk data without the CPU copying it word by word. >
   void enableDMA() { dmaOption = 1; if (guestCpu != null) { guestCpu.enableDMA(); } }
   void disableDMA(){ dmaOption = 0; if (guestCpu != null) { guestCpu.disableDMA(); } }
   boolean dmaEnabled() { return dmaOption == 1; }
-  // Native GPU access: the hosted CPU gets a GPU device to offload compute to.
+  < Native GPU access: the hosted CPU gets a GPU device to offload compute to. >
   void enableGPU() { gpuOption = 1; if (guestCpu != null) { guestCpu.enableGPU(); } }
   void disableGPU(){ gpuOption = 0; if (guestCpu != null) { guestCpu.disableGPU(); } }
   boolean gpuEnabled() { return gpuOption == 1; }
-  // Direct access to the guest's engines (null until hosted/enabled).
+  < Direct access to the guest's engines (null until hosted/enabled). >
   SLDMAController dmaEngine() { return (guestCpu != null) ? guestCpu.dmaEngine() : null; }
   SLGPUDevice gpuDevice()     { return (guestCpu != null) ? guestCpu.gpuDevice() : null; }
 
   SLCPURuntime hostedCpu() { return guestCpu; }
 
-  // Run the full stack in one call: the hosted guest CPU compiles a C/C++/Java/
-  // Sleela workload, maps it onto SLVM's substrate, and SLVM drives that opcode
-  // stream (servicing I/O VM-exits through its native bindings). Returns the
-  // observable output. This is the Creator -> SLVM -> CPU -> program executor
-  // path realized end to end.
+  < Run the full stack in one call: the hosted guest CPU compiles a C/C++/Java/ >
+  < Sleela workload, maps it onto SLVM's substrate, and SLVM drives that opcode >
+  < stream (servicing I/O VM-exits through its native bindings). Returns the >
+  < observable output. This is the Creator -> SLVM -> CPU -> program executor >
+  < path realized end to end. >
   int runGuestWorkload(SLWorkload work, int budget) {
     if (guestCpu == null) { return -1; }
     SLSleelaVM target = guestCpu.mapWorkload(work, substrate);
-    if (target == null) { return -1; }   // workload rejected by the CPU's grant
+    < workload rejected by the CPU's grant >
+    if (target == null) { return -1; }
     state = 2;
     int ran = 0;
     while (ran < budget && !substrate.isHalted()) {
@@ -263,7 +276,7 @@ class SLVM {
 
   int lastGuestResult() { return guestResult; }
 
-  // --- object allocation surface for Sleela-sourced VM code ---
+  < --- object allocation surface for Sleela-sourced VM code --- >
   SLVMObject newInstance(int classId) {
     SLVMClass k = (module != null) ? module.classById(classId) : null;
     int fields = (k != null) ? k.instanceSize() : 0;
@@ -272,7 +285,7 @@ class SLVM {
     return obj;
   }
 
-  // --- GC surface: clear marks, mark reachable from the main thread's "this". ---
+  < --- GC surface: clear marks, mark reachable from the main thread's "this". --- >
   int collect() {
     heap.clearMarks();
     if (main.contextHandle() >= 0) { heap.mark(main.contextHandle()); }

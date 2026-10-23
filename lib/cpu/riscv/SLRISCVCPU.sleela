@@ -65,18 +65,22 @@ class SLRISCVCPU extends SLCPURuntime {
   static final int JAL  = 8;
   static final int ECALL = 9;
 
-  // A few CSRs modelled as named registers above the GPR file.
+  < A few CSRs modelled as named registers above the GPR file. >
   static final int CSR_MSTATUS = 32;
   static final int CSR_MCAUSE  = 33;
   static final int CSR_MEPC    = 34;
 
-  int xlen;             // register width (32 for RV32)
-  String isaExtensions; // e.g. "IMAFD"
-  int privilege;        // 0 U, 1 S, 3 M
+  < register width (32 for RV32) >
+  int xlen;
+  < e.g. "IMAFD" >
+  String isaExtensions;
+  < 0 U, 1 S, 3 M >
+  int privilege;
 
   void configure(String extensions) {
     xlen = 32;
-    setSpecClock(100);   // RISC-V RV32I reference at 100 MHz; overclockable
+    < RISC-V RV32I reference at 100 MHz; overclockable >
+    setSpecClock(100);
     bringUp("RISC-V RV32I", 32, 32, 35, 262144);
     isaExtensions = extensions; privilege = 3;
   }
@@ -89,7 +93,7 @@ class SLRISCVCPU extends SLCPURuntime {
   int rs1Of(int w)  { return (w / 256) % 256; }
   int rs2ImmOf(int w){ return w % 256; }
 
-  // Immediate generator: sign-extend the compact 8-bit immediate field.
+  < Immediate generator: sign-extend the compact 8-bit immediate field. >
   int immediate(int w) { int v = rs2ImmOf(w); if (v >= 128) { return v - 256; } return v; }
 
   void decode(int word) {
@@ -107,8 +111,9 @@ class SLRISCVCPU extends SLCPURuntime {
     if (opcode == ECALL){ systemInstruction(); return; }
   }
 
-  // ECALL: record the trap in CSRs and halt (environment call to the host/VM).
-  void systemInstruction() { trap(11); halted = 1; }   // mcause 11 = ecall from M
+  < ECALL: record the trap in CSRs and halt (environment call to the host/VM). >
+  < mcause 11 = ecall from M >
+  void systemInstruction() { trap(11); halted = 1; }
   void trap(int cause) {
     writeReg(CSR_MCAUSE, cause);
     writeReg(CSR_MEPC, programCounter());

@@ -89,7 +89,7 @@ class SLVmResult {
     return "INTERNAL";
   }
 
-  // Report through SLVmReport at the severity the code implies.
+  < Report through SLVmReport at the severity the code implies. >
   int report(SLVmReport r) {
     if (r == null || code == E_OK) { return 0; }
     if (code == E_LIMIT || code == E_DENIED || code == E_INTERNAL) {
@@ -98,8 +98,8 @@ class SLVmResult {
     return r.warn(subsystem, codeName(), message);
   }
 
-  // Map a legacy sleela_* ABI status onto a stable category (mirror
-  // vm_result_from_status): 0 ok, negatives per the common convention.
+  < Map a legacy sleela_* ABI status onto a stable category (mirror >
+  < vm_result_from_status): 0 ok, negatives per the common convention. >
   int fromStatus(int status) {
     if (status == 0)  { return E_OK; }
     if (status == -1) { return E_INVALID; }

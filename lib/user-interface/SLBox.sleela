@@ -55,8 +55,8 @@ class SLBox extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a box inside `parent` (an SLWidget). orientation is ORIENT_VERTICAL
-  // or ORIENT_HORIZONTAL; spacing is the gap between children in pixels.
+  < Create a box inside `parent` (an SLWidget). orientation is ORIENT_VERTICAL >
+  < or ORIENT_HORIZONTAL; spacing is the gap between children in pixels. >
   void createIn(SLWidget parent, int orientation, int spacing) {
     widget = uiBox(parent.handle(), orientation, spacing);
   }
@@ -64,7 +64,7 @@ class SLBox extends SLWidget {
     widget = uiBox(parentHandle, orientation, spacing);
   }
 
-  // Convenience constructors for the two orientations.
+  < Convenience constructors for the two orientations. >
   void vertical(SLWidget parent, int spacing) {
     createIn(parent, ORIENT_VERTICAL, spacing);
   }

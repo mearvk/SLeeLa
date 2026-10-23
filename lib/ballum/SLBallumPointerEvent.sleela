@@ -1,31 +1,29 @@
-/*
- * lib/ballum/SLBallumPointerEvent.sleela
- * SLeeLa Standard Library Definition.
- * Definition: One Ballum pointer (mouse/touch) event, mirroring ballum_pointer_event_t.
- */
+<< lib/ballum/SLBallumPointerEvent.sleela
+   SLeeLa Standard Library Definition.
+   Definition: One Ballum pointer (mouse/touch) event, mirroring ballum_pointer_event_t. >>
 #sleela 2.1
-// Family: ballum. A single pointer event in screen pixel coordinates (top-left
-// origin), mirroring the native ballum_pointer_event_t. Mouse and touch are
-// unified: a touch contact arrives as DOWN/MOVE/UP with source == TOUCH. Higher
-// gestures (click, drag) are synthesized by SLBallumInput, not carried here.
+< Family: ballum. A single pointer event in screen pixel coordinates (top-left >
+< origin), mirroring the native ballum_pointer_event_t. Mouse and touch are >
+< unified: a touch contact arrives as DOWN/MOVE/UP with source == TOUCH. Higher >
+< gestures (click, drag) are synthesized by SLBallumInput, not carried here. >
 class SLBallumPointerEvent {
-  // --- event type (mirror ballum_event_type_t) ---
+  < --- event type (mirror ballum_event_type_t) --- >
   static final int TYPE_NONE = 0;
   static final int TYPE_DOWN = 1;
   static final int TYPE_MOVE = 2;
   static final int TYPE_UP = 3;
 
-  // --- button (mirror ballum_pointer_button_t) ---
+  < --- button (mirror ballum_pointer_button_t) --- >
   static final int BUTTON_NONE = 0;
   static final int BUTTON_LEFT = 1;
   static final int BUTTON_MIDDLE = 2;
   static final int BUTTON_RIGHT = 3;
 
-  // --- source (mirror ballum_pointer_source_t) ---
+  < --- source (mirror ballum_pointer_source_t) --- >
   static final int SOURCE_MOUSE = 0;
   static final int SOURCE_TOUCH = 1;
 
-  // --- modifier bits (mirror BALLUM_MOD_*) ---
+  < --- modifier bits (mirror BALLUM_MOD_*) --- >
   static final int MOD_SHIFT = 1;
   static final int MOD_CTRL = 2;
   static final int MOD_ALT = 4;
@@ -71,10 +69,10 @@ class SLBallumPointerEvent {
   boolean ctrl() { return hasModifier(MOD_CTRL); }
   boolean alt() { return hasModifier(MOD_ALT); }
 
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override this record.
-  // Values are faithful to the real origin of the subject where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, >
+  < or catalog can read and (where appropriate) override this record. >
+  < Values are faithful to the real origin of the subject where publicly known. >
   String metaVersion = "1.0.0";
   int metaId = 11516;
   String metaAuthor = "SLeeLa Project";
@@ -84,7 +82,8 @@ class SLBallumPointerEvent {
   String metaCorporation = "SLeeLa Project";
   String metaOrigin = "International";
   String metaBirthDate = "2026";
-  int metaScienceRating = 9;        // maturity/robustness on a 1..10 scale
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
   String metaNationalSchedule = "SLeeLa Ballum input model (lib/ballum)";
 
   String getMetaVersion() { return metaVersion; }

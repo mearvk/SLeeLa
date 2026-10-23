@@ -58,7 +58,7 @@ class SLXltProducerRegistry {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Slot ids the parts divide into (orthogonal document slots).
+  < Slot ids the parts divide into (orthogonal document slots). >
   static final int SLOT_CPU     = 1;
   static final int SLOT_MEMORY  = 2;
   static final int SLOT_BOARD   = 3;
@@ -66,17 +66,21 @@ class SLXltProducerRegistry {
   static final int SLOT_STORAGE = 5;
   static final int SLOT_BUS     = 6;
 
-  // Registered entries, stored over an SLRAM-free parallel-array shape: each
-  // entry is (slot, ref, attr). Bounded; grown by register().
+  < Registered entries, stored over an SLRAM-free parallel-array shape: each >
+  < entry is (slot, ref, attr). Bounded; grown by register(). >
   int count;
   static final int MAX = 64;
 
-  // Parallel stores (no arrays in the surface language: use a small fixed bank
-  // backed by an SLRAM-less scheme is awkward, so we page into an SLRAM pair).
-  SLRAM slots;    // slot id per entry
-  SLRAM attrs;    // integer attribute per entry (channels, etc.)
-  SLRAM refsLo;   // ref string handles are not storable in SLRAM; see refs bank
-  SLXltRefBank refs;  // string bank holding the ref per entry
+  < Parallel stores (no arrays in the surface language: use a small fixed bank >
+  < backed by an SLRAM-less scheme is awkward, so we page into an SLRAM pair). >
+  < slot id per entry >
+  SLRAM slots;
+  < integer attribute per entry (channels, etc.) >
+  SLRAM attrs;
+  < ref string handles are not storable in SLRAM; see refs bank >
+  SLRAM refsLo;
+  < string bank holding the ref per entry >
+  SLXltRefBank refs;
 
   void configure() {
     count = 0;
@@ -86,7 +90,7 @@ class SLXltProducerRegistry {
     loadDefaults();
   }
 
-  // Register one producer: its slot, ref string, and integer attribute.
+  < Register one producer: its slot, ref string, and integer attribute. >
   boolean register(int slot, String ref, int attr) {
     if (count >= MAX) { return false; }
     slots.writeWord(count, slot);
@@ -96,7 +100,7 @@ class SLXltProducerRegistry {
     return true;
   }
 
-  // Is `ref` a registered producer for `slot`?
+  < Is `ref` a registered producer for `slot`? >
   boolean known(int slot, String ref) {
     int i = 0;
     while (i < count) {
@@ -106,7 +110,7 @@ class SLXltProducerRegistry {
     return false;
   }
 
-  // The integer attribute registered for (slot, ref); 0 if not found.
+  < The integer attribute registered for (slot, ref); 0 if not found. >
   int attrOf(int slot, String ref) {
     int i = 0;
     while (i < count) {
@@ -118,10 +122,10 @@ class SLXltProducerRegistry {
 
   int entries() { return count; }
 
-  // The default roster: every ref the SLComponentCatalog + CPU folders expose,
-  // with memory/board channel attributes for the agreement check.
+  < The default roster: every ref the SLComponentCatalog + CPU folders expose, >
+  < with memory/board channel attributes for the agreement check. >
   void loadDefaults() {
-    // CPUs (attr unused -> 0): EPYC + Threadripper rosters.
+    < CPUs (attr unused -> 0): EPYC + Threadripper rosters. >
     register(SLOT_CPU, "SLAMDEPYC9575F", 0); register(SLOT_CPU, "SLAMDEPYC9965", 0);
     register(SLOT_CPU, "SLAMDEPYC9755", 0);  register(SLOT_CPU, "SLAMDEPYC9645", 0);
     register(SLOT_CPU, "SLAMDEPYC9475F", 0); register(SLOT_CPU, "SLAMDEPYC9355", 0);
@@ -132,7 +136,7 @@ class SLXltProducerRegistry {
     register(SLOT_CPU, "SLAMDThreadripperPro9965WX", 0); register(SLOT_CPU, "SLAMDThreadripperPro9955WX", 0);
     register(SLOT_CPU, "SLAMDThreadripperPro9945WX", 0); register(SLOT_CPU, "SLAMDThreadripperCPU", 0);
 
-    // Memory (attr = channel count the preset implies).
+    < Memory (attr = channel count the preset implies). >
     register(SLOT_MEMORY, "dram_fpm", 1);    register(SLOT_MEMORY, "sdram_pc100", 1);
     register(SLOT_MEMORY, "ddr_400", 1);     register(SLOT_MEMORY, "ddr2_800", 1);
     register(SLOT_MEMORY, "ddr3_1600", 1);   register(SLOT_MEMORY, "ddr4_3200", 1);
@@ -141,15 +145,15 @@ class SLXltProducerRegistry {
     register(SLOT_MEMORY, "ddr5_6400_octaChannel", 8);
     register(SLOT_MEMORY, "sram_fast", 1);
 
-    // Boards (attr = routed memory channels).
+    < Boards (attr = routed memory channels). >
     register(SLOT_BOARD, "trx50", 4); register(SLOT_BOARD, "wrx90", 8);
 
-    // Cadences (attr = tech id used by SLCadenceConnector / SLMemoryInterface).
+    < Cadences (attr = tech id used by SLCadenceConnector / SLMemoryInterface). >
     register(SLOT_CADENCE, "DDR", 3);  register(SLOT_CADENCE, "DDR2", 4);
     register(SLOT_CADENCE, "DDR3", 5); register(SLOT_CADENCE, "DDR4", 6);
     register(SLOT_CADENCE, "DDR5", 7);
 
-    // Storage + bus (attr unused).
+    < Storage + bus (attr unused). >
     register(SLOT_STORAGE, "nvmeGen4", 0); register(SLOT_STORAGE, "nvmeGen3", 0);
     register(SLOT_STORAGE, "sataSsd", 0);  register(SLOT_STORAGE, "sataHdd", 0);
     register(SLOT_BUS, "pcieGen5x16", 0); register(SLOT_BUS, "pcieGen4x16", 0);

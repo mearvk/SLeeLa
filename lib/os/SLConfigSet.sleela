@@ -63,20 +63,28 @@ class SLConfigSet {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Phase: when the config file must be present.
+  < Phase: when the config file must be present. >
   static final int PHASE_COMPILE = 0;
   static final int PHASE_ISO     = 1;
 
-  // Well-known settings files: 1 if required, with their path/format fixed.
-  int wantOsConf;        // config/os.conf        (global settings)      compile
-  int wantSwap;          // config/swap.conf      (paging)               iso
-  int wantFilesystems;   // config/filesystems.txt(file-table choices)   compile
-  int wantBaseDrivers;   // kernel/base-drivers/base-drivers.conf        compile
-  int wantServices;      // userspace/os-loader/services.conf            iso
-  int wantCompat;        // userspace/compat-loader/compat.conf          iso
-  int wantCmdline;       // config/cmdline.conf   (kernel command line)  compile
-  int wantDownloads;     // config/downloads.conf (resolved URLs)        compile
-  // Up to four developer extras: each "path|format|phase".
+  < Well-known settings files: 1 if required, with their path/format fixed. >
+  < config/os.conf        (global settings)      compile >
+  int wantOsConf;
+  < config/swap.conf      (paging)               iso >
+  int wantSwap;
+  < config/filesystems.txt(file-table choices)   compile >
+  int wantFilesystems;
+  < kernel/base-drivers/base-drivers.conf        compile >
+  int wantBaseDrivers;
+  < userspace/os-loader/services.conf            iso >
+  int wantServices;
+  < userspace/compat-loader/compat.conf          iso >
+  int wantCompat;
+  < config/cmdline.conf   (kernel command line)  compile >
+  int wantCmdline;
+  < config/downloads.conf (resolved URLs)        compile >
+  int wantDownloads;
+  < Up to four developer extras: each "path|format|phase". >
   String extra0; String extra1; String extra2; String extra3; int extraCount;
   int configured;
 
@@ -87,16 +95,16 @@ class SLConfigSet {
     configured = 1;
   }
 
-  // Seed from a model's shape/compat: a desktop/server always wants os.conf,
-  // swap, filesystems, base-drivers, services, cmdline, downloads; the compat
-  // config is wanted only when the model ships foreign-exec routes.
+  < Seed from a model's shape/compat: a desktop/server always wants os.conf, >
+  < swap, filesystems, base-drivers, services, cmdline, downloads; the compat >
+  < config is wanted only when the model ships foreign-exec routes. >
   void forModel(boolean hasCompat) {
     configure();
     if (hasCompat) { wantCompat = 1; } else { wantCompat = 0; }
   }
 
-  // Add a developer config file: target path, format ("conf"/"ini"/"json"/
-  // "yaml"/"xml"/"text"), and the phase it is needed. Up to four.
+  < Add a developer config file: target path, format ("conf"/"ini"/"json"/ >
+  < "yaml"/"xml"/"text"), and the phase it is needed. Up to four. >
   int addExtra(String path, String format, int phase) {
     String ph = "compile";
     if (phase == PHASE_ISO) { ph = "iso"; }
@@ -110,9 +118,9 @@ class SLConfigSet {
     return 0;
   }
 
-  // ---- The checklist --------------------------------------------------
-  // A newline manifest "<path> <format> <phase> required|optional" of every
-  // settings file the build expects.
+  < ---- The checklist -------------------------------------------------- >
+  < A newline manifest "<path> <format> <phase> required|optional" of every >
+  < settings file the build expects. >
   String configManifest() {
     String m = "";
     m = row(m, "config/os.conf", "conf", "compile", wantOsConf);
@@ -141,7 +149,7 @@ class SLConfigSet {
     return acc + "\n" + rec;
   }
 
-  // Count of required compile-phase / iso-phase settings files.
+  < Count of required compile-phase / iso-phase settings files. >
   int compilePhaseCount() {
     int n = 0;
     if (wantOsConf == 1) { n = n + 1; }
@@ -159,10 +167,10 @@ class SLConfigSet {
     return n;
   }
 
-  // ---- Phase gates ----------------------------------------------------
-  // Before COMPILE: the irreducible settings — a global os.conf, the kernel
-  // command line, the filesystem choice, and the base-driver policy — must be
-  // declared wanted. Before ISO: additionally the service manifest.
+  < ---- Phase gates ---------------------------------------------------- >
+  < Before COMPILE: the irreducible settings — a global os.conf, the kernel >
+  < command line, the filesystem choice, and the base-driver policy — must be >
+  < declared wanted. Before ISO: additionally the service manifest. >
   boolean readyForCompile() {
     if (configured != 1) { return false; }
     return wantOsConf == 1 && wantCmdline == 1 && wantFilesystems == 1 && wantBaseDrivers == 1;
@@ -172,11 +180,11 @@ class SLConfigSet {
     return wantServices == 1;
   }
 
-  // ---- Presence check (host) ------------------------------------------
-  // allPresent(root): are the required compile-phase settings files actually on
-  // disk under `root`? A pre-flight the Creator runs before compiling. Returns 1
-  // if every required compile file exists, else 0 (missing one is honest, not
-  // faked). Only checks the well-known fixed slots (extras are developer-owned).
+  < ---- Presence check (host) ------------------------------------------ >
+  < allPresent(root): are the required compile-phase settings files actually on >
+  < disk under `root`? A pre-flight the Creator runs before compiling. Returns 1 >
+  < if every required compile file exists, else 0 (missing one is honest, not >
+  < faked). Only checks the well-known fixed slots (extras are developer-owned). >
   int compileFilesPresent(String root) {
     if (wantOsConf == 1       && osExists(root + "/config/os.conf") != 1) { return 0; }
     if (wantCmdline == 1      && osExists(root + "/config/cmdline.conf") != 1) { return 0; }
@@ -185,9 +193,9 @@ class SLConfigSet {
     return 1;
   }
 
-  // ---- Default content for the global settings file -------------------
-  // os.conf aggregates the top-level knobs; the per-layer files are emitted by
-  // their own layers. This gives the build one authoritative settings header.
+  < ---- Default content for the global settings file ------------------- >
+  < os.conf aggregates the top-level knobs; the per-layer files are emitted by >
+  < their own layers. This gives the build one authoritative settings header. >
   String emitOsConf(String osName, String osVersion, String shape, String arch) {
     String s = "# os.conf - global OS settings (generated by SLeeLa lib/os)\n";
     s = s + "name = " + osName + "\n";

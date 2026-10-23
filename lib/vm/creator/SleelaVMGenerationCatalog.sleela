@@ -50,7 +50,8 @@ class SleelaVMGenerationCatalog {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int CORE       = 0;
-  static final int SOVEREIGN  = 11;   // highest defined generation
+  < highest defined generation >
+  static final int SOVEREIGN  = 11;
 
   String nameForVersion(int version) {
     if (version == 0)  { return "Core"; }

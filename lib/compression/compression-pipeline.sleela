@@ -91,7 +91,7 @@ class Verifier {
   }
 }
 
-// ---- Processor: pure compress/decompress dispatch over the facts -------
+< ---- Processor: pure compress/decompress dispatch over the facts ------- >
 class Processor {
   int compress(boolean loaded, boolean nativeAlg, boolean backendReady) {
     if (!loaded) { return -5; }
@@ -107,11 +107,12 @@ class Processor {
   }
 }
 
-// ---- Controller: owns lifecycle + wires the collaborators as fields ----
+< ---- Controller: owns lifecycle + wires the collaborators as fields ---- >
 class Controller {
   int[] loaded;
   int[] backend;
-  Verifier verifier;      // wired by create(), called via the field (1.11)
+  < wired by create(), called via the field (1.11) >
+  Verifier verifier;
   Processor processor;
 
   void create() {
@@ -142,7 +143,7 @@ class Controller {
     return n;
   }
 
-  // Clean facade methods: delegate to the wired collaborators.
+  < Clean facade methods: delegate to the wired collaborators. >
   int resolveExtension(String ext) { return verifier.resolveExtension(ext); }
   int probeMagic(String tag) { return verifier.probeMagic(tag); }
   String resultText(int code) { return verifier.resultText(code); }
@@ -154,29 +155,29 @@ class Controller {
     create();
     print("algorithms known: " + count());
 
-    // Resolve a file the way a GUI would when the user opens it.
+    < Resolve a file the way a GUI would when the user opens it. >
     int rle = resolveExtension(".rle");
     int gz = resolveExtension(".gz");
     print("resolve .rle -> " + rle + " (" + nameOf(rle) + ")");
     print("resolve .gz  -> " + gz + " (" + nameOf(gz) + ")");
 
-    // Compress before load: honest state error (-5).
+    < Compress before load: honest state error (-5). >
     print("compress .rle before load: " + resultText(compress(rle)));
 
-    // Load the native RLE algorithm and process it.
+    < Load the native RLE algorithm and process it. >
     load(rle);
     print("compress .rle loaded:      " + resultText(compress(rle)));
     print("decompress .rle loaded:    " + resultText(decompress(rle)));
 
-    // Load backend gzip with no backend wired: unsupported (-1), not a false ok.
+    < Load backend gzip with no backend wired: unsupported (-1), not a false ok. >
     load(gz);
     print("compress .gz no backend:   " + resultText(compress(gz)));
 
-    // Wire a gzip backend adapter, then it processes.
+    < Wire a gzip backend adapter, then it processes. >
     registerBackend(gz);
     print("compress .gz backend:      " + resultText(compress(gz)));
 
-    // Verifier content probe for a GUI pre-classify.
+    < Verifier content probe for a GUI pre-classify. >
     print("probe 'SHF1' -> id " + probeMagic("SHF1") + " (" + nameOf(2) + ")");
 
     print("loaded count=" + loadedCount());

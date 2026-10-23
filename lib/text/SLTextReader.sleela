@@ -1,45 +1,52 @@
-// lib/text/SLTextReader.sleela
-// SLeeLa Standard Library Definition.
-// Definition: SLTextReader -- a comprehensive buffered text-input contract for
-// the text library family.
-//
-// SLTextReader reads decoded text from a source. The byte/stream I/O is a
-// runtime concern, so the actual source reads are bridged; the in-language
-// layer manages an in-memory pushback/peek buffer and line/position state so a
-// caller can drive the reader deterministically.
-//   * In-language: source naming, charset selection, an in-memory buffer the
-//     caller can prime/peek/advance, line and offset counters, EOF state.
-//   * Bridged: open / read / readChar / readLine / ready / close -- the real
-//     source access; each returns an inspectable "text.bridge:reader:<op>:..."
-//     descriptor the runtime fulfils; never a faked read.
-//
-// Comments are // only; #sleela 2.1.
+< lib/text/SLTextReader.sleela >
+< SLeeLa Standard Library Definition. >
+< Definition: SLTextReader -- a comprehensive buffered text-input contract for >
+< the text library family. >
+<  >
+< SLTextReader reads decoded text from a source. The byte/stream I/O is a >
+< runtime concern, so the actual source reads are bridged; the in-language >
+< layer manages an in-memory pushback/peek buffer and line/position state so a >
+< caller can drive the reader deterministically. >
+< * In-language: source naming, charset selection, an in-memory buffer the >
+< caller can prime/peek/advance, line and offset counters, EOF state. >
+< * Bridged: open / read / readChar / readLine / ready / close -- the real >
+< source access; each returns an inspectable "text.bridge:reader:<op>:..." >
+< descriptor the runtime fulfils; never a faked read. >
+<  >
+< only; #sleela 2.1. > >
+< Comments are
 #sleela 2.1
-// Family: text. Native VM/OS work crosses an explicit bridge.
+< Family: text. Native VM/OS work crosses an explicit bridge. >
 
 class SLTextReader {
 
-  String value   = "";      // the source name/path or primed buffer content
-  String charset = "UTF-8"; // decoding charset
-  String buffer  = "";      // in-memory lookahead buffer (in-language)
-  int    line    = 1;       // 1-based current line
-  int    offset  = 0;       // characters consumed
-  int    atEof   = 0;       // 1 once the source is exhausted
+  < the source name/path or primed buffer content >
+  String value   = "";
+  < decoding charset >
+  String charset = "UTF-8";
+  < in-memory lookahead buffer (in-language) >
+  String buffer  = "";
+  < 1-based current line >
+  int    line    = 1;
+  < characters consumed >
+  int    offset  = 0;
+  < 1 once the source is exhausted >
+  int    atEof   = 0;
 
-  // ---- configuration / lifecycle (in-language) ----------------------
+  < ---- configuration / lifecycle (in-language) ---------------------- >
   void set(String v)         { value = v; }
   String get()               { return value; }
   void clear()               { value = ""; buffer = ""; line = 1; offset = 0; atEof = 0; }
   void setCharset(String c)  { charset = c; }
   String getCharset()        { return charset; }
 
-  // In-memory buffer the caller can prime (useful for tests / piping).
+  < In-memory buffer the caller can prime (useful for tests / piping). >
   void prime(String text)    { buffer = buffer + text; }
   String peekBuffer()        { return buffer; }
   boolean hasBuffered()      { return buffer != ""; }
   void dropBuffer()          { buffer = ""; }
 
-  // Position state (in-language).
+  < Position state (in-language). >
   int lineNumber()           { return line; }
   int position()             { return offset; }
   boolean isEof()            { return atEof == 1; }
@@ -47,7 +54,7 @@ class SLTextReader {
   void countLine()           { line = line + 1; }
   void advance(int chars)    { offset = offset + chars; }
 
-  // ---- bridged source access (the real I/O) -------------------------
+  < ---- bridged source access (the real I/O) ------------------------- >
   String bridge(String op)              { return "text.bridge:reader:" + op + ":" + value; }
   String bridgeArg(String op, String a) { return "text.bridge:reader:" + op + ":" + value + ":" + a; }
 
@@ -57,20 +64,21 @@ class SLTextReader {
   String readLine()           { return bridge("readLine"); }
   String readAll()            { return bridge("readAll"); }
   String ready()              { return bridge("ready"); }
-  String closeStream()        { return bridge("close"); }   // not named close(): close is reserved
+  < not named close(): close is reserved >
+  String closeStream()        { return bridge("close"); }
 
-  // ---- introspection -------------------------------------------------
+  < ---- introspection ------------------------------------------------- >
   String typeName()   { return "SLeeLa.text.SLTextReader"; }
   boolean available() { return true; }
 
-  // SLCloneable / SLDisposable intent.
+  < SLCloneable / SLDisposable intent. >
   SLTextReader copy() { SLTextReader c = new SLTextReader(); c.set(value); c.setCharset(charset); return c; }
   void dispose() { value = ""; buffer = ""; line = 1; offset = 0; atEof = 0; }
 
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override each record.
-  // Values are faithful to the subject's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, >
+  < or catalog can read and (where appropriate) override each record. >
+  < Values are faithful to the subject's real origin where publicly known. >
   String metaVersion = "1.0.0";
   int metaId = 6;
   String metaAuthor = "SLeeLa standard library";

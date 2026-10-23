@@ -59,7 +59,7 @@ class Character {
   int cashCents;
   BusinessModel model;
 
-  // Optional life-capability profile. Scale: 1..30; 0 = unknown.
+  < Optional life-capability profile. Scale: 1..30; 0 = unknown. >
   int intelligence;
   int creativity;
   int systemsThinking;
@@ -131,7 +131,7 @@ class Character {
     return total;
   }
 
-  // Zero explicitly represents an unknown stat; populated scores use 1..30.
+  < Zero explicitly represents an unknown stat; populated scores use 1..30. >
   boolean setLifeCapabilities(int intel, int create, int systems, int innovation,
                               int execute, int explore, int collaborate,
                               int recover, int sustain, String status, String source) {
@@ -156,14 +156,14 @@ class Character {
 
   boolean validStat(int value) { return value >= 0 && value <= 30; }
 
-  // Classic ability-score modifier; a game/simulation convention only.
+  < Classic ability-score modifier; a game/simulation convention only. >
   int intelligenceModifier() {
     if (intelligence == 0) { return 0; }
     return floorHalf(intelligence - 10);
   }
 
-  // Normalized planning index, not measured human cognitive throughput.
-  // INT 10 -> 100; each point above/below 10 shifts index by five.
+  < Normalized planning index, not measured human cognitive throughput. >
+  < INT 10 -> 100; each point above/below 10 shifts index by five. >
   int intelligencePlanningIndex() {
     if (intelligence == 0) { return 0; }
     return 100 + (intelligence - 10) * 5;

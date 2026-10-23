@@ -72,32 +72,45 @@ class SLAMDThreadripperCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
-    // Family default: rated at the roster's 5.4 GHz max boost. Per-SKU classes
-    // (SLAMDThreadripper9980X, ...) override configure() via bringUpModel().
+    < Family default: rated at the roster's 5.4 GHz max boost. Per-SKU classes >
+    < (SLAMDThreadripper9980X, ...) override configure() via bringUpModel(). >
     bringUpModel("AMD Ryzen Threadripper 9000 (Zen 5 x86-64)", 5400);
   }
 
-  // Shared bring-up for every Threadripper SKU: all share the Zen 5 x86-64
-  // programmer model (64-bit data / 48-bit address / 16 register slots); a SKU
-  // differs only in its rated clock and identity label. A per-SKU subclass
-  // calls this from its own configure().
+  < Shared bring-up for every Threadripper SKU: all share the Zen 5 x86-64 >
+  < programmer model (64-bit data / 48-bit address / 16 register slots); a SKU >
+  < differs only in its rated clock and identity label. A per-SKU subclass >
+  < calls this from its own configure(). >
   void bringUpModel(String name, int ratedMHz) {
-    setSpecClock(ratedMHz);   // rated clock (MHz); overclockable via overclock()
+    < rated clock (MHz); overclockable via overclock() >
+    setSpecClock(ratedMHz);
     bringUp(name, 64, 48, 16, 262144);
   }
 
-  static final int I_LOADI = 1;   // dst <- imm
-  static final int I_MOVE  = 2;   // dst <- src
-  static final int I_LOAD  = 3;   // dst <- mem[imm]
-  static final int I_STORE = 4;   // mem[imm] <- dst
-  static final int I_ADD   = 5;   // dst <- dst + src
-  static final int I_SUB   = 6;   // dst <- dst - src
-  static final int I_MUL   = 7;   // dst <- dst * src
-  static final int I_AND   = 8;   // dst <- dst & src
-  static final int I_OR    = 9;   // dst <- dst | src
-  static final int I_CMP   = 10;  // flags <- dst - src
-  static final int I_JMP   = 11;  // pc <- imm
-  static final int I_JZ    = 12;  // if Z: pc <- imm
+  < dst <- imm >
+  static final int I_LOADI = 1;
+  < dst <- src >
+  static final int I_MOVE  = 2;
+  < dst <- mem[imm] >
+  static final int I_LOAD  = 3;
+  < mem[imm] <- dst >
+  static final int I_STORE = 4;
+  < dst <- dst + src >
+  static final int I_ADD   = 5;
+  < dst <- dst - src >
+  static final int I_SUB   = 6;
+  < dst <- dst * src >
+  static final int I_MUL   = 7;
+  < dst <- dst & src >
+  static final int I_AND   = 8;
+  < dst <- dst | src >
+  static final int I_OR    = 9;
+  < flags <- dst - src >
+  static final int I_CMP   = 10;
+  < pc <- imm >
+  static final int I_JMP   = 11;
+  < if Z: pc <- imm >
+  static final int I_JZ    = 12;
   static final int I_HALT  = 13;
 
   int opOf(int w)  { return (w / 65536) % 256; }

@@ -428,7 +428,7 @@ ExprP Parser::parseUnary(){
 ExprP Parser::parsePrimary(){
     const Token&t=cur();
     switch(t.kind){
-    case Tok::Int:i_++;return parsePostfix(std::make_unique<IntLit>(std::stoll(t.text)));
+    case Tok::Int:{i_++;long long iv;const std::string&nt=t.text;if(nt.size()>2&&nt[0]=='0'&&(nt[1]=='b'||nt[1]=='B'))iv=std::stoll(nt.substr(2),nullptr,2);else iv=std::stoll(nt,nullptr,0);return parsePostfix(std::make_unique<IntLit>(iv));}
     case Tok::Double:i_++;return parsePostfix(std::make_unique<DoubleLit>(std::stod(t.text)));
     case Tok::Str:i_++;return parsePostfix(std::make_unique<StrLit>(t.text));
     case Tok::KwTrue:i_++;return parsePostfix(std::make_unique<BoolLit>(true));

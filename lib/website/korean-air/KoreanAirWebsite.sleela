@@ -49,20 +49,20 @@ class KoreanAirWebsite {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Brand identity for Korean Air.
+  < Brand identity for Korean Air. >
   String brandName() { return "Korean Air"; }
   String brand() { return "#0f4c99"; }
   String base() { return "#0a1322"; }
   String accent() { return "#e4002b"; }
   String tagline() { return "Excellence in flight."; }
   String hubs() { return "Seoul Incheon"; }
-  // Airline sites read as confident and vivid: a bold animated hero gradient.
+  < Airline sites read as confident and vivid: a bold animated hero gradient. >
   int energy() { return 85; }
   String font() { return "'Inter', system-ui, sans-serif"; }
 
   String intToStr(int v) { return "" + v; }
 
-  // The <style> block, derived entirely from the brand design.
+  < The <style> block, derived entirely from the brand design. >
   String style() {
     String css = "<style>\n";
     css = css + ":root{--brand:" + brand() + ";--base:" + base() + ";--accent:" + accent()
@@ -86,7 +86,7 @@ class KoreanAirWebsite {
     return css;
   }
 
-  // The composed page body: the airline's ordered semantic signs.
+  < The composed page body: the airline's ordered semantic signs. >
   String body() {
     String b = "";
     b = b + "<nav><span class=\"brand\">" + brandName() + "</span><span>Book &nbsp; Flights &nbsp; Destinations &nbsp; Loyalty</span></nav>";
@@ -102,7 +102,7 @@ class KoreanAirWebsite {
     return b;
   }
 
-  // The finished, self-contained HTML document for this airline.
+  < The finished, self-contained HTML document for this airline. >
   String build() {
     String html = "<!doctype html>\n<html lang=\"en\">\n<head>\n";
     html = html + "<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n";

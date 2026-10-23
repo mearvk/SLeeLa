@@ -61,26 +61,34 @@ class SLGuiCryptoSelector {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_SUITES = 32;
 
-  // Security strength classes (ascending).
-  static final int STRENGTH_LEGACY     = 0;   // deprecated, interop only
+  < Security strength classes (ascending). >
+  < deprecated, interop only >
+  static final int STRENGTH_LEGACY     = 0;
   static final int STRENGTH_STANDARD   = 1;
   static final int STRENGTH_STRONG     = 2;
-  static final int STRENGTH_TOPSECRET  = 3;   // suite-B / PQC grade
+  < suite-B / PQC grade >
+  static final int STRENGTH_TOPSECRET  = 3;
 
-  String[] names;       // suite name, e.g. "AES-256-GCM + X25519 + Ed25519"
-  int[] strength;       // STRENGTH_*
-  int[] available;      // 1 = the platform can actually run this suite
-  int[] pqc;            // 1 = post-quantum
+  < suite name, e.g. "AES-256-GCM + X25519 + Ed25519" >
+  String[] names;
+  < STRENGTH_* >
+  int[] strength;
+  < 1 = the platform can actually run this suite >
+  int[] available;
+  < 1 = post-quantum >
+  int[] pqc;
   int count;
 
-  int selected;         // index of the chosen suite (-1 = none)
-  int minStrength;      // a suite below this cannot be selected
+  < index of the chosen suite (-1 = none) >
+  int selected;
+  < a suite below this cannot be selected >
+  int minStrength;
 
   void configure() {
     names = new String[MAX_SUITES]; strength = new int[MAX_SUITES];
     available = new int[MAX_SUITES]; pqc = new int[MAX_SUITES]; count = 0;
     selected = -1; minStrength = STRENGTH_STANDARD;
-    // A careful default catalog (standards, not implementations).
+    < A careful default catalog (standards, not implementations). >
     add("AES-128-GCM + X25519 + Ed25519",        STRENGTH_STANDARD,  1, 0);
     add("AES-256-GCM + X25519 + Ed25519",        STRENGTH_STRONG,    1, 0);
     add("ChaCha20-Poly1305 + X25519 + Ed25519",  STRENGTH_STRONG,    1, 0);
@@ -102,20 +110,20 @@ class SLGuiCryptoSelector {
   boolean suitePostQuantum(int i) { return i >= 0 && i < count && pqc[i] == 1; }
   int indexOf(String name) { for (int i = 0; i < count; i = i + 1) { if (names[i] == name) { return i; } } return -1; }
 
-  // Require a minimum strength; any current selection below it is cleared.
+  < Require a minimum strength; any current selection below it is cleared. >
   void requireMinStrength(int s) {
     if (s >= STRENGTH_LEGACY && s <= STRENGTH_TOPSECRET) {
       minStrength = s;
       if (selected >= 0 && strength[selected] < minStrength) { selected = -1; }
     }
   }
-  // A suite is selectable when it exists, is available, and meets the minimum.
+  < A suite is selectable when it exists, is available, and meets the minimum. >
   boolean selectable(int i) {
     return i >= 0 && i < count && available[i] == 1 && strength[i] >= minStrength;
   }
 
-  // Select by index or name. Fail-closed: returns false (and selects nothing)
-  // if the suite is unavailable or below the required strength.
+  < Select by index or name. Fail-closed: returns false (and selects nothing) >
+  < if the suite is unavailable or below the required strength. >
   boolean select(int i) {
     if (!selectable(i)) { return false; }
     selected = i; return true;

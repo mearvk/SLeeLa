@@ -1,5 +1,5 @@
 #sleela 2.1
-/* HTTP/1.0 connection lifecycle defaults. */
+< HTTP/1.0 connection lifecycle defaults. >
 class Http30ConnectionPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,5 +1,5 @@
 #sleela 2.1
-/* State model only; native server must enforce it atomically per stream. */
+< State model only; native server must enforce it atomically per stream. >
 class Http50StreamState {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -53,13 +53,18 @@ class SLIR {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String language;    // "sleela" | "c" | "cpp" | "java" (provenance only)
-  SLRAM nodeStore;    // encoded IR nodes, one per word-group (modeled)
-  int count;          // number of IR instructions
-  int nextTemp;       // SSA-ish temporary allocator
-  int nextLabel;      // label id allocator
+  < "sleela" | "c" | "cpp" | "java" (provenance only) >
+  String language;
+  < encoded IR nodes, one per word-group (modeled) >
+  SLRAM nodeStore;
+  < number of IR instructions >
+  int count;
+  < SSA-ish temporary allocator >
+  int nextTemp;
+  < label id allocator >
+  int nextLabel;
 
-  // Node fields kept in parallel integer stores for walkability.
+  < Node fields kept in parallel integer stores for walkability. >
   SLRAM opStore; SLRAM dstStore; SLRAM aStore; SLRAM bStore; SLRAM immStore; SLRAM flagStore;
 
   void configure(String lang, int capacity) {
@@ -75,7 +80,7 @@ class SLIR {
   int allocTemp() { int t = nextTemp; nextTemp = nextTemp + 1; return t; }
   int allocLabel() { int l = nextLabel; nextLabel = nextLabel + 1; return l; }
 
-  // Append an IR instruction; returns its index.
+  < Append an IR instruction; returns its index. >
   int emit(int op, int dst, int a, int b, int imm) {
     int i = count;
     opStore.writeWord(i, op);
@@ -90,7 +95,7 @@ class SLIR {
 
   void markImmediateA(int index) { flagStore.writeWord(index, 1); }
 
-  // Read a node back as an SLIRInstruction.
+  < Read a node back as an SLIRInstruction. >
   SLIRInstruction at(int index) {
     SLIRInstruction n = new SLIRInstruction();
     n.configure(opStore.readWord(index), dstStore.readWord(index),

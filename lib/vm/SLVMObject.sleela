@@ -53,11 +53,12 @@ class SLVMObject {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLVMHeap heap;
-  int handle;      // -1 == null object
+  < -1 == null object >
+  int handle;
 
   void bind(SLVMHeap h, int objectHandle) { heap = h; handle = objectHandle; }
 
-  // Allocate a fresh instance of classId with fieldCount fields on the heap.
+  < Allocate a fresh instance of classId with fieldCount fields on the heap. >
   void create(SLVMHeap h, int classId, int fieldCount) {
     heap = h;
     handle = h.allocate(classId, fieldCount);
@@ -77,7 +78,7 @@ class SLVMObject {
     heap.setField(handle, index, v);
   }
 
-  // Convenience scalar accessors for the common integer-field case.
+  < Convenience scalar accessors for the common integer-field case. >
   int getInt(int index) {
     SLVMValue tmp = new SLVMValue();
     getField(index, tmp);

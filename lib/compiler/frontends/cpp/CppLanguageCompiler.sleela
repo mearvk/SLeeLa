@@ -67,14 +67,14 @@ class CppLanguageCompiler extends SLLanguageCompiler {
   }
 
   boolean runResolve(SLCompileRequest request) {
-    // C++ name resolution: namespaces, overloads, templates, ADL, and
-    // qualified lookup resolve to SLeeLa symbols here.
+    < C++ name resolution: namespaces, overloads, templates, ADL, and >
+    < qualified lookup resolve to SLeeLa symbols here. >
     return provides(PHASE_RESOLVE);
   }
 
   boolean runSemantic(SLCompileRequest request) {
-    // C++ semantics: template instantiation, overload resolution, access
-    // control, and type checking before IR construction.
+    < C++ semantics: template instantiation, overload resolution, access >
+    < control, and type checking before IR construction. >
     return provides(PHASE_SEMANTIC);
   }
 }

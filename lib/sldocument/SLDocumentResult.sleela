@@ -55,10 +55,13 @@ class SLDocumentResult {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_STEPS = 65536;
 
-  SLVeritable[] values; // one per step, in run order
-  String[] names;       // the step name for each value
+  < one per step, in run order >
+  SLVeritable[] values;
+  < the step name for each value >
+  String[] names;
   int count;
-  int firstUnsound;     // index of the first unsound step, or -1
+  < index of the first unsound step, or -1 >
+  int firstUnsound;
   int state;
 
   void init() {
@@ -80,7 +83,7 @@ class SLDocumentResult {
   int size() { return count; }
   boolean active() { return state == 1; }
 
-  // The document is sound when every recorded step was sound.
+  < The document is sound when every recorded step was sound. >
   boolean sound() { return state == 1 && count > 0 && firstUnsound < 0; }
   int firstFault() { return firstUnsound; }
 
@@ -89,8 +92,8 @@ class SLDocumentResult {
     return values[index];
   }
 
-  // The final binary item of the whole document: the last step's bit, which in
-  // an ordered program is the established "final result" of the flow.
+  < The final binary item of the whole document: the last step's bit, which in >
+  < an ordered program is the established "final result" of the flow. >
   int finalBit() {
     if (count < 1) { return 0; }
     SLVeritable last = values[count - 1];

@@ -1,8 +1,6 @@
 #sleela 2.1
-/*
- * A model/policy smoke example. It does not access a physical radio.
- * The live OOD must bind SLWifiManager to a native SLVM bridge.
- */
+<< A model/policy smoke example. It does not access a physical radio.
+   The live OOD must bind SLWifiManager to a native SLVM bridge. >>
 class WifiOODPolicySmoke {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -60,7 +60,8 @@ class SLOpcodeReactorBank {
   String label;
   SLOpcodeConditionalReactive[] reactives;
   int count;
-  int fired;   // total reactions fired across all ticks
+  < total reactions fired across all ticks >
+  int fired;
   int state;
 
   void init(String name) {
@@ -85,8 +86,8 @@ class SLOpcodeReactorBank {
   int size() { return count; }
   int firedCount() { return fired; }
 
-  // Tick every reactive at the given stream index. Returns how many reacted
-  // on this tick.
+  < Tick every reactive at the given stream index. Returns how many reacted >
+  < on this tick. >
   int tick(int index) {
     if (!active()) { return 0; }
     int reactedNow = 0;
@@ -97,15 +98,15 @@ class SLOpcodeReactorBank {
     return reactedNow;
   }
 
-  // Reset every reactive's edge so the bank can be reused for another run.
+  < Reset every reactive's edge so the bank can be reused for another run. >
   void rearmAll() {
     for (int i = 0; i < count; i = i + 1) { reactives[i].rearm(); }
     fired = 0;
   }
 
-  // Drive a stream to completion under this bank: before each opcode fires, tick
-  // the bank at that index so reactives can warm/gate/run/skip around it. The
-  // VM owns the instruction pointer; the opcode still fires via step().
+  < Drive a stream to completion under this bank: before each opcode fires, tick >
+  < the bank at that index so reactives can warm/gate/run/skip around it. The >
+  < VM owns the instruction pointer; the opcode still fires via step(). >
   int driveStream(SLOpcodeStream stream) {
     if (!active() || stream == null || !stream.active()) { return -1; }
     int ip = 0;

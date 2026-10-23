@@ -53,27 +53,36 @@ class SLVideoCard extends SLHardwareComponent {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // GPU vendor ordinals.
+  < GPU vendor ordinals. >
   static final int GPU_NVIDIA = 0;
   static final int GPU_AMD    = 1;
   static final int GPU_INTEL  = 2;
-  // Video-memory type ordinals.
+  < Video-memory type ordinals. >
   static final int VRAM_GDDR6  = 0;
   static final int VRAM_GDDR6X = 1;
   static final int VRAM_GDDR7  = 2;
   static final int VRAM_HBM    = 3;
 
-  int gpuVendor;      // GPU_*
-  String architecture;// e.g. "Ada Lovelace", "RDNA 3", "Xe-HPG"
-  int pcieGen;        // PCIe generation (3,4,5)
-  int pcieLanes;      // typically 16
-  int vramMb;         // video memory in MB
-  int vramType;       // VRAM_*
+  < GPU_* >
+  int gpuVendor;
+  < e.g. "Ada Lovelace", "RDNA 3", "Xe-HPG" >
+  String architecture;
+  < PCIe generation (3,4,5) >
+  int pcieGen;
+  < typically 16 >
+  int pcieLanes;
+  < video memory in MB >
+  int vramMb;
+  < VRAM_* >
+  int vramType;
   int hdmiPorts;
   int displayPorts;
-  int boardPowerW;    // typical board power (TGP) in watts
-  int vulkan;         // 1 if Vulkan supported
-  int direct3d;       // 1 if Direct3D 12 supported
+  < typical board power (TGP) in watts >
+  int boardPowerW;
+  < 1 if Vulkan supported >
+  int vulkan;
+  < 1 if Direct3D 12 supported >
+  int direct3d;
 
   void configure(String vendorName, String partName, int vendorOrdinal, int vramMegabytes) {
     configureComponent(vendorName, partName, CLASS_VIDEO);
@@ -86,7 +95,7 @@ class SLVideoCard extends SLHardwareComponent {
     if (vendorOrdinal == GPU_INTEL)  { architecture = "Xe-HPG"; vramType = VRAM_GDDR6; }
   }
 
-  // Configure by vendor name ("NVIDIA"/"AMD"/"Intel").
+  < Configure by vendor name ("NVIDIA"/"AMD"/"Intel"). >
   void configureByVendor(String vendorName, String partName, int vramMb) {
     if (vendorName == "NVIDIA") { configure(vendorName, partName, GPU_NVIDIA, vramMb); return; }
     if (vendorName == "AMD")    { configure(vendorName, partName, GPU_AMD, vramMb); return; }

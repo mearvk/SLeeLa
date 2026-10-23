@@ -54,7 +54,7 @@ class SLSpinner extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a spinner inside `parent`.
+  < Create a spinner inside `parent`. >
   void createIn(SLWidget parent) {
     widget = uiSpinner(parent.handle());
   }
@@ -62,7 +62,7 @@ class SLSpinner extends SLWidget {
     widget = uiSpinner(parentHandle);
   }
 
-  // Advance the bright arc; phase wraps over [0,1].
+  < Advance the bright arc; phase wraps over [0,1]. >
   void setPhase(double phase) {
     if (widget >= 0) { uiWidgetSetValue(widget, phase); }
   }

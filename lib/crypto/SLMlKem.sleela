@@ -57,18 +57,22 @@ class SLMlKem {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Status codes mirror slcrypto_status in crypto/include/slcrypto.h.
+  < Status codes mirror slcrypto_status in crypto/include/slcrypto.h. >
   static final int OK = 0;
   static final int ERR_PARAM = -1;
   static final int ERR_AUTH = -2;
   static final int ERR_UNIMPL = -3;
 
-  String parameterSet;   // "ML-KEM-512" | "ML-KEM-768" | "ML-KEM-1024"
-  int state;             // 1 = enabled, 0 = disabled
-  int configured;        // 1 once a supported parameter set has been accepted
-  int backend;           // 1 only once a real native implementation is linked
+  < "ML-KEM-512" | "ML-KEM-768" | "ML-KEM-1024" >
+  String parameterSet;
+  < 1 = enabled, 0 = disabled >
+  int state;
+  < 1 once a supported parameter set has been accepted >
+  int configured;
+  < 1 only once a real native implementation is linked >
+  int backend;
 
-  // Validate against the three FIPS 203 parameter sets named by CNSA 2.0.
+  < Validate against the three FIPS 203 parameter sets named by CNSA 2.0. >
   int configure(String p) {
     if (p == null) { configured = 0; return ERR_PARAM; }
     if (p == "ML-KEM-512" || p == "ML-KEM-768" || p == "ML-KEM-1024") {
@@ -78,20 +82,20 @@ class SLMlKem {
     return ERR_PARAM;
   }
 
-  // The VM/OS bridge binding calls this with 1 only when a real ML-KEM
-  // implementation is present. It stays 0 while src/pq.c returns ERR_UNIMPL.
+  < The VM/OS bridge binding calls this with 1 only when a real ML-KEM >
+  < implementation is present. It stays 0 while src/pq.c returns ERR_UNIMPL. >
   void bindBackend(int ready) { if (ready == 1) { backend = 1; } else { backend = 0; } }
   boolean backendReady() { return backend == 1; }
 
   void enable() { state = 1; }
   void disable() { state = 0; }
 
-  // active() reflects real usability: it is false while the PQ backend is pending,
-  // so it cannot report ready for an unimplemented primitive.
+  < active() reflects real usability: it is false while the PQ backend is pending, >
+  < so it cannot report ready for an unimplemented primitive. >
   boolean active() { return state == 1 && configured == 1 && backend == 1; }
 
-  // KEM operations. Model slc_mlkem_keygen/encaps/decaps; they surface
-  // ERR_UNIMPL until the backend is vendored.
+  < KEM operations. Model slc_mlkem_keygen/encaps/decaps; they surface >
+  < ERR_UNIMPL until the backend is vendored. >
   int keygen() {
     if (configured == 0) { return ERR_PARAM; }
     if (backend == 0) { return ERR_UNIMPL; }

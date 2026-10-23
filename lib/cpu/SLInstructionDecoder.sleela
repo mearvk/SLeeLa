@@ -54,7 +54,7 @@ class SLInstructionDecoder {
 
   void configure(SLInstructionSet instructionSet) { isa = instructionSet; decoded = 0; }
 
-  // Decode a packed word [opcode][rd][rs][imm] into an SLInstruction.
+  < Decode a packed word [opcode][rd][rs][imm] into an SLInstruction. >
   SLInstruction decode(int word) {
     int opcode = (word / 16777216) % 256;
     int rd     = (word / 65536) % 256;

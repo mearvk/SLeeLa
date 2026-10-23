@@ -56,7 +56,8 @@ class SLDriverSet {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String drivers;     // newline-separated "name binding" lines (binding: builtin|module)
+  < newline-separated "name binding" lines (binding: builtin|module) >
+  String drivers;
   int count;
   int builtinCount;
   int configured;
@@ -69,13 +70,13 @@ class SLDriverSet {
     count = count + 1;
     if (binding == "builtin") { builtinCount = builtinCount + 1; }
   }
-  // A driver that must be present before the rootfs mounts -> built-in.
+  < A driver that must be present before the rootfs mounts -> built-in. >
   void builtin(String name) { add(name, "builtin"); }
-  // A driver loaded on demand after boot -> module.
+  < A driver loaded on demand after boot -> module. >
   void module(String name) { add(name, "module"); }
 
-  // Seed the baseline driver set for a shape. Storage/bus/input are built in;
-  // GPU/audio/extra network are modules.
+  < Seed the baseline driver set for a shape. Storage/bus/input are built in; >
+  < GPU/audio/extra network are modules. >
   void forShape(SLOSShape shape) {
     configure();
     builtin("storage-ahci");
@@ -92,6 +93,6 @@ class SLDriverSet {
   String driverManifest() { return drivers; }
   int driverCount()       { return count; }
   int builtinDriverCount(){ return builtinCount; }
-  // The kernel can reach a rootfs only if at least one storage driver is built in.
+  < The kernel can reach a rootfs only if at least one storage driver is built in. >
   boolean canReachRootfs() { return builtinCount > 0; }
 }

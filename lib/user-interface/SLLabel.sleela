@@ -53,7 +53,7 @@ class SLLabel extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a label inside `parent` with initial text.
+  < Create a label inside `parent` with initial text. >
   void createIn(SLWidget parent, String text) {
     widget = uiLabel(parent.handle(), text);
   }

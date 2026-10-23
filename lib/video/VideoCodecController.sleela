@@ -62,7 +62,8 @@ class VideoCodecController {
 
   int[] loaded;
   int[] backend;
-  VideoCodecVerifier verifier;   // wired by create(), called via the field
+  < wired by create(), called via the field >
+  VideoCodecVerifier verifier;
   int ready;
 
   void create(){
@@ -82,8 +83,8 @@ class VideoCodecController {
   int count(){ return 12; }
   boolean validId(int id){ return id >= 0 && id < 12; }
 
-  // Only Raw Video (0) is native; every other video codec is a backend
-  // (ProRes/DNx are qualified backends).
+  < Only Raw Video (0) is native; every other video codec is a backend >
+  < (ProRes/DNx are qualified backends). >
   boolean isNative(int id){ return id == 0; }
   boolean isQualifiedBackend(int id){ return id == 10 || id == 11; }
 
@@ -119,8 +120,8 @@ class VideoCodecController {
     return n;
   }
 
-  // Register a (qualified, for ProRes/DNx) backend adapter. Returns 0 ok,
-  // -2 invalid id.
+  < Register a (qualified, for ProRes/DNx) backend adapter. Returns 0 ok, >
+  < -2 invalid id. >
   int registerBackend(int id){
     if(!validId(id)){ return -2; }
     backend[id] = 1;
@@ -145,7 +146,7 @@ class VideoCodecController {
     return backend[id] == 1;
   }
 
-  // Resolve a codec id from a file extension via the wired Verifier.
+  < Resolve a codec id from a file extension via the wired Verifier. >
   int resolveExtension(string extension){
     return verifier.resolveExtension(extension);
   }

@@ -56,22 +56,28 @@ class SLDMAController {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Transfer modes.
+  < Transfer modes. >
   static final int MODE_MEM_TO_MEM = 0;
   static final int MODE_MEM_TO_DEV = 1;
   static final int MODE_DEV_TO_MEM = 2;
 
   static final int CHANNELS = 8;
 
-  int enabled;          // 1 when the DMA option is on
-  SLRAM memory;         // the address space transfers operate over
+  < 1 when the DMA option is on >
+  int enabled;
+  < the address space transfers operate over >
+  SLRAM memory;
 
-  // Per-channel descriptors (bounded: 8 channels, wired as fields).
-  int busyMask;         // bit c set while channel c is running
-  int completedMask;    // bit c set once channel c finished
+  < Per-channel descriptors (bounded: 8 channels, wired as fields). >
+  < bit c set while channel c is running >
+  int busyMask;
+  < bit c set once channel c finished >
+  int completedMask;
   int lastSource; int lastDest; int lastLength; int lastMode;
-  int transfersDone;    // completed transfers
-  int wordsMoved;       // total words moved
+  < completed transfers >
+  int transfersDone;
+  < total words moved >
+  int wordsMoved;
 
   void configure(SLRAM addressSpace) {
     enabled = 0; memory = addressSpace;
@@ -84,8 +90,8 @@ class SLDMAController {
   void disable() { enabled = 0; }
   boolean isEnabled() { return enabled == 1; }
 
-  // Program a channel and perform a direct memory-to-memory block transfer.
-  // Returns the number of words moved, or -1 if DMA is disabled / out of range.
+  < Program a channel and perform a direct memory-to-memory block transfer. >
+  < Returns the number of words moved, or -1 if DMA is disabled / out of range. >
   int transfer(int channel, int src, int dst, int length, int mode) {
     if (enabled == 0) { return -1; }
     if (channel < 0 || channel >= CHANNELS) { return -1; }
@@ -97,7 +103,7 @@ class SLDMAController {
     start(channel);
     lastSource = src; lastDest = dst; lastLength = length; lastMode = mode;
 
-    // Direct copy over SLRAM. Overlap-safe (copy backward when dst > src).
+    < Direct copy over SLRAM. Overlap-safe (copy backward when dst > src). >
     if (dst > src) {
       int i = length - 1;
       while (i >= 0) { memory.writeWord(dst + i, memory.readWord(src + i)); i = i - 1; }
@@ -112,10 +118,10 @@ class SLDMAController {
     return length;
   }
 
-  // Convenience: a plain memory-to-memory move on channel 0.
+  < Convenience: a plain memory-to-memory move on channel 0. >
   int memcpy(int src, int dst, int length) { return transfer(0, src, dst, length, MODE_MEM_TO_MEM); }
 
-  // Fill a region with a constant (memset-style) without CPU involvement.
+  < Fill a region with a constant (memset-style) without CPU involvement. >
   int fill(int channel, int dst, int length, int value) {
     if (enabled == 0 || memory == null) { return -1; }
     if (dst < 0 || length < 0 || dst + length > memory.capacityWords()) { return -1; }

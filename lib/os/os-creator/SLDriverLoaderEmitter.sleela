@@ -100,8 +100,8 @@ class SLDriverLoaderEmitter {
     return p;
   }
 
-  // One load_driver() call per manifest line whose binding matches, with the
-  // given error code on failure.
+  < One load_driver() call per manifest line whose binding matches, with the >
+  < given error code on failure. >
   String emitLoadCalls(String manifest, String binding, int errCode) {
     String out = "";
     String line = "";
@@ -123,7 +123,7 @@ class SLDriverLoaderEmitter {
     return out;
   }
 
-  // A comma-separated C++ initializer list of driver names with the binding.
+  < A comma-separated C++ initializer list of driver names with the binding. >
   String driverList(String manifest, String binding) {
     String out = "";
     String line = "";
@@ -146,7 +146,7 @@ class SLDriverLoaderEmitter {
     return out;
   }
 
-  // "name binding" -> name (token before the space).
+  < "name binding" -> name (token before the space). >
   String lineName(String line) {
     int i = 0;
     int n = strLen(line);
@@ -156,7 +156,7 @@ class SLDriverLoaderEmitter {
     }
     return line;
   }
-  // "name binding" -> binding (token after the space).
+  < "name binding" -> binding (token after the space). >
   String lineBinding(String line) {
     int i = 0;
     int n = strLen(line);

@@ -54,10 +54,13 @@ class AskForHelpMove extends GameMove {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  static final int BASE_REPORT_COST = 2000;  // cents, before quality scaling
+  < cents, before quality scaling >
+  static final int BASE_REPORT_COST = 2000;
 
-  ExpectedFuture lastFuture;   // populated on a winning flip
-  DetailedReport lastReport;   // populated on a losing flip
+  < populated on a winning flip >
+  ExpectedFuture lastFuture;
+  < populated on a losing flip >
+  DetailedReport lastReport;
 
   void setUp() {
     load();
@@ -76,9 +79,10 @@ class AskForHelpMove extends GameMove {
       return out;
     }
 
-    boolean win = dice.coinFlip();   // the 50/50
+    < the 50/50 >
+    boolean win = dice.coinFlip();
     if (win) {
-      // You get to see your Expected Future being modeled live.
+      < You get to see your Expected Future being modeled live. >
       lastFuture = engine.model(p, turnNumber);
       out.succeed();
       out.addXp(3);
@@ -89,12 +93,13 @@ class AskForHelpMove extends GameMove {
               + " turn(s) — time to re-route.");
       }
     } else {
-      // The boss steps in with a pre-decided brief; you pay by your quality.
+      < The boss steps in with a pre-decided brief; you pay by your quality. >
       lastReport = engine.brief(p, BASE_REPORT_COST);
       if (lastReport.paid()) {
         out.succeed();
         out.addXp(2);
-        out.addFile(1);     // a report is paper; paper is file
+        < a report is paper; paper is file >
+        out.addFile(1);
         out.say("50/50 lost, but bought the Boss's brief ("
               + lastReport.moves() + " moves) for " + lastReport.price() + "c.");
       } else {

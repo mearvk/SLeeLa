@@ -70,19 +70,19 @@ class SLCodecController {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // Per-codec loaded flag (1 loaded, 0 not), indexed by codec id.
+  < Per-codec loaded flag (1 loaded, 0 not), indexed by codec id. >
   int[] loaded;
-  // Per-codec backend-registered flag (1 if an approved adapter is wired).
+  < Per-codec backend-registered flag (1 if an approved adapter is wired). >
   int[] backend;
-  // The verification collaborator, wired by create() and called via the field.
+  < The verification collaborator, wired by create() and called via the field. >
   SLCodecVerifier verifier;
-  // 1 once create() has allocated the tables and wired the verifier.
+  < 1 once create() has allocated the tables and wired the verifier. >
   int ready;
 
-  // ---- lifecycle of the controller itself -----------------------------
+  < ---- lifecycle of the controller itself ----------------------------- >
 
-  // Build the controller with every codec registered but none loaded.
-  // Mirrors sleela_codec_manager_create.
+  < Build the controller with every codec registered but none loaded. >
+  < Mirrors sleela_codec_manager_create. >
   void create() {
     loaded = new int[20];
     backend = new int[20];
@@ -92,31 +92,31 @@ class SLCodecController {
 
   boolean isReady() { return ready == 1; }
 
-  // Release every loaded codec. Mirrors sleela_codec_manager_destroy's cleanup.
+  < Release every loaded codec. Mirrors sleela_codec_manager_destroy's cleanup. >
   void destroy() {
     int i = 0;
     while (i < 20) { loaded[i] = 0; i = i + 1; }
   }
 
-  // ---- registry inspection --------------------------------------------
+  < ---- registry inspection -------------------------------------------- >
 
   int count() { return 20; }
   boolean validId(int id) { return id >= 0 && id < 20; }
 
-  // Native codecs encode/decode in-package: PCM/WAV (0), AIFF (1),
-  // G.711 mu-law (15), G.711 A-law (16).
+  < Native codecs encode/decode in-package: PCM/WAV (0), AIFF (1), >
+  < G.711 mu-law (15), G.711 A-law (16). >
   boolean isNative(int id) { return id == 0 || id == 1 || id == 15 || id == 16; }
 
-  // ---- loader / unloader (controller lifecycle for an app) ------------
+  < ---- loader / unloader (controller lifecycle for an app) ------------ >
 
-  // load(id): make a codec usable. Returns 0 ok, -2 invalid id. Idempotent.
+  < load(id): make a codec usable. Returns 0 ok, -2 invalid id. Idempotent. >
   int load(int id) {
     if (!validId(id)) { return -2; }
     loaded[id] = 1;
     return 0;
   }
 
-  // unload(id): release a codec. Returns 0 ok, -2 invalid id. Idempotent.
+  < unload(id): release a codec. Returns 0 ok, -2 invalid id. Idempotent. >
   int unload(int id) {
     if (!validId(id)) { return -2; }
     loaded[id] = 0;
@@ -133,7 +133,7 @@ class SLCodecController {
     return loaded[id] == 1;
   }
 
-  // How many codecs are currently loaded — handy for GUI status.
+  < How many codecs are currently loaded — handy for GUI status. >
   int loadedCount() {
     int n = 0;
     int i = 0;
@@ -144,10 +144,10 @@ class SLCodecController {
     return n;
   }
 
-  // ---- backend registration (for backend-state codecs) ----------------
+  < ---- backend registration (for backend-state codecs) ---------------- >
 
-  // registerBackend(id): record that an approved backend adapter is available
-  // for a backend codec. Returns 0 ok, -2 invalid id.
+  < registerBackend(id): record that an approved backend adapter is available >
+  < for a backend codec. Returns 0 ok, -2 invalid id. >
   int registerBackend(int id) {
     if (!validId(id)) { return -2; }
     backend[id] = 1;
@@ -165,18 +165,18 @@ class SLCodecController {
     return backend[id] == 1;
   }
 
-  // ---- resolution (delegated to the wired Verifier) -------------------
+  < ---- resolution (delegated to the wired Verifier) ------------------- >
 
-  // Resolve a codec id from a file extension via the Controller's Verifier.
+  < Resolve a codec id from a file extension via the Controller's Verifier. >
   int resolveExtension(String extension) {
     return verifier.resolveExtension(extension);
   }
 
-  // ---- dispatch (requires load; honest capability result) -------------
+  < ---- dispatch (requires load; honest capability result) ------------- >
 
-  // canProcess(id): can this codec encode/decode right now? True for a loaded
-  // native codec, or a loaded backend codec with a backend registered — what a
-  // GUI checks before enabling a convert action.
+  < canProcess(id): can this codec encode/decode right now? True for a loaded >
+  < native codec, or a loaded backend codec with a backend registered — what a >
+  < GUI checks before enabling a convert action. >
   boolean canProcess(int id) {
     if (!validId(id)) { return false; }
     if (loaded[id] == 0) { return false; }
@@ -184,8 +184,8 @@ class SLCodecController {
     return backend[id] == 1;
   }
 
-  // decode(id): returns a result code: -2 invalid, -5 not loaded,
-  // -1 backend absent, 0 ok.
+  < decode(id): returns a result code: -2 invalid, -5 not loaded, >
+  < -1 backend absent, 0 ok. >
   int decode(int id) {
     if (!validId(id)) { return -2; }
     if (loaded[id] == 0) { return -5; }
@@ -202,7 +202,7 @@ class SLCodecController {
     return -1;
   }
 
-  // Human-readable text for a result code (via the wired Verifier).
+  < Human-readable text for a result code (via the wired Verifier). >
   String resultText(int code) {
     return verifier.resultText(code);
   }

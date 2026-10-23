@@ -59,13 +59,18 @@ class SLDocumentAnnotation {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int METHOD   = 0; // bare method name; order = textual position
-  static final int ORDER    = 1; // @order(n)
-  static final int FUNCTION = 2; // @function("name")
+  < bare method name; order = textual position >
+  static final int METHOD   = 0;
+  < @order(n) >
+  static final int ORDER    = 1;
+  < @function("name") >
+  static final int FUNCTION = 2;
 
   int kind;
-  int order;      // meaningful when kind == ORDER
-  String role;    // meaningful when kind == FUNCTION
+  < meaningful when kind == ORDER >
+  int order;
+  < meaningful when kind == FUNCTION >
+  String role;
   String methodName;
 
   void asMethod(String name) { kind = METHOD; methodName = name; order = -1; role = ""; }

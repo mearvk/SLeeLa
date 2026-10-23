@@ -67,7 +67,7 @@ class GuiEventsDemo {
   void main() {
     banner("SLeeLa GUI events: callbacks, DHTML DOM, and scripting");
 
-    // --- Build a document (DHTML-style) ------------------------------------
+    < --- Build a document (DHTML-style) ------------------------------------ >
     SLGuiDom dom = new SLGuiDom();
     dom.init();
     SLGuiNode win = dom.createRoot("window", "app");
@@ -78,12 +78,12 @@ class GuiEventsDemo {
     print("document nodes -> " + dom.size()
         + "; root children -> " + dom.getElementById("app").children());
 
-    // --- Bind callbacks the DHTML way --------------------------------------
+    < --- Bind callbacks the DHTML way -------------------------------------- >
     SLGuiHandler onSave = dom.onClick("save", "doSave");
     SLGuiHandler onType = dom.onInput("name", "doValidate");
     print("bound click 'save' -> doSave; input 'name' -> doValidate");
 
-    // --- Raise events; the dispatcher routes them --------------------------
+    < --- Raise events; the dispatcher routes them -------------------------- >
     int fired = dom.fire(SLGuiEventType.CLICK, "save", "");
     print("click 'save' -> handlers fired: " + fired
         + "; onSave latched: " + boolToStr(onSave.take()));
@@ -91,7 +91,7 @@ class GuiEventsDemo {
     dom.fire(SLGuiEventType.INPUT, "name", "Ada");
     print("input 'name'='Ada' -> onType value: '" + onType.value() + "'");
 
-    // --- preventDefault / stopPropagation ----------------------------------
+    < --- preventDefault / stopPropagation ---------------------------------- >
     SLGuiEvent key = new SLGuiEvent();
     key.configure(SLGuiEventType.KEYDOWN, "name");
     key.setKey("Enter");
@@ -100,14 +100,14 @@ class GuiEventsDemo {
     key.preventDefault();
     print("keydown Enter -> defaultPrevented: " + boolToStr(key.isDefaultPrevented()));
 
-    // --- Mutate the DOM live -----------------------------------------------
+    < --- Mutate the DOM live ----------------------------------------------- >
     dom.setText("save", "Saved!");
     dom.setStyle("save", "accent", "suggested");
     dom.setEnabled("save", false);
     print("live mutate -> save.text='" + dom.getElementById("save").text()
         + "', enabled=" + boolToStr(dom.getElementById("save").isEnabled()));
 
-    // --- Drive the SAME DOM from a script ----------------------------------
+    < --- Drive the SAME DOM from a script ---------------------------------- >
     banner("Scripting: build + drive a panel from a command list");
     SLGuiScript script = new SLGuiScript();
     script.init(dom);

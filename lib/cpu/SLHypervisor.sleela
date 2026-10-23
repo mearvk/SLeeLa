@@ -63,22 +63,24 @@ class SLHypervisor {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLCPU host;
   SLRAM hostMemory;
-  SLHardDrive bootDisk;   // host-backed drive the guest block device uses
+  < host-backed drive the guest block device uses >
+  SLHardDrive bootDisk;
   SLGuestVM g0; SLGuestVM g1; SLGuestVM g2; SLGuestVM g3;
   int guestCount;
-  int exits;         // total VM-exits handled
+  < total VM-exits handled >
+  int exits;
   int current;
 
   void configure(SLCPU hostCpu, SLRAM ram) {
     host = hostCpu; hostMemory = ram; guestCount = 0; exits = 0; current = -1;
   }
 
-  // Optionally provide a host drive to back guests' virtual block devices.
+  < Optionally provide a host drive to back guests' virtual block devices. >
   void attachBootDisk(SLHardDrive drive) { bootDisk = drive; }
 
-  // Create a guest VM with a guest-physical window [base, base+size) in host RAM.
-  // A per-guest MMU identity-maps the window with full permissions as the boot
-  // address space (the guest kernel may install its own page tables after).
+  < Create a guest VM with a guest-physical window [base, base+size) in host RAM. >
+  < A per-guest MMU identity-maps the window with full permissions as the boot >
+  < address space (the guest kernel may install its own page tables after). >
   SLGuestVM createGuest(String name, int base, int size, int guestEntry) {
     SLGuestVM vm = new SLGuestVM();
     vm.configure(name, host.bootCore(), hostMemory, base, size, guestEntry);
@@ -90,8 +92,8 @@ class SLHypervisor {
     mmu.identityMap(pages, base / pageSize, mmu.PERM_WRITE + mmu.PERM_EXEC);
     vm.attachMMU(mmu);
 
-    // Guest device model (step 3): timer (IRQ0), console, block device (IRQ2),
-    // and a guest interrupt controller aggregating their lines.
+    < Guest device model (step 3): timer (IRQ0), console, block device (IRQ2), >
+    < and a guest interrupt controller aggregating their lines. >
     SLGuestTimer timer = new SLGuestTimer(); timer.init(57344, 0);
     SLGuestConsole con = new SLGuestConsole(); con.init(57360);
     SLGuestBlockDevice blk = new SLGuestBlockDevice(); blk.init(57376, 2, bootDisk);
@@ -103,7 +105,7 @@ class SLHypervisor {
     if (idx == 0) { g0 = vm; } if (idx == 1) { g1 = vm; }
     if (idx == 2) { g2 = vm; } if (idx == 3) { g3 = vm; }
     guestCount = guestCount + 1;
-    // The host core's TRAP vector is the VM-exit entry.
+    < The host core's TRAP vector is the VM-exit entry. >
     host.bootCore().controlUnit().installTrapVector(0);
     return vm;
   }
@@ -114,7 +116,7 @@ class SLHypervisor {
     return g0;
   }
 
-  // Run a guest for a bounded number of guest instructions, handling VM-exits.
+  < Run a guest for a bounded number of guest instructions, handling VM-exits. >
   int runGuest(int idx, int budget) {
     SLGuestVM vm = guest(idx);
     if (vm == null) { return 0; }

@@ -64,15 +64,18 @@ class SLVMThread {
   int id;
   String name;
   int state;
-  int depth;          // number of active frames
+  < number of active frames >
+  int depth;
 
-  // Bounded frame pins (current at index depth-1). Deeper recursion still works
-  // via the returnIp chain inside SLVM; these give a scheduler a visible stack.
+  < Bounded frame pins (current at index depth-1). Deeper recursion still works >
+  < via the returnIp chain inside SLVM; these give a scheduler a visible stack. >
   SLVMFrame f0; SLVMFrame f1; SLVMFrame f2; SLVMFrame f3;
   SLVMFrame f4; SLVMFrame f5; SLVMFrame f6; SLVMFrame f7;
 
-  int thisClassId;    // current "this" context class for field opcodes
-  int thisHandle;     // current "this" object handle
+  < current "this" context class for field opcodes >
+  int thisClassId;
+  < current "this" object handle >
+  int thisHandle;
 
   void configure(int threadId, String threadName) {
     id = threadId; name = threadName;

@@ -57,7 +57,7 @@ class SLHardwareComponent {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Device-class ordinals (what kind of part this is).
+  < Device-class ordinals (what kind of part this is). >
   static final int CLASS_MEMORY  = 0;
   static final int CLASS_SSD     = 1;
   static final int CLASS_HDD     = 2;
@@ -67,9 +67,12 @@ class SLHardwareComponent {
   static final int CLASS_CPU     = 6;
   static final int CLASS_MAINBOARD = 7;
 
-  String vendor;      // manufacturer, e.g. "Samsung", "NVIDIA"
-  String model;       // model / part name, e.g. "M378A2K43DB1", "GeForce RTX 4090"
-  int deviceClass;    // one of CLASS_*
+  < manufacturer, e.g. "Samsung", "NVIDIA" >
+  String vendor;
+  < model / part name, e.g. "M378A2K43DB1", "GeForce RTX 4090" >
+  String model;
+  < one of CLASS_* >
+  int deviceClass;
   int configured;
 
   void configureComponent(String manufacturer, String partName, int cls) {
@@ -92,6 +95,6 @@ class SLHardwareComponent {
     return "mainboard";
   }
 
-  // A short identity line shared by every part, e.g. "ssd Samsung 990 PRO".
+  < A short identity line shared by every part, e.g. "ssd Samsung 990 PRO". >
   String identity() { return className() + " " + vendor + " " + model; }
 }

@@ -59,22 +59,30 @@ class PortfolioDecision {
 
   static final String MODULE = "PortfolioDecision";
 
-  // Bet sizes. "Big" is special: in this game a found big bet always pays.
+  < Bet sizes. "Big" is special: in this game a found big bet always pays. >
   static final int SIZE_SMALL  = 0;
   static final int SIZE_MEDIUM = 1;
   static final int SIZE_BIG    = 2;
 
   int loadedFlag;
-  String industry;      // e.g. "Energy", "Logistics", "Healthcare"
-  int stakeCents;       // what the player puts in
-  int winPercent;       // base chance the bet pays (0..100)
-  int multiplierX10;    // payout multiple x10 (so 25 = 2.5x), on a win
-  int size;             // one of SIZE_*
-  boolean resolved;     // whether resolve() has run
-  boolean won;          // the outcome, once resolved
-  int profitCents;      // net profit (payout - stake) once resolved
+  < e.g. "Energy", "Logistics", "Healthcare" >
+  String industry;
+  < what the player puts in >
+  int stakeCents;
+  < base chance the bet pays (0..100) >
+  int winPercent;
+  < payout multiple x10 (so 25 = 2.5x), on a win >
+  int multiplierX10;
+  < one of SIZE_* >
+  int size;
+  < whether resolve() has run >
+  boolean resolved;
+  < the outcome, once resolved >
+  boolean won;
+  < net profit (payout - stake) once resolved >
+  int profitCents;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() {
     loadedFlag = 1;
     industry = "Unspecified";
@@ -105,8 +113,8 @@ class PortfolioDecision {
     profitCents = 0;
   }
 
-  // The game's one law: a BIG bet, once you've found it, always wins. Smaller
-  // bets must roll under their win chance like everyone else.
+  < The game's one law: a BIG bet, once you've found it, always wins. Smaller >
+  < bets must roll under their win chance like everyone else. >
   boolean isGuaranteed() { return size == SIZE_BIG; }
 
   int effectiveWinPercent() {
@@ -114,8 +122,8 @@ class PortfolioDecision {
     return winPercent;
   }
 
-  // Resolve the bet against a roller. Profit = payout - stake on a win, else
-  // the stake is lost. Big bets always land, so bet big where you find them.
+  < Resolve the bet against a roller. Profit = payout - stake on a win, else >
+  < the stake is lost. Big bets always land, so bet big where you find them. >
   int resolve(DiceRoll dice) {
     resolved = true;
     boolean hit = false;

@@ -54,18 +54,18 @@ class RunWorkloadsExample {
   int crossArchOut;
 
   void main() {
-    // A normal-priority grant: 4096 words of memory, a 100k-instruction slice.
+    < A normal-priority grant: 4096 words of memory, a 100k-instruction slice. >
     SLCPUResource grant = new SLCPUResource();
     grant.configure(4096, 100000, grant.PRIORITY_NORMAL);
 
-    // 1) Run a C workload on a 6502.
+    < 1) Run a C workload on a 6502. >
     SLWorkload cJob = new SLWorkload();
     cJob.configure("hello-c", "examples/hello.c", cJob.LANG_C, grant);
     SL6502CPU mos = new SL6502CPU(); mos.configure();
     cOut = mos.runWorkload(cJob);
     print("C on 6502 -> " + cOut);
 
-    // 2) Run the equivalent Sleela workload on an ARM, fresh grant.
+    < 2) Run the equivalent Sleela workload on an ARM, fresh grant. >
     SLCPUResource grant2 = new SLCPUResource();
     grant2.configure(4096, 100000, grant2.PRIORITY_NORMAL);
     SLWorkload sJob = new SLWorkload();
@@ -74,8 +74,8 @@ class RunWorkloadsExample {
     sleelaOut = arm.runWorkload(sJob);
     print("Sleela on ARM -> " + sleelaOut);
 
-    // 3) Same C++ workload on a RISC-V and a PowerPC: cross-architecture, same
-    //    observable result (1:1 Turing effect).
+    < 3) Same C++ workload on a RISC-V and a PowerPC: cross-architecture, same >
+    < observable result (1:1 Turing effect). >
     SLCPUResource grant3 = new SLCPUResource();
     grant3.configure(4096, 100000, grant3.PRIORITY_HIGH);
     SLWorkload cppJob = new SLWorkload();

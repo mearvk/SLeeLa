@@ -54,11 +54,13 @@ class SLStatusRegister {
   int carry;
   int overflow;
   int interruptEnable;
-  int supervisor;    // 1 = kernel/supervisor mode, 0 = user mode
+  < 1 = kernel/supervisor mode, 0 = user mode >
+  int supervisor;
 
   void reset() {
     zero = 0; negative = 0; carry = 0; overflow = 0;
-    interruptEnable = 0; supervisor = 1; // boot in supervisor mode
+    < boot in supervisor mode >
+    interruptEnable = 0; supervisor = 1;
   }
 
   void setFromALU(SLALU alu) {

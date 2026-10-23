@@ -56,31 +56,32 @@ class SLCompilerRegistry {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // Clear the registry back to empty.
+  < Clear the registry back to empty. >
   void reset() {
     native sleela_lang_registry_reset();
   }
 
-  // Register (or replace by name) a language front end. Returns true on success.
+  < Register (or replace by name) a language front end. Returns true on success. >
   boolean add(SLLanguageCompiler frontEnd) {
     int rc = frontEnd.register();
-    return rc == 1; // SLEELA_LANG_OK
+    < SLEELA_LANG_OK >
+    return rc == 1;
   }
 
-  // How many front ends are registered.
+  < How many front ends are registered. >
   int count() {
     return native sleela_lang_registry_count();
   }
 
-  // Is a language registered?
+  < Is a language registered? >
   boolean has(String languageName) {
     return native sleela_lang_has(languageName) == 1;
   }
 
-  // Resolve a compile request to a front-end language name by the input's
-  // extension. Returns the matched language name, or the empty string when no
-  // registered front end claims the extension (unresolved is surfaced, not
-  // guessed).
+  < Resolve a compile request to a front-end language name by the input's >
+  < extension. Returns the matched language name, or the empty string when no >
+  < registered front end claims the extension (unresolved is surfaced, not >
+  < guessed). >
   String resolveByExtension(String fileName) {
     return native sleela_lang_resolve_extension(fileName);
   }

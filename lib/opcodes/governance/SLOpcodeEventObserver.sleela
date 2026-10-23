@@ -67,7 +67,7 @@ class SLOpcodeEventObserver {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Canonical opcodes this observer reasons about by code.
+  < Canonical opcodes this observer reasons about by code. >
   static final int OP_DIV = 11;
   static final int OP_MOD = 12;
   static final int OP_CALL = 25;
@@ -82,14 +82,18 @@ class SLOpcodeEventObserver {
   static final int OP_FILECLOSE = 46;
   static final int OP_HALT = 48;
   static final int OP_NEWSTRUCT = 58;
-  static final int OP_TIME_LO = 49; // first time opcode
-  static final int OP_TIME_HI = 57; // last time opcode
+  < first time opcode >
+  static final int OP_TIME_LO = 49;
+  < last time opcode >
+  static final int OP_TIME_HI = 57;
 
-  String purpose;        // the declared outright goal of the program
-  SLGovSymbolMap symbols; // known patches that just work
+  < the declared outright goal of the program >
+  String purpose;
+  < known patches that just work >
+  SLGovSymbolMap symbols;
   int state;
 
-  // Assessed concepts (filled by assess()).
+  < Assessed concepts (filled by assess()). >
   SLGovConcept[] concepts;
   int breadth;
   int height;
@@ -117,10 +121,10 @@ class SLOpcodeEventObserver {
 
   boolean isTimeOp(int code) { return code >= OP_TIME_LO && code <= OP_TIME_HI; }
 
-  // Decide whether the whole program is a musical, ordered process. The verdict
-  // may ADMIT, WARN (concern recorded), PATCH (a known symbol map was applied),
-  // PAUSE (unrest), or REJECT (an ethics/norms violation). flawCode, when >= 0,
-  // marks an opcode the observer judged faulty and tried to patch.
+  < Decide whether the whole program is a musical, ordered process. The verdict >
+  < may ADMIT, WARN (concern recorded), PATCH (a known symbol map was applied), >
+  < PAUSE (unrest), or REJECT (an ethics/norms violation). flawCode, when >= 0, >
+  < marks an opcode the observer judged faulty and tried to patch. >
   SLGovVerdict assess(SLOpcodeStream stream, int flawCode) {
     SLGovVerdict v = new SLGovVerdict();
     if (!active() || stream == null) {
@@ -131,7 +135,7 @@ class SLOpcodeEventObserver {
 
     int n = stream.size();
 
-    // Tallies across the program.
+    < Tallies across the program. >
     int computes = 0; int controls = 0; int ios = 0; int times = 0; int concurrency = 0;
     int opensFile = 0; int closesFile = 0; int opensSock = 0; int closesSock = 0;
     int structs = 0; int prints = 0; int halts = 0;
@@ -163,7 +167,7 @@ class SLOpcodeEventObserver {
       if (code == OP_DIV || code == OP_MOD) { divSeen = true; }
     }
 
-    // breadth = number of capability groups touched; height = deepest nesting.
+    < breadth = number of capability groups touched; height = deepest nesting. >
     breadth = 0;
     if (computes > 0) { breadth = breadth + 1; }
     if (controls > 0) { breadth = breadth + 1; }
@@ -172,37 +176,37 @@ class SLOpcodeEventObserver {
     if (concurrency > 0) { breadth = breadth + 1; }
     height = maxDepth;
 
-    // --- Concept checks (indices 0..6 map to SLGovConcept 1..7) ---
+    < --- Concept checks (indices 0..6 map to SLGovConcept 1..7) --- >
 
-    // STRAIGHTNESS: control flow is straight (CALLs balanced by RETs over whole).
+    < STRAIGHTNESS: control flow is straight (CALLs balanced by RETs over whole). >
     if (depth != 0) { concepts[0].fail("unbalanced CALL/RET: control path is not straight"); }
 
-    // LINEAR_REALS: division present implies the program must guard magnitude;
-    // the observer records a concern it cannot prove zero-safety statically.
+    < LINEAR_REALS: division present implies the program must guard magnitude; >
+    < the observer records a concern it cannot prove zero-safety statically. >
     if (divSeen) { concepts[1].note = "division present: ensure non-zero divisor on the real line"; }
 
-    // OUTRIGHT_GOALS: the program declares an outright goal.
+    < OUTRIGHT_GOALS: the program declares an outright goal. >
     if (purpose == null || purpose.length() == 0) {
       concepts[2].fail("no outright goal declared for the program");
     }
 
-    // ETHICS_NORMS: a flaw code flagged as an ethics/norms violation cannot be
-    // patched away; it is a hard rejection.
+    < ETHICS_NORMS: a flaw code flagged as an ethics/norms violation cannot be >
+    < patched away; it is a hard rejection. >
     boolean ethicsViolation = false;
 
-    // FINALIZATION over fields: opened resources must be closed.
+    < FINALIZATION over fields: opened resources must be closed. >
     if (opensFile != closesFile) { concepts[4].fail("files opened are not all closed (fields not finalized)"); }
     if (opensSock != closesSock) { concepts[4].fail("sockets opened are not all closed (fields not finalized)"); }
 
-    // TIMES_UPON_COUNTS: time reads should be proportionate to the program size.
+    < TIMES_UPON_COUNTS: time reads should be proportionate to the program size. >
     if (n > 0 && times > n / 2 && times > 2) {
       concepts[5].fail("time operations disproportionate to program counts");
     }
 
-    // FINAL_GOALS: the program reaches a definite final goal (halts).
+    < FINAL_GOALS: the program reaches a definite final goal (halts). >
     if (halts < 1) { concepts[6].fail("program does not reach a final goal (no OP_HALT)"); }
 
-    // --- Try to patch a flagged flaw with a known symbol map that just works ---
+    < --- Try to patch a flagged flaw with a known symbol map that just works --- >
     boolean patchedAny = false;
     if (flawCode >= 0 && symbols != null && symbols.active()) {
       if (symbols.known(flawCode)) {
@@ -210,14 +214,14 @@ class SLOpcodeEventObserver {
       }
     }
 
-    // --- Decide the disposition from the concept results ---
+    < --- Decide the disposition from the concept results --- >
     if (ethicsViolation) {
       v.configure(SLGovVerdict.REJECT, "operation violates ethics or norms", -1, SLGovPhase.AFTER);
       lastVerdict = v;
       return v;
     }
 
-    // Any hard structural concept failure that is not finalizable -> unrest.
+    < Any hard structural concept failure that is not finalizable -> unrest. >
     boolean straightOk = concepts[0].ok();
     boolean finalGoalOk = concepts[6].ok();
     if (!straightOk || !finalGoalOk) {
@@ -232,7 +236,7 @@ class SLOpcodeEventObserver {
       return v;
     }
 
-    // Remaining soft concerns (finalization, goals, times) -> warn but proceed.
+    < Remaining soft concerns (finalization, goals, times) -> warn but proceed. >
     boolean anyConcern = false;
     for (int i = 0; i < SLGovConcept.CONCEPT_COUNT; i = i + 1) {
       if (!concepts[i].ok()) { anyConcern = true; }

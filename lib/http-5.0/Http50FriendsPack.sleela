@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Friends' Packs are application data; never an identity or authorization grant. */
+< Friends' Packs are application data; never an identity or authorization grant. >
 class Http50FriendsPack {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -64,27 +64,38 @@ class SLAccessManifest {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // --- magic / identity ---
-  static final int MAGIC = 5214;   // "SL-ACCESS" marker word (SL-TIMING is 5213)
+  < --- magic / identity --- >
+  < "SL-ACCESS" marker word (SL-TIMING is 5213) >
+  static final int MAGIC = 5214;
   int version;
 
-  // --- per-role member counts (how the image's surface divides up) ---
-  int exposedCount;   // public  members: network-exposed hops
-  int localCount;     // private members: local/admin/safety/security/backup
-  int guardedCount;   // protected members: integrity-guarded connections
+  < --- per-role member counts (how the image's surface divides up) --- >
+  < public  members: network-exposed hops >
+  int exposedCount;
+  < private members: local/admin/safety/security/backup >
+  int localCount;
+  < protected members: integrity-guarded connections >
+  int guardedCount;
 
-  // --- ordered public hop chain (doc 1 -> doc 2 -> doc 3 ...) ---
-  int hopChainLength; // number of ordered hops the public surface forms
-  int orderedFlag;    // 1 = the public members communicate in a defined order
+  < --- ordered public hop chain (doc 1 -> doc 2 -> doc 3 ...) --- >
+  < number of ordered hops the public surface forms >
+  int hopChainLength;
+  < 1 = the public members communicate in a defined order >
+  int orderedFlag;
 
-  // --- default backdrop bundles (ids from SLAccessSemantics) ---
-  int exposeComponents;  // default EXPOSE_* the public surface is stood up with
-  int localConcerns;     // default LOCAL_*  the private surface declares
-  int guardControls;     // default GUARD_*  the protected surface enforces
+  < --- default backdrop bundles (ids from SLAccessSemantics) --- >
+  < default EXPOSE_* the public surface is stood up with >
+  int exposeComponents;
+  < default LOCAL_*  the private surface declares >
+  int localConcerns;
+  < default GUARD_*  the protected surface enforces >
+  int guardControls;
 
-  // --- sealed summary ---
-  int competentFlag;  // 1 = the stated backdrop is complete enough to realize
-  int surfaceTotal;   // exposed + local + guarded (the classified member total)
+  < --- sealed summary --- >
+  < 1 = the stated backdrop is complete enough to realize >
+  int competentFlag;
+  < exposed + local + guarded (the classified member total) >
+  int surfaceTotal;
 
   void configure() {
     version = 1;
@@ -121,9 +132,9 @@ class SLAccessManifest {
   int guardBundle()  { return guardControls; }
   int classifiedTotal() { return surfaceTotal; }
 
-  // Serialize into a caller-provided SLRAM header region at `at`; returns the
-  // next free word. Stored ahead of the instruction stream, exactly as
-  // SLTimingManifest.writeHeader is.
+  < Serialize into a caller-provided SLRAM header region at `at`; returns the >
+  < next free word. Stored ahead of the instruction stream, exactly as >
+  < SLTimingManifest.writeHeader is. >
   int writeHeader(SLRAM mem, int at) {
     int i = at;
     mem.writeWord(i, MAGIC);            i = i + 1;

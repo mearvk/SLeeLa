@@ -55,11 +55,14 @@ class SLCircuit {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
-  int gateCount;        // gates directly in this circuit
-  int subCircuitCount;  // nested sub-circuits
+  < gates directly in this circuit >
+  int gateCount;
+  < nested sub-circuits >
+  int subCircuitCount;
   int inputs;
   int outputs;
-  int propagationUnits; // modeled gate-delay depth (critical path)
+  < modeled gate-delay depth (critical path) >
+  int propagationUnits;
 
   void configure(String circuitName, int in, int out) {
     name = circuitName; inputs = in; outputs = out;
@@ -77,7 +80,7 @@ class SLCircuit {
 
   int totalGates() { return gateCount; }
   int criticalPath() { return propagationUnits; }
-  // CMOS rule of thumb: a 2-input gate is ~4 transistors; report an estimate.
+  < CMOS rule of thumb: a 2-input gate is ~4 transistors; report an estimate. >
   int transistorEstimate() { return gateCount * 4; }
   String circuitName() { return name; }
 }

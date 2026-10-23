@@ -50,10 +50,14 @@ class MarketplaceModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int transactions;      // deals brokered this month
-  int avgOrderCents;     // average value of one order
-  int takeRatePercent;   // the house's cut (0..100)
-  int opCostCents;       // operating cost per transaction (support, fraud, etc.)
+  < deals brokered this month >
+  int transactions;
+  < average value of one order >
+  int avgOrderCents;
+  < the house's cut (0..100) >
+  int takeRatePercent;
+  < operating cost per transaction (support, fraud, etc.) >
+  int opCostCents;
 
   void setUp(int txns, int avgOrder, int takeRate, int opCost) {
     load();
@@ -70,7 +74,7 @@ class MarketplaceModel extends BusinessModel {
     setUnits(txns);
   }
 
-  // Gross merchandise value: everything that flowed through the marketplace.
+  < Gross merchandise value: everything that flowed through the marketplace. >
   int gmv() { return transactions * avgOrderCents; }
 
   int monthlyRevenue() { return (gmv() * takeRatePercent) / 100; }

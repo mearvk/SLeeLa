@@ -55,26 +55,41 @@ class SLGuiSkeleton {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Lifecycle states.
-  static final int STATE_IDLE      = 0;   // not shown
-  static final int STATE_LOADING   = 1;   // placeholder visible, shimmering
-  static final int STATE_REVEALING = 2;   // cross-fading placeholder -> content
-  static final int STATE_REVEALED  = 3;   // real content shown, placeholder gone
+  < Lifecycle states. >
+  < not shown >
+  static final int STATE_IDLE      = 0;
+  < placeholder visible, shimmering >
+  static final int STATE_LOADING   = 1;
+  < cross-fading placeholder -> content >
+  static final int STATE_REVEALING = 2;
+  < real content shown, placeholder gone >
+  static final int STATE_REVEALED  = 3;
 
-  // Placeholder shape presets (host maps to a block layout).
-  static final int SHAPE_TEXT   = 0;   // stacked text lines
-  static final int SHAPE_CARD   = 1;   // media block + text lines
-  static final int SHAPE_AVATAR = 2;   // circle + two short lines
-  static final int SHAPE_LIST   = 3;   // repeated rows
+  < Placeholder shape presets (host maps to a block layout). >
+  < stacked text lines >
+  static final int SHAPE_TEXT   = 0;
+  < media block + text lines >
+  static final int SHAPE_CARD   = 1;
+  < circle + two short lines >
+  static final int SHAPE_AVATAR = 2;
+  < repeated rows >
+  static final int SHAPE_LIST   = 3;
 
-  int shape;          // SHAPE_*
-  int lines;          // number of placeholder blocks/rows, 1..32
-  int state;          // STATE_*
-  int shimmerPeriodMs;// one full shimmer sweep, 200..10000 ms
-  int shimmerElapsed; // position within the current sweep
+  < SHAPE_* >
+  int shape;
+  < number of placeholder blocks/rows, 1..32 >
+  int lines;
+  < STATE_* >
+  int state;
+  < one full shimmer sweep, 200..10000 ms >
+  int shimmerPeriodMs;
+  < position within the current sweep >
+  int shimmerElapsed;
 
-  SLGuiTransition appearFx;  // the placeholder's initial fade-in
-  SLGuiTransition revealFx;  // the placeholder -> content dissolve (cross-fade)
+  < the placeholder's initial fade-in >
+  SLGuiTransition appearFx;
+  < the placeholder -> content dissolve (cross-fade) >
+  SLGuiTransition revealFx;
 
   int clamp(int v, int lo, int hi) {
     if (v < lo) { return lo; }
@@ -82,17 +97,19 @@ class SLGuiSkeleton {
     return v;
   }
 
-  // Safe defaults: a 3-line text skeleton, 180ms fade-in, a 1.2s shimmer sweep,
-  // a 260ms dissolve reveal.
+  < Safe defaults: a 3-line text skeleton, 180ms fade-in, a 1.2s shimmer sweep, >
+  < a 260ms dissolve reveal. >
   void configure(int shapeVal, int lineCount) {
     shape = (shapeVal >= SHAPE_TEXT && shapeVal <= SHAPE_LIST) ? shapeVal : SHAPE_TEXT;
     lines = clamp(lineCount, 1, 32);
     state = STATE_IDLE;
     shimmerPeriodMs = 1200; shimmerElapsed = 0;
     appearFx = new SLGuiTransition(); appearFx.configure();
-    appearFx.fadeIn(180, 2);   // 2 = SLGuiTransition.EASE_OUT
+    < 2 = SLGuiTransition.EASE_OUT >
+    appearFx.fadeIn(180, 2);
     revealFx = new SLGuiTransition(); revealFx.configure();
-    revealFx.fadeIn(260, 4);   // 4 = SLGuiTransition.EASE_DISSOLVE
+    < 4 = SLGuiTransition.EASE_DISSOLVE >
+    revealFx.fadeIn(260, 4);
   }
 
   void setShape(int shapeVal) { if (shapeVal >= SHAPE_TEXT && shapeVal <= SHAPE_LIST) { shape = shapeVal; } }
@@ -101,14 +118,14 @@ class SLGuiSkeleton {
   void setAppearMillis(int ms) { appearFx.setDuration(ms); }
   void setRevealMillis(int ms) { revealFx.setDuration(ms); }
 
-  // ---- lifecycle ----------------------------------------------------------
-  // Begin loading: fade the placeholder in and start shimmering.
+  < ---- lifecycle ---------------------------------------------------------- >
+  < Begin loading: fade the placeholder in and start shimmering. >
   void beginLoading() {
     state = STATE_LOADING;
     appearFx.reset();
     shimmerElapsed = 0;
   }
-  // Content is ready: start the dissolve reveal.
+  < Content is ready: start the dissolve reveal. >
   void complete() {
     if (state == STATE_IDLE || state == STATE_REVEALED) { return; }
     state = STATE_REVEALING;
@@ -116,8 +133,8 @@ class SLGuiSkeleton {
   }
   void reset() { state = STATE_IDLE; shimmerElapsed = 0; }
 
-  // Advance by `deltaMs`. Returns true while the placeholder is still visible
-  // (loading or revealing), false once the real content is fully revealed/idle.
+  < Advance by `deltaMs`. Returns true while the placeholder is still visible >
+  < (loading or revealing), false once the real content is fully revealed/idle. >
   boolean tick(int deltaMs) {
     if (deltaMs < 0) { deltaMs = 0; }
     if (state == STATE_LOADING) {
@@ -131,24 +148,25 @@ class SLGuiSkeleton {
       if (revealFx.done()) { state = STATE_REVEALED; return false; }
       return true;
     }
-    return false;   // STATE_IDLE / STATE_REVEALED
+    < STATE_IDLE / STATE_REVEALED >
+    return false;
   }
 
-  // ---- presentation -------------------------------------------------------
-  // Opacity (0..100 %) to paint the PLACEHOLDER panel at. During the reveal the
-  // placeholder fades OUT as the content fades in (1 - reveal progress).
+  < ---- presentation ------------------------------------------------------- >
+  < Opacity (0..100 %) to paint the PLACEHOLDER panel at. During the reveal the >
+  < placeholder fades OUT as the content fades in (1 - reveal progress). >
   int placeholderOpacityPct() {
     if (state == STATE_LOADING)   { return appearFx.opacityPct(); }
     if (state == STATE_REVEALING) { return 100 - revealFx.opacityPct(); }
     return 0;
   }
-  // Opacity (0..100 %) to paint the real CONTENT at. Rises during the reveal.
+  < Opacity (0..100 %) to paint the real CONTENT at. Rises during the reveal. >
   int contentOpacityPct() {
     if (state == STATE_REVEALING) { return revealFx.opacityPct(); }
     if (state == STATE_REVEALED)  { return 100; }
     return 0;
   }
-  // Shimmer phase as a 0..100 % sweep position (host sweeps a highlight band).
+  < Shimmer phase as a 0..100 % sweep position (host sweeps a highlight band). >
   int shimmerPhasePct() {
     if (shimmerPeriodMs <= 0) { return 0; }
     return clamp((shimmerElapsed * 100) / shimmerPeriodMs, 0, 100);
@@ -156,7 +174,7 @@ class SLGuiSkeleton {
   boolean onScreen() { return state == STATE_LOADING || state == STATE_REVEALING; }
   boolean revealed() { return state == STATE_REVEALED; }
 
-  // ---- readers ------------------------------------------------------------
+  < ---- readers ------------------------------------------------------------ >
   int getShape() { return shape; }
   int getLines() { return lines; }
   int getState() { return state; }
@@ -185,8 +203,8 @@ class SLGuiSkeleton {
         && appearFx.honored() && revealFx.honored();
   }
 
-  // Flatten into the reconciler's style descriptor. Shape:
-  //   "skeleton:<shape>x<lines>;shimmer:<ms>;<appear>;reveal-<dissolve>"
+  < Flatten into the reconciler's style descriptor. Shape: >
+  < "skeleton:<shape>x<lines>;shimmer:<ms>;<appear>;reveal-<dissolve>" >
   String toStyle() {
     return "skeleton:" + shapeName() + "x" + lines + ";"
         + "shimmer:" + shimmerPeriodMs + ";" + appearFx.toStyle()

@@ -70,7 +70,7 @@ class SLCPU {
     width = bits; clockMHz = mhz;
   }
 
-  // Build the chip: allocate memory, the shared L3, and each core.
+  < Build the chip: allocate memory, the shared L3, and each core. >
   void power(SLRAM mainMemory) {
     memory = mainMemory;
     l3 = new SLCache(); l3.configure("L3", 16777216, 64, 16); l3.attachBacking(memory);
@@ -96,7 +96,7 @@ class SLCPU {
     return c0;
   }
 
-  // The bootstrap processor (core 0) is where firmware/the OS starts.
+  < The bootstrap processor (core 0) is where firmware/the OS starts. >
   SLCore bootCore() { return c0; }
 
   String vendorName() { return vendor; }

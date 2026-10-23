@@ -56,7 +56,7 @@ class SLOSArtifact {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Kind tags.
+  < Kind tags. >
   static final int KIND_C_HEADER = 0;
   static final int KIND_C_SOURCE = 1;
   static final int KIND_CPP_SOURCE = 2;
@@ -64,9 +64,12 @@ class SLOSArtifact {
   static final int KIND_ISO = 4;
   static final int KIND_MANIFEST = 5;
 
-  String path;        // logical output path
-  int kind;           // one of KIND_*
-  String contents;    // text (source/script/manifest) or ISO descriptor
+  < logical output path >
+  String path;
+  < one of KIND_* >
+  int kind;
+  < text (source/script/manifest) or ISO descriptor >
+  String contents;
 
   void configure(String outPath, int artifactKind, String text) {
     path = outPath; kind = artifactKind; contents = text;

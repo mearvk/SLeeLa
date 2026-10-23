@@ -63,7 +63,7 @@ class SLOSCompiler {
   SLCppEmitter cppEmit;
   SLOSBuildReport report;
 
-  // The artifacts of the most recent compile (held for the caller to persist).
+  < The artifacts of the most recent compile (held for the caller to persist). >
   SLOSArtifact configHeader;
   SLOSArtifact bootUnit;
   SLOSArtifact osImage;
@@ -73,9 +73,9 @@ class SLOSCompiler {
     cppEmit = new SLCppEmitter();
   }
 
-  // Compile a model to C and C++. Returns the build report (succeeded() is
-  // false if the model is not buildable). Artifacts are reachable via the
-  // header()/boot()/image() accessors afterward.
+  < Compile a model to C and C++. Returns the build report (succeeded() is >
+  < false if the model is not buildable). Artifacts are reachable via the >
+  < header()/boot()/image() accessors afterward. >
   SLOSBuildReport compile(SLOSModel m) {
     report = new SLOSBuildReport();
     report.configure(m.identity());
@@ -85,7 +85,7 @@ class SLOSCompiler {
       return report;
     }
 
-    // C surface: a config header and an early-boot translation unit.
+    < C surface: a config header and an early-boot translation unit. >
     configHeader = new SLOSArtifact();
     configHeader.configure("gen/os_config.h", configHeader.KIND_C_HEADER,
                            cEmit.emitConfigHeader(m));
@@ -96,7 +96,7 @@ class SLOSCompiler {
                        cEmit.emitBootUnit(m));
     report.record(bootUnit);
 
-    // C++ surface: the OsImage object that composes the boot chain.
+    < C++ surface: the OsImage object that composes the boot chain. >
     osImage = new SLOSArtifact();
     osImage.configure("gen/os_image.cpp", osImage.KIND_CPP_SOURCE,
                       cppEmit.emitOsImage(m));
@@ -105,8 +105,8 @@ class SLOSCompiler {
     return report;
   }
 
-  // Compile the model, then build its ISO and generate its installer in one
-  // call. The returned report indexes every artifact across all three stages.
+  < Compile the model, then build its ISO and generate its installer in one >
+  < call. The returned report indexes every artifact across all three stages. >
   SLOSBuildReport compileToIso(SLOSModel m) {
     SLOSBuildReport r = compile(m);
     if (!r.succeeded()) { return r; }
@@ -124,7 +124,7 @@ class SLOSCompiler {
     return r;
   }
 
-  // ---- Accessors to the most recent compile's artifacts -------------------
+  < ---- Accessors to the most recent compile's artifacts ------------------- >
   SLOSArtifact header() { return configHeader; }
   SLOSArtifact boot()   { return bootUnit; }
   SLOSArtifact image()  { return osImage; }

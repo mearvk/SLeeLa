@@ -74,7 +74,7 @@ class GuiAppDemo {
 
     SLGuiDom dom = app.document();
 
-    // Build an interface in the SLeeLa DOM (declarative).
+    < Build an interface in the SLeeLa DOM (declarative). >
     SLGuiNode header = app.add("root", "header", "bar");
     SLGuiNode brand = app.add("bar", "label", "brand");
     brand.setText("SLeeLa");
@@ -82,10 +82,10 @@ class GuiAppDemo {
     save.setText("Save");
     save.setStyle("accent", "suggested");
 
-    // Bind a callback the DHTML way.
+    < Bind a callback the DHTML way. >
     app.onClick("save", "doSave");
 
-    // Drive the rest from a script (build a status row + bind + fire).
+    < Drive the rest from a script (build a status row + bind + fire). >
     SLGuiScript s = app.scripting();
     s.create("status", "foot", "root");
     s.create("label", "msg", "foot");
@@ -95,13 +95,13 @@ class GuiAppDemo {
     print("script executed -> " + ran + "/" + s.size()
         + "; nodes -> " + dom.size());
 
-    // Project the DOM onto real widgets.
+    < Project the DOM onto real widgets. >
     app.refresh();
     print("mounted nodes -> " + app.mount.mountedCount()
         + "; applied last pass -> " + app.mount.appliedLast());
 
-    // Simulate the host raising a click (what the toolkit would do on a real
-    // press): the host adapter would normally poll the widget latch.
+    < Simulate the host raising a click (what the toolkit would do on a real >
+    < press): the host adapter would normally poll the widget latch. >
     int fired = dom.fire(SLGuiEventType.CLICK, "save", "");
     print("click 'save' -> handlers fired: " + fired);
 

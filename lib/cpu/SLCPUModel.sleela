@@ -57,16 +57,25 @@ class SLCPUModel {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String architecture;
   int clock;
-  int registers;        // register count
-  int width;            // data path width in bits
-  int pipeline;         // pipeline stage count (0 = non-pipelined)
+  < register count >
+  int registers;
+  < data path width in bits >
+  int width;
+  < pipeline stage count (0 = non-pipelined) >
+  int pipeline;
   int executionUnits;
-  int caches;           // cache level count
-  int memory;           // addressable words
-  int ioBus;            // 1 if an I/O bus is present
-  int dma;              // 1 if a DMA engine is present
-  int mmu;              // 1 if an MMU is present
-  int interrupts;       // interrupt line count
+  < cache level count >
+  int caches;
+  < addressable words >
+  int memory;
+  < 1 if an I/O bus is present >
+  int ioBus;
+  < 1 if a DMA engine is present >
+  int dma;
+  < 1 if an MMU is present >
+  int mmu;
+  < interrupt line count >
+  int interrupts;
   int couplers;
 
   void configure(String arch, int clockMHz, int regCount, int bits,
@@ -83,8 +92,8 @@ class SLCPUModel {
   void withInterrupts(int n)   { interrupts = n; }
   void withCouplers(int n)     { couplers = n; }
 
-  // A model is valid when it names an architecture, has a positive width and
-  // register count, and a non-empty address space.
+  < A model is valid when it names an architecture, has a positive width and >
+  < register count, and a non-empty address space. >
   boolean validate() {
     if (architecture == null || architecture == "") { return false; }
     if (width <= 0) { return false; }

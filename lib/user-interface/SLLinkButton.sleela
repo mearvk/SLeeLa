@@ -54,7 +54,7 @@ class SLLinkButton extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a link button inside `parent` with a label.
+  < Create a link button inside `parent` with a label. >
   void createIn(SLWidget parent, String label) {
     widget = uiLinkButton(parent.handle(), label);
   }
@@ -62,7 +62,7 @@ class SLLinkButton extends SLWidget {
     widget = uiLinkButton(parentHandle, label);
   }
 
-  // True if the link was activated since the last check (latch cleared on read).
+  < True if the link was activated since the last check (latch cleared on read). >
   boolean clicked() {
     if (widget < 0) { return false; }
     return uiWidgetTakeActivated(widget) == 1;

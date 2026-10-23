@@ -56,26 +56,26 @@ class SLSSDCatalog {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   void configure() {}
 
-  // A flagship NVMe PCIe 4.0 drive from a named manufacturer.
+  < A flagship NVMe PCIe 4.0 drive from a named manufacturer. >
   SLSSD nvme4(String manufacturer, int capacityGb) {
     SLSSD d = new SLSSD();
     d.configure(manufacturer, nvmePart(manufacturer), d.IF_NVME_PCIE4, capacityGb);
     return d;
   }
-  // A flagship NVMe PCIe 5.0 drive from a named manufacturer.
+  < A flagship NVMe PCIe 5.0 drive from a named manufacturer. >
   SLSSD nvme5(String manufacturer, int capacityGb) {
     SLSSD d = new SLSSD();
     d.configure(manufacturer, nvme5Part(manufacturer), d.IF_NVME_PCIE5, capacityGb);
     return d;
   }
-  // A SATA III 2.5" drive from a named manufacturer.
+  < A SATA III 2.5" drive from a named manufacturer. >
   SLSSD sata(String manufacturer, int capacityGb) {
     SLSSD d = new SLSSD();
     d.configure(manufacturer, sataPart(manufacturer), d.IF_SATA3, capacityGb);
     return d;
   }
 
-  // Build an SSD by interface name from any manufacturer.
+  < Build an SSD by interface name from any manufacturer. >
   SLSSD drive(String manufacturer, String ifName, int capacityGb) {
     SLSSD d = new SLSSD();
     d.configureByName(manufacturer, partFor(manufacturer, ifName), ifName, capacityGb);
@@ -90,7 +90,7 @@ class SLSSDCatalog {
         || manufacturer == "Corsair"  || manufacturer == "Sabrent";
   }
 
-  // ---- Representative model names ----------------------------------------
+  < ---- Representative model names ---------------------------------------- >
   String nvme5Part(String mfr) {
     if (mfr == "Samsung")         { return "990 PRO"; }
     if (mfr == "Crucial")         { return "T700"; }

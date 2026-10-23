@@ -53,8 +53,8 @@ class SLSeparator extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a separator inside `parent`. orientation is ORIENT_HORIZONTAL
-  // (a horizontal rule) or ORIENT_VERTICAL (a vertical rule).
+  < Create a separator inside `parent`. orientation is ORIENT_HORIZONTAL >
+  < (a horizontal rule) or ORIENT_VERTICAL (a vertical rule). >
   void createIn(SLWidget parent, int orientation) {
     widget = uiSeparator(parent.handle(), orientation);
   }

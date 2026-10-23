@@ -64,34 +64,42 @@ class SLCadDocument {
 
   String title;
   String units;
-  double curX; double curY;        // insertion point applied to the next room
+  < insertion point applied to the next room >
+  double curX; double curY;
 
   SLCadEntity[] items;
-  int count;                       // number of slots used (alive + tombstoned)
-  int nextId;                      // monotonic id source
+  < number of slots used (alive + tombstoned) >
+  int count;
+  < monotonic id source >
+  int nextId;
 
-  // ---- timestamps ---------------------------------------------------------
-  // Time is supplied by the host (there is no live wall-clock in the runtime),
-  // so the engine stays deterministic. A timestamp is carried as a Julian date
-  // (AutoCAD's $TDCREATE/$TDUPDATE unit, group code 40) plus a human-readable
-  // label the inspection/report API prints. createdAt is set once at begin();
-  // updatedAt advances on every mutation via touch().
-  double createdAt;                // Julian date the document was created (0 = unset)
-  double updatedAt;                // Julian date of the most recent edit (0 = unset)
-  String createdLabel;             // readable creation stamp (e.g. "2026-10-13T18:00Z")
-  String updatedLabel;             // readable last-update stamp
+  < ---- timestamps --------------------------------------------------------- >
+  < Time is supplied by the host (there is no live wall-clock in the runtime), >
+  < so the engine stays deterministic. A timestamp is carried as a Julian date >
+  < (AutoCAD's $TDCREATE/$TDUPDATE unit, group code 40) plus a human-readable >
+  < label the inspection/report API prints. createdAt is set once at begin(); >
+  < updatedAt advances on every mutation via touch(). >
+  < Julian date the document was created (0 = unset) >
+  double createdAt;
+  < Julian date of the most recent edit (0 = unset) >
+  double updatedAt;
+  < readable creation stamp (e.g. "2026-10-13T18:00Z") >
+  String createdLabel;
+  < readable last-update stamp >
+  String updatedLabel;
 
-  SLCadDxf writer;                 // the DXF section wrapper (reused)
+  < the DXF section wrapper (reused) >
+  SLCadDxf writer;
 
-  // ---- lifecycle ----------------------------------------------------------
+  < ---- lifecycle ---------------------------------------------------------- >
 
   void begin(String t, String u) {
     beginAt(t, u, 0.0, "");
   }
 
-  // Begin a document and record its creation timestamp (Julian date + label).
-  // A zero/empty timestamp means "unset" and no $TDCREATE/$TDUPDATE is emitted,
-  // so existing callers of begin() are byte-compatible with the old output.
+  < Begin a document and record its creation timestamp (Julian date + label). >
+  < A zero/empty timestamp means "unset" and no $TDCREATE/$TDUPDATE is emitted, >
+  < so existing callers of begin() are byte-compatible with the old output. >
   void beginAt(String t, String u, double createdJulian, String createdText) {
     title = t; units = u;
     curX = 0.0; curY = 0.0;
@@ -108,23 +116,23 @@ class SLCadDocument {
   void setUnits(String u) { units = u; }
   void setAt(double x, double y) { curX = x; curY = y; }
 
-  // ---- timestamp access ---------------------------------------------------
+  < ---- timestamp access --------------------------------------------------- >
 
   double getCreatedAt() { return createdAt; }
   double getUpdatedAt() { return updatedAt; }
   String getCreatedLabel() { return createdLabel; }
   String getUpdatedLabel() { return updatedLabel; }
 
-  // Record that the document changed at the given host-supplied time. The
-  // Creator calls this after each create/alter/delete so $TDUPDATE and the
-  // readable label track the last edit. Called with (0, "") it is a no-op,
-  // which keeps timestamp-unaware callers unchanged.
+  < Record that the document changed at the given host-supplied time. The >
+  < Creator calls this after each create/alter/delete so $TDUPDATE and the >
+  < readable label track the last edit. Called with (0, "") it is a no-op, >
+  < which keeps timestamp-unaware callers unchanged. >
   void touch(double whenJulian, String whenText) {
     if (whenJulian > 0.0) { updatedAt = whenJulian; }
     if (whenText != "") { updatedLabel = whenText; }
   }
 
-  // ---- creation (returns the new entity id, or -1 if the store is full) ---
+  < ---- creation (returns the new entity id, or -1 if the store is full) --- >
 
   int addLine(String layer, double x1, double y1, double x2, double y2) {
     if (count >= MAX_ENTITIES) { return -1; }
@@ -147,30 +155,34 @@ class SLCadDocument {
     return store(e);
   }
 
-  // A wall is a line on the "walls" layer.
+  < A wall is a line on the "walls" layer. >
   int addWall(double x1, double y1, double x2, double y2) {
     return addLine("walls", x1, y1, x2, y2);
   }
 
-  // A note is text on the "notes" layer at a default height.
+  < A note is text on the "notes" layer at a default height. >
   int addNote(double x, double y, String text) {
     return addText("notes", x, y, text, 150.0);
   }
 
-  // A dimension on the "dims" layer with the standard label height.
+  < A dimension on the "dims" layer with the standard label height. >
   int addDimension(double x1, double y1, double x2, double y2) {
     return addDim("dims", x1, y1, x2, y2, 120.0);
   }
 
-  // Expand a room (w x h) at the current insertion point into four walls and a
-  // centred label; returns the id of the first (south) wall so a caller can
-  // locate the room.
+  < Expand a room (w x h) at the current insertion point into four walls and a >
+  < centred label; returns the id of the first (south) wall so a caller can >
+  < locate the room. >
   int addRoom(double w, double h, String name) {
     double ox = curX; double oy = curY;
-    int first = addWall(ox,     oy,     ox + w, oy);        // south
-    addWall(ox + w, oy,     ox + w, oy + h);                // east
-    addWall(ox + w, oy + h, ox,     oy + h);                // north
-    addWall(ox,     oy + h, ox,     oy);                    // west
+    < south >
+    int first = addWall(ox,     oy,     ox + w, oy);
+    < east >
+    addWall(ox + w, oy,     ox + w, oy + h);
+    < north >
+    addWall(ox + w, oy + h, ox,     oy + h);
+    < west >
+    addWall(ox,     oy + h, ox,     oy);
     if (name != "") {
       addText("notes", ox + w / 2.0, oy + h / 2.0, name, 150.0);
     }
@@ -184,7 +196,7 @@ class SLCadDocument {
     return e.getId();
   }
 
-  // ---- lookup -------------------------------------------------------------
+  < ---- lookup ------------------------------------------------------------- >
 
   int size() { return count; }
   SLCadEntity at(int index) {
@@ -210,8 +222,8 @@ class SLCadDocument {
     return n;
   }
 
-  // Hit test: the id of the live entity whose anchor/first point is nearest to
-  // (x,y) within `radius`, or -1. Lets a GUI turn a click into a selection.
+  < Hit test: the id of the live entity whose anchor/first point is nearest to >
+  < (x,y) within `radius`, or -1. Lets a GUI turn a click into a selection. >
   int pick(double x, double y, double radius) {
     int best = -1;
     double bestD = radius;
@@ -233,8 +245,8 @@ class SLCadDocument {
     if (d <= 0.0) { return 0.0; }
     return sqrtApprox(d);
   }
-  // A dependency-free square root (Newton's method) so hit testing needs no
-  // import beyond this class; converges fast for the magnitudes CAD uses.
+  < A dependency-free square root (Newton's method) so hit testing needs no >
+  < import beyond this class; converges fast for the magnitudes CAD uses. >
   double sqrtApprox(double v) {
     if (v <= 0.0) { return 0.0; }
     double g = v;
@@ -242,23 +254,23 @@ class SLCadDocument {
     return g;
   }
 
-  // ---- alteration ---------------------------------------------------------
+  < ---- alteration --------------------------------------------------------- >
 
-  // Move an entity by (dx,dy). Returns true if it existed and is alive.
+  < Move an entity by (dx,dy). Returns true if it existed and is alive. >
   boolean move(int id, double dx, double dy) {
     SLCadEntity e = byId(id);
     if (e == null || !e.isAlive()) { return false; }
     e.translate(dx, dy);
     return true;
   }
-  // Re-point a line/dim's endpoints.
+  < Re-point a line/dim's endpoints. >
   boolean reshape(int id, double x1, double y1, double x2, double y2) {
     SLCadEntity e = byId(id);
     if (e == null || !e.isAlive()) { return false; }
     e.setEndpoints(x1, y1, x2, y2);
     return true;
   }
-  // Move a point-anchored entity (TEXT) or a line's first point.
+  < Move a point-anchored entity (TEXT) or a line's first point. >
   boolean moveTo(int id, double x, double y) {
     SLCadEntity e = byId(id);
     if (e == null || !e.isAlive()) { return false; }
@@ -277,7 +289,7 @@ class SLCadDocument {
     e.setLayer(layer);
     return true;
   }
-  // Soft-delete (tombstone) / restore -- ids stay stable across the edit.
+  < Soft-delete (tombstone) / restore -- ids stay stable across the edit. >
   boolean remove(int id) {
     SLCadEntity e = byId(id);
     if (e == null || !e.isAlive()) { return false; }
@@ -291,7 +303,7 @@ class SLCadDocument {
     return true;
   }
 
-  // ---- extents (recomputed from the live entities) ------------------------
+  < ---- extents (recomputed from the live entities) ------------------------ >
 
   double minX() { return boundX(true); }
   double maxX() { return boundX(false); }
@@ -324,11 +336,11 @@ class SLCadDocument {
     return (v > acc) ? v : acc;
   }
 
-  // ---- serialisation (Save) -----------------------------------------------
+  < ---- serialisation (Save) ----------------------------------------------- >
 
-  // Emit the whole document as AutoCAD DXF (R12 text) with the current extents.
-  // This is what the Creator's Save produces; a host writes it to a .dxf file
-  // (or the runnable `main` prints it, as the renderer does).
+  < Emit the whole document as AutoCAD DXF (R12 text) with the current extents. >
+  < This is what the Creator's Save produces; a host writes it to a .dxf file >
+  < (or the runnable `main` prints it, as the renderer does). >
   String toDxf() {
     String walls = ""; String dims = ""; String notes = "";
     for (int i = 0; i < count; i = i + 1) {

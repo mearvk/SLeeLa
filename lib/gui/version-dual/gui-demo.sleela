@@ -61,7 +61,7 @@ class GuiDemo {
   String intToStr(int v) { return "" + v; }
   String boolToStr(boolean b) { return b ? "yes" : "no"; }
 
-  // The toolkit-neutral backend selector (SleelaGui.create).
+  < The toolkit-neutral backend selector (SleelaGui.create). >
   String resolveBackend(String kind) {
     if (kind == "fx") { return "javafx"; }
     return kind;
@@ -70,12 +70,12 @@ class GuiDemo {
     return kind == "swing" || kind == "javafx" || kind == "fx" || kind == "native";
   }
 
-  // The hard 1..14 document-count contract.
+  < The hard 1..14 document-count contract. >
   boolean withinBound(int count) {
     return count >= MIN_DOCUMENTS && count <= MAX_DOCUMENTS;
   }
 
-  // The window's document-change refresh sink (SleelaGui.refresh default).
+  < The window's document-change refresh sink (SleelaGui.refresh default). >
   String refreshText(String documentId, String revision) {
     return "Document '" + documentId + "' changed (" + revision + ")";
   }
@@ -89,7 +89,7 @@ class GuiDemo {
   void main() {
     banner("SLeeLa GUI: three integration paths + document listener");
 
-    // Backend selection (toolkit-neutral).
+    < Backend selection (toolkit-neutral). >
     print("backend swing -> " + resolveBackend("swing")
         + " (supported " + boolToStr(backendSupported("swing")) + ")");
     print("backend fx    -> " + resolveBackend("fx")
@@ -97,19 +97,19 @@ class GuiDemo {
     print("backend qt    -> supported " + boolToStr(backendSupported("qt")));
 
     banner("Path 2: SLeeLa intent -> Java GUI");
-    // SLeeLa describes a window and publishes text; Java renders it.
+    < SLeeLa describes a window and publishes text; Java renders it. >
     print("window 'Editor' 800x600 shown; text set by SLeeLa intent.");
 
     banner("Path 1: Java host -> SLeeLa business logic");
-    // Java hosts the window; the action maps to a SLeeLa operation.
+    < Java hosts the window; the action maps to a SLeeLa operation. >
     print("action 'primary' -> operation 'onSave'; result published to window.");
 
     banner("Document-change listener (1..14, OS-driven refresh)");
     print("watch 3 documents  -> within bound " + boolToStr(withinBound(3)));
     print("watch 0 documents  -> within bound " + boolToStr(withinBound(0)) + " (rejected)");
     print("watch 15 documents -> within bound " + boolToStr(withinBound(15)) + " (rejected)");
-    // An OS call wakes the watch; a real revision move refreshes the window,
-    // while a no-op event (revision unchanged) is coalesced away.
+    < An OS call wakes the watch; a real revision move refreshes the window, >
+    < while a no-op event (revision unchanged) is coalesced away. >
     print("OS call, doc 'notes.md' moved -> " + refreshText("notes.md", "1739981000:2048"));
     print("OS call, no revision move -> coalesced (no refresh).");
 

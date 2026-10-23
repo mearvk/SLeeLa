@@ -56,32 +56,32 @@ class SLPath {
   void configure(String p) { value = p; }
   String text() { return value; }
 
-  // The host path separator: "\\" on Windows, "/" elsewhere.
+  < The host path separator: "\\" on Windows, "/" elsewhere. >
   String separator() {
     if (osPlatform() == "Windows") { return "\\"; }
     return "/";
   }
 
-  // The host entry (PATH) separator: ";" on Windows, ":" elsewhere.
+  < The host entry (PATH) separator: ";" on Windows, ":" elsewhere. >
   String listSeparator() {
     if (osPlatform() == "Windows") { return ";"; }
     return ":";
   }
 
-  // Join a child segment onto this path using the host separator; returns the
-  // combined path text.
+  < Join a child segment onto this path using the host separator; returns the >
+  < combined path text. >
   String join(String child) {
     if (value == "") { return child; }
     return value + separator() + child;
   }
 
-  // Append in place and return the new path text.
+  < Append in place and return the new path text. >
   String append(String child) { value = join(child); return value; }
 
-  // Build a PATH-style list string from two entries using the host list
-  // separator (";" on Windows, ":" elsewhere).
+  < Build a PATH-style list string from two entries using the host list >
+  < separator (";" on Windows, ":" elsewhere). >
   String joinList(String a, String b) { return a + listSeparator() + b; }
 
-  // True when this path exists on the host filesystem.
+  < True when this path exists on the host filesystem. >
   boolean exists() { return osExists(value) == 1; }
 }

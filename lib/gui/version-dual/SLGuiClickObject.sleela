@@ -59,28 +59,45 @@ class SLGuiClickObject {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Motion architectures.
-  static final int MOTION_STATIC = 0;   // fixed position
-  static final int MOTION_DRIFT  = 1;   // linear drift by (vx,vy) per interval
-  static final int MOTION_ORBIT  = 2;   // orbit a center at a radius/step
-  static final int MOTION_PULSE  = 3;   // radius pulses between min/max
+  < Motion architectures. >
+  < fixed position >
+  static final int MOTION_STATIC = 0;
+  < linear drift by (vx,vy) per interval >
+  static final int MOTION_DRIFT  = 1;
+  < orbit a center at a radius/step >
+  static final int MOTION_ORBIT  = 2;
+  < radius pulses between min/max >
+  static final int MOTION_PULSE  = 3;
 
   String id;
-  int x; int y;          // exact position (px) of the circle's center
-  int radiusPx;          // circle radius, 2..512
-  int motion;            // MOTION_*
-  int vx; int vy;        // drift velocity (px per interval) for MOTION_DRIFT
-  int orbitCx; int orbitCy; int orbitR; int orbitDeg; int orbitStepDeg;  // MOTION_ORBIT
-  int pulseMin; int pulseMax; int pulseDir; // MOTION_PULSE radius bounds + direction
+  < exact position (px) of the circle's center >
+  int x; int y;
+  < circle radius, 2..512 >
+  int radiusPx;
+  < MOTION_* >
+  int motion;
+  < drift velocity (px per interval) for MOTION_DRIFT >
+  int vx; int vy;
+  < MOTION_ORBIT >
+  int orbitCx; int orbitCy; int orbitR; int orbitDeg; int orbitStepDeg;
+  < MOTION_PULSE radius bounds + direction >
+  int pulseMin; int pulseMax; int pulseDir;
 
-  // Staged apprentice timer.
-  int intervalMs;        // time between apprentice stages, 50..600000
-  int accumMs;           // banked time toward the next stage
-  int apprentice;        // current apprentice stage (0 = dormant)
-  int apprenticeMax;     // stages before the final call fires, 1..64
-  String finalCall;      // SLeeLa operation fired at the culminating stage
-  int fired;             // 1 once the final call has fired (fires once)
-  int running;           // 1 while the timer advances
+  < Staged apprentice timer. >
+  < time between apprentice stages, 50..600000 >
+  int intervalMs;
+  < banked time toward the next stage >
+  int accumMs;
+  < current apprentice stage (0 = dormant) >
+  int apprentice;
+  < stages before the final call fires, 1..64 >
+  int apprenticeMax;
+  < SLeeLa operation fired at the culminating stage >
+  String finalCall;
+  < 1 once the final call has fired (fires once) >
+  int fired;
+  < 1 while the timer advances >
+  int running;
 
   void configure(String objId, int cx, int cy, int radius) {
     id = objId; x = cx; y = cy; radiusPx = clampRadius(radius);
@@ -95,14 +112,14 @@ class SLGuiClickObject {
   int clampRadius(int r) { return clamp(r, 2, 512); }
   int wrapDeg(int d) { int r = d % 360; if (r < 0) { r = r + 360; } return r; }
 
-  // ---- position ----------------------------------------------------------
+  < ---- position ---------------------------------------------------------- >
   void setPosition(int cx, int cy) { x = cx; y = cy; }
   void setRadius(int r) { radiusPx = clampRadius(r); }
   int posX() { return x; }
   int posY() { return y; }
   int radius() { return radiusPx; }
 
-  // ---- motion architecture ------------------------------------------------
+  < ---- motion architecture ------------------------------------------------ >
   void setStatic() { motion = MOTION_STATIC; }
   void setDrift(int velX, int velY) { motion = MOTION_DRIFT; vx = velX; vy = velY; }
   void setOrbit(int centerX, int centerY, int r, int stepDeg) {
@@ -116,8 +133,8 @@ class SLGuiClickObject {
     pulseDir = 1;
   }
 
-  // ---- apprentice ladder --------------------------------------------------
-  // Bind the culminating action and how many apprentice stages precede it.
+  < ---- apprentice ladder -------------------------------------------------- >
+  < Bind the culminating action and how many apprentice stages precede it. >
   void bindFinalCall(String operation, int stages) {
     finalCall = (operation == null) ? "" : operation;
     apprenticeMax = clamp(stages, 1, 64);
@@ -132,11 +149,11 @@ class SLGuiClickObject {
   boolean finalFired() { return fired == 1; }
   String getFinalCall() { return finalCall; }
 
-  // ---- advance (called by the app tick) -----------------------------------
-  // Advance motion and the apprentice timer by `elapsedMs`. Returns a code:
-  //   0 = nothing happened this tick
-  //   1 = moved and/or advanced an apprentice stage
-  //   2 = the FINAL CALL fired this tick (the host should invoke finalCall)
+  < ---- advance (called by the app tick) ----------------------------------- >
+  < Advance motion and the apprentice timer by `elapsedMs`. Returns a code: >
+  < 0 = nothing happened this tick >
+  < 1 = moved and/or advanced an apprentice stage >
+  < 2 = the FINAL CALL fired this tick (the host should invoke finalCall) >
   int advance(int elapsedMs) {
     if (running == 0 || elapsedMs <= 0) { return 0; }
     boolean changed = advanceMotion();
@@ -146,18 +163,20 @@ class SLGuiClickObject {
     while (accumMs >= intervalMs && fired == 0) {
       accumMs = accumMs - intervalMs;
       if (apprentice < apprenticeMax) {
-        apprentice = apprentice + 1;   // one more subtle System Apprentice awakens
+        < one more subtle System Apprentice awakens >
+        apprentice = apprentice + 1;
         code = 1;
       }
       if (apprentice >= apprenticeMax) {
-        fired = 1; running = 0;        // the final call lands exactly once
+        < the final call lands exactly once >
+        fired = 1; running = 0;
         return 2;
       }
     }
     return code;
   }
 
-  // Apply one motion step according to the architecture. Returns true if moved.
+  < Apply one motion step according to the architecture. Returns true if moved. >
   boolean advanceMotion() {
     if (motion == MOTION_DRIFT) {
       if (vx == 0 && vy == 0) { return false; }
@@ -166,8 +185,8 @@ class SLGuiClickObject {
     if (motion == MOTION_ORBIT) {
       if (orbitR == 0) { return false; }
       orbitDeg = wrapDeg(orbitDeg + orbitStepDeg);
-      // integer cosine/sine via a coarse step table would be ideal; here we keep
-      // the angle authoritative and let the host place the point from orbitDeg.
+      < integer cosine/sine via a coarse step table would be ideal; here we keep >
+      < the angle authoritative and let the host place the point from orbitDeg. >
       return true;
     }
     if (motion == MOTION_PULSE) {
@@ -177,7 +196,8 @@ class SLGuiClickObject {
       else if (radiusPx <= pulseMin) { radiusPx = pulseMin; pulseDir = 1; }
       return true;
     }
-    return false;   // MOTION_STATIC
+    < MOTION_STATIC >
+    return false;
   }
 
   int orbitAngle() { return orbitDeg; }

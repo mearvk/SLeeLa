@@ -54,15 +54,24 @@ class SLGuiHandler {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int type;             // SLGuiEventType ordinal this handler listens for
-  String targetId;      // node id it is bound to ("*" matches any target)
-  String operation;     // the SLeeLa operation invoked when it fires
-  int once;             // 1 = auto-remove after the first fire
-  int capture;          // 1 = fire during capture phase, 0 = bubble phase
-  int enabled;          // 1 while active
-  int pending;          // activation latch (set on fire, cleared on take)
-  int fired;            // total times fired
-  String lastValue;     // the value carried by the most recent matching event
+  < SLGuiEventType ordinal this handler listens for >
+  int type;
+  < node id it is bound to ("*" matches any target) >
+  String targetId;
+  < the SLeeLa operation invoked when it fires >
+  String operation;
+  < 1 = auto-remove after the first fire >
+  int once;
+  < 1 = fire during capture phase, 0 = bubble phase >
+  int capture;
+  < 1 while active >
+  int enabled;
+  < activation latch (set on fire, cleared on take) >
+  int pending;
+  < total times fired >
+  int fired;
+  < the value carried by the most recent matching event >
+  String lastValue;
 
   void configure(int eventType, String target, String op) {
     type = eventType; targetId = target; operation = op;
@@ -81,22 +90,22 @@ class SLGuiHandler {
   void setEnabled(boolean on) { enabled = on ? 1 : 0; }
   boolean isEnabled() { return enabled == 1; }
 
-  // Does this handler match the given event? "*" target is a wildcard.
+  < Does this handler match the given event? "*" target is a wildcard. >
   boolean matches(SLGuiEvent event) {
     if (enabled == 0 || event == null) { return false; }
     if (event.getType() != type) { return false; }
     return targetId == "*" || targetId == event.target();
   }
 
-  // Fire against a matching event: record it and raise the latch. The
-  // dispatcher calls this; a host that polls then reads it with take().
+  < Fire against a matching event: record it and raise the latch. The >
+  < dispatcher calls this; a host that polls then reads it with take(). >
   void fire(SLGuiEvent event) {
     if (event != null) { lastValue = event.getValue(); }
     pending = 1;
     fired = fired + 1;
   }
 
-  // Take-the-latch read: true once per fire, then cleared.
+  < Take-the-latch read: true once per fire, then cleared. >
   boolean take() {
     if (pending == 1) { pending = 0; return true; }
     return false;

@@ -55,7 +55,7 @@ class SLGuiTheme {
   static final String DANGER = "#D9534F";
   static final String SUCCESS = "#3FA776";
 
-  // Typed SLColor words (0xRRGGBBAA) used by SLTheme at runtime.
+  < Typed SLColor words (0xRRGGBBAA) used by SLTheme at runtime. >
   static final int TITLE_BAR_COLOR = 0x1D2025FF;
   static final int MENU_BAR_COLOR = 0x1D2025FF;
   static final int URL_BAR_COLOR = 0x383C47FF;

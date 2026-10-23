@@ -59,7 +59,8 @@ class SLGuestProgram {
   SLRAM ops;
   SLRAM args;
   int length;
-  int base;        // substrate code index where this program was loaded
+  < substrate code index where this program was loaded >
+  int base;
 
   void configure(String programName, int capacity) {
     name = programName;
@@ -73,8 +74,8 @@ class SLGuestProgram {
     int at = length; length = length + 1; return at;
   }
 
-  // Build a guest program from source via the shared toolchain, copying the
-  // compiled opcode image out of a scratch kernel-image build.
+  < Build a guest program from source via the shared toolchain, copying the >
+  < compiled opcode image out of a scratch kernel-image build. >
   void buildFrom(String sourcePath, int langId) {
     SLGuestKernelBuilder builder = new SLGuestKernelBuilder(); builder.configure();
     SLGuestKernelImage img = builder.build(sourcePath, langId, name, "task");
@@ -82,8 +83,8 @@ class SLGuestProgram {
     while (i < img.size()) { append(img.opcodeAt(i), img.argAt(i)); i = i + 1; }
   }
 
-  // Load the program into the guest substrate at the current end of its code
-  // store; returns the entry index (base) for the task.
+  < Load the program into the guest substrate at the current end of its code >
+  < store; returns the entry index (base) for the task. >
   int loadInto(SLSleelaVM vm) {
     base = vm.programLength();
     int i = 0;
@@ -91,7 +92,7 @@ class SLGuestProgram {
     return base;
   }
 
-  // Op/arg accessors so a program can be serialized to an on-disk executable.
+  < Op/arg accessors so a program can be serialized to an on-disk executable. >
   int opcodeAt(int i) { return ops.readWord(i); }
   int argAt(int i) { return args.readWord(i); }
 

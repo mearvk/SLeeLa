@@ -51,7 +51,7 @@ class SLGuiWindow {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Shared chrome colour defaults for every SLeeLa GUI variant.
+  < Shared chrome colour defaults for every SLeeLa GUI variant. >
   static final String TITLE_BAR_BACKGROUND = "#1d2025";
   static final String MENU_BAR_BACKGROUND = "#1d2025";
   static final String URL_BAR_BACKGROUND = "#383c47";
@@ -60,23 +60,24 @@ class SLGuiWindow {
   int width;
   int height;
   String text;
-  int shown;                   // 1 once show() has been requested
+  < 1 once show() has been requested >
+  int shown;
   void configure(String t, int w, int h) {
     title = t; width = w; height = h; text = ""; shown = 0;
   }
-  // Request the window be shown at its configured size.
+  < Request the window be shown at its configured size. >
   void show() { shown = 1; }
   boolean visible() { return shown == 1; }
-  // A window is valid once it has a title and a positive extent.
+  < A window is valid once it has a title and a positive extent. >
   boolean valid() { return title != null && width > 0 && height > 0; }
   String getTitle() { return title; }
   int getWidth() { return width; }
   int getHeight() { return height; }
-  // Set the window's text (the SleelaGui.setText sink).
+  < Set the window's text (the SleelaGui.setText sink). >
   void setText(String value) { text = value; }
   String getText() { return text; }
-  // The document-change refresh sink: SleelaGui.refresh(id, revision). The
-  // default publishes a short status line, exactly like the Java default.
+  < The document-change refresh sink: SleelaGui.refresh(id, revision). The >
+  < default publishes a short status line, exactly like the Java default. >
   void refresh(String documentId, String revision) {
     text = "Document '" + documentId + "' changed (" + revision + ")";
   }

@@ -55,7 +55,8 @@ class SLFileSystem {
   static final int MAX_FILES = 8;
   SLDiskDriver disk;
 
-  String n0; int b0; int l0;   // name, start block, length (blocks) per entry
+  < name, start block, length (blocks) per entry >
+  String n0; int b0; int l0;
   String n1; int b1; int l1;
   String n2; int b2; int l2;
   String n3; int b3; int l3;
@@ -70,7 +71,7 @@ class SLFileSystem {
     disk = blockDevice; fileCount = 0; nextFreeBlock = dataStartBlock;
   }
 
-  // Create a file occupying `blocks` contiguous blocks; returns its index.
+  < Create a file occupying `blocks` contiguous blocks; returns its index. >
   int create(String name, int blocks) {
     int idx = fileCount;
     if (idx >= MAX_FILES) { return -1; }
@@ -116,8 +117,8 @@ class SLFileSystem {
     return 0;
   }
 
-  // Read the first block of a named file (loader entry; full reads loop over
-  // the file's block run).
+  < Read the first block of a named file (loader entry; full reads loop over >
+  < the file's block run). >
   int readFirstBlock(String name) {
     int idx = indexOf(name);
     if (idx < 0 || disk == null) { return -1; }

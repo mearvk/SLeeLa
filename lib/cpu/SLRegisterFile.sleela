@@ -59,8 +59,8 @@ class SLRegisterFile {
   int reads;
   int writes;
 
-  // SLeeLa surface has no array storage; model up to 16 registers as fields,
-  // which matches a typical architectural register count.
+  < SLeeLa surface has no array storage; model up to 16 registers as fields, >
+  < which matches a typical architectural register count. >
   void configure(int regCount, int bits) {
     count = regCount; if (count > 16) { count = 16; }
     width = bits; reads = 0; writes = 0;
@@ -74,7 +74,8 @@ class SLRegisterFile {
   void write(int index, int v) {
     writes = writes + 1;
     int w = clampWord(v);
-    if (index == 0) { return; }        // r0 is the hardwired-zero convention
+    < r0 is the hardwired-zero convention >
+    if (index == 0) { return; }
     if (index == 1) { r1 = w; }
     if (index == 2) { r2 = w; }
     if (index == 3) { r3 = w; }

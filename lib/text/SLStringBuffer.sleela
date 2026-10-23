@@ -1,41 +1,44 @@
-// lib/text/SLStringBuffer.sleela
-// SLeeLa Standard Library Definition.
-// Definition: SLStringBuffer -- the synchronized mutable text buffer for the
-// text library family.
-//
-// SLStringBuffer is the thread-safe sibling of SLStringBuilder: the same
-// accumulate-via-(+) surface, but every mutation is a guarded critical section
-// so concurrent callers see a consistent buffer. It keeps the same two honest
-// layers: real in-language appends/joins, and bridged char-level ops that need
-// raw code units. The guard/locking itself is a runtime concern, so
-// beginSync() / endSync() cross the VM/OS bridge; the surface marks the
-// boundary and reports it honestly rather than pretending to lock in-language.
-//
-// Comments are // only; #sleela 2.1.
+< lib/text/SLStringBuffer.sleela >
+< SLeeLa Standard Library Definition. >
+< Definition: SLStringBuffer -- the synchronized mutable text buffer for the >
+< text library family. >
+<  >
+< SLStringBuffer is the thread-safe sibling of SLStringBuilder: the same >
+< accumulate-via-(+) surface, but every mutation is a guarded critical section >
+< so concurrent callers see a consistent buffer. It keeps the same two honest >
+< layers: real in-language appends/joins, and bridged char-level ops that need >
+< raw code units. The guard/locking itself is a runtime concern, so >
+< beginSync() / endSync() cross the VM/OS bridge; the surface marks the >
+< boundary and reports it honestly rather than pretending to lock in-language. >
+<  >
+< only; #sleela 2.1. > >
+< Comments are
 #sleela 2.1
-// Family: text. Native VM/OS work crosses an explicit bridge.
+< Family: text. Native VM/OS work crosses an explicit bridge. >
 
 class SLStringBuffer {
 
   String value = "";
-  int    edits = 0;        // number of mutations
-  int    locks = 0;        // depth of synchronized sections entered
+  < number of mutations >
+  int    edits = 0;
+  < depth of synchronized sections entered >
+  int    locks = 0;
 
-  // ---- synchronization (bridged runtime concern) --------------------
-  // The native runtime supplies the real monitor; these mark the boundary and
-  // keep an honest in-language view of lock depth for diagnostics. (Named
-  // beginSync/endSync rather than lock/unlock: lock is a reserved built-in.)
+  < ---- synchronization (bridged runtime concern) -------------------- >
+  < The native runtime supplies the real monitor; these mark the boundary and >
+  < keep an honest in-language view of lock depth for diagnostics. (Named >
+  < beginSync/endSync rather than lock/unlock: lock is a reserved built-in.) >
   String beginSync() { locks = locks + 1; return "text.bridge:monitor-enter:buffer"; }
   String endSync()   { if (locks > 0) { locks = locks - 1; } return "text.bridge:monitor-exit:buffer"; }
   boolean isLocked() { return locks > 0; }
   int lockDepth()    { return locks; }
 
-  // ---- lifecycle -----------------------------------------------------
+  < ---- lifecycle ----------------------------------------------------- >
   void clear()      { value = ""; edits = edits + 1; }
   boolean isEmpty() { return value == ""; }
   int editCount()   { return edits; }
 
-  // ---- in-language appends (guarded; fluent) ------------------------
+  < ---- in-language appends (guarded; fluent) ------------------------ >
   SLStringBuffer append(String s)  { beginSync(); value = value + s; edits = edits + 1; endSync(); return this; }
   SLStringBuffer appendInt(int n)  { beginSync(); value = value + n; edits = edits + 1; endSync(); return this; }
   SLStringBuffer appendBool(boolean b) { beginSync(); value = value + b; edits = edits + 1; endSync(); return this; }
@@ -65,12 +68,12 @@ class SLStringBuffer {
     return this;
   }
 
-  // ---- result --------------------------------------------------------
+  < ---- result -------------------------------------------------------- >
   String toString()  { return value; }
   String get()       { return value; }
   void set(String v) { beginSync(); value = v; edits = edits + 1; endSync(); }
 
-  // ---- bridged char-level operations ---------------------------------
+  < ---- bridged char-level operations --------------------------------- >
   String bridge(String op)              { return "text.bridge:" + op + ":" + value; }
   String bridgeArg(String op, String a) { return "text.bridge:" + op + ":" + value + ":" + a; }
   String bridgeArg2(String op, String a, String b) {
@@ -84,18 +87,18 @@ class SLStringBuffer {
   String reverse()                          { return bridge("reverse"); }
   String indexOf(String needle)             { return bridgeArg("indexOf", needle); }
 
-  // ---- introspection -------------------------------------------------
+  < ---- introspection ------------------------------------------------- >
   String typeName()   { return "SLeeLa.text.SLStringBuffer"; }
   boolean available() { return true; }
 
-  // SLCloneable / SLDisposable intent.
+  < SLCloneable / SLDisposable intent. >
   SLStringBuffer copy() { SLStringBuffer c = new SLStringBuffer(); c.set(value); return c; }
   void dispose() { value = ""; edits = 0; locks = 0; }
 
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override each record.
-  // Values are faithful to the subject's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, >
+  < or catalog can read and (where appropriate) override each record. >
+  < Values are faithful to the subject's real origin where publicly known. >
   String metaVersion = "1.0.0";
   int metaId = 2;
   String metaAuthor = "SLeeLa standard library";

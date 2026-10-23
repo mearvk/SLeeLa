@@ -53,10 +53,11 @@ class SLPackage {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Version identity: this is the mual line — the 1.0 GUI baseline. The gual
-  // line is the 2.0 package (version(), featureLevel()); mual stays the stable
-  // baseline. featureLevel() lets callers branch on the line.
-  static final int FEATURE_LEVEL = 1;   // 1 = mual/1.0 ; 2 = gual/2.0
+  < Version identity: this is the mual line — the 1.0 GUI baseline. The gual >
+  < line is the 2.0 package (version(), featureLevel()); mual stays the stable >
+  < baseline. featureLevel() lets callers branch on the line. >
+  < 1 = mual/1.0 ; 2 = gual/2.0 >
+  static final int FEATURE_LEVEL = 1;
   String packageName;
   String packageVersion;
   void configure(String name) { packageName = name; packageVersion = "1.0"; }

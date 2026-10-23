@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Request model; carrier protocol is negotiated separately. */
+< Request model; carrier protocol is negotiated separately. >
 class Http40Request {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

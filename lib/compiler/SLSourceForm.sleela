@@ -65,8 +65,10 @@ class SLSourceForm {
   static final int SLSCRIPT   = 3;
 
   int form;
-  String extension; // canonical extension, including the dot
-  boolean ordered;  // true when the form runs strictly top-down
+  < canonical extension, including the dot >
+  String extension;
+  < true when the form runs strictly top-down >
+  boolean ordered;
 
   void configure(int whichForm) {
     form = whichForm;
@@ -76,8 +78,8 @@ class SLSourceForm {
     else { extension = ""; ordered = false; }
   }
 
-  // Infer the source form from a file name's extension. Returns 0 (unknown) when
-  // the extension is not a recognised SLeeLa source form.
+  < Infer the source form from a file name's extension. Returns 0 (unknown) when >
+  < the extension is not a recognised SLeeLa source form. >
   int fromExtension(String fileName) {
     if (endsWith(fileName, ".sldocument")) { configure(SLDOCUMENT); return SLDOCUMENT; }
     if (endsWith(fileName, ".sleela-script")) { configure(SLSCRIPT); return SLSCRIPT; }
@@ -92,8 +94,8 @@ class SLSourceForm {
   boolean isDocument() { return form == SLDOCUMENT; }
   boolean isProgram() { return form == SLEELA; }
 
-  // Small helper: does `s` end with `suffix`? (The .sldocument check runs before
-  // the .sleela check so the longer extension is matched first.)
+  < Small helper: does `s` end with `suffix`? (The .sldocument check runs before >
+  < the .sleela check so the longer extension is matched first.) >
   boolean endsWith(String s, String suffix) {
     if (s == null || suffix == null) { return false; }
     int sl = s.length();

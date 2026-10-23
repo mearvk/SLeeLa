@@ -49,14 +49,16 @@ class SLLatch {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int q;        // stored bit
-  int enabled;  // 1 = transparent (follows D), 0 = holding
+  < stored bit >
+  int q;
+  < 1 = transparent (follows D), 0 = holding >
+  int enabled;
 
   void reset() { q = 0; enabled = 0; }
   void enable() { enabled = 1; }
   void disable() { enabled = 0; }
 
-  // Gated-D behavior: capture D only while enabled, otherwise hold.
+  < Gated-D behavior: capture D only while enabled, otherwise hold. >
   int write(int d) {
     if (enabled == 1) { if (d != 0) { q = 1; } else { q = 0; } }
     return q;

@@ -1,10 +1,8 @@
 #sleela 2.1
-/*
- * CitizenSchemaAndRulesMetadataStats.sleela
- * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
- * Source category: Schema and rules metadata.
- * Monetary values use integer minor units where the field name says Cents.
- */
+<< CitizenSchemaAndRulesMetadataStats.sleela
+   Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+   Source category: Schema and rules metadata.
+   Monetary values use integer minor units where the field name says Cents. >>
 class CitizenSchemaAndRulesMetadataStats {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

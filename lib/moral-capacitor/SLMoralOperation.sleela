@@ -55,12 +55,18 @@ class SLMoralOperation {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String actor;       // "vm" / "os" / "machine" / library name
-  String action;      // verb: "allocate" / "erase" / "spawn" / "boot" / ...
-  String target;      // what it affects
-  String scope;       // "process" / "disk" / "host" / "network" / ...
-  int reversible;     // 1 if the effect can be undone
-  int consented;      // 1 if the affected party has consented
+  < "vm" / "os" / "machine" / library name >
+  String actor;
+  < verb: "allocate" / "erase" / "spawn" / "boot" / ... >
+  String action;
+  < what it affects >
+  String target;
+  < "process" / "disk" / "host" / "network" / ... >
+  String scope;
+  < 1 if the effect can be undone >
+  int reversible;
+  < 1 if the affected party has consented >
+  int consented;
   int configured;
 
   void configure(String who, String what, String onWhat, String howWide) {
@@ -78,7 +84,7 @@ class SLMoralOperation {
   boolean isReversible() { return reversible == 1; }
   boolean hasConsent()   { return consented == 1; }
 
-  // A short identity line for verdicts and the ledger.
+  < A short identity line for verdicts and the ledger. >
   String identity() {
     return actor + ":" + action + " " + target + " (" + scope + ")";
   }

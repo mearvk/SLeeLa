@@ -54,7 +54,7 @@ class SLSearchEntry extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a search entry inside `parent` (placeholder defaults to "Search").
+  < Create a search entry inside `parent` (placeholder defaults to "Search"). >
   void createIn(SLWidget parent, String placeholder) {
     widget = uiSearchEntry(parent.handle(), placeholder);
   }
@@ -62,7 +62,7 @@ class SLSearchEntry extends SLWidget {
     widget = uiSearchEntry(parentHandle, placeholder);
   }
 
-  // True if Enter was pressed since the last check (latch cleared on read).
+  < True if Enter was pressed since the last check (latch cleared on read). >
   boolean submitted() {
     if (widget < 0) { return false; }
     return uiWidgetTakeActivated(widget) == 1;

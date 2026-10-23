@@ -55,8 +55,10 @@ class SLMachineMoralGate {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLMoralCapacitor cap;
   SLMoralLedger ledger;
-  SLMoralCertificate certificate;   // the Machine product's Certificate of Morals
-  SLMoralCodeGuard codeGuard;       // admits the Machine only when certified
+  < the Machine product's Certificate of Morals >
+  SLMoralCertificate certificate;
+  < admits the Machine only when certified >
+  SLMoralCodeGuard codeGuard;
   int configured;
 
   void configure() {
@@ -66,37 +68,37 @@ class SLMachineMoralGate {
     configured = 1;
   }
 
-  // Certify this Machine: issue a Certificate of Morals over the gate's
-  // capacitor and arm a code guard against it, so the Machine is a morally
-  // certified product.
+  < Certify this Machine: issue a Certificate of Morals over the gate's >
+  < capacitor and arm a code guard against it, so the Machine is a morally >
+  < certified product. >
   void certify(SLMoralCertificateAuthority authority, int redlinesArmed,
                String issuedAt, String expiresAt) {
     certificate = authority.issue("sleela-machine", cap, redlinesArmed, issuedAt, expiresAt);
     codeGuard = new SLMoralCodeGuard(); codeGuard.configure(authority);
   }
 
-  // Prove at the Machine product boundary (power-on/boot) that the moral code is
-  // present and certified as of nowStamp.
+  < Prove at the Machine product boundary (power-on/boot) that the moral code is >
+  < present and certified as of nowStamp. >
   boolean admit(String nowStamp) {
     if (codeGuard == null || certificate == null) { return false; }
     return codeGuard.permits("sleela-machine", cap, certificate, nowStamp);
   }
   SLMoralCertificate moralCertificate() { return certificate; }
 
-  // Powering on the composed machine.
+  < Powering on the composed machine. >
   SLMoralVerdict permitPowerOn(String machineName) {
     SLMoralPolicy p = new SLMoralPolicy(); p.machinePower();
     return decide(op("machine", "power-on", machineName, "host", true, true), p);
   }
 
-  // Booting a guest OS on the machine.
+  < Booting a guest OS on the machine. >
   SLMoralVerdict permitBootGuest(String guest, boolean consented) {
     SLMoralPolicy p = new SLMoralPolicy(); p.machinePower();
     return decide(op("machine", "boot", guest, "host", true, consented), p);
   }
 
-  // Executing a program on the machine. Purpose is the stated use; it is
-  // screened for red-line verbs (surveil/impersonate/weaponize/...).
+  < Executing a program on the machine. Purpose is the stated use; it is >
+  < screened for red-line verbs (surveil/impersonate/weaponize/...). >
   SLMoralVerdict permitExecute(String purpose, boolean consented) {
     SLMoralPolicy p = new SLMoralPolicy(); p.machinePower(); p.setThreshold(3);
     return decide(op("machine", purpose, "program", "process", true, consented), p);

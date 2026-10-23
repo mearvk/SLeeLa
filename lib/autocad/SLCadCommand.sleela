@@ -55,31 +55,41 @@ class SLCadCommand {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Verb ordinals.
-  static final int CREATE  = 0;   // an entity was created (undo = delete it)
-  static final int MOVE    = 1;   // translated by (dx,dy)
-  static final int RESHAPE = 2;   // endpoints changed (before stored)
-  static final int RELABEL = 3;   // text value changed (before stored)
-  static final int RESTYLE = 4;   // layer changed (before stored)
-  static final int DELETE  = 5;   // tombstoned (undo = restore)
+  < Verb ordinals. >
+  < an entity was created (undo = delete it) >
+  static final int CREATE  = 0;
+  < translated by (dx,dy) >
+  static final int MOVE    = 1;
+  < endpoints changed (before stored) >
+  static final int RESHAPE = 2;
+  < text value changed (before stored) >
+  static final int RELABEL = 3;
+  < layer changed (before stored) >
+  static final int RESTYLE = 4;
+  < tombstoned (undo = restore) >
+  static final int DELETE  = 5;
 
   int verb;
   int entityId;
 
-  // "Before" snapshot for reversal (meaning depends on the verb).
-  double dx; double dy;                 // MOVE delta
-  double px1; double py1; double px2; double py2;  // RESHAPE prior endpoints
-  String priorValue;                    // RELABEL prior text
-  String priorLayer;                    // RESTYLE prior layer
+  < "Before" snapshot for reversal (meaning depends on the verb). >
+  < MOVE delta >
+  double dx; double dy;
+  < RESHAPE prior endpoints >
+  double px1; double py1; double px2; double py2;
+  < RELABEL prior text >
+  String priorValue;
+  < RESTYLE prior layer >
+  String priorLayer;
 
-  // Audit metadata: when the edit was applied (host-supplied) and its order in
-  // the session. seq is 1-based; stampedAt is a Julian date (0 = unstamped) and
-  // stampLabel its readable form. Stamped by the Creator via stamp().
+  < Audit metadata: when the edit was applied (host-supplied) and its order in >
+  < the session. seq is 1-based; stampedAt is a Julian date (0 = unstamped) and >
+  < stampLabel its readable form. Stamped by the Creator via stamp(). >
   int seq;
   double stampedAt;
   String stampLabel;
 
-  // Attach the audit stamp (sequence number + host time) to this command.
+  < Attach the audit stamp (sequence number + host time) to this command. >
   void stamp(int sequence, double whenJulian, String whenText) {
     seq = sequence; stampedAt = whenJulian; stampLabel = whenText;
   }
@@ -99,10 +109,12 @@ class SLCadCommand {
   int getVerb() { return verb; }
   int getEntityId() { return entityId; }
 
-  // Reverse this command against `doc`. Returns true when something changed.
+  < Reverse this command against `doc`. Returns true when something changed. >
   boolean undo(SLCadDocument doc) {
-    if (verb == CREATE)  { return doc.remove(entityId); }       // undo create = delete
-    if (verb == DELETE)  { return doc.restore(entityId); }      // undo delete = restore
+    < undo create = delete >
+    if (verb == CREATE)  { return doc.remove(entityId); }
+    < undo delete = restore >
+    if (verb == DELETE)  { return doc.restore(entityId); }
     if (verb == MOVE)    { return doc.move(entityId, -dx, -dy); }
     if (verb == RESHAPE) { return doc.reshape(entityId, px1, py1, px2, py2); }
     if (verb == RELABEL) { return doc.relabel(entityId, priorValue); }
@@ -110,7 +122,7 @@ class SLCadCommand {
     return false;
   }
 
-  // A short, human-readable description for a history/log view.
+  < A short, human-readable description for a history/log view. >
   String describe() {
     if (verb == CREATE)  { return "create #" + entityId; }
     if (verb == MOVE)    { return "move #" + entityId; }
@@ -121,8 +133,8 @@ class SLCadCommand {
     return "noop";
   }
 
-  // The same description prefixed with the audit stamp, for a timeline view:
-  //   "#3 @ 2026-10-13T18:00Z  move #7"
+  < The same description prefixed with the audit stamp, for a timeline view: >
+  < "#3 @ 2026-10-13T18:00Z  move #7" >
   String describeAt() {
     String s = "#" + seq;
     if (stampLabel != "") { s = s + " @ " + stampLabel; }

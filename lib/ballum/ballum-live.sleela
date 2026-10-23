@@ -77,8 +77,8 @@ class BallumLive {
             + " brightness=" + capHas(caps, 4)
             + " warmth=" + capHas(caps, 8));
 
-      // Drive each control; the native manager validates and returns an honest
-      // status. On a headless host these report 'backend unavailable'.
+      < Drive each control; the native manager validates and returns an honest >
+      < status. On a headless host these report 'backend unavailable'. >
       print("    setPixel(0,0 red): " + uiBallumStatusName(uiBallumSetPixel(id, 0, 0, 255, 0, 0, 255)));
       print("    brightness 70%:    " + uiBallumStatusName(uiBallumSetBrightness(id, 70)));
       print("    warmth 3400K:      " + uiBallumStatusName(uiBallumSetWarmth(id, 3400)));
@@ -87,7 +87,7 @@ class BallumLive {
     }
 
     if (count == 0) {
-      // No displays (e.g. headless): prove the controls still fail closed.
+      < No displays (e.g. headless): prove the controls still fail closed. >
       print("no displays; set on id 0 -> " + uiBallumStatusName(uiBallumSetBrightness(0, 50)));
     }
     print("done");

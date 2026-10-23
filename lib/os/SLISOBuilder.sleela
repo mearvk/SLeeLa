@@ -58,14 +58,15 @@ class SLISOBuilder {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String stagingRoot;   // where the rootfs is assembled
+  < where the rootfs is assembled >
+  String stagingRoot;
   int configured;
 
   void configure() { stagingRoot = "staging/rootfs"; configured = 1; }
   void stageAt(String dir) { stagingRoot = dir; }
 
-  // Build the ISO descriptor + recipe for a model that was already compiled by
-  // the given SLOSCompiler (so the C/C++ artifacts exist to be built in).
+  < Build the ISO descriptor + recipe for a model that was already compiled by >
+  < the given SLOSCompiler (so the C/C++ artifacts exist to be built in). >
   SLOSArtifact build(SLOSModel m, SLOSCompiler compiler) {
     String vol = volumeLabel(m);
     String recipe = "#!/bin/sh\n";
@@ -102,8 +103,8 @@ class SLISOBuilder {
     return iso;
   }
 
-  // ---- Recipe fragments ---------------------------------------------------
-  // One `mkdir -p` per directory in the model's filesystem manifest.
+  < ---- Recipe fragments --------------------------------------------------- >
+  < One `mkdir -p` per directory in the model's filesystem manifest. >
   String emitMkdirs(SLOSModel m) {
     String tree = m.layout().manifest();
     String out = "";
@@ -125,7 +126,7 @@ class SLISOBuilder {
     return out;
   }
 
-  // One package-install line per entry in the model's package manifest.
+  < One package-install line per entry in the model's package manifest. >
   String emitPackageInstall(SLOSModel m) {
     String pkgs = m.packageSet().packages();
     String out = "";
@@ -147,12 +148,12 @@ class SLISOBuilder {
     return out;
   }
 
-  // Turn a Windows-style path into a POSIX staging subpath so the recipe is
-  // uniform (the ISO is authored on a POSIX builder regardless of shape).
+  < Turn a Windows-style path into a POSIX staging subpath so the recipe is >
+  < uniform (the ISO is authored on a POSIX builder regardless of shape). >
   String normalize(String path) {
     if (strLen(path) >= 2) {
       if (substr(path, 1, 2) == ":") {
-        // "C:\Windows\System32" -> "/C/Windows/System32"
+        < "C:\Windows\System32" -> "/C/Windows/System32" >
         return "/" + substr(path, 0, 1) + replaceBackslash(substr(path, 2, strLen(path)));
       }
     }
@@ -176,7 +177,7 @@ class SLISOBuilder {
          + m.architectures().primaryArch().arch() + ".iso";
   }
 
-  // String primitives wrap the shared native text intrinsics.
+  < String primitives wrap the shared native text intrinsics. >
   int strLen(String s) { return native sleela_str_length(s); }
   String substr(String s, int a, int b) { return native sleela_str_substring(s, a, b); }
   String charAt(String s, int i) { return substr(s, i, i + 1); }

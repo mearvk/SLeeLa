@@ -54,19 +54,27 @@ class SLGuiAudioRecorder {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int STATE_IDLE      = 0;
-  static final int STATE_ARMED     = 1;   // monitoring input, not yet recording
+  < monitoring input, not yet recording >
+  static final int STATE_ARMED     = 1;
   static final int STATE_RECORDING = 2;
   static final int STATE_PAUSED    = 3;
   static final int STATE_STOPPED   = 4;
 
   int state;
-  String inputDevice;    // host-resolvable capture device ("default" = system)
-  int sampleRate;        // Hz, 8000..192000
-  int channels;          // 1 mono / 2 stereo
-  String outputAsset;    // where the host writes the capture
-  int levelPct;          // live input level 0..100 (host-reported)
-  int durationMs;        // elapsed recording time
-  int clipping;          // 1 if level hit the ceiling since last clear
+  < host-resolvable capture device ("default" = system) >
+  String inputDevice;
+  < Hz, 8000..192000 >
+  int sampleRate;
+  < 1 mono / 2 stereo >
+  int channels;
+  < where the host writes the capture >
+  String outputAsset;
+  < live input level 0..100 (host-reported) >
+  int levelPct;
+  < elapsed recording time >
+  int durationMs;
+  < 1 if level hit the ceiling since last clear >
+  int clipping;
 
   void configure(String device, String output) {
     state = STATE_IDLE;
@@ -81,10 +89,10 @@ class SLGuiAudioRecorder {
   void setChannels(int ch) { channels = (ch == 1 || ch == 2) ? ch : channels; }
   void setOutputAsset(String a) { outputAsset = (a == null) ? "" : a; }
 
-  // ---- transport ----------------------------------------------------------
-  // Arm (begin monitoring the input without capturing).
+  < ---- transport ---------------------------------------------------------- >
+  < Arm (begin monitoring the input without capturing). >
   boolean arm() { if (state == STATE_IDLE || state == STATE_STOPPED) { state = STATE_ARMED; return true; } return false; }
-  // The record button: start capturing from idle/armed/stopped, or resume paused.
+  < The record button: start capturing from idle/armed/stopped, or resume paused. >
   boolean record() {
     if (state == STATE_PAUSED) { state = STATE_RECORDING; return true; }
     if (state == STATE_IDLE || state == STATE_ARMED || state == STATE_STOPPED) {
@@ -99,7 +107,7 @@ class SLGuiAudioRecorder {
   }
   void reset() { state = STATE_IDLE; levelPct = 0; durationMs = 0; clipping = 0; }
 
-  // Host feeds the live input level + elapsed time while recording.
+  < Host feeds the live input level + elapsed time while recording. >
   void onLevel(int pct) {
     levelPct = clamp(pct, 0, 100);
     if (levelPct >= 100) { clipping = 1; }
@@ -107,7 +115,7 @@ class SLGuiAudioRecorder {
   void onElapsed(int deltaMs) { if (state == STATE_RECORDING && deltaMs > 0) { durationMs = durationMs + deltaMs; } }
   void clearClipping() { clipping = 0; }
 
-  // ---- state readers ------------------------------------------------------
+  < ---- state readers ------------------------------------------------------ >
   int getState() { return state; }
   boolean isRecording() { return state == STATE_RECORDING; }
   boolean isPaused() { return state == STATE_PAUSED; }
@@ -127,7 +135,7 @@ class SLGuiAudioRecorder {
     if (state == STATE_STOPPED)   { return "stopped"; }
     return "idle";
   }
-  // The record button's label follows the transport state.
+  < The record button's label follows the transport state. >
   String buttonLabel() {
     if (state == STATE_RECORDING) { return "Stop"; }
     if (state == STATE_PAUSED)    { return "Resume"; }

@@ -97,7 +97,8 @@ class Processor {
 class Controller {
   int[] loaded;
   int[] backend;
-  Verifier verifier;      // wired by create(), called via the field (1.11)
+  < wired by create(), called via the field (1.11) >
+  Verifier verifier;
   Processor processor;
 
   void create() {
@@ -127,7 +128,7 @@ class Controller {
     return n;
   }
 
-  // Clean facade methods: delegate to the wired collaborators.
+  < Clean facade methods: delegate to the wired collaborators. >
   int resolveExtension(string ext) { return verifier.resolveExtension(ext); }
   string resultText(int code) { return verifier.resultText(code); }
   int decode(int id) { return processor.decode(isLoaded(id), isNative(id), hasBackend(id)); }

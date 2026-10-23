@@ -53,10 +53,14 @@ class SLAdder {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int width;      // bits per word (e.g. 32 or 64)
-  SLFullAdder fa; // one reusable full-adder cell, applied bit by bit
-  int result;     // numeric sum, truncated to `width` bits
-  int carryOut;   // carry out of the most significant bit
+  < bits per word (e.g. 32 or 64) >
+  int width;
+  < one reusable full-adder cell, applied bit by bit >
+  SLFullAdder fa;
+  < numeric sum, truncated to `width` bits >
+  int result;
+  < carry out of the most significant bit >
+  int carryOut;
 
   void configure(int bits) {
     width = bits;
@@ -75,7 +79,7 @@ class SLAdder {
     return p;
   }
 
-  // Add two words of `width` bits; ripple the carry through each full adder.
+  < Add two words of `width` bits; ripple the carry through each full adder. >
   int add(int a, int b) {
     int carry = 0;
     int sum = 0;

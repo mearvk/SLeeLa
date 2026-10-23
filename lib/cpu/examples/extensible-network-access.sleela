@@ -60,15 +60,20 @@ class ExtensibleNetworkAccessExample {
     net.initialize("OrderPipeline", "three-file ordered system");
     SLAccessSemantics sem = new SLAccessSemantics();
 
-    // Register each file's surface member under its access modifier.
-    // Three public members -> the ordered hop chain doc1 -> doc2 -> doc3.
-    net.registerMember(sem.MOD_PUBLIC);     // doc 1 : intake endpoint (hop 1)
-    net.registerMember(sem.MOD_PUBLIC);     // doc 2 : process endpoint (hop 2)
-    net.registerMember(sem.MOD_PUBLIC);     // doc 3 : dispatch endpoint (hop 3)
-    net.registerMember(sem.MOD_PRIVATE);    // admin/backup concern (local)
-    net.registerMember(sem.MOD_PROTECTED);  // integrity-guarded intake check
+    < Register each file's surface member under its access modifier. >
+    < Three public members -> the ordered hop chain doc1 -> doc2 -> doc3. >
+    < doc 1 : intake endpoint (hop 1) >
+    net.registerMember(sem.MOD_PUBLIC);
+    < doc 2 : process endpoint (hop 2) >
+    net.registerMember(sem.MOD_PUBLIC);
+    < doc 3 : dispatch endpoint (hop 3) >
+    net.registerMember(sem.MOD_PUBLIC);
+    < admin/backup concern (local) >
+    net.registerMember(sem.MOD_PRIVATE);
+    < integrity-guarded intake check >
+    net.registerMember(sem.MOD_PROTECTED);
 
-    // Dynamite Connector lifecycle: resolve -> load (fail-closed).
+    < Dynamite Connector lifecycle: resolve -> load (fail-closed). >
     print("state after initialize: " + net.state());
     net.resolve();
     print("state after resolve:    " + net.state());
@@ -76,20 +81,20 @@ class ExtensibleNetworkAccessExample {
     print("state after load:       " + net.state() + ", realized=" + realized +
           ", ready=" + net.ready());
 
-    // What the network classified.
+    < What the network classified. >
     print("members=" + net.members() + " -> exposed(public)=" + net.exposed() +
           ", local(private)=" + net.localMembers() +
           ", guarded(protected)=" + net.guardedMembers());
     print("ordered hop chain length = " + net.hopCount() +
           " (doc 1 -> doc 2 -> doc 3), competent=" + net.competent());
 
-    // The backdrop the VM stands up per role (default bundles).
+    < The backdrop the VM stands up per role (default bundles). >
     print("exposed backdrop  = " + sem.exposeComponentName(net.exposureBackdrop()));
     print("local backdrop    = " + sem.localConcernName(net.localBackdrop()));
     print("guard backdrop    = " + sem.guardName(net.guardBackdrop()));
 
-    // Flatten to the manifest the compiled image carries, and attach it to a
-    // program — the VM reads this back and sets up the same System backdrop.
+    < Flatten to the manifest the compiled image carries, and attach it to a >
+    < program — the VM reads this back and sets up the same System backdrop. >
     SLAccessManifest man = net.toManifest();
     SLProgram prog = new SLProgram();
     prog.configure("order-pipeline", 256);
@@ -100,18 +105,21 @@ class ExtensibleNetworkAccessExample {
           " guarded=" + man.guarded() + " hops=" + man.hops() +
           " ordered=" + man.ordered() + " classified=" + man.classifiedTotal());
 
-    // ------------------------------------------------------------------
-    // VM-SIDE ENFORCEMENT: build a class whose methods carry access roles,
-    // load it with the manifest adopted, and show the VM gates resolution.
-    // ------------------------------------------------------------------
+    < ------------------------------------------------------------------ >
+    < VM-SIDE ENFORCEMENT: build a class whose methods carry access roles, >
+    < load it with the manifest adopted, and show the VM gates resolution. >
+    < ------------------------------------------------------------------ >
     SLVMClass svc = new SLVMClass();
     svc.configure(1, "OrderService", -1, 0);
 
-    SLVMMethod intake = new SLVMMethod();       // public -> exposed hop (role 1)
+    < public -> exposed hop (role 1) >
+    SLVMMethod intake = new SLVMMethod();
     intake.configureAccess("intake", "(I)I", 0, 4, 1, 2, true, false, sem.ROLE_EXPOSED);
-    SLVMMethod backup = new SLVMMethod();        // private -> local only (role 2)
+    < private -> local only (role 2) >
+    SLVMMethod backup = new SLVMMethod();
     backup.configureAccess("backup", "()V", 4, 3, 0, 1, true, false, sem.ROLE_LOCAL);
-    SLVMMethod verify = new SLVMMethod();        // protected -> integrity-guarded (role 3)
+    < protected -> integrity-guarded (role 3) >
+    SLVMMethod verify = new SLVMMethod();
     verify.configureAccess("verify", "(I)Z", 7, 5, 1, 2, true, false, sem.ROLE_GUARDED);
     svc.addMethod(intake); svc.addMethod(backup); svc.addMethod(verify);
 
@@ -119,17 +127,18 @@ class ExtensibleNetworkAccessExample {
     loader.configure("/lib");
     SLVMModule mod = loader.beginModule("order-pipeline", 64, 32, 16);
     loader.defineClass(svc);
-    loader.finishModuleWithAccess(1, "intake", man);   // adopt the manifest
+    < adopt the manifest >
+    loader.finishModuleWithAccess(1, "intake", man);
     print("module loaded, access realized = " + loader.accessRealized() +
           ", module.hasAccess = " + mod.hasAccess());
 
-    // A NETWORK caller (exposed-role caller) resolving against the module:
+    < A NETWORK caller (exposed-role caller) resolving against the module: >
     SLVMMethod netIntake = mod.resolveExposedMethod(1, "intake");
     SLVMMethod netBackup = mod.resolveExposedMethod(1, "backup");
     print("network sees intake (public)  -> " + (netIntake != null) + " [reachable]");
     print("network sees backup (private) -> " + (netBackup != null) + " [must be false]");
 
-    // A LOCAL (in-system) caller can reach the private/protected members:
+    < A LOCAL (in-system) caller can reach the private/protected members: >
     SLVMMethod locBackup = mod.resolveMethodForCaller(1, "backup", sem.ROLE_LOCAL);
     SLVMMethod locVerify = mod.resolveMethodForCaller(1, "verify", sem.ROLE_LOCAL);
     SLVMMethod extBackup = mod.resolveMethodForCaller(1, "backup", sem.ROLE_EXPOSED);

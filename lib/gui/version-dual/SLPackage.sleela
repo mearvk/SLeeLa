@@ -60,13 +60,14 @@ class SLPackage {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Version identity: this is the dual line — the 4.0 GUI package. mual=1.0
-  // baseline, gual=2.0 settings, thual=3.0 visual effects; dual (4.0) adds the
-  // rich professional component set (audio recorder, video canvas, HTML/HTTP URL
-  // bar, custom click objects, exact positioning + layout, graphics facility,
-  // admin sign-off / sign-in / legal signature) and a substantially upgraded
-  // aesthetic. featureLevel() lets callers branch.
-  static final int FEATURE_LEVEL = 4;   // 4 dual ; 3 thual ; 2 gual ; 1 mual
+  < Version identity: this is the dual line — the 4.0 GUI package. mual=1.0 >
+  < baseline, gual=2.0 settings, thual=3.0 visual effects; dual (4.0) adds the >
+  < rich professional component set (audio recorder, video canvas, HTML/HTTP URL >
+  < bar, custom click objects, exact positioning + layout, graphics facility, >
+  < admin sign-off / sign-in / legal signature) and a substantially upgraded >
+  < aesthetic. featureLevel() lets callers branch. >
+  < 4 dual ; 3 thual ; 2 gual ; 1 mual >
+  static final int FEATURE_LEVEL = 4;
   String packageName;
   String packageVersion;
   void configure(String name) { packageName = name; packageVersion = "4.0"; }

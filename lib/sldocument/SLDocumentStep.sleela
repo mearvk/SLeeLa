@@ -54,16 +54,20 @@ class SLDocumentStep {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  SLDocumentAnnotation annotation; // how the step is named/ordered
-  int effectiveOrder;              // resolved 1-based position in the run
-  int frame;                       // VM frame the method is invoked against
-  SLVeritable result;              // the single binary value the step returned
+  < how the step is named/ordered >
+  SLDocumentAnnotation annotation;
+  < resolved 1-based position in the run >
+  int effectiveOrder;
+  < VM frame the method is invoked against >
+  int frame;
+  < the single binary value the step returned >
+  SLVeritable result;
   boolean ran;
   int state;
 
   void configure(SLDocumentAnnotation ann, int textualPosition, int vmFrame) {
     annotation = ann;
-    // Explicit @order wins; otherwise the textual (top-down) position governs.
+    < Explicit @order wins; otherwise the textual (top-down) position governs. >
     if (ann != null && ann.hasExplicitOrder()) { effectiveOrder = ann.orderValue(); }
     else { effectiveOrder = textualPosition; }
     frame = vmFrame;
@@ -77,9 +81,9 @@ class SLDocumentStep {
   int order() { return effectiveOrder; }
   String name() { return annotation == null ? "" : annotation.method(); }
 
-  // Invoke the step's method on the VM and capture its single binary result.
-  // The native side evaluates the compiled method and reports a 1 (veritable)
-  // or 0 (not), together with a kindness flag for well-formedness.
+  < Invoke the step's method on the VM and capture its single binary result. >
+  < The native side evaluates the compiled method and reports a 1 (veritable) >
+  < or 0 (not), together with a kindness flag for well-formedness. >
   SLVeritable invoke() {
     SLVeritable v = new SLVeritable();
     if (!active() || annotation == null) {

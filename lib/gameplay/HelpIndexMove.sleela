@@ -66,25 +66,27 @@ class HelpIndexMove extends GameMove {
       return out;
     }
 
-    // The primary 80% roll: build the help index / make the friend.
+    < The primary 80% roll: build the help index / make the friend. >
     boolean built = dice.rollUnder(80);
     if (!built) {
       out.say("The index wouldn't come together this turn.");
-      out.addXp(1);                 // you learn a little even from a dud
+      < you learn a little even from a dud >
+      out.addXp(1);
       return out;
     }
     out.succeed();
-    out.addXp(5);                   // more experience per turn, as desired
+    < more experience per turn, as desired >
+    out.addXp(5);
 
-    // The rarer 20% roll unlocks the premium rewards, each a live subevent.
+    < The rarer 20% roll unlocks the premium rewards, each a live subevent. >
     boolean premium = dice.rollUnder(20);
     if (premium) {
-      // Subevent 1: the better player's index (65% within the premium branch).
+      < Subevent 1: the better player's index (65% within the premium branch). >
       if (dice.rollUnder(65)) {
         out.addXp(4);
         out.addFile(1);
       }
-      // Subevent 2: your boss's deeper understanding (55% within premium).
+      < Subevent 2: your boss's deeper understanding (55% within premium). >
       if (dice.rollUnder(55)) {
         p.raiseBossUnderstanding(10);
         out.addTact(1);

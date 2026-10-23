@@ -50,10 +50,14 @@ class BrokerageModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int trades;             // trades executed this month
-  int feePerTradeCents;   // commission per trade
-  int clearingCostCents;  // clearing/settlement cost per trade
-  int complianceCents;    // monthly fixed compliance overhead
+  < trades executed this month >
+  int trades;
+  < commission per trade >
+  int feePerTradeCents;
+  < clearing/settlement cost per trade >
+  int clearingCostCents;
+  < monthly fixed compliance overhead >
+  int complianceCents;
 
   void setUp(int executed, int feePerTrade, int clearingCost, int compliance) {
     load();

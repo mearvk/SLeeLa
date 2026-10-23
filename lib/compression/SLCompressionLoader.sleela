@@ -57,31 +57,31 @@ class SLCompressionLoader {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Per-algorithm loaded flag (1 loaded, 0 not), indexed by id. Backed by the
-  // first-class array type; call init() before use.
+  < Per-algorithm loaded flag (1 loaded, 0 not), indexed by id. Backed by the >
+  < first-class array type; call init() before use. >
   int[] loaded;
 
-  // The number of algorithms the native manager knows (SLEELA_COMPRESSION_COUNT).
+  < The number of algorithms the native manager knows (SLEELA_COMPRESSION_COUNT). >
   int algorithmCount() { return 15; }
 
-  // Allocate the loaded-flag table with every algorithm unloaded.
+  < Allocate the loaded-flag table with every algorithm unloaded. >
   void init() { loaded = new int[15]; }
 
-  // load(id): mark an algorithm loaded. Mirrors sleela_compression_manager_load.
+  < load(id): mark an algorithm loaded. Mirrors sleela_compression_manager_load. >
   void load(int id) { loaded[id] = 1; }
 
-  // unload(id): mark an algorithm unloaded. Mirrors sleela_compression_manager_unload.
+  < unload(id): mark an algorithm unloaded. Mirrors sleela_compression_manager_unload. >
   void unload(int id) { loaded[id] = 0; }
 
   boolean isLoaded(int id) { return loaded[id] == 1; }
 
-  // unloadAll(): release every loaded algorithm. Mirrors sleela_compression_manager_unload_all.
+  < unloadAll(): release every loaded algorithm. Mirrors sleela_compression_manager_unload_all. >
   void unloadAll() {
     int i = 0;
     while (i < 15) { loaded[i] = 0; i = i + 1; }
   }
 
-  // Human-readable algorithm name by id, matching the native registry.
+  < Human-readable algorithm name by id, matching the native registry. >
   String nameOf(int id) {
     if (id == 0) { return "Store (raw)"; }
     if (id == 1) { return "Run-Length Encoding"; }
@@ -100,8 +100,8 @@ class SLCompressionLoader {
     return "ZIP archive";
   }
 
-  // Native algorithms implement compress/decompress in-package (no external
-  // backend): Store (0), RLE (1), Huffman (2), LZW (3). The rest are backend or
-  // container handlers until an approved library adapter is registered.
+  < Native algorithms implement compress/decompress in-package (no external >
+  < backend): Store (0), RLE (1), Huffman (2), LZW (3). The rest are backend or >
+  < container handlers until an approved library adapter is registered. >
   boolean isNative(int id) { return id == 0 || id == 1 || id == 2 || id == 3; }
 }

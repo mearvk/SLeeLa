@@ -59,27 +59,28 @@ class SLDrawContext {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Buffer-mode ordinals (mirror SLUIBufferMode).
+  < Buffer-mode ordinals (mirror SLUIBufferMode). >
   static final int BUFFER_SINGLE = 0;
   static final int BUFFER_DOUBLE = 1;
-  // Blend-mode ordinals (mirror SLUIBlendMode).
+  < Blend-mode ordinals (mirror SLUIBlendMode). >
   static final int BLEND_OVER     = 0;
   static final int BLEND_COPY     = 1;
   static final int BLEND_ADD      = 2;
   static final int BLEND_MULTIPLY = 3;
   static final int BLEND_SCREEN   = 4;
   static final int BLEND_MAX      = 5;
-  // Orientation ordinals (mirror SLUIOrientation), for linear gradients.
+  < Orientation ordinals (mirror SLUIOrientation), for linear gradients. >
   static final int ORIENT_VERTICAL   = 0;
   static final int ORIENT_HORIZONTAL = 1;
 
-  int dc;   // VM-local draw-context handle (-1 = none)
+  < VM-local draw-context handle (-1 = none) >
+  int dc;
 
-  // Create a free-standing context of width x height device pixels.
+  < Create a free-standing context of width x height device pixels. >
   void create(int width, int height, int bufferMode) {
     dc = drawCreate(width, height, bufferMode);
   }
-  // Adopt a context handed in by an SLCanvasView draw routine.
+  < Adopt a context handed in by an SLCanvasView draw routine. >
   void adopt(int handle) { dc = handle; }
   int handle() { return dc; }
   boolean valid() { return dc >= 0; }
@@ -89,25 +90,25 @@ class SLDrawContext {
   int width()  { if (dc < 0) { return 0; } return drawWidth(dc); }
   int height() { if (dc < 0) { return 0; } return drawHeight(dc); }
 
-  // ---- state --------------------------------------------------------------
+  < ---- state -------------------------------------------------------------- >
   void setBlend(int mode)       { if (dc >= 0) { drawSetBlend(dc, mode); } }
   void setOpacity(double value) { if (dc >= 0) { drawSetOpacity(dc, value); } }
   void clipPush(int x, int y, int w, int h) { if (dc >= 0) { drawClipPush(dc, x, y, w, h); } }
   void clipPop()                { if (dc >= 0) { drawClipPop(dc); } }
   void clipReset()              { if (dc >= 0) { drawClipReset(dc); } }
 
-  // ---- buffering ----------------------------------------------------------
+  < ---- buffering ---------------------------------------------------------- >
   void clear(int color) { if (dc >= 0) { drawClear(dc, color); } }
   void present()        { if (dc >= 0) { drawPresent(dc); } }
 
-  // ---- pixel-level control ------------------------------------------------
+  < ---- pixel-level control ------------------------------------------------ >
   void setPixel(int x, int y, int color) { if (dc >= 0) { drawSetPixel(dc, x, y, color); } }
   int getPixel(int x, int y) { if (dc < 0) { return 0; } return drawGetPixel(dc, x, y); }
   void blendPixel(int x, int y, int color, double coverage) {
     if (dc >= 0) { drawBlendPixel(dc, x, y, color, coverage); }
   }
 
-  // ---- primitives ---------------------------------------------------------
+  < ---- primitives --------------------------------------------------------- >
   void fillRect(int x, int y, int w, int h, int color) {
     if (dc >= 0) { drawFillRect(dc, x, y, w, h, color); }
   }

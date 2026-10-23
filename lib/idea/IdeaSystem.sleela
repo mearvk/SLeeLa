@@ -60,43 +60,53 @@ class IdeaSystem {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-    // ---- shared State (thread-safe globals) ----------------------------
-    // The System is prevaricated upon its State; these fields ARE the System.
+    < ---- shared State (thread-safe globals) ---------------------------- >
+    < The System is prevaricated upon its State; these fields ARE the System. >
     String sourceUrl = "https://github.com/mearvk/Senior.Senate.Attorney.E44Hrs/wiki/US-Title-Brands";
 
-    int maxHours     = 30;    // design goal: <= 30 hours of content
-    int maxDecisions = 9;     // design goal: <= 9 seemly, important decisions
+    < design goal: <= 30 hours of content >
+    int maxHours     = 30;
+    < design goal: <= 9 seemly, important decisions >
+    int maxDecisions = 9;
 
-    int elapsed      = 0;     // forward Time, in simulated hours
-    int decisions    = 0;     // seemly decisions reached so far
+    < forward Time, in simulated hours >
+    int elapsed      = 0;
+    < seemly decisions reached so far >
+    int decisions    = 0;
     String state     = "LOADING";
 
-    // ---- organization: present what is present/capable in the State ----
+    < ---- organization: present what is present/capable in the State ---- >
     void present() {
         print("Idea System(TM) [" + state + "] hour=" + elapsed + "/" + maxHours
               + " decisions=" + decisions + "/" + maxDecisions);
     }
 
-    // ---- 2. choose the part of the internet to receive the signal from --
-    // The signal is an Author-controlled hex code from github.com.  best-of*
-    // weighs data/decisions/costs/versions/architecture and picks the route.
+    < ---- 2. choose the part of the internet to receive the signal from -- >
+    < The signal is an Author-controlled hex code from github.com.  best-of* >
+    < weighs data/decisions/costs/versions/architecture and picks the route. >
     int chooseResource() {
         int b = bestOfNew();
-        bestOfWeight(b, 0, 55);   // data      (measured latency/loss/jitter)
-        bestOfWeight(b, 1, 25);   // decisions (the <= 9 seemly choices)
-        bestOfWeight(b, 2, 10);   // costs
-        bestOfWeight(b, 3, 5);    // versions
-        bestOfWeight(b, 4, 5);    // architecture
+        < data      (measured latency/loss/jitter) >
+        bestOfWeight(b, 0, 55);
+        < decisions (the <= 9 seemly choices) >
+        bestOfWeight(b, 1, 25);
+        < costs >
+        bestOfWeight(b, 2, 10);
+        < versions >
+        bestOfWeight(b, 3, 5);
+        < architecture >
+        bestOfWeight(b, 4, 5);
         bestOfMinVersion(b, 1);
         bestOfCostBudget(b, 50);
 
-        // The known internet resource: the Author's github.com wiki page.
-        // (b, name, route, timeoutMs, payloadLen, gapMs, flags, version, cost, replays)
+        < The known internet resource: the Author's github.com wiki page. >
+        < (b, name, route, timeoutMs, payloadLen, gapMs, flags, version, cost, replays) >
         int author = bestOfCandidate(b, "author-wiki", "https://github.com", 2000, 256, 0, 3, 1, 20, 2);
-        bestOfCandidateArch(b, author, 1, 46, 1);   // DiffServ, DSCP 46 (EF), realized
+        < DiffServ, DSCP 46 (EF), realized >
+        bestOfCandidateArch(b, author, 1, 46, 1);
 
-        // Honest Synchro measurement folded into the candidate (loopback
-        // discard keeps the runnable deterministic; a deployment probes live).
+        < Honest Synchro measurement folded into the candidate (loopback >
+        < discard keeps the runnable deterministic; a deployment probes live). >
         int p = synchroOpen("127.0.0.1", 9);
         if (p >= 0) {
             int i = 0;
@@ -113,16 +123,18 @@ class IdeaSystem {
         return winner;
     }
 
-    // ---- 3. declare the AI-driven solution Series ----------------------
-    // The native AI VM bridge (ai* built-ins) is a separate API layer and is
-    // NOT part of the verified core semantic set in this compiler build, so
-    // the runnable models the AI objectives with core-verified constructs:
-    // conducted-method catalog lookups and the Constitution limits.  The
-    // native /idea C/C++ core carries the actual AI objective structures.
+    < ---- 3. declare the AI-driven solution Series ---------------------- >
+    < The native AI VM bridge (ai* built-ins) is a separate API layer and is >
+    < NOT part of the verified core semantic set in this compiler build, so >
+    < the runnable models the AI objectives with core-verified constructs: >
+    < conducted-method catalog lookups and the Constitution limits.  The >
+    < native /idea C/C++ core carries the actual AI objective structures. >
     void declareModel() {
         print("ai-objectives (bounded to " + maxDecisions + "):");
-        print("  receive : " + insight("System"));   // receive signal input
-        print("  solve   : " + role("Pipeline"));     // advance the Series
+        < receive signal input >
+        print("  receive : " + insight("System"));
+        < advance the Series >
+        print("  solve   : " + role("Pipeline"));
         print("  decide  : seemly, important choices within degree<=" + degreemax());
         print("  present : present only what is present and capable");
         print("instruction: fold the Author hex code into a forward linear "
@@ -130,15 +142,15 @@ class IdeaSystem {
               + " decisions.");
     }
 
-    // ---- 4. let Time progress; present the State at each hour -----------
-    // Time is ultimate and company to the Series.  It may SEEM to loop/retry
-    // but it is consistent in Time -- a forward, linear Series.
+    < ---- 4. let Time progress; present the State at each hour ----------- >
+    < Time is ultimate and company to the Series.  It may SEEM to loop/retry >
+    < but it is consistent in Time -- a forward, linear Series. >
     void advance() {
         state = "SOLVING";
         while (elapsed < maxHours) {
             elapsed = elapsed + 1;
 
-            // Spread the <= 9 seemly decisions evenly across the Series.
+            < Spread the <= 9 seemly decisions evenly across the Series. >
             int due = (elapsed * maxDecisions) / maxHours;
             if (due > decisions) {
                 decisions = due;
@@ -148,24 +160,28 @@ class IdeaSystem {
             }
             present();
         }
-        state = "FINAL";   // Finality: end of Time for this Series
+        < Finality: end of Time for this Series >
+        state = "FINAL";
         present();
     }
 
     void main() {
-        // The Constitution the System runs under (read directly).
+        < The Constitution the System runs under (read directly). >
         print("Constitution: depth=" + sysdepth() + " degree<=" + degreemax());
 
-        // Name the System against the conducted catalog -- the System IS a
-        // root object; the Series routes through the piping role.
+        < Name the System against the conducted catalog -- the System IS a >
+        < root object; the Series routes through the piping role. >
         print("conduct(System)=" + conduct("System")
               + " role(Pipeline)=" + role("Pipeline"));
 
         state = "RECEIVING";
-        chooseResource();   // 2. choose + receive from the internet resource
-        declareModel();     // 3. declare the AI-driven Series
+        < 2. choose + receive from the internet resource >
+        chooseResource();
+        < 3. declare the AI-driven Series >
+        declareModel();
 
-        advance();          // 4. forward Time to Finality
+        < 4. forward Time to Finality >
+        advance();
         print("Idea System(TM): the State is the System; what you saw is what it presents.");
     }
 }

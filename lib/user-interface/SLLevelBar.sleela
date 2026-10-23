@@ -54,7 +54,7 @@ class SLLevelBar extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a level bar inside `parent` with an initial level in [0,1].
+  < Create a level bar inside `parent` with an initial level in [0,1]. >
   void createIn(SLWidget parent, double level) {
     widget = uiLevelBar(parent.handle(), level);
   }

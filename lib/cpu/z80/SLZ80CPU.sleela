@@ -59,11 +59,15 @@ class SLZ80CPU extends SLCPURuntime {
   static final int R_A = 0; static final int R_B = 1; static final int R_C = 2;
   static final int R_D = 3; static final int R_E = 4; static final int R_H = 5;
   static final int R_L = 6; static final int R_SP = 7; static final int R_R = 8;
-  static final int R_F = 9;   // flags
+  < flags >
+  static final int R_F = 9;
 
-  static final int LD_R_N   = 1;   // operand low nibble = reg, high nibble = n (packed)
-  static final int LD_A_NN  = 2;   // A <- (nn)
-  static final int ST_NN_A  = 3;   // (nn) <- A
+  < operand low nibble = reg, high nibble = n (packed) >
+  static final int LD_R_N   = 1;
+  < A <- (nn) >
+  static final int LD_A_NN  = 2;
+  < (nn) <- A >
+  static final int ST_NN_A  = 3;
   static final int ADD_A_N  = 4;
   static final int SUB_N    = 5;
   static final int INC_R    = 6;
@@ -74,11 +78,14 @@ class SLZ80CPU extends SLCPURuntime {
   static final int JR_NZ    = 11;
   static final int HALT     = 12;
 
-  SLRAM ioPorts;        // 256-port I/O space (separate from memory, Z80 style)
-  int rCounter;         // memory-refresh counter (R register wraps 0..127)
+  < 256-port I/O space (separate from memory, Z80 style) >
+  SLRAM ioPorts;
+  < memory-refresh counter (R register wraps 0..127) >
+  int rCounter;
 
   void configure() {
-    setSpecClock(4);   // Zilog Z80 at 4 MHz; overclockable
+    < Zilog Z80 at 4 MHz; overclockable >
+    setSpecClock(4);
     bringUp("Zilog Z80", 8, 16, 10, 65536);
     ioPorts = new SLRAM(); ioPorts.configure(256, 32); ioPorts.allocate();
     rCounter = 0;
@@ -88,13 +95,14 @@ class SLZ80CPU extends SLCPURuntime {
   int opOf(int w)      { return (w / 256) % 256; }
   int operandOf(int w) { return w % 256; }
 
-  // Each M1 (opcode-fetch) cycle a real Z80 ticks its memory-refresh register.
-  // SLCPURuntime.step() calls preFetch() before fetch(), so refresh runs for
-  // every instruction without depending on fetch() override dispatch.
+  < Each M1 (opcode-fetch) cycle a real Z80 ticks its memory-refresh register. >
+  < SLCPURuntime.step() calls preFetch() before fetch(), so refresh runs for >
+  < every instruction without depending on fetch() override dispatch. >
   void preFetch() { refresh(); }
 
   void refresh() { rCounter = (rCounter + 1) % 128; writeReg(R_R, rCounter); }
-  void wait(int cycles) { }   // model hook; cycle-accurate waits are documented, not simulated
+  < model hook; cycle-accurate waits are documented, not simulated >
+  void wait(int cycles) { }
 
   void decode(int word) {
     int opcode = opOf(word);
@@ -114,7 +122,7 @@ class SLZ80CPU extends SLCPURuntime {
     if (opcode == HALT)    { halted = 1; return; }
   }
 
-  // Separate I/O port space (OUT/IN), distinct from the memory bus.
+  < Separate I/O port space (OUT/IN), distinct from the memory bus. >
   void ioCycleWrite(int port, int value) { ioPorts.writeWord(port % 256, value % 256); }
   int ioCycleRead(int port)              { return ioPorts.readWord(port % 256); }
 

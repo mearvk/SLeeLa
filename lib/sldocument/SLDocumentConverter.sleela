@@ -65,7 +65,8 @@ class SLDocumentConverter {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLDocumentNaming naming;
   SLSourceNameComparison comparison;
-  String className;      // the .sleela class the document becomes
+  < the .sleela class the document becomes >
+  String className;
   int state;
   String lastError;
 
@@ -81,7 +82,7 @@ class SLDocumentConverter {
 
   boolean active() { return state == 1; }
 
-  // Build the naming comparison for a whole document (does not emit yet).
+  < Build the naming comparison for a whole document (does not emit yet). >
   boolean plan(SLDocument doc) {
     if (!active() || doc == null || !doc.valid()) { lastError = "no document to convert"; return false; }
     doc.arrange();
@@ -98,15 +99,15 @@ class SLDocumentConverter {
 
   int synthesizedCount() { return comparison == null ? 0 : comparison.synthesizedCount(); }
 
-  // Emit the .sleela class text. Each step becomes a named method; run() calls
-  // them in order. Returns the emitted .sleela source, or "" on failure.
+  < Emit the .sleela class text. Each step becomes a named method; run() calls >
+  < them in order. Returns the emitted .sleela source, or "" on failure. >
   String toSleela(SLDocument doc) {
     if (!plan(doc)) { return ""; }
     return native sleela_sldocument_emit_sleela(className, doc.title, doc.size());
   }
 
-  // Convert and write the .sleela to a path for safekeeping. Returns true on
-  // success. The path should carry the .sleela extension.
+  < Convert and write the .sleela to a path for safekeeping. Returns true on >
+  < success. The path should carry the .sleela extension. >
   boolean convertToFile(SLDocument doc, String sleelaPath) {
     String source = toSleela(doc);
     if (source == null || source.length() == 0) { return false; }

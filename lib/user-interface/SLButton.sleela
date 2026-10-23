@@ -55,7 +55,7 @@ class SLButton extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a button inside `parent` with a label.
+  < Create a button inside `parent` with a label. >
   void createIn(SLWidget parent, String label) {
     widget = uiButton(parent.handle(), label);
   }
@@ -63,7 +63,7 @@ class SLButton extends SLWidget {
     widget = uiButton(parentHandle, label);
   }
 
-  // Create a labelled button and attach an icon descriptor in one operation.
+  < Create a labelled button and attach an icon descriptor in one operation. >
   void createInWithIcon(SLWidget parent, String label, SLIcon icon) {
     createIn(parent, label);
     setIcon(icon);
@@ -73,7 +73,7 @@ class SLButton extends SLWidget {
     setIcon(icon);
   }
 
-  // Attach a JPEG icon plus a named fallback symbol (for example, Wifi).
+  < Attach a JPEG icon plus a named fallback symbol (for example, Wifi). >
   void setIcon(SLIcon icon) {
     if (widget >= 0 && icon != null) {
       uiWidgetSetIcon(widget, icon.assetPath(), icon.symbolName());
@@ -83,8 +83,8 @@ class SLButton extends SLWidget {
     if (widget >= 0) { uiWidgetSetIcon(widget, assetPath, symbolName); }
   }
 
-  // True if this button has an activation pending since the last check; the
-  // VM clears the latch on read, so each click is observed exactly once.
+  < True if this button has an activation pending since the last check; the >
+  < VM clears the latch on read, so each click is observed exactly once. >
   boolean clicked() {
     if (widget < 0) { return false; }
     return uiWidgetTakeActivated(widget) == 1;

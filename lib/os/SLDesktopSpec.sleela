@@ -57,14 +57,19 @@ class SLDesktopSpec {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int enabled;        // 1 if the OS has a desktop at all (0 = server/headless)
-  String displayServer; // "Wayland" / "DWM" / "WindowServer"
-  String sessionShell;  // "GNOME Shell" / "Explorer" / "Aqua"
-  String toolkit;       // "GTK" / "Win32/WinUI" / "AppKit"
-  String displayManager;// login/greeter
+  < 1 if the OS has a desktop at all (0 = server/headless) >
+  int enabled;
+  < "Wayland" / "DWM" / "WindowServer" >
+  String displayServer;
+  < "GNOME Shell" / "Explorer" / "Aqua" >
+  String sessionShell;
+  < "GTK" / "Win32/WinUI" / "AppKit" >
+  String toolkit;
+  < login/greeter >
+  String displayManager;
   int configured;
 
-  // A headless (no desktop) configuration — valid for a server edition.
+  < A headless (no desktop) configuration — valid for a server edition. >
   void headless() {
     enabled = 0; displayServer = ""; sessionShell = "";
     toolkit = ""; displayManager = ""; configured = 1;
@@ -75,7 +80,7 @@ class SLDesktopSpec {
     toolkit = kit; displayManager = greeter; configured = 1;
   }
 
-  // Seed the native desktop stack for a shape.
+  < Seed the native desktop stack for a shape. >
   void forShape(SLOSShape shape) {
     if (shape.isWindows()) {
       configure("DWM", "Explorer", "Win32/WinUI", "LogonUI"); return;
@@ -86,7 +91,7 @@ class SLDesktopSpec {
     configure("Wayland", "GNOME Shell", "GTK", "GDM");
   }
 
-  // Swap the Linux desktop for an alternate (the desktop is replaceable).
+  < Swap the Linux desktop for an alternate (the desktop is replaceable). >
   void useAlternate(String shell, String kit) {
     sessionShell = shell; toolkit = kit;
   }

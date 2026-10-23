@@ -61,10 +61,13 @@ class SLKernelSpec {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String kernelName;    // "NT", "Linux", "XNU"
-  String version;       // e.g. "6.18.27"
-  String cmdline;       // kernel boot parameters
-  // Subsystem toggles (1 = required, 0 = omitted).
+  < "NT", "Linux", "XNU" >
+  String kernelName;
+  < e.g. "6.18.27" >
+  String version;
+  < kernel boot parameters >
+  String cmdline;
+  < Subsystem toggles (1 = required, 0 = omitted). >
   int processMgmt;
   int memoryMgmt;
   int scheduler;
@@ -72,10 +75,11 @@ class SLKernelSpec {
   int filesystems;
   int drivers;
   int security;
-  int preemptible;      // preemptible kernel
+  < preemptible kernel >
+  int preemptible;
   int configured;
 
-  // Baseline: a full-featured, preemptible kernel with every core subsystem.
+  < Baseline: a full-featured, preemptible kernel with every core subsystem. >
   void configure(String name, String ver) {
     kernelName = name; version = ver; cmdline = "ro quiet";
     processMgmt = 1; memoryMgmt = 1; scheduler = 1; networking = 1;
@@ -83,19 +87,19 @@ class SLKernelSpec {
     configured = 1;
   }
 
-  // Pick the kernel family that matches a shape, with a sensible version.
+  < Pick the kernel family that matches a shape, with a sensible version. >
   void forShape(SLOSShape shape) {
     if (shape.isWindows()) { configure("NT", "10.0"); return; }
     if (shape.isMac())     { configure("XNU", "24.0"); return; }
     configure("Linux", "6.18.27");
   }
 
-  // Request a SPECIFIC kernel version via SLKernelCatalog. `family` is
-  // "Linux"/"Windows"/"macOS" and `selection` is a named series/edition
-  // ("6.6 LTS", "11", "Sonoma", "latest", "default") or an explicit version.
-  // Returns true when the selection is supported for the family; on success the
-  // kernel name and resolved version are applied, otherwise the spec is left
-  // unchanged. Windows requests below Windows 10 are unsupported (return false).
+  < Request a SPECIFIC kernel version via SLKernelCatalog. `family` is >
+  < "Linux"/"Windows"/"macOS" and `selection` is a named series/edition >
+  < ("6.6 LTS", "11", "Sonoma", "latest", "default") or an explicit version. >
+  < Returns true when the selection is supported for the family; on success the >
+  < kernel name and resolved version are applied, otherwise the spec is left >
+  < unchanged. Windows requests below Windows 10 are unsupported (return false). >
   boolean selectVersion(SLKernelCatalog catalog, String family, String selection) {
     String resolved = catalog.resolve(family, selection);
     if (resolved == "") { return false; }
@@ -111,7 +115,7 @@ class SLKernelSpec {
   String kernelVersion() { return version; }
   String commandLine() { return cmdline; }
 
-  // Count of enabled core subsystems (used by the model's validity check).
+  < Count of enabled core subsystems (used by the model's validity check). >
   int subsystemCount() {
     int n = 0;
     if (processMgmt == 1) { n = n + 1; }
@@ -123,7 +127,7 @@ class SLKernelSpec {
     if (security == 1)    { n = n + 1; }
     return n;
   }
-  // A kernel is bootable only if it provides the three irreducible subsystems.
+  < A kernel is bootable only if it provides the three irreducible subsystems. >
   boolean isBootable() {
     return processMgmt == 1 && memoryMgmt == 1 && scheduler == 1;
   }

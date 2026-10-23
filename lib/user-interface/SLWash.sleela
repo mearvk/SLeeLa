@@ -53,19 +53,20 @@ class SLWash {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int wash;   // VM-local handle (-1 = none)
+  < VM-local handle (-1 = none) >
+  int wash;
 
   void begin() { wash = washBegin(); }
   int handle() { return wash; }
   boolean valid() { return wash >= 0; }
   void destroy() { if (wash >= 0) { washDestroy(wash); wash = -1; } }
 
-  // Add a colour stop at position in [0,1]. Softness (0..1) extra-blurs between
-  // stops for a gentler wash.
+  < Add a colour stop at position in [0,1]. Softness (0..1) extra-blurs between >
+  < stops for a gentler wash. >
   void stop(double position, int color) { if (wash >= 0) { washStop(wash, position, color); } }
   void setSoftness(double softness) { if (wash >= 0) { washSoftness(wash, softness); } }
 
-  // Two- and three-stop shortcuts for the common washes.
+  < Two- and three-stop shortcuts for the common washes. >
   void linear(int a, int b) {
     begin(); stop(0.0, a); stop(1.0, b);
   }
@@ -73,6 +74,6 @@ class SLWash {
     begin(); stop(0.0, a); stop(0.5, b); stop(1.0, c);
   }
 
-  // Sample the wash at t in [0,1] -> colour (0xRRGGBBAA).
+  < Sample the wash at t in [0,1] -> colour (0xRRGGBBAA). >
   int sample(double t) { if (wash < 0) { return 0; } return washSample(wash, t); }
 }

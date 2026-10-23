@@ -69,25 +69,34 @@ struct Schema {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-    String name;      // table name
-    String cols;      // "id, title, year" (display only)
-    int    ncols;     // column count
+    < table name >
+    String name;
+    < "id, title, year" (display only) >
+    String cols;
+    < column count >
+    int    ncols;
 }
 
-// One planned statement to validate. The caller precomputes the facts the
-// SLeeLa string surface cannot derive from raw bytes (counts, column found).
+< One planned statement to validate. The caller precomputes the facts the >
+< SLeeLa string surface cannot derive from raw bytes (counts, column found). >
 struct Plan {
-    String op;        // "CREATE" | "INSERT" | "SELECT"
-    String table;     // target table
-    int    nvalues;   // INSERT: number of VALUES supplied
-    String col;       // SELECT: a projected / WHERE column ("" or "*" = all)
-    int    colFound;  // SELECT: 1 if `col` exists in the schema, else 0
-    int    exists;    // CREATE: 1 if a table of this name already exists
+    < "CREATE" | "INSERT" | "SELECT" >
+    String op;
+    < target table >
+    String table;
+    < INSERT: number of VALUES supplied >
+    int    nvalues;
+    < SELECT: a projected / WHERE column ("" or "*" = all) >
+    String col;
+    < SELECT: 1 if `col` exists in the schema, else 0 >
+    int    colFound;
+    < CREATE: 1 if a table of this name already exists >
+    int    exists;
 }
 
 class SqlModel {
 
-    // Verdict for a CREATE plan (table must not already exist).
+    < Verdict for a CREATE plan (table must not already exist). >
     void checkCreate(Plan p) {
         if (p.exists == 1) {
             print("REFUSE CREATE " + p.table + "  (table already exists)");
@@ -96,7 +105,7 @@ class SqlModel {
         }
     }
 
-    // Verdict for an INSERT plan against a schema (arity invariant).
+    < Verdict for an INSERT plan against a schema (arity invariant). >
     void checkInsert(Plan p, Schema s) {
         if (p.nvalues == s.ncols) {
             print("OK     INSERT " + p.table + "  (" + p.nvalues + "/"
@@ -107,7 +116,7 @@ class SqlModel {
         }
     }
 
-    // Verdict for a SELECT plan against a schema (column existence).
+    < Verdict for a SELECT plan against a schema (column existence). >
     void checkSelect(Plan p, Schema s) {
         if (p.col == "" || p.col == "*") {
             print("OK     SELECT " + p.table + "  (all columns)");
@@ -140,23 +149,30 @@ class SqlModel {
         print("Invariants: INSERT arity == column count; columns must exist.");
         print("");
 
-        // The worked schema mirrors the native engine's demo (see lib/sleela-sql/samples):
-        //   CREATE TABLE games (id, title, year)
+        < The worked schema mirrors the native engine's demo (see lib/sleela-sql/samples): >
+        < CREATE TABLE games (id, title, year) >
         Schema games = schema("games", "id, title, year", 3);
 
-        // These mirror lib/sleela-sql/samples/demo.sql so the model and the byte
-        // tool agree on which statements are accepted and which are refused.
-        // (colFound / exists are the facts the byte engine derives from the CSV
-        //  header; here we supply them, as NesEditModel supplies encoded len.)
-        checkCreate(plan("CREATE", "games", 0, "",      0, 0)); // fresh  -> OK
-        checkCreate(plan("CREATE", "games", 0, "",      0, 1)); // dup    -> REFUSE
+        < These mirror lib/sleela-sql/samples/demo.sql so the model and the byte >
+        < tool agree on which statements are accepted and which are refused. >
+        < (colFound / exists are the facts the byte engine derives from the CSV >
+        < header; here we supply them, as NesEditModel supplies encoded len.) >
+        < fresh  -> OK >
+        checkCreate(plan("CREATE", "games", 0, "",      0, 0));
+        < dup    -> REFUSE >
+        checkCreate(plan("CREATE", "games", 0, "",      0, 1));
 
-        checkInsert(plan("INSERT", "games", 3, "",      0, 1), games); // 3/3 -> OK
-        checkInsert(plan("INSERT", "games", 2, "",      0, 1), games); // 2/3 -> REFUSE
+        < 3/3 -> OK >
+        checkInsert(plan("INSERT", "games", 3, "",      0, 1), games);
+        < 2/3 -> REFUSE >
+        checkInsert(plan("INSERT", "games", 2, "",      0, 1), games);
 
-        checkSelect(plan("SELECT", "games", 0, "*",     0, 1), games); // *     -> OK
-        checkSelect(plan("SELECT", "games", 0, "title", 1, 1), games); // known -> OK
-        checkSelect(plan("SELECT", "games", 0, "score", 0, 1), games); // unknown-> REFUSE
+        < *     -> OK >
+        checkSelect(plan("SELECT", "games", 0, "*",     0, 1), games);
+        < known -> OK >
+        checkSelect(plan("SELECT", "games", 0, "title", 1, 1), games);
+        < unknown-> REFUSE >
+        checkSelect(plan("SELECT", "games", 0, "score", 0, 1), games);
 
         print("");
         print("Hand the OK statements to the native byte engine, in either dialect:");

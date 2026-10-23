@@ -58,22 +58,35 @@ class SLMotherboard {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Socket ids (the mechanical/electrical CPU interface).
+  < Socket ids (the mechanical/electrical CPU interface). >
   static final int SOCKET_UNKNOWN = 0;
-  static final int SOCKET_STR5    = 1;   // AMD sTR5 (Threadripper 9000)
-  static final int SOCKET_AM5     = 2;   // AMD AM5 (Ryzen desktop)
-  static final int SOCKET_SP5     = 3;   // AMD SP5 (EPYC)
-  static final int SOCKET_LGA1700 = 4;   // Intel LGA1700
-  static final int SOCKET_GENERIC = 5;   // non-specific / legacy
+  < AMD sTR5 (Threadripper 9000) >
+  static final int SOCKET_STR5    = 1;
+  < AMD AM5 (Ryzen desktop) >
+  static final int SOCKET_AM5     = 2;
+  < AMD SP5 (EPYC) >
+  static final int SOCKET_SP5     = 3;
+  < Intel LGA1700 >
+  static final int SOCKET_LGA1700 = 4;
+  < non-specific / legacy >
+  static final int SOCKET_GENERIC = 5;
 
-  String partName;      // nameful: "ASRock WRX90 WS EVO", "TRX50 reference", ...
-  int socket;           // one of SOCKET_*
-  String chipset;       // "TRX50", "WRX90", ...
-  int memoryChannels;   // routed memory channels (4 HEDT, 8 PRO WX, ...)
-  int dimmSlots;        // physical DIMM slots
-  int pcieLanes;        // total CPU-attached PCIe lanes the board exposes
-  int pcieGen;          // PCIe generation (5 = PCIe 5.0)
-  int busType;          // the SLSystemBus type the board's primary slot is
+  < nameful: "ASRock WRX90 WS EVO", "TRX50 reference", ... >
+  String partName;
+  < one of SOCKET_* >
+  int socket;
+  < "TRX50", "WRX90", ... >
+  String chipset;
+  < routed memory channels (4 HEDT, 8 PRO WX, ...) >
+  int memoryChannels;
+  < physical DIMM slots >
+  int dimmSlots;
+  < total CPU-attached PCIe lanes the board exposes >
+  int pcieLanes;
+  < PCIe generation (5 = PCIe 5.0) >
+  int pcieGen;
+  < the SLSystemBus type the board's primary slot is >
+  int busType;
 
   void configure(String name, int socketId, String chipsetName,
                  int channels, int slots, int lanes, int gen, int systemBusType) {
@@ -85,13 +98,13 @@ class SLMotherboard {
     busType = systemBusType;
   }
 
-  // Does a CPU that reports socket `cpuSocket` drop into this board?
+  < Does a CPU that reports socket `cpuSocket` drop into this board? >
   boolean acceptsSocket(int cpuSocket) { return cpuSocket == socket; }
 
-  // Can this board populate a memory module that wants `wantChannels` channels?
+  < Can this board populate a memory module that wants `wantChannels` channels? >
   boolean supportsChannels(int wantChannels) { return wantChannels <= memoryChannels; }
 
-  // Can a card/device asking for `wantLanes` PCIe lanes be seated here?
+  < Can a card/device asking for `wantLanes` PCIe lanes be seated here? >
   boolean supportsLanes(int wantLanes) { return wantLanes <= pcieLanes; }
 
   String name()         { return partName; }

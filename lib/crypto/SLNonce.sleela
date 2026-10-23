@@ -52,21 +52,27 @@ class SLNonce {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Status codes mirror slcrypto_status in crypto/include/slcrypto.h.
+  < Status codes mirror slcrypto_status in crypto/include/slcrypto.h. >
   static final int OK = 0;
   static final int ERR_PARAM = -1;
   static final int ERR_AUTH = -2;
   static final int ERR_UNIMPL = -3;
 
-  // AES-GCM recommends a 96-bit (12-byte) nonce (SP 800-38D).
+  < AES-GCM recommends a 96-bit (12-byte) nonce (SP 800-38D). >
   static final int GCM_NONCE_BYTES = 12;
 
-  String algorithm;  // e.g. "AES-GCM"
-  int sizeBytes;     // requested nonce length
-  int state;         // 1 = enabled, 0 = disabled
-  int configured;    // 1 once an algorithm name has been accepted
-  int sizeSet;       // 1 once a valid nonce size has been accepted
-  int backend;       // 1 when the native /crypto backend is linked and ready
+  < e.g. "AES-GCM" >
+  String algorithm;
+  < requested nonce length >
+  int sizeBytes;
+  < 1 = enabled, 0 = disabled >
+  int state;
+  < 1 once an algorithm name has been accepted >
+  int configured;
+  < 1 once a valid nonce size has been accepted >
+  int sizeSet;
+  < 1 when the native /crypto backend is linked and ready >
+  int backend;
 
   int configure(String a) {
     if (a == null) { configured = 0; return ERR_PARAM; }
@@ -75,7 +81,7 @@ class SLNonce {
     return OK;
   }
 
-  // Nonce length must be positive; reject zero/negative sizes.
+  < Nonce length must be positive; reject zero/negative sizes. >
   int size(int n) {
     if (n >= 1) { sizeBytes = n; sizeSet = 1; return OK; }
     sizeSet = 0;
@@ -91,7 +97,7 @@ class SLNonce {
 
   int nonceLength() { return sizeBytes; }
 
-  // Draw a fresh random nonce of the configured size from the native CSPRNG.
+  < Draw a fresh random nonce of the configured size from the native CSPRNG. >
   int generate() {
     if (active() == false) { return ERR_UNIMPL; }
     return OK;

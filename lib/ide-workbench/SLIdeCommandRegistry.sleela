@@ -53,10 +53,14 @@ class SLIdeCommandRegistry {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_COMMANDS = 1024;
 
-  String[] ids;                // stable command id, e.g. "ide.compile"
-  String[] labels;             // human label, e.g. "Compile"
-  String[] operations;         // SLeeLa operation the host invokes
-  int[] enabled;               // 1 when the command is currently invokable
+  < stable command id, e.g. "ide.compile" >
+  String[] ids;
+  < human label, e.g. "Compile" >
+  String[] labels;
+  < SLeeLa operation the host invokes >
+  String[] operations;
+  < 1 when the command is currently invokable >
+  int[] enabled;
   int count;
 
   void init() {
@@ -67,7 +71,7 @@ class SLIdeCommandRegistry {
     count = 0;
   }
 
-  // Register the standard IDE command set wired to its service operations.
+  < Register the standard IDE command set wired to its service operations. >
   void installDefaults() {
     register("ide.open",     "Open",      "onOpen");
     register("ide.save",     "Save",      "onSave");
@@ -79,7 +83,8 @@ class SLIdeCommandRegistry {
 
   boolean register(String id, String label, String operation) {
     if (count >= MAX_COMMANDS) { return false; }
-    if (indexOf(id) >= 0) { return false; } // ids are unique
+    < ids are unique >
+    if (indexOf(id) >= 0) { return false; }
     ids[count] = id; labels[count] = label;
     operations[count] = operation; enabled[count] = 1;
     count = count + 1;
@@ -107,7 +112,7 @@ class SLIdeCommandRegistry {
     return operations[i];
   }
 
-  // Enable/disable a command (e.g. "Save" is disabled when nothing is dirty).
+  < Enable/disable a command (e.g. "Save" is disabled when nothing is dirty). >
   boolean setEnabled(String id, boolean on) {
     int i = indexOf(id);
     if (i < 0) { return false; }
@@ -119,8 +124,8 @@ class SLIdeCommandRegistry {
     return i >= 0 && enabled[i] == 1;
   }
 
-  // Build a bound lib/gui SLGuiAction for a command so a Path 1/Path 2 host can
-  // raise it; returns null for an unknown command.
+  < Build a bound lib/gui SLGuiAction for a command so a Path 1/Path 2 host can >
+  < raise it; returns null for an unknown command. >
   SLGuiAction toAction(String id) {
     int i = indexOf(id);
     if (i < 0) { return null; }

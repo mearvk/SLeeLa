@@ -57,7 +57,7 @@ class SLMood {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Mood-kind ordinals (mirror SLUIMoodKind).
+  < Mood-kind ordinals (mirror SLUIMoodKind). >
   static final int CALM    = 0;
   static final int WARM    = 1;
   static final int COOL    = 2;
@@ -66,22 +66,23 @@ class SLMood {
   static final int TENDER  = 5;
   static final int RADIANT = 6;
   static final int CUSTOM  = 7;
-  // Role/polarity ordinals (mirror the Lighting C ABI) for placeLight.
+  < Role/polarity ordinals (mirror the Lighting C ABI) for placeLight. >
   static final int SOURCE  = 0;
   static final int EMITTER = 1;
   static final int LIGHT   = 0;
   static final int SHADOW  = 1;
 
-  int mood;   // VM-local handle (-1 = none)
+  < VM-local handle (-1 = none) >
+  int mood;
 
-  // Create a mood from a built-in kind (pre-filled tasteful wash + tanor) or
-  // CUSTOM to set your own.
+  < Create a mood from a built-in kind (pre-filled tasteful wash + tanor) or >
+  < CUSTOM to set your own. >
   void create(int kind) { mood = moodCreate(kind); }
   int handle() { return mood; }
   boolean valid() { return mood >= 0; }
   void destroy() { if (mood >= 0) { moodDestroy(mood); mood = -1; } }
 
-  // Give the mood an Excellent Wash and a Calculus-8 (borrowed).
+  < Give the mood an Excellent Wash and a Calculus-8 (borrowed). >
   void setWash(SLWash wash) {
     if (mood >= 0 && wash != null) { moodSetWash(mood, wash.handle()); }
   }
@@ -89,9 +90,9 @@ class SLMood {
     if (mood >= 0 && calc != null) { moodSetCalculus(mood, calc.handle()); }
   }
 
-  // Configure the natural tanor (lightless-bulb glow): warmth 0 cool..1 warm,
-  // diffusion 0..1 portrait softness, refreshHz pattern refresh, leftBias
-  // "a little left", depth 0..1, tone 0xRRGGBBAA.
+  < Configure the natural tanor (lightless-bulb glow): warmth 0 cool..1 warm, >
+  < diffusion 0..1 portrait softness, refreshHz pattern refresh, leftBias >
+  < "a little left", depth 0..1, tone 0xRRGGBBAA. >
   void setTanor(double warmth, double diffusion, double refreshHz,
                 double leftBias, double depth, int tone) {
     if (mood >= 0) {
@@ -99,14 +100,14 @@ class SLMood {
     }
   }
 
-  // The mood's current colour, freshened at time_s seconds (0xRRGGBBAA).
+  < The mood's current colour, freshened at time_s seconds (0xRRGGBBAA). >
   int color(double timeS) { if (mood < 0) { return 0; } return moodColor(mood, timeS); }
 
-  // Build a mm-placed, mood-coloured light for text painted at
-  // (fontX, fontBaseline). mm places it (height it shines down from, plus
-  // left/right/up/down); dpi resolves mm to pixels; role/polarity choose
-  // source vs emitter and light vs shadow. Adds it to `scene` and returns the
-  // light index (or a negative error).
+  < Build a mm-placed, mood-coloured light for text painted at >
+  < (fontX, fontBaseline). mm places it (height it shines down from, plus >
+  < left/right/up/down); dpi resolves mm to pixels; role/polarity choose >
+  < source vs emitter and light vs shadow. Adds it to `scene` and returns the >
+  < light index (or a negative error). >
   int placeLight(SLLightScene scene, double fontX, double fontBaseline,
                  SLMm mm, double dpi, double timeS, int role, int polarity,
                  double reachPx, double intensity) {

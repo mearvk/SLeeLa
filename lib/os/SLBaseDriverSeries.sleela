@@ -59,15 +59,22 @@ class SLBaseDriverSeries {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Fixed component slots keep the model array-free. Each holds a driver name
-  // ("" if unset) and whether it is required at boot.
-  String busDrv;      int busBoot;      // motherboard/chipset bus (PCI/ACPI)
-  String storageDrv;  int storageBoot;  // storage controller (AHCI/NVMe/virtio)
-  String keyboardDrv; int keyboardBoot; // keyboard (i8042/USB HID)
-  String mouseDrv;    int mouseBoot;    // mouse/pointer (USB HID / PS2)
-  String displayDrv;  int displayBoot;  // console/framebuffer display
-  String usbDrv;      int usbBoot;      // USB host controller (xHCI)
-  String audioDrv;    int audioBoot;    // audio (HD-Audio) — not boot-required
+  < Fixed component slots keep the model array-free. Each holds a driver name >
+  < ("" if unset) and whether it is required at boot. >
+  < motherboard/chipset bus (PCI/ACPI) >
+  String busDrv;      int busBoot;
+  < storage controller (AHCI/NVMe/virtio) >
+  String storageDrv;  int storageBoot;
+  < keyboard (i8042/USB HID) >
+  String keyboardDrv; int keyboardBoot;
+  < mouse/pointer (USB HID / PS2) >
+  String mouseDrv;    int mouseBoot;
+  < console/framebuffer display >
+  String displayDrv;  int displayBoot;
+  < USB host controller (xHCI) >
+  String usbDrv;      int usbBoot;
+  < audio (HD-Audio) — not boot-required >
+  String audioDrv;    int audioBoot;
   int configured;
 
   void configure() {
@@ -78,9 +85,9 @@ class SLBaseDriverSeries {
     configured = 1;
   }
 
-  // Seed the minimum-boot series for a shape. The bus + storage + console +
-  // keyboard are REQUIRED at boot; USB and mouse are early-available; audio is
-  // non-boot. Driver names reflect each family's real early drivers.
+  < Seed the minimum-boot series for a shape. The bus + storage + console + >
+  < keyboard are REQUIRED at boot; USB and mouse are early-available; audio is >
+  < non-boot. Driver names reflect each family's real early drivers. >
   void forShape(SLOSShape shape) {
     configure();
     if (shape.isWindows()) {
@@ -103,7 +110,7 @@ class SLBaseDriverSeries {
       setAudio("AppleHDA", false);
       return;
     }
-    // Linux early drivers.
+    < Linux early drivers. >
     setBus("pci + acpi", true);
     setStorage("ahci + nvme + virtio_blk", true);
     setKeyboard("atkbd + usbhid", true);
@@ -113,7 +120,7 @@ class SLBaseDriverSeries {
     setAudio("snd_hda_intel", false);
   }
 
-  // ---- Setters -------------------------------------------------------
+  < ---- Setters ------------------------------------------------------- >
   void setBus(String n, boolean boot)      { busDrv = n;      busBoot = b(boot); }
   void setStorage(String n, boolean boot)  { storageDrv = n;  storageBoot = b(boot); }
   void setKeyboard(String n, boolean boot) { keyboardDrv = n; keyboardBoot = b(boot); }
@@ -123,10 +130,10 @@ class SLBaseDriverSeries {
   void setAudio(String n, boolean boot)    { audioDrv = n;    audioBoot = b(boot); }
   int b(boolean x) { if (x) { return 1; } return 0; }
 
-  // ---- Validity ------------------------------------------------------
-  // A series can boot only with the irreducible trio: a bus to enumerate
-  // hardware, a storage controller to reach the rootfs, and a keyboard for the
-  // console. Display is strongly expected; audio/mouse/usb are not required.
+  < ---- Validity ------------------------------------------------------ >
+  < A series can boot only with the irreducible trio: a bus to enumerate >
+  < hardware, a storage controller to reach the rootfs, and a keyboard for the >
+  < console. Display is strongly expected; audio/mouse/usb are not required. >
   boolean canBoot() {
     if (configured != 1) { return false; }
     if (busDrv == "" || busBoot != 1) { return false; }
@@ -135,7 +142,7 @@ class SLBaseDriverSeries {
     return true;
   }
 
-  // Count of boot-required drivers present.
+  < Count of boot-required drivers present. >
   int bootRequiredCount() {
     int n = 0;
     if (busBoot == 1 && busDrv != "") { n = n + 1; }
@@ -145,8 +152,8 @@ class SLBaseDriverSeries {
     return n;
   }
 
-  // ---- Manifest ------------------------------------------------------
-  // Newline "class name boot" lines (boot = boot|early) for the emitters.
+  < ---- Manifest ------------------------------------------------------ >
+  < Newline "class name boot" lines (boot = boot|early) for the emitters. >
   String seriesManifest() {
     String m = "";
     m = line(m, "bus", busDrv, busBoot);
@@ -167,7 +174,7 @@ class SLBaseDriverSeries {
     return acc + "\n" + l;
   }
 
-  // Accessors for the emitters.
+  < Accessors for the emitters. >
   String bus()      { return busDrv; }
   String storage()  { return storageDrv; }
   String keyboard() { return keyboardDrv; }

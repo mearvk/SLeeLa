@@ -56,22 +56,23 @@ class SLPackageSet {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String manifest;    // newline-separated "name version" lines
+  < newline-separated "name version" lines >
+  String manifest;
   int count;
   int configured;
 
   void configure() { manifest = ""; count = 0; configured = 1; }
 
-  // Add a package with an explicit version.
+  < Add a package with an explicit version. >
   void add(String name, String version) {
     String line = name + " " + version;
     if (manifest == "") { manifest = line; } else { manifest = manifest + "\n" + line; }
     count = count + 1;
   }
-  // Add a package at an unpinned/"latest" version.
+  < Add a package at an unpinned/"latest" version. >
   void addLatest(String name) { add(name, "latest"); }
 
-  // Seed the base-system packages a shape needs before any layering.
+  < Seed the base-system packages a shape needs before any layering. >
   void baseSeedForShape(SLOSShape shape) {
     if (configured != 1) { configure(); }
     if (shape.isWindows()) {
@@ -84,7 +85,7 @@ class SLPackageSet {
       add("launchd", "24.0"); add("CoreServices", "24.0");
       return;
     }
-    // Linux base seed.
+    < Linux base seed. >
     add("libc", "2.39"); add("coreutils", "9.5");
     add("bash", "5.2"); add("systemd", "255");
     add("util-linux", "2.40");

@@ -55,7 +55,7 @@ class SLMemoryModule {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Memory technology ids.
+  < Memory technology ids. >
   static final int TECH_SRAM   = 0;
   static final int TECH_DRAM   = 1;
   static final int TECH_SDRAM  = 2;
@@ -65,26 +65,34 @@ class SLMemoryModule {
   static final int TECH_DDR4   = 6;
   static final int TECH_DDR5   = 7;
 
-  String partName;      // e.g. "DDR4-3200 16GB"
+  < e.g. "DDR4-3200 16GB" >
+  String partName;
   int technology;
-  int capacityMiB;      // module capacity in MiB
-  int busWidthBits;     // data bus width per channel (e.g. 64 for a DIMM)
-  int clockMHz;         // I/O bus clock (MT/s = clockMHz × ddrFactor)
-  int casLatency;       // CL in clock cycles
-  int ddrFactor;        // 1 for SDR/SRAM, 2 for DDR double-pumping
-  int channels;         // populated memory channels (1 single, 4 HEDT, 8 PRO)
+  < module capacity in MiB >
+  int capacityMiB;
+  < data bus width per channel (e.g. 64 for a DIMM) >
+  int busWidthBits;
+  < I/O bus clock (MT/s = clockMHz × ddrFactor) >
+  int clockMHz;
+  < CL in clock cycles >
+  int casLatency;
+  < 1 for SDR/SRAM, 2 for DDR double-pumping >
+  int ddrFactor;
+  < populated memory channels (1 single, 4 HEDT, 8 PRO) >
+  int channels;
 
-  SLRAM backing;        // the actual word store the executor addresses
+  < the actual word store the executor addresses >
+  SLRAM backing;
 
   void configure(String name, int tech, int capMiB, int busBits,
                  int ioClockMHz, int cl, int ddr) {
     configureChannels(name, tech, capMiB, busBits, ioClockMHz, cl, ddr, 1);
   }
 
-  // Full form: also state how many memory channels are populated. A platform
-  // with N channels multiplies both the addressable capacity (N modules) and
-  // the aggregate peak bandwidth by N — this is what distinguishes a 4-channel
-  // HEDT board from an 8-channel workstation board running the same DIMMs.
+  < Full form: also state how many memory channels are populated. A platform >
+  < with N channels multiplies both the addressable capacity (N modules) and >
+  < the aggregate peak bandwidth by N — this is what distinguishes a 4-channel >
+  < HEDT board from an 8-channel workstation board running the same DIMMs. >
   void configureChannels(String name, int tech, int capMiB, int busBits,
                          int ioClockMHz, int cl, int ddr, int channelCount) {
     partName = name; technology = tech; capacityMiB = capMiB;
@@ -93,32 +101,32 @@ class SLMemoryModule {
     channels = (channelCount < 1) ? 1 : channelCount;
   }
 
-  // Set the populated channel count after configuration (e.g. to retarget the
-  // same DIMM spec from a 4-channel to an 8-channel platform).
+  < Set the populated channel count after configuration (e.g. to retarget the >
+  < same DIMM spec from a 4-channel to an 8-channel platform). >
   void setChannels(int channelCount) { channels = (channelCount < 1) ? 1 : channelCount; }
 
-  // Allocate the backing store for this module as `width`-bit words. The arena
-  // spans the full populated capacity across every channel.
+  < Allocate the backing store for this module as `width`-bit words. The arena >
+  < spans the full populated capacity across every channel. >
   SLRAM mount(int wordWidth) {
     int words = (totalCapacityMiB() * 1048576 * 8) / wordWidth;
     backing = new SLRAM(); backing.configure(words, wordWidth); backing.allocate();
     return backing;
   }
 
-  // Effective data rate in mega-transfers/second per channel (DDR double-pumps).
+  < Effective data rate in mega-transfers/second per channel (DDR double-pumps). >
   int transfersPerSecMT() { return clockMHz * ddrFactor; }
 
-  // Per-channel peak bandwidth in MB/s: MT/s × bus bytes.
+  < Per-channel peak bandwidth in MB/s: MT/s × bus bytes. >
   int channelBandwidthMBs() { return transfersPerSecMT() * (busWidthBits / 8); }
 
-  // Aggregate peak bandwidth in MB/s across every populated channel. For a
-  // single-channel module this equals the per-channel figure.
+  < Aggregate peak bandwidth in MB/s across every populated channel. For a >
+  < single-channel module this equals the per-channel figure. >
   int peakBandwidthMBs() { return channelBandwidthMBs() * channels; }
 
-  // Total installed capacity across all channels (one module per channel).
+  < Total installed capacity across all channels (one module per channel). >
   int totalCapacityMiB() { return capacityMiB * channels; }
 
-  // First-word access latency in nanoseconds: CL / clock. (×1000 for ns.)
+  < First-word access latency in nanoseconds: CL / clock. (×1000 for ns.) >
   int firstWordLatencyNs() { if (clockMHz <= 0) { return 0; } return (casLatency * 1000) / clockMHz; }
 
   String name()        { return partName; }

@@ -72,10 +72,11 @@ class GuiOverflowScrollDemo {
     print("================================================================");
   }
 
-  // Report the implied-scroll decision for a viewport vs. content extent.
+  < Report the implied-scroll decision for a viewport vs. content extent. >
   void axis(String name, int viewport, int content, boolean horizontal) {
     SLGuiScrollbar bar = new SLGuiScrollbar();
-    bar.configure(horizontal ? 1 : 0, viewport, content);   // 0=vertical,1=horizontal
+    < 0=vertical,1=horizontal >
+    bar.configure(horizontal ? 1 : 0, viewport, content);
     print(name + " -> viewport=" + viewport + "px content=" + content + "px"
         + " overflow=" + bar.overflow()
         + " implied(bar shown automatically)=" + bar.implied());
@@ -97,11 +98,11 @@ class GuiOverflowScrollDemo {
     print("content is larger than the frame. The decision per axis:");
     print("");
 
-    // A 120px-tall frame holding 40 rows (~800px): vertical scroll appears.
+    < A 120px-tall frame holding 40 rows (~800px): vertical scroll appears. >
     axis("TALL CONTENT ", 120, 40 * 20, false);
-    // A 260px-wide frame holding 860px of content: horizontal scroll appears.
+    < A 260px-wide frame holding 860px of content: horizontal scroll appears. >
     axis("WIDE CONTENT ", 260, 860, true);
-    // A frame that already contains its content: NO bar (auto policy hides it).
+    < A frame that already contains its content: NO bar (auto policy hides it). >
     axis("FITS IN FRAME", 400, 300, false);
 
     print("");

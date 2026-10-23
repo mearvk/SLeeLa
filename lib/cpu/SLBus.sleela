@@ -70,7 +70,7 @@ class SLBus {
   void driveData(int data) { dataLane = data; }
   void driveControl(int ctrl) { controlLane = ctrl; }
 
-  // Complete the current transfer; returns the data lane value.
+  < Complete the current transfer; returns the data lane value. >
   int transfer() { transfers = transfers + 1; return dataLane; }
 
   int address() { return addressLane; }

@@ -59,17 +59,25 @@ class SLSwapConfig {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String kind;        // "file" / "partition" / "zram" / "zswap" / "pagefile" / "dynamic" / "none"
-  String host;        // the OS family this swap belongs to
-  int    sizeMb;      // swap size in MB (0 = auto / RAM-relative)
-  int    ramMultipleTenths; // size as a multiple of RAM, in tenths (e.g. 10 = 1.0x RAM); 0 = use sizeMb
-  int    swappiness;  // 0..100 reclaim aggressiveness (Linux vm.swappiness)
-  String compAlgo;    // compression algorithm for zram/zswap ("lzo","lz4","zstd"), else ""
-  int    compLevel;   // compression quality/level (algorithm-dependent), 0 = default
-  int    priority;    // swap priority (higher = preferred); -1 = default
+  < "file" / "partition" / "zram" / "zswap" / "pagefile" / "dynamic" / "none" >
+  String kind;
+  < the OS family this swap belongs to >
+  String host;
+  < swap size in MB (0 = auto / RAM-relative) >
+  int    sizeMb;
+  < size as a multiple of RAM, in tenths (e.g. 10 = 1.0x RAM); 0 = use sizeMb >
+  int    ramMultipleTenths;
+  < 0..100 reclaim aggressiveness (Linux vm.swappiness) >
+  int    swappiness;
+  < compression algorithm for zram/zswap ("lzo","lz4","zstd"), else "" >
+  String compAlgo;
+  < compression quality/level (algorithm-dependent), 0 = default >
+  int    compLevel;
+  < swap priority (higher = preferred); -1 = default >
+  int    priority;
   int    configured;
 
-  // Configure explicitly. compAlgo/compLevel apply only to zram/zswap.
+  < Configure explicitly. compAlgo/compLevel apply only to zram/zswap. >
   void configure(String swapKind, int sizeMegabytes, int swappinessValue) {
     kind = norm(swapKind); sizeMb = sizeMegabytes; ramMultipleTenths = 0;
     swappiness = clamp0to100(swappinessValue);
@@ -83,7 +91,8 @@ class SLSwapConfig {
     if (k == "pagefile")  { return "pagefile"; }
     if (k == "dynamic")   { return "dynamic"; }
     if (k == "none")      { return "none"; }
-    return "file";   // default kind
+    < default kind >
+    return "file";
   }
 
   int clamp0to100(int v) {
@@ -92,8 +101,8 @@ class SLSwapConfig {
     return v;
   }
 
-  // Seed the family default: Linux a swap file at 1.0x RAM, swappiness 60;
-  // Windows a system-managed pagefile; macOS dynamic swap files.
+  < Seed the family default: Linux a swap file at 1.0x RAM, swappiness 60; >
+  < Windows a system-managed pagefile; macOS dynamic swap files. >
   void forShape(SLOSShape shape) {
     host = shape.name();
     if (shape.isWindows()) {
@@ -104,28 +113,29 @@ class SLSwapConfig {
       kind = "dynamic"; sizeMb = 0; ramMultipleTenths = 0; swappiness = 0;
       compAlgo = ""; compLevel = 0; priority = -1; configured = 1; return;
     }
-    kind = "file"; sizeMb = 0; ramMultipleTenths = 10;  // 1.0x RAM
+    < 1.0x RAM >
+    kind = "file"; sizeMb = 0; ramMultipleTenths = 10;
     swappiness = 60; compAlgo = ""; compLevel = 0; priority = -1; configured = 1;
   }
 
-  // ---- Quality tuning -------------------------------------------------
-  // Size the swap as an absolute MB amount, or as a multiple of RAM (tenths:
-  // 5 = 0.5x, 10 = 1.0x, 20 = 2.0x). Setting one clears the other.
+  < ---- Quality tuning ------------------------------------------------- >
+  < Size the swap as an absolute MB amount, or as a multiple of RAM (tenths: >
+  < 5 = 0.5x, 10 = 1.0x, 20 = 2.0x). Setting one clears the other. >
   void setSizeMb(int mb) { sizeMb = mb; ramMultipleTenths = 0; }
   void setSizeRamMultiple(int tenths) { ramMultipleTenths = tenths; sizeMb = 0; }
   void setSwappiness(int v) { swappiness = clamp0to100(v); }
   void setPriority(int p) { priority = p; }
 
-  // Compression (zram/zswap only). algo in {lzo,lz4,lz4hc,zstd}; level is the
-  // algorithm's quality knob (e.g. zstd 1..22). Ignored for non-compressed kinds.
+  < Compression (zram/zswap only). algo in {lzo,lz4,lz4hc,zstd}; level is the >
+  < algorithm's quality knob (e.g. zstd 1..22). Ignored for non-compressed kinds. >
   void setCompression(String algo, int level) {
     compAlgo = algo; compLevel = level;
   }
   boolean isCompressed() { return kind == "zram" || kind == "zswap"; }
 
-  // ---- Validity -------------------------------------------------------
-  // A compressed kind must name a compression algorithm; a sized file/partition
-  // must have either an MB size or a RAM multiple; "none" is always valid.
+  < ---- Validity ------------------------------------------------------- >
+  < A compressed kind must name a compression algorithm; a sized file/partition >
+  < must have either an MB size or a RAM multiple; "none" is always valid. >
   boolean isValid() {
     if (configured != 1) { return false; }
     if (kind == "none") { return true; }
@@ -136,8 +146,8 @@ class SLSwapConfig {
     return true;
   }
 
-  // Is this kind valid for the host family? zram/zswap/file/partition are Linux;
-  // pagefile is Windows; dynamic is macOS; none is universal.
+  < Is this kind valid for the host family? zram/zswap/file/partition are Linux; >
+  < pagefile is Windows; dynamic is macOS; none is universal. >
   boolean validForShape(SLOSShape shape) {
     if (kind == "none") { return true; }
     if (shape.isWindows()) { return kind == "pagefile"; }
@@ -145,14 +155,14 @@ class SLSwapConfig {
     return kind == "file" || kind == "partition" || kind == "zram" || kind == "zswap";
   }
 
-  // ---- Accessors ------------------------------------------------------
+  < ---- Accessors ------------------------------------------------------ >
   String swapKind()   { return kind; }
   int swapSizeMb()    { return sizeMb; }
   int swappinessValue() { return swappiness; }
   String compression() { return compAlgo; }
   int compressionLevel() { return compLevel; }
 
-  // A human size description.
+  < A human size description. >
   String sizeText() {
     if (ramMultipleTenths > 0) {
       return tenths(ramMultipleTenths) + "x RAM";
@@ -166,9 +176,9 @@ class SLSwapConfig {
     return "" + whole + "." + frac;
   }
 
-  // ---- Emission -------------------------------------------------------
-  // The Linux fstab entry (file/partition) or the systemd/zram-generator line
-  // (zram), plus a vm.swappiness sysctl. Empty for kind "none".
+  < ---- Emission ------------------------------------------------------- >
+  < The Linux fstab entry (file/partition) or the systemd/zram-generator line >
+  < (zram), plus a vm.swappiness sysctl. Empty for kind "none". >
   String emitLinux() {
     if (kind == "none") { return "# swap: disabled\n"; }
     String s = "# swap configuration (generated by SLeeLa lib/os)\n";
@@ -201,7 +211,7 @@ class SLSwapConfig {
     return compAlgo;
   }
 
-  // The per-shape swap note the generator/creator records.
+  < The per-shape swap note the generator/creator records. >
   String emitForShape(SLOSShape shape) {
     if (shape.isWindows()) {
       return "# Windows paging: pagefile.sys (system-managed by default)\n"
@@ -213,7 +223,7 @@ class SLSwapConfig {
     return emitLinux();
   }
 
-  // A compact summary line.
+  < A compact summary line. >
   String summary() {
     if (kind == "none") { return "swap: none"; }
     String s = "swap: " + kind + " " + sizeText();

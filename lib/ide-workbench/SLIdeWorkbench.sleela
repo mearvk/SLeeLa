@@ -51,19 +51,27 @@ class SLIdeWorkbench {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  SLGuiBackend backend;             // lib/gui: toolkit selection
-  SLGuiWindow window;               // lib/gui: the host window
-  SLGuiIntegration integration;     // lib/gui: three-path posture
-  SLGuiDocumentListener watch;      // lib/gui: OS-driven 1..14 document watch
+  < lib/gui: toolkit selection >
+  SLGuiBackend backend;
+  < lib/gui: the host window >
+  SLGuiWindow window;
+  < lib/gui: three-path posture >
+  SLGuiIntegration integration;
+  < lib/gui: OS-driven 1..14 document watch >
+  SLGuiDocumentListener watch;
 
-  SLIdeTabGroup tabs;               // open editors (unbounded)
-  SLIdeProjectTree tree;            // project explorer
-  SLIdeCommandRegistry commands;    // Open/Save/Compile/Run/...
-  SLIdeDiagnosticsPanel diagnostics;// compiler problems surface
+  < open editors (unbounded) >
+  SLIdeTabGroup tabs;
+  < project explorer >
+  SLIdeProjectTree tree;
+  < Open/Save/Compile/Run/... >
+  SLIdeCommandRegistry commands;
+  < compiler problems surface >
+  SLIdeDiagnosticsPanel diagnostics;
 
   int ready;
 
-  // Stand up the whole shell. `root` is the opened project directory.
+  < Stand up the whole shell. `root` is the opened project directory. >
   void boot(String backendKind, String title, int width, int height, String root) {
     backend = new SLGuiBackend();
     backend.configure(backendKind);
@@ -75,7 +83,8 @@ class SLIdeWorkbench {
     integration.configure();
     integration.enableJavaHost();
     integration.enableSleelaIntent();
-    integration.enableNativeAbi();   // recommended(): all three paths
+    < recommended(): all three paths >
+    integration.enableNativeAbi();
 
     tabs = new SLIdeTabGroup();  tabs.init();
     tree = new SLIdeProjectTree(); tree.init(root);
@@ -92,9 +101,9 @@ class SLIdeWorkbench {
 
   boolean isReady() { return ready == 1; }
 
-  // --- Opening / editing ---------------------------------------------------
+  < --- Opening / editing --------------------------------------------------- >
 
-  // Open a file from the tree into an editor tab, classifying its language.
+  < Open a file from the tree into an editor tab, classifying its language. >
   int openFile(String documentId, String path, String contents, String revision) {
     SLIdeEditor ed = new SLIdeEditor();
     ed.configure(documentId, path, tree.languageFor(path));
@@ -105,17 +114,17 @@ class SLIdeWorkbench {
     return idx;
   }
 
-  // Apply a user edit to the active editor.
+  < Apply a user edit to the active editor. >
   void editActive(String newText) {
     SLIdeEditor ed = tabs.activeEditor();
     if (ed != null) { ed.setText(newText); syncCommandState(); }
   }
 
-  // --- Compile (SST Nordshrit path + SLeeLa compiler) ----------------------
+  < --- Compile (SST Nordshrit path + SLeeLa compiler) ---------------------- >
 
-  // Compile the active editor. .sst routes through NordshriftCompilerBridge;
-  // .sleela goes straight to the SLeeLa compiler. Diagnostics are published to
-  // the panel; the return value honors the IDE failure rule.
+  < Compile the active editor. .sst routes through NordshriftCompilerBridge; >
+  < .sleela goes straight to the SLeeLa compiler. Diagnostics are published to >
+  < the panel; the return value honors the IDE failure rule. >
   boolean compileActive(NordshriftCompilerBridge nordshrift, SLCompiler compiler) {
     SLIdeEditor ed = tabs.activeEditor();
     if (ed == null) { return false; }
@@ -124,7 +133,7 @@ class SLIdeWorkbench {
 
     int prepared = 1;
     if (ed.isSst()) {
-      // .sst -> Nordshrift -> /lib discovery -> .sleela, then compile.
+      < .sst -> Nordshrift -> /lib discovery -> .sleela, then compile. >
       nordshrift.resolveLibrary();
       prepared = nordshrift.prepare();
       if (prepared == 1) { prepared = nordshrift.compileToSleela(); }
@@ -135,7 +144,7 @@ class SLIdeWorkbench {
     }
 
     if (prepared == 1) {
-      // The SLeeLa compiler is authoritative for the resulting source.
+      < The SLeeLa compiler is authoritative for the resulting source. >
       compiler.start();
       compiler.emit();
       compiler.stop();
@@ -146,9 +155,9 @@ class SLIdeWorkbench {
     return ok;
   }
 
-  // --- Save / load (lib/sldocument owns persistence) -----------------------
+  < --- Save / load (lib/sldocument owns persistence) ----------------------- >
 
-  // The host persisted the active editor at `revision`; mark it clean.
+  < The host persisted the active editor at `revision`; mark it clean. >
   boolean saveActive(String revision) {
     SLIdeEditor ed = tabs.activeEditor();
     if (ed == null) { return false; }
@@ -157,10 +166,10 @@ class SLIdeWorkbench {
     return true;
   }
 
-  // --- OS-driven external change -------------------------------------------
+  < --- OS-driven external change ------------------------------------------- >
 
-  // An OS watch call reported `realChanges`; refresh the active editor's view
-  // (full reconciliation of each stale buffer is a host re-read).
+  < An OS watch call reported `realChanges`; refresh the active editor's view >
+  < (full reconciliation of each stale buffer is a host re-read). >
   int onDocumentChange(String documentId, String revision, int realChanges) {
     if (!watch.isRunning()) { return 0; }
     int emitted = watch.onOsCall(realChanges);
@@ -168,9 +177,9 @@ class SLIdeWorkbench {
     return emitted;
   }
 
-  // --- Internal wiring -----------------------------------------------------
+  < --- Internal wiring ----------------------------------------------------- >
 
-  // Re-register the OS watch over the current bounded (1..14) watch set.
+  < Re-register the OS watch over the current bounded (1..14) watch set. >
   void rearmWatch() {
     int n = tabs.watchSetSize();
     if (n < 1) { watch.close(); return; }
@@ -178,8 +187,8 @@ class SLIdeWorkbench {
     watch.watch();
   }
 
-  // Keep command availability honest: Save/Save All reflect dirty state;
-  // Compile/Run require an active editor.
+  < Keep command availability honest: Save/Save All reflect dirty state; >
+  < Compile/Run require an active editor. >
   void syncCommandState() {
     boolean haveActive = tabs.activeEditor() != null;
     commands.setEnabled("ide.compile", haveActive);
@@ -190,7 +199,7 @@ class SLIdeWorkbench {
     commands.setEnabled("ide.close", haveActive);
   }
 
-  // Accessors for the host/presentation layer.
+  < Accessors for the host/presentation layer. >
   SLIdeTabGroup tabGroup() { return tabs; }
   SLIdeProjectTree projectTree() { return tree; }
   SLIdeCommandRegistry commandRegistry() { return commands; }

@@ -57,29 +57,34 @@ class DiceRoll {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   static final String MODULE = "DiceRoll";
-  static final int MODULUS = 2147483647;   // 2^31 - 1, a classic LCG modulus
-  static final int MULT     = 48271;        // MINSTD multiplier
+  < 2^31 - 1, a classic LCG modulus >
+  static final int MODULUS = 2147483647;
+  < MINSTD multiplier >
+  static final int MULT     = 48271;
 
   int loadedFlag;
-  int state;        // current generator state, 1..MODULUS-1
-  int rollCount;    // how many rolls this stream has produced
+  < current generator state, 1..MODULUS-1 >
+  int state;
+  < how many rolls this stream has produced >
+  int rollCount;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() { loadedFlag = 1; state = 1; rollCount = 0; }
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // Seed the stream. The same seed replays the same sequence, every time.
+  < Seed the stream. The same seed replays the same sequence, every time. >
   void seed(int s) {
     int v = s;
     if (v < 0) { v = 0 - v; }
     v = v % MODULUS;
-    if (v == 0) { v = 1; }   // 0 is a fixed point; nudge it off
+    < 0 is a fixed point; nudge it off >
+    if (v == 0) { v = 1; }
     state = v;
     rollCount = 0;
   }
 
-  // Advance and return the next raw value in 1..MODULUS-1.
+  < Advance and return the next raw value in 1..MODULUS-1. >
   int next() {
     state = (MULT * state) % MODULUS;
     if (state <= 0) { state = state + MODULUS; }
@@ -87,21 +92,21 @@ class DiceRoll {
     return state;
   }
 
-  // A percentage result in 0..99 for the next step of play.
+  < A percentage result in 0..99 for the next step of play. >
   int percent() { return next() % 100; }
 
-  // Roll against a target: returns true when the roll "succeeds" at `chance`
-  // percent. chance<=0 never succeeds; chance>=100 always does.
+  < Roll against a target: returns true when the roll "succeeds" at `chance` >
+  < percent. chance<=0 never succeeds; chance>=100 always does. >
   boolean rollUnder(int chance) {
     if (chance <= 0) { return false; }
     if (chance >= 100) { return true; }
     return percent() < chance;
   }
 
-  // The 50/50 your "ask for help" move leans on.
+  < The 50/50 your "ask for help" move leans on. >
   boolean coinFlip() { return rollUnder(50); }
 
-  // A value in [lo, hi] inclusive, for picking amounts and indices.
+  < A value in [lo, hi] inclusive, for picking amounts and indices. >
   int between(int lo, int hi) {
     if (hi <= lo) { return lo; }
     int span = hi - lo + 1;

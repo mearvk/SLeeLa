@@ -57,14 +57,14 @@ class SLDDRCatalog {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   void configure() {}
 
-  // Return a DDR5 module from a named manufacturer at a given capacity (MB).
+  < Return a DDR5 module from a named manufacturer at a given capacity (MB). >
   SLDDRModule ddr5(String manufacturer, int capacityMb) {
     SLDDRModule m = new SLDDRModule();
     m.configure(manufacturer, ddr5Part(manufacturer), m.GEN_DDR5);
     m.sized(capacityMb, false);
     return m;
   }
-  // Return a DDR4 module from a named manufacturer at a given capacity (MB).
+  < Return a DDR4 module from a named manufacturer at a given capacity (MB). >
   SLDDRModule ddr4(String manufacturer, int capacityMb) {
     SLDDRModule m = new SLDDRModule();
     m.configure(manufacturer, ddr4Part(manufacturer), m.GEN_DDR4);
@@ -72,7 +72,7 @@ class SLDDRCatalog {
     return m;
   }
 
-  // Build a module of any generation by name from any manufacturer.
+  < Build a module of any generation by name from any manufacturer. >
   SLDDRModule module(String manufacturer, String genName, int capacityMb, boolean ecc) {
     SLDDRModule m = new SLDDRModule();
     m.configureByName(manufacturer, genPart(manufacturer, genName), genName);
@@ -80,7 +80,7 @@ class SLDDRCatalog {
     return m;
   }
 
-  // Is this one of the recognised DRAM manufacturers?
+  < Is this one of the recognised DRAM manufacturers? >
   boolean known(String manufacturer) {
     return manufacturer == "Samsung" || manufacturer == "SK Hynix"
         || manufacturer == "Micron"  || manufacturer == "Kingston"
@@ -88,7 +88,7 @@ class SLDDRCatalog {
         || manufacturer == "Crucial" || manufacturer == "Mushkin";
   }
 
-  // ---- Representative part numbers per manufacturer ----------------------
+  < ---- Representative part numbers per manufacturer ---------------------- >
   String ddr5Part(String mfr) {
     if (mfr == "Samsung")  { return "M323R-DDR5"; }
     if (mfr == "SK Hynix") { return "HMCG-DDR5"; }

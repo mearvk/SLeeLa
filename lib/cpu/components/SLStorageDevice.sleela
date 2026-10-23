@@ -52,14 +52,14 @@ class SLStorageDevice {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Device classes.
+  < Device classes. >
   static final int CLASS_FLOPPY = 0;
   static final int CLASS_HDD    = 1;
   static final int CLASS_SSD    = 2;
   static final int CLASS_NVME   = 3;
   static final int CLASS_TAPE   = 4;
 
-  // Interfaces.
+  < Interfaces. >
   static final int IF_ST506 = 0;
   static final int IF_IDE   = 1;
   static final int IF_SCSI  = 2;
@@ -70,10 +70,14 @@ class SLStorageDevice {
   String partName;
   int deviceClass;
   int iface;
-  int capacityMiB;        // capacity in MiB
-  int rpm;                // rotational speed (0 for SSD/NVMe/flash)
-  int avgSeekUs;          // average seek time, microseconds (0 for solid state)
-  int transferMBs;        // sustained sequential transfer, MB/s
+  < capacity in MiB >
+  int capacityMiB;
+  < rotational speed (0 for SSD/NVMe/flash) >
+  int rpm;
+  < average seek time, microseconds (0 for solid state) >
+  int avgSeekUs;
+  < sustained sequential transfer, MB/s >
+  int transferMBs;
 
   void configure(String name, int devClass, int interfaceId, int capMiB,
                  int rotationRpm, int seekMicros, int seqMBs) {
@@ -81,14 +85,15 @@ class SLStorageDevice {
     capacityMiB = capMiB; rpm = rotationRpm; avgSeekUs = seekMicros; transferMBs = seqMBs;
   }
 
-  // Average rotational latency in microseconds (half a revolution). 0 for
-  // non-rotational media.
+  < Average rotational latency in microseconds (half a revolution). 0 for >
+  < non-rotational media. >
   int rotationalLatencyUs() { if (rpm <= 0) { return 0; } return 30000000 / rpm; }
 
-  // Modelled random-access time for a `bytes`-sized read: seek + rotational
-  // latency + transfer time, in microseconds.
+  < Modelled random-access time for a `bytes`-sized read: seek + rotational >
+  < latency + transfer time, in microseconds. >
   int accessTimeUs(int bytes) {
-    int xfer = (transferMBs <= 0) ? 0 : bytes / transferMBs;   // ~us at MB/s
+    < ~us at MB/s >
+    int xfer = (transferMBs <= 0) ? 0 : bytes / transferMBs;
     return avgSeekUs + rotationalLatencyUs() + xfer;
   }
 

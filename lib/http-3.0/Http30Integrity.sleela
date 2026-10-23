@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Model of the H3 integrity gate. Native implementation is authoritative. */
+< Model of the H3 integrity gate. Native implementation is authoritative. >
 class Http30Integrity {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

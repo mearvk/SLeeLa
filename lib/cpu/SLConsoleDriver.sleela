@@ -52,11 +52,12 @@ class SLConsoleDriver extends SLDeviceDriver {
   int charsWritten;
 
   void init(SLIOBus bus, int port) {
-    configure("console", port, -1, bus); // console is polled, no IRQ
+    < console is polled, no IRQ >
+    configure("console", port, -1, bus);
     charsWritten = 0;
   }
 
-  // Write one character code to the console port and to the host terminal.
+  < Write one character code to the console port and to the host terminal. >
   int putChar(int code) {
     if (!ready()) { return -1; }
     write(code);

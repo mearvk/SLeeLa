@@ -111,9 +111,9 @@ class JamesCameronLifeStats {
         || scenarioTechnicalInnovation == 0) { return 0; }
     return (scenarioCreativity + scenarioSystemsThinking + scenarioTechnicalInnovation) * 100 / 90;
   }
-  // Weighted career-leverage scenario index (0..100), not a real-world measure.
-  // Weights: creativity 25%, systems 20%, innovation 20%, execution 20%,
-  // exploration 10%, collaboration 5%; all component scores use 1..30.
+  < Weighted career-leverage scenario index (0..100), not a real-world measure. >
+  < Weights: creativity 25%, systems 20%, innovation 20%, execution 20%, >
+  < exploration 10%, collaboration 5%; all component scores use 1..30. >
   int careerLeverageIndex() {
     if (scenarioCreativity == 0 || scenarioSystemsThinking == 0
         || scenarioTechnicalInnovation == 0 || scenarioExecution == 0

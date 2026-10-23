@@ -1,16 +1,14 @@
 << lib/coorenagraph/Coorenagraph.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type Coorenagraph used within the coorenagraph library family. >>
-/*
- * Coorenagraph.sleela
- * SLeeLa COORENAGRAPH moral-grounding truth contract.
- *
- * The evaluator accepts exactly two Moral Arguments and one Grounding
- * Mechanism. The produced Truth is invariant with respect to whether the
- * person is modeled as Vile or Lively.
- *
- * This is a formal SLeeLa rule, not a claim about any real person.
- */
+<< Coorenagraph.sleela
+   SLeeLa COORENAGRAPH moral-grounding truth contract.
+   
+   The evaluator accepts exactly two Moral Arguments and one Grounding
+   Mechanism. The produced Truth is invariant with respect to whether the
+   person is modeled as Vile or Lively.
+   
+   This is a formal SLeeLa rule, not a claim about any real person. >>
 
 struct MoralArgument {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

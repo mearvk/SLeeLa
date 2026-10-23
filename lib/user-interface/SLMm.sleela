@@ -55,9 +55,12 @@ class SLMm {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  double rightMm;   // +right, -left
-  double downMm;    // +down, -up
-  double heightMm;  // above the plane the light shines down from
+  < +right, -left >
+  double rightMm;
+  < +down, -up >
+  double downMm;
+  < above the plane the light shines down from >
+  double heightMm;
 
   void of(double right, double down, double height) {
     rightMm = right; downMm = down; heightMm = height;
@@ -67,6 +70,6 @@ class SLMm {
   void up(double mm, double height)    { of(0.0, -mm, height); }
   void down(double mm, double height)  { of(0.0, mm, height); }
 
-  // Millimetres to device pixels at `dpi` (25.4 mm per inch).
+  < Millimetres to device pixels at `dpi` (25.4 mm per inch). >
   double toPixels(double mm, double dpi) { return mmToPx(mm, dpi); }
 }

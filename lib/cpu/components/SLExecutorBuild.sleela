@@ -61,8 +61,10 @@ class SLExecutorBuild {
   SLCPURuntime cpu;
   SLMotherboard board;
   SLMemoryModule memory;
-  SLMemoryInterface memInterface;   // optional OOD cadence-overlay over `memory`
-  SLMemoryTierRouter tiers;         // optional two-tier (usual/accurate) router
+  < optional OOD cadence-overlay over `memory` >
+  SLMemoryInterface memInterface;
+  < optional two-tier (usual/accurate) router >
+  SLMemoryTierRouter tiers;
   SLStorageDevice storage;
   SLOpticalDrive optical;
   SLSystemBus bus;
@@ -70,7 +72,7 @@ class SLExecutorBuild {
 
   void configure(String name) { buildName = name; assembled = 0; }
 
-  // Pick parts (any may be omitted; CPU and memory are required to assemble).
+  < Pick parts (any may be omitted; CPU and memory are required to assemble). >
   void installCpu(SLCPURuntime chosenCpu)        { cpu = chosenCpu; }
   void installBoard(SLMotherboard motherboard)   { board = motherboard; }
   void installMemory(SLMemoryModule module)      { memory = module; }
@@ -78,18 +80,18 @@ class SLExecutorBuild {
   void installOptical(SLOpticalDrive drive)      { optical = drive; }
   void installBus(SLSystemBus systemBus)         { bus = systemBus; }
 
-  // The OOD slot for a memory interface/adapter layer: a Sleela-level overlay
-  // that imposes a target-tech refresh duty cycle on the real module (e.g. run
-  // the DDR5 so it refreshes as though it were DDR2). Composed WITH the module:
-  // install a module first, then install an interface that wraps it. The real
-  // backing store is never replaced — only the observed availability changes.
+  < The OOD slot for a memory interface/adapter layer: a Sleela-level overlay >
+  < that imposes a target-tech refresh duty cycle on the real module (e.g. run >
+  < the DDR5 so it refreshes as though it were DDR2). Composed WITH the module: >
+  < install a module first, then install an interface that wraps it. The real >
+  < backing store is never replaced — only the observed availability changes. >
   void installMemoryInterface(SLMemoryInterface iface) { memInterface = iface; }
 
-  // Designate PHYSICAL memory tiers: a usual-activities module and an
-  // accuracy/competency module, plus which is the main (document default). A
-  // function marked usualmem/accuratemem binds to the matching module; the rest
-  // inherit the main tier. The accurate tier doubles as the base `memory` the
-  // CPU mounts, so single-tier builds are unaffected.
+  < Designate PHYSICAL memory tiers: a usual-activities module and an >
+  < accuracy/competency module, plus which is the main (document default). A >
+  < function marked usualmem/accuratemem binds to the matching module; the rest >
+  < inherit the main tier. The accurate tier doubles as the base `memory` the >
+  < CPU mounts, so single-tier builds are unaffected. >
   void installUsualTier(SLMemoryModule m) {
     if (tiers == null) { tiers = new SLMemoryTierRouter(); tiers.configure(); }
     tiers.installUsual(m);
@@ -97,36 +99,38 @@ class SLExecutorBuild {
   void installAccurateTier(SLMemoryModule m) {
     if (tiers == null) { tiers = new SLMemoryTierRouter(); tiers.configure(); }
     tiers.installAccurate(m);
-    if (memory == null) { memory = m; }   // the accurate tier is the base store
+    < the accurate tier is the base store >
+    if (memory == null) { memory = m; }
   }
   void setMainTier(int tier) {
     if (tiers == null) { tiers = new SLMemoryTierRouter(); tiers.configure(); }
     tiers.setMainTier(tier);
   }
 
-  // Optional accelerators: give the build's CPU direct DMA and/or native GPU
-  // access, so a program on this executor can use them at any point.
+  < Optional accelerators: give the build's CPU direct DMA and/or native GPU >
+  < access, so a program on this executor can use them at any point. >
   void enableDMA() { if (cpu != null) { cpu.enableDMA(); } }
   void enableGPU() { if (cpu != null) { cpu.enableGPU(); } }
   boolean dmaEnabled() { return cpu != null && cpu.dmaEnabled(); }
   boolean gpuEnabled() { return cpu != null && cpu.gpuEnabled(); }
 
-  // Run the CPU at a chosen frequency (0 = leave at spec). Overclocking returns
-  // false if the target is above the model's stability ceiling.
+  < Run the CPU at a chosen frequency (0 = leave at spec). Overclocking returns >
+  < false if the target is above the model's stability ceiling. >
   boolean setClock(int targetMHz) {
     if (cpu == null) { return false; }
     if (targetMHz <= 0) { cpu.resetClock(); return true; }
     return cpu.overclock(targetMHz);
   }
 
-  // Assemble the machine: mount the chosen RAM module as the CPU's main memory.
-  // Returns true when the required parts (CPU + memory) are present.
+  < Assemble the machine: mount the chosen RAM module as the CPU's main memory. >
+  < Returns true when the required parts (CPU + memory) are present. >
   boolean assemble() {
     if (cpu == null || memory == null) { return false; }
-    memory.mount(cpu.dataWidth());   // allocate RAM backing at the CPU word width
-    // Mount the usual tier too, when a two-tier router is present, so both
-    // physical modules have backing a dispatched function can bind to. (The
-    // accurate tier is `memory`, already mounted above.)
+    < allocate RAM backing at the CPU word width >
+    memory.mount(cpu.dataWidth());
+    < Mount the usual tier too, when a two-tier router is present, so both >
+    < physical modules have backing a dispatched function can bind to. (The >
+    < accurate tier is `memory`, already mounted above.) >
     if (tiers != null && tiers.hasUsual()) {
       SLMemoryModule u = tiers.moduleFor(tiers.TIER_USUAL);
       if (u != null && u != memory) { u.mount(cpu.dataWidth()); }
@@ -135,11 +139,11 @@ class SLExecutorBuild {
     return true;
   }
 
-  // The effective memory bandwidth available to the CPU is the smaller of the
-  // RAM module's effective peak and (when present) the system bus's peak — the
-  // bus can bottleneck fast RAM. When a memory interface is installed, the RAM
-  // figure is the interface's duty-scaled bandwidth (the refresh cadence
-  // overlay), not the module's raw peak.
+  < The effective memory bandwidth available to the CPU is the smaller of the >
+  < RAM module's effective peak and (when present) the system bus's peak — the >
+  < bus can bottleneck fast RAM. When a memory interface is installed, the RAM >
+  < figure is the interface's duty-scaled bandwidth (the refresh cadence >
+  < overlay), not the module's raw peak. >
   int effectiveMemoryBandwidthMBs() {
     int ram = memoryBandwidthMBs();
     if (bus == null) { return ram; }
@@ -147,17 +151,17 @@ class SLExecutorBuild {
     return (b < ram) ? b : ram;
   }
 
-  // RAM bandwidth as the system sees it: the interface's duty-scaled figure
-  // when a cadence overlay is installed, otherwise the module's raw peak.
+  < RAM bandwidth as the system sees it: the interface's duty-scaled figure >
+  < when a cadence overlay is installed, otherwise the module's raw peak. >
   int memoryBandwidthMBs() {
     if (memInterface != null) { return memInterface.effectiveBandwidthMBs(); }
     return (memory != null) ? memory.peakBandwidthMBs() : 0;
   }
 
-  // When a motherboard is installed, the memory module's channel count must fit
-  // the board's routed channels (an 8-channel module can't run on a 4-channel
-  // board). No board installed = no constraint. Returns true when the build's
-  // memory topology is seatable on the board.
+  < When a motherboard is installed, the memory module's channel count must fit >
+  < the board's routed channels (an 8-channel module can't run on a 4-channel >
+  < board). No board installed = no constraint. Returns true when the build's >
+  < memory topology is seatable on the board. >
   boolean boardFits() {
     if (board == null) { return true; }
     if (memory == null) { return true; }
@@ -170,9 +174,9 @@ class SLExecutorBuild {
   SLMemoryInterface ramInterface() { return memInterface; }
   boolean hasMemoryInterface()     { return memInterface != null && memInterface.active(); }
 
-  // Two-tier memory access. memoryForTier(t) returns the physical module a
-  // function with declared tier t (SLMemoryTierRouter.TIER_*) binds to; the VM
-  // dispatcher calls this per function so usualmem/accuratemem actually route.
+  < Two-tier memory access. memoryForTier(t) returns the physical module a >
+  < function with declared tier t (SLMemoryTierRouter.TIER_*) binds to; the VM >
+  < dispatcher calls this per function so usualmem/accuratemem actually route. >
   SLMemoryTierRouter tierRouter() { return tiers; }
   boolean twoTierMemory()         { return tiers != null && tiers.twoTier(); }
   SLMemoryModule memoryForTier(int declaredTier) {

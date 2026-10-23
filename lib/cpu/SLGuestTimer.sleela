@@ -77,7 +77,7 @@ class SLGuestTimer extends SLGuestDevice {
     if (r == 2) { enabled = value % 2; }
   }
 
-  // One timer tick: decrement; on reaching zero, reload and raise the IRQ.
+  < One timer tick: decrement; on reaching zero, reload and raise the IRQ. >
   void tick() {
     if (enabled == 1 && reload > 0) {
       count = count - 1;

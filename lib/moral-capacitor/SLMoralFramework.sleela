@@ -57,17 +57,24 @@ class SLMoralFramework {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Framework ordinals.
-  static final int DEONTOLOGY     = 1;  // duties / rules
-  static final int UTILITARIANISM = 2;  // outcomes / greatest good
-  static final int VIRTUE_ETHICS  = 3;  // character / what a good agent does
-  static final int BENEFICENCE    = 4;  // do good, avoid harm
-  static final int CONSENT        = 5;  // respect autonomy / consent
+  < Framework ordinals. >
+  < duties / rules >
+  static final int DEONTOLOGY     = 1;
+  < outcomes / greatest good >
+  static final int UTILITARIANISM = 2;
+  < character / what a good agent does >
+  static final int VIRTUE_ETHICS  = 3;
+  < do good, avoid harm >
+  static final int BENEFICENCE    = 4;
+  < respect autonomy / consent >
+  static final int CONSENT        = 5;
   static final int FRAMEWORK_COUNT = 5;
 
-  int framework;      // one of the ordinals
+  < one of the ordinals >
+  int framework;
   String label;
-  int weight;         // how much this framework's charge counts (1..4)
+  < how much this framework's charge counts (1..4) >
+  int weight;
   int configured;
 
   void configure(int fw) {
@@ -80,7 +87,7 @@ class SLMoralFramework {
     else { label = "unknown"; framework = 0; }
   }
 
-  // Configure by name ("deontology", "utilitarianism", ...).
+  < Configure by name ("deontology", "utilitarianism", ...). >
   void configureByName(String name) {
     if (name == "utilitarianism") { configure(UTILITARIANISM); return; }
     if (name == "virtue")         { configure(VIRTUE_ETHICS); return; }
@@ -97,8 +104,8 @@ class SLMoralFramework {
   String name()   { return label; }
   int frameworkWeight() { return weight; }
 
-  // The coorenagraph vocabulary class name this framework corresponds to, so a
-  // caller can cross-reference the moral definition.
+  < The coorenagraph vocabulary class name this framework corresponds to, so a >
+  < caller can cross-reference the moral definition. >
   String coorenagraphTerm() {
     if (framework == DEONTOLOGY)     { return "Deontology"; }
     if (framework == UTILITARIANISM) { return "Utilitarianism"; }

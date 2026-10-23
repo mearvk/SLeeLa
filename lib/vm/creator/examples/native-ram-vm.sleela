@@ -54,17 +54,19 @@ class NativeRamVMExample {
     SL6502CPU cpu = new SL6502CPU();
     cpu.configure();
 
-    // Ask the Creator to build a VM that runs on native host RAM.
+    < Ask the Creator to build a VM that runs on native host RAM. >
     SleelaVMCreator creator = new SleelaVMCreator();
     creator.configure();
-    creator.requestNativeRam();        // <- run outside simulation, on real RAM
-    creator.selectGeneration(5);       // "Manager" generation
+    < <- run outside simulation, on real RAM >
+    creator.requestNativeRam();
+    < "Manager" generation >
+    creator.selectGeneration(5);
     creator.create();
     print("VM native RAM: " + creator.builtVM().nativeRam());
 
     creator.installExecutor(cpu);
 
-    // Run a program on the native-RAM VM exactly as on a simulated one.
+    < Run a program on the native-RAM VM exactly as on a simulated one. >
     SLCPUResource grant = new SLCPUResource();
     grant.configure(4096, 100000, grant.PRIORITY_NORMAL);
     SLWorkload job = new SLWorkload();

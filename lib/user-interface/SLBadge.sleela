@@ -53,7 +53,7 @@ class SLBadge extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a badge inside `parent` with text (often a small number).
+  < Create a badge inside `parent` with text (often a small number). >
   void createIn(SLWidget parent, String text) {
     widget = uiBadge(parent.handle(), text);
   }

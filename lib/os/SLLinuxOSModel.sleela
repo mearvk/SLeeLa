@@ -56,12 +56,12 @@ class SLLinuxOSModel extends SLOSModel {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Build a Linux-shaped model with the given product name/version on amd64.
+  < Build a Linux-shaped model with the given product name/version on amd64. >
   void build(String name, String ver) {
     configure(name, ver);
     shapeAs("Linux", "amd64");
     kernelSpec().appendCmdline("splash");
-    // Layer the toolchain and desktop packages a Linux desktop expects.
+    < Layer the toolchain and desktop packages a Linux desktop expects. >
     packageSet().add("gcc", "14");
     packageSet().add("binutils", "2.42");
     packageSet().add("grub", "2.12");
@@ -69,7 +69,7 @@ class SLLinuxOSModel extends SLOSModel {
     packageSet().add("mesa", "24.0");
   }
 
-  // Build a multi-arch Linux model (adds arm64 to the primary amd64 target).
+  < Build a multi-arch Linux model (adds arm64 to the primary amd64 target). >
   void buildMultiArch(String name, String ver) {
     build(name, ver);
     architectures().addTarget("arm64");

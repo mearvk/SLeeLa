@@ -52,9 +52,12 @@ class SLInstruction {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   int opcode;
-  int rd;    // destination register index
-  int rs;    // source register index
-  int imm;   // immediate value or memory/branch address
+  < destination register index >
+  int rd;
+  < source register index >
+  int rs;
+  < immediate value or memory/branch address >
+  int imm;
 
   void configure(int op, int dest, int src, int immediate) {
     opcode = op; rd = dest; rs = src; imm = immediate;
@@ -65,7 +68,7 @@ class SLInstruction {
   int src() { return rs; }
   int immediate() { return imm; }
 
-  // Pack into a single word for storage in RAM (modeled fixed layout).
+  < Pack into a single word for storage in RAM (modeled fixed layout). >
   int encode() {
     return ((opcode % 256) * 16777216) + ((rd % 256) * 65536) + ((rs % 256) * 256) + (imm % 256);
   }

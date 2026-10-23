@@ -59,8 +59,8 @@ class SLCompressionVerifier {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // ---- extension resolution (mirrors sleela_compression_by_extension) -----
-  // Returns the algorithm id for a known extension, or -1 if unrecognized.
+  < ---- extension resolution (mirrors sleela_compression_by_extension) ----- >
+  < Returns the algorithm id for a known extension, or -1 if unrecognized. >
   int resolveExtension(String ext) {
     if (ext == ".bin") { return 0; }
     if (ext == ".rle") { return 1; }
@@ -80,39 +80,49 @@ class SLCompressionVerifier {
     return -1;
   }
 
-  // ---- content-signature probe (mirrors each plugin's probe()) ------------
-  // Given a short leading-byte signature tag (as text), return the algorithm id
-  // that claims it, or -1. The actual byte comparison lives in the native
-  // plugin; here the Verifier encodes which magic belongs to which algorithm so
-  // a GUI can pre-classify.
+  < ---- content-signature probe (mirrors each plugin's probe()) ------------ >
+  < Given a short leading-byte signature tag (as text), return the algorithm id >
+  < that claims it, or -1. The actual byte comparison lives in the native >
+  < plugin; here the Verifier encodes which magic belongs to which algorithm so >
+  < a GUI can pre-classify. >
   int probeMagic(String tag) {
-    if (tag == "SHF1") { return 2; }        // SLeeLa Huffman stream marker
-    if (tag == "SLZW") { return 3; }        // SLeeLa LZW stream marker
-    if (tag == "1F8B08") { return 6; }      // gzip magic + deflate method
-    if (tag == "BZh") { return 7; }         // bzip2 magic
-    if (tag == "5D0000") { return 8; }      // LZMA properties + dict size
-    if (tag == "FD377A585A00") { return 9; }// xz magic
-    if (tag == "28B52FFD") { return 10; }   // Zstandard frame magic
-    if (tag == "04224D18") { return 11; }   // LZ4 frame magic
-    if (tag == "FF060000734E") { return 13; } // Snappy stream identifier
-    if (tag == "PK") { return 14; }         // ZIP 'PK' signature
+    < SLeeLa Huffman stream marker >
+    if (tag == "SHF1") { return 2; }
+    < SLeeLa LZW stream marker >
+    if (tag == "SLZW") { return 3; }
+    < gzip magic + deflate method >
+    if (tag == "1F8B08") { return 6; }
+    < bzip2 magic >
+    if (tag == "BZh") { return 7; }
+    < LZMA properties + dict size >
+    if (tag == "5D0000") { return 8; }
+    < xz magic >
+    if (tag == "FD377A585A00") { return 9; }
+    < Zstandard frame magic >
+    if (tag == "28B52FFD") { return 10; }
+    < LZ4 frame magic >
+    if (tag == "04224D18") { return 11; }
+    < Snappy stream identifier >
+    if (tag == "FF060000734E") { return 13; }
+    < ZIP 'PK' signature >
+    if (tag == "PK") { return 14; }
     return -1;
   }
 
-  // headerless(id): true for algorithms with no reliable magic (Store, RLE,
-  // raw DEFLATE, Brotli), where probing by content cannot confirm the format —
-  // the caller must select it out-of-band by id or extension.
+  < headerless(id): true for algorithms with no reliable magic (Store, RLE, >
+  < raw DEFLATE, Brotli), where probing by content cannot confirm the format — >
+  < the caller must select it out-of-band by id or extension. >
   boolean headerless(int id) { return id == 0 || id == 1 || id == 4 || id == 12; }
 
-  // ---- loadability / lifecycle verification -------------------------------
-  // verifyLoadable(id): 0 if the id is a real algorithm that can be loaded,
-  // else -2 (invalid). Mirrors the manager's id_ok guard.
+  < ---- loadability / lifecycle verification ------------------------------- >
+  < verifyLoadable(id): 0 if the id is a real algorithm that can be loaded, >
+  < else -2 (invalid). Mirrors the manager's id_ok guard. >
   int verifyLoadable(int id) {
     if (id >= 0 && id < 15) { return 0; }
     return -2;
   }
 
-  // ---- result-code text (mirrors sleela_compression_result_text) ----------
+  < ---- result-code text (mirrors sleela_compression_result_text) ---------- >
   String resultText(int code) {
     if (code == 0) { return "ok"; }
     if (code == -1) { return "unsupported (backend not present)"; }

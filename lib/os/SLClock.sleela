@@ -52,22 +52,23 @@ class SLClock {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int monoStart;   // monotonic reference captured at reset (nanoseconds)
+  < monotonic reference captured at reset (nanoseconds) >
+  int monoStart;
   void configure() { monoStart = 0; }
 
-  // Milliseconds since the Unix epoch (UTC wall-clock).
+  < Milliseconds since the Unix epoch (UTC wall-clock). >
   int nowMillis() { return timeUtcMillis(); }
-  // Monotonic nanoseconds (never goes backward; for durations).
+  < Monotonic nanoseconds (never goes backward; for durations). >
   int monotonicNanos() { return timeMonotonicNanos(); }
-  // An RFC 1123 HTTP date string for "now".
+  < An RFC 1123 HTTP date string for "now". >
   String httpDate() { return timeHttpDate(); }
-  // The host's configured time-zone location.
+  < The host's configured time-zone location. >
   String location() { return timeLocation(); }
 
-  // Start a monotonic stopwatch.
+  < Start a monotonic stopwatch. >
   void reset() { monoStart = timeMonotonicNanos(); }
-  // Elapsed nanoseconds since reset().
+  < Elapsed nanoseconds since reset(). >
   int elapsedNanos() { return timeMonotonicNanos() - monoStart; }
-  // Elapsed whole milliseconds since reset().
+  < Elapsed whole milliseconds since reset(). >
   int elapsedMillis() { return (timeMonotonicNanos() - monoStart) / 1000000; }
 }

@@ -59,18 +59,20 @@ class SLARMCPU extends SLCPURuntime {
   static final int R_SP = 13; static final int R_LR = 14; static final int R_PC = 15;
   static final int R_CPSR = 16;
 
-  // Condition codes.
+  < Condition codes. >
   static final int COND_EQ = 0; static final int COND_NE = 1; static final int COND_AL = 14;
 
-  // Operations (bits 20..27 of the model word).
+  < Operations (bits 20..27 of the model word). >
   static final int MOV = 1; static final int ADD = 2; static final int SUB = 3;
   static final int CMP = 4; static final int LDR = 5; static final int STR = 6;
   static final int B   = 7; static final int BL  = 8; static final int SWI = 9;
 
-  int securityState;    // 0 non-secure, 1 secure (TrustZone hook)
+  < 0 non-secure, 1 secure (TrustZone hook) >
+  int securityState;
 
   void configure() {
-    setSpecClock(25);   // ARMv4 (ARM7-class) at ~25 MHz; overclockable
+    < ARMv4 (ARM7-class) at ~25 MHz; overclockable >
+    setSpecClock(25);
     bringUp("ARMv4 (A32)", 32, 32, 17, 262144);
     securityState = 0;
     writeReg(R_SP, 0x40000 - 4);
@@ -82,7 +84,7 @@ class SLARMCPU extends SLCPURuntime {
   int rnOf(int w)   { return (w / 4096) % 16; }
   int op2Of(int w)  { return w % 4096; }
 
-  // Evaluate the ARM condition field against current flags.
+  < Evaluate the ARM condition field against current flags. >
   boolean conditionPasses(int cond) {
     if (cond == COND_AL) { return true; }
     if (cond == COND_EQ) { return zero() == 1; }
@@ -92,7 +94,8 @@ class SLARMCPU extends SLCPURuntime {
 
   void decode(int word) {
     int cond = condOf(word);
-    if (!conditionPasses(cond)) { return; }   // conditional execution
+    < conditional execution >
+    if (!conditionPasses(cond)) { return; }
 
     int opcode = opOf(word);
     int rd = rdOf(word); int rn = rnOf(word); int op2 = op2Of(word);
@@ -100,7 +103,8 @@ class SLARMCPU extends SLCPURuntime {
     if (opcode == MOV) { writeReg(rd, op2); setNZ(op2); return; }
     if (opcode == ADD) { int r = aluOp(readReg(rn), op2, alu.OP_ADD); writeReg(rd, r); return; }
     if (opcode == SUB) { int r = aluOp(readReg(rn), op2, alu.OP_SUB); writeReg(rd, r); return; }
-    if (opcode == CMP) { aluOp(readReg(rn), op2, alu.OP_SUB); return; }   // flags only
+    < flags only >
+    if (opcode == CMP) { aluOp(readReg(rn), op2, alu.OP_SUB); return; }
     if (opcode == LDR) { writeReg(rd, readMem(readReg(rn) + op2)); return; }
     if (opcode == STR) { writeMem(readReg(rn) + op2, readReg(rd)); return; }
     if (opcode == B)   { setEntryPoint(programCounter() + signed12(op2)); return; }
@@ -108,7 +112,7 @@ class SLARMCPU extends SLCPURuntime {
     if (opcode == SWI) { exception(2); halted = 1; return; }
   }
 
-  // Exception / banked-register entry (SWI, IRQ, etc.).
+  < Exception / banked-register entry (SWI, IRQ, etc.). >
   void exception(int vector) { writeReg(R_CPSR, vector); }
   void interrupt(int vector) { exception(vector); }
 

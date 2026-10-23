@@ -65,11 +65,14 @@ class SLDocument {
   static final int MAX_STEPS = 65536;
 
   String title;
-  String version;        // the declared #sldocument version, e.g. "1.0"
+  < the declared #sldocument version, e.g. "1.0" >
+  String version;
   SLDocumentStep[] steps;
   int count;
-  int frame;             // VM frame the steps execute against
-  boolean continueOnUnsound; // false = stop at first unsound step
+  < VM frame the steps execute against >
+  int frame;
+  < false = stop at first unsound step >
+  boolean continueOnUnsound;
   SLDocumentResult result;
   int state;
   String lastError;
@@ -89,8 +92,8 @@ class SLDocument {
 
   void permitContinue() { continueOnUnsound = true; }
 
-  // Add a step in textual (top-down) order. The textual position becomes the
-  // step's order unless the annotation carries an explicit @order.
+  < Add a step in textual (top-down) order. The textual position becomes the >
+  < step's order unless the annotation carries an explicit @order. >
   boolean addStep(SLDocumentAnnotation annotation) {
     if (count >= MAX_STEPS) { lastError = "document full"; return false; }
     SLDocumentStep s = new SLDocumentStep();
@@ -110,7 +113,7 @@ class SLDocument {
   boolean active() { return state == 1 && valid(); }
   int size() { return count; }
 
-  // Arrange steps by effective order so the run is strictly top-down/ascending.
+  < Arrange steps by effective order so the run is strictly top-down/ascending. >
   void arrange() {
     for (int i = 0; i < count; i = i + 1) {
       for (int j = i + 1; j < count; j = j + 1) {
@@ -123,7 +126,7 @@ class SLDocument {
     }
   }
 
-  // Run the document top-down. Returns the result collection.
+  < Run the document top-down. Returns the result collection. >
   SLDocumentResult run() {
     if (!active()) { return result; }
     arrange();
@@ -131,13 +134,14 @@ class SLDocument {
       SLVeritable v = steps[i].invoke();
       result.record(steps[i].name(), v);
       if (!continueOnUnsound) {
-        if (v == null || !v.sound()) { return result; } // stop at first unsound
+        < stop at first unsound >
+        if (v == null || !v.sound()) { return result; }
       }
     }
     return result;
   }
 
-  // The whole document's single binary item: sound and final-bit together.
+  < The whole document's single binary item: sound and final-bit together. >
   SLVeritable outcome() {
     SLVeritable v = new SLVeritable();
     v.configure(result.sound(), result.sound(), title);

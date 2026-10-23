@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Documented policy defaults; values are not enforced until native code applies them. */
+< Documented policy defaults; values are not enforced until native code applies them. >
 class Http50Limits {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

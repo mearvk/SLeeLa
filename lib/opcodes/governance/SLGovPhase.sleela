@@ -59,9 +59,12 @@ class SLGovPhase {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int BEFORE = 1; // Registrar admits/rejects/pauses the program
-  static final int DURING = 2; // Listener confirms live fit, opcode by opcode
-  static final int AFTER  = 3; // EventObserver judges the finished operation(s)
+  < Registrar admits/rejects/pauses the program >
+  static final int BEFORE = 1;
+  < Listener confirms live fit, opcode by opcode >
+  static final int DURING = 2;
+  < EventObserver judges the finished operation(s) >
+  static final int AFTER  = 3;
 
   int phase;
   String label;

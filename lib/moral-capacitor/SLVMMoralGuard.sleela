@@ -59,8 +59,10 @@ class SLVMMoralGuard {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLMoralCapacitor cap;
   SLMoralLedger ledger;
-  SLMoralCertificate certificate;   // the VM product's Certificate of Morals
-  SLMoralCodeGuard codeGuard;       // admits the VM only when certified
+  < the VM product's Certificate of Morals >
+  SLMoralCertificate certificate;
+  < admits the VM only when certified >
+  SLMoralCodeGuard codeGuard;
   int configured;
 
   void configure() {
@@ -70,42 +72,42 @@ class SLVMMoralGuard {
     configured = 1;
   }
 
-  // Certify this VM: issue a Certificate of Morals over the guard's capacitor
-  // from the given authority, and arm a code guard against it. After this, the
-  // VM is a morally certified product and admit() can prove it before running.
+  < Certify this VM: issue a Certificate of Morals over the guard's capacitor >
+  < from the given authority, and arm a code guard against it. After this, the >
+  < VM is a morally certified product and admit() can prove it before running. >
   void certify(SLMoralCertificateAuthority authority, int redlinesArmed,
                String issuedAt, String expiresAt) {
     certificate = authority.issue("sleela-vm", cap, redlinesArmed, issuedAt, expiresAt);
     codeGuard = new SLMoralCodeGuard(); codeGuard.configure(authority);
   }
 
-  // Prove at the VM product boundary that the moral code is present and
-  // certified as of nowStamp. Returns true to admit the VM to run.
+  < Prove at the VM product boundary that the moral code is present and >
+  < certified as of nowStamp. Returns true to admit the VM to run. >
   boolean admit(String nowStamp) {
     if (codeGuard == null || certificate == null) { return false; }
     return codeGuard.permits("sleela-vm", cap, certificate, nowStamp);
   }
   SLMoralCertificate moralCertificate() { return certificate; }
 
-  // Routine VM op (reversible, in-process). Low bar.
+  < Routine VM op (reversible, in-process). Low bar. >
   SLMoralVerdict permitMemoryGrowth(String region, boolean reversible) {
     SLMoralPolicy p = new SLMoralPolicy(); p.vmDefault();
     return decide(op("vm", "allocate", region, "process", reversible, true), p);
   }
 
-  // Spawning a thread/process is higher-consequence than in-process work.
+  < Spawning a thread/process is higher-consequence than in-process work. >
   SLMoralVerdict permitSpawn(String what) {
     SLMoralPolicy p = new SLMoralPolicy(); p.vmBridge();
     return decide(op("vm", "spawn", what, "process", true, true), p);
   }
 
-  // Crossing the native/OS bridge reaches outside the VM: the higher bar.
+  < Crossing the native/OS bridge reaches outside the VM: the higher bar. >
   SLMoralVerdict permitBridgeCall(String target, boolean reversible, boolean consented) {
     SLMoralPolicy p = new SLMoralPolicy(); p.vmBridge();
     return decide(op("vm", "bridge", target, "host", reversible, consented), p);
   }
 
-  // Running a compiled program on the substrate.
+  < Running a compiled program on the substrate. >
   SLMoralVerdict permitRun(String program) {
     SLMoralPolicy p = new SLMoralPolicy(); p.vmDefault();
     return decide(op("vm", "run", program, "process", true, true), p);
@@ -114,7 +116,7 @@ class SLVMMoralGuard {
   SLMoralLedger auditLedger() { return ledger; }
   SLMoralCapacitor capacitor() { return cap; }
 
-  // ---- Internals ----------------------------------------------------------
+  < ---- Internals ---------------------------------------------------------- >
   SLMoralOperation op(String actor, String action, String target, String scope,
                       boolean reversible, boolean consented) {
     SLMoralOperation o = new SLMoralOperation();

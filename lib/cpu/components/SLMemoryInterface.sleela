@@ -69,8 +69,8 @@ class SLMemoryInterface {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Target-cadence technology ids mirror SLMemoryModule.TECH_* so the interface
-  // can present any tier's refresh discipline over any real module.
+  < Target-cadence technology ids mirror SLMemoryModule.TECH_* so the interface >
+  < can present any tier's refresh discipline over any real module. >
   static final int TECH_SRAM  = 0;
   static final int TECH_DRAM  = 1;
   static final int TECH_SDRAM = 2;
@@ -80,26 +80,30 @@ class SLMemoryInterface {
   static final int TECH_DDR4  = 6;
   static final int TECH_DDR5  = 7;
 
-  String partName;          // nameful: "DDR2-cadence interface", ...
-  SLMemoryModule actual;    // the REAL module in the system (e.g. DDR5-6400)
-  int targetTech;           // the cadence presented (mirrors the slot connector)
+  < nameful: "DDR2-cadence interface", ... >
+  String partName;
+  < the REAL module in the system (e.g. DDR5-6400) >
+  SLMemoryModule actual;
+  < the cadence presented (mirrors the slot connector) >
+  int targetTech;
 
-  // The cadence SLOT is filled by a Dynamite Connector, not by setters. The
-  // connector resolves a named generation (or a custom profile) into the
-  // refresh timings this interface reads back once the connector is loaded.
+  < The cadence SLOT is filled by a Dynamite Connector, not by setters. The >
+  < connector resolves a named generation (or a custom profile) into the >
+  < refresh timings this interface reads back once the connector is loaded. >
   SLCadenceConnector slot;
 
-  // Refresh model, in nanoseconds (the Sleela-layer cadence, not host timers):
-  //   tREFI = average refresh interval (how often a refresh is issued)
-  //   tRFC  = refresh command time (how long the array is busy per refresh)
-  // The duty the system sees available is (tREFI - tRFC) / tREFI. These are
-  // populated from the connected cadence connector, never set directly.
+  < Refresh model, in nanoseconds (the Sleela-layer cadence, not host timers): >
+  < tREFI = average refresh interval (how often a refresh is issued) >
+  < tRFC  = refresh command time (how long the array is busy per refresh) >
+  < The duty the system sees available is (tREFI - tRFC) / tREFI. These are >
+  < populated from the connected cadence connector, never set directly. >
   int tREFI_ns;
   int tRFC_ns;
-  int engaged;              // 1 = the cadence overlay is active
+  < 1 = the cadence overlay is active >
+  int engaged;
 
-  // Wrap a real module and present the given target technology's refresh
-  // cadence by building and connecting a Dynamite cadence connector for it.
+  < Wrap a real module and present the given target technology's refresh >
+  < cadence by building and connecting a Dynamite cadence connector for it. >
   void configure(String name, SLMemoryModule realModule, int cadenceTech) {
     partName = name; actual = realModule; engaged = 1;
     SLCadenceConnector c = new SLCadenceConnector();
@@ -108,15 +112,15 @@ class SLMemoryInterface {
     connect(c);
   }
 
-  // Plug a cadence connector into the slot: resolve-then-load it (if the caller
-  // has not already), then read its resolved timings. Fail-closed — a connector
-  // that will not load leaves the overlay disengaged with a refresh-free duty.
+  < Plug a cadence connector into the slot: resolve-then-load it (if the caller >
+  < has not already), then read its resolved timings. Fail-closed — a connector >
+  < that will not load leaves the overlay disengaged with a refresh-free duty. >
   boolean connect(SLCadenceConnector connector) {
     slot = connector;
     if (connector == null) { targetTech = -1; tREFI_ns = 0; tRFC_ns = 0; return false; }
     boolean ok = connector.load();
     if (ok == false) {
-      // not resolved/loadable: leave cadence inert (100% duty), overlay off.
+      < not resolved/loadable: leave cadence inert (100% duty), overlay off. >
       targetTech = connector.cadenceTech(); tREFI_ns = 0; tRFC_ns = 0;
       return false;
     }
@@ -126,14 +130,15 @@ class SLMemoryInterface {
     return true;
   }
 
-  // The connector currently filling the cadence slot (null if none).
+  < The connector currently filling the cadence slot (null if none). >
   SLCadenceConnector cadenceSlot() { return slot; }
 
   void engage()    { engaged = 1; }
-  void disengage() { engaged = 0; }   // pass the real module through untouched
+  < pass the real module through untouched >
+  void disengage() { engaged = 0; }
 
-  // Available duty as a percentage: the share of time NOT spent refreshing.
-  // 100% when the overlay is off or the cadence is refresh-free.
+  < Available duty as a percentage: the share of time NOT spent refreshing. >
+  < 100% when the overlay is off or the cadence is refresh-free. >
   int availableDutyPct() {
     if (engaged == 0 || tREFI_ns <= 0) { return 100; }
     int lost = (tRFC_ns * 100) / tREFI_ns;
@@ -142,22 +147,22 @@ class SLMemoryInterface {
     return avail;
   }
 
-  // Refresh overhead the cadence costs, as a percentage of time.
+  < Refresh overhead the cadence costs, as a percentage of time. >
   int refreshOverheadPct() { return 100 - availableDutyPct(); }
 
-  // The module's REAL peak bandwidth, unscaled (native data rate preserved).
+  < The module's REAL peak bandwidth, unscaled (native data rate preserved). >
   int nativeBandwidthMBs() { return (actual != null) ? actual.peakBandwidthMBs() : 0; }
 
-  // Effective bandwidth the system observes: real peak scaled by the available
-  // duty of the presented cadence. The data rate is unchanged; availability is
-  // what the refresh duty cycle shapes.
+  < Effective bandwidth the system observes: real peak scaled by the available >
+  < duty of the presented cadence. The data rate is unchanged; availability is >
+  < what the refresh duty cycle shapes. >
   int effectiveBandwidthMBs() {
     if (actual == null) { return 0; }
     if (engaged == 0) { return actual.peakBandwidthMBs(); }
     return (actual.peakBandwidthMBs() * availableDutyPct()) / 100;
   }
 
-  // Pass-through identity of the REAL module (never masked by the overlay).
+  < Pass-through identity of the REAL module (never masked by the overlay). >
   SLMemoryModule module()     { return actual; }
   int nativeTech()            { return (actual != null) ? actual.tech() : -1; }
   String nativeTechName()     { return (actual != null) ? actual.technologyName() : "none"; }

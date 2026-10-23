@@ -61,7 +61,8 @@ class SLDocumentCompiler {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String[] companionSources; // .sleela source units compiled alongside
+  < .sleela source units compiled alongside >
+  String[] companionSources;
   int companionCount;
   int state;
   String lastError;
@@ -73,7 +74,7 @@ class SLDocumentCompiler {
     lastError = "";
   }
 
-  // Register a companion .sleela source unit the document compiles with.
+  < Register a companion .sleela source unit the document compiles with. >
   boolean withSource(String sleelaSourcePath) {
     if (companionCount >= 1024) { lastError = "too many companion sources"; return false; }
     companionSources[companionCount] = sleelaSourcePath;
@@ -84,9 +85,9 @@ class SLDocumentCompiler {
   void enable() { state = 1; }
   boolean active() { return state == 1; }
 
-  // Validate that the document's resolved order is a clean 1..N with no gaps and
-  // no duplicate explicit @order values — a national/ordered program must have a
-  // settled sequence.
+  < Validate that the document's resolved order is a clean 1..N with no gaps and >
+  < no duplicate explicit @order values — a national/ordered program must have a >
+  < settled sequence. >
   boolean validateOrder(SLDocument doc) {
     if (doc == null || !doc.valid()) { lastError = "no document"; return false; }
     doc.arrange();
@@ -103,8 +104,8 @@ class SLDocumentCompiler {
     return true;
   }
 
-  // Compile the document together with its companion sources through the SLeeLa
-  // Compiler path. Returns a VM frame handle (>= 0) on success, or -1 on failure.
+  < Compile the document together with its companion sources through the SLeeLa >
+  < Compiler path. Returns a VM frame handle (>= 0) on success, or -1 on failure. >
   int compile(SLDocument doc) {
     if (!active()) { lastError = "compiler inactive"; return -1; }
     if (!validateOrder(doc)) { return -1; }
@@ -113,7 +114,7 @@ class SLDocumentCompiler {
     return frame;
   }
 
-  // Compile and run in one call, binding the compiled frame into the document.
+  < Compile and run in one call, binding the compiled frame into the document. >
   SLDocumentResult compileAndRun(SLDocument doc) {
     int frame = compile(doc);
     if (frame < 0) { return doc.results(); }

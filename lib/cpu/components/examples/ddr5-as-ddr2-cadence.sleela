@@ -57,20 +57,24 @@ class Ddr5AsDdr2CadenceExample {
     SLAMDThreadripper9980X cpu = new SLAMDThreadripper9980X();
     cpu.configure();
 
-    // The REAL RAM in the system: DDR5-6400, 4-channel (TRX50 HEDT).
-    SLMemoryModule ddr5 = parts.ddr5_6400_quadChannel(32768);   // 4 × 32 GiB
+    < The REAL RAM in the system: DDR5-6400, 4-channel (TRX50 HEDT). >
+    < 4 × 32 GiB >
+    SLMemoryModule ddr5 = parts.ddr5_6400_quadChannel(32768);
 
-    // The OOD interface layer: wrap that DDR5 so it refreshes like DDR2.
+    < The OOD interface layer: wrap that DDR5 so it refreshes like DDR2. >
     SLMemoryInterface ddr2cad = parts.ddr2CadenceInterface(ddr5);
 
     SLExecutorBuild build = new SLExecutorBuild();
     build.configure("tr-9980x-ddr5-as-ddr2");
     build.installCpu(cpu);
     build.installBoard(parts.trx50());
-    build.installMemory(ddr5);                  // actual module
-    build.installMemoryInterface(ddr2cad);      // AND the cadence overlay
+    < actual module >
+    build.installMemory(ddr5);
+    < AND the cadence overlay >
+    build.installMemoryInterface(ddr2cad);
     build.installBus(parts.pcieGen5x16());
-    build.assemble();                           // mounts the REAL DDR5 backing store
+    < mounts the REAL DDR5 backing store >
+    build.assemble();
 
     print("=== DDR5-6400 operated with DDR2 refresh cadence ===");
     print("native module: " + ddr5.name() + " (" + ddr5.technologyName() +
@@ -89,18 +93,20 @@ class Ddr5AsDdr2CadenceExample {
     print("build sees memory BW: " + build.memoryBandwidthMBs() +
           " MB/s, interface active=" + build.hasMemoryInterface());
 
-    // Disengage the overlay to pass the real DDR5 through untouched (A/B check).
+    < Disengage the overlay to pass the real DDR5 through untouched (A/B check). >
     ddr2cad.disengage();
     print("overlay off -> effective BW back to native: " +
           ddr2cad.effectiveBandwidthMBs() + " MB/s, duty " + ddr2cad.availableDutyPct() + " %");
 
-    // Explicit Dynamite Connector flow: build a cadence connector, drive its
-    // lifecycle, and plug it into the interface's slot via connect() — instead
-    // of relying on setters. Re-cadence the SAME interface to DDR4.
-    SLCadenceConnector ddr4 = parts.ddr4Cadence();   // initialized + resolved
+    < Explicit Dynamite Connector flow: build a cadence connector, drive its >
+    < lifecycle, and plug it into the interface's slot via connect() — instead >
+    < of relying on setters. Re-cadence the SAME interface to DDR4. >
+    < initialized + resolved >
+    SLCadenceConnector ddr4 = parts.ddr4Cadence();
     print("connector '" + ddr4.referenceId() + "' state after resolve: " + ddr4.state());
     ddr2cad.engage();
-    boolean connected = ddr2cad.connect(ddr4);       // load()s then binds timings
+    < load()s then binds timings >
+    boolean connected = ddr2cad.connect(ddr4);
     print("connected DDR4 cadence: " + connected + ", slot state=" +
           ddr2cad.cadenceSlot().state() + ", refreshes as " + ddr2cad.refreshesAsName());
     print("effective BW under DDR4 cadence: " + ddr2cad.effectiveBandwidthMBs() +

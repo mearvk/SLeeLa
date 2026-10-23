@@ -59,10 +59,14 @@ class SLSourceNameComparison {
   static final int MAX_ROWS = 65536;
 
   SLDocumentNaming naming;
-  String[] documentName; // the step's name in the document (may be "")
-  String[] sleelaName;   // the method name it would have in .sleela
-  boolean[] synthesized; // true when the .sleela name had to be synthesized
-  boolean[] collided;    // true when this name duplicates an earlier one
+  < the step's name in the document (may be "") >
+  String[] documentName;
+  < the method name it would have in .sleela >
+  String[] sleelaName;
+  < true when the .sleela name had to be synthesized >
+  boolean[] synthesized;
+  < true when this name duplicates an earlier one >
+  boolean[] collided;
   int rows;
   int state;
 
@@ -79,14 +83,14 @@ class SLSourceNameComparison {
   boolean active() { return state == 1; }
   int size() { return rows; }
 
-  // Compare one document step. `textualPosition` is its 1-based top-down index.
+  < Compare one document step. `textualPosition` is its 1-based top-down index. >
   void compareStep(SLDocumentAnnotation ann, int textualPosition) {
     if (!active() || rows >= MAX_ROWS) { return; }
     String docName = (ann == null || ann.method() == null) ? "" : ann.method();
     String slName = naming.nameFor(ann, textualPosition);
     boolean synth = naming.isSynthesized(ann);
 
-    // collision: does slName already appear in an earlier row?
+    < collision: does slName already appear in an earlier row? >
     boolean collide = false;
     for (int i = 0; i < rows; i = i + 1) {
       if (sleelaName[i] == slName) { collide = true; }
@@ -99,20 +103,20 @@ class SLSourceNameComparison {
     rows = rows + 1;
   }
 
-  // How many steps had to be given a synthesized .sleela name?
+  < How many steps had to be given a synthesized .sleela name? >
   int synthesizedCount() {
     int c = 0;
     for (int i = 0; i < rows; i = i + 1) { if (synthesized[i]) { c = c + 1; } }
     return c;
   }
 
-  // Did any two steps resolve to the same .sleela method name?
+  < Did any two steps resolve to the same .sleela method name? >
   boolean hasCollision() {
     for (int i = 0; i < rows; i = i + 1) { if (collided[i]) { return true; } }
     return false;
   }
 
-  // True when the comparison is clean enough to convert safely: no collisions.
+  < True when the comparison is clean enough to convert safely: no collisions. >
   boolean convertible() { return active() && rows > 0 && !hasCollision(); }
 
   String documentNameAt(int i) { if (i < 0 || i >= rows) { return ""; } return documentName[i]; }

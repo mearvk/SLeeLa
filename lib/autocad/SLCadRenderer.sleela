@@ -57,8 +57,10 @@ class SLCadRenderer {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String title;         // drawing title
-  String units;         // drawing units (e.g. "mm")
+  < drawing title >
+  String title;
+  < drawing units (e.g. "mm") >
+  String units;
 
   void begin(String t, String u) { title = t; units = u; }
   String drawingTitle() { return title; }

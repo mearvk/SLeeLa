@@ -1,41 +1,39 @@
-/*
- * lib/codecs/SLCodecAmrWb.sleela
- * SLeeLa Standard Library Definition.
- * Definition: AMR-WB codec class — the SLeeLa-facing handle to codec id 14.
- */
+<< lib/codecs/SLCodecAmrWb.sleela
+   SLeeLa Standard Library Definition.
+   Definition: AMR-WB codec class — the SLeeLa-facing handle to codec id 14. >>
 #sleela 2.1
-// Family: codecs. Individual codec class for AMR-WB:
-// Adaptive Multi-Rate Wideband, speech. Mirrors codecs/codecs/amr_wb/ and the registry entry in
-// sleela_codec_manager.h. SLeeLa never calls a codec directly; the
-// SLCodecLoader loads this plugin by id and dispatches decode/encode. This
-// class is the metadata + capability contract for that plugin.
-//
-// Handler state codes: 0 native, 1 backend, 2 recognized, 3 container, 4 event.
+< Family: codecs. Individual codec class for AMR-WB: >
+< Adaptive Multi-Rate Wideband, speech. Mirrors codecs/codecs/amr_wb/ and the registry entry in >
+< sleela_codec_manager.h. SLeeLa never calls a codec directly; the >
+< SLCodecLoader loads this plugin by id and dispatches decode/encode. This >
+< class is the metadata + capability contract for that plugin. >
+<  >
+< Handler state codes: 0 native, 1 backend, 2 recognized, 3 container, 4 event. >
 class SLCodecAmrWb {
-  // Registry identity (mirrors sleela_codec_handler).
+  < Registry identity (mirrors sleela_codec_handler). >
   int id() { return 14; }
   String name() { return "AMR-WB"; }
   String mime() { return "audio/amr-wb"; }
   String extensions() { return ".awb"; }
 
-  // Capability state: 1 == backend.
+  < Capability state: 1 == backend. >
   int state() { return 1; }
   String stateName() { return "backend"; }
 
-  // Direction support advertised by the plugin vtable.
+  < Direction support advertised by the plugin vtable. >
   boolean canDecode() { return true; }
   boolean canEncode() { return true; }
 
-  // Native codecs implement encode/decode in-package (no external backend);
-  // a backend codec reports its honest state and fails cleanly from
-  // decode/encode until an approved backend adapter is registered.
+  < Native codecs implement encode/decode in-package (no external backend); >
+  < a backend codec reports its honest state and fails cleanly from >
+  < decode/encode until an approved backend adapter is registered. >
   boolean isNative() { return false; }
   boolean needsBackend() { return true; }
 
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override each codec's record.
-  // Values are faithful to the codec's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, >
+  < or catalog can read and (where appropriate) override each codec's record. >
+  < Values are faithful to the codec's real origin where publicly known. >
   String metaVersion = "1.0.0";
   int metaId = 14;
   String metaAuthor = "3GPP / ETSI";
@@ -45,7 +43,8 @@ class SLCodecAmrWb {
   String metaCorporation = "3GPP / ETSI";
   String metaOrigin = "International";
   String metaBirthDate = "2001";
-  int metaScienceRating = 8;        // maturity/robustness on a 1..10 scale
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
   String metaNationalSchedule = "3GPP TS 26.171 / ITU-T G.722.2";
 
   String getMetaVersion() { return metaVersion; }

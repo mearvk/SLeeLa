@@ -59,33 +59,39 @@ class SLTimingManifest {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // --- magic / identity ---
-  static final int MAGIC = 5213;   // "SL-TIMING" marker word in a program header
+  < --- magic / identity --- >
+  < "SL-TIMING" marker word in a program header >
+  static final int MAGIC = 5213;
   int version;
 
-  // --- expertise tier ---
-  int tier;              // SLTimingClass.TIER_*
-  String tierLabel;      // "Novice" / "Basic" / "Advanced" / "Expert"
-  String brandMedium;    // the brand or medium this profile targets
+  < --- expertise tier --- >
+  < SLTimingClass.TIER_* >
+  int tier;
+  < "Novice" / "Basic" / "Advanced" / "Expert" >
+  String tierLabel;
+  < the brand or medium this profile targets >
+  String brandMedium;
 
-  // --- dialed clocks (variable speeds) ---
+  < --- dialed clocks (variable speeds) --- >
   int coreMHz;
   int busMHz;
   int ioMHz;
   int ramMTs;
 
-  // --- settled actual voltages (millivolts) ---
+  < --- settled actual voltages (millivolts) --- >
   int vcoreMv;
   int vsocMv;
   int vddqMv;
   int vioMv;
 
-  // --- RAM primaries (command-clock cycles) ---
+  < --- RAM primaries (command-clock cycles) --- >
   int cl; int trcd; int trp; int tras;
 
-  // --- honored summary ---
-  int honoredFlag;       // 1 = every budget honored when the manifest was sealed
-  int worstSlackPs;      // tightest setup slack across all paths (quality margin)
+  < --- honored summary --- >
+  < 1 = every budget honored when the manifest was sealed >
+  int honoredFlag;
+  < tightest setup slack across all paths (quality margin) >
+  int worstSlackPs;
 
   void configure() {
     version = 1;
@@ -112,14 +118,14 @@ class SLTimingManifest {
     honoredFlag = isHonored ? 1 : 0; worstSlackPs = worstSlack;
   }
 
-  // Is this a well-formed, honored manifest a consumer may trust?
+  < Is this a well-formed, honored manifest a consumer may trust? >
   boolean valid() { return version > 0 && honoredFlag == 1; }
   boolean honored() { return honoredFlag == 1; }
 
-  // Serialize the numeric fields into a caller-provided SLRAM header region,
-  // starting at `at`. Returns the next free word index. A compiled .sleela
-  // image stores this header ahead of the instruction stream so the loader and
-  // the VM read the STATED operating point instead of inferring one.
+  < Serialize the numeric fields into a caller-provided SLRAM header region, >
+  < starting at `at`. Returns the next free word index. A compiled .sleela >
+  < image stores this header ahead of the instruction stream so the loader and >
+  < the VM read the STATED operating point instead of inferring one. >
   int writeHeader(SLRAM mem, int at) {
     int i = at;
     mem.writeWord(i, MAGIC);       i = i + 1;
@@ -142,13 +148,13 @@ class SLTimingManifest {
     return i;
   }
 
-  // The fixed number of header words writeHeader emits (so a loader can skip
-  // the header to reach the first instruction).
+  < The fixed number of header words writeHeader emits (so a loader can skip >
+  < the header to reach the first instruction). >
   int headerWords() { return 17; }
 
-  // Read the manifest back from an SLRAM header at `at`. Returns true only when
-  // the magic matches — so a consumer can tell "this image carries a stated
-  // profile" from "this image expects me to assume one".
+  < Read the manifest back from an SLRAM header at `at`. Returns true only when >
+  < the magic matches — so a consumer can tell "this image carries a stated >
+  < profile" from "this image expects me to assume one". >
   boolean readHeader(SLRAM mem, int at) {
     int i = at;
     if (mem.readWord(i) != MAGIC) { return false; }

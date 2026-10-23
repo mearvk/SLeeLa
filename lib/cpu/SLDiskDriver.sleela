@@ -55,7 +55,8 @@ class SLDiskDriver extends SLDeviceDriver {
   int blocksWritten;
 
   void init(SLIOBus bus, int port, SLHardDrive hd, SLDMAController dmaEngine) {
-    configure("disk", port, 2, bus); // IRQ_DISK = 2
+    < IRQ_DISK = 2 >
+    configure("disk", port, 2, bus);
     drive = hd; dma = dmaEngine;
     blocksRead = 0; blocksWritten = 0;
   }
@@ -72,7 +73,7 @@ class SLDiskDriver extends SLDeviceDriver {
     return drive.writeBlock(block, payloadHandle);
   }
 
-  // Bulk read via DMA directly into main memory, then the device raises its IRQ.
+  < Bulk read via DMA directly into main memory, then the device raises its IRQ. >
   int dmaReadInto(int diskBlock, int memWord, int words) {
     if (!ready() || dma == null) { return -1; }
     dma.program(diskBlock, memWord, words);
