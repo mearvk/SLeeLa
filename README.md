@@ -255,3 +255,63 @@ drawing in memory, prints a report plus the DXF, and exits cleanly.
 ## UTF-4088 input-map ordering
 
 The specialized UTF-4088 catalogue defines its spatial input-map traversal and abstract pressure iterations in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). The National Lien subject-index policy is in [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). Map coordinates, pressure levels (1–50), permanent catalogue IDs, and alphabetic ranks are independent fields; none should be silently substituted for another. Pressure is an algorithmic iteration level, not a physical quantity.
+
+
+## Recent and expanded package index
+
+This appended index highlights recently expanded packages, domain libraries, and
+source collections. Entries are grouped alphabetically by package name or topic.
+Descriptions identify the repository location; implementation and validation
+status should be checked in each package's own documentation and tests.
+
+### A–C
+
+- **Alphabet and UTF-4088** — `alphabet/sleela/`, `lib/alphabet/native/`, and
+  `utf-4088/`: alphabet catalogues, native character-set support, input-map
+  ordering, and UTF-4088 integration documentation.
+- **AutoCAD Creator** — `autocad/creator/` and `lib/autocad/`: interactive
+  2D drawing workflows and reusable CAD document/editing components.
+- **Ballum** — SleelaUI event and widget integration, including VM bridge support
+  under `impl/`; see the corresponding implementation and API documentation.
+- **CDMA** — `cdma/` and `lib/cdma/`: CDMA-related technical material and
+  SLeeLa source-library work.
+- **Character** — `lib/character/`: character profiles and reusable character
+  statistics, including biographical profile examples.
+- **Coorenagraph** — `lib/coorenagraph/`: ethical reasoning, moral vocabulary,
+  deliberation, and related concepts; see its package README and source files.
+
+### H–I
+
+- **HTTP 1.0–8.0** — `lib/http-1.0/` through the available versioned HTTP
+  package directories: version-specific protocol specifications and
+  implementations. Consult each version's documentation for its precise scope
+  and verification status.
+- **International Criminal Court** — `lib/international-criminal-court/` and
+  `INTERNATIONAL.CRIMINAL.COURTS.md`: related domain-specific source and
+  documentation.
+
+### O–S
+
+- **OFDMA** — `ofdma/`: orthogonal frequency-division multiple-access
+  technical material and C/C++ development resources.
+- **Synchro** — native runtime/compiler integration and packet-dispatch and
+  measurement-related functionality; see the relevant `impl/` source and
+  compiler implementation.
+- **SleelaUI / terminal UI** — `lib/user-interface/` and the
+  `sleela-terminal` project: SLeeLa UI integration and terminal-oriented
+  interaction components.
+
+### U–W
+
+- **United Nations** — `united-nations/`: domain-specific repository materials.
+- **Wi-Fi 4, Wi-Fi 5, and Wi-Fi 6** — `wi-fi-4/`, `wi-fi-5/`,
+  `wi-fi-6/`, and related `lib/wifi/` source directories: generation-specific
+  wireless networking material and configuration resources.
+
+### Package-index maintenance
+
+When a package is added or materially expanded, add its entry here in the
+appropriate alphabetical group, link to its canonical directory and README,
+and describe only capabilities supported by the checked-in sources. Keep this
+index additive: do not remove or rewrite the existing README sections as part
+of package-index updates.
