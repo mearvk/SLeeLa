@@ -3,6 +3,10 @@
 # its structure. Build:  make -C impl/xlt   ->  impl/xlt/build/xltc
 CXX      ?= g++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra
+# Automatic header-dependency tracking (parity with impl/Makefile): -MMD writes
+# a .d per object, -MP guards against removed headers; the .d files are
+# -included below so editing any xlt_*.h recompiles exactly the dependents.
+DEPFLAGS := -MMD -MP
 BUILD    := build
 BIN      := $(BUILD)/xltc
 
@@ -17,7 +21,9 @@ $(BIN): $(OBJ)
 
 $(BUILD)/%.o: %.cpp
 	@mkdir -p $(BUILD)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(DEPFLAGS) -c $< -o $@
+
+-include $(wildcard $(BUILD)/*.d)
 
 # Smoke-check the bundled example: a congruent model builds, exit 0.
 check: $(BIN)

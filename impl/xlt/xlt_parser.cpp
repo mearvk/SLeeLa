@@ -7,6 +7,18 @@ namespace xlt {
 
 namespace {
 
+// Decode an integer-literal token text that may carry a radix prefix
+// (0x hex, 0b binary, 0o octal) or be plain decimal -- parity with the SLeeLa
+// frontend (SLEELA.syntax 1.4). Underscores are already stripped by the lexer.
+long long decodeInt(const std::string& t) {
+    if (t.size() > 2 && t[0] == '0' && (t[1] == 'b' || t[1] == 'B'))
+        return std::stoll(t.substr(2), nullptr, 2);
+    if (t.size() > 2 && t[0] == '0' && (t[1] == 'o' || t[1] == 'O'))
+        return std::stoll(t.substr(2), nullptr, 8);
+    // base 0 auto-detects 0x hex and a leading-0 octal; plain decimal otherwise.
+    return std::stoll(t, nullptr, 0);
+}
+
 class Parser {
 public:
     Parser(const std::vector<Token>& toks, const std::string& file, DiagnosticBag& diags)
@@ -122,9 +134,9 @@ private:
         if (kw == "grant") {
             if (m.grantWords != 0 || m.grantBudget != 0) err("XLT-E-0032", "duplicate 'grant' breaks document orthogonality", "XLT-ORTHO-01");
             m.grantLine = kwLine;
-            if (is(Tok::Integer)) { m.grantWords = std::stoll(cur().text); advance(); }
+            if (is(Tok::Integer)) { m.grantWords = decodeInt(cur().text); advance(); }
             else err("XLT-E-0033", "'grant' expects a memory-words integer", "XLT-PROG-02");
-            if (is(Tok::Integer)) { m.grantBudget = std::stoll(cur().text); advance(); }
+            if (is(Tok::Integer)) { m.grantBudget = decodeInt(cur().text); advance(); }
             else err("XLT-E-0034", "'grant' expects a cycle-budget integer", "XLT-PROG-02");
             expectSemicolon();
             return;
@@ -157,7 +169,7 @@ private:
         }
         // memory takes an optional integer capacity.
         if (kw == "memory" && is(Tok::Integer)) {
-            m.memoryCapMiB = std::stoi(cur().text); advance();
+            m.memoryCapMiB = (int)decodeInt(cur().text); advance();
         }
         expectSemicolon();
     }

@@ -26,6 +26,11 @@
 //     grant    65536 1000000;      // optional: memory words + cycle budget
 //     target   sleela;
 //   }
+//
+// Integer values (memory capacity, grant words/budget) accept radix-prefixed
+// literals in parity with the SLeeLa frontend (SLEELA.syntax 1.4): 0x/0X hex,
+// 0b/0B binary, 0o/0O octal, with optional '_' digit separators -- e.g.
+// `memory "ddr5_6400" 0x20000;` or `grant 0x10000 1_000_000;`.
 // ===========================================================================
 #ifndef SLEELA_XLT_MODEL_H
 #define SLEELA_XLT_MODEL_H

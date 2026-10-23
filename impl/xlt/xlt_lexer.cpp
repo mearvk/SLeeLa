@@ -72,10 +72,42 @@ std::vector<Token> lex(const std::string& src, const std::string& file,
         }
         // number / version
         if (std::isdigit((unsigned char)c)) {
+            // Radix-prefixed integer literals, matching the SLeeLa frontend
+            // (SLEELA.syntax 1.4): 0x/0X hex, 0b/0B binary, 0o/0O octal, with
+            // optional '_' digit separators. The prefix is kept in the token
+            // text; the parser decodes the value. A non-prefixed run stays a
+            // decimal integer, or a dotted Version (e.g. the #xlt 1.0 pragma).
+            auto isHex = [](char d) {
+                return (d >= '0' && d <= '9') || (d >= 'a' && d <= 'f') || (d >= 'A' && d <= 'F');
+            };
+            if (c == '0' && i + 1 < src.size() &&
+                (src[i + 1] == 'x' || src[i + 1] == 'X' ||
+                 src[i + 1] == 'b' || src[i + 1] == 'B' ||
+                 src[i + 1] == 'o' || src[i + 1] == 'O')) {
+                char radix = src[i + 1];
+                std::string num; num += src[i]; num += radix; advance(2);
+                bool any = false;
+                while (i < src.size()) {
+                    char d = src[i];
+                    if (d == '_') { advance(); continue; }
+                    bool ok = (radix == 'x' || radix == 'X') ? isHex(d)
+                            : (radix == 'b' || radix == 'B') ? (d == '0' || d == '1')
+                            : (d >= '0' && d <= '7');  // octal
+                    if (!ok) break;
+                    num += d; any = true; advance();
+                }
+                if (!any) {
+                    diags.error("XLT-E-0003", file, startLine,
+                                std::string("radix literal '") + num + "' has no digits", "XLT-LEX-03");
+                }
+                toks.push_back(Token{ Tok::Integer, num, startLine, startCol });
+                continue;
+            }
             std::string num; bool dotted = false;
-            while (i < src.size() && (std::isdigit((unsigned char)src[i]) || src[i] == '.')) {
+            while (i < src.size() && (std::isdigit((unsigned char)src[i]) || src[i] == '.' || src[i] == '_')) {
                 if (src[i] == '.') dotted = true;
-                num += src[i]; advance();
+                if (src[i] != '_') num += src[i];
+                advance();
             }
             toks.push_back(Token{ dotted ? Tok::Version : Tok::Integer, num, startLine, startCol });
             continue;
