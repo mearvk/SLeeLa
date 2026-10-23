@@ -11,8 +11,7 @@
 < beginSync() / endSync() cross the VM/OS bridge; the surface marks the >
 < boundary and reports it honestly rather than pretending to lock in-language. >
 <  >
-< only; #sleela 2.1. > >
-< Comments are
+< Comments use the angle-bracket style; #sleela 2.1. >
 #sleela 2.1
 < Family: text. Native VM/OS work crosses an explicit bridge. >
 
@@ -36,6 +35,7 @@ class SLStringBuffer {
   < ---- lifecycle ----------------------------------------------------- >
   void clear()      { value = ""; edits = edits + 1; }
   boolean isEmpty() { return value == ""; }
+  boolean notEmpty(){ return value != ""; }
   int editCount()   { return edits; }
 
   < ---- in-language appends (guarded; fluent) ------------------------ >
@@ -51,6 +51,12 @@ class SLStringBuffer {
     while (i < n) { value = value + s; i = i + 1; }
     edits = edits + 1;
     endSync();
+    return this;
+  }
+
+  < appendIf(cond, s): guarded conditional append (real, fluent). >
+  SLStringBuffer appendIf(boolean cond, String s) {
+    if (cond) { beginSync(); value = value + s; edits = edits + 1; endSync(); }
     return this;
   }
 

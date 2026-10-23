@@ -9,7 +9,7 @@
 < The core contract therefore implements the operations expressible in the >
 < language and names the char-level ones as crossing the explicit VM/OS bridge >
 < (CORE.BASE.md: "Runtime-sensitive operations should cross an explicit VM/OS >
-< bridge."). Comments are `//` only; #sleela 2.1. >
+< bridge."). Comments use the angle-bracket style; #sleela 2.1. >
 #sleela 2.1
 < SLeeLa core/base language contract. >
 
@@ -47,6 +47,19 @@ class SLString {
     while (i < n) { out = out + value; i = i + 1; }
     return out;
   }
+
+  < notEmpty / isBlankLike: base emptiness helpers (real, == only). >
+  boolean notEmpty()    { return value != null && value != ""; }
+  boolean isBlankLike() { return value == null || value == ""; }
+
+  < defaultIfEmpty(fallback): fall back to a default when unset/empty (real). >
+  String defaultIfEmpty(String fallback) {
+    if (value == null || value == "") { return fallback; }
+    return value;
+  }
+
+  < append(tail): fluent in-language append (real). >
+  SLString append(String tail) { value = value + tail; count = count + 1; return this; }
 
   < ---- bridged char-level operations --------------------------------- >
   < Char-level work needs the raw code units SLeeLa never exposes; these cross >
