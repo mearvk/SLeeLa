@@ -1,28 +1,67 @@
-/*
- * lib/gui/version-dual/SLGuiAdminAuthority.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiAdminAuthority — the 4.0 admin authority surface. It
- *   gates three careful, auditable things:
- *     1. admin SIGN-IN to START a process (a session an authorised admin opens
- *        before a guarded process may run);
- *     2. admin SIGN-OFF on a component OPERATION (an authorised approval that a
- *        specific operation may proceed); and
- *     3. an admin SIGNATURE FOR LAW (a legal attestation binding an admin to a
- *        document/record with a signature token).
- *
- *   This class models the authority STATE and a bounded audit trail of the
- *   approvals/signatures granted; it is fail-closed (no identity => no authority)
- *   and does not implement a credential check or a cryptographic signature — it
- *   records WHO authorised WHAT, and leaves verification to the host/security
- *   layer. The point is that a guarded operation cannot proceed, a guarded
- *   process cannot start, and a legal record cannot be signed, without an
- *   explicit, recorded admin act.
- *
- * Family: gui. Consulted by components before a guarded action; the host
- * supplies authenticated admin identities.
- */
+<< lib/gui/version-dual/SLGuiAdminAuthority.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiAdminAuthority — the 4.0 admin authority surface. It
+     gates three careful, auditable things:
+       1. admin SIGN-IN to START a process (a session an authorised admin opens
+          before a guarded process may run);
+       2. admin SIGN-OFF on a component OPERATION (an authorised approval that a
+          specific operation may proceed); and
+       3. an admin SIGNATURE FOR LAW (a legal attestation binding an admin to a
+          document/record with a signature token).
+   
+     This class models the authority STATE and a bounded audit trail of the
+     approvals/signatures granted; it is fail-closed (no identity => no authority)
+     and does not implement a credential check or a cryptographic signature — it
+     records WHO authorised WHAT, and leaves verification to the host/security
+     layer. The point is that a guarded operation cannot proceed, a guarded
+     process cannot start, and a legal record cannot be signed, without an
+     explicit, recorded admin act.
+   
+   Family: gui. Consulted by components before a guarded action; the host
+   supplies authenticated admin identities. >>
 #sleela 2.1
 class SLGuiAdminAuthority {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_AUDIT = 128;
 
   // Audit entry kinds.

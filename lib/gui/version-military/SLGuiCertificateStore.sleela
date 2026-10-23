@@ -1,22 +1,61 @@
-/*
- * lib/gui/version-military/SLGuiCertificateStore.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiCertificateStore — a military-line COMPONENT that
- *   holds and presents public-key certificates (an X.509-style store). Each
- *   entry carries a subject, an issuer, a key algorithm, a fingerprint, a trust
- *   state (trusted / untrusted / revoked / expired), and whether it is a CA. The
- *   store lets the program import a certificate, mark trust, select one for use,
- *   and query validity. SLeeLa owns the store CONTENTS and trust STATE; the
- *   host/crypto layer performs chain building and signature verification and
- *   reports the result back as a trust state. It is fail-closed: a certificate
- *   is untrusted until explicitly trusted, and a revoked/expired certificate is
- *   never reported valid.
- *
- * Family: gui. A "certstore" node's backing model; partners SLGuiCryptoSelector
- *   and SLGuiAdminAuthority (an admin signature for Law may reference a cert).
- */
+<< lib/gui/version-military/SLGuiCertificateStore.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiCertificateStore — a military-line COMPONENT that
+     holds and presents public-key certificates (an X.509-style store). Each
+     entry carries a subject, an issuer, a key algorithm, a fingerprint, a trust
+     state (trusted / untrusted / revoked / expired), and whether it is a CA. The
+     store lets the program import a certificate, mark trust, select one for use,
+     and query validity. SLeeLa owns the store CONTENTS and trust STATE; the
+     host/crypto layer performs chain building and signature verification and
+     reports the result back as a trust state. It is fail-closed: a certificate
+     is untrusted until explicitly trusted, and a revoked/expired certificate is
+     never reported valid.
+   
+   Family: gui. A "certstore" node's backing model; partners SLGuiCryptoSelector
+     and SLGuiAdminAuthority (an admin signature for Law may reference a cert). >>
 #sleela 2.1
 class SLGuiCertificateStore {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_CERTS = 64;
 
   // Trust state of an entry.

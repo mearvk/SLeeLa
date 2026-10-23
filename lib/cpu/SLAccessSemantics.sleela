@@ -1,38 +1,77 @@
-/*
- * lib/cpu/SLAccessSemantics.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLAccessSemantics — the authoritative, enumerated meaning
- *   the SLeeLa compiler and VM give to the access modifiers public / private /
- *   protected when a program opts into the extensible-network interpretation
- *   (via SLExtensibleNetwork). These modifiers normally describe member
- *   visibility; under this interpretation they additionally declare a SYSTEM
- *   ROLE the VM can read back from the compiled image (SLAccessManifest) and use
- *   to stand up a clean system backdrop:
- *
- *     public    -> a NETWORK-EXPOSED HOP. The function is exposed like a REST
- *                  API endpoint and is meant to communicate as part of a System
- *                  or as a Hop Controller for a System. A network of files can
- *                  assume a public function is reachable, and public members
- *                  participate in an ORDERED hop chain (doc 1 -> doc 2 -> doc 3
- *                  communicate in that order).
- *     private   -> LOCAL / SYSTEM-INTERNAL. Relates to the local System itself
- *                  or to admin, safety, security, or data-backup concerns. Not
- *                  exposed to the network.
- *     protected -> INTEGRITY-GUARDED. The connection carries inherent safety
- *                  concerns and must pass integrity controls before proceeding
- *                  (input doubling/verification, virus scanning, system-integrity
- *                  checks, heuristics, admin involvement, database-integrity).
- *
- *   This class is the single source of truth for those role ids and for the
- *   named concern/control catalogs each role implies. SLAccessManifest records
- *   them per member; SLExtensibleNetwork realizes them; the VM infers the
- *   backdrop from them.
- *
- * Family: cpu. Pure declaration/catalog; read by SLAccessManifest,
- *   SLExtensibleNetwork, and the VM backdrop.
- */
+<< lib/cpu/SLAccessSemantics.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLAccessSemantics — the authoritative, enumerated meaning
+     the SLeeLa compiler and VM give to the access modifiers public / private /
+     protected when a program opts into the extensible-network interpretation
+     (via SLExtensibleNetwork). These modifiers normally describe member
+     visibility; under this interpretation they additionally declare a SYSTEM
+     ROLE the VM can read back from the compiled image (SLAccessManifest) and use
+     to stand up a clean system backdrop:
+   
+       public    -> a NETWORK-EXPOSED HOP. The function is exposed like a REST
+                    API endpoint and is meant to communicate as part of a System
+                    or as a Hop Controller for a System. A network of files can
+                    assume a public function is reachable, and public members
+                    participate in an ORDERED hop chain (doc 1 -> doc 2 -> doc 3
+                    communicate in that order).
+       private   -> LOCAL / SYSTEM-INTERNAL. Relates to the local System itself
+                    or to admin, safety, security, or data-backup concerns. Not
+                    exposed to the network.
+       protected -> INTEGRITY-GUARDED. The connection carries inherent safety
+                    concerns and must pass integrity controls before proceeding
+                    (input doubling/verification, virus scanning, system-integrity
+                    checks, heuristics, admin involvement, database-integrity).
+   
+     This class is the single source of truth for those role ids and for the
+     named concern/control catalogs each role implies. SLAccessManifest records
+     them per member; SLExtensibleNetwork realizes them; the VM infers the
+     backdrop from them.
+   
+   Family: cpu. Pure declaration/catalog; read by SLAccessManifest,
+     SLExtensibleNetwork, and the VM backdrop. >>
 #sleela 2.1
 class SLAccessSemantics {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   // --- the three roles (one per access modifier) -------------------------
   static final int ROLE_NONE      = 0;

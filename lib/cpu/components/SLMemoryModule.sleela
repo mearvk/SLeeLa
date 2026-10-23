@@ -1,21 +1,60 @@
-/*
- * lib/cpu/components/SLMemoryModule.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLMemoryModule — a selectable main-memory part a user
- *   plugs into a Sleela executor build. It carries the real-world specification
- *   of a RAM module: technology (DRAM/SDRAM/DDRn/SRAM), capacity, data-bus
- *   width, clock, CAS latency, and the resulting first-word latency and peak
- *   transfer bandwidth. The timings are what make one RAM choice faster than
- *   another; SLComponentCatalog offers presets (DDR3-1600, DDR5-6000, ...).
- *
- * The module backs an SLRAM at the chosen capacity; the spec fields drive the
- * performance model (effective bandwidth, access latency) so overclocked CPUs
- * and faster RAM visibly change an executor's characterization.
- *
- * Family: cpu.components. Composes SLRAM; selected via SLComponentCatalog.
- */
+<< lib/cpu/components/SLMemoryModule.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLMemoryModule — a selectable main-memory part a user
+     plugs into a Sleela executor build. It carries the real-world specification
+     of a RAM module: technology (DRAM/SDRAM/DDRn/SRAM), capacity, data-bus
+     width, clock, CAS latency, and the resulting first-word latency and peak
+     transfer bandwidth. The timings are what make one RAM choice faster than
+     another; SLComponentCatalog offers presets (DDR3-1600, DDR5-6000, ...).
+   
+   The module backs an SLRAM at the chosen capacity; the spec fields drive the
+   performance model (effective bandwidth, access latency) so overclocked CPUs
+   and faster RAM visibly change an executor's characterization.
+   
+   Family: cpu.components. Composes SLRAM; selected via SLComponentCatalog. >>
 #sleela 2.1
 class SLMemoryModule {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-09";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Memory technology ids.
   static final int TECH_SRAM   = 0;
   static final int TECH_DRAM   = 1;

@@ -1,25 +1,64 @@
-/*
- * lib/cpu/SLGuestKernelBuilder.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuestKernelBuilder — builds a bootable guest kernel
- *   image by running kernel source through the real toolchain: a language
- *   frontend (SLCompilerDriver) lowers it to the register ISA, SLOpcodeMap
- *   reduces that to canonical SLeeLa opcodes, and the result is packaged as an
- *   SLGuestKernelImage. This is step 4 of the OS-VM roadmap: the guest boots a
- *   GENUINELY COMPILED kernel instead of a hand-written opcode stub.
- *
- * Because the kernel is compiled through the same frontend/IR/opcode pipeline
- * as user programs, the guest kernel can in principle be written in any of the
- * supported languages (C/C++/Java/Sleela) — a direct consequence of the 1:1
- * Turing-effect mapping (SLTuringBridge).
- *
- * SCOPE NOTE: this builds a small CUSTOM kernel, not upstream Linux.
- *
- * Family: cpu. Composes SLCompilerDriver, SLOpcodeMap, SLSleelaVM,
- *   SLInstructionSet, SLSystemCall, SLGuestKernelImage.
- */
+<< lib/cpu/SLGuestKernelBuilder.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuestKernelBuilder — builds a bootable guest kernel
+     image by running kernel source through the real toolchain: a language
+     frontend (SLCompilerDriver) lowers it to the register ISA, SLOpcodeMap
+     reduces that to canonical SLeeLa opcodes, and the result is packaged as an
+     SLGuestKernelImage. This is step 4 of the OS-VM roadmap: the guest boots a
+     GENUINELY COMPILED kernel instead of a hand-written opcode stub.
+   
+   Because the kernel is compiled through the same frontend/IR/opcode pipeline
+   as user programs, the guest kernel can in principle be written in any of the
+   supported languages (C/C++/Java/Sleela) — a direct consequence of the 1:1
+   Turing-effect mapping (SLTuringBridge).
+   
+   SCOPE NOTE: this builds a small CUSTOM kernel, not upstream Linux.
+   
+   Family: cpu. Composes SLCompilerDriver, SLOpcodeMap, SLSleelaVM,
+     SLInstructionSet, SLSystemCall, SLGuestKernelImage. >>
 #sleela 2.1
 class SLGuestKernelBuilder {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLInstructionSet isa;
   SLInstructionDecoder decoder;
   SLSystemCall sys;

@@ -1,22 +1,61 @@
-/*
- * lib/gui/version-mual/SLGuiApp.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiApp — the top-level support structure that ties the
- *   whole /lib/gui dynamic stack together into one object: it opens a SleelaUI
- *   application and window (via /lib/user-interface), owns the SLeeLa DOM
- *   (SLGuiDom), the reconciler (SLGuiMount) that projects the DOM onto widgets,
- *   the host adapter (SLGuiHostAdapter) that raises widget activations back as
- *   events, and an optional script engine (SLGuiScript). Its run loop pumps the
- *   toolkit event loop, polls widget activations into the event bus, re-mounts
- *   any newly-created nodes, and reconciles dirty nodes each turn. This is the
- *   "basic support structure" a program (or the IDE) builds on: construct the
- *   DOM declaratively or by script, bind callbacks, and call run().
- *
- * Family: gui. SLeeLa owns the DOM, dispatch, and script execution; SleelaUI
- * owns presentation; this object is the wiring between them.
- */
+<< lib/gui/version-mual/SLGuiApp.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiApp — the top-level support structure that ties the
+     whole /lib/gui dynamic stack together into one object: it opens a SleelaUI
+     application and window (via /lib/user-interface), owns the SLeeLa DOM
+     (SLGuiDom), the reconciler (SLGuiMount) that projects the DOM onto widgets,
+     the host adapter (SLGuiHostAdapter) that raises widget activations back as
+     events, and an optional script engine (SLGuiScript). Its run loop pumps the
+     toolkit event loop, polls widget activations into the event bus, re-mounts
+     any newly-created nodes, and reconciles dirty nodes each turn. This is the
+     "basic support structure" a program (or the IDE) builds on: construct the
+     DOM declaratively or by script, bind callbacks, and call run().
+   
+   Family: gui. SLeeLa owns the DOM, dispatch, and script execution; SleelaUI
+   owns presentation; this object is the wiring between them. >>
 #sleela 2.1
 class SLGuiApp {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-20";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLUserInterface ui;
   SLWindow window;
   SLGuiDom dom;

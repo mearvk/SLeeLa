@@ -1,31 +1,70 @@
-/*
- * lib/codecs/SLCodecProcessor.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLCodecProcessor used within the codecs library family.
- */
+<< lib/codecs/SLCodecProcessor.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines the SLeeLa standard-library type SLCodecProcessor used within the codecs library family. >>
 #sleela 2.1
-// Family: codecs. The decode/encode dispatch layer — the SLeeLa mirror of the
-// native manager's processor path (sleela_codec_manager_decode /
-// sleela_codec_manager_encode) and each plugin's decode/encode entry points
-// (codecs/include/sleela_codec_plugin.h). It dispatches a decode/encode
-// request against the current lifecycle/capability facts and returns an honest
-// result code.
-//
-// This is a contract, not a fake processor: the real sample conversion happens
-// in the native plugin (and, for backend codecs, in a registered backend
-// adapter). The Processor is pure — the caller passes in whether the codec is
-// loaded, whether it is native, and whether a backend is registered — so it
-// composes with SLCodecController/SLCodecLoader without storing a class-typed
-// field (method calls resolve on parameters, not fields, on this surface).
-// It never reports a false success:
-//
-//   not loaded                 -> -5 (state)
-//   native codec, loaded       ->  0 (ok)      PCM/WAV, AIFF, G.711 mu/A-law
-//   backend codec, no backend  -> -1 (unsupported)
-//
-// Result codes (sleela_codec_result): 0 ok, -1 unsupported, -2 invalid,
-// -3 format, -4 io, -5 state(not loaded).
+< Family: codecs. The decode/encode dispatch layer — the SLeeLa mirror of the >
+< native manager's processor path (sleela_codec_manager_decode / >
+< sleela_codec_manager_encode) and each plugin's decode/encode entry points >
+< (codecs/include/sleela_codec_plugin.h). It dispatches a decode/encode >
+< request against the current lifecycle/capability facts and returns an honest >
+< result code. >
+<  >
+< This is a contract, not a fake processor: the real sample conversion happens >
+< in the native plugin (and, for backend codecs, in a registered backend >
+< adapter). The Processor is pure — the caller passes in whether the codec is >
+< loaded, whether it is native, and whether a backend is registered — so it >
+< composes with SLCodecController/SLCodecLoader without storing a class-typed >
+< field (method calls resolve on parameters, not fields, on this surface). >
+< It never reports a false success: >
+<  >
+< not loaded                 -> -5 (state) >
+< native codec, loaded       ->  0 (ok)      PCM/WAV, AIFF, G.711 mu/A-law >
+< backend codec, no backend  -> -1 (unsupported) >
+<  >
+< Result codes (sleela_codec_result): 0 ok, -1 unsupported, -2 invalid, >
+< -3 format, -4 io, -5 state(not loaded). >
 class SLCodecProcessor {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   // canProcess: can this codec encode/decode right now, given the facts?
   // True for a loaded native codec, or a loaded backend codec with a backend

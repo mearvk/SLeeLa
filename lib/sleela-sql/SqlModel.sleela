@@ -1,33 +1,74 @@
 #sleela 2.1
-// SqlModel.sleela -- the MODEL for the CSV-backed SQL engine, in SLeeLa.
-//
-// Part of mearvk/SLeeLa. Counterpart to the native C engine in lib/sleela-sql/native. The C
-// tool does the byte/file work (parsing statements, reading and writing the CSV
-// table files); SLeeLa's file surface is string-oriented, not raw-byte, so it
-// owns the *model and validation* layer -- it reasons about whether a planned
-// statement is well-formed against a table's schema BEFORE any CSV byte is
-// touched, and prints a clear verdict. This runs on the SLeeLa Native VM
-// (sleela run lib/sleela-sql/SqlModel.sleela).
-//
-// DIALECT-AGNOSTIC. The engine accepts two surface languages -- classic SQL and
-// the fluent SLeeLaSQL -- but both lower to the SAME compiled operation. This
-// model validates that lowered operation, so a single verdict covers a plan no
-// matter which dialect expressed it (and whether or not it used '?' prepared-
-// statement placeholders, since binding only fills values, not shape).
-//
-// Like NesEditModel.sleela, the model stays within SLeeLa's string surface: the
-// caller supplies the already-computed facts (value count, column count, and
-// whether a referenced column was found in the schema), exactly as the byte
-// engine computes them from the CSV header. SLeeLa then applies the rules and
-// renders the verdict.
-//
-// Invariants the model checks, mirroring sleela_sql.c:
-//   * INSERT value count must equal the table's column count (ARITY).
-//   * every projected / WHERE column must exist in the schema (NOCOL).
-//   * CREATE must not collide with an existing table (EXISTS).
+< SqlModel.sleela -- the MODEL for the CSV-backed SQL engine, in SLeeLa. >
+<  >
+< Part of mearvk/SLeeLa. Counterpart to the native C engine in lib/sleela-sql/native. The C >
+< tool does the byte/file work (parsing statements, reading and writing the CSV >
+< table files); SLeeLa's file surface is string-oriented, not raw-byte, so it >
+< owns the *model and validation* layer -- it reasons about whether a planned >
+< statement is well-formed against a table's schema BEFORE any CSV byte is >
+< touched, and prints a clear verdict. This runs on the SLeeLa Native VM >
+< (sleela run lib/sleela-sql/SqlModel.sleela). >
+<  >
+< DIALECT-AGNOSTIC. The engine accepts two surface languages -- classic SQL and >
+< the fluent SLeeLaSQL -- but both lower to the SAME compiled operation. This >
+< model validates that lowered operation, so a single verdict covers a plan no >
+< matter which dialect expressed it (and whether or not it used '?' prepared- >
+< statement placeholders, since binding only fills values, not shape). >
+<  >
+< Like NesEditModel.sleela, the model stays within SLeeLa's string surface: the >
+< caller supplies the already-computed facts (value count, column count, and >
+< whether a referenced column was found in the schema), exactly as the byte >
+< engine computes them from the CSV header. SLeeLa then applies the rules and >
+< renders the verdict. >
+<  >
+< Invariants the model checks, mirroring sleela_sql.c: >
+< * INSERT value count must equal the table's column count (ARITY). >
+< * every projected / WHERE column must exist in the schema (NOCOL). >
+< * CREATE must not collide with an existing table (EXISTS). >
 
-// A table schema: a name, the column list (for reporting), and its arity.
+< A table schema: a name, the column list (for reporting), and its arity. >
 struct Schema {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
     String name;      // table name
     String cols;      // "id, title, year" (display only)
     int    ncols;     // column count

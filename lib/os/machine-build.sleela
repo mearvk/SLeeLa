@@ -1,25 +1,66 @@
 #sleela 2.1
-// machine-build.sleela -- the self-contained, runnable demonstrator of the
-// lib/os NAMED-HARDWARE machine family (SLHardwareComponent, the per-family
-// catalogues under memory-ddr/ ssd/ hdd/ usb/ uefi/ video-cards/, the
-// SLHardwareRegistry, SLMachineModel, and SLMachineBuilder). The SLeeLa
-// compiler's `run` compiles one file as a single unit, so this aggregate
-// inlines a compact slice of the named-part model + a `main` that:
-//   1. requests named parts by manufacturer + variant (DDR5, NVMe PCIe5, UEFI,
-//      a GeForce card),
-//   2. assembles them into a machine "build sheet",
-//   3. sizes the Sleela VM from the real part capacities,
-// then prints the resulting machine description. The split per-family files are
-// the full catalogue; this file is the executable counterpart, mirroring the
-// os-build.sleela / website.sleela convention.
-//
-// The point it demonstrates: a machine is described ONCE by its named parts in
-// Sleela source, and compiling + running that description yields a concrete,
-// sized machine ready to boot on the Sleela VM. Swapping a part name (SSD ->
-// HDD, DDR5 -> DDR4) re-sizes the produced machine.
+< machine-build.sleela -- the self-contained, runnable demonstrator of the >
+< lib/os NAMED-HARDWARE machine family (SLHardwareComponent, the per-family >
+< catalogues under memory-ddr/ ssd/ hdd/ usb/ uefi/ video-cards/, the >
+< SLHardwareRegistry, SLMachineModel, and SLMachineBuilder). The SLeeLa >
+< compiler's `run` compiles one file as a single unit, so this aggregate >
+< inlines a compact slice of the named-part model + a `main` that: >
+< 1. requests named parts by manufacturer + variant (DDR5, NVMe PCIe5, UEFI, >
+< a GeForce card), >
+< 2. assembles them into a machine "build sheet", >
+< 3. sizes the Sleela VM from the real part capacities, >
+< then prints the resulting machine description. The split per-family files are >
+< the full catalogue; this file is the executable counterpart, mirroring the >
+< os-build.sleela / website.sleela convention. >
+<  >
+< The point it demonstrates: a machine is described ONCE by its named parts in >
+< Sleela source, and compiling + running that description yields a concrete, >
+< sized machine ready to boot on the Sleela VM. Swapping a part name (SSD -> >
+< HDD, DDR5 -> DDR4) re-sizes the produced machine. >
 
-// --- A compact named-parts machine model --------------------------------
-struct Part { String cls; String vendor; String model; String spec; int sizeUnits; }
+< --- A compact named-parts machine model -------------------------------- >
+struct Part {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; } String cls; String vendor; String model; String spec; int sizeUnits; }
 
 struct Machine {
     String name; String cpuVendor; String cpuModel; int cores; int bits; int mhz;

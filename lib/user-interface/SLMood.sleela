@@ -1,23 +1,62 @@
-/*
- * lib/user-interface/SLMood.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLMood — a named, adjustable SleelaUI mood: an Excellent
- *   Wash + a natural tanor + a Calculus-8, together. The mood's colour is the
- *   wash sampled at the calculus's mood scalar, freshened over time by the
- *   tanor's refresh and its gentle "a little left" bias. A tanor is a soft,
- *   portrait-quality ambient glow for "lightless bulbs" (light-of-effect with no
- *   hard source). Applying a mood to a light sets its colour and folds in the
- *   tanor's portrait softness/depth — so inputs flow into direct moods in one
- *   call. Each method bottoms out in a `mood*`/`light*` SLVM built-in calling the
- *   C ABI (sleela_ui_mood.h).
- *
- * A mood is a VM-local handle (-1 = none).
- *
- * Family: user-interface. Native VM/UI work crosses the explicit `mood*` SLVM
- * bridge.
- */
+<< lib/user-interface/SLMood.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLMood — a named, adjustable SleelaUI mood: an Excellent
+     Wash + a natural tanor + a Calculus-8, together. The mood's colour is the
+     wash sampled at the calculus's mood scalar, freshened over time by the
+     tanor's refresh and its gentle "a little left" bias. A tanor is a soft,
+     portrait-quality ambient glow for "lightless bulbs" (light-of-effect with no
+     hard source). Applying a mood to a light sets its colour and folds in the
+     tanor's portrait softness/depth — so inputs flow into direct moods in one
+     call. Each method bottoms out in a `mood*`/`light*` SLVM built-in calling the
+     C ABI (sleela_ui_mood.h).
+   
+   A mood is a VM-local handle (-1 = none).
+   
+   Family: user-interface. Native VM/UI work crosses the explicit `mood*` SLVM
+   bridge. >>
 #sleela 2.1
 class SLMood {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-07";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Mood-kind ordinals (mirror SLUIMoodKind).
   static final int CALM    = 0;
   static final int WARM    = 1;

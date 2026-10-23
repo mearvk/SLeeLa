@@ -1,36 +1,75 @@
-/*
- * lib/cpu/SLExtensibleNetwork.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLExtensibleNetwork — the language feature that lets the
- *   compiler and VM reinterpret the access modifiers public / private /
- *   protected as SYSTEM ROLES across a network of files, and stand up a clean
- *   system backdrop for them. It is a Dynamite Connector: a named,
- *   resolve-then-load, fail-closed binding (initialize -> resolve ->
- *   [deferConstruction] -> load) following the connector idiom used across the
- *   tree (lib/compiler, lib/sst, lib/nordshrift, lib/cpu/components).
- *
- *   The redefined meanings (authoritative catalog in SLAccessSemantics):
- *     public    -> a NETWORK-EXPOSED HOP: exposed like a REST API endpoint, able
- *                  to act as a Hop Controller for a System; the network of files
- *                  may assume it is reachable. Public members form an ORDERED
- *                  hop chain (registered doc 1, doc 2, doc 3 communicate 1->2->3).
- *     private   -> LOCAL to the System itself, or an admin / safety / security /
- *                  data-backup concern; never exposed to the network.
- *     protected -> an INTEGRITY-GUARDED connection: before proceeding it applies
- *                  controls (double-input verification, virus scan, system- and
- *                  database-integrity checks, heuristics, admin involvement, ...).
- *
- *   Use: initialize the network for a System, register each member under its
- *   modifier, resolve (classify + order the hop chain + choose backdrops), then
- *   load (fail-closed) to realize it. toManifest() flattens the result into an
- *   SLAccessManifest the compiled image carries; the VM reads that back and
- *   infers the same backdrop without guessing.
- *
- * Family: cpu. A Dynamite Connector; composes SLAccessSemantics; produces
- *   SLAccessManifest; realized backdrop mirrors lib/net + lib/os services.
- */
+<< lib/cpu/SLExtensibleNetwork.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLExtensibleNetwork — the language feature that lets the
+     compiler and VM reinterpret the access modifiers public / private /
+     protected as SYSTEM ROLES across a network of files, and stand up a clean
+     system backdrop for them. It is a Dynamite Connector: a named,
+     resolve-then-load, fail-closed binding (initialize -> resolve ->
+     [deferConstruction] -> load) following the connector idiom used across the
+     tree (lib/compiler, lib/sst, lib/nordshrift, lib/cpu/components).
+   
+     The redefined meanings (authoritative catalog in SLAccessSemantics):
+       public    -> a NETWORK-EXPOSED HOP: exposed like a REST API endpoint, able
+                    to act as a Hop Controller for a System; the network of files
+                    may assume it is reachable. Public members form an ORDERED
+                    hop chain (registered doc 1, doc 2, doc 3 communicate 1->2->3).
+       private   -> LOCAL to the System itself, or an admin / safety / security /
+                    data-backup concern; never exposed to the network.
+       protected -> an INTEGRITY-GUARDED connection: before proceeding it applies
+                    controls (double-input verification, virus scan, system- and
+                    database-integrity checks, heuristics, admin involvement, ...).
+   
+     Use: initialize the network for a System, register each member under its
+     modifier, resolve (classify + order the hop chain + choose backdrops), then
+     load (fail-closed) to realize it. toManifest() flattens the result into an
+     SLAccessManifest the compiled image carries; the VM reads that back and
+     infers the same backdrop without guessing.
+   
+   Family: cpu. A Dynamite Connector; composes SLAccessSemantics; produces
+     SLAccessManifest; realized backdrop mirrors lib/net + lib/os services. >>
 #sleela 2.1
 class SLExtensibleNetwork {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // --- Dynamite Connector contract ---
   String referenceName;   // the System this network fronts
   String configuration;   // free-form config note

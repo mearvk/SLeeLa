@@ -1,19 +1,58 @@
-/*
- * lib/cpu/SLGuestTimer.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuestTimer — a programmable interval timer exposed to
- *   the guest. The guest kernel programs a reload value; each tick decrements a
- *   counter, and on expiry the timer raises its IRQ (the guest's scheduler tick
- *   / preemption source). This is the heartbeat a guest OS needs for
- *   timekeeping and preemptive multitasking.
- *
- * MMIO registers: 0 = reload value (RW), 1 = current count (RO), 2 = control
- * (bit0 enable). IRQ fires on count reaching zero when enabled.
- *
- * Family: cpu. Extends SLGuestDevice.
- */
+<< lib/cpu/SLGuestTimer.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuestTimer — a programmable interval timer exposed to
+     the guest. The guest kernel programs a reload value; each tick decrements a
+     counter, and on expiry the timer raises its IRQ (the guest's scheduler tick
+     / preemption source). This is the heartbeat a guest OS needs for
+     timekeeping and preemptive multitasking.
+   
+   MMIO registers: 0 = reload value (RW), 1 = current count (RO), 2 = control
+   (bit0 enable). IRQ fires on count reaching zero when enabled.
+   
+   Family: cpu. Extends SLGuestDevice. >>
 #sleela 2.1
 class SLGuestTimer extends SLGuestDevice {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   int reload;
   int count;
   int enabled;

@@ -1,20 +1,59 @@
-/*
- * lib/cpu/SLCPUResource.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLCPUResource — a resource grant assigned to a workload
- *   running on a CPU. It is the unit of resource assignment: how much memory
- *   (words) the workload may address, how many instructions it may retire
- *   (instruction budget / time-slice), its scheduling priority, and whether it
- *   may use I/O and privileged services. A CPU admits a workload only if its
- *   model can satisfy the grant, then enforces it while the workload runs.
- *
- * This is what lets many workloads share one CPU model predictably: each gets a
- * bounded, explicit slice of the machine, and the CPU accounts usage against it.
- *
- * Family: cpu. Composed by SLWorkload; enforced by SLCPURuntime.
- */
+<< lib/cpu/SLCPUResource.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLCPUResource — a resource grant assigned to a workload
+     running on a CPU. It is the unit of resource assignment: how much memory
+     (words) the workload may address, how many instructions it may retire
+     (instruction budget / time-slice), its scheduling priority, and whether it
+     may use I/O and privileged services. A CPU admits a workload only if its
+     model can satisfy the grant, then enforces it while the workload runs.
+   
+   This is what lets many workloads share one CPU model predictably: each gets a
+   bounded, explicit slice of the machine, and the CPU accounts usage against it.
+   
+   Family: cpu. Composed by SLWorkload; enforced by SLCPURuntime. >>
 #sleela 2.1
 class SLCPUResource {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-09";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Scheduling priority bands.
   static final int PRIORITY_IDLE   = 0;
   static final int PRIORITY_NORMAL = 1;

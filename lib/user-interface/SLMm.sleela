@@ -1,21 +1,60 @@
-/*
- * lib/user-interface/SLMm.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLMm — a millimetre placement for a SleelaUI light/dark/
- *   shadow emitter, relative to the text's font-paint location. It holds a
- *   left/right offset, an up/down offset, and a HEIGHT the light shines down
- *   from, all in millimetres, and converts to device pixels at a DPI. This is
- *   the mm-precise placement the lighting design calls for: the light shines
- *   down from some mm of height, and left/right/up/down are all supported.
- *   Mirrors SLUIMm in the SleelaUI Mood/Light C ABI (sleela_ui_mood.h).
- *
- * SLMm is a pure value helper (no VM handle); feed it to SLMood.placeLight or
- * the `light*` built-ins.
- *
- * Family: user-interface.
- */
+<< lib/user-interface/SLMm.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLMm — a millimetre placement for a SleelaUI light/dark/
+     shadow emitter, relative to the text's font-paint location. It holds a
+     left/right offset, an up/down offset, and a HEIGHT the light shines down
+     from, all in millimetres, and converts to device pixels at a DPI. This is
+     the mm-precise placement the lighting design calls for: the light shines
+     down from some mm of height, and left/right/up/down are all supported.
+     Mirrors SLUIMm in the SleelaUI Mood/Light C ABI (sleela_ui_mood.h).
+   
+   SLMm is a pure value helper (no VM handle); feed it to SLMood.placeLight or
+   the `light*` built-ins.
+   
+   Family: user-interface. >>
 #sleela 2.1
 class SLMm {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-07";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   double rightMm;   // +right, -left
   double downMm;    // +down, -up
   double heightMm;  // above the plane the light shines down from

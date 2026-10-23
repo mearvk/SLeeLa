@@ -1,32 +1,71 @@
-/*
- * lib/alphabet/Alphabet.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines Alphabet, the base writing-system Master Class a developer
- *   extends to describe any ordered set of Letters — Latin, Greek, Cyrillic, or
- *   a user's own invention. It is thematically important to ALL users of
- *   Sleela: text is just an Alphabet, replayed.
- *
- * A concrete alphabet is created exactly like a lib/compiler front end:
- * subclass Alphabet and override compose() to append its Letters in order. The
- * base provides the shared machinery — append(), letter lookup, vowel counting,
- * and the loadable-module contract — so a subclass only has to spell its own
- * letters.
- *
- * Alphabet is a NATURAL / LOADABLE MODULE sharing the common module contract
- * (load / loaded / moduleName / describe). It owns an ordered run of Letters.
- *
- * Syntax 1.8+: in addition to append(glyph, vowel), an Alphabet now accepts a
- * pre-built Letter via appendLetter(Letter) — the hook AlphabetBuilder uses to
- * add Letters constructed in one line with `new Letter(glyph, order, vowel)`.
- * The classic compose()/append() path is retained unchanged, so every existing
- * concrete alphabet (Latin / Greek / Cyrillic and any 1.3 subclass) keeps
- * working exactly as before.
- *
- * Family: alphabet.
- */
+<< lib/alphabet/Alphabet.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines Alphabet, the base writing-system Master Class a developer
+     extends to describe any ordered set of Letters — Latin, Greek, Cyrillic, or
+     a user's own invention. It is thematically important to ALL users of
+     Sleela: text is just an Alphabet, replayed.
+   
+   A concrete alphabet is created exactly like a lib/compiler front end:
+   subclass Alphabet and override compose() to append its Letters in order. The
+   base provides the shared machinery — append(), letter lookup, vowel counting,
+   and the loadable-module contract — so a subclass only has to spell its own
+   letters.
+   
+   Alphabet is a NATURAL / LOADABLE MODULE sharing the common module contract
+   (load / loaded / moduleName / describe). It owns an ordered run of Letters.
+   
+   Syntax 1.8+: in addition to append(glyph, vowel), an Alphabet now accepts a
+   pre-built Letter via appendLetter(Letter) — the hook AlphabetBuilder uses to
+   add Letters constructed in one line with `new Letter(glyph, order, vowel)`.
+   The classic compose()/append() path is retained unchanged, so every existing
+   concrete alphabet (Latin / Greek / Cyrillic and any 1.3 subclass) keeps
+   working exactly as before.
+   
+   Family: alphabet. >>
 #sleela 2.1
-// Unified SLeeLa SDK front-end object.
+< Unified SLeeLa SDK front-end object. >
 class Alphabet {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-07";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   static final String MODULE = "Alphabet";
   static final int MAX = 256;

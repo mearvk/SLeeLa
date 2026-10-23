@@ -1,25 +1,64 @@
-/*
- * lib/moral-capacitor/SLMoralCodeGuard.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLMoralCodeGuard — the Guard of the Moral Code: the
- *   enforcement that a SLeeLa software product actually INCLUDES the moral code
- *   it claims. Before a product is permitted to run or ship, the guard checks
- *   that it (1) embeds a live Moral Capacitor(TM), (2) presents a Certificate of
- *   Morals(TM) that is well-formed, (3) was sealed by a trusted authority and
- *   verifies against it, (4) is within its validity span, and (5) attests a
- *   posture consistent with the embedded capacitor (same policy threshold, red
- *   lines armed). A product that fails any check is refused — the moral code is
- *   mandatory, not optional.
- *
- * This is how the project strives to include Morals and Certificates in all its
- * SLeeLa software: the guard is the gate at the product boundary, the
- * counterpart to SLMoralCapacitor at the operation boundary.
- *
- * Family: moral-capacitor. Verifies SLMoralCertificate via
- *   SLMoralCertificateAuthority; inspects SLMoralCapacitor.
- */
+<< lib/moral-capacitor/SLMoralCodeGuard.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLMoralCodeGuard — the Guard of the Moral Code: the
+     enforcement that a SLeeLa software product actually INCLUDES the moral code
+     it claims. Before a product is permitted to run or ship, the guard checks
+     that it (1) embeds a live Moral Capacitor(TM), (2) presents a Certificate of
+     Morals(TM) that is well-formed, (3) was sealed by a trusted authority and
+     verifies against it, (4) is within its validity span, and (5) attests a
+     posture consistent with the embedded capacitor (same policy threshold, red
+     lines armed). A product that fails any check is refused — the moral code is
+     mandatory, not optional.
+   
+   This is how the project strives to include Morals and Certificates in all its
+   SLeeLa software: the guard is the gate at the product boundary, the
+   counterpart to SLMoralCapacitor at the operation boundary.
+   
+   Family: moral-capacitor. Verifies SLMoralCertificate via
+     SLMoralCertificateAuthority; inspects SLMoralCapacitor. >>
 #sleela 2.1
 class SLMoralCodeGuard {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Guard outcome ordinals.
   static final int ADMIT   = 1;  // the product includes the moral code: admit
   static final int REFUSE  = 2;  // missing/invalid moral code: refuse

@@ -1,21 +1,60 @@
-/*
- * lib/vm/SLVMMemory.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLVMMemory — the flat linear address space of the
- *   secondary Sleela VM, distinct from the object heap (SLVMHeap). It backs raw
- *   loads/stores, string/array blobs, and the module code image over SLRAM, with
- *   word- and byte-granular access and simple bounds checking. The heap carves
- *   its arena from this space; native bindings may map device windows into it.
- *
- * Keeping a byte-addressable linear memory separate from the typed heap lets the
- * secondary VM model both managed objects and the raw memory a guest OS/CPU
- * model expects — the same split the native layer draws between SLRAM and the
- * managed runtime.
- *
- * Family: vm. Composes SLRAM; composed by SLVM.
- */
+<< lib/vm/SLVMMemory.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLVMMemory — the flat linear address space of the
+     secondary Sleela VM, distinct from the object heap (SLVMHeap). It backs raw
+     loads/stores, string/array blobs, and the module code image over SLRAM, with
+     word- and byte-granular access and simple bounds checking. The heap carves
+     its arena from this space; native bindings may map device windows into it.
+   
+   Keeping a byte-addressable linear memory separate from the typed heap lets the
+   secondary VM model both managed objects and the raw memory a guest OS/CPU
+   model expects — the same split the native layer draws between SLRAM and the
+   managed runtime.
+   
+   Family: vm. Composes SLRAM; composed by SLVM. >>
 #sleela 2.1
 class SLVMMemory {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Backing mode.
   static final int MODE_SIMULATED = 0;   // SLRAM (bridge-backed, accounted)
   static final int MODE_NATIVE    = 1;   // SLNativeMemory (real host RAM, direct)

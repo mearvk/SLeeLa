@@ -1,24 +1,63 @@
-/*
- * lib/alphabet/AlphabetBuilder.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines AlphabetBuilder — the syntax 1.8+ way to assemble a
- *   custom Alphabet without declaring a subclass. Where the classic path is
- *   "subclass Alphabet and override compose()", the builder lets a user of
- *   Sleela compose a writing system inline using one-line Letter constructors
- *   and `let`-inferred locals:
- *
- *     let b = new AlphabetBuilder("Runic");
- *     b.vowel("A"); b.consonant("B"); ...
- *     let alpha = b.build();            // a fully formed Alphabet
- *
- * Each add() builds a Letter with `new Letter(glyph, order, vowel)` (the 1.8
- * constructor) and hands it to Alphabet.appendLetter. The builder is the
- * ergonomic, subclass-free front door the 1.8 surface makes possible.
- *
- * Family: alphabet. Composes Alphabet + Letter (1.8 constructors).
- */
+<< lib/alphabet/AlphabetBuilder.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines AlphabetBuilder — the syntax 1.8+ way to assemble a
+     custom Alphabet without declaring a subclass. Where the classic path is
+     "subclass Alphabet and override compose()", the builder lets a user of
+     Sleela compose a writing system inline using one-line Letter constructors
+     and `let`-inferred locals:
+   
+       let b = new AlphabetBuilder("Runic");
+       b.vowel("A"); b.consonant("B"); ...
+       let alpha = b.build();            // a fully formed Alphabet
+   
+   Each add() builds a Letter with `new Letter(glyph, order, vowel)` (the 1.8
+   constructor) and hands it to Alphabet.appendLetter. The builder is the
+   ergonomic, subclass-free front door the 1.8 surface makes possible.
+   
+   Family: alphabet. Composes Alphabet + Letter (1.8 constructors). >>
 #sleela 2.1
 class AlphabetBuilder {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   Alphabet target;
   int next;        // 1-based running order for constructed Letters

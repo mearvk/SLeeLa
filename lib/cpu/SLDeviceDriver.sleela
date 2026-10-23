@@ -1,19 +1,58 @@
-/*
- * lib/cpu/SLDeviceDriver.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLDeviceDriver — the base class for all device drivers.
- *   A driver is the software contract between the OS and a hardware device: it
- *   owns the device's I/O port(s), exposes a uniform lifecycle (probe, attach,
- *   open, read/write, close, detach), and fields the device's interrupt. The
- *   kernel talks to devices only through drivers.
- *
- * Concrete drivers (console, disk, keyboard, network) extend this and override
- * the transfer methods.
- *
- * Family: cpu. Composes SLIOBus; base of the driver hierarchy.
- */
+<< lib/cpu/SLDeviceDriver.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLDeviceDriver — the base class for all device drivers.
+     A driver is the software contract between the OS and a hardware device: it
+     owns the device's I/O port(s), exposes a uniform lifecycle (probe, attach,
+     open, read/write, close, detach), and fields the device's interrupt. The
+     kernel talks to devices only through drivers.
+   
+   Concrete drivers (console, disk, keyboard, network) extend this and override
+   the transfer methods.
+   
+   Family: cpu. Composes SLIOBus; base of the driver hierarchy. >>
 #sleela 2.1
 class SLDeviceDriver {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int STATE_UNLOADED = 0;
   static final int STATE_ATTACHED = 1;
   static final int STATE_OPEN     = 2;

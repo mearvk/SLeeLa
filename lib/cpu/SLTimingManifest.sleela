@@ -1,25 +1,64 @@
-/*
- * lib/cpu/SLTimingManifest.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLTimingManifest — the compact, serializable record of a
- *   timing/voltage/expertise profile that a COMPILED .sleela file carries
- *   inside it. This is the pivot the request turns on: a compiled program must
- *   not oblige a compiler or VM to GUESS the quality of the hardware it runs on
- *   ("rather than inherently to expect the quality of these operating as
- *   confidences of how CPUs operate"). Instead the program states its timings,
- *   and the engine operates those STATED numbers.
- *
- *   A manifest flattens an SLTimingProfile into plain integers/strings: the
- *   expertise tier + brand/medium, the dialed core/bus/io clocks, the settled
- *   rail voltages, the RAM primaries, and the worst honored slack. It can be
- *   embedded as a header in an SLProgram image and read back by any consumer —
- *   SLSleelaVM, SLControlUnit, SLCompilerDriver — so every stage honors the
- *   same declared operating point.
- *
- * Family: cpu. Serialization layer over SLTimingProfile; embedded in SLProgram.
- */
+<< lib/cpu/SLTimingManifest.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLTimingManifest — the compact, serializable record of a
+     timing/voltage/expertise profile that a COMPILED .sleela file carries
+     inside it. This is the pivot the request turns on: a compiled program must
+     not oblige a compiler or VM to GUESS the quality of the hardware it runs on
+     ("rather than inherently to expect the quality of these operating as
+     confidences of how CPUs operate"). Instead the program states its timings,
+     and the engine operates those STATED numbers.
+   
+     A manifest flattens an SLTimingProfile into plain integers/strings: the
+     expertise tier + brand/medium, the dialed core/bus/io clocks, the settled
+     rail voltages, the RAM primaries, and the worst honored slack. It can be
+     embedded as a header in an SLProgram image and read back by any consumer —
+     SLSleelaVM, SLControlUnit, SLCompilerDriver — so every stage honors the
+     same declared operating point.
+   
+   Family: cpu. Serialization layer over SLTimingProfile; embedded in SLProgram. >>
 #sleela 2.1
 class SLTimingManifest {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // --- magic / identity ---
   static final int MAGIC = 5213;   // "SL-TIMING" marker word in a program header
   int version;

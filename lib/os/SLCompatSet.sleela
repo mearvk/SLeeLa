@@ -1,24 +1,63 @@
-/*
- * lib/os/SLCompatSet.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLCompatSet — the compatibility layer of an OS being
- *   constructed: the set of foreign-OS execution capabilities the built OS
- *   ships, so it can run guest executables (and their libraries) from other OS
- *   families. In the firmware -> boot -> kernel -> userspace -> desktop model
- *   this is a userspace capability node; SLOSModel composes one, and the OS
- *   Creator's SLCompatLoaderEmitter turns it into real OS components.
- *
- * The set is keyed by the OS's own shape (its host family) and records which
- * guest families it supports running, each realised by an SLCompatLayer
- * (binfmt_misc + Wine/QEMU/WSL/Rosetta/Darling + the guest libraries). A Linux
- * variant that wants to run Windows .exe adds the "Windows" guest; forShape()
- * seeds the common defaults for the host family.
- *
- * Family: os. Composes SLCompatLayer (up to three guests). Pure design model
- *   for composition/validity; the layers' own load/unload cross the os* bridge.
- */
+<< lib/os/SLCompatSet.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLCompatSet — the compatibility layer of an OS being
+     constructed: the set of foreign-OS execution capabilities the built OS
+     ships, so it can run guest executables (and their libraries) from other OS
+     families. In the firmware -> boot -> kernel -> userspace -> desktop model
+     this is a userspace capability node; SLOSModel composes one, and the OS
+     Creator's SLCompatLoaderEmitter turns it into real OS components.
+   
+   The set is keyed by the OS's own shape (its host family) and records which
+   guest families it supports running, each realised by an SLCompatLayer
+   (binfmt_misc + Wine/QEMU/WSL/Rosetta/Darling + the guest libraries). A Linux
+   variant that wants to run Windows .exe adds the "Windows" guest; forShape()
+   seeds the common defaults for the host family.
+   
+   Family: os. Composes SLCompatLayer (up to three guests). Pure design model
+     for composition/validity; the layers' own load/unload cross the os* bridge. >>
 #sleela 2.1
 class SLCompatSet {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String host;              // the built OS's own family
   // Up to three guest layers (Linux/Windows/macOS). Fixed slots keep the model
   // array-free; an unused slot has an empty guest.

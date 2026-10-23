@@ -1,22 +1,61 @@
-/*
- * lib/gameplay/Player.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines Player, the actor who takes a turn in the gameplay
- *   package. A Player carries experience, a Person/Citizen quality score (which
- *   sets the price they pay for information), cash, and the three things a turn
- *   can grant them — file, tact, and rolls — plus a Management Courtroom to keep
- *   them in.
- *
- * Player is a NATURAL / LOADABLE MODULE sharing the common module contract
- * (load / loaded / moduleName / describe). The quality score is the hinge of
- * move (b): a higher-quality Person/Citizen is charged more for the Inference
- * Engine's information, because good information finds the people who can use it.
- *
- * Family: gameplay.
- */
+<< lib/gameplay/Player.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines Player, the actor who takes a turn in the gameplay
+     package. A Player carries experience, a Person/Citizen quality score (which
+     sets the price they pay for information), cash, and the three things a turn
+     can grant them — file, tact, and rolls — plus a Management Courtroom to keep
+     them in.
+   
+   Player is a NATURAL / LOADABLE MODULE sharing the common module contract
+   (load / loaded / moduleName / describe). The quality score is the hinge of
+   move (b): a higher-quality Person/Citizen is charged more for the Inference
+   Engine's information, because good information finds the people who can use it.
+   
+   Family: gameplay. >>
 #sleela 2.1
-// Unified SLeeLa SDK front-end object.
+< Unified SLeeLa SDK front-end object. >
 class Player {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-07";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   static final String MODULE = "Player";
 

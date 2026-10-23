@@ -1,24 +1,63 @@
-/*
- * lib/cpu/components/SLMotherboard.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLMotherboard — the board a Sleela executor is built on:
- *   the CPU socket, the platform chipset, the memory topology (channel count
- *   and DIMM slots), the number of PCIe lanes the platform exposes and their
- *   generation, and the system-bus generation the board carries. These are the
- *   "motherboard-pertinent settings" that bound a build: a CPU only drops into
- *   a matching socket, memory can only populate as many channels as the board
- *   routes, and no card can use more PCIe lanes than the platform provides.
- *
- * The board is nameful and spec-first: every field states a real platform
- * property (sTR5 socket, TRX50/WRX90 chipset, 4- vs 8-channel memory, PCIe 5.0
- * lane budget) rather than assuming a generic machine. SLExecutorBuild mounts a
- * board and can check that the chosen CPU socket and memory channels fit it.
- *
- * Family: cpu.components. Selected via SLComponentCatalog; mounted in
- *   SLExecutorBuild; partners SLMemoryModule and SLSystemBus.
- */
+<< lib/cpu/components/SLMotherboard.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLMotherboard — the board a Sleela executor is built on:
+     the CPU socket, the platform chipset, the memory topology (channel count
+     and DIMM slots), the number of PCIe lanes the platform exposes and their
+     generation, and the system-bus generation the board carries. These are the
+     "motherboard-pertinent settings" that bound a build: a CPU only drops into
+     a matching socket, memory can only populate as many channels as the board
+     routes, and no card can use more PCIe lanes than the platform provides.
+   
+   The board is nameful and spec-first: every field states a real platform
+   property (sTR5 socket, TRX50/WRX90 chipset, 4- vs 8-channel memory, PCIe 5.0
+   lane budget) rather than assuming a generic machine. SLExecutorBuild mounts a
+   board and can check that the chosen CPU socket and memory channels fit it.
+   
+   Family: cpu.components. Selected via SLComponentCatalog; mounted in
+     SLExecutorBuild; partners SLMemoryModule and SLSystemBus. >>
 #sleela 2.1
 class SLMotherboard {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Socket ids (the mechanical/electrical CPU interface).
   static final int SOCKET_UNKNOWN = 0;
   static final int SOCKET_STR5    = 1;   // AMD sTR5 (Threadripper 9000)

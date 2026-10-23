@@ -1,29 +1,70 @@
 #sleela 2.1
 import math;
-// world-net-results.sleela -- the self-contained, runnable build of the CPU
-// ROSTER + FLEET + NET-RESULTS world simulation, with the Creator->network->CPU
-// distribution path. The SLeeLa compiler's `run` compiles one file as a single
-// unit, so this aggregate inlines a faithful behavioral model of the pieces the
-// library ships as split classes (SLCPUCatalog, SLCPUFleet, SLClockPolicy,
-// SLCPUResource, SLWorkload, SLCPURuntime) plus a `main` that:
-//   1. builds a CPU ROSTER you can choose from (CpuCatalog),
-//   2. assembles a FLEET from the roster (CpuFleet),
-//   3. runs real work across the fleet and aggregates NET RESULTS (scoreboard),
-//   4. drives the same via a CREATOR over a modeled NETWORK (CreatorNetwork),
-// and ends with a headless SELF-CHECK. This proves the end-to-end "simulate a
-// real world with net results" story without the full loader (the split
-// lib/cpu/SL* classes are the discovery surface; this is the executable twin,
-// mirroring autocad/creator/creator.sleela).
-//
-// Behavioral fidelity: each CPU models deterministic instruction retirement and
-// a reproducible observable output; it is a net-result accounting model, not a
-// cycle-accurate emulator (see lib/cpu/CPU.md "Note on fidelity").
+< world-net-results.sleela -- the self-contained, runnable build of the CPU >
+< ROSTER + FLEET + NET-RESULTS world simulation, with the Creator->network->CPU >
+< distribution path. The SLeeLa compiler's `run` compiles one file as a single >
+< unit, so this aggregate inlines a faithful behavioral model of the pieces the >
+< library ships as split classes (SLCPUCatalog, SLCPUFleet, SLClockPolicy, >
+< SLCPUResource, SLWorkload, SLCPURuntime) plus a `main` that: >
+< 1. builds a CPU ROSTER you can choose from (CpuCatalog), >
+< 2. assembles a FLEET from the roster (CpuFleet), >
+< 3. runs real work across the fleet and aggregates NET RESULTS (scoreboard), >
+< 4. drives the same via a CREATOR over a modeled NETWORK (CreatorNetwork), >
+< and ends with a headless SELF-CHECK. This proves the end-to-end "simulate a >
+< real world with net results" story without the full loader (the split >
+< lib/cpu/SL* classes are the discovery surface; this is the executable twin, >
+< mirroring autocad/creator/creator.sleela). >
+<  >
+< Behavioral fidelity: each CPU models deterministic instruction retirement and >
+< a reproducible observable output; it is a net-result accounting model, not a >
+< cycle-accurate emulator (see lib/cpu/CPU.md "Note on fidelity"). >
 
-// -----------------------------------------------------------------------------
-// Clock policy: spec clock, overclock to a target, stability ceiling.
-// Mirrors lib/cpu/SLClockPolicy.
-// -----------------------------------------------------------------------------
+< ----------------------------------------------------------------------------- >
+< Clock policy: spec clock, overclock to a target, stability ceiling. >
+< Mirrors lib/cpu/SLClockPolicy. >
+< ----------------------------------------------------------------------------- >
 class ClockPolicy {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   int baseMHz; int multiplier; int specMHz; int maxStableMHz; int oc; int unstable;
 
   void configureSpec(int ratedMHz) {

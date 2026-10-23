@@ -1,38 +1,77 @@
-/*
- * lib/cpu/SLSleelaOpcode.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLSleelaOpcode — the canonical SLeeLa VM opcode registry,
- *   the Turing-complete substrate that the whole CPU model reduces to. The
- *   codes and mnemonics mirror the native enum exactly (impl/core/sleela_core.h
- *   `SLOp` and lib/vm/InstructionSet.sleela). The native enum currently defines
- *   150 opcodes (codes 0..149), dispatched one-at-a-time by the native VM, and
- *   organized here as a DOUBLE SHELF of three contiguous tiers:
- *     - shelf 1, base computational/service core (codes 0..48): arithmetic,
- *       control flow, call/return, threads, sockets, pipes, files;
- *     - shelf 2, substrate extensions (codes 49..97): time services, structs,
- *       Synchro / Munction / Best-of;
- *     - shelf 3, host-facing services (codes 98..149): arrays, OS syscalls, GC
- *       hint, `ran::`, the Idea realtime canvas, VM-select / Modium.
- *   All three shelves are acceptable opcodes; the tiers (BASE_COUNT /
- *   SUBSTRATE_COUNT / NATIVE_COUNT and the TIER_* flags) do not gate execution,
- *   they let the professional monitoring/storage layer tag and iterate each
- *   shelf under its own flag. Every CPU instruction and OS syscall lowers onto
- *   shelf 1 (plus structs on shelf 2).
- *
- *   Codes are conservative: they match the native numbering exactly rather than
- *   inventing a parallel set.
- *
- * This is the ground truth. The register-style SLInstructionSet, the OS system
- * calls, and every language frontend ultimately map onto THESE opcodes. Because
- * the native VM already executes them and they are Turing complete, any program
- * expressed as a stream of these opcodes has a well-defined, machine-realizable
- * meaning — which is what lets C, C++, Java, and Sleela be 1:1 in Turing effect
- * (SLTuringBridge).
- *
- * Family: cpu. Pure Sleela opcode registry; the canonical substrate.
- */
+<< lib/cpu/SLSleelaOpcode.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLSleelaOpcode — the canonical SLeeLa VM opcode registry,
+     the Turing-complete substrate that the whole CPU model reduces to. The
+     codes and mnemonics mirror the native enum exactly (impl/core/sleela_core.h
+     `SLOp` and lib/vm/InstructionSet.sleela). The native enum currently defines
+     150 opcodes (codes 0..149), dispatched one-at-a-time by the native VM, and
+     organized here as a DOUBLE SHELF of three contiguous tiers:
+       - shelf 1, base computational/service core (codes 0..48): arithmetic,
+         control flow, call/return, threads, sockets, pipes, files;
+       - shelf 2, substrate extensions (codes 49..97): time services, structs,
+         Synchro / Munction / Best-of;
+       - shelf 3, host-facing services (codes 98..149): arrays, OS syscalls, GC
+         hint, `ran::`, the Idea realtime canvas, VM-select / Modium.
+     All three shelves are acceptable opcodes; the tiers (BASE_COUNT /
+     SUBSTRATE_COUNT / NATIVE_COUNT and the TIER_* flags) do not gate execution,
+     they let the professional monitoring/storage layer tag and iterate each
+     shelf under its own flag. Every CPU instruction and OS syscall lowers onto
+     shelf 1 (plus structs on shelf 2).
+   
+     Codes are conservative: they match the native numbering exactly rather than
+     inventing a parallel set.
+   
+   This is the ground truth. The register-style SLInstructionSet, the OS system
+   calls, and every language frontend ultimately map onto THESE opcodes. Because
+   the native VM already executes them and they are Turing complete, any program
+   expressed as a stream of these opcodes has a well-defined, machine-realizable
+   meaning — which is what lets C, C++, Java, and Sleela be 1:1 in Turing effect
+   (SLTuringBridge).
+   
+   Family: cpu. Pure Sleela opcode registry; the canonical substrate. >>
 #sleela 2.1
 class SLSleelaOpcode {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Base computational/service core, in exact native numeric order. These are
   // the Turing-complete subset the CPU ISA and OS syscalls lower onto; the
   // native enum continues past them with extended host-facing opcodes.

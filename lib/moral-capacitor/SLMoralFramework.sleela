@@ -1,23 +1,62 @@
-/*
- * lib/moral-capacitor/SLMoralFramework.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLMoralFramework — the catalogue of ethical lenses the
- *   Moral Capacitor(TM) charges from. Each framework is a named way of judging
- *   an operation's rightness, drawn from the coorenagraph moral vocabulary:
- *   deontology (duties/rules), consequentialism/utilitarianism (outcomes),
- *   virtue ethics (character), beneficence (do good / avoid harm), and
- *   consent/autonomy (respect the affected party's will). A framework contributes
- *   a small signed charge to the capacitor: positive when it endorses the
- *   operation, negative when it objects.
- *
- * This is the vocabulary bridge: the frameworks name the same ethics the
- * coorenagraph package defines (Deontology, Utilitarianism, VirtueEthics,
- * Beneficence), made evaluable as capacitor charge.
- *
- * Family: moral-capacitor. Bridges coorenagraph; charges SLMoralCapacitor.
- */
+<< lib/moral-capacitor/SLMoralFramework.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLMoralFramework — the catalogue of ethical lenses the
+     Moral Capacitor(TM) charges from. Each framework is a named way of judging
+     an operation's rightness, drawn from the coorenagraph moral vocabulary:
+     deontology (duties/rules), consequentialism/utilitarianism (outcomes),
+     virtue ethics (character), beneficence (do good / avoid harm), and
+     consent/autonomy (respect the affected party's will). A framework contributes
+     a small signed charge to the capacitor: positive when it endorses the
+     operation, negative when it objects.
+   
+   This is the vocabulary bridge: the frameworks name the same ethics the
+   coorenagraph package defines (Deontology, Utilitarianism, VirtueEthics,
+   Beneficence), made evaluable as capacitor charge.
+   
+   Family: moral-capacitor. Bridges coorenagraph; charges SLMoralCapacitor. >>
 #sleela 2.1
 class SLMoralFramework {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Framework ordinals.
   static final int DEONTOLOGY     = 1;  // duties / rules
   static final int UTILITARIANISM = 2;  // outcomes / greatest good

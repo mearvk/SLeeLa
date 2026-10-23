@@ -1,20 +1,61 @@
 #sleela 2.1
-// website.sleela -- the self-contained, runnable build of the SLeeLa Website
-// Generator. The SLeeLa compiler's `run` compiles one file as a single unit,
-// so this aggregate inlines every class the generator needs (design, sign,
-// emitter) plus a `main` that composes a demo site and prints the finished
-// HTML. The split per-class files in this package (SLWebsiteDesign.sleela,
-// SLWebsiteSign.sleela, SLWebsiteEmitter.sleela, SLWebsiteGenerator.sleela) are
-// the package's discovery surface; this file is the executable counterpart,
-// mirroring the data-structures/data_structures.sleela convention.
-//
-// Build custom, exciting websites from a design (theme, palette, an "energy"
-// dial, layout grammar) and an ordered list of semantic signs. No new VM
-// opcode is required: everything here is arithmetic and the existing String
-// concatenation on OP_ADD.
+< website.sleela -- the self-contained, runnable build of the SLeeLa Website >
+< Generator. The SLeeLa compiler's `run` compiles one file as a single unit, >
+< so this aggregate inlines every class the generator needs (design, sign, >
+< emitter) plus a `main` that composes a demo site and prints the finished >
+< HTML. The split per-class files in this package (SLWebsiteDesign.sleela, >
+< SLWebsiteSign.sleela, SLWebsiteEmitter.sleela, SLWebsiteGenerator.sleela) are >
+< the package's discovery surface; this file is the executable counterpart, >
+< mirroring the data-structures/data_structures.sleela convention. >
+<  >
+< Build custom, exciting websites from a design (theme, palette, an "energy" >
+< dial, layout grammar) and an ordered list of semantic signs. No new VM >
+< opcode is required: everything here is arithmetic and the existing String >
+< concatenation on OP_ADD. >
 
-// --- Design: the global look --------------------------------------------
+< --- Design: the global look -------------------------------------------- >
 struct WebDesign {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-03";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
     String theme; String brand; String base; String accent; String font;
     int radius; int energy; int grammar;
 }

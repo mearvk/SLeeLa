@@ -1,23 +1,62 @@
-/*
- * lib/user-interface/SLScrollView.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLScrollView — a SleelaUI scrollable viewport. It is a
- *   composite SleelaUI widget (it adds no new C ABI): a vertical content box
- *   held inside a clipping frame, with an SLScrollBar on the needed axes. The
- *   content box is the parent handle children attach to; the view tracks the
- *   content's natural extent against the viewport extent and only shows a bar
- *   when the content overflows. Scroll position is reported in [0,1] by the
- *   bars and converted to a pixel offset the toolkit applies to the content.
- *
- * An SLScrollView IS an SLWidget container built from SLFrame + SLBox +
- * SLScrollBar, so any widget set (a tree, a list, a text view) becomes
- * scrollable by being built into its content().
- *
- * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
- * bridge.
- */
+<< lib/user-interface/SLScrollView.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLScrollView — a SleelaUI scrollable viewport. It is a
+     composite SleelaUI widget (it adds no new C ABI): a vertical content box
+     held inside a clipping frame, with an SLScrollBar on the needed axes. The
+     content box is the parent handle children attach to; the view tracks the
+     content's natural extent against the viewport extent and only shows a bar
+     when the content overflows. Scroll position is reported in [0,1] by the
+     bars and converted to a pixel offset the toolkit applies to the content.
+   
+   An SLScrollView IS an SLWidget container built from SLFrame + SLBox +
+   SLScrollBar, so any widget set (a tree, a list, a text view) becomes
+   scrollable by being built into its content().
+   
+   Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+   bridge. >>
 #sleela 2.1
 class SLScrollView extends SLWidget {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLFrame clip;        // the clipping viewport
   SLBox layout;        // horizontal: content column + vertical scrollbar
   SLBox content;       // the vertical content column children attach to

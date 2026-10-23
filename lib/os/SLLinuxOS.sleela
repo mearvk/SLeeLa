@@ -1,20 +1,59 @@
-/*
- * lib/os/SLLinuxOS.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLLinuxOS — the Linux-specific flavor of the OS family.
- *   It composes the general `os*` built-ins into Linux idioms: /bin/sh command
- *   execution, XDG and HOME/PATH environment entries, the Filesystem Hierarchy
- *   Standard directories (/etc, /proc, /sys, /tmp, /var), and reading kernel/
- *   distro facts out of /proc and /etc. Underneath it is genuine POSIX —
- *   posix_spawn/waitpid, getenv/setenv, stat, getcwd — on the real kernel.
- *
- * Guard: methods are meaningful only when osPlatform()=="Linux"; isHost()
- * lets a program check first.
- *
- * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
- */
+<< lib/os/SLLinuxOS.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLLinuxOS — the Linux-specific flavor of the OS family.
+     It composes the general `os*` built-ins into Linux idioms: /bin/sh command
+     execution, XDG and HOME/PATH environment entries, the Filesystem Hierarchy
+     Standard directories (/etc, /proc, /sys, /tmp, /var), and reading kernel/
+     distro facts out of /proc and /etc. Underneath it is genuine POSIX —
+     posix_spawn/waitpid, getenv/setenv, stat, getcwd — on the real kernel.
+   
+   Guard: methods are meaningful only when osPlatform()=="Linux"; isHost()
+   lets a program check first.
+   
+   Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge. >>
 #sleela 2.1
 class SLLinuxOS {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   void configure() {}
 
   // True when the running host is actually Linux.

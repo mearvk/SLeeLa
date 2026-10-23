@@ -1,25 +1,64 @@
-/*
- * lib/gui/version-military/SLGuiCryptoSelector.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiCryptoSelector — a military-line COMPONENT that lets
- *   a program choose its cryptography: a careful catalog of named suites
- *   (key-exchange + signature + cipher + hash), each with a security STRENGTH
- *   class (legacy / standard / strong / top-secret) so the UI can present and
- *   gate them. SLeeLa owns the catalog and the SELECTION; the host/crypto layer
- *   performs the actual cryptography. The selector is fail-closed: nothing is
- *   selected until an available suite is chosen, and a suite below a required
- *   minimum strength cannot be selected.
- *
- *   The catalog names standards (not implementations) — e.g. AES-256-GCM,
- *   ChaCha20-Poly1305, X25519, Ed25519, ML-KEM/ML-DSA (post-quantum). Listing a
- *   suite does not imply a bundled implementation; availability is reported
- *   separately so the component only offers what the platform can actually run.
- *
- * Family: gui. A "cryptoselector" node's backing model; the host supplies which
- *   suites are actually available and performs the selected cryptography.
- */
+<< lib/gui/version-military/SLGuiCryptoSelector.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiCryptoSelector — a military-line COMPONENT that lets
+     a program choose its cryptography: a careful catalog of named suites
+     (key-exchange + signature + cipher + hash), each with a security STRENGTH
+     class (legacy / standard / strong / top-secret) so the UI can present and
+     gate them. SLeeLa owns the catalog and the SELECTION; the host/crypto layer
+     performs the actual cryptography. The selector is fail-closed: nothing is
+     selected until an available suite is chosen, and a suite below a required
+     minimum strength cannot be selected.
+   
+     The catalog names standards (not implementations) — e.g. AES-256-GCM,
+     ChaCha20-Poly1305, X25519, Ed25519, ML-KEM/ML-DSA (post-quantum). Listing a
+     suite does not imply a bundled implementation; availability is reported
+     separately so the component only offers what the platform can actually run.
+   
+   Family: gui. A "cryptoselector" node's backing model; the host supplies which
+     suites are actually available and performs the selected cryptography. >>
 #sleela 2.1
 class SLGuiCryptoSelector {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_SUITES = 32;
 
   // Security strength classes (ascending).

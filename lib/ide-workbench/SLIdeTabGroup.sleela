@@ -1,17 +1,56 @@
-/*
- * lib/ide-workbench/SLIdeTabGroup.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLIdeTabGroup — the multi-document (tabbed) model lib/gui
- *   lacks. SLGuiWindow is a single-text window and SLGuiDocumentListener is
- *   hard-bounded to 1..14 watched documents; a real IDE opens many files. This
- *   group owns an unbounded set of SLIdeEditor buffers and tracks the active
- *   one, while exposing only the active + most-recently-focused editors
- *   (<= SLGUI_MAX_DOCUMENTS) to be registered with the OS watch. The 1..14
- *   bound stays an OS-watch contract; the open-file count is independent of it.
- */
+<< lib/ide-workbench/SLIdeTabGroup.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLIdeTabGroup — the multi-document (tabbed) model lib/gui
+     lacks. SLGuiWindow is a single-text window and SLGuiDocumentListener is
+     hard-bounded to 1..14 watched documents; a real IDE opens many files. This
+     group owns an unbounded set of SLIdeEditor buffers and tracks the active
+     one, while exposing only the active + most-recently-focused editors
+     (<= SLGUI_MAX_DOCUMENTS) to be registered with the OS watch. The 1..14
+     bound stays an OS-watch contract; the open-file count is independent of it. >>
 #sleela 2.1
-// Family: ide-workbench. Owns open editors; feeds a bounded watch set to lib/gui.
+< Family: ide-workbench. Owns open editors; feeds a bounded watch set to lib/gui. >
 class SLIdeTabGroup {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_OPEN = 4096;     // generous open-file ceiling
   static final int SLGUI_MAX_DOCUMENTS = 14; // mirrors lib/gui's hard watch bound
 

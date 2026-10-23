@@ -1,27 +1,66 @@
-/*
- * lib/cpu/SLTimingProfile.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLTimingProfile — the one object that gathers a whole
- *   machine's adjustable electrical + timing operating point under a single
- *   expertise tier. It owns the named voltage rails (Vcore, Vsoc, Vddq, Vio),
- *   the expert CPU/bus/I/O/RAM timings, and the SLTimingClass tier object that
- *   governs how aggressively any of it may be dialed. The profile is the thing
- *   a builder tunes and then SEALS into an SLTimingManifest for a compiled
- *   .sleela file to carry.
- *
- * Flow:
- *   1. configure(tier, brand/medium)         pick the expertise Class Object
- *   2. the tier stamps its guardband/headroom onto every rail and budget
- *   3. dialCore/dialBus/dialIO/dialRam(...)   adjust variable speeds (tier-capped)
- *   4. adjustVcore/... (mV)                   adjust ACTUAL voltages (tier-capped)
- *   5. honored()                              check every budget + rail together
- *   6. toManifest()                           flatten to the embeddable record
- *
- * Family: cpu. Composes SLVoltageRail, SLCpuTiming, SLBusTiming, SLIOTiming,
- *   SLRamTiming, SLTimingClass; produces SLTimingManifest.
- */
+<< lib/cpu/SLTimingProfile.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLTimingProfile — the one object that gathers a whole
+     machine's adjustable electrical + timing operating point under a single
+     expertise tier. It owns the named voltage rails (Vcore, Vsoc, Vddq, Vio),
+     the expert CPU/bus/I/O/RAM timings, and the SLTimingClass tier object that
+     governs how aggressively any of it may be dialed. The profile is the thing
+     a builder tunes and then SEALS into an SLTimingManifest for a compiled
+     .sleela file to carry.
+   
+   Flow:
+     1. configure(tier, brand/medium)         pick the expertise Class Object
+     2. the tier stamps its guardband/headroom onto every rail and budget
+     3. dialCore/dialBus/dialIO/dialRam(...)   adjust variable speeds (tier-capped)
+     4. adjustVcore/... (mV)                   adjust ACTUAL voltages (tier-capped)
+     5. honored()                              check every budget + rail together
+     6. toManifest()                           flatten to the embeddable record
+   
+   Family: cpu. Composes SLVoltageRail, SLCpuTiming, SLBusTiming, SLIOTiming,
+     SLRamTiming, SLTimingClass; produces SLTimingManifest. >>
 #sleela 2.1
 class SLTimingProfile {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLTimingClass tier;   // the governing expertise Class Object
 
   // Named, adjustable voltage rails — the ACTUAL voltages, in millivolts.

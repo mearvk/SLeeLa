@@ -1,23 +1,62 @@
-/*
- * lib/cpu/sega-saturn/SLSaturnCPU.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLSaturnCPU — a runnable model of the Sega Saturn (SH-2). It extends
- *   SLCPURuntime, so it inherits register storage, a word-addressable memory
- *   interface, an SLALU, the fetch-decode-execute loop, and — crucially — the
- *   resource-aware workload path (admit()/runWorkload()) that runs C, C++ or
- *   Sleela programs on this CPU within an SLCPUResource grant, mapped onto the
- *   canonical SLeeLa opcode substrate.
- *
- * This file supplies the Sega Saturn (SH-2) register set and a decode() over a compact
- * instruction encoding (load/move/arithmetic/compare/branch/halt). It is a
- * functional model sufficient to run the CPU as a CPU and as a target for
- * further .sleela inputs, not a cycle-accurate emulator; per-arch bus/timing
- * detail remains in this folder's markdown docs.
- *
- * Family: cpu. Extends SLCPURuntime.
- */
+<< lib/cpu/sega-saturn/SLSaturnCPU.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLSaturnCPU — a runnable model of the Sega Saturn (SH-2). It extends
+     SLCPURuntime, so it inherits register storage, a word-addressable memory
+     interface, an SLALU, the fetch-decode-execute loop, and — crucially — the
+     resource-aware workload path (admit()/runWorkload()) that runs C, C++ or
+     Sleela programs on this CPU within an SLCPUResource grant, mapped onto the
+     canonical SLeeLa opcode substrate.
+   
+   This file supplies the Sega Saturn (SH-2) register set and a decode() over a compact
+   instruction encoding (load/move/arithmetic/compare/branch/halt). It is a
+   functional model sufficient to run the CPU as a CPU and as a target for
+   further .sleela inputs, not a cycle-accurate emulator; per-arch bus/timing
+   detail remains in this folder's markdown docs.
+   
+   Family: cpu. Extends SLCPURuntime. >>
 #sleela 2.1
 class SLSaturnCPU extends SLCPURuntime {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-09";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int R_ZERO = 0;
   static final int R_SP = 15;
   static final int R_LINK = 14;

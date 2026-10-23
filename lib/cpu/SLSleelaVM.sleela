@@ -1,24 +1,63 @@
-/*
- * lib/cpu/SLSleelaVM.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLSleelaVM — a stack machine that executes the canonical
- *   SLeeLa opcodes (SLSleelaOpcode) directly. It mirrors the native dispatch
- *   loop in impl/core/sleela_core.c ("in = code[ip++]; switch(in.op){...}"):
- *   fetch one opcode, execute it against an operand stack and globals, advance.
- *
- * This is the Turing-complete substrate of the entire CPU model. Every higher
- * layer — the register-style SLControlUnit, the OS system calls, and all four
- * language frontends — ultimately produces a stream of these opcodes, and this
- * VM gives that stream its meaning. Running the same effect here and on the
- * native VM is what makes the equivalence (SLTuringBridge) concrete.
- *
- * Operand stack and globals are modeled over SLRAM so arbitrarily large
- * computations are expressible (unbounded tape => Turing-complete).
- *
- * Family: cpu. Composes SLSleelaOpcode, SLStack, SLRAM.
- */
+<< lib/cpu/SLSleelaVM.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLSleelaVM — a stack machine that executes the canonical
+     SLeeLa opcodes (SLSleelaOpcode) directly. It mirrors the native dispatch
+     loop in impl/core/sleela_core.c ("in = code[ip++]; switch(in.op){...}"):
+     fetch one opcode, execute it against an operand stack and globals, advance.
+   
+   This is the Turing-complete substrate of the entire CPU model. Every higher
+   layer — the register-style SLControlUnit, the OS system calls, and all four
+   language frontends — ultimately produces a stream of these opcodes, and this
+   VM gives that stream its meaning. Running the same effect here and on the
+   native VM is what makes the equivalence (SLTuringBridge) concrete.
+   
+   Operand stack and globals are modeled over SLRAM so arbitrarily large
+   computations are expressible (unbounded tape => Turing-complete).
+   
+   Family: cpu. Composes SLSleelaOpcode, SLStack, SLRAM. >>
 #sleela 2.1
 class SLSleelaVM {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLSleelaOpcode op;
   SLRAM codeOps;    // opcode of each instruction
   SLRAM codeArgs;   // immediate operand of each instruction

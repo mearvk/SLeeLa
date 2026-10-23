@@ -1,29 +1,68 @@
-/*
- * lib/cpu/SLProgram.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLProgram — an executable image: a sequence of encoded
- *   instructions plus an entry point and a name. A program is produced by the
- *   assembler (SLAssembler), stored by the filesystem, loaded into memory by
- *   SLProgramLoader, and run as a process on the Sleela CPU under the Sleela OS.
- *
- * Instructions are staged into a backing SLRAM region at build time so the
- * loader can copy them to their final load address.
- *
- * A program may also carry an SLTimingManifest — the stated timing/voltage/
- * expertise operating point the image was compiled for. When present, a
- * compiler or VM operates those DECLARED timings instead of assuming the
- * quality of the hardware ("rather than inherently to expect the quality of
- * these operating as confidences of how CPUs operate").
- *
- * A program may likewise carry an SLAccessManifest — the stated meaning of its
- * public / private / protected members as system roles (exposed hop / local /
- * integrity-guarded), so the VM stands up a clean System backdrop from the
- * declared semantics instead of inferring a file-network topology.
- *
- * Family: cpu. Composes SLInstruction, SLRAM, SLTimingManifest, SLAccessManifest.
- */
+<< lib/cpu/SLProgram.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLProgram — an executable image: a sequence of encoded
+     instructions plus an entry point and a name. A program is produced by the
+     assembler (SLAssembler), stored by the filesystem, loaded into memory by
+     SLProgramLoader, and run as a process on the Sleela CPU under the Sleela OS.
+   
+   Instructions are staged into a backing SLRAM region at build time so the
+   loader can copy them to their final load address.
+   
+   A program may also carry an SLTimingManifest — the stated timing/voltage/
+   expertise operating point the image was compiled for. When present, a
+   compiler or VM operates those DECLARED timings instead of assuming the
+   quality of the hardware ("rather than inherently to expect the quality of
+   these operating as confidences of how CPUs operate").
+   
+   A program may likewise carry an SLAccessManifest — the stated meaning of its
+   public / private / protected members as system roles (exposed hop / local /
+   integrity-guarded), so the VM stands up a clean System backdrop from the
+   declared semantics instead of inferring a file-network topology.
+   
+   Family: cpu. Composes SLInstruction, SLRAM, SLTimingManifest, SLAccessManifest. >>
 #sleela 2.1
 class SLProgram {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
   int entryPoint;
   int length;        // instruction count

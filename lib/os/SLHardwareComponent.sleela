@@ -1,23 +1,62 @@
-/*
- * lib/os/SLHardwareComponent.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLHardwareComponent — the common base of every named
- *   hardware part in the OS-construction family (RAM/DDR modules, SSDs, hard
- *   disks, USB devices, UEFI firmware, video cards). It carries the identity
- *   every part shares: a manufacturer, a model/part name, a device class, and a
- *   configured flag, plus a human identity line. Concrete device classes extend
- *   it and add their class-specific specification fields.
- *
- * The point of the family is name-addressable parts: because the real world has
- * a finite catalogue of device types (DDR..DDR5, SATA/NVMe SSDs, USB 1.1..4,
- * UEFI revisions, GPU families), each is a named SLeeLa class a machine
- * description can request by manufacturer + model, compose into an SLMachine,
- * and run on the Sleela VM.
- *
- * Family: os. Base of the hardware-component hierarchy.
- */
+<< lib/os/SLHardwareComponent.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLHardwareComponent — the common base of every named
+     hardware part in the OS-construction family (RAM/DDR modules, SSDs, hard
+     disks, USB devices, UEFI firmware, video cards). It carries the identity
+     every part shares: a manufacturer, a model/part name, a device class, and a
+     configured flag, plus a human identity line. Concrete device classes extend
+     it and add their class-specific specification fields.
+   
+   The point of the family is name-addressable parts: because the real world has
+   a finite catalogue of device types (DDR..DDR5, SATA/NVMe SSDs, USB 1.1..4,
+   UEFI revisions, GPU families), each is a named SLeeLa class a machine
+   description can request by manufacturer + model, compose into an SLMachine,
+   and run on the Sleela VM.
+   
+   Family: os. Base of the hardware-component hierarchy. >>
 #sleela 2.1
 class SLHardwareComponent {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Device-class ordinals (what kind of part this is).
   static final int CLASS_MEMORY  = 0;
   static final int CLASS_SSD     = 1;

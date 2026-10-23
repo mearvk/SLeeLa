@@ -1,22 +1,61 @@
-/*
- * lib/cpu/SLGuestSyscall.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuestSyscall — the guest kernel's system-call ABI and
- *   dispatcher. When a guest user program issues a syscall, the substrate takes
- *   a VM-exit; SLGuestVM routes it here, and this class emulates the requested
- *   service against the guest's devices (console), filesystem, scheduler, and
- *   task table, then returns a result the guest resumes with. This is the
- *   controlled user->kernel boundary a real OS exposes.
- *
- * ABI: a guest syscall carries a number plus up to three integer arguments
- * (modeled as the exit payload + operand-stack values). The dispatcher returns
- * an integer result (or a negative errno-style code), and reports control
- * effects (exit/yield) so SLGuestVM can act on them.
- *
- * Family: cpu. Composes SLGuestDeviceBus, SLGuestFileSystem, SLGuestScheduler.
- */
+<< lib/cpu/SLGuestSyscall.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuestSyscall — the guest kernel's system-call ABI and
+     dispatcher. When a guest user program issues a syscall, the substrate takes
+     a VM-exit; SLGuestVM routes it here, and this class emulates the requested
+     service against the guest's devices (console), filesystem, scheduler, and
+     task table, then returns a result the guest resumes with. This is the
+     controlled user->kernel boundary a real OS exposes.
+   
+   ABI: a guest syscall carries a number plus up to three integer arguments
+   (modeled as the exit payload + operand-stack values). The dispatcher returns
+   an integer result (or a negative errno-style code), and reports control
+   effects (exit/yield) so SLGuestVM can act on them.
+   
+   Family: cpu. Composes SLGuestDeviceBus, SLGuestFileSystem, SLGuestScheduler. >>
 #sleela 2.1
 class SLGuestSyscall {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Linux-like syscall numbers (a small, representative subset).
   static final int SYS_READ   = 0;
   static final int SYS_WRITE  = 1;

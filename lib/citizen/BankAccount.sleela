@@ -1,24 +1,63 @@
-/*
- * lib/citizen/BankAccount.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines BankAccount, the civic-finance Master Class — the quiet
- *   place a Citizen's money goes to be anxious. It models a single banking
- *   relationship: who you bank with, the routing + account numbers that get the
- *   money there, and the balance that is somehow always lower than you expect.
- *
- * BankAccount is a NATURAL / LOADABLE MODULE sharing the common module contract
- * (load / loaded / moduleName / describe). It is a sidecar owned by Citizen and
- * carries the real banking details: a 9-digit ABA routing number (the first two
- * digits of which the Federal Reserve uses to decide which of its twelve
- * Districts your money reports to) and an account number. It holds balance
- * state in whole cents to keep the pennies honest.
- *
- * Family: citizen. Settlement crosses an explicit bridge to the ledger and the
- * FederalReserveID clearing fabric.
- */
+<< lib/citizen/BankAccount.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines BankAccount, the civic-finance Master Class — the quiet
+     place a Citizen's money goes to be anxious. It models a single banking
+     relationship: who you bank with, the routing + account numbers that get the
+     money there, and the balance that is somehow always lower than you expect.
+   
+   BankAccount is a NATURAL / LOADABLE MODULE sharing the common module contract
+   (load / loaded / moduleName / describe). It is a sidecar owned by Citizen and
+   carries the real banking details: a 9-digit ABA routing number (the first two
+   digits of which the Federal Reserve uses to decide which of its twelve
+   Districts your money reports to) and an account number. It holds balance
+   state in whole cents to keep the pennies honest.
+   
+   Family: citizen. Settlement crosses an explicit bridge to the ledger and the
+   FederalReserveID clearing fabric. >>
 #sleela 2.1
-// Unified SLeeLa SDK front-end object.
+< Unified SLeeLa SDK front-end object. >
 class BankAccount {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-07";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   static final String MODULE = "BankAccount";
 

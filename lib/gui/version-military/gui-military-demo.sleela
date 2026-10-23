@@ -1,14 +1,53 @@
-/*
- * lib/gui/version-military/gui-military-demo.sleela
- * A runnable walkthrough of the military (5.0) GUI line: the neutral metal /
- * metal-silver / blue-hue aesthetic with a 3D-lit base frame and careful
- * shadows, strong branding, carefully sized/placed icons on buttons and menu
- * items, the explicit Component vs Container taxonomy, the cryptography
- * selector, the public-key certificate store, and the window key-listeners
- * (resize / minimize / fullscreen / minimize-right fold + double-click restore).
- */
+<< lib/gui/version-military/gui-military-demo.sleela
+   A runnable walkthrough of the military (5.0) GUI line: the neutral metal /
+   metal-silver / blue-hue aesthetic with a 3D-lit base frame and careful
+   shadows, strong branding, carefully sized/placed icons on buttons and menu
+   items, the explicit Component vs Container taxonomy, the cryptography
+   selector, the public-key certificate store, and the window key-listeners
+   (resize / minimize / fullscreen / minimize-right fold + double-click restore). >>
 #sleela 2.1
 class GuiMilitaryDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   void main() {
     SLPackage pkg = new SLPackage(); pkg.configure("gui");

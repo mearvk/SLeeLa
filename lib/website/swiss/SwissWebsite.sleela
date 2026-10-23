@@ -1,15 +1,54 @@
-/*
- * lib/website/swiss/SwissWebsite.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SwissWebsite — the SLeeLa Website Generator build for SWISS International Air Lines. It composes the airline's brand design (brand #cb0300, accent #ffffff) and an ordered list of semantic signs (nav, hero, feature, testimonial, cta, footer) into a complete, self-contained HTML site. Mirrors lib/website/website.sleela: String concatenation on OP_ADD plus integer-to-text, no new VM opcode.
- */
+<< lib/website/swiss/SwissWebsite.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SwissWebsite — the SLeeLa Website Generator build for SWISS International Air Lines. It composes the airline's brand design (brand #cb0300, accent #ffffff) and an ordered list of semantic signs (nav, hero, feature, testimonial, cta, footer) into a complete, self-contained HTML site. Mirrors lib/website/website.sleela: String concatenation on OP_ADD plus integer-to-text, no new VM opcode. >>
 #sleela 2.1
-// SLeeLa website/swiss front-end builder — one airline website per directory.
-// Family: website. SWISS International Air Lines brand site, built from the website model: a
-// design (brand/base/accent + an energy dial) and an ordered list of semantic
-// signs. The same sign model as lib/website/website.sleela; only the brand
-// identity and copy change. Self-contained and runnable (print the HTML).
+< SLeeLa website/swiss front-end builder — one airline website per directory. >
+< Family: website. SWISS International Air Lines brand site, built from the website model: a >
+< design (brand/base/accent + an energy dial) and an ordered list of semantic >
+< signs. The same sign model as lib/website/website.sleela; only the brand >
+< identity and copy change. Self-contained and runnable (print the HTML). >
 class SwissWebsite {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Brand identity for SWISS International Air Lines.
   String brandName() { return "SWISS International Air Lines"; }
   String brand() { return "#cb0300"; }

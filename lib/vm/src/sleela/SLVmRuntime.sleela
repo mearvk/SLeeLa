@@ -1,24 +1,63 @@
-/*
- * lib/vm/src/sleela/SLVmRuntime.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLVmRuntime — the OOD equivalent of the native
- *   consolidated facade (virtual-machine/vm-version/010/vm_runtime.{h,c}, v010).
- *   It composes the whole hardened VM — config, report, status, memory, result,
- *   telemetry, gc, profile, capability, platform, audit — and wires them in
- *   dependency order behind a four-call surface: init / poll / permit / report
- *   / shutdown. This is the Sleela object a VM selection resolves to: the native
- *   VM holds this record in memory after loading the chosen version's .sleela
- *   and uses it to configure and observe the loaded C/C++ VM.
- *
- * Mirrors: VM_RUNTIME_VERSION, vm_runtime_init/register_table/poll/permit/
- *   note/report/shutdown.
- *
- * Family: vm. Composes SLVmConfig, SLVmReport, SLVmStatus, SLVmMemory,
- *   SLVmResult, SLVmTelemetry, SLVmGc, SLVmProfile, SLVmCapability,
- *   SLVmPlatform, SLVmAudit. Native effects route via SLVMNativeBinding.
- */
+<< lib/vm/src/sleela/SLVmRuntime.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLVmRuntime — the OOD equivalent of the native
+     consolidated facade (virtual-machine/vm-version/010/vm_runtime.{h,c}, v010).
+     It composes the whole hardened VM — config, report, status, memory, result,
+     telemetry, gc, profile, capability, platform, audit — and wires them in
+     dependency order behind a four-call surface: init / poll / permit / report
+     / shutdown. This is the Sleela object a VM selection resolves to: the native
+     VM holds this record in memory after loading the chosen version's .sleela
+     and uses it to configure and observe the loaded C/C++ VM.
+   
+   Mirrors: VM_RUNTIME_VERSION, vm_runtime_init/register_table/poll/permit/
+     note/report/shutdown.
+   
+   Family: vm. Composes SLVmConfig, SLVmReport, SLVmStatus, SLVmMemory,
+     SLVmResult, SLVmTelemetry, SLVmGc, SLVmProfile, SLVmCapability,
+     SLVmPlatform, SLVmAudit. Native effects route via SLVMNativeBinding. >>
 #sleela 2.1
 class SLVmRuntime {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "unknown";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "unknown";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String versionString;        // e.g. "idea-vm v010 (consolidated)"
   SLVmConfig      config;
   SLVmReport      report;

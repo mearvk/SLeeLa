@@ -1,21 +1,60 @@
-/*
- * lib/autocad/SLCadCommand.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLCadCommand -- one recorded, reversible edit the AutoCAD
- *   Creator(TM) applied to a document. Every creation (line/text/dim/room) and
- *   every alteration (move/reshape/relabel/restyle/delete) is captured as a
- *   command so the Creator can keep an audit trail and offer undo: a command
- *   remembers its verb, the id of the entity it affected, and the "before"
- *   values needed to reverse it (prior endpoints, prior label/layer, prior
- *   alive flag). This keeps editing a first-class, inspectable operation rather
- *   than an opaque mutation -- which is exactly what makes a creator (as opposed
- *   to a one-shot renderer) possible.
- *
- * Family: autocad. SLeeLa owns the edit history; a command is a plain record,
- * replayed/reversed against an SLCadDocument.
- */
+<< lib/autocad/SLCadCommand.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLCadCommand -- one recorded, reversible edit the AutoCAD
+     Creator(TM) applied to a document. Every creation (line/text/dim/room) and
+     every alteration (move/reshape/relabel/restyle/delete) is captured as a
+     command so the Creator can keep an audit trail and offer undo: a command
+     remembers its verb, the id of the entity it affected, and the "before"
+     values needed to reverse it (prior endpoints, prior label/layer, prior
+     alive flag). This keeps editing a first-class, inspectable operation rather
+     than an opaque mutation -- which is exactly what makes a creator (as opposed
+     to a one-shot renderer) possible.
+   
+   Family: autocad. SLeeLa owns the edit history; a command is a plain record,
+   replayed/reversed against an SLCadDocument. >>
 #sleela 2.1
 class SLCadCommand {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Verb ordinals.
   static final int CREATE  = 0;   // an entity was created (undo = delete it)
   static final int MOVE    = 1;   // translated by (dx,dy)

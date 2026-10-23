@@ -1,23 +1,62 @@
-/*
- * lib/vm/SleelaVMSystemCallBridge.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SleelaVMSystemCallBridge — the VM-family face of the
- *   operating-system System Call API. Where SLVMNativeBinding is the lifecycle
- *   anchor for "the VM reaches native code," this class is the concrete bridge
- *   that exposes the host System API to a running VM through the os* built-ins
- *   (OP_OS_* opcodes), serviced by impl/core/sleela_os.c on Windows, Linux, and
- *   macOS. Every SLeeLa VM — the base SLVM and generations SLVM/1..11 — shares
- *   one ISA, so if the base VM can issue these system calls, every generation
- *   can too; this class is how a VM advertises and performs them.
- *
- * Capability: pairs with SleelaVMFeatureBits.PROCESS and .OS_SYSCALLS. A VM that
- * sets those bits is declaring it supports this bridge. A spawned process is a
- * VM-local bounded handle (the sockets/files discipline), never a raw PID.
- *
- * Family: vm. Native VM/OS work crosses the explicit os* SLVM bridge.
- */
+<< lib/vm/SleelaVMSystemCallBridge.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SleelaVMSystemCallBridge — the VM-family face of the
+     operating-system System Call API. Where SLVMNativeBinding is the lifecycle
+     anchor for "the VM reaches native code," this class is the concrete bridge
+     that exposes the host System API to a running VM through the os* built-ins
+     (OP_OS_* opcodes), serviced by impl/core/sleela_os.c on Windows, Linux, and
+     macOS. Every SLeeLa VM — the base SLVM and generations SLVM/1..11 — shares
+     one ISA, so if the base VM can issue these system calls, every generation
+     can too; this class is how a VM advertises and performs them.
+   
+   Capability: pairs with SleelaVMFeatureBits.PROCESS and .OS_SYSCALLS. A VM that
+   sets those bits is declaring it supports this bridge. A spawned process is a
+   VM-local bounded handle (the sockets/files discipline), never a raw PID.
+   
+   Family: vm. Native VM/OS work crosses the explicit os* SLVM bridge. >>
 #sleela 2.1
 class SleelaVMSystemCallBridge {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
   int state;
   int calls;

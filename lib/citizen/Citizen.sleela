@@ -1,27 +1,66 @@
-/*
- * lib/citizen/Citizen.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines Citizen, the civic Master Class — one honest, taxpaying,
- *   coffee-drinking person as modeled by the Republic of Sleela. A Citizen is
- *   the smallest unit of a nation that still complains about the weather.
- *
- * Citizen is a NATURAL / LOADABLE MODULE sharing the common module contract
- * (load / loaded / moduleName / describe) with the other /lib Master Classes,
- * so a loader can treat it uniformly. It composes three sidecar records that it
- * owns and keeps consistent: an Industry affiliation (what they do for a
- * living), a BankAccount (where the money quietly leaves from), and a
- * FederalReserveID (how the central bank pretends to know them personally).
- *
- * A Citizen is, famously, able. It can be born, employed, paid, taxed, retired,
- * and — on a good day — content. It holds civic state only; the paperwork is
- * performed by the sidecar classes in this package. The runnable orchestration
- * example lives in citizen/sleela/CitizenDemo.sleela.
- *
- * Family: citizen. Civic data crosses an explicit bridge to the ledger.
- */
+<< lib/citizen/Citizen.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines Citizen, the civic Master Class — one honest, taxpaying,
+     coffee-drinking person as modeled by the Republic of Sleela. A Citizen is
+     the smallest unit of a nation that still complains about the weather.
+   
+   Citizen is a NATURAL / LOADABLE MODULE sharing the common module contract
+   (load / loaded / moduleName / describe) with the other /lib Master Classes,
+   so a loader can treat it uniformly. It composes three sidecar records that it
+   owns and keeps consistent: an Industry affiliation (what they do for a
+   living), a BankAccount (where the money quietly leaves from), and a
+   FederalReserveID (how the central bank pretends to know them personally).
+   
+   A Citizen is, famously, able. It can be born, employed, paid, taxed, retired,
+   and — on a good day — content. It holds civic state only; the paperwork is
+   performed by the sidecar classes in this package. The runnable orchestration
+   example lives in citizen/sleela/CitizenDemo.sleela.
+   
+   Family: citizen. Civic data crosses an explicit bridge to the ledger. >>
 #sleela 2.1
-// Unified SLeeLa SDK front-end object.
+< Unified SLeeLa SDK front-end object. >
 class Citizen {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-07";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   static final String MODULE = "Citizen";
 

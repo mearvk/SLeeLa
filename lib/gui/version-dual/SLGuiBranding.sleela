@@ -1,17 +1,56 @@
-/*
- * lib/gui/version-dual/SLGuiBranding.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiBranding — the 3.0 logo + brand-identity surface for
- *   a SLeeLa GUI app: a logo asset (by host-resolvable name/path), a placement,
- *   a scale, an optional wordmark, brand accent/secondary colors, and a tagline.
- *   The host paints the logo into the chrome (title bar / splash / about / app
- *   header) at the requested placement and scale; SLeeLa names the brand, the
- *   host renders it. Every knob is validated/clamped.
- *
- * Family: gui. Owned by SLGuiApp; read by the host when it dresses the window.
- */
+<< lib/gui/version-dual/SLGuiBranding.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiBranding — the 3.0 logo + brand-identity surface for
+     a SLeeLa GUI app: a logo asset (by host-resolvable name/path), a placement,
+     a scale, an optional wordmark, brand accent/secondary colors, and a tagline.
+     The host paints the logo into the chrome (title bar / splash / about / app
+     header) at the requested placement and scale; SLeeLa names the brand, the
+     host renders it. Every knob is validated/clamped.
+   
+   Family: gui. Owned by SLGuiApp; read by the host when it dresses the window. >>
 #sleela 2.1
 class SLGuiBranding {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Logo placement in the app chrome.
   static final int PLACE_TITLEBAR = 0;
   static final int PLACE_HEADER   = 1;

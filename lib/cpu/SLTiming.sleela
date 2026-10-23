@@ -1,23 +1,62 @@
-/*
- * lib/cpu/SLTiming.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLTiming — one named, careful timing budget: the atom all
- *   the expert bus / CPU / I/O / RAM timings are built from. A budget names a
- *   path and states its real electrical constraints in picoseconds (ps):
- *   setup, hold, propagation, and jitter, all against a declared period. Rather
- *   than assume a part is "fast enough", a budget is CHECKED — slack is period
- *   minus the consumed time, and a path is honored only when slack is
- *   non-negative with the stated guardband.
- *
- * Everything here is nameful and quality-first: each budget carries the signal
- * name and a human reason, so a timing report reads as prose, not as magic
- * numbers. A compiled .sleela file embeds these budgets so a compiler or VM
- * operates the STATED timings instead of inferring confidences about silicon.
- *
- * Family: cpu. Pure Sleela timing model (picosecond integer arithmetic).
- */
+<< lib/cpu/SLTiming.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLTiming — one named, careful timing budget: the atom all
+     the expert bus / CPU / I/O / RAM timings are built from. A budget names a
+     path and states its real electrical constraints in picoseconds (ps):
+     setup, hold, propagation, and jitter, all against a declared period. Rather
+     than assume a part is "fast enough", a budget is CHECKED — slack is period
+     minus the consumed time, and a path is honored only when slack is
+     non-negative with the stated guardband.
+   
+   Everything here is nameful and quality-first: each budget carries the signal
+   name and a human reason, so a timing report reads as prose, not as magic
+   numbers. A compiled .sleela file embeds these budgets so a compiler or VM
+   operates the STATED timings instead of inferring confidences about silicon.
+   
+   Family: cpu. Pure Sleela timing model (picosecond integer arithmetic). >>
 #sleela 2.1
 class SLTiming {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String signal;      // nameful path: "addr->ras", "cas->dq", "req->ack", ...
   String reason;      // why this budget exists, in words
   int periodPs;       // the clock/strobe period this path must fit inside (ps)

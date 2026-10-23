@@ -1,24 +1,63 @@
-/*
- * lib/alphabet/Theme.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines Theme, the base Master Class that binds the three things
- *   this package is about — a Palette of Colors, role colors (background,
- *   foreground, accent), and an Alphabet — into one coherent, user-facing look.
- *   A Theme is what a user of Sleela actually sees.
- *
- * A concrete theme is created by subclassing Theme and overriding dress(),
- * which fills in the palette and role colors. The base owns the role plumbing,
- * contrast checking, and the loadable-module contract, mirroring the
- * base/subclass pattern used by Alphabet and the lib/compiler front ends.
- *
- * Theme is a NATURAL / LOADABLE MODULE sharing the common module contract
- * (load / loaded / moduleName / describe).
- *
- * Family: alphabet.
- */
+<< lib/alphabet/Theme.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines Theme, the base Master Class that binds the three things
+     this package is about — a Palette of Colors, role colors (background,
+     foreground, accent), and an Alphabet — into one coherent, user-facing look.
+     A Theme is what a user of Sleela actually sees.
+   
+   A concrete theme is created by subclassing Theme and overriding dress(),
+   which fills in the palette and role colors. The base owns the role plumbing,
+   contrast checking, and the loadable-module contract, mirroring the
+   base/subclass pattern used by Alphabet and the lib/compiler front ends.
+   
+   Theme is a NATURAL / LOADABLE MODULE sharing the common module contract
+   (load / loaded / moduleName / describe).
+   
+   Family: alphabet. >>
 #sleela 2.1
-// Unified SLeeLa SDK front-end object.
+< Unified SLeeLa SDK front-end object. >
 class Theme {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-07";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   static final String MODULE = "Theme";
 

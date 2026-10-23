@@ -1,17 +1,56 @@
-/*
- * lib/os/SLPath.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLPath — path construction and inspection that is aware
- *   of the host's path conventions. The separator differs per OS ('\' on
- *   Windows, '/' on POSIX), so SLPath asks the VM which platform it is on
- *   (osPlatform) and joins/normalizes accordingly. This is a pure-SLeeLa helper
- *   layered on the one OS fact it needs — the platform — so developers write
- *   portable path code once.
- *
- * Family: os. Reads the host platform via the `os*` SLVM bridge.
- */
+<< lib/os/SLPath.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLPath — path construction and inspection that is aware
+     of the host's path conventions. The separator differs per OS ('\' on
+     Windows, '/' on POSIX), so SLPath asks the VM which platform it is on
+     (osPlatform) and joins/normalizes accordingly. This is a pure-SLeeLa helper
+     layered on the one OS fact it needs — the platform — so developers write
+     portable path code once.
+   
+   Family: os. Reads the host platform via the `os*` SLVM bridge. >>
 #sleela 2.1
 class SLPath {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String value;
 
   void configure(String p) { value = p; }
