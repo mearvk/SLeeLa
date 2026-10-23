@@ -45622,6 +45622,10 @@
       "sha256": "0079f0e5bb44d0fd7d2d23f6f573558d697a0f11a7eb056aeea3067429c03f0d"
     },
     {
+      "path": "lib/os/SLOSNativeSubsystem.sleela",
+      "sha256": "1ab10947fbd4f8558044a019cf3b9e1770a53853250046a25b9fc7c9c25677ab"
+    },
+    {
       "path": "lib/os/SLOSSensitivityFetch.sleela",
       "sha256": "19ee0920af7c66c1e2c44718432ef3351b92fd3bc6e46b9343bca25006eb425b"
     },
