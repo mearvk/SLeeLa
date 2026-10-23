@@ -22,5 +22,10 @@ Key pointers (full table in `ORGANIZATION.md`):
 
 Prefer the canonical spec over restating grammar or numbers from memory.
 
+**Conventions for new code:** All new SLeeLa (`.sleela`) classes must carry the
+**Metadata Class metapattern** (the descriptive-metadata block). This is a
+standing team preference — see [`metadata-class-standard.md`](metadata-class-standard.md)
+and the normative `SLEELA.syntax` §15.
+
 **Branches:** `main` and `master` are both maintained and kept with equivalent
 content — apply changes to both.

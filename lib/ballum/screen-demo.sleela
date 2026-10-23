@@ -1,0 +1,80 @@
+#sleela 2.1
+// screen-demo.sleela -- the runnable demo of the clean, pixel-accurate Ballum
+// Screen API. It inlines a compact Screen over the uiBallum* VM bridge
+// (mirroring SLBallumScreen + SLBallumManager) and a main that opens the
+// primary display, reports its geometry and capabilities, then plots exact
+// pixels and sets brightness/warmth/gamma -- each with a precise, readable
+// status. On a headless host the native backend is the unavailable fallback and
+// every op reports an honest status, never a false success.
+//
+// Status codes: 0 ok, 2 backend-unavailable, 4 display-not-found,
+// 5 out-of-bounds, 7 unsupported. Capability bits: 1 per-pixel, 4 brightness,
+// 8 warmth, 16 gamma.
+class ScreenDemo {
+  int boundId;
+  int w;
+  int h;
+  int caps;
+
+  boolean capHas(int bit) { return (caps / bit) % 2 == 1; }
+  boolean inBounds(int x, int y) { return x >= 0 && y >= 0 && x < w && y < h; }
+
+  String statusText(int code) {
+    if (code == 0) { return "ok"; }
+    if (code == 2) { return "backend unavailable"; }
+    if (code == 4) { return "display not found"; }
+    if (code == 5) { return "out of bounds"; }
+    if (code == 7) { return "unsupported"; }
+    return uiBallumStatusName(code);
+  }
+
+  // Open the primary display and cache its facts.
+  int open() {
+    int st = uiBallumEnumerate();
+    if (st != 0) { return st; }
+    int n = uiBallumDisplayCount();
+    if (n == 0) { return 4; }
+    int idx = 0;
+    int i = 0;
+    while (i < n) { if (uiBallumDisplayPrimary(i) == 1) { idx = i; } i = i + 1; }
+    boundId = uiBallumDisplayId(idx);
+    w = uiBallumDisplayWidth(idx);
+    h = uiBallumDisplayHeight(idx);
+    caps = uiBallumDisplayCaps(idx);
+    return 0;
+  }
+
+  // plot(x,y,...): one pixel-accurate write, validated before dispatch.
+  int plot(int x, int y, int r, int g, int b) {
+    if (!capHas(1)) { return 7; }
+    if (!inBounds(x, y)) { return 5; }
+    return uiBallumSetPixel(boundId, x, y, r, g, b, 255);
+  }
+
+  void main() {
+    print("=== Ballum Screen API (pixel accuracy) ===");
+    print("backend: " + uiBallumBackendName());
+
+    int st = open();
+    print("open primary: " + statusText(st));
+
+    if (st == 0) {
+      print("screen id=" + boundId + " size " + w + "x" + h
+            + " perPixel=" + capHas(1) + " brightness=" + capHas(4)
+            + " warmth=" + capHas(8) + " gamma=" + capHas(16));
+
+      // Exact placements: one in range, one deliberately out of range.
+      print("plot(0,0 red):        " + statusText(plot(0, 0, 255, 0, 0)));
+      print("plot(w,h off-screen): " + statusText(plot(w, h, 0, 255, 0)));
+
+      // Whole-display controls.
+      print("brightness 70%:       " + statusText(uiBallumSetBrightness(boundId, 70)));
+      print("warmth 3400K:         " + statusText(uiBallumSetWarmth(boundId, 3400)));
+      print("gamma 2.20:           " + statusText(uiBallumSetGamma(boundId, 220)));
+    } else {
+      // Headless: prove the API still refuses cleanly and precisely.
+      print("no screen; plot refuses: " + statusText(plot(0, 0, 255, 255, 255)));
+    }
+    print("done");
+  }
+}

@@ -1,0 +1,292 @@
+/*
+ * lib/ballum/SLBallumScreen.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: The clean, pixel-accurate Screen API for Ballum developers.
+ */
+#sleela 2.1
+// Family: ballum. SLBallumScreen is the high-level, pixel-accurate developer
+// API for one bound display. Where SLBallumManager is the low-level bridge to
+// the native ballum_manager_t, SLBallumScreen is the polite, ergonomic surface
+// a SLeeLa developer actually integrates with: open a screen, ask what it can
+// do and how big it is, then set pixels and whole-display controls with clear,
+// well-named, safe methods.
+//
+// Pixel accuracy is the contract. Every placement is validated against the live
+// display geometry and the advertised capability of the display BEFORE it reaches
+// the device, so a write either lands exactly where asked or returns a precise,
+// readable status -- it never silently clips, wraps, or no-ops. Coordinates use
+// a top-left origin: x grows right in [0, width), y grows down in [0, height).
+//
+// Typical use:
+//   SLBallumScreen screen = new SLBallumScreen();
+//   screen.open();                         // bind the primary display
+//   if (screen.isReady()) {
+//     screen.plot(10, 20, screen.rgb(255, 0, 0));   // one exact red pixel
+//     screen.brightness(70);                        // 0..100 percent
+//     screen.warmth(3400);                          // kelvin (warm)
+//   }
+//   print(screen.lastMessage());
+//
+// Result codes mirror SLBallumStatus / the native ballum_status_t: 0 ok,
+// 1 invalid, 2 backend-unavailable, 4 display-not-found, 5 out-of-bounds,
+// 7 unsupported, 100 bridge-required.
+class SLBallumScreen {
+
+  SLBallumManager manager;   // the low-level bridge-boundary driver
+  SLBallumStatus status;     // result-code text
+  int boundIndex;            // enumerate() index of the bound display, or -1
+  int boundId;               // native display id of the bound display, or -1
+  int w;                     // cached width  (pixels) of the bound display
+  int h;                     // cached height (pixels) of the bound display
+  int caps;                  // cached capability bitmask of the bound display
+  int lastStatus;            // the status of the most recent operation
+
+  // ---- lifecycle ------------------------------------------------------
+
+  // Prepare the Screen. Call open()/openIndex() before drawing.
+  void create() {
+    manager = new SLBallumManager();
+    manager.configure();
+    status = new SLBallumStatus();
+    boundIndex = -1;
+    boundId = -1;
+    w = 0;
+    h = 0;
+    caps = 0;
+    lastStatus = SLBallumStatus.BRIDGE_REQUIRED;
+  }
+
+  // Bind the native backend handle the host VM provides. A negative handle
+  // means no display backend is available on this host.
+  boolean attach(int nativeHandle) {
+    if (manager == null) { create(); }
+    boolean ok = manager.bindNativeHandle(nativeHandle);
+    lastStatus = manager.statusCode();
+    return ok;
+  }
+
+  // open(): enumerate displays and bind the primary one (or display 0 if no
+  // display is flagged primary). Returns the result code.
+  int open() {
+    return openIndex(primaryIndex());
+  }
+
+  // openIndex(index): enumerate displays and bind the one at `index`.
+  int openIndex(int index) {
+    if (manager == null) { create(); }
+    int st = manager.enumerate();
+    lastStatus = st;
+    if (st != SLBallumStatus.OK) { return st; }
+    if (index < 0 || index >= manager.displays()) {
+      lastStatus = SLBallumStatus.DISPLAY_NOT_FOUND;
+      return lastStatus;
+    }
+    boundIndex = index;
+    boundId = manager.displayIdAt(index);
+    w = manager.displayWidthAt(index);
+    h = manager.displayHeightAt(index);
+    caps = manager.displayCapsAt(index);
+    lastStatus = SLBallumStatus.OK;
+    return lastStatus;
+  }
+
+  // A Screen is ready to draw once a display is bound.
+  boolean isReady() { return boundId >= 0; }
+
+  // ---- discovery ------------------------------------------------------
+
+  int screenCount() {
+    if (manager == null) { return 0; }
+    return manager.displays();
+  }
+
+  // Index of the primary display among the enumerated set, or 0 as a safe
+  // default when none is flagged. Enumerates first if needed.
+  int primaryIndex() {
+    if (manager == null) { create(); }
+    if (manager.displays() == 0) { manager.enumerate(); }
+    int n = manager.displays();
+    int i = 0;
+    while (i < n) {
+      if (manager.displayPrimaryAt(i)) { return i; }
+      i = i + 1;
+    }
+    return 0;
+  }
+
+  // Geometry + identity of the bound display.
+  int width() { return w; }
+  int height() { return h; }
+  int displayId() { return boundId; }
+  String name() {
+    if (!isReady()) { return ""; }
+    return manager.displayNameAt(boundIndex);
+  }
+  boolean isPrimary() {
+    if (!isReady()) { return false; }
+    return manager.displayPrimaryAt(boundIndex);
+  }
+
+  // Capability queries a developer checks before enabling a control. These read
+  // the advertised capability bitmask of the bound display (ballum_capability_t:
+  // 1 per-pixel, 2 blit, 4 brightness, 8 warmth, 16 gamma).
+  boolean capHas(int bit) { return (caps / bit) % 2 == 1; }
+  boolean canPlotPixels() { return capHas(1); }
+  boolean canSetBrightness() { return capHas(4); }
+  boolean canSetWarmth() { return capHas(8); }
+  boolean canSetGamma() { return capHas(16); }
+
+  // ---- pixel accuracy helpers -----------------------------------------
+
+  // Is (x, y) an exact, in-range pixel on the bound display? This is the
+  // accuracy gate every placement passes through.
+  boolean inBounds(int x, int y) {
+    return isReady() && x >= 0 && y >= 0 && x < w && y < h;
+  }
+
+  // Build a color without needing to name SLBallumColor at the call site.
+  SLBallumColor rgb(int r, int g, int b) {
+    SLBallumColor c = new SLBallumColor();
+    c.setRgb(r, g, b);
+    return c;
+  }
+  SLBallumColor rgba(int r, int g, int b, int a) {
+    SLBallumColor c = new SLBallumColor();
+    c.setRgba(r, g, b, a);
+    return c;
+  }
+
+  // ---- pixel control (the core of the API) ----------------------------
+
+  // plot(x, y, color): set exactly one pixel. Validates readiness, capability,
+  // and bounds before the write, so the pixel lands precisely or a clear status
+  // is returned. Returns the result code (also in lastStatus).
+  int plot(int x, int y, SLBallumColor color) {
+    if (!isReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (color == null) { lastStatus = SLBallumStatus.INVALID_ARGUMENT; return lastStatus; }
+    if (!canPlotPixels()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    if (!inBounds(x, y)) { lastStatus = SLBallumStatus.OUT_OF_BOUNDS; return lastStatus; }
+    lastStatus = manager.setPixel(boundId, x, y, color);
+    return lastStatus;
+  }
+
+  // plotRgb: the common case, one call, no color object at the call site.
+  int plotRgb(int x, int y, int r, int g, int b) {
+    return plot(x, y, rgb(r, g, b));
+  }
+
+  // sample(x, y): read a pixel back, returned packed as 0xAARRGGBB, or -1 if the
+  // read is out of bounds / unsupported. Lets a developer verify accuracy.
+  int sample(int x, int y) {
+    if (!isReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return -1; }
+    if (!canPlotPixels()) { lastStatus = SLBallumStatus.UNSUPPORTED; return -1; }
+    if (!inBounds(x, y)) { lastStatus = SLBallumStatus.OUT_OF_BOUNDS; return -1; }
+    int packed = manager.getPixelPacked(boundId, x, y);
+    lastStatus = packed >= 0 ? SLBallumStatus.OK : SLBallumStatus.BACKEND_ERROR;
+    return packed;
+  }
+
+  // fillRect(x, y, rectW, rectH, color): set every pixel in an exact rectangle,
+  // one accurate plot at a time. The rectangle must lie fully inside the
+  // display; otherwise OUT_OF_BOUNDS is returned and nothing is drawn. Returns
+  // the result code; stops and reports the first non-OK pixel.
+  int fillRect(int x, int y, int rectW, int rectH, SLBallumColor color) {
+    if (!isReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (color == null || rectW <= 0 || rectH <= 0) { lastStatus = SLBallumStatus.INVALID_ARGUMENT; return lastStatus; }
+    if (!canPlotPixels()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    if (x < 0 || y < 0 || x + rectW > w || y + rectH > h) {
+      lastStatus = SLBallumStatus.OUT_OF_BOUNDS;
+      return lastStatus;
+    }
+    int row = 0;
+    while (row < rectH) {
+      int col = 0;
+      while (col < rectW) {
+        int st = manager.setPixel(boundId, x + col, y + row, color);
+        if (st != SLBallumStatus.OK) { lastStatus = st; return st; }
+        col = col + 1;
+      }
+      row = row + 1;
+    }
+    lastStatus = SLBallumStatus.OK;
+    return lastStatus;
+  }
+
+  // ---- whole-display controls -----------------------------------------
+  // Each checks the capability, then delegates to the manager (which clamps to
+  // the documented range and dispatches to native).
+
+  // brightness(percent): 0..100.
+  int brightness(int percent) {
+    if (!isReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (!canSetBrightness()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    lastStatus = manager.setBrightness(boundId, percent);
+    return lastStatus;
+  }
+
+  // warmth(kelvin): color temperature, 1000..10000K (6500 neutral; lower warmer).
+  int warmth(int kelvin) {
+    if (!isReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (!canSetWarmth()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    lastStatus = manager.setWarmth(boundId, kelvin);
+    return lastStatus;
+  }
+
+  // gamma(gammaScaled): gamma encoded x100 (2.20 gamma == 220), 10..1000.
+  int gamma(int gammaScaled) {
+    if (!isReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (!canSetGamma()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    lastStatus = manager.setGamma(boundId, gammaScaled);
+    return lastStatus;
+  }
+
+  // gammaPoint(whole, hundredths): convenience for gamma(2, 20) == 2.20 gamma.
+  int gammaPoint(int whole, int hundredths) {
+    return gamma(whole * 100 + hundredths);
+  }
+
+  // ---- status ---------------------------------------------------------
+
+  int statusCode() { return lastStatus; }
+  boolean ok() { return lastStatus == SLBallumStatus.OK; }
+  String lastMessage() { return status.text(lastStatus); }
+
+  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+  // or catalog can read and (where appropriate) override this record.
+  // Values are faithful to the real origin of the subject where publicly known.
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "SLeeLa Project";
+  String metaDate = "2026-10-23";
+  String metaCopyright = "SLeeLa standard library";
+  String metaTrademark = "Ballum";
+  String metaCorporation = "SLeeLa Project";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026";
+  int metaScienceRating = 8;        // maturity/robustness on a 1..10 scale
+  String metaNationalSchedule = "SLeeLa Ballum Screen API (lib/ballum)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

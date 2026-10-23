@@ -1030,6 +1030,10 @@
       "sha256": "00ee83e3abf1abc75655408c9811ba4ff50bf6da3d5b24ed8de2f9f77e5290b1"
     },
     {
+      "path": "lib/ballum/SLBallumScreen.sleela",
+      "sha256": "13b683fb91b8b6d967c6626bdf786b74656b39f02b520f3097a25d754dce3d40"
+    },
+    {
       "path": "lib/ballum/SLBallumStatus.sleela",
       "sha256": "1983fd89c4bfcd7a934c903748ee269c82937c66404085217d51a31ce081ced7"
     },
@@ -1056,6 +1060,10 @@
     {
       "path": "lib/ballum/platforms/Microsoft/Windows/SLWindowsBallumProfile.sleela",
       "sha256": "92560bef2968332206ea5699377914e7dbad30cf26e2ddc846d77d0cba9082a2"
+    },
+    {
+      "path": "lib/ballum/screen-demo.sleela",
+      "sha256": "fb18a08d3b2fd1bf4ed28684c909b070dd76dc7e45e710da19bb32313012d8e8"
     },
     {
       "path": "lib/bash/SLPackage.sleela",

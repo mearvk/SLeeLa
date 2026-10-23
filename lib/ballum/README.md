@@ -23,10 +23,55 @@ out-of-range pixel or an impossible control.
 | File | Role |
 | --- | --- |
 | `SLPackage.sleela` | Package facade (`configure`/`name`/`available`). |
-| `SLBallumManager.sleela` | The bridge-boundary facade a program drives: bind the native handle, enumerate, then `request*` a pixel/blit/brightness/warmth/gamma op (validated before dispatch). |
+| `SLBallumScreen.sleela` | **The clean, pixel-accurate Screen API** — the high-level surface a developer integrates with (see below). |
+| `SLBallumManager.sleela` | The low-level bridge-boundary driver: bind the native handle, enumerate, then live `setPixel`/`setBrightness`/`setWarmth`/`setGamma` through the `uiBallum*` VM bridge (plus `request*` pre-validation helpers). |
 | `SLBallumDisplay.sleela` | One connected display: id, geometry, primary flag, and the capability bitmask (`supportsPerPixel`/`supportsBrightness`/…), mirroring `ballum_display_t`. |
 | `SLBallumColor.sleela` | An 8-bit RGBA color with clamped channels, mirroring `ballum_color_t`. |
 | `SLBallumStatus.sleela` | Result codes mirroring `ballum_status_t`, plus the SLeeLa `BRIDGE_REQUIRED` code and `text(code)`. |
+
+## The Screen API (`SLBallumScreen`) — pixel accuracy, cleanly
+
+`SLBallumScreen` is the surface most developers should use. It wraps the
+low-level `SLBallumManager` for one bound display and offers a small, polite,
+well-named API with **pixel accuracy as its contract**: every placement is
+validated against the live display geometry *and* the display's advertised
+capability **before** it reaches the device, so a write either lands exactly
+where asked or returns a precise, readable status — it never silently clips,
+wraps, or no-ops. Coordinates use a top-left origin: `x` in `[0, width)`,
+`y` in `[0, height)`.
+
+```java
+SLBallumScreen screen = new SLBallumScreen();
+screen.create();
+screen.attach(nativeHandle);     // host VM provides the backend handle
+screen.open();                   // enumerate + bind the primary display
+
+if (screen.isReady() && screen.canPlotPixels()) {
+    screen.plotRgb(10, 20, 255, 0, 0);          // one exact red pixel
+    screen.fillRect(0, 0, 32, 32, screen.rgb(0, 128, 255));
+    int packed = screen.sample(10, 20);         // read back: 0xAARRGGBB
+}
+if (screen.canSetBrightness()) { screen.brightness(70); }   // 0..100 %
+if (screen.canSetWarmth())     { screen.warmth(3400); }     // kelvin (warm)
+if (screen.canSetGamma())      { screen.gammaPoint(2, 20); }// gamma 2.20
+print(screen.lastMessage());                                // readable status
+```
+
+| Method | Purpose |
+| --- | --- |
+| `create()` / `attach(handle)` / `open()` / `openIndex(i)` | prepare, bind the native handle, enumerate + bind a display |
+| `isReady()` / `width()` / `height()` / `name()` / `displayId()` / `isPrimary()` | readiness + geometry/identity of the bound display |
+| `screenCount()` / `primaryIndex()` | discovery across displays |
+| `canPlotPixels()` / `canSetBrightness()` / `canSetWarmth()` / `canSetGamma()` | capability gates to check before enabling a control |
+| `inBounds(x, y)` | the accuracy gate every placement passes |
+| `rgb(r,g,b)` / `rgba(r,g,b,a)` | build a color at the call site |
+| `plot(x,y,color)` / `plotRgb(x,y,r,g,b)` | set exactly one pixel |
+| `sample(x,y)` | read a pixel back as packed `0xAARRGGBB` (verify accuracy) |
+| `fillRect(x,y,w,h,color)` | fill an exact rectangle, pixel by pixel |
+| `brightness(%)` / `warmth(kelvin)` / `gamma(scaled)` / `gammaPoint(whole,hundredths)` | whole-display controls |
+| `statusCode()` / `ok()` / `lastMessage()` | precise, readable result of the last op |
+
+Runnable demo: `screen-demo.sleela`.
 
 Per-OS profile classes (the `lib/antivirus` profile pattern) under
 `platforms/<Brand>/<OS>/`:
