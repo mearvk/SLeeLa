@@ -20,7 +20,7 @@ class SLCPUCatalog {
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
   String metaVersion = "1.0.0";
-  int metaId = 0;
+  int metaId = 11034;
   String metaAuthor = "Kiro Agent";
   String metaDate = "2026-10-16";
   String metaCopyright = "SLeeLa project";
@@ -30,7 +30,7 @@ class SLCPUCatalog {
   String metaOrigin = "International";
   String metaBirthDate = "2026-10-13";
   < metaScienceRating: maturity/robustness on a 1..10 scale >
-  int metaScienceRating = 8;
+  int metaScienceRating = 9;
   < metaNationalSchedule: a real, citable instrument or "none" >
   String metaNationalSchedule = "none";
 

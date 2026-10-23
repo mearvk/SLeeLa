@@ -256,7 +256,7 @@ class SLBallumScreen {
   // or catalog can read and (where appropriate) override this record.
   // Values are faithful to the real origin of the subject where publicly known.
   String metaVersion = "1.0.0";
-  int metaId = 0;
+  int metaId = 11517;
   String metaAuthor = "SLeeLa Project";
   String metaDate = "2026-10-23";
   String metaCopyright = "SLeeLa standard library";
@@ -264,7 +264,7 @@ class SLBallumScreen {
   String metaCorporation = "SLeeLa Project";
   String metaOrigin = "International";
   String metaBirthDate = "2026";
-  int metaScienceRating = 8;        // maturity/robustness on a 1..10 scale
+  int metaScienceRating = 9;        // maturity/robustness on a 1..10 scale
   String metaNationalSchedule = "SLeeLa Ballum Screen API (lib/ballum)";
 
   String getMetaVersion() { return metaVersion; }

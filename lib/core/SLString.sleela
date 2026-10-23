@@ -73,7 +73,7 @@ class SLString {
   // or catalog can read and (where appropriate) override each record.
   // Values are faithful to the subject's real origin where publicly known.
   String metaVersion = "1.0.0";
-  int metaId = 0;
+  int metaId = 11518;
   String metaAuthor = "SLeeLa standard library";
   String metaDate = "2026-10-23";
   String metaCopyright = "MEARVK LLC";
