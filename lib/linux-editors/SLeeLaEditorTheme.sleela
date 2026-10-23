@@ -1,5 +1,5 @@
 #sleela 1.7
-# SLeeLa American Professional editor theme metadata.
+# SLeeLa editor theme catalog metadata.
 package linux.editors;
 
 class SLeeLaEditorTheme {
@@ -13,4 +13,40 @@ class SLeeLaEditorTheme {
     let comment = "#8A96A3";
     let function = "#82C91E";
     let diagnostic = "#FF6B6B";
+}
+
+class SLeeLaEurasiaTheme {
+    let name = "SLeeLa Pan-Eurasian";
+    let background = "#111827";
+    let keyword = "#7AA7E8";
+    let type = "#69C9B3";
+    let string = "#D7B56D";
+    let comment = "#8995A5";
+}
+
+class SLeeLaRussianSlavicTheme {
+    let name = "SLeeLa Russian and Slavic (Medium)";
+    let background = "#202733";
+    let keyword = "#A9C0DD";
+    let type = "#8FC4B2";
+    let string = "#D6BD8B";
+    let comment = "#9AA3AF";
+}
+
+class SLeeLaSilkRoadTheme {
+    let name = "SLeeLa Central Asian / Silk Road";
+    let background = "#1C2529";
+    let keyword = "#7FADE0";
+    let type = "#45C6C2";
+    let string = "#D9B56D";
+    let comment = "#92A3A0";
+}
+
+class SLeeLaEastAsianTheme {
+    let name = "SLeeLa East Asian";
+    let background = "#171A1C";
+    let keyword = "#D97878";
+    let type = "#72C7A5";
+    let string = "#D8B76A";
+    let comment = "#969F9B";
 }
