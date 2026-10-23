@@ -104,4 +104,14 @@ class SLCipherContext {
   String securityNote() {
     return "Reference-grade: not constant-time, not side-channel resistant; use an audited library in production.";
   }
+
+  < ---- common service contract (identity) ----------------------------- >
+  < SLCipherContext conforms to the SLService lifecycle CONCEPT (configure -> >
+  < enable/active -> init/update/final -> disable), but is NOT an >
+  < SLPluginService: it is a cipher context, not a plugin-registry, and its >
+  < result codes (OK/ERR_PARAM/ERR_AUTH/ERR_UNIMPL) are cryptography-specific >
+  < and deliberately NOT the shared SLServiceResult vocabulary, so a caller is >
+  < never misled about an auth failure. serviceName() gives status surfaces a >
+  < uniform handle across all services. >
+  String serviceName() { return "SLCipherContext"; }
 }

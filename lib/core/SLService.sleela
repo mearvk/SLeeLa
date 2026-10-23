@@ -2,8 +2,20 @@
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLService used within the core library family. >>
 #sleela 2.1
-< Native foundational bridge contract for Service. >
-< Role: service. Responsibility: service abstraction. >
+< Native foundational bridge contract for Service -- the common lifecycle base >
+< every SLeeLa service honors. A "service" is any managed subsystem with a >
+< create -> use -> destroy lifecycle (codecs, compression, video, crypto, http, >
+< OS services, ...). This base fixes the universal contract so the API has one >
+< working design to refer to, and so cross-cutting tooling (a GUI, loader, or >
+< catalog) can drive any service uniformly: >
+<   * lifecycle state   -- reset / activate / active / status (original), plus >
+<                          create / isReady / destroy (the managed form); >
+<   * identity          -- serviceName(); >
+<   * honest outcomes   -- resultText(code), delegating to the shared >
+<                          SLServiceResult vocabulary so every service reports >
+<                          failures in one standard wording. >
+< Plugin-registry services (load/unload/dispatch by id) extend the richer >
+< SLPluginService, which itself extends this base. Role: service. >
 class SLService {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
@@ -46,9 +58,36 @@ class SLService {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < ---- original lifecycle state (preserved for compatibility) --------- >
   int state;
   void reset(){state=0;}
   void activate(){state=1;}
   boolean active(){return state==1;}
   int status(){return state;}
+
+  < ---- managed lifecycle (the common service contract) ---------------- >
+  < create(): bring the service up and mark it active. A subclass overrides >
+  < create() to allocate its own tables/collaborators, then calls up via >
+  < activate() (or sets ready itself). isReady() reports usability; destroy() >
+  < tears down and returns to the inert state. These compose with the original >
+  < state field so existing callers keep working. >
+  int ready;
+  void create()      { activate(); ready = 1; }
+  boolean isReady()  { return ready == 1; }
+  void destroy()     { ready = 0; reset(); }
+
+  < ---- identity ------------------------------------------------------- >
+  < A short name for the service, for status surfaces and catalogs. A concrete >
+  < service overrides this with its own name. >
+  String serviceName() { return "SLService"; }
+
+  < ---- honest outcomes ------------------------------------------------ >
+  < Render a result code via the shared SLServiceResult vocabulary, so every >
+  < service's human-readable outcomes use one authoritative wording. A service >
+  < with no extra codes can rely on this directly; one with extra codes >
+  < overrides resultText() and falls back here for the shared ones. >
+  String resultText(int code) {
+    SLServiceResult r = new SLServiceResult();
+    return r.text(code);
+  }
 }
