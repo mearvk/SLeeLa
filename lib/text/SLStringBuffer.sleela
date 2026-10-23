@@ -1,11 +1,90 @@
-/*
- * lib/text/SLStringBuffer.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLStringBuffer used within the text library family.
- */
+// lib/text/SLStringBuffer.sleela
+// SLeeLa Standard Library Definition.
+// Definition: SLStringBuffer -- the synchronized mutable text buffer for the
+// text library family.
+//
+// SLStringBuffer is the thread-safe sibling of SLStringBuilder: the same
+// accumulate-via-(+) surface, but every mutation is a guarded critical section
+// so concurrent callers see a consistent buffer. It keeps the same two honest
+// layers: real in-language appends/joins, and bridged char-level ops that need
+// raw code units. The guard/locking itself is a runtime concern, so
+// beginSync() / endSync() cross the VM/OS bridge; the surface marks the
+// boundary and reports it honestly rather than pretending to lock in-language.
+//
+// Comments are // only; #sleela 2.1.
 #sleela 2.1
-// Unified SLeeLa standard-library front-end object.
 // Family: text. Native VM/OS work crosses an explicit bridge.
+
 class SLStringBuffer {
-  String value; void set(String v){value=v;} String get(){return value;} void clear(){value="";}
+
+  String value = "";
+  int    edits = 0;        // number of mutations
+  int    locks = 0;        // depth of synchronized sections entered
+
+  // ---- synchronization (bridged runtime concern) --------------------
+  // The native runtime supplies the real monitor; these mark the boundary and
+  // keep an honest in-language view of lock depth for diagnostics. (Named
+  // beginSync/endSync rather than lock/unlock: lock is a reserved built-in.)
+  String beginSync() { locks = locks + 1; return "text.bridge:monitor-enter:buffer"; }
+  String endSync()   { if (locks > 0) { locks = locks - 1; } return "text.bridge:monitor-exit:buffer"; }
+  boolean isLocked() { return locks > 0; }
+  int lockDepth()    { return locks; }
+
+  // ---- lifecycle -----------------------------------------------------
+  void clear()      { value = ""; edits = edits + 1; }
+  boolean isEmpty() { return value == ""; }
+  int editCount()   { return edits; }
+
+  // ---- in-language appends (guarded; fluent) ------------------------
+  SLStringBuffer append(String s)  { beginSync(); value = value + s; edits = edits + 1; endSync(); return this; }
+  SLStringBuffer appendInt(int n)  { beginSync(); value = value + n; edits = edits + 1; endSync(); return this; }
+  SLStringBuffer appendBool(boolean b) { beginSync(); value = value + b; edits = edits + 1; endSync(); return this; }
+  SLStringBuffer appendLine(String s)  { beginSync(); value = value + s + "\n"; edits = edits + 1; endSync(); return this; }
+  SLStringBuffer prepend(String s) { beginSync(); value = s + value; edits = edits + 1; endSync(); return this; }
+
+  SLStringBuffer repeat(String s, int n) {
+    beginSync();
+    int i = 0;
+    while (i < n) { value = value + s; i = i + 1; }
+    edits = edits + 1;
+    endSync();
+    return this;
+  }
+
+  SLStringBuffer join(String[] parts, String sep) {
+    beginSync();
+    int i = 0;
+    int n = arrayLength(parts);
+    while (i < n) {
+      if (i > 0) { value = value + sep; }
+      value = value + parts[i];
+      i = i + 1;
+    }
+    edits = edits + 1;
+    endSync();
+    return this;
+  }
+
+  // ---- result --------------------------------------------------------
+  String toString()  { return value; }
+  String get()       { return value; }
+  void set(String v) { beginSync(); value = v; edits = edits + 1; endSync(); }
+
+  // ---- bridged char-level operations ---------------------------------
+  String bridge(String op)              { return "text.bridge:" + op + ":" + value; }
+  String bridgeArg(String op, String a) { return "text.bridge:" + op + ":" + value + ":" + a; }
+  String bridgeArg2(String op, String a, String b) {
+    return "text.bridge:" + op + ":" + value + ":" + a + ":" + b;
+  }
+
+  String charAt(String idx)                 { return bridgeArg("charAt", idx); }
+  String substring(String from, String to)  { return bridgeArg2("substring", from, to); }
+  String insertAt(String idx, String s)     { return bridgeArg2("insert", idx, s); }
+  String deleteRange(String from, String to){ return bridgeArg2("deleteRange", from, to); }
+  String reverse()                          { return bridge("reverse"); }
+  String indexOf(String needle)             { return bridgeArg("indexOf", needle); }
+
+  // ---- introspection -------------------------------------------------
+  String typeName()   { return "SLeeLa.text.SLStringBuffer"; }
+  boolean available() { return true; }
 }

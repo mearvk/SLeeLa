@@ -1,11 +1,79 @@
-/*
- * lib/text/SLTextWriter.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLTextWriter used within the text library family.
- */
+// lib/text/SLTextWriter.sleela
+// SLeeLa Standard Library Definition.
+// Definition: SLTextWriter -- a comprehensive buffered text-output contract for
+// the text library family.
+//
+// SLTextWriter accumulates decoded text and flushes it to a sink. The byte/
+// stream I/O is a runtime concern, so sink writes are bridged; the in-language
+// layer owns a real accumulation buffer the caller fills with (+), plus line
+// and byte bookkeeping.
+//   * In-language: sink naming, charset selection, a real write buffer the
+//     caller appends to (write/writeLine/newline/indent), buffered-length and
+//     line counters, and pending-content inspection.
+//   * Bridged: open / flush / drain / close -- the real sink access; each
+//     returns an inspectable "text.bridge:writer:<op>:..." descriptor the
+//     runtime fulfils; never a faked write.
+//
+// Comments are // only; #sleela 2.1.
 #sleela 2.1
-// Unified SLeeLa standard-library front-end object.
 // Family: text. Native VM/OS work crosses an explicit bridge.
+
 class SLTextWriter {
-  String value; void set(String v){value=v;} String get(){return value;} void clear(){value="";}
+
+  String value   = "";      // the sink name/path
+  String charset = "UTF-8"; // encoding charset
+  String pending = "";      // accumulated, not-yet-flushed text (in-language)
+  int    lines   = 0;       // lines written into the buffer
+  int    edits   = 0;       // number of write operations
+
+  // ---- configuration / lifecycle (in-language) ----------------------
+  void set(String v)        { value = v; }
+  String get()              { return value; }
+  void clear()              { value = ""; pending = ""; lines = 0; edits = 0; }
+  void setCharset(String c) { charset = c; }
+  String getCharset()       { return charset; }
+
+  // ---- in-language buffered writes (real; fluent) -------------------
+  SLTextWriter write(String s)      { pending = pending + s; edits = edits + 1; return this; }
+  SLTextWriter writeInt(int n)      { pending = pending + n; edits = edits + 1; return this; }
+  SLTextWriter writeLine(String s)  { pending = pending + s + "\n"; lines = lines + 1; edits = edits + 1; return this; }
+  SLTextWriter newline()            { pending = pending + "\n"; lines = lines + 1; edits = edits + 1; return this; }
+  SLTextWriter space()              { pending = pending + " "; edits = edits + 1; return this; }
+
+  // indent(depth): write depth units of two-space indentation (real).
+  SLTextWriter indent(int depth) {
+    int i = 0;
+    while (i < depth) { pending = pending + "  "; i = i + 1; }
+    edits = edits + 1;
+    return this;
+  }
+
+  // writeAll(parts): write every element of a String[] (real).
+  SLTextWriter writeAll(String[] parts) {
+    int i = 0;
+    int n = arrayLength(parts);
+    while (i < n) { pending = pending + parts[i]; i = i + 1; }
+    edits = edits + 1;
+    return this;
+  }
+
+  // pending-content inspection (in-language).
+  String buffered()       { return pending; }
+  boolean hasPending()    { return pending != ""; }
+  int lineCount()         { return lines; }
+  int writeCount()        { return edits; }
+
+  // ---- bridged sink access (the real I/O) ---------------------------
+  String bridge(String op)              { return "text.bridge:writer:" + op + ":" + value; }
+  String bridgeArg(String op, String a) { return "text.bridge:writer:" + op + ":" + value + ":" + a; }
+
+  String open()               { return bridge("open"); }
+  // flush(): hand the pending buffer to the runtime sink and clear it locally.
+  String flush()              { String out = bridgeArg("flush", pending); pending = ""; return out; }
+  String drain()              { return bridgeArg("drain", pending); }
+  String closeStream()        { return bridge("close"); }   // not named close(): close is reserved
+
+  // ---- introspection -------------------------------------------------
+  String typeName()   { return "SLeeLa.text.SLTextWriter"; }
+  boolean available() { return true; }
 }

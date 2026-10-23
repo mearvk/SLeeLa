@@ -1,11 +1,157 @@
-/*
- * lib/text/SLString.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLString used within the text library family.
- */
+// lib/text/SLString.sleela
+// SLeeLa Standard Library Definition.
+// Definition: The comprehensive SLeeLa text/String contract (SLString) for the
+// text library family.
+//
+// SLString is the language-facing String surface. SLeeLa's built-in `String`
+// scalar exposes only concatenation (+) and equality (==/!=) to source code;
+// there is no char type and no char-level indexing. So this class is organised
+// in two honest layers:
+//
+//   * IN-LANGUAGE operations -- length-independent text work that can be
+//     expressed with +, ==, stored fields, and String[]/int[] arrays with
+//     loops. These are implemented here and return real results.
+//   * BRIDGED operations -- char-level work (charAt, substring, indexOf,
+//     case mapping, trimming, splitting, ordering) that requires the raw code
+//     units. SLeeLa never sees those, so these methods cross the explicit
+//     VM/OS bridge: each returns a stable, inspectable bridge-call descriptor
+//     ("text.bridge:<op>:<args>") that the native runtime fulfils -- the same
+//     "never fake it" contract the codec/Java-envelope surfaces use. A method
+//     is never a silent lie: a bridged op advertises that it is bridged.
+//
+// Comments are `//` only (the lexer has no block comments). Methods resolve on
+// class-typed fields per syntax 1.11+. #sleela 2.1 enables the full surface.
 #sleela 2.1
-// Unified SLeeLa standard-library front-end object.
-// Family: text. Native VM/OS work crosses an explicit bridge.
+
 class SLString {
-  String value; void set(String v){value=v;} String get(){return value;} void clear(){value="";}
+
+  // ---- backing value -------------------------------------------------
+  // The text this SLString wraps. value == "" is the canonical empty state.
+  String value = "";
+
+  // ---- construction / lifecycle --------------------------------------
+  // Library convention is an explicit initialiser rather than a constructor.
+  void set(String v)   { value = v; }
+  String get()         { return value; }
+  void clear()         { value = ""; }
+  SLString with(String v) { value = v; return this; }   // fluent seed
+
+  // ====================================================================
+  // IN-LANGUAGE operations (real, no bridge)
+  // ====================================================================
+
+  // Concatenation: the one native String operator besides compare.
+  String concat(String other)            { return value + other; }
+  String concatBoth(String a, String b)  { return a + b; }
+
+  // Equality / emptiness via the native == on strings.
+  boolean equals(String other)           { return value == other; }
+  boolean equalsText(String a, String b) { return a == b; }
+  boolean isEmpty()                       { return value == ""; }
+  boolean isEmptyText(String s)           { return s == ""; }
+  boolean notEmpty()                      { return value != ""; }
+
+  // Null/absence helpers (a SLeeLa String field may be unset == null).
+  boolean isNull()                        { return value == null; }
+  boolean isBlankLike()                   { return value == null || value == ""; }
+
+  // Append/prepend mutate the wrapped value and return it fluently.
+  SLString append(String tail)  { value = value + tail; return this; }
+  SLString prepend(String head) { value = head + value; return this; }
+  SLString appendLine(String tail) { value = value + tail + "\n"; return this; }
+
+  // repeat(n): value repeated n times (n <= 0 yields ""). Built with a loop
+  // over the native + operator -- fully in-language.
+  String repeat(int n) {
+    String out = "";
+    int i = 0;
+    while (i < n) { out = out + value; i = i + 1; }
+    return out;
+  }
+
+  // repeatText(s, n): static-style helper form.
+  String repeatText(String s, int n) {
+    String out = "";
+    int i = 0;
+    while (i < n) { out = out + s; i = i + 1; }
+    return out;
+  }
+
+  // join(parts, sep): join a String[] with a separator. In-language: loop + +.
+  String join(String[] parts, String sep) {
+    String out = "";
+    int i = 0;
+    int n = arrayLength(parts);
+    while (i < n) {
+      if (i > 0) { out = out + sep; }
+      out = out + parts[i];
+      i = i + 1;
+    }
+    return out;
+  }
+
+  // joinLines(parts): join a String[] with newlines.
+  String joinLines(String[] parts) { return join(parts, "\n"); }
+
+  // surround / quote: wrap the value with affixes (in-language).
+  String surround(String left, String right) { return left + value + right; }
+  String quote()  { return "\"" + value + "\""; }
+  String parens() { return "(" + value + ")"; }
+
+  // ====================================================================
+  // BRIDGED operations (char-level; cross the explicit VM/OS bridge)
+  // Each returns a stable, inspectable bridge-call descriptor rather than a
+  // fabricated result, so a caller / native runtime can dispatch honestly.
+  // ====================================================================
+
+  // A bridged op is marked so callers can distinguish it from an in-language
+  // result. These helpers build the descriptor strings.
+  boolean isBridged(String op) {
+    return op == "length"     || op == "charAt"    || op == "codePointAt"
+        || op == "substring"  || op == "indexOf"   || op == "lastIndexOf"
+        || op == "contains"   || op == "startsWith"|| op == "endsWith"
+        || op == "replace"    || op == "replaceAll"|| op == "toUpperCase"
+        || op == "toLowerCase"|| op == "trim"      || op == "strip"
+        || op == "split"      || op == "compareTo" || op == "matches"
+        || op == "format"     || op == "chars";
+  }
+  String bridge(String op)                 { return "text.bridge:" + op + ":" + value; }
+  String bridgeArg(String op, String a)    { return "text.bridge:" + op + ":" + value + ":" + a; }
+  String bridgeArg2(String op, String a, String b) {
+    return "text.bridge:" + op + ":" + value + ":" + a + ":" + b;
+  }
+
+  // Length / indexing -- bridged (no in-language char access).
+  String length()            { return bridge("length"); }
+  String charAt(String idx)  { return bridgeArg("charAt", idx); }
+  String codePointAt(String idx) { return bridgeArg("codePointAt", idx); }
+  String chars()             { return bridge("chars"); }
+
+  // Slicing / search -- bridged.
+  String substring(String from, String to) { return bridgeArg2("substring", from, to); }
+  String indexOf(String needle)            { return bridgeArg("indexOf", needle); }
+  String lastIndexOf(String needle)        { return bridgeArg("lastIndexOf", needle); }
+  String contains(String needle)           { return bridgeArg("contains", needle); }
+  String startsWith(String prefix)         { return bridgeArg("startsWith", prefix); }
+  String endsWith(String suffix)           { return bridgeArg("endsWith", suffix); }
+
+  // Transformation -- bridged.
+  String toUpperCase()                     { return bridge("toUpperCase"); }
+  String toLowerCase()                     { return bridge("toLowerCase"); }
+  String trim()                            { return bridge("trim"); }
+  String strip()                           { return bridge("strip"); }
+  String replace(String from, String to)   { return bridgeArg2("replace", from, to); }
+  String replaceAll(String regex, String to){ return bridgeArg2("replaceAll", regex, to); }
+
+  // Splitting / matching / ordering -- bridged.
+  String split(String regex)               { return bridgeArg("split", regex); }
+  String matches(String regex)             { return bridgeArg("matches", regex); }
+  String compareTo(String other)           { return bridgeArg("compareTo", other); }
+
+  // Formatting -- bridged (format uses the native formatter over the bridge).
+  String format(String pattern)            { return bridgeArg("format", pattern); }
+
+  // ---- introspection -------------------------------------------------
+  String typeName()   { return "SLeeLa.text.SLString"; }
+  boolean available() { return true; }
 }

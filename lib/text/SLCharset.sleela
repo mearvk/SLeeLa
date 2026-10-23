@@ -1,11 +1,70 @@
-/*
- * lib/text/SLCharset.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLCharset used within the text library family.
- */
+// lib/text/SLCharset.sleela
+// SLeeLa Standard Library Definition.
+// Definition: SLCharset -- a comprehensive character-set contract for the text
+// library family.
+//
+// SLCharset identifies a named character encoding and classifies it, then
+// defers the actual byte<->text transcoding to the native runtime. Two honest
+// layers:
+//   * In-language: canonical name + alias resolution, well-known charset
+//     constants, and classification (isUnicode / isSingleByte / isAsciiCompat)
+//     expressed purely with == and +.
+//   * Bridged: encode / decode / canEncode / newDecoder -- real byte work the
+//     language cannot do; each returns an inspectable
+//     "text.bridge:charset:<op>:<name>" descriptor the runtime fulfils.
+//
+// Comments are // only; #sleela 2.1.
 #sleela 2.1
-// Unified SLeeLa standard-library front-end object.
 // Family: text. Native VM/OS work crosses an explicit bridge.
+
 class SLCharset {
-  String value; void set(String v){value=v;} String get(){return value;} void clear(){value="";}
+
+  String value = "UTF-8";   // canonical charset name
+
+  // ---- well-known canonical names (in-language constants) ------------
+  String utf8()    { return "UTF-8"; }
+  String utf16()   { return "UTF-16"; }
+  String utf16le() { return "UTF-16LE"; }
+  String utf16be() { return "UTF-16BE"; }
+  String utf32()   { return "UTF-32"; }
+  String ascii()   { return "US-ASCII"; }
+  String latin1()  { return "ISO-8859-1"; }
+
+  // ---- name management (in-language) ---------------------------------
+  void set(String v)   { value = canonical(v); }
+  String get()         { return value; }
+  void clear()         { value = "UTF-8"; }
+  String name()        { return value; }
+  boolean equals(String other) { return value == canonical(other); }
+
+  // canonical(n): resolve common aliases to a canonical name (real, via ==).
+  String canonical(String n) {
+    if (n == "utf8" || n == "UTF8" || n == "utf-8") { return "UTF-8"; }
+    if (n == "utf16" || n == "UTF16") { return "UTF-16"; }
+    if (n == "ascii" || n == "ASCII" || n == "us-ascii") { return "US-ASCII"; }
+    if (n == "latin1" || n == "Latin1" || n == "iso-8859-1" || n == "ISO8859-1") { return "ISO-8859-1"; }
+    return n;
+  }
+
+  // ---- classification (in-language) ----------------------------------
+  boolean isUnicode() {
+    return value == "UTF-8" || value == "UTF-16" || value == "UTF-16LE"
+        || value == "UTF-16BE" || value == "UTF-32";
+  }
+  boolean isSingleByte() { return value == "US-ASCII" || value == "ISO-8859-1"; }
+  boolean isAsciiCompat() { return value == "UTF-8" || value == "US-ASCII" || value == "ISO-8859-1"; }
+
+  // ---- bridged transcoding (the real byte work) ---------------------
+  String bridge(String op)              { return "text.bridge:charset:" + op + ":" + value; }
+  String bridgeArg(String op, String a) { return "text.bridge:charset:" + op + ":" + value + ":" + a; }
+
+  String encode(String text)   { return bridgeArg("encode", text); }
+  String decode(String bytes)  { return bridgeArg("decode", bytes); }
+  String canEncode(String text){ return bridgeArg("canEncode", text); }
+  String newEncoder()          { return bridge("newEncoder"); }
+  String newDecoder()          { return bridge("newDecoder"); }
+
+  // ---- introspection -------------------------------------------------
+  String typeName()   { return "SLeeLa.text.SLCharset"; }
+  boolean available() { return true; }
 }

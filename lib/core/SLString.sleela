@@ -1,15 +1,66 @@
-/*
- * lib/core/SLString.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLString used within the core library family.
- */
+// lib/core/SLString.sleela
+// SLeeLa Standard Library Definition.
+// Definition: SLString -- the core/base text value contract (see
+// lib/CORE.BASE.md). This is the small, bootstrap-level String contract the
+// language base needs; the richer utility surface lives in lib/text/SLString.
+//
+// SLeeLa's built-in `String` scalar exposes only concatenation (+) and
+// equality (==/!=) to source; there is no char type or char-level indexing.
+// The core contract therefore implements the operations expressible in the
+// language and names the char-level ones as crossing the explicit VM/OS bridge
+// (CORE.BASE.md: "Runtime-sensitive operations should cross an explicit VM/OS
+// bridge."). Comments are `//` only; #sleela 2.1.
 #sleela 2.1
 // SLeeLa core/base language contract.
+
 class SLString {
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  // ---- value + lifecycle ---------------------------------------------
+  String value = "";
+  int    state;                 // 0 inert, 1 active (set at least once)
+  int    count;                 // number of mutations applied
+
+  void reset()    { value = ""; state = 0; count = 0; }
+  void activate() { state = 1; count = count + 1; }
+  boolean active(){ return state == 1; }
+  int status()    { return state; }
+
+  // ---- in-language text value ----------------------------------------
+  void set(String v) { value = v; state = 1; count = count + 1; }
+  String get()       { return value; }
+  void clear()       { value = ""; state = 0; }
+
+  boolean isEmpty()      { return value == ""; }
+  boolean notEmpty()     { return value != ""; }
+  boolean isNull()       { return value == null; }
+  boolean equals(String other) { return value == other; }
+
+  // Concatenation is the one native text-producing operator.
+  String concat(String other) { value = value + other; count = count + 1; return value; }
+
+  // repeat(n): value repeated n times (n <= 0 -> ""), built with + in a loop.
+  String repeat(int n) {
+    String out = "";
+    int i = 0;
+    while (i < n) { out = out + value; i = i + 1; }
+    return out;
+  }
+
+  // ---- bridged char-level operations ---------------------------------
+  // Char-level work needs the raw code units SLeeLa never exposes; these cross
+  // the VM/OS bridge and return an inspectable descriptor, never a faked value.
+  String bridge(String op)              { return "core.string.bridge:" + op + ":" + value; }
+  String bridgeArg(String op, String a) { return "core.string.bridge:" + op + ":" + value + ":" + a; }
+
+  String length()                 { return bridge("length"); }
+  String charAt(String idx)       { return bridgeArg("charAt", idx); }
+  String toUpperCase()            { return bridge("toUpperCase"); }
+  String toLowerCase()            { return bridge("toLowerCase"); }
+  String trim()                   { return bridge("trim"); }
+  String indexOf(String needle)   { return bridgeArg("indexOf", needle); }
+  String compareTo(String other)  { return bridgeArg("compareTo", other); }
+
+  // ---- introspection -------------------------------------------------
+  String typeName()   { return "SLeeLa.core.SLString"; }
+  boolean available() { return true; }
 }
