@@ -134,4 +134,8 @@ class SL6502CPU extends SLCPURuntime {
   int accumulator() { return readReg(R_A); }
   int indexX()      { return readReg(R_X); }
   int indexY()      { return readReg(R_Y); }
+
+  < The 6502 leaves a computation's result in the accumulator, so the opcode >
+  < path's observable (used by the inherited runs-by-both basis check) is A. >
+  int opcodeObservable() { return readReg(R_A); }
 }

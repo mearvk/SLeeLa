@@ -409,4 +409,72 @@ class SLCPURuntime {
   int negative() { return flagN; }
   int carry()    { return flagC; }
   int overflow() { return flagV; }
+
+  < ================================================================== >
+  < RUNS BY BOTH -- the basis of function every CPU model inherits >
+  < ================================================================== >
+  < A CPU model is defined partly by the fact that it can run code two ways, >
+  < and that the two ways AGREE: >
+  <   (1) by OPCODES -- its own instruction set driven through the native >
+  <       fetch-decode-execute loop (fetch/decode/step/run); and >
+  <   (2) by FUNCTION-CALL EQUIVALENCE -- the code of an assumed other process >
+  <       (any supported language/ISA workload) reduced through the shared >
+  <       SLOpcodeMap to the equivalent canonical-opcode / service-call stream >
+  <       on this CPU's substrate (runWorkload). >
+  < Both mechanisms already funnel to the one canonical SLSleelaVM engine, so >
+  < "runs by both" is not two behaviours but one basis observed two ways. These >
+  < named entry points make that expectation first-class and inherited, and >
+  < basisHolds() asserts the two observables coincide -- the opcode-vs- >
+  < equivalence analogue of SLTuringBridge.proveEquivalence, on a single CPU. >
+
+  < (1) Run a native instruction-word program through the opcode loop. The >
+  < program is an int[] of packed instruction words (as a model's assembler >
+  < helper produces); it is loaded from `at`, the entry point is set, and the >
+  < fetch-decode-execute loop runs within `budget`. Returns opcodes retired. >
+  int runByOpcodes(int[] program, int at, int budget) {
+    reset();
+    int n = arrayLength(program);
+    int i = 0;
+    while (i < n) { loadProgramWord(at + i, program[i]); i = i + 1; }
+    setEntryPoint(at);
+    return run(budget);
+  }
+  int runByOpcodes(int[] program, int budget) { return runByOpcodes(program, 0, budget); }
+
+  < (2) Run the code of an assumed other process by function-call equivalence: >
+  < the workload is compiled and mapped (SLOpcodeMap) to the equivalent opcode / >
+  < service-call stream on this CPU, then executed within its grant. This is a >
+  < first-class, honestly-named view of the shared workload path (runWorkload). >
+  < Returns the observable output, or -1 if the workload was not admitted. >
+  int runByEquivalence(SLWorkload work) { return runWorkload(work); }
+
+  < The observable result left by the OPCODE path. A native instruction loop >
+  < leaves its result in architecture-defined state (a register or a memory >
+  < cell), NOT on the lowering substrate -- so the base reads register 0 as the >
+  < conventional result slot. A model whose result lands elsewhere (e.g. the >
+  < 6502's accumulator) overrides this to name its own result location, so the >
+  < basis comparison stays honest rather than assuming a fixed convention. >
+  int opcodeObservable() { return readReg(0); }
+
+  < Does this CPU run by both? The basis holds when the SAME computation, run >
+  < by opcodes and by function-call equivalence, yields the SAME observable. >
+  < `opcodeProgram` is the native-opcode form left in opcodeObservable(); >
+  < `equivalentWork` is the assumed-other-process form whose observable is its >
+  < printed output. `expected` is the agreed result both must produce (callers >
+  < supply it because the two paths observe different surfaces -- a register vs. >
+  < a printed value -- so equivalence means "both equal the intended result", >
+  < not "both read the same physical slot"). Returns true iff both agree with it. >
+  boolean basisHolds(int[] opcodeProgram, int opcodeBudget,
+                     SLWorkload equivalentWork, int expected) {
+    runByOpcodes(opcodeProgram, 0, opcodeBudget);
+    int viaOpcodes = opcodeObservable();
+    int viaEquivalence = runByEquivalence(equivalentWork);
+    return viaOpcodes == expected && viaEquivalence == expected;
+  }
+
+  < A model advertises that running by both mechanisms is part of its basis. >
+  < Always true for an SLCPURuntime-derived model: both the opcode loop and the >
+  < equivalence pipeline are inherited here. Subclasses do not re-implement it; >
+  < they inherit the capability by extending this runtime. >
+  boolean runsByBoth() { return true; }
 }
