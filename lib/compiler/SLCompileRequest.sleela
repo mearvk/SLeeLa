@@ -52,10 +52,14 @@ class SLCompileRequest {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String languageName;   // which registered front end to use
-  String inputPath;      // the source path (not opened here)
-  int    requestedTarget;// one of SLLanguageCompiler.TARGET_*; 0 => front end default
-  boolean strict;        // true => any absent required phase fails the request
+  < which registered front end to use >
+  String languageName;
+  < the source path (not opened here) >
+  String inputPath;
+  < one of SLLanguageCompiler.TARGET_*; 0 => front end default >
+  int    requestedTarget;
+  < true => any absent required phase fails the request >
+  boolean strict;
 
   void configure(String language, String path, int target) {
     languageName = language;

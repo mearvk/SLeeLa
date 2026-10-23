@@ -59,14 +59,22 @@ class SLGuiRotationSchedule {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int intervalMillis;   // time between rotation steps, 50..3600000 ms
-  int stepDeg;          // degrees added each interval, -359..359
-  int running;          // 1 while the cadence advances
-  int accumMillis;      // elapsed time banked toward the next step
-  int epoch;            // key epoch: increments once per completed step
-  int turns;            // total steps applied
-  int maxTurns;         // 0 = unbounded; else stop after maxTurns steps
-  String memoLabel;     // the internal memorandum this cadence rotates the key for
+  < time between rotation steps, 50..3600000 ms >
+  int intervalMillis;
+  < degrees added each interval, -359..359 >
+  int stepDeg;
+  < 1 while the cadence advances >
+  int running;
+  < elapsed time banked toward the next step >
+  int accumMillis;
+  < key epoch: increments once per completed step >
+  int epoch;
+  < total steps applied >
+  int turns;
+  < 0 = unbounded; else stop after maxTurns steps >
+  int maxTurns;
+  < the internal memorandum this cadence rotates the key for >
+  String memoLabel;
 
   void configure(int intervalMs, int degPerStep) {
     intervalMillis = clampInterval(intervalMs);
@@ -78,8 +86,8 @@ class SLGuiRotationSchedule {
   int clampInterval(int ms) { if (ms < 50) { return 50; } if (ms > 3600000) { return 3600000; } return ms; }
   int clampStep(int d) { if (d < -359) { return -359; } if (d > 359) { return 359; } return d; }
 
-  // Name the internal memorandum whose key epoch this schene rotates, and
-  // optionally cap how many epochs it will turn through (0 = unbounded).
+  < Name the internal memorandum whose key epoch this schene rotates, and >
+  < optionally cap how many epochs it will turn through (0 = unbounded). >
   void bindMemorandum(String label, int epochCap) {
     memoLabel = (label == null) ? "" : label;
     maxTurns = (epochCap < 0) ? 0 : epochCap;
@@ -89,19 +97,21 @@ class SLGuiRotationSchedule {
   void stop()  { running = 0; }
   boolean active() { return running == 1; }
 
-  // Advance by `elapsedMillis`. When a full interval banks (and the turn cap is
-  // not reached), apply one step: bump the epoch + turns and return the degree
-  // step to add. Returns 0 when no step fired this tick.
+  < Advance by `elapsedMillis`. When a full interval banks (and the turn cap is >
+  < not reached), apply one step: bump the epoch + turns and return the degree >
+  < step to add. Returns 0 when no step fired this tick. >
   int advance(int elapsedMillis) {
     if (running == 0 || elapsedMillis <= 0) { return 0; }
     if (maxTurns > 0 && turns >= maxTurns) { running = 0; return 0; }
     accumMillis = accumMillis + elapsedMillis;
     if (accumMillis < intervalMillis) { return 0; }
     accumMillis = accumMillis - intervalMillis;
-    epoch = epoch + 1;        // the memorandum's internal key rotates one epoch
+    < the memorandum's internal key rotates one epoch >
+    epoch = epoch + 1;
     turns = turns + 1;
     if (maxTurns > 0 && turns >= maxTurns) { running = 0; }
-    return stepDeg;           // the visible component rotates by this much
+    < the visible component rotates by this much >
+    return stepDeg;
   }
 
   int getIntervalMillis() { return intervalMillis; }

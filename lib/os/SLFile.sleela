@@ -58,10 +58,10 @@ class SLFile {
   boolean isRegular() { return osExists(path) == 1 && osIsDir(path) == 0; }
   int size() { return osFileSize(path); }
 
-  // Remove this file; returns true on success.
+  < Remove this file; returns true on success. >
   boolean delete() { return osRemove(path) == 0; }
 
-  // Rename/move this file; on success the handle tracks the new path.
+  < Rename/move this file; on success the handle tracks the new path. >
   boolean renameTo(String newPath) {
     if (osRename(path, newPath) == 0) { path = newPath; return true; }
     return false;

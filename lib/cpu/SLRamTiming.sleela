@@ -56,26 +56,42 @@ class SLRamTiming {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String name;        // nameful: "DIMM-A ch0", ...
-  int dataRateMTs;    // transfers per second, millions (e.g. 3200 = DDR4-3200)
-  int minMTs;         // lowest data rate the operator may dial
-  int maxMTs;         // highest validated data rate
+  < nameful: "DIMM-A ch0", ... >
+  String name;
+  < transfers per second, millions (e.g. 3200 = DDR4-3200) >
+  int dataRateMTs;
+  < lowest data rate the operator may dial >
+  int minMTs;
+  < highest validated data rate >
+  int maxMTs;
 
-  // Primary timings, in command-clock CYCLES (the datasheet surface).
-  int cl;             // CAS latency: read command -> first data
-  int trcd;           // RAS-to-CAS delay: activate -> read/write
-  int trp;            // row precharge: precharge -> next activate
-  int tras;           // row active time: activate -> precharge
-  int trc;            // row cycle: activate -> activate (same bank)
-  int commandRate;    // 1 (1T) or 2 (2T) command rate
+  < Primary timings, in command-clock CYCLES (the datasheet surface). >
+  < CAS latency: read command -> first data >
+  int cl;
+  < RAS-to-CAS delay: activate -> read/write >
+  int trcd;
+  < row precharge: precharge -> next activate >
+  int trp;
+  < row active time: activate -> precharge >
+  int tras;
+  < row cycle: activate -> activate (same bank) >
+  int trc;
+  < 1 (1T) or 2 (2T) command rate >
+  int commandRate;
 
-  SLVoltageRail vddq; // the DRAM I/O supply rail
-  int mvPerStep;      // settled Vddq each extra MT/s step of ceiling needs
-  int stepMTs;        // the MT/s granularity one voltage step buys
+  < the DRAM I/O supply rail >
+  SLVoltageRail vddq;
+  < settled Vddq each extra MT/s step of ceiling needs >
+  int mvPerStep;
+  < the MT/s granularity one voltage step buys >
+  int stepMTs;
 
-  SLTiming casBudget; // CAS-to-DQ named budget
-  SLTiming rcdBudget; // activate-to-CAS named budget
-  SLTiming rpBudget;  // precharge named budget
+  < CAS-to-DQ named budget >
+  SLTiming casBudget;
+  < activate-to-CAS named budget >
+  SLTiming rcdBudget;
+  < precharge named budget >
+  SLTiming rpBudget;
 
   void configure(String channelName, int rateMTs, int floorMTs, int ceilingMTs) {
     name = channelName; dataRateMTs = rateMTs; minMTs = floorMTs; maxMTs = ceilingMTs;
@@ -95,12 +111,12 @@ class SLRamTiming {
     vddq = rail; mvPerStep = millivoltsPerStep; stepMTs = mtsPerStep;
   }
 
-  // The command clock runs at half the data rate on DDR (two transfers per
-  // command clock). Period of one command clock, in picoseconds.
+  < The command clock runs at half the data rate on DDR (two transfers per >
+  < command clock). Period of one command clock, in picoseconds. >
   int commandClockMHz() { return dataRateMTs / 2; }
   int commandPeriodPs() { int f = commandClockMHz(); if (f <= 0) { return 0; } return 1000000 / f; }
 
-  // Set each primary timing (in command-clock cycles). Larger = looser/safer.
+  < Set each primary timing (in command-clock cycles). Larger = looser/safer. >
   void setCL(int cycles) { if (cycles > 0) { cl = cycles; restamp(); } }
   void setTRCD(int cycles) { if (cycles > 0) { trcd = cycles; restamp(); } }
   void setTRP(int cycles) { if (cycles > 0) { trp = cycles; restamp(); } }
@@ -108,8 +124,8 @@ class SLRamTiming {
   void setTRC(int cycles) { if (cycles > 0) { trc = cycles; restamp(); } }
   void setCommandRate(int t) { if (t == 1 || t == 2) { commandRate = t; } }
 
-  // Dial the data rate, clamped into [min,max] and into what settled Vddq
-  // supports. DDR data rate changes the command period every budget rides on.
+  < Dial the data rate, clamped into [min,max] and into what settled Vddq >
+  < supports. DDR data rate changes the command period every budget rides on. >
   int setDataRate(int mts) {
     int target = mts;
     if (target < minMTs) { target = minMTs; }
@@ -127,12 +143,12 @@ class SLRamTiming {
     return steps * stepMTs;
   }
 
-  // Re-derive each budget. A primary timing of N command-clocks must physically
-  // complete inside N clock periods: the window the controller allows is N
-  // periods, and the DRAM's internal settle (modeled as the array's fixed ~ns
-  // access translated back into this period) must fit with margin. We model the
-  // settle as (N-1) periods of propagation, so a tighter N shrinks the slack —
-  // tighten too far and the budget stops being honored.
+  < Re-derive each budget. A primary timing of N command-clocks must physically >
+  < complete inside N clock periods: the window the controller allows is N >
+  < periods, and the DRAM's internal settle (modeled as the array's fixed ~ns >
+  < access translated back into this period) must fit with margin. We model the >
+  < settle as (N-1) periods of propagation, so a tighter N shrinks the slack — >
+  < tighten too far and the budget stops being honored. >
   void restamp() {
     int p = commandPeriodPs();
     casBudget.setPeriod(p * cl);     casBudget.setPropagation(p * (cl - 1));     casBudget.setSetup(0);
@@ -140,15 +156,15 @@ class SLRamTiming {
     rpBudget.setPeriod(p * trp);     rpBudget.setPropagation(p * (trp - 1));     rpBudget.setSetup(0);
   }
 
-  // First-word read latency in nanoseconds: (tRCD + CL) command-clocks times
-  // the command period, divided by 1000 ps/ns.
+  < First-word read latency in nanoseconds: (tRCD + CL) command-clocks times >
+  < the command period, divided by 1000 ps/ns. >
   int firstWordLatencyNs() { return ((trcd + cl) * commandPeriodPs()) / 1000; }
 
-  // Random full-row access latency in ns: tRP (close) + tRCD (open) + CL.
+  < Random full-row access latency in ns: tRP (close) + tRCD (open) + CL. >
   int randomAccessLatencyNs() { return ((trp + trcd + cl) * commandPeriodPs()) / 1000; }
 
-  // Honored when tRAS >= tRCD + CL (row stays open long enough to read it),
-  // tRC >= tRAS + tRP (the row cycle closes cleanly), and Vddq is in limits.
+  < Honored when tRAS >= tRCD + CL (row stays open long enough to read it), >
+  < tRC >= tRAS + tRP (the row cycle closes cleanly), and Vddq is in limits. >
   boolean honored() {
     boolean activeOk = tras >= (trcd + cl);
     boolean cycleOk = trc >= (tras + trp);

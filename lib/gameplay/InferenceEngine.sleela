@@ -60,39 +60,41 @@ class InferenceEngine {
   static final String MODULE = "InferenceEngine";
 
   int loadedFlag;
-  int targetTurn;     // the custom game's intended finishing turn
+  < the custom game's intended finishing turn >
+  int targetTurn;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() { loadedFlag = 1; targetTurn = 20; }
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
   void setTarget(int turn) { if (turn > 0) { targetTurn = turn; } }
 
-  // Project the Player's Expected Future at `now`. Pace is driven by the
-  // player's experience: more experience finishes sooner. Confidence rises with
-  // the player's Person/Citizen quality — a clearer person is easier to model.
+  < Project the Player's Expected Future at `now`. Pace is driven by the >
+  < player's experience: more experience finishes sooner. Confidence rises with >
+  < the player's Person/Citizen quality — a clearer person is easier to model. >
   ExpectedFuture model(Player p, int now) {
     ExpectedFuture ef = new ExpectedFuture();
     ef.load();
     if (p == null) { return ef; }
-    // Pace: a baseline span, shortened by experience (capped so it stays sane).
+    < Pace: a baseline span, shortened by experience (capped so it stays sane). >
     int span = 24 - (p.xp() / 10);
     if (span < 4) { span = 4; }
     int projectedEnd = now + span;
-    int confidence = 40 + (p.qualityScore() / 2);   // 40..90
+    < 40..90 >
+    int confidence = 40 + (p.qualityScore() / 2);
     ef.project(now, projectedEnd, targetTurn, confidence);
     return ef;
   }
 
-  // Assemble the Boss's DetailedReport: concrete Game-Engineering moves already
-  // chosen for the player, priced by the player's own quality. The player pays
-  // (or cannot), and that is recorded on the report.
+  < Assemble the Boss's DetailedReport: concrete Game-Engineering moves already >
+  < chosen for the player, priced by the player's own quality. The player pays >
+  < (or cannot), and that is recorded on the report. >
   DetailedReport brief(Player p, int baseCostCents) {
     DetailedReport rep = new DetailedReport();
     rep.load();
     rep.name("Game-Engineering Brief");
-    // The pre-decided moves. These are the boss doing the thinking for you.
+    < The pre-decided moves. These are the boss doing the thinking for you. >
     rep.decide("Re-route the critical path through the cheaper supplier.");
     rep.decide("Bank two rolls now; spend them on the schedule crunch later.");
     rep.decide("Trade one unit of tact for the stakeholder's early sign-off.");

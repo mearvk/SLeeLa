@@ -63,15 +63,16 @@ class SLRegistry {
 
   String version;
   int    count;
-  // numbered key store (surface has no arrays). A real deployment with more
-  // keys resolves them natively; this models the baseline a new install seeds.
+  < numbered key store (surface has no arrays). A real deployment with more >
+  < keys resolves them natively; this models the baseline a new install seeds. >
   SLRegistryKey k0; SLRegistryKey k1; SLRegistryKey k2; SLRegistryKey k3;
   SLRegistryKey k4; SLRegistryKey k5; SLRegistryKey k6; SLRegistryKey k7;
 
   void boot() { version = "1.0.0"; count = 0; }
 
   boolean addKey(SLRegistryKey k) {
-    if (count >= 8) { return false; }   // baseline bound for the Sleela model
+    < baseline bound for the Sleela model >
+    if (count >= 8) { return false; }
     if (count == 0) { k0 = k; } else if (count == 1) { k1 = k; }
     else if (count == 2) { k2 = k; } else if (count == 3) { k3 = k; }
     else if (count == 4) { k4 = k; } else if (count == 5) { k5 = k; }
@@ -86,8 +87,8 @@ class SLRegistry {
     if (idx == 6) { return k6; } return k7;
   }
 
-  // Seed the baseline a new install starts from (mirrors sl_reg_seed_defaults):
-  // System, System/VM, Settings, Features, Artifacts.
+  < Seed the baseline a new install starts from (mirrors sl_reg_seed_defaults): >
+  < System, System/VM, Settings, Features, Artifacts. >
   void seedDefaults() {
     boot();
 
@@ -117,7 +118,7 @@ class SLRegistry {
   }
 
   boolean featureEnabled(String name) {
-    // scan Features key values
+    < scan Features key values >
     int i = 0;
     while (i < count) {
       SLRegistryKey k = keyAt(i);
@@ -134,7 +135,7 @@ class SLRegistry {
     return false;
   }
 
-  // Terminal review (mirrors sl_reg_review).
+  < Terminal review (mirrors sl_reg_review). >
   void show() {
     print("Sleela Registry " + version + "  (keys=" + count + ")");
     int i = 0;

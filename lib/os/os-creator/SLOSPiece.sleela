@@ -56,14 +56,22 @@ class SLOSPiece {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String name;        // human name, e.g. "Boot Loader"
-  String directory;   // tree-relative dir, e.g. "boot/loader"
-  String baseName;    // file stem, e.g. "bootloader"
-  String cSource;     // the .c surface
-  String cppSource;   // the .cpp surface
-  String configName;  // config file name, e.g. "loader.conf"
-  String configText;  // config file contents
-  String readme;      // per-piece README.md contents
+  < human name, e.g. "Boot Loader" >
+  String name;
+  < tree-relative dir, e.g. "boot/loader" >
+  String directory;
+  < file stem, e.g. "bootloader" >
+  String baseName;
+  < the .c surface >
+  String cSource;
+  < the .cpp surface >
+  String cppSource;
+  < config file name, e.g. "loader.conf" >
+  String configName;
+  < config file contents >
+  String configText;
+  < per-piece README.md contents >
+  String readme;
   int configured;
 
   void configure(String pieceName, String dir, String stem) {
@@ -77,13 +85,13 @@ class SLOSPiece {
   void setConfig(String fileName, String text) { configName = fileName; configText = text; }
   void setReadme(String text) { readme = text; }
 
-  // ---- Derived file paths (relative to the dev-tree root) -----------------
+  < ---- Derived file paths (relative to the dev-tree root) ----------------- >
   String cPath()      { return directory + "/" + baseName + ".c"; }
   String cppPath()    { return directory + "/" + baseName + ".cpp"; }
   String configPath() { return directory + "/" + configName; }
   String readmePath() { return directory + "/README.md"; }
 
-  // ---- Accessors ----------------------------------------------------------
+  < ---- Accessors ---------------------------------------------------------- >
   String pieceName()  { return name; }
   String dir()        { return directory; }
   String c()          { return cSource; }

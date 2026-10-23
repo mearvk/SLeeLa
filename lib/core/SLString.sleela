@@ -1,31 +1,33 @@
-// lib/core/SLString.sleela
-// SLeeLa Standard Library Definition.
-// Definition: SLString -- the core/base text value contract (see
-// lib/CORE.BASE.md). This is the small, bootstrap-level String contract the
-// language base needs; the richer utility surface lives in lib/text/SLString.
-//
-// SLeeLa's built-in `String` scalar exposes only concatenation (+) and
-// equality (==/!=) to source; there is no char type or char-level indexing.
-// The core contract therefore implements the operations expressible in the
-// language and names the char-level ones as crossing the explicit VM/OS bridge
-// (CORE.BASE.md: "Runtime-sensitive operations should cross an explicit VM/OS
-// bridge."). Comments are `//` only; #sleela 2.1.
+< lib/core/SLString.sleela >
+< SLeeLa Standard Library Definition. >
+< Definition: SLString -- the core/base text value contract (see >
+< lib/CORE.BASE.md). This is the small, bootstrap-level String contract the >
+< language base needs; the richer utility surface lives in lib/text/SLString. >
+<  >
+< SLeeLa's built-in `String` scalar exposes only concatenation (+) and >
+< equality (==/!=) to source; there is no char type or char-level indexing. >
+< The core contract therefore implements the operations expressible in the >
+< language and names the char-level ones as crossing the explicit VM/OS bridge >
+< (CORE.BASE.md: "Runtime-sensitive operations should cross an explicit VM/OS >
+< bridge."). Comments are `//` only; #sleela 2.1. >
 #sleela 2.1
-// SLeeLa core/base language contract.
+< SLeeLa core/base language contract. >
 
 class SLString {
 
-  // ---- value + lifecycle ---------------------------------------------
+  < ---- value + lifecycle --------------------------------------------- >
   String value = "";
-  int    state;                 // 0 inert, 1 active (set at least once)
-  int    count;                 // number of mutations applied
+  < 0 inert, 1 active (set at least once) >
+  int    state;
+  < number of mutations applied >
+  int    count;
 
   void reset()    { value = ""; state = 0; count = 0; }
   void activate() { state = 1; count = count + 1; }
   boolean active(){ return state == 1; }
   int status()    { return state; }
 
-  // ---- in-language text value ----------------------------------------
+  < ---- in-language text value ---------------------------------------- >
   void set(String v) { value = v; state = 1; count = count + 1; }
   String get()       { return value; }
   void clear()       { value = ""; state = 0; }
@@ -35,10 +37,10 @@ class SLString {
   boolean isNull()       { return value == null; }
   boolean equals(String other) { return value == other; }
 
-  // Concatenation is the one native text-producing operator.
+  < Concatenation is the one native text-producing operator. >
   String concat(String other) { value = value + other; count = count + 1; return value; }
 
-  // repeat(n): value repeated n times (n <= 0 -> ""), built with + in a loop.
+  < repeat(n): value repeated n times (n <= 0 -> ""), built with + in a loop. >
   String repeat(int n) {
     String out = "";
     int i = 0;
@@ -46,9 +48,9 @@ class SLString {
     return out;
   }
 
-  // ---- bridged char-level operations ---------------------------------
-  // Char-level work needs the raw code units SLeeLa never exposes; these cross
-  // the VM/OS bridge and return an inspectable descriptor, never a faked value.
+  < ---- bridged char-level operations --------------------------------- >
+  < Char-level work needs the raw code units SLeeLa never exposes; these cross >
+  < the VM/OS bridge and return an inspectable descriptor, never a faked value. >
   String bridge(String op)              { return "core.string.bridge:" + op + ":" + value; }
   String bridgeArg(String op, String a) { return "core.string.bridge:" + op + ":" + value + ":" + a; }
 
@@ -60,18 +62,18 @@ class SLString {
   String indexOf(String needle)   { return bridgeArg("indexOf", needle); }
   String compareTo(String other)  { return bridgeArg("compareTo", other); }
 
-  // ---- introspection -------------------------------------------------
+  < ---- introspection ------------------------------------------------- >
   String typeName()   { return "SLeeLa.core.SLString"; }
   boolean available() { return true; }
 
-  // SLCloneable / SLDisposable intent (core base contracts, see CORE.BASE.md).
+  < SLCloneable / SLDisposable intent (core base contracts, see CORE.BASE.md). >
   SLString copy() { SLString c = new SLString(); c.set(value); return c; }
   void dispose() { value = ""; state = 0; count = 0; }
 
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override each record.
-  // Values are faithful to the subject's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, >
+  < or catalog can read and (where appropriate) override each record. >
+  < Values are faithful to the subject's real origin where publicly known. >
   String metaVersion = "1.0.0";
   int metaId = 11518;
   String metaAuthor = "SLeeLa standard library";

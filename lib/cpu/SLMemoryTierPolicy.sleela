@@ -63,18 +63,20 @@ class SLMemoryTierPolicy {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Modifier bits as emitted by the frontend (mirror impl/frontend/ast.h).
-  static final int MOD_USUALMEM    = 32768;   // JavaMemUsual    = 1 << 15
-  static final int MOD_ACCURATEMEM = 65536;   // JavaMemAccurate = 1 << 16
+  < Modifier bits as emitted by the frontend (mirror impl/frontend/ast.h). >
+  < JavaMemUsual    = 1 << 15 >
+  static final int MOD_USUALMEM    = 32768;
+  < JavaMemAccurate = 1 << 16 >
+  static final int MOD_ACCURATEMEM = 65536;
 
-  // Tier ids (mirror SLMemoryTierRouter.TIER_*).
+  < Tier ids (mirror SLMemoryTierRouter.TIER_*). >
   static final int TIER_INHERIT  = 0;
   static final int TIER_USUAL    = 1;
   static final int TIER_ACCURATE = 2;
 
-  // Read a declaration's modifier bitset and return the tier it flags.
-  // usualmem wins only if accuratemem is absent (they are mutually exclusive by
-  // intent); neither bit => TIER_INHERIT.
+  < Read a declaration's modifier bitset and return the tier it flags. >
+  < usualmem wins only if accuratemem is absent (they are mutually exclusive by >
+  < intent); neither bit => TIER_INHERIT. >
   int tierFromModifiers(int modifiers) {
     boolean acc = (modifiers / MOD_ACCURATEMEM) % 2 == 1;
     boolean usu = (modifiers / MOD_USUALMEM) % 2 == 1;
@@ -83,15 +85,15 @@ class SLMemoryTierPolicy {
     return TIER_INHERIT;
   }
 
-  // The tier a method declares (TIER_INHERIT when it declares none).
+  < The tier a method declares (TIER_INHERIT when it declares none). >
   int methodTierFromModifiers(int methodModifiers) { return tierFromModifiers(methodModifiers); }
 
-  // The document (whole-program) default tier from the top-level class's
-  // modifiers (TIER_INHERIT when the class declares none).
+  < The document (whole-program) default tier from the top-level class's >
+  < modifiers (TIER_INHERIT when the class declares none). >
   int documentTierFromModifiers(int classModifiers) { return tierFromModifiers(classModifiers); }
 
-  // Resolve a method's EFFECTIVE tier: its own tier, else the document default,
-  // else accurate (DDR5). Mirrors SLProgram.effectiveTier.
+  < Resolve a method's EFFECTIVE tier: its own tier, else the document default, >
+  < else accurate (DDR5). Mirrors SLProgram.effectiveTier. >
   int effectiveTier(int methodTier, int documentTier) {
     if (methodTier == TIER_USUAL || methodTier == TIER_ACCURATE) { return methodTier; }
     if (documentTier == TIER_USUAL || documentTier == TIER_ACCURATE) { return documentTier; }

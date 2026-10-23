@@ -59,14 +59,14 @@ class SLAssembler {
     isa = instructionSet; program = target;
   }
 
-  // Encode and append one instruction; returns the address (index) it landed at.
+  < Encode and append one instruction; returns the address (index) it landed at. >
   int emit(int opcode, int rd, int rs, int imm) {
     SLInstruction instr = new SLInstruction();
     instr.configure(opcode, rd, rs, imm);
     return program.append(instr.encode());
   }
 
-  // Convenience emitters for the common instructions.
+  < Convenience emitters for the common instructions. >
   int mov(int rd, int imm) { return emit(isa.MOV, rd, 0, imm); }
   int add(int rd, int rs) { return emit(isa.ADD, rd, rs, 0); }
   int sub(int rd, int rs) { return emit(isa.SUB, rd, rs, 0); }

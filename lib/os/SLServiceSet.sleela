@@ -56,8 +56,10 @@ class SLServiceSet {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String manager;     // "systemd" / "ServiceControlManager" / "launchd"
-  String units;       // newline-separated "name mode" lines (mode: boot|ondemand)
+  < "systemd" / "ServiceControlManager" / "launchd" >
+  String manager;
+  < newline-separated "name mode" lines (mode: boot|ondemand) >
+  String units;
   int count;
   int configured;
 
@@ -73,7 +75,7 @@ class SLServiceSet {
   void enableAtBoot(String name) { addUnit(name, "boot"); }
   void enableOnDemand(String name) { addUnit(name, "ondemand"); }
 
-  // Seed the baseline services a shape brings up, under its own manager.
+  < Seed the baseline services a shape brings up, under its own manager. >
   void forShape(SLOSShape shape) {
     configure(shape.initManager());
     if (shape.isWindows()) {
@@ -89,12 +91,17 @@ class SLServiceSet {
       enableAtBoot("com.apple.loginwindow");
       return;
     }
-    // Linux: systemd units.
-    enableAtBoot("systemd-udevd");       // device management
-    enableAtBoot("systemd-networkd");    // networking
-    enableAtBoot("systemd-journald");    // logging
-    enableAtBoot("systemd-logind");      // login/session
-    enableAtBoot("systemd-timesyncd");   // time sync
+    < Linux: systemd units. >
+    < device management >
+    enableAtBoot("systemd-udevd");
+    < networking >
+    enableAtBoot("systemd-networkd");
+    < logging >
+    enableAtBoot("systemd-journald");
+    < login/session >
+    enableAtBoot("systemd-logind");
+    < time sync >
+    enableAtBoot("systemd-timesyncd");
   }
 
   String serviceManager() { return manager; }

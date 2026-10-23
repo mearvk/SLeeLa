@@ -57,30 +57,46 @@ class SLVmVersion {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String id;        // e.g. "idea-vm-001"
-  String label;     // e.g. "ground floor"
-  int    number;    // 1..10
-  String nativeDir; // e.g. "virtual-machine/vm-version/001"
-  String nativeMain;// the C/C++ entry (e.g. "vm_ground_test" / "vm_runtime")
+  < e.g. "idea-vm-001" >
+  String id;
+  < e.g. "ground floor" >
+  String label;
+  < 1..10 >
+  int    number;
+  < e.g. "virtual-machine/vm-version/001" >
+  String nativeDir;
+  < the C/C++ entry (e.g. "vm_ground_test" / "vm_runtime") >
+  String nativeMain;
 
-  // Which hardening units this version composes (additive 001..010).
-  int hasConfig; int hasReport; int hasStatus;   // 001
-  int hasMemory;      // 002
-  int hasResult;      // 003
-  int hasTelemetry;   // 004
-  int hasGc;          // 005
-  int hasProfile;     // 006
-  int hasCapability;  // 007
-  int hasPlatform;    // 008
-  int hasAudit;       // 009
-  int hasRuntime;     // 010
+  < Which hardening units this version composes (additive 001..010). >
+  < 001 >
+  int hasConfig; int hasReport; int hasStatus;
+  < 002 >
+  int hasMemory;
+  < 003 >
+  int hasResult;
+  < 004 >
+  int hasTelemetry;
+  < 005 >
+  int hasGc;
+  < 006 >
+  int hasProfile;
+  < 007 >
+  int hasCapability;
+  < 008 >
+  int hasPlatform;
+  < 009 >
+  int hasAudit;
+  < 010 >
+  int hasRuntime;
 
-  SLVmConfig profile;  // the default configuration a user starts from
+  < the default configuration a user starts from >
+  SLVmConfig profile;
 
-  // Subclasses call base() then set their specifics.
+  < Subclasses call base() then set their specifics. >
   void base(int n, String identifier, String lbl, String dir, String mainEntry) {
     number = n; id = identifier; label = lbl; nativeDir = dir; nativeMain = mainEntry;
-    // ground floor is present from 001.
+    < ground floor is present from 001. >
     hasConfig = 1; hasReport = 1; hasStatus = 1;
     hasMemory = 0; hasResult = 0; hasTelemetry = 0; hasGc = 0; hasProfile = 0;
     hasCapability = 0; hasPlatform = 0; hasAudit = 0; hasRuntime = 0;
@@ -88,7 +104,7 @@ class SLVmVersion {
     profile.defaults();
   }
 
-  // Enable every additive unit up to version `n` (the cumulative carry-forward).
+  < Enable every additive unit up to version `n` (the cumulative carry-forward). >
   void composeThrough(int n) {
     if (n >= 2)  { hasMemory = 1; }
     if (n >= 3)  { hasResult = 1; }
@@ -108,7 +124,7 @@ class SLVmVersion {
     return c;
   }
 
-  // Build a configured runtime for this version (what selection resolves to).
+  < Build a configured runtime for this version (what selection resolves to). >
   SLVmRuntime build() {
     SLVmRuntime rt = new SLVmRuntime();
     rt.init(profile, id + " (" + label + ")");

@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Resume metadata policy; session IDs are not authorization tokens. */
+< Resume metadata policy; session IDs are not authorization tokens. >
 class Http30DownloadPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

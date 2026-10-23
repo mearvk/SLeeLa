@@ -57,7 +57,7 @@ class SLGuiGraphics {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_COMMANDS = 1024;
 
-  // Draw verbs.
+  < Draw verbs. >
   static final int OP_CLEAR  = 0;
   static final int OP_LINE   = 1;
   static final int OP_RECT   = 2;
@@ -66,31 +66,41 @@ class SLGuiGraphics {
   static final int OP_TEXT   = 5;
   static final int OP_IMAGE  = 6;
 
-  // Render quality (control layer).
+  < Render quality (control layer). >
   static final int QUALITY_LOW  = 0;
   static final int QUALITY_MED  = 1;
   static final int QUALITY_HIGH = 2;
 
-  int width; int height;   // surface size in px
+  < surface size in px >
+  int width; int height;
 
-  // Command list (parallel arrays; the surface language has no record arrays).
+  < Command list (parallel arrays; the surface language has no record arrays). >
   int[] op;
-  int[] a; int[] b; int[] c; int[] d;   // up to four integer operands per verb
-  String[] arg;                          // string operand (text / image asset / color)
+  < up to four integer operands per verb >
+  int[] a; int[] b; int[] c; int[] d;
+  < string operand (text / image asset / color) >
+  String[] arg;
   int count;
 
-  // Current pen/brush state applied to each appended command.
-  int strokeWidth;         // 1..64
-  String strokeColor;      // "#rrggbb" / named
-  String fillColor;        // "#rrggbb" / named / "" = no fill
-  int opacityPct;          // 0..100
+  < Current pen/brush state applied to each appended command. >
+  < 1..64 >
+  int strokeWidth;
+  < "#rrggbb" / named >
+  String strokeColor;
+  < "#rrggbb" / named / "" = no fill >
+  String fillColor;
+  < 0..100 >
+  int opacityPct;
 
-  // Control layer.
+  < Control layer. >
   int quality;
-  int antialias;           // 1 = AA on
-  int layer;               // z layer, 0..15
-  int dirty;               // 1 when the command list changed since last replay
-  // Dirty redraw region (host may clip to it); 0-size = whole surface.
+  < 1 = AA on >
+  int antialias;
+  < z layer, 0..15 >
+  int layer;
+  < 1 when the command list changed since last replay >
+  int dirty;
+  < Dirty redraw region (host may clip to it); 0-size = whole surface. >
   int regionX; int regionY; int regionW; int regionH;
 
   void configure(int w, int h) {
@@ -105,20 +115,20 @@ class SLGuiGraphics {
 
   int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
 
-  // ---- pen / brush state --------------------------------------------------
+  < ---- pen / brush state -------------------------------------------------- >
   void setStrokeWidth(int px) { strokeWidth = clamp(px, 1, 64); }
   void setStrokeColor(String color) { if (color != null) { strokeColor = color; } }
   void setFillColor(String color) { fillColor = (color == null) ? "" : color; }
   void setOpacity(int pct) { opacityPct = clamp(pct, 0, 100); }
 
-  // ---- control layer ------------------------------------------------------
+  < ---- control layer ------------------------------------------------------ >
   void setQuality(int q) { if (q >= QUALITY_LOW && q <= QUALITY_HIGH) { quality = q; } }
   void setAntialias(boolean on) { antialias = on ? 1 : 0; }
   void setLayer(int z) { layer = clamp(z, 0, 15); }
   void markRegion(int rx, int ry, int rw, int rh) { regionX = rx; regionY = ry; regionW = rw; regionH = rh; }
   void clearRegion() { regionX = 0; regionY = 0; regionW = 0; regionH = 0; }
 
-  // ---- draw commands ------------------------------------------------------
+  < ---- draw commands ------------------------------------------------------ >
   boolean push(int verb, int p0, int p1, int p2, int p3, String s) {
     if (count >= MAX_COMMANDS) { return false; }
     op[count] = verb; a[count] = p0; b[count] = p1; c[count] = p2; d[count] = p3; arg[count] = s;
@@ -135,7 +145,7 @@ class SLGuiGraphics {
 
   void reset() { count = 0; dirty = 1; }
 
-  // ---- readers (host replays these) ---------------------------------------
+  < ---- readers (host replays these) --------------------------------------- >
   int commands() { return count; }
   int opAt(int i) { return (i >= 0 && i < count) ? op[i] : -1; }
   int aAt(int i) { return (i >= 0 && i < count) ? a[i] : 0; }

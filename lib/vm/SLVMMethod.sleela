@@ -59,24 +59,30 @@ class SLVMMethod {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
-  String descriptor;   // e.g. "(II)I" style signature summary
-  int entry;           // first opcode index in the module code store
-  int length;          // number of opcodes
-  int argCount;        // operands popped from caller / consumed as params
-  int maxLocals;       // local slots the frame must reserve
+  < e.g. "(II)I" style signature summary >
+  String descriptor;
+  < first opcode index in the module code store >
+  int entry;
+  < number of opcodes >
+  int length;
+  < operands popped from caller / consumed as params >
+  int argCount;
+  < local slots the frame must reserve >
+  int maxLocals;
   boolean isStatic;
-  boolean isNative;    // body is an SLVMNativeBinding instead of opcodes
+  < body is an SLVMNativeBinding instead of opcodes >
+  boolean isNative;
 
-  // Access role under the extensible-network interpretation (mirrors
-  // SLAccessSemantics.ROLE_*): 0 none, 1 exposed-hop (public), 2 local-system
-  // (private), 3 integrity-guarded (protected). This is the first VM-level
-  // access metadata on a method; resolveMethod gates on it (see SLVMClass).
+  < Access role under the extensible-network interpretation (mirrors >
+  < SLAccessSemantics.ROLE_*): 0 none, 1 exposed-hop (public), 2 local-system >
+  < (private), 3 integrity-guarded (protected). This is the first VM-level >
+  < access metadata on a method; resolveMethod gates on it (see SLVMClass). >
   int accessRole;
 
-  // Memory tier this method runs against (SLMemoryTierRouter.TIER_*):
-  // 0 inherit (use the program/document default), 1 usual (DDR2), 2 accurate
-  // (DDR5). Set from the usualmem/accuratemem modifiers; the dispatcher uses it
-  // to pick the physical memory module the method binds to.
+  < Memory tier this method runs against (SLMemoryTierRouter.TIER_*): >
+  < 0 inherit (use the program/document default), 1 usual (DDR2), 2 accurate >
+  < (DDR5). Set from the usualmem/accuratemem modifiers; the dispatcher uses it >
+  < to pick the physical memory module the method binds to. >
   int memTier;
 
   void configure(String methodName, String sig, int entryIndex, int codeLength,
@@ -85,8 +91,8 @@ class SLVMMethod {
                     staticMethod, nativeMethod, 0);
   }
 
-  // Full form: also record the method's access role. The old configure()
-  // delegates here with role 0 (none), so existing callers are unchanged.
+  < Full form: also record the method's access role. The old configure() >
+  < delegates here with role 0 (none), so existing callers are unchanged. >
   void configureAccess(String methodName, String sig, int entryIndex, int codeLength,
                        int args, int locals, boolean staticMethod, boolean nativeMethod,
                        int role) {
@@ -114,17 +120,20 @@ class SLVMMethod {
   boolean staticMethod(){ return isStatic; }
   boolean nativeMethod(){ return isNative; }
 
-  // Role predicates for the resolve-time access gate.
+  < Role predicates for the resolve-time access gate. >
   int role()            { return accessRole; }
-  boolean exposedHop()  { return accessRole == 1; }   // public  : REST-exposed
-  boolean localOnly()   { return accessRole == 2; }   // private : local/admin/safety
-  boolean guarded()     { return accessRole == 3; }   // protected: integrity-checked
+  < public  : REST-exposed >
+  boolean exposedHop()  { return accessRole == 1; }
+  < private : local/admin/safety >
+  boolean localOnly()   { return accessRole == 2; }
+  < protected: integrity-checked >
+  boolean guarded()     { return accessRole == 3; }
 
-  // Memory-tier accessors (SLMemoryTierRouter.TIER_*).
+  < Memory-tier accessors (SLMemoryTierRouter.TIER_*). >
   int tier()            { return memTier; }
   boolean usualTier()   { return memTier == 1; }
   boolean accurateTier(){ return memTier == 2; }
 
-  // Does the given instruction index fall inside this method's code window?
+  < Does the given instruction index fall inside this method's code window? >
   boolean contains(int ip) { return ip >= entry && ip < entry + length; }
 }

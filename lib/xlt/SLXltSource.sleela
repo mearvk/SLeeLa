@@ -12,17 +12,28 @@
      An .xlt sheet reads:
          #xlt 1.0
          model Name {
-           cpu      "SLAMDEPYC9575F";   // a real CPU SKU class
-           board    "wrx90";            // a real SLMotherboard preset (optional)
-           memory   "ddr2_800" 4096;    // a real SLMemoryModule preset + capacity
-           cadence  "DDR2";             // SLCadenceConnector cadence to present
-           storage  "nvmeGen4";         // optional
-           bus      "pcieGen5x16";      // optional
-           gpu;                         // optional capability: native GPU
-           dma;                         // optional capability: DMA engine
-           nativeram;                   // optional capability: NATIVE_RAM bit
-           program  "app.sleela" sleela; // optional: run this program on the build
-           grant    65536 1000000;      // optional: memory words + cycle budget
+           < a real CPU SKU class >
+           cpu      "SLAMDEPYC9575F";
+           < a real SLMotherboard preset (optional) >
+           board    "wrx90";
+           < a real SLMemoryModule preset + capacity >
+           memory   "ddr2_800" 4096;
+           < SLCadenceConnector cadence to present >
+           cadence  "DDR2";
+           < optional >
+           storage  "nvmeGen4";
+           < optional >
+           bus      "pcieGen5x16";
+           < optional capability: native GPU >
+           gpu;
+           < optional capability: DMA engine >
+           dma;
+           < optional capability: NATIVE_RAM bit >
+           nativeram;
+           < optional: run this program on the build >
+           program  "app.sleela" sleela;
+           < optional: memory words + cycle budget >
+           grant    65536 1000000;
            target   sleela;
          }
    
@@ -80,38 +91,59 @@ class SLXltSource {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String path;          // the .xlt file path
-  String modelName;     // the `model Name { ... }` identifier
-  String target;        // `target sleela;`
-  String libraryRoot;   // the /lib root parts resolve against
+  < the .xlt file path >
+  String path;
+  < the `model Name { ... }` identifier >
+  String modelName;
+  < `target sleela;` >
+  String target;
+  < the /lib root parts resolve against >
+  String libraryRoot;
 
-  // The declared parts, one per orthogonal slot (each may be set at most once).
-  String cpuRef;        // CPU SKU class name, e.g. "SLAMDEPYC9575F"
-  String boardRef;      // SLMotherboard preset, e.g. "wrx90" (empty = none)
-  String memoryRef;     // SLMemoryModule preset, e.g. "ddr2_800"
-  int    memoryCapMiB;  // capacity argument for the memory preset
-  String cadenceRef;    // cadence to present, e.g. "DDR2" (empty = native)
-  String storageRef;    // SLStorageDevice preset (empty = none)
-  String busRef;        // SLSystemBus preset (empty = none)
+  < The declared parts, one per orthogonal slot (each may be set at most once). >
+  < CPU SKU class name, e.g. "SLAMDEPYC9575F" >
+  String cpuRef;
+  < SLMotherboard preset, e.g. "wrx90" (empty = none) >
+  String boardRef;
+  < SLMemoryModule preset, e.g. "ddr2_800" >
+  String memoryRef;
+  < capacity argument for the memory preset >
+  int    memoryCapMiB;
+  < cadence to present, e.g. "DDR2" (empty = native) >
+  String cadenceRef;
+  < SLStorageDevice preset (empty = none) >
+  String storageRef;
+  < SLSystemBus preset (empty = none) >
+  String busRef;
 
-  // Capability directives: bare orthogonal flags (declared at most once each).
-  int gpuFlag;          // `gpu;`       -> build.enableGPU()
-  int dmaFlag;          // `dma;`       -> build.enableDMA()
-  int nativeRamFlag;    // `nativeram;` -> declare the NATIVE_RAM feature bit
+  < Capability directives: bare orthogonal flags (declared at most once each). >
+  < `gpu;`       -> build.enableGPU() >
+  int gpuFlag;
+  < `dma;`       -> build.enableDMA() >
+  int dmaFlag;
+  < `nativeram;` -> declare the NATIVE_RAM feature bit >
+  int nativeRamFlag;
 
-  // Memory-tier designation: the model may split memory into a "usual" tier
-  // (for usual activities) and an "accurate" tier (for competency/accuracy),
-  // and name which is the default (main) tier. Each memory preset slot below.
-  String usualTierRef;    // memory preset for the usual tier, e.g. "ddr2_800"
-  String accurateTierRef; // memory preset for the accurate tier, e.g. "ddr5_6400"
-  String mainTier;        // "usual" or "accurate" — which the main program uses
+  < Memory-tier designation: the model may split memory into a "usual" tier >
+  < (for usual activities) and an "accurate" tier (for competency/accuracy), >
+  < and name which is the default (main) tier. Each memory preset slot below. >
+  < memory preset for the usual tier, e.g. "ddr2_800" >
+  String usualTierRef;
+  < memory preset for the accurate tier, e.g. "ddr5_6400" >
+  String accurateTierRef;
+  < "usual" or "accurate" — which the main program uses >
+  String mainTier;
 
-  // Optional workload: the program this model should politely run on the built
-  // CPU (source path + language), and the resource grant it is admitted under.
-  String programPath;     // e.g. "app.sleela" (empty = build hardware only)
-  String programLang;     // "sleela" | "c" | "cpp" | "java"
-  int    grantWords;      // memory words requested (0 = compiler default)
-  int    grantBudget;     // cycle budget requested (0 = compiler default)
+  < Optional workload: the program this model should politely run on the built >
+  < CPU (source path + language), and the resource grant it is admitted under. >
+  < e.g. "app.sleela" (empty = build hardware only) >
+  String programPath;
+  < "sleela" | "c" | "cpp" | "java" >
+  String programLang;
+  < memory words requested (0 = compiler default) >
+  int    grantWords;
+  < cycle budget requested (0 = compiler default) >
+  int    grantBudget;
 
   int validated;
 
@@ -129,8 +161,8 @@ class SLXltSource {
   void setModelName(String name) { modelName = name; }
   void setTarget(String t)       { target = t; }
 
-  // Orthogonal part declarations: each returns false if the slot was already
-  // filled (a duplicate breaks document orthogonality and must be reported).
+  < Orthogonal part declarations: each returns false if the slot was already >
+  < filled (a duplicate breaks document orthogonality and must be reported). >
   boolean declareCpu(String ref)     { if (cpuRef != "") { return false; } cpuRef = ref; return true; }
   boolean declareBoard(String ref)   { if (boardRef != "") { return false; } boardRef = ref; return true; }
   boolean declareMemory(String ref, int capMiB) {
@@ -141,17 +173,17 @@ class SLXltSource {
   boolean declareStorage(String ref) { if (storageRef != "") { return false; } storageRef = ref; return true; }
   boolean declareBus(String ref)     { if (busRef != "") { return false; } busRef = ref; return true; }
 
-  // Capability directives: each may be declared at most once (orthogonal).
+  < Capability directives: each may be declared at most once (orthogonal). >
   boolean declareGpu()       { if (gpuFlag == 1) { return false; } gpuFlag = 1; return true; }
   boolean declareDma()       { if (dmaFlag == 1) { return false; } dmaFlag = 1; return true; }
   boolean declareNativeRam() { if (nativeRamFlag == 1) { return false; } nativeRamFlag = 1; return true; }
 
-  // Memory-tier designation (orthogonal: each tier declared at most once).
+  < Memory-tier designation (orthogonal: each tier declared at most once). >
   boolean declareUsualTier(String ref)    { if (usualTierRef != "") { return false; } usualTierRef = ref; return true; }
   boolean declareAccurateTier(String ref) { if (accurateTierRef != "") { return false; } accurateTierRef = ref; return true; }
   boolean declareMainTier(String which)   { if (mainTier != "") { return false; } mainTier = which; return true; }
 
-  // Workload + grant (each declared at most once; orthogonal).
+  < Workload + grant (each declared at most once; orthogonal). >
   boolean declareProgram(String path, String lang) {
     if (programPath != "") { return false; }
     programPath = path; programLang = lang; return true;

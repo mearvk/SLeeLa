@@ -50,10 +50,14 @@ class WholesaleModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int cases;              // cases moved this month
-  int casePriceCents;     // price per case to the retailer
-  int caseCostCents;      // cost per case from the manufacturer
-  int logisticsCents;     // monthly warehouse + freight overhead
+  < cases moved this month >
+  int cases;
+  < price per case to the retailer >
+  int casePriceCents;
+  < cost per case from the manufacturer >
+  int caseCostCents;
+  < monthly warehouse + freight overhead >
+  int logisticsCents;
 
   void setUp(int casesSold, int casePrice, int caseCost, int logistics) {
     load();

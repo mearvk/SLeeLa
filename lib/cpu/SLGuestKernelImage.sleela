@@ -59,8 +59,10 @@ class SLGuestKernelImage {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
   String version;
-  SLRAM ops;      // opcode stream: op per word
-  SLRAM args;     // paired immediate per word
+  < opcode stream: op per word >
+  SLRAM ops;
+  < paired immediate per word >
+  SLRAM args;
   int length;
   int entry;
 
@@ -71,7 +73,7 @@ class SLGuestKernelImage {
     length = 0; entry = 0;
   }
 
-  // Append one compiled opcode to the image.
+  < Append one compiled opcode to the image. >
   int append(int opcode, int arg) {
     ops.writeWord(length, opcode);
     args.writeWord(length, arg);
@@ -83,7 +85,7 @@ class SLGuestKernelImage {
   int opcodeAt(int i) { return ops.readWord(i); }
   int argAt(int i) { return args.readWord(i); }
 
-  // Load this image into a guest VM's substrate for execution.
+  < Load this image into a guest VM's substrate for execution. >
   void loadInto(SLSleelaVM vm) {
     int i = 0;
     while (i < length) { vm.loadOpcode(ops.readWord(i), args.readWord(i)); i = i + 1; }

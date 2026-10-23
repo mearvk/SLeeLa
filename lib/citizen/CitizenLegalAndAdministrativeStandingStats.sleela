@@ -1,10 +1,8 @@
 #sleela 2.1
-/*
- * CitizenLegalAndAdministrativeStandingStats.sleela
- * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
- * Source category: Legal and administrative standing.
- * Monetary values use integer minor units where the field name says Cents.
- */
+<< CitizenLegalAndAdministrativeStandingStats.sleela
+   Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+   Source category: Legal and administrative standing.
+   Monetary values use integer minor units where the field name says Cents. >>
 class CitizenLegalAndAdministrativeStandingStats {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

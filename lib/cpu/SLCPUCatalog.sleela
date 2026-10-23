@@ -58,11 +58,16 @@ class SLCPUCatalog {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX = 128;
 
-  String[] key;         // stable selection key, e.g. "6502"
-  String[] label;       // human label, e.g. "MOS 6502"
-  String[] family;      // architecture family, e.g. "6502", "arm", "x86"
-  int[]    specMHz;     // rated spec clock (MHz)
-  int[]    width;       // data-path width (bits)
+  < stable selection key, e.g. "6502" >
+  String[] key;
+  < human label, e.g. "MOS 6502" >
+  String[] label;
+  < architecture family, e.g. "6502", "arm", "x86" >
+  String[] family;
+  < rated spec clock (MHz) >
+  int[]    specMHz;
+  < data-path width (bits) >
+  int[]    width;
   int      count;
 
   void configure() {
@@ -71,7 +76,7 @@ class SLCPUCatalog {
     seedRoster();
   }
 
-  // Register one model in the roster.
+  < Register one model in the roster. >
   void add(String k, String human, String fam, int mhz, int bits) {
     if (count >= MAX) { return; }
     key[count] = k; label[count] = human; family[count] = fam;
@@ -93,7 +98,7 @@ class SLCPUCatalog {
   String labelAt(int i) { if (i < 0 || i >= count) { return ""; } return label[i]; }
   int specAt(int i)     { if (i < 0 || i >= count) { return 0; } return specMHz[i]; }
 
-  // A newline-separated listing of the roster, for a chooser or report.
+  < A newline-separated listing of the roster, for a chooser or report. >
   String list() {
     String s = "";
     for (int i = 0; i < count; i = i + 1) {
@@ -103,10 +108,10 @@ class SLCPUCatalog {
     return s;
   }
 
-  // Instantiate and configure the model selected by key, as a runnable
-  // SLCPURuntime. Returns null if the key is unknown. The concrete model's
-  // configure() does bring-up (register set, memory, spec clock); the family
-  // switch maps a catalog key onto its SL<ARCH>CPU class.
+  < Instantiate and configure the model selected by key, as a runnable >
+  < SLCPURuntime. Returns null if the key is unknown. The concrete model's >
+  < configure() does bring-up (register set, memory, spec clock); the family >
+  < switch maps a catalog key onto its SL<ARCH>CPU class. >
   SLCPURuntime make(String k) {
     String fam = familyOf(k);
     if (fam == "") { return null; }
@@ -115,10 +120,10 @@ class SLCPUCatalog {
     return cpu;
   }
 
-  // Map an architecture family onto its concrete runnable class. Covers the
-  // classic cores directly; console/system families reuse the CPU core they
-  // shipped (e.g. a Genesis is a 68000-class core), so the roster stays runnable
-  // without a bespoke class per SKU.
+  < Map an architecture family onto its concrete runnable class. Covers the >
+  < classic cores directly; console/system families reuse the CPU core they >
+  < shipped (e.g. a Genesis is a 68000-class core), so the roster stays runnable >
+  < without a bespoke class per SKU. >
   SLCPURuntime instantiate(String fam) {
     if (fam == "6502")  { SL6502CPU c = new SL6502CPU();   c.configure(); return c; }
     if (fam == "z80")   { SLZ80CPU c = new SLZ80CPU();     c.configure(); return c; }
@@ -132,13 +137,13 @@ class SLCPUCatalog {
     if (fam == "sparc") { SLSparcCPU c = new SLSparcCPU(); c.configure(); return c; }
     if (fam == "vax")   { SLVAXCPU c = new SLVAXCPU();     c.configure(); return c; }
     if (fam == "superh"){ SLSuperHCPU c = new SLSuperHCPU(); c.configure(); return c; }
-    // --- prominent modern/brand CPUs (added folders) ---
+    < --- prominent modern/brand CPUs (added folders) --- >
     if (fam == "intel-core")  { SLIntelCoreCPU c = new SLIntelCoreCPU();   c.configure(); return c; }
     if (fam == "intel-xeon")  { SLIntelXeonCPU c = new SLIntelXeonCPU();   c.configure(); return c; }
     if (fam == "intel-8086")  { SLIntel8086CPU c = new SLIntel8086CPU();   c.configure(); return c; }
     if (fam == "amd-ryzen")   { SLAMDRyzenCPU c = new SLAMDRyzenCPU();     c.configure(); return c; }
     if (fam == "amd-epyc")    { SLAMDEPYCCPU c = new SLAMDEPYCCPU();       c.configure(); return c; }
-    // EPYC 9005 "Turin" per-SKU classes (Zen 5 / Zen 5c)
+    < EPYC 9005 "Turin" per-SKU classes (Zen 5 / Zen 5c) >
     if (fam == "epyc-9965")   { SLAMDEPYC9965 c = new SLAMDEPYC9965();     c.configure(); return c; }
     if (fam == "epyc-9755")   { SLAMDEPYC9755 c = new SLAMDEPYC9755();     c.configure(); return c; }
     if (fam == "epyc-9645")   { SLAMDEPYC9645 c = new SLAMDEPYC9645();     c.configure(); return c; }
@@ -147,7 +152,7 @@ class SLCPUCatalog {
     if (fam == "epyc-9355")   { SLAMDEPYC9355 c = new SLAMDEPYC9355();     c.configure(); return c; }
     if (fam == "epyc-9175f")  { SLAMDEPYC9175F c = new SLAMDEPYC9175F();   c.configure(); return c; }
     if (fam == "amd-threadripper") { SLAMDThreadripperCPU c = new SLAMDThreadripperCPU(); c.configure(); return c; }
-    // Threadripper 9000 "Shimada Peak" per-SKU classes (Zen 5)
+    < Threadripper 9000 "Shimada Peak" per-SKU classes (Zen 5) >
     if (fam == "tr-9980x")    { SLAMDThreadripper9980X c = new SLAMDThreadripper9980X(); c.configure(); return c; }
     if (fam == "tr-9970x")    { SLAMDThreadripper9970X c = new SLAMDThreadripper9970X(); c.configure(); return c; }
     if (fam == "tr-9960x")    { SLAMDThreadripper9960X c = new SLAMDThreadripper9960X(); c.configure(); return c; }
@@ -173,9 +178,9 @@ class SLCPUCatalog {
     return null;
   }
 
-  // A representative starter roster spanning eras and families. A deployment may
-  // add() more entries (every runnable SL<ARCH>CPU is eligible) without changing
-  // this class. Spec clocks are rated reference values in MHz.
+  < A representative starter roster spanning eras and families. A deployment may >
+  < add() more entries (every runnable SL<ARCH>CPU is eligible) without changing >
+  < this class. Spec clocks are rated reference values in MHz. >
   void seedRoster() {
     add("6502",  "MOS 6502",            "6502",   1,    8);
     add("z80",   "Zilog Z80",           "z80",    4,    8);
@@ -189,14 +194,14 @@ class SLCPUCatalog {
     add("sparc", "SPARC",               "sparc",  143, 32);
     add("vax",   "DEC VAX",             "vax",    5,   32);
     add("sh4",   "SuperH SH-4",         "superh", 200, 32);
-    // --- prominent modern/brand CPUs ---
+    < --- prominent modern/brand CPUs --- >
     add("8086",      "Intel 8086",            "intel-8086", 5,    16);
     add("intel-core","Intel Core (x86-64)",   "intel-core", 3600, 64);
     add("xeon",      "Intel Xeon (x86-64)",   "intel-xeon", 3800, 64);
     add("athlon",    "AMD Athlon (K7)",       "amd-athlon", 1000, 32);
     add("ryzen",     "AMD Ryzen (Zen)",       "amd-ryzen",  4500, 64);
     add("epyc",      "AMD EPYC (Zen)",        "amd-epyc",   3700, 64);
-    // EPYC 9005 "Turin" individual SKUs (rated clock = max boost MHz)
+    < EPYC 9005 "Turin" individual SKUs (rated clock = max boost MHz) >
     add("epyc-9965", "AMD EPYC 9965 (192C Turin)",   "epyc-9965",  3700, 64);
     add("epyc-9755", "AMD EPYC 9755 (128C Turin)",   "epyc-9755",  4100, 64);
     add("epyc-9645", "AMD EPYC 9645 (96C Turin)",    "epyc-9645",  3700, 64);
@@ -205,7 +210,7 @@ class SLCPUCatalog {
     add("epyc-9355", "AMD EPYC 9355 (32C Turin)",    "epyc-9355",  4400, 64);
     add("epyc-9175f","AMD EPYC 9175F (16C Turin)",   "epyc-9175f", 5000, 64);
     add("threadripper","AMD Ryzen Threadripper 9000 (Zen 5)","amd-threadripper",5400,64);
-    // Threadripper 9000 "Shimada Peak" individual SKUs
+    < Threadripper 9000 "Shimada Peak" individual SKUs >
     add("tr-9980x",  "Threadripper 9980X (64C)",     "tr-9980x",   5400, 64);
     add("tr-9970x",  "Threadripper 9970X (32C)",     "tr-9970x",   5400, 64);
     add("tr-9960x",  "Threadripper 9960X (24C)",     "tr-9960x",   5400, 64);

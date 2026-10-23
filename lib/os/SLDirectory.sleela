@@ -56,23 +56,23 @@ class SLDirectory {
   String name() { return path; }
   boolean exists() { return osIsDir(path) == 1; }
 
-  // Create this directory (succeeds if it already exists).
+  < Create this directory (succeeds if it already exists). >
   boolean create() { return osMkdir(path) == 0; }
 
-  // Remove this directory (must be empty on POSIX/Windows).
+  < Remove this directory (must be empty on POSIX/Windows). >
   boolean remove() { return osRemove(path) == 0; }
 
-  // Rename/move; on success the handle tracks the new path.
+  < Rename/move; on success the handle tracks the new path. >
   boolean renameTo(String newPath) {
     if (osRename(path, newPath) == 0) { path = newPath; return true; }
     return false;
   }
 
-  // Make this directory the process' current working directory.
+  < Make this directory the process' current working directory. >
   boolean enter() { return osChangeDir(path) == 0; }
 
-  // The process' current working directory (static-style convenience).
+  < The process' current working directory (static-style convenience). >
   String current() { return osCurrentDir(); }
-  // The system temporary directory.
+  < The system temporary directory. >
   String temp() { return osTempDir(); }
 }

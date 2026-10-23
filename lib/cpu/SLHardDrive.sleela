@@ -53,8 +53,10 @@ class SLHardDrive {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int MEDIA_HDD = 0; // rotational
-  static final int MEDIA_SSD = 1; // solid-state
+  < rotational >
+  static final int MEDIA_HDD = 0;
+  < solid-state >
+  static final int MEDIA_SSD = 1;
 
   String name;
   int blockCount;
@@ -69,7 +71,7 @@ class SLHardDrive {
     handle = 0; reads = 0; writes = 0;
   }
 
-  // Mount the native file-backed store, creating it if absent.
+  < Mount the native file-backed store, creating it if absent. >
   int mount(String path) {
     handle = native sleela_blockdev_open(path, blockCount, blockBytes);
     return handle;

@@ -61,27 +61,40 @@ class SLNintendo64CPU extends SLCPURuntime {
   static final int R_SP = 33;
   static final int R_LINK = 32;
 
-  // r0 is hardwired to zero (reads 0, writes discarded).
+  < r0 is hardwired to zero (reads 0, writes discarded). >
   int gpr(int i)            { if (i == 0) { return 0; } return readReg(i); }
   void setGpr(int i, int v) { if (i == 0) { return; } writeReg(i, v); }
 
   void configure() {
-    setSpecClock(94);   // the model's rated clock (MHz); overclockable
+    < the model's rated clock (MHz); overclockable >
+    setSpecClock(94);
     bringUp("Nintendo 64 (NEC VR4300 / MIPS)", 64, 32, 34, 262144);
   }
 
-  static final int I_LOADI = 1;   // dst <- imm
-  static final int I_MOVE  = 2;   // dst <- src
-  static final int I_LOAD  = 3;   // dst <- mem[imm]
-  static final int I_STORE = 4;   // mem[imm] <- dst
-  static final int I_ADD   = 5;   // dst <- dst + src
-  static final int I_SUB   = 6;   // dst <- dst - src
-  static final int I_MUL   = 7;   // dst <- dst * src
-  static final int I_AND   = 8;   // dst <- dst & src
-  static final int I_OR    = 9;   // dst <- dst | src
-  static final int I_CMP   = 10;  // flags <- dst - src
-  static final int I_JMP   = 11;  // pc <- imm
-  static final int I_JZ    = 12;  // if Z: pc <- imm
+  < dst <- imm >
+  static final int I_LOADI = 1;
+  < dst <- src >
+  static final int I_MOVE  = 2;
+  < dst <- mem[imm] >
+  static final int I_LOAD  = 3;
+  < mem[imm] <- dst >
+  static final int I_STORE = 4;
+  < dst <- dst + src >
+  static final int I_ADD   = 5;
+  < dst <- dst - src >
+  static final int I_SUB   = 6;
+  < dst <- dst * src >
+  static final int I_MUL   = 7;
+  < dst <- dst & src >
+  static final int I_AND   = 8;
+  < dst <- dst | src >
+  static final int I_OR    = 9;
+  < flags <- dst - src >
+  static final int I_CMP   = 10;
+  < pc <- imm >
+  static final int I_JMP   = 11;
+  < if Z: pc <- imm >
+  static final int I_JZ    = 12;
   static final int I_HALT  = 13;
 
   int opOf(int w)  { return (w / 65536) % 256; }

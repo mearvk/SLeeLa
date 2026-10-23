@@ -52,7 +52,7 @@ class SLChip extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a chip inside `parent` with a label.
+  < Create a chip inside `parent` with a label. >
   void createIn(SLWidget parent, String text) {
     widget = uiChip(parent.handle(), text);
   }

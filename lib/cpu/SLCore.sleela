@@ -78,8 +78,8 @@ class SLCore {
     isa = new SLInstructionSet(); isa.configure();
     decoder = new SLInstructionDecoder(); decoder.configure(isa);
 
-    // Per-core hardware stack: a high region of shared memory growing downward.
-    // The OS re-points the stack per process; this is the boot default.
+    < Per-core hardware stack: a high region of shared memory growing downward. >
+    < The OS re-points the stack per process; this is the boot default. >
     stack = new SLStack();
     int top = sharedMemory.capacityWords() - 1 - (coreId * 4096);
     stack.configure(sharedMemory, top, top - 2048);
@@ -95,10 +95,10 @@ class SLCore {
   void loadEntryPoint(int addr) { pc.branchTo(addr); }
   void installSyscallVector(int addr) { control.installSyscallVector(addr); }
 
-  // Advance one clock cycle: tick the clock, execute one instruction.
+  < Advance one clock cycle: tick the clock, execute one instruction. >
   int tick() { clock.toggle(); return control.step(); }
 
-  // Raise the timer interrupt (the OS uses this for preemptive scheduling).
+  < Raise the timer interrupt (the OS uses this for preemptive scheduling). >
   void timerTick() { irq.raise(irq.IRQ_TIMER); }
 
   boolean halted() { return control.isHalted(); }

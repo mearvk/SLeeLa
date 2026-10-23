@@ -64,14 +64,20 @@ class SleelaVMCreator {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SleelaVMGenerationCatalog catalog;
-  int generation;         // selected SLVM generation (0 = /impl Core .. 11 Sovereign)
-  String formalName;      // catalog name for the generation
-  SLVM vm;                // the live Secondary VM this creator built
+  < selected SLVM generation (0 = /impl Core .. 11 Sovereign) >
+  int generation;
+  < catalog name for the generation >
+  String formalName;
+  < the live Secondary VM this creator built >
+  SLVM vm;
   int heapWords;
   int memoryWords;
-  int dmaOption;          // 1 => grant direct DMA to the built VM/CPU/program
-  int gpuOption;          // 1 => grant native GPU access
-  int nativeRamOption;    // 1 => build the VM to run on real host RAM
+  < 1 => grant direct DMA to the built VM/CPU/program >
+  int dmaOption;
+  < 1 => grant native GPU access >
+  int gpuOption;
+  < 1 => build the VM to run on real host RAM >
+  int nativeRamOption;
 
   void configure() {
     catalog = new SleelaVMGenerationCatalog();
@@ -82,10 +88,10 @@ class SleelaVMCreator {
     dmaOption = 0; gpuOption = 0; nativeRamOption = 0;
   }
 
-  // Size the VM the creator will build (optional; sensible defaults otherwise).
+  < Size the VM the creator will build (optional; sensible defaults otherwise). >
   void sizeVM(int heap, int memory) { heapWords = heap; memoryWords = memory; }
 
-  // Select a generation by version; validated against the catalog.
+  < Select a generation by version; validated against the catalog. >
   boolean selectGeneration(int version) {
     if (!catalog.validateVersion(version)) { return false; }
     generation = version;
@@ -93,61 +99,64 @@ class SleelaVMCreator {
     return true;
   }
 
-  // Build and boot a LIVE Secondary Sleela VM for the selected generation.
-  // This is the step the Creator README called "VM artifact" — here it is an
-  // actual runnable SLVM instance, not just a packaged build plan.
+  < Build and boot a LIVE Secondary Sleela VM for the selected generation. >
+  < This is the step the Creator README called "VM artifact" — here it is an >
+  < actual runnable SLVM instance, not just a packaged build plan. >
   SLVM create() {
     vm = new SLVM();
     vm.configure(formalName);
-    if (nativeRamOption == 1) { vm.useNativeRam(); }   // run on real host RAM
+    < run on real host RAM >
+    if (nativeRamOption == 1) { vm.useNativeRam(); }
     vm.boot(heapWords, memoryWords);
-    if (dmaOption == 1) { vm.enableDMA(); }   // apply opted-in acceleration
+    < apply opted-in acceleration >
+    if (dmaOption == 1) { vm.enableDMA(); }
     if (gpuOption == 1) { vm.enableGPU(); }
     return vm;
   }
-    if (dmaOption == 1) { vm.enableDMA(); }             // apply opted-in acceleration
+    < apply opted-in acceleration >
+    if (dmaOption == 1) { vm.enableDMA(); }
     if (gpuOption == 1) { vm.enableGPU(); }
     return vm;
   }
 
-  // Optional capabilities: request direct DMA and/or native GPU access for the
-  // built VM. Call before create()/run() so the hosted CPU and its program get
-  // them. These correspond to the DMA and GPU feature bits (SleelaVMFeatureBits).
+  < Optional capabilities: request direct DMA and/or native GPU access for the >
+  < built VM. Call before create()/run() so the hosted CPU and its program get >
+  < them. These correspond to the DMA and GPU feature bits (SleelaVMFeatureBits). >
   void requestDMA() { dmaOption = 1; if (vm != null) { vm.enableDMA(); } }
   void requestGPU() { gpuOption = 1; if (vm != null) { vm.enableGPU(); } }
   boolean dmaRequested() { return dmaOption == 1; }
   boolean gpuRequested() { return gpuOption == 1; }
 
-  // Native-RAM option: build the VM to run on REAL host RAM instead of the
-  // simulated store — for running outside simulation for procedural layment.
-  // Call before create()/run(). Corresponds to the NATIVE_RAM feature bit.
+  < Native-RAM option: build the VM to run on REAL host RAM instead of the >
+  < simulated store — for running outside simulation for procedural layment. >
+  < Call before create()/run(). Corresponds to the NATIVE_RAM feature bit. >
   void requestNativeRam() { nativeRamOption = 1; }
   boolean nativeRamRequested() { return nativeRamOption == 1; }
 
-  // Optional capabilities: request direct DMA and/or native GPU access for the
-  // built VM. Call before create()/run() so the hosted CPU and its program get
-  // them. These correspond to the DMA and GPU feature bits (SleelaVMFeatureBits).
+  < Optional capabilities: request direct DMA and/or native GPU access for the >
+  < built VM. Call before create()/run() so the hosted CPU and its program get >
+  < them. These correspond to the DMA and GPU feature bits (SleelaVMFeatureBits). >
   void requestDMA() { dmaOption = 1; if (vm != null) { vm.enableDMA(); } }
   void requestGPU() { gpuOption = 1; if (vm != null) { vm.enableGPU(); } }
   boolean dmaRequested() { return dmaOption == 1; }
   boolean gpuRequested() { return gpuOption == 1; }
 
-  // Host a Sleela CPU model as the VM's executor (nested on the SLVM substrate).
+  < Host a Sleela CPU model as the VM's executor (nested on the SLVM substrate). >
   void installExecutor(SLCPURuntime cpu) {
     if (vm == null) { create(); }
     vm.hostCpu(cpu);
   }
 
-  // Run a C / C++ / Java / Sleela program through the hosted CPU under the SLVM.
-  // Returns the observable output. The whole stack — Creator built the SLVM, the
-  // SLVM hosts the CPU, the CPU executes the program — resolves in this call.
+  < Run a C / C++ / Java / Sleela program through the hosted CPU under the SLVM. >
+  < Returns the observable output. The whole stack — Creator built the SLVM, the >
+  < SLVM hosts the CPU, the CPU executes the program — resolves in this call. >
   int runProgram(SLWorkload work, int budget) {
     if (vm == null) { return -1; }
     return vm.runGuestWorkload(work, budget);
   }
 
-  // Convenience: do the entire stack in one call.
-  //   creator.run(generationVersion, cpu, workload, budget)
+  < Convenience: do the entire stack in one call. >
+  < creator.run(generationVersion, cpu, workload, budget) >
   int run(int version, SLCPURuntime cpu, SLWorkload work, int budget) {
     selectGeneration(version);
     create();

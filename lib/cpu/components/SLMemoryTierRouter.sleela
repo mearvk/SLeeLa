@@ -59,13 +59,19 @@ class SLMemoryTierRouter {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int TIER_INHERIT  = 0;   // no per-function tier -> use main
-  static final int TIER_USUAL    = 1;   // usualmem    (DDR2)
-  static final int TIER_ACCURATE = 2;   // accuratemem (DDR5)
+  < no per-function tier -> use main >
+  static final int TIER_INHERIT  = 0;
+  < usualmem    (DDR2) >
+  static final int TIER_USUAL    = 1;
+  < accuratemem (DDR5) >
+  static final int TIER_ACCURATE = 2;
 
-  SLMemoryModule usual;      // the usual-activities tier module (may be null)
-  SLMemoryModule accurate;   // the accuracy/competency tier module (may be null)
-  int mainTier;              // TIER_USUAL or TIER_ACCURATE (default accurate)
+  < the usual-activities tier module (may be null) >
+  SLMemoryModule usual;
+  < the accuracy/competency tier module (may be null) >
+  SLMemoryModule accurate;
+  < TIER_USUAL or TIER_ACCURATE (default accurate) >
+  int mainTier;
 
   void configure() { usual = null; accurate = null; mainTier = TIER_ACCURATE; }
 
@@ -75,17 +81,17 @@ class SLMemoryTierRouter {
     if (tier == TIER_USUAL || tier == TIER_ACCURATE) { mainTier = tier; }
   }
 
-  // Resolve a function's declared tier to the concrete tier it runs on:
-  // TIER_INHERIT folds to the main tier; otherwise the declared tier stands.
+  < Resolve a function's declared tier to the concrete tier it runs on: >
+  < TIER_INHERIT folds to the main tier; otherwise the declared tier stands. >
   int resolveTier(int declaredTier) {
     if (declaredTier == TIER_USUAL || declaredTier == TIER_ACCURATE) { return declaredTier; }
     return mainTier;
   }
 
-  // The actual memory module a function with `declaredTier` binds to. Falls
-  // back to whichever tier IS installed if the resolved one is absent, so a
-  // model that declared only one tier still runs (the router never returns
-  // null when at least one tier is present).
+  < The actual memory module a function with `declaredTier` binds to. Falls >
+  < back to whichever tier IS installed if the resolved one is absent, so a >
+  < model that declared only one tier still runs (the router never returns >
+  < null when at least one tier is present). >
   SLMemoryModule moduleFor(int declaredTier) {
     int t = resolveTier(declaredTier);
     if (t == TIER_USUAL) {
@@ -96,7 +102,7 @@ class SLMemoryTierRouter {
     return usual;
   }
 
-  // Human-readable tier a function resolves to (for reports/diagnostics).
+  < Human-readable tier a function resolves to (for reports/diagnostics). >
   String tierName(int declaredTier) {
     int t = resolveTier(declaredTier);
     if (t == TIER_USUAL) { return "usual"; }

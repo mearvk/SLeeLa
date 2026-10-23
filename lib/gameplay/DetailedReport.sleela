@@ -61,12 +61,15 @@ class DetailedReport {
 
   int loadedFlag;
   String title;
-  String[] decidedMoves;   // Game-Engineering moves the boss already chose
+  < Game-Engineering moves the boss already chose >
+  String[] decidedMoves;
   int moveCount;
-  int pricePaidCents;      // what the player paid, by their quality
-  boolean affordable;      // whether the player could pay at all
+  < what the player paid, by their quality >
+  int pricePaidCents;
+  < whether the player could pay at all >
+  boolean affordable;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() {
     loadedFlag = 1;
     title = "Boss's Detailed Report";
@@ -84,7 +87,7 @@ class DetailedReport {
     affordable = couldPay;
   }
 
-  // Record one pre-decided Game-Engineering move.
+  < Record one pre-decided Game-Engineering move. >
   void decide(String move) {
     if (move == null || moveCount >= MAX_MOVES) { return; }
     decidedMoves[moveCount] = move;

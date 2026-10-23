@@ -55,10 +55,10 @@ class SLEnvironment {
 
   void configure() { reads = 0; writes = 0; }
 
-  // Read a variable; "" when unset. Tracks a read count for observability.
+  < Read a variable; "" when unset. Tracks a read count for observability. >
   String get(String key) { reads = reads + 1; return osGetEnv(key); }
 
-  // Read with a fallback used when the variable is unset (empty).
+  < Read with a fallback used when the variable is unset (empty). >
   String getOrDefault(String key, String fallback) {
     String v = osGetEnv(key);
     reads = reads + 1;
@@ -66,26 +66,28 @@ class SLEnvironment {
     return v;
   }
 
-  // True when the variable is present (non-empty).
+  < True when the variable is present (non-empty). >
   boolean has(String key) { reads = reads + 1; return osGetEnv(key) != ""; }
 
-  // Set (overwrite) a variable; returns true on success.
+  < Set (overwrite) a variable; returns true on success. >
   boolean set(String key, String value) {
     writes = writes + 1;
     return osSetEnv(key, value) == 0;
   }
 
-  // Common entries, resolved per-OS by the host (PATH, HOME/USERPROFILE, ...).
+  < Common entries, resolved per-OS by the host (PATH, HOME/USERPROFILE, ...). >
   String path() { return osGetEnv("PATH"); }
   String home() {
     String h = osGetEnv("HOME");
     if (h != "") { return h; }
-    return osGetEnv("USERPROFILE");   // Windows
+    < Windows >
+    return osGetEnv("USERPROFILE");
   }
   String shell() {
     String s = osGetEnv("SHELL");
     if (s != "") { return s; }
-    return osGetEnv("COMSPEC");        // Windows (cmd.exe)
+    < Windows (cmd.exe) >
+    return osGetEnv("COMSPEC");
   }
 
   int readCount() { return reads; }

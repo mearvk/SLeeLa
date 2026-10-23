@@ -60,7 +60,8 @@ class SLLoadingDemo {
   int run() {
     ui = new SLUserInterface();
     ui.configure("com.mearvk.SleelaUI.Loading");
-    if (!ui.open()) { return 1; }   // headless: no display
+    < headless: no display >
+    if (!ui.open()) { return 1; }
 
     SLTheme theme = new SLTheme();
     theme.slickBlack();
@@ -73,7 +74,7 @@ class SLLoadingDemo {
     content.setMarginAll(20);
     content.setExpand(true, true);
 
-    // The three primitives, each on its own row.
+    < The three primitives, each on its own row. >
     SLLabel t1 = new SLLabel(); t1.createIn(content, "Throbber (flowing field):");
     SLThrobber throb = new SLThrobber();
     throb.createIn(content, 200);
@@ -93,13 +94,14 @@ class SLLoadingDemo {
     SLSeparator rule = new SLSeparator();
     rule.horizontal(content);
 
-    // The unified loading indicator: starts indeterminate, then determinate.
+    < The unified loading indicator: starts indeterminate, then determinate. >
     loader = new SLLoadingIndicator();
     loader.createIn(content, SLLoadingIndicator.STYLE_THROBBER, 160);
     loader.beginIndeterminate("Resolving library...");
-    // (A host would later call these as work proceeds:)
+    < (A host would later call these as work proceeds:) >
     loader.beginDeterminate("Compiling", 0.0);
-    loader.setFraction(0.6);           // caption becomes "Compiling  60%"
+    < caption becomes "Compiling  60%" >
+    loader.setFraction(0.6);
     loader.done("Build succeeded");
 
     win.show();

@@ -57,13 +57,17 @@ class SLOSArchitecture {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String triple;      // LLVM-style target triple
-  String packageArch; // distro package arch label (amd64/arm64/...)
-  int wordBits;       // 32 or 64
-  int littleEndian;   // 1 little, 0 big
+  < LLVM-style target triple >
+  String triple;
+  < distro package arch label (amd64/arm64/...) >
+  String packageArch;
+  < 32 or 64 >
+  int wordBits;
+  < 1 little, 0 big >
+  int littleEndian;
   int configured;
 
-  // ---- Presets ------------------------------------------------------------
+  < ---- Presets ------------------------------------------------------------ >
   void amd64() {
     triple = "x86_64-unknown-linux-gnu"; packageArch = "amd64";
     wordBits = 64; littleEndian = 1; configured = 1;
@@ -93,7 +97,7 @@ class SLOSArchitecture {
     wordBits = 32; littleEndian = 1; configured = 1;
   }
 
-  // Choose by package-arch label; defaults to amd64.
+  < Choose by package-arch label; defaults to amd64. >
   void configure(String arch) {
     if (arch == "arm64")   { arm64();   return; }
     if (arch == "armhf")   { armhf();   return; }
@@ -104,7 +108,7 @@ class SLOSArchitecture {
     amd64();
   }
 
-  // Re-triple for a non-Linux shape so the triple reflects the target OS.
+  < Re-triple for a non-Linux shape so the triple reflects the target OS. >
   void retargetForShape(SLOSShape shape) {
     if (shape.isWindows()) {
       if (packageArch == "arm64") { triple = "aarch64-pc-windows-msvc"; }

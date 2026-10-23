@@ -105,8 +105,8 @@ class VoIPApplication {
   String path(){return source;}
   boolean available(){return source!=null;}
 }
-// Hecht's Notional Brand — Static Permanent National Council ID on port 171.
-// Authoritative runnables live in telephony-skya/sleela/hechts/.
+< Hecht's Notional Brand — Static Permanent National Council ID on port 171. >
+< Authoritative runnables live in telephony-skya/sleela/hechts/. >
 class HechtsNationalCouncil {
   String source;
   void configure(String path){source=path;}
@@ -125,6 +125,6 @@ class HechtsClient {
   String path(){return source;}
   boolean available(){return source!=null;}
 }
-// The emblematic Skya modules (Socio, Network, Servers, Communication,
-// RealAcquaintances) and their SkyaModules loader are now first-class /lib
-// Master Classes, one per file in this package, rather than facade stubs.
+< The emblematic Skya modules (Socio, Network, Servers, Communication, >
+< RealAcquaintances) and their SkyaModules loader are now first-class /lib >
+< Master Classes, one per file in this package, rather than facade stubs. >

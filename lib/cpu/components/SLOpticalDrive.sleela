@@ -54,18 +54,22 @@ class SLOpticalDrive {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MEDIUM_CD = 0;
   static final int MEDIUM_DVD = 1;
-  static final int MEDIUM_BD  = 2;   // Blu-ray
+  < Blu-ray >
+  static final int MEDIUM_BD  = 2;
 
-  // Base 1x data rate in KB/s for each medium.
+  < Base 1x data rate in KB/s for each medium. >
   static final int BASE_CD_KBS = 150;
   static final int BASE_DVD_KBS = 1385;
   static final int BASE_BD_KBS = 4500;
 
   String partName;
   int medium;
-  int speedMultiplier;   // the "nnX" rating
-  int writer;            // 1 if it can burn media
-  int capacityMiB;       // disc capacity (CD 700, DVD 4700, BD 25000, ...)
+  < the "nnX" rating >
+  int speedMultiplier;
+  < 1 if it can burn media >
+  int writer;
+  < disc capacity (CD 700, DVD 4700, BD 25000, ...) >
+  int capacityMiB;
 
   void configure(String name, int mediumId, int multiplier, boolean canWrite, int discMiB) {
     partName = name; medium = mediumId; speedMultiplier = multiplier;
@@ -79,11 +83,11 @@ class SLOpticalDrive {
     return BASE_CD_KBS;
   }
 
-  // Sustained read rate in KB/s = base × multiplier.
+  < Sustained read rate in KB/s = base × multiplier. >
   int readRateKBs() { return baseRateKBs() * speedMultiplier; }
   int readRateMBs() { return readRateKBs() / 1024; }
 
-  // Time in milliseconds to read `mib` megabytes at the drive's rate.
+  < Time in milliseconds to read `mib` megabytes at the drive's rate. >
   int readTimeMs(int mib) { int r = readRateKBs(); if (r <= 0) { return 0; } return (mib * 1024 * 1000) / r; }
 
   String name()      { return partName; }

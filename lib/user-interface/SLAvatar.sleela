@@ -52,7 +52,7 @@ class SLAvatar extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create an avatar inside `parent` with an initial and a diameter (px).
+  < Create an avatar inside `parent` with an initial and a diameter (px). >
   void createIn(SLWidget parent, String initial, int diameter) {
     widget = uiAvatar(parent.handle(), initial, diameter);
   }

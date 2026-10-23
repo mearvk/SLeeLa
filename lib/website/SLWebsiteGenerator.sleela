@@ -56,8 +56,10 @@ class SLWebsiteGenerator {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String presetName;    // "neon" | "aurora" | "brutalist" | "editorial"
-  int signCount;        // number of signs composed into the current site
+  < "neon" | "aurora" | "brutalist" | "editorial" >
+  String presetName;
+  < number of signs composed into the current site >
+  int signCount;
 
   void choose(String preset) { presetName = preset; }
   void addedSign() { signCount = signCount + 1; }

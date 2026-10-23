@@ -55,7 +55,7 @@ class SLFrame extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a frame inside `parent` with a title (pass "" for no title).
+  < Create a frame inside `parent` with a title (pass "" for no title). >
   void createIn(SLWidget parent, String title) {
     widget = uiFrame(parent.handle(), title);
   }

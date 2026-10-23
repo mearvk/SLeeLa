@@ -65,16 +65,20 @@ class SLProgram {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
   int entryPoint;
-  int length;        // instruction count
-  SLRAM image;       // staging buffer holding the encoded words
-  SLTimingManifest timing;   // stated operating point (null until attached)
-  SLAccessManifest access;   // stated access semantics (null until attached)
+  < instruction count >
+  int length;
+  < staging buffer holding the encoded words >
+  SLRAM image;
+  < stated operating point (null until attached) >
+  SLTimingManifest timing;
+  < stated access semantics (null until attached) >
+  SLAccessManifest access;
 
-  // Document-level memory tier: flags the WHOLE program with a default tier
-  // (SLMemoryTierRouter.TIER_*): 0 none (accurate/DDR5 default), 1 usual (DDR2),
-  // 2 accurate (DDR5). A method's own usualmem/accuratemem tier overrides this;
-  // any method that declares no tier inherits this document default. This is
-  // the "flag the entire document" lever; per-method flags handle any subset.
+  < Document-level memory tier: flags the WHOLE program with a default tier >
+  < (SLMemoryTierRouter.TIER_*): 0 none (accurate/DDR5 default), 1 usual (DDR2), >
+  < 2 accurate (DDR5). A method's own usualmem/accuratemem tier overrides this; >
+  < any method that declares no tier inherits this document default. This is >
+  < the "flag the entire document" lever; per-method flags handle any subset. >
   int docMemTier;
 
   void configure(String programName, int capacityWords) {
@@ -83,41 +87,42 @@ class SLProgram {
     timing = null; access = null; docMemTier = 0;
   }
 
-  // Flag the entire document's default tier. `usualmem` on the program means
-  // "everything is usual unless a method says otherwise"; likewise accurate.
+  < Flag the entire document's default tier. `usualmem` on the program means >
+  < "everything is usual unless a method says otherwise"; likewise accurate. >
   void setDocumentTier(int tier) { docMemTier = tier; }
   int documentTier() { return docMemTier; }
 
-  // The EFFECTIVE tier for a method: the method's own tier when it declares one
-  // (usualmem/accuratemem), else the document default, else accurate (2).
+  < The EFFECTIVE tier for a method: the method's own tier when it declares one >
+  < (usualmem/accuratemem), else the document default, else accurate (2). >
   int effectiveTier(int methodTier) {
     if (methodTier == 1 || methodTier == 2) { return methodTier; }
     if (docMemTier == 1 || docMemTier == 2) { return docMemTier; }
-    return 2;   // accurate / DDR5 default
+    < accurate / DDR5 default >
+    return 2;
   }
 
   void setEntryPoint(int addr) { entryPoint = addr; }
 
-  // Attach the stated timing/voltage/expertise manifest this image was compiled
-  // for. The loader and VM read it instead of inferring an operating point.
+  < Attach the stated timing/voltage/expertise manifest this image was compiled >
+  < for. The loader and VM read it instead of inferring an operating point. >
   void attachTiming(SLTimingManifest manifest) { timing = manifest; }
   SLTimingManifest timingManifest() { return timing; }
   boolean hasTiming() { return timing != null; }
-  // True only when the image declares an operating point AND that point was
-  // sealed honored at compile time — the consumer may trust it as stated.
+  < True only when the image declares an operating point AND that point was >
+  < sealed honored at compile time — the consumer may trust it as stated. >
   boolean timingHonored() { return timing != null && timing.honored(); }
 
-  // Attach the stated access-semantics manifest (public/private/protected as
-  // system roles). The VM reads it to stand up the System backdrop instead of
-  // guessing a file-network topology.
+  < Attach the stated access-semantics manifest (public/private/protected as >
+  < system roles). The VM reads it to stand up the System backdrop instead of >
+  < guessing a file-network topology. >
   void attachAccess(SLAccessManifest manifest) { access = manifest; }
   SLAccessManifest accessManifest() { return access; }
   boolean hasAccess() { return access != null; }
-  // True only when the image declares access semantics AND they were sealed as
-  // a competent backdrop the consumer may realize as stated.
+  < True only when the image declares access semantics AND they were sealed as >
+  < a competent backdrop the consumer may realize as stated. >
   boolean accessCompetent() { return access != null && access.competent(); }
 
-  // Append one encoded instruction word to the image.
+  < Append one encoded instruction word to the image. >
   int append(int encodedWord) {
     image.writeWord(length, encodedWord);
     int at = length;

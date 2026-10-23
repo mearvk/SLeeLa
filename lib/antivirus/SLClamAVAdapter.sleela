@@ -80,12 +80,10 @@ class SLClamAVAdapter {
       (mode != null && (mode.equals("DAEMON") || mode.equals("ONE_SHOT")));
   }
 
-  /*
-   * This method is intentionally a contract, not a fake scanner.
-   * The native bridge must use an argument vector or a local socket,
-   * enforce timeouts, parse exit codes/output, and set connected only
-   * after a real health check. Never interpolate paths into a shell.
-   */
+  << This method is intentionally a contract, not a fake scanner.
+     The native bridge must use an argument vector or a local socket,
+     enforce timeouts, parse exit codes/output, and set connected only
+     after a real health check. Never interpolate paths into a shell. >>
   String scanStatus(String targetPath) {
     if (!isReady()) return "ENGINE_NOT_CONNECTED";
     return "HOST_BRIDGE_NOT_IMPLEMENTED";

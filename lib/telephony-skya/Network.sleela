@@ -59,9 +59,12 @@ class Network {
 
   static final String MODULE = "Network";
 
-  static final int NAT_UNKNOWN   = 0; // reachability unknown; let PINGs decide
-  static final int NAT_REFLEXIVE = 1; // reachable after local reflexive discovery
-  static final int NAT_DIRECT    = 2; // inbound feasibly reachable / already-mapped
+  < reachability unknown; let PINGs decide >
+  static final int NAT_UNKNOWN   = 0;
+  < reachable after local reflexive discovery >
+  static final int NAT_REFLEXIVE = 1;
+  < inbound feasibly reachable / already-mapped >
+  static final int NAT_DIRECT    = 2;
 
   int loadedFlag;
   String localHost;

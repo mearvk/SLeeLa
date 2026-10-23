@@ -65,7 +65,7 @@ class GameTurn {
   int turnNumber;
   MoveOutcome lastOutcome;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() {
     loadedFlag = 1;
     dice = new DiceRoll();
@@ -79,15 +79,15 @@ class GameTurn {
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // Configure the shared roller seed and the custom game's target turn.
+  < Configure the shared roller seed and the custom game's target turn. >
   void configure(int seed, int targetTurn) {
     dice.seed(seed);
     engine.setTarget(targetTurn);
     turnNumber = 0;
   }
 
-  // Play one turn: bind the chosen move, resolve it, apply it to the player.
-  // The move is any GameMove subclass, already set up by the caller.
+  < Play one turn: bind the chosen move, resolve it, apply it to the player. >
+  < The move is any GameMove subclass, already set up by the caller. >
   MoveOutcome play(Player p, GameMove move) {
     turnNumber = turnNumber + 1;
     if (p == null || move == null) {

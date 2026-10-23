@@ -100,34 +100,35 @@ class SLGovernedExecution {
   boolean active() { return state == 1; }
   int warningCount() { return warnings; }
 
-  // Notify both SLeeLa and the VM that a governance phase is beginning. The
-  // native bridge lets the VM register its interest so it, too, listens for
-  // ordering at BEFORE / DURING / AFTER.
+  < Notify both SLeeLa and the VM that a governance phase is beginning. The >
+  < native bridge lets the VM register its interest so it, too, listens for >
+  < ordering at BEFORE / DURING / AFTER. >
   void announce(int phase) {
     native sleela_gov_announce_phase(phase);
   }
 
-  // Run the program under full governance. Returns the final VM instruction
-  // pointer on success, or a negative value when a phase blocked execution.
+  < Run the program under full governance. Returns the final VM instruction >
+  < pointer on success, or a negative value when a phase blocked execution. >
   int run() {
     if (!active() || stream == null) { return -1; }
 
-    // ---- BEFORE ----
+    < ---- BEFORE ---- >
     announce(SLGovPhase.BEFORE);
     beforeVerdict = registrar.consider(stream);
     if (beforeVerdict.blocks()) {
       haltReason = beforeVerdict.why();
-      return -1; // rejected or paused as unrest; nothing runs
+      < rejected or paused as unrest; nothing runs >
+      return -1;
     }
 
-    // ---- DURING ----
+    < ---- DURING ---- >
     announce(SLGovPhase.DURING);
     int ip = 0;
     int n = stream.size();
     for (int i = 0; i < n; i = i + 1) {
       SLOpcodeBase op = stream.ops[i];
 
-      // The Listener hears the live VM code before the opcode is allowed to fire.
+      < The Listener hears the live VM code before the opcode is allowed to fire. >
       int liveIp = native sleela_gov_live_ip(stream.frame, i);
       duringVerdict = listener.observe(op, liveIp, i);
       if (duringVerdict.blocks()) {
@@ -136,9 +137,10 @@ class SLGovernedExecution {
       }
       if (duringVerdict.value() == SLGovVerdict.WARN) { warnings = warnings + 1; }
 
-      // Admitted: fire exactly this one opcode on the VM.
+      < Admitted: fire exactly this one opcode on the VM. >
       ip = op.step(stream.frame);
-      if (ip < 0) { break; } // OP_HALT or VM rejection ends DURING
+      < OP_HALT or VM rejection ends DURING >
+      if (ip < 0) { break; }
     }
 
     SLGovVerdict settled = listener.settle();
@@ -148,7 +150,7 @@ class SLGovernedExecution {
     }
     if (settled.value() == SLGovVerdict.WARN) { warnings = warnings + 1; }
 
-    // ---- AFTER ----
+    < ---- AFTER ---- >
     announce(SLGovPhase.AFTER);
     afterVerdict = observer.assess(stream, -1);
     if (afterVerdict.value() == SLGovVerdict.REJECT) {
@@ -164,7 +166,7 @@ class SLGovernedExecution {
     return ip;
   }
 
-  // True only when the program passed all three phases without being blocked.
+  < True only when the program passed all three phases without being blocked. >
   boolean admitted() {
     if (beforeVerdict == null || afterVerdict == null) { return false; }
     if (beforeVerdict.blocks()) { return false; }

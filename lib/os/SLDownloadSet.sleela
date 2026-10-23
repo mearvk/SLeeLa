@@ -63,19 +63,21 @@ class SLDownloadSet {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Phase tags: when a download must be present.
-  static final int PHASE_COMPILE = 0;   // before compiling the OS (sources/toolchain)
-  static final int PHASE_ISO     = 1;    // before authoring the ISO (rootfs payloads)
+  < Phase tags: when a download must be present. >
+  < before compiling the OS (sources/toolchain) >
+  static final int PHASE_COMPILE = 0;
+  < before authoring the ISO (rootfs payloads) >
+  static final int PHASE_ISO     = 1;
 
-  // Well-known download slots. "" when unset.
+  < Well-known download slots. "" when unset. >
   String packageRepo;    String kernelSrc;    String firmwareSrc;
   String runtimeWine;    String runtimeQemu;  String upstreamDistro;
-  // Up to four developer-added extra URLs, each "kind|url|phase".
+  < Up to four developer-added extra URLs, each "kind|url|phase". >
   String extra0; String extra1; String extra2; String extra3;
   int extraCount;
-  // The resilient fallback downloader: when a primary URL 404s, it supplies
-  // prioritized support/mirror URLs (authoritative -> official -> college ->
-  // archive). This is the OS-document hook for the support downloader module.
+  < The resilient fallback downloader: when a primary URL 404s, it supplies >
+  < prioritized support/mirror URLs (authoritative -> official -> college -> >
+  < archive). This is the OS-document hook for the support downloader module. >
   SLSupportDownloader support;
   int configured;
 
@@ -87,11 +89,11 @@ class SLDownloadSet {
     configured = 1;
   }
 
-  // The composed support downloader (for the OS document to reach).
+  < The composed support downloader (for the OS document to reach). >
   SLSupportDownloader supportDownloader() { return support; }
 
-  // Seed the per-shape default download URLs. These are the canonical upstreams
-  // a build of that family pulls from; a developer overrides any of them.
+  < Seed the per-shape default download URLs. These are the canonical upstreams >
+  < a build of that family pulls from; a developer overrides any of them. >
   void forShape(SLOSShape shape) {
     configure();
     upstreamDistro = "https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted.git";
@@ -108,7 +110,7 @@ class SLDownloadSet {
       runtimeQemu = "https://www.qemu.org/download";
       return;
     }
-    // Linux defaults.
+    < Linux defaults. >
     packageRepo    = "http://archive.ubuntu.com/ubuntu";
     kernelSrc      = "https://cdn.kernel.org/pub/linux/kernel";
     firmwareSrc    = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
@@ -116,7 +118,7 @@ class SLDownloadSet {
     runtimeQemu    = "https://www.qemu.org/download";
   }
 
-  // ---- Setters --------------------------------------------------------
+  < ---- Setters -------------------------------------------------------- >
   void setPackageRepo(String url) { packageRepo = url; }
   void setKernelSrc(String url)   { kernelSrc = url; }
   void setFirmwareSrc(String url) { firmwareSrc = url; }
@@ -124,8 +126,8 @@ class SLDownloadSet {
   void setRuntimeQemu(String url) { runtimeQemu = url; }
   void setUpstreamDistro(String url) { upstreamDistro = url; }
 
-  // Add a developer download: kind label, URL, and phase (0 compile / 1 iso).
-  // Up to four extras are held.
+  < Add a developer download: kind label, URL, and phase (0 compile / 1 iso). >
+  < Up to four extras are held. >
   int addExtra(String kind, String url, int phase) {
     String ph = "compile";
     if (phase == PHASE_ISO) { ph = "iso"; }
@@ -134,27 +136,28 @@ class SLDownloadSet {
     else if (extraCount == 1) { extra1 = rec; }
     else if (extraCount == 2) { extra2 = rec; }
     else if (extraCount == 3) { extra3 = rec; }
-    else { return -1; }                 // full
+    < full >
+    else { return -1; }
     extraCount = extraCount + 1;
     return 0;
   }
 
-  // ---- Validity -------------------------------------------------------
-  // Before COMPILE: a package repo + kernel source must be known (you cannot
-  // build an OS without where its base and kernel come from).
+  < ---- Validity ------------------------------------------------------- >
+  < Before COMPILE: a package repo + kernel source must be known (you cannot >
+  < build an OS without where its base and kernel come from). >
   boolean readyForCompile() {
     if (configured != 1) { return false; }
     return packageRepo != "" && kernelSrc != "";
   }
-  // Before ISO: additionally the firmware source must be known (the ESP/loader
-  // needs firmware), and every required slot resolved.
+  < Before ISO: additionally the firmware source must be known (the ESP/loader >
+  < needs firmware), and every required slot resolved. >
   boolean readyForIso() {
     if (!readyForCompile()) { return false; }
     return firmwareSrc != "";
   }
 
-  // ---- Manifest + fetch -----------------------------------------------
-  // A newline manifest "<kind> <phase> <url>" of every known download.
+  < ---- Manifest + fetch ----------------------------------------------- >
+  < A newline manifest "<kind> <phase> <url>" of every known download. >
   String downloadManifest() {
     String m = "";
     m = row(m, "package-repo", "compile", packageRepo);
@@ -175,15 +178,16 @@ class SLDownloadSet {
     if (acc == "") { return l; }
     return acc + "\n" + l;
   }
-  // An extra record "kind|url|phase" -> "kind phase url".
+  < An extra record "kind|url|phase" -> "kind phase url". >
   String rowExtra(String acc, String rec) {
     if (rec == "") { return acc; }
-    return acc + "\n" + rec;   // kept raw; the emitter reformats pipes for display
+    < kept raw; the emitter reformats pipes for display >
+    return acc + "\n" + rec;
   }
 
-  // A POSIX fetch script that retrieves the phase's downloads. Honest: it uses
-  // the right tool per URL scheme (git clone for .git, curl otherwise) and is a
-  // separate, explicit step — never run during compile automatically.
+  < A POSIX fetch script that retrieves the phase's downloads. Honest: it uses >
+  < the right tool per URL scheme (git clone for .git, curl otherwise) and is a >
+  < separate, explicit step — never run during compile automatically. >
   String fetchScript(int phase) {
     String s = "#!/bin/sh\n# fetch downloads (phase=" + phaseName(phase)
              + ") generated by SLeeLa lib/os\nset -eu\nmkdir -p downloads\n";
@@ -199,10 +203,10 @@ class SLDownloadSet {
   String fetchLine(int wantPhase, int rowPhase, String kind, String url) {
     if (url == "") { return ""; }
     if (wantPhase != rowPhase) { return ""; }
-    // Choose the fetch tool by the download's kind rather than by string
-    // inspection: the distro upstream and kernel/firmware source are git repos;
-    // package repos and runtime payloads are retrieved with curl. (The surface
-    // has no string-length/substring, so kind drives the choice, not a suffix.)
+    < Choose the fetch tool by the download's kind rather than by string >
+    < inspection: the distro upstream and kernel/firmware source are git repos; >
+    < package repos and runtime payloads are retrieved with curl. (The surface >
+    < has no string-length/substring, so kind drives the choice, not a suffix.) >
     if (kind == "upstream" || kind == "kernel-src" || kind == "firmware-src") {
       return "git clone --depth 1 " + url + " downloads/" + kind + " || true\n";
     }
@@ -211,11 +215,11 @@ class SLDownloadSet {
 
   String phaseName(int phase) { if (phase == PHASE_ISO) { return "iso"; } return "compile"; }
 
-  // ---- Resilient fetch via the support downloader ---------------------
-  // supportFetchScript(phase): like fetchScript, but each component is fetched
-  // through the support downloader's 404-tolerant fallback loop (primary ->
-  // official mirror -> college/edu mirror -> archive). This is what a build
-  // should run so a single 404 does not break it.
+  < ---- Resilient fetch via the support downloader --------------------- >
+  < supportFetchScript(phase): like fetchScript, but each component is fetched >
+  < through the support downloader's 404-tolerant fallback loop (primary -> >
+  < official mirror -> college/edu mirror -> archive). This is what a build >
+  < should run so a single 404 does not break it. >
   String supportFetchScript(int phase) {
     String s = "#!/bin/sh\n# resilient fetch (phase=" + phaseName(phase)
              + ") with 404 fallback, generated by SLeeLa lib/os\nset -eu\nmkdir -p downloads\n";
@@ -232,7 +236,7 @@ class SLDownloadSet {
     return s;
   }
 
-  // The support URL table for the manifest/report (every kind, every tier).
+  < The support URL table for the manifest/report (every kind, every tier). >
   String supportManifest() {
     String s = "";
     s = s + "# package:\n" + support.rankedList("package") + "\n";

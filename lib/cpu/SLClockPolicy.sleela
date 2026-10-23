@@ -56,16 +56,22 @@ class SLClockPolicy {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int baseClockMHz;     // reference/base clock (e.g. FSB/BCLK), MHz
-  int multiplier;       // clock multiplier (effective = base × multiplier)
-  int specMHz;          // the CPU's rated/spec frequency, MHz
-  int maxStableMHz;     // highest frequency the model treats as stable
-  int overclocked;      // 1 once pushed above spec
-  int unstable;         // 1 when effective exceeds maxStableMHz
+  < reference/base clock (e.g. FSB/BCLK), MHz >
+  int baseClockMHz;
+  < clock multiplier (effective = base × multiplier) >
+  int multiplier;
+  < the CPU's rated/spec frequency, MHz >
+  int specMHz;
+  < highest frequency the model treats as stable >
+  int maxStableMHz;
+  < 1 once pushed above spec >
+  int overclocked;
+  < 1 when effective exceeds maxStableMHz >
+  int unstable;
 
-  // Configure from a spec frequency. We factor it into a conventional
-  // base × multiplier (100 MHz base is the common modern reference; small/old
-  // parts fall back to a base of 1 so the spec is representable exactly).
+  < Configure from a spec frequency. We factor it into a conventional >
+  < base × multiplier (100 MHz base is the common modern reference; small/old >
+  < parts fall back to a base of 1 so the spec is representable exactly). >
   void configureSpec(int ratedMHz) {
     specMHz = ratedMHz;
     if (ratedMHz >= 100 && (ratedMHz % 100) == 0) { baseClockMHz = 100; }
@@ -73,24 +79,24 @@ class SLClockPolicy {
     else { baseClockMHz = 1; }
     multiplier = ratedMHz / baseClockMHz;
     if (multiplier < 1) { multiplier = 1; baseClockMHz = ratedMHz; }
-    // Default stability headroom: ~60% over spec (a generous enthusiast ceiling).
+    < Default stability headroom: ~60% over spec (a generous enthusiast ceiling). >
     maxStableMHz = specMHz + (specMHz * 6 / 10);
     overclocked = 0; unstable = 0;
     reassess();
   }
 
-  // Set the stability ceiling explicitly (e.g. a model known to be a poor/strong
-  // overclocker). Must be at least the spec clock.
+  < Set the stability ceiling explicitly (e.g. a model known to be a poor/strong >
+  < overclocker). Must be at least the spec clock. >
   void setStabilityCeiling(int ceilingMHz) {
     if (ceilingMHz >= specMHz) { maxStableMHz = ceilingMHz; }
     reassess();
   }
 
-  // Overclock by raising the multiplier (classic unlocked-multiplier OC).
+  < Overclock by raising the multiplier (classic unlocked-multiplier OC). >
   void setMultiplier(int m) { if (m >= 1) { multiplier = m; } reassess(); }
-  // Overclock by raising the base clock (BCLK/FSB OC).
+  < Overclock by raising the base clock (BCLK/FSB OC). >
   void setBaseClock(int mhz) { if (mhz >= 1) { baseClockMHz = mhz; } reassess(); }
-  // Overclock directly to a target effective frequency.
+  < Overclock directly to a target effective frequency. >
   void overclockTo(int targetMHz) {
     if (targetMHz < 1) { return; }
     if (baseClockMHz < 1) { baseClockMHz = 1; }
@@ -98,7 +104,7 @@ class SLClockPolicy {
     if (multiplier < 1) { multiplier = 1; baseClockMHz = targetMHz; }
     reassess();
   }
-  // Return to the rated spec clock.
+  < Return to the rated spec clock. >
   void resetToSpec() { configureSpec(specMHz); }
 
   void reassess() {
@@ -115,7 +121,7 @@ class SLClockPolicy {
   boolean isOverclocked() { return overclocked == 1; }
   boolean isStable()      { return unstable == 0; }
 
-  // Effective speed as a ratio of spec, ×1000 (integer; 1000 = at spec, 1600 =
-  // +60%). Lets callers scale throughput without floating point.
+  < Effective speed as a ratio of spec, ×1000 (integer; 1000 = at spec, 1600 = >
+  < +60%). Lets callers scale throughput without floating point. >
   int speedRatioMilli() { if (specMHz <= 0) { return 1000; } return (effectiveMHz() * 1000) / specMHz; }
 }

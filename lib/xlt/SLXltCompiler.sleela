@@ -69,10 +69,14 @@ class SLXltCompiler {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLComponentCatalog parts;
-  SLXltProducerRegistry registry;   // what refs are recognized, per slot
-  SLExecutorBuild build;      // the real assembly produced on success
-  int memChannelsWanted;      // channels the declared memory needs (for agreement)
-  int boardChannels;          // channels the declared board routes (0 = no board)
+  < what refs are recognized, per slot >
+  SLXltProducerRegistry registry;
+  < the real assembly produced on success >
+  SLExecutorBuild build;
+  < channels the declared memory needs (for agreement) >
+  int memChannelsWanted;
+  < channels the declared board routes (0 = no board) >
+  int boardChannels;
 
   void configure() {
     parts = new SLComponentCatalog();
@@ -80,11 +84,11 @@ class SLXltCompiler {
     memChannelsWanted = 1; boardChannels = 0;
   }
 
-  // Allow callers to register additional producers before compiling, so a new
-  // part becomes recognizable without editing the compiler.
+  < Allow callers to register additional producers before compiling, so a new >
+  < part becomes recognizable without editing the compiler. >
   void registerProducer(int slot, String ref, int attr) { registry.register(slot, ref, attr); }
 
-  // Compile an .xlt source to a build result. Ordered, orthogonal, congruent.
+  < Compile an .xlt source to a build result. Ordered, orthogonal, congruent. >
   SLXltBuildResult compile(SLXltSource src) {
     SLXltBuildResult res = new SLXltBuildResult();
     res.configure(src.name());
@@ -92,7 +96,7 @@ class SLXltCompiler {
     build.configure(src.name());
     memChannelsWanted = 1; boardChannels = 0;
 
-    // ---- 1. CPU (required) ----
+    < ---- 1. CPU (required) ---- >
     if (src.cpu() == "") {
       res.recordReason(res.REASON_MISSING, "no cpu declared: a model requires a CPU");
     } else if (registry.known(registry.SLOT_CPU, src.cpu()) == false) {
@@ -101,7 +105,7 @@ class SLXltCompiler {
       res.recordBuilt("cpu: " + src.cpu());
     }
 
-    // ---- 2. board (optional) ----
+    < ---- 2. board (optional) ---- >
     if (src.hasBoard()) {
       if (registry.known(registry.SLOT_BOARD, src.board()) == false) {
         res.recordReason(res.REASON_MISSING, "board '" + src.board() + "' is not a registered motherboard");
@@ -112,7 +116,7 @@ class SLXltCompiler {
       }
     }
 
-    // ---- 3. memory (required) ----
+    < ---- 3. memory (required) ---- >
     if (src.memory() == "") {
       res.recordReason(res.REASON_MISSING, "no memory declared: a model requires main memory");
     } else if (registry.known(registry.SLOT_MEMORY, src.memory()) == false) {
@@ -120,7 +124,7 @@ class SLXltCompiler {
     } else {
       memChannelsWanted = registry.attrOf(registry.SLOT_MEMORY, src.memory());
       SLMemoryModule mod = memoryFor(src.memory(), src.memoryCapacity());
-      // Agreement check: memory channels must fit the board's routed channels.
+      < Agreement check: memory channels must fit the board's routed channels. >
       if (boardChannels > 0 && memChannelsWanted > boardChannels) {
         res.recordReason(res.REASON_DISAGREES,
           "memory '" + src.memory() + "' needs " + memChannelsWanted +
@@ -128,7 +132,7 @@ class SLXltCompiler {
       } else {
         build.installMemory(mod);
         res.recordBuilt("memory: " + src.memory() + " x" + src.memoryCapacity() + " MiB");
-        // ---- 3b. cadence overlay (optional, rides the memory) ----
+        < ---- 3b. cadence overlay (optional, rides the memory) ---- >
         if (src.hasCadence()) {
           if (registry.known(registry.SLOT_CADENCE, src.cadence()) == false) {
             res.recordReason(res.REASON_MISSING, "cadence '" + src.cadence() + "' is not a registered generation");
@@ -142,7 +146,7 @@ class SLXltCompiler {
       }
     }
 
-    // ---- 4. storage (optional) ----
+    < ---- 4. storage (optional) ---- >
     if (src.hasStorage()) {
       if (registry.known(registry.SLOT_STORAGE, src.storage()) == false) {
         res.recordReason(res.REASON_MISSING, "storage '" + src.storage() + "' is not a registered device");
@@ -152,7 +156,7 @@ class SLXltCompiler {
       }
     }
 
-    // ---- 5. bus (optional) ----
+    < ---- 5. bus (optional) ---- >
     if (src.hasBus()) {
       if (registry.known(registry.SLOT_BUS, src.bus()) == false) {
         res.recordReason(res.REASON_MISSING, "bus '" + src.bus() + "' is not a registered system bus");
@@ -162,19 +166,19 @@ class SLXltCompiler {
       }
     }
 
-    // ---- 6. capabilities (optional, bare directives) ----
-    // gpu / dma wire directly to the build's CPU; nativeram is a declared
-    // feature bit (NATIVE_RAM) the VM creator honors when it hosts the build.
+    < ---- 6. capabilities (optional, bare directives) ---- >
+    < gpu / dma wire directly to the build's CPU; nativeram is a declared >
+    < feature bit (NATIVE_RAM) the VM creator honors when it hosts the build. >
     if (src.wantsGpu()) { build.enableGPU(); res.recordBuilt("capability: gpu (native compute)"); }
     if (src.wantsDma()) { build.enableDMA(); res.recordBuilt("capability: dma (bulk engine)"); }
     if (src.wantsNativeRam()) { res.recordBuilt("capability: nativeram (NATIVE_RAM feature bit)"); }
 
-    // ---- 7. memory tiers (optional) ----
-    // The model may split memory into a 'usual' tier (usual activities) and an
-    // 'accurate' tier (competency/accuracy); `main` names the program default.
-    // Each tier ref must resolve like any memory preset; `main` must name a
-    // declared tier. Functions marked usualmem/accuratemem route to the matching
-    // tier, the rest inherit `main` (accurate/DDR5 by default).
+    < ---- 7. memory tiers (optional) ---- >
+    < The model may split memory into a 'usual' tier (usual activities) and an >
+    < 'accurate' tier (competency/accuracy); `main` names the program default. >
+    < Each tier ref must resolve like any memory preset; `main` must name a >
+    < declared tier. Functions marked usualmem/accuratemem route to the matching >
+    < tier, the rest inherit `main` (accurate/DDR5 by default). >
     if (src.hasTiers()) {
       if (src.usualTier() != "") {
         if (registry.known(registry.SLOT_MEMORY, src.usualTier()) == false) {
@@ -190,7 +194,7 @@ class SLXltCompiler {
           res.recordBuilt("memtier accurate: " + src.accurateTier() + " (competency/accuracy)");
         }
       }
-      // `main` must name one of the declared tiers (default accurate when unset).
+      < `main` must name one of the declared tiers (default accurate when unset). >
       String main = src.main();
       if (main == "") { main = "accurate"; }
       if (main != "usual" && main != "accurate") {
@@ -204,18 +208,18 @@ class SLXltCompiler {
       }
     }
 
-    // ---- 8. program (optional): politely RUN it on the built CPU ----
-    // Only when the model declared a program AND the build is congruent so far
-    // (no reasons): we assemble the machine, admit an SLWorkload under an
-    // SLCPUResource grant, and run it on build.processor() via SleelaVMCreator —
-    // the sanctioned path, never reaching around the CPU model.
+    < ---- 8. program (optional): politely RUN it on the built CPU ---- >
+    < Only when the model declared a program AND the build is congruent so far >
+    < (no reasons): we assemble the machine, admit an SLWorkload under an >
+    < SLCPUResource grant, and run it on build.processor() via SleelaVMCreator — >
+    < the sanctioned path, never reaching around the CPU model. >
     if (src.hasProgram()) {
       int lang = languageOf(src.programLanguage());
       if (lang < 0) {
         res.recordReason(res.REASON_MISSING, "program language '" + src.programLanguage() +
           "' is not one of sleela/c/cpp/java");
       } else if (res.reasonLines() > 0) {
-        // hardware not congruent -> do not run; the build reasons already explain why.
+        < hardware not congruent -> do not run; the build reasons already explain why. >
         res.recordReason(res.REASON_DISAGREES, "program '" + src.program() +
           "' not run: the hardware model is not congruent");
       } else {
@@ -229,25 +233,31 @@ class SLXltCompiler {
 
   SLExecutorBuild assembled() { return build; }
 
-  // Map an .xlt language token to the SLWorkload.LANG_* id (-1 if unknown).
+  < Map an .xlt language token to the SLWorkload.LANG_* id (-1 if unknown). >
   int languageOf(String lang) {
-    if (lang == "sleela") { return 0; }   // LANG_SLEELA
-    if (lang == "c")      { return 1; }   // LANG_C
-    if (lang == "cpp")    { return 2; }   // LANG_CPP
-    if (lang == "java")   { return 3; }   // LANG_JAVA
+    < LANG_SLEELA >
+    if (lang == "sleela") { return 0; }
+    < LANG_C >
+    if (lang == "c")      { return 1; }
+    < LANG_CPP >
+    if (lang == "cpp")    { return 2; }
+    < LANG_JAVA >
+    if (lang == "java")   { return 3; }
     return -1;
   }
 
-  // Assemble the machine and politely run the declared program on it: a grant,
-  // an SLWorkload, and SleelaVMCreator.run on build.processor(). The capability
-  // flags (nativeram/gpu/dma) are requested on the creator so the run honors
-  // what the model declared.
+  < Assemble the machine and politely run the declared program on it: a grant, >
+  < an SLWorkload, and SleelaVMCreator.run on build.processor(). The capability >
+  < flags (nativeram/gpu/dma) are requested on the creator so the run honors >
+  < what the model declared. >
   void runProgram(SLXltSource src, int lang, SLXltBuildResult res) {
-    build.assemble();   // mount the chosen RAM into the CPU (idempotent to set up)
+    < mount the chosen RAM into the CPU (idempotent to set up) >
+    build.assemble();
 
     int words = src.grantWordsRequested();
     int budget = src.grantBudgetRequested();
-    if (words <= 0)  { words = 4096; }      // polite defaults when unstated
+    < polite defaults when unstated >
+    if (words <= 0)  { words = 4096; }
     if (budget <= 0) { budget = 1000000; }
 
     SLCPUResource grant = new SLCPUResource();
@@ -268,10 +278,10 @@ class SLXltCompiler {
                     ") -> output " + out);
   }
 
-  // ---------------- ref -> real catalog producer mappings ------------------
-  // Recognition and channel attributes come from SLXltProducerRegistry; these
-  // methods only map an already-recognized ref to the concrete catalog call
-  // (the surface language cannot `new` a type from a runtime string).
+  < ---------------- ref -> real catalog producer mappings ------------------ >
+  < Recognition and channel attributes come from SLXltProducerRegistry; these >
+  < methods only map an already-recognized ref to the concrete catalog call >
+  < (the surface language cannot `new` a type from a runtime string). >
   SLMemoryModule memoryFor(String ref, int capMiB) {
     if (ref == "ddr_400")    { return parts.ddr_400(capMiB); }
     if (ref == "ddr2_800")   { return parts.ddr2_800(capMiB); }

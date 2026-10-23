@@ -61,35 +61,43 @@ class SLTimingProfile {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  SLTimingClass tier;   // the governing expertise Class Object
+  < the governing expertise Class Object >
+  SLTimingClass tier;
 
-  // Named, adjustable voltage rails — the ACTUAL voltages, in millivolts.
-  SLVoltageRail vcore;  // CPU core
-  SLVoltageRail vsoc;   // SoC / uncore / interconnect
-  SLVoltageRail vddq;   // DRAM I/O
-  SLVoltageRail vio;    // peripheral I/O ring
+  < Named, adjustable voltage rails — the ACTUAL voltages, in millivolts. >
+  < CPU core >
+  SLVoltageRail vcore;
+  < SoC / uncore / interconnect >
+  SLVoltageRail vsoc;
+  < DRAM I/O >
+  SLVoltageRail vddq;
+  < peripheral I/O ring >
+  SLVoltageRail vio;
 
-  // Expert timings, each on its rail.
+  < Expert timings, each on its rail. >
   SLCpuTiming cpu;
-  SLBusTiming memBus;   // the memory interconnect
-  SLBusTiming sysBus;   // the system/front-side interconnect
+  < the memory interconnect >
+  SLBusTiming memBus;
+  < the system/front-side interconnect >
+  SLBusTiming sysBus;
   SLIOTiming  ioLink;
   SLRamTiming ram;
 
-  // Configure the whole profile for an expertise tier and a brand/medium, then
-  // populate sensible per-tier defaults for a modern part. The tier's guardband
-  // and headroom are stamped into every budget and rail.
+  < Configure the whole profile for an expertise tier and a brand/medium, then >
+  < populate sensible per-tier defaults for a modern part. The tier's guardband >
+  < and headroom are stamped into every budget and rail. >
   void configure(int tierId, String brandOrMedium) {
     tier = new SLTimingClass(); tier.configure(tierId, brandOrMedium);
 
-    // Rails: name / floor / ceiling in mV, with a per-tier nominal lift. A
-    // safer (Novice/Basic) tier runs each rail a little HIGHER than its base
-    // nominal so there is real headroom above the floor to insist on; an Expert
-    // tier runs lean. The floor stays at the physical limit; the lift raises the
-    // settled operating point by exactly the headroom the tier demands.
+    < Rails: name / floor / ceiling in mV, with a per-tier nominal lift. A >
+    < safer (Novice/Basic) tier runs each rail a little HIGHER than its base >
+    < nominal so there is real headroom above the floor to insist on; an Expert >
+    < tier runs lean. The floor stays at the physical limit; the lift raises the >
+    < settled operating point by exactly the headroom the tier demands. >
     int lift = tier.headroom();
     vcore = new SLVoltageRail(); vcore.configure("Vcore", 1200 + lift, 950, 1450);
-    vcore.setLoadLine(500); vcore.setLoad(60000); vcore.lock();   // 0.5 mOhm, 60 A
+    < 0.5 mOhm, 60 A >
+    vcore.setLoadLine(500); vcore.setLoad(60000); vcore.lock();
     vsoc  = new SLVoltageRail(); vsoc.configure("Vsoc", 1050 + lift, 900, 1300);
     vsoc.setLoadLine(400); vsoc.setLoad(20000); vsoc.lock();
     vddq  = new SLVoltageRail(); vddq.configure("Vddq", 1100 + lift, 1000, 1300);
@@ -97,29 +105,32 @@ class SLTimingProfile {
     vio   = new SLVoltageRail(); vio.configure("Vio", 1800 + lift, 1620, 2050);
     vio.setLoadLine(200); vio.setLoad(4000); vio.lock();
 
-    // CPU core timing on Vcore. Ceiling 5 GHz; needs ~0.25 mV/MHz of settled Vcore.
+    < CPU core timing on Vcore. Ceiling 5 GHz; needs ~0.25 mV/MHz of settled Vcore. >
     cpu = new SLCpuTiming(); cpu.configure("core-pipeline", 800, 5000);
-    cpu.attachVcore(vcore, 1);                 // 1 mV per MHz of ceiling (modeled)
+    < 1 mV per MHz of ceiling (modeled) >
+    cpu.attachVcore(vcore, 1);
     cpu.setFetch(90, 20, 15); cpu.setDecode(80, 20, 15);
-    cpu.setExecute(150, 25, 20);               // ALU carry chain = long pole
+    < ALU carry chain = long pole >
+    cpu.setExecute(150, 25, 20);
     cpu.setWriteback(70, 15, 10);
     cpu.setClockJitter(8);
 
-    // Memory interconnect on Vsoc: DDR (2 transfers/clk), 64-bit, 400..2400 MHz.
+    < Memory interconnect on Vsoc: DDR (2 transfers/clk), 64-bit, 400..2400 MHz. >
     memBus = new SLBusTiming(); memBus.configure("MemBus", 400, 2400, 64, 2);
     memBus.attachRail(vsoc, 1);
     memBus.setAddressPath(140, 30, 20);
-    memBus.setDataPath(90, 25, 18, 10);        // data-strobe: the careful one
+    < data-strobe: the careful one >
+    memBus.setDataPath(90, 25, 18, 10);
     memBus.setControlPath(120, 25, 20);
 
-    // System interconnect on Vsoc: QDR-ish fabric, 32-bit, 400..4000 MHz.
+    < System interconnect on Vsoc: QDR-ish fabric, 32-bit, 400..4000 MHz. >
     sysBus = new SLBusTiming(); sysBus.configure("SysBus", 400, 4000, 32, 2);
     sysBus.attachRail(vsoc, 1);
     sysBus.setAddressPath(110, 25, 18);
     sysBus.setDataPath(70, 20, 15, 8);
     sysBus.setControlPath(100, 22, 18);
 
-    // I/O link on Vio: 50..1000 MHz, 2-stage CDC synchronizer.
+    < I/O link on Vio: 50..1000 MHz, 2-stage CDC synchronizer. >
     ioLink = new SLIOTiming(); ioLink.configure("io-link", 50, 1000, 2);
     ioLink.attachVio(vio, 1);
     ioLink.setHandshake(200, 40, 30);
@@ -127,9 +138,10 @@ class SLTimingProfile {
     ioLink.setRecovery(180, 30, 25);
     ioLink.setJitter(15);
 
-    // RAM channel on Vddq: DDR4-3200 class, dialing 2133..4000 MT/s.
+    < RAM channel on Vddq: DDR4-3200 class, dialing 2133..4000 MT/s. >
     ram = new SLRamTiming(); ram.configure("DIMM ch0", 3200, 2133, 4000);
-    ram.attachVddq(vddq, 1, 2);                // 1 mV per 2 MT/s of ceiling (modeled)
+    < 1 mV per 2 MT/s of ceiling (modeled) >
+    ram.attachVddq(vddq, 1, 2);
     ram.setCL(16); ram.setTRCD(18); ram.setTRP(18); ram.setTRAS(39); ram.setTRC(57);
     ram.setCommandRate(1);
 
@@ -137,31 +149,32 @@ class SLTimingProfile {
     dialToTierDefaults();
   }
 
-  // Push the tier's demanded guardband onto every named budget so a passing
-  // check already means "honored for this expertise tier".
+  < Push the tier's demanded guardband onto every named budget so a passing >
+  < check already means "honored for this expertise tier". >
   void stampTierGuardbands() {
     int g = tier.guardband();
-    // The tier most directly governs the carefully-named critical paths: the
-    // CPU execute stage and each interconnect's data strobe / handshake. Set
-    // the guardband in place (without disturbing the measured path numbers).
+    < The tier most directly governs the carefully-named critical paths: the >
+    < CPU execute stage and each interconnect's data strobe / handshake. Set >
+    < the guardband in place (without disturbing the measured path numbers). >
     cpu.executeBudget().setGuardband(g);
     memBus.dataBudget().setGuardband(g);
     sysBus.dataBudget().setGuardband(g);
     ioLink.handshakeBudget().setGuardband(g);
   }
 
-  // Dial each variable speed to the tier's willing fraction of its honest
-  // ceiling (Novice backs off; Expert pushes to the edge).
+  < Dial each variable speed to the tier's willing fraction of its honest >
+  < ceiling (Novice backs off; Expert pushes to the edge). >
   void dialToTierDefaults() {
     cpu.setClock(tier.dialableMHz(cpu.criticalMaxMHz()));
     memBus.setClock(tier.dialableMHz(memBus.ceilingMHz()));
     sysBus.setClock(tier.dialableMHz(sysBus.ceilingMHz()));
-    ioLink.setClock(tier.dialableMHz(1000));   // 1000 MHz = the io-link ceiling
-    // RAM: dial MT/s to the tier fraction of the datasheet ceiling.
+    < 1000 MHz = the io-link ceiling >
+    ioLink.setClock(tier.dialableMHz(1000));
+    < RAM: dial MT/s to the tier fraction of the datasheet ceiling. >
     ram.setDataRate(tier.dialableMHz(4000));
   }
 
-  // ---- expert dialing surface (tier governs whether each is permitted) ----
+  < ---- expert dialing surface (tier governs whether each is permitted) ---- >
 
   int dialCore(int mhz) { if (!tier.allowsKnob() && mhz > cpu.clock()) { return cpu.clock(); } return cpu.setClock(mhz); }
   int dialMemBus(int mhz) { if (!tier.allowsKnob() && mhz > memBus.clock()) { return memBus.clock(); } return memBus.setClock(mhz); }
@@ -169,22 +182,23 @@ class SLTimingProfile {
   int dialIO(int mhz) { if (!tier.allowsKnob() && mhz > ioLink.clock()) { return ioLink.clock(); } return ioLink.setClock(mhz); }
   int dialRam(int mts) { if (!tier.allowsKnob() && mts > ram.dataRate()) { return ram.dataRate(); } return ram.setDataRate(mts); }
 
-  // Adjust an ACTUAL voltage (mV). Novice/Basic may only lower (undervolt is
-  // always safe); Advanced/Expert may raise within limits. Expert may unlock.
+  < Adjust an ACTUAL voltage (mV). Novice/Basic may only lower (undervolt is >
+  < always safe); Advanced/Expert may raise within limits. Expert may unlock. >
   int adjustVcore(int deltaMv) { return adjustRail(vcore, deltaMv); }
   int adjustVsoc(int deltaMv) { return adjustRail(vsoc, deltaMv); }
   int adjustVddq(int deltaMv) { return adjustRail(vddq, deltaMv); }
   int adjustVio(int deltaMv) { return adjustRail(vio, deltaMv); }
 
   int adjustRail(SLVoltageRail rail, int deltaMv) {
-    if (deltaMv > 0 && !tier.allowsKnob()) { return rail.effectiveMv(); } // no raising below Advanced
+    < no raising below Advanced >
+    if (deltaMv > 0 && !tier.allowsKnob()) { return rail.effectiveMv(); }
     if (tier.allowsUnlock()) { /* expert may push to window edges */ }
     rail.adjust(deltaMv);
     return rail.effectiveMv();
   }
 
-  // Everything honored together: every expert timing on every rail, and every
-  // rail inside its limits with the tier's insisted headroom.
+  < Everything honored together: every expert timing on every rail, and every >
+  < rail inside its limits with the tier's insisted headroom. >
   boolean honored() {
     boolean timings = cpu.honored() && memBus.honored() && sysBus.honored()
                    && ioLink.honored() && ram.honored();
@@ -195,9 +209,9 @@ class SLTimingProfile {
     return timings && rails;
   }
 
-  // The tightest setup slack across the carefully-named bus/CPU/IO paths — the
-  // single quality number a consumer reads to know how close to the edge this
-  // profile runs.
+  < The tightest setup slack across the carefully-named bus/CPU/IO paths — the >
+  < single quality number a consumer reads to know how close to the edge this >
+  < profile runs. >
   int worstSlackPs() {
     int w = cpu.executeBudget().setupSlackPs();
     int m = memBus.worstSlackPs();
@@ -209,8 +223,8 @@ class SLTimingProfile {
     return w;
   }
 
-  // Flatten the whole operating point into the embeddable manifest a compiled
-  // .sleela file carries — stated numbers, not assumed confidences.
+  < Flatten the whole operating point into the embeddable manifest a compiled >
+  < .sleela file carries — stated numbers, not assumed confidences. >
   SLTimingManifest toManifest() {
     SLTimingManifest man = new SLTimingManifest(); man.configure();
     man.setTier(tier.tierId(), tier.tierName(), tier.brandOrMedium());

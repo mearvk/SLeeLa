@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Request metadata for the HTTP/1.x carrier endpoint. */
+< Request metadata for the HTTP/1.x carrier endpoint. >
 class Http50Request {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -54,7 +54,7 @@ class GuiMilitaryDemo {
     print("gui package " + pkg.version() + " (featureLevel " + pkg.featureLevel() +
           ", military=" + pkg.isMilitary() + ")");
 
-    // ---- Military metal/blue aesthetic + 3D-lit frame + careful shadows ----
+    < ---- Military metal/blue aesthetic + 3D-lit frame + careful shadows ---- >
     SLGuiSettings s = new SLGuiSettings(); s.configure();
     print("aesthetic: " + s.aestheticName() + " honored=" + (s.honored() && s.militaryHonored()));
     print("  " + s.report());
@@ -62,30 +62,35 @@ class GuiMilitaryDemo {
     print("  finish now: " + s.metalFinishName() + " blueHue=" + s.getBlueHuePct() +
           "% frame3d=" + s.frameLit() + "@" + s.getFrameLightAngle() + "deg");
 
-    // ---- Strong, facile branding ----
+    < ---- Strong, facile branding ---- >
     SLGuiBranding b = new SLGuiBranding(); b.configure("brand/insignia.svg");
     b.setPlacement(b.PLACE_HEADER); b.setScalePct(120); b.setWordmark("SLeeLa Command");
     b.setColors("#8FB7D9", "#3A4450"); b.setTagline("neutral · hardened · precise");
     print("branding: " + b.report());
 
-    // ---- Component vs Container taxonomy (now explicit) ----
+    < ---- Component vs Container taxonomy (now explicit) ---- >
     SLGuiKind k = new SLGuiKind();
     print("taxonomy:");
-    print("  " + k.describe("window"));         // container
-    print("  " + k.describe("button"));         // component, clickable, icon-eligible
-    print("  " + k.describe("cryptoselector")); // component, clickable
-    print("  " + k.describe("label"));          // component (not clickable)
+    < container >
+    print("  " + k.describe("window"));
+    < component, clickable, icon-eligible >
+    print("  " + k.describe("button"));
+    < component, clickable >
+    print("  " + k.describe("cryptoselector"));
+    < component (not clickable) >
+    print("  " + k.describe("label"));
 
-    // ---- Carefully sized + placed icons on a button and a menu item ----
+    < ---- Carefully sized + placed icons on a button and a menu item ---- >
     SLGuiIcon icon = new SLGuiIcon(); icon.configure("icons/shield.svg");
     icon.setSizeTier(icon.SIZE_MD); icon.setPosition(icon.POS_LEADING); icon.setGapPx(8);
     icon.setTint("#8FB7D9"); icon.setOpticalNudge(0, -1);
     print("button icon: " + icon.sizeName() + " " + icon.positionName() +
           " valid=" + icon.valid() + " -> " + icon.toStyle());
 
-    // ---- Cryptography Selector ----
+    < ---- Cryptography Selector ---- >
     SLGuiCryptoSelector cs = new SLGuiCryptoSelector(); cs.configure();
-    cs.requireMinStrength(cs.STRENGTH_STRONG);   // gate out legacy/standard
+    < gate out legacy/standard >
+    cs.requireMinStrength(cs.STRENGTH_STRONG);
     print("crypto suites=" + cs.suiteCount() + " (min strength: " +
           cs.strengthName(cs.STRENGTH_STRONG) + ")");
     boolean okLegacy = cs.selectByName("3DES-CBC + RSA-2048 (legacy interop)");
@@ -94,7 +99,7 @@ class GuiMilitaryDemo {
     print("  select PQC strong         -> " + okPqc + " -> '" + cs.selectedSuite() +
           "' strength=" + cs.strengthName(cs.selectedStrength()) + " pqc=" + cs.selectedIsPostQuantum());
 
-    // ---- Public Key Certificate Store ----
+    < ---- Public Key Certificate Store ---- >
     SLGuiCertificateStore store = new SLGuiCertificateStore(); store.configure();
     int root = store.importCert("SLeeLa Root CA", "SLeeLa Root CA", "Ed25519", "ab12..root", true);
     int leaf = store.importCert("cmd.sleela.mil", "SLeeLa Root CA", "ECDSA-P256", "cd34..leaf", false);
@@ -107,7 +112,7 @@ class GuiMilitaryDemo {
     store.markRevoked(leaf);
     print("  after revoke: leaf valid=" + store.valid(leaf) + " selection cleared=" + (!store.hasSelection()));
 
-    // ---- Window key-listeners: minimize-right fold + double-click restore ----
+    < ---- Window key-listeners: minimize-right fold + double-click restore ---- >
     SLGuiWindowState w = new SLGuiWindowState(); w.configure(120, 80, 1024, 720);
     w.setDesktop(1920, 1080);
     print("window: " + w.modeName() + " " + w.getWidth() + "x" + w.getHeight() + " @(" + w.getX() + "," + w.getY() + ")");

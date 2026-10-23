@@ -50,7 +50,7 @@ class SLBallumStatus {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // --- native ballum_status_t (same ordinals) ---
+  < --- native ballum_status_t (same ordinals) --- >
   static final int OK = 0;
   static final int INVALID_ARGUMENT = 1;
   static final int BACKEND_UNAVAILABLE = 2;
@@ -62,9 +62,9 @@ class SLBallumStatus {
   static final int PERMISSION_DENIED = 8;
   static final int NOT_INITIALIZED = 9;
 
-  // --- SLeeLa bridge-boundary code (no native equivalent) ---
-  // Returned before a host SLVM binding connects this facade to the native
-  // ballum_manager_* API.
+  < --- SLeeLa bridge-boundary code (no native equivalent) --- >
+  < Returned before a host SLVM binding connects this facade to the native >
+  < ballum_manager_* API. >
   static final int BRIDGE_REQUIRED = 100;
 
   String text(int code) {

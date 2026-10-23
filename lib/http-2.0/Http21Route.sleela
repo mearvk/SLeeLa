@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Logical route IDs are application identifiers, not native OS ports. */
+< Logical route IDs are application identifiers, not native OS ports. >
 class Http21Route {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

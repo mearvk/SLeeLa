@@ -1,5 +1,5 @@
 #sleela 2.1
-/* H3 application envelope model; this is not the IETF HTTP/3 frame format. */
+< H3 application envelope model; this is not the IETF HTTP/3 frame format. >
 class Http30Envelope {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -54,8 +54,8 @@ class SLGrid extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a grid inside `parent` with a column count and a spacing (px)
-  // applied between both rows and columns.
+  < Create a grid inside `parent` with a column count and a spacing (px) >
+  < applied between both rows and columns. >
   void createIn(SLWidget parent, int columns, int spacing) {
     widget = uiGrid(parent.handle(), columns, spacing);
   }

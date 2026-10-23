@@ -58,21 +58,24 @@ class SLVmRuntime {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String versionString;        // e.g. "idea-vm v010 (consolidated)"
+  < e.g. "idea-vm v010 (consolidated)" >
+  String versionString;
   SLVmConfig      config;
   SLVmReport      report;
   SLVmStatus      status;
   SLVmMemory      memory;
-  SLVmResult      result;       // a reusable scratch result
+  < a reusable scratch result >
+  SLVmResult      result;
   SLVmTelemetry   telemetry;
   SLVmGc          gc;
   SLVmProfile     profile;
   SLVmCapability  capability;
   SLVmPlatform    platform;
   SLVmAudit       audit;
-  int up;                       // 0 down, 1 running
+  < 0 down, 1 running >
+  int up;
 
-  // init in dependency order (mirror vm_runtime_init).
+  < init in dependency order (mirror vm_runtime_init). >
   void init(SLVmConfig cfg, String version) {
     versionString = version;
     config = cfg;
@@ -94,12 +97,12 @@ class SLVmRuntime {
     up = 1;
   }
 
-  // register a bounded-table capacity for saturation watching.
+  < register a bounded-table capacity for saturation watching. >
   void registerTable(int table, int capacity) {
     if (telemetry != null) { telemetry.setCapacity(table, capacity); }
   }
 
-  // periodic health sample: memory pressure (+ gc if fresh stats supplied).
+  < periodic health sample: memory pressure (+ gc if fresh stats supplied). >
   void poll(int gcAllocated, int gcReclaimed, int gcCollections, boolean haveGc) {
     if (up == 0) { return; }
     int m = memory.poll(report);
@@ -114,14 +117,14 @@ class SLVmRuntime {
     }
   }
 
-  // guard a native operation by capability; records a denial to the trail.
+  < guard a native operation by capability; records a denial to the trail. >
   boolean permit(int cap, String subsystem, String operation) {
     if (capability.check(cap, subsystem, operation, result, report, telemetry)) { return true; }
     audit.logResult(result, report);
     return false;
   }
 
-  // the status banner + totals (mirror the consolidated report).
+  < the status banner + totals (mirror the consolidated report). >
   void reportStatus() {
     status.banner();
     print("telemetry: steps=" + telemetry.steps + " allocs=" + telemetry.allocs

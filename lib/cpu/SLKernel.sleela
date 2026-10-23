@@ -73,9 +73,9 @@ class SLKernel {
     syscallHandlerAddr = handlerAddr; ticks = 0; running = 0;
   }
 
-  // Bring the OS up: install the syscall vector and enable the timer interrupt
-  // on the boot core, then switch the boot core to user mode once a process is
-  // dispatched.
+  < Bring the OS up: install the syscall vector and enable the timer interrupt >
+  < on the boot core, then switch the boot core to user mode once a process is >
+  < dispatched. >
   void boot() {
     syscalls.configure();
     SLCore core = cpu.bootCore();
@@ -84,10 +84,10 @@ class SLKernel {
     running = 1;
   }
 
-  // The kernel's main loop. Each outer iteration is one scheduling round:
-  // dispatch the next ready process, run it for a quantum, handle any syscall
-  // it made and any timer preemption, until no runnable process remains or the
-  // round budget is spent.
+  < The kernel's main loop. Each outer iteration is one scheduling round: >
+  < dispatch the next ready process, run it for a quantum, handle any syscall >
+  < it made and any timer preemption, until no runnable process remains or the >
+  < round budget is spent. >
   int run(int rounds) {
     SLCore core = cpu.bootCore();
     int round = 0;
@@ -103,7 +103,7 @@ class SLKernel {
         q = q + 1;
       }
 
-      // End of quantum: a timer interrupt preempts the process.
+      < End of quantum: a timer interrupt preempts the process. >
       core.timerTick();
       if (core.interrupts().hasPending()) {
         int line = core.interrupts().highestPriorityPending();
@@ -116,12 +116,13 @@ class SLKernel {
     return round;
   }
 
-  // Dispatch a user syscall by number. SYS_WRITE goes to the console driver;
-  // SYS_EXIT terminates the process; SYS_YIELD gives up the rest of the quantum.
+  < Dispatch a user syscall by number. SYS_WRITE goes to the console driver; >
+  < SYS_EXIT terminates the process; SYS_YIELD gives up the rest of the quantum. >
   void serviceSyscall(SLCore core, SLProcess proc, int number) {
     syscalls.count();
     if (number == syscalls.SYS_WRITE) {
-      int ch = core.registers().read(2); // convention: r2 holds the char
+      < convention: r2 holds the char >
+      int ch = core.registers().read(2);
       if (drivers.consoleDriver() != null) { drivers.consoleDriver().putChar(ch); }
     } else if (number == syscalls.SYS_EXIT) {
       proc.terminate();

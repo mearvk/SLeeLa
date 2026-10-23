@@ -60,7 +60,7 @@ class SLInstallerGenerator {
   int configured;
   void configure() { configured = 1; }
 
-  // Generate the installer that matches the model's shape.
+  < Generate the installer that matches the model's shape. >
   SLOSArtifact generate(SLOSModel m) {
     SLOSShape shape = m.osShape();
     if (shape.isWindows()) { return windowsInstaller(m); }
@@ -68,7 +68,7 @@ class SLInstallerGenerator {
     return linuxInstaller(m);
   }
 
-  // ---- Linux: POSIX shell installer --------------------------------------
+  < ---- Linux: POSIX shell installer -------------------------------------- >
   SLOSArtifact linuxInstaller(SLOSModel m) {
     String iso = isoFileName(m);
     String s = "#!/bin/sh\n";
@@ -94,7 +94,7 @@ class SLInstallerGenerator {
     return a;
   }
 
-  // ---- Windows: PowerShell installer -------------------------------------
+  < ---- Windows: PowerShell installer ------------------------------------- >
   SLOSArtifact windowsInstaller(SLOSModel m) {
     String iso = isoFileName(m);
     String s = "#requires -RunAsAdministrator\n";
@@ -121,7 +121,7 @@ class SLInstallerGenerator {
     return a;
   }
 
-  // ---- macOS: APFS shell installer ---------------------------------------
+  < ---- macOS: APFS shell installer --------------------------------------- >
   SLOSArtifact macInstaller(SLOSModel m) {
     String iso = isoFileName(m);
     String s = "#!/bin/sh\n";
@@ -144,7 +144,7 @@ class SLInstallerGenerator {
     return a;
   }
 
-  // The shared --vm (QEMU) branch for POSIX installers: boot the ISO read-only.
+  < The shared --vm (QEMU) branch for POSIX installers: boot the ISO read-only. >
   String vmBranchPosix(SLOSModel m) {
     String arch = m.architectures().primaryArch().arch();
     String bin = "qemu-system-x86_64";

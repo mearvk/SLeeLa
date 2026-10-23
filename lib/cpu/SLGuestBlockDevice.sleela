@@ -56,7 +56,8 @@ class SLGuestBlockDevice extends SLGuestDevice {
   SLHardDrive backing;
   int blockNo;
   int bufAddr;
-  int status;      // 0 idle, 1 busy, 2 done
+  < 0 idle, 1 busy, 2 done >
+  int status;
   int reads;
   int writes;
 
@@ -80,12 +81,14 @@ class SLGuestBlockDevice extends SLGuestDevice {
     if (r == 2) { command(value); }
   }
 
-  // Execute a block command and signal completion.
+  < Execute a block command and signal completion. >
   void command(int cmd) {
-    status = 1; // busy
+    < busy >
+    status = 1;
     if (cmd == 1 && backing != null) { backing.readBlock(blockNo); reads = reads + 1; }
     if (cmd == 2 && backing != null) { backing.writeBlock(blockNo, bufAddr); writes = writes + 1; }
-    status = 2; // done
+    < done >
+    status = 2;
     raiseIRQ();
   }
 

@@ -57,9 +57,9 @@ class Morale {
         return "The collective emotional state, confidence, or spirit of a group.";
     }
 
-    // --- COORENAGRAPH linguistic / graph members, specific to "Morale" ------
+    < --- COORENAGRAPH linguistic / graph members, specific to "Morale" ------ >
 
-    // Related adverb form(s) of this object.
+    < Related adverb form(s) of this object. >
     int adverbCount() { return 1; }
     String[] adverbs() {
         String[] a = new String[1];
@@ -67,7 +67,7 @@ class Morale {
         return a;
     }
 
-    // Related verb form(s) of this object.
+    < Related verb form(s) of this object. >
     int verbCount() { return 1; }
     String[] verbs() {
         String[] v = new String[1];
@@ -75,7 +75,7 @@ class Morale {
         return v;
     }
 
-    // Related noun form(s) of this object.
+    < Related noun form(s) of this object. >
     int nounCount() { return 3; }
     String[] nouns() {
         String[] n = new String[3];
@@ -85,8 +85,8 @@ class Morale {
         return n;
     }
 
-    // Co-sections: sibling concepts co-located with this object in the graph.
-    // NOTE: distinct from Moral (right/wrong); see MoralVocabulary.
+    < Co-sections: sibling concepts co-located with this object in the graph. >
+    < NOTE: distinct from Moral (right/wrong); see MoralVocabulary. >
     int cosectCount() { return 2; }
     String[] cosects() {
         String[] c = new String[2];
@@ -95,12 +95,12 @@ class Morale {
         return c;
     }
 
-    // The moral dimension / axis this object occupies.
+    < The moral dimension / axis this object occupies. >
     String dimension() {
         return "disposition";
     }
 
-    // Interchangeable (near-synonym) terms for this object.
+    < Interchangeable (near-synonym) terms for this object. >
     int interchangeCount() { return 2; }
     String[] interchanges() {
         String[] i = new String[2];

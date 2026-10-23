@@ -54,7 +54,8 @@ class SLMoralLedger {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String entries;     // newline-separated verdict summaries
+  < newline-separated verdict summaries >
+  String entries;
   int total;
   int permits;
   int defers;
@@ -65,7 +66,7 @@ class SLMoralLedger {
     entries = ""; total = 0; permits = 0; defers = 0; denials = 0; configured = 1;
   }
 
-  // Append a verdict for an operation.
+  < Append a verdict for an operation. >
   void record(SLMoralOperation op, SLMoralVerdict v) {
     String line = op.identity() + " -> " + v.summary();
     if (entries == "") { entries = line; } else { entries = entries + "\n" + line; }

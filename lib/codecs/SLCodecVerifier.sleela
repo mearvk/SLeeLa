@@ -59,9 +59,9 @@ class SLCodecVerifier {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // ---- extension resolution (mirrors sleela_codec_by_extension) -------
-  // Returns the codec id for a known extension, or -1 if unrecognized.
-  // Extensions are taken verbatim from each codec's registry metadata.
+  < ---- extension resolution (mirrors sleela_codec_by_extension) ------- >
+  < Returns the codec id for a known extension, or -1 if unrecognized. >
+  < Extensions are taken verbatim from each codec's registry metadata. >
   int resolveExtension(String ext) {
     if (ext == ".wav") { return 0; }
     if (ext == ".aif" || ext == ".aiff") { return 1; }
@@ -69,8 +69,10 @@ class SLCodecVerifier {
     if (ext == ".caf") { return 3; }
     if (ext == ".mp3") { return 4; }
     if (ext == ".aac") { return 5; }
-    if (ext == ".m4a") { return 5; }        // AAC family container
-    if (ext == ".ogg") { return 7; }        // Vorbis is the default .ogg audio
+    < AAC family container >
+    if (ext == ".m4a") { return 5; }
+    < Vorbis is the default .ogg audio >
+    if (ext == ".ogg") { return 7; }
     if (ext == ".opus") { return 8; }
     if (ext == ".spx") { return 9; }
     if (ext == ".wma") { return 10; }
@@ -86,41 +88,52 @@ class SLCodecVerifier {
     return -1;
   }
 
-  // ---- content-signature probe (mirrors each plugin's probe()) --------
-  // Given a short leading-byte signature tag (as text, e.g. "RIFF", "fLaC",
-  // "MThd", "OggS", "FORM", "1A45DFA3" for EBML), return the codec id that
-  // claims it, or -1. This is the SLeeLa expression of the native byte probe:
-  // the actual byte comparison lives in the native plugin; here the Verifier
-  // encodes which magic belongs to which codec so a GUI can pre-classify.
+  < ---- content-signature probe (mirrors each plugin's probe()) -------- >
+  < Given a short leading-byte signature tag (as text, e.g. "RIFF", "fLaC", >
+  < "MThd", "OggS", "FORM", "1A45DFA3" for EBML), return the codec id that >
+  < claims it, or -1. This is the SLeeLa expression of the native byte probe: >
+  < the actual byte comparison lives in the native plugin; here the Verifier >
+  < encodes which magic belongs to which codec so a GUI can pre-classify. >
   int probeMagic(String tag) {
-    if (tag == "RIFF") { return 0; }        // RIFF/WAVE -> PCM/WAV
-    if (tag == "FORM") { return 1; }        // FORM/AIFF -> AIFF
-    if (tag == "fLaC") { return 2; }        // FLAC stream marker
-    if (tag == "ID3" || tag == "FFFB" || tag == "FFF3") { return 4; } // MP3 frame/ID3
-    if (tag == "OggS") { return 7; }        // Ogg container (Vorbis/Speex/Opus)
-    if (tag == "OpusHead") { return 8; }    // Opus identification header
-    if (tag == "0B77") { return 11; }       // AC-3 sync word
-    if (tag == "#!AMR") { return 13; }      // AMR-NB magic
-    if (tag == "#!AMR-WB") { return 14; }   // AMR-WB magic
-    if (tag == "MThd") { return 17; }       // Standard MIDI header
-    if (tag == "1A45DFA3") { return 18; }   // EBML -> Matroska/WebM
+    < RIFF/WAVE -> PCM/WAV >
+    if (tag == "RIFF") { return 0; }
+    < FORM/AIFF -> AIFF >
+    if (tag == "FORM") { return 1; }
+    < FLAC stream marker >
+    if (tag == "fLaC") { return 2; }
+    < MP3 frame/ID3 >
+    if (tag == "ID3" || tag == "FFFB" || tag == "FFF3") { return 4; }
+    < Ogg container (Vorbis/Speex/Opus) >
+    if (tag == "OggS") { return 7; }
+    < Opus identification header >
+    if (tag == "OpusHead") { return 8; }
+    < AC-3 sync word >
+    if (tag == "0B77") { return 11; }
+    < AMR-NB magic >
+    if (tag == "#!AMR") { return 13; }
+    < AMR-WB magic >
+    if (tag == "#!AMR-WB") { return 14; }
+    < Standard MIDI header >
+    if (tag == "MThd") { return 17; }
+    < EBML -> Matroska/WebM >
+    if (tag == "1A45DFA3") { return 18; }
     return -1;
   }
 
-  // headerless(id): true for codecs with no reliable magic (G.711 telephony),
-  // where probing by content cannot confirm the format — the caller must know
-  // the format out-of-band. Mirrors the mu-law/A-law probe comment.
+  < headerless(id): true for codecs with no reliable magic (G.711 telephony), >
+  < where probing by content cannot confirm the format — the caller must know >
+  < the format out-of-band. Mirrors the mu-law/A-law probe comment. >
   boolean headerless(int id) { return id == 15 || id == 16; }
 
-  // ---- loadability / lifecycle verification ---------------------------
-  // verifyLoadable(id): 0 if the id is a real codec that can be loaded,
-  // else -2 (invalid). Mirrors the manager's id_ok guard.
+  < ---- loadability / lifecycle verification --------------------------- >
+  < verifyLoadable(id): 0 if the id is a real codec that can be loaded, >
+  < else -2 (invalid). Mirrors the manager's id_ok guard. >
   int verifyLoadable(int id) {
     if (id >= 0 && id < 20) { return 0; }
     return -2;
   }
 
-  // ---- result-code text (mirrors sleela_codec_result_text) ------------
+  < ---- result-code text (mirrors sleela_codec_result_text) ------------ >
   String resultText(int code) {
     if (code == 0) { return "ok"; }
     if (code == -1) { return "unsupported (backend not present)"; }

@@ -56,8 +56,10 @@ class SLRegistryKey {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_VALUES = 8;
 
-  String path;              // full key path, e.g. "Settings"
-  int    count;             // live values
+  < full key path, e.g. "Settings" >
+  String path;
+  < live values >
+  int    count;
   SLRegistryValue v0; SLRegistryValue v1; SLRegistryValue v2; SLRegistryValue v3;
   SLRegistryValue v4; SLRegistryValue v5; SLRegistryValue v6; SLRegistryValue v7;
   int hasProvenance;
@@ -65,7 +67,7 @@ class SLRegistryKey {
 
   void configure(String keyPath) { path = keyPath; count = 0; hasProvenance = 0; }
 
-  // append a value (numbered-field store in place of an array)
+  < append a value (numbered-field store in place of an array) >
   boolean add(SLRegistryValue val) {
     if (count >= MAX_VALUES) { return false; }
     if (count == 0) { v0 = val; }

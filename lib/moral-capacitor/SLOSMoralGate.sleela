@@ -58,8 +58,10 @@ class SLOSMoralGate {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLMoralCapacitor cap;
   SLMoralLedger ledger;
-  SLMoralCertificate certificate;   // the OS product's Certificate of Morals
-  SLMoralCodeGuard codeGuard;       // admits the OS only when certified
+  < the OS product's Certificate of Morals >
+  SLMoralCertificate certificate;
+  < admits the OS only when certified >
+  SLMoralCodeGuard codeGuard;
   int configured;
 
   void configure() {
@@ -69,48 +71,48 @@ class SLOSMoralGate {
     configured = 1;
   }
 
-  // Certify this OS: issue a Certificate of Morals over the gate's capacitor and
-  // arm a code guard against it, so the OS is a morally certified product.
+  < Certify this OS: issue a Certificate of Morals over the gate's capacitor and >
+  < arm a code guard against it, so the OS is a morally certified product. >
   void certify(SLMoralCertificateAuthority authority, int redlinesArmed,
                String issuedAt, String expiresAt) {
     certificate = authority.issue("sleela-os", cap, redlinesArmed, issuedAt, expiresAt);
     codeGuard = new SLMoralCodeGuard(); codeGuard.configure(authority);
   }
 
-  // Prove at the OS product boundary (ship/boot/install) that the moral code is
-  // present and certified as of nowStamp.
+  < Prove at the OS product boundary (ship/boot/install) that the moral code is >
+  < present and certified as of nowStamp. >
   boolean admit(String nowStamp) {
     if (codeGuard == null || certificate == null) { return false; }
     return codeGuard.permits("sleela-os", cap, certificate, nowStamp);
   }
   SLMoralCertificate moralCertificate() { return certificate; }
 
-  // Reading identity/env/cwd is routine and reversible.
+  < Reading identity/env/cwd is routine and reversible. >
   SLMoralVerdict permitQuery(String what) {
     SLMoralPolicy p = new SLMoralPolicy(); p.osRoutine();
     return decide(op("os", "query", what, "host", true, true), p);
   }
 
-  // Running a shell command reaches the host: a higher bar, consent assumed
-  // from the caller but screened for red lines.
+  < Running a shell command reaches the host: a higher bar, consent assumed >
+  < from the caller but screened for red lines. >
   SLMoralVerdict permitRun(String command, boolean consented) {
     SLMoralPolicy p = new SLMoralPolicy(); p.osRoutine(); p.setThreshold(4);
     return decide(op("os", "run", command, "host", true, consented), p);
   }
 
-  // Deleting a path is irreversible: strict policy, consent required.
+  < Deleting a path is irreversible: strict policy, consent required. >
   SLMoralVerdict permitErase(String path, boolean consented) {
     SLMoralPolicy p = new SLMoralPolicy(); p.osDestructive();
     return decide(op("os", "erase", path, "disk", false, consented), p);
   }
 
-  // Formatting / installing to a disk is the most destructive OS action.
+  < Formatting / installing to a disk is the most destructive OS action. >
   SLMoralVerdict permitInstallToDisk(String device, boolean consented) {
     SLMoralPolicy p = new SLMoralPolicy(); p.osDestructive();
     return decide(op("os", "format", device, "disk", false, consented), p);
   }
 
-  // OS Creator(TM) writing a development tree is reversible (an output dir).
+  < OS Creator(TM) writing a development tree is reversible (an output dir). >
   SLMoralVerdict permitWriteDevTree(String root) {
     SLMoralPolicy p = new SLMoralPolicy(); p.osRoutine();
     return decide(op("os", "write", root, "disk", true, true), p);

@@ -71,19 +71,19 @@ class SLGuestKernelBuilder {
     built = 0;
   }
 
-  // Compile a guest kernel from source in the given language into a bootable
-  // opcode image. langId: 0 Sleela, 1 C, 2 C++, 3 Java.
+  < Compile a guest kernel from source in the given language into a bootable >
+  < opcode image. langId: 0 Sleela, 1 C, 2 C++, 3 Java. >
   SLGuestKernelImage build(String sourcePath, int langId, String name, String version) {
-    // 1. frontend + lowering: source -> register ISA program.
+    < 1. frontend + lowering: source -> register ISA program. >
     SLCompilerDriver driver = new SLCompilerDriver(); driver.configure(isa);
     SLProgram prog = driver.compile(sourcePath, langId, name);
 
-    // 2. map register ISA + syscalls -> canonical SLeeLa opcodes, into a scratch VM.
+    < 2. map register ISA + syscalls -> canonical SLeeLa opcodes, into a scratch VM. >
     SLSleelaVM scratch = new SLSleelaVM(); scratch.configure(65536, 8192, 4096);
     SLOpcodeMap map = new SLOpcodeMap(); map.configure(isa, sys, scratch);
     map.mapProgram(prog, decoder);
 
-    // 3. package the emitted opcode stream as a bootable kernel image.
+    < 3. package the emitted opcode stream as a bootable kernel image. >
     SLGuestKernelImage image = new SLGuestKernelImage();
     image.configure(name, version, scratch.programLength() + 8);
     int i = 0;

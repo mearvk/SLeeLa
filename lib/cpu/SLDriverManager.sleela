@@ -65,7 +65,7 @@ class SLDriverManager {
   void installKeyboard(SLKeyboardDriver d) { keyboard = d; d.attach(); d.open(); installed = installed + 1; }
   void installNetwork(SLNetworkDriver d) { net = d; d.attach(); d.open(); installed = installed + 1; }
 
-  // Route an interrupt line to the driver that owns it (ISR dispatch).
+  < Route an interrupt line to the driver that owns it (ISR dispatch). >
   void dispatchInterrupt(int line) {
     if (line == 1 && keyboard != null) { keyboard.serviceInterrupt(); }
     if (line == 2 && disk != null) { disk.serviceInterrupt(); }

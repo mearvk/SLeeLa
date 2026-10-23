@@ -52,17 +52,21 @@ class SLCertificateStore {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Status codes mirror slcrypto_status in crypto/include/slcrypto.h.
+  < Status codes mirror slcrypto_status in crypto/include/slcrypto.h. >
   static final int OK = 0;
   static final int ERR_PARAM = -1;
   static final int ERR_AUTH = -2;
   static final int ERR_UNIMPL = -3;
 
   String algorithm;
-  int count;         // number of certificates held
-  int state;         // 1 = enabled, 0 = disabled
-  int configured;    // 1 once an algorithm name has been accepted
-  int backend;       // 1 when the native /crypto backend is linked and ready
+  < number of certificates held >
+  int count;
+  < 1 = enabled, 0 = disabled >
+  int state;
+  < 1 once an algorithm name has been accepted >
+  int configured;
+  < 1 when the native /crypto backend is linked and ready >
+  int backend;
 
   int configure(String a) {
     if (a == null) { configured = 0; return ERR_PARAM; }
@@ -80,7 +84,7 @@ class SLCertificateStore {
 
   int size() { return count; }
 
-  // Add a parsed certificate to the store.
+  < Add a parsed certificate to the store. >
   int add(String encoded) {
     if (active() == false) { return ERR_UNIMPL; }
     if (encoded == null) { return ERR_PARAM; }
@@ -88,7 +92,7 @@ class SLCertificateStore {
     return OK;
   }
 
-  // Clear all held certificates.
+  < Clear all held certificates. >
   int clear() {
     if (backend == 0) { return ERR_UNIMPL; }
     count = 0;

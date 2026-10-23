@@ -59,49 +59,69 @@ class SLInstructionSet {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // --- control / misc ---
+  < --- control / misc --- >
   static final int NOP   = 0;
   static final int HALT  = 1;
-  // --- data movement ---
-  static final int MOV   = 2;   // rd <- imm (load immediate)
-  static final int MOVR  = 3;   // rd <- rs (register copy)
-  static final int LOAD  = 4;   // rd <- mem[imm]            (absolute)
-  static final int LOADR = 5;   // rd <- mem[rs]             (register-indirect)
-  static final int LOADX = 6;   // rd <- mem[rs + imm]       (indexed / struct field, array)
-  static final int STORE = 7;   // mem[imm] <- rs            (absolute)
-  static final int STORER= 8;   // mem[rd]  <- rs            (register-indirect)
-  static final int STOREX= 9;   // mem[rd + imm] <- rs       (indexed)
-  // --- integer arithmetic ---
+  < --- data movement --- >
+  < rd <- imm (load immediate) >
+  static final int MOV   = 2;
+  < rd <- rs (register copy) >
+  static final int MOVR  = 3;
+  < rd <- mem[imm]            (absolute) >
+  static final int LOAD  = 4;
+  < rd <- mem[rs]             (register-indirect) >
+  static final int LOADR = 5;
+  < rd <- mem[rs + imm]       (indexed / struct field, array) >
+  static final int LOADX = 6;
+  < mem[imm] <- rs            (absolute) >
+  static final int STORE = 7;
+  < mem[rd]  <- rs            (register-indirect) >
+  static final int STORER= 8;
+  < mem[rd + imm] <- rs       (indexed) >
+  static final int STOREX= 9;
+  < --- integer arithmetic --- >
   static final int ADD   = 10;
   static final int SUB   = 11;
   static final int MUL   = 12;
   static final int DIV   = 13;
   static final int MOD   = 14;
   static final int NEG   = 15;
-  // --- bitwise / shift ---
+  < --- bitwise / shift --- >
   static final int AND   = 16;
   static final int OR    = 17;
   static final int XOR   = 18;
   static final int NOT   = 19;
   static final int SHL   = 20;
   static final int SHR   = 21;
-  // --- compare + branch ---
+  < --- compare + branch --- >
   static final int CMP   = 22;
-  static final int JMP   = 23;  // unconditional
-  static final int JZ    = 24;  // branch if zero flag
-  static final int JNZ   = 25;  // branch if not zero
-  static final int JLT   = 26;  // branch if negative flag (less-than after CMP)
-  static final int JGE   = 27;  // branch if not negative (>=)
-  // --- call / stack ---
-  static final int CALL  = 28;  // push return addr; jump to imm
-  static final int RET   = 29;  // pop return addr; jump to it
-  static final int PUSH  = 30;  // push rs
-  static final int POP   = 31;  // pop into rd
-  // --- i/o + system ---
-  static final int IN    = 32;  // rd <- port[imm]
-  static final int OUT   = 33;  // port[imm] <- rs
+  < unconditional >
+  static final int JMP   = 23;
+  < branch if zero flag >
+  static final int JZ    = 24;
+  < branch if not zero >
+  static final int JNZ   = 25;
+  < branch if negative flag (less-than after CMP) >
+  static final int JLT   = 26;
+  < branch if not negative (>=) >
+  static final int JGE   = 27;
+  < --- call / stack --- >
+  < push return addr; jump to imm >
+  static final int CALL  = 28;
+  < pop return addr; jump to it >
+  static final int RET   = 29;
+  < push rs >
+  static final int PUSH  = 30;
+  < pop into rd >
+  static final int POP   = 31;
+  < --- i/o + system --- >
+  < rd <- port[imm] >
+  static final int IN    = 32;
+  < port[imm] <- rs >
+  static final int OUT   = 33;
   static final int SYSCALL = 34;
-  static final int TRAP  = 35;  // software interrupt (fault/debug/guest-exit)
+  < software interrupt (fault/debug/guest-exit) >
+  static final int TRAP  = 35;
 
   static final int OPCODE_COUNT = 36;
 

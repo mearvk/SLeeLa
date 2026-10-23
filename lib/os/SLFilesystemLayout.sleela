@@ -58,9 +58,12 @@ class SLFilesystemLayout {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String format;      // "ext4" / "NTFS" / "APFS"
-  String separator;   // path separator for this layout
-  String tree;        // newline-separated directory manifest
+  < "ext4" / "NTFS" / "APFS" >
+  String format;
+  < path separator for this layout >
+  String separator;
+  < newline-separated directory manifest >
+  String tree;
   int dirCount;
   int configured;
 
@@ -68,13 +71,13 @@ class SLFilesystemLayout {
     format = fsFormat; separator = sep; tree = ""; dirCount = 0; configured = 1;
   }
 
-  // Add one directory to the manifest.
+  < Add one directory to the manifest. >
   void addDir(String path) {
     if (tree == "") { tree = path; } else { tree = tree + "\n" + path; }
     dirCount = dirCount + 1;
   }
 
-  // Seed the standard directory tree for a shape.
+  < Seed the standard directory tree for a shape. >
   void forShape(SLOSShape shape) {
     configure(shape.rootFilesystem(), shape.pathSeparator());
     if (shape.isWindows()) {
@@ -97,7 +100,7 @@ class SLFilesystemLayout {
       addDir("/private/tmp");
       return;
     }
-    // Linux: Filesystem Hierarchy Standard roots.
+    < Linux: Filesystem Hierarchy Standard roots. >
     addDir("/boot");
     addDir("/etc");
     addDir("/usr");
@@ -115,6 +118,6 @@ class SLFilesystemLayout {
   String fsFormat()  { return format; }
   String manifest()  { return tree; }
   int directoryCount() { return dirCount; }
-  // A layout must declare at least a system root and a user-data root.
+  < A layout must declare at least a system root and a user-data root. >
   boolean isComplete() { return dirCount >= 2; }
 }

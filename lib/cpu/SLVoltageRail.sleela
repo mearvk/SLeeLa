@@ -57,64 +57,73 @@ class SLVoltageRail {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String name;        // nameful rail: "Vcore", "Vsoc", "Vddq", "Vio", ...
-  int nominalMv;      // nominal operating voltage in millivolts
-  int offsetMv;       // operator-dialed adjustment (may be negative = undervolt)
-  int floorMv;        // hard lower limit; below this the part is unstable
-  int ceilingMv;      // hard upper limit; above this the part is unsafe
-  int loadLineUohm;   // load-line resistance in micro-ohms (droop = I * R)
-  int loadMa;         // present current draw in milliamps
-  int locked;         // 1 = limits enforced, adjustments clamped into range
+  < nameful rail: "Vcore", "Vsoc", "Vddq", "Vio", ... >
+  String name;
+  < nominal operating voltage in millivolts >
+  int nominalMv;
+  < operator-dialed adjustment (may be negative = undervolt) >
+  int offsetMv;
+  < hard lower limit; below this the part is unstable >
+  int floorMv;
+  < hard upper limit; above this the part is unsafe >
+  int ceilingMv;
+  < load-line resistance in micro-ohms (droop = I * R) >
+  int loadLineUohm;
+  < present current draw in milliamps >
+  int loadMa;
+  < 1 = limits enforced, adjustments clamped into range >
+  int locked;
 
-  // Configure a rail with its name, nominal point, and safe window.
+  < Configure a rail with its name, nominal point, and safe window. >
   void configure(String railName, int nominal, int floor, int ceiling) {
     name = railName; nominalMv = nominal; offsetMv = 0;
     floorMv = floor; ceilingMv = ceiling;
     loadLineUohm = 0; loadMa = 0; locked = 1;
   }
 
-  // Give the rail a load line (micro-ohms) so droop can be computed from draw.
+  < Give the rail a load line (micro-ohms) so droop can be computed from draw. >
   void setLoadLine(int microOhms) { if (microOhms >= 0) { loadLineUohm = microOhms; } }
 
-  // Declare the present current draw (milliamps) the rail is sourcing.
+  < Declare the present current draw (milliamps) the rail is sourcing. >
   void setLoad(int milliamps) { if (milliamps >= 0) { loadMa = milliamps; } }
 
-  // Dial an adjustment. When locked, the resulting effective voltage is held
-  // inside [floor, ceiling]; the offset is clamped so a settled rail is safe.
+  < Dial an adjustment. When locked, the resulting effective voltage is held >
+  < inside [floor, ceiling]; the offset is clamped so a settled rail is safe. >
   void adjust(int deltaMv) {
     offsetMv = offsetMv + deltaMv;
     if (locked == 1) { clampToWindow(); }
   }
 
-  // Set the adjustment to an absolute value (relative to nominal).
+  < Set the adjustment to an absolute value (relative to nominal). >
   void setOffset(int deltaMv) { offsetMv = deltaMv; if (locked == 1) { clampToWindow(); } }
 
   void lock() { locked = 1; clampToWindow(); }
-  void unlock() { locked = 0; }   // bench/expert mode: adjustments uncapped
+  < bench/expert mode: adjustments uncapped >
+  void unlock() { locked = 0; }
 
-  // Droop in millivolts from the load line at the present draw:
-  //   droop(mV) = loadMa (mA) * loadLineUohm (uOhm) / 1_000_000
+  < Droop in millivolts from the load line at the present draw: >
+  < droop(mV) = loadMa (mA) * loadLineUohm (uOhm) / 1_000_000 >
   int droopMv() { return (loadMa * loadLineUohm) / 1000000; }
 
-  // The voltage the rail actually settles at under load — what every timing
-  // budget on this rail is proven against.
+  < The voltage the rail actually settles at under load — what every timing >
+  < budget on this rail is proven against. >
   int effectiveMv() { return nominalMv + offsetMv - droopMv(); }
 
-  // Keep the dialed offset such that effective() stays within the safe window.
+  < Keep the dialed offset such that effective() stays within the safe window. >
   void clampToWindow() {
     int eff = effectiveMv();
     if (eff < floorMv)   { offsetMv = offsetMv + (floorMv - eff); }
     if (effectiveMv() > ceilingMv) { offsetMv = offsetMv - (effectiveMv() - ceilingMv); }
   }
 
-  // Is the settled rail inside its stated safe window?
+  < Is the settled rail inside its stated safe window? >
   boolean withinLimits() {
     int eff = effectiveMv();
     return eff >= floorMv && eff <= ceilingMv;
   }
 
-  // Headroom (mV) between the settled point and the floor — the margin a slow
-  // corner has before it browns out. Negative means a violation.
+  < Headroom (mV) between the settled point and the floor — the margin a slow >
+  < corner has before it browns out. Negative means a violation. >
   int headroomMv() { return effectiveMv() - floorMv; }
 
   String railName() { return name; }

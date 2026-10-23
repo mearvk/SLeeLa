@@ -64,11 +64,12 @@ class SLPDP8CPU extends SLCPURuntime {
     Map<Integer, Integer> memory = new Map<Integer, Integer>();
     Map<Integer, Object> ioDevices = new Map<Integer, Object>();
 
-    // Standard entry point: bring up the inherited runtime (12-bit data, 12-bit
-    // address, a small register file for AC/LINK/PC) and apply a default PDP-8/E
-    // profile. Call configureModel(...) to select a specific machine profile.
+    < Standard entry point: bring up the inherited runtime (12-bit data, 12-bit >
+    < address, a small register file for AC/LINK/PC) and apply a default PDP-8/E >
+    < profile. Call configureModel(...) to select a specific machine profile. >
     void configure() {
-        setSpecClock(1);   // DEC PDP-8 (~0.67 MHz, rounded to 1); overclockable
+        < DEC PDP-8 (~0.67 MHz, rounded to 1); overclockable >
+        setSpecClock(1);
         bringUp("DEC PDP-8", 12, 12, 4, 4096);
         configureModel("PDP-8/E", 4096, false, false);
     }

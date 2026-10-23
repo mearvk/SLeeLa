@@ -60,7 +60,7 @@ class SLWebsiteDesign {
     radius = clamp(r, 0, 24); energy = clamp(e, 0, 100); grammar = clamp(g, 0, 3);
   }
 
-  // Named presets. A front end can start from a preset then override.
+  < Named presets. A front end can start from a preset then override. >
   void preset(String name) {
     if (name == "neon") { configure("neon", "#7c3aed", "#0b0714", "#22d3ee", "'Space Grotesk', system-ui, sans-serif", 18, 95, 3); return; }
     if (name == "brutalist") { configure("brutalist", "#111111", "#f5f5f5", "#ff3b30", "'Arial Black', system-ui, sans-serif", 0, 70, 0); return; }
@@ -68,7 +68,7 @@ class SLWebsiteDesign {
     configure("aurora", "#2563eb", "#0f172a", "#38bdf8", "'Inter', system-ui, sans-serif", 14, 60, 2);
   }
 
-  // Energy drives flat color (0), soft gradient (1), or bold animated gradient (2).
+  < Energy drives flat color (0), soft gradient (1), or bold animated gradient (2). >
   int motionLevel() {
     if (energy >= 75) { return 2; }
     if (energy >= 35) { return 1; }

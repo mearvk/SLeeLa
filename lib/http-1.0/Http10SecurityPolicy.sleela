@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Declarative posture only; this class does not implement TLS or authentication. */
+< Declarative posture only; this class does not implement TLS or authentication. >
 class Http10SecurityPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

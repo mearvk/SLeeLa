@@ -62,11 +62,11 @@ class SLBootloader {
     kernelLoadAddr = 0; kernelBlocks = 0; booted = 0;
   }
 
-  // POST: minimal power-on self test — confirm core 0 and memory are present.
+  < POST: minimal power-on self test — confirm core 0 and memory are present. >
   boolean post() { return cpu != null && cpu.bootCore() != null && memory != null; }
 
-  // Load `blocks` of the kernel image starting at disk block `fromBlock` into
-  // memory at `loadAddr`, then point the boot core at it.
+  < Load `blocks` of the kernel image starting at disk block `fromBlock` into >
+  < memory at `loadAddr`, then point the boot core at it. >
   int loadKernel(int fromBlock, int blocks, int loadAddr) {
     if (!post()) { return -1; }
     kernelLoadAddr = loadAddr; kernelBlocks = blocks;

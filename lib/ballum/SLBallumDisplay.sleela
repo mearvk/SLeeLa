@@ -49,21 +49,28 @@ class SLBallumDisplay {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // --- capability flags (mirror ballum_capability_t) ---
+  < --- capability flags (mirror ballum_capability_t) --- >
   static final int CAP_NONE = 0;
-  static final int CAP_PER_PIXEL = 1;          // 1 << 0
-  static final int CAP_REGION_BLIT = 2;        // 1 << 1
-  static final int CAP_BRIGHTNESS = 4;         // 1 << 2
-  static final int CAP_COLOR_TEMPERATURE = 8;  // 1 << 3
-  static final int CAP_GAMMA = 16;             // 1 << 4
+  < 1 << 0 >
+  static final int CAP_PER_PIXEL = 1;
+  < 1 << 1 >
+  static final int CAP_REGION_BLIT = 2;
+  < 1 << 2 >
+  static final int CAP_BRIGHTNESS = 4;
+  < 1 << 3 >
+  static final int CAP_COLOR_TEMPERATURE = 8;
+  < 1 << 4 >
+  static final int CAP_GAMMA = 16;
 
   int id;
   String name;
   int width;
   int height;
   int refreshMilliHz;
-  int primary;          // 1 if the primary display
-  int capabilities;     // OR of CAP_* flags
+  < 1 if the primary display >
+  int primary;
+  < OR of CAP_* flags >
+  int capabilities;
 
   void configure(int displayId, String displayName, int w, int h) {
     id = displayId;
@@ -84,7 +91,7 @@ class SLBallumDisplay {
   int pixelHeight() { return height; }
   boolean isPrimary() { return primary == 1; }
 
-  // Capability queries a GUI checks before enabling a control.
+  < Capability queries a GUI checks before enabling a control. >
   boolean has(int cap) { return (capabilities / cap) % 2 == 1; }
   boolean supportsPerPixel() { return has(CAP_PER_PIXEL); }
   boolean supportsBlit() { return has(CAP_REGION_BLIT); }
@@ -92,7 +99,7 @@ class SLBallumDisplay {
   boolean supportsColorTemperature() { return has(CAP_COLOR_TEMPERATURE); }
   boolean supportsGamma() { return has(CAP_GAMMA); }
 
-  // Is (x, y) a valid pixel on this display?
+  < Is (x, y) a valid pixel on this display? >
   boolean contains(int x, int y) {
     return x >= 0 && y >= 0 && x < width && y < height;
   }

@@ -60,21 +60,24 @@ class SLXltBuildResult {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String modelName;
-  int success;          // 1 = built; 0 = congruence failure
+  < 1 = built; 0 = congruence failure >
+  int success;
 
-  // What was built (success path) — one line per installed part, in order.
+  < What was built (success path) — one line per installed part, in order. >
   int builtCount;
   String b0; String b1; String b2; String b3; String b4; String b5;
 
-  // Why it could not be built (failure path) — one reason per line, in order.
+  < Why it could not be built (failure path) — one reason per line, in order. >
   int reasonCount;
   String c0; String c1; String c2; String c3; String c4; String c5;
 
   static final int MAX_LINES = 6;
 
-  // Reason kinds, so a consumer can distinguish the two failure classes.
-  static final int REASON_MISSING     = 1;  // a declared part resolved to nothing
-  static final int REASON_DISAGREES   = 2;  // a part is not agreeable to design
+  < Reason kinds, so a consumer can distinguish the two failure classes. >
+  < a declared part resolved to nothing >
+  static final int REASON_MISSING     = 1;
+  < a part is not agreeable to design >
+  static final int REASON_DISAGREES   = 2;
 
   void configure(String name) {
     modelName = name; success = 0;
@@ -91,8 +94,8 @@ class SLXltBuildResult {
     if (builtCount < MAX_LINES) { builtCount = builtCount + 1; }
   }
 
-  // Record a congruence reason. `kind` is REASON_MISSING or REASON_DISAGREES;
-  // the recorded line is prefixed so the report reads clearly.
+  < Record a congruence reason. `kind` is REASON_MISSING or REASON_DISAGREES; >
+  < the recorded line is prefixed so the report reads clearly. >
   void recordReason(int kind, String detail) {
     String tag = "disagrees";
     if (kind == REASON_MISSING) { tag = "missing"; }
@@ -103,16 +106,18 @@ class SLXltBuildResult {
     if (reasonCount < MAX_LINES) { reasonCount = reasonCount + 1; }
   }
 
-  // Optional program-run outcome (set when the model declared a `program`).
-  int ranProgram;     // 1 = a workload was run on the built CPU
-  int programOutput;  // the program's observable output
+  < Optional program-run outcome (set when the model declared a `program`). >
+  < 1 = a workload was run on the built CPU >
+  int ranProgram;
+  < the program's observable output >
+  int programOutput;
 
   void setRun(int output) { ranProgram = 1; programOutput = output; }
   boolean programRan()  { return ranProgram == 1; }
   int output()          { return programOutput; }
 
-  // Seal the outcome: success iff at least one part was built AND no congruence
-  // reason was recorded (every declared part resolved and agreed).
+  < Seal the outcome: success iff at least one part was built AND no congruence >
+  < reason was recorded (every declared part resolved and agreed). >
   void seal() { success = (builtCount > 0 && reasonCount == 0) ? 1 : 0; }
 
   boolean built()   { return success == 1; }

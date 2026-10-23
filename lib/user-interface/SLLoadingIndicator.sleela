@@ -61,44 +61,57 @@ class SLLoadingIndicator extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Mode ordinals.
+  < Mode ordinals. >
   static final int MODE_IDLE          = 0;
   static final int MODE_INDETERMINATE = 1;
   static final int MODE_DETERMINATE   = 2;
   static final int MODE_DONE          = 3;
   static final int MODE_FAILED        = 4;
 
-  // Which indeterminate visual to use.
-  static final int STYLE_THROBBER = 0;   // the water-flow field (default)
-  static final int STYLE_SPINNER  = 1;   // the accent arc on a ring
+  < Which indeterminate visual to use. >
+  < the water-flow field (default) >
+  static final int STYLE_THROBBER = 0;
+  < the accent arc on a ring >
+  static final int STYLE_SPINNER  = 1;
 
-  SLBox row;             // horizontal: [visual] [caption]
-  SLThrobber throbber;   // indeterminate (STYLE_THROBBER)
-  SLSpinner spinner;     // indeterminate (STYLE_SPINNER)
-  SLProgressBar bar;     // determinate
-  SLLabel caption;       // the status text
+  < horizontal: [visual] [caption] >
+  SLBox row;
+  < indeterminate (STYLE_THROBBER) >
+  SLThrobber throbber;
+  < indeterminate (STYLE_SPINNER) >
+  SLSpinner spinner;
+  < determinate >
+  SLProgressBar bar;
+  < the status text >
+  SLLabel caption;
 
-  int style;             // STYLE_THROBBER | STYLE_SPINNER
+  < STYLE_THROBBER | STYLE_SPINNER >
+  int style;
   int mode;
-  double fraction;       // current determinate fraction [0,1]
-  double phase;          // current indeterminate phase [0,1]
-  boolean showPercent;   // append " NN%" to the caption in determinate mode
-  String baseCaption;    // the caption text without any appended percentage
+  < current determinate fraction [0,1] >
+  double fraction;
+  < current indeterminate phase [0,1] >
+  double phase;
+  < append " NN%" to the caption in determinate mode >
+  boolean showPercent;
+  < the caption text without any appended percentage >
+  String baseCaption;
 
-  // Create the indicator inside `parent`. style picks the indeterminate visual;
-  // visualWidth sizes the throbber (ignored for the spinner).
+  < Create the indicator inside `parent`. style picks the indeterminate visual; >
+  < visualWidth sizes the throbber (ignored for the spinner). >
   void createIn(SLWidget parent, int style0, int visualWidth) {
     style = style0;
     row = new SLBox();
     row.horizontal(parent, 10);
     widget = row.handle();
 
-    // Build all three visuals once; show only the active one.
+    < Build all three visuals once; show only the active one. >
     throbber = new SLThrobber();
     throbber.createIn(row, visualWidth > 0 ? visualWidth : 120);
     throbber.setSizeRequest(0, 6);
     throbber.setIntensity(0.6);
-    throbber.setHue(150.0);          // green water, matching the brand accent
+    < green water, matching the brand accent >
+    throbber.setHue(150.0);
 
     spinner = new SLSpinner();
     spinner.createIn(row);
@@ -116,16 +129,16 @@ class SLLoadingIndicator extends SLWidget {
     applyMode();
   }
 
-  // ---- lifecycle ----------------------------------------------------------
+  < ---- lifecycle ---------------------------------------------------------- >
 
-  // Begin an indeterminate task of unknown length.
+  < Begin an indeterminate task of unknown length. >
   void beginIndeterminate(String text) {
     mode = MODE_INDETERMINATE;
     setCaption(text);
     applyMode();
   }
 
-  // Begin (or switch to) a determinate task; `initial` is the starting [0,1].
+  < Begin (or switch to) a determinate task; `initial` is the starting [0,1]. >
   void beginDeterminate(String text, double initial) {
     mode = MODE_DETERMINATE;
     setFraction(initial);
@@ -133,7 +146,7 @@ class SLLoadingIndicator extends SLWidget {
     applyMode();
   }
 
-  // Update determinate progress; clamps to [0,1] and refreshes the caption.
+  < Update determinate progress; clamps to [0,1] and refreshes the caption. >
   void setFraction(double value) {
     fraction = clamp01(value);
     if (bar.valid()) { bar.setFraction(fraction); }
@@ -141,31 +154,31 @@ class SLLoadingIndicator extends SLWidget {
   }
   double getFraction() { return fraction; }
 
-  // Advance the indeterminate visual (host calls this each frame; phase wraps).
+  < Advance the indeterminate visual (host calls this each frame; phase wraps). >
   void tick(double delta) {
     phase = phase + delta;
     while (phase >= 1.0) { phase = phase - 1.0; }
     if (mode == MODE_INDETERMINATE && style == STYLE_SPINNER && spinner.valid()) {
       spinner.setPhase(phase);
     }
-    // The throbber animates itself from the window frame loop; nothing to push.
+    < The throbber animates itself from the window frame loop; nothing to push. >
   }
 
-  // Finish successfully: hide the activity visual, set a final caption.
+  < Finish successfully: hide the activity visual, set a final caption. >
   void done(String text) {
     mode = MODE_DONE;
     if (text != null) { setCaption(text); }
     applyMode();
   }
 
-  // Finish with an error: hide the activity visual, set a failure caption.
+  < Finish with an error: hide the activity visual, set a failure caption. >
   void fail(String text) {
     mode = MODE_FAILED;
     if (text != null) { setCaption(text); }
     applyMode();
   }
 
-  // Reset to idle (hidden).
+  < Reset to idle (hidden). >
   void reset() {
     mode = MODE_IDLE; fraction = 0.0; phase = 0.0;
     if (bar.valid()) { bar.setFraction(0.0); }
@@ -173,25 +186,25 @@ class SLLoadingIndicator extends SLWidget {
     applyMode();
   }
 
-  // ---- query --------------------------------------------------------------
+  < ---- query -------------------------------------------------------------- >
 
   int currentMode() { return mode; }
   boolean busy() { return mode == MODE_INDETERMINATE || mode == MODE_DETERMINATE; }
   boolean finished() { return mode == MODE_DONE || mode == MODE_FAILED; }
   boolean failed() { return mode == MODE_FAILED; }
 
-  // Choose the indeterminate visual (throbber vs spinner) at any time.
+  < Choose the indeterminate visual (throbber vs spinner) at any time. >
   void setStyle(int style0) { style = style0; applyMode(); }
 
-  // Whether to append a percentage to the determinate caption.
+  < Whether to append a percentage to the determinate caption. >
   void setShowPercent(boolean on) { showPercent = on; refreshCaption(); }
 
-  // Set the base caption text (without any appended percentage).
+  < Set the base caption text (without any appended percentage). >
   void setCaption(String text) { baseCaption = (text == null) ? "" : text; refreshCaption(); }
 
-  // ---- internals ----------------------------------------------------------
+  < ---- internals ---------------------------------------------------------- >
 
-  // Show exactly the visual the current mode needs; hide the rest.
+  < Show exactly the visual the current mode needs; hide the rest. >
   void applyMode() {
     boolean indet = (mode == MODE_INDETERMINATE);
     boolean det   = (mode == MODE_DETERMINATE);
@@ -201,7 +214,7 @@ class SLLoadingIndicator extends SLWidget {
     refreshCaption();
   }
 
-  // Rebuild the caption, appending " NN%" in determinate mode when enabled.
+  < Rebuild the caption, appending " NN%" in determinate mode when enabled. >
   void refreshCaption() {
     if (caption == null || !caption.valid()) { return; }
     String text = (baseCaption == null) ? "" : baseCaption;
@@ -211,7 +224,7 @@ class SLLoadingIndicator extends SLWidget {
     caption.setText(text);
   }
 
-  // fraction[0,1] -> integer percent 0..100 without a float->int cast.
+  < fraction[0,1] -> integer percent 0..100 without a float->int cast. >
   String percentText(double f) {
     double v = clamp01(f);
     int p = 0;

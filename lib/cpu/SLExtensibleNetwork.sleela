@@ -70,24 +70,31 @@ class SLExtensibleNetwork {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // --- Dynamite Connector contract ---
-  String referenceName;   // the System this network fronts
-  String configuration;   // free-form config note
-  String status;          // imported -> resolved -> [deferred] -> loaded
+  < --- Dynamite Connector contract --- >
+  < the System this network fronts >
+  String referenceName;
+  < free-form config note >
+  String configuration;
+  < imported -> resolved -> [deferred] -> loaded >
+  String status;
 
-  SLAccessSemantics sem;  // the role/catalog source of truth
+  < the role/catalog source of truth >
+  SLAccessSemantics sem;
 
-  // Registered members, bounded like the VM's fixed slot tables. Each member
-  // carries its modifier role and (for public) its position in the hop chain.
+  < Registered members, bounded like the VM's fixed slot tables. Each member >
+  < carries its modifier role and (for public) its position in the hop chain. >
   int memberCount;
-  int r0; int r1; int r2; int r3; int r4; int r5; int r6; int r7;   // role per member
-  int h0; int h1; int h2; int h3; int h4; int h5; int h6; int h7;   // hop order (public only; 0 = n/a)
+  < role per member >
+  int r0; int r1; int r2; int r3; int r4; int r5; int r6; int r7;
+  < hop order (public only; 0 = n/a) >
+  int h0; int h1; int h2; int h3; int h4; int h5; int h6; int h7;
   static final int MAX_MEMBERS = 8;
 
-  // Resolved summary.
+  < Resolved summary. >
   int exposedCount; int localCount; int guardedCount;
   int hopChainLength;
-  int resolved;           // 1 once resolve() has run
+  < 1 once resolve() has run >
+  int resolved;
 
   void initialize(String systemName, String config) {
     referenceName = systemName; configuration = config;
@@ -99,8 +106,8 @@ class SLExtensibleNetwork {
     resolved = 0; status = "imported";
   }
 
-  // Register one member by its access modifier (SLAccessSemantics.MOD_*). The
-  // compiler calls this for each classified member of each file in the network.
+  < Register one member by its access modifier (SLAccessSemantics.MOD_*). The >
+  < compiler calls this for each classified member of each file in the network. >
   boolean registerMember(int modifierBit) {
     if (memberCount >= MAX_MEMBERS) { return false; }
     int role = sem.roleOfModifier(modifierBit);
@@ -136,9 +143,9 @@ class SLExtensibleNetwork {
     return 0;
   }
 
-  // Resolve: count roles and assign the ordered hop chain to public members in
-  // registration order (doc 1 -> doc 2 -> doc 3 ...). Part of the connector
-  // lifecycle; after this the backdrop is decided but not yet realized.
+  < Resolve: count roles and assign the ordered hop chain to public members in >
+  < registration order (doc 1 -> doc 2 -> doc 3 ...). Part of the connector >
+  < lifecycle; after this the backdrop is decided but not yet realized. >
   String resolve() {
     exposedCount = 0; localCount = 0; guardedCount = 0; hopChainLength = 0;
     int i = 0;
@@ -146,7 +153,8 @@ class SLExtensibleNetwork {
       int role = roleAt(i);
       if (role == sem.ROLE_EXPOSED) {
         hopChainLength = hopChainLength + 1;
-        setHopAt(i, hopChainLength);        // 1-based position in the hop chain
+        < 1-based position in the hop chain >
+        setHopAt(i, hopChainLength);
         exposedCount = exposedCount + 1;
       } else {
         setHopAt(i, 0);
@@ -159,10 +167,10 @@ class SLExtensibleNetwork {
     return status;
   }
 
-  // Defer realization (stage the network without standing the backdrop up yet).
+  < Defer realization (stage the network without standing the backdrop up yet). >
   String deferConstruction() { status = "deferred"; return status; }
 
-  // Load: realize the backdrop. Fail-closed — refuses if not resolved.
+  < Load: realize the backdrop. Fail-closed — refuses if not resolved. >
   boolean load() {
     if (resolved == 0) { status = "unresolved"; return false; }
     status = "loaded";
@@ -171,29 +179,30 @@ class SLExtensibleNetwork {
 
   boolean ready() { return resolved == 1 && equalsStr(status, "loaded"); }
 
-  // --- backdrop the VM sets up per role (defaults from SLAccessSemantics) ---
-  // Exposure components the public hop surface is stood up with.
+  < --- backdrop the VM sets up per role (defaults from SLAccessSemantics) --- >
+  < Exposure components the public hop surface is stood up with. >
   int exposureBackdrop() { return (exposedCount > 0) ? sem.defaultExposeForExposed() : 0; }
-  // Local concerns the private surface declares.
+  < Local concerns the private surface declares. >
   int localBackdrop()    { return (localCount > 0) ? sem.defaultConcernForLocal() : 0; }
-  // Integrity controls the protected surface enforces.
+  < Integrity controls the protected surface enforces. >
   int guardBackdrop()    { return (guardedCount > 0) ? sem.defaultGuardsForGuarded() : 0; }
 
-  // Is the resolved network a competent, complete backdrop to realize? It is
-  // competent when it classified at least one member and every public member
-  // got a hop-chain position (the ordered communication is well-formed).
+  < Is the resolved network a competent, complete backdrop to realize? It is >
+  < competent when it classified at least one member and every public member >
+  < got a hop-chain position (the ordered communication is well-formed). >
   boolean competent() {
     int classified = exposedCount + localCount + guardedCount;
     return classified > 0 && hopChainLength == exposedCount;
   }
 
-  // Flatten the resolved network into the serializable manifest the compiled
-  // image carries and the VM reads back.
+  < Flatten the resolved network into the serializable manifest the compiled >
+  < image carries and the VM reads back. >
   SLAccessManifest toManifest() {
     SLAccessManifest m = new SLAccessManifest();
     m.configure();
     m.setCounts(exposedCount, localCount, guardedCount);
-    m.setHopChain(hopChainLength, hopChainLength > 1);   // ordered when 2+ hops
+    < ordered when 2+ hops >
+    m.setHopChain(hopChainLength, hopChainLength > 1);
     m.setBackdrop(exposureBackdrop(), localBackdrop(), guardBackdrop());
     m.seal(competent());
     return m;

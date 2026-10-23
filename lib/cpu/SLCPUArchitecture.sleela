@@ -54,16 +54,24 @@ class SLCPUArchitecture {
   static final int ENDIAN_LITTLE = 0;
   static final int ENDIAN_BIG     = 1;
 
-  String identity;      // ISA name, e.g. "MOS 6502", "ARMv7-A"
-  String isa;           // ISA family tag, e.g. "6502", "arm", "riscv"
-  int wordWidth;        // data path width in bits
-  int addressWidth;     // address bus width in bits
+  < ISA name, e.g. "MOS 6502", "ARMv7-A" >
+  String identity;
+  < ISA family tag, e.g. "6502", "arm", "riscv" >
+  String isa;
+  < data path width in bits >
+  int wordWidth;
+  < address bus width in bits >
+  int addressWidth;
   int endian;
-  int registerFile;     // architectural register count
-  int pipeline;         // assumed pipeline depth (0 = none)
+  < architectural register count >
+  int registerFile;
+  < assumed pipeline depth (0 = none) >
+  int pipeline;
   int executionUnits;
-  int cacheHierarchy;   // cache level count
-  int memoryController; // 1 if a memory controller is modelled
+  < cache level count >
+  int cacheHierarchy;
+  < 1 if a memory controller is modelled >
+  int memoryController;
   int interconnect;
   int ioTiming;
   int dmaController;
@@ -81,10 +89,11 @@ class SLCPUArchitecture {
     interruptController = 0; couplers = 0;
   }
 
-  // Address space size in words implied by the address width (bounded for the
-  // bounded SLeeLa surface; large ISAs use a windowed subset).
+  < Address space size in words implied by the address width (bounded for the >
+  < bounded SLeeLa surface; large ISAs use a windowed subset). >
   int addressSpaceWords() {
-    int bits = addressWidth; if (bits > 24) { bits = 24; }   // cap model memory
+    < cap model memory >
+    int bits = addressWidth; if (bits > 24) { bits = 24; }
     int words = 1; int i = 0; while (i < bits) { words = words * 2; i = i + 1; }
     return words;
   }

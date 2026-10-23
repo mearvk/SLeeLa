@@ -66,8 +66,8 @@ class GoLanguageCompiler extends SLLanguageCompiler {
   }
 
   boolean runResolve(SLCompileRequest request) {
-    // Go resolution: package scope, imports, exported vs unexported identifiers,
-    // and method sets resolve to SLeeLa symbols here.
+    < Go resolution: package scope, imports, exported vs unexported identifiers, >
+    < and method sets resolve to SLeeLa symbols here. >
     return provides(PHASE_RESOLVE);
   }
 }

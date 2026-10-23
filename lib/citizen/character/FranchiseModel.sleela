@@ -49,10 +49,14 @@ class FranchiseModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int outlets;               // franchised locations
-  int avgOutletSalesCents;   // average monthly sales per outlet
-  int royaltyPercent;        // the franchisor's royalty (0..100)
-  int supportCostCents;      // monthly cost to support one outlet
+  < franchised locations >
+  int outlets;
+  < average monthly sales per outlet >
+  int avgOutletSalesCents;
+  < the franchisor's royalty (0..100) >
+  int royaltyPercent;
+  < monthly cost to support one outlet >
+  int supportCostCents;
 
   void setUp(int locations, int avgSales, int royalty, int supportCost) {
     load();
@@ -69,7 +73,7 @@ class FranchiseModel extends BusinessModel {
     setUnits(locations);
   }
 
-  // Total sales across the whole brand this month.
+  < Total sales across the whole brand this month. >
   int networkSales() { return outlets * avgOutletSalesCents; }
 
   int monthlyRevenue() { return (networkSales() * royaltyPercent) / 100; }

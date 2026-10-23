@@ -57,16 +57,19 @@ class SLMoralVeto {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Red-line ordinals.
+  < Red-line ordinals. >
   static final int CHILD_SAFETY        = 1;
   static final int WEAPONS_CBRN        = 2;
   static final int NONCONSENSUAL_SURVEILLANCE = 3;
-  static final int DECEPTION           = 4;   // impersonation / spoofing / fraud
-  static final int SCALED_ABUSE        = 5;   // spam / manipulation / coordinated harm
-  static final int IRREVERSIBLE_HARM   = 6;   // destruction without consent
+  < impersonation / spoofing / fraud >
+  static final int DECEPTION           = 4;
+  < spam / manipulation / coordinated harm >
+  static final int SCALED_ABUSE        = 5;
+  < destruction without consent >
+  static final int IRREVERSIBLE_HARM   = 6;
   static final int REDLINE_COUNT       = 6;
 
-  // Tripped bitmap, one slot per red line (index = ordinal).
+  < Tripped bitmap, one slot per red line (index = ordinal). >
   int tripped1; int tripped2; int tripped3; int tripped4; int tripped5; int tripped6;
   String firstReason;
   int configured;
@@ -76,7 +79,7 @@ class SLMoralVeto {
     firstReason = ""; configured = 1;
   }
 
-  // Trip a red line with a reason. The first tripped line's reason is retained.
+  < Trip a red line with a reason. The first tripped line's reason is retained. >
   void trip(int redline, String reason) {
     if (redline == CHILD_SAFETY)        { tripped1 = 1; }
     else if (redline == WEAPONS_CBRN)   { tripped2 = 1; }
@@ -97,7 +100,7 @@ class SLMoralVeto {
     return false;
   }
 
-  // Any red line tripped forbids discharge.
+  < Any red line tripped forbids discharge. >
   boolean anyTripped() {
     return tripped1 == 1 || tripped2 == 1 || tripped3 == 1
         || tripped4 == 1 || tripped5 == 1 || tripped6 == 1;

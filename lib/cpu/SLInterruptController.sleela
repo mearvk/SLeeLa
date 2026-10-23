@@ -58,9 +58,12 @@ class SLInterruptController {
   static final int IRQ_DISK = 2;
   static final int IRQ_NETWORK = 3;
 
-  int vectorBase;    // base address of the interrupt vector table
-  int pendingMask;   // bitset of raised-but-unserviced lines
-  int enableMask;    // bitset of enabled lines
+  < base address of the interrupt vector table >
+  int vectorBase;
+  < bitset of raised-but-unserviced lines >
+  int pendingMask;
+  < bitset of enabled lines >
+  int enableMask;
   int serviced;
 
   void configure(int base) { vectorBase = base; pendingMask = 0; enableMask = 0; serviced = 0; }
@@ -73,14 +76,14 @@ class SLInterruptController {
 
   boolean hasPending() { return pendingMask != 0; }
 
-  // Return the lowest-numbered pending line (highest priority), or -1 if none.
+  < Return the lowest-numbered pending line (highest priority), or -1 if none. >
   int highestPriorityPending() {
     int line = 0;
     while (line < LINES) { if (bitSet(pendingMask, line)) { return line; } line = line + 1; }
     return -1;
   }
 
-  // Acknowledge a line: clear it and return its handler address.
+  < Acknowledge a line: clear it and return its handler address. >
   int acknowledge(int line) {
     if (bitSet(pendingMask, line)) { pendingMask = pendingMask - pow2(line); serviced = serviced + 1; }
     return vectorBase + line;

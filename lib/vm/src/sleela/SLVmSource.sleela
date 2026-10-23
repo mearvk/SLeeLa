@@ -59,14 +59,18 @@ class SLVmSource {
   static final int KIND_SLJVM = 1;
 
   int    kind;
-  int    pointerBits;    // 32 or 64
+  < 32 or 64 >
+  int    pointerBits;
   int    memoryLimitMiB;
   int    cpuLimit;
   int    stackLimit;
-  int    abiCode;        // SLJVM=32; SLVM=30 or 31
+  < SLJVM=32; SLVM=30 or 31 >
+  int    abiCode;
   int    moduleCount;
-  int    featureMaskLow;  // bits 0..30 (surface int)
-  int    featureMaskHigh; // bits 31..61
+  < bits 0..30 (surface int) >
+  int    featureMaskLow;
+  < bits 31..61 >
+  int    featureMaskHigh;
 
   void configure(int k, int pbits, int memMiB, int cpu, int stack, int abi) {
     kind = k; pointerBits = pbits; memoryLimitMiB = memMiB;
@@ -74,18 +78,19 @@ class SLVmSource {
     moduleCount = 0; featureMaskLow = 0; featureMaskHigh = 0;
   }
 
-  // validate (mirror sleela_vm_requirements_validate): kind + widths + ABI code.
+  < validate (mirror sleela_vm_requirements_validate): kind + widths + ABI code. >
   boolean validate() {
     if (kind != KIND_SLVM && kind != KIND_SLJVM) { return false; }
     if (pointerBits != 32 && pointerBits != 64) { return false; }
     if (memoryLimitMiB <= 0 || cpuLimit <= 0 || stackLimit <= 0) { return false; }
     if (kind == KIND_SLJVM) { return abiCode == 32; }
-    return abiCode == 30 || abiCode == 31;   // SLVM
+    < SLVM >
+    return abiCode == 30 || abiCode == 31;
   }
 
   boolean planModules(int n) { if (n < 0) { return false; } moduleCount = n; return true; }
 
-  // feature bit 0..61 via the two halves.
+  < feature bit 0..61 via the two halves. >
   boolean featureEnabled(int bit) {
     if (bit < 0 || bit > 61) { return false; }
     if (bit <= 30) { return (featureMaskLow / pow2(bit)) % 2 == 1; }

@@ -54,8 +54,10 @@ class SLMacOSBallumProfile {
 
   boolean supportsPerPixel() { return true; }
   boolean supportsRegionBlit() { return true; }
-  boolean supportsBrightness() { return true; }        // via transfer formula
-  boolean supportsColorTemperature() { return true; }  // via transfer formula
+  < via transfer formula >
+  boolean supportsBrightness() { return true; }
+  < via transfer formula >
+  boolean supportsColorTemperature() { return true; }
   boolean supportsGamma() { return true; }
 
   boolean supportsDdcBacklight() { return false; }

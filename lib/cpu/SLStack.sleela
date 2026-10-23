@@ -55,12 +55,16 @@ class SLStack {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLRAM memory;
-  int base;     // highest address of the stack region (SP starts here)
-  int limit;    // lowest address the stack may reach
-  int sp;       // stack pointer
+  < highest address of the stack region (SP starts here) >
+  int base;
+  < lowest address the stack may reach >
+  int limit;
+  < stack pointer >
+  int sp;
   int pushes;
   int pops;
-  int faulted;  // set on overflow/underflow
+  < set on overflow/underflow >
+  int faulted;
 
   void configure(SLRAM ram, int stackBase, int stackLimit) {
     memory = ram; base = stackBase; limit = stackLimit; sp = stackBase;
@@ -70,7 +74,7 @@ class SLStack {
   boolean empty() { return sp >= base; }
   boolean full() { return sp <= limit; }
 
-  // Push a word: pre-decrement SP, then store. Returns new SP, or -1 on overflow.
+  < Push a word: pre-decrement SP, then store. Returns new SP, or -1 on overflow. >
   int push(int value) {
     if (sp <= limit) { faulted = 1; return -1; }
     sp = sp - 1;
@@ -79,7 +83,7 @@ class SLStack {
     return sp;
   }
 
-  // Pop a word: read at SP, then post-increment. Returns the value, or -1 on underflow.
+  < Pop a word: read at SP, then post-increment. Returns the value, or -1 on underflow. >
   int pop() {
     if (sp >= base) { faulted = 1; return -1; }
     int value = memory.readWord(sp);

@@ -1,51 +1,52 @@
-// lib/text/SLFormatter.sleela
-// SLeeLa Standard Library Definition.
-// Definition: SLFormatter -- a comprehensive text formatter for the text
-// library family.
-//
-// SLFormatter assembles formatted text. It splits into two honest layers:
-//   * In-language assembly implemented for real over (+): positional
-//     substitution helpers (with one/two/three args), key/value lines, list
-//     rendering over a String[], padding by repetition, and separators.
-//   * Bridged printf-style formatting (%d, %s, %5.2f, locale, width/precision)
-//     that needs char-level spec parsing: format()/formatArgs() return an
-//     inspectable "text.bridge:format:<pattern>:<args>" descriptor the native
-//     runtime fulfils -- never a faked result.
-//
-// Comments are // only; #sleela 2.1.
+< lib/text/SLFormatter.sleela >
+< SLeeLa Standard Library Definition. >
+< Definition: SLFormatter -- a comprehensive text formatter for the text >
+< library family. >
+<  >
+< SLFormatter assembles formatted text. It splits into two honest layers: >
+< * In-language assembly implemented for real over (+): positional >
+< substitution helpers (with one/two/three args), key/value lines, list >
+< rendering over a String[], padding by repetition, and separators. >
+< * Bridged printf-style formatting (%d, %s, %5.2f, locale, width/precision) >
+< that needs char-level spec parsing: format()/formatArgs() return an >
+< inspectable "text.bridge:format:<pattern>:<args>" descriptor the native >
+< runtime fulfils -- never a faked result. >
+<  >
+< only; #sleela 2.1. > >
+< Comments are
 #sleela 2.1
-// Family: text. Native VM/OS work crosses an explicit bridge.
+< Family: text. Native VM/OS work crosses an explicit bridge. >
 
 class SLFormatter {
 
-  // Last pattern set, for stateful callers; the helpers are also stateless.
+  < Last pattern set, for stateful callers; the helpers are also stateless. >
   String value = "";
   void set(String v) { value = v; }
   String get()       { return value; }
   void clear()       { value = ""; }
 
-  // ---- in-language assembly (real) ----------------------------------
-  // render1..render3: substitute {} placeholders left to right with args,
-  // built purely with +. The pattern is split on the literal "{}" marker.
+  < ---- in-language assembly (real) ---------------------------------- >
+  < render1..render3: substitute {} placeholders left to right with args, >
+  < built purely with +. The pattern is split on the literal "{}" marker. >
   String render1(String a) { return fill(value, a); }
   String render2(String a, String b) { return fill(fill(value, a), b); }
   String render3(String a, String b, String c) { return fill(fill(fill(value, a), b), c); }
 
-  // fill(pattern, arg): replace the FIRST "{}" in pattern with arg. Char-level
-  // search is bridged, so this in-language form expresses the common case of a
-  // caller passing explicit prefix/suffix via prefixSuffix() below; for raw
-  // patterns the bridge form (formatArgs) is authoritative.
+  < fill(pattern, arg): replace the FIRST "{}" in pattern with arg. Char-level >
+  < search is bridged, so this in-language form expresses the common case of a >
+  < caller passing explicit prefix/suffix via prefixSuffix() below; for raw >
+  < patterns the bridge form (formatArgs) is authoritative. >
   String fill(String pattern, String arg) { return pattern + arg; }
 
-  // prefixSuffix: the dependable in-language form -- caller supplies the parts.
+  < prefixSuffix: the dependable in-language form -- caller supplies the parts. >
   String wrap(String prefix, String body, String suffix) { return prefix + body + suffix; }
 
-  // key/value line rendering (real).
+  < key/value line rendering (real). >
   String kv(String key, String val)           { return key + ": " + val; }
   String kvLine(String key, String val)        { return key + ": " + val + "\n"; }
   String field(String key, String val, String sep) { return key + sep + val; }
 
-  // list(parts, sep): render a String[] separated by sep (real).
+  < list(parts, sep): render a String[] separated by sep (real). >
   String list(String[] parts, String sep) {
     String out = "";
     int i = 0;
@@ -58,7 +59,7 @@ class SLFormatter {
     return out;
   }
 
-  // bullets(parts): render a String[] as a dashed bullet block (real).
+  < bullets(parts): render a String[] as a dashed bullet block (real). >
   String bullets(String[] parts) {
     String out = "";
     int i = 0;
@@ -67,10 +68,10 @@ class SLFormatter {
     return out;
   }
 
-  // pad(s, width, padChar): right-pad s to width by repeating padChar. The
-  // current content length is bridged, so this appends (width) pad units as a
-  // best-effort in-language pad; callers needing exact column padding use the
-  // bridged padTo().
+  < pad(s, width, padChar): right-pad s to width by repeating padChar. The >
+  < current content length is bridged, so this appends (width) pad units as a >
+  < best-effort in-language pad; callers needing exact column padding use the >
+  < bridged padTo(). >
   String pad(String s, int width, String padChar) {
     String out = s;
     int i = 0;
@@ -78,28 +79,28 @@ class SLFormatter {
     return out;
   }
 
-  // ---- bridged printf-style formatting ------------------------------
+  < ---- bridged printf-style formatting ------------------------------ >
   String bridge(String op, String a)            { return "text.bridge:" + op + ":" + a; }
   String bridgeArg(String op, String a, String b){ return "text.bridge:" + op + ":" + a + ":" + b; }
 
-  // format(pattern, args): printf-style, needs spec parsing -> bridged.
+  < format(pattern, args): printf-style, needs spec parsing -> bridged. >
   String format(String pattern, String args)    { return bridgeArg("format", pattern, args); }
   String formatOne(String pattern, String a)     { return bridgeArg("format", pattern, a); }
   String padTo(String s, String width)           { return bridgeArg("padTo", s, width); }
   String alignRight(String s, String width)       { return bridgeArg("alignRight", s, width); }
 
-  // ---- introspection -------------------------------------------------
+  < ---- introspection ------------------------------------------------- >
   String typeName()   { return "SLeeLa.text.SLFormatter"; }
   boolean available() { return true; }
 
-  // SLCloneable / SLDisposable intent.
+  < SLCloneable / SLDisposable intent. >
   SLFormatter copy() { SLFormatter c = new SLFormatter(); c.set(value); return c; }
   void dispose() { value = ""; }
 
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override each record.
-  // Values are faithful to the subject's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, >
+  < or catalog can read and (where appropriate) override each record. >
+  < Values are faithful to the subject's real origin where publicly known. >
   String metaVersion = "1.0.0";
   int metaId = 3;
   String metaAuthor = "SLeeLa standard library";

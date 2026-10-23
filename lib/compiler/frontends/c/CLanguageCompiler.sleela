@@ -58,7 +58,7 @@ class CLanguageCompiler extends SLLanguageCompiler {
 
   void configure() {
     declare("C", "C-family", "C17", ".c", TARGET_SLVM);
-    // C provides the complete pipeline, source through codegen.
+    < C provides the complete pipeline, source through codegen. >
     provide(PHASE_SOURCE);
     provide(PHASE_LEX);
     provide(PHASE_PARSE);
@@ -69,23 +69,23 @@ class CLanguageCompiler extends SLLanguageCompiler {
     provide(PHASE_CODEGEN);
   }
 
-  // The phase hooks below show where a developer plugs in C-specific behavior.
-  // Each still honors the base contract (returns whether the phase is provided)
-  // and would, in a full build, drive the C-specific lexer/parser/lowering.
+  < The phase hooks below show where a developer plugs in C-specific behavior. >
+  < Each still honors the base contract (returns whether the phase is provided) >
+  < and would, in a full build, drive the C-specific lexer/parser/lowering. >
   boolean runLex(SLCompileRequest request) {
-    // C lexing: identifiers, keywords, preprocessing tokens, string/char
-    // literals, operators and punctuators.
+    < C lexing: identifiers, keywords, preprocessing tokens, string/char >
+    < literals, operators and punctuators. >
     return provides(PHASE_LEX);
   }
 
   boolean runParse(SLCompileRequest request) {
-    // C parsing: translation units, declarations, functions, statements, and
-    // expressions per the C grammar.
+    < C parsing: translation units, declarations, functions, statements, and >
+    < expressions per the C grammar. >
     return provides(PHASE_PARSE);
   }
 
   boolean runIR(SLCompileRequest request) {
-    // Lower the C AST into target-neutral SLeeLa IR.
+    < Lower the C AST into target-neutral SLeeLa IR. >
     return provides(PHASE_IR);
   }
 }

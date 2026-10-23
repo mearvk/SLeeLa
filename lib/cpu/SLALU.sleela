@@ -83,7 +83,8 @@ class SLALU {
   }
 
   int pow2(int n) { int p = 1; int i = 0; while (i < n) { p = p * 2; i = i + 1; } return p; }
-  int mask() { return pow2(width); }                 // 2^width
+  < 2^width >
+  int mask() { return pow2(width); }
   int bitAt(int v, int i) { return (v / pow2(i)) % 2; }
   int signBit(int v) { return bitAt(v, width - 1); }
 
@@ -117,14 +118,15 @@ class SLALU {
       int s = adder.add(a % mask(), b % mask());
       setFlags(s, adder.carry(), 0);
     } else if (op == OP_SUB || op == OP_CMP) {
-      // two's complement subtract: a + (~b + 1)
+      < two's complement subtract: a + (~b + 1) >
       int nb = (bitwise(b, 0, OP_NOT) + 1) % mask();
       int s = adder.add(a % mask(), nb);
       setFlags(s, adder.carry(), 0);
     } else if (op == OP_MUL) {
       setFlags((a * b) % mask(), 0, 0);
     } else if (op == OP_DIV) {
-      if (b == 0) { setFlags(0, 0, 1); } else { setFlags(a / b, 0, 0); } // div-by-zero sets overflow
+      < div-by-zero sets overflow >
+      if (b == 0) { setFlags(0, 0, 1); } else { setFlags(a / b, 0, 0); }
     } else if (op == OP_MOD) {
       if (b == 0) { setFlags(0, 0, 1); } else { setFlags(a % b, 0, 0); }
     } else if (op == OP_NEG) {
@@ -136,7 +138,8 @@ class SLALU {
     } else if (op == OP_SHR) {
       setFlags(a / pow2(b), 0, 0);
     } else {
-      setFlags(a, 0, 0); // OP_PASS
+      < OP_PASS >
+      setFlags(a, 0, 0);
     }
     return result;
   }

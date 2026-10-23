@@ -52,22 +52,34 @@ class VideoCodecVerifier {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // Resolve a video codec id from a file extension, or -1 if unknown.
-  // Extensions are taken verbatim from the native video registry; note some
-  // containers (.webm, .mov) are shared and resolve to a representative codec.
+  < Resolve a video codec id from a file extension, or -1 if unknown. >
+  < Extensions are taken verbatim from the native video registry; note some >
+  < containers (.webm, .mov) are shared and resolve to a representative codec. >
   int resolveExtension(string ext){
-    if(ext == ".yuv" || ext == ".rgb"){ return 0; }        // Raw Video
-    if(ext == ".h264" || ext == ".264"){ return 1; }       // H.264
-    if(ext == ".h265" || ext == ".hevc"){ return 2; }      // HEVC
-    if(ext == ".av1"){ return 3; }                         // AV1
-    if(ext == ".ivf"){ return 5; }                         // VP8/VP9 (VP9 default)
-    if(ext == ".webm"){ return 5; }                        // WebM video (VP9 default)
-    if(ext == ".mpg" || ext == ".mpeg" || ext == ".m2v"){ return 6; } // MPEG-2
-    if(ext == ".ogv"){ return 7; }                         // Theora
-    if(ext == ".mjpg" || ext == ".mjpeg"){ return 8; }     // Motion JPEG
-    if(ext == ".ffv1"){ return 9; }                        // FFV1
-    if(ext == ".mov"){ return 10; }                        // ProRes (default .mov)
-    if(ext == ".mxf"){ return 11; }                        // DNxHD/DNxHR
+    < Raw Video >
+    if(ext == ".yuv" || ext == ".rgb"){ return 0; }
+    < H.264 >
+    if(ext == ".h264" || ext == ".264"){ return 1; }
+    < HEVC >
+    if(ext == ".h265" || ext == ".hevc"){ return 2; }
+    < AV1 >
+    if(ext == ".av1"){ return 3; }
+    < VP8/VP9 (VP9 default) >
+    if(ext == ".ivf"){ return 5; }
+    < WebM video (VP9 default) >
+    if(ext == ".webm"){ return 5; }
+    < MPEG-2 >
+    if(ext == ".mpg" || ext == ".mpeg" || ext == ".m2v"){ return 6; }
+    < Theora >
+    if(ext == ".ogv"){ return 7; }
+    < Motion JPEG >
+    if(ext == ".mjpg" || ext == ".mjpeg"){ return 8; }
+    < FFV1 >
+    if(ext == ".ffv1"){ return 9; }
+    < ProRes (default .mov) >
+    if(ext == ".mov"){ return 10; }
+    < DNxHD/DNxHR >
+    if(ext == ".mxf"){ return 11; }
     return -1;
   }
 

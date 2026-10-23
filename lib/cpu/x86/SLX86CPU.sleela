@@ -66,11 +66,14 @@ class SLX86CPU extends SLCPURuntime {
   static final int MOV_RM = 7; static final int MOV_MR = 8; static final int JMP = 9;
   static final int JE = 10; static final int JNE = 11; static final int INT = 12; static final int HLT = 13;
 
-  int mode;             // 0 real, 1 protected (control-register hook)
-  int cr0;              // control register 0
+  < 0 real, 1 protected (control-register hook) >
+  int mode;
+  < control register 0 >
+  int cr0;
 
   void configure() {
-    setSpecClock(33);   // Intel IA-32 (386/486-class) at ~33 MHz; overclockable
+    < Intel IA-32 (386/486-class) at ~33 MHz; overclockable >
+    setSpecClock(33);
     bringUp("Intel IA-32", 32, 32, 9, 262144);
     mode = 1; cr0 = 1;
     writeReg(ESP, 0x40000 - 4);
@@ -99,15 +102,16 @@ class SLX86CPU extends SLCPURuntime {
     if (opcode == HLT)    { halted = 1; return; }
   }
 
-  void interrupt(int vector) { cr0 = cr0; }   // IDT dispatch hook (model no-op)
+  < IDT dispatch hook (model no-op) >
+  void interrupt(int vector) { cr0 = cr0; }
 
   void setZN(int v) { flagZ = (v == 0) ? 1 : 0; flagN = (v < 0) ? 1 : 0; }
   int encode(int opcode, int dst, int src) { return (opcode % 256) * 256 + (dst % 16) * 16 + (src % 16); }
   int encodeImm(int opcode, int dst, int imm) { return (opcode % 256) * 256 + (imm % 256); }
 
-  // --- Worked example: run x86 "MOV EAX,a; MOV EBX,b; ADD; PRINT" on top of
-  // the secondary Sleela VM by lowering to canonical opcodes. This demonstrates
-  // a CPU model executing on the native-opcode substrate rather than inline.
+  < --- Worked example: run x86 "MOV EAX,a; MOV EBX,b; ADD; PRINT" on top of >
+  < the secondary Sleela VM by lowering to canonical opcodes. This demonstrates >
+  < a CPU model executing on the native-opcode substrate rather than inline. >
   int lowerAddAndPrint(int a, int b) {
     enableLowering();
     emitConst(a);

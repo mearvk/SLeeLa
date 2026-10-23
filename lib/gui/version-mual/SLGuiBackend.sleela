@@ -50,18 +50,19 @@ class SLGuiBackend {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String kind;                 // "swing" | "javafx" | "fx" | "native"
+  < "swing" | "javafx" | "fx" | "native" >
+  String kind;
   void configure(String k) { kind = k; }
   String name() { return kind; }
-  // A backend is supported when it is one of the known toolkits/bridges.
+  < A backend is supported when it is one of the known toolkits/bridges. >
   boolean supported() {
     return kind == "swing" || kind == "javafx" || kind == "fx" || kind == "native";
   }
   boolean isSwing() { return kind == "swing"; }
   boolean isJavaFx() { return kind == "javafx" || kind == "fx"; }
   boolean isNative() { return kind == "native"; }
-  // Normalized label: the "fx" alias resolves to "javafx".
+  < Normalized label: the "fx" alias resolves to "javafx". >
   String resolved() { return kind == "fx" ? "javafx" : kind; }
-  // 1.0 compatibility: JavaFX/native can request host-native menus; Swing uses custom widgets.
+  < 1.0 compatibility: JavaFX/native can request host-native menus; Swing uses custom widgets. >
   boolean supportsNativeMenus() { return isNative() || isJavaFx(); }
 }

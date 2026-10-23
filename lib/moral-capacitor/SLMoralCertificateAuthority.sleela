@@ -59,8 +59,10 @@ class SLMoralCertificateAuthority {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String authority;   // the issuing party name
-  String key;         // the authority's seal key (keeps the fold authority-specific)
+  < the issuing party name >
+  String authority;
+  < the authority's seal key (keeps the fold authority-specific) >
+  String key;
   int issuedCount;
   int configured;
 
@@ -68,9 +70,9 @@ class SLMoralCertificateAuthority {
     authority = name; key = sealKey; issuedCount = 0; configured = 1;
   }
 
-  // Issue a Certificate of Morals for a product, reading the posture from a live
-  // capacitor. redlinesArmed is the number of absolute red lines the product
-  // keeps armed (SLMoralVeto.REDLINE_COUNT for the full set).
+  < Issue a Certificate of Morals for a product, reading the posture from a live >
+  < capacitor. redlinesArmed is the number of absolute red lines the product >
+  < keeps armed (SLMoralVeto.REDLINE_COUNT for the full set). >
   SLMoralCertificate issue(String product, SLMoralCapacitor cap, int redlinesArmed,
                            String issuedAt, String expiresAt) {
     SLMoralCertificate cert = new SLMoralCertificate();
@@ -84,9 +86,9 @@ class SLMoralCertificateAuthority {
     return cert;
   }
 
-  // Re-verify a certificate: recompute the seal over its canonical body and
-  // compare. Returns true when the seal matches (the certificate is authentic
-  // and unaltered) and the certificate names this authority.
+  < Re-verify a certificate: recompute the seal over its canonical body and >
+  < compare. Returns true when the seal matches (the certificate is authentic >
+  < and unaltered) and the certificate names this authority. >
   boolean verify(SLMoralCertificate cert) {
     if (cert.issuerName() != authority) { return false; }
     if (!cert.isSealed()) { return false; }
@@ -94,9 +96,9 @@ class SLMoralCertificateAuthority {
     return cert.sealValue() == expected;
   }
 
-  // Deterministic seal over the body, keyed on the authority name. A rolling
-  // polynomial fold over per-character weights; stable and reproducible without
-  // relying on a Unicode codepoint intrinsic (the fold only needs determinism).
+  < Deterministic seal over the body, keyed on the authority name. A rolling >
+  < polynomial fold over per-character weights; stable and reproducible without >
+  < relying on a Unicode codepoint intrinsic (the fold only needs determinism). >
   String computeSeal(String body) {
     int acc = foldKey(authority) + foldKey(key);
     int i = 0;
@@ -119,14 +121,14 @@ class SLMoralCertificateAuthority {
   int issuedTotal() { return issuedCount; }
   String authorityName() { return authority; }
 
-  // ---- Text helpers -------------------------------------------------------
+  < ---- Text helpers ------------------------------------------------------- >
   int strLen(String s) { return native sleela_str_length(s); }
   String charAt(String s, int i) { return native sleela_str_substring(s, i, i + 1); }
 
-  // A stable per-character weight for the fold (same portable technique as
-  // lib/citizen/FederalReserveID.charWeight): digits use their value, common
-  // punctuation and letters map to small distinct constants. The fold needs
-  // determinism, not a full character map.
+  < A stable per-character weight for the fold (same portable technique as >
+  < lib/citizen/FederalReserveID.charWeight): digits use their value, common >
+  < punctuation and letters map to small distinct constants. The fold needs >
+  < determinism, not a full character map. >
   int charWeight(String c) {
     int d = digitValue(c);
     if (d >= 0) { return d + 1; }

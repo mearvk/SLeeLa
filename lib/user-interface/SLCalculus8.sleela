@@ -58,24 +58,27 @@ class SLCalculus8 {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int INPUTS = 100;  // the 100 differentiables
-  static final int STAGES = 8;    // the careful 8 stages
+  < the 100 differentiables >
+  static final int INPUTS = 100;
+  < the careful 8 stages >
+  static final int STAGES = 8;
 
-  int calc;   // VM-local handle (-1 = none)
+  < VM-local handle (-1 = none) >
+  int calc;
 
   void create() { calc = calc8Create(); }
   int handle() { return calc; }
   boolean valid() { return calc >= 0; }
   void destroy() { if (calc >= 0) { calc8Destroy(calc); calc = -1; } }
 
-  // Set/get one of the 100 differentiables (index 0..99), each in [0,1].
+  < Set/get one of the 100 differentiables (index 0..99), each in [0,1]. >
   void set(int index, double value) { if (calc >= 0) { calc8Set(calc, index, value); } }
   double get(int index) { if (calc < 0) { return 0.0; } return calc8Get(calc, index); }
 
-  // Evaluate: the mood scalar in [0,1].
+  < Evaluate: the mood scalar in [0,1]. >
   double mood() { if (calc < 0) { return 0.5; } return calc8Eval(calc, -1); }
-  // The slope d(mood)/d(input) along a given differentiable (differentiable
-  // calculus: nudging that input moves the mood by this slope).
+  < The slope d(mood)/d(input) along a given differentiable (differentiable >
+  < calculus: nudging that input moves the mood by this slope). >
   double slope(int wrtIndex) {
     if (calc < 0) { return 0.0; }
     return calc8Slope(calc, wrtIndex);

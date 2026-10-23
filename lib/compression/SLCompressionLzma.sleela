@@ -1,41 +1,39 @@
-/*
- * lib/compression/SLCompressionLzma.sleela
- * SLeeLa Standard Library Definition.
- * Definition: LZMA algorithm class — the SLeeLa-facing handle to algorithm id 8.
- */
+<< lib/compression/SLCompressionLzma.sleela
+   SLeeLa Standard Library Definition.
+   Definition: LZMA algorithm class — the SLeeLa-facing handle to algorithm id 8. >>
 #sleela 2.1
-// Family: compression. Individual algorithm class for LZMA, mirroring
-// compression/compressors/lzma/ and the registry entry in
-// sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the
-// SLCompressionLoader loads this plugin by id and dispatches
-// compress/decompress. This class is the metadata + capability contract for
-// that plugin.
-//
-// Handler state codes: 0 native, 1 backend, 2 recognized, 3 container.
+< Family: compression. Individual algorithm class for LZMA, mirroring >
+< compression/compressors/lzma/ and the registry entry in >
+< sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the >
+< SLCompressionLoader loads this plugin by id and dispatches >
+< compress/decompress. This class is the metadata + capability contract for >
+< that plugin. >
+<  >
+< Handler state codes: 0 native, 1 backend, 2 recognized, 3 container. >
 class SLCompressionLzma {
-  // Registry identity (mirrors sleela_compressor_handler).
+  < Registry identity (mirrors sleela_compressor_handler). >
   int id() { return 8; }
   String name() { return "LZMA"; }
   String mime() { return "application/x-lzma"; }
   String extensions() { return ".lzma"; }
 
-  // Capability state: 1 == backend.
+  < Capability state: 1 == backend. >
   int state() { return 1; }
   String stateName() { return "backend"; }
 
-  // Direction support advertised by the plugin vtable.
+  < Direction support advertised by the plugin vtable. >
   boolean canCompress() { return true; }
   boolean canDecompress() { return true; }
 
-  // Native algorithms implement compress/decompress in-package (no external backend).
+  < Native algorithms implement compress/decompress in-package (no external backend). >
   boolean isNative() { return false; }
-  // A backend adapter must be registered before a backend algorithm can run.
+  < A backend adapter must be registered before a backend algorithm can run. >
   boolean needsBackend() { return true; }
 
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, or
-  // catalog can read and (where appropriate) override each algorithm's record.
-  // Values are faithful to the algorithm's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, or >
+  < catalog can read and (where appropriate) override each algorithm's record. >
+  < Values are faithful to the algorithm's real origin where publicly known. >
   String metaVersion = "1.0.0";
   int metaId = 8;
   String metaAuthor = "Igor Pavlov";
@@ -45,7 +43,8 @@ class SLCompressionLzma {
   String metaCorporation = "7-Zip project";
   String metaOrigin = "Russia";
   String metaBirthDate = "1998";
-  int metaScienceRating = 9;        // maturity/robustness on a 1..10 scale
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
   String metaNationalSchedule = "LZMA (7-Zip)";
 
   String getMetaVersion() { return metaVersion; }

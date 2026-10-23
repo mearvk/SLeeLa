@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Values mirror documented HTTP 3.0 protocol constants; verify against native headers on change. */
+< Values mirror documented HTTP 3.0 protocol constants; verify against native headers on change. >
 class Http30Limits {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

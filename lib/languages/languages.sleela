@@ -52,9 +52,9 @@ class Languages {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-    // Translate one message key into the given locale. Falls back to English
-    // for an unknown locale or key. Only a representative subset of the full
-    // key set (see /languages/KEYS.md) is shown here for the demonstration.
+    < Translate one message key into the given locale. Falls back to English >
+    < for an unknown locale or key. Only a representative subset of the full >
+    < key set (see /languages/KEYS.md) is shown here for the demonstration. >
     String text(String locale, String key) {
         if (locale == "es") {
             if (key == "greeting.hello") { return "Hola"; }
@@ -112,14 +112,15 @@ class Languages {
             if (key == "word.no") { return "لا"; }
             if (key == "status.done") { return "تم"; }
         }
-        // English reference / fallback.
+        < English reference / fallback. >
         if (key == "greeting.hello") { return "Hello"; }
         if (key == "greeting.welcome") { return "Welcome"; }
         if (key == "prompt.continue") { return "Continue?"; }
         if (key == "word.yes") { return "Yes"; }
         if (key == "word.no") { return "No"; }
         if (key == "status.done") { return "Done"; }
-        return key;   // unknown key: return the key itself
+        < unknown key: return the key itself >
+        return key;
     }
 
     void greetIn(String locale) {
@@ -127,9 +128,9 @@ class Languages {
               + text(locale, "prompt.continue") + " / " + text(locale, "word.yes"));
     }
 
-    // Resolve the active locale from settings: an explicit override (e.g. the
-    // SLEELA_LANG value a launcher supplies) wins; otherwise the configured
-    // active locale. Mirrors languages/settings.conf and SLLanguageSettings.
+    < Resolve the active locale from settings: an explicit override (e.g. the >
+    < SLEELA_LANG value a launcher supplies) wins; otherwise the configured >
+    < active locale. Mirrors languages/settings.conf and SLLanguageSettings. >
     String resolveActive(String configuredActive, String override) {
         if (override != "") { return override; }
         if (configuredActive == "") { return "en"; }
@@ -137,7 +138,7 @@ class Languages {
     }
 
     void main() {
-        // The same program, the same logic -- presented in each language.
+        < The same program, the same logic -- presented in each language. >
         greetIn("en");
         greetIn("es");
         greetIn("fr");
@@ -147,8 +148,8 @@ class Languages {
         greetIn("th");
         greetIn("ar");
 
-        // Settings-driven selection: with settings.conf active = "th" and no
-        // override, output is presented in Thai.
+        < Settings-driven selection: with settings.conf active = "th" and no >
+        < override, output is presented in Thai. >
         String active = resolveActive("th", "");
         print("active=" + active + ": " + text(active, "greeting.welcome"));
     }

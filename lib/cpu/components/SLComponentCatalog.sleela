@@ -57,7 +57,7 @@ class SLComponentCatalog {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // ---------------- Memory presets ----------------
+  < ---------------- Memory presets ---------------- >
   SLMemoryModule mem(String name, int tech, int capMiB, int bus, int clk, int cl, int ddr) {
     SLMemoryModule m = new SLMemoryModule();
     m.configure(name, tech, capMiB, bus, clk, cl, ddr);
@@ -73,39 +73,39 @@ class SLComponentCatalog {
   SLMemoryModule ddr5_6000(int capMiB)   { return mem("DDR5-6000", 7, capMiB, 64, 3000, 36, 2); }
   SLMemoryModule ddr5_6400(int capMiB)   { return mem("DDR5-6400", 7, capMiB, 64, 3200, 40, 2); }
 
-  // Channel-aware memory: same DIMM spec populated across N channels. `capMiB`
-  // is the per-module capacity; the module reports N× capacity and N× aggregate
-  // bandwidth. These match the AMD Threadripper 9000 platforms directly.
+  < Channel-aware memory: same DIMM spec populated across N channels. `capMiB` >
+  < is the per-module capacity; the module reports N× capacity and N× aggregate >
+  < bandwidth. These match the AMD Threadripper 9000 platforms directly. >
   SLMemoryModule memChannels(String name, int tech, int capMiB, int bus, int clk, int cl, int ddr, int channels) {
     SLMemoryModule m = new SLMemoryModule();
     m.configureChannels(name, tech, capMiB, bus, clk, cl, ddr, channels);
     return m;
   }
-  // DDR5-6400 on a 4-channel HEDT board (Threadripper 9980X/9970X/9960X, TRX50).
+  < DDR5-6400 on a 4-channel HEDT board (Threadripper 9980X/9970X/9960X, TRX50). >
   SLMemoryModule ddr5_6400_quadChannel(int capMiBPerModule) {
     return memChannels("DDR5-6400 (4-channel)", 7, capMiBPerModule, 64, 3200, 40, 2, 4);
   }
-  // DDR5-6400 on an 8-channel workstation board (Threadripper PRO WX, WRX90).
+  < DDR5-6400 on an 8-channel workstation board (Threadripper PRO WX, WRX90). >
   SLMemoryModule ddr5_6400_octaChannel(int capMiBPerModule) {
     return memChannels("DDR5-6400 (8-channel)", 7, capMiBPerModule, 64, 3200, 40, 2, 8);
   }
 
-  // ---------------- Memory interface (cadence overlay) presets ----------------
-  // An OOD adapter that wraps a REAL module and makes it refresh as though it
-  // were `cadenceTech`. The module keeps its native data rate, capacity, and
-  // backing store; only the observed refresh duty cycle changes. Compose BOTH:
-  // pick a module, then wrap it with one of these.
+  < ---------------- Memory interface (cadence overlay) presets ---------------- >
+  < An OOD adapter that wraps a REAL module and makes it refresh as though it >
+  < were `cadenceTech`. The module keeps its native data rate, capacity, and >
+  < backing store; only the observed refresh duty cycle changes. Compose BOTH: >
+  < pick a module, then wrap it with one of these. >
   SLMemoryInterface memInterface(String name, SLMemoryModule realModule, int cadenceTech) {
     SLMemoryInterface i = new SLMemoryInterface();
     i.configure(name, realModule, cadenceTech);
     return i;
   }
-  // One preset per DDR generation: present any real module with that
-  // generation's refresh cadence (the common special case: run a DDR5 module so
-  // it refreshes like DDR2). The tech ids match SLMemoryModule.TECH_* / the
-  // cadences an SLCadenceConnector resolves: DDR=3 .. DDR5=7. These convenience
-  // forms build the interface and connect the cadence connector for you; for
-  // explicit control, build an SLCadenceConnector and call iface.connect(c).
+  < One preset per DDR generation: present any real module with that >
+  < generation's refresh cadence (the common special case: run a DDR5 module so >
+  < it refreshes like DDR2). The tech ids match SLMemoryModule.TECH_* / the >
+  < cadences an SLCadenceConnector resolves: DDR=3 .. DDR5=7. These convenience >
+  < forms build the interface and connect the cadence connector for you; for >
+  < explicit control, build an SLCadenceConnector and call iface.connect(c). >
   SLMemoryInterface ddrCadenceInterface(SLMemoryModule realModule) {
     return memInterface("DDR-cadence interface", realModule, 3);
   }
@@ -122,10 +122,10 @@ class SLComponentCatalog {
     return memInterface("DDR5-cadence interface", realModule, 7);
   }
 
-  // Standalone Dynamite cadence connectors (one per DDR generation), resolved
-  // and ready to plug into a memory interface's slot via iface.connect(c). Use
-  // these when you want to stage/defer the cadence explicitly rather than let a
-  // *CadenceInterface preset build and connect it in one step.
+  < Standalone Dynamite cadence connectors (one per DDR generation), resolved >
+  < and ready to plug into a memory interface's slot via iface.connect(c). Use >
+  < these when you want to stage/defer the cadence explicitly rather than let a >
+  < *CadenceInterface preset build and connect it in one step. >
   SLCadenceConnector cadenceConnector(int cadenceTech) {
     SLCadenceConnector c = new SLCadenceConnector();
     c.initialize(cadenceTech, "catalog cadence connector");
@@ -138,22 +138,30 @@ class SLComponentCatalog {
   SLCadenceConnector ddr4Cadence() { return cadenceConnector(6); }
   SLCadenceConnector ddr5Cadence() { return cadenceConnector(7); }
 
-  // ---------------- Storage presets ----------------
+  < ---------------- Storage presets ---------------- >
   SLStorageDevice store(String name, int cls, int iface, int capMiB, int rpm, int seekUs, int mbs) {
     SLStorageDevice d = new SLStorageDevice();
     d.configure(name, cls, iface, capMiB, rpm, seekUs, mbs);
     return d;
   }
-  SLStorageDevice floppy144()  { return store("3.5\" HD floppy", 0, 1, 1, 360, 84000, 1); }           // ~1.44MB, slow
-  SLStorageDevice mfmHdd()     { return store("MFM HDD (ST-506)", 1, 0, 20, 3600, 65000, 1); }         // 20MB, ~65ms seek
-  SLStorageDevice ideHdd()     { return store("IDE HDD 5400rpm", 1, 1, 40000, 5400, 9000, 60); }        // 40GB
-  SLStorageDevice sataHdd()    { return store("SATA HDD 7200rpm", 1, 3, 2000000, 7200, 8500, 180); }    // 2TB
-  SLStorageDevice sataSsd()    { return store("SATA SSD", 2, 3, 1000000, 0, 100, 550); }                // 1TB, ~0.1ms
-  SLStorageDevice nvmeGen3()   { return store("NVMe Gen3 SSD", 3, 5, 1000000, 0, 20, 3500); }           // 3.5GB/s
-  SLStorageDevice nvmeGen4()   { return store("NVMe Gen4 SSD", 3, 5, 2000000, 0, 15, 7000); }           // 7GB/s
-  SLStorageDevice tapeLto()    { return store("LTO tape", 4, 2, 6000000, 0, 60000000, 300); }           // huge, high latency
+  < ~1.44MB, slow >
+  SLStorageDevice floppy144()  { return store("3.5\" HD floppy", 0, 1, 1, 360, 84000, 1); }
+  < 20MB, ~65ms seek >
+  SLStorageDevice mfmHdd()     { return store("MFM HDD (ST-506)", 1, 0, 20, 3600, 65000, 1); }
+  < 40GB >
+  SLStorageDevice ideHdd()     { return store("IDE HDD 5400rpm", 1, 1, 40000, 5400, 9000, 60); }
+  < 2TB >
+  SLStorageDevice sataHdd()    { return store("SATA HDD 7200rpm", 1, 3, 2000000, 7200, 8500, 180); }
+  < 1TB, ~0.1ms >
+  SLStorageDevice sataSsd()    { return store("SATA SSD", 2, 3, 1000000, 0, 100, 550); }
+  < 3.5GB/s >
+  SLStorageDevice nvmeGen3()   { return store("NVMe Gen3 SSD", 3, 5, 1000000, 0, 20, 3500); }
+  < 7GB/s >
+  SLStorageDevice nvmeGen4()   { return store("NVMe Gen4 SSD", 3, 5, 2000000, 0, 15, 7000); }
+  < huge, high latency >
+  SLStorageDevice tapeLto()    { return store("LTO tape", 4, 2, 6000000, 0, 60000000, 300); }
 
-  // ---------------- Optical presets ----------------
+  < ---------------- Optical presets ---------------- >
   SLOpticalDrive optical(String name, int medium, int mult, boolean write, int capMiB) {
     SLOpticalDrive o = new SLOpticalDrive();
     o.configure(name, medium, mult, write, capMiB);
@@ -166,7 +174,7 @@ class SLComponentCatalog {
   SLOpticalDrive bluRay()   { return optical("Blu-ray 16x", 2, 16, false, 25000); }
   SLOpticalDrive bdxl()     { return optical("BDXL writer 16x", 2, 16, true, 100000); }
 
-  // ---------------- Bus presets ----------------
+  < ---------------- Bus presets ---------------- >
   SLSystemBus bus(String name, int type, int clk, int width, int lanes, int laneMBs) {
     SLSystemBus b = new SLSystemBus();
     b.configure(name, type, clk, width, lanes, laneMBs);
@@ -180,18 +188,18 @@ class SLComponentCatalog {
   SLSystemBus pcieGen5x16(){ return bus("PCIe 5.0 x16", 3, 32000, 1, 16, 3938); }
   SLSystemBus fsb(int mhz){ return bus("Front-side bus", 4, mhz, 64, 1, 0); }
 
-  // ---------------- Motherboard presets ----------------
+  < ---------------- Motherboard presets ---------------- >
   SLMotherboard board(String name, int socket, String chipset, int channels,
                       int slots, int lanes, int gen, int busType) {
     SLMotherboard b = new SLMotherboard();
     b.configure(name, socket, chipset, channels, slots, lanes, gen, busType);
     return b;
   }
-  // AMD Threadripper 9000 HEDT: sTR5 + TRX50, 4-channel DDR5, up to 88 PCIe 5.0 lanes.
+  < AMD Threadripper 9000 HEDT: sTR5 + TRX50, 4-channel DDR5, up to 88 PCIe 5.0 lanes. >
   SLMotherboard trx50() {
     return board("TRX50 (Threadripper HEDT)", 1, "TRX50", 4, 4, 88, 5, 3);
   }
-  // AMD Threadripper PRO 9000 WX: sTR5 + WRX90, 8-channel DDR5, up to 128 PCIe 5.0 lanes.
+  < AMD Threadripper PRO 9000 WX: sTR5 + WRX90, 8-channel DDR5, up to 128 PCIe 5.0 lanes. >
   SLMotherboard wrx90() {
     return board("WRX90 (Threadripper PRO WX)", 1, "WRX90", 8, 8, 128, 5, 3);
   }

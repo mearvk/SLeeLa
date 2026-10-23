@@ -94,10 +94,10 @@ class ClockPolicy {
   int speedRatioMilli() { if (specMHz <= 0) { return 1000; } return (effectiveMHz() * 1000) / specMHz; }
 }
 
-// -----------------------------------------------------------------------------
-// Resource grant assigned to a workload (memory words + instruction budget).
-// Mirrors lib/cpu/SLCPUResource.
-// -----------------------------------------------------------------------------
+< ----------------------------------------------------------------------------- >
+< Resource grant assigned to a workload (memory words + instruction budget). >
+< Mirrors lib/cpu/SLCPUResource. >
+< ----------------------------------------------------------------------------- >
 class Resource {
   int memWords; int budget; int priority; int used; int rejected;
   void configure(int words, int b) { memWords = words; budget = b; priority = 1; used = 0; rejected = 0; }
@@ -108,10 +108,10 @@ class Resource {
   int remaining() { int r = budget - used; return (r < 0) ? 0 : r; }
 }
 
-// -----------------------------------------------------------------------------
-// A workload: a named program with a memory/compute cost and a per-run grant.
-// Mirrors lib/cpu/SLWorkload (the cost stands in for compiled-image length).
-// -----------------------------------------------------------------------------
+< ----------------------------------------------------------------------------- >
+< A workload: a named program with a memory/compute cost and a per-run grant. >
+< Mirrors lib/cpu/SLWorkload (the cost stands in for compiled-image length). >
+< ----------------------------------------------------------------------------- >
 class Workload {
   static final int LANG_SLEELA = 0; static final int LANG_C = 1; static final int LANG_CPP = 2; static final int LANG_JAVA = 3;
   String name; int lang; int wordsNeeded; int instrCost; int baseResult; Resource grant;
@@ -125,11 +125,11 @@ class Workload {
   }
 }
 
-// -----------------------------------------------------------------------------
-// A runnable CPU model: register width, memory size, clock, and a deterministic
-// workload executor with admission + budget accounting. Mirrors the runnable
-// contract of lib/cpu/SLCPURuntime (admit + runWorkload) in behavioral form.
-// -----------------------------------------------------------------------------
+< ----------------------------------------------------------------------------- >
+< A runnable CPU model: register width, memory size, clock, and a deterministic >
+< workload executor with admission + budget accounting. Mirrors the runnable >
+< contract of lib/cpu/SLCPURuntime (admit + runWorkload) in behavioral form. >
+< ----------------------------------------------------------------------------- >
 class CpuModel {
   String key; String label; String family; int width; int memWords;
   ClockPolicy clock; int admitted; int completed;
@@ -145,8 +145,8 @@ class CpuModel {
   boolean clockStable() { return clock.isStable(); }
   boolean overclock(int targetMHz) { clock.overclockTo(targetMHz); return clock.isStable(); }
 
-  // Admission: the workload fits only if its memory request fits this CPU's
-  // address space and the grant has a positive budget.
+  < Admission: the workload fits only if its memory request fits this CPU's >
+  < address space and the grant has a positive budget. >
   boolean admit(Workload w) {
     Resource g = w.grant;
     if (g == null) { return false; }
@@ -157,10 +157,10 @@ class CpuModel {
     return true;
   }
 
-  // Run a workload within its grant. Charges the instruction cost (clamped to
-  // the budget) and returns a deterministic observable output: the workload's
-  // base result, identical across architectures (the 1:1 Turing-effect
-  // guarantee), independent of clock. Returns -1 if rejected.
+  < Run a workload within its grant. Charges the instruction cost (clamped to >
+  < the budget) and returns a deterministic observable output: the workload's >
+  < base result, identical across architectures (the 1:1 Turing-effect >
+  < guarantee), independent of clock. Returns -1 if rejected. >
   int runWorkload(Workload w) {
     if (!admit(w)) { w.grant.rejected = 1; return -1; }
     Resource g = w.grant;
@@ -171,9 +171,9 @@ class CpuModel {
   }
 }
 
-// -----------------------------------------------------------------------------
-// The CPU roster you choose from. Mirrors lib/cpu/SLCPUCatalog.
-// -----------------------------------------------------------------------------
+< ----------------------------------------------------------------------------- >
+< The CPU roster you choose from. Mirrors lib/cpu/SLCPUCatalog. >
+< ----------------------------------------------------------------------------- >
 class CpuCatalog {
   static final int MAX = 64;
   String[] key; String[] label; String[] family; int[] specMHz; int[] width; int[] memWords; int count;
@@ -193,7 +193,7 @@ class CpuCatalog {
   int indexOf(String k) { for (int i = 0; i < count; i = i + 1) { if (key[i] == k) { return i; } } return -1; }
   boolean has(String k) { return indexOf(k) >= 0; }
 
-  // Instantiate the model selected by key (null if unknown).
+  < Instantiate the model selected by key (null if unknown). >
   CpuModel make(String k) {
     int i = indexOf(k);
     if (i < 0) { return null; }
@@ -208,7 +208,7 @@ class CpuCatalog {
     }
     return s;
   }
-  // A roster spanning eras: 8-bit micros through modern 64-bit console SoCs.
+  < A roster spanning eras: 8-bit micros through modern 64-bit console SoCs. >
   void seed() {
     add("6502",  "MOS 6502",          "6502",   1,    8,  65536);
     add("z80",   "Zilog Z80",         "z80",    4,    8,  65536);
@@ -220,7 +220,7 @@ class CpuCatalog {
     add("ppc",   "PowerPC",           "powerpc",233, 32,  1048576);
     add("ps5",   "PlayStation 5 SoC", "x86-64", 3500,64,  16777216);
     add("xbsx",  "Xbox Series X SoC", "x86-64", 3800,64,  16777216);
-    // prominent modern brands (newly added folders)
+    < prominent modern brands (newly added folders) >
     add("intel-core","Intel Core",    "x86-64", 3600,64,  16777216);
     add("xeon",  "Intel Xeon",        "x86-64", 3800,64,  16777216);
     add("ryzen", "AMD Ryzen (Zen)",   "x86-64", 4500,64,  16777216);
@@ -239,10 +239,10 @@ class CpuCatalog {
   }
 }
 
-// -----------------------------------------------------------------------------
-// A fleet: a chosen set of CPUs run as a group to produce NET RESULTS.
-// Mirrors lib/cpu/SLCPUFleet.
-// -----------------------------------------------------------------------------
+< ----------------------------------------------------------------------------- >
+< A fleet: a chosen set of CPUs run as a group to produce NET RESULTS. >
+< Mirrors lib/cpu/SLCPUFleet. >
+< ----------------------------------------------------------------------------- >
 class CpuFleet {
   static final int MAX = 64;
   CpuCatalog catalog; String[] memberKey; CpuModel[] member; int size;
@@ -270,8 +270,8 @@ class CpuFleet {
     }
   }
 
-  // Run the same workload spec across every member, each with a fresh grant,
-  // and aggregate the net results.
+  < Run the same workload spec across every member, each with a fresh grant, >
+  < and aggregate the net results. >
   int runAcross(String name, int lang, int wordsNeeded, int instrCost, int baseResult, int grantWords, int budget) {
     resetResults();
     for (int i = 0; i < size; i = i + 1) {
@@ -320,24 +320,25 @@ class CpuFleet {
   }
 }
 
-// -----------------------------------------------------------------------------
-// The Creator over a NETWORK: distributes workloads to a fleet across modeled
-// network nodes and aggregates net results. Mirrors the Creator->SLVM->CPU
-// chain (lib/vm/creator/SleelaVMCreator) extended to a distributed fleet.
-// -----------------------------------------------------------------------------
+< ----------------------------------------------------------------------------- >
+< The Creator over a NETWORK: distributes workloads to a fleet across modeled >
+< network nodes and aggregates net results. Mirrors the Creator->SLVM->CPU >
+< chain (lib/vm/creator/SleelaVMCreator) extended to a distributed fleet. >
+< ----------------------------------------------------------------------------- >
 class CreatorNetwork {
   CpuFleet fleet; int dispatched; int delivered; int lost; int latencyUnits; String log;
 
   void configure(CpuFleet f) { fleet = f; dispatched = 0; delivered = 0; lost = 0; latencyUnits = 0; log = ""; }
 
-  // Dispatch a workload spec to the whole fleet "over the network": each hop
-  // adds latency proportional to the node index; a node is reachable here (no
-  // packet loss modeled by default), and the fleet executes locally per node.
+  < Dispatch a workload spec to the whole fleet "over the network": each hop >
+  < adds latency proportional to the node index; a node is reachable here (no >
+  < packet loss modeled by default), and the fleet executes locally per node. >
   int dispatch(String name, int lang, int wordsNeeded, int instrCost, int baseResult, int grantWords, int budget) {
     dispatched = dispatched + 1;
-    // Model per-node network latency before the fleet executes.
+    < Model per-node network latency before the fleet executes. >
     for (int i = 0; i < fleet.count(); i = i + 1) {
-      latencyUnits = latencyUnits + (i + 1);     // farther nodes cost more
+      < farther nodes cost more >
+      latencyUnits = latencyUnits + (i + 1);
       delivered = delivered + 1;
       log = log + "  net->node[" + i + "] " + fleet.keyAt(i) + " (+" + (i + 1) + " lat)\n";
     }
@@ -357,13 +358,13 @@ class CreatorNetwork {
   }
 }
 
-// Fleet exposes keyAt for the network log.
-// (declared here as an extension point used above)
+< Fleet exposes keyAt for the network log. >
+< (declared here as an extension point used above) >
 
-// -----------------------------------------------------------------------------
-// Runnable: build the roster, choose a fleet, run work -> net results, then do
-// the same over the Creator network, and SELF-CHECK the invariants.
-// -----------------------------------------------------------------------------
+< ----------------------------------------------------------------------------- >
+< Runnable: build the roster, choose a fleet, run work -> net results, then do >
+< the same over the Creator network, and SELF-CHECK the invariants. >
+< ----------------------------------------------------------------------------- >
 class World {
   void banner(String t) {
     print("================================================================");
@@ -374,13 +375,13 @@ class World {
   void main() {
     banner("SLeeLa CPU Roster -> Fleet -> NET RESULTS (world simulation)");
 
-    // 1) THE ROSTER you choose from.
+    < 1) THE ROSTER you choose from. >
     CpuCatalog roster = new CpuCatalog();
     roster.configure();
     print("Roster (" + roster.size() + " CPUs to choose from):");
     print(roster.list());
 
-    // 2) CHOOSE a heterogeneous fleet from the roster (classic + modern).
+    < 2) CHOOSE a heterogeneous fleet from the roster (classic + modern). >
     CpuFleet fleet = new CpuFleet();
     fleet.configure(roster);
     fleet.select("6502");
@@ -390,31 +391,35 @@ class World {
     fleet.select("x86");
     fleet.select("ps5");
     fleet.select("xbsx");
-    fleet.select("ryzen");      // AMD Ryzen (Zen)
-    fleet.select("m4");         // Apple M4
-    fleet.select("grace");      // NVIDIA Grace
+    < AMD Ryzen (Zen) >
+    fleet.select("ryzen");
+    < Apple M4 >
+    fleet.select("m4");
+    < NVIDIA Grace >
+    fleet.select("grace");
     print("Chosen fleet: " + fleet.count() + " CPUs");
 
-    // 3) RUN real work across the fleet -> NET RESULTS. The same C workload
-    //    runs on every architecture and returns the same observable (42); the
-    //    net output is the sum, and the aggregate clock is the world's capacity.
+    < 3) RUN real work across the fleet -> NET RESULTS. The same C workload >
+    < runs on every architecture and returns the same observable (42); the >
+    < net output is the sum, and the aggregate clock is the world's capacity. >
     int net = fleet.runAcross("compute-c", 1, 4096, 25000, 42, 65536, 100000);
     print(fleet.scoreboard());
     print("NET OUTPUT across fleet = " + net);
 
-    // 3b) OVERCLOCK the fleet +25% and re-run: net output is identical (result
-    //     is clock-independent) but aggregate effective clock rises.
+    < 3b) OVERCLOCK the fleet +25% and re-run: net output is identical (result >
+    < is clock-independent) but aggregate effective clock rises. >
     fleet.overclockFleetPercent(125);
     int net2 = fleet.runAcross("compute-c", 1, 4096, 25000, 42, 65536, 100000);
     print("After +25% fleet overclock:");
     print("  net output        = " + net2 + " (unchanged: result is clock-independent)");
     print("  aggregate eff MHz = " + fleet.aggregateEffectiveMHz() + " (ratio x" + fleet.fleetSpeedRatioMilli() + "/1000)");
 
-    // 4) CREATOR over the NETWORK: distribute the same work to the fleet across
-    //    modeled network nodes and aggregate net results end to end.
+    < 4) CREATOR over the NETWORK: distribute the same work to the fleet across >
+    < modeled network nodes and aggregate net results end to end. >
     CpuFleet netFleet = new CpuFleet();
     netFleet.configure(roster);
-    netFleet.selectAll();                               // the whole roster as a world
+    < the whole roster as a world >
+    netFleet.selectAll();
     CreatorNetwork creator = new CreatorNetwork();
     creator.configure(netFleet);
     int netNet = creator.dispatch("compute-c", 1, 4096, 25000, 42, 65536, 100000);
@@ -422,7 +427,7 @@ class World {
     print(netFleet.scoreboard());
     print("NET OUTPUT over network across whole roster = " + netNet);
 
-    // SELF-CHECK the world invariants.
+    < SELF-CHECK the world invariants. >
     selfCheck(roster, fleet, netFleet, creator, net, net2, netNet);
   }
 

@@ -50,9 +50,12 @@ class LicensingModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int licensedUnits;      // units the licensees sold this month
-  int royaltyPerUnitCents;// royalty collected per licensed unit
-  int ipUpkeepCents;      // monthly cost to maintain/defend the IP
+  < units the licensees sold this month >
+  int licensedUnits;
+  < royalty collected per licensed unit >
+  int royaltyPerUnitCents;
+  < monthly cost to maintain/defend the IP >
+  int ipUpkeepCents;
 
   void setUp(int unitsLicensed, int royaltyPerUnit, int ipUpkeep) {
     load();

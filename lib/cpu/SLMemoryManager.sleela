@@ -54,9 +54,11 @@ class SLMemoryManager {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLRAM memory;
-  int pageWords;      // words per page
+  < words per page >
+  int pageWords;
   int totalPages;
-  int kernelPages;    // low pages reserved for the kernel
+  < low pages reserved for the kernel >
+  int kernelPages;
   int nextFreePage;
   int allocations;
 
@@ -71,8 +73,8 @@ class SLMemoryManager {
 
   int pageToAddr(int page) { return page * pageWords; }
 
-  // Allocate `pages` contiguous pages for a process; return the base address,
-  // or -1 if out of memory.
+  < Allocate `pages` contiguous pages for a process; return the base address, >
+  < or -1 if out of memory. >
   int allocPages(int pages) {
     if (nextFreePage + pages > totalPages) { return -1; }
     int base = pageToAddr(nextFreePage);
@@ -81,8 +83,8 @@ class SLMemoryManager {
     return base;
   }
 
-  // Enforce the kernel/user boundary: a user access must stay above the kernel
-  // region.
+  < Enforce the kernel/user boundary: a user access must stay above the kernel >
+  < region. >
   boolean userMayAccess(int addr) { return addr >= pageToAddr(kernelPages); }
 
   int freePages() { return totalPages - nextFreePage; }

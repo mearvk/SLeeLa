@@ -54,16 +54,26 @@ class SLGuiEvent {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int type;             // SLGuiEventType ordinal
-  String targetId;      // the node id the event was raised on
-  String value;         // string payload (entry text, changed value, custom data)
-  String key;           // key name for KEYDOWN/KEYUP (e.g. "Enter", "a")
-  int x;                // pointer x within the target (pointer events)
-  int y;                // pointer y within the target (pointer events)
-  int toggleState;      // 1/0 for TOGGLE events
-  int defaultPrevented; // 1 once preventDefault() is called
-  int propagationStopped; // 1 once stopPropagation() is called
-  int timestamp;        // host-supplied monotonic tick (0 if unknown)
+  < SLGuiEventType ordinal >
+  int type;
+  < the node id the event was raised on >
+  String targetId;
+  < string payload (entry text, changed value, custom data) >
+  String value;
+  < key name for KEYDOWN/KEYUP (e.g. "Enter", "a") >
+  String key;
+  < pointer x within the target (pointer events) >
+  int x;
+  < pointer y within the target (pointer events) >
+  int y;
+  < 1/0 for TOGGLE events >
+  int toggleState;
+  < 1 once preventDefault() is called >
+  int defaultPrevented;
+  < 1 once stopPropagation() is called >
+  int propagationStopped;
+  < host-supplied monotonic tick (0 if unknown) >
+  int timestamp;
 
   void configure(int eventType, String target) {
     type = eventType; targetId = target;
@@ -74,7 +84,7 @@ class SLGuiEvent {
   int getType() { return type; }
   String target() { return targetId; }
 
-  // Payload setters (the host fills in what the kind carries).
+  < Payload setters (the host fills in what the kind carries). >
   void setValue(String v) { value = v; }
   String getValue() { return value; }
   void setKey(String k) { key = k; }
@@ -87,7 +97,7 @@ class SLGuiEvent {
   void setTimestamp(int t) { timestamp = t; }
   int when() { return timestamp; }
 
-  // DHTML-style propagation controls.
+  < DHTML-style propagation controls. >
   void preventDefault() { defaultPrevented = 1; }
   boolean isDefaultPrevented() { return defaultPrevented == 1; }
   void stopPropagation() { propagationStopped = 1; }

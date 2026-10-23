@@ -60,39 +60,59 @@ class SLGuiEffects {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // --- lighting / glow ---
-  int glow;             // 1 = glow enabled
-  int glowRadiusPx;     // glow spread, 0..64 px
-  int glowIntensityPct; // glow strength, 0..100 %
-  String glowColor;     // "#rrggbb" or a named accent ("accent"/"warning"/...)
+  < --- lighting / glow --- >
+  < 1 = glow enabled >
+  int glow;
+  < glow spread, 0..64 px >
+  int glowRadiusPx;
+  < glow strength, 0..100 % >
+  int glowIntensityPct;
+  < "#rrggbb" or a named accent ("accent"/"warning"/...) >
+  String glowColor;
 
-  // --- 3D shine highlight ---
-  int shine;            // 1 = 3D specular shine enabled
-  int shineAngleDeg;    // highlight light angle, 0..359 deg
-  int shineIntensityPct;// 0..100 %
+  < --- 3D shine highlight --- >
+  < 1 = 3D specular shine enabled >
+  int shine;
+  < highlight light angle, 0..359 deg >
+  int shineAngleDeg;
+  < 0..100 % >
+  int shineIntensityPct;
 
-  // --- drop shadow ---
-  int shadow;           // 1 = shadow enabled
-  int shadowOffsetX;    // -32..32 px
-  int shadowOffsetY;    // -32..32 px
-  int shadowBlurPx;     // 0..64 px
-  int shadowOpacityPct; // 0..100 %
+  < --- drop shadow --- >
+  < 1 = shadow enabled >
+  int shadow;
+  < -32..32 px >
+  int shadowOffsetX;
+  < -32..32 px >
+  int shadowOffsetY;
+  < 0..64 px >
+  int shadowBlurPx;
+  < 0..100 % >
+  int shadowOpacityPct;
 
-  // --- metal look-and-feel ---
-  int metal;            // 1 = brushed/metal surface enabled
-  int metalSheenPct;    // 0..100 % (how reflective the surface reads)
+  < --- metal look-and-feel --- >
+  < 1 = brushed/metal surface enabled >
+  int metal;
+  < 0..100 % (how reflective the surface reads) >
+  int metalSheenPct;
 
-  // --- rotation ---
-  int rotationDeg;      // current fixed rotation, 0..359 deg
-  SLGuiRotationSchedule schedule;  // optional scheduled "schene" rotation (null = static)
+  < --- rotation --- >
+  < current fixed rotation, 0..359 deg >
+  int rotationDeg;
+  < optional scheduled "schene" rotation (null = static) >
+  SLGuiRotationSchedule schedule;
 
-  // --- fade ---
-  int opacityPct;       // 0..100 % current opacity
-  int fadeMillis;       // transition duration for fade in/out, 0..10000 ms
+  < --- fade --- >
+  < 0..100 % current opacity >
+  int opacityPct;
+  < transition duration for fade in/out, 0..10000 ms >
+  int fadeMillis;
 
-  // --- activation audio ---
-  String activationCue; // host audio cue name played on activation ("" = silent)
-  int activationGainPct;// 0..100 % playback gain
+  < --- activation audio --- >
+  < host audio cue name played on activation ("" = silent) >
+  String activationCue;
+  < 0..100 % playback gain >
+  int activationGainPct;
 
   void configure() {
     glow = 0; glowRadiusPx = 12; glowIntensityPct = 60; glowColor = "accent";
@@ -107,7 +127,7 @@ class SLGuiEffects {
   int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
   int wrapDeg(int d) { int r = d % 360; if (r < 0) { r = r + 360; } return r; }
 
-  // ---- lighting / glow ----------------------------------------------------
+  < ---- lighting / glow ---------------------------------------------------- >
   void enableGlow(int radiusPx, int intensityPct, String color) {
     glow = 1;
     glowRadiusPx = clamp(radiusPx, 0, 64);
@@ -117,7 +137,7 @@ class SLGuiEffects {
   void disableGlow() { glow = 0; }
   boolean glowOn() { return glow == 1; }
 
-  // ---- 3D shine -----------------------------------------------------------
+  < ---- 3D shine ----------------------------------------------------------- >
   void enableShine(int angleDeg, int intensityPct) {
     shine = 1;
     shineAngleDeg = wrapDeg(angleDeg);
@@ -126,7 +146,7 @@ class SLGuiEffects {
   void disableShine() { shine = 0; }
   boolean shineOn() { return shine == 1; }
 
-  // ---- shadow -------------------------------------------------------------
+  < ---- shadow ------------------------------------------------------------- >
   void enableShadow(int offX, int offY, int blurPx, int opacityPct) {
     shadow = 1;
     shadowOffsetX = clamp(offX, -32, 32);
@@ -137,21 +157,21 @@ class SLGuiEffects {
   void disableShadow() { shadow = 0; }
   boolean shadowOn() { return shadow == 1; }
 
-  // ---- metal look-and-feel ------------------------------------------------
+  < ---- metal look-and-feel ------------------------------------------------ >
   void enableMetal(int sheenPct) { metal = 1; metalSheenPct = clamp(sheenPct, 0, 100); }
   void disableMetal() { metal = 0; }
   boolean metalOn() { return metal == 1; }
 
-  // ---- rotation -----------------------------------------------------------
+  < ---- rotation ----------------------------------------------------------- >
   void rotateTo(int deg) { rotationDeg = wrapDeg(deg); }
   void rotateBy(int deltaDeg) { rotationDeg = wrapDeg(rotationDeg + deltaDeg); }
   int rotation() { return rotationDeg; }
-  // Attach a scheduled rotation ("schene"): the component rotates on a cadence.
+  < Attach a scheduled rotation ("schene"): the component rotates on a cadence. >
   void setSchedule(SLGuiRotationSchedule s) { schedule = s; }
   SLGuiRotationSchedule rotationSchedule() { return schedule; }
   boolean scheduledRotation() { return schedule != null && schedule.active(); }
-  // Advance a scheduled rotation by `elapsedMillis`; applies the schedule's step
-  // when its interval elapses. Returns true when the rotation moved this tick.
+  < Advance a scheduled rotation by `elapsedMillis`; applies the schedule's step >
+  < when its interval elapses. Returns true when the rotation moved this tick. >
   boolean tickRotation(int elapsedMillis) {
     if (schedule == null) { return false; }
     int step = schedule.advance(elapsedMillis);
@@ -159,18 +179,18 @@ class SLGuiEffects {
     return false;
   }
 
-  // ---- fade ---------------------------------------------------------------
+  < ---- fade --------------------------------------------------------------- >
   void setOpacity(int pct) { opacityPct = clamp(pct, 0, 100); }
   int opacity() { return opacityPct; }
   void setFadeMillis(int ms) { fadeMillis = clamp(ms, 0, 10000); }
   int getFadeMillis() { return fadeMillis; }
-  // Fade intents: the host animates opacity 0<->100 over fadeMillis. These set
-  // the TARGET; a reconciler/host interpolates toward it over the duration.
+  < Fade intents: the host animates opacity 0<->100 over fadeMillis. These set >
+  < the TARGET; a reconciler/host interpolates toward it over the duration. >
   void fadeIn()  { opacityPct = 100; }
   void fadeOut() { opacityPct = 0; }
   boolean faded() { return opacityPct == 0; }
 
-  // ---- activation audio ---------------------------------------------------
+  < ---- activation audio --------------------------------------------------- >
   void setActivationCue(String cue, int gainPct) {
     activationCue = (cue == null) ? "" : cue;
     activationGainPct = clamp(gainPct, 0, 100);
@@ -179,7 +199,7 @@ class SLGuiEffects {
   int getActivationGainPct() { return activationGainPct; }
   boolean hasActivationAudio() { return activationCue != ""; }
 
-  // Internally consistent when every knob sits in its clamped window.
+  < Internally consistent when every knob sits in its clamped window. >
   boolean honored() {
     boolean g = glowRadiusPx >= 0 && glowRadiusPx <= 64 && glowIntensityPct >= 0 && glowIntensityPct <= 100;
     boolean s = shineIntensityPct >= 0 && shineIntensityPct <= 100;
@@ -190,10 +210,10 @@ class SLGuiEffects {
     return g && s && sh && o && a && sc;
   }
 
-  // Flatten the enabled effects into a node's inline style map via the callback-
-  // free convention the mount reconciler reads: the caller applies each returned
-  // "effect-*" property. Here we return a single compact descriptor string the
-  // host parses; SLGuiMount copies it onto the widget.
+  < Flatten the enabled effects into a node's inline style map via the callback- >
+  < free convention the mount reconciler reads: the caller applies each returned >
+  < "effect-*" property. Here we return a single compact descriptor string the >
+  < host parses; SLGuiMount copies it onto the widget. >
   String toStyle() {
     String s = "";
     if (glow == 1)   { s = s + "glow:" + glowRadiusPx + "/" + glowIntensityPct + "/" + glowColor + ";"; }

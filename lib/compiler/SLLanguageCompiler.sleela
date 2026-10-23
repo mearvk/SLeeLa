@@ -63,35 +63,49 @@ class SLLanguageCompiler {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // --- Canonical pipeline phases, in order. Mirrors sleela_langc.h. ---
-  static final int PHASE_SOURCE   = 1; // load/normalize source units
-  static final int PHASE_LEX      = 2; // tokenize
-  static final int PHASE_PARSE    = 3; // build the language syntax tree
-  static final int PHASE_RESOLVE  = 4; // names, scopes, imports, symbols
-  static final int PHASE_SEMANTIC = 5; // types, capabilities, dependencies
-  static final int PHASE_IR       = 6; // lower to target-neutral SLeeLa IR
-  static final int PHASE_LOWER    = 7; // lower IR to VM-ready operations
-  static final int PHASE_CODEGEN  = 8; // emit artifact
+  < --- Canonical pipeline phases, in order. Mirrors sleela_langc.h. --- >
+  < load/normalize source units >
+  static final int PHASE_SOURCE   = 1;
+  < tokenize >
+  static final int PHASE_LEX      = 2;
+  < build the language syntax tree >
+  static final int PHASE_PARSE    = 3;
+  < names, scopes, imports, symbols >
+  static final int PHASE_RESOLVE  = 4;
+  < types, capabilities, dependencies >
+  static final int PHASE_SEMANTIC = 5;
+  < lower to target-neutral SLeeLa IR >
+  static final int PHASE_IR       = 6;
+  < lower IR to VM-ready operations >
+  static final int PHASE_LOWER    = 7;
+  < emit artifact >
+  static final int PHASE_CODEGEN  = 8;
 
-  // --- Lowering targets. Mirrors sleela_langc.h. ---
+  < --- Lowering targets. Mirrors sleela_langc.h. --- >
   static final int TARGET_SLVM    = 1;
   static final int TARGET_SLJVM   = 2;
   static final int TARGET_SLIR    = 3;
   static final int TARGET_NATIVE  = 4;
 
-  // Identity a concrete front end declares.
-  String languageName;        // e.g. "C", "C++", "Java", "Python"
-  String languageFamily;      // e.g. "C-family", "JVM", "scripting"
-  String languageVersion;     // the accepted language version
-  String sourceExtensions;    // comma list, e.g. ".c" or ".cc,.cpp,.cxx"
-  int    defaultTarget;       // one of TARGET_*
-  boolean referenceOnly;      // true => identify/plan only, never emit
+  < Identity a concrete front end declares. >
+  < e.g. "C", "C++", "Java", "Python" >
+  String languageName;
+  < e.g. "C-family", "JVM", "scripting" >
+  String languageFamily;
+  < the accepted language version >
+  String languageVersion;
+  < comma list, e.g. ".c" or ".cc,.cpp,.cxx" >
+  String sourceExtensions;
+  < one of TARGET_* >
+  int    defaultTarget;
+  < true => identify/plan only, never emit >
+  boolean referenceOnly;
 
-  // Which phases this front end provides, as a bitmask of (1 << (phase-1)).
+  < Which phases this front end provides, as a bitmask of (1 << (phase-1)). >
   int phaseMask;
   String diagnostic;
 
-  // A subclass calls this from its own configure() to declare identity.
+  < A subclass calls this from its own configure() to declare identity. >
   void declare(String name, String family, String version, String exts, int target) {
     languageName = name;
     languageFamily = family;
@@ -103,7 +117,7 @@ class SLLanguageCompiler {
     diagnostic = "";
   }
 
-  // Mark a provided phase. A front end calls this once per phase it implements.
+  < Mark a provided phase. A front end calls this once per phase it implements. >
   void provide(int phase) {
     if (phase >= PHASE_SOURCE && phase <= PHASE_CODEGEN) {
       phaseMask = phaseMask | (1 << (phase - 1));
@@ -115,9 +129,9 @@ class SLLanguageCompiler {
     return (phaseMask & (1 << (phase - 1))) != 0;
   }
 
-  // --- Pipeline phase hooks. The base implementations are no-ops that report
-  // "absent"; a concrete front end overrides the phases it actually provides.
-  // Each returns true when the phase completed, false when refused/incomplete.
+  < --- Pipeline phase hooks. The base implementations are no-ops that report >
+  < "absent"; a concrete front end overrides the phases it actually provides. >
+  < Each returns true when the phase completed, false when refused/incomplete. >
   boolean runSource(SLCompileRequest request)   { return provides(PHASE_SOURCE); }
   boolean runLex(SLCompileRequest request)       { return provides(PHASE_LEX); }
   boolean runParse(SLCompileRequest request)     { return provides(PHASE_PARSE); }
@@ -127,17 +141,17 @@ class SLLanguageCompiler {
   boolean runLower(SLCompileRequest request)     { return provides(PHASE_LOWER); }
   boolean runCodegen(SLCompileRequest request)   { return provides(PHASE_CODEGEN); }
 
-  // Register this front end with the native, language-neutral registry so it can
-  // be found by name or by source extension alongside every other language.
+  < Register this front end with the native, language-neutral registry so it can >
+  < be found by name or by source extension alongside every other language. >
   int register() {
     return native sleela_lang_register_module(
       languageName, languageFamily, languageVersion,
       sourceExtensions, phaseMask, defaultTarget, referenceOnly);
   }
 
-  // Produce a compile plan for `request` against this front end. The native
-  // framework walks the required phases for the requested target and reports the
-  // first missing one (fail-closed; nothing is guessed or silently added).
+  < Produce a compile plan for `request` against this front end. The native >
+  < framework walks the required phases for the requested target and reports the >
+  < first missing one (fail-closed; nothing is guessed or silently added). >
   SLCompilePlan planCompile(SLCompileRequest request) {
     SLCompilePlan plan = new SLCompilePlan();
     plan.buildFor(this, request);

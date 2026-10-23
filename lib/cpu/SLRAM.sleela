@@ -52,9 +52,12 @@ class SLRAM {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int wordCount;   // number of addressable words
-  int width;       // bits per word
-  int handle;      // native backing-store handle (0 until allocated)
+  < number of addressable words >
+  int wordCount;
+  < bits per word >
+  int width;
+  < native backing-store handle (0 until allocated) >
+  int handle;
   int reads;
   int writes;
 
@@ -62,7 +65,7 @@ class SLRAM {
     wordCount = words; width = bits; handle = 0; reads = 0; writes = 0;
   }
 
-  // Allocate the native backing store (zero-initialized).
+  < Allocate the native backing store (zero-initialized). >
   int allocate() {
     handle = native sleela_mem_alloc_words(wordCount, width);
     return handle;

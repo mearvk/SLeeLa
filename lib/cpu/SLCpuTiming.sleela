@@ -56,18 +56,28 @@ class SLCpuTiming {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String name;        // nameful: "core0-pipeline", ...
-  int minMHz;         // lowest core clock the operator may dial
-  int maxMHz;         // datasheet ceiling for the core clock
-  int currentMHz;     // the variable core clock presently selected
+  < nameful: "core0-pipeline", ... >
+  String name;
+  < lowest core clock the operator may dial >
+  int minMHz;
+  < datasheet ceiling for the core clock >
+  int maxMHz;
+  < the variable core clock presently selected >
+  int currentMHz;
 
-  SLVoltageRail vcore; // the core supply rail
-  int mvPerMHz;        // settled Vcore each extra MHz of ceiling needs
+  < the core supply rail >
+  SLVoltageRail vcore;
+  < settled Vcore each extra MHz of ceiling needs >
+  int mvPerMHz;
 
-  SLTiming fetch;      // fetch-stage critical path
-  SLTiming decode;     // decode-stage critical path
-  SLTiming execute;    // execute-stage critical path (usually the long pole)
-  SLTiming writeback;  // writeback-stage critical path
+  < fetch-stage critical path >
+  SLTiming fetch;
+  < decode-stage critical path >
+  SLTiming decode;
+  < execute-stage critical path (usually the long pole) >
+  SLTiming execute;
+  < writeback-stage critical path >
+  SLTiming writeback;
 
   void configure(String coreName, int floorMHz, int ceilingMHz) {
     name = coreName; minMHz = floorMHz; maxMHz = ceilingMHz; currentMHz = floorMHz;
@@ -89,20 +99,20 @@ class SLCpuTiming {
 
   int periodPsAt(int mhz) { if (mhz <= 0) { return 0; } return 1000000 / mhz; }
 
-  // State a stage's measured path (propagation + setup, with hold).
+  < State a stage's measured path (propagation + setup, with hold). >
   void setFetch(int propPs, int setupPs, int holdPs) { fetch.setPropagation(propPs); fetch.setSetup(setupPs); fetch.setHold(holdPs); }
   void setDecode(int propPs, int setupPs, int holdPs) { decode.setPropagation(propPs); decode.setSetup(setupPs); decode.setHold(holdPs); }
   void setExecute(int propPs, int setupPs, int holdPs) { execute.setPropagation(propPs); execute.setSetup(setupPs); execute.setHold(holdPs); }
   void setWriteback(int propPs, int setupPs, int holdPs) { writeback.setPropagation(propPs); writeback.setSetup(setupPs); writeback.setHold(holdPs); }
 
-  // Jitter from the clock tree applies to every stage equally.
+  < Jitter from the clock tree applies to every stage equally. >
   void setClockJitter(int jitterPs) {
     fetch.setJitter(jitterPs); decode.setJitter(jitterPs);
     execute.setJitter(jitterPs); writeback.setJitter(jitterPs);
   }
 
-  // The honest maximum core clock: the lowest per-stage max-frequency (the
-  // critical stage wins) further capped by what the settled Vcore supports.
+  < The honest maximum core clock: the lowest per-stage max-frequency (the >
+  < critical stage wins) further capped by what the settled Vcore supports. >
   int criticalMaxMHz() {
     int m = fetch.maxFrequencyMHz();
     if (decode.maxFrequencyMHz() < m) { m = decode.maxFrequencyMHz(); }
@@ -119,8 +129,8 @@ class SLCpuTiming {
     return vcore.effectiveMv() / mvPerMHz;
   }
 
-  // Dial the variable core clock, clamped into [min,max] and into the honest
-  // critical/voltage ceiling. Returns the clock actually set.
+  < Dial the variable core clock, clamped into [min,max] and into the honest >
+  < critical/voltage ceiling. Returns the clock actually set. >
   int setClock(int mhz) {
     int target = mhz;
     if (target < minMHz) { target = minMHz; }
@@ -137,7 +147,7 @@ class SLCpuTiming {
     fetch.setPeriod(p); decode.setPeriod(p); execute.setPeriod(p); writeback.setPeriod(p);
   }
 
-  // Which stage is the critical path, by name — nameful reporting.
+  < Which stage is the critical path, by name — nameful reporting. >
   String criticalStage() {
     int m = fetch.maxFrequencyMHz(); String s = fetch.signalName();
     if (decode.maxFrequencyMHz() < m) { m = decode.maxFrequencyMHz(); s = decode.signalName(); }
@@ -146,7 +156,7 @@ class SLCpuTiming {
     return s;
   }
 
-  // Every stage honored at the dialed clock AND Vcore in limits.
+  < Every stage honored at the dialed clock AND Vcore in limits. >
   boolean honored() {
     boolean stages = fetch.honored() && decode.honored() && execute.honored() && writeback.honored();
     boolean power = (vcore == null) || vcore.withinLimits();

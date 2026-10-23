@@ -58,8 +58,10 @@ class SLVMClass {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   int classId;
   String name;
-  int superId;        // -1 when there is no superclass
-  int fieldTotal;     // instance field slots (incl. inherited) => object size
+  < -1 when there is no superclass >
+  int superId;
+  < instance field slots (incl. inherited) => object size >
+  int fieldTotal;
 
   int fieldCount;
   SLVMField f0; SLVMField f1; SLVMField f2; SLVMField f3;
@@ -98,7 +100,7 @@ class SLVMClass {
     return null;
   }
 
-  // Map a field name to its heap slot; -1 if not declared here.
+  < Map a field name to its heap slot; -1 if not declared here. >
   int fieldSlot(String fieldName) {
     int i = 0;
     while (i < fieldCount) {
@@ -133,8 +135,8 @@ class SLVMClass {
     return null;
   }
 
-  // Virtual-ish lookup by name within this class (superclass walk is driven by
-  // SLVMModule, which owns the id->class table).
+  < Virtual-ish lookup by name within this class (superclass walk is driven by >
+  < SLVMModule, which owns the id->class table). >
   SLVMMethod resolveMethod(String methodName) {
     int i = 0;
     while (i < methodCount) {
@@ -145,32 +147,35 @@ class SLVMClass {
     return null;
   }
 
-  // --- access-gated resolution (extensible-network enforcement) -----------
-  // Resolve ONLY a network-exposed (public) method. This is what a remote hop /
-  // another file in the network may reach: a private or protected method is NOT
-  // returned here, so the network cannot bind a non-exposed symbol.
+  < --- access-gated resolution (extensible-network enforcement) ----------- >
+  < Resolve ONLY a network-exposed (public) method. This is what a remote hop / >
+  < another file in the network may reach: a private or protected method is NOT >
+  < returned here, so the network cannot bind a non-exposed symbol. >
   SLVMMethod resolveExposedMethod(String methodName) {
     SLVMMethod mm = resolveMethod(methodName);
     if (mm != null && mm.exposedHop()) { return mm; }
     return null;
   }
 
-  // Resolve on behalf of a caller whose own access role is `callerRole`
-  // (SLAccessSemantics.ROLE_*). Rules the VM enforces:
-  //   - exposed (public)   methods: reachable by anyone (including the network);
-  //   - local   (private)  methods: reachable only by a local/in-system caller
-  //                                 (callerRole local or guarded), never the net;
-  //   - guarded (protected) methods: reachable by a local or guarded caller
-  //                                 (the guard controls run before proceeding).
-  // A plain resolveMethod() with no role still works (role 0 = ungated).
+  < Resolve on behalf of a caller whose own access role is `callerRole` >
+  < (SLAccessSemantics.ROLE_*). Rules the VM enforces: >
+  < - exposed (public)   methods: reachable by anyone (including the network); >
+  < - local   (private)  methods: reachable only by a local/in-system caller >
+  < (callerRole local or guarded), never the net; >
+  < - guarded (protected) methods: reachable by a local or guarded caller >
+  < (the guard controls run before proceeding). >
+  < A plain resolveMethod() with no role still works (role 0 = ungated). >
   SLVMMethod resolveMethodForCaller(String methodName, int callerRole) {
     SLVMMethod mm = resolveMethod(methodName);
     if (mm == null) { return null; }
-    if (mm.exposedHop()) { return mm; }                 // public: always reachable
-    if (mm.role() == 0)  { return mm; }                 // ungated member
-    // private/protected require a local (2) or guarded (3) caller.
+    < public: always reachable >
+    if (mm.exposedHop()) { return mm; }
+    < ungated member >
+    if (mm.role() == 0)  { return mm; }
+    < private/protected require a local (2) or guarded (3) caller. >
     if (callerRole == 2 || callerRole == 3) { return mm; }
-    return null;                                         // network/exposed caller denied
+    < network/exposed caller denied >
+    return null;
   }
 
   int id()           { return classId; }

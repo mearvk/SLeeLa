@@ -95,11 +95,24 @@ variables `camelCase` (convention, not enforced).
 
 ### 1.4 Literals
 
-    int-lit    ::= digit+                         // 64-bit signed
-    double-lit ::= digit+ "." digit+
+    int-lit    ::= dec-lit | hex-lit | bin-lit | oct-lit   // 64-bit signed
+    dec-lit    ::= digit+
+    hex-lit    ::= ("0x" | "0X") hexdigit (hexdigit | "_")*
+    bin-lit    ::= ("0b" | "0B") bit (bit | "_")*
+    oct-lit    ::= ("0o" | "0O") octdigit (octdigit | "_")*
+    hexdigit   ::= digit | "a".."f" | "A".."F"
+    octdigit   ::= "0".."7"
+    bit        ::= "0" | "1"
+    double-lit ::= digit+ "." digit+ (("e" | "E") ("+" | "-")? digit+)?
     bool-lit   ::= "true" | "false"
     string-lit ::= '"' (char | escape)* '"'       // escapes: \n \t \r \\ \"
     null-lit   ::= "null"
+
+Radix-prefixed integer literals (hex `0x`, binary `0b`, octal `0o`) all denote
+the same 64-bit signed `int` type as a decimal literal; the prefix only selects
+the base. An underscore `_` may separate digits for readability (e.g.
+`0xFF_EC`, `0b1010_0001`) and is ignored. A prefix with no following digit
+(e.g. `0x`) is a lexical error.
 
 ### 1.5 Operators & punctuation
 

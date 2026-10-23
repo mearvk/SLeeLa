@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Defaults mirror http1_server.h; read deadlines are enforced in native transport. */
+< Defaults mirror http1_server.h; read deadlines are enforced in native transport. >
 class Http10Limits {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

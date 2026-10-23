@@ -58,16 +58,19 @@ class SLNativeMemory {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   int wordCount;
-  int width;        // bits per word
-  int handle;       // native host-allocation handle (0 until allocated)
-  int resident;     // 1 once backed by real host RAM
+  < bits per word >
+  int width;
+  < native host-allocation handle (0 until allocated) >
+  int handle;
+  < 1 once backed by real host RAM >
+  int resident;
 
   void configure(int words, int bits) {
     wordCount = words; width = bits; handle = 0; resident = 0;
   }
 
-  // Allocate a contiguous block of REAL host RAM (not the simulated store).
-  // Crosses the bridge once; thereafter accesses are direct.
+  < Allocate a contiguous block of REAL host RAM (not the simulated store). >
+  < Crosses the bridge once; thereafter accesses are direct. >
   int allocate() {
     handle = native sleela_native_ram_alloc(wordCount, width);
     resident = (handle != 0) ? 1 : 0;
@@ -77,7 +80,7 @@ class SLNativeMemory {
   boolean inRange(int addr) { return addr >= 0 && addr < wordCount; }
   boolean isResident()      { return resident == 1; }
 
-  // Direct host-memory access — no per-access accounting or simulation step.
+  < Direct host-memory access — no per-access accounting or simulation step. >
   int readWord(int addr) {
     if (!inRange(addr)) { return -1; }
     return native sleela_native_ram_read(handle, addr);
@@ -87,8 +90,8 @@ class SLNativeMemory {
     return native sleela_native_ram_write(handle, addr, value);
   }
 
-  // Direct block move within host RAM (used for procedural layout / DMA-style
-  // bulk placement without the simulated copy loop).
+  < Direct block move within host RAM (used for procedural layout / DMA-style >
+  < bulk placement without the simulated copy loop). >
   void blockMove(int dst, int src, int words) {
     native sleela_native_ram_move(handle, dst, src, words);
   }

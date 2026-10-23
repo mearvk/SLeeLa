@@ -73,17 +73,23 @@ class SLAccessSemantics {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // --- the three roles (one per access modifier) -------------------------
+  < --- the three roles (one per access modifier) ------------------------- >
   static final int ROLE_NONE      = 0;
-  static final int ROLE_EXPOSED   = 1;  // public    : REST-exposed hop / hop controller
-  static final int ROLE_LOCAL     = 2;  // private   : local system / admin / safety / backup
-  static final int ROLE_GUARDED   = 3;  // protected : integrity-checked connection
+  < public    : REST-exposed hop / hop controller >
+  static final int ROLE_EXPOSED   = 1;
+  < private   : local system / admin / safety / backup >
+  static final int ROLE_LOCAL     = 2;
+  < protected : integrity-checked connection >
+  static final int ROLE_GUARDED   = 3;
 
-  // Map the frontend modifier (mirrors impl/frontend/ast.h JavaModifier bits)
-  // to the role this interpretation assigns it.
-  static final int MOD_PUBLIC    = 1;   // JavaPublic    (1u<<0)
-  static final int MOD_PROTECTED = 2;   // JavaProtected (1u<<1)
-  static final int MOD_PRIVATE   = 4;   // JavaPrivate   (1u<<2)
+  < Map the frontend modifier (mirrors impl/frontend/ast.h JavaModifier bits) >
+  < to the role this interpretation assigns it. >
+  < JavaPublic    (1u<<0) >
+  static final int MOD_PUBLIC    = 1;
+  < JavaProtected (1u<<1) >
+  static final int MOD_PROTECTED = 2;
+  < JavaPrivate   (1u<<2) >
+  static final int MOD_PRIVATE   = 4;
 
   int roleOfModifier(int modifierBit) {
     if (modifierBit == MOD_PUBLIC)    { return ROLE_EXPOSED; }
@@ -99,36 +105,57 @@ class SLAccessSemantics {
     return "none";
   }
 
-  // --- PUBLIC role: network-exposed hop ----------------------------------
-  // The transport/exposure components a public member is stood up with.
-  static final int EXPOSE_REST_ENDPOINT   = 1;   // exposed like a REST API endpoint
-  static final int EXPOSE_HOP_CONTROLLER  = 2;   // acts as a hop controller for a System
-  static final int EXPOSE_ORDERED_CHAIN   = 3;   // participates in ordered doc1->doc2->doc3 flow
-  static final int EXPOSE_SERVICE_MEMBER  = 4;   // a member of a System's service set
-  static final int EXPOSE_HEALTH_PROBE    = 5;   // reachability/health advertised to the network
+  < --- PUBLIC role: network-exposed hop ---------------------------------- >
+  < The transport/exposure components a public member is stood up with. >
+  < exposed like a REST API endpoint >
+  static final int EXPOSE_REST_ENDPOINT   = 1;
+  < acts as a hop controller for a System >
+  static final int EXPOSE_HOP_CONTROLLER  = 2;
+  < participates in ordered doc1->doc2->doc3 flow >
+  static final int EXPOSE_ORDERED_CHAIN   = 3;
+  < a member of a System's service set >
+  static final int EXPOSE_SERVICE_MEMBER  = 4;
+  < reachability/health advertised to the network >
+  static final int EXPOSE_HEALTH_PROBE    = 5;
 
-  // --- PRIVATE role: local / admin / safety / security / backup ----------
-  static final int LOCAL_SYSTEM_INTERNAL  = 1;   // relates to the local System itself
-  static final int LOCAL_ADMIN            = 2;   // admin concern
-  static final int LOCAL_SAFETY           = 3;   // safety concern
-  static final int LOCAL_SECURITY         = 4;   // security concern
-  static final int LOCAL_DATA_BACKUP      = 5;   // data-backup concern
-  static final int LOCAL_AUDIT            = 6;   // local audit/log concern
-  static final int LOCAL_CONFIG           = 7;   // local configuration/secrets
+  < --- PRIVATE role: local / admin / safety / security / backup ---------- >
+  < relates to the local System itself >
+  static final int LOCAL_SYSTEM_INTERNAL  = 1;
+  < admin concern >
+  static final int LOCAL_ADMIN            = 2;
+  < safety concern >
+  static final int LOCAL_SAFETY           = 3;
+  < security concern >
+  static final int LOCAL_SECURITY         = 4;
+  < data-backup concern >
+  static final int LOCAL_DATA_BACKUP      = 5;
+  < local audit/log concern >
+  static final int LOCAL_AUDIT            = 6;
+  < local configuration/secrets >
+  static final int LOCAL_CONFIG           = 7;
 
-  // --- PROTECTED role: integrity controls --------------------------------
-  // The named checks a protected connection applies before proceeding.
-  static final int GUARD_DOUBLE_INPUT     = 1;   // double the input to confirm correctness
-  static final int GUARD_VIRUS_SCAN       = 2;   // run a virus scanner over the inputs
-  static final int GUARD_SYSTEM_INTEGRITY = 3;   // check System integrity before continuing
-  static final int GUARD_HEURISTICS       = 4;   // heuristic plausibility checks
-  static final int GUARD_ADMIN_INVOLVED   = 5;   // require admin involvement/approval
-  static final int GUARD_DB_INTEGRITY     = 6;   // database integrity checks
-  static final int GUARD_CHECKSUM         = 7;   // checksum/hash verification of payload
-  static final int GUARD_RATE_LIMIT       = 8;   // throttle to resist abuse
-  static final int GUARD_SCHEMA_VALIDATE  = 9;   // validate input against a declared schema
+  < --- PROTECTED role: integrity controls -------------------------------- >
+  < The named checks a protected connection applies before proceeding. >
+  < double the input to confirm correctness >
+  static final int GUARD_DOUBLE_INPUT     = 1;
+  < run a virus scanner over the inputs >
+  static final int GUARD_VIRUS_SCAN       = 2;
+  < check System integrity before continuing >
+  static final int GUARD_SYSTEM_INTEGRITY = 3;
+  < heuristic plausibility checks >
+  static final int GUARD_HEURISTICS       = 4;
+  < require admin involvement/approval >
+  static final int GUARD_ADMIN_INVOLVED   = 5;
+  < database integrity checks >
+  static final int GUARD_DB_INTEGRITY     = 6;
+  < checksum/hash verification of payload >
+  static final int GUARD_CHECKSUM         = 7;
+  < throttle to resist abuse >
+  static final int GUARD_RATE_LIMIT       = 8;
+  < validate input against a declared schema >
+  static final int GUARD_SCHEMA_VALIDATE  = 9;
 
-  // Human-readable names for the control ids (used in reports/backdrops).
+  < Human-readable names for the control ids (used in reports/backdrops). >
   String guardName(int guard) {
     if (guard == GUARD_DOUBLE_INPUT)     { return "double-input-verification"; }
     if (guard == GUARD_VIRUS_SCAN)       { return "virus-scan"; }
@@ -162,10 +189,13 @@ class SLAccessSemantics {
     return "none";
   }
 
-  // The DEFAULT backdrop each role implies, as a representative bundle of the
-  // ids above. A program may override per member via SLAccessManifest, but the
-  // VM can stand up a competent default from the role alone.
-  int defaultGuardsForGuarded()  { return GUARD_DOUBLE_INPUT; }        // at least input doubling
-  int defaultExposeForExposed()  { return EXPOSE_REST_ENDPOINT; }      // at least a REST endpoint
-  int defaultConcernForLocal()   { return LOCAL_SYSTEM_INTERNAL; }     // at least system-internal
+  < The DEFAULT backdrop each role implies, as a representative bundle of the >
+  < ids above. A program may override per member via SLAccessManifest, but the >
+  < VM can stand up a competent default from the role alone. >
+  < at least input doubling >
+  int defaultGuardsForGuarded()  { return GUARD_DOUBLE_INPUT; }
+  < at least a REST endpoint >
+  int defaultExposeForExposed()  { return EXPOSE_REST_ENDPOINT; }
+  < at least system-internal >
+  int defaultConcernForLocal()   { return LOCAL_SYSTEM_INTERNAL; }
 }

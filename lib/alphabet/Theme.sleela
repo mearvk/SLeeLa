@@ -63,13 +63,18 @@ class Theme {
 
   int loadedFlag;
   String themeName;
-  Palette palette;      // the colors this theme draws from
-  Color background;     // the canvas
-  Color foreground;     // the text
-  Color accent;         // the one color that gets to be loud
-  Alphabet script;      // the writing system this theme presents
+  < the colors this theme draws from >
+  Palette palette;
+  < the canvas >
+  Color background;
+  < the text >
+  Color foreground;
+  < the one color that gets to be loud >
+  Color accent;
+  < the writing system this theme presents >
+  Alphabet script;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() {
     loadedFlag = 1;
     themeName = "Unnamed";
@@ -86,8 +91,8 @@ class Theme {
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // A subclass calls this to build the theme: name it, dress it, done. Mirrors
-  // Alphabet.begin() / compose().
+  < A subclass calls this to build the theme: name it, dress it, done. Mirrors >
+  < Alphabet.begin() / compose(). >
   void begin(String name) {
     load();
     if (name != null) { themeName = name; }
@@ -95,16 +100,16 @@ class Theme {
     dress();
   }
 
-  // Overridable: a concrete theme fills palette + role colors here. The base
-  // leaves everything black-on-black, which is honestly unusable on purpose.
+  < Overridable: a concrete theme fills palette + role colors here. The base >
+  < leaves everything black-on-black, which is honestly unusable on purpose. >
   void dress() { }
 
-  // Helpers a subclass uses from dress() to set the three role colors.
+  < Helpers a subclass uses from dress() to set the three role colors. >
   void setBackground(int r, int g, int b) { background.set(r, g, b); }
   void setForeground(int r, int g, int b) { foreground.set(r, g, b); }
   void setAccent(int r, int g, int b)     { accent.set(r, g, b); }
 
-  // Attach the writing system this theme presents.
+  < Attach the writing system this theme presents. >
   void useAlphabet(Alphabet a) { script = a; }
 
   Color bg() { return background; }
@@ -114,12 +119,12 @@ class Theme {
   Alphabet alphabet() { return script; }
   String name() { return themeName; }
 
-  // A theme is "dark" when its canvas is dark. All users of Sleela will have
-  // opinions about this.
+  < A theme is "dark" when its canvas is dark. All users of Sleela will have >
+  < opinions about this. >
   boolean isDark() { return background.isDark(); }
 
-  // Readable means the text and the canvas disagree about darkness — a crude
-  // but effective contrast check.
+  < Readable means the text and the canvas disagree about darkness — a crude >
+  < but effective contrast check. >
   boolean readable() { return background.isDark() != foreground.isDark(); }
 
   int letterCount() { if (script == null) { return 0; } return script.size(); }

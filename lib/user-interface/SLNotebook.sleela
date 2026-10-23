@@ -59,16 +59,24 @@ class SLNotebook extends SLWidget {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_PAGES = 4096;
 
-  SLBox column;      // vertical: tab strip over the content area
-  SLBox strip;       // horizontal tab strip
-  SLBox stack;       // the content area (one page visible at a time)
+  < vertical: tab strip over the content area >
+  SLBox column;
+  < horizontal tab strip >
+  SLBox strip;
+  < the content area (one page visible at a time) >
+  SLBox stack;
 
-  SLButton[] tabs;   // one tab button per page
-  SLBox[] pages;     // one content container per page
-  String[] titles;   // base tab titles (without the dirty marker)
-  boolean[] dirty;   // per-page dirty flag (adds a '*' to the tab)
+  < one tab button per page >
+  SLButton[] tabs;
+  < one content container per page >
+  SLBox[] pages;
+  < base tab titles (without the dirty marker) >
+  String[] titles;
+  < per-page dirty flag (adds a '*' to the tab) >
+  boolean[] dirty;
   int count;
-  int active;        // active page index, -1 when empty
+  < active page index, -1 when empty >
+  int active;
 
   void createIn(SLWidget parent) {
     column = new SLBox();
@@ -91,8 +99,8 @@ class SLNotebook extends SLWidget {
     count = 0; active = -1;
   }
 
-  // Add a page with a tab title; returns the page index. The returned page's
-  // content() is the container child widgets attach to.
+  < Add a page with a tab title; returns the page index. The returned page's >
+  < content() is the container child widgets attach to. >
   int addPage(String title) {
     if (count >= MAX_PAGES) { return -1; }
     SLButton tab = new SLButton();
@@ -109,17 +117,18 @@ class SLNotebook extends SLWidget {
 
     int idx = count;
     count = count + 1;
-    select(idx);          // newly added page becomes active
+    < newly added page becomes active >
+    select(idx);
     return idx;
   }
 
-  // The content container for page `index` (attach children with createIn).
+  < The content container for page `index` (attach children with createIn). >
   SLWidget pageContent(int index) {
     if (index < 0 || index >= count) { return null; }
     return pages[index];
   }
 
-  // Show page `index`, hide the rest, accent its tab.
+  < Show page `index`, hide the rest, accent its tab. >
   void select(int index) {
     if (index < 0 || index >= count) { return; }
     active = index;
@@ -131,8 +140,8 @@ class SLNotebook extends SLWidget {
 
   int activeIndex() { return active; }
 
-  // Poll the tab strip: if a tab was clicked since the last check, make it
-  // active and return its index; otherwise return -1.
+  < Poll the tab strip: if a tab was clicked since the last check, make it >
+  < active and return its index; otherwise return -1. >
   int takeClickedTab() {
     for (int i = 0; i < count; i = i + 1) {
       if (tabs[i].clicked()) { select(i); return i; }
@@ -140,7 +149,7 @@ class SLNotebook extends SLWidget {
     return -1;
   }
 
-  // Mark a page dirty/clean; refreshes its tab label with a '*' suffix.
+  < Mark a page dirty/clean; refreshes its tab label with a '*' suffix. >
   void setDirty(int index, boolean isDirty) {
     if (index < 0 || index >= count) { return; }
     dirty[index] = isDirty;
@@ -150,7 +159,7 @@ class SLNotebook extends SLWidget {
     return index >= 0 && index < count && dirty[index];
   }
 
-  // Rename a tab (keeps the current dirty marker).
+  < Rename a tab (keeps the current dirty marker). >
   void setTitle(int index, String title) {
     if (index < 0 || index >= count) { return; }
     titles[index] = title;

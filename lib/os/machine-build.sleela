@@ -78,15 +78,15 @@ class MachineBuilder {
         return p;
     }
 
-    // DDR module: sizeUnits = capacity in MB. spec = generation name.
+    < DDR module: sizeUnits = capacity in MB. spec = generation name. >
     Part ddr(String vendor, String gen, int capacityMb) {
         return part("memory", vendor, vendor + " " + gen, gen, capacityMb);
     }
-    // SSD: sizeUnits = capacity in GB. spec = interface name.
+    < SSD: sizeUnits = capacity in GB. spec = interface name. >
     Part ssd(String vendor, String model, String iface, int capacityGb) {
         return part("ssd", vendor, model, iface, capacityGb);
     }
-    // HDD: sizeUnits = capacity in GB. spec = "RPM/iface".
+    < HDD: sizeUnits = capacity in GB. spec = "RPM/iface". >
     Part hdd(String vendor, String model, int capacityGb) {
         return part("hdd", vendor, model, "7200rpm SATA", capacityGb);
     }
@@ -108,18 +108,18 @@ class MachineBuilder {
         return m;
     }
 
-    // Total installed memory (MB) across modules.
+    < Total installed memory (MB) across modules. >
     int totalMemMb(Machine m) {
         if (m.memory.sizeUnits == 0) { return 0; }
         return m.memory.sizeUnits * m.memModules;
     }
 
-    // VM memory words from installed MB at the machine's word width.
+    < VM memory words from installed MB at the machine's word width. >
     int memoryWords(Machine m) {
         int bytes = totalMemMb(m) * 1048576;
         return bytes / (m.bits / 8);
     }
-    // VM block count from the boot device's GB capacity at 4096-byte blocks.
+    < VM block count from the boot device's GB capacity at 4096-byte blocks. >
     int bootBlocks(Machine m) {
         int bytes = m.storage.sizeUnits * 1073741824;
         return bytes / 4096;
@@ -136,15 +136,18 @@ class MachineBuilder {
     }
 
     void main() {
-        // 1. Describe a machine by requesting named parts.
+        < 1. Describe a machine by requesting named parts. >
         Machine m = machine("Determinant Workstation");
-        m.memory   = ddr("Samsung", "DDR5", 16384);              // 16 GB per module
-        m.storage  = ssd("Samsung", "990 PRO", "NVMe PCIe 5.0", 2048); // 2 TB NVMe
+        < 16 GB per module >
+        m.memory   = ddr("Samsung", "DDR5", 16384);
+        < 2 TB NVMe >
+        m.storage  = ssd("Samsung", "990 PRO", "NVMe PCIe 5.0", 2048);
         m.firmware = uefi("AMI", "Aptio V");
         m.usb      = usbController("Intel", "USB4", 4);
-        m.video    = gpu("NVIDIA", "GeForce RTX 4090", 24576);   // 24 GB
+        < 24 GB >
+        m.video    = gpu("NVIDIA", "GeForce RTX 4090", 24576);
 
-        // 2. Print the build sheet.
+        < 2. Print the build sheet. >
         banner("Machine build sheet: " + m.name);
         print("  CPU: " + m.cpuVendor + " " + m.cpuModel
               + "  x" + intToStr(m.cores) + "  " + intToStr(m.bits) + "-bit  "
@@ -157,7 +160,7 @@ class MachineBuilder {
         printPart(m, "USB ", m.usb);
         printPart(m, "GPU ", m.video);
 
-        // 3. Size the Sleela VM from the real part capacities.
+        < 3. Size the Sleela VM from the real part capacities. >
         banner("Sized for the Sleela VM");
         print("  main memory : " + intToStr(memoryWords(m)) + " words");
         print("  boot store  : " + intToStr(bootBlocks(m)) + " blocks of 4096 bytes");

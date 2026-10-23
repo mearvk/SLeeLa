@@ -53,8 +53,10 @@ class SLFlipFlop {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLLatch master;
   SLLatch slave;
-  int d;        // sampled data input
-  int lastClk;  // previous clock level, for edge detection
+  < sampled data input >
+  int d;
+  < previous clock level, for edge detection >
+  int lastClk;
 
   void build() {
     master = new SLLatch(); master.reset();
@@ -64,8 +66,8 @@ class SLFlipFlop {
 
   void setD(int bit) { d = bit; }
 
-  // Drive the clock. On the rising edge (0 -> 1), the sampled D propagates
-  // through master then slave to the output.
+  < Drive the clock. On the rising edge (0 -> 1), the sampled D propagates >
+  < through master then slave to the output. >
   int clock(int clk) {
     if (lastClk == 0 && clk == 1) {
       master.enable(); master.write(d); master.disable();

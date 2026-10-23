@@ -56,7 +56,8 @@ class SLLightScene {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int scene;   // VM-local scene handle (-1 = none)
+  < VM-local scene handle (-1 = none) >
+  int scene;
 
   void create() { scene = lightSceneCreate(); }
   int handle() { return scene; }
@@ -65,7 +66,7 @@ class SLLightScene {
   void clear() { if (scene >= 0) { lightSceneClear(scene); } }
   int count() { if (scene < 0) { return 0; } return lightSceneCount(scene); }
 
-  // Add an EMITTER (reserves nothing). Returns its index (>=0), reusable.
+  < Add an EMITTER (reserves nothing). Returns its index (>=0), reusable. >
   int addEmitter(SLLight l) {
     if (scene < 0) { return -1; }
     return lightSceneAddEmitter(scene, l.kind, l.polarity, l.x, l.y, l.z,
@@ -73,9 +74,9 @@ class SLLightScene {
                                 l.color);
   }
 
-  // Add a SOURCE bound to `anchor` (reserves it; the object is USED as a
-  // source). Returns the light index (>=0), or a negative error if `anchor` is
-  // already reserved by another source in this scene.
+  < Add a SOURCE bound to `anchor` (reserves it; the object is USED as a >
+  < source). Returns the light index (>=0), or a negative error if `anchor` is >
+  < already reserved by another source in this scene. >
   int addSource(int anchor, SLLight l) {
     if (scene < 0) { return -1; }
     return lightSceneAddSource(scene, anchor, l.kind, l.polarity, l.x, l.y, l.z,
@@ -83,17 +84,17 @@ class SLLightScene {
                                l.color);
   }
 
-  // True if `anchor` is currently reserved as a source in this scene.
+  < True if `anchor` is currently reserved as a source in this scene. >
   boolean anchorReserved(int anchor) {
     if (scene < 0) { return false; }
     return lightSceneAnchorReserved(scene, anchor) == 1;
   }
-  // Release a source's reservation so the anchor can be a source again.
+  < Release a source's reservation so the anchor can be a source again. >
   void releaseSource(int anchor) {
     if (scene >= 0) { lightSceneReleaseSource(scene, anchor); }
   }
 
-  // The base ambient illumination applied before any light.
+  < The base ambient illumination applied before any light. >
   void setAmbient(double intensity, int color) {
     if (scene >= 0) { lightSceneSetAmbient(scene, intensity, color); }
   }

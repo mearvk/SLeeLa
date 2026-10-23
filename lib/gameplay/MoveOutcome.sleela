@@ -58,16 +58,24 @@ class MoveOutcome {
   static final String MODULE = "MoveOutcome";
 
   int loadedFlag;
-  String moveName;     // which move produced this
-  String headline;     // one-line summary of what happened
-  boolean success;     // did the move land?
-  int xpGain;          // experience granted
-  int cashGain;        // cash granted (net; may be 0)
-  int fileGain;        // courtroom file granted
-  int tactGain;        // courtroom tact granted
-  int rollsGain;       // courtroom rolls granted
+  < which move produced this >
+  String moveName;
+  < one-line summary of what happened >
+  String headline;
+  < did the move land? >
+  boolean success;
+  < experience granted >
+  int xpGain;
+  < cash granted (net; may be 0) >
+  int cashGain;
+  < courtroom file granted >
+  int fileGain;
+  < courtroom tact granted >
+  int tactGain;
+  < courtroom rolls granted >
+  int rollsGain;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() {
     loadedFlag = 1;
     moveName = "";
@@ -88,7 +96,7 @@ class MoveOutcome {
   void addTact(int n)  { if (n > 0) { tactGain = tactGain + n; } }
   void addRolls(int n) { if (n > 0) { rollsGain = rollsGain + n; } }
 
-  // Apply everything this outcome granted to a Player, in one shot.
+  < Apply everything this outcome granted to a Player, in one shot. >
   void applyTo(Player p) {
     if (p == null) { return; }
     p.gainExperience(xpGain);

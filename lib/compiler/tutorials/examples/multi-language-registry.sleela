@@ -52,8 +52,8 @@ class MultiLanguageRegistryExample {
     SLCompilerRegistry registry = new SLCompilerRegistry();
     registry.reset();
 
-    // Register front ends for several publicly known languages. A developer can
-    // register as many implementations as they like.
+    < Register front ends for several publicly known languages. A developer can >
+    < register as many implementations as they like. >
     CLanguageCompiler c = new CLanguageCompiler();            c.configure();
     CppLanguageCompiler cpp = new CppLanguageCompiler();      cpp.configure();
     JavaLanguageCompiler java = new JavaLanguageCompiler();   java.configure();
@@ -64,15 +64,17 @@ class MultiLanguageRegistryExample {
     registry.add(java);
     registry.add(py);
 
-    // Resolve an input file to its front end by extension (unresolved => "").
-    text language = registry.resolveByExtension("widget.cpp"); // -> "C++"
+    < Resolve an input file to its front end by extension (unresolved => ""). >
+    < -> "C++" >
+    text language = registry.resolveByExtension("widget.cpp");
 
-    // Plan a compile of a C source toward the SLeeLa VM artifact.
+    < Plan a compile of a C source toward the SLeeLa VM artifact. >
     SLCompileRequest request = new SLCompileRequest();
     request.configure("C", "util.c", SLLanguageCompiler.TARGET_SLVM);
 
     SLCompilePlan plan = c.planCompile(request);
-    boolean ready = plan.isVMReady(); // true: C provides every required phase
+    < true: C provides every required phase >
+    boolean ready = plan.isVMReady();
 
     return ready;
   }

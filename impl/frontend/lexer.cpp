@@ -76,7 +76,34 @@ void Lexer::skipTrivia(){
         else break;
     }
 }
-Token Lexer::makeNumber(){int L=line_,C=col_;std::string s;bool d=false;while(std::isdigit((unsigned char)peek()))s+=advance();if(peek()=='.'&&std::isdigit((unsigned char)peek(1))){d=true;s+=advance();while(std::isdigit((unsigned char)peek()))s+=advance();}if(peek()=='e'||peek()=='E'){s+=advance();if(peek()=='+'||peek()=='-')s+=advance();while(std::isdigit((unsigned char)peek()))s+=advance();}return Token{d||peek()=='e'||peek()=='E'?Tok::Double:Tok::Int,s,L,C};}
+Token Lexer::makeNumber(){
+    int L=line_,C=col_;std::string s;
+    // Radix-prefixed integer literals: 0x/0X hex, 0b/0B binary, 0o/0O octal.
+    // The prefix is kept in the token text; the parser decodes the value.
+    if(peek()=='0'){
+        char p1=peek(1);
+        auto isHex=[](char c){return (c>='0'&&c<='9')||(c>='a'&&c<='f')||(c>='A'&&c<='F');};
+        if(p1=='x'||p1=='X'){
+            s+=advance();s+=advance();                 // consume "0x"
+            if(!isHex(peek()))error("hexadecimal literal has no digits after '0x'");
+            while(isHex(peek())||peek()=='_'){char c=advance();if(c!='_')s+=c;}
+            return Token{Tok::Int,s,L,C};
+        }
+        if(p1=='b'||p1=='B'){
+            s+=advance();s+=advance();                 // consume "0b"
+            if(peek()!='0'&&peek()!='1')error("binary literal has no digits after '0b'");
+            while(peek()=='0'||peek()=='1'||peek()=='_'){char c=advance();if(c!='_')s+=c;}
+            return Token{Tok::Int,s,L,C};
+        }
+        if(p1=='o'||p1=='O'){
+            advance();advance();                       // consume "0o" (not kept)
+            s+='0';                                     // keep a leading 0 so stoll base 0 reads octal
+            if(peek()<'0'||peek()>'7')error("octal literal has no digits after '0o'");
+            while((peek()>='0'&&peek()<='7')||peek()=='_'){char c=advance();if(c!='_')s+=c;}
+            return Token{Tok::Int,s,L,C};
+        }
+    }
+    bool d=false;while(std::isdigit((unsigned char)peek()))s+=advance();if(peek()=='.'&&std::isdigit((unsigned char)peek(1))){d=true;s+=advance();while(std::isdigit((unsigned char)peek()))s+=advance();}if(peek()=='e'||peek()=='E'){s+=advance();if(peek()=='+'||peek()=='-')s+=advance();while(std::isdigit((unsigned char)peek()))s+=advance();}return Token{d||peek()=='e'||peek()=='E'?Tok::Double:Tok::Int,s,L,C};}
 Token Lexer::makeString(){int L=line_,C=col_;advance();std::string out;while(!atEnd()&&peek()!='"'){char c=advance();if(c=='\\'){if(atEnd())error("unterminated escape sequence");char e=advance();switch(e){case'n':out+='\n';break;case't':out+='\t';break;r:out+='\r';break;case'b':out+='\b';break;case'f':out+='\f';break;case'0':out+='\0';break;case'\\':out+='\\';break;case'"':out+='"';break;case'u':{uint32_t cp=0;for(int i=0;i<4;i++){if(atEnd())error("unterminated unicode escape");char hex=advance();int v=0;if(hex>='0'&&hex<='9')v=hex-'0';else if(hex>='a'&&hex<='f')v=10+(hex-'a');else if(hex>='A'&&hex<='F')v=10+(hex-'A');else error("invalid unicode escape");cp=(cp<<4)|v;}out+=utf8FromCodePoint(cp);break;}default:out+=e;break;}}else out+=c;}if(atEnd())error("unterminated string literal");advance();return Token{Tok::Str,out,L,C};}
 static const std::unordered_map<std::string,int> kContextualBuiltins13={
     {"Munction",1},{"start",1},{"connect",1},{"enable",1},{"send",1},{"thatch",1},{"consume",1},{"latch",1},{"closeWithReceipt",1},{"reception",1},

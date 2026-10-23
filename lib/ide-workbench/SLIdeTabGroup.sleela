@@ -51,12 +51,15 @@ class SLIdeTabGroup {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int MAX_OPEN = 4096;     // generous open-file ceiling
-  static final int SLGUI_MAX_DOCUMENTS = 14; // mirrors lib/gui's hard watch bound
+  < generous open-file ceiling >
+  static final int MAX_OPEN = 4096;
+  < mirrors lib/gui's hard watch bound >
+  static final int SLGUI_MAX_DOCUMENTS = 14;
 
   SLIdeEditor[] editors;
   int count;
-  int active;                  // index of the active editor, -1 when none
+  < index of the active editor, -1 when none >
+  int active;
 
   void init() {
     editors = new SLIdeEditor[MAX_OPEN];
@@ -66,7 +69,7 @@ class SLIdeTabGroup {
   int size() { return count; }
   boolean empty() { return count == 0; }
 
-  // Find an already-open editor for a document id (-1 when not open).
+  < Find an already-open editor for a document id (-1 when not open). >
   int indexOf(String documentId) {
     for (int i = 0; i < count; i = i + 1) {
       if (editors[i].getId() == documentId) { return i; }
@@ -74,7 +77,7 @@ class SLIdeTabGroup {
     return -1;
   }
 
-  // Open (or focus, if already open) an editor; returns its index or -1 if full.
+  < Open (or focus, if already open) an editor; returns its index or -1 if full. >
   int open(SLIdeEditor editor) {
     int existing = indexOf(editor.getId());
     if (existing >= 0) { active = existing; return existing; }
@@ -90,14 +93,14 @@ class SLIdeTabGroup {
     return editors[active];
   }
 
-  // Focus an open tab by index; makes it the active (and most-recent) editor.
+  < Focus an open tab by index; makes it the active (and most-recent) editor. >
   boolean focus(int index) {
     if (index < 0 || index >= count) { return false; }
     active = index;
     return true;
   }
 
-  // Close a tab; shifts the array down and keeps a valid active index.
+  < Close a tab; shifts the array down and keeps a valid active index. >
   boolean close(int index) {
     if (index < 0 || index >= count) { return false; }
     for (int i = index; i < count - 1; i = i + 1) {
@@ -110,7 +113,7 @@ class SLIdeTabGroup {
     return true;
   }
 
-  // How many editors have unsaved changes.
+  < How many editors have unsaved changes. >
   int dirtyCount() {
     int n = 0;
     for (int i = 0; i < count; i = i + 1) {
@@ -120,16 +123,16 @@ class SLIdeTabGroup {
   }
   boolean anyDirty() { return dirtyCount() > 0; }
 
-  // The number of editors the OS watch should register this moment: the active
-  // one plus as many others as fit under the 1..14 lib/gui contract. Never 0
-  // when at least one editor is open (so the watch has a valid 1..14 count).
+  < The number of editors the OS watch should register this moment: the active >
+  < one plus as many others as fit under the 1..14 lib/gui contract. Never 0 >
+  < when at least one editor is open (so the watch has a valid 1..14 count). >
   int watchSetSize() {
     if (count == 0) { return 0; }
     if (count > SLGUI_MAX_DOCUMENTS) { return SLGUI_MAX_DOCUMENTS; }
     return count;
   }
 
-  // True when the OS-watch registration must respect the 1..14 bound.
+  < True when the OS-watch registration must respect the 1..14 bound. >
   boolean watchSetWithinGuiBound() {
     int w = watchSetSize();
     return w >= 1 && w <= SLGUI_MAX_DOCUMENTS;

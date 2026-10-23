@@ -60,7 +60,8 @@ class SLVmReport {
   static final int SEV_WARN   = 2;
   static final int SEV_ERROR  = 3;
 
-  int verbosity;   // mirrors the active SLVmConfig verbosity
+  < mirrors the active SLVmConfig verbosity >
+  int verbosity;
 
   void bind(SLVmConfig cfg) { if (cfg != null) { verbosity = cfg.verbosity; } }
 
@@ -72,15 +73,19 @@ class SLVmReport {
     return "INFO";
   }
 
-  // Lowest severity shown at the current verbosity (mirror min_shown()).
+  < Lowest severity shown at the current verbosity (mirror min_shown()). >
   int minShown() {
-    if (verbosity == 0) { return SEV_ERROR; }   // quiet   -> errors only
-    if (verbosity == 1) { return SEV_WARN; }    // normal  -> warn+error
-    if (verbosity == 2) { return SEV_NOTICE; }  // verbose -> notice..error
-    return SEV_DEBUG;                           // debug   -> everything
+    < quiet   -> errors only >
+    if (verbosity == 0) { return SEV_ERROR; }
+    < normal  -> warn+error >
+    if (verbosity == 1) { return SEV_WARN; }
+    < verbose -> notice..error >
+    if (verbosity == 2) { return SEV_NOTICE; }
+    < debug   -> everything >
+    return SEV_DEBUG;
   }
 
-  // Emit one diagnostic if the severity is permitted. Returns 1 if printed.
+  < Emit one diagnostic if the severity is permitted. Returns 1 if printed. >
   int emit(int sev, String subsystem, String code, String message) {
     if (sev < minShown()) { return 0; }
     String sub = subsystem;

@@ -55,13 +55,20 @@ class SLRegistryProvenance {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String name;      // tracked file name
-  String date;      // ISO-8601 recorded date/time
-  String author;    // authoring party
-  String version;   // artifact version
-  String hexId;     // 16 hex chars, stable identity
-  String hash;      // SHA-256 of the file content (64 hex)
-  String seal;      // originality seal (64 hex)
+  < tracked file name >
+  String name;
+  < ISO-8601 recorded date/time >
+  String date;
+  < authoring party >
+  String author;
+  < artifact version >
+  String version;
+  < 16 hex chars, stable identity >
+  String hexId;
+  < SHA-256 of the file content (64 hex) >
+  String hash;
+  < originality seal (64 hex) >
+  String seal;
 
   void configure(String fileName, String recordedDate, String by,
                  String ver, String id, String contentHash) {
@@ -69,18 +76,18 @@ class SLRegistryProvenance {
     version = ver; hexId = id; hash = contentHash; seal = "";
   }
 
-  // The seal input: the four identity-and-content fields, order fixed.
+  < The seal input: the four identity-and-content fields, order fixed. >
   String sealInput() { return hexId + "|" + version + "|" + hash + "|" + author; }
 
-  // The host computes SHA-256 of sealInput() and sets it here (native bridge).
+  < The host computes SHA-256 of sealInput() and sets it here (native bridge). >
   void setSeal(String computed) { seal = computed; }
   boolean isSealed() {
     if (seal == null) { return false; }
     return seal != "";
   }
 
-  // Verify requires the host to recompute SHA-256(sealInput()) and compare.
-  // expected = that recomputation; returns true if it matches the stored seal.
+  < Verify requires the host to recompute SHA-256(sealInput()) and compare. >
+  < expected = that recomputation; returns true if it matches the stored seal. >
   boolean verify(String expected) { return isSealed() && seal == expected; }
 
   String render() {

@@ -57,12 +57,13 @@ class SLPackage {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Version identity: this is the thual line — the 3.0 GUI package. mual is the
-  // 1.0 baseline, gual the 2.0 settings-first line; thual (3.0) adds the clean,
-  // professional visual-effects surface (lighting/glow/3D shine, rotation +
-  // scheduled "schene" rotation, fade in/out, activation audio, shadow, metal
-  // look-and-feel, logo branding). featureLevel() lets callers branch.
-  static final int FEATURE_LEVEL = 3;   // 3 = thual/3.0 ; 2 = gual/2.0 ; 1 = mual/1.0
+  < Version identity: this is the thual line — the 3.0 GUI package. mual is the >
+  < 1.0 baseline, gual the 2.0 settings-first line; thual (3.0) adds the clean, >
+  < professional visual-effects surface (lighting/glow/3D shine, rotation + >
+  < scheduled "schene" rotation, fade in/out, activation audio, shadow, metal >
+  < look-and-feel, logo branding). featureLevel() lets callers branch. >
+  < 3 = thual/3.0 ; 2 = gual/2.0 ; 1 = mual/1.0 >
+  static final int FEATURE_LEVEL = 3;
   String packageName;
   String packageVersion;
   void configure(String name) { packageName = name; packageVersion = "3.0"; }

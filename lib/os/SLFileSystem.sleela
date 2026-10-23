@@ -58,19 +58,19 @@ class SLFileSystem {
   boolean isDir(String path)  { ops = ops + 1; return osIsDir(path) == 1; }
   boolean isFile(String path) { ops = ops + 1; return osExists(path) == 1 && osIsDir(path) == 0; }
 
-  // Size in bytes, or -1 if the path does not exist / is not a regular file.
+  < Size in bytes, or -1 if the path does not exist / is not a regular file. >
   int size(String path) { ops = ops + 1; return osFileSize(path); }
 
-  // Create a directory (succeeds if it already exists). Returns true on success.
+  < Create a directory (succeeds if it already exists). Returns true on success. >
   boolean makeDir(String path) { ops = ops + 1; return osMkdir(path) == 0; }
 
-  // Remove a file or an empty directory. Returns true on success.
+  < Remove a file or an empty directory. Returns true on success. >
   boolean remove(String path) { ops = ops + 1; return osRemove(path) == 0; }
 
-  // Rename/move a path. Returns true on success.
+  < Rename/move a path. Returns true on success. >
   boolean rename(String from, String to) { ops = ops + 1; return osRename(from, to) == 0; }
 
-  // Move is rename across directories (same host primitive).
+  < Move is rename across directories (same host primitive). >
   boolean move(String from, String to) { return rename(from, to); }
 
   int operationCount() { return ops; }

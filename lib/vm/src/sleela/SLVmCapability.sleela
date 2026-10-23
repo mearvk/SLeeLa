@@ -61,12 +61,13 @@ class SLVmCapability {
   int denialCount() { return denials; }
 
   boolean allowed(int cap) {
-    if (config == null) { return true; }   // unconfigured -> permissive
+    < unconfigured -> permissive >
+    if (config == null) { return true; }
     return config.has(cap);
   }
 
-  // Guard a bridge op. Returns true to proceed; on denial fills `out` with a
-  // DENIED result, reports+counts it, returns false.
+  < Guard a bridge op. Returns true to proceed; on denial fills `out` with a >
+  < DENIED result, reports+counts it, returns false. >
   boolean check(int cap, String subsystem, String operation,
                 SLVmResult out, SLVmReport rep, SLVmTelemetry tel) {
     if (allowed(cap)) { return true; }

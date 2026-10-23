@@ -52,7 +52,8 @@ class SLVmStatus {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String versionString;   // e.g. "idea-vm v001 (ground floor)"
+  < e.g. "idea-vm v001 (ground floor)" >
+  String versionString;
   SLVmConfig config;
 
   void bind(String version, SLVmConfig cfg) { versionString = version; config = cfg; }

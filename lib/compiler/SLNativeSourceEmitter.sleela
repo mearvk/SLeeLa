@@ -67,7 +67,7 @@ class SLNativeSourceEmitter {
     return true;
   }
 
-  // The native bridge consumes verified compiler IR, not unchecked source text.
+  < The native bridge consumes verified compiler IR, not unchecked source text. >
   boolean emitVerifiedIR(String irPath, String outputPath) {
     if (!validateTarget()) return false;
     if (irPath == null || irPath == "" || outputPath == null || outputPath == "") {

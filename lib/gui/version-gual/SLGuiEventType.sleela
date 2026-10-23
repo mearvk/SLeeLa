@@ -52,26 +52,42 @@ class SLGuiEventType {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Ordinals (stable; used as table indices).
-  static final int CLICK      = 0;   // a primary activation (click / Enter / Space)
-  static final int DBLCLICK   = 1;   // a double activation
-  static final int INPUT      = 2;   // live text input (per keystroke)
-  static final int CHANGE     = 3;   // a committed value change (blur/Enter)
-  static final int FOCUS      = 4;   // the target gained focus
-  static final int BLUR       = 5;   // the target lost focus
-  static final int KEYDOWN    = 6;   // a key went down while focused
-  static final int KEYUP      = 7;   // a key came up while focused
-  static final int POINTERDOWN= 8;   // a pointer press began on the target
-  static final int POINTERUP  = 9;   // a pointer press ended on the target
-  static final int POINTERMOVE=10;   // the pointer moved over the target
-  static final int SCROLL     =11;   // the target scrolled
-  static final int SUBMIT     =12;   // a form-like submit (Enter in an entry)
-  static final int TOGGLE     =13;   // a toggle/checkbox flipped
-  static final int CUSTOM     =14;   // a host- or script-defined event
+  < Ordinals (stable; used as table indices). >
+  < a primary activation (click / Enter / Space) >
+  static final int CLICK      = 0;
+  < a double activation >
+  static final int DBLCLICK   = 1;
+  < live text input (per keystroke) >
+  static final int INPUT      = 2;
+  < a committed value change (blur/Enter) >
+  static final int CHANGE     = 3;
+  < the target gained focus >
+  static final int FOCUS      = 4;
+  < the target lost focus >
+  static final int BLUR       = 5;
+  < a key went down while focused >
+  static final int KEYDOWN    = 6;
+  < a key came up while focused >
+  static final int KEYUP      = 7;
+  < a pointer press began on the target >
+  static final int POINTERDOWN= 8;
+  < a pointer press ended on the target >
+  static final int POINTERUP  = 9;
+  < the pointer moved over the target >
+  static final int POINTERMOVE=10;
+  < the target scrolled >
+  static final int SCROLL     =11;
+  < a form-like submit (Enter in an entry) >
+  static final int SUBMIT     =12;
+  < a toggle/checkbox flipped >
+  static final int TOGGLE     =13;
+  < a host- or script-defined event >
+  static final int CUSTOM     =14;
 
-  static final int COUNT      =15;   // number of defined event kinds
+  < number of defined event kinds >
+  static final int COUNT      =15;
 
-  // The canonical lowercase name for an ordinal (the addEventListener string).
+  < The canonical lowercase name for an ordinal (the addEventListener string). >
   String nameOf(int type) {
     if (type == CLICK)       { return "click"; }
     if (type == DBLCLICK)    { return "dblclick"; }
@@ -91,7 +107,7 @@ class SLGuiEventType {
     return "unknown";
   }
 
-  // The ordinal for a canonical name (-1 when the name is not recognised).
+  < The ordinal for a canonical name (-1 when the name is not recognised). >
   int typeOf(String name) {
     for (int t = 0; t < COUNT; t = t + 1) {
       if (nameOf(t) == name) { return t; }

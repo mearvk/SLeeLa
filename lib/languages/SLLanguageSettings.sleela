@@ -52,13 +52,18 @@ class SLLanguageSettings {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String active;        // active locale code (default "en")
-  String fallback;      // fallback locale when a key/pack is missing
-  boolean respectDirection;  // honor #!direction (ltr/rtl) for layout
-  boolean enablePlaceholders; // fill {0},{1},... in messages
-  String missingKey;    // "key" (echo the key) or "empty" (empty string)
+  < active locale code (default "en") >
+  String active;
+  < fallback locale when a key/pack is missing >
+  String fallback;
+  < honor #!direction (ltr/rtl) for layout >
+  boolean respectDirection;
+  < fill {0},{1},... in messages >
+  boolean enablePlaceholders;
+  < "key" (echo the key) or "empty" (empty string) >
+  String missingKey;
 
-  // Defaults matching languages/settings.conf.
+  < Defaults matching languages/settings.conf. >
   void defaults() {
     active = "en";
     fallback = "en";
@@ -71,8 +76,8 @@ class SLLanguageSettings {
   String activeLocale() { if (active == "") { return "en"; } return active; }
   String fallbackLocale() { if (fallback == "") { return "en"; } return fallback; }
 
-  // Resolve the locale to actually use: the explicit override wins (e.g. the
-  // SLEELA_LANG environment value a launcher supplies), else the active locale.
+  < Resolve the locale to actually use: the explicit override wins (e.g. the >
+  < SLEELA_LANG environment value a launcher supplies), else the active locale. >
   String resolve(String override) {
     if (override != "") { return override; }
     return activeLocale();

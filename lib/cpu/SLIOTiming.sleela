@@ -58,18 +58,28 @@ class SLIOTiming {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String name;         // nameful link: "console-port", "disk-link", ...
-  int minMHz;          // lowest link clock the operator may dial
-  int maxMHz;          // highest validated link clock
-  int currentMHz;      // the variable link clock presently selected
-  int syncStages;      // flip-flops in the clock-domain-crossing synchronizer
+  < nameful link: "console-port", "disk-link", ... >
+  String name;
+  < lowest link clock the operator may dial >
+  int minMHz;
+  < highest validated link clock >
+  int maxMHz;
+  < the variable link clock presently selected >
+  int currentMHz;
+  < flip-flops in the clock-domain-crossing synchronizer >
+  int syncStages;
 
-  SLVoltageRail vio;   // the I/O ring supply rail
-  int mvPerMHz;        // settled Vio each extra MHz of ceiling needs
+  < the I/O ring supply rail >
+  SLVoltageRail vio;
+  < settled Vio each extra MHz of ceiling needs >
+  int mvPerMHz;
 
-  SLTiming handshake;  // req -> ack named budget
-  SLTiming turnaround; // bus direction reversal named budget
-  SLTiming recovery;   // inter-transaction recovery gap named budget
+  < req -> ack named budget >
+  SLTiming handshake;
+  < bus direction reversal named budget >
+  SLTiming turnaround;
+  < inter-transaction recovery gap named budget >
+  SLTiming recovery;
 
   void configure(String linkName, int floorMHz, int ceilingMHz, int synchronizerStages) {
     name = linkName; minMHz = floorMHz; maxMHz = ceilingMHz; currentMHz = floorMHz;
@@ -88,14 +98,14 @@ class SLIOTiming {
 
   int periodPsAt(int mhz) { if (mhz <= 0) { return 0; } return 1000000 / mhz; }
 
-  // State the measured path (propagation + setup, with hold) of each phase.
+  < State the measured path (propagation + setup, with hold) of each phase. >
   void setHandshake(int propPs, int setupPs, int holdPs) { handshake.setPropagation(propPs); handshake.setSetup(setupPs); handshake.setHold(holdPs); }
   void setTurnaround(int propPs, int setupPs, int holdPs) { turnaround.setPropagation(propPs); turnaround.setSetup(setupPs); turnaround.setHold(holdPs); }
   void setRecovery(int propPs, int setupPs, int holdPs) { recovery.setPropagation(propPs); recovery.setSetup(setupPs); recovery.setHold(holdPs); }
 
   void setJitter(int jitterPs) { handshake.setJitter(jitterPs); turnaround.setJitter(jitterPs); recovery.setJitter(jitterPs); }
 
-  // Dial the variable link clock, clamped into [min,max] and the voltage ceiling.
+  < Dial the variable link clock, clamped into [min,max] and the voltage ceiling. >
   int setClock(int mhz) {
     int target = mhz;
     if (target < minMHz) { target = minMHz; }
@@ -117,12 +127,12 @@ class SLIOTiming {
     handshake.setPeriod(p); turnaround.setPeriod(p); recovery.setPeriod(p);
   }
 
-  // Latency (ps) to cross the device clock domain into the CPU domain: each
-  // synchronizer stage costs up to one link period. I/O control is not instant.
+  < Latency (ps) to cross the device clock domain into the CPU domain: each >
+  < synchronizer stage costs up to one link period. I/O control is not instant. >
   int synchronizerLatencyPs() { return syncStages * periodPsAt(currentMHz); }
 
-  // Total control latency of one transaction in ps: synchronizer + handshake +
-  // turnaround + recovery consumed times.
+  < Total control latency of one transaction in ps: synchronizer + handshake + >
+  < turnaround + recovery consumed times. >
   int transactionLatencyPs() {
     return synchronizerLatencyPs()
          + handshake.consumedPs()
@@ -130,7 +140,7 @@ class SLIOTiming {
          + recovery.consumedPs();
   }
 
-  // Every phase honored at the dialed clock AND Vio in limits.
+  < Every phase honored at the dialed clock AND Vio in limits. >
   boolean honored() {
     boolean phases = handshake.honored() && turnaround.honored() && recovery.honored();
     boolean power = (vio == null) || vio.withinLimits();

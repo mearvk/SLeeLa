@@ -56,8 +56,11 @@ class DarkTheme extends Theme {
     palette.add("amber",     255, 176,  32);
     palette.add("muted",     140, 140, 150);
 
-    setBackground(24, 24, 28);    // charcoal
-    setForeground(224, 224, 224); // mist
-    setAccent(255, 176, 32);      // amber
+    < charcoal >
+    setBackground(24, 24, 28);
+    < mist >
+    setForeground(224, 224, 224);
+    < amber >
+    setAccent(255, 176, 32);
   }
 }

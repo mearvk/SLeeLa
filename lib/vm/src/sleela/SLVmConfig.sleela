@@ -58,13 +58,13 @@ class SLVmConfig {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Verbosity ordinals (mirror VmVerbosity).
+  < Verbosity ordinals (mirror VmVerbosity). >
   static final int VERBOSITY_QUIET   = 0;
   static final int VERBOSITY_NORMAL  = 1;
   static final int VERBOSITY_VERBOSE = 2;
   static final int VERBOSITY_DEBUG   = 3;
 
-  // Capability bits (mirror VmCapability; OR together).
+  < Capability bits (mirror VmCapability; OR together). >
   static final int CAP_MEMORY   = 1;
   static final int CAP_FILE_IO  = 2;
   static final int CAP_NETWORK  = 4;
@@ -75,21 +75,27 @@ class SLVmConfig {
   static final int CAP_PROCESS  = 128;
   static final int CAP_IPC      = 256;
   static final int CAP_TIME     = 512;
-  static final int CAP_ALL      = 1023;   // 0x3FF
+  < 0x3FF >
+  static final int CAP_ALL      = 1023;
 
-  // Bounds (mirror the native #defines).
+  < Bounds (mirror the native #defines). >
   static final int MIN_MEMORY_MIB = 256;
   static final int MAX_MEMORY_MIB  = 2048;
   static final int MAX_THREADS     = 128;
 
-  // ---- the configuration (mirror struct VmConfig) ----
-  int memoryLimitMiB;    // 256..2048; 0 = manager off
-  int threadCap;         // 1..128
-  int verbosity;         // VERBOSITY_*
-  int capabilities;      // CAP_* bitset
-  int memoryManagerOn;   // 1/0
+  < ---- the configuration (mirror struct VmConfig) ---- >
+  < 256..2048; 0 = manager off >
+  int memoryLimitMiB;
+  < 1..128 >
+  int threadCap;
+  < VERBOSITY_* >
+  int verbosity;
+  < CAP_* bitset >
+  int capabilities;
+  < 1/0 >
+  int memoryManagerOn;
 
-  // Sensible default: 2 GiB, 128 threads, NORMAL, all caps, manager on.
+  < Sensible default: 2 GiB, 128 threads, NORMAL, all caps, manager on. >
   void defaults() {
     memoryLimitMiB  = MAX_MEMORY_MIB;
     threadCap       = MAX_THREADS;
@@ -98,7 +104,7 @@ class SLVmConfig {
     memoryManagerOn = 1;
   }
 
-  // Clamping setters (mirror vm_config_set_*).
+  < Clamping setters (mirror vm_config_set_*). >
   void setMemoryMiB(int mib) {
     if (mib == 0) { memoryManagerOn = 0; memoryLimitMiB = 0; return; }
     if (mib < MIN_MEMORY_MIB) { mib = MIN_MEMORY_MIB; }
@@ -118,7 +124,7 @@ class SLVmConfig {
   }
   void enable(int cap)  { capabilities = capabilities | cap; }
   void disable(int cap) {
-    // clear the bit without a bitwise-not (surface has no ~): subtract if set.
+    < clear the bit without a bitwise-not (surface has no ~): subtract if set. >
     if ((capabilities / cap) % 2 == 1) { capabilities = capabilities - cap; }
   }
   boolean has(int cap) { return (capabilities / cap) % 2 == 1; }

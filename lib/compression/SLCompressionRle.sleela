@@ -1,41 +1,39 @@
-/*
- * lib/compression/SLCompressionRle.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Run-Length Encoding algorithm class — the SLeeLa-facing handle to algorithm id 1.
- */
+<< lib/compression/SLCompressionRle.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Run-Length Encoding algorithm class — the SLeeLa-facing handle to algorithm id 1. >>
 #sleela 2.1
-// Family: compression. Individual algorithm class for Run-Length Encoding, mirroring
-// compression/compressors/rle/ and the registry entry in
-// sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the
-// SLCompressionLoader loads this plugin by id and dispatches
-// compress/decompress. This class is the metadata + capability contract for
-// that plugin.
-//
-// Handler state codes: 0 native, 1 backend, 2 recognized, 3 container.
+< Family: compression. Individual algorithm class for Run-Length Encoding, mirroring >
+< compression/compressors/rle/ and the registry entry in >
+< sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the >
+< SLCompressionLoader loads this plugin by id and dispatches >
+< compress/decompress. This class is the metadata + capability contract for >
+< that plugin. >
+<  >
+< Handler state codes: 0 native, 1 backend, 2 recognized, 3 container. >
 class SLCompressionRle {
-  // Registry identity (mirrors sleela_compressor_handler).
+  < Registry identity (mirrors sleela_compressor_handler). >
   int id() { return 1; }
   String name() { return "Run-Length Encoding"; }
   String mime() { return "application/x-rle"; }
   String extensions() { return ".rle"; }
 
-  // Capability state: 0 == native.
+  < Capability state: 0 == native. >
   int state() { return 0; }
   String stateName() { return "native"; }
 
-  // Direction support advertised by the plugin vtable.
+  < Direction support advertised by the plugin vtable. >
   boolean canCompress() { return true; }
   boolean canDecompress() { return true; }
 
-  // Native algorithms implement compress/decompress in-package (no external backend).
+  < Native algorithms implement compress/decompress in-package (no external backend). >
   boolean isNative() { return true; }
-  // A backend adapter must be registered before a backend algorithm can run.
+  < A backend adapter must be registered before a backend algorithm can run. >
   boolean needsBackend() { return false; }
 
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, or
-  // catalog can read and (where appropriate) override each algorithm's record.
-  // Values are faithful to the algorithm's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, or >
+  < catalog can read and (where appropriate) override each algorithm's record. >
+  < Values are faithful to the algorithm's real origin where publicly known. >
   String metaVersion = "1.0.0";
   int metaId = 1;
   String metaAuthor = "Apple / public";
@@ -45,7 +43,8 @@ class SLCompressionRle {
   String metaCorporation = "Apple Inc. (PackBits)";
   String metaOrigin = "United States";
   String metaBirthDate = "1984";
-  int metaScienceRating = 8;        // maturity/robustness on a 1..10 scale
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
   String metaNationalSchedule = "PackBits (TIFF 6.0 Section 9)";
 
   String getMetaVersion() { return metaVersion; }

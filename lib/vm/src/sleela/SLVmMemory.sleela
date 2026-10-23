@@ -61,15 +61,17 @@ class SLVmMemory {
   static final int CRITICAL = 2;
   static final int LIMIT    = 3;
 
-  // watermarks as percent of the hard limit (defaults 80 / 95).
+  < watermarks as percent of the hard limit (defaults 80 / 95). >
   int warnPct;
   int critPct;
-  // the latest sampled numbers (fed from the native memmgr stats).
+  < the latest sampled numbers (fed from the native memmgr stats). >
   int liveMiB;
   int limitMiB;
   int refused;
-  int last;           // last classified condition
-  int peakReported;   // highest condition already announced (edge-trigger)
+  < last classified condition >
+  int last;
+  < highest condition already announced (edge-trigger) >
+  int peakReported;
 
   void defaults() { warnPct = 80; critPct = 95; peakReported = NORMAL; last = NORMAL; }
 
@@ -81,7 +83,7 @@ class SLVmMemory {
     warnPct = warning; critPct = critical;
   }
 
-  // Feed a fresh memmgr sample (live/limit MiB + cumulative refused).
+  < Feed a fresh memmgr sample (live/limit MiB + cumulative refused). >
   void sample(int live, int limit, int refusedCount) {
     liveMiB = live; limitMiB = limit; refused = refusedCount;
   }
@@ -100,7 +102,7 @@ class SLVmMemory {
     return NORMAL;
   }
 
-  // Poll + edge-triggered report through SLVmReport. Returns the condition.
+  < Poll + edge-triggered report through SLVmReport. Returns the condition. >
   int poll(SLVmReport r) {
     int c = classify();
     if (c > peakReported) {

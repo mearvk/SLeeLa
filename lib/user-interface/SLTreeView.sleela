@@ -57,27 +57,30 @@ class SLTreeView extends SLWidget {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_NODES = 65536;
-  static final int ROW_HEIGHT = 22;   // pixels per row (for scroll math)
+  < pixels per row (for scroll math) >
+  static final int ROW_HEIGHT = 22;
 
   SLScrollView scroll;
 
-  // Node model (parallel arrays keyed by node index).
+  < Node model (parallel arrays keyed by node index). >
   String[] ids;
   String[] labels;
-  int[] parents;        // index of parent node, -1 for a root
+  < index of parent node, -1 for a root >
+  int[] parents;
   int[] depths;
   boolean[] expanded;
   boolean[] leaf;
   int count;
 
-  // Visible-row projection (indices into the node arrays, in display order).
+  < Visible-row projection (indices into the node arrays, in display order). >
   int[] visible;
   int visibleCount;
 
-  // One reusable label row per visible slot.
+  < One reusable label row per visible slot. >
   SLLabel[] rows;
   int rowCapacity;
-  int selectedRow;      // index into `visible`, -1 when nothing selected
+  < index into `visible`, -1 when nothing selected >
+  int selectedRow;
 
   void createIn(SLWidget parent, int visibleRows) {
     scroll = new SLScrollView();
@@ -108,7 +111,7 @@ class SLTreeView extends SLWidget {
     selectedRow = -1;
   }
 
-  // Add a node under `parentId` ("" / null for a root). Returns its index.
+  < Add a node under `parentId` ("" / null for a root). Returns its index. >
   int addNode(String id, String label, String parentId, boolean isLeaf) {
     if (count >= MAX_NODES) { return -1; }
     int parentIdx = (parentId == null) ? -1 : indexOfId(parentId);
@@ -130,8 +133,8 @@ class SLTreeView extends SLWidget {
     return -1;
   }
 
-  // Recompute the visible rows: a node is visible when every ancestor is
-  // expanded. Walks nodes in insertion order (parents precede children).
+  < Recompute the visible rows: a node is visible when every ancestor is >
+  < expanded. Walks nodes in insertion order (parents precede children). >
   void rebuild() {
     visibleCount = 0;
     for (int i = 0; i < count; i = i + 1) {
@@ -153,7 +156,7 @@ class SLTreeView extends SLWidget {
     return true;
   }
 
-  // Repaint the visible slice into the reusable row labels.
+  < Repaint the visible slice into the reusable row labels. >
   void paint() {
     int first = firstVisibleRow();
     for (int slot = 0; slot < rowCapacity; slot = slot + 1) {
@@ -175,7 +178,7 @@ class SLTreeView extends SLWidget {
     return off / ROW_HEIGHT;
   }
 
-  // "    > Branch" / "      file.sleela" — indent by depth, disclosure marker.
+  < "    > Branch" / "      file.sleela" — indent by depth, disclosure marker. >
   String rowText(int node) {
     String pad = indent(depths[node]);
     if (leaf[node]) { return pad + "  " + labels[node]; }
@@ -189,7 +192,7 @@ class SLTreeView extends SLWidget {
     return s;
   }
 
-  // Toggle a branch open/closed by node id; leaves are ignored.
+  < Toggle a branch open/closed by node id; leaves are ignored. >
   void toggle(String id) {
     int idx = indexOfId(id);
     if (idx < 0 || leaf[idx]) { return; }
@@ -197,14 +200,14 @@ class SLTreeView extends SLWidget {
     rebuild();
   }
 
-  // Select a visible row (0-based into the visible projection).
+  < Select a visible row (0-based into the visible projection). >
   void selectRow(int visibleIndex) {
     if (visibleIndex < 0 || visibleIndex >= visibleCount) { return; }
     selectedRow = visibleIndex;
     paint();
   }
 
-  // The selected node id, or null when nothing is selected.
+  < The selected node id, or null when nothing is selected. >
   String selectedId() {
     if (selectedRow < 0 || selectedRow >= visibleCount) { return null; }
     return ids[visible[selectedRow]];

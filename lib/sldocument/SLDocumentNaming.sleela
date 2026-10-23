@@ -66,35 +66,36 @@ class SLDocumentNaming {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String prefix;   // prefix for synthesized names (default "step")
+  < prefix for synthesized names (default "step") >
+  String prefix;
   int state;
 
   void configure() { prefix = "step"; state = 1; }
   void withPrefix(String p) { prefix = p; }
   boolean active() { return state == 1; }
 
-  // Does the step already carry an explicit method name (vs. being anonymous)?
+  < Does the step already carry an explicit method name (vs. being anonymous)? >
   boolean isNamed(SLDocumentAnnotation ann) {
     if (ann == null) { return false; }
     if (ann.kindOf() == SLDocumentAnnotation.METHOD) {
       String m = ann.method();
       return m != null && m.length() > 0;
     }
-    // ORDER/FUNCTION annotations may still carry a method identifier.
+    < ORDER/FUNCTION annotations may still carry a method identifier. >
     String m = ann.method();
     return m != null && m.length() > 0;
   }
 
-  // Produce the stable .sleela method name for a step, per the convention.
-  // `textualPosition` is the step's 1-based top-down position used when a name
-  // must be synthesized.
+  < Produce the stable .sleela method name for a step, per the convention. >
+  < `textualPosition` is the step's 1-based top-down position used when a name >
+  < must be synthesized. >
   String nameFor(SLDocumentAnnotation ann, int textualPosition) {
     if (!active()) { return ""; }
-    // 1. explicit method name wins (sanitized to a legal identifier).
+    < 1. explicit method name wins (sanitized to a legal identifier). >
     if (ann != null) {
       String m = ann.method();
       if (m != null && m.length() > 0) { return sanitize(m); }
-      // 2. derive from a @function role.
+      < 2. derive from a @function role. >
       if (ann.kindOf() == SLDocumentAnnotation.FUNCTION) {
         String role = ann.role_();
         if (role != null && role.length() > 0) {
@@ -103,13 +104,13 @@ class SLDocumentNaming {
         }
       }
     }
-    // 3. synthesize from ordered position: prefix + zero-padded order.
+    < 3. synthesize from ordered position: prefix + zero-padded order. >
     int ord = textualPosition;
     if (ann != null && ann.hasExplicitOrder()) { ord = ann.orderValue(); }
     return native sleela_sldocument_synth_name(prefix, ord);
   }
 
-  // Was this name synthesized (vs. authored by the engineer)?
+  < Was this name synthesized (vs. authored by the engineer)? >
   boolean isSynthesized(SLDocumentAnnotation ann) {
     if (ann == null) { return true; }
     String m = ann.method();
@@ -121,12 +122,12 @@ class SLDocumentNaming {
     return true;
   }
 
-  // Make an arbitrary string a legal SLeeLa identifier.
+  < Make an arbitrary string a legal SLeeLa identifier. >
   String sanitize(String raw) {
     return native sleela_sldocument_sanitize_identifier(raw);
   }
 
-  // Turn a human role ("reconcile accounts") into camelCase ("reconcileAccounts").
+  < Turn a human role ("reconcile accounts") into camelCase ("reconcileAccounts"). >
   String camelFromRole(String role) {
     return native sleela_sldocument_camel_from_role(role);
   }

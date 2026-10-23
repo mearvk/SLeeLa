@@ -61,8 +61,10 @@ class SLGuiDom {
   int count;
   String rootId;
   SLGuiEventBus bus;
-  SLGuiEventType types;   // name<->ordinal helper
-  int idSeq;              // auto-id counter for createElement without an id
+  < name<->ordinal helper >
+  SLGuiEventType types;
+  < auto-id counter for createElement without an id >
+  int idSeq;
 
   void init() {
     nodes = new SLGuiNode[MAX_NODES];
@@ -75,9 +77,9 @@ class SLGuiDom {
   SLGuiEventBus events() { return bus; }
   int size() { return count; }
 
-  // ---- creation / tree ----------------------------------------------------
+  < ---- creation / tree ---------------------------------------------------- >
 
-  // createElement(tag, id): id "" generates a stable auto id ("n<seq>").
+  < createElement(tag, id): id "" generates a stable auto id ("n<seq>"). >
   SLGuiNode createElement(String tag, String id) {
     if (count >= MAX_NODES) { return null; }
     String nodeId = (id == null || id == "") ? autoId() : id;
@@ -87,7 +89,7 @@ class SLGuiDom {
     return n;
   }
 
-  // The document root (the window element). Created once.
+  < The document root (the window element). Created once. >
   SLGuiNode createRoot(String tag, String id) {
     SLGuiNode n = createElement(tag, id);
     if (n != null) { rootId = n.getId(); }
@@ -106,7 +108,7 @@ class SLGuiDom {
     return -1;
   }
 
-  // appendChild(parentId, childId): link child under parent in both directions.
+  < appendChild(parentId, childId): link child under parent in both directions. >
   boolean appendChild(String parentId, String childId) {
     SLGuiNode p = getElementById(parentId);
     SLGuiNode c = getElementById(childId);
@@ -115,7 +117,7 @@ class SLGuiDom {
     return p.appendChild(childId);
   }
 
-  // Convenience: create a child element already appended to a parent.
+  < Convenience: create a child element already appended to a parent. >
   SLGuiNode appendElement(String parentId, String tag, String id) {
     SLGuiNode c = createElement(tag, id);
     if (c == null) { return null; }
@@ -123,8 +125,8 @@ class SLGuiDom {
     return c;
   }
 
-  // removeChild: detach from parent, remove its handlers, and drop the node
-  // (and recursively its subtree).
+  < removeChild: detach from parent, remove its handlers, and drop the node >
+  < (and recursively its subtree). >
   boolean removeChild(String childId) {
     SLGuiNode c = getElementById(childId);
     if (c == null) { return false; }
@@ -134,7 +136,7 @@ class SLGuiDom {
     return true;
   }
 
-  // ---- manipulation (id-addressed, DHTML-style) ---------------------------
+  < ---- manipulation (id-addressed, DHTML-style) --------------------------- >
 
   void setText(String id, String text) {
     SLGuiNode n = getElementById(id); if (n != null) { n.setText(text); }
@@ -151,9 +153,9 @@ class SLGuiDom {
     SLGuiNode n = getElementById(id); if (n != null) { n.setEnabled(on); }
   }
 
-  // ---- queries ------------------------------------------------------------
+  < ---- queries ------------------------------------------------------------ >
 
-  // Fill `out` with the ids of every node with the given tag; returns the count.
+  < Fill `out` with the ids of every node with the given tag; returns the count. >
   int getElementsByTag(String tag, String[] out, int cap) {
     int n = 0;
     for (int i = 0; i < count && n < cap; i = i + 1) {
@@ -161,7 +163,7 @@ class SLGuiDom {
     }
     return n;
   }
-  // Return the first node id whose attribute `name` equals `value` (or null).
+  < Return the first node id whose attribute `name` equals `value` (or null). >
   String querySelectorByAttr(String name, String value) {
     for (int i = 0; i < count; i = i + 1) {
       String got = nodes[i].getAttribute(name);
@@ -170,7 +172,7 @@ class SLGuiDom {
     return null;
   }
 
-  // ---- events (addEventListener + onX shorthands) -------------------------
+  < ---- events (addEventListener + onX shorthands) ------------------------- >
 
   SLGuiHandler addEventListener(String id, String eventName, String operation) {
     int t = types.typeOf(eventName);
@@ -183,7 +185,7 @@ class SLGuiDom {
     return bus.removeListener(id, t, operation);
   }
 
-  // Shorthands mirroring onclick=/oninput= style bindings.
+  < Shorthands mirroring onclick=/oninput= style bindings. >
   SLGuiHandler onClick(String id, String operation) {
     return bus.addListener(id, SLGuiEventType.CLICK, operation);
   }
@@ -200,16 +202,16 @@ class SLGuiDom {
     return bus.addListener(id, SLGuiEventType.SUBMIT, operation);
   }
 
-  // The host raises an activation on a node; dispatch it through the bus.
-  // Returns how many handlers fired.
+  < The host raises an activation on a node; dispatch it through the bus. >
+  < Returns how many handlers fired. >
   int dispatchEvent(SLGuiEvent event) { return bus.dispatch(event); }
   int fire(int eventType, String targetId, String value) {
     return bus.raise(eventType, targetId, value);
   }
 
-  // ---- host sync ----------------------------------------------------------
+  < ---- host sync ---------------------------------------------------------- >
 
-  // The number of nodes needing a host re-sync (dirty), for the mount walk.
+  < The number of nodes needing a host re-sync (dirty), for the mount walk. >
   int dirtyCount() {
     int n = 0;
     for (int i = 0; i < count; i = i + 1) { if (nodes[i].isDirty()) { n = n + 1; } }
@@ -220,7 +222,7 @@ class SLGuiDom {
     return nodes[i];
   }
 
-  // ---- internals ----------------------------------------------------------
+  < ---- internals ---------------------------------------------------------- >
 
   String autoId() { idSeq = idSeq + 1; return "n" + idSeq; }
 

@@ -58,9 +58,12 @@ class SLRegistryValue {
 
   String name;
   int    kind;
-  String s;     // when KIND_STRING
-  int    i;     // when KIND_INT
-  int    b;     // when KIND_BOOL (0/1)
+  < when KIND_STRING >
+  String s;
+  < when KIND_INT >
+  int    i;
+  < when KIND_BOOL (0/1) >
+  int    b;
 
   void setString(String n, String value) { name = n; kind = KIND_STRING; s = value; }
   void setInt(String n, int value)        { name = n; kind = KIND_INT; i = value; }

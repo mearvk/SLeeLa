@@ -54,8 +54,8 @@ class SLSpinButton extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a spin button inside `parent` spanning [min, max], stepping by
-  // `step`, with an initial value.
+  < Create a spin button inside `parent` spanning [min, max], stepping by >
+  < `step`, with an initial value. >
   void createIn(SLWidget parent, double min, double max, double step,
                 double value) {
     widget = uiSpinButton(parent.handle(), min, max, step, value);
@@ -73,7 +73,7 @@ class SLSpinButton extends SLWidget {
     if (widget >= 0) { uiWidgetSetValue(widget, value); }
   }
 
-  // True if the value changed since the last check (latch cleared on read).
+  < True if the value changed since the last check (latch cleared on read). >
   boolean changed() {
     if (widget < 0) { return false; }
     return uiWidgetTakeActivated(widget) == 1;

@@ -73,7 +73,7 @@ class SLString {
   }
   String quote() { return "\"" + value + "\""; }
 
-  // Bridged char-level ops -- honest descriptors, never faked.
+  < Bridged char-level ops -- honest descriptors, never faked. >
   String bridge(String op) { return "text.bridge:" + op + ":" + value; }
   String bridgeArg(String op, String a) { return "text.bridge:" + op + ":" + value + ":" + a; }
   String bridgeKind(String op) {
@@ -90,7 +90,7 @@ class SLString {
   void main() {
     print("=== SLeeLa text/String surface demo ===");
 
-    // In-language ops (real results).
+    < In-language ops (real results). >
     SLString s = new SLString();
     s.set("SLeeLa");
     print("value      : " + s.get());
@@ -111,7 +111,7 @@ class SLString {
     print("join       : " + joiner.join(parts, ", "));
     print("quote      : " + greet.quote());
 
-    // copy() is independent of the original.
+    < copy() is independent of the original. >
     SLString original = new SLString();
     original.set("keep");
     SLString dup = original.copy();
@@ -119,7 +119,7 @@ class SLString {
     print("copy orig  : " + original.get());
     print("copy dup   : " + dup.get());
 
-    // Bridged ops (honest descriptors + the type the runtime will yield).
+    < Bridged ops (honest descriptors + the type the runtime will yield). >
     print("length     : " + s.length() + "   (kind " + s.bridgeKind("length") + ")");
     print("toUpperCase: " + s.toUpperCase());
     print("indexOf    : " + s.indexOf("L") + "   (kind " + s.bridgeKind("indexOf") + ")");

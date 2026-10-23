@@ -59,49 +59,53 @@ class SLIdeWorkbenchUI {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  SLGuiApp app;                 // the /lib/gui support structure (app+window+DOM)
+  < the /lib/gui support structure (app+window+DOM) >
+  SLGuiApp app;
   SLGuiDom dom;
 
-  // Command handlers (bound through the DOM event bus; polled for latches).
+  < Command handlers (bound through the DOM event bus; polled for latches). >
   SLGuiHandler openH;
   SLGuiHandler compileH;
   SLGuiHandler saveH;
   SLGuiHandler closeH;
 
-  // Content-control handlers: tree selection (CHANGE) and tab switch (TOGGLE),
-  // routed through the SAME event bus so the content controls are DOM-driven
-  // too, not polled ad hoc.
+  < Content-control handlers: tree selection (CHANGE) and tab switch (TOGGLE), >
+  < routed through the SAME event bus so the content controls are DOM-driven >
+  < too, not polled ad hoc. >
   SLGuiHandler treeSelectH;
   SLGuiHandler tabChangeH;
 
-  // Rich content controls mounted into DOM container handles.
+  < Rich content controls mounted into DOM container handles. >
   SLTreeView tree;
   SLNotebook notebook;
   SLStatusBar status;
   SLLoadingIndicator loading;
 
-  // State models (the SLeeLa logic layer).
+  < State models (the SLeeLa logic layer). >
   SLIdeTabGroup tabs;
   SLIdeProjectTree projectModel;
   SLIdeDiagnosticsPanel diagnostics;
 
-  // Per-page editor views, index-aligned with the notebook pages.
+  < Per-page editor views, index-aligned with the notebook pages. >
   SLTextView[] editors;
   int editorCount;
 
-  String lastTreeSelection;     // debounce: only fire CHANGE when it moves
+  < debounce: only fire CHANGE when it moves >
+  String lastTreeSelection;
   boolean ready;
 
-  // Build and show the IDE. Returns true when the toolkit came up.
+  < Build and show the IDE. Returns true when the toolkit came up. >
   boolean boot(String appId, String title, int width, int height, String root) {
     app = new SLGuiApp();
     if (!app.boot(appId, title, width, height)) { ready = false; return false; }
     dom = app.document();
 
-    buildChromeDom();     // header + command buttons as DOM nodes
-    buildContent();       // tree + notebook + status mounted into DOM handles
+    < header + command buttons as DOM nodes >
+    buildChromeDom();
+    < tree + notebook + status mounted into DOM handles >
+    buildContent();
 
-    // State models.
+    < State models. >
     tabs = new SLIdeTabGroup();  tabs.init();
     projectModel = new SLIdeProjectTree(); projectModel.init(root);
     diagnostics = new SLIdeDiagnosticsPanel(); diagnostics.init();
@@ -110,15 +114,16 @@ class SLIdeWorkbenchUI {
     editorCount = 0;
     lastTreeSelection = "";
 
-    app.refresh();        // mount the DOM chrome onto real widgets
+    < mount the DOM chrome onto real widgets >
+    app.refresh();
     ready = true;
     refreshStatus();
     return true;
   }
 
-  // The window chrome, expressed as a DOM: a header bar holding a brand label,
-  // a spacer, and the four command buttons. Each command button binds an
-  // onClick handler through the event bus.
+  < The window chrome, expressed as a DOM: a header bar holding a brand label, >
+  < a spacer, and the four command buttons. Each command button binds an >
+  < onClick handler through the event bus. >
   void buildChromeDom() {
     SLGuiNode header = dom.appendElement("root", "header", "ide-header");
     SLGuiNode brand = dom.appendElement("ide-header", "label", "ide-brand");
@@ -135,16 +140,16 @@ class SLIdeWorkbenchUI {
     SLGuiNode close = dom.appendElement("ide-header", "button", "cmd-close");
     close.setText("Close");
 
-    // Bind the command callbacks (DHTML onClick). The handler latches each fire;
-    // the loop reads the latch and runs the matching command.
+    < Bind the command callbacks (DHTML onClick). The handler latches each fire; >
+    < the loop reads the latch and runs the matching command. >
     openH = dom.onClick("cmd-open", "onOpenSelected");
     compileH = dom.onClick("cmd-compile", "onCompile");
     saveH = dom.onClick("cmd-save", "onSave");
     closeH = dom.onClick("cmd-close", "onClose");
   }
 
-  // The body + status, as DOM containers whose mounted widget handles host the
-  // specialised controls (tree / notebook / status bar / loading indicator).
+  < The body + status, as DOM containers whose mounted widget handles host the >
+  < specialised controls (tree / notebook / status bar / loading indicator). >
   void buildContent() {
     SLGuiNode body = dom.appendElement("root", "hbox", "ide-body");
 
@@ -156,20 +161,20 @@ class SLIdeWorkbenchUI {
 
     SLGuiNode statusN = dom.appendElement("root", "status", "ide-status");
 
-    // DOM proxy nodes for the two content controls, so their interactions
-    // (a tree selection, a tab switch) dispatch through the event bus like the
-    // commands do. These are logical nodes: the specialised SleelaUI widgets
-    // live inside the ide-left / ide-right handles, but their events route here.
+    < DOM proxy nodes for the two content controls, so their interactions >
+    < (a tree selection, a tab switch) dispatch through the event bus like the >
+    < commands do. These are logical nodes: the specialised SleelaUI widgets >
+    < live inside the ide-left / ide-right handles, but their events route here. >
     dom.appendElement("ide-left", "treeview", "ide-tree");
     dom.appendElement("ide-right", "notebook", "ide-notebook");
 
-    // CHANGE on the tree carries the selected node id; TOGGLE on the notebook
-    // carries the newly-active tab index (as a string).
+    < CHANGE on the tree carries the selected node id; TOGGLE on the notebook >
+    < carries the newly-active tab index (as a string). >
     treeSelectH = dom.addEventListener("ide-tree", "change", "onTreeActivate");
     tabChangeH = dom.addEventListener("ide-notebook", "toggle", "onTabChange");
 
-    // Mount the DOM so the container handles exist, then attach specialised
-    // SleelaUI widgets into those handles.
+    < Mount the DOM so the container handles exist, then attach specialised >
+    < SleelaUI widgets into those handles. >
     app.refresh();
 
     SLWidget left = adopt(dom.getElementById("ide-left").widgetHandle());
@@ -190,7 +195,7 @@ class SLIdeWorkbenchUI {
     loading.createIn(statusW, SLLoadingIndicator.STYLE_SPINNER, 0);
   }
 
-  // Wrap a raw widget handle as an SLWidget so specialised controls can attach.
+  < Wrap a raw widget handle as an SLWidget so specialised controls can attach. >
   SLWidget adopt(int handle) {
     SLWidget w = new SLBox();
     w.adopt(handle);
@@ -199,7 +204,7 @@ class SLIdeWorkbenchUI {
 
   boolean isReady() { return ready; }
 
-  // ---- opening / editing --------------------------------------------------
+  < ---- opening / editing -------------------------------------------------- >
 
   void addTreeNode(String id, String label, String parentId, boolean isLeaf) {
     tree.addNode(id, label, parentId, isLeaf);
@@ -230,14 +235,14 @@ class SLIdeWorkbenchUI {
     return editors[i];
   }
 
-  // ---- commands (driven by the event-bus handler latches) -----------------
+  < ---- commands (driven by the event-bus handler latches) ----------------- >
 
-  // Read the command handler latches once per loop turn and act. The latches
-  // are raised by SLGuiHostAdapter when the real buttons fire, so there is no
-  // direct widget polling here. Returns false when Close emptied the tabs.
+  < Read the command handler latches once per loop turn and act. The latches >
+  < are raised by SLGuiHostAdapter when the real buttons fire, so there is no >
+  < direct widget polling here. Returns false when Close emptied the tabs. >
   boolean pollCommands() {
-    // Content-control interactions are translated into DOM events first, so
-    // their handlers run through the same bus as the commands.
+    < Content-control interactions are translated into DOM events first, so >
+    < their handlers run through the same bus as the commands. >
     routeContentEvents();
 
     if (openH != null && openH.take())           { onOpenSelected(); }
@@ -249,11 +254,11 @@ class SLIdeWorkbenchUI {
     return true;
   }
 
-  // Translate raw content-control state changes into DOM events on the bus.
-  // A tab click raises TOGGLE("ide-notebook", <index>); a tree row selection
-  // raises CHANGE("ide-tree", <nodeId>). The host adapter already turns command
-  // button presses into events; these two controls are specialised widgets, so
-  // the shell bridges their state into the same dispatch path here.
+  < Translate raw content-control state changes into DOM events on the bus. >
+  < A tab click raises TOGGLE("ide-notebook", <index>); a tree row selection >
+  < raises CHANGE("ide-tree", <nodeId>). The host adapter already turns command >
+  < button presses into events; these two controls are specialised widgets, so >
+  < the shell bridges their state into the same dispatch path here. >
   void routeContentEvents() {
     int clickedTab = notebook.takeClickedTab();
     if (clickedTab >= 0) {
@@ -266,23 +271,25 @@ class SLIdeWorkbenchUI {
     }
   }
 
-  // Handler for a tree CHANGE: the selected id is the DOM event's value.
-  // Returns the id of a selected leaf (a file the host should open), else null.
+  < Handler for a tree CHANGE: the selected id is the DOM event's value. >
+  < Returns the id of a selected leaf (a file the host should open), else null. >
   String onTreeActivate(String nodeId) {
     if (!tree.selectionIsLeaf()) { return null; }
-    return nodeId;   // host reads this id, loads the file, calls openFile(...)
+    < host reads this id, loads the file, calls openFile(...) >
+    return nodeId;
   }
 
-  // Handler for a notebook TOGGLE: focus the newly-active tab.
+  < Handler for a notebook TOGGLE: focus the newly-active tab. >
   void onTabChange(String indexStr) {
     int idx = parseInt(indexStr);
     if (idx >= 0) { tabs.focus(idx); notebook.select(idx); refreshStatus(); }
   }
 
-  // Backward-compatible entry: the Open command selects whatever the tree has.
+  < Backward-compatible entry: the Open command selects whatever the tree has. >
   String onOpenSelected() {
     if (!tree.selectionIsLeaf()) { return null; }
-    return tree.selectedId();   // host reads this id, loads the file, calls openFile
+    < host reads this id, loads the file, calls openFile >
+    return tree.selectedId();
   }
 
   void onCompile() {
@@ -318,7 +325,7 @@ class SLIdeWorkbenchUI {
     refreshStatus();
   }
 
-  // ---- diagnostics --------------------------------------------------------
+  < ---- diagnostics -------------------------------------------------------- >
 
   void publishDiagnostic(String documentId, int severity, int line, int col, String message) {
     diagnostics.publish(documentId, severity, line, col, message);
@@ -337,15 +344,16 @@ class SLIdeWorkbenchUI {
     }
   }
 
-  // ---- loop ---------------------------------------------------------------
+  < ---- loop --------------------------------------------------------------- >
 
-  // Run via the SLGuiApp support loop: each turn it pumps the toolkit, lets
-  // SLGuiHostAdapter poll widget activations into the event bus (firing the
-  // bound command handlers), and reconciles the DOM. We then read the command
-  // latches and advance IDE state.
+  < Run via the SLGuiApp support loop: each turn it pumps the toolkit, lets >
+  < SLGuiHostAdapter poll widget activations into the event bus (firing the >
+  < bound command handlers), and reconciles the DOM. We then read the command >
+  < latches and advance IDE state. >
   int runLoop() {
     while (app.ui.active()) {
-      int raised = app.step(true);     // pump + poll activations + reconcile
+      < pump + poll activations + reconcile >
+      int raised = app.step(true);
       if (!pollCommands()) { app.quit(0); }
       syncDirtyFromEditor();
       if (loading.busy()) { loading.tick(0.03); }
@@ -353,7 +361,7 @@ class SLIdeWorkbenchUI {
     return 0;
   }
 
-  // ---- helpers ------------------------------------------------------------
+  < ---- helpers ------------------------------------------------------------ >
 
   void refreshStatus() {
     String watch = "watch " + tabs.watchSetSize() + "/" + SLIdeTabGroup.SLGUI_MAX_DOCUMENTS;
@@ -390,7 +398,7 @@ class SLIdeWorkbenchUI {
 
   String currentRevision() { return "saved"; }
 
-  // Parse a non-negative integer from a decimal string ("" / null -> -1).
+  < Parse a non-negative integer from a decimal string ("" / null -> -1). >
   int parseInt(String s) {
     if (s == null || s == "") { return -1; }
     int value = 0;

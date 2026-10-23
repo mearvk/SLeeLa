@@ -50,19 +50,21 @@ class SLClock {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   int frequencyMHz;
-  int level;    // current clock level, 0 or 1
-  int cycles;   // completed cycles (rising edges issued)
+  < current clock level, 0 or 1 >
+  int level;
+  < completed cycles (rising edges issued) >
+  int cycles;
 
   void configure(int mhz) { frequencyMHz = mhz; level = 0; cycles = 0; }
 
-  // One half-step: toggle the level. A full cycle is two toggles; a rising
-  // edge (0 -> 1) increments the cycle counter.
+  < One half-step: toggle the level. A full cycle is two toggles; a rising >
+  < edge (0 -> 1) increments the cycle counter. >
   int toggle() {
     if (level == 0) { level = 1; cycles = cycles + 1; } else { level = 0; }
     return level;
   }
 
-  // Issue a full cycle (low then high) and return the new cycle count.
+  < Issue a full cycle (low then high) and return the new cycle count. >
   int tick() { toggle(); toggle(); return cycles; }
 
   int currentLevel() { return level; }

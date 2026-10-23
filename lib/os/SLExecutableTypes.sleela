@@ -65,7 +65,8 @@ class SLExecutableTypes {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String shape;   // "Linux" / "Windows" / "macOS"
+  < "Linux" / "Windows" / "macOS" >
+  String shape;
 
   void configure(String shapeName) {
     if (shapeName == "Windows") { shape = "Windows"; return; }
@@ -73,7 +74,7 @@ class SLExecutableTypes {
     shape = "Linux";
   }
 
-  // Configure from the real host OS the VM runs on.
+  < Configure from the real host OS the VM runs on. >
   void configureForHost() { configure(osPlatform()); }
 
   String name() { return shape; }
@@ -81,10 +82,10 @@ class SLExecutableTypes {
   boolean isMac()     { return shape == "macOS"; }
   boolean isLinux()   { return shape == "Linux"; }
 
-  // ---- Executability policy by file type ------------------------------
-  // isExecutable(ext): does this extension name an executable file type on the
-  // configured shape? ext includes the dot (".exe"); "" means "no extension",
-  // which is the common case for ELF/Mach-O binaries on POSIX.
+  < ---- Executability policy by file type ------------------------------ >
+  < isExecutable(ext): does this extension name an executable file type on the >
+  < configured shape? ext includes the dot (".exe"); "" means "no extension", >
+  < which is the common case for ELF/Mach-O binaries on POSIX. >
   boolean isExecutable(String ext) {
     if (shape == "Windows") {
       return ext == ".exe" || ext == ".com" || ext == ".bat" || ext == ".cmd"
@@ -94,49 +95,49 @@ class SLExecutableTypes {
       return ext == "" || ext == ".command" || ext == ".sh" || ext == ".app"
           || ext == ".bin" || ext == ".dylib" || ext == ".o";
     }
-    // Linux / POSIX.
+    < Linux / POSIX. >
     return ext == "" || ext == ".sh" || ext == ".bin" || ext == ".run"
         || ext == ".AppImage" || ext == ".elf" || ext == ".so" || ext == ".ko";
   }
 
-  // The newline-separated list of executable types for this shape (for a table
-  // or a generated header). On Windows this doubles as the PATHEXT seed.
+  < The newline-separated list of executable types for this shape (for a table >
+  < or a generated header). On Windows this doubles as the PATHEXT seed. >
   String executableTypes() {
     if (shape == "Windows") { return ".COM\n.EXE\n.BAT\n.CMD\n.PS1\n.MSI\n.VBS\n.SCR"; }
     if (shape == "macOS")   { return "(no-ext Mach-O)\n.command\n.sh\n.app\n.bin\n.dylib"; }
     return "(no-ext ELF)\n.sh\n.bin\n.run\n.AppImage\n.elf\n.so\n.ko";
   }
 
-  // The Windows PATHEXT value a shell uses to resolve a bare command name.
-  // Empty on POSIX, where executability is the mode bit, not the extension.
+  < The Windows PATHEXT value a shell uses to resolve a bare command name. >
+  < Empty on POSIX, where executability is the mode bit, not the extension. >
   String pathext() {
     if (shape == "Windows") { return ".COM;.EXE;.BAT;.CMD;.PS1;.VBS;.MSI"; }
     return "";
   }
 
-  // How a file becomes executable on this shape (human-readable mechanism).
+  < How a file becomes executable on this shape (human-readable mechanism). >
   String mechanism() {
     if (shape == "Windows") { return "association via PATHEXT / file handler (no exec bit)"; }
     if (shape == "macOS")   { return "exec bit (chmod +x) for scripts/Mach-O; .app via open(1)"; }
     return "exec bit (chmod +x) plus a recognised format (ELF / #! script)";
   }
 
-  // Whether this shape uses the POSIX exec-bit model at all.
+  < Whether this shape uses the POSIX exec-bit model at all. >
   boolean usesExecBit() { return shape != "Windows"; }
 
-  // ---- Host actions (cross the os* bridge) ----------------------------
-  // markExecutable(path): make a real file runnable on the host. On POSIX this
-  // runs chmod +x and returns its exit code (0 ok). On Windows there is no exec
-  // bit — executability is governed by extension/PATHEXT — so it is a no-op that
-  // reports success. Only meaningful when the configured shape is the host.
+  < ---- Host actions (cross the os* bridge) ---------------------------- >
+  < markExecutable(path): make a real file runnable on the host. On POSIX this >
+  < runs chmod +x and returns its exit code (0 ok). On Windows there is no exec >
+  < bit — executability is governed by extension/PATHEXT — so it is a no-op that >
+  < reports success. Only meaningful when the configured shape is the host. >
   int markExecutable(String path) {
     if (osPlatform() == "Windows") { return 0; }
     return osRun("chmod +x " + path + " 2>/dev/null");
   }
 
-  // isHostExecutable(path, ext): best-effort check that a real path is runnable
-  // on the host now. On POSIX: exist + (executable extension OR the exec bit is
-  // set, probed via `test -x`); on Windows: exist + executable extension.
+  < isHostExecutable(path, ext): best-effort check that a real path is runnable >
+  < on the host now. On POSIX: exist + (executable extension OR the exec bit is >
+  < set, probed via `test -x`); on Windows: exist + executable extension. >
   boolean isHostExecutable(String path, String ext) {
     if (osExists(path) != 1) { return false; }
     if (osPlatform() == "Windows") { return isExecutable(ext); }
@@ -144,10 +145,10 @@ class SLExecutableTypes {
     return osRun("test -x " + path) == 0;
   }
 
-  // ---- Generated C/C++ table ------------------------------------------
-  // Emit a C header declaring this shape's executable file-type table, for the
-  // working C/CPP set the OS generator writes. A loader uses it to decide
-  // whether a file is a candidate executable.
+  < ---- Generated C/C++ table ------------------------------------------ >
+  < Emit a C header declaring this shape's executable file-type table, for the >
+  < working C/CPP set the OS generator writes. A loader uses it to decide >
+  < whether a file is a candidate executable. >
   String emitExecTypesHeader() {
     String h = "/* exec_types.h - executable file types for " + shape + " (generated by SLeeLa lib/os) */\n";
     h = h + "#ifndef EXEC_TYPES_H\n#define EXEC_TYPES_H\n\n";
@@ -164,7 +165,7 @@ class SLExecutableTypes {
     return h;
   }
 
-  // One C string literal per executable extension for this shape.
+  < One C string literal per executable extension for this shape. >
   String emitTableRows() {
     if (shape == "Windows") {
       return "    \".exe\", \".com\", \".bat\", \".cmd\", \".ps1\", \".msi\", \".vbs\", \".scr\",\n";

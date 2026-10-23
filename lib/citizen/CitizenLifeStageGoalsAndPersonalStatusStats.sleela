@@ -1,10 +1,8 @@
 #sleela 2.1
-/*
- * CitizenLifeStageGoalsAndPersonalStatusStats.sleela
- * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
- * Source category: Life stage, goals, and personal status.
- * Monetary values use integer minor units where the field name says Cents.
- */
+<< CitizenLifeStageGoalsAndPersonalStatusStats.sleela
+   Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+   Source category: Life stage, goals, and personal status.
+   Monetary values use integer minor units where the field name says Cents. >>
 class CitizenLifeStageGoalsAndPersonalStatusStats {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

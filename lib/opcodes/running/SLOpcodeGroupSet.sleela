@@ -87,7 +87,7 @@ class SLOpcodeGroupSet {
   boolean active() { return state == 1 && valid(); }
   int size() { return count; }
 
-  // Warm every group in the set. Returns the total number of opcodes warmed.
+  < Warm every group in the set. Returns the total number of opcodes warmed. >
   int warmAll() {
     int total = 0;
     for (int i = 0; i < count; i = i + 1) {
@@ -103,7 +103,7 @@ class SLOpcodeGroupSet {
     return null;
   }
 
-  // Flatten all groups, in order, onto a single stream.
+  < Flatten all groups, in order, onto a single stream. >
   boolean emitInto(SLOpcodeStream stream) {
     if (stream == null || !active()) { lastError = "inactive set or no stream"; return false; }
     for (int i = 0; i < count; i = i + 1) {
@@ -112,7 +112,7 @@ class SLOpcodeGroupSet {
     return true;
   }
 
-  // Run every group in order against a VM frame.
+  < Run every group in order against a VM frame. >
   int run(int frame) {
     if (!active()) { return -1; }
     int ip = 0;

@@ -105,7 +105,7 @@ class SLUEFIEmitter {
     return p;
   }
 
-  // Map a loader name to its EFI image filename.
+  < Map a loader name to its EFI image filename. >
   String loaderImage(String loader) {
     if (loader == "BOOTMGR")  { return "BOOTMGFW.EFI"; }
     if (loader == "boot.efi") { return "BOOTX64.EFI"; }

@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Policy declaration only; not a cryptographic implementation. */
+< Policy declaration only; not a cryptographic implementation. >
 class Http30SecurityPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -59,27 +59,43 @@ class Industry {
 
   static final String MODULE = "Industry";
 
-  // The whole economy, abridged to fit on one business card.
-  static final int SECTOR_NONE          = 0;   // between jobs; "consulting"
-  static final int SECTOR_AGRICULTURE   = 1;   // feeds everyone, thanked by few
-  static final int SECTOR_MINING        = 2;   // digs up tomorrow's shortage
-  static final int SECTOR_MANUFACTURING = 3;   // makes the thing in the box
-  static final int SECTOR_ENERGY        = 4;   // keeps the lights, bills on
-  static final int SECTOR_CONSTRUCTION  = 5;   // runs 3 weeks over, always
-  static final int SECTOR_RETAIL        = 6;   // "did you find everything okay?"
-  static final int SECTOR_TRANSPORT     = 7;   // the box, now moving
-  static final int SECTOR_FINANCE       = 8;   // moves money, keeps a slice
-  static final int SECTOR_HEALTHCARE    = 9;   // the only sector that bills you
-                                               //   for existing near it
-  static final int SECTOR_EDUCATION     = 10;  // underpaid, over-caffeinated
-  static final int SECTOR_TECHNOLOGY    = 11;  // "we've gone fully remote"
-  static final int SECTOR_GOVERNMENT    = 12;  // the sector that counts the rest
+  < The whole economy, abridged to fit on one business card. >
+  < between jobs; "consulting" >
+  static final int SECTOR_NONE          = 0;
+  < feeds everyone, thanked by few >
+  static final int SECTOR_AGRICULTURE   = 1;
+  < digs up tomorrow's shortage >
+  static final int SECTOR_MINING        = 2;
+  < makes the thing in the box >
+  static final int SECTOR_MANUFACTURING = 3;
+  < keeps the lights, bills on >
+  static final int SECTOR_ENERGY        = 4;
+  < runs 3 weeks over, always >
+  static final int SECTOR_CONSTRUCTION  = 5;
+  < "did you find everything okay?" >
+  static final int SECTOR_RETAIL        = 6;
+  < the box, now moving >
+  static final int SECTOR_TRANSPORT     = 7;
+  < moves money, keeps a slice >
+  static final int SECTOR_FINANCE       = 8;
+  < the only sector that bills you >
+  static final int SECTOR_HEALTHCARE    = 9;
+                                               < for existing near it >
+  < underpaid, over-caffeinated >
+  static final int SECTOR_EDUCATION     = 10;
+  < "we've gone fully remote" >
+  static final int SECTOR_TECHNOLOGY    = 11;
+  < the sector that counts the rest >
+  static final int SECTOR_GOVERNMENT    = 12;
   static final int SECTOR_COUNT         = 13;
 
   int loadedFlag;
-  int sector;        // one of SECTOR_*
-  int wageCents;     // pay per cycle, in cents, so nobody loses a penny
-  boolean onPayroll; // whether the machine currently remembers your name
+  < one of SECTOR_* >
+  int sector;
+  < pay per cycle, in cents, so nobody loses a penny >
+  int wageCents;
+  < whether the machine currently remembers your name >
+  boolean onPayroll;
 
   void load() {
     loadedFlag = 1;
@@ -90,7 +106,7 @@ class Industry {
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // Join the workforce in a given sector at a given wage. Welcome aboard.
+  < Join the workforce in a given sector at a given wage. Welcome aboard. >
   void employ(int whichSector, int cents) {
     if (whichSector < 0 || whichSector >= SECTOR_COUNT) {
       whichSector = SECTOR_NONE;
@@ -101,12 +117,12 @@ class Industry {
     onPayroll = whichSector != SECTOR_NONE;
   }
 
-  // "We're going in a different direction." Famous last words of a Friday.
+  < "We're going in a different direction." Famous last words of a Friday. >
   void layOff() {
     onPayroll = false;
   }
 
-  // A modest raise. The economy's rare act of kindness.
+  < A modest raise. The economy's rare act of kindness. >
   void giveRaise(int cents) {
     if (cents > 0) { wageCents = wageCents + cents; }
   }
@@ -115,7 +131,7 @@ class Industry {
   int wage() { if (!employed()) { return 0; } return wageCents; }
   int currentSector() { return sector; }
 
-  // A human-readable job title, because SECTOR_8 impresses no one at dinner.
+  < A human-readable job title, because SECTOR_8 impresses no one at dinner. >
   String sectorName() {
     if (sector == SECTOR_AGRICULTURE)   { return "Agriculture"; }
     if (sector == SECTOR_MINING)        { return "Mining"; }

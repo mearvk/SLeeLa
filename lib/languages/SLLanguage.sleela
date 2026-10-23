@@ -51,9 +51,12 @@ class SLLanguage {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String locale;      // BCP-47 code, e.g. "fr"
-  String name;        // endonym, e.g. "Français"
-  String direction;   // "ltr" or "rtl"
+  < BCP-47 code, e.g. "fr" >
+  String locale;
+  < endonym, e.g. "Français" >
+  String name;
+  < "ltr" or "rtl" >
+  String direction;
 
   void configure(String code, String endonym, String dir) {
     locale = code; name = endonym; direction = dir;

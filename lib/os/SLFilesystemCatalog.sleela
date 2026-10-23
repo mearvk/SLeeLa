@@ -59,12 +59,12 @@ class SLFilesystemCatalog {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // Canonical, lowercase filesystem identifiers this catalogue knows.
+  < Canonical, lowercase filesystem identifiers this catalogue knows. >
   boolean isKnown(String fs) {
     return family(fs) != "unknown";
   }
 
-  // The family a filesystem belongs to, or "unknown".
+  < The family a filesystem belongs to, or "unknown". >
   String family(String fs) {
     if (fs == "fat12" || fs == "fat16" || fs == "fat32" || fs == "vfat" || fs == "exfat") { return "FAT"; }
     if (fs == "ntfs" || fs == "refs") { return "Windows"; }
@@ -79,10 +79,11 @@ class SLFilesystemCatalog {
     return "unknown";
   }
 
-  // The OS that natively owns/defaults to this filesystem.
+  < The OS that natively owns/defaults to this filesystem. >
   String nativeOs(String fs) {
     String f = family(fs);
-    if (f == "FAT")     { return "cross-platform"; }  // universally supported
+    < universally supported >
+    if (f == "FAT")     { return "cross-platform"; }
     if (f == "Windows") { return "Windows"; }
     if (f == "ext" || f == "Linux") { return "Linux"; }
     if (f == "Apple")   { return "macOS"; }
@@ -91,30 +92,32 @@ class SLFilesystemCatalog {
     return f;
   }
 
-  // Does it journal (crash-consistent metadata)? FAT and classic HFS do not.
+  < Does it journal (crash-consistent metadata)? FAT and classic HFS do not. >
   boolean journaling(String fs) {
     if (fs == "ext3" || fs == "ext4" || fs == "ntfs" || fs == "xfs"
      || fs == "jfs" || fs == "reiserfs" || fs == "refs") { return true; }
-    // Copy-on-write filesystems are crash-consistent without a classic journal.
+    < Copy-on-write filesystems are crash-consistent without a classic journal. >
     if (fs == "btrfs" || fs == "zfs" || fs == "apfs" || fs == "f2fs") { return true; }
-    return false;   // fat*, exfat, ext2, hfs+, iso9660, tmpfs, swap, ...
+    < fat*, exfat, ext2, hfs+, iso9660, tmpfs, swap, ... >
+    return false;
   }
 
-  // Copy-on-write (snapshotting) filesystems.
+  < Copy-on-write (snapshotting) filesystems. >
   boolean copyOnWrite(String fs) {
     return fs == "btrfs" || fs == "zfs" || fs == "apfs";
   }
 
-  // Case sensitivity of file names by default.
+  < Case sensitivity of file names by default. >
   String caseSensitivity(String fs) {
     if (fs == "ntfs" || fs == "refs") { return "case-insensitive (case-preserving)"; }
     if (family(fs) == "FAT") { return "case-insensitive (case-preserving)"; }
     if (fs == "apfs") { return "case-insensitive by default (case-sensitive variant exists)"; }
     if (fs == "hfs+" || fs == "hfsplus") { return "case-insensitive by default"; }
-    return "case-sensitive";   // ext*, xfs, btrfs, zfs, f2fs, ufs, ...
+    < ext*, xfs, btrfs, zfs, f2fs, ufs, ... >
+    return "case-sensitive";
   }
 
-  // A typical maximum single-file size, as human text (real per-fs limits).
+  < A typical maximum single-file size, as human text (real per-fs limits). >
   String maxFileSize(String fs) {
     if (fs == "fat12" || fs == "fat16") { return "2 GB"; }
     if (fs == "fat32") { return "4 GB (minus 1 byte)"; }
@@ -133,21 +136,21 @@ class SLFilesystemCatalog {
     return "n/a";
   }
 
-  // Can this filesystem hold a bootable root? (optical/pseudo/network cannot
-  // serve as a general writable root; FAT/EFI can host an ESP but not a Linux
-  // root.) True for the mainstream rootable filesystems.
+  < Can this filesystem hold a bootable root? (optical/pseudo/network cannot >
+  < serve as a general writable root; FAT/EFI can host an ESP but not a Linux >
+  < root.) True for the mainstream rootable filesystems. >
   boolean rootable(String fs) {
     return fs == "ext4" || fs == "ext3" || fs == "xfs" || fs == "btrfs"
         || fs == "zfs"  || fs == "f2fs" || fs == "ntfs" || fs == "refs"
         || fs == "apfs" || fs == "hfs+" || fs == "hfsplus" || fs == "ufs";
   }
 
-  // Suitable for the EFI System Partition (must be FAT).
+  < Suitable for the EFI System Partition (must be FAT). >
   boolean efiSystemPartition(String fs) {
     return fs == "fat32" || fs == "vfat" || fs == "fat16";
   }
 
-  // The mkfs-style tool that formats this filesystem.
+  < The mkfs-style tool that formats this filesystem. >
   String mkfsTool(String fs) {
     if (fs == "fat12" || fs == "fat16" || fs == "fat32" || fs == "vfat") { return "mkfs.vfat"; }
     if (fs == "exfat") { return "mkfs.exfat"; }
@@ -169,7 +172,7 @@ class SLFilesystemCatalog {
     return "n/a";
   }
 
-  // A one-line use-case note for a GUI/menu.
+  < A one-line use-case note for a GUI/menu. >
   String useCase(String fs) {
     if (family(fs) == "FAT") { return "removable media / EFI System Partition; universal compatibility"; }
     if (fs == "ntfs") { return "Windows system and data volumes"; }
@@ -190,21 +193,21 @@ class SLFilesystemCatalog {
     return "general-purpose";
   }
 
-  // The default root filesystem for an OS shape (what forShape would pick).
+  < The default root filesystem for an OS shape (what forShape would pick). >
   String defaultRootFor(String shapeName) {
     if (shapeName == "Windows") { return "ntfs"; }
     if (shapeName == "macOS")   { return "apfs"; }
     return "ext4";
   }
 
-  // A newline menu of the catalogue's rootable choices for a shape, for a GUI.
+  < A newline menu of the catalogue's rootable choices for a shape, for a GUI. >
   String rootChoicesFor(String shapeName) {
     if (shapeName == "Windows") { return "ntfs\nrefs"; }
     if (shapeName == "macOS")   { return "apfs\nhfs+"; }
     return "ext4\nxfs\nbtrfs\nzfs\nf2fs";
   }
 
-  // A compact spec line a tool can print for one filesystem.
+  < A compact spec line a tool can print for one filesystem. >
   String describe(String fs) {
     if (!isKnown(fs)) { return fs + ": unknown filesystem"; }
     String s = fs + " [" + family(fs) + "] native=" + nativeOs(fs);

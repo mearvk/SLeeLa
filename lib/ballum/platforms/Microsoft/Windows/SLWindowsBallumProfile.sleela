@@ -56,8 +56,10 @@ class SLWindowsBallumProfile {
 
   boolean supportsPerPixel() { return true; }
   boolean supportsRegionBlit() { return true; }
-  boolean supportsBrightness() { return true; }        // via gamma ramp scaling
-  boolean supportsColorTemperature() { return true; }  // via gamma ramp
+  < via gamma ramp scaling >
+  boolean supportsBrightness() { return true; }
+  < via gamma ramp >
+  boolean supportsColorTemperature() { return true; }
   boolean supportsGamma() { return true; }
 
   boolean supportsDdcBacklight() { return false; }

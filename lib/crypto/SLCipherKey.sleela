@@ -52,19 +52,26 @@ class SLCipherKey {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Status codes mirror slcrypto_status in crypto/include/slcrypto.h.
+  < Status codes mirror slcrypto_status in crypto/include/slcrypto.h. >
   static final int OK = 0;
   static final int ERR_PARAM = -1;
   static final int ERR_AUTH = -2;
   static final int ERR_UNIMPL = -3;
 
-  String algorithm; // e.g. "AES"
-  int keyBits;      // 128, 192, or 256
-  int state;        // 1 = enabled, 0 = disabled
-  int configured;   // 1 once an algorithm name has been accepted
-  int keySet;       // 1 once a valid key size has been accepted
-  int loaded;       // 1 once key material has been loaded
-  int backend;      // 1 when the native /crypto backend is linked and ready
+  < e.g. "AES" >
+  String algorithm;
+  < 128, 192, or 256 >
+  int keyBits;
+  < 1 = enabled, 0 = disabled >
+  int state;
+  < 1 once an algorithm name has been accepted >
+  int configured;
+  < 1 once a valid key size has been accepted >
+  int keySet;
+  < 1 once key material has been loaded >
+  int loaded;
+  < 1 when the native /crypto backend is linked and ready >
+  int backend;
 
   int configure(String a) {
     if (a == null) { configured = 0; return ERR_PARAM; }
@@ -73,7 +80,7 @@ class SLCipherKey {
     return OK;
   }
 
-  // AES key sizes only (FIPS 197).
+  < AES key sizes only (FIPS 197). >
   int keySize(int b) {
     if (b == 128 || b == 192 || b == 256) { keyBits = b; keySet = 1; return OK; }
     keySet = 0;
@@ -87,7 +94,7 @@ class SLCipherKey {
   void disable() { state = 0; }
   boolean active() { return state == 1 && configured == 1 && keySet == 1 && backend == 1; }
 
-  // Load raw key bytes and build the native key schedule.
+  < Load raw key bytes and build the native key schedule. >
   int load(String keyMaterial) {
     if (active() == false) { return ERR_UNIMPL; }
     if (keyMaterial == null) { return ERR_PARAM; }
@@ -96,7 +103,7 @@ class SLCipherKey {
   }
   boolean isLoaded() { return loaded == 1; }
 
-  // Best-effort zeroization of the native key schedule.
+  < Best-effort zeroization of the native key schedule. >
   int wipe() {
     if (backend == 0) { return ERR_UNIMPL; }
     loaded = 0;

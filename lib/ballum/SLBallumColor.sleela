@@ -78,7 +78,7 @@ class SLBallumColor {
   int blue() { return b; }
   int alpha() { return a; }
 
-  // Pack to 0xAARRGGBB for a caller that wants a single int handle.
+  < Pack to 0xAARRGGBB for a caller that wants a single int handle. >
   int packed() {
     return (a * 16777216) + (r * 65536) + (g * 256) + b;
   }

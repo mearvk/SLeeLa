@@ -58,11 +58,14 @@ class ManagementCourtroom {
   static final String MODULE = "ManagementCourtroom";
 
   int loadedFlag;
-  int file;    // documented leverage: evidence, memos, the paper trail
-  int tact;    // social capital: knowing what to say and when
-  int rolls;   // banked extra rolls the player can spend on future turns
+  < documented leverage: evidence, memos, the paper trail >
+  int file;
+  < social capital: knowing what to say and when >
+  int tact;
+  < banked extra rolls the player can spend on future turns >
+  int rolls;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() { loadedFlag = 1; file = 0; tact = 0; rolls = 0; }
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
@@ -71,7 +74,7 @@ class ManagementCourtroom {
   void addTact(int n)  { if (n > 0) { tact  = tact  + n; } }
   void addRolls(int n) { if (n > 0) { rolls = rolls + n; } }
 
-  // Spend a banked roll, if any. Returns true if one was available.
+  < Spend a banked roll, if any. Returns true if one was available. >
   boolean spendRoll() {
     if (rolls <= 0) { return false; }
     rolls = rolls - 1;
@@ -82,8 +85,8 @@ class ManagementCourtroom {
   int tactCount() { return tact; }
   int rollCount() { return rolls; }
 
-  // Overall standing in the room: the three holdings, weighted. Tact talks
-  // loudest, file carries weight, banked rolls are nice to have.
+  < Overall standing in the room: the three holdings, weighted. Tact talks >
+  < loudest, file carries weight, banked rolls are nice to have. >
   int standing() { return tact * 3 + file * 2 + rolls; }
 
   String describe() {

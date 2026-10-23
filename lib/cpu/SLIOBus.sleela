@@ -85,7 +85,7 @@ class SLIOBus {
     return p0;
   }
 
-  // CPU-side IN/OUT routed through the bus.
+  < CPU-side IN/OUT routed through the bus. >
   int in(int number) { SLIOPort p = port(number); if (p != null) { return p.in(); } return -1; }
   void out(int number, int value) { SLIOPort p = port(number); if (p != null) { p.out(value); } }
 

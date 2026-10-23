@@ -68,7 +68,7 @@ class MoralCertificateDemo {
 
     String intToStr(int v) { return "" + v; }
 
-    // A stable per-character weight for the seal fold.
+    < A stable per-character weight for the seal fold. >
     int charWeight(String c) {
         if (c == "0") { return 1; } if (c == "1") { return 2; } if (c == "2") { return 3; }
         if (c == "3") { return 4; } if (c == "4") { return 5; } if (c == "5") { return 6; }
@@ -86,7 +86,7 @@ class MoralCertificateDemo {
              + ";capacitor=" + intToStr(c.capacitor) + ";expires=" + c.expires;
     }
 
-    // Deterministic seal over the body, keyed on the issuer.
+    < Deterministic seal over the body, keyed on the issuer. >
     String computeSeal(Cert c) {
         String b = body(c);
         int acc = 7;
@@ -107,7 +107,7 @@ class MoralCertificateDemo {
 
     boolean verify(Cert c) { return c.seal == computeSeal(c); }
 
-    // Guard: admit only when capacitor present, cert verifies, unexpired, red lines armed.
+    < Guard: admit only when capacitor present, cert verifies, unexpired, red lines armed. >
     String guard(String product, Cert c, String now) {
         if (c.capacitor != 1) { return "REFUSE: no Moral Capacitor embedded in " + product; }
         if (c.subject != product) { return "REFUSE: certificate subject mismatch"; }
@@ -126,24 +126,25 @@ class MoralCertificateDemo {
     void main() {
         banner("Certificate of Morals(TM) + Guard of the Moral Code");
 
-        // 1. Issue a Certificate of Morals for a VM product.
+        < 1. Issue a Certificate of Morals for a VM product. >
         Cert vm = issue("sleela-vm", "MEARVK LLC", "vm-bridge", 4, 6, "2030-01-01");
         print("Issued: subject=" + vm.subject + " issuer=" + vm.issuer
               + " policy=" + vm.policy + " seal=" + vm.seal);
 
-        // 2. Verify + guard a genuine certificate -> ADMIT.
+        < 2. Verify + guard a genuine certificate -> ADMIT. >
         print(guard("sleela-vm", vm, "2026-10-10"));
 
-        // 3. Tamper with the attested threshold (without re-sealing) -> REFUSE.
+        < 3. Tamper with the attested threshold (without re-sealing) -> REFUSE. >
         Cert tampered = issue("sleela-vm", "MEARVK LLC", "vm-bridge", 4, 6, "2030-01-01");
-        tampered.threshold = 1;    // altered after sealing: seal no longer matches body
+        < altered after sealing: seal no longer matches body >
+        tampered.threshold = 1;
         print(guard("sleela-vm", tampered, "2026-10-10"));
 
-        // 4. An expired certificate -> REFUSE.
+        < 4. An expired certificate -> REFUSE. >
         Cert old = issue("sleela-os", "MEARVK LLC", "os-destructive", 6, 6, "2020-01-01");
         print(guard("sleela-os", old, "2026-10-10"));
 
-        // 5. A product with no moral code at all -> REFUSE.
+        < 5. A product with no moral code at all -> REFUSE. >
         Cert none = new Cert();
         none.subject = "uncertified-tool"; none.capacitor = 0;
         print(guard("uncertified-tool", none, "2026-10-10"));

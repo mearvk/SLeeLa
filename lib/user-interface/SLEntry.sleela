@@ -54,7 +54,7 @@ class SLEntry extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create an entry inside `parent` with placeholder text (shown when empty).
+  < Create an entry inside `parent` with placeholder text (shown when empty). >
   void createIn(SLWidget parent, String placeholder) {
     widget = uiEntry(parent.handle(), placeholder);
   }
@@ -62,7 +62,7 @@ class SLEntry extends SLWidget {
     widget = uiEntry(parentHandle, placeholder);
   }
 
-  // True if Enter was pressed since the last check (latch cleared on read).
+  < True if Enter was pressed since the last check (latch cleared on read). >
   boolean submitted() {
     if (widget < 0) { return false; }
     return uiWidgetTakeActivated(widget) == 1;

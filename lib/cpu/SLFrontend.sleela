@@ -62,7 +62,8 @@ class SLFrontend {
   String language;
   int langId;
   String sourcePath;
-  int diagnostics;    // count of errors/warnings produced
+  < count of errors/warnings produced >
+  int diagnostics;
   SLIR ir;
 
   void configure(String lang, int id, String path) {
@@ -70,18 +71,18 @@ class SLFrontend {
     ir = new SLIR(); ir.configure(lang, 4096);
   }
 
-  // Lex + parse + semantic check. Concrete frontends override; the base reports
-  // readiness only.
+  < Lex + parse + semantic check. Concrete frontends override; the base reports >
+  < readiness only. >
   boolean parse() { return sourcePath != null; }
 
-  // Lower parsed source to the common IR. Concrete frontends override to emit
-  // real IR; the base emits an empty, well-formed module (HALT only).
+  < Lower parsed source to the common IR. Concrete frontends override to emit >
+  < real IR; the base emits an empty, well-formed module (HALT only). >
   SLIR lower() {
     ir.emit(SLIRInstructionConst(), -1, -1, -1, 0);
     return ir;
   }
 
-  // Helper so subclasses can reference the IR_HALT constant without an instance.
+  < Helper so subclasses can reference the IR_HALT constant without an instance. >
   int SLIRInstructionConst() { SLIRInstruction t = new SLIRInstruction(); return t.IR_HALT; }
 
   SLIR intermediate() { return ir; }

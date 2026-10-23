@@ -1,10 +1,8 @@
 #sleela 2.1
-/*
- * CitizenMobilityTransportAndEnvironmentalImpactStats.sleela
- * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
- * Source category: Mobility, transport, and environmental impact.
- * Monetary values use integer minor units where the field name says Cents.
- */
+<< CitizenMobilityTransportAndEnvironmentalImpactStats.sleela
+   Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+   Source category: Mobility, transport, and environmental impact.
+   Monetary values use integer minor units where the field name says Cents. >>
 class CitizenMobilityTransportAndEnvironmentalImpactStats {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

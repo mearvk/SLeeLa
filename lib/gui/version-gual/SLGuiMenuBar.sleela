@@ -43,7 +43,7 @@ class SLGuiMenuBar {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Shared menu-bar base colour used by the GUI host.
+  < Shared menu-bar base colour used by the GUI host. >
   static final String BACKGROUND_COLOR = "#2b2f32";
 
   String name;

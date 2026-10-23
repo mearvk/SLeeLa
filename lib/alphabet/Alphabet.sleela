@@ -71,11 +71,12 @@ class Alphabet {
   static final int MAX = 256;
 
   int loadedFlag;
-  String scriptName;    // e.g. "Latin", "Greek", "Cyrillic"
+  < e.g. "Latin", "Greek", "Cyrillic" >
+  String scriptName;
   Letter[] letters;
   int count;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() {
     loadedFlag = 1;
     scriptName = "Unnamed";
@@ -85,20 +86,20 @@ class Alphabet {
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // A subclass calls this from its own setup to declare the script name, then
-  // appends its letters via compose(). Mirrors the declare()/configure()
-  // pattern used across the standard library.
+  < A subclass calls this from its own setup to declare the script name, then >
+  < appends its letters via compose(). Mirrors the declare()/configure() >
+  < pattern used across the standard library. >
   void begin(String name) {
     load();
     if (name != null) { scriptName = name; }
     compose();
   }
 
-  // Overridable: a concrete alphabet appends its Letters here, in order. The
-  // base version writes nothing, so an un-overridden Alphabet is honestly empty.
+  < Overridable: a concrete alphabet appends its Letters here, in order. The >
+  < base version writes nothing, so an un-overridden Alphabet is honestly empty. >
   void compose() { }
 
-  // Append one letter. Vowel-ness is passed in because only the script knows.
+  < Append one letter. Vowel-ness is passed in because only the script knows. >
   void append(String glyph, boolean vowel) {
     if (count >= MAX) { return; }
     Letter L = new Letter();
@@ -108,9 +109,9 @@ class Alphabet {
     count = count + 1;
   }
 
-  // Syntax 1.8+: append a pre-built Letter (e.g. one made with the Letter
-  // constructor `new Letter(glyph, order, vowel)`). The letter's order is
-  // normalised to its real position so a builder need not track indices.
+  < Syntax 1.8+: append a pre-built Letter (e.g. one made with the Letter >
+  < constructor `new Letter(glyph, order, vowel)`). The letter's order is >
+  < normalised to its real position so a builder need not track indices. >
   void appendLetter(Letter L) {
     if (count >= MAX) { return; }
     if (L == null) { return; }
@@ -124,7 +125,7 @@ class Alphabet {
     return letters[i];
   }
 
-  // The first letter whose glyph matches, or null.
+  < The first letter whose glyph matches, or null. >
   Letter find(String glyph) {
     if (glyph == null) { return null; }
     int i = 0;

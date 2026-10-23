@@ -53,15 +53,19 @@ class SLCache {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String level;        // "L1", "L2", "L3"
+  < "L1", "L2", "L3" >
+  String level;
   int sizeBytes;
   int lineBytes;
-  int associativity;   // ways
-  SLRAM backing;       // next level down (main memory or a lower cache)
+  < ways >
+  int associativity;
+  < next level down (main memory or a lower cache) >
+  SLRAM backing;
   int accesses;
   int hits;
   int misses;
-  int warmLines;       // modeled count of resident lines
+  < modeled count of resident lines >
+  int warmLines;
 
   void configure(String cacheLevel, int size, int line, int ways) {
     level = cacheLevel; sizeBytes = size; lineBytes = line; associativity = ways;
@@ -73,9 +77,9 @@ class SLCache {
   int lineCount() { if (lineBytes == 0) { return 0; } return sizeBytes / lineBytes; }
   int lineOf(int addr) { if (lineBytes == 0) { return 0; } return addr / (lineBytes / 4); }
 
-  // Access a word address. A line already warm is a hit; otherwise a miss that
-  // warms the line (bounded by the cache's line capacity) and reads from the
-  // backing store.
+  < Access a word address. A line already warm is a hit; otherwise a miss that >
+  < warms the line (bounded by the cache's line capacity) and reads from the >
+  < backing store. >
   int access(int addr) {
     accesses = accesses + 1;
     int line = lineOf(addr);
@@ -94,7 +98,7 @@ class SLCache {
   int accessCount() { return accesses; }
   int hitCount() { return hits; }
   int missCount() { return misses; }
-  // hit rate in percent (0..100), integer
+  < hit rate in percent (0..100), integer >
   int hitRatePercent() { if (accesses == 0) { return 0; } return (hits * 100) / accesses; }
   String levelName() { return level; }
 }

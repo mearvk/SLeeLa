@@ -66,8 +66,8 @@ class JavaScriptLanguageCompiler extends SLLanguageCompiler {
   }
 
   boolean runParse(SLCompileRequest request) {
-    // JavaScript parsing: scripts vs modules, hoisting-aware declarations,
-    // functions/arrow functions, classes, and expressions.
+    < JavaScript parsing: scripts vs modules, hoisting-aware declarations, >
+    < functions/arrow functions, classes, and expressions. >
     return provides(PHASE_PARSE);
   }
 }

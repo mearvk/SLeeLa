@@ -54,8 +54,8 @@ class SLRadioButton extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a radio inside `parent`, in exclusivity `group`, with a label and
-  // initial selected state.
+  < Create a radio inside `parent`, in exclusivity `group`, with a label and >
+  < initial selected state. >
   void createIn(SLWidget parent, String label, int group, boolean selected) {
     widget = uiRadioButton(parent.handle(), label, group, selected ? 1 : 0);
   }
@@ -72,7 +72,7 @@ class SLRadioButton extends SLWidget {
     if (widget >= 0) { uiWidgetSetToggle(widget, 1); }
   }
 
-  // True if this radio was just selected since the last check (latch cleared).
+  < True if this radio was just selected since the last check (latch cleared). >
   boolean changed() {
     if (widget < 0) { return false; }
     return uiWidgetTakeActivated(widget) == 1;

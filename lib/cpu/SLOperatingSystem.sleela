@@ -77,12 +77,12 @@ class SLOperatingSystem {
     name = osName; cpu = processor; memory = ram; nextPid = 1;
   }
 
-  // Build every subsystem and bring the kernel up.
+  < Build every subsystem and bring the kernel up. >
   void install(SLHardDrive bootDrive, int syscallHandlerAddr) {
-    // Memory
+    < Memory >
     mm = new SLMemoryManager(); mm.configure(memory, 256, 16);
 
-    // I/O + drivers
+    < I/O + drivers >
     io = new SLIOBus(); io.configure();
     SLIOPort consolePort = new SLIOPort(); consolePort.configure(0, SLIOPort.DIR_OUT); io.registerPort(0, consolePort);
     SLIOPort diskPort = new SLIOPort(); diskPort.configure(1, SLIOPort.DIR_INOUT); io.registerPort(1, diskPort);
@@ -102,20 +102,21 @@ class SLOperatingSystem {
     drivers.installKeyboard(keyboard);
     drivers.installNetwork(net);
 
-    // Filesystem (data region starts after the kernel image blocks)
+    < Filesystem (data region starts after the kernel image blocks) >
     fs = new SLFileSystem(); fs.configure(disk, 64);
 
-    // Syscalls + scheduler
+    < Syscalls + scheduler >
     syscalls = new SLSystemCall(); syscalls.configure();
-    scheduler = new SLScheduler(); scheduler.configure(16); // 16-tick quantum
+    < 16-tick quantum >
+    scheduler = new SLScheduler(); scheduler.configure(16);
 
-    // Kernel
+    < Kernel >
     kernel = new SLKernel();
     kernel.configure(cpu, memory, scheduler, mm, drivers, syscalls, fs, syscallHandlerAddr);
     kernel.boot();
   }
 
-  // Admit a loaded program as a schedulable process.
+  < Admit a loaded program as a schedulable process. >
   SLProcess spawn(String procName, int entryPoint) {
     int base = mm.allocPages(4);
     SLProcess p = new SLProcess();
@@ -125,7 +126,7 @@ class SLOperatingSystem {
     return p;
   }
 
-  // Hand control to the kernel for a bounded number of scheduling rounds.
+  < Hand control to the kernel for a bounded number of scheduling rounds. >
   int run(int rounds) { return kernel.run(rounds); }
 
   String osName() { return name; }

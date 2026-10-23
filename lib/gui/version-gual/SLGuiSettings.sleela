@@ -58,52 +58,73 @@ class SLGuiSettings {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // --- theme ---
-  static final int THEME_SYSTEM = 0;   // follow the OS theme
+  < --- theme --- >
+  < follow the OS theme >
+  static final int THEME_SYSTEM = 0;
   static final int THEME_LIGHT  = 1;
   static final int THEME_DARK   = 2;
 
-  // --- document-listener backpressure policy ---
-  static final int BACKPRESSURE_COALESCE = 0;  // merge overflow into the latest (default)
-  static final int BACKPRESSURE_DROP     = 1;  // drop oldest when the queue is full
-  static final int BACKPRESSURE_BLOCK    = 2;  // block the producer until drained
+  < --- document-listener backpressure policy --- >
+  < merge overflow into the latest (default) >
+  static final int BACKPRESSURE_COALESCE = 0;
+  < drop oldest when the queue is full >
+  static final int BACKPRESSURE_DROP     = 1;
+  < block the producer until drained >
+  static final int BACKPRESSURE_BLOCK    = 2;
 
-  // --- presentation buffering (mirror native SLUIBufferingMode) ---
-  static final int BUFFERING_SINGLE = 0;  // blit straight to the window (may tear on resize)
-  static final int BUFFERING_DOUBLE = 1;  // one off-screen back buffer; frame lands atomically (default)
-  static final int BUFFERING_TRIPLE = 2;  // a ring of two back buffers; smoother rapid resize/animation
+  < --- presentation buffering (mirror native SLUIBufferingMode) --- >
+  < blit straight to the window (may tear on resize) >
+  static final int BUFFERING_SINGLE = 0;
+  < one off-screen back buffer; frame lands atomically (default) >
+  static final int BUFFERING_DOUBLE = 1;
+  < a ring of two back buffers; smoother rapid resize/animation >
+  static final int BUFFERING_TRIPLE = 2;
 
-  // --- presentation ---
-  int theme;            // THEME_*
-  int dpiScalePct;      // display scale percentage, 50..400 (100 = 1x)
-  int reducedMotion;    // 1 = minimize animation (accessibility)
-  int accessible;       // 1 = expose accessibility tree / larger hit targets
-  int vsync;            // 1 = present synchronized to the display refresh
-  int bufferingMode;    // BUFFERING_* — how a painted frame reaches the screen
+  < --- presentation --- >
+  < THEME_* >
+  int theme;
+  < display scale percentage, 50..400 (100 = 1x) >
+  int dpiScalePct;
+  < 1 = minimize animation (accessibility) >
+  int reducedMotion;
+  < 1 = expose accessibility tree / larger hit targets >
+  int accessible;
+  < 1 = present synchronized to the display refresh >
+  int vsync;
+  < BUFFERING_* — how a painted frame reaches the screen >
+  int bufferingMode;
 
-  // --- window defaults ---
+  < --- window defaults --- >
   int minWidth; int minHeight;
   int maxWidth; int maxHeight;
-  int resizable;        // 1 = user may resize
-  int decorated;        // 1 = OS title bar / borders
+  < 1 = user may resize >
+  int resizable;
+  < 1 = OS title bar / borders >
+  int decorated;
 
-  // --- document-listener timing ---
-  int pollMillis;       // OS wake cadence (ms), 10..60000
-  int debounceMillis;   // settle window after a change before emitting, 0..10000
-  int coalesceQueueMax; // max pending change events before backpressure, 1..4096
-  int backpressure;     // BACKPRESSURE_*
+  < --- document-listener timing --- >
+  < OS wake cadence (ms), 10..60000 >
+  int pollMillis;
+  < settle window after a change before emitting, 0..10000 >
+  int debounceMillis;
+  < max pending change events before backpressure, 1..4096 >
+  int coalesceQueueMax;
+  < BACKPRESSURE_* >
+  int backpressure;
 
-  // Apply the documented, careful defaults. Everything here is already in range.
+  < Apply the documented, careful defaults. Everything here is already in range. >
   void configure() {
     theme = THEME_SYSTEM; dpiScalePct = 100; reducedMotion = 0; accessible = 1; vsync = 1;
-    bufferingMode = BUFFERING_DOUBLE;   // flicker-free resize out of the box
-    minWidth = 320; minHeight = 240; maxWidth = 0; maxHeight = 0;   // 0 = unbounded
+    < flicker-free resize out of the box >
+    bufferingMode = BUFFERING_DOUBLE;
+    < 0 = unbounded >
+    minWidth = 320; minHeight = 240; maxWidth = 0; maxHeight = 0;
     resizable = 1; decorated = 1;
     pollMillis = 500; debounceMillis = 50; coalesceQueueMax = 64;
     backpressure = BACKPRESSURE_COALESCE;
   }
 
-  // --- clamped setters: a value out of range is pulled to the nearest bound ---
+  < --- clamped setters: a value out of range is pulled to the nearest bound --- >
   int clamp(int v, int lo, int hi) { if (v < lo) { return lo; } if (v > hi) { return hi; } return v; }
 
   void setTheme(int t) { if (t >= THEME_SYSTEM && t <= THEME_DARK) { theme = t; } }
@@ -116,7 +137,7 @@ class SLGuiSettings {
   }
 
   void setMinSize(int w, int h) { if (w > 0) { minWidth = w; } if (h > 0) { minHeight = h; } }
-  // Max of 0 means unbounded; a positive max must not fall below the min.
+  < Max of 0 means unbounded; a positive max must not fall below the min. >
   void setMaxSize(int w, int h) {
     if (w == 0 || w >= minWidth)  { maxWidth = (w < 0) ? 0 : w; }
     if (h == 0 || h >= minHeight) { maxHeight = (h < 0) ? 0 : h; }
@@ -131,7 +152,7 @@ class SLGuiSettings {
     if (policy >= BACKPRESSURE_COALESCE && policy <= BACKPRESSURE_BLOCK) { backpressure = policy; }
   }
 
-  // --- readers ---
+  < --- readers --- >
   int getTheme() { return theme; }
   int getDpiScalePct() { return dpiScalePct; }
   boolean reducedMotionOn() { return reducedMotion == 1; }
@@ -165,8 +186,8 @@ class SLGuiSettings {
     return "double";
   }
 
-  // Internally consistent when every clamped field sits in range and a bounded
-  // max is not below its min (0 = unbounded always passes).
+  < Internally consistent when every clamped field sits in range and a bounded >
+  < max is not below its min (0 = unbounded always passes). >
   boolean honored() {
     boolean scaleOk = dpiScalePct >= 50 && dpiScalePct <= 400;
     boolean pollOk = pollMillis >= 10 && pollMillis <= 60000;

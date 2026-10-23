@@ -64,26 +64,40 @@ class Citizen {
 
   static final String MODULE = "Citizen";
 
-  // Life stages, because every bureaucracy loves an enum it can't spell.
-  static final int STAGE_UNBORN   = 0;   // a gleam in the census-taker's eye
-  static final int STAGE_MINOR    = 1;   // all rights, none of the taxes
-  static final int STAGE_WORKING  = 2;   // the golden, caffeinated years
-  static final int STAGE_RETIRED  = 3;   // emeritus citizen, senior discount
-  static final int STAGE_DECEASED = 4;   // files one final, very late return
+  < Life stages, because every bureaucracy loves an enum it can't spell. >
+  < a gleam in the census-taker's eye >
+  static final int STAGE_UNBORN   = 0;
+  < all rights, none of the taxes >
+  static final int STAGE_MINOR    = 1;
+  < the golden, caffeinated years >
+  static final int STAGE_WORKING  = 2;
+  < emeritus citizen, senior discount >
+  static final int STAGE_RETIRED  = 3;
+  < files one final, very late return >
+  static final int STAGE_DECEASED = 4;
 
-  int loadedFlag;              // 1 once the module is loaded
+  < 1 once the module is loaded >
+  int loadedFlag;
 
-  String legalName;            // the name on the forms nobody reads
-  String nickname;             // the name their friends actually use
-  int age;                     // in laps around a medium yellow star
-  int stage;                   // one of STAGE_*
-  int moodOutOf100;            // 0 = DMV queue, 100 = Friday 5pm
+  < the name on the forms nobody reads >
+  String legalName;
+  < the name their friends actually use >
+  String nickname;
+  < in laps around a medium yellow star >
+  int age;
+  < one of STAGE_* >
+  int stage;
+  < 0 = DMV queue, 100 = Friday 5pm >
+  int moodOutOf100;
 
-  Industry industry;           // what they claim at parties
-  BankAccount bank;            // the sad truth of what they can afford
-  FederalReserveID fedId;      // how the central bank addresses the holiday card
+  < what they claim at parties >
+  Industry industry;
+  < the sad truth of what they can afford >
+  BankAccount bank;
+  < how the central bank addresses the holiday card >
+  FederalReserveID fedId;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() {
     loadedFlag = 1;
     legalName = "Jane Q. Public";
@@ -101,36 +115,39 @@ class Citizen {
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // --- civic life cycle ---------------------------------------------------
+  < --- civic life cycle --------------------------------------------------- >
 
-  // A citizen is born. Congratulations, you now owe the system a resume.
+  < A citizen is born. Congratulations, you now owe the system a resume. >
   void beBorn(String name) {
     if (name != null) { legalName = name; }
     age = 0;
     stage = STAGE_MINOR;
-    moodOutOf100 = 100;            // newborns have no idea yet. Bless them.
+    < newborns have no idea yet. Bless them. >
+    moodOutOf100 = 100;
     fedId.issue(legalName);
     bank.openFor(legalName);
   }
 
-  // Time, that undefeated opponent, advances exactly one year.
+  < Time, that undefeated opponent, advances exactly one year. >
   void haveABirthday() {
     age = age + 1;
     if (age >= 18 && stage == STAGE_MINOR) { stage = STAGE_WORKING; }
     if (age >= 67 && stage == STAGE_WORKING) { retire(); }
-    moodOutOf100 = moodOutOf100 + 1;   // another candle, mild optimism
+    < another candle, mild optimism >
+    moodOutOf100 = moodOutOf100 + 1;
     if (moodOutOf100 > 100) { moodOutOf100 = 100; }
   }
 
-  // Pick a trade. The Industry class judges you so this class doesn't have to.
+  < Pick a trade. The Industry class judges you so this class doesn't have to. >
   void getAJob(int sector, int wageCents) {
     industry.employ(sector, wageCents);
     if (stage == STAGE_MINOR && age >= 16) { stage = STAGE_WORKING; }
-    moodOutOf100 = moodOutOf100 + 5;   // the thrill wears off by Tuesday
+    < the thrill wears off by Tuesday >
+    moodOutOf100 = moodOutOf100 + 5;
     clampMood();
   }
 
-  // Payday. The one unambiguously good day of the fortnight.
+  < Payday. The one unambiguously good day of the fortnight. >
   int getPaid() {
     if (!employed()) { return 0; }
     int gross = industry.wage();
@@ -140,18 +157,19 @@ class Citizen {
     return gross;
   }
 
-  // Taxes. A citizen is, after all, defined by their relationship with Form 1040.
+  < Taxes. A citizen is, after all, defined by their relationship with Form 1040. >
   int payTaxes(int ratePercent) {
     if (ratePercent < 0) { ratePercent = 0; }
     if (ratePercent > 100) { ratePercent = 100; }
     int owed = (bank.balance() * ratePercent) / 100;
     bank.withdraw(owed);
-    moodOutOf100 = moodOutOf100 - 15;   // the one unambiguously bad day
+    < the one unambiguously bad day >
+    moodOutOf100 = moodOutOf100 - 15;
     clampMood();
     return owed;
   }
 
-  // Spend some money on something frivolous. Highly recommended for morale.
+  < Spend some money on something frivolous. Highly recommended for morale. >
   boolean treatYourself(int cents) {
     boolean ok = bank.withdraw(cents);
     if (ok) { moodOutOf100 = moodOutOf100 + 8; }
@@ -159,26 +177,27 @@ class Citizen {
     return ok;
   }
 
-  // Gracefully exit the workforce; keep the opinions.
+  < Gracefully exit the workforce; keep the opinions. >
   void retire() {
     stage = STAGE_RETIRED;
     industry.layOff();
-    moodOutOf100 = moodOutOf100 + 20;   // no more Monday meetings
+    < no more Monday meetings >
+    moodOutOf100 = moodOutOf100 + 20;
     clampMood();
   }
 
-  // The final, non-negotiable withdrawal.
+  < The final, non-negotiable withdrawal. >
   void passAway() {
     stage = STAGE_DECEASED;
     industry.layOff();
   }
 
-  // --- queries ------------------------------------------------------------
+  < --- queries ------------------------------------------------------------ >
   boolean alive() { return stage != STAGE_UNBORN && stage != STAGE_DECEASED; }
   boolean employed() { return industry.employed() && stage == STAGE_WORKING; }
   boolean solvent() { return bank.balance() >= 0; }
 
-  // The whole point: a Citizen is able. This proves it.
+  < The whole point: a Citizen is able. This proves it. >
   boolean isAble() {
     return alive() && fedId.valid() && bank.open() && moodOutOf100 > 0;
   }
@@ -194,8 +213,8 @@ class Citizen {
     if (moodOutOf100 < 0) { moodOutOf100 = 0; }
   }
 
-  // Render a boolean as a word, so describe() concatenates only Strings/ints —
-  // the exact idiom the shipped /lib describe() methods already use.
+  < Render a boolean as a word, so describe() concatenates only Strings/ints — >
+  < the exact idiom the shipped /lib describe() methods already use. >
   String yn(boolean b) { if (b) { return "yes"; } return "no"; }
 
   String describe() {

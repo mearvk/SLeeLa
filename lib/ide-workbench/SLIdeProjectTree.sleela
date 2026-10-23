@@ -52,12 +52,17 @@ class SLIdeProjectTree {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_ENTRIES = 65536;
 
-  String rootPath;             // the opened project / workspace root
-  String[] paths;              // resolved host paths, one per visible entry
-  int[] kinds;                 // 0 = directory, 1 = file
-  int[] depths;                // indentation depth for tree rendering
+  < the opened project / workspace root >
+  String rootPath;
+  < resolved host paths, one per visible entry >
+  String[] paths;
+  < 0 = directory, 1 = file >
+  int[] kinds;
+  < indentation depth for tree rendering >
+  int[] depths;
   int count;
-  int selected;                // index of the selected entry, -1 when none
+  < index of the selected entry, -1 when none >
+  int selected;
 
   void init(String root) {
     rootPath = root;
@@ -70,7 +75,7 @@ class SLIdeProjectTree {
   String root() { return rootPath; }
   int size() { return count; }
 
-  // Add a visible entry (the host enumerates the filesystem; SLeeLa models it).
+  < Add a visible entry (the host enumerates the filesystem; SLeeLa models it). >
   boolean addEntry(String path, int kind, int depth) {
     if (count >= MAX_ENTRIES) { return false; }
     paths[count] = path; kinds[count] = kind; depths[count] = depth;
@@ -101,11 +106,11 @@ class SLIdeProjectTree {
   int selection() { return selected; }
   String selectedPath() { return pathAt(selected); }
 
-  // The selected entry is openable in an editor only when it is a file.
+  < The selected entry is openable in an editor only when it is a file. >
   boolean selectionOpenable() { return isFile(selected); }
 
-  // Classify a path's editor language from its extension (drives SLIdeEditor
-  // and the compile route: .sst goes through Nordshrift, .sleela goes direct).
+  < Classify a path's editor language from its extension (drives SLIdeEditor >
+  < and the compile route: .sst goes through Nordshrift, .sleela goes direct). >
   String languageFor(String path) {
     if (endsWith(path, ".sst")) { return "sst"; }
     if (endsWith(path, ".sleela")) { return "sleela"; }
@@ -123,8 +128,8 @@ class SLIdeProjectTree {
     return substr(s, sl - ql, sl) == suffix;
   }
 
-  // Thin wrappers over the host string services (kept explicit so the model is
-  // self-describing; the Java/native host supplies the implementations).
+  < Thin wrappers over the host string services (kept explicit so the model is >
+  < self-describing; the Java/native host supplies the implementations). >
   int len(String s) { return s.length(); }
   String substr(String s, int from, int to) { return s.substring(from, to); }
 }

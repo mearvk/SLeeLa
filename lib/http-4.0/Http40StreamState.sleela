@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Per-stream model; native transport must enforce concurrency and ordering. */
+< Per-stream model; native transport must enforce concurrency and ordering. >
 class Http40StreamState {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

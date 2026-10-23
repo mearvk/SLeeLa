@@ -67,13 +67,20 @@ class SLOpcodeConditionalReactive {
   static final int SKIP = 4;
 
   String label;
-  SLOpcodeCondition trigger;  // the condition watched
-  SLOpcodeGroup subject;      // the group reacted upon
-  SLOpcodeWarmer warmer;      // used when the reaction is WARM/GATE
-  int reaction;               // one of WARM..SKIP
-  int frame;                  // VM frame
-  boolean latched;            // edge state: already reacted this rising edge
-  int reactions;              // how many times it has reacted
+  < the condition watched >
+  SLOpcodeCondition trigger;
+  < the group reacted upon >
+  SLOpcodeGroup subject;
+  < used when the reaction is WARM/GATE >
+  SLOpcodeWarmer warmer;
+  < one of WARM..SKIP >
+  int reaction;
+  < VM frame >
+  int frame;
+  < edge state: already reacted this rising edge >
+  boolean latched;
+  < how many times it has reacted >
+  int reactions;
   int state;
 
   void configure(String name, SLOpcodeCondition cond, SLOpcodeGroup group,
@@ -96,13 +103,15 @@ class SLOpcodeConditionalReactive {
   int reactionCount() { return reactions; }
   String name() { return label; }
 
-  // Evaluate the trigger at the current stream index and react on the rising
-  // edge. Returns the reaction performed (0 = none this tick).
+  < Evaluate the trigger at the current stream index and react on the rising >
+  < edge. Returns the reaction performed (0 = none this tick). >
   int tick(int index) {
     if (!active() || trigger == null) { return 0; }
     boolean now = trigger.holds(frame, index);
-    if (!now) { latched = false; return 0; } // falling/low: reset the edge
-    if (latched) { return 0; }                // already reacted on this edge
+    < falling/low: reset the edge >
+    if (!now) { latched = false; return 0; }
+    < already reacted on this edge >
+    if (latched) { return 0; }
     latched = true;
     reactions = reactions + 1;
 
@@ -115,21 +124,21 @@ class SLOpcodeConditionalReactive {
       return RUN;
     }
     if (reaction == GATE) {
-      // Gated inclusion: warm now so the group is ready to be appended/run.
+      < Gated inclusion: warm now so the group is ready to be appended/run. >
       if (warmer != null && subject != null) { warmer.warmGroup(subject); }
       return GATE;
     }
     if (reaction == SKIP) {
-      // Hold the group back: disable it so a driver will not run it.
+      < Hold the group back: disable it so a driver will not run it. >
       if (subject != null) { subject.disable(); }
       return SKIP;
     }
     return 0;
   }
 
-  // Whether the subject group should be allowed to run given the reaction and
-  // the current edge state. GATE allows only after reacting; SKIP forbids while
-  // latched; WARM/RUN leave running to the driver.
+  < Whether the subject group should be allowed to run given the reaction and >
+  < the current edge state. GATE allows only after reacting; SKIP forbids while >
+  < latched; WARM/RUN leave running to the driver. >
   boolean admits() {
     if (reaction == GATE) { return latched; }
     if (reaction == SKIP) { return !latched; }

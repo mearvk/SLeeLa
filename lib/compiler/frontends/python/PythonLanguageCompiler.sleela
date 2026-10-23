@@ -67,14 +67,14 @@ class PythonLanguageCompiler extends SLLanguageCompiler {
   }
 
   boolean runLex(SLCompileRequest request) {
-    // Python lexing is indentation-significant: INDENT/DEDENT tokens are
-    // produced from leading whitespace alongside the usual token kinds.
+    < Python lexing is indentation-significant: INDENT/DEDENT tokens are >
+    < produced from leading whitespace alongside the usual token kinds. >
     return provides(PHASE_LEX);
   }
 
   boolean runSemantic(SLCompileRequest request) {
-    // Dynamic semantics: scope/binding analysis and name/attribute checks,
-    // without static type enforcement.
+    < Dynamic semantics: scope/binding analysis and name/attribute checks, >
+    < without static type enforcement. >
     return provides(PHASE_SEMANTIC);
   }
 }

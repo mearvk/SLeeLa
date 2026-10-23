@@ -51,10 +51,14 @@ class SubscriptionModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int subscribers;        // paying seats right now
-  int priceCents;         // monthly price per subscriber
-  int churnPercent;       // share who cancel each month (0..100)
-  int serviceCostCents;   // cost to serve one subscriber per month
+  < paying seats right now >
+  int subscribers;
+  < monthly price per subscriber >
+  int priceCents;
+  < share who cancel each month (0..100) >
+  int churnPercent;
+  < cost to serve one subscriber per month >
+  int serviceCostCents;
 
   void setUp(int seats, int price, int churn, int serviceCost) {
     load();
@@ -71,7 +75,7 @@ class SubscriptionModel extends BusinessModel {
     setUnits(seats);
   }
 
-  // Subscribers who are still around after this month's churn pay full price.
+  < Subscribers who are still around after this month's churn pay full price. >
   int retained() { return subscribers - (subscribers * churnPercent) / 100; }
 
   int monthlyRevenue() { return retained() * priceCents; }

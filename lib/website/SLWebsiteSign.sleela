@@ -56,8 +56,8 @@ class SLWebsiteSign {
 
   void set(int k, String sa, String sb, String sc) { kind = k; a = sa; b = sb; c = sc; }
 
-  // Convenience constructors -- one per sign kind -- so authoring reads
-  // naturally and never has to remember the kind enum.
+  < Convenience constructors -- one per sign kind -- so authoring reads >
+  < naturally and never has to remember the kind enum. >
   void nav(String brand, String links)                   { set(0, brand, links, ""); }
   void hero(String headline, String subhead, String cta) { set(1, headline, subhead, cta); }
   void feature(String title, String items)               { set(2, title, items, ""); }

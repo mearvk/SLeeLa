@@ -58,7 +58,8 @@ class SLGuestDeviceBus {
   SLGuestTimer timer;
   SLGuestConsole console;
   SLGuestBlockDevice blk;
-  SLInterruptController pic;   // guest interrupt controller
+  < guest interrupt controller >
+  SLInterruptController pic;
   int mmioAccesses;
 
   void configure(SLGuestTimer t, SLGuestConsole c, SLGuestBlockDevice b, SLInterruptController controller) {
@@ -68,7 +69,7 @@ class SLGuestDeviceBus {
     if (blk != null && blk.irq() >= 0) { pic.enable(blk.irq()); }
   }
 
-  // Route a guest MMIO read to the owning device.
+  < Route a guest MMIO read to the owning device. >
   int mmioRead(int addr) {
     mmioAccesses = mmioAccesses + 1;
     if (timer != null && timer.owns(addr)) { return timer.read(addr); }
@@ -77,7 +78,7 @@ class SLGuestDeviceBus {
     return 0;
   }
 
-  // Route a guest MMIO write to the owning device.
+  < Route a guest MMIO write to the owning device. >
   void mmioWrite(int addr, int value) {
     mmioAccesses = mmioAccesses + 1;
     if (timer != null && timer.owns(addr)) { timer.write(addr, value); return; }
@@ -85,8 +86,8 @@ class SLGuestDeviceBus {
     if (blk != null && blk.owns(addr)) { blk.write(addr, value); return; }
   }
 
-  // Advance device time by one tick and post any raised interrupts into the
-  // guest interrupt controller.
+  < Advance device time by one tick and post any raised interrupts into the >
+  < guest interrupt controller. >
   void tick() {
     if (timer != null) {
       timer.tick();
@@ -95,21 +96,23 @@ class SLGuestDeviceBus {
     if (blk != null && blk.irqRaised()) { pic.raise(blk.irq()); blk.clearIRQ(); }
   }
 
-  // The guest kernel's ISR dispatch asks for the highest-priority pending IRQ.
+  < The guest kernel's ISR dispatch asks for the highest-priority pending IRQ. >
   int pendingInterrupt() { if (pic.hasPending()) { return pic.highestPriorityPending(); } return -1; }
   void acknowledge(int line) { pic.acknowledge(line); }
 
-  // Console convenience for the hypervisor's VM-exit router: write one char to
-  // the guest console device's data register.
+  < Console convenience for the hypervisor's VM-exit router: write one char to >
+  < the guest console device's data register. >
   boolean hasConsole() { return console != null; }
   void consoleWrite(int code) { if (console != null) { console.write(console.mmioBase, code); } }
 
-  // Program and enable the guest timer (reload value + enable) so its expiries
-  // drive the guest scheduler. Convenience for the guest kernel bring-up.
+  < Program and enable the guest timer (reload value + enable) so its expiries >
+  < drive the guest scheduler. Convenience for the guest kernel bring-up. >
   void programTimer(int reload) {
     if (timer != null) {
-      timer.write(timer.mmioBase + 0, reload);  // reload register
-      timer.write(timer.mmioBase + 2, 1);       // control: enable
+      < reload register >
+      timer.write(timer.mmioBase + 0, reload);
+      < control: enable >
+      timer.write(timer.mmioBase + 2, 1);
     }
   }
   SLGuestTimer timerDevice() { return timer; }

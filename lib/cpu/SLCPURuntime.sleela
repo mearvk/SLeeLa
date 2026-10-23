@@ -66,58 +66,73 @@ class SLCPURuntime {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String archName;
-  int width;            // data path width in bits
-  int addrWidth;        // address bus width in bits
-  int regCount;         // architectural register count
+  < data path width in bits >
+  int width;
+  < address bus width in bits >
+  int addrWidth;
+  < architectural register count >
+  int regCount;
 
-  SLRAM regs;           // architectural registers (one word each)
-  SLRAM mem;            // word-addressable system memory
+  < architectural registers (one word each) >
+  SLRAM regs;
+  < word-addressable system memory >
+  SLRAM mem;
   int memWords;
 
   SLALU alu;
-  int pc;               // program counter (word index)
+  < program counter (word index) >
+  int pc;
   int flagZ; int flagN; int flagC; int flagV;
   int halted;
-  int retired;          // instructions executed
+  < instructions executed >
+  int retired;
 
-  // --- clock: run at the model's spec, with overclock support ---
-  SLClockPolicy clock;  // spec/overclock frequency policy
-  int specMHz;          // the model's rated clock (set via setSpecClock)
+  < --- clock: run at the model's spec, with overclock support --- >
+  < spec/overclock frequency policy >
+  SLClockPolicy clock;
+  < the model's rated clock (set via setSpecClock) >
+  int specMHz;
 
-  // --- secondary-VM substrate: the CPU runs its lowered form here ---
+  < --- secondary-VM substrate: the CPU runs its lowered form here --- >
   SLSleelaVM substrate;
   SLSleelaOpcode op;
-  int lowering;         // 1 => execute by lowering to canonical opcodes
+  < 1 => execute by lowering to canonical opcodes >
+  int lowering;
 
-  // --- workload execution: run C / C++ / Sleela work on this CPU within a
-  // resource grant. The register-ISA mapping pipeline is shared across all
-  // architectures (SLCompilerDriver -> SLProgram -> SLOpcodeMap -> substrate). ---
+  < --- workload execution: run C / C++ / Sleela work on this CPU within a >
+  < resource grant. The register-ISA mapping pipeline is shared across all >
+  < architectures (SLCompilerDriver -> SLProgram -> SLOpcodeMap -> substrate). --- >
   SLInstructionSet workIsa;
   SLInstructionDecoder workDecoder;
   SLSystemCall workSys;
-  SLCPUResource activeGrant;    // the grant the current workload runs within
+  < the grant the current workload runs within >
+  SLCPUResource activeGrant;
   int admittedWorkloads;
   int completedWorkloads;
 
-  // --- substrate injection (nesting seam) ---
-  // When a host (the Secondary Sleela VM, SLVM) wants the CPU to run as a guest
-  // ON its substrate rather than on a private one, it attaches that substrate
-  // here. runWorkload()/mapWorkload() then target the attached substrate, so the
-  // CPU's lowered opcode stream and the host's dispatch loop operate on ONE
-  // SLSleelaVM — the true "CPU on top of the Secondary VM" nesting the docs
-  // describe. When null (the default) the CPU owns its substrate as before.
+  < --- substrate injection (nesting seam) --- >
+  < When a host (the Secondary Sleela VM, SLVM) wants the CPU to run as a guest >
+  < ON its substrate rather than on a private one, it attaches that substrate >
+  < here. runWorkload()/mapWorkload() then target the attached substrate, so the >
+  < CPU's lowered opcode stream and the host's dispatch loop operate on ONE >
+  < SLSleelaVM — the true "CPU on top of the Secondary VM" nesting the docs >
+  < describe. When null (the default) the CPU owns its substrate as before. >
   SLSleelaVM attachedSubstrate;
 
-  // --- optional capabilities: direct DMA and native GPU access ---
-  // Off by default. A program/executor that needs them turns them on; when on,
-  // the CPU exposes a direct-memory-access engine and a GPU device it can
-  // offload to at any point.
-  int dmaOption;        // 1 when direct DMA is enabled
-  int gpuOption;        // 1 when native GPU access is enabled
-  SLDMAController dma;   // the DMA engine (operates over this CPU's memory)
-  SLGPUDevice gpu;       // the GPU device
+  < --- optional capabilities: direct DMA and native GPU access --- >
+  < Off by default. A program/executor that needs them turns them on; when on, >
+  < the CPU exposes a direct-memory-access engine and a GPU device it can >
+  < offload to at any point. >
+  < 1 when direct DMA is enabled >
+  int dmaOption;
+  < 1 when native GPU access is enabled >
+  int gpuOption;
+  < the DMA engine (operates over this CPU's memory) >
+  SLDMAController dma;
+  < the GPU device >
+  SLGPUDevice gpu;
 
-  // Bring the inherited machinery up once a subclass has set its widths.
+  < Bring the inherited machinery up once a subclass has set its widths. >
   void bringUp(String name, int dataBits, int addressBits, int registers, int memoryWords) {
     archName = name; width = dataBits; addrWidth = addressBits;
     regCount = registers; memWords = memoryWords;
@@ -134,26 +149,26 @@ class SLCPURuntime {
     op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
     lowering = 0;
 
-    // Default the clock to a conservative 1 MHz spec; a model/user overrides it
-    // with setSpecClock(ratedMHz) so the CPU runs at its own specification.
+    < Default the clock to a conservative 1 MHz spec; a model/user overrides it >
+    < with setSpecClock(ratedMHz) so the CPU runs at its own specification. >
     clock = new SLClockPolicy();
     specMHz = (specMHz > 0) ? specMHz : 1;
     clock.configureSpec(specMHz);
 
-    // Shared multi-language workload pipeline.
+    < Shared multi-language workload pipeline. >
     workIsa = new SLInstructionSet(); workIsa.configure();
     workDecoder = new SLInstructionDecoder(); workDecoder.configure(workIsa);
     workSys = new SLSystemCall(); workSys.configure();
     admittedWorkloads = 0; completedWorkloads = 0;
 
-    // Optional capabilities default to off.
+    < Optional capabilities default to off. >
     dmaOption = 0; gpuOption = 0;
   }
 
-  // --- optional capability: direct DMA ---
-  // Enable the direct memory-access engine over this CPU's memory. After this a
-  // program can call dmaEngine().transfer(...) / memcpy(...) / fill(...) to move
-  // bulk data without the CPU copying word by word.
+  < --- optional capability: direct DMA --- >
+  < Enable the direct memory-access engine over this CPU's memory. After this a >
+  < program can call dmaEngine().transfer(...) / memcpy(...) / fill(...) to move >
+  < bulk data without the CPU copying word by word. >
   void enableDMA() {
     dmaOption = 1;
     if (dma == null) { dma = new SLDMAController(); }
@@ -163,16 +178,16 @@ class SLCPURuntime {
   void disableDMA() { dmaOption = 0; if (dma != null) { dma.disable(); } }
   boolean dmaEnabled() { return dmaOption == 1; }
   SLDMAController dmaEngine() { return dma; }
-  // Convenience passthrough for the common bulk move (returns words moved or -1).
+  < Convenience passthrough for the common bulk move (returns words moved or -1). >
   int dmaCopy(int src, int dst, int length) {
     if (dmaOption == 0 || dma == null) { return -1; }
     return dma.memcpy(src, dst, length);
   }
 
-  // --- optional capability: native GPU access ---
-  // Enable a GPU device the CPU can offload parallel/compute kernels to. The
-  // device uses a real host GPU over the bridge when available, else a modelled
-  // SIMT engine, so GPU code always runs.
+  < --- optional capability: native GPU access --- >
+  < Enable a GPU device the CPU can offload parallel/compute kernels to. The >
+  < device uses a real host GPU over the bridge when available, else a modelled >
+  < SIMT engine, so GPU code always runs. >
   void enableGPU() { enableGPU("SLeeLa Compute GPU", 16, 64, 1000, 256); }
   void enableGPU(String name, int units, int lanes, int core, int vramMiB) {
     gpuOption = 1;
@@ -184,27 +199,27 @@ class SLCPURuntime {
   boolean gpuEnabled() { return gpuOption == 1; }
   SLGPUDevice gpuDevice() { return gpu; }
 
-  // The register ISA used by the shared compile/map pipeline (SLWorkload.compile
-  // needs it to lower any supported language to a language-independent image).
+  < The register ISA used by the shared compile/map pipeline (SLWorkload.compile >
+  < needs it to lower any supported language to a language-independent image). >
   SLInstructionSet workloadIsa() { return workIsa; }
 
-  // Host hands its substrate to the CPU so the CPU runs nested on it (SLVM).
+  < Host hands its substrate to the CPU so the CPU runs nested on it (SLVM). >
   void attachSubstrate(SLSleelaVM hostSubstrate) { attachedSubstrate = hostSubstrate; }
   void detachSubstrate() { attachedSubstrate = null; }
   boolean nested() { return attachedSubstrate != null; }
 
-  // --- clock / overclocking ---
-  // Set the model's rated clock (its own specification). A concrete SL<ARCH>CPU
-  // calls this in configure() so the CPU runs at spec; it may be called before
-  // or after bringUp().
+  < --- clock / overclocking --- >
+  < Set the model's rated clock (its own specification). A concrete SL<ARCH>CPU >
+  < calls this in configure() so the CPU runs at spec; it may be called before >
+  < or after bringUp(). >
   void setSpecClock(int ratedMHz) {
     specMHz = ratedMHz;
     if (clock == null) { clock = new SLClockPolicy(); }
     clock.configureSpec(ratedMHz);
   }
-  // Overclock the CPU to a target effective frequency (returns false if the
-  // target exceeds the model's stability ceiling — the OC is applied but the
-  // policy reports it unstable).
+  < Overclock the CPU to a target effective frequency (returns false if the >
+  < target exceeds the model's stability ceiling — the OC is applied but the >
+  < policy reports it unstable). >
   boolean overclock(int targetMHz) {
     if (clock == null) { return false; }
     clock.overclockTo(targetMHz);
@@ -220,15 +235,15 @@ class SLCPURuntime {
   int effectiveMHz()   { return (clock != null) ? clock.effectiveMHz() : specMHz; }
   boolean overclocked(){ return clock != null && clock.isOverclocked(); }
   boolean clockStable(){ return clock == null || clock.isStable(); }
-  // How many model cycles the clock delivers in a given number of microseconds
-  // (lets a workload budget be expressed in time rather than raw instructions).
+  < How many model cycles the clock delivers in a given number of microseconds >
+  < (lets a workload budget be expressed in time rather than raw instructions). >
   int cyclesInMicroseconds(int us) { return effectiveMHz() * us; }
 
-  // Compile + map a workload onto a target substrate WITHOUT running it, so a
-  // host (SLVM) can drive the resulting opcode stream itself. Returns the
-  // substrate that now carries the workload, or null if the workload was
-  // rejected. Used by SLVM.runGuestWorkload for the Creator -> SLVM -> CPU ->
-  // program stack.
+  < Compile + map a workload onto a target substrate WITHOUT running it, so a >
+  < host (SLVM) can drive the resulting opcode stream itself. Returns the >
+  < substrate that now carries the workload, or null if the workload was >
+  < rejected. Used by SLVM.runGuestWorkload for the Creator -> SLVM -> CPU -> >
+  < program stack. >
   SLSleelaVM mapWorkload(SLWorkload work, SLSleelaVM target) {
     if (!admit(work)) { return null; }
     activeGrant = work.grant();
@@ -241,10 +256,10 @@ class SLCPURuntime {
     return target;
   }
 
-  // --- resource assignment + workload execution ---
-  // Admission control: can this CPU satisfy the workload's resource grant?
-  // A workload is admitted only when its memory request fits the CPU's address
-  // space and (if it needs I/O/privileged services) the model provides them.
+  < --- resource assignment + workload execution --- >
+  < Admission control: can this CPU satisfy the workload's resource grant? >
+  < A workload is admitted only when its memory request fits the CPU's address >
+  < space and (if it needs I/O/privileged services) the model provides them. >
   boolean admit(SLWorkload work) {
     SLCPUResource g = work.grant();
     if (g == null) { work.markRejected(); return false; }
@@ -255,20 +270,20 @@ class SLCPURuntime {
     return true;
   }
 
-  // Run a workload on this CPU within its grant. The source (C/C++/Sleela/Java)
-  // is compiled to the register ISA, mapped onto THIS CPU's canonical-opcode
-  // substrate, and executed up to the grant's instruction budget. Returns the
-  // observable output (the printed value), or -1 if the workload was rejected.
+  < Run a workload on this CPU within its grant. The source (C/C++/Sleela/Java) >
+  < is compiled to the register ISA, mapped onto THIS CPU's canonical-opcode >
+  < substrate, and executed up to the grant's instruction budget. Returns the >
+  < observable output (the printed value), or -1 if the workload was rejected. >
   int runWorkload(SLWorkload work) {
     if (!admit(work)) { return -1; }
     activeGrant = work.grant();
 
-    // Compile the source to a language-independent register-ISA image.
+    < Compile the source to a language-independent register-ISA image. >
     if (!work.compiled()) { work.compile(workIsa); }
 
-    // Target substrate: the host's injected one when nested (CPU runs as a guest
-    // of the Secondary VM), otherwise a fresh private one sized to the grant so
-    // one workload cannot see another's memory.
+    < Target substrate: the host's injected one when nested (CPU runs as a guest >
+    < of the Secondary VM), otherwise a fresh private one sized to the grant so >
+    < one workload cannot see another's memory. >
     if (attachedSubstrate != null) {
       substrate = attachedSubstrate;
     } else {
@@ -277,12 +292,12 @@ class SLCPURuntime {
     }
     if (!activeGrant.ioEnabled()) { substrate.setHosted(); }
 
-    // Map the register-ISA image onto this CPU's substrate.
+    < Map the register-ISA image onto this CPU's substrate. >
     SLOpcodeMap map = new SLOpcodeMap();
     map.configure(workIsa, workSys, substrate);
     map.mapProgram(work.image(), workDecoder);
 
-    // Execute within the instruction budget (the resource time-slice).
+    < Execute within the instruction budget (the resource time-slice). >
     work.markRunning();
     int ran = substrate.run(activeGrant.budget());
     int i = 0; while (i < ran) { activeGrant.chargeInstruction(); i = i + 1; }
@@ -297,7 +312,7 @@ class SLCPURuntime {
   int workloadsRun()    { return completedWorkloads; }
   SLCPUResource currentGrant() { return activeGrant; }
 
-  // --- register / memory access (what decode() uses) ---
+  < --- register / memory access (what decode() uses) --- >
   int readReg(int i)             { if (i < 0 || i > regCount) { return 0; } return regs.readWord(i); }
   void writeReg(int i, int v)    { if (i < 0 || i > regCount) { return; } regs.writeWord(i, maskWord(v)); }
   int readMem(int addr)          { if (addr < 0 || addr >= memWords) { return 0; } return mem.readWord(addr); }
@@ -308,14 +323,14 @@ class SLCPURuntime {
     int r = v % m; if (r < 0) { r = r + m; } return r;
   }
 
-  // --- ALU surface (decode() routes arithmetic through here so flags are set) ---
+  < --- ALU surface (decode() routes arithmetic through here so flags are set) --- >
   int aluOp(int a, int b, int op) {
     int r = alu.execute(a, b, op);
     flagZ = alu.zero(); flagN = alu.negative(); flagC = alu.carry(); flagV = alu.overflow();
     return r;
   }
 
-  // --- lowering surface: emit canonical opcodes onto the secondary VM ---
+  < --- lowering surface: emit canonical opcodes onto the secondary VM --- >
   void enableLowering() { lowering = 1; substrate.setHosted(); }
   int emitConst(int v)        { return substrate.emit(op.OP_CONST, v); }
   int emitLoadGlobal(int slot){ return substrate.emit(op.OP_LOADG, slot); }
@@ -328,14 +343,14 @@ class SLCPURuntime {
   int emitJump(int target)      { return substrate.emit(op.OP_JMP, target); }
   int emitJumpIfFalse(int target){ return substrate.emit(op.OP_JMPF, target); }
 
-  // Execute the lowered program on the substrate (the "run on top of the
-  // secondary VM" path). Returns opcodes retired on the substrate.
+  < Execute the lowered program on the substrate (the "run on top of the >
+  < secondary VM" path). Returns opcodes retired on the substrate. >
   int runLowered(int budget) { return substrate.run(budget); }
   int loweredOutput() { return substrate.printed(); }
   SLSleelaVM engine() { return substrate; }
 
-  // --- fetch-decode-execute lifecycle (overridable) ---
-  // Default fetch: read the instruction word at pc and advance.
+  < --- fetch-decode-execute lifecycle (overridable) --- >
+  < Default fetch: read the instruction word at pc and advance. >
   int fetch() {
     if (pc < 0 || pc >= memWords) { halted = 1; return 0; }
     int word = mem.readWord(pc);
@@ -343,19 +358,19 @@ class SLCPURuntime {
     return word;
   }
 
-  // Subclasses override decode() to interpret one instruction word. The base
-  // treats a zero word as NOP and anything else as HALT so the loop terminates
-  // safely if a model forgets to override.
+  < Subclasses override decode() to interpret one instruction word. The base >
+  < treats a zero word as NOP and anything else as HALT so the loop terminates >
+  < safely if a model forgets to override. >
   void decode(int word) {
     if (word == 0) { return; }
     halted = 1;
   }
 
-  // Per-instruction hook a subclass overrides for M1-cycle side effects (e.g.
-  // the Z80 memory refresh). Default does nothing.
+  < Per-instruction hook a subclass overrides for M1-cycle side effects (e.g. >
+  < the Z80 memory refresh). Default does nothing. >
   void preFetch() { }
 
-  // One instruction: pre-fetch hook, fetch, decode/execute, count.
+  < One instruction: pre-fetch hook, fetch, decode/execute, count. >
   int step() {
     if (halted == 1) { return -1; }
     preFetch();
@@ -379,9 +394,10 @@ class SLCPURuntime {
 
   void loadProgramWord(int addr, int word) { writeMem(addr, word); }
   void setEntryPoint(int addr) { pc = addr; }
-  void interrupt(int vector) { }   // arch-specific; default no-op
+  < arch-specific; default no-op >
+  void interrupt(int vector) { }
 
-  // --- introspection ---
+  < --- introspection --- >
   boolean validate() { return width > 0 && regCount > 0 && memWords > 0; }
   String architecture() { return archName; }
   int programCounter()  { return pc; }

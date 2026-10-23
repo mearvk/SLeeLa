@@ -53,12 +53,13 @@ class SLColor {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int packed;   // 0xRRGGBBAA
+  < 0xRRGGBBAA >
+  int packed;
 
-  // Opaque colour from 8-bit channels.
+  < Opaque colour from 8-bit channels. >
   void rgb(int r, int g, int b) { rgba(r, g, b, 255); }
 
-  // Colour with explicit alpha. Channels are masked to 0..255.
+  < Colour with explicit alpha. Channels are masked to 0..255. >
   void rgba(int r, int g, int b, int a) {
     int rr = r & 255;
     int gg = g & 255;

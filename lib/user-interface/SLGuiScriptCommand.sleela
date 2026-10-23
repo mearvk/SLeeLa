@@ -54,26 +54,43 @@ class SLGuiScriptCommand {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Verb ordinals.
-  static final int CREATE = 0;   // create <tag> <id> [parentId]
-  static final int APPEND = 1;   // append <parentId> <childId>
-  static final int TEXT   = 2;   // text   <id> <value>
-  static final int ATTR   = 3;   // attr   <id> <name> <value>
-  static final int STYLE  = 4;   // style  <id> <prop> <value>
-  static final int SHOW   = 5;   // show   <id>
-  static final int HIDE   = 6;   // hide   <id>
-  static final int ENABLE = 7;   // enable <id> <"1"|"0">
-  static final int ON     = 8;   // on     <id> <eventName> <operation>
-  static final int FIRE   = 9;   // fire   <id> <eventName> [value]
-  static final int CALL   =10;   // call   <operation> [arguments]
-  static final int REMOVE =11;   // remove <id>
-  static final int NOP    =12;   // no-op / comment
+  < Verb ordinals. >
+  < create <tag> <id> [parentId] >
+  static final int CREATE = 0;
+  < append <parentId> <childId> >
+  static final int APPEND = 1;
+  < text   <id> <value> >
+  static final int TEXT   = 2;
+  < attr   <id> <name> <value> >
+  static final int ATTR   = 3;
+  < style  <id> <prop> <value> >
+  static final int STYLE  = 4;
+  < show   <id> >
+  static final int SHOW   = 5;
+  < hide   <id> >
+  static final int HIDE   = 6;
+  < enable <id> <"1"|"0"> >
+  static final int ENABLE = 7;
+  < on     <id> <eventName> <operation> >
+  static final int ON     = 8;
+  < fire   <id> <eventName> [value] >
+  static final int FIRE   = 9;
+  < call   <operation> [arguments] >
+  static final int CALL   =10;
+  < remove <id> >
+  static final int REMOVE =11;
+  < no-op / comment >
+  static final int NOP    =12;
 
   int verb;
-  String a;    // operand 1
-  String b;    // operand 2
-  String c;    // operand 3
-  String d;    // operand 4
+  < operand 1 >
+  String a;
+  < operand 2 >
+  String b;
+  < operand 3 >
+  String c;
+  < operand 4 >
+  String d;
 
   void configure(int v, String o1, String o2, String o3, String o4) {
     verb = v; a = o1; b = o2; c = o3; d = o4;
@@ -85,7 +102,7 @@ class SLGuiScriptCommand {
   String op3() { return c; }
   String op4() { return d; }
 
-  // Map a verb keyword to its ordinal (-1 when unknown).
+  < Map a verb keyword to its ordinal (-1 when unknown). >
   int verbOf(String word) {
     if (word == "create") { return CREATE; }
     if (word == "append") { return APPEND; }

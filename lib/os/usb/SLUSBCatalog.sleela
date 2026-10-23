@@ -53,27 +53,27 @@ class SLUSBCatalog {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   void configure() {}
 
-  // A USB host controller (root hub) from a named vendor at a generation.
+  < A USB host controller (root hub) from a named vendor at a generation. >
   SLUSBDevice controller(String vendor, String genName, int ports) {
     SLUSBDevice d = new SLUSBDevice();
     d.configureByName(vendor, controllerPart(vendor), genName, d.UC_CONTROLLER);
     d.setPorts(ports);
     return d;
   }
-  // A USB hub from a named vendor.
+  < A USB hub from a named vendor. >
   SLUSBDevice hub(String vendor, String genName, int ports) {
     SLUSBDevice d = new SLUSBDevice();
     d.configureByName(vendor, vendor + " Hub", genName, d.UC_HUB);
     d.setPorts(ports);
     return d;
   }
-  // A HID device (keyboard/mouse), typically USB 2.0 Type-A.
+  < A HID device (keyboard/mouse), typically USB 2.0 Type-A. >
   SLUSBDevice hid(String vendor, String part) {
     SLUSBDevice d = new SLUSBDevice();
     d.configure(vendor, part, d.USB_2_0, d.UC_HID);
     return d;
   }
-  // A mass-storage flash drive at a given generation.
+  < A mass-storage flash drive at a given generation. >
   SLUSBDevice flashDrive(String vendor, String part, String genName) {
     SLUSBDevice d = new SLUSBDevice();
     d.configureByName(vendor, part, genName, d.UC_MASS);

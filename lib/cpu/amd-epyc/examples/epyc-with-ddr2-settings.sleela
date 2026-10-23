@@ -64,86 +64,107 @@ class EpycWithDdr2Settings {
     SLComponentCatalog parts = new SLComponentCatalog();
     SLMemoryTierPolicy policy = new SLMemoryTierPolicy();
 
-    // 1) The CPU: a real EPYC SKU (Zen 5 Turin, 64C/128T, rated 5.0 GHz boost).
+    < 1) The CPU: a real EPYC SKU (Zen 5 Turin, 64C/128T, rated 5.0 GHz boost). >
     SLAMDEPYC9575F cpu = new SLAMDEPYC9575F();
-    cpu.configure();                        // runs at its rated spec clock
+    < runs at its rated spec clock >
+    cpu.configure();
     print("CPU: " + cpu.architecture());
     print("  spec clock = " + cpu.specClockMHz() + " MHz, data=" +
           cpu.dataWidth() + "-bit, regs=" + cpu.registerCount());
 
-    // 2) DDR2 settings — the actual module: DDR2-800, 64-bit, CL5 (authentic).
-    SLMemoryModule ddr2 = parts.ddr2_800(4096);   // 4 GiB DDR2-800 DIMM
+    < 2) DDR2 settings — the actual module: DDR2-800, 64-bit, CL5 (authentic). >
+    < 4 GiB DDR2-800 DIMM >
+    SLMemoryModule ddr2 = parts.ddr2_800(4096);
     print("RAM: " + ddr2.name() + " (" + ddr2.technologyName() + "), CL" +
           ddr2.cl() + ", peak " + ddr2.peakBandwidthMBs() + " MB/s, first-word " +
           ddr2.firstWordLatencyNs() + " ns");
 
-    // 3) DDR2 settings — the refresh cadence, as a Dynamite Connector plugged
-    //    into the memory interface's slot (resolve -> load -> bind timings).
+    < 3) DDR2 settings — the refresh cadence, as a Dynamite Connector plugged >
+    < into the memory interface's slot (resolve -> load -> bind timings). >
     SLMemoryInterface iface = new SLMemoryInterface();
-    iface.configure("EPYC DDR2 interface", ddr2, iface.TECH_DDR2);  // builds+connects a DDR2 connector
+    < builds+connects a DDR2 connector >
+    iface.configure("EPYC DDR2 interface", ddr2, iface.TECH_DDR2);
     SLCadenceConnector slot = iface.cadenceSlot();
     print("cadence connector '" + slot.referenceId() + "' state = " + slot.state() +
           " (tREFI=" + iface.refreshIntervalNs() + " ns, tRFC=" + iface.refreshTimeNs() + " ns)");
     print("refreshes as: " + iface.refreshesAsName() + ", available duty = " +
           iface.availableDutyPct() + " % (refresh overhead " + iface.refreshOverheadPct() + " %)");
 
-    // 4) Assemble the executor: CPU + the DDR2 module + the DDR2 cadence overlay.
-    //    The backing store is the real DDR2 module; the overlay shapes the
-    //    observed availability only.
+    < 4) Assemble the executor: CPU + the DDR2 module + the DDR2 cadence overlay. >
+    < The backing store is the real DDR2 module; the overlay shapes the >
+    < observed availability only. >
     SLExecutorBuild build = new SLExecutorBuild();
     build.configure("epyc-9575f-ddr2");
     build.installCpu(cpu);
-    build.installMemory(ddr2);              // actual DDR2 module (base store)
-    build.installMemoryInterface(iface);    // DDR2 refresh cadence (the connector)
-    build.installBus(parts.pcieGen5x16());  // PCIe 5.0 x16 system bus
+    < actual DDR2 module (base store) >
+    build.installMemory(ddr2);
+    < DDR2 refresh cadence (the connector) >
+    build.installMemoryInterface(iface);
+    < PCIe 5.0 x16 system bus >
+    build.installBus(parts.pcieGen5x16());
 
-    // Capabilities (the gpu/dma/nativeram terms): native GPU + DMA on the CPU.
-    build.enableGPU();                      // native GPU compute
-    build.enableDMA();                      // DMA bulk engine
+    < Capabilities (the gpu/dma/nativeram terms): native GPU + DMA on the CPU. >
+    < native GPU compute >
+    build.enableGPU();
+    < DMA bulk engine >
+    build.enableDMA();
 
-    // PHYSICAL memory tiers (the memtier/maintier terms): DDR2 for usual
-    // activities, DDR5 for competency/accuracy; main program -> accurate (DDR5).
-    build.installUsualTier(ddr2);                       // usual -> DDR2
-    build.installAccurateTier(parts.ddr5_6400(65536));  // accurate -> DDR5
+    < PHYSICAL memory tiers (the memtier/maintier terms): DDR2 for usual >
+    < activities, DDR5 for competency/accuracy; main program -> accurate (DDR5). >
+    < usual -> DDR2 >
+    build.installUsualTier(ddr2);
+    < accurate -> DDR5 >
+    build.installAccurateTier(parts.ddr5_6400(65536));
     build.setMainTier(policy.TIER_ACCURATE);
 
-    build.assemble();                       // mounts the real backing stores
+    < mounts the real backing stores >
+    build.assemble();
     print("assembled '" + build.name() + "', memory BW seen by CPU = " +
           build.memoryBandwidthMBs() + " MB/s, DDR2 overlay active = " +
           build.hasMemoryInterface() + ", GPU=" + build.gpuEnabled() +
           ", DMA=" + build.dmaEnabled() + ", two-tier=" + build.twoTierMemory());
 
-    // 5) Run a short program ON the EPYC CPU, using its own instruction set.
-    //    Compute (7 + 5) * 3 = 36 and store it to memory word 100.
+    < 5) Run a short program ON the EPYC CPU, using its own instruction set. >
+    < Compute (7 + 5) * 3 = 36 and store it to memory word 100. >
     cpu.reset();
-    int a = 20;                              // code base address (word index)
-    cpu.loadProgramWord(a + 0, cpu.encode(cpu.I_LOADI, 1, 7));   // r1 <- 7
-    cpu.loadProgramWord(a + 1, cpu.encode(cpu.I_LOADI, 2, 5));   // r2 <- 5
-    cpu.loadProgramWord(a + 2, cpu.encode(cpu.I_ADD,   1, 2));   // r1 <- r1 + r2   (12)
-    cpu.loadProgramWord(a + 3, cpu.encode(cpu.I_LOADI, 3, 3));   // r3 <- 3
-    cpu.loadProgramWord(a + 4, cpu.encode(cpu.I_MUL,   1, 3));   // r1 <- r1 * r3   (36)
-    cpu.loadProgramWord(a + 5, cpu.encode(cpu.I_STORE, 1, 100)); // mem[100] <- r1
-    cpu.loadProgramWord(a + 6, cpu.encode(cpu.I_HALT,  0, 0));   // halt
+    < code base address (word index) >
+    int a = 20;
+    < r1 <- 7 >
+    cpu.loadProgramWord(a + 0, cpu.encode(cpu.I_LOADI, 1, 7));
+    < r2 <- 5 >
+    cpu.loadProgramWord(a + 1, cpu.encode(cpu.I_LOADI, 2, 5));
+    < r1 <- r1 + r2   (12) >
+    cpu.loadProgramWord(a + 2, cpu.encode(cpu.I_ADD,   1, 2));
+    < r3 <- 3 >
+    cpu.loadProgramWord(a + 3, cpu.encode(cpu.I_LOADI, 3, 3));
+    < r1 <- r1 * r3   (36) >
+    cpu.loadProgramWord(a + 4, cpu.encode(cpu.I_MUL,   1, 3));
+    < mem[100] <- r1 >
+    cpu.loadProgramWord(a + 5, cpu.encode(cpu.I_STORE, 1, 100));
+    < halt >
+    cpu.loadProgramWord(a + 6, cpu.encode(cpu.I_HALT,  0, 0));
     cpu.setEntryPoint(a);
-    cpu.run(32);                             // step until HALT (budget-bounded)
+    < step until HALT (budget-bounded) >
+    cpu.run(32);
 
     result = cpu.readMem(100);
     print("program: (7 + 5) * 3 -> r1 = " + cpu.reg(1) + ", mem[100] = " + result +
           ", instructions retired = " + cpu.instructionsRetired() +
           ", halted = " + cpu.isHalted());
 
-    // 6) Memory-tier DISPATCH (the usualmem/accuratemem terms). A program may
-    //    flag the whole document (top-level class modifier) or any subset of
-    //    methods; each function resolves to the physical tier module it binds.
+    < 6) Memory-tier DISPATCH (the usualmem/accuratemem terms). A program may >
+    < flag the whole document (top-level class modifier) or any subset of >
+    < methods; each function resolves to the physical tier module it binds. >
     SLProgram prog = new SLProgram();
     prog.configure("epyc-workload", 256);
-    prog.setDocumentTier(policy.TIER_ACCURATE);   // whole-document default: DDR5
+    < whole-document default: DDR5 >
+    prog.setDocumentTier(policy.TIER_ACCURATE);
 
-    // usualmem void logActivity()  -> usual (DDR2)
+    < usualmem void logActivity()  -> usual (DDR2) >
     SLVMMethod logActivity = new SLVMMethod();
     logActivity.configure("logActivity", "()V", 0, 3, 0, 1, true, false);
     logActivity.setMemTier(policy.methodTierFromModifiers(policy.MOD_USUALMEM));
-    // accuratemem int settleLedger() -> accurate (DDR5)
+    < accuratemem int settleLedger() -> accurate (DDR5) >
     SLVMMethod settleLedger = new SLVMMethod();
     settleLedger.configure("settleLedger", "()I", 3, 5, 0, 2, true, false);
     settleLedger.setMemTier(policy.methodTierFromModifiers(policy.MOD_ACCURATEMEM));
@@ -151,14 +172,14 @@ class EpycWithDdr2Settings {
     dispatch(build, prog, policy, logActivity);
     dispatch(build, prog, policy, settleLedger);
 
-    // 7) A/B: disengage the DDR2 cadence to see the module's raw availability.
+    < 7) A/B: disengage the DDR2 cadence to see the module's raw availability. >
     iface.disengage();
     print("overlay off -> effective BW = " + iface.effectiveBandwidthMBs() +
           " MB/s, duty " + iface.availableDutyPct() + " %");
   }
 
-  // Resolve a method's effective tier against the document default and bind it
-  // to the real physical module (usualmem->DDR2, accuratemem->DDR5).
+  < Resolve a method's effective tier against the document default and bind it >
+  < to the real physical module (usualmem->DDR2, accuratemem->DDR5). >
   void dispatch(SLExecutorBuild build, SLProgram prog, SLMemoryTierPolicy policy, SLVMMethod m) {
     int effective = prog.effectiveTier(m.tier());
     SLMemoryModule mod = build.memoryForTier(effective);

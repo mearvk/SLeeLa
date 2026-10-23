@@ -59,12 +59,16 @@ class ExpectedFuture {
   static final String MODULE = "ExpectedFuture";
 
   int loadedFlag;
-  int currentTurn;     // where the player is now
-  int projectedEnd;    // when, at this pace, they finish
-  int targetTurn;      // when the custom game says they SHOULD finish
-  int confidence;      // 0..100, how sure the engine is
+  < where the player is now >
+  int currentTurn;
+  < when, at this pace, they finish >
+  int projectedEnd;
+  < when the custom game says they SHOULD finish >
+  int targetTurn;
+  < 0..100, how sure the engine is >
+  int confidence;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() {
     loadedFlag = 1;
     currentTurn = 0; projectedEnd = 0; targetTurn = 0; confidence = 0;
@@ -81,7 +85,7 @@ class ExpectedFuture {
     if (confidence > 100) { confidence = 100; }
   }
 
-  // Negative = ahead of schedule, 0 = exactly on, positive = behind.
+  < Negative = ahead of schedule, 0 = exactly on, positive = behind. >
   int scheduleGap() { return projectedEnd - targetTurn; }
 
   boolean onSchedule() { return scheduleGap() <= 0; }

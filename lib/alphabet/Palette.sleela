@@ -63,7 +63,7 @@ class Palette {
   String[] labels;
   int count;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() {
     loadedFlag = 1;
     paletteName = "Untitled";
@@ -76,8 +76,8 @@ class Palette {
 
   void name(String n) { if (n != null) { paletteName = n; } }
 
-  // Add a labeled color by its channels. Returns the color's index, or -1 if
-  // the palette is full.
+  < Add a labeled color by its channels. Returns the color's index, or -1 if >
+  < the palette is full. >
   int add(String label, int r, int g, int b) {
     if (count >= MAX) { return -1; }
     Color c = new Color();
@@ -101,7 +101,7 @@ class Palette {
     return labels[i];
   }
 
-  // Find a color by its label, or null if the palette never heard of it.
+  < Find a color by its label, or null if the palette never heard of it. >
   Color byLabel(String label) {
     if (label == null) { return null; }
     int i = 0;

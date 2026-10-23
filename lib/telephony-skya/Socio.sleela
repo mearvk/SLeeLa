@@ -58,17 +58,21 @@ class Socio {
 
   static final String MODULE = "Socio";
 
-  int loadedFlag;      // 1 once the module is loaded
-  int members;         // social members currently present
-  int ties;            // acknowledged ties between members
-  int standing;        // 0 guest, 1 member, 2 trusted, 3 steward
+  < 1 once the module is loaded >
+  int loadedFlag;
+  < social members currently present >
+  int members;
+  < acknowledged ties between members >
+  int ties;
+  < 0 guest, 1 member, 2 trusted, 3 steward >
+  int standing;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() { loadedFlag = 1; members = 0; ties = 0; standing = 0; }
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // --- social behavior ----------------------------------------------------
+  < --- social behavior ---------------------------------------------------- >
   void admit(int atStanding) {
     members = members + 1;
     if (atStanding > standing) { standing = atStanding; }

@@ -58,21 +58,31 @@ class SLGPUDevice {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String model;         // e.g. "SLeeLa Compute GPU"
-  int computeUnits;     // number of parallel compute units
-  int lanesPerUnit;     // SIMT lanes per unit (warp/wavefront width)
-  int clockMHz;         // core clock
-  int vramMiB;          // VRAM capacity
+  < e.g. "SLeeLa Compute GPU" >
+  String model;
+  < number of parallel compute units >
+  int computeUnits;
+  < SIMT lanes per unit (warp/wavefront width) >
+  int lanesPerUnit;
+  < core clock >
+  int clockMHz;
+  < VRAM capacity >
+  int vramMiB;
 
-  int enabled;          // 1 when the GPU option is on
-  int nativeAvailable;  // 1 if a real host GPU is reachable over the bridge
+  < 1 when the GPU option is on >
+  int enabled;
+  < 1 if a real host GPU is reachable over the bridge >
+  int nativeAvailable;
 
-  SLRAM vram;           // device memory
-  SLSleelaVM kernelVM;  // executes a kernel's canonical opcodes (per-lane model)
+  < device memory >
+  SLRAM vram;
+  < executes a kernel's canonical opcodes (per-lane model) >
+  SLSleelaVM kernelVM;
   SLSleelaOpcode op;
 
   int kernelsRun;
-  int lastResult;       // observable output of the last kernel
+  < observable output of the last kernel >
+  int lastResult;
 
   void configure(String name, int units, int lanes, int core, int vramMegabytes) {
     model = name; computeUnits = units; lanesPerUnit = lanes;
@@ -82,7 +92,8 @@ class SLGPUDevice {
 
   void enable()  {
     enabled = 1;
-    vram = new SLRAM(); vram.configure(vramMiB * 262144, 32); vram.allocate(); // 256K words/MiB
+    < 256K words/MiB >
+    vram = new SLRAM(); vram.configure(vramMiB * 262144, 32); vram.allocate();
     kernelVM = new SLSleelaVM(); kernelVM.configure(1 << 16, 4096, 1024);
     op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
     probeNative();
@@ -90,25 +101,25 @@ class SLGPUDevice {
   void disable() { enabled = 0; }
   boolean isEnabled() { return enabled == 1; }
 
-  // Total parallel lanes across the device.
+  < Total parallel lanes across the device. >
   int totalLanes() { return computeUnits * lanesPerUnit; }
 
-  // Ask the host whether a real GPU is present (bridge). Falls back to the
-  // modelled SIMT engine when none is available, so GPU code always runs.
+  < Ask the host whether a real GPU is present (bridge). Falls back to the >
+  < modelled SIMT engine when none is available, so GPU code always runs. >
   void probeNative() { nativeAvailable = native sleela_gpu_available(); }
   boolean nativeAccess() { return nativeAvailable == 1; }
 
-  // --- VRAM access (host<->device copies are typically via DMA) ---
+  < --- VRAM access (host<->device copies are typically via DMA) --- >
   void writeVram(int addr, int value) { if (vram != null && addr >= 0 && addr < vram.capacityWords()) { vram.writeWord(addr, value); } }
   int readVram(int addr)              { if (vram == null || addr < 0 || addr >= vram.capacityWords()) { return 0; } return vram.readWord(addr); }
   SLRAM deviceMemory() { return vram; }
 
-  // Build a kernel into the device's kernel engine (canonical opcodes).
+  < Build a kernel into the device's kernel engine (canonical opcodes). >
   int emitKernel(int opcode, int arg) { return kernelVM.emit(opcode, arg); }
 
-  // Dispatch the built kernel across `gridLanes` lanes. In the modelled path the
-  // kernel engine runs the opcode stream (per-lane state would be SIMT-expanded
-  // by the native path); the native path offloads to the host GPU.
+  < Dispatch the built kernel across `gridLanes` lanes. In the modelled path the >
+  < kernel engine runs the opcode stream (per-lane state would be SIMT-expanded >
+  < by the native path); the native path offloads to the host GPU. >
   int dispatch(int gridLanes, int budget) {
     if (enabled == 0) { return -1; }
     if (nativeAvailable == 1) {

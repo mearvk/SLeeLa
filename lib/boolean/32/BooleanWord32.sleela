@@ -50,33 +50,36 @@ class BooleanWord32 {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int headBit;        // 1 = TRUE result, 0 = FALSE result
-  int carryTrue;      // number of carried TRUE syllables
-  int carryFalse;     // number of carried FALSE syllables
-  // Configure one word of this depth: the head result and the carry makeup.
+  < 1 = TRUE result, 0 = FALSE result >
+  int headBit;
+  < number of carried TRUE syllables >
+  int carryTrue;
+  < number of carried FALSE syllables >
+  int carryFalse;
+  < Configure one word of this depth: the head result and the carry makeup. >
   void configure(int head, int cTrue, int cFalse) {
     headBit = head; carryTrue = cTrue; carryFalse = cFalse;
   }
   int depth() { return 32; }
   int carryDepth() { return 31; }
-  // Valid when the head bit is 0/1 and the carry syllables fill the carry slots.
+  < Valid when the head bit is 0/1 and the carry syllables fill the carry slots. >
   boolean valid() {
     return (headBit == 0 || headBit == 1)
         && carryTrue >= 0 && carryFalse >= 0
         && carryTrue + carryFalse == 31;
   }
-  // Head syllable = the asserted result.
+  < Head syllable = the asserted result. >
   boolean head() { return headBit == 1; }
   String headSyllable() { return headBit == 1 ? "TRUE" : "FALSE"; }
-  // A caveat exists when any carried syllable is FALSE.
+  < A caveat exists when any carried syllable is FALSE. >
   boolean caveat() { return carryFalse > 0; }
-  // Agreement: the word is uniform (carry entirely matches the head).
+  < Agreement: the word is uniform (carry entirely matches the head). >
   boolean agrees() {
     return (headBit == 1 && carryFalse == 0) || (headBit == 0 && carryTrue == 0);
   }
   int trueCount() { return carryTrue + (headBit == 1 ? 1 : 0); }
   int falseCount() { return carryFalse + (headBit == 0 ? 1 : 0); }
-  // Dotted label for the result and the caveat posture.
+  < Dotted label for the result and the caveat posture. >
   String describe() {
     return "BOOLEAN." + headSyllable()
          + (caveat() ? " +carry-caveat" : " +clean");

@@ -54,17 +54,17 @@ class SLGuiWidgetFactory {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Orientation ordinals (mirror SLUIOrientation / SLWidget).
+  < Orientation ordinals (mirror SLUIOrientation / SLWidget). >
   static final int ORIENT_VERTICAL   = 0;
   static final int ORIENT_HORIZONTAL = 1;
 
-  // Construct the widget for `node` inside `parentHandle`. Returns the new
-  // widget handle, or -1 when it could not be created. `label` is the node's
-  // initial text/placeholder (empty string when it has none).
+  < Construct the widget for `node` inside `parentHandle`. Returns the new >
+  < widget handle, or -1 when it could not be created. `label` is the node's >
+  < initial text/placeholder (empty string when it has none). >
   int construct(int parentHandle, String tag, String label) {
     if (parentHandle < 0) { return -1; }
 
-    // Containers.
+    < Containers. >
     if (tag == "window" || tag == "box" || tag == "vbox") {
       return uiBox(parentHandle, ORIENT_VERTICAL, 8);
     }
@@ -75,7 +75,7 @@ class SLGuiWidgetFactory {
     if (tag == "status" || tag == "statusbar") { return uiStatusBar(parentHandle); }
     if (tag == "frame" || tag == "group")      { return uiFrame(parentHandle, label); }
 
-    // Leaf / interactive controls.
+    < Leaf / interactive controls. >
     if (tag == "label" || tag == "text")   { return uiLabel(parentHandle, label); }
     if (tag == "button")                    { return uiButton(parentHandle, label); }
     if (tag == "entry" || tag == "input")   { return uiEntry(parentHandle, label); }
@@ -83,18 +83,18 @@ class SLGuiWidgetFactory {
     if (tag == "spacer")                    { return uiSpacer(parentHandle); }
     if (tag == "separator" || tag == "hr")  { return uiSeparator(parentHandle, ORIENT_HORIZONTAL); }
 
-    // Unknown tag: give it a vertical box so children still have a container.
+    < Unknown tag: give it a vertical box so children still have a container. >
     return uiBox(parentHandle, ORIENT_VERTICAL, 8);
   }
 
-  // Is this tag an interactive control the host should poll for activations?
+  < Is this tag an interactive control the host should poll for activations? >
   boolean interactive(String tag) {
     return tag == "button" || tag == "entry" || tag == "input"
         || tag == "toggle" || tag == "switch";
   }
 
-  // Which SLGuiEventType an activation on this tag should raise.
-  // Buttons -> CLICK; entries -> SUBMIT (Enter); toggles -> TOGGLE.
+  < Which SLGuiEventType an activation on this tag should raise. >
+  < Buttons -> CLICK; entries -> SUBMIT (Enter); toggles -> TOGGLE. >
   int activationEvent(String tag) {
     if (tag == "button") { return SLGuiEventType.CLICK; }
     if (tag == "toggle" || tag == "switch") { return SLGuiEventType.TOGGLE; }

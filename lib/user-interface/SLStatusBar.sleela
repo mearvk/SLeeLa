@@ -54,7 +54,7 @@ class SLStatusBar extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a status bar inside `parent` (normally the window root).
+  < Create a status bar inside `parent` (normally the window root). >
   void createIn(SLWidget parent) {
     widget = uiStatusBar(parent.handle());
   }

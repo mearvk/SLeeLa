@@ -65,7 +65,8 @@ class MacosCreator {
     Model m = new Model();
     m.name = name; m.version = version; m.arch = "arm64";
     m.triple = "aarch64-apple-darwin";
-    m.loader = "boot.efi"; m.kernel = "XNU"; m.kernelVer = "24.0.0";   // Darwin 24 (Sequoia)
+    < Darwin 24 (Sequoia) >
+    m.loader = "boot.efi"; m.kernel = "XNU"; m.kernelVer = "24.0.0";
     m.cmdline = "ro quiet"; m.rootfs = "APFS"; m.init = "launchd";
     m.desktop = "Aqua/WindowServer";
     return m;
@@ -119,8 +120,8 @@ class MacosCreator {
     return s;
   }
 
-  // macOS has no FS interpreter; it runs Windows (Wine) and Linux (Lima VM)
-  // guests; Rosetta 2 translates x86-64 within the macOS world.
+  < macOS has no FS interpreter; it runs Windows (Wine) and Linux (Lima VM) >
+  < guests; Rosetta 2 translates x86-64 within the macOS world. >
   String compat(Model m) {
     return "macOS runs Windows via wine/crossover + win32-libs\n"
          + "macOS runs Linux via lima + linux-userland\n"

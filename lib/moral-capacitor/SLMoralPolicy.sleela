@@ -56,9 +56,12 @@ class SLMoralPolicy {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String label;
-  int dischargeThreshold;  // minimum charge to PERMIT
-  int allowDefer;          // 1: partial charge -> DEFER; 0: fail closed to DENY
-  int requireConsent;      // 1: a non-consented irreversible op auto-trips a veto
+  < minimum charge to PERMIT >
+  int dischargeThreshold;
+  < 1: partial charge -> DEFER; 0: fail closed to DENY >
+  int allowDefer;
+  < 1: a non-consented irreversible op auto-trips a veto >
+  int requireConsent;
   int configured;
 
   void configure(String name, int threshold) {
@@ -66,17 +69,17 @@ class SLMoralPolicy {
     configured = 1;
   }
 
-  // ---- Ready-made stances for the priority surfaces ----------------------
-  // Routine VM work: a modest threshold, DEFER allowed.
+  < ---- Ready-made stances for the priority surfaces ---------------------- >
+  < Routine VM work: a modest threshold, DEFER allowed. >
   void vmDefault() { configure("vm-default", 2); allowDefer = 1; requireConsent = 0; }
-  // VM native/OS-bridge or process spawn: higher bar.
+  < VM native/OS-bridge or process spawn: higher bar. >
   void vmBridge()  { configure("vm-bridge", 4); allowDefer = 1; requireConsent = 1; }
-  // OS routine (read env, cwd): low bar.
+  < OS routine (read env, cwd): low bar. >
   void osRoutine() { configure("os-routine", 2); allowDefer = 1; requireConsent = 0; }
-  // OS destructive (remove/format/install to disk): high bar, consent required,
-  // fail closed (no DEFER — an unsure destructive op is denied).
+  < OS destructive (remove/format/install to disk): high bar, consent required, >
+  < fail closed (no DEFER — an unsure destructive op is denied). >
   void osDestructive() { configure("os-destructive", 6); allowDefer = 0; requireConsent = 1; }
-  // Machine power-on / boot a guest: high bar.
+  < Machine power-on / boot a guest: high bar. >
   void machinePower()  { configure("machine-power", 5); allowDefer = 1; requireConsent = 1; }
 
   void setThreshold(int t) { dischargeThreshold = t; }

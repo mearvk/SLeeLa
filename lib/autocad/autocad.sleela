@@ -59,11 +59,16 @@ class AutoCadRenderer {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
     String title; String units;
-    double curX; double curY;                      // insertion point for next room
-    double minX; double minY; double maxX; double maxY; // extents
-    String walls;   // accumulated LINE entities (walls layer)
-    String dims;    // accumulated dimension LINE + measured TEXT entities
-    String notes;   // accumulated TEXT entities (notes layer)
+    < insertion point for next room >
+    double curX; double curY;
+    < extents >
+    double minX; double minY; double maxX; double maxY;
+    < accumulated LINE entities (walls layer) >
+    String walls;
+    < accumulated dimension LINE + measured TEXT entities >
+    String dims;
+    < accumulated TEXT entities (notes layer) >
+    String notes;
     int noteCount;
 
     void begin(String t, String u) {
@@ -126,7 +131,7 @@ class AutoCadRenderer {
 
     double numberOf(int v) { return v * 1.0; }
 
-    // Apply one plan directive to the model.
+    < Apply one plan directive to the model. >
     void applyDirective(String op, double n1, double n2, double n3, double n4, String text) {
         if (op == "title") { title = text; addNote(minX, maxY + 500.0, text); return; }
         if (op == "units") { units = text; return; }
@@ -146,7 +151,7 @@ class AutoCadRenderer {
         return "0\nLAYER\n2\n" + name + "\n70\n0\n62\n" + istr(color) + "\n6\nCONTINUOUS\n";
     }
 
-    // Serialize the whole model to AutoCAD DXF text.
+    < Serialize the whole model to AutoCAD DXF text. >
     String emit() {
         String s = "0\nSECTION\n2\nHEADER\n";
         s = s + "9\n$EXTMIN\n10\n" + num(minX) + "\n20\n" + num(minY) + "\n";

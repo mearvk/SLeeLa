@@ -64,7 +64,8 @@ class SLMoralCapacitor {
   int configured;
 
   void configure() {
-    storedCharge = new SLMoralCharge(); storedCharge.configure(16);  // capacity 16
+    < capacity 16 >
+    storedCharge = new SLMoralCharge(); storedCharge.configure(16);
     vetoes = new SLMoralVeto(); vetoes.configure();
     activePolicy = new SLMoralPolicy(); activePolicy.vmDefault();
     lastOp = null;
@@ -74,22 +75,22 @@ class SLMoralCapacitor {
   void setPolicy(SLMoralPolicy policy) { activePolicy = policy; }
   SLMoralPolicy policy() { return activePolicy; }
 
-  // ---- Manual charging (a library may charge explicitly) ------------------
-  // Add a framework's signed moral contribution.
+  < ---- Manual charging (a library may charge explicitly) ------------------ >
+  < Add a framework's signed moral contribution. >
   void charge(int frameworkOrdinal, int delta) { storedCharge.add(frameworkOrdinal, delta); }
-  // Arm a red line with a reason.
+  < Arm a red line with a reason. >
   void arm(int redline, String reason) { vetoes.trip(redline, reason); }
 
-  // ---- Automatic appraisal (frameworks score the operation) ---------------
-  // Charge the capacitor from each framework's reading of the operation, and
-  // arm any red line the operation plainly crosses. This is the default,
-  // honest appraisal; a library may follow it with additional charge/arm calls.
+  < ---- Automatic appraisal (frameworks score the operation) --------------- >
+  < Charge the capacitor from each framework's reading of the operation, and >
+  < arm any red line the operation plainly crosses. This is the default, >
+  < honest appraisal; a library may follow it with additional charge/arm calls. >
   void appraise(SLMoralOperation op) {
     lastOp = op;
 
-    // Consent / autonomy: a consented operation earns charge; a non-consented,
-    // irreversible one loses charge and (under a consent-requiring policy) trips
-    // the irreversible-harm red line.
+    < Consent / autonomy: a consented operation earns charge; a non-consented, >
+    < irreversible one loses charge and (under a consent-requiring policy) trips >
+    < the irreversible-harm red line. >
     if (op.hasConsent()) { storedCharge.add(SLMoralFramework.CONSENT, 2); }
     else {
       storedCharge.add(SLMoralFramework.CONSENT, -2);
@@ -99,27 +100,27 @@ class SLMoralCapacitor {
       }
     }
 
-    // Beneficence: reversible operations are safer (do-no-harm); irreversible
-    // ones must justify themselves elsewhere.
+    < Beneficence: reversible operations are safer (do-no-harm); irreversible >
+    < ones must justify themselves elsewhere. >
     if (op.isReversible()) { storedCharge.add(SLMoralFramework.BENEFICENCE, 2); }
     else { storedCharge.add(SLMoralFramework.BENEFICENCE, -1); }
 
-    // Deontology: a duty to respect declared consent and scope. A consented,
-    // in-scope operation satisfies duty.
+    < Deontology: a duty to respect declared consent and scope. A consented, >
+    < in-scope operation satisfies duty. >
     if (op.hasConsent()) { storedCharge.add(SLMoralFramework.DEONTOLOGY, 1); }
 
-    // Utilitarianism: routine, reversible work tends to net positive utility.
+    < Utilitarianism: routine, reversible work tends to net positive utility. >
     if (op.isReversible()) { storedCharge.add(SLMoralFramework.UTILITARIANISM, 1); }
 
-    // Virtue ethics: a transparent, consented action is what a good agent does.
+    < Virtue ethics: a transparent, consented action is what a good agent does. >
     if (op.hasConsent() && op.isReversible()) { storedCharge.add(SLMoralFramework.VIRTUE_ETHICS, 1); }
 
-    // Red lines keyed on the action/target vocabulary. These are conservative
-    // string checks; a library should also arm vetoes it detects directly.
+    < Red lines keyed on the action/target vocabulary. These are conservative >
+    < string checks; a library should also arm vetoes it detects directly. >
     screenRedLines(op);
   }
 
-  // Conservative red-line screen over the operation's action/target words.
+  < Conservative red-line screen over the operation's action/target words. >
   void screenRedLines(SLMoralOperation op) {
     String a = op.actionVerb();
     String t = op.targetName();
@@ -139,54 +140,54 @@ class SLMoralCapacitor {
     }
   }
 
-  // ---- The decision -------------------------------------------------------
-  // Evaluate the stored charge against a threshold and the armed vetoes.
+  < ---- The decision ------------------------------------------------------- >
+  < Evaluate the stored charge against a threshold and the armed vetoes. >
   SLMoralVerdict evaluate(int threshold) {
     SLMoralVerdict v = new SLMoralVerdict();
     int level = storedCharge.level();
 
-    // 1. A tripped red line denies regardless of charge.
+    < 1. A tripped red line denies regardless of charge. >
     if (vetoes.anyTripped()) {
       v.configure(SLMoralVerdict.DENY, level, threshold,
         "veto: " + firstTrippedName(), vetoes.reason());
       return v;
     }
-    // 2. Sufficient charge discharges -> permit.
+    < 2. Sufficient charge discharges -> permit. >
     if (level >= threshold) {
       v.configure(SLMoralVerdict.PERMIT, level, threshold,
         frameworkName(storedCharge.dominantFramework()), "sufficient moral charge");
       return v;
     }
-    // 3. Partial charge: defer if the policy allows, else fail closed to deny.
+    < 3. Partial charge: defer if the policy allows, else fail closed to deny. >
     if (level > 0 && activePolicy.defersAllowed()) {
       v.configure(SLMoralVerdict.DEFER, level, threshold,
         frameworkName(storedCharge.dominantFramework()),
         "insufficient charge; more justification or consent required");
       return v;
     }
-    // 4. No basis (or fail-closed policy) -> deny.
+    < 4. No basis (or fail-closed policy) -> deny. >
     v.configure(SLMoralVerdict.DENY, level, threshold, "none",
       "no sufficient moral basis to proceed");
     return v;
   }
 
-  // Evaluate against the active policy's threshold.
+  < Evaluate against the active policy's threshold. >
   SLMoralVerdict decide() { return evaluate(activePolicy.threshold()); }
 
-  // One-call gate: appraise an operation under the active policy and decide.
+  < One-call gate: appraise an operation under the active policy and decide. >
   SLMoralVerdict gate(SLMoralOperation op) {
     appraise(op);
     return decide();
   }
 
-  // Reset stored charge and vetoes so the capacitor can judge the next op.
+  < Reset stored charge and vetoes so the capacitor can judge the next op. >
   void discharge() {
     storedCharge.reset();
     vetoes = new SLMoralVeto(); vetoes.configure();
     lastOp = null;
   }
 
-  // ---- Introspection ------------------------------------------------------
+  < ---- Introspection ------------------------------------------------------ >
   int chargeLevel() { return storedCharge.level(); }
   SLMoralCharge charge() { return storedCharge; }
   SLMoralVeto vetoSet() { return vetoes; }

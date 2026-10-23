@@ -60,7 +60,7 @@ class SLFont {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Weight ordinals (mirror SLUIFontWeight).
+  < Weight ordinals (mirror SLUIFontWeight). >
   static final int THIN     = 100;
   static final int LIGHT    = 300;
   static final int REGULAR  = 400;
@@ -68,20 +68,21 @@ class SLFont {
   static final int SEMIBOLD = 600;
   static final int BOLD     = 700;
   static final int BLACK    = 900;
-  // Slant ordinals (mirror SLUIFontSlant).
+  < Slant ordinals (mirror SLUIFontSlant). >
   static final int UPRIGHT = 0;
   static final int ITALIC  = 1;
   static final int OBLIQUE = 2;
-  // Quality ordinals (mirror SLUIFontQuality).
+  < Quality ordinals (mirror SLUIFontQuality). >
   static final int QUALITY_DRAFT  = 0;
   static final int QUALITY_LOW    = 1;
   static final int QUALITY_MEDIUM = 2;
   static final int QUALITY_HIGH   = 3;
   static final int QUALITY_ULTRA  = 4;
 
-  int font;   // VM-local font handle (-1 = none)
+  < VM-local font handle (-1 = none) >
+  int font;
 
-  // Create a font with a family ("system"/"mono"/a real face) and point size.
+  < Create a font with a family ("system"/"mono"/a real face) and point size. >
   void create(String family, double sizePt) {
     font = fontCreate(family, sizePt);
   }
@@ -89,7 +90,7 @@ class SLFont {
   boolean valid() { return font >= 0; }
   void destroy() { if (font >= 0) { fontDestroy(font); font = -1; } }
 
-  // ---- face attributes ----------------------------------------------------
+  < ---- face attributes ---------------------------------------------------- >
   void setFamily(String family) { if (font >= 0) { fontSetFamily(font, family); } }
   void setSize(double sizePt)   { if (font >= 0) { fontSetSize(font, sizePt); } }
   void setWeight(int weight)    { if (font >= 0) { fontSetWeight(font, weight); } }
@@ -100,8 +101,8 @@ class SLFont {
 
   double size() { if (font < 0) { return 0.0; } return fontSize(font); }
 
-  // ---- effect stack -------------------------------------------------------
-  // Add an effect (applied back-to-front in add order).
+  < ---- effect stack ------------------------------------------------------- >
+  < Add an effect (applied back-to-front in add order). >
   void addEffect(SLFontEffect e) {
     if (font >= 0) {
       fontAddEffect(font, e.type, e.color, e.color2, e.dx, e.dy, e.blur,
@@ -111,23 +112,23 @@ class SLFont {
   void clearEffects() { if (font >= 0) { fontClearEffects(font); } }
   int effectCount() { if (font < 0) { return 0; } return fontEffectCount(font); }
 
-  // ---- measuring ----------------------------------------------------------
+  < ---- measuring ---------------------------------------------------------- >
   double measure(String utf8) { if (font < 0) { return 0.0; } return fontMeasure(font, utf8); }
   double ascent()  { if (font < 0) { return 0.0; } return fontAscent(font); }
   double descent() { if (font < 0) { return 0.0; } return fontDescent(font); }
   double lineHeight() { if (font < 0) { return 0.0; } return fontLineHeight(font); }
 
-  // ---- drawing ------------------------------------------------------------
-  // Draw into an SLDrawContext with the full effect stack at (x, baseline).
+  < ---- drawing ------------------------------------------------------------ >
+  < Draw into an SLDrawContext with the full effect stack at (x, baseline). >
   void draw(SLDrawContext dc, String utf8, int x, int baseline, int color) {
     if (font >= 0 && dc != null) {
       fontDraw(font, dc.handle(), utf8, x, baseline, color);
     }
   }
 
-  // If this font carries an EMITTER effect, register that emission into a light
-  // scene for text drawn at (x, baseline). A pure emitter reserves nothing; an
-  // anchored one binds as a source. Returns the light index or an error.
+  < If this font carries an EMITTER effect, register that emission into a light >
+  < scene for text drawn at (x, baseline). A pure emitter reserves nothing; an >
+  < anchored one binds as a source. Returns the light index or an error. >
   int emitInto(SLLightScene scene, int x, int baseline, String utf8) {
     if (font < 0 || scene == null) { return -1; }
     return fontEmitIntoScene(font, scene.handle(), x, baseline, utf8);

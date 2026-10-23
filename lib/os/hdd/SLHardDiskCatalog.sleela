@@ -55,19 +55,19 @@ class SLHardDiskCatalog {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   void configure() {}
 
-  // A 7200 RPM SATA desktop/NAS drive from a named manufacturer.
+  < A 7200 RPM SATA desktop/NAS drive from a named manufacturer. >
   SLHardDisk sata7200(String manufacturer, int capacityGb) {
     SLHardDisk d = new SLHardDisk();
     d.configure(manufacturer, desktopPart(manufacturer), d.IF_SATA3, 7200, capacityGb);
     return d;
   }
-  // A 7200 RPM SAS enterprise drive from a named manufacturer.
+  < A 7200 RPM SAS enterprise drive from a named manufacturer. >
   SLHardDisk enterprise(String manufacturer, int capacityGb) {
     SLHardDisk d = new SLHardDisk();
     d.configure(manufacturer, enterprisePart(manufacturer), d.IF_SAS, 7200, capacityGb);
     return d;
   }
-  // A high-RPM (10k/15k) SAS performance drive.
+  < A high-RPM (10k/15k) SAS performance drive. >
   SLHardDisk performance(String manufacturer, int rpm, int capacityGb) {
     SLHardDisk d = new SLHardDisk();
     d.configure(manufacturer, enterprisePart(manufacturer), d.IF_SAS, rpm, capacityGb);

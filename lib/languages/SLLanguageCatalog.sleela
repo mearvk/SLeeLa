@@ -52,12 +52,13 @@ class SLLanguageCatalog {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String active;     // active locale code (default "en")
+  < active locale code (default "en") >
+  String active;
 
   void use(String code) { active = code; }
   String current() { if (active == "") { return "en"; } return active; }
 
-  // The set of locales shipped under /languages, as a stable count + probe.
+  < The set of locales shipped under /languages, as a stable count + probe. >
   int localeCount() { return 12; }
   boolean has(String code) {
     return code == "en" || code == "es" || code == "fr" || code == "de"

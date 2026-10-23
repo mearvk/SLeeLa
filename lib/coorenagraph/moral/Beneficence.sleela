@@ -57,9 +57,9 @@ class Beneficence {
         return "The practice of doing good, showing kindness, and acting to benefit others.";
     }
 
-    // --- COORENAGRAPH linguistic / graph members, specific to "Beneficence" -
+    < --- COORENAGRAPH linguistic / graph members, specific to "Beneficence" - >
 
-    // Related adverb form(s) of this object.
+    < Related adverb form(s) of this object. >
     int adverbCount() { return 1; }
     String[] adverbs() {
         String[] a = new String[1];
@@ -67,7 +67,7 @@ class Beneficence {
         return a;
     }
 
-    // Related verb form(s) of this object.
+    < Related verb form(s) of this object. >
     int verbCount() { return 2; }
     String[] verbs() {
         String[] v = new String[2];
@@ -76,7 +76,7 @@ class Beneficence {
         return v;
     }
 
-    // Related noun form(s) of this object.
+    < Related noun form(s) of this object. >
     int nounCount() { return 3; }
     String[] nouns() {
         String[] n = new String[3];
@@ -86,7 +86,7 @@ class Beneficence {
         return n;
     }
 
-    // Co-sections: sibling concepts co-located with this object in the graph.
+    < Co-sections: sibling concepts co-located with this object in the graph. >
     int cosectCount() { return 3; }
     String[] cosects() {
         String[] c = new String[3];
@@ -96,12 +96,12 @@ class Beneficence {
         return c;
     }
 
-    // The moral dimension / axis this object occupies.
+    < The moral dimension / axis this object occupies. >
     String dimension() {
         return "virtue";
     }
 
-    // Interchangeable (near-synonym) terms for this object.
+    < Interchangeable (near-synonym) terms for this object. >
     int interchangeCount() { return 2; }
     String[] interchanges() {
         String[] i = new String[2];

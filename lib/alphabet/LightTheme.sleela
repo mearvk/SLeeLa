@@ -51,14 +51,18 @@ class LightTheme extends Theme {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   void dress() {
-    // Palette entries, in order, so a user can reference them by name.
+    < Palette entries, in order, so a user can reference them by name. >
     palette.add("paper",     250, 250, 250);
     palette.add("ink",        17,  17,  17);
-    palette.add("accent",     30, 144, 255);  // dodger blue
+    < dodger blue >
+    palette.add("accent",     30, 144, 255);
     palette.add("muted",     120, 120, 120);
 
-    setBackground(250, 250, 250);  // paper
-    setForeground(17, 17, 17);     // ink
-    setAccent(30, 144, 255);       // accent
+    < paper >
+    setBackground(250, 250, 250);
+    < ink >
+    setForeground(17, 17, 17);
+    < accent >
+    setAccent(30, 144, 255);
   }
 }

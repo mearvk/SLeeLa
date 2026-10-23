@@ -59,7 +59,8 @@ class SLGuiEventBus {
 
   SLGuiHandler[] handlers;
   int count;
-  int lastDelivered;    // how many handlers the last dispatch fired
+  < how many handlers the last dispatch fired >
+  int lastDelivered;
 
   void init() {
     handlers = new SLGuiHandler[MAX_HANDLERS];
@@ -68,7 +69,7 @@ class SLGuiEventBus {
 
   int size() { return count; }
 
-  // addEventListener(target, type, operation): register a handler and return it.
+  < addEventListener(target, type, operation): register a handler and return it. >
   SLGuiHandler addListener(String targetId, int eventType, String operation) {
     if (count >= MAX_HANDLERS) { return null; }
     SLGuiHandler h = new SLGuiHandler();
@@ -78,7 +79,7 @@ class SLGuiEventBus {
     return h;
   }
 
-  // addEventListener with options (once / capture).
+  < addEventListener with options (once / capture). >
   SLGuiHandler addListenerEx(String targetId, int eventType, String operation,
                              boolean once, boolean capture) {
     SLGuiHandler h = addListener(targetId, eventType, operation);
@@ -86,7 +87,7 @@ class SLGuiEventBus {
     return h;
   }
 
-  // removeEventListener: drop the first handler matching (target, type, op).
+  < removeEventListener: drop the first handler matching (target, type, op). >
   boolean removeListener(String targetId, int eventType, String operation) {
     for (int i = 0; i < count; i = i + 1) {
       SLGuiHandler h = handlers[i];
@@ -99,7 +100,7 @@ class SLGuiEventBus {
     return false;
   }
 
-  // Remove every handler bound to a target (used when a node is destroyed).
+  < Remove every handler bound to a target (used when a node is destroyed). >
   int removeTarget(String targetId) {
     int removed = 0;
     int i = 0;
@@ -110,15 +111,17 @@ class SLGuiEventBus {
     return removed;
   }
 
-  // Dispatch a raised event: capture-phase handlers first, then bubble-phase,
-  // stopping early if a handler calls stopPropagation(). once handlers are
-  // removed after they fire. Returns the number of handlers that fired.
+  < Dispatch a raised event: capture-phase handlers first, then bubble-phase, >
+  < stopping early if a handler calls stopPropagation(). once handlers are >
+  < removed after they fire. Returns the number of handlers that fired. >
   int dispatch(SLGuiEvent event) {
     lastDelivered = 0;
     if (event == null) { return 0; }
-    deliverPhase(event, true);                       // capture
+    < capture >
+    deliverPhase(event, true);
     if (!event.isPropagationStopped()) {
-      deliverPhase(event, false);                    // target + bubble
+      < target + bubble >
+      deliverPhase(event, false);
     }
     sweepOnce();
     return lastDelivered;
@@ -135,7 +138,7 @@ class SLGuiEventBus {
     }
   }
 
-  // Convenience: build and dispatch a simple typed event with a string value.
+  < Convenience: build and dispatch a simple typed event with a string value. >
   int raise(int eventType, String targetId, String value) {
     SLGuiEvent e = new SLGuiEvent();
     e.configure(eventType, targetId);
@@ -143,14 +146,14 @@ class SLGuiEventBus {
     return dispatch(e);
   }
 
-  // Poll a handler's latch (for hosts that poll rather than get called back).
+  < Poll a handler's latch (for hosts that poll rather than get called back). >
   boolean poll(SLGuiHandler handler) {
     return handler != null && handler.take();
   }
 
   int deliveredLast() { return lastDelivered; }
 
-  // ---- internals ----------------------------------------------------------
+  < ---- internals ---------------------------------------------------------- >
 
   void removeAt(int index) {
     if (index < 0 || index >= count) { return; }
@@ -159,7 +162,7 @@ class SLGuiEventBus {
     handlers[count] = null;
   }
 
-  // Remove handlers flagged once that have fired at least once.
+  < Remove handlers flagged once that have fired at least once. >
   void sweepOnce() {
     int i = 0;
     while (i < count) {

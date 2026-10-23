@@ -49,10 +49,14 @@ class RetailModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int unitsSold;          // items sold this month
-  int retailPriceCents;   // price on the shelf
-  int unitCostCents;      // what the item cost to acquire
-  int overheadCents;      // monthly rent/staff/lights
+  < items sold this month >
+  int unitsSold;
+  < price on the shelf >
+  int retailPriceCents;
+  < what the item cost to acquire >
+  int unitCostCents;
+  < monthly rent/staff/lights >
+  int overheadCents;
 
   void setUp(int sold, int retailPrice, int unitCost, int overhead) {
     load();
@@ -68,7 +72,7 @@ class RetailModel extends BusinessModel {
     setUnits(sold);
   }
 
-  // Margin per unit, in case anyone asks how thin it really is.
+  < Margin per unit, in case anyone asks how thin it really is. >
   int unitMargin() { return retailPriceCents - unitCostCents; }
 
   int monthlyRevenue() { return unitsSold * retailPriceCents; }

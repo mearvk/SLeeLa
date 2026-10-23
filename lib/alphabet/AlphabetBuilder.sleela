@@ -8,7 +8,8 @@
    
        let b = new AlphabetBuilder("Runic");
        b.vowel("A"); b.consonant("B"); ...
-       let alpha = b.build();            // a fully formed Alphabet
+       < a fully formed Alphabet >
+       let alpha = b.build();
    
    Each add() builds a Letter with `new Letter(glyph, order, vowel)` (the 1.8
    constructor) and hands it to Alphabet.appendLetter. The builder is the
@@ -60,16 +61,18 @@ class AlphabetBuilder {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   Alphabet target;
-  int next;        // 1-based running order for constructed Letters
+  < 1-based running order for constructed Letters >
+  int next;
 
-  // Syntax 1.8 constructor: start a builder for a named script.
+  < Syntax 1.8 constructor: start a builder for a named script. >
   AlphabetBuilder(String scriptName) {
     this.target = new Alphabet();
-    this.target.begin(scriptName);   // base compose() is empty: a blank canvas
+    < base compose() is empty: a blank canvas >
+    this.target.begin(scriptName);
     this.next = 1;
   }
 
-  // Add a letter built in one line with the Letter 1.8 constructor.
+  < Add a letter built in one line with the Letter 1.8 constructor. >
   void add(String glyph, boolean vowel) {
     Letter L = new Letter(glyph, next, vowel);
     target.appendLetter(L);
@@ -78,10 +81,10 @@ class AlphabetBuilder {
   void vowel(String glyph)     { add(glyph, true); }
   void consonant(String glyph) { add(glyph, false); }
 
-  // Add a whole run of consonants or vowels from pre-split glyphs is left to the
-  // caller; the per-glyph adders keep vowel-ness explicit (only the script knows).
+  < Add a whole run of consonants or vowels from pre-split glyphs is left to the >
+  < caller; the per-glyph adders keep vowel-ness explicit (only the script knows). >
 
-  // The assembled alphabet.
+  < The assembled alphabet. >
   Alphabet build() { return target; }
 
   int letterCount() { return target.size(); }

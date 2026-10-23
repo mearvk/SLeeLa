@@ -60,22 +60,29 @@ class SLVmModium {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // scan modes
-  static final int MODE_SHA   = 0;   // ~95% case: existence + location + SHA-256
-  static final int MODE_EXACT = 1;   // additionally byte-exact
+  < scan modes >
+  < ~95% case: existence + location + SHA-256 >
+  static final int MODE_SHA   = 0;
+  < additionally byte-exact >
+  static final int MODE_EXACT = 1;
 
-  // per-file outcome ordinals (mirror the subcommand's classification)
+  < per-file outcome ordinals (mirror the subcommand's classification) >
   static final int FILE_OK        = 0;
-  static final int FILE_MISSING   = 1;   // not where it should be
-  static final int FILE_CORRUPT   = 2;   // present but SHA/bytes mismatch
+  < not where it should be >
+  static final int FILE_MISSING   = 1;
+  < present but SHA/bytes mismatch >
+  static final int FILE_CORRUPT   = 2;
   static final int FILE_UNREADABLE= 3;
 
-  int    vmNumber;        // 1..10
-  String manifestPath;    // "virtual-machine/vm-version/NNN/MODIUM.json"
-  String rebuildPath;     // "virtual-machine/vm-version/NNN/rebuild.sql"
+  < 1..10 >
+  int    vmNumber;
+  < "virtual-machine/vm-version/NNN/MODIUM.json" >
+  String manifestPath;
+  < "virtual-machine/vm-version/NNN/rebuild.sql" >
+  String rebuildPath;
   int    mode;
 
-  // rolling scan totals
+  < rolling scan totals >
   int total; int okCount; int missing; int corrupt; int unreadable;
 
   void configure(int number, int scanMode) {
@@ -89,20 +96,20 @@ class SLVmModium {
 
   void reset() { total = 0; okCount = 0; missing = 0; corrupt = 0; unreadable = 0; }
 
-  // Request the host scan via the service opcode. Returns a status (0 ok,
-  // -1 out of range); detailed per-file results are reported by the host.
+  < Request the host scan via the service opcode. Returns a status (0 ok, >
+  < -1 out of range); detailed per-file results are reported by the host. >
   int scan(SLVmResult res, SLVmReport rep) {
     if (vmNumber < 1 || vmNumber > 10) {
       if (res != null) { res.fail(res.E_INVALID, "modium", "vm number out of range (1..10)"); res.report(rep); }
       return -1;
     }
-    // The host services OP_MODIUM_SCAN: it reads manifestPath, verifies every
-    // recorded file, and fills the totals below. (In the Sleela model this is a
-    // VM-exit; the native subcommand `sleela modium scan` is the same scan.)
+    < The host services OP_MODIUM_SCAN: it reads manifestPath, verifies every >
+    < recorded file, and fills the totals below. (In the Sleela model this is a >
+    < VM-exit; the native subcommand `sleela modium scan` is the same scan.) >
     return 0;
   }
 
-  // Tally one file outcome (the host calls this per file).
+  < Tally one file outcome (the host calls this per file). >
   void tally(int outcome) {
     total = total + 1;
     if (outcome == FILE_OK) { okCount = okCount + 1; }
@@ -113,8 +120,8 @@ class SLVmModium {
 
   boolean resolved() { return missing == 0 && corrupt == 0 && unreadable == 0; }
 
-  // Reconstitution advice: exact recovery comes from rebuild.sql (MySQL), or a
-  // restore from the version's committed git content. Never automatic.
+  < Reconstitution advice: exact recovery comes from rebuild.sql (MySQL), or a >
+  < restore from the version's committed git content. Never automatic. >
   String reconstituteHint() {
     return "load " + rebuildPath + " into MySQL and write back the recorded "
          + "content for the flagged files (restore is explicit-only).";

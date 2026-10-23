@@ -1,5 +1,5 @@
 #sleela 2.1
-/* DOWNLOAD metadata model; not an authenticated or durable resume service. */
+< DOWNLOAD metadata model; not an authenticated or durable resume service. >
 class Http50DownloadState {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

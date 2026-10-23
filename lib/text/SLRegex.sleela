@@ -1,29 +1,33 @@
-// lib/text/SLRegex.sleela
-// SLeeLa Standard Library Definition.
-// Definition: SLRegex -- a comprehensive regular-expression contract for the
-// text library family.
-//
-// SLRegex holds a compiled-by-the-runtime pattern and exposes matching through
-// the engine. Regex matching is inherently char-level, so almost all of the
-// real work is bridged; the in-language layer manages the pattern/flags value
-// and the honest result-reporting contract.
-//   * In-language: pattern/flags management, equality of patterns, anchoring
-//     helpers that assemble a new pattern string with +, and flag bookkeeping.
-//   * Bridged: compile, matches, find, findAll, replaceAll, split, groupCount,
-//     group -- each returns an inspectable "text.bridge:re:<op>:..." descriptor
-//     the native regex engine fulfils; never a faked match.
-//
-// Comments are // only; #sleela 2.1.
+< lib/text/SLRegex.sleela >
+< SLeeLa Standard Library Definition. >
+< Definition: SLRegex -- a comprehensive regular-expression contract for the >
+< text library family. >
+<  >
+< SLRegex holds a compiled-by-the-runtime pattern and exposes matching through >
+< the engine. Regex matching is inherently char-level, so almost all of the >
+< real work is bridged; the in-language layer manages the pattern/flags value >
+< and the honest result-reporting contract. >
+< * In-language: pattern/flags management, equality of patterns, anchoring >
+< helpers that assemble a new pattern string with +, and flag bookkeeping. >
+< * Bridged: compile, matches, find, findAll, replaceAll, split, groupCount, >
+< group -- each returns an inspectable "text.bridge:re:<op>:..." descriptor >
+< the native regex engine fulfils; never a faked match. >
+<  >
+< only; #sleela 2.1. > >
+< Comments are
 #sleela 2.1
-// Family: text. Native VM/OS work crosses an explicit bridge.
+< Family: text. Native VM/OS work crosses an explicit bridge. >
 
 class SLRegex {
 
-  String value = "";       // the pattern source
-  String flags = "";       // e.g. "i", "m", "s", "ix"
-  int    compiled = 0;     // 1 once the runtime has compiled it (via bridge)
+  < the pattern source >
+  String value = "";
+  < e.g. "i", "m", "s", "ix" >
+  String flags = "";
+  < 1 once the runtime has compiled it (via bridge) >
+  int    compiled = 0;
 
-  // ---- pattern management (in-language) ------------------------------
+  < ---- pattern management (in-language) ------------------------------ >
   void set(String v)   { value = v; compiled = 0; }
   String get()         { return value; }
   void clear()         { value = ""; flags = ""; compiled = 0; }
@@ -32,7 +36,7 @@ class SLRegex {
   boolean equals(String other) { return value == other; }
   boolean isEmpty()    { return value == ""; }
 
-  // Pattern assembly helpers (real, built with +): anchor / group / alternate.
+  < Pattern assembly helpers (real, built with +): anchor / group / alternate. >
   String anchored()           { return "^" + value + "$"; }
   String startAnchored()      { return "^" + value; }
   String endAnchored()        { return value + "$"; }
@@ -41,7 +45,7 @@ class SLRegex {
   String alternate(String other) { return value + "|" + other; }
   String withFlags()          { return "(?" + flags + ")" + value; }
 
-  // ---- bridged matching (the real engine) ----------------------------
+  < ---- bridged matching (the real engine) ---------------------------- >
   String bridge(String op)              { return "text.bridge:re:" + op + ":" + value; }
   String bridgeArg(String op, String a) { return "text.bridge:re:" + op + ":" + value + ":" + a; }
   String bridgeArg2(String op, String a, String b) {
@@ -59,18 +63,18 @@ class SLRegex {
   String replaceFirst(String input, String to){ return bridgeArg2("replaceFirst", input, to); }
   String split(String input)               { return bridgeArg("split", input); }
 
-  // ---- introspection -------------------------------------------------
+  < ---- introspection ------------------------------------------------- >
   String typeName()   { return "SLeeLa.text.SLRegex"; }
   boolean available() { return true; }
 
-  // SLCloneable / SLDisposable intent.
+  < SLCloneable / SLDisposable intent. >
   SLRegex copy() { SLRegex c = new SLRegex(); c.set(value); c.setFlags(flags); return c; }
   void dispose() { value = ""; flags = ""; compiled = 0; }
 
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override each record.
-  // Values are faithful to the subject's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, >
+  < or catalog can read and (where appropriate) override each record. >
+  < Values are faithful to the subject's real origin where publicly known. >
   String metaVersion = "1.0.0";
   int metaId = 4;
   String metaAuthor = "SLeeLa standard library";

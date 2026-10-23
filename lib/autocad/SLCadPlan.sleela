@@ -54,9 +54,9 @@ class SLCadPlan {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // Map a directive keyword to its stable kind code so a front end and the
-  // renderer agree on the vocabulary:
-  //   0 title  1 units  2 at  3 room  4 wall  5 door  6 dim  7 note
+  < Map a directive keyword to its stable kind code so a front end and the >
+  < renderer agree on the vocabulary: >
+  < 0 title  1 units  2 at  3 room  4 wall  5 door  6 dim  7 note >
   int kindOf(String op) {
     if (op == "title") { return 0; }
     if (op == "units") { return 1; }
@@ -66,7 +66,8 @@ class SLCadPlan {
     if (op == "door")  { return 5; }
     if (op == "dim")   { return 6; }
     if (op == "note")  { return 7; }
-    return -1;    // unknown directives are ignored (forward-compatible)
+    < unknown directives are ignored (forward-compatible) >
+    return -1;
   }
 
   boolean known(String op) { return kindOf(op) >= 0; }

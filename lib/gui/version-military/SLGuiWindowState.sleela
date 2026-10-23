@@ -59,9 +59,10 @@ class SLGuiWindowState {
   static final int MODE_MINIMIZED  = 1;
   static final int MODE_FULLSCREEN = 2;
   static final int MODE_MAXIMIZED  = 3;
-  static final int MODE_FOLDED     = 4;   // folded to a side of the desktop
+  < folded to a side of the desktop >
+  static final int MODE_FOLDED     = 4;
 
-  // Fold sides (for "minimize right" and friends).
+  < Fold sides (for "minimize right" and friends). >
   static final int SIDE_NONE   = 0;
   static final int SIDE_RIGHT  = 1;
   static final int SIDE_LEFT   = 2;
@@ -69,16 +70,18 @@ class SLGuiWindowState {
   static final int SIDE_BOTTOM = 4;
 
   int mode;
-  int foldSide;          // which side the window folded to (when MODE_FOLDED)
-  int foldedExtentPx;    // the thin extent the folded window occupies (px)
+  < which side the window folded to (when MODE_FOLDED) >
+  int foldSide;
+  < the thin extent the folded window occupies (px) >
+  int foldedExtentPx;
 
-  // Current geometry.
+  < Current geometry. >
   int x; int y; int width; int height;
-  // Remembered "norm" geometry to restore to (set whenever leaving NORMAL).
+  < Remembered "norm" geometry to restore to (set whenever leaving NORMAL). >
   int normX; int normY; int normW; int normH;
   int haveNorm;
 
-  // Desktop work-area the host reports (for computing a fold rect).
+  < Desktop work-area the host reports (for computing a fold rect). >
   int deskW; int deskH;
 
   void configure(int px, int py, int w, int h) {
@@ -90,16 +93,17 @@ class SLGuiWindowState {
   void setDesktop(int w, int h) { if (w > 0) { deskW = w; } if (h > 0) { deskH = h; } }
   void setFoldedExtent(int px) { if (px > 0) { foldedExtentPx = px; } }
 
-  // Snapshot the current geometry as the norm to restore to (called before a
-  // transition away from NORMAL so a later restore is exact).
+  < Snapshot the current geometry as the norm to restore to (called before a >
+  < transition away from NORMAL so a later restore is exact). >
   void rememberNorm() {
     if (mode == MODE_NORMAL) { normX = x; normY = y; normW = width; normH = height; haveNorm = 1; }
   }
 
-  // ---- key / gesture listeners (the host raises these) --------------------
+  < ---- key / gesture listeners (the host raises these) -------------------- >
   void onResize(int w, int h) {
     if (w > 0) { width = w; } if (h > 0) { height = h; }
-    if (mode == MODE_NORMAL) { normW = width; normH = height; }   // track the norm live
+    < track the norm live >
+    if (mode == MODE_NORMAL) { normW = width; normH = height; }
   }
   void onMove(int px, int py) { x = px; y = py; if (mode == MODE_NORMAL) { normX = x; normY = y; } }
 
@@ -113,8 +117,8 @@ class SLGuiWindowState {
     mode = MODE_MAXIMIZED; x = 0; y = 0; width = deskW; height = deskH;
   }
 
-  // "Minimize right" (and other sides): FOLD the UI to a side of the desktop,
-  // leaving a thin folded extent. Remembers the norm for restore.
+  < "Minimize right" (and other sides): FOLD the UI to a side of the desktop, >
+  < leaving a thin folded extent. Remembers the norm for restore. >
   void foldTo(int side) {
     if (side < SIDE_RIGHT || side > SIDE_BOTTOM) { return; }
     rememberNorm();
@@ -124,9 +128,10 @@ class SLGuiWindowState {
     else if (side == SIDE_TOP)    { width = deskW; height = foldedExtentPx; x = 0; y = 0; }
     else if (side == SIDE_BOTTOM) { width = deskW; height = foldedExtentPx; x = 0; y = deskH - foldedExtentPx; }
   }
-  void minimizeRight() { foldTo(SIDE_RIGHT); }   // the named "minimize right" gesture
+  < the named "minimize right" gesture >
+  void minimizeRight() { foldTo(SIDE_RIGHT); }
 
-  // DOUBLE-CLICK restore: return to the remembered norm geometry exactly.
+  < DOUBLE-CLICK restore: return to the remembered norm geometry exactly. >
   boolean onDoubleClick() {
     if (mode == MODE_NORMAL) { return false; }
     return restoreNorm();
@@ -138,7 +143,7 @@ class SLGuiWindowState {
     return true;
   }
 
-  // ---- readers ------------------------------------------------------------
+  < ---- readers ------------------------------------------------------------ >
   int getMode() { return mode; }
   int getFoldSide() { return foldSide; }
   boolean isNormal() { return mode == MODE_NORMAL; }

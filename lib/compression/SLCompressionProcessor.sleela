@@ -65,17 +65,17 @@ class SLCompressionProcessor {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // canProcess: can this algorithm compress/decompress right now, given the
-  // facts? True for a loaded native algorithm, or a loaded backend algorithm
-  // with a backend registered — what a GUI checks before enabling an action.
+  < canProcess: can this algorithm compress/decompress right now, given the >
+  < facts? True for a loaded native algorithm, or a loaded backend algorithm >
+  < with a backend registered — what a GUI checks before enabling an action. >
   boolean canProcess(boolean loaded, boolean nativeAlg, boolean backendReady) {
     if (!loaded) { return false; }
     if (nativeAlg) { return true; }
     return backendReady;
   }
 
-  // compress: dispatch a compress against the given facts. Returns a result
-  // code: -5 not loaded, 0 ok (native or backend ready), -1 backend absent.
+  < compress: dispatch a compress against the given facts. Returns a result >
+  < code: -5 not loaded, 0 ok (native or backend ready), -1 backend absent. >
   int compress(boolean loaded, boolean nativeAlg, boolean backendReady) {
     if (!loaded) { return -5; }
     if (nativeAlg) { return 0; }
@@ -83,7 +83,7 @@ class SLCompressionProcessor {
     return -1;
   }
 
-  // decompress: same result-code contract as compress.
+  < decompress: same result-code contract as compress. >
   int decompress(boolean loaded, boolean nativeAlg, boolean backendReady) {
     if (!loaded) { return -5; }
     if (nativeAlg) { return 0; }

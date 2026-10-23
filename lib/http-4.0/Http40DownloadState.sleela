@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Shared resumable DOWNLOAD contract; 50 MiB is a mode threshold, not a cap. */
+< Shared resumable DOWNLOAD contract; 50 MiB is a mode threshold, not a cap. >
 class Http40DownloadState {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
@@ -75,8 +75,8 @@ class Http40DownloadState {
       authorizedPrincipalId != "" && authenticatedResumeToken != "" &&
       contentDigest != "";
   }
-  // These flags are policy inputs, not cryptographic proof. Native code must
-  // verify token, principal, chunk hashes, and final digest before setting them.
+  < These flags are policy inputs, not cryptographic proof. Native code must >
+  < verify token, principal, chunk hashes, and final digest before setting them. >
   boolean mayCommit() {
     return hasResumeAuthorizationMetadata() && isComplete() &&
       allChunksVerified && finalDigestVerified;

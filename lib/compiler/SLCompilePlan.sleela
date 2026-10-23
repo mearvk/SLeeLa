@@ -54,16 +54,22 @@ class SLCompilePlan {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int coveredPhaseMask;   // phases the front end provides
-  int requiredPhaseMask;  // phases the request needs for its target
-  int firstMissingPhase;  // 0 when none missing
-  int resolvedTarget;     // SLLanguageCompiler.TARGET_*
-  boolean vmReady;        // true when every required phase is covered
-  int status;             // native status: OK / ABSENT / INVALID / BLOCKED
+  < phases the front end provides >
+  int coveredPhaseMask;
+  < phases the request needs for its target >
+  int requiredPhaseMask;
+  < 0 when none missing >
+  int firstMissingPhase;
+  < SLLanguageCompiler.TARGET_* >
+  int resolvedTarget;
+  < true when every required phase is covered >
+  boolean vmReady;
+  < native status: OK / ABSENT / INVALID / BLOCKED >
+  int status;
   String diagnostic;
 
-  // Build the plan by asking the native framework to walk required vs covered
-  // phases for the request's resolved target.
+  < Build the plan by asking the native framework to walk required vs covered >
+  < phases for the request's resolved target. >
   void buildFor(SLLanguageCompiler frontEnd, SLCompileRequest request) {
     int handle = native sleela_lang_plan_request(
       frontEnd.name(), request.input(), request.target(), request.isStrict());

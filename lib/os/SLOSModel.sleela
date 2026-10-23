@@ -66,29 +66,38 @@ class SLOSModel {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String osName;      // product name, e.g. "Determinant"
-  String edition;     // "Desktop" / "Server"
-  String version;     // product version
+  < product name, e.g. "Determinant" >
+  String osName;
+  < "Desktop" / "Server" >
+  String edition;
+  < product version >
+  String version;
 
   SLOSShape shape;
   SLArchitectureSet arches;
   SLBootloaderSpec boot;
   SLKernelSpec kernel;
   SLFilesystemLayout filesystem;
-  SLSwapConfig swap;         // swap/paging kind + quality
-  SLBaseDriverSeries baseDrivers;  // minimum-boot driver series
-  SLDriverSource driverSource;     // driver provenance/trust + cross-OS bridge
+  < swap/paging kind + quality >
+  SLSwapConfig swap;
+  < minimum-boot driver series >
+  SLBaseDriverSeries baseDrivers;
+  < driver provenance/trust + cross-OS bridge >
+  SLDriverSource driverSource;
   SLDriverSet drivers;
   SLPackageSet packages;
   SLServiceSet services;
   SLDesktopSpec desktop;
-  SLCompatSet compat;      // foreign-OS execution capability (optional layer)
-  SLDownloadSet downloads; // URLs for related downloads (pre-compile / pre-ISO)
-  SLConfigSet configFiles; // the settings files that must be present pre-build
+  < foreign-OS execution capability (optional layer) >
+  SLCompatSet compat;
+  < URLs for related downloads (pre-compile / pre-ISO) >
+  SLDownloadSet downloads;
+  < the settings files that must be present pre-build >
+  SLConfigSet configFiles;
   int configured;
 
-  // Begin a model with a product name and version. Layers are created empty;
-  // call shape(...) to populate them with a family's defaults.
+  < Begin a model with a product name and version. Layers are created empty; >
+  < call shape(...) to populate them with a family's defaults. >
   void configure(String name, String ver) {
     osName = name; version = ver; edition = "Desktop";
     shape = new SLOSShape();
@@ -109,9 +118,9 @@ class SLOSModel {
     configured = 1;
   }
 
-  // OOD extrapolation: take the shape of a named family ("Linux"/"Windows"/
-  // "macOS") on a primary architecture, filling every layer with that family's
-  // defaults. Refine any layer afterwards by reaching its spec object.
+  < OOD extrapolation: take the shape of a named family ("Linux"/"Windows"/ >
+  < "macOS") on a primary architecture, filling every layer with that family's >
+  < defaults. Refine any layer afterwards by reaching its spec object. >
   void shapeAs(String family, String primaryArch) {
     shape.configure(family);
     SLOSArchitecture a = new SLOSArchitecture();
@@ -128,15 +137,18 @@ class SLOSModel {
     packages.baseSeedForShape(shape);
     services.forShape(shape);
     desktop.forShape(shape);
-    compat.forShape(shape);   // seed the family's foreign-exec defaults
-    downloads.forShape(shape); // seed the family's download URLs
-    configFiles.forModel(compat.hasAny());  // seed the settings checklist
+    < seed the family's foreign-exec defaults >
+    compat.forShape(shape);
+    < seed the family's download URLs >
+    downloads.forShape(shape);
+    < seed the settings checklist >
+    configFiles.forModel(compat.hasAny());
   }
 
-  // Mark this as a server edition: drop the desktop layer.
+  < Mark this as a server edition: drop the desktop layer. >
   void asServer() { edition = "Server"; desktop.headless(); }
 
-  // ---- Accessors for the layers (for refinement and emission) -------------
+  < ---- Accessors for the layers (for refinement and emission) ------------- >
   SLOSShape osShape()            { return shape; }
   SLArchitectureSet architectures() { return arches; }
   SLBootloaderSpec bootloader()  { return boot; }
@@ -146,8 +158,8 @@ class SLOSModel {
   SLBaseDriverSeries baseDriverSeries() { return baseDrivers; }
   SLDriverSource driverPolicy()  { return driverSource; }
   SLDriverSet driverSet()        { return drivers; }
-  // The filesystem (file-table) type catalogue — a fresh reference helper for
-  // choosing/validating a filesystem format (FAT/NTFS/ext4/APFS/...).
+  < The filesystem (file-table) type catalogue — a fresh reference helper for >
+  < choosing/validating a filesystem format (FAT/NTFS/ext4/APFS/...). >
   SLFilesystemCatalog fsCatalog() { return new SLFilesystemCatalog(); }
   SLPackageSet packageSet()      { return packages; }
   SLServiceSet serviceSet()      { return services; }
@@ -160,8 +172,8 @@ class SLOSModel {
   String osVersion() { return version; }
   String osEdition() { return edition; }
 
-  // ---- Validity: can this model be built into a bootable OS? --------------
-  // Every irreducible layer must be present and self-consistent.
+  < ---- Validity: can this model be built into a bootable OS? -------------- >
+  < Every irreducible layer must be present and self-consistent. >
   boolean isBuildable() {
     if (configured != 1) { return false; }
     if (!boot.isComplete()) { return false; }
@@ -174,18 +186,18 @@ class SLOSModel {
     return true;
   }
 
-  // ---- Pre-build readiness: downloads + settings in place -----------------
-  // Before the OS is COMPILED, the model must be buildable AND the related
-  // download URLs and the required settings files for the compile phase must be
-  // declared. This is the gate the OS Creator checks before emitting/compiling.
+  < ---- Pre-build readiness: downloads + settings in place ----------------- >
+  < Before the OS is COMPILED, the model must be buildable AND the related >
+  < download URLs and the required settings files for the compile phase must be >
+  < declared. This is the gate the OS Creator checks before emitting/compiling. >
   boolean readyToCompile() {
     if (!isBuildable()) { return false; }
     if (!downloads.readyForCompile()) { return false; }
     if (!configFiles.readyForCompile()) { return false; }
     return true;
   }
-  // Before the final ISO conversion, additionally the ISO-phase downloads
-  // (firmware, runtime payloads) and settings (services, swap) must be ready.
+  < Before the final ISO conversion, additionally the ISO-phase downloads >
+  < (firmware, runtime payloads) and settings (services, swap) must be ready. >
   boolean readyForIso() {
     if (!readyToCompile()) { return false; }
     if (!downloads.readyForIso()) { return false; }
@@ -193,7 +205,7 @@ class SLOSModel {
     return true;
   }
 
-  // A short, human-readable identity line for logs and ISO volume labels.
+  < A short, human-readable identity line for logs and ISO volume labels. >
   String identity() {
     return osName + " " + version + " (" + edition + ", " + shape.name()
          + ", " + arches.primaryArch().arch() + ")";

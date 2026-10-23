@@ -50,7 +50,8 @@ class SLProgramCounter {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLRegister reg;
-  int stride;   // bytes/words advanced per sequential instruction
+  < bytes/words advanced per sequential instruction >
+  int stride;
 
   void configure(int bits, int step) {
     reg = new SLRegister(); reg.configure("PC", bits);
@@ -60,9 +61,9 @@ class SLProgramCounter {
   void reset() { reg.load(0); }
   int value() { return reg.read(); }
 
-  // Sequential advance to the next instruction.
+  < Sequential advance to the next instruction. >
   int increment() { int next = reg.read() + stride; reg.load(next); return next; }
 
-  // Non-sequential transfer of control (jump/branch/call target).
+  < Non-sequential transfer of control (jump/branch/call target). >
   int branchTo(int target) { reg.load(target); return reg.read(); }
 }

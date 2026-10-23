@@ -55,18 +55,22 @@ class SLVMMemory {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Backing mode.
-  static final int MODE_SIMULATED = 0;   // SLRAM (bridge-backed, accounted)
-  static final int MODE_NATIVE    = 1;   // SLNativeMemory (real host RAM, direct)
+  < Backing mode. >
+  < SLRAM (bridge-backed, accounted) >
+  static final int MODE_SIMULATED = 0;
+  < SLNativeMemory (real host RAM, direct) >
+  static final int MODE_NATIVE    = 1;
 
   int mode;
-  SLRAM store;             // used in MODE_SIMULATED
-  SLNativeMemory native;   // used in MODE_NATIVE
+  < used in MODE_SIMULATED >
+  SLRAM store;
+  < used in MODE_NATIVE >
+  SLNativeMemory native;
   int capacityWords;
   int reads;
   int writes;
 
-  // Default (simulated) backing over SLRAM.
+  < Default (simulated) backing over SLRAM. >
   void configure(int words) {
     mode = MODE_SIMULATED;
     capacityWords = words;
@@ -74,8 +78,8 @@ class SLVMMemory {
     reads = 0; writes = 0;
   }
 
-  // Native-RAM backing: the linear address space lives in REAL host memory, for
-  // running outside the simulated store (procedural layment). Same interface.
+  < Native-RAM backing: the linear address space lives in REAL host memory, for >
+  < running outside the simulated store (procedural layment). Same interface. >
   void configureNative(int words) {
     mode = MODE_NATIVE;
     capacityWords = words;
@@ -100,7 +104,7 @@ class SLVMMemory {
     store.writeWord(addr, value);
   }
 
-  // Byte view packed four-per-word, little-endian within the word.
+  < Byte view packed four-per-word, little-endian within the word. >
   int readByte(int byteAddr) {
     int w = byteAddr / 4; int b = byteAddr % 4;
     int word = readWord(w);
@@ -114,7 +118,7 @@ class SLVMMemory {
     writeWord(w, cleared | ((value & 0xFF) << shift));
   }
 
-  // Copy a block of words (memmove-style, forward).
+  < Copy a block of words (memmove-style, forward). >
   void copy(int dst, int src, int words) {
     int i = 0;
     while (i < words) { writeWord(dst + i, readWord(src + i)); i = i + 1; }

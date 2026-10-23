@@ -60,7 +60,7 @@ class SLThrobber extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a throbber inside `parent` with an initial pixel width.
+  < Create a throbber inside `parent` with an initial pixel width. >
   void createIn(SLWidget parent, int widthPx) {
     widget = uiThrobber(parent.handle(), widthPx);
   }
@@ -68,20 +68,20 @@ class SLThrobber extends SLWidget {
     widget = uiThrobber(parentHandle, widthPx);
   }
 
-  // Adjust the width in pixels; the water field rescales to fit.
+  < Adjust the width in pixels; the water field rescales to fit. >
   void setWidth(int widthPx) {
     if (widget >= 0) { uiThrobberSetWidth(widget, widthPx); }
   }
 
-  // Flow vigour in [0,1]: 0 = a calm trickle, 1 = vigorous flow. Drives both
-  // the speed and the colour spread of the field.
+  < Flow vigour in [0,1]: 0 = a calm trickle, 1 = vigorous flow. Drives both >
+  < the speed and the colour spread of the field. >
   void setIntensity(double intensity) {
     if (widget >= 0) { uiThrobberSetIntensity(widget, intensity); }
   }
 
-  // Base hue in degrees the predictive colouring flows around (205 ~ water;
-  // 150 ~ green water; 30 ~ warm). The actual rendered hue leads this by the
-  // local flow velocity.
+  < Base hue in degrees the predictive colouring flows around (205 ~ water; >
+  < 150 ~ green water; 30 ~ warm). The actual rendered hue leads this by the >
+  < local flow velocity. >
   void setHue(double hueDegrees) {
     if (widget >= 0) { uiThrobberSetHue(widget, hueDegrees); }
   }

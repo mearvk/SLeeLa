@@ -56,11 +56,14 @@ class SLOpcodeStream {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int MAX_OPS = 65536; // bounded program length
+  < bounded program length >
+  static final int MAX_OPS = 65536;
 
-  SLOpcodeBase[] ops; // the verbatim, ordered opcode objects
+  < the verbatim, ordered opcode objects >
+  SLOpcodeBase[] ops;
   int count;
-  int frame;          // the VM frame handle this stream executes against
+  < the VM frame handle this stream executes against >
+  int frame;
   int state;
   String lastError;
 
@@ -72,7 +75,7 @@ class SLOpcodeStream {
     lastError = "";
   }
 
-  // Append the next opcode in program order. Fail-closed on bound / inactive op.
+  < Append the next opcode in program order. Fail-closed on bound / inactive op. >
   boolean append(SLOpcodeBase op) {
     if (op == null || !op.armed()) { lastError = "unarmed opcode"; return false; }
     if (count >= MAX_OPS) { lastError = "opcode stream full"; return false; }
@@ -91,16 +94,17 @@ class SLOpcodeStream {
   boolean active() { return state == 1 && valid(); }
   int size() { return count; }
 
-  // Execute the stream verbatim. For each opcode object, the family contract is
-  // honoured: advance the VM to the next instruction, then execute exactly that
-  // one opcode. A non-negative return from step() is the next instruction
-  // pointer; a negative return halts the stream (e.g. after OP_HALT or an error).
+  < Execute the stream verbatim. For each opcode object, the family contract is >
+  < honoured: advance the VM to the next instruction, then execute exactly that >
+  < one opcode. A non-negative return from step() is the next instruction >
+  < pointer; a negative return halts the stream (e.g. after OP_HALT or an error). >
   int run() {
     if (!active()) { return -1; }
     int ip = 0;
     for (int i = 0; i < count; i = i + 1) {
       ip = ops[i].step(frame);
-      if (ip < 0) { return ip; } // VM halted or rejected the opcode
+      < VM halted or rejected the opcode >
+      if (ip < 0) { return ip; }
     }
     return ip;
   }

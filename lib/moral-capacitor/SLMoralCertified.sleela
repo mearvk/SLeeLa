@@ -65,10 +65,10 @@ class SLMoralCertified {
   SLMoralCodeGuard guard;
   int configured;
 
-  // Certify a product: embed a capacitor under the given policy, issue a
-  // Certificate of Morals from the authority over it, and arm the guard.
-  // redlinesArmed is the number of absolute red lines kept armed (use
-  // SLMoralVeto.REDLINE_COUNT for the full set).
+  < Certify a product: embed a capacitor under the given policy, issue a >
+  < Certificate of Morals from the authority over it, and arm the guard. >
+  < redlinesArmed is the number of absolute red lines kept armed (use >
+  < SLMoralVeto.REDLINE_COUNT for the full set). >
   void configure(String productName, SLMoralPolicy policy, int redlinesArmed,
                  String issuer, String sealKey, String issuedAt, String expiresAt) {
     product = productName;
@@ -87,17 +87,17 @@ class SLMoralCertified {
     configured = 1;
   }
 
-  // The operation-boundary gate a product uses to judge operations.
+  < The operation-boundary gate a product uses to judge operations. >
   SLMoralCapacitor capacitor() { return cap; }
-  // The product-boundary warranty the product ships with.
+  < The product-boundary warranty the product ships with. >
   SLMoralCertificate certificate() { return cert; }
 
-  // Prove, at a product boundary (ship / boot / run), that the moral code is
-  // included and certified as of `nowStamp`. Returns true to admit.
+  < Prove, at a product boundary (ship / boot / run), that the moral code is >
+  < included and certified as of `nowStamp`. Returns true to admit. >
   boolean admit(String nowStamp) {
     return guard.permits(product, cap, cert, nowStamp);
   }
-  // The reason behind the last admit() decision (for logs / refusal messages).
+  < The reason behind the last admit() decision (for logs / refusal messages). >
   String admitReason() { return guard.reason(); }
 
   String productName() { return product; }

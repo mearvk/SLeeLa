@@ -53,14 +53,14 @@ class GuiComponentsDemo {
     print("gui package " + pkg.version() + " (featureLevel " + pkg.featureLevel() +
           ", 4.0=" + pkg.isFourPointZero() + ")");
 
-    // ---- Upgraded aesthetic ----
+    < ---- Upgraded aesthetic ---- >
     SLGuiSettings s = new SLGuiSettings(); s.configure();
     s.setAesthetic(s.AESTHETIC_GLASS);
     s.setCornerRadiusPx(14); s.setElevationPct(55); s.setDensity(s.DENSITY_COMFORT);
     s.setTypeScalePct(110); s.setAccentColor("#2E8BFF");
     print("aesthetic honored=" + s.honored() + " -> " + s.report());
 
-    // ---- Audio recorder (standard record button) ----
+    < ---- Audio recorder (standard record button) ---- >
     SLGuiAudioRecorder rec = new SLGuiAudioRecorder();
     rec.configure("default", "takes/take1.wav");
     rec.record(); rec.onLevel(72); rec.onElapsed(1500);
@@ -68,14 +68,14 @@ class GuiComponentsDemo {
           "' level=" + rec.level() + "% dur=" + rec.durationMillis() + "ms");
     rec.stop(); print("  -> " + rec.stateName());
 
-    // ---- Video canvas with controls ----
+    < ---- Video canvas with controls ---- >
     SLGuiVideoCanvas vid = new SLGuiVideoCanvas();
     vid.configure("movies/intro.mp4");
     vid.onDuration(120000); vid.play(); vid.onPosition(30000); vid.setVolume(70);
     print("video: " + vid.stateName() + " " + vid.position() + "/" + vid.duration() +
           "ms (" + vid.progressPct() + "%) vol=" + vid.getVolume());
 
-    // ---- HTML-aware HTTP URL bar ----
+    < ---- HTML-aware HTTP URL bar ---- >
     SLGuiUrlBar bar = new SLGuiUrlBar(); bar.configure("about:home");
     bar.navigate("https://sleela.example/docs");
     bar.onResponse(200, "text/html; charset=utf-8");
@@ -83,11 +83,13 @@ class GuiComponentsDemo {
           " html=" + bar.isHtmlAware() + " secure=" + bar.isSecure() +
           " back=" + bar.canGoBack());
 
-    // ---- Custom click object (motion + apprentice ladder -> final call) ----
+    < ---- Custom click object (motion + apprentice ladder -> final call) ---- >
     SLGuiClickObject dot = new SLGuiClickObject();
     dot.configure("pulse-dot", 100, 100, 6);
-    dot.setOrbit(100, 100, 40, 12);          // architecturally-driven motion
-    dot.bindFinalCall("escalate", 3);        // 3 apprentice stages -> final call
+    < architecturally-driven motion >
+    dot.setOrbit(100, 100, 40, 12);
+    < 3 apprentice stages -> final call >
+    dot.bindFinalCall("escalate", 3);
     dot.setInterval(1000); dot.start();
     int t = 0;
     while (t < 3500) {
@@ -99,14 +101,15 @@ class GuiComponentsDemo {
       }
     }
 
-    // ---- Exact positioning + layout ----
+    < ---- Exact positioning + layout ---- >
     SLGuiLayout lay = new SLGuiLayout(); lay.configure();
-    lay.placeExact(24, 24, 320, 200);        // exact component position
+    < exact component position >
+    lay.placeExact(24, 24, 320, 200);
     print("layout(exact): " + lay.modeName() + " -> " + lay.toStyle());
     lay.grid(3, 4); lay.setGap(12); lay.setPaddingAll(16);
     print("layout(grid):  " + lay.toStyle() + " honored=" + lay.honored());
 
-    // ---- Graphics facility + control ----
+    < ---- Graphics facility + control ---- >
     SLGuiGraphics g = new SLGuiGraphics(); g.configure(320, 200);
     g.setQuality(g.QUALITY_HIGH); g.setAntialias(true);
     g.setStrokeColor("#2E8BFF"); g.setStrokeWidth(2);
@@ -114,7 +117,7 @@ class GuiComponentsDemo {
     print("graphics: " + g.commands() + " cmds, quality=" + g.qualityName() +
           " aa=" + g.antialiasOn() + " honored=" + g.honored());
 
-    // ---- Admin authority: sign-in, sign-off, signature for Law ----
+    < ---- Admin authority: sign-in, sign-off, signature for Law ---- >
     SLGuiAdminAuthority admin = new SLGuiAdminAuthority(); admin.configure();
     boolean started = admin.signIn("ada", "render-pipeline");
     boolean mayStart = admin.mayStartProcess("render-pipeline");

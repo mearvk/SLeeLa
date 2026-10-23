@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Timing/carrier certainty is advisory telemetry, not a security decision. */
+< Timing/carrier certainty is advisory telemetry, not a security decision. >
 class Http30TimingPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -65,16 +65,23 @@ class Character {
 
   static final String MODULE = "Character";
 
-  int loadedFlag;        // 1 once the module is loaded
-  String name;           // who this Character is
-  String tagline;        // their elevator pitch, mercifully short
-  int grit;              // 0..100 — how many bad months they can stomach
-  int reputation;        // 0..100 — grows with profit, bruises with loss
-  int cashCents;         // running cash on hand
+  < 1 once the module is loaded >
+  int loadedFlag;
+  < who this Character is >
+  String name;
+  < their elevator pitch, mercifully short >
+  String tagline;
+  < 0..100 — how many bad months they can stomach >
+  int grit;
+  < 0..100 — grows with profit, bruises with loss >
+  int reputation;
+  < running cash on hand >
+  int cashCents;
 
-  BusinessModel model;   // the one model they live by (any concrete subclass)
+  < the one model they live by (any concrete subclass) >
+  BusinessModel model;
 
-  // --- loadable-module contract ------------------------------------------
+  < --- loadable-module contract ------------------------------------------ >
   void load() {
     loadedFlag = 1;
     name = "Nameless Founder";
@@ -87,7 +94,7 @@ class Character {
   boolean loaded() { return loadedFlag == 1; }
   String moduleName() { return MODULE; }
 
-  // Introduce the Character and give them a little personality.
+  < Introduce the Character and give them a little personality. >
   void introduce(String who, String pitch, int startingGrit, int startingCash) {
     if (who != null) { name = who; }
     if (pitch != null) { tagline = pitch; }
@@ -96,17 +103,17 @@ class Character {
     if (startingCash >= 0) { cashCents = startingCash; }
   }
 
-  // Adopt a business model. Any concrete BusinessModel subclass will do — the
-  // Character does not care which, only whether it makes money. This is the
-  // whole point of a base-typed reference holding a subclass instance.
+  < Adopt a business model. Any concrete BusinessModel subclass will do — the >
+  < Character does not care which, only whether it makes money. This is the >
+  < whole point of a base-typed reference holding a subclass instance. >
   void adopt(BusinessModel chosen) {
     model = chosen;
   }
 
   boolean hasModel() { return model != null && model.ready(); }
 
-  // Live one month: realize the model's profit into cash and let it move the
-  // Character's reputation and grit. Returns the profit for the month.
+  < Live one month: realize the model's profit into cash and let it move the >
+  < Character's reputation and grit. Returns the profit for the month. >
   int liveAMonth() {
     if (!hasModel()) { return 0; }
     int profit = model.monthlyProfit();
@@ -116,12 +123,13 @@ class Character {
       grit = clamp(grit + 1);
     } else {
       reputation = clamp(reputation - 2);
-      grit = clamp(grit - 5);   // a losing month really takes it out of you
+      < a losing month really takes it out of you >
+      grit = clamp(grit - 5);
     }
     return profit;
   }
 
-  // Run several months and report the total profit realized.
+  < Run several months and report the total profit realized. >
   int runMonths(int months) {
     int total = 0;
     int i = 0;
@@ -132,7 +140,7 @@ class Character {
     return total;
   }
 
-  // The question every Character secretly asks at 3am.
+  < The question every Character secretly asks at 3am. >
   boolean stillStanding() { return cashCents >= 0 && grit > 0; }
   boolean thriving() { return hasModel() && model.profitable() && reputation >= 60; }
 

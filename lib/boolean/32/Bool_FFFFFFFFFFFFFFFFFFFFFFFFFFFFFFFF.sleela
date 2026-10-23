@@ -52,19 +52,19 @@ class Bool_FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF {
   String word() { return "BOOLEAN.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE"; }
   String glyphs() { return "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"; }
   int depth() { return 32; }
-  // Head syllable = the asserted result.
+  < Head syllable = the asserted result. >
   boolean head() { return false; }
   String headSyllable() { return "FALSE"; }
-  // Carry = the trailing syllables, read as a caveat structure.
+  < Carry = the trailing syllables, read as a caveat structure. >
   String carry() { return "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"; }
   int carryDepth() { return 31; }
-  // A caveat exists when any carried syllable disagrees (a FALSE is carried).
+  < A caveat exists when any carried syllable disagrees (a FALSE is carried). >
   boolean caveat() { return true; }
-  // Agreement: the whole word is uniform (all syllables equal the head).
+  < Agreement: the whole word is uniform (all syllables equal the head). >
   boolean agrees() { return true; }
   int trueCount() { return 0; }
   int falseCount() { return 32; }
-  // Binary reading: TRUE=1, FALSE=0, head syllable most significant.
+  < Binary reading: TRUE=1, FALSE=0, head syllable most significant. >
   String bits() { return "00000000000000000000000000000000"; }
   String value() { return "0"; }
 }

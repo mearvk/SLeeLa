@@ -80,7 +80,7 @@ class OsCreatorDemo {
         print("================================================================");
     }
 
-    // The /os-development layout OS Creator(TM) writes.
+    < The /os-development layout OS Creator(TM) writes. >
     void printLayout(Os o) {
         print("/os-development/");
         print("  MANIFEST.md  Makefile  build.sh  build.ps1");
@@ -96,7 +96,7 @@ class OsCreatorDemo {
         print("  src/sleela/os-model.sleela   tools/gen-iso.sh");
     }
 
-    // A representative emitted piece: the OS loader (PID 1) C surface.
+    < A representative emitted piece: the OS loader (PID 1) C surface. >
     String osLoaderC(Os o) {
         String c = "/* os_loader.c - PID 1 / service manager for " + o.name + " */\n";
         c = c + "extern int start_manager(const char *manager);\n";

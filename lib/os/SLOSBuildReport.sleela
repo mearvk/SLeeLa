@@ -55,23 +55,26 @@ class SLOSBuildReport {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String identity;    // the model identity this build is for
-  String index;       // newline-separated "kind size path" lines
+  < the model identity this build is for >
+  String identity;
+  < newline-separated "kind size path" lines >
+  String index;
   int artifactCount;
-  int ok;             // 1 if the build completed without a failure
+  < 1 if the build completed without a failure >
+  int ok;
 
   void configure(String modelIdentity) {
     identity = modelIdentity; index = ""; artifactCount = 0; ok = 1;
   }
 
-  // Record one produced artifact.
+  < Record one produced artifact. >
   void record(SLOSArtifact a) {
     String line = a.kindName() + " " + intToStr(a.byteCount()) + " " + a.outputPath();
     if (index == "") { index = line; } else { index = index + "\n" + line; }
     artifactCount = artifactCount + 1;
   }
 
-  // Mark the build as failed (e.g. an unbuildable model).
+  < Mark the build as failed (e.g. an unbuildable model). >
   void fail() { ok = 0; }
 
   boolean succeeded()   { return ok == 1; }
@@ -79,7 +82,7 @@ class SLOSBuildReport {
   String artifactIndex(){ return index; }
   String modelIdentity(){ return identity; }
 
-  // A one-line human summary.
+  < A one-line human summary. >
   String summary() {
     String state = "FAILED";
     if (ok == 1) { state = "OK"; }

@@ -59,18 +59,20 @@ class SLVMComponentFetcher {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  SLVM vm;                     // the VM this fetcher serves
-  SLSupportDownloader support; // the shared resilient downloader
+  < the VM this fetcher serves >
+  SLVM vm;
+  < the shared resilient downloader >
+  SLSupportDownloader support;
   int configured;
 
-  // Wire the fetcher to a VM, creating a fresh support downloader.
+  < Wire the fetcher to a VM, creating a fresh support downloader. >
   void configure(SLVM targetVm) {
     vm = targetVm;
     support = new SLSupportDownloader(); support.configure();
     configured = 1;
   }
-  // Wire to a VM AND an existing (OS-document-shared) support downloader, so the
-  // VM and the OS model use one and the same fallback policy.
+  < Wire to a VM AND an existing (OS-document-shared) support downloader, so the >
+  < VM and the OS model use one and the same fallback policy. >
   void configureShared(SLVM targetVm, SLSupportDownloader shared) {
     vm = targetVm; support = shared; configured = 1;
   }
@@ -78,24 +80,24 @@ class SLVMComponentFetcher {
   SLSupportDownloader supportDownloader() { return support; }
   boolean ready() { return configured == 1; }
 
-  // Resolve the first reachable support URL for a component kind (probes the
-  // mirrors in priority order), or "" if none respond. The VM calls this before
-  // acquiring a component so it binds to a live source.
+  < Resolve the first reachable support URL for a component kind (probes the >
+  < mirrors in priority order), or "" if none respond. The VM calls this before >
+  < acquiring a component so it binds to a live source. >
   String resolve(String kind) {
     if (configured != 1) { return ""; }
     return support.firstReachable(kind);
   }
 
-  // Run the 404-tolerant fallback fetch for a component kind to a destination.
-  // Returns 0 on success (some tier succeeded), non-zero when every support URL
-  // (including the archive) failed. Uses osRun to execute the generated loop.
+  < Run the 404-tolerant fallback fetch for a component kind to a destination. >
+  < Returns 0 on success (some tier succeeded), non-zero when every support URL >
+  < (including the archive) failed. Uses osRun to execute the generated loop. >
   int fetch(String kind, String dest) {
     if (configured != 1) { return -1; }
     if (!support.knownKind(kind)) { return -2; }
-    // Try each tier in priority order; stop at the first that succeeds.
-    // Tiers are 0..3 (authoritative, official-mirror, college, archive) as
-    // defined by SLSupportDownloader; a static constant is class-scoped, so the
-    // archive ordinal (3) is used directly as the loop bound.
+    < Try each tier in priority order; stop at the first that succeeds. >
+    < Tiers are 0..3 (authoritative, official-mirror, college, archive) as >
+    < defined by SLSupportDownloader; a static constant is class-scoped, so the >
+    < archive ordinal (3) is used directly as the loop bound. >
     int p = 0;
     while (p <= 3) {
       String url = support.supportUrl(kind, p);
@@ -105,10 +107,11 @@ class SLVMComponentFetcher {
       }
       p = p + 1;
     }
-    return 1;   // all support URLs failed
+    < all support URLs failed >
+    return 1;
   }
 
-  // Execute one fetch of url -> dest with the right tool for the kind.
+  < Execute one fetch of url -> dest with the right tool for the kind. >
   int runFetch(String kind, String url, String dest) {
     if (support.isGitKind(kind)) {
       return osRun("git clone --depth 1 " + url + " " + dest + " >/dev/null 2>&1");
@@ -116,7 +119,7 @@ class SLVMComponentFetcher {
     return osRun("curl -fsSL --retry 2 -o " + dest + " \"" + url + "\" >/dev/null 2>&1");
   }
 
-  // A VM-facing summary: which support URL each needed kind would resolve to.
+  < A VM-facing summary: which support URL each needed kind would resolve to. >
   String resolvedPlan(String kind) {
     String url = resolve(kind);
     if (url == "") { return kind + ": no reachable support URL"; }

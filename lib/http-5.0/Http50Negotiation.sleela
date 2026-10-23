@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Project-generation negotiation. Caller flags are not cryptographic proof. */
+< Project-generation negotiation. Caller flags are not cryptographic proof. >
 class Http50Negotiation {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

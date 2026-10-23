@@ -56,22 +56,22 @@ class SLMacOS {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   void configure() {}
 
-  // True when the running host is actually macOS.
+  < True when the running host is actually macOS. >
   boolean isHost() { return osPlatform() == "macOS"; }
 
-  // ---- Shell / Apple tools -----------------------------------------------
-  // Run a command through /bin/sh.
+  < ---- Shell / Apple tools ----------------------------------------------- >
+  < Run a command through /bin/sh. >
   int sh(String command) { return osRun(command); }
-  // Open a file/URL/app with the default handler via the `open(1)` tool.
+  < Open a file/URL/app with the default handler via the `open(1)` tool. >
   int openWith(String target) { return osRun("open " + target); }
-  // Launch a .app bundle by name, e.g. "Safari".
+  < Launch a .app bundle by name, e.g. "Safari". >
   int launchApp(String appName) { return osRun("open -a " + appName); }
-  // Start a background command; returns an SLProcess.
+  < Start a background command; returns an SLProcess. >
   SLProcess startSh(String command) {
     SLProcess p = new SLProcess(); p.configure(command); p.start(); return p;
   }
 
-  // ---- Apple directory layout --------------------------------------------
+  < ---- Apple directory layout -------------------------------------------- >
   String home()        { return osGetEnv("HOME"); }
   String library()     { return osGetEnv("HOME") + "/Library"; }
   String appSupport()  { return osGetEnv("HOME") + "/Library/Application Support"; }
@@ -80,23 +80,24 @@ class SLMacOS {
   String system()      { return "/System"; }
   String volumes()     { return "/Volumes"; }
 
-  // Homebrew prefix: Apple Silicon uses /opt/homebrew, Intel uses /usr/local.
+  < Homebrew prefix: Apple Silicon uses /opt/homebrew, Intel uses /usr/local. >
   String brewPrefix() {
     if (osExists("/opt/homebrew") == 1) { return "/opt/homebrew"; }
     return "/usr/local";
   }
 
-  // ---- System facts via Apple CLIs ---------------------------------------
-  // Run `sw_vers` to print the macOS product version to the console.
+  < ---- System facts via Apple CLIs --------------------------------------- >
+  < Run `sw_vers` to print the macOS product version to the console. >
   int productVersion() { return osRun("sw_vers -productVersion"); }
-  // Read a defaults domain key, e.g. domain "NSGlobalDomain", key "AppleLocale".
+  < Read a defaults domain key, e.g. domain "NSGlobalDomain", key "AppleLocale". >
   int readDefault(String domain, String key) {
     return osRun("defaults read " + domain + " " + key);
   }
 
-  // ---- Filesystem / identity (through the real OS) ------------------------
+  < ---- Filesystem / identity (through the real OS) ------------------------ >
   boolean exists(String path) { return osExists(path) == 1; }
-  String tempDir() { return osTempDir(); }   // honours TMPDIR
+  < honours TMPDIR >
+  String tempDir() { return osTempDir(); }
   String hostName() { return osHostName(); }
   String userName() { return osUserName(); }
 }

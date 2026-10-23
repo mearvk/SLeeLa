@@ -68,27 +68,31 @@ class CpuOptions {
 }
 
 class ExecutionOptions {
-  String mode;   // "interpret" / "jit"
+  < "interpret" / "jit" >
+  String mode;
   boolean threads;
   void configure(String m, boolean t) { mode = m; threads = t; }
   boolean valid() { return mode == "interpret" || mode == "jit"; }
   String summary() { return "mode=" + mode + " threads=" + threads; }
 }
 
-// A tiny feature bitset (GC, PROCESS/OS syscalls, NATIVE bindings).
+< A tiny feature bitset (GC, PROCESS/OS syscalls, NATIVE bindings). >
 class FeatureBits {
   int bits;
   void configure() { bits = 0; }
-  void enableGc()      { bits = bits + 1; }   // bit 0
-  void enableProcess() { bits = bits + 2; }   // bit 1
-  void enableNative()  { bits = bits + 4; }   // bit 2
+  < bit 0 >
+  void enableGc()      { bits = bits + 1; }
+  < bit 1 >
+  void enableProcess() { bits = bits + 2; }
+  < bit 2 >
+  void enableNative()  { bits = bits + 4; }
   boolean gc()      { return (bits / 1) - ((bits / 2) * 2) == 1; }
   int value() { return bits; }
 }
 
 class BuildPlan {
-  // Takes the validated option objects (as parameters -- method calls resolve
-  // on parameters) and renders a plan.
+  < Takes the validated option objects (as parameters -- method calls resolve >
+  < on parameters) and renders a plan. >
   String render(MemoryOptions mem, CpuOptions cpu, ExecutionOptions exe, int features) {
     String s = "VM build plan:\n";
     s = s + "  memory:    " + mem.summary() + "\n";
@@ -109,7 +113,7 @@ class MidVMConfig {
     FeatureBits feat = new FeatureBits(); feat.configure();
     feat.enableGc(); feat.enableProcess();
 
-    // Validate before planning -- a careful user gates on this.
+    < Validate before planning -- a careful user gates on this. >
     boolean ok = mem.valid() && cpu.valid() && exe.valid();
     print("configuration valid? " + ok + " (gc enabled=" + feat.gc() + ")");
     if (!ok) { print("REFUSED: invalid configuration"); return; }

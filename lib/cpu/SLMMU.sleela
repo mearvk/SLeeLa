@@ -69,9 +69,12 @@ class SLMMU {
   static final int FAULT_UNMAPPED= 1;
   static final int FAULT_PROT    = 2;
 
-  int pageSize;      // words per page
-  int pageCount;     // number of virtual pages
-  SLRAM table;       // page table: entry = (frame << 3) | perms
+  < words per page >
+  int pageSize;
+  < number of virtual pages >
+  int pageCount;
+  < page table: entry = (frame << 3) | perms >
+  SLRAM table;
   int translations;
   int faults;
   int lastFault;
@@ -85,7 +88,7 @@ class SLMMU {
   int vpnOf(int vaddr) { return vaddr / pageSize; }
   int offsetOf(int vaddr) { return vaddr % pageSize; }
 
-  // Map a virtual page to a host-physical frame with permissions.
+  < Map a virtual page to a host-physical frame with permissions. >
   void map(int vpn, int frame, int perms) {
     if (vpn >= 0 && vpn < pageCount) {
       table.writeWord(vpn, (frame * 8) + (perms + PERM_PRESENT));
@@ -96,11 +99,12 @@ class SLMMU {
   int entryOf(int vpn) { if (vpn < 0 || vpn >= pageCount) { return 0; } return table.readWord(vpn); }
   int frameOf(int entry) { return entry / 8; }
   int permsOf(int entry) { return entry % 8; }
-  boolean present(int entry) { return (permsOf(entry) % 2) == 1; } // PRESENT bit
+  < PRESENT bit >
+  boolean present(int entry) { return (permsOf(entry) % 2) == 1; }
 
-  // Translate a virtual address to a host-physical address, checking the
-  // requested access (0 read, PERM_WRITE write, PERM_EXEC execute). Returns the
-  // host-physical address, or -1 on a page fault (reason recorded).
+  < Translate a virtual address to a host-physical address, checking the >
+  < requested access (0 read, PERM_WRITE write, PERM_EXEC execute). Returns the >
+  < host-physical address, or -1 on a page fault (reason recorded). >
   int translateAccess(int vaddr, int access) {
     translations = translations + 1;
     int vpn = vpnOf(vaddr);
@@ -113,12 +117,12 @@ class SLMMU {
     return (frameOf(entry) * pageSize) + offsetOf(vaddr);
   }
 
-  // Convenience: a plain read translation.
+  < Convenience: a plain read translation. >
   int translate(int vaddr) { return translateAccess(vaddr, 0); }
 
-  // Identity-map `pages` pages starting at vpn 0 to frames at `baseFrame`, with
-  // full permissions — the simplest bring-up a guest kernel uses before it
-  // installs its own tables.
+  < Identity-map `pages` pages starting at vpn 0 to frames at `baseFrame`, with >
+  < full permissions — the simplest bring-up a guest kernel uses before it >
+  < installs its own tables. >
   void identityMap(int pages, int baseFrame, int perms) {
     int i = 0;
     while (i < pages) { map(i, baseFrame + i, perms); i = i + 1; }

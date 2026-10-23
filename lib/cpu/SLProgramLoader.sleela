@@ -52,7 +52,8 @@ class SLProgramLoader {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLOperatingSystem os;
   SLRAM memory;
-  SLCompilerDriver compiler;   // multi-language front-end driver
+  < multi-language front-end driver >
+  SLCompilerDriver compiler;
   int loaded;
 
   void configure(SLOperatingSystem operatingSystem, SLRAM ram) {
@@ -60,11 +61,11 @@ class SLProgramLoader {
     compiler = new SLCompilerDriver();
   }
 
-  // Attach the ISA so the loader can compile source in any supported language.
+  < Attach the ISA so the loader can compile source in any supported language. >
   void attachCompiler(SLInstructionSet isa) { compiler.configure(isa); }
 
-  // Copy an already-compiled program image into memory starting at loadAddr,
-  // then spawn it. Returns the created process.
+  < Copy an already-compiled program image into memory starting at loadAddr, >
+  < then spawn it. Returns the created process. >
   SLProcess load(SLProgram program, int loadAddr) {
     int i = 0;
     while (i < program.size()) {
@@ -76,15 +77,15 @@ class SLProgramLoader {
     return os.spawn(program.programName(), loadAddr);
   }
 
-  // Compile a source file in ANY supported language (C, C++, Java, Sleela) to a
-  // program image via the shared frontend/IR/backend pipeline, then load it.
-  // This is the multi-language loader entry point.
+  < Compile a source file in ANY supported language (C, C++, Java, Sleela) to a >
+  < program image via the shared frontend/IR/backend pipeline, then load it. >
+  < This is the multi-language loader entry point. >
   SLProcess loadSource(String path, int langId, String programName, int loadAddr) {
     SLProgram prog = compiler.compile(path, langId, programName);
     return load(prog, loadAddr);
   }
 
-  // Convenience: infer the language from the file extension.
+  < Convenience: infer the language from the file extension. >
   SLProcess loadFile(String path, String programName, int loadAddr) {
     SLProgram prog = compiler.compileFile(path, programName);
     return load(prog, loadAddr);

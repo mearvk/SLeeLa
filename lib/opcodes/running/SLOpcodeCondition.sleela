@@ -57,25 +57,40 @@ class SLOpcodeCondition {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int EQ = 0; // observed == target
-  static final int NE = 1; // observed != target
-  static final int LT = 2; // observed <  target
-  static final int LE = 3; // observed <= target
-  static final int GT = 4; // observed >  target
-  static final int GE = 5; // observed >= target
+  < observed == target >
+  static final int EQ = 0;
+  < observed != target >
+  static final int NE = 1;
+  < observed <  target >
+  static final int LT = 2;
+  < observed <= target >
+  static final int LE = 3;
+  < observed >  target >
+  static final int GT = 4;
+  < observed >= target >
+  static final int GE = 5;
 
-  // Well-known signals the condition may read from the VM frame.
-  static final int SIG_IP          = 1; // the live instruction pointer
-  static final int SIG_LOCK_DEPTH  = 2; // locks currently held
-  static final int SIG_CALL_DEPTH  = 3; // open call frames
-  static final int SIG_OPEN_SOCKETS = 4; // open sockets
-  static final int SIG_WARN_COUNT  = 5; // governance warnings so far
-  static final int SIG_INDEX       = 6; // current stream index
+  < Well-known signals the condition may read from the VM frame. >
+  < the live instruction pointer >
+  static final int SIG_IP          = 1;
+  < locks currently held >
+  static final int SIG_LOCK_DEPTH  = 2;
+  < open call frames >
+  static final int SIG_CALL_DEPTH  = 3;
+  < open sockets >
+  static final int SIG_OPEN_SOCKETS = 4;
+  < governance warnings so far >
+  static final int SIG_WARN_COUNT  = 5;
+  < current stream index >
+  static final int SIG_INDEX       = 6;
 
   String label;
-  int signal;    // which SIG_* to observe
-  int op;        // one of EQ..GE
-  int target;    // the value to compare against
+  < which SIG_* to observe >
+  int signal;
+  < one of EQ..GE >
+  int op;
+  < the value to compare against >
+  int target;
   int state;
 
   void configure(String name, int whichSignal, int comparator, int targetValue) {
@@ -91,14 +106,14 @@ class SLOpcodeCondition {
   boolean active() { return state == 1; }
   String name() { return label; }
 
-  // Read the configured signal from the VM frame across the bridge. `index` is
-  // the current stream position, supplied by the reactive driver.
+  < Read the configured signal from the VM frame across the bridge. `index` is >
+  < the current stream position, supplied by the reactive driver. >
   int observe(int frame, int index) {
     if (signal == SIG_INDEX) { return index; }
     return native sleela_opcode_signal(frame, signal, index);
   }
 
-  // Evaluate the predicate against the observed signal.
+  < Evaluate the predicate against the observed signal. >
   boolean holds(int frame, int index) {
     if (!active()) { return false; }
     int observed = observe(frame, index);

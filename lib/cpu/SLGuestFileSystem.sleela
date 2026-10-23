@@ -62,7 +62,7 @@ class SLGuestFileSystem {
 
   SLGuestBlockDevice blk;
 
-  // Directory: file id -> start block, length (bytes), present.
+  < Directory: file id -> start block, length (bytes), present. >
   int id0; int sb0; int ln0; int p0;
   int id1; int sb1; int ln1; int p1;
   int id2; int sb2; int ln2; int p2;
@@ -70,7 +70,7 @@ class SLGuestFileSystem {
   int fileCount;
   int nextBlock;
 
-  // Open-file table: fd -> file id, cursor (byte offset), open flag.
+  < Open-file table: fd -> file id, cursor (byte offset), open flag. >
   int fdFile0; int fdPos0; int fdOpen0;
   int fdFile1; int fdPos1; int fdOpen1;
   int fdFile2; int fdPos2; int fdOpen2;
@@ -82,7 +82,7 @@ class SLGuestFileSystem {
     p0=0;p1=0;p2=0;p3=0; fdOpen0=0;fdOpen1=0;fdOpen2=0;fdOpen3=0;
   }
 
-  // Create a file (by integer id) occupying `blocks` blocks; returns its index.
+  < Create a file (by integer id) occupying `blocks` blocks; returns its index. >
   int create(int fileId, int blocks) {
     int idx = fileCount;
     if (idx >= 4) { return -1; }
@@ -108,23 +108,25 @@ class SLGuestFileSystem {
     if (idx==2){return sb2;} if (idx==3){return sb3;} return -1;
   }
 
-  // Open a file by id; returns a file descriptor (0..3) or -1.
+  < Open a file by id; returns a file descriptor (0..3) or -1. >
   int openByName(int fileId) {
     int fidx = indexOfId(fileId);
-    if (fidx < 0) { fidx = create(fileId, 4); if (fidx < 0) { return -1; } } // create on open
+    < create on open >
+    if (fidx < 0) { fidx = create(fileId, 4); if (fidx < 0) { return -1; } }
     int fd = openCount; if (fd >= 4) { return -1; }
     if (fd==0){ fdFile0=fidx; fdPos0=0; fdOpen0=1; }
     if (fd==1){ fdFile1=fidx; fdPos1=0; fdOpen1=1; }
     if (fd==2){ fdFile2=fidx; fdPos2=0; fdOpen2=1; }
     if (fd==3){ fdFile3=fidx; fdPos3=0; fdOpen3=1; }
     openCount = openCount + 1;
-    return fd + 3;  // reserve 0,1,2 for stdin/out/err
+    < reserve 0,1,2 for stdin/out/err >
+    return fd + 3;
   }
 
   boolean fdValid(int fd) { int i = fd - 3; return i >= 0 && i < 4; }
 
-  // Write one byte to an open fd (append semantics, block-device backed);
-  // returns 1 on success.
+  < Write one byte to an open fd (append semantics, block-device backed); >
+  < returns 1 on success. >
   int writeByte(int fd, int value) {
     if (!fdValid(fd)) { return -1; }
     int i = fd - 3;
@@ -135,7 +137,7 @@ class SLGuestFileSystem {
     return 1;
   }
 
-  // Read one byte from an open fd; returns the byte or -1 at EOF/error.
+  < Read one byte from an open fd; returns the byte or -1 at EOF/error. >
   int readByte(int fd) {
     if (!fdValid(fd)) { return -1; }
     int i = fd - 3;

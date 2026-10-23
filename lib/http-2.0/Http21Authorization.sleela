@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Client-supplied route IDs are not credentials. Identity verification belongs to security adapter. */
+< Client-supplied route IDs are not credentials. Identity verification belongs to security adapter. >
 class Http21Authorization {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

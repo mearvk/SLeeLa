@@ -56,9 +56,12 @@ class SLGuestPipe {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLRAM buffer;
   int capacity;
-  int head;        // read index
-  int tail;        // write index
-  int size;        // bytes currently buffered
+  < read index >
+  int head;
+  < write index >
+  int tail;
+  < bytes currently buffered >
+  int size;
   int readerClosed;
   int writerClosed;
   int totalWritten;
@@ -73,8 +76,8 @@ class SLGuestPipe {
   boolean empty() { return size == 0; }
   boolean full() { return size == capacity; }
 
-  // Write one byte; returns 1 on success, 0 if full (back-pressure), -1 if the
-  // read end is closed (broken pipe).
+  < Write one byte; returns 1 on success, 0 if full (back-pressure), -1 if the >
+  < read end is closed (broken pipe). >
   int writeByte(int value) {
     if (readerClosed == 1) { return -1; }
     if (full()) { return 0; }
@@ -85,8 +88,8 @@ class SLGuestPipe {
     return 1;
   }
 
-  // Read one byte; returns the byte (>=0), -1 at end-of-stream (writer closed
-  // and empty), or -2 if empty but still open ("would block").
+  < Read one byte; returns the byte (>=0), -1 at end-of-stream (writer closed >
+  < and empty), or -2 if empty but still open ("would block"). >
   int readByte() {
     if (empty()) {
       if (writerClosed == 1) { return -1; }

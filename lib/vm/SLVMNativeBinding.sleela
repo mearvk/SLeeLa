@@ -55,10 +55,14 @@ class SLVMNativeBinding {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String symbol;       // e.g. "sleela_vm_print_int"
-  int serviceOpcode;   // canonical OP_* this binding fronts (-1 if pure native)
-  int arity;           // operands consumed
-  int bound;           // 1 once resolved against the native table
+  < e.g. "sleela_vm_print_int" >
+  String symbol;
+  < canonical OP_* this binding fronts (-1 if pure native) >
+  int serviceOpcode;
+  < operands consumed >
+  int arity;
+  < 1 once resolved against the native table >
+  int bound;
   int lastResult;
 
   void configure(String nativeSymbol, int opcode, int args) {
@@ -71,9 +75,9 @@ class SLVMNativeBinding {
   int argCount()        { return arity; }
   boolean resolved()    { return bound == 1; }
 
-  // Front the native call by parking a VM-exit on the substrate. The host reads
-  // exitReasonOpcode()/exitReasonPayload(), performs the real work, and resumes
-  // with pushResult(). payload is the primary argument (e.g. char to print).
+  < Front the native call by parking a VM-exit on the substrate. The host reads >
+  < exitReasonOpcode()/exitReasonPayload(), performs the real work, and resumes >
+  < with pushResult(). payload is the primary argument (e.g. char to print). >
   int invoke(SLSleelaVM substrate, int payload) {
     if (bound == 0) { return -1; }
     substrate.setHosted();

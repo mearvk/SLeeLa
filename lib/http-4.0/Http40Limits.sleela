@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Defensive model defaults; native enforcement must be verified independently. */
+< Defensive model defaults; native enforcement must be verified independently. >
 class Http40Limits {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

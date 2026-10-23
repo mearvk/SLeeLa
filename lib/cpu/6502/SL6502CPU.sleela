@@ -58,14 +58,19 @@ class SL6502CPU extends SLCPURuntime {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Register file indices (into the inherited SLRAM register store).
-  static final int R_A  = 0;   // accumulator
-  static final int R_X  = 1;   // X index
-  static final int R_Y  = 2;   // Y index
-  static final int R_SP = 3;   // stack pointer
-  static final int R_P  = 4;   // processor status
+  < Register file indices (into the inherited SLRAM register store). >
+  < accumulator >
+  static final int R_A  = 0;
+  < X index >
+  static final int R_X  = 1;
+  < Y index >
+  static final int R_Y  = 2;
+  < stack pointer >
+  static final int R_SP = 3;
+  < processor status >
+  static final int R_P  = 4;
 
-  // Opcodes in the compact model encoding (high byte of the instruction word).
+  < Opcodes in the compact model encoding (high byte of the instruction word). >
   static final int LDA_IMM = 1;
   static final int LDX_IMM = 2;
   static final int LDY_IMM = 3;
@@ -83,8 +88,9 @@ class SL6502CPU extends SLCPURuntime {
   static final int BRK      = 15;
 
   void configure() {
-    // 8-bit data, 16-bit address, 5 architectural registers, 64 KiB words.
-    setSpecClock(1);   // MOS 6502 ran at ~1 MHz; overclockable via the clock policy
+    < 8-bit data, 16-bit address, 5 architectural registers, 64 KiB words. >
+    < MOS 6502 ran at ~1 MHz; overclockable via the clock policy >
+    setSpecClock(1);
     bringUp("MOS 6502", 8, 16, 5, 65536);
     writeReg(R_SP, 0xFF);
   }
@@ -111,10 +117,10 @@ class SL6502CPU extends SLCPURuntime {
     if (opcode == BEQ_REL) { if (zero() == 1) { setEntryPoint(programCounter() + signed(arg)); } return; }
     if (opcode == BNE_REL) { if (zero() == 0) { setEntryPoint(programCounter() + signed(arg)); } return; }
     if (opcode == BRK)     { halted = 1; return; }
-    // NOP / unknown
+    < NOP / unknown >
   }
 
-  // Treat the low byte as a signed relative offset for branches.
+  < Treat the low byte as a signed relative offset for branches. >
   int signed(int b) { if (b >= 128) { return b - 256; } return b; }
 
   void setZN(int v) {
@@ -122,7 +128,7 @@ class SL6502CPU extends SLCPURuntime {
     flagN = ((v / 128) % 2 == 1) ? 1 : 0;
   }
 
-  // Assembler helper: pack an instruction word for loadProgramWord().
+  < Assembler helper: pack an instruction word for loadProgramWord(). >
   int encode(int opcode, int operand) { return (opcode % 256) * 256 + (operand % 256); }
 
   int accumulator() { return readReg(R_A); }

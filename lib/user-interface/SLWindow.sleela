@@ -57,31 +57,33 @@ class SLWindow {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int window;   // VM-local window handle (-1 = none)
-  int root;     // VM-local handle of the window's root container widget
+  < VM-local window handle (-1 = none) >
+  int window;
+  < VM-local handle of the window's root container widget >
+  int root;
   String title;
 
-  // Called by SLUserInterface.openWindow(). themeHandle -1 selects the
-  // built-in Slick Black default theme.
+  < Called by SLUserInterface.openWindow(). themeHandle -1 selects the >
+  < built-in Slick Black default theme. >
   void configureOn(int app, String windowTitle, int width, int height,
                    int themeHandle) {
     title = windowTitle;
     window = uiWindowCreate(app, windowTitle, width, height, themeHandle);
     root = (window >= 0) ? uiWindowRoot(window) : -1;
-    // Sleela GUI setup defaults to triple buffering for smoother redraws.
+    < Sleela GUI setup defaults to triple buffering for smoother redraws. >
     if (window >= 0) { uiWindowSetBuffering(window, 2); }
   }
 
   boolean valid() { return window >= 0; }
 
-  // The root container widget. Add boxes/controls to this to build the UI.
+  < The root container widget. Add boxes/controls to this to build the UI. >
   SLWidget rootWidget() {
     SLBox box = new SLBox();
     box.adopt(root);
     return box;
   }
 
-  // Raw root handle, for widget constructors that attach to a parent handle.
+  < Raw root handle, for widget constructors that attach to a parent handle. >
   int rootHandle() { return root; }
 
   void show() { if (window >= 0) { uiWindowShow(window); } }
@@ -93,19 +95,19 @@ class SLWindow {
   }
   String windowTitle() { return title; }
 
-  // Swap the whole palette live (pass an SLTheme handle).
+  < Swap the whole palette live (pass an SLTheme handle). >
   void setTheme(int themeHandle) {
     if (window >= 0) { uiWindowSetTheme(window, themeHandle); }
   }
 
-  // Ask the toolkit to repaint this window on the next turn.
+  < Ask the toolkit to repaint this window on the next turn. >
   void requestRedraw() { if (window >= 0) { uiWindowRedraw(window); } }
 
-  // Presentation buffering: how a painted frame reaches the screen.
-  //   0 = single (direct blit; may tear on resize)
-  //   1 = double (one off-screen back buffer; frame lands atomically)
-  //   2 = triple (two back buffers; default for SLeeLa GUI setup)
-  // Programs can override this with setBuffering(mode).
+  < Presentation buffering: how a painted frame reaches the screen. >
+  < 0 = single (direct blit; may tear on resize) >
+  < 1 = double (one off-screen back buffer; frame lands atomically) >
+  < 2 = triple (two back buffers; default for SLeeLa GUI setup) >
+  < Programs can override this with setBuffering(mode). >
   void setBuffering(int mode) { if (window >= 0) { uiWindowSetBuffering(window, mode); } }
   int buffering() { return (window >= 0) ? uiWindowBuffering(window) : 0; }
 

@@ -59,35 +59,43 @@ class SLTextView extends SLWidget {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_LINES = 1048576;
-  static final int LINE_HEIGHT = 18;   // px per text row
-  static final int CHAR_WIDTH  = 9;    // px per monospace cell
-  static final int GUTTER_W    = 52;   // px line-number gutter
-  static final int PAD_X       = 8;    // px left padding inside the text area
+  < px per text row >
+  static final int LINE_HEIGHT = 18;
+  < px per monospace cell >
+  static final int CHAR_WIDTH  = 9;
+  < px line-number gutter >
+  static final int GUTTER_W    = 52;
+  < px left padding inside the text area >
+  static final int PAD_X       = 8;
 
-  // Slick Black palette (0xRRGGBBAA), consistent with the SleelaUI theme.
+  < Slick Black palette (0xRRGGBBAA), consistent with the SleelaUI theme. >
   static final int COL_BG        = 0x151515FF;
   static final int COL_GUTTER_BG = 0x1E1E1EFF;
   static final int COL_GUTTER_FG = 0x6A6A6AFF;
   static final int COL_TEXT      = 0xE6E6E6FF;
-  static final int COL_CARET     = 0x3BE07AFF;   // brand green
+  < brand green >
+  static final int COL_CARET     = 0x3BE07AFF;
   static final int COL_SELECT    = 0x294C38FF;
   static final int COL_CURLINE   = 0x1C1C1CFF;
 
   SLCanvasView canvas;
 
-  // Text model.
+  < Text model. >
   String[] lines;
   int lineCount;
 
-  // Caret and selection (line/column are 0-based).
+  < Caret and selection (line/column are 0-based). >
   int caretLine;
   int caretCol;
-  int anchorLine;   // selection anchor; equal to caret when there is no selection
+  < selection anchor; equal to caret when there is no selection >
+  int anchorLine;
   int anchorCol;
 
   boolean dirty;
-  int topLine;      // first visible line (vertical scroll in lines)
-  int viewportRows; // visible text rows (set from the canvas height)
+  < first visible line (vertical scroll in lines) >
+  int topLine;
+  < visible text rows (set from the canvas height) >
+  int viewportRows;
 
   void createIn(SLWidget parent, int width, int height) {
     canvas = new SLCanvasView();
@@ -103,13 +111,13 @@ class SLTextView extends SLWidget {
     viewportRows = (height > 0) ? (height / LINE_HEIGHT) : 40;
   }
 
-  // Register the SLeeLa draw-handler ordinal the VM calls each frame; the
-  // handler body should call render(ctx) with its SLDrawContext.
+  < Register the SLeeLa draw-handler ordinal the VM calls each frame; the >
+  < handler body should call render(ctx) with its SLDrawContext. >
   void setDrawHandler(int handlerId) { canvas.setDrawHandler(handlerId); }
 
-  // ---- model loading / reading -------------------------------------------
+  < ---- model loading / reading ------------------------------------------- >
 
-  // Replace the whole buffer from a list of lines (a load, not an edit).
+  < Replace the whole buffer from a list of lines (a load, not an edit). >
   void loadLines(String[] newLines, int n) {
     for (int i = 0; i < n && i < MAX_LINES; i = i + 1) { lines[i] = newLines[i]; }
     lineCount = (n < 1) ? 1 : n;
@@ -126,7 +134,7 @@ class SLTextView extends SLWidget {
   boolean isDirty() { return dirty; }
   void markSaved() { dirty = false; }
 
-  // ---- caret / selection --------------------------------------------------
+  < ---- caret / selection -------------------------------------------------- >
 
   void clearSelection() { anchorLine = caretLine; anchorCol = caretCol; }
   boolean hasSelection() { return anchorLine != caretLine || anchorCol != caretCol; }
@@ -150,7 +158,7 @@ class SLTextView extends SLWidget {
   void moveHome(boolean extend) { moveTo(caretLine, 0, extend); }
   void moveEnd(boolean extend)  { moveTo(caretLine, len(lines[caretLine]), extend); }
 
-  // Map a pixel click inside the text area to a caret position.
+  < Map a pixel click inside the text area to a caret position. >
   void clickAt(int px, int py, boolean extend) {
     int line = topLine + (py / LINE_HEIGHT);
     int col = (px - GUTTER_W - PAD_X) / CHAR_WIDTH;
@@ -158,9 +166,9 @@ class SLTextView extends SLWidget {
     moveTo(line, col, extend);
   }
 
-  // ---- editing ------------------------------------------------------------
+  < ---- editing ------------------------------------------------------------ >
 
-  // Insert a run of text with no newlines at the caret.
+  < Insert a run of text with no newlines at the caret. >
   void insert(String s) {
     if (hasSelection()) { deleteSelection(); }
     String line = lines[caretLine];
@@ -171,7 +179,7 @@ class SLTextView extends SLWidget {
     followCaret();
   }
 
-  // Split the current line at the caret (Enter).
+  < Split the current line at the caret (Enter). >
   void newline() {
     if (hasSelection()) { deleteSelection(); }
     String line = lines[caretLine];
@@ -186,8 +194,8 @@ class SLTextView extends SLWidget {
     followCaret();
   }
 
-  // Backspace: delete the selection, else the char before the caret, else
-  // join with the previous line.
+  < Backspace: delete the selection, else the char before the caret, else >
+  < join with the previous line. >
   void backspace() {
     if (hasSelection()) { deleteSelection(); dirty = true; return; }
     if (caretCol > 0) {
@@ -206,7 +214,7 @@ class SLTextView extends SLWidget {
     followCaret();
   }
 
-  // Forward delete.
+  < Forward delete. >
   void deleteForward() {
     if (hasSelection()) { deleteSelection(); dirty = true; return; }
     String line = lines[caretLine];
@@ -220,9 +228,9 @@ class SLTextView extends SLWidget {
     followCaret();
   }
 
-  // Delete the current selection and place the caret at its start. Only the
-  // single-line and whole-line-span common cases are modeled here; a full
-  // multi-line splice is a host-assisted operation.
+  < Delete the current selection and place the caret at its start. Only the >
+  < single-line and whole-line-span common cases are modeled here; a full >
+  < multi-line splice is a host-assisted operation. >
   void deleteSelection() {
     if (!hasSelection()) { return; }
     int sl = selStartLine(); int sc = selStartCol();
@@ -241,9 +249,9 @@ class SLTextView extends SLWidget {
     followCaret();
   }
 
-  // ---- rendering (called from the canvas draw handler) --------------------
+  < ---- rendering (called from the canvas draw handler) -------------------- >
 
-  // Paint the editor into `ctx` (an SLDrawContext bound to the canvas frame).
+  < Paint the editor into `ctx` (an SLDrawContext bound to the canvas frame). >
   void render(SLDrawContext ctx) {
     if (ctx == null || !ctx.valid()) { return; }
     int w = ctx.width();
@@ -292,7 +300,7 @@ class SLTextView extends SLWidget {
     ctx.fillRect(x, y + 2, 2, LINE_HEIGHT - 4, COL_CARET);
   }
 
-  // ---- helpers ------------------------------------------------------------
+  < ---- helpers ------------------------------------------------------------ >
 
   void followCaret() {
     if (caretLine < topLine) { topLine = caretLine; }
@@ -325,7 +333,7 @@ class SLTextView extends SLWidget {
     return col;
   }
 
-  // Normalized selection bounds (start precedes end in document order).
+  < Normalized selection bounds (start precedes end in document order). >
   boolean selectionForward() {
     return anchorLine < caretLine || (anchorLine == caretLine && anchorCol <= caretCol);
   }

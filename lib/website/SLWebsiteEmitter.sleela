@@ -54,7 +54,7 @@ class SLWebsiteEmitter {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  // Produce the <style> block from the design.
+  < Produce the <style> block from the design. >
   String styleFor(SLWebsiteDesign d) {
     int motion = d.motionLevel();
     String heroBg = "var(--brand)";
@@ -86,7 +86,7 @@ class SLWebsiteEmitter {
     return css;
   }
 
-  // Render a single sign to HTML under the active design.
+  < Render a single sign to HTML under the active design. >
   String renderSign(SLWebsiteSign s) {
     if (s.kind == 0) { return "<nav><span class=\"brand\">" + s.a + "</span><span>" + s.b + "</span></nav>"; }
     if (s.kind == 1) { return "<section class=\"hero\"><div class=\"wrap\"><h1>" + s.a + "</h1><p>" + s.b + "</p><a class=\"btn\" href=\"#\">" + s.c + "</a></div></section>"; }
@@ -99,7 +99,7 @@ class SLWebsiteEmitter {
     return "<footer><div class=\"wrap\"><strong>" + s.a + "</strong><div>" + s.b + "</div></footer>";
   }
 
-  // Wrap a design's style + a pre-rendered body into a full HTML document.
+  < Wrap a design's style + a pre-rendered body into a full HTML document. >
   String document(String title, String style, String body) {
     String html = "<!doctype html>\n<html lang=\"en\">\n<head>\n";
     html = html + "<meta charset=\"utf-8\">\n";

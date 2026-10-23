@@ -57,10 +57,14 @@ class SLMoralWarranty {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String warrantor;   // the issuing party (e.g. "MEARVK LLC")
-  String product;     // the covered product / software unit
-  String statement;   // the human-readable warranty
-  String limits;      // the explicit limits of the warranty
+  < the issuing party (e.g. "MEARVK LLC") >
+  String warrantor;
+  < the covered product / software unit >
+  String product;
+  < the human-readable warranty >
+  String statement;
+  < the explicit limits of the warranty >
+  String limits;
   int configured;
 
   void configure(String issuer, String coveredProduct) {
@@ -73,7 +77,7 @@ class SLMoralWarranty {
   void setStatement(String s) { statement = s; }
   void setLimits(String l) { limits = l; }
 
-  // The standard warranty: the moral gate is present and enforced.
+  < The standard warranty: the moral gate is present and enforced. >
   String defaultStatement(String coveredProduct) {
     return "This software (" + coveredProduct + ") embeds the Moral Capacitor(TM): "
          + "its consequential operations are gated by an ethical capacitor that "
@@ -81,7 +85,7 @@ class SLMoralWarranty {
          + "no absolute red line is tripped, and it records its verdicts for audit.";
   }
 
-  // The standard limits: a conduct guarantee, not an oracle or fitness claim.
+  < The standard limits: a conduct guarantee, not an oracle or fitness claim. >
   String defaultLimits() {
     return "This is a warranty that the moral gate is PRESENT and ENFORCED, a "
          + "checkable property. It is not a claim of objective morality, not a "
@@ -95,7 +99,7 @@ class SLMoralWarranty {
   String warrantyStatement() { return statement; }
   String warrantyLimits() { return limits; }
 
-  // The full warranty text (statement + limits) for embedding in a certificate.
+  < The full warranty text (statement + limits) for embedding in a certificate. >
   String text() {
     return "WARRANTY OF MORALS\nWarrantor: " + warrantor + "\nProduct: " + product
          + "\n\n" + statement + "\n\nLimits: " + limits + "\n";

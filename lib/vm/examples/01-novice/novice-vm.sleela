@@ -53,14 +53,16 @@ class Vm {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
-  int state;      // 0 stopped, 1 running
+  < 0 stopped, 1 running >
+  int state;
   int modules;
 
   void configure(String n) { name = n; state = 0; modules = 0; }
   void start() { state = 1; }
   void stop()  { state = 0; }
   boolean active() { return state == 1; }
-  void loadModule() { modules = modules + 1; }   // "register" a module
+  < "register" a module >
+  void loadModule() { modules = modules + 1; }
   int moduleCount() { return modules; }
 }
 
@@ -75,7 +77,7 @@ class NoviceVM {
     vm.start();
     print("started: active=" + vm.active());
 
-    // Load a couple of modules into the running VM.
+    < Load a couple of modules into the running VM. >
     vm.loadModule();
     vm.loadModule();
     print("modules loaded: " + vm.moduleCount());

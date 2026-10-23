@@ -53,19 +53,20 @@ class SLGuiRuntime {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLGuiWindow window;
   SLGuiDocumentListener listener;
-  int listening;               // 1 when the listen option is enabled
+  < 1 when the listen option is enabled >
+  int listening;
   void configure(SLGuiWindow w) {
     window = w; listening = 0;
   }
-  // Open/describe the window at the requested size.
+  < Open/describe the window at the requested size. >
   void openWindow(String title, int width, int height) {
     window.configure(title, width, height);
     window.show();
   }
-  // Publish text to the running window.
+  < Publish text to the running window. >
   void text(String value) { window.setText(value); }
-  // Enable the document-change listener option over 1..14 documents; the
-  // listener refreshes the running window directly when a document changes.
+  < Enable the document-change listener option over 1..14 documents; the >
+  < listener refreshes the running window directly when a document changes. >
   boolean listen(SLGuiDocumentListener l) {
     listener = l;
     if (!listener.watch()) { listening = 0; return false; }
@@ -73,7 +74,7 @@ class SLGuiRuntime {
     return true;
   }
   boolean isListening() { return listening == 1 && listener != null && listener.isRunning(); }
-  // An OS call reports `realChanges`; refresh the window for the change.
+  < An OS call reports `realChanges`; refresh the window for the change. >
   int onDocumentChange(String documentId, String revision, int realChanges) {
     if (!isListening()) { return 0; }
     int emitted = listener.onOsCall(realChanges);

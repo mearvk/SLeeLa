@@ -63,7 +63,7 @@ class SLCompileChoice {
   int state;
   String diagnostic;
 
-  // Choose explicitly by form.
+  < Choose explicitly by form. >
   void choose(String path, int form) {
     inputPath = path;
     sourceForm = new SLSourceForm();
@@ -72,7 +72,7 @@ class SLCompileChoice {
     diagnostic = state == 1 ? "" : "unknown source form chosen";
   }
 
-  // Choose by inferring the form from the input file's extension.
+  < Choose by inferring the form from the input file's extension. >
   void chooseFromPath(String path) {
     inputPath = path;
     sourceForm = new SLSourceForm();
@@ -92,9 +92,9 @@ class SLCompileChoice {
   boolean compilesAsDocument() { return sourceForm != null && sourceForm.isDocument(); }
   boolean compilesAsProgram() { return sourceForm != null && sourceForm.isProgram(); }
 
-  // Compile through the selected front end. Returns a VM frame handle (>= 0) on
-  // success, or -1 with a diagnostic. The document path is routed to the
-  // document-aware native compile; the program path to the ordinary one.
+  < Compile through the selected front end. Returns a VM frame handle (>= 0) on >
+  < success, or -1 with a diagnostic. The document path is routed to the >
+  < document-aware native compile; the program path to the ordinary one. >
   int compile() {
     if (!resolved()) { diagnostic = "cannot compile: form unresolved"; return -1; }
     if (compilesAsDocument()) {

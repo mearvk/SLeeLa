@@ -54,7 +54,7 @@ class SLCard extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a card inside `parent`.
+  < Create a card inside `parent`. >
   void createIn(SLWidget parent) {
     widget = uiCard(parent.handle());
   }

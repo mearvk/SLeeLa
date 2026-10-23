@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Model-level validation only; native parser remains authoritative. */
+< Model-level validation only; native parser remains authoritative. >
 class Http10Validation {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

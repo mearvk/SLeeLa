@@ -51,15 +51,24 @@ class SLIdeEditor {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String documentId;           // stable IDE-facing identity (matches SLGuiDocument.id)
-  String path;                 // resolved host path, "" when untitled
-  String language;             // "sleela" | "sst" | "c" | "cpp" | "java"
-  String text;                 // the live buffer contents
-  String savedRevision;        // on-disk revision last synced ("lastModified:size" | "absent")
-  int dirty;                   // 1 when the buffer differs from the saved revision
-  int caret;                   // caret offset into text
-  int selStart;                // selection start offset (== selEnd when no selection)
-  int selEnd;                  // selection end offset
+  < stable IDE-facing identity (matches SLGuiDocument.id) >
+  String documentId;
+  < resolved host path, "" when untitled >
+  String path;
+  < "sleela" | "sst" | "c" | "cpp" | "java" >
+  String language;
+  < the live buffer contents >
+  String text;
+  < on-disk revision last synced ("lastModified:size" | "absent") >
+  String savedRevision;
+  < 1 when the buffer differs from the saved revision >
+  int dirty;
+  < caret offset into text >
+  int caret;
+  < selection start offset (== selEnd when no selection) >
+  int selStart;
+  < selection end offset >
+  int selEnd;
 
   void configure(String docId, String docPath, String lang) {
     documentId = docId; path = docPath; language = lang;
@@ -72,13 +81,13 @@ class SLIdeEditor {
   String getLanguage() { return language; }
   boolean untitled() { return path == null || path == ""; }
 
-  // Replace the buffer (a load or a programmatic set); not itself a user edit.
+  < Replace the buffer (a load or a programmatic set); not itself a user edit. >
   void loadText(String value, String revision) {
     text = value; savedRevision = revision; dirty = 0;
     caret = 0; selStart = 0; selEnd = 0;
   }
 
-  // A user edit: set the buffer text and mark it dirty.
+  < A user edit: set the buffer text and mark it dirty. >
   void setText(String value) {
     if (value != text) { text = value; dirty = 1; }
   }
@@ -86,10 +95,10 @@ class SLIdeEditor {
 
   boolean isDirty() { return dirty == 1; }
 
-  // Mark the buffer clean against the revision the host just wrote to disk.
+  < Mark the buffer clean against the revision the host just wrote to disk. >
   void markSaved(String revision) { savedRevision = revision; dirty = 0; }
 
-  // Caret / selection (offsets are clamped to the buffer by the host).
+  < Caret / selection (offsets are clamped to the buffer by the host). >
   void moveCaret(int offset) { caret = offset; selStart = offset; selEnd = offset; }
   int getCaret() { return caret; }
   void select(int start, int end) {
@@ -97,8 +106,8 @@ class SLIdeEditor {
   }
   boolean hasSelection() { return selStart != selEnd; }
 
-  // True when an external (on-disk) revision no longer matches what we loaded,
-  // i.e. the file changed underneath us (reconcile via the document listener).
+  < True when an external (on-disk) revision no longer matches what we loaded, >
+  < i.e. the file changed underneath us (reconcile via the document listener). >
   boolean staleAgainst(String diskRevision) {
     if (diskRevision == null) { return false; }
     return diskRevision != savedRevision;

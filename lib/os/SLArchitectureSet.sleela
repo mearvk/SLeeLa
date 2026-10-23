@@ -54,7 +54,8 @@ class SLArchitectureSet {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLOSArchitecture primary;
-  String targets;     // newline-separated package-arch labels
+  < newline-separated package-arch labels >
+  String targets;
   int count;
   int configured;
 
@@ -62,14 +63,14 @@ class SLArchitectureSet {
     primary = primaryArch; targets = primaryArch.arch(); count = 1; configured = 1;
   }
 
-  // Convenience: configure directly from a package-arch label.
+  < Convenience: configure directly from a package-arch label. >
   void configureLabel(String arch) {
     SLOSArchitecture a = new SLOSArchitecture();
     a.configure(arch);
     configure(a);
   }
 
-  // Add another target architecture by label.
+  < Add another target architecture by label. >
   void addTarget(String arch) {
     targets = targets + "\n" + arch;
     count = count + 1;

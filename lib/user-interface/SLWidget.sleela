@@ -56,24 +56,25 @@ class SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Alignment ordinals (mirror SLUIAlign in the toolkit C ABI).
+  < Alignment ordinals (mirror SLUIAlign in the toolkit C ABI). >
   static final int ALIGN_START  = 0;
   static final int ALIGN_CENTER = 1;
   static final int ALIGN_END    = 2;
   static final int ALIGN_FILL   = 3;
 
-  // Orientation ordinals (mirror SLUIOrientation).
+  < Orientation ordinals (mirror SLUIOrientation). >
   static final int ORIENT_VERTICAL   = 0;
   static final int ORIENT_HORIZONTAL = 1;
 
-  int widget;   // VM-local widget handle (-1 = none)
+  < VM-local widget handle (-1 = none) >
+  int widget;
 
-  // Adopt an existing handle (used for the window's root container).
+  < Adopt an existing handle (used for the window's root container). >
   void adopt(int handle) { widget = handle; }
   int handle() { return widget; }
   boolean valid() { return widget >= 0; }
 
-  // ---- Box model: margin, alignment, expansion, minimum size -------------
+  < ---- Box model: margin, alignment, expansion, minimum size ------------- >
   void setMargin(int top, int right, int bottom, int left) {
     if (widget >= 0) { uiWidgetMargin(widget, top, right, bottom, left); }
   }
@@ -91,7 +92,7 @@ class SLWidget {
     if (widget >= 0) { uiWidgetSizeRequest(widget, minWidth, minHeight); }
   }
 
-  // ---- State -------------------------------------------------------------
+  < ---- State ------------------------------------------------------------- >
   void setSensitive(boolean sensitive) {
     if (widget >= 0) { uiWidgetSensitive(widget, sensitive ? 1 : 0); }
   }
@@ -99,7 +100,7 @@ class SLWidget {
     if (widget >= 0) { uiWidgetVisible(widget, visible ? 1 : 0); }
   }
 
-  // ---- Text (label / button / entry) -------------------------------------
+  < ---- Text (label / button / entry) ------------------------------------- >
   void setText(String text) {
     if (widget >= 0) { uiWidgetSetText(widget, text); }
   }
@@ -108,9 +109,9 @@ class SLWidget {
     return uiWidgetGetText(widget);
   }
 
-  // ---- Accents -----------------------------------------------------------
-  // Create a reusable hidden popup panel within a parent layout. The caller
-  // should place it in a stack/overlay-capable container and manage visibility.
+  < ---- Accents ----------------------------------------------------------- >
+  < Create a reusable hidden popup panel within a parent layout. The caller >
+  < should place it in a stack/overlay-capable container and manage visibility. >
   int createPopupPanel() {
     if (widget < 0) return -1;
     return uiPopupCreate(widget);
@@ -122,35 +123,35 @@ class SLWidget {
     return popupHandle >= 0 && uiPopupIsOpen(popupHandle) != 0;
   }
 
-  // ---- Native Wi-Fi provider (shared wifi-common C/C++ core) -------------
-  // Scan returns WIFI_STATUS_OK on success; query the bounded result cache
-  // with wifiNetworkCount/SSID/BSSID/signal/security. Indexes are zero-based.
+  < ---- Native Wi-Fi provider (shared wifi-common C/C++ core) ------------- >
+  < Scan returns WIFI_STATUS_OK on success; query the bounded result cache >
+  < with wifiNetworkCount/SSID/BSSID/signal/security. Indexes are zero-based. >
   int wifiScan() { return uiWifiScan(); }
   int wifiNetworkCount() { return uiWifiNetworkCount(); }
   String wifiNetworkSsid(int index) { return uiWifiNetworkSsid(index); }
   String wifiNetworkBssid(int index) { return uiWifiNetworkBssid(index); }
   int wifiNetworkSignal(int index) { return uiWifiNetworkSignal(index); }
   String wifiNetworkSecurity(int index) { return uiWifiNetworkSecurity(index); }
-  // Connect through OS-managed authentication or a trusted saved profile. The bridge never accepts
-  // raw passwords from Sleela source or places credentials on command lines.
+  < Connect through OS-managed authentication or a trusted saved profile. The bridge never accepts >
+  < raw passwords from Sleela source or places credentials on command lines. >
   int wifiConnect(int index, String profileName) {
     return uiWifiConnect(index, profileName);
   }
   int wifiDisconnect() { return uiWifiDisconnect(); }
   String wifiStatusName(int status) { return uiWifiStatusName(status); }
 
-  // Mark this as the SINGLE suggested (accent) action in its group.
+  < Mark this as the SINGLE suggested (accent) action in its group. >
   void setSuggested(boolean suggested) {
     if (widget >= 0) { uiWidgetSuggested(widget, suggested ? 1 : 0); }
   }
-  // Mark this as destructive (uses the danger colour on hover).
+  < Mark this as destructive (uses the danger colour on hover). >
   void setDestructive(boolean destructive) {
     if (widget >= 0) { uiWidgetDestructive(widget, destructive ? 1 : 0); }
   }
 
-  // Give this text widget a styled SLFont so its label renders with the font's
-  // effects (shadows, glow, outline, relief, gradient). The widget borrows the
-  // font. Pass null to revert to plain theme text.
+  < Give this text widget a styled SLFont so its label renders with the font's >
+  < effects (shadows, glow, outline, relief, gradient). The widget borrows the >
+  < font. Pass null to revert to plain theme text. >
   void setFont(SLFont font) {
     if (widget >= 0 && font != null) { uiWidgetSetFont(widget, font.handle()); }
   }

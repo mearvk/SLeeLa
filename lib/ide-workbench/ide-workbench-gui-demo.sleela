@@ -58,24 +58,26 @@ class IdeWorkbenchGuiDemo {
     SLIdeWorkbenchUI ide = new SLIdeWorkbenchUI();
     if (!ide.boot("com.mearvk.SleelaIDE", "SLeeLa IDE - MEARVK LLC",
                   1280, 800, "/work/project")) {
-      return 1;   // headless: no display
+      < headless: no display >
+      return 1;
     }
 
-    // Project explorer: a root with two source files (SST Nordshrit + SLeeLa).
+    < Project explorer: a root with two source files (SST Nordshrit + SLeeLa). >
     ide.addTreeNode("root", "project", null, false);
     ide.addTreeNode("f1", "main.sst", "root", true);
     ide.addTreeNode("f2", "util.sleela", "root", true);
-    ide.tree.toggle("root");         // expand the root so children show
+    < expand the root so children show >
+    ide.tree.toggle("root");
     ide.rebuildTree();
 
-    // Open main.sst into a code editor tab.
+    < Open main.sst into a code editor tab. >
     String[] sst = new String[3];
     sst[0] = "system Demo {";
     sst[1] = "  symbol Greeting";
     sst[2] = "}";
     ide.openFile("f1", "/work/project/main.sst", sst, 3, "r1");
 
-    // Open util.sleela into a second tab.
+    < Open util.sleela into a second tab. >
     String[] sl = new String[4];
     sl[0] = "#sleela 1.5";
     sl[1] = "class Util {";
@@ -83,18 +85,20 @@ class IdeWorkbenchGuiDemo {
     sl[3] = "}";
     ide.openFile("f2", "/work/project/util.sleela", sl, 4, "r1");
 
-    // A sample diagnostic from a compile (host would publish real ones).
+    < A sample diagnostic from a compile (host would publish real ones). >
     ide.publishDiagnostic("f1", SLIdeDiagnosticsPanel.SEV_WARNING, 2, 3,
                           "symbol 'Greeting' is never referenced");
     ide.finishCompile();
 
-    // Content-control interactions now flow through the DOM event bus too: a
-    // tab switch raises TOGGLE("ide-notebook", idx) and a tree selection raises
-    // CHANGE("ide-tree", id), handled by onTabChange / onTreeActivate.
-    ide.onTabChange("0");                 // focus the first editor tab
-    String opened = ide.onTreeActivate("f2");  // selecting a leaf names a file
+    < Content-control interactions now flow through the DOM event bus too: a >
+    < tab switch raises TOGGLE("ide-notebook", idx) and a tree selection raises >
+    < CHANGE("ide-tree", id), handled by onTabChange / onTreeActivate. >
+    < focus the first editor tab >
+    ide.onTabChange("0");
+    < selecting a leaf names a file >
+    String opened = ide.onTreeActivate("f2");
 
-    // Hand control to the SleelaUI event loop (polls the command buttons).
+    < Hand control to the SleelaUI event loop (polls the command buttons). >
     int code = ide.runLoop();
     ide.shutdown();
     return code;

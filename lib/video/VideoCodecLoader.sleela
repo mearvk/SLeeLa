@@ -54,10 +54,10 @@ class VideoCodecLoader {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Per-codec loaded flag (1 loaded, 0 not), indexed by codec id. Call init().
+  < Per-codec loaded flag (1 loaded, 0 not), indexed by codec id. Call init(). >
   int[] loaded;
 
-  // Number of video codecs the native registry knows (SLEELA_VIDEO_CODEC_COUNT).
+  < Number of video codecs the native registry knows (SLEELA_VIDEO_CODEC_COUNT). >
   int codecCount(){ return 12; }
 
   void init(){ loaded = new int[12]; }
@@ -71,7 +71,7 @@ class VideoCodecLoader {
     while(i < 12){ loaded[i] = 0; i = i + 1; }
   }
 
-  // Human-readable codec name by id, matching the native registry.
+  < Human-readable codec name by id, matching the native registry. >
   string nameOf(int id){
     if(id == 0){ return "Raw Video"; }
     if(id == 1){ return "H.264/AVC"; }
@@ -87,10 +87,10 @@ class VideoCodecLoader {
     return "DNxHD/DNxHR";
   }
 
-  // Only Raw Video (0) encodes/decodes natively; every other video codec is a
-  // backend (ProRes/DNx are qualified backends). Mirrors the registry state.
+  < Only Raw Video (0) encodes/decodes natively; every other video codec is a >
+  < backend (ProRes/DNx are qualified backends). Mirrors the registry state. >
   boolean isNative(int id){ return id == 0; }
 
-  // ProRes (10) and DNx (11) need a specially qualified backend adapter.
+  < ProRes (10) and DNx (11) need a specially qualified backend adapter. >
   boolean isQualifiedBackend(int id){ return id == 10 || id == 11; }
 }

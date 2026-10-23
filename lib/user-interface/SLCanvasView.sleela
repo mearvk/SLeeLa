@@ -62,7 +62,7 @@ class SLCanvasView extends SLWidget {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Create a canvas view inside `parent` with an initial pixel size.
+  < Create a canvas view inside `parent` with an initial pixel size. >
   void createIn(SLWidget parent, int width, int height) {
     widget = uiCanvasView(parent.handle(), width, height);
   }
@@ -70,15 +70,15 @@ class SLCanvasView extends SLWidget {
     widget = uiCanvasView(parentHandle, width, height);
   }
 
-  // The target refresh rate (frames per second) the window loop honours while
-  // this view is visible (0 = the window's default).
+  < The target refresh rate (frames per second) the window loop honours while >
+  < this view is visible (0 = the window's default). >
   void setFps(double fps) {
     if (widget >= 0) { uiCanvasViewSetFps(widget, fps); }
   }
 
-  // Register the draw routine for this view. `handlerId` is a VM draw-handler
-  // ordinal the host has bound to a SLeeLa method; the VM invokes it each frame
-  // with an SLDrawContext, the animation time, and the per-frame delta.
+  < Register the draw routine for this view. `handlerId` is a VM draw-handler >
+  < ordinal the host has bound to a SLeeLa method; the VM invokes it each frame >
+  < with an SLDrawContext, the animation time, and the per-frame delta. >
   void setDrawHandler(int handlerId) {
     if (widget >= 0) { uiCanvasViewSetDraw(widget, handlerId); }
   }

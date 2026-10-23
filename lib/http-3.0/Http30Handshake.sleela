@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Capability levels are project-specific; not HTTP/3 or QUIC negotiation. */
+< Capability levels are project-specific; not HTTP/3 or QUIC negotiation. >
 class Http30Handshake {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

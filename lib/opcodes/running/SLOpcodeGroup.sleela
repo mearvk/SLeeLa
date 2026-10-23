@@ -57,10 +57,13 @@ class SLOpcodeGroup {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_MEMBERS = 4096;
 
-  String label;          // the group's name, e.g. "critical-section"
-  SLOpcodeBase[] members; // the ordered opcodes in this group
+  < the group's name, e.g. "critical-section" >
+  String label;
+  < the ordered opcodes in this group >
+  SLOpcodeBase[] members;
   int count;
-  int warmed;            // how many members have been warmed (pre-armed)
+  < how many members have been warmed (pre-armed) >
+  int warmed;
   int state;
   String lastError;
 
@@ -73,7 +76,7 @@ class SLOpcodeGroup {
     lastError = "";
   }
 
-  // Append an opcode to the group in order. Fail-closed on bound/inactive op.
+  < Append an opcode to the group in order. Fail-closed on bound/inactive op. >
   boolean add(SLOpcodeBase op) {
     if (op == null) { lastError = "null opcode"; return false; }
     if (count >= MAX_MEMBERS) { lastError = "group full"; return false; }
@@ -93,8 +96,8 @@ class SLOpcodeGroup {
   int size() { return count; }
   String name() { return label; }
 
-  // Warm the group: pre-arm every member so it is ready to fire without a
-  // per-opcode arming cost at run time. Returns the number warmed.
+  < Warm the group: pre-arm every member so it is ready to fire without a >
+  < per-opcode arming cost at run time. Returns the number warmed. >
   int warm() {
     warmed = 0;
     for (int i = 0; i < count; i = i + 1) {
@@ -105,8 +108,8 @@ class SLOpcodeGroup {
 
   boolean isWarmed() { return warmed == count && count > 0; }
 
-  // Append this group's opcodes, in order, onto a stream so the whole program
-  // runs them as part of its verbatim sequence.
+  < Append this group's opcodes, in order, onto a stream so the whole program >
+  < runs them as part of its verbatim sequence. >
   boolean emitInto(SLOpcodeStream stream) {
     if (stream == null || !active()) { lastError = "inactive group or no stream"; return false; }
     for (int i = 0; i < count; i = i + 1) {
@@ -115,8 +118,8 @@ class SLOpcodeGroup {
     return true;
   }
 
-  // Run the group directly against a VM frame, in order. Returns the final
-  // instruction pointer, or a negative value on halt/rejection.
+  < Run the group directly against a VM frame, in order. Returns the final >
+  < instruction pointer, or a negative value on halt/rejection. >
   int run(int frame) {
     if (!active()) { return -1; }
     int ip = 0;

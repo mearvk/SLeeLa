@@ -54,10 +54,12 @@ class SLLinuxBallumProfile {
 
   boolean supportsPerPixel() { return true; }
   boolean supportsRegionBlit() { return true; }
-  boolean supportsBrightness() { return true; }        // via CRTC gamma scaling
-  boolean supportsColorTemperature() { return true; }  // via CRTC gamma ramp
+  < via CRTC gamma scaling >
+  boolean supportsBrightness() { return true; }
+  < via CRTC gamma ramp >
+  boolean supportsColorTemperature() { return true; }
   boolean supportsGamma() { return true; }
 
-  // DDC/CI backlight is hardware-dependent; advertised separately.
+  < DDC/CI backlight is hardware-dependent; advertised separately. >
   boolean supportsDdcBacklight() { return false; }
 }

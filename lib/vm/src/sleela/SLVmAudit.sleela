@@ -62,8 +62,10 @@ class SLVmAudit {
   static final int PLATFORM = 5;
   static final int ERROR    = 6;
 
-  int    total;        // ever recorded
-  int    chainLow;     // low 31 bits of the running chain hash (surface int)
+  < ever recorded >
+  int    total;
+  < low 31 bits of the running chain hash (surface int) >
+  int    chainLow;
   int    lastSeq;
   int    lastKind;
   String lastSubsystem;
@@ -78,15 +80,15 @@ class SLVmAudit {
     return SLVmReport.SEV_DEBUG;
   }
 
-  // simple positive-int FNV-1a fold step (surface has no unsigned/xor; use
-  // multiply+add+mod to keep a stable, order-sensitive running value).
+  < simple positive-int FNV-1a fold step (surface has no unsigned/xor; use >
+  < multiply+add+mod to keep a stable, order-sensitive running value). >
   int fold(int h, int v) {
     int x = (h * 131 + v) % 2147483647;
     if (x < 0) { x = x + 2147483647; }
     return x;
   }
 
-  // record an event (mirror vm_audit_record): seq++, fold the chain, mirror to report.
+  < record an event (mirror vm_audit_record): seq++, fold the chain, mirror to report. >
   int log(int kind, String subsystem, String message, SLVmReport rep) {
     total = total + 1;
     lastSeq = total; lastKind = kind;
@@ -97,7 +99,7 @@ class SLVmAudit {
     return lastSeq;
   }
 
-  // fold a typed result into the trail (mirror vm_audit_result).
+  < fold a typed result into the trail (mirror vm_audit_result). >
   int logResult(SLVmResult r, SLVmReport rep) {
     if (r == null) { return total; }
     int k;

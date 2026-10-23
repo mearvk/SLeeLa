@@ -59,19 +59,21 @@ class SLUserInterface {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Backend ordinals (mirror SLUIBackend in the toolkit C ABI).
+  < Backend ordinals (mirror SLUIBackend in the toolkit C ABI). >
   static final int BACKEND_UNKNOWN = 0;
   static final int BACKEND_WIN32   = 1;
   static final int BACKEND_COCOA   = 2;
   static final int BACKEND_X11     = 3;
 
-  String appId;      // application identifier, e.g. "com.mearvk.App"
-  int app;           // VM-local application handle (-1 = none)
+  < application identifier, e.g. "com.mearvk.App" >
+  String appId;
+  < VM-local application handle (-1 = none) >
+  int app;
 
   void configure(String id) { appId = id; app = -1; }
 
-  // Create the SleelaUI application connection (opens the host display).
-  // Returns true if the toolkit came up (false if, e.g., no display on X11).
+  < Create the SleelaUI application connection (opens the host display). >
+  < Returns true if the toolkit came up (false if, e.g., no display on X11). >
   boolean open() {
     app = uiAppCreate(appId);
     return app >= 0;
@@ -79,7 +81,7 @@ class SLUserInterface {
 
   boolean active() { return app >= 0; }
 
-  // The window-system backend driving this process: "x11" / "cocoa" / "win32".
+  < The window-system backend driving this process: "x11" / "cocoa" / "win32". >
   String backend() { return uiBackendName(uiBackend()); }
   int backendId()  { return uiBackend(); }
   String version() { return uiVersion(); }
@@ -88,36 +90,36 @@ class SLUserInterface {
   boolean isMac()     { return uiBackend() == BACKEND_COCOA; }
   boolean isWindows() { return uiBackend() == BACKEND_WIN32; }
 
-  // The primary screen / display size in pixels, straight from the host window
-  // system (uiScreenWidth / uiScreenHeight bottom out in slui_screen_size).
-  // Returns 0 when the toolkit cannot report a size — e.g. a headless host, or
-  // before open() has connected the display — so callers can fall back to a
-  // modeled resolution (see SLGuiScreenFit). Needs an open application.
+  < The primary screen / display size in pixels, straight from the host window >
+  < system (uiScreenWidth / uiScreenHeight bottom out in slui_screen_size). >
+  < Returns 0 when the toolkit cannot report a size — e.g. a headless host, or >
+  < before open() has connected the display — so callers can fall back to a >
+  < modeled resolution (see SLGuiScreenFit). Needs an open application. >
   int screenWidth()  { return app >= 0 ? uiScreenWidth(app)  : 0; }
   int screenHeight() { return app >= 0 ? uiScreenHeight(app) : 0; }
   boolean screenKnown() { return screenWidth() > 0 && screenHeight() > 0; }
 
-  // Open a window on this application. title/width/height describe the content
-  // area; theme is an SLTheme handle (pass -1 for the Slick Black default).
-  // Returns an SLWindow bound to the new native window.
+  < Open a window on this application. title/width/height describe the content >
+  < area; theme is an SLTheme handle (pass -1 for the Slick Black default). >
+  < Returns an SLWindow bound to the new native window. >
   SLWindow openWindow(String title, int width, int height, int themeHandle) {
     SLWindow w = new SLWindow();
     w.configureOn(app, title, width, height, themeHandle);
     return w;
   }
 
-  // Run the toolkit's own event loop until every window closes (or quit()).
-  // Returns the process-style exit code.
+  < Run the toolkit's own event loop until every window closes (or quit()). >
+  < Returns the process-style exit code. >
   int run() { return uiAppRun(app); }
 
-  // Process pending host events once; block != 0 waits for at least one.
-  // Returns the number of events dispatched, or a negative error.
+  < Process pending host events once; block != 0 waits for at least one. >
+  < Returns the number of events dispatched, or a negative error. >
   int pump(boolean block) { return uiAppPump(app, block ? 1 : 0); }
 
-  // Ask the event loop to stop; run() returns exitCode.
+  < Ask the event loop to stop; run() returns exitCode. >
   void quit(int exitCode) { uiAppQuit(app, exitCode); }
 
-  // Release the application and all its windows.
+  < Release the application and all its windows. >
   void close() {
     if (app >= 0) { uiAppDestroy(app); app = -1; }
   }

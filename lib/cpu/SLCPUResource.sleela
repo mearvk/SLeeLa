@@ -54,22 +54,28 @@ class SLCPUResource {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  // Scheduling priority bands.
+  < Scheduling priority bands. >
   static final int PRIORITY_IDLE   = 0;
   static final int PRIORITY_NORMAL = 1;
   static final int PRIORITY_HIGH   = 2;
   static final int PRIORITY_REALTIME = 3;
 
-  int memoryWords;      // address-space words the workload may use
-  int instructionBudget;// max instructions it may retire this grant (time-slice)
+  < address-space words the workload may use >
+  int memoryWords;
+  < max instructions it may retire this grant (time-slice) >
+  int instructionBudget;
   int priority;
-  int ioAllowed;        // 1 = may issue I/O / service opcodes
-  int privileged;       // 1 = may run supervisor-level services
-  int coreAffinity;     // preferred core index (-1 = any)
+  < 1 = may issue I/O / service opcodes >
+  int ioAllowed;
+  < 1 = may run supervisor-level services >
+  int privileged;
+  < preferred core index (-1 = any) >
+  int coreAffinity;
 
-  // Accounting (filled while running).
+  < Accounting (filled while running). >
   int instructionsUsed;
-  int memoryHighWater;  // highest word index touched
+  < highest word index touched >
+  int memoryHighWater;
 
   void configure(int words, int budget, int schedPriority) {
     memoryWords = words;
@@ -83,7 +89,7 @@ class SLCPUResource {
   void allowPrivileged(boolean on){ privileged = on ? 1 : 0; }
   void pinToCore(int index)       { coreAffinity = index; }
 
-  // Budget accounting, used by the CPU's run loop.
+  < Budget accounting, used by the CPU's run loop. >
   void chargeInstruction()        { instructionsUsed = instructionsUsed + 1; }
   void observeAddress(int addr)   { if (addr > memoryHighWater) { memoryHighWater = addr; } }
   boolean exhausted()             { return instructionsUsed >= instructionBudget; }

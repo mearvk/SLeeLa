@@ -61,14 +61,17 @@ class SLVmGc {
   static final int PRESSURE = 2;
   static final int THRASH   = 3;
 
-  int minReclaimPct;  // reclaim/alloc below this = pressure (default 25)
-  int thrashPerK;     // collections per 1000 allocs for thrash (default 50)
+  < reclaim/alloc below this = pressure (default 25) >
+  int minReclaimPct;
+  < collections per 1000 allocs for thrash (default 50) >
+  int thrashPerK;
 
-  // previous snapshot (for deltas)
+  < previous snapshot (for deltas) >
   int prevAlloc; int prevReclaim; int prevColl;
   int havePrev;
   int cond;
-  int reported;       // edge-trigger latch
+  < edge-trigger latch >
+  int reported;
   int collectYoung;
 
   void init() {
@@ -94,7 +97,7 @@ class SLVmGc {
     return HEALTHY;
   }
 
-  // observe fresh cumulative stats; returns the condition.
+  < observe fresh cumulative stats; returns the condition. >
   int observe(int allocated, int reclaimed, int collections, SLVmResult res, SLVmReport rep) {
     if (havePrev == 0) {
       prevAlloc = allocated; prevReclaim = reclaimed; prevColl = collections;

@@ -54,8 +54,10 @@ class SLOpcodeWarmer {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int frame;     // the VM frame to pre-stage against
-  int warmedOps; // total opcodes warmed
+  < the VM frame to pre-stage against >
+  int frame;
+  < total opcodes warmed >
+  int warmedOps;
   int state;
 
   void configure(int vmFrame) {
@@ -69,7 +71,7 @@ class SLOpcodeWarmer {
   boolean active() { return state == 1; }
   int warmedCount() { return warmedOps; }
 
-  // Warm one opcode: arm it in SLeeLa and ask the VM to pre-stage its fetch.
+  < Warm one opcode: arm it in SLeeLa and ask the VM to pre-stage its fetch. >
   boolean warmOne(SLOpcodeBase op) {
     if (!active() || op == null) { return false; }
     op.arm();
@@ -78,7 +80,7 @@ class SLOpcodeWarmer {
     return true;
   }
 
-  // Warm a whole group (arms its members and pre-stages each).
+  < Warm a whole group (arms its members and pre-stages each). >
   int warmGroup(SLOpcodeGroup group) {
     if (!active() || group == null) { return 0; }
     int warmed = 0;
@@ -89,7 +91,7 @@ class SLOpcodeWarmer {
     return warmed;
   }
 
-  // Warm every group in a set.
+  < Warm every group in a set. >
   int warmSet(SLOpcodeGroupSet set) {
     if (!active() || set == null) { return 0; }
     int warmed = 0;

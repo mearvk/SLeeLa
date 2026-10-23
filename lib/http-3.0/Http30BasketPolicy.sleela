@@ -1,5 +1,5 @@
 #sleela 2.1
-/* Fixed H3 basket schema metadata. Canonicalization is enforced by native code. */
+< Fixed H3 basket schema metadata. Canonicalization is enforced by native code. >
 class Http30BasketPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

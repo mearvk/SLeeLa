@@ -50,11 +50,16 @@ class SaaSModel extends BusinessModel {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int basicSeats;         // seats on the basic tier
-  int premiumSeats;       // seats on the premium tier
-  int basicPriceCents;    // monthly price per basic seat
-  int premiumPriceCents;  // monthly price per premium seat
-  int infraCostPerSeatCents; // cloud/infra cost per seat per month
+  < seats on the basic tier >
+  int basicSeats;
+  < seats on the premium tier >
+  int premiumSeats;
+  < monthly price per basic seat >
+  int basicPriceCents;
+  < monthly price per premium seat >
+  int premiumPriceCents;
+  < cloud/infra cost per seat per month >
+  int infraCostPerSeatCents;
 
   void setUp(int basic, int premium, int basicPrice, int premiumPrice, int infraPerSeat) {
     load();
