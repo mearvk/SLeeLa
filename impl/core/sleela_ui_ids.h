@@ -152,6 +152,24 @@ typedef enum {
     SLUI_FN_WIFI_DISCONNECT,    /* uiWifiDisconnect() -> status */
     SLUI_FN_WIFI_STATUS_NAME,   /* uiWifiStatusName(status:i) -> string */
 
+    /* --- Ballum(TM): pixel-level display control (ballum/ + lib/ballum) --- */
+    SLUI_FN_BALLUM_SUPPORTED,        /* uiBallumSupported() -> 1 real backend, 0 fallback */
+    SLUI_FN_BALLUM_BACKEND_NAME,     /* uiBallumBackendName() -> string */
+    SLUI_FN_BALLUM_ENUMERATE,        /* uiBallumEnumerate() -> status */
+    SLUI_FN_BALLUM_DISPLAY_COUNT,    /* uiBallumDisplayCount() -> int */
+    SLUI_FN_BALLUM_DISPLAY_ID,       /* uiBallumDisplayId(index:i) -> id, or -1 */
+    SLUI_FN_BALLUM_DISPLAY_NAME,     /* uiBallumDisplayName(index:i) -> string */
+    SLUI_FN_BALLUM_DISPLAY_WIDTH,    /* uiBallumDisplayWidth(index:i) -> px */
+    SLUI_FN_BALLUM_DISPLAY_HEIGHT,   /* uiBallumDisplayHeight(index:i) -> px */
+    SLUI_FN_BALLUM_DISPLAY_PRIMARY,  /* uiBallumDisplayPrimary(index:i) -> 1/0/-1 */
+    SLUI_FN_BALLUM_DISPLAY_CAPS,     /* uiBallumDisplayCaps(index:i) -> capability bitmask */
+    SLUI_FN_BALLUM_SET_PIXEL,        /* uiBallumSetPixel(id:i,x:i,y:i,r:i,g:i,b:i,a:i) -> status */
+    SLUI_FN_BALLUM_GET_PIXEL,        /* uiBallumGetPixel(id:i,x:i,y:i) -> packed 0xAARRGGBB, or -1 */
+    SLUI_FN_BALLUM_SET_BRIGHTNESS,   /* uiBallumSetBrightness(id:i, percent:i) -> status */
+    SLUI_FN_BALLUM_SET_WARMTH,       /* uiBallumSetWarmth(id:i, kelvin:i) -> status */
+    SLUI_FN_BALLUM_SET_GAMMA,        /* uiBallumSetGamma(id:i, gammaScaled:i) -> status */
+    SLUI_FN_BALLUM_STATUS_NAME,      /* uiBallumStatusName(status:i) -> string */
+
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;
 

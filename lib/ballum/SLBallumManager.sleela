@@ -171,4 +171,57 @@ class SLBallumManager {
     lastStatus = SLBallumStatus.BRIDGE_REQUIRED;
     displayCount = 0;
   }
+
+  // ---- live native control (uiBallum* VM bridge) ----------------------
+  // These drive the native Ballum manager through the VM bridge
+  // (impl/core/ballum_vm_bridge.c over ballum/). Each returns the native
+  // ballum_status_t (or a packed pixel) and records it in lastStatus. The
+  // native manager performs the authoritative bounds/capability/range checks;
+  // the request* methods above let a GUI pre-validate before calling these.
+
+  // 1 if a real per-OS backend is compiled in, 0 if the fallback.
+  boolean backendSupported() { return uiBallumSupported() == 1; }
+  String backendName() { return uiBallumBackendName(); }
+
+  // Enumerate displays; records the count and marks the manager ENUMERATED.
+  int enumerate() {
+    int st = uiBallumEnumerate();
+    lastStatus = st;
+    if (st == SLBallumStatus.OK) {
+      displayCount = uiBallumDisplayCount();
+      state = STATE_ENUMERATED;
+    }
+    return st;
+  }
+
+  int displayIdAt(int index) { return uiBallumDisplayId(index); }
+  String displayNameAt(int index) { return uiBallumDisplayName(index); }
+  int displayWidthAt(int index) { return uiBallumDisplayWidth(index); }
+  int displayHeightAt(int index) { return uiBallumDisplayHeight(index); }
+  boolean displayPrimaryAt(int index) { return uiBallumDisplayPrimary(index) == 1; }
+  int displayCapsAt(int index) { return uiBallumDisplayCaps(index); }
+
+  // Set a pixel's color on display `id`. Returns the native status.
+  int setPixel(int id, int x, int y, SLBallumColor color) {
+    if (color == null) { lastStatus = SLBallumStatus.INVALID_ARGUMENT; return lastStatus; }
+    lastStatus = uiBallumSetPixel(id, x, y, color.red(), color.green(), color.blue(), color.alpha());
+    return lastStatus;
+  }
+
+  // Read a pixel; returns packed 0xAARRGGBB, or -1 on failure.
+  int getPixelPacked(int id, int x, int y) { return uiBallumGetPixel(id, x, y); }
+
+  // Whole-display controls (clamped locally, then dispatched to native).
+  int setBrightness(int id, int percent) {
+    lastStatus = uiBallumSetBrightness(id, clampBrightness(percent));
+    return lastStatus;
+  }
+  int setWarmth(int id, int kelvin) {
+    lastStatus = uiBallumSetWarmth(id, clampWarmth(kelvin));
+    return lastStatus;
+  }
+  int setGamma(int id, int gammaScaled) {
+    lastStatus = uiBallumSetGamma(id, clampGamma(gammaScaled));
+    return lastStatus;
+  }
 }

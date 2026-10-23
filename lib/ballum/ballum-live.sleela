@@ -1,0 +1,54 @@
+#sleela 2.1
+// ballum-live.sleela -- the runnable live Ballum demo. Unlike ballum.sleela
+// (a self-contained model), this drives the real native Ballum manager through
+// the uiBallum* VM bridge (impl/core/ballum_vm_bridge.c over ballum/). What it
+// prints depends on the host: with a per-OS backend compiled in and a display
+// present it reports real displays and OK controls; on a headless host the
+// backend is the unavailable fallback and every op reports an honest status --
+// never a false success.
+//
+// Capability bits (ballum_capability_t): 1 per-pixel, 2 blit, 4 brightness,
+// 8 warmth, 16 gamma. Status codes (ballum_status_t): 0 ok, 2 unavailable,
+// 5 out-of-bounds, 7 unsupported.
+class BallumLive {
+  boolean capHas(int caps, int bit) { return (caps / bit) % 2 == 1; }
+
+  void main() {
+    print("=== Ballum live (native display control) ===");
+    print("backend: " + uiBallumBackendName() + "  supported=" + uiBallumSupported());
+
+    int st = uiBallumEnumerate();
+    print("enumerate: " + uiBallumStatusName(st));
+
+    int count = uiBallumDisplayCount();
+    print("displays: " + count);
+
+    int i = 0;
+    while (i < count) {
+      int id = uiBallumDisplayId(i);
+      int w = uiBallumDisplayWidth(i);
+      int h = uiBallumDisplayHeight(i);
+      int caps = uiBallumDisplayCaps(i);
+      print("  #" + i + " id=" + id + " " + uiBallumDisplayName(i)
+            + " " + w + "x" + h
+            + " primary=" + uiBallumDisplayPrimary(i)
+            + " perPixel=" + capHas(caps, 1)
+            + " brightness=" + capHas(caps, 4)
+            + " warmth=" + capHas(caps, 8));
+
+      // Drive each control; the native manager validates and returns an honest
+      // status. On a headless host these report 'backend unavailable'.
+      print("    setPixel(0,0 red): " + uiBallumStatusName(uiBallumSetPixel(id, 0, 0, 255, 0, 0, 255)));
+      print("    brightness 70%:    " + uiBallumStatusName(uiBallumSetBrightness(id, 70)));
+      print("    warmth 3400K:      " + uiBallumStatusName(uiBallumSetWarmth(id, 3400)));
+      print("    gamma 2.20:        " + uiBallumStatusName(uiBallumSetGamma(id, 220)));
+      i = i + 1;
+    }
+
+    if (count == 0) {
+      // No displays (e.g. headless): prove the controls still fail closed.
+      print("no displays; set on id 0 -> " + uiBallumStatusName(uiBallumSetBrightness(0, 50)));
+    }
+    print("done");
+  }
+}

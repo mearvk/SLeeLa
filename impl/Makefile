@@ -169,7 +169,42 @@ else
   WIFI_BACKEND_OBJ := $(BUILD)/wifi_backend_nmcli.o
 endif
 WIFI_OBJS := $(WIFI_MANAGER_OBJ) $(WIFI_BACKEND_OBJ) $(WIFI_VM_BRIDGE_OBJ)
-SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_NANOJPEG_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ) $(WIFI_OBJS)
+# Ballum(TM): pixel-level display control. The uiBallum* VM built-ins lower to
+# OP_UI_CALL and route through core/ballum_vm_bridge.c into the native Ballum
+# manager (ballum/). One backend is compiled per OS (open standards: X11/XRANDR
+# on Linux, Core Graphics on macOS, Win32 GDI on Windows 10+); the always-present
+# "unavailable" fallback keeps the VM linkable on any host.
+BALLUM_DIR := ../ballum
+BALLUM_MANAGER_OBJ := $(BUILD)/ballum_manager.o
+BALLUM_SELECT_OBJ := $(BUILD)/ballum_backend_select.o
+BALLUM_UNAVAIL_OBJ := $(BUILD)/ballum_backend_unavailable.o
+BALLUM_VM_BRIDGE_OBJ := $(BUILD)/ballum_vm_bridge.o
+BALLUM_BACKEND_OBJ := $(BUILD)/ballum_backend_os.o
+ifeq ($(PLATFORM),windows)
+  BALLUM_BACKEND_SRC := $(BALLUM_DIR)/src/ballum_backend_windows.c
+  BALLUM_BACKEND_DEF := -DBALLUM_BACKEND_WINDOWS
+  SLUI_LIBS += -lgdi32 -luser32
+else ifeq ($(PLATFORM),macos)
+  BALLUM_BACKEND_SRC := $(BALLUM_DIR)/src/ballum_backend_macos.mm
+  BALLUM_BACKEND_DEF := -DBALLUM_BACKEND_MACOS
+  SLUI_LIBS += -framework CoreGraphics -framework ApplicationServices
+else
+  # Linux uses the X11/XRANDR backend when its development headers are present.
+  # Where they are absent (e.g. a headless CI image), fall back to compiling the
+  # X11 source with the guard undefined -- it becomes an empty TU and the
+  # selector resolves ballum_backend_default() to the 'unavailable' fallback, so
+  # the VM still links and Ballum reports BACKEND_UNAVAILABLE at runtime.
+  BALLUM_BACKEND_SRC := $(BALLUM_DIR)/src/ballum_backend_x11.c
+  BALLUM_HAVE_X11 := $(shell printf '\#include <X11/extensions/Xrandr.h>\nint main(void){return 0;}\n' | $(CC) -xc - -o /dev/null 2>/dev/null && echo yes)
+  ifeq ($(BALLUM_HAVE_X11),yes)
+    BALLUM_BACKEND_DEF := -DBALLUM_BACKEND_X11
+    SLUI_LIBS += -lXrandr
+  else
+    BALLUM_BACKEND_DEF :=
+  endif
+endif
+BALLUM_OBJS := $(BALLUM_MANAGER_OBJ) $(BALLUM_SELECT_OBJ) $(BALLUM_UNAVAIL_OBJ) $(BALLUM_BACKEND_OBJ) $(BALLUM_VM_BRIDGE_OBJ)
+SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_NANOJPEG_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ) $(WIFI_OBJS) $(BALLUM_OBJS)
 # OpenMP is opt-in on macOS/Windows because Apple clang and some MinGW
 # distributions do not ship a compatible OpenMP runtime. Linux GCC enables it
 # by default; callers can override IDEA_CANVAS_OMP explicitly on any platform.
@@ -473,7 +508,7 @@ $(SLUI_NANOJPEG_OBJ): $(SLUI_DIR)/src/nanojpeg.c $(SLUI_DIR)/src/nanojpeg.h | $(
 $(SLUI_BACKEND_OBJ): $(SLUI_BACKEND_SRC) | $(BUILD)
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) $(SLUI_BACKEND_CFLAGS) -c $< -o $@
-$(SLUI_VM_OBJ): core/sleela_ui_vm.c core/sleela_ui_vm.h core/sleela_ui_ids.h core/wifi_vm_bridge.h $(SLUI_DIR)/include/sleela_ui.h | $(BUILD)
+$(SLUI_VM_OBJ): core/sleela_ui_vm.c core/sleela_ui_vm.h core/sleela_ui_ids.h core/wifi_vm_bridge.h core/ballum_vm_bridge.h $(SLUI_DIR)/include/sleela_ui.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_ui_vm.c -o $@
 
 $(WIFI_MANAGER_OBJ): $(WIFI_DIR)/src/wifi_manager.c $(WIFI_DIR)/include/sleela_wifi/wifi_manager.h | $(BUILD)
@@ -486,6 +521,23 @@ $(WIFI_BACKEND_OBJ): $(WIFI_BACKEND_SRC) $(WIFI_DIR)/include/sleela_wifi/wifi_ma
 else
 $(WIFI_BACKEND_OBJ): $(WIFI_BACKEND_SRC) $(WIFI_DIR)/include/sleela_wifi/wifi_manager.h | $(BUILD)
 	$(CC) $(CFLAGS) -I$(WIFI_DIR)/include -c $< -o $@
+endif
+# ---- Ballum: native manager, backend selector, fallback, per-OS backend, bridge
+BALLUM_INC := -I$(BALLUM_DIR)/include
+$(BALLUM_MANAGER_OBJ): $(BALLUM_DIR)/src/ballum_manager.c $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) -c $< -o $@
+$(BALLUM_SELECT_OBJ): $(BALLUM_DIR)/src/ballum_backend_select.c $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) $(BALLUM_BACKEND_DEF) -c $< -o $@
+$(BALLUM_UNAVAIL_OBJ): $(BALLUM_DIR)/src/ballum_backend_unavailable.c $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) -c $< -o $@
+$(BALLUM_VM_BRIDGE_OBJ): core/ballum_vm_bridge.c core/ballum_vm_bridge.h $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) -Icore -c $< -o $@
+ifeq ($(PLATFORM),macos)
+$(BALLUM_BACKEND_OBJ): $(BALLUM_BACKEND_SRC) $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(BALLUM_INC) $(BALLUM_BACKEND_DEF) -c $< -o $@
+else
+$(BALLUM_BACKEND_OBJ): $(BALLUM_BACKEND_SRC) $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) $(BALLUM_BACKEND_DEF) -c $< -o $@
 endif
 $(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_bestof.c -o $@

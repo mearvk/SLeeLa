@@ -19,6 +19,7 @@
 #include "sleela_ui_vm.h"
 #include "sleela_ui_ids.h"
 #include "wifi_vm_bridge.h"
+#include "ballum_vm_bridge.h"
 
 #include "../../user-interface/include/sleela_ui.h"
 
@@ -94,6 +95,8 @@ int sleela_ui_arity(int id) {
         /* 0 args */
         case SLUI_FN_BACKEND: case SLUI_FN_VERSION: case SLUI_FN_WIFI_OPEN_SETTINGS:
         case SLUI_FN_WIFI_SCAN: case SLUI_FN_WIFI_NETWORK_COUNT: case SLUI_FN_WIFI_DISCONNECT:
+        case SLUI_FN_BALLUM_SUPPORTED: case SLUI_FN_BALLUM_BACKEND_NAME:
+        case SLUI_FN_BALLUM_ENUMERATE: case SLUI_FN_BALLUM_DISPLAY_COUNT:
             return 0;
         /* 1 arg */
         case SLUI_FN_APP_CREATE: case SLUI_FN_APP_RUN: case SLUI_FN_APP_DESTROY:
@@ -111,6 +114,10 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_WIFI_NETWORK_SIGNAL: case SLUI_FN_WIFI_NETWORK_SECURITY:
         case SLUI_FN_WIFI_STATUS_NAME:
         case SLUI_FN_WINDOW_BUFFERING:
+        case SLUI_FN_BALLUM_DISPLAY_ID: case SLUI_FN_BALLUM_DISPLAY_NAME:
+        case SLUI_FN_BALLUM_DISPLAY_WIDTH: case SLUI_FN_BALLUM_DISPLAY_HEIGHT:
+        case SLUI_FN_BALLUM_DISPLAY_PRIMARY: case SLUI_FN_BALLUM_DISPLAY_CAPS:
+        case SLUI_FN_BALLUM_STATUS_NAME:
             return 1;
         /* 2 args */
         case SLUI_FN_APP_PUMP: case SLUI_FN_APP_QUIT: case SLUI_FN_WINDOW_SET_TITLE:
@@ -134,6 +141,8 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_THEME_SET_FG_DIM: case SLUI_FN_THEME_SET_ACCENT:
         case SLUI_FN_THEME_SET_ACCENT_FG: case SLUI_FN_THEME_SET_DANGER:
         case SLUI_FN_THEME_SET_RADIUS: case SLUI_FN_THEME_SET_CONTROL_H:
+        case SLUI_FN_BALLUM_SET_BRIGHTNESS: case SLUI_FN_BALLUM_SET_WARMTH:
+        case SLUI_FN_BALLUM_SET_GAMMA:
             return 2;
         /* 3 args */
         case SLUI_FN_BOX: case SLUI_FN_GRID: case SLUI_FN_TOGGLE:
@@ -144,6 +153,7 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_SCROLLED_VIEW:
         case SLUI_FN_SCROLLED_SCROLL_TO: case SLUI_FN_SCROLLED_SCROLL_BY:
         case SLUI_FN_WIDGET_SET_ICON:
+        case SLUI_FN_BALLUM_GET_PIXEL:
             return 3;
         /* 4 args */
         case SLUI_FN_IMAGE: case SLUI_FN_RADIO_BUTTON: case SLUI_FN_SCROLL_BAR:
@@ -153,6 +163,9 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_WINDOW_CREATE: case SLUI_FN_SPIN_BUTTON:
         case SLUI_FN_WIDGET_SET_MARGIN:
             return 5;
+        /* 7 args */
+        case SLUI_FN_BALLUM_SET_PIXEL:
+            return 7;
         default: return 0;
     }
 }
@@ -277,6 +290,28 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_WIFI_CONNECT: return r_int(sleela_wifi_vm_connect((int)ai(a,n,0), as_(a,n,1)));
         case SLUI_FN_WIFI_DISCONNECT: return r_int(sleela_wifi_vm_disconnect());
         case SLUI_FN_WIFI_STATUS_NAME: return r_str(sleela_wifi_vm_status_name((int)ai(a,n,0)));
+
+        /* --- Ballum: pixel-level display control --- */
+        case SLUI_FN_BALLUM_SUPPORTED:       return r_int(sleela_ballum_vm_supported());
+        case SLUI_FN_BALLUM_BACKEND_NAME:    return r_str(sleela_ballum_vm_backend_name());
+        case SLUI_FN_BALLUM_ENUMERATE:       return r_int(sleela_ballum_vm_enumerate());
+        case SLUI_FN_BALLUM_DISPLAY_COUNT:   return r_int(sleela_ballum_vm_display_count());
+        case SLUI_FN_BALLUM_DISPLAY_ID:      return r_int(sleela_ballum_vm_display_id((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_DISPLAY_NAME:    return r_str(sleela_ballum_vm_display_name((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_DISPLAY_WIDTH:   return r_int(sleela_ballum_vm_display_width((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_DISPLAY_HEIGHT:  return r_int(sleela_ballum_vm_display_height((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_DISPLAY_PRIMARY: return r_int(sleela_ballum_vm_display_is_primary((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_DISPLAY_CAPS:    return r_int(sleela_ballum_vm_display_caps((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_SET_PIXEL:       return r_int(sleela_ballum_vm_set_pixel(
+                                                 (int)ai(a,n,0), (int)ai(a,n,1), (int)ai(a,n,2),
+                                                 (int)ai(a,n,3), (int)ai(a,n,4), (int)ai(a,n,5), (int)ai(a,n,6)));
+        case SLUI_FN_BALLUM_GET_PIXEL:       return r_int(sleela_ballum_vm_get_pixel(
+                                                 (int)ai(a,n,0), (int)ai(a,n,1), (int)ai(a,n,2)));
+        case SLUI_FN_BALLUM_SET_BRIGHTNESS:  return r_int(sleela_ballum_vm_set_brightness((int)ai(a,n,0), (int)ai(a,n,1)));
+        case SLUI_FN_BALLUM_SET_WARMTH:      return r_int(sleela_ballum_vm_set_warmth((int)ai(a,n,0), (int)ai(a,n,1)));
+        case SLUI_FN_BALLUM_SET_GAMMA:       return r_int(sleela_ballum_vm_set_gamma((int)ai(a,n,0), (int)ai(a,n,1)));
+        case SLUI_FN_BALLUM_STATUS_NAME:     return r_str(sleela_ballum_vm_status_name((int)ai(a,n,0)));
+
         case SLUI_FN_WIDGET_SET_TOGGLE:    slui_widget_set_toggle(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_VALUE:     slui_widget_set_value(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();
 

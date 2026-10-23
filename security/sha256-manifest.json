@@ -6,6 +6,38 @@
       "sha256": "4a1db07047989c32f866701a5b919781781d7fc1718bfacb0f5e009cbda204dc"
     },
     {
+      "path": "ballum/include/sleela_ballum/ballum_manager.h",
+      "sha256": "81f7678acaf1fb3d4e35bc38aa2affc7bc4b7679f00e9f4eca9bd54f86ab939b"
+    },
+    {
+      "path": "ballum/src/ballum_backend_macos.mm",
+      "sha256": "e22c4a7319be1e06a27d01860262e727e296d4fe6d749b3487f534ed4bdf47ca"
+    },
+    {
+      "path": "ballum/src/ballum_backend_select.c",
+      "sha256": "c1abd56540d38671e90b6aa7f69ff51cb34b38a795bcb7e5286117fdbb358b11"
+    },
+    {
+      "path": "ballum/src/ballum_backend_unavailable.c",
+      "sha256": "ad3ad375ed660e8d74f29339647612ed6c5ac9572771b956d3be13cf5541eb79"
+    },
+    {
+      "path": "ballum/src/ballum_backend_windows.c",
+      "sha256": "7ceea8409f82f3a02ed543d4548d047ae160199c292e4c30d13015671fe6866f"
+    },
+    {
+      "path": "ballum/src/ballum_backend_x11.c",
+      "sha256": "e7b674347b8f666ddba018e83cd7f55d65d841fa676741409489458eaf10ed7d"
+    },
+    {
+      "path": "ballum/src/ballum_manager.c",
+      "sha256": "e5f910f02ebdecac413a49201ea90d57fbd8b3f7cdeadd095030fd2fa2ab262f"
+    },
+    {
+      "path": "ballum/tests/test_ballum_manager.c",
+      "sha256": "3a559398c6297c1539f201aa65ce572e10c8a2db8b1e175edc2e559ad304cc48"
+    },
+    {
       "path": "bash/pixel_terminal.cpp",
       "sha256": "1f9f4da60bea309dd44a83e4828c60aae93b4acfb46ba609421ee557954f25d4"
     },
@@ -120,6 +152,14 @@
     {
       "path": "impl/catalog/sheet_catalog.h",
       "sha256": "686e224870c1e3f810fdb3539baa3385e3c36e3eb5c3402a806dbf8978e73de1"
+    },
+    {
+      "path": "impl/core/ballum_vm_bridge.c",
+      "sha256": "6518fc658b055e46e8ffb47251b3333e5f55a43eea387d3841c11081ad158eb9"
+    },
+    {
+      "path": "impl/core/ballum_vm_bridge.h",
+      "sha256": "29511d07b34a2b6e70663b45e63c2e3b3c33698b5b9f7e1893ebe9a2683bbb3b"
     },
     {
       "path": "impl/core/bestof_smoke.c",
@@ -383,11 +423,11 @@
     },
     {
       "path": "impl/core/sleela_ui_ids.h",
-      "sha256": "53111be1cd2e17392b58f136be551991bbdf035d14f10b39228d91ce2229f5b3"
+      "sha256": "4243a5e3f2d0c42a23096b79f6f45d6d77687f689ff1d3724ae3974a78c9416e"
     },
     {
       "path": "impl/core/sleela_ui_vm.c",
-      "sha256": "769104d33ab847433ed9786c1b7c9791af51e231730ed5a4f15f7fd60732e86d"
+      "sha256": "25819389442d7bc5b0ad76be9997baa9c8bf48b7ab171b1d8cbb00fbbee2efde"
     },
     {
       "path": "impl/core/sleela_ui_vm.h",
@@ -447,7 +487,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "dee82bcb1c878fc95d439fcfc419ae87fd95b08544e799f40fe26abf423b658c"
+      "sha256": "d406e89210163bb7d99402ca3f107cef2173b551cae73af6f2b04bcbd37fff0a"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -987,7 +1027,7 @@
     },
     {
       "path": "lib/ballum/SLBallumManager.sleela",
-      "sha256": "1e25b3559347d19ab7a213eada794792bf585d1b0afad011aab433a5165b02e6"
+      "sha256": "00ee83e3abf1abc75655408c9811ba4ff50bf6da3d5b24ed8de2f9f77e5290b1"
     },
     {
       "path": "lib/ballum/SLBallumStatus.sleela",
@@ -996,6 +1036,10 @@
     {
       "path": "lib/ballum/SLPackage.sleela",
       "sha256": "b977dfcad96c21171253640ae927ed50637a11b292946889d16f991bf85e5968"
+    },
+    {
+      "path": "lib/ballum/ballum-live.sleela",
+      "sha256": "2dedd18021902f43bb7495eb97cba74efeebccb50a7c8760dc88763202e62d6d"
     },
     {
       "path": "lib/ballum/ballum.sleela",
