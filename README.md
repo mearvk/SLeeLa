@@ -118,68 +118,15 @@ SLeeLa includes a coordinated set of professional dark color schemes for **Vim**
 
 ### Color swatch table
 
-This visual table renders each color as a solid swatch—there are no hexadecimal labels inside the color cells. It follows the same scheme order as the reference table above. The table uses rounded outer corners where the Markdown renderer supports inline table styling.
+The palette cells below use **embedded SVG swatches**, so GitHub's HTML sanitizer cannot turn the colors into empty cells. Each strip renders the actual six colors—background, foreground, keywords, types, strings, and comments—in the same scheme order as the reference table above. The swatches themselves have rounded corners; the hex codes remain in the reference table above.
 
-<table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:12px;border:1px solid #394553;width:100%;">
-  <thead>
-    <tr>
-      <th align="left" style="padding:10px;">Scheme</th>
-      <th align="center" style="padding:10px;">Background</th>
-      <th align="center" style="padding:10px;">Foreground</th>
-      <th align="center" style="padding:10px;">Keywords</th>
-      <th align="center" style="padding:10px;">Types</th>
-      <th align="center" style="padding:10px;">Strings</th>
-      <th align="center" style="padding:10px;">Comments</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th align="left" style="padding:10px;">American Professional</th>
-      <td bgcolor="#101820" width="90" height="38" aria-label="Background color #101820">&nbsp;</td>
-      <td bgcolor="#F4F7FA" width="90" height="38" aria-label="Foreground color #F4F7FA">&nbsp;</td>
-      <td bgcolor="#7FB3FF" width="90" height="38" aria-label="Keyword color #7FB3FF">&nbsp;</td>
-      <td bgcolor="#73DACA" width="90" height="38" aria-label="Type color #73DACA">&nbsp;</td>
-      <td bgcolor="#F2C078" width="90" height="38" aria-label="String color #F2C078">&nbsp;</td>
-      <td bgcolor="#8A96A3" width="90" height="38" aria-label="Comment color #8A96A3">&nbsp;</td>
-    </tr>
-    <tr>
-      <th align="left" style="padding:10px;">Pan-Eurasian</th>
-      <td bgcolor="#111827" width="90" height="38" aria-label="Background color #111827">&nbsp;</td>
-      <td bgcolor="#F0F2F5" width="90" height="38" aria-label="Foreground color #F0F2F5">&nbsp;</td>
-      <td bgcolor="#7AA7E8" width="90" height="38" aria-label="Keyword color #7AA7E8">&nbsp;</td>
-      <td bgcolor="#69C9B3" width="90" height="38" aria-label="Type color #69C9B3">&nbsp;</td>
-      <td bgcolor="#D7B56D" width="90" height="38" aria-label="String color #D7B56D">&nbsp;</td>
-      <td bgcolor="#8995A5" width="90" height="38" aria-label="Comment color #8995A5">&nbsp;</td>
-    </tr>
-    <tr>
-      <th align="left" style="padding:10px;">Russian and Slavic — Medium</th>
-      <td bgcolor="#202733" width="90" height="38" aria-label="Background color #202733">&nbsp;</td>
-      <td bgcolor="#E8EAF0" width="90" height="38" aria-label="Foreground color #E8EAF0">&nbsp;</td>
-      <td bgcolor="#A9C0DD" width="90" height="38" aria-label="Keyword color #A9C0DD">&nbsp;</td>
-      <td bgcolor="#8FC4B2" width="90" height="38" aria-label="Type color #8FC4B2">&nbsp;</td>
-      <td bgcolor="#D6BD8B" width="90" height="38" aria-label="String color #D6BD8B">&nbsp;</td>
-      <td bgcolor="#9AA3AF" width="90" height="38" aria-label="Comment color #9AA3AF">&nbsp;</td>
-    </tr>
-    <tr>
-      <th align="left" style="padding:10px;">Central Asian / Silk Road</th>
-      <td bgcolor="#1C2529" width="90" height="38" aria-label="Background color #1C2529">&nbsp;</td>
-      <td bgcolor="#F5F0E5" width="90" height="38" aria-label="Foreground color #F5F0E5">&nbsp;</td>
-      <td bgcolor="#7FADE0" width="90" height="38" aria-label="Keyword color #7FADE0">&nbsp;</td>
-      <td bgcolor="#45C6C2" width="90" height="38" aria-label="Type color #45C6C2">&nbsp;</td>
-      <td bgcolor="#D9B56D" width="90" height="38" aria-label="String color #D9B56D">&nbsp;</td>
-      <td bgcolor="#92A3A0" width="90" height="38" aria-label="Comment color #92A3A0">&nbsp;</td>
-    </tr>
-    <tr>
-      <th align="left" style="padding:10px;">East Asian</th>
-      <td bgcolor="#171A1C" width="90" height="38" aria-label="Background color #171A1C">&nbsp;</td>
-      <td bgcolor="#F2EFE7" width="90" height="38" aria-label="Foreground color #F2EFE7">&nbsp;</td>
-      <td bgcolor="#D97878" width="90" height="38" aria-label="Keyword color #D97878">&nbsp;</td>
-      <td bgcolor="#72C7A5" width="90" height="38" aria-label="Type color #72C7A5">&nbsp;</td>
-      <td bgcolor="#D8B76A" width="90" height="38" aria-label="String color #D8B76A">&nbsp;</td>
-      <td bgcolor="#969F9B" width="90" height="38" aria-label="Comment color #969F9B">&nbsp;</td>
-    </tr>
-  </tbody>
-</table>
+| Scheme | Rendered palette colors |
+|---|---|
+| **American Professional** | ![American Professional palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/american-professional.svg) |
+| **Pan-Eurasian** | ![Pan-Eurasian palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/pan-eurasian.svg) |
+| **Russian and Slavic — Medium** | ![Russian and Slavic Medium palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/russian-slavic-medium.svg) |
+| **Central Asian / Silk Road** | ![Central Asian Silk Road palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/central-asian-silk-road.svg) |
+| **East Asian** | ![East Asian palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/east-asian.svg) |
 
 Additional accent colors are used for functions, constants, selections, diagnostics, and preprocessor directives. The Russian and Slavic palette intentionally uses medium-intensity slate, blue, sage, ruby, and antique gold for a calmer professional appearance.
 
