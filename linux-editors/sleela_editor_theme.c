@@ -54,10 +54,10 @@ static const ThemeEntry themes[] = {
  ENTRY("american", american), ENTRY("eurasia", eurasia), ENTRY("russian-slavic", russian_slavic),
  ENTRY("silk-road", silk_road), ENTRY("east-asian", east_asian)
 };
-const char *sleela_theme_names(unsigned int *count) {
+const char *const *sleela_theme_names(unsigned int *count) {
  static const char *names[] = {"american", "eurasia", "russian-slavic", "silk-road", "east-asian"};
  if (count) *count = (unsigned int)(sizeof names / sizeof names[0]);
- return names[0];
+ return names;
 }
 const SleelaThemeColor *sleela_theme_palette_for(const char *theme, unsigned int *count) {
  unsigned int i;
