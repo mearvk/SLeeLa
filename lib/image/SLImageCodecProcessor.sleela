@@ -1,0 +1,52 @@
+/*
+ * lib/image/SLImageCodecProcessor.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLImageCodecProcessor used within the image library family.
+ */
+#sleela 2.1
+// Family: image. The decode/encode dispatch layer -- the SLeeLa mirror of the
+// audio/video manager processor path and each plugin's decode/encode entry
+// points. It dispatches a decode/encode request against the current
+// lifecycle/capability facts and returns an honest result code.
+//
+// This is a contract, not a fake processor: the real raster conversion happens
+// in the native plugin (native image codecs) or in a registered backend
+// adapter (backend codecs). The Processor is pure -- the caller passes in
+// whether the codec is loaded, whether it is native, and whether a backend is
+// registered -- so it composes with SLImageCodecController/SLImageCodecLoader
+// without storing a class-typed field. It never reports a false success:
+//
+//   not loaded                 -> -5 (state)
+//   native codec, loaded       ->  0 (ok)      PPM/PNM, BMP, TGA, HDR, PCX
+//   backend codec, no backend  -> -1 (unsupported)
+//
+// Result codes: 0 ok, -1 unsupported, -2 invalid, -3 format, -4 io,
+// -5 state(not loaded).
+class SLImageCodecProcessor {
+
+  // canProcess: can this codec encode/decode right now, given the facts?
+  // True for a loaded native codec, or a loaded backend codec with a backend
+  // registered -- what a GUI checks before enabling a convert action.
+  boolean canProcess(boolean loaded, boolean nativeCodec, boolean backendReady) {
+    if (!loaded) { return false; }
+    if (nativeCodec) { return true; }
+    return backendReady;
+  }
+
+  // decode: dispatch a decode against the given facts. Returns a result code:
+  //   -5 not loaded, 0 ok (native or backend ready), -1 backend absent.
+  int decode(boolean loaded, boolean nativeCodec, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeCodec) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+
+  // encode: same result-code contract as decode.
+  int encode(boolean loaded, boolean nativeCodec, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeCodec) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+}

@@ -1,0 +1,67 @@
+/*
+ * lib/image/SLImageCodecSvg.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: SVG codec class -- the SLeeLa-facing handle to image codec id 13.
+ */
+#sleela 2.1
+// Family: image. Individual codec class for SVG (Scalable Vector Graphics), an
+// XML-based vector format (optionally gzip-compressed as .svgz). It is
+// recognized and classified here, but rasterizing SVG requires a full XML +
+// vector rendering backend; there is no pixel buffer to decode in-package.
+// State 2 == recognized: the surface identifies and reports SVG honestly and
+// defers actual rasterization to a registered backend. SLeeLa never calls a
+// codec directly -- the SLImageCodecLoader loads this plugin by id.
+//
+// Handler state codes: 0 native, 1 backend, 2 recognized, 3 container, 4 event.
+class SLImageCodecSvg {
+  int id() { return 13; }
+  String name() { return "SVG"; }
+  String mime() { return "image/svg+xml"; }
+  String extensions() { return ".svg .svgz"; }
+
+  // Capability state: 2 == recognized (classified, rasterized by a backend).
+  int state() { return 2; }
+  String stateName() { return "recognized"; }
+
+  boolean canDecode() { return true; }
+  // Encoding raster -> SVG (vectorization) is not a general operation here.
+  boolean canEncode() { return false; }
+
+  boolean isNative() { return false; }
+  boolean needsBackend() { return true; }
+
+  String metaVersion = "1.0.0";
+  int metaId = 13;
+  String metaAuthor = "W3C SVG Working Group";
+  String metaDate = "2026-09-28";
+  String metaCopyright = "Open (W3C Recommendation)";
+  String metaTrademark = "none";
+  String metaCorporation = "World Wide Web Consortium (W3C)";
+  String metaOrigin = "International";
+  String metaBirthDate = "2001";
+  int metaScienceRating = 9;
+  String metaNationalSchedule = "W3C SVG 1.1 / SVG 2";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

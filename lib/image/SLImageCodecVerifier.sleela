@@ -1,0 +1,105 @@
+/*
+ * lib/image/SLImageCodecVerifier.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLImageCodecVerifier used within the image library family.
+ */
+#sleela 2.1
+// Family: image. The verification layer for image codecs -- the SLeeLa mirror
+// of the audio/video manager resolve/probe path and each plugin's probe()
+// contract. A GUI or app uses the Verifier to answer "which image codec is
+// this?" and "is this input actually that codec's format?" before asking the
+// Controller to decode.
+//
+// Verification has three layers, matching the audio/video design:
+//   1. resolveExtension(ext)  -- filename extension -> codec id
+//   2. probeMagic(tag)        -- a leading content signature -> codec id
+//   3. result codes           -- honest status, never a false success
+//
+// Result codes: 0 ok, -1 unsupported, -2 invalid, -3 format, -4 io,
+// -5 state(not loaded).
+class SLImageCodecVerifier {
+
+  // ---- extension resolution -------------------------------------------
+  // Returns the codec id for a known extension, or -1 if unrecognized.
+  // Extensions are taken verbatim from each codec's registry metadata.
+  int resolveExtension(String ext) {
+    if (ext == ".ppm" || ext == ".pgm" || ext == ".pbm" || ext == ".pnm" || ext == ".pam") { return 0; }
+    if (ext == ".bmp" || ext == ".dib") { return 1; }
+    if (ext == ".tga" || ext == ".icb" || ext == ".vda" || ext == ".vst") { return 2; }
+    if (ext == ".png" || ext == ".apng") { return 3; }
+    if (ext == ".jpg" || ext == ".jpeg" || ext == ".jpe" || ext == ".jfif") { return 4; }
+    if (ext == ".gif") { return 5; }
+    if (ext == ".tif" || ext == ".tiff") { return 6; }
+    if (ext == ".webp") { return 7; }
+    if (ext == ".heif" || ext == ".heic" || ext == ".hif") { return 8; }
+    if (ext == ".avif") { return 9; }
+    if (ext == ".jxl") { return 10; }
+    if (ext == ".jp2" || ext == ".j2k" || ext == ".jpf" || ext == ".jpx") { return 11; }
+    if (ext == ".ico" || ext == ".cur") { return 12; }
+    if (ext == ".svg" || ext == ".svgz") { return 13; }
+    if (ext == ".dds") { return 14; }
+    if (ext == ".exr") { return 15; }
+    if (ext == ".hdr" || ext == ".pic") { return 16; }
+    if (ext == ".pcx") { return 17; }
+    if (ext == ".xpm") { return 18; }
+    if (ext == ".icns") { return 19; }
+    return -1;
+  }
+
+  // ---- content-signature probe (mirrors each plugin's probe()) --------
+  // Given a short leading-byte signature tag (as text), return the codec id
+  // that claims it, or -1. The actual byte comparison lives in the native
+  // plugin / backend; here the Verifier encodes which magic belongs to which
+  // codec so a GUI can pre-classify. Hex tags are the leading bytes as
+  // uppercase hex; ASCII tags are the literal leading characters.
+  int probeMagic(String tag) {
+    if (tag == "P1" || tag == "P2" || tag == "P3" || tag == "P4" || tag == "P5" || tag == "P6" || tag == "P7") { return 0; } // Netpbm
+    if (tag == "BM") { return 1; }                 // BMP
+    if (tag == "89504E47") { return 3; }           // PNG \x89PNG
+    if (tag == "FFD8FF") { return 4; }             // JPEG SOI + marker
+    if (tag == "GIF87a" || tag == "GIF89a") { return 5; } // GIF
+    if (tag == "49492A00" || tag == "4D4D002A") { return 6; } // TIFF (II*. / MM.*)
+    if (tag == "RIFF") { return 7; }               // RIFF....WEBP (WebP); disambiguated by the WEBP fourCC
+    if (tag == "ftypheic" || tag == "ftypheix" || tag == "ftyphevc" || tag == "ftypmif1") { return 8; } // HEIF brands
+    if (tag == "ftypavif" || tag == "ftypavis") { return 9; } // AVIF brands
+    if (tag == "FF0A" || tag == "0000000C4A584C20") { return 10; } // JPEG XL codestream / ISOBMFF
+    if (tag == "0000000C6A502020" || tag == "FF4FFF51") { return 11; } // JP2 signature / J2K codestream
+    if (tag == "00000100" || tag == "00000200") { return 12; } // ICO / CUR
+    if (tag == "<?xml" || tag == "<svg") { return 13; } // SVG (XML or root element)
+    if (tag == "DDS ") { return 14; }              // DDS
+    if (tag == "762F3101") { return 15; }          // OpenEXR magic 0x76 0x2f 0x31 0x01
+    if (tag == "#?RADIANCE" || tag == "#?RGBE") { return 16; } // Radiance HDR
+    if (tag == "0A") { return 17; }                // PCX (ZSoft, first byte 0x0A)
+    if (tag == "/* XPM */") { return 18; }         // XPM C-source header
+    if (tag == "icns") { return 19; }              // ICNS
+    return -1;
+  }
+
+  // headerless(id): true for codecs that cannot be confirmed by a leading
+  // content signature alone (PCX's single 0x0A byte and XPM's plain-text
+  // header are weak), where the caller should corroborate with the extension
+  // or structure. The format is still decodable; the probe is just not
+  // sufficient on its own.
+  boolean headerless(int id) { return id == 17 || id == 18; }
+
+  // ---- loadability / lifecycle verification ---------------------------
+  // verifyLoadable(id): 0 if the id is a real codec that can be loaded,
+  // else -2 (invalid).
+  int verifyLoadable(int id) {
+    if (id >= 0 && id < 20) { return 0; }
+    return -2;
+  }
+
+  // ---- result-code text -----------------------------------------------
+  String resultText(int code) {
+    if (code == 0) { return "ok"; }
+    if (code == -1) { return "unsupported (backend not present)"; }
+    if (code == -2) { return "invalid arguments"; }
+    if (code == -3) { return "input is not this codec's format"; }
+    if (code == -4) { return "I/O or allocation failure"; }
+    if (code == -5) { return "codec not loaded"; }
+    return "unknown";
+  }
+
+  boolean ok(int code) { return code == 0; }
+}
