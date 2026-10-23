@@ -18,6 +18,36 @@
 - [Merchandise concepts and assets](merchandise/README.md)
 - [Testing policy and release gates](markdown/TESTING.md)
 
+## News
+
+Recent additions to the language, drivers, and standard library:
+
+- **Angle-bracket comments (`<` / `<<`).** A new go-forward comment style —
+  `< line >` and `<< block >>` — lexed by the SLeeLa frontend and documented in
+  [`SLEELA.syntax`](SLEELA.syntax) §1.1.
+- **Radix integer literals.** `int` literals now accept hexadecimal (`0x`),
+  binary (`0b`), and octal (`0o`) forms with `_` digit separators, in both the
+  SLeeLa source language ([`SLEELA.syntax`](SLEELA.syntax) §1.4) and the
+  [`.xlt` CPU-model format](lib/xlt/README.md).
+- **The Metadata Class standard across the library.** The descriptive-metadata
+  metapattern (provenance, legality, jurisdictional scope) is now carried by
+  every class-bearing `.sleela` file under `/lib`; see
+  [`SLEELA.syntax`](SLEELA.syntax) §15 and
+  [the tutorial lesson](tutorial/13-metadata-class.md).
+- **A richer text / String family.** `lib/text` gains real in-language helpers,
+  a char-cell view giving genuine `charAt`/`substring`/`indexOf`/`reverse`/
+  column-alignment, and a real positional templater — see the
+  [text & String tutorial](tutorial/14-text-and-strings.md) and the runnable
+  [`lib/text/text-string-demo.sleela`](lib/text/text-string-demo.sleela).
+- **First-class `String` in Nordshrift sheets.** A `.sst` sheet can declare a
+  typed `strings:` block that contributes to the build's component manifest;
+  see the [Nordshrift Sheet Reference](wiki/Nordshrift-Sheet-Reference.md).
+- **CPU models run by both opcodes and function-call equivalence.** Every
+  `SL<ARCH>CPU` inherits the basis of running a native instruction stream
+  through its fetch-decode-execute loop *and* running the code of an assumed
+  other process by equivalent calls on the shared VM substrate — see
+  [`lib/cpu/EXECUTION.md`](lib/cpu/EXECUTION.md) §5.
+
 ## Build and test
 From a clean checkout:
 
