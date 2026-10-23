@@ -7,7 +7,7 @@
 
 **The Now. The Ingredient.** A language is more than syntax: it is the compiler, runtime, libraries, tools, and platform contracts that make software usable.
 
-## Start here
+## Start Here
 - [Build the native implementation](impl/README.md)
 - [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
@@ -17,7 +17,7 @@
 - [Merchandise concepts and assets](merchandise/README.md)
 - [Testing policy and release gates](markdown/TESTING.md)
 
-## Build and test
+## Build and Test
 From a clean checkout:
 
 ```sh
@@ -62,19 +62,19 @@ removes only files recorded by the installer, preserving configuration and
 untracked runtime data. For the interactive deployment workflow and all
 installation options, see [Quick and Safe Install](install/README.md).
 
-## Language and runtime
+## Language and Runtime
 The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **1.10**; compiler/tool version and source syntax version are distinct. Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
 
 The repository includes a native C/C++ implementation, SLVM generation references, standard-library modules, tests, examples, and platform integrations. Implementation and validation status varies by module; consult its specification and current CI results rather than assuming uniform completeness.
 
-## Engineering principles
+## Engineering Principles
 - **Evidence over claims:** distinguish implemented, tested, experimental, and planned behavior.
 - **One contract per boundary:** document syntax, APIs, file formats, platform assumptions, and failure behavior.
 - **Portable by design:** isolate platform-specific backends and test on native runners.
 - **Safe failure:** test malformed input, resource limits, process failures, and cleanup paths.
 - **Reproducible releases:** rebuild cleanly and publish artifact hashes and release notes.
 
-## Antivirus build and integrity
+## Antivirus Build and Integrity
 
 The Sleelavirin antivirus package includes a native SHA-256 scanner, an optional
 ClamAV adapter, source/index integrity manifests, and platform-package checksums.
@@ -101,11 +101,11 @@ A release is not considered verified until the relevant CI jobs pass on the
 exact release commit and the resulting artifacts have been checked.
 
 
-## SLeeLa editor themes — Vim and Emacs
+## SLeeLa Editor Themes — Vim and Emacs
 
 SLeeLa includes a coordinated set of professional dark color schemes for **Vim** and **Emacs**, plus a native C/C++ palette utility. The original **American Professional** scheme remains the default. Four companion palettes are available for different cultural design inspirations; these are interpretive design palettes, not official representations of any nation or culture.
 
-### The five schemes and their colors
+### The Five Schemes and Their Colors
 
 | Scheme | Background | Foreground | Keywords | Types | Strings | Comments |
 |---|---|---|---|---|---|---|
@@ -116,7 +116,7 @@ SLeeLa includes a coordinated set of professional dark color schemes for **Vim**
 | **East Asian** | <span style="display:inline-block;width:1em;height:1em;background:#171A1C;border:1px solid #888"></span> `#171A1C` | <span style="display:inline-block;width:1em;height:1em;background:#F2EFE7;border:1px solid #888"></span> `#F2EFE7` | <span style="display:inline-block;width:1em;height:1em;background:#D97878;border:1px solid #888"></span> `#D97878` | <span style="display:inline-block;width:1em;height:1em;background:#72C7A5;border:1px solid #888"></span> `#72C7A5` | <span style="display:inline-block;width:1em;height:1em;background:#D8B76A;border:1px solid #888"></span> `#D8B76A` | <span style="display:inline-block;width:1em;height:1em;background:#969F9B;border:1px solid #888"></span> `#969F9B` |
 
 
-### Color swatch table
+### Color Swatch Table
 
 The palette cells below use **embedded SVG swatches**, so GitHub's HTML sanitizer cannot turn the colors into empty cells. Each strip renders the actual six colors—background, foreground, keywords, types, strings, and comments—in the same scheme order as the reference table above. The swatches themselves have rounded corners; the hex codes remain in the reference table above.
 
@@ -130,7 +130,7 @@ The palette cells below use **embedded SVG swatches**, so GitHub's HTML sanitize
 
 Additional accent colors are used for functions, constants, selections, diagnostics, and preprocessor directives. The Russian and Slavic palette intentionally uses medium-intensity slate, blue, sage, ruby, and antique gold for a calmer professional appearance.
 
-### Install the Vim schemes
+### Install the Vim Schemes
 
 From the repository root:
 
@@ -159,7 +159,7 @@ Choose exactly one of these colorscheme names:
 
 For example, use `colorscheme sleela-russian-slavic` for the medium Russian and Slavic palette. Restart Vim or source your configuration with `:source $MYVIMRC`.
 
-### Install the Emacs schemes
+### Install the Emacs Schemes
 
 Create a local theme directory and copy the mode and theme files from the repository root:
 
@@ -180,7 +180,7 @@ Add this to `~/.emacs` or `~/.emacs.d/init.el`:
 
 Replace `sleela-american` with `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, or `sleela-east-asian` to select another scheme. If Emacs asks whether to trust the theme, inspect the local theme file before accepting it.
 
-### Preview the native C/C++ palettes
+### Preview the Native C/C++ Palettes
 
 The small native palette utility can list schemes, print their terminal colors, and look up an individual color:
 
@@ -211,7 +211,7 @@ For the AE6E66 initiative, the project's stated expectation is **$300,000,000.00
 This statement records a project expectation only. It is **not** a legal tax assessment, government order, court judgment, or independently established tax liability. Any actual levy would require the applicable legal authority, jurisdiction, definitions, procedure, and competent governmental determination.
 
 
-## Alphabet and character-set runtime
+## Alphabet and Character-set Runtime
 
 SLeeLa's alphabet documentation and native character runtime are maintained in alphabet/sleela/ and lib/alphabet/native/. The native C++17 tests cover strict UTF-8 scalar decoding/encoding, C<n> capacity signatures, and bounded character-set membership:
 
@@ -252,12 +252,12 @@ On a display this opens the live editing window; on a headless host it builds th
 drawing in memory, prints a report plus the DXF, and exits cleanly.
 
 
-## UTF-4088 input-map ordering
+## UTF-4088 Input-map Ordering
 
 The specialized UTF-4088 catalogue defines its spatial input-map traversal and abstract pressure iterations in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). The National Lien subject-index policy is in [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). Map coordinates, pressure levels (1–50), permanent catalogue IDs, and alphabetic ranks are independent fields; none should be silently substituted for another. Pressure is an algorithmic iteration level, not a physical quantity.
 
 
-## Recent and expanded package index
+## Recent and Expanded Package Index
 
 This appended index highlights recently expanded packages, domain libraries, and
 source collections. Entries are grouped alphabetically by package name or topic.
@@ -308,7 +308,7 @@ status should be checked in each package's own documentation and tests.
   `wi-fi-6/`, and related `lib/wifi/` source directories: generation-specific
   wireless networking material and configuration resources.
 
-### Package-index maintenance
+### Package-index Maintenance
 
 When a package is added or materially expanded, add its entry here in the
 appropriate alphabetical group, link to its canonical directory and README,
