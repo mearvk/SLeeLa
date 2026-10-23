@@ -35,6 +35,7 @@ appears in shipping `.sleela` sources and `.sst` sheets.
 | 11 | [HTTP 3.0 & HTTP colors](11-http3-and-colors.md) | Packet integrity and naming HTTP colors from source |
 | 12 | [Putting it together](12-capstone.md) | A small end-to-end module, built and ledgered |
 | 13 | [The Metadata Class standard](13-metadata-class.md) | The metapattern: provenance, legality, and probation of intent |
+| 14 | [The text & String family](14-text-and-strings.md) | The `lib/text` String surface: in-language ops, the char-cell view, and honest bridge descriptors |
 
 ## Prerequisites
 
