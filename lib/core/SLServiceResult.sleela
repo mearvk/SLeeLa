@@ -20,12 +20,18 @@ class SLServiceResult {
   < ---- the canonical result codes (0 ok; negatives are failures) ------ >
   < A service method returns one of these ints; a caller compares against the >
   < named constants rather than magic numbers, and renders with text(). >
-  static final int OK          =  0;   < success >
-  static final int UNSUPPORTED = -1;   < capability/backend not present >
-  static final int INVALID     = -2;   < invalid arguments (e.g. bad id) >
-  static final int FORMAT      = -3;   < input is not this service's format >
-  static final int IO          = -4;   < I/O or allocation failure >
-  static final int STATE       = -5;   < wrong state (e.g. not loaded) >
+  < OK: success >
+  static final int OK          =  0;
+  < UNSUPPORTED: capability/backend not present >
+  static final int UNSUPPORTED = -1;
+  < INVALID: invalid arguments, e.g. a bad id >
+  static final int INVALID     = -2;
+  < FORMAT: input is not this service format >
+  static final int FORMAT      = -3;
+  < IO: an I/O or allocation failure >
+  static final int IO          = -4;
+  < STATE: wrong state, e.g. not loaded >
+  static final int STATE       = -5;
 
   int ok()          { return 0; }
   int unsupported() { return -1; }
