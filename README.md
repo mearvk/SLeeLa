@@ -118,65 +118,65 @@ SLeeLa includes a coordinated set of professional dark color schemes for **Vim**
 
 ### Color swatch table
 
-The second table shows the actual palette colors as filled swatches, in the same scheme order as the reference table above. Rounded outer corners keep the palette easy to scan.
+This visual table renders each color as a solid swatch—there are no hexadecimal labels inside the color cells. It follows the same scheme order as the reference table above. The table uses rounded outer corners where the Markdown renderer supports inline table styling.
 
-<table style="border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:12px;border:1px solid #394553;width:100%;">
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:12px;border:1px solid #394553;width:100%;">
   <thead>
     <tr>
       <th align="left" style="padding:10px;">Scheme</th>
-      <th align="left" style="padding:10px;">Background</th>
-      <th align="left" style="padding:10px;">Foreground</th>
-      <th align="left" style="padding:10px;">Keywords</th>
-      <th align="left" style="padding:10px;">Types</th>
-      <th align="left" style="padding:10px;">Strings</th>
-      <th align="left" style="padding:10px;">Comments</th>
+      <th align="center" style="padding:10px;">Background</th>
+      <th align="center" style="padding:10px;">Foreground</th>
+      <th align="center" style="padding:10px;">Keywords</th>
+      <th align="center" style="padding:10px;">Types</th>
+      <th align="center" style="padding:10px;">Strings</th>
+      <th align="center" style="padding:10px;">Comments</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th align="left" style="padding:10px;">American Professional</th>
-      <td bgcolor="#101820" style="padding:10px;color:#F4F7FA;">#101820</td>
-      <td bgcolor="#F4F7FA" style="padding:10px;color:#101820;">#F4F7FA</td>
-      <td bgcolor="#7FB3FF" style="padding:10px;color:#101820;">#7FB3FF</td>
-      <td bgcolor="#73DACA" style="padding:10px;color:#101820;">#73DACA</td>
-      <td bgcolor="#F2C078" style="padding:10px;color:#101820;">#F2C078</td>
-      <td bgcolor="#8A96A3" style="padding:10px;color:#101820;">#8A96A3</td>
+      <td bgcolor="#101820" width="90" height="38" aria-label="Background color #101820">&nbsp;</td>
+      <td bgcolor="#F4F7FA" width="90" height="38" aria-label="Foreground color #F4F7FA">&nbsp;</td>
+      <td bgcolor="#7FB3FF" width="90" height="38" aria-label="Keyword color #7FB3FF">&nbsp;</td>
+      <td bgcolor="#73DACA" width="90" height="38" aria-label="Type color #73DACA">&nbsp;</td>
+      <td bgcolor="#F2C078" width="90" height="38" aria-label="String color #F2C078">&nbsp;</td>
+      <td bgcolor="#8A96A3" width="90" height="38" aria-label="Comment color #8A96A3">&nbsp;</td>
     </tr>
     <tr>
       <th align="left" style="padding:10px;">Pan-Eurasian</th>
-      <td bgcolor="#111827" style="padding:10px;color:#F0F2F5;">#111827</td>
-      <td bgcolor="#F0F2F5" style="padding:10px;color:#111827;">#F0F2F5</td>
-      <td bgcolor="#7AA7E8" style="padding:10px;color:#111827;">#7AA7E8</td>
-      <td bgcolor="#69C9B3" style="padding:10px;color:#111827;">#69C9B3</td>
-      <td bgcolor="#D7B56D" style="padding:10px;color:#111827;">#D7B56D</td>
-      <td bgcolor="#8995A5" style="padding:10px;color:#111827;">#8995A5</td>
+      <td bgcolor="#111827" width="90" height="38" aria-label="Background color #111827">&nbsp;</td>
+      <td bgcolor="#F0F2F5" width="90" height="38" aria-label="Foreground color #F0F2F5">&nbsp;</td>
+      <td bgcolor="#7AA7E8" width="90" height="38" aria-label="Keyword color #7AA7E8">&nbsp;</td>
+      <td bgcolor="#69C9B3" width="90" height="38" aria-label="Type color #69C9B3">&nbsp;</td>
+      <td bgcolor="#D7B56D" width="90" height="38" aria-label="String color #D7B56D">&nbsp;</td>
+      <td bgcolor="#8995A5" width="90" height="38" aria-label="Comment color #8995A5">&nbsp;</td>
     </tr>
     <tr>
       <th align="left" style="padding:10px;">Russian and Slavic — Medium</th>
-      <td bgcolor="#202733" style="padding:10px;color:#E8EAF0;">#202733</td>
-      <td bgcolor="#E8EAF0" style="padding:10px;color:#202733;">#E8EAF0</td>
-      <td bgcolor="#A9C0DD" style="padding:10px;color:#202733;">#A9C0DD</td>
-      <td bgcolor="#8FC4B2" style="padding:10px;color:#202733;">#8FC4B2</td>
-      <td bgcolor="#D6BD8B" style="padding:10px;color:#202733;">#D6BD8B</td>
-      <td bgcolor="#9AA3AF" style="padding:10px;color:#202733;">#9AA3AF</td>
+      <td bgcolor="#202733" width="90" height="38" aria-label="Background color #202733">&nbsp;</td>
+      <td bgcolor="#E8EAF0" width="90" height="38" aria-label="Foreground color #E8EAF0">&nbsp;</td>
+      <td bgcolor="#A9C0DD" width="90" height="38" aria-label="Keyword color #A9C0DD">&nbsp;</td>
+      <td bgcolor="#8FC4B2" width="90" height="38" aria-label="Type color #8FC4B2">&nbsp;</td>
+      <td bgcolor="#D6BD8B" width="90" height="38" aria-label="String color #D6BD8B">&nbsp;</td>
+      <td bgcolor="#9AA3AF" width="90" height="38" aria-label="Comment color #9AA3AF">&nbsp;</td>
     </tr>
     <tr>
       <th align="left" style="padding:10px;">Central Asian / Silk Road</th>
-      <td bgcolor="#1C2529" style="padding:10px;color:#F5F0E5;">#1C2529</td>
-      <td bgcolor="#F5F0E5" style="padding:10px;color:#1C2529;">#F5F0E5</td>
-      <td bgcolor="#7FADE0" style="padding:10px;color:#1C2529;">#7FADE0</td>
-      <td bgcolor="#45C6C2" style="padding:10px;color:#1C2529;">#45C6C2</td>
-      <td bgcolor="#D9B56D" style="padding:10px;color:#1C2529;">#D9B56D</td>
-      <td bgcolor="#92A3A0" style="padding:10px;color:#1C2529;">#92A3A0</td>
+      <td bgcolor="#1C2529" width="90" height="38" aria-label="Background color #1C2529">&nbsp;</td>
+      <td bgcolor="#F5F0E5" width="90" height="38" aria-label="Foreground color #F5F0E5">&nbsp;</td>
+      <td bgcolor="#7FADE0" width="90" height="38" aria-label="Keyword color #7FADE0">&nbsp;</td>
+      <td bgcolor="#45C6C2" width="90" height="38" aria-label="Type color #45C6C2">&nbsp;</td>
+      <td bgcolor="#D9B56D" width="90" height="38" aria-label="String color #D9B56D">&nbsp;</td>
+      <td bgcolor="#92A3A0" width="90" height="38" aria-label="Comment color #92A3A0">&nbsp;</td>
     </tr>
     <tr>
       <th align="left" style="padding:10px;">East Asian</th>
-      <td bgcolor="#171A1C" style="padding:10px;color:#F2EFE7;">#171A1C</td>
-      <td bgcolor="#F2EFE7" style="padding:10px;color:#171A1C;">#F2EFE7</td>
-      <td bgcolor="#D97878" style="padding:10px;color:#171A1C;">#D97878</td>
-      <td bgcolor="#72C7A5" style="padding:10px;color:#171A1C;">#72C7A5</td>
-      <td bgcolor="#D8B76A" style="padding:10px;color:#171A1C;">#D8B76A</td>
-      <td bgcolor="#969F9B" style="padding:10px;color:#171A1C;">#969F9B</td>
+      <td bgcolor="#171A1C" width="90" height="38" aria-label="Background color #171A1C">&nbsp;</td>
+      <td bgcolor="#F2EFE7" width="90" height="38" aria-label="Foreground color #F2EFE7">&nbsp;</td>
+      <td bgcolor="#D97878" width="90" height="38" aria-label="Keyword color #D97878">&nbsp;</td>
+      <td bgcolor="#72C7A5" width="90" height="38" aria-label="Type color #72C7A5">&nbsp;</td>
+      <td bgcolor="#D8B76A" width="90" height="38" aria-label="String color #D8B76A">&nbsp;</td>
+      <td bgcolor="#969F9B" width="90" height="38" aria-label="Comment color #969F9B">&nbsp;</td>
     </tr>
   </tbody>
 </table>
