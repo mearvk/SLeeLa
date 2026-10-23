@@ -1,32 +1,71 @@
-/*
- * lib/os/SLOSModel.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLOSModel — the root aggregate of the OS-construction
- *   family: a complete object-oriented description of an operating system a
- *   developer is DESIGNING. It composes one of each layer in the
- *   firmware -> boot -> kernel -> userspace -> desktop model: a shape
- *   (SLOSShape), a target-architecture set (SLArchitectureSet), a bootloader
- *   (SLBootloaderSpec), a kernel (SLKernelSpec), a filesystem layout
- *   (SLFilesystemLayout), a driver set (SLDriverSet), a package seed
- *   (SLPackageSet), a service set (SLServiceSet), and an optional desktop
- *   (SLDesktopSpec).
- *
- * This is the OOD extrapolation point: `shape()` applies every per-family
- * default in one call, so an OS can "assume the shape" of Windows, Linux, or
- * macOS and then be refined field by field. A fully configured SLOSModel is the
- * single input to SLOSCompiler (which emits C and C++), SLISOBuilder (which
- * assembles the bootable ISO), and SLInstallerGenerator (which writes the
- * per-OS installer).
- *
- * This models an OS being BUILT. It is distinct from SLOperatingSystem, which
- * talks to the real host OS the VM already runs on.
- *
- * Family: os. Composes SLOSShape, SLArchitectureSet, SLBootloaderSpec,
- *   SLKernelSpec, SLFilesystemLayout, SLDriverSet, SLPackageSet, SLServiceSet,
- *   SLDesktopSpec. Pure design model; no native bridge calls.
- */
+<< lib/os/SLOSModel.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLOSModel — the root aggregate of the OS-construction
+     family: a complete object-oriented description of an operating system a
+     developer is DESIGNING. It composes one of each layer in the
+     firmware -> boot -> kernel -> userspace -> desktop model: a shape
+     (SLOSShape), a target-architecture set (SLArchitectureSet), a bootloader
+     (SLBootloaderSpec), a kernel (SLKernelSpec), a filesystem layout
+     (SLFilesystemLayout), a driver set (SLDriverSet), a package seed
+     (SLPackageSet), a service set (SLServiceSet), and an optional desktop
+     (SLDesktopSpec).
+   
+   This is the OOD extrapolation point: `shape()` applies every per-family
+   default in one call, so an OS can "assume the shape" of Windows, Linux, or
+   macOS and then be refined field by field. A fully configured SLOSModel is the
+   single input to SLOSCompiler (which emits C and C++), SLISOBuilder (which
+   assembles the bootable ISO), and SLInstallerGenerator (which writes the
+   per-OS installer).
+   
+   This models an OS being BUILT. It is distinct from SLOperatingSystem, which
+   talks to the real host OS the VM already runs on.
+   
+   Family: os. Composes SLOSShape, SLArchitectureSet, SLBootloaderSpec,
+     SLKernelSpec, SLFilesystemLayout, SLDriverSet, SLPackageSet, SLServiceSet,
+     SLDesktopSpec. Pure design model; no native bridge calls. >>
 #sleela 2.1
 class SLOSModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String osName;      // product name, e.g. "Determinant"
   String edition;     // "Desktop" / "Server"
   String version;     // product version

@@ -1,46 +1,85 @@
-/*
- * lib/xlt/SLXltSource.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLXltSource — the canonical source-time representation of
- *   an XLT (.xlt) CPU-model sheet, the exact counterpart of SSTSource for the
- *   SST (.sst) layer. Where SST declaratively authors a SYSTEM of library
- *   symbols, XLT declaratively authors a CPU MODEL: a chosen CPU SKU plus the
- *   board, memory, cadence, storage, and bus parts that assemble it. The format
- *   needs no new keyword and no setters — the document's ORTHOGONALITY (each
- *   part declared once, in order, non-overlapping) is itself what guarantees
- *   the model's integrity and a clear compilation.
- *
- *   An .xlt sheet reads:
- *       #xlt 1.0
- *       model Name {
- *         cpu      "SLAMDEPYC9575F";   // a real CPU SKU class
- *         board    "wrx90";            // a real SLMotherboard preset (optional)
- *         memory   "ddr2_800" 4096;    // a real SLMemoryModule preset + capacity
- *         cadence  "DDR2";             // SLCadenceConnector cadence to present
- *         storage  "nvmeGen4";         // optional
- *         bus      "pcieGen5x16";      // optional
- *         gpu;                         // optional capability: native GPU
- *         dma;                         // optional capability: DMA engine
- *         nativeram;                   // optional capability: NATIVE_RAM bit
- *         program  "app.sleela" sleela; // optional: run this program on the build
- *         grant    65536 1000000;      // optional: memory words + cycle budget
- *         target   sleela;
- *       }
- *
- *   When a `program` is declared, a congruent build is politely RUN: the
- *   compiler admits an SLWorkload (source + language) under an SLCPUResource
- *   grant and executes it on build.processor() via SleelaVMCreator — the
- *   sanctioned path (admission-checked, through the model's fetch-decode-execute
- *   loop), never reaching around the CPU model.
- *
- *   The compile path parallels SST's:
- *       .xlt -> SLXltCompiler -> SLExecutorBuild (real parts) -> SLProgram/VM
- *
- * Family: xlt. Source-time contract; resolved by SLXltCompiler into a real
- *   SLExecutorBuild. Mirrors lib/sst/SSTSource.
- */
+<< lib/xlt/SLXltSource.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLXltSource — the canonical source-time representation of
+     an XLT (.xlt) CPU-model sheet, the exact counterpart of SSTSource for the
+     SST (.sst) layer. Where SST declaratively authors a SYSTEM of library
+     symbols, XLT declaratively authors a CPU MODEL: a chosen CPU SKU plus the
+     board, memory, cadence, storage, and bus parts that assemble it. The format
+     needs no new keyword and no setters — the document's ORTHOGONALITY (each
+     part declared once, in order, non-overlapping) is itself what guarantees
+     the model's integrity and a clear compilation.
+   
+     An .xlt sheet reads:
+         #xlt 1.0
+         model Name {
+           cpu      "SLAMDEPYC9575F";   // a real CPU SKU class
+           board    "wrx90";            // a real SLMotherboard preset (optional)
+           memory   "ddr2_800" 4096;    // a real SLMemoryModule preset + capacity
+           cadence  "DDR2";             // SLCadenceConnector cadence to present
+           storage  "nvmeGen4";         // optional
+           bus      "pcieGen5x16";      // optional
+           gpu;                         // optional capability: native GPU
+           dma;                         // optional capability: DMA engine
+           nativeram;                   // optional capability: NATIVE_RAM bit
+           program  "app.sleela" sleela; // optional: run this program on the build
+           grant    65536 1000000;      // optional: memory words + cycle budget
+           target   sleela;
+         }
+   
+     When a `program` is declared, a congruent build is politely RUN: the
+     compiler admits an SLWorkload (source + language) under an SLCPUResource
+     grant and executes it on build.processor() via SleelaVMCreator — the
+     sanctioned path (admission-checked, through the model's fetch-decode-execute
+     loop), never reaching around the CPU model.
+   
+     The compile path parallels SST's:
+         .xlt -> SLXltCompiler -> SLExecutorBuild (real parts) -> SLProgram/VM
+   
+   Family: xlt. Source-time contract; resolved by SLXltCompiler into a real
+     SLExecutorBuild. Mirrors lib/sst/SSTSource. >>
 #sleela 2.1
 class SLXltSource {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String path;          // the .xlt file path
   String modelName;     // the `model Name { ... }` identifier
   String target;        // `target sleela;`

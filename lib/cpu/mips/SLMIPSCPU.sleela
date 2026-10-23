@@ -1,21 +1,60 @@
-/*
- * lib/cpu/mips/SLMIPSCPU.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLMIPSCPU — a runnable model of a classic 32-bit MIPS R-
- *   style load/store RISC: 32 general registers (R0 hardwired to zero), the HI
- *   and LO multiply/divide result registers, and a program counter. It extends
- *   SLCPURuntime and adds the MIPS register conventions, a decoder for a compact
- *   R/I-type encoding, and the branch-delay-slot / CP0 hooks the skeleton named.
- *
- * Instruction model (op in bits 24..31, rd in 16..23, rs in 8..15, rt/imm in
- * 0..7): ADD rd,rs,rt / SUB rd,rs,rt / ADDI rd,rs,imm / LW rd,imm(rs) /
- * SW rt,imm(rs) / BEQ rs,rt,off / BNE rs,rt,off / J addr / NOP / SYSCALL(halt).
- * R0 reads as zero and ignores writes, as on real MIPS.
- *
- * Family: cpu. Extends SLCPURuntime.
- */
+<< lib/cpu/mips/SLMIPSCPU.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLMIPSCPU — a runnable model of a classic 32-bit MIPS R-
+     style load/store RISC: 32 general registers (R0 hardwired to zero), the HI
+     and LO multiply/divide result registers, and a program counter. It extends
+     SLCPURuntime and adds the MIPS register conventions, a decoder for a compact
+     R/I-type encoding, and the branch-delay-slot / CP0 hooks the skeleton named.
+   
+   Instruction model (op in bits 24..31, rd in 16..23, rs in 8..15, rt/imm in
+   0..7): ADD rd,rs,rt / SUB rd,rs,rt / ADDI rd,rs,imm / LW rd,imm(rs) /
+   SW rt,imm(rs) / BEQ rs,rt,off / BNE rs,rt,off / J addr / NOP / SYSCALL(halt).
+   R0 reads as zero and ignores writes, as on real MIPS.
+   
+   Family: cpu. Extends SLCPURuntime. >>
 #sleela 2.1
 class SLMIPSCPU extends SLCPURuntime {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int R_HI = 32;
   static final int R_LO = 33;
 

@@ -1,21 +1,60 @@
-/*
- * lib/vm/src/sleela/SLVmReport.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLVmReport — the OOD equivalent of the native uniform
- *   diagnostic surface (virtual-machine/vm-version/001/vm_report.{h,c}, v001).
- *   It fixes one legible line format for every VM subsystem,
- *   "[idea-vm] <SEV> (<subsystem>[/<code>]): <message>", gated by the active
- *   verbosity, so a user sees consistent diagnostics instead of raw status
- *   ints. On the native side output goes to a stream; on the Sleela side this
- *   class formats and gates the line (print is the surface sink).
- *
- * Mirrors: enum VmSeverity, vm_report/vm_error/vm_warn/vm_notice/vm_debug.
- *
- * Family: vm. Composed by SLVmResult, SLVmMemory, SLVmTelemetry, SLVmAudit,
- *   SLVmRuntime; it reads an SLVmConfig for the verbosity gate.
- */
+<< lib/vm/src/sleela/SLVmReport.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLVmReport — the OOD equivalent of the native uniform
+     diagnostic surface (virtual-machine/vm-version/001/vm_report.{h,c}, v001).
+     It fixes one legible line format for every VM subsystem,
+     "[idea-vm] <SEV> (<subsystem>[/<code>]): <message>", gated by the active
+     verbosity, so a user sees consistent diagnostics instead of raw status
+     ints. On the native side output goes to a stream; on the Sleela side this
+     class formats and gates the line (print is the surface sink).
+   
+   Mirrors: enum VmSeverity, vm_report/vm_error/vm_warn/vm_notice/vm_debug.
+   
+   Family: vm. Composed by SLVmResult, SLVmMemory, SLVmTelemetry, SLVmAudit,
+     SLVmRuntime; it reads an SLVmConfig for the verbosity gate. >>
 #sleela 2.1
 class SLVmReport {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "unknown";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "unknown";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int SEV_DEBUG  = 0;
   static final int SEV_NOTICE = 1;
   static final int SEV_WARN   = 2;

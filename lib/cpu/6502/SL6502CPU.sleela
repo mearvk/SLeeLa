@@ -1,24 +1,63 @@
-/*
- * lib/cpu/6502/SL6502CPU.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SL6502CPU — a runnable model of the MOS 6502: an 8-bit
- *   accumulator machine with X/Y index registers, a stack pointer, and the
- *   N V - B D I Z C status flags. It extends SLCPURuntime, so register storage,
- *   memory, the ALU, and the fetch-decode-execute loop are inherited; this file
- *   supplies the 6502's registers and an instruction decoder.
- *
- * Instruction model (one word per instruction: op in bits 8..15, operand in
- * bits 0..7) — a compact teaching encoding, not the byte-exact 6502 opcode map,
- * sufficient to run the CPU as a CPU and as a model for further .sleela inputs:
- *   LDA#imm, LDX#imm, LDY#imm, STA abs, LDA abs, ADC#imm, SBC#imm, INX, INY,
- *   TAX, TAY, JMP abs, BEQ rel, BNE rel, BRK(halt), NOP.
- * decode() routes arithmetic through the inherited ALU (so flags are real) and
- * can also lower the stream onto the secondary VM via the inherited emit*().
- *
- * Family: cpu. Extends SLCPURuntime.
- */
+<< lib/cpu/6502/SL6502CPU.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SL6502CPU — a runnable model of the MOS 6502: an 8-bit
+     accumulator machine with X/Y index registers, a stack pointer, and the
+     N V - B D I Z C status flags. It extends SLCPURuntime, so register storage,
+     memory, the ALU, and the fetch-decode-execute loop are inherited; this file
+     supplies the 6502's registers and an instruction decoder.
+   
+   Instruction model (one word per instruction: op in bits 8..15, operand in
+   bits 0..7) — a compact teaching encoding, not the byte-exact 6502 opcode map,
+   sufficient to run the CPU as a CPU and as a model for further .sleela inputs:
+     LDA#imm, LDX#imm, LDY#imm, STA abs, LDA abs, ADC#imm, SBC#imm, INX, INY,
+     TAX, TAY, JMP abs, BEQ rel, BNE rel, BRK(halt), NOP.
+   decode() routes arithmetic through the inherited ALU (so flags are real) and
+   can also lower the stream onto the secondary VM via the inherited emit*().
+   
+   Family: cpu. Extends SLCPURuntime. >>
 #sleela 2.1
 class SL6502CPU extends SLCPURuntime {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Register file indices (into the inherited SLRAM register store).
   static final int R_A  = 0;   // accumulator
   static final int R_X  = 1;   // X index

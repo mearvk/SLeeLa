@@ -1,22 +1,61 @@
-/*
- * lib/cpu/SLLowering.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLLowering — the shared compiler backend. It walks an
- *   SLIR module and emits real machine instructions (via SLAssembler) for the
- *   SLInstructionSet, performing a simple temporary-to-register allocation and
- *   two-pass label resolution. Because every language frontend produces the
- *   same SLIR, this one backend serves C, C++, Java, and Sleela — the ISA is
- *   multi-language because the backend is shared.
- *
- * Register convention: IR temporaries map to r1..r15 round-robin (r0 is the
- * hardwired zero). Spilling to the stack for programs that exceed the register
- * file is described in CPU.md and modeled by PUSH/POP; this pass handles the
- * common small-function case directly.
- *
- * Family: cpu. Composes SLIR, SLAssembler, SLProgram, SLInstructionSet.
- */
+<< lib/cpu/SLLowering.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLLowering — the shared compiler backend. It walks an
+     SLIR module and emits real machine instructions (via SLAssembler) for the
+     SLInstructionSet, performing a simple temporary-to-register allocation and
+     two-pass label resolution. Because every language frontend produces the
+     same SLIR, this one backend serves C, C++, Java, and Sleela — the ISA is
+     multi-language because the backend is shared.
+   
+   Register convention: IR temporaries map to r1..r15 round-robin (r0 is the
+   hardwired zero). Spilling to the stack for programs that exceed the register
+   file is described in CPU.md and modeled by PUSH/POP; this pass handles the
+   common small-function case directly.
+   
+   Family: cpu. Composes SLIR, SLAssembler, SLProgram, SLInstructionSet. >>
 #sleela 2.1
 class SLLowering {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLInstructionSet isa;
   SLAssembler asm;
   SLProgram program;

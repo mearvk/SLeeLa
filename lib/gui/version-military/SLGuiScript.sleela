@@ -1,21 +1,60 @@
-/*
- * lib/gui/version-military/SLGuiScript.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiScript — the scripting engine for /lib/gui. It holds
- *   an ordered list of SLGuiScriptCommands and runs them against an SLGuiDom
- *   (and, for the `call` verb, across the native boundary via SLGuiBridge). This
- *   is the "support for scripting" layer: a UI can be described and driven by a
- *   command list rather than hand-written SLeeLa, which is what makes
- *   DHTML-style authoring and tooling (serialising a UI, replaying interactions,
- *   data-driven screens) possible. The engine is deliberately NOT a general
- *   interpreter — it is a bounded, auditable verb list that only touches the
- *   SLeeLa-owned DOM/event bus and the documented operation bridge, so a script
- *   can never do more than the DOM API already allows.
- *
- * Family: gui. SLeeLa owns execution; scripts express UI intent declaratively.
- */
+<< lib/gui/version-military/SLGuiScript.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiScript — the scripting engine for /lib/gui. It holds
+     an ordered list of SLGuiScriptCommands and runs them against an SLGuiDom
+     (and, for the `call` verb, across the native boundary via SLGuiBridge). This
+     is the "support for scripting" layer: a UI can be described and driven by a
+     command list rather than hand-written SLeeLa, which is what makes
+     DHTML-style authoring and tooling (serialising a UI, replaying interactions,
+     data-driven screens) possible. The engine is deliberately NOT a general
+     interpreter — it is a bounded, auditable verb list that only touches the
+     SLeeLa-owned DOM/event bus and the documented operation bridge, so a script
+     can never do more than the DOM API already allows.
+   
+   Family: gui. SLeeLa owns execution; scripts express UI intent declaratively. >>
 #sleela 2.1
 class SLGuiScript {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_COMMANDS = 65536;
 
   SLGuiScriptCommand[] commands;

@@ -1,29 +1,68 @@
-/*
- * lib/cpu/SLTuringBridge.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLTuringBridge — the equivalence driver that closes the
- *   loop. It takes a program in ANY supported language (C, C++, Java, Sleela),
- *   runs it through the shared pipeline down to the register ISA, maps that onto
- *   the canonical SLeeLa opcode substrate (SLOpcodeMap), and executes it on the
- *   Turing-complete SLSleelaVM. Because all four languages reduce to the SAME
- *   opcode stream and that stream is run by the substrate, their observable
- *   results are identical — they are 1:1 in Turing effect.
- *
- *   source(C|CPP|Java|Sleela)
- *     -> SLFrontend*          (language -> common IR)
- *       -> SLLowering         (IR -> register ISA, SLProgram)
- *         -> SLOpcodeMap      (register ISA + syscalls -> Sleela opcodes)
- *           -> SLSleelaVM     (execute the canonical Turing-complete substrate)
- *
- * The method proveEquivalence() compiles the SAME computation from all four
- * frontends, reduces each to the opcode substrate, runs each, and reports
- * whether every language produced the identical printed result. Equal results
- * are the operational statement of 1:1 Turing effect across the languages.
- *
- * Family: cpu. Composes the frontends, lowering, opcode map, and the Sleela VM.
- */
+<< lib/cpu/SLTuringBridge.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLTuringBridge — the equivalence driver that closes the
+     loop. It takes a program in ANY supported language (C, C++, Java, Sleela),
+     runs it through the shared pipeline down to the register ISA, maps that onto
+     the canonical SLeeLa opcode substrate (SLOpcodeMap), and executes it on the
+     Turing-complete SLSleelaVM. Because all four languages reduce to the SAME
+     opcode stream and that stream is run by the substrate, their observable
+     results are identical — they are 1:1 in Turing effect.
+   
+     source(C|CPP|Java|Sleela)
+       -> SLFrontend*          (language -> common IR)
+         -> SLLowering         (IR -> register ISA, SLProgram)
+           -> SLOpcodeMap      (register ISA + syscalls -> Sleela opcodes)
+             -> SLSleelaVM     (execute the canonical Turing-complete substrate)
+   
+   The method proveEquivalence() compiles the SAME computation from all four
+   frontends, reduces each to the opcode substrate, runs each, and reports
+   whether every language produced the identical printed result. Equal results
+   are the operational statement of 1:1 Turing effect across the languages.
+   
+   Family: cpu. Composes the frontends, lowering, opcode map, and the Sleela VM. >>
 #sleela 2.1
 class SLTuringBridge {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLInstructionSet isa;
   SLInstructionDecoder decoder;
   SLSystemCall sys;

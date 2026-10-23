@@ -1,24 +1,63 @@
-/*
- * lib/xlt/SLXltProducerRegistry.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLXltProducerRegistry — the explicit registry of part
- *   producers the XLT compiler resolves declared refs against. Instead of the
- *   compiler hardcoding "is this a known ref" tables inline, each recognizable
- *   part ref (CPU SKU, memory preset, board, cadence, storage, bus) is
- *   REGISTERED here under its slot, and the compiler asks the registry whether
- *   a ref is known and (for memory/board) what channel count it implies for the
- *   agreement check. A new part becomes recognizable by registering it, not by
- *   editing the compiler — the open/closed seam the SST symbol tables have.
- *
- *   A registered entry carries: the slot it belongs to, the ref string, and an
- *   integer attribute (memory channel count, or board routed channels; 0/1
- *   otherwise). Registration order does not matter; lookup is by (slot, ref).
- *
- * Family: xlt. Consulted by SLXltCompiler; mirrors the resolution role of
- *   lib/sst/SSTSymbolTable for the CPU-model format.
- */
+<< lib/xlt/SLXltProducerRegistry.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLXltProducerRegistry — the explicit registry of part
+     producers the XLT compiler resolves declared refs against. Instead of the
+     compiler hardcoding "is this a known ref" tables inline, each recognizable
+     part ref (CPU SKU, memory preset, board, cadence, storage, bus) is
+     REGISTERED here under its slot, and the compiler asks the registry whether
+     a ref is known and (for memory/board) what channel count it implies for the
+     agreement check. A new part becomes recognizable by registering it, not by
+     editing the compiler — the open/closed seam the SST symbol tables have.
+   
+     A registered entry carries: the slot it belongs to, the ref string, and an
+     integer attribute (memory channel count, or board routed channels; 0/1
+     otherwise). Registration order does not matter; lookup is by (slot, ref).
+   
+   Family: xlt. Consulted by SLXltCompiler; mirrors the resolution role of
+     lib/sst/SSTSymbolTable for the CPU-model format. >>
 #sleela 2.1
 class SLXltProducerRegistry {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Slot ids the parts divide into (orthogonal document slots).
   static final int SLOT_CPU     = 1;
   static final int SLOT_MEMORY  = 2;

@@ -1,24 +1,63 @@
-/*
- * lib/vm/SLVMMethod.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLVMMethod — one executable method in the secondary Sleela
- *   VM. A method is a window into its module's canonical-opcode code store
- *   (SLVMModule holds the SLSleelaVM substrate): an entry instruction index, a
- *   length, an argument count, and a local-slot count. Calling a method pushes
- *   an SLVMFrame sized to maxLocals and points the substrate's ip at entry.
- *
- * The method does not own code bytes itself — code lives once in the module's
- * SLSleelaVM so every layer executes the same 124 canonical opcodes the native
- * engine (lib/cpu/SLSleelaVM) interprets.
- *
- * A method also carries an access role (exposed-hop / local-system /
- * integrity-guarded) under the extensible-network interpretation, so the VM can
- * gate resolution by role and realize the per-role backdrop.
- *
- * Family: vm. Composed by SLVMClass; drives SLVMFrame + SLVMModule.
- */
+<< lib/vm/SLVMMethod.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLVMMethod — one executable method in the secondary Sleela
+     VM. A method is a window into its module's canonical-opcode code store
+     (SLVMModule holds the SLSleelaVM substrate): an entry instruction index, a
+     length, an argument count, and a local-slot count. Calling a method pushes
+     an SLVMFrame sized to maxLocals and points the substrate's ip at entry.
+   
+   The method does not own code bytes itself — code lives once in the module's
+   SLSleelaVM so every layer executes the same 124 canonical opcodes the native
+   engine (lib/cpu/SLSleelaVM) interprets.
+   
+   A method also carries an access role (exposed-hop / local-system /
+   integrity-guarded) under the extensible-network interpretation, so the VM can
+   gate resolution by role and realize the per-role backdrop.
+   
+   Family: vm. Composed by SLVMClass; drives SLVMFrame + SLVMModule. >>
 #sleela 2.1
 class SLVMMethod {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
   String descriptor;   // e.g. "(II)I" style signature summary
   int entry;           // first opcode index in the module code store

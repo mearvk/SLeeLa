@@ -1,34 +1,73 @@
-/*
- * lib/compression/SLCompressionController.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLCompressionController used within the compression library family.
- */
+<< lib/compression/SLCompressionController.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines the SLeeLa standard-library type SLCompressionController used within the compression library family. >>
 #sleela 2.1
-// Family: compression. The SLeeLa-facing Compression Management Controller —
-// the single surface a GUI or application drives, mirroring the native
-// "Compression Loader / Unloader / Management Controller"
-// (compression/include/sleela_compression_manager.h). The Controller owns each
-// algorithm's loaded/unloaded lifecycle and the backend-registration table, and
-// cooperates with the sibling classes:
-//
-//   * SLCompressionLoader    — classification (nameOf / isNative) and the
-//                              standalone plugin-load contract;
-//   * SLCompressionVerifier  — extension/magic resolution and result-code text;
-//   * SLCompressionProcessor — the standalone compress/decompress dispatch.
-//
-// As of syntax 1.11 the Controller holds its collaborators as fields and calls
-// through them directly (method calls resolve on class-typed fields). create()
-// wires an SLCompressionVerifier; the Controller keeps its own lifecycle state
-// in int[] tables.
-//
-// Algorithm ids mirror sleela_compressor_id (0-based, registry order):
-//   0 STORE  1 RLE  2 HUFFMAN  3 LZW  4 DEFLATE  5 ZLIB  6 GZIP  7 BZIP2
-//   8 LZMA  9 XZ  10 ZSTD  11 LZ4  12 BROTLI  13 SNAPPY  14 ZIP
-//
-// Handler states: 0 native, 1 backend, 2 recognized, 3 container.
-// Result codes (sleela_compression_result): 0 ok, -1 unsupported, -2 invalid,
-// -3 format, -4 io, -5 state(not loaded), -6 buffer too small.
+< Family: compression. The SLeeLa-facing Compression Management Controller — >
+< the single surface a GUI or application drives, mirroring the native >
+< "Compression Loader / Unloader / Management Controller" >
+< (compression/include/sleela_compression_manager.h). The Controller owns each >
+< algorithm's loaded/unloaded lifecycle and the backend-registration table, and >
+< cooperates with the sibling classes: >
+<  >
+< * SLCompressionLoader    — classification (nameOf / isNative) and the >
+< standalone plugin-load contract; >
+< * SLCompressionVerifier  — extension/magic resolution and result-code text; >
+< * SLCompressionProcessor — the standalone compress/decompress dispatch. >
+<  >
+< As of syntax 1.11 the Controller holds its collaborators as fields and calls >
+< through them directly (method calls resolve on class-typed fields). create() >
+< wires an SLCompressionVerifier; the Controller keeps its own lifecycle state >
+< in int[] tables. >
+<  >
+< Algorithm ids mirror sleela_compressor_id (0-based, registry order): >
+< 0 STORE  1 RLE  2 HUFFMAN  3 LZW  4 DEFLATE  5 ZLIB  6 GZIP  7 BZIP2 >
+< 8 LZMA  9 XZ  10 ZSTD  11 LZ4  12 BROTLI  13 SNAPPY  14 ZIP >
+<  >
+< Handler states: 0 native, 1 backend, 2 recognized, 3 container. >
+< Result codes (sleela_compression_result): 0 ok, -1 unsupported, -2 invalid, >
+< -3 format, -4 io, -5 state(not loaded), -6 buffer too small. >
 class SLCompressionController {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-23";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-23";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   // Per-algorithm loaded flag (1 loaded, 0 not), indexed by id.
   int[] loaded;

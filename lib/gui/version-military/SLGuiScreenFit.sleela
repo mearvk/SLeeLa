@@ -1,28 +1,67 @@
-/*
- * lib/gui/version-military/SLGuiScreenFit.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiScreenFit — the military-line helper that sizes a
- *   window from the ACTUAL screen size / resolution. It offers three support
- *   tiers so a host can ask for as much or as little cleverness as it wants:
- *
- *     BASIC    — a fixed fraction of the screen, clamped to a sane min/max.
- *     MODERATE — a fraction plus a work-area margin and a centered position.
- *     ADVANCED — resolution-CLASS buckets (≤720p / 1080p / 1440p / 4K+), each
- *                with its own target fraction and a cap, aspect-ratio aware,
- *                honoring the min/max window window and the work-area inset.
- *
- *   It is a pure model. The host feeds in the real screen via setScreen(w,h)
- *   — sourced from the native `uiScreenWidth(app)` / `uiScreenHeight(app)`
- *   built-ins — and reads the resolved width/height/x/y back out to pass to
- *   `uiWindowCreate`. When the screen is unknown (0, e.g. a headless host) it
- *   falls back to a modeled 1920×1080 so sizing is always defined. Every knob
- *   clamps to a safe window, the GUAL/MILITARY clamp-to-a-window discipline.
- *
- * Family: gui. Companion to SLGuiWindowState (which owns the live geometry);
- *   this class decides the initial, screen-relative size and placement.
- */
+<< lib/gui/version-military/SLGuiScreenFit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiScreenFit — the military-line helper that sizes a
+     window from the ACTUAL screen size / resolution. It offers three support
+     tiers so a host can ask for as much or as little cleverness as it wants:
+   
+       BASIC    — a fixed fraction of the screen, clamped to a sane min/max.
+       MODERATE — a fraction plus a work-area margin and a centered position.
+       ADVANCED — resolution-CLASS buckets (≤720p / 1080p / 1440p / 4K+), each
+                  with its own target fraction and a cap, aspect-ratio aware,
+                  honoring the min/max window window and the work-area inset.
+   
+     It is a pure model. The host feeds in the real screen via setScreen(w,h)
+     — sourced from the native `uiScreenWidth(app)` / `uiScreenHeight(app)`
+     built-ins — and reads the resolved width/height/x/y back out to pass to
+     `uiWindowCreate`. When the screen is unknown (0, e.g. a headless host) it
+     falls back to a modeled 1920×1080 so sizing is always defined. Every knob
+     clamps to a safe window, the GUAL/MILITARY clamp-to-a-window discipline.
+   
+   Family: gui. Companion to SLGuiWindowState (which owns the live geometry);
+     this class decides the initial, screen-relative size and placement. >>
 #sleela 2.1
 class SLGuiScreenFit {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-20";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-19";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Support tiers.
   static final int TIER_BASIC    = 0;
   static final int TIER_MODERATE = 1;

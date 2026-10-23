@@ -1,39 +1,78 @@
-/*
- * lib/vm/SLVM.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLVM — the secondary Sleela VM: the runnable interpreter a
- *   coder uses to design and control a Sleela-sourced virtual machine. It owns
- *   the managed object heap (SLVMHeap), the flat linear memory (SLVMMemory), the
- *   module loader (SLVMModuleLoader), a main thread with a frame-based call
- *   stack (SLVMThread/SLVMFrame), and a native-binding table (SLVMNativeBinding).
- *
- * SLVM does not re-implement opcode semantics — it drives the module's canonical
- * SLSleelaVM substrate (the native Sleela VM, lib/cpu/SLSleelaVM) one opcode at a
- * time, intercepting CALL/RET to maintain frames and service opcodes to route
- * through native bindings. Running on top of that substrate is exactly what makes
- * this the "secondary VM on top of the Native Sleela VM": every effect ultimately
- * executes on the same 124-opcode engine the native layer interprets.
- *
- * Typical use (opcode module):
- *   vm = new SLVM(); vm.boot(1<<16, 1<<16);
- *   module = vm.loader().beginModule("app", 4096, 4096, 1024);
- *   ... emit opcodes / define classes ...
- *   vm.install(module); vm.run(1000000);
- *
- * Guest-CPU use (Creator -> SLVM -> CPU -> program): SLVM can also host a Sleela
- * CPU model (any SLCPURuntime / SL<ARCH>CPU) as its executor and run a C / C++ /
- * Java / Sleela program through it, nested on this VM's substrate:
- *   vm = new SLVM(); vm.configure("edition"); vm.boot(1<<16, 1<<16);
- *   SL6502CPU cpu = new SL6502CPU(); cpu.configure();
- *   vm.hostCpu(cpu);
- *   int out = vm.runGuestWorkload(job, 1000000);   // job wraps a .c/.cpp/.java/.sleela source
- * (SleelaVMCreator builds and boots the SLVM for this flow.)
- *
- * Family: vm. Composes SLVMHeap, SLVMMemory, SLVMModuleLoader, SLVMThread,
- *   SLVMFrame, SLVMValue, SLVMNativeBinding, SLSleelaVM; hosts SLCPURuntime.
- */
+<< lib/vm/SLVM.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLVM — the secondary Sleela VM: the runnable interpreter a
+     coder uses to design and control a Sleela-sourced virtual machine. It owns
+     the managed object heap (SLVMHeap), the flat linear memory (SLVMMemory), the
+     module loader (SLVMModuleLoader), a main thread with a frame-based call
+     stack (SLVMThread/SLVMFrame), and a native-binding table (SLVMNativeBinding).
+   
+   SLVM does not re-implement opcode semantics — it drives the module's canonical
+   SLSleelaVM substrate (the native Sleela VM, lib/cpu/SLSleelaVM) one opcode at a
+   time, intercepting CALL/RET to maintain frames and service opcodes to route
+   through native bindings. Running on top of that substrate is exactly what makes
+   this the "secondary VM on top of the Native Sleela VM": every effect ultimately
+   executes on the same 124-opcode engine the native layer interprets.
+   
+   Typical use (opcode module):
+     vm = new SLVM(); vm.boot(1<<16, 1<<16);
+     module = vm.loader().beginModule("app", 4096, 4096, 1024);
+     ... emit opcodes / define classes ...
+     vm.install(module); vm.run(1000000);
+   
+   Guest-CPU use (Creator -> SLVM -> CPU -> program): SLVM can also host a Sleela
+   CPU model (any SLCPURuntime / SL<ARCH>CPU) as its executor and run a C / C++ /
+   Java / Sleela program through it, nested on this VM's substrate:
+     vm = new SLVM(); vm.configure("edition"); vm.boot(1<<16, 1<<16);
+     SL6502CPU cpu = new SL6502CPU(); cpu.configure();
+     vm.hostCpu(cpu);
+     int out = vm.runGuestWorkload(job, 1000000);   // job wraps a .c/.cpp/.java/.sleela source
+   (SleelaVMCreator builds and boots the SLVM for this flow.)
+   
+   Family: vm. Composes SLVMHeap, SLVMMemory, SLVMModuleLoader, SLVMThread,
+     SLVMFrame, SLVMValue, SLVMNativeBinding, SLSleelaVM; hosts SLCPURuntime. >>
 #sleela 2.1
 class SLVM {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
   int state;              // 0 off, 1 booted, 2 running, 3 halted
 

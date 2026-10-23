@@ -1,20 +1,59 @@
-/*
- * lib/gui/version-mual/SLGuiToast.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiToast — the TOAST / SNACKBAR component: a small
- *   notification panel that fades IN at a corner/edge of the screen, DWELLS for
- *   a few seconds, then fades OUT. It is a pure model + lifecycle state machine:
- *   hidden -> fadingIn -> shown -> fadingOut -> hidden, driven by tick(elapsed).
- *   The fade in and fade out are each an SLGuiTransition (the shared enter/exit
- *   tween); the dwell is a plain timer. SLeeLa owns the message, placement,
- *   severity, and timing; the host paints the panel at the resolved opacity and
- *   anchors it to the chosen corner.
- *
- * Family: gui. A self-dismissing notification; the host renders it, this model
- * decides when it is visible and how opaque.
- */
+<< lib/gui/version-mual/SLGuiToast.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiToast — the TOAST / SNACKBAR component: a small
+     notification panel that fades IN at a corner/edge of the screen, DWELLS for
+     a few seconds, then fades OUT. It is a pure model + lifecycle state machine:
+     hidden -> fadingIn -> shown -> fadingOut -> hidden, driven by tick(elapsed).
+     The fade in and fade out are each an SLGuiTransition (the shared enter/exit
+     tween); the dwell is a plain timer. SLeeLa owns the message, placement,
+     severity, and timing; the host paints the panel at the resolved opacity and
+     anchors it to the chosen corner.
+   
+   Family: gui. A self-dismissing notification; the host renders it, this model
+   decides when it is visible and how opaque. >>
 #sleela 2.1
 class SLGuiToast {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-19";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-19";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Lifecycle states.
   static final int STATE_HIDDEN     = 0;   // not on screen
   static final int STATE_FADING_IN  = 1;   // enter transition running

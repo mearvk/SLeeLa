@@ -1,23 +1,62 @@
-/*
- * lib/cpu/SLGuestFileSystem.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuestFileSystem — a minimal in-guest filesystem over
- *   the guest block device. It presents named files (a flat directory) backed
- *   by block storage, with an open-file table of descriptors supporting
- *   sequential read/write by byte. The guest kernel's syscall layer
- *   (SLGuestSyscall) uses it for open/read/write/close; the loader can read
- *   program images from it.
- *
- * This is a guest-side analogue of the host SLFileSystem but scoped to a guest
- * VM and reached through the guest block device (SLGuestBlockDevice). Files are
- * identified by an integer name/handle (the guest passes an interned id) to fit
- * the integer-only syscall ABI; a small fixed directory (8 files) and fd table
- * (8 descriptors) are modeled (SLeeLa surface has no arrays).
- *
- * Family: cpu. Composes SLGuestBlockDevice.
- */
+<< lib/cpu/SLGuestFileSystem.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuestFileSystem — a minimal in-guest filesystem over
+     the guest block device. It presents named files (a flat directory) backed
+     by block storage, with an open-file table of descriptors supporting
+     sequential read/write by byte. The guest kernel's syscall layer
+     (SLGuestSyscall) uses it for open/read/write/close; the loader can read
+     program images from it.
+   
+   This is a guest-side analogue of the host SLFileSystem but scoped to a guest
+   VM and reached through the guest block device (SLGuestBlockDevice). Files are
+   identified by an integer name/handle (the guest passes an interned id) to fit
+   the integer-only syscall ABI; a small fixed directory (8 files) and fd table
+   (8 descriptors) are modeled (SLeeLa surface has no arrays).
+   
+   Family: cpu. Composes SLGuestBlockDevice. >>
 #sleela 2.1
 class SLGuestFileSystem {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_FILES = 8;
   static final int MAX_FDS   = 8;
 

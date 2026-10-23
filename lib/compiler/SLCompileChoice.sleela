@@ -1,24 +1,63 @@
-/*
- * lib/compiler/SLCompileChoice.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLCompileChoice, the compiler's decision about which
- *   source form to compile, making .sldocument a selectable compile choice.
- *
- * A developer tells the compiler "compile this as a program" or "compile this as
- * an ordered document". SLCompileChoice records that selection, resolves it from
- * a file name when not stated explicitly, and routes to the right front end:
- *   - a .sleela program compiles through the ordinary SLeeLa Compiler path;
- *   - a .sldocument compiles through the document-aware path (which still uses
- *     the SLeeLa Compiler for the step methods and any companion .sleela source).
- *
- * The choice is explicit and fail-closed: an unknown form is not guessed; it is
- * surfaced as a diagnostic.
- *
- * Family: compiler. Native VM/OS work crosses an explicit bridge.
- */
+<< lib/compiler/SLCompileChoice.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLCompileChoice, the compiler's decision about which
+     source form to compile, making .sldocument a selectable compile choice.
+   
+   A developer tells the compiler "compile this as a program" or "compile this as
+   an ordered document". SLCompileChoice records that selection, resolves it from
+   a file name when not stated explicitly, and routes to the right front end:
+     - a .sleela program compiles through the ordinary SLeeLa Compiler path;
+     - a .sldocument compiles through the document-aware path (which still uses
+       the SLeeLa Compiler for the step methods and any companion .sleela source).
+   
+   The choice is explicit and fail-closed: an unknown form is not guessed; it is
+   surfaced as a diagnostic.
+   
+   Family: compiler. Native VM/OS work crosses an explicit bridge. >>
 #sleela 2.1
-// Unified SLeeLa SDK front-end object.
+< Unified SLeeLa SDK front-end object. >
 class SLCompileChoice {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLSourceForm sourceForm;
   String inputPath;
   int state;

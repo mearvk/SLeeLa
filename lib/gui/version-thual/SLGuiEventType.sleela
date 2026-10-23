@@ -1,18 +1,57 @@
-/*
- * lib/gui/version-thual/SLGuiEventType.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiEventType — the catalogue of GUI event kinds the
- *   /lib/gui event layer understands. These are the SLeeLa-facing names a
- *   handler binds to (the DHTML-style "click", "input", "change", "keydown",
- *   ...). The host raises one of these on a target; SLeeLa decides what it
- *   means. Each kind has a stable ordinal (used by the dispatch tables) and a
- *   canonical lowercase name (the string an onX binding or addEventListener
- *   uses), mirroring the activation model already in SLGuiAction.
- *
- * Family: gui. Java/native raise typed activations; SLeeLa owns their meaning.
- */
+<< lib/gui/version-thual/SLGuiEventType.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiEventType — the catalogue of GUI event kinds the
+     /lib/gui event layer understands. These are the SLeeLa-facing names a
+     handler binds to (the DHTML-style "click", "input", "change", "keydown",
+     ...). The host raises one of these on a target; SLeeLa decides what it
+     means. Each kind has a stable ordinal (used by the dispatch tables) and a
+     canonical lowercase name (the string an onX binding or addEventListener
+     uses), mirroring the activation model already in SLGuiAction.
+   
+   Family: gui. Java/native raise typed activations; SLeeLa owns their meaning. >>
 #sleela 2.1
 class SLGuiEventType {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Ordinals (stable; used as table indices).
   static final int CLICK      = 0;   // a primary activation (click / Enter / Space)
   static final int DBLCLICK   = 1;   // a double activation

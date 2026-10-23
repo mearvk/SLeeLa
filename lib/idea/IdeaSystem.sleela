@@ -1,23 +1,64 @@
 #sleela 2.1
-// Version: Idea System(TM) 1.0.0 | Main program: Sleelvac 1.5
-// IdeaSystem.sleela -- the Sleela "Sleela runnable" for the Idea(TM) System.
-//
-// Idea System(TM) / Idea(TM).  From Author; distributive.
-//
-// This is the Sleela surface of everything /idea implements in C/C++.  It:
-//   1. Loads the signal-distributed System and names it against the catalog.
-//   2. Receives signal input from the known internet resource -- a hex code
-//      the Content Author controls, served from github.com -- selecting the
-//      part of the internet to use with the first-class best-of* method.
-//   3. Declares the AI model/objectives that fold the signal into a forward,
-//      linear solution Series (<= 30h of content, <= 9 seemly decisions).
-//   4. Lets Time progress; the System presents its State.  The State IS the
-//      System -- a user cannot really know which is the difference.
-//
-// It honors the Constitution (system depth 3024, complexity degree <= 4) and
-// uses honest Synchro measurement, exactly as the language intends.
+< Version: Idea System(TM) 1.0.0 | Main program: Sleelvac 1.5 >
+< IdeaSystem.sleela -- the Sleela "Sleela runnable" for the Idea(TM) System. >
+<  >
+< Idea System(TM) / Idea(TM).  From Author; distributive. >
+<  >
+< This is the Sleela surface of everything /idea implements in C/C++.  It: >
+< 1. Loads the signal-distributed System and names it against the catalog. >
+< 2. Receives signal input from the known internet resource -- a hex code >
+< the Content Author controls, served from github.com -- selecting the >
+< part of the internet to use with the first-class best-of* method. >
+< 3. Declares the AI model/objectives that fold the signal into a forward, >
+< linear solution Series (<= 30h of content, <= 9 seemly decisions). >
+< 4. Lets Time progress; the System presents its State.  The State IS the >
+< System -- a user cannot really know which is the difference. >
+<  >
+< It honors the Constitution (system depth 3024, complexity degree <= 4) and >
+< uses honest Synchro measurement, exactly as the language intends. >
 
 class IdeaSystem {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-14";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
     // ---- shared State (thread-safe globals) ----------------------------
     // The System is prevaricated upon its State; these fields ARE the System.

@@ -1,25 +1,64 @@
-/*
- * lib/gui/version-dual/SLGuiClickObject.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiClickObject — a 4.0 custom click object: a small
- *   circle with its own position, radius, architecturally-driven MOTION, and a
- *   staged TIMER. The timer runs through a sequence of "System Apprentice"
- *   stages — subtle, escalating activations — and when the final stage elapses
- *   it fires the FINAL CALL (a named SLeeLa operation). The motion is a declared
- *   architecture (static / drift / orbit / pulse) advanced by the app tick, so
- *   the circle moves predictably rather than by ad-hoc animation. SLeeLa owns
- *   position, motion, the apprentice ladder, and the final-call binding; the
- *   host paints the circle and plays any cue.
- *
- *   The apprentice model: stage 0 is dormant; each interval advances one
- *   apprentice stage (subtle visual/behaviour change); reaching apprenticeMax
- *   triggers the final call exactly once. This gives a click object a careful,
- *   architecturally-driven build-up to its culminating action.
- *
- * Family: gui. A circle node's backing model; advanced by SLGuiApp's tick.
- */
+<< lib/gui/version-dual/SLGuiClickObject.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiClickObject — a 4.0 custom click object: a small
+     circle with its own position, radius, architecturally-driven MOTION, and a
+     staged TIMER. The timer runs through a sequence of "System Apprentice"
+     stages — subtle, escalating activations — and when the final stage elapses
+     it fires the FINAL CALL (a named SLeeLa operation). The motion is a declared
+     architecture (static / drift / orbit / pulse) advanced by the app tick, so
+     the circle moves predictably rather than by ad-hoc animation. SLeeLa owns
+     position, motion, the apprentice ladder, and the final-call binding; the
+     host paints the circle and plays any cue.
+   
+     The apprentice model: stage 0 is dormant; each interval advances one
+     apprentice stage (subtle visual/behaviour change); reaching apprenticeMax
+     triggers the final call exactly once. This gives a click object a careful,
+     architecturally-driven build-up to its culminating action.
+   
+   Family: gui. A circle node's backing model; advanced by SLGuiApp's tick. >>
 #sleela 2.1
 class SLGuiClickObject {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Motion architectures.
   static final int MOTION_STATIC = 0;   // fixed position
   static final int MOTION_DRIFT  = 1;   // linear drift by (vx,vy) per interval

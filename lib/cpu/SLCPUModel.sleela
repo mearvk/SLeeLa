@@ -1,21 +1,60 @@
-/*
- * lib/cpu/SLCPUModel.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLCPUModel — the declarative description of a specific
- *   processor: the inventory of units it is built from (architecture metadata,
- *   clock, register file, pipeline, execution units, caches, memory, I/O bus,
- *   DMA, MMU, interrupts, couplers) and a validate() contract that a concrete
- *   model satisfies. It is the specification half; SLCPURuntime is the runnable
- *   half a per-architecture model extends.
- *
- * Kept as populatable fields (not bare names) so a Sleela-sourced CPU can be
- * described, validated, and then handed to SLCPURuntime to execute on top of the
- * secondary VM.
- *
- * Family: cpu. Describes what SLCPURuntime runs.
- */
+<< lib/cpu/SLCPUModel.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLCPUModel — the declarative description of a specific
+     processor: the inventory of units it is built from (architecture metadata,
+     clock, register file, pipeline, execution units, caches, memory, I/O bus,
+     DMA, MMU, interrupts, couplers) and a validate() contract that a concrete
+     model satisfies. It is the specification half; SLCPURuntime is the runnable
+     half a per-architecture model extends.
+   
+   Kept as populatable fields (not bare names) so a Sleela-sourced CPU can be
+   described, validated, and then handed to SLCPURuntime to execute on top of the
+   secondary VM.
+   
+   Family: cpu. Describes what SLCPURuntime runs. >>
 #sleela 2.1
 class SLCPUModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-09";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String architecture;
   int clock;
   int registers;        // register count

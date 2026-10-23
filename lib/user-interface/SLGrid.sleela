@@ -1,20 +1,59 @@
-/*
- * lib/user-interface/SLGrid.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGrid — a SleelaUI fixed row/column grid container.
- *   Children fill cells in row-major order across a fixed number of columns; the
- *   grid sizes every cell to the largest child and spreads them to fill the
- *   available width. Use it for form layouts and tiles. The constructor bottoms
- *   out in the `uiGrid` built-in (SleelaUI C ABI slui_grid()); children are
- *   added by constructing control classes against this grid's handle.
- *
- * An SLGrid IS an SLWidget container.
- *
- * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
- * bridge.
- */
+<< lib/user-interface/SLGrid.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGrid — a SleelaUI fixed row/column grid container.
+     Children fill cells in row-major order across a fixed number of columns; the
+     grid sizes every cell to the largest child and spreads them to fill the
+     available width. Use it for form layouts and tiles. The constructor bottoms
+     out in the `uiGrid` built-in (SleelaUI C ABI slui_grid()); children are
+     added by constructing control classes against this grid's handle.
+   
+   An SLGrid IS an SLWidget container.
+   
+   Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+   bridge. >>
 #sleela 2.1
 class SLGrid extends SLWidget {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-07";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Create a grid inside `parent` with a column count and a spacing (px)
   // applied between both rows and columns.
   void createIn(SLWidget parent, int columns, int spacing) {

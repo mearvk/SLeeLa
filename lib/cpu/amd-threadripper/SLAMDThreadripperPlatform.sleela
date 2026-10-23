@@ -1,24 +1,63 @@
-/*
- * lib/cpu/amd-threadripper/SLAMDThreadripperPlatform.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLAMDThreadripperPlatform — the ancillary, board-level
- *   operating point for the AMD Ryzen Threadripper 9000 (Zen 5 "Shimada Peak")
- *   family: the DDR5-6400 memory timings, the actual Vcore / Vsoc / Vddq supply
- *   rails in millivolts, and the HEDT (TRX50, 4-channel) vs PRO WX (WRX90,
- *   8-channel) board topology. Where SLAMDThreadripperCPU is the runnable core,
- *   this class carries the "everything around the core" the shared expert-timing
- *   layer (SLRamTiming / SLVoltageRail) needs to characterize a real rig.
- *
- * Nothing here is invented: DDR5's I/O rail is 1.1 V (1100 mV) and the roster
- * runs DDR5-6400 (JEDEC ~CL46); the Zen 5 core/SoC rails use AMD's documented
- * nominal/limit points. Each getter hands back a configured object ready to
- * drop into an SLTimingProfile or an SLExecutorBuild.
- *
- * Family: cpu. Composes SLRamTiming, SLVoltageRail, SLMotherboard,
- *   SLMemoryModule (via SLComponentCatalog); partners SLAMDThreadripperCPU.
- */
+<< lib/cpu/amd-threadripper/SLAMDThreadripperPlatform.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLAMDThreadripperPlatform — the ancillary, board-level
+     operating point for the AMD Ryzen Threadripper 9000 (Zen 5 "Shimada Peak")
+     family: the DDR5-6400 memory timings, the actual Vcore / Vsoc / Vddq supply
+     rails in millivolts, and the HEDT (TRX50, 4-channel) vs PRO WX (WRX90,
+     8-channel) board topology. Where SLAMDThreadripperCPU is the runnable core,
+     this class carries the "everything around the core" the shared expert-timing
+     layer (SLRamTiming / SLVoltageRail) needs to characterize a real rig.
+   
+   Nothing here is invented: DDR5's I/O rail is 1.1 V (1100 mV) and the roster
+   runs DDR5-6400 (JEDEC ~CL46); the Zen 5 core/SoC rails use AMD's documented
+   nominal/limit points. Each getter hands back a configured object ready to
+   drop into an SLTimingProfile or an SLExecutorBuild.
+   
+   Family: cpu. Composes SLRamTiming, SLVoltageRail, SLMotherboard,
+     SLMemoryModule (via SLComponentCatalog); partners SLAMDThreadripperCPU. >>
 #sleela 2.1
 class SLAMDThreadripperPlatform {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   // ---- Supply rails (actual voltages in millivolts) -----------------------
 

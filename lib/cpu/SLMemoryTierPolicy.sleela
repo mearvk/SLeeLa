@@ -1,29 +1,68 @@
-/*
- * lib/cpu/SLMemoryTierPolicy.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLMemoryTierPolicy — the bridge from the SOURCE memory-tier
- *   flags to the RUNTIME tier a method binds to. The frontend records the
- *   usualmem / accuratemem modifiers as bits on each declaration
- *   (impl/frontend/ast.h: JavaMemUsual 1<<15, JavaMemAccurate 1<<16); this policy
- *   turns a modifier bitset into a tier id (SLMemoryTierRouter.TIER_*) for a
- *   method, and resolves a method's EFFECTIVE tier against the document default
- *   so:
- *     - a method flagged usualmem/accuratemem uses that tier;
- *     - an unflagged method inherits the document (whole-program) default;
- *     - a document with no default resolves to accurate (DDR5).
- *
- *   Flagging scope (answers "can a program flag the whole document or a subset"):
- *     - WHOLE DOCUMENT: put usualmem/accuratemem on the top-level class — the
- *       frontend parses class-level modifiers, so the bit flags every method
- *       that does not override it. documentTierFromModifiers() reads that.
- *     - ANY SUBSET: put usualmem/accuratemem on each method — methodTierFrom
- *       Modifiers() reads that and overrides the document default.
- *
- * Family: cpu. Pure policy; pairs SLProgram (document default) with
- *   SLMemoryTierRouter (physical modules) and SLVMMethod (per-method tier).
- */
+<< lib/cpu/SLMemoryTierPolicy.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLMemoryTierPolicy — the bridge from the SOURCE memory-tier
+     flags to the RUNTIME tier a method binds to. The frontend records the
+     usualmem / accuratemem modifiers as bits on each declaration
+     (impl/frontend/ast.h: JavaMemUsual 1<<15, JavaMemAccurate 1<<16); this policy
+     turns a modifier bitset into a tier id (SLMemoryTierRouter.TIER_*) for a
+     method, and resolves a method's EFFECTIVE tier against the document default
+     so:
+       - a method flagged usualmem/accuratemem uses that tier;
+       - an unflagged method inherits the document (whole-program) default;
+       - a document with no default resolves to accurate (DDR5).
+   
+     Flagging scope (answers "can a program flag the whole document or a subset"):
+       - WHOLE DOCUMENT: put usualmem/accuratemem on the top-level class — the
+         frontend parses class-level modifiers, so the bit flags every method
+         that does not override it. documentTierFromModifiers() reads that.
+       - ANY SUBSET: put usualmem/accuratemem on each method — methodTierFrom
+         Modifiers() reads that and overrides the document default.
+   
+   Family: cpu. Pure policy; pairs SLProgram (document default) with
+     SLMemoryTierRouter (physical modules) and SLVMMethod (per-method tier). >>
 #sleela 2.1
 class SLMemoryTierPolicy {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Modifier bits as emitted by the frontend (mirror impl/frontend/ast.h).
   static final int MOD_USUALMEM    = 32768;   // JavaMemUsual    = 1 << 15
   static final int MOD_ACCURATEMEM = 65536;   // JavaMemAccurate = 1 << 16

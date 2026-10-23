@@ -1,25 +1,66 @@
 #sleela 2.1
-// compression-pipeline.sleela -- the self-contained, runnable build of the
-// SLeeLa compression Controller/Verifier/Processor pipeline. The compiler's
-// `run` compiles one file as a single unit, so this aggregate inlines the
-// collaborators (mirroring the split SLCompressionController /
-// SLCompressionVerifier / SLCompressionProcessor / SLCompressionLoader
-// discovery files) plus a `main` that drives them the way a GUI or app would:
-// resolve -> load -> verify -> compress/decompress -> unload. The split
-// per-class files are the package's discovery surface; this file is the
-// executable counterpart, mirroring compression.sleela.
-//
-// Algorithm ids: 0 STORE 1 RLE 2 HUFFMAN 3 LZW 4 DEFLATE ... 6 GZIP ... 14 ZIP.
-// States: 0 native 1 backend 2 recognized 3 container. Result codes: 0 ok
-// -1 unsupported -2 invalid -3 format -4 io -5 not-loaded -6 buffer.
-//
-// Syntax 1.11: method calls resolve on class-typed fields, so the Controller
-// holds its Verifier and Processor as fields (wired in create()) and delegates
-// through them. A GUI drives one object: ctrl.compress(id),
-// ctrl.resolveExtension(ext), ctrl.resultText(code) -- no facts by hand.
+< compression-pipeline.sleela -- the self-contained, runnable build of the >
+< SLeeLa compression Controller/Verifier/Processor pipeline. The compiler's >
+< `run` compiles one file as a single unit, so this aggregate inlines the >
+< collaborators (mirroring the split SLCompressionController / >
+< SLCompressionVerifier / SLCompressionProcessor / SLCompressionLoader >
+< discovery files) plus a `main` that drives them the way a GUI or app would: >
+< resolve -> load -> verify -> compress/decompress -> unload. The split >
+< per-class files are the package's discovery surface; this file is the >
+< executable counterpart, mirroring compression.sleela. >
+<  >
+< Algorithm ids: 0 STORE 1 RLE 2 HUFFMAN 3 LZW 4 DEFLATE ... 6 GZIP ... 14 ZIP. >
+< States: 0 native 1 backend 2 recognized 3 container. Result codes: 0 ok >
+< -1 unsupported -2 invalid -3 format -4 io -5 not-loaded -6 buffer. >
+<  >
+< Syntax 1.11: method calls resolve on class-typed fields, so the Controller >
+< holds its Verifier and Processor as fields (wired in create()) and delegates >
+< through them. A GUI drives one object: ctrl.compress(id), >
+< ctrl.resolveExtension(ext), ctrl.resultText(code) -- no facts by hand. >
 
-// ---- Verifier: extension/magic resolution + result text ----------------
+< ---- Verifier: extension/magic resolution + result text ---------------- >
 class Verifier {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-23";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-23";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   int resolveExtension(String ext) {
     if (ext == ".bin") { return 0; }
     if (ext == ".rle") { return 1; }

@@ -1,21 +1,60 @@
-/*
- * lib/os/hdd/SLHardDisk.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLHardDisk — a named rotational hard disk drive. It
- *   extends SLHardwareComponent and models the finite catalogue of HDD variants
- *   by the dimensions that distinguish them: form factor (3.5" / 2.5"),
- *   spindle speed (5400 / 7200 / 10000 / 15000 RPM), host interface (SATA III /
- *   SAS), recording technology (CMR vs SMR), cache size, capacity, and
- *   representative sustained transfer rate. A machine description requests an
- *   HDD by manufacturer + model and composes it as a bulk/boot storage device.
- *
- * Like SLSSD it is a storage device whose capacity-in-blocks maps onto the VM
- * block store; media kind is rotational so SLMachineModel marks it MEDIA_HDD.
- *
- * Family: os. Extends SLHardwareComponent.
- */
+<< lib/os/hdd/SLHardDisk.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLHardDisk — a named rotational hard disk drive. It
+     extends SLHardwareComponent and models the finite catalogue of HDD variants
+     by the dimensions that distinguish them: form factor (3.5" / 2.5"),
+     spindle speed (5400 / 7200 / 10000 / 15000 RPM), host interface (SATA III /
+     SAS), recording technology (CMR vs SMR), cache size, capacity, and
+     representative sustained transfer rate. A machine description requests an
+     HDD by manufacturer + model and composes it as a bulk/boot storage device.
+   
+   Like SLSSD it is a storage device whose capacity-in-blocks maps onto the VM
+   block store; media kind is rotational so SLMachineModel marks it MEDIA_HDD.
+   
+   Family: os. Extends SLHardwareComponent. >>
 #sleela 2.1
 class SLHardDisk extends SLHardwareComponent {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Interface ordinals.
   static final int IF_SATA3 = 0;  // 6 Gb/s
   static final int IF_SAS   = 1;  // 12 Gb/s enterprise

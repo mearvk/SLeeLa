@@ -1,17 +1,56 @@
-/*
- * lib/gui/version-gual/SLGuiIntegration.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiIntegration — the recommended combined architecture
- *   from gui/INTEGRATION.md. The three complementary paths are not mutually
- *   exclusive: SLeeLa owns business logic, state transitions, and the meaning
- *   of events; Java owns Swing/JavaFX presentation and desktop lifecycle; the
- *   native bridge provides a stable low-level boundary to the C/C++ core.
- */
+<< lib/gui/version-gual/SLGuiIntegration.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiIntegration — the recommended combined architecture
+     from gui/INTEGRATION.md. The three complementary paths are not mutually
+     exclusive: SLeeLa owns business logic, state transitions, and the meaning
+     of events; Java owns Swing/JavaFX presentation and desktop lifecycle; the
+     native bridge provides a stable low-level boundary to the C/C++ core. >>
 #sleela 2.1
-// SLeeLa gui front-end contract — the three-path integration posture.
-// Family: gui. Intentionally asymmetric: Java is a native desktop host for
-// SLeeLa, not a second business-logic implementation.
+< SLeeLa gui front-end contract — the three-path integration posture. >
+< Family: gui. Intentionally asymmetric: Java is a native desktop host for >
+< SLeeLa, not a second business-logic implementation. >
 class SLGuiIntegration {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   int PATH_JAVA_HOST = 1;      // Path 1: Java host -> SLeeLa business logic
   int PATH_SLEELA_INTENT = 2;  // Path 2: SLeeLa intent -> Java GUI
   int PATH_NATIVE_ABI = 3;     // Path 3: shared native ABI bridge

@@ -1,22 +1,61 @@
-/*
- * lib/cpu/components/SLComponentCatalog.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLComponentCatalog — the parts bin. It hands back
- *   ready-configured, real-world-spec'd components a user picks to build a
- *   Sleela executor: memory modules (DRAM through DDR5), storage (floppy, MFM
- *   HDD, SATA SSD, NVMe), optical drives (CD/DVD/Blu-ray), and system buses
- *   (ISA/PCI/AGP/PCIe). Each preset carries authentic speeds, timings, and
- *   capacities so a chosen configuration behaves like the real part.
- *
- * This is the user-facing selection surface: build an executor by naming parts
- * (e.g. ddr4_3200(), nvmeGen3(), bluRay()), not by filling in raw numbers.
- *
- * Family: cpu.components. Produces SLMemoryModule, SLMemoryInterface,
- *   SLCadenceConnector, SLStorageDevice, SLOpticalDrive, SLSystemBus,
- *   SLMotherboard.
- */
+<< lib/cpu/components/SLComponentCatalog.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLComponentCatalog — the parts bin. It hands back
+     ready-configured, real-world-spec'd components a user picks to build a
+     Sleela executor: memory modules (DRAM through DDR5), storage (floppy, MFM
+     HDD, SATA SSD, NVMe), optical drives (CD/DVD/Blu-ray), and system buses
+     (ISA/PCI/AGP/PCIe). Each preset carries authentic speeds, timings, and
+     capacities so a chosen configuration behaves like the real part.
+   
+   This is the user-facing selection surface: build an executor by naming parts
+   (e.g. ddr4_3200(), nvmeGen3(), bluRay()), not by filling in raw numbers.
+   
+   Family: cpu.components. Produces SLMemoryModule, SLMemoryInterface,
+     SLCadenceConnector, SLStorageDevice, SLOpticalDrive, SLSystemBus,
+     SLMotherboard. >>
 #sleela 2.1
 class SLComponentCatalog {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-09";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   // ---------------- Memory presets ----------------
   SLMemoryModule mem(String name, int tech, int capMiB, int bus, int clk, int cl, int ddr) {

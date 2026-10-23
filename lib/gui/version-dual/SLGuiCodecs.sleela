@@ -1,26 +1,65 @@
-/*
- * lib/gui/version-dual/SLGuiCodecs.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiCodecs — the GUI-facing view of the SLeeLa codec
- *   registry in /codecs. It mirrors codecs/include/sleela_codecs.h exactly (the
- *   20 audio-codec ids, their capability STATE — native/backend/recognized/
- *   container/event — MIME type, and file extensions) so GUI components can SEE
- *   what the system supports before offering media: a video canvas or audio
- *   recorder asks "can we play/record this?" and the URL bar / HTML renderer
- *   asks "is this <audio>/<source> type supported?". SLeeLa names the codecs
- *   here; the native /codecs backend (sleela_codec_* C ABI) does the actual
- *   encode/decode.
- *
- *   Capability semantics (from codecs/CODECS.md): native = in-tree encode/
- *   decode; backend = handler contract needs an approved library; recognized =
- *   identified only; container = carries audio but is not a codec; event =
- *   musical events, not PCM. "supported for playback" means native or backend.
- *
- * Family: gui. The SLeeLa-source mirror of /codecs; consulted by SLGuiVideoCanvas,
- *   SLGuiAudioRecorder, and SLGuiHtmlRenderer media elements.
- */
+<< lib/gui/version-dual/SLGuiCodecs.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiCodecs — the GUI-facing view of the SLeeLa codec
+     registry in /codecs. It mirrors codecs/include/sleela_codecs.h exactly (the
+     20 audio-codec ids, their capability STATE — native/backend/recognized/
+     container/event — MIME type, and file extensions) so GUI components can SEE
+     what the system supports before offering media: a video canvas or audio
+     recorder asks "can we play/record this?" and the URL bar / HTML renderer
+     asks "is this <audio>/<source> type supported?". SLeeLa names the codecs
+     here; the native /codecs backend (sleela_codec_* C ABI) does the actual
+     encode/decode.
+   
+     Capability semantics (from codecs/CODECS.md): native = in-tree encode/
+     decode; backend = handler contract needs an approved library; recognized =
+     identified only; container = carries audio but is not a codec; event =
+     musical events, not PCM. "supported for playback" means native or backend.
+   
+   Family: gui. The SLeeLa-source mirror of /codecs; consulted by SLGuiVideoCanvas,
+     SLGuiAudioRecorder, and SLGuiHtmlRenderer media elements. >>
 #sleela 2.1
 class SLGuiCodecs {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Capability state (mirrors sleela_codec_state).
   static final int STATE_NATIVE     = 0;
   static final int STATE_BACKEND    = 1;

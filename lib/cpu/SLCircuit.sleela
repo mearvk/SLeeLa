@@ -1,20 +1,59 @@
-/*
- * lib/cpu/SLCircuit.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLCircuit, a named combinational circuit built from gates.
- *   It is the organizing abstraction one level above SLGate: a circuit has a
- *   name, a declared gate/transistor budget, and tracks propagation so higher
- *   components (adders, decoders, the ALU) can describe themselves as circuits.
- *
- * Modern CPUs are hierarchies of circuits (standard cells -> functional blocks
- * -> units -> cores). This class models that hierarchy at the Sleela-source
- * layer: it counts constituent gates and composes sub-circuits, which lets the
- * whole design report a transistor-order estimate.
- *
- * Family: cpu. Pure Sleela structure.
- */
+<< lib/cpu/SLCircuit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLCircuit, a named combinational circuit built from gates.
+     It is the organizing abstraction one level above SLGate: a circuit has a
+     name, a declared gate/transistor budget, and tracks propagation so higher
+     components (adders, decoders, the ALU) can describe themselves as circuits.
+   
+   Modern CPUs are hierarchies of circuits (standard cells -> functional blocks
+   -> units -> cores). This class models that hierarchy at the Sleela-source
+   layer: it counts constituent gates and composes sub-circuits, which lets the
+   whole design report a transistor-order estimate.
+   
+   Family: cpu. Pure Sleela structure. >>
 #sleela 2.1
 class SLCircuit {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
   int gateCount;        // gates directly in this circuit
   int subCircuitCount;  // nested sub-circuits

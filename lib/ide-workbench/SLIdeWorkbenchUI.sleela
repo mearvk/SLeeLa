@@ -1,25 +1,64 @@
-/*
- * lib/ide-workbench/SLIdeWorkbenchUI.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLIdeWorkbenchUI — the IDE shell rendered as a REAL
- *   SleelaUI graphical interface, built on the /lib/gui support structure. The
- *   shell's chrome (the window, header bar, and the Open/Compile/Save/Close
- *   command buttons) is expressed as an SLGuiApp DOM: each command is a DOM
- *   button node with an onClick handler bound through the event bus, so a real
- *   click flows widget -> SLGuiHostAdapter -> SLGuiEvent -> handler -> command,
- *   instead of ad-hoc .clicked() polling. The rich content controls (the
- *   SLTreeView project explorer, the SLNotebook of SLTextView code editors, and
- *   the SLLoadingIndicator) are specialised SleelaUI widgets mounted into the
- *   DOM's body/status container handles. SLGuiApp runs the loop (pump -> poll
- *   activations -> dispatch -> reconcile); this class only reads the command
- *   handler latches and acts. The IDE is the first full consumer of the
- *   event/DOM/support stack.
- *
- * Family: ide-workbench. The GUI is SleelaUI driven through the lib/gui DOM;
- * SLeeLa owns meaning and dispatch.
- */
+<< lib/ide-workbench/SLIdeWorkbenchUI.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLIdeWorkbenchUI — the IDE shell rendered as a REAL
+     SleelaUI graphical interface, built on the /lib/gui support structure. The
+     shell's chrome (the window, header bar, and the Open/Compile/Save/Close
+     command buttons) is expressed as an SLGuiApp DOM: each command is a DOM
+     button node with an onClick handler bound through the event bus, so a real
+     click flows widget -> SLGuiHostAdapter -> SLGuiEvent -> handler -> command,
+     instead of ad-hoc .clicked() polling. The rich content controls (the
+     SLTreeView project explorer, the SLNotebook of SLTextView code editors, and
+     the SLLoadingIndicator) are specialised SleelaUI widgets mounted into the
+     DOM's body/status container handles. SLGuiApp runs the loop (pump -> poll
+     activations -> dispatch -> reconcile); this class only reads the command
+     handler latches and acts. The IDE is the first full consumer of the
+     event/DOM/support stack.
+   
+   Family: ide-workbench. The GUI is SleelaUI driven through the lib/gui DOM;
+   SLeeLa owns meaning and dispatch. >>
 #sleela 2.1
 class SLIdeWorkbenchUI {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   SLGuiApp app;                 // the /lib/gui support structure (app+window+DOM)
   SLGuiDom dom;
 

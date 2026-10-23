@@ -1,23 +1,62 @@
-/*
- * lib/cpu/SLGuestExecutable.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuestExecutable — a simple on-disk executable format
- *   for guest programs (a miniature ELF). It has a fixed header (magic, version,
- *   entry offset, opcode count) followed by an opcode section (op+arg pairs).
- *   A compiled SLGuestProgram can be *serialized* to this format and written to
- *   the guest filesystem; the loader can later *read it back from disk* and load
- *   it into the guest substrate — so programs come from storage, not only from
- *   inline compilation.
- *
- * On-disk layout (one word per slot in the backing store):
- *   [0] magic 0x5345584c ("SEXL")  [1] version  [2] entry  [3] opcode-count
- *   [4..] interleaved op,arg,op,arg,...
- *
- * Family: cpu. Composes SLRAM (image bytes), SLGuestFileSystem (storage),
- *   SLSleelaVM (load target).
- */
+<< lib/cpu/SLGuestExecutable.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuestExecutable — a simple on-disk executable format
+     for guest programs (a miniature ELF). It has a fixed header (magic, version,
+     entry offset, opcode count) followed by an opcode section (op+arg pairs).
+     A compiled SLGuestProgram can be *serialized* to this format and written to
+     the guest filesystem; the loader can later *read it back from disk* and load
+     it into the guest substrate — so programs come from storage, not only from
+     inline compilation.
+   
+   On-disk layout (one word per slot in the backing store):
+     [0] magic 0x5345584c ("SEXL")  [1] version  [2] entry  [3] opcode-count
+     [4..] interleaved op,arg,op,arg,...
+   
+   Family: cpu. Composes SLRAM (image bytes), SLGuestFileSystem (storage),
+     SLSleelaVM (load target). >>
 #sleela 2.1
 class SLGuestExecutable {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAGIC = 1397113932; // 0x5345584C 'SEXL'
   static final int HDR_WORDS = 4;
 

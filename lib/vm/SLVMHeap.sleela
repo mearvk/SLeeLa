@@ -1,21 +1,60 @@
-/*
- * lib/vm/SLVMHeap.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLVMHeap — the object store of the secondary Sleela VM.
- *   It hands out stable integer handles and lays every object out over SLRAM as
- *   a small header (classId, fieldCount, mark) followed by its field slots. A
- *   value never embeds another object; it embeds a handle, so the GC can relocate
- *   or reclaim without the SLeeLa surface needing pointers.
- *
- * Allocation is a bump pointer over an SLRAM arena (unbounded tape => the VM can
- * express arbitrarily large object graphs). mark()/sweepReset() give the native
- * tri-colour collector (GC.md) a surface to drive; here they maintain the mark
- * bit so a Sleela-sourced VM can reason about liveness without crossing to C.
- *
- * Family: vm. Composes SLRAM; composed by SLVM.
- */
+<< lib/vm/SLVMHeap.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLVMHeap — the object store of the secondary Sleela VM.
+     It hands out stable integer handles and lays every object out over SLRAM as
+     a small header (classId, fieldCount, mark) followed by its field slots. A
+     value never embeds another object; it embeds a handle, so the GC can relocate
+     or reclaim without the SLeeLa surface needing pointers.
+   
+   Allocation is a bump pointer over an SLRAM arena (unbounded tape => the VM can
+   express arbitrarily large object graphs). mark()/sweepReset() give the native
+   tri-colour collector (GC.md) a surface to drive; here they maintain the mark
+   bit so a Sleela-sourced VM can reason about liveness without crossing to C.
+   
+   Family: vm. Composes SLRAM; composed by SLVM. >>
 #sleela 2.1
 class SLVMHeap {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // Per-object header layout (words), then fieldCount field slots follow.
   static final int H_CLASS  = 0;   // classId of this object
   static final int H_FIELDS = 1;   // number of field slots

@@ -1,25 +1,64 @@
-/*
- * lib/moral-capacitor/SLMoralCertificateAuthority.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLMoralCertificateAuthority — the issuer of a Certificate
- *   of Morals(TM). Given a product name and a live Moral Capacitor (its policy
- *   and armed red-line set), the authority mints an SLMoralCertificate: it
- *   records the moral posture, assigns a serial and validity span, computes a
- *   deterministic seal over the certificate's canonical body, and applies it.
- *   The same authority re-verifies a certificate by recomputing the seal, so a
- *   Guard can trust that a certificate was issued here and not altered.
- *
- * The seal is a deterministic fold over the canonical body keyed on the
- * authority's name — a self-contained, reproducible integrity tag. In
- * production it is hardened by signing the body with lib/crypto SLDigest +
- * SLSignature under the authority's key; this class keeps the issue/verify
- * contract stable regardless of which seal backend is linked.
- *
- * Family: moral-capacitor. Issues/verifies SLMoralCertificate; reads
- *   SLMoralCapacitor + SLMoralPolicy.
- */
+<< lib/moral-capacitor/SLMoralCertificateAuthority.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLMoralCertificateAuthority — the issuer of a Certificate
+     of Morals(TM). Given a product name and a live Moral Capacitor (its policy
+     and armed red-line set), the authority mints an SLMoralCertificate: it
+     records the moral posture, assigns a serial and validity span, computes a
+     deterministic seal over the certificate's canonical body, and applies it.
+     The same authority re-verifies a certificate by recomputing the seal, so a
+     Guard can trust that a certificate was issued here and not altered.
+   
+   The seal is a deterministic fold over the canonical body keyed on the
+   authority's name — a self-contained, reproducible integrity tag. In
+   production it is hardened by signing the body with lib/crypto SLDigest +
+   SLSignature under the authority's key; this class keeps the issue/verify
+   contract stable regardless of which seal backend is linked.
+   
+   Family: moral-capacitor. Issues/verifies SLMoralCertificate; reads
+     SLMoralCapacitor + SLMoralPolicy. >>
 #sleela 2.1
 class SLMoralCertificateAuthority {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String authority;   // the issuing party name
   String key;         // the authority's seal key (keeps the fold authority-specific)
   int issuedCount;

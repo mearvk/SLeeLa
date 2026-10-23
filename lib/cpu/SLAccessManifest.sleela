@@ -1,30 +1,69 @@
-/*
- * lib/cpu/SLAccessManifest.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLAccessManifest — the compact, serializable record of a
- *   program's ACCESS SEMANTICS that a compiled .sleela image carries, the exact
- *   counterpart of SLTimingManifest. Where the timing manifest states the
- *   operating point so the VM need not guess hardware quality, the access
- *   manifest states what the program's public / private / protected members
- *   MEAN as system roles (SLAccessSemantics), so the VM need not guess a
- *   file-network topology — it reads the stated roles and stands up a clean
- *   System backdrop:
- *
- *     public    -> exposed hop  (REST endpoint / hop controller, ordered chain)
- *     private   -> local system (admin / safety / security / backup concerns)
- *     protected -> integrity-guarded (double-input / virus-scan / integrity / ...)
- *
- *   The manifest summarizes, for the whole image: how many members fall in each
- *   role, the length of the ordered public hop chain (doc 1 -> 2 -> 3 ...), and
- *   the default guard / exposure / local-concern bundles the VM should realize.
- *   It is MAGIC-guarded and versioned so a consumer can tell "this image states
- *   its access semantics" from "this image expects me to assume them".
- *
- * Family: cpu. Serialization layer over SLAccessSemantics; embedded in
- *   SLProgram; read back by the VM / SLExtensibleNetwork.
- */
+<< lib/cpu/SLAccessManifest.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLAccessManifest — the compact, serializable record of a
+     program's ACCESS SEMANTICS that a compiled .sleela image carries, the exact
+     counterpart of SLTimingManifest. Where the timing manifest states the
+     operating point so the VM need not guess hardware quality, the access
+     manifest states what the program's public / private / protected members
+     MEAN as system roles (SLAccessSemantics), so the VM need not guess a
+     file-network topology — it reads the stated roles and stands up a clean
+     System backdrop:
+   
+       public    -> exposed hop  (REST endpoint / hop controller, ordered chain)
+       private   -> local system (admin / safety / security / backup concerns)
+       protected -> integrity-guarded (double-input / virus-scan / integrity / ...)
+   
+     The manifest summarizes, for the whole image: how many members fall in each
+     role, the length of the ordered public hop chain (doc 1 -> 2 -> 3 ...), and
+     the default guard / exposure / local-concern bundles the VM should realize.
+     It is MAGIC-guarded and versioned so a consumer can tell "this image states
+     its access semantics" from "this image expects me to assume them".
+   
+   Family: cpu. Serialization layer over SLAccessSemantics; embedded in
+     SLProgram; read back by the VM / SLExtensibleNetwork. >>
 #sleela 2.1
 class SLAccessManifest {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // --- magic / identity ---
   static final int MAGIC = 5214;   // "SL-ACCESS" marker word (SL-TIMING is 5213)
   int version;

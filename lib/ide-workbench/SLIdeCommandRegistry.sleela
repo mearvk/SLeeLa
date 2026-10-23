@@ -1,17 +1,56 @@
-/*
- * lib/ide-workbench/SLIdeCommandRegistry.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLIdeCommandRegistry — the IDE command system lib/gui
- *   lacks. SLGuiAction models a single named, take-the-latch action; an IDE
- *   needs a registry of commands (Open, Save, Save All, Compile, Run, Close)
- *   each mapped to a stable id, a menu/toolbar label, and a SLeeLa operation
- *   name the host invokes. This is the single place that binds UI affordances
- *   (menus from lib/ui/SLMenu, toolbars, shortcuts) to the services:
- *   compile -> lib/nordshrift + lib/compiler, save/load -> lib/sldocument.
- */
+<< lib/ide-workbench/SLIdeCommandRegistry.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLIdeCommandRegistry — the IDE command system lib/gui
+     lacks. SLGuiAction models a single named, take-the-latch action; an IDE
+     needs a registry of commands (Open, Save, Save All, Compile, Run, Close)
+     each mapped to a stable id, a menu/toolbar label, and a SLeeLa operation
+     name the host invokes. This is the single place that binds UI affordances
+     (menus from lib/ui/SLMenu, toolbars, shortcuts) to the services:
+     compile -> lib/nordshrift + lib/compiler, save/load -> lib/sldocument. >>
 #sleela 2.1
-// Family: ide-workbench. Named commands bound to SLeeLa operations.
+< Family: ide-workbench. Named commands bound to SLeeLa operations. >
 class SLIdeCommandRegistry {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_COMMANDS = 1024;
 
   String[] ids;                // stable command id, e.g. "ide.compile"

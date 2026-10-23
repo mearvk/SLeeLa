@@ -1,25 +1,64 @@
-/*
- * lib/cpu/SLGuestVM.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuestVM — one guest virtual machine managed by the
- *   hypervisor. It presents a virtual CPU over a window of host memory
- *   (guest-physical addressing) and, crucially, EXECUTES the guest as a stream
- *   of canonical SLeeLa opcodes on an embedded SLSleelaVM substrate. Guest code
- *   is therefore run by the same Turing-complete engine as everything else in
- *   the model (step 1 of the OS-VM roadmap): the guest is not merely ticked and
- *   counted — its opcodes are actually dispatched.
- *
- * A guest TRAP/SYSCALL opcode is a VM-exit: the vCPU stops at that point, the
- * hypervisor/guest-kernel emulates the operation, and the guest resumes. VM
- * exits are recorded so the hypervisor can account for and service them.
- *
- * Guest address translation uses a real MMU (SLMMU, page tables + protection)
- * when one is attached, falling back to a single base-offset window otherwise.
- *
- * Family: cpu. Composes SLCore, SLSleelaVM, SLRAM, SLMMU.
- */
+<< lib/cpu/SLGuestVM.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuestVM — one guest virtual machine managed by the
+     hypervisor. It presents a virtual CPU over a window of host memory
+     (guest-physical addressing) and, crucially, EXECUTES the guest as a stream
+     of canonical SLeeLa opcodes on an embedded SLSleelaVM substrate. Guest code
+     is therefore run by the same Turing-complete engine as everything else in
+     the model (step 1 of the OS-VM roadmap): the guest is not merely ticked and
+     counted — its opcodes are actually dispatched.
+   
+   A guest TRAP/SYSCALL opcode is a VM-exit: the vCPU stops at that point, the
+   hypervisor/guest-kernel emulates the operation, and the guest resumes. VM
+   exits are recorded so the hypervisor can account for and service them.
+   
+   Guest address translation uses a real MMU (SLMMU, page tables + protection)
+   when one is attached, falling back to a single base-offset window otherwise.
+   
+   Family: cpu. Composes SLCore, SLSleelaVM, SLRAM, SLMMU. >>
 #sleela 2.1
 class SLGuestVM {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;
   SLCore vcpu;          // virtual CPU (the guest's modeled hardware core)
   SLSleelaVM substrate; // the Turing-complete engine that actually runs guest code

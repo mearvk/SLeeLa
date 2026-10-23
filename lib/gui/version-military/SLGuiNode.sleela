@@ -1,25 +1,64 @@
-/*
- * lib/gui/version-military/SLGuiNode.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLGuiNode — a DHTML-style element node in the /lib/gui
- *   document model. Like a DOM element it has a tag (e.g. "window", "box",
- *   "button", "label", "entry"), a unique id, text content, a parent id, an
- *   ordered list of child ids, a flat attribute map, a flat style map, and a
- *   visibility/enabled state. SLeeLa code (or a script) manipulates the tree
- *   through these — setAttribute, setStyle, show/hide, enable/disable,
- *   setText — and the host reflects the node onto a real SleelaUI widget. A node
- *   carries an optional widget handle so a change can be pushed to the live
- *   control, but the node itself is the SLeeLa-owned source of truth.
- *
- *   In the 3.0 (thual) line a node may also carry an SLGuiEffects bundle
- *   (lighting/glow, 3D shine, shadow, metal, rotation incl. scheduled "schene"
- *   rotation, fade in/out, activation audio); effects() lazily creates it and
- *   applyEffects() flattens it into the node's style for the reconciler.
- *
- * Family: gui. The DOM is SLeeLa-owned; the host mirrors it onto widgets.
- */
+<< lib/gui/version-military/SLGuiNode.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiNode — a DHTML-style element node in the /lib/gui
+     document model. Like a DOM element it has a tag (e.g. "window", "box",
+     "button", "label", "entry"), a unique id, text content, a parent id, an
+     ordered list of child ids, a flat attribute map, a flat style map, and a
+     visibility/enabled state. SLeeLa code (or a script) manipulates the tree
+     through these — setAttribute, setStyle, show/hide, enable/disable,
+     setText — and the host reflects the node onto a real SleelaUI widget. A node
+     carries an optional widget handle so a change can be pushed to the live
+     control, but the node itself is the SLeeLa-owned source of truth.
+   
+     In the 3.0 (thual) line a node may also carry an SLGuiEffects bundle
+     (lighting/glow, 3D shine, shadow, metal, rotation incl. scheduled "schene"
+     rotation, fade in/out, activation audio); effects() lazily creates it and
+     applyEffects() flattens it into the node's style for the reconciler.
+   
+   Family: gui. The DOM is SLeeLa-owned; the host mirrors it onto widgets. >>
 #sleela 2.1
 class SLGuiNode {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-16";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_CHILDREN = 4096;
   static final int MAX_PAIRS = 64;      // attributes / style entries per node
 

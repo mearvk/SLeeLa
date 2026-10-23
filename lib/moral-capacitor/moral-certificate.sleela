@@ -1,24 +1,65 @@
 #sleela 2.1
-// moral-certificate.sleela -- the self-contained, runnable demonstrator of the
-// Certificate of Morals(TM) and the Guard of the Moral Code (lib/moral-capacitor
-// SLMoralCertificate, SLMoralCertificateAuthority, SLMoralCodeGuard,
-// SLMoralCertified). The SLeeLa compiler's `run` compiles one file as a single
-// unit, so this aggregate inlines a compact certificate + authority + guard and
-// a `main` that:
-//   1. issues a Certificate of Morals over a product's moral policy,
-//   2. verifies it against the issuing authority (seal recompute),
-//   3. guards the product -> ADMIT, then shows that tampering or a missing
-//      certificate -> REFUSE.
-// The split per-class files are the full component; this file is the executable
-// counterpart, mirroring the moral-capacitor.sleela convention.
-//
-// The point it demonstrates: moral code and its certificate travel WITH a
-// product. The authority seals a warranty that the Moral Capacitor is embedded
-// and enforced; the guard admits the product only when that certificate is
-// present, authentic, unexpired, and consistent -- so Morals and Certificates
-// are included in all our Sleela software by construction, not by hope.
+< moral-certificate.sleela -- the self-contained, runnable demonstrator of the >
+< Certificate of Morals(TM) and the Guard of the Moral Code (lib/moral-capacitor >
+< SLMoralCertificate, SLMoralCertificateAuthority, SLMoralCodeGuard, >
+< SLMoralCertified). The SLeeLa compiler's `run` compiles one file as a single >
+< unit, so this aggregate inlines a compact certificate + authority + guard and >
+< a `main` that: >
+< 1. issues a Certificate of Morals over a product's moral policy, >
+< 2. verifies it against the issuing authority (seal recompute), >
+< 3. guards the product -> ADMIT, then shows that tampering or a missing >
+< certificate -> REFUSE. >
+< The split per-class files are the full component; this file is the executable >
+< counterpart, mirroring the moral-capacitor.sleela convention. >
+<  >
+< The point it demonstrates: moral code and its certificate travel WITH a >
+< product. The authority seals a warranty that the Moral Capacitor is embedded >
+< and enforced; the guard admits the product only when that certificate is >
+< present, authentic, unexpired, and consistent -- so Morals and Certificates >
+< are included in all our Sleela software by construction, not by hope. >
 
 struct Cert {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
     String subject; String issuer; String policy; int threshold; int redlines;
     int capacitor; String expires; String seal;
 }

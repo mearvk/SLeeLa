@@ -1,22 +1,61 @@
-/*
- * lib/vm/src/sleela/SLVmMemory.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLVmMemory — the OOD equivalent of the native memory
- *   hardening layer (virtual-machine/vm-version/002/vm_memory.{h,c}, v002). It
- *   adds WARNING and CRITICAL pressure watermarks over the memory manager's
- *   live/limit accounting and classifies a condition (NORMAL/PRESSURE/CRITICAL/
- *   LIMIT), edge-triggering a report through SLVmReport only when a watermark is
- *   crossed (not per allocation) and a recovery notice when it returns to
- *   normal. The native side samples sleela_memmgr; this class holds the
- *   watermarks + the fed live/limit sample and the edge-trigger latch.
- *
- * Mirrors: enum VmMemCondition, vm_memory_set_watermarks/poll/condition/
- *   usage_fraction/report.
- *
- * Family: vm. Composes SLVmReport.
- */
+<< lib/vm/src/sleela/SLVmMemory.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLVmMemory — the OOD equivalent of the native memory
+     hardening layer (virtual-machine/vm-version/002/vm_memory.{h,c}, v002). It
+     adds WARNING and CRITICAL pressure watermarks over the memory manager's
+     live/limit accounting and classifies a condition (NORMAL/PRESSURE/CRITICAL/
+     LIMIT), edge-triggering a report through SLVmReport only when a watermark is
+     crossed (not per allocation) and a recovery notice when it returns to
+     normal. The native side samples sleela_memmgr; this class holds the
+     watermarks + the fed live/limit sample and the edge-trigger latch.
+   
+   Mirrors: enum VmMemCondition, vm_memory_set_watermarks/poll/condition/
+     usage_fraction/report.
+   
+   Family: vm. Composes SLVmReport. >>
 #sleela 2.1
 class SLVmMemory {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "unknown";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "unknown";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int NORMAL   = 0;
   static final int PRESSURE = 1;
   static final int CRITICAL = 2;

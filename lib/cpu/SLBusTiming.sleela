@@ -1,24 +1,63 @@
-/*
- * lib/cpu/SLBusTiming.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLBusTiming — the careful, nameful timing + variable
- *   clock speed of one interconnect (front-side / memory / peripheral bus). A
- *   bus here is not assumed to "just work" at a frequency: its clock is a
- *   VARIABLE speed with a floor and a ceiling the operator may dial between,
- *   and three named SLTiming budgets (address, data, control) are checked
- *   against the period that frequency implies. Bus timing is given special care
- *   — this is the class the thesis "timing issues for buses shall be careful
- *   and nameful" lives in — so the data-strobe path carries its own name and
- *   reason and the whole bus reports whether it is honored at the dialed speed.
- *
- * It rides on an SLVoltageRail: the achievable clock ceiling scales with the
- * rail's effective (settled, under-load) voltage, so under-volting a bus
- * lowers the speed it can be trusted at rather than silently corrupting it.
- *
- * Family: cpu. Composes SLTiming and SLVoltageRail; partners SLBus/SLClock.
- */
+<< lib/cpu/SLBusTiming.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLBusTiming — the careful, nameful timing + variable
+     clock speed of one interconnect (front-side / memory / peripheral bus). A
+     bus here is not assumed to "just work" at a frequency: its clock is a
+     VARIABLE speed with a floor and a ceiling the operator may dial between,
+     and three named SLTiming budgets (address, data, control) are checked
+     against the period that frequency implies. Bus timing is given special care
+     — this is the class the thesis "timing issues for buses shall be careful
+     and nameful" lives in — so the data-strobe path carries its own name and
+     reason and the whole bus reports whether it is honored at the dialed speed.
+   
+   It rides on an SLVoltageRail: the achievable clock ceiling scales with the
+   rail's effective (settled, under-load) voltage, so under-volting a bus
+   lowers the speed it can be trusted at rather than silently corrupting it.
+   
+   Family: cpu. Composes SLTiming and SLVoltageRail; partners SLBus/SLClock. >>
 #sleela 2.1
 class SLBusTiming {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name;         // nameful bus: "FSB", "MemBus", "PCIe", "IOBus", ...
   int minMHz;          // lowest clock the operator may dial the bus to
   int maxMHz;          // highest clock the bus is validated for

@@ -1,24 +1,63 @@
-/*
- * lib/user-interface/SLTextView.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLTextView — a competent SleelaUI multi-line editable text
- *   / code editor, written entirely in SLeeLa. It owns the text model (a line
- *   buffer, a caret at line/column, and an optional selection span) and renders
- *   it onto an SLCanvasView via the SleelaUI Draw API: a gutter with 1-based
- *   line numbers, the text lines in a monospace metric, the current-line
- *   highlight, the selection band, and a block caret. It exposes real editing
- *   operations — insert text, newline, backspace, delete, and caret movement —
- *   and a dirty flag that distinguishes a load from user edits. This is the code
- *   editor an IDE needs, with no new C ABI: it composes SLCanvasView +
- *   SLDrawContext.
- *
- * An SLTextView IS an SLWidget (its handle is the canvas view's handle).
- *
- * Family: user-interface. Native VM/UI work crosses the explicit `ui*`/`draw*`
- * SLVM bridges.
- */
+<< lib/user-interface/SLTextView.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLTextView — a competent SleelaUI multi-line editable text
+     / code editor, written entirely in SLeeLa. It owns the text model (a line
+     buffer, a caret at line/column, and an optional selection span) and renders
+     it onto an SLCanvasView via the SleelaUI Draw API: a gutter with 1-based
+     line numbers, the text lines in a monospace metric, the current-line
+     highlight, the selection band, and a block caret. It exposes real editing
+     operations — insert text, newline, backspace, delete, and caret movement —
+     and a dirty flag that distinguishes a load from user edits. This is the code
+     editor an IDE needs, with no new C ABI: it composes SLCanvasView +
+     SLDrawContext.
+   
+   An SLTextView IS an SLWidget (its handle is the canvas view's handle).
+   
+   Family: user-interface. Native VM/UI work crosses the explicit `ui*`/`draw*`
+   SLVM bridges. >>
 #sleela 2.1
 class SLTextView extends SLWidget {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int MAX_LINES = 1048576;
   static final int LINE_HEIGHT = 18;   // px per text row
   static final int CHAR_WIDTH  = 9;    // px per monospace cell

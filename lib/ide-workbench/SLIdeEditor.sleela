@@ -1,17 +1,56 @@
-/*
- * lib/ide-workbench/SLIdeEditor.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLIdeEditor — a real code-editor buffer for one open
- *   source file. Where lib/ui/SLTextArea is a visibility stub, SLIdeEditor adds
- *   the editor state an IDE needs: a text buffer, a dirty (unsaved) flag, a
- *   caret offset, a selection span, and a revision marker that mirrors the
- *   lib/gui SLGuiDocument revision fingerprint so external changes can be
- *   reconciled. Presentation (actual glyphs, syntax colors) is still owned by
- *   the Java/native host; SLeeLa owns the buffer and the meaning of edits.
- */
+<< lib/ide-workbench/SLIdeEditor.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLIdeEditor — a real code-editor buffer for one open
+     source file. Where lib/ui/SLTextArea is a visibility stub, SLIdeEditor adds
+     the editor state an IDE needs: a text buffer, a dirty (unsaved) flag, a
+     caret offset, a selection span, and a revision marker that mirrors the
+     lib/gui SLGuiDocument revision fingerprint so external changes can be
+     reconciled. Presentation (actual glyphs, syntax colors) is still owned by
+     the Java/native host; SLeeLa owns the buffer and the meaning of edits. >>
 #sleela 2.1
-// Family: ide-workbench. One editor == one open document buffer.
+< Family: ide-workbench. One editor == one open document buffer. >
 class SLIdeEditor {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String documentId;           // stable IDE-facing identity (matches SLGuiDocument.id)
   String path;                 // resolved host path, "" when untitled
   String language;             // "sleela" | "sst" | "c" | "cpp" | "java"

@@ -1,22 +1,61 @@
-/*
- * lib/cpu/motorola-68000/SL68000CPU.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SL68000CPU — a runnable model of the Motorola 68000: a
- *   16/32-bit CISC with eight data registers D0..D7 and eight address registers
- *   A0..A7 (A7 is the stack pointer), plus the X N Z V C condition codes. It
- *   extends SLCPURuntime and adds the 68000 register set, a decoder, and the
- *   effective-address / bus-arbitration hooks the skeleton named.
- *
- * Instruction model (op in high byte, then a 4-bit dst and 4-bit src selector
- * or an immediate in the low byte): MOVE Dn,Dm / MOVEQ #imm,Dn / MOVE Dn,(An) /
- * MOVE (An),Dn / ADD Dn,Dm / SUB Dn,Dm / ADDQ #imm,Dn / LEA #imm,An / JMP abs /
- * BEQ / BNE / RTS(halt) / NOP. Compact teaching encoding, enough to run the CPU
- * and model further .sleela inputs.
- *
- * Family: cpu. Extends SLCPURuntime.
- */
+<< lib/cpu/motorola-68000/SL68000CPU.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SL68000CPU — a runnable model of the Motorola 68000: a
+     16/32-bit CISC with eight data registers D0..D7 and eight address registers
+     A0..A7 (A7 is the stack pointer), plus the X N Z V C condition codes. It
+     extends SLCPURuntime and adds the 68000 register set, a decoder, and the
+     effective-address / bus-arbitration hooks the skeleton named.
+   
+   Instruction model (op in high byte, then a 4-bit dst and 4-bit src selector
+   or an immediate in the low byte): MOVE Dn,Dm / MOVEQ #imm,Dn / MOVE Dn,(An) /
+   MOVE (An),Dn / ADD Dn,Dm / SUB Dn,Dm / ADDQ #imm,Dn / LEA #imm,An / JMP abs /
+   BEQ / BNE / RTS(halt) / NOP. Compact teaching encoding, enough to run the CPU
+   and model further .sleela inputs.
+   
+   Family: cpu. Extends SLCPURuntime. >>
 #sleela 2.1
 class SL68000CPU extends SLCPURuntime {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // D0..D7 => 0..7, A0..A7 => 8..15 (A7 == stack pointer).
   static final int D0 = 0;
   static final int A0 = 8;

@@ -1,25 +1,66 @@
 #sleela 2.1
-// 04-very-senior: a production-grade VM assembly, end to end -- compilable.
-//
-// A very-senior user drives the whole VM lifecycle with the advanced
-// subsystems: a resilient component fetcher (the SLVMComponentFetcher +
-// SLSupportDownloader fallback: primary -> official -> college/edu -> archive),
-// an OS system-call bridge gated by feature bits, a dynamic memory guard with a
-// quality/aggressiveness setting, a challenge/report manager that verifies the
-// assembly, and a build plan that emits the C/C++ the VM compiles toward. It
-// mirrors lib/vm's advanced tiers (SLVMComponentFetcher, SleelaVMSystemCall
-// Bridge, SleelaVMDynamicMemoryGuard, SleelaVMChallengeManagerAdvanced,
-// SleelaVMReportsManager, SleelaVMBuildPlan) as composed, running objects.
-//
-// New ideas over senior: resilient acquisition with ranked fallback, a
-// capability bridge gated by features, a self-verifying challenge pass with a
-// report, and emitted build artifacts -- the full "assemble, verify, emit" arc.
-//
-// Run:  ./impl/build/sleela run lib/vm/examples/04-very-senior/very-senior-vm.sleela
+< 04-very-senior: a production-grade VM assembly, end to end -- compilable. >
+<  >
+< A very-senior user drives the whole VM lifecycle with the advanced >
+< subsystems: a resilient component fetcher (the SLVMComponentFetcher + >
+< SLSupportDownloader fallback: primary -> official -> college/edu -> archive), >
+< an OS system-call bridge gated by feature bits, a dynamic memory guard with a >
+< quality/aggressiveness setting, a challenge/report manager that verifies the >
+< assembly, and a build plan that emits the C/C++ the VM compiles toward. It >
+< mirrors lib/vm's advanced tiers (SLVMComponentFetcher, SleelaVMSystemCall >
+< Bridge, SleelaVMDynamicMemoryGuard, SleelaVMChallengeManagerAdvanced, >
+< SleelaVMReportsManager, SleelaVMBuildPlan) as composed, running objects. >
+<  >
+< New ideas over senior: resilient acquisition with ranked fallback, a >
+< capability bridge gated by features, a self-verifying challenge pass with a >
+< report, and emitted build artifacts -- the full "assemble, verify, emit" arc. >
+<  >
+< Run:  ./impl/build/sleela run lib/vm/examples/04-very-senior/very-senior-vm.sleela >
 
-// ---- Resilient component fetcher (mirrors SLVMComponentFetcher) --------
-// Ranked support tiers by likelihood of a final/college reference.
+< ---- Resilient component fetcher (mirrors SLVMComponentFetcher) -------- >
+< Ranked support tiers by likelihood of a final/college reference. >
 class ComponentFetcher {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
   // tier 0 authoritative, 1 official-mirror, 2 college/edu, 3 archive
   String url(String kind, int tier) {
     if (kind == "runtime") {
