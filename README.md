@@ -1,5 +1,5 @@
 # SLeeLa
-<p align="center"><img src="images/brand/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
 <p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/merchandise/sleela-marketing-logo-001.png" alt="SLeeLa Marketing Logo" width="560"></p>
 
 <p align="center"><strong>A native systems language, compiler, runtime, and virtual-machine ecosystem.</strong></p>
