@@ -384,10 +384,20 @@ StmtP Parser::parseSimpleStatement(){
 }
 ExprP Parser::parseExpr(){return parseAssignment();}
 ExprP Parser::parseAssignment(){
-    ExprP e=parseConditional();
+    ExprP e=parseStructOffload();
     if(check(Tok::Assign)||check(Tok::PlusAssign)||check(Tok::MinusAssign)||check(Tok::StarAssign)||check(Tok::SlashAssign)||check(Tok::PercentAssign)){
         std::string op=cur().text; i_++; return std::make_unique<AssignmentExpr>(op,std::move(e),parseAssignment());
     }
+    return e;
+}
+// Structural-offload send: `source ::: receiver(args)`. The `:::` operator tells
+// the VM to perform a structured, element-by-element transfer of the left
+// operand's data into the right-hand receiver (framing done by the interpreter,
+// not a source for-loop). Low precedence, left-associative, so it composes:
+//   a ::: b(n) ::: c(m)  ==  (a ::: b(n)) ::: c(m).
+ExprP Parser::parseStructOffload(){
+    ExprP e=parseConditional();
+    while(accept(Tok::TripleColon)){ e=std::make_unique<Binary>(":::",std::move(e),parseConditional()); }
     return e;
 }
 ExprP Parser::parseConditional(){

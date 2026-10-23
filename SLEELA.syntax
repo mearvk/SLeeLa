@@ -120,8 +120,26 @@ the base. An underscore `_` may separate digits for readability (e.g.
     comparison   ==  !=  <   <=  >   >=
     logical      &&  ||  !
     assignment   =
+    transfer     :::                         // structural-offload send (below)
     grouping     (   )   {   }
     separators   ;   ,
+
+The **structural-offload send** `:::` transfers a `String`'s data to a receiver
+as a VM-performed, element-by-element stream — the framing and iteration are
+done by the interpreter, not by a source `for` loop:
+
+    send-expr ::= expr ":::" receiver          // left-to-right, low precedence
+    receiver  ::= expr                          // evaluates to a receiver handle
+
+`source ::: receiver` frames `source` (one UTF-8 code point per element) into
+`receiver` through the VM's transport, then evaluates to the **source**, so the
+same String keeps flowing to further receivers — `x ::: a ::: b` sends `x` to
+`a`, then `x` to `b`. The left operand must be `String`; the receiver evaluates
+to a reach handle (e.g. `Munction.start(name)`). It lowers to the `OP_SSEND`
+opcode; the VM holds a structural send handler and the receiver transport, so
+SLeeLa source only states the framing intent. Example (x already has a value):
+
+    String x ::: solution(nxm);     // the VM streams x's elements into solution
 
 --------------------------------------------------------------------------------
 ## 2. Program structure

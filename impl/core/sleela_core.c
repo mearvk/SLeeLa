@@ -1165,6 +1165,34 @@ static SLResult run_thread(SLThread* t) {
             SLValue dv=POP(), hv=POP(); if(hv.type!=SL_INT||dv.type!=SL_STR) TERR("Munction send(datum) requires a reach handle and a String datum");
             SLMunction* m=munction_get(vm,(int)hv.as.i); if(m){const char* d=slvm_str(vm,dv.as.s); slmunction_send(m,d,strlen(d));} PUSH(hv);
         } break;
+        /* OP_SSEND: the ::: structural-offload send. Operands were emitted
+         * source-then-receiver, so the receiver reach handle is on top. The VM
+         * frames the String source element-by-element (one UTF-8 code point per
+         * frame) into the receiver via the existing Munction SDPS transport --
+         * the structural iteration/framing is performed HERE, not by a source
+         * for-loop. Pushes the SOURCE back so the same String can keep flowing
+         * to further receivers (`x ::: a ::: b` fans x out to a then b). */
+        case OP_SSEND: {
+            SLValue rv=POP(), sv=POP();
+            if(rv.type!=SL_INT||sv.type!=SL_STR) TERR("::: structural send requires a String source and a receiver reach handle");
+            SLMunction* m=munction_get(vm,(int)rv.as.i);
+            if(m){
+                const char* s=slvm_str(vm,sv.as.s);
+                size_t i=0;
+                while(s[i]!='\0'){
+                    /* one UTF-8 code point = one structural element/frame */
+                    unsigned char c0=(unsigned char)s[i];
+                    size_t clen=1;
+                    if(c0>=0xF0) clen=4; else if(c0>=0xE0) clen=3; else if(c0>=0xC0) clen=2;
+                    size_t j=0; char elem[8];
+                    while(j<clen && s[i+j]!='\0'){ elem[j]=s[i+j]; j++; }
+                    elem[j]='\0';
+                    slmunction_send(m,elem,j);
+                    i+=j;
+                }
+            }
+            PUSH(sv);
+        } break;
         case OP_MUN_THATCH: {
             SLValue sv=POP(), hv=POP(); if(hv.type!=SL_INT||sv.type!=SL_STR) TERR("Munction thatch(interims) requires a reach handle and a String spec");
             SLMunction* m=munction_get(vm,(int)hv.as.i); if(m) slmunction_thatch(m,slvm_str(vm,sv.as.s)); PUSH(hv);

@@ -321,7 +321,17 @@ class Analyzer{
    if(!numeric(r)&&r.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
    return{(l.kind==Kind::Double||r.kind==Kind::Double)?Kind::Double:Kind::Int,{}};}
   if(b.op=="<"||b.op=="<="||b.op==">"||b.op==">="){if(l.kind==Kind::Unsigned||r.kind==Kind::Unsigned){if(l.kind!=Kind::Unsigned||r.kind!=Kind::Unsigned||l.name!=r.name)err("comparison '"+b.op+"' requires unsigned operands of the same width");}else if((!numeric(l)||!numeric(r))&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("comparison '"+b.op+"' requires numeric operands");return{Kind::Bool,{}};}
-  if(b.op=="=="||b.op=="!="){if(!assignable(l,r)&&!assignable(r,l)&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("equality operands have incompatible types "+nameOf(l)+" and "+nameOf(r));return{Kind::Bool,{}};}err("unknown binary operator '"+b.op+"'");return{Kind::Error,{}};
+  if(b.op=="=="||b.op=="!="){if(!assignable(l,r)&&!assignable(r,l)&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("equality operands have incompatible types "+nameOf(l)+" and "+nameOf(r));return{Kind::Bool,{}};}
+  // ::: structural-offload send: the left operand is the String data source;
+  // the right evaluates to the receiver handle the VM frames the elements into.
+  // The expression yields the SOURCE (left), so the same String can keep
+  // flowing to further receivers -- `x ::: a ::: b` sends x to a, then x to b
+  // (fan-out), which is how String functions feed data directly to each other.
+  if(b.op==":::"){
+   if(l.kind!=Kind::String&&l.kind!=Kind::Unknown)err("operator ':::' requires a String data source on the left");
+   return l;
+  }
+  err("unknown binary operator '"+b.op+"'");return{Kind::Error,{}};
  }
  Type call(const Call&c){auto it=methods.find(cls+"::"+c.callee);if(it==methods.end())it=methods.find(c.callee);if(it==methods.end()&&c.callee.rfind("__native_",0)==0){
    // Synthesized native helpers are stored as qualified class methods. Match

@@ -56,7 +56,7 @@ const char* tokName(Tok t) {
         case Tok::Increment:return "++"; case Tok::Decrement:return "--"; case Tok::ShiftLeft:return "<<"; case Tok::ShiftRight:return ">>"; case Tok::UnsignedShiftRight:return ">>>";
         case Tok::EqEq:return "=="; case Tok::NotEq:return "!="; case Tok::Lt:return "<"; case Tok::Le:return "<=";
         case Tok::Gt:return ">"; case Tok::Ge:return ">="; case Tok::AndAnd:return "&&"; case Tok::OrOr:return "||"; case Tok::BitAnd:return "&"; case Tok::BitOr:return "|"; case Tok::BitXor:return "^"; case Tok::BitNot:return "~";
-        case Tok::Not:return "!"; case Tok::Question:return "?"; case Tok::Colon:return ":"; case Tok::DoubleColon:return "::"; case Tok::Arrow:return "->";
+        case Tok::Not:return "!"; case Tok::Question:return "?"; case Tok::Colon:return ":"; case Tok::DoubleColon:return "::"; case Tok::TripleColon:return ":::"; case Tok::Arrow:return "->";
         case Tok::Eof:return "<eof>";
     }
     return "?";
@@ -167,7 +167,7 @@ std::vector<Token> Lexer::tokenize(){
             case'&':if(match('&'))emit(Tok::AndAnd,"&&");else emit(Tok::BitAnd,"&");break;
             case'|':if(match('|'))emit(Tok::OrOr,"||");else emit(Tok::BitOr,"|");break;
             case'^':emit(Tok::BitXor,"^");break;case'~':emit(Tok::BitNot,"~");break;
-            case'?':emit(Tok::Question,"?");break;case':':if(match(':'))emit(Tok::DoubleColon,"::");else emit(Tok::Colon,":");break;
+            case'?':emit(Tok::Question,"?");break;case':':if(match(':')){if(match(':'))emit(Tok::TripleColon,":::");else emit(Tok::DoubleColon,"::");}else emit(Tok::Colon,":");break;
             default:error(std::string("unexpected character '")+c+"'");
         }
     }

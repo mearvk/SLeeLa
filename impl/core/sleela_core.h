@@ -167,6 +167,14 @@ typedef enum {
      * pushes its result, routing to the SleelaUI C ABI (real host window). */
     OP_UI_CALL
     ,
+    /* Structural-offload send (the ::: operator). Pops a receiver reach handle
+     * and a String source; the VM performs a structured, element-by-element
+     * transfer of the source's data into the receiver (framing/iteration done
+     * here, not by a source for-loop), then pushes the receiver handle so a
+     * ::: chain stays fluent. Models OP_MUN_SEND but frames each element as its
+     * own datum via the Munction transport. */
+    OP_SSEND
+    ,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
