@@ -1,6 +1,16 @@
-# SLeeLa Linux Editor Theme
+# SLeeLa Linux Editor Themes
 
-**SLeeLa American Professional** is a coordinated, low-glare syntax palette for Vim and Emacs on Linux. Deep navy, clean American blue, cool teal, warm amber, slate comments, and high-contrast diagnostics make token classes distinct for long editing sessions.
+A coordinated collection of professional syntax palettes for Vim and Emacs on Linux. The original **American Professional** theme remains the default; four companion schemes are available as independent selections.
+
+## Themes
+
+- **American Professional** — deep navy, American blue, teal and warm amber.
+- **Pan-Eurasian** — sapphire, jade, silk gold and burgundy, a broad cross-regional interpretation rather than a claim to represent one country.
+- **Russian and Slavic (medium)** — balanced charcoal-slate, muted imperial blue, restrained ruby and antique gold. Contrast and saturation are intentionally moderate for a calm professional workspace.
+- **Central Asian / Silk Road** — turquoise, lapis lazuli, desert gold and warm textile ivory.
+- **East Asian** — ink black, lacquer red, jade and ceremonial gold.
+
+These are design interpretations inspired by broad cultural color references, not official national or cultural palettes.
 
 ## Vim install
 
@@ -10,10 +20,10 @@ From the repository root:
 mkdir -p ~/.vim/{syntax,ftdetect,colors}
 cp lib/linux-editors/vim/syntax/sleela.vim ~/.vim/syntax/
 cp lib/linux-editors/vim/ftdetect/sleela.vim ~/.vim/ftdetect/
-cp lib/linux-editors/vim/colors/sleela-american.vim ~/.vim/colors/
+cp lib/linux-editors/vim/colors/sleela-*.vim ~/.vim/colors/
 ```
 
-Add to `~/.vimrc`:
+Add one scheme to `~/.vimrc`:
 
 ```vim
 syntax enable
@@ -21,36 +31,37 @@ set background=dark
 colorscheme sleela-american
 ```
 
+Choose one of `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, or `sleela-east-asian` instead.
+
 ## Emacs install
 
-Copy the two files from `lib/linux-editors/emacs/` into a directory on your Emacs `load-path`, then add:
+Copy `lib/linux-editors/emacs/sleela-mode.el` and the desired `sleela-*-theme.el` file into a directory on your Emacs `load-path`. Then load the mode and one theme:
 
 ```elisp
 (require 'sleela-mode)
-(load-theme 'sleela-american t)
+(load-theme 'sleela-russian-slavic t)
 ```
 
-Both adapters detect `.sleela` files. Editor configuration is per-user; no sudo is required.
+Theme IDs: `sleela-american`, `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`. Theme files are independent; load only the theme you want.
 
-## Native palette utility
+## Native C/C++ palette utility
 
 ```sh
 make -C linux-editors
-./linux-editors/build/sleela-editor-theme --palette
-./linux-editors/build/sleela-editor-theme --hex keyword
+./linux-editors/build/sleela-editor-theme --themes
+./linux-editors/build/sleela-editor-theme --theme eurasia --palette
+./linux-editors/build/sleela-editor-theme --theme russian-slavic --hex keyword
 make -C linux-editors test
 ```
 
-## Palette
+For backward compatibility, `--palette` and `--hex COLOR` without `--theme` continue to use American Professional.
 
-| Token | Color | Hex |
-|---|---|---|
-| Background | Deep navy | `#101820` |
-| Foreground | Soft white | `#F4F7FA` |
-| Keywords | American blue | `#7FB3FF` |
-| Types | Cool teal | `#73DACA` |
-| Strings | Warm amber | `#F2C078` |
-| Numbers | Violet | `#C4A7E7` |
-| Comments | Slate | `#8A96A3` |
-| Functions | Green | `#82C91E` |
-| Errors | Coral | `#FF6B6B` |
+## Palette reference
+
+| Scheme | Background | Keyword | Type | String | Comment |
+|---|---|---|---|---|---|
+| American Professional | `#101820` | `#7FB3FF` | `#73DACA` | `#F2C078` | `#8A96A3` |
+| Pan-Eurasian | `#111827` | `#7AA7E8` | `#69C9B3` | `#D7B56D` | `#8995A5` |
+| Russian and Slavic (medium) | `#202733` | `#A9C0DD` | `#8FC4B2` | `#D6BD8B` | `#9AA3AF` |
+| Central Asian / Silk Road | `#1C2529` | `#7FADE0` | `#45C6C2` | `#D9B56D` | `#92A3A0` |
+| East Asian | `#171A1C` | `#D97878` | `#72C7A5` | `#D8B76A` | `#969F9B` |
