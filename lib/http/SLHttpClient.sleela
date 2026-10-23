@@ -47,4 +47,7 @@ class SLHttpClient {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String path; int status; int state; void configure(String p){path=p;} void open(){state=1;} void close(){state=0;} void setStatus(int s){status=s;} boolean active(){return state==1;}
+  < Conforms to the SLService lifecycle concept (configure -> open/active -> >
+  < close); HTTP is a request/response object graph, not an SLPluginService. >
+  String serviceName(){ return "SLHttpClient"; }
 }

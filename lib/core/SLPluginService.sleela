@@ -1,0 +1,180 @@
+< lib/core/SLPluginService.sleela >
+< SLeeLa Standard Library Definition. >
+< Definition: SLPluginService -- the professional common harness for a >
+< plugin-registry service: a closed set of handlers addressed by 0-based id, >
+< each with a loaded/unloaded lifecycle and an optional backend registration, >
+< driven through one management surface. It is the shared design that the >
+< codecs, compression, and video families' Controllers all implement >
+< identically; extracting it here gives them one working base instead of three >
+< copies, and gives the API a single design to refer to. >
+<  >
+< SLeeLa resolves method calls statically (a base method does not dispatch to a >
+< subclass override), so this harness is FIELD-CONFIGURED rather than >
+< hook-configured: a subclass calls configure(count, nativeMask) from its own >
+< create(), and every inherited method reads those fields. nativeMask is a bit >
+< set of the ids that are "native" (process in-package, no backend required). >
+<  >
+< Result codes follow the shared SLServiceResult standard (0 ok, -2 invalid id, >
+< -5 not loaded, -1 backend absent). Comments use the angle-bracket style. >
+#sleela 2.1
+< Family: core. Plugin-registry service harness; extends SLService. >
+
+class SLPluginService extends SLService {
+
+  < ---- configured registry shape (set by a subclass via configure) ---- >
+  < number of handlers in the closed registry >
+  int capacity;
+  < bit i set => handler id i is native (no backend needed) >
+  int nativeMask;
+  < per-id loaded flag (1 loaded) >
+  int[] loadedTable;
+  < per-id backend-registered flag (1 wired) >
+  int[] backendTable;
+
+  < configure(count, mask): a subclass calls this from create() with its own >
+  < handler count and native-id bit mask, allocating the lifecycle tables. >
+  void configure(int count, int mask) {
+    capacity = count;
+    nativeMask = mask;
+    loadedTable = new int[count];
+    backendTable = new int[count];
+    int i = 0;
+    while (i < count) { loadedTable[i] = 0; backendTable[i] = 0; i = i + 1; }
+    activate();
+    ready = 1;
+  }
+
+  < ---- registry inspection -------------------------------------------- >
+  int count() { return capacity; }
+  boolean validId(int id) { return id >= 0 && id < capacity; }
+
+  < isNative(id): is handler id native? Read from the configured bit mask. >
+  < (bit test by repeated halving, since there is no native bit operator.) >
+  boolean isNative(int id) {
+    if (!validId(id)) { return false; }
+    int m = nativeMask;
+    int k = id;
+    while (k > 0) { m = m / 2; k = k - 1; }
+    return (m % 2) == 1;
+  }
+
+  < ---- loader / unloader (idempotent; -2 invalid id) ------------------ >
+  int load(int id) {
+    if (!validId(id)) { return -2; }
+    loadedTable[id] = 1;
+    return 0;
+  }
+  int unload(int id) {
+    if (!validId(id)) { return -2; }
+    loadedTable[id] = 0;
+    return 0;
+  }
+  void unloadAll() {
+    int i = 0;
+    while (i < capacity) { loadedTable[i] = 0; i = i + 1; }
+  }
+  boolean isLoaded(int id) {
+    if (!validId(id)) { return false; }
+    return loadedTable[id] == 1;
+  }
+  int loadedCount() {
+    int n = 0;
+    int i = 0;
+    while (i < capacity) { if (loadedTable[i] == 1) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+
+  < ---- backend registration (for non-native handlers) ----------------- >
+  int registerBackend(int id) {
+    if (!validId(id)) { return -2; }
+    backendTable[id] = 1;
+    return 0;
+  }
+  int clearBackend(int id) {
+    if (!validId(id)) { return -2; }
+    backendTable[id] = 0;
+    return 0;
+  }
+  boolean hasBackend(int id) {
+    if (!validId(id)) { return false; }
+    return backendTable[id] == 1;
+  }
+
+  < ---- dispatch gate (honest capability result) ----------------------- >
+  < canProcess(id): true for a loaded native handler, or a loaded non-native >
+  < handler that has a backend registered -- what a GUI checks before enabling >
+  < an action. >
+  boolean canProcess(int id) {
+    if (!validId(id)) { return false; }
+    if (loadedTable[id] == 0) { return false; }
+    if (isNative(id)) { return true; }
+    return backendTable[id] == 1;
+  }
+
+  < dispatchCode(id): the shared result of attempting to use handler id -- the >
+  < common core of every family's decode/encode/compress/decompress. Returns >
+  < -2 invalid, -5 not loaded, -1 backend absent, 0 ok. A family's domain verb >
+  < (e.g. decode(id)) is a thin, honestly-named wrapper over this. >
+  int dispatchCode(int id) {
+    if (!validId(id)) { return -2; }
+    if (loadedTable[id] == 0) { return -5; }
+    if (isNative(id)) { return 0; }
+    if (backendTable[id] == 1) { return 0; }
+    return -1;
+  }
+
+  < ---- lifecycle ------------------------------------------------------ >
+  < destroy(): release every loaded handler and return to the inert state. >
+  void destroy() {
+    unloadAll();
+    ready = 0;
+    reset();
+  }
+
+  < ---- introspection -------------------------------------------------- >
+  String serviceName() { return "SLPluginService"; }
+  String typeName()    { return "SLeeLa.core.SLPluginService"; }
+  boolean available()  { return true; }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "SLeeLa standard library";
+  String metaDate = "2026-10-23";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

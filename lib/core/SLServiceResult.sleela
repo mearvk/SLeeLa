@@ -1,0 +1,99 @@
+< lib/core/SLServiceResult.sleela >
+< SLeeLa Standard Library Definition. >
+< Definition: SLServiceResult -- the professional common result-code standard >
+< shared by SLeeLa service subsystems (codecs, compression, video, and any >
+< plugin-registry service built on SLPluginService / SLService). >
+<  >
+< Before this, each family (codecs, compression, video) carried its own private >
+< copy of the identical result-code table in its Verifier. This class makes the >
+< vocabulary ONE authoritative contract: a service reports an outcome with one >
+< of these codes, and text(code) renders it for a human. The codes mirror the >
+< native sleela_codec_result / sleela_compression_result conventions exactly >
+< (0 ok; negative = a specific, honest failure) so source and native agree. >
+<  >
+< Comments use the angle-bracket style; #sleela 2.1. >
+#sleela 2.1
+< Family: core. The shared service result-code vocabulary. >
+
+class SLServiceResult {
+
+  < ---- the canonical result codes (0 ok; negatives are failures) ------ >
+  < A service method returns one of these ints; a caller compares against the >
+  < named constants rather than magic numbers, and renders with text(). >
+  static final int OK          =  0;   < success >
+  static final int UNSUPPORTED = -1;   < capability/backend not present >
+  static final int INVALID     = -2;   < invalid arguments (e.g. bad id) >
+  static final int FORMAT      = -3;   < input is not this service's format >
+  static final int IO          = -4;   < I/O or allocation failure >
+  static final int STATE       = -5;   < wrong state (e.g. not loaded) >
+
+  int ok()          { return 0; }
+  int unsupported() { return -1; }
+  int invalid()     { return -2; }
+  int format()      { return -3; }
+  int io()          { return -4; }
+  int state()       { return -5; }
+
+  < ---- classification ------------------------------------------------- >
+  boolean isOk(int code)      { return code == 0; }
+  boolean isFailure(int code) { return code < 0; }
+
+  < ---- rendering ------------------------------------------------------ >
+  < Human-readable text for a result code -- the single authoritative mapping >
+  < every service's resultText() delegates to, so the wording never diverges. >
+  String text(int code) {
+    if (code == 0)  { return "ok"; }
+    if (code == -1) { return "unsupported (capability/backend not present)"; }
+    if (code == -2) { return "invalid arguments"; }
+    if (code == -3) { return "input is not this service's format"; }
+    if (code == -4) { return "I/O or allocation failure"; }
+    if (code == -5) { return "wrong state (not loaded / not ready)"; }
+    return "unknown";
+  }
+
+  < ---- introspection -------------------------------------------------- >
+  String typeName()   { return "SLeeLa.core.SLServiceResult"; }
+  boolean available() { return true; }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "SLeeLa standard library";
+  String metaDate = "2026-10-23";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

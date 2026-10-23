@@ -2523,7 +2523,7 @@
     },
     {
       "path": "lib/codecs/SLCodecController.sleela",
-      "sha256": "4ec8290426dccde4c14712de282fd832a1c7be53c0f0a96982ce715fa8193086"
+      "sha256": "10cb40ef5842314a3233e8220d6d6612b5b824597b2653cba3cf56a534e2ed98"
     },
     {
       "path": "lib/codecs/SLCodecEac3.sleela",
@@ -3007,7 +3007,7 @@
     },
     {
       "path": "lib/compression/SLCompressionController.sleela",
-      "sha256": "6bf24214d9fded523bcff23e7fb05d9e6a246836d42590cc19c37a72d776437d"
+      "sha256": "2f7fda204bd30f953b01db300695b542d9b03052697c8f5d3b5a5a903a451b70"
     },
     {
       "path": "lib/compression/SLCompressionDeflate.sleela",
@@ -3598,6 +3598,10 @@
       "sha256": "81ec83b0cf027a9402bc503da80d1f6471d5e7c03d242b94eb280d980b432303"
     },
     {
+      "path": "lib/core/SLPluginService.sleela",
+      "sha256": "7d5c279c80bff69097321c0afe5399febe60cf37888dad38236c0daedfbc1f82"
+    },
+    {
       "path": "lib/core/SLProcess.sleela",
       "sha256": "b1d62e3e01e695e8f58d4834d8d5ec7fdaa797409f18c0daf3edf2d8eeffe0d3"
     },
@@ -3635,7 +3639,11 @@
     },
     {
       "path": "lib/core/SLService.sleela",
-      "sha256": "e61b045a8e1821e900a9e67fb77d16a85d05e6e5116934c65ff96f7d6b72dad7"
+      "sha256": "1765debbb5d143e8f586811ce6eebb70c56f197aa38167b96a958c57c86a2aa6"
+    },
+    {
+      "path": "lib/core/SLServiceResult.sleela",
+      "sha256": "77c4bd2cca20bbe7946232d203a9aff9ea87ebc3ab642b41738bbec6a7698d48"
     },
     {
       "path": "lib/core/SLSession.sleela",
@@ -4799,7 +4807,7 @@
     },
     {
       "path": "lib/crypto/SLCipherContext.sleela",
-      "sha256": "c9fcb301b15e8f28f4657f50337418a40d9c0dc585f19350e6d29b5219dfafd1"
+      "sha256": "3963798ce54d045673d2cea8fb9a7f1cd133517207330d24e1c547828c57aea1"
     },
     {
       "path": "lib/crypto/SLCipherKey.sleela",
@@ -7651,7 +7659,7 @@
     },
     {
       "path": "lib/http/SLHttpClient.sleela",
-      "sha256": "ca86012de47410de91b99effbad338ecbb195f2a869dd3a33444479b36901b87"
+      "sha256": "a0893cabcbc70c62acc1c192874665ce9fe6e993da4f9a74e68c409483c8ee46"
     },
     {
       "path": "lib/http/SLHttpCookie.sleela",
@@ -7687,7 +7695,7 @@
     },
     {
       "path": "lib/http/SLHttpServer.sleela",
-      "sha256": "6d607a1a9092296c1015bf0ad5013d68f969be78ca7a68f7148900be58dadd22"
+      "sha256": "5f01583c98c44c37bc6008f6f13b07f84b9b089326cdf1685432b499708d5461"
     },
     {
       "path": "lib/http/SLHttpSession.sleela",
@@ -46739,7 +46747,7 @@
     },
     {
       "path": "lib/video/VideoCodecController.sleela",
-      "sha256": "5e46eb0c55c18427ddaafa21c3821fcde132996e0251d2dd415c46ff8ef4b516"
+      "sha256": "39520d5ab5a5e3264dbcf99855d912ca1ef378dae54338c82f0a265ef11cfa15"
     },
     {
       "path": "lib/video/VideoCodecLoader.sleela",
