@@ -55,10 +55,19 @@ executes on `impl/core`.
 
 ### 1.1 Encoding & trivia
 Source is UTF-8. Whitespace (space, tab, CR, LF) separates tokens and is
-otherwise insignificant. Two comment forms:
+otherwise insignificant. Comment forms:
 
     // line comment — to end of line
     /* block comment — may span lines */
+
+The preferred (go-forward) house style uses leading angle brackets. The opener
+must be the first non-whitespace on its line:
+
+    < line comment — closed by a matching `>` or end of line >
+    << block comment — spans lines, closed by `>>` >>
+
+The legacy `//` and `/* */` forms remain valid for untouched code; new and
+modified code uses the `<` / `<<` angle-bracket forms.
 
 ### 1.2 Keywords (reserved)
 
