@@ -100,6 +100,32 @@ actual run.
 It is the declarative analog of the hand-written builder in
 `lib/cpu/amd-epyc/examples/epyc-with-ddr2-settings.sleela`.
 
+### Integer literals (decimal / hex / binary / octal)
+
+Integer values in an `.xlt` sheet — the memory capacity and the `grant`
+words/budget — accept **radix-prefixed literals**, in parity with the SLeeLa
+frontend (`SLEELA.syntax` §1.4):
+
+| Form | Prefix | Example |
+| --- | --- | --- |
+| decimal | *(none)* | `4096` |
+| hexadecimal | `0x` / `0X` | `0x10000` (= 65536) |
+| binary | `0b` / `0B` | `0b1_0000_0000_0000_0000` |
+| octal | `0o` / `0O` | `0o200000` |
+
+An underscore `_` may separate digits for readability and is ignored
+(`0xFF_EC`, `1_000_000`). A prefix with no following digit (e.g. `0x`) is a
+lexical error (`XLT-E-0003`). All forms denote the same 64-bit integer; the
+prefix only selects the base. This is the natural way to write power-of-two
+memory sizes and cycle budgets:
+
+```
+memory "ddr5_6400" 0x10000;              // 64 GiB
+grant  0b1_0000_0000_0000_0000 0xF4240;  // 65536 words, 1_000_000 cycles
+```
+
+See `examples/epyc-radix-literals.xlt`.
+
 ## Design: orthogonality is the contract
 
 XLT deliberately needs **no new keyword and no setters**. Each part occupies one
@@ -169,5 +195,8 @@ impl/xlt/build/xltc lib/xlt/examples/bad-model.xlt    # congruence report, exit 
 ## Examples
 
 - `examples/epyc-ddr2.xlt` — the EPYC + DDR2 CPU model as an XLT sheet.
+- `examples/epyc-tiered-memory.xlt` — a model with usual/accurate memory tiers.
+- `examples/epyc-radix-literals.xlt` — hex/binary integer literals for the
+  memory capacity and the grant words/budget.
 - `examples/compile-xlt-models.sleela` — compiles a congruent model (success +
   build list) and a non-congruent one (congruence report), end to end.
