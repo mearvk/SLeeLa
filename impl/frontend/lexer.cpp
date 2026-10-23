@@ -65,7 +65,17 @@ char Lexer::peek(int off) const { size_t p=pos_+(size_t)off; return p<src_.size(
 char Lexer::advance(){char c=src_[pos_++];if(c=='\n'){line_++;col_=1;}else col_++;return c;}
 bool Lexer::match(char c){if(peek()==c){advance();return true;}return false;}
 void Lexer::error(const std::string& msg) const {throw std::runtime_error("Lexical error (line "+std::to_string(line_)+", col "+std::to_string(col_)+"): "+msg);}
-void Lexer::skipTrivia(){for(;;){char c=peek();if(c==' '||c=='\t'||c=='\r'||c=='\n')advance();else if(c=='#')while(!atEnd()&&peek()!='\n')advance();else if(c=='/'&&peek(1)=='/')while(!atEnd()&&peek()!='\n')advance();else break;}}
+void Lexer::skipTrivia(){
+    auto atLinePrefix=[&](){size_t p=pos_;while(p>0&&src_[p-1]!='\n'){char b=src_[p-1];if(b!=' '&&b!='\t'&&b!='\r')return false;--p;}return true;};
+    for(;;){char c=peek();
+        if(c==' '||c=='\t'||c=='\r'||c=='\n')advance();
+        else if(c=='#')while(!atEnd()&&peek()!='\n')advance();
+        else if(c=='/'&&peek(1)=='/')while(!atEnd()&&peek()!='\n')advance();
+        else if(atLinePrefix()&&c=='<'&&peek(1)=='<'){advance();advance();bool closed=false;while(!atEnd()){if(peek()=='>'&&peek(1)=='>'){advance();advance();closed=true;break;}advance();}if(!closed)error("unterminated angle-bracket block comment");}
+        else if(atLinePrefix()&&c=='<'&&peek(1)!='<'){size_t e=pos_+1;while(e<src_.size()&&src_[e]!='\n'&&src_[e]!='>')++e;if(e<src_.size()&&src_[e]=='>')while(!atEnd()&&peek()!='\n')advance();else break;}
+        else break;
+    }
+}
 Token Lexer::makeNumber(){int L=line_,C=col_;std::string s;bool d=false;while(std::isdigit((unsigned char)peek()))s+=advance();if(peek()=='.'&&std::isdigit((unsigned char)peek(1))){d=true;s+=advance();while(std::isdigit((unsigned char)peek()))s+=advance();}if(peek()=='e'||peek()=='E'){s+=advance();if(peek()=='+'||peek()=='-')s+=advance();while(std::isdigit((unsigned char)peek()))s+=advance();}return Token{d||peek()=='e'||peek()=='E'?Tok::Double:Tok::Int,s,L,C};}
 Token Lexer::makeString(){int L=line_,C=col_;advance();std::string out;while(!atEnd()&&peek()!='"'){char c=advance();if(c=='\\'){if(atEnd())error("unterminated escape sequence");char e=advance();switch(e){case'n':out+='\n';break;case't':out+='\t';break;r:out+='\r';break;case'b':out+='\b';break;case'f':out+='\f';break;case'0':out+='\0';break;case'\\':out+='\\';break;case'"':out+='"';break;case'u':{uint32_t cp=0;for(int i=0;i<4;i++){if(atEnd())error("unterminated unicode escape");char hex=advance();int v=0;if(hex>='0'&&hex<='9')v=hex-'0';else if(hex>='a'&&hex<='f')v=10+(hex-'a');else if(hex>='A'&&hex<='F')v=10+(hex-'A');else error("invalid unicode escape");cp=(cp<<4)|v;}out+=utf8FromCodePoint(cp);break;}default:out+=e;break;}}else out+=c;}if(atEnd())error("unterminated string literal");advance();return Token{Tok::Str,out,L,C};}
 static const std::unordered_map<std::string,int> kContextualBuiltins13={

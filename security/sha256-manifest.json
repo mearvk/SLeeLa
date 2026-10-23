@@ -495,7 +495,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "d3bf167c69bcc557f4055ac9db67656607999950528d88a5612946b9c399dd67"
+      "sha256": "c0320b36514224064aeacb443538cb3d40bbd14e14eb17232fc918a11e4d260b"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -543,7 +543,7 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "71ab5085e3d7f463387d699edf1ff1a2c3438e781709c8f37d26214c2a9c060a"
+      "sha256": "9ba186fb85bc8d952856b695d67375eb6a787b803cfb7898329ed27a5b99c9c5"
     },
     {
       "path": "impl/frontend/lexer.h",
@@ -587,7 +587,7 @@
     },
     {
       "path": "impl/frontend/version.cpp",
-      "sha256": "141c2567fd738838908d91288ad4d16275cd2a1d9cea459179ae9531dbb30916"
+      "sha256": "909e6c1cd5b17ab924eff445e619967321bb138b8f069908c90c29e3f5e2343c"
     },
     {
       "path": "impl/frontend/version.h",

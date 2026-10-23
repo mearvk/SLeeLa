@@ -61,10 +61,17 @@ void skipWs(const std::string& s, size_t& p) {
 bool skipTrivia(const std::string& s, size_t& p) {
     for (;;) {
         skipWs(s, p);
-        if (p + 1 < s.size() && s[p] == '/' && s[p + 1] == '/') {
+        if (p + 1 < s.size() && s[p] == '<' && s[p + 1] == '<') {
             p += 2;
-            while (p < s.size() && s[p] != '\n') p++;
-        } else if (p + 1 < s.size() && s[p] == '/' && s[p + 1] == '*') {
+            while (p + 1 < s.size() && !(s[p] == '>' && s[p + 1] == '>')) p++;
+            if (p + 1 >= s.size()) return false;
+            p += 2;
+        } else if (p < s.size() && s[p] == '<') {
+            size_t close = p + 1;
+            while (close < s.size() && s[close] != '\n' && s[close] != '>') close++;
+            if (close < s.size() && s[close] == '>') { p = close + 1; while (p < s.size() && s[p] != '\n') p++; }
+            else return true;
+        } else if (p + 1 < s.size() && s[p] == '/' && s[p + 1] == '/') {
             p += 2;
             while (p + 1 < s.size() && !(s[p] == '*' && s[p + 1] == '/')) p++;
             if (p + 1 >= s.size()) return false;  // unterminated
@@ -106,6 +113,15 @@ VersionResolution resolveSyntaxVersion(const std::string& source) {
             while (a < b && std::isspace((unsigned char)rest[a])) a++;
             while (b > a && std::isspace((unsigned char)rest[b - 1])) b--;
             std::string verText = rest.substr(a, b - a);
+            const size_t angleComment = verText.find('<');
+            if (angleComment != std::string::npos && (angleComment == 0 || std::isspace((unsigned char)verText[angleComment - 1]))) {
+                const size_t close = verText.find('>', angleComment + 1);
+                if (close != std::string::npos) {
+                    bool onlyWhitespaceAfter = true;
+                    for (size_t k = close + 1; k < verText.size(); ++k) if (!std::isspace((unsigned char)verText[k])) { onlyWhitespaceAfter = false; break; }
+                    if (onlyWhitespaceAfter) { verText.erase(angleComment); while (!verText.empty() && std::isspace((unsigned char)verText.back())) verText.pop_back(); }
+                }
+            }
 
             r.pragmaPresent = true;
             r.raw = verText;

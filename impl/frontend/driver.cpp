@@ -1182,14 +1182,25 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
     // the word "Certificate" in a comment must not resolve Java API classes).
     auto dependencyScanText = [](const std::string& input) {
         std::string output = input;
-        enum class State { Code, LineComment, BlockComment, String, Character };
+        enum class State { Code, LineComment, BlockComment, AngleBlockComment, String, Character };
         State state = State::Code;
         bool escaped = false;
         for (size_t i = 0; i < input.size(); ++i) {
             const char c = input[i];
             const char next = (i + 1 < input.size()) ? input[i + 1] : '\0';
             if (state == State::Code) {
-                if (c == '/' && next == '/') {
+                bool linePrefix = true;
+                for (size_t p = i; p > 0 && input[p - 1] != '\n'; --p) {
+                    const char before = input[p - 1];
+                    if (before != ' ' && before != '\t' && before != '\r') { linePrefix = false; break; }
+                }
+                if (linePrefix && c == '<' && next == '<') {
+                    output[i] = output[i + 1] = ' '; ++i; state = State::AngleBlockComment;
+                } else if (linePrefix && c == '<' && next != '<') {
+                    size_t close = i + 1;
+                    while (close < input.size() && input[close] != '\n' && input[close] != '>') ++close;
+                    if (close < input.size() && input[close] == '>') { output[i] = ' '; state = State::LineComment; }
+                } else if (c == '/' && next == '/') {
                     output[i] = output[i + 1] = ' ';
                     ++i;
                     state = State::LineComment;
@@ -1210,11 +1221,11 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
                 if (c == '\n') state = State::Code;
                 else output[i] = ' ';
             } else if (state == State::BlockComment) {
-                if (c == '*' && next == '/') {
-                    output[i] = output[i + 1] = ' ';
-                    ++i;
-                    state = State::Code;
-                } else if (c != '\n') output[i] = ' ';
+                if (c == '*' && next == '/') { output[i] = output[i + 1] = ' '; ++i; state = State::Code; }
+                else if (c != '\n') output[i] = ' ';
+            } else if (state == State::AngleBlockComment) {
+                if (c == '>' && next == '>') { output[i] = output[i + 1] = ' '; ++i; state = State::Code; }
+                else if (c != '\n') output[i] = ' ';
             } else {
                 if (c != '\n') output[i] = ' ';
                 if (escaped) escaped = false;
