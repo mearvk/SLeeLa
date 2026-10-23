@@ -1,0 +1,16 @@
+#sleela 1.7
+# SLeeLa American Professional editor theme metadata.
+package linux.editors;
+
+class SLeeLaEditorTheme {
+    let name = "SLeeLa American Professional";
+    let background = "#101820";
+    let foreground = "#F4F7FA";
+    let keyword = "#7FB3FF";
+    let type = "#73DACA";
+    let string = "#F2C078";
+    let number = "#C4A7E7";
+    let comment = "#8A96A3";
+    let function = "#82C91E";
+    let diagnostic = "#FF6B6B";
+}
