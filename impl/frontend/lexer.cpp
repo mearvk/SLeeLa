@@ -37,7 +37,7 @@ const char* tokName(Tok t) {
     switch(t) {
         case Tok::Int:return "int-literal"; case Tok::Double:return "double-literal"; case Tok::Str:return "string-literal";
         case Tok::Ident:return "identifier"; case Tok::At:return "@";
-        case Tok::KwClass:return "class"; case Tok::KwInterface:return "interface"; case Tok::KwEnum:return "enum"; case Tok::KwRecord:return "record";
+        case Tok::KwClass:return "class"; case Tok::KwInterface:return "interface"; case Tok::KwEnum:return "enum"; case Tok::KwRecord:return "record"; case Tok::KwStruct:return "struct";
         case Tok::KwStatic:return "static"; case Tok::KwProtected:return "protected"; case Tok::KwPublic:return "public"; case Tok::KwPrivate:return "private";
         case Tok::KwFinal:return "final"; case Tok::KwAbstract:return "abstract"; case Tok::KwNative:return "native";
         case Tok::KwSynchronized:return "synchronized"; case Tok::KwVolatile:return "volatile"; case Tok::KwTransient:return "transient";
@@ -131,7 +131,7 @@ bool isContextualBuiltin(const std::string& name){return kContextualBuiltins13.f
 bool isGcHintWord(const std::string& name){return name=="gc"||name=="mem";}
 Token Lexer::makeIdentOrKeyword(){
     static const std::unordered_map<std::string,Tok> kw={
-        {"class",Tok::KwClass},{"interface",Tok::KwInterface},{"enum",Tok::KwEnum},{"record",Tok::KwRecord},
+        {"class",Tok::KwClass},{"interface",Tok::KwInterface},{"enum",Tok::KwEnum},{"record",Tok::KwRecord},{"struct",Tok::KwStruct},
         {"static",Tok::KwStatic},{"protected",Tok::KwProtected},{"public",Tok::KwPublic},{"private",Tok::KwPrivate},
         {"final",Tok::KwFinal},{"abstract",Tok::KwAbstract},{"native",Tok::KwNative},{"synchronized",Tok::KwSynchronized},
         {"volatile",Tok::KwVolatile},{"transient",Tok::KwTransient},{"strictfp",Tok::KwStrictfp},{"sealed",Tok::KwSealed},{"non-sealed",Tok::KwNonSealed},{"const",Tok::KwConst},{"usualmem",Tok::KwUsualMem},{"usualgc",Tok::KwUsualGc},

@@ -543,7 +543,7 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "2706905a186cc8afbd24b2a8bf198a6b9adbfa442413e2fceb3649b9d83016f0"
+      "sha256": "76c5face7d13dd42f8951cfd39511c5129902df1799fd7a8b78e46428ffdbbd4"
     },
     {
       "path": "impl/frontend/lexer.h",
@@ -45622,6 +45622,14 @@
       "sha256": "0079f0e5bb44d0fd7d2d23f6f573558d697a0f11a7eb056aeea3067429c03f0d"
     },
     {
+      "path": "lib/os/SLOSSensitivityFetch.sleela",
+      "sha256": "19ee0920af7c66c1e2c44718432ef3351b92fd3bc6e46b9343bca25006eb425b"
+    },
+    {
+      "path": "lib/os/SLOSSensitivitySource.sleela",
+      "sha256": "bc8bc48133cf4dc02dbcf8e4748be2110030f9c8a042c94f4e56f6cdb0526afb"
+    },
+    {
       "path": "lib/os/SLOSShape.sleela",
       "sha256": "e106a8ff033889d485f21080159071103ec90462f031617bd0ee0acb571f349d"
     },
@@ -45768,6 +45776,10 @@
     {
       "path": "lib/os/os-generate.sleela",
       "sha256": "a99441bc6b46fb4cb6aa7f3aa841a39952eb66dfb09d5940473473c555371696"
+    },
+    {
+      "path": "lib/os/os-sensitivity-fetch.sleela",
+      "sha256": "eb085c42f660fd00bedbfe0832cab24b22d9229696e6d50ba28a71a576b17202"
     },
     {
       "path": "lib/os/ssd/SLSSD.sleela",
