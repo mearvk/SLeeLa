@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="78" viewBox="0 0 600 78" role="img" aria-label="Russian and Slavic — Medium color palette">
+  <title>Russian and Slavic — Medium palette: #202733, #E8EAF0, #A9C0DD, #8FC4B2, #D6BD8B, #9AA3AF</title>
+  <defs><clipPath id="rounded"><rect width="600" height="48" rx="9" ry="9"/></clipPath></defs>
+  <g clip-path="url(#rounded)">
+  <rect x="0" y="0" width="100" height="48" fill="#202733"/>
+  <rect x="100" y="0" width="100" height="48" fill="#E8EAF0"/>
+  <rect x="200" y="0" width="100" height="48" fill="#A9C0DD"/>
+  <rect x="300" y="0" width="100" height="48" fill="#8FC4B2"/>
+  <rect x="400" y="0" width="100" height="48" fill="#D6BD8B"/>
+  <rect x="500" y="0" width="100" height="48" fill="#9AA3AF"/>
+  </g>
+  <text x="50" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Background</text>
+  <text x="150" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Foreground</text>
+  <text x="250" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Keywords</text>
+  <text x="350" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Types</text>
+  <text x="450" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Strings</text>
+  <text x="550" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Comments</text>
+</svg>
