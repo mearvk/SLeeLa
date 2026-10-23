@@ -37,7 +37,7 @@ class SLCompressionStore {
   // catalog can read and (where appropriate) override each algorithm's record.
   // Values are faithful to the algorithm's real origin where publicly known.
   String metaVersion = "1.0.0";
-  int metaId = 0;
+  int metaId = 11514;
   String metaAuthor = "SLeeLa";
   String metaDate = "2026-10-23";
   String metaCopyright = "Public domain";
@@ -45,7 +45,7 @@ class SLCompressionStore {
   String metaCorporation = "SLeeLa Project";
   String metaOrigin = "United States";
   String metaBirthDate = "1991";
-  int metaScienceRating = 10;        // maturity/robustness on a 1..10 scale
+  int metaScienceRating = 9;        // maturity/robustness on a 1..10 scale
   String metaNationalSchedule = "Identity / stored (no compression)";
 
   String getMetaVersion() { return metaVersion; }

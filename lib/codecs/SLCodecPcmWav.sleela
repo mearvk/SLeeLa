@@ -36,7 +36,7 @@ class SLCodecPcmWav {
   // or catalog can read and (where appropriate) override each codec's record.
   // Values are faithful to the codec's real origin where publicly known.
   String metaVersion = "1.0.0";
-  int metaId = 0;
+  int metaId = 1;
   String metaAuthor = "IBM/Microsoft";
   String metaDate = "2026-09-28";
   String metaCopyright = "Public domain (format)";
@@ -44,7 +44,7 @@ class SLCodecPcmWav {
   String metaCorporation = "Microsoft Corporation";
   String metaOrigin = "United States";
   String metaBirthDate = "1991";
-  int metaScienceRating = 10;        // maturity/robustness on a 1..10 scale
+  int metaScienceRating = 9;        // maturity/robustness on a 1..10 scale
   String metaNationalSchedule = "ITU-T G.711-adjacent / RIFF WAVE";
 
   String getMetaVersion() { return metaVersion; }
