@@ -77,9 +77,26 @@ static ballum_status_t mock_set_gamma(void *ctx, uint32_t id, uint32_t gamma) {
     (void)ctx; (void)id; g_last_gamma = gamma; return BALLUM_STATUS_OK;
 }
 
+/* A tiny scripted pointer-event queue: DOWN(100,100,left) then MOVE(140,100). */
+static int g_poll_step = 0;
+static ballum_status_t mock_poll_event(void *ctx, ballum_pointer_event_t *out) {
+    (void)ctx;
+    out->type = BALLUM_EVENT_NONE;
+    if (g_poll_step == 0) {
+        out->type = BALLUM_EVENT_POINTER_DOWN; out->x = 100; out->y = 100;
+        out->button = BALLUM_BUTTON_LEFT; out->source = BALLUM_POINTER_MOUSE;
+        g_poll_step = 1;
+    } else if (g_poll_step == 1) {
+        out->type = BALLUM_EVENT_POINTER_MOVE; out->x = 140; out->y = 100;
+        out->source = BALLUM_POINTER_TOUCH; out->contact_id = 7;
+        g_poll_step = 2;
+    }
+    return BALLUM_STATUS_OK;
+}
+
 static const ballum_backend_t g_mock = {
     "mock", mock_enumerate, mock_set_pixel, mock_get_pixel, mock_blit,
-    mock_set_brightness, mock_set_warmth, mock_set_gamma
+    mock_set_brightness, mock_set_warmth, mock_set_gamma, mock_poll_event
 };
 
 int main(void) {
@@ -167,12 +184,32 @@ int main(void) {
     assert(ballum_manager_set_warmth(&m, 200, 5000) == BALLUM_STATUS_UNSUPPORTED);
     assert(ballum_manager_set_brightness(&m, 200, 50) == BALLUM_STATUS_OK);
 
+    /* ---- pointer input: the manager polls and surfaces events ------------ */
+    assert(ballum_manager_has_input(&m) == 1);
+    ballum_pointer_event_t ev;
+    assert(ballum_manager_poll_event(&m, &ev) == BALLUM_STATUS_OK);
+    assert(ev.type == BALLUM_EVENT_POINTER_DOWN);
+    assert(ev.x == 100 && ev.y == 100 && ev.button == BALLUM_BUTTON_LEFT);
+    assert(ev.source == BALLUM_POINTER_MOUSE);
+    assert(ballum_manager_poll_event(&m, &ev) == BALLUM_STATUS_OK);
+    assert(ev.type == BALLUM_EVENT_POINTER_MOVE);
+    assert(ev.x == 140 && ev.y == 100 && ev.source == BALLUM_POINTER_TOUCH && ev.contact_id == 7);
+    assert(ballum_manager_poll_event(&m, &ev) == BALLUM_STATUS_OK);
+    assert(ev.type == BALLUM_EVENT_NONE);          /* queue drained */
+    assert(ballum_event_type_name(BALLUM_EVENT_POINTER_DOWN) != NULL);
+
     /* ---- the unavailable fallback fails closed --------------------------- */
     ballum_manager_t u;
     assert(ballum_manager_init(&u, ballum_backend_unavailable(), NULL) == BALLUM_STATUS_OK);
     size_t uc = 0;
     assert(ballum_manager_enumerate(&u, ds, 4, &uc) == BALLUM_STATUS_BACKEND_UNAVAILABLE);
     assert(uc == 0);
+    /* No-input path: the fallback has no poll, so has_input is 0 and poll
+     * reports UNSUPPORTED while leaving out well-defined. */
+    assert(ballum_manager_has_input(&u) == 0);
+    ballum_pointer_event_t uev;
+    assert(ballum_manager_poll_event(&u, &uev) == BALLUM_STATUS_UNSUPPORTED);
+    assert(uev.type == BALLUM_EVENT_NONE);
 
     /* ---- status text is never NULL --------------------------------------- */
     assert(ballum_status_name(BALLUM_STATUS_OK) != NULL);

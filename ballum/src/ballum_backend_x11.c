@@ -71,7 +71,7 @@ static ballum_status_t x11_enumerate(void *ctx, ballum_display_t *out,
                 d.is_primary = (res->outputs[i] == primary) ? 1 : 0;
                 d.capabilities = BALLUM_CAP_PER_PIXEL | BALLUM_CAP_REGION_BLIT |
                                  BALLUM_CAP_BRIGHTNESS | BALLUM_CAP_COLOR_TEMPERATURE |
-                                 BALLUM_CAP_GAMMA;
+                                 BALLUM_CAP_GAMMA | BALLUM_CAP_POINTER_INPUT;
                 out[count++] = d;
                 XRRFreeCrtcInfo(ci);
             }
@@ -214,10 +214,69 @@ static ballum_status_t x11_set_gamma(void *ctx, uint32_t id, uint32_t gamma_scal
     return apply_ramp(id, 1.0, 1.0, 1.0, 1.0 / gamma);
 }
 
+/* Pointer input: select button/motion events on the root window (once), then
+ * drain one queued event per poll. Mouse buttons 1/2/3 map to LEFT/MIDDLE/RIGHT;
+ * X11 core input does not distinguish touch, so contacts arrive as mouse. */
+static int g_input_selected;
+
+static ballum_pointer_button_t map_button(unsigned int xbutton) {
+    if (xbutton == Button1) return BALLUM_BUTTON_LEFT;
+    if (xbutton == Button2) return BALLUM_BUTTON_MIDDLE;
+    if (xbutton == Button3) return BALLUM_BUTTON_RIGHT;
+    return BALLUM_BUTTON_NONE;
+}
+
+static uint32_t map_mods(unsigned int state) {
+    uint32_t m = 0;
+    if (state & ShiftMask)   m |= BALLUM_MOD_SHIFT;
+    if (state & ControlMask) m |= BALLUM_MOD_CTRL;
+    if (state & Mod1Mask)    m |= BALLUM_MOD_ALT;
+    if (state & Mod4Mask)    m |= BALLUM_MOD_SUPER;
+    return m;
+}
+
+static ballum_status_t x11_poll_event(void *ctx, ballum_pointer_event_t *out) {
+    (void)ctx;
+    if (!out) return BALLUM_STATUS_INVALID_ARGUMENT;
+    out->type = BALLUM_EVENT_NONE;
+    Display *dpy = ensure_display();
+    if (!dpy) return BALLUM_STATUS_BACKEND_UNAVAILABLE;
+
+    if (!g_input_selected) {
+        XSelectInput(dpy, g_ctx.root,
+                     ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
+        g_input_selected = 1;
+    }
+
+    if (XPending(dpy) <= 0) return BALLUM_STATUS_OK;   /* none pending -> NONE */
+
+    XEvent ev;
+    XNextEvent(dpy, &ev);
+    out->source = BALLUM_POINTER_MOUSE;
+    out->contact_id = 0;
+    if (ev.type == ButtonPress) {
+        out->type = BALLUM_EVENT_POINTER_DOWN;
+        out->x = ev.xbutton.x_root; out->y = ev.xbutton.y_root;
+        out->button = map_button(ev.xbutton.button);
+        out->modifiers = map_mods(ev.xbutton.state);
+    } else if (ev.type == ButtonRelease) {
+        out->type = BALLUM_EVENT_POINTER_UP;
+        out->x = ev.xbutton.x_root; out->y = ev.xbutton.y_root;
+        out->button = map_button(ev.xbutton.button);
+        out->modifiers = map_mods(ev.xbutton.state);
+    } else if (ev.type == MotionNotify) {
+        out->type = BALLUM_EVENT_POINTER_MOVE;
+        out->x = ev.xmotion.x_root; out->y = ev.xmotion.y_root;
+        out->button = BALLUM_BUTTON_NONE;
+        out->modifiers = map_mods(ev.xmotion.state);
+    }
+    return BALLUM_STATUS_OK;
+}
+
 static const ballum_backend_t k_x11 = {
     "x11-xrandr",
     x11_enumerate, x11_set_pixel, x11_get_pixel, x11_blit,
-    x11_set_brightness, x11_set_warmth, x11_set_gamma
+    x11_set_brightness, x11_set_warmth, x11_set_gamma, x11_poll_event
 };
 
 const ballum_backend_t *ballum_backend_x11(void) { return &k_x11; }

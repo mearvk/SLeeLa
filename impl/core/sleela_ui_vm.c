@@ -97,6 +97,10 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_WIFI_SCAN: case SLUI_FN_WIFI_NETWORK_COUNT: case SLUI_FN_WIFI_DISCONNECT:
         case SLUI_FN_BALLUM_SUPPORTED: case SLUI_FN_BALLUM_BACKEND_NAME:
         case SLUI_FN_BALLUM_ENUMERATE: case SLUI_FN_BALLUM_DISPLAY_COUNT:
+        case SLUI_FN_BALLUM_HAS_INPUT: case SLUI_FN_BALLUM_POLL:
+        case SLUI_FN_BALLUM_EVENT_X: case SLUI_FN_BALLUM_EVENT_Y:
+        case SLUI_FN_BALLUM_EVENT_BUTTON: case SLUI_FN_BALLUM_EVENT_SOURCE:
+        case SLUI_FN_BALLUM_EVENT_CONTACT: case SLUI_FN_BALLUM_EVENT_MODIFIERS:
             return 0;
         /* 1 arg */
         case SLUI_FN_APP_CREATE: case SLUI_FN_APP_RUN: case SLUI_FN_APP_DESTROY:
@@ -117,7 +121,7 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_BALLUM_DISPLAY_ID: case SLUI_FN_BALLUM_DISPLAY_NAME:
         case SLUI_FN_BALLUM_DISPLAY_WIDTH: case SLUI_FN_BALLUM_DISPLAY_HEIGHT:
         case SLUI_FN_BALLUM_DISPLAY_PRIMARY: case SLUI_FN_BALLUM_DISPLAY_CAPS:
-        case SLUI_FN_BALLUM_STATUS_NAME:
+        case SLUI_FN_BALLUM_STATUS_NAME: case SLUI_FN_BALLUM_EVENT_TYPE_NAME:
             return 1;
         /* 2 args */
         case SLUI_FN_APP_PUMP: case SLUI_FN_APP_QUIT: case SLUI_FN_WINDOW_SET_TITLE:
@@ -311,6 +315,15 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_BALLUM_SET_WARMTH:      return r_int(sleela_ballum_vm_set_warmth((int)ai(a,n,0), (int)ai(a,n,1)));
         case SLUI_FN_BALLUM_SET_GAMMA:       return r_int(sleela_ballum_vm_set_gamma((int)ai(a,n,0), (int)ai(a,n,1)));
         case SLUI_FN_BALLUM_STATUS_NAME:     return r_str(sleela_ballum_vm_status_name((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_HAS_INPUT:       return r_int(sleela_ballum_vm_has_input());
+        case SLUI_FN_BALLUM_POLL:            return r_int(sleela_ballum_vm_poll());
+        case SLUI_FN_BALLUM_EVENT_X:         return r_int(sleela_ballum_vm_event_x());
+        case SLUI_FN_BALLUM_EVENT_Y:         return r_int(sleela_ballum_vm_event_y());
+        case SLUI_FN_BALLUM_EVENT_BUTTON:    return r_int(sleela_ballum_vm_event_button());
+        case SLUI_FN_BALLUM_EVENT_SOURCE:    return r_int(sleela_ballum_vm_event_source());
+        case SLUI_FN_BALLUM_EVENT_CONTACT:   return r_int(sleela_ballum_vm_event_contact());
+        case SLUI_FN_BALLUM_EVENT_MODIFIERS: return r_int(sleela_ballum_vm_event_modifiers());
+        case SLUI_FN_BALLUM_EVENT_TYPE_NAME: return r_str(sleela_ballum_vm_event_type_name((int)ai(a,n,0)));
 
         case SLUI_FN_WIDGET_SET_TOGGLE:    slui_widget_set_toggle(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_VALUE:     slui_widget_set_value(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();

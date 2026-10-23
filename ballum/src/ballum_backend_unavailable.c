@@ -58,7 +58,10 @@ static const ballum_backend_t k_unavailable = {
     unavail_blit,
     unavail_set_brightness,
     unavail_set_warmth,
-    unavail_set_gamma
+    unavail_set_gamma,
+    /* poll_event = NULL: the fallback has no input queue, so the manager
+     * reports has_input()==0 and poll returns UNSUPPORTED (never a fake event). */
+    0
 };
 
 const ballum_backend_t *ballum_backend_unavailable(void) { return &k_unavailable; }

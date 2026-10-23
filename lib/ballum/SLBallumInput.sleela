@@ -1,0 +1,230 @@
+/*
+ * lib/ballum/SLBallumInput.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: The Ballum touchscreen + mouse input listener (click, move, drag).
+ */
+#sleela 2.1
+// Family: ballum. SLBallumInput is the pointer-input listener for Ballum: a
+// clean surface a developer polls to receive touchscreen and mouse input over
+// the whole screen. It reads raw pointer events through the uiBallum* VM bridge
+// (mouse and touch unified as DOWN/MOVE/UP) and synthesizes the higher gestures
+// a developer actually wants -- CLICK and DRAG (press, move, release) -- with a
+// small, explicit state machine.
+//
+// Polling model (no callbacks in the core VM): call poll() each frame; it
+// returns a gesture code describing what happened since the last call. Read the
+// latched position/button with the accessors. A click is a down+up at (nearly)
+// the same spot; a drag is a down, one or more moves past a small threshold,
+// then an up -- reported as DRAG_BEGIN, DRAG_MOVE(s), DRAG_END.
+//
+// Gesture codes (returned by poll()):
+//   0 NONE        nothing happened this poll
+//   1 DOWN        a raw press that has not yet resolved to click/drag
+//   2 MOVE        a hover/move with no button held
+//   3 CLICK       a press+release at the same spot (tap, on touch)
+//   4 DRAG_BEGIN  movement past the threshold while pressed
+//   5 DRAG_MOVE   continued drag movement
+//   6 DRAG_END    release that ends a drag
+//
+// Raw event types mirror ballum_event_type_t (1 down, 2 move, 3 up).
+class SLBallumInput {
+
+  // --- gesture codes ---
+  static final int NONE = 0;
+  static final int DOWN = 1;
+  static final int MOVE = 2;
+  static final int CLICK = 3;
+  static final int DRAG_BEGIN = 4;
+  static final int DRAG_MOVE = 5;
+  static final int DRAG_END = 6;
+
+  // --- raw native event types (ballum_event_type_t) ---
+  static final int RAW_NONE = 0;
+  static final int RAW_DOWN = 1;
+  static final int RAW_MOVE = 2;
+  static final int RAW_UP = 3;
+
+  // Movement (in pixels) past which a press becomes a drag rather than a click.
+  int dragThreshold;
+
+  // Pressed-gesture state.
+  int pressed;        // 1 while a button/finger is down
+  int dragging;       // 1 once movement crossed the threshold
+  int downX;          // where the press started
+  int downY;
+
+  // The latched current event, for accessor reads after poll().
+  int curType;        // raw type of the last polled event
+  int curX;
+  int curY;
+  int curButton;
+  int curSource;      // 0 mouse, 1 touch
+  int curContact;
+  int curModifiers;
+  int lastGesture;    // the gesture poll() last returned
+
+  void configure() {
+    dragThreshold = 4;   // a few pixels of slop before a tap becomes a drag
+    pressed = 0;
+    dragging = 0;
+    downX = 0;
+    downY = 0;
+    curType = RAW_NONE;
+    curX = 0;
+    curY = 0;
+    curButton = 0;
+    curSource = 0;
+    curContact = 0;
+    curModifiers = 0;
+    lastGesture = NONE;
+  }
+
+  void setDragThreshold(int px) { if (px >= 0) { dragThreshold = px; } }
+
+  // Is a pointer-input backend available on this host?
+  boolean available() { return uiBallumHasInput() == 1; }
+
+  // |a - b| for the threshold test.
+  int absDiff(int a, int b) { if (a >= b) { return a - b; } return b - a; }
+
+  // poll(): dequeue one raw event and fold it into the gesture state machine.
+  // Returns a gesture code (see the class header). Call repeatedly until it
+  // returns NONE to drain all input for this frame.
+  int poll() {
+    int raw = uiBallumPoll();
+    curType = raw;
+    if (raw == RAW_NONE) { lastGesture = NONE; return NONE; }
+
+    // Latch the event fields so the developer can read them after poll().
+    curX = uiBallumEventX();
+    curY = uiBallumEventY();
+    curButton = uiBallumEventButton();
+    curSource = uiBallumEventSource();
+    curContact = uiBallumEventContact();
+    curModifiers = uiBallumEventModifiers();
+
+    if (raw == RAW_DOWN) {
+      pressed = 1;
+      dragging = 0;
+      downX = curX;
+      downY = curY;
+      lastGesture = DOWN;
+      return DOWN;
+    }
+
+    if (raw == RAW_MOVE) {
+      if (pressed == 1) {
+        if (dragging == 1) {
+          lastGesture = DRAG_MOVE;
+          return DRAG_MOVE;
+        }
+        // Not yet a drag: has it moved far enough to become one?
+        if (absDiff(curX, downX) > dragThreshold || absDiff(curY, downY) > dragThreshold) {
+          dragging = 1;
+          lastGesture = DRAG_BEGIN;
+          return DRAG_BEGIN;
+        }
+        // Pressed but still within the tap slop: report as a plain move.
+        lastGesture = MOVE;
+        return MOVE;
+      }
+      // Hover / move with no button held.
+      lastGesture = MOVE;
+      return MOVE;
+    }
+
+    // raw == RAW_UP
+    if (pressed == 1 && dragging == 1) {
+      pressed = 0;
+      dragging = 0;
+      lastGesture = DRAG_END;
+      return DRAG_END;
+    }
+    if (pressed == 1) {
+      // Pressed and released without crossing the threshold -> a click / tap.
+      pressed = 0;
+      lastGesture = CLICK;
+      return CLICK;
+    }
+    // An up with no matching down we tracked: treat as nothing meaningful.
+    lastGesture = NONE;
+    return NONE;
+  }
+
+  // ---- accessors for the latched event / gesture ----------------------
+  int gesture() { return lastGesture; }
+  int rawType() { return curType; }
+  int x() { return curX; }
+  int y() { return curY; }
+  int button() { return curButton; }
+  int source() { return curSource; }         // 0 mouse, 1 touch
+  int contact() { return curContact; }
+  int modifiers() { return curModifiers; }
+
+  boolean isTouch() { return curSource == 1; }
+  boolean isMouse() { return curSource == 0; }
+  boolean isPressed() { return pressed == 1; }
+  boolean isDragging() { return dragging == 1; }
+
+  // The start point of the current press/drag.
+  int pressX() { return downX; }
+  int pressY() { return downY; }
+
+  // Build an SLBallumPointerEvent snapshot of the latched raw event, for code
+  // that prefers a value object over the inline accessors.
+  SLBallumPointerEvent snapshot() {
+    SLBallumPointerEvent e = new SLBallumPointerEvent();
+    e.configure(curType, curX, curY, curButton, curSource, curContact, curModifiers);
+    return e;
+  }
+
+  String gestureName(int g) {
+    if (g == NONE) { return "none"; }
+    if (g == DOWN) { return "down"; }
+    if (g == MOVE) { return "move"; }
+    if (g == CLICK) { return "click"; }
+    if (g == DRAG_BEGIN) { return "drag-begin"; }
+    if (g == DRAG_MOVE) { return "drag-move"; }
+    if (g == DRAG_END) { return "drag-end"; }
+    return "unknown";
+  }
+
+  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+  // or catalog can read and (where appropriate) override this record.
+  // Values are faithful to the real origin of the subject where publicly known.
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "SLeeLa Project";
+  String metaDate = "2026-10-23";
+  String metaCopyright = "SLeeLa standard library";
+  String metaTrademark = "Ballum";
+  String metaCorporation = "SLeeLa Project";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026";
+  int metaScienceRating = 8;        // maturity/robustness on a 1..10 scale
+  String metaNationalSchedule = "SLeeLa Ballum input listener (lib/ballum)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

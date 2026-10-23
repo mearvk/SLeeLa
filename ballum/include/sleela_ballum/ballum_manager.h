@@ -75,8 +75,57 @@ typedef enum {
     BALLUM_CAP_REGION_BLIT       = 1 << 1, /* blit a rectangle of pixels        */
     BALLUM_CAP_BRIGHTNESS        = 1 << 2, /* whole-display brightness          */
     BALLUM_CAP_COLOR_TEMPERATURE = 1 << 3, /* warmth / color temperature        */
-    BALLUM_CAP_GAMMA             = 1 << 4  /* gamma ramp                        */
+    BALLUM_CAP_GAMMA             = 1 << 4, /* gamma ramp                        */
+    BALLUM_CAP_POINTER_INPUT     = 1 << 5, /* mouse/touch pointer events        */
+    BALLUM_CAP_TOUCH_INPUT       = 1 << 6  /* multi-touch is reported           */
 } ballum_capability_t;
+
+/* ---- pointer input ------------------------------------------------------- */
+
+/* Raw pointer event kinds the backend reports. Mouse and touch are unified: a
+ * touch contact maps to DOWN/MOVE/UP with source BALLUM_POINTER_TOUCH. Higher
+ * gestures (click, drag) are synthesized above this layer, not reported here. */
+typedef enum {
+    BALLUM_EVENT_NONE = 0,
+    BALLUM_EVENT_POINTER_DOWN,   /* button pressed / finger touched down */
+    BALLUM_EVENT_POINTER_MOVE,   /* pointer/finger moved                 */
+    BALLUM_EVENT_POINTER_UP      /* button released / finger lifted      */
+} ballum_event_type_t;
+
+/* Which physical button, matching the SLUI pointer-button vocabulary. For a
+ * touch contact the button is reported as LEFT. */
+typedef enum {
+    BALLUM_BUTTON_NONE = 0,
+    BALLUM_BUTTON_LEFT = 1,
+    BALLUM_BUTTON_MIDDLE = 2,
+    BALLUM_BUTTON_RIGHT = 3
+} ballum_pointer_button_t;
+
+/* Where the event came from. */
+typedef enum {
+    BALLUM_POINTER_MOUSE = 0,
+    BALLUM_POINTER_TOUCH = 1
+} ballum_pointer_source_t;
+
+/* Modifier bitmask, matching SLUI_MOD_*. */
+enum {
+    BALLUM_MOD_SHIFT = 1u << 0,
+    BALLUM_MOD_CTRL  = 1u << 1,
+    BALLUM_MOD_ALT   = 1u << 2,
+    BALLUM_MOD_SUPER = 1u << 3
+};
+
+/* One raw pointer event in display pixel coordinates (top-left origin). */
+typedef struct {
+    ballum_event_type_t     type;
+    uint32_t                display_id;   /* display the event occurred on   */
+    int32_t                 x;            /* pixel x (may be <0 if off-edge)  */
+    int32_t                 y;            /* pixel y                          */
+    ballum_pointer_button_t button;       /* for DOWN/UP; LEFT for touch      */
+    ballum_pointer_source_t source;       /* mouse or touch                   */
+    uint32_t                contact_id;   /* touch contact id (0 for mouse)   */
+    uint32_t                modifiers;    /* BALLUM_MOD_* bitmask             */
+} ballum_pointer_event_t;
 
 /* ---- value types --------------------------------------------------------- */
 
@@ -143,6 +192,13 @@ typedef struct ballum_backend {
     ballum_status_t (*set_brightness)(void *context, uint32_t display_id, int percent);
     ballum_status_t (*set_warmth)(void *context, uint32_t display_id, uint32_t kelvin);
     ballum_status_t (*set_gamma)(void *context, uint32_t display_id, uint32_t gamma_scaled);
+
+    /* Poll one pending pointer (mouse/touch) event without blocking. Writes the
+     * event through `out` and returns BALLUM_STATUS_OK when one was dequeued, or
+     * BALLUM_STATUS_UNSUPPORTED when the backend has no input queue. When no
+     * event is pending it returns BALLUM_STATUS_OK with out->type ==
+     * BALLUM_EVENT_NONE. May be NULL (input not provided). */
+    ballum_status_t (*poll_event)(void *context, ballum_pointer_event_t *out);
 } ballum_backend_t;
 
 /* The backend compiled in for this build (never NULL; may be the unavailable
@@ -201,9 +257,21 @@ ballum_status_t ballum_manager_set_warmth(ballum_manager_t *manager, uint32_t id
 ballum_status_t ballum_manager_set_gamma(ballum_manager_t *manager, uint32_t id,
                                          uint32_t gamma_scaled);
 
+/* ---- pointer input ------------------------------------------------------- */
+
+/* Poll one pending pointer (mouse/touch) event, non-blocking. On success *out
+ * is filled; out->type == BALLUM_EVENT_NONE means no event was pending. Returns
+ * BALLUM_STATUS_UNSUPPORTED when the backend provides no input queue. */
+ballum_status_t ballum_manager_poll_event(ballum_manager_t *manager,
+                                          ballum_pointer_event_t *out);
+
+/* Does the backend provide pointer input at all? 1 yes, 0 no, <0 on bad args. */
+int ballum_manager_has_input(const ballum_manager_t *manager);
+
 /* ---- helpers ------------------------------------------------------------- */
 
 const char *ballum_status_name(ballum_status_t status);
+const char *ballum_event_type_name(ballum_event_type_t type);
 ballum_color_t ballum_color_rgb(uint8_t r, uint8_t g, uint8_t b);
 ballum_color_t ballum_color_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 

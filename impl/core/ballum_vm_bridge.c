@@ -133,3 +133,34 @@ int sleela_ballum_vm_set_gamma(int display_id, int gamma_scaled) {
 const char *sleela_ballum_vm_status_name(int status) {
     return ballum_status_name((ballum_status_t)status);
 }
+
+/* ---- pointer input ------------------------------------------------------- */
+/* The most recently polled event, latched so the SLeeLa side can read its
+ * fields after poll() reports the type. */
+static ballum_pointer_event_t g_event;
+
+int sleela_ballum_vm_has_input(void) {
+    if (ensure_manager() != BALLUM_STATUS_OK) return 0;
+    return ballum_manager_has_input(&g_manager) == 1 ? 1 : 0;
+}
+
+int sleela_ballum_vm_poll(void) {
+    ballum_pointer_event_t ev;
+    if (ensure_manager() != BALLUM_STATUS_OK) { g_event.type = BALLUM_EVENT_NONE; return BALLUM_EVENT_NONE; }
+    if (ballum_manager_poll_event(&g_manager, &ev) != BALLUM_STATUS_OK) {
+        g_event.type = BALLUM_EVENT_NONE;
+        return BALLUM_EVENT_NONE;
+    }
+    g_event = ev;
+    return (int)g_event.type;
+}
+
+int sleela_ballum_vm_event_x(void)         { return (int)g_event.x; }
+int sleela_ballum_vm_event_y(void)         { return (int)g_event.y; }
+int sleela_ballum_vm_event_button(void)    { return (int)g_event.button; }
+int sleela_ballum_vm_event_source(void)    { return (int)g_event.source; }
+int sleela_ballum_vm_event_contact(void)   { return (int)g_event.contact_id; }
+int sleela_ballum_vm_event_modifiers(void) { return (int)g_event.modifiers; }
+const char *sleela_ballum_vm_event_type_name(int type) {
+    return ballum_event_type_name((ballum_event_type_t)type);
+}

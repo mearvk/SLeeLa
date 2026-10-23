@@ -28,6 +28,67 @@ out-of-range pixel or an impossible control.
 | `SLBallumDisplay.sleela` | One connected display: id, geometry, primary flag, and the capability bitmask (`supportsPerPixel`/`supportsBrightness`/…), mirroring `ballum_display_t`. |
 | `SLBallumColor.sleela` | An 8-bit RGBA color with clamped channels, mirroring `ballum_color_t`. |
 | `SLBallumStatus.sleela` | Result codes mirroring `ballum_status_t`, plus the SLeeLa `BRIDGE_REQUIRED` code and `text(code)`. |
+| `SLBallumInput.sleela` | **The touchscreen + mouse input listener** — polls pointer events and synthesizes click/move/drag gestures (see below). |
+| `SLBallumPointerEvent.sleela` | One pointer event (type/x/y/button/source/contact/modifiers), mirroring `ballum_pointer_event_t`. |
+
+## Input: touchscreen + mouse (`SLBallumInput`)
+
+Ballum is not just output — `SLBallumInput` is a clean listener for **mouse and
+touchscreen** input over the whole screen. The native backend reports raw
+pointer events (mouse and touch unified as `DOWN`/`MOVE`/`UP`), and the listener
+folds them into the gestures a developer actually wants — **click** and
+**drag** — with a small, explicit state machine and a configurable drag
+threshold.
+
+The core VM has no callbacks, so input is **polled**: call `poll()` each frame;
+it returns a gesture code and latches the event position/button/source for the
+accessors. Drain until it returns `NONE`.
+
+| Gesture (`poll()` return) | Meaning |
+| --- | --- |
+| `NONE` (0) | nothing this poll |
+| `DOWN` (1) | a raw press, not yet resolved to click/drag |
+| `MOVE` (2) | hover/move with no button held |
+| `CLICK` (3) | press + release at the same spot (a tap, on touch) |
+| `DRAG_BEGIN` (4) | movement past the threshold while pressed |
+| `DRAG_MOVE` (5) | continued drag movement |
+| `DRAG_END` (6) | release that ends a drag |
+
+```java
+SLBallumInput input = new SLBallumInput();
+input.configure();
+input.setDragThreshold(4);                 // pixels of slop before tap -> drag
+
+if (input.available()) {                    // a pointer backend is present
+    int g = input.poll();                   // call each frame; drain to NONE
+    while (g != SLBallumInput.NONE) {
+        if (g == SLBallumInput.CLICK) {
+            screen.plotRgb(input.x(), input.y(), 0, 255, 0);   // paint where tapped
+        } else if (g == SLBallumInput.DRAG_MOVE) {
+            screen.plotRgb(input.x(), input.y(), 255, 255, 0); // trail while dragging
+        }
+        g = input.poll();
+    }
+}
+```
+
+| Method | Purpose |
+| --- | --- |
+| `configure()` / `setDragThreshold(px)` | prepare; tune the click-vs-drag threshold |
+| `available()` | is a pointer-input backend present on this host |
+| `poll()` | fold one raw event into a gesture; returns a gesture code |
+| `gesture()` / `gestureName(g)` | the last gesture and its readable name |
+| `x()` / `y()` / `button()` / `source()` / `contact()` / `modifiers()` | latched event fields |
+| `isTouch()` / `isMouse()` / `isPressed()` / `isDragging()` | state queries |
+| `pressX()` / `pressY()` | where the current press/drag started |
+| `snapshot()` | an `SLBallumPointerEvent` value object of the latched event |
+
+**Platform support:** the Linux (X11) backend provides live pointer input
+(`XSelectInput` + button/motion events). The macOS and Windows backends report
+`available() == false` for now — whole-screen global capture there needs a
+CGEventTap (macOS, with Accessibility permission) or a `WH_MOUSE_LL` hook
+(Windows), each with its own lifecycle; until wired, they fail cleanly rather
+than fake an input stream. Runnable demo: `input-demo.sleela`.
 
 ## The Screen API (`SLBallumScreen`) — pixel accuracy, cleanly
 

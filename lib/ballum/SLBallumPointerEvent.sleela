@@ -1,0 +1,112 @@
+/*
+ * lib/ballum/SLBallumPointerEvent.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: One Ballum pointer (mouse/touch) event, mirroring ballum_pointer_event_t.
+ */
+#sleela 2.1
+// Family: ballum. A single pointer event in screen pixel coordinates (top-left
+// origin), mirroring the native ballum_pointer_event_t. Mouse and touch are
+// unified: a touch contact arrives as DOWN/MOVE/UP with source == TOUCH. Higher
+// gestures (click, drag) are synthesized by SLBallumInput, not carried here.
+class SLBallumPointerEvent {
+  // --- event type (mirror ballum_event_type_t) ---
+  static final int TYPE_NONE = 0;
+  static final int TYPE_DOWN = 1;
+  static final int TYPE_MOVE = 2;
+  static final int TYPE_UP = 3;
+
+  // --- button (mirror ballum_pointer_button_t) ---
+  static final int BUTTON_NONE = 0;
+  static final int BUTTON_LEFT = 1;
+  static final int BUTTON_MIDDLE = 2;
+  static final int BUTTON_RIGHT = 3;
+
+  // --- source (mirror ballum_pointer_source_t) ---
+  static final int SOURCE_MOUSE = 0;
+  static final int SOURCE_TOUCH = 1;
+
+  // --- modifier bits (mirror BALLUM_MOD_*) ---
+  static final int MOD_SHIFT = 1;
+  static final int MOD_CTRL = 2;
+  static final int MOD_ALT = 4;
+  static final int MOD_SUPER = 8;
+
+  int type;
+  int x;
+  int y;
+  int button;
+  int source;
+  int contactId;
+  int modifiers;
+
+  void configure(int evType, int px, int py, int evButton,
+                 int evSource, int evContact, int evModifiers) {
+    type = evType;
+    x = px;
+    y = py;
+    button = evButton;
+    source = evSource;
+    contactId = evContact;
+    modifiers = evModifiers;
+  }
+
+  int eventType() { return type; }
+  int posX() { return x; }
+  int posY() { return y; }
+  int pointerButton() { return button; }
+  int pointerSource() { return source; }
+  int touchContact() { return contactId; }
+  int modifierMask() { return modifiers; }
+
+  boolean isDown() { return type == TYPE_DOWN; }
+  boolean isMove() { return type == TYPE_MOVE; }
+  boolean isUp() { return type == TYPE_UP; }
+  boolean isNone() { return type == TYPE_NONE; }
+  boolean isTouch() { return source == SOURCE_TOUCH; }
+  boolean isMouse() { return source == SOURCE_MOUSE; }
+  boolean isLeft() { return button == BUTTON_LEFT; }
+
+  boolean hasModifier(int bit) { return (modifiers / bit) % 2 == 1; }
+  boolean shift() { return hasModifier(MOD_SHIFT); }
+  boolean ctrl() { return hasModifier(MOD_CTRL); }
+  boolean alt() { return hasModifier(MOD_ALT); }
+
+  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+  // or catalog can read and (where appropriate) override this record.
+  // Values are faithful to the real origin of the subject where publicly known.
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "SLeeLa Project";
+  String metaDate = "2026-10-23";
+  String metaCopyright = "SLeeLa standard library";
+  String metaTrademark = "Ballum";
+  String metaCorporation = "SLeeLa Project";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026";
+  int metaScienceRating = 8;        // maturity/robustness on a 1..10 scale
+  String metaNationalSchedule = "SLeeLa Ballum input model (lib/ballum)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

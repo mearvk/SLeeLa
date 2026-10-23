@@ -150,10 +150,16 @@ static ballum_status_t win_set_gamma(void *ctx, uint32_t id, uint32_t gamma_scal
     return apply_ramp(1.0, 1.0, 1.0, 1.0 / gamma);
 }
 
+/* Whole-screen global pointer capture on Windows uses a low-level mouse hook
+ * (SetWindowsHookEx WH_MOUSE_LL) with its own message-pump lifecycle. Until that
+ * is wired, this backend provides no poll_event (NULL below), so the manager
+ * reports has_input()==0 and poll returns UNSUPPORTED -- it never fakes an input
+ * stream. The display controls above are unaffected. */
+
 static const ballum_backend_t k_windows = {
     "windows-gdi",
     win_enumerate, win_set_pixel, win_get_pixel, win_blit,
-    win_set_brightness, win_set_warmth, win_set_gamma
+    win_set_brightness, win_set_warmth, win_set_gamma, /* poll_event */ 0
 };
 
 const ballum_backend_t *ballum_backend_windows(void) { return &k_windows; }

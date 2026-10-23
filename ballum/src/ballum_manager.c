@@ -13,6 +13,16 @@
 
 /* ---- helpers ------------------------------------------------------------- */
 
+const char *ballum_event_type_name(ballum_event_type_t type) {
+    switch (type) {
+        case BALLUM_EVENT_NONE:         return "none";
+        case BALLUM_EVENT_POINTER_DOWN: return "down";
+        case BALLUM_EVENT_POINTER_MOVE: return "move";
+        case BALLUM_EVENT_POINTER_UP:   return "up";
+    }
+    return "unknown";
+}
+
 const char *ballum_status_name(ballum_status_t status) {
     switch (status) {
         case BALLUM_STATUS_OK:                  return "ok";
@@ -225,4 +235,23 @@ ballum_status_t ballum_manager_set_gamma(ballum_manager_t *manager, uint32_t id,
     if (!manager->backend->set_gamma) return BALLUM_STATUS_UNSUPPORTED;
     return manager->backend->set_gamma(manager->backend_context, id,
                                        ballum_clamp_gamma(gamma_scaled));
+}
+
+/* ---- pointer input ------------------------------------------------------- */
+
+int ballum_manager_has_input(const ballum_manager_t *manager) {
+    if (!manager) return -1;
+    return (manager->backend && manager->backend->poll_event) ? 1 : 0;
+}
+
+ballum_status_t ballum_manager_poll_event(ballum_manager_t *manager,
+                                          ballum_pointer_event_t *out) {
+    if (!manager || !out) return BALLUM_STATUS_INVALID_ARGUMENT;
+    if (!manager->initialized) return BALLUM_STATUS_NOT_INITIALIZED;
+    /* Always leave `out` well-defined, even on the no-input path. */
+    memset(out, 0, sizeof(*out));
+    out->type = BALLUM_EVENT_NONE;
+    if (!manager->backend || !manager->backend->poll_event)
+        return BALLUM_STATUS_UNSUPPORTED;
+    return manager->backend->poll_event(manager->backend_context, out);
 }

@@ -169,6 +169,16 @@ typedef enum {
     SLUI_FN_BALLUM_SET_WARMTH,       /* uiBallumSetWarmth(id:i, kelvin:i) -> status */
     SLUI_FN_BALLUM_SET_GAMMA,        /* uiBallumSetGamma(id:i, gammaScaled:i) -> status */
     SLUI_FN_BALLUM_STATUS_NAME,      /* uiBallumStatusName(status:i) -> string */
+    /* Ballum pointer input (mouse/touch): click, move, drag. */
+    SLUI_FN_BALLUM_HAS_INPUT,        /* uiBallumHasInput() -> 1/0 */
+    SLUI_FN_BALLUM_POLL,             /* uiBallumPoll() -> event type (0 none,1 down,2 move,3 up) */
+    SLUI_FN_BALLUM_EVENT_X,          /* uiBallumEventX() -> px */
+    SLUI_FN_BALLUM_EVENT_Y,          /* uiBallumEventY() -> px */
+    SLUI_FN_BALLUM_EVENT_BUTTON,     /* uiBallumEventButton() -> 0..3 */
+    SLUI_FN_BALLUM_EVENT_SOURCE,     /* uiBallumEventSource() -> 0 mouse,1 touch */
+    SLUI_FN_BALLUM_EVENT_CONTACT,    /* uiBallumEventContact() -> touch contact id */
+    SLUI_FN_BALLUM_EVENT_MODIFIERS,  /* uiBallumEventModifiers() -> bitmask */
+    SLUI_FN_BALLUM_EVENT_TYPE_NAME,  /* uiBallumEventTypeName(type:i) -> string */
 
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;

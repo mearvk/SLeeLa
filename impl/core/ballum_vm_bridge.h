@@ -33,6 +33,18 @@ int         sleela_ballum_vm_set_brightness(int display_id, int percent);  /* ->
 int         sleela_ballum_vm_set_warmth(int display_id, int kelvin);       /* -> status              */
 int         sleela_ballum_vm_set_gamma(int display_id, int gamma_scaled);  /* -> status              */
 const char *sleela_ballum_vm_status_name(int status);         /* human-readable status text          */
+/* Pointer input (mouse/touch). poll() dequeues one event into a VM-local latch
+ * and returns its type (0 none, 1 down, 2 move, 3 up); the accessors read the
+ * latched event. has_input() reports whether the backend supplies any input. */
+int         sleela_ballum_vm_has_input(void);                 /* 1 input available, 0 not            */
+int         sleela_ballum_vm_poll(void);                      /* latch one event -> type (0..3)      */
+int         sleela_ballum_vm_event_x(void);                   /* latched event pixel x               */
+int         sleela_ballum_vm_event_y(void);                   /* latched event pixel y               */
+int         sleela_ballum_vm_event_button(void);             /* 0 none,1 left,2 middle,3 right       */
+int         sleela_ballum_vm_event_source(void);             /* 0 mouse, 1 touch                     */
+int         sleela_ballum_vm_event_contact(void);            /* touch contact id (0 for mouse)       */
+int         sleela_ballum_vm_event_modifiers(void);          /* BALLUM_MOD_* bitmask                 */
+const char *sleela_ballum_vm_event_type_name(int type);      /* "none"/"down"/"move"/"up"            */
 #ifdef __cplusplus
 }
 #endif
