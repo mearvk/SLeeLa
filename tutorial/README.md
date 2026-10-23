@@ -9,7 +9,7 @@
 
 # SLeeLa — A Tutorial Series
 
-A hands-on, twelve-part tour of **SLeeLa at her source best**: the language, the
+A hands-on, thirteen-part tour of **SLeeLa at her source best**: the language, the
 Wrapper™ source file, the Nordshrift driver and its triplet targets, the
 conducted-method vocabulary, subjects, and the protocol/tooling work that rides
 on top (HTTP 3.0 integrity, HTTP colors, and the `.ledger` class).
@@ -34,6 +34,7 @@ appears in shipping `.sleela` sources and `.sst` sheets.
 | 10 | [The `.ledger` class](10-ledger.md) | Per-file QR insignia + SHA-256 chain + timestamp |
 | 11 | [HTTP 3.0 & HTTP colors](11-http3-and-colors.md) | Packet integrity and naming HTTP colors from source |
 | 12 | [Putting it together](12-capstone.md) | A small end-to-end module, built and ledgered |
+| 13 | [The Metadata Class standard](13-metadata-class.md) | The metapattern: provenance, legality, and probation of intent |
 
 ## Prerequisites
 

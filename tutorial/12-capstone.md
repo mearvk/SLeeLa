@@ -1,6 +1,6 @@
 # Lesson 12 — Putting It Together (Capstone)
 
-> Series: [index](README.md) · prev: [11](11-http3-and-colors.md)
+> Series: [index](README.md) · prev: [11](11-http3-and-colors.md) · next: [13 — The Metadata Class standard](13-metadata-class.md)
 
 Time to combine the whole series into one small module: write a Wrapper, drive
 it with a sheet, build the runnable artifact, get its `.ledger`, and verify it.

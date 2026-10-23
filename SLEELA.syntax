@@ -788,3 +788,129 @@ exactly like a top-level class.
 
 Nested classes require `#sleela 1.11`. A document that nests a class under a
 lower declared version is rejected ("nested classes require #sleela 1.11").
+
+## 15. The Metadata Class standard (the metapattern)
+
+A **metadata class** is a Sleela class whose purpose is to carry the
+provenance, standing, and intent of a unit of work — not its runtime behavior.
+The pattern was first established by the codec and compression library
+families (`lib/codecs/SLCodec*.sleela`, `lib/compression/SLCompression*.sleela`):
+a block of **catalogued attributes with getter/setter pairs**, faithful to the
+subject's real-world origin where publicly known. This section raises that
+block from a local convention to a **professional standard** for the Sleela
+source format.
+
+The standard is informative at the grammar level — the metapattern uses only
+ordinary fields and methods (sections 3.2, 3.3) — and **normative at the
+authoring level**: it defines what a metadata class must contain, who is
+expected to write one, and how the jurisdictional and legal dimensions are
+framed. A tool MAY read these attributes; it MUST NOT infer runtime capability
+from them (capability is the plugin/manager's concern, never the metadata).
+
+### 15.1 Class of intellect — who writes a metadata class
+
+The standard recognizes two authoring tiers. The tier sets the *expectation*,
+not a compiler gate.
+
+- **Worker class.** Everyday Sleela — tutorials, examples, single-purpose
+  wrappers. A metadata block is **welcome and encouraged** here as a mark of
+  craft, but only the baseline identity attributes (§15.2) are expected.
+- **Executive+ class.** Library-family classes, registry entries, and anything
+  that represents a standard, a product, or a jurisdictional artifact. Here the
+  **full metadata record is expected** — baseline identity *plus* the legality
+  and probation-of-intent attributes (§15.3, §15.4). An executive-grade class
+  that omits the record is incomplete, even if it compiles.
+
+The metapattern thus sets a *pace in the collective intellect*: the higher the
+standing of the code, the more complete its self-description.
+
+### 15.2 Baseline identity attributes
+
+The original eleven catalogued attributes, each a field with a matching
+`get`/`set` pair. Values are faithful to the subject's real origin where
+publicly known; unknown values use `"none"` or `"unknown"`, never a guess
+presented as fact.
+
+| Field | Type | Meaning |
+|---|---|---|
+| `metaVersion` | `String` | Record version (`"MAJOR.MINOR.PATCH"`). |
+| `metaId` | `int` | Stable registry id (mirrors the native handler id). |
+| `metaAuthor` | `String` | Originating author or body. |
+| `metaDate` | `String` | Record date (`"YYYY-MM-DD"`). |
+| `metaCopyright` | `String` | Copyright / licensing posture. |
+| `metaTrademark` | `String` | Trademark, or `"none"`. |
+| `metaCorporation` | `String` | Stewarding corporation or organization. |
+| `metaOrigin` | `String` | Jurisdictional origin (§15.4). |
+| `metaBirthDate` | `String` | Year/date the subject came into being. |
+| `metaScienceRating` | `int` | Maturity/robustness on a 1..10 scale. |
+| `metaNationalSchedule` | `String` | The governing standard/specification schedule (§15.3). |
+
+Canonical shape (from `lib/codecs/SLCodecMidi.sleela`):
+
+```sleela
+  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+  // or catalog can read and (where appropriate) override each codec's record.
+  // Values are faithful to the codec's real origin where publicly known.
+  String metaVersion = "1.0.0";
+  int metaId = 17;
+  String metaAuthor = "MIDI Manufacturers Association";
+  String metaDate = "2026-09-28";
+  String metaCopyright = "Open specification";
+  String metaTrademark = "MIDI";
+  String metaCorporation = "MIDI Manufacturers Association";
+  String metaOrigin = "International";
+  String metaBirthDate = "1983";
+  int metaScienceRating = 10;        // maturity/robustness on a 1..10 scale
+  String metaNationalSchedule = "MMA MIDI 1.0 / SMF";
+```
+
+Each field is paired with accessors — `getMetaVersion()`/`setMetaVersion(...)`,
+`getAuthor()`/`setAuthor(...)`, and so on — so a GUI, loader, or catalog can
+read the record and, **where appropriate**, override it. Overriding a legality
+or schedule field (§15.3) is a privileged act and should be logged by the
+caller; the metadata class itself does not police this.
+
+### 15.3 Legality — the schedule and standing attributes
+
+Legality in a metadata class is expressed, not enforced. The **schedule**
+(`metaNationalSchedule`) names the governing standard, specification, treaty, or
+statute under which the subject is defined — e.g. `"RFC 1952"`, `"ITU-T G.711"`,
+`"MMA MIDI 1.0 / SMF"`, `"PKWARE APPNOTE (ZIP)"`. The copyright, trademark, and
+corporation fields together state the **fiduciary standing**: who owns, who
+stewards, and under what terms. An executive+ class treats these as mandatory:
+they are the audit surface a legal, administrative, or executive reviewer reads
+first.
+
+Rule: a schedule value must name a *real, citable* instrument or be `"none"`.
+A metadata class never invents a legal schedule to appear legitimate.
+
+### 15.4 Probation of intent — jurisdictional scope
+
+`metaOrigin` frames **where the subject's authority and intent are seated**,
+along a widening scale. This is the "probation of intent": a declaration, open
+to review, of the scope under which the artifact is offered. The standard
+vocabulary, smallest to largest:
+
+| Scope | Meaning |
+|---|---|
+| `"National"` | Seated in a single nation (name the nation where known, e.g. `"United States"`, `"France"`). |
+| `"International"` | Multi-national / standards-body seated (e.g. ISO, IETF, ITU, MMA). |
+| `"Galactic"` | Reserved for artifacts whose intended scope exceeds terrestrial jurisdiction — the top of the pace-setting scale. |
+
+Adjacent framings a reviewer reads alongside origin — **Legal, Fiduciary,
+Admin, Executive** — are expressed through the §15.3 schedule/standing fields
+rather than as separate scope tokens: *Legal* = the schedule, *Fiduciary* =
+copyright/trademark/corporation, *Admin/Executive* = the authoring tier (§15.1)
+and the act of maintaining the record. A nation name is a permitted, more
+specific value of `"National"`; `"International"` and `"Galactic"` are the
+broadening steps above it.
+
+### 15.5 Fidelity and honesty
+
+The metapattern's one hard contract: **values are faithful to the subject's
+real origin where publicly known.** A metadata class is a statement of record.
+It may be overridden by a caller, summarized by a catalog, or left at baseline
+by a worker-class author — but it must never assert a false author, a
+fabricated schedule, or an inflated scope. Honesty of the record is what lets
+the higher classes of Sleela intellect rely on it to set the pace.
