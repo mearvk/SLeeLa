@@ -24,7 +24,7 @@ printf '%s\n' "--- above supported range ---"
 printf '%s\n' "${NEW_OUTPUT}"
 
 if [[ ${OLD_RC} -eq 0 ]]; then
-  echo "FAIL: below-floor syntax 1.2 was accepted"
+  echo "FAIL: below-floor syntax 0.9 was accepted"
   exit 1
 fi
 if ! grep -Eq "TooOld|older than this compiler|NSS-E-SRC-002" <<<"${OLD_OUTPUT}"; then
@@ -32,19 +32,19 @@ if ! grep -Eq "TooOld|older than this compiler|NSS-E-SRC-002" <<<"${OLD_OUTPUT}"
   exit 1
 fi
 if [[ ${CURRENT_RC} -ne 0 ]]; then
-  echo "FAIL: supported syntax 1.3 was rejected"
+  echo "FAIL: supported syntax 2.2 was rejected"
   exit 1
 fi
-if ! grep -Eq "COMPAT-CURRENT|1.3" <<<"${CURRENT_OUTPUT}"; then
-  echo "FAIL: supported-version fixture produced no expected 1.3 evidence"
+if ! grep -Eq "0 error\(s\)|OK: target-language" <<<"${CURRENT_OUTPUT}"; then
+  echo "FAIL: supported-version fixture (syntax 2.2) did not check cleanly"
   exit 1
 fi
 if [[ ${NEW_RC} -eq 0 ]]; then
-  echo "FAIL: above-ceiling syntax 1.7 was accepted"
+  echo "FAIL: above-ceiling syntax 2.3 was accepted"
   exit 1
 fi
 if ! grep -Eq "TooNew|exceeds this compiler|NSS-E-SRC-002" <<<"${NEW_OUTPUT}"; then
   echo "FAIL: missing above-ceiling compatibility diagnostic"
   exit 1
 fi
-echo "PASS: compiler rejects syntax outside supported range 1.3 .. 1.6"
+echo "PASS: compiler rejects syntax outside supported range 1.0 .. 2.2"

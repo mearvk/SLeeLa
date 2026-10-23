@@ -1,4 +1,4 @@
-#sleela 2.1
+#sleela 0.9
 
 class CompatOld {
     void main() {
