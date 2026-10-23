@@ -1,0 +1,66 @@
+#sleela 2.1
+// compression.sleela -- the self-contained, runnable build of the SLeeLa
+// compression Loader demonstration. The compiler's `run` compiles one file as a
+// single unit, so this aggregate inlines the Loader contract (mirroring
+// SLCompressionLoader.sleela / the native compression/ manager) and a `main`
+// that loads, uses, and unloads algorithms. SLeeLa calls the Loader; the Loader
+// calls the individual compressor plugins.
+//
+// Algorithm ids mirror sleela_compressor_id: 0 STORE 1 RLE 2 HUFFMAN 3 LZW
+// 4 DEFLATE ... 6 GZIP ... 14 ZIP. Native algorithms (0,1,2,3) compress/
+// decompress in-package; the rest advertise a backend/container state and fail
+// cleanly until a backend is wired. The per-algorithm loaded flags use the
+// first-class array type.
+class Compression {
+  int[] loaded;
+
+  int count() { return 15; }
+  void init() { loaded = new int[15]; }
+
+  boolean isLoaded(int id) { return loaded[id] == 1; }
+  void load(int id) { loaded[id] = 1; }
+  void unload(int id) { loaded[id] = 0; }
+  void unloadAll() { int i = 0; while (i < 15) { loaded[i] = 0; i = i + 1; } }
+
+  boolean isNative(int id) { return id == 0 || id == 1 || id == 2 || id == 3; }
+
+  String nameOf(int id) {
+    if (id == 0) { return "Store (raw)"; }
+    if (id == 1) { return "Run-Length Encoding"; }
+    if (id == 2) { return "Canonical Huffman"; }
+    if (id == 3) { return "Lempel-Ziv-Welch"; }
+    if (id == 6) { return "gzip (RFC 1952)"; }
+    return "algorithm#" + id;
+  }
+
+  String stateWord(int id) { if (isNative(id)) { return "native"; } return "backend"; }
+
+  void report(int id) {
+    String tag = "unloaded";
+    if (isLoaded(id)) { tag = "loaded"; }
+    print(nameOf(id) + " [" + stateWord(id) + "] -> " + tag);
+  }
+
+  void main() {
+    init();
+    // SLeeLa drives the Loader: load native algorithms and a backend algorithm,
+    // use them, then unload. The Loader -- not the program -- owns each plugin.
+    load(1);    // RLE (native)
+    load(2);    // Huffman (native)
+    load(6);    // gzip (backend)
+
+    report(1);
+    report(2);
+    report(6);
+    report(10); // Zstandard: never loaded
+
+    print("loaded native RLE? " + isLoaded(1));
+    print("gzip is native? " + isNative(6));
+
+    unload(6);
+    report(6);
+
+    unloadAll();
+    print("after unloadAll, RLE loaded? " + isLoaded(1));
+  }
+}

@@ -1,0 +1,169 @@
+/*
+ * lib/compression/SLCompressionController.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLCompressionController used within the compression library family.
+ */
+#sleela 2.1
+// Family: compression. The SLeeLa-facing Compression Management Controller —
+// the single surface a GUI or application drives, mirroring the native
+// "Compression Loader / Unloader / Management Controller"
+// (compression/include/sleela_compression_manager.h). The Controller owns each
+// algorithm's loaded/unloaded lifecycle and the backend-registration table, and
+// cooperates with the sibling classes:
+//
+//   * SLCompressionLoader    — classification (nameOf / isNative) and the
+//                              standalone plugin-load contract;
+//   * SLCompressionVerifier  — extension/magic resolution and result-code text;
+//   * SLCompressionProcessor — the standalone compress/decompress dispatch.
+//
+// As of syntax 1.11 the Controller holds its collaborators as fields and calls
+// through them directly (method calls resolve on class-typed fields). create()
+// wires an SLCompressionVerifier; the Controller keeps its own lifecycle state
+// in int[] tables.
+//
+// Algorithm ids mirror sleela_compressor_id (0-based, registry order):
+//   0 STORE  1 RLE  2 HUFFMAN  3 LZW  4 DEFLATE  5 ZLIB  6 GZIP  7 BZIP2
+//   8 LZMA  9 XZ  10 ZSTD  11 LZ4  12 BROTLI  13 SNAPPY  14 ZIP
+//
+// Handler states: 0 native, 1 backend, 2 recognized, 3 container.
+// Result codes (sleela_compression_result): 0 ok, -1 unsupported, -2 invalid,
+// -3 format, -4 io, -5 state(not loaded), -6 buffer too small.
+class SLCompressionController {
+
+  // Per-algorithm loaded flag (1 loaded, 0 not), indexed by id.
+  int[] loaded;
+  // Per-algorithm backend-registered flag (1 if an approved adapter is wired).
+  int[] backend;
+  // The verification collaborator, wired by create() and called via the field.
+  SLCompressionVerifier verifier;
+  // 1 once create() has allocated the tables and wired the verifier.
+  int ready;
+
+  // ---- lifecycle of the controller itself -----------------------------
+
+  // Build the controller with every algorithm registered but none loaded.
+  // Mirrors sleela_compression_manager_create.
+  void create() {
+    loaded = new int[15];
+    backend = new int[15];
+    verifier = new SLCompressionVerifier();
+    ready = 1;
+  }
+
+  boolean isReady() { return ready == 1; }
+
+  // Release every loaded algorithm. Mirrors sleela_compression_manager_destroy's cleanup.
+  void destroy() {
+    int i = 0;
+    while (i < 15) { loaded[i] = 0; i = i + 1; }
+  }
+
+  // ---- registry inspection --------------------------------------------
+
+  int count() { return 15; }
+  boolean validId(int id) { return id >= 0 && id < 15; }
+
+  // Native algorithms compress/decompress in-package: Store (0), RLE (1),
+  // Huffman (2), LZW (3).
+  boolean isNative(int id) { return id == 0 || id == 1 || id == 2 || id == 3; }
+
+  // ---- loader / unloader (controller lifecycle for an app) ------------
+
+  // load(id): make an algorithm usable. Returns 0 ok, -2 invalid id. Idempotent.
+  int load(int id) {
+    if (!validId(id)) { return -2; }
+    loaded[id] = 1;
+    return 0;
+  }
+
+  // unload(id): release an algorithm. Returns 0 ok, -2 invalid id. Idempotent.
+  int unload(int id) {
+    if (!validId(id)) { return -2; }
+    loaded[id] = 0;
+    return 0;
+  }
+
+  void unloadAll() {
+    int i = 0;
+    while (i < 15) { loaded[i] = 0; i = i + 1; }
+  }
+
+  boolean isLoaded(int id) {
+    if (!validId(id)) { return false; }
+    return loaded[id] == 1;
+  }
+
+  // How many algorithms are currently loaded — handy for GUI status.
+  int loadedCount() {
+    int n = 0;
+    int i = 0;
+    while (i < 15) {
+      if (loaded[i] == 1) { n = n + 1; }
+      i = i + 1;
+    }
+    return n;
+  }
+
+  // ---- backend registration (for backend-state algorithms) ------------
+
+  // registerBackend(id): record that an approved backend adapter is available
+  // for a backend algorithm. Returns 0 ok, -2 invalid id.
+  int registerBackend(int id) {
+    if (!validId(id)) { return -2; }
+    backend[id] = 1;
+    return 0;
+  }
+
+  int clearBackend(int id) {
+    if (!validId(id)) { return -2; }
+    backend[id] = 0;
+    return 0;
+  }
+
+  boolean hasBackend(int id) {
+    if (!validId(id)) { return false; }
+    return backend[id] == 1;
+  }
+
+  // ---- resolution (delegated to the wired Verifier) -------------------
+
+  // Resolve an algorithm id from a file extension via the Controller's Verifier.
+  int resolveExtension(String extension) {
+    return verifier.resolveExtension(extension);
+  }
+
+  // ---- dispatch (requires load; honest capability result) -------------
+
+  // canProcess(id): can this algorithm compress/decompress right now? True for
+  // a loaded native algorithm, or a loaded backend algorithm with a backend
+  // registered — what a GUI checks before enabling an action.
+  boolean canProcess(int id) {
+    if (!validId(id)) { return false; }
+    if (loaded[id] == 0) { return false; }
+    if (isNative(id)) { return true; }
+    return backend[id] == 1;
+  }
+
+  // compress(id): returns a result code: -2 invalid, -5 not loaded,
+  // -1 backend absent, 0 ok.
+  int compress(int id) {
+    if (!validId(id)) { return -2; }
+    if (loaded[id] == 0) { return -5; }
+    if (isNative(id)) { return 0; }
+    if (backend[id] == 1) { return 0; }
+    return -1;
+  }
+
+  int decompress(int id) {
+    if (!validId(id)) { return -2; }
+    if (loaded[id] == 0) { return -5; }
+    if (isNative(id)) { return 0; }
+    if (backend[id] == 1) { return 0; }
+    return -1;
+  }
+
+  // Human-readable text for a result code (via the wired Verifier).
+  String resultText(int code) {
+    return verifier.resultText(code);
+  }
+}

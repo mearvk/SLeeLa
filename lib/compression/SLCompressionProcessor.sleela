@@ -1,0 +1,54 @@
+/*
+ * lib/compression/SLCompressionProcessor.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLCompressionProcessor used within the compression library family.
+ */
+#sleela 2.1
+// Family: compression. The compress/decompress dispatch layer — the SLeeLa
+// mirror of the native manager's processor path
+// (sleela_compression_manager_compress / sleela_compression_manager_decompress)
+// and each plugin's compress/decompress entry points
+// (compression/include/sleela_compressor_plugin.h). It dispatches a request
+// against the current lifecycle/capability facts and returns an honest result.
+//
+// This is a contract, not a fake processor: the real byte transformation
+// happens in the native plugin (and, for backend algorithms, in a registered
+// backend adapter). The Processor is pure — the caller passes in whether the
+// algorithm is loaded, whether it is native, and whether a backend is
+// registered — so it composes with SLCompressionController/SLCompressionLoader
+// without storing a class-typed field. It never reports a false success:
+//
+//   not loaded                    -> -5 (state)
+//   native algorithm, loaded      ->  0 (ok)   Store, RLE, Huffman, LZW
+//   backend algorithm, no backend -> -1 (unsupported)
+//
+// Result codes (sleela_compression_result): 0 ok, -1 unsupported, -2 invalid,
+// -3 format, -4 io, -5 state(not loaded), -6 buffer too small.
+class SLCompressionProcessor {
+
+  // canProcess: can this algorithm compress/decompress right now, given the
+  // facts? True for a loaded native algorithm, or a loaded backend algorithm
+  // with a backend registered — what a GUI checks before enabling an action.
+  boolean canProcess(boolean loaded, boolean nativeAlg, boolean backendReady) {
+    if (!loaded) { return false; }
+    if (nativeAlg) { return true; }
+    return backendReady;
+  }
+
+  // compress: dispatch a compress against the given facts. Returns a result
+  // code: -5 not loaded, 0 ok (native or backend ready), -1 backend absent.
+  int compress(boolean loaded, boolean nativeAlg, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeAlg) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+
+  // decompress: same result-code contract as compress.
+  int decompress(boolean loaded, boolean nativeAlg, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeAlg) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+}

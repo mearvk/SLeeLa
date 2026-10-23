@@ -1,0 +1,73 @@
+/*
+ * lib/compression/SLCompressionBrotli.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Brotli algorithm class — the SLeeLa-facing handle to algorithm id 12.
+ */
+#sleela 2.1
+// Family: compression. Individual algorithm class for Brotli, mirroring
+// compression/compressors/brotli/ and the registry entry in
+// sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the
+// SLCompressionLoader loads this plugin by id and dispatches
+// compress/decompress. This class is the metadata + capability contract for
+// that plugin.
+//
+// Handler state codes: 0 native, 1 backend, 2 recognized, 3 container.
+class SLCompressionBrotli {
+  // Registry identity (mirrors sleela_compressor_handler).
+  int id() { return 12; }
+  String name() { return "Brotli"; }
+  String mime() { return "application/x-brotli"; }
+  String extensions() { return ".br"; }
+
+  // Capability state: 1 == backend.
+  int state() { return 1; }
+  String stateName() { return "backend"; }
+
+  // Direction support advertised by the plugin vtable.
+  boolean canCompress() { return true; }
+  boolean canDecompress() { return true; }
+
+  // Native algorithms implement compress/decompress in-package (no external backend).
+  boolean isNative() { return false; }
+  // A backend adapter must be registered before a backend algorithm can run.
+  boolean needsBackend() { return true; }
+
+  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, or
+  // catalog can read and (where appropriate) override each algorithm's record.
+  // Values are faithful to the algorithm's real origin where publicly known.
+  String metaVersion = "1.0.0";
+  int metaId = 12;
+  String metaAuthor = "Jyrki Alakuijala / Zoltan Szabadka";
+  String metaDate = "2026-10-23";
+  String metaCopyright = "MIT License";
+  String metaTrademark = "none";
+  String metaCorporation = "Google LLC";
+  String metaOrigin = "Switzerland";
+  String metaBirthDate = "2015";
+  int metaScienceRating = 9;        // maturity/robustness on a 1..10 scale
+  String metaNationalSchedule = "RFC 7932 (Brotli)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

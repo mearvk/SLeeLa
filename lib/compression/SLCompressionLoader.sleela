@@ -1,0 +1,68 @@
+/*
+ * lib/compression/SLCompressionLoader.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLCompressionLoader used within the compression library family.
+ */
+#sleela 2.1
+// Unified SLeeLa standard-library front-end object.
+// Family: compression. The SLeeLa-facing handle to the native Compression
+// Loader / Unloader / Management Controller
+// (compression/include/sleela_compression_manager.h). SLeeLa calls the Loader
+// -- never an individual algorithm. The Loader keeps a registry of every plugin
+// and a per-algorithm loaded flag; a program loads an algorithm by id,
+// compresses/decompresses through the Loader, then unloads it.
+//
+// Algorithm ids mirror sleela_compressor_id (0-based, in registry order):
+//   0 STORE  1 RLE  2 HUFFMAN  3 LZW  4 DEFLATE  5 ZLIB  6 GZIP  7 BZIP2
+//   8 LZMA  9 XZ  10 ZSTD  11 LZ4  12 BROTLI  13 SNAPPY  14 ZIP
+//
+// Handler states: 0 native, 1 backend, 2 recognized, 3 container.
+class SLCompressionLoader {
+  // Per-algorithm loaded flag (1 loaded, 0 not), indexed by id. Backed by the
+  // first-class array type; call init() before use.
+  int[] loaded;
+
+  // The number of algorithms the native manager knows (SLEELA_COMPRESSION_COUNT).
+  int algorithmCount() { return 15; }
+
+  // Allocate the loaded-flag table with every algorithm unloaded.
+  void init() { loaded = new int[15]; }
+
+  // load(id): mark an algorithm loaded. Mirrors sleela_compression_manager_load.
+  void load(int id) { loaded[id] = 1; }
+
+  // unload(id): mark an algorithm unloaded. Mirrors sleela_compression_manager_unload.
+  void unload(int id) { loaded[id] = 0; }
+
+  boolean isLoaded(int id) { return loaded[id] == 1; }
+
+  // unloadAll(): release every loaded algorithm. Mirrors sleela_compression_manager_unload_all.
+  void unloadAll() {
+    int i = 0;
+    while (i < 15) { loaded[i] = 0; i = i + 1; }
+  }
+
+  // Human-readable algorithm name by id, matching the native registry.
+  String nameOf(int id) {
+    if (id == 0) { return "Store (raw)"; }
+    if (id == 1) { return "Run-Length Encoding"; }
+    if (id == 2) { return "Canonical Huffman"; }
+    if (id == 3) { return "Lempel-Ziv-Welch"; }
+    if (id == 4) { return "DEFLATE (RFC 1951)"; }
+    if (id == 5) { return "zlib (RFC 1950)"; }
+    if (id == 6) { return "gzip (RFC 1952)"; }
+    if (id == 7) { return "bzip2"; }
+    if (id == 8) { return "LZMA"; }
+    if (id == 9) { return "xz (LZMA2)"; }
+    if (id == 10) { return "Zstandard"; }
+    if (id == 11) { return "LZ4"; }
+    if (id == 12) { return "Brotli"; }
+    if (id == 13) { return "Snappy"; }
+    return "ZIP archive";
+  }
+
+  // Native algorithms implement compress/decompress in-package (no external
+  // backend): Store (0), RLE (1), Huffman (2), LZW (3). The rest are backend or
+  // container handlers until an approved library adapter is registered.
+  boolean isNative(int id) { return id == 0 || id == 1 || id == 2 || id == 3; }
+}

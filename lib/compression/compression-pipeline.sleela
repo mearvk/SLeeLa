@@ -1,0 +1,146 @@
+#sleela 2.1
+// compression-pipeline.sleela -- the self-contained, runnable build of the
+// SLeeLa compression Controller/Verifier/Processor pipeline. The compiler's
+// `run` compiles one file as a single unit, so this aggregate inlines the
+// collaborators (mirroring the split SLCompressionController /
+// SLCompressionVerifier / SLCompressionProcessor / SLCompressionLoader
+// discovery files) plus a `main` that drives them the way a GUI or app would:
+// resolve -> load -> verify -> compress/decompress -> unload. The split
+// per-class files are the package's discovery surface; this file is the
+// executable counterpart, mirroring compression.sleela.
+//
+// Algorithm ids: 0 STORE 1 RLE 2 HUFFMAN 3 LZW 4 DEFLATE ... 6 GZIP ... 14 ZIP.
+// States: 0 native 1 backend 2 recognized 3 container. Result codes: 0 ok
+// -1 unsupported -2 invalid -3 format -4 io -5 not-loaded -6 buffer.
+//
+// Syntax 1.11: method calls resolve on class-typed fields, so the Controller
+// holds its Verifier and Processor as fields (wired in create()) and delegates
+// through them. A GUI drives one object: ctrl.compress(id),
+// ctrl.resolveExtension(ext), ctrl.resultText(code) -- no facts by hand.
+
+// ---- Verifier: extension/magic resolution + result text ----------------
+class Verifier {
+  int resolveExtension(String ext) {
+    if (ext == ".bin") { return 0; }
+    if (ext == ".rle") { return 1; }
+    if (ext == ".huff") { return 2; }
+    if (ext == ".lzw" || ext == ".Z") { return 3; }
+    if (ext == ".gz") { return 6; }
+    if (ext == ".zst") { return 10; }
+    if (ext == ".zip") { return 14; }
+    return -1;
+  }
+  int probeMagic(String tag) {
+    if (tag == "SHF1") { return 2; }
+    if (tag == "SLZW") { return 3; }
+    if (tag == "1F8B08") { return 6; }
+    if (tag == "28B52FFD") { return 10; }
+    if (tag == "PK") { return 14; }
+    return -1;
+  }
+  String resultText(int code) {
+    if (code == 0) { return "ok"; }
+    if (code == -1) { return "unsupported (backend not present)"; }
+    if (code == -2) { return "invalid arguments"; }
+    if (code == -3) { return "input is not this algorithm's format"; }
+    if (code == -4) { return "I/O or allocation failure"; }
+    if (code == -5) { return "algorithm not loaded"; }
+    if (code == -6) { return "output buffer too small"; }
+    return "unknown";
+  }
+}
+
+// ---- Processor: pure compress/decompress dispatch over the facts -------
+class Processor {
+  int compress(boolean loaded, boolean nativeAlg, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeAlg) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+  int decompress(boolean loaded, boolean nativeAlg, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeAlg) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+}
+
+// ---- Controller: owns lifecycle + wires the collaborators as fields ----
+class Controller {
+  int[] loaded;
+  int[] backend;
+  Verifier verifier;      // wired by create(), called via the field (1.11)
+  Processor processor;
+
+  void create() {
+    loaded = new int[15];
+    backend = new int[15];
+    verifier = new Verifier();
+    processor = new Processor();
+  }
+
+  int count() { return 15; }
+  boolean isNative(int id) { return id == 0 || id == 1 || id == 2 || id == 3; }
+  String nameOf(int id) {
+    if (id == 1) { return "Run-Length Encoding"; }
+    if (id == 2) { return "Canonical Huffman"; }
+    if (id == 6) { return "gzip (RFC 1952)"; }
+    if (id == 10) { return "Zstandard"; }
+    return "algorithm#" + id;
+  }
+
+  int load(int id) { loaded[id] = 1; return 0; }
+  boolean isLoaded(int id) { return loaded[id] == 1; }
+  void unloadAll() { int i = 0; while (i < 15) { loaded[i] = 0; i = i + 1; } }
+  int registerBackend(int id) { backend[id] = 1; return 0; }
+  boolean hasBackend(int id) { return backend[id] == 1; }
+  int loadedCount() {
+    int n = 0; int i = 0;
+    while (i < 15) { if (loaded[i] == 1) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+
+  // Clean facade methods: delegate to the wired collaborators.
+  int resolveExtension(String ext) { return verifier.resolveExtension(ext); }
+  int probeMagic(String tag) { return verifier.probeMagic(tag); }
+  String resultText(int code) { return verifier.resultText(code); }
+  int compress(int id) { return processor.compress(isLoaded(id), isNative(id), hasBackend(id)); }
+  int decompress(int id) { return processor.decompress(isLoaded(id), isNative(id), hasBackend(id)); }
+
+  void main() {
+    print("=== SLeeLa compression pipeline (Controller/Loader/Verifier/Processor) ===");
+    create();
+    print("algorithms known: " + count());
+
+    // Resolve a file the way a GUI would when the user opens it.
+    int rle = resolveExtension(".rle");
+    int gz = resolveExtension(".gz");
+    print("resolve .rle -> " + rle + " (" + nameOf(rle) + ")");
+    print("resolve .gz  -> " + gz + " (" + nameOf(gz) + ")");
+
+    // Compress before load: honest state error (-5).
+    print("compress .rle before load: " + resultText(compress(rle)));
+
+    // Load the native RLE algorithm and process it.
+    load(rle);
+    print("compress .rle loaded:      " + resultText(compress(rle)));
+    print("decompress .rle loaded:    " + resultText(decompress(rle)));
+
+    // Load backend gzip with no backend wired: unsupported (-1), not a false ok.
+    load(gz);
+    print("compress .gz no backend:   " + resultText(compress(gz)));
+
+    // Wire a gzip backend adapter, then it processes.
+    registerBackend(gz);
+    print("compress .gz backend:      " + resultText(compress(gz)));
+
+    // Verifier content probe for a GUI pre-classify.
+    print("probe 'SHF1' -> id " + probeMagic("SHF1") + " (" + nameOf(2) + ")");
+
+    print("loaded count=" + loadedCount());
+    unloadAll();
+    print("after unloadAll, .rle loaded? " + isLoaded(rle));
+    print("done");
+  }
+}
