@@ -83,6 +83,14 @@ catalog (sections `network` and `finance`), so every declared object has a home
 in the shared object-compatibility / relevance structure. Unknown members are
 rejected with structured diagnostics (`NSS-E-NET-00x` / `NSS-E-FIN-00x`).
 
+A sheet may also declare a **`strings:`** block (sheet grammar 1.4) — named,
+first-class **String** values, each of which must be a quoted String literal
+(the block is closed to the `String` type, rejecting a mis-typed value with
+`NSS-E-STR-001`). This gives the `.sst` sheet the same first-class `String` type
+the SLeeLa source language has (`SLEELA.syntax` §1.4 / §3.1). The grammar,
+examples, and full diagnostic set are documented canonically in the
+[Nordshrift Sheet Reference](../wiki/Nordshrift-Sheet-Reference.md#strings-first-class-string-values-nordshrift-14).
+
 A sheet may also declare one or more **`subject:`** blocks — the 2.0 semantic
 layer (`Subject → Quantity → Unit → Assumption → Relation → Formula →
 Transformation → Result → ComparativeNorm → Evidence → Explanation →

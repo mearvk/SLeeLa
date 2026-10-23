@@ -651,7 +651,7 @@
     },
     {
       "path": "impl/nordshrift/sheet_model.h",
-      "sha256": "1e0726b7886eb8ef8a14f00a717e298a441fa55624bcaec4f5120aedf679453f"
+      "sha256": "2386149f0c146cc10cf0d99ef784a03dd21109d0b411c301c3ae747be86bf06f"
     },
     {
       "path": "impl/nordshrift/sleela_emit.cpp",
@@ -687,7 +687,7 @@
     },
     {
       "path": "impl/nordshrift/sst_parser.cpp",
-      "sha256": "ba82e5519b611d82fa7b4a5f677d7f3d5ec3b4d3fa0aafc8aef766077fc3317e"
+      "sha256": "5411ad3aa768087e0dfeee03929e67521b4383c03122da12fffb3ffd48d1871b"
     },
     {
       "path": "impl/nordshrift/sst_parser.h",
