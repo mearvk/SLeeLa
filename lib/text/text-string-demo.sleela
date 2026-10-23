@@ -1,0 +1,89 @@
+#sleela 2.1
+// text-string-demo.sleela -- the self-contained, runnable reference for the
+// SLeeLa text/String surface, parallel to the codec/compression *-pipeline
+// demos. The compiler's `run` compiles one file as a single unit, so this
+// aggregate inlines a compact SLString plus a `main` that drives it the way an
+// application would: seed a value, use the in-language ops (concat, equals,
+// repeat, join, quote, copy), and show that char-level ops return honest
+// "text.bridge:<op>:..." descriptors rather than faked results.
+//
+// The authoritative split classes live alongside this file:
+//   SLString, SLStringBuilder, SLStringBuffer, SLFormatter, SLRegex,
+//   SLCharset, SLTextReader, SLTextWriter.
+
+class SLString {
+  String value = "";
+  void set(String v) { value = v; }
+  String get() { return value; }
+  SLString with(String v) { value = v; return this; }
+  SLString copy() { SLString c = new SLString(); c.set(value); return c; }
+  void dispose() { value = ""; }
+
+  String concat(String other) { return value + other; }
+  boolean equals(String other) { return value == other; }
+  boolean isEmpty() { return value == ""; }
+  SLString append(String tail) { value = value + tail; return this; }
+  SLString prepend(String head) { value = head + value; return this; }
+  String repeat(int n) { String out = ""; int i = 0; while (i < n) { out = out + value; i = i + 1; } return out; }
+  String join(String[] parts, String sep) {
+    String out = ""; int i = 0; int n = arrayLength(parts);
+    while (i < n) { if (i > 0) { out = out + sep; } out = out + parts[i]; i = i + 1; }
+    return out;
+  }
+  String quote() { return "\"" + value + "\""; }
+
+  // Bridged char-level ops -- honest descriptors, never faked.
+  String bridge(String op) { return "text.bridge:" + op + ":" + value; }
+  String bridgeArg(String op, String a) { return "text.bridge:" + op + ":" + value + ":" + a; }
+  String bridgeKind(String op) {
+    if (op == "length" || op == "indexOf" || op == "compareTo") { return "int"; }
+    if (op == "contains" || op == "startsWith") { return "boolean"; }
+    if (op == "split") { return "string[]"; }
+    return "string";
+  }
+  String length() { return bridge("length"); }
+  String toUpperCase() { return bridge("toUpperCase"); }
+  String indexOf(String needle) { return bridgeArg("indexOf", needle); }
+  String split(String regex) { return bridgeArg("split", regex); }
+
+  void main() {
+    print("=== SLeeLa text/String surface demo ===");
+
+    // In-language ops (real results).
+    SLString s = new SLString();
+    s.set("SLeeLa");
+    print("value      : " + s.get());
+    print("concat     : " + s.concat(" text"));
+    print("equals     : " + s.equals("SLeeLa"));
+    print("isEmpty    : " + s.isEmpty());
+
+    s.append("!").prepend(">> ");
+    print("append/pre : " + s.get());
+
+    SLString greet = new SLString();
+    greet.set("ab");
+    print("repeat(3)  : " + greet.repeat(3));
+
+    String[] parts = new String[3];
+    parts[0] = "one"; parts[1] = "two"; parts[2] = "three";
+    SLString joiner = new SLString();
+    print("join       : " + joiner.join(parts, ", "));
+    print("quote      : " + greet.quote());
+
+    // copy() is independent of the original.
+    SLString original = new SLString();
+    original.set("keep");
+    SLString dup = original.copy();
+    dup.append("-changed");
+    print("copy orig  : " + original.get());
+    print("copy dup   : " + dup.get());
+
+    // Bridged ops (honest descriptors + the type the runtime will yield).
+    print("length     : " + s.length() + "   (kind " + s.bridgeKind("length") + ")");
+    print("toUpperCase: " + s.toUpperCase());
+    print("indexOf    : " + s.indexOf("L") + "   (kind " + s.bridgeKind("indexOf") + ")");
+    print("split      : " + s.split(" ") + "   (kind " + s.bridgeKind("split") + ")");
+
+    print("done");
+  }
+}

@@ -1,9 +1,8 @@
-/*
- * lib/java/java/lang/StringIndexOutOfBoundsException.sleela
- * SLeeLa Java 28 source envelope.
- * Definition: SLeeLa source declaration for the Java type java.lang.StringIndexOutOfBoundsException.
- * Java behavior is supplied through the SLeeLa Java conformance boundary.
- */
+// lib/java/java/lang/StringIndexOutOfBoundsException.sleela
+// SLeeLa Java 28 source envelope.
+// Definition: SLeeLa source declaration for the Java type java.lang.StringIndexOutOfBoundsException.
+// Java behavior is supplied through the SLeeLa Java conformance boundary.
+//
 #sleela 2.1
 
 class StringIndexOutOfBoundsException {
