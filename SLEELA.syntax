@@ -69,6 +69,11 @@ must be the first non-whitespace on its line:
 The legacy `//` and `/* */` forms remain valid for untouched code; new and
 modified code uses the `<` / `<<` angle-bracket forms.
 
+The descriptive-metadata header required by the Metadata Class standard (§15) is
+written in this comment style; in new code it is the angle-bracket form
+`< ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >`,
+with the header text kept verbatim so the block stays greppable.
+
 ### 1.2 Keywords (reserved)
 
     class   static   void     struct   new
@@ -857,10 +862,10 @@ presented as fact.
 Canonical shape (from `lib/codecs/SLCodecMidi.sleela`):
 
 ```sleela
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override each codec's record.
-  // Values are faithful to the codec's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each codec's record.
+     Values are faithful to the codec's real origin where publicly known. >>
   String metaVersion = "1.0.0";
   int metaId = 17;
   String metaAuthor = "MIDI Manufacturers Association";
@@ -870,9 +875,14 @@ Canonical shape (from `lib/codecs/SLCodecMidi.sleela`):
   String metaCorporation = "MIDI Manufacturers Association";
   String metaOrigin = "International";
   String metaBirthDate = "1983";
-  int metaScienceRating = 10;        // maturity/robustness on a 1..10 scale
+  int metaScienceRating = 10;
   String metaNationalSchedule = "MMA MIDI 1.0 / SMF";
 ```
+
+(The legacy `//` header remains valid in the existing `lib/codecs/*` sources;
+new code uses the angle-bracket form shown here — §1.1. The `metaScienceRating`
+inline note "maturity/robustness on a 1..10 scale" moves to its own `<...>`
+line when present, since angle-bracket comments start the line.)
 
 Each field is paired with accessors — `getMetaVersion()`/`setMetaVersion(...)`,
 `getAuthor()`/`setAuthor(...)`, and so on — so a GUI, loader, or catalog can
