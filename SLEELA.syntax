@@ -160,6 +160,17 @@ value.
 
 `C<n>` is a character-set capacity signature, where `n` is a decimal integer in the inclusive range `1..1048576`. Unlike `U<n>`, which specifies a bit width, `C<n>` specifies the maximum number of distinct character entries addressable by a character catalogue. `C1048576` therefore denotes a capacity of `1024 * 1024 = 1,048,576` entries. It does not assert that every slot is populated, that every entry has a verified meaning, or that the set is Unicode-compatible. The actual registry population must be reported separately. A character-set record should distinguish catalogue ID, code point/identifier, glyph, semantic annotation, and source provenance. `C<n>` is a source-catalogue contract; full compiler/runtime integration must be tested before claiming end-to-end runtime support. `U<n>` and `C<n>` are different parameterized families even though both use decimal parameters.
 
+`String` is a first-class scalar type. Its literal form is `string-lit` (§1.4);
+source code operates on it with concatenation (`+`) and equality (`==` / `!=`)
+only — there is no `char` type and no char-level indexing at the language level.
+Richer text operations are provided by the `lib/text` String family
+(`SLString`, `SLStringBuilder`, `SLStringBuffer`, `SLFormatter`, …), which
+implements length-independent work in-language and crosses an explicit VM/OS
+bridge for char-level operations (see `lib/text/SLString.sleela`). The companion
+Nordshrift `.sst` sheet grammar carries the same first-class `String` type in
+its `strings:` block (see the Nordshrift Sheet Reference), so a value typed
+`String` has consistent standing in both the source language and the build sheet.
+
 A **struct type name** (§3.4) is additionally used at compile time to
 resolve `.field` offsets, so struct-typed variables/parameters/fields must be
 declared with their struct type for member access to compile.

@@ -700,7 +700,8 @@ $(BUILD)/xclass_loader.o: xclass/xclass_loader.cpp xclass/xclass_loader.h | $(BU
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/langin.o: langin/langin.cpp langin/langin.h xclass/xclass_loader.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c langin/langin.cpp -o $@
-$(BUILD)/ns_%.o: nordshrift/%.cpp | $(BUILD)
+NS_HEADERS := $(wildcard nordshrift/*.h)
+$(BUILD)/ns_%.o: nordshrift/%.cpp $(NS_HEADERS) | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(LEDGER_CORE_OBJ): ../ledger/ledger_core.cpp ../ledger/ledger_core.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@

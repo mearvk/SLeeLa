@@ -2,7 +2,7 @@
 
 **Nordshrift** reads a `.sst` **control sheet** and drives transpilation of Sleela sources to the selected *triplet* target. The sheet is a **build-control surface, not a program**. This page is the practical reference; the normative documents are `SST.model` (NS-SST-0001, 1.0), `SST-2.0.model` (2.0), and `NORDSHRIFT.md`.
 
-> Current driver: **Nordshrift 2.0**.
+> Current driver: **Nordshrift 2.0** (sheet grammar 1.4 — first-class `String`).
 
 ---
 
@@ -24,7 +24,9 @@ nordshrift version
 
 - **Indentation-significant**, pragma-first.
 - A block opens with `name:` and an indented body.
-- Scalars: strings (`"..."` / `"""..."""`), integers (`1_000`), versions (`1.0.0`), identifiers, booleans (`true/false`, `on/off`).
+- Scalars are **typed**: `String` (`"..."` / `"""..."""`), integer (`1_000`),
+  version (`1.0.0`), identifier, boolean (`true/false`, `on/off`). The `String`
+  type is first-class — see the [`strings:`](#strings-first-class-string-values-nordshrift-14) block, which accepts only String literals.
 - Lists: `[ a, b, c ]`.
 
 Required pragma:
@@ -149,6 +151,29 @@ finance:
 ```
 
 Unknown members: `NSS-E-FIN-001` (object), `NSS-E-FIN-002` (period), `NSS-E-FIN-003` (discounting).
+
+### `strings:` (first-class String values, Nordshrift 1.4)
+
+Declares named **String** values. Each entry is `name  "value"`, and the value
+**must** be a quoted String literal — the block is closed to the `String` type,
+so the sheet cannot silently mis-type a value. This gives a sheet the same
+first-class `String` type the SLeeLa source language has (`SLEELA.syntax` §1.4).
+
+```sst
+strings:
+  greeting  "Hello, world"
+  banner    "SLeeLa text surface"
+```
+
+Diagnostics:
+
+| Code | Meaning |
+|---|---|
+| `NSS-E-STR-001` | value is not a quoted String literal (got integer/version/identifier) |
+| `NSS-E-STR-002` | duplicate string name in the block |
+| `NSS-E-STR-003` | `strings:` present but has no indented body |
+| `NSS-E-STR-004` | a name has no value |
+| `NSS-E-STR-005` | block exceeds the 256-entry bound |
 
 ### `subject:` (Nordshrift 2.0 semantic layer)
 

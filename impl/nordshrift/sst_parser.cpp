@@ -64,12 +64,37 @@ struct Parser {
     void exitBlock() { if (is(Tok::Dedent)) i++; }
 
     // ---- scalar / list readers -----------------------------------------
+    // Read a scalar while PRESERVING its lexical type (String support, 1.4).
+    // A quoted "..." literal becomes ScalarKind::String; everything else keeps
+    // its integer/version/boolean/identifier kind. This is the typed primitive;
+    // readScalarText() below is the text-only wrapper the rest of the parser
+    // has always used, so existing behaviour is unchanged.
+    TypedScalar readTypedScalar() {
+        const Token& tk = cur();
+        TypedScalar ts;
+        ts.line = tk.line;
+        switch (tk.kind) {
+            case Tok::String:  ts.kind = ScalarKind::String;  ts.text = tk.text; i++; break;
+            case Tok::Integer: ts.kind = ScalarKind::Integer; ts.text = tk.text; i++; break;
+            case Tok::Version: ts.kind = ScalarKind::Version; ts.text = tk.text; i++; break;
+            case Tok::Ident: {
+                // booleans are identifiers at the lexical level
+                if (tk.text == "true" || tk.text == "false" ||
+                    tk.text == "on"   || tk.text == "off") {
+                    ts.kind = ScalarKind::Boolean;
+                } else {
+                    ts.kind = ScalarKind::Identifier;
+                }
+                ts.text = tk.text; i++; break;
+            }
+            default: ts.kind = ScalarKind::None; break;
+        }
+        return ts;
+    }
+
     std::string readScalarText() {
         // scalar-value ::= string | boolean | integer | version | identifier
-        const Token& tk = cur();
-        if (tk.kind == Tok::String || tk.kind == Tok::Integer ||
-            tk.kind == Tok::Version || tk.kind == Tok::Ident) { i++; return tk.text; }
-        return "";
+        return readTypedScalar().text;
     }
 
     // list-literal ::= "[" [ scalar { "," scalar } ] "]"
@@ -211,6 +236,7 @@ struct Parser {
         if (kw == "interop")  { parseInterop();  return true; }
         if (kw == "network")  { parseNetwork();  return true; }
         if (kw == "finance")  { parseFinance();  return true; }
+        if (kw == "strings")  { parseStrings();  return true; }
         if (kw == "reach")    { parseReach();    return true; }
         if (kw == "measure")  { parseMeasure();  return true; }
         if (kw == "subject")  { parseSubject();  return true; }
@@ -268,6 +294,62 @@ struct Parser {
             errAt(ln, "NSS-E-OBJ-006", error, "SST-OBJECT-VALIDATE", true);
         else
             sheet.inputObjects.push_back(std::move(obj));
+    }
+
+    // ---- strings (first-class String values, 1.4) ----------------------
+    // A `strings:` block declares named String values:
+    //     strings:
+    //       greeting   "Hello, world"
+    //       banner     "SLeeLa text surface"
+    // The value MUST be a quoted String literal. A non-String scalar (integer,
+    // version, bare identifier) in this block is a typed error (NSS-E-STR-001)
+    // -- the block is closed to the String type, so a sheet cannot silently
+    // mis-type a value. Names must be unique (NSS-E-STR-002).
+    void parseStrings() {
+        sheet.strings.present = true;
+        sheet.strings.line = cur().line;
+        i++; // 'strings'
+        if (!enterBlock()) {
+            errAt(sheet.strings.line, "NSS-E-STR-003",
+                  "strings block requires an indented body", "SST-STRINGS-BLOCK", true);
+            syncToNewline();
+            return;
+        }
+        while (!atBlockEnd()) {
+            if (is(Tok::Newline)) { i++; continue; }
+            if (!is(Tok::Ident)) { syncToNewline(); continue; }
+            int keyLine = cur().line;
+            std::string name = cur().text; i++;
+            if (is(Tok::Colon)) i++;
+            TypedScalar ts = readTypedScalar();
+            if (!ts.present()) {
+                errAt(keyLine, "NSS-E-STR-004",
+                      "string '" + name + "' has no value", "SST-STRINGS-VALUE", true);
+            } else if (!ts.isString()) {
+                errAt(ts.line, "NSS-E-STR-001",
+                      "string '" + name + "' requires a quoted String literal, got "
+                      + scalarKindName(ts.kind), "SST-STRINGS-TYPE", true);
+            } else {
+                bool dup = false;
+                for (const auto& v : sheet.strings.vars)
+                    if (v.name == name) { dup = true; break; }
+                if (dup) {
+                    errAt(keyLine, "NSS-E-STR-002",
+                          "duplicate string name '" + name + "'", "SST-STRINGS-UNIQUE", true);
+                } else if (sheet.strings.vars.size() >= 256) {
+                    errAt(keyLine, "NSS-E-STR-005",
+                          "strings block limit (256) exceeded", "SST-STRINGS-BOUND", true);
+                } else {
+                    StringVar sv;
+                    sv.name = name;
+                    sv.value = ts.text;
+                    sv.line = keyLine;
+                    sheet.strings.vars.push_back(std::move(sv));
+                }
+            }
+            if (is(Tok::Newline)) i++;
+        }
+        exitBlock();
     }
 
     // ---- source ---------------------------------------------------------

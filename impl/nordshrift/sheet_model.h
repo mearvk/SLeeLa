@@ -26,6 +26,52 @@ enum class DeriveStyle { Record, ImmutableClass, Builder, Lombok };
 
 enum class TargetLang { Java, Sleela, C };
 
+// ---------------------------------------------------------------------------
+// First-class scalar typing (NS-SST String support, 1.4).
+// ---------------------------------------------------------------------------
+// The SST lexer already distinguishes a quoted "..." literal (Tok::String)
+// from an integer, a dotted version, a boolean, and a bare identifier. Until
+// now the parser collapsed all of them to raw text via readScalarText(), so a
+// String scalar had no first-class standing. ScalarKind + TypedScalar preserve
+// that distinction so a sheet value can be a genuine String type -- parallel to
+// how SLeeLa source has a String literal (SLEELA.syntax 1.4).
+enum class ScalarKind { String, Integer, Version, Boolean, Identifier, None };
+
+inline const char* scalarKindName(ScalarKind k) {
+    switch (k) {
+        case ScalarKind::String:     return "string";
+        case ScalarKind::Integer:    return "integer";
+        case ScalarKind::Version:    return "version";
+        case ScalarKind::Boolean:    return "boolean";
+        case ScalarKind::Identifier: return "identifier";
+        default:                     return "none";
+    }
+}
+
+struct TypedScalar {
+    std::string text;                      // the decoded value text
+    ScalarKind  kind = ScalarKind::None;   // how the lexer classified it
+    int         line = 0;
+    bool isString()  const { return kind == ScalarKind::String; }
+    bool present()   const { return kind != ScalarKind::None; }
+};
+
+// A named String value declared in a sheet's `strings:` block. First-class and
+// closed to the String type: a non-String literal in this block is a typed
+// error (NSS-E-STR-001), mirroring the "never silently coerce" discipline the
+// network/finance blocks use.
+struct StringVar {
+    std::string name;      // identifier key
+    std::string value;     // the String literal's decoded text
+    int         line = 0;
+};
+
+struct StringSpec {
+    std::vector<StringVar> vars;
+    bool present = false;
+    int  line = 0;
+};
+
 // Network objects are first-class SST declarations.  These names correspond
 // to the Nordshrift network model and are deliberately closed so an SST sheet
 // cannot silently request an unsupported runtime object.
@@ -286,6 +332,7 @@ struct Sheet {
     Interop   interop;
     NetworkSpec network;
     FinanceSpec finance;
+    StringSpec  strings;    // first-class String values block (1.4)
     ReachSpec   reach;      // Munction reach-composition block (1.3)
     MeasureSpec measure;    // Synchro measurement block (1.3)
     std::vector<semantic::Subject> subjects;   // 2.0 semantic subject blocks
