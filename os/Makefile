@@ -26,6 +26,7 @@ SRC_C := \
   src/sleela_os_ideology.c \
   src/sleela_os_security.c \
   src/sleela_os_aggregate.c \
+  src/sleela_os_theme.c \
   src/base_drivers_table.c \
   base_drivers.c
 
@@ -56,7 +57,7 @@ $(BUILD)/libsleela_os.a: $(OBJS)
 # driver (same approach as /compression).
 TESTS := $(BUILD)/test_os_shape $(BUILD)/test_os_fetch $(BUILD)/test_os_ideology \
          $(BUILD)/test_os_security $(BUILD)/test_os_aggregate $(BUILD)/test_os_translate \
-         $(BUILD)/test_os_base_drivers
+         $(BUILD)/test_os_theme $(BUILD)/test_os_base_drivers
 
 test: $(TESTS)
 	./$(BUILD)/test_os_shape
@@ -65,6 +66,7 @@ test: $(TESTS)
 	./$(BUILD)/test_os_security
 	./$(BUILD)/test_os_aggregate
 	./$(BUILD)/test_os_translate
+	./$(BUILD)/test_os_theme
 	./$(BUILD)/test_os_base_drivers
 	@echo "os: all tests passed"
 
