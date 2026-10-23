@@ -33,10 +33,10 @@ the block stays greppable across the tree. This is the real block from
 `lib/codecs/SLCodecMidi.sleela`:
 
 ```sleela
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override each codec's record.
-  // Values are faithful to the codec's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each codec's record.
+     Values are faithful to the codec's real origin where publicly known. >>
   String metaVersion = "1.0.0";
   int metaId = 17;
   String metaAuthor = "MIDI Manufacturers Association";
@@ -46,9 +46,14 @@ the block stays greppable across the tree. This is the real block from
   String metaCorporation = "MIDI Manufacturers Association";
   String metaOrigin = "International";
   String metaBirthDate = "1983";
-  int metaScienceRating = 10;        // maturity/robustness on a 1..10 scale
+  int metaScienceRating = 10;
   String metaNationalSchedule = "MMA MIDI 1.0 / SMF";
 ```
+
+> The comment header uses the angle-bracket style (`<` / `<<`) that is the
+> go-forward house style (see [`SLEELA.syntax` §1.1](../SLEELA.syntax)). The
+> existing `lib/codecs/*` sources still carry the legacy `//` header; new
+> metadata classes use the form shown here. Keep the header text verbatim.
 
 | Field | Meaning |
 |---|---|
@@ -88,15 +93,15 @@ accessors and the honest, citable values:
 
 ```sleela
 #sleela 2.1
-// A metadata class: record only, no runtime behavior.
+< A metadata class: record only, no runtime behavior. >
 class AcmeArchiveMeta {
   int id() { return 1; }
   String name() { return "ACME Archive"; }
 
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override each record.
-  // Values are faithful to the subject's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each record.
+     Values are faithful to the subject's real origin where publicly known. >>
   String metaVersion = "1.0.0";
   int metaId = 1;
   String metaAuthor = "ACME Standards Group";
@@ -119,7 +124,7 @@ class AcmeArchiveMeta {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
-  // ... remaining get/set pairs follow the same shape.
+  < ... remaining get/set pairs follow the same shape. >
 }
 ```
 

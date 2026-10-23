@@ -41,10 +41,10 @@ Each field has a matching `get`/`set` pair. Keep the comment header verbatim so
 the block is greppable across the tree.
 
 ```sleela
-  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
-  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-  // or catalog can read and (where appropriate) override each record.
-  // Values are faithful to the subject's real origin where publicly known.
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each record.
+     Values are faithful to the subject's real origin where publicly known. >>
   String metaVersion = "1.0.0";
   int metaId = 0;
   String metaAuthor = "...";
@@ -52,11 +52,22 @@ the block is greppable across the tree.
   String metaCopyright = "...";
   String metaTrademark = "none";
   String metaCorporation = "...";
-  String metaOrigin = "International";   // National | <nation> | International | Galactic
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
   String metaBirthDate = "...";
-  int metaScienceRating = 10;            // maturity/robustness on a 1..10 scale
-  String metaNationalSchedule = "...";   // a real, citable instrument or "none"
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 10;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "...";
 ```
+
+**Comment style:** the header and any explanatory comments use the
+angle-bracket style (`<` / `<<`) that is the go-forward house style (see
+`comment-style.md` and `SLEELA.syntax` §1.1). Keep the header text
+`---- Descriptive metadata (version 1.11 nested-friendly accessors) ----`
+verbatim so the block stays greppable. Existing `lib/codecs/*` and
+`lib/compression/*` sources still carry the legacy `//` header and are valid;
+new metadata classes use the angle-bracket form.
 
 ## Framing for a mode of business
 
