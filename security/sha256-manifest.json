@@ -46331,7 +46331,7 @@
     },
     {
       "path": "lib/text/SLFormatter.sleela",
-      "sha256": "4bc704c75b2a21f68d24f2b9c2736da92735e43391e290fbe6af75fddd1ef772"
+      "sha256": "1393a41c5b28d3b604d0dd61333648892bee94b66a5300e611db78af99cb1021"
     },
     {
       "path": "lib/text/SLRegex.sleela",
@@ -46339,7 +46339,7 @@
     },
     {
       "path": "lib/text/SLString.sleela",
-      "sha256": "b0075ca95cbe2302d17bc5527892a1f5e0bdd19fb2d19e17198b68268c3b5361"
+      "sha256": "f5d741f6969a87ada41ac6021569cb8d304fde38940c1df359bb0ca1a8d2b843"
     },
     {
       "path": "lib/text/SLStringBuffer.sleela",
@@ -46347,7 +46347,7 @@
     },
     {
       "path": "lib/text/SLStringBuilder.sleela",
-      "sha256": "c70fef748a41198108f9ffaca638433afdec7ad505e8f91196a88cd28fa23c0f"
+      "sha256": "1bed0dbcae0ddac4504842209aa374e33ee26d075a0cf29b55a24769741d0910"
     },
     {
       "path": "lib/text/SLTextReader.sleela",

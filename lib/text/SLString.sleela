@@ -218,6 +218,165 @@ class SLString {
   String spaced(String[] parts) { return join(parts, " "); }
 
   < ==================================================================== >
+  < CHAR-CELL VIEW -- REAL char-level ops over an explicit String[] of cells >
+  < ==================================================================== >
+  < The built-in String is opaque, so charAt/substring/indexOf must normally >
+  < be bridged. But when a caller represents text as a String[] whose cells are >
+  < the individual glyphs (a "char-cell view"), these operations become fully >
+  < in-language and REAL -- no bridge, no faking -- because the decomposition >
+  < was supplied explicitly. Produce cells at the boundary (e.g. from the >
+  < bridged chars()/split() the runtime fulfils, or from a known literal set), >
+  < then do dependable char-level work here. fromCells() rejoins to a String. >
+  < Indices are int (0-based); out-of-range access returns "" rather than >
+  < failing, matching the library's fail-soft convention. >
+
+  < fromCells(cells): rejoin a char-cell array into a String (real). >
+  String fromCells(String[] cells) {
+    String out = "";
+    int i = 0;
+    int n = arrayLength(cells);
+    while (i < n) { out = out + cells[i]; i = i + 1; }
+    return out;
+  }
+
+  < lengthCells(cells): real character length of a char-cell view. >
+  int lengthCells(String[] cells) { return arrayLength(cells); }
+
+  < charAtCells(cells, i): the glyph at index i, or "" if out of range (real). >
+  String charAtCells(String[] cells, int i) {
+    if (i < 0 || i >= arrayLength(cells)) { return ""; }
+    return cells[i];
+  }
+
+  < substringCells(cells, from, to): the cells in [from, to) rejoined (real). >
+  < from is clamped to 0, to is clamped to the length; from >= to yields "". >
+  String substringCells(String[] cells, int from, int to) {
+    String out = "";
+    int n = arrayLength(cells);
+    int i = from;
+    if (i < 0) { i = 0; }
+    int end = to;
+    if (end > n) { end = n; }
+    while (i < end) { out = out + cells[i]; i = i + 1; }
+    return out;
+  }
+
+  < indexOfCell(cells, needle): first index whose cell == needle, else -1 (real). >
+  int indexOfCell(String[] cells, String needle) {
+    int i = 0;
+    int n = arrayLength(cells);
+    while (i < n) {
+      if (cells[i] == needle) { return i; }
+      i = i + 1;
+    }
+    return -1;
+  }
+
+  < lastIndexOfCell(cells, needle): last matching index, else -1 (real). >
+  int lastIndexOfCell(String[] cells, String needle) {
+    int i = arrayLength(cells) - 1;
+    while (i >= 0) {
+      if (cells[i] == needle) { return i; }
+      i = i - 1;
+    }
+    return -1;
+  }
+
+  < containsCell(cells, needle): true if any cell equals needle (real). >
+  boolean containsCell(String[] cells, String needle) {
+    return indexOfCell(cells, needle) >= 0;
+  }
+
+  < countCell(cells, needle): how many cells equal needle (real). >
+  int countCell(String[] cells, String needle) {
+    int c = 0;
+    int i = 0;
+    int n = arrayLength(cells);
+    while (i < n) {
+      if (cells[i] == needle) { c = c + 1; }
+      i = i + 1;
+    }
+    return c;
+  }
+
+  < startsWithCells(cells, prefix): does the cell view begin with the prefix >
+  < cell array? Real: element-wise == over the leading cells. >
+  boolean startsWithCells(String[] cells, String[] prefix) {
+    int pn = arrayLength(prefix);
+    if (pn > arrayLength(cells)) { return false; }
+    int i = 0;
+    while (i < pn) {
+      if (cells[i] != prefix[i]) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  < endsWithCells(cells, suffix): does the cell view end with the suffix cells? >
+  boolean endsWithCells(String[] cells, String[] suffix) {
+    int sn = arrayLength(suffix);
+    int cn = arrayLength(cells);
+    if (sn > cn) { return false; }
+    int i = 0;
+    while (i < sn) {
+      if (cells[cn - sn + i] != suffix[i]) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  < reverseCells(cells): the glyphs in reverse order, rejoined (real). >
+  String reverseCells(String[] cells) {
+    String out = "";
+    int i = arrayLength(cells) - 1;
+    while (i >= 0) { out = out + cells[i]; i = i - 1; }
+    return out;
+  }
+
+  < replaceCells(cells, from, to): every cell equal to `from` becomes `to`; >
+  < returns a new String[] of the same length (real). >
+  String[] replaceCells(String[] cells, String from, String to) {
+    int n = arrayLength(cells);
+    String[] out = new String[n];
+    int i = 0;
+    while (i < n) {
+      if (cells[i] == from) { out[i] = to; } else { out[i] = cells[i]; }
+      i = i + 1;
+    }
+    return out;
+  }
+
+  < equalsCells(a, b): element-wise equality of two char-cell views (real). >
+  boolean equalsCells(String[] a, String[] b) {
+    int n = arrayLength(a);
+    if (n != arrayLength(b)) { return false; }
+    int i = 0;
+    while (i < n) {
+      if (a[i] != b[i]) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  < padCellsLeft / padCellsRight(cells, width, padCell): pad the view to a real >
+  < target character width with padCell, returning a String (real). If the view >
+  < is already >= width, it is returned rejoined unchanged. >
+  String padCellsLeft(String[] cells, int width, String padCell) {
+    String pad = "";
+    int n = arrayLength(cells);
+    int i = n;
+    while (i < width) { pad = pad + padCell; i = i + 1; }
+    return pad + fromCells(cells);
+  }
+  String padCellsRight(String[] cells, int width, String padCell) {
+    String out = fromCells(cells);
+    int n = arrayLength(cells);
+    int i = n;
+    while (i < width) { out = out + padCell; i = i + 1; }
+    return out;
+  }
+
+  < ==================================================================== >
   < BRIDGED operations (char-level; cross the explicit VM/OS bridge) >
   < Each returns a stable, inspectable bridge-call descriptor rather than a >
   < fabricated result, so a caller / native runtime can dispatch honestly. >
@@ -228,6 +387,22 @@ class SLString {
   String bridgeArg(String op, String a)    { return "text.bridge:" + op + ":" + value + ":" + a; }
   String bridgeArg2(String op, String a, String b) {
     return "text.bridge:" + op + ":" + value + ":" + a + ":" + b;
+  }
+
+  < bridgeOp(fields): read the op name back out of a descriptor that has been >
+  < split on ":" into fields (field 0 == "text.bridge", field 1 == the op). >
+  < Real: a caller that split the descriptor (e.g. via the bridged split()) can >
+  < reason about it fully in-language. Returns "" if the array is malformed. >
+  String bridgeOp(String[] fields) {
+    if (arrayLength(fields) < 2) { return ""; }
+    if (fields[0] != "text.bridge") { return ""; }
+    return fields[1];
+  }
+
+  < isBridgeDescriptor(fields): true if the split fields name a text.bridge >
+  < descriptor for a known op (real; composes bridgeOp + isBridged). >
+  boolean isBridgeDescriptor(String[] fields) {
+    return bridgeOp(fields) != "" && isBridged(bridgeOp(fields));
   }
 
   < Descriptor introspection: does this string name a bridged op, and which? >

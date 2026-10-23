@@ -142,6 +142,44 @@ class SLFormatter {
     return repeatChar(padChar, count) + block;
   }
 
+  < ---- real column alignment over a char-cell view ------------------- >
+  < When the caller supplies the content as a String[] of glyph cells, we know >
+  < its true character width (arrayLength), so we can align to an ABSOLUTE >
+  < column fully in-language -- the exact-column case that the raw-String >
+  < padLeft/padRight could not do and padTo() had to bridge. >
+  String columnLeft(String[] cells, int width, String padChar) {
+    String body = fromCells(cells);
+    int n = arrayLength(cells);
+    String pad = "";
+    int i = n;
+    while (i < width) { pad = pad + padChar; i = i + 1; }
+    return body + pad;
+  }
+  String columnRight(String[] cells, int width, String padChar) {
+    String body = fromCells(cells);
+    int n = arrayLength(cells);
+    String pad = "";
+    int i = n;
+    while (i < width) { pad = pad + padChar; i = i + 1; }
+    return pad + body;
+  }
+  String columnCenter(String[] cells, int width, String padChar) {
+    int n = arrayLength(cells);
+    int total = width - n;
+    if (total < 0) { total = 0; }
+    int left = total / 2;
+    int right = total - left;
+    return repeatChar(padChar, left) + fromCells(cells) + repeatChar(padChar, right);
+  }
+  < fromCells(cells): rejoin a char-cell array into a String (real). >
+  String fromCells(String[] cells) {
+    String out = "";
+    int i = 0;
+    int n = arrayLength(cells);
+    while (i < n) { out = out + cells[i]; i = i + 1; }
+    return out;
+  }
+
   < ---- bridged printf-style formatting ------------------------------ >
   String bridge(String op, String a)            { return "text.bridge:" + op + ":" + a; }
   String bridgeArg(String op, String a, String b){ return "text.bridge:" + op + ":" + a + ":" + b; }
