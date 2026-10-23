@@ -15,6 +15,7 @@
 - [Platform support and validation matrix](docs/PLATFORM-SUPPORT.md)
 - [Brand guide](docs/BRAND-GUIDE.md)
 - [Merchandise concepts and assets](merchandise/README.md)
+- [NitroWebExpress logo](images/nitro-web-express/nitrowebexpress-logo-004.jpeg)
 - [Testing policy and release gates](markdown/TESTING.md)
 
 ## News
