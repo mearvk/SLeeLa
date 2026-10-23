@@ -3,9 +3,15 @@
 < SLeeLa text/String surface, parallel to the codec/compression *-pipeline >
 < demos. The compiler's `run` compiles one file as a single unit, so this >
 < aggregate inlines a compact SLString plus a `main` that drives it the way an >
-< application would: seed a value, use the in-language ops (concat, equals, >
-< repeat, join, quote, copy), and show that char-level ops return honest >
-< "text.bridge:<op>:..." descriptors rather than faked results. >
+< application would, in three honest layers: >
+<   1. IN-LANGUAGE ops (real results from +, ==, loops, String[]): concat, >
+<      equals, repeat, join, quote, copy, and the richer helpers repeatWithSep, >
+<      joinNonEmpty, equalsAnyOf. >
+<   2. CHAR-CELL VIEW (also real): when text is supplied as a String[] of >
+<      single-glyph cells, charAt/substring/indexOf/reverse/column-align become >
+<      genuinely in-language -- no bridge, no faking. >
+<   3. BRIDGED ops: char-level work on an opaque String returns honest >
+<      "text.bridge:<op>:..." descriptors rather than faked results. >
 <  >
 < The authoritative split classes live alongside this file: >
 < SLString, SLStringBuilder, SLStringBuffer, SLFormatter, SLRegex, >
@@ -73,6 +79,62 @@ class SLString {
   }
   String quote() { return "\"" + value + "\""; }
 
+  < Richer in-language helpers (real; mirror lib/text/SLString). >
+  String repeatWithSep(int n, String sep) {
+    String out = ""; int i = 0;
+    while (i < n) { if (i > 0) { out = out + sep; } out = out + value; i = i + 1; }
+    return out;
+  }
+  String joinNonEmpty(String[] parts, String sep) {
+    String out = ""; boolean first = true; int i = 0; int n = arrayLength(parts);
+    while (i < n) {
+      String p = parts[i];
+      if (p != null && p != "") { if (!first) { out = out + sep; } out = out + p; first = false; }
+      i = i + 1;
+    }
+    return out;
+  }
+  boolean equalsAnyOf(String[] options) {
+    int i = 0; int n = arrayLength(options);
+    while (i < n) { if (value == options[i]) { return true; } i = i + 1; }
+    return false;
+  }
+
+  < Char-cell view: REAL char-level ops over an explicit String[] of glyphs. >
+  String fromCells(String[] cells) {
+    String out = ""; int i = 0; int n = arrayLength(cells);
+    while (i < n) { out = out + cells[i]; i = i + 1; }
+    return out;
+  }
+  int lengthCells(String[] cells) { return arrayLength(cells); }
+  String charAtCells(String[] cells, int i) {
+    if (i < 0 || i >= arrayLength(cells)) { return ""; }
+    return cells[i];
+  }
+  String substringCells(String[] cells, int from, int to) {
+    String out = ""; int n = arrayLength(cells); int i = from;
+    if (i < 0) { i = 0; }
+    int end = to; if (end > n) { end = n; }
+    while (i < end) { out = out + cells[i]; i = i + 1; }
+    return out;
+  }
+  int indexOfCell(String[] cells, String needle) {
+    int i = 0; int n = arrayLength(cells);
+    while (i < n) { if (cells[i] == needle) { return i; } i = i + 1; }
+    return -1;
+  }
+  String reverseCells(String[] cells) {
+    String out = ""; int i = arrayLength(cells) - 1;
+    while (i >= 0) { out = out + cells[i]; i = i - 1; }
+    return out;
+  }
+  String columnRight(String[] cells, int width, String padChar) {
+    String body = fromCells(cells); int n = arrayLength(cells);
+    String pad = ""; int i = n;
+    while (i < width) { pad = pad + padChar; i = i + 1; }
+    return pad + body;
+  }
+
   < Bridged char-level ops -- honest descriptors, never faked. >
   String bridge(String op) { return "text.bridge:" + op + ":" + value; }
   String bridgeArg(String op, String a) { return "text.bridge:" + op + ":" + value + ":" + a; }
@@ -110,6 +172,31 @@ class SLString {
     SLString joiner = new SLString();
     print("join       : " + joiner.join(parts, ", "));
     print("quote      : " + greet.quote());
+
+    < Richer in-language helpers (real). >
+    print("repeatWSep : " + greet.repeatWithSep(3, "-"));
+    String[] sparse = new String[4];
+    sparse[0] = "a"; sparse[1] = ""; sparse[2] = "b"; sparse[3] = "c";
+    print("joinNonEmpty: " + joiner.joinNonEmpty(sparse, "/"));
+    SLString color = new SLString();
+    color.set("blue");
+    String[] opts = new String[2]; opts[0] = "red"; opts[1] = "blue";
+    print("equalsAnyOf: " + color.equalsAnyOf(opts));
+
+    < --- CHAR-CELL VIEW: real char-level ops (no bridge) --------------- >
+    print("");
+    print("--- char-cell view (real char-level ops) ---");
+    SLString cell = new SLString();
+    String[] hello = new String[5];
+    hello[0] = "h"; hello[1] = "e"; hello[2] = "l"; hello[3] = "l"; hello[4] = "o";
+    print("cells      : " + cell.fromCells(hello));
+    print("lengthCells: " + cell.lengthCells(hello));
+    print("charAt(1)  : " + cell.charAtCells(hello, 1));
+    print("substr 1..4: " + cell.substringCells(hello, 1, 4));
+    print("indexOf 'l': " + cell.indexOfCell(hello, "l"));
+    print("reverse    : " + cell.reverseCells(hello));
+    print("colRight 8 : [" + cell.columnRight(hello, 8, ".") + "]");
+    print("");
 
     < copy() is independent of the original. >
     SLString original = new SLString();
