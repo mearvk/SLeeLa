@@ -52,6 +52,31 @@ std::string quotedList(const std::vector<std::string>& xs) {
     return s;
 }
 
+// Escape a user-provided String value for safe embedding in generated Java / C
+// / Sleela source (the value can contain quotes, backslashes, newlines, tabs).
+// network/finance names are closed enum identifiers and never need this, but
+// `strings:` values are arbitrary user text, so they must be escaped.
+std::string escapeForSource(const std::string& in) {
+    std::string out;
+    out.reserve(in.size() + 8);
+    for (char c : in) {
+        switch (c) {
+            case '\\': out += "\\\\"; break;
+            case '"':  out += "\\\""; break;
+            case '\n': out += "\\n";  break;
+            case '\r': out += "\\r";  break;
+            case '\t': out += "\\t";  break;
+            default:   out += c;      break;
+        }
+    }
+    return out;
+}
+std::string quotedEscapedList(const std::vector<std::string>& xs) {
+    std::string s;
+    for (size_t i = 0; i < xs.size(); i++) { if (i) s += ", "; s += "\"" + escapeForSource(xs[i]) + "\""; }
+    return s;
+}
+
 // ---- Java manifest --------------------------------------------------------
 std::string emitJava(const Sheet& sheet, const std::string& pkg) {
     std::ostringstream o;
@@ -102,6 +127,12 @@ std::string emitJava(const Sheet& sheet, const std::string& pkg) {
         std::vector<std::string> ids;
         for (const auto& s : sheet.subjects) ids.push_back(s.identity);
         o << "    public static final String[] SUBJECTS = { " << quotedList(ids) << " };\n";
+    }
+    if (sheet.strings.present && !sheet.strings.vars.empty()) {
+        std::vector<std::string> names, values;
+        for (const auto& v : sheet.strings.vars) { names.push_back(v.name); values.push_back(v.value); }
+        o << "\n    public static final String[] STRING_NAMES = { " << quotedList(names) << " };\n";
+        o << "    public static final String[] STRING_VALUES = { " << quotedEscapedList(values) << " };\n";
     }
     o << "}\n";
     return o.str();
@@ -154,6 +185,20 @@ std::string emitC(const Sheet& sheet) {
         for (const auto& s : sheet.subjects) ids.push_back(s.identity);
         emitCArray(o, "ns_subjects", ids);
     }
+    if (sheet.strings.present && !sheet.strings.vars.empty()) {
+        std::vector<std::string> names, values;
+        for (const auto& v : sheet.strings.vars) {
+            names.push_back(v.name);
+            values.push_back(escapeForSource(v.value));
+        }
+        emitCArray(o, "ns_string_names", names);
+        // values are pre-escaped; emit directly so escapes survive verbatim.
+        o << "const char* const ns_string_values[] = { ";
+        for (size_t i = 0; i < values.size(); i++) { if (i) o << ", "; o << "\"" << values[i] << "\""; }
+        if (!values.empty()) o << ", ";
+        o << "0 };\n";
+        o << "const int ns_string_values_count = " << values.size() << ";\n";
+    }
     return o.str();
 }
 
@@ -205,6 +250,15 @@ std::string emitSleela(const Sheet& sheet) {
         for (const auto& s : sheet.subjects) ids.push_back(s.identity);
         emitSleelaList(o, "subjects", ids);
     }
+    if (sheet.strings.present && !sheet.strings.vars.empty()) {
+        std::vector<std::string> names;
+        for (const auto& v : sheet.strings.vars) names.push_back(v.name);
+        emitSleelaList(o, "stringNames", names);
+        // one accessor-style field per declared String value (escaped).
+        for (const auto& v : sheet.strings.vars) {
+            o << "    String string_" << v.name << " = \"" << escapeForSource(v.value) << "\";\n";
+        }
+    }
     o << "}\n";
     return o.str();
 }
@@ -213,7 +267,8 @@ std::string emitSleela(const Sheet& sheet) {
 
 bool hasComponentManifest(const Sheet& sheet) {
     return sheet.network.present || sheet.finance.present ||
-           sheet.reach.present || sheet.measure.present || !sheet.subjects.empty();
+           sheet.reach.present || sheet.measure.present || !sheet.subjects.empty() ||
+           (sheet.strings.present && !sheet.strings.vars.empty());
 }
 
 std::string emitComponentManifest(const Sheet& sheet, TargetLang lang,
@@ -240,6 +295,8 @@ std::string summarizeComponents(const Sheet& sheet) {
         o << "  manifest: measure " << sheet.measure.metrics.size() << " metric(s) [Synchro]\n";
     if (!sheet.subjects.empty())
         o << "  manifest: " << sheet.subjects.size() << " subject(s)\n";
+    if (sheet.strings.present && !sheet.strings.vars.empty())
+        o << "  manifest: strings " << sheet.strings.vars.size() << " value(s)\n";
     return o.str();
 }
 

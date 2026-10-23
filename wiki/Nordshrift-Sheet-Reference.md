@@ -183,13 +183,15 @@ Declares explicit semantics. See **[Writing a Subject](Writing-a-Subject)**.
 
 ## The component manifest (build effect)
 
-When a sheet declares `network:`, `finance:`, or `subject:` blocks, `nordshrift build` emits a **component manifest** artifact so those declarations have a real effect:
+When a sheet declares `network:`, `finance:`, `subject:`, `reach:`, `measure:`, or `strings:` blocks, `nordshrift build` emits a **component manifest** artifact so those declarations have a real effect:
 
 | Target | Manifest form |
 |---|---|
 | `java` | a `ComponentManifest` class of `static final String[]` arrays (printed) |
 | `c` | null-terminated `const char*` name arrays with `_count`s (printed) |
 | `sleela` | a `ComponentManifest` class written to `<sheetDir>/build/ComponentManifest.sleela` |
+
+A `strings:` block contributes `STRING_NAMES`/`STRING_VALUES` (Java), `ns_string_names`/`ns_string_values` with counts (C), or per-value `String string_<name>` fields (Sleela). Values are escaped for safe embedding, so quotes and backslashes survive verbatim.
 
 Every network/finance object also lives in `SHEET.sheet`, so `nordshrift objects` / `nordshrift relevance` will show it alongside the system objects (as a `model` relevance).
 
