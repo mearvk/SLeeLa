@@ -105,6 +105,33 @@ class SLStringBuilder {
   String get()       { return value; }
   void set(String v) { value = v; edits = edits + 1; }
 
+  < ---- char-cell view (REAL char-level ops over an explicit String[]) ----- >
+  < When the caller supplies the glyphs as a String[] of single cells, these >
+  < are genuinely in-language -- no bridge, no faking. appendCells builds the >
+  < value from cells; reverseCells/charAtCells operate on a supplied view. >
+  SLStringBuilder appendCells(String[] cells) {
+    int i = 0;
+    int n = arrayLength(cells);
+    while (i < n) { value = value + cells[i]; i = i + 1; }
+    segments = segments + 1;
+    edits = edits + 1;
+    return this;
+  }
+  < reverseCells(cells): the glyphs reversed and rejoined (real). >
+  String reverseCells(String[] cells) {
+    String out = "";
+    int i = arrayLength(cells) - 1;
+    while (i >= 0) { out = out + cells[i]; i = i - 1; }
+    return out;
+  }
+  < charAtCells(cells, i): glyph at i, or "" if out of range (real). >
+  String charAtCells(String[] cells, int i) {
+    if (i < 0 || i >= arrayLength(cells)) { return ""; }
+    return cells[i];
+  }
+  < lengthCells(cells): real character length of a char-cell view. >
+  int lengthCells(String[] cells) { return arrayLength(cells); }
+
   < ---- bridged char-level operations --------------------------------- >
   < Need the raw code units; cross the VM/OS bridge with an honest descriptor. >
   String bridge(String op)              { return "text.bridge:" + op + ":" + value; }
