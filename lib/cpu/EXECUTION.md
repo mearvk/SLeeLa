@@ -211,6 +211,50 @@ language produced the identical result.
 > honest — equivalence means "same effect for the same program expressed in
 > different languages," not that any two different programs are equal.
 
+## 5. Runs by both — the basis of function every CPU model inherits
+
+A CPU model is not defined solely by *an* execution path; part of its **basis of
+function** is that it runs code **two ways, equivalently**. Both are inherited
+from `SLCPURuntime`, so every `SL<ARCH>CPU` has them by extension — no model
+re-implements the capability:
+
+1. **By opcodes** — `runByOpcodes(int[] program, [int at,] int budget)` loads a
+   native instruction-word program and drives it through the model's own
+   fetch-decode-execute loop (`fetch` / `decode` / `step` / `run`). This is the
+   model running *its own ISA* directly. The result is left in
+   architecture-defined state, read via the overridable `opcodeObservable()`
+   (the base reads register 0; e.g. `SL6502CPU` overrides it to return the
+   accumulator).
+
+2. **By function-call equivalence** — `runByEquivalence(SLWorkload work)` runs
+   *the code of an assumed other process* (any supported language/ISA workload)
+   by reducing it, through the shared `SLOpcodeMap`, to the equivalent canonical
+   opcode / service-call stream on this CPU's substrate (the `runWorkload`
+   pipeline of §2 and §4). Here the model runs code written for *another*
+   process by mapping its operations to equivalent function calls/opcodes.
+
+Because both paths funnel to the one canonical `SLSleelaVM` engine (§4), "runs by
+both" is not two realities but **one basis observed two ways**. The runtime makes
+that an assertable property:
+
+```
+boolean basisHolds(int[] opcodeProgram, int opcodeBudget,
+                   SLWorkload equivalentWork, int expected)
+```
+
+It runs the same computation by opcodes and by equivalence and returns true only
+when **both** produce the agreed `expected` result. This is the opcode-vs-
+equivalence analogue of `SLTuringBridge.proveEquivalence` (§4), but on a single
+CPU: the opcode form and the assumed-other-process form of the same computation
+must coincide. `runsByBoth()` advertises the capability (always true for an
+`SLCPURuntime`-derived model).
+
+> The two paths observe different surfaces — a register (opcode path) vs. a
+> printed value (equivalence path) — so `basisHolds` takes the intended result
+> explicitly and checks both equal it, rather than assuming the two mechanisms
+> write the same physical slot. Equivalence means "both compute the intended
+> result," honestly stated.
+
 ## What would make each piece "real" (roadmap)
 
 | Goal | Needed |

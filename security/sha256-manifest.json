@@ -3699,7 +3699,7 @@
     },
     {
       "path": "lib/cpu/6502/SL6502CPU.sleela",
-      "sha256": "bb9e1fca9607f2e3821222d6edc0907e86036720b87ac2713d1bc9ee4675d574"
+      "sha256": "7a000008d34033f826a16d7135dfcb68f1de2d8e9f02fb1a1fc32bb34d33eb06"
     },
     {
       "path": "lib/cpu/68020/SL68020CPU.sleela",
@@ -3779,7 +3779,7 @@
     },
     {
       "path": "lib/cpu/SLCPURuntime.sleela",
-      "sha256": "6d951427801be6f442f8a850e2fbf043132a8574e5d518c681bbf86a56b045dc"
+      "sha256": "fffc4df28a2626ee9d63498b349f0fa7efa1e12eb8a89dac77751fb1eede2260"
     },
     {
       "path": "lib/cpu/SLCache.sleela",
