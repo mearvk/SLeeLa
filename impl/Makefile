@@ -40,7 +40,14 @@ endif
 
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra $(THREADFLAG)
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra $(THREADFLAG)
-CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash
+# Automatic header-dependency tracking. -MMD writes a .d file per object listing
+# every (non-system) header it includes; -MP adds phony targets so a deleted
+# header does not break the build. These .d files are -included below so that
+# editing ANY header recompiles exactly the objects that include it. This closes
+# a class of stale-object bugs (e.g. editing a struct layout in a shared header
+# while a dependent object was compiled against the old layout -> ABI mismatch).
+DEPFLAGS := -MMD -MP
+CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash $(DEPFLAGS)
 LDFLAGS ?= $(THREADFLAG)
 LIBS ?= $(PLATFORM_LIBS)
 BUILD := build
@@ -500,7 +507,7 @@ $(IDEA_CANVAS_CTX_OBJ): $(IDEA_CANVAS_CTX_SRC) $(IDEA_CANVAS_DIR)/idea_canvas_ct
 # ---- SleelaUI toolkit objects + the ui* VM bridge --------------------------
 $(BUILD)/slui/%.o: $(SLUI_DIR)/src/%.cpp | $(BUILD)
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(DEPFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) -c $< -o $@
 $(SLUI_NANOJPEG_OBJ): $(SLUI_DIR)/src/nanojpeg.c $(SLUI_DIR)/src/nanojpeg.h | $(BUILD)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -Wno-shift-negative-value -I$(SLUI_DIR)/src -c $< -o $@
@@ -929,3 +936,11 @@ $(UNSIGNED_INTEGER_TEST): tests/unsigned_integer_test.cpp frontend/unsigned_inte
 	$(CXX) $(CXXFLAGS) -Ifrontend tests/unsigned_integer_test.cpp -o $@
 test-unsigned-integer: $(UNSIGNED_INTEGER_TEST)
 	@echo "=== SLeeLa arbitrary-width unsigned integer tests ==="; $(UNSIGNED_INTEGER_TEST)
+
+# ---- Automatic header-dependency include -----------------------------------
+# Pull in the per-object .d files written by $(DEPFLAGS) (-MMD -MP). Each lists
+# the headers its object includes, so editing any header recompiles exactly the
+# dependent objects. The wildcard is empty on a clean tree (no .d yet), which is
+# fine -- the first build creates them. '-include' never errors on missing files.
+-include $(wildcard $(BUILD)/*.d)
+-include $(wildcard $(BUILD)/slui/*.d)

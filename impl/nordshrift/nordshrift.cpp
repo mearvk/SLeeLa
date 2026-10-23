@@ -413,9 +413,9 @@ static int doBuild(const std::string& path) {
     }
 
     // Emit a component/subject manifest artifact from the declared network,
-    // finance, and subject series, so declaring those blocks has a real,
-    // inspectable build effect. Written next to the sheet for the sleela
-    // target; printed for java/c (matching the source emission behavior).
+    // finance, subject, reach, measure, and strings series, so declaring those
+    // blocks has a real, inspectable build effect. Written next to the sheet for
+    // the sleela target; printed for java/c (matching the source emission behavior).
     if (hasComponentManifest(sheet)) {
         std::string manifest = emitComponentManifest(sheet, lang, sheet.target.packageRoot);
         if (lang == TargetLang::Sleela) {
@@ -427,7 +427,7 @@ static int doBuild(const std::string& path) {
             if (mf) {
                 mf << manifest;
                 std::cout << "nordshrift: manifest -> " << out.string()
-                          << " (network/finance/subject component manifest)\n";
+                          << " (component manifest)\n";
             } else {
                 std::cerr << "nordshrift: cannot write manifest '" << out.string() << "'\n";
                 rc = 1;

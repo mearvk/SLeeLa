@@ -603,7 +603,7 @@
     },
     {
       "path": "impl/nordshrift/component_manifest.cpp",
-      "sha256": "e9607bae1bafee88152b29f748f6a1dd05ae7b38710a009ba421a87f71e97416"
+      "sha256": "92f24fd148dff96ff635138fcf42aa0d5b4e73dd0a2637750a79ef0a0dce76ac"
     },
     {
       "path": "impl/nordshrift/component_manifest.h",
@@ -639,7 +639,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "7c1d7212495820b5404311732fb20a03e204a5401816de90506dfafd99501fe0"
+      "sha256": "0f871d74fe3b00f413836de212bbfa45c5d2863f3683d9e56214cfd96da8e8dc"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
