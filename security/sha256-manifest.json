@@ -3635,7 +3635,7 @@
     },
     {
       "path": "lib/core/SLString.sleela",
-      "sha256": "136a6c8c01ddde747723263b5e4548da86ef436994a47ef63b2a2d20a59ae8f1"
+      "sha256": "183bf4e775916d83c4102b2aa3202021f2cbc6234f4a3a032567d31d4a3641ec"
     },
     {
       "path": "lib/core/SLSymbol.sleela",
@@ -29011,7 +29011,7 @@
     },
     {
       "path": "lib/java/java/lang/AbstractStringBuilder.sleela",
-      "sha256": "9304c6123601722bddeaa24bf0a3106c8b3ed35f3018303465472c821594c029"
+      "sha256": "035d203e8cf03c77a3565814c0e2158e3dcd7bc7de00c94f3f52182c2c53defc"
     },
     {
       "path": "lib/java/java/lang/Appendable.sleela",
@@ -29439,31 +29439,31 @@
     },
     {
       "path": "lib/java/java/lang/StringBuffer.sleela",
-      "sha256": "99bb21570735c2726ebeff43664df655a01f4df53d0ef02e15889a1d685861c8"
+      "sha256": "699e413ece3cd1bc41807d80bd19af335d2957d2fbd7a3f362c50cdecbfbcddb"
     },
     {
       "path": "lib/java/java/lang/StringBuilder.sleela",
-      "sha256": "c17f5ae538b8f3c278bb01546d09433395e35714ada8276b32c9d3fa3770a6b6"
+      "sha256": "fd7be2fe873298355a1431abed4624126c46eb6e1a691363a58609e4c80dd1ca"
     },
     {
       "path": "lib/java/java/lang/StringCoding.sleela",
-      "sha256": "48ee0d919bffe459a568f02d2c00c0c3bcc13d700a356dc170de1d3887e784b7"
+      "sha256": "b77556797fbec23b8d2941653563b9c8b5c9a267951e923e8ae20b4e2079e900"
     },
     {
       "path": "lib/java/java/lang/StringConcatHelper.sleela",
-      "sha256": "f25c96aa11528a37d4c6c52a74d6805fc48e871597e5fcc92517c8a4b04a84d5"
+      "sha256": "bd3f70ce39a2f98fee814059573cf83844b38ca4ed51d6a1a4f8caa8eb58e2ba"
     },
     {
       "path": "lib/java/java/lang/StringIndexOutOfBoundsException.sleela",
-      "sha256": "28bdfe073111d0d1092ebf4ee32773e117485347df4244afe61d3c3976974469"
+      "sha256": "b97a533911b03e61fd549f3f98ee7c68670307cf4cf6b57f7e617dc718d7693a"
     },
     {
       "path": "lib/java/java/lang/StringLatin1.sleela",
-      "sha256": "16de6ca869e4f22b402ef1d1b190ebcf5ee97402bf52985077d5715918ed4b29"
+      "sha256": "e4742562d5619e5b510d1c38b68ec90848222c535746b8cb9e42ee601746be63"
     },
     {
       "path": "lib/java/java/lang/StringUTF16.sleela",
-      "sha256": "f0dab9d86e23bce7e4a8eb35d8702c635ec2676bab2b58ad7fddb3922d98c2db"
+      "sha256": "24dac1887538246abaf87ef75ebba276744554bb9b2b90c59610883ba1bbf1b3"
     },
     {
       "path": "lib/java/java/lang/SuppressWarnings.sleela",
@@ -30079,7 +30079,7 @@
     },
     {
       "path": "lib/java/java/lang/classfile/constantpool/StringEntry.sleela",
-      "sha256": "b083a90b21fa14962db82e333c64ceee91a55b6321ea5fd52073dfcfe4882b9e"
+      "sha256": "cea48a89155fbaf208dbd6eba65da36bfa96a885ab84d7e7e4a5ad7262687932"
     },
     {
       "path": "lib/java/java/lang/classfile/constantpool/Utf8Entry.sleela",
@@ -30523,11 +30523,11 @@
     },
     {
       "path": "lib/java/java/lang/invoke/StringConcatException.sleela",
-      "sha256": "f5fbf2475f826d8e97252ca7db288c502e45e2c7173f3acac13544cf42f550e8"
+      "sha256": "c051f408927c14720be5a18887a226fc7908b34c260ff5c160af5195cb105a8c"
     },
     {
       "path": "lib/java/java/lang/invoke/StringConcatFactory.sleela",
-      "sha256": "e7a8aff3f19394154338885a5f7bcdd7af385afc94c99d9570d63cfeed228979"
+      "sha256": "bb754a1a14caa83d226987c04589c7680dcdfb70c86ae3abbd3b0c67089af703"
     },
     {
       "path": "lib/java/java/lang/invoke/SwitchPoint.sleela",
@@ -46311,35 +46311,39 @@
     },
     {
       "path": "lib/text/SLCharset.sleela",
-      "sha256": "0afa3b7e1e470736b32026f8991f5816877c90e48057ee785892c710cee6b89d"
+      "sha256": "53d2757f2856712168d02712dd15b7539f3c6d9cf29314c7a42920e4f0d3876b"
     },
     {
       "path": "lib/text/SLFormatter.sleela",
-      "sha256": "efb685440f74399d9bfeb696d8a0839d844150836d1f3b7a4c2c4371e959449a"
+      "sha256": "e7365a5a5ac1c11707c1fd00742a3b2dbb1798a323a46da4b9c74c511e8b65e9"
     },
     {
       "path": "lib/text/SLRegex.sleela",
-      "sha256": "89e58bd3deb7e3f48017976d83bae89706f4f2559eda9e8c9f9d40e0c66b70c7"
+      "sha256": "a274bd5e52f7e3b49ad0e7259768c32de64a8242fd0dcb6ca5712636b5d9a90f"
     },
     {
       "path": "lib/text/SLString.sleela",
-      "sha256": "bfb2c0302e5a3825849c189855f1face73e05a4cb5b3f8046eade12f0b8ec2a8"
+      "sha256": "8693b5b9d87b560ff1d6f15c52094ae59c1c12ba184b98a7507dc9d64e213173"
     },
     {
       "path": "lib/text/SLStringBuffer.sleela",
-      "sha256": "45f57e34da4b1d3999599b9ffe43d301a1654c31f5cc29fad991e912d1bbfa11"
+      "sha256": "6d06a50138226cdbf06c4cdedd782269b039da73ccaeb0f8cb1c79e8801584bd"
     },
     {
       "path": "lib/text/SLStringBuilder.sleela",
-      "sha256": "0c8c2507772762328fcb3b55a4ddd6968d35e0b05843f7038d8ddbd40ccd61c6"
+      "sha256": "122043afecd581eeba0691aeff5289ac44c520821c0235331960b585984e817b"
     },
     {
       "path": "lib/text/SLTextReader.sleela",
-      "sha256": "0671d548c7568434612ec84ff67ee6fbc26ae28096c00c3a824c50ab0ecdb39c"
+      "sha256": "d44a3f0c5ba7071994c01e9d877d12374d520c29541cb94ca2e871f03c35c15c"
     },
     {
       "path": "lib/text/SLTextWriter.sleela",
-      "sha256": "e598c9c0ed85a3bef8fa94413c99023e87e9475d7923b50647cabcd1cb6f2868"
+      "sha256": "036e25ff4e797b9d4504f400ba813820682804a697c4892b298d69608c0043cc"
+    },
+    {
+      "path": "lib/text/text-string-demo.sleela",
+      "sha256": "7cbd31544082f30672ede3730e16bf0176743f3181d5c21a0f5048f130b6fa1e"
     },
     {
       "path": "lib/ui/SLApplication.sleela",

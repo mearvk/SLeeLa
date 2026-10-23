@@ -15,15 +15,26 @@
 //     case mapping, trimming, splitting, ordering) that requires the raw code
 //     units. SLeeLa never sees those, so these methods cross the explicit
 //     VM/OS bridge: each returns a stable, inspectable bridge-call descriptor
-//     ("text.bridge:<op>:<args>") that the native runtime fulfils -- the same
-//     "never fake it" contract the codec/Java-envelope surfaces use. A method
-//     is never a silent lie: a bridged op advertises that it is bridged.
+//     and the native runtime fulfils it -- the same "never fake it" contract
+//     the codec/Java-envelope surfaces use. A method is never a silent lie:
+//     a bridged op advertises that it is bridged.
+//
+// Bridge descriptor schema (shared across the text family):
+//   "text.bridge:<op>[:<receiver>][:<arg>...]"
+// Field 1 is always the literal "text.bridge"; field 2 is the op name; the
+// remaining fields are the receiver value then the operation arguments. The
+// helpers bridge()/bridgeArg()/bridgeArg2() build it; bridgeOp(d) reads the op
+// back out so a caller or test can reason about a descriptor in-language.
 //
 // Comments are `//` only (the lexer has no block comments). Methods resolve on
 // class-typed fields per syntax 1.11+. #sleela 2.1 enables the full surface.
 #sleela 2.1
 
 class SLString {
+
+  // ---- identity ------------------------------------------------------
+  int id() { return 0; }
+  String name() { return "SLString"; }
 
   // ---- backing value -------------------------------------------------
   // The text this SLString wraps. value == "" is the canonical empty state.
@@ -36,19 +47,22 @@ class SLString {
   void clear()         { value = ""; }
   SLString with(String v) { value = v; return this; }   // fluent seed
 
+  // SLCloneable intent: a detached copy of this SLString.
+  SLString copy() { SLString c = new SLString(); c.set(value); return c; }
+
+  // SLDisposable intent: release to the canonical empty state.
+  void dispose() { value = ""; }
+
   // ====================================================================
   // IN-LANGUAGE operations (real, no bridge)
   // ====================================================================
 
   // Concatenation: the one native String operator besides compare.
   String concat(String other)            { return value + other; }
-  String concatBoth(String a, String b)  { return a + b; }
 
   // Equality / emptiness via the native == on strings.
   boolean equals(String other)           { return value == other; }
-  boolean equalsText(String a, String b) { return a == b; }
   boolean isEmpty()                       { return value == ""; }
-  boolean isEmptyText(String s)           { return s == ""; }
   boolean notEmpty()                      { return value != ""; }
 
   // Null/absence helpers (a SLeeLa String field may be unset == null).
@@ -66,14 +80,6 @@ class SLString {
     String out = "";
     int i = 0;
     while (i < n) { out = out + value; i = i + 1; }
-    return out;
-  }
-
-  // repeatText(s, n): static-style helper form.
-  String repeatText(String s, int n) {
-    String out = "";
-    int i = 0;
-    while (i < n) { out = out + s; i = i + 1; }
     return out;
   }
 
@@ -98,14 +104,34 @@ class SLString {
   String quote()  { return "\"" + value + "\""; }
   String parens() { return "(" + value + ")"; }
 
+  // --------------------------------------------------------------------
+  // Static-style helpers: the same in-language operations as free functions
+  // over explicit arguments, for callers that do not wish to seed value first.
+  // --------------------------------------------------------------------
+  String concatBoth(String a, String b)   { return a + b; }
+  boolean equalsText(String a, String b)  { return a == b; }
+  boolean isEmptyText(String s)           { return s == ""; }
+  String repeatText(String s, int n) {
+    String out = "";
+    int i = 0;
+    while (i < n) { out = out + s; i = i + 1; }
+    return out;
+  }
+
   // ====================================================================
   // BRIDGED operations (char-level; cross the explicit VM/OS bridge)
   // Each returns a stable, inspectable bridge-call descriptor rather than a
   // fabricated result, so a caller / native runtime can dispatch honestly.
   // ====================================================================
 
-  // A bridged op is marked so callers can distinguish it from an in-language
-  // result. These helpers build the descriptor strings.
+  // Descriptor builders.
+  String bridge(String op)                 { return "text.bridge:" + op + ":" + value; }
+  String bridgeArg(String op, String a)    { return "text.bridge:" + op + ":" + value + ":" + a; }
+  String bridgeArg2(String op, String a, String b) {
+    return "text.bridge:" + op + ":" + value + ":" + a + ":" + b;
+  }
+
+  // Descriptor introspection: does this string name a bridged op, and which?
   boolean isBridged(String op) {
     return op == "length"     || op == "charAt"    || op == "codePointAt"
         || op == "substring"  || op == "indexOf"   || op == "lastIndexOf"
@@ -113,16 +139,26 @@ class SLString {
         || op == "replace"    || op == "replaceAll"|| op == "toUpperCase"
         || op == "toLowerCase"|| op == "trim"      || op == "strip"
         || op == "split"      || op == "compareTo" || op == "matches"
-        || op == "format"     || op == "chars";
+        || op == "format"     || op == "chars"     || op == "equalsIgnoreCase"
+        || op == "hashCode"   || op == "lengthValue";
   }
-  String bridge(String op)                 { return "text.bridge:" + op + ":" + value; }
-  String bridgeArg(String op, String a)    { return "text.bridge:" + op + ":" + value + ":" + a; }
-  String bridgeArg2(String op, String a, String b) {
-    return "text.bridge:" + op + ":" + value + ":" + a + ":" + b;
+  // bridgeKind(op): "int" / "boolean" / "string" / "string[]" -- the TYPE the
+  // runtime yields for a bridged op, so a caller knows how to read the result
+  // even though the descriptor itself is carried as a String.
+  String bridgeKind(String op) {
+    if (op == "length" || op == "lengthValue" || op == "indexOf"
+        || op == "lastIndexOf" || op == "codePointAt" || op == "compareTo"
+        || op == "hashCode") { return "int"; }
+    if (op == "contains" || op == "startsWith" || op == "endsWith"
+        || op == "matches" || op == "equalsIgnoreCase") { return "boolean"; }
+    if (op == "split" || op == "chars") { return "string[]"; }
+    return "string";
   }
 
   // Length / indexing -- bridged (no in-language char access).
+  // length() returns the descriptor; lengthValue() signals the int-typed form.
   String length()            { return bridge("length"); }
+  String lengthValue()       { return bridge("lengthValue"); }
   String charAt(String idx)  { return bridgeArg("charAt", idx); }
   String codePointAt(String idx) { return bridgeArg("codePointAt", idx); }
   String chars()             { return bridge("chars"); }
@@ -143,10 +179,12 @@ class SLString {
   String replace(String from, String to)   { return bridgeArg2("replace", from, to); }
   String replaceAll(String regex, String to){ return bridgeArg2("replaceAll", regex, to); }
 
-  // Splitting / matching / ordering -- bridged.
+  // Splitting / matching / ordering / hashing -- bridged.
   String split(String regex)               { return bridgeArg("split", regex); }
   String matches(String regex)             { return bridgeArg("matches", regex); }
   String compareTo(String other)           { return bridgeArg("compareTo", other); }
+  String equalsIgnoreCase(String other)    { return bridgeArg("equalsIgnoreCase", other); }
+  String hashCode()                        { return bridge("hashCode"); }
 
   // Formatting -- bridged (format uses the native formatter over the bridge).
   String format(String pattern)            { return bridgeArg("format", pattern); }
@@ -154,4 +192,43 @@ class SLString {
   // ---- introspection -------------------------------------------------
   String typeName()   { return "SLeeLa.text.SLString"; }
   boolean available() { return true; }
+
+  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+  // or catalog can read and (where appropriate) override each record.
+  // Values are faithful to the subject's real origin where publicly known.
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "SLeeLa standard library";
+  String metaDate = "2026-10-23";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026";
+  int metaScienceRating = 9;             // maturity/robustness on a 1..10 scale
+  String metaNationalSchedule = "The Java Language Specification; Unicode / ISO/IEC 10646";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 }
