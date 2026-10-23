@@ -24,6 +24,7 @@ in `impl/core`.
 | **Ideology inspecting & conversion** | `include/sleela_os_ideology.h` | `src/sleela_os_ideology.c` | `SLCompatLayer`, `SLOSShape` |
 | **Security review** | `include/sleela_os_security.h` | `src/sleela_os_security.c` | `SLPermissions`, the SHA-256 verify gate |
 | **Aggregation** | `include/sleela_os_aggregate.h` | `src/sleela_os_aggregate.c` | `SLOSBuildReport` |
+| **Theming** | `include/sleela_os_theme.h` | `src/sleela_os_theme.c` | `SLDesktopTheme` (in `SLDesktopSpec`) |
 
 Two shared cores support the above:
 
@@ -56,6 +57,13 @@ Two shared cores support the above:
 - **Aggregation** records each emitted artifact (kind, byte size, path) into a
   bounded build report with a printable index and a one-line summary, mirroring
   `SLOSBuildReport`.
+- **Theming** carries the appearance a constructed OS's desktop adopts: a named
+  set of role colors (background/foreground/accent, reusing the editor/SleelaUI
+  role vocabulary) plus the desktop-asset identifiers (GTK theme, icon set,
+  cursor, wallpaper) an OS rollout applies. Per-shape defaults and edition
+  presets (including a `white` theme aligned with `ubuntu-white`); the asset
+  bytes are fetched from the `desktop-loader` warehouse component. Backs
+  `lib/os/SLDesktopTheme.sleela`, composed into `SLDesktopSpec`.
 
 ## The SLeeLa handle
 

@@ -88,6 +88,7 @@ class SLOSNativeSubsystem {
     if (capability == "ideology")   { return "sleela_os_ideology.h"; }
     if (capability == "security")   { return "sleela_os_security.h"; }
     if (capability == "aggregate")  { return "sleela_os_aggregate.h"; }
+    if (capability == "theme")      { return "sleela_os_theme.h"; }
     if (capability == "shape")      { return "sleela_os_shape.h"; }
     if (capability == "base-drivers") { return "base_drivers.h"; }
     return "";
@@ -103,13 +104,14 @@ class SLOSNativeSubsystem {
     if (capability == "ideology")   { return "SLCompatLayer"; }
     if (capability == "security")   { return "SLPermissions"; }
     if (capability == "aggregate")  { return "SLOSBuildReport"; }
+    if (capability == "theme")      { return "SLDesktopTheme"; }
     if (capability == "shape")      { return "SLOSShape"; }
     if (capability == "base-drivers") { return "SLBaseDriverSeries"; }
     return "";
   }
 
   < Number of executive capabilities backed by the native subsystem. >
-  int capabilityCount() { return 5; }
+  int capabilityCount() { return 6; }
 
   < A newline-separated contract sheet a tool or README can print. >
   String contractSheet() {
@@ -121,6 +123,7 @@ class SLOSNativeSubsystem {
     s = s + "  ideology   -> " + headerFor("ideology")   + " -> " + theSLeeLa("ideology") + "\n";
     s = s + "  security   -> " + headerFor("security")   + " -> " + theSLeeLa("security") + "\n";
     s = s + "  aggregate  -> " + headerFor("aggregate")  + " -> " + theSLeeLa("aggregate") + "\n";
+    s = s + "  theme      -> " + headerFor("theme")      + " -> " + theSLeeLa("theme") + "\n";
     s = s + "shared:\n";
     s = s + "  shape        -> " + headerFor("shape") + "\n";
     s = s + "  base-drivers -> " + headerFor("base-drivers") + "\n";

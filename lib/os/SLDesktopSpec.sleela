@@ -67,12 +67,15 @@ class SLDesktopSpec {
   String toolkit;
   < login/greeter >
   String displayManager;
+  < the desktop appearance/theme (null on a headless edition) >
+  SLDesktopTheme appearance;
   int configured;
 
-  < A headless (no desktop) configuration — valid for a server edition. >
+  << A headless (no desktop) configuration -- valid for a server edition. A
+     headless edition has no desktop, hence no theme. >>
   void headless() {
     enabled = 0; displayServer = ""; sessionShell = "";
-    toolkit = ""; displayManager = ""; configured = 1;
+    toolkit = ""; displayManager = ""; appearance = null; configured = 1;
   }
 
   void configure(String server, String shell, String kit, String greeter) {
@@ -80,8 +83,10 @@ class SLDesktopSpec {
     toolkit = kit; displayManager = greeter; configured = 1;
   }
 
-  < Seed the native desktop stack for a shape. >
+  < Seed the native desktop stack for a shape, including its default theme. >
   void forShape(SLOSShape shape) {
+    appearance = new SLDesktopTheme();
+    appearance.forShape(shape);
     if (shape.isWindows()) {
       configure("DWM", "Explorer", "Win32/WinUI", "LogonUI"); return;
     }
@@ -90,6 +95,16 @@ class SLDesktopSpec {
     }
     configure("Wayland", "GNOME Shell", "GTK", "GDM");
   }
+
+  << Apply a specific theme to the desktop (e.g. the White Edition look). A
+     headless edition cannot carry a theme. >>
+  void applyTheme(SLDesktopTheme t) {
+    if (enabled == 1) { appearance = t; }
+  }
+
+  < The desktop theme, or null when headless / not yet seeded. >
+  SLDesktopTheme theme() { return appearance; }
+  boolean hasTheme()     { return appearance != null; }
 
   < Swap the Linux desktop for an alternate (the desktop is replaceable). >
   void useAlternate(String shell, String kit) {

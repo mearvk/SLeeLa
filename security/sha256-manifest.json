@@ -45495,7 +45495,11 @@
     },
     {
       "path": "lib/os/SLDesktopSpec.sleela",
-      "sha256": "5a531f690ee9a6b57b9d2df6655b4170c4345a62eafbf8e079835c63346d9695"
+      "sha256": "9430f6e9f8b604c4274f74bf59506a5a77251c5251564f9967c7bd7d643b6997"
+    },
+    {
+      "path": "lib/os/SLDesktopTheme.sleela",
+      "sha256": "45e34e9e8d2491a7a383319965ff356856526ec11342d6176d87a67039e33dc1"
     },
     {
       "path": "lib/os/SLDirectory.sleela",
@@ -45623,7 +45627,7 @@
     },
     {
       "path": "lib/os/SLOSNativeSubsystem.sleela",
-      "sha256": "1ab10947fbd4f8558044a019cf3b9e1770a53853250046a25b9fc7c9c25677ab"
+      "sha256": "48b6485c3f521ba6b8aa6b8bbfdd1eb2c4ef7ca51d69858d319106f0e498997e"
     },
     {
       "path": "lib/os/SLOSSensitivityFetch.sleela",
@@ -45784,6 +45788,10 @@
     {
       "path": "lib/os/os-sensitivity-fetch.sleela",
       "sha256": "eb085c42f660fd00bedbfe0832cab24b22d9229696e6d50ba28a71a576b17202"
+    },
+    {
+      "path": "lib/os/os-theme-demo.sleela",
+      "sha256": "9d3a11d4819269a3fcfc0bf0c9bb781a7537d6f3d0c36b66e10090c5a9a690fe"
     },
     {
       "path": "lib/os/ssd/SLSSD.sleela",
