@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="78" viewBox="0 0 600 78" role="img" aria-label="Pan-Eurasian color palette">
+  <title>Pan-Eurasian palette: #111827, #F0F2F5, #7AA7E8, #69C9B3, #D7B56D, #8995A5</title>
+  <defs><clipPath id="rounded"><rect width="600" height="48" rx="9" ry="9"/></clipPath></defs>
+  <g clip-path="url(#rounded)">
+  <rect x="0" y="0" width="100" height="48" fill="#111827"/>
+  <rect x="100" y="0" width="100" height="48" fill="#F0F2F5"/>
+  <rect x="200" y="0" width="100" height="48" fill="#7AA7E8"/>
+  <rect x="300" y="0" width="100" height="48" fill="#69C9B3"/>
+  <rect x="400" y="0" width="100" height="48" fill="#D7B56D"/>
+  <rect x="500" y="0" width="100" height="48" fill="#8995A5"/>
+  </g>
+  <text x="50" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Background</text>
+  <text x="150" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Foreground</text>
+  <text x="250" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Keywords</text>
+  <text x="350" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Types</text>
+  <text x="450" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Strings</text>
+  <text x="550" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Comments</text>
+</svg>
