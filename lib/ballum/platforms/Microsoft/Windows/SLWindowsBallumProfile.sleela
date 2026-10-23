@@ -1,0 +1,25 @@
+/*
+ * OS profile: Microsoft / Windows 10+ (Win32 GDI).
+ */
+#sleela 2.1
+// Family: ballum. Per-OS facts for the Windows backend
+// (ballum/src/ballum_backend_windows.c). Enumeration uses EnumDisplayMonitors;
+// pixel I/O uses GDI SetPixel/GetPixel; brightness, warmth, and gamma are
+// applied through the 256-entry device gamma ramp (SetDeviceGammaRamp).
+// Targets Windows 10 and later.
+class SLWindowsBallumProfile {
+  String brand() { return "Microsoft"; }
+  String name() { return "Windows"; }
+  String minimumVersion() { return "Windows 10"; }
+  String backendName() { return "windows-gdi"; }
+  String displayServer() { return "Win32 GDI / DXGI"; }
+  String systemLibraries() { return "gdi32, user32"; }
+
+  boolean supportsPerPixel() { return true; }
+  boolean supportsRegionBlit() { return true; }
+  boolean supportsBrightness() { return true; }        // via gamma ramp scaling
+  boolean supportsColorTemperature() { return true; }  // via gamma ramp
+  boolean supportsGamma() { return true; }
+
+  boolean supportsDdcBacklight() { return false; }
+}

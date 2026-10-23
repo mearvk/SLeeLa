@@ -1,0 +1,23 @@
+/*
+ * OS profile: Apple / macOS (Core Graphics / Quartz).
+ */
+#sleela 2.1
+// Family: ballum. Per-OS facts for the macOS backend
+// (ballum/src/ballum_backend_macos.mm). Enumeration and gamma/warmth/brightness
+// use Core Graphics / Quartz (CGDisplay* + CGSetDisplayTransferByFormula);
+// per-pixel I/O uses a CGDisplay drawing/capture context.
+class SLMacOSBallumProfile {
+  String brand() { return "Apple"; }
+  String name() { return "macOS"; }
+  String backendName() { return "macos-coregraphics"; }
+  String displayServer() { return "Quartz / Core Graphics"; }
+  String systemLibraries() { return "CoreGraphics, ApplicationServices, Foundation"; }
+
+  boolean supportsPerPixel() { return true; }
+  boolean supportsRegionBlit() { return true; }
+  boolean supportsBrightness() { return true; }        // via transfer formula
+  boolean supportsColorTemperature() { return true; }  // via transfer formula
+  boolean supportsGamma() { return true; }
+
+  boolean supportsDdcBacklight() { return false; }
+}

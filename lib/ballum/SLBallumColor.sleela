@@ -1,0 +1,46 @@
+/*
+ * lib/ballum/SLBallumColor.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: An 8-bit RGBA color, mirroring ballum_color_t.
+ */
+#sleela 2.1
+// Family: ballum. A single pixel color: 8-bit per channel, straight
+// (non-premultiplied) alpha, mirroring the native ballum_color_t struct. Each
+// channel is clamped to 0..255 on set so a program can never hand the native
+// layer an out-of-range component.
+class SLBallumColor {
+  int r;
+  int g;
+  int b;
+  int a;
+
+  int clampChannel(int v) {
+    if (v < 0) { return 0; }
+    if (v > 255) { return 255; }
+    return v;
+  }
+
+  void setRgb(int red, int green, int blue) {
+    r = clampChannel(red);
+    g = clampChannel(green);
+    b = clampChannel(blue);
+    a = 255;
+  }
+
+  void setRgba(int red, int green, int blue, int alpha) {
+    r = clampChannel(red);
+    g = clampChannel(green);
+    b = clampChannel(blue);
+    a = clampChannel(alpha);
+  }
+
+  int red() { return r; }
+  int green() { return g; }
+  int blue() { return b; }
+  int alpha() { return a; }
+
+  // Pack to 0xAARRGGBB for a caller that wants a single int handle.
+  int packed() {
+    return (a * 16777216) + (r * 65536) + (g * 256) + b;
+  }
+}

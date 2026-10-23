@@ -1,0 +1,174 @@
+/*
+ * lib/ballum/SLBallumManager.sleela
+ * SLeeLa object model/facade for the native ballum_manager_t C API.
+ *
+ * Ballum(TM) gives pixel-level control of the native OS screen/monitor: set the
+ * color of a pixel, blit a region, and adjust brightness, warmth (color
+ * temperature), and gamma -- on macOS, Linux, and Windows 10+.
+ *
+ * Bridge boundary: this class owns request/state/validation semantics; it does
+ * not drive a real display on its own. A host SLVM binding must connect its
+ * methods to ballum_manager_enumerate/describe/set_pixel/get_pixel/blit_region/
+ * set_brightness/set_warmth/set_gamma. Until that binding is installed,
+ * operations return BRIDGE_REQUIRED. The facade still performs every bound,
+ * range, and capability check locally so a program fails cleanly and never asks
+ * the native layer to write an out-of-range pixel or an impossible control.
+ */
+#sleela 2.1
+class SLBallumManager {
+  static final int STATE_NEW = 0;
+  static final int STATE_BRIDGE_READY = 1;
+  static final int STATE_ENUMERATED = 2;
+
+  // Documented native ranges (mirror ballum_manager.h).
+  static final int BRIGHTNESS_MIN = 0;
+  static final int BRIGHTNESS_MAX = 100;
+  static final int WARMTH_MIN_KELVIN = 1000;
+  static final int WARMTH_NEUTRAL_K = 6500;
+  static final int WARMTH_MAX_KELVIN = 10000;
+  static final int GAMMA_SCALE = 100;   // gamma 2.20 is encoded as 220
+  static final int GAMMA_MIN = 10;      // 0.10
+  static final int GAMMA_MAX = 1000;    // 10.00
+
+  int nativeHandle;      // VM-local bridge index, not a native pointer
+  int state;
+  int lastStatus;
+  int displayCount;
+  SLBallumStatus status;
+
+  void configure() {
+    nativeHandle = -1;
+    state = STATE_NEW;
+    lastStatus = SLBallumStatus.BRIDGE_REQUIRED;
+    displayCount = 0;
+    status = new SLBallumStatus();
+  }
+
+  // Bind the VM-side native handle (returned by the host bridge). A negative
+  // handle means the backend is unavailable on this host.
+  boolean bindNativeHandle(int handle) {
+    if (handle < 0) {
+      nativeHandle = -1;
+      state = STATE_NEW;
+      lastStatus = SLBallumStatus.BACKEND_UNAVAILABLE;
+      return false;
+    }
+    nativeHandle = handle;
+    state = STATE_BRIDGE_READY;
+    lastStatus = SLBallumStatus.OK;
+    return true;
+  }
+
+  boolean nativeReady() { return nativeHandle >= 0; }
+  int handle() { return nativeHandle; }
+  int managerState() { return state; }
+  int statusCode() { return lastStatus; }
+  String statusText() { return status.text(lastStatus); }
+  int displays() { return displayCount; }
+
+  // ---- clamps (mirror ballum_clamp_*) --------------------------------
+  int clampBrightness(int percent) {
+    if (percent < BRIGHTNESS_MIN) { return BRIGHTNESS_MIN; }
+    if (percent > BRIGHTNESS_MAX) { return BRIGHTNESS_MAX; }
+    return percent;
+  }
+  int clampWarmth(int kelvin) {
+    if (kelvin < WARMTH_MIN_KELVIN) { return WARMTH_MIN_KELVIN; }
+    if (kelvin > WARMTH_MAX_KELVIN) { return WARMTH_MAX_KELVIN; }
+    return kelvin;
+  }
+  int clampGamma(int gammaScaled) {
+    if (gammaScaled < GAMMA_MIN) { return GAMMA_MIN; }
+    if (gammaScaled > GAMMA_MAX) { return GAMMA_MAX; }
+    return gammaScaled;
+  }
+
+  // ---- enumeration ----------------------------------------------------
+  // acceptEnumerateResult: the host bridge calls this with the native status
+  // and the display count after ballum_manager_enumerate runs.
+  int acceptEnumerateResult(int statusCode, int count) {
+    if (!nativeReady()) {
+      lastStatus = SLBallumStatus.BRIDGE_REQUIRED;
+      return lastStatus;
+    }
+    if (count < 0) {
+      lastStatus = SLBallumStatus.INVALID_ARGUMENT;
+      return lastStatus;
+    }
+    displayCount = count;
+    state = STATE_ENUMERATED;
+    lastStatus = statusCode;
+    return lastStatus;
+  }
+
+  // ---- per-pixel ------------------------------------------------------
+  // requestSetPixel: validate against the display before asking the bridge.
+  // Returns OK when the request is well-formed and may be dispatched, else a
+  // failing status that the caller surfaces without touching the device.
+  int requestSetPixel(SLBallumDisplay display, int x, int y, SLBallumColor color) {
+    if (!nativeReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (display == null || color == null) { lastStatus = SLBallumStatus.INVALID_ARGUMENT; return lastStatus; }
+    if (!display.supportsPerPixel()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    if (!display.contains(x, y)) { lastStatus = SLBallumStatus.OUT_OF_BOUNDS; return lastStatus; }
+    lastStatus = SLBallumStatus.OK;
+    return lastStatus;
+  }
+
+  int requestGetPixel(SLBallumDisplay display, int x, int y) {
+    if (!nativeReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (display == null) { lastStatus = SLBallumStatus.INVALID_ARGUMENT; return lastStatus; }
+    if (!display.supportsPerPixel()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    if (!display.contains(x, y)) { lastStatus = SLBallumStatus.OUT_OF_BOUNDS; return lastStatus; }
+    lastStatus = SLBallumStatus.OK;
+    return lastStatus;
+  }
+
+  // requestBlit: the rectangle must be inside the display and the pixel count
+  // must equal width*height.
+  int requestBlit(SLBallumDisplay display, int x, int y, int w, int h, int pixelCount) {
+    if (!nativeReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (display == null || w <= 0 || h <= 0) { lastStatus = SLBallumStatus.INVALID_ARGUMENT; return lastStatus; }
+    if (!display.supportsBlit()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    if (x < 0 || y < 0 || x + w > display.pixelWidth() || y + h > display.pixelHeight()) {
+      lastStatus = SLBallumStatus.OUT_OF_BOUNDS;
+      return lastStatus;
+    }
+    if (pixelCount != w * h) { lastStatus = SLBallumStatus.INVALID_ARGUMENT; return lastStatus; }
+    lastStatus = SLBallumStatus.OK;
+    return lastStatus;
+  }
+
+  // ---- whole-display controls -----------------------------------------
+  // Each returns the value to hand the native layer (already clamped), via
+  // lastStatus = OK, or a failing status when unsupported / no bridge.
+  int requestBrightness(SLBallumDisplay display, int percent) {
+    if (!nativeReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (display == null) { lastStatus = SLBallumStatus.INVALID_ARGUMENT; return lastStatus; }
+    if (!display.supportsBrightness()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    lastStatus = SLBallumStatus.OK;
+    return lastStatus;
+  }
+
+  int requestWarmth(SLBallumDisplay display, int kelvin) {
+    if (!nativeReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (display == null) { lastStatus = SLBallumStatus.INVALID_ARGUMENT; return lastStatus; }
+    if (!display.supportsColorTemperature()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    lastStatus = SLBallumStatus.OK;
+    return lastStatus;
+  }
+
+  int requestGamma(SLBallumDisplay display, int gammaScaled) {
+    if (!nativeReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (display == null) { lastStatus = SLBallumStatus.INVALID_ARGUMENT; return lastStatus; }
+    if (!display.supportsGamma()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    lastStatus = SLBallumStatus.OK;
+    return lastStatus;
+  }
+
+  void reset() {
+    nativeHandle = -1;
+    state = STATE_NEW;
+    lastStatus = SLBallumStatus.BRIDGE_REQUIRED;
+    displayCount = 0;
+  }
+}

@@ -1,0 +1,47 @@
+/*
+ * lib/ballum/SLBallumStatus.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Ballum result/status codes, mirroring ballum_status_t.
+ */
+#sleela 2.1
+// Family: ballum. The result codes for every Ballum operation, mirroring the
+// native ballum_status_t enum in ballum/include/sleela_ballum/ballum_manager.h
+// one-for-one, plus the SLeeLa-side BRIDGE_REQUIRED code used before the VM
+// installs the native bridge. SLeeLa never fakes a successful display write: a
+// control that the backend or display cannot do returns UNSUPPORTED, and an
+// out-of-range pixel returns OUT_OF_BOUNDS, never a silent success.
+class SLBallumStatus {
+  // --- native ballum_status_t (same ordinals) ---
+  static final int OK = 0;
+  static final int INVALID_ARGUMENT = 1;
+  static final int BACKEND_UNAVAILABLE = 2;
+  static final int BACKEND_ERROR = 3;
+  static final int DISPLAY_NOT_FOUND = 4;
+  static final int OUT_OF_BOUNDS = 5;
+  static final int BUFFER_TOO_SMALL = 6;
+  static final int UNSUPPORTED = 7;
+  static final int PERMISSION_DENIED = 8;
+  static final int NOT_INITIALIZED = 9;
+
+  // --- SLeeLa bridge-boundary code (no native equivalent) ---
+  // Returned before a host SLVM binding connects this facade to the native
+  // ballum_manager_* API.
+  static final int BRIDGE_REQUIRED = 100;
+
+  String text(int code) {
+    if (code == OK) { return "ok"; }
+    if (code == INVALID_ARGUMENT) { return "invalid argument"; }
+    if (code == BACKEND_UNAVAILABLE) { return "backend unavailable"; }
+    if (code == BACKEND_ERROR) { return "backend error"; }
+    if (code == DISPLAY_NOT_FOUND) { return "display not found"; }
+    if (code == OUT_OF_BOUNDS) { return "coordinate out of bounds"; }
+    if (code == BUFFER_TOO_SMALL) { return "buffer too small"; }
+    if (code == UNSUPPORTED) { return "unsupported by backend"; }
+    if (code == PERMISSION_DENIED) { return "permission denied"; }
+    if (code == NOT_INITIALIZED) { return "not initialized"; }
+    if (code == BRIDGE_REQUIRED) { return "native bridge required"; }
+    return "unknown";
+  }
+
+  boolean ok(int code) { return code == OK; }
+}

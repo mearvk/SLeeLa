@@ -1,0 +1,24 @@
+/*
+ * OS profile: GNU / Linux (X11 + XRANDR).
+ */
+#sleela 2.1
+// Family: ballum. Per-OS facts for the Linux backend
+// (ballum/src/ballum_backend_x11.c). Pixel I/O goes through X11; brightness,
+// warmth, and gamma are applied via the XRANDR CRTC gamma ramp. Per-monitor
+// backlight may additionally be driven over DDC/CI where the panel supports it.
+class SLLinuxBallumProfile {
+  String brand() { return "GNU"; }
+  String name() { return "Linux"; }
+  String backendName() { return "x11-xrandr"; }
+  String displayServer() { return "X11 (XRANDR)"; }
+  String systemLibraries() { return "libX11, libXrandr"; }
+
+  boolean supportsPerPixel() { return true; }
+  boolean supportsRegionBlit() { return true; }
+  boolean supportsBrightness() { return true; }        // via CRTC gamma scaling
+  boolean supportsColorTemperature() { return true; }  // via CRTC gamma ramp
+  boolean supportsGamma() { return true; }
+
+  // DDC/CI backlight is hardware-dependent; advertised separately.
+  boolean supportsDdcBacklight() { return false; }
+}

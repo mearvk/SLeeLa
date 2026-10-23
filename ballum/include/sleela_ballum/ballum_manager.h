@@ -1,0 +1,219 @@
+#ifndef SLEELA_BALLUM_MANAGER_H
+#define SLEELA_BALLUM_MANAGER_H
+
+/*
+ * Ballum(TM) -- pixel-level control over the screen/monitor of the native OS.
+ *
+ * Ballum gives a SLeeLa program direct, bounded control of the display: set an
+ * individual pixel's color, read/blit a region, and adjust whole-display
+ * brightness, warmth (color temperature), and gamma. It targets macOS, Linux,
+ * and Windows 10+ through one portable manager over a per-OS backend vtable,
+ * exactly like wifi-common/ abstracts the radio.
+ *
+ * Design rules (carried from the repo's established native subsystems):
+ *   - Open standards only on each OS (X11/XRANDR + DDC/CI on Linux, Core
+ *     Graphics / IOKit on macOS, DXGI + the Win32 gamma ramp on Windows 10+).
+ *   - Exactly one backend is compiled in per build; a graceful "unavailable"
+ *     backend is always available so calls fail closed, never crash.
+ *   - The manager copies results into caller/VM-owned memory and never hands
+ *     out internal pointers.
+ *   - Every setter is bounded and validated before it touches the device.
+ *
+ * This header is the single C ABI the SLeeLa bridge and the standalone tests
+ * build against.
+ */
+
+#include <stddef.h>
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* ---- limits -------------------------------------------------------------- */
+
+#define BALLUM_MAX_DISPLAYS        16u
+#define BALLUM_DISPLAY_NAME_BYTES  64u
+#define BALLUM_BACKEND_NAME_BYTES  32u
+
+/* Percent controls (brightness) are 0..100. */
+#define BALLUM_BRIGHTNESS_MIN      0
+#define BALLUM_BRIGHTNESS_MAX      100
+
+/* Color temperature / warmth, in kelvin. 6500K is the neutral D65 white point;
+ * lower is warmer (toward amber), higher is cooler (toward blue). */
+#define BALLUM_WARMTH_MIN_KELVIN   1000u
+#define BALLUM_WARMTH_NEUTRAL_K    6500u
+#define BALLUM_WARMTH_MAX_KELVIN   10000u
+
+/* Gamma is a fixed-point value scaled by 100 (so 2.20 gamma == 220). */
+#define BALLUM_GAMMA_SCALE         100u
+#define BALLUM_GAMMA_MIN           10u    /* 0.10 */
+#define BALLUM_GAMMA_MAX           1000u  /* 10.00 */
+
+/* ---- status -------------------------------------------------------------- */
+
+typedef enum {
+    BALLUM_STATUS_OK = 0,
+    BALLUM_STATUS_INVALID_ARGUMENT,
+    BALLUM_STATUS_BACKEND_UNAVAILABLE,
+    BALLUM_STATUS_BACKEND_ERROR,
+    BALLUM_STATUS_DISPLAY_NOT_FOUND,
+    BALLUM_STATUS_OUT_OF_BOUNDS,         /* pixel/region outside the display   */
+    BALLUM_STATUS_BUFFER_TOO_SMALL,
+    BALLUM_STATUS_UNSUPPORTED,           /* backend lacks this capability       */
+    BALLUM_STATUS_PERMISSION_DENIED,     /* OS refused the display operation    */
+    BALLUM_STATUS_NOT_INITIALIZED
+} ballum_status_t;
+
+/* Capability flags a backend advertises per display. A SLeeLa program checks
+ * these before enabling a control, so a missing capability fails cleanly
+ * instead of silently doing nothing. */
+typedef enum {
+    BALLUM_CAP_NONE              = 0,
+    BALLUM_CAP_PER_PIXEL         = 1 << 0, /* set/get individual pixels         */
+    BALLUM_CAP_REGION_BLIT       = 1 << 1, /* blit a rectangle of pixels        */
+    BALLUM_CAP_BRIGHTNESS        = 1 << 2, /* whole-display brightness          */
+    BALLUM_CAP_COLOR_TEMPERATURE = 1 << 3, /* warmth / color temperature        */
+    BALLUM_CAP_GAMMA             = 1 << 4  /* gamma ramp                        */
+} ballum_capability_t;
+
+/* ---- value types --------------------------------------------------------- */
+
+/* A single pixel: 8-bit RGBA, straight (non-premultiplied) alpha. */
+typedef struct {
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    uint8_t a;
+} ballum_color_t;
+
+/* A pixel coordinate on a display (top-left origin). */
+typedef struct {
+    uint32_t x;
+    uint32_t y;
+} ballum_point_t;
+
+/* A rectangle of pixels. */
+typedef struct {
+    uint32_t x;
+    uint32_t y;
+    uint32_t width;
+    uint32_t height;
+} ballum_rect_t;
+
+/* Static description of one connected display. */
+typedef struct {
+    uint32_t id;                                /* backend-stable display id    */
+    char     name[BALLUM_DISPLAY_NAME_BYTES];   /* human-readable, NUL-terminated */
+    uint32_t width;                             /* pixels                        */
+    uint32_t height;                            /* pixels                        */
+    uint32_t refresh_mhz;                       /* refresh rate in milli-Hz      */
+    int      is_primary;                        /* 1 if the primary display      */
+    uint32_t capabilities;                      /* OR of ballum_capability_t     */
+} ballum_display_t;
+
+/* ---- backend vtable ------------------------------------------------------ */
+
+/*
+ * One backend is compiled in per build (per-OS). The portable manager calls
+ * through this vtable; any entry may be NULL, in which case the manager returns
+ * BALLUM_STATUS_UNSUPPORTED for that operation rather than dereferencing NULL.
+ */
+typedef struct ballum_backend {
+    const char *name;
+
+    /* Enumerate displays into `out` (capacity entries); sets *out_count. */
+    ballum_status_t (*enumerate)(void *context, ballum_display_t *out,
+                                 size_t capacity, size_t *out_count);
+
+    /* Per-pixel. */
+    ballum_status_t (*set_pixel)(void *context, uint32_t display_id,
+                                 ballum_point_t at, ballum_color_t color);
+    ballum_status_t (*get_pixel)(void *context, uint32_t display_id,
+                                 ballum_point_t at, ballum_color_t *out);
+
+    /* Blit a tightly-packed RGBA buffer of rect.width*rect.height pixels. */
+    ballum_status_t (*blit_region)(void *context, uint32_t display_id,
+                                   ballum_rect_t rect, const ballum_color_t *pixels,
+                                   size_t pixel_count);
+
+    /* Whole-display controls. brightness is 0..100; warmth is kelvin;
+     * gamma is scaled by BALLUM_GAMMA_SCALE. */
+    ballum_status_t (*set_brightness)(void *context, uint32_t display_id, int percent);
+    ballum_status_t (*set_warmth)(void *context, uint32_t display_id, uint32_t kelvin);
+    ballum_status_t (*set_gamma)(void *context, uint32_t display_id, uint32_t gamma_scaled);
+} ballum_backend_t;
+
+/* The backend compiled in for this build (never NULL; may be the unavailable
+ * backend when no OS backend is selected). */
+const ballum_backend_t *ballum_backend_default(void);
+
+/* 1 if the compiled-in backend is a real OS backend, 0 if it is the
+ * unavailable fallback. */
+int ballum_backend_supported(void);
+
+/* ---- manager ------------------------------------------------------------- */
+
+typedef struct ballum_manager {
+    const ballum_backend_t *backend;
+    void                   *backend_context;
+    ballum_display_t        displays[BALLUM_MAX_DISPLAYS];
+    size_t                  display_count;
+    uint64_t                enumerate_generation;
+    int                     initialized;
+} ballum_manager_t;
+
+/* Initialize a manager over a backend (NULL selects ballum_backend_default()). */
+ballum_status_t ballum_manager_init(ballum_manager_t *manager,
+                                    const ballum_backend_t *backend,
+                                    void *backend_context);
+
+/* Refresh the manager's display list; fills `out` (capacity entries) and
+ * *out_count with the enumerated displays, copied into caller memory. */
+ballum_status_t ballum_manager_enumerate(ballum_manager_t *manager,
+                                         ballum_display_t *out, size_t capacity,
+                                         size_t *out_count);
+
+/* Copy the cached description of display `id` into `out`. */
+ballum_status_t ballum_manager_describe(const ballum_manager_t *manager,
+                                        uint32_t id, ballum_display_t *out);
+
+/* Does display `id` advertise capability `cap`? 1 yes, 0 no, <0 on bad args. */
+int ballum_manager_has_capability(const ballum_manager_t *manager,
+                                   uint32_t id, ballum_capability_t cap);
+
+/* Pixel control (validated against the cached display bounds + capability). */
+ballum_status_t ballum_manager_set_pixel(ballum_manager_t *manager, uint32_t id,
+                                         ballum_point_t at, ballum_color_t color);
+ballum_status_t ballum_manager_get_pixel(ballum_manager_t *manager, uint32_t id,
+                                         ballum_point_t at, ballum_color_t *out);
+ballum_status_t ballum_manager_blit_region(ballum_manager_t *manager, uint32_t id,
+                                           ballum_rect_t rect,
+                                           const ballum_color_t *pixels,
+                                           size_t pixel_count);
+
+/* Whole-display controls (validated against the documented ranges). */
+ballum_status_t ballum_manager_set_brightness(ballum_manager_t *manager, uint32_t id,
+                                              int percent);
+ballum_status_t ballum_manager_set_warmth(ballum_manager_t *manager, uint32_t id,
+                                          uint32_t kelvin);
+ballum_status_t ballum_manager_set_gamma(ballum_manager_t *manager, uint32_t id,
+                                         uint32_t gamma_scaled);
+
+/* ---- helpers ------------------------------------------------------------- */
+
+const char *ballum_status_name(ballum_status_t status);
+ballum_color_t ballum_color_rgb(uint8_t r, uint8_t g, uint8_t b);
+ballum_color_t ballum_color_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+
+/* Clamp helpers used by both the manager and backends. */
+int      ballum_clamp_brightness(int percent);
+uint32_t ballum_clamp_warmth(uint32_t kelvin);
+uint32_t ballum_clamp_gamma(uint32_t gamma_scaled);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* SLEELA_BALLUM_MANAGER_H */

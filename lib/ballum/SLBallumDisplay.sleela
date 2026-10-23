@@ -1,0 +1,60 @@
+/*
+ * lib/ballum/SLBallumDisplay.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: A connected display description, mirroring ballum_display_t.
+ */
+#sleela 2.1
+// Family: ballum. The SLeeLa-side description of one connected display,
+// mirroring the native ballum_display_t struct. A host SLVM binding fills these
+// fields from ballum_manager_enumerate/describe; the capability bitmask mirrors
+// ballum_capability_t so a program can check what the display actually supports
+// before enabling a control.
+class SLBallumDisplay {
+  // --- capability flags (mirror ballum_capability_t) ---
+  static final int CAP_NONE = 0;
+  static final int CAP_PER_PIXEL = 1;          // 1 << 0
+  static final int CAP_REGION_BLIT = 2;        // 1 << 1
+  static final int CAP_BRIGHTNESS = 4;         // 1 << 2
+  static final int CAP_COLOR_TEMPERATURE = 8;  // 1 << 3
+  static final int CAP_GAMMA = 16;             // 1 << 4
+
+  int id;
+  String name;
+  int width;
+  int height;
+  int refreshMilliHz;
+  int primary;          // 1 if the primary display
+  int capabilities;     // OR of CAP_* flags
+
+  void configure(int displayId, String displayName, int w, int h) {
+    id = displayId;
+    name = displayName;
+    width = w;
+    height = h;
+    refreshMilliHz = 0;
+    primary = 0;
+    capabilities = CAP_NONE;
+  }
+
+  void setCapabilities(int caps) { capabilities = caps; }
+  void setPrimary(boolean isPrimary) { primary = isPrimary ? 1 : 0; }
+
+  int displayId() { return id; }
+  String displayName() { return name; }
+  int pixelWidth() { return width; }
+  int pixelHeight() { return height; }
+  boolean isPrimary() { return primary == 1; }
+
+  // Capability queries a GUI checks before enabling a control.
+  boolean has(int cap) { return (capabilities / cap) % 2 == 1; }
+  boolean supportsPerPixel() { return has(CAP_PER_PIXEL); }
+  boolean supportsBlit() { return has(CAP_REGION_BLIT); }
+  boolean supportsBrightness() { return has(CAP_BRIGHTNESS); }
+  boolean supportsColorTemperature() { return has(CAP_COLOR_TEMPERATURE); }
+  boolean supportsGamma() { return has(CAP_GAMMA); }
+
+  // Is (x, y) a valid pixel on this display?
+  boolean contains(int x, int y) {
+    return x >= 0 && y >= 0 && x < width && y < height;
+  }
+}

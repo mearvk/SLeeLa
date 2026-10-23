@@ -978,6 +978,42 @@
       "sha256": "945911f57c65fc55fa014e0a31f688e300b8304b5bbb56ec63d173c1df290bb0"
     },
     {
+      "path": "lib/ballum/SLBallumColor.sleela",
+      "sha256": "eb382530399ebc7cca33dff9252b8646c47912fd3b7e8d0f902aa4b34820cbb3"
+    },
+    {
+      "path": "lib/ballum/SLBallumDisplay.sleela",
+      "sha256": "30343920e2b4f0994160ddb6a4f47a2cd3e7417b3bb45628fdf597a53d4166ea"
+    },
+    {
+      "path": "lib/ballum/SLBallumManager.sleela",
+      "sha256": "1e25b3559347d19ab7a213eada794792bf585d1b0afad011aab433a5165b02e6"
+    },
+    {
+      "path": "lib/ballum/SLBallumStatus.sleela",
+      "sha256": "1983fd89c4bfcd7a934c903748ee269c82937c66404085217d51a31ce081ced7"
+    },
+    {
+      "path": "lib/ballum/SLPackage.sleela",
+      "sha256": "b977dfcad96c21171253640ae927ed50637a11b292946889d16f991bf85e5968"
+    },
+    {
+      "path": "lib/ballum/ballum.sleela",
+      "sha256": "f0160e4c51bc1dc128ca0909a37a0b8280fd20a7a4487e59aa79efcc429ff938"
+    },
+    {
+      "path": "lib/ballum/platforms/Apple/macOS/SLMacOSBallumProfile.sleela",
+      "sha256": "23f047f30453cc48a7524e277c99ab18fa69f18e5e2365a5ef0c04075d0de109"
+    },
+    {
+      "path": "lib/ballum/platforms/GNU/Linux/SLLinuxBallumProfile.sleela",
+      "sha256": "687e80fbc8e994098c7856c39efdf0590e9aa208edc02bde9e6af2f1544ff18b"
+    },
+    {
+      "path": "lib/ballum/platforms/Microsoft/Windows/SLWindowsBallumProfile.sleela",
+      "sha256": "92560bef2968332206ea5699377914e7dbad30cf26e2ddc846d77d0cba9082a2"
+    },
+    {
       "path": "lib/bash/SLPackage.sleela",
       "sha256": "825a0bd8c9a2fa3f2b03eebe4e8fb0f7477a1ec6d8cadfdc6a5ecc4e2049350b"
     },
