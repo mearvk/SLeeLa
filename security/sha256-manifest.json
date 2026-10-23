@@ -3547,7 +3547,7 @@
     },
     {
       "path": "lib/core/SLString.sleela",
-      "sha256": "e49dd58b70891d3d7828bb3b610cd245d7c870c8d60b1d3e88ce8728c1df6283"
+      "sha256": "136a6c8c01ddde747723263b5e4548da86ef436994a47ef63b2a2d20a59ae8f1"
     },
     {
       "path": "lib/core/SLSymbol.sleela",
@@ -29347,7 +29347,7 @@
     },
     {
       "path": "lib/java/java/lang/String.sleela",
-      "sha256": "79f361591a972746449a611648962b541a637bb4c66346468296103634db248e"
+      "sha256": "70ae88d07d8e7b544ee5f1a3c60e45d69ff46f54dce65c11afca9cf86fce30e4"
     },
     {
       "path": "lib/java/java/lang/StringBuffer.sleela",
@@ -46235,7 +46235,7 @@
     },
     {
       "path": "lib/text/SLString.sleela",
-      "sha256": "d534e4da3832e4ef27189d66df612542d295ec8ad153dfd4abb205f753e2482c"
+      "sha256": "bfb2c0302e5a3825849c189855f1face73e05a4cb5b3f8046eade12f0b8ec2a8"
     },
     {
       "path": "lib/text/SLStringBuffer.sleela",

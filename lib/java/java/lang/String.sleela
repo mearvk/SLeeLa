@@ -1,11 +1,9 @@
-/*
- * lib/java/java/lang/String.sleela
- * SLeeLa Java SE/JDK 28 source envelope.
- * Definition: Native SLeeLa source declaration for the Java type java.lang.String.
- *
- * The Java class name is retained exactly. The SLeeLa declaration is the source
- * contract; Java behavior is supplied only through the conformance boundary.
- */
+// lib/java/java/lang/String.sleela
+// SLeeLa Java SE/JDK 28 source envelope.
+// Definition: Native SLeeLa source declaration for the Java type java.lang.String.
+//
+// The Java class name is retained exactly. The SLeeLa declaration is the source
+// contract; Java behavior is supplied only through the conformance boundary.
 #sleela 2.1
 
 class String {
