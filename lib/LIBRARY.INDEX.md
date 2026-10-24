@@ -1,11 +1,29 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.49  
+**Revision:** 0.50  
 **Packages:** 101  
-**SLeeLa source units:** 11548  
+**SLeeLa source units:** 11549  
 **Module-facade symbols:** 70  
-**Total symbol records:** 11618  
+**Total symbol records:** 11619  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.50 defines the **`philosophers`** vocabulary categorically at the
+> IQ-201+ register. The twenty-one Guides are renamed and defined in seven
+> ternary categories — **Admission** (Approach, Notice, Warrant), **Inception**
+> (Patch, Seed, Frame), **Intent** (Aim, Course, Measure), **Vitality** (Health,
+> Vigor, Pattern), **Governance** (Guide, Ministry, Counsel), **Standing**
+> (Office, Saint, Favor), **Closure** (Impart, Conform, Approval) — in
+> `SLPhilosopherSeating` (`SEAT_*`, `CAT_*`, `category()`/`categoryName()`). A
+> new **`SLOrdain`** class adds **Ordain** as an *orthogonal* axis: the
+> ordinality itself (rank, category, nearness to the ordaining crown Approval),
+> which stands across all twenty-one rather than occupying a seat. The
+> categorical terms are related to the Source Diagram and the Language Syntax in
+> `lib/philosophers/PHILOSOPHERS.CATEGORICAL.md`, and the VIM/EMACS coloring
+> (`lib/linux-editors/`) is updated to the new Guide names plus a distinct
+> Ordain face. One new source class (`SLOrdain`); no new package or facade.
+> Counts reconciled to the live `/lib` tree by
+> `tools/generate-library-symbols.py` and verified by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.49 adds the new **`philosophers`** package (`lib/philosophers/`):
 > a model of the **perfect Constructor** of procedural design and its Guide

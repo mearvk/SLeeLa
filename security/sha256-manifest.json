@@ -45862,6 +45862,10 @@
       "sha256": "802868e165b55d7291c99c2120d57a74995a5f97f53a8d6b96d6003452d30d19"
     },
     {
+      "path": "lib/philosophers/SLOrdain.sleela",
+      "sha256": "54dd186b4cea6e36c5a599ca59c66379ac2217e3fb0aaa84e1a579da107a4ff1"
+    },
+    {
       "path": "lib/philosophers/SLPackage.sleela",
       "sha256": "8de6c4705d17acde5f89efab1810d41c929dc31936b041c0719a88ce2874786f"
     },
@@ -45879,11 +45883,11 @@
     },
     {
       "path": "lib/philosophers/SLPhilosopherSeating.sleela",
-      "sha256": "164ace6c0406bbd3c586ef1bf77b238fc9fbfefd69780f7cc8daa8289a635068"
+      "sha256": "e2c249bf2d0cb1a302bde74d53b9869d8265fc6a5f749eaabaa7c7a89990170c"
     },
     {
       "path": "lib/philosophers/philosophers-demo.sleela",
-      "sha256": "17076f73cb88c83211c6c7f76d5634c83f782d67caa515d93bbef585546b3cb7"
+      "sha256": "9d353a20c06935e301d069826ef5f2a25a232f7a316bf16b65261ebf112ea3a7"
     },
     {
       "path": "lib/politico/SLPackage.sleela",

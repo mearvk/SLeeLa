@@ -43,17 +43,26 @@ class PhilosophersDemo {
     int band = ctor.admit(3);
     print("admitted seating band: " + band + "   capacity: " + ctor.capacity());
 
-    << Seat the four Guides of the example, each on its baseline seating ordinal
-       (see SLPhilosopherSeating): Patch=2, Constructor=3, Aim=4, Guide=5. Patch
-       and Aim carry approving favor (Gold/Yellow); Constructor and Guide are
-       still growing (Green). >>
-    ctor.guide("Patch", 2, true);
-    ctor.guide("Constructor", 3, false);
-    ctor.guide("Aim", 4, true);
-    ctor.guide("Guide", 5, false);
+    << Seat four Guides of the IQ-201+ register, each on its baseline seating
+       ordinal (see SLPhilosopherSeating): Patch=3 (Inception), Seed=4
+       (Inception), Aim=6 (Intent), Guide=12 (Governance). Patch, Aim and Guide
+       carry approving favor (Gold/Yellow); Seed is still growing (Green). >>
+    ctor.guide("Patch", 3, true);
+    ctor.guide("Seed", 4, false);
+    ctor.guide("Aim", 6, true);
+    ctor.guide("Guide", 12, true);
 
     print("declared chain: " + ctor.chainText());
     print("color manifest: " + ctor.colorManifest());
+
+    << Read the orthogonal Ordain axis over the register: Ordain is not a seat,
+       it is the ordinality that ranks each seating and measures its nearness to
+       the ordaining crown (Approval, ordinal 20). >>
+    SLOrdain ordain = new SLOrdain();
+    ordain.create();
+    print("ordain(Aim):   " + ordain.reading(6));
+    print("ordain(Guide): " + ordain.reading(12));
+    print("ordain(crown): " + ordain.reading(20));
 
     < require at least two caught Notices before favor is granted >
     ctor.requireNotice(2);

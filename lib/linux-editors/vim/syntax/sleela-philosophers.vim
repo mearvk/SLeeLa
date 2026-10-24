@@ -21,22 +21,28 @@ endif
 syntax match slPhilGrowth "\s*::\s*" contained containedin=ALL
 
 " ---- approving Guides -> Gold / Yellow -----------------------------------
-" The Guides that carry favor forward in the canonical chain and the seating
-" register (SLPhilosopherSeating): Approval-bearing and office/guidance tiers.
-syntax keyword slPhilGuideGold contained Patch Aim Approval Favor Saints
-      \ Ministerial Guidance Professional Executive Approach Notice
+" The IQ-201+ Guides that carry favor forward (see SLPhilosopherSeating):
+" Warrant, Patch, Aim, Health, Guide, Office, Saint, Favor, Approval.
+syntax keyword slPhilGuideGold contained Warrant Patch Aim Health Guide
+      \ Office Saint Favor Approval
 
 " ---- growing Guides -> Green ---------------------------------------------
 " The Guides that are still maturing toward Approval.
-syntax keyword slPhilGuideGreen contained Constructor Guide Wisdom Life Gains
-      \ Health Growth Pattern Impart Conform
+syntax keyword slPhilGuideGreen contained Approach Notice Seed Frame Course
+      \ Measure Vigor Pattern Ministry Counsel Impart Conform
 
 " Only treat these names as Guides when they sit right after a "::" growth,
 " so ordinary identifiers elsewhere are untouched. The region opens at "::".
-syntax match slPhilGuideSite "::\s*\%(Patch\|Aim\|Approval\|Favor\|Saints\|Ministerial\|Guidance\|Professional\|Executive\|Approach\|Notice\)\>"
+syntax match slPhilGuideSite "::\s*\%(Warrant\|Patch\|Aim\|Health\|Guide\|Office\|Saint\|Favor\|Approval\)\>"
       \ contains=slPhilGrowth,slPhilGuideGold
-syntax match slPhilGuideSite "::\s*\%(Constructor\|Guide\|Wisdom\|Life\|Gains\|Health\|Growth\|Pattern\|Impart\|Conform\)\>"
+syntax match slPhilGuideSite "::\s*\%(Approach\|Notice\|Seed\|Frame\|Course\|Measure\|Vigor\|Pattern\|Ministry\|Counsel\|Impart\|Conform\)\>"
       \ contains=slPhilGrowth,slPhilGuideGreen
+
+" ---- Ordain -> the orthogonal ordinality axis ----------------------------
+" Ordain is not a Guide and not a seating; it is the ordering of order that
+" stands across all twenty-one. It is given its own distinct, authoritative
+" color so it reads as orthogonal to the chain rather than part of it.
+syntax keyword slPhilOrdain Ordain SLOrdain
 
 " ---- colors: Gold/Yellow (approving) and Green (growing) ------------------
 " Gold/Yellow impart.
@@ -45,5 +51,7 @@ highlight default slPhilGuideGold  guifg=#F2C078 gui=bold ctermfg=222 cterm=bold
 highlight default slPhilGuideGreen guifg=#82C91E gui=bold ctermfg=112 cterm=bold
 " The conform operator "::" -- a calm, unified join.
 highlight default slPhilGrowth     guifg=#73DACA ctermfg=116
+" Ordain -- the orthogonal ordinality axis; a high, ordaining violet-gold.
+highlight default slPhilOrdain     guifg=#C4A7E7 gui=bold,underline ctermfg=183 cterm=bold,underline
 
 let b:current_syntax_philosophers = 1

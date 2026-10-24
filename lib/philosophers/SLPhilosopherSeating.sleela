@@ -69,32 +69,49 @@ class SLPhilosopherSeating {
   static final int MIN_CAPACITY = 19;
   static final int MAX_CAPACITY = 27;
 
-  < --- the twenty-one seatings, Approach .. Approval (ordinals 0..20) ------ >
-  << The progression is a career of principle: it opens at Approach and closes
-     at Approval, passing through Life and Gains, the Ministerial and Guidance
-     offices, and the Professional and Executive tiers, with the Saints seating
-     as the matured conscience that the whole chain answers to. >>
+  << --- the twenty-one seatings, Approach .. Approval (ordinals 0..20) ------
+     The IQ-201+ register. The progression is a career of principle in seven
+     ternary CATEGORIES, each a phase of the construction event:
+       I   Admission  (0..2)   Approach, Notice, Warrant
+       II  Inception  (3..5)   Patch, Seed, Frame
+       III Intent     (6..8)   Aim, Course, Measure
+       IV  Vitality   (9..11)  Health, Vigor, Pattern
+       V   Governance (12..14) Guide, Ministry, Counsel
+       VI  Standing   (15..17) Office, Saint, Favor
+       VII Closure    (18..20) Impart, Conform, Approval
+     Orthogonal to all of this is ORDAIN (see SLOrdain): not a seat but the
+     ordinality itself -- the principle of rank/order (the ordering of order)
+     that stands across every seating rather than occupying one. >>
   static final int SEAT_APPROACH = 0;
   static final int SEAT_NOTICE = 1;
-  static final int SEAT_PATCH = 2;
-  static final int SEAT_CONSTRUCTOR = 3;
-  static final int SEAT_AIM = 4;
-  static final int SEAT_GUIDE = 5;
-  static final int SEAT_WISDOM = 6;
-  static final int SEAT_LIFE = 7;
-  static final int SEAT_GAINS = 8;
+  static final int SEAT_WARRANT = 2;
+  static final int SEAT_PATCH = 3;
+  static final int SEAT_SEED = 4;
+  static final int SEAT_FRAME = 5;
+  static final int SEAT_AIM = 6;
+  static final int SEAT_COURSE = 7;
+  static final int SEAT_MEASURE = 8;
   static final int SEAT_HEALTH = 9;
-  static final int SEAT_GROWTH = 10;
+  static final int SEAT_VIGOR = 10;
   static final int SEAT_PATTERN = 11;
-  static final int SEAT_MINISTERIAL = 12;
-  static final int SEAT_GUIDANCE = 13;
-  static final int SEAT_PROFESSIONAL = 14;
-  static final int SEAT_EXECUTIVE = 15;
-  static final int SEAT_SAINTS = 16;
+  static final int SEAT_GUIDE = 12;
+  static final int SEAT_MINISTRY = 13;
+  static final int SEAT_COUNSEL = 14;
+  static final int SEAT_OFFICE = 15;
+  static final int SEAT_SAINT = 16;
   static final int SEAT_FAVOR = 17;
   static final int SEAT_IMPART = 18;
   static final int SEAT_CONFORM = 19;
   static final int SEAT_APPROVAL = 20;
+
+  < --- the seven categories (the ordinal ternary phases) ------------------- >
+  static final int CAT_ADMISSION = 0;
+  static final int CAT_INCEPTION = 1;
+  static final int CAT_INTENT = 2;
+  static final int CAT_VITALITY = 3;
+  static final int CAT_GOVERNANCE = 4;
+  static final int CAT_STANDING = 5;
+  static final int CAT_CLOSURE = 6;
 
   < the number of additional seatings this register has admitted, in band >
   int additional;
@@ -136,25 +153,50 @@ class SLPhilosopherSeating {
   String seatName(int ordinal) {
     if (ordinal == SEAT_APPROACH) { return "Approach"; }
     if (ordinal == SEAT_NOTICE) { return "Notice"; }
+    if (ordinal == SEAT_WARRANT) { return "Warrant"; }
     if (ordinal == SEAT_PATCH) { return "Patch"; }
-    if (ordinal == SEAT_CONSTRUCTOR) { return "Constructor"; }
+    if (ordinal == SEAT_SEED) { return "Seed"; }
+    if (ordinal == SEAT_FRAME) { return "Frame"; }
     if (ordinal == SEAT_AIM) { return "Aim"; }
-    if (ordinal == SEAT_GUIDE) { return "Guide"; }
-    if (ordinal == SEAT_WISDOM) { return "Wisdom"; }
-    if (ordinal == SEAT_LIFE) { return "Life"; }
-    if (ordinal == SEAT_GAINS) { return "Gains"; }
+    if (ordinal == SEAT_COURSE) { return "Course"; }
+    if (ordinal == SEAT_MEASURE) { return "Measure"; }
     if (ordinal == SEAT_HEALTH) { return "Health"; }
-    if (ordinal == SEAT_GROWTH) { return "Growth"; }
+    if (ordinal == SEAT_VIGOR) { return "Vigor"; }
     if (ordinal == SEAT_PATTERN) { return "Pattern"; }
-    if (ordinal == SEAT_MINISTERIAL) { return "Ministerial"; }
-    if (ordinal == SEAT_GUIDANCE) { return "Guidance"; }
-    if (ordinal == SEAT_PROFESSIONAL) { return "Professional"; }
-    if (ordinal == SEAT_EXECUTIVE) { return "Executive"; }
-    if (ordinal == SEAT_SAINTS) { return "Saints"; }
+    if (ordinal == SEAT_GUIDE) { return "Guide"; }
+    if (ordinal == SEAT_MINISTRY) { return "Ministry"; }
+    if (ordinal == SEAT_COUNSEL) { return "Counsel"; }
+    if (ordinal == SEAT_OFFICE) { return "Office"; }
+    if (ordinal == SEAT_SAINT) { return "Saint"; }
     if (ordinal == SEAT_FAVOR) { return "Favor"; }
     if (ordinal == SEAT_IMPART) { return "Impart"; }
     if (ordinal == SEAT_CONFORM) { return "Conform"; }
     if (ordinal == SEAT_APPROVAL) { return "Approval"; }
     return "unseated";
+  }
+
+  < The category ordinal (0..6) of a baseline seating, or -1 if unseated. >
+  < Each category holds three consecutive seatings, so the category is the >
+  < seating ordinal divided by three. >
+  int category(int ordinal) {
+    if (ordinal < 0 || ordinal > SEAT_APPROVAL) { return -1; }
+    return ordinal / 3;
+  }
+
+  < The human name of a category ordinal (0..6), or "none". >
+  String categoryName(int cat) {
+    if (cat == CAT_ADMISSION) { return "Admission"; }
+    if (cat == CAT_INCEPTION) { return "Inception"; }
+    if (cat == CAT_INTENT) { return "Intent"; }
+    if (cat == CAT_VITALITY) { return "Vitality"; }
+    if (cat == CAT_GOVERNANCE) { return "Governance"; }
+    if (cat == CAT_STANDING) { return "Standing"; }
+    if (cat == CAT_CLOSURE) { return "Closure"; }
+    return "none";
+  }
+
+  < The category name of a seating ordinal directly, or "none" if unseated. >
+  String seatCategoryName(int ordinal) {
+    return categoryName(category(ordinal));
   }
 }

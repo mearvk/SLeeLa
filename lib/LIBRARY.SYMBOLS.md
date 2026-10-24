@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11548
+library-source-files: 11549
 library-packages: 101
 module-facade-symbols: 70
-total-symbol-records: 11618
+total-symbol-records: 11619
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11194,6 +11194,7 @@ os	SLVideoCard.sleela	lib/os/video-cards/SLVideoCard.sleela	source
 os	SLVideoCardCatalog.sleela	lib/os/video-cards/SLVideoCardCatalog.sleela	source
 philosophers	SLConstructorContract.sleela	lib/philosophers/SLConstructorContract.sleela	source
 philosophers	SLFavorMechanism.sleela	lib/philosophers/SLFavorMechanism.sleela	source
+philosophers	SLOrdain.sleela	lib/philosophers/SLOrdain.sleela	source
 philosophers	SLPackage.sleela	lib/philosophers/SLPackage.sleela	facade
 philosophers	SLPhilosopherChain.sleela	lib/philosophers/SLPhilosopherChain.sleela	source
 philosophers	SLPhilosopherConstructor.sleela	lib/philosophers/SLPhilosopherConstructor.sleela	source

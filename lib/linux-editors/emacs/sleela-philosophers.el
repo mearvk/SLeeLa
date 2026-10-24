@@ -34,20 +34,27 @@
   "Face for the \"::\" growth separator (the conform operator)."
   :group 'sleela-philosophers)
 
-;; Guides that carry approving favor forward -> Gold/Yellow.
+(defface sleela-philosophers-ordain-face
+  '((t (:foreground "#C4A7E7" :weight bold :underline t)))
+  "Face for Ordain -- the orthogonal ordinality axis (the ordering of order)."
+  :group 'sleela-philosophers)
+
+;; The IQ-201+ Guides that carry approving favor forward -> Gold/Yellow.
 (defconst sleela-philosophers--gold-guides
-  '("Patch" "Aim" "Approval" "Favor" "Saints" "Ministerial"
-    "Guidance" "Professional" "Executive" "Approach" "Notice"))
+  '("Warrant" "Patch" "Aim" "Health" "Guide"
+    "Office" "Saint" "Favor" "Approval"))
 
 ;; Guides that are still maturing toward Approval -> Green.
 (defconst sleela-philosophers--green-guides
-  '("Constructor" "Guide" "Wisdom" "Life" "Gains" "Health"
-    "Growth" "Pattern" "Impart" "Conform"))
+  '("Approach" "Notice" "Seed" "Frame" "Course" "Measure"
+    "Vigor" "Pattern" "Ministry" "Counsel" "Impart" "Conform"))
 
 (defconst sleela-philosophers-font-lock-keywords
   (list
    ;; the "::" growth separator (conform operator)
    '("::" 0 'sleela-philosophers-growth-face)
+   ;; Ordain -- orthogonal to the chain; highlighted wherever it appears
+   '("\\_<\\(Ordain\\|SLOrdain\\)\\_>" 1 'sleela-philosophers-ordain-face)
    ;; a Gold Guide only when it sits right after a "::" growth
    (list (concat "::[[:space:]]*\\("
                  (regexp-opt sleela-philosophers--gold-guides) "\\)\\_>")
