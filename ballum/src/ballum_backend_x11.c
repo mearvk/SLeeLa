@@ -296,9 +296,9 @@ static ballum_status_t x11_poll_key(void *ctx, int *out) {
     space = XKeysymToKeycode(dpy, XK_space);
     if (!esc) return BALLUM_STATUS_UNSUPPORTED;
     XQueryKeymap(dpy, keys);
-    esc_down = (keys[esc >> 3] & (1 << (esc & 7))) != 0;
-    enter_down = enter && (keys[enter >> 3] & (1 << (enter & 7))) != 0;
-    space_down = space && (keys[space >> 3] & (1 << (space & 7))) != 0;
+    esc_down = (((unsigned char)keys[esc >> 3] & (1u << (esc & 7))) != 0);
+    enter_down = enter && (((unsigned char)keys[enter >> 3] & (1u << (enter & 7))) != 0);
+    space_down = space && (((unsigned char)keys[space >> 3] & (1u << (space & 7))) != 0);
     if (esc_down && !was_escape_down) *out = BALLUM_KEY_ESC;
     else if (enter_down && !was_enter_down) *out = BALLUM_KEY_ENTER;
     else if (space_down && !was_space_down) *out = BALLUM_KEY_SPACE;
