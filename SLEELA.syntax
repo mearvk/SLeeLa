@@ -1071,3 +1071,79 @@ The following Java generic forms are recognized as intended surface but are
 Generic type signatures are specified by `#sleela 2.2`. They are accepted across
 the 2.x surface the front end drives (documented supported range 1.0 .. 2.2);
 2.2 is the version a document should declare to rely on them normatively.
+
+
+--------------------------------------------------------------------------------
+## 17. The philosophers Constructor Guide-chain (informative)
+
+This section is **informative**, not a core-grammar change. It documents a
+library-level construction *surface* provided by the `lib/philosophers` package
+and the matching editor coloring under `lib/linux-editors/`. The core lexer and
+parser are unchanged by it; everything here is expressed with ordinary class,
+method, and `String` constructs already defined above.
+
+### 17.1 The `::` growth separator (a reading, not a new operator)
+
+The philosophers package reads a **Constructor** as an event that seats a finite
+set of **Guides**, written as a chain with a double-colon separator:
+
+    Constructor() :: Patch :: Seed :: Aim :: Guide
+
+Here `::` is the **growth separator** (the *conform* token): it joins one growth
+to the next under a unity of identity over Cause. This chain is produced and
+consumed as **text** (`SLPhilosopherChain.render()` builds it with `+`); it is
+**not** lexed as a core operator. In particular:
+
+- it is distinct from the core **structural-offload send** `:::` (§1.5), a real
+  lexed operator; and
+- it does not introduce scope-resolution or any new punctuation into the
+  grammar — a `.sleela` source file still only uses the operators in §1.5.
+
+### 17.2 The finite register (21 seatings, 7 categories, a signed band)
+
+A perfect Constructor admits only so many Guides. `SLPhilosopherSeating` fixes
+the vocabulary: a **base of 21 seatings** plus a signed admission **band in
+`[-2, +6]`**, so admitted capacity lives in `[19, 27]`. The 21 seatings are
+grouped into **seven ternary categories** (`category(ordinal) == ordinal / 3`):
+
+    I   Admission   Approach  Notice   Warrant
+    II  Inception   Patch     Seed     Frame
+    III Intent      Aim       Course   Measure
+    IV  Vitality    Health    Vigor    Pattern
+    V   Governance  Guide     Ministry Counsel
+    VI  Standing    Office    Saint    Favor
+    VII Closure     Impart    Conform  Approval
+
+Each Guide carries an **impart color** for the editor — **Gold/Yellow** when it
+carries approving favor, **Green** when it is still growing toward Approval
+(`SLPhilosopherGuide.color()`, idempotent).
+
+### 17.3 Ordain — the orthogonal ordinality
+
+`SLOrdain` is **orthogonal** to the Guide axis: it is the *ordinality itself* —
+the ordering of order. It is not a Guide and occupies no seat (there is no
+twenty-second seating); it reads the **rank**, the **ordaining category**, and
+the **nearness to the crown** (Approval, ordinal 20) of any seating. Per §15 its
+`metaOrigin` is `Galactic` and it names an ordering principle, not a deity of
+record, so no authority is fabricated (`metaNationalSchedule = "none"`).
+
+### 17.4 The construction contract (of nature and time)
+
+A construction is time-bounded: `SLConstructorContract` caps the instantiative
+moment at `MAX_SECONDS = 120` and only ever advances its clock forward
+(`tickAhead`, the perpetual whistle *ahead*). A `SLFavorMechanism` catches the
+Notice of Approach and grants or withholds **runnability** by quorum; only on
+granted favor does the Constructor run, dispose its Guides, and **liberate** the
+object so it lives free of the moment that made it.
+
+### 17.5 Where this is specified
+
+The normative source is the package itself (the source is the authority):
+
+- `lib/philosophers/*.sleela` — the six Constructor classes plus `SLOrdain`.
+- `lib/philosophers/PHILOSOPHERS.CONSTRUCTORS.md` — the Constructors, lifecycle,
+  and full per-class method reference.
+- `lib/philosophers/PHILOSOPHERS.CATEGORICAL.md` — the 21 Guides and Ordain,
+  each related to the Source Diagram and this Language Syntax.
+- `tutorial/15-philosophers-constructors.md` — the tutorial lesson.
+- `lib/linux-editors/{vim,emacs}/sleela-philosophers.*` — the `::`/Guide coloring.

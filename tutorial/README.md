@@ -9,7 +9,7 @@
 
 # SLeeLa — A Tutorial Series
 
-A hands-on, thirteen-part tour of **SLeeLa at her source best**: the language, the
+A hands-on, fifteen-part tour of **SLeeLa at her source best**: the language, the
 Wrapper™ source file, the Nordshrift driver and its triplet targets, the
 conducted-method vocabulary, subjects, and the protocol/tooling work that rides
 on top (HTTP 3.0 integrity, HTTP colors, and the `.ledger` class).
@@ -36,6 +36,7 @@ appears in shipping `.sleela` sources and `.sst` sheets.
 | 12 | [Putting it together](12-capstone.md) | A small end-to-end module, built and ledgered |
 | 13 | [The Metadata Class standard](13-metadata-class.md) | The metapattern: provenance, legality, and probation of intent |
 | 14 | [The text & String family](14-text-and-strings.md) | The `lib/text` String surface: in-language ops, the char-cell view, and honest bridge descriptors |
+| 15 | [The philosophers Constructor Guide-chain](15-philosophers-constructors.md) | The perfect Constructor: the `::` Guide chain, the 21 seatings in 7 categories, the orthogonal Ordain axis, and the time-bounded contract |
 
 ## Prerequisites
 
