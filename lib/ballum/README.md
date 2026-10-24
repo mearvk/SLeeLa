@@ -189,9 +189,7 @@ the native `ballum_clamp_*` helpers.
 
 - Native manager + per-OS backends: `ballum/`
   (`ballum/include/sleela_ballum/ballum_manager.h`, `ballum/src/*`).
-- Bridge convention mirrors `lib/wifi/` (`SLWifiManager` + the VM bridge). A live
-  `impl/core/ballum_vm_bridge.*` is the planned next step to connect this facade
-  to the native manager at runtime.
+- VM bridge: `impl/core/ballum_vm_bridge.c` and `impl/core/ballum_vm_bridge.h` expose the `uiBallum*` boundary used by the live demos. Verify that the bridge is included in the particular runtime build before expecting device I/O.
 
 ## Implementation boundary
 
@@ -199,3 +197,13 @@ These classes manage, classify, validate, and report. Real pixel/brightness/
 warmth/gamma control requires the native `ballum/` backend plus a host VM
 bridge. Without the bridge, operations report `BRIDGE_REQUIRED`; with a backend
 that lacks a capability, they report `UNSUPPORTED` — never a false success.
+
+
+## Examples and Tutorial Series
+
+The package now includes a progressive learning path:
+
+- **[Examples](examples/README.md)** — five focused SLeeLa programs covering display inspection, safe pixel writes, capability-gated display controls, bounded pointer polling, and headless-safe behavior.
+- **[Tutorials](tutorials/README.md)** — seven lessons covering architecture, display enumeration, coordinate safety, display controls, pointer input, status/testing, and the native bridge.
+
+Start with `examples/05-headless-safe.sleela` and `examples/01-screen-inspection.sleela` before trying operations that visibly change a display. The examples are source additions; compilation and runtime behavior still need to be verified with the project's actual SLeeLa toolchain and target OS.
