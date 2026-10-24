@@ -23,14 +23,23 @@
 #   DESTDIR=...     staged-install root forwarded to each module
 #   MODULES="a b c" override the module list/order
 #
-# This is a standalone, ordinary Makefile: it does not replace the main
-# dispatcher (./Makefile), it paces the per-module install/build the main `all`
-# does all at once.
+# This is a standalone, ordinary Makefile living in bin/: it does not replace
+# the main dispatcher (../Makefile), it paces the per-module install/build the
+# main `all` does all at once. Invoke it from anywhere:
+#
+#   make -f bin/Makefile.modules install-modules     # from the repo root, or
+#   bin/install-modules                              # the launcher (any cwd)
+#
+# All module work runs with the REPO ROOT as the working directory, derived from
+# this Makefile's own location (bin/..), so `make -C <module>` and the build/
+# state files resolve correctly no matter where make was started.
 # =============================================================================
 
 SHELL := /bin/sh
-ROOT  := $(CURDIR)
-RUNNER := scripts/install-modules.sh
+# This Makefile lives in bin/; the repo root is its parent.
+HERE  := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+ROOT  := $(abspath $(HERE)/..)
+RUNNER := $(HERE)/install-modules.sh
 
 PREFIX  ?= /usr/local
 DESTDIR ?=
@@ -56,7 +65,9 @@ MODULES ?= config common-rails resolver preferred-routers logger ledger registry
 .PHONY: install-modules install-modules-fast install-modules-resume \
         list-modules modules-status clean-modules help
 
-# Paced iterative install/build of every module (~10-20 min).
+# Paced iterative install/build of every module (~10-20 min). The runner cd's to
+# the repo root itself (ROOT derived from its own location), so it works from
+# any cwd.
 install-modules:
 	@TARGET_SECONDS="$(TARGET_SECONDS)" PACE="$(PACE)" RESUME="$(RESUME)" \
 	 PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" MODULES="$(MODULES)" \
@@ -64,46 +75,48 @@ install-modules:
 
 # Same walk, but no pacing sleeps (as fast as the machine allows).
 install-modules-fast:
-	@$(MAKE) -f Makefile.modules install-modules PACE=off
+	@$(MAKE) -f "$(HERE)/Makefile.modules" install-modules PACE=off
 
 # Continue a previous run, retrying only what was skipped / not yet done.
 install-modules-resume:
-	@$(MAKE) -f Makefile.modules install-modules RESUME=on
+	@$(MAKE) -f "$(HERE)/Makefile.modules" install-modules RESUME=on
 
-# Show the module order and whether each has its own `install` target.
+# Show the module order and whether each has its own `install` target. Paths are
+# resolved against the repo ROOT so this works from any cwd.
 list-modules:
 	@echo "SLeeLa module install order ($(words $(MODULES)) modules):"
 	@i=0; for m in $(MODULES); do \
 	  i=$$((i+1)); \
-	  if [ ! -f "$$m/Makefile" ]; then tag="(no Makefile)"; \
-	  elif grep -qE '^install:' "$$m/Makefile"; then tag="-> make install"; \
+	  if [ ! -f "$(ROOT)/$$m/Makefile" ]; then tag="(no Makefile)"; \
+	  elif grep -qE '^install:' "$(ROOT)/$$m/Makefile"; then tag="-> make install"; \
 	  else tag="-> make all"; fi; \
 	  printf "  %2d. %-22s %s\n" "$$i" "$$m" "$$tag"; \
 	done
 
 # Report per-module state from the last run.
 modules-status:
-	@if [ -f build/module-install.state ]; then \
-	  echo "module install state (build/module-install.state):"; \
-	  sed 's/^/  /' build/module-install.state; \
-	else echo "no run yet (run 'make -f Makefile.modules install-modules')"; fi
+	@if [ -f "$(ROOT)/build/module-install.state" ]; then \
+	  echo "module install state ($(ROOT)/build/module-install.state):"; \
+	  sed 's/^/  /' "$(ROOT)/build/module-install.state"; \
+	else echo "no run yet (run 'bin/install-modules' or 'make -f bin/Makefile.modules install-modules')"; fi
 
 # Clean every module in the list (best-effort; a missing clean target is fine).
 clean-modules:
 	@for m in $(MODULES); do \
-	  [ -f "$$m/Makefile" ] || continue; \
-	  echo "==> clean $$m"; $(MAKE) -C "$$m" clean >/dev/null 2>&1 || true; \
+	  [ -f "$(ROOT)/$$m/Makefile" ] || continue; \
+	  echo "==> clean $$m"; $(MAKE) -C "$(ROOT)/$$m" clean >/dev/null 2>&1 || true; \
 	done
-	@rm -f build/module-install.state build/module-install.log
+	@rm -f "$(ROOT)/build/module-install.state" "$(ROOT)/build/module-install.log"
 	@echo "modules cleaned; install state reset."
 
 help:
-	@echo "SLeeLa iterative module installer (Makefile.modules)"
-	@echo "  make -f Makefile.modules install-modules         Paced install/build of all modules (~10-20 min)"
-	@echo "  make -f Makefile.modules install-modules-fast    Same, without pacing sleeps"
-	@echo "  make -f Makefile.modules install-modules-resume  Continue a prior run (retry skipped/undone)"
-	@echo "  make -f Makefile.modules list-modules            Show the module order + each module's target"
-	@echo "  make -f Makefile.modules modules-status          Show per-module state from the last run"
-	@echo "  make -f Makefile.modules clean-modules           Clean every module and reset install state"
+	@echo "SLeeLa iterative module installer (bin/Makefile.modules)"
+	@echo "  bin/install-modules                              Paced install/build of all modules (~10-20 min)"
+	@echo "  make -f bin/Makefile.modules install-modules     Same, via make directly"
+	@echo "  make -f bin/Makefile.modules install-modules-fast    Same, without pacing sleeps"
+	@echo "  make -f bin/Makefile.modules install-modules-resume  Continue a prior run (retry skipped/undone)"
+	@echo "  make -f bin/Makefile.modules list-modules            Show the module order + each module's target"
+	@echo "  make -f bin/Makefile.modules modules-status          Show per-module state from the last run"
+	@echo "  make -f bin/Makefile.modules clean-modules           Clean every module and reset install state"
 	@echo ""
 	@echo "Knobs: TARGET_SECONDS (600..1200, default 900) PACE=on|off RESUME=on|off PREFIX=... DESTDIR=... MODULES=\"...\""

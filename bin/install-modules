@@ -1,0 +1,60 @@
+#!/usr/bin/env sh
+# =============================================================================
+# install-modules -- bin/ launcher for the paced iterative module installer.
+#
+# A thin front end (like bin/SLeeLa and bin/OSsupport) that drives
+# bin/Makefile.modules from the repo root, so the walk works from any cwd:
+#
+#     $> install-modules                 # paced install/build of all modules (~10-20 min)
+#     $> install-modules fast            # same, no pacing sleeps
+#     $> install-modules resume          # continue a prior run (retry skipped/undone)
+#     $> install-modules list            # show the module order + each module's target
+#     $> install-modules status          # per-module state from the last run
+#     $> install-modules clean           # clean every module and reset install state
+#     $> install-modules help            # this help
+#
+# Knobs pass straight through as environment or make-style VAR=VALUE args:
+#   TARGET_SECONDS (600..1200, default 900) PACE=on|off RESUME=on|off
+#   PREFIX=... DESTDIR=... MODULES="..."
+# e.g.  install-modules TARGET_SECONDS=1200 PREFIX="$HOME/.local"
+#
+# It preserves the exit status of the underlying make.
+# =============================================================================
+set -u
+
+BIN_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+ROOT_DIR=$(CDPATH= cd -- "$BIN_DIR/.." && pwd)
+MF="$BIN_DIR/Makefile.modules"
+
+if [ ! -f "$MF" ]; then
+    echo "install-modules: $MF not found" >&2
+    exit 1
+fi
+
+usage() {
+    # Defer to the Makefile's own help so the two never drift.
+    make -f "$MF" help
+}
+
+# Map the friendly subcommand to the Makefile target; pass any VAR=VALUE args on.
+cmd=""
+if [ "$#" -ge 1 ]; then
+    case "$1" in
+        ""|run|install|all)      cmd=install-modules; shift ;;
+        fast)                    cmd=install-modules-fast; shift ;;
+        resume)                  cmd=install-modules-resume; shift ;;
+        list|list-modules)       cmd=list-modules; shift ;;
+        status|modules-status)   cmd=modules-status; shift ;;
+        clean|clean-modules)     cmd=clean-modules; shift ;;
+        help|-h|--help)          usage; exit 0 ;;
+        *=*)                     cmd=install-modules ;;   # a bare VAR=VALUE: default action
+        *) echo "install-modules: unknown command '$1'" >&2; usage >&2; exit 2 ;;
+    esac
+else
+    cmd=install-modules
+fi
+
+# Run from the repo root so relative module paths and build/ resolve, forwarding
+# any remaining VAR=VALUE knobs to make. Preserve make's exit status.
+cd "$ROOT_DIR" || exit 1
+exec make -f "$MF" "$cmd" "$@"
