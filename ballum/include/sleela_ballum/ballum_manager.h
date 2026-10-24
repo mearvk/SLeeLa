@@ -92,6 +92,17 @@ typedef enum {
     BALLUM_EVENT_POINTER_UP      /* button released / finger lifted      */
 } ballum_event_type_t;
 
+/* Backend-neutral key codes a session acts on. The set is intentionally small:
+ * a Ballum session's one hard control is ESC (exit). Per-OS backends map their
+ * native keysyms (X11 keysym, Win32 VK, macOS key code) onto these. Printable
+ * ASCII may be reported as its own code (e.g. 'a'); 0 means no key. */
+typedef enum {
+    BALLUM_KEY_NONE  = 0,
+    BALLUM_KEY_ESC   = 27,  /* ASCII ESC -- exit a full-screen session        */
+    BALLUM_KEY_ENTER = 13,
+    BALLUM_KEY_SPACE = 32
+} ballum_key_t;
+
 /* Which physical button, matching the SLUI pointer-button vocabulary. For a
  * touch contact the button is reported as LEFT. */
 typedef enum {
@@ -199,6 +210,15 @@ typedef struct ballum_backend {
      * event is pending it returns BALLUM_STATUS_OK with out->type ==
      * BALLUM_EVENT_NONE. May be NULL (input not provided). */
     ballum_status_t (*poll_event)(void *context, ballum_pointer_event_t *out);
+
+    /* Poll one pending key event without blocking. Writes the key through `out`
+     * and returns BALLUM_STATUS_OK when one was dequeued; *out == BALLUM_KEY_NONE
+     * means no key was pending. Returns BALLUM_STATUS_UNSUPPORTED when the
+     * backend has no keyboard queue. May be NULL (keyboard not provided), in
+     * which case the manager reports no keys -- fail closed, never a false key.
+     * Key codes are the backend-neutral ballum_key_t set (ESC is the one a
+     * session needs to exit); per-OS backends map their native keysyms onto it. */
+    ballum_status_t (*poll_key)(void *context, int *out);
 } ballum_backend_t;
 
 /* The backend compiled in for this build (never NULL; may be the unavailable
@@ -267,6 +287,17 @@ ballum_status_t ballum_manager_poll_event(ballum_manager_t *manager,
 
 /* Does the backend provide pointer input at all? 1 yes, 0 no, <0 on bad args. */
 int ballum_manager_has_input(const ballum_manager_t *manager);
+
+/* ---- keyboard input ------------------------------------------------------ */
+
+/* Poll one pending key, non-blocking. On success *out holds a ballum_key_t
+ * (0 == BALLUM_KEY_NONE means nothing pending). Returns BALLUM_STATUS_UNSUPPORTED
+ * when the backend has no keyboard queue. Fails closed: a backend without a
+ * poll_key reports no keys rather than a false one. */
+ballum_status_t ballum_manager_poll_key(ballum_manager_t *manager, int *out);
+
+/* Does the backend provide keyboard input at all? 1 yes, 0 no, <0 on bad args. */
+int ballum_manager_has_keyboard(const ballum_manager_t *manager);
 
 /* ---- helpers ------------------------------------------------------------- */
 

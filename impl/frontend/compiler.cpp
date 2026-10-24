@@ -713,6 +713,8 @@ private:
             {"uiBallumEventButton",SLUI_FN_BALLUM_EVENT_BUTTON},{"uiBallumEventSource",SLUI_FN_BALLUM_EVENT_SOURCE},
             {"uiBallumEventContact",SLUI_FN_BALLUM_EVENT_CONTACT},{"uiBallumEventModifiers",SLUI_FN_BALLUM_EVENT_MODIFIERS},
             {"uiBallumEventTypeName",SLUI_FN_BALLUM_EVENT_TYPE_NAME},
+            {"uiBallumHasKeyboard",SLUI_FN_BALLUM_HAS_KEYBOARD},{"uiBallumPollKey",SLUI_FN_BALLUM_POLL_KEY},
+            {"uiBallumLogoReady",SLUI_FN_BALLUM_LOGO_READY},{"uiBallumLogoBlend",SLUI_FN_BALLUM_LOGO_BLEND},
             {"uiWidgetSetToggle",SLUI_FN_WIDGET_SET_TOGGLE},
             {"uiWidgetSetValue",SLUI_FN_WIDGET_SET_VALUE},{"uiWidgetGetText",SLUI_FN_WIDGET_GET_TEXT},
             {"uiWidgetGetToggle",SLUI_FN_WIDGET_GET_TOGGLE},{"uiWidgetGetValue",SLUI_FN_WIDGET_GET_VALUE},

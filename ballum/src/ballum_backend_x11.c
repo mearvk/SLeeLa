@@ -276,7 +276,11 @@ static ballum_status_t x11_poll_event(void *ctx, ballum_pointer_event_t *out) {
 static const ballum_backend_t k_x11 = {
     "x11-xrandr",
     x11_enumerate, x11_set_pixel, x11_get_pixel, x11_blit,
-    x11_set_brightness, x11_set_warmth, x11_set_gamma, x11_poll_event
+    x11_set_brightness, x11_set_warmth, x11_set_gamma, x11_poll_event,
+    /* poll_key: the X11 pointer path does not yet feed keys through Ballum, so
+     * NULL -> has_keyboard()==0 and poll_key returns UNSUPPORTED (fail closed).
+     * Mapping XKeyEvent keysyms onto ballum_key_t is the native follow-up. */
+    0
 };
 
 const ballum_backend_t *ballum_backend_x11(void) { return &k_x11; }

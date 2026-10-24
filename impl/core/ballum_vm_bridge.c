@@ -164,3 +164,43 @@ int sleela_ballum_vm_event_modifiers(void) { return (int)g_event.modifiers; }
 const char *sleela_ballum_vm_event_type_name(int type) {
     return ballum_event_type_name((ballum_event_type_t)type);
 }
+
+/* ---- keyboard input ------------------------------------------------------ */
+int sleela_ballum_vm_has_keyboard(void) {
+    if (ensure_manager() != BALLUM_STATUS_OK) return 0;
+    return ballum_manager_has_keyboard(&g_manager) == 1 ? 1 : 0;
+}
+
+int sleela_ballum_vm_poll_key(void) {
+    int key = 0;
+    if (ensure_manager() != BALLUM_STATUS_OK) return 0;
+    if (ballum_manager_poll_key(&g_manager, &key) != BALLUM_STATUS_OK) return 0;
+    return key;
+}
+
+/* ---- logo splash compositing (host hook) --------------------------------
+ * The portable core ships no image decoder, so by default no logo is ready and
+ * the blend is a clean no-op: a full-screen session still paints white, runs
+ * its fade timeline, and honors ESC. A host build that links an image decoder
+ * overrides these (weak) definitions to decode the session logo and blit it
+ * toward the background at the requested opacity. Fail closed: never a false
+ * "ready", never a blit the core cannot actually perform. */
+#if defined(__GNUC__)
+__attribute__((weak)) int sleela_ballum_vm_logo_ready(void) { return 0; }
+__attribute__((weak)) int sleela_ballum_vm_logo_blend(int display_id, int opacity_percent,
+                                                      int screen_w, int screen_h,
+                                                      int bg_r, int bg_g, int bg_b) {
+    (void)display_id; (void)opacity_percent; (void)screen_w; (void)screen_h;
+    (void)bg_r; (void)bg_g; (void)bg_b;
+    return BALLUM_STATUS_UNSUPPORTED;
+}
+#else
+int sleela_ballum_vm_logo_ready(void) { return 0; }
+int sleela_ballum_vm_logo_blend(int display_id, int opacity_percent,
+                                int screen_w, int screen_h,
+                                int bg_r, int bg_g, int bg_b) {
+    (void)display_id; (void)opacity_percent; (void)screen_w; (void)screen_h;
+    (void)bg_r; (void)bg_g; (void)bg_b;
+    return BALLUM_STATUS_UNSUPPORTED;
+}
+#endif

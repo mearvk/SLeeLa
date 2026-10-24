@@ -101,6 +101,8 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_BALLUM_EVENT_X: case SLUI_FN_BALLUM_EVENT_Y:
         case SLUI_FN_BALLUM_EVENT_BUTTON: case SLUI_FN_BALLUM_EVENT_SOURCE:
         case SLUI_FN_BALLUM_EVENT_CONTACT: case SLUI_FN_BALLUM_EVENT_MODIFIERS:
+        case SLUI_FN_BALLUM_HAS_KEYBOARD: case SLUI_FN_BALLUM_POLL_KEY:
+        case SLUI_FN_BALLUM_LOGO_READY:
             return 0;
         /* 1 arg */
         case SLUI_FN_APP_CREATE: case SLUI_FN_APP_RUN: case SLUI_FN_APP_DESTROY:
@@ -169,6 +171,7 @@ int sleela_ui_arity(int id) {
             return 5;
         /* 7 args */
         case SLUI_FN_BALLUM_SET_PIXEL:
+        case SLUI_FN_BALLUM_LOGO_BLEND:
             return 7;
         default: return 0;
     }
@@ -324,6 +327,12 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_BALLUM_EVENT_CONTACT:   return r_int(sleela_ballum_vm_event_contact());
         case SLUI_FN_BALLUM_EVENT_MODIFIERS: return r_int(sleela_ballum_vm_event_modifiers());
         case SLUI_FN_BALLUM_EVENT_TYPE_NAME: return r_str(sleela_ballum_vm_event_type_name((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_HAS_KEYBOARD:    return r_int(sleela_ballum_vm_has_keyboard());
+        case SLUI_FN_BALLUM_POLL_KEY:        return r_int(sleela_ballum_vm_poll_key());
+        case SLUI_FN_BALLUM_LOGO_READY:      return r_int(sleela_ballum_vm_logo_ready());
+        case SLUI_FN_BALLUM_LOGO_BLEND:      return r_int(sleela_ballum_vm_logo_blend(
+                                                 (int)ai(a,n,0), (int)ai(a,n,1), (int)ai(a,n,2),
+                                                 (int)ai(a,n,3), (int)ai(a,n,4), (int)ai(a,n,5), (int)ai(a,n,6)));
 
         case SLUI_FN_WIDGET_SET_TOGGLE:    slui_widget_set_toggle(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_VALUE:     slui_widget_set_value(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();

@@ -45,6 +45,22 @@ int         sleela_ballum_vm_event_source(void);             /* 0 mouse, 1 touch
 int         sleela_ballum_vm_event_contact(void);            /* touch contact id (0 for mouse)       */
 int         sleela_ballum_vm_event_modifiers(void);          /* BALLUM_MOD_* bitmask                 */
 const char *sleela_ballum_vm_event_type_name(int type);      /* "none"/"down"/"move"/"up"            */
+/* Keyboard input. poll_key() dequeues one key and returns its ballum_key_t code
+ * (0 none; 27 ESC; 13 ENTER; 32 SPACE; printable ASCII as itself). has_keyboard()
+ * reports whether the backend supplies keys; a backend without a keyboard queue
+ * returns 0 keys -- fail closed, never a false key. */
+int         sleela_ballum_vm_has_keyboard(void);             /* 1 keyboard available, 0 not          */
+int         sleela_ballum_vm_poll_key(void);                 /* dequeue one key -> code (0 none)     */
+/* Logo splash compositing hook, used by a full-screen SLBallumSession. The host
+ * (where an image decoder is available) decodes the session's logo and blends
+ * it over the background at a given opacity; without a decoder these are honest
+ * no-ops -- logo_ready() reports 0 and logo_blend() does nothing and returns a
+ * clean status, so the session's white fill + fade timeline + ESC still run and
+ * never report a false success. */
+int         sleela_ballum_vm_logo_ready(void);               /* 1 host decoder supplied the logo, 0 not */
+int         sleela_ballum_vm_logo_blend(int display_id, int opacity_percent,
+                                        int screen_w, int screen_h,
+                                        int bg_r, int bg_g, int bg_b); /* -> status */
 #ifdef __cplusplus
 }
 #endif

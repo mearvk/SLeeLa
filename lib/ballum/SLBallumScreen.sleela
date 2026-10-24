@@ -2,36 +2,33 @@
    SLeeLa Standard Library Definition.
    Definition: The clean, pixel-accurate Screen API for Ballum developers. >>
 #sleela 2.1
-< Family: ballum. SLBallumScreen is the high-level, pixel-accurate developer >
-< API for one bound display. Where SLBallumManager is the low-level bridge to >
-< the native ballum_manager_t, SLBallumScreen is the polite, ergonomic surface >
-< a SLeeLa developer actually integrates with: open a screen, ask what it can >
-< do and how big it is, then set pixels and whole-display controls with clear, >
-< well-named, safe methods. >
-<  >
-< Pixel accuracy is the contract. Every placement is validated against the live >
-< display geometry and the advertised capability of the display BEFORE it reaches >
-< the device, so a write either lands exactly where asked or returns a precise, >
-< readable status -- it never silently clips, wraps, or no-ops. Coordinates use >
-< a top-left origin: x grows right in [0, width), y grows down in [0, height). >
-<  >
-< Typical use: >
-< SLBallumScreen screen = new SLBallumScreen(); >
-< bind the primary display > >
-< screen.open();
-< if (screen.isReady()) { >
-< one exact red pixel > >
-< screen.plot(10, 20, screen.rgb(255, 0, 0));
-< 0..100 percent > >
-< screen.brightness(70);
-< kelvin (warm) > >
-< screen.warmth(3400);
-< } >
-< print(screen.lastMessage()); >
-<  >
-< Result codes mirror SLBallumStatus / the native ballum_status_t: 0 ok, >
-< 1 invalid, 2 backend-unavailable, 4 display-not-found, 5 out-of-bounds, >
-< 7 unsupported, 100 bridge-required. >
+<< Family: ballum. SLBallumScreen is the high-level, pixel-accurate developer
+   API for one bound display. Where SLBallumManager is the low-level bridge to
+   the native ballum_manager_t, SLBallumScreen is the polite, ergonomic surface
+   a SLeeLa developer actually integrates with: open a screen, ask what it can
+   do and how big it is, then set pixels and whole-display controls with clear,
+   well-named, safe methods.
+
+   Pixel accuracy is the contract. Every placement is validated against the live
+   display geometry and the advertised capability of the display BEFORE it
+   reaches the device, so a write either lands exactly where asked or returns a
+   precise, readable status -- it never silently clips, wraps, or no-ops.
+   Coordinates use a top-left origin: x grows right in [0, width), y grows down
+   in [0, height).
+
+   Typical use:
+     SLBallumScreen screen = new SLBallumScreen();
+     screen.open();                           bind the primary display
+     if (screen.isReady()) {
+       screen.plot(10, 20, screen.rgb(255, 0, 0));   one exact red pixel
+       screen.brightness(70);                 0..100 percent
+       screen.warmth(3400);                   kelvin (warm)
+     }
+     print(screen.lastMessage());
+
+   Result codes mirror SLBallumStatus / the native ballum_status_t: 0 ok,
+   1 invalid, 2 backend-unavailable, 4 display-not-found, 5 out-of-bounds,
+   7 unsupported, 100 bridge-required. >>
 class SLBallumScreen {
 
   < the low-level bridge-boundary driver >

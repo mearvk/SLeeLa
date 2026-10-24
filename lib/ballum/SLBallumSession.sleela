@@ -1,0 +1,262 @@
+<< lib/ballum/SLBallumSession.sleela
+   SLeeLa Standard Library Definition.
+   Definition: A full-screen Ballum session with an easy, one-call startup: a
+     pure-white screen into which a logo fades in from the white background, the
+     whole display owned (full screen), and the ESC key wired to exit -- once to
+     frame mode, again to leave the program altogether.
+
+   What a session is. Ballum already owns the whole native display (it is the
+   screen, not a window), so a session IS full screen by nature. SLBallumSession
+   adds the lifecycle a user-facing startup wants on top of SLBallumScreen
+   (pixels/fill/geometry) and SLBallumInput (pointer + the new keyboard poll):
+     - fill the display pure white,
+     - fade a logo in over the white background across a set number of frames
+       (opacity 0 -> 100 %, blended toward white so it emerges from the
+       background rather than popping in),
+     - run until ESC: first ESC -> FRAME mode (the session yields its
+       full-screen hold to a framed/windowed context), second ESC -> EXIT
+       (leave the program).
+
+   Easy startup. The connect-and-go surface is deliberately tiny:
+       SLBallumSession s = new SLBallumSession();
+       s.start();                 < white screen + default logo fade, full screen >
+       while (s.step() == RUNNING) { }   < advance; ESC handling is built in >
+   Defaults are sensible (primary display, the national-bitcoin-icc logo, a
+   ~48-frame fade). Override any of them before start() with the with*() setters
+   (withLogo, withFadeFrames, withDisplayIndex, withBackground).
+
+   Logo bytes. The session NAMES the logo by URL and composites the fade; the
+   actual image decode is a native/host responsibility (Ballum has no in-engine
+   JPEG decoder), mirroring how the OS warehouse names assets the host supplies.
+   On a host with a decoder the logo pixels blit through the fade; without one,
+   the session still runs the white fill, the fade timeline, and ESC handling,
+   and reports the logo as pending -- never a false success.
+
+   Family: ballum. Full-screen session over SLBallumScreen + SLBallumInput; ESC
+   uses the uiBallumPollKey keyboard bridge (requires a keyboard backend to exit
+   by key; a pointer long-press and requestExit() are always-available fallbacks). >>
+#sleela 2.2
+class SLBallumSession {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11560;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Ballum";
+  String metaCorporation = "SLeeLa Project";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-24";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "SLeeLa Ballum full-screen session (lib/ballum)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- session run states (returned by step()) --- >
+  < not started yet >
+  static final int IDLE = 0;
+  < fading the logo in / holding full screen >
+  static final int RUNNING = 1;
+  < first ESC: yielded full screen to a framed context >
+  static final int FRAME = 2;
+  < second ESC (or requestExit): leaving the program >
+  static final int EXIT = 3;
+
+  < the bound full-screen display >
+  SLBallumScreen screen;
+  < keyboard + pointer input (for ESC and the pointer exit fallback) >
+  SLBallumInput input;
+
+  < startup configuration (easy defaults; override before start()) >
+  String logoUrl;
+  int fadeFrames;
+  int displayIndex;
+  < background is pure white by default, as an RGB triple >
+  int bgR;
+  int bgG;
+  int bgB;
+
+  < live state >
+  int state;
+  < current fade frame, 0..fadeFrames >
+  int frame;
+  < 1 once the white background has been painted >
+  int painted;
+  < 1 once a logo decoder supplied pixels (host-dependent) >
+  int logoReady;
+
+  < ---- construction / easy startup ------------------------------------ >
+
+  < Prepare a session with sensible, user-friendly defaults. >
+  void configure() {
+    screen = new SLBallumScreen();
+    screen.create();
+    input = new SLBallumInput();
+    input.configure();
+    logoUrl = defaultLogoUrl();
+    fadeFrames = 48;
+    displayIndex = -1;
+    bgR = 255; bgG = 255; bgB = 255;
+    state = IDLE;
+    frame = 0;
+    painted = 0;
+    logoReady = 0;
+  }
+
+  < The default splash logo (the national bitcoin / ICC mark). >
+  String defaultLogoUrl() {
+    return "https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg";
+  }
+
+  << Fluent, optional overrides -- call before start(). Each returns this so a
+    caller can chain or simply call them in sequence. >>
+  SLBallumSession withLogo(String url) { if (url != "") { logoUrl = url; } return this; }
+  SLBallumSession withFadeFrames(int frames) { if (frames > 0) { fadeFrames = frames; } return this; }
+  SLBallumSession withDisplayIndex(int index) { displayIndex = index; return this; }
+  SLBallumSession withBackground(int r, int g, int b) { bgR = r; bgG = g; bgB = b; return this; }
+
+  << start(): the one call a user needs. Binds the display full screen, paints
+    the pure-white background, and arms the logo fade. Returns the run state:
+    RUNNING on success, EXIT if no display/backend is available (fail closed). >>
+  int start() {
+    if (screen == null) { configure(); }
+    int st;
+    if (displayIndex < 0) { st = screen.open(); }
+    else { st = screen.openIndex(displayIndex); }
+    if (st != SLBallumStatus.OK || !screen.isReady()) {
+      state = EXIT;
+      return state;
+    }
+    < Paint the whole display the background color (pure white by default). >
+    paintBackground();
+    frame = 0;
+    logoReady = uiBallumLogoReady();
+    state = RUNNING;
+    return state;
+  }
+
+  << Paint the full screen the background color. Full screen is inherent: Ballum
+    owns the whole display, so this fills every pixel of it. >>
+  void paintBackground() {
+    SLBallumColor bg = screen.rgb(bgR, bgG, bgB);
+    screen.fillRect(0, 0, screen.width(), screen.height(), bg);
+    painted = 1;
+  }
+
+  < ---- the frame loop ------------------------------------------------- >
+
+  << step(): advance the session one frame. Handles ESC (frame -> exit),
+    advances the logo fade, and returns the current run state. Call in a loop:
+        while (s.step() == SLBallumSession.RUNNING) { }
+    Returns FRAME after the first ESC and EXIT after the second (or after
+    requestExit()). >>
+  int step() {
+    if (state == EXIT) { return EXIT; }
+
+    << Drain input: ESC drives the two-stage exit; a pointer long-press is a
+      touch-friendly fallback for devices without a keyboard. >>
+    handleInput();
+    if (state == EXIT) { return EXIT; }
+
+    < Advance the fade while running (a FRAME-mode session holds its last frame). >
+    if (state == RUNNING && frame < fadeFrames) {
+      frame = frame + 1;
+      renderFade();
+    }
+    return state;
+  }
+
+  << Read keyboard + pointer and fold ESC into the state machine. First ESC:
+    RUNNING -> FRAME (yield full screen to a framed context). Second ESC:
+    FRAME -> EXIT (leave the program). >>
+  void handleInput() {
+    < keyboard: ESC >
+    int k = input.pollKey();
+    if (k == SLBallumInput.KEY_ESC) { escPressed(); return; }
+
+    << pointer fallback: a long-press (press that becomes a drag-hold) also
+      requests the same staged exit, so touch-only devices can leave. >>
+    int g = input.poll();
+    if (g == SLBallumInput.DRAG_END) { escPressed(); }
+  }
+
+  < Apply one ESC press to the state machine. >
+  void escPressed() {
+    if (state == RUNNING) { state = FRAME; return; }
+    if (state == FRAME) { state = EXIT; return; }
+  }
+
+  << Always-available programmatic exit (e.g. a menu "Quit"). One call from
+    RUNNING drops straight to EXIT. >>
+  void requestExit() { state = EXIT; }
+  < Return a FRAME-mode session to full-screen running. >
+  int resume() { if (state == FRAME) { state = RUNNING; } return state; }
+
+  << renderFade(): composite the logo over the white background at the current
+    opacity. The logo emerges from white: at frame 0 the screen is pure
+    background; at frame == fadeFrames the logo is fully opaque. When no host
+    decoder supplied the logo, the timeline still advances (so ESC and the fade
+    progress are real) and the screen shows the clean background. >>
+  void renderFade() {
+    if (logoReady != 1) { return; }
+    int pct = fadePercent();
+    << Hand the composite to the host blitter: it blends the decoded logo toward
+       the background at pct opacity and places it centered on the display. >>
+    uiBallumLogoBlend(screen.displayId(), pct,
+                      screen.width(), screen.height(), bgR, bgG, bgB);
+  }
+
+  < The current fade opacity as a percent 0..100. >
+  int fadePercent() {
+    if (fadeFrames <= 0) { return 100; }
+    return frame * 100 / fadeFrames;
+  }
+
+  < ---- queries -------------------------------------------------------- >
+  boolean isFullScreen() { return screen != null && screen.isReady(); }
+  boolean isRunning()    { return state == RUNNING; }
+  boolean isFrameMode()  { return state == FRAME; }
+  boolean isExiting()    { return state == EXIT; }
+  boolean fadeComplete() { return frame >= fadeFrames; }
+  boolean logoPending()  { return logoReady != 1; }
+  int runState()         { return state; }
+  int currentFrame()     { return frame; }
+  int screenWidth()      { if (screen == null) { return 0; } return screen.width(); }
+  int screenHeight()     { if (screen == null) { return 0; } return screen.height(); }
+  String logo()          { return logoUrl; }
+
+  String stateName(int s) {
+    if (s == IDLE) { return "idle"; }
+    if (s == RUNNING) { return "running"; }
+    if (s == FRAME) { return "frame"; }
+    if (s == EXIT) { return "exit"; }
+    return "unknown";
+  }
+}

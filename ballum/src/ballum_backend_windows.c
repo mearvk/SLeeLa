@@ -159,7 +159,10 @@ static ballum_status_t win_set_gamma(void *ctx, uint32_t id, uint32_t gamma_scal
 static const ballum_backend_t k_windows = {
     "windows-gdi",
     win_enumerate, win_set_pixel, win_get_pixel, win_blit,
-    win_set_brightness, win_set_warmth, win_set_gamma, /* poll_event */ 0
+    win_set_brightness, win_set_warmth, win_set_gamma, /* poll_event */ 0,
+    /* poll_key: no keyboard queue wired yet (map Win32 WM_KEYDOWN VK codes onto
+     * ballum_key_t as the native follow-up); NULL -> fail closed. */
+    0
 };
 
 const ballum_backend_t *ballum_backend_windows(void) { return &k_windows; }
