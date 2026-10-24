@@ -16,19 +16,31 @@ two package documents:
 [`PHILOSOPHERS.CATEGORICAL.md`](../lib/philosophers/PHILOSOPHERS.CATEGORICAL.md)
 (the vocabulary).
 
-## The chain
+## The chain — a first-class operator (syntax 2.3)
 
-A Constructor declares a chain of growths with `::`:
+As of **syntax 2.3** the Guide chain is real language syntax. You write:
 
+```sleela
+Perfect p = new Perfect() :: patch :: aim :: guide;
 ```
-Constructor() :: Patch :: Seed :: Aim :: Guide
-```
 
-- `Constructor()` is the real call — the *root*.
-- each name after a `::` is a **Guide**: a growth / a Wisdom.
-- `::` is the **growth separator** (the *conform* token) — a unity of identity
-  over Cause. It is produced as text (built with `+`), **not** lexed as an
-  operator, and it is distinct from the core `:::` structural-offload send.
+- `new Perfect()` is the real constructor call — the *head*.
+- each name after a `::` is a **Guide**: the name of a **zero-argument method**
+  of the constructed class.
+- `::` is the **growth separator** (the *conform* token). The chain applies each
+  Guide to the instance in order and **evaluates to the instance** (fluent), so
+  the whole right-hand side is one expression that yields the finished object.
+
+It is lexed, parsed, type-checked, compiled, and run on the native Core — see
+[`SLEELA.syntax` §17](../SLEELA.syntax). It is distinct from the three other
+`::` uses (method reference `obj::method`, the `ran::` GC-hint scope, and
+qualified `::dynamite`/`::permissible` imports) and from the `:::`
+structural-offload operator: the chain engages only when the head is a
+`new T(...)` call. A source below 2.3 using it is rejected.
+
+The `lib/philosophers` package layers its narrative on top — a chain read as
+`Constructor() :: Patch :: Seed :: Aim :: Guide`, where the Guides are seated
+onto the 21-seating register below.
 
 Each Guide colors **Gold/Yellow** when it carries approving favor, or **Green**
 when it is still growing toward Approval. The VIM/EMACS coloring lives under
@@ -127,7 +139,8 @@ the object now lives free of its instantiative moment.
 
 ## Where to look next
 
-- Runnable reference: [`lib/philosophers/philosophers-demo.sleela`](../lib/philosophers/philosophers-demo.sleela).
+- The first-class `::` operator, runnable: [`example/science/guide-chain-syntax.sleela`](../example/science/guide-chain-syntax.sleela).
+- Runnable reference (library narrative): [`lib/philosophers/philosophers-demo.sleela`](../lib/philosophers/philosophers-demo.sleela).
 - A second worked example: [`example/science/philosophers-constructor.sleela`](../example/science/philosophers-constructor.sleela).
 - The classes: `SLPhilosopherConstructor`, `SLPhilosopherChain`,
   `SLPhilosopherGuide`, `SLPhilosopherSeating`, `SLFavorMechanism`,

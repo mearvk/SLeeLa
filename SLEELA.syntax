@@ -1,20 +1,23 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  2.2  (1.3..1.11 baseline carried forward)
-    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.0 .. 2.2)
+    Syntax version:  2.3  (1.3..1.11 baseline carried forward)
+    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.0 .. 2.3)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.3..2.2 surface
+    Status:          Normative for the syntax 1.3..2.3 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 2.2`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.2).
-    Syntax 2.2 is the current spec level: it adds **generic type signatures**
+    `#sleela 2.3`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.3).
+    Syntax 2.3 is the current spec level: it adds the **philosophers Guide-chain
+    expression** `new T(...) :: Guide :: Guide ...` (section 17), a first-class
+    construct the lexer/parser/semantic analyzer/compiler and native Core all
+    execute. Syntax 2.2 added **generic type signatures**
     (type parameters on classes and methods, parameterized types, and
     wildcards — section 16), with the 1.3..1.11 feature surface described below
     carried forward unchanged.
@@ -50,7 +53,7 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax 1.3..2.2 surface the front end accepts.
+This document is normative for the syntax 1.3..2.3 surface the front end accepts.
 Every production and built-in below is implemented in `impl/frontend` and
 executes on `impl/core`.
 
@@ -1074,30 +1077,49 @@ the 2.x surface the front end drives (documented supported range 1.0 .. 2.2);
 
 
 --------------------------------------------------------------------------------
-## 17. The philosophers Constructor Guide-chain (informative)
+## 17. The philosophers Constructor Guide-chain (syntax 2.3)
 
-This section is **informative**, not a core-grammar change. It documents a
-library-level construction *surface* provided by the `lib/philosophers` package
-and the matching editor coloring under `lib/linux-editors/`. The core lexer and
-parser are unchanged by it; everything here is expressed with ordinary class,
-method, and `String` constructs already defined above.
+This section is **normative** for syntax **2.3**. The Guide chain is a
+first-class expression executed end to end by the toolchain — lexer → parser →
+semantic analyzer → bytecode compiler → native Core — not a library text
+convention. The `lib/philosophers` package and the editor coloring under
+`lib/linux-editors/` build on it.
 
-### 17.1 The `::` growth separator (a reading, not a new operator)
+### 17.1 The `::` growth separator (a first-class operator)
 
-The philosophers package reads a **Constructor** as an event that seats a finite
-set of **Guides**, written as a chain with a double-colon separator:
+A **Guide chain** seats a finite set of **Guides** onto a freshly constructed
+object, written with the double-colon **growth separator**:
 
-    Constructor() :: Patch :: Seed :: Aim :: Guide
+    new Thing() :: patch :: aim :: guide
 
-Here `::` is the **growth separator** (the *conform* token): it joins one growth
-to the next under a unity of identity over Cause. This chain is produced and
-consumed as **text** (`SLPhilosopherChain.render()` builds it with `+`); it is
-**not** lexed as a core operator. In particular:
+Grammar (fits into the precedence chain just below assignment and above the
+`:::` structural-offload level of §1.5):
 
-- it is distinct from the core **structural-offload send** `:::` (§1.5), a real
-  lexed operator; and
-- it does not introduce scope-resolution or any new punctuation into the
-  grammar — a `.sleela` source file still only uses the operators in §1.5.
+    guide-chain  ::= new-expr ( "::" guide-name )+
+    new-expr     ::= "new" type "(" [ arg-list ] ")"      // the constructor head
+    guide-name   ::= ident                                 // a zero-arg method of the head's class
+
+Semantics:
+
+- The **head** must be a constructor call `new T(...)`. Each **Guide** names a
+  **zero-argument method** of class `T`. The analyzer rejects a Guide that is
+  not such a method ("Guide 'x' is not a method of class 'T'").
+- The chain **applies each Guide in order** to the constructed instance and
+  **evaluates to that instance** (it is fluent), so a perfect Constructor seats
+  its Guides inline and the whole expression is the finished object.
+- It lowers to existing opcodes only: `OP_NEWSTRUCT` (+ field init / ctor) for
+  the head, then, per Guide, `OP_DUP` + `OP_CALL T::guide` + `OP_POP`. No new
+  opcode and no artifact-ABI change.
+
+Disambiguation from the three other `::` uses (unchanged): the chain engages
+**only** when the head parses as a `new T(...)` expression and the next tokens
+are `:: <ident>`. A bare `obj::method` is still a **method reference** (§1.5
+family), `ran::gc` / `ran::mem` is still the **GC-hint system namespace** (§13),
+and `import ::dynamite::…` / `::permissible::…` are still **qualified imports**.
+The greedily-lexed `:::` (§1.5) is never split into `::` + `:`.
+
+Version gate: the Guide chain requires `#sleela 2.3`; a source below 2.3 using
+it is rejected ("Guide chains … require syntax 2.3").
 
 ### 17.2 The finite register (21 seatings, 7 categories, a signed band)
 
@@ -1136,11 +1158,25 @@ Notice of Approach and grants or withholds **runnability** by quorum; only on
 granted favor does the Constructor run, dispose its Guides, and **liberate** the
 object so it lives free of the moment that made it.
 
-### 17.5 Where this is specified
+### 17.5 Where this is implemented and specified
 
-The normative source is the package itself (the source is the authority):
+The `::` Guide chain is implemented in the front end and executed on the native
+Core:
 
-- `lib/philosophers/*.sleela` — the six Constructor classes plus `SLOrdain`.
+- `impl/frontend/lexer.{h,cpp}` — the `::` token (`Tok::DoubleColon`) already
+  existed; no lexer change was needed.
+- `impl/frontend/ast.h` — `GuideChainExpr { head; guides }`.
+- `impl/frontend/parser.cpp` — `parseGuideChain()` (between assignment and the
+  `:::` level), entered only on a `new T(...)` head followed by `:: <ident>`.
+- `impl/frontend/semantic.cpp` — `guideChain()`: head must be a known class,
+  each Guide a zero-arg method; version-gated at 2.3.
+- `impl/frontend/compiler.cpp` — `emitGuideChain()`: head then per-Guide
+  `OP_DUP`/`OP_CALL`/`OP_POP`; no new Core opcode.
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.3.
+
+The companion library and docs (the source is the authority):
+
+- `lib/philosophers/*.sleela` — the Constructor classes plus `SLOrdain`.
 - `lib/philosophers/PHILOSOPHERS.CONSTRUCTORS.md` — the Constructors, lifecycle,
   and full per-class method reference.
 - `lib/philosophers/PHILOSOPHERS.CATEGORICAL.md` — the 21 Guides and Ordain,

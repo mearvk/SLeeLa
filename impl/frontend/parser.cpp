@@ -384,9 +384,30 @@ StmtP Parser::parseSimpleStatement(){
 }
 ExprP Parser::parseExpr(){return parseAssignment();}
 ExprP Parser::parseAssignment(){
-    ExprP e=parseStructOffload();
+    ExprP e=parseGuideChain();
     if(check(Tok::Assign)||check(Tok::PlusAssign)||check(Tok::MinusAssign)||check(Tok::StarAssign)||check(Tok::SlashAssign)||check(Tok::PercentAssign)){
         std::string op=cur().text; i_++; return std::make_unique<AssignmentExpr>(op,std::move(e),parseAssignment());
+    }
+    return e;
+}
+// Guide chain (syntax 2.3): `new T(...) :: Guide :: Guide ...`.
+// Sits just below assignment, above `:::`. It only engages when the parsed head
+// is a constructor call (NewExpr) AND the next tokens are `:: <Ident>`, so it
+// never shadows the three existing `::` uses -- method references (obj::method),
+// the `ran::` GC-hint scope, and qualified `::dynamite`/`::permissible` imports --
+// all of which are consumed earlier, inside parsePrimary/parsePostfix or at the
+// top level, on a non-NewExpr head. A trailing `::` after `new T()` is not eaten
+// by parsePostfix, so it reaches this level cleanly.
+ExprP Parser::parseGuideChain(){
+    ExprP e=parseStructOffload();
+    if(dynamic_cast<NewExpr*>(e.get())
+       && check(Tok::DoubleColon) && peek(1).kind==Tok::Ident){
+        auto gc=std::make_unique<GuideChainExpr>(std::move(e));
+        while(check(Tok::DoubleColon) && peek(1).kind==Tok::Ident){
+            ++i_; // consume '::'
+            gc->guides.push_back(cur().text); ++i_; // consume the Guide name
+        }
+        return gc;
     }
     return e;
 }

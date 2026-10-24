@@ -125,6 +125,13 @@ struct ArrayAccess:Expr{ExprP base,index;ArrayAccess(ExprP b,ExprP i):base(std::
 // Method reference `base::method`.
 struct MethodReferenceExpr:Expr{ExprP base;std::string method;MethodReferenceExpr(ExprP b,std::string m):base(std::move(b)),method(std::move(m)){}};
 
+// Guide chain (syntax 2.3): `new T(...) :: Guide :: Guide ...`.
+// The head is a constructor-style call (NewExpr); each guide is the name of a
+// zero-argument method on the head's class, applied in order. The chain
+// evaluates to the head instance (fluent), so a perfect Constructor can seat
+// its Guides inline. See SLEELA.syntax section 17 and lib/philosophers.
+struct GuideChainExpr:Expr{ExprP head;std::vector<std::string> guides;explicit GuideChainExpr(ExprP h):head(std::move(h)){}};
+
 struct Stmt{virtual ~Stmt()=default;};using StmtP=std::unique_ptr<Stmt>;
 struct VarDecl:Stmt{std::string type,name;ExprP init;};
 struct Assign:Stmt{std::string name;ExprP value;};
