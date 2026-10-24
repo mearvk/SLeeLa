@@ -52,5 +52,48 @@ gating, bounds, clamping, fallback). The per-OS backends compile against their
 platform SDKs. The SLeeLa developer surface is in `lib/ballum/`.
 
 A live VM bridge (`impl/core/ballum_vm_bridge.*` + `SLUI_FN_BALLUM_*` dispatch),
-mirroring the Wi-Fi bridge, is the planned next step to wire the `lib/ballum`
-facade to the native manager at runtime.
+mirroring the Wi-Fi bridge, wires the `lib/ballum` facade to the native manager
+at runtime.
+
+## 7. Keyboard input
+
+Alongside pointer input, the bridge exposes a non-blocking key poll so a
+full-screen session can exit by key. The backend vtable gains an optional
+`poll_key(context, int *out)`; the manager passes it through
+(`ballum_manager_poll_key` / `ballum_manager_has_keyboard`), and the VM bridge
+surfaces `uiBallumPollKey()` / `uiBallumHasKeyboard()`. Key codes are the
+backend-neutral `ballum_key_t` set — the one a session needs is
+`BALLUM_KEY_ESC` (27). A backend without a keyboard queue reports no keys and
+`poll_key` returns `UNSUPPORTED` (fail closed — never a false key). Mapping each
+per-OS keysym (X11 `XKeyEvent`, Win32 `WM_KEYDOWN` VK, macOS key code) onto
+`ballum_key_t` is the per-OS follow-up, exactly like the pointer path.
+
+## 8. Full-screen session (white splash + logo fade + ESC)
+
+`lib/ballum/SLBallumSession` is the user-facing, easy-startup session built on
+`SLBallumScreen` (pixels/geometry) and `SLBallumInput` (pointer + the key poll).
+A session is **full screen by nature** — Ballum owns the whole display, not a
+window. The session:
+
+1. paints the display **pure white**,
+2. **fades a logo in from the white background** across a configurable number of
+   frames (opacity 0→100 %, blended toward the background so it emerges rather
+   than pops in), and
+3. runs until **ESC**: the first ESC yields full screen to **frame mode**, a
+   second ESC **exits** the program. `requestExit()` and a pointer long-press
+   are always-available fallbacks for hosts without a keyboard.
+
+Easy startup is three lines — `configure()`, `start()`, then a `step()` loop —
+with sensible defaults (primary display, the national bitcoin / ICC logo, a
+~48-frame fade) overridable by the fluent `withLogo` / `withFadeFrames` /
+`withDisplayIndex` / `withBackground` setters.
+
+**Logo bytes.** The session *names* its logo by URL and runs the fade timeline;
+the actual image decode + composite is a host hook (`uiBallumLogoReady()` /
+`uiBallumLogoBlend(...)`). The portable core ships no image decoder, so by
+default no logo is ready and the blend is a clean no-op — the white fill, the
+fade timeline, and ESC still run; a host build that links a decoder overrides
+the weak hook to blit the decoded logo at the requested opacity. Fail closed:
+never a false "ready", never a blit the core cannot perform.
+
+Runnable demonstrator: `lib/ballum/session-demo.sleela`.

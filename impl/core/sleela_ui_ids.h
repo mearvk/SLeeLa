@@ -179,6 +179,10 @@ typedef enum {
     SLUI_FN_BALLUM_EVENT_CONTACT,    /* uiBallumEventContact() -> touch contact id */
     SLUI_FN_BALLUM_EVENT_MODIFIERS,  /* uiBallumEventModifiers() -> bitmask */
     SLUI_FN_BALLUM_EVENT_TYPE_NAME,  /* uiBallumEventTypeName(type:i) -> string */
+    SLUI_FN_BALLUM_HAS_KEYBOARD,     /* uiBallumHasKeyboard() -> 1/0 */
+    SLUI_FN_BALLUM_POLL_KEY,         /* uiBallumPollKey() -> key code (0 none, 27 ESC, 13 ENTER, 32 SPACE) */
+    SLUI_FN_BALLUM_LOGO_READY,       /* uiBallumLogoReady() -> 1 host decoder supplied the session logo, 0 not */
+    SLUI_FN_BALLUM_LOGO_BLEND,       /* uiBallumLogoBlend(id:i,pct:i,w:i,h:i,r:i,g:i,b:i) -> status */
 
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;

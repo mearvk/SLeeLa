@@ -86,8 +86,30 @@ class SLBallumInput {
 
   void setDragThreshold(int px) { if (px >= 0) { dragThreshold = px; } }
 
+  < --- key codes (ballum_key_t) --- >
+  static final int KEY_NONE = 0;
+  static final int KEY_ENTER = 13;
+  static final int KEY_ESC = 27;
+  static final int KEY_SPACE = 32;
+
+  < the last key poll_key() returned (0 none) >
+  int curKey;
+
   < Is a pointer-input backend available on this host? >
   boolean available() { return uiBallumHasInput() == 1; }
+
+  < Is a keyboard backend available on this host? >
+  boolean hasKeyboard() { return uiBallumHasKeyboard() == 1; }
+
+  < pollKey(): dequeue one key, returning its code (0 none, 27 ESC, 13 ENTER, >
+  < 32 SPACE, printable ASCII as itself). Fail closed: a host with no keyboard >
+  < backend always returns KEY_NONE, never a false key. >
+  int pollKey() {
+    curKey = uiBallumPollKey();
+    return curKey;
+  }
+  int key() { return curKey; }
+  boolean isEscape() { return curKey == KEY_ESC; }
 
   < |a - b| for the threshold test. >
   int absDiff(int a, int b) { if (a >= b) { return a - b; } return b - a; }

@@ -255,3 +255,18 @@ ballum_status_t ballum_manager_poll_event(ballum_manager_t *manager,
         return BALLUM_STATUS_UNSUPPORTED;
     return manager->backend->poll_event(manager->backend_context, out);
 }
+
+int ballum_manager_has_keyboard(const ballum_manager_t *manager) {
+    if (!manager) return -1;
+    return (manager->backend && manager->backend->poll_key) ? 1 : 0;
+}
+
+ballum_status_t ballum_manager_poll_key(ballum_manager_t *manager, int *out) {
+    if (!manager || !out) return BALLUM_STATUS_INVALID_ARGUMENT;
+    if (!manager->initialized) return BALLUM_STATUS_NOT_INITIALIZED;
+    /* Always leave `out` well-defined, even on the no-keyboard path. */
+    *out = BALLUM_KEY_NONE;
+    if (!manager->backend || !manager->backend->poll_key)
+        return BALLUM_STATUS_UNSUPPORTED;
+    return manager->backend->poll_key(manager->backend_context, out);
+}

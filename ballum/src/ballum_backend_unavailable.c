@@ -61,6 +61,9 @@ static const ballum_backend_t k_unavailable = {
     unavail_set_gamma,
     /* poll_event = NULL: the fallback has no input queue, so the manager
      * reports has_input()==0 and poll returns UNSUPPORTED (never a fake event). */
+    0,
+    /* poll_key = NULL: the fallback has no keyboard queue either, so
+     * has_keyboard()==0 and poll_key returns UNSUPPORTED (never a fake key). */
     0
 };
 

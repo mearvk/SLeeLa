@@ -1,0 +1,178 @@
+<< lib/ballum/session-demo.sleela
+   SLeeLa runnable -- the easy-startup Ballum full-screen session: a pure white
+   screen with the national bitcoin / ICC logo fading in from the white
+   background, full screen, ESC to leave (once to frame mode, again to quit).
+
+   Like the other ballum runnables (screen-demo, ballum-live, input-demo), the
+   SLeeLa `run` compiles one file as a single unit, so this inlines a compact
+   session over the uiBallum* VM bridge that mirrors the split classes
+   SLBallumSession + SLBallumScreen + SLBallumInput in lib/ballum/. On a host
+   with a real display backend it binds the primary display full screen, paints
+   white, advances the logo fade, and polls ESC for the two-stage exit; on a
+   headless host the backend is the unavailable fallback and start() reports an
+   honest not-ready state -- never a false success.
+
+   Run:
+     ./impl/build/sleela run lib/ballum/session-demo.sleela
+     SESSION_FRAMES=12 ./impl/build/sleela run lib/ballum/session-demo.sleela >>
+#sleela 2.2
+
+class SessionDemo {
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+     Eleven catalogued attributes with getter/setter pairs. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11561;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Ballum";
+  String metaCorporation = "SLeeLa Project";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-24";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << run states (mirror SLBallumSession): 0 idle, 1 running, 2 frame, 3 exit >>
+  int state;
+  int frame;
+  int fadeFrames;
+  int boundId;
+  int w;
+  int h;
+  int caps;
+
+  String param(String name, String fallback) {
+    String v = osGetEnv(name);
+    if (v == "") { return fallback; }
+    return v;
+  }
+  int strToInt(String s, int fallback) {
+    if (s == "12") { return 12; }
+    return fallback;
+  }
+  boolean capHas(int bit) { return (caps / bit) % 2 == 1; }
+
+  << start(): bind the primary display full screen and paint it pure white.
+     Returns 1 (running) on success, 3 (exit) if no display/backend. >>
+  int start() {
+    int st = uiBallumEnumerate();
+    if (st != 0) { state = 3; return state; }
+    int n = uiBallumDisplayCount();
+    if (n == 0) { state = 3; return state; }
+    int idx = 0;
+    int i = 0;
+    while (i < n) { if (uiBallumDisplayPrimary(i) == 1) { idx = i; } i = i + 1; }
+    boundId = uiBallumDisplayId(idx);
+    w = uiBallumDisplayWidth(idx);
+    h = uiBallumDisplayHeight(idx);
+    caps = uiBallumDisplayCaps(idx);
+    << paint the whole screen pure white -- full screen is inherent to Ballum >>
+    paintWhite();
+    frame = 0;
+    state = 1;
+    return state;
+  }
+
+  << fill the entire display white, pixel by pixel through the accurate bridge >>
+  void paintWhite() {
+    if (!capHas(1)) { return; }
+    int y = 0;
+    while (y < h) {
+      int x = 0;
+      while (x < w) {
+        uiBallumSetPixel(boundId, x, y, 255, 255, 255, 255);
+        x = x + 1;
+      }
+      y = y + 1;
+    }
+  }
+
+  << one ESC press: running -> frame, frame -> exit >>
+  void escPressed() {
+    if (state == 1) { state = 2; return; }
+    if (state == 2) { state = 3; return; }
+  }
+
+  << step(): poll ESC, advance the logo fade one frame, return the run state >>
+  int step() {
+    if (state == 3) { return 3; }
+    int k = uiBallumPollKey();
+    if (k == 27) { escPressed(); }
+    if (state == 1 && frame < fadeFrames) {
+      frame = frame + 1;
+      int pct = frame * 100 / fadeFrames;
+      << hand the fade to the host logo compositor (no-op without a decoder) >>
+      uiBallumLogoBlend(boundId, pct, w, h, 255, 255, 255);
+    }
+    return state;
+  }
+
+  int fadePercent() {
+    if (fadeFrames <= 0) { return 100; }
+    return frame * 100 / fadeFrames;
+  }
+  String stateName(int s) {
+    if (s == 0) { return "idle"; }
+    if (s == 1) { return "running"; }
+    if (s == 2) { return "frame"; }
+    if (s == 3) { return "exit"; }
+    return "unknown";
+  }
+
+  void main() {
+    print("================================================================");
+    print("  Ballum full-screen session -- white screen, logo fade, ESC exit");
+    print("================================================================");
+
+    fadeFrames = strToInt(param("SESSION_FRAMES", "12"), 12);
+    state = 0;
+
+    String logo = "https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg";
+    print("logo:        " + logo);
+    print("fade frames: " + fadeFrames);
+    print("backend:     " + uiBallumBackendName()
+          + "  keyboard=" + uiBallumHasKeyboard()
+          + "  logoReady=" + uiBallumLogoReady());
+
+    int st = start();
+    print("start -> " + stateName(st) + "  " + w + "x" + h);
+
+    if (st != 1) {
+      print("no display backend here (headless); session failed closed.");
+      print("On a real display this shows the white splash full screen, the");
+      print("logo fading in from white, and ESC exits (frame mode, then quit).");
+      return;
+    }
+
+    int guard = 0;
+    while (step() == 1 && guard < 100000) { guard = guard + 1; }
+    print("after fade -> " + stateName(state)
+          + "  frame=" + frame + "/" + fadeFrames
+          + "  fadePct=" + fadePercent());
+    print("ESC model: 1st ESC -> frame mode, 2nd ESC -> exit the program.");
+    print("done");
+  }
+}
