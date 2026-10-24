@@ -1,0 +1,96 @@
+<< lib/ballum/SLBallumEffect.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The catalog of Ballum transition effects a session uses to reveal
+     a logo over a background across its fade timeline. Each effect id mirrors
+     the native ballum_effects.h / ballum_fx_t set one-for-one; the native
+     compositor (uiBallumLogoBlend) applies the chosen effect per frame.
+
+   Effects are deliberately broad and fun: fades, wipes, iris, bars/blinds,
+   dissolve, pixelate, slides, zoom, spotlight, ripple, checker, diamond, a
+   radial clock wipe, and sparkle. Pick one with id() or byName(); a session
+   passes the id to uiBallumLogoSetEffect before its fade.
+
+   Family: ballum. Pure catalog; the compositing lives in native code. >>
+#sleela 2.2
+class SLBallumEffect {
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+     Eleven catalogued attributes with getter/setter pairs. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11562;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Ballum";
+  String metaCorporation = "SLeeLa Project";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-24";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "SLeeLa Ballum transition effects (lib/ballum)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << effect ids -- must match ballum_fx_t in ballum/include/.../ballum_effects.h >>
+  static final int FADE = 0;
+  static final int WIPE_LEFT = 1;
+  static final int WIPE_RIGHT = 2;
+  static final int WIPE_UP = 3;
+  static final int WIPE_DOWN = 4;
+  static final int IRIS_IN = 5;
+  static final int IRIS_OUT = 6;
+  static final int BARS = 7;
+  static final int BLINDS = 8;
+  static final int DISSOLVE = 9;
+  static final int PIXELATE = 10;
+  static final int SLIDE_LEFT = 11;
+  static final int SLIDE_UP = 12;
+  static final int ZOOM = 13;
+  static final int SPOTLIGHT = 14;
+  static final int RIPPLE = 15;
+  static final int CHECKER = 16;
+  static final int DIAMOND = 17;
+  static final int CLOCK = 18;
+  static final int SPARKLE = 19;
+
+  << How many effects the native catalog advertises (authoritative). >>
+  int count() { return uiBallumFxCount(); }
+
+  << The lowercase name of an effect id (e.g. 5 -> "iris-in"). >>
+  String name(int fx) { return uiBallumFxName(fx); }
+
+  << Resolve an effect id by name; unknown names resolve to FADE. >>
+  int byName(String n) { return uiBallumFxByName(n); }
+
+  << A newline-separated listing of every effect: "id name". >>
+  String catalog() {
+    String s = "";
+    int i = 0;
+    int c = count();
+    while (i < c) {
+      if (i > 0) { s = s + "\n"; }
+      s = s + i + " " + name(i);
+      i = i + 1;
+    }
+    return s;
+  }
+}

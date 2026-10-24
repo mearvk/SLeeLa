@@ -96,7 +96,9 @@ static ballum_status_t mock_poll_event(void *ctx, ballum_pointer_event_t *out) {
 
 static const ballum_backend_t g_mock = {
     "mock", mock_enumerate, mock_set_pixel, mock_get_pixel, mock_blit,
-    mock_set_brightness, mock_set_warmth, mock_set_gamma, mock_poll_event
+    mock_set_brightness, mock_set_warmth, mock_set_gamma, mock_poll_event,
+    /* poll_key: this mock exercises the pointer path only; no keyboard. */
+    0
 };
 
 int main(void) {

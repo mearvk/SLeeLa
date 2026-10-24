@@ -96,6 +96,10 @@ class SLBallumSession {
 
   < startup configuration (easy defaults; override before start()) >
   String logoUrl;
+  < local file path to decode the logo from (empty = none; URL is for display) >
+  String logoPath;
+  < transition effect id (SLBallumEffect.*); default FADE >
+  int effect;
   int fadeFrames;
   int displayIndex;
   < background is pure white by default, as an RGB triple >
@@ -121,6 +125,8 @@ class SLBallumSession {
     input = new SLBallumInput();
     input.configure();
     logoUrl = defaultLogoUrl();
+    logoPath = "";
+    effect = SLBallumEffect.FADE;
     fadeFrames = 48;
     displayIndex = -1;
     bgR = 255; bgG = 255; bgB = 255;
@@ -138,6 +144,12 @@ class SLBallumSession {
   << Fluent, optional overrides -- call before start(). Each returns this so a
     caller can chain or simply call them in sequence. >>
   SLBallumSession withLogo(String url) { if (url != "") { logoUrl = url; } return this; }
+  << Decode the logo from a local file (a JPEG the host has fetched). The URL
+     set by withLogo is for display/provenance; this path is what the native
+     image handler decodes. >>
+  SLBallumSession withLogoFile(String path) { if (path != "") { logoPath = path; } return this; }
+  << Choose a transition effect (SLBallumEffect.* -- FADE, IRIS_IN, SPARKLE...). >>
+  SLBallumSession withEffect(int fx) { effect = fx; return this; }
   SLBallumSession withFadeFrames(int frames) { if (frames > 0) { fadeFrames = frames; } return this; }
   SLBallumSession withDisplayIndex(int index) { displayIndex = index; return this; }
   SLBallumSession withBackground(int r, int g, int b) { bgR = r; bgG = g; bgB = b; return this; }
@@ -157,6 +169,11 @@ class SLBallumSession {
     < Paint the whole display the background color (pure white by default). >
     paintBackground();
     frame = 0;
+    << Decode the logo (if a local file was given) and arm the chosen effect. The
+       image handler fails closed: a missing/undecodable file leaves logoReady 0,
+       and the session still runs its white fill + fade timeline + ESC. >>
+    if (logoPath != "") { uiBallumLogoLoad(logoPath); }
+    uiBallumLogoSetEffect(effect);
     logoReady = uiBallumLogoReady();
     state = RUNNING;
     return state;

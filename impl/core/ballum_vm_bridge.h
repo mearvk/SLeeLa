@@ -57,10 +57,15 @@ int         sleela_ballum_vm_poll_key(void);                 /* dequeue one key 
  * no-ops -- logo_ready() reports 0 and logo_blend() does nothing and returns a
  * clean status, so the session's white fill + fade timeline + ESC still run and
  * never report a false success. */
-int         sleela_ballum_vm_logo_ready(void);               /* 1 host decoder supplied the logo, 0 not */
+int         sleela_ballum_vm_logo_ready(void);               /* 1 logo decoded + loaded, 0 not */
+int         sleela_ballum_vm_logo_load(const char *path);    /* decode a JPEG logo from a file -> status */
+int         sleela_ballum_vm_logo_set_effect(int fx);        /* choose a transition effect (ballum_fx_t) -> status */
 int         sleela_ballum_vm_logo_blend(int display_id, int opacity_percent,
                                         int screen_w, int screen_h,
-                                        int bg_r, int bg_g, int bg_b); /* -> status */
+                                        int bg_r, int bg_g, int bg_b); /* composite one frame -> status */
+int         sleela_ballum_vm_fx_count(void);                 /* number of transition effects */
+const char *sleela_ballum_vm_fx_name(int fx);                /* effect name, e.g. "iris-in" */
+int         sleela_ballum_vm_fx_by_name(const char *name);   /* effect id for a name (fade if unknown) */
 #ifdef __cplusplus
 }
 #endif

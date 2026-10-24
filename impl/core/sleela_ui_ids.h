@@ -181,8 +181,13 @@ typedef enum {
     SLUI_FN_BALLUM_EVENT_TYPE_NAME,  /* uiBallumEventTypeName(type:i) -> string */
     SLUI_FN_BALLUM_HAS_KEYBOARD,     /* uiBallumHasKeyboard() -> 1/0 */
     SLUI_FN_BALLUM_POLL_KEY,         /* uiBallumPollKey() -> key code (0 none, 27 ESC, 13 ENTER, 32 SPACE) */
-    SLUI_FN_BALLUM_LOGO_READY,       /* uiBallumLogoReady() -> 1 host decoder supplied the session logo, 0 not */
+    SLUI_FN_BALLUM_LOGO_READY,       /* uiBallumLogoReady() -> 1 logo decoded + loaded, 0 not */
     SLUI_FN_BALLUM_LOGO_BLEND,       /* uiBallumLogoBlend(id:i,pct:i,w:i,h:i,r:i,g:i,b:i) -> status */
+    SLUI_FN_BALLUM_LOGO_LOAD,        /* uiBallumLogoLoad(path:s) -> status (decode a JPEG logo) */
+    SLUI_FN_BALLUM_LOGO_SET_EFFECT,  /* uiBallumLogoSetEffect(fx:i) -> status */
+    SLUI_FN_BALLUM_FX_COUNT,         /* uiBallumFxCount() -> number of effects */
+    SLUI_FN_BALLUM_FX_NAME,          /* uiBallumFxName(fx:i) -> string name */
+    SLUI_FN_BALLUM_FX_BY_NAME,       /* uiBallumFxByName(name:s) -> effect id */
 
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;

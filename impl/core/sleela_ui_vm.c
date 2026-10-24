@@ -102,7 +102,7 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_BALLUM_EVENT_BUTTON: case SLUI_FN_BALLUM_EVENT_SOURCE:
         case SLUI_FN_BALLUM_EVENT_CONTACT: case SLUI_FN_BALLUM_EVENT_MODIFIERS:
         case SLUI_FN_BALLUM_HAS_KEYBOARD: case SLUI_FN_BALLUM_POLL_KEY:
-        case SLUI_FN_BALLUM_LOGO_READY:
+        case SLUI_FN_BALLUM_LOGO_READY: case SLUI_FN_BALLUM_FX_COUNT:
             return 0;
         /* 1 arg */
         case SLUI_FN_APP_CREATE: case SLUI_FN_APP_RUN: case SLUI_FN_APP_DESTROY:
@@ -124,6 +124,8 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_BALLUM_DISPLAY_WIDTH: case SLUI_FN_BALLUM_DISPLAY_HEIGHT:
         case SLUI_FN_BALLUM_DISPLAY_PRIMARY: case SLUI_FN_BALLUM_DISPLAY_CAPS:
         case SLUI_FN_BALLUM_STATUS_NAME: case SLUI_FN_BALLUM_EVENT_TYPE_NAME:
+        case SLUI_FN_BALLUM_LOGO_LOAD: case SLUI_FN_BALLUM_LOGO_SET_EFFECT:
+        case SLUI_FN_BALLUM_FX_NAME: case SLUI_FN_BALLUM_FX_BY_NAME:
             return 1;
         /* 2 args */
         case SLUI_FN_APP_PUMP: case SLUI_FN_APP_QUIT: case SLUI_FN_WINDOW_SET_TITLE:
@@ -333,6 +335,11 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_BALLUM_LOGO_BLEND:      return r_int(sleela_ballum_vm_logo_blend(
                                                  (int)ai(a,n,0), (int)ai(a,n,1), (int)ai(a,n,2),
                                                  (int)ai(a,n,3), (int)ai(a,n,4), (int)ai(a,n,5), (int)ai(a,n,6)));
+        case SLUI_FN_BALLUM_LOGO_LOAD:       return r_int(sleela_ballum_vm_logo_load(as_(a,n,0)));
+        case SLUI_FN_BALLUM_LOGO_SET_EFFECT: return r_int(sleela_ballum_vm_logo_set_effect((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_FX_COUNT:        return r_int(sleela_ballum_vm_fx_count());
+        case SLUI_FN_BALLUM_FX_NAME:         return r_str(sleela_ballum_vm_fx_name((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_FX_BY_NAME:      return r_int(sleela_ballum_vm_fx_by_name(as_(a,n,0)));
 
         case SLUI_FN_WIDGET_SET_TOGGLE:    slui_widget_set_toggle(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_VALUE:     slui_widget_set_value(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();

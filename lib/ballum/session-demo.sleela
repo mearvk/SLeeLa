@@ -59,6 +59,7 @@ class SessionDemo {
   int state;
   int frame;
   int fadeFrames;
+  int effect;
   int boundId;
   int w;
   int h;
@@ -124,7 +125,8 @@ class SessionDemo {
     if (state == 1 && frame < fadeFrames) {
       frame = frame + 1;
       int pct = frame * 100 / fadeFrames;
-      << hand the fade to the host logo compositor (no-op without a decoder) >>
+      << composite the logo with the selected effect at this progress (the host
+         image handler + effects engine; clean no-op if no logo decoded) >>
       uiBallumLogoBlend(boundId, pct, w, h, 255, 255, 255);
     }
     return state;
@@ -153,6 +155,26 @@ class SessionDemo {
     String logo = "https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg";
     print("logo:        " + logo);
     print("fade frames: " + fadeFrames);
+
+    << the many cool transition effects now available >>
+    print("");
+    print("transition effects (" + uiBallumFxCount() + "):");
+    int fi = 0;
+    while (fi < uiBallumFxCount()) {
+      print("  " + fi + "  " + uiBallumFxName(fi));
+      fi = fi + 1;
+    }
+
+    << pick an effect by name for this run (default iris-in); FX env overrides >>
+    effect = uiBallumFxByName(param("FX", "iris-in"));
+    print("");
+    print("selected effect: " + effect + " (" + uiBallumFxName(effect) + ")");
+
+    << optional: decode a local logo file if provided (host fetches the JPEG) >>
+    String file = param("LOGO_FILE", "");
+    if (file != "") { print("logo file: " + file + "  load=" + uiBallumLogoLoad(file)); }
+    uiBallumLogoSetEffect(effect);
+
     print("backend:     " + uiBallumBackendName()
           + "  keyboard=" + uiBallumHasKeyboard()
           + "  logoReady=" + uiBallumLogoReady());

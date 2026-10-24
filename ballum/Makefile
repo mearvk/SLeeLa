@@ -76,11 +76,16 @@ $(BUILD)/libsleela_ballum.a: $(LIB_OBJS)
 # ---- test: portable, links the unavailable backend (no display libs) -----
 # Built without any BACKEND_DEFINE so ballum_backend_select resolves to the
 # unavailable fallback; the test supplies its own mock backend.
+NANOJPEG_DIR := ../user-interface/src
 test: | $(BUILD)
 	$(CC) $(CFLAGS) \
 	  src/ballum_manager.c src/ballum_backend_select.c src/ballum_backend_unavailable.c \
 	  tests/test_ballum_manager.c -o $(BUILD)/ballum-manager-test
 	./$(BUILD)/ballum-manager-test
+	$(CC) $(CFLAGS) -I$(NANOJPEG_DIR) \
+	  src/ballum_effects.c src/ballum_image.c $(NANOJPEG_DIR)/nanojpeg.c \
+	  tests/test_ballum_effects.c -o $(BUILD)/ballum-effects-test -lm
+	./$(BUILD)/ballum-effects-test
 	@echo "ballum: all tests passed"
 
 clean:
