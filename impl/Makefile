@@ -210,7 +210,9 @@ else
     BALLUM_BACKEND_DEF :=
   endif
 endif
-BALLUM_OBJS := $(BALLUM_MANAGER_OBJ) $(BALLUM_SELECT_OBJ) $(BALLUM_UNAVAIL_OBJ) $(BALLUM_BACKEND_OBJ) $(BALLUM_VM_BRIDGE_OBJ)
+BALLUM_IMAGE_OBJ := $(BUILD)/ballum_image.o
+BALLUM_EFFECTS_OBJ := $(BUILD)/ballum_effects.o
+BALLUM_OBJS := $(BALLUM_MANAGER_OBJ) $(BALLUM_SELECT_OBJ) $(BALLUM_UNAVAIL_OBJ) $(BALLUM_BACKEND_OBJ) $(BALLUM_VM_BRIDGE_OBJ) $(BALLUM_IMAGE_OBJ) $(BALLUM_EFFECTS_OBJ)
 SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_NANOJPEG_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ) $(WIFI_OBJS) $(BALLUM_OBJS)
 # OpenMP is opt-in on macOS/Windows because Apple clang and some MinGW
 # distributions do not ship a compatible OpenMP runtime. Linux GCC enables it
@@ -537,8 +539,14 @@ $(BALLUM_SELECT_OBJ): $(BALLUM_DIR)/src/ballum_backend_select.c $(BALLUM_DIR)/in
 	$(CC) $(CFLAGS) $(BALLUM_INC) $(BALLUM_BACKEND_DEF) -c $< -o $@
 $(BALLUM_UNAVAIL_OBJ): $(BALLUM_DIR)/src/ballum_backend_unavailable.c $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
 	$(CC) $(CFLAGS) $(BALLUM_INC) -c $< -o $@
-$(BALLUM_VM_BRIDGE_OBJ): core/ballum_vm_bridge.c core/ballum_vm_bridge.h $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+$(BALLUM_VM_BRIDGE_OBJ): core/ballum_vm_bridge.c core/ballum_vm_bridge.h $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h $(BALLUM_DIR)/include/sleela_ballum/ballum_image.h $(BALLUM_DIR)/include/sleela_ballum/ballum_effects.h | $(BUILD)
 	$(CC) $(CFLAGS) $(BALLUM_INC) -Icore -c $< -o $@
+# Image handler: decodes JPEG via the bundled nanojpeg (in user-interface/src).
+$(BALLUM_IMAGE_OBJ): $(BALLUM_DIR)/src/ballum_image.c $(BALLUM_DIR)/include/sleela_ballum/ballum_image.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) -I$(SLUI_DIR)/src -c $< -o $@
+# Transition effects: pure per-pixel compositing, no deps.
+$(BALLUM_EFFECTS_OBJ): $(BALLUM_DIR)/src/ballum_effects.c $(BALLUM_DIR)/include/sleela_ballum/ballum_effects.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) -c $< -o $@
 ifeq ($(PLATFORM),macos)
 $(BALLUM_BACKEND_OBJ): $(BALLUM_BACKEND_SRC) $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(BALLUM_INC) $(BALLUM_BACKEND_DEF) -c $< -o $@

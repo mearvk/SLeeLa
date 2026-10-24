@@ -1,5 +1,7 @@
 #include "ballum_vm_bridge.h"
 #include "../../ballum/include/sleela_ballum/ballum_manager.h"
+#include "../../ballum/include/sleela_ballum/ballum_image.h"
+#include "../../ballum/include/sleela_ballum/ballum_effects.h"
 #include <string.h>
 
 /*
@@ -178,29 +180,61 @@ int sleela_ballum_vm_poll_key(void) {
     return key;
 }
 
-/* ---- logo splash compositing (host hook) --------------------------------
- * The portable core ships no image decoder, so by default no logo is ready and
- * the blend is a clean no-op: a full-screen session still paints white, runs
- * its fade timeline, and honors ESC. A host build that links an image decoder
- * overrides these (weak) definitions to decode the session logo and blit it
- * toward the background at the requested opacity. Fail closed: never a false
- * "ready", never a blit the core cannot actually perform. */
-#if defined(__GNUC__)
-__attribute__((weak)) int sleela_ballum_vm_logo_ready(void) { return 0; }
-__attribute__((weak)) int sleela_ballum_vm_logo_blend(int display_id, int opacity_percent,
-                                                      int screen_w, int screen_h,
-                                                      int bg_r, int bg_g, int bg_b) {
-    (void)display_id; (void)opacity_percent; (void)screen_w; (void)screen_h;
-    (void)bg_r; (void)bg_g; (void)bg_b;
-    return BALLUM_STATUS_UNSUPPORTED;
+/* ---- logo splash: real image handler + effects --------------------------
+ * The bridge now decodes a logo (JPEG via the bundled nanojpeg, through
+ * ballum_image) and composites it onto the display with a selectable transition
+ * effect (ballum_effects) for a given progress. A session loads the logo once
+ * (uiBallumLogoLoad), picks an effect (uiBallumLogoSetEffect), then calls
+ * logo_blend each frame. Fail closed: if no logo is loaded, logo_ready()==0 and
+ * logo_blend is a clean no-op, so the white fill + timeline + ESC still run and
+ * nothing false is drawn. */
+static ballum_image_t g_logo;
+static int            g_logo_loaded;
+static ballum_fx_t    g_logo_fx = BALLUM_FX_FADE;
+
+int sleela_ballum_vm_logo_load(const char *path) {
+    if (!path || path[0] == '\0') return (int)BALLUM_STATUS_INVALID_ARGUMENT;
+    if (g_logo_loaded) { ballum_image_free(&g_logo); g_logo_loaded = 0; }
+    ballum_image_init(&g_logo);
+    ballum_status_t st = ballum_image_load_file(&g_logo, path);
+    g_logo_loaded = (st == BALLUM_STATUS_OK && ballum_image_ready(&g_logo)) ? 1 : 0;
+    return (int)st;
 }
-#else
-int sleela_ballum_vm_logo_ready(void) { return 0; }
+
+int sleela_ballum_vm_logo_set_effect(int fx) {
+    if (fx < 0 || fx >= (int)BALLUM_FX__COUNT) return (int)BALLUM_STATUS_INVALID_ARGUMENT;
+    g_logo_fx = (ballum_fx_t)fx;
+    return (int)BALLUM_STATUS_OK;
+}
+
+int sleela_ballum_vm_logo_ready(void) {
+    return (g_logo_loaded && ballum_image_ready(&g_logo)) ? 1 : 0;
+}
+
 int sleela_ballum_vm_logo_blend(int display_id, int opacity_percent,
                                 int screen_w, int screen_h,
                                 int bg_r, int bg_g, int bg_b) {
-    (void)display_id; (void)opacity_percent; (void)screen_w; (void)screen_h;
-    (void)bg_r; (void)bg_g; (void)bg_b;
-    return BALLUM_STATUS_UNSUPPORTED;
+    if (!sleela_ballum_vm_logo_ready()) return (int)BALLUM_STATUS_UNSUPPORTED;
+    if (ensure_manager() != BALLUM_STATUS_OK) return (int)BALLUM_STATUS_BACKEND_UNAVAILABLE;
+    if (screen_w <= 0 || screen_h <= 0) return (int)BALLUM_STATUS_INVALID_ARGUMENT;
+
+    ballum_color_t bg = ballum_color_rgb((uint8_t)bg_r, (uint8_t)bg_g, (uint8_t)bg_b);
+    int t = opacity_percent < 0 ? 0 : (opacity_percent > 100 ? 100 : opacity_percent);
+
+    /* Composite the whole frame: for each pixel, sample the logo fitted/centered
+     * on the display, run the selected effect at progress t, and plot it. */
+    for (int y = 0; y < screen_h; ++y) {
+        for (int x = 0; x < screen_w; ++x) {
+            ballum_color_t fg = ballum_image_sample_fit(&g_logo, screen_w, screen_h, x, y);
+            ballum_color_t out = ballum_fx_pixel(g_logo_fx, t, screen_w, screen_h, x, y, fg, bg);
+            ballum_point_t at; at.x = x; at.y = y;
+            ballum_manager_set_pixel(&g_manager, (uint32_t)display_id, at, out);
+        }
+    }
+    return (int)BALLUM_STATUS_OK;
 }
-#endif
+
+/* ---- effect catalog passthroughs ---------------------------------------- */
+int sleela_ballum_vm_fx_count(void) { return ballum_fx_count(); }
+const char *sleela_ballum_vm_fx_name(int fx) { return ballum_fx_name((ballum_fx_t)fx); }
+int sleela_ballum_vm_fx_by_name(const char *name) { return (int)ballum_fx_by_name(name); }

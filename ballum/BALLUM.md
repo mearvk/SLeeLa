@@ -88,12 +88,31 @@ with sensible defaults (primary display, the national bitcoin / ICC logo, a
 ~48-frame fade) overridable by the fluent `withLogo` / `withFadeFrames` /
 `withDisplayIndex` / `withBackground` setters.
 
-**Logo bytes.** The session *names* its logo by URL and runs the fade timeline;
-the actual image decode + composite is a host hook (`uiBallumLogoReady()` /
-`uiBallumLogoBlend(...)`). The portable core ships no image decoder, so by
-default no logo is ready and the blend is a clean no-op — the white fill, the
-fade timeline, and ESC still run; a host build that links a decoder overrides
-the weak hook to blit the decoded logo at the requested opacity. Fail closed:
+**Logo bytes.** The session loads its logo through the **image handler**
+(`ballum/src/ballum_image.c`, `uiBallumLogoLoad(path)`), which decodes a JPEG
+with the bundled nanojpeg (MIT) into an RGBA buffer and samples it scaled and
+centered onto the display. Fail closed: a missing/undecodable file leaves
+`uiBallumLogoReady()==0`, and the white fill + fade timeline + ESC still run —
 never a false "ready", never a blit the core cannot perform.
 
-Runnable demonstrator: `lib/ballum/session-demo.sleela`.
+## 9. Transition effects
+
+The logo reveal runs through a catalog of **transition effects**
+(`ballum/src/ballum_effects.c`, `ballum_fx_t`): a pure, deterministic,
+integer-only per-pixel compositor. A session picks one with
+`uiBallumLogoSetEffect(fx)` (or `SLBallumSession.withEffect(...)`); each frame
+`uiBallumLogoBlend(...)` composites the fitted logo over the background at the
+frame's progress using the selected effect. The 20 effects:
+
+`fade`, `wipe-left/right/up/down`, `iris-in`, `iris-out`, `bars`, `blinds`,
+`dissolve`, `pixelate`, `slide-left`, `slide-up`, `zoom`, `spotlight`,
+`ripple`, `checker`, `diamond`, `clock`, `sparkle`.
+
+Every effect frames the reveal as "foreground over background as t goes
+0 → 100", so at full progress the logo is shown wherever it is opaque; a
+transparent logo pixel always stays background. The effect catalog is surfaced
+to SLeeLa by `SLBallumEffect` (ids + `uiBallumFxName`/`uiBallumFxByName`/
+`uiBallumFxCount`). Covered by `ballum/tests/test_ballum_effects.c`.
+
+Runnable demonstrator: `lib/ballum/session-demo.sleela` (lists every effect and
+runs one; `FX=iris-in LOGO_FILE=/path/logo.jpg` to pick an effect and a logo).
