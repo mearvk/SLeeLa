@@ -1,0 +1,160 @@
+<< lib/philosophers/SLPhilosopherSeating.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The twenty-one catalogued "seatings" a perfect Constructor can
+   admit -- each a Guide/Wisdom slot that governs the maturation of principle
+   over a static constructor. >>
+#sleela 2.1
+<< Family: philosophers. A Constructor in procedural design has only so many
+   perfect forms even across an infinite number of possible classes; this class
+   fixes the vocabulary of that finitude. There is a BASE of 21 seatings, and a
+   Constructor may admit a signed band of additional seatings in [-2, +6], so
+   the admitted capacity lives in [19, 27]. Each seating is a named Guide/Wisdom
+   that runs from Approach through Approval, naming the pace at which a man's
+   principle matures as his Health -- his IQ versus his Income -- changes.
+
+   This class is descriptive and finite on purpose: it does not execute a chain
+   (SLPhilosopherChain does that), it declares what a chain is allowed to seat
+   and in what order the seatings progress. Values are faithful where publicly
+   known and are "none" where they are a model of the project's own making. >>
+class SLPhilosopherSeating {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11563;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-24";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < --- the finitude of a perfect Constructor ------------------------------ >
+  < BASE seatings that every perfect Constructor approves by default. >
+  static final int BASE_SEATINGS = 21;
+  < The signed band of additional seatings a Constructor may admit. >
+  static final int ADDITIONAL_MIN = -2;
+  static final int ADDITIONAL_MAX = 6;
+  < Admitted capacity therefore lives in [MIN_CAPACITY, MAX_CAPACITY]. >
+  static final int MIN_CAPACITY = 19;
+  static final int MAX_CAPACITY = 27;
+
+  < --- the twenty-one seatings, Approach .. Approval (ordinals 0..20) ------ >
+  << The progression is a career of principle: it opens at Approach and closes
+     at Approval, passing through Life and Gains, the Ministerial and Guidance
+     offices, and the Professional and Executive tiers, with the Saints seating
+     as the matured conscience that the whole chain answers to. >>
+  static final int SEAT_APPROACH = 0;
+  static final int SEAT_NOTICE = 1;
+  static final int SEAT_PATCH = 2;
+  static final int SEAT_CONSTRUCTOR = 3;
+  static final int SEAT_AIM = 4;
+  static final int SEAT_GUIDE = 5;
+  static final int SEAT_WISDOM = 6;
+  static final int SEAT_LIFE = 7;
+  static final int SEAT_GAINS = 8;
+  static final int SEAT_HEALTH = 9;
+  static final int SEAT_GROWTH = 10;
+  static final int SEAT_PATTERN = 11;
+  static final int SEAT_MINISTERIAL = 12;
+  static final int SEAT_GUIDANCE = 13;
+  static final int SEAT_PROFESSIONAL = 14;
+  static final int SEAT_EXECUTIVE = 15;
+  static final int SEAT_SAINTS = 16;
+  static final int SEAT_FAVOR = 17;
+  static final int SEAT_IMPART = 18;
+  static final int SEAT_CONFORM = 19;
+  static final int SEAT_APPROVAL = 20;
+
+  < the number of additional seatings this register has admitted, in band >
+  int additional;
+  < admitted capacity = BASE + additional, clamped to [MIN, MAX] >
+  int capacity;
+
+  < Prepare the register at the default (band = 0) capacity. >
+  void create() {
+    additional = 0;
+    capacity = BASE_SEATINGS;
+  }
+
+  < Admit a signed number of additional seatings. Out-of-band requests are >
+  < clamped into [ADDITIONAL_MIN, ADDITIONAL_MAX]; the method returns the band >
+  < actually admitted so the caller learns the truth rather than a silent lie. >
+  int admit(int band) {
+    int b = band;
+    if (b < ADDITIONAL_MIN) { b = ADDITIONAL_MIN; }
+    if (b > ADDITIONAL_MAX) { b = ADDITIONAL_MAX; }
+    additional = b;
+    capacity = BASE_SEATINGS + b;
+    return b;
+  }
+
+  int getCapacity() { return capacity; }
+  int getAdditional() { return additional; }
+
+  < Is an ordinal a real seating in the current admitted capacity? >
+  boolean seats(int ordinal) {
+    return ordinal >= 0 && ordinal < capacity;
+  }
+
+  < Is a band value inside the signed admission band? >
+  boolean inBand(int band) {
+    return band >= ADDITIONAL_MIN && band <= ADDITIONAL_MAX;
+  }
+
+  < The human name of a baseline seating ordinal, or "unseated" past 20. >
+  String seatName(int ordinal) {
+    if (ordinal == SEAT_APPROACH) { return "Approach"; }
+    if (ordinal == SEAT_NOTICE) { return "Notice"; }
+    if (ordinal == SEAT_PATCH) { return "Patch"; }
+    if (ordinal == SEAT_CONSTRUCTOR) { return "Constructor"; }
+    if (ordinal == SEAT_AIM) { return "Aim"; }
+    if (ordinal == SEAT_GUIDE) { return "Guide"; }
+    if (ordinal == SEAT_WISDOM) { return "Wisdom"; }
+    if (ordinal == SEAT_LIFE) { return "Life"; }
+    if (ordinal == SEAT_GAINS) { return "Gains"; }
+    if (ordinal == SEAT_HEALTH) { return "Health"; }
+    if (ordinal == SEAT_GROWTH) { return "Growth"; }
+    if (ordinal == SEAT_PATTERN) { return "Pattern"; }
+    if (ordinal == SEAT_MINISTERIAL) { return "Ministerial"; }
+    if (ordinal == SEAT_GUIDANCE) { return "Guidance"; }
+    if (ordinal == SEAT_PROFESSIONAL) { return "Professional"; }
+    if (ordinal == SEAT_EXECUTIVE) { return "Executive"; }
+    if (ordinal == SEAT_SAINTS) { return "Saints"; }
+    if (ordinal == SEAT_FAVOR) { return "Favor"; }
+    if (ordinal == SEAT_IMPART) { return "Impart"; }
+    if (ordinal == SEAT_CONFORM) { return "Conform"; }
+    if (ordinal == SEAT_APPROVAL) { return "Approval"; }
+    return "unseated";
+  }
+}

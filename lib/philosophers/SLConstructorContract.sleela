@@ -1,0 +1,149 @@
+<< lib/philosophers/SLConstructorContract.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The time-bounded contract of the instantiative moment -- the
+   Constructor is of nature and time, and that moment does not outstay ~2
+   minutes. >>
+#sleela 2.1
+<< Family: philosophers. A Constructor is itself of nature and time: the moment
+   of instancing is an event with a beginning and an end, not a resident. This
+   contract fixes the length of that moment. By rule the instantiative moment
+   runs no more than about two minutes (120 seconds); once it closes, the object
+   lives FREE of the moment that made it. The contract then asks each Guide to
+   dispose, and the whole thing resolves to a quality, an effect, and an output.
+   The perpetual whistle of time is kept here as "ahead": the contract advances
+   a clock forward only, never back, so a closed moment can never re-open. >>
+class SLConstructorContract {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11566;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-24";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < --- the two-minute boundary and the phases of the moment --------------- >
+  < The instantiative moment runs no more than about two minutes. >
+  static final int MAX_SECONDS = 120;
+
+  static final int PHASE_SEALED = 0;
+  static final int PHASE_OPEN = 1;
+  static final int PHASE_CLOSED = 2;
+  static final int PHASE_FREE = 3;
+
+  < the clock of the moment, in seconds; only ever advanced ahead >
+  int clock;
+  < the current phase of the moment >
+  int phase;
+  < 1 once the object has been declared to live free of the moment >
+  int free;
+
+  < Prepare a sealed contract. The moment has not opened. >
+  void create() {
+    clock = 0;
+    phase = PHASE_SEALED;
+    free = 0;
+  }
+
+  < Open the instantiative moment. The clock starts at zero. >
+  void open() {
+    clock = 0;
+    phase = PHASE_OPEN;
+    free = 0;
+  }
+
+  < The perpetual whistle of time, kept as "ahead": advance the clock forward >
+  < by a number of seconds. Backward or zero ticks are ignored (time only ever >
+  < goes ahead). When the clock reaches the two-minute boundary the moment >
+  < closes on its own. Returns the clock after the tick. >
+  int tickAhead(int seconds) {
+    if (seconds > 0 && phase == PHASE_OPEN) {
+      clock = clock + seconds;
+      if (clock >= MAX_SECONDS) {
+        clock = MAX_SECONDS;
+        phase = PHASE_CLOSED;
+      }
+    }
+    return clock;
+  }
+
+  < Is the moment still inside its two-minute contract? >
+  boolean withinContract() {
+    return phase == PHASE_OPEN && clock < MAX_SECONDS;
+  }
+
+  < Clamp a requested duration (seconds) into [1, MAX_SECONDS]. Offered so a >
+  < caller never has to name this class's MAX_SECONDS constant directly. >
+  int clampSeconds(int seconds) {
+    int s = seconds;
+    if (s < 1) { s = 1; }
+    if (s > MAX_SECONDS) { s = MAX_SECONDS; }
+    return s;
+  }
+
+  < The two-minute boundary, as a method, for callers that need the number. >
+  int maxSeconds() { return MAX_SECONDS; }
+
+  < Close the moment deliberately (e.g. construction finished before 2 min). >
+  << Named sealMoment() rather than close(): a bare close() collides with the >>
+  << reserved Munction reach-handle built-in, so the contract uses its own name. >>
+  void sealMoment() {
+    if (phase == PHASE_OPEN) { phase = PHASE_CLOSED; }
+  }
+
+  < Declare the object free: it now lives on, released from the moment that >
+  < made it. Only a closed moment can be freed; the whistle never runs back. >
+  boolean liberate() {
+    if (phase == PHASE_CLOSED) {
+      phase = PHASE_FREE;
+      free = 1;
+      return true;
+    }
+    return false;
+  }
+
+  boolean livesFree() { return free == 1; }
+  int getClock() { return clock; }
+  int getPhase() { return phase; }
+
+  String phaseText() {
+    if (phase == PHASE_SEALED) { return "sealed"; }
+    if (phase == PHASE_OPEN) { return "open"; }
+    if (phase == PHASE_CLOSED) { return "closed"; }
+    if (phase == PHASE_FREE) { return "free"; }
+    return "unknown";
+  }
+}

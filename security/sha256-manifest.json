@@ -595,7 +595,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "1531301f4af525a76ea5bc72b2bc04f00a45b70f0d5d73c5af4c9fe6886c5717"
+      "sha256": "f7ffb7358d77dfbe6c9e8ddcbe5453ab2ef3e5a0c686a41a25685f8227629928"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -1067,7 +1067,7 @@
     },
     {
       "path": "lib/ballum/SLBallumSession.sleela",
-      "sha256": "70e089175f2a105d337f7239b2ed597e97a2b6921c917708c0c5147934fe7d00"
+      "sha256": "0632f4cc182df4566ef53d20d9efc269b342d6e4cf0ddcbd8681aa47882ef6bf"
     },
     {
       "path": "lib/ballum/SLBallumStatus.sleela",
@@ -1084,6 +1084,26 @@
     {
       "path": "lib/ballum/ballum.sleela",
       "sha256": "a1647bb48fdd78264564ec922fbb6fb7e7577c576d79235b9a9a972348565806"
+    },
+    {
+      "path": "lib/ballum/examples/01-screen-inspection.sleela",
+      "sha256": "be6344478fb543d37307a984d0777895ed2a54d8960158274677f9b77da8674f"
+    },
+    {
+      "path": "lib/ballum/examples/02-safe-pixel.sleela",
+      "sha256": "5877978bf7518f7beef91372f49ca75694909914c57dd0c56777d70e931098c2"
+    },
+    {
+      "path": "lib/ballum/examples/03-display-controls.sleela",
+      "sha256": "410d444938de34253f4603590afbdae77b10ce66a707b50e0fd552462318e813"
+    },
+    {
+      "path": "lib/ballum/examples/04-input-polling.sleela",
+      "sha256": "f983bc485893965a92a122e633690d6278893a22272b9ef971b3cf40ae1fe7ac"
+    },
+    {
+      "path": "lib/ballum/examples/05-headless-safe.sleela",
+      "sha256": "59bbf2a8d2d69ce48551214cbe54687d9f7db589a0eeee9e12e8fd1e9160193d"
     },
     {
       "path": "lib/ballum/input-demo.sleela",
@@ -1107,7 +1127,7 @@
     },
     {
       "path": "lib/ballum/session-demo.sleela",
-      "sha256": "da673a13626f1e5ff5e6b94d0436246e2794510cc7b0eacee94893211d94a900"
+      "sha256": "bdec4c42cece0504b06f544dba2c0a6aad85744296af62bc61f1636af94bd0d1"
     },
     {
       "path": "lib/bash/SLPackage.sleela",
@@ -45854,6 +45874,38 @@
       "sha256": "31b13aa3cdd19cd9adffde7d7a715d7c032e87c4bd04bca29251cfcbeaa13a46"
     },
     {
+      "path": "lib/philosophers/SLConstructorContract.sleela",
+      "sha256": "0096afe726ef8fa1fc5046f7575c13c96c96b260ce89d07e5274bb878505f5c7"
+    },
+    {
+      "path": "lib/philosophers/SLFavorMechanism.sleela",
+      "sha256": "802868e165b55d7291c99c2120d57a74995a5f97f53a8d6b96d6003452d30d19"
+    },
+    {
+      "path": "lib/philosophers/SLPackage.sleela",
+      "sha256": "8de6c4705d17acde5f89efab1810d41c929dc31936b041c0719a88ce2874786f"
+    },
+    {
+      "path": "lib/philosophers/SLPhilosopherChain.sleela",
+      "sha256": "093b302edd4ba6b2d6055374d3f276e77ac6524f34124b242a3f7f753ef25702"
+    },
+    {
+      "path": "lib/philosophers/SLPhilosopherConstructor.sleela",
+      "sha256": "c5593cb0c53ba5f8c6fdc4a8505b73ec176bae60c4c7f15f327126fd11395dac"
+    },
+    {
+      "path": "lib/philosophers/SLPhilosopherGuide.sleela",
+      "sha256": "51a83d75795d42c399d700cc418c25c87d8d1063b260cc71e593dc43d5686630"
+    },
+    {
+      "path": "lib/philosophers/SLPhilosopherSeating.sleela",
+      "sha256": "164ace6c0406bbd3c586ef1bf77b238fc9fbfefd69780f7cc8daa8289a635068"
+    },
+    {
+      "path": "lib/philosophers/philosophers-demo.sleela",
+      "sha256": "17076f73cb88c83211c6c7f76d5634c83f782d67caa515d93bbef585546b3cb7"
+    },
+    {
       "path": "lib/politico/SLPackage.sleela",
       "sha256": "e8d82f0442c7f33f1503e2309e5df992ecf96ac66c99692da3b428d7d87c782a"
     },
@@ -47816,10 +47868,6 @@
     {
       "path": "wifi-common/tests/test_wifi_manager.c",
       "sha256": "5cdb18e0b65bd3bc8aa41a899d8e3e912b6abe4b031d94db1543f0ced8fac82e"
-    },
-    {
-      "path": "ballum/BALLUM.md",
-      "sha256": "13a385fe47bcc533c35522bf06b686c7172c59341d85e61777a1ddedcfd1bb7e"
     }
   ]
 }
