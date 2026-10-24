@@ -47816,6 +47816,10 @@
     {
       "path": "wifi-common/tests/test_wifi_manager.c",
       "sha256": "5cdb18e0b65bd3bc8aa41a899d8e3e912b6abe4b031d94db1543f0ced8fac82e"
+    },
+    {
+      "path": "ballum/BALLUM.md",
+      "sha256": "13a385fe47bcc533c35522bf06b686c7172c59341d85e61777a1ddedcfd1bb7e"
     }
   ]
 }
