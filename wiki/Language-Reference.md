@@ -2,7 +2,7 @@
 
 The Sleela language is a Java-like language compiled by **Sleelvac™** and executed on the C/C++ core. This page is the practical reference; the normative documents are `COMPILER.md`, `SOURCE.md`, `SLEELA.md`, `STRUCTS.md`, and `VERSION.md`.
 
-> Supported `.sleela` syntax versions: **1.0 – 2.2** (default **2.2**). A file selects its version with the `#sleela` pragma; the compiler rejects a version outside this range with a clear diagnostic.
+> Supported `.sleela` syntax versions: **1.0 – 2.3** (default **2.3**). A file selects its version with the `#sleela` pragma; the compiler rejects a version outside this range with a clear diagnostic.
 
 ---
 

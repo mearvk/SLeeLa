@@ -1,0 +1,84 @@
+<< example/science/guide-chain-syntax.sleela
+   A runnable example of the FIRST-CLASS Guide-chain operator (syntax 2.3):
+
+       new T(...) :: Guide :: Guide ...
+
+   The `::` growth separator is now real language syntax -- lexed, parsed,
+   type-checked, compiled, and executed on the native Core -- not a string. Each
+   Guide names a zero-argument method of the constructed class; the chain
+   applies them in order and evaluates to the constructed instance (fluent).
+
+   Run:
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/science/guide-chain-syntax.sleela >>
+#sleela 2.3
+<< Family: example. A tiny "perfect Constructor" whose Guides are zero-arg
+   methods, seated inline with the :: operator. >>
+class Perfect {
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-24";
+  int metaScienceRating = 6;
+  String metaNationalSchedule = "none";
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+
+  < the seated growth, accumulated as each Guide fires >
+  int growth;
+  String trail;
+
+  void create() { growth = 0; trail = "Constructor()"; }
+
+  < --- the Guides: each a zero-argument method, seated via :: --- >
+  void patch() { growth = growth + 1;   trail = trail + " :: Patch"; }
+  void seed()  { growth = growth + 2;   trail = trail + " :: Seed"; }
+  void aim()   { growth = growth + 10;  trail = trail + " :: Aim"; }
+  void guide() { growth = growth + 100; trail = trail + " :: Guide"; }
+
+  int total()  { return growth; }
+  String chain() { return trail; }
+}
+
+class GuideChainSyntax {
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-24";
+  int metaScienceRating = 6;
+  String metaNationalSchedule = "none";
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+
+  void main() {
+    print("=== first-class Guide-chain operator (syntax 2.3) ===");
+
+    << The whole right-hand side is ONE expression: construct a Perfect, then
+       seat four Guides with ::, evaluating to the finished instance. >>
+    Perfect p = new Perfect() :: patch :: seed :: aim :: guide;
+
+    print("chain: " + p.chain());
+    print("total: " + p.total());
+
+    << A second chain with a different seating shows order matters and the
+       operator composes anywhere an expression is expected. >>
+    int justAim = (new Perfect() :: aim).total();
+    print("just aim: " + justAim);
+
+    print("done");
+  }
+}

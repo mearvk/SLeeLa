@@ -379,6 +379,7 @@ private:
         if(dynamic_cast<const ThisExpr*>(e)){emitThis();return;}
         if(auto x=dynamic_cast<const ArrayAccess*>(e)){emitExpr(x->base.get());emitExpr(x->index.get());emit(OP_ARRGET);return;}
         if(auto x=dynamic_cast<const MethodReferenceExpr*>(e)){emitExpr(x->base.get());return;}
+        if(auto x=dynamic_cast<const GuideChainExpr*>(e)){emitGuideChain(*x);return;}
         throw std::runtime_error("Semantic error: unknown expression kind");
     }
     // Lower a (possibly compound) assignment expression. The result value is
@@ -476,6 +477,10 @@ private:
         if(dynamic_cast<const ThisExpr*>(e))return currentClass_;
         if(auto m=dynamic_cast<const MemberAccess*>(e)){std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
         if(auto n=dynamic_cast<const NewExpr*>(e))return n->typeName;
+        // A Guide chain evaluates to its constructed head instance, so its
+        // struct type is the head's type -- this lets `(new T() :: g).m()`
+        // resolve the trailing method on T.
+        if(auto g=dynamic_cast<const GuideChainExpr*>(e))return exprStructType(g->head.get());
         // A method-call receiver carries the called method's declared return
         // type, so a chained call -- obj.getX().method() -- resolves: find the
         // receiver's type, look up receiverType::method, and return that
@@ -555,6 +560,24 @@ private:
             for(const auto& a:n.args) emitExpr(a.get());
             emit(OP_CALL,target->second);
             emit(OP_POP);
+        }
+    }
+    // Guide chain `new T(...) :: G1 :: G2 ...` (syntax 2.3). Lower the head to
+    // its instance (emitNew leaves the initialized instance on the stack), then
+    // apply each Guide as a zero-arg method call on that instance, in order:
+    // DUP the instance as `this`, CALL T::Gi, POP the (discarded) return. The
+    // instance itself remains on the stack, so the chain is fluent and the
+    // whole expression evaluates to the constructed object.
+    void emitGuideChain(const GuideChainExpr& g){
+        if(syntax_<SyntaxVersion{2,3}) throw std::runtime_error("Semantic error: Guide chains require #sleela 2.3");
+        emitExpr(g.head.get());
+        std::string owner=exprStructType(g.head.get());
+        for(const std::string& gn:g.guides){
+            auto target=funcIndex_.find(owner+"::"+gn);
+            if(target==funcIndex_.end()) throw std::runtime_error("Semantic error: Guide '"+gn+"' is not a method of class '"+owner+"'");
+            emit(OP_DUP);                 // [instance, instance]  -- instance as `this`
+            emit(OP_CALL,target->second); // [instance, ret]
+            emit(OP_POP);                 // [instance]            -- discard the Guide's return
         }
     }
     void emitMember(const MemberAccess& m){

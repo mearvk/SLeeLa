@@ -303,7 +303,25 @@ class Analyzer{
   if(dynamic_cast<const ThisExpr*>(&e)){if(cls.empty()||!cur||cur->isStatic){err("'this' is only available in an instance method");return{Kind::Error,{}};}return{Kind::Struct,cls,{}};}
   if(auto aa=dynamic_cast<const ArrayAccess*>(&e)){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array)return typeOf(base.elem);if(base.kind==Kind::Unknown)return{Kind::Unknown,{}};err("index access requires an array value, got "+nameOf(base));return{Kind::Error,{}};}
   if(auto mr=dynamic_cast<const MethodReferenceExpr*>(&e)){expr(*mr->base);return{Kind::Unknown,{}};}
+  if(auto g=dynamic_cast<const GuideChainExpr*>(&e)){return guideChain(*g);}
   err("unknown expression kind");return{Kind::Error,{}};
+ }
+ // Guide chain `new T(...) :: G1 :: G2 ...` (syntax 2.3). The head must be a
+ // known class; each Guide must name a zero-argument method on that class. The
+ // chain is fluent: it evaluates to the head's instance type.
+ Type guideChain(const GuideChainExpr&g){
+  if(syntax<SyntaxVersion{2,3}){expr(*g.head);err("Guide chains 'new T(...) :: Guide ...' require syntax 2.3");return{Kind::Error,{}};}
+  Type h=expr(*g.head);
+  if(h.kind!=Kind::Struct){if(h.kind!=Kind::Unknown&&h.kind!=Kind::Error)err("a Guide chain head must be a constructed class, got "+nameOf(h));return h;}
+  const std::string owner=h.name;
+  for(const std::string&gn:g.guides){
+   auto it=methods.find(owner+"::"+gn);
+   if(it==methods.end()){err("Guide '"+gn+"' is not a method of class '"+owner+"'");continue;}
+   const Method&m=*it->second.m;
+   if(!m.params.empty())err("Guide '"+gn+"' must be a zero-argument method of class '"+owner+"'");
+   if(m.isProtected&&it->second.owner!=cls)err("protected Guide access denied for '"+gn+"'");
+  }
+  return{Kind::Struct,owner,{}};
  }
  Type binary(const Binary&b){Type l=expr(*b.lhs),r=expr(*b.rhs);if(b.op=="&&"||b.op=="||"){if(l.kind!=Kind::Bool&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");if(r.kind!=Kind::Bool&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");return{Kind::Bool,{}};}
   if(b.op=="+"||b.op=="-"||b.op=="*"||b.op=="/"||b.op=="%"){
