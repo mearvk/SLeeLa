@@ -207,3 +207,28 @@ The package now includes a progressive learning path:
 - **[Tutorials](tutorials/README.md)** — seven lessons covering architecture, display enumeration, coordinate safety, display controls, pointer input, status/testing, and the native bridge.
 
 Start with `examples/05-headless-safe.sleela` and `examples/01-screen-inspection.sleela` before trying operations that visibly change a display. The examples are source additions; compilation and runtime behavior still need to be verified with the project's actual SLeeLa toolchain and target OS.
+
+
+## Full-Screen White Splash and Logo Fade
+
+For a ready-to-run, full-screen white display with the repository logo fading in,
+see **[Ballum Full-Screen Tutorial](TUTORIAL.md)**. From the repository root:
+
+```sh
+make -C impl
+./impl/build/sleela run lib/ballum/session-demo.sleela
+```
+
+The default splash uses [logo 007](../../images/national-bitcoin-icc-logo-007.jpg);
+select [logo 006](../../images/national-bitcoin-icc-logo-006.jpg) with:
+
+```sh
+LOGO_FILE=images/national-bitcoin-icc-logo-006.jpg FX=fade ./impl/build/sleela run lib/ballum/session-demo.sleela
+```
+
+The runnable paints a white background, fades the logo in, handles Escape, then
+fades the logo out and restores white. The reusable `SLBallumSession` API now
+provides `finish()` for the same graceful fade-out; call it after the `step()`
+loop. Relative asset paths assume the repository root is the working directory.
+These are source-level examples; validate the build and display backend on your
+machine before relying on live display control.
