@@ -595,7 +595,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "1531301f4af525a76ea5bc72b2bc04f00a45b70f0d5d73c5af4c9fe6886c5717"
+      "sha256": "f7ffb7358d77dfbe6c9e8ddcbe5453ab2ef3e5a0c686a41a25685f8227629928"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -1067,7 +1067,7 @@
     },
     {
       "path": "lib/ballum/SLBallumSession.sleela",
-      "sha256": "70e089175f2a105d337f7239b2ed597e97a2b6921c917708c0c5147934fe7d00"
+      "sha256": "0632f4cc182df4566ef53d20d9efc269b342d6e4cf0ddcbd8681aa47882ef6bf"
     },
     {
       "path": "lib/ballum/SLBallumStatus.sleela",
@@ -1084,6 +1084,26 @@
     {
       "path": "lib/ballum/ballum.sleela",
       "sha256": "a1647bb48fdd78264564ec922fbb6fb7e7577c576d79235b9a9a972348565806"
+    },
+    {
+      "path": "lib/ballum/examples/01-screen-inspection.sleela",
+      "sha256": "be6344478fb543d37307a984d0777895ed2a54d8960158274677f9b77da8674f"
+    },
+    {
+      "path": "lib/ballum/examples/02-safe-pixel.sleela",
+      "sha256": "5877978bf7518f7beef91372f49ca75694909914c57dd0c56777d70e931098c2"
+    },
+    {
+      "path": "lib/ballum/examples/03-display-controls.sleela",
+      "sha256": "410d444938de34253f4603590afbdae77b10ce66a707b50e0fd552462318e813"
+    },
+    {
+      "path": "lib/ballum/examples/04-input-polling.sleela",
+      "sha256": "f983bc485893965a92a122e633690d6278893a22272b9ef971b3cf40ae1fe7ac"
+    },
+    {
+      "path": "lib/ballum/examples/05-headless-safe.sleela",
+      "sha256": "59bbf2a8d2d69ce48551214cbe54687d9f7db589a0eeee9e12e8fd1e9160193d"
     },
     {
       "path": "lib/ballum/input-demo.sleela",
@@ -1107,7 +1127,7 @@
     },
     {
       "path": "lib/ballum/session-demo.sleela",
-      "sha256": "da673a13626f1e5ff5e6b94d0436246e2794510cc7b0eacee94893211d94a900"
+      "sha256": "bdec4c42cece0504b06f544dba2c0a6aad85744296af62bc61f1636af94bd0d1"
     },
     {
       "path": "lib/bash/SLPackage.sleela",
@@ -7804,6 +7824,114 @@
     {
       "path": "lib/idea/SLIdeaCanvas.sleela",
       "sha256": "63ff793b23faa500c3ce5c48e02d5872def858d7c88af3458507fed8499c5d76"
+    },
+    {
+      "path": "lib/image/SLImageCodecAvif.sleela",
+      "sha256": "393a3fa09e80b359b1759a99c267ecb5a719212b5fc21d1d7bfbfc43f068ad73"
+    },
+    {
+      "path": "lib/image/SLImageCodecBmp.sleela",
+      "sha256": "0f2fa3d7d85535225eda9a2bf522c420174e28789b95a6a9edd095d67dec1099"
+    },
+    {
+      "path": "lib/image/SLImageCodecController.sleela",
+      "sha256": "ebb192f5a097fe6d118ae451c88715571cc381763b5b745a70b37eaa6f993cac"
+    },
+    {
+      "path": "lib/image/SLImageCodecDds.sleela",
+      "sha256": "04295a601c15dc1c04c09c6d5ca79d6e92df681e194841d9376511c9bf99a50e"
+    },
+    {
+      "path": "lib/image/SLImageCodecGif.sleela",
+      "sha256": "20e9664550382f2c51ebf92d2f4b5c7265a69e15c1abb8e0940904237e446364"
+    },
+    {
+      "path": "lib/image/SLImageCodecHeif.sleela",
+      "sha256": "eae0470634f958f6c0b19a9d781b0eb1c6ac458b7f29b52281f88d4bbbe7c0da"
+    },
+    {
+      "path": "lib/image/SLImageCodecIcns.sleela",
+      "sha256": "67f079ff52b6363a8ea88dcb9cc279e304e4ea46d6395f166e97e42694cad030"
+    },
+    {
+      "path": "lib/image/SLImageCodecIco.sleela",
+      "sha256": "660bf5ae61884fc087080608d7803089c1543da220f9472644bf22da86221339"
+    },
+    {
+      "path": "lib/image/SLImageCodecJpeg.sleela",
+      "sha256": "77aa1090471bf51ffdaa9d2182cea64531003ff859194807d9e003321536c581"
+    },
+    {
+      "path": "lib/image/SLImageCodecJpeg2000.sleela",
+      "sha256": "b4ed4f8a7ff65a9371b66a370fa9aad7f42869532d98e60cb0af861becdd433b"
+    },
+    {
+      "path": "lib/image/SLImageCodecJpegXl.sleela",
+      "sha256": "e9e8a318095ec965afb65a9d1569d9a0ee46a1190ffc2df42583fddb241359ac"
+    },
+    {
+      "path": "lib/image/SLImageCodecLoader.sleela",
+      "sha256": "22104dd86c42073bf6382b08b91f0b9c3716fc132d7dcf04a19278697535b9a9"
+    },
+    {
+      "path": "lib/image/SLImageCodecOpenExr.sleela",
+      "sha256": "db6638adf99080ce8b1b9822f2b7a74fddc031ae2f819cb0065cd31ce56aad85"
+    },
+    {
+      "path": "lib/image/SLImageCodecPcx.sleela",
+      "sha256": "559148f91bd72a7d1c18f443ef13651f2f06851c7ee8ac55cd310af04df65a10"
+    },
+    {
+      "path": "lib/image/SLImageCodecPng.sleela",
+      "sha256": "3dd63364a92cf0d3aa045d544ac9ecaf807c3515876047c579956f0da8011d8d"
+    },
+    {
+      "path": "lib/image/SLImageCodecPpm.sleela",
+      "sha256": "f054a12c726701850c181947674d1d5d81364f9b12c83e4070eef52aa13c30a0"
+    },
+    {
+      "path": "lib/image/SLImageCodecProcessor.sleela",
+      "sha256": "e62f4b0ae77033561f53cd2b2ef73e0497a576421572f560d812429ab1159d1a"
+    },
+    {
+      "path": "lib/image/SLImageCodecRadianceHdr.sleela",
+      "sha256": "2adbf653987294a8dd096c680ae1ac15aaffde5a8ca022ba6efcca3434d23cbe"
+    },
+    {
+      "path": "lib/image/SLImageCodecSvg.sleela",
+      "sha256": "d7f6f2360a5d00bc814cfa424c0488c772be7be6a42c56d4f20623d0457a692e"
+    },
+    {
+      "path": "lib/image/SLImageCodecTga.sleela",
+      "sha256": "eb9906bb942a11c48b1e67c2f4e8c656c54bf087512f7f404f0c70cd8f957c21"
+    },
+    {
+      "path": "lib/image/SLImageCodecTiff.sleela",
+      "sha256": "e2670d1f356ef2d68e282143cc8bae2937f3a24455776d02eb245451c2f3cdb8"
+    },
+    {
+      "path": "lib/image/SLImageCodecVerifier.sleela",
+      "sha256": "20c1f487c761c0aa8e88efa2651ac188b713bb728e0935128e2fb0882f12838c"
+    },
+    {
+      "path": "lib/image/SLImageCodecWebp.sleela",
+      "sha256": "c61f1c4aa005b1f8b69f3ea398456673cdf9e8d2d2b7385262821e0d5c1b4d41"
+    },
+    {
+      "path": "lib/image/SLImageCodecXpm.sleela",
+      "sha256": "9ab6ad249ebc6b4470fffc456fcc3763ca4e606e7ab79b5d7e9293f38689a445"
+    },
+    {
+      "path": "lib/image/SLPackage.sleela",
+      "sha256": "ec37f369488cf25a78683c99c758de58d12e63091eee56c8137eb20e7beeb02e"
+    },
+    {
+      "path": "lib/image/image-codec-pipeline.sleela",
+      "sha256": "73155c2824b4afe3ab13a74f2bc5f55d28ad234ac61d632e539a8a1c6d2856ed"
+    },
+    {
+      "path": "lib/image/image-codecs.sleela",
+      "sha256": "36152ed003a7e364c3abc29ea97779de400081fdc632f58d579f0ddefcd15707"
     },
     {
       "path": "lib/inference-model/SLPackage.sleela",
@@ -47816,10 +47944,6 @@
     {
       "path": "wifi-common/tests/test_wifi_manager.c",
       "sha256": "5cdb18e0b65bd3bc8aa41a899d8e3e912b6abe4b031d94db1543f0ced8fac82e"
-    },
-    {
-      "path": "ballum/BALLUM.md",
-      "sha256": "13a385fe47bcc533c35522bf06b686c7172c59341d85e61777a1ddedcfd1bb7e"
     }
   ]
 }
