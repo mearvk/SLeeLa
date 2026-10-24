@@ -49,21 +49,47 @@ Recent additions to the language, drivers, and standard library:
   [`lib/cpu/EXECUTION.md`](lib/cpu/EXECUTION.md) §5.
 
 ## III. Build and test
-From a clean checkout:
+
+**Prerequisites:** a C/C++ toolchain (GCC or Clang) and GNU Make; Python 3 for
+the manifest/flow tooling; on Linux the X11/Xrandr development packages for the
+display products (a module's `make deps` reports/installs what it needs). The
+`impl/` build is fail-closed on a trusted SHA-256 manifest, which the root
+`Makefile` points at automatically.
+
+From a clean checkout, the quickest start:
 
 ```sh
-make -C impl all
-bash ./test-suites/run-all.sh --all
+make                                  # build everything from the repo root
 ```
 
-The repo-root `make all` builds every product (core, VM, codecs, churn,
-antivirus, …) and ends by building the **registry** and materializing its
-baseline table — so a built tree ships a reviewable registry out of the box:
+Or build and test just the native core:
 
 ```sh
-make all                 # full build; the `registry` target runs last
+make -C impl all                      # build the core compiler/runtime only
+bash ./test-suites/run-all.sh --all   # run the full test suite
+```
+
+The repo-root `make` builds every product (core, VM, codecs, churn,
+antivirus, …) and ends by building the **registry** and materializing its
+baseline table — so a built tree ships a reviewable registry out of the box.
+The essential targets:
+
+```sh
+make                     # build everything (alias of `make all`; registry runs last)
+make all                 # the same full build, named explicitly
+sudo make install        # install commands + runtime support (see §IV)
+make clean               # remove build outputs from every dispatched build system
+make help                # list every target the root Makefile provides
+```
+
+Other useful targets:
+
+```sh
 make registry            # just the registry: build + materialize the table
 ./build-registry.sh      # same thing, invoked directly
+make tests               # build and run the test suite
+make ballum              # build the Ballum display library for this OS (see ballum/)
+bin/install-modules      # paced install/build of each module over ~10-20 min (see bin/)
 ```
 
 The `registry` target runs [`build-registry.sh`](build-registry.sh): it builds
