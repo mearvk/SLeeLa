@@ -1,0 +1,182 @@
+.\" Man page for the Sleela compiler and runtime front end.
+.\" Kept in lockstep with impl/frontend/driver.cpp usage; the binary is the
+.\" authority. Build the binary with: cd impl && make build/sleela
+.TH SLEELA 1 "2026-10-24" "SLeeLa 0.3.29-dev" "SLeeLa Manual"
+.SH NAME
+sleela \- SLeeLa compiler and runtime front end (Sleelvac(TM))
+.SH SYNOPSIS
+.B sleela
+.RI [ global-options ]
+.I command
+.RI [ args ...]
+.SH DESCRIPTION
+.B sleela
+is the authoritative SLeeLa compiler and runtime, also known as
+Sleelvac(TM). It parses, resolves referenced library units, checks semantics,
+compiles
+.I .sleela
+source into a runnable Core artifact, and executes artifacts and supported
+source/framework input on the native C/C++ Core VM. The supported source-syntax
+range is 1.0 \(en 2.2 (see
+.BR sleela-syntax (7)
+and the in-tree
+.IR SLEELA.syntax ).
+.PP
+A SLeeLa program is a
+.IR .sleela
+source file (a "Wrapper(TM)"). The companion
+.B nordshrift
+tool performs the Nordshrift round-trip; it is documented separately.
+.SH GLOBAL OPTIONS
+These appear
+.I before
+the command.
+.TP
+.BR \-\-memory\-manager ", " \-\-mm
+Enable the Memory Manager with the default 2 GiB limit.
+.TP
+.BI \-\-memory\-manager= SIZE ", " \-\-mm= SIZE
+Enable the Memory Manager with a byte limit;
+.BR K ", " M ", and " G
+suffixes are accepted.
+.SH COMMANDS
+.SS Source and artifact commands
+.TP
+.B sleela compile \fR[\fIglobal-options\fR] \fIfile.sleela\fR [\fImore.sleela\fR ...] \fB\-o\fR \fIoutput.sleela\fR
+Compile one or more source files to a runnable Core artifact.
+.TP
+.B sleela check \fIfile.sleela\fR
+Parse, resolve referenced library units, and check semantics. Exits non-zero on
+any error; this is the fail-closed validation gate.
+.TP
+.B sleela run \fIfile\fR [\fImore-files\fR ...]
+Run a Core artifact, or run supported source/framework input directly. Accepted
+inputs:
+.IR .sleela ", " .xclass ", " .java ", " .kt ", " .scala ", " .groovy ", and " .clj .
+.TP
+.B sleela validate\-artifact \fIfile.sleela\fR
+Validate the runnable artifact ABI and format.
+.TP
+.B sleela version
+Print the compiler/runtime version string.
+.SS Other commands
+.TP
+.B sleela http\-server \fR<1|2|3> [\fB\-\-port\fR N] [\fB\-\-threads\fR N] [\fB\-\-root\fR DIR] [\fB\-\-log\fR FILE] [\fB\-\-once\fR]
+Serve over HTTP/1, HTTP/2, or HTTP/3.
+.TP
+.B sleela xclass \fR[\fB\-\-run\fR|\fB\-\-emit\fR|\fB\-\-info\fR] \fIfile.xclass\fR [...]
+Operate on compiled-class input (default
+.BR \-\-run ).
+.TP
+.B sleela langin \fR[\fB\-\-run\fR|\fB\-\-emit\-sleela\fR|\fB\-\-emit\-xclass\fR|\fB\-\-info\fR] \fIfile.java\fR|\fI.kt\fR|\fI.scala\fR|\fI.groovy\fR|\fI.clj\fR [...]
+Bring JVM-family source into SLeeLa (default
+.BR \-\-run ;
+.B \-\-emit
+aliases
+.BR \-\-emit\-sleela ).
+.TP
+.B sleela nordshrift \fR[\fB\-\-emit\fR|\fB\-\-roundtrip\fR] [\fB\-\-target=\fRsleela|java|c] \fIfile.sleela\fR
+Run the Nordshrift round-trip (default target
+.BR sleela ).
+.TP
+.B sleela vm \fR[list|select <native|1..10|premium 1..11>|info <selection>|run <premium <1..11>|p<N>|native> <program>]
+Select and run a SLeeLa Virtual Machine generation.
+.TP
+.B sleela modium \fR[scan [native|1..10] [\fB\-\-exact\fR] [\fB\-\-seal\fR]|status|restore <1..10>]
+Module-integrity scanning and restore.
+.TP
+.B sleela registry \fR[review|get|set|feature|save|export]
+Inspect and edit the runtime registry.
+.TP
+.B sleela native \fR[\fB\-\-config\fR \fIfile\fR] [\fB\-\-mm\fR[=\fIsize\fR]] [\fB\-\-\fR] \fIprogram\fR [\fIargs\fR...]
+Run a program against the native configuration;
+.B \-\-
+ends option parsing.
+.TP
+.B sleela exec \fR[...]
+As
+.BR native ,
+for executing a program.
+.TP
+.B sleela design\-activity \fIscience correctness reproducibility observability safety resource interoperability\fR
+Report a design-activity score across the seven axes.
+.TP
+.B sleela defender \fR<detect|fetch|build|install|provision> [\fIdirectory\fR] [\fB\-\-allow\-defender\fR|\fB\-\-optin\fR] [\fB\-\-allow\-root\fR] [\fB\-\-sha256\fR \fIhex\fR]
+OS Defender provisioning.
+.B detect
+is read-only;
+.BR fetch / build / install / provision
+require
+.B \-\-allow\-defender
+or
+.BR SLEELA_DEFENDER_OPTIN=1 .
+.SH ENVIRONMENT
+.TP
+.B SLEELA_SHA256_MANIFEST
+Path to the trusted SHA-256 manifest. The build and execution gate verifies
+every covered source file against this manifest and fails closed on a mismatch.
+Regenerate it after editing covered sources with
+.IR "python3 tools/generate-sha256-manifest.py \-\-root . \-\-output security/sha256-manifest.json" .
+.TP
+.B SLEELA_DEFENDER_OPTIN
+When set to 1, authorizes the privileged
+.B defender
+subcommands.
+.TP
+.B SLEELA_DEFENDER_ALLOW_ROOT
+When set to 1, explicitly authorizes privileged installation.
+.SH EXIT STATUS
+.B sleela
+exits 0 on success and non-zero on a parse, resolution, semantic, verification,
+or runtime error.
+.SH EXAMPLES
+.PP
+Validate and run a standard-library demo:
+.PP
+.RS
+.EX
+sleela check lib/philosophers/philosophers-demo.sleela
+sleela run   lib/philosophers/philosophers-demo.sleela
+.EE
+.RE
+.PP
+Compile two sources to a Core artifact, then validate it:
+.PP
+.RS
+.EX
+sleela compile a.sleela b.sleela -o out.sleela
+sleela validate-artifact out.sleela
+.EE
+.RE
+.PP
+Run with the Memory Manager capped at 512 MiB:
+.PP
+.RS
+.EX
+sleela --mm=512M run program.sleela
+.EE
+.RE
+.SH FILES
+.TP
+.I SLEELA.syntax
+The normative language-syntax specification (syntax 1.0 \(en 2.2).
+.TP
+.I lib/LIBRARY.SYMBOLS.md
+The authoritative /lib class vocabulary.
+.TP
+.I security/sha256-manifest.json
+The trusted manifest consulted by the verification gate.
+.SH SEE ALSO
+.BR nordshrift (1),
+.BR sleela-syntax (7)
+.PP
+In-tree:
+.IR SLEELA.syntax ", " README.md ", " "tutorial/README.md" ,
+and the
+.I lib/philosophers
+documents
+.RI ( PHILOSOPHERS.CONSTRUCTORS.md ", " PHILOSOPHERS.CATEGORICAL.md ).
+.SH AUTHORS
+The SLeeLa project.
+.SH BUGS
+Report issues at the project repository: https://github.com/mearvk/SLeeLa
