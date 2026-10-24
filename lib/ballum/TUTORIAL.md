@@ -41,7 +41,8 @@ That cadence is simple but can consume CPU while the demo is running.
 ## 4. Minimal session API pattern
 
 The standard library session API is in `lib/ballum/SLBallumSession.sleela`.
-Its intended usage pattern is:
+Its intended usage pattern is: call `finish()` after the exit loop to fade the
+logo back out and restore the configured background (white by default).
 
 ```text
 SLBallumSession s = new SLBallumSession();
@@ -52,6 +53,7 @@ s.start();
 while (s.step() != SLBallumSession.EXIT) {
   // Keep polling; first Escape enters FRAME, second Escape exits.
 }
+s.finish(); // fade the logo back to white, then restore a clean white screen
 ```
 
 This is an API illustration; use the runnable demo above as the verified
@@ -74,8 +76,8 @@ entry point for the current single-file `sleela run` workflow.
 
 ## Assets
 
-- [Logo 006](../images/national-bitcoin-icc-logo-006.jpg)
-- [Logo 007](../images/national-bitcoin-icc-logo-007.jpg)
+- [Logo 006](../../images/national-bitcoin-icc-logo-006.jpg)
+- [Logo 007](../../images/national-bitcoin-icc-logo-007.jpg)
 - [Ballum standard](../../ballum/BALLUM.md)
 
 ## Validation notes
@@ -83,4 +85,5 @@ entry point for the current single-file `sleela run` workflow.
 The source and paths are updated in the repository. A successful remote commit
 does not itself prove the current host can open a display or decode a JPEG.
 Run `make -C ballum test` and `make -C impl all`, then try the demo on a
-machine with a supported graphical display.
+machine with a supported graphical display. These commits have not been
+validated by a live full-screen run in this session.
