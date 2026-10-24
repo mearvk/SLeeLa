@@ -20,7 +20,7 @@
    Easy startup. The connect-and-go surface is deliberately tiny:
        SLBallumSession s = new SLBallumSession();
        s.start();                 < white screen + default logo fade, full screen >
-       while (s.step() == RUNNING) { }   < advance; ESC handling is built in >
+       while (s.step() != EXIT) { }      < keep polling in FRAME mode too >
    Defaults are sensible (primary display, the national-bitcoin-icc logo, a
    ~48-frame fade). Override any of them before start() with the with*() setters
    (withLogo, withFadeFrames, withDisplayIndex, withBackground).
@@ -156,7 +156,8 @@ class SLBallumSession {
 
   << start(): the one call a user needs. Binds the display full screen, paints
     the pure-white background, and arms the logo fade. Returns the run state:
-    RUNNING on success, EXIT if no display/backend is available (fail closed). >>
+    RUNNING on success, EXIT if no display/backend is available (fail closed).
+    The caller must keep calling step() in FRAME mode so the second ESC is read. >>
   int start() {
     if (screen == null) { configure(); }
     int st;
@@ -191,7 +192,7 @@ class SLBallumSession {
 
   << step(): advance the session one frame. Handles ESC (frame -> exit),
     advances the logo fade, and returns the current run state. Call in a loop:
-        while (s.step() == SLBallumSession.RUNNING) { }
+        while (s.step() != SLBallumSession.EXIT) { }
     Returns FRAME after the first ESC and EXIT after the second (or after
     requestExit()). >>
   int step() {
