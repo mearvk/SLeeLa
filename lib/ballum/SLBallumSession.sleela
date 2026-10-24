@@ -237,6 +237,25 @@ class SLBallumSession {
   < Return a FRAME-mode session to full-screen running. >
   int resume() { if (state == FRAME) { state = RUNNING; } return state; }
 
+  << finish(): perform a graceful logo fade-out to the configured background.
+    Call after the step() loop ends and before the program returns. This is
+    intentionally explicit so applications control exactly when the display is
+    restored; it does not change the EXIT state or claim a host decoder exists. >>
+  void finish() {
+    if (screen == null || !screen.isReady()) { return; }
+    if (logoReady == 1) {
+      int outPct = 100;
+      while (outPct >= 0) {
+        uiBallumLogoBlend(screen.displayId(), outPct,
+                          screen.width(), screen.height(), bgR, bgG, bgB);
+        outPct = outPct - 5;
+        int frameStart = timeMonotonicNanos();
+        while (timeMonotonicNanos() - frameStart < 16000000) { }
+      }
+    }
+    paintBackground();
+  }
+
   << renderFade(): composite the logo over the white background at the current
     opacity. The logo emerges from white: at frame 0 the screen is pure
     background; at frame == fadeFrames the logo is fully opaque. When no host
