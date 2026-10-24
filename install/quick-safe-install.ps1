@@ -1,6 +1,7 @@
 param(
   [string]$Destination = "",
-  [switch]$NoBuild
+  [switch]$NoBuild,
+  [switch]$SkipOptionalProducts
 )
 $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -45,28 +46,33 @@ $PathUpdate = "no"
 if ($InstallMode -eq "user") { $PathUpdate = Ask-YesNo "Add SLeeLa bin to the user PATH?" "yes" }
 
 if (-not $NoBuild) {
-  Write-Host "Building SLeeLa..."
-  & make -C $RepoRoot all
-  if ($LASTEXITCODE -ne 0) { throw "SLeeLa build failed; installation was not changed." }
+  Write-Host "Building Windows-native core and selected smoke tests..."
+  $BuildScript = Join-Path $RepoRoot "build\native-windows.ps1"
+  & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $BuildScript
+  if ($LASTEXITCODE -ne 0) { throw "Windows native build failed; installation was not changed." }
 }
 
 $Stage = Join-Path ([System.IO.Path]::GetTempPath()) ("sleela-install-" + [guid]::NewGuid())
 New-Item -ItemType Directory -Force -Path (Join-Path $Stage "lib"),(Join-Path $Stage "bin"),(Join-Path $Stage "config"),(Join-Path $Stage "tools"),(Join-Path $Stage "security") | Out-Null
-if (Test-Path (Join-Path $RepoRoot "lib")) { Copy-Item -Recurse -Force (Join-Path $RepoRoot "lib\\*") (Join-Path $Stage "lib") }
-Copy-Item -Force (Join-Path $RepoRoot "tools\\verify-before-execution.py") (Join-Path $Stage "tools")
-Copy-Item -Force (Join-Path $RepoRoot "security\\sha256-manifest.json") (Join-Path $Stage "security")
+if (Test-Path (Join-Path $RepoRoot "lib")) {
+  Get-ChildItem -LiteralPath (Join-Path $RepoRoot "lib") -Force | Copy-Item -Destination (Join-Path $Stage "lib") -Recurse -Force
+}
+Copy-Item -LiteralPath (Join-Path $RepoRoot "tools\verify-before-execution.py") -Destination (Join-Path $Stage "tools") -Force
+Copy-Item -LiteralPath (Join-Path $RepoRoot "security\sha256-manifest.json") -Destination (Join-Path $Stage "security") -Force
 # Preserve the trusted manifest's relative source paths so the installed verifier
 # sees the complete source set that the manifest describes.
-$Manifest = Get-Content (Join-Path $RepoRoot "security\\sha256-manifest.json") -Raw | ConvertFrom-Json
+$Manifest = Get-Content (Join-Path $RepoRoot "security\sha256-manifest.json") -Raw | ConvertFrom-Json
 foreach ($Entry in $Manifest.files) {
   $Relative = $Entry.path.Replace("/", "\\")
-  $Source = Join-Path $RepoRoot $Relative
+  $Source = [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $Relative))
+  if (-not $Source.StartsWith(([System.IO.Path]::GetFullPath($RepoRoot) + [System.IO.Path]::DirectorySeparatorChar), [System.StringComparison]::OrdinalIgnoreCase)) { throw "Manifest path escapes repository: $($Entry.path)" }
   if (-not (Test-Path $Source -PathType Leaf)) { throw "Manifest source missing: $($Entry.path)" }
   $Target = Join-Path $Stage $Relative
   New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Target) | Out-Null
   Copy-Item -Force $Source $Target
 }
 foreach ($Product in @("sleela.exe","sleelvac.exe","nordshrift.exe")) {
+  if ($SkipOptionalProducts -and $Product -ne "sleela.exe") { continue }
   $Built = Join-Path $RepoRoot ("impl\build\" + $Product)
   if (-not (Test-Path $Built)) { throw "Required compiled product missing: $Built" }
   Copy-Item -Force $Built (Join-Path $Stage ("bin\" + $Product))
@@ -95,12 +101,12 @@ port-authority.shutdown=$PortShutdown
 if (Test-Path $Destination) {
   $BackupRoot = if ($InstallMode -eq "user") { Join-Path $env:LOCALAPPDATA "SLeeLa-backups" } else { Join-Path $env:ProgramData "SLeeLa-backups" }
   New-Item -ItemType Directory -Force -Path $BackupRoot | Out-Null
-  $Backup = Join-Path $BackupRoot (Get-Date -Format "yyyyMMdd-HHmmss")
+  $Backup = Join-Path $BackupRoot ((Get-Date -Format "yyyyMMdd-HHmmss") + "-" + [guid]::NewGuid().ToString("N").Substring(0,8))
   Copy-Item -Recurse -Force $Destination $Backup
   Write-Host "Backup: $Backup"
 }
 New-Item -ItemType Directory -Force -Path $Destination | Out-Null
-Copy-Item -Recurse -Force (Join-Path $Stage "*") $Destination
+Get-ChildItem -LiteralPath $Stage -Force | Copy-Item -Destination $Destination -Recurse -Force
 $BinDir = Join-Path $Destination "bin"
 if ($PathUpdate -eq "yes") {
   $Current = [Environment]::GetEnvironmentVariable("Path","User")
