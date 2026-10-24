@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="78" viewBox="0 0 600 78" role="img" aria-label="ICC International Criminal Court color palette">
+  <title>ICC palette: #0E1A2B, #EAF0F7, #5B8FD6, #7FB7C9, #D9B25A, #7E8CA0</title>
+  <defs><clipPath id="rounded"><rect width="600" height="48" rx="9" ry="9"/></clipPath></defs>
+  <g clip-path="url(#rounded)">
+  <rect x="0" y="0" width="100" height="48" fill="#0E1A2B"/>
+  <rect x="100" y="0" width="100" height="48" fill="#EAF0F7"/>
+  <rect x="200" y="0" width="100" height="48" fill="#5B8FD6"/>
+  <rect x="300" y="0" width="100" height="48" fill="#7FB7C9"/>
+  <rect x="400" y="0" width="100" height="48" fill="#D9B25A"/>
+  <rect x="500" y="0" width="100" height="48" fill="#7E8CA0"/>
+  </g>
+  <text x="50" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Background</text>
+  <text x="150" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Foreground</text>
+  <text x="250" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Keywords</text>
+  <text x="350" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Types</text>
+  <text x="450" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Strings</text>
+  <text x="550" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4B5563">Comments</text>
+</svg>
