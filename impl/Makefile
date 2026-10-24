@@ -639,14 +639,16 @@ $(PARAMETERS_OBJ): ../runtime/Parameters.c ../runtime/Parameters.h | $(BUILD)
 $(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
 
-# The exact object set the Core engine needs at link time (the same set the
-# core smoke tests link): the engine translation unit plus every OS-abstraction
-# backend it calls into (thread/io/net/synchro/munction/bestof/idea-canvas/
-# registry/path/terminal/library/os/platform/time/memory/memmgr) and the GC.
+# The reusable Core archive contains the engine, OS abstractions, GC, and
+# every runtime bridge required by OP_UI_CALL. In particular, premium VM runners
+# consume this archive rather than the native executable's direct object list,
+# so include SleelaUI plus its Wi-Fi and Ballum VM bridges, managers, image/effect
+# helpers, and the selected native backend here. Platform link libraries are
+# propagated to each final runner separately by the VM-family Makefiles.
 SLCORE_OBJS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) \
   $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) \
   $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TIME_OBJ) \
-  $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ)
+  $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SLUI_OBJS)
 $(SLCORE_LIB): $(SLCORE_OBJS)
 	$(AR) rcs $@ $(SLCORE_OBJS)
 libslcore: $(SLCORE_LIB)
