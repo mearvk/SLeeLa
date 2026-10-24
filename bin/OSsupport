@@ -1,5 +1,19 @@
 #!/usr/bin/env sh
 # OSsupport — SLVM native executable / OS Defender support command.
+#
+# The "OS Defender" is SLeeLa's OS-centric native-support layer: per host OS it
+# fetches, builds, and installs the matching privileged backend that lets SLeeLa
+# integrate with the operating system's own protection surface (a signed WDK
+# driver on Windows, a kernel module on Linux; macOS is detect-only). It is
+# provisioning for that native support -- it never bypasses the OS's own
+# security controls (Secure Boot, UAC, Defender, driver signing).
+#
+# The native products this provisions are compiled artifacts (C/C++ driver and
+# module builds). Alongside the other compiled SLeeLa products, their resolved
+# executables are catalogued in bin/SUPPOSITIONS.md, which also documents how
+# bin/ accepts the output of C/C++ compilations (per-module and the whole Sleela
+# program) in addition to the usual user/system/local profile bin locations.
+#
 # Runs the SLeeLa OS-aware Defender provisioning interface and reports results.
 
 set -u
@@ -41,10 +55,12 @@ Choices:
   5  Provision (fetch + build + install)
   6  Quit
 
-The selected implementation is OS-native:
-  Windows -> Windows.Admin.Defender
-  Linux   -> Linux.Admin.Defender
-  macOS   -> MacOS.Admin.Defender (detect only; provisioning unsupported)
+The OS Defender is SLeeLa's OS-centric native-support layer. The selected
+implementation is OS-native, and provisioning compiles + installs a privileged
+backend for that OS:
+  Windows -> Windows.Admin.Defender  (signed WDK kernel-mode driver)
+  Linux   -> Linux.Admin.Defender    (kernel module via `make install`)
+  macOS   -> MacOS.Admin.Defender    (detect only; no privileged backend)
 
 On macOS, `detect`/`status` report the mapping, but `fetch`/`build`/`install`/
 `provision` are refused: no privileged Defender backend is implemented for
