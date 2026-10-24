@@ -1,0 +1,138 @@
+<< lib/philosophers/SLPhilosopherGuide.sleela
+   SLeeLa Standard Library Definition.
+   Definition: One Guide -- a single growth in a Constructor's chain, with its
+   color impart and its listener for contexts and imparts. >>
+#sleela 2.1
+<< Family: philosophers. In the chain
+
+     Constructor() :: Patch :: Constructor :: Aim :: Guide
+
+   each name after the leading Constructor() is a Guide: a named growth that
+   listens, at the time of the Constructor call, for the contexts and imparts it
+   recognizes, and reports whether it was matched. A Guide is also a Wisdom: it
+   carries a color impart so an editor (VIM / EMACS) can render the Guide and
+   its leading "::" in Gold/Yellow when the impart is approving and Green when
+   the impart is growing. The coloring is a conform based on unity of identity
+   over Cause -- two Guides of the same seating color alike -- and it is
+   idempotent: asking a Guide for its color twice never changes it. >>
+class SLPhilosopherGuide {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11564;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-24";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < --- color imparts (editor conform) ------------------------------------- >
+  << A Guide colors Gold/Yellow when its impart is approving (it carries favor
+     forward) and Green when its impart is growing (it is still maturing toward
+     Approval). NONE is the uncolored default before a Guide has an impart. >>
+  static final int COLOR_NONE = 0;
+  static final int COLOR_GOLD = 1;
+  static final int COLOR_GREEN = 2;
+
+  < --- a Guide's own name, seating and impart ----------------------------- >
+  < the name as written in the chain, e.g. "Patch", "Aim", "Guide" >
+  String name;
+  < the seating ordinal this Guide claims (see SLPhilosopherSeating) >
+  int seat;
+  < 1 when this Guide carries approving favor forward, else 0 >
+  int approving;
+  < a small count of contexts/imparts this Guide has matched so far >
+  int matched;
+  < 1 once this Guide has been disposed after the object lives free >
+  int disposed;
+
+  < Prepare an empty, uncolored Guide. >
+  void create() {
+    name = "unnamed";
+    seat = -1;
+    approving = 0;
+    matched = 0;
+    disposed = 0;
+  }
+
+  < Name a Guide onto a seating. An approving Guide carries favor (Gold); a >
+  < still-growing Guide carries Green. >
+  void sit(String guideName, int seatOrdinal, boolean carriesFavor) {
+    if (guideName != null) { name = guideName; }
+    seat = seatOrdinal;
+    if (carriesFavor) { approving = 1; } else { approving = 0; }
+    matched = 0;
+    disposed = 0;
+  }
+
+  String getName() { return name; }
+  int getSeat() { return seat; }
+  boolean isApproving() { return approving == 1; }
+  int getMatched() { return matched; }
+
+  < The editor color impart for this Guide. Idempotent: the same Guide always >
+  < reports the same color for the same impart, and asking never mutates it. >
+  int color() {
+    if (seat < 0) { return COLOR_NONE; }
+    if (approving == 1) { return COLOR_GOLD; }
+    return COLOR_GREEN;
+  }
+
+  < The color impart as text, for banners and editor manifests. >
+  String colorName() {
+    int c = color();
+    if (c == COLOR_GOLD) { return "Gold/Yellow"; }
+    if (c == COLOR_GREEN) { return "Green"; }
+    return "none";
+  }
+
+  < Listen for a context/impart at Constructor-call time. A Guide matches when >
+  < the impart is non-null and names this Guide's seating or its own name; the >
+  < match is counted so the Favor Mechanism can weigh Notice over Time. >
+  boolean listen(String impart) {
+    if (impart == null) { return false; }
+    if (disposed == 1) { return false; }
+    if (impart == name) { matched = matched + 1; return true; }
+    return false;
+  }
+
+  < Dispose this Guide after the object lives free of its instantiative moment. >
+  < Disposal is idempotent and produces the Guide's final effect: it stops >
+  < listening and keeps its matched tally as its output of record. >
+  void dispose() {
+    disposed = 1;
+  }
+  boolean isDisposed() { return disposed == 1; }
+}

@@ -1,0 +1,85 @@
+<< lib/philosophers/philosophers-demo.sleela
+   SLeeLa runnable demo for the philosophers package.
+   Definition: builds the canonical chain Constructor() :: Patch :: Constructor
+   :: Aim :: Guide, weighs favor on the Notice of Approach, runs a time-bounded
+   contract, and lets the object live free. >>
+#sleela 2.1
+<< Family: philosophers. A worker-class runnable that exercises the perfect
+   Constructor end to end and prints its quality, effect and output. It seats
+   four Guides -- Patch, Constructor, Aim, Guide -- as the user's example asks,
+   admits a small seating band, provides the facts/sayings of Approach as
+   imparts, and shows the chain text, the color manifest, the favor verdict, the
+   two-minute contract clock, and the final "lives free" state. >>
+class PhilosophersDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Worker-class baseline identity: an honest record for a single-purpose
+     runnable example. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11570;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-24";
+  int metaScienceRating = 6;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+
+  void main() {
+    print("=== Philosophers: the perfect Constructor and its Guides ===");
+
+    SLPhilosopherConstructor ctor = new SLPhilosopherConstructor();
+    ctor.create();
+
+    < admit a small positive band of additional seatings (in [-2,+6]) >
+    int band = ctor.admit(3);
+    print("admitted seating band: " + band + "   capacity: " + ctor.capacity());
+
+    << Seat the four Guides of the example, each on its baseline seating ordinal
+       (see SLPhilosopherSeating): Patch=2, Constructor=3, Aim=4, Guide=5. Patch
+       and Aim carry approving favor (Gold/Yellow); Constructor and Guide are
+       still growing (Green). >>
+    ctor.guide("Patch", 2, true);
+    ctor.guide("Constructor", 3, false);
+    ctor.guide("Aim", 4, true);
+    ctor.guide("Guide", 5, false);
+
+    print("declared chain: " + ctor.chainText());
+    print("color manifest: " + ctor.colorManifest());
+
+    < require at least two caught Notices before favor is granted >
+    ctor.requireNotice(2);
+
+    < the facts/sayings of Approach, as imparts broadcast to the Guides >
+    << imparts[0..2] name seated Guides (Patch, Aim, Guide) and are matched;
+       imparts[3] "Approach" is heard but seats no named Guide. >>
+    String[] imparts = new String[4];
+    imparts[0] = "Patch";
+    imparts[1] = "Aim";
+    imparts[2] = "Guide";
+    imparts[3] = "Approach";
+
+    < run the instantiative moment for 90 seconds (within the ~2-minute bound) >
+    boolean alive = ctor.run(imparts, 90);
+
+    print("verdict: " + ctor.verdict());
+    print("constructed & lives free: " + alive);
+    print("report: " + ctor.report());
+
+    if (alive) {
+      print("the object now lives free of its instantiative moment.");
+    } else {
+      print("favor was withheld; the construction did not run.");
+    }
+
+    print("done");
+  }
+}

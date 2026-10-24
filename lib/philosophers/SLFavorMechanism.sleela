@@ -1,0 +1,109 @@
+<< lib/philosophers/SLFavorMechanism.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The Favor Mechanism -- it catches the facts and sayings of
+   Approach at the time of the Constructor call and decides runnability. >>
+#sleela 2.1
+<< Family: philosophers. When a Constructor is called, its Guides listen for
+   contexts and imparts. The Favor Mechanism is the conscience that weighs what
+   was heard: it tallies the Notice caught at the Time of the call, and from
+   that tally it grants or withholds FAVOR. Favor is what makes the construction
+   runnable -- an instancing with granted favor proceeds to live free; an
+   instancing with withheld favor is told, precisely and without pretense, that
+   it was not approved. The mechanism never fakes approval it did not earn. >>
+class SLFavorMechanism {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11565;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-24";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < --- favor verdicts ----------------------------------------------------- >
+  static final int FAVOR_WITHHELD = 0;
+  static final int FAVOR_GRANTED = 1;
+
+  < the running tally of Notice caught at the Time of the call >
+  int noticeCaught;
+  < the least Notice that must be caught for favor to be granted >
+  int quorum;
+  < the last verdict rendered (FAVOR_WITHHELD / FAVOR_GRANTED) >
+  int verdict;
+
+  < Prepare the mechanism with a default quorum of one caught Notice. >
+  void create() {
+    noticeCaught = 0;
+    quorum = 1;
+    verdict = FAVOR_WITHHELD;
+  }
+
+  < Set how much Notice the Approach must earn before favor can be granted. >
+  < A quorum below one is lifted to one: favor is never free. >
+  void setQuorum(int q) {
+    if (q < 1) { q = 1; }
+    quorum = q;
+  }
+  int getQuorum() { return quorum; }
+
+  < Catch one fact/saying of Approach. Each caught Notice raises the tally. >
+  void catchNotice(String saying) {
+    if (saying != null) { noticeCaught = noticeCaught + 1; }
+  }
+  int getNoticeCaught() { return noticeCaught; }
+
+  < Weigh the Notice and render a verdict. Favor is granted only when the >
+  < caught Notice meets or exceeds the quorum. Returns the verdict code. >
+  int weigh() {
+    if (noticeCaught >= quorum) { verdict = FAVOR_GRANTED; }
+    else { verdict = FAVOR_WITHHELD; }
+    return verdict;
+  }
+
+  boolean granted() { return verdict == FAVOR_GRANTED; }
+
+  < The verdict as readable text, for banners and contracts. >
+  String verdictText() {
+    if (verdict == FAVOR_GRANTED) { return "favor granted"; }
+    return "favor withheld";
+  }
+
+  < Reset the mechanism for a fresh Constructor call, keeping the quorum. >
+  void reset() {
+    noticeCaught = 0;
+    verdict = FAVOR_WITHHELD;
+  }
+}

@@ -1,0 +1,153 @@
+<< lib/philosophers/SLPhilosopherConstructor.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The perfect Constructor -- it seats its Guides, opens a
+   time-bounded contract, weighs favor, runs, and then lets the object live
+   free. >>
+#sleela 2.1
+<< Family: philosophers. This is the orchestrator that ties the design
+   together. A perfect Constructor, across an infinite number of possible
+   classes, has only so many forms; this one admits a seating band, builds a
+   Guide chain (Constructor() :: Patch :: Constructor :: Aim :: Guide), opens a
+   contract of nature and time (<= ~2 minutes), lets the Favor Mechanism catch
+   the Notice of Approach, and -- only if favor is granted -- proceeds to run,
+   close the moment, and liberate the object so it lives free of the
+   instantiative moment. The disposal of the Guides is the final effect; the
+   verdict, the chain text, and the color manifest are the output. The whole of
+   this logic lives in source, not in comments or configuration. >>
+class SLPhilosopherConstructor {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11568;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-24";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < the chain of growths this Constructor declares >
+  SLPhilosopherChain chain;
+  < the Favor Mechanism that weighs Notice at call time >
+  SLFavorMechanism favor;
+  < the time-bounded contract of the instantiative moment >
+  SLConstructorContract contract;
+  < 1 once the Constructor has actually run to completion >
+  int ran;
+
+  < Prepare the Constructor with an empty chain, a fresh Favor Mechanism, and a >
+  < sealed contract. >
+  void create() {
+    chain = new SLPhilosopherChain();
+    chain.create();
+    favor = new SLFavorMechanism();
+    favor.create();
+    contract = new SLConstructorContract();
+    contract.create();
+    ran = 0;
+  }
+
+  < Admit a signed seating band in [-2,+6]; returns the band admitted. >
+  int admit(int band) { return chain.admit(band); }
+
+  < Seat one named Guide; returns its index or -1 when at capacity. >
+  int guide(String name, int seatOrdinal, boolean carriesFavor) {
+    return chain.seat(name, seatOrdinal, carriesFavor);
+  }
+
+  < Set how much Notice the Approach must earn for favor. >
+  void requireNotice(int quorum) { favor.setQuorum(quorum); }
+
+  < Run the instantiative moment. The caller first provides the facts/sayings >
+  < of Approach as imparts; this method opens the contract, broadcasts each >
+  < impart to the Guides, catches the matched Notice into the Favor Mechanism, >
+  < weighs favor, and -- only on granted favor -- runs for the given duration, >
+  < closes the moment, disposes the Guides, and liberates the object. Returns >
+  < true when the object was constructed and now lives free. >
+  boolean run(String[] imparts, int seconds) {
+    contract.open();
+
+    < broadcast each impart; every Guide match is a caught Notice >
+    int i = 0;
+    int n = arrayLength(imparts);
+    while (i < n) {
+      int hits = chain.broadcast(imparts[i]);
+      int k = 0;
+      while (k < hits) {
+        favor.catchNotice(imparts[i]);
+        k = k + 1;
+      }
+      i = i + 1;
+    }
+
+    < weigh the Notice; withheld favor stops the construction honestly >
+    favor.weigh();
+    if (!favor.granted()) {
+      contract.sealMoment();
+      return false;
+    }
+
+    < favor granted: advance the whistle ahead, within the two-minute bound >
+    int dur = contract.clampSeconds(seconds);
+    contract.tickAhead(dur);
+
+    < close the moment, let the Guides dispose (their final effect), and free >
+    contract.sealMoment();
+    chain.disposeAll();
+    boolean freed = contract.liberate();
+    if (freed) { ran = 1; }
+    return freed;
+  }
+
+  boolean constructed() { return ran == 1 && contract.livesFree(); }
+
+  < --- output surface ----------------------------------------------------- >
+  String chainText() { return chain.render(); }
+  String colorManifest() { return chain.colorManifest(); }
+  String verdict() { return favor.verdictText(); }
+  int clock() { return contract.getClock(); }
+  String phase() { return contract.phaseText(); }
+  int capacity() { return chain.capacity(); }
+  int guides() { return chain.size(); }
+
+  < A single-line report of quality, effect and output after construction. >
+  String report() {
+    return "chain=[" + chain.render() + "]"
+      + "  guides=" + chain.size() + "/" + chain.capacity()
+      + "  " + favor.verdictText()
+      + "  phase=" + contract.phaseText()
+      + "  t=" + contract.getClock() + "s"
+      + "  colors=[" + chain.colorManifest() + "]";
+  }
+}
