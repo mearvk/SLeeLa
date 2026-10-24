@@ -1,0 +1,49 @@
+name: SLeeLa HTTP 6.0 hardening
+
+on:
+  push:
+    paths:
+      - "http-6.0/**"
+      - "preferred-routers/**"
+      - "resolver/**"
+      - "impl/core/sleela_net.*"
+      - ".github/workflows/http6-hardening.yml"
+  pull_request:
+    paths:
+      - "http-6.0/**"
+      - "preferred-routers/**"
+      - "resolver/**"
+      - "impl/core/sleela_net.*"
+      - ".github/workflows/http6-hardening.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: x86_64
+          - os: windows-latest
+            arch: x86_64
+          - os: macos-15-intel
+            arch: x86_64
+          - os: macos-latest
+            arch: arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Windows build tools
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: choco install make mingw --no-progress -y
+      - name: Build and test
+        shell: bash
+        run: |
+          make -C http-6.0 clean
+          make -C http-6.0 syntax
+          make -C http-6.0 test
