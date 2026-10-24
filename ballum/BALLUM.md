@@ -58,15 +58,17 @@ at runtime.
 ## 7. Keyboard input
 
 Alongside pointer input, the bridge exposes a non-blocking key poll so a
-full-screen session can exit by key. The backend vtable gains an optional
+full-screen session can exit by key. The backend vtable has an optional
 `poll_key(context, int *out)`; the manager passes it through
 (`ballum_manager_poll_key` / `ballum_manager_has_keyboard`), and the VM bridge
 surfaces `uiBallumPollKey()` / `uiBallumHasKeyboard()`. Key codes are the
-backend-neutral `ballum_key_t` set — the one a session needs is
-`BALLUM_KEY_ESC` (27). A backend without a keyboard queue reports no keys and
-`poll_key` returns `UNSUPPORTED` (fail closed — never a false key). Mapping each
-per-OS keysym (X11 `XKeyEvent`, Win32 `WM_KEYDOWN` VK, macOS key code) onto
-`ballum_key_t` is the per-OS follow-up, exactly like the pointer path.
+backend-neutral `ballum_key_t` set: Escape (27), Enter (13), and Space (32).
+The Linux/X11 backend uses `XQueryKeymap`, Windows uses `GetAsyncKeyState`,
+and macOS uses `CGEventSourceKeyState`. Each backend emits key-down edges
+rather than repeating a key while it is held, so one long Escape press cannot
+skip both stages of the session exit flow. A backend that is unavailable or
+cannot poll keys still fails closed and reports no key; pointer capture remains
+a separate capability with its own platform limitations.
 
 ## 8. Full-screen session (white splash + logo fade + ESC)
 
