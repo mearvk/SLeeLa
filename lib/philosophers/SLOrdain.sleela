@@ -1,0 +1,134 @@
+<< lib/philosophers/SLOrdain.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Ordain -- the ordinality itself. Not a Guide and not a seating,
+   but the orthogonal principle of rank and order that stands across all
+   twenty-one seatings at once. >>
+#sleela 2.1
+<< Family: philosophers. The twenty-one Guides form one axis: a categorical,
+   ordinal sequence that runs Approach .. Approval through the seven categories.
+   ORDAIN is the OTHER axis -- orthogonal to that sequence. It is the ordering
+   of order: the principle by which any seating has a rank at all, by which the
+   categories themselves are ranked, and by which the whole register answers
+   upward to a single ordaining authority at the top of the scale.
+
+   Because it is orthogonal, Ordain does not occupy a seat (there is no
+   twenty-second seating). Instead it is a pure measure that can be asked of any
+   ordinal: what is its rank, which category ordains it, and how near is it to
+   the ordaining crown (Approval, ordinal 20, the seat the whole chain answers
+   to). At an IQ of 201+ the register reads its own order rather than merely
+   running it; Ordain is that reading.
+
+   The one hard rule of the metadata standard is kept: where a value models the
+   project's own design rather than a publicly-known subject it is "none", never
+   a fabricated authority. Ordain names an ordering principle, not a deity of
+   record; metaOrigin is therefore "Galactic" (scope beyond jurisdiction) and
+   the schedule is "none". >>
+class SLOrdain {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11571;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-24";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "Galactic";
+  String metaBirthDate = "2026-10-24";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < --- the axis of order ---------------------------------------------------- >
+  < The ordaining crown: the seating the whole chain answers to (Approval). >
+  static final int CROWN = 20;
+  < The floor of the register: the first seating (Approach). >
+  static final int FLOOR = 0;
+  < The number of categories that Ordain ranks over the sequence. >
+  static final int CATEGORIES = 7;
+
+  < the register whose order Ordain reads (orthogonal, not seated within it) >
+  SLPhilosopherSeating register;
+
+  < Prepare the ordinality over a fresh register. >
+  void create() {
+    register = new SLPhilosopherSeating();
+    register.create();
+  }
+
+  < Read over an existing register instead of the fresh one. >
+  void readOver(SLPhilosopherSeating r) {
+    if (r != null) { register = r; }
+  }
+
+  < Is this ordinal ordained (a real, ranked seating)? Orthogonality means >
+  < Ordain itself is never one of them, so it answers about others only. >
+  boolean ordains(int ordinal) {
+    return ordinal >= FLOOR && ordinal <= CROWN;
+  }
+
+  < The rank of an ordinal: its distance up from the floor (0 at Approach, >
+  < 20 at Approval). This is the ordinality -- the order-number of the seat. >
+  int rank(int ordinal) {
+    if (!ordains(ordinal)) { return -1; }
+    return ordinal - FLOOR;
+  }
+
+  < How near a seating stands to the ordaining crown: 0 at the crown itself, >
+  < growing with distance below it. The chain answers upward, so nearness to >
+  < the crown is nearness to Approval. >
+  int toCrown(int ordinal) {
+    if (!ordains(ordinal)) { return -1; }
+    return CROWN - ordinal;
+  }
+
+  < The category that ordains a seating (which of the seven phases ranks it). >
+  int ordainingCategory(int ordinal) {
+    return register.category(ordinal);
+  }
+  String ordainingCategoryName(int ordinal) {
+    return register.seatCategoryName(ordinal);
+  }
+
+  < Is this the ordaining crown itself (Approval, the seat answered to)? >
+  boolean isCrown(int ordinal) {
+    return ordinal == CROWN;
+  }
+
+  < A one-line reading of an ordinal's place in the order, e.g. >
+  < "Aim: rank 6, category Intent, 14 below the crown (Approval)". >
+  String reading(int ordinal) {
+    if (!ordains(ordinal)) { return "unordained"; }
+    return register.seatName(ordinal)
+      + ": rank " + rank(ordinal)
+      + ", category " + register.seatCategoryName(ordinal)
+      + ", " + toCrown(ordinal) + " below the crown (Approval)";
+  }
+}
