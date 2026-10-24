@@ -151,18 +151,33 @@ static ballum_status_t win_set_gamma(void *ctx, uint32_t id, uint32_t gamma_scal
 }
 
 /* Whole-screen global pointer capture on Windows uses a low-level mouse hook
- * (SetWindowsHookEx WH_MOUSE_LL) with its own message-pump lifecycle. Until that
- * is wired, this backend provides no poll_event (NULL below), so the manager
- * reports has_input()==0 and poll returns UNSUPPORTED -- it never fakes an input
- * stream. The display controls above are unaffected. */
+ * with its own message-pump lifecycle; it remains intentionally unavailable.
+ * Keyboard exit is independent and uses non-blocking Win32 key-state polling. */
+static ballum_status_t win_poll_key(void *ctx, int *out) {
+    static int was_escape_down;
+    static int was_enter_down;
+    static int was_space_down;
+    int escape_down, enter_down, space_down;
+    (void)ctx;
+    if (!out) return BALLUM_STATUS_INVALID_ARGUMENT;
+    *out = BALLUM_KEY_NONE;
+    escape_down = (GetAsyncKeyState(VK_ESCAPE) & 0x8000) != 0;
+    enter_down = (GetAsyncKeyState(VK_RETURN) & 0x8000) != 0;
+    space_down = (GetAsyncKeyState(VK_SPACE) & 0x8000) != 0;
+    if (escape_down && !was_escape_down) *out = BALLUM_KEY_ESC;
+    else if (enter_down && !was_enter_down) *out = BALLUM_KEY_ENTER;
+    else if (space_down && !was_space_down) *out = BALLUM_KEY_SPACE;
+    was_escape_down = escape_down;
+    was_enter_down = enter_down;
+    was_space_down = space_down;
+    return BALLUM_STATUS_OK;
+}
 
 static const ballum_backend_t k_windows = {
     "windows-gdi",
     win_enumerate, win_set_pixel, win_get_pixel, win_blit,
     win_set_brightness, win_set_warmth, win_set_gamma, /* poll_event */ 0,
-    /* poll_key: no keyboard queue wired yet (map Win32 WM_KEYDOWN VK codes onto
-     * ballum_key_t as the native follow-up); NULL -> fail closed. */
-    0
+    win_poll_key
 };
 
 const ballum_backend_t *ballum_backend_windows(void) { return &k_windows; }
