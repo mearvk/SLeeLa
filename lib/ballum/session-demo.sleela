@@ -152,7 +152,7 @@ class SessionDemo {
     fadeFrames = strToInt(param("SESSION_FRAMES", "12"), 12);
     state = 0;
 
-    String logo = "https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg";
+    String logo = "images/national-bitcoin-icc-logo-007.jpg";
     print("logo:        " + logo);
     print("fade frames: " + fadeFrames);
 
@@ -171,7 +171,7 @@ class SessionDemo {
     print("selected effect: " + effect + " (" + uiBallumFxName(effect) + ")");
 
     << optional: decode a local logo file if provided (host fetches the JPEG) >>
-    String file = param("LOGO_FILE", "");
+    String file = param("LOGO_FILE", "images/national-bitcoin-icc-logo-007.jpg");
     if (file != "") { print("logo file: " + file + "  load=" + uiBallumLogoLoad(file)); }
     uiBallumLogoSetEffect(effect);
 
@@ -198,6 +198,15 @@ class SessionDemo {
       step();
       while (timeMonotonicNanos() - frameStart < 16000000) { }
     }
+    << Fade the logo back out to pure white before leaving the display. >>
+    int outPct = 100;
+    while (outPct > 0) {
+      uiBallumLogoBlend(boundId, outPct, w, h, 255, 255, 255);
+      outPct = outPct - 5;
+      int outStart = timeMonotonicNanos();
+      while (timeMonotonicNanos() - outStart < 16000000) { }
+    }
+    paintWhite();
     print("after fade -> " + stateName(state)
           + "  frame=" + frame + "/" + fadeFrames
           + "  fadePct=" + fadePercent());
