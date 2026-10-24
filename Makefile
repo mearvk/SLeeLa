@@ -3,14 +3,14 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check install install-all install-local install-system install-check install-product tutorial-check tests server config route common-rails registry premium-vms clean help
+.PHONY: all uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product tutorial-check tests server config route common-rails registry premium-vms clean help
 
 SLEELA_MANIFEST_CONSENT ?=
 
 PREFIX ?= /usr/local
 DESTDIR ?=
 
-all: core java28 regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs churn antivirus registry premium-vms
+all: core java28 regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs churn antivirus registry premium-vms ballum
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
@@ -89,6 +89,54 @@ antivirus-integrity:
 antivirus-integrity-check:
 	@test -n "$(MANIFEST)" || { echo "Usage: make antivirus-integrity-check MANIFEST=build/INTEGRITY-MANIFEST.json" >&2; exit 2; }
 	$(MAKE) -C antivirus integrity-check MANIFEST="$(MANIFEST)"
+
+# Ballum(TM) pixel-level display control. The native library links OS-centric
+# display libraries (Linux X11+Xrandr; macOS CoreGraphics/ApplicationServices/
+# Foundation; Windows gdi32/user32), provisioned/reported by the ballum/
+# Makefile's own `deps`/`check-deps` targets. The top-level `ballum` target
+# attempts the real per-OS build; if the OS development libraries are missing it
+# falls back to the always-portable test rather than failing `make all` (mirror
+# of how optional native families are kept non-fatal). Build the real OS library
+# explicitly with `make ballum` on a host whose deps are present, or run
+# `make ballum-deps` first.
+ballum:
+	@if $(MAKE) -C ballum check-deps >/dev/null 2>&1; then \
+	  $(MAKE) -C ballum all; \
+	else \
+	  echo "ballum: OS display libraries missing -- building the portable test only."; \
+	  echo "        run 'make ballum-deps' (host package manager) then 'make ballum' for the real OS library."; \
+	  $(MAKE) -C ballum test; \
+	fi
+
+ballum-test:
+	$(MAKE) -C ballum test
+
+ballum-check-deps:
+	$(MAKE) -C ballum check-deps
+
+# Provision this OS's Ballum display libraries. Reports the install command by
+# default; pass BALLUM_DEPS_INSTALL=1 to actually install (may use sudo on Linux).
+ballum-deps:
+	$(MAKE) -C ballum deps BALLUM_DEPS_INSTALL="$(BALLUM_DEPS_INSTALL)"
+
+# Install the native Ballum library + headers under $(PREFIX).
+ballum-install:
+	$(MAKE) -C ballum install PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)"
+
+ballum-uninstall:
+	$(MAKE) -C ballum uninstall PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)"
+
+ballum-clean:
+	$(MAKE) -C ballum clean
+
+# The SLeeLa-facing Ballum library (lib/ballum): validates the .sleela sources
+# with the compiler and dispatches the native build/install/clean below it.
+lib-ballum:
+	$(MAKE) -C lib/ballum all
+lib-ballum-check:
+	$(MAKE) -C lib/ballum check
+lib-ballum-install:
+	$(MAKE) -C lib/ballum install PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)"
 
 install-check:
 	$(MAKE) -C install install-check
@@ -178,6 +226,8 @@ clean:
 	$(MAKE) -C codecs clean
 	$(MAKE) -C churn clean
 	$(MAKE) -C antivirus clean
+	$(MAKE) -C ballum clean
+	$(MAKE) -C lib/ballum clean
 	@make -C config clean
 
 help:
@@ -199,6 +249,14 @@ help:
 	@echo "  make antivirus-clamav Check optional ClamAV scanner integration"
 	@echo "  make antivirus-integrity Generate SHA-256 inventory for antivirus source and indexes"
 	@echo "  make antivirus-integrity-check MANIFEST=PATH Verify the SHA-256 inventory"
+	@echo "  make ballum    Build the native Ballum display library for this OS (falls back to the portable test if OS deps are missing)"
+	@echo "  make ballum-deps [BALLUM_DEPS_INSTALL=1] Report/install this OS's Ballum display libraries (X11+Xrandr / Apple frameworks / gdi32)"
+	@echo "  make ballum-check-deps Report whether this OS's Ballum display libraries are available"
+	@echo "  make ballum-test Build and run the portable Ballum tests (no display libraries required)"
+	@echo "  make ballum-install [PREFIX=/usr/local] Install the native Ballum library + headers"
+	@echo "  make ballum-uninstall Remove the installed native Ballum library + headers"
+	@echo "  make lib-ballum Validate the SLeeLa lib/ballum sources and build the native backend below it"
+	@echo "  make lib-ballum-check Validate the lib/ballum .sleela sources with the compiler"
 	@echo "  make jetbrains Show JetBrains source acquisition helpers"
 	@echo "  make connector Build all optional native database/data-source connectors"
 	@echo "  make connector-test Run available offline connector tests"
