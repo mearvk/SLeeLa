@@ -1,0 +1,65 @@
+/*
+ * lib/image/SLImageCodecTiff.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: TIFF codec class -- the SLeeLa-facing handle to image codec id 6.
+ */
+#sleela 2.1
+// Family: image. Individual codec class for TIFF (Tagged Image File Format), a
+// flexible tag-based raster container supporting many compressions (none, LZW,
+// PackBits, Deflate, JPEG). Identified by "II*\0" (little-endian) or "MM\0*"
+// (big-endian). The IFD parsing and per-tag codec selection live in the native
+// plugin or a registered backend adapter; this class is the metadata +
+// capability contract. SLeeLa never calls a codec directly -- the
+// SLImageCodecLoader loads this plugin by id and dispatches decode/encode.
+//
+// Handler state codes: 0 native, 1 backend, 2 recognized, 3 container, 4 event.
+class SLImageCodecTiff {
+  int id() { return 6; }
+  String name() { return "TIFF"; }
+  String mime() { return "image/tiff"; }
+  String extensions() { return ".tif .tiff"; }
+
+  int state() { return 1; }
+  String stateName() { return "backend"; }
+
+  boolean canDecode() { return true; }
+  boolean canEncode() { return true; }
+
+  boolean isNative() { return false; }
+  boolean needsBackend() { return true; }
+
+  String metaVersion = "1.0.0";
+  int metaId = 6;
+  String metaAuthor = "Aldus Corporation";
+  String metaDate = "2026-09-28";
+  String metaCopyright = "Open (Adobe TIFF 6.0 specification)";
+  String metaTrademark = "TIFF";
+  String metaCorporation = "Adobe Inc.";
+  String metaOrigin = "United States";
+  String metaBirthDate = "1986";
+  int metaScienceRating = 9;
+  String metaNationalSchedule = "Adobe TIFF 6.0";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

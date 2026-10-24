@@ -1,0 +1,14 @@
+/*
+ * lib/image/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for image codecs.
+ */
+#sleela 2.1
+// Library facade for module package: image
+// Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+class SLPackage {
+  String packageName;
+  void configure(String name){packageName=name;}
+  String name(){return packageName;}
+  boolean available(){return packageName!=null;}
+}

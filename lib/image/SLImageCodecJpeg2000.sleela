@@ -1,0 +1,64 @@
+/*
+ * lib/image/SLImageCodecJpeg2000.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: JPEG 2000 codec class -- the SLeeLa-facing handle to image codec id 11.
+ */
+#sleela 2.1
+// Family: image. Individual codec class for JPEG 2000, a wavelet-based raster
+// format. The JP2 container is identified by 00 00 00 0C 6A 50 20 20; the raw
+// codestream by the SOC marker FF 4F FF 51. The DWT/EBCOT pipeline lives in the
+// native plugin or a registered backend adapter; this class is the metadata +
+// capability contract. SLeeLa never calls a codec directly -- the
+// SLImageCodecLoader loads this plugin by id and dispatches decode/encode.
+//
+// Handler state codes: 0 native, 1 backend, 2 recognized, 3 container, 4 event.
+class SLImageCodecJpeg2000 {
+  int id() { return 11; }
+  String name() { return "JPEG 2000"; }
+  String mime() { return "image/jp2"; }
+  String extensions() { return ".jp2 .j2k .jpf .jpx"; }
+
+  int state() { return 1; }
+  String stateName() { return "backend"; }
+
+  boolean canDecode() { return true; }
+  boolean canEncode() { return true; }
+
+  boolean isNative() { return false; }
+  boolean needsBackend() { return true; }
+
+  String metaVersion = "1.0.0";
+  int metaId = 11;
+  String metaAuthor = "Joint Photographic Experts Group";
+  String metaDate = "2026-09-28";
+  String metaCopyright = "Open (ISO/IEC)";
+  String metaTrademark = "JPEG 2000";
+  String metaCorporation = "ISO/IEC JTC 1 / ITU-T";
+  String metaOrigin = "International";
+  String metaBirthDate = "2000";
+  int metaScienceRating = 8;
+  String metaNationalSchedule = "ISO/IEC 15444-1 (ITU-T T.800)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
