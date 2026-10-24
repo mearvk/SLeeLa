@@ -7,7 +7,7 @@
 
 **The Now. The Ingredient.** A language is more than syntax: it is the compiler, runtime, libraries, tools, and platform contracts that make software usable.
 
-## Start Here
+## I. Start Here
 - [Build the native implementation](impl/README.md)
 - [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
@@ -18,7 +18,7 @@
 - [NitroWebExpress logo](images/nitro-web-express/nitrowebexpress-logo-004.jpeg)
 - [Testing policy and release gates](markdown/TESTING.md)
 
-## News
+## II. News
 
 Recent additions to the language, drivers, and standard library:
 
@@ -48,7 +48,7 @@ Recent additions to the language, drivers, and standard library:
   other process by equivalent calls on the shared VM substrate — see
   [`lib/cpu/EXECUTION.md`](lib/cpu/EXECUTION.md) §5.
 
-## Build and Test
+## III. Build and Test
 From a clean checkout:
 
 ```sh
@@ -75,7 +75,7 @@ the registry core, seeds the baseline table into the portable text store
 
 Consult the build and testing guides for prerequisites and platform-specific steps. A successful build of one component does not prove every library or platform is release-ready.
 
-## Install
+## IV. Install
 
 After building the native products, install the commands and runtime support files:
 
@@ -93,19 +93,19 @@ removes only files recorded by the installer, preserving configuration and
 untracked runtime data. For the interactive deployment workflow and all
 installation options, see [Quick and Safe Install](install/README.md).
 
-## Language and Runtime
+## V. Language and Runtime
 The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **2.2**; compiler/tool version and source syntax version are distinct. Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
 
 The repository includes a native C/C++ implementation, SLVM generation references, standard-library modules, tests, examples, and platform integrations. Implementation and validation status varies by module; consult its specification and current CI results rather than assuming uniform completeness.
 
-## Engineering Principles
+## VI. Engineering Principles
 - **Evidence over claims:** distinguish implemented, tested, experimental, and planned behavior.
 - **One contract per boundary:** document syntax, APIs, file formats, platform assumptions, and failure behavior.
 - **Portable by design:** isolate platform-specific backends and test on native runners.
 - **Safe failure:** test malformed input, resource limits, process failures, and cleanup paths.
 - **Reproducible releases:** rebuild cleanly and publish artifact hashes and release notes.
 
-## Antivirus Build and Integrity
+## VII. Antivirus Build and Integrity
 
 The Sleelavirin antivirus package includes a native SHA-256 scanner, an optional
 ClamAV adapter, source/index integrity manifests, and platform-package checksums.
@@ -132,7 +132,7 @@ A release is not considered verified until the relevant CI jobs pass on the
 exact release commit and the resulting artifacts have been checked.
 
 
-## SLeeLa Editor Themes — Vim and Emacs
+## VIII. SLeeLa Editor Themes — Vim and Emacs
 
 SLeeLa includes a coordinated set of professional dark color schemes for **Vim** and **Emacs**, plus a native C/C++ palette utility. The original **American Professional** scheme remains the default. Four companion palettes are available for different cultural design inspirations; these are interpretive design palettes, not official representations of any nation or culture.
 
@@ -227,7 +227,7 @@ For backward compatibility, `--palette` and `--hex COLOR` without `--theme` sele
 
 See [the editor integration guide](linux-editors/README.md) for the full palette descriptions and utility details.
 
-## Contributing
+## IX. Contributing
 1. Read the documentation index and testing policy.
 2. Make focused changes with positive and negative tests.
 3. Run targeted tests, then the broad suite.
@@ -235,14 +235,14 @@ See [the editor integration guide](linux-editors/README.md) for the full palette
 
 SLeeLa is developed by **MEARVK LLC**. Historical landing-page material is preserved in [`docs/README-LEGACY.md`](docs/README-LEGACY.md).
 
-## AE6E66 — Round Public Email Levy Expectation
+## X. AE6E66 — Round Public Email Levy Expectation
 
 For the AE6E66 initiative, the project's stated expectation is **$300,000,000.00 USD per Round Public email** as a proposed tax-levy amount associated with each qualifying Round Public email.
 
 This statement records a project expectation only. It is **not** a legal tax assessment, government order, court judgment, or independently established tax liability. Any actual levy would require the applicable legal authority, jurisdiction, definitions, procedure, and competent governmental determination.
 
 
-## Alphabet and Character-set Runtime
+## XI. Alphabet and Character-set Runtime
 
 SLeeLa's alphabet documentation and native character runtime are maintained in alphabet/sleela/ and lib/alphabet/native/. The native C++17 tests cover strict UTF-8 scalar decoding/encoding, C<n> capacity signatures, and bounded character-set membership:
 
@@ -250,7 +250,7 @@ SLeeLa's alphabet documentation and native character runtime are maintained in a
 
 The experimental UTF-4088 catalogue and its SLeeLa lookup adapter are documented in utf-4088/SLeeLa-ALPHABET-INTEGRATION.md. UTF-4088 IDs are a separate namespace, not Unicode scalar values. Compiler and SLVM binding work is explicitly tracked separately from these native foundations.
 
-## AutoCAD Creator™
+## XII. AutoCAD Creator™
 
 The [AutoCAD Creator™](autocad/creator/README.md) is an interactive 2D CAD
 application written entirely in SLeeLa. Where the sibling AutoCAD Renderer turns
@@ -283,12 +283,12 @@ On a display this opens the live editing window; on a headless host it builds th
 drawing in memory, prints a report plus the DXF, and exits cleanly.
 
 
-## UTF-4088 Input-map Ordering
+## XIII. UTF-4088 Input-map Ordering
 
 The specialized UTF-4088 catalogue defines its spatial input-map traversal and abstract pressure iterations in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). The National Lien subject-index policy is in [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). Map coordinates, pressure levels (1–50), permanent catalogue IDs, and alphabetic ranks are independent fields; none should be silently substituted for another. Pressure is an algorithmic iteration level, not a physical quantity.
 
 
-## Recent and Expanded Package Index
+## XIV. Recent and Expanded Package Index
 
 This appended index highlights recently expanded packages, domain libraries, and
 source collections. Entries are grouped alphabetically by package name or topic.
@@ -350,7 +350,7 @@ of package-index updates.
 
 ---
 
-## <img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian"> II. Bitcoin Conjegeum
+## <img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian"> XV. Bitcoin Conjegeum
 
 ![CremeOak](https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg)
 
