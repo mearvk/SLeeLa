@@ -21,6 +21,7 @@
 #if defined(BALLUM_BACKEND_X11)
 
 #include <X11/Xlib.h>
+#include <X11/keysym.h>
 #include <X11/extensions/Xrandr.h>
 #include <math.h>
 #include <string.h>
@@ -273,14 +274,45 @@ static ballum_status_t x11_poll_event(void *ctx, ballum_pointer_event_t *out) {
     return BALLUM_STATUS_OK;
 }
 
+/* Non-blocking global key-state polling. XQueryKeymap reports physical key
+ * state for the active X server even when the application has no focused
+ * window. Return only key-down edges so holding ESC does not skip both stages
+ * of SLBallumSession's RUNNING -> FRAME -> EXIT transition. */
+static ballum_status_t x11_poll_key(void *ctx, int *out) {
+    static int was_escape_down;
+    static int was_enter_down;
+    static int was_space_down;
+    char keys[32];
+    Display *dpy;
+    KeyCode esc, enter, space;
+    int esc_down, enter_down, space_down;
+    (void)ctx;
+    if (!out) return BALLUM_STATUS_INVALID_ARGUMENT;
+    *out = BALLUM_KEY_NONE;
+    dpy = ensure_display();
+    if (!dpy) return BALLUM_STATUS_BACKEND_UNAVAILABLE;
+    esc = XKeysymToKeycode(dpy, XK_Escape);
+    enter = XKeysymToKeycode(dpy, XK_Return);
+    space = XKeysymToKeycode(dpy, XK_space);
+    if (!esc) return BALLUM_STATUS_UNSUPPORTED;
+    XQueryKeymap(dpy, keys);
+    esc_down = (keys[esc >> 3] & (1 << (esc & 7))) != 0;
+    enter_down = enter && (keys[enter >> 3] & (1 << (enter & 7))) != 0;
+    space_down = space && (keys[space >> 3] & (1 << (space & 7))) != 0;
+    if (esc_down && !was_escape_down) *out = BALLUM_KEY_ESC;
+    else if (enter_down && !was_enter_down) *out = BALLUM_KEY_ENTER;
+    else if (space_down && !was_space_down) *out = BALLUM_KEY_SPACE;
+    was_escape_down = esc_down;
+    was_enter_down = enter_down;
+    was_space_down = space_down;
+    return BALLUM_STATUS_OK;
+}
+
 static const ballum_backend_t k_x11 = {
     "x11-xrandr",
     x11_enumerate, x11_set_pixel, x11_get_pixel, x11_blit,
     x11_set_brightness, x11_set_warmth, x11_set_gamma, x11_poll_event,
-    /* poll_key: the X11 pointer path does not yet feed keys through Ballum, so
-     * NULL -> has_keyboard()==0 and poll_key returns UNSUPPORTED (fail closed).
-     * Mapping XKeyEvent keysyms onto ballum_key_t is the native follow-up. */
-    0
+    x11_poll_key
 };
 
 const ballum_backend_t *ballum_backend_x11(void) { return &k_x11; }
