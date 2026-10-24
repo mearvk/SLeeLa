@@ -1,0 +1,65 @@
+/*
+ * lib/image/SLImageCodecDds.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: DDS codec class -- the SLeeLa-facing handle to image codec id 14.
+ */
+#sleela 2.1
+// Family: image. Individual codec class for DDS (DirectDraw Surface), a
+// container for GPU texture data including block-compressed formats (BC1-BC7 /
+// DXT) and mipmap chains, identified by the "DDS " magic. The block-decompress
+// pipeline lives in the native plugin or a registered backend adapter; this
+// class is the metadata + capability contract. SLeeLa never calls a codec
+// directly -- the SLImageCodecLoader loads this plugin by id and dispatches
+// decode/encode.
+//
+// Handler state codes: 0 native, 1 backend, 2 recognized, 3 container, 4 event.
+class SLImageCodecDds {
+  int id() { return 14; }
+  String name() { return "DirectDraw Surface (DDS)"; }
+  String mime() { return "image/vnd-ms.dds"; }
+  String extensions() { return ".dds"; }
+
+  int state() { return 1; }
+  String stateName() { return "backend"; }
+
+  boolean canDecode() { return true; }
+  boolean canEncode() { return true; }
+
+  boolean isNative() { return false; }
+  boolean needsBackend() { return true; }
+
+  String metaVersion = "1.0.0";
+  int metaId = 14;
+  String metaAuthor = "Microsoft";
+  String metaDate = "2026-09-28";
+  String metaCopyright = "Microsoft (format spec)";
+  String metaTrademark = "DirectDraw";
+  String metaCorporation = "Microsoft Corporation";
+  String metaOrigin = "United States";
+  String metaBirthDate = "1999";
+  int metaScienceRating = 8;
+  String metaNationalSchedule = "Microsoft DDS (DirectX)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

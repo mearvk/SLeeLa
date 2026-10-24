@@ -60,6 +60,12 @@ int http6_frame_validate(const http6_frame_header_t *h, size_t available)
         return -3;
     if (h->payload_length > HTTP6_MAX_PAYLOAD)
         return -4;
+    /* Bits 7..15 are reserved and must not be silently reinterpreted. */
+    if ((h->flags & (uint16_t)~(HTTP6_FLAG_FIN | HTTP6_FLAG_ACK |
+                                HTTP6_FLAG_URGENT | HTTP6_FLAG_INCREMENTAL |
+                                HTTP6_FLAG_RESUMABLE | HTTP6_FLAG_OPTIONAL |
+                                HTTP6_FLAG_USER_AUTHORED)) != 0)
+        return -7;
     if ((size_t)h->payload_length > available)
         return -5;
     return 0;

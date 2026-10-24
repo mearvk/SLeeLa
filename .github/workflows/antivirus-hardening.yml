@@ -1,0 +1,62 @@
+name: Sleelavirin antivirus hardening
+
+on:
+  push:
+    paths:
+      - "antivirus/**"
+      - "lib/antivirus/**"
+      - ".github/workflows/antivirus-hardening.yml"
+  pull_request:
+    paths:
+      - "antivirus/**"
+      - "lib/antivirus/**"
+      - ".github/workflows/antivirus-hardening.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: x86_64
+          - os: windows-latest
+            arch: x86_64
+          - os: macos-13
+            arch: x86_64
+          - os: macos-latest
+            arch: arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Install Windows build tools
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          choco install make mingw --no-progress -y
+      - name: Build and test on Unix
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          make -C antivirus clean test
+          python3 -m py_compile antivirus/tools/*.py antivirus/tests/test_*.py
+      - name: Build and test on Windows
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          make -C antivirus clean test
+          python -m py_compile antivirus/tools/*.py antivirus/tests/test_*.py
+      - name: Verify source manifest tooling
+        shell: bash
+        run: |
+          python antivirus/tools/sleelavirin_manifest.py --help
+          python antivirus/tools/sleelavirin_verify_signature.py --help

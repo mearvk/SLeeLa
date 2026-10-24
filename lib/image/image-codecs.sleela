@@ -1,0 +1,70 @@
+#sleela 2.1
+// image-codecs.sleela -- the self-contained, runnable build of the SLeeLa image
+// codec Loader demonstration, parallel to the audio codecs/codecs.sleela. The
+// compiler's `run` compiles one file as a single unit, so this aggregate
+// inlines the Loader contract (mirroring SLImageCodecLoader.sleela) and a
+// `main` that loads, uses, and unloads image codecs. SLeeLa calls the Loader;
+// the Loader calls the individual image codec plugins.
+//
+// Image codec ids: 0 PPM/PNM 1 BMP 2 TGA 3 PNG 4 JPEG 5 GIF 6 TIFF 7 WEBP
+// 8 HEIF 9 AVIF 10 JPEG_XL 11 JPEG_2000 12 ICO 13 SVG 14 DDS 15 OPENEXR
+// 16 RADIANCE_HDR 17 PCX 18 XPM 19 ICNS. Native codecs (0, 1, 2, 16, 17)
+// decode/encode raster in-package; the rest advertise a backend state and fail
+// cleanly until a backend is wired. The per-codec loaded flags use the
+// first-class array type.
+class ImageCodecs {
+  int[] loaded;
+
+  int count() { return 20; }
+  void init() { loaded = new int[20]; }
+
+  boolean isLoaded(int id) { return loaded[id] == 1; }
+  void load(int id) { loaded[id] = 1; }
+  void unload(int id) { loaded[id] = 0; }
+  void unloadAll() { int i = 0; while (i < 20) { loaded[i] = 0; i = i + 1; } }
+
+  boolean isNative(int id) {
+    return id == 0 || id == 1 || id == 2 || id == 16 || id == 17;
+  }
+
+  String nameOf(int id) {
+    if (id == 0) { return "PPM/PNM"; }
+    if (id == 1) { return "BMP"; }
+    if (id == 2) { return "TGA"; }
+    if (id == 3) { return "PNG"; }
+    if (id == 4) { return "JPEG"; }
+    if (id == 7) { return "WebP"; }
+    return "codec#" + id;
+  }
+
+  String stateWord(int id) { if (isNative(id)) { return "native"; } return "backend"; }
+
+  void report(int id) {
+    String tag = "unloaded";
+    if (isLoaded(id)) { tag = "loaded"; }
+    print(nameOf(id) + " [" + stateWord(id) + "] -> " + tag);
+  }
+
+  void main() {
+    init();
+    // SLeeLa drives the Loader: load a native raster codec and a backend codec,
+    // use them, then unload. The Loader -- not the program -- owns each plugin.
+    load(1);    // BMP (native)
+    load(0);    // PPM/PNM (native)
+    load(3);    // PNG (backend)
+
+    report(0);
+    report(1);
+    report(3);
+    report(4);  // JPEG: never loaded
+
+    print("loaded native BMP? " + isLoaded(1));
+    print("PNG is native? " + isNative(3));
+
+    unload(3);
+    report(3);
+
+    unloadAll();
+    print("after unloadAll, BMP loaded? " + isLoaded(1));
+  }
+}

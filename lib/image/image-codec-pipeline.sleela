@@ -1,0 +1,152 @@
+#sleela 2.1
+// image-codec-pipeline.sleela -- the self-contained, runnable build of the
+// SLeeLa image codec Controller/Verifier/Processor pipeline, parallel to the
+// audio codecs/codec-pipeline.sleela and the video
+// video/video-codec-pipeline.sleela. The split per-class files
+// (SLImageCodecController / SLImageCodecLoader / SLImageCodecVerifier /
+// SLImageCodecProcessor) are the package discovery surface; this file is the
+// executable counterpart, inlining the collaborators plus a `main` that drives
+// them the way a GUI or app would: resolve -> load -> verify -> decode/encode
+// -> unload.
+//
+// Image codec ids: 0 PPM/PNM 1 BMP 2 TGA 3 PNG 4 JPEG 5 GIF 6 TIFF 7 WEBP
+// 8 HEIF 9 AVIF 10 JPEG_XL 11 JPEG_2000 12 ICO 13 SVG 14 DDS 15 OPENEXR
+// 16 RADIANCE_HDR 17 PCX 18 XPM 19 ICNS. Native codecs (0,1,2,16,17) decode
+// in-package; the rest are backend/container/recognized. Result codes: 0 ok
+// -1 unsupported -2 invalid -3 format -4 io -5 not-loaded.
+//
+// Syntax 1.11: method calls resolve on class-typed fields, so the Controller
+// holds its Verifier and Processor as fields (wired in create()) and delegates
+// through them -- a GUI drives one object: ctrl.decode(id),
+// ctrl.resolveExtension(ext), ctrl.resultText(code).
+
+// ---- Verifier: extension/magic resolution + result text ----------------
+class Verifier {
+  int resolveExtension(String ext) {
+    if (ext == ".ppm" || ext == ".pgm" || ext == ".pbm" || ext == ".pnm") { return 0; }
+    if (ext == ".bmp") { return 1; }
+    if (ext == ".tga") { return 2; }
+    if (ext == ".png") { return 3; }
+    if (ext == ".jpg" || ext == ".jpeg") { return 4; }
+    if (ext == ".gif") { return 5; }
+    if (ext == ".webp") { return 7; }
+    if (ext == ".avif") { return 9; }
+    if (ext == ".svg") { return 13; }
+    return -1;
+  }
+  int probeMagic(String tag) {
+    if (tag == "P6") { return 0; }                 // Netpbm binary RGB
+    if (tag == "BM") { return 1; }                 // BMP
+    if (tag == "89504E47") { return 3; }           // PNG
+    if (tag == "FFD8FF") { return 4; }             // JPEG
+    if (tag == "GIF89a") { return 5; }             // GIF
+    if (tag == "RIFF") { return 7; }               // WebP (RIFF....WEBP)
+    return -1;
+  }
+  String resultText(int code) {
+    if (code == 0) { return "ok"; }
+    if (code == -1) { return "unsupported (backend not present)"; }
+    if (code == -2) { return "invalid arguments"; }
+    if (code == -3) { return "input is not this codec's format"; }
+    if (code == -4) { return "I/O or allocation failure"; }
+    if (code == -5) { return "codec not loaded"; }
+    return "unknown";
+  }
+}
+
+// ---- Processor: pure decode/encode dispatch over the facts -------------
+class Processor {
+  int decode(boolean loaded, boolean nativeCodec, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeCodec) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+  int encode(boolean loaded, boolean nativeCodec, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeCodec) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+}
+
+// ---- Controller: owns lifecycle + wires the collaborators as fields ----
+class Controller {
+  int[] loaded;
+  int[] backend;
+  Verifier verifier;      // wired by create(), called via the field (1.11)
+  Processor processor;
+
+  void create() {
+    loaded = new int[20];
+    backend = new int[20];
+    verifier = new Verifier();
+    processor = new Processor();
+  }
+
+  int count() { return 20; }
+  boolean isNative(int id) {
+    return id == 0 || id == 1 || id == 2 || id == 16 || id == 17;
+  }
+  String nameOf(int id) {
+    if (id == 0) { return "PPM/PNM"; }
+    if (id == 1) { return "BMP"; }
+    if (id == 3) { return "PNG"; }
+    if (id == 7) { return "WebP"; }
+    return "codec#" + id;
+  }
+
+  int load(int id) { loaded[id] = 1; return 0; }
+  boolean isLoaded(int id) { return loaded[id] == 1; }
+  void unloadAll() { int i = 0; while (i < 20) { loaded[i] = 0; i = i + 1; } }
+  int registerBackend(int id) { backend[id] = 1; return 0; }
+  boolean hasBackend(int id) { return backend[id] == 1; }
+  int loadedCount() {
+    int n = 0; int i = 0;
+    while (i < 20) { if (loaded[i] == 1) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+
+  // Clean facade methods: delegate to the wired collaborators.
+  int resolveExtension(String ext) { return verifier.resolveExtension(ext); }
+  int probeMagic(String tag) { return verifier.probeMagic(tag); }
+  String resultText(int code) { return verifier.resultText(code); }
+  int decode(int id) { return processor.decode(isLoaded(id), isNative(id), hasBackend(id)); }
+  int encode(int id) { return processor.encode(isLoaded(id), isNative(id), hasBackend(id)); }
+
+  void main() {
+    print("=== SLeeLa image codec pipeline (Controller/Loader/Verifier/Processor) ===");
+    create();
+    print("image codecs known: " + count());
+
+    // Resolve a file the way a GUI would when the user opens it.
+    int bmp = resolveExtension(".bmp");
+    int png = resolveExtension(".png");
+    print("resolve .bmp -> " + bmp + " (" + nameOf(bmp) + ")");
+    print("resolve .png -> " + png + " (" + nameOf(png) + ")");
+
+    // Decode before load: honest state error (-5).
+    print("decode .bmp before load: " + resultText(decode(bmp)));
+
+    // Load the native BMP codec and process it.
+    load(bmp);
+    print("decode .bmp loaded (native): " + resultText(decode(bmp)));
+    print("encode .bmp loaded (native): " + resultText(encode(bmp)));
+
+    // Load backend PNG with no backend wired: unsupported (-1), not a false ok.
+    load(png);
+    print("decode .png no backend: " + resultText(decode(png)));
+
+    // Wire a PNG backend adapter, then it processes.
+    registerBackend(png);
+    print("decode .png backend:    " + resultText(decode(png)));
+
+    // Verifier content probe for a GUI pre-classify.
+    print("probe '89504E47' -> id " + probeMagic("89504E47") + " (" + nameOf(3) + ")");
+
+    print("loaded count=" + loadedCount());
+    unloadAll();
+    print("after unloadAll, .bmp loaded? " + isLoaded(bmp));
+    print("done");
+  }
+}

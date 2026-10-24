@@ -1,0 +1,66 @@
+/*
+ * lib/image/SLImageCodecXpm.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: XPM codec class -- the SLeeLa-facing handle to image codec id 18.
+ */
+#sleela 2.1
+// Family: image. Individual codec class for XPM (X PixMap), an ASCII C-source
+// pixmap format used by the X Window System, identified by the leading
+// "/* XPM */" comment. It is a textual format whose parsing is backend-provided
+// (the file is literally a C char array). State 2 == recognized: the surface
+// identifies and reports XPM, and defers decoding to a registered backend.
+// SLeeLa never calls a codec directly -- the SLImageCodecLoader loads this
+// plugin by id.
+//
+// Handler state codes: 0 native, 1 backend, 2 recognized, 3 container, 4 event.
+class SLImageCodecXpm {
+  int id() { return 18; }
+  String name() { return "X PixMap (XPM)"; }
+  String mime() { return "image/x-xpixmap"; }
+  String extensions() { return ".xpm"; }
+
+  // Capability state: 2 == recognized (textual C-source pixmap).
+  int state() { return 2; }
+  String stateName() { return "recognized"; }
+
+  boolean canDecode() { return true; }
+  boolean canEncode() { return true; }
+
+  boolean isNative() { return false; }
+  boolean needsBackend() { return true; }
+
+  String metaVersion = "1.0.0";
+  int metaId = 18;
+  String metaAuthor = "Daniel Dardailler / Colas Nahaboo";
+  String metaDate = "2026-09-28";
+  String metaCopyright = "Open (Groupe Bull)";
+  String metaTrademark = "none";
+  String metaCorporation = "Groupe Bull";
+  String metaOrigin = "France";
+  String metaBirthDate = "1989";
+  int metaScienceRating = 6;
+  String metaNationalSchedule = "X11 XPM3";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

@@ -1,0 +1,196 @@
+/*
+ * lib/image/SLImageCodecController.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLImageCodecController used within the image library family.
+ */
+#sleela 2.1
+// Family: image. The SLeeLa-facing Image Codec Management Controller -- the
+// single surface a GUI or application drives to use image codecs, parallel to
+// the audio lib/codecs SLCodecController and the lib/video VideoCodecController.
+// The Controller owns each codec's loaded/unloaded lifecycle and the
+// backend-registration table, and cooperates with the sibling classes:
+//
+//   * SLImageCodecLoader    -- classification (nameOf / isNative) and the
+//                             standalone plugin-load contract;
+//   * SLImageCodecVerifier  -- extension/magic resolution and result-code text;
+//   * SLImageCodecProcessor -- the standalone decode/encode dispatch contract.
+//
+// As of syntax 1.11 the Controller holds its collaborators as fields and calls
+// through them directly (method calls resolve on class-typed fields). create()
+// wires an SLImageCodecVerifier; the Controller keeps its own lifecycle state
+// in int[] tables.
+//
+// Image codec ids (0-based, registry order):
+//   0 PPM/PNM  1 BMP  2 TGA  3 PNG  4 JPEG  5 GIF  6 TIFF  7 WEBP  8 HEIF
+//   9 AVIF  10 JPEG_XL  11 JPEG_2000  12 ICO  13 SVG  14 DDS  15 OPENEXR
+//   16 RADIANCE_HDR  17 PCX  18 XPM  19 ICNS
+//
+// Handler states: 0 native, 1 backend, 2 recognized, 3 container, 4 event.
+// Result codes: 0 ok, -1 unsupported, -2 invalid, -3 format, -4 io,
+// -5 state(not loaded).
+class SLImageCodecController {
+
+  // Per-codec loaded flag (1 loaded, 0 not), indexed by codec id.
+  int[] loaded;
+  // Per-codec backend-registered flag (1 if an approved adapter is wired).
+  int[] backend;
+  // The verification collaborator, wired by create() and called via the field.
+  SLImageCodecVerifier verifier;
+  // 1 once create() has allocated the tables and wired the verifier.
+  int ready;
+
+  // ---- lifecycle of the controller itself -----------------------------
+
+  // Build the controller with every codec registered but none loaded.
+  void create() {
+    loaded = new int[20];
+    backend = new int[20];
+    verifier = new SLImageCodecVerifier();
+    ready = 1;
+  }
+
+  boolean isReady() { return ready == 1; }
+
+  // Release every loaded codec.
+  void destroy() {
+    int i = 0;
+    while (i < 20) { loaded[i] = 0; i = i + 1; }
+  }
+
+  // ---- registry inspection --------------------------------------------
+
+  int count() { return 20; }
+  boolean validId(int id) { return id >= 0 && id < 20; }
+
+  // Native image codecs decode/encode raster in-package: PPM/PNM (0), BMP (1),
+  // TGA (2), Radiance HDR (16), PCX (17).
+  boolean isNative(int id) {
+    return id == 0 || id == 1 || id == 2 || id == 16 || id == 17;
+  }
+
+  String nameOf(int id) {
+    if (id == 0) { return "PPM/PNM (Netpbm)"; }
+    if (id == 1) { return "BMP"; }
+    if (id == 2) { return "Truevision TGA"; }
+    if (id == 3) { return "PNG"; }
+    if (id == 4) { return "JPEG"; }
+    if (id == 5) { return "GIF"; }
+    if (id == 6) { return "TIFF"; }
+    if (id == 7) { return "WebP"; }
+    if (id == 8) { return "HEIF/HEIC"; }
+    if (id == 9) { return "AVIF"; }
+    if (id == 10) { return "JPEG XL"; }
+    if (id == 11) { return "JPEG 2000"; }
+    if (id == 12) { return "ICO/CUR"; }
+    if (id == 13) { return "SVG"; }
+    if (id == 14) { return "DirectDraw Surface (DDS)"; }
+    if (id == 15) { return "OpenEXR"; }
+    if (id == 16) { return "Radiance HDR"; }
+    if (id == 17) { return "PCX"; }
+    if (id == 18) { return "X PixMap (XPM)"; }
+    return "Apple Icon Image (ICNS)";
+  }
+
+  // ---- loader / unloader (controller lifecycle for an app) ------------
+
+  // load(id): make a codec usable. Returns 0 ok, -2 invalid id. Idempotent.
+  int load(int id) {
+    if (!validId(id)) { return -2; }
+    loaded[id] = 1;
+    return 0;
+  }
+
+  // unload(id): release a codec. Returns 0 ok, -2 invalid id. Idempotent.
+  int unload(int id) {
+    if (!validId(id)) { return -2; }
+    loaded[id] = 0;
+    return 0;
+  }
+
+  void unloadAll() {
+    int i = 0;
+    while (i < 20) { loaded[i] = 0; i = i + 1; }
+  }
+
+  boolean isLoaded(int id) {
+    if (!validId(id)) { return false; }
+    return loaded[id] == 1;
+  }
+
+  // How many codecs are currently loaded -- handy for GUI status.
+  int loadedCount() {
+    int n = 0;
+    int i = 0;
+    while (i < 20) {
+      if (loaded[i] == 1) { n = n + 1; }
+      i = i + 1;
+    }
+    return n;
+  }
+
+  // ---- backend registration (for backend-state codecs) ----------------
+
+  // registerBackend(id): record that an approved backend adapter is available
+  // for a backend codec. Returns 0 ok, -2 invalid id.
+  int registerBackend(int id) {
+    if (!validId(id)) { return -2; }
+    backend[id] = 1;
+    return 0;
+  }
+
+  int clearBackend(int id) {
+    if (!validId(id)) { return -2; }
+    backend[id] = 0;
+    return 0;
+  }
+
+  boolean hasBackend(int id) {
+    if (!validId(id)) { return false; }
+    return backend[id] == 1;
+  }
+
+  // ---- resolution (delegated to the wired Verifier) -------------------
+
+  int resolveExtension(String extension) {
+    return verifier.resolveExtension(extension);
+  }
+
+  int probeMagic(String tag) {
+    return verifier.probeMagic(tag);
+  }
+
+  // ---- dispatch (requires load; honest capability result) -------------
+
+  // canProcess(id): can this codec encode/decode right now? True for a loaded
+  // native codec, or a loaded backend codec with a backend registered -- what a
+  // GUI checks before enabling a convert action.
+  boolean canProcess(int id) {
+    if (!validId(id)) { return false; }
+    if (loaded[id] == 0) { return false; }
+    if (isNative(id)) { return true; }
+    return backend[id] == 1;
+  }
+
+  // decode(id): returns a result code: -2 invalid, -5 not loaded,
+  // -1 backend absent, 0 ok.
+  int decode(int id) {
+    if (!validId(id)) { return -2; }
+    if (loaded[id] == 0) { return -5; }
+    if (isNative(id)) { return 0; }
+    if (backend[id] == 1) { return 0; }
+    return -1;
+  }
+
+  int encode(int id) {
+    if (!validId(id)) { return -2; }
+    if (loaded[id] == 0) { return -5; }
+    if (isNative(id)) { return 0; }
+    if (backend[id] == 1) { return 0; }
+    return -1;
+  }
+
+  // Human-readable text for a result code (via the wired Verifier).
+  String resultText(int code) {
+    return verifier.resultText(code);
+  }
+}

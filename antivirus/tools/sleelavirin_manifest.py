@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Create/verify SHA-256 manifests for Sleelavirin source trees and release packages.
 
-The manifest excludes itself, build outputs, Python caches, and ClamAV's mutable
-local database cache. ClamAV snapshots have their own manifest and validator.
+The manifest excludes itself, build outputs, Python caches, symlinks, and ClamAV's
+mutable local database cache. ClamAV snapshots have their own manifest and validator.
 """
 import argparse
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import sys
 
 SCHEMA = "sleelavirin-sha256-manifest-v1"
@@ -33,11 +33,14 @@ def sha256(path):
 
 def ignored(path, root, manifest_path):
     rel = path.relative_to(root)
+    # Never follow or hash symlinks: they can point outside the inventory root
+    # or change their targets between manifest creation and verification.
+    if path.is_symlink():
+        return True
     if path.resolve() == manifest_path.resolve() or path.name == "SHA256SUMS":
         return True
     if any(part in EXCLUDED_PREFIXES or part in EXCLUDED_DIRS for part in rel.parts):
         return True
-    # ClamAV's local mutable cache is validated by its own snapshot manifest.
     if "clamav-cache" in rel.parts:
         return True
     return not path.is_file()
@@ -90,11 +93,20 @@ def verify(root, manifest_path):
             errors.append("malformed file record")
             continue
         rel = item["path"]
+        posix = PurePosixPath(rel)
+        if (not rel or ":" in rel or any(ord(ch) < 32 for ch in rel) or posix.is_absolute() or "\\" in rel
+                or any(part in ("", ".", "..") for part in rel.split("/"))):
+            errors.append(f"invalid/non-canonical manifest path: {rel}")
+            continue
         if rel in expected_paths:
             errors.append(f"duplicate manifest path: {rel}")
             continue
         expected_paths.add(rel)
-        path = (root / rel).resolve()
+        candidate = root / rel
+        if candidate.is_symlink():
+            errors.append(f"symlink not allowed in manifest: {rel}")
+            continue
+        path = candidate.resolve()
         try:
             path.relative_to(root.resolve())
         except ValueError:
