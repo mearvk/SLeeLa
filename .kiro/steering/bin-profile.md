@@ -8,8 +8,12 @@ inclusion: always
 in [`bin/SUPPOSITIONS.md`](../../bin/SUPPOSITIONS.md) — is that **`bin/` is the
 in-tree collection/staging point for SLeeLa's runnable products**:
 
-1. the launcher/entry **scripts** (`bin/SLeeLa`, `bin/OSsupport`) — shipped; and
-2. the **compiled C/C++ executables** produced when SLeeLa is built — whether an
+1. the launcher/entry **scripts** (`bin/SLeeLa`, `bin/OSsupport`,
+   `bin/install-modules`) — shipped;
+2. the **paced iterative module installer** (`bin/Makefile.modules` +
+   `bin/install-modules.sh`) that walks every module's `install`/`all` over a
+   ~10-20 minute window; and
+3. the **compiled C/C++ executables** produced when SLeeLa is built — whether an
    individual module is compiled or the whole main program is built.
 
 This is **in addition to** (never instead of) the normal binary-install

@@ -3,8 +3,11 @@
 # install-modules.sh -- iteratively install (or build) the SLeeLa modules,
 # paced over a modest window (default ~10-20 minutes).
 #
-# Driven by Makefile.modules (`make -f Makefile.modules install-modules`), but
-# runnable directly. For each module in order it runs the module's own
+# Lives in bin/. Driven by bin/Makefile.modules and the bin/install-modules
+# launcher, but runnable directly. It derives the repo root from its own
+# location (bin/..) and cd's there, so every `make -C <module>` and the build/
+# state files resolve correctly regardless of the caller's cwd. For each module
+# in order it runs the module's own
 # `install` target when it has one, else `all` (build). It is resilient: a
 # module that fails or lacks its OS dependencies is logged and SKIPPED, never
 # fatal -- the walk continues. Progress, a resumable state file, and a final

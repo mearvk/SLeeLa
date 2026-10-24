@@ -65,6 +65,9 @@ names the build that emits it.
 |---|---|---|---|
 | `SLeeLa` | POSIX `sh` | in-tree | OS-terminal launcher: run a `.sleela` object/artifact, forward toolchain subcommands, set the catalog + SHA-256 gate |
 | `OSsupport` | POSIX `sh` | in-tree | OS Defender / native-support provisioning front end (`sleela defender ...`) |
+| `install-modules` | POSIX `sh` | in-tree | paced iterative installer: walk every module and run its `install`/`all`, spread over ~10-20 min (drives `bin/Makefile.modules`) |
+| `Makefile.modules` | Makefile | in-tree | the module-walk build logic the `install-modules` launcher drives |
+| `install-modules.sh` | POSIX `sh` | in-tree | the paced-walk runner invoked by `bin/Makefile.modules` |
 
 ### 3.2 Core toolchain binaries (whole-program C/C++ build) — (shipped as `impl/build/*`; supposed to stage into `bin/`)
 
