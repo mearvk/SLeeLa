@@ -38,6 +38,10 @@
       "sha256": "e50f30ec9ebb9b65b1880ee67d26c61709b05c5c3b81365c7ae4787b2b742b1d"
     },
     {
+      "path": "ballum/src/ballum_demo.c",
+      "sha256": "bc3634fcb5a3cff0533eadb27a4eeeae7e139e8bd15bff93357f7781d154ba69"
+    },
+    {
       "path": "ballum/src/ballum_effects.c",
       "sha256": "029069c299440c96e1f82b56badc8f3fd3b6ee72a85f38e7e6d347e2b1af204b"
     },

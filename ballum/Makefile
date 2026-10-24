@@ -68,8 +68,8 @@ NANOJPEG_DIR := ../user-interface/src
 PORTABLE_C := src/ballum_manager.c src/ballum_backend_select.c src/ballum_backend_unavailable.c
 
 # ---- default: verify OS deps, then build the real OS backend library ------
-all: check-deps $(BUILD)/libsleela_ballum.a
-	@echo "ballum: built $(BUILD)/libsleela_ballum.a for PLATFORM=$(PLATFORM) (links: $(BACKEND_LIBS))"
+all: check-deps $(BUILD)/libsleela_ballum.a $(BUILD)/sleela_ballum.pc
+	@echo "ballum: built $(BUILD)/libsleela_ballum.a + sleela_ballum.pc for PLATFORM=$(PLATFORM) (links: $(BACKEND_LIBS))"
 
 $(BUILD):
 	mkdir -p $(BUILD)
@@ -103,6 +103,48 @@ LIB_OBJS := $(BUILD)/ballum_manager.o $(BUILD)/ballum_backend_select.o \
 
 $(BUILD)/libsleela_ballum.a: $(LIB_OBJS)
 	$(AR) rcs $@ $(LIB_OBJS)
+
+# ---- pkg-config manifest -------------------------------------------------
+# Records how a downstream build links against Ballum, including the OS-centric
+# display libraries this PLATFORM needs. Because libsleela_ballum is a STATIC
+# archive, those system libs go in Libs.private (emitted by `pkg-config
+# --static`), so a consumer does:
+#   cc app.c $(pkg-config --cflags --libs --static sleela_ballum) -o app
+# The private libs are generated from BACKEND_LIBS, so the .pc never drifts from
+# what the build actually links. It is regenerated every build (FORCE) so a
+# change of PLATFORM in an existing build/ can never leave a stale manifest.
+.PHONY: FORCE
+$(BUILD)/sleela_ballum.pc: FORCE | $(BUILD)
+	@printf '%s\n' \
+	  'prefix=$(PREFIX)' \
+	  'exec_prefix=$${prefix}' \
+	  'libdir=$(LIBDIR)' \
+	  'includedir=$(INCLUDEDIR)' \
+	  '' \
+	  'Name: libsleela_ballum' \
+	  'Description: SLeeLa Ballum(TM) pixel-level display control (PLATFORM=$(PLATFORM))' \
+	  'Version: 1.0.0' \
+	  'Cflags: -I$${includedir}' \
+	  'Libs: -L$${libdir} -lsleela_ballum' \
+	  'Libs.private: $(BACKEND_LIBS)' \
+	  > $@
+
+pc: $(BUILD)/sleela_ballum.pc
+	@echo "ballum: wrote $(BUILD)/sleela_ballum.pc (Libs.private: $(BACKEND_LIBS))"
+
+# ---- demo: a REAL linked executable --------------------------------------
+# Unlike the static archive (which `ar` only bundles), this target performs an
+# actual link of libsleela_ballum.a against the per-OS display libraries, so a
+# missing/!working OS link surfaces here at build time. Needs the OS deps, so it
+# depends on check-deps like `all`.
+ifeq ($(BACKEND_IS_CPP),1)
+LINKER := $(CXX)
+else
+LINKER := $(CC)
+endif
+demo: check-deps $(BUILD)/libsleela_ballum.a
+	$(LINKER) $(CFLAGS) src/ballum_demo.c $(BUILD)/libsleela_ballum.a $(BACKEND_LIBS) -o $(BUILD)/ballum-demo
+	@echo "ballum: linked $(BUILD)/ballum-demo against libsleela_ballum.a $(BACKEND_LIBS)"
 
 # ---- per-OS dependency provisioning --------------------------------------
 # `check-deps` verifies the OS-centric libraries this PLATFORM needs. On Linux
@@ -195,13 +237,17 @@ install: all
 	$(INSTALL) -m 0644 include/sleela_ballum/ballum_manager.h "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_manager.h"
 	$(INSTALL) -m 0644 include/sleela_ballum/ballum_effects.h "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_effects.h"
 	$(INSTALL) -m 0644 include/sleela_ballum/ballum_image.h   "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_image.h"
-	@echo "ballum: installed libsleela_ballum.a and headers to $(DESTDIR)$(PREFIX) (link with $(BACKEND_LIBS))"
+	$(INSTALL) -d "$(DESTDIR)$(LIBDIR)/pkgconfig"
+	$(INSTALL) -m 0644 $(BUILD)/sleela_ballum.pc "$(DESTDIR)$(LIBDIR)/pkgconfig/sleela_ballum.pc"
+	@echo "ballum: installed libsleela_ballum.a, headers and sleela_ballum.pc to $(DESTDIR)$(PREFIX)"
+	@echo "ballum: downstream builds: cc app.c \$$(pkg-config --cflags --libs --static sleela_ballum) -o app"
 
 uninstall:
 	rm -f "$(DESTDIR)$(LIBDIR)/libsleela_ballum.a"
 	rm -f "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_manager.h" \
 	      "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_effects.h" \
 	      "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_image.h"
+	rm -f "$(DESTDIR)$(LIBDIR)/pkgconfig/sleela_ballum.pc"
 	-rmdir "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum" 2>/dev/null || true
 	@echo "ballum: uninstalled from $(DESTDIR)$(PREFIX)"
 
@@ -213,9 +259,11 @@ help:
 	@echo "  make all         Verify OS deps, then build build/libsleela_ballum.a for this OS"
 	@echo "  make check-deps  Report whether this OS's display libraries are available"
 	@echo "  make deps        Show how to install the OS libraries (BALLUM_DEPS_INSTALL=1 to install)"
+	@echo "  make demo        Link a real build/ballum-demo executable against the lib + this OS's libs"
+	@echo "  make pc          Generate the pkg-config manifest (build/sleela_ballum.pc)"
 	@echo "  make test        Build and run the portable tests (no display libraries required)"
-	@echo "  make install     Install the library + headers to \$$(PREFIX) [default $(PREFIX)]"
+	@echo "  make install     Install the library + headers + sleela_ballum.pc to \$$(PREFIX) [default $(PREFIX)]"
 	@echo "  make uninstall   Remove the installed library + headers"
 	@echo "  make clean       Remove the build/ directory"
 
-.PHONY: all test clean install uninstall help check-deps deps
+.PHONY: all test clean install uninstall help check-deps deps demo pc
