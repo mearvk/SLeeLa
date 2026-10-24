@@ -125,7 +125,7 @@ class SLBallumSession {
     input = new SLBallumInput();
     input.configure();
     logoUrl = defaultLogoUrl();
-    logoPath = "";
+    logoPath = "images/national-bitcoin-icc-logo-007.jpg";
     effect = SLBallumEffect.FADE;
     fadeFrames = 48;
     displayIndex = -1;
@@ -138,7 +138,7 @@ class SLBallumSession {
 
   < The default splash logo (the national bitcoin / ICC mark). >
   String defaultLogoUrl() {
-    return "https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg";
+    return "images/national-bitcoin-icc-logo-007.jpg";
   }
 
   << Fluent, optional overrides -- call before start(). Each returns this so a
