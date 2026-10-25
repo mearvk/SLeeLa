@@ -305,6 +305,7 @@ public:
         FT_Set_Pixel_Sizes(face, 0, static_cast<FT_UInt>(px));
         active_face_ = face;
         current_key_ = key;
+        current_px_ = px;
         glyph_cache_.clear();
         return true;
     }
@@ -324,7 +325,14 @@ public:
 
     bool rasterize_glyph(uint32_t cp, GlyphBitmap* out) override {
         if (!active_face_) return false;
-        if (FT_Load_Char(active_face_, cp, FT_LOAD_RENDER) != 0) return false;
+        /* Coherent Dignity typography (section 4): below 12px, force MONOCHROME
+         * hinting. Grayscale sub-pixel AA at tiny sizes smears thin stems and,
+         * on dark backgrounds, produces coloured fringing; a crisp 1-bpp render
+         * expanded to full-coverage keeps small technical text ultra-sharp.
+         * At 12px and up we keep the antialiased render for smooth larger text. */
+        const bool mono = current_px_ < 12;
+        FT_Int32 flags = FT_LOAD_RENDER | (mono ? FT_LOAD_TARGET_MONO : 0);
+        if (FT_Load_Char(active_face_, cp, flags) != 0) return false;
         FT_GlyphSlot g = active_face_->glyph;
         out->left = g->bitmap_left;
         out->top = g->bitmap_top;
@@ -332,10 +340,23 @@ public:
         out->height = static_cast<int>(g->bitmap.rows);
         out->advance = g->advance.x / 64.0;
         out->coverage.assign(static_cast<size_t>(out->width) * out->height, 0);
-        for (int row = 0; row < out->height; ++row) {
-            const unsigned char* src = g->bitmap.buffer + row * g->bitmap.pitch;
-            std::memcpy(out->coverage.data() + static_cast<size_t>(row) * out->width,
-                        src, static_cast<size_t>(out->width));
+        if (g->bitmap.pixel_mode == FT_PIXEL_MODE_MONO) {
+            /* 1 bit per pixel, MSB-first within each byte; expand to 0/255. */
+            for (int row = 0; row < out->height; ++row) {
+                const unsigned char* src = g->bitmap.buffer + row * g->bitmap.pitch;
+                for (int x = 0; x < out->width; ++x) {
+                    unsigned char bit = (src[x >> 3] >> (7 - (x & 7))) & 1u;
+                    out->coverage[static_cast<size_t>(row) * out->width + x] =
+                        bit ? 255 : 0;
+                }
+            }
+        } else {
+            /* 8-bit grayscale coverage (antialiased). */
+            for (int row = 0; row < out->height; ++row) {
+                const unsigned char* src = g->bitmap.buffer + row * g->bitmap.pitch;
+                std::memcpy(out->coverage.data() + static_cast<size_t>(row) * out->width,
+                            src, static_cast<size_t>(out->width));
+            }
         }
         return true;
     }
@@ -355,12 +376,8 @@ public:
     int screen() const { return screen_; }
 
 private:
-    std::string resolve_face(const std::string& family) {
-        /* Fontconfig picks a real installed face for the requested family;
-         * "system" maps to the default sans family. */
-        const char* req = (family == "system" || family.empty())
-                              ? "sans-serif"
-                              : family.c_str();
+    /* Resolve one requested family to a real installed face file, or "". */
+    std::string match_one(const char* req) {
         FcPattern* pat = FcNameParse(reinterpret_cast<const FcChar8*>(req));
         FcConfigSubstitute(nullptr, pat, FcMatchPattern);
         FcDefaultSubstitute(pat);
@@ -375,6 +392,44 @@ private:
         }
         FcPatternDestroy(pat);
         return path;
+    }
+    std::string resolve_face(const std::string& family) {
+        /* A specific requested family resolves directly through Fontconfig. */
+        if (!(family == "system" || family.empty()))
+            return match_one(family.c_str());
+        /* Coherent Dignity typography (sections 1-2): "system" prefers the
+         * indestructible Neo-Grotesque workhorses in order, then any sans. The
+         * first family Fontconfig resolves to a REAL file wins; if a name is not
+         * installed, Fontconfig still returns its best substitute for the final
+         * "sans-serif" request, so a face is always found. We only accept an
+         * EXACT family match for the preferred names so we don't stop early on a
+         * substitute; the final sans-serif entry is the guaranteed fallback. */
+        static const char* kPreferred[] = {
+            "Inter", "SF Pro Text", "SF Pro", "Segoe UI", "Roboto", "sans-serif"
+        };
+        for (const char* fam : kPreferred) {
+            FcPattern* pat = FcNameParse(reinterpret_cast<const FcChar8*>(fam));
+            FcConfigSubstitute(nullptr, pat, FcMatchPattern);
+            FcDefaultSubstitute(pat);
+            FcResult res;
+            FcPattern* match = FcFontMatch(nullptr, pat, &res);
+            std::string path, got;
+            if (match) {
+                FcChar8* file = nullptr;
+                if (FcPatternGetString(match, FC_FILE, 0, &file) == FcResultMatch && file)
+                    path = reinterpret_cast<const char*>(file);
+                FcChar8* famGot = nullptr;
+                if (FcPatternGetString(match, FC_FAMILY, 0, &famGot) == FcResultMatch && famGot)
+                    got = reinterpret_cast<const char*>(famGot);
+                FcPatternDestroy(match);
+            }
+            FcPatternDestroy(pat);
+            bool isFallback = (std::string(fam) == "sans-serif");
+            /* Accept an exact family hit, or the guaranteed final fallback. */
+            if (!path.empty() && (isFallback || got == fam)) return path;
+            if (isFallback && !path.empty()) return path;
+        }
+        return match_one("sans-serif");
     }
 
     bool dispatch(const XEvent& xe) {
@@ -487,6 +542,7 @@ private:
     FT_Library ft_ = nullptr;
     FT_Face active_face_ = nullptr;
     std::string current_key_;
+    int current_px_ = 14;   /* active face pixel size (for sub-12px hinting) */
     std::unordered_map<std::string, FT_Face> faces_;
     std::unordered_map<uint32_t, double> glyph_cache_;
 
