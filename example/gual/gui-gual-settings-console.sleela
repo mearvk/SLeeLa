@@ -183,6 +183,7 @@ class GuiGualSettingsConsole {
 
     // --- Chrome ---
     int header = uiHeaderBar(root);
+    uiWidgetSizeRequest(header, 0, 48);          // Coherent Dignity: 6X header banner (48px)
     int htitle = uiLabel(header, "\u2699  Preferences");
     uiWidgetMargin(htitle, 0, 10, 0, 12);
     uiSpacer(header);
