@@ -169,6 +169,23 @@ class SLLayoutDriver {
       uiWidgetExpand(childHandle, row ? 1 : 0, row ? 0 : 1);
       uiWidgetAlign(childHandle, ALIGN_FILL, ALIGN_FILL);
     }
+    < realize the component's QUALITY: the parts the toolkit honors per widget. >
+    applyQuality(frame.qualityAt(index), childHandle);
+  }
+
+  < ---- realize a component's QUALITY on a native widget ------------------- >
+  << Apply the quality descriptor's honorable parts to the live widget: the
+     single PRIMARY action becomes the toolkit's suggested (accent) action; a
+     DANGER action becomes destructive; a non-interactive component is greyed
+     out. The theme ROLE (body/surface/chrome/accent) is a hint the themed
+     renderer uses when drawing the surface; the toolkit has no per-widget
+     surface call, so role is honored through the window theme, not forced here.
+     Safe no-op for a null quality or an invalid handle. >>
+  void applyQuality(SLComponentQuality q, int childHandle) {
+    if (q == null || childHandle < 0) { return; }
+    uiWidgetSuggested(childHandle, q.isPrimary() ? 1 : 0);
+    uiWidgetDestructive(childHandle, q.isDanger() ? 1 : 0);
+    uiWidgetSensitive(childHandle, q.isInteractive() ? 1 : 0);
   }
 
   << Apply the plan to a named component (convenience over applyComponent by

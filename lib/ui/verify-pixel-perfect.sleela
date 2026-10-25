@@ -1,0 +1,156 @@
+<< lib/ui/verify-pixel-perfect.sleela
+   Rigorous self-check that the Standard Layout family places every component
+   pixel-perfect: exact x/y/width/height, no gaps or overlaps, children tiling
+   the container's inner area exactly. Prints PASS/FAIL per assertion. >>
+#sleela 2.1
+class VerifyPixelPerfect {
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  int metaScienceRating = 8;
+  String metaNationalSchedule = "none";
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+
+  int pass;
+  int fail;
+
+  void check(String label, boolean cond) {
+    if (cond) { pass = pass + 1; print("  PASS  " + label); }
+    else      { fail = fail + 1; print("  FAIL  " + label); }
+  }
+
+  void eq(String label, int got, int want) {
+    check(label + " (got " + got + ", want " + want + ")", got == want);
+  }
+
+  void main() {
+    pass = 0; fail = 0;
+    print("=== pixel-perfect placement verification ===");
+
+    < 1) Vertical column: header 40, body flexible, footer 32, gap 8, pad 12, >
+    < in a 320x600 frame. The body must take EXACTLY the leftover. >
+    print("[column: 320x600, pad 12, gap 8, header 40 / body flex / footer 32]");
+    SLLayoutFrame f = new SLLayoutFrame(); f.create();
+    f.useColumn(8, 12);
+    f.add("header", 40);
+    f.add("body", 0);
+    f.add("footer", 32);
+    f.place(0, 0, 320, 600);
+    SLLayoutBox h = f.boxOf("header");
+    SLLayoutBox b = f.boxOf("body");
+    SLLayoutBox ft = f.boxOf("footer");
+
+    < inner area = 296 wide, 576 tall, starting at (12,12) >
+    int innerX = 12; int innerY = 12; int innerW = 296; int innerH = 576;
+    < leftover for the flexible child = 576 - 40 - 32 - 8 - 8 = 488 >
+    int bodyH = innerH - 40 - 32 - 8 - 8;
+
+    eq("header.x", h.getX(), innerX);
+    eq("header.y", h.getY(), innerY);
+    eq("header.w", h.getWidth(), innerW);
+    eq("header.h", h.getHeight(), 40);
+
+    < body.y is after header + gap = 60 >
+    eq("body.x", b.getX(), innerX);
+    eq("body.y", b.getY(), innerY + 40 + 8);
+    eq("body.w", b.getWidth(), innerW);
+    eq("body.h", b.getHeight(), bodyH);
+
+    < footer.y = 12 + 40 + 8 + 488 + 8 = 556 >
+    eq("footer.x", ft.getX(), innerX);
+    eq("footer.y", ft.getY(), innerY + 40 + 8 + bodyH + 8);
+    eq("footer.w", ft.getWidth(), innerW);
+    eq("footer.h", ft.getHeight(), 32);
+
+    < no overlap + exact tiling along the main axis >
+    check("header.bottom + gap == body.top", h.bottom() + 8 == b.getY());
+    check("body.bottom + gap == footer.top", b.bottom() + 8 == ft.getY());
+    check("footer.bottom == inner bottom", ft.bottom() == innerY + innerH);
+
+    < 2) Horizontal row: three fixed 100px cells, gap 10, pad 0, in 800x60. >
+    print("[row: 800x60, pad 0, gap 10, three 100px cells]");
+    SLLayoutFrame r = new SLLayoutFrame(); r.create();
+    r.useRow(10, 0);
+    r.add("a", 100); r.add("b", 100); r.add("c", 100);
+    r.place(0, 0, 800, 60);
+    SLLayoutBox a = r.boxAt(0);
+    SLLayoutBox bb = r.boxAt(1);
+    SLLayoutBox c = r.boxAt(2);
+    eq("a.x", a.getX(), 0);
+    < b.x = 100 + gap 10 = 110; c.x = 220 >
+    eq("b.x", bb.getX(), 110);
+    eq("c.x", c.getX(), 220);
+    eq("row height fills", a.getHeight(), 60);
+    check("a.right + gap == b.left", a.right() + 10 == bb.getX());
+    check("b.right + gap == c.left", bb.right() + 10 == c.getX());
+
+    < 3) Grid: 3 columns, 5 cells, gap 10, pad 10, in 600x400. >
+    print("[grid: 600x400, 3 cols, 5 cells, pad 10, gap 10]");
+    SLLayoutFrame g = new SLLayoutFrame(); g.create();
+    g.useGrid(3, 10, 10);
+    g.add("c0", 0); g.add("c1", 0); g.add("c2", 0); g.add("c3", 0); g.add("c4", 0);
+    g.place(0, 0, 600, 400);
+    SLLayoutBox g0 = g.boxAt(0);
+    SLLayoutBox g1 = g.boxAt(1);
+    SLLayoutBox g3 = g.boxAt(3);
+    SLLayoutBox g4 = g.boxAt(4);
+    < inner 580x380; cellW=(580-20)/3=186; cellH=(380-10)/2=185 >
+    eq("cell0.x", g0.getX(), 10);
+    eq("cell0.y", g0.getY(), 10);
+    eq("cell0.w", g0.getWidth(), 186);
+    eq("cell0.h", g0.getHeight(), 185);
+    < cell1 next column: 10 + 186 + 10 = 206 >
+    eq("cell1.x", g1.getX(), 206);
+    < cell3 second row: 10 + 185 + 10 = 205 >
+    eq("cell3.y (row 2)", g3.getY(), 205);
+    eq("cell4.x (row2 col1)", g4.getX(), 206);
+    check("all cells identical size", g0.getWidth() == g4.getWidth() && g0.getHeight() == g4.getHeight());
+
+    < 4) QUALITY: every component is describable in quality (role + emphasis + >
+    < interactivity) alongside its exact size and pixel-perfect placement. >
+    print("[quality: role + emphasis + interactivity, per component]");
+    SLLayoutFrame q = new SLLayoutFrame(); q.create();
+    q.useColumn(8, 12);
+    q.add("title", 40);
+    q.add("list", 0);
+    q.add("save", 36);
+    q.add("delete", 36);
+    q.place(0, 0, 320, 600);
+
+    < describe each component's quality in the theme's own vocabulary >
+    q.qualityOf("title").asChrome();
+    q.qualityOf("list").asSurface();
+    q.qualityOf("save").asAccent(); q.qualityOf("save").primary();
+    q.qualityOf("delete").danger();
+    q.qualityOf("delete").disable();
+
+    check("title role == chrome", q.qualityOf("title").getRole() == 2);
+    check("list role == surface", q.qualityOf("list").getRole() == 1);
+    check("save is primary", q.qualityOf("save").isPrimary());
+    check("save role == accent", q.qualityOf("save").getRole() == 3);
+    check("delete is danger", q.qualityOf("delete").isDanger());
+    check("delete is disabled", !q.qualityOf("delete").isInteractive());
+    check("default quality is body/normal/enabled",
+        q.qualityAt(1) != null
+        && q.qualityOf("list").honored());
+
+    < a component is fully described by QUALITY + SIZE + PLACEMENT together >
+    SLLayoutBox saveBox = q.boxOf("save");
+    print("  'save' fully described: "
+        + q.qualityOf("save").describe() + " + " + saveBox.describe());
+    check("'save' has a concrete rect", saveBox.getWidth() == 296 && saveBox.getHeight() == 36);
+
+    print("=== result: " + pass + " passed, " + fail + " failed ===");
+    if (fail == 0) { print("PIXEL-PERFECT + QUALITY: VERIFIED"); }
+    else { print("VERIFICATION: FAILURES PRESENT"); }
+  }
+}

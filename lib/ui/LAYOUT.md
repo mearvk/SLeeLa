@@ -144,3 +144,48 @@ gracefully on a headless host (it prints the computed plan and exits).
 `isFlexibleAt(index)`, alongside the existing `boxAt(index)` / `boxOf(name)`
 rectangles. The underlying `SLStackLayout` gained `getGap()` and
 `isFlexibleAt(index)`; `SLGridLayout` gained `getGap()`.
+
+## Describing a component's quality (`SLComponentQuality`)
+
+A layout gives every component its exact **size** and pixel-perfect
+**placement** (`SLLayoutBox`: x/y/w/h). `SLComponentQuality` completes the
+picture with each component's **quality**, so a component is fully described by
+**quality + size + placement**.
+
+Quality is expressed in the standard themes' own vocabulary, so it maps cleanly
+to a flavor (blue/gray/black/white) and to what the native toolkit can honor per
+widget:
+
+- **role** — `asBody()` / `asSurface()` / `asChrome()` / `asAccent()`: which
+  themed surface/text the component reads as.
+- **emphasis** — `normal()` / `primary()` / `danger()`: `primary` is the single
+  suggested action, `danger` is destructive.
+- **interactivity** — `enable()` / `disable()`.
+
+Every component added to an `SLLayoutFrame` gets a default quality
+(`body / normal / enabled`) you can customize by name:
+
+```sleela
+SLLayoutFrame f = new SLLayoutFrame(); f.create();
+f.useColumn(8, 12);
+f.add("title", 40);
+f.add("list", 0);
+f.add("save", 36);
+f.place(0, 0, 320, 600);
+
+f.qualityOf("title").asChrome();
+f.qualityOf("list").asSurface();
+f.qualityOf("save").asAccent(); f.qualityOf("save").primary();
+
+< now fully described: quality + size + placement >
+< e.g. "save" -> quality:accent/primary/enabled + [12,508 296x36] >
+```
+
+When realized by `SLLayoutDriver`, the honorable parts are applied to the live
+widget (`primary` -> `uiWidgetSuggested`, `danger` -> `uiWidgetDestructive`,
+`disable()` -> `uiWidgetSensitive`); the role is a hint the themed renderer uses
+when drawing the surface (the toolkit has no per-widget surface call, so role is
+honored through the window theme).
+
+`lib/ui/verify-pixel-perfect.sleela` is a runnable self-check (37 assertions)
+proving exact placement/size (column, row, grid) and the quality descriptor.
