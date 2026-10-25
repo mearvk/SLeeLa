@@ -63,6 +63,27 @@ id, hash, document, member name, signature, and edit date. Clean and united.
    compilable).
 6. Dispatch probe + reserve the id/hash direct-call brander.
 
+## The third output: wikitext emanation (implemented)
+
+A major author-marked work can also emanate a **MediaWiki wikitext document** as
+a third compile output (alongside the artifact and the originated source). It is
+opt-in: `sleela compile <src> -o <art> --wiki` writes `<src>.wiki` next to the
+source; `--wiki-dir=<dir>` redirects it. The page is factual/structured and
+scales with program size: an infobox, a Time section (edit date + UTC compile
+stamp — "time as a second"), a Structure section (sortable wikitables of every
+member with id/signature/slot/SHA-256 brander + the duplicate-dispatch ordering
+table), a Movement section (members in declaration order — the "tempo"), and
+Provenance + `[[Category:SLeeLa]]`. Implemented in
+`impl/frontend/wikigen.{h,cpp}` (UTC stamp via `ledger::utc_iso8601`), wired in
+`driver.cpp`, specified in `SLEELA.syntax` §18.5.
+
+Honesty boundary kept: the emanation asserts nothing beyond the document's own
+declared structure/timestamps, and it is for a **self-hosted** wiki — not a
+submission to any public encyclopedia (which governs notability, independent
+sourcing, and mass auto-generated pages). We did NOT invent a literal
+"Universities" subject the owner mentioned — that remains an unnamed knob to be
+specified before it appears in output.
+
 Remember the integrity gate: any `lib/**` or `impl/**` edit requires
 regenerating `security/sha256-manifest.json` and a passing `make check-manifest`
 before commit.

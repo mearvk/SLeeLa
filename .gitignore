@@ -27,3 +27,7 @@ Thumbs.db
 
 # Local generated/runtime state
 *.log
+
+# Generated compile outputs (syntax 2.4 author-marked documents)
+*.originated.sleela
+*.wiki
