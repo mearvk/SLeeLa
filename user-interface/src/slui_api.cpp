@@ -346,7 +346,13 @@ SLUIWidget* slui_card(SLUIWidget* parent) {
  * not invalidate a handle retained by the SLeeLa VM. */
 SLUIWidget* slui_popup_create(SLUIWidget* parent) {
     SLUIWidget* popup = slui_card(parent);
-    if (popup) slui_widget_set_visible(popup, 0);
+    if (popup) {
+        slui_widget_set_visible(popup, 0);
+        /* A popup floats forward of the frame: mark it an overlay so the Window
+         * paints it last (above everything) and unclipped, instead of inline in
+         * its parent's layout where later siblings would paint over it. */
+        as_widget(popup)->set_overlay(true);
+    }
     return popup;
 }
 void slui_popup_set_open(SLUIWidget* popup, int open) {
