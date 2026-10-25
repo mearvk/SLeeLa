@@ -46558,6 +46558,10 @@
       "sha256": "1884f76022359e3e2504330a7e2240675669f72b6c9de1dc7b6b248bc61d1b6f"
     },
     {
+      "path": "lib/ui/SLStandardTheme.sleela",
+      "sha256": "9b34872fe0791338181bab41aa468b1810953f5e805b407d6e2c6af3024e39d4"
+    },
+    {
       "path": "lib/ui/SLTableView.sleela",
       "sha256": "7cb86bb542bd2d2ab984f50812817988493e6b04be006a31b622a37b9b43045f"
     },
@@ -46572,6 +46576,14 @@
     {
       "path": "lib/ui/SLTheme.sleela",
       "sha256": "3d74ba0f61cd00a8bec0dbeb14c1f7fb64f7b9f03e19f72e14f89bc542354f0d"
+    },
+    {
+      "path": "lib/ui/SLThemeFlavor.sleela",
+      "sha256": "0ec540cdc00e90f39e8c8bd87b26ed05ddc4d6d52d942cf06cfbc4ee0852164b"
+    },
+    {
+      "path": "lib/ui/SLThemeHint.sleela",
+      "sha256": "7101bb0a5dd8d24f7cad662419ae7595f5633c966603129f367845e2c4b71d67"
     },
     {
       "path": "lib/ui/SLTreeView.sleela",
@@ -46592,6 +46604,10 @@
     {
       "path": "lib/ui/layout-demo.sleela",
       "sha256": "2abe5ab53a7e01b4fc5b67075bfdc78458d20152b7200a3fb7ce5f4c22b5fc90"
+    },
+    {
+      "path": "lib/ui/theme-demo.sleela",
+      "sha256": "f0235b6f6e1da537f186dffa40d373d5502dc48bb33a5f7c9bd58ad08d9121de"
     },
     {
       "path": "lib/us-infrastructure/SLPackage.sleela",
