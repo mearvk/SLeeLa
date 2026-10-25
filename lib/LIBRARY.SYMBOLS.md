@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11549
+library-source-files: 11550
 library-packages: 101
 module-facade-symbols: 70
-total-symbol-records: 11619
+total-symbol-records: 11620
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -1535,6 +1535,7 @@ gui	SLPackage.sleela	lib/gui/version-mual/SLPackage.sleela	facade
 gui	gui-app-demo.sleela	lib/gui/version-mual/gui-app-demo.sleela	source
 gui	gui-demo.sleela	lib/gui/version-mual/gui-demo.sleela	source
 gui	gui-events-demo.sleela	lib/gui/version-mual/gui-events-demo.sleela	source
+gui	gui-guide-chain-demo.sleela	lib/gui/version-mual/gui-guide-chain-demo.sleela	source
 gui	gui-overflow-scroll-demo.sleela	lib/gui/version-mual/gui-overflow-scroll-demo.sleela	source
 gui	gui-scroll-screenfit-demo.sleela	lib/gui/version-mual/gui-scroll-screenfit-demo.sleela	source
 gui	gui-transitions-demo.sleela	lib/gui/version-mual/gui-transitions-demo.sleela	source

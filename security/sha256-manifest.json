@@ -3,7 +3,7 @@
   "files": [
     {
       "path": "SHEET.sheet",
-      "sha256": "86cb456e0be719767a682b3dccdcdad3f7f5c0cef7a153dfe4902ec5468ea3f3"
+      "sha256": "ad7abf87d8012a2bc41a85f5e6ef5eea526d1e818c15e053f0f79d3352dc5adf"
     },
     {
       "path": "ballum/include/sleela_ballum/ballum_effects.h",
@@ -6463,7 +6463,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiAdminAuthority.sleela",
-      "sha256": "d90de34941021d05c3fb4f390eb382f1db61ef2c988b814c3d55e2c83352c246"
+      "sha256": "d3f37881afa1e907a25a43a45d57e3ff790940638d07ef00dff737b4261361e6"
     },
     {
       "path": "lib/gui/version-dual/SLGuiApp.sleela",
@@ -6475,7 +6475,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiAudioRecorder.sleela",
-      "sha256": "ec07625f94e07be18c5b623198a85f2ea74e52692925dfaae1af0325cb123ef4"
+      "sha256": "dd637dec79ee535ad986d30a79bda5b2ab536c851f604f68b603bb44809e0912"
     },
     {
       "path": "lib/gui/version-dual/SLGuiBackend.sleela",
@@ -6571,7 +6571,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiMount.sleela",
-      "sha256": "6246b56e42ab67aa08f07f492c5f3bbae7e5b431a7772137eedb794854691116"
+      "sha256": "4e31d1cda28c3f3749eaf08637021a76a65a85a46368c81acf68a69ba7f8033b"
     },
     {
       "path": "lib/gui/version-dual/SLGuiNode.sleela",
@@ -6751,7 +6751,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiMount.sleela",
-      "sha256": "ebe3d7dba551b9b072b0742d096f7282c32f72b3c67fef0352bba0e437c2c4ab"
+      "sha256": "1d6ee6c289786dc7aeeda17c52d11c7375741ff8af572fbaf9edf7180ea7f312"
     },
     {
       "path": "lib/gui/version-gual/SLGuiNode.sleela",
@@ -6843,7 +6843,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiAdminAuthority.sleela",
-      "sha256": "9b0828977958e8594b96c9366f7b3ae4b287ac695637cfccafb7e2b8c7e4cde6"
+      "sha256": "12f1c75800a176a70a1d1a2ca3fd22e54e892d37d0698e7ef01ebb5fc8fd78be"
     },
     {
       "path": "lib/gui/version-military/SLGuiApp.sleela",
@@ -6855,7 +6855,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiAudioRecorder.sleela",
-      "sha256": "c74c18622c2a4d65ef186dd71783a683e53f476364cce68def1dab3845ff5e49"
+      "sha256": "22f4a2ef3c5efdd16b33910f5fdbdefd7393bc2f5933dadbf962d7de67bb7eaf"
     },
     {
       "path": "lib/gui/version-military/SLGuiBackend.sleela",
@@ -6967,7 +6967,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiMount.sleela",
-      "sha256": "a599b04b0ae22e24bcf96acacc9215761d4714a0d0867181cc48cece10ad9d4d"
+      "sha256": "ab44a8ad6f5a04c036833a867e8ea149d435b6cbf40891bd6cbae718c28a8482"
     },
     {
       "path": "lib/gui/version-military/SLGuiNode.sleela",
@@ -7159,7 +7159,7 @@
     },
     {
       "path": "lib/gui/version-mual/SLGuiMount.sleela",
-      "sha256": "cb395be361ae4ef9b52d2131d6f497032fbbada0a336f1bd0d2c5e88c1074b0b"
+      "sha256": "3f4c510cc575ca367b229d9cca42feb3948923d808b725406fc954f2df2ad6a5"
     },
     {
       "path": "lib/gui/version-mual/SLGuiNode.sleela",
@@ -7228,6 +7228,10 @@
     {
       "path": "lib/gui/version-mual/gui-events-demo.sleela",
       "sha256": "9ceee0cacca2a96c5456a053e237a86ca4ed3546dcbc102a0bf3c81e84fc8c49"
+    },
+    {
+      "path": "lib/gui/version-mual/gui-guide-chain-demo.sleela",
+      "sha256": "31a4c19af3d9979f7c0717823be60f082678775247524b833e44fcca4913ec4e"
     },
     {
       "path": "lib/gui/version-mual/gui-overflow-scroll-demo.sleela",
@@ -7327,7 +7331,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiMount.sleela",
-      "sha256": "b041da7c64fefb6f24ca139b945412af9b9ed5306325b5c1e46a6f39a7b7bf83"
+      "sha256": "e1baa98dd0a22d3f5e08e7e98b9c9237c003cf53bfff96efb437f5df5631e007"
     },
     {
       "path": "lib/gui/version-thual/SLGuiNode.sleela",

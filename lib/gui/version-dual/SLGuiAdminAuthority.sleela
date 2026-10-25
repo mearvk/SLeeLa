@@ -7,14 +7,14 @@
        2. admin SIGN-OFF on a component OPERATION (an authorised approval that a
           specific operation may proceed); and
        3. an admin SIGNATURE FOR LAW (a legal attestation binding an admin to a
-          document/record with a signature token).
+          document/subject with a signature token).
    
      This class models the authority STATE and a bounded audit trail of the
      approvals/signatures granted; it is fail-closed (no identity => no authority)
      and does not implement a credential check or a cryptographic signature — it
      records WHO authorised WHAT, and leaves verification to the host/security
      layer. The point is that a guarded operation cannot proceed, a guarded
-     process cannot start, and a legal record cannot be signed, without an
+     process cannot start, and a legal subject cannot be signed, without an
      explicit, recorded admin act.
    
    Family: gui. Consulted by components before a guarded action; the host
@@ -23,7 +23,7 @@
 class SLGuiAdminAuthority {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-     or catalog can read and (where appropriate) override this record.
+     or catalog can read and (where appropriate) override this subject.
      Values are faithful to the subject's real origin where publicly known. >>
   String metaVersion = "1.0.0";
   int metaId = 11155;
@@ -100,11 +100,11 @@ class SLGuiAdminAuthority {
   boolean signIn(String admin, String process) {
     if (admin == null || admin == "" || process == null || process == "") { return false; }
     adminId = admin; processName = process; signedIn = 1;
-    record(ACT_SIGNIN, admin, process, "");
+    logAct(ACT_SIGNIN, admin, process, "");
     return true;
   }
   void signOut() {
-    if (signedIn == 1) { record(ACT_SIGNOUT, adminId, processName, ""); }
+    if (signedIn == 1) { logAct(ACT_SIGNOUT, adminId, processName, ""); }
     signedIn = 0; adminId = ""; processName = "";
   }
   boolean isSignedIn() { return signedIn == 1; }
@@ -121,7 +121,7 @@ class SLGuiAdminAuthority {
   < approval is recorded against that admin. Returns false without authority. >
   boolean signOff(String operation, String reason) {
     if (signedIn == 0 || operation == null || operation == "") { return false; }
-    record(ACT_SIGNOFF, adminId, operation, (reason == null) ? "" : reason);
+    logAct(ACT_SIGNOFF, adminId, operation, (reason == null) ? "" : reason);
     return true;
   }
   < Was `operation` signed off by an admin (searching the audit trail)? >
@@ -135,28 +135,28 @@ class SLGuiAdminAuthority {
   < ---- 3. admin signature for Law ----------------------------------------- >
   < Attach a legal signature token to a record. Requires a signed-in admin; the >
   < token is host-supplied (e.g. a signed hash). Fail-closed on missing inputs. >
-  boolean signForLaw(String record, String signatureToken) {
-    if (signedIn == 0 || record == null || record == "" ||
+  boolean signForLaw(String subject, String signatureToken) {
+    if (signedIn == 0 || subject == null || subject == "" ||
         signatureToken == null || signatureToken == "") { return false; }
-    this.record(ACT_SIGNATURE, adminId, record, signatureToken);
+    this.logAct(ACT_SIGNATURE, adminId, subject, signatureToken);
     return true;
   }
-  boolean isLegallySigned(String record) {
+  boolean isLegallySigned(String subject) {
     for (int i = 0; i < auditCount; i = i + 1) {
-      if (auditAct[i] == ACT_SIGNATURE && auditSubject[i] == record &&
+      if (auditAct[i] == ACT_SIGNATURE && auditSubject[i] == subject &&
           auditToken[i] != null && auditToken[i] != "") { return true; }
     }
     return false;
   }
-  String signatureOf(String record) {
+  String signatureOf(String subject) {
     for (int i = auditCount - 1; i >= 0; i = i - 1) {
-      if (auditAct[i] == ACT_SIGNATURE && auditSubject[i] == record) { return auditToken[i]; }
+      if (auditAct[i] == ACT_SIGNATURE && auditSubject[i] == subject) { return auditToken[i]; }
     }
     return "";
   }
 
   < ---- audit trail -------------------------------------------------------- >
-  void record(int act, String admin, String subject, String token) {
+  void logAct(int act, String admin, String subject, String token) {
     if (auditCount >= MAX_AUDIT) { return; }
     auditAct[auditCount] = act; auditAdmin[auditCount] = admin;
     auditSubject[auditCount] = subject; auditToken[auditCount] = token;

@@ -89,7 +89,7 @@ class SLGuiMount {
     for (int i = 0; i < mapCount; i = i + 1) { if (ids[i] == id) { return handles[i]; } }
     return -1;
   }
-  void record(String id, int handle) {
+  void mapId(String id, int handle) {
     int existing = indexOf(id);
     if (existing >= 0) { handles[existing] = handle; return; }
     if (mapCount >= MAX_NODES) { return; }
@@ -109,7 +109,7 @@ class SLGuiMount {
     if (root == null) { return; }
     < The root element adopts the window's existing root container handle. >
     root.mount(rootHandle);
-    record(root.getId(), rootHandle);
+    mapId(root.getId(), rootHandle);
     mounted = mounted + 1;
     mountChildren(root);
     reconcile();
@@ -132,7 +132,7 @@ class SLGuiMount {
         < build one via the factory. >
         int wh = constructWithOverflow(ph, child, label);
         child.mount(wh);
-        record(childId, wh);
+        mapId(childId, wh);
         mounted = mounted + 1;
       }
       mountChildren(child);
