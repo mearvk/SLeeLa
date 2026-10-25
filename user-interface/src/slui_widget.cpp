@@ -60,6 +60,29 @@ double measure_text(Backend* backend, const std::string& utf8) {
     return w;
 }
 
+/* Coherent Dignity (collision avoidance): clip text cleanly to a pixel width
+ * with a trailing ellipsis when it overflows, rather than letting it spill its
+ * component envelope. UTF-8 aware; returns the original string when it fits. */
+std::string ellipsize(Backend* backend, const std::string& utf8, double max_w) {
+    if (!backend || max_w <= 0.0) return utf8;
+    if (measure_text(backend, utf8) <= max_w) return utf8;
+    const std::string ell = "\xE2\x80\xA6"; /* U+2026 HORIZONTAL ELLIPSIS */
+    double ell_w = measure_text(backend, ell);
+    if (ell_w > max_w) return ""; /* not even the ellipsis fits */
+    /* Accumulate scalars while head + ellipsis stays within max_w. */
+    std::string out;
+    double w = 0.0;
+    for (size_t i = 0; i < utf8.size();) {
+        size_t start = i;
+        uint32_t cp = next_scalar(utf8, i);
+        double adv = backend->glyph_advance(cp);
+        if (w + adv + ell_w > max_w) break;
+        out.append(utf8, start, i - start);
+        w += adv;
+    }
+    return out + ell;
+}
+
 void draw_text(PaintContext& ctx, const std::string& utf8, int x, int baseline,
                const Color& color) {
     if (!ctx.backend || !ctx.canvas) return;
@@ -273,11 +296,16 @@ void Label::paint(PaintContext& ctx) {
     double lh = ctx.backend->font_line_height();
     int baseline = c.y + static_cast<int>((c.h - lh) / 2.0 + asc + 0.5);
     Color col = sensitive_ ? t.fg : t.fg_dim;
-    double tw = measure_text(ctx.backend, text_);
+    /* Collision avoidance: if the label text is wider than its content box,
+     * truncate it cleanly with an ellipsis instead of overrunning the envelope
+     * (the ancestor clip hides the rest, but a clean ellipsis is the dignified
+     * form). Measurement/placement then use the possibly-shortened string. */
+    std::string shown = ellipsize(ctx.backend, text_, static_cast<double>(c.w));
+    double tw = measure_text(ctx.backend, shown);
     int tx = c.x;
     if (halign_ == SLUI_ALIGN_CENTER) tx = c.x + static_cast<int>((c.w - tw) / 2.0);
     else if (halign_ == SLUI_ALIGN_END) tx = c.right() - static_cast<int>(tw);
-    draw_text_styled(ctx, styled_font_, text_, tx, baseline, col);
+    draw_text_styled(ctx, styled_font_, shown, tx, baseline, col);
 }
 
 /* ======================================================================== */
