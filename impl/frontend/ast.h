@@ -236,6 +236,12 @@ struct Program {
     // Number of nested classes hoisted from enclosing classes in this document
     // (syntax 1.11). Capped by the parser at 42 per document.
     int nestedClassCount=0;
+    // Author marker (syntax 2.4): set true when the document declares the bare
+    // top-level word `author` or its synonym `authorial`. It marks the document
+    // as handled by professional council and, operationally, permits duplicate
+    // fields/methods (each member then carries a declaration-order id and an
+    // SHA-256 brander) and requests the originated source document on compile.
+    bool authorMarked=false;
 };
 
 } // namespace sleela
