@@ -1145,7 +1145,11 @@ void Frame::paint(PaintContext& ctx) {
         int baseline = c.y + static_cast<int>(ctx.backend->font_ascent()) + t.unit;
         draw_text(ctx, title_, c.x + t.unit * 3, baseline, t.fg_dim);
     }
+    /* A frame is a hard paint boundary: clip children to the framed content box
+     * so interior components never draw past the frame's border/margins. */
+    if (ctx.canvas) ctx.canvas->push_clip(c);
     paint_children(ctx);
+    if (ctx.canvas) ctx.canvas->pop_clip();
 }
 
 /* ======================================================================== */
@@ -1184,7 +1188,11 @@ void Card::paint(PaintContext& ctx) {
     Rect c = content();
     ctx.canvas->fill_round_rect(c, t.radius, t.surface);
     ctx.canvas->stroke_round_rect(c, t.radius, 1.0, t.border);
+    /* A card is a hard paint boundary: clip children to the card's content box
+     * so interior components can never spill past the rounded border/margins. */
+    if (ctx.canvas) ctx.canvas->push_clip(c);
     paint_children(ctx);
+    if (ctx.canvas) ctx.canvas->pop_clip();
 }
 
 /* ======================================================================== */

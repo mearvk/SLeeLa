@@ -98,7 +98,14 @@ typedef enum {
     SLUI_THEME_SLICK_BLACK = 0,  /* the original matte-black theme            */
     SLUI_THEME_GRAPHITE = 1,     /* a lighter neutral alternative             */
     SLUI_THEME_CUSTOM = 2,       /* fully host-defined via SLUITheme fields   */
-    SLUI_THEME_SLEELA_BASE = 3   /* THE DEFAULT: base colour #2B1608 (warm)   */
+    SLUI_THEME_SLEELA_BASE = 3,  /* THE DEFAULT: base colour #2B1608 (warm)   */
+    /* The four Standard Patterns -- flat, one-accent palettes a host can pick
+     * by id with no field edits. Appended after SLEELA_BASE to preserve the
+     * existing ABI numbering. */
+    SLUI_THEME_WHITE = 4,        /* light surface, dark text, blue accent     */
+    SLUI_THEME_BLACK = 5,        /* deep black surface, light text            */
+    SLUI_THEME_BLUE = 6,         /* blue-tinted surfaces, light text          */
+    SLUI_THEME_GRAY = 7          /* neutral mid-gray surfaces                 */
 } SLUIThemeId;
 
 /* Sleela's configurable BASE COLOUR, the floor of the default theme. Deep warm
