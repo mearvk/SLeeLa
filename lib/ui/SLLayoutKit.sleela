@@ -1,0 +1,97 @@
+<< lib/ui/SLLayoutKit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLLayoutKit — the one-stop, beginner-first entry point to the
+     standard layout family. A newcomer does not need to know which class to
+     pick: ask the kit for a column, a row, a grid, a dock, or absolute
+     placement, and it returns a ready-to-use layout. Professionals use the
+     concrete SL*Layout classes directly. Pure SLeeLa; every layout it makes
+     fills SLLayoutBox[] with real pixel rects.
+
+   Easy path:
+     SLLayoutKit kit = new SLLayoutKit(); kit.create();
+     SLStackLayout col = kit.column(8, 12);   < gap 8, pad 12 >
+     col.add(40); col.add(0);
+     col.arrange(0, 0, 320, 480);
+     SLLayoutBox body = col.boxOf(1);
+   >>
+#sleela 2.1
+< Family: ui. The standard, beginner-first facade over the SL*Layout family. >
+class SLLayoutKit {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11606;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void create() { }
+
+  < A vertical stack with the given gap and uniform padding. >
+  SLStackLayout column(int gap, int pad) {
+    SLStackLayout s = new SLStackLayout();
+    s.create(); s.column(); s.gap(gap); s.pad(pad);
+    return s;
+  }
+  < A horizontal stack with the given gap and uniform padding. >
+  SLStackLayout row(int gap, int pad) {
+    SLStackLayout s = new SLStackLayout();
+    s.create(); s.row(); s.gap(gap); s.pad(pad);
+    return s;
+  }
+  < A grid with the given column count, gap, and uniform padding. >
+  SLGridLayout grid(int columns, int gap, int pad) {
+    SLGridLayout g = new SLGridLayout();
+    g.create(); g.columns(columns); g.gap(gap); g.pad(pad);
+    return g;
+  }
+  < An edge-dock layout (toolbar/sidebar/status + centre fill). >
+  SLDockLayout dock() {
+    SLDockLayout d = new SLDockLayout();
+    d.create();
+    return d;
+  }
+  < Pixel-exact placement. >
+  SLAbsoluteLayout absolute() {
+    SLAbsoluteLayout a = new SLAbsoluteLayout();
+    a.create();
+    return a;
+  }
+
+  < The names of the standard layouts, for a tool/catalog that lists them. >
+  String families() {
+    return "column, row, grid, dock, absolute";
+  }
+}

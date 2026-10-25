@@ -1,0 +1,160 @@
+<< lib/ui/SLStackLayout.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLStackLayout — the simplest, most-used layout: place children in
+     a single row or column. The 90% case, made a one-liner for beginners while
+     staying precise for professionals. Pure SLeeLa (computes real pixel rects
+     into SLLayoutBox[]); no native handle, so it always checks and runs.
+
+   Easy path (a vertical stack of three 40px rows in a 200-wide area):
+     SLStackLayout s = new SLStackLayout();
+     s.column();                      < or s.row() >
+     s.gap(8); s.pad(12);
+     s.add(40); s.add(40); s.add(40);
+     s.arrange(0, 0, 200, 600);
+     SLLayoutBox b = s.boxOf(0);      < first child's rect >
+
+   A child size of 0 means "flexible" -- it shares the leftover main-axis space
+   equally with the other flexible children, so a body region that fills the
+   rest is just s.add(0). >>
+#sleela 2.1
+< Family: ui. A standard, professional, beginner-friendly stack layout. >
+class SLStackLayout {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11602;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < axis: 0 = row (horizontal), 1 = column (vertical) >
+  static final int AXIS_ROW = 0;
+  static final int AXIS_COLUMN = 1;
+  < the most a single stack will hold >
+  static final int MAX_ITEMS = 128;
+
+  int axis;
+  < requested main-axis size per child (0 = flexible) >
+  int[] sizes;
+  int count;
+  int gapPx;
+  int padLeft; int padTop; int padRight; int padBottom;
+  < computed rectangles, one per child, filled by arrange() >
+  SLLayoutBox[] boxes;
+
+  void create() {
+    axis = AXIS_COLUMN;
+    sizes = new int[MAX_ITEMS];
+    boxes = new SLLayoutBox[MAX_ITEMS];
+    count = 0;
+    gapPx = 8;
+    padLeft = 0; padTop = 0; padRight = 0; padBottom = 0;
+  }
+
+  < ---- orientation (pick one; column is the default) ---------------------- >
+  void row() { axis = AXIS_ROW; }
+  void column() { axis = AXIS_COLUMN; }
+  boolean isRow() { return axis == AXIS_ROW; }
+
+  < ---- spacing (beginner-friendly one-call helpers) ----------------------- >
+  void gap(int px) { gapPx = (px < 0) ? 0 : px; }
+  void pad(int p) { int q = (p < 0) ? 0 : p; padLeft = q; padTop = q; padRight = q; padBottom = q; }
+  void padEach(int l, int t, int r, int b) {
+    padLeft = (l < 0) ? 0 : l; padTop = (t < 0) ? 0 : t;
+    padRight = (r < 0) ? 0 : r; padBottom = (b < 0) ? 0 : b;
+  }
+
+  < ---- children ----------------------------------------------------------- >
+  < Add a child with a fixed main-axis size in px, or 0 for flexible. Returns >
+  < the child's index, or -1 if the stack is full. >
+  int add(int sizePx) {
+    if (count >= MAX_ITEMS) { return -1; }
+    sizes[count] = (sizePx < 0) ? 0 : sizePx;
+    int idx = count;
+    count = count + 1;
+    return idx;
+  }
+  int size() { return count; }
+
+  < ---- arrange: compute every child's rectangle inside (x,y,w,h) ---------- >
+  void arrange(int x, int y, int w, int h) {
+    int innerX = x + padLeft;
+    int innerY = y + padTop;
+    int innerW = w - padLeft - padRight; if (innerW < 0) { innerW = 0; }
+    int innerH = h - padTop - padBottom; if (innerH < 0) { innerH = 0; }
+
+    < total main-axis extent and how it is spent on gaps/fixed/flex >
+    int gaps = (count > 1) ? (gapPx * (count - 1)) : 0;
+    int main = isRow() ? innerW : innerH;
+    int avail = main - gaps; if (avail < 0) { avail = 0; }
+
+    int fixedTotal = 0; int flexCount = 0;
+    int i = 0;
+    while (i < count) {
+      if (sizes[i] == 0) { flexCount = flexCount + 1; }
+      else { fixedTotal = fixedTotal + sizes[i]; }
+      i = i + 1;
+    }
+    int leftover = avail - fixedTotal; if (leftover < 0) { leftover = 0; }
+    int flexEach = (flexCount > 0) ? (leftover / flexCount) : 0;
+
+    < lay the children end-to-end along the main axis; cross axis fills inner >
+    int cursor = isRow() ? innerX : innerY;
+    int j = 0;
+    while (j < count) {
+      int span = (sizes[j] == 0) ? flexEach : sizes[j];
+      SLLayoutBox b = new SLLayoutBox();
+      b.create();
+      if (isRow()) { b.set(cursor, innerY, span, innerH); }
+      else         { b.set(innerX, cursor, innerW, span); }
+      boxes[j] = b;
+      cursor = cursor + span + gapPx;
+      j = j + 1;
+    }
+  }
+
+  < ---- read the computed rectangles --------------------------------------- >
+  SLLayoutBox boxOf(int index) {
+    if (index < 0 || index >= count) { return null; }
+    return boxes[index];
+  }
+
+  boolean honored() {
+    return count >= 0 && count <= MAX_ITEMS && gapPx >= 0
+      && padLeft >= 0 && padTop >= 0 && padRight >= 0 && padBottom >= 0
+      && (axis == AXIS_ROW || axis == AXIS_COLUMN);
+  }
+}

@@ -1,0 +1,98 @@
+<< lib/ui/SLAbsoluteLayout.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLAbsoluteLayout — place children at EXACT x/y/width/height in
+     device pixels, relative to the container's origin. The escape hatch when a
+     professional wants pixel-exact control; still clamps negative sizes to
+     zero. Pure SLeeLa; fills SLLayoutBox[].
+
+   Easy path:
+     SLAbsoluteLayout a = new SLAbsoluteLayout();
+     a.add(10, 10, 120, 24);     < a label >
+     a.add(10, 44, 120, 24);     < a field >
+     a.arrange(0, 0, 400, 300);  < container origin offsets all children >
+     SLLayoutBox b = a.boxOf(0); >>
+#sleela 2.1
+< Family: ui. A standard, professional, beginner-friendly absolute layout. >
+class SLAbsoluteLayout {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11604;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  static final int MAX_ITEMS = 256;
+
+  int count;
+  int[] rx; int[] ry; int[] rw; int[] rh;
+  SLLayoutBox[] boxes;
+
+  void create() {
+    count = 0;
+    rx = new int[MAX_ITEMS]; ry = new int[MAX_ITEMS];
+    rw = new int[MAX_ITEMS]; rh = new int[MAX_ITEMS];
+    boxes = new SLLayoutBox[MAX_ITEMS];
+  }
+
+  < Add a child at exact x/y/width/height (relative to the container origin). >
+  int add(int px, int py, int w, int h) {
+    if (count >= MAX_ITEMS) { return -1; }
+    rx[count] = px; ry[count] = py;
+    rw[count] = (w < 0) ? 0 : w; rh[count] = (h < 0) ? 0 : h;
+    int idx = count; count = count + 1; return idx;
+  }
+  int size() { return count; }
+
+  < Offset every child by the container origin (x,y). w/h here are advisory >
+  < (absolute children keep their own sizes); provided for a uniform arrange(). >
+  void arrange(int x, int y, int w, int h) {
+    int i = 0;
+    while (i < count) {
+      SLLayoutBox b = new SLLayoutBox();
+      b.create();
+      b.set(x + rx[i], y + ry[i], rw[i], rh[i]);
+      boxes[i] = b;
+      i = i + 1;
+    }
+  }
+
+  SLLayoutBox boxOf(int index) {
+    if (index < 0 || index >= count) { return null; }
+    return boxes[index];
+  }
+
+  boolean honored() { return count >= 0 && count <= MAX_ITEMS; }
+}

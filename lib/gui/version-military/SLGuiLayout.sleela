@@ -172,9 +172,15 @@ class SLGuiLayout {
   }
 
   boolean honored() {
-    boolean grid = mode != MODE_GRID || (rows >= 1 && cols >= 1);
-    boolean size = width >= 0 && height >= 0;
-    boolean gap = gapPx >= 0 && gapPx <= 256;
-    return grid && size && gap;
+    boolean modeOk  = mode >= MODE_FLOW && mode <= MODE_DOCK;
+    boolean grid    = mode != MODE_GRID || (rows >= 1 && cols >= 1);
+    boolean size    = width >= 0 && height >= 0;
+    boolean gap     = gapPx >= 0 && gapPx <= 256;
+    boolean align   = alignH >= ALIGN_START && alignH <= ALIGN_STRETCH
+                   && alignV >= ALIGN_START && alignV <= ALIGN_STRETCH;
+    boolean dockOk  = dock >= DOCK_NONE && dock <= DOCK_FILL;
+    boolean padding = padLeft >= 0 && padLeft <= 512 && padTop >= 0 && padTop <= 512
+                   && padRight >= 0 && padRight <= 512 && padBottom >= 0 && padBottom <= 512;
+    return modeOk && grid && size && gap && align && dockOk && padding;
   }
 }

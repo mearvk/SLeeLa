@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11550
+library-source-files: 11557
 library-packages: 101
 module-facade-symbols: 70
-total-symbol-records: 11620
+total-symbol-records: 11627
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11336,14 +11336,20 @@ text	SLStringBuilder.sleela	lib/text/SLStringBuilder.sleela	source
 text	SLTextReader.sleela	lib/text/SLTextReader.sleela	source
 text	SLTextWriter.sleela	lib/text/SLTextWriter.sleela	source
 text	text-string-demo.sleela	lib/text/text-string-demo.sleela	source
+ui	SLAbsoluteLayout.sleela	lib/ui/SLAbsoluteLayout.sleela	source
 ui	SLApplication.sleela	lib/ui/SLApplication.sleela	source
 ui	SLButton.sleela	lib/ui/SLButton.sleela	source
 ui	SLDialog.sleela	lib/ui/SLDialog.sleela	source
+ui	SLDockLayout.sleela	lib/ui/SLDockLayout.sleela	source
+ui	SLGridLayout.sleela	lib/ui/SLGridLayout.sleela	source
 ui	SLLabel.sleela	lib/ui/SLLabel.sleela	source
 ui	SLLayout.sleela	lib/ui/SLLayout.sleela	source
+ui	SLLayoutBox.sleela	lib/ui/SLLayoutBox.sleela	source
+ui	SLLayoutKit.sleela	lib/ui/SLLayoutKit.sleela	source
 ui	SLListView.sleela	lib/ui/SLListView.sleela	source
 ui	SLMenu.sleela	lib/ui/SLMenu.sleela	source
 ui	SLMenuItem.sleela	lib/ui/SLMenuItem.sleela	source
+ui	SLStackLayout.sleela	lib/ui/SLStackLayout.sleela	source
 ui	SLTableView.sleela	lib/ui/SLTableView.sleela	source
 ui	SLTextArea.sleela	lib/ui/SLTextArea.sleela	source
 ui	SLTextField.sleela	lib/ui/SLTextField.sleela	source
@@ -11352,6 +11358,7 @@ ui	SLTreeView.sleela	lib/ui/SLTreeView.sleela	source
 ui	SLView.sleela	lib/ui/SLView.sleela	source
 ui	SLWidget.sleela	lib/ui/SLWidget.sleela	source
 ui	SLWindow.sleela	lib/ui/SLWindow.sleela	source
+ui	layout-demo.sleela	lib/ui/layout-demo.sleela	source
 us-infrastructure	SLPackage.sleela	lib/us-infrastructure/SLPackage.sleela	facade
 user-interface	SLAvatar.sleela	lib/user-interface/SLAvatar.sleela	source
 user-interface	SLBadge.sleela	lib/user-interface/SLBadge.sleela	source

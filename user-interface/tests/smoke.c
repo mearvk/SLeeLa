@@ -202,11 +202,13 @@ int main(void) {
     }
 
     /* --- presentation buffering: default + mode round-trip --------------- */
-    CHECK(slui_window_buffering(win) == SLUI_BUFFERING_DOUBLE,
-          "window defaults to double buffering");
-    slui_window_set_buffering(win, SLUI_BUFFERING_TRIPLE);
+    /* Triple buffering is the native default (smoother rapid redraws/resize/
+     * animation); see slui_window.cpp. Applications may select single/double. */
     CHECK(slui_window_buffering(win) == SLUI_BUFFERING_TRIPLE,
-          "buffering set to triple");
+          "window defaults to triple buffering");
+    slui_window_set_buffering(win, SLUI_BUFFERING_DOUBLE);
+    CHECK(slui_window_buffering(win) == SLUI_BUFFERING_DOUBLE,
+          "buffering set to double");
     slui_window_set_buffering(win, SLUI_BUFFERING_SINGLE);
     CHECK(slui_window_buffering(win) == SLUI_BUFFERING_SINGLE,
           "buffering set to single");
