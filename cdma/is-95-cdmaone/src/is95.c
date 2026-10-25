@@ -2,7 +2,8 @@
 #include <stddef.h>
 int is95_make_code(int *code, size_t spreading_factor, unsigned code_index) {
     if (!code) return -1;
-    if (spreading_factor < 2 || spreading_factor > 128U) return -1;
+    /* IS-95 channelization is Walsh-64; cap at the documented IS95_WALSH_LENGTH. */
+    if (spreading_factor < 2 || spreading_factor > IS95_WALSH_LENGTH) return -1;
     return cdma_walsh_code(code, spreading_factor, code_index);
 }
 int is95_spread(int symbol, size_t spreading_factor, unsigned code_index, int *chips) {

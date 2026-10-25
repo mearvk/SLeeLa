@@ -26,7 +26,11 @@ int cdma_ovsf_code(int *code, size_t sf, unsigned index) {
 int cdma_pn_sequence(int *out, size_t length, unsigned stages, unsigned taps, unsigned seed) {
     size_t i; unsigned mask, state;
     if (!out || stages < 2 || stages > 30 || taps == 0) return -1;
-    mask = (1U << stages) - 1U; state = seed & mask; if (!state) state = 1U;
+    mask = (1U << stages) - 1U;
+    /* Taps must reference only existing stages; a tap bit outside the register
+     * silently feeds back a nonexistent stage and yields a degenerate sequence. */
+    if ((taps & ~mask) != 0U) return -1;
+    state = seed & mask; if (!state) state = 1U;
     for (i = 0; i < length; ++i) {
         unsigned fb = 0, x = state & taps;
         while (x) { fb ^= x & 1U; x >>= 1U; }
