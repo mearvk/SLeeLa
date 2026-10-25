@@ -41,6 +41,20 @@ class LayoutDemo {
     g.arrange(0, 0, 600, 400);
     print("grid rows=" + g.rows() + " cell0: " + g.boxOf(0).describe() + " cell4: " + g.boxOf(4).describe());
 
+    << The Frame is the organizing root: it owns a layout and holds named
+       components, each placed in excellent reference to the Frame. >>
+    SLLayoutFrame frame = new SLLayoutFrame(); frame.create();
+    frame.title("Settings");
+    frame.useColumn(8, 12);
+    frame.add("header", 40);
+    frame.add("body", 0);
+    frame.add("footer", 32);
+    frame.place(0, 0, 320, 600);
+    print("frame '" + frame.getTitle() + "' organizes " + frame.size() + " components:");
+    print("  header: " + frame.boxOf("header").describe());
+    print("  body:   " + frame.boxOf("body").describe());
+    print("  footer: " + frame.boxOf("footer").describe());
+
     print("done");
   }
 }
