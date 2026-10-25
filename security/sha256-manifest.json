@@ -3782,6 +3782,10 @@
       "sha256": "6dd5dcc045d0fa34c473ea2088ea4f2076a8daff1bbb31c88d84dd8876fa0562"
     },
     {
+      "path": "lib/core/SLVictory.sleela",
+      "sha256": "b31adee306b70f7e44051ad5ffd5430fa65b8167f637cc8d9dcc2e0340d475b4"
+    },
+    {
       "path": "lib/cpu/6502/SL6502CPU.sleela",
       "sha256": "7a000008d34033f826a16d7135dfcb68f1de2d8e9f02fb1a1fc32bb34d33eb06"
     },

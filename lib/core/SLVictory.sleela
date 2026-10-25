@@ -1,0 +1,164 @@
+< lib/core/SLVictory.sleela >
+< SLeeLa Standard Library Definition. >
+<< Definition: SLVictory -- the Victory Model. A sibling of SLAuthorship. It
+   records WINS under one exact definition: a win is a CHECK that RESOLVES TO AN
+   EXACT ITEM. Resolution is EXACT EQUALITY: a candidate resolves to the win iff
+   it equals the declared exact item (SLeeLa's native == on strings), measured
+   against a named reference standard (a "calculus"), not conferred by any
+   external authority. This is "means are goals and directions without worship
+   elsewhere": the win is the method carried out and checked by exact equality,
+   standing on its own merit; it names no idol and ranks no person.
+
+   Why equality is the exact check. SLeeLa's built-in String exposes only
+   concatenation (+) and equality (==/!=) to source -- there is no char type or
+   char-level indexing. So "resolves to an item exactly" is modelled with the
+   one exact test the language actually provides: ==. A win is therefore honest
+   and dependable in-language, never a faked char-level guess.
+
+   The win rule, exactly:
+     * declare(item): name the one exact item the victory is defined against
+       (non-null, non-empty).
+     * check(candidate): a WIN iff candidate == the declared item (exact
+       equality). Any other candidate is PENDING, never a win.
+     * the measuring standard is a CALCULUS: a named, citable reference. The
+       default is the United States reference standard, carried as a real
+       instrument (NIST -- the U.S. authority for measurement standards), not a
+       fabricated authority.
+     * direction() names the orientation the win advances (Humanities ->
+       Science); it is a direction, not a ranking.
+
+   worshipsElsewhere() is false by contract and standsOnItsOwn() is true.
+   Comments use the angle-bracket style; #sleela 2.4. >>
+#sleela 2.4
+< Family: core. The Victory Model: a win is a check resolving to an exact item. >
+
+author;
+
+class SLVictory {
+
+  < ---- identity ----------------------------------------------------- >
+  int id() { return 0; }
+  String name() { return "SLVictory"; }
+
+  < ---- the calculus (the named reference standard) ------------------ >
+  < the standard a check is measured against; a real, citable U.S. standard >
+  String calculus = "United States reference standard (NIST)";
+  String theCalculus()        { return calculus; }
+  void setCalculus(String c)  { calculus = c; }
+
+  < ---- direction (the orientation a win advances) ------------------- >
+  < Humanities toward Science: means are goals and directions. >
+  String orientation = "Humanities -> Science";
+  String direction()          { return orientation; }
+  void setDirection(String d) { orientation = d; }
+
+  < ---- the exact item the victory is defined against --------------- >
+  < the one exact item; "" means undeclared (no victory can resolve yet) >
+  String item = "";
+  boolean declared = false;
+
+  << declare(target): name the one exact item. Non-null, non-empty. Returns true
+     when a valid exact item was declared. A victory must be declared before a
+     check can resolve to it. >>
+  boolean declare(String target) {
+    if (target == null || target == "") { declared = false; return false; }
+    item = target;
+    declared = true;
+    return true;
+  }
+  String declaredItem() { return item; }
+  boolean isDeclared()  { return declared; }
+
+  < ---- the win rule: exact equality against the declared item ------- >
+  << resolves(candidate): the win TEST -- the dependable boolean answer. True iff
+     a victory is declared AND candidate equals the declared item exactly (native
+     ==). This is the honest in-language check: equality is the one exact test
+     the language provides. It does NOT mutate the tally; use check() to record. >>
+  boolean resolves(String candidate) {
+    if (!declared) { return false; }
+    if (candidate == null) { return false; }
+    return candidate == item;
+  }
+
+  << check(candidate): resolve and RECORD. Increments the tally on a win and
+     returns a self-standing descriptor naming the item, the calculus, and the
+     direction -- nothing external. A non-resolving or undeclared candidate
+     returns the honest pending descriptor and is NOT counted. Pair it with
+     resolves() when you want the boolean without recording. >>
+  String check(String candidate) {
+    if (!resolves(candidate)) {
+      String shown = candidate;
+      if (candidate == null) { shown = ""; }
+      String why = "does-not-resolve-to-exact-item";
+      if (!declared) { why = "no-exact-item-declared"; }
+      return "pending:item=" + shown + ":reason=" + why;
+    }
+    wins = wins + 1;
+    return "win:item=" + item + ":calculus=" + calculus + ":direction=" + orientation;
+  }
+
+  << declareAndCheck(target): declare an exact item and immediately resolve it
+     against itself -- the canonical single-step win, when the means IS the goal
+     (the exact item checked against the exact standard). >>
+  String declareAndCheck(String target) {
+    if (!declare(target)) {
+      return "pending:item=:reason=not-an-exact-item";
+    }
+    return check(target);
+  }
+
+  < ---- tally (continuance of triumph, grounded in exact checks) ----- >
+  int wins = 0;
+  int tally()      { return wins; }
+  void resetTally(){ wins = 0; }
+
+  < ---- the standing: without worship elsewhere --------------------- >
+  boolean worshipsElsewhere() { return false; }
+  boolean standsOnItsOwn()    { return true; }
+  boolean ranksPersons()      { return false; }
+
+  < ---- introspection ------------------------------------------------ >
+  String typeName()   { return "SLeeLa.core.SLVictory"; }
+  boolean available() { return true; }
+
+  SLVictory copy() { SLVictory c = new SLVictory(); c.setCalculus(calculus); c.setDirection(orientation); return c; }
+  void dispose() { wins = 0; item = ""; declared = false; }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. The calculus's real
+     U.S. standards authority is cited in metaNationalSchedule (NIST). >>
+  String metaVersion = "1.0.0";
+  int metaId = 11602;
+  String metaAuthor = "SLeeLa standard library";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "National";
+  String metaBirthDate = "2026";
+  int metaScienceRating = 8;
+  String metaNationalSchedule = "U.S. National Institute of Standards and Technology (NIST) measurement standards";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

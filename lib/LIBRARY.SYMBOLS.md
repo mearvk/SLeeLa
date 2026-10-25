@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11574
+library-source-files: 11576
 library-packages: 101
 module-facade-symbols: 70
-total-symbol-records: 11644
+total-symbol-records: 11646
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -672,6 +672,7 @@ core	SLType.sleela	lib/core/SLType.sleela	source
 core	SLTypeDescriptor.sleela	lib/core/SLTypeDescriptor.sleela	source
 core	SLUdpTransport.sleela	lib/core/SLUdpTransport.sleela	source
 core	SLValidator.sleela	lib/core/SLValidator.sleela	source
+core	SLVictory.sleela	lib/core/SLVictory.sleela	source
 cpu	SL6502CPU.sleela	lib/cpu/6502/SL6502CPU.sleela	source
 cpu	SL68020CPU.sleela	lib/cpu/68020/SL68020CPU.sleela	source
 cpu	SL68030CPU.sleela	lib/cpu/68030/SL68030CPU.sleela	source
@@ -11568,6 +11569,7 @@ vm	SLVmGc.sleela	lib/vm/src/sleela/SLVmGc.sleela	source
 vm	SLVmMemory.sleela	lib/vm/src/sleela/SLVmMemory.sleela	source
 vm	SLVmModium.sleela	lib/vm/src/sleela/SLVmModium.sleela	source
 vm	SLVmPlatform.sleela	lib/vm/src/sleela/SLVmPlatform.sleela	source
+vm	SLVmPremiumVersion.sleela	lib/vm/src/sleela/SLVmPremiumVersion.sleela	source
 vm	SLVmProfile.sleela	lib/vm/src/sleela/SLVmProfile.sleela	source
 vm	SLVmReport.sleela	lib/vm/src/sleela/SLVmReport.sleela	source
 vm	SLVmResult.sleela	lib/vm/src/sleela/SLVmResult.sleela	source
