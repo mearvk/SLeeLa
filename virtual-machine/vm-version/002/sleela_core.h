@@ -161,6 +161,30 @@ typedef enum {
     OP_VM_SELECT      /* pops vmNumber; selects+boots a registered VM version; pushes status */
     ,
     OP_MODIUM_SCAN    /* pops vmNumber; scans that VM version's files for resolution; pushes status */
+    ,
+    /* [SYNC impl/core 2026-10-25] The three enum entries below (OP_UI_CALL,
+     * OP_SSEND, and the OP__COUNT sentinel) were missing from this VM-tree
+     * header, which stopped at OP_MODIUM_SCAN. They are appended here in the
+     * SAME ORDER as the senior Native VM (impl/core/sleela_core.h) so opcode
+     * numbers stay identical and bytecode remains compatible. The matching
+     * handlers were added to sleela_core.c in the same sync. */
+    /* SleelaUI bridge: a = ui* function id (see sleela_ui_ids.h). Pops that
+     * function's arguments (arity from sleela_ui_arity) left-to-right and
+     * pushes its result, routing to the SleelaUI C ABI (real host window). */
+    OP_UI_CALL
+    ,
+    /* Structural-offload send (the ::: operator). Pops a receiver reach handle
+     * and a String source; the VM performs a structured, element-by-element
+     * transfer of the source's data into the receiver (framing/iteration done
+     * here, not by a source for-loop), then pushes the receiver handle so a
+     * ::: chain stays fluent. Models OP_MUN_SEND but frames each element as its
+     * own datum via the Munction transport. */
+    OP_SSEND
+    ,
+    /* Sentinel: one past the last real opcode. Artifact validation uses this so
+     * every defined opcode is accepted and adding a new opcode above never
+     * requires updating the validator's upper bound again. KEEP LAST. */
+    OP__COUNT
 } SLOp;
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */

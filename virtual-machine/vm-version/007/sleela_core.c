@@ -7,6 +7,23 @@
  * runs on both Linux/POSIX and Windows 10+ without raw platform calls. Host
  * resources are exposed only as VM-local bounded handles; Sleela code never
  * receives a raw descriptor, SOCKET, or HANDLE.
+ *
+ * ---------------------------------------------------------------------------
+ * [SYNC impl/core 2026-10-25] PROVENANCE. This file in the virtual-machine/
+ * tree (virtual-machine/core and the vm-version/NNN snapshots, which per each
+ * VERSION.md "carry the core forward unchanged") had drifted behind the senior
+ * Native VM at impl/core/sleela_core.c. It has been reconciled to that senior
+ * copy. Every reconciled site is marked inline with a "[SYNC impl/core ...]"
+ * comment; grep for that tag to see exactly what this sync changed:
+ *   1. OP_EQ / OP_NE  -- added the missing SL_NULL case (correctness bug:
+ *                        `== null` / `!= null` previously coerced to number).
+ *   2. OP_SSEND       -- the ::: structural-offload send (was absent here).
+ *   3. OP_VM_SELECT / OP_MODIUM_SCAN -- declared in the header but unimplemented
+ *                        here (dead `vm`/`modium` seams); now implemented.
+ *   4. OP_UI_CALL     -- the SleelaUI bridge (+ sleela_ui_vm.h/sleela_ui_ids.h);
+ *                        was absent here.
+ * The authority is impl/core; keep this copy in step with it.
+ * ---------------------------------------------------------------------------
  * ========================================================================== */
 #ifndef _WIN32
 #define _POSIX_C_SOURCE 200809L
@@ -22,6 +39,13 @@
 #include "sleela_os.h"
 #include "sleela_memmgr.h"
 #include "sleela_idea_canvas.h"
+/* [SYNC impl/core 2026-10-25] Added alongside the OP_UI_CALL handler ported
+ * below. These two small, toolkit-type-free headers are copied into this
+ * VM tree from the senior Native VM (impl/core); they were previously absent
+ * here. The heavier sleela_ui_vm.c implementation is NOT carried into this
+ * reference snapshot (this tree is not a compiled target). */
+#include "sleela_ui_vm.h"
+#include "sleela_ui_ids.h"
 
 #ifndef SL_IDEA_CANVAS_MAX
 #define SL_IDEA_CANVAS_MAX 16   /* bounded VM-local realtime-canvas table */
@@ -1044,8 +1068,15 @@ static SLResult run_thread(SLThread* t) {
         case OP_DIV: { SLValue b=POP(),a=POP(); if(both_int(a,b)){if(!b.as.i) TERR("integer divide by zero"); PUSH(slval_int(a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
         case OP_MOD: { SLValue b=POP(),a=POP(); if(both_int(a,b)){ if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TERR("modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
         case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
-        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
-        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
+        /* [SYNC impl/core 2026-10-25] Reconciled with the senior Native VM
+         * (impl/core/sleela_core.c). This VM-tree copy had drifted behind and
+         * lacked the SL_NULL branch below, so `x == null` / `x != null` fell
+         * through to numeric coercion and gave wrong answers. The null-first
+         * test makes null==null true and null==non-null false, matching the
+         * Native VM. Relied on by the lib/text String surface (isNull,
+         * isBlankLike, joinNonEmpty, defaultIfEmpty, ...). */
+        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_NULL||b.type==SL_NULL) e=(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_NULL||b.type==SL_NULL) e=!(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
         case OP_LT: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)<as_num(b))); } break;
         case OP_LE: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
         case OP_GT: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)>as_num(b))); } break;
@@ -1162,6 +1193,37 @@ static SLResult run_thread(SLThread* t) {
         case OP_MUN_SEND: {
             SLValue dv=POP(), hv=POP(); if(hv.type!=SL_INT||dv.type!=SL_STR) TERR("Munction send(datum) requires a reach handle and a String datum");
             SLMunction* m=munction_get(vm,(int)hv.as.i); if(m){const char* d=slvm_str(vm,dv.as.s); slmunction_send(m,d,strlen(d));} PUSH(hv);
+        } break;
+        /* [SYNC impl/core 2026-10-25] Ported from the senior Native VM: this
+         * VM-tree copy predated the ::: structural-offload send entirely (its
+         * sleela_core.h did not even declare OP_SSEND). Added for parity. */
+        /* OP_SSEND: the ::: structural-offload send. Operands were emitted
+         * source-then-receiver, so the receiver reach handle is on top. The VM
+         * frames the String source element-by-element (one UTF-8 code point per
+         * frame) into the receiver via the existing Munction SDPS transport --
+         * the structural iteration/framing is performed HERE, not by a source
+         * for-loop. Pushes the SOURCE back so the same String can keep flowing
+         * to further receivers (`x ::: a ::: b` fans x out to a then b). */
+        case OP_SSEND: {
+            SLValue rv=POP(), sv=POP();
+            if(rv.type!=SL_INT||sv.type!=SL_STR) TERR("::: structural send requires a String source and a receiver reach handle");
+            SLMunction* m=munction_get(vm,(int)rv.as.i);
+            if(m){
+                const char* s=slvm_str(vm,sv.as.s);
+                size_t i=0;
+                while(s[i]!='\0'){
+                    /* one UTF-8 code point = one structural element/frame */
+                    unsigned char c0=(unsigned char)s[i];
+                    size_t clen=1;
+                    if(c0>=0xF0) clen=4; else if(c0>=0xE0) clen=3; else if(c0>=0xC0) clen=2;
+                    size_t j=0; char elem[8];
+                    while(j<clen && s[i+j]!='\0'){ elem[j]=s[i+j]; j++; }
+                    elem[j]='\0';
+                    slmunction_send(m,elem,j);
+                    i+=j;
+                }
+            }
+            PUSH(sv);
         } break;
         case OP_MUN_THATCH: {
             SLValue sv=POP(), hv=POP(); if(hv.type!=SL_INT||sv.type!=SL_STR) TERR("Munction thatch(interims) requires a reach handle and a String spec");
@@ -1383,6 +1445,63 @@ static SLResult run_thread(SLThread* t) {
             SLValue tv=POP(), hv=POP();
             if(hv.type!=SL_INT||tv.type!=SL_INT) TERR("ideaCanvasMigrate(handle, target) requires a handle and target int (0 cpu,1 gpu)");
             PUSH(slval_int(sl_idea_canvas_migrate(ic_get(vm,(int)hv.as.i),(int)tv.as.i)));
+        } break;
+
+        /* [SYNC impl/core 2026-10-25] Ported the whole block below from the
+         * senior Native VM. OP_VM_SELECT / OP_MODIUM_SCAN were DECLARED in this
+         * VM-tree's sleela_core.h but had NO handler here, so they fell to the
+         * default "unknown opcode" case (the VM's own `vm`/`modium` seams were
+         * dead). OP_UI_CALL (the SleelaUI bridge) was absent from both the
+         * header and here. All three are now implemented for parity; see the
+         * matching sleela_ui_vm.h / sleela_ui_ids.h added alongside this file. */
+        /* ---- VM selection service (SLVmRegistry seam) ----------------- */
+        case OP_VM_SELECT: {
+            /* pops a VM version number. This is the service-exit seam a Sleela
+             * VM selector (virtual-machine/vm-version/SLVmRegistry) uses to ask
+             * the host to build+boot the chosen version. Valid range is 1..11:
+             * the ten standard think-tank versions (1..10) and the eleven
+             * premium SLVM generations (1..11, the broader range), each a real
+             * runnable VM under sleela-virtual-machine/0NN that links the shared
+             * Core engine. The core validates the request and pushes a status
+             * (0 ok, -1 out of range); the actual build+boot is a host action
+             * signalled by this opcode (an unknown opcode is never a no-op). */
+            SLValue nv=POP();
+            if(nv.type!=SL_INT) TERR("vmSelect(number) requires an int version number");
+            int sel=(int)nv.as.i;
+            PUSH(slval_int((sel>=1 && sel<=11) ? 0 : -1));
+        } break;
+
+        /* ---- Modium file-resolution scan (SLVmModium seam) ----------- */
+        case OP_MODIUM_SCAN: {
+            /* pops a VM version number (1..10). The service-exit seam the Sleela
+             * SLVmModium uses to ask the host to scan that version's files
+             * (exist/placed/intact per its MODIUM.json). The core validates the
+             * request and pushes a status (0 ok, -1 out of range); the actual
+             * file scan + reconstitution from rebuild.sql is a host action
+             * signalled by this opcode. */
+            SLValue mv=POP();
+            if(mv.type!=SL_INT) TERR("modiumScan(number) requires an int version number");
+            int msel=(int)mv.as.i;
+            PUSH(slval_int((msel>=1 && msel<=10) ? 0 : -1));
+        } break;
+
+        /* ---- SleelaUI bridge: ui* built-ins -> native toolkit --------- */
+        case OP_UI_CALL: {
+            int ui_id = in.a;
+            int ui_n = sleela_ui_arity(ui_id);
+            if (ui_n < 0 || ui_n > 6) TERR("ui call: bad arity");
+            SLUIArg ui_args[6];
+            /* Args were pushed left-to-right, so pop into reverse slots. */
+            for (int k = ui_n - 1; k >= 0; --k) {
+                SLValue v = POP();
+                if (v.type == SL_STR)       { ui_args[k].kind = SLUI_ARG_STR;    ui_args[k].s = slvm_str(vm, v.as.s); ui_args[k].i = 0; ui_args[k].d = 0; }
+                else if (v.type == SL_DOUBLE){ ui_args[k].kind = SLUI_ARG_DOUBLE; ui_args[k].d = v.as.d; ui_args[k].i = 0; ui_args[k].s = NULL; }
+                else                         { ui_args[k].kind = SLUI_ARG_INT;    ui_args[k].i = (long)v.as.i; ui_args[k].d = 0; ui_args[k].s = NULL; }
+            }
+            SLUIArg ui_r = sleela_ui_dispatch(ui_id, ui_args, ui_n);
+            if (ui_r.kind == SLUI_ARG_STR) { SLValue o; o.type = SL_STR; o.as.s = intern(vm, ui_r.s ? ui_r.s : ""); PUSH(o); }
+            else if (ui_r.kind == SLUI_ARG_DOUBLE) { PUSH(slval_double(ui_r.d)); }
+            else { PUSH(slval_int(ui_r.i)); }
         } break;
 
         /* ---- SLVM Audio bridge --------------------------------------- */
