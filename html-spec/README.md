@@ -21,6 +21,13 @@ specification source is obtainable, it is included verbatim in [`specs/`](./spec
 | 9 | HTML 5.2 | 2017 | W3C | [md](./md/09-html-5.2-2017.md) | ⚠️ only a W3C **5.3 Editor's Draft** source is archived (`w3c-html53-ED-single-page.bs`), not 5.2 |
 | 10 | HTML Living Standard | 2011→now | WHATWG | [md](./md/10-html-living-standard.md) | ✅ |
 
+## Appraisals
+
+- [`STATE.md`](./STATE.md) — coherence audit of every archived spec (completeness, labeling).
+- [`APPRAISAL-structural-elements.md`](./APPRAISAL-structural-elements.md) — structural-integrity
+  appraisal of `div` / `span` / `table` vs. international-technology expectations, a safeguarding
+  checklist for page structure, and the "can divs resize dynamically?" analysis.
+
 ## Folder layout
 
 ```
