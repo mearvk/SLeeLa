@@ -9,7 +9,7 @@
 | **Published** | November 1995 |
 | **Status** | Historic (obsoleted) |
 | **Canonical reference** | <https://www.rfc-editor.org/rfc/rfc1866> |
-| **Source in this archive** | ❌ Not retrievable from this build environment (no reachable IETF mirror) |
+| **Source in this archive** | ✅ **Full verbatim text** — [`specs/rfc1866-html-2.0.txt`](../specs/rfc1866-html-2.0.txt) (RFC 1866, 146 KB; from the `mcpherrinm/rfc-mirror` repo — see PROVENANCE.txt) |
 
 ## Summary
 

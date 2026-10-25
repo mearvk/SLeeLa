@@ -7,7 +7,7 @@
 | **Published** | 26 January 2000 (W3C Recommendation; revised 1 August 2002) |
 | **Status** | Superseded |
 | **Canonical reference** | <https://www.w3.org/TR/xhtml1/> |
-| **Source in this archive** | ❌ Not retrievable from this build environment (w3.org unreachable) |
+| **Source in this archive** | ✅ Normative DTDs — [`specs/dtd/xhtml-1.0/`](../specs/dtd/xhtml-1.0/) (strict / transitional / frameset). Prose is at the w3.org URL above. |
 
 ## Summary
 

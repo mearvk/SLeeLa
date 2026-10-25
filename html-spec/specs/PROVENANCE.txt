@@ -17,3 +17,36 @@ w3c-html52-single-page.bs
     commit: 2ef7a579bcfd2693b98df35f20e51dff60e3fbef
     path:   single-page.bs
     bytes:  45366
+
+---- Second retrieval pass (exhaustive search for historical originals) ----
+Retrieved via GitHub API from mirror repositories.
+
+rfc1866-html-2.0.txt   (HTML 2.0 — FULL VERBATIM SPEC TEXT)
+    repo:   mcpherrinm/rfc-mirror
+    commit: (main HEAD at retrieval)
+    path:   rfc1866.txt
+    bytes:  146904
+    note:   This is the complete, authoritative IETF RFC 1866 text.
+
+dtd/**  (normative W3C DTDs + entity sets, bundled by the W3C validator)
+    repo:   w3c/markup-validator
+    commit: 724a15b0dd40841b03a7a8bc4abde8bdb16c0385
+    base:   htdocs/sgml-lib/
+    files:
+      dtd/html-3.2/HTML32.dtd                     <- REC-html32-19970114/
+      dtd/html-4.0/{strict,loose,frameset}.dtd    <- REC-html40-19980424/
+      dtd/html-4.01/{strict,loose,frameset}.dtd   <- REC-html401-19991224/
+      dtd/html-4.01/HTML{lat1,special,symbol}.ent <- REC-html401-19991224/
+      dtd/xhtml-1.0/xhtml1-{strict,transitional,frameset}.dtd <- REC-xhtml1-20020801/
+      dtd/xhtml-1.1/{xhtml11.dtd,xhtml11-model-1.mod}         <- REC-xhtml11-20101123/
+    note:   These are the normative machine-readable grammars referenced by each
+            Recommendation. They are the authoritative formal definition of the
+            element/attribute vocabulary for HTML 3.2 / 4.0 / 4.01 / XHTML 1.0 / 1.1.
+            The human-readable PROSE of these RECs lives at w3.org/TR and was NOT
+            reachable from this INTEGRATIONS_ONLY environment.
+
+STILL NOT OBTAINED:
+    - HTML Tags (1991, CERN/Berners-Lee): not in any reachable GitHub repo; w3.org
+      History tree is blocked. Canonical URL recorded in the md/ write-up. Not fabricated.
+    - Full human-readable prose of HTML 3.2 / 4.0 / 4.01 / XHTML 1.0 / 1.1: only the
+      normative DTDs were obtainable here; prose is at the w3.org/TR URLs in each write-up.
