@@ -49,6 +49,27 @@ class SMEquation {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
+  < ---- Scientific record (purpose / method / gains / bedrock / integrity) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors).
+     Written truthfully for THIS class, not copied: each record states its own
+     purpose. metaIntegrityGoal is the standing promise the record answers to --
+     it allows greatness to be recorded without being inflated. >>
+  String metaPurpose = "Hold one equation as a faithful record: its name, form, rightful discoverer, and year.";
+  String metaScientificMethod = "Atomic attribution: one equation, one honest line of credit; no derivation, no claim.";
+  String metaAuthorialGains = "None over the equation itself; it is public-domain science. The record gains only accuracy.";
+  String metaBedrock = "The single primary/secondary citation behind the equation it carries.";
+  String metaIntegrityGoal = "Record the move exactly as it happened -- great or small -- crediting the real author, never the archive.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
   < ---- Equation facts (public record) ---- >
   String eqName = "unknown";
   String eqForm = "unknown";

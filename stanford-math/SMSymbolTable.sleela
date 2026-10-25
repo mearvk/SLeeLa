@@ -48,6 +48,26 @@ class SMSymbolTable {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
+  < ---- Scientific record (purpose / method / gains / bedrock / integrity) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors).
+     Written truthfully for THIS class. metaIntegrityGoal: symbols are recorded
+     with their conventional meaning, not a private redefinition. >>
+  String metaPurpose = "Define the standard symbols the catalogued formulas use, in their conventional meaning.";
+  String metaScientificMethod = "Notation attribution: each glyph carries its established usage, not an archive-local invention.";
+  String metaAuthorialGains = "None; notation is a shared commons. The table gains only clarity.";
+  String metaBedrock = "Conventional mathematical/physical notation (CODATA/SI for physical symbols).";
+  String metaIntegrityGoal = "Let a symbol mean what the field means by it -- record the convention faithfully, never bend it to fit.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
   < ---- The symbols (conventional meanings) ---- >
   String[] glyphs;
   String[] meanings;

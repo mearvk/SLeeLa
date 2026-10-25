@@ -55,6 +55,7 @@ class SMBrand {
   String metaScientificMethod = "Documentary: attribute the institution from its own public record (bulletins, department pages).";
   String metaAuthorialGains = "Curatorial credit for the record; no claim over the Stanford name or trademark.";
   String metaBedrock = "Stanford University's public institutional record and founding instruments.";
+  String metaIntegrityGoal = "Record a great institution by its own public record -- honor the name, never trade on it.";
   String getPurpose() { return metaPurpose; }
   void setPurpose(String v) { metaPurpose = v; }
   String getScientificMethod() { return metaScientificMethod; }
@@ -63,6 +64,8 @@ class SMBrand {
   void setAuthorialGains(String v) { metaAuthorialGains = v; }
   String getBedrock() { return metaBedrock; }
   void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
 
   < ---- Brand facts (public record) ---- >
   String institution = "Stanford University Department of Mathematics";

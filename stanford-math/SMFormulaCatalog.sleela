@@ -48,6 +48,26 @@ class SMFormulaCatalog {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
+  < ---- Scientific record (purpose / method / gains / bedrock / integrity) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors).
+     Written truthfully for THIS class. metaIntegrityGoal: the great moves tied
+     to Stanford names are recorded with their real citation, not borrowed glory. >>
+  String metaPurpose = "Catalogue the named formulas/theorems tied specifically to Stanford mathematicians.";
+  String metaScientificMethod = "Credited cataloguing: each entry pairs a statement with its real discoverer and citation.";
+  String metaAuthorialGains = "None over the results; the catalogue gains only a faithful, Stanford-anchored index.";
+  String metaBedrock = "Peer-reviewed literature naming the Stanford author (Bayer-Diaconis, Polya, Loewner, Keller, Cohen).";
+  String metaIntegrityGoal = "Record a great move only where the public record truly ties it to Stanford -- attribute the person, never inflate the brand.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
   < ---- The formulas (public record) ---- >
   String[] titles;
   String[] forms;

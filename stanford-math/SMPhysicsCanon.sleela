@@ -57,6 +57,7 @@ class SMPhysicsCanon {
   String metaScientificMethod = "Tertiary cataloguing: record empirically-grounded, published laws; originate nothing.";
   String metaAuthorialGains = "Editorial credit for the catalogue only; the physical laws belong to the public scientific record.";
   String metaBedrock = "The experimental and peer-reviewed physics record (see SMProvenance).";
+  String metaIntegrityGoal = "Record each great law as experiment and history confirm it -- credit the discoverer, claim nothing.";
   String getPurpose() { return metaPurpose; }
   void setPurpose(String v) { metaPurpose = v; }
   String getScientificMethod() { return metaScientificMethod; }
@@ -65,6 +66,8 @@ class SMPhysicsCanon {
   void setAuthorialGains(String v) { metaAuthorialGains = v; }
   String getBedrock() { return metaBedrock; }
   void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
 
   < ---- The physics canon (public record) ---- >
   SMEquation[] eqs;

@@ -74,19 +74,42 @@ second greppable block that makes each class state its standing as a **scientifi
 record**:
 
 ```sleela
-  < ---- Scientific record (purpose / method / gains / bedrock) ---- >
+  < ---- Scientific record (purpose / method / gains / bedrock / integrity) ---- >
   String metaPurpose           = "...";   < what this record is for >
   String metaScientificMethod  = "...";   < the method it follows >
   String metaAuthorialGains    = "...";   < what its authors legitimately gain >
   String metaBedrock           = "...";   < the foundation the method rests on >
+  String metaIntegrityGoal     = "...";   < the standing promise the record keeps >
 ```
 
-| Facet | What it declares |
-|-------|------------------|
-| **Purpose** | The program's reason to exist: *carry, not create* — an honest index of published equations and rightful credit. |
+This block is present on **all 13 classes** in the archive, and — this is the
+point — it is **written truthfully for each class, not copied**. The purpose of
+`SMEquation` ("hold one equation faithfully") is not the purpose of `SMArchive`
+("broadcast the whole, unaltered"); the gains of a public-domain theorem differ
+from the gains of a cited 1973 finance paper. *Not the same.*
+
+| Facet | What it declares (archive-wide spirit) |
+|-------|----------------------------------------|
+| **Purpose** | The record's reason to exist: *carry, not create.* |
 | **Perceived scientific method** | **Tertiary cataloguing** — record claims traceable to primary/secondary literature; originate nothing. |
-| **Authorial gains** | Editorial/curatorial credit for the *catalogue only*. The theorems and laws are public-domain science owned by no one; cited crossover results belong to their authors/publishers. The archive claims no authorship over the works it cites. |
+| **Authorial gains** | Curatorial credit for the *catalogue only*. Public-domain science is owned by no one; cited results belong to their authors/publishers. The archive claims no authorship over the works it cites. |
 | **Bedrock of the method** | The peer-reviewed and historical scientific record — primary sources where citable, tertiary indexes to locate them. |
+| **Integrity Goal** | The standing promise: **allow greatness to be recorded — fully and forward — without inflating it.** Record a great move exactly as it happened, credit the real author, claim nothing for the archive, and mark honestly where each reach stops. |
+
+### The Integrity Goal, per record (each distinct)
+
+| Class | Its own Integrity Goal (abridged) |
+|-------|-----------------------------------|
+| `SMBrand` | Record a great institution by its own public record — honor the name, never trade on it. |
+| `SMPersonRegistry` | Record mathematicians the public record names — never add for prestige, never omit who belongs. |
+| `SMFormulaCatalog` | Record a move as Stanford's only where the record truly ties it there — attribute the person, not the brand. |
+| `SMSymbolTable` | Let a symbol mean what the field means — never bend it to fit. |
+| `SMThermodynamics` | Record the great reach fully, out to black-hole thermodynamics — while marking where the math dept ends and Physics begins. |
+| `SMMathCanon` / `SMPhysicsCanon` / `SMThermoEquations` | Record each great result under the name history/experiment gives it — credit the discoverer, claim nothing. |
+| `SMCrossoverCanon` | Record each crossover with its primary paper — credit the authors/publishers, claim nothing. |
+| `SMProvenance` | Tier every source honestly — trace greatness to its origin, not a convenient index. |
+| `SMEquation` | Record the move exactly as it happened — great or small — crediting the real author, never the archive. |
+| `SMArchive` | Read the greatness aloud exactly as recorded — adding nothing, hiding nothing. |
 
 ### Calls out to sane, published literature (`SMProvenance`)
 

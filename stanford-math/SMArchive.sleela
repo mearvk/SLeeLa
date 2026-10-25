@@ -48,6 +48,26 @@ class SMArchive {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
+  < ---- Scientific record (purpose / method / gains / bedrock / integrity) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors).
+     Written truthfully for THIS class. metaIntegrityGoal: the demo is the one
+     place greatness is read aloud -- it must broadcast the record as-is. >>
+  String metaPurpose = "Link the sibling records and broadcast the whole archive, unaltered, as a single readable run.";
+  String metaScientificMethod = "Orchestration only: compose and print; the demo adds no fact the records do not already hold.";
+  String metaAuthorialGains = "None; the demo gains only legibility for the records it presents.";
+  String metaBedrock = "The sibling record classes in this directory (brand, people, formulas, symbols, canons, provenance).";
+  String metaIntegrityGoal = "Read the greatness aloud exactly as recorded -- every author, year, symbol, and boundary -- adding nothing and hiding nothing.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
   void main() {
     print("==== Stanford Math brand -- present-utopia archive ====");
 
@@ -154,11 +174,23 @@ class SMArchive {
 
     print("");
     print("==== Scientific record of this archive ====");
-    SMMathCanon rec = mathCanon;
-    print("purpose: " + rec.getPurpose());
-    print("method:  " + rec.getScientificMethod());
-    print("gains:   " + rec.getAuthorialGains());
-    print("bedrock: " + rec.getBedrock());
+    print("purpose: " + getPurpose());
+    print("method:  " + getScientificMethod());
+    print("gains:   " + getAuthorialGains());
+    print("bedrock: " + getBedrock());
+    print("integrity goal: " + getIntegrityGoal());
+
+    print("");
+    print("-- Integrity Goal, per record (not the same -- each true to its own standing) --");
+    print("  SMBrand:         " + brand.getIntegrityGoal());
+    print("  SMPersonRegistry:" + people.getIntegrityGoal());
+    print("  SMFormulaCatalog:" + formulas.getIntegrityGoal());
+    print("  SMSymbolTable:   " + symbols.getIntegrityGoal());
+    print("  SMThermodynamics:" + thermo.getIntegrityGoal());
+    print("  SMMathCanon:     " + mathCanon.getIntegrityGoal());
+    print("  SMPhysicsCanon:  " + physCanon.getIntegrityGoal());
+    print("  SMThermoEqs:     " + thermoEq.getIntegrityGoal());
+    print("  SMCrossoverCanon:" + crossCanon.getIntegrityGoal());
 
     print("");
     print("==== Published-literature callouts (sane sources; Wikipedia respected) ====");

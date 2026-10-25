@@ -49,6 +49,26 @@ class SMThermodynamics {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
+  < ---- Scientific record (purpose / method / gains / bedrock / integrity) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors).
+     Written truthfully for THIS class. metaIntegrityGoal: the reach is recorded
+     with its real boundary -- how far it goes AND where it stops. >>
+  String metaPurpose = "Record how far the Stanford Math brand's thermodynamics/stat-mech line actually reaches.";
+  String metaScientificMethod = "Graded scoping: rank the reach by rungs anchored in research-area pages, courses, and lectures.";
+  String metaAuthorialGains = "None; the record gains only an honest map of the department's reach.";
+  String metaBedrock = "Stanford research-area descriptions, course records, and colloquia (see Sources).";
+  String metaIntegrityGoal = "Record the great reach fully -- out to black-hole thermodynamics -- while marking honestly where the math department ends and Physics begins.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
   < ---- The reach, rung by rung (public record) ---- >
   << rung 1 = closest to the math department's own work;
      rung 5 = the far frontier; the boundary note marks where Physics owns it. >>

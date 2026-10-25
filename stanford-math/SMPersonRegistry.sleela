@@ -48,6 +48,26 @@ class SMPersonRegistry {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
+  < ---- Scientific record (purpose / method / gains / bedrock / integrity) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors).
+     Written truthfully for THIS class. metaIntegrityGoal: the roster records
+     who was truly here, in proportion to the public record. >>
+  String metaPurpose = "Assemble the roster of named Stanford mathematicians recorded in this archive.";
+  String metaScientificMethod = "Registry cataloguing: each entry sourced from Stanford's own rosters/bulletins; no entry without a basis.";
+  String metaAuthorialGains = "None over any person; the registry gains only completeness and accuracy.";
+  String metaBedrock = "Stanford Department of Mathematics faculty/emeriti rosters and bulletins.";
+  String metaIntegrityGoal = "Record great mathematicians because the public record names them -- never add a name for prestige, never omit one that belongs.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
   < ---- The named people (public record) ---- >
   SMPerson[] people;
   int filled;

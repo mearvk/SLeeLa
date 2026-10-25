@@ -57,6 +57,7 @@ class SMMathCanon {
   String metaScientificMethod = "Tertiary cataloguing: record established results traceable to primary/secondary literature; originate nothing.";
   String metaAuthorialGains = "Editorial credit for the catalogue only; the theorems are public-domain mathematics owned by no one.";
   String metaBedrock = "The historical and peer-reviewed mathematical record (see SMProvenance).";
+  String metaIntegrityGoal = "Record each great theorem under the name history gives it -- credit the discoverer, claim nothing.";
   String getPurpose() { return metaPurpose; }
   void setPurpose(String v) { metaPurpose = v; }
   String getScientificMethod() { return metaScientificMethod; }
@@ -65,6 +66,8 @@ class SMMathCanon {
   void setAuthorialGains(String v) { metaAuthorialGains = v; }
   String getBedrock() { return metaBedrock; }
   void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
 
   < ---- The mathematics canon (public record) ---- >
   SMEquation[] eqs;

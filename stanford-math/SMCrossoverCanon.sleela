@@ -56,6 +56,7 @@ class SMCrossoverCanon {
   String metaScientificMethod = "Tertiary cataloguing: record published results traceable to their primary papers; originate nothing.";
   String metaAuthorialGains = "Editorial credit for the catalogue only; each result belongs to its cited authors/publishers.";
   String metaBedrock = "The peer-reviewed applied-science record -- finance, chemistry, cosmology, information theory (see SMProvenance).";
+  String metaIntegrityGoal = "Record each great crossover with its primary paper -- credit the authors and publishers, claim nothing.";
   String getPurpose() { return metaPurpose; }
   void setPurpose(String v) { metaPurpose = v; }
   String getScientificMethod() { return metaScientificMethod; }
@@ -64,6 +65,8 @@ class SMCrossoverCanon {
   void setAuthorialGains(String v) { metaAuthorialGains = v; }
   String getBedrock() { return metaBedrock; }
   void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
 
   < ---- The crossover canon (public record) ---- >
   SMEquation[] eqs;

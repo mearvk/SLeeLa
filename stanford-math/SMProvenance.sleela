@@ -58,6 +58,7 @@ class SMProvenance {
   String metaScientificMethod = "Tertiary cataloguing -- record claims traceable to primary/secondary literature; never originate results.";
   String metaAuthorialGains = "Editorial/curatorial credit for the catalogue only; no claim over the cited works themselves.";
   String metaBedrock = "The peer-reviewed and historical scientific record; primary sources where citable, tertiary indexes to locate them.";
+  String metaIntegrityGoal = "Tier every source honestly -- primary over tertiary -- so greatness is traced to its origin, not to a convenient index.";
 
   String getPurpose() { return metaPurpose; }
   void setPurpose(String v) { metaPurpose = v; }
@@ -67,6 +68,8 @@ class SMProvenance {
   void setAuthorialGains(String v) { metaAuthorialGains = v; }
   String getBedrock() { return metaBedrock; }
   void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
 
   < ---- Published-literature callouts (sane sources) ---- >
   << Tiered: primary = the original papers/treatises named in each canon;

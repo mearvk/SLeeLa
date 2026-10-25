@@ -47,6 +47,26 @@ class SMPerson {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
+  < ---- Scientific record (purpose / method / gains / bedrock / integrity) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors).
+     Written truthfully for THIS class. metaIntegrityGoal is the standing
+     promise: a person's greatness is recorded faithfully, never embellished. >>
+  String metaPurpose = "Hold one mathematician as an honest identity record: name, dates, field, standing, what they are noted for.";
+  String metaScientificMethod = "Biographical attribution from the public record; dates given where known, 'unknown' otherwise.";
+  String metaAuthorialGains = "None over the person's work; the record gains only a faithful entry.";
+  String metaBedrock = "Department rosters, bulletins, and the biographical public record.";
+  String metaIntegrityGoal = "Let a great career be recorded as it truly was -- real contributions, real dates -- without inflating the person or claiming their achievements.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
   < ---- Person facts (public record) ---- >
   String personName = "unknown";
   String lifespan = "unknown";
