@@ -141,6 +141,8 @@ typedef struct {
 - Use the metric ratios above; keep structural spacing on the 8px module.
 - Use the bounded-contrast presets (no pure black/white); desaturate semantics
   and pair them with a glyph.
-- Overflowing text → ellipsis or scroll-clip, never overlap.
+- Overflowing text → ellipsis or scroll-clip, never overlap. (The toolkit's
+  `Label` auto-truncates with a trailing ellipsis `…` when text exceeds its
+  content box; `ScrolledView` provides the scroll-clip path.)
 - Treat the UI as a stateless projection of the core; never block the UI thread
   on core work — show the cached frame + "Core Busy".
