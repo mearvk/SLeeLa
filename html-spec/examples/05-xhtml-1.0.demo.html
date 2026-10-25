@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>XHTML 1.0 (2000) &#8212; Use-Case Demonstration</title>
+</head>
+<body>
+
+<h1>XHTML 1.0 (2000) &#8212; Use-Case Demonstration</h1>
+
+<p><strong>Date:</strong> 2026-10-25</p>
+
+<p>
+XHTML 1.0 is HTML 4.01 reformulated as well-formed XML. The element set is the same; what
+changes are the syntax rules. Each example demonstrates a rule and states whether it
+<em>performs as expected in a modern browser</em>: &#x2713; Yes, or &#x2717; No.
+</p>
+
+<hr />
+
+<h2>Use case 1 &#8212; Self-closing empty elements</h2>
+<p><strong>Title:</strong> XML-style void tags &#160;|&#160; <strong>Date:</strong> 2026-10-25</p>
+<p>A line break<br />and a horizontal rule follow:</p>
+<hr />
+<p>Empty elements must be closed with <code>/&gt;</code> in XHTML.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr />
+
+<h2>Use case 2 &#8212; Self-closed image</h2>
+<p><strong>Title:</strong> Image with quoted attributes &#160;|&#160; <strong>Date:</strong> 2026-10-25</p>
+<p><img src="https://www.w3.org/Icons/w3c_home" alt="W3C logo" width="72" height="48" /></p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &#8212; all attribute values are quoted and the tag is self-closed.</p>
+
+<hr />
+
+<h2>Use case 3 &#8212; Lowercase element and attribute names</h2>
+<p><strong>Title:</strong> Case sensitivity &#160;|&#160; <strong>Date:</strong> 2026-10-25</p>
+<p>In XHTML every tag and attribute name is <strong>lowercase</strong> &#8212; <code>&lt;P&gt;</code> must be written <code>&lt;p&gt;</code>.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr />
+
+<h2>Use case 4 &#8212; Fully-expanded (no minimized) attributes</h2>
+<p><strong>Title:</strong> Boolean attributes written in full &#160;|&#160; <strong>Date:</strong> 2026-10-25</p>
+<form action="#" method="get">
+<p>
+<input type="checkbox" id="agree" name="agree" checked="checked" />
+<label for="agree">I agree</label>
+</p>
+<p>
+<select name="pick">
+<option value="a" selected="selected">A</option>
+<option value="b">B</option>
+</select>
+</p>
+</form>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &#8212; <code>checked="checked"</code> and <code>selected="selected"</code> are the required expanded forms.</p>
+
+<hr />
+
+<h2>Use case 5 &#8212; Fragment identifier via id (not name)</h2>
+<p><strong>Title:</strong> Named destination &#160;|&#160; <strong>Date:</strong> 2026-10-25</p>
+<p id="target">This paragraph is a link target, identified with <code>id</code>.</p>
+<p><a href="#target">Jump to it</a>.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &#8212; XHTML uses <code>id</code>; the old <code>name</code> attribute on anchors is deprecated.</p>
+
+<hr />
+
+<h2>Use case 6 &#8212; Well-formed strict nesting</h2>
+<p><strong>Title:</strong> Properly nested inline markup &#160;|&#160; <strong>Date:</strong> 2026-10-25</p>
+<p>Text with <strong>bold and <em>bold-italic</em></strong> that is strictly nested and closed.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr />
+
+<p><strong>Summary:</strong> Every XHTML 1.0 syntax rule &#8212; self-closed void elements, quoted
+attributes, lowercase names, expanded boolean attributes, <code>id</code> fragments, strict
+nesting &#8212; is honoured here and renders as expected. XHTML 1.0 added no new elements over
+HTML 4.01; only the authoring discipline is stricter.</p>
+
+</body>
+</html>

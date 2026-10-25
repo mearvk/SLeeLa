@@ -29,6 +29,13 @@ specification source is obtainable, it is included verbatim in [`specs/`](./spec
   [`md/tags/CHANGES.md`](./md/tags/CHANGES.md) for the added/removed/deprecated deltas across
   versions.
 
+## Worked examples
+
+- [`examples/`](./examples) — one **well-formed demo document per version** showing each
+  version's elements in their usual use cases. Every example has a Title and a Date and a
+  **"performs as expected in a modern browser"** verdict (&#x2713; Yes / &#x2717; No). No CSS —
+  just the markup and the status glyph. See [`examples/README.md`](./examples/README.md).
+
 ## Appraisals
 
 - [`STATE.md`](./STATE.md) — coherence audit of every archived spec (completeness, labeling).

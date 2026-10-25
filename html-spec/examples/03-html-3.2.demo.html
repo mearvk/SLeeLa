@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HTML 3.2 "Wilbur" (1997) &mdash; Use-Case Demonstration</title>
+</head>
+<body>
+
+<h1>HTML 3.2 "Wilbur" (1997) &mdash; Use-Case Demonstration</h1>
+
+<p><strong>Date:</strong> 2026-10-25</p>
+
+<p>
+This document demonstrates the elements HTML 3.2 added (tables, generic containers, image maps,
+applets, and a wave of presentational tags) in their usual use cases. Each example states whether
+it still <em>performs as expected in a modern browser</em>: &#x2713; Yes, or &#x2717; No.
+</p>
+
+<hr>
+
+<h2>Use case 1 &mdash; Generic block container</h2>
+<p><strong>Title:</strong> A div grouping &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<div>
+<p>A <code>&lt;div&gt;</code> groups related content into a block. New in HTML 3.2.</p>
+</div>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 2 &mdash; Data table (flat model)</h2>
+<p><strong>Title:</strong> A table of data &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<table border="1">
+<caption>Browser release years</caption>
+<tr><th>Browser</th><th>Year</th></tr>
+<tr><td>Mosaic</td><td>1993</td></tr>
+<tr><td>Netscape</td><td>1994</td></tr>
+</table>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; tables (<code>table</code>, <code>caption</code>, <code>tr</code>, <code>th</code>, <code>td</code>) were new in HTML 3.2.</p>
+
+<hr>
+
+<h2>Use case 3 &mdash; Superscript and subscript</h2>
+<p><strong>Title:</strong> Scientific notation &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>Water is H<sub>2</sub>O; energy is E = mc<sup>2</sup>.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 4 &mdash; Defining term</h2>
+<p><strong>Title:</strong> First use of a term &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>A <dfn>hyperlink</dfn> is a reference the reader can follow.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 5 &mdash; Client-side image map</h2>
+<p><strong>Title:</strong> Clickable image regions &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>
+<img src="https://www.w3.org/Icons/w3c_home" alt="Logo" width="72" height="48" usemap="#logomap">
+<map name="logomap">
+<area shape="rect" coords="0,0,72,48" href="https://www.w3.org/" alt="W3C home">
+</map>
+</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>map</code>/<code>area</code> were new in HTML 3.2.</p>
+
+<hr>
+
+<h2>Use case 6 &mdash; Centering content</h2>
+<p><strong>Title:</strong> Centered block &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<center>
+<p>This content is centered with the <code>&lt;center&gt;</code> tag.</p>
+</center>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; <code>&lt;center&gt;</code> is obsolete; use CSS <code>text-align</code> / margins.</p>
+
+<hr>
+
+<h2>Use case 7 &mdash; Font styling</h2>
+<p><strong>Title:</strong> Inline font control &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p><font size="5" color="maroon">Large coloured text via the font tag.</font></p>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; <code>&lt;font&gt;</code> is obsolete; use CSS.</p>
+
+<hr>
+
+<h2>Use case 8 &mdash; Strikethrough and underline</h2>
+<p><strong>Title:</strong> Presentational text &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>This has <strike>struck-through</strike> and <u>underlined</u> text.</p>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; <code>&lt;strike&gt;</code> is obsolete (use <code>&lt;s&gt;</code>/<code>&lt;del&gt;</code>); <code>&lt;u&gt;</code> now means annotation, not &ldquo;underline&rdquo;.</p>
+
+<hr>
+
+<h2>Use case 9 &mdash; Big and small text</h2>
+<p><strong>Title:</strong> Relative text size &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>This is <big>bigger</big> and this is <small>smaller</small>.</p>
+<p><strong>Performs as expected:</strong> &#x2717; No for <code>&lt;big&gt;</code> (obsolete; use CSS). &#x2713; Yes for <code>&lt;small&gt;</code> (redefined as fine-print semantics, still valid).</p>
+
+<hr>
+
+<h2>Use case 10 &mdash; Embedded Java applet</h2>
+<p><strong>Title:</strong> An applet with a parameter &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>
+<applet code="Clock.class" width="150" height="150">
+<param name="bgcolor" value="white">
+Your browser does not support applets.
+</applet>
+</p>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; <code>&lt;applet&gt;</code> is obsolete and no longer executes; use <code>&lt;object&gt;</code>/<code>&lt;embed&gt;</code> or modern web technology.</p>
+
+<hr>
+
+<p><strong>Summary:</strong> HTML 3.2's structural additions (<code>div</code>, tables, image maps,
+<code>sub</code>/<code>sup</code>, <code>dfn</code>, <code>small</code>) perform as expected. Its
+presentational additions (<code>center</code>, <code>font</code>, <code>strike</code>,
+<code>u</code>-as-underline, <code>big</code>) and <code>&lt;applet&gt;</code> do not &mdash; CSS and
+modern embedding replaced them.</p>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HTML Living Standard (WHATWG) &mdash; Use-Case Demonstration</title>
+</head>
+<body>
+
+<h1>HTML Living Standard (WHATWG) &mdash; Use-Case Demonstration</h1>
+
+<p><strong>Date:</strong> 2026-10-25</p>
+
+<p>
+This document demonstrates the elements the modern Living Standard adds beyond HTML5 (native
+dialogs, responsive/art-directed images, the search landmark, and the Web Components building
+blocks) in their usual use cases. Each example states whether it
+<em>performs as expected in a modern browser</em>: &#x2713; Yes, or &#x2717; No.
+</p>
+
+<hr>
+
+<h2>Use case 1 &mdash; Native dialog</h2>
+<p><strong>Title:</strong> A dialog box &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<dialog open="open">
+<p>This is a native dialog, shown because the <code>open</code> attribute is present.</p>
+</dialog>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>&lt;dialog&gt;</code> is a modern (post-HTML5) addition.</p>
+
+<hr>
+
+<h2>Use case 2 &mdash; Responsive / art-directed image</h2>
+<p><strong>Title:</strong> picture with sources &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<picture>
+<source media="(min-width: 800px)" srcset="large.png">
+<source media="(min-width: 400px)" srcset="medium.png">
+<img src="https://www.w3.org/Icons/w3c_home" alt="W3C logo" width="72" height="48">
+</picture>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>&lt;picture&gt;</code> chooses a <code>&lt;source&gt;</code> by viewport; the <code>&lt;img&gt;</code> is the fallback.</p>
+
+<hr>
+
+<h2>Use case 3 &mdash; Responsive img with srcset</h2>
+<p><strong>Title:</strong> Density/width switching &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<img src="https://www.w3.org/Icons/w3c_home"
+     srcset="https://www.w3.org/Icons/w3c_home 1x, https://www.w3.org/Icons/w3c_home 2x"
+     alt="W3C logo" width="72" height="48">
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 4 &mdash; Search landmark</h2>
+<p><strong>Title:</strong> A search region &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<search>
+<form action="#" method="get">
+<label for="s">Search the site:</label>
+<input type="search" id="s" name="q">
+<button type="submit">Go</button>
+</form>
+</search>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>&lt;search&gt;</code> is a recent landmark element.</p>
+
+<hr>
+
+<h2>Use case 5 &mdash; Web Components: template + slot</h2>
+<p><strong>Title:</strong> Shadow-tree building blocks &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<template id="card-template">
+<article>
+<h4><slot name="heading">Default heading</slot></h4>
+<p><slot name="body">Default body</slot></p>
+</article>
+</template>
+<p>The <code>&lt;template&gt;</code> above defines inert markup; its <code>&lt;slot&gt;</code> elements are filled when a custom element instantiates it via script. (Not rendered until used.)</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>&lt;slot&gt;</code> is the Web Components placeholder (requires script to populate).</p>
+
+<hr>
+
+<h2>Use case 6 &mdash; Customisable select content</h2>
+<p><strong>Title:</strong> selectedcontent &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>The newest <code>&lt;selectedcontent&gt;</code> element reflects a <code>&lt;select&gt;</code>'s chosen option content in a customisable control. It is very new and not yet widely implemented.</p>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; still limited/experimental browser support at this time; treat as progressive enhancement.</p>
+
+<hr>
+
+<p><strong>Summary:</strong> The established modern elements &mdash; <code>dialog</code>,
+<code>picture</code>, <code>srcset</code>, <code>search</code>, <code>template</code>/<code>slot</code>
+&mdash; perform as expected. The very newest addition, <code>&lt;selectedcontent&gt;</code>, does
+not yet, owing to limited implementation.</p>
+
+</body>
+</html>

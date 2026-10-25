@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HTML 2.0 (RFC 1866, 1995) &mdash; Use-Case Demonstration</title>
+</head>
+<body>
+
+<h1>HTML 2.0 (RFC 1866, 1995) &mdash; Use-Case Demonstration</h1>
+
+<p><strong>Date:</strong> 2026-10-25</p>
+
+<p>
+This document demonstrates the elements standardized by HTML 2.0 (the first formal HTML
+specification) in their usual use cases. Each example states whether it still
+<em>performs as expected in a modern browser</em>: &#x2713; Yes, or &#x2717; No.
+</p>
+
+<hr>
+
+<h2>Use case 1 &mdash; Document skeleton</h2>
+<p><strong>Title:</strong> html / head / body structure &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>This whole page is wrapped in <code>&lt;html&gt;</code>, with a <code>&lt;head&gt;</code> (metadata) and a <code>&lt;body&gt;</code> (content) &mdash; the skeleton HTML 2.0 formalized.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 2 &mdash; Paragraphs, breaks and rules</h2>
+<p><strong>Title:</strong> Block text flow &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>A paragraph of text.<br>A forced line break inside it.</p>
+<hr>
+<p>Content after a horizontal rule.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 3 &mdash; Phrase (logical) markup</h2>
+<p><strong>Title:</strong> Semantic inline text &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>
+Use <em>emphasis</em>, <strong>strong importance</strong>, <code>source code</code>,
+<samp>sample output</samp>, <kbd>typed input</kbd>, a <var>variable</var>, and a
+<cite>citation</cite>.
+</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 4 &mdash; Font (physical) markup</h2>
+<p><strong>Title:</strong> Presentational inline text &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>This has <b>bold</b>, <i>italic</i>, and <tt>teletype</tt> text.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;tt&gt;</code> still render (though <code>&lt;tt&gt;</code> is obsolete in the modern standard).</p>
+
+<hr>
+
+<h2>Use case 5 &mdash; Block quotation and preformatted text</h2>
+<p><strong>Title:</strong> Quotes and code blocks &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<blockquote>
+<p>The Web does not just connect machines, it connects people.</p>
+</blockquote>
+<pre>
+function greet() {
+    return "hello";
+}
+</pre>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 6 &mdash; Ordered and unordered lists</h2>
+<p><strong>Title:</strong> Numbered and bulleted lists &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<ol>
+<li>First step</li>
+<li>Second step</li>
+</ol>
+<ul>
+<li>A point</li>
+<li>Another point</li>
+</ul>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>&lt;ol&gt;</code> was new in HTML 2.0.</p>
+
+<hr>
+
+<h2>Use case 7 &mdash; Embedded image</h2>
+<p><strong>Title:</strong> An inline image &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p><img src="https://www.w3.org/Icons/w3c_home" alt="W3C logo" width="72" height="48"></p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>&lt;img&gt;</code> with <code>src</code> and <code>alt</code> was new in HTML 2.0.</p>
+
+<hr>
+
+<h2>Use case 8 &mdash; A form with controls</h2>
+<p><strong>Title:</strong> User input form &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<form action="#" method="get">
+<p>Name: <input type="text" name="fullname"></p>
+<p>Comments:<br>
+<textarea name="comments" rows="3" cols="30"></textarea></p>
+<p>Choose:
+<select name="choice">
+<option>Option A</option>
+<option>Option B</option>
+</select></p>
+<p><input type="submit" value="Send"></p>
+</form>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; forms (<code>form</code>, <code>input</code>, <code>textarea</code>, <code>select</code>, <code>option</code>) were new in HTML 2.0.</p>
+
+<hr>
+
+<h2>Use case 9 &mdash; Searchable-document prompt</h2>
+<p><strong>Title:</strong> Keyword search prompt &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p><code>&lt;isindex&gt;</code> marked the document as searchable. (Not emitted live &mdash; no longer renders a prompt.)</p>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; obsolete; use a <code>&lt;form&gt;</code> with an <code>&lt;input&gt;</code>.</p>
+
+<hr>
+
+<p><strong>Summary:</strong> HTML 2.0's structural, text, list, image and form elements all still
+perform as expected today. Only <code>&lt;isindex&gt;</code> (and the now-obsolete <code>&lt;tt&gt;</code>)
+fall short of modern expectations.</p>
+
+</body>
+</html>

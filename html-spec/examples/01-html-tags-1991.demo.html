@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HTML Tags (1991) &mdash; Use-Case Demonstration</title>
+</head>
+<body>
+
+<h1>HTML Tags (1991) &mdash; Use-Case Demonstration</h1>
+
+<p><strong>Date:</strong> 2026-10-25</p>
+
+<p>
+This document demonstrates the ~20 elements described in the original 1991 CERN
+&ldquo;HTML Tags&rdquo; note, each in its usual use case. Each example states whether it still
+<em>performs as expected in a modern browser</em>: &#x2713; Yes, or &#x2717; No.
+</p>
+
+<hr>
+
+<h2>Use case 1 &mdash; Document title</h2>
+<p><strong>Title:</strong> Title of the page &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>The <code>&lt;title&gt;</code> element names the document. It appears in the browser tab, shown in the <code>&lt;head&gt;</code> of this page.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 2 &mdash; Headings</h2>
+<p><strong>Title:</strong> Six heading levels &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<h1>Heading level 1</h1>
+<h2>Heading level 2</h2>
+<h3>Heading level 3</h3>
+<h4>Heading level 4</h4>
+<h5>Heading level 5</h5>
+<h6>Heading level 6</h6>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 3 &mdash; Paragraphs</h2>
+<p><strong>Title:</strong> Paragraph text &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>This is a paragraph. In 1991 the <code>&lt;p&gt;</code> tag was a separator between paragraphs rather than a container, but modern browsers treat it as a block container.</p>
+<p>This is a second paragraph.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 4 &mdash; Hyperlink anchor</h2>
+<p><strong>Title:</strong> A link to another document &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>Visit the <a href="https://www.w3.org/History/19921103-hypertext/hypertext/WWW/MarkUp/Tags.html">original 1991 HTML Tags note</a>.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 5 &mdash; Link target (named anchor)</h2>
+<p><strong>Title:</strong> A named destination &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p><a name="section-five">This point</a> can be linked to with a fragment identifier.</p>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; the <code>name</code> attribute on <code>&lt;a&gt;</code> is obsolete; modern pages use <code>id</code> instead.</p>
+
+<hr>
+
+<h2>Use case 6 &mdash; Unordered list</h2>
+<p><strong>Title:</strong> A bulleted list &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<ul>
+<li>First item</li>
+<li>Second item</li>
+<li>Third item</li>
+</ul>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 7 &mdash; Menu list</h2>
+<p><strong>Title:</strong> A compact menu list &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<menu>
+<li>New</li>
+<li>Open</li>
+<li>Save</li>
+</menu>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; the 1991 &ldquo;compact menu list&rdquo; meaning is gone; modern <code>&lt;menu&gt;</code> is redefined as a command/toolbar list.</p>
+
+<hr>
+
+<h2>Use case 8 &mdash; Directory list</h2>
+<p><strong>Title:</strong> A short-item directory list &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<dir>
+<li>bin</li>
+<li>etc</li>
+<li>usr</li>
+</dir>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; <code>&lt;dir&gt;</code> is obsolete and removed from HTML; use <code>&lt;ul&gt;</code>.</p>
+
+<hr>
+
+<h2>Use case 9 &mdash; Definition (glossary) list</h2>
+<p><strong>Title:</strong> A glossary list &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<dl>
+<dt>HTML</dt>
+<dd>HyperText Markup Language.</dd>
+<dt>URL</dt>
+<dd>Uniform Resource Locator.</dd>
+</dl>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 10 &mdash; Address block</h2>
+<p><strong>Title:</strong> Authorship information &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<address>
+Written at CERN, 1991.
+</address>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 11 &mdash; Preformatted example text</h2>
+<p><strong>Title:</strong> Literal monospaced text &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<xmp>
+    <A NAME=xxx HREF="..."> ... </A>
+</xmp>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; <code>&lt;xmp&gt;</code> is obsolete; use <code>&lt;pre&gt;</code> with escaped <code>&lt;code&gt;</code>.</p>
+
+<hr>
+
+<h2>Use case 12 &mdash; Searchable-document prompt</h2>
+<p><strong>Title:</strong> A keyword search prompt &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p><code>&lt;isindex&gt;</code> declared a document as searchable. (Not emitted live here because it no longer renders a prompt.)</p>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; <code>&lt;isindex&gt;</code> is obsolete; use an <code>&lt;input&gt;</code> in a <code>&lt;form&gt;</code>.</p>
+
+<hr>
+
+<p><strong>Summary:</strong> The structural elements (title, headings, paragraphs, links, lists,
+definition lists, address) still perform as expected. The 1991-specific legacy tags
+(named <code>&lt;a&gt;</code>, old <code>&lt;menu&gt;</code>, <code>&lt;dir&gt;</code>,
+<code>&lt;xmp&gt;</code>, <code>&lt;isindex&gt;</code>) do not.</p>
+
+</body>
+</html>
