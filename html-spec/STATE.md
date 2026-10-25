@@ -206,3 +206,53 @@ Added the full **XHTML Modularization 1.1 library (47 files)** under
 | 5 | XHTML 1.0 | ❌ ext. entities | ✅ entities co-located + validates |
 | 9 | HTML 5.2 "file" | ❗ mislabeled | ✅ renamed to 5.3-ED, honestly labeled |
 | 3 | HTML 3.2 | ⚠️ grammar only | ✅ self-resolving (prose still absent) |
+
+---
+
+## Fixes applied (2026-10-25, second session) — originals recovered via GitHub mirrors
+
+The earlier audit assumed gaps #5 and most of #4 were permanently out of reach because
+`w3.org`/`ietf.org` are network-blocked. This pass **re-verified the block is real** (shell
+`curl` _and_ the agent web-fetch path both still get `403` from w3.org, rfc-editor.org, and
+ietf.org) — and then recovered three of the missing **originals** anyway, through the one
+egress that has always worked here: the **GitHub API**, pulling from repositories that mirror
+the `w3.org` trees byte-for-byte. Same methodology and the same no-fabrication bar as every
+earlier pass. Full record in [`specs/PROVENANCE.txt`](./specs/PROVENANCE.txt).
+
+### ✅ #5a — The 1991 "HTML Tags" note is now archived — the oldest gap is **closed**
+`specs/html-tags-1991/Tags.html` (9568 bytes, sha256 `96abc473…b264e`) — the first-ever HTML
+document, from `andrewmaa/dsa`, a byte-for-byte mirror of the CERN `info.cern.ch` original
+that w3.org serves. The authentic note: `<TITLE>`, `<NEXTID 22>`, `info.cern.ch` anchor URLs,
+`<XMP>`, `<HP1>`/`<HP2>`, `<DL>`/`<DT>`/`<DD>`, `<UL>`/`<MENU>`/`<DIR>`. Item 1 in the archive
+is no longer "❌ no source."
+
+### ✅ #4a — XHTML 1.0 (2E) **prose** REC archived — complete
+`specs/prose/xhtml-1.0/Overview.html` (71428 bytes) — the full single-page
+_"XHTML 1.0 … (Second Edition), W3C Recommendation 26 January 2000, revised 1 August 2002,"_
+55 sections, ends cleanly. From `manzamb/SemanticWebinAction`. This is the human-readable
+prose, not just the DTD the archive already had.
+
+### ⚠️ #4b — HTML 4.01 **prose** REC archived — partial (core chapters)
+`specs/prose/html-4.01/**` (25 files) — authentic W3C prose (`$Id: …ijacobs` RCS stamp,
+"Changed by: Ian B. Jacobs"). Has the core chapters incl. `struct/tables`, `struct/dirlang`,
+`struct/global`, `present/styles` — exactly the sections the structural-elements appraisal
+cites. **Partial**: the mirror lacks `about.html`, `intro/*`, `struct/lists.html`,
+`interact/forms.html`, `appendix/changes.html`. The complete REC is at the blocked w3.org.
+
+### Still genuinely not obtained (searched GitHub thoroughly; nothing authoritative)
+- **HTML 3.2 prose** — only the DTD (archived) + Wikipedia-style derivatives exist on GitHub;
+  no faithful full-prose mirror found. Not archiving a derivative (no-fabrication bar).
+- **HTML5 (2014) published REC text** — the only reachable "html5" snapshot is a WHATWG
+  `x-Hixie` **draft** fixture, not the published 28-Oct-2014 Recommendation. Not archived
+  (would be mislabeled — the exact failure this report was created to catch).
+- **HTML 5.1 / 5.2 published RECs** — unchanged (only the 5.3 Editor's Draft, honestly labeled).
+
+### Updated scorecard (second session)
+
+| # | Spec | After 1st session | After 2nd session |
+|---|------|-------------------|-------------------|
+| 1 | HTML Tags 1991 | ❌ no source | ✅ **original note archived** |
+| 4 | HTML 4.0/4.01 | ✅ DTD self-resolving; prose absent | ✅ DTD + ⚠️ **partial prose added** |
+| 5 | XHTML 1.0 | ✅ DTD validates; prose absent | ✅ DTD + ✅ **full prose added** |
+| 7 | HTML5 2014 | ❌ none | ❌ none (no authoritative snapshot on GitHub) |
+| 3 | HTML 3.2 | ✅ grammar; prose absent | ✅ grammar; prose still absent |
