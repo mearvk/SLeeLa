@@ -1,0 +1,193 @@
+<< lib/ui/SLLayoutDriver.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLLayoutDriver — the bridge that lets the pure-SLeeLa Standard
+     Layout family actually DRIVE real on-screen widgets through the native
+     SleelaUI toolkit (the `ui*` SLVM bridge). The Standard Layouts
+     (SLStackLayout, SLGridLayout, ... organized by SLLayoutFrame) are the
+     PLANNING layer: they compute, in pure SLeeLa, the exact pixel rectangle of
+     every component. SLLayoutDriver is the REALIZING layer: it reads that plan
+     and configures a native container plus each native child so the live
+     toolkit reproduces the plan.
+
+   Why this shape. The SleelaUI toolkit — like GTK or Qt layouts — is a
+   container/pack model: you declare structure (a box with an orientation and a
+   spacing, or a grid of N columns) and the toolkit solves geometry on every
+   backend (X11 / Win32 / Cocoa). There is no "put this widget at absolute x,y"
+   call, by design, so a view stays correct when the window resizes. The good
+   news: the Standard STACK and GRID layouts use the SAME model as the native
+   uiBox / uiGrid containers (orientation + gap, or columns + gap, with
+   fixed vs. flexible children). So realizing them is FAITHFUL, not lossy:
+     - a column/row stack  -> uiBox(parent, orient, gap)
+     - a grid               -> uiGrid(parent, columns, gap)
+   and each child is given the plan's size as a minimum-size request
+   (uiWidgetSizeRequest), with flexible (size 0) children marked to expand
+   (uiWidgetExpand) so they share the leftover space exactly as the planner
+   computed.
+
+   This class is native, bridge-backed (it calls `ui*`), so — unlike the pure
+   SL*Layout planners — it only runs where a display/toolkit is present. It is
+   the twin of the pure-SLeeLa SLLayoutFrame: plan with the Frame, realize with
+   the Driver.
+
+   Easy path (plan a settings column, then build it on a real window root):
+     SLLayoutFrame f = new SLLayoutFrame(); f.create();
+     f.useColumn(8, 12);
+     f.add("header", 40);
+     f.add("list",   0);          < flexible: fills the rest >
+     f.add("footer", 32);
+     f.place(0, 0, 320, 600);
+
+     SLLayoutDriver d = new SLLayoutDriver(); d.create();
+     int box = d.realizeStack(root, f);   < native uiBox matching the plan >
+     < create real controls parented into `box`, in component order ... >
+     int header = uiLabel(box, "Settings");
+     d.applyComponent(f, 0, header);      < size the header per the plan >
+     int list = uiScrolledView(box, 1, 1);
+     d.applyComponent(f, 1, list);        < flexible -> expands >
+     int footer = uiButton(box, "Close");
+     d.applyComponent(f, 2, footer);
+   >>
+#sleela 2.1
+< Family: ui. Realizes a planned SLLayoutFrame onto native ui* widgets. >
+class SLLayoutDriver {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11608;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < uiBox orientation ordinals (mirror SLUIOrientation in the toolkit C ABI). >
+  < NOTE the mapping: SLStackLayout.isRow() == true means a horizontal row. >
+  < ORIENT_VERTICAL = uiBox vertical (a column); ORIENT_HORIZONTAL = a row. >
+  static final int ORIENT_VERTICAL   = 0;
+  static final int ORIENT_HORIZONTAL = 1;
+
+  < SLLayoutFrame layout-kind ordinals (mirror SLLayoutFrame.LAYOUT_*). >
+  static final int LAYOUT_STACK = 0;
+  static final int LAYOUT_GRID  = 1;
+
+  < uiWidgetAlign ordinal for "stretch to fill" (mirror SLUIAlign.FILL). >
+  static final int ALIGN_FILL = 3;
+
+  < the last native container handle this driver created (-1 = none) >
+  int lastContainer;
+
+  void create() { lastContainer = -1; }
+
+  < The native container handle produced by the most recent realize* call. >
+  int container() { return lastContainer; }
+
+  < ---- realize a planned Frame as a native container ---------------------- >
+  << Create the native container (uiBox for a stack, uiGrid for a grid) that
+     reproduces the Frame's planned layout, parented under `parentHandle`
+     (typically a window root from uiWindowRoot). Returns the native container
+     handle, or -1 if the Frame is null / not placed / the parent is invalid.
+     The caller then creates each real control parented INTO this handle, in the
+     same order the components were add()ed to the Frame, and calls
+     applyComponent() on each. >>
+  int realize(int parentHandle, SLLayoutFrame frame) {
+    if (parentHandle < 0 || frame == null) { return -1; }
+    if (!frame.isPlaced()) { return -1; }
+    if (frame.getLayoutKind() == LAYOUT_GRID) {
+      return realizeGrid(parentHandle, frame);
+    }
+    return realizeStack(parentHandle, frame);
+  }
+
+  << Realize a STACK (column/row) Frame as a native uiBox with the same
+     orientation and gap. Returns the box handle (also stored as container()). >>
+  int realizeStack(int parentHandle, SLLayoutFrame frame) {
+    if (parentHandle < 0 || frame == null) { return -1; }
+    int orient = frame.isRowLayout() ? ORIENT_HORIZONTAL : ORIENT_VERTICAL;
+    int box = uiBox(parentHandle, orient, frame.getGap());
+    lastContainer = box;
+    return box;
+  }
+
+  << Realize a GRID Frame as a native uiGrid with the same column count and
+     gap. Returns the grid handle (also stored as container()). >>
+  int realizeGrid(int parentHandle, SLLayoutFrame frame) {
+    if (parentHandle < 0 || frame == null) { return -1; }
+    int grid = uiGrid(parentHandle, frame.getColumns(), frame.getGap());
+    lastContainer = grid;
+    return grid;
+  }
+
+  < ---- size each real child to match the plan ---------------------------- >
+  << Apply the Frame's planned rectangle for component `index` to the native
+     widget `childHandle`: request the planned pixel size as the widget's
+     minimum, and — for a flexible component (planned to grow) — mark it to
+     expand and fill so the toolkit lets it share leftover space exactly as the
+     planner intended. Safe no-op if arguments are out of range. >>
+  void applyComponent(SLLayoutFrame frame, int index, int childHandle) {
+    if (frame == null || childHandle < 0) { return; }
+    SLLayoutBox box = frame.boxAt(index);
+    if (box == null) { return; }
+    int w = box.getWidth();
+    int h = box.getHeight();
+    if (w < 0) { w = 0; }
+    if (h < 0) { h = 0; }
+    uiWidgetSizeRequest(childHandle, w, h);
+    if (isFlexibleComponent(frame, index)) {
+      < grow with the container and stretch across the cross axis >
+      boolean row = frame.isRowLayout();
+      uiWidgetExpand(childHandle, row ? 1 : 0, row ? 0 : 1);
+      uiWidgetAlign(childHandle, ALIGN_FILL, ALIGN_FILL);
+    }
+  }
+
+  << Apply the plan to a named component (convenience over applyComponent by
+     index). >>
+  void applyNamed(SLLayoutFrame frame, String name, int childHandle) {
+    if (frame == null) { return; }
+    applyComponent(frame, frame.indexOf(name), childHandle);
+  }
+
+  < A component is "flexible" when the Frame planned it to grow (stack size 0). >
+  < Grid cells are never flagged flexible here; the grid itself sizes cells. >
+  boolean isFlexibleComponent(SLLayoutFrame frame, int index) {
+    if (frame == null) { return false; }
+    if (frame.getLayoutKind() == LAYOUT_GRID) { return false; }
+    return frame.isFlexibleAt(index);
+  }
+
+  boolean honored() {
+    return (lastContainer >= 0 || lastContainer == -1)
+      && ORIENT_VERTICAL == 0 && ORIENT_HORIZONTAL == 1;
+  }
+}

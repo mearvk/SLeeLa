@@ -1,0 +1,108 @@
+<< lib/ui/layout-driver-demo.sleela
+   SLeeLa runnable demo: the Standard Layout family DRIVING real native widgets.
+   A layout is PLANNED in pure SLeeLa with SLLayoutFrame (orientation, gap,
+   fixed vs. flexible components, exact pixel rects) and then REALIZED onto the
+   live SleelaUI toolkit with SLLayoutDriver — one native uiBox that reproduces
+   the plan, with each real control sized from the plan (uiWidgetSizeRequest)
+   and flexible components marked to expand.
+
+   Headless-safe: if no display/toolkit is available the demo prints the PLAN
+   (the computed rectangles) and exits cleanly, so it always runs. On a desktop
+   (X11 / Cocoa / Win32) it builds and shows a real window.
+
+   Run:
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run lib/ui/layout-driver-demo.sleela
+   >>
+#sleela 2.1
+class LayoutDriverDemo {
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  int metaScienceRating = 8;
+  String metaNationalSchedule = "none";
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+
+  < Build the PLAN once: a settings column with a fixed header, a flexible body >
+  < that fills the rest, and a fixed footer. The same plan drives both the >
+  < printed (headless) output and the real window. >
+  SLLayoutFrame planSettings(int w, int h) {
+    SLLayoutFrame f = new SLLayoutFrame(); f.create();
+    f.title("Settings");
+    f.useColumn(8, 12);
+    f.add("header", 40);
+    f.add("body", 0);
+    f.add("footer", 32);
+    f.place(0, 0, w, h);
+    return f;
+  }
+
+  void printPlan(SLLayoutFrame f) {
+    print("plan '" + f.getTitle() + "' (" + f.getWidth() + "x" + f.getHeight()
+        + ", gap " + f.getGap() + "):");
+    print("  header: " + f.boxOf("header").describe()
+        + (f.isFlexibleAt(0) ? "  [flexible]" : "  [fixed]"));
+    print("  body:   " + f.boxOf("body").describe()
+        + (f.isFlexibleAt(1) ? "  [flexible]" : "  [fixed]"));
+    print("  footer: " + f.boxOf("footer").describe()
+        + (f.isFlexibleAt(2) ? "  [flexible]" : "  [fixed]"));
+  }
+
+  void main() {
+    print("=== Standard Layout driving native widgets ===");
+    print("toolkit " + uiVersion() + ", backend " + uiBackendName(uiBackend()));
+
+    SLLayoutFrame plan = planSettings(320, 600);
+    printPlan(plan);
+
+    int app = uiAppCreate("com.mearvk.SleelaUI.LayoutDriverDemo");
+    if (app < 0) {
+      print("No display (headless): printed the PLAN above; the Driver would");
+      print("realize it as a uiBox on a desktop (X11 / Cocoa / Win32).");
+      return;
+    }
+
+    int win = uiWindowCreate(app, "Settings (driven by the Standard Layout)", 320, 600, 0);
+    int root = uiWindowRoot(win);
+
+    < REALIZE the plan: one native uiBox matching the Frame's column + gap. >
+    SLLayoutDriver driver = new SLLayoutDriver(); driver.create();
+    int box = driver.realize(root, plan);
+
+    < Create the real controls parented into the box, in component order, and >
+    < size each one from the plan. The flexible body expands to fill. >
+    int header = uiLabel(box, "Settings");
+    driver.applyNamed(plan, "header", header);
+
+    int body = uiScrolledView(box, 1, 1);
+    driver.applyNamed(plan, "body", body);
+    int bodyList = uiBox(body, 0, 6);
+    uiLabel(bodyList, "General");
+    uiLabel(bodyList, "Appearance");
+    uiLabel(bodyList, "Network");
+    uiLabel(bodyList, "Privacy");
+
+    int footer = uiButton(box, "Close");
+    driver.applyNamed(plan, "footer", footer);
+
+    print("realized: native container handle " + driver.container()
+        + " with 3 components sized from the plan.");
+
+    uiWindowShow(win);
+    < Pump a few turns so the window maps, then exit (demo, not an app loop). >
+    int turn = 0;
+    while (turn < 3) { uiAppPump(app, 0); turn = turn + 1; }
+    uiAppQuit(app, 0);
+    uiAppDestroy(app);
+    print("done");
+  }
+}

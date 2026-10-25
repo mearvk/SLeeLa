@@ -162,6 +162,28 @@ class SLLayoutFrame {
     return stack.boxOf(index);
   }
 
+  < ---- read the plan (for a native realizer such as SLLayoutDriver) ------- >
+  < Which standard layout governs this Frame: LAYOUT_STACK or LAYOUT_GRID. >
+  int getLayoutKind() { return kind; }
+  < True when the governing layout is a horizontal row stack. >
+  boolean isRowLayout() { return kind == LAYOUT_STACK && stack != null && stack.isRow(); }
+  < The gap (px) the governing layout uses between adjacent children/cells. >
+  int getGap() {
+    if (kind == LAYOUT_GRID) { return (grid == null) ? 0 : grid.getGap(); }
+    return (stack == null) ? 0 : stack.getGap();
+  }
+  < The column count for a grid Frame (1 for a stack Frame). >
+  int getColumns() {
+    if (kind == LAYOUT_GRID && grid != null) { return grid.getColumns(); }
+    return 1;
+  }
+  < True if component `index` is flexible (stack size 0). Grid cells are never >
+  < flexible here — the grid sizes its own cells. >
+  boolean isFlexibleAt(int index) {
+    if (kind == LAYOUT_GRID) { return false; }
+    return (stack != null) && stack.isFlexibleAt(index);
+  }
+
   < the Frame's own rectangle, for a host to draw its border/title >
   int getX() { return fx; }
   int getY() { return fy; }

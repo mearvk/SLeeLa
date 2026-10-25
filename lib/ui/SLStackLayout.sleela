@@ -109,6 +109,16 @@ class SLStackLayout {
   }
   int size() { return count; }
 
+  < ---- read the plan (for a native realizer / inspector) ------------------ >
+  < The gap, in px, between adjacent children along the main axis. >
+  int getGap() { return gapPx; }
+  < True if child `index` is flexible (added with size 0, so it grows to share >
+  < the leftover main-axis space). Out-of-range indices are not flexible. >
+  boolean isFlexibleAt(int index) {
+    if (index < 0 || index >= count) { return false; }
+    return sizes[index] == 0;
+  }
+
   < ---- arrange: compute every child's rectangle inside (x,y,w,h) ---------- >
   void arrange(int x, int y, int w, int h) {
     int innerX = x + padLeft;
