@@ -7,7 +7,7 @@
 | **Published** | 31 May 2001 (W3C Recommendation; 2nd edition 23 November 2010) |
 | **Status** | Superseded |
 | **Canonical reference** | <https://www.w3.org/TR/xhtml11/> |
-| **Source in this archive** | ✅ Normative DTD + content module — [`specs/dtd/xhtml-1.1/`](../specs/dtd/xhtml-1.1/) (`xhtml11.dtd`, `xhtml11-model-1.mod`). Prose is at the w3.org URL above. |
+| **Source in this archive** | ✅ Complete normative grammar — [`specs/dtd/xhtml-1.1/`](../specs/dtd/xhtml-1.1/): the driver `xhtml11.dtd`, `xhtml11-model-1.mod`, and the full 47-file XHTML Modularization 1.1 set under `modules/`. Resolves and **validates offline** via `specs/dtd/catalog.xml`. Prose is at the w3.org URL above. |
 
 ## Summary
 

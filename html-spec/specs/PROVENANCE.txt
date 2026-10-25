@@ -50,3 +50,31 @@ STILL NOT OBTAINED:
       History tree is blocked. Canonical URL recorded in the md/ write-up. Not fabricated.
     - Full human-readable prose of HTML 3.2 / 4.0 / 4.01 / XHTML 1.0 / 1.1: only the
       normative DTDs were obtainable here; prose is at the w3.org/TR URLs in each write-up.
+
+---- Third pass: coherence fixes (STATE.md items #1-#3) ----
+
+FIX #1  Renamed w3c-html52-single-page.bs -> w3c-html53-ED-single-page.bs
+        The file's own metadata is Title: HTML 5.3 / Level: 5.3 / Status: ED, so the
+        old 5.2 name was wrong. It is the W3C HTML 5.3 Editor's Draft Bikeshed source.
+
+FIX #2  Completed the XHTML 1.1 grammar. Added the full XHTML Modularization 1.1
+        module library (47 files) under dtd/xhtml-1.1/modules/, from
+        w3c/markup-validator htdocs/sgml-lib/REC-xhtml-modularization-20100729 @724a15b.
+        xhtml11.dtd now resolves its entire ~26-module closure. Verified: a sample
+        XHTML 1.1 document validates offline with xmllint (0 unresolved references).
+
+FIX #3  Made the DTD bundle self-resolving offline:
+        - Added dtd/catalog (SGML Open) and dtd/catalog.xml (XML catalog) mapping every
+          PUBLIC id + the external SYSTEM urls to local files.
+        - Co-located entity files so each DTD family is complete:
+            html-3.2/ISOlat1.ent            (from IETF/ISOlat1.ent @724a15b)
+            html-4.0/HTML{lat1,symbol,special}.ent  (copies; identical public ids to 4.01)
+            xhtml-1.0/xhtml-{lat1,symbol,special}.ent (from the modularization set)
+            xhtml-1.1/xhtml-datatypes-1.mod (copy next to driver for the one bare ref)
+        Verified offline with xmllint --valid --catalogs:
+            XHTML 1.1 (26-module closure) .... VALID
+            XHTML 1.0 Strict ................. VALID
+            XHTML 1.0 Transitional ........... VALID
+            XHTML 1.0 Frameset ............... VALID
+        (HTML 3.2/4.x are SGML; no onsgmls in this env to live-test, but all referenced
+         entity files are now present and catalog-mapped.)

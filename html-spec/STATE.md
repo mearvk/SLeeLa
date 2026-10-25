@@ -5,10 +5,16 @@ judges whether each artifact is coherent and complete, and names concretely what
 
 ## Verdict in one line
 
-**The archive is accurate and honestly labeled, but it is _not_ "perfect" or fully self-contained.**
-One file is **mislabeled**, several DTDs are **not standalone** (they reference external
-modules/entity files that are not bundled), and two of the ten versions have **no original
-source** at all. Details below, per artifact.
+**Original assessment:** the archive was accurate and honestly labeled, but _not_ "perfect"
+or fully self-contained — one file was mislabeled, several DTDs weren't standalone, and two of
+the ten versions have no original source.
+
+> **UPDATE (fixes applied — see the "Fixes applied" section at the bottom):** issues #1, #2,
+> and #3 are now **resolved** — the mislabeled file was renamed, the XHTML 1.1 grammar is
+> complete and validates offline, and the whole DTD bundle is self-resolving via SGML + XML
+> catalogs. The remaining gaps (#4 prose, #5 the 1991 note / 2014 REC text) are **blocked**
+> by the network sandbox, not by anything fixable here. The per-spec notes below are the
+> original audit; the final section records what changed.
 
 ---
 
@@ -153,3 +159,50 @@ source** at all. Details below, per artifact.
 3. Co-locate the `.ent` entity files under `xhtml-1.0/` (and `html-4.0/`) and add an SGML
    `catalog` so the DTDs resolve standalone.
 4. (Open-network only) Add the human-readable prose RECs and the 1991 Tags note.
+
+---
+
+## Fixes applied (2026-10-25)
+
+Fixes #1–#3 from the list above have been carried out and verified:
+
+### ✅ #1 — Mislabeled file renamed
+`w3c-html52-single-page.bs` → **`w3c-html53-ED-single-page.bs`**. The content is the W3C
+**HTML 5.3 Editor's Draft** (its own metadata says `Title: HTML 5.3`, `Status: ED`), now named
+accordingly. The README no longer claims it is a 5.1/5.2 snapshot.
+
+### ✅ #2 — XHTML 1.1 grammar completed
+Added the full **XHTML Modularization 1.1 library (47 files)** under
+`specs/dtd/xhtml-1.1/modules/`. `xhtml11.dtd` now resolves its entire ~26-module closure.
+**Verified:** a sample XHTML 1.1 document validates with `xmllint` offline, 0 unresolved refs.
+
+### ✅ #3 — DTD bundle is now self-resolving offline
+- Added **`specs/dtd/catalog`** (SGML Open) and **`specs/dtd/catalog.xml`** (XML catalog)
+  mapping every PUBLIC id and the external `w3.org` SYSTEM URLs to local files.
+- Co-located the needed entity files: `html-3.2/ISOlat1.ent`, `html-4.0/HTML*.ent`,
+  `xhtml-1.0/xhtml-*.ent`, and `xhtml-1.1/xhtml-datatypes-1.mod`.
+- **Verified offline** with `xmllint --valid --catalogs`:
+
+  | Flavor | Result |
+  |--------|--------|
+  | XHTML 1.1 (26-module closure) | ✅ VALID |
+  | XHTML 1.0 Strict | ✅ VALID |
+  | XHTML 1.0 Transitional | ✅ VALID |
+  | XHTML 1.0 Frameset | ✅ VALID |
+
+  (HTML 3.2/4.x are SGML, not XML; no `onsgmls` is installed here to live-test them, but all
+  their referenced entity files are now present locally and catalog-mapped.)
+
+### Still blocked (not fixable from this sandbox)
+- **#4** — Human-readable **prose** of the 3.2 / 4.x / XHTML RECs (lives at the blocked w3.org).
+- **#5** — The **1991 HTML Tags** note (in no reachable repo) and the **2014 HTML5 REC** text.
+
+### Updated scorecard
+
+| # | Spec | Was | Now |
+|---|------|-----|-----|
+| 6 | XHTML 1.1 | ❌ ~25 modules missing | ✅ complete + validates offline |
+| 4 | HTML 4.0/4.01 | ❌ needs catalog | ✅ entities co-located + catalogs |
+| 5 | XHTML 1.0 | ❌ ext. entities | ✅ entities co-located + validates |
+| 9 | HTML 5.2 "file" | ❗ mislabeled | ✅ renamed to 5.3-ED, honestly labeled |
+| 3 | HTML 3.2 | ⚠️ grammar only | ✅ self-resolving (prose still absent) |
