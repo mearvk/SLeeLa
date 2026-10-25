@@ -47479,7 +47479,7 @@
     },
     {
       "path": "lib/vm/src/sleela/SLVmPremiumVersion.sleela",
-      "sha256": "1c0873f2fb70cc1360d62d77975e0d04a1d3dbc4a4d5634e25fcd0a7e446f20f"
+      "sha256": "ba55baa5ebf5e702be6ca3fb540d22a5dcc1fcd4b58047408f8d52ccd07f18a6"
     },
     {
       "path": "lib/vm/src/sleela/SLVmProfile.sleela",

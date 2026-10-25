@@ -73,6 +73,11 @@ class SLVmPremiumVersion {
   < ---- identity (faithful to impl/frontend/driver.cpp kPremium) ---- >
   < e.g. "slvm-1" >
   String id;
+  < The generation codename -- faithful to each VM's SLVM_CODENAME in its >
+  < src/slvmNN_vm.c. The eleven form an ascending authority ladder that IS the >
+  < progression: Foundation, Operator, Specialist, Supervisor, Manager, >
+  < Director, Administrator, Executive, Authority, Principal, Sovereign. >
+  String codename;
   < e.g. "dedicated VM: broker, capabilities, security, OS boundary" >
   String label;
   < 1..11 >
@@ -115,8 +120,8 @@ class SLVmPremiumVersion {
   int hasModuleHosting; int hasSchemaExtension;
 
   < Subclasses call base() then set their specifics. >
-  void base(int n, String identifier, String lbl, String directory, String val) {
-    number = n; id = identifier; label = lbl; dir = directory; validator = val;
+  void base(int n, String identifier, String code, String lbl, String directory, String val) {
+    number = n; id = identifier; codename = code; label = lbl; dir = directory; validator = val;
     < start all capabilities off; composeThrough(n) turns on the carry-forward. >
     hasBroker = 0; hasCapabilities = 0; hasSecurity = 0; hasOsBoundary = 0;
     hasCrypto = 0; hasVmLink = 0;
@@ -171,8 +176,11 @@ class SLVmPremiumVersion {
     return rt;
   }
 
+  < getCodename(): the generation's authority-ladder name (real, from source). >
+  String getCodename() { return codename; }
+
   void describe() {
-    print(id + "  [" + label + "]  caps=" + capabilityCount()
+    print(id + " \"" + codename + "\"  [" + label + "]  caps=" + capabilityCount()
           + "  validator=" + validator + "  -> " + nativeBinary());
   }
 }

@@ -2,24 +2,24 @@
  * sleela-virtual-machine/005/SLVmPremiumVersion005.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmPremiumVersion005 -- the loadable SLeeLa manifest for
- *   premium VM generation slvm-5 ("reproducibility, policy, recovery, assurance"), the OOD selector record the native
- *   VM can enumerate and select via `sleela vm select premium 5` (or p5).
- *   It names this generation's C/C++ project directory and admission validator,
- *   composes the cumulative premium capability set through generation 5, and
- *   carries the default configuration profile. build() returns the configured
- *   SLVmRuntime a selection resolves to; nativeBinary() names the binary the
- *   master build produces (vm-build/slvm-5).
+ *   premium VM generation slvm-5 (codename "Manager"; "reproducibility, policy, recovery, assurance"), the OOD selector
+ *   record the native VM can enumerate and select via `sleela vm select premium
+ *   5` (or p5). It names this generation's C/C++ project directory, codename,
+ *   and admission validator, composes the cumulative premium capability set
+ *   through generation 5, and carries the default configuration profile.
+ *   build() returns the configured SLVmRuntime a selection resolves to;
+ *   nativeBinary() names the binary the master build produces (vm-build/slvm-5).
  *
- * Faithful to impl/frontend/driver.cpp (kPremium) and virtual-machine/USER-GUIDE.md
- * (per-grade validator list). It extends SLVmPremiumVersion
- * (lib/vm/src/sleela/SLVmPremiumVersion.sleela).
+ * Faithful to impl/frontend/driver.cpp (kPremium), each VM's SLVM_CODENAME
+ * (src/slvm05_vm.c), and virtual-machine/USER-GUIDE.md (per-grade validator).
+ * It extends SLVmPremiumVersion (lib/vm/src/sleela/SLVmPremiumVersion.sleela).
  *
  * Family: vm. Composes SLVmPremiumVersion, SLVmConfig, SLVmRuntime.
  */
 #sleela 2.4
 class SLVmPremiumVersion005 extends SLVmPremiumVersion {
   void configure() {
-    base(5, "slvm-5", "reproducibility, policy, recovery, assurance", "sleela-virtual-machine/005", "policy snapshot");
+    base(5, "slvm-5", "Manager", "reproducibility, policy, recovery, assurance", "sleela-virtual-machine/005", "policy snapshot");
     composeThrough(5);
     // default profile tuning for this generation (user-editable in setup/conference)
     profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);

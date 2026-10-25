@@ -2,24 +2,24 @@
  * sleela-virtual-machine/007/SLVmPremiumVersion007.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLVmPremiumVersion007 -- the loadable SLeeLa manifest for
- *   premium VM generation slvm-7 ("hardened management, failure handling, recovery"), the OOD selector record the native
- *   VM can enumerate and select via `sleela vm select premium 7` (or p7).
- *   It names this generation's C/C++ project directory and admission validator,
- *   composes the cumulative premium capability set through generation 7, and
- *   carries the default configuration profile. build() returns the configured
- *   SLVmRuntime a selection resolves to; nativeBinary() names the binary the
- *   master build produces (vm-build/slvm-7).
+ *   premium VM generation slvm-7 (codename "Administrator"; "hardened management, failure handling, recovery"), the OOD selector
+ *   record the native VM can enumerate and select via `sleela vm select premium
+ *   7` (or p7). It names this generation's C/C++ project directory, codename,
+ *   and admission validator, composes the cumulative premium capability set
+ *   through generation 7, and carries the default configuration profile.
+ *   build() returns the configured SLVmRuntime a selection resolves to;
+ *   nativeBinary() names the binary the master build produces (vm-build/slvm-7).
  *
- * Faithful to impl/frontend/driver.cpp (kPremium) and virtual-machine/USER-GUIDE.md
- * (per-grade validator list). It extends SLVmPremiumVersion
- * (lib/vm/src/sleela/SLVmPremiumVersion.sleela).
+ * Faithful to impl/frontend/driver.cpp (kPremium), each VM's SLVM_CODENAME
+ * (src/slvm07_vm.c), and virtual-machine/USER-GUIDE.md (per-grade validator).
+ * It extends SLVmPremiumVersion (lib/vm/src/sleela/SLVmPremiumVersion.sleela).
  *
  * Family: vm. Composes SLVmPremiumVersion, SLVmConfig, SLVmRuntime.
  */
 #sleela 2.4
 class SLVmPremiumVersion007 extends SLVmPremiumVersion {
   void configure() {
-    base(7, "slvm-7", "hardened management, failure handling, recovery", "sleela-virtual-machine/007", "manager health");
+    base(7, "slvm-7", "Administrator", "hardened management, failure handling, recovery", "sleela-virtual-machine/007", "manager health");
     composeThrough(7);
     // default profile tuning for this generation (user-editable in setup/conference)
     profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
