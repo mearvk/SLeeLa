@@ -93,7 +93,7 @@ class SLGuiAudioRecorder {
   < Arm (begin monitoring the input without capturing). >
   boolean arm() { if (state == STATE_IDLE || state == STATE_STOPPED) { state = STATE_ARMED; return true; } return false; }
   < The record button: start capturing from idle/armed/stopped, or resume paused. >
-  boolean record() {
+  boolean startRecording() {
     if (state == STATE_PAUSED) { state = STATE_RECORDING; return true; }
     if (state == STATE_IDLE || state == STATE_ARMED || state == STATE_STOPPED) {
       state = STATE_RECORDING; durationMs = 0; clipping = 0; return true;

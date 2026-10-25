@@ -2,9 +2,9 @@
 
 **Revision:** 0.50  
 **Packages:** 101  
-**SLeeLa source units:** 11554  
+**SLeeLa source units:** 11555  
 **Module-facade symbols:** 70  
-**Total symbol records:** 11624  
+**Total symbol records:** 11625  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.50 defines the **`philosophers`** vocabulary categorically at the

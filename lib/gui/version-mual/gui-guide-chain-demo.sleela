@@ -1,0 +1,101 @@
+<< lib/gui/version-mual/gui-guide-chain-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable demonstrator for the philosophers Guide-chain operator
+     (syntax 2.3, SLEELA.syntax section 17) applied to GUI setup. A window is
+     "constructed and guided" in one expression:
+
+         new GuiPanel() :: window :: title :: listen :: show
+
+     where each Guide is a zero-argument setup step applied in order, and the
+     chain evaluates to the constructed panel (fluent). This is the gui-family
+     reading of the perfect Constructor: the construction of a GUI surface IS a
+     seated sequence of growths. Self-contained (inline model + main). >>
+#sleela 2.3
+< SLeeLa gui package: the Guide-chain operator for one-expression GUI setup. >
+< SLeeLa owns the meaning of the steps; a host (Java/native) owns presentation. >
+import gui.version-mual;
+class GuiGuideChainDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+
+  void main() {
+    print("=== gui: Guide-chain construction (syntax 2.3) ===");
+
+    << One expression constructs the panel and seats four GUI Guides -- window,
+       title, listen, show -- each a zero-argument setup step, applied in order.
+       The chain evaluates to the constructed, fully set-up panel. >>
+    GuiPanel p = new GuiPanel() :: window :: title :: listen :: show;
+
+    print("panel state: " + p.describe());
+    print("steps seated: " + p.steps());
+    print("done");
+  }
+}
+
+< A tiny GUI surface whose setup steps are Guides: each is a zero-arg method the >
+< :: chain applies in order. SLeeLa owns the step meaning; a host would draw it. >
+class GuiPanel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class demo surface. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  int metaScienceRating = 6;
+  String metaNationalSchedule = "none";
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+
+  < set as each Guide fires >
+  int hasWindow;
+  int hasTitle;
+  int listening;
+  int shown;
+  int seated;
+
+  void create() {
+    hasWindow = 0; hasTitle = 0; listening = 0; shown = 0; seated = 0;
+  }
+
+  < --- the GUI Guides: zero-arg setup steps seated via :: --- >
+  void window() { hasWindow = 1; seated = seated + 1; }
+  void title()  { hasTitle = 1;  seated = seated + 1; }
+  void listen() { listening = 1; seated = seated + 1; }
+  void show()   { shown = 1;     seated = seated + 1; }
+
+  int steps() { return seated; }
+
+  String describe() {
+    String s = "window=" + hasWindow + " title=" + hasTitle
+      + " listening=" + listening + " shown=" + shown;
+    return s;
+  }
+}

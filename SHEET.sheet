@@ -1,7 +1,7 @@
 #sheet SHEET.sheet
 #kind    system-object-catalog
 #for     Sleela / Nordshrift software systems
-#rev     1.0.1
+#rev     1.0.2
 #format  1.0
 #machine yes
 
@@ -1003,6 +1003,73 @@ section finance:             # role: finance
     children:  Numerator, Denominator
     siblings:  Determinant2x2, CAPM
     note:      guarded numerator/denominator ratio (zero-safe).
+
+
+# ---------------------------------------------------------------------------
+# 19. GUI — the SLeeLa-facing GUI component series (lib/gui; gui/INTEGRATION.md)
+# ---------------------------------------------------------------------------
+# The GUI object series: SLeeLa owns business logic, state, and the MEANING of
+# events; a Java/native host owns presentation and desktop lifecycle; the native
+# bridge is the C ABI boundary (gui/native/sleela_gui_bridge.*). Each object here
+# mirrors a class in lib/gui's five versioned lines (version-mual 1.0 ..
+# version-military 5.0). Nordshrift carries these on the object-compatibility
+# list so a declared GUI object has a home in the shared object structure.
+section gui:                 # role: gui
+
+  Widget
+    children:  Window, Menu, Action
+    siblings:  Node, Component
+    note:      the base GUI surface element the host draws and SLeeLa gives meaning.
+
+  Window
+    children:  Title, RootHandle, Refresh
+    siblings:  Dialog, Panel
+    note:      a window intent: show/setText and the refresh(id,revision) document sink (SLGuiWindow).
+
+  Action
+    children:  Name, Operation, Latch
+    siblings:  Command, Handler
+    note:      a named action bound to a SLeeLa operation; take-the-latch activation (SLGuiAction).
+
+  MenuBar
+    children:  Menu, Focus, ActiveMenu
+    siblings:  Toolbar, StatusBar
+    note:      ordered, toolkit-neutral menu-bar state; the host draws, SLeeLa owns labels/state (SLGuiMenuBar).
+
+  Menu
+    children:  MenuItem, OpenState, Selection
+    siblings:  MenuBar, ContextMenu
+    note:      a menu's visibility/open state and active-item navigation (SLGuiMenu).
+
+  MenuItem
+    children:  Label, Shortcut, CheckedState
+    siblings:  Separator, SubMenu
+    note:      enabled/checkable/checked state + one-shot activation latch (SLGuiMenuItem).
+
+  Document
+    children:  Id, Path, Revision
+    siblings:  Snapshot, Resource
+    note:      an immutable watched-document snapshot with an OS revision fingerprint (SLGuiDocument).
+
+  DocumentListener
+    children:  Watch, Refresh, Coalesce
+    siblings:  Observer, Poller
+    note:      the OS-driven 1..14 document watch with revision coalescing (SLGuiDocumentListener).
+
+  Backend
+    children:  Swing, JavaFX, Native
+    siblings:  Toolkit, Host
+    note:      toolkit-neutral backend selector: swing / javafx (fx) / native (SLGuiBackend).
+
+  Bridge
+    children:  Create, Call, Destroy
+    siblings:  Runtime, Host
+    note:      the shared native ABI boundary create/call/refresh/destroy (SLGuiBridge).
+
+  Mount
+    children:  Reconcile, HandleMap, Dirty
+    siblings:  Renderer, Tree
+    note:      reconciles the SLeeLa DOM onto host handles; applies dirty nodes (SLGuiMount).
 
 
 # ===========================================================================
