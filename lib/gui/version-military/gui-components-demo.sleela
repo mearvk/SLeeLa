@@ -63,7 +63,7 @@ class GuiComponentsDemo {
     < ---- Audio recorder (standard record button) ---- >
     SLGuiAudioRecorder rec = new SLGuiAudioRecorder();
     rec.configure("default", "takes/take1.wav");
-    rec.record(); rec.onLevel(72); rec.onElapsed(1500);
+    rec.startRecording(); rec.onLevel(72); rec.onElapsed(1500);
     print("recorder: " + rec.stateName() + " btn='" + rec.buttonLabel() +
           "' level=" + rec.level() + "% dur=" + rec.durationMillis() + "ms");
     rec.stop(); print("  -> " + rec.stateName());

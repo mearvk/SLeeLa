@@ -1,0 +1,123 @@
+<< lib/ui/SLGridLayout.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLGridLayout — place children in an evenly-divided rows x cols
+     grid, filling left-to-right, top-to-bottom. Beginner-simple (pick columns,
+     add children) and precise (equal cells with gap + padding). Pure SLeeLa;
+     fills SLLayoutBox[] with real pixel rects.
+
+   Easy path (a 3-column gallery in a 600x400 area):
+     SLGridLayout g = new SLGridLayout();
+     g.columns(3); g.gap(10); g.pad(10);
+     g.add(); g.add(); g.add(); g.add(); g.add();   < 5 cells -> 2 rows >
+     g.arrange(0, 0, 600, 400);
+     SLLayoutBox b = g.boxOf(0); >>
+#sleela 2.1
+< Family: ui. A standard, professional, beginner-friendly grid layout. >
+class SLGridLayout {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11603;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  static final int MAX_ITEMS = 256;
+
+  int cols;
+  int count;
+  int gapPx;
+  int padLeft; int padTop; int padRight; int padBottom;
+  SLLayoutBox[] boxes;
+
+  void create() {
+    cols = 1; count = 0; gapPx = 8;
+    padLeft = 0; padTop = 0; padRight = 0; padBottom = 0;
+    boxes = new SLLayoutBox[MAX_ITEMS];
+  }
+
+  < Number of columns (at least 1). >
+  void columns(int c) { cols = (c < 1) ? 1 : c; }
+  int getColumns() { return cols; }
+  void gap(int px) { gapPx = (px < 0) ? 0 : px; }
+  void pad(int p) { int q = (p < 0) ? 0 : p; padLeft = q; padTop = q; padRight = q; padBottom = q; }
+
+  < Add one cell (grid cells are evenly sized, so no per-cell size needed). >
+  int add() {
+    if (count >= MAX_ITEMS) { return -1; }
+    int idx = count; count = count + 1; return idx;
+  }
+  int size() { return count; }
+  < How many rows the current cell count needs for the chosen column count. >
+  int rows() { if (count == 0) { return 0; } return (count + cols - 1) / cols; }
+
+  void arrange(int x, int y, int w, int h) {
+    int innerX = x + padLeft;
+    int innerY = y + padTop;
+    int innerW = w - padLeft - padRight; if (innerW < 0) { innerW = 0; }
+    int innerH = h - padTop - padBottom; if (innerH < 0) { innerH = 0; }
+
+    int r = rows();
+    int colGaps = (cols > 1) ? (gapPx * (cols - 1)) : 0;
+    int rowGaps = (r > 1) ? (gapPx * (r - 1)) : 0;
+    int cellW = (cols > 0) ? ((innerW - colGaps) / cols) : innerW;
+    int cellH = (r > 0) ? ((innerH - rowGaps) / r) : innerH;
+    if (cellW < 0) { cellW = 0; }
+    if (cellH < 0) { cellH = 0; }
+
+    int i = 0;
+    while (i < count) {
+      int col = i - (i / cols) * cols;
+      int rowIdx = i / cols;
+      int cx = innerX + col * (cellW + gapPx);
+      int cy = innerY + rowIdx * (cellH + gapPx);
+      SLLayoutBox b = new SLLayoutBox();
+      b.create();
+      b.set(cx, cy, cellW, cellH);
+      boxes[i] = b;
+      i = i + 1;
+    }
+  }
+
+  SLLayoutBox boxOf(int index) {
+    if (index < 0 || index >= count) { return null; }
+    return boxes[index];
+  }
+
+  boolean honored() {
+    return cols >= 1 && count >= 0 && count <= MAX_ITEMS && gapPx >= 0
+      && padLeft >= 0 && padTop >= 0 && padRight >= 0 && padBottom >= 0;
+  }
+}

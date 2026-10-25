@@ -1,0 +1,79 @@
+<< lib/ui/SLLayoutBox.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLLayoutBox — one computed rectangle (x, y, width, height in
+     device pixels). It is the OUTPUT unit of the standard layout classes: a
+     layout takes a container rect and the children's requested sizes and fills
+     an array of SLLayoutBox, one per child. Pure SLeeLa, no native handle, so
+     it always checks and runs. >>
+#sleela 2.1
+< Family: ui. The standard layout result type, shared by every SL*Layout class. >
+class SLLayoutBox {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11601;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < the computed rectangle, in device pixels >
+  int x; int y; int width; int height;
+
+  void create() { x = 0; y = 0; width = 0; height = 0; }
+
+  < Set the rectangle directly (widths/heights below zero clamp to zero). >
+  void set(int px, int py, int w, int h) {
+    x = px; y = py;
+    width = (w < 0) ? 0 : w;
+    height = (h < 0) ? 0 : h;
+  }
+
+  int getX() { return x; }
+  int getY() { return y; }
+  int getWidth() { return width; }
+  int getHeight() { return height; }
+  int right()  { return x + width; }
+  int bottom() { return y + height; }
+
+  < Does a point fall inside this box? Useful for hit-testing. >
+  boolean contains(int px, int py) {
+    return px >= x && px < x + width && py >= y && py < y + height;
+  }
+
+  String describe() {
+    return "[" + x + "," + y + " " + width + "x" + height + "]";
+  }
+}
