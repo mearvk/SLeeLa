@@ -3,7 +3,7 @@
   "files": [
     {
       "path": "SHEET.sheet",
-      "sha256": "86cb456e0be719767a682b3dccdcdad3f7f5c0cef7a153dfe4902ec5468ea3f3"
+      "sha256": "ad7abf87d8012a2bc41a85f5e6ef5eea526d1e818c15e053f0f79d3352dc5adf"
     },
     {
       "path": "ballum/include/sleela_ballum/ballum_effects.h",
@@ -19,7 +19,7 @@
     },
     {
       "path": "ballum/src/ballum_backend_macos.mm",
-      "sha256": "2e64a7c5279264869dc8bb0381c81bcbc691409dd0fa98d04e8012fccd178ffa"
+      "sha256": "c1c3e6c7e22e2a1914a5c2a0bc09e324e10d825c2b3df0d3a0f5f771eddfb6b4"
     },
     {
       "path": "ballum/src/ballum_backend_select.c",
@@ -31,11 +31,11 @@
     },
     {
       "path": "ballum/src/ballum_backend_windows.c",
-      "sha256": "15ee9b2b1028d9299c03cf671411b12be0bfe5d5348c33454fbfcb698d139663"
+      "sha256": "b1d0d518da0704eb92ce6c531612c72fbae6931921bc8eb55101e9d86cafc613"
     },
     {
       "path": "ballum/src/ballum_backend_x11.c",
-      "sha256": "e50f30ec9ebb9b65b1880ee67d26c61709b05c5c3b81365c7ae4787b2b742b1d"
+      "sha256": "3f2be72a4b956ef25a828b0dd9e467928931b619b96d46510ac043abd44cac19"
     },
     {
       "path": "ballum/src/ballum_demo.c",
@@ -59,7 +59,7 @@
     },
     {
       "path": "ballum/tests/test_ballum_manager.c",
-      "sha256": "e8de0e1bdc74a16639141e8b8a3a4589a97bd9814e690b851f2612bec8d54813"
+      "sha256": "5f4d768985ce499e473e4918ab509a40871fd6c032cd86525eb7ab8a1e9d2b73"
     },
     {
       "path": "bash/pixel_terminal.cpp",
@@ -607,7 +607,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "374b31d7c1fc5a2324b8256d51946fdaa620cf49d00695f8e007b4dca5a3bbc1"
+      "sha256": "59a624b28b0ee88180013ab047c2fe15d406aff2ab6d907d80dbbea8b68b5c0b"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -1087,7 +1087,7 @@
     },
     {
       "path": "lib/ballum/SLBallumSession.sleela",
-      "sha256": "0632f4cc182df4566ef53d20d9efc269b342d6e4cf0ddcbd8681aa47882ef6bf"
+      "sha256": "89c4dadb93b6f9a4ce7515599373d8094081bb5029ac70c3827e63ce234a20af"
     },
     {
       "path": "lib/ballum/SLBallumStatus.sleela",
@@ -1104,26 +1104,6 @@
     {
       "path": "lib/ballum/ballum.sleela",
       "sha256": "a1647bb48fdd78264564ec922fbb6fb7e7577c576d79235b9a9a972348565806"
-    },
-    {
-      "path": "lib/ballum/examples/01-screen-inspection.sleela",
-      "sha256": "be6344478fb543d37307a984d0777895ed2a54d8960158274677f9b77da8674f"
-    },
-    {
-      "path": "lib/ballum/examples/02-safe-pixel.sleela",
-      "sha256": "5877978bf7518f7beef91372f49ca75694909914c57dd0c56777d70e931098c2"
-    },
-    {
-      "path": "lib/ballum/examples/03-display-controls.sleela",
-      "sha256": "410d444938de34253f4603590afbdae77b10ce66a707b50e0fd552462318e813"
-    },
-    {
-      "path": "lib/ballum/examples/04-input-polling.sleela",
-      "sha256": "f983bc485893965a92a122e633690d6278893a22272b9ef971b3cf40ae1fe7ac"
-    },
-    {
-      "path": "lib/ballum/examples/05-headless-safe.sleela",
-      "sha256": "59bbf2a8d2d69ce48551214cbe54687d9f7db589a0eeee9e12e8fd1e9160193d"
     },
     {
       "path": "lib/ballum/input-demo.sleela",
@@ -1147,7 +1127,7 @@
     },
     {
       "path": "lib/ballum/session-demo.sleela",
-      "sha256": "bdec4c42cece0504b06f544dba2c0a6aad85744296af62bc61f1636af94bd0d1"
+      "sha256": "ac893bb68d05e592319a62ed6066f0c53cb723357a1b60a0b5b15f6691efecbf"
     },
     {
       "path": "lib/bash/SLPackage.sleela",
@@ -6499,7 +6479,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiAdminAuthority.sleela",
-      "sha256": "d90de34941021d05c3fb4f390eb382f1db61ef2c988b814c3d55e2c83352c246"
+      "sha256": "d3f37881afa1e907a25a43a45d57e3ff790940638d07ef00dff737b4261361e6"
     },
     {
       "path": "lib/gui/version-dual/SLGuiApp.sleela",
@@ -6511,7 +6491,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiAudioRecorder.sleela",
-      "sha256": "ec07625f94e07be18c5b623198a85f2ea74e52692925dfaae1af0325cb123ef4"
+      "sha256": "dd637dec79ee535ad986d30a79bda5b2ab536c851f604f68b603bb44809e0912"
     },
     {
       "path": "lib/gui/version-dual/SLGuiBackend.sleela",
@@ -6587,7 +6567,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiLayout.sleela",
-      "sha256": "6b497671ea56121e1229a17d3aa9bb1a28be05581531a0acf1caf3394b7643b3"
+      "sha256": "6f07e3256b4ca02974e9ba0185c983a408886289925af595fc753242a3865bd6"
     },
     {
       "path": "lib/gui/version-dual/SLGuiMenu.sleela",
@@ -6607,7 +6587,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiMount.sleela",
-      "sha256": "6246b56e42ab67aa08f07f492c5f3bbae7e5b431a7772137eedb794854691116"
+      "sha256": "4e31d1cda28c3f3749eaf08637021a76a65a85a46368c81acf68a69ba7f8033b"
     },
     {
       "path": "lib/gui/version-dual/SLGuiNode.sleela",
@@ -6683,7 +6663,7 @@
     },
     {
       "path": "lib/gui/version-dual/gui-components-demo.sleela",
-      "sha256": "5c01fb1b5e666ea67fa8a5b49ea89f3ca2747de1aea3a258d1682201dba46faa"
+      "sha256": "fe8dcac8bd833a848cf7d48c944486aba00f8d02a7190e2f98f96feb63f73b15"
     },
     {
       "path": "lib/gui/version-dual/gui-demo.sleela",
@@ -6787,7 +6767,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiMount.sleela",
-      "sha256": "ebe3d7dba551b9b072b0742d096f7282c32f72b3c67fef0352bba0e437c2c4ab"
+      "sha256": "1d6ee6c289786dc7aeeda17c52d11c7375741ff8af572fbaf9edf7180ea7f312"
     },
     {
       "path": "lib/gui/version-gual/SLGuiNode.sleela",
@@ -6879,7 +6859,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiAdminAuthority.sleela",
-      "sha256": "9b0828977958e8594b96c9366f7b3ae4b287ac695637cfccafb7e2b8c7e4cde6"
+      "sha256": "12f1c75800a176a70a1d1a2ca3fd22e54e892d37d0698e7ef01ebb5fc8fd78be"
     },
     {
       "path": "lib/gui/version-military/SLGuiApp.sleela",
@@ -6891,7 +6871,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiAudioRecorder.sleela",
-      "sha256": "c74c18622c2a4d65ef186dd71783a683e53f476364cce68def1dab3845ff5e49"
+      "sha256": "22f4a2ef3c5efdd16b33910f5fdbdefd7393bc2f5933dadbf962d7de67bb7eaf"
     },
     {
       "path": "lib/gui/version-military/SLGuiBackend.sleela",
@@ -6983,7 +6963,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiLayout.sleela",
-      "sha256": "f3070244f2130ed93e2b664b28f490a03206d9accd0823a11d8997562e07f531"
+      "sha256": "f14959ee45f4432a6f87a58ccdcd65720424776e95ac7e06b0c24477433832bb"
     },
     {
       "path": "lib/gui/version-military/SLGuiMenu.sleela",
@@ -7003,7 +6983,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiMount.sleela",
-      "sha256": "a599b04b0ae22e24bcf96acacc9215761d4714a0d0867181cc48cece10ad9d4d"
+      "sha256": "ab44a8ad6f5a04c036833a867e8ea149d435b6cbf40891bd6cbae718c28a8482"
     },
     {
       "path": "lib/gui/version-military/SLGuiNode.sleela",
@@ -7083,7 +7063,7 @@
     },
     {
       "path": "lib/gui/version-military/gui-components-demo.sleela",
-      "sha256": "80ee0b4197c8911297c3e9cb061fbcb28db29c93142c2d661233e150f321a026"
+      "sha256": "a8d0fbb10b474e9e593da9a27828601c4a5be6fcfa7d5e18dc06588afb9e90d4"
     },
     {
       "path": "lib/gui/version-military/gui-demo.sleela",
@@ -7195,7 +7175,7 @@
     },
     {
       "path": "lib/gui/version-mual/SLGuiMount.sleela",
-      "sha256": "cb395be361ae4ef9b52d2131d6f497032fbbada0a336f1bd0d2c5e88c1074b0b"
+      "sha256": "3f4c510cc575ca367b229d9cca42feb3948923d808b725406fc954f2df2ad6a5"
     },
     {
       "path": "lib/gui/version-mual/SLGuiNode.sleela",
@@ -7264,6 +7244,10 @@
     {
       "path": "lib/gui/version-mual/gui-events-demo.sleela",
       "sha256": "9ceee0cacca2a96c5456a053e237a86ca4ed3546dcbc102a0bf3c81e84fc8c49"
+    },
+    {
+      "path": "lib/gui/version-mual/gui-guide-chain-demo.sleela",
+      "sha256": "31a4c19af3d9979f7c0717823be60f082678775247524b833e44fcca4913ec4e"
     },
     {
       "path": "lib/gui/version-mual/gui-overflow-scroll-demo.sleela",
@@ -7363,7 +7347,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiMount.sleela",
-      "sha256": "b041da7c64fefb6f24ca139b945412af9b9ed5306325b5c1e46a6f39a7b7bf83"
+      "sha256": "e1baa98dd0a22d3f5e08e7e98b9c9237c003cf53bfff96efb437f5df5631e007"
     },
     {
       "path": "lib/gui/version-thual/SLGuiNode.sleela",
@@ -46502,6 +46486,10 @@
       "sha256": "6c5cde0e2bdce7cdc1f40dbc4481fccb543d467df5ca32c8665dd01b394e48e8"
     },
     {
+      "path": "lib/ui/SLAbsoluteLayout.sleela",
+      "sha256": "eefe2e28e47671d5543544a4aebfff914346fbd82f4f31fb2aae837f06051ebd"
+    },
+    {
       "path": "lib/ui/SLApplication.sleela",
       "sha256": "9a81e442e714992c2750daa95c1542a36321314716adf20225dfd48608d86c3d"
     },
@@ -46514,12 +46502,36 @@
       "sha256": "5884a34873b670ac3dade4ae08eb86599c9452d2d01208345c0b947729e4f3e9"
     },
     {
+      "path": "lib/ui/SLDockLayout.sleela",
+      "sha256": "4ab4366b3aa6f19aab8780b6c12efe1071549cc228420df41ff91c83184d9773"
+    },
+    {
+      "path": "lib/ui/SLGridLayout.sleela",
+      "sha256": "cdaec73d950a88547d5931428a326022fdc2cb9eecae9a8ef18c391d784a1bc3"
+    },
+    {
       "path": "lib/ui/SLLabel.sleela",
       "sha256": "1004508ddd474a261edbae92c24f1f3e83f921aefa342a547865a6d304ec64c7"
     },
     {
       "path": "lib/ui/SLLayout.sleela",
       "sha256": "d7a90d95b13a1306bf8aa3db9099a908bb5b8373aa14a96ed2e54ddb9d3178a9"
+    },
+    {
+      "path": "lib/ui/SLLayoutBox.sleela",
+      "sha256": "a9e3bec43559fc914a6787e160f34bc6df7344d603a5a947618606b84b9c4758"
+    },
+    {
+      "path": "lib/ui/SLLayoutDriver.sleela",
+      "sha256": "37b6e45614941579a1c855d975a052fb8d8683296c06ddcbebab14e1d3b45e1e"
+    },
+    {
+      "path": "lib/ui/SLLayoutFrame.sleela",
+      "sha256": "da241ae75cd1d932f32ef289dcdc9a664b9cde9b369f1983094511d9dbe48fef"
+    },
+    {
+      "path": "lib/ui/SLLayoutKit.sleela",
+      "sha256": "857f990921a78f6f1074028fdd461a6d6243c0f8a77f2a27e957a137d94227c7"
     },
     {
       "path": "lib/ui/SLListView.sleela",
@@ -46532,6 +46544,14 @@
     {
       "path": "lib/ui/SLMenuItem.sleela",
       "sha256": "24deffb2bb4517e9735f39a6bd0823b076c373c1d75cdf344797dba635b2952c"
+    },
+    {
+      "path": "lib/ui/SLStackLayout.sleela",
+      "sha256": "ded4509fac2a2485e3b57d22f98aebe24836b111fff7134106efa17fb4eba4d1"
+    },
+    {
+      "path": "lib/ui/SLStandardTheme.sleela",
+      "sha256": "9b34872fe0791338181bab41aa468b1810953f5e805b407d6e2c6af3024e39d4"
     },
     {
       "path": "lib/ui/SLTableView.sleela",
@@ -46550,6 +46570,14 @@
       "sha256": "3d74ba0f61cd00a8bec0dbeb14c1f7fb64f7b9f03e19f72e14f89bc542354f0d"
     },
     {
+      "path": "lib/ui/SLThemeFlavor.sleela",
+      "sha256": "0ec540cdc00e90f39e8c8bd87b26ed05ddc4d6d52d942cf06cfbc4ee0852164b"
+    },
+    {
+      "path": "lib/ui/SLThemeHint.sleela",
+      "sha256": "7101bb0a5dd8d24f7cad662419ae7595f5633c966603129f367845e2c4b71d67"
+    },
+    {
       "path": "lib/ui/SLTreeView.sleela",
       "sha256": "15d6e121c516fc30f7c4c2690338bd8cbafe082a199e0f7e99e67a46bda7ed7e"
     },
@@ -46564,6 +46592,18 @@
     {
       "path": "lib/ui/SLWindow.sleela",
       "sha256": "86d66aa26ae6aee054e36a992041f8a8fcdc2cd90df59ba2b96291eab5e313e7"
+    },
+    {
+      "path": "lib/ui/layout-demo.sleela",
+      "sha256": "2abe5ab53a7e01b4fc5b67075bfdc78458d20152b7200a3fb7ce5f4c22b5fc90"
+    },
+    {
+      "path": "lib/ui/layout-driver-demo.sleela",
+      "sha256": "f15092cf66947db150d5da38f9e4d8939cd1d4ed5e0cfb34cf63102e4400fa60"
+    },
+    {
+      "path": "lib/ui/theme-demo.sleela",
+      "sha256": "f0235b6f6e1da537f186dffa40d373d5502dc48bb33a5f7c9bd58ad08d9121de"
     },
     {
       "path": "lib/us-infrastructure/SLPackage.sleela",
