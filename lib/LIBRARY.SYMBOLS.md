@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11567
+library-source-files: 11568
 library-packages: 101
 module-facade-symbols: 70
-total-symbol-records: 11637
+total-symbol-records: 11638
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -667,6 +667,7 @@ core	SLType.sleela	lib/core/SLType.sleela	source
 core	SLTypeDescriptor.sleela	lib/core/SLTypeDescriptor.sleela	source
 core	SLUdpTransport.sleela	lib/core/SLUdpTransport.sleela	source
 core	SLValidator.sleela	lib/core/SLValidator.sleela	source
+core	SLVictory.sleela	lib/core/SLVictory.sleela	source
 cpu	SL6502CPU.sleela	lib/cpu/6502/SL6502CPU.sleela	source
 cpu	SL68020CPU.sleela	lib/cpu/68020/SL68020CPU.sleela	source
 cpu	SL68030CPU.sleela	lib/cpu/68030/SL68030CPU.sleela	source
