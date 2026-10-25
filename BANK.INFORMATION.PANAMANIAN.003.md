@@ -1,4 +1,4 @@
-# SLeeLa — BANKS3.md
+# SLeeLa — BANK.INFORMATION.PANAMANIAN.003.md
 
 ## HTTP 3.0 National Banking, Economic & Historical Registry — Combined 391-Country Table
 
