@@ -45,26 +45,40 @@ and adapt. It now covers three things:
 
 ## Shared GUI Color Theme
 
-All five runnable GUI examples now use the same SLeeLa family palette, matching
-`lib/gui/GUI-THEME.md` and the `SLGuiTheme` classes:
+The four `lib/gui` version-line demos each use one of the toolkit's four
+**Standard Pattern** theme presets (built into SleelaUI as `SLUIThemeId`
+values, applied with `uiThemePreset(id)` — no per-colour overrides). **MILITARY
+keeps its own metal/blue branded palette** and is left unchanged.
 
-| Role | Color |
-|---|---|
-| Title/menu/header chrome | `#1D2025` |
-| URL-entry / raised surface | `#383C47` |
-| Application background | `#22262D` |
-| Panels and cards | `#292D35` |
-| Primary text | `#E8EAED` |
-| Muted text | `#B0B7C3` |
-| Borders | `#444A56` |
-| Accent | `#4F8CFF` |
-| Focus | `#8AB4F8` |
-| Danger | `#D9534F` |
-| Success | `#3FA776` |
+| Demo | Standard Pattern | Preset id | Character |
+|---|---|---|---|
+| **MUAL** | WHITE | 4 | Light surfaces, dark text, blue accent |
+| **GUAL** | BLACK | 5 | Deep black surfaces, light text |
+| **THUAL** | BLUE | 6 | Blue-tinted surfaces, light text |
+| **DUAL** | GRAY | 7 | Neutral mid-gray surfaces, light text |
+| MILITARY | (own) | — | Metal/blue branded palette, unchanged |
 
-The example theme builders configure the SleelaUI theme tokens consistently.
+Each preset is a flat, one-accent palette defined in
+`user-interface/src/slui_theme.cpp`; a host selects one by id and tunes only the
+family metrics (radius, control height).
+
+### Frame, overflow, and the floating Wi-Fi popup
+
+Three toolkit behaviours these demos rely on:
+
+- **Interior content is clipped to its frame.** `Card` and `Frame` are now hard
+  paint boundaries (like `Box`/`ScrolledView` already were): children are
+  clipped to the content box, so interior components can never spill past the
+  frame border/margins.
+- **The Wi-Fi popup floats forward of the frame.** A popup is an *overlay*: it
+  is painted last and unclipped, anchored near the lower-right status region, so
+  clicking the Wi-Fi icon shows the connectivity menu floating above the window
+  rather than inline in the layout.
+- **The Wi-Fi icon is right-aligned.** A trailing spacer pushes the Wi-Fi
+  control to the rightmost end of the status bar in every model.
+
 Native operating-system title-bar tinting is platform/window-manager dependent;
-the `#1D2025` token is applied to the toolkit's chrome/header surface.
+the preset's chrome token is applied to the toolkit's own header surface.
 
 ---
 

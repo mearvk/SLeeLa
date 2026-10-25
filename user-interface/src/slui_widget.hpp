@@ -126,9 +126,25 @@ public:
     /* Paint self then children. */
     virtual void paint(PaintContext& ctx) = 0;
 
+    /* Overlay flag: an overlay widget (e.g. a popup/menu) floats FORWARD of the
+     * frame. It is skipped during the normal in-tree child paint (so it is not
+     * drawn clipped or mid-tree) and painted LAST by the Window, unclipped, so
+     * it appears above everything. */
+    bool is_overlay() const { return is_overlay_; }
+    void set_overlay(bool on) { is_overlay_ = on; }
+
     void paint_children(PaintContext& ctx) {
         for (auto& c : children_) {
-            if (c->visible_) c->paint(ctx);
+            if (c->visible_ && !c->is_overlay_) c->paint(ctx);
+        }
+    }
+
+    /* Depth-first collect of visible overlay widgets, for the Window's top pass. */
+    void collect_overlays(std::vector<Widget*>& out) {
+        for (auto& c : children_) {
+            if (!c->visible_) continue;
+            if (c->is_overlay_) out.push_back(c.get());
+            c->collect_overlays(out);
         }
     }
 
@@ -251,6 +267,7 @@ protected:
     bool suggested_ = false;
     bool destructive_ = false;
     bool activated_ = false; /* one-shot activation latch (take_activated) */
+    bool is_overlay_ = false; /* floats forward of the frame; painted last */
 
     SLUIActivateHandler activate_ = nullptr;
     void* activate_user_ = nullptr;

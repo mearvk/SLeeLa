@@ -125,6 +125,82 @@ void theme_fill_preset(SLUITheme* out, SLUIThemeId id) {
         copy_family(out, "system");
         break;
 
+    case SLUI_THEME_WHITE:
+        /* Standard Pattern: WHITE. A light surface family with dark text and a
+         * blue accent -- the classic light desktop look. */
+        out->id = SLUI_THEME_WHITE;
+        out->bg = slui_rgb(0xF4, 0xF5, 0xF7);        /* light application floor */
+        out->surface = slui_rgb(0xFF, 0xFF, 0xFF);   /* white panels / cards    */
+        out->surface_hi = slui_rgb(0xEA, 0xEC, 0xF0); /* hovered raised surface */
+        out->chrome = slui_rgb(0xE6, 0xE8, 0xEC);    /* light title / header    */
+        out->border = slui_rgb(0xD0, 0xD4, 0xDA);    /* soft hairline           */
+        out->fg = slui_rgb(0x1A, 0x1C, 0x20);        /* near-black primary text */
+        out->fg_dim = slui_rgba(0x1A, 0x1C, 0x20, 0xA0);
+        out->accent = slui_rgb(0x2F, 0x6F, 0xED);    /* blue accent             */
+        out->accent_fg = slui_rgb(0xFF, 0xFF, 0xFF);
+        out->danger = slui_rgb(0xD0, 0x3A, 0x34);
+        out->hover = slui_rgba(0x00, 0x00, 0x00, 0x0E);  /* subtle dark tint    */
+        out->active = slui_rgba(0x00, 0x00, 0x00, 0x1C);
+        copy_family(out, "system");
+        break;
+
+    case SLUI_THEME_BLACK:
+        /* Standard Pattern: BLACK. Deep black surfaces with light text; a
+         * stronger, flatter sibling of SLICK_BLACK. */
+        out->id = SLUI_THEME_BLACK;
+        out->bg = slui_rgb(0x08, 0x08, 0x0A);
+        out->surface = slui_rgb(0x12, 0x12, 0x15);
+        out->surface_hi = slui_rgb(0x1C, 0x1D, 0x22);
+        out->chrome = slui_rgb(0x0B, 0x0B, 0x0E);
+        out->border = slui_rgb(0x26, 0x27, 0x2D);
+        out->fg = slui_rgb(0xF3, 0xF4, 0xF6);
+        out->fg_dim = slui_rgba(0xF3, 0xF4, 0xF6, 0xA6);
+        out->accent = slui_rgb(0x6C, 0xA6, 0xFF);
+        out->accent_fg = slui_rgb(0x06, 0x0A, 0x14);
+        out->danger = slui_rgb(0xE5, 0x4B, 0x4B);
+        out->hover = slui_rgba(0xFF, 0xFF, 0xFF, 0x12);
+        out->active = slui_rgba(0xFF, 0xFF, 0xFF, 0x24);
+        copy_family(out, "system");
+        break;
+
+    case SLUI_THEME_BLUE:
+        /* Standard Pattern: BLUE. Blue-tinted dark surfaces with light text and
+         * a brighter blue accent. */
+        out->id = SLUI_THEME_BLUE;
+        out->bg = slui_rgb(0x10, 0x1A, 0x2E);
+        out->surface = slui_rgb(0x17, 0x24, 0x3E);
+        out->surface_hi = slui_rgb(0x20, 0x31, 0x52);
+        out->chrome = slui_rgb(0x0C, 0x14, 0x24);
+        out->border = slui_rgb(0x2C, 0x41, 0x68);
+        out->fg = slui_rgb(0xEC, 0xF1, 0xFB);
+        out->fg_dim = slui_rgba(0xEC, 0xF1, 0xFB, 0xAA);
+        out->accent = slui_rgb(0x4F, 0x8C, 0xFF);
+        out->accent_fg = slui_rgb(0x08, 0x12, 0x24);
+        out->danger = slui_rgb(0xE5, 0x5B, 0x55);
+        out->hover = slui_rgba(0xFF, 0xFF, 0xFF, 0x12);
+        out->active = slui_rgba(0xFF, 0xFF, 0xFF, 0x22);
+        copy_family(out, "system");
+        break;
+
+    case SLUI_THEME_GRAY:
+        /* Standard Pattern: GRAY. Neutral mid-gray surfaces, light text, cool
+         * accent -- a quiet, professional neutral. */
+        out->id = SLUI_THEME_GRAY;
+        out->bg = slui_rgb(0x3A, 0x3D, 0x42);
+        out->surface = slui_rgb(0x45, 0x48, 0x4E);
+        out->surface_hi = slui_rgb(0x52, 0x56, 0x5D);
+        out->chrome = slui_rgb(0x30, 0x33, 0x38);
+        out->border = slui_rgb(0x5A, 0x5E, 0x66);
+        out->fg = slui_rgb(0xF0, 0xF1, 0xF3);
+        out->fg_dim = slui_rgba(0xF0, 0xF1, 0xF3, 0xA8);
+        out->accent = slui_rgb(0x7F, 0xB0, 0xFF);
+        out->accent_fg = slui_rgb(0x0D, 0x14, 0x20);
+        out->danger = slui_rgb(0xE0, 0x5A, 0x55);
+        out->hover = slui_rgba(0xFF, 0xFF, 0xFF, 0x12);
+        out->active = slui_rgba(0xFF, 0xFF, 0xFF, 0x22);
+        copy_family(out, "system");
+        break;
+
     case SLUI_THEME_SLEELA_BASE:
     case SLUI_THEME_CUSTOM:
     default:
