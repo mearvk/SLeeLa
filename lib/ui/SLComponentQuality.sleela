@@ -1,0 +1,138 @@
+<< lib/ui/SLComponentQuality.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLComponentQuality — the per-COMPONENT QUALITY descriptor that
+     completes the standard layout model. A layout already gives every component
+     its exact SIZE and pixel-perfect PLACEMENT (SLLayoutBox: x/y/w/h); this
+     class gives every component its intended QUALITY: which theme role it reads
+     as, how strongly it is emphasised, and whether it is currently interactive.
+     So a component is fully described by QUALITY + SIZE + PLACEMENT.
+
+   Quality is expressed in the vocabulary the standard themes already define
+   (SLStandardTheme's role tokens), so it maps cleanly to a flavor (blue / gray
+   / black / white) and to what the native toolkit can honor per widget:
+     - ROLE   : which surface/text the renderer draws the component as --
+                BODY (default content), SURFACE (a raised panel), CHROME
+                (title/menu bar), or ACCENT (the one interactive accent).
+     - EMPHASIS: NORMAL, PRIMARY (the single suggested action -> the toolkit's
+                uiWidgetSuggested), or DANGER (destructive -> uiWidgetDestructive).
+     - interactive: whether the component is enabled (sensitive) right now.
+
+   Pure SLeeLa (no native handle); it always checks and runs. The native
+   realizer (SLLayoutDriver) reads a component's quality and applies the parts
+   the toolkit can honor per widget (emphasis + sensitivity); the role is a hint
+   the themed renderer uses when it draws the surface. >>
+#sleela 2.1
+< Family: ui. Per-component quality: role + emphasis + interactivity. >
+class SLComponentQuality {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11609;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ROLE: which theme surface/text the component reads as. >
+  static final int ROLE_BODY    = 0;
+  static final int ROLE_SURFACE = 1;
+  static final int ROLE_CHROME  = 2;
+  static final int ROLE_ACCENT  = 3;
+
+  < EMPHASIS: normal, the single primary action, or a destructive action. >
+  static final int EMPHASIS_NORMAL  = 0;
+  static final int EMPHASIS_PRIMARY = 1;
+  static final int EMPHASIS_DANGER  = 2;
+
+  int role;
+  int emphasis;
+  < 1 = enabled/interactive, 0 = disabled (greyed out) >
+  int interactive;
+
+  < Default quality: body role, no emphasis, interactive. >
+  void create() {
+    role = ROLE_BODY;
+    emphasis = EMPHASIS_NORMAL;
+    interactive = 1;
+  }
+
+  < ---- role (fluent one-call setters, beginner-friendly) ------------------ >
+  void asBody()    { role = ROLE_BODY; }
+  void asSurface() { role = ROLE_SURFACE; }
+  void asChrome()  { role = ROLE_CHROME; }
+  void asAccent()  { role = ROLE_ACCENT; }
+  void setRole(int r) { if (r >= ROLE_BODY && r <= ROLE_ACCENT) { role = r; } }
+  int getRole() { return role; }
+
+  < ---- emphasis ----------------------------------------------------------- >
+  void normal()  { emphasis = EMPHASIS_NORMAL; }
+  void primary() { emphasis = EMPHASIS_PRIMARY; }
+  void danger()  { emphasis = EMPHASIS_DANGER; }
+  void setEmphasis(int e) { if (e >= EMPHASIS_NORMAL && e <= EMPHASIS_DANGER) { emphasis = e; } }
+  int getEmphasis() { return emphasis; }
+  boolean isPrimary() { return emphasis == EMPHASIS_PRIMARY; }
+  boolean isDanger()  { return emphasis == EMPHASIS_DANGER; }
+
+  < ---- interactivity ------------------------------------------------------ >
+  void enable()  { interactive = 1; }
+  void disable() { interactive = 0; }
+  void setInteractive(boolean on) { interactive = on ? 1 : 0; }
+  boolean isInteractive() { return interactive == 1; }
+
+  < The role name, in the theme's own vocabulary. >
+  String roleName() {
+    if (role == ROLE_SURFACE) { return "surface"; }
+    if (role == ROLE_CHROME)  { return "chrome"; }
+    if (role == ROLE_ACCENT)  { return "accent"; }
+    return "body";
+  }
+  < The emphasis name. >
+  String emphasisName() {
+    if (emphasis == EMPHASIS_PRIMARY) { return "primary"; }
+    if (emphasis == EMPHASIS_DANGER)  { return "danger"; }
+    return "normal";
+  }
+
+  < A one-line account of the quality, for logs/inspection. >
+  String describe() {
+    return "quality:" + roleName() + "/" + emphasisName()
+      + (interactive == 1 ? "/enabled" : "/disabled");
+  }
+
+  boolean honored() {
+    return role >= ROLE_BODY && role <= ROLE_ACCENT
+      && emphasis >= EMPHASIS_NORMAL && emphasis <= EMPHASIS_DANGER
+      && (interactive == 0 || interactive == 1);
+  }
+}

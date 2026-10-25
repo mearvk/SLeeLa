@@ -46526,6 +46526,10 @@
       "sha256": "6d8c094b318bba47e80ec52e01fdd9a8f2ac632ad777c040ca3f8e93422778a6"
     },
     {
+      "path": "lib/ui/SLComponentQuality.sleela",
+      "sha256": "3e36ffb341aeb7ee53807648195d21006f6e825dc9ffaa0df47dec4b8f295cef"
+    },
+    {
       "path": "lib/ui/SLDialog.sleela",
       "sha256": "5884a34873b670ac3dade4ae08eb86599c9452d2d01208345c0b947729e4f3e9"
     },
@@ -46551,11 +46555,11 @@
     },
     {
       "path": "lib/ui/SLLayoutDriver.sleela",
-      "sha256": "37b6e45614941579a1c855d975a052fb8d8683296c06ddcbebab14e1d3b45e1e"
+      "sha256": "c91fd4c1e69f043399c6c66b9ff5b3d78f958d48a43577b42cbcf8f3ed94de94"
     },
     {
       "path": "lib/ui/SLLayoutFrame.sleela",
-      "sha256": "da241ae75cd1d932f32ef289dcdc9a664b9cde9b369f1983094511d9dbe48fef"
+      "sha256": "0b0a7ba3da6667d3f97301baa7447db67a6c7c2bbdbb16846438dd45610a3f0a"
     },
     {
       "path": "lib/ui/SLLayoutKit.sleela",
@@ -46627,11 +46631,15 @@
     },
     {
       "path": "lib/ui/layout-driver-demo.sleela",
-      "sha256": "f15092cf66947db150d5da38f9e4d8939cd1d4ed5e0cfb34cf63102e4400fa60"
+      "sha256": "c26c81347946f4f0aaff982a51b69103265ded742d1f788548851514edae5730"
     },
     {
       "path": "lib/ui/theme-demo.sleela",
       "sha256": "f0235b6f6e1da537f186dffa40d373d5502dc48bb33a5f7c9bd58ad08d9121de"
+    },
+    {
+      "path": "lib/ui/verify-pixel-perfect.sleela",
+      "sha256": "f2be8a0dabb14c53abf8971ee4043fdb4d701e9b4a47d75f16838a9cfe8f43ae"
     },
     {
       "path": "lib/us-infrastructure/SLPackage.sleela",

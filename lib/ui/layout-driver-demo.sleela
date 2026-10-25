@@ -43,17 +43,21 @@ class LayoutDriverDemo {
     f.add("body", 0);
     f.add("footer", 32);
     f.place(0, 0, w, h);
+    < describe each component's QUALITY (role + emphasis) alongside its size >
+    f.qualityOf("header").asChrome();
+    f.qualityOf("body").asSurface();
+    f.qualityOf("footer").asAccent(); f.qualityOf("footer").primary();
     return f;
   }
 
   void printPlan(SLLayoutFrame f) {
     print("plan '" + f.getTitle() + "' (" + f.getWidth() + "x" + f.getHeight()
         + ", gap " + f.getGap() + "):");
-    print("  header: " + f.boxOf("header").describe()
+    print("  header: " + f.boxOf("header").describe() + "  " + f.qualityOf("header").describe()
         + (f.isFlexibleAt(0) ? "  [flexible]" : "  [fixed]"));
-    print("  body:   " + f.boxOf("body").describe()
+    print("  body:   " + f.boxOf("body").describe() + "  " + f.qualityOf("body").describe()
         + (f.isFlexibleAt(1) ? "  [flexible]" : "  [fixed]"));
-    print("  footer: " + f.boxOf("footer").describe()
+    print("  footer: " + f.boxOf("footer").describe() + "  " + f.qualityOf("footer").describe()
         + (f.isFlexibleAt(2) ? "  [flexible]" : "  [fixed]"));
   }
 
@@ -95,7 +99,7 @@ class LayoutDriverDemo {
     driver.applyNamed(plan, "footer", footer);
 
     print("realized: native container handle " + driver.container()
-        + " with 3 components sized from the plan.");
+        + " with 3 components sized AND quality-applied from the plan.");
 
     uiWindowShow(win);
     < Pump a few turns so the window maps, then exit (demo, not an app loop). >

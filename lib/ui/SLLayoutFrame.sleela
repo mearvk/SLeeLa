@@ -81,6 +81,8 @@ class SLLayoutFrame {
   SLGridLayout  grid;
   < the named components the Frame organizes, in add order >
   String[] names;
+  < each component's quality (role + emphasis + interactivity), parallel to names >
+  SLComponentQuality[] qualities;
   int count;
   < 1 once place() has arranged the layout >
   int placed;
@@ -92,6 +94,7 @@ class SLLayoutFrame {
     stack = new SLStackLayout(); stack.create();
     grid = null;
     names = new String[MAX_COMPONENTS];
+    qualities = new SLComponentQuality[MAX_COMPONENTS];
     count = 0;
     placed = 0;
   }
@@ -127,10 +130,31 @@ class SLLayoutFrame {
     if (kind == LAYOUT_GRID) { grid.add(); }
     else { stack.add(sizePx); }
     names[count] = name;
+    SLComponentQuality q = new SLComponentQuality(); q.create();
+    qualities[count] = q;
     int idx = count; count = count + 1;
     return idx;
   }
   int size() { return count; }
+
+  < ---- per-component quality (role + emphasis + interactivity) ------------ >
+  < The quality descriptor for component `index` (never null for a valid >
+  < index; defaults to body/normal/enabled until the caller customizes it). >
+  SLComponentQuality qualityAt(int index) {
+    if (index < 0 || index >= count) { return null; }
+    return qualities[index];
+  }
+  < The quality descriptor for a named component, or null if unknown. >
+  SLComponentQuality qualityOf(String name) {
+    int idx = indexOf(name);
+    if (idx < 0) { return null; }
+    return qualities[idx];
+  }
+  < Replace a component's quality wholesale (ignored for an unknown index). >
+  void setQualityAt(int index, SLComponentQuality q) {
+    if (index < 0 || index >= count || q == null) { return; }
+    qualities[index] = q;
+  }
 
   < the index of a named component, or -1 if the Frame never heard of it >
   int indexOf(String name) {
