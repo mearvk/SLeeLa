@@ -10,6 +10,8 @@
 | **Canonical reference** | <https://www.w3.org/TR/REC-html32> |
 | **Source in this archive** | ✅ Normative DTD — [`specs/dtd/html-3.2/HTML32.dtd`](../specs/dtd/html-3.2/HTML32.dtd). (Human-readable prose is at the w3.org URL above.) |
 
+> 📖 **Tag reference:** see [`tags/03-html-3.2.tags.md`](./tags/03-html-3.2.tags.md) for this version's elements and their definitions.
+
 ## Summary
 
 HTML 3.2 was the **first W3C Recommendation** for HTML, marking the handoff of HTML stewardship from the IETF to the W3C. The ambitious HTML 3.0 draft had been abandoned; 3.2 instead standardized the widely-deployed features that browser vendors (Netscape, Microsoft) had already shipped.

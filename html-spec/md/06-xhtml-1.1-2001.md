@@ -9,6 +9,8 @@
 | **Canonical reference** | <https://www.w3.org/TR/xhtml11/> |
 | **Source in this archive** | ✅ Complete normative grammar — [`specs/dtd/xhtml-1.1/`](../specs/dtd/xhtml-1.1/): the driver `xhtml11.dtd`, `xhtml11-model-1.mod`, and the full 47-file XHTML Modularization 1.1 set under `modules/`. Resolves and **validates offline** via `specs/dtd/catalog.xml`. ✅ **Full prose** now archived too — [`specs/prose/xhtml-1.1/xhtml11.html`](../specs/prose/xhtml-1.1/xhtml11.html) (the complete XHTML 1.1 Second Edition single-page Recommendation, 23 Nov 2010). |
 
+> 📖 **Tag reference:** see [`tags/06-xhtml-1.1.tags.md`](./tags/06-xhtml-1.1.tags.md) for the module set, the element list, and the new Ruby elements.
+
 ## Summary
 
 XHTML 1.1 took XHTML 1.0 Strict and removed the transitional/legacy allowances, defining the language in terms of **modularized XHTML** — a set of reusable modules (text, forms, tables, etc.) assembled into the full language. This modular approach was intended to let constrained devices support defined subsets.

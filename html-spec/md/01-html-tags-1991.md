@@ -10,6 +10,8 @@
 | **Canonical reference** | <https://www.w3.org/History/19921103-hypertext/hypertext/WWW/MarkUp/Tags.html> |
 | **Source in this archive** | ✅ [`specs/html-tags-1991/Tags.html`](../specs/html-tags-1991/Tags.html) — the original note, verbatim |
 
+> 📖 **Tag reference:** see [`tags/01-html-tags-1991.tags.md`](./tags/01-html-tags-1991.tags.md) for this version's elements and their definitions.
+
 ## Summary
 
 The first public description of HTML was an informal document titled **"HTML Tags"**, listing roughly **18–20 elements** that the earliest web browsers would support. It had no DTD, no formal grammar, and no versioning — it was a working note, not a specification in the modern sense.

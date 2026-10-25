@@ -21,6 +21,14 @@ specification source is obtainable, it is included verbatim in [`specs/`](./spec
 | 9 | HTML 5.2 | 2017 | W3C | [md](./md/09-html-5.2-2017.md) | ⚠️ only a W3C **5.3 Editor's Draft** source is archived (`w3c-html53-ED-single-page.bs`), not 5.2 |
 | 10 | HTML Living Standard | 2011→now | WHATWG | [md](./md/10-html-living-standard.md) | ✅ |
 
+## Tag references
+
+- [`md/tags/`](./md/tags) — a **per-version catalogue of every element (tag) with a one-line
+  definition**, grouped by role, derived directly from the archived DTDs / RFC / source. See
+  [`md/tags/README.md`](./md/tags/README.md) for the index and
+  [`md/tags/CHANGES.md`](./md/tags/CHANGES.md) for the added/removed/deprecated deltas across
+  versions.
+
 ## Appraisals
 
 - [`STATE.md`](./STATE.md) — coherence audit of every archived spec (completeness, labeling).
@@ -36,7 +44,10 @@ html-spec/
 ├── md/                    ← written-up Markdown summary, one per version
 │   ├── 01-html-tags-1991.md
 │   ├── ... (chronological) ...
-│   └── 10-html-living-standard.md
+│   ├── 10-html-living-standard.md
+│   └── tags/              ← per-version element (tag) catalogue + definitions
+│       ├── README.md      (index)   CHANGES.md (cross-version deltas)
+│       └── NN-<version>.tags.md ...
 └── specs/                 ← actual retrieved specification sources
     ├── rfc1866-html-2.0.txt                       (HTML 2.0 — full verbatim IETF RFC text)
     ├── html-tags-1991/Tags.html                   (the 1991 CERN "HTML Tags" note — the first HTML doc)

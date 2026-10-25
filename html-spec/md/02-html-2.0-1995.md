@@ -11,6 +11,8 @@
 | **Canonical reference** | <https://www.rfc-editor.org/rfc/rfc1866> |
 | **Source in this archive** | ✅ **Full verbatim text** — [`specs/rfc1866-html-2.0.txt`](../specs/rfc1866-html-2.0.txt) (RFC 1866, 146 KB; from the `mcpherrinm/rfc-mirror` repo — see PROVENANCE.txt) |
 
+> 📖 **Tag reference:** see [`tags/02-html-2.0.tags.md`](./tags/02-html-2.0.tags.md) for this version's elements and their definitions.
+
 ## Summary
 
 HTML 2.0 was the **first formal HTML specification** — the first version blessed by a standards body (the IETF). It codified the common practice of the early-1990s browsers (notably NCSA Mosaic) into a single document with a proper SGML DTD. "2.0" was chosen to distinguish it from the many informal "1.x" documents in circulation; there was never a formal HTML 1.0 standard.

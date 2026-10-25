@@ -10,6 +10,8 @@
 | **Canonical reference** | <https://www.w3.org/TR/html401/> |
 | **Source in this archive** | ✅ Normative DTDs + entity sets — [`specs/dtd/html-4.0/`](../specs/dtd/html-4.0/) (strict/loose/frameset) and [`specs/dtd/html-4.01/`](../specs/dtd/html-4.01/) (strict/loose/frameset + HTMLlat1/HTMLspecial/HTMLsymbol entities). ✅ **Complete prose** now archived — [`specs/prose/html-4.01/`](../specs/prose/html-4.01/): every canonical chapter (`about`, `intro/*`, `struct/*` incl. `lists`, `present/*`, `interact/*` incl. `forms`, `sgml/*`, `appendix/*`, `index/*`) plus the figure images. The published 24 December 1999 Recommendation. |
 
+> 📖 **Tag reference:** see [`tags/04-html-4.01.tags.md`](./tags/04-html-4.01.tags.md) for this version's elements and their definitions (Strict / Transitional / Frameset).
+
 ## Summary
 
 HTML 4.x was the long-lived mature version of classic HTML, and the baseline for the web for roughly a decade. Its central theme was the **separation of structure from presentation**: markup describes the document, while **CSS** handles appearance. HTML 4.01 is a minor bug-fix revision of 4.0.

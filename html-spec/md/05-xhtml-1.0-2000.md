@@ -9,6 +9,8 @@
 | **Canonical reference** | <https://www.w3.org/TR/xhtml1/> |
 | **Source in this archive** | ✅ Normative DTDs — [`specs/dtd/xhtml-1.0/`](../specs/dtd/xhtml-1.0/) (strict / transitional / frameset). ✅ **Full prose** now archived — [`specs/prose/xhtml-1.0/Overview.html`](../specs/prose/xhtml-1.0/Overview.html) (the complete XHTML 1.0 Second Edition single-page Recommendation). |
 
+> 📖 **Tag reference:** see [`tags/05-xhtml-1.0.tags.md`](./tags/05-xhtml-1.0.tags.md) for the element set and the XML syntax rules that differ from HTML 4.01.
+
 ## Summary
 
 XHTML 1.0 is a **reformulation of HTML 4.01 as an application of XML 1.0** rather than SGML. The vocabulary (the elements and attributes) is essentially identical to HTML 4.01; what changed are the syntax rules, which XML makes strict.

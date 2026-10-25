@@ -9,6 +9,8 @@
 | **Canonical reference** | <https://html.spec.whatwg.org/> (multipage: <https://html.spec.whatwg.org/multipage/>) |
 | **Source in this archive** | ✅ `specs/whatwg-html-living-standard.source.html` — full 8.0 MB source; see PROVENANCE.txt for the exact commit |
 
+> 📖 **Tag reference:** see [`tags/10-html-living-standard.tags.md`](./tags/10-html-living-standard.tags.md) for the full modern element set (also the authoritative list for HTML5 / 5.1 / 5.2), plus [`tags/CHANGES.md`](./tags/CHANGES.md) for cross-version deltas.
+
 ## Summary
 
 The HTML Living Standard is a **continuously-maintained, unversioned** specification — there are no numbered editions; the standard *is* whatever the current document says. Rather than periodic snapshots, changes land continuously as features reach interoperable implementation. Since the **2019 W3C/WHATWG agreement**, this is the single authoritative HTML specification, and the W3C no longer publishes competing versions.
