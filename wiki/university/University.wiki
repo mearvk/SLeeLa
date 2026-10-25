@@ -1,0 +1,68 @@
+<!-- Sourced concept page for a self-hosted wiki. Definitional, neutral, and
+     cited. Paraphrased from authoritative references (see == Sources ==); no
+     specific institutions are ranked or enumerated. Not a submission to any
+     public encyclopedia. -->
+{{Infobox concept
+| name   = University
+| field  = Higher education
+| latin  = universitas (a whole; a corporate body)
+| origin = Medieval Europe, 11th–13th centuries
+}}
+
+A '''university''' is an institution of higher education and research that has
+the authority to award [[Academic degree|academic degrees]] across a range of
+subjects. It typically brings together a college of arts and sciences with
+graduate and professional schools, and sits within the broader category of
+[[Higher education|higher-education institutions]].<ref name="eb" /><ref name="nwe" />
+
+Universities grant degrees at successive levels — commonly the bachelor's,
+master's and doctorate — and combine teaching with the advancement of knowledge
+through research.<ref name="nwe" /><ref name="unesco-hei" />
+
+== Definition ==
+
+Authoritative reference works converge on a compact definition: a university is
+a degree-granting institution of higher learning, usually comprising a liberal
+arts and sciences core together with graduate and professional faculties.<ref name="eb" />
+Encyclopaedic treatments add that it conducts research and confers degrees at
+every level — undergraduate through doctoral — across many fields.<ref name="nwe" />
+
+In the wider educational system, universities are one kind of
+'''higher-education institution''': establishments that provide advanced
+learning beyond secondary school and award degrees and certifications, a set
+that also includes colleges and specialised schools.<ref name="unesco-hei" />
+
+== Etymology ==
+
+The word derives from the Latin ''universitas'', denoting a whole or a corporate
+body — originally a guild-like association of masters and scholars rather than a
+building or a single managed institution.<ref name="hoi" /> The enduring phrase
+''alma mater'' ("nourishing mother") is one of the oldest symbols of the
+university, associated with the institution founded at Bologna in 1088.<ref name="wp-univ" />
+
+== Mission ==
+
+Higher education — the stage of learning that universities principally serve —
+is widely described as a cultural and scientific asset that supports personal
+development and drives economic, technological and social change, and that
+advances the exchange of knowledge, research and innovation.<ref name="unesco-know" />
+
+== See also ==
+
+* [[Higher education]]
+* [[History of the university]]
+* [[University governance]]
+* [[Academic degree]]
+
+== Sources ==
+<references>
+<ref name="eb">"University: Definition, Origin, History, & Facts", Encyclopædia Britannica. https://www.britannica.com/topic/university — a university is an institution of higher education, usually with a college of liberal arts and sciences plus graduate and professional schools, able to confer degrees in various fields. (Rephrased for compliance.)</ref>
+<ref name="nwe">"University", New World Encyclopedia. https://www.newworldencyclopedia.org/entry/University — a university is an institution of higher education and research that grants degrees at all levels in a variety of subjects. (Rephrased for compliance.)</ref>
+<ref name="unesco-hei">"What is a Higher education institution? Meaning, Definition", UNESCO. https://www.unesco.org/en/ — higher-education institutions provide advanced learning beyond secondary education and typically offer degrees and certifications, encompassing universities, colleges and specialised schools. (Rephrased for compliance.)</ref>
+<ref name="unesco-know">"Higher education: What you need to know", UNESCO. https://www.unesco.org/en/higher-education/need-know — higher education is a cultural and scientific asset enabling personal development and promoting economic, technological and social change. (Rephrased for compliance.)</ref>
+<ref name="hoi">"The origin of the university" (on ''universitas'' as a guild/association of masters), History of Information. https://historyofinformation.com/detail.php?id=4153 (Rephrased for compliance.)</ref>
+<ref name="wp-univ">"University", Wikipedia. https://en.wikipedia.org/wiki/University — on ''alma mater'' and the 1088 foundation at Bologna. (Rephrased for compliance.)</ref>
+</references>
+
+[[Category:Higher education]]
+[[Category:University corpus]]
