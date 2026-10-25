@@ -1,0 +1,27 @@
+/*
+ * sleela-virtual-machine/003/SLVmPremiumVersion003.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmPremiumVersion003 -- the loadable SLeeLa manifest for
+ *   premium VM generation slvm-3 ("isolation and verification"), the OOD selector record the native
+ *   VM can enumerate and select via `sleela vm select premium 3` (or p3).
+ *   It names this generation's C/C++ project directory and admission validator,
+ *   composes the cumulative premium capability set through generation 3, and
+ *   carries the default configuration profile. build() returns the configured
+ *   SLVmRuntime a selection resolves to; nativeBinary() names the binary the
+ *   master build produces (vm-build/slvm-3).
+ *
+ * Faithful to impl/frontend/driver.cpp (kPremium) and virtual-machine/USER-GUIDE.md
+ * (per-grade validator list). It extends SLVmPremiumVersion
+ * (lib/vm/src/sleela/SLVmPremiumVersion.sleela).
+ *
+ * Family: vm. Composes SLVmPremiumVersion, SLVmConfig, SLVmRuntime.
+ */
+#sleela 2.4
+class SLVmPremiumVersion003 extends SLVmPremiumVersion {
+  void configure() {
+    base(3, "slvm-3", "isolation and verification", "sleela-virtual-machine/003", "isolation policy");
+    composeThrough(3);
+    // default profile tuning for this generation (user-editable in setup/conference)
+    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+  }
+}

@@ -670,7 +670,11 @@ static int vmCmd(int argc,char**argv){
     };
     /* Premium VMs: the eleven SLVM generations under sleela-virtual-machine.
      * Selected as `sleela vm select premium <1..11>` (or `pNN`). These are
-     * substantial generation builds, distinct from the think-tank versions. */
+     * substantial generation builds, distinct from the think-tank versions.
+     * This table is mirrored by the SLeeLa-level premium catalogue
+     * (sleela-virtual-machine/SLVmPremiumRegistry.sleela composing
+     * SLVmPremiumVersion001..011), the premium sibling of the standard
+     * virtual-machine/vm-version/SLVmRegistry; keep the two in step. */
     struct PremiumVm{int n;const char*id;const char*label;const char*dir;};
     static const PremiumVm kPremium[11]={
         {1,"slvm-1","dedicated VM: broker, capabilities, security, OS boundary","sleela-virtual-machine/001"},

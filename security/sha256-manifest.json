@@ -519,7 +519,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "cf941b5cd210c1f1d3d749f770ecd03f9bca4e7bf299c53439d03b1ed79d7265"
+      "sha256": "d71753019929a6ce398d8e334ca2e3296884595436beddde2cbedf6fba337f44"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -47472,6 +47472,10 @@
     {
       "path": "lib/vm/src/sleela/SLVmPlatform.sleela",
       "sha256": "f5fba092269c1e4cbc704195031c971201e4b9443e9a58d58950d000585bc457"
+    },
+    {
+      "path": "lib/vm/src/sleela/SLVmPremiumVersion.sleela",
+      "sha256": "1c0873f2fb70cc1360d62d77975e0d04a1d3dbc4a4d5634e25fcd0a7e446f20f"
     },
     {
       "path": "lib/vm/src/sleela/SLVmProfile.sleela",

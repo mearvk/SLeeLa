@@ -1,0 +1,27 @@
+/*
+ * sleela-virtual-machine/010/SLVmPremiumVersion010.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmPremiumVersion010 -- the loadable SLeeLa manifest for
+ *   premium VM generation slvm-10 ("verified storage execution"), the OOD selector record the native
+ *   VM can enumerate and select via `sleela vm select premium 10` (or p10).
+ *   It names this generation's C/C++ project directory and admission validator,
+ *   composes the cumulative premium capability set through generation 10, and
+ *   carries the default configuration profile. build() returns the configured
+ *   SLVmRuntime a selection resolves to; nativeBinary() names the binary the
+ *   master build produces (vm-build/slvm-10).
+ *
+ * Faithful to impl/frontend/driver.cpp (kPremium) and virtual-machine/USER-GUIDE.md
+ * (per-grade validator list). It extends SLVmPremiumVersion
+ * (lib/vm/src/sleela/SLVmPremiumVersion.sleela).
+ *
+ * Family: vm. Composes SLVmPremiumVersion, SLVmConfig, SLVmRuntime.
+ */
+#sleela 2.4
+class SLVmPremiumVersion010 extends SLVmPremiumVersion {
+  void configure() {
+    base(10, "slvm-10", "verified storage execution", "sleela-virtual-machine/010", "verified storage");
+    composeThrough(10);
+    // default profile tuning for this generation (user-editable in setup/conference)
+    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+  }
+}

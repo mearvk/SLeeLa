@@ -1,0 +1,178 @@
+<< lib/vm/src/sleela/SLVmPremiumVersion.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLVmPremiumVersion -- the base manifest a selectable
+     PREMIUM VM generation (slvm-1 .. slvm-11) extends. It is the premium
+     sibling of SLVmVersion (the standard think-tank manifest base). Where the
+     standard arc is a 1..10 progression of additive user-level hardening units
+     over the shared Native Core, the premium arc is 1..11 SUBSTANTIAL
+     generation builds, each a real runnable VM under sleela-virtual-machine/0NN
+     that links the shared Core engine and admits a program only once that
+     generation's own feature validator accepts a well-formed instance.
+
+     A premium manifest is the loadable record that DESCRIBES one generation:
+     its id and label, the directory of its C/C++ VM project, the admission
+     VALIDATOR it compiles and calls at boot, and the native binary the master
+     build produces (vm-build/slvm-NN). It mirrors the authoritative premium
+     table in impl/frontend/driver.cpp (kPremium) and the per-grade validator
+     list documented in virtual-machine/USER-GUIDE.md; values are faithful to
+     those sources, never invented.
+
+   Each concrete SLVmPremiumVersionNNN (in sleela-virtual-machine/NNN) sets its
+   id, label, dir, validator, and generation number, then build() returns a
+   configured SLVmRuntime the selection resolves to. This is the SLeeLa-level
+   catalogue entry so premium generations are discoverable/selectable the same
+   way the standard versions are via SLVmRegistry.
+
+   Family: vm. Composes SLVmConfig, SLVmRuntime. Premium sibling of SLVmVersion.
+
+   [SYNC syntax-2.4 2026-10-25] Authored at the current syntax level. >>
+#sleela 2.4
+class SLVmPremiumVersion {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11601;
+  String metaAuthor = "SLeeLa standard library";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "SLeeLa SLEELA.syntax 2.4; sleela-virtual-machine LANGUAGE.SPEC";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- identity (faithful to impl/frontend/driver.cpp kPremium) ---- >
+  < e.g. "slvm-1" >
+  String id;
+  < e.g. "dedicated VM: broker, capabilities, security, OS boundary" >
+  String label;
+  < 1..11 >
+  int    number;
+  < e.g. "sleela-virtual-machine/001" >
+  String dir;
+  < the admission feature validator this generation compiles+calls at boot >
+  < (USER-GUIDE: 1 security supervisor ... 11 TAC3 filesystem module) >
+  String validator;
+
+  < the default configuration a user starts from >
+  SLVmConfig profile;
+
+  < -------------------------------------------------------------------- >
+  < Cumulative premium capability inventory. Each generation carries the >
+  < prior generations' capabilities forward and adds its own, mirroring the >
+  < kPremium label arc. These are honest booleans flipped on by generation. >
+  < -------------------------------------------------------------------- >
+  < 001 >
+  int hasBroker; int hasCapabilities; int hasSecurity; int hasOsBoundary;
+  < 002 >
+  int hasCrypto; int hasVmLink;
+  < 003 >
+  int hasIsolation; int hasVerification;
+  < 004 >
+  int hasAuthenticated; int hasDistributed;
+  < 005 >
+  int hasReproducibility; int hasPolicy; int hasRecovery; int hasAssurance;
+  < 006 >
+  int hasLineage; int hasAttestation; int hasLeases; int hasMigration;
+  < 007 >
+  int hasManagerHealth; int hasFailureHandling;
+  < 008 >
+  int hasAdmission; int hasTransactions; int hasAudit;
+  < 009 >
+  int hasFilesystem; int hasOsAdaptation;
+  < 010 >
+  int hasVerifiedStorage;
+  < 011 >
+  int hasModuleHosting; int hasSchemaExtension;
+
+  < Subclasses call base() then set their specifics. >
+  void base(int n, String identifier, String lbl, String directory, String val) {
+    number = n; id = identifier; label = lbl; dir = directory; validator = val;
+    < start all capabilities off; composeThrough(n) turns on the carry-forward. >
+    hasBroker = 0; hasCapabilities = 0; hasSecurity = 0; hasOsBoundary = 0;
+    hasCrypto = 0; hasVmLink = 0;
+    hasIsolation = 0; hasVerification = 0;
+    hasAuthenticated = 0; hasDistributed = 0;
+    hasReproducibility = 0; hasPolicy = 0; hasRecovery = 0; hasAssurance = 0;
+    hasLineage = 0; hasAttestation = 0; hasLeases = 0; hasMigration = 0;
+    hasManagerHealth = 0; hasFailureHandling = 0;
+    hasAdmission = 0; hasTransactions = 0; hasAudit = 0;
+    hasFilesystem = 0; hasOsAdaptation = 0;
+    hasVerifiedStorage = 0;
+    hasModuleHosting = 0; hasSchemaExtension = 0;
+    profile = new SLVmConfig();
+    profile.defaults();
+  }
+
+  < Enable every capability up to generation `n` (the cumulative carry-forward). >
+  void composeThrough(int n) {
+    if (n >= 1)  { hasBroker = 1; hasCapabilities = 1; hasSecurity = 1; hasOsBoundary = 1; }
+    if (n >= 2)  { hasCrypto = 1; hasVmLink = 1; }
+    if (n >= 3)  { hasIsolation = 1; hasVerification = 1; }
+    if (n >= 4)  { hasAuthenticated = 1; hasDistributed = 1; }
+    if (n >= 5)  { hasReproducibility = 1; hasPolicy = 1; hasRecovery = 1; hasAssurance = 1; }
+    if (n >= 6)  { hasLineage = 1; hasAttestation = 1; hasLeases = 1; hasMigration = 1; }
+    if (n >= 7)  { hasManagerHealth = 1; hasFailureHandling = 1; }
+    if (n >= 8)  { hasAdmission = 1; hasTransactions = 1; hasAudit = 1; }
+    if (n >= 9)  { hasFilesystem = 1; hasOsAdaptation = 1; }
+    if (n >= 10) { hasVerifiedStorage = 1; }
+    if (n >= 11) { hasModuleHosting = 1; hasSchemaExtension = 1; }
+  }
+
+  int capabilityCount() {
+    int c = hasBroker + hasCapabilities + hasSecurity + hasOsBoundary
+          + hasCrypto + hasVmLink + hasIsolation + hasVerification
+          + hasAuthenticated + hasDistributed + hasReproducibility + hasPolicy
+          + hasRecovery + hasAssurance + hasLineage + hasAttestation
+          + hasLeases + hasMigration + hasManagerHealth + hasFailureHandling
+          + hasAdmission + hasTransactions + hasAudit + hasFilesystem
+          + hasOsAdaptation + hasVerifiedStorage + hasModuleHosting
+          + hasSchemaExtension;
+    return c;
+  }
+
+  < The native binary the master build produces for this generation. The >
+  < generations build to vm-build/slvm-NN (zero-padded dir, un-padded binary). >
+  String nativeBinary() { return dir + "/vm-build/" + id; }
+
+  < Build a configured runtime for this generation (what selection resolves to). >
+  SLVmRuntime build() {
+    SLVmRuntime rt = new SLVmRuntime();
+    rt.init(profile, id + " (" + label + ")");
+    return rt;
+  }
+
+  void describe() {
+    print(id + "  [" + label + "]  caps=" + capabilityCount()
+          + "  validator=" + validator + "  -> " + nativeBinary());
+  }
+}

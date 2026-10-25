@@ -1,0 +1,27 @@
+/*
+ * sleela-virtual-machine/006/SLVmPremiumVersion006.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmPremiumVersion006 -- the loadable SLeeLa manifest for
+ *   premium VM generation slvm-6 ("continuous verification, lineage, attestation, leases, migration"), the OOD selector record the native
+ *   VM can enumerate and select via `sleela vm select premium 6` (or p6).
+ *   It names this generation's C/C++ project directory and admission validator,
+ *   composes the cumulative premium capability set through generation 6, and
+ *   carries the default configuration profile. build() returns the configured
+ *   SLVmRuntime a selection resolves to; nativeBinary() names the binary the
+ *   master build produces (vm-build/slvm-6).
+ *
+ * Faithful to impl/frontend/driver.cpp (kPremium) and virtual-machine/USER-GUIDE.md
+ * (per-grade validator list). It extends SLVmPremiumVersion
+ * (lib/vm/src/sleela/SLVmPremiumVersion.sleela).
+ *
+ * Family: vm. Composes SLVmPremiumVersion, SLVmConfig, SLVmRuntime.
+ */
+#sleela 2.4
+class SLVmPremiumVersion006 extends SLVmPremiumVersion {
+  void configure() {
+    base(6, "slvm-6", "continuous verification, lineage, attestation, leases, migration", "sleela-virtual-machine/006", "execution lease");
+    composeThrough(6);
+    // default profile tuning for this generation (user-editable in setup/conference)
+    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+  }
+}
