@@ -1,7 +1,7 @@
 #sheet SHEET.sheet
 #kind    system-object-catalog
 #for     Sleela / Nordshrift software systems
-#rev     1.0.0
+#rev     1.0.1
 #format  1.0
 #machine yes
 
@@ -587,8 +587,13 @@ section completitives:       # role: completitive
 
   Completion
     children:  Result, Status, Timestamp
-    siblings:  Termination, Done
+    siblings:  Termination, Done, Conclusion
     note:      the object representing a finished unit of work.
+
+  Conclusion
+    children:  Verdict, Approval, LivesFree
+    siblings:  Completion, Finding, Summary
+    note:      the reasoned outcome a unit of work settles on (vs Completion's mechanical finish); the philosophers Constructor's close -- Favor weighs the Notice of Approach to a Verdict, granted favor reaches Approval, the object LivesFree (lib/philosophers; SLEELA.syntax 17).
 
   Future
     children:  Promise, Resolver, Callback
