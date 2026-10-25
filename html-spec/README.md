@@ -13,9 +13,9 @@ specification source is obtainable, it is included verbatim in [`specs/`](./spec
 | 1 | HTML Tags (first HTML) | 1991–92 | CERN (Tim Berners-Lee) | [md](./md/01-html-tags-1991.md) | ✅ **original note** (`html-tags-1991/Tags.html`) |
 | 2 | HTML 2.0 (RFC 1866) | 1995 | IETF | [md](./md/02-html-2.0-1995.md) | ✅ **full prose** (`rfc1866-html-2.0.txt`) |
 | 3 | HTML 3.2 "Wilbur" | 1997 | W3C | [md](./md/03-html-3.2-1997.md) | ✅ DTD (`dtd/html-3.2/`) · ❌ prose |
-| 4 | HTML 4.0 / 4.01 "Cougar" | 1997 / 1999 | W3C | [md](./md/04-html-4.0-4.01-1997-1999.md) | ✅ DTDs + entities (`dtd/html-4.0/`, `dtd/html-4.01/`) · ⚠️ **partial prose** (`prose/html-4.01/`) |
+| 4 | HTML 4.0 / 4.01 "Cougar" | 1997 / 1999 | W3C | [md](./md/04-html-4.0-4.01-1997-1999.md) | ✅ DTDs + entities (`dtd/html-4.0/`, `dtd/html-4.01/`) · ✅ **full prose** (`prose/html-4.01/`) |
 | 5 | XHTML 1.0 | 2000 | W3C | [md](./md/05-xhtml-1.0-2000.md) | ✅ DTDs (`dtd/xhtml-1.0/`) · ✅ **full prose** (`prose/xhtml-1.0/`) |
-| 6 | XHTML 1.1 | 2001 | W3C | [md](./md/06-xhtml-1.1-2001.md) | ✅ full DTD + 47-file module set (`dtd/xhtml-1.1/`), validates offline |
+| 6 | XHTML 1.1 | 2001 | W3C | [md](./md/06-xhtml-1.1-2001.md) | ✅ full DTD + 47-file module set (`dtd/xhtml-1.1/`), validates offline · ✅ **full prose** (`prose/xhtml-1.1/`) |
 | 7 | HTML5 | 2014 | W3C / WHATWG | [md](./md/07-html5-2014.md) | ❌ 2014 REC text not snapshotted (prose at w3.org) |
 | 8 | HTML 5.1 | 2016 | W3C | [md](./md/08-html-5.1-2016.md) | ❌ no 5.1 snapshot (see note below) |
 | 9 | HTML 5.2 | 2017 | W3C | [md](./md/09-html-5.2-2017.md) | ⚠️ only a W3C **5.3 Editor's Draft** source is archived (`w3c-html53-ED-single-page.bs`), not 5.2 |
@@ -41,8 +41,9 @@ html-spec/
     ├── rfc1866-html-2.0.txt                       (HTML 2.0 — full verbatim IETF RFC text)
     ├── html-tags-1991/Tags.html                   (the 1991 CERN "HTML Tags" note — the first HTML doc)
     ├── prose/                                     (human-readable Recommendation PROSE — see prose/README.md)
+    │   ├── html-4.01/                             (HTML 4.01 REC — complete chapter tree + figures)
     │   ├── xhtml-1.0/Overview.html                (XHTML 1.0 2E REC — full single-page prose)
-    │   └── html-4.01/                             (HTML 4.01 REC — core chapter prose, partial)
+    │   └── xhtml-1.1/                             (XHTML 1.1 2E REC — full prose; grammar is in dtd/)
     ├── dtd/                                       (normative W3C grammars — self-resolving offline)
     │   ├── catalog, catalog.xml                   (SGML + XML catalogs; see dtd/README.md)
     │   ├── html-3.2/HTML32.dtd + ISOlat1.ent
@@ -81,17 +82,17 @@ Consequences (after an exhaustive mirror search):
     Recommendations — those prose RECs are not archived (they live at w3.org, blocked here).
   - **HTML Tags (1991)** — the original CERN note (`html-tags-1991/Tags.html`), recovered from
     a GitHub mirror of the `info.cern.ch` tree. _(Added 2026-10-25 — was previously unobtainable.)_
-  - **XHTML 1.0 (2E) prose** — the full single-page Recommendation (`prose/xhtml-1.0/`), and
-    **partial HTML 4.01 prose** (`prose/html-4.01/`, core chapters), from GitHub mirrors of the
+  - **HTML 4.01 prose** — the **complete** chapter tree (`prose/html-4.01/`, every canonical
+    chapter + figures), **XHTML 1.0 (2E) prose** (`prose/xhtml-1.0/`, full single-page), and
+    **XHTML 1.1 (2E) prose** (`prose/xhtml-1.1/`, full), all from GitHub mirrors of the
     `w3.org/TR` trees. _(Added 2026-10-25 — see [`prose/README.md`](./specs/prose/README.md).)_
 - **What is still NOT included:**
   - The published **HTML5 (2014) / 5.1 / 5.2 Recommendation prose** — only the 5.3 Editor's
     Draft Bikeshed source was reachable. (No authoritative 2014-REC snapshot exists on GitHub;
-    the one "html5" fixture found is a WHATWG `x-Hixie` draft, not the published REC.)
+    the "html5" candidates found are a WHATWG `x-Hixie` draft fixture and a 4 KB Hugo stub —
+    neither the published REC.)
   - The **human-readable prose** of the **HTML 3.2** Recommendation — only its normative DTD
     is reachable; no faithful full-prose mirror was found on GitHub.
-  - The **missing HTML 4.01 chapters** (`about`, `intro/*`, `struct/lists`, `interact/forms`,
-    `appendix/changes`) — absent from the mirror; the complete REC lives at the blocked w3.org.
 
 No specification text has been fabricated or presented as if it were the original source.
 The `md/` files are clearly descriptive write-ups; only files under `specs/` are verbatim
@@ -99,14 +100,14 @@ upstream material.
 
 ## To complete the remaining gaps from an open-network machine
 
-Most of the historical originals are now archived locally (see the table above). The few
-that remain can be downloaded directly where network access to w3.org is available:
+Nearly all of the historical originals are now archived locally (see the table above). Only
+three gaps remain, and each can be downloaded directly where network access to w3.org is
+available:
 
 - HTML 3.2 **prose**: <https://www.w3.org/TR/REC-html32> &nbsp;(DTD already archived; prose still missing)
-- HTML 4.01 **missing chapters**: `about`, `intro/*`, `struct/lists`, `interact/forms`,
-  `appendix/changes` from <https://www.w3.org/TR/html401/>
 - HTML5 **2014 published REC**: <https://www.w3.org/TR/2014/REC-html5-20141028/>
 - HTML 5.1 / 5.2 **published RECs**: <https://www.w3.org/TR/html51/> · <https://www.w3.org/TR/html52/>
 
 Already archived locally (no longer need fetching): the 1991 Tags note, RFC 1866 (HTML 2.0),
-the HTML 3.2/4.x/XHTML DTDs, XHTML 1.0 prose, partial HTML 4.01 prose, and the Living Standard.
+the HTML 3.2/4.x/XHTML DTDs, the **complete HTML 4.01 prose**, XHTML 1.0 prose, XHTML 1.1 prose,
+and the Living Standard.

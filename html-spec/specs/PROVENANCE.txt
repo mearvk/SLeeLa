@@ -136,3 +136,42 @@ STILL NOT OBTAINED (searched GitHub exhaustively this pass, nothing authoritativ
       W3C 28-October-2014 Recommendation -- NOT archived (would be mislabeled).
     - HTML 5.1 / 5.2 published RECs: unchanged from prior passes (only the 5.3 Editor's Draft
       Bikeshed source is archived, honestly labeled).
+
+---- Fifth pass: completing the prose (2026-10-25, same session) ----
+
+Found a dedicated W3C-REC mirror (learnwebcoding/lwc, under
+html/zz_html_w3c_html_recommendations/) that carries COMPLETE published Recommendations.
+Used it to upgrade the partial HTML 4.01 prose to complete, and to add XHTML 1.1 prose.
+
+UPGRADED  HTML 4.01 prose -- PARTIAL -> COMPLETE.
+    files:  prose/html-4.01/**  (66 files: all chapters + figures + css)
+    repo:   learnwebcoding/lwc
+    commit: f8a8bdc0a741f1f4cf93298ef1836fc96e9d4349
+    path:   html/zz_html_w3c_html_recommendations/html401_Dec99/
+    note:   Authentic published REC -- $Id: cover.src,v 1.117 1999/12/24 ... ijacobs and the
+            "W3C Recommendation 24 December 1999" banner. Supersedes the 4th-pass partial
+            mirror (logesh-works/JavaScript-Tutorial). Now includes the chapters the partial
+            lacked: about.html, intro/{intro,sgmltut}.html, struct/lists.html,
+            interact/forms.html, appendix/changes.html, sgml/sgmldecl.html, plus the images/
+            figures the prose references. DTD/entity/catalog/decl files bundled in the mirror
+            were REMOVED (archive already has authoritative copies under dtd/html-4.01/).
+    sha256: cover.html          a49618920fc4ee9a4698cdecfb1d7bbde1d7e046051324cec83f93b79d05c813
+            interact/forms.html 574385e5fc6f3a8534c38319ff11c22485cd9440da0ea42aa28cf935f8696899
+
+ADDED     XHTML 1.1 (Second Edition) prose -- COMPLETE. (grammar was already archived)
+    files:  prose/xhtml-1.1/**  (14 files: xhtml11.html full single-page REC + chapter files + css)
+    repo:   learnwebcoding/lwc
+    commit: f8a8bdc0a741f1f4cf93298ef1836fc96e9d4349
+    path:   html/zz_html_w3c_html_recommendations/xhtml11_SecondEd_Nov10/
+    note:   Header: "XHTML(TM) 1.1 - Module-based XHTML - Second Edition, W3C Recommendation
+            23 November 2010." Prose only -- the DTD + 47-module Modularization grammar was
+            already archived under dtd/xhtml-1.1/ (and validates offline), so the mirror's
+            DTD/ and SCHEMA/ trees and the .pdf/.ps renderings were deliberately NOT re-copied.
+    sha256: xhtml11.html        b24462e387dc7ca9e0eced625e5f150fcdd8c84c5f80b772682d2a931f6e7b87
+
+STILL NOT OBTAINED (re-searched this pass):
+    - HTML 3.2 PROSE REC: still no faithful full-prose mirror on GitHub (only the DTD, archived,
+      and Wikipedia-style derivatives). The lwc mirror does NOT carry html32.
+    - HTML5 (2014) / 5.1 / 5.2 published REC prose: the nispworld "w3c-rec-html5-20141028.html"
+      candidate turned out to be a 4 KB Hugo stub ("work in progress"), NOT the REC. The
+      python/pyperformance fixture is a WHATWG x-Hixie DRAFT. Neither archived (mislabel risk).

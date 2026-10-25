@@ -1,6 +1,6 @@
 /*
  * Style sheet for the HTML 4.0 specification
- * $Id: default.css,v 1.1 2018/03/20 02:36:53 plehegar Exp $
+ * $Id: default.css,v 1.13 1999/03/08 17:25:02 ijacobs Exp $
  */
 
 div.example {
@@ -69,10 +69,3 @@ a.informref {
 
 DIV.subtoc {padding: 1em; border: solid thin; margin: 1em 0;
     background: #ddd}
-    body {
-        background: top left fixed no-repeat url(https://www.w3.org/StyleSheets/TR/2016/logos/SPSD);
-        background-size: 25px auto;
-        padding-left: 25px;
-      }
-      
-      

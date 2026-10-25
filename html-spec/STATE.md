@@ -256,3 +256,38 @@ cites. **Partial**: the mirror lacks `about.html`, `intro/*`, `struct/lists.html
 | 5 | XHTML 1.0 | ✅ DTD validates; prose absent | ✅ DTD + ✅ **full prose added** |
 | 7 | HTML5 2014 | ❌ none | ❌ none (no authoritative snapshot on GitHub) |
 | 3 | HTML 3.2 | ✅ grammar; prose absent | ✅ grammar; prose still absent |
+
+### ✅ #4b-upgrade + #6-prose — prose completed (same session, fifth pass)
+
+After the partial HTML 4.01 prose above, a dedicated W3C-REC mirror
+(`learnwebcoding/lwc`, `html/zz_html_w3c_html_recommendations/`) was found carrying **complete**
+published Recommendations. Used it to:
+
+- **Upgrade HTML 4.01 prose from partial → complete** — `specs/prose/html-4.01/**` (66 files)
+  now has every canonical chapter, including the ones the first mirror lacked (`about`,
+  `intro/intro`, `intro/sgmltut`, `struct/lists`, `interact/forms`, `appendix/changes`,
+  `sgml/sgmldecl`) plus the figure images the prose references. Authentic published REC
+  (`$Id: cover.src,v 1.117 1999/12/24 … ijacobs`, "W3C Recommendation 24 December 1999").
+- **Add XHTML 1.1 (2E) prose** — `specs/prose/xhtml-1.1/**` (14 files incl. the full
+  `xhtml11.html`). The archive already had the XHTML 1.1 **grammar** (DTD + 47-module set,
+  validates offline); now it has the **prose** too. ("XHTML™ 1.1 … Second Edition, W3C
+  Recommendation 23 November 2010.")
+
+Still not obtained (re-searched): HTML 3.2 prose, and the published HTML5 2014 / 5.1 / 5.2 REC
+prose (the only "html5" candidates on GitHub are a WHATWG `x-Hixie` draft fixture and a 4 KB
+Hugo stub — neither the published REC; not archived, to avoid the mislabeling this report exists
+to catch).
+
+### Final scorecard (end of second session)
+
+| # | Spec | DTD/grammar | Prose | Original |
+|---|------|-------------|-------|----------|
+| 1 | HTML Tags 1991 | — | — | ✅ original note |
+| 2 | HTML 2.0 | — | ✅ full RFC 1866 | ✅ |
+| 3 | HTML 3.2 | ✅ self-resolving | ❌ not on GitHub | — |
+| 4 | HTML 4.0/4.01 | ✅ + catalogs | ✅ **complete** | — |
+| 5 | XHTML 1.0 | ✅ validates offline | ✅ **complete** | — |
+| 6 | XHTML 1.1 | ✅ validates offline | ✅ **complete** | — |
+| 7 | HTML5 2014 | — | ❌ no authoritative snapshot | — |
+| 8–9 | HTML 5.1/5.2 | — | ⚠️ only 5.3-ED Bikeshed source | — |
+| 10 | Living Standard | n/a | ✅ full source | ✅ |
