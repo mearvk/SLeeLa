@@ -31,3 +31,7 @@ Thumbs.db
 # Generated compile outputs (syntax 2.4 author-marked documents)
 *.originated.sleela
 *.wiki
+# ...but the hand-authored, sourced wiki corpora under wiki/ are committed
+# content, not compiler output -- keep them tracked.
+!wiki/**/*.wiki
+!wiki/*.wiki

@@ -1,0 +1,62 @@
+<!-- Sourced concept page for a self-hosted wiki. Definitional, neutral, cited.
+     Not for public-encyclopedia submission. -->
+{{Infobox concept
+| name  = University governance
+| field = Higher education
+}}
+
+'''University governance''' concerns how a university directs itself —
+the arrangements, rights and responsibilities through which faculty,
+administrators and governing boards share authority over academic affairs.<ref name="agb" />
+Two principles are central to it: '''institutional autonomy''' and '''academic
+freedom'''.
+
+== Institutional autonomy ==
+
+Institutional autonomy is the degree of self-governance and independence a
+higher-education institution exercises — free from undue governmental,
+commercial or political interference.<ref name="stavros" /> A frequently cited
+legal formulation describes it as the university's right to decide, on academic
+grounds, who may teach, what is taught, how it is taught, and who is admitted to
+study.<ref name="aau" />
+
+== Academic freedom ==
+
+Academic freedom is the recognised principle that gives scholars the autonomy to
+pursue intellectual questions within their disciplines, carry out professional
+work, and express their views publicly without undue interference.<ref name="mdpi" />
+By insulating scholarly work from ideological, political or economic pressure,
+it protects the independence and legitimacy of inquiry in service of knowledge
+and the public good.<ref name="mdpi2" />
+
+Autonomy and academic freedom are understood to reinforce one another: a
+university needs autonomy so that its faculty and students can exercise academic
+freedom.<ref name="cambridge" />
+
+== Shared governance ==
+
+A sound system of institutional governance is treated as a necessary condition
+for protecting faculty rights and for the productive exercise of academic
+freedom.<ref name="aaup" /> The idea that faculty — as professionals in
+scholarship and teaching — should be centrally involved in running the
+institution is known as '''shared governance'''.<ref name="aaup-sg" />
+
+== See also ==
+
+* [[University]]
+* [[Higher education]]
+
+== Sources ==
+<references>
+<ref name="agb">"A Guide to Academic Freedom", AGB (PDF). https://agb.org/ — governance responsibility shared among faculty, administrators and trustees. (Rephrased for compliance.)</ref>
+<ref name="stavros">"Academic Autonomy", encyclopedia entry. https://encyclopedai.stavros.io/entries/academic-autonomy — self-governance and independence of institutions and their faculty from external interference. (Rephrased for compliance.)</ref>
+<ref name="aau">"Academic Principles: Institutional Autonomy, Academic Freedom, and Shared Governance", AAU. https://www.aau.edu/ — autonomy as the right to determine, on academic grounds, who teaches, what and how it is taught, and who is admitted (after ''Sweezy v. New Hampshire'', 1957). (Rephrased for compliance.)</ref>
+<ref name="mdpi">"Academic Freedom in US Higher Education", MDPI Encyclopedia. https://www.mdpi.com/2673-8392/5/2/64 — academic freedom as autonomy to explore questions and express views without undue interference. (Rephrased for compliance.)</ref>
+<ref name="mdpi2">Ibid., MDPI — academic freedom insulates inquiry from ideological, political or economic constraint. (Rephrased for compliance.)</ref>
+<ref name="cambridge">"Institutional Autonomy in Relation to Academic Freedom", European Review (Cambridge). https://www.cambridge.org/core/journals/european-review/ — autonomy and academic freedom go hand in hand. (Rephrased for compliance.)</ref>
+<ref name="aaup">"On the Relationship of Faculty Governance to Academic Freedom", AAUP. https://www.aaup.org/ — sound governance is a necessary condition for protecting faculty freedoms. (Rephrased for compliance.)</ref>
+<ref name="aaup-sg">"College and University Governance", AAUP. https://www.aaup.org/ — the principle of shared governance. (Rephrased for compliance.)</ref>
+</references>
+
+[[Category:Higher education]]
+[[Category:University corpus]]

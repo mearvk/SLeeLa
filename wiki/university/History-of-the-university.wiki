@@ -1,0 +1,53 @@
+<!-- Sourced concept page for a self-hosted wiki. Definitional, neutral, cited.
+     No specific institutions are ranked; named foundations appear only where a
+     cited source uses them to date the concept. Not for public-encyclopedia
+     submission. -->
+{{Infobox concept
+| name   = History of the university
+| field  = History of higher education
+| period = 11th–15th centuries (origin)
+}}
+
+The '''university''' as an institution took shape in medieval [[Higher education|Latin Europe]].
+A medieval university was a corporation organised during the Middle Ages for the
+purpose of higher education.<ref name="wp-med" /> Historians usually reserve the
+term for an institution that medieval sources called a ''studium generale''.<ref name="wp-list" />
+
+== The studium generale ==
+
+The ''studium generale'' was a new entity for advanced study that appeared in
+Europe from the 12th century, arising out of gatherings of masters and scholars
+in early centres of learning such as Bologna, Paris and Oxford.<ref name="stanford" />
+The term ''studium generale'' itself came into customary use at the start of the
+13th century and denoted a place that welcomed students from everywhere, not
+only from the local district.<ref name="wp-sg" />
+
+== From guild to institution ==
+
+The Latin ''universitas'' originally named a guild or voluntary association of
+individual masters, rather than a single institution run by an organised staff;
+only later did the word come to mean a university in the modern sense.<ref name="hoi" />
+
+== Charters ==
+
+The first university charters were issued in 13th-century Europe. The ''studium
+generale'' created by a charter of Emperor Frederick II in 1224 is widely
+regarded as the first deliberately founded university.<ref name="wp-charter" />
+
+== See also ==
+
+* [[University]]
+* [[Higher education]]
+
+== Sources ==
+<references>
+<ref name="wp-med">"Medieval university", Wikipedia. https://en.wikipedia.org/wiki/Medieval_university (Rephrased for compliance.)</ref>
+<ref name="wp-list">"List of medieval universities", Wikipedia. https://en.wikipedia.org/wiki/List_of_medieval_universities — historians restrict "medieval university" to a ''studium generale''. (Rephrased for compliance.)</ref>
+<ref name="stanford">"The Medieval Universities of Oxford and Paris", Stanford (PDF). https://intellectualproperties.stanford.edu/ — the ''studium generale'' emerged in the 12th century from congregations of masters and scholars at Bologna, Paris and Oxford. (Rephrased for compliance.)</ref>
+<ref name="wp-sg">"Studium generale", Wikipedia. https://en.wikipedia.org/wiki/Studium_generale — the term appeared in the early 13th century and meant a place welcoming students from everywhere. (Rephrased for compliance.)</ref>
+<ref name="hoi">History of Information. https://historyofinformation.com/detail.php?id=4153 — ''universitas'' as a voluntary association of masters. (Rephrased for compliance.)</ref>
+<ref name="wp-charter">"University charter", Wikipedia. https://en.wikipedia.org/wiki/University_charter — first charters in 13th-century Europe; the 1224 foundation under Frederick II. (Rephrased for compliance.)</ref>
+</references>
+
+[[Category:Higher education]]
+[[Category:University corpus]]

@@ -1,0 +1,34 @@
+<!-- Corpus index for a self-hosted wiki. Extensible: new sourced concept pages
+     are added here as the corpus grows. Not for public-encyclopedia
+     submission. -->
+{{Infobox concept
+| name  = University corpus
+| field = Higher education
+}}
+
+The '''University corpus''' is a small, sourced, neutral knowledge base about
+the university as an institution. Each page is definitional and cited; no
+specific institutions are ranked or enumerated. The corpus is designed to grow —
+further sourced concept pages can be added under the same categories.
+
+== Concept pages ==
+
+* [[University]] — what a university is (definition, etymology, mission).
+* [[History of the university]] — the ''studium generale'' and medieval origins.
+* [[University governance]] — autonomy, academic freedom, shared governance.
+* [[Academic degree]] — bachelor's, master's and doctoral levels.
+
+== Scope and conventions ==
+
+* '''Definitional, not promotional.''' Pages state only what sourced references
+  establish about the concept.
+* '''Cited.''' Every substantive claim carries a <code><ref></code> to an
+  authoritative source (UNESCO, Encyclopædia Britannica, AAUP/AAU, Cambridge,
+  and encyclopaedic references). Source text is paraphrased, not copied.
+* '''Self-hosted.''' This is MediaWiki markup for a private/self-hosted wiki. It
+  is not a submission to any public encyclopedia, whose policies on notability,
+  independent sourcing and auto-generated content govern what may be published
+  there.
+
+[[Category:Higher education]]
+[[Category:University corpus]]
