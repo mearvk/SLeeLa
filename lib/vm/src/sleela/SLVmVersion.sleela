@@ -13,8 +13,13 @@
    label, the composed-unit flags, the config profile, and the native source
    list, then build() returns a configured SLVmRuntime.
    
-   Family: vm. Composes SLVmConfig, SLVmRuntime, SLVmSource. >>
-#sleela 2.1
+   Family: vm. Composes SLVmConfig, SLVmRuntime, SLVmSource.
+   
+   [SYNC syntax-2.4 2026-10-25] Syntax header raised 2.1 -> 2.4 to match the
+   authoritative current level in impl/frontend/version.h (max supported 2.4).
+   No language constructs changed; the bump keeps the VM manifests on the same
+   current syntax as the rest of the tree. >>
+#sleela 2.4
 class SLVmVersion {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

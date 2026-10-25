@@ -47499,7 +47499,7 @@
     },
     {
       "path": "lib/vm/src/sleela/SLVmVersion.sleela",
-      "sha256": "97033c47b3a60e201d36aa33bd1e9bb62b8150d86c3100ebe8b5b3ec29817ed8"
+      "sha256": "ad74f6c406e11df21c44b099861804518b832bee10c6936c6166f07e021e2afb"
     },
     {
       "path": "lib/vm/src/sleela_vm_builder.cpp",
