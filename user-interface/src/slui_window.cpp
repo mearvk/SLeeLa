@@ -90,6 +90,36 @@ const Canvas& Window::render() {
     ctx.backend = backend_;
     ctx.theme = &theme_;
     root_->paint(ctx);
+
+    /* Overlay pass: paint floating widgets (popups/menus) LAST so they appear
+     * forward of the frame, and UNCLIPPED (a full-canvas clip) so they are not
+     * trimmed by any ancestor's clip. Each overlay is measured to its natural
+     * size and placed near the lower-right of the window (the status-bar region
+     * its trigger lives in), clamped to stay on-screen. */
+    std::vector<Widget*> overlays;
+    root_->collect_overlays(overlays);
+    if (!overlays.empty()) {
+        int W = canvas_.width(), H = canvas_.height();
+        for (Widget* ov : overlays) {
+            SLUISize s = ov->measure(ctx);
+            int ow = s.w > 0 ? s.w : 240;
+            int oh = s.h > 0 ? s.h : 160;
+            if (ow > W) ow = W;
+            if (oh > H) oh = H;
+            /* Anchor to the lower-right, a small inset above the status bar,
+             * which is where the connectivity trigger sits in these demos. */
+            int margin = theme_.unit * 3;
+            int ox = W - ow - margin;
+            int oy = H - oh - (theme_.control_height + margin);
+            if (ox < margin) ox = margin;
+            if (oy < margin) oy = margin;
+            ov->arrange(ctx, Rect{ox, oy, ow, oh});
+            canvas_.push_clip(Rect{0, 0, W, H});
+            ov->paint(ctx);
+            canvas_.pop_clip();
+        }
+    }
+
     dirty_ = false;
     return canvas_;
 }

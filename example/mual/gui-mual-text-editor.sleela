@@ -86,22 +86,16 @@ class GuiMualTextEditor {
   int rgba(int r, int g, int b, int a) { return r * 16777216 + g * 65536 + b * 256 + a; }
   int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
 
+  // Standard Pattern ordinal (mirror SLUIThemeId in the toolkit C ABI):
+  // 4=WHITE, 5=BLACK, 6=BLUE, 7=GRAY. This line (mual) uses WHITE.
+  int THEME_WHITE = 4;
+
   // Build the baseline editor theme and return its handle.
-  // Shared SLeeLa family palette: chrome/title bar #1D2025,
-  // URL-entry surface #383C47; keep these tokens aligned across all five lines.
+  // mual is the WHITE Standard Pattern: a light surface family with dark text
+  // and a blue accent, supplied by the toolkit preset (no per-colour overrides);
+  // only the family metrics are tuned here.
   int baselineTheme() {
-    int t = uiThemePreset(THEME_CUSTOM);
-    // Shared SLeeLa palette is defined in source code; no external theme settings.
-    uiThemeSetBg(t, rgb(34, 38, 45));           // #22262D application floor
-    uiThemeSetSurface(t, rgb(41, 45, 53));      // #292D35 panels/cards
-    uiThemeSetSurfaceHi(t, rgb(56, 60, 71));    // #383C47 URL / raised surface
-    uiThemeSetChrome(t, rgb(29, 32, 37));       // #1D2025 title/menu/header chrome
-    uiThemeSetBorder(t, rgba(68, 74, 86, 255));// #444A56
-    uiThemeSetFg(t, rgb(232, 234, 237));       // #E8EAED primary text
-    uiThemeSetFgDim(t, rgb(176, 183, 195));    // #B0B7C3 muted text
-    uiThemeSetAccent(t, rgb(79, 140, 255));    // #4F8CFF accent
-    uiThemeSetAccentFg(t, rgb(18, 24, 36));
-    uiThemeSetDanger(t, rgb(217, 83, 79));     // #D9534F
+    int t = uiThemePreset(THEME_WHITE);
     uiThemeSetRadius(t, 8);
     uiThemeSetControlHeight(t, 32);
     return t;
