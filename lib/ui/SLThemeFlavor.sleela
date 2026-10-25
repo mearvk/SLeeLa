@@ -1,0 +1,164 @@
+<< lib/ui/SLThemeFlavor.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLThemeFlavor — the four standard UI flavors as ready-made,
+     psychologically careful presets over the unified SLStandardTheme token
+     model: Blue, Gray, Black, White. Each is a factory that fills every token
+     at once, so a flavor is total (no half-themed surface) and swapping is
+     seamless. The palettes are unified -- one accent family, one status set,
+     one text/contrast discipline -- so the four read as a family, not four
+     unrelated skins.
+
+   Psychology (why each flavor exists):
+     Blue  -- trust, calm, sustained focus. Deep navy surfaces lower arousal;
+              the steel-blue accent reads as dependable, not loud.
+     Gray  -- neutral, professional, low eye-fatigue. Graphite surfaces recede
+              so content leads; the cool accent gives just enough life.
+     Black -- depth, focus, premium restraint. A matte near-black floor with
+              crisp white text; one accent, used sparingly, for hierarchy.
+     White -- clarity, openness, daylight. Soft off-white (never pure #FFFFFF
+              glare) with dark text for effortless reading in bright rooms.
+
+   Every pairing (text on bg/surface/chrome, accentText on accent) is tuned to
+   clear WCAG AA contrast. Colors are faithful design values, not placeholders. >>
+#sleela 2.1
+< Family: ui. The four standard flavors: Blue, Gray, Black, White. >
+class SLThemeFlavor {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11621;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "WCAG 2.1 AA";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < the four standard flavor ordinals >
+  static final int BLUE  = 0;
+  static final int GRAY  = 1;
+  static final int BLACK = 2;
+  static final int WHITE = 3;
+
+  void create() { }
+
+  < ---- Blue: trust, calm, sustained focus --------------------------------- >
+  SLStandardTheme blue() {
+    SLStandardTheme t = new SLStandardTheme(); t.create();
+    t.set("Blue", "trust", 1,
+      "#0B1A2F",
+      "#12263F",
+      "#1B3350",
+      "#0E2138",
+      "#2C4A6B",
+      "#EAF2FB",
+      "#9FB6D0",
+      "#4F8CFF",
+      "#071424",
+      "#8AB4F8");
+    return t;
+  }
+
+  < ---- Gray: neutral, professional, low eye-fatigue ----------------------- >
+  SLStandardTheme gray() {
+    SLStandardTheme t = new SLStandardTheme(); t.create();
+    t.set("Gray", "neutral", 1,
+      "#17191C",
+      "#212429",
+      "#2B2F36",
+      "#1B1E22",
+      "#3A3F47",
+      "#E7E9EC",
+      "#A7ADB6",
+      "#6EA8FE",
+      "#0C0E10",
+      "#9DC1FF");
+    return t;
+  }
+
+  < ---- Black: depth, focus, premium restraint ---------------------------- >
+  SLStandardTheme black() {
+    SLStandardTheme t = new SLStandardTheme(); t.create();
+    t.set("Black", "focus", 1,
+      "#0A0A0C",
+      "#121214",
+      "#1C1C20",
+      "#0D0D0F",
+      "#2A2A30",
+      "#F4F6F8",
+      "#A9ADB4",
+      "#5E9CFF",
+      "#07090D",
+      "#86B7FF");
+    return t;
+  }
+
+  < ---- White: clarity, openness, daylight --------------------------------- >
+  SLStandardTheme white() {
+    SLStandardTheme t = new SLStandardTheme(); t.create();
+    t.set("White", "clarity", 0,
+      "#F7F8FA",
+      "#FFFFFF",
+      "#EEF1F5",
+      "#FFFFFF",
+      "#D5DAE1",
+      "#16202C",
+      "#55606C",
+      "#1F6FEB",
+      "#FFFFFF",
+      "#1F6FEB");
+    return t;
+  }
+
+  < Build a flavor by ordinal (BLUE/GRAY/BLACK/WHITE); defaults to Black. >
+  SLStandardTheme byId(int id) {
+    if (id == BLUE)  { return blue(); }
+    if (id == GRAY)  { return gray(); }
+    if (id == WHITE) { return white(); }
+    return black();
+  }
+
+  < Build a flavor by name, case-insensitive-ish on the four exact words; >
+  < an unknown name returns null so the caller can fall back deliberately. >
+  SLStandardTheme byName(String n) {
+    if (n == null) { return null; }
+    if (n == "blue"  || n == "Blue"  || n == "BLUE")  { return blue(); }
+    if (n == "gray"  || n == "Gray"  || n == "GRAY"
+     || n == "grey"  || n == "Grey"  || n == "GREY")  { return gray(); }
+    if (n == "black" || n == "Black" || n == "BLACK") { return black(); }
+    if (n == "white" || n == "White" || n == "WHITE") { return white(); }
+    return null;
+  }
+
+  < The names of the standard flavors, for a tool/catalog that lists them. >
+  String flavors() { return "Blue, Gray, Black, White"; }
+}

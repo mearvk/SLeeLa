@@ -1,0 +1,122 @@
+<< lib/ui/SLStandardTheme.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLStandardTheme — one unified set of role tokens that every
+     standard flavor fills, so swapping flavors is seamless and total. The token
+     model mirrors the native theme (gui/native/sleela_gui_theme.h,
+     user-interface/slui_theme.hpp): background, surfaces, chrome, text, accent,
+     and the status colors. Colors are hex strings ("#RRGGBB") so the class is
+     pure SLeeLa (no native handle) and always checks + runs; the renderer reads
+     these tokens to produce the beautiful design.
+
+   A flavor sets all tokens at once (see SLThemeFlavor). Every flavor is tuned so
+   text clears WCAG AA contrast on each surface it is drawn over -- that is the
+   quality bar, not a suggestion. >>
+#sleela 2.1
+< Family: ui. The unified token model shared by the four standard flavors. >
+class SLStandardTheme {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11620;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "WCAG 2.1 AA";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < the flavor human name and its one-word psychological intent >
+  String name;
+  String intent;
+  < 1 if this is a dark-surface flavor, 0 if light (drives default text) >
+  int dark;
+
+  < ---- the unified role tokens (hex "#RRGGBB") --------------------------- >
+  < page background (the deepest/furthest surface) >
+  String bg;
+  < main application surface, drawn over bg >
+  String surface;
+  < a raised/hover surface, one step above surface >
+  String surfaceHi;
+  < title bar / menu bar chrome >
+  String chrome;
+  < dividers and outlines >
+  String border;
+  < primary text, readable on surface (WCAG AA) >
+  String text;
+  < secondary/dim text, still legible >
+  String textDim;
+  < the single interactive accent color >
+  String accent;
+  < text/icon drawn ON the accent >
+  String accentText;
+  < keyboard-focus ring (visible, non-color-only cue still required elsewhere) >
+  String focus;
+  < status colors (shared across flavors for learnability) >
+  String danger;
+  String success;
+  String warning;
+
+  void create() {
+    name = "unset"; intent = "none"; dark = 1;
+    bg = "#000000"; surface = "#000000"; surfaceHi = "#000000"; chrome = "#000000";
+    border = "#000000"; text = "#FFFFFF"; textDim = "#AAAAAA";
+    accent = "#4F8CFF"; accentText = "#FFFFFF"; focus = "#8AB4F8";
+    danger = "#D9534F"; success = "#3FA776"; warning = "#E0A33E";
+  }
+
+  < Fill every token in one call (used by the flavor presets). >
+  void set(String n, String intnt, int isDark,
+           String b, String s, String sh, String ch, String bo,
+           String t, String td, String ac, String act, String fo) {
+    name = n; intent = intnt; dark = isDark;
+    bg = b; surface = s; surfaceHi = sh; chrome = ch; border = bo;
+    text = t; textDim = td; accent = ac; accentText = act; focus = fo;
+  }
+
+  boolean isDark() { return dark == 1; }
+  String getName() { return name; }
+  String getIntent() { return intent; }
+
+  < A compact style descriptor the renderer applies ("theme:<name>/bg/.../accent"). >
+  String toStyle() {
+    return "theme:" + name + "/bg" + bg + "/surface" + surface
+      + "/chrome" + chrome + "/text" + text + "/accent" + accent
+      + "/focus" + focus + ";";
+  }
+
+  < A readable summary for a catalog/tool. >
+  String describe() {
+    return name + " (" + intent + "): bg " + bg + ", surface " + surface
+      + ", text " + text + ", accent " + accent;
+  }
+}

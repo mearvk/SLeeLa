@@ -1,0 +1,47 @@
+<< lib/ui/theme-demo.sleela
+   SLeeLa runnable demo for the four standard UI themes (Blue, Gray, Black,
+   White) and the source-hint -> renderer flow. Shows each flavor unified over
+   one token model and a document selecting its intended flavor by a hint the
+   renderer then uses to produce the design. >>
+#sleela 2.1
+class ThemeDemo {
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  int metaScienceRating = 8;
+  String metaNationalSchedule = "WCAG 2.1 AA";
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+
+  void main() {
+    print("=== the four standard UI flavors ===");
+    SLThemeFlavor flavors = new SLThemeFlavor(); flavors.create();
+    print("flavors: " + flavors.flavors());
+    print("  " + flavors.blue().describe());
+    print("  " + flavors.gray().describe());
+    print("  " + flavors.black().describe());
+    print("  " + flavors.white().describe());
+
+    print("=== a document hints its intended flavor; the renderer obeys ===");
+    SLThemeHint hint = new SLThemeHint(); hint.create();
+    hint.setFallback("Black");
+
+    SLStandardTheme t = hint.resolve("white");
+    print(hint.report() + "  (dark=" + t.isDark() + ")");
+    print("renderer style: " + t.toStyle());
+
+    print("=== an unrecognized hint falls back honestly ===");
+    hint.resolve("chartreuse");
+    print(hint.report());
+
+    print("done");
+  }
+}
