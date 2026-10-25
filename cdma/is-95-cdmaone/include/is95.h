@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 /* IS-95 cdmaOne compact reference model; not a conforming modem. */
 #ifndef IS95_REFERENCE_H
 #define IS95_REFERENCE_H

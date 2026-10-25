@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #include <stdio.h>
 #include "../include/cdma_common.h"
 int main(void) {

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 /* CDMA2000 1x EV-DO compact reference model; not a conforming modem. */
 #ifndef EVDO_REFERENCE_H
 #define EVDO_REFERENCE_H

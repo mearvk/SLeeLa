@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #ifndef IS95_REFERENCE_H_HPP
 #define IS95_REFERENCE_H_HPP
 #include "is95.h"

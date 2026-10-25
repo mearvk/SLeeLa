@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #include "../include/is95.h"
 #include <stddef.h>
 int is95_make_code(int *code, size_t spreading_factor, unsigned code_index) {

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/cdma2000_1x.h"

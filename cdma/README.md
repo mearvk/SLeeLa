@@ -18,3 +18,30 @@ This directory contains compact reference models for direct-sequence CDMA channe
 | `../lib/cdma/` | SLeeLa-language reference front end | Pure-model counterparts and demo |
 
 The named standards are design references, not a claim of interoperability or full conformance. Build/test entry point: `make -C cdma/build all test`.
+
+## Link-level stack and tooling
+
+Beyond the per-standard channelization models, `common/` provides a
+**link-level simulation layer** (`cdma_link.h`): a deterministic PRNG, AWGN and
+multipath channel models, a RAKE combiner, closed-loop power control, and
+Monte-Carlo bit-error-rate evaluation. A laptop command-line driver,
+`tools/cdma-sim`, ties these together:
+
+```sh
+make -C build all test                 # build everything + run all tests
+./tools/cdma-sim --std wcdma --sf 64 --users 16 --ebn0 6 --paths 3 --trials 20000
+```
+
+See **[`STACK.md`](STACK.md)** for the full build/run guide, how the pieces fit
+together, and an honest map of what a real device would need on top of this.
+
+## License and scope
+
+This directory is **MIT-licensed** software (repository-root
+[`LICENSE`](../LICENSE); every source file carries an `SPDX-License-Identifier:
+MIT` tag). The MIT grant covers the **source code only**. It does **not** grant
+CDMA air-interface patent rights (SEP/FRAND), FCC equipment authorization, or
+carrier certification, all of which a real device requires. These models are
+for education, algorithm study, and golden-model validation — not deployable
+baseband. The full, non-legal-advice notice is in
+**[`LEGAL-AND-SCOPE.md`](LEGAL-AND-SCOPE.md)**.

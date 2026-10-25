@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #include "../include/wcdma.h"
 int wcdma_make_code(int *code, size_t sf, unsigned index) {
     if (!code || sf < 2 || sf > 512U) return -1;

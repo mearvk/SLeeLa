@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #include <stdio.h>
 #include "../include/wcdma.h"
 int main(void) {

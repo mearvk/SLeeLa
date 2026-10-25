@@ -1,9 +1,14 @@
+/* SPDX-License-Identifier: MIT */
 /* SLeeLa CDMA common DS-CDMA primitives.
- * Reference model only; not a production baseband.
+ * Reference model only; not a production baseband. See cdma/LEGAL-AND-SCOPE.md.
  */
 #ifndef SLEELA_CDMA_COMMON_H
 #define SLEELA_CDMA_COMMON_H
 #include <stddef.h>
+
+/* Maximum spreading-code / chip-window length honored by the reference
+ * models. Fixed-size stack buffers throughout the tree are sized to this. */
+#define CDMA_MAX_CODE_LEN 512
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #ifndef SLEELA_CDMA_COMMON_HPP
 #define SLEELA_CDMA_COMMON_HPP
 #include "cdma_common.h"

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 /* CDMA2000 1xRTT compact reference model; not a conforming modem. */
 #ifndef CDMA2000_1X_REFERENCE_H
 #define CDMA2000_1X_REFERENCE_H

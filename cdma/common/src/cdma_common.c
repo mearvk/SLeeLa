@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #include "../include/cdma_common.h"
 #include <limits.h>
 int cdma_walsh_code(int *code, size_t length, unsigned index) {
