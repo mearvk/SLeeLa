@@ -1,11 +1,27 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.50  
+**Revision:** 0.51  
 **Packages:** 101  
-**SLeeLa source units:** 11566  
+**SLeeLa source units:** 11568  
 **Module-facade symbols:** 70  
-**Total symbol records:** 11636  
+**Total symbol records:** 11638  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.51 adds two companion `core` classes expressing the standing of a
+> work and its wins, both author-marked (syntax 2.4) and carrying the full
+> Metadata Class metapattern. **`SLAuthorship`** is the authorship *Method :
+> Class* — continuance (the work is carried forward), dignity (a modest,
+> protected standing; an empty claim honestly becomes `"unverified"`), and free
+> guidance (`imposes()` is false by contract). It carries any distinction as a
+> cited historiometric *estimate* with provenance, never an asserted score, and
+> ranks no person. **`SLVictory`** is the Victory Model: a *win* is a **check
+> that resolves to an exact item** (exact equality against a declared item),
+> measured against a named *calculus* (default: the U.S. reference standard,
+> citing NIST), in the direction *Humanities → Science* — "means are goals and
+> directions without worship elsewhere." Two new source classes; no new package
+> or facade. Counts reconciled to the live `/lib` tree by
+> `tools/generate-library-symbols.py` and verified by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.50 defines the **`philosophers`** vocabulary categorically at the
 > IQ-201+ register. The twenty-one Guides are renamed and defined in seven
