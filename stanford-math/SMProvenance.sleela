@@ -1,0 +1,116 @@
+<< stanford-math/SMProvenance.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The provenance registry for the stanford-math archive -- the
+   sane, published literature the archive calls out to, with explicit respect
+   to Wikipedia as a tertiary index. Each source is named faithfully; the
+   archive asserts no authorship over the works it cites. >>
+#sleela 2.1
+< Executive+ class: a jurisdictional/standing artifact, full metadata record. >
+class SMProvenance {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9250;
+  String metaAuthor = "stanford-math archive editors";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "cited works remain the property of their authors/publishers";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 10;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Scientific record (purpose / method / gains / bedrock) ---- >
+  << This block extends the baseline identity with the standing a scientific
+     record is expected to declare: what it is for, the method it follows, what
+     its authors legitimately gain, and the bedrock the method rests on. These
+     are ordinary catalogued fields with accessors, per SLEELA.syntax §15. >>
+  String metaPurpose = "Carry, not create: an honest index of published equations and who is owed credit for them.";
+  String metaScientificMethod = "Tertiary cataloguing -- record claims traceable to primary/secondary literature; never originate results.";
+  String metaAuthorialGains = "Editorial/curatorial credit for the catalogue only; no claim over the cited works themselves.";
+  String metaBedrock = "The peer-reviewed and historical scientific record; primary sources where citable, tertiary indexes to locate them.";
+
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+
+  < ---- Published-literature callouts (sane sources) ---- >
+  << Tiered: primary = the original papers/treatises named in each canon;
+     secondary = standard texts and reference works; tertiary = indexes,
+     with explicit respect to Wikipedia as a tertiary locator (CC BY-SA 4.0),
+     never cited as a primary authority. >>
+  String[] sources;
+  String[] tiers;
+  int filled;
+
+  void build() {
+    sources = new String[14];
+    tiers = new String[14];
+    filled = 0;
+
+    add("primary", "Newton, Philosophiae Naturalis Principia Mathematica (1687)");
+    add("primary", "Euler, Introductio in analysin infinitorum (1748)");
+    add("primary", "Maxwell, A Dynamical Theory of the Electromagnetic Field (1865)");
+    add("primary", "Einstein, Annalen der Physik (1905); field equations (1915)");
+    add("primary", "Shannon, A Mathematical Theory of Communication, Bell System Tech. J. (1948)");
+    add("primary", "Black & Scholes, J. Political Economy (1973); Merton (1973)");
+    add("secondary", "NIST Digital Library of Mathematical Functions (dlmf.nist.gov)");
+    add("secondary", "Abramowitz & Stegun, Handbook of Mathematical Functions (1964)");
+    add("secondary", "Gradshteyn & Ryzhik, Table of Integrals, Series, and Products");
+    add("secondary", "Misner, Thorne & Wheeler, Gravitation (1973); Jackson, Classical Electrodynamics");
+    add("secondary", "CODATA / SI Brochure (9th ed.) for physical constants and symbols");
+    add("tertiary", "Wolfram MathWorld (mathworld.wolfram.com)");
+    add("tertiary", "Wikipedia, the free encyclopedia -- tertiary locator, content under CC BY-SA 4.0 (en.wikipedia.org)");
+    add("tertiary", "Stanford Encyclopedia of Philosophy (plato.stanford.edu) for foundations/entropy entries");
+  }
+
+  void add(String tier, String src) {
+    tiers[filled] = tier;
+    sources[filled] = src;
+    filled = filled + 1;
+  }
+
+  int count() { return filled; }
+  String tierAt(int i) { return tiers[i]; }
+  String sourceAt(int i) { return sources[i]; }
+  String lineAt(int i) { return "[" + tiers[i] + "] " + sources[i]; }
+
+  < The honesty note the whole archive answers to. >
+  String disclaimer() {
+    return "This archive is a tertiary catalogue: it records and attributes published results; it does not originate, own, or certify them. Cited works belong to their authors and publishers.";
+  }
+}

@@ -26,6 +26,7 @@ faithful to the subject's real origin where publicly known**; unknowns are
 | `SMPhysicsCanon`   | Foundational physics equations | Standard references (see Sources) |
 | `SMThermoEquations`| Thermodynamics & statistical-mechanics equations | Standard references (see Sources) |
 | `SMCrossoverCanon` | Applied/PhD crossovers (finance, chemistry, cosmology, info) | Standard references (see Sources) |
+| `SMProvenance`     | Purpose/method/gains/bedrock + tiered literature callouts (Wikipedia attributed) | Primary/secondary/tertiary sources |
 | `SMArchive` (demo) | Runnable entry point that broadcasts the archive | — |
 
 ## The equation canon (102 entries)
@@ -63,6 +64,48 @@ Breakdown (counts verified by running `SMArchive`):
 Where attribution is genuinely diffuse (e.g. the quadratic formula, the 2×2
 determinant), the discoverer field says so honestly rather than crediting a
 single name.
+
+## The metadata pattern, extended into a scientific record
+
+The baseline Metadata metapattern (`SLEELA.syntax` §15) records *who made this,
+under what authority, with what intent*. This archive extends it — using only
+ordinary catalogued fields + accessors, exactly as §15 sanctions — with a
+second greppable block that makes each class state its standing as a **scientific
+record**:
+
+```sleela
+  < ---- Scientific record (purpose / method / gains / bedrock) ---- >
+  String metaPurpose           = "...";   < what this record is for >
+  String metaScientificMethod  = "...";   < the method it follows >
+  String metaAuthorialGains    = "...";   < what its authors legitimately gain >
+  String metaBedrock           = "...";   < the foundation the method rests on >
+```
+
+| Facet | What it declares |
+|-------|------------------|
+| **Purpose** | The program's reason to exist: *carry, not create* — an honest index of published equations and rightful credit. |
+| **Perceived scientific method** | **Tertiary cataloguing** — record claims traceable to primary/secondary literature; originate nothing. |
+| **Authorial gains** | Editorial/curatorial credit for the *catalogue only*. The theorems and laws are public-domain science owned by no one; cited crossover results belong to their authors/publishers. The archive claims no authorship over the works it cites. |
+| **Bedrock of the method** | The peer-reviewed and historical scientific record — primary sources where citable, tertiary indexes to locate them. |
+
+### Calls out to sane, published literature (`SMProvenance`)
+
+`SMProvenance` is the provenance registry. It tiers its sources honestly:
+
+- **Primary** — the original papers/treatises (Newton's *Principia*, Euler's
+  *Introductio*, Maxwell 1865, Einstein 1905/1915, Shannon 1948, Black–Scholes
+  1973).
+- **Secondary** — standard references (NIST DLMF, Abramowitz & Stegun,
+  Gradshteyn & Ryzhik, MTW *Gravitation*, Jackson, the CODATA/SI Brochure).
+- **Tertiary** — locators, including **Wikipedia**, cited with respect and
+  attributed honestly: a *tertiary locator*, content under **CC BY-SA 4.0**,
+  never treated as a primary authority. Also Wolfram MathWorld and the Stanford
+  Encyclopedia of Philosophy.
+
+The registry carries a standing disclaimer: *this archive records and attributes
+published results; it does not originate, own, or certify them.* That is the
+§15.5 fidelity rule applied to the question of authorial gains — the record
+stays honest about exactly how much it may claim.
 
 ## People recorded (public record)
 

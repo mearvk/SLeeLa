@@ -151,6 +151,27 @@ class SMArchive {
     int total = mn + phn + ten + cn;
     print("");
     print("Equation canon total: " + total + " entries recorded, each faithful to its real origin.");
+
+    print("");
+    print("==== Scientific record of this archive ====");
+    SMMathCanon rec = mathCanon;
+    print("purpose: " + rec.getPurpose());
+    print("method:  " + rec.getScientificMethod());
+    print("gains:   " + rec.getAuthorialGains());
+    print("bedrock: " + rec.getBedrock());
+
+    print("");
+    print("==== Published-literature callouts (sane sources; Wikipedia respected) ====");
+    SMProvenance prov = new SMProvenance();
+    prov.build();
+    int srcn = prov.count();
+    i = 0;
+    while (i < srcn) {
+      print("  " + prov.lineAt(i));
+      i = i + 1;
+    }
+    print("");
+    print("note: " + prov.disclaimer());
     print("==== end of archive ====");
   }
 }

@@ -48,6 +48,23 @@ class SMThermoEquations {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
+  < ---- Scientific record (purpose / method / gains / bedrock) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors):
+     what the canon is for, the method it follows, what its editors gain, and
+     the bedrock it rests on. See SMProvenance for the literature callouts. >>
+  String metaPurpose = "A curated index of the equations of thermodynamics and statistical mechanics.";
+  String metaScientificMethod = "Tertiary cataloguing: record established laws and relations; originate nothing.";
+  String metaAuthorialGains = "Editorial credit for the catalogue only; the laws belong to the public scientific record.";
+  String metaBedrock = "Classical and statistical thermodynamics in the peer-reviewed record (see SMProvenance).";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+
   < ---- The thermodynamics canon (public record) ---- >
   SMEquation[] eqs;
   int filled;

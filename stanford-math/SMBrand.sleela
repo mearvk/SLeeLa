@@ -47,6 +47,23 @@ class SMBrand {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
+  < ---- Scientific record (purpose / method / gains / bedrock) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors)
+     stating what this record is for, the method it follows, what its authors
+     gain, and the bedrock it rests on. >>
+  String metaPurpose = "Record the Stanford Math brand as a named public institution, faithfully.";
+  String metaScientificMethod = "Documentary: attribute the institution from its own public record (bulletins, department pages).";
+  String metaAuthorialGains = "Curatorial credit for the record; no claim over the Stanford name or trademark.";
+  String metaBedrock = "Stanford University's public institutional record and founding instruments.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+
   < ---- Brand facts (public record) ---- >
   String institution = "Stanford University Department of Mathematics";
   String city = "Stanford, California";
