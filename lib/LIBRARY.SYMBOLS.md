@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11557
+library-source-files: 11558
 library-packages: 101
 module-facade-symbols: 70
-total-symbol-records: 11627
+total-symbol-records: 11628
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11345,6 +11345,7 @@ ui	SLGridLayout.sleela	lib/ui/SLGridLayout.sleela	source
 ui	SLLabel.sleela	lib/ui/SLLabel.sleela	source
 ui	SLLayout.sleela	lib/ui/SLLayout.sleela	source
 ui	SLLayoutBox.sleela	lib/ui/SLLayoutBox.sleela	source
+ui	SLLayoutFrame.sleela	lib/ui/SLLayoutFrame.sleela	source
 ui	SLLayoutKit.sleela	lib/ui/SLLayoutKit.sleela	source
 ui	SLListView.sleela	lib/ui/SLListView.sleela	source
 ui	SLMenu.sleela	lib/ui/SLMenu.sleela	source
