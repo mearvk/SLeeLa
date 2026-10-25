@@ -1257,7 +1257,33 @@ definition (last-wins), and overload-by-arity resolution across duplicates is
 not yet performed. The id/hash branders are stable now so direct call is purely
 additive later.
 
-### 18.5 Where this is implemented
+### 18.5 The wikitext emanation (the third output)
+
+A major author-marked work may also **emanate a MediaWiki wikitext document** as
+a consequence of compilation — a third output alongside the artifact and the
+originated source. It is opt-in: `--wiki` writes it next to the source,
+`--wiki-dir=<dir>` redirects it; the file is named `<original>.wiki`. The page
+is factual and structured, and scales with the size of the work (a larger work
+produces a larger corpus):
+
+- an `{{Infobox software}}` with the document name, release/edit date, the
+  compile stamp, and the class/field/method tally;
+- a **Time** section carrying the two temporal axes — the source edit date and
+  the UTC compile stamp (time as a second);
+- a **Structure** section: one sortable `wikitable` per class listing every
+  member with its declaration-order id, signature, `slot=k/n`, and SHA-256
+  brander, plus the duplicate-dispatch ordering table;
+- a **Movement** section: the members in declaration order (the tempo of the
+  work), as nested ordered lists;
+- a **Provenance** section with counts, and `[[Category:SLeeLa]]` tags.
+
+The emanation asserts nothing beyond the document's own declared structure and
+timestamps. It is MediaWiki markup for a **self-hosted** wiki; it is not a
+submission to any public encyclopedia, whose policies (notability, reliable
+independent sourcing, no mass auto-generated pages) govern what may be published
+there.
+
+### 18.6 Where this is implemented
 
 - `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.4.
 - `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
@@ -1266,5 +1292,8 @@ additive later.
   the duplicate-member checks when `authorMarked`.
 - `impl/frontend/originate.{h,cpp}` — the originated-source emitter (SHA-256
   branders via `ledger::sha256_hex`).
-- `impl/frontend/driver.cpp` — the `compile` flow calls the emitter for
-  author-marked documents and parses `--originate-dir=<dir>`.
+- `impl/frontend/wikigen.{h,cpp}` — the wikitext emanation (MediaWiki markup;
+  UTC compile stamp via `ledger::utc_iso8601`).
+- `impl/frontend/driver.cpp` — the `compile` flow calls the emitters for
+  author-marked documents and parses `--originate-dir=<dir>`, `--wiki`, and
+  `--wiki-dir=<dir>`.

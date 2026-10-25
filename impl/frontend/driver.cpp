@@ -7,6 +7,7 @@
 #include "compiler.h"
 #include "artifact.h"
 #include "originate.h"
+#include "wikigen.h"
 #include "native_api.h"
 #include "chemistry_api.h"
 #include "financial_api.h"
@@ -645,6 +646,11 @@ static catalog::Catalog loadCatalog(){
 // source file's own directory. Set by the compile subcommand's
 // --originate-dir=<dir> flag.
 static std::string g_originateDir;
+// Wikitext emanation (syntax 2.4, third output). Opt-in via --wiki; the
+// optional --wiki-dir=<dir> redirects the output (empty = source directory).
+// g_wiki enables it; it is implied when --wiki-dir is given.
+static bool        g_wiki=false;
+static std::string g_wikiDir;
 static int compileFile(const std::string&sourcePath,const std::string&outputPath);
 static int runFile(const std::string&path);
 
@@ -1010,6 +1016,8 @@ static int sleelvacUsage(){
         << "Compiler commands:\n"
         << "  " << n << " [global-options] compile <file.sleela> [more.sleela ...] -o <output.sleela>\n"
         << "                               Compile one or more Sleela source files to a runnable Core artifact\n"
+        << "                               (author-marked documents also emit an originated source document;\n"
+        << "                                add --wiki or --wiki-dir=<dir> to also emanate a MediaWiki page)\n"
         << "  " << n << " check <file.sleela>\n"
         << "                               Parse, resolve referenced library units, and check semantics (no output artifact)\n"
         << "  " << n << " validate-artifact <file.sleela>\n"
@@ -1108,6 +1116,10 @@ static int compileFile(const std::string&sourcePath,const std::string&outputPath
     // document alongside the artifact: every member located, originated, and
     // branded with a therefore-brander. Clean and united.
     if(prog.authorMarked){std::string op=sleela::writeOriginatedDocument(prog,sourcePath,g_originateDir);if(!op.empty())std::cout<<"sleelvac: originated source -> "<<op<<"\n";}
+    // Wikitext emanation (syntax 2.4, third output): a consequence of compiling
+    // an author-marked document, opt-in via --wiki/--wiki-dir. Factual,
+    // structured MediaWiki markup for a self-hosted wiki.
+    if(prog.authorMarked&&g_wiki){std::string wp=sleela::writeWikitextDocument(prog,sourcePath,g_wikiDir);if(!wp.empty())std::cout<<"sleelvac: wikitext emanated -> "<<wp<<"\n";}
     return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static int validateArtifact(const std::string&path){
     char error[256]={0};
@@ -1474,6 +1486,8 @@ int main(int argc,char**argv){
         for(int i=2;i<argc;++i){std::string a=argv[i];
             if(a=="-o"){if(i+1<argc){out=argv[i+1];i++;}else return usage();}
             else if(a.rfind("--originate-dir=",0)==0){g_originateDir=a.substr(a.find('=')+1);}
+            else if(a=="--wiki"){g_wiki=true;}
+            else if(a.rfind("--wiki-dir=",0)==0){g_wiki=true;g_wikiDir=a.substr(a.find('=')+1);}
             else files.push_back(a);}
         if(files.empty()||out.empty())return usage();
         rc=(files.size()==1)?compileFile(files[0],out):compileFilesMulti(files,out);
