@@ -135,6 +135,92 @@ class SLString {
     return pad + body;
   }
 
+  < New real char-cell helpers (mirror lib/text/SLString v1.1). >
+  String padCenterCells(String[] cells, int width, String padCell) {
+    int n = arrayLength(cells); if (n >= width) { return fromCells(cells); }
+    int total = width - n; int left = total / 2; int right = total - left;
+    String lpad = ""; int i = 0;
+    while (i < left) { lpad = lpad + padCell; i = i + 1; }
+    String rpad = ""; i = 0;
+    while (i < right) { rpad = rpad + padCell; i = i + 1; }
+    return lpad + fromCells(cells) + rpad;
+  }
+  String truncateCells(String[] cells, int width, String ellipsisCell) {
+    int n = arrayLength(cells); if (width <= 0) { return ""; }
+    if (n <= width) { return fromCells(cells); }
+    String out = ""; int keep = width - 1; int i = 0;
+    while (i < keep) { out = out + cells[i]; i = i + 1; }
+    return out + ellipsisCell;
+  }
+  boolean matchesAt(String[] cells, int at, String[] needle) {
+    int nn = arrayLength(needle); int cn = arrayLength(cells);
+    if (at < 0 || at + nn > cn) { return false; }
+    int i = 0;
+    while (i < nn) { if (cells[at + i] != needle[i]) { return false; } i = i + 1; }
+    return true;
+  }
+  int indexOfSeqCells(String[] cells, String[] needle) {
+    int nn = arrayLength(needle); int cn = arrayLength(cells);
+    if (nn == 0) { return 0; }
+    int start = 0;
+    while (start + nn <= cn) { if (matchesAt(cells, start, needle)) { return start; } start = start + 1; }
+    return -1;
+  }
+  int countSeqCells(String[] cells, String[] needle) {
+    int nn = arrayLength(needle); int cn = arrayLength(cells);
+    if (nn == 0) { return 0; }
+    int c = 0; int start = 0;
+    while (start + nn <= cn) {
+      if (matchesAt(cells, start, needle)) { c = c + 1; start = start + nn; }
+      else { start = start + 1; }
+    }
+    return c;
+  }
+  String replaceSeqCells(String[] cells, String[] from, String[] to) {
+    int fn = arrayLength(from); int cn = arrayLength(cells);
+    if (fn == 0) { return fromCells(cells); }
+    String out = ""; int i = 0;
+    while (i < cn) {
+      if (i + fn <= cn && matchesAt(cells, i, from)) {
+        int j = 0; int tn = arrayLength(to);
+        while (j < tn) { out = out + to[j]; j = j + 1; }
+        i = i + fn;
+      } else { out = out + cells[i]; i = i + 1; }
+    }
+    return out;
+  }
+  String mapCell(String cv, String[] fromSet, String[] toSet) {
+    int n = arrayLength(fromSet); if (arrayLength(toSet) < n) { n = arrayLength(toSet); }
+    int k = 0;
+    while (k < n) { if (cv == fromSet[k]) { return toSet[k]; } k = k + 1; }
+    return cv;
+  }
+  String mapCellsToString(String[] cells, String[] fromSet, String[] toSet) {
+    String out = ""; int n = arrayLength(cells); int i = 0;
+    while (i < n) { out = out + mapCell(cells[i], fromSet, toSet); i = i + 1; }
+    return out;
+  }
+  String[] splitCellsOn(String[] cells, String sepCell) {
+    int n = arrayLength(cells); int segs = 1; int i = 0;
+    while (i < n) { if (cells[i] == sepCell) { segs = segs + 1; } i = i + 1; }
+    String[] out = new String[segs]; int s = 0; String cur = ""; i = 0;
+    while (i < n) {
+      if (cells[i] == sepCell) { out[s] = cur; s = s + 1; cur = ""; }
+      else { cur = cur + cells[i]; }
+      i = i + 1;
+    }
+    out[s] = cur;
+    return out;
+  }
+  < New pure value helpers + honest bridged declarations. >
+  String suffixIf(boolean cond, String tail) { if (cond) { return value + tail; } return value; }
+  String wrapIfNotEmpty(String left, String right) {
+    if (value == null || value == "") { return ""; }
+    return left + value + right;
+  }
+  String normalize(String form) { return bridgeArg("normalize", form); }
+  String stripLeading() { return bridge("stripLeading"); }
+
   < Bridged char-level ops -- honest descriptors, never faked. >
   String bridge(String op) { return "text.bridge:" + op + ":" + value; }
   String bridgeArg(String op, String a) { return "text.bridge:" + op + ":" + value + ":" + a; }
@@ -196,6 +282,31 @@ class SLString {
     print("indexOf 'l': " + cell.indexOfCell(hello, "l"));
     print("reverse    : " + cell.reverseCells(hello));
     print("colRight 8 : [" + cell.columnRight(hello, 8, ".") + "]");
+
+    < New real char-cell helpers (v1.1 surface): centre, truncate, subsequence >
+    < search/replace, split, and explicit-table case mapping. >
+    print("padCenter 9: [" + cell.padCenterCells(hello, 9, ".") + "]");
+    print("truncate 4 : [" + cell.truncateCells(hello, 4, "~") + "]");
+    String[] ll = new String[2]; ll[0] = "l"; ll[1] = "l";
+    print("idxSeq ll  : " + cell.indexOfSeqCells(hello, ll));
+    print("countSeq l : " + cell.countSeqCells(hello, ll));
+    String[] dash = new String[1]; dash[0] = "-";
+    print("replaceSeq : " + cell.replaceSeqCells(hello, ll, dash));
+    String[] loSet = new String[2]; loSet[0] = "h"; loSet[1] = "e";
+    String[] upSet = new String[2]; upSet[0] = "H"; upSet[1] = "E";
+    print("mapCells   : " + cell.mapCellsToString(hello, loSet, upSet));
+    String[] csvCells = new String[5];
+    csvCells[0]="x"; csvCells[1]=","; csvCells[2]="y"; csvCells[3]=","; csvCells[4]="z";
+    String[] segs = cell.splitCellsOn(csvCells, ",");
+    print("splitOn ,  : " + arrayLength(segs) + " -> " + segs[0] + "|" + segs[1] + "|" + segs[2]);
+
+    < New pure value helpers + bridged declarations. >
+    SLString av = new SLString();
+    av.set("name");
+    print("suffixIf   : " + av.suffixIf(true, ":"));
+    print("wrapIfNE   : " + av.wrapIfNotEmpty("[", "]"));
+    print("normalize  : " + av.normalize("NFC") + "   (kind " + av.bridgeKind("normalize") + ")");
+    print("stripLead  : " + av.stripLeading());
     print("");
 
     < copy() is independent of the original. >

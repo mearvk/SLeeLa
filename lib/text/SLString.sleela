@@ -217,6 +217,34 @@ class SLString {
   String csv(String[] parts)    { return join(parts, ","); }
   String spaced(String[] parts) { return join(parts, " "); }
 
+  < concatAll(parts): concatenate every element of a String[] with no separator >
+  < (real: loop + +). The separator-less sibling of join. >
+  String concatAll(String[] parts) {
+    String out = "";
+    int i = 0;
+    int n = arrayLength(parts);
+    while (i < n) { out = out + parts[i]; i = i + 1; }
+    return out;
+  }
+
+  < wrapIfNotEmpty(left, right): surround the value only when it is non-empty; an >
+  < empty/unset value stays "" (real: == guard). Avoids emitting bare affixes. >
+  String wrapIfNotEmpty(String left, String right) {
+    if (value == null || value == "") { return ""; }
+    return left + value + right;
+  }
+
+  < prefixIf(cond, head) / suffixIf(cond, tail): conditionally affix the value >
+  < and return the result (real). Handy when assembling text from flags. >
+  String prefixIf(boolean cond, String head) {
+    if (cond) { return head + value; }
+    return value;
+  }
+  String suffixIf(boolean cond, String tail) {
+    if (cond) { return value + tail; }
+    return value;
+  }
+
   < ==================================================================== >
   < CHAR-CELL VIEW -- REAL char-level ops over an explicit String[] of cells >
   < ==================================================================== >
@@ -376,6 +404,272 @@ class SLString {
     return out;
   }
 
+  < padCenterCells(cells, width, padCell): centre the view in a real character >
+  < width, padding both sides with padCell. Any odd remainder goes on the right >
+  < (matching common centre-text conventions). If the view is already >= width, >
+  < it is returned rejoined unchanged. Fully in-language (loops + +). >
+  String padCenterCells(String[] cells, int width, String padCell) {
+    int n = arrayLength(cells);
+    if (n >= width) { return fromCells(cells); }
+    int total = width - n;
+    int left = total / 2;
+    int right = total - left;
+    String lpad = "";
+    int i = 0;
+    while (i < left) { lpad = lpad + padCell; i = i + 1; }
+    String rpad = "";
+    i = 0;
+    while (i < right) { rpad = rpad + padCell; i = i + 1; }
+    return lpad + fromCells(cells) + rpad;
+  }
+
+  < truncateCells(cells, width, ellipsisCell): if the view is longer than width >
+  < real characters, keep the first (width - 1) cells and append ellipsisCell so >
+  < the result is exactly `width` cells wide; otherwise return it unchanged. A >
+  < width <= 0 yields "". Real: slice + append over the supplied cells. >
+  String truncateCells(String[] cells, int width, String ellipsisCell) {
+    int n = arrayLength(cells);
+    if (width <= 0) { return ""; }
+    if (n <= width) { return fromCells(cells); }
+    String out = "";
+    int keep = width - 1;
+    int i = 0;
+    while (i < keep) { out = out + cells[i]; i = i + 1; }
+    return out + ellipsisCell;
+  }
+
+  < sliceCells(cells, from, to): the cells in [from, to) as a NEW String[] (real). >
+  < from is clamped to 0, to to the length; from >= to yields an empty array. >
+  < This is the array-returning sibling of substringCells (which rejoins). >
+  String[] sliceCells(String[] cells, int from, int to) {
+    int n = arrayLength(cells);
+    int lo = from;
+    if (lo < 0) { lo = 0; }
+    int hi = to;
+    if (hi > n) { hi = n; }
+    if (lo >= hi) { return new String[0]; }
+    int len = hi - lo;
+    String[] out = new String[len];
+    int i = 0;
+    while (i < len) { out[i] = cells[lo + i]; i = i + 1; }
+    return out;
+  }
+
+  < insertCells(cells, at, ins): a NEW cell array with the cells of `ins` spliced >
+  < in before index `at` (at clamped to [0, len]). Real: array alloc + copy loops. >
+  String[] insertCells(String[] cells, int at, String[] ins) {
+    int n = arrayLength(cells);
+    int m = arrayLength(ins);
+    int pos = at;
+    if (pos < 0) { pos = 0; }
+    if (pos > n) { pos = n; }
+    String[] out = new String[n + m];
+    int o = 0;
+    int i = 0;
+    while (i < pos) { out[o] = cells[i]; o = o + 1; i = i + 1; }
+    int j = 0;
+    while (j < m) { out[o] = ins[j]; o = o + 1; j = j + 1; }
+    while (i < n) { out[o] = cells[i]; o = o + 1; i = i + 1; }
+    return out;
+  }
+
+  < deleteCellsRange(cells, from, to): a NEW cell array with [from, to) removed >
+  < (from clamped to 0, to to the length; from >= to removes nothing). Real. >
+  String[] deleteCellsRange(String[] cells, int from, int to) {
+    int n = arrayLength(cells);
+    int lo = from;
+    if (lo < 0) { lo = 0; }
+    int hi = to;
+    if (hi > n) { hi = n; }
+    if (lo >= hi) {
+      String[] same = new String[n];
+      int k = 0;
+      while (k < n) { same[k] = cells[k]; k = k + 1; }
+      return same;
+    }
+    int removed = hi - lo;
+    String[] out = new String[n - removed];
+    int o = 0;
+    int i = 0;
+    while (i < lo) { out[o] = cells[i]; o = o + 1; i = i + 1; }
+    i = hi;
+    while (i < n) { out[o] = cells[i]; o = o + 1; i = i + 1; }
+    return out;
+  }
+
+  < -------------------------------------------------------------------- >
+  < Multi-cell SUBSEQUENCE ops. The single-cell helpers above (indexOfCell, >
+  < replaceCells, ...) match one glyph at a time; these match a whole cell >
+  < sequence, giving real substring search/replace entirely in-language. >
+  < -------------------------------------------------------------------- >
+
+  < matchesAt(cells, at, needle): does the needle cell-sequence occur in `cells` >
+  < starting exactly at index `at`? Real: element-wise == over the window. >
+  boolean matchesAt(String[] cells, int at, String[] needle) {
+    int nn = arrayLength(needle);
+    int cn = arrayLength(cells);
+    if (at < 0 || at + nn > cn) { return false; }
+    int i = 0;
+    while (i < nn) {
+      if (cells[at + i] != needle[i]) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  < indexOfSeqCells(cells, needle): first start index where the needle sequence >
+  < occurs, or -1. An empty needle matches at 0 (as substring search does). Real. >
+  int indexOfSeqCells(String[] cells, String[] needle) {
+    int nn = arrayLength(needle);
+    int cn = arrayLength(cells);
+    if (nn == 0) { return 0; }
+    int start = 0;
+    while (start + nn <= cn) {
+      if (matchesAt(cells, start, needle)) { return start; }
+      start = start + 1;
+    }
+    return -1;
+  }
+
+  < lastIndexOfSeqCells(cells, needle): last start index of the needle sequence, >
+  < or -1. Empty needle matches at the end. Real. >
+  int lastIndexOfSeqCells(String[] cells, String[] needle) {
+    int nn = arrayLength(needle);
+    int cn = arrayLength(cells);
+    if (nn == 0) { return cn; }
+    int start = cn - nn;
+    while (start >= 0) {
+      if (matchesAt(cells, start, needle)) { return start; }
+      start = start - 1;
+    }
+    return -1;
+  }
+
+  < containsSeqCells / startsWithSeqCells / endsWithSeqCells: multi-cell forms of >
+  < the single-cell predicates, built on matchesAt / indexOfSeqCells (real). >
+  boolean containsSeqCells(String[] cells, String[] needle) {
+    return indexOfSeqCells(cells, needle) >= 0;
+  }
+  boolean startsWithSeqCells(String[] cells, String[] needle) {
+    return matchesAt(cells, 0, needle);
+  }
+  boolean endsWithSeqCells(String[] cells, String[] needle) {
+    int nn = arrayLength(needle);
+    int cn = arrayLength(cells);
+    if (nn > cn) { return false; }
+    return matchesAt(cells, cn - nn, needle);
+  }
+
+  < countSeqCells(cells, needle): number of NON-OVERLAPPING occurrences of the >
+  < needle sequence. An empty needle yields 0 (no progress possible). Real. >
+  int countSeqCells(String[] cells, String[] needle) {
+    int nn = arrayLength(needle);
+    int cn = arrayLength(cells);
+    if (nn == 0) { return 0; }
+    int c = 0;
+    int start = 0;
+    while (start + nn <= cn) {
+      if (matchesAt(cells, start, needle)) { c = c + 1; start = start + nn; }
+      else { start = start + 1; }
+    }
+    return c;
+  }
+
+  < replaceSeqCells(cells, from, to): replace every NON-OVERLAPPING occurrence of >
+  < the `from` cell-sequence with the `to` cell-sequence, returning the rejoined >
+  < String. An empty `from` returns the view unchanged. Real: scan + rebuild. >
+  String replaceSeqCells(String[] cells, String[] from, String[] to) {
+    int fn = arrayLength(from);
+    int cn = arrayLength(cells);
+    if (fn == 0) { return fromCells(cells); }
+    String out = "";
+    int i = 0;
+    while (i < cn) {
+      if (i + fn <= cn && matchesAt(cells, i, from)) {
+        int j = 0;
+        int tn = arrayLength(to);
+        while (j < tn) { out = out + to[j]; j = j + 1; }
+        i = i + fn;
+      } else {
+        out = out + cells[i];
+        i = i + 1;
+      }
+    }
+    return out;
+  }
+
+  < splitCellsOn(cells, sepCell): split the view on each cell equal to sepCell, >
+  < returning the segments as a NEW String[] (each segment is the rejoined run >
+  < of cells between separators; adjacent separators yield "" segments). Real. >
+  String[] splitCellsOn(String[] cells, String sepCell) {
+    int n = arrayLength(cells);
+    < first pass: count segments (separators + 1) >
+    int segs = 1;
+    int i = 0;
+    while (i < n) { if (cells[i] == sepCell) { segs = segs + 1; } i = i + 1; }
+    String[] out = new String[segs];
+    int s = 0;
+    String cur = "";
+    i = 0;
+    while (i < n) {
+      if (cells[i] == sepCell) { out[s] = cur; s = s + 1; cur = ""; }
+      else { cur = cur + cells[i]; }
+      i = i + 1;
+    }
+    out[s] = cur;
+    return out;
+  }
+
+  < -------------------------------------------------------------------- >
+  < Case mapping through an EXPLICIT case-pair table. SLeeLa cannot know the >
+  < Unicode case of an opaque glyph, so true case mapping is bridged. But when >
+  < the caller supplies the mapping as two parallel String[] tables (fromSet[k] >
+  < maps to toSet[k]), per-cell translation is fully real and honest -- the >
+  < semantics are exactly what the caller declared, nothing assumed. >
+  < -------------------------------------------------------------------- >
+
+  < mapCell(cell, fromSet, toSet): the mapped cell if `cell` equals some >
+  < fromSet[k] (first match wins), else `cell` unchanged. Real. >
+  String mapCell(String cell, String[] fromSet, String[] toSet) {
+    int n = arrayLength(fromSet);
+    if (arrayLength(toSet) < n) { n = arrayLength(toSet); }
+    int k = 0;
+    while (k < n) {
+      if (cell == fromSet[k]) { return toSet[k]; }
+      k = k + 1;
+    }
+    return cell;
+  }
+
+  < mapCells(cells, fromSet, toSet): translate every cell through the pair table >
+  < and return a NEW String[] of the same length (real). >
+  String[] mapCells(String[] cells, String[] fromSet, String[] toSet) {
+    int n = arrayLength(cells);
+    String[] out = new String[n];
+    int i = 0;
+    while (i < n) { out[i] = mapCell(cells[i], fromSet, toSet); i = i + 1; }
+    return out;
+  }
+
+  < mapCellsToString(cells, fromSet, toSet): as mapCells, rejoined to a String. >
+  String mapCellsToString(String[] cells, String[] fromSet, String[] toSet) {
+    return fromCells(mapCells(cells, fromSet, toSet));
+  }
+
+  < trimCells(cells, blankCell): drop leading and trailing cells equal to >
+  < blankCell, returning the rejoined inner String (real). All-blank -> "". >
+  String trimCells(String[] cells, String blankCell) {
+    int n = arrayLength(cells);
+    int lo = 0;
+    while (lo < n && cells[lo] == blankCell) { lo = lo + 1; }
+    int hi = n - 1;
+    while (hi >= lo && cells[hi] == blankCell) { hi = hi - 1; }
+    String out = "";
+    int i = lo;
+    while (i <= hi) { out = out + cells[i]; i = i + 1; }
+    return out;
+  }
+
   < ==================================================================== >
   < BRIDGED operations (char-level; cross the explicit VM/OS bridge) >
   < Each returns a stable, inspectable bridge-call descriptor rather than a >
@@ -410,11 +704,13 @@ class SLString {
     return op == "length"     || op == "charAt"    || op == "codePointAt"
         || op == "substring"  || op == "indexOf"   || op == "lastIndexOf"
         || op == "contains"   || op == "startsWith"|| op == "endsWith"
-        || op == "replace"    || op == "replaceAll"|| op == "toUpperCase"
-        || op == "toLowerCase"|| op == "trim"      || op == "strip"
+        || op == "replace"    || op == "replaceAll"|| op == "replaceFirst"
+        || op == "toUpperCase"|| op == "toLowerCase"|| op == "trim"
+        || op == "strip"      || op == "stripLeading" || op == "stripTrailing"
         || op == "split"      || op == "compareTo" || op == "matches"
-        || op == "format"     || op == "chars"     || op == "equalsIgnoreCase"
-        || op == "hashCode"   || op == "lengthValue";
+        || op == "format"     || op == "formatWith"|| op == "chars"
+        || op == "codePoints" || op == "normalize" || op == "equalsIgnoreCase"
+        || op == "compareToIgnoreCase" || op == "hashCode" || op == "lengthValue";
   }
   < bridgeKind(op): "int" / "boolean" / "string" / "string[]" -- the TYPE the >
   < runtime yields for a bridged op, so a caller knows how to read the result >
@@ -422,10 +718,10 @@ class SLString {
   String bridgeKind(String op) {
     if (op == "length" || op == "lengthValue" || op == "indexOf"
         || op == "lastIndexOf" || op == "codePointAt" || op == "compareTo"
-        || op == "hashCode") { return "int"; }
+        || op == "compareToIgnoreCase" || op == "hashCode") { return "int"; }
     if (op == "contains" || op == "startsWith" || op == "endsWith"
         || op == "matches" || op == "equalsIgnoreCase") { return "boolean"; }
-    if (op == "split" || op == "chars") { return "string[]"; }
+    if (op == "split" || op == "chars" || op == "codePoints") { return "string[]"; }
     return "string";
   }
 
@@ -445,23 +741,37 @@ class SLString {
   String startsWith(String prefix)         { return bridgeArg("startsWith", prefix); }
   String endsWith(String suffix)           { return bridgeArg("endsWith", suffix); }
 
+  < Length / indexing (continued) -- bridged. >
+  String codePoints()        { return bridge("codePoints"); }
+
   < Transformation -- bridged. >
   String toUpperCase()                     { return bridge("toUpperCase"); }
   String toLowerCase()                     { return bridge("toLowerCase"); }
   String trim()                            { return bridge("trim"); }
   String strip()                           { return bridge("strip"); }
+  < strip only the leading / trailing run of Unicode whitespace -- char-level, >
+  < so bridged (the in-language trimCells covers the explicit char-cell case). >
+  String stripLeading()                    { return bridge("stripLeading"); }
+  String stripTrailing()                   { return bridge("stripTrailing"); }
+  < Unicode normalization (NFC/NFD/NFKC/NFKD named by `form`) -- bridged. >
+  String normalize(String form)            { return bridgeArg("normalize", form); }
   String replace(String from, String to)   { return bridgeArg2("replace", from, to); }
   String replaceAll(String regex, String to){ return bridgeArg2("replaceAll", regex, to); }
+  < replaceFirst: replace only the first regex match -- bridged. >
+  String replaceFirst(String regex, String to){ return bridgeArg2("replaceFirst", regex, to); }
 
   < Splitting / matching / ordering / hashing -- bridged. >
   String split(String regex)               { return bridgeArg("split", regex); }
   String matches(String regex)             { return bridgeArg("matches", regex); }
   String compareTo(String other)           { return bridgeArg("compareTo", other); }
+  String compareToIgnoreCase(String other) { return bridgeArg("compareToIgnoreCase", other); }
   String equalsIgnoreCase(String other)    { return bridgeArg("equalsIgnoreCase", other); }
   String hashCode()                        { return bridge("hashCode"); }
 
   < Formatting -- bridged (format uses the native formatter over the bridge). >
   String format(String pattern)            { return bridgeArg("format", pattern); }
+  < formatWith(pattern, arg): single-argument printf-style format -- bridged. >
+  String formatWith(String pattern, String arg) { return bridgeArg2("formatWith", pattern, arg); }
 
   < ---- introspection ------------------------------------------------- >
   String typeName()   { return "SLeeLa.text.SLString"; }
@@ -471,7 +781,7 @@ class SLString {
   < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, >
   < or catalog can read and (where appropriate) override each record. >
   < Values are faithful to the subject's real origin where publicly known. >
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 11519;
   String metaAuthor = "SLeeLa standard library";
   String metaDate = "2026-10-23";

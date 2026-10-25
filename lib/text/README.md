@@ -43,7 +43,8 @@ result even though the descriptor itself is carried as a `String`.
 
 | File | Role |
 | --- | --- |
-| `SLString.sleela` | The comprehensive String surface: in-language concat/equals/empty/append/prepend/repeat/join/quote/copy, and the full bridged char-level API (length, charAt, substring, indexOf, contains, startsWith/endsWith, toUpperCase/toLowerCase, trim, replace, split, compareTo, equalsIgnoreCase, hashCode, format). |
+| `SLString.sleela` | The comprehensive String surface: in-language concat/equals/empty/append/prepend/repeat/join/quote/copy and value helpers (`concatAll`, `wrapIfNotEmpty`, `prefixIf`/`suffixIf`); a real **char-cell view** over an explicit `String[]` (charAt, substring/slice, indexOf, pad left/right/**center**, **truncate**, **insert/delete**, multi-cell **subsequence** search/count/replace, **split**, explicit-table **case mapping**, **trim**); and the full bridged char-level API (length, charAt, substring, indexOf, contains, startsWith/endsWith, toUpperCase/toLowerCase, trim, strip/**stripLeading**/**stripTrailing**, **normalize**, replace/replaceAll/**replaceFirst**, split, compareTo/**compareToIgnoreCase**, equalsIgnoreCase, hashCode, **codePoints**, format/**formatWith**). |
+| `SLStringCells.sleela` | A pure, **stateless companion** to `SLString`: every method takes its char-cell `String[]` as an argument and returns a real result (no seeded `value`, no bridge). Join/rejoin, slice/substring, reverse, single- and multi-cell search (`indexOf`/`indexOfSeq`/`lastIndexOfSeq`/`contains`/`count`), subsequence `replaceSeq`, `insert`/`deleteRange`, `splitOn`/`fieldCount`, explicit-table case `map`/`mapToString`, `trim`/`isBlank` over a caller-supplied blank set, `padLeft`/`padRight`/`padCenter`/`truncate`, `equals`/`commonPrefixLength`, and in-language **ASCII cell helpers** (`asciiCells`, `asciiCode`, `asciiUpperSet`/`asciiLowerSet`, `toUpperAscii`/`toLowerAscii`) that produce a dependable char-cell view for ASCII literals with no bridge. For lexers, column/table formatters, and template engines that think in arrays. |
 | `SLStringBuilder.sleela` | A genuinely functional mutable builder: fluent append (String/int/boolean), appendLine/newline/prepend, repeat, join/appendAll over `String[]`, tracked length + edit count, `toString`; char-level ops bridged. |
 | `SLStringBuffer.sleela` | The synchronized sibling (the Java StringBuilder/StringBuffer split); same builder surface, each mutation guarded by `beginSync()`/`endSync()` with honest lock-depth tracking. |
 | `SLFormatter.sleela` | In-language template assembly (`kv`, `wrap`, `list`/`bullets`, `pad`, `render1..3`); printf-style `format`/`padTo`/`alignRight` bridged. |
@@ -63,16 +64,34 @@ The core/base String value contract lives at `lib/core/SLString.sleela` (per
 ```sh
 # from the repository root
 ./impl/build/sleela run lib/text/text-string-demo.sleela
+./impl/build/sleela run lib/text/string-cells-demo.sleela
 ```
 
-Expected: the in-language ops print real results (`concat`, `equals` -> true,
-`repeat`, `join` -> `one, two, three`, independent `copy`), and the char-level
-ops print honest `text.bridge:...` descriptors with their yielded kind.
+Expected from `text-string-demo`: the in-language ops print real results
+(`concat`, `equals` -> true, `repeat`, `join` -> `one, two, three`, independent
+`copy`), the new char-cell helpers print real results (`padCenter 9` ->
+`..hello..`, `truncate 4` -> `hel~`, `replaceSeq ll` -> `he-o`, `mapCells` ->
+`HEllo`, `splitOn ,` -> `x|y|z`), and the char-level ops print honest
+`text.bridge:...` descriptors with their yielded kind.
+
+Expected from `string-cells-demo` (the stateless `SLStringCells` toolkit, all
+real): over `mississippi`, `indexOf ss` -> `2`, `count ss` -> `2`,
+`replace iss` -> `m------ippi`; `split` on `,` yields three fields; explicit
+case map -> `ABC`; `trim` -> `hi`; `padCenter 6` -> `..hi..`; `truncate 4` ->
+`mis~`.
 
 ## Reserved-name notes (SLeeLa gotchas)
 
-- `close()` and `lock()` are **reserved built-ins**. The stream teardown is
-  `closeStream()`; the buffer monitor is `beginSync()` / `endSync()`.
+- `close()`, `lock()`, and `join()` are **reserved built-ins** (the thread /
+  monitor / reach-handle surface). An *unqualified* in-class call to `join(...)`
+  is captured by the concurrency built-in before method resolution, so the
+  char-cell rejoin in `SLStringCells` is named `joinCells()` (with `joinWith()`
+  for the separator form). The stream teardown is `closeStream()`; the buffer
+  monitor is `beginSync()` / `endSync()`.
+- A char literal `'A'` is **not** valid SLeeLa — there is no `char` type, and a
+  bare `'` is a lexical error even inside an angle-bracket comment. Use the
+  double-quoted single-glyph cell (`"A"`) and keep apostrophes out of comments
+  on code-adjacent lines.
 - Binary operators need surrounding spaces (`n - 1`, not `n-1`) or the lexer
   reads them as one identifier.
 - Comments are `//` only — the lexer has no `/* */` block comments.
