@@ -1,0 +1,94 @@
+<< stanford-math/SMThermoEquations.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The equations of thermodynamics and statistical mechanics -- the
+   formal backbone behind SMThermodynamics' reach record. Each entry is faithful
+   to the public record. >>
+#sleela 2.1
+< Executive+ class: a standards artifact, full metadata record. >
+class SMThermoEquations {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9230;
+  String metaAuthor = "the thermodynamic public record";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "results in the public domain";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 10;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- The thermodynamics canon (public record) ---- >
+  SMEquation[] eqs;
+  int filled;
+
+  void build() {
+    eqs = new SMEquation[24];
+    filled = 0;
+
+    add("Zeroth law of thermodynamics", "A~C and B~C  =>  A~B (thermal equilibrium is transitive)", "thermodynamics", "Fowler & Guggenheim (named)", "1939");
+    add("First law of thermodynamics", "dU = dQ - dW", "thermodynamics", "Clausius; Joule; Mayer", "1850");
+    add("Second law (Clausius)", "dS >= dQ / T,  dS_universe >= 0", "thermodynamics", "Rudolf Clausius", "1865");
+    add("Third law of thermodynamics", "S -> 0 as T -> 0 (perfect crystal)", "thermodynamics", "Walther Nernst", "1906");
+    add("Entropy (Clausius definition)", "dS = dQ_rev / T", "thermodynamics", "Rudolf Clausius", "1865");
+    add("Boltzmann entropy", "S = k * ln(W)", "statistical mechanics", "Ludwig Boltzmann", "1877");
+    add("Gibbs entropy", "S = -k * sum p_i ln p_i", "statistical mechanics", "J. Willard Gibbs", "1878");
+    add("Ideal gas law", "P V = n R T", "thermodynamics", "Clapeyron (combined)", "1834");
+    add("Gibbs free energy", "G = H - T S", "thermodynamics", "J. Willard Gibbs", "1873");
+    add("Helmholtz free energy", "F = U - T S", "thermodynamics", "Hermann von Helmholtz", "1882");
+    add("Enthalpy", "H = U + P V", "thermodynamics", "Kamerlingh Onnes (term)", "1909");
+    add("Carnot efficiency", "eta = 1 - T_cold / T_hot", "thermodynamics", "Sadi Carnot", "1824");
+    add("Maxwell-Boltzmann distribution", "f(v) ~ v^2 e^(-m v^2 / (2 k T))", "statistical mechanics", "Maxwell; Boltzmann", "1860");
+    add("Boltzmann factor", "P(E) ~ e^(-E / (k T))", "statistical mechanics", "Ludwig Boltzmann", "1868");
+    add("Partition function", "Z = sum_i e^(-E_i / (k T))", "statistical mechanics", "Boltzmann; Gibbs", "1901");
+    add("Stefan-Boltzmann law", "j = sigma T^4", "thermodynamics", "Stefan; Boltzmann", "1879");
+    add("Clausius-Clapeyron relation", "dP/dT = L / (T dV)", "thermodynamics", "Clausius; Clapeyron", "1834");
+    add("Gibbs-Helmholtz equation", "d(G/T)/dT = -H / T^2", "thermodynamics", "Gibbs; Helmholtz", "1882");
+    add("Sackur-Tetrode equation", "S = N k [ln(V/N (4 pi m U/(3 N h^2))^{3/2}) + 5/2]", "statistical mechanics", "Sackur; Tetrode", "1912");
+    add("Landauer's principle", "E_min = k T ln(2) per bit erased", "information thermodynamics", "Rolf Landauer", "1961");
+  }
+
+  void add(String name, String form, String field, String who, String year) {
+    SMEquation e = new SMEquation();
+    e.define(name, form, field, who, year);
+    eqs[filled] = e;
+    filled = filled + 1;
+  }
+
+  int count() { return filled; }
+
+  String lineAt(int i) {
+    SMEquation e = eqs[i];
+    return e.line();
+  }
+}

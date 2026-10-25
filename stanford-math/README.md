@@ -21,7 +21,48 @@ faithful to the subject's real origin where publicly known**; unknowns are
 | `SMFormulaCatalog` | Named formulas/theorems tied to Stanford names | Peer-reviewed literature (see Sources) |
 | `SMSymbolTable`    | Standard symbols used by those formulas | Established mathematical notation |
 | `SMThermodynamics` | How far Stanford's thermodynamics/stat-mech reaches | Research-area pages, course records, lectures |
+| `SMEquation`       | One equation record (name, form, field, discoverer, year) | — |
+| `SMMathCanon`      | Foundational mathematics equations/identities | Standard references (see Sources) |
+| `SMPhysicsCanon`   | Foundational physics equations | Standard references (see Sources) |
+| `SMThermoEquations`| Thermodynamics & statistical-mechanics equations | Standard references (see Sources) |
+| `SMCrossoverCanon` | Applied/PhD crossovers (finance, chemistry, cosmology, info) | Standard references (see Sources) |
 | `SMArchive` (demo) | Runnable entry point that broadcasts the archive | — |
+
+## The equation canon (102 entries)
+
+> On "all of the equations known in the known Universe": **no finite, complete
+> list of every equation exists** — and fabricating one would violate this
+> repo's one hard rule (values faithful to real origin; unknowns are `"none"`,
+> never invented). So this archive records a **curated, fully-attributed canon**
+> of the genuinely foundational equations that every math/physics PhD rests on:
+> **102 entries**, each with its real name, symbolic form, discoverer(s), year,
+> and field.
+
+Breakdown (counts verified by running `SMArchive`):
+
+- **Mathematics — 34:** Pythagoras, Euler's identity/formula, FTC, binomial
+  theorem, Taylor & Fourier series, Cauchy–Schwarz, Gauss/Green/Stokes,
+  Cauchy integral & residue theorems, Riemann zeta functional equation, Euler
+  product, prime number theorem, Bayes, CLT, Stirling, Gamma, Basel problem,
+  Euler–Mascheroni, golden ratio, polyhedron formula, eigenvalue equation,
+  Green–Tao, and more.
+- **Physics — 36:** Newton's laws & gravitation, Lagrange/Hamilton, Coulomb,
+  all four Maxwell equations, Lorentz force, `E=mc^2`, Einstein field equations,
+  Schwarzschild radius, Planck relation & law, de Broglie, both Schrödinger
+  equations, Heisenberg uncertainty, Dirac, canonical commutation, Bohr levels,
+  Rydberg, photoelectric, Navier–Stokes, wave equation, Bernoulli.
+- **Thermodynamics & statistical mechanics — 20:** the four laws, Clausius
+  entropy, Boltzmann `S=k ln W`, Gibbs entropy, ideal gas law, Gibbs/Helmholtz
+  free energies, enthalpy, Carnot efficiency, Maxwell–Boltzmann, Boltzmann
+  factor, partition function, Stefan–Boltzmann, Clausius–Clapeyron,
+  Gibbs–Helmholtz, Sackur–Tetrode, Landauer's principle.
+- **Crossovers — 12:** Black–Scholes (PDE & call price), Itô's lemma, Nernst,
+  Arrhenius, Friedmann, Hubble–Lemaître, Drake, Shannon entropy & channel
+  capacity, logistic equation, heat equation.
+
+Where attribution is genuinely diffuse (e.g. the quadratic formula, the 2×2
+determinant), the discoverer field says so honestly rather than crediting a
+single name.
 
 ## People recorded (public record)
 
@@ -114,6 +155,19 @@ cd impl && SLEELA_SHA256_MANIFEST="$PWD/../security/sha256-manifest.json" make b
   Entropy" (`plato.stanford.edu`).
 - Stanford Dept. of Mathematics FARS colloquium on black-hole thermodynamics;
   Physics 170 syllabus (`syllabus.stanford.edu`).
+
+### Equation-canon attributions
+
+The canon's names, symbolic forms, discoverers, and years follow the standard
+history-of-science record. Representative anchors: Newton, *Principia* (1687);
+Euler, *Introductio in analysin infinitorum* (1748); Maxwell, "A Dynamical
+Theory of the Electromagnetic Field" (1865); Einstein, *Annalen der Physik*
+(1905) and the field equations (1915); Planck (1900); Schrödinger (1926);
+Heisenberg (1927); Dirac (1928); Boltzmann (1877); Gibbs (1873–78); Clausius
+(1850/1865); Carnot (1824); Black & Scholes, *J. Political Economy* (1973),
+with Merton; Nernst (1889); Friedmann (1922); Shannon, *Bell System Tech. J.*
+(1948); Landauer, *IBM J. Res. Dev.* (1961). Each is standard, citable history;
+diffuse attributions are marked as such in the data.
 
 *Content was rephrased from the above sources for compliance with licensing
 restrictions.*

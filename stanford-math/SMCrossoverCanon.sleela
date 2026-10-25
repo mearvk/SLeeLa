@@ -1,0 +1,86 @@
+<< stanford-math/SMCrossoverCanon.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Named crossover equations where the math/physics canon reaches
+   into applied PhD fields -- finance, chemistry/electrochemistry, cosmology,
+   and information theory. Each entry is faithful to the public record. >>
+#sleela 2.1
+< Executive+ class: a standards/products artifact, full metadata record. >
+class SMCrossoverCanon {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9240;
+  String metaAuthor = "the applied-science public record";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "results in the peer-reviewed public record";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- The crossover canon (public record) ---- >
+  SMEquation[] eqs;
+  int filled;
+
+  void build() {
+    eqs = new SMEquation[16];
+    filled = 0;
+
+    add("Black-Scholes PDE", "dV/dt + (1/2) sigma^2 S^2 d2V/dS2 + r S dV/dS - r V = 0", "mathematical finance", "Black; Scholes; Merton", "1973");
+    add("Black-Scholes call price", "C = S N(d1) - K e^(-r T) N(d2)", "mathematical finance", "Black; Scholes; Merton", "1973");
+    add("Ito's lemma", "df = (df/dt + mu df/dx + (1/2) sigma^2 d2f/dx2) dt + sigma df/dx dW", "stochastic calculus", "Kiyosi Ito", "1951");
+    add("Nernst equation", "E = E0 - (R T / (n F)) ln(Q)", "electrochemistry", "Walther Nernst", "1889");
+    add("Arrhenius equation", "k = A e^(-Ea / (R T))", "physical chemistry", "Svante Arrhenius", "1889");
+    add("Friedmann equation", "(adot/a)^2 = (8 pi G / 3) rho - k c^2/a^2 + Lambda c^2/3", "cosmology", "Alexander Friedmann", "1922");
+    add("Hubble-Lemaitre law", "v = H0 * d", "cosmology", "Lemaitre; Hubble", "1927");
+    add("Drake equation", "N = R* f_p n_e f_l f_i f_c L", "astrobiology", "Frank Drake", "1961");
+    add("Shannon entropy", "H = -sum p_i log2 p_i", "information theory", "Claude Shannon", "1948");
+    add("Shannon channel capacity", "C = B log2(1 + S/N)", "information theory", "Claude Shannon", "1948");
+    add("Logistic (population) equation", "dN/dt = r N (1 - N/K)", "mathematical biology", "Pierre Francois Verhulst", "1838");
+    add("Schrodinger-form diffusion (heat equation)", "du/dt = alpha laplacian u", "applied analysis", "Joseph Fourier", "1822");
+  }
+
+  void add(String name, String form, String field, String who, String year) {
+    SMEquation e = new SMEquation();
+    e.define(name, form, field, who, year);
+    eqs[filled] = e;
+    filled = filled + 1;
+  }
+
+  int count() { return filled; }
+
+  String lineAt(int i) {
+    SMEquation e = eqs[i];
+    return e.line();
+  }
+}

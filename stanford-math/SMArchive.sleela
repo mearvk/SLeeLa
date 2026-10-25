@@ -100,6 +100,57 @@ class SMArchive {
     }
     print("");
     print("Answer: " + thermo.reachStatement());
+
+    print("");
+    print("==== Equation canon (math, physics, thermodynamics, crossovers) ====");
+
+    print("");
+    print("-- Mathematics canon --");
+    SMMathCanon mathCanon = new SMMathCanon();
+    mathCanon.build();
+    int mn = mathCanon.count();
+    i = 0;
+    while (i < mn) {
+      print("  " + mathCanon.lineAt(i));
+      i = i + 1;
+    }
+
+    print("");
+    print("-- Physics canon --");
+    SMPhysicsCanon physCanon = new SMPhysicsCanon();
+    physCanon.build();
+    int phn = physCanon.count();
+    i = 0;
+    while (i < phn) {
+      print("  " + physCanon.lineAt(i));
+      i = i + 1;
+    }
+
+    print("");
+    print("-- Thermodynamics & statistical mechanics canon --");
+    SMThermoEquations thermoEq = new SMThermoEquations();
+    thermoEq.build();
+    int ten = thermoEq.count();
+    i = 0;
+    while (i < ten) {
+      print("  " + thermoEq.lineAt(i));
+      i = i + 1;
+    }
+
+    print("");
+    print("-- Crossover canon (finance, chemistry, cosmology, information) --");
+    SMCrossoverCanon crossCanon = new SMCrossoverCanon();
+    crossCanon.build();
+    int cn = crossCanon.count();
+    i = 0;
+    while (i < cn) {
+      print("  " + crossCanon.lineAt(i));
+      i = i + 1;
+    }
+
+    int total = mn + phn + ten + cn;
+    print("");
+    print("Equation canon total: " + total + " entries recorded, each faithful to its real origin.");
     print("==== end of archive ====");
   }
 }
