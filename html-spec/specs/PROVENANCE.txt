@@ -1,0 +1,19 @@
+Retrieved 2026-10-25T15:07:16Z via GitHub API (sandbox is INTEGRATIONS_ONLY; w3.org/ietf.org unreachable).
+
+whatwg-html-living-standard.source.html
+    repo:   whatwg/html
+    commit: b342939ba3b7e40041655fb926f6e41b54fe47ef
+    blob:   f52d0c265bbc8d3af556e49b4934ce4bbeeee994
+    path:   source
+    bytes:  8012421
+
+whatwg-html-README.md
+    repo:   whatwg/html
+    commit: b342939ba3b7e40041655fb926f6e41b54fe47ef
+    path:   README.md
+
+w3c-html52-single-page.bs
+    repo:   w3c/html   (Deliverables of the HTML WG until Oct 2018 — source for HTML 5.0/5.1/5.2 RECs)
+    commit: 2ef7a579bcfd2693b98df35f20e51dff60e3fbef
+    path:   single-page.bs
+    bytes:  45366
