@@ -78,3 +78,69 @@ pair with `SLMeasure` (unit conversion) when you need physical/relative units.
   reconciler; it is a per-widget style, not a multi-child solver.
 
 The standard family is the recommended default for everyday placement.
+
+## Driving real native widgets (`SLLayoutDriver`)
+
+The Standard Layouts are the **planning** layer: pure SLeeLa that computes the
+exact pixel rectangle of every component (`SLLayoutFrame` + the `SL*Layout`
+family). `SLLayoutDriver` is the **realizing** layer: it takes a *placed*
+`SLLayoutFrame` and configures live SleelaUI widgets through the `ui*` bridge so
+the real, on-screen toolkit reproduces the plan.
+
+### Why it is faithful, not lossy
+
+SleelaUI — like GTK or Qt layouts — is a **container/pack** model: you declare
+structure (a box with an orientation and spacing, or a grid of N columns) and
+the toolkit solves geometry on every backend (X11 / Cocoa / Win32). There is no
+"place this widget at absolute x,y" call, by design, so a view stays correct
+when the window resizes. The Standard **stack** and **grid** layouts use that
+same model, so realizing them is exact:
+
+| Plan (`SLLayoutFrame`) | Realized native container |
+| --- | --- |
+| `useColumn(gap, pad)` | `uiBox(parent, 0 /*vertical*/, gap)` |
+| `useRow(gap, pad)`    | `uiBox(parent, 1 /*horizontal*/, gap)` |
+| `useGrid(cols, gap, pad)` | `uiGrid(parent, cols, gap)` |
+
+Each real control is sized from the plan with `uiWidgetSizeRequest(w, h)`, and a
+**flexible** component (added with size `0`) is marked `uiWidgetExpand` +
+`uiWidgetAlign(FILL, FILL)` so it shares the leftover space exactly as the
+planner computed.
+
+### Usage
+
+```sleela
+< 1. PLAN in pure SLeeLa (always checks and runs, headless included) >
+SLLayoutFrame f = new SLLayoutFrame(); f.create();
+f.useColumn(8, 12);
+f.add("header", 40);     < fixed 40px >
+f.add("body",   0);      < flexible: fills the rest >
+f.add("footer", 32);     < fixed 32px >
+f.place(0, 0, 320, 600);
+
+< 2. REALIZE onto a real window root (needs a display) >
+SLLayoutDriver d = new SLLayoutDriver(); d.create();
+int box = d.realize(root, f);         < one uiBox matching the plan >
+
+int header = uiLabel(box, "Settings");
+d.applyNamed(f, "header", header);    < sized from the plan >
+
+int body = uiScrolledView(box, 1, 1);
+d.applyNamed(f, "body", body);        < flexible -> expands to fill >
+
+int footer = uiButton(box, "Close");
+d.applyNamed(f, "footer", footer);
+```
+
+`SLLayoutDriver` is **native, bridge-backed** (it calls `ui*`), so unlike the
+pure planners it runs only where a display/toolkit is present. The runnable
+demo `lib/ui/layout-driver-demo.sleela` shows the full flow and degrades
+gracefully on a headless host (it prints the computed plan and exits).
+
+### Reading the plan from a realizer
+
+`SLLayoutFrame` now exposes its plan so any realizer (or inspector) can read it:
+`getLayoutKind()`, `isRowLayout()`, `getGap()`, `getColumns()`, and
+`isFlexibleAt(index)`, alongside the existing `boxAt(index)` / `boxOf(name)`
+rectangles. The underlying `SLStackLayout` gained `getGap()` and
+`isFlexibleAt(index)`; `SLGridLayout` gained `getGap()`.

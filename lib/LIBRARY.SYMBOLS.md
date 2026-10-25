@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11562
+library-source-files: 11564
 library-packages: 101
 module-facade-symbols: 70
-total-symbol-records: 11632
+total-symbol-records: 11634
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11345,6 +11345,7 @@ ui	SLGridLayout.sleela	lib/ui/SLGridLayout.sleela	source
 ui	SLLabel.sleela	lib/ui/SLLabel.sleela	source
 ui	SLLayout.sleela	lib/ui/SLLayout.sleela	source
 ui	SLLayoutBox.sleela	lib/ui/SLLayoutBox.sleela	source
+ui	SLLayoutDriver.sleela	lib/ui/SLLayoutDriver.sleela	source
 ui	SLLayoutFrame.sleela	lib/ui/SLLayoutFrame.sleela	source
 ui	SLLayoutKit.sleela	lib/ui/SLLayoutKit.sleela	source
 ui	SLListView.sleela	lib/ui/SLListView.sleela	source
@@ -11363,6 +11364,7 @@ ui	SLView.sleela	lib/ui/SLView.sleela	source
 ui	SLWidget.sleela	lib/ui/SLWidget.sleela	source
 ui	SLWindow.sleela	lib/ui/SLWindow.sleela	source
 ui	layout-demo.sleela	lib/ui/layout-demo.sleela	source
+ui	layout-driver-demo.sleela	lib/ui/layout-driver-demo.sleela	source
 ui	theme-demo.sleela	lib/ui/theme-demo.sleela	source
 us-infrastructure	SLPackage.sleela	lib/us-infrastructure/SLPackage.sleela	facade
 user-interface	SLAvatar.sleela	lib/user-interface/SLAvatar.sleela	source

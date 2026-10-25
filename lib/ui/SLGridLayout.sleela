@@ -71,6 +71,8 @@ class SLGridLayout {
   < Number of columns (at least 1). >
   void columns(int c) { cols = (c < 1) ? 1 : c; }
   int getColumns() { return cols; }
+  < The gap, in px, between adjacent cells (used by a native realizer). >
+  int getGap() { return gapPx; }
   void gap(int px) { gapPx = (px < 0) ? 0 : px; }
   void pad(int p) { int q = (p < 0) ? 0 : p; padLeft = q; padTop = q; padRight = q; padBottom = q; }
 
