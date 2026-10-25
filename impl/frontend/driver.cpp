@@ -6,6 +6,7 @@
 #include "semantic.h"
 #include "compiler.h"
 #include "artifact.h"
+#include "originate.h"
 #include "native_api.h"
 #include "chemistry_api.h"
 #include "financial_api.h"
@@ -640,6 +641,10 @@ static catalog::Catalog loadCatalog(){
  * opcode validates it in the VM (1..10). Actually building+booting a selected
  * version's native main is a host/build action beyond the shipped `sleela`
  * binary; this subcommand resolves and reports the selection. */
+// Directory for the originated source document (syntax 2.4). Empty means the
+// source file's own directory. Set by the compile subcommand's
+// --originate-dir=<dir> flag.
+static std::string g_originateDir;
 static int compileFile(const std::string&sourcePath,const std::string&outputPath);
 static int runFile(const std::string&path);
 
@@ -1098,7 +1103,12 @@ static int checkFile(const std::string&path){
     }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}
     std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;
 }
-static int compileFile(const std::string&sourcePath,const std::string&outputPath){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
+static int compileFile(const std::string&sourcePath,const std::string&outputPath){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";
+    // Author-marked documents (syntax 2.4) get a second, originated source
+    // document alongside the artifact: every member located, originated, and
+    // branded with a therefore-brander. Clean and united.
+    if(prog.authorMarked){std::string op=sleela::writeOriginatedDocument(prog,sourcePath,g_originateDir);if(!op.empty())std::cout<<"sleelvac: originated source -> "<<op<<"\n";}
+    return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static int validateArtifact(const std::string&path){
     char error[256]={0};
     if(!slvm_validate_artifact_file(path.c_str(),error,sizeof(error))){
@@ -1461,7 +1471,10 @@ int main(int argc,char**argv){
     if(cmd=="compile"){
         // compile <file...> -o <out>: collect every source path before "-o".
         std::vector<std::string> files; std::string out;
-        for(int i=2;i<argc;++i){std::string a=argv[i];if(a=="-o"){if(i+1<argc){out=argv[i+1];i++;}else return usage();}else files.push_back(a);}
+        for(int i=2;i<argc;++i){std::string a=argv[i];
+            if(a=="-o"){if(i+1<argc){out=argv[i+1];i++;}else return usage();}
+            else if(a.rfind("--originate-dir=",0)==0){g_originateDir=a.substr(a.find('=')+1);}
+            else files.push_back(a);}
         if(files.empty()||out.empty())return usage();
         rc=(files.size()==1)?compileFile(files[0],out):compileFilesMulti(files,out);
     }

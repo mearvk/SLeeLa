@@ -1,20 +1,25 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  2.3  (1.3..1.11 baseline carried forward)
-    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.0 .. 2.3)
+    Syntax version:  2.4  (1.3..1.11 baseline carried forward)
+    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.0 .. 2.4)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.3..2.3 surface
+    Status:          Normative for the syntax 1.3..2.4 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 2.3`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.3).
-    Syntax 2.3 is the current spec level: it adds the **philosophers Guide-chain
+    `#sleela 2.4`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.4).
+    Syntax 2.4 is the current spec level: it adds the **`author`/`authorial`
+    document marker** (section 18) — a modifier-less word that marks a document
+    as handled by professional council, legalises duplicate fields/methods
+    (each member gets a declaration-order id and an SHA-256 brander), and makes
+    the standard compile emit a second "originated" source document whose
+    members carry `∴` branders. Syntax 2.3 added the **philosophers Guide-chain
     expression** `new T(...) :: Guide :: Guide ...` (section 17), a first-class
     construct the lexer/parser/semantic analyzer/compiler and native Core all
     execute. Syntax 2.2 added **generic type signatures**
@@ -53,7 +58,7 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax 1.3..2.3 surface the front end accepts.
+This document is normative for the syntax 1.3..2.4 surface the front end accepts.
 Every production and built-in below is implemented in `impl/frontend` and
 executes on `impl/core`.
 
@@ -1172,7 +1177,7 @@ Core:
   each Guide a zero-arg method; version-gated at 2.3.
 - `impl/frontend/compiler.cpp` — `emitGuideChain()`: head then per-Guide
   `OP_DUP`/`OP_CALL`/`OP_POP`; no new Core opcode.
-- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.3.
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.4.
 
 The companion library and docs (the source is the authority):
 
@@ -1183,3 +1188,83 @@ The companion library and docs (the source is the authority):
   each related to the Source Diagram and this Language Syntax.
 - `tutorial/15-philosophers-constructors.md` — the tutorial lesson.
 - `lib/linux-editors/{vim,emacs}/sleela-philosophers.*` — the `::`/Guide coloring.
+
+
+## 18. Syntax 2.4 — the `author`/`authorial` document marker
+
+This section is **normative** for syntax **2.4**. The marker is a first-class,
+compiler-recognised document property — not a library convention — executed by
+the front end (lexer → parser → semantic analyzer) and by the compile driver,
+which emits a second "originated" source document. The companion design note is
+`markdown/AUTHOR-FIELD-AND-BRANDER.design.md`.
+
+### 18.1 The marker
+
+A document may declare, at top level (after the `#sleela` pragma, outside any
+class), the single bare word:
+
+    author;
+
+`authorial;` is an **exact synonym**. It takes no modifier and no type — it is a
+*static class unto the document itself* — and marks the document as **handled by
+professional council**. `author`/`authorial` are **contextual** words, not
+reserved keywords: anywhere other than this top-level marker position (and in
+any document below 2.4) they remain ordinary identifiers. A trailing `;` is
+optional and a repeated marker is harmless.
+
+Version gate: the marker requires `#sleela 2.4`; a 2.4-feature use declared below
+2.4 is rejected ("the author/authorial document marker requires #sleela 2.4").
+
+### 18.2 Legal duplicate members and member identity
+
+In an author-marked document, two or more fields, or two or more methods, may
+share a name — the semantic analyzer's duplicate-field / duplicate-static-field
+/ duplicate-method rejections are relaxed **only** for such documents (every
+other document keeps the historical "duplicate member" error). Identity is
+preserved: each field and method receives a **declaration-order id** (per class,
+from 1, fields then methods) and an **SHA-256 brander** over the preimage
+
+    <docName>|<memberName>|<paramTypeList>|<editDate>
+
+where `paramTypeList` is the ordered, comma-separated parameter-type list, and
+only `String`/`int` parameters are considered eligible for the duplicate
+allowance (a member with any other parameter type is still originated, but its
+brander is marked `n/a`). `editDate` is the source file's edit date (YYYY-MM-DD).
+
+### 18.3 The originated source document (the second output)
+
+As part of the **standard compile**, an author-marked document produces, in
+addition to the runnable artifact, a regenerated **originated source document**:
+valid `.sleela` source in which every field and method is preceded by a `∴`
+brander (the house analogue of Java's `@`) recording the member's id, hash,
+document, member name, signature, and edit date, plus a `slot=k/n` marker and a
+per-name **ordering table** for duplicated names. It is written next to the
+original source, or to the directory given by the compile flag
+`--originate-dir=<dir>`, named `<original>.originated.sleela`. The originated
+document is itself valid, compilable SLeeLa — the auditable twin of the
+artifact: clean and united.
+
+### 18.4 Duplicate dispatch (current status)
+
+Each duplicate is a distinct, branded member. The ordering table emitted into
+the originated document is an ordered list of declaration-order slots per
+duplicated name, dispatched by a forward probe from slot 1 (busy → next slot)
+with a frequency-of-use tilt, and a document that supposes `author` may address
+a specific definition directly by its id/hash. The direct-call surface syntax
+and the full run-time probe are reserved for a later slice; in the present
+build, a **bare** call to a duplicated name resolves to the last declared
+definition (last-wins), and overload-by-arity resolution across duplicates is
+not yet performed. The id/hash branders are stable now so direct call is purely
+additive later.
+
+### 18.5 Where this is implemented
+
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.4.
+- `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
+  contextual `author`/`authorial` marker and sets `Program.authorMarked`.
+- `impl/frontend/semantic.cpp` — `collect()` gates the marker to 2.4 and relaxes
+  the duplicate-member checks when `authorMarked`.
+- `impl/frontend/originate.{h,cpp}` — the originated-source emitter (SHA-256
+  branders via `ledger::sha256_hex`).
+- `impl/frontend/driver.cpp` — the `compile` flow calls the emitter for
+  author-marked documents and parses `--originate-dir=<dir>`.

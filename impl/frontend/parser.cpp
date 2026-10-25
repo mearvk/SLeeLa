@@ -179,6 +179,19 @@ Program Parser::parseProgram(){
         }
         else if(check(Tok::KwExtends)){ contentStarted=true; p.documentExtensions.push_back(parseDocumentExtension()); }
         else if(check(Tok::KwStruct)){ contentStarted=true; p.structs.push_back(parseStruct()); }
+        else if(check(Tok::Ident)&&(cur().text=="author"||cur().text=="authorial")){
+            // Author marker (syntax 2.4). A single, modifier-less, type-less word
+            // at document scope -- a static class of the document itself -- that
+            // marks the document as handled by professional council and permits
+            // duplicate members (see SLEELA.syntax section 18). `author` and
+            // `authorial` are exact synonyms. A trailing ';' is optional; a
+            // repeat marker is harmless (the flag is already set). It is a
+            // contextual word, not a reserved keyword, so below 2.4 (or anywhere
+            // else) `author`/`authorial` remain ordinary identifiers.
+            ++i_;
+            accept(Tok::Semicolon);
+            p.authorMarked=true;
+        }
         else {
             unsigned mods=parseJavaModifiers();
             if(check(Tok::KwClass)||check(Tok::KwInterface)||check(Tok::KwEnum)||check(Tok::KwRecord)){
