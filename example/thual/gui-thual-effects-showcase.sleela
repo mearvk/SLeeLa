@@ -171,6 +171,7 @@ class GuiThualEffectsShowcase {
 
     // --- Chrome: branding painted into the header ---
     int header = uiHeaderBar(root);
+    uiWidgetSizeRequest(header, 0, 48);                   // Coherent Dignity: 6X header banner (48px)
     int logo = uiLabel(header, "\u2756");                 // the studio mark
     uiWidgetMargin(logo, 0, 10, 0, 14);
     int brand = uiBox(header, 1, 0);

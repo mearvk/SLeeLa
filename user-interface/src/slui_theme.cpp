@@ -126,40 +126,43 @@ void theme_fill_preset(SLUITheme* out, SLUIThemeId id) {
         break;
 
     case SLUI_THEME_WHITE:
-        /* Standard Pattern: WHITE. A light surface family with dark text and a
-         * blue accent -- the classic light desktop look. */
+        /* Standard Pattern: WHITE, under the Coherent Dignity contrast matrix.
+         * A LIGHT family that bans pure #FFFFFF (ocular ghosting): the floor is
+         * a warm parchment near-white and text is a mid-dark neutral chosen to
+         * land inside the 4.5:1..7:1 comfort band rather than max contrast. */
         out->id = SLUI_THEME_WHITE;
-        out->bg = slui_rgb(0xF4, 0xF5, 0xF7);        /* light application floor */
-        out->surface = slui_rgb(0xFF, 0xFF, 0xFF);   /* white panels / cards    */
-        out->surface_hi = slui_rgb(0xEA, 0xEC, 0xF0); /* hovered raised surface */
-        out->chrome = slui_rgb(0xE6, 0xE8, 0xEC);    /* light title / header    */
-        out->border = slui_rgb(0xD0, 0xD4, 0xDA);    /* soft hairline           */
-        out->fg = slui_rgb(0x1A, 0x1C, 0x20);        /* near-black primary text */
-        out->fg_dim = slui_rgba(0x1A, 0x1C, 0x20, 0xA0);
-        out->accent = slui_rgb(0x2F, 0x6F, 0xED);    /* blue accent             */
-        out->accent_fg = slui_rgb(0xFF, 0xFF, 0xFF);
-        out->danger = slui_rgb(0xD0, 0x3A, 0x34);
-        out->hover = slui_rgba(0x00, 0x00, 0x00, 0x0E);  /* subtle dark tint    */
-        out->active = slui_rgba(0x00, 0x00, 0x00, 0x1C);
+        out->bg = slui_rgb(0xEC, 0xEC, 0xE8);        /* warm parchment floor    */
+        out->surface = slui_rgb(0xF2, 0xF2, 0xEF);   /* +~10% luminance surface */
+        out->surface_hi = slui_rgb(0xE2, 0xE2, 0xDD); /* raised / hovered       */
+        out->chrome = slui_rgb(0xE4, 0xE4, 0xDF);    /* light header strip      */
+        out->border = slui_rgb(0xCB, 0xCB, 0xC4);    /* muted hairline          */
+        out->fg = slui_rgb(0x30, 0x33, 0x38);        /* mid-dark text (~6:1)    */
+        out->fg_dim = slui_rgba(0x30, 0x33, 0x38, 0xB0);
+        out->accent = slui_rgb(0x2F, 0x63, 0xC8);    /* restrained blue         */
+        out->accent_fg = slui_rgb(0xF2, 0xF2, 0xEF);
+        out->danger = slui_rgb(0xB0, 0x55, 0x50);    /* desaturated error       */
+        out->hover = slui_rgba(0x00, 0x00, 0x00, 0x0E);
+        out->active = slui_rgba(0x00, 0x00, 0x00, 0x1A);
         copy_family(out, "system");
         break;
 
     case SLUI_THEME_BLACK:
-        /* Standard Pattern: BLACK. Deep black surfaces with light text; a
-         * stronger, flatter sibling of SLICK_BLACK. */
+        /* Standard Pattern: BLACK, under the contrast matrix. DEEP OBSIDIAN, not
+         * pure #000000: a low-stimulus near-black floor with text held in the
+         * comfort band (a warm off-white, not blinding #FFFFFF). */
         out->id = SLUI_THEME_BLACK;
-        out->bg = slui_rgb(0x08, 0x08, 0x0A);
-        out->surface = slui_rgb(0x12, 0x12, 0x15);
-        out->surface_hi = slui_rgb(0x1C, 0x1D, 0x22);
-        out->chrome = slui_rgb(0x0B, 0x0B, 0x0E);
-        out->border = slui_rgb(0x26, 0x27, 0x2D);
-        out->fg = slui_rgb(0xF3, 0xF4, 0xF6);
-        out->fg_dim = slui_rgba(0xF3, 0xF4, 0xF6, 0xA6);
-        out->accent = slui_rgb(0x6C, 0xA6, 0xFF);
-        out->accent_fg = slui_rgb(0x06, 0x0A, 0x14);
-        out->danger = slui_rgb(0xE5, 0x4B, 0x4B);
-        out->hover = slui_rgba(0xFF, 0xFF, 0xFF, 0x12);
-        out->active = slui_rgba(0xFF, 0xFF, 0xFF, 0x24);
+        out->bg = slui_rgb(0x14, 0x15, 0x17);        /* deep obsidian floor     */
+        out->surface = slui_rgb(0x1D, 0x1E, 0x21);   /* +~10% luminance surface */
+        out->surface_hi = slui_rgb(0x27, 0x28, 0x2C); /* raised / hovered       */
+        out->chrome = slui_rgb(0x17, 0x18, 0x1B);    /* header strip            */
+        out->border = slui_rgb(0x32, 0x34, 0x39);    /* muted hairline          */
+        out->fg = slui_rgb(0xDE, 0xDF, 0xDB);        /* warm off-white (~comfort)*/
+        out->fg_dim = slui_rgba(0xDE, 0xDF, 0xDB, 0xA6);
+        out->accent = slui_rgb(0x5E, 0x93, 0xDC);    /* restrained steel-blue   */
+        out->accent_fg = slui_rgb(0x10, 0x12, 0x16);
+        out->danger = slui_rgb(0xC2, 0x5F, 0x5A);    /* desaturated error       */
+        out->hover = slui_rgba(0xFF, 0xFF, 0xFF, 0x10);
+        out->active = slui_rgba(0xFF, 0xFF, 0xFF, 0x20);
         copy_family(out, "system");
         break;
 
@@ -172,13 +175,13 @@ void theme_fill_preset(SLUITheme* out, SLUIThemeId id) {
         out->surface_hi = slui_rgb(0x20, 0x31, 0x52);
         out->chrome = slui_rgb(0x0C, 0x14, 0x24);
         out->border = slui_rgb(0x2C, 0x41, 0x68);
-        out->fg = slui_rgb(0xEC, 0xF1, 0xFB);
-        out->fg_dim = slui_rgba(0xEC, 0xF1, 0xFB, 0xAA);
-        out->accent = slui_rgb(0x4F, 0x8C, 0xFF);
+        out->fg = slui_rgb(0xDD, 0xE4, 0xF2);        /* comfort-band off-white  */
+        out->fg_dim = slui_rgba(0xDD, 0xE4, 0xF2, 0xAA);
+        out->accent = slui_rgb(0x4F, 0x8C, 0xF0);
         out->accent_fg = slui_rgb(0x08, 0x12, 0x24);
-        out->danger = slui_rgb(0xE5, 0x5B, 0x55);
-        out->hover = slui_rgba(0xFF, 0xFF, 0xFF, 0x12);
-        out->active = slui_rgba(0xFF, 0xFF, 0xFF, 0x22);
+        out->danger = slui_rgb(0xC2, 0x60, 0x5A);    /* desaturated error       */
+        out->hover = slui_rgba(0xFF, 0xFF, 0xFF, 0x10);
+        out->active = slui_rgba(0xFF, 0xFF, 0xFF, 0x20);
         copy_family(out, "system");
         break;
 
@@ -191,13 +194,13 @@ void theme_fill_preset(SLUITheme* out, SLUIThemeId id) {
         out->surface_hi = slui_rgb(0x52, 0x56, 0x5D);
         out->chrome = slui_rgb(0x30, 0x33, 0x38);
         out->border = slui_rgb(0x5A, 0x5E, 0x66);
-        out->fg = slui_rgb(0xF0, 0xF1, 0xF3);
-        out->fg_dim = slui_rgba(0xF0, 0xF1, 0xF3, 0xA8);
-        out->accent = slui_rgb(0x7F, 0xB0, 0xFF);
+        out->fg = slui_rgb(0xE6, 0xE7, 0xEA);        /* comfort-band off-white  */
+        out->fg_dim = slui_rgba(0xE6, 0xE7, 0xEA, 0xA8);
+        out->accent = slui_rgb(0x7F, 0xAA, 0xEC);
         out->accent_fg = slui_rgb(0x0D, 0x14, 0x20);
-        out->danger = slui_rgb(0xE0, 0x5A, 0x55);
-        out->hover = slui_rgba(0xFF, 0xFF, 0xFF, 0x12);
-        out->active = slui_rgba(0xFF, 0xFF, 0xFF, 0x22);
+        out->danger = slui_rgb(0xC6, 0x62, 0x5C);    /* desaturated error       */
+        out->hover = slui_rgba(0xFF, 0xFF, 0xFF, 0x10);
+        out->active = slui_rgba(0xFF, 0xFF, 0xFF, 0x20);
         copy_family(out, "system");
         break;
 

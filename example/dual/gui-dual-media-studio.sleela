@@ -207,6 +207,7 @@ class GuiDualMediaStudio {
 
     // --- Chrome: URL bar (HTML-aware, HTTP-driven) ---
     int header = uiHeaderBar(root);
+    uiWidgetSizeRequest(header, 0, 48);          // Coherent Dignity: 6X header banner (48px)
     uiButton(header, "\u2039");                  // back
     uiButton(header, "\u203A");                  // forward
     uiButton(header, "\u21BB");                  // reload
