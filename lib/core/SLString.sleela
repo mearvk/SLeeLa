@@ -33,7 +33,6 @@ class SLString {
   void clear()       { value = ""; state = 0; }
 
   boolean isEmpty()      { return value == ""; }
-  boolean notEmpty()     { return value != ""; }
   boolean isNull()       { return value == null; }
   boolean equals(String other) { return value == other; }
 

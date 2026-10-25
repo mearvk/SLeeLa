@@ -3711,7 +3711,7 @@
     },
     {
       "path": "lib/core/SLString.sleela",
-      "sha256": "d43442b9c5df1bc1b493d7aec29850824a77ee03528f2a51f7b626f44647e5d6"
+      "sha256": "37f08cda775e9c8c554a028d1a5b6a5b8adcd5a5ce4296d580110b10f1540e5b"
     },
     {
       "path": "lib/core/SLSymbol.sleela",
