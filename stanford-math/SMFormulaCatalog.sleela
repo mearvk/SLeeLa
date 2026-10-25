@@ -1,0 +1,98 @@
+<< stanford-math/SMFormulaCatalog.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Catalog of named formulas and theorems tied to Stanford Math
+   names. Each entry pairs a human statement with its canonical symbolic form
+   and its real citation; nothing here is invented. >>
+#sleela 2.1
+< Executive+ class: a standards/products artifact, full metadata record. >
+class SMFormulaCatalog {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9120;
+  String metaAuthor = "Stanford University Department of Mathematics";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "results in the peer-reviewed public record";
+  String metaTrademark = "none";
+  String metaCorporation = "The Leland Stanford Junior University";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 10;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- The formulas (public record) ---- >
+  String[] titles;
+  String[] forms;
+  String[] credits;
+  int filled;
+
+  void build() {
+    titles = new String[6];
+    forms = new String[6];
+    credits = new String[6];
+    filled = 0;
+
+    add("Seven shuffles suffice (riffle-shuffle cutoff)",
+        "t* = (3/2) * log2(N) riffle shuffles to mix N cards",
+        "Bayer & Diaconis, 1992");
+    add("Polya recurrence theorem",
+        "simple random walk on Z^d: recurrent for d in {1,2}, transient for d >= 3",
+        "G. Polya, 1921");
+    add("Polya enumeration theorem",
+        "orbit count = (1/|G|) * sum over g in G of m^c(g), with c(g) = cycles of g",
+        "G. Polya, 1937");
+    add("Loewner's theorem (operator monotone functions)",
+        "f is operator monotone on an interval iff f extends to a Pick (Nevanlinna) function on the upper half-plane",
+        "K. Loewner, 1934");
+    add("Geometrical theory of diffraction",
+        "total field = geometrical-optics field + diffracted-ray field from edges/corners/grazing rays",
+        "J. B. Keller, 1962");
+    add("Cohen forcing (independence of CH)",
+        "ZFC does not decide the continuum hypothesis: CH is independent of ZFC",
+        "P. Cohen, 1963");
+  }
+
+  void add(String t, String form, String credit) {
+    titles[filled] = t;
+    forms[filled] = form;
+    credits[filled] = credit;
+    filled = filled + 1;
+  }
+
+  int count() { return filled; }
+  String titleAt(int i) { return titles[i]; }
+  String formAt(int i) { return forms[i]; }
+  String creditAt(int i) { return credits[i]; }
+
+  String entryAt(int i) {
+    return titles[i] + " : " + forms[i] + "  [" + credits[i] + "]";
+  }
+}
