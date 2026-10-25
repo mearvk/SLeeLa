@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11566
+library-source-files: 11567
 library-packages: 101
 module-facade-symbols: 70
-total-symbol-records: 11636
+total-symbol-records: 11637
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -583,6 +583,7 @@ coorenagraph	VirtueEthics.sleela	lib/coorenagraph/moral/VirtueEthics.sleela	sour
 core	SLAnnotation.sleela	lib/core/SLAnnotation.sleela	source
 core	SLAny.sleela	lib/core/SLAny.sleela	source
 core	SLArray.sleela	lib/core/SLArray.sleela	source
+core	SLAuthorship.sleela	lib/core/SLAuthorship.sleela	source
 core	SLBoolean.sleela	lib/core/SLBoolean.sleela	source
 core	SLBuffer.sleela	lib/core/SLBuffer.sleela	source
 core	SLByte.sleela	lib/core/SLByte.sleela	source
