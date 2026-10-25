@@ -191,6 +191,7 @@ class GuiMualTextEditor {
 
     // --- Toolbar: the Path-1 actions bound to SLeeLa operations ---
     int menu = uiHeaderBar(root);
+    uiWidgetSizeRequest(menu, 0, 48);            // Coherent Dignity: 6X header banner (48px)
     int title = uiLabel(menu, "\u25A2  Editor");
     uiWidgetMargin(title, 0, 10, 0, 12);
     btnEditor = uiButton(menu, "Editor");       // -> show the editor panel
