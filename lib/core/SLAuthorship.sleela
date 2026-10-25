@@ -1,0 +1,146 @@
+< lib/core/SLAuthorship.sleela >
+< SLeeLa Standard Library Definition. >
+<< Definition: SLAuthorship -- the authorship model as a Method : Class. It
+   expresses the standing of a work's author in three honest registers:
+   CONTINUANCE (the work is carried forward, free of the moment that made it),
+   DIGNITY (a modest, protected standing -- stated with restraint, never
+   inflated), and FREE GUIDANCE (direction offered to those who follow, never
+   authority imposed). It builds on the syntax 2.4 author marker: a document so
+   marked is "handled by professional council," and this class is the modest
+   paragraph that standing deserves.
+
+   On distinction and measured claims. This class deliberately does NOT assert a
+   measured intelligence score for any person. Where a figure appears, it is an
+   ILLUSTRATIVE HISTORIOMETRIC ESTIMATE with its provenance attached, never a
+   fact about this work's author. Historiometry estimates the traits of
+   historical figures from biographical records; such estimates are retrospective
+   and contested, not psychometric measurements. The da Vinci reference below is
+   carried in exactly that spirit (Cox 1926), as a nod to polymath brilliance --
+   the bridging of domains -- not as a ranking of human worth.
+
+   On social theory. Some sociological theories treat measured ability as
+   pertinent to social ranking; that view is contested (cf. the meritocracy
+   critique). This class records that as an ATTRIBUTED position of some theories,
+   not as its own verdict, and takes no stance ranking persons by any score. >>
+#sleela 2.4
+< Family: core. The author marker + metadata metapattern, carried with dignity. >
+
+author;
+
+class SLAuthorship {
+
+  < ---- identity ----------------------------------------------------- >
+  int id() { return 0; }
+  String name() { return "SLAuthorship"; }
+
+  < ---- standing (the modest paragraph, as data) --------------------- >
+  << The standing is stated with protected modesty: what is true of the WORK and
+     its stewardship, not a claim about a person's intellect. "handled by
+     professional council" is the author-marker meaning (syntax 2.4). >>
+  String metaStanding = "handled by professional council";
+  < a one-line modest paragraph; restraint is the point >
+  String modesty = "The work is held modestly: its triumph is that it continues.";
+
+  String standing()  { return metaStanding; }
+  String modestNote(){ return modesty; }
+
+  < ---- the three registers ------------------------------------------ >
+
+  << CONTINUANCE -- the work is carried forward. Triumph here is not conquest but
+     continuance: that the work outlives the moment that made it and is handed on
+     intact. `carryForward` returns the work's name wrapped as a continued line. >>
+  boolean continues = true;
+  boolean continuance()         { return continues; }
+  String  carryForward(String work) { return "continuance(" + work + ")"; }
+
+  << DIGNITY -- a modest, protected standing. `dignified(claim)` passes a claim
+     through only if it is non-empty, and never inflates it; an empty claim
+     becomes the honest "unverified", so dignity is never a fabricated boast. >>
+  String dignified(String claim) {
+    if (claim == null || claim == "") { return "unverified"; }
+    return claim;
+  }
+
+  << FREE GUIDANCE -- direction offered, not authority imposed. `guide(toward)`
+     returns an offer of direction; `imposes()` is always false by contract. The
+     method IS the class: guidance is given freely and may be freely declined. >>
+  String guide(String toward)   { return "free-guidance -> " + toward; }
+  boolean imposes()             { return false; }
+  boolean offersFreely()        { return true; }
+
+  < ---- distinction (honest; an estimate with provenance) ------------ >
+  << metaDistinction is NOT a measured score and NOT a claim about this work's
+     author. It carries an illustrative historiometric estimate with its source,
+     so the figure can never be read as asserted fact. The exemplar is Leonardo
+     da Vinci -- chosen for polymath brilliance (bridging art, anatomy,
+     engineering), which is what CONTINUANCE and FREE GUIDANCE honour. >>
+  String metaDistinction = "historiometric estimate (illustrative, not a measured score)";
+  String metaDistinctionExemplar = "Leonardo da Vinci (1452-1519)";
+  << The figures, with their nature made explicit: Cox (1926) corrected estimate
+     ~180; popular retrospective range 180-220 with no psychometric baseline. da
+     Vinci predates intelligence testing (first practical test 1905) by centuries,
+     so NO real score exists -- these are estimates honouring a polymath. >>
+  String metaDistinctionEstimate = "Cox 1926 corrected ~180; popular retrospective range 180-220 (no psychometric baseline)";
+  String metaDistinctionCaveat = "retrospective historiometric estimate; not a measured IQ; not a claim about this work's author";
+
+  String distinction()        { return metaDistinction; }
+  String distinctionExemplar(){ return metaDistinctionExemplar; }
+  String distinctionEstimate(){ return metaDistinctionEstimate; }
+  String distinctionCaveat()  { return metaDistinctionCaveat; }
+
+  << A social-theory note, carried as an ATTRIBUTED position, not a verdict. Some
+     sociological theories treat measured ability as pertinent to ranking; that
+     is contested (the meritocracy critique). This class ranks no person. >>
+  String socialTheoryNote = "Some social theories treat ability as pertinent to ranking; this is contested (meritocracy critique). SLAuthorship ranks no person.";
+  String socialTheory()   { return socialTheoryNote; }
+  boolean ranksPersons()  { return false; }
+
+  < ---- introspection ------------------------------------------------ >
+  String typeName()   { return "SLeeLa.core.SLAuthorship"; }
+  boolean available() { return true; }
+
+  < SLCloneable / SLDisposable intent. >
+  SLAuthorship copy() { SLAuthorship c = new SLAuthorship(); return c; }
+  void dispose() { continues = false; }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject's real origin where publicly known; the one citable schedule
+     is the real Cox (1926) study that the distinction fields reference. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11601;
+  String metaAuthor = "SLeeLa standard library";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026";
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < a real, citable instrument: the historiometric study the figures come from >
+  String metaNationalSchedule = "Cox, C. M. (1926), The Early Mental Traits of Three Hundred Geniuses (historiometry)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

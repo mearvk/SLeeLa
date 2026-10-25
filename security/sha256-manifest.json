@@ -3446,6 +3446,10 @@
       "sha256": "1a1291d890efb22643c23ef6e9011808b894260ab5da0e88f9423955aefdf767"
     },
     {
+      "path": "lib/core/SLAuthorship.sleela",
+      "sha256": "aa2fb9dabaa5d7f16eafaadfb70dbaab6d5c953d830c6436a06d2bc5a201d7fb"
+    },
+    {
       "path": "lib/core/SLBoolean.sleela",
       "sha256": "045ad4daddc2f98cb463d7c73ae5e5ff3654a154f97a8de53b25d4980bc5716d"
     },
