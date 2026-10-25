@@ -98,13 +98,21 @@ class Analyzer{
    if(p.nestedClassCount>42)
     err("a single Sleela document may contain at most 42 nested classes");
   }
+  // Author marker (syntax 2.4): the bare `author`/`authorial` document word
+  // requires #sleela 2.4. When set it relaxes the duplicate-member rejections
+  // below (each duplicate keeps a distinct declaration-order id + SHA-256
+  // brander, emitted into the originated source document). Below 2.4 the words
+  // never parse as a marker, so this only fires on a genuine 2.4-feature use in
+  // an older-declared document.
+  if(p.authorMarked&&syntax<SyntaxVersion{2,4})
+   err("the author/authorial document marker requires #sleela 2.4");
   for(const auto&c:p.classes){
    std::map<std::string,Type> instanceFields;
    for(const auto&f:c.fields){Type t=tn(f.type);if(t.kind==Kind::Error)err("unknown type '"+f.type+"' for field '"+f.name+"'");if(t.kind==Kind::Void)err("field '"+f.name+"' cannot be void");
-    if(f.isStatic){const std::string key=c.name+"::"+f.name;if(globals.count(key))err("duplicate static field '"+key+"'");globals[key]=t;owners[key]=c.name;}
-    else {if(instanceFields.count(f.name))err("duplicate field '"+f.name+"' in class '"+c.name+"'");instanceFields[f.name]=t;}}
+    if(f.isStatic){const std::string key=c.name+"::"+f.name;if(globals.count(key)&&!p.authorMarked)err("duplicate static field '"+key+"'");globals[key]=t;owners[key]=c.name;}
+    else {if(instanceFields.count(f.name)&&!p.authorMarked)err("duplicate field '"+f.name+"' in class '"+c.name+"'");instanceFields[f.name]=t;}}
    fields[c.name]=instanceFields;
-   for(const auto&m:c.methods){const std::string key=c.name+"::"+m.name;if(methods.count(key))err("duplicate method '"+key+"'");
+   for(const auto&m:c.methods){const std::string key=c.name+"::"+m.name;if(methods.count(key)&&!p.authorMarked)err("duplicate method '"+key+"'");
     if(!known(m.retType))err("unknown return type '"+m.retType+"' for method '"+m.name+"'");
     if(m.isProtected&&!m.isStatic)err("protected method '"+m.name+"' must also be static");
     methods[key]={&m,c.name};if(m.name=="main")methods["main"]={&m,c.name};}

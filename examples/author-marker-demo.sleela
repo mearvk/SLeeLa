@@ -1,0 +1,40 @@
+#sleela 2.4
+<< author-marker-demo.sleela -- the runnable reference for the syntax 2.4
+   author/authorial document marker (SLEELA.syntax section 18).
+
+   The bare top-level word `author;` marks this document as handled by
+   professional council. Its operational effect: the document may legally
+   declare DUPLICATE fields and methods -- each duplicate keeps a distinct
+   declaration-order id and an SHA-256 brander, and the standard compile emits
+   a second "originated" source document whose members carry a therefore (the
+   therefore glyph) brander, the house analogue of Java's @.
+
+   Compile this file to see both outputs:
+     sleela compile examples/author-marker-demo.sleela -o /tmp/out.art
+   -> writes the artifact AND examples/author-marker-demo.originated.sleela
+   A --originate-dir=<dir> flag redirects the originated document. >>
+
+author;
+
+class Greeter {
+  String name = "world";
+
+  << Three methods named `greet` -- legal because the document is
+     author-marked. Each is branded distinctly in the originated document
+     (slot 1/3, 2/3, 3/3). A bare call to a duplicated name currently resolves
+     to the last declared definition (see SLEELA.syntax 18.4). >>
+  String greet() { return "hello " + name; }
+  String greet(String who) { return "hello " + who; }
+  String greet(String who, int times) {
+    String out = "";
+    int i = 0;
+    while (i < times) { out = out + "hi " + who + " "; i = i + 1; }
+    return out;
+  }
+
+  void main() {
+    Greeter g = new Greeter();
+    print(g.greet("everyone", 2));
+    print("done");
+  }
+}

@@ -1,0 +1,49 @@
+<!-- Sourced concept page for a self-hosted wiki. Definitional, neutral, cited.
+     Not for public-encyclopedia submission. -->
+{{Infobox concept
+| name  = Academic degree
+| field = Higher education
+}}
+
+An '''academic degree''' is a qualification awarded by a [[University|university]]
+or other [[Higher education|higher-education institution]] on completion of a
+course of study. Degrees are organised in ascending levels, principally the
+undergraduate bachelor's degree and the postgraduate master's degree and
+doctorate.<ref name="wp-deg" />
+
+== Levels ==
+
+{| class="wikitable"
+! Level !! Character
+|-
+| Bachelor's || The most common undergraduate qualification; provides foundational knowledge and broad entry to careers or further study.<ref name="wp-deg" /><ref name="research" />
+|-
+| Master's || A postgraduate degree offering advanced specialisation and a more concentrated, rigorous curriculum.<ref name="research" />
+|-
+| Doctorate || The highest academic qualification; centred on original research culminating in a dissertation, and oriented toward expert and leadership roles.<ref name="ebsco" /><ref name="research" />
+|}
+
+Some systems also recognise shorter undergraduate awards (such as the associate
+or foundation degree) below the bachelor's level.<ref name="wp-deg" />
+
+== International reference scale ==
+
+International frameworks place these awards on a common scale: sub-bachelor's
+higher education, bachelor's level, master's level and doctoral level occupy the
+successive upper tiers.<ref name="wp-he" />
+
+== See also ==
+
+* [[University]]
+* [[Higher education]]
+
+== Sources ==
+<references>
+<ref name="wp-deg">"Academic degree", Wikipedia. https://en.wikipedia.org/wiki/Academic_degree — the bachelor's is the most common undergraduate qualification; postgraduate degrees include the master's and the doctorate; some systems offer associate/foundation degrees. (Rephrased for compliance.)</ref>
+<ref name="research">"Higher Education Degree Levels Explained", Research.com. https://research.com/advice/higher-education-degree-levels-explained-bachelors-vs-masters-vs-doctorate — bachelor's = foundational; master's = advanced specialisation; doctorate = original research and expert roles. (Rephrased for compliance.)</ref>
+<ref name="ebsco">"Academic degree", EBSCO Research Starters. https://www.ebsco.com/research-starters/education/academic-degree — doctorates are the highest qualification, involving extensive research culminating in a dissertation. (Rephrased for compliance.)</ref>
+<ref name="wp-he">"Higher education", Wikipedia. https://en.wikipedia.org/wiki/Higher_education — the ISCED-style levels 5–8 (sub-bachelor's, bachelor's, master's, doctoral). (Rephrased for compliance.)</ref>
+</references>
+
+[[Category:Higher education]]
+[[Category:University corpus]]
