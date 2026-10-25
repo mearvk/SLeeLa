@@ -1,29 +1,29 @@
-/*
- * example/gui-military-command-console.sleela
- * The MILITARY (5.0) "command console" scene as a REAL, on-screen window --
- * driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
- * bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
- * this file only print()ed a walkthrough of the hardened military surface; now
- * that scene (metal/blue 3D-lit frame, strong branding, Component-vs-Container
- * taxonomy, icons on clickables, a post-quantum crypto selector, and the public
- * key certificate store) is painted as actual, interactive widgets.
- *
- * It is the console-flavoured companion to gui-military-window.sleela: both
- * render through the same native path, this one foregrounding the crypto
- * selector + certificate store workflow.
- *
- * The three-layer stack is live here:
- *   SLeeLa decoration (this program + the metal/blue theme below)
- *     -> model (ui* built-ins: uiWindowCreate, uiComboBox, uiBadge, ...)
- *       -> C/C++ (SleelaUI software rasterizer + native window backend)
- *
- * Run (needs a display: X on Linux, native on macOS/Windows):
- *   SLEELA_SHEET=./SHEET.sheet \
- *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
- *   ./impl/build/sleela run example/gui-military-command-console.sleela
- *
- * With no display (headless/CI) it reports that and exits 0 without a window.
- */
+<<
+   example/gui-military-command-console.sleela
+   The MILITARY (5.0) "command console" scene as a REAL, on-screen window --
+   driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
+   bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
+   this file only print()ed a walkthrough of the hardened military surface; now
+   that scene (metal/blue 3D-lit frame, strong branding, Component-vs-Container
+   taxonomy, icons on clickables, a post-quantum crypto selector, and the public
+   key certificate store) is painted as actual, interactive widgets.
+   
+   It is the console-flavoured companion to gui-military-window.sleela: both
+   render through the same native path, this one foregrounding the crypto
+   selector + certificate store workflow.
+   
+   The three-layer stack is live here:
+     SLeeLa decoration (this program + the metal/blue theme below)
+       -> model (ui* built-ins: uiWindowCreate, uiComboBox, uiBadge, ...)
+         -> C/C++ (SleelaUI software rasterizer + native window backend)
+   
+   Run (needs a display: X on Linux, native on macOS/Windows):
+     SLEELA_SHEET=./SHEET.sheet \
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/gui-military-command-console.sleela
+   
+   With no display (headless/CI) it reports that and exits 0 without a window.
+>>
 #sleela 2.1
 class GuiMilitaryCommandConsole {
 
@@ -288,7 +288,7 @@ class GuiMilitaryCommandConsole {
           if (settingsResult == 0) {
             uiWidgetSetText(wifiStatusLabel, "Opened the operating system's network settings.");
             uiWidgetSetText(statusLabel, "Connectivity · opened system network settings");
-            openMenu(-1);
+            closeWifiMenu();
           } else {
             wifiActionUnavailable("Opening network settings");
           }

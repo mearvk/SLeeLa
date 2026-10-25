@@ -1,24 +1,24 @@
-/*
- * example/gui-dual-media-studio.sleela
- * The DUAL (4.0) "media studio" scene as a REAL, on-screen window -- driven by
- * SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM bridge
- * (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously this file
- * only print()ed a walkthrough; now the rich professional component set (audio
- * recorder, video canvas with transport, codec-aware controls, URL bar, layout,
- * graphics) is painted as actual, interactive widgets.
- *
- * The three-layer stack is live here:
- *   SLeeLa decoration (this program + the glass theme below)
- *     -> model (ui* built-ins: uiWindowCreate, uiSlider, uiProgressBar, ...)
- *       -> C/C++ (SleelaUI software rasterizer + native window backend)
- *
- * Run (needs a display: X on Linux, native on macOS/Windows):
- *   SLEELA_SHEET=./SHEET.sheet \
- *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
- *   ./impl/build/sleela run example/gui-dual-media-studio.sleela
- *
- * With no display (headless/CI) it reports that and exits 0 without a window.
- */
+<<
+   example/gui-dual-media-studio.sleela
+   The DUAL (4.0) "media studio" scene as a REAL, on-screen window -- driven by
+   SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM bridge
+   (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously this file
+   only print()ed a walkthrough; now the rich professional component set (audio
+   recorder, video canvas with transport, codec-aware controls, URL bar, layout,
+   graphics) is painted as actual, interactive widgets.
+   
+   The three-layer stack is live here:
+     SLeeLa decoration (this program + the glass theme below)
+       -> model (ui* built-ins: uiWindowCreate, uiSlider, uiProgressBar, ...)
+         -> C/C++ (SleelaUI software rasterizer + native window backend)
+   
+   Run (needs a display: X on Linux, native on macOS/Windows):
+     SLEELA_SHEET=./SHEET.sheet \
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/gui-dual-media-studio.sleela
+   
+   With no display (headless/CI) it reports that and exits 0 without a window.
+>>
 #sleela 2.1
 // DUAL (4.0): rich professional components that are codec-aware -- the UI never
 // offers media it cannot play. Here the codec gate decides which transport

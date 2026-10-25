@@ -1,25 +1,25 @@
-/*
- * example/gui-gual-settings-console.sleela
- * The GUAL (2.0) "preferences console" scene as a REAL, on-screen window --
- * driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
- * bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
- * this file only print()ed a walkthrough; now the hardened, settings-first
- * surface (validated, clamp-to-a-safe-window knobs: theme, DPI scale,
- * reduced-motion, vsync, poll/debounce, window min/max, document-listener
- * backpressure) is painted as actual, interactive widgets.
- *
- * The three-layer stack is live here:
- *   SLeeLa decoration (this program + the theme below)
- *     -> model (ui* built-ins: uiWindowCreate, uiComboBox, uiSlider, uiToggle)
- *       -> C/C++ (SleelaUI software rasterizer + native window backend)
- *
- * Run (needs a display: X on Linux, native on macOS/Windows):
- *   SLEELA_SHEET=./SHEET.sheet \
- *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
- *   ./impl/build/sleela run example/gui-gual-settings-console.sleela
- *
- * With no display (headless/CI) it reports that and exits 0 without a window.
- */
+<<
+   example/gui-gual-settings-console.sleela
+   The GUAL (2.0) "preferences console" scene as a REAL, on-screen window --
+   driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
+   bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
+   this file only print()ed a walkthrough; now the hardened, settings-first
+   surface (validated, clamp-to-a-safe-window knobs: theme, DPI scale,
+   reduced-motion, vsync, poll/debounce, window min/max, document-listener
+   backpressure) is painted as actual, interactive widgets.
+   
+   The three-layer stack is live here:
+     SLeeLa decoration (this program + the theme below)
+       -> model (ui* built-ins: uiWindowCreate, uiComboBox, uiSlider, uiToggle)
+         -> C/C++ (SleelaUI software rasterizer + native window backend)
+   
+   Run (needs a display: X on Linux, native on macOS/Windows):
+     SLEELA_SHEET=./SHEET.sheet \
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/gui-gual-settings-console.sleela
+   
+   With no display (headless/CI) it reports that and exits 0 without a window.
+>>
 #sleela 2.1
 // GUAL (2.0): the clamp-to-a-safe-window discipline applied to GUI settings.
 // Every knob is validated; here the validated values are shown on real

@@ -1,19 +1,19 @@
-/*
- * example/science/physics.sleela
- * A runnable SLeeLa PHYSICS program on the native `physics` subject library
- * (import physics;). It exercises the subject library's formula families
- * directly — mechanics, gravitation, special relativity, electricity, waves —
- * via qualified calls like physics.velocity(...). Physics depends on Math, so
- * the subject library requires `import math;` as well.
- *
- * The inputs are grounded in the CODATA 2022 constants the physics library
- * carries and Earth's mass/radius from churn/2/data/solar-system.json.
- *
- * Run (a built sleela binary is required — ./scripts/build-linux.sh):
- *   SLEELA_SHEET=./SHEET.sheet \
- *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
- *   ./impl/build/sleela run example/science/physics.sleela
- */
+<<
+   example/science/physics.sleela
+   A runnable SLeeLa PHYSICS program on the native `physics` subject library
+   (import physics;). It exercises the subject library's formula families
+   directly — mechanics, gravitation, special relativity, electricity, waves —
+   via qualified calls like physics.velocity(...). Physics depends on Math, so
+   the subject library requires `import math;` as well.
+   
+   The inputs are grounded in the CODATA 2022 constants the physics library
+   carries and Earth's mass/radius from churn/2/data/solar-system.json.
+   
+   Run (a built sleela binary is required — ./scripts/build-linux.sh):
+     SLEELA_SHEET=./SHEET.sheet \
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/science/physics.sleela
+>>
 #sleela 2.1
 import math;
 import physics;

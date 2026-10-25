@@ -1,20 +1,20 @@
-/*
- * example/science/math.sleela
- * A runnable SLeeLa MATH program built on the native `math` subject library
- * (import math;). It tours the math facade — the same executable vocabulary the
- * churn models use (churn/2/structures.sleela) — and reports each result.
- *
- * The math facade (see impl/subjects/math/math_native.cpp) exposes:
- *   constants: pi(), e(), tau()
- *   unary:     abs, sqrt, exp, log, log10, sin, cos, tan, floor, ceil, trunc, sign
- *   binary:    pow, hypot, min, max, fmod
- *   ternary:   clamp
- *
- * Run (a built sleela binary is required — ./scripts/build-linux.sh):
- *   SLEELA_SHEET=./SHEET.sheet \
- *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
- *   ./impl/build/sleela run example/science/math.sleela
- */
+<<
+   example/science/math.sleela
+   A runnable SLeeLa MATH program built on the native `math` subject library
+   (import math;). It tours the math facade — the same executable vocabulary the
+   churn models use (churn/2/structures.sleela) — and reports each result.
+   
+   The math facade (see impl/subjects/math/math_native.cpp) exposes:
+     constants: pi(), e(), tau()
+     unary:     abs, sqrt, exp, log, log10, sin, cos, tan, floor, ceil, trunc, sign
+     binary:    pow, hypot, min, max, fmod
+     ternary:   clamp
+   
+   Run (a built sleela binary is required — ./scripts/build-linux.sh):
+     SLEELA_SHEET=./SHEET.sheet \
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/science/math.sleela
+>>
 #sleela 2.1
 import math;
 

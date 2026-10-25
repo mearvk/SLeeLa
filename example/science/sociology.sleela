@@ -1,27 +1,27 @@
-/*
- * example/science/sociology.sleela
- * A runnable SLeeLa SOCIOLOGY program on the native `sociology` subject library
- * (import sociology;). It exercises the subject library's measures directly via
- * qualified calls like sociology.rate(...). Sociology depends on Math, so the
- * subject library requires `import math;`.
- *
- * Facade (impl/subjects/sociology/sociology_native.cpp):
- *   proportion(part, total)                      part / total
- *   rate(events, population, scale)              events / population * scale
- *   growth_rate(oldValue, newValue)              (new - old) / old
- *   transition_probability(transitions, origin)  transitions / origin
- *
- * Inputs are real, dated, sourced US figures from the churn datasets
- * (churn/2/data/social-labor-us.json, churn/4/data/social-density-us.json):
- * BLS / Census. Discipline: these are OBSERVED published statistics; any
- * relation drawn between them is a MODEL, not a causal claim
- * (ASSOCIATION != CAUSATION — see churn/README.md).
- *
- * Run:
- *   SLEELA_SHEET=./SHEET.sheet \
- *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
- *   ./impl/build/sleela run example/science/sociology.sleela
- */
+<<
+   example/science/sociology.sleela
+   A runnable SLeeLa SOCIOLOGY program on the native `sociology` subject library
+   (import sociology;). It exercises the subject library's measures directly via
+   qualified calls like sociology.rate(...). Sociology depends on Math, so the
+   subject library requires `import math;`.
+   
+   Facade (impl/subjects/sociology/sociology_native.cpp):
+     proportion(part, total)                      part / total
+     rate(events, population, scale)              events / population * scale
+     growth_rate(oldValue, newValue)              (new - old) / old
+     transition_probability(transitions, origin)  transitions / origin
+   
+   Inputs are real, dated, sourced US figures from the churn datasets
+   (churn/2/data/social-labor-us.json, churn/4/data/social-density-us.json):
+   BLS / Census. Discipline: these are OBSERVED published statistics; any
+   relation drawn between them is a MODEL, not a causal claim
+   (ASSOCIATION != CAUSATION — see churn/README.md).
+   
+   Run:
+     SLEELA_SHEET=./SHEET.sheet \
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/science/sociology.sleela
+>>
 #sleela 2.1
 import math;
 import sociology;

@@ -1,33 +1,33 @@
-/*
- * example/gui-mual-text-editor.sleela
- * The MUAL (1.0 baseline) "text editor" scene as a REAL, INTERACTIVE on-screen
- * window -- driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the
- * ui* SLVM bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32).
- *
- * What changed: the toolbar buttons now FUNCTION. Instead of calling the
- * toolkit's own uiAppRun() loop (which just waits for the window to close),
- * this program runs its OWN event loop: each turn it pumps the toolkit, then
- * polls every button's one-shot activation latch (uiWidgetTakeActivated) and
- * reacts -- switching which panel is visible (uiWidgetVisible) and updating the
- * status line (uiWidgetSetText). So clicking "Editor" / "Documents" / "About"
- * actually swaps the panel on screen, and "Save" / "New" update the status.
- *
- * It also shows a NEW GUI feature: the Documents panel is a uiScrolledView, so
- * its long watch-list scrolls and a scrollbar appears AUTOMATICALLY when the
- * content overflows the frame.
- *
- * The three-layer stack is live here:
- *   SLeeLa decoration (this program + the theme + the event loop)
- *     -> model (ui* built-ins: uiWindowCreate, uiButton, uiScrolledView, ...)
- *       -> C/C++ (SleelaUI software rasterizer + native window backend)
- *
- * Run (needs a display: X on Linux, native on macOS/Windows):
- *   SLEELA_SHEET=./SHEET.sheet \
- *   SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
- *   ./impl/build/sleela run example/gui-mual-text-editor.sleela
- *
- * With no display (headless/CI) it reports that and exits 0 without a window.
- */
+<<
+   example/gui-mual-text-editor.sleela
+   The MUAL (1.0 baseline) "text editor" scene as a REAL, INTERACTIVE on-screen
+   window -- driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the
+   ui* SLVM bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32).
+   
+   What changed: the toolbar buttons now FUNCTION. Instead of calling the
+   toolkit's own uiAppRun() loop (which just waits for the window to close),
+   this program runs its OWN event loop: each turn it pumps the toolkit, then
+   polls every button's one-shot activation latch (uiWidgetTakeActivated) and
+   reacts -- switching which panel is visible (uiWidgetVisible) and updating the
+   status line (uiWidgetSetText). So clicking "Editor" / "Documents" / "About"
+   actually swaps the panel on screen, and "Save" / "New" update the status.
+   
+   It also shows a NEW GUI feature: the Documents panel is a uiScrolledView, so
+   its long watch-list scrolls and a scrollbar appears AUTOMATICALLY when the
+   content overflows the frame.
+   
+   The three-layer stack is live here:
+     SLeeLa decoration (this program + the theme + the event loop)
+       -> model (ui* built-ins: uiWindowCreate, uiButton, uiScrolledView, ...)
+         -> C/C++ (SleelaUI software rasterizer + native window backend)
+   
+   Run (needs a display: X on Linux, native on macOS/Windows):
+     SLEELA_SHEET=./SHEET.sheet \
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/gui-mual-text-editor.sleela
+   
+   With no display (headless/CI) it reports that and exits 0 without a window.
+>>
 #sleela 2.1
 // MUAL (1.0) is the stable baseline: the original 25-class surface. SLeeLa owns
 // business logic and the meaning of events; here that model is projected onto
