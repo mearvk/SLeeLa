@@ -36,7 +36,6 @@
 class GuiMualTextEditor {
 
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
-  int THEME_CUSTOM = 2;
   // Orientation + scroll-policy ordinals (mirror the toolkit C ABI).
   int VERTICAL = 0;
   int HORIZONTAL = 1;
