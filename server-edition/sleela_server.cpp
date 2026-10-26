@@ -99,19 +99,30 @@ bool SleelaServer::register_handler(const std::string& service,const std::string
  return handlers_.emplace(handler_key(service,operation),std::move(handler)).second;
 }
 bool SleelaServer::start(){
+ std::lock_guard<std::mutex> state_lock(state_mutex_);
+ if(running_.load())return true;
  if(config_.port==0 || config_.max_connections==0 || config_.max_connections>65535 ||
     config_.max_packet_bytes<FIXED_HEADER || config_.max_header_bytes>config_.max_packet_bytes-FIXED_HEADER ||
     config_.max_payload_bytes>config_.max_packet_bytes || config_.idle_timeout_seconds==0 ||
     config_.max_packets_per_second==0) { logger_.write(Severity::ERROR,"invalid_server_configuration",nullptr,nullptr); return false; }
 #ifdef _WIN32
- WSADATA w{};if(WSAStartup(MAKEWORD(2,2),&w)!=0)return false;
+ WSADATA w{};if(WSAStartup(MAKEWORD(2,2),&w)!=0)return false;winsock_started_=true;
 #endif
- listen_fd_=(int)::socket(AF_INET,SOCK_STREAM,0);if(listen_fd_<0)return false;int one=1;setsockopt(listen_fd_,SOL_SOCKET,SO_REUSEADDR,(char*)&one,sizeof(one));
- sockaddr_in a{};a.sin_family=AF_INET;a.sin_port=htons(config_.port);if(config_.bind_address=="0.0.0.0")a.sin_addr.s_addr=htonl(INADDR_ANY);else if(inet_pton(AF_INET,config_.bind_address.c_str(),&a.sin_addr)!=1){close_socket(listen_fd_);listen_fd_=-1;return false;}
+ listen_fd_=(int)::socket(AF_INET,SOCK_STREAM,0);if(listen_fd_<0){
+#ifdef _WIN32
+ if(winsock_started_){WSACleanup();winsock_started_=false;}
+#endif
+ return false;}int one=1;setsockopt(listen_fd_,SOL_SOCKET,SO_REUSEADDR,(char*)&one,sizeof(one));
+ sockaddr_in a{};a.sin_family=AF_INET;a.sin_port=htons(config_.port);if(config_.bind_address=="0.0.0.0")a.sin_addr.s_addr=htonl(INADDR_ANY);else if(inet_pton(AF_INET,config_.bind_address.c_str(),&a.sin_addr)!=1){close_socket(listen_fd_);listen_fd_=-1;
+#ifdef _WIN32
+ if(winsock_started_){WSACleanup();winsock_started_=false;}
+#endif
+ return false;}
  if(::bind(listen_fd_,(sockaddr*)&a,sizeof(a))!=0){close_socket(listen_fd_);listen_fd_=-1;return false;}if(::listen(listen_fd_,(int)config_.max_connections)!=0){close_socket(listen_fd_);listen_fd_=-1;return false;}running_=true; sleela::LoggerLogic logic; logic.log_sent=true; logic.log_received=true; logic.minimum_severity=sleela::LogSeverity::Info; logic.minimum_admission=sleela::LogAdmission::Accepted; packet_logger_.set_logic(logic); if(!packet_logger_.open()){ logger_.write(Severity::ERROR,"packet_logger_open_failed",nullptr,nullptr); } logger_.write(Severity::NOTICE,"server_started",nullptr,nullptr);return true;
 }
 void SleelaServer::run(){
- if(!running_.load()&&!start())throw std::runtime_error("SLeeLa server start failed");
+ bool expected=false;if(!run_active_.compare_exchange_strong(expected,true))throw std::runtime_error("SLeeLa server run already active");
+ if(!running_.load()&&!start()){run_active_.store(false);throw std::runtime_error("SLeeLa server start failed");}
  while(running_.load()){
   sockaddr_in p{};socket_len_t n=sizeof(p);
   int fd=(int)::accept(listen_fd_,(sockaddr*)&p,&n);
@@ -139,11 +150,23 @@ void SleelaServer::run(){
   workers_.clear();
  }
  packet_logger_.close();
-}
-void SleelaServer::stop(){ std::lock_guard<std::mutex>l(state_mutex_);if(!running_.load()&&listen_fd_<0)return;running_.store(false);if(listen_fd_>=0){close_socket(listen_fd_);listen_fd_=-1;}
+ {std::lock_guard<std::mutex> state_lock(state_mutex_);if(listen_fd_>=0){close_socket(listen_fd_);listen_fd_=-1;}
 #ifdef _WIN32
- WSACleanup();
+ if(winsock_started_){WSACleanup();winsock_started_=false;}
 #endif
+ } run_active_.store(false);
+}
+void SleelaServer::stop(){ std::lock_guard<std::mutex>l(state_mutex_);running_.store(false);if(listen_fd_>=0){
+#ifdef _WIN32
+ shutdown(listen_fd_,SD_BOTH);
+#else
+ shutdown(listen_fd_,SHUT_RDWR);
+#endif
+ if(!run_active_.load()){close_socket(listen_fd_);listen_fd_=-1;
+#ifdef _WIN32
+ if(winsock_started_){WSACleanup();winsock_started_=false;}
+#endif
+ }}
 }
 bool SleelaServer::running()const noexcept{return running_.load();}
 bool SleelaServer::read_exact(int fd,void*dst,std::size_t bytes,std::uint32_t ms){
