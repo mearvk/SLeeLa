@@ -1,12 +1,12 @@
 # Gate 1 — The Threshold
 
-![The Threshold](../images/gate-01.svg)
+![The Threshold](../images/svg/gate-01.svg)
 
 | | |
 |---|---|
 | **Index** | 01 |
 | **Name** | The Threshold |
-| **Emblem** | [`images/gate-01.svg`](../images/gate-01.svg) |
+| **Emblem** | [`images/svg/gate-01.svg`](../images/svg/gate-01.svg) |
 
 ## Motif
 

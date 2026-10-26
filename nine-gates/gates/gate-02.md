@@ -1,12 +1,12 @@
 # Gate 2 — The Lantern
 
-![The Lantern](../images/gate-02.svg)
+![The Lantern](../images/svg/gate-02.svg)
 
 | | |
 |---|---|
 | **Index** | 02 |
 | **Name** | The Lantern |
-| **Emblem** | [`images/gate-02.svg`](../images/gate-02.svg) |
+| **Emblem** | [`images/svg/gate-02.svg`](../images/svg/gate-02.svg) |
 
 ## Motif
 

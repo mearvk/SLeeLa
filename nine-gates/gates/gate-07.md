@@ -1,12 +1,12 @@
 # Gate 7 — The Ember
 
-![The Ember](../images/gate-07.svg)
+![The Ember](../images/svg/gate-07.svg)
 
 | | |
 |---|---|
 | **Index** | 07 |
 | **Name** | The Ember |
-| **Emblem** | [`images/gate-07.svg`](../images/gate-07.svg) |
+| **Emblem** | [`images/svg/gate-07.svg`](../images/svg/gate-07.svg) |
 
 ## Motif
 

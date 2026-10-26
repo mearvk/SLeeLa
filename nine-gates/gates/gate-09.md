@@ -1,12 +1,12 @@
 # Gate 9 — The Horizon
 
-![The Horizon](../images/gate-09.svg)
+![The Horizon](../images/svg/gate-09.svg)
 
 | | |
 |---|---|
 | **Index** | 09 |
 | **Name** | The Horizon |
-| **Emblem** | [`images/gate-09.svg`](../images/gate-09.svg) |
+| **Emblem** | [`images/svg/gate-09.svg`](../images/svg/gate-09.svg) |
 
 ## Motif
 

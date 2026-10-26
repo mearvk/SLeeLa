@@ -38,15 +38,20 @@ nine-gates/
     gate-08.md         The Compass
     gate-09.md         The Horizon
   images/
-    gate-01.svg .. gate-09.svg        one emblem per gate
-    nine-gates-contact-sheet.svg      all nine on one sheet
+    svg/                              images are organized by file type
+      gate-01.svg .. gate-09.svg      one emblem per gate
+      nine-gates-contact-sheet.svg    all nine on one sheet
 ```
+
+Images are **organized by file type** under `images/`: each format lives in its own subfolder
+(`images/svg/` for the vector emblems). A future raster export would go in a sibling folder such
+as `images/png/`, keeping the paired `gate-0N` basename.
 
 **Naming convention (deliberate, so the set stays sortable and greppable):**
 
 - Documents: `gates/gate-0N.md` — zero-padded two-digit index, one per gate, matching the emblem.
-- Emblems: `images/gate-0N.svg` — same index, so `gate-03.md` pairs with `gate-03.svg`.
-- The combined sheet: `images/nine-gates-contact-sheet.svg`.
+- Emblems: `images/svg/gate-0N.svg` — same index, so `gate-03.md` pairs with `gate-03.svg`.
+- The combined sheet: `images/svg/nine-gates-contact-sheet.svg`.
 
 The zero-padding (`01`..`09`) keeps lexical order equal to numeric order in every file browser and
 `ls`, and makes a tenth-or-later gate (`10`) sort correctly if the set is ever extended.
@@ -78,22 +83,22 @@ The emblems are **hand-written SVG** (plain vector line-art, no external fonts o
 are portable and diffable.
 
 **View one emblem:**
-- Open `images/gate-01.svg` in any web browser, or
-- Embed in Markdown/HTML: `![The Threshold](images/gate-01.svg)`
+- Open `images/svg/gate-01.svg` in any web browser, or
+- Embed in Markdown/HTML: `![The Threshold](images/svg/gate-01.svg)`
 
-**View all nine:** open [`images/nine-gates-contact-sheet.svg`](./images/nine-gates-contact-sheet.svg).
+**View all nine:** open [`images/svg/nine-gates-contact-sheet.svg`](./images/svg/nine-gates-contact-sheet.svg).
 
 **Convert to PNG** (optional, if you have one of these installed):
 
 ```sh
 # with rsvg-convert (librsvg)
-rsvg-convert -w 512 -h 512 images/gate-01.svg -o gate-01.png
+rsvg-convert -w 512 -h 512 images/svg/gate-01.svg -o gate-01.png
 
 # or with ImageMagick
-convert -background none -resize 512x512 images/gate-01.svg gate-01.png
+convert -background none -resize 512x512 images/svg/gate-01.svg gate-01.png
 
 # or with Inkscape
-inkscape images/gate-01.svg --export-type=png -w 512 -o gate-01.png
+inkscape images/svg/gate-01.svg --export-type=png -w 512 -o gate-01.png
 ```
 
 Each emblem is drawn on a `0 0 240 240` viewBox with a transparent background, so it scales to any
@@ -118,7 +123,7 @@ a dark default otherwise).
 
 To add or revise a gate:
 
-1. Keep the paired naming: a new `gates/gate-0N.md` **and** `images/gate-0N.svg` with the same `N`.
+1. Keep the paired naming: a new `gates/gate-0N.md` **and** `images/svg/gate-0N.svg` with the same `N`.
 2. Author original art only — no copying from protected sources.
 3. Add the row to the tables in [`README.md`](./README.md) and §3 above.
 4. If you add a tenth gate, the naming already sorts correctly (`gate-10.*`), but update the

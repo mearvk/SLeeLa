@@ -1,12 +1,12 @@
 # Gate 3 — The Bridge
 
-![The Bridge](../images/gate-03.svg)
+![The Bridge](../images/svg/gate-03.svg)
 
 | | |
 |---|---|
 | **Index** | 03 |
 | **Name** | The Bridge |
-| **Emblem** | [`images/gate-03.svg`](../images/gate-03.svg) |
+| **Emblem** | [`images/svg/gate-03.svg`](../images/svg/gate-03.svg) |
 
 ## Motif
 

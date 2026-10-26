@@ -1,12 +1,12 @@
 # Gate 5 — The Keystone
 
-![The Keystone](../images/gate-05.svg)
+![The Keystone](../images/svg/gate-05.svg)
 
 | | |
 |---|---|
 | **Index** | 05 |
 | **Name** | The Keystone |
-| **Emblem** | [`images/gate-05.svg`](../images/gate-05.svg) |
+| **Emblem** | [`images/svg/gate-05.svg`](../images/svg/gate-05.svg) |
 
 ## Motif
 

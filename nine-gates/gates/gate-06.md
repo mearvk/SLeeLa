@@ -1,12 +1,12 @@
 # Gate 6 — The Tide
 
-![The Tide](../images/gate-06.svg)
+![The Tide](../images/svg/gate-06.svg)
 
 | | |
 |---|---|
 | **Index** | 06 |
 | **Name** | The Tide |
-| **Emblem** | [`images/gate-06.svg`](../images/gate-06.svg) |
+| **Emblem** | [`images/svg/gate-06.svg`](../images/svg/gate-06.svg) |
 
 ## Motif
 

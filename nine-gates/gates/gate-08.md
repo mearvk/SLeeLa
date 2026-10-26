@@ -1,12 +1,12 @@
 # Gate 8 — The Compass
 
-![The Compass](../images/gate-08.svg)
+![The Compass](../images/svg/gate-08.svg)
 
 | | |
 |---|---|
 | **Index** | 08 |
 | **Name** | The Compass |
-| **Emblem** | [`images/gate-08.svg`](../images/gate-08.svg) |
+| **Emblem** | [`images/svg/gate-08.svg`](../images/svg/gate-08.svg) |
 
 ## Motif
 

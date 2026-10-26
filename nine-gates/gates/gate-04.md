@@ -1,12 +1,12 @@
 # Gate 4 — The Mirror
 
-![The Mirror](../images/gate-04.svg)
+![The Mirror](../images/svg/gate-04.svg)
 
 | | |
 |---|---|
 | **Index** | 04 |
 | **Name** | The Mirror |
-| **Emblem** | [`images/gate-04.svg`](../images/gate-04.svg) |
+| **Emblem** | [`images/svg/gate-04.svg`](../images/svg/gate-04.svg) |
 
 ## Motif
 
