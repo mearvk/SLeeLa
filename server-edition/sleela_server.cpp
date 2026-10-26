@@ -107,9 +107,10 @@ bool SleelaServer::start(){
  if(config_.port==0 || config_.max_connections==0 || config_.max_connections>65535 ||
     config_.max_packet_bytes<FIXED_HEADER || config_.max_header_bytes>config_.max_packet_bytes-FIXED_HEADER ||
     config_.max_payload_bytes>config_.max_packet_bytes || config_.idle_timeout_seconds==0 ||
-    config_.max_packets_per_second==0) { logger_.write(Severity::ERROR,"invalid_server_configuration",nullptr,nullptr); return false; }
+    config_.max_packets_per_second==0 || config_.tls_certificate_file.empty()!=config_.tls_private_key_file.empty() || config_.tls_certificate_file.empty()!=config_.tls_client_ca_file.empty()) { logger_.write(Severity::ERROR,"invalid_server_configuration",nullptr,nullptr); return false; }
 const bool tls_enabled=!config_.tls_certificate_file.empty();
  if(config_.bind_address!="127.0.0.1" && config_.bind_address.rfind("127.",0)!=0 && !tls_enabled){logger_.write(Severity::ERROR,"remote_bind_requires_tls",nullptr,nullptr);return false;}
+ if(tls_enabled && (config_.allowed_peer_identities.empty()||config_.identity_permissions.empty())){logger_.write(Severity::ERROR,"tls_identity_policy_missing",nullptr,nullptr);return false;}
  if(tls_enabled){
   tls_context_=SSL_CTX_new(TLS_server_method());
   if(!tls_context_ || SSL_CTX_set_min_proto_version(tls_context_,TLS1_3_VERSION)!=1 || SSL_CTX_set_max_proto_version(tls_context_,TLS1_3_VERSION)!=1 ||
@@ -134,7 +135,7 @@ const bool tls_enabled=!config_.tls_certificate_file.empty();
  if(winsock_started_){WSACleanup();winsock_started_=false;}
 #endif
  return false;}
- if(::bind(listen_fd_,(sockaddr*)&a,sizeof(a))!=0){close_socket(listen_fd_);listen_fd_=-1;return false;}if(::listen(listen_fd_,(int)config_.max_connections)!=0){close_socket(listen_fd_);listen_fd_=-1;return false;}running_=true; sleela::LoggerLogic logic; logic.log_sent=true; logic.log_received=true; logic.minimum_severity=sleela::LogSeverity::Info; logic.minimum_admission=sleela::LogAdmission::Accepted; packet_logger_.set_logic(logic); if(!packet_logger_.open()){ logger_.write(Severity::ERROR,"packet_logger_open_failed",nullptr,nullptr); } logger_.write(Severity::NOTICE,"server_started",nullptr,nullptr);return true;
+ if(::bind(listen_fd_,(sockaddr*)&a,sizeof(a))!=0){close_socket(listen_fd_);listen_fd_=-1;if(tls_context_){SSL_CTX_free(tls_context_);tls_context_=nullptr;}return false;}if(::listen(listen_fd_,(int)config_.max_connections)!=0){close_socket(listen_fd_);listen_fd_=-1;if(tls_context_){SSL_CTX_free(tls_context_);tls_context_=nullptr;}return false;}running_=true; sleela::LoggerLogic logic; logic.log_sent=true; logic.log_received=true; logic.minimum_severity=sleela::LogSeverity::Info; logic.minimum_admission=sleela::LogAdmission::Accepted; packet_logger_.set_logic(logic); if(!packet_logger_.open()){ logger_.write(Severity::ERROR,"packet_logger_open_failed",nullptr,nullptr); } logger_.write(Severity::NOTICE,"server_started",nullptr,nullptr);return true;
 }
 void SleelaServer::run(){
  bool expected=false;if(!run_active_.compare_exchange_strong(expected,true))throw std::runtime_error("SLeeLa server run already active");
@@ -185,7 +186,7 @@ void SleelaServer::stop(){ std::lock_guard<std::mutex>l(state_mutex_);running_.s
 #else
  shutdown(listen_fd_,SHUT_RDWR);
 #endif
- if(!run_active_.load()){close_socket(listen_fd_);listen_fd_=-1;
+ if(!run_active_.load()){close_socket(listen_fd_);listen_fd_=-1;if(tls_context_){SSL_CTX_free(tls_context_);tls_context_=nullptr;}
 #ifdef _WIN32
  if(winsock_started_){WSACleanup();winsock_started_=false;}
 #endif
