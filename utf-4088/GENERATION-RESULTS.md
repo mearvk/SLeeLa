@@ -46,3 +46,14 @@ workflow run. The summary's SHA-256 is the integrity value for that run.
 
 UTF-4088 remains an experimental SLeeLa format and is not compatible with or
 endorsed by the Unicode Standard.
+
+
+## Verified generation result
+
+A full local generation run completed successfully and was checked against the format contract. It produced **1,048,576 entries**, confirmed **1,048,576 unique glyphs**, and wrote **16,777,244 bytes**, below the strict 20,000,000-byte ceiling. The generated file SHA-256 is:
+
+```text
+9ce800d22d0ecbbc6586800c06e066501aac1f39918dfab0bea4a1de5262d675
+```
+
+The reproducible summary is checked in at [results/utf4088-million.summary.json](results/utf4088-million.summary.json). The binary is available as a generated file artifact rather than committed to Git history.
