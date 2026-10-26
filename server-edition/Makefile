@@ -20,6 +20,8 @@ $(TEST_TARGET): $(TEST_SOURCES) sleela_server.hpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) -o $@ $(TEST_SOURCES) $(LDLIBS)
 test: $(TEST_TARGET)
 	./$(TEST_TARGET)
+	$(PYTHON) -m unittest discover -s tests -p 'test_nat_awareness.py' -v
+	$(PYTHON) tests/test_tls_integration.py $(SERVER_TEST_BINARY)
 clean:
 	rm -f $(TARGET) $(TARGET).exe $(TEST_TARGET) *.o
 .PHONY: all test clean
