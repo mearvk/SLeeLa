@@ -1,5 +1,9 @@
 # READY.1234 — Creating the SLeeLa Repository From Scratch
 
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
+
 *A blueprint for an AI agent (Kiro, Claude, ChatGPT) that must author this
 repository from nothing, in the most efficient, correctly-ordered, and careful
 way — so every layer exists before the layer that depends on it.*
