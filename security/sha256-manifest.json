@@ -5070,6 +5070,18 @@
       "sha256": "946d4e548551366dc47101437164e4e6c3b5115454f1df2b8506b37fb8c53f2d"
     },
     {
+      "path": "lib/db-connector/include/sldbc.h",
+      "sha256": "1695386c79526e9258bc507bab1ead7cec7e9789e1fbabbbe3a0d0060448ab86"
+    },
+    {
+      "path": "lib/db-connector/src/sldbc.c",
+      "sha256": "6f07fa7d18e232a6fa14e796f2a872a33ca5335be45f2955914e17e71b3e91d1"
+    },
+    {
+      "path": "lib/db-connector/tests/test_connector.c",
+      "sha256": "864069191c27f8360e27a29fc4076b2cba314c0594ad66b52570854d5528c77f"
+    },
+    {
       "path": "lib/debugger/SLBreakpoint.sleela",
       "sha256": "b1bd1a7d495ae2b499b39659bd566a0345a4de764d8ebe20130cff5bad9687cb"
     },
