@@ -2,8 +2,11 @@
 #include <algorithm>
 #include <array>
 #include <chrono>
+#include <charconv>
+#include <limits>
 #include <ctime>
 #include <fstream>
+#include <cerrno>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -33,6 +36,14 @@ std::uint32_t be32(const std::uint8_t*p){return ((std::uint32_t)p[0]<<24)|((std:
 std::uint64_t be64(const std::uint8_t*p){std::uint64_t v=0;for(int i=0;i<8;++i)v=(v<<8)|p[i];return v;}
 bool known_grade(std::uint8_t g){return g>=1&&g<=9;}
 bool printable(const std::string&s){for(unsigned char c:s)if(c<0x20&&c!='\t')return false;return true;}
+template <typename T> bool parse_uint(const std::string& text, T& out) {
+ if (text.empty()) return false;
+ T value{};
+ const auto r = std::from_chars(text.data(), text.data() + text.size(), value, 10);
+ if (r.ec != std::errc{} || r.ptr != text.data() + text.size()) return false;
+ out = value;
+ return true;
+}
 std::string esc(const std::string&s){std::string o;for(unsigned char c:s){if(c=='\\'||c=='"'){o+='\\';o+=(char)c;}else if(c=='\n')o+="\\n";else if(c=='\r')o+="\\r";else if(c<0x20){std::ostringstream x;x<<"\\u"<<std::hex<<std::setw(4)<<std::setfill('0')<<(int)c;o+=x.str();}else o+=(char)c;}return o;}
 }
 StructuredLogger::StructuredLogger(const ServerConfig&c):cfg_(c){}
@@ -68,8 +79,15 @@ Decision PacketInspector::inspect(const Packet&p,std::size_t wire,std::uint64_t 
 bool PacketInspector::parse_headers(const std::string&block,Packet&p,std::string&err){
  std::istringstream in(block);std::string line;std::unordered_set<std::string>seen;
  try{while(std::getline(in,line)){if(!line.empty()&&line.back()=='\r')line.pop_back();if(line.empty())continue;auto eq=line.find('=');if(eq==std::string::npos||eq==0){err="bad_header";return false;}std::string k=line.substr(0,eq),v=line.substr(eq+1);if(k.size()>64||v.size()>4096||!printable(k)){err="header_bounds";return false;}if(!seen.insert(k).second){err="duplicate_header";return false;}
-  if(k=="SERVICE-ID")p.service_id=v;else if(k=="OP-ID")p.operation_id=v;else if(k=="PROTOCOL-GRADE")p.grade=(std::uint8_t)std::stoul(v);else if(k=="FLAGS")p.flags=(std::uint16_t)std::stoul(v);else if(k=="STREAM-ID")p.stream_id=std::stoull(v);else if(k=="REQUEST-ID")p.request_id=std::stoull(v);else if(k=="SEQUENCE")p.sequence=std::stoull(v);else p.fields.emplace(std::move(k),std::move(v));
- } }catch(...){err="invalid_numeric_header";return false;}if(p.grade==0||p.service_id.empty()||p.operation_id.empty()){err="missing_required_header";return false;}return true;
+  if(k=="SERVICE-ID")p.service_id=v;
+  else if(k=="OP-ID")p.operation_id=v;
+  else if(k=="PROTOCOL-GRADE"){std::uint64_t n=0;if(!parse_uint(v,n)||n>255){err="invalid_protocol_grade";return false;}p.grade=static_cast<std::uint8_t>(n);}
+  else if(k=="FLAGS"){std::uint64_t n=0;if(!parse_uint(v,n)||n>65535){err="invalid_flags";return false;}p.flags=static_cast<std::uint16_t>(n);}
+  else if(k=="STREAM-ID"){if(!parse_uint(v,p.stream_id)){err="invalid_stream_id";return false;}}
+  else if(k=="REQUEST-ID"){if(!parse_uint(v,p.request_id)){err="invalid_request_id";return false;}}
+  else if(k=="SEQUENCE"){if(!parse_uint(v,p.sequence)){err="invalid_sequence";return false;}}
+  else p.fields.emplace(std::move(k),std::move(v));
+ } }catch(...){err="invalid_header";return false;}if(p.grade==0||p.service_id.empty()||p.operation_id.empty()){err="missing_required_header";return false;}return true;
 }
 SleelaServer::SleelaServer(ServerConfig c):config_(std::move(c)),logger_(config_),inspector_(config_),packet_logger_("logs"){}
 SleelaServer::~SleelaServer(){stop();}
@@ -88,7 +106,16 @@ void SleelaServer::stop(){ packet_logger_.close(); std::lock_guard<std::mutex>l(
 #endif
 }
 bool SleelaServer::running()const noexcept{return running_;}
-bool SleelaServer::read_exact(int fd,void*dst,std::size_t bytes,std::uint32_t ms){auto*p=(std::uint8_t*)dst;std::size_t got=0;while(got<bytes){fd_set set;FD_ZERO(&set);FD_SET(fd,&set);timeval tv{(long)(ms/1000),(long)((ms%1000)*1000)};if(select(fd+1,&set,nullptr,nullptr,&tv)<=0)return false;
+bool SleelaServer::read_exact(int fd,void*dst,std::size_t bytes,std::uint32_t ms){
+ auto* p=static_cast<std::uint8_t*>(dst); std::size_t got=0;
+ const auto deadline=std::chrono::steady_clock::now()+std::chrono::milliseconds(ms);
+ while(got<bytes){
+  const auto now=std::chrono::steady_clock::now(); if(now>=deadline)return false;
+  const auto remaining=std::chrono::duration_cast<std::chrono::microseconds>(deadline-now);
+  const auto us=remaining.count();
+  fd_set set;FD_ZERO(&set);FD_SET(fd,&set);
+  timeval tv{static_cast<long>(us/1000000),static_cast<long>(us%1000000)};
+  if(select(fd+1,&set,nullptr,nullptr,&tv)<=0)return false;
 #ifdef _WIN32
  int n=recv(fd,(char*)p+got,(int)(bytes-got),0);
 #else
@@ -97,12 +124,25 @@ bool SleelaServer::read_exact(int fd,void*dst,std::size_t bytes,std::uint32_t ms
  if(n<=0)return false;got+=(std::size_t)n;}return true;}
 bool SleelaServer::read_packet(int fd,Packet&p,std::size_t&wire,std::string&err){std::array<std::uint8_t,FIXED_HEADER>h{};if(!read_exact(fd,h.data(),h.size(),config_.idle_timeout_seconds*1000U)){err="header_timeout_or_eof";return false;}if(be32(h.data())!=MAGIC||h[4]!=WIRE_VERSION){err="bad_magic_or_wire_version";return false;}std::uint32_t hl=be32(h.data()+8),pl=be32(h.data()+12);std::uint64_t total=FIXED_HEADER+(std::uint64_t)hl+pl;if(hl>config_.max_header_bytes||pl>config_.max_payload_bytes||total>config_.max_packet_bytes){err="frame_exceeds_limits";return false;}
  p.grade=h[5];p.flags=be16(h.data()+6);p.stream_id=be64(h.data()+16);p.request_id=be64(h.data()+24);p.sequence=be64(h.data()+32);std::string hs(hl,'\0');if(hl&&!read_exact(fd,hs.data(),hl,config_.idle_timeout_seconds*1000U)){err="header_body_truncated";return false;}if(!PacketInspector::parse_headers(hs,p,err))return false;if(p.grade!=h[5]){err="grade_mismatch";return false;}p.payload.resize(pl);if(pl&&!read_exact(fd,p.payload.data(),pl,config_.idle_timeout_seconds*1000U)){err="payload_truncated";return false;}wire=(std::size_t)total;return true;}
-bool SleelaServer::write_status(int fd,int status,const char*reason){std::string s="SLPK/1 "+std::to_string(status)+" "+reason+"\n";
+bool SleelaServer::write_status(int fd,int status,const char*reason){
+ const std::string s="SLPK/1 "+std::to_string(status)+" "+reason+"\n";
+ std::size_t sent=0;
+ while(sent<s.size()){
 #ifdef _WIN32
- return send(fd,s.data(),(int)s.size(),0)==(int)s.size();
+  const int n=send(fd,s.data()+sent,static_cast<int>(s.size()-sent),0);
 #else
- return send(fd,s.data(),s.size(),MSG_NOSIGNAL)==(ssize_t)s.size();
+  const auto n=send(fd,s.data()+sent,s.size()-sent,MSG_NOSIGNAL);
 #endif
+  if(n<0){
+#ifndef _WIN32
+   if(errno==EINTR)continue;
+#endif
+   return false;
+  }
+  if(n==0)return false;
+  sent+=static_cast<std::size_t>(n);
+ }
+ return true;
 }
 void SleelaServer::client_loop(int fd,std::string peer){std::uint64_t packets=0,failures=0;auto started=std::chrono::steady_clock::now();logger_.write(Severity::DEBUG,"client_connected",nullptr,nullptr,peer);
  while(running_){Packet p;std::size_t wire=0;std::string err;if(!read_packet(fd,p,wire,err)){++failures;logger_.write(Severity::WARN,"packet_rejected",nullptr,nullptr,peer+":"+err);write_status(fd,400,err.c_str());break;}++packets; packet_logger_.record_received(peer,"SLeeLa-WIRE/"+std::to_string((int)p.grade),p.stream_id,p.request_id,p.sequence,wire,"raw_socket_to_sleela_server"); auto sec=std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now()-started).count();std::uint64_t rate=sec==0?packets:packets/(std::uint64_t)sec;Decision d=inspector_.inspect(p,wire,rate,failures);logger_.write(d.severity,d.accept?"packet_accepted":"packet_rejected",&p,&d,peer);if(!d.accept){write_status(fd,d.status,d.reason.c_str());break;}packet_logger_.record_sent(peer,"SLeeLa-WIRE/"+std::to_string((int)p.grade),p.stream_id,p.request_id,p.sequence,std::string("SLPK/1 200 accepted\n").size(),"server_to_os_socket"); if(!write_status(fd,200,"accepted"))break;}
