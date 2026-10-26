@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none" stroke="currentColor" color="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>Gate 8 — The Compass</title>
+  <!-- A compass rose: outer ring, cardinal points, and a four-point needle. -->
+  <circle cx="120" cy="120" r="80"/>
+  <circle cx="120" cy="120" r="64" stroke-width="2"/>
+  <line x1="120" y1="40" x2="120" y2="56"/>
+  <line x1="120" y1="184" x2="120" y2="200"/>
+  <line x1="40" y1="120" x2="56" y2="120"/>
+  <line x1="184" y1="120" x2="200" y2="120"/>
+  <path d="M120 64 l16 56 -16 16 -16 -16 z" fill="currentColor" fill-opacity="0.15"/>
+  <path d="M120 176 l16 -56 -16 -16 -16 16 z"/>
+  <path d="M120 64 l16 56 -16 16 -16 -16 z"/>
+  <circle cx="120" cy="120" r="5" fill="currentColor"/>
+</svg>

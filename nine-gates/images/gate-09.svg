@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none" stroke="currentColor" color="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>Gate 9 — The Horizon</title>
+  <!-- A sun rising over a level horizon line, framed as an open gateway. -->
+  <line x1="36" y1="150" x2="204" y2="150"/>
+  <path d="M78 150 a42 42 0 0 1 84 0"/>
+  <line x1="120" y1="52" x2="120" y2="72" stroke-width="2"/>
+  <line x1="78" y1="64" x2="88" y2="82" stroke-width="2"/>
+  <line x1="162" y1="64" x2="152" y2="82" stroke-width="2"/>
+  <line x1="52" y1="104" x2="70" y2="114" stroke-width="2"/>
+  <line x1="188" y1="104" x2="170" y2="114" stroke-width="2"/>
+  <line x1="48" y1="168" x2="192" y2="168" stroke-width="2"/>
+  <line x1="64" y1="184" x2="176" y2="184" stroke-width="2" stroke-dasharray="4 8"/>
+</svg>

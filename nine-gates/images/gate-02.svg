@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none" stroke="currentColor" color="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>Gate 2 — The Lantern</title>
+  <!-- A hanging lantern casting light. -->
+  <line x1="120" y1="28" x2="120" y2="48"/>
+  <path d="M100 48 h40 l-6 14 h-28 z"/>
+  <rect x="96" y="62" width="48" height="72" rx="6"/>
+  <line x1="96" y1="98" x2="144" y2="98"/>
+  <line x1="120" y1="62" x2="120" y2="134"/>
+  <circle cx="120" cy="98" r="10" fill="currentColor"/>
+  <path d="M120 134 v12" />
+  <g stroke-width="2">
+    <line x1="120" y1="158" x2="120" y2="186"/>
+    <line x1="92" y1="150" x2="72" y2="170"/>
+    <line x1="148" y1="150" x2="168" y2="170"/>
+    <line x1="80" y1="130" x2="56" y2="138"/>
+    <line x1="160" y1="130" x2="184" y2="138"/>
+  </g>
+</svg>

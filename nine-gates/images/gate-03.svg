@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none" stroke="currentColor" color="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>Gate 3 — The Bridge</title>
+  <!-- An arched span over a gap, with two piers. -->
+  <path d="M36 150 q84 -84 168 0"/>
+  <line x1="36" y1="150" x2="204" y2="150"/>
+  <line x1="60" y1="150" x2="60" y2="196"/>
+  <line x1="180" y1="150" x2="180" y2="196"/>
+  <line x1="120" y1="94" x2="120" y2="150"/>
+  <line x1="90" y1="112" x2="90" y2="150"/>
+  <line x1="150" y1="112" x2="150" y2="150"/>
+  <path d="M30 196 h40 M170 196 h40" stroke-width="2"/>
+  <path d="M84 196 q36 20 72 0" stroke-width="2" stroke-dasharray="4 6"/>
+</svg>
