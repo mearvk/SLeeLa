@@ -1,0 +1,31 @@
+#sleela 2.1
+< Consent is explicit, purpose-specific, and revocable. Defaults are denied. >
+class SLSommelierConsent {
+  boolean feedbackAllowed = false;
+  boolean profileSharingAllowed = false;
+  boolean sessionSharingAllowed = false;
+  boolean researchUseAllowed = false;
+  boolean consentRecorded = false;
+  String consentVersion = "1.0";
+
+  boolean canSendFeedback() { return feedbackAllowed; }
+  boolean canShareProfile() { return profileSharingAllowed; }
+  boolean canShareSession() { return sessionSharingAllowed; }
+  boolean canUseForResearch() { return researchUseAllowed; }
+  boolean isRecorded() { return consentRecorded; }
+
+  void allowFeedback(boolean value) { feedbackAllowed = value; consentRecorded = true; }
+  void allowProfileSharing(boolean value) { profileSharingAllowed = value; consentRecorded = true; }
+  void allowSessionSharing(boolean value) { sessionSharingAllowed = value; consentRecorded = true; }
+  void allowResearchUse(boolean value) { researchUseAllowed = value; consentRecorded = true; }
+
+  void revokeAll() {
+    feedbackAllowed = false;
+    profileSharingAllowed = false;
+    sessionSharingAllowed = false;
+    researchUseAllowed = false;
+    consentRecorded = true;
+  }
+
+  boolean isMinimalOptIn() { return consentRecorded && feedbackAllowed; }
+}
