@@ -130,7 +130,7 @@ const bool tls_enabled=!config_.tls_certificate_file.empty();
  if(winsock_started_){WSACleanup();winsock_started_=false;}
 #endif
  return false;}int one=1;setsockopt(listen_fd_,SOL_SOCKET,SO_REUSEADDR,(char*)&one,sizeof(one));
- sockaddr_in a{};a.sin_family=AF_INET;a.sin_port=htons(config_.port);if(config_.bind_address=="0.0.0.0")a.sin_addr.s_addr=htonl(INADDR_ANY);else if(inet_pton(AF_INET,config_.bind_address.c_str(),&a.sin_addr)!=1){close_socket(listen_fd_);listen_fd_=-1;
+ sockaddr_in a{};a.sin_family=AF_INET;a.sin_port=htons(config_.port);if(config_.bind_address=="0.0.0.0")a.sin_addr.s_addr=htonl(INADDR_ANY);else if(inet_pton(AF_INET,config_.bind_address.c_str(),&a.sin_addr)!=1){close_socket(listen_fd_);listen_fd_=-1;if(tls_context_){SSL_CTX_free(tls_context_);tls_context_=nullptr;}
 #ifdef _WIN32
  if(winsock_started_){WSACleanup();winsock_started_=false;}
 #endif
