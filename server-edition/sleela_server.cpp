@@ -125,7 +125,7 @@ const bool tls_enabled=!config_.tls_certificate_file.empty();
 #ifdef _WIN32
  WSADATA w{};if(WSAStartup(MAKEWORD(2,2),&w)!=0){if(tls_context_){SSL_CTX_free(tls_context_);tls_context_=nullptr;}return false;}winsock_started_=true;
 #endif
- listen_fd_=(int)::socket(AF_INET,SOCK_STREAM,0);if(listen_fd_<0){
+ listen_fd_=(int)::socket(AF_INET,SOCK_STREAM,0);if(listen_fd_<0){if(tls_context_){SSL_CTX_free(tls_context_);tls_context_=nullptr;}
 #ifdef _WIN32
  if(winsock_started_){WSACleanup();winsock_started_=false;}
 #endif
@@ -242,11 +242,21 @@ bool SleelaServer::write_status(int fd,SSL* ssl,int status,const char*reason){
 void SleelaServer::client_loop(int fd,std::string peer){
  SSL* ssl=nullptr; std::string identity;
  if(tls_context_){
+#ifdef _WIN32
+  DWORD handshake_timeout=10000;setsockopt(fd,SOL_SOCKET,SO_RCVTIMEO,reinterpret_cast<const char*>(&handshake_timeout),sizeof(handshake_timeout));
+#else
+  timeval handshake_timeout{10,0};setsockopt(fd,SOL_SOCKET,SO_RCVTIMEO,&handshake_timeout,sizeof(handshake_timeout));
+#endif
   ssl=SSL_new(tls_context_);
   if(!ssl || SSL_set_fd(ssl,fd)!=1 || SSL_accept(ssl)!=1){
    logger_.write(Severity::WARN,"tls_handshake_failed",nullptr,nullptr,peer);
    if(ssl)SSL_free(ssl);close_socket(fd);{std::lock_guard<std::mutex> lock(state_mutex_);client_sockets_.erase(fd);}active_connections_.fetch_sub(1);return;
   }
+#ifdef _WIN32
+  DWORD no_timeout=0;setsockopt(fd,SOL_SOCKET,SO_RCVTIMEO,reinterpret_cast<const char*>(&no_timeout),sizeof(no_timeout));
+#else
+  timeval no_timeout{0,0};setsockopt(fd,SOL_SOCKET,SO_RCVTIMEO,&no_timeout,sizeof(no_timeout));
+#endif
   X509* cert=SSL_get1_peer_certificate(ssl);
   if(cert){X509_NAME* subject=X509_get_subject_name(cert);int index=X509_NAME_get_index_by_NID(subject,NID_commonName,-1);if(index>=0){X509_NAME_ENTRY* entry=X509_NAME_get_entry(subject,index);ASN1_STRING* data=X509_NAME_ENTRY_get_data(entry);unsigned char* utf8=nullptr;int n=ASN1_STRING_to_UTF8(&utf8,data);if(n>0&&static_cast<std::size_t>(n)<=256)identity.assign(reinterpret_cast<char*>(utf8),static_cast<std::size_t>(n));OPENSSL_free(utf8);}X509_free(cert);}
   if(identity.empty()||!config_.allowed_peer_identities.count(identity)){
