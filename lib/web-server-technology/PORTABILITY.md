@@ -49,7 +49,17 @@ version. Two toolchains work:
 - **MinGW-w64** GCC ≥ 7 (the same toolchain `lib/sleela-sql` documents for its
   Windows build).
 
-Example (MinGW-w64):
+A `windows` Makefile target automates the MinGW-w64 cross-build (from Linux or
+macOS) into `build/win/`:
+
+```sh
+make windows                       # x86-64 Windows libs (build/win/libslweb*.a)
+make windows MINGW=i686-w64-mingw32 # 32-bit
+make windows-test                  # also build the smoke-test .exe files
+```
+
+It auto-detects the toolchain and prints an install hint if MinGW-w64 is absent.
+The equivalent manual commands:
 
 ```sh
 x86_64-w64-mingw32-gcc  -std=c11   -O2 -c native/src/slweb.c   -Inative/include -o slweb.o
