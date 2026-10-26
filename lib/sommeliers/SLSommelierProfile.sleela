@@ -1,0 +1,32 @@
+#sleela 2.1
+< SL Sommelier profile: optional display preferences only; no sensitive identity
+  fields are required to participate. >
+class SLSommelierProfile {
+  String displayName = "Sommelier";
+  String preferredLanguage = "en";
+  String regionLabel = "unspecified";
+  boolean displayNameShared = false;
+  boolean regionShared = false;
+  boolean profileComplete = false;
+
+  String name() { return displayName; }
+  String language() { return preferredLanguage; }
+  String region() { return regionLabel; }
+  boolean sharesName() { return displayNameShared; }
+  boolean sharesRegion() { return regionShared; }
+
+  void setDisplayName(String value) { displayName = value; }
+  void setPreferredLanguage(String value) { preferredLanguage = value; }
+  void setRegionLabel(String value) { regionLabel = value; }
+  void shareName(boolean value) { displayNameShared = value; }
+  void shareRegion(boolean value) { regionShared = value; }
+
+  boolean valid() {
+    return displayName != "" && preferredLanguage != "" && regionLabel != "";
+  }
+
+  String publicLabel() {
+    if (displayNameShared) { return displayName; }
+    return "Anonymous sommelier";
+  }
+}
