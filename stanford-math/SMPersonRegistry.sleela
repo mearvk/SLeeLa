@@ -1,0 +1,125 @@
+<< stanford-math/SMPersonRegistry.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The registry of named Stanford mathematicians recorded in this
+   archive. Each entry is faithful to the public record; dates are given where
+   publicly known and "unknown" otherwise. >>
+#sleela 2.1
+< Executive+ class: a registry entry, full metadata record. >
+class SMPersonRegistry {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9110;
+  String metaAuthor = "Stanford University Department of Mathematics";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "biographical facts in the public record";
+  String metaTrademark = "none";
+  String metaCorporation = "The Leland Stanford Junior University";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 10;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Scientific record (purpose / method / gains / bedrock / integrity) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors).
+     Written truthfully for THIS class. metaIntegrityGoal: the roster records
+     who was truly here, in proportion to the public record. >>
+  String metaPurpose = "Assemble the roster of named Stanford mathematicians recorded in this archive.";
+  String metaScientificMethod = "Registry cataloguing: each entry sourced from Stanford's own rosters/bulletins; no entry without a basis.";
+  String metaAuthorialGains = "None over any person; the registry gains only completeness and accuracy.";
+  String metaBedrock = "Stanford Department of Mathematics faculty/emeriti rosters and bulletins.";
+  String metaIntegrityGoal = "Record great mathematicians because the public record names them -- never add a name for prestige, never omit one that belongs.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
+  < ---- The named people (public record) ---- >
+  SMPerson[] people;
+  int filled;
+
+  void build() {
+    people = new SMPerson[9];
+    filled = 0;
+    add("George Polya", "1887-1985", "analysis, probability, combinatorics",
+        "Professor of Mathematics, Stanford (from 1942)",
+        "random-walk recurrence (1921); Polya enumeration theorem");
+    add("Charles Loewner (Karl Loewner)", "1893-1968", "complex analysis, operator theory",
+        "Professor of Mathematics, Stanford",
+        "Loewner's theorem on operator monotone functions (1934)");
+    add("Paul Cohen", "1934-2007", "logic, set theory, analysis",
+        "Professor of Mathematics, Stanford",
+        "forcing; independence of the continuum hypothesis; Fields Medal 1966");
+    add("Persi Diaconis", "1945-unknown", "probability, statistics",
+        "Professor of Mathematics and Statistics, Stanford",
+        "riffle-shuffle mixing -- 'seven shuffles suffice' (Bayer-Diaconis 1992)");
+    add("Samuel Karlin", "1924-2007", "applied probability, mathematical biology",
+        "Professor, Stanford (emeritus)",
+        "total positivity; birth-death processes");
+    add("Joseph B. Keller", "1923-2016", "applied mathematics",
+        "Professor, Stanford (emeritus)",
+        "geometrical theory of diffraction (1962)");
+    add("Donald Ornstein", "1934-2023", "ergodic theory",
+        "Professor, Stanford (emeritus)",
+        "the Ornstein isomorphism theorem for Bernoulli shifts");
+    add("Yakov Eliashberg", "1946-unknown", "symplectic and contact topology",
+        "Professor of Mathematics, Stanford",
+        "foundational results in symplectic/contact geometry");
+    add("Robert Osserman", "1926-2011", "differential geometry",
+        "Professor, Stanford (emeritus)",
+        "minimal surfaces; mathematics outreach");
+  }
+
+  void add(String n, String life, String f, String s, String note) {
+    SMPerson p = new SMPerson();
+    p.describePerson(n, life, f, s, note);
+    people[filled] = p;
+    filled = filled + 1;
+  }
+
+  int count() { return filled; }
+
+  String nameAt(int i) {
+    SMPerson p = people[i];
+    return p.getName();
+  }
+
+  String summaryAt(int i) {
+    SMPerson p = people[i];
+    return p.summary();
+  }
+}

@@ -1,0 +1,27 @@
+/*
+ * sleela-virtual-machine/009/SLVmPremiumVersion009.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmPremiumVersion009 -- the loadable SLeeLa manifest for
+ *   premium VM generation slvm-9 (codename "Authority"; "filesystem and OS adaptation"), the OOD selector
+ *   record the native VM can enumerate and select via `sleela vm select premium
+ *   9` (or p9). It names this generation's C/C++ project directory, codename,
+ *   and admission validator, composes the cumulative premium capability set
+ *   through generation 9, and carries the default configuration profile.
+ *   build() returns the configured SLVmRuntime a selection resolves to;
+ *   nativeBinary() names the binary the master build produces (vm-build/slvm-9).
+ *
+ * Faithful to impl/frontend/driver.cpp (kPremium), each VM's SLVM_CODENAME
+ * (src/slvm09_vm.c), and virtual-machine/USER-GUIDE.md (per-grade validator).
+ * It extends SLVmPremiumVersion (lib/vm/src/sleela/SLVmPremiumVersion.sleela).
+ *
+ * Family: vm. Composes SLVmPremiumVersion, SLVmConfig, SLVmRuntime.
+ */
+#sleela 2.4
+class SLVmPremiumVersion009 extends SLVmPremiumVersion {
+  void configure() {
+    base(9, "slvm-9", "Authority", "filesystem and OS adaptation", "sleela-virtual-machine/009", "filesystem substrate");
+    composeThrough(9);
+    // default profile tuning for this generation (user-editable in setup/conference)
+    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+  }
+}

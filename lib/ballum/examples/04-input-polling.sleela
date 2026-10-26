@@ -1,0 +1,29 @@
+#sleela 2.1
+< Ballum example 04: bounded polling for mouse/touch events. >
+class BallumInputPolling {
+  void main() {
+    print("=== Ballum: Input Polling ===");
+    print("backend: " + uiBallumBackendName());
+    if (uiBallumHasInput() == 0) {
+      print("Pointer input is unavailable on this host; exiting cleanly.");
+      return;
+    }
+    int handled = 0;
+    int budget = 64;
+    int i = 0;
+    while (i < budget) {
+      int event = uiBallumPoll();
+      if (event == 0) { i = budget; }
+      else {
+        print("event=" + event + " x=" + uiBallumEventX()
+          + " y=" + uiBallumEventY()
+          + " button=" + uiBallumEventButton()
+          + " source=" + uiBallumEventSource());
+        handled = handled + 1;
+        i = i + 1;
+      }
+    }
+    print("events handled: " + handled);
+    print("Polling ended within a fixed budget; no indefinite wait.");
+  }
+}

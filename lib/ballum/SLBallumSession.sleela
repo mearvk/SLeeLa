@@ -20,7 +20,7 @@
    Easy startup. The connect-and-go surface is deliberately tiny:
        SLBallumSession s = new SLBallumSession();
        s.start();                 < white screen + default logo fade, full screen >
-       while (s.step() == RUNNING) { }   < advance; ESC handling is built in >
+       while (s.step() != EXIT) { }      < keep polling in FRAME mode too >
    Defaults are sensible (primary display, the national-bitcoin-icc logo, a
    ~48-frame fade). Override any of them before start() with the with*() setters
    (withLogo, withFadeFrames, withDisplayIndex, withBackground).
@@ -125,7 +125,7 @@ class SLBallumSession {
     input = new SLBallumInput();
     input.configure();
     logoUrl = defaultLogoUrl();
-    logoPath = "";
+    logoPath = "images/national-bitcoin-icc-logo-007.jpg";
     effect = SLBallumEffect.FADE;
     fadeFrames = 48;
     displayIndex = -1;
@@ -138,7 +138,7 @@ class SLBallumSession {
 
   < The default splash logo (the national bitcoin / ICC mark). >
   String defaultLogoUrl() {
-    return "https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg";
+    return "images/national-bitcoin-icc-logo-007.jpg";
   }
 
   << Fluent, optional overrides -- call before start(). Each returns this so a
@@ -156,7 +156,8 @@ class SLBallumSession {
 
   << start(): the one call a user needs. Binds the display full screen, paints
     the pure-white background, and arms the logo fade. Returns the run state:
-    RUNNING on success, EXIT if no display/backend is available (fail closed). >>
+    RUNNING on success, EXIT if no display/backend is available (fail closed).
+    The caller must keep calling step() in FRAME mode so the second ESC is read. >>
   int start() {
     if (screen == null) { configure(); }
     int st;
@@ -191,7 +192,7 @@ class SLBallumSession {
 
   << step(): advance the session one frame. Handles ESC (frame -> exit),
     advances the logo fade, and returns the current run state. Call in a loop:
-        while (s.step() == SLBallumSession.RUNNING) { }
+        while (s.step() != SLBallumSession.EXIT) { }
     Returns FRAME after the first ESC and EXIT after the second (or after
     requestExit()). >>
   int step() {
@@ -235,6 +236,25 @@ class SLBallumSession {
   void requestExit() { state = EXIT; }
   < Return a FRAME-mode session to full-screen running. >
   int resume() { if (state == FRAME) { state = RUNNING; } return state; }
+
+  << finish(): perform a graceful logo fade-out to the configured background.
+    Call after the step() loop ends and before the program returns. This is
+    intentionally explicit so applications control exactly when the display is
+    restored; it does not change the EXIT state or claim a host decoder exists. >>
+  void finish() {
+    if (screen == null || !screen.isReady()) { return; }
+    if (logoReady == 1) {
+      int outPct = 100;
+      while (outPct >= 0) {
+        uiBallumLogoBlend(screen.displayId(), outPct,
+                          screen.width(), screen.height(), bgR, bgG, bgB);
+        outPct = outPct - 5;
+        int frameStart = timeMonotonicNanos();
+        while (timeMonotonicNanos() - frameStart < 16000000) { }
+      }
+    }
+    paintBackground();
+  }
 
   << renderFade(): composite the logo over the white background at the current
     opacity. The logo emerges from white: at frame 0 the screen is pure

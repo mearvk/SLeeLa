@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #include "../include/cdma2000_1x.h"
 #include <stddef.h>
 int cdma2000_1x_make_code(int *code, size_t spreading_factor, unsigned code_index) {

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 /* W-CDMA / UMTS compact reference model; not a conforming modem. */
 #ifndef WCDMA_REFERENCE_H
 #define WCDMA_REFERENCE_H

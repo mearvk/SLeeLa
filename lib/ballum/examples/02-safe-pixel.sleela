@@ -1,0 +1,38 @@
+#sleela 2.1
+< Ballum example 02: bounds-check before a pixel write. >
+class BallumSafePixel {
+  boolean inBounds(int x, int y, int w, int h) {
+    return x >= 0 && y >= 0 && x < w && y < h;
+  }
+  void main() {
+    print("=== Ballum: Safe Pixel ===");
+    int st = uiBallumEnumerate();
+    if (st != 0 || uiBallumDisplayCount() == 0) {
+      print("No usable display; no pixel write attempted.");
+      return;
+    }
+    int idx = 0;
+    int i = 0;
+    while (i < uiBallumDisplayCount()) {
+      if (uiBallumDisplayPrimary(i) == 1) { idx = i; }
+      i = i + 1;
+    }
+    int id = uiBallumDisplayId(idx);
+    int w = uiBallumDisplayWidth(idx);
+    int h = uiBallumDisplayHeight(idx);
+    int caps = uiBallumDisplayCaps(idx);
+    if ((caps / 1) % 2 != 1) {
+      print("Display does not advertise per-pixel writes; skipped.");
+      return;
+    }
+    int x = 0;
+    int y = 0;
+    if (inBounds(x, y, w, h)) {
+      print("write pixel (0,0): " +
+        uiBallumStatusName(uiBallumSetPixel(id, x, y, 255, 0, 0, 255)));
+    }
+    print("out-of-bounds test (w,h): " +
+      uiBallumStatusName(uiBallumSetPixel(id, w, h, 0, 255, 0, 255)));
+    print("The invalid coordinate should be rejected by the native manager.");
+  }
+}

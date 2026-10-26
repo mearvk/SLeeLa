@@ -1,5 +1,4 @@
-# SLeeLa - /ˈsliːlɑː/
-
+# SLeeLa
 <p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
 <p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/merchandise/sleela-marketing-logo-001.png" alt="SLeeLa Marketing Logo" width="560"></p>
 
@@ -8,7 +7,7 @@
 
 **The Now. The Ingredient.** A language is more than syntax: it is the compiler, runtime, libraries, tools, and platform contracts that make software usable.
 
-## I. Start here
+## I. Start Here
 - [Build the native implementation](impl/README.md)
 - [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
@@ -16,6 +15,7 @@
 - [Platform support and validation matrix](docs/PLATFORM-SUPPORT.md)
 - [Brand guide](docs/BRAND-GUIDE.md)
 - [Merchandise concepts and assets](merchandise/README.md)
+- [NitroWebExpress logo](images/nitro-web-express/nitrowebexpress-logo-004.jpeg)
 - [Testing policy and release gates](markdown/TESTING.md)
 
 ## II. News
@@ -48,7 +48,7 @@ Recent additions to the language, drivers, and standard library:
   other process by equivalent calls on the shared VM substrate — see
   [`lib/cpu/EXECUTION.md`](lib/cpu/EXECUTION.md) §5.
 
-## III. Build and test
+## III. Build and Test
 
 **Prerequisites:** a C/C++ toolchain (GCC or Clang) and GNU Make; Python 3 for
 the manifest/flow tooling; on Linux the X11/Xrandr development packages for the
@@ -119,19 +119,19 @@ removes only files recorded by the installer, preserving configuration and
 untracked runtime data. For the interactive deployment workflow and all
 installation options, see [Quick and Safe Install](install/README.md).
 
-## V. Language and runtime
+## V. Language and Runtime
 The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **2.4**; compiler/tool version and source syntax version are distinct. Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
 
 The repository includes a native C/C++ implementation, SLVM generation references, standard-library modules, tests, examples, and platform integrations. Implementation and validation status varies by module; consult its specification and current CI results rather than assuming uniform completeness.
 
-## VI. Engineering principles
+## VI. Engineering Principles
 - **Evidence over claims:** distinguish implemented, tested, experimental, and planned behavior.
 - **One contract per boundary:** document syntax, APIs, file formats, platform assumptions, and failure behavior.
 - **Portable by design:** isolate platform-specific backends and test on native runners.
 - **Safe failure:** test malformed input, resource limits, process failures, and cleanup paths.
 - **Reproducible releases:** rebuild cleanly and publish artifact hashes and release notes.
 
-## VII. Antivirus build and integrity
+## VII. Antivirus Build and Integrity
 
 The Sleelavirin antivirus package includes a native SHA-256 scanner, an optional
 ClamAV adapter, source/index integrity manifests, and platform-package checksums.
@@ -158,11 +158,11 @@ A release is not considered verified until the relevant CI jobs pass on the
 exact release commit and the resulting artifacts have been checked.
 
 
-## VIII. SLeeLa editor themes — Vim and Emacs
+## VIII. SLeeLa Editor Themes — Vim and Emacs
 
 SLeeLa includes a coordinated set of professional dark color schemes for **Vim** and **Emacs**, plus a native C/C++ palette utility. The original **American Professional** scheme remains the default. Six companion palettes are available for different cultural and institutional design inspirations; these are interpretive design palettes, not official representations of any nation, culture, court, or institution.
 
-### The seven schemes and their colors
+### The Nine Schemes and Their Colors
 
 | Scheme | Background | Foreground | Keywords | Types | Strings | Comments |
 |---|---|---|---|---|---|---|
@@ -173,25 +173,42 @@ SLeeLa includes a coordinated set of professional dark color schemes for **Vim**
 | **East Asian** | <span style="display:inline-block;width:1em;height:1em;background:#171A1C;border:1px solid #888"></span> `#171A1C` | <span style="display:inline-block;width:1em;height:1em;background:#F2EFE7;border:1px solid #888"></span> `#F2EFE7` | <span style="display:inline-block;width:1em;height:1em;background:#D97878;border:1px solid #888"></span> `#D97878` | <span style="display:inline-block;width:1em;height:1em;background:#72C7A5;border:1px solid #888"></span> `#72C7A5` | <span style="display:inline-block;width:1em;height:1em;background:#D8B76A;border:1px solid #888"></span> `#D8B76A` | <span style="display:inline-block;width:1em;height:1em;background:#969F9B;border:1px solid #888"></span> `#969F9B` |
 | **ICC — International Criminal Court** | <span style="display:inline-block;width:1em;height:1em;background:#0E1A2B;border:1px solid #888"></span> `#0E1A2B` | <span style="display:inline-block;width:1em;height:1em;background:#EAF0F7;border:1px solid #888"></span> `#EAF0F7` | <span style="display:inline-block;width:1em;height:1em;background:#5B8FD6;border:1px solid #888"></span> `#5B8FD6` | <span style="display:inline-block;width:1em;height:1em;background:#7FB7C9;border:1px solid #888"></span> `#7FB7C9` | <span style="display:inline-block;width:1em;height:1em;background:#D9B25A;border:1px solid #888"></span> `#D9B25A` | <span style="display:inline-block;width:1em;height:1em;background:#7E8CA0;border:1px solid #888"></span> `#7E8CA0` |
 | **SCOTUS — U.S. Supreme Court** | <span style="display:inline-block;width:1em;height:1em;background:#1A1416;border:1px solid #888"></span> `#1A1416` | <span style="display:inline-block;width:1em;height:1em;background:#F3EEE6;border:1px solid #888"></span> `#F3EEE6` | <span style="display:inline-block;width:1em;height:1em;background:#9E2B35;border:1px solid #888"></span> `#9E2B35` | <span style="display:inline-block;width:1em;height:1em;background:#8FA9B8;border:1px solid #888"></span> `#8FA9B8` | <span style="display:inline-block;width:1em;height:1em;background:#C9A24B;border:1px solid #888"></span> `#C9A24B` | <span style="display:inline-block;width:1em;height:1em;background:#8C8178;border:1px solid #888"></span> `#8C8178` |
+| **Greek (Hellenic)** | <span style="display:inline-block;width:1em;height:1em;background:#0A1A30;border:1px solid #888"></span> `#0A1A30` | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | <span style="display:inline-block;width:1em;height:1em;background:#2E7BD6;border:1px solid #888"></span> `#2E7BD6` | <span style="display:inline-block;width:1em;height:1em;background:#5E9FE0;border:1px solid #888"></span> `#5E9FE0` | <span style="display:inline-block;width:1em;height:1em;background:#9FC3EC;border:1px solid #888"></span> `#9FC3EC` | <span style="display:inline-block;width:1em;height:1em;background:#6E86A6;border:1px solid #888"></span> `#6E86A6` |
+| **Turkish (Al Bayrak)** | <span style="display:inline-block;width:1em;height:1em;background:#2A0609;border:1px solid #888"></span> `#2A0609` | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | <span style="display:inline-block;width:1em;height:1em;background:#F23D48;border:1px solid #888"></span> `#F23D48` | <span style="display:inline-block;width:1em;height:1em;background:#F0A9AE;border:1px solid #888"></span> `#F0A9AE` | <span style="display:inline-block;width:1em;height:1em;background:#F0C9A9;border:1px solid #888"></span> `#F0C9A9` | <span style="display:inline-block;width:1em;height:1em;background:#A8767A;border:1px solid #888"></span> `#A8767A` |
+
+#### National flag colours (source palette)
+
+The Greek and Turkish schemes are derived from the two countries' **official national flag colours**, shown here with their exact published hex values. The scheme backgrounds/accents above are darkened, editor-friendly interpretations of these source colours — the table below is the "colors as nationally exposed" reference.
+
+| Nation | Colour | Hex | Basis and meaning |
+|---|---|---|---|
+| **Greece** | Blue | <span style="display:inline-block;width:1em;height:1em;background:#0D5EAF;border:1px solid #888"></span> `#0D5EAF` | National flag blue (Law 851/1978). The sky and the seas; blazoned heraldically as *azure*. |
+| **Greece** | White | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | National flag white. Purity of the independence struggle; the cross denotes Eastern Orthodox Christianity. |
+| **Türkiye** | Red (*al bayrak*) | <span style="display:inline-block;width:1em;height:1em;background:#E30A17;border:1px solid #888"></span> `#E30A17` | National flag red (Turkish Flag Law). The field; by tradition the blood of martyrs and Ottoman sovereignty. |
+| **Türkiye** | White | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | National flag white. The crescent and star — peace, purity, and the Turkic/Islamic heritage symbol. |
+
+The schemes anchor each editor's foreground on the national **white** and its keywords, cursor, selection, and status line on the exact national **blue** (`#0D5EAF`) or **red** (`#E30A17`), so the colours that matter are literally the national colours. These are interpretive design palettes; the flag-colour reference is provided for provenance and is not an official representation of either state. Colour meanings follow the Hellenic Republic MFA state-symbols description and the Turkish Flag Law tradition.
 
 
-### Color swatch table
+### Color Swatch Table
 
-The palette cells below use **embedded SVG swatches**, so GitHub's HTML sanitizer cannot turn the colors into empty cells. Each strip renders the actual six colors—background, foreground, keywords, types, strings, and comments—in the same scheme order as the reference table above. The swatches themselves have rounded corners; the hex codes remain in the reference table above.
+The palette cells below use **SVG swatches**, so GitHub renders the actual colors rather than empty HTML color cells. Each strip shows the six colors in this order: background, foreground, keywords, types, strings, and comments. The exact hex codes are listed beside each swatch, in the same scheme order as the reference table above.
 
-| Scheme | Rendered palette colors |
-|---|---|
-| **American Professional** | ![American Professional palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/american-professional.svg) |
-| **Pan-Eurasian** | ![Pan-Eurasian palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/pan-eurasian.svg) |
-| **Russian and Slavic — Medium** | ![Russian and Slavic Medium palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/russian-slavic-medium.svg) |
-| **Central Asian / Silk Road** | ![Central Asian Silk Road palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/central-asian-silk-road.svg) |
-| **East Asian** | ![East Asian palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/east-asian.svg) |
-| **ICC — International Criminal Court** | ![ICC palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/icc.svg) |
-| **SCOTUS — U.S. Supreme Court** | ![SCOTUS palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/scotus.svg) |
+| Scheme | Rendered palette colors | Hex codes (background · foreground · keywords · types · strings · comments) |
+|---|---|---|
+| **American Professional** | ![American Professional palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/american-professional.svg) | `#101820` · `#F4F7FA` · `#7FB3FF` · `#73DACA` · `#F2C078` · `#8A96A3` |
+| **Pan-Eurasian** | ![Pan-Eurasian palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/pan-eurasian.svg) | `#111827` · `#F0F2F5` · `#7AA7E8` · `#69C9B3` · `#D7B56D` · `#8995A5` |
+| **Russian and Slavic — Medium** | ![Russian and Slavic Medium palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/russian-slavic-medium.svg) | `#202733` · `#E8EAF0` · `#A9C0DD` · `#8FC4B2` · `#D6BD8B` · `#9AA3AF` |
+| **Central Asian / Silk Road** | ![Central Asian Silk Road palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/central-asian-silk-road.svg) | `#1C2529` · `#F5F0E5` · `#7FADE0` · `#45C6C2` · `#D9B56D` · `#92A3A0` |
+| **East Asian** | ![East Asian palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/east-asian.svg) | `#171A1C` · `#F2EFE7` · `#D97878` · `#72C7A5` · `#D8B76A` · `#969F9B` |
+| **ICC — International Criminal Court** | ![ICC palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/icc.svg) | `#0E1A2B` · `#EAF0F7` · `#5B8FD6` · `#7FB7C9` · `#D9B25A` · `#7E8CA0` |
+| **SCOTUS — U.S. Supreme Court** | ![SCOTUS palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/scotus.svg) | `#1A1416` · `#F3EEE6` · `#9E2B35` · `#8FA9B8` · `#C9A24B` · `#8C8178` |
+| **Greek (Hellenic)** | ![Greek Hellenic palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/greek.svg) | `#0A1A30` · `#FFFFFF` · `#2E7BD6` · `#5E9FE0` · `#9FC3EC` · `#6E86A6` |
+| **Turkish (Al Bayrak)** | ![Turkish Al Bayrak palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/turkish.svg) | `#2A0609` · `#FFFFFF` · `#F23D48` · `#F0A9AE` · `#F0C9A9` · `#A8767A` |
 
 Additional accent colors are used for functions, constants, selections, diagnostics, and preprocessor directives. The Russian and Slavic palette intentionally uses medium-intensity slate, blue, sage, ruby, and antique gold for a calmer professional appearance.
 
-### Install the Vim schemes
+### Install the Vim Schemes
 
 From the repository root:
 
@@ -217,10 +234,12 @@ Choose exactly one of these colorscheme names:
 - `sleela-russian-slavic`
 - `sleela-silk-road`
 - `sleela-east-asian`
+- `sleela-greek`
+- `sleela-turkish`
 
-For example, use `colorscheme sleela-russian-slavic` for the medium Russian and Slavic palette. Restart Vim or source your configuration with `:source $MYVIMRC`.
+For example, use `colorscheme sleela-russian-slavic` for the medium Russian and Slavic palette, or `colorscheme sleela-greek` / `colorscheme sleela-turkish` for the Hellenic and Al Bayrak palettes. Restart Vim or source your configuration with `:source $MYVIMRC`.
 
-### Install the Emacs schemes
+### Install the Emacs Schemes
 
 Create a local theme directory and copy the mode and theme files from the repository root:
 
@@ -239,9 +258,9 @@ Add this to `~/.emacs` or `~/.emacs.d/init.el`:
 (load-theme 'sleela-american t)
 ```
 
-Replace `sleela-american` with `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, or `sleela-east-asian` to select another scheme. If Emacs asks whether to trust the theme, inspect the local theme file before accepting it.
+Replace `sleela-american` with `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, or `sleela-turkish` to select another scheme. If Emacs asks whether to trust the theme, inspect the local theme file before accepting it.
 
-### Preview the native C/C++ palettes
+### Preview the Native C/C++ Palettes
 
 The small native palette utility can list schemes, print their terminal colors, and look up an individual color:
 
@@ -272,7 +291,7 @@ For the AE6E66 initiative, the project's stated expectation is **$300,000,000.00
 This statement records a project expectation only. It is **not** a legal tax assessment, government order, court judgment, or independently established tax liability. Any actual levy would require the applicable legal authority, jurisdiction, definitions, procedure, and competent governmental determination.
 
 
-## XI. Alphabet and character-set runtime
+## XI. Alphabet and Character-set Runtime
 
 SLeeLa's alphabet documentation and native character runtime are maintained in alphabet/sleela/ and lib/alphabet/native/. The native C++17 tests cover strict UTF-8 scalar decoding/encoding, C<n> capacity signatures, and bounded character-set membership:
 
@@ -313,14 +332,74 @@ On a display this opens the live editing window; on a headless host it builds th
 drawing in memory, prints a report plus the DXF, and exits cleanly.
 
 
-## XIII. UTF-4088 input-map ordering
+## XIII. UTF-4088 Input-map Ordering
 
 The specialized UTF-4088 catalogue defines its spatial input-map traversal and abstract pressure iterations in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). The National Lien subject-index policy is in [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). Map coordinates, pressure levels (1–50), permanent catalogue IDs, and alphabetic ranks are independent fields; none should be silently substituted for another. Pressure is an algorithmic iteration level, not a physical quantity.
 
 
+## XIV. Recent and Expanded Package Index
+
+This appended index highlights recently expanded packages, domain libraries, and
+source collections. Entries are grouped alphabetically by package name or topic.
+Descriptions identify the repository location; implementation and validation
+status should be checked in each package's own documentation and tests.
+
+### A–C
+
+- **Alphabet and UTF-4088** — `alphabet/sleela/`, `lib/alphabet/native/`, and
+  `utf-4088/`: alphabet catalogues, native character-set support, input-map
+  ordering, and UTF-4088 integration documentation.
+- **AutoCAD Creator** — `autocad/creator/` and `lib/autocad/`: interactive
+  2D drawing workflows and reusable CAD document/editing components.
+- **Ballum** — SleelaUI event and widget integration, including VM bridge support
+  under `impl/`; see the corresponding implementation and API documentation.
+- **CDMA** — `cdma/` and `lib/cdma/`: CDMA-related technical material and
+  SLeeLa source-library work.
+- **Character** — `lib/character/`: character profiles and reusable character
+  statistics, including biographical profile examples.
+- **Coorenagraph** — `lib/coorenagraph/`: ethical reasoning, moral vocabulary,
+  deliberation, and related concepts; see its package README and source files.
+
+### H–I
+
+- **HTTP 1.0–8.0** — `lib/http-1.0/` through the available versioned HTTP
+  package directories: version-specific protocol specifications and
+  implementations. Consult each version's documentation for its precise scope
+  and verification status.
+- **International Criminal Court** — `lib/international-criminal-court/` and
+  `INTERNATIONAL.CRIMINAL.COURTS.md`: related domain-specific source and
+  documentation.
+
+### O–S
+
+- **OFDMA** — `ofdma/`: orthogonal frequency-division multiple-access
+  technical material and C/C++ development resources.
+- **Synchro** — native runtime/compiler integration and packet-dispatch and
+  measurement-related functionality; see the relevant `impl/` source and
+  compiler implementation.
+- **SleelaUI / terminal UI** — `lib/user-interface/` and the
+  `sleela-terminal` project: SLeeLa UI integration and terminal-oriented
+  interaction components.
+
+### U–W
+
+- **United Nations** — `united-nations/`: domain-specific repository materials.
+- **Wi-Fi 4, Wi-Fi 5, and Wi-Fi 6** — `wi-fi-4/`, `wi-fi-5/`,
+  `wi-fi-6/`, and related `lib/wifi/` source directories: generation-specific
+  wireless networking material and configuration resources.
+
+### Package-index Maintenance
+
+When a package is added or materially expanded, add its entry here in the
+appropriate alphabetical group, link to its canonical directory and README,
+and describe only capabilities supported by the checked-in sources. Keep this
+index additive: do not remove or rewrite the existing README sections as part
+of package-index updates.
+
+
 ---
 
-## <img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian"> XIV. Bitcoin Conjegeum
+## <img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian"> XV. Bitcoin Conjegeum
 
 ![CremeOak](https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg)
 
@@ -332,3 +411,9 @@ bc1qx33vma553gddsjkq372l3xlm8e8huv2vzad3cc :: ⠃⠉⠼⠁⠟⠭⠼⠉⠼⠉⠪�
 US Democratic and US Policy.
 
 ---
+
+## XVI. National Science Brand Imagery
+
+<p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/brand/national-sleela-science-004.jpg" alt="National SLeeLa Science" width="560"></p>
+
+<p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/brand/national-sleela-nsf-001.jpg" alt="National SLeeLa NSF" width="560"></p>

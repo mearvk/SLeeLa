@@ -388,12 +388,7 @@ class Analyzer{
   if(n=="Munction.start"||n=="read"||n=="recv"||n=="sockread"||n=="timeNtp"){return{Kind::Unknown,{}};}
   // SleelaUI (ui*) bridge return types: string getters, one double getter, the
   // rest return int handles/counts/status.
-  if(n=="uiVersion"||n=="uiBackendName"||n=="uiWidgetGetText"){return{Kind::String,{}};}
-  // String-returning ui* name/status builtins (ballum + wifi). These resolve to
-  // a native "-> string" bridge fn (see impl/core/sleela_ui_ids.h); without this
-  // they would fall through to the Kind::Int default below and a String method
-  // returning one -- e.g. Ballum's statusText(code) -- would wrongly error.
-  if(n=="uiBallumBackendName"||n=="uiBallumStatusName"||n=="uiBallumDisplayName"||n=="uiBallumFxName"||n=="uiWifiStatusName"){return{Kind::String,{}};}
+  if(n=="uiVersion"||n=="uiBackendName"||n=="uiWidgetGetText"||n=="uiBallumStatusName"||n=="uiBallumDisplayName"||n=="uiBallumEventTypeName"||n=="uiBallumFxName"||n=="uiBallumBackendName"||n=="uiWifiStatusName"||n=="uiWifiNetworkSsid"||n=="uiWifiNetworkBssid"||n=="uiWifiNetworkSecurity"){return{Kind::String,{}};}
   if(n=="uiWidgetGetValue"){return{Kind::Double,{}};}
   if(n.size()>2 && n[0]=='u' && n[1]=='i' && n[2]>='A' && n[2]<='Z'){return{Kind::Int,{}};}
   return{Kind::Unknown,{}};

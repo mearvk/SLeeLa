@@ -1,0 +1,76 @@
+-- SGML Open catalog for the archived W3C HTML / XHTML DTDs.
+-- Maps every PUBLIC identifier (and the few SYSTEM ids) used by the bundled
+-- DTDs to the local files in this tree, so the grammars resolve standalone
+-- without network access.
+--
+-- Usage examples:
+--   onsgmls  -c specs/dtd/catalog  mydoc.html
+--   xmllint  --catalogs            mydoc.xhtml      (see also catalog.xml)
+--
+-- Relative paths are resolved from the directory containing this catalog
+-- (i.e. specs/dtd/).
+
+----------------------------------------------------------------------
+-- HTML 3.2 (REC-html32-19970114)
+----------------------------------------------------------------------
+PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"              "html-3.2/HTML32.dtd"
+PUBLIC "-//W3C//DTD HTML 3.2//EN"                    "html-3.2/HTML32.dtd"
+PUBLIC "-//W3C//DTD HTML 3.2 Draft//EN"              "html-3.2/HTML32.dtd"
+PUBLIC "ISO 8879-1986//ENTITIES Added Latin 1//EN//HTML"  "html-3.2/ISOlat1.ent"
+
+----------------------------------------------------------------------
+-- HTML 4.0 (REC-html40-19980424)
+----------------------------------------------------------------------
+PUBLIC "-//W3C//DTD HTML 4.0//EN"                    "html-4.0/strict.dtd"
+PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"       "html-4.0/loose.dtd"
+PUBLIC "-//W3C//DTD HTML 4.0 Frameset//EN"           "html-4.0/frameset.dtd"
+
+----------------------------------------------------------------------
+-- HTML 4.01 (REC-html401-19991224)
+----------------------------------------------------------------------
+PUBLIC "-//W3C//DTD HTML 4.01//EN"                   "html-4.01/strict.dtd"
+PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"      "html-4.01/loose.dtd"
+PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"          "html-4.01/frameset.dtd"
+
+-- Shared HTML 4.x entity sets (identical public ids across 4.0 and 4.01;
+-- mapped to the 4.01 copies, which are byte-identical in content role).
+PUBLIC "-//W3C//ENTITIES Latin1//EN//HTML"           "html-4.01/HTMLlat1.ent"
+PUBLIC "-//W3C//ENTITIES Symbols//EN//HTML"          "html-4.01/HTMLsymbol.ent"
+PUBLIC "-//W3C//ENTITIES Special//EN//HTML"          "html-4.01/HTMLspecial.ent"
+
+----------------------------------------------------------------------
+-- XHTML 1.0 (REC-xhtml1-20020801)
+----------------------------------------------------------------------
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"            "xhtml-1.0/xhtml1-strict.dtd"
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"      "xhtml-1.0/xhtml1-transitional.dtd"
+PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"          "xhtml-1.0/xhtml1-frameset.dtd"
+PUBLIC "-//W3C//ENTITIES Latin 1 for XHTML//EN"      "xhtml-1.0/xhtml-lat1.ent"
+PUBLIC "-//W3C//ENTITIES Symbols for XHTML//EN"      "xhtml-1.0/xhtml-symbol.ent"
+PUBLIC "-//W3C//ENTITIES Special for XHTML//EN"      "xhtml-1.0/xhtml-special.ent"
+
+----------------------------------------------------------------------
+-- XHTML 1.1 (REC-xhtml11-20101123) driver + Modularization 1.1 modules
+----------------------------------------------------------------------
+PUBLIC "-//W3C//DTD XHTML 1.1//EN"                   "xhtml-1.1/xhtml11.dtd"
+PUBLIC "-//W3C//ENTITIES XHTML 1.1 Document Model 1.0//EN"  "xhtml-1.1/xhtml11-model-1.mod"
+
+-- The ~45 Modularization modules live under xhtml-1.1/modules/. They are
+-- referenced by relative SYSTEM paths from the driver, so no PUBLIC mapping
+-- is strictly required; the entries below cover the common PUBLIC ids.
+PUBLIC "-//W3C//ENTITIES XHTML Datatypes 1.0//EN"            "xhtml-1.1/modules/xhtml-datatypes-1.mod"
+PUBLIC "-//W3C//ENTITIES XHTML Qualified Names 1.0//EN"      "xhtml-1.1/modules/xhtml-qname-1.mod"
+PUBLIC "-//W3C//ENTITIES XHTML Common Attributes 1.0//EN"    "xhtml-1.1/modules/xhtml-attribs-1.mod"
+PUBLIC "-//W3C//ELEMENTS XHTML Modular Framework 1.0//EN"    "xhtml-1.1/modules/xhtml-framework-1.mod"
+PUBLIC "-//W3C//ELEMENTS XHTML Document Structure 1.0//EN"   "xhtml-1.1/modules/xhtml-struct-1.mod"
+PUBLIC "-//W3C//ELEMENTS XHTML Text 1.0//EN"                 "xhtml-1.1/modules/xhtml-text-1.mod"
+PUBLIC "-//W3C//ELEMENTS XHTML Hypertext 1.0//EN"            "xhtml-1.1/modules/xhtml-hypertext-1.mod"
+PUBLIC "-//W3C//ELEMENTS XHTML Lists 1.0//EN"                "xhtml-1.1/modules/xhtml-list-1.mod"
+PUBLIC "-//W3C//ELEMENTS XHTML Forms 1.0//EN"                "xhtml-1.1/modules/xhtml-form-1.mod"
+PUBLIC "-//W3C//ELEMENTS XHTML Tables 1.0//EN"               "xhtml-1.1/modules/xhtml-table-1.mod"
+PUBLIC "-//W3C//ELEMENTS XHTML Images 1.0//EN"               "xhtml-1.1/modules/xhtml-image-1.mod"
+PUBLIC "-//W3C//ELEMENTS XHTML Ruby 1.0//EN"                 "xhtml-1.1/modules/xhtml-ruby-1.mod"
+PUBLIC "-//W3C//ENTITIES Latin 1 for XHTML//EN"              "xhtml-1.1/modules/xhtml-lat1.ent"
+PUBLIC "-//W3C//ENTITIES Symbols for XHTML//EN"              "xhtml-1.1/modules/xhtml-symbol.ent"
+PUBLIC "-//W3C//ENTITIES Special for XHTML//EN"              "xhtml-1.1/modules/xhtml-special.ent"
+
+-- End of catalog.

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #ifndef WCDMA_REFERENCE_H_HPP
 #define WCDMA_REFERENCE_H_HPP
 #include "wcdma.h"

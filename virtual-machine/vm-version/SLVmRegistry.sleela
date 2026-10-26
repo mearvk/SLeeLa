@@ -14,8 +14,11 @@
  *   no native state; it binds the ten manifests and resolves a selection.
  *
  * Family: vm. Composes SLVmVersion001..010, SLVmRuntime.
+ *
+ * [SYNC syntax-2.4 2026-10-25] Syntax header raised 2.1 -> 2.4 to match the
+ * authoritative current level in impl/frontend/version.h (max supported 2.4).
  */
-#sleela 2.1
+#sleela 2.4
 class SLVmRegistry {
   SLVmVersion001 v1; SLVmVersion002 v2; SLVmVersion003 v3; SLVmVersion004 v4;
   SLVmVersion005 v5; SLVmVersion006 v6; SLVmVersion007 v7; SLVmVersion008 v8;

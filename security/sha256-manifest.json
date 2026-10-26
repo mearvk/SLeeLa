@@ -19,7 +19,7 @@
     },
     {
       "path": "ballum/src/ballum_backend_macos.mm",
-      "sha256": "c1c3e6c7e22e2a1914a5c2a0bc09e324e10d825c2b3df0d3a0f5f771eddfb6b4"
+      "sha256": "2e64a7c5279264869dc8bb0381c81bcbc691409dd0fa98d04e8012fccd178ffa"
     },
     {
       "path": "ballum/src/ballum_backend_select.c",
@@ -31,11 +31,11 @@
     },
     {
       "path": "ballum/src/ballum_backend_windows.c",
-      "sha256": "b1d0d518da0704eb92ce6c531612c72fbae6931921bc8eb55101e9d86cafc613"
+      "sha256": "15ee9b2b1028d9299c03cf671411b12be0bfe5d5348c33454fbfcb698d139663"
     },
     {
       "path": "ballum/src/ballum_backend_x11.c",
-      "sha256": "3f2be72a4b956ef25a828b0dd9e467928931b619b96d46510ac043abd44cac19"
+      "sha256": "e50f30ec9ebb9b65b1880ee67d26c61709b05c5c3b81365c7ae4787b2b742b1d"
     },
     {
       "path": "ballum/src/ballum_demo.c",
@@ -59,7 +59,7 @@
     },
     {
       "path": "ballum/tests/test_ballum_manager.c",
-      "sha256": "5f4d768985ce499e473e4918ab509a40871fd6c032cd86525eb7ab8a1e9d2b73"
+      "sha256": "e8de0e1bdc74a16639141e8b8a3a4589a97bd9814e690b851f2612bec8d54813"
     },
     {
       "path": "bash/pixel_terminal.cpp",
@@ -519,7 +519,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "cf941b5cd210c1f1d3d749f770ecd03f9bca4e7bf299c53439d03b1ed79d7265"
+      "sha256": "d71753019929a6ce398d8e334ca2e3296884595436beddde2cbedf6fba337f44"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -607,7 +607,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "59a624b28b0ee88180013ab047c2fe15d406aff2ab6d907d80dbbea8b68b5c0b"
+      "sha256": "374b31d7c1fc5a2324b8256d51946fdaa620cf49d00695f8e007b4dca5a3bbc1"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -1087,7 +1087,7 @@
     },
     {
       "path": "lib/ballum/SLBallumSession.sleela",
-      "sha256": "89c4dadb93b6f9a4ce7515599373d8094081bb5029ac70c3827e63ce234a20af"
+      "sha256": "0632f4cc182df4566ef53d20d9efc269b342d6e4cf0ddcbd8681aa47882ef6bf"
     },
     {
       "path": "lib/ballum/SLBallumStatus.sleela",
@@ -1104,6 +1104,26 @@
     {
       "path": "lib/ballum/ballum.sleela",
       "sha256": "a1647bb48fdd78264564ec922fbb6fb7e7577c576d79235b9a9a972348565806"
+    },
+    {
+      "path": "lib/ballum/examples/01-screen-inspection.sleela",
+      "sha256": "be6344478fb543d37307a984d0777895ed2a54d8960158274677f9b77da8674f"
+    },
+    {
+      "path": "lib/ballum/examples/02-safe-pixel.sleela",
+      "sha256": "5877978bf7518f7beef91372f49ca75694909914c57dd0c56777d70e931098c2"
+    },
+    {
+      "path": "lib/ballum/examples/03-display-controls.sleela",
+      "sha256": "410d444938de34253f4603590afbdae77b10ce66a707b50e0fd552462318e813"
+    },
+    {
+      "path": "lib/ballum/examples/04-input-polling.sleela",
+      "sha256": "f983bc485893965a92a122e633690d6278893a22272b9ef971b3cf40ae1fe7ac"
+    },
+    {
+      "path": "lib/ballum/examples/05-headless-safe.sleela",
+      "sha256": "59bbf2a8d2d69ce48551214cbe54687d9f7db589a0eeee9e12e8fd1e9160193d"
     },
     {
       "path": "lib/ballum/input-demo.sleela",
@@ -1127,7 +1147,7 @@
     },
     {
       "path": "lib/ballum/session-demo.sleela",
-      "sha256": "ac893bb68d05e592319a62ed6066f0c53cb723357a1b60a0b5b15f6691efecbf"
+      "sha256": "bdec4c42cece0504b06f544dba2c0a6aad85744296af62bc61f1636af94bd0d1"
     },
     {
       "path": "lib/bash/SLPackage.sleela",
@@ -46471,7 +46491,7 @@
     },
     {
       "path": "lib/text/SLString.sleela",
-      "sha256": "f5d741f6969a87ada41ac6021569cb8d304fde38940c1df359bb0ca1a8d2b843"
+      "sha256": "ce3e5d612d76acb7948b71a134673a0840e8596b3c7ee1ba1edb3d790a9bd450"
     },
     {
       "path": "lib/text/SLStringBuffer.sleela",
@@ -46482,6 +46502,10 @@
       "sha256": "1bed0dbcae0ddac4504842209aa374e33ee26d075a0cf29b55a24769741d0910"
     },
     {
+      "path": "lib/text/SLStringCells.sleela",
+      "sha256": "46d1489faee9fcfb96c683f589153b196df62f0fe85082f6f1b08998243fb0e1"
+    },
+    {
       "path": "lib/text/SLTextReader.sleela",
       "sha256": "2d0d0e23a2ef5570acfae0803b0be8a4677fb2e41a08e6ee311b0ec853b137f6"
     },
@@ -46490,8 +46514,12 @@
       "sha256": "a0d2a07c98f8e098cecb4922b81041c1b4eb18dfaaad8afc287074ae81e3925e"
     },
     {
+      "path": "lib/text/string-cells-demo.sleela",
+      "sha256": "cd69a2e8d76da3246b2d7d95bd915de5223abd217d2352c229d44f6f8e645cdb"
+    },
+    {
       "path": "lib/text/text-string-demo.sleela",
-      "sha256": "6c5cde0e2bdce7cdc1f40dbc4481fccb543d467df5ca32c8665dd01b394e48e8"
+      "sha256": "183ed5e2d618aaa3575a38f5e2fc511b4eb29bc483c70f0fe41d7d76f4207e52"
     },
     {
       "path": "lib/ui/SLAbsoluteLayout.sleela",
@@ -47450,6 +47478,10 @@
       "sha256": "f5fba092269c1e4cbc704195031c971201e4b9443e9a58d58950d000585bc457"
     },
     {
+      "path": "lib/vm/src/sleela/SLVmPremiumVersion.sleela",
+      "sha256": "ba55baa5ebf5e702be6ca3fb540d22a5dcc1fcd4b58047408f8d52ccd07f18a6"
+    },
+    {
       "path": "lib/vm/src/sleela/SLVmProfile.sleela",
       "sha256": "50ccac8ac5d9ddc8afea9cfbb80fefda9223d35e7f9321ae378482a7551ef655"
     },
@@ -47479,7 +47511,7 @@
     },
     {
       "path": "lib/vm/src/sleela/SLVmVersion.sleela",
-      "sha256": "97033c47b3a60e201d36aa33bd1e9bb62b8150d86c3100ebe8b5b3ec29817ed8"
+      "sha256": "ad74f6c406e11df21c44b099861804518b832bee10c6936c6166f07e021e2afb"
     },
     {
       "path": "lib/vm/src/sleela_vm_builder.cpp",

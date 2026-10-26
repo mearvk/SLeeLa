@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #ifndef CDMA2000_1X_REFERENCE_H_HPP
 #define CDMA2000_1X_REFERENCE_H_HPP
 #include "cdma2000_1x.h"

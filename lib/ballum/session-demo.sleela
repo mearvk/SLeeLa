@@ -152,7 +152,7 @@ class SessionDemo {
     fadeFrames = strToInt(param("SESSION_FRAMES", "12"), 12);
     state = 0;
 
-    String logo = "https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg";
+    String logo = "images/national-bitcoin-icc-logo-007.jpg";
     print("logo:        " + logo);
     print("fade frames: " + fadeFrames);
 
@@ -171,7 +171,7 @@ class SessionDemo {
     print("selected effect: " + effect + " (" + uiBallumFxName(effect) + ")");
 
     << optional: decode a local logo file if provided (host fetches the JPEG) >>
-    String file = param("LOGO_FILE", "");
+    String file = param("LOGO_FILE", "images/national-bitcoin-icc-logo-007.jpg");
     if (file != "") { print("logo file: " + file + "  load=" + uiBallumLogoLoad(file)); }
     uiBallumLogoSetEffect(effect);
 
@@ -189,12 +189,28 @@ class SessionDemo {
       return;
     }
 
-    int guard = 0;
-    while (step() == 1 && guard < 100000) { guard = guard + 1; }
+    << Keep the live program running until the second Escape transitions to EXIT.
+       A 16 ms frame cadence leaves time for the user to press a key; the old
+       100000-iteration guard could finish before input was ever received. >>
+    int frameStart = 0;
+    while (state != 3) {
+      frameStart = timeMonotonicNanos();
+      step();
+      while (timeMonotonicNanos() - frameStart < 16000000) { }
+    }
+    << Fade the logo back out to pure white before leaving the display. >>
+    int outPct = 100;
+    while (outPct > 0) {
+      uiBallumLogoBlend(boundId, outPct, w, h, 255, 255, 255);
+      outPct = outPct - 5;
+      int outStart = timeMonotonicNanos();
+      while (timeMonotonicNanos() - outStart < 16000000) { }
+    }
+    paintWhite();
     print("after fade -> " + stateName(state)
           + "  frame=" + frame + "/" + fadeFrames
           + "  fadePct=" + fadePercent());
-    print("ESC model: 1st ESC -> frame mode, 2nd ESC -> exit the program.");
+    print("ESC: first press enters frame mode; second press exits the program.");
     print("done");
   }
 }

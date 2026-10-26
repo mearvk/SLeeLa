@@ -146,16 +146,36 @@ static ballum_status_t macos_set_gamma(void *ctx, uint32_t id, uint32_t gamma_sc
     return BALLUM_STATUS_OK;
 }
 
-/* Whole-screen global pointer capture on macOS requires a CGEventTap (and
- * Accessibility permission), which has its own lifecycle and entitlement model.
- * Until that is wired, this backend provides no poll_event (NULL below), so the
- * manager reports has_input()==0 and poll returns UNSUPPORTED -- it never fakes
- * an input stream. The display controls above are unaffected. */
+/* Whole-screen pointer capture requires a CGEventTap and Accessibility
+ * permission, so pointer events remain unavailable here. Escape polling is a
+ * separate, non-blocking Core Graphics key-state query. Key-down edges prevent
+ * one held key from triggering both stages of SLBallumSession's exit flow. */
+static ballum_status_t macos_poll_key(void *ctx, int *out) {
+    static int was_escape_down;
+    static int was_enter_down;
+    static int was_space_down;
+    int escape_down, enter_down, space_down;
+    (void)ctx;
+    if (!out) return BALLUM_STATUS_INVALID_ARGUMENT;
+    *out = BALLUM_KEY_NONE;
+    /* Virtual key codes: Escape=53, Return=36, Space=49. */
+    escape_down = CGEventSourceKeyState(kCGEventSourceStateCombinedSessionState, 53);
+    enter_down = CGEventSourceKeyState(kCGEventSourceStateCombinedSessionState, 36);
+    space_down = CGEventSourceKeyState(kCGEventSourceStateCombinedSessionState, 49);
+    if (escape_down && !was_escape_down) *out = BALLUM_KEY_ESC;
+    else if (enter_down && !was_enter_down) *out = BALLUM_KEY_ENTER;
+    else if (space_down && !was_space_down) *out = BALLUM_KEY_SPACE;
+    was_escape_down = escape_down;
+    was_enter_down = enter_down;
+    was_space_down = space_down;
+    return BALLUM_STATUS_OK;
+}
 
 static const ballum_backend_t k_macos = {
     "macos-coregraphics",
     macos_enumerate, macos_set_pixel, macos_get_pixel, macos_blit,
-    macos_set_brightness, macos_set_warmth, macos_set_gamma, /* poll_event */ 0
+    macos_set_brightness, macos_set_warmth, macos_set_gamma, /* poll_event */ 0,
+    macos_poll_key
 };
 
 const ballum_backend_t *ballum_backend_macos(void) { return &k_macos; }

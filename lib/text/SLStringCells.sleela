@@ -1,0 +1,564 @@
+< lib/text/SLStringCells.sleela >
+< SLeeLa Standard Library Definition. >
+< Definition: SLStringCells -- a pure, static-style companion to SLString that >
+< works entirely over the "char-cell view": a String[] whose elements are the >
+< individual glyphs of some text. >
+<  >
+< Why this class exists. SLeeLa's built-in String is an opaque scalar: source >
+< can only concatenate (+) and compare (==/!=). So real char-level work (count, >
+< slice, search, replace, pad, case-fold, tokenise) is only honest in-language >
+< when the caller supplies the decomposition explicitly as cells. SLString >
+< already carries a char-cell section bound to a seeded `value`; this companion >
+< is the SEPARATE, stateless surface: every method takes its cells as an >
+< argument and returns a real result, so callers who think in arrays -- lexers, >
+< table/column formatters, diff tools, template engines -- get a focused, >
+< dependency-free toolkit without first seeding an SLString. >
+<  >
+< Everything here is REAL (loops + + + == + String[]/int[] arrays). Nothing is >
+< bridged and nothing is faked: the semantics are exactly the cells and tables >
+< the caller declared. Where a glyph's Unicode identity would be needed (true >
+< case, whitespace class), the caller passes an explicit set/table, so the >
+< answer stays honest. Cells are produced at the boundary -- from a literal set, >
+< from the bridged chars()/split() the runtime fulfils, or by this class's own >
+< ascii helpers. Indices are int, 0-based; out-of-range access is fail-soft >
+< (returns ""/-1/empty array) matching the text library convention. >
+<  >
+< Comments use the angle-bracket style (< line, << block >>). #sleela 2.1. >
+#sleela 2.1
+< Family: text. Pure in-language char-cell toolkit; no VM/OS bridge. >
+
+class SLStringCells {
+
+  < ---- identity ------------------------------------------------------ >
+  int id() { return 0; }
+  String name() { return "SLStringCells"; }
+  String typeName()   { return "SLeeLa.text.SLStringCells"; }
+  boolean available() { return true; }
+
+  < ==================================================================== >
+  < CONSTRUCTION / REJOIN >
+  < ==================================================================== >
+
+  < joinCells(cells): rejoin a char-cell array into a String (real). >
+  String joinCells(String[] cells) {
+    String out = "";
+    int i = 0;
+    int n = arrayLength(cells);
+    while (i < n) { out = out + cells[i]; i = i + 1; }
+    return out;
+  }
+
+  < joinWith(cells, sep): rejoin with a separator between cells (real). >
+  String joinWith(String[] cells, String sep) {
+    String out = "";
+    int i = 0;
+    int n = arrayLength(cells);
+    while (i < n) {
+      if (i > 0) { out = out + sep; }
+      out = out + cells[i];
+      i = i + 1;
+    }
+    return out;
+  }
+
+  < copyCells(cells): a detached copy of the cell array (real). >
+  String[] copyCells(String[] cells) {
+    int n = arrayLength(cells);
+    String[] out = new String[n];
+    int i = 0;
+    while (i < n) { out[i] = cells[i]; i = i + 1; }
+    return out;
+  }
+
+  < repeatCells(cells, n): a NEW cell array with the view repeated n times >
+  < (n <= 0 yields an empty array). Real: array alloc + copy loops. >
+  String[] repeatCells(String[] cells, int n) {
+    if (n <= 0) { return new String[0]; }
+    int w = arrayLength(cells);
+    String[] out = new String[w * n];
+    int o = 0;
+    int r = 0;
+    while (r < n) {
+      int i = 0;
+      while (i < w) { out[o] = cells[i]; o = o + 1; i = i + 1; }
+      r = r + 1;
+    }
+    return out;
+  }
+
+  < concatCells(a, b): a NEW cell array that is a followed by b (real). >
+  String[] concatCells(String[] a, String[] b) {
+    int an = arrayLength(a);
+    int bn = arrayLength(b);
+    String[] out = new String[an + bn];
+    int o = 0;
+    int i = 0;
+    while (i < an) { out[o] = a[i]; o = o + 1; i = i + 1; }
+    i = 0;
+    while (i < bn) { out[o] = b[i]; o = o + 1; i = i + 1; }
+    return out;
+  }
+
+  < ==================================================================== >
+  < MEASUREMENT / ACCESS >
+  < ==================================================================== >
+
+  int length(String[] cells) { return arrayLength(cells); }
+  boolean isEmpty(String[] cells) { return arrayLength(cells) == 0; }
+
+  < at(cells, i): the glyph at index i, or "" if out of range (real). >
+  String at(String[] cells, int i) {
+    if (i < 0 || i >= arrayLength(cells)) { return ""; }
+    return cells[i];
+  }
+
+  < first / last: the end glyphs, or "" when empty (real). >
+  String first(String[] cells) { return at(cells, 0); }
+  String last(String[] cells)  { return at(cells, arrayLength(cells) - 1); }
+
+  < slice(cells, from, to): the cells in [from, to) as a NEW array; from clamped >
+  < to 0, to to the length; from >= to yields an empty array (real). >
+  String[] slice(String[] cells, int from, int to) {
+    int n = arrayLength(cells);
+    int lo = from;
+    if (lo < 0) { lo = 0; }
+    int hi = to;
+    if (hi > n) { hi = n; }
+    if (lo >= hi) { return new String[0]; }
+    int len = hi - lo;
+    String[] out = new String[len];
+    int i = 0;
+    while (i < len) { out[i] = cells[lo + i]; i = i + 1; }
+    return out;
+  }
+
+  < substring(cells, from, to): slice(...) rejoined to a String (real). >
+  String substring(String[] cells, int from, int to) {
+    return joinCells(slice(cells, from, to));
+  }
+
+  < reverse(cells): a NEW cell array in reverse order (real). >
+  String[] reverse(String[] cells) {
+    int n = arrayLength(cells);
+    String[] out = new String[n];
+    int i = 0;
+    while (i < n) { out[i] = cells[n - 1 - i]; i = i + 1; }
+    return out;
+  }
+
+  < reverseString(cells): the glyphs reversed and rejoined (real). >
+  String reverseString(String[] cells) { return joinCells(reverse(cells)); }
+
+  < ==================================================================== >
+  < SINGLE-CELL SEARCH >
+  < ==================================================================== >
+
+  int indexOf(String[] cells, String needle) {
+    int i = 0;
+    int n = arrayLength(cells);
+    while (i < n) { if (cells[i] == needle) { return i; } i = i + 1; }
+    return -1;
+  }
+  int lastIndexOf(String[] cells, String needle) {
+    int i = arrayLength(cells) - 1;
+    while (i >= 0) { if (cells[i] == needle) { return i; } i = i - 1; }
+    return -1;
+  }
+  boolean contains(String[] cells, String needle) { return indexOf(cells, needle) >= 0; }
+  int count(String[] cells, String needle) {
+    int c = 0;
+    int i = 0;
+    int n = arrayLength(cells);
+    while (i < n) { if (cells[i] == needle) { c = c + 1; } i = i + 1; }
+    return c;
+  }
+
+  < ==================================================================== >
+  < MULTI-CELL (SUBSEQUENCE) SEARCH / REPLACE -- real substring semantics >
+  < ==================================================================== >
+
+  < matchesAt(cells, at, needle): does needle occur starting exactly at `at`? >
+  boolean matchesAt(String[] cells, int at, String[] needle) {
+    int nn = arrayLength(needle);
+    int cn = arrayLength(cells);
+    if (at < 0 || at + nn > cn) { return false; }
+    int i = 0;
+    while (i < nn) {
+      if (cells[at + i] != needle[i]) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  < indexOfSeq(cells, needle): first start index of needle, or -1 (empty needle >
+  < matches at 0). lastIndexOfSeq is the right-to-left form. >
+  int indexOfSeq(String[] cells, String[] needle) {
+    int nn = arrayLength(needle);
+    int cn = arrayLength(cells);
+    if (nn == 0) { return 0; }
+    int start = 0;
+    while (start + nn <= cn) {
+      if (matchesAt(cells, start, needle)) { return start; }
+      start = start + 1;
+    }
+    return -1;
+  }
+  int lastIndexOfSeq(String[] cells, String[] needle) {
+    int nn = arrayLength(needle);
+    int cn = arrayLength(cells);
+    if (nn == 0) { return cn; }
+    int start = cn - nn;
+    while (start >= 0) {
+      if (matchesAt(cells, start, needle)) { return start; }
+      start = start - 1;
+    }
+    return -1;
+  }
+
+  boolean containsSeq(String[] cells, String[] needle)   { return indexOfSeq(cells, needle) >= 0; }
+  boolean startsWith(String[] cells, String[] needle)    { return matchesAt(cells, 0, needle); }
+  boolean endsWith(String[] cells, String[] needle) {
+    int nn = arrayLength(needle);
+    int cn = arrayLength(cells);
+    if (nn > cn) { return false; }
+    return matchesAt(cells, cn - nn, needle);
+  }
+
+  < countSeq(cells, needle): non-overlapping occurrences (empty needle -> 0). >
+  int countSeq(String[] cells, String[] needle) {
+    int nn = arrayLength(needle);
+    int cn = arrayLength(cells);
+    if (nn == 0) { return 0; }
+    int c = 0;
+    int start = 0;
+    while (start + nn <= cn) {
+      if (matchesAt(cells, start, needle)) { c = c + 1; start = start + nn; }
+      else { start = start + 1; }
+    }
+    return c;
+  }
+
+  < replaceSeq(cells, from, to): every non-overlapping `from` becomes `to`, >
+  < rejoined to a String (empty `from` returns the view unchanged). Real. >
+  String replaceSeq(String[] cells, String[] from, String[] to) {
+    int fn = arrayLength(from);
+    int cn = arrayLength(cells);
+    if (fn == 0) { return joinCells(cells); }
+    String out = "";
+    int i = 0;
+    while (i < cn) {
+      if (i + fn <= cn && matchesAt(cells, i, from)) {
+        int j = 0;
+        int tn = arrayLength(to);
+        while (j < tn) { out = out + to[j]; j = j + 1; }
+        i = i + fn;
+      } else {
+        out = out + cells[i];
+        i = i + 1;
+      }
+    }
+    return out;
+  }
+
+  < replaceCell(cells, from, to): every cell == from becomes to; a NEW array of >
+  < the same length (real). >
+  String[] replaceCell(String[] cells, String from, String to) {
+    int n = arrayLength(cells);
+    String[] out = new String[n];
+    int i = 0;
+    while (i < n) {
+      if (cells[i] == from) { out[i] = to; } else { out[i] = cells[i]; }
+      i = i + 1;
+    }
+    return out;
+  }
+
+  < ==================================================================== >
+  < EDITING: insert / delete >
+  < ==================================================================== >
+
+  String[] insert(String[] cells, int at, String[] ins) {
+    int n = arrayLength(cells);
+    int m = arrayLength(ins);
+    int pos = at;
+    if (pos < 0) { pos = 0; }
+    if (pos > n) { pos = n; }
+    String[] out = new String[n + m];
+    int o = 0;
+    int i = 0;
+    while (i < pos) { out[o] = cells[i]; o = o + 1; i = i + 1; }
+    int j = 0;
+    while (j < m) { out[o] = ins[j]; o = o + 1; j = j + 1; }
+    while (i < n) { out[o] = cells[i]; o = o + 1; i = i + 1; }
+    return out;
+  }
+
+  String[] deleteRange(String[] cells, int from, int to) {
+    int n = arrayLength(cells);
+    int lo = from;
+    if (lo < 0) { lo = 0; }
+    int hi = to;
+    if (hi > n) { hi = n; }
+    if (lo >= hi) { return copyCells(cells); }
+    int removed = hi - lo;
+    String[] out = new String[n - removed];
+    int o = 0;
+    int i = 0;
+    while (i < lo) { out[o] = cells[i]; o = o + 1; i = i + 1; }
+    i = hi;
+    while (i < n) { out[o] = cells[i]; o = o + 1; i = i + 1; }
+    return out;
+  }
+
+  < ==================================================================== >
+  < SPLIT / TOKENISE >
+  < ==================================================================== >
+
+  < splitOn(cells, sepCell): split on each cell == sepCell; the segments as a >
+  < NEW String[] (adjacent separators yield "" segments). Real. >
+  String[] splitOn(String[] cells, String sepCell) {
+    int n = arrayLength(cells);
+    int segs = 1;
+    int i = 0;
+    while (i < n) { if (cells[i] == sepCell) { segs = segs + 1; } i = i + 1; }
+    String[] out = new String[segs];
+    int s = 0;
+    String cur = "";
+    i = 0;
+    while (i < n) {
+      if (cells[i] == sepCell) { out[s] = cur; s = s + 1; cur = ""; }
+      else { cur = cur + cells[i]; }
+      i = i + 1;
+    }
+    out[s] = cur;
+    return out;
+  }
+
+  < fieldCount(cells, sepCell): number of fields splitOn would produce (real). >
+  int fieldCount(String[] cells, String sepCell) {
+    return count(cells, sepCell) + 1;
+  }
+
+  < ==================================================================== >
+  < CASE / TRANSLATION via an explicit pair table (honest, caller-declared) >
+  < ==================================================================== >
+
+  < mapCell(cell, fromSet, toSet): the mapped cell if cell == fromSet[k] (first >
+  < match wins), else the cell unchanged (real). >
+  String mapCell(String cell, String[] fromSet, String[] toSet) {
+    int n = arrayLength(fromSet);
+    if (arrayLength(toSet) < n) { n = arrayLength(toSet); }
+    int k = 0;
+    while (k < n) {
+      if (cell == fromSet[k]) { return toSet[k]; }
+      k = k + 1;
+    }
+    return cell;
+  }
+
+  < map(cells, fromSet, toSet): translate every cell; a NEW array (real). >
+  String[] map(String[] cells, String[] fromSet, String[] toSet) {
+    int n = arrayLength(cells);
+    String[] out = new String[n];
+    int i = 0;
+    while (i < n) { out[i] = mapCell(cells[i], fromSet, toSet); i = i + 1; }
+    return out;
+  }
+
+  < mapToString(cells, fromSet, toSet): map(...) rejoined to a String (real). >
+  String mapToString(String[] cells, String[] fromSet, String[] toSet) {
+    return joinCells(map(cells, fromSet, toSet));
+  }
+
+  < ==================================================================== >
+  < WHITESPACE / TRIM over an explicit blank set >
+  < ==================================================================== >
+
+  < isBlankCell(cell, blanks): true if the cell equals any blank in the set. >
+  boolean isBlankCell(String cell, String[] blanks) {
+    return indexOf(blanks, cell) >= 0;
+  }
+
+  < trim(cells, blanks): drop leading + trailing cells in the blank set, rejoined. >
+  String trim(String[] cells, String[] blanks) {
+    int n = arrayLength(cells);
+    int lo = 0;
+    while (lo < n && isBlankCell(cells[lo], blanks)) { lo = lo + 1; }
+    int hi = n - 1;
+    while (hi >= lo && isBlankCell(cells[hi], blanks)) { hi = hi - 1; }
+    String out = "";
+    int i = lo;
+    while (i <= hi) { out = out + cells[i]; i = i + 1; }
+    return out;
+  }
+
+  < isBlank(cells, blanks): true if the view is empty or all blank cells (real). >
+  boolean isBlank(String[] cells, String[] blanks) {
+    int i = 0;
+    int n = arrayLength(cells);
+    while (i < n) {
+      if (!isBlankCell(cells[i], blanks)) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  < ==================================================================== >
+  < PADDING / ALIGNMENT -- real target widths in characters >
+  < ==================================================================== >
+
+  String padLeft(String[] cells, int width, String padCell) {
+    String pad = "";
+    int i = arrayLength(cells);
+    while (i < width) { pad = pad + padCell; i = i + 1; }
+    return pad + joinCells(cells);
+  }
+  String padRight(String[] cells, int width, String padCell) {
+    String out = joinCells(cells);
+    int i = arrayLength(cells);
+    while (i < width) { out = out + padCell; i = i + 1; }
+    return out;
+  }
+  String padCenter(String[] cells, int width, String padCell) {
+    int n = arrayLength(cells);
+    if (n >= width) { return joinCells(cells); }
+    int total = width - n;
+    int left = total / 2;
+    int right = total - left;
+    String lpad = "";
+    int i = 0;
+    while (i < left) { lpad = lpad + padCell; i = i + 1; }
+    String rpad = "";
+    i = 0;
+    while (i < right) { rpad = rpad + padCell; i = i + 1; }
+    return lpad + joinCells(cells) + rpad;
+  }
+
+  < truncate(cells, width, ellipsisCell): keep first (width-1) cells + ellipsis >
+  < when longer than width, so the result is exactly `width` cells; width <= 0 >
+  < yields "" (real). >
+  String truncate(String[] cells, int width, String ellipsisCell) {
+    int n = arrayLength(cells);
+    if (width <= 0) { return ""; }
+    if (n <= width) { return joinCells(cells); }
+    String out = "";
+    int keep = width - 1;
+    int i = 0;
+    while (i < keep) { out = out + cells[i]; i = i + 1; }
+    return out + ellipsisCell;
+  }
+
+  < ==================================================================== >
+  < EQUALITY / COMPARISON (ordinal, by the caller's cell order) >
+  < ==================================================================== >
+
+  < equals(a, b): element-wise equality of two cell views (real). >
+  boolean equals(String[] a, String[] b) {
+    int n = arrayLength(a);
+    if (n != arrayLength(b)) { return false; }
+    int i = 0;
+    while (i < n) { if (a[i] != b[i]) { return false; } i = i + 1; }
+    return true;
+  }
+
+  < commonPrefixLength(a, b): number of leading cells a and b share (real). >
+  int commonPrefixLength(String[] a, String[] b) {
+    int n = arrayLength(a);
+    int bn = arrayLength(b);
+    if (bn < n) { n = bn; }
+    int i = 0;
+    while (i < n && a[i] == b[i]) { i = i + 1; }
+    return i;
+  }
+
+  < ==================================================================== >
+  < ASCII cell helpers -- produce cells WITHOUT a bridge, from the known, >
+  < finite ASCII alphabet. These let callers build a dependable char-cell view >
+  < for ASCII literals entirely in-language (the general case still needs the >
+  < runtime's chars() to decompose arbitrary Unicode). >
+  < ==================================================================== >
+
+  < asciiCells(): the 95 printable ASCII glyphs (space..~) as a cell array. The >
+  < index of a cell is its ASCII code minus 32, so this doubles as a code table. >
+  String[] asciiCells() {
+    String[] a = new String[95];
+    a[0]=" ";  a[1]="!";  a[2]="\""; a[3]="#";  a[4]="$";  a[5]="%";  a[6]="&";
+    a[7]="'";  a[8]="(";  a[9]=")";  a[10]="*"; a[11]="+"; a[12]=","; a[13]="-";
+    a[14]="."; a[15]="/"; a[16]="0"; a[17]="1"; a[18]="2"; a[19]="3"; a[20]="4";
+    a[21]="5"; a[22]="6"; a[23]="7"; a[24]="8"; a[25]="9"; a[26]=":"; a[27]=";";
+    a[28]="<"; a[29]="="; a[30]=">"; a[31]="?"; a[32]="@";
+    a[33]="A"; a[34]="B"; a[35]="C"; a[36]="D"; a[37]="E"; a[38]="F"; a[39]="G";
+    a[40]="H"; a[41]="I"; a[42]="J"; a[43]="K"; a[44]="L"; a[45]="M"; a[46]="N";
+    a[47]="O"; a[48]="P"; a[49]="Q"; a[50]="R"; a[51]="S"; a[52]="T"; a[53]="U";
+    a[54]="V"; a[55]="W"; a[56]="X"; a[57]="Y"; a[58]="Z";
+    a[59]="["; a[60]="\\"; a[61]="]"; a[62]="^"; a[63]="_"; a[64]="`";
+    a[65]="a"; a[66]="b"; a[67]="c"; a[68]="d"; a[69]="e"; a[70]="f"; a[71]="g";
+    a[72]="h"; a[73]="i"; a[74]="j"; a[75]="k"; a[76]="l"; a[77]="m"; a[78]="n";
+    a[79]="o"; a[80]="p"; a[81]="q"; a[82]="r"; a[83]="s"; a[84]="t"; a[85]="u";
+    a[86]="v"; a[87]="w"; a[88]="x"; a[89]="y"; a[90]="z";
+    a[91]="{"; a[92]="|"; a[93]="}"; a[94]="~";
+    return a;
+  }
+
+  < asciiCode(cell): the ASCII code (32..126) of a single printable cell, or -1 >
+  < if it is not a known printable ASCII glyph (real: lookup in asciiCells). >
+  int asciiCode(String cell) {
+    String[] a = asciiCells();
+    int idx = indexOf(a, cell);
+    if (idx < 0) { return -1; }
+    return idx + 32;
+  }
+
+  < asciiUpper / asciiLower pair tables (26 letters) -- the explicit case table >
+  < the case-mapping helpers expect, built in-language from asciiCells(). >
+  < asciiUpperSet: the 26 upper-case letters A..Z (ascii index 33..58). >
+  String[] asciiUpperSet() { return slice(asciiCells(), 33, 59); }
+  < asciiLowerSet: the 26 lower-case letters a..z (ascii index 65..90). >
+  String[] asciiLowerSet() { return slice(asciiCells(), 65, 91); }
+
+  < toUpperAscii / toLowerAscii(cells): case-fold ASCII letters via the ascii >
+  < pair tables; non-letters pass through unchanged. REAL and honest -- the map >
+  < is the explicit ASCII case table, nothing about arbitrary Unicode assumed. >
+  String toUpperAscii(String[] cells) { return mapToString(cells, asciiLowerSet(), asciiUpperSet()); }
+  String toLowerAscii(String[] cells) { return mapToString(cells, asciiUpperSet(), asciiLowerSet()); }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, >
+  < or catalog can read and (where appropriate) override each record. >
+  < Values are faithful to the subject's real origin where publicly known. >
+  String metaVersion = "1.0.0";
+  int metaId = 11531;
+  String metaAuthor = "SLeeLa standard library";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026";
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  String metaNationalSchedule = "Unicode / ISO/IEC 10646; ANSI X3.4 (US-ASCII)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

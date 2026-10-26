@@ -1,0 +1,16 @@
+#sleela 2.1
+< Ballum example 05: confirm unavailable hardware is reported honestly. >
+class BallumHeadlessSafe {
+  void main() {
+    print("=== Ballum: Headless-Safe Probe ===");
+    print("backend: " + uiBallumBackendName());
+    int st = uiBallumEnumerate();
+    print("enumerate: " + uiBallumStatusName(st));
+    if (st != 0 || uiBallumDisplayCount() == 0) {
+      print("No usable display. This is a supported failure path, not a crash.");
+      return;
+    }
+    print("Displays found: " + uiBallumDisplayCount());
+    print("Probe complete; no display controls were changed.");
+  }
+}

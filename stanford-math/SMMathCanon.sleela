@@ -1,0 +1,129 @@
+<< stanford-math/SMMathCanon.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The canon of foundational mathematics equations/identities/
+   theorems every graduate curriculum rests on. Each entry records a real
+   name, symbolic form, discoverer, and year faithful to the public record;
+   where attribution is genuinely diffuse it is marked honestly. >>
+#sleela 2.1
+< Executive+ class: a standards/products artifact, full metadata record. >
+class SMMathCanon {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9210;
+  String metaAuthor = "the mathematical public record";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "results in the public domain";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 10;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Scientific record (purpose / method / gains / bedrock) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors):
+     what the canon is for, the method it follows, what its editors gain, and
+     the bedrock it rests on. See SMProvenance for the literature callouts. >>
+  String metaPurpose = "A curated index of foundational mathematics equations and their rightful discoverers.";
+  String metaScientificMethod = "Tertiary cataloguing: record established results traceable to primary/secondary literature; originate nothing.";
+  String metaAuthorialGains = "Editorial credit for the catalogue only; the theorems are public-domain mathematics owned by no one.";
+  String metaBedrock = "The historical and peer-reviewed mathematical record (see SMProvenance).";
+  String metaIntegrityGoal = "Record each great theorem under the name history gives it -- credit the discoverer, claim nothing.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
+  < ---- The mathematics canon (public record) ---- >
+  SMEquation[] eqs;
+  int filled;
+
+  void build() {
+    eqs = new SMEquation[40];
+    filled = 0;
+
+    add("Pythagorean theorem", "a^2 + b^2 = c^2", "geometry", "Pythagoras (attrib.)", "c. 530 BC");
+    add("Euler's identity", "e^(i*pi) + 1 = 0", "analysis", "Leonhard Euler", "1748");
+    add("Euler's formula", "e^(i*x) = cos(x) + i*sin(x)", "analysis", "Leonhard Euler", "1748");
+    add("Fundamental theorem of calculus", "integral_a^b f'(x) dx = f(b) - f(a)", "calculus", "Newton & Leibniz", "c. 1670");
+    add("Binomial theorem", "(x+y)^n = sum_{k=0}^n C(n,k) x^(n-k) y^k", "algebra", "generalized by Newton", "1665");
+    add("Quadratic formula", "x = (-b +/- sqrt(b^2 - 4ac)) / (2a)", "algebra", "ancient; modern form diffuse", "unknown");
+    add("Taylor series", "f(x) = sum_{n>=0} f^(n)(a)/n! * (x-a)^n", "analysis", "Brook Taylor", "1715");
+    add("Fourier series", "f(x) = a0/2 + sum (a_n cos(n x) + b_n sin(n x))", "analysis", "Joseph Fourier", "1807");
+    add("Cauchy-Schwarz inequality", "|<u,v>| <= ||u|| * ||v||", "analysis", "Cauchy; Bunyakovsky; Schwarz", "1821");
+    add("Triangle inequality", "||u + v|| <= ||u|| + ||v||", "analysis", "classical", "unknown");
+    add("Gauss (divergence) theorem", "integral_V (div F) dV = surface_integral F . dS", "vector calculus", "Gauss; Ostrogradsky", "1813");
+    add("Green's theorem", "closed_integral (P dx + Q dy) = integral_D (dQ/dx - dP/dy) dA", "vector calculus", "George Green", "1828");
+    add("Stokes' theorem", "integral_S (curl F) . dS = closed_integral_C F . dr", "vector calculus", "Kelvin; Stokes", "1854");
+    add("De Moivre's theorem", "(cos x + i sin x)^n = cos(n x) + i sin(n x)", "complex analysis", "Abraham de Moivre", "1707");
+    add("Cauchy integral formula", "f(a) = (1/(2*pi*i)) closed_integral f(z)/(z-a) dz", "complex analysis", "Augustin-Louis Cauchy", "1831");
+    add("Residue theorem", "closed_integral f(z) dz = 2*pi*i * sum Res(f, a_k)", "complex analysis", "Augustin-Louis Cauchy", "1831");
+    add("Riemann zeta functional equation", "zeta(s) = 2^s pi^(s-1) sin(pi s/2) Gamma(1-s) zeta(1-s)", "number theory", "Bernhard Riemann", "1859");
+    add("Euler product", "zeta(s) = product_p 1/(1 - p^(-s))", "number theory", "Leonhard Euler", "1737");
+    add("Prime number theorem", "pi(x) ~ x / ln(x)", "number theory", "Hadamard; de la Vallee Poussin", "1896");
+    add("Bayes' theorem", "P(A|B) = P(B|A) P(A) / P(B)", "probability", "Thomas Bayes", "1763");
+    add("Gaussian (normal) density", "f(x) = (1/(sigma sqrt(2 pi))) e^(-(x-mu)^2/(2 sigma^2))", "probability", "Gauss; de Moivre", "1809");
+    add("Central limit theorem", "sqrt(n)(Xbar - mu) -> N(0, sigma^2) in distribution", "probability", "Laplace; Lyapunov; Lindeberg", "1810");
+    add("Stirling's approximation", "n! ~ sqrt(2 pi n) (n/e)^n", "analysis", "James Stirling; de Moivre", "1730");
+    add("Gamma function", "Gamma(n) = integral_0^inf t^(n-1) e^(-t) dt", "analysis", "Leonhard Euler", "1729");
+    add("Basel problem", "sum_{n>=1} 1/n^2 = pi^2 / 6", "analysis", "Leonhard Euler", "1734");
+    add("Harmonic/log limit (Euler-Mascheroni)", "lim (sum_{k=1}^n 1/k - ln n) = gamma", "analysis", "Euler; Mascheroni", "1734");
+    add("Fibonacci / golden ratio", "phi = (1 + sqrt(5)) / 2", "number theory", "classical; Fibonacci", "1202");
+    add("Law of cosines", "c^2 = a^2 + b^2 - 2ab cos(C)", "geometry", "classical (Euclid II)", "c. 300 BC");
+    add("Heron's formula", "Area = sqrt(s(s-a)(s-b)(s-c)), s=(a+b+c)/2", "geometry", "Heron of Alexandria", "c. 60 AD");
+    add("Euler's polyhedron formula", "V - E + F = 2", "topology", "Leonhard Euler", "1752");
+    add("Determinant of 2x2", "det([[a,b],[c,d]]) = ad - bc", "linear algebra", "classical", "unknown");
+    add("Eigenvalue equation", "A v = lambda v", "linear algebra", "Cauchy; Hilbert (spectral)", "1829");
+    add("Green-Tao theorem", "primes contain arbitrarily long arithmetic progressions", "number theory", "Ben Green & Terence Tao", "2004");
+    add("Bayes-rule odds form", "posterior odds = likelihood ratio * prior odds", "probability", "Thomas Bayes", "1763");
+  }
+
+  void add(String name, String form, String field, String who, String year) {
+    SMEquation e = new SMEquation();
+    e.define(name, form, field, who, year);
+    eqs[filled] = e;
+    filled = filled + 1;
+  }
+
+  int count() { return filled; }
+
+  String lineAt(int i) {
+    SMEquation e = eqs[i];
+    return e.line();
+  }
+}

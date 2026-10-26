@@ -1,7 +1,7 @@
 {
   "algorithm": "sha256",
   "author": "MEARVK LLC / the Author",
-  "count": 96,
+  "count": 98,
   "files": [
     {
       "ancestry": [],
@@ -10,9 +10,9 @@
       "name": "SLVmVersion009.sleela",
       "parent": ".",
       "path": "SLVmVersion009.sleela",
-      "seal": "04f090901f48209253306a2ca183a104e85402e5cf4d7cff12593a121d8dba5c",
-      "sha256": "6b0b5308fe65617c8c638d15be3fb185e463e176153705b3adafbb42e1ff3bda",
-      "size": 1193
+      "seal": "68d5a03b155896b056ecc22c4aec0a9c211f313e50e847dd23b72337aa8e3c76",
+      "sha256": "f7f8ab74e0efcaa31149a506fd866cd85103257ff2714ddfbb72eeacd2782b29",
+      "size": 1252
     },
     {
       "ancestry": [],
@@ -241,9 +241,9 @@
       "name": "sleela_core.c",
       "parent": ".",
       "path": "sleela_core.c",
-      "seal": "b8ec86e50034ccde38ab1204e7e095e81d860cbd6512ea275feb808a0369cc56",
-      "sha256": "232198a84ada489ac3fb8b69f05af62308ee326069b0d0f28d96f71116c92395",
-      "size": 92756
+      "seal": "03fea4d7ba143ae6eae611c6ee80159fda97d07a09b4034e0939415a9da3475a",
+      "sha256": "2fcbdf95939e48980e76a8e49c149eba2fc44bf317341c26f0f2e52ae4dd9f95",
+      "size": 100441
     },
     {
       "ancestry": [],
@@ -252,9 +252,9 @@
       "name": "sleela_core.h",
       "parent": ".",
       "path": "sleela_core.h",
-      "seal": "d2ab4992de97dbbd05302bbbf04ca2fb54b00da18923a5a5bfc9485b3d74cac4",
-      "sha256": "e2b5e4862d8de413b627a2bb4b5ac3121c36f146c3e0e234e11b4bc2623bc4db",
-      "size": 16769
+      "seal": "7c9cb0bd2165a1eaeaa537d83b19e738227eec0d40cadb31ddac1dd5f43c296c",
+      "sha256": "9b42d793989d7746cbff9554ae3cf28dd0b12242c0f3d945398e7276cd31d68e",
+      "size": 18183
     },
     {
       "ancestry": [],
@@ -744,6 +744,28 @@
       "ancestry": [],
       "author": "MEARVK LLC / the Author",
       "depth": 0,
+      "name": "sleela_ui_ids.h",
+      "parent": ".",
+      "path": "sleela_ui_ids.h",
+      "seal": "ca9ee87e79aa51d375c188ae5c8e78814fdeac1cdcaddb6ce1a4145f34487d67",
+      "sha256": "b9829614a28ad2c9a02982d0ec82ba8d74e659ccb4a7895809a728eb5b9fcc2c",
+      "size": 13844
+    },
+    {
+      "ancestry": [],
+      "author": "MEARVK LLC / the Author",
+      "depth": 0,
+      "name": "sleela_ui_vm.h",
+      "parent": ".",
+      "path": "sleela_ui_vm.h",
+      "seal": "fc707691fa0c54b19c0f0e8ee1dce85dc9e90cab9f3aa116564470c706b0ddf2",
+      "sha256": "5050af1cd624f3a621121dcf2d35c9c4b93c66cde0fa2f02e428c03e5fac2c50",
+      "size": 1663
+    },
+    {
+      "ancestry": [],
+      "author": "MEARVK LLC / the Author",
+      "depth": 0,
       "name": "socket_smoke.c",
       "parent": ".",
       "path": "socket_smoke.c",
@@ -1062,6 +1084,6 @@
   ],
   "generated_for": "idea-vm-009",
   "kind": "modium-file-resolution",
-  "manifest_seal": "fd77e55a63b6695390ee01bf2530f02a0fdab396ecd85edca622c15c102edccd",
+  "manifest_seal": "a5088a20ce28923af32ff04a1c75125ba1e4ba5a03942d23eed4725851dbc6cb",
   "root": "virtual-machine/vm-version/009"
 }

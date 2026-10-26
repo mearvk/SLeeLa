@@ -1,0 +1,31 @@
+#sleela 2.1
+< Ballum example 03: query capability flags before changing display controls. >
+class BallumDisplayControls {
+  boolean has(int caps, int bit) { return (caps / bit) % 2 == 1; }
+  void main() {
+    print("=== Ballum: Display Controls ===");
+    int st = uiBallumEnumerate();
+    if (st != 0 || uiBallumDisplayCount() == 0) {
+      print("No display available; controls skipped.");
+      return;
+    }
+    int idx = 0;
+    int i = 0;
+    while (i < uiBallumDisplayCount()) {
+      if (uiBallumDisplayPrimary(i) == 1) { idx = i; }
+      i = i + 1;
+    }
+    int id = uiBallumDisplayId(idx);
+    int caps = uiBallumDisplayCaps(idx);
+    if (has(caps, 4)) {
+      print("brightness 70%: " + uiBallumStatusName(uiBallumSetBrightness(id, 70)));
+    } else { print("brightness: unsupported; skipped"); }
+    if (has(caps, 8)) {
+      print("warmth 3400K: " + uiBallumStatusName(uiBallumSetWarmth(id, 3400)));
+    } else { print("warmth: unsupported; skipped"); }
+    if (has(caps, 16)) {
+      print("gamma 2.20: " + uiBallumStatusName(uiBallumSetGamma(id, 220)));
+    } else { print("gamma: unsupported; skipped"); }
+    print("Note: these settings can visibly change the display.");
+  }
+}

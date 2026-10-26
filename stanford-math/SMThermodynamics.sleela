@@ -1,0 +1,101 @@
+<< stanford-math/SMThermodynamics.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Records how far the thermodynamic / statistical-mechanics line of
+   the Stanford Math brand actually reaches, as a graded set of rungs from the
+   math department's own work out to its adjacent frontiers. Honest about where
+   the boundary to the Physics department lies. >>
+#sleela 2.1
+< Executive+ class: a jurisdictional-scope artifact, full metadata record. >
+class SMThermodynamics {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9140;
+  String metaAuthor = "Stanford University Department of Mathematics";
+  String metaDate = "2026-10-25";
+  String metaCopyright = "research-area descriptions in the public record";
+  String metaTrademark = "none";
+  String metaCorporation = "The Leland Stanford Junior University";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "Galactic";
+  String metaBirthDate = "2026-10-25";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Scientific record (purpose / method / gains / bedrock / integrity) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors).
+     Written truthfully for THIS class. metaIntegrityGoal: the reach is recorded
+     with its real boundary -- how far it goes AND where it stops. >>
+  String metaPurpose = "Record how far the Stanford Math brand's thermodynamics/stat-mech line actually reaches.";
+  String metaScientificMethod = "Graded scoping: rank the reach by rungs anchored in research-area pages, courses, and lectures.";
+  String metaAuthorialGains = "None; the record gains only an honest map of the department's reach.";
+  String metaBedrock = "Stanford research-area descriptions, course records, and colloquia (see Sources).";
+  String metaIntegrityGoal = "Record the great reach fully -- out to black-hole thermodynamics -- while marking honestly where the math department ends and Physics begins.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
+  < ---- The reach, rung by rung (public record) ---- >
+  << rung 1 = closest to the math department's own work;
+     rung 5 = the far frontier; the boundary note marks where Physics owns it. >>
+  String[] rungs;
+  int filled;
+
+  void build() {
+    rungs = new String[6];
+    filled = 0;
+    add("Rung 1 -- Entropy & Gibbs measures inside the probability group");
+    add("Rung 2 -- Statistical-mechanics analysis of Markov chains (mixing, cutoff)");
+    add("Rung 3 -- Large deviations and interacting particle systems (applied analysis)");
+    add("Rung 4 -- Information/thermodynamic-entropy link (Stanford intellectual tradition)");
+    add("Rung 5 -- Black-hole thermodynamics via geometry/general relativity (far frontier)");
+    add("Boundary -- Formal thermodynamics & stat-mech COURSES sit in Physics (e.g. Physics 170), not the math department");
+  }
+
+  void add(String r) {
+    rungs[filled] = r;
+    filled = filled + 1;
+  }
+
+  int count() { return filled; }
+  String rungAt(int i) { return rungs[i]; }
+
+  < The one-line answer to 'how far does their thermodynamics go?' >
+  String reachStatement() {
+    return "From entropy and Gibbs measures in probability, through statistical-mechanics analysis of Markov chains, out to the thermodynamic analogies of general relativity -- while foundational thermodynamics coursework lives in Physics.";
+  }
+}

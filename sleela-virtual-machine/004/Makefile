@@ -35,10 +35,13 @@ else
     CORE_LIBS ?= -ldl -lm
   endif
 endif
+# Shared native UI, Wi-Fi, and Ballum platform link dependencies.
+VM_PLATFORM_LIBS_MK := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../platform-libs.mk)
+include $(VM_PLATFORM_LIBS_MK)
 # The Core archive bundles the OS-abstraction backends + GC and contains C++
 # objects (the idea-canvas layer), so the final link is driven by the C++
 # compiler and needs the platform runtime libs + OpenMP.
-CORE_LDLIBS ?= $(THREADFLAG) -fopenmp $(CORE_LIBS)
+CORE_LDLIBS ?= $(THREADFLAG) -fopenmp $(CORE_LIBS) $(CORE_UI_LIBS)
 
 FEATURE_OBJS = $(BUILD)/slvm4_distributed.o
 VM = $(BUILD)/slvm-04

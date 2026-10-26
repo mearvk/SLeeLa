@@ -2,9 +2,9 @@
 
 **Revision:** 0.51  
 **Packages:** 101  
-**SLeeLa source units:** 11568  
+**SLeeLa source units:** 11576  
 **Module-facade symbols:** 70  
-**Total symbol records:** 11638  
+**Total symbol records:** 11646  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.51 adds two companion `core` classes expressing the standing of a

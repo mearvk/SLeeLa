@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #ifndef EVDO_REFERENCE_H_HPP
 #define EVDO_REFERENCE_H_HPP
 #include "evdo.h"

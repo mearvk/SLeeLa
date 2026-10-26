@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/cdma2000_1x.h"
@@ -10,6 +11,6 @@ int main(void) {
     if (cdma_channel_add(mix, 64, u0) != 0 || cdma_channel_add(mix, 64, u1) != 0) return 3;
     if (cdma_decide_symbol(cdma_correlate(mix, 64, c0)) != 1 || cdma_decide_symbol(cdma_correlate(mix, 64, c1)) != -1) return 4;
     for (i = 0; i < 64; ++i) { if (mix[i] != c0[i] - c1[i]) return 5; }
-    printf("CDMA2000 1xRTT: shared-channel recovery PASS (+1, -1)\\n");
+    printf("CDMA2000 1xRTT: shared-channel recovery PASS (+1, -1)\n");
     return 0;
 }

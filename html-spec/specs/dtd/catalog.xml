@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE catalog PUBLIC "-//OASIS//DTD XML Catalogs V1.0//EN"
+  "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
+<!--
+  XML catalog that resolves every external reference made by the archived
+  W3C HTML / XHTML DTDs to the local files in this tree, fully offline.
+  Use with any catalog-aware tool. Point XML_CATALOG_FILES at this file and
+  run xmllint with the validate + catalogs options against a document.
+  Paths are relative to this catalog's location (the specs/dtd directory).
+-->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+
+  <!-- ============ XHTML 1.1 driver + Modularization 1.1 ============ -->
+  <!-- The driver references its modules by absolute w3.org URLs; rewrite
+       that whole prefix to the local modules/ directory. -->
+  <rewriteSystem systemIdStartString="http://www.w3.org/MarkUp/DTD/"
+                 rewritePrefix="xhtml-1.1/modules/"/>
+  <!-- The driver + model themselves -->
+  <system systemId="http://www.w3.org/MarkUp/DTD/xhtml11.dtd"
+          uri="xhtml-1.1/xhtml11.dtd"/>
+  <system systemId="http://www.w3.org/MarkUp/DTD/xhtml11-model-1.mod"
+          uri="xhtml-1.1/xhtml11-model-1.mod"/>
+  <public publicId="-//W3C//DTD XHTML 1.1//EN"
+          uri="xhtml-1.1/xhtml11.dtd"/>
+
+  <!-- ============ XHTML 1.0 ============ -->
+  <public publicId="-//W3C//DTD XHTML 1.0 Strict//EN"       uri="xhtml-1.0/xhtml1-strict.dtd"/>
+  <public publicId="-//W3C//DTD XHTML 1.0 Transitional//EN" uri="xhtml-1.0/xhtml1-transitional.dtd"/>
+  <public publicId="-//W3C//DTD XHTML 1.0 Frameset//EN"     uri="xhtml-1.0/xhtml1-frameset.dtd"/>
+  <public publicId="-//W3C//ENTITIES Latin 1 for XHTML//EN" uri="xhtml-1.0/xhtml-lat1.ent"/>
+  <public publicId="-//W3C//ENTITIES Symbols for XHTML//EN" uri="xhtml-1.0/xhtml-symbol.ent"/>
+  <public publicId="-//W3C//ENTITIES Special for XHTML//EN" uri="xhtml-1.0/xhtml-special.ent"/>
+  <system systemId="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"       uri="xhtml-1.0/xhtml1-strict.dtd"/>
+  <system systemId="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" uri="xhtml-1.0/xhtml1-transitional.dtd"/>
+  <system systemId="http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"     uri="xhtml-1.0/xhtml1-frameset.dtd"/>
+
+  <!-- ============ HTML 4.01 ============ -->
+  <public publicId="-//W3C//DTD HTML 4.01//EN"              uri="html-4.01/strict.dtd"/>
+  <public publicId="-//W3C//DTD HTML 4.01 Transitional//EN" uri="html-4.01/loose.dtd"/>
+  <public publicId="-//W3C//DTD HTML 4.01 Frameset//EN"     uri="html-4.01/frameset.dtd"/>
+
+  <!-- ============ HTML 4.0 ============ -->
+  <public publicId="-//W3C//DTD HTML 4.0//EN"               uri="html-4.0/strict.dtd"/>
+  <public publicId="-//W3C//DTD HTML 4.0 Transitional//EN"  uri="html-4.0/loose.dtd"/>
+  <public publicId="-//W3C//DTD HTML 4.0 Frameset//EN"      uri="html-4.0/frameset.dtd"/>
+
+  <!-- Shared HTML 4.x entity sets (same public ids in 4.0 and 4.01) -->
+  <public publicId="-//W3C//ENTITIES Latin1//EN//HTML"   uri="html-4.01/HTMLlat1.ent"/>
+  <public publicId="-//W3C//ENTITIES Symbols//EN//HTML"  uri="html-4.01/HTMLsymbol.ent"/>
+  <public publicId="-//W3C//ENTITIES Special//EN//HTML"  uri="html-4.01/HTMLspecial.ent"/>
+
+  <!-- ============ HTML 3.2 ============ -->
+  <public publicId="-//W3C//DTD HTML 3.2 Final//EN"  uri="html-3.2/HTML32.dtd"/>
+  <public publicId="-//W3C//DTD HTML 3.2//EN"        uri="html-3.2/HTML32.dtd"/>
+  <public publicId="ISO 8879-1986//ENTITIES Added Latin 1//EN//HTML" uri="html-3.2/ISOlat1.ent"/>
+
+</catalog>

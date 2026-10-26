@@ -1,0 +1,25 @@
+#sleela 2.1
+< Ballum example 01: inspect the host display without writing pixels. >
+class BallumScreenInspection {
+  void main() {
+    print("=== Ballum: Screen Inspection ===");
+    print("backend: " + uiBallumBackendName());
+    int st = uiBallumEnumerate();
+    print("enumerate status: " + uiBallumStatusName(st));
+    if (st != 0) {
+      print("No display enumeration; stop without changing the screen.");
+      return;
+    }
+    int n = uiBallumDisplayCount();
+    print("display count: " + n);
+    int i = 0;
+    while (i < n) {
+      print("display[" + i + "] id=" + uiBallumDisplayId(i)
+        + " size=" + uiBallumDisplayWidth(i) + "x" + uiBallumDisplayHeight(i)
+        + " primary=" + uiBallumDisplayPrimary(i)
+        + " capabilities=" + uiBallumDisplayCaps(i));
+      i = i + 1;
+    }
+    print("Inspection complete; no display settings were changed.");
+  }
+}

@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11568
+library-source-files: 11576
 library-packages: 101
 module-facade-symbols: 70
-total-symbol-records: 11638
+total-symbol-records: 11646
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -61,6 +61,11 @@ ballum	SLBallumStatus.sleela	lib/ballum/SLBallumStatus.sleela	source
 ballum	SLPackage.sleela	lib/ballum/SLPackage.sleela	facade
 ballum	ballum-live.sleela	lib/ballum/ballum-live.sleela	source
 ballum	ballum.sleela	lib/ballum/ballum.sleela	source
+ballum	01-screen-inspection.sleela	lib/ballum/examples/01-screen-inspection.sleela	source
+ballum	02-safe-pixel.sleela	lib/ballum/examples/02-safe-pixel.sleela	source
+ballum	03-display-controls.sleela	lib/ballum/examples/03-display-controls.sleela	source
+ballum	04-input-polling.sleela	lib/ballum/examples/04-input-polling.sleela	source
+ballum	05-headless-safe.sleela	lib/ballum/examples/05-headless-safe.sleela	source
 ballum	input-demo.sleela	lib/ballum/input-demo.sleela	source
 ballum	SLMacOSBallumProfile.sleela	lib/ballum/platforms/Apple/macOS/SLMacOSBallumProfile.sleela	source
 ballum	SLLinuxBallumProfile.sleela	lib/ballum/platforms/GNU/Linux/SLLinuxBallumProfile.sleela	source
@@ -11335,8 +11340,10 @@ text	SLRegex.sleela	lib/text/SLRegex.sleela	source
 text	SLString.sleela	lib/text/SLString.sleela	source
 text	SLStringBuffer.sleela	lib/text/SLStringBuffer.sleela	source
 text	SLStringBuilder.sleela	lib/text/SLStringBuilder.sleela	source
+text	SLStringCells.sleela	lib/text/SLStringCells.sleela	source
 text	SLTextReader.sleela	lib/text/SLTextReader.sleela	source
 text	SLTextWriter.sleela	lib/text/SLTextWriter.sleela	source
+text	string-cells-demo.sleela	lib/text/string-cells-demo.sleela	source
 text	text-string-demo.sleela	lib/text/text-string-demo.sleela	source
 ui	SLAbsoluteLayout.sleela	lib/ui/SLAbsoluteLayout.sleela	source
 ui	SLApplication.sleela	lib/ui/SLApplication.sleela	source
@@ -11562,6 +11569,7 @@ vm	SLVmGc.sleela	lib/vm/src/sleela/SLVmGc.sleela	source
 vm	SLVmMemory.sleela	lib/vm/src/sleela/SLVmMemory.sleela	source
 vm	SLVmModium.sleela	lib/vm/src/sleela/SLVmModium.sleela	source
 vm	SLVmPlatform.sleela	lib/vm/src/sleela/SLVmPlatform.sleela	source
+vm	SLVmPremiumVersion.sleela	lib/vm/src/sleela/SLVmPremiumVersion.sleela	source
 vm	SLVmProfile.sleela	lib/vm/src/sleela/SLVmProfile.sleela	source
 vm	SLVmReport.sleela	lib/vm/src/sleela/SLVmReport.sleela	source
 vm	SLVmResult.sleela	lib/vm/src/sleela/SLVmResult.sleela	source

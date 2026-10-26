@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>HTML 4.01 "Cougar" (1999) &mdash; Use-Case Demonstration</title>
+</head>
+<body>
+
+<h1>HTML 4.01 "Cougar" (1999) &mdash; Use-Case Demonstration</h1>
+
+<p><strong>Date:</strong> 2026-10-25</p>
+
+<p>
+This document demonstrates the elements HTML 4.01 added (generic inline containers, inline
+quotes, abbreviations, edits, bidi, the full accessible table model, rich forms, generic
+objects, and frames) in their usual use cases. Each example states whether it still
+<em>performs as expected in a modern browser</em>: &#x2713; Yes, or &#x2717; No.
+</p>
+
+<hr>
+
+<h2>Use case 1 &mdash; Generic inline container</h2>
+<p><strong>Title:</strong> A span hook &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>The temperature is <span lang="fr">vingt degr&eacute;s</span> today.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>&lt;span&gt;</code> was new in HTML 4.0.</p>
+
+<hr>
+
+<h2>Use case 2 &mdash; Inline quotation and abbreviations</h2>
+<p><strong>Title:</strong> Quote, abbreviation, acronym &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>She said <q>the web is for everyone</q>. We use <abbr title="HyperText Markup Language">HTML</abbr> and <acronym title="World Wide Web Consortium">W3C</acronym> standards.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes for <code>&lt;q&gt;</code> and <code>&lt;abbr&gt;</code>. &#x2717; No for <code>&lt;acronym&gt;</code> &mdash; obsolete; use <code>&lt;abbr&gt;</code>.</p>
+
+<hr>
+
+<h2>Use case 3 &mdash; Edits (insert / delete)</h2>
+<p><strong>Title:</strong> Tracked changes &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>The price is <del>$50</del> <ins>$40</ins>.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 4 &mdash; Bidirectional override</h2>
+<p><strong>Title:</strong> Direction control &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>English then <bdo dir="rtl">this run is overridden right-to-left</bdo>.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 5 &mdash; Accessible data table (full model)</h2>
+<p><strong>Title:</strong> Grouped, captioned table &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<table border="1" summary="HTML versions and their years">
+<caption>HTML versions</caption>
+<thead>
+<tr><th scope="col">Version</th><th scope="col">Year</th></tr>
+</thead>
+<tbody>
+<tr><th scope="row">HTML 3.2</th><td>1997</td></tr>
+<tr><th scope="row">HTML 4.01</th><td>1999</td></tr>
+</tbody>
+<tfoot>
+<tr><td>Source</td><td>W3C</td></tr>
+</tfoot>
+</table>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>thead</code>/<code>tbody</code>/<code>tfoot</code>/<code>scope</code> were new in HTML 4.0 (though the <code>summary</code> attribute is now obsolete).</p>
+
+<hr>
+
+<h2>Use case 6 &mdash; Rich form with grouping and labels</h2>
+<p><strong>Title:</strong> Labelled, grouped controls &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<form action="#" method="post">
+<fieldset>
+<legend>Account</legend>
+<p><label for="user">Username:</label> <input type="text" id="user" name="user"></p>
+<p>
+<label for="role">Role:</label>
+<select id="role" name="role">
+<optgroup label="Staff">
+<option>Editor</option>
+<option>Admin</option>
+</optgroup>
+</select>
+</p>
+<p><button type="submit">Create</button></p>
+</fieldset>
+</form>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>label</code>, <code>fieldset</code>, <code>legend</code>, <code>optgroup</code>, <code>button</code> were new in HTML 4.0.</p>
+
+<hr>
+
+<h2>Use case 7 &mdash; Generic embedded object</h2>
+<p><strong>Title:</strong> An object with a parameter &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>
+<object data="https://www.w3.org/Icons/w3c_home" type="image/png" width="72" height="48">
+<param name="border" value="0">
+W3C logo
+</object>
+</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>&lt;object&gt;</code> is the standards-based embed (the replacement for <code>&lt;applet&gt;</code>).</p>
+
+<hr>
+
+<h2>Use case 8 &mdash; Inline frame</h2>
+<p><strong>Title:</strong> Embedding another document &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<iframe src="https://www.w3.org/" width="300" height="150">
+Your browser does not support inline frames.
+</iframe>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>&lt;iframe&gt;</code> remains valid (it was Transitional in 4.01, conforming in HTML5).</p>
+
+<hr>
+
+<h2>Use case 9 &mdash; Framesets</h2>
+<p><strong>Title:</strong> Multi-frame layout &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>A Frameset document replaces <code>&lt;body&gt;</code> with:</p>
+<pre>
+&lt;frameset cols="25%,75%"&gt;
+  &lt;frame src="menu.html"&gt;
+  &lt;frame src="content.html"&gt;
+&lt;/frameset&gt;
+</pre>
+<p>(Shown as escaped markup, not emitted live, because it cannot coexist with a <code>&lt;body&gt;</code>.)</p>
+<p><strong>Performs as expected:</strong> &#x2717; No &mdash; <code>frameset</code>/<code>frame</code>/<code>noframes</code> are obsolete and removed from HTML; use <code>&lt;iframe&gt;</code> or server-side composition.</p>
+
+<hr>
+
+<p><strong>Summary:</strong> Nearly all of HTML 4.01's additions (<code>span</code>, <code>q</code>,
+<code>abbr</code>, <code>ins</code>/<code>del</code>, <code>bdo</code>, the full table model, rich
+forms, <code>object</code>, <code>iframe</code>) perform as expected. The exceptions are
+<code>&lt;acronym&gt;</code>, the <code>summary</code> attribute, and framesets &mdash; all obsolete.</p>
+
+</body>
+</html>

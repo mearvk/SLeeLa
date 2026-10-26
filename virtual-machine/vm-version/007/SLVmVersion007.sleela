@@ -9,12 +9,12 @@
  *   default configuration profile a user starts from. build() returns the
  *   configured SLVmRuntime a selection resolves to.
  *
- * Mirrors the C/C++ in this folder (the 71-file core + the additive vm_* units
+ * Mirrors the C/C++ in this folder (the 73-file core (71 + the sleela_ui_vm.h/sleela_ui_ids.h added 2026-10-25) + the additive vm_* units
  * through v007). It extends SLVmVersion (lib/vm/src/sleela/SLVmVersion.sleela).
  *
  * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
  */
-#sleela 2.1
+#sleela 2.4
 class SLVmVersion007 extends SLVmVersion {
   void configure() {
     base(7, "idea-vm-007", "capability enforcement", "virtual-machine/vm-version/007", "vm_capability_test");

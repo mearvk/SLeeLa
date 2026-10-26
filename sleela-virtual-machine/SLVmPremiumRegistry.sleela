@@ -1,0 +1,78 @@
+/*
+ * sleela-virtual-machine/SLVmPremiumRegistry.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVmPremiumRegistry -- the catalogue of selectable PREMIUM
+ *   VM generations (slvm-1 .. slvm-11). It is the premium sibling of
+ *   SLVmRegistry (virtual-machine/vm-version/SLVmRegistry.sleela), which
+ *   catalogues the ten standard think-tank versions. On system start, or during
+ *   a conference with the user, the native VM loads this registry (and each
+ *   SLVmPremiumVersionNNN manifest) so a user can enumerate the premium
+ *   generations and select one via `sleela vm select premium <1..11>` (or pNN).
+ *   The chosen manifest's build() yields a configured SLVmRuntime, and its
+ *   nativeBinary() names the C/C++ binary the master build boots.
+ *
+ * Selection paths this models: `sleela vm list` (premium section) /
+ *   `sleela vm select premium <n>` / `sleela vm run premium <n> <program>`.
+ *   The registry holds no native state; it binds the eleven manifests and
+ *   resolves a selection, exactly as SLVmRegistry does for the standard arc.
+ *
+ * Family: vm. Composes SLVmPremiumVersion001..011, SLVmRuntime.
+ *
+ * [SYNC syntax-2.4 2026-10-25] Authored at the current syntax level.
+ */
+#sleela 2.4
+class SLVmPremiumRegistry {
+  SLVmPremiumVersion001 g1; SLVmPremiumVersion002 g2; SLVmPremiumVersion003 g3;
+  SLVmPremiumVersion004 g4; SLVmPremiumVersion005 g5; SLVmPremiumVersion006 g6;
+  SLVmPremiumVersion007 g7; SLVmPremiumVersion008 g8; SLVmPremiumVersion009 g9;
+  SLVmPremiumVersion010 g10; SLVmPremiumVersion011 g11;
+  int count;
+
+  // Load + configure all eleven premium manifests (system-start / conference).
+  void load() {
+    g1 = new SLVmPremiumVersion001(); g1.configure();
+    g2 = new SLVmPremiumVersion002(); g2.configure();
+    g3 = new SLVmPremiumVersion003(); g3.configure();
+    g4 = new SLVmPremiumVersion004(); g4.configure();
+    g5 = new SLVmPremiumVersion005(); g5.configure();
+    g6 = new SLVmPremiumVersion006(); g6.configure();
+    g7 = new SLVmPremiumVersion007(); g7.configure();
+    g8 = new SLVmPremiumVersion008(); g8.configure();
+    g9 = new SLVmPremiumVersion009(); g9.configure();
+    g10 = new SLVmPremiumVersion010(); g10.configure();
+    g11 = new SLVmPremiumVersion011(); g11.configure();
+    count = 11;
+  }
+
+  // Enumerate for the user (the premium section of `sleela vm list`).
+  void list() {
+    g1.describe(); g2.describe(); g3.describe(); g4.describe(); g5.describe();
+    g6.describe(); g7.describe(); g8.describe(); g9.describe(); g10.describe();
+    g11.describe();
+  }
+
+  // Resolve a selection (1..11) to its manifest; returns null if out of range.
+  SLVmPremiumVersion select(int number) {
+    if (number == 1)  { return g1; }
+    if (number == 2)  { return g2; }
+    if (number == 3)  { return g3; }
+    if (number == 4)  { return g4; }
+    if (number == 5)  { return g5; }
+    if (number == 6)  { return g6; }
+    if (number == 7)  { return g7; }
+    if (number == 8)  { return g8; }
+    if (number == 9)  { return g9; }
+    if (number == 10) { return g10; }
+    if (number == 11) { return g11; }
+    return null;
+  }
+
+  // Select + build the runtime (what `sleela vm select premium N` resolves to).
+  SLVmRuntime boot(int number) {
+    SLVmPremiumVersion g = select(number);
+    if (g == null) { return null; }
+    return g.build();
+  }
+
+  int available() { return count; }
+}

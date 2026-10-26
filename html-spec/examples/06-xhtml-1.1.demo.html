@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>XHTML 1.1 (2001) &#8212; Use-Case Demonstration</title>
+</head>
+<body>
+
+<h1>XHTML 1.1 (2001) &#8212; Use-Case Demonstration</h1>
+
+<p><strong>Date:</strong> 2026-10-25</p>
+
+<p>
+XHTML 1.1 is module-based XHTML: the XHTML 1.0 Strict vocabulary, minus the HTML-compatibility
+allowances, plus the Ruby Annotation module. Each example states whether it
+<em>performs as expected in a modern browser</em>: &#x2713; Yes, or &#x2717; No.
+</p>
+
+<hr />
+
+<h2>Use case 1 &#8212; Ruby annotation (simple)</h2>
+<p><strong>Title:</strong> Furigana over kanji &#160;|&#160; <strong>Date:</strong> 2026-10-25</p>
+<p>
+<ruby>
+<rb>&#x6F22;&#x5B57;</rb>
+<rp>(</rp><rt>kanji</rt><rp>)</rp>
+</ruby>
+means "Chinese characters."
+</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes for <code>ruby</code>/<code>rt</code>/<code>rp</code> &#8212; carried into HTML5 and widely supported. &#x2717; No for <code>&lt;rb&gt;</code> &#8212; obsolete in the modern standard (put the base text directly in <code>&lt;ruby&gt;</code>).</p>
+
+<hr />
+
+<h2>Use case 2 &#8212; Ruby with parenthesis fallback</h2>
+<p><strong>Title:</strong> Graceful degradation &#160;|&#160; <strong>Date:</strong> 2026-10-25</p>
+<p>
+<ruby>WWW<rp> (</rp><rt>World Wide Web</rt><rp>)</rp></ruby>
+</p>
+<p>Browsers without ruby support show the <code>&lt;rp&gt;</code> parentheses around the annotation.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr />
+
+<h2>Use case 3 &#8212; Language tagging with xml:lang</h2>
+<p><strong>Title:</strong> Per-section language &#160;|&#160; <strong>Date:</strong> 2026-10-25</p>
+<p xml:lang="de">Dies ist ein deutscher Satz.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &#8212; XHTML 1.1 uses <code>xml:lang</code> exclusively (the <code>lang</code> attribute was removed).</p>
+
+<hr />
+
+<h2>Use case 4 &#8212; Core vocabulary (inherited from XHTML 1.0 Strict)</h2>
+<p><strong>Title:</strong> Structure, list, emphasis &#160;|&#160; <strong>Date:</strong> 2026-10-25</p>
+<div>
+<h3>A section</h3>
+<p>Text with <em>emphasis</em> and <strong>strong importance</strong>.</p>
+<ul>
+<li>One</li>
+<li>Two</li>
+</ul>
+</div>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr />
+
+<h2>Use case 5 &#8212; Self-closed empty element</h2>
+<p><strong>Title:</strong> XML void tag &#160;|&#160; <strong>Date:</strong> 2026-10-25</p>
+<p>A break here<br />and the line continues.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr />
+
+<p><strong>Summary:</strong> XHTML 1.1's one genuinely new capability &#8212; Ruby annotation &#8212;
+still performs as expected for <code>ruby</code>/<code>rt</code>/<code>rp</code>, with the
+complex-ruby <code>&lt;rb&gt;</code> now obsolete. The inherited XHTML 1.0 Strict vocabulary and
+<code>xml:lang</code> all render as expected.</p>
+
+</body>
+</html>

@@ -94,11 +94,21 @@ static ballum_status_t mock_poll_event(void *ctx, ballum_pointer_event_t *out) {
     return BALLUM_STATUS_OK;
 }
 
+static int g_key_poll_step = 0;
+static ballum_status_t mock_poll_key(void *ctx, int *out) {
+    (void)ctx;
+    if (!out) return BALLUM_STATUS_INVALID_ARGUMENT;
+    *out = BALLUM_KEY_NONE;
+    if (g_key_poll_step == 0) *out = BALLUM_KEY_ESC;
+    else if (g_key_poll_step == 2) *out = BALLUM_KEY_ENTER;
+    ++g_key_poll_step;
+    return BALLUM_STATUS_OK;
+}
+
 static const ballum_backend_t g_mock = {
     "mock", mock_enumerate, mock_set_pixel, mock_get_pixel, mock_blit,
     mock_set_brightness, mock_set_warmth, mock_set_gamma, mock_poll_event,
-    /* poll_key: this mock exercises the pointer path only; no keyboard. */
-    0
+    mock_poll_key
 };
 
 int main(void) {
@@ -200,6 +210,16 @@ int main(void) {
     assert(ev.type == BALLUM_EVENT_NONE);          /* queue drained */
     assert(ballum_event_type_name(BALLUM_EVENT_POINTER_DOWN) != NULL);
 
+    /* ---- keyboard bridge: Escape and subsequent key polling --------------- */
+    assert(ballum_manager_has_keyboard(&m) == 1);
+    int key = -1;
+    assert(ballum_manager_poll_key(&m, &key) == BALLUM_STATUS_OK);
+    assert(key == BALLUM_KEY_ESC);
+    assert(ballum_manager_poll_key(&m, &key) == BALLUM_STATUS_OK);
+    assert(key == BALLUM_KEY_NONE);
+    assert(ballum_manager_poll_key(&m, &key) == BALLUM_STATUS_OK);
+    assert(key == BALLUM_KEY_ENTER);
+
     /* ---- the unavailable fallback fails closed --------------------------- */
     ballum_manager_t u;
     assert(ballum_manager_init(&u, ballum_backend_unavailable(), NULL) == BALLUM_STATUS_OK);
@@ -212,6 +232,10 @@ int main(void) {
     ballum_pointer_event_t uev;
     assert(ballum_manager_poll_event(&u, &uev) == BALLUM_STATUS_UNSUPPORTED);
     assert(uev.type == BALLUM_EVENT_NONE);
+    assert(ballum_manager_has_keyboard(&u) == 0);
+    int no_key = -1;
+    assert(ballum_manager_poll_key(&u, &no_key) == BALLUM_STATUS_UNSUPPORTED);
+    assert(no_key == BALLUM_KEY_NONE);
 
     /* ---- status text is never NULL --------------------------------------- */
     assert(ballum_status_name(BALLUM_STATUS_OK) != NULL);

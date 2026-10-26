@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: MIT */
 #include "../include/evdo.h"
 #include <stddef.h>
 int evdo_make_code(int *code, size_t spreading_factor, unsigned code_index) {

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HTML5 (2014) &mdash; Use-Case Demonstration</title>
+</head>
+<body>
+
+<h1>HTML5 (2014) &mdash; Use-Case Demonstration</h1>
+
+<p><strong>Date:</strong> 2026-10-25</p>
+
+<p>
+This document demonstrates the elements HTML5 added (semantic sections, media, canvas, new form
+controls, interactive widgets, and new text-level semantics) in their usual use cases. Each
+example states whether it <em>performs as expected in a modern browser</em>:
+&#x2713; Yes, or &#x2717; No.
+</p>
+
+<hr>
+
+<h2>Use case 1 &mdash; Semantic page structure</h2>
+<p><strong>Title:</strong> Landmark elements &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<header>
+<p>Site header</p>
+<nav>
+<a href="#a">Home</a> | <a href="#b">About</a>
+</nav>
+</header>
+<main>
+<article>
+<h3>An article</h3>
+<section>
+<h4>A section within it</h4>
+<p>Self-contained, semantically structured content.</p>
+</section>
+</article>
+<aside>
+<p>A sidebar note.</p>
+</aside>
+</main>
+<footer>
+<p>Site footer</p>
+</footer>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>header</code>, <code>nav</code>, <code>main</code>, <code>article</code>, <code>section</code>, <code>aside</code>, <code>footer</code> are new in HTML5.</p>
+
+<hr>
+
+<h2>Use case 2 &mdash; Figure with caption</h2>
+<p><strong>Title:</strong> Self-contained figure &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<figure>
+<img src="https://www.w3.org/Icons/w3c_home" alt="W3C logo" width="72" height="48">
+<figcaption>Figure 1. The W3C logo.</figcaption>
+</figure>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 3 &mdash; Video and audio</h2>
+<p><strong>Title:</strong> Native media &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<video controls="controls" width="320">
+<source src="movie.mp4" type="video/mp4">
+Your browser does not support the video element.
+</video>
+<audio controls="controls">
+<source src="sound.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>video</code>, <code>audio</code>, <code>source</code> are new in HTML5 (media files are placeholders here).</p>
+
+<hr>
+
+<h2>Use case 4 &mdash; Canvas drawing surface</h2>
+<p><strong>Title:</strong> Scriptable graphics &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<canvas width="200" height="80">
+Your browser does not support the canvas element.
+</canvas>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; <code>&lt;canvas&gt;</code> is new in HTML5 (drawing is done via script).</p>
+
+<hr>
+
+<h2>Use case 5 &mdash; New input types</h2>
+<p><strong>Title:</strong> Typed form controls &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<form action="#" method="get">
+<p>Email: <input type="email" name="email"></p>
+<p>Date: <input type="date" name="when"></p>
+<p>Range: <input type="range" name="level" min="0" max="10"></p>
+<p>Colour: <input type="color" name="shade"></p>
+<p>Search:
+<input type="search" name="q" list="suggestions">
+<datalist id="suggestions">
+<option value="HTML"></option>
+<option value="HTTP"></option>
+</datalist>
+</p>
+</form>
+<p><strong>Performs as expected:</strong> &#x2713; Yes &mdash; the <code>email</code>/<code>date</code>/<code>range</code>/<code>color</code>/<code>search</code> input types and <code>&lt;datalist&gt;</code> are new in HTML5.</p>
+
+<hr>
+
+<h2>Use case 6 &mdash; Progress and meter</h2>
+<p><strong>Title:</strong> Gauges &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>Upload: <progress value="70" max="100">70%</progress></p>
+<p>Disk: <meter value="0.6">60%</meter></p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 7 &mdash; Disclosure widget</h2>
+<p><strong>Title:</strong> Expand / collapse &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<details>
+<summary>More information</summary>
+<p>This content is revealed when the summary is clicked &mdash; no script required.</p>
+</details>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 8 &mdash; New text-level semantics</h2>
+<p><strong>Title:</strong> mark, time, bdi, wbr &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<p>Published on <time datetime="2026-10-25">25 October 2026</time>, with a <mark>highlighted</mark> phrase, a name <bdi>&#x0623;&#x062D;&#x0645;&#x062F;</bdi> isolated for bidi, and a long&shy;word&wbr;break opportunity.</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<h2>Use case 9 &mdash; Reusable template</h2>
+<p><strong>Title:</strong> Inert scripted content &nbsp;|&nbsp; <strong>Date:</strong> 2026-10-25</p>
+<template id="row">
+<p>A template's content is parsed but not rendered until cloned by script.</p>
+</template>
+<p>(The template above is intentionally not displayed.)</p>
+<p><strong>Performs as expected:</strong> &#x2713; Yes</p>
+
+<hr>
+
+<p><strong>Summary:</strong> Every HTML5 addition demonstrated here &mdash; semantic landmarks,
+<code>figure</code>, media, <code>canvas</code>, the new input types, <code>datalist</code>,
+<code>progress</code>/<code>meter</code>, <code>details</code>/<code>summary</code>,
+<code>mark</code>/<code>time</code>/<code>bdi</code>/<code>wbr</code>, and <code>template</code>
+&mdash; performs as expected in a modern browser.</p>
+
+</body>
+</html>
