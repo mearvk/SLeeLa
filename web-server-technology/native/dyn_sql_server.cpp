@@ -31,6 +31,7 @@ extern "C" int sleela_wst_dyn_sql_server_run(int, char **) {
 }
 #else
 #include "dyn_sql_server.h"
+#include "envelopment.h"
 #include "../../lib/sleela-sql/native/include/sleela_sql.h"
 
 #include <arpa/inet.h>
@@ -95,6 +96,9 @@ struct Config {
   fs::path log_path;
   bool db_writable = false;
   std::string bind_addr; // empty => any address (dual-stack)
+  // Side 2: envelopment. When env.active() is false the server behaves exactly
+  // as Side 1 (single program/meme per domain) and never consults this.
+  sleela::wst::Envelopment env;
 };
 
 std::string lo(std::string s) {
@@ -490,12 +494,19 @@ bool statement_is_readonly(const std::string &sql) {
   return false;
 }
 
-Resp db_endpoint(const Req &q, const Config &cfg, std::string &log_detail) {
+// Execute the /db protocol (health + query) against an explicit table dir and
+// write policy. Used both by Side-1 (--db/--db-writable) and by Side-2
+// envelopment SQL programs, which supply their own per-program dir/policy.
+// query_path is the request path with any program mount prefix already removed,
+// so an enveloped SQL program at mount "/lab" still answers "/db/query".
+Resp db_endpoint_on(const Req &q, const std::string &query_path,
+                    const fs::path &db_dir, bool db_writable,
+                    std::string &log_detail) {
   Resp r;
   r.keep = q.keep;
   r.type = "application/json";
 
-  if (cfg.db_dir.empty()) {
+  if (db_dir.empty()) {
     r.code = 503;
     std::string b = "{\"error\":\"database endpoint disabled (start with --db DIR)\"}\n";
     r.body.assign(b.begin(), b.end());
@@ -503,12 +514,12 @@ Resp db_endpoint(const Req &q, const Config &cfg, std::string &log_detail) {
     return r;
   }
 
-  if (q.path == "/db/health" || q.path == "/db" || q.path == "/db/") {
+  if (query_path == "/db/health" || query_path == "/db" || query_path == "/db/") {
     ssql_db db;
-    ssql_status st = ssql_open(&db, cfg.db_dir.c_str());
+    ssql_status st = ssql_open(&db, db_dir.c_str());
     std::ostringstream o;
     o << "{\"server\":\"SLeeLa\",\"engine\":\"sleela-sql\",\"dialects\":[\"sql\",\"sleelasql\"],"
-      << "\"writable\":" << (cfg.db_writable ? "true" : "false") << ","
+      << "\"writable\":" << (db_writable ? "true" : "false") << ","
       << "\"status\":\"" << (st == SSQL_OK ? "ok" : ssql_strerror(st)) << "\"}\n";
     std::string b = o.str();
     r.body.assign(b.begin(), b.end());
@@ -516,7 +527,7 @@ Resp db_endpoint(const Req &q, const Config &cfg, std::string &log_detail) {
     return r;
   }
 
-  if (q.path != "/db/query") {
+  if (query_path != "/db/query") {
     r.code = 404;
     std::string b = "{\"error\":\"unknown db route\"}\n";
     r.body.assign(b.begin(), b.end());
@@ -589,7 +600,7 @@ Resp db_endpoint(const Req &q, const Config &cfg, std::string &log_detail) {
   }
 
   bool readonly = statement_is_readonly(sql);
-  if (!readonly && !cfg.db_writable) {
+  if (!readonly && !db_writable) {
     r.code = 403;
     std::string b = "{\"error\":\"this endpoint is read-only; start with --db-writable to allow mutations\"}\n";
     r.body.assign(b.begin(), b.end());
@@ -598,7 +609,7 @@ Resp db_endpoint(const Req &q, const Config &cfg, std::string &log_detail) {
   }
 
   ssql_db db;
-  if (ssql_open(&db, cfg.db_dir.c_str()) != SSQL_OK) {
+  if (ssql_open(&db, db_dir.c_str()) != SSQL_OK) {
     r.code = 500;
     std::string b = "{\"error\":\"cannot open database\"}\n";
     r.body.assign(b.begin(), b.end());
@@ -645,6 +656,100 @@ Resp db_endpoint(const Req &q, const Config &cfg, std::string &log_detail) {
   return r;
 }
 
+// Side-1 /db endpoint: server-wide db dir + policy, path used verbatim.
+Resp db_endpoint(const Req &q, const Config &cfg, std::string &log_detail) {
+  return db_endpoint_on(q, q.path, cfg.db_dir, cfg.db_writable, log_detail);
+}
+
+// ---- static + meme program handlers (shared by Side 1 and envelopment) ------
+Resp serve_static(const Req &q, const fs::path &root, const std::string &rel_path) {
+  Resp r;
+  r.keep = q.keep;
+  r.head = q.method == "HEAD";
+  if (q.method == "POST") {
+    r.code = 405; r.keep = false;
+    std::string b = "Method Not Allowed\n";
+    r.body.assign(b.begin(), b.end());
+    return r;
+  }
+  fs::path p;
+  if (!safe(root, rel_path, p)) {
+    r.code = 403; r.keep = false;
+    std::string b = "Forbidden\n";
+    r.body.assign(b.begin(), b.end());
+    return r;
+  }
+  std::error_code e;
+  if (fs::is_directory(p, e)) p /= "index.html";
+  if (!fs::is_regular_file(p, e)) {
+    r.code = 404;
+    std::string b = "Not Found\n";
+    r.body.assign(b.begin(), b.end());
+    return r;
+  }
+  auto n = fs::file_size(p, e);
+  if (e || n > BMAX) {
+    r.code = 413; r.keep = false;
+    std::string b = "Content Too Large\n";
+    r.body.assign(b.begin(), b.end());
+    return r;
+  }
+  std::ifstream f(p, std::ios::binary);
+  if (!f) {
+    r.code = 403; r.keep = false;
+    std::string b = "Forbidden\n";
+    r.body.assign(b.begin(), b.end());
+    return r;
+  }
+  r.type = mime(p);
+  r.body.resize((size_t)n);
+  if (n) f.read(r.body.data(), (std::streamsize)n);
+  if (!f && n) { r.code = 500; r.body.clear(); r.keep = false; }
+  return r;
+}
+
+// ---- envelopment program runner (Side 2) ------------------------------------
+// A warrant has already selected `prog`; run its backing kind. `rel` is the
+// request path with the program's mount prefix stripped (so a program sees its
+// own root-relative path space). This is the only entry point Side 2 adds to
+// request handling, and it reuses the same static/SQL machinery as Side 1.
+Resp run_program(const Req &q, const sleela::wst::Program &prog,
+                 const std::string &rel, std::string &log_detail) {
+  using sleela::wst::ProgramKind;
+  switch (prog.kind) {
+    case ProgramKind::Meme: {
+      Resp r;
+      r.keep = q.keep;
+      r.type = prog.meme_type.empty() ? "text/plain; charset=utf-8" : prog.meme_type;
+      std::string b = prog.meme_body;
+      if (b.empty() || b.back() != '\n') b.push_back('\n');
+      r.body.assign(b.begin(), b.end());
+      log_detail = "program kind=meme name=" + prog.name;
+      return r;
+    }
+    case ProgramKind::Static: {
+      std::string rp = rel.empty() ? "/" : rel;
+      Resp r = serve_static(q, prog.root, rp);
+      log_detail = "program kind=static name=" + prog.name;
+      return r;
+    }
+    case ProgramKind::Sql: {
+      // Map the program's own path space onto the /db protocol: the program
+      // owns "/db..." under its mount. Anything else under the program is 404.
+      std::string qp = rel;
+      if (qp.empty() || qp == "/") qp = "/db/health";
+      Resp r = db_endpoint_on(q, qp, prog.db_dir, prog.db_writable, log_detail);
+      log_detail = "program kind=sql name=" + prog.name + " " + log_detail;
+      return r;
+    }
+  }
+  Resp r;
+  r.code = 500;
+  std::string b = "Internal Server Error\n";
+  r.body.assign(b.begin(), b.end());
+  return r;
+}
+
 // ---- request dispatch --------------------------------------------------------
 Resp make(const Req &q, const Config &cfg, std::string &log_detail) {
   Resp r;
@@ -670,11 +775,47 @@ Resp make(const Req &q, const Config &cfg, std::string &log_detail) {
     o << "{\"server\":\"SLeeLa\",\"kind\":\"web-server-technology/dynamic-sql\","
       << "\"http\":\"1.1\",\"dual_stack\":true,\"db_endpoint\":"
       << (cfg.db_dir.empty() ? "false" : "true")
-      << ",\"db_writable\":" << (cfg.db_writable ? "true" : "false") << "}\n";
+      << ",\"db_writable\":" << (cfg.db_writable ? "true" : "false")
+      << ",\"envelopment\":" << (cfg.env.active() ? "true" : "false")
+      << ",\"scientist\":" << (cfg.env.scientist ? "true" : "false")
+      << ",\"programs\":" << cfg.env.programs.size()
+      << ",\"warrants\":" << cfg.env.warrants.size() << "}\n";
     std::string b = o.str();
     r.type = "application/json";
     r.body.assign(b.begin(), b.end());
     return r;
+  }
+
+  // Side 2: envelopment. Only consulted when active (enabled + scientist +
+  // >=1 warrant). A matched warrant selects one program, which is then run in
+  // its own mount-relative path space. If nothing matches we fall through to
+  // the unchanged Side-1 dispatch below.
+  if (cfg.env.active()) {
+    std::string host;
+    auto hi = q.h.find("host");
+    if (hi != q.h.end()) {
+      host = hi->second;
+      size_t colon = host.find(':');  // strip :port
+      if (colon != std::string::npos) host = host.substr(0, colon);
+    }
+    std::string cause;
+    const sleela::wst::Program *prog = cfg.env.resolve(host, q.path, cause);
+    if (prog) {
+      // compute the program-relative path by removing the mount prefix
+      std::string rel = q.path;
+      if (!prog->mount.empty() && prog->mount != "/" &&
+          rel.rfind(prog->mount, 0) == 0) {
+        rel = rel.substr(prog->mount.size());
+        if (rel.empty()) rel = "/";
+        if (rel[0] != '/') rel = "/" + rel;
+      }
+      std::string pdetail;
+      Resp r2 = run_program(q, *prog, rel, pdetail);
+      log_detail = "envelopment cause=\"" + cause + "\" host=" +
+                   (host.empty() ? "-" : host) + " " + pdetail;
+      return r2;
+    }
+    // no warrant matched: fall through to Side-1 behaviour
   }
 
   // dynamic SQL surface
@@ -824,7 +965,12 @@ void usage() {
       << "  --db-writable    allow mutating SQL (default read-only)\n"
       << "  --threads N      worker threads (default 16)\n"
       << "  --log FILE       operational log file\n"
-      << "  --once           handle one connection then exit (for tests)\n";
+      << "  --once           handle one connection then exit (for tests)\n"
+      << "\n"
+      << "  Side 2 -- envelopment (many programs per domain; Scientist-gated):\n"
+      << "  --config FILE    load an envelopment config file (programs/warrants)\n"
+      << "  --envelopment    enable envelopment (requires --scientist too)\n"
+      << "  --scientist      assert the Scientist capability that gates Side 2\n";
 }
 
 int run(int ac, char **av) {
@@ -832,6 +978,8 @@ int run(int ac, char **av) {
   int port = 8090;
   unsigned threads = TDEFAULT;
   bool once = false;
+  std::string config_path;
+  bool cli_envelopment = false, cli_scientist = false;
   for (int i = 1; i < ac; ++i) {
     std::string a = av[i];
     if (a == "--port" && i + 1 < ac) port = std::atoi(av[++i]);
@@ -841,6 +989,9 @@ int run(int ac, char **av) {
     else if (a == "--db-writable") cfg.db_writable = true;
     else if (a == "--threads" && i + 1 < ac) threads = (unsigned)std::strtoul(av[++i], nullptr, 10);
     else if (a == "--log" && i + 1 < ac) cfg.log_path = av[++i];
+    else if (a == "--config" && i + 1 < ac) config_path = av[++i];
+    else if (a == "--envelopment") cli_envelopment = true;
+    else if (a == "--scientist") cli_scientist = true;
     else if (a == "--once") once = true;
     else if (a == "--help" || a == "-h") { usage(); return 0; }
     else { std::cerr << "unknown option: " << a << "\n"; return 2; }
@@ -854,6 +1005,49 @@ int run(int ac, char **av) {
     cfg.db_dir = fs::weakly_canonical(cfg.db_dir, e);
     if (e) { std::cerr << "invalid --db directory\n"; return 2; }
   }
+
+  // Side 2: load envelopment from the config file (if any), then let the CLI
+  // flags turn the gates on. The CLI can enable but is still subject to the
+  // Scientist capability -- envelopment only activates with BOTH gates set and
+  // at least one warrant. This is the "startup settings OR config file" control
+  // surface the design calls for.
+  if (!config_path.empty()) {
+    std::string cerr_msg;
+    if (!load_envelopment_config(config_path, cfg.env, cerr_msg)) {
+      std::cerr << "config: " << cerr_msg << "\n";
+      return 2;
+    }
+  }
+  if (cli_envelopment) cfg.env.enabled = true;
+  if (cli_scientist) cfg.env.scientist = true;
+
+  if (cfg.env.enabled && !cfg.env.scientist) {
+    std::cerr << "envelopment: refused -- Side 2 requires the Scientist "
+                 "capability (pass --scientist or set scientist=true)\n";
+    return 2;
+  }
+  // Canonicalize and validate each program's backing resource.
+  for (auto &prog : cfg.env.programs) {
+    if (prog.kind == sleela::wst::ProgramKind::Static && !prog.root.empty()) {
+      auto cr = fs::weakly_canonical(prog.root, e);
+      if (e || !fs::is_directory(cr)) {
+        std::cerr << "envelopment: program '" << prog.name
+                  << "' has an invalid static root\n";
+        return 2;
+      }
+      prog.root = cr.string();
+    }
+    if (prog.kind == sleela::wst::ProgramKind::Sql && !prog.db_dir.empty()) {
+      auto cd = fs::weakly_canonical(prog.db_dir, e);
+      if (e) {
+        std::cerr << "envelopment: program '" << prog.name
+                  << "' has an invalid db directory\n";
+        return 2;
+      }
+      prog.db_dir = cd.string();
+    }
+  }
+
   if (cfg.log_path.empty()) cfg.log_path = cfg.root / ".sleela-wst-dynamic-sql.log";
 
   signal(SIGINT, on_signal);
@@ -868,7 +1062,12 @@ int run(int ac, char **av) {
   log.put(std::string("server=start kind=dynamic-sql port=") + std::to_string(port) +
           " dual_stack=" + (dual ? "yes" : "no") +
           " db=" + (cfg.db_dir.empty() ? "disabled" : cfg.db_dir.string()) +
-          " db_writable=" + (cfg.db_writable ? "yes" : "no"));
+          " db_writable=" + (cfg.db_writable ? "yes" : "no") +
+          " envelopment=" + (cfg.env.active() ? "active"
+                             : cfg.env.enabled ? "enabled-inactive" : "off") +
+          " scientist=" + (cfg.env.scientist ? "yes" : "no") +
+          " programs=" + std::to_string(cfg.env.programs.size()) +
+          " warrants=" + std::to_string(cfg.env.warrants.size()));
 
   Pool pool(threads, [&](int fd) { serve(fd, cfg, log); });
   while (!g_stop) {

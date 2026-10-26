@@ -80,6 +80,50 @@ class DemoWebServerTechnology {
     print("server active: " + server.active());
     server.shutdownServer();
     print("server active after shutdown: " + server.active());
+
+    < 4) Side 2: envelopment -- one domain, many programs via warrants, >
+    < gated to Scientists. >
+    print("-- Side 2: envelopment --");
+    SLEnvelopment env = new SLEnvelopment();
+    env.configure("science.example");
+
+    SLWebProgram landing = new SLWebProgram();
+    landing.configure("landing");
+    landing.setMount("/");
+    landing.asMeme("<h1>science.example</h1>");
+    env.registerProgram();
+
+    SLWebProgram lab = new SLWebProgram();
+    lab.configure("lab");
+    lab.setMount("/lab");
+    lab.asSql("/srv/labdb");
+    env.registerProgram();
+    print("lab program is sql: " + lab.isSql());
+    print("lab writes allowed (default): " + lab.databaseWritable);
+
+    SLWarrant wLanding = new SLWarrant();
+    wLanding.configure("publish-landing-page");
+    wLanding.setSubject("science.example");
+    wLanding.setPathPrefix("/");
+    wLanding.bindProgram("landing");
+    env.registerWarrant();
+
+    SLWarrant wLab = new SLWarrant();
+    wLab.configure("expose-lab-dataset-readonly");
+    wLab.setSubject("science.example");
+    wLab.setPathPrefix("/lab");
+    wLab.bindProgram("lab");
+    env.registerWarrant();
+    print("lab warrant matches its host: " + wLab.matchesHost("science.example"));
+    print("lab warrant matches other host: " + wLab.matchesHost("other.example"));
+
+    < Scientist gate: enabled alone is not enough. >
+    env.turnOn();
+    print("active with turnOn() but no scientist: " + env.active());
+    env.grantScientist();
+    print("active with enable() and scientist and warrants: " + env.active());
+    print("programs=" + env.getProgramCount() + " warrants=" + env.getWarrantCount());
+
     print("demo complete");
   }
 }

@@ -1,0 +1,96 @@
+<< lib/web-server-technology/SLWebProgram.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines the SLeeLa standard-library type SLWebProgram, the
+   SLeeLa-side model of a mounted program in a Side-2 envelopment: a named unit
+   of behaviour whose backing kind is static, sql, or meme. Named SLWebProgram
+   (not SLProgram) to avoid colliding with the existing lib/cpu/SLProgram. >>
+#sleela 2.1
+< Unified SLeeLa SDK front-end object. >
+< Family: web-server-technology. Native implementation crosses an explicit VM/OS bridge. >
+class SLWebProgram {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11644;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-26";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-26";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "RFC 9112 (HTTP/1.1 message framing)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Program descriptor (mirrors struct Program in envelopment.h) ---- >
+  < Unique program name within its envelopment. >
+  String programName;
+  < Backing kind: "static", "sql", or "meme". >
+  String kind;
+  < Path prefix this program owns under the domain, e.g. "/papers". >
+  String mount;
+  < static: document-root subtree. >
+  String root;
+  < sql: directory of CSV tables. >
+  String databaseDirectory;
+  < sql: whether mutations are permitted. >
+  boolean databaseWritable;
+  < meme: fixed response body. >
+  String memeBody;
+
+  void configure(String name) {
+    programName = name;
+    kind = "meme";
+    mount = "/";
+    root = "";
+    databaseDirectory = "";
+    databaseWritable = false;
+    memeBody = "";
+  }
+  String getProgramName() { return programName; }
+  void setMount(String m) { mount = m; }
+  String getMount() { return mount; }
+
+  < Shape this program as a static-file surface. >
+  void asStatic(String documentRoot) { kind = "static"; root = documentRoot; }
+  < Shape this program as a SQL surface over a table directory. >
+  void asSql(String tableDirectory) { kind = "sql"; databaseDirectory = tableDirectory; }
+  < Shape this program as a single fixed meme response. >
+  void asMeme(String body) { kind = "meme"; memeBody = body; }
+  void allowDatabaseWrites() { databaseWritable = true; }
+
+  String getKind() { return kind; }
+  boolean isStatic() { return kind == "static"; }
+  boolean isSql() { return kind == "sql"; }
+  boolean isMeme() { return kind == "meme"; }
+
+  String serviceName() { return "SLWebProgram"; }
+}

@@ -20,6 +20,19 @@ servers do not have:
    and returning **JSON computed per request**, rather than reading a file from
    disk. Both SQL dialects are accepted: classic SQL and fluent SLeeLaSQL.
 
+## Two sides of one interface
+
+- **Side 1 (always on): a program goes to a domain and then a meme.** One
+  domain resolves to a single coherent response unit — static files plus the
+  optional `/db` SQL surface. This is the default and needs no configuration.
+- **Side 2 (opt-in, Scientist-gated): a domain envelops many programs.** One
+  domain may carry many subjects/warrants for causes, so the website becomes an
+  **envelopment** of disparate programs (meme / static / sql) behind one
+  domain, routed by warrant. It is **available for Scientists** and is
+  selectable in **startup settings or the configuration file**. See
+  [`docs/ENVELOPMENT.md`](docs/ENVELOPMENT.md). When envelopment is inactive the
+  server behaves exactly as Side 1.
+
 Apache's documented modular MPM model and Tomcat's connector/request-worker
 model were used as **architectural references, not copied code**.
 
@@ -42,13 +55,19 @@ This is an honest description, not marketing copy:
 web-server-technology/
   README.md                     this document
   ARCHITECTURE.md               request lifecycle, concurrency, dual-stack, /db
+  docs/
+    ENVELOPMENT.md              Side 2: programs, warrants, config grammar
+  examples/
+    envelopment.conf            a worked multi-program envelopment config
   native/
     dyn_sql_server.h            public C entry point
-    dyn_sql_server.cpp          the server (parsing, pool, static + /db)
+    dyn_sql_server.cpp          the server (parsing, pool, static + /db + Side 2)
+    envelopment.h / .cpp        the Side-2 envelopment model + config loader
     main.cpp                    command-line entry point
     Makefile                    builds and links the lib/sleela-sql engine
     smoke-test.sh               end-to-end static + dynamic + policy test
     trav-test.sh                path-traversal containment test
+    envelopment-test.sh         Side-2 gate + warrant-routing test
 ```
 
 The SLeeLa-side model of this server lives at
@@ -80,6 +99,14 @@ sleela-web-server --port 8090 --root ./public --db ./data --db-writable
 
 Options: `--port N`, `--addr ADDR`, `--root DIR`, `--db DIR`, `--db-writable`,
 `--threads N`, `--log FILE`, `--once`.
+
+Side-2 (envelopment) options: `--config FILE`, `--envelopment`, `--scientist`.
+
+```sh
+# Side 2: one domain enveloping many programs, for a Scientist:
+sleela-web-server --port 8090 --config examples/envelopment.conf --scientist
+# (or set envelopment=on and scientist=true inside the config file)
+```
 
 ## Endpoints
 

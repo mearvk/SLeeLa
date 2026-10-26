@@ -1,0 +1,90 @@
+<< lib/web-server-technology/SLWarrant.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines the SLeeLa standard-library type SLWarrant, the
+   SLeeLa-side model of an envelopment warrant: a cause served for a subject by
+   a named program. >>
+#sleela 2.1
+< Unified SLeeLa SDK front-end object. >
+< Family: web-server-technology. Native implementation crosses an explicit VM/OS bridge. >
+class SLWarrant {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11645;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-26";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-26";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Warrant descriptor (mirrors struct Warrant in envelopment.h) ---- >
+  < The reason-to-serve, recorded for provenance and logged on each match. >
+  String cause;
+  < Host to match; "*" matches any host. >
+  String subject;
+  < Optional additional path gate; empty matches any path. >
+  String pathPrefix;
+  < Name of the program this warrant activates. >
+  String program;
+  < A disabled warrant never matches. >
+  boolean enabled;
+
+  void configure(String causeText) {
+    cause = causeText;
+    subject = "*";
+    pathPrefix = "";
+    program = "";
+    enabled = true;
+  }
+  String getCause() { return cause; }
+  void setSubject(String host) { subject = host; }
+  String getSubject() { return subject; }
+  void setPathPrefix(String prefix) { pathPrefix = prefix; }
+  String getPathPrefix() { return pathPrefix; }
+  void bindProgram(String programName) { program = programName; }
+  String getProgram() { return program; }
+  void disable() { enabled = false; }
+  boolean isEnabled() { return enabled; }
+
+  < Whether this warrant matches a request for the given host. Path-prefix >
+  < matching is performed natively; this models the host/enabled gate. >
+  boolean matchesHost(String host) {
+    if (!enabled) return false;
+    if (subject == "*") return true;
+    return subject == host;
+  }
+
+  String serviceName() { return "SLWarrant"; }
+}

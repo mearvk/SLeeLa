@@ -23,8 +23,8 @@ $(BUILD):
 $(SQL_OBJ): $(SQL_SRC) $(SQL_HDR) | $(BUILD)
 	$(CC) -I ../../lib/sleela-sql/native/include $(CFLAGS) -c $< -o $@
 
-$(TARGET): main.cpp dyn_sql_server.cpp dyn_sql_server.h $(SQL_OBJ) | $(BUILD)
-	$(CXX) $(CXXFLAGS) main.cpp dyn_sql_server.cpp $(SQL_OBJ) -o $@
+$(TARGET): main.cpp dyn_sql_server.cpp dyn_sql_server.h envelopment.cpp envelopment.h $(SQL_OBJ) | $(BUILD)
+	$(CXX) $(CXXFLAGS) main.cpp dyn_sql_server.cpp envelopment.cpp $(SQL_OBJ) -o $@
 
 clean:
 	rm -rf $(BUILD)

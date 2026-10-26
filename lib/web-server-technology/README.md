@@ -15,6 +15,9 @@ themselves — the native server does that.
 | `SLWebServer` | server configuration + lifecycle (`configure`/`open`/`shutdownServer`/`active`), document root, port, threads, bind address, and the `/db` enable + writable flags |
 | `SLSqlEndpoint` | the dynamic `/db` route policy: route prefix, read-only vs writable, statement/row bounds, and read-verb classification that mirrors the native `statement_is_readonly` logic |
 | `SLDualStackBinding` | the binding descriptor; `reachesWorld()` is true only when bound to all interfaces as dual-stack IPv6+IPv4 |
+| `SLWebProgram` | Side 2: a mounted program whose backing kind is `static`, `sql`, or `meme` (named `SLWebProgram` to avoid colliding with `lib/cpu/SLProgram`) |
+| `SLWarrant` | Side 2: a cause served for a subject by a program; `matchesHost` models the host/enabled gate |
+| `SLEnvelopment` | Side 2: a domain that envelops many programs; `active()` enforces the Scientist gate (`turnOn()` + `grantScientist()` + at least one warrant) |
 
 ## Validate
 

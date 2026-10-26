@@ -47630,6 +47630,10 @@
       "sha256": "54e05a49c3334f0075f5f3ba0c748d79bd39594ecd39b13db78cd0e7f1677d5e"
     },
     {
+      "path": "lib/web-server-technology/SLEnvelopment.sleela",
+      "sha256": "b001d6e9719a144a4e94578f5c77f3af72ac41f1ee980e6a49809ae426807e1c"
+    },
+    {
       "path": "lib/web-server-technology/SLPackage.sleela",
       "sha256": "6e59f7c0fb8728cdd2f162887dbf93b4e00cfd0e20ae492339f6752d233a2d82"
     },
@@ -47638,12 +47642,20 @@
       "sha256": "12cecbab4050b1f128960ea38d7f74d120fc31d879d942185b46b59c504b1bf2"
     },
     {
+      "path": "lib/web-server-technology/SLWarrant.sleela",
+      "sha256": "aa457d4d8f21c3ade15e6b932eb4e89249b3249e26706ce27e680d6cb0e8a9a8"
+    },
+    {
+      "path": "lib/web-server-technology/SLWebProgram.sleela",
+      "sha256": "0c53ab8850b3762cce7a9953d5afce3910e88da6bb383f6a32e4eaa9df4340a1"
+    },
+    {
       "path": "lib/web-server-technology/SLWebServer.sleela",
       "sha256": "888f4c2a7ba948002e802fb708fb013ef6e413badd5d35be2c5a615d5eaed36a"
     },
     {
       "path": "lib/web-server-technology/demo-web-server-technology.sleela",
-      "sha256": "e8c33a6ac81b448f1d7f56426c9157d782499dfe53e55314f3f86d69c0468c0f"
+      "sha256": "5fefa8b6f2fef411c0898b33bb59ef2b2dd903da4e7e3ef44ce54c8f6872e457"
     },
     {
       "path": "lib/website/SLWebsiteDesign.sleela",
