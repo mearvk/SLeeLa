@@ -148,8 +148,10 @@ def main() -> int:
                             tls.settimeout(2)
                             try:
                                 data = tls.recv(1)
-                            except (OSError, ssl.SSLError):
+                            except ssl.SSLError:
                                 return
+                            except socket.timeout as exc:
+                                raise AssertionError(f"server did not reject {description} after TLS handshake") from exc
                             if data:
                                 raise AssertionError(f"server accepted {description}")
                 except (OSError, ssl.SSLError):
