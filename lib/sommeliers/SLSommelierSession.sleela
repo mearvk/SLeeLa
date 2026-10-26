@@ -1,0 +1,43 @@
+#sleela 2.1
+< A local session state model; persistence and network transport are host concerns. >
+class SLSommelierSession {
+  int STATE_NEW = 0;
+  int STATE_READY = 1;
+  int STATE_ACTIVE = 2;
+  int STATE_CLOSED = 3;
+  int state = 0;
+  String sessionId = "";
+  String locale = "en";
+  int feedbackCount = 0;
+  boolean userInitiated = false;
+
+  int currentState() { return state; }
+  String id() { return sessionId; }
+  String language() { return locale; }
+  int count() { return feedbackCount; }
+  boolean initiatedByUser() { return userInitiated; }
+
+  boolean begin(String id, String language) {
+    if (state != STATE_NEW || id == "" || language == "") { return false; }
+    sessionId = id;
+    locale = language;
+    userInitiated = true;
+    state = STATE_READY;
+    return true;
+  }
+
+  boolean start() {
+    if (state != STATE_READY) { return false; }
+    state = STATE_ACTIVE;
+    return true;
+  }
+
+  boolean recordFeedback() {
+    if (state != STATE_ACTIVE || feedbackCount >= 10000) { return false; }
+    feedbackCount = feedbackCount + 1;
+    return true;
+  }
+
+  void close() { state = STATE_CLOSED; }
+  boolean active() { return state == STATE_ACTIVE; }
+}
