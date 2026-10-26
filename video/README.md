@@ -29,3 +29,9 @@ C++ wrapper was added, and the C++ `Frame` constructor now populates the
 underlying `raw.{width,height,format}` fields (previously left zero, so
 `Frame::valid(...)` wrongly failed). See the 2026-10-03 entry in
 [`../REVISIONS.md`](../REVISIONS.md).
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

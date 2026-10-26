@@ -35,3 +35,9 @@ Run the portable contract tests with make test. The Linux provider deliberately 
 Connect accepts a network only if its SSID, BSSID and security match the latest scan. The native provider must still revalidate current state. Regulatory rules and adapter capabilities remain with the operating system and firmware.
 
 See SECURITY.md for defaults and authorized red/blue-team guidance.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

@@ -53,3 +53,9 @@ appears in shipping `.sleela` sources and `.sst` sheets.
   never fabricated per-person figures (see the glossary's term-care note).
 
 Start with [Lesson 01](01-what-is-sleela.md).
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

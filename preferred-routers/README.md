@@ -41,3 +41,9 @@ Refresh is opt-in so normal builds remain deterministic and offline.
 ## Safety / scope
 
 This component is a route **preference policy**. Actual route installation and forwarding remain the responsibility of the host networking stack and authorized network operators.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

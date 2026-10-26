@@ -142,3 +142,9 @@ A handler becomes **Native** only when the codec implementation, validation, tes
 A **Backend** handler may be wired to a supported codec library later. Until then, callers can inspect its state and fail cleanly instead of receiving a false success.
 
 See `CODECS.md` for the detailed registry and implementation order.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

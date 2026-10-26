@@ -103,3 +103,9 @@ present in the standard library). They name the algorithms and model the
 configure/enable lifecycle; the actual computation crosses the explicit VM/OS
 bridge to this native implementation. See `lib/crypto/SLNationalSuite.sleela`
 and the per-algorithm units added alongside the existing crypto façades.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

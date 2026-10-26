@@ -44,3 +44,9 @@ Fixed build-blocking defects: a broken string literal (`"\\""` →
 (`archive_segment`, `archive_path_for`) that were defined and used but never
 declared in the `Logger` class. The logger (and the server edition that links
 it) now builds. See the 2026-10-03 entry in [`../REVISIONS.md`](../REVISIONS.md).
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

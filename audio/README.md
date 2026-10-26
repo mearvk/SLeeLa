@@ -231,3 +231,9 @@ The VM owns the bounded job state. `audioRender` crosses a stable C ABI callback
 The existing `audio/c/` C ABI remains available, `impl/core/sleela_audio_mixer.c` remains the in-VM float mixer, and `audio/cpp/` remains the concrete WAV implementation.
 
 See `audio/sleela/README.md` and `audio/sleela/SLVM.md` for the complete boundary.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

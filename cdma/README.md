@@ -45,3 +45,9 @@ carrier certification, all of which a real device requires. These models are
 for education, algorithm study, and golden-model validation — not deployable
 baseband. The full, non-legal-advice notice is in
 **[`LEGAL-AND-SCOPE.md`](LEGAL-AND-SCOPE.md)**.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

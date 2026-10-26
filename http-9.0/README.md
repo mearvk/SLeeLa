@@ -44,3 +44,9 @@ See [HTTP90.SPEC.md](HTTP90.SPEC.md), [HTTP.NEGOTIATION.md](HTTP.NEGOTIATION.md)
 ## Shared route-data contract
 
 This implementation follows the SLeeLa route-data contract in `route/ROUTE.DATA.json` and `route/ROUTE.DATA.md`. Dynamic targets must be validated by the shared resolver before acceptance. VM names are architectural metadata only and do not grant capabilities.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

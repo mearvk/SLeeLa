@@ -79,3 +79,9 @@ constraint reports are generated outputs and remain ignored by Git. See
 - Record units explicitly; convert before comparing unlike units.
 - Keep assumptions, derived values, and published observations distinguishable.
 - A Spark is explanatory guidance, never a factual source.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

@@ -142,3 +142,9 @@ available:
 Already archived locally (no longer need fetching): the 1991 Tags note, RFC 1866 (HTML 2.0),
 the HTML 3.2/4.x/XHTML DTDs, the **complete HTML 4.01 prose**, XHTML 1.0 prose, XHTML 1.1 prose,
 and the Living Standard.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

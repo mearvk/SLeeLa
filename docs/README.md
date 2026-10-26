@@ -93,3 +93,9 @@ passes.
 4. Report test results with the run/commit context and link to CI instead of
    implying a permanent pass from historical successes.
 5. Keep this index current when adding, renaming, or retiring core documentation.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

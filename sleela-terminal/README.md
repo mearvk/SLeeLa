@@ -208,3 +208,8 @@ In an interactive terminal, press **Tab** to complete a command from shell built
 
 The footer ticker uses a slightly grey text colour with a 1px pure-white text outline. In **Settings → Footer ticker**, choose when rightward scrolling starts: 5, 10, 15, 30, 45, or 60 minutes after the current footer message appears. The preference is saved in the user configuration. RSS searches request the past day of stories and display up to eight headlines. When a topic feed is enabled, SleelaTerminal refreshes every 15 minutes from 9:00 AM through 4:59 PM local time, and hourly outside that workday window. Feed updates require network access and `curl`.
 
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

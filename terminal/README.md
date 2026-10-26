@@ -33,3 +33,9 @@ upstream GNU Bash repository. That made it appear as a submodule reference on
 GitHub and pointed at upstream rather than being SLeeLa's own development
 folder. It has been converted into a normal tracked directory so development can
 happen directly in-repo.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

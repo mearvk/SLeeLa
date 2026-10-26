@@ -161,3 +161,9 @@ supported library later; until then, callers can inspect its state and fail
 cleanly instead of receiving a false success.
 
 See `COMPRESSION.md` for the detailed registry and implementation order.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

@@ -93,3 +93,9 @@ All nine files were compiled and exercised when added:
   returning `200` / `404` / `405` over HTTP.
 - **C** — all three compile clean under `-Wall -Wextra`; the HTTP server was
   confirmed over `curl`, and the FTP server over a full control-channel session.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

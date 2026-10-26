@@ -97,3 +97,9 @@ The concrete bridge is server-edition/annotation_language_bridge.hpp/.cpp. It in
 A single valid @next becomes the Nexter Colony candidate. Multiple @next declarations remain metadata but are rejected by the current runtime until an explicit multi-destination forwarding policy exists.
 
 See server-edition/ANNOTATION_LANGUAGE.md.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

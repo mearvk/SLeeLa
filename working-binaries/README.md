@@ -44,3 +44,9 @@ SLEELA_BIN=working-binaries/sleela tools/idea-check.sh
 Built in the Kiro sandbox from this repository's `impl/` tree with the
 top-level `Makefile` (`g++ -std=c++17 -O2`, pthread). SHA-256 of the copies at
 commit time is recorded in the pull request description.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

@@ -48,3 +48,9 @@ CMake uses platform-aware install directories. To stage a user-controlled instal
     cmake --install build/compiler --config Release --prefix build/compiler/stage
 
 Use an explicit system prefix only when the installer or administrator intends a system-wide installation. See ARCHITECTURE.md and PRODUCTION-INTEGRATION-GATE.md for the production-integration gate.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

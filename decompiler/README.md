@@ -97,3 +97,9 @@ For libraries, the pipeline additionally models dependency relationships and pub
 Analysis is read-only by default. Slecompiler™ never executes an analyzed artifact as part of parsing or lifting. Driver and kernel-module images are treated as untrusted input. Kernel-mode loading, device I/O, memory writes, and execution of recovered native code are outside the default operation.
 
 Use the subsystem only with software you are authorized to inspect.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

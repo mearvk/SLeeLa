@@ -210,3 +210,9 @@ desktop platforms instead of inheriting three different native themes. The
 rules are written down and enforced in [`UI-PRINCIPLES.md`](UI-PRINCIPLES.md).
 
 — SleelaUI™ · MEARVK LLC · 2026
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

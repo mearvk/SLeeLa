@@ -84,3 +84,9 @@ XML is declarative and allow-listed. It cannot invoke arbitrary shell commands o
 ## 10 — Apache/Tomcat Web Server Deployment
 
 `10-webserver-deployment.md` shows how a web-aware application can hand its deployment artifact and health endpoint to the cross-platform `api/webserver/` module.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

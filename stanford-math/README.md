@@ -237,3 +237,9 @@ diffuse attributions are marked as such in the data.
 
 *Content was rephrased from the above sources for compliance with licensing
 restrictions.*
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

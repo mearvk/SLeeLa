@@ -22,3 +22,9 @@ produce a live DNS/IP resolution rather than a static path result.
 The resolver does not rewrite operating-system routes. It supplies a current
 resolution result to the HTTP/server decision layer, which can then combine it
 with the preferred-router subsystem.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

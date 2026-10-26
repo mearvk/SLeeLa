@@ -65,3 +65,9 @@ For backward compatibility, `--palette` and `--hex COLOR` without `--theme` cont
 | Russian and Slavic (medium) | `#202733` | `#A9C0DD` | `#8FC4B2` | `#D6BD8B` | `#9AA3AF` |
 | Central Asian / Silk Road | `#1C2529` | `#7FADE0` | `#45C6C2` | `#D9B56D` | `#92A3A0` |
 | East Asian | `#171A1C` | `#D97878` | `#72C7A5` | `#D8B76A` | `#969F9B` |
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

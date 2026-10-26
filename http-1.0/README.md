@@ -211,3 +211,9 @@ routes at the application layer, never treat X-SLeeLa routing IDs or download
 session IDs as credentials, and bind resume state to an authenticated principal
 and stable file identity. The declarative classes under `lib/http-1.0` document
 these contracts; they do not replace native enforcement.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

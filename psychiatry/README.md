@@ -63,3 +63,9 @@ Configuration: `SLEELA_KEY_URL` overrides the remote URL (default: the repo's
 The startup probe uses `--startup` internally: a matching key is silent, while
 mismatch/offline/unreadable states emit only the minor note described above and
 return success so normal SLeeLa startup is not interrupted.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

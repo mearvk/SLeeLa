@@ -60,3 +60,9 @@ audit is a lint/consistency gate; runtime instrumentation and explicit
 behavioral assertions remain the authoritative evidence for behavior.
 
 See TEST.MATRIX.md, FUNCTION.COVERAGE.POLICY.md, TEST.MAP.yml, CI.MATRIX.md, negative/, regression/, and sanitizers/.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

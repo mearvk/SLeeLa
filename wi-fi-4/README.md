@@ -36,3 +36,9 @@ The C, C++, and Java files provide static reference metadata and simple capabili
 ## Status
 
 Research and reference-source foundation. Compile examples with the commands in [BUILDING.md](BUILDING.md). Hardware-level implementation requires operating-system and driver integration, compatible certified radios, regulatory controls, and conformance testing.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

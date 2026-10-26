@@ -60,3 +60,9 @@ the full surface and the `SL_ARRAY` / `OP_ARR*` implementation. Earlier
 collection structures (list/stack/queue/map) remain modelled as the semantic
 `struct`-based contracts in `data_structures.sleela`; arrays are the primitive
 sequence those higher structures can be expressed over.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

@@ -142,3 +142,9 @@ many streams, and the token-bucket rate limit keeps egress predictable on shared
 or long-haul links. Synchro reports the real observed latency for those
 transfers with the same measured percentiles as the UDP path — it does not, and
 will not, promise a fixed delivery time across such distances.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

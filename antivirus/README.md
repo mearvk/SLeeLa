@@ -329,3 +329,9 @@ python tools/sleelavirin_manifest.py --root . --verify INTEGRITY-MANIFEST.json
 ```
 
 The checksum list and manifest are integrity checks, not independent publisher authentication. An attacker who can replace both files and their checksums can recompute them. For tamper evidence, compare the archive's SHA-256 with a trusted value obtained independently, or authenticate a release signature using a public key distributed through a separate trusted channel. The release workflow checks its manifest before packaging.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

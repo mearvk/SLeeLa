@@ -28,3 +28,9 @@ Run locally:
 python3 tests/jdk28_functional_equivalence.py
 python3 tests/jdk28_functional_equivalence.py --functional
 ```
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
