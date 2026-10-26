@@ -32,7 +32,17 @@ To request a non-loopback bind, pass --allow-remote explicitly:
 
     ./server-edition/sleelas --bind 192.0.2.10 --port 19866 --allow-remote
 
-The last example uses a documentation-only address. A remote bind is not safe by itself: the inspected server path does not provide built-in TLS or authenticated peer identity. Do not expose it directly to untrusted networks. Use a protected deployment boundary and service-level authorization; these controls remain release requirements.
+Remote binding is refused unless TLS certificate, private key, client CA, an allowlisted client certificate Common Name, and at least one explicit authorization rule are configured. The remote path uses TLS 1.3 only and requires client certificates signed by the configured CA.
+
+Example (replace paths and identities with your deployment values):
+
+    ./server-edition/sleelas --bind 0.0.0.0 --allow-remote \
+      --tls-cert certs/server-chain.pem --tls-key certs/server-key.pem \
+      --tls-client-ca certs/client-ca.pem \
+      --allow-peer billing-client \
+      --authorize billing-client:billing:submit
+
+The server authorizes exact `identity:service:operation` triples; no permissions are granted implicitly. The identity is taken from the verified client certificate's Common Name (CN), not from packet metadata. Do not reuse a CN for different principals. Use a server certificate with the correct Subject Alternative Name (SAN), protect private-key files, and provision client certificates only from a trusted CA. This is an initial mutual-TLS control, not a claim of complete production security; review certificate rotation, revocation, rate limiting, replay protection, and deployment policy before production.
 
 ## Processing boundary
 
