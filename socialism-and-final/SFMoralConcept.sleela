@@ -1,0 +1,122 @@
+<< socialism-and-final/SFMoralConcept.sleela
+   SLeeLa Standard Library Definition.
+   Definition: A named moral concept a creator can reason with, honestly. >>
+#sleela 2.1
+<< Family: socialism-and-final. SFMoralConcept lets a creator represent an
+   ethical concept as a first-class value: its name, a faithful statement, the
+   virtue it reaches for, and the two failures that flank it. It follows the
+   repo Integrity Goal -- record a concept as the tradition states it, credit
+   the origin, invent no doctrine -- and the 1491 principle that a sound bond is
+   kept by its symmetry (reach balanced with regard).
+
+   It takes no side as absolute. A concept is modeled as an Aristotelian mean:
+   a good aim sits between an excess and a deficiency, so a creator can reason
+   about where a choice falls rather than merely label it good or bad.
+
+   Typical use:
+     SFMoralConcept c = new SFMoralConcept();
+     c.define("Fairness", "Give each their due by a rule applied the same to all.");
+     c.flank("favouritism (too little rule)", "cruelty of rule without mercy");
+     print(c.render()); >>
+class SFMoralConcept {
+
+  < the name of the concept (e.g. Fairness, Solidarity, Honesty) >
+  String title;
+  < a faithful one-sentence statement of the concept >
+  String statement;
+  < the deficiency: the failure of having too little of the virtue >
+  String deficiency;
+  < the excess: the failure of pushing the virtue past its measure >
+  String excess;
+  < the source tradition this statement is faithful to, or "none" >
+  String tradition;
+
+  < ---- lifecycle ------------------------------------------------------ >
+
+  void create() {
+    title = "Unnamed";
+    statement = "";
+    deficiency = "";
+    excess = "";
+    tradition = "none";
+  }
+
+  < Define the concept with its faithful statement. >
+  void define(String t, String s) {
+    title = t;
+    statement = s;
+  }
+
+  < Name the flanking failures -- the mean sits between them. >
+  void flank(String tooLittle, String tooMuch) {
+    deficiency = tooLittle;
+    excess = tooMuch;
+  }
+
+  < Credit the tradition the statement is faithful to. >
+  void attribute(String source) {
+    tradition = source;
+  }
+
+  < ---- reasoning helpers ---------------------------------------------- >
+
+  < True when a described choice is named by neither failure, i.e. nearer >
+  < the mean. The creator passes whether the choice matched excess/deficiency. >
+  boolean isMeasured(boolean matchedExcess, boolean matchedDeficiency) {
+    return !matchedExcess && !matchedDeficiency;
+  }
+
+  < A readable one-line rendering of the concept. >
+  String render() {
+    return title + ": " + statement;
+  }
+
+  < The mean, stated with both flanks, so neither extreme passes as the virtue. >
+  String mean() {
+    return title + " is the measure between " + deficiency + " and " + excess + ".";
+  }
+
+  < The honesty note: concept plus the tradition it is credited to. >
+  String provenance() {
+    return title + " -- as stated by: " + tradition + ".";
+  }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Values faithful to the real origin: moral concepts modeled here as the >
+  < Aristotelian mean; the class credits traditions, asserts no doctrine. >
+  String metaVersion = "1.0.0";
+  int metaId = 3;
+  String metaAuthor = "classical ethics (Aristotle, Nicomachean Ethics) as modeling frame";
+  String metaDate = "2026-10-26";
+  String metaCopyright = "none (public philosophical tradition)";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  String metaOrigin = "International";
+  String metaBirthDate = "c. 340 BCE (Nicomachean Ethics)";
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

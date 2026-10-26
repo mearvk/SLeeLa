@@ -1,0 +1,60 @@
+<< socialism-and-final/SFCreator.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable entry point -- a creator renders design, math, and a
+   moral concept together, each faithful to its origin. >>
+#sleela 2.1
+<< Family: socialism-and-final. SFCreator is the sibling demo that composes the
+   three source documents of this folder so a creator can see them working
+   together: a design principle to reason with, exact proportional math to lay
+   out with, and a moral concept to weigh a choice against.
+
+   It follows the 1751 principle -- one unified reading built of many faithful
+   parts -- and the 1491 principle -- each part kept in symmetry. It prints a
+   small, honest report; it invents nothing and credits each origin. >>
+class SFCreator {
+
+  void main() {
+    print("socialism-and-final -- a creator's working set");
+    print("================================================");
+
+    < --- Design: reason with a named principle --- >
+    SFDesignPrinciple contrast = new SFDesignPrinciple();
+    contrast.create();
+    contrast.define("Contrast", "Difference creates hierarchy and draws the eye.", 8);
+    contrast.bound("harsh, exhausting noise", "flat, unreadable sameness");
+    print("");
+    print("DESIGN");
+    print("  " + contrast.render());
+    print("  " + contrast.balance());
+    print("  renderer weight: " + ("" + contrast.weightPercent()) + "%");
+
+    < --- Math: lay out with exact golden proportion --- >
+    SFGoldenMeasure measure = new SFGoldenMeasure();
+    int total = 800;
+    int major = measure.goldenMajor(total);
+    int minor = measure.goldenMinor(total);
+    print("");
+    print("MATH");
+    print("  golden split of " + ("" + total) + ": major=" + ("" + major)
+        + " minor=" + ("" + minor));
+    print("  phi (x1000) = " + ("" + measure.phiMilli()));
+    print("  fib(10) = " + ("" + measure.fib(10)));
+
+    < --- Moral: weigh a choice against a concept --- >
+    SFMoralConcept fairness = new SFMoralConcept();
+    fairness.create();
+    fairness.define("Fairness", "Give each their due by a rule applied the same to all.");
+    fairness.flank("favouritism -- no rule", "rigid rule with no mercy");
+    fairness.attribute("Aristotle (Nicomachean Ethics); the repo Integrity Goal");
+    print("");
+    print("MORAL");
+    print("  " + fairness.render());
+    print("  " + fairness.mean());
+    print("  " + fairness.provenance());
+
+    < --- The whole, unified from honest parts (1751) --- >
+    print("");
+    print("One set: design reasons, math measures, morals weigh -- unified, not single.");
+    print("socialism-and-final: rendered.");
+  }
+}

@@ -1,0 +1,118 @@
+<< socialism-and-final/SFGoldenMeasure.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Integer-exact proportional math a creator renders layout with. >>
+#sleela 2.1
+<< Family: socialism-and-final. SFGoldenMeasure gives a creator the proportional
+   mathematics behind excellent composition -- the golden ratio and a Fibonacci
+   measure -- computed in exact integer arithmetic so a layout is reproducible
+   and free of floating-point drift.
+
+   The golden ratio phi = (1 + sqrt 5)/2 is approached here through the Fibonacci
+   sequence, whose consecutive ratios converge to phi. A renderer that needs a
+   pleasing split of a length asks goldenMajor(total): the larger part of a
+   golden section, with the remainder as the minor part.
+
+   Nothing here is asserted as the only beautiful proportion; it is one
+   well-founded, widely used measure, supplied exactly.
+
+   Typical use:
+     SFGoldenMeasure m = new SFGoldenMeasure();
+     int major = m.goldenMajor(800);   larger part of an 800px golden split
+     int minor = 800 - major;          the remainder >>
+class SFGoldenMeasure {
+
+  < ---- Fibonacci (the integer road to phi) ---------------------------- >
+
+  < The nth Fibonacci number, exact. fib(0)=0, fib(1)=1. >
+  < Defined recursively: each call evaluates fresh, so the value is correct for >
+  < any small n a layout needs (fib(15)=610 and fib(16)=987 give the phi ratio). >
+  int fib(int n) {
+    if (n <= 0) { return 0; }
+    if (n == 1) { return 1; }
+    return fib(n - 1) + fib(n - 2);
+  }
+
+  < ---- the golden section, exact in integers -------------------------- >
+
+  < The larger part of a golden section of `total`, via the Fibonacci ratio. >
+  < Uses fib(15)/fib(16) = 610/987 ~= 0.6180, a close rational for phi-1. >
+  int goldenMajor(int total) {
+    if (total <= 0) { return 0; }
+    return (total * 610) / 987;
+  }
+
+  < The smaller (minor) part: the remainder of the section. >
+  int goldenMinor(int total) {
+    if (total <= 0) { return 0; }
+    return total - goldenMajor(total);
+  }
+
+  < Phi scaled x1000 as an int (1618), so callers avoid floats. >
+  int phiMilli() {
+    return 1618;
+  }
+
+  < True when a:b sits within tolerance of the golden ratio (b the larger). >
+  < Compares a*1618 to b*1000 with a +/- `tol` (per-mille) band. >
+  boolean isGolden(int a, int b, int tol) {
+    if (a <= 0) { return false; }
+    int left = a * 1618;
+    int right = b * 1000;
+    int diff = left - right;
+    if (diff < 0) { diff = 0 - diff; }
+    return diff <= (right * tol) / 1000;
+  }
+
+  < ---- a modular scale a renderer can step through -------------------- >
+
+  < The kth step of a type/size scale from `base`, stepping by the ratio >
+  < numerator/denominator (e.g. 1618/1000 for golden). k may be 0..n. >
+  int scaleStep(int base, int k) {
+    int v = base;
+    int i = 0;
+    while (i < k) {
+      v = (v * 1618) / 1000;
+      i = i + 1;
+    }
+    return v;
+  }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  < Values faithful to the real origin: the golden ratio and Fibonacci are >
+  < ancient, ownerless mathematics; attribution is to that shared record. >
+  String metaVersion = "1.0.0";
+  int metaId = 2;
+  String metaAuthor = "classical mathematics (Euclid; Fibonacci / Leonardo of Pisa)";
+  String metaDate = "2026-10-26";
+  String metaCopyright = "none (public-domain mathematics)";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  String metaOrigin = "International";
+  String metaBirthDate = "c. 300 BCE (Euclid); 1202 (Liber Abaci)";
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 10;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
