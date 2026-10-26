@@ -32,6 +32,7 @@ extern "C" int sleela_wst_dyn_sql_server_run(int, char **) {
 #else
 #include "dyn_sql_server.h"
 #include "envelopment.h"
+#include "hardening.h"
 #include "../../lib/sleela-sql/native/include/sleela_sql.h"
 
 #include <arpa/inet.h>
@@ -99,6 +100,12 @@ struct Config {
   // Side 2: envelopment. When env.active() is false the server behaves exactly
   // as Side 1 (single program/meme per domain) and never consults this.
   sleela::wst::Envelopment env;
+
+  // Section-3 hardening. All optional; each defaults to off/open.
+  // RateLimiter holds a mutex, so Config is non-copyable (passed by ref only).
+  mutable sleela::wst::RateLimiter rate;   // admission control (disabled by default)
+  sleela::wst::WriteAuth write_auth;       // bearer-token gate on /db mutations
+  std::vector<std::string> trusted_proxies;// peers whose Forwarded hdr we honour
 };
 
 std::string lo(std::string s) {
@@ -111,6 +118,7 @@ const char *reason(int s) {
     case 200: return "OK";
     case 204: return "No Content";
     case 400: return "Bad Request";
+    case 401: return "Unauthorized";
     case 403: return "Forbidden";
     case 404: return "Not Found";
     case 405: return "Method Not Allowed";
@@ -371,33 +379,40 @@ class Log {
   }
 };
 
+// An accepted connection: its descriptor plus the immediate TCP peer IP (used
+// for rate limiting, logging, and trusted-proxy client-IP resolution).
+struct Conn {
+  int fd;
+  std::string peer_ip;
+};
+
 class Pool {
   std::mutex m;
   std::condition_variable cv;
-  std::deque<int> q;
+  std::deque<Conn> q;
   std::vector<std::thread> w;
   bool end = false;
  public:
-  Pool(unsigned n, std::function<void(int)> fn) {
+  Pool(unsigned n, std::function<void(Conn)> fn) {
     for (unsigned i = 0; i < n; ++i)
       w.emplace_back([this, fn] {
         for (;;) {
-          int fd;
+          Conn c;
           {
             std::unique_lock<std::mutex> g(m);
             cv.wait(g, [this] { return end || !q.empty(); });
             if (end && q.empty()) return;
-            fd = q.front();
+            c = q.front();
             q.pop_front();
           }
-          fn(fd);
+          fn(c);
         }
       });
   }
-  bool add(int fd) {
+  bool add(const Conn &c) {
     std::lock_guard<std::mutex> g(m);
     if (end || q.size() >= QMAX) return false;
-    q.push_back(fd);
+    q.push_back(c);
     cv.notify_one();
     return true;
   }
@@ -499,8 +514,20 @@ bool statement_is_readonly(const std::string &sql) {
 // envelopment SQL programs, which supply their own per-program dir/policy.
 // query_path is the request path with any program mount prefix already removed,
 // so an enveloped SQL program at mount "/lab" still answers "/db/query".
+// Bind an ssql_db to a directory WITHOUT the per-request stat()/mkdir() that
+// ssql_open performs. Safe because every db directory the server will use is
+// canonicalized and validated once at startup (Side-1 --db and each envelopment
+// SQL program). This removes a filesystem syscall from the hot request path --
+// the handle-reuse optimization. Returns false only if the path is too long.
+bool bind_db(ssql_db *db, const std::string &dir) {
+  if (dir.empty() || dir.size() >= sizeof(db->dir)) return false;
+  std::snprintf(db->dir, sizeof(db->dir), "%s", dir.c_str());
+  return true;
+}
+
 Resp db_endpoint_on(const Req &q, const std::string &query_path,
                     const fs::path &db_dir, bool db_writable,
+                    const sleela::wst::WriteAuth &write_auth,
                     std::string &log_detail) {
   Resp r;
   r.keep = q.keep;
@@ -516,11 +543,11 @@ Resp db_endpoint_on(const Req &q, const std::string &query_path,
 
   if (query_path == "/db/health" || query_path == "/db" || query_path == "/db/") {
     ssql_db db;
-    ssql_status st = ssql_open(&db, db_dir.c_str());
+    bool bound = bind_db(&db, db_dir.string());
     std::ostringstream o;
     o << "{\"server\":\"SLeeLa\",\"engine\":\"sleela-sql\",\"dialects\":[\"sql\",\"sleelasql\"],"
       << "\"writable\":" << (db_writable ? "true" : "false") << ","
-      << "\"status\":\"" << (st == SSQL_OK ? "ok" : ssql_strerror(st)) << "\"}\n";
+      << "\"status\":\"" << (bound ? "ok" : "bad-path") << "\"}\n";
     std::string b = o.str();
     r.body.assign(b.begin(), b.end());
     log_detail = "db-health";
@@ -607,9 +634,22 @@ Resp db_endpoint_on(const Req &q, const std::string &query_path,
     log_detail = "db-query write-denied";
     return r;
   }
+  // Writes additionally require a valid bearer token when one is configured.
+  if (!readonly && write_auth.required()) {
+    auto ai = q.h.find("authorization");
+    std::string authz = ai != q.h.end() ? ai->second : std::string();
+    if (!write_auth.authorize(authz)) {
+      r.code = 401;
+      std::string b = "{\"error\":\"write authorization required\"}\n";
+      r.body.assign(b.begin(), b.end());
+      r.keep = false;
+      log_detail = "db-query write-unauthorized";
+      return r;
+    }
+  }
 
   ssql_db db;
-  if (ssql_open(&db, db_dir.c_str()) != SSQL_OK) {
+  if (!bind_db(&db, db_dir.string())) {
     r.code = 500;
     std::string b = "{\"error\":\"cannot open database\"}\n";
     r.body.assign(b.begin(), b.end());
@@ -658,7 +698,8 @@ Resp db_endpoint_on(const Req &q, const std::string &query_path,
 
 // Side-1 /db endpoint: server-wide db dir + policy, path used verbatim.
 Resp db_endpoint(const Req &q, const Config &cfg, std::string &log_detail) {
-  return db_endpoint_on(q, q.path, cfg.db_dir, cfg.db_writable, log_detail);
+  return db_endpoint_on(q, q.path, cfg.db_dir, cfg.db_writable, cfg.write_auth,
+                        log_detail);
 }
 
 // ---- static + meme program handlers (shared by Side 1 and envelopment) ------
@@ -714,7 +755,9 @@ Resp serve_static(const Req &q, const fs::path &root, const std::string &rel_pat
 // own root-relative path space). This is the only entry point Side 2 adds to
 // request handling, and it reuses the same static/SQL machinery as Side 1.
 Resp run_program(const Req &q, const sleela::wst::Program &prog,
-                 const std::string &rel, std::string &log_detail) {
+                 const std::string &rel,
+                 const sleela::wst::WriteAuth &write_auth,
+                 std::string &log_detail) {
   using sleela::wst::ProgramKind;
   switch (prog.kind) {
     case ProgramKind::Meme: {
@@ -738,7 +781,8 @@ Resp run_program(const Req &q, const sleela::wst::Program &prog,
       // owns "/db..." under its mount. Anything else under the program is 404.
       std::string qp = rel;
       if (qp.empty() || qp == "/") qp = "/db/health";
-      Resp r = db_endpoint_on(q, qp, prog.db_dir, prog.db_writable, log_detail);
+      Resp r = db_endpoint_on(q, qp, prog.db_dir, prog.db_writable, write_auth,
+                              log_detail);
       log_detail = "program kind=sql name=" + prog.name + " " + log_detail;
       return r;
     }
@@ -779,7 +823,10 @@ Resp make(const Req &q, const Config &cfg, std::string &log_detail) {
       << ",\"envelopment\":" << (cfg.env.active() ? "true" : "false")
       << ",\"scientist\":" << (cfg.env.scientist ? "true" : "false")
       << ",\"programs\":" << cfg.env.programs.size()
-      << ",\"warrants\":" << cfg.env.warrants.size() << "}\n";
+      << ",\"warrants\":" << cfg.env.warrants.size()
+      << ",\"rate_limit\":" << (cfg.rate.enabled() ? "true" : "false")
+      << ",\"write_auth\":" << (cfg.write_auth.required() ? "true" : "false")
+      << ",\"trusted_proxies\":" << cfg.trusted_proxies.size() << "}\n";
     std::string b = o.str();
     r.type = "application/json";
     r.body.assign(b.begin(), b.end());
@@ -810,7 +857,7 @@ Resp make(const Req &q, const Config &cfg, std::string &log_detail) {
         if (rel[0] != '/') rel = "/" + rel;
       }
       std::string pdetail;
-      Resp r2 = run_program(q, *prog, rel, pdetail);
+      Resp r2 = run_program(q, *prog, rel, cfg.write_auth, pdetail);
       log_detail = "envelopment cause=\"" + cause + "\" host=" +
                    (host.empty() ? "-" : host) + " " + pdetail;
       return r2;
@@ -866,7 +913,37 @@ Resp make(const Req &q, const Config &cfg, std::string &log_detail) {
   return r;
 }
 
-void serve(int fd, const Config &cfg, Log &log) {
+// Effective client IP for a request: the immediate peer unless it is a trusted
+// proxy that supplied a Forwarded / X-Forwarded-For header (see hardening.cpp).
+std::string effective_client_ip(const Req &q, const std::string &peer_ip,
+                                const Config &cfg) {
+  if (cfg.trusted_proxies.empty()) return peer_ip;
+  std::string xff;
+  auto xi = q.h.find("x-forwarded-for");
+  if (xi != q.h.end()) xff = xi->second;
+  if (xff.empty()) {
+    // RFC 7239 Forwarded: for=1.2.3.4; take the first for= token.
+    auto fi = q.h.find("forwarded");
+    if (fi != q.h.end()) {
+      const std::string &fwd = fi->second;
+      size_t p = lo(fwd).find("for=");
+      if (p != std::string::npos) {
+        size_t s = p + 4;
+        size_t e2 = s;
+        while (e2 < fwd.size() && fwd[e2] != ';' && fwd[e2] != ',') ++e2;
+        xff = fwd.substr(s, e2 - s);
+        // strip surrounding quotes/brackets
+        std::string t;
+        for (char c : xff) if (c != '"' && c != '[' && c != ']') t.push_back(c);
+        xff = t;
+      }
+    }
+  }
+  return sleela::wst::client_ip_from(peer_ip, xff, cfg.trusted_proxies);
+}
+
+void serve(Conn conn, const Config &cfg, Log &log) {
+  const int fd = conn.fd;
   timeval tv{15, 0};
   setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof tv);
   setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof tv);
@@ -885,9 +962,27 @@ void serve(int fd, const Config &cfg, Log &log) {
       std::string msg = "Bad Request\n";
       er.body.assign(msg.begin(), msg.end());
       response(fd, bad, er, "SLeeLa-WST");
-      log.put("request status=400 detail=" + e);
+      log.put("request client=" + conn.peer_ip + " status=400 detail=" + e);
       break;
     }
+
+    const std::string client = effective_client_ip(q, conn.peer_ip, cfg);
+
+    // Section-3 admission control: windowed rate limit per client (and global).
+    if (cfg.rate.enabled() && !cfg.rate.allow(client)) {
+      Resp er;
+      er.code = 503; er.keep = false;
+      er.type = "application/json";
+      std::string msg = "{\"error\":\"rate limit exceeded; retry later\"}\n";
+      er.body.assign(msg.begin(), msg.end());
+      // A Retry-After hint is added by response() only for the generic path; we
+      // keep it simple and signal 503 with Connection: close.
+      response(fd, q, er, "SLeeLa-WST/dynamic-sql");
+      log.put("request client=" + client + " method=" + q.method + " path=" +
+              q.path + " status=503 note=rate-limited");
+      break;
+    }
+
     auto st = std::chrono::steady_clock::now();
     std::string detail;
     Resp r = make(q, cfg, detail);
@@ -895,11 +990,11 @@ void serve(int fd, const Config &cfg, Log &log) {
     auto us = std::chrono::duration_cast<std::chrono::microseconds>(
                   std::chrono::steady_clock::now() - st)
                   .count();
-    log.put("request method=" + q.method + " path=" + q.path +
-            " version=" + q.version + " status=" + std::to_string(r.code) +
-            " bytes=" + std::to_string(r.body.size()) +
-            " duration_us=" + std::to_string(us) +
-            (detail.empty() ? "" : " note=" + detail));
+    log.put("request client=" + client + " method=" + q.method + " path=" +
+            q.path + " version=" + q.version + " status=" +
+            std::to_string(r.code) + " bytes=" +
+            std::to_string(r.body.size()) + " duration_us=" +
+            std::to_string(us) + (detail.empty() ? "" : " note=" + detail));
     if (!q.keep || !r.keep) break;
   }
   close(fd);
@@ -970,7 +1065,15 @@ void usage() {
       << "  Side 2 -- envelopment (many programs per domain; Scientist-gated):\n"
       << "  --config FILE    load an envelopment config file (programs/warrants)\n"
       << "  --envelopment    enable envelopment (requires --scientist too)\n"
-      << "  --scientist      assert the Scientist capability that gates Side 2\n";
+      << "  --scientist      assert the Scientist capability that gates Side 2\n"
+      << "\n"
+      << "  Hardening (Section 3):\n"
+      << "  --rate-per-peer N    max requests per window per client IP (0=off)\n"
+      << "  --rate-global N      max requests per window across all peers (0=off)\n"
+      << "  --rate-window-ms N   rate-limit window in ms (default 1000)\n"
+      << "  --write-token TOK    require 'Authorization: Bearer TOK' for /db writes\n"
+      << "  --trusted-proxy IP   honour Forwarded/X-Forwarded-For from this peer\n"
+      << "                       (repeatable; prevents client IP spoofing)\n";
 }
 
 int run(int ac, char **av) {
@@ -980,6 +1083,10 @@ int run(int ac, char **av) {
   bool once = false;
   std::string config_path;
   bool cli_envelopment = false, cli_scientist = false;
+  // Section-3 hardening options (0/empty => feature off).
+  unsigned rate_per_peer = 0, rate_global = 0, rate_window_ms = 1000;
+  std::string write_token;
+  std::vector<std::string> trusted_proxies;
   for (int i = 1; i < ac; ++i) {
     std::string a = av[i];
     if (a == "--port" && i + 1 < ac) port = std::atoi(av[++i]);
@@ -992,11 +1099,48 @@ int run(int ac, char **av) {
     else if (a == "--config" && i + 1 < ac) config_path = av[++i];
     else if (a == "--envelopment") cli_envelopment = true;
     else if (a == "--scientist") cli_scientist = true;
+    else if (a == "--rate-per-peer" && i + 1 < ac) rate_per_peer = (unsigned)std::strtoul(av[++i], nullptr, 10);
+    else if (a == "--rate-global" && i + 1 < ac) rate_global = (unsigned)std::strtoul(av[++i], nullptr, 10);
+    else if (a == "--rate-window-ms" && i + 1 < ac) rate_window_ms = (unsigned)std::strtoul(av[++i], nullptr, 10);
+    else if (a == "--write-token" && i + 1 < ac) write_token = av[++i];
+    else if (a == "--trusted-proxy" && i + 1 < ac) trusted_proxies.push_back(av[++i]);
     else if (a == "--once") once = true;
     else if (a == "--help" || a == "-h") { usage(); return 0; }
     else { std::cerr << "unknown option: " << a << "\n"; return 2; }
   }
   if (port < 1 || port > 65535 || threads < 1 || threads > TMAX) return 2;
+
+  // Resolve hardening settings from the config file first (if any), then apply
+  // CLI flags on top so the command line overrides the file. This gives the
+  // "startup settings OR configuration file settings" control surface for the
+  // Section-3 features, matching the envelopment control surface.
+  bool cli_rate_per_peer = false, cli_rate_global = false, cli_rate_window = false;
+  // (track which CLI rate flags were explicitly set so file values are not
+  //  silently clobbered by defaults)
+  for (int i = 1; i < ac; ++i) {
+    std::string a = av[i];
+    if (a == "--rate-per-peer") cli_rate_per_peer = true;
+    else if (a == "--rate-global") cli_rate_global = true;
+    else if (a == "--rate-window-ms") cli_rate_window = true;
+  }
+  if (!config_path.empty()) {
+    sleela::wst::HardeningSettings hs;
+    std::string herr;
+    if (!load_hardening_config(config_path, hs, herr)) {
+      std::cerr << "config: " << herr << "\n";
+      return 2;
+    }
+    if (hs.has_rate_per_peer && !cli_rate_per_peer) rate_per_peer = hs.rate_per_peer;
+    if (hs.has_rate_global && !cli_rate_global) rate_global = hs.rate_global;
+    if (hs.has_rate_window && !cli_rate_window) rate_window_ms = hs.rate_window_ms;
+    if (hs.has_write_token && write_token.empty()) write_token = hs.write_token;
+    for (const auto &p : hs.trusted_proxies) trusted_proxies.push_back(p);
+  }
+
+  if (rate_window_ms < 1) rate_window_ms = 1000;
+  cfg.rate.configure(rate_per_peer, rate_global, std::chrono::milliseconds(rate_window_ms));
+  if (!write_token.empty()) cfg.write_auth.set_token(write_token);
+  cfg.trusted_proxies = trusted_proxies;
 
   std::error_code e;
   cfg.root = fs::weakly_canonical(cfg.root, e);
@@ -1004,6 +1148,15 @@ int run(int ac, char **av) {
   if (!cfg.db_dir.empty()) {
     cfg.db_dir = fs::weakly_canonical(cfg.db_dir, e);
     if (e) { std::cerr << "invalid --db directory\n"; return 2; }
+    // Create/validate once at startup so the request path can bind the engine
+    // without a per-request stat()/mkdir() (ssql_open's work, done here once).
+    std::error_code ce;
+    if (!fs::is_directory(cfg.db_dir, ce)) {
+      fs::create_directories(cfg.db_dir, ce);
+      if (ce || !fs::is_directory(cfg.db_dir, ce)) {
+        std::cerr << "cannot create --db directory\n"; return 2;
+      }
+    }
   }
 
   // Side 2: load envelopment from the config file (if any), then let the CLI
@@ -1044,6 +1197,15 @@ int run(int ac, char **av) {
                   << "' has an invalid db directory\n";
         return 2;
       }
+      std::error_code ce;
+      if (!fs::is_directory(cd, ce)) {
+        fs::create_directories(cd, ce);
+        if (ce || !fs::is_directory(cd, ce)) {
+          std::cerr << "envelopment: program '" << prog.name
+                    << "' db directory cannot be created\n";
+          return 2;
+        }
+      }
       prog.db_dir = cd.string();
     }
   }
@@ -1067,18 +1229,46 @@ int run(int ac, char **av) {
                              : cfg.env.enabled ? "enabled-inactive" : "off") +
           " scientist=" + (cfg.env.scientist ? "yes" : "no") +
           " programs=" + std::to_string(cfg.env.programs.size()) +
-          " warrants=" + std::to_string(cfg.env.warrants.size()));
+          " warrants=" + std::to_string(cfg.env.warrants.size()) +
+          " rate_limit=" + (cfg.rate.enabled() ? "on" : "off") +
+          " write_auth=" + (cfg.write_auth.required() ? "on" : "off") +
+          " trusted_proxies=" + std::to_string(cfg.trusted_proxies.size()));
 
-  Pool pool(threads, [&](int fd) { serve(fd, cfg, log); });
+  Pool pool(threads, [&](Conn c) { serve(c, cfg, log); });
+  auto last_sweep = std::chrono::steady_clock::now();
   while (!g_stop) {
     pollfd p{l, POLLIN, 0};
     int rc = poll(&p, 1, 500);
+    // Periodically reclaim aged-out per-peer rate-limit windows.
+    if (cfg.rate.enabled()) {
+      auto now = std::chrono::steady_clock::now();
+      if (now - last_sweep > std::chrono::seconds(10)) {
+        cfg.rate.sweep(now);
+        last_sweep = now;
+      }
+    }
     if (rc <= 0) continue;
-    int fd = accept(l, nullptr, nullptr);
+    sockaddr_storage ss{};
+    socklen_t slen = sizeof ss;
+    int fd = accept(l, (sockaddr *)&ss, &slen);
     if (fd < 0) continue;
-    if (!pool.add(fd)) {
+    // Resolve the immediate peer IP for rate limiting / logging.
+    char ipbuf[INET6_ADDRSTRLEN] = {0};
+    std::string peer_ip;
+    if (ss.ss_family == AF_INET6) {
+      auto *a6 = (sockaddr_in6 *)&ss;
+      if (inet_ntop(AF_INET6, &a6->sin6_addr, ipbuf, sizeof ipbuf)) peer_ip = ipbuf;
+      // Normalise IPv4-mapped (::ffff:a.b.c.d) to the bare IPv4 form.
+      const std::string pfx = "::ffff:";
+      if (peer_ip.rfind(pfx, 0) == 0) peer_ip = peer_ip.substr(pfx.size());
+    } else if (ss.ss_family == AF_INET) {
+      auto *a4 = (sockaddr_in *)&ss;
+      if (inet_ntop(AF_INET, &a4->sin_addr, ipbuf, sizeof ipbuf)) peer_ip = ipbuf;
+    }
+    Conn conn{fd, peer_ip};
+    if (!pool.add(conn)) {
       close(fd);
-      log.put("connection rejected reason=worker-queue-full");
+      log.put("connection rejected client=" + peer_ip + " reason=worker-queue-full");
     }
     if (once) g_stop = true;
   }

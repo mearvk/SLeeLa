@@ -57,17 +57,22 @@ web-server-technology/
   ARCHITECTURE.md               request lifecycle, concurrency, dual-stack, /db
   docs/
     ENVELOPMENT.md              Side 2: programs, warrants, config grammar
+    HARDENING.md                Section 3: rate limit, write-auth, proxy, TLS
   examples/
     envelopment.conf            a worked multi-program envelopment config
   native/
     dyn_sql_server.h            public C entry point
     dyn_sql_server.cpp          the server (parsing, pool, static + /db + Side 2)
     envelopment.h / .cpp        the Side-2 envelopment model + config loader
+    hardening.h / .cpp          rate limiter, write-auth, trusted-proxy, config
     main.cpp                    command-line entry point
-    Makefile                    builds and links the lib/sleela-sql engine
+    Makefile                    builds + links the SQL engine; `make check` runs units
     smoke-test.sh               end-to-end static + dynamic + policy test
     trav-test.sh                path-traversal containment test
     envelopment-test.sh         Side-2 gate + warrant-routing test
+    hardening-test.cpp          Section-3 unit tests (no sockets)
+    hardening-live-test.sh      Section-3 end-to-end test
+    config-hardening-test.sh    Section-3 features configured from a file
 ```
 
 The SLeeLa-side model of this server lives at
@@ -101,6 +106,12 @@ Options: `--port N`, `--addr ADDR`, `--root DIR`, `--db DIR`, `--db-writable`,
 `--threads N`, `--log FILE`, `--once`.
 
 Side-2 (envelopment) options: `--config FILE`, `--envelopment`, `--scientist`.
+
+Hardening (Section 3) options: `--rate-per-peer N`, `--rate-global N`,
+`--rate-window-ms N`, `--write-token TOKEN`, `--trusted-proxy IP` (repeatable).
+These are also settable in the config file. See
+[`docs/HARDENING.md`](docs/HARDENING.md), including the TLS reverse-proxy
+deployment model.
 
 ```sh
 # Side 2: one domain enveloping many programs, for a Scientist:
