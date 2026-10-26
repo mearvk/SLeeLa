@@ -6,6 +6,8 @@
 using sleela::server::Packet;
 using sleela::server::PacketInspector;
 using sleela::server::SleelaServer;
+using sleela::server::ServiceResponse;
+using sleela::server::SleelaServer;
 
 int main() {
     {
