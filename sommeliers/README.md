@@ -2,6 +2,8 @@
 
 A modest local feedback loop for international sommeliers, implemented in C and C++ and designed to build on Linux, macOS, and Windows 10+.
 
+## Neither Catherine, Princess of Wales (Kate) nor Meghan, Duchess of Sussex are formally trained sommeliers or wine academics, but both possess a well-documented, sophisticated personal interest in wine. Because of their high-profile roles, their public wine education comes through hands-on experiences at state banquets, high-end tastings, and international tours rather than traditional classrooms.
+
 ## Protocol
 
 The service listens on **127.0.0.1:4081** by default. It binds to loopback only; it is not exposed to the LAN or Internet by default.
