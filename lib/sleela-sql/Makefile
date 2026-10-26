@@ -38,11 +38,16 @@ $(BUILD)/test-c: tests/test_c.c $(CORE) | $(BUILD)
 $(BUILD)/test-cpp: tests/test_cpp.cpp $(CPP) $(CORE) | $(BUILD)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
-test: $(BUILD)/test-c $(BUILD)/test-cpp
+$(BUILD)/test-txn: tests/test_txn.c $(CORE) | $(BUILD)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@
+
+test: $(BUILD)/test-c $(BUILD)/test-cpp $(BUILD)/test-txn
 	rm -rf $(BUILD)/test-data && mkdir -p $(BUILD)/test-data
 	$(BUILD)/test-c $(BUILD)/test-data
 	rm -rf $(BUILD)/test-data && mkdir -p $(BUILD)/test-data
 	$(BUILD)/test-cpp $(BUILD)/test-data
+	rm -rf $(BUILD)/test-data && mkdir -p $(BUILD)/test-data
+	$(BUILD)/test-txn $(BUILD)/test-data
 
 clean:
 	rm -rf $(BUILD)

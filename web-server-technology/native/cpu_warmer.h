@@ -87,6 +87,13 @@ class CpuWarmer {
    */
   double measured_pct() const;
 
+  /*
+   * Per-core most-recent measured utilization (percent), one entry per warmer
+   * thread, in core order. Empty when not running. Approximate, like
+   * measured_pct().
+   */
+  std::vector<double> measured_per_core() const;
+
  private:
   void worker_loop(unsigned index);
 

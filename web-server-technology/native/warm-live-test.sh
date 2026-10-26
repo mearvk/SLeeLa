@@ -18,6 +18,7 @@ echo "=== A) default ON: band 11-14, cores clamped, measured in-band ==="
 PID=$!
 sleep 2   # let the controller settle
 echo "status: $(curl -s "http://127.0.0.1:$PORT/__sleela/status")"
+echo "warm:   $(curl -s "http://127.0.0.1:$PORT/__sleela/warm")"
 echo "startup log:"; grep -E 'cpu-warm' "$WORK/log"
 kill "$PID" 2>/dev/null || true; wait "$PID" 2>/dev/null || true; PID=
 

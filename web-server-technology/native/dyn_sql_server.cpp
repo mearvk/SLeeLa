@@ -851,6 +851,31 @@ Resp make(const Req &q, const Config &cfg, std::string &log_detail) {
     return r;
   }
 
+  if (q.path == "/__sleela/warm") {
+    // Per-core keep-warm readings. Reports the configured band plus the live
+    // measured utilization of each warmer thread (empty when disabled).
+    std::ostringstream o;
+    o << "{\"enabled\":" << (cfg.warm.enabled ? "true" : "false")
+      << ",\"floor_pct\":" << cfg.warm.floor_pct
+      << ",\"ceiling_pct\":" << cfg.warm.ceiling_pct
+      << ",\"cores\":" << (cfg.warm_live ? cfg.warm_live->threads() : 0u)
+      << ",\"per_core_pct\":[";
+    if (cfg.warm_live) {
+      auto v = cfg.warm_live->measured_per_core();
+      for (size_t i = 0; i < v.size(); ++i) {
+        if (i) o << ',';
+        char pbuf[32];
+        std::snprintf(pbuf, sizeof pbuf, "%.2f", v[i]);
+        o << pbuf;
+      }
+    }
+    o << "]}\n";
+    std::string b = o.str();
+    r.type = "application/json";
+    r.body.assign(b.begin(), b.end());
+    return r;
+  }
+
   // Side 2: envelopment. Only consulted when active (enabled + scientist +
   // >=1 warrant). A matched warrant selects one program, which is then run in
   // its own mount-relative path space. If nothing matches we fall through to

@@ -14,8 +14,9 @@ This document tracks the native C11 engine, C++17 facade, and eventual SLeeLa ru
 
 ## Priority A — persistence and integrity
 
-- [ ] Define and implement explicit transaction API with documented durability and rollback guarantees.
-- [ ] Add crash-recovery journal/manifest and recovery tests before claiming transaction safety.
+- [~] Explicit transaction API with documented rollback guarantees: `ssql_begin`/`ssql_commit`/`ssql_rollback`/`ssql_in_transaction` implemented as a snapshot-based, single-connection transaction (see the header for the precise, honest guarantees and `tests/test_txn.c`). Rollback restores every table to its begin-time contents, undoing INSERT/UPDATE/DELETE and tables CREATEd during the transaction, and restoring tables DROPped during it. Nesting is rejected. Still NOT provided: durable crash recovery, and isolation between concurrent writers (next two items).
+- [ ] Add crash-recovery journal/manifest and recovery tests before claiming transaction safety. (The current snapshot is left in place on a failed restore for manual recovery, but there is no automatic replay yet.)
+- [ ] Add concurrent-writer isolation (one transaction per database directory is enforced, but there is no cross-process locking yet).
 - [ ] Add portable inter-process locking and deterministic concurrent-writer behavior.
 - [ ] Detect truncated/oversized records and malformed CSV instead of silently accepting partial records.
 - [ ] Parse quoted CSV fields that contain embedded newlines.

@@ -59,6 +59,7 @@ web-server-technology/
     ENVELOPMENT.md              Side 2: programs, warrants, config grammar
     HARDENING.md                Section 3: rate limit, write-auth, proxy, TLS
     CPU-WARM.md                 CPU keep-warm idle floor (controller, policy)
+    TESTING.md                  local test suite (no external CI) + the harness
   examples/
     envelopment.conf            a worked multi-program envelopment config
   native/
@@ -76,7 +77,8 @@ web-server-technology/
     hardening-live-test.sh      Section-3 end-to-end test
     config-hardening-test.sh    Section-3 features configured from a file
     cpu_warmer-test.cpp         keep-warm convergence test (~4s)
-    warm-live-test.sh           live keep-warm status + --no-warm override
+    warm-live-test.sh           live keep-warm status + /__sleela/warm + --no-warm
+    stress-fuzz-test.sh         concurrent /db soak + SQL fuzz + HTTP framing fuzz
 ```
 
 The SLeeLa-side model of this server lives at
@@ -134,7 +136,8 @@ sleela-web-server --port 8090 --config examples/envelopment.conf --scientist
 | Method | Path | Behaviour |
 |---|---|---|
 | GET | `/__sleela/health` | plain-text liveness |
-| GET | `/__sleela/status` | server status JSON (dual-stack, db flags) |
+| GET | `/__sleela/status` | server status JSON (dual-stack, db, hardening, warm flags) |
+| GET | `/__sleela/warm` | CPU keep-warm per-core readings JSON |
 | GET | `/db/health` | SQL engine status JSON |
 | GET | `/db/query?sql=...` | run a (read-only) statement, return JSON rows |
 | POST | `/db/query` (body = SQL) | run a statement; mutations need `--db-writable` |

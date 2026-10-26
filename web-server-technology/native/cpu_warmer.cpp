@@ -121,6 +121,14 @@ double CpuWarmer::measured_pct() const {
   return sum / (double)measured_.size();
 }
 
+std::vector<double> CpuWarmer::measured_per_core() const {
+  std::vector<double> out;
+  if (!running_.load()) return out;
+  out.reserve(measured_.size());
+  for (const auto &m : measured_) out.push_back(m.load());
+  return out;
+}
+
 void CpuWarmer::worker_loop(unsigned index) {
   lower_priority();
 
