@@ -128,6 +128,8 @@ def main() -> int:
                 raise AssertionError(f"expected authorization denial, got {response!r}")
 
             def assert_rejected(client_context: ssl.SSLContext, description: str) -> None:
+                if proc.poll() is not None:
+                    raise RuntimeError(f"server exited before rejection test: {proc.returncode}")
                 try:
                     with socket.create_connection(("127.0.0.1", port), timeout=2) as raw:
                         with client_context.wrap_socket(raw, server_hostname="localhost") as tls:
