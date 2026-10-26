@@ -14,7 +14,12 @@ LDLIBS ?= -lssl -lcrypto
 SOURCES=sleela_server.cpp server.cpp packet_logger_bridge.cpp ../logger/sleela_logger.cpp
 all: $(TARGET)
 
-TEST_TARGET=server_protocol_test
+TEST_TARGET = server_protocol_test
+ifneq (,$(findstring Windows_NT,$(OS)))
+TEST_TARGET = server_protocol_test.exe
+else ifneq (,$(findstring MINGW,$(shell uname -s)))
+TEST_TARGET = server_protocol_test.exe
+endif
 TEST_SOURCES=sleela_server.cpp packet_logger_bridge.cpp ../logger/sleela_logger.cpp tests/server_protocol_test.cpp
 $(TARGET): $(SOURCES) sleela_server.hpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) -o $@ $(SOURCES) $(LDLIBS)
