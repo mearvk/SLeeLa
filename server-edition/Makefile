@@ -3,6 +3,10 @@ CPPFLAGS ?=
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Wpedantic -pthread
 LDFLAGS ?=
 PYTHON ?= python3
+SERVER_TEST_BINARY = ./$(TARGET)
+ifeq ($(OS),Windows_NT)
+SERVER_TEST_BINARY = ./$(TARGET).exe
+endif
 LDLIBS ?= -lssl -lcrypto
 TARGET=sleelas
 SOURCES=sleela_server.cpp server.cpp packet_logger_bridge.cpp ../logger/sleela_logger.cpp
@@ -17,5 +21,5 @@ $(TEST_TARGET): $(TEST_SOURCES) sleela_server.hpp
 test: $(TEST_TARGET)
 	./$(TEST_TARGET)
 clean:
-	rm -f $(TARGET) $(TEST_TARGET) *.o
+	rm -f $(TARGET) $(TARGET).exe $(TEST_TARGET) *.o
 .PHONY: all test clean
