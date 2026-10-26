@@ -92,6 +92,12 @@ bool PacketInspector::parse_headers(const std::string&block,Packet&p,std::string
 }
 SleelaServer::SleelaServer(ServerConfig c):config_(std::move(c)),logger_(config_),inspector_(config_),packet_logger_("logs"){}
 SleelaServer::~SleelaServer(){stop();}
+std::string SleelaServer::handler_key(const std::string& service,const std::string& operation){return service+char(31)+operation;}
+bool SleelaServer::register_handler(const std::string& service,const std::string& operation,ServiceHandler handler){
+ if(service.empty()||operation.empty()||service.size()>256||operation.size()>256||!handler||!printable(service)||!printable(operation))return false;
+ std::lock_guard<std::mutex> lock(handlers_mutex_);
+ return handlers_.emplace(handler_key(service,operation),std::move(handler)).second;
+}
 bool SleelaServer::start(){
  if(config_.port==0 || config_.max_connections==0 || config_.max_connections>65535 ||
     config_.max_packet_bytes<FIXED_HEADER || config_.max_header_bytes>config_.max_packet_bytes-FIXED_HEADER ||
@@ -179,7 +185,7 @@ bool SleelaServer::write_status(int fd,int status,const char*reason){
  return true;
 }
 void SleelaServer::client_loop(int fd,std::string peer){struct ActiveGuard{std::atomic<std::size_t>& count;~ActiveGuard(){count.fetch_sub(1);}} active_guard{active_connections_};std::uint64_t packets=0,failures=0;auto started=std::chrono::steady_clock::now();logger_.write(Severity::DEBUG,"client_connected",nullptr,nullptr,peer);
- while(running_.load()){Packet p;std::size_t wire=0;std::string err;if(!read_packet(fd,p,wire,err)){++failures;logger_.write(Severity::WARN,"packet_rejected",nullptr,nullptr,peer+":"+err);write_status(fd,400,err.c_str());break;}++packets; packet_logger_.record_received(peer,"SLeeLa-WIRE/"+std::to_string((int)p.grade),p.stream_id,p.request_id,p.sequence,wire,"raw_socket_to_sleela_server"); auto sec=std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now()-started).count();std::uint64_t rate=sec==0?packets:packets/(std::uint64_t)sec;Decision d=inspector_.inspect(p,wire,rate,failures);logger_.write(d.severity,d.accept?"packet_accepted":"packet_rejected",&p,&d,peer);if(!d.accept){write_status(fd,d.status,d.reason.c_str());break;}if(!write_status(fd,200,"accepted"))break; packet_logger_.record_sent(peer,"SLeeLa-WIRE/"+std::to_string((int)p.grade),p.stream_id,p.request_id,p.sequence,std::string("SLPK/1 200 accepted\n").size(),"server_to_os_socket");}
+ while(running_.load()){Packet p;std::size_t wire=0;std::string err;if(!read_packet(fd,p,wire,err)){++failures;logger_.write(Severity::WARN,"packet_rejected",nullptr,nullptr,peer+":"+err);write_status(fd,400,err.c_str());break;}++packets; packet_logger_.record_received(peer,"SLeeLa-WIRE/"+std::to_string((int)p.grade),p.stream_id,p.request_id,p.sequence,wire,"raw_socket_to_sleela_server"); auto sec=std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now()-started).count();std::uint64_t rate=sec==0?packets:packets/(std::uint64_t)sec;Decision d=inspector_.inspect(p,wire,rate,failures);logger_.write(d.severity,d.accept?"packet_accepted":"packet_rejected",&p,&d,peer);if(!d.accept){write_status(fd,d.status,d.reason.c_str());break;}ServiceHandler handler;{std::lock_guard<std::mutex> lock(handlers_mutex_);auto it=handlers_.find(handler_key(p.service_id,p.operation_id));if(it!=handlers_.end())handler=it->second;} ServiceResponse response; if(!handler){response.status=501;response.reason="service_not_implemented";}else{try{response=handler(p);}catch(...){response.status=500;response.reason="handler_error";}} if(response.status<200||response.status>599||response.reason.empty()||response.reason.find_first_of(" \r\n")!=std::string::npos){response.status=500;response.reason="invalid_handler_response";} if(!write_status(fd,response.status,response.reason.c_str()))break; packet_logger_.record_sent(peer,"SLeeLa-WIRE/"+std::to_string((int)p.grade),p.stream_id,p.request_id,p.sequence,(std::string("SLPK/1 ")+std::to_string(response.status)+" "+response.reason+"\n").size(),"server_to_os_socket");}
  close_socket(fd);logger_.write(Severity::DEBUG,"client_disconnected",nullptr,nullptr,peer);}
 void SleelaServer::close_socket(int fd){if(fd<0)return;
 #ifdef _WIN32
