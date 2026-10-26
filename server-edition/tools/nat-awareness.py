@@ -106,8 +106,8 @@ def main() -> int:
         print(f"stun_mapped_address={external_ip}:{external_port}")
         if local != external:
             print("assessment=address_translation_or_upstream_mapping_likely")
-        elif local.is_private or local.is_loopback or local.is_link_local:
-            print("assessment=private_local_address; upstream NAT may still be present")
+        elif not local.is_global:
+            print("assessment=non_global_local_address; upstream NAT may still be present")
         else:
             print("assessment=no_address_translation_observed_by_this_probe")
         print("note=STUN is an observation only; it does not prove inbound reachability or identify every NAT type.")
