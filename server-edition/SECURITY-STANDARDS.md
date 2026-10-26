@@ -2,13 +2,13 @@
 
 **Document date:** 2026-10-26  
 **Scope:** server-edition/  
-**Status:** Initial hardening baseline. Controls listed as planned are not implemented merely because they are documented.
+**Status:** Initial hardening baseline with mutual-TLS transport and identity-operation authorization implemented in source; compilation, integration testing, and production review remain outstanding.
 
 ## Security posture
 
 The server should be treated as a transport/admission component, not as a production-secure application gateway, until authentication, protected transport, authorization, bounded concurrency, deterministic shutdown, and service dispatch are implemented and tested.
 
-Current hardening changes set the default listener to 127.0.0.1:19866, validate CLI port and packet-size values, reject unknown CLI options, and require an explicit --allow-remote flag before the command-line executable will attempt a non-loopback bind. The remote-bind flag is an exposure acknowledgement only; it does not add TLS, authentication, or authorization.
+Current hardening changes set the default listener to 127.0.0.1:19866, validate CLI port and packet-size values, reject unknown CLI options, and require an explicit --allow-remote flag before the command-line executable will attempt a non-loopback bind. The remote-bind flag alone is insufficient: remote use additionally requires TLS 1.3, mutual client-certificate verification, an allowlisted certificate identity, and explicit service/operation permissions. These source changes have not yet been build- or runtime-verified.
 
 ## Required engineering controls
 
