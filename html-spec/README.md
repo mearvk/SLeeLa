@@ -36,6 +36,14 @@ specification source is obtainable, it is included verbatim in [`specs/`](./spec
   **"performs as expected in a modern browser"** verdict (&#x2713; Yes / &#x2717; No). No CSS —
   just the markup and the status glyph. See [`examples/README.md`](./examples/README.md).
 
+## CSS archive
+
+- [`css/`](./css) — a parallel archive of **Cascading Style Sheets** from CSS1 (1996) to the
+  modular CSS of today: version subfolders, each with the retrieved **spec source** and a
+  **feature catalogue** (all selectors, properties, at-rules, functions, values and units of
+  that level). File **signatures** (size + SHA-256) and provenance in
+  [`css/SIGNATURES.md`](./css/SIGNATURES.md); index in [`css/README.md`](./css/README.md).
+
 ## Appraisals
 
 - [`STATE.md`](./STATE.md) — coherence audit of every archived spec (completeness, labeling).
