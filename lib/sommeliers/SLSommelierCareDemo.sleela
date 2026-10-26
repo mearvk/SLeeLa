@@ -1,0 +1,19 @@
+#sleela 2.1
+< Demonstration of the suite's defaults. Network transport is intentionally not
+  claimed until a native/host bridge is connected. >
+class SLSommelierCareDemo {
+  void main() {
+    SLSommelierCare care = new SLSommelierCare();
+    care.initialize();
+
+    print("=== SLeeLa Sommelier Open Create-Use ===");
+    print(care.offerSummary());
+    print("Feedback sharing default: off");
+    print("Profile sharing default: off");
+    print("Public by default: no");
+    print("Feedback symbols: 0 / 1 / s");
+    print("Service target: 127.0.0.1:4081");
+    print("Transport bridge: not connected in this source-only demo");
+    print("Participation is voluntary; consent can be revoked.");
+  }
+}
