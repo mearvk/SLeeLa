@@ -1,6 +1,6 @@
 #include "sleela_server.hpp"
-#include <cerrno>
 #include <charconv>
+#include <cstdio>
 #include <cstdint>
 #include <iostream>
 #include <limits>
@@ -16,7 +16,6 @@ bool parse_unsigned(std::string_view text, std::uint64_t& value) {
  const auto result = std::from_chars(text.data(), text.data() + text.size(), value, 10);
  return result.ec == std::errc{} && result.ptr == text.data() + text.size();
 }
-
 void usage(std::ostream& out) {
  out << "SLeeLa Server Edition\n"
      << " Usage: sleelas [options]\n"
@@ -28,9 +27,7 @@ void usage(std::ostream& out) {
      << " --max-packet BYTES    Maximum wire packet size\n"
      << " --help                Show this help\n";
 }
-
 bool is_loopback_ipv4(const std::string& address) {
- // This CLI currently supports IPv4 literals only. Treat the entire 127/8 range as loopback.
  unsigned a = 0, b = 0, c = 0, d = 0;
  char tail = '\0';
  if (std::sscanf(address.c_str(), "%u.%u.%u.%u%c", &a, &b, &c, &d, &tail) != 4)
@@ -38,12 +35,10 @@ bool is_loopback_ipv4(const std::string& address) {
  return a == 127 && b <= 255 && c <= 255 && d <= 255;
 }
 }
-
 int main(int argc, char** argv) {
  ServerConfig cfg;
  bool allow_remote = false;
  bool show_help = false;
-
  for (int i = 1; i < argc; ++i) {
   const std::string arg(argv[i]);
   auto require_value = [&](const char* option) -> const char* {
@@ -53,7 +48,6 @@ int main(int argc, char** argv) {
    }
    return argv[++i];
   };
-
   if (arg == "--help" || arg == "-h") {
    show_help = true;
   } else if (arg == "--allow-remote") {
@@ -93,12 +87,10 @@ int main(int argc, char** argv) {
    return 2;
   }
  }
-
  if (show_help) {
   usage(std::cout);
   return 0;
  }
-
  if (!is_loopback_ipv4(cfg.bind_address) && !allow_remote) {
   std::cerr << "Refusing non-loopback bind without --allow-remote. "
                "Remote exposure requires a protected, authenticated deployment boundary.\n";
@@ -108,7 +100,6 @@ int main(int argc, char** argv) {
   std::cerr << "WARNING: remote binding requested. This server path does not provide built-in "
                "TLS or authenticated peer identity; do not expose it directly to untrusted networks.\n";
  }
-
  try {
   SleelaServer server(cfg);
   if (!server.start()) {
