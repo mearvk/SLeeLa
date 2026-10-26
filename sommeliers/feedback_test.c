@@ -18,7 +18,7 @@ int main(void) {
     failures += check("0", '0');
     failures += check("1", '1');
     failures += check("s", 's');
-    failures += check("08s1", 's');
+    failures += check("08s1", '1');
     if (sommeliers_to_binary("A", bits, sizeof(bits)) != 8 ||
         strcmp(bits, "01000001") != 0) {
         fprintf(stderr, "FAIL binary conversion for A: '%s'\n", bits);
