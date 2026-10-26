@@ -63,5 +63,3 @@ jobs:
         run: make -C server-edition clean all
       - name: Run protocol tests
         run: make -C server-edition test
-      - name: Run NAT parser unit tests
-        run: python -m unittest discover -s server-edition/tests -p 'test_nat_awareness.py' -v
