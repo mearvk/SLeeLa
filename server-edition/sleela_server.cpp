@@ -12,6 +12,9 @@
 #include <sstream>
 #include <stdexcept>
 #include <thread>
+#include <cstring>
+#include <openssl/ssl.h>
+#include <openssl/x509.h>
 #ifdef _WIN32
 #define NOMINMAX
 #include <winsock2.h>
@@ -105,8 +108,21 @@ bool SleelaServer::start(){
     config_.max_packet_bytes<FIXED_HEADER || config_.max_header_bytes>config_.max_packet_bytes-FIXED_HEADER ||
     config_.max_payload_bytes>config_.max_packet_bytes || config_.idle_timeout_seconds==0 ||
     config_.max_packets_per_second==0) { logger_.write(Severity::ERROR,"invalid_server_configuration",nullptr,nullptr); return false; }
+const bool tls_enabled=!config_.tls_certificate_file.empty();
+ if(config_.bind_address!="127.0.0.1" && config_.bind_address.rfind("127.",0)!=0 && !tls_enabled){logger_.write(Severity::ERROR,"remote_bind_requires_tls",nullptr,nullptr);return false;}
+ if(tls_enabled){
+  tls_context_=SSL_CTX_new(TLS_server_method());
+  if(!tls_context_ || SSL_CTX_set_min_proto_version(tls_context_,TLS1_3_VERSION)!=1 || SSL_CTX_set_max_proto_version(tls_context_,TLS1_3_VERSION)!=1 ||
+     SSL_CTX_use_certificate_chain_file(tls_context_,config_.tls_certificate_file.c_str())!=1 ||
+     SSL_CTX_use_PrivateKey_file(tls_context_,config_.tls_private_key_file.c_str(),SSL_FILETYPE_PEM)!=1 ||
+     SSL_CTX_check_private_key(tls_context_)!=1 || SSL_CTX_load_verify_locations(tls_context_,config_.tls_client_ca_file.c_str(),nullptr)!=1){
+   if(tls_context_){SSL_CTX_free(tls_context_);tls_context_=nullptr;} logger_.write(Severity::ERROR,"tls_configuration_failed",nullptr,nullptr);return false;
+  }
+  SSL_CTX_set_verify(tls_context_,SSL_VERIFY_PEER|SSL_VERIFY_FAIL_IF_NO_PEER_CERT,nullptr);
+  SSL_CTX_set_verify_depth(tls_context_,4);
+ }
 #ifdef _WIN32
- WSADATA w{};if(WSAStartup(MAKEWORD(2,2),&w)!=0)return false;winsock_started_=true;
+ WSADATA w{};if(WSAStartup(MAKEWORD(2,2),&w)!=0){if(tls_context_){SSL_CTX_free(tls_context_);tls_context_=nullptr;}return false;}winsock_started_=true;
 #endif
  listen_fd_=(int)::socket(AF_INET,SOCK_STREAM,0);if(listen_fd_<0){
 #ifdef _WIN32
@@ -130,7 +146,7 @@ void SleelaServer::run(){
   const auto previous=active_connections_.fetch_add(1);
   if(previous>=config_.max_connections){
    active_connections_.fetch_sub(1);
-   write_status(fd,503,"connection_limit");
+   write_status(fd,nullptr,503,"connection_limit");
    close_socket(fd);
    logger_.write(Severity::NOTICE,"connection_limit_reached",nullptr,nullptr);
    continue;
@@ -176,7 +192,7 @@ void SleelaServer::stop(){ std::lock_guard<std::mutex>l(state_mutex_);running_.s
  }}
 }
 bool SleelaServer::running()const noexcept{return running_.load();}
-bool SleelaServer::read_exact(int fd,void*dst,std::size_t bytes,std::uint32_t ms){
+bool SleelaServer::read_exact(int fd,SSL* ssl,void*dst,std::size_t bytes,std::uint32_t ms){
  auto* p=static_cast<std::uint8_t*>(dst); std::size_t got=0;
  const auto deadline=std::chrono::steady_clock::now()+std::chrono::milliseconds(ms);
  while(got<bytes){
@@ -192,9 +208,9 @@ bool SleelaServer::read_exact(int fd,void*dst,std::size_t bytes,std::uint32_t ms
  int n=(int)recv(fd,p+got,bytes-got,0);
 #endif
  if(n<=0)return false;got+=(std::size_t)n;}return true;}
-bool SleelaServer::read_packet(int fd,Packet&p,std::size_t&wire,std::string&err){std::array<std::uint8_t,FIXED_HEADER>h{};if(!read_exact(fd,h.data(),h.size(),config_.idle_timeout_seconds*1000U)){err="header_timeout_or_eof";return false;}if(be32(h.data())!=MAGIC||h[4]!=WIRE_VERSION){err="bad_magic_or_wire_version";return false;}std::uint32_t hl=be32(h.data()+8),pl=be32(h.data()+12);std::uint64_t total=FIXED_HEADER+(std::uint64_t)hl+pl;if(be16(h.data()+6)!=0){err="unsupported_flags";return false;}if(hl>config_.max_header_bytes||pl>config_.max_payload_bytes||total>config_.max_packet_bytes){err="frame_exceeds_limits";return false;}
- p.grade=h[5];p.flags=be16(h.data()+6);p.stream_id=be64(h.data()+16);p.request_id=be64(h.data()+24);p.sequence=be64(h.data()+32);std::string hs(hl,'\0');if(hl&&!read_exact(fd,hs.data(),hl,config_.idle_timeout_seconds*1000U)){err="header_body_truncated";return false;}if(!PacketInspector::parse_headers(hs,p,err))return false;if(p.grade!=h[5]){err="grade_mismatch";return false;}if(p.flags!=be16(h.data()+6)){err="flags_mismatch";return false;}p.payload.resize(pl);if(pl&&!read_exact(fd,p.payload.data(),pl,config_.idle_timeout_seconds*1000U)){err="payload_truncated";return false;}wire=(std::size_t)total;return true;}
-bool SleelaServer::write_status(int fd,int status,const char*reason){
+bool SleelaServer::read_packet(int fd,SSL* ssl,Packet&p,std::size_t&wire,std::string&err){std::array<std::uint8_t,FIXED_HEADER>h{};if(!read_exact(fd,ssl,h.data(),h.size(),config_.idle_timeout_seconds*1000U)){err="header_timeout_or_eof";return false;}if(be32(h.data())!=MAGIC||h[4]!=WIRE_VERSION){err="bad_magic_or_wire_version";return false;}std::uint32_t hl=be32(h.data()+8),pl=be32(h.data()+12);std::uint64_t total=FIXED_HEADER+(std::uint64_t)hl+pl;if(be16(h.data()+6)!=0){err="unsupported_flags";return false;}if(hl>config_.max_header_bytes||pl>config_.max_payload_bytes||total>config_.max_packet_bytes){err="frame_exceeds_limits";return false;}
+ p.grade=h[5];p.flags=be16(h.data()+6);p.stream_id=be64(h.data()+16);p.request_id=be64(h.data()+24);p.sequence=be64(h.data()+32);std::string hs(hl,'\0');if(hl&&!read_exact(fd,ssl,hs.data(),hl,config_.idle_timeout_seconds*1000U)){err="header_body_truncated";return false;}if(!PacketInspector::parse_headers(hs,p,err))return false;if(p.grade!=h[5]){err="grade_mismatch";return false;}if(p.flags!=be16(h.data()+6)){err="flags_mismatch";return false;}p.payload.resize(pl);if(pl&&!read_exact(fd,ssl,p.payload.data(),pl,config_.idle_timeout_seconds*1000U)){err="payload_truncated";return false;}wire=(std::size_t)total;return true;}
+bool SleelaServer::write_status(int fd,SSL* ssl,int status,const char*reason){
  const std::string s="SLPK/1 "+std::to_string(status)+" "+reason+"\n";
  std::size_t sent=0;
  while(sent<s.size()){
