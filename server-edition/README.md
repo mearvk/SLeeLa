@@ -46,7 +46,7 @@ The server authorizes exact `identity:service:operation` triples; no permissions
 
 ## Processing boundary
 
-The current implementation parses and inspects packets and returns an admission status. Do not assume that an accepted packet has been executed by an application service handler unless that handler integration is present and tested.
+After admission checks, the server dispatches only to explicitly registered `(SERVICE-ID, OP-ID)` handlers. Missing handlers return `501 service_not_implemented`; handler exceptions return `500 handler_error`. End-to-end dispatch and lifecycle tests remain required.
 
 Payloads are bytes. The server must not execute programs, shell commands, scripts, XML procedures, or metadata merely because they arrive in a packet.
 
