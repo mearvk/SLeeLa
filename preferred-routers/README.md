@@ -13,9 +13,10 @@ The checked-in rating is a **routing preference tier** from 1–5. Tier 5 is the
 ## Data
 
 - \`preferred-routers.csv\`: 996 entries, four routing-role anchors for each of 249 ISO 3166 country/territory records.
-- \`preferred-routers.json\`: same data plus schema and source references.
-- Public references used for the catalog design include PeeringDB and RIPE NCC country ASN/resource data.
+- \`preferred-routers.json\`: same data plus schema and source references (\`schema_version\` 1.1).
+- Public references used for the catalog design include [PeeringDB](https://www.peeringdb.com/) and RIPE NCC country ASN/resource data.
 - The role-anchor rows intentionally avoid fabricating a named router where current provider identity has not been independently resolved. Run \`refresh_peeringdb.py\` to bind roles to current PeeringDB network, IXP, and facility identities.
+- Prior and snapshot editions of the catalog are preserved under [\`backup/\`](./backup) — see [\`backup/MANIFEST.md\`](./backup/MANIFEST.md). The current edition is **v1.1 (2026-10-26)**, which corrected the PeeringDB source URL from the non-canonical \`peeringdb.org\` to the canonical \`peeringdb.com\`.
 
 ## Configuration
 
