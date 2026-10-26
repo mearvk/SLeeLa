@@ -9,6 +9,7 @@
 #include <mutex>
 #include <atomic>
 #include <thread>
+#include <functional>
 #include "packet_logger_bridge.hpp"
 namespace sleela::server {
 enum class Severity { DEBUG, INFO, NOTICE, WARN, ERROR, ALERT };
@@ -29,6 +30,8 @@ struct Packet {
  std::vector<std::uint8_t> payload;
 };
 struct Decision { bool accept=false; int status=400; Severity severity=Severity::WARN; std::string reason; double heuristic_score=0.0; };
+struct ServiceResponse { int status=200; std::string reason="ok"; };
+using ServiceHandler = std::function<ServiceResponse(const Packet&)>;
 class StructuredLogger {
  public: explicit StructuredLogger(const ServerConfig&); void write(Severity,const std::string&,const Packet*,const Decision*,const std::string& detail="");
  private: ServerConfig cfg_; std::mutex mutex_; std::string level_name(Severity) const;
@@ -41,9 +44,10 @@ class PacketInspector {
 class SleelaServer {
  public: explicit SleelaServer(ServerConfig config={}); ~SleelaServer();
  bool start(); void run(); void stop(); bool running() const noexcept;
+ bool register_handler(const std::string& service_id,const std::string& operation_id,ServiceHandler handler);
  private:
- ServerConfig config_; StructuredLogger logger_; PacketInspector inspector_; PacketLoggerBridge packet_logger_; int listen_fd_=-1; std::atomic<bool> running_{false}; std::atomic<std::size_t> active_connections_{0}; std::mutex state_mutex_; std::mutex workers_mutex_; std::vector<std::thread> workers_;
- void client_loop(int,std::string); bool read_exact(int,void*,std::size_t,std::uint32_t);
+ ServerConfig config_; StructuredLogger logger_; PacketInspector inspector_; PacketLoggerBridge packet_logger_; int listen_fd_=-1; std::atomic<bool> running_{false}; std::atomic<std::size_t> active_connections_{0}; std::mutex state_mutex_; std::mutex workers_mutex_; std::mutex handlers_mutex_; std::unordered_map<std::string,ServiceHandler> handlers_; std::atomic<bool> run_active_{false}; std::vector<std::thread> workers_;
+ static std::string handler_key(const std::string&,const std::string&); void client_loop(int,std::string); bool read_exact(int,void*,std::size_t,std::uint32_t);
  bool write_status(int,int,const char*); bool read_packet(int,Packet&,std::size_t&,std::string&); void close_socket(int);
 };
 }
