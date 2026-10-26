@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <mutex>
+#include <atomic>
+#include <thread>
 #include "packet_logger_bridge.hpp"
 namespace sleela::server {
 enum class Severity { DEBUG, INFO, NOTICE, WARN, ERROR, ALERT };
@@ -40,7 +42,7 @@ class SleelaServer {
  public: explicit SleelaServer(ServerConfig config={}); ~SleelaServer();
  bool start(); void run(); void stop(); bool running() const noexcept;
  private:
- ServerConfig config_; StructuredLogger logger_; PacketInspector inspector_; PacketLoggerBridge packet_logger_; int listen_fd_=-1; bool running_=false; std::mutex state_mutex_;
+ ServerConfig config_; StructuredLogger logger_; PacketInspector inspector_; PacketLoggerBridge packet_logger_; int listen_fd_=-1; std::atomic<bool> running_{false}; std::atomic<std::size_t> active_connections_{0}; std::mutex state_mutex_; std::mutex workers_mutex_; std::vector<std::thread> workers_;
  void client_loop(int,std::string); bool read_exact(int,void*,std::size_t,std::uint32_t);
  bool write_status(int,int,const char*); bool read_packet(int,Packet&,std::size_t&,std::string&); void close_socket(int);
 };
