@@ -8,7 +8,7 @@
 | **Published** | HTML 4.0 — 18 December 1997 (revised 24 April 1998); **HTML 4.01 — 24 December 1999** |
 | **Status** | Superseded |
 | **Canonical reference** | <https://www.w3.org/TR/html401/> |
-| **Source in this archive** | ✅ Normative DTDs + entity sets — [`specs/dtd/html-4.0/`](../specs/dtd/html-4.0/) (strict/loose/frameset) and [`specs/dtd/html-4.01/`](../specs/dtd/html-4.01/) (strict/loose/frameset + HTMLlat1/HTMLspecial/HTMLsymbol entities). ✅ **Complete prose** now archived — [`specs/prose/html-4.01/`](../specs/prose/html-4.01/): every canonical chapter (`about`, `intro/*`, `struct/*` incl. `lists`, `present/*`, `interact/*` incl. `forms`, `sgml/*`, `appendix/*`, `index/*`) plus the figure images. The published 24 December 1999 Recommendation. |
+| **Source in this archive** | ✅ Normative DTDs + entity sets — [`specifications/dtd/html-4.0/`](../specifications/dtd/html-4.0/) (strict/loose/frameset) and [`specifications/dtd/html-4.01/`](../specifications/dtd/html-4.01/) (strict/loose/frameset + HTMLlat1/HTMLspecial/HTMLsymbol entities). ✅ **Complete prose** now archived — [`specifications/prose/html-4.01/`](../specifications/prose/html-4.01/): every canonical chapter (`about`, `intro/*`, `struct/*` incl. `lists`, `present/*`, `interact/*` incl. `forms`, `sgml/*`, `appendix/*`, `index/*`) plus the figure images. The published 24 December 1999 Recommendation. |
 
 > 📖 **Tag reference:** see [`tags/04-html-4.01.tags.md`](./tags/04-html-4.01.tags.md) for this version's elements and their definitions (Strict / Transitional / Frameset).
 

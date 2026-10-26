@@ -1,8 +1,8 @@
 # XHTML 1.0 (2000, 2nd Ed. 2002) — element reference
 
-Sources: [`specs/dtd/xhtml-1.0/`](../../specs/dtd/xhtml-1.0/)
+Sources: [`specifications/dtd/xhtml-1.0/`](../../specifications/dtd/xhtml-1.0/)
 (`xhtml1-strict.dtd` = 77 elements, `xhtml1-transitional.dtd`, `xhtml1-frameset.dtd`) and the
-archived prose [`specs/prose/xhtml-1.0/Overview.html`](../../specs/prose/xhtml-1.0/Overview.html).
+archived prose [`specifications/prose/xhtml-1.0/Overview.html`](../../specifications/prose/xhtml-1.0/Overview.html).
 
 XHTML 1.0 is **HTML 4.01 reformulated as XML** — the *element and attribute vocabulary is the
 same as HTML 4.01*, split into the same three flavours (Strict / Transitional / Frameset). What

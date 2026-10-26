@@ -23,14 +23,14 @@ dtd/
 For XHTML (XML) documents, with `xmllint`:
 
 ```sh
-XML_CATALOG_FILES=/path/to/specs/dtd/catalog.xml \
+XML_CATALOG_FILES=/path/to/specifications/dtd/catalog.xml \
   xmllint --noout --valid --catalogs yourdoc.xhtml
 ```
 
 For classic HTML (SGML) documents, with `onsgmls` (from OpenSP, if installed):
 
 ```sh
-SGML_CATALOG_FILES=/path/to/specs/dtd/catalog onsgmls -s -c /path/to/specs/dtd/catalog yourdoc.html
+SGML_CATALOG_FILES=/path/to/specifications/dtd/catalog onsgmls -s -c /path/to/specifications/dtd/catalog yourdoc.html
 ```
 
 ## Verified

@@ -7,7 +7,7 @@
 | **Published** | 14 December 2017 (W3C Recommendation) |
 | **Status** | The **last** standalone W3C HTML Recommendation |
 | **Canonical reference** | <https://www.w3.org/TR/html52/> |
-| **Source in this archive** | ✅ `specs/w3c-html52-single-page.bs` (Bikeshed source) — see PROVENANCE.txt |
+| **Source in this archive** | ✅ `specifications/w3c-html52-single-page.bs` (Bikeshed source) — see PROVENANCE.txt |
 
 ## Summary
 

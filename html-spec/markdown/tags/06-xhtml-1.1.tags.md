@@ -1,8 +1,8 @@
 # XHTML 1.1 (2001, 2nd Ed. 2010) — element reference
 
-Sources: the module set under [`specs/dtd/xhtml-1.1/`](../../specs/dtd/xhtml-1.1/) (driver
+Sources: the module set under [`specifications/dtd/xhtml-1.1/`](../../specifications/dtd/xhtml-1.1/) (driver
 `xhtml11.dtd` + 47-file Modularization library, validates offline) and the archived prose
-[`specs/prose/xhtml-1.1/xhtml11.html`](../../specs/prose/xhtml-1.1/xhtml11.html).
+[`specifications/prose/xhtml-1.1/xhtml11.html`](../../specifications/prose/xhtml-1.1/xhtml11.html).
 
 XHTML 1.1 is **"Module-based XHTML"**: the same vocabulary as XHTML 1.0 **Strict**, but assembled
 from the W3C *Modularization* modules rather than one monolithic DTD. At the tag level it is

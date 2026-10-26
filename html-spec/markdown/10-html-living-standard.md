@@ -7,7 +7,7 @@
 | **First published** | 2011 (as the Living Standard model); continuously updated ever since |
 | **Status** | ✅ **The current, authoritative version of HTML** |
 | **Canonical reference** | <https://html.spec.whatwg.org/> (multipage: <https://html.spec.whatwg.org/multipage/>) |
-| **Source in this archive** | ✅ `specs/whatwg-html-living-standard.source.html` — full 8.0 MB source; see PROVENANCE.txt for the exact commit |
+| **Source in this archive** | ✅ `specifications/whatwg-html-living-standard.source.html` — full 8.0 MB source; see PROVENANCE.txt for the exact commit |
 
 > 📖 **Tag reference:** see [`tags/10-html-living-standard.tags.md`](./tags/10-html-living-standard.tags.md) for the full modern element set (also the authoritative list for HTML5 / 5.1 / 5.2), plus [`tags/CHANGES.md`](./tags/CHANGES.md) for cross-version deltas.
 

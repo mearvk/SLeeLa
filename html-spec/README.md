@@ -3,30 +3,30 @@
 A chronological archive of the international specifications for HTML — the web's markup
 language — from its 1991 origin through the current WHATWG Living Standard.
 
-Each version has a written-up Markdown summary in [`md/`](./md). Where the actual
-specification source is obtainable, it is included verbatim in [`specs/`](./specs).
+Each version has a written-up Markdown summary in [`markdown/`](./markdown). Where the actual
+specification source is obtainable, it is included verbatim in [`specifications/`](./specifications).
 
 ## Timeline
 
 | # | Version | Year | Publisher | Write-up | Source included |
 |---|---------|------|-----------|----------|-----------------|
-| 1 | HTML Tags (first HTML) | 1991–92 | CERN (Tim Berners-Lee) | [md](./md/01-html-tags-1991.md) | ✅ **original note** (`html-tags-1991/Tags.html`) |
-| 2 | HTML 2.0 (RFC 1866) | 1995 | IETF | [md](./md/02-html-2.0-1995.md) | ✅ **full prose** (`rfc1866-html-2.0.txt`) |
-| 3 | HTML 3.2 "Wilbur" | 1997 | W3C | [md](./md/03-html-3.2-1997.md) | ✅ DTD (`dtd/html-3.2/`) · ❌ prose |
-| 4 | HTML 4.0 / 4.01 "Cougar" | 1997 / 1999 | W3C | [md](./md/04-html-4.0-4.01-1997-1999.md) | ✅ DTDs + entities (`dtd/html-4.0/`, `dtd/html-4.01/`) · ✅ **full prose** (`prose/html-4.01/`) |
-| 5 | XHTML 1.0 | 2000 | W3C | [md](./md/05-xhtml-1.0-2000.md) | ✅ DTDs (`dtd/xhtml-1.0/`) · ✅ **full prose** (`prose/xhtml-1.0/`) |
-| 6 | XHTML 1.1 | 2001 | W3C | [md](./md/06-xhtml-1.1-2001.md) | ✅ full DTD + 47-file module set (`dtd/xhtml-1.1/`), validates offline · ✅ **full prose** (`prose/xhtml-1.1/`) |
-| 7 | HTML5 | 2014 | W3C / WHATWG | [md](./md/07-html5-2014.md) | ❌ 2014 REC text not snapshotted (prose at w3.org) |
-| 8 | HTML 5.1 | 2016 | W3C | [md](./md/08-html-5.1-2016.md) | ❌ no 5.1 snapshot (see note below) |
-| 9 | HTML 5.2 | 2017 | W3C | [md](./md/09-html-5.2-2017.md) | ⚠️ only a W3C **5.3 Editor's Draft** source is archived (`w3c-html53-ED-single-page.bs`), not 5.2 |
-| 10 | HTML Living Standard | 2011→now | WHATWG | [md](./md/10-html-living-standard.md) | ✅ |
+| 1 | HTML Tags (first HTML) | 1991–92 | CERN (Tim Berners-Lee) | [md](./markdown/01-html-tags-1991.md) | ✅ **original note** (`html-tags-1991/Tags.html`) |
+| 2 | HTML 2.0 (RFC 1866) | 1995 | IETF | [md](./markdown/02-html-2.0-1995.md) | ✅ **full prose** (`rfc1866-html-2.0.txt`) |
+| 3 | HTML 3.2 "Wilbur" | 1997 | W3C | [md](./markdown/03-html-3.2-1997.md) | ✅ DTD (`dtd/html-3.2/`) · ❌ prose |
+| 4 | HTML 4.0 / 4.01 "Cougar" | 1997 / 1999 | W3C | [md](./markdown/04-html-4.0-4.01-1997-1999.md) | ✅ DTDs + entities (`dtd/html-4.0/`, `dtd/html-4.01/`) · ✅ **full prose** (`prose/html-4.01/`) |
+| 5 | XHTML 1.0 | 2000 | W3C | [md](./markdown/05-xhtml-1.0-2000.md) | ✅ DTDs (`dtd/xhtml-1.0/`) · ✅ **full prose** (`prose/xhtml-1.0/`) |
+| 6 | XHTML 1.1 | 2001 | W3C | [md](./markdown/06-xhtml-1.1-2001.md) | ✅ full DTD + 47-file module set (`dtd/xhtml-1.1/`), validates offline · ✅ **full prose** (`prose/xhtml-1.1/`) |
+| 7 | HTML5 | 2014 | W3C / WHATWG | [md](./markdown/07-html5-2014.md) | ❌ 2014 REC text not snapshotted (prose at w3.org) |
+| 8 | HTML 5.1 | 2016 | W3C | [md](./markdown/08-html-5.1-2016.md) | ❌ no 5.1 snapshot (see note below) |
+| 9 | HTML 5.2 | 2017 | W3C | [md](./markdown/09-html-5.2-2017.md) | ⚠️ only a W3C **5.3 Editor's Draft** source is archived (`w3c-html53-ED-single-page.bs`), not 5.2 |
+| 10 | HTML Living Standard | 2011→now | WHATWG | [md](./markdown/10-html-living-standard.md) | ✅ |
 
 ## Tag references
 
-- [`md/tags/`](./md/tags) — a **per-version catalogue of every element (tag) with a one-line
+- [`markdown/tags/`](./markdown/tags) — a **per-version catalogue of every element (tag) with a one-line
   definition**, grouped by role, derived directly from the archived DTDs / RFC / source. See
-  [`md/tags/README.md`](./md/tags/README.md) for the index and
-  [`md/tags/CHANGES.md`](./md/tags/CHANGES.md) for the added/removed/deprecated deltas across
+  [`markdown/tags/README.md`](./markdown/tags/README.md) for the index and
+  [`markdown/tags/CHANGES.md`](./markdown/tags/CHANGES.md) for the added/removed/deprecated deltas across
   versions.
 
 ## Worked examples
@@ -56,14 +56,14 @@ specification source is obtainable, it is included verbatim in [`specs/`](./spec
 ```
 html-spec/
 ├── README.md              ← this index
-├── md/                    ← written-up Markdown summary, one per version
+├── markdown/              ← written-up Markdown summary, one per version
 │   ├── 01-html-tags-1991.md
 │   ├── ... (chronological) ...
 │   ├── 10-html-living-standard.md
 │   └── tags/              ← per-version element (tag) catalogue + definitions
 │       ├── README.md      (index)   CHANGES.md (cross-version deltas)
 │       └── NN-<version>.tags.md ...
-└── specs/                 ← actual retrieved specification sources
+└── specifications/                 ← actual retrieved specification sources
     ├── rfc1866-html-2.0.txt                       (HTML 2.0 — full verbatim IETF RFC text)
     ├── html-tags-1991/Tags.html                   (the 1991 CERN "HTML Tags" note — the first HTML doc)
     ├── prose/                                     (human-readable Recommendation PROSE — see prose/README.md)
@@ -92,15 +92,15 @@ CDNs. The **only** working egress was the GitHub API.
 
 Consequences (after an exhaustive mirror search):
 
-- **Sources that are included** (`specs/`) were pulled directly from official upstream or
+- **Sources that are included** (`specifications/`) were pulled directly from official upstream or
   faithful mirror GitHub repositories at specific commits recorded in
-  [`specs/PROVENANCE.txt`](./specs/PROVENANCE.txt). These are byte-for-byte upstream source:
+  [`specifications/PROVENANCE.txt`](./specifications/PROVENANCE.txt). These are byte-for-byte upstream source:
   - **HTML 2.0** — the complete verbatim IETF **RFC 1866** text (from `mcpherrinm/rfc-mirror`).
   - **HTML 3.2 / 4.0 / 4.01 / XHTML 1.0 / 1.1** — the **normative W3C DTDs and entity sets**
     (from `w3c/markup-validator`, which bundles them). These are the authoritative,
     machine-readable grammars each Recommendation is built on.
   - The XHTML 1.0/1.1 grammars are **complete and self-resolving** — they validate offline
-    against the bundled files via `specs/dtd/catalog.xml` (verified with `xmllint`).
+    against the bundled files via `specifications/dtd/catalog.xml` (verified with `xmllint`).
   - **HTML Living Standard** — the full 8 MB `source` (from `whatwg/html`).
   - **W3C HTML 5.x track** — a Bikeshed source (from `w3c/html`). ⚠️ Note: that file is the
     **HTML 5.3 Editor's Draft** (its own metadata says so), archived as
@@ -111,7 +111,7 @@ Consequences (after an exhaustive mirror search):
   - **HTML 4.01 prose** — the **complete** chapter tree (`prose/html-4.01/`, every canonical
     chapter + figures), **XHTML 1.0 (2E) prose** (`prose/xhtml-1.0/`, full single-page), and
     **XHTML 1.1 (2E) prose** (`prose/xhtml-1.1/`, full), all from GitHub mirrors of the
-    `w3.org/TR` trees. _(Added 2026-10-25 — see [`prose/README.md`](./specs/prose/README.md).)_
+    `w3.org/TR` trees. _(Added 2026-10-25 — see [`prose/README.md`](./specifications/prose/README.md).)_
 - **What is still NOT included:**
   - The published **HTML5 (2014) / 5.1 / 5.2 Recommendation prose** — only the 5.3 Editor's
     Draft Bikeshed source was reachable. (No authoritative 2014-REC snapshot exists on GitHub;
@@ -121,7 +121,7 @@ Consequences (after an exhaustive mirror search):
     is reachable; no faithful full-prose mirror was found on GitHub.
 
 No specification text has been fabricated or presented as if it were the original source.
-The `md/` files are clearly descriptive write-ups; only files under `specs/` are verbatim
+The `markdown/` files are clearly descriptive write-ups; only files under `specifications/` are verbatim
 upstream material.
 
 ## To complete the remaining gaps from an open-network machine

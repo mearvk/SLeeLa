@@ -1,9 +1,9 @@
 # HTML 4.01 "Cougar" (1999) — element reference
 
-Sources: [`specs/dtd/html-4.01/strict.dtd`](../../specs/dtd/html-4.01/strict.dtd),
-[`loose.dtd`](../../specs/dtd/html-4.01/loose.dtd), [`frameset.dtd`](../../specs/dtd/html-4.01/frameset.dtd),
+Sources: [`specifications/dtd/html-4.01/strict.dtd`](../../specifications/dtd/html-4.01/strict.dtd),
+[`loose.dtd`](../../specifications/dtd/html-4.01/loose.dtd), [`frameset.dtd`](../../specifications/dtd/html-4.01/frameset.dtd),
 with definitions cross-checked against the archived prose under
-[`specs/prose/html-4.01/`](../../specs/prose/html-4.01/). Parameter-entity groups
+[`specifications/prose/html-4.01/`](../../specifications/prose/html-4.01/). Parameter-entity groups
 (`%heading`, `%fontstyle`, `%phrase`, `%special`, `%list`) are expanded.
 
 HTML 4.01 has **three flavours**: **Strict** (modern, no presentation), **Transitional/Loose**

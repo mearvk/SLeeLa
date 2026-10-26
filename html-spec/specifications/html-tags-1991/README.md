@@ -2,7 +2,7 @@
 
 `Tags.html` in this directory is the original **"HTML Tags"** note — the earliest surviving
 description of HTML, written by Tim Berners-Lee at CERN. It is the document that
-[`../../md/01-html-tags-1991.md`](../../md/01-html-tags-1991.md) writes up, and it is the
+[`../../markdown/01-html-tags-1991.md`](../../markdown/01-html-tags-1991.md) writes up, and it is the
 source referenced by the main [README](../../README.md) as *"❌ (unobtainable)"* — that gap is
 now **closed**.
 

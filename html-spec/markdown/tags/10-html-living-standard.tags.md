@@ -1,6 +1,6 @@
 # HTML Living Standard (WHATWG) — element reference
 
-Source: [`specs/whatwg-html-living-standard.source.html`](../../specs/whatwg-html-living-standard.source.html).
+Source: [`specifications/whatwg-html-living-standard.source.html`](../../specifications/whatwg-html-living-standard.source.html).
 Element names are extracted from the source's authoritative element-definition markers
 (`<dfn element><code>…</code></dfn>`). This is the modern element set; it is also the
 authoritative list for **HTML5 (2014) / 5.1 / 5.2**, whose elements are a subset of this.

@@ -2,17 +2,17 @@
 
 A per-version catalogue of HTML/XHTML **elements (tags)** with a one-line definition of each.
 Every list is derived from the authoritative source **archived in this repository** — not from
-memory — so each entry can be traced back to a file under [`../../specs/`](../../specs):
+memory — so each entry can be traced back to a file under [`../../specifications/`](../../specifications):
 
 | Version | Reference | Element inventory derived from |
 |---------|-----------|--------------------------------|
-| HTML Tags (1991) | [`01-html-tags-1991.tags.md`](./01-html-tags-1991.tags.md) | the original note [`specs/html-tags-1991/Tags.html`](../../specs/html-tags-1991/Tags.html) |
-| HTML 2.0 (1995) | [`02-html-2.0.tags.md`](./02-html-2.0.tags.md) | the DTD embedded in [`specs/rfc1866-html-2.0.txt`](../../specs/rfc1866-html-2.0.txt) |
-| HTML 3.2 (1997) | [`03-html-3.2.tags.md`](./03-html-3.2.tags.md) | [`specs/dtd/html-3.2/HTML32.dtd`](../../specs/dtd/html-3.2/HTML32.dtd) |
-| HTML 4.01 (1999) | [`04-html-4.01.tags.md`](./04-html-4.01.tags.md) | [`specs/dtd/html-4.01/`](../../specs/dtd/html-4.01/) (strict + loose) + prose |
-| XHTML 1.0 (2000) | [`05-xhtml-1.0.tags.md`](./05-xhtml-1.0.tags.md) | [`specs/dtd/xhtml-1.0/`](../../specs/dtd/xhtml-1.0/) + [`prose`](../../specs/prose/xhtml-1.0/) |
-| XHTML 1.1 (2010) | [`06-xhtml-1.1.tags.md`](./06-xhtml-1.1.tags.md) | [`specs/dtd/xhtml-1.1/`](../../specs/dtd/xhtml-1.1/) module set + prose |
-| HTML Living Standard | [`10-html-living-standard.tags.md`](./10-html-living-standard.tags.md) | [`specs/whatwg-html-living-standard.source.html`](../../specs/whatwg-html-living-standard.source.html) |
+| HTML Tags (1991) | [`01-html-tags-1991.tags.md`](./01-html-tags-1991.tags.md) | the original note [`specifications/html-tags-1991/Tags.html`](../../specifications/html-tags-1991/Tags.html) |
+| HTML 2.0 (1995) | [`02-html-2.0.tags.md`](./02-html-2.0.tags.md) | the DTD embedded in [`specifications/rfc1866-html-2.0.txt`](../../specifications/rfc1866-html-2.0.txt) |
+| HTML 3.2 (1997) | [`03-html-3.2.tags.md`](./03-html-3.2.tags.md) | [`specifications/dtd/html-3.2/HTML32.dtd`](../../specifications/dtd/html-3.2/HTML32.dtd) |
+| HTML 4.01 (1999) | [`04-html-4.01.tags.md`](./04-html-4.01.tags.md) | [`specifications/dtd/html-4.01/`](../../specifications/dtd/html-4.01/) (strict + loose) + prose |
+| XHTML 1.0 (2000) | [`05-xhtml-1.0.tags.md`](./05-xhtml-1.0.tags.md) | [`specifications/dtd/xhtml-1.0/`](../../specifications/dtd/xhtml-1.0/) + [`prose`](../../specifications/prose/xhtml-1.0/) |
+| XHTML 1.1 (2010) | [`06-xhtml-1.1.tags.md`](./06-xhtml-1.1.tags.md) | [`specifications/dtd/xhtml-1.1/`](../../specifications/dtd/xhtml-1.1/) module set + prose |
+| HTML Living Standard | [`10-html-living-standard.tags.md`](./10-html-living-standard.tags.md) | [`specifications/whatwg-html-living-standard.source.html`](../../specifications/whatwg-html-living-standard.source.html) |
 
 > HTML5 (2014) / 5.1 / 5.2 are not given separate tag files: their element set is a subset of
 > the Living Standard's, and this archive has no published-REC prose snapshot for them (only the

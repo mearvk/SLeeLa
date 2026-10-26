@@ -8,7 +8,7 @@
 | **Published** | 14 January 1997 (W3C Recommendation) |
 | **Status** | Superseded |
 | **Canonical reference** | <https://www.w3.org/TR/REC-html32> |
-| **Source in this archive** | ✅ Normative DTD — [`specs/dtd/html-3.2/HTML32.dtd`](../specs/dtd/html-3.2/HTML32.dtd). (Human-readable prose is at the w3.org URL above.) |
+| **Source in this archive** | ✅ Normative DTD — [`specifications/dtd/html-3.2/HTML32.dtd`](../specifications/dtd/html-3.2/HTML32.dtd). (Human-readable prose is at the w3.org URL above.) |
 
 > 📖 **Tag reference:** see [`tags/03-html-3.2.tags.md`](./tags/03-html-3.2.tags.md) for this version's elements and their definitions.
 

@@ -7,7 +7,7 @@
 | **Published** | 26 January 2000 (W3C Recommendation; revised 1 August 2002) |
 | **Status** | Superseded |
 | **Canonical reference** | <https://www.w3.org/TR/xhtml1/> |
-| **Source in this archive** | ✅ Normative DTDs — [`specs/dtd/xhtml-1.0/`](../specs/dtd/xhtml-1.0/) (strict / transitional / frameset). ✅ **Full prose** now archived — [`specs/prose/xhtml-1.0/Overview.html`](../specs/prose/xhtml-1.0/Overview.html) (the complete XHTML 1.0 Second Edition single-page Recommendation). |
+| **Source in this archive** | ✅ Normative DTDs — [`specifications/dtd/xhtml-1.0/`](../specifications/dtd/xhtml-1.0/) (strict / transitional / frameset). ✅ **Full prose** now archived — [`specifications/prose/xhtml-1.0/Overview.html`](../specifications/prose/xhtml-1.0/Overview.html) (the complete XHTML 1.0 Second Edition single-page Recommendation). |
 
 > 📖 **Tag reference:** see [`tags/05-xhtml-1.0.tags.md`](./tags/05-xhtml-1.0.tags.md) for the element set and the XML syntax rules that differ from HTML 4.01.
 

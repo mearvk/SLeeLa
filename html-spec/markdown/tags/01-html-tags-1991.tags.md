@@ -1,6 +1,6 @@
 # HTML Tags (1991) — element reference
 
-Source: the original CERN note [`specs/html-tags-1991/Tags.html`](../../specs/html-tags-1991/Tags.html).
+Source: the original CERN note [`specifications/html-tags-1991/Tags.html`](../../specifications/html-tags-1991/Tags.html).
 There was **no DTD** in 1991 — this is the informal set of tags the note describes. Several were
 already flagged *"NOT CURRENTLY USED"* or *"Obsolete"* even then.
 

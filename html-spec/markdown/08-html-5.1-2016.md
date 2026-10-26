@@ -7,7 +7,7 @@
 | **Published** | 1 November 2016 (W3C Recommendation; 2nd edition 3 October 2017) |
 | **Status** | Superseded by HTML 5.2 / Living Standard |
 | **Canonical reference** | <https://www.w3.org/TR/html51/> |
-| **Source in this archive** | ✅ Produced from `w3c/html` — see `specs/w3c-html52-single-page.bs` and PROVENANCE.txt |
+| **Source in this archive** | ✅ Produced from `w3c/html` — see `specifications/w3c-html52-single-page.bs` and PROVENANCE.txt |
 
 ## Summary
 

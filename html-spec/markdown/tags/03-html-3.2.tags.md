@@ -1,6 +1,6 @@
 # HTML 3.2 "Wilbur" (1997) — element reference
 
-Source: [`specs/dtd/html-3.2/HTML32.dtd`](../../specs/dtd/html-3.2/HTML32.dtd). First W3C
+Source: [`specifications/dtd/html-3.2/HTML32.dtd`](../../specifications/dtd/html-3.2/HTML32.dtd). First W3C
 Recommendation. Element names below come from the DTD's `<!ELEMENT>` declarations; the
 `%heading`, `%font` and `%phrase` parameter-entity groups are expanded. 3.2 consolidated the
 *presentational* tags browsers had already shipped.

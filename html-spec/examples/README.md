@@ -25,7 +25,7 @@ label, as requested.
 ## How "performs as expected" is judged
 
 The verdict is measured against **a current browser**, so it is meaningful and ties into the
-deprecated/obsolete data in [`../md/tags/CHANGES.md`](../md/tags/CHANGES.md):
+deprecated/obsolete data in [`../markdown/tags/CHANGES.md`](../markdown/tags/CHANGES.md):
 
 - **&#x2713; Yes** — the element still renders and behaves as its spec intended (e.g. `<table>`,
   `<ul>`, `<form>`, `<video>`, `<details>`).

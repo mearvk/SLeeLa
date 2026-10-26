@@ -1,6 +1,6 @@
 # State of the HTML Spec Archive — Coherence Report
 
-_Assessment date: 2026-10-25. This report audits what is actually in [`specs/`](./specs),
+_Assessment date: 2026-10-25. This report audits what is actually in [`specifications/`](./specifications),
 judges whether each artifact is coherent and complete, and names concretely what is wrong._
 
 ## Verdict in one line
@@ -27,7 +27,7 @@ the ten versions have no original source.
 - **Coherent?** The *write-up* is coherent; the *archive entry* is incomplete by necessity.
 
 ### 2. HTML 2.0 — ✅ coherent & complete
-- **File:** `specs/rfc1866-html-2.0.txt`
+- **File:** `specifications/rfc1866-html-2.0.txt`
 - **State:** The **full verbatim RFC 1866 text**. Verified it ends cleanly on `[Page 77]` of
   77 — no truncation. This is the single most complete original in the archive.
 - **Problem:** None of substance. (It is fixed-width ASCII with form-feed page breaks and
@@ -36,7 +36,7 @@ the ten versions have no original source.
 - **Coherent?** Yes. Gold standard.
 
 ### 3. HTML 3.2 — ⚠️ partial (grammar only)
-- **File:** `specs/dtd/html-3.2/HTML32.dtd` (45 `<!ELEMENT>`, 44 `<!ENTITY>`, 35 `<!ATTLIST>`)
+- **File:** `specifications/dtd/html-3.2/HTML32.dtd` (45 `<!ELEMENT>`, 44 `<!ENTITY>`, 35 `<!ATTLIST>`)
 - **State:** The normative DTD, intact. **Mostly self-contained** (only 2 external references,
   for the ISO Latin-1 character entities).
 - **Problem:** This is the **machine-readable grammar only** — the human-readable prose of the
@@ -44,8 +44,8 @@ the ten versions have no original source.
 - **Coherent?** Internally coherent; incomplete as "the spec."
 
 ### 4. HTML 4.0 / 4.01 — ⚠️ partial, and NOT standalone
-- **Files:** `specs/dtd/html-4.0/{strict,loose,frameset}.dtd`,
-  `specs/dtd/html-4.01/{strict,loose,frameset}.dtd` + `HTML{lat1,special,symbol}.ent`
+- **Files:** `specifications/dtd/html-4.0/{strict,loose,frameset}.dtd`,
+  `specifications/dtd/html-4.01/{strict,loose,frameset}.dtd` + `HTML{lat1,special,symbol}.ent`
 - **State:** All three flavors for both versions, plus the three 4.01 entity sets. The
   strict/loose DTDs are substantial (55 / 65 elements).
 - **Problems:**
@@ -60,7 +60,7 @@ the ten versions have no original source.
   self-resolving bundle**.
 
 ### 5. XHTML 1.0 — ⚠️ partial, external entity refs unresolved
-- **Files:** `specs/dtd/xhtml-1.0/xhtml1-{strict,transitional,frameset}.dtd`
+- **Files:** `specifications/dtd/xhtml-1.0/xhtml1-{strict,transitional,frameset}.dtd`
 - **State:** All three DTDs, full size (strict = 77 elements).
 - **Problems:**
   1. Each DTD declares the Latin-1 / symbol / special **entity sets via external identifiers**
@@ -71,7 +71,7 @@ the ten versions have no original source.
 - **Coherent?** Authentic, but depends on files not co-located.
 
 ### 6. XHTML 1.1 — ❌ grammar present but effectively unusable standalone
-- **Files:** `specs/dtd/xhtml-1.1/xhtml11.dtd` + `xhtml11-model-1.mod`
+- **Files:** `specifications/dtd/xhtml-1.1/xhtml11.dtd` + `xhtml11-model-1.mod`
 - **State:** `xhtml11.dtd` is the **driver DTD** — it has **0 `<!ELEMENT>` declarations of its
   own**. The entire vocabulary lives in **26 external modules** (`xhtml-struct.mod`,
   `xhtml-text.mod`, `xhtml-form.mod`, `xhtml-table.mod`, `xhtml-ruby.mod`, … ).
@@ -93,7 +93,7 @@ the ten versions have no original source.
   only the one `w3c-html5x` file, which (see item 9) isn't even 5.1 or 5.2.
 
 ### 9. HTML 5.2 (2017) — ❗ **MISLABELED FILE** (most important issue)
-- **File:** `specs/w3c-html52-single-page.bs`
+- **File:** `specifications/w3c-html52-single-page.bs`
 - **State:** It **is** the authentic W3C HTML WG Bikeshed source — but its metadata header says:
   `Title: HTML 5.3`, `Level: 5.3`, `Status: ED` (Editor's Draft), `TR: .../TR/html53/`.
 - **Problem:** **The filename claims 5.2, but the content is the HTML 5.3 _Editor's Draft_**
@@ -104,7 +104,7 @@ the ten versions have no original source.
   something like `w3c-html53-ED-single-page.bs` and the README corrected.
 
 ### 10. HTML Living Standard — ✅ coherent & complete
-- **File:** `specs/whatwg-html-living-standard.source.html` (8.0 MB, 164,839 lines)
+- **File:** `specifications/whatwg-html-living-standard.source.html` (8.0 MB, 164,839 lines)
 - **State:** The complete `source` file. Verified it ends cleanly with `</body></html>` — no
   truncation. The authentic single-source-of-truth for the current standard.
 - **Problem:** It is the **source** (Wattsi/annotated input), not the rendered multipage spec —
@@ -173,11 +173,11 @@ accordingly. The README no longer claims it is a 5.1/5.2 snapshot.
 
 ### ✅ #2 — XHTML 1.1 grammar completed
 Added the full **XHTML Modularization 1.1 library (47 files)** under
-`specs/dtd/xhtml-1.1/modules/`. `xhtml11.dtd` now resolves its entire ~26-module closure.
+`specifications/dtd/xhtml-1.1/modules/`. `xhtml11.dtd` now resolves its entire ~26-module closure.
 **Verified:** a sample XHTML 1.1 document validates with `xmllint` offline, 0 unresolved refs.
 
 ### ✅ #3 — DTD bundle is now self-resolving offline
-- Added **`specs/dtd/catalog`** (SGML Open) and **`specs/dtd/catalog.xml`** (XML catalog)
+- Added **`specifications/dtd/catalog`** (SGML Open) and **`specifications/dtd/catalog.xml`** (XML catalog)
   mapping every PUBLIC id and the external `w3.org` SYSTEM URLs to local files.
 - Co-located the needed entity files: `html-3.2/ISOlat1.ent`, `html-4.0/HTML*.ent`,
   `xhtml-1.0/xhtml-*.ent`, and `xhtml-1.1/xhtml-datatypes-1.mod`.
@@ -217,23 +217,23 @@ The earlier audit assumed gaps #5 and most of #4 were permanently out of reach b
 ietf.org) — and then recovered three of the missing **originals** anyway, through the one
 egress that has always worked here: the **GitHub API**, pulling from repositories that mirror
 the `w3.org` trees byte-for-byte. Same methodology and the same no-fabrication bar as every
-earlier pass. Full record in [`specs/PROVENANCE.txt`](./specs/PROVENANCE.txt).
+earlier pass. Full record in [`specifications/PROVENANCE.txt`](./specifications/PROVENANCE.txt).
 
 ### ✅ #5a — The 1991 "HTML Tags" note is now archived — the oldest gap is **closed**
-`specs/html-tags-1991/Tags.html` (9568 bytes, sha256 `96abc473…b264e`) — the first-ever HTML
+`specifications/html-tags-1991/Tags.html` (9568 bytes, sha256 `96abc473…b264e`) — the first-ever HTML
 document, from `andrewmaa/dsa`, a byte-for-byte mirror of the CERN `info.cern.ch` original
 that w3.org serves. The authentic note: `<TITLE>`, `<NEXTID 22>`, `info.cern.ch` anchor URLs,
 `<XMP>`, `<HP1>`/`<HP2>`, `<DL>`/`<DT>`/`<DD>`, `<UL>`/`<MENU>`/`<DIR>`. Item 1 in the archive
 is no longer "❌ no source."
 
 ### ✅ #4a — XHTML 1.0 (2E) **prose** REC archived — complete
-`specs/prose/xhtml-1.0/Overview.html` (71428 bytes) — the full single-page
+`specifications/prose/xhtml-1.0/Overview.html` (71428 bytes) — the full single-page
 _"XHTML 1.0 … (Second Edition), W3C Recommendation 26 January 2000, revised 1 August 2002,"_
 55 sections, ends cleanly. From `manzamb/SemanticWebinAction`. This is the human-readable
 prose, not just the DTD the archive already had.
 
 ### ⚠️ #4b — HTML 4.01 **prose** REC archived — partial (core chapters)
-`specs/prose/html-4.01/**` (25 files) — authentic W3C prose (`$Id: …ijacobs` RCS stamp,
+`specifications/prose/html-4.01/**` (25 files) — authentic W3C prose (`$Id: …ijacobs` RCS stamp,
 "Changed by: Ian B. Jacobs"). Has the core chapters incl. `struct/tables`, `struct/dirlang`,
 `struct/global`, `present/styles` — exactly the sections the structural-elements appraisal
 cites. **Partial**: the mirror lacks `about.html`, `intro/*`, `struct/lists.html`,
@@ -263,12 +263,12 @@ After the partial HTML 4.01 prose above, a dedicated W3C-REC mirror
 (`learnwebcoding/lwc`, `html/zz_html_w3c_html_recommendations/`) was found carrying **complete**
 published Recommendations. Used it to:
 
-- **Upgrade HTML 4.01 prose from partial → complete** — `specs/prose/html-4.01/**` (66 files)
+- **Upgrade HTML 4.01 prose from partial → complete** — `specifications/prose/html-4.01/**` (66 files)
   now has every canonical chapter, including the ones the first mirror lacked (`about`,
   `intro/intro`, `intro/sgmltut`, `struct/lists`, `interact/forms`, `appendix/changes`,
   `sgml/sgmldecl`) plus the figure images the prose references. Authentic published REC
   (`$Id: cover.src,v 1.117 1999/12/24 … ijacobs`, "W3C Recommendation 24 December 1999").
-- **Add XHTML 1.1 (2E) prose** — `specs/prose/xhtml-1.1/**` (14 files incl. the full
+- **Add XHTML 1.1 (2E) prose** — `specifications/prose/xhtml-1.1/**` (14 files incl. the full
   `xhtml11.html`). The archive already had the XHTML 1.1 **grammar** (DTD + 47-module set,
   validates offline); now it has the **prose** too. ("XHTML™ 1.1 … Second Edition, W3C
   Recommendation 23 November 2010.")

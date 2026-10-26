@@ -1,6 +1,6 @@
 # HTML 2.0 (RFC 1866, 1995) — element reference
 
-Source: the DTD embedded in [`specs/rfc1866-html-2.0.txt`](../../specs/rfc1866-html-2.0.txt).
+Source: the DTD embedded in [`specifications/rfc1866-html-2.0.txt`](../../specifications/rfc1866-html-2.0.txt).
 HTML 2.0 was the first *formal* HTML specification (IETF). Element names below are taken from the
 RFC's `<!ELEMENT>` declarations; the heading / font / phrase groups are expanded.
 

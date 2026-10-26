@@ -2,7 +2,7 @@
 
 _An appraisal of HTML's three core structural primitives against the capabilities assumed of
 international web technology, with a safeguarding checklist. Grounded in the specifications
-archived under [`specs/`](./specs): the HTML 3.2 / 4.01 / XHTML DTDs and the WHATWG HTML
+archived under [`specifications/`](./specifications): the HTML 3.2 / 4.01 / XHTML DTDs and the WHATWG HTML
 Living Standard `source`._
 
 > **Context.** The concern raised was that HTML "has become unwieldy." The finding below is
@@ -174,7 +174,7 @@ Use this as a review gate for any page or component.
 
 ### Validation / conformance
 - [ ] Markup validates (for XHTML, against the self-resolving bundle in
-      [`specs/dtd/`](./specs/dtd) via `catalog.xml`; for HTML5, against the Living Standard).
+      [`specifications/dtd/`](./specifications/dtd) via `catalog.xml`; for HTML5, against the Living Standard).
 - [ ] Elements are properly nested and closed; inline (`span`) never wraps block (`div`).
 - [ ] No deprecated/obsolete structural attributes remain.
 

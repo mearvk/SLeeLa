@@ -3,7 +3,7 @@
 Every CSS specification source archived under [`css/`](.) is listed here with its **file
 signature** (byte size + SHA-256) and its **provenance** (the exact GitHub repo and commit it was
 retrieved from). This matches the integrity convention used for the HTML sources in
-[`../specs/PROVENANCE.txt`](../specs/PROVENANCE.txt).
+[`../specifications/PROVENANCE.txt`](../specifications/PROVENANCE.txt).
 
 > **On "file signature":** `.css`/spec files have no binary magic number — they are plain text,
 > identified by the `text/css` MIME type (for stylesheets) and here by a cryptographic

@@ -8,7 +8,7 @@
 | **Published** | Late 1991 (document circulated), described publicly ~1992 |
 | **Status** | Historical — never a formal standard |
 | **Canonical reference** | <https://www.w3.org/History/19921103-hypertext/hypertext/WWW/MarkUp/Tags.html> |
-| **Source in this archive** | ✅ [`specs/html-tags-1991/Tags.html`](../specs/html-tags-1991/Tags.html) — the original note, verbatim |
+| **Source in this archive** | ✅ [`specifications/html-tags-1991/Tags.html`](../specifications/html-tags-1991/Tags.html) — the original note, verbatim |
 
 > 📖 **Tag reference:** see [`tags/01-html-tags-1991.tags.md`](./tags/01-html-tags-1991.tags.md) for this version's elements and their definitions.
 
@@ -20,7 +20,7 @@ HTML was conceived as an application of **SGML** (Standard Generalized Markup La
 
 ## Key elements introduced
 
-As enumerated by the [original note](../specs/html-tags-1991/Tags.html) itself:
+As enumerated by the [original note](../specifications/html-tags-1991/Tags.html) itself:
 
 - Document/structure: `<title>`, `<nextid>` (a NeXT-browser document-wide id counter, "not good
   SGML"; obsolete), `<base>` ("format … not yet specified. NOT CURRENTLY USED"), `<p>`

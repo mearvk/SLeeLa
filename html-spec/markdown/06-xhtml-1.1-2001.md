@@ -7,7 +7,7 @@
 | **Published** | 31 May 2001 (W3C Recommendation; 2nd edition 23 November 2010) |
 | **Status** | Superseded |
 | **Canonical reference** | <https://www.w3.org/TR/xhtml11/> |
-| **Source in this archive** | ✅ Complete normative grammar — [`specs/dtd/xhtml-1.1/`](../specs/dtd/xhtml-1.1/): the driver `xhtml11.dtd`, `xhtml11-model-1.mod`, and the full 47-file XHTML Modularization 1.1 set under `modules/`. Resolves and **validates offline** via `specs/dtd/catalog.xml`. ✅ **Full prose** now archived too — [`specs/prose/xhtml-1.1/xhtml11.html`](../specs/prose/xhtml-1.1/xhtml11.html) (the complete XHTML 1.1 Second Edition single-page Recommendation, 23 Nov 2010). |
+| **Source in this archive** | ✅ Complete normative grammar — [`specifications/dtd/xhtml-1.1/`](../specifications/dtd/xhtml-1.1/): the driver `xhtml11.dtd`, `xhtml11-model-1.mod`, and the full 47-file XHTML Modularization 1.1 set under `modules/`. Resolves and **validates offline** via `specifications/dtd/catalog.xml`. ✅ **Full prose** now archived too — [`specifications/prose/xhtml-1.1/xhtml11.html`](../specifications/prose/xhtml-1.1/xhtml11.html) (the complete XHTML 1.1 Second Edition single-page Recommendation, 23 Nov 2010). |
 
 > 📖 **Tag reference:** see [`tags/06-xhtml-1.1.tags.md`](./tags/06-xhtml-1.1.tags.md) for the module set, the element list, and the new Ruby elements.
 
