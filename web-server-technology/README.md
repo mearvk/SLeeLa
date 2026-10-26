@@ -58,6 +58,7 @@ web-server-technology/
   docs/
     ENVELOPMENT.md              Side 2: programs, warrants, config grammar
     HARDENING.md                Section 3: rate limit, write-auth, proxy, TLS
+    CPU-WARM.md                 CPU keep-warm idle floor (controller, policy)
   examples/
     envelopment.conf            a worked multi-program envelopment config
   native/
@@ -65,6 +66,7 @@ web-server-technology/
     dyn_sql_server.cpp          the server (parsing, pool, static + /db + Side 2)
     envelopment.h / .cpp        the Side-2 envelopment model + config loader
     hardening.h / .cpp          rate limiter, write-auth, trusted-proxy, config
+    cpu_warmer.h / .cpp         closed-loop CPU keep-warm idle floor
     main.cpp                    command-line entry point
     Makefile                    builds + links the SQL engine; `make check` runs units
     smoke-test.sh               end-to-end static + dynamic + policy test
@@ -73,6 +75,8 @@ web-server-technology/
     hardening-test.cpp          Section-3 unit tests (no sockets)
     hardening-live-test.sh      Section-3 end-to-end test
     config-hardening-test.sh    Section-3 features configured from a file
+    cpu_warmer-test.cpp         keep-warm convergence test (~4s)
+    warm-live-test.sh           live keep-warm status + --no-warm override
 ```
 
 The SLeeLa-side model of this server lives at
@@ -112,6 +116,12 @@ Hardening (Section 3) options: `--rate-per-peer N`, `--rate-global N`,
 These are also settable in the config file. See
 [`docs/HARDENING.md`](docs/HARDENING.md), including the TLS reverse-proxy
 deployment model.
+
+CPU keep-warm idle floor (**on by default**; admin may disable): `--no-warm`,
+`--warm-floor N`, `--warm-ceiling N`, `--warm-cores N` (also config-file keys).
+A closed-loop controller holds each of the 1–16 cores at a target band of
+~11–14% so the server stays warm; it runs low-priority so real work always
+preempts it. See [`docs/CPU-WARM.md`](docs/CPU-WARM.md).
 
 ```sh
 # Side 2: one domain enveloping many programs, for a Scientist:

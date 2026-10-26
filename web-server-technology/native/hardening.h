@@ -118,6 +118,15 @@ struct HardeningSettings {
   bool has_rate_window = false;   unsigned rate_window_ms = 1000;
   bool has_write_token = false;   std::string write_token;
   std::vector<std::string> trusted_proxies;
+  // CPU keep-warm idle floor (also controllable from the config file):
+  //   cpu-warm        = on | off      (default on)
+  //   cpu-warm-floor  = N             (percent, per core)
+  //   cpu-warm-ceiling= N
+  //   cpu-warm-cores  = N             (clamp 1..16)
+  bool has_warm = false;          bool warm_enabled = true;
+  bool has_warm_floor = false;    unsigned warm_floor = 11;
+  bool has_warm_ceiling = false;  unsigned warm_ceiling = 14;
+  bool has_warm_cores = false;    unsigned warm_cores = 16;
 };
 
 /*

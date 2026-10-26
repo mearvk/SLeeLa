@@ -33,6 +33,7 @@ extern "C" int sleela_wst_dyn_sql_server_run(int, char **) {
 #include "dyn_sql_server.h"
 #include "envelopment.h"
 #include "hardening.h"
+#include "cpu_warmer.h"
 #include "../../lib/sleela-sql/native/include/sleela_sql.h"
 
 #include <arpa/inet.h>
@@ -106,6 +107,13 @@ struct Config {
   mutable sleela::wst::RateLimiter rate;   // admission control (disabled by default)
   sleela::wst::WriteAuth write_auth;       // bearer-token gate on /db mutations
   std::vector<std::string> trusted_proxies;// peers whose Forwarded hdr we honour
+
+  // CPU keep-warm idle floor. ON BY DEFAULT (admin may disable). The running
+  // warmer is owned by run(); this holds the configured band for status, and
+  // warm_live points at the running warmer so /__sleela/status can report the
+  // live measured utilization (nullptr until started / when disabled).
+  sleela::wst::CpuWarmerConfig warm;
+  const sleela::wst::CpuWarmer *warm_live = nullptr;
 };
 
 std::string lo(std::string s) {
@@ -826,7 +834,17 @@ Resp make(const Req &q, const Config &cfg, std::string &log_detail) {
       << ",\"warrants\":" << cfg.env.warrants.size()
       << ",\"rate_limit\":" << (cfg.rate.enabled() ? "true" : "false")
       << ",\"write_auth\":" << (cfg.write_auth.required() ? "true" : "false")
-      << ",\"trusted_proxies\":" << cfg.trusted_proxies.size() << "}\n";
+      << ",\"trusted_proxies\":" << cfg.trusted_proxies.size()
+      << ",\"cpu_warm\":" << (cfg.warm.enabled ? "true" : "false")
+      << ",\"cpu_warm_floor_pct\":" << cfg.warm.floor_pct
+      << ",\"cpu_warm_ceiling_pct\":" << cfg.warm.ceiling_pct
+      << ",\"cpu_warm_cores\":" << (cfg.warm_live ? cfg.warm_live->threads() : 0u);
+    if (cfg.warm_live) {
+      char pbuf[32];
+      std::snprintf(pbuf, sizeof pbuf, "%.2f", cfg.warm_live->measured_pct());
+      o << ",\"cpu_warm_measured_pct\":" << pbuf;
+    }
+    o << "}\n";
     std::string b = o.str();
     r.type = "application/json";
     r.body.assign(b.begin(), b.end());
@@ -1073,7 +1091,13 @@ void usage() {
       << "  --rate-window-ms N   rate-limit window in ms (default 1000)\n"
       << "  --write-token TOK    require 'Authorization: Bearer TOK' for /db writes\n"
       << "  --trusted-proxy IP   honour Forwarded/X-Forwarded-For from this peer\n"
-      << "                       (repeatable; prevents client IP spoofing)\n";
+      << "                       (repeatable; prevents client IP spoofing)\n"
+      << "\n"
+      << "  CPU keep-warm idle floor (ON by default; administrator may disable):\n"
+      << "  --no-warm            disable the keep-warm idle floor\n"
+      << "  --warm-floor N       target floor percent per core (default 11)\n"
+      << "  --warm-ceiling N     target ceiling percent per core (default 14)\n"
+      << "  --warm-cores N       max warmer threads, clamped 1..16 (default 16)\n";
 }
 
 int run(int ac, char **av) {
@@ -1104,6 +1128,11 @@ int run(int ac, char **av) {
     else if (a == "--rate-window-ms" && i + 1 < ac) rate_window_ms = (unsigned)std::strtoul(av[++i], nullptr, 10);
     else if (a == "--write-token" && i + 1 < ac) write_token = av[++i];
     else if (a == "--trusted-proxy" && i + 1 < ac) trusted_proxies.push_back(av[++i]);
+    else if (a == "--no-warm") cfg.warm.enabled = false;
+    else if (a == "--warm") cfg.warm.enabled = true;  // explicit (already default)
+    else if (a == "--warm-floor" && i + 1 < ac) cfg.warm.floor_pct = (unsigned)std::strtoul(av[++i], nullptr, 10);
+    else if (a == "--warm-ceiling" && i + 1 < ac) cfg.warm.ceiling_pct = (unsigned)std::strtoul(av[++i], nullptr, 10);
+    else if (a == "--warm-cores" && i + 1 < ac) cfg.warm.max_cores = (unsigned)std::strtoul(av[++i], nullptr, 10);
     else if (a == "--once") once = true;
     else if (a == "--help" || a == "-h") { usage(); return 0; }
     else { std::cerr << "unknown option: " << a << "\n"; return 2; }
@@ -1115,13 +1144,18 @@ int run(int ac, char **av) {
   // "startup settings OR configuration file settings" control surface for the
   // Section-3 features, matching the envelopment control surface.
   bool cli_rate_per_peer = false, cli_rate_global = false, cli_rate_window = false;
-  // (track which CLI rate flags were explicitly set so file values are not
-  //  silently clobbered by defaults)
+  bool cli_warm = false, cli_warm_floor = false, cli_warm_ceiling = false, cli_warm_cores = false;
+  // (track which CLI flags were explicitly set so file values are not
+  //  silently clobbered, and so the CLI overrides the config file)
   for (int i = 1; i < ac; ++i) {
     std::string a = av[i];
     if (a == "--rate-per-peer") cli_rate_per_peer = true;
     else if (a == "--rate-global") cli_rate_global = true;
     else if (a == "--rate-window-ms") cli_rate_window = true;
+    else if (a == "--warm" || a == "--no-warm") cli_warm = true;
+    else if (a == "--warm-floor") cli_warm_floor = true;
+    else if (a == "--warm-ceiling") cli_warm_ceiling = true;
+    else if (a == "--warm-cores") cli_warm_cores = true;
   }
   if (!config_path.empty()) {
     sleela::wst::HardeningSettings hs;
@@ -1135,12 +1169,19 @@ int run(int ac, char **av) {
     if (hs.has_rate_window && !cli_rate_window) rate_window_ms = hs.rate_window_ms;
     if (hs.has_write_token && write_token.empty()) write_token = hs.write_token;
     for (const auto &p : hs.trusted_proxies) trusted_proxies.push_back(p);
+    // CPU warmer from the file (CLI --warm/--no-warm/--warm-* override below).
+    if (hs.has_warm && !cli_warm) cfg.warm.enabled = hs.warm_enabled;
+    if (hs.has_warm_floor && !cli_warm_floor) cfg.warm.floor_pct = hs.warm_floor;
+    if (hs.has_warm_ceiling && !cli_warm_ceiling) cfg.warm.ceiling_pct = hs.warm_ceiling;
+    if (hs.has_warm_cores && !cli_warm_cores) cfg.warm.max_cores = hs.warm_cores;
   }
 
   if (rate_window_ms < 1) rate_window_ms = 1000;
   cfg.rate.configure(rate_per_peer, rate_global, std::chrono::milliseconds(rate_window_ms));
   if (!write_token.empty()) cfg.write_auth.set_token(write_token);
   cfg.trusted_proxies = trusted_proxies;
+  // Validate/clamp the keep-warm band into the in-contract range.
+  cfg.warm = sleela::wst::sanitize(cfg.warm);
 
   std::error_code e;
   cfg.root = fs::weakly_canonical(cfg.root, e);
@@ -1234,6 +1275,19 @@ int run(int ac, char **av) {
           " write_auth=" + (cfg.write_auth.required() ? "on" : "off") +
           " trusted_proxies=" + std::to_string(cfg.trusted_proxies.size()));
 
+  // Start the CPU keep-warm idle floor (on by default). Owned here; stopped on
+  // shutdown. It runs low-priority so request handling always preempts it.
+  sleela::wst::CpuWarmer warmer(cfg.warm);
+  warmer.start();
+  cfg.warm_live = &warmer;
+  if (cfg.warm.enabled) {
+    log.put(std::string("cpu-warm=on floor=") + std::to_string(cfg.warm.floor_pct) +
+            "% ceiling=" + std::to_string(cfg.warm.ceiling_pct) +
+            "% cores=" + std::to_string(warmer.threads()));
+  } else {
+    log.put("cpu-warm=off (administrator disabled)");
+  }
+
   Pool pool(threads, [&](Conn c) { serve(c, cfg, log); });
   auto last_sweep = std::chrono::steady_clock::now();
   while (!g_stop) {
@@ -1275,6 +1329,8 @@ int run(int ac, char **av) {
   shutdown(l, SHUT_RDWR);
   close(l);
   pool.stop();
+  cfg.warm_live = nullptr;
+  warmer.stop();
   log.put("server=stop kind=dynamic-sql");
   return 0;
 }

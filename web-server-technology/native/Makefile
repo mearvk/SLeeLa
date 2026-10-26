@@ -23,15 +23,20 @@ $(BUILD):
 $(SQL_OBJ): $(SQL_SRC) $(SQL_HDR) | $(BUILD)
 	$(CC) -I ../../lib/sleela-sql/native/include $(CFLAGS) -c $< -o $@
 
-$(TARGET): main.cpp dyn_sql_server.cpp dyn_sql_server.h envelopment.cpp envelopment.h hardening.cpp hardening.h $(SQL_OBJ) | $(BUILD)
-	$(CXX) $(CXXFLAGS) main.cpp dyn_sql_server.cpp envelopment.cpp hardening.cpp $(SQL_OBJ) -o $@
+$(TARGET): main.cpp dyn_sql_server.cpp dyn_sql_server.h envelopment.cpp envelopment.h hardening.cpp hardening.h cpu_warmer.cpp cpu_warmer.h $(SQL_OBJ) | $(BUILD)
+	$(CXX) $(CXXFLAGS) main.cpp dyn_sql_server.cpp envelopment.cpp hardening.cpp cpu_warmer.cpp $(SQL_OBJ) -o $@
 
 # Unit tests for the Section-3 hardening primitives (no sockets).
 $(BUILD)/hardening-test: hardening-test.cpp hardening.cpp hardening.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) hardening-test.cpp hardening.cpp -o $@
 
-check: $(BUILD)/hardening-test
+# Convergence test for the CPU keep-warm controller (takes ~4s).
+$(BUILD)/cpu-warmer-test: cpu_warmer-test.cpp cpu_warmer.cpp cpu_warmer.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) cpu_warmer-test.cpp cpu_warmer.cpp -o $@
+
+check: $(BUILD)/hardening-test $(BUILD)/cpu-warmer-test
 	$(BUILD)/hardening-test
+	$(BUILD)/cpu-warmer-test
 
 clean:
 	rm -rf $(BUILD)

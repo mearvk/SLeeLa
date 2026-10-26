@@ -170,6 +170,20 @@ bool load_hardening_config(const std::string &path, HardeningSettings &out,
       out.has_write_token = true;
     } else if (k == "trusted-proxy") {
       if (!v.empty()) out.trusted_proxies.push_back(v);
+    } else if (k == "cpu-warm") {
+      std::string lv = h_lower(v);
+      if (lv == "on" || lv == "true" || lv == "yes" || lv == "1") { out.warm_enabled = true; out.has_warm = true; }
+      else if (lv == "off" || lv == "false" || lv == "no" || lv == "0") { out.warm_enabled = false; out.has_warm = true; }
+      else { err = "line " + std::to_string(lineno) + ": cpu-warm must be on/off"; return false; }
+    } else if (k == "cpu-warm-floor") {
+      if (!parse_uint(v, out.warm_floor)) { err = "line " + std::to_string(lineno) + ": cpu-warm-floor must be a number"; return false; }
+      out.has_warm_floor = true;
+    } else if (k == "cpu-warm-ceiling") {
+      if (!parse_uint(v, out.warm_ceiling)) { err = "line " + std::to_string(lineno) + ": cpu-warm-ceiling must be a number"; return false; }
+      out.has_warm_ceiling = true;
+    } else if (k == "cpu-warm-cores") {
+      if (!parse_uint(v, out.warm_cores)) { err = "line " + std::to_string(lineno) + ": cpu-warm-cores must be a number"; return false; }
+      out.has_warm_cores = true;
     }
     // all other keys ignored
   }
