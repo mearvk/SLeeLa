@@ -47654,8 +47654,32 @@
       "sha256": "888f4c2a7ba948002e802fb708fb013ef6e413badd5d35be2c5a615d5eaed36a"
     },
     {
+      "path": "lib/web-server-technology/cpp/include/slweb.hpp",
+      "sha256": "8f23676e8d48fa686e3f21bffe391ecd3d5e4404d6e7de686e554a975cbcb3d2"
+    },
+    {
+      "path": "lib/web-server-technology/cpp/src/slweb.cpp",
+      "sha256": "35b272482c60f258215a22b92ee4362ecf979a95d295d128ff53989aa5aca35f"
+    },
+    {
       "path": "lib/web-server-technology/demo-web-server-technology.sleela",
       "sha256": "5fefa8b6f2fef411c0898b33bb59ef2b2dd903da4e7e3ef44ce54c8f6872e457"
+    },
+    {
+      "path": "lib/web-server-technology/native/include/slweb.h",
+      "sha256": "a4ee18df0c440c311cc74f6e934019c45f4cafb2280970b555832166b356ddc6"
+    },
+    {
+      "path": "lib/web-server-technology/native/src/slweb.c",
+      "sha256": "44dd11c63aeecda1ac6ada45f7e1f0704dcbcd048c8ad2b0c0a6ba191bba5693"
+    },
+    {
+      "path": "lib/web-server-technology/tests/test_c.c",
+      "sha256": "fe3020ce7796908658e2d438a2bf3e7f247b3381d2d83bc17b4d92e3b1ef6a11"
+    },
+    {
+      "path": "lib/web-server-technology/tests/test_cpp.cpp",
+      "sha256": "64880ba478d17dea3e17afac92f1c0af6f291eda0eeb46765ab74d61a8baf93b"
     },
     {
       "path": "lib/website/SLWebsiteDesign.sleela",
