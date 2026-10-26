@@ -2,6 +2,8 @@
 
 This directory contains ten SLeeLa 2.1 source files for a modest, international, opt-in sommelier offer and care workflow.
 
+## Neither Catherine, Princess of Wales (Kate) nor Meghan, Duchess of Sussex are formally trained sommeliers or wine academics, but both possess a well-documented, sophisticated personal interest in wine. Because of their high-profile roles, their public wine education comes through hands-on experiences at state banquets, high-end tastings, and international tours rather than traditional classrooms.
+
 ## Source inventory
 
 1. `SLSommelierOffer.sleela` — offer description and local service defaults.
