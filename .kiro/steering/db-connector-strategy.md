@@ -2,66 +2,94 @@
 inclusion: always
 ---
 
-# Database connectivity strategy (the SLeeLa connector)
+# Database, connector, and assembly strategy
 
-SLeeLa accesses databases the way Java does: a stable **API shape** plus
-pluggable **drivers** selected at connect time — the JDBC model. Build all
-database work to this layering; do not bypass it or invent a parallel path.
+SLeeLa accesses databases and external data sources the way Java does: a stable
+**API shape** plus pluggable **connectors/drivers** chosen at connect time (the
+JDBC model). Build all such work to the layering below, and — critically —
+**reuse the existing homes rather than duplicating them**. There are several
+DB/connection-related trees in `lib/`; know which is which before adding code.
 
-| Java | SLeeLa — canonical home |
-|---|---|
-| `java.sql.*` API | `lib/database/*.sleela` facade classes |
-| JDBC driver (the connector jar) | `lib/db-connector` — the C ABI `sldbc_*` |
-| the database engine | `lib/sleela-sql` (local), or an external RDBMS |
+## The authoritative homes (do not duplicate)
 
-## The contract
+| Concern | Canonical home | What lives there |
+|---|---|---|
+| External DB + data-source **drivers** (the collection) | **`lib/connector/`** | Real per-vendor adapters (C ABI + C++17 RAII) over the vendors' own client libraries, plus a connector **registry**. This is where "MySQL et al." already lives. |
+| A **uniform, driver-agnostic ABI** (open-by-URL lifecycle) | `lib/db-connector/` (`sldbc_*`) | One portable surface — open/prepare/bind `?`/execute/query/ResultSet/tx — with the bundled `sleelasql` driver. A façade concept, NOT a second place for vendor drivers. |
+| The SLeeLa-language DB **API shape** | `lib/database/*.sleela` | `SLDatabase`, `SLPreparedStatement`, `SLResultSet`, `SLConnectionPool`, `SLTransaction`, … (facade classes). |
+| The local embedded **engine** | `lib/sleela-sql/` (`ssql_*`) | CSV-backed SQL engine: both dialects, prepared statements, snapshot transactions. |
+| External-DB connection **config** | `api/database/` | `sleela_database_config_t` (host/port/database/username/`password_env`/options) + `sleela_database_validate`. |
+| Driver package placeholder | `lib/drivers/` | Currently only an `SLPackage.sleela` placeholder — not a second driver tree. |
 
-- **One driver-agnostic ABI**: `lib/db-connector/include/sldbc.h` (`sldbc_*`).
-  The JDBC lifecycle: `sldbc_open(url)` → `prepare` → `bind` (1-based `?`) →
-  `execute` / `query` → `ResultSet` accessors → `begin`/`commit`/`rollback` →
-  `close`. New database capability is exposed **through this ABI**, not as a
-  one-off.
-- **The connection URL scheme selects the driver**, exactly like a JDBC URL:
-  `sleelasql:<dir>`, `mysql:<...>`, `postgresql:<...>`, etc. Register every new
-  backend as a scheme in the connector's driver table.
-- **The bundled real driver is `sleelasql`**, wrapping the `lib/sleela-sql`
-  engine (`ssql_*`): both dialects, prepared statements, snapshot transactions.
-- **Honest stubs, never fakes.** A known-but-unimplemented backend returns
-  `SLDBC_UNSUPPORTED`; an unknown scheme returns `SLDBC_ERR_NODRIVER`. Never
-  return a connection for a backend you cannot actually reach, and never
-  claim a capability (ACID, isolation, wire-protocol support) that is not
-  implemented and tested. The external kinds named in `api/database`
-  (postgresql / mysql / mariadb / sqlite / sqlserver / oracle / odbc) start as
-  stubs and are lit up only when a real driver passes tests.
+## `lib/connector/` is the driver collection — it already covers MySQL et al.
+
+Before writing any new database or data-source connector, check
+`lib/connector/CONNECTOR-CATALOG.md`. Baseline adapters already exist (C ABI +
+C++17 facade, build targets present; "baseline" = not yet certified
+production-ready):
+
+- **Database:** `mysql` (MySQL C client: open/close/ping/execute/prepare/
+  `MYSQL_BIND` param+result binding/fetch/affected_rows), `mariadb` (shared
+  mysql adapter, MariaDB Connector/C profile), `sqlite` (SQLite C API),
+  `postgres` (libpq `PQexecParams`), `odbc` (ODBC 3.x), `sqlserver` and
+  `oracle` (ODBC profiles).
+- **Non-database sources:** `delimited` (CSV/TSV), `json`, `xml` (libxml2),
+  `rest` (libcurl), `mqtt` (Mosquitto).
+- **Registry:** `connector_registry.h/.c` + C++ facade — named references,
+  non-owning handles, duplicate rejection, deterministic lookup; unnamed
+  resolution succeeds only when exactly one connector is registered.
+
+Build: `make -C lib/connector build` (or `database` / `data` / `test`).
 
 ## Go-forward intent: a strong driver collection (MySQL et al.)
 
-The deliberate plan is to grow a **first-class driver collection for the major
-external databases — MySQL first, then PostgreSQL/MariaDB/SQLite and the rest**.
-When implementing a new external driver:
+The deliberate plan is a first-class driver collection for the major external
+databases. **That collection lives in `lib/connector/`, where it already
+exists.** When advancing it:
 
-1. Add it under `lib/db-connector` behind the existing `sldbc_*` ABI (a new
-   driver implementation + its scheme), keeping the connector the single entry
-   point. Do not fork a separate connector per database.
-2. Treat the existing `sleelasql` driver as the reference for the lifecycle
-   (open/prepare/bind/execute/query/rows/tx) and match its behaviour and error
-   mapping.
-3. Reuse `api/database`'s `sleela_database_config_t` (host/port/database/
-   username/`password_env`/options) for connection configuration; honour
-   `password_env` (read the secret from the environment, never hard-code or log
-   credentials).
-4. Only flip a scheme from `SLDBC_UNSUPPORTED` to active once a real
-   connect + prepared-statement + result-set + transaction path works against
-   that engine and a test proves it. Document durability/isolation guarantees
-   honestly, as `lib/sleela-sql/ROADMAP.md` does.
-5. Prefer the database vendor's documented client protocol/library as the
-   dependency boundary; keep the driver's surface small and the connector ABI
-   unchanged so callers are driver-agnostic.
+1. **Extend the existing `lib/connector/<vendor>` adapter** (and its catalog
+   entry); do NOT start a parallel connector elsewhere. If an adapter is a
+   baseline, deepen it toward the production-readiness checklist in
+   `CONNECTOR-CATALOG.md` (integration tests, documented parameter lifetimes /
+   result ownership / transactions / timeouts, TLS + safe secrets, result
+   streaming, verified Linux/macOS/Windows builds).
+2. Register every connection through `connector_registry` (named references,
+   duplicate rejection) so e.g. `mysql` + `postgres` never silently resolve to
+   an arbitrary connection.
+3. Configure connections via `api/database`'s `sleela_database_config_t`;
+   honour `password_env` (read the secret from the environment — never
+   hard-code or log credentials). Vendor client libraries are opt-in
+   dependencies the operator installs; access begins only on explicit open.
+4. **Honest capability only.** Do not claim ACID, isolation, wire-protocol
+   completeness, or "production-ready" until integration tests pass against a
+   real server and the behaviour is documented. A known-but-unimplemented
+   backend must fail cleanly, never fake a connection. (The `lib/db-connector`
+   ABI mirrors this with `SLDBC_UNSUPPORTED` / `SLDBC_ERR_NODRIVER`.)
 
-## When wiring SLeeLa programs
+## The uniform ABI vs. the driver collection
 
-The `lib/database/*.sleela` facades (`SLDatabase`, `SLPreparedStatement`,
-`SLResultSet`, `SLConnectionPool`, `SLTransaction`, …) are the SLeeLa-language
-front. They should ultimately call **through** `lib/db-connector`'s ABI so a
-SLeeLa program uses one connector regardless of backend — the same way a Java
-program uses one `java.sql` API across every JDBC driver.
+`lib/db-connector` (`sldbc_*`) provides ONE portable, driver-agnostic surface
+(URL scheme selects the driver) and today ships only the `sleelasql` driver; it
+treats external schemes as honest stubs. It must NOT grow its own copies of the
+MySQL/Postgres/etc. drivers — those belong in `lib/connector/`. If a uniform
+surface over the real vendor adapters is wanted, implement `lib/db-connector`
+drivers as thin shims that dispatch to the corresponding `lib/connector/<vendor>`
+adapter. Keep exactly one implementation of each vendor's client code.
+
+## Terminology → where it maps
+
+When a request mentions any of these, resolve it to the home above and reuse it:
+
+- "DB connector", "database driver", "JDBC-like", "connector jar", "MySQL /
+  MariaDB / PostgreSQL / SQLite / SQL Server / Oracle / ODBC connector",
+  "data-source adapter" (CSV/TSV, JSON, XML, REST, MQTT) → **`lib/connector/`**.
+- "connector registry", "driver manager", "resolve/register a connection",
+  "assembly/wiring of connections", "named data source" → the
+  **`connector_registry`** in `lib/connector/`.
+- "uniform DB API", "open-by-URL", "driver-agnostic query/ResultSet",
+  "SLeeLaSQL/embedded queries" → **`lib/db-connector`** (`sldbc_*`) and
+  **`lib/sleela-sql`**.
+- "SLeeLa DB classes", "SLDatabase/SLResultSet/SLPreparedStatement/pool/
+  transaction objects" → **`lib/database/*.sleela`** (these should ultimately
+  call through the connector layer, not reimplement it).
+- "database connection config/credentials/DSN" → **`api/database`**.
