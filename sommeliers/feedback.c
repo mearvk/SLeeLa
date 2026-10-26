@@ -49,6 +49,6 @@ int sommeliers_feedback_symbol(const char *input, char *output) {
             value >>= 1u;
         }
     }
-    *output = (char[]){ '0', '1', 's' }[ones % 3u];
+    {\n        static const char symbols[] = { '0', '1', 's' };\n        *output = symbols[ones % 3u];\n    }
     return 0;
 }
