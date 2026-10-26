@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
    const char* value = require_value("--tls-client-ca"); if (!value) return 2; cfg.tls_client_ca_file = value;
   } else if (arg == "--allow-peer") {
    const char* value = require_value("--allow-peer"); if (!value) return 2;
-   if (std::string(value).find_first_of("\\r\n") != std::string::npos || std::string(value).empty()) { std::cerr << "Invalid --allow-peer identity\n"; return 2; }
+   if (std::string(value).find_first_of("\r\n") != std::string::npos || std::string(value).empty()) { std::cerr << "Invalid --allow-peer identity\n"; return 2; }
    cfg.allowed_peer_identities.insert(value);
   } else if (arg == "--authorize") {
    const char* value = require_value("--authorize"); if (!value) return 2;
