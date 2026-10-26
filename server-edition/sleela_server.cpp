@@ -167,7 +167,7 @@ void SleelaServer::run(){
   workers_.clear();
  }
  packet_logger_.close();
- {std::lock_guard<std::mutex> state_lock(state_mutex_);if(listen_fd_>=0){close_socket(listen_fd_);listen_fd_=-1;}
+ {std::lock_guard<std::mutex> state_lock(state_mutex_);if(listen_fd_>=0){close_socket(listen_fd_);listen_fd_=-1;}if(tls_context_){SSL_CTX_free(tls_context_);tls_context_=nullptr;}
 #ifdef _WIN32
  if(winsock_started_){WSACleanup();winsock_started_=false;}
 #endif
@@ -201,12 +201,16 @@ bool SleelaServer::read_exact(int fd,SSL* ssl,void*dst,std::size_t bytes,std::ui
   const auto us=remaining.count();
   fd_set set;FD_ZERO(&set);FD_SET(fd,&set);
   timeval tv{static_cast<long>(us/1000000),static_cast<long>(us%1000000)};
-  if(select(fd+1,&set,nullptr,nullptr,&tv)<=0)return false;
+  if((!ssl || SSL_pending(ssl)==0) && select(fd+1,&set,nullptr,nullptr,&tv)<=0)return false;
+ int n=0;
+ if(ssl)n=SSL_read(ssl,p+got,static_cast<int>(std::min<std::size_t>(bytes-got,static_cast<std::size_t>(std::numeric_limits<int>::max()))));
+ else {
 #ifdef _WIN32
- int n=recv(fd,(char*)p+got,(int)(bytes-got),0);
+  n=recv(fd,(char*)p+got,(int)(bytes-got),0);
 #else
- int n=(int)recv(fd,p+got,bytes-got,0);
+  n=(int)recv(fd,p+got,bytes-got,0);
 #endif
+ }
  if(n<=0)return false;got+=(std::size_t)n;}return true;}
 bool SleelaServer::read_packet(int fd,SSL* ssl,Packet&p,std::size_t&wire,std::string&err){std::array<std::uint8_t,FIXED_HEADER>h{};if(!read_exact(fd,ssl,h.data(),h.size(),config_.idle_timeout_seconds*1000U)){err="header_timeout_or_eof";return false;}if(be32(h.data())!=MAGIC||h[4]!=WIRE_VERSION){err="bad_magic_or_wire_version";return false;}std::uint32_t hl=be32(h.data()+8),pl=be32(h.data()+12);std::uint64_t total=FIXED_HEADER+(std::uint64_t)hl+pl;if(be16(h.data()+6)!=0){err="unsupported_flags";return false;}if(hl>config_.max_header_bytes||pl>config_.max_payload_bytes||total>config_.max_packet_bytes){err="frame_exceeds_limits";return false;}
  p.grade=h[5];p.flags=be16(h.data()+6);p.stream_id=be64(h.data()+16);p.request_id=be64(h.data()+24);p.sequence=be64(h.data()+32);std::string hs(hl,'\0');if(hl&&!read_exact(fd,ssl,hs.data(),hl,config_.idle_timeout_seconds*1000U)){err="header_body_truncated";return false;}if(!PacketInspector::parse_headers(hs,p,err))return false;if(p.grade!=h[5]){err="grade_mismatch";return false;}if(p.flags!=be16(h.data()+6)){err="flags_mismatch";return false;}p.payload.resize(pl);if(pl&&!read_exact(fd,ssl,p.payload.data(),pl,config_.idle_timeout_seconds*1000U)){err="payload_truncated";return false;}wire=(std::size_t)total;return true;}
@@ -214,11 +218,15 @@ bool SleelaServer::write_status(int fd,SSL* ssl,int status,const char*reason){
  const std::string s="SLPK/1 "+std::to_string(status)+" "+reason+"\n";
  std::size_t sent=0;
  while(sent<s.size()){
+  int n=0;
+  if(ssl)n=SSL_write(ssl,s.data()+sent,static_cast<int>(s.size()-sent));
+  else {
 #ifdef _WIN32
-  const int n=send(fd,s.data()+sent,static_cast<int>(s.size()-sent),0);
+   n=send(fd,s.data()+sent,static_cast<int>(s.size()-sent),0);
 #else
-  const auto n=send(fd,s.data()+sent,s.size()-sent,MSG_NOSIGNAL);
+   n=static_cast<int>(send(fd,s.data()+sent,s.size()-sent,MSG_NOSIGNAL));
 #endif
+  }
   if(n<0){
 #ifndef _WIN32
    if(errno==EINTR)continue;
