@@ -15,8 +15,8 @@ Current hardening changes set the default listener to 127.0.0.1:19866, validate 
 ### Network and identity
 
 - Default to loopback; expose remotely only behind a documented, authenticated, protected deployment boundary.
-- Add TLS 1.3 or an explicitly supported authenticated transport and validate peer credentials.
-- Authorize each service and operation against authenticated identity and policy.
+- **Implemented in source:** TLS 1.3-only transport, mandatory client-certificate validation against a configured CA, explicit certificate-CN allowlisting, and exact identity/service/operation authorization rules. Remote binds require all these settings.
+- **Still required:** Build and integration verification, certificate expiry/revocation and rotation procedures, and cross-platform OpenSSL packaging.
 - Treat packet metadata, claimed source fields, grades, classifications, and annotation fields as untrusted input, never as identity or privilege.
 - Add replay protection and durable request/sequence semantics for operations with side effects.
 
