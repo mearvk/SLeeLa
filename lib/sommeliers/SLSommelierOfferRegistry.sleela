@@ -1,0 +1,31 @@
+#sleela 2.1
+< Small fixed-capacity registry for offer metadata. No remote publication or
+  persistent storage is implied. >
+class SLSommelierOfferRegistry {
+  int CAPACITY = 12;
+  int count = 0;
+  String offerIds = "";
+  String lastError = "";
+
+  int size() { return count; }
+  String error() { return lastError; }
+
+  boolean containsId(String id) {
+    if (id == "" || offerIds == "") { return false; }
+    return offerIds == id || offerIds.indexOf("|" + id + "|") >= 0
+      || offerIds.indexOf(id + "|") == 0
+      || offerIds.indexOf("|" + id) >= 0;
+  }
+
+  boolean register(String id) {
+    if (id == "") { lastError = "empty offer id"; return false; }
+    if (containsId(id)) { lastError = "duplicate offer id"; return false; }
+    if (count >= CAPACITY) { lastError = "registry full"; return false; }
+    offerIds = offerIds + "|" + id + "|";
+    count = count + 1;
+    lastError = "";
+    return true;
+  }
+
+  void clear() { count = 0; offerIds = ""; lastError = ""; }
+}
