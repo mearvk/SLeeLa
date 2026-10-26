@@ -46,7 +46,7 @@ class SleelaServer {
  bool start(); void run(); void stop(); bool running() const noexcept;
  bool register_handler(const std::string& service_id,const std::string& operation_id,ServiceHandler handler);
  private:
- ServerConfig config_; StructuredLogger logger_; PacketInspector inspector_; PacketLoggerBridge packet_logger_; int listen_fd_=-1; std::atomic<bool> running_{false}; std::atomic<std::size_t> active_connections_{0}; std::mutex state_mutex_; std::mutex workers_mutex_; std::mutex handlers_mutex_; std::unordered_map<std::string,ServiceHandler> handlers_; std::atomic<bool> run_active_{false}; std::vector<std::thread> workers_;
+ ServerConfig config_; StructuredLogger logger_; PacketInspector inspector_; PacketLoggerBridge packet_logger_; int listen_fd_=-1; std::atomic<bool> running_{false}; std::atomic<std::size_t> active_connections_{0}; std::mutex state_mutex_; std::mutex workers_mutex_; std::mutex handlers_mutex_; std::unordered_map<std::string,ServiceHandler> handlers_; std::atomic<bool> run_active_{false}; bool winsock_started_=false; std::vector<std::thread> workers_;
  static std::string handler_key(const std::string&,const std::string&); void client_loop(int,std::string); bool read_exact(int,void*,std::size_t,std::uint32_t);
  bool write_status(int,int,const char*); bool read_packet(int,Packet&,std::size_t&,std::string&); void close_socket(int);
 };
