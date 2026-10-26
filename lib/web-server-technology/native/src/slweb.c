@@ -10,8 +10,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if !defined(_WIN32) && !defined(_WIN64)
-#include <unistd.h>
+#if defined(_WIN32) || defined(_WIN64)
+#include <windows.h>   /* GetSystemInfo for the CPU count on Windows */
+#else
+#include <unistd.h>    /* sysconf(_SC_NPROCESSORS_ONLN) on POSIX/macOS */
 #endif
 
 const char *slweb_version(void) { return "1.0.0"; }
@@ -417,7 +419,13 @@ double slweb_warm_target_pct(slweb_warm w) {
 
 unsigned slweb_warm_core_count(unsigned max_cores) {
   long n = 1;
-#if defined(_SC_NPROCESSORS_ONLN)
+#if defined(_WIN32) || defined(_WIN64)
+  /* Windows (XP through 11+): GetSystemInfo is available on every version. */
+  SYSTEM_INFO si;
+  GetSystemInfo(&si);
+  if (si.dwNumberOfProcessors > 0) n = (long)si.dwNumberOfProcessors;
+#elif defined(_SC_NPROCESSORS_ONLN)
+  /* POSIX / macOS. */
   long got = sysconf(_SC_NPROCESSORS_ONLN);
   if (got > 0) n = got;
 #endif

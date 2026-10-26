@@ -72,6 +72,15 @@ make        # -> build/libslweb.a and build/libslweb++.a
 make test   # C and C++ smoke tests
 ```
 
+### Portability
+
+The library is dependency-free (no sockets, no HTTP): it builds on Linux,
+macOS (Intel + Apple Silicon), and Windows 7–11 with a C++17 toolchain (MSVC
+2017+ or MinGW-w64). The one platform-specific call is the CPU count
+(`GetSystemInfo` on Windows, `sysconf` on POSIX/macOS). Windows XP can build the
+**C core** but not the C++17 facade. See [`PORTABILITY.md`](PORTABILITY.md) for
+the full matrix and the honest verification status.
+
 Consumers of the C++ facade link both the C++ and C core libraries (as with
 `lib/sleela-sql`). Example:
 
