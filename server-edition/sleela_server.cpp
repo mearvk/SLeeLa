@@ -257,7 +257,7 @@ void SleelaServer::client_loop(int fd,std::string peer){
 #else
   timeval no_timeout{0,0};setsockopt(fd,SOL_SOCKET,SO_RCVTIMEO,&no_timeout,sizeof(no_timeout));
 #endif
-  X509* cert=SSL_get1_peer_certificate(ssl);
+  X509* cert=SSL_get_peer_certificate(ssl);
   if(cert){X509_NAME* subject=X509_get_subject_name(cert);int index=X509_NAME_get_index_by_NID(subject,NID_commonName,-1);if(index>=0){X509_NAME_ENTRY* entry=X509_NAME_get_entry(subject,index);ASN1_STRING* data=X509_NAME_ENTRY_get_data(entry);unsigned char* utf8=nullptr;int n=ASN1_STRING_to_UTF8(&utf8,data);if(n>0&&static_cast<std::size_t>(n)<=256)identity.assign(reinterpret_cast<char*>(utf8),static_cast<std::size_t>(n));OPENSSL_free(utf8);}X509_free(cert);}
   if(identity.empty()||!config_.allowed_peer_identities.count(identity)){
    logger_.write(Severity::WARN,"tls_identity_not_allowlisted",nullptr,nullptr,peer);
