@@ -127,6 +127,18 @@ def main() -> int:
             if not response.startswith("SLPK/1 403 identity_not_authorized"):
                 raise AssertionError(f"expected authorization denial, got {response!r}")
 
+            # Offer only X25519: a successful TLS 1.3 handshake proves the server
+            # supports this explicitly configured ephemeral DH group.
+            group_probe = subprocess.run([
+                "openssl", "s_client", "-connect", f"127.0.0.1:{port}",
+                "-servername", "localhost", "-tls1_3", "-groups", "X25519",
+                "-CAfile", str(cert["ca.crt"]), "-cert", str(cert["client.crt"]),
+                "-key", str(cert["client.key"]), "-brief",
+            ], cwd=root, input="", text=True, capture_output=True, timeout=5)
+            group_output = group_probe.stdout + group_probe.stderr
+            if group_probe.returncode != 0 or "TLSv1.3" not in group_output:
+                raise AssertionError(f"TLS 1.3 X25519-only handshake failed: {group_output}")
+
             def assert_rejected(client_context: ssl.SSLContext, description: str) -> None:
                 if proc.poll() is not None:
                     raise RuntimeError(f"server exited before rejection test: {proc.returncode}")
@@ -154,7 +166,7 @@ def main() -> int:
             except subprocess.TimeoutExpired:
                 proc.kill()
                 proc.wait(timeout=5)
-    print("TLS integration: PASS (trusted client, unauthorized operation denied, missing/non-allowlisted/untrusted client certificates rejected)")
+    print("TLS integration: PASS (TLS 1.3 X25519, trusted client, unauthorized operation denied, missing/non-allowlisted/untrusted client certificates rejected)")
     return 0
 
 
