@@ -1,0 +1,39 @@
+#sleela 2.1
+< Aggregate entry point for the open sommelier create-use care suite. >
+class SLSommelierCare {
+  SLSommelierOffer offer;
+  SLSommelierProfile profile;
+  SLSommelierConsent consent;
+  SLSommelierFeedback feedback;
+  SLSommelierSession session;
+  SLSommelierCarePlan plan;
+  SLSommelierLocale locale;
+  SLSommelierFeedbackClient client;
+
+  void initialize() {
+    offer = new SLSommelierOffer();
+    profile = new SLSommelierProfile();
+    consent = new SLSommelierConsent();
+    feedback = new SLSommelierFeedback();
+    session = new SLSommelierSession();
+    plan = new SLSommelierCarePlan();
+    locale = new SLSommelierLocale();
+    client = new SLSommelierFeedbackClient();
+  }
+
+  String offerSummary() { return offer.summary(); }
+  boolean canSubmitFeedback() { return consent.canSendFeedback() && session.active(); }
+
+  int submitCanonicalFeedback(String symbol) {
+    if (!canSubmitFeedback()) { return 102; }
+    if (!feedback.acceptCanonical(symbol)) { return 101; }
+    if (!session.recordFeedback()) { return 103; }
+    return client.send(symbol);
+  }
+
+  void revokeParticipation() {
+    consent.revokeAll();
+    session.close();
+    feedback.clear();
+  }
+}
