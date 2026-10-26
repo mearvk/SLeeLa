@@ -119,21 +119,23 @@ def main() -> int:
             if not response.startswith("SLPK/1 403 identity_not_authorized"):
                 raise AssertionError(f"expected authorization denial, got {response!r}")
 
-            no_cert = context(cert["ca.crt"])
-            try:
-                with socket.create_connection(("127.0.0.1", port), timeout=2) as raw:
-                    with no_cert.wrap_socket(raw, server_hostname="localhost"):
-                        raise AssertionError("server accepted a client without a certificate")
-            except (OSError, ssl.SSLError):
-                pass
+            def assert_rejected(client_context: ssl.SSLContext, description: str) -> None:
+                try:
+                    with socket.create_connection(("127.0.0.1", port), timeout=2) as raw:
+                        with client_context.wrap_socket(raw, server_hostname="localhost") as tls:
+                            tls.settimeout(2)
+                            try:
+                                data = tls.recv(1)
+                            except (OSError, ssl.SSLError):
+                                return
+                            if data:
+                                raise AssertionError(f"server accepted {description}")
+                except (OSError, ssl.SSLError):
+                    return
 
+            assert_rejected(context(cert["ca.crt"]), "a client without a certificate")
             bad = context(cert["ca.crt"], cert["bad-client.crt"], cert["bad-client.key"])
-            try:
-                with socket.create_connection(("127.0.0.1", port), timeout=2) as raw:
-                    with bad.wrap_socket(raw, server_hostname="localhost"):
-                        raise AssertionError("server accepted a certificate from an untrusted CA")
-            except (OSError, ssl.SSLError):
-                pass
+            assert_rejected(bad, "a certificate from an untrusted CA")
         finally:
             proc.terminate()
             try:
