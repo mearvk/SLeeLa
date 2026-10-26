@@ -45,5 +45,11 @@ int main() {
             "PROTOCOL-GRADE=1\nSERVICE ID=health\nOP-ID=ping\n";
         assert(!PacketInspector::parse_headers(invalid_name, p, error));
     }
+    {
+        SleelaServer server;
+        assert(server.register_handler("health", "ping", [](const Packet&) { return ServiceResponse{200, "pong"}; }));
+        assert(!server.register_handler("health", "ping", [](const Packet&) { return ServiceResponse{200, "duplicate"}; }));
+        assert(!server.register_handler("", "ping", [](const Packet&) { return ServiceResponse{200, "invalid"}; }));
+    }
     std::cout << "server_protocol_test: PASS\n";
 }
