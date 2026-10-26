@@ -3,12 +3,14 @@ CPPFLAGS ?=
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Wpedantic -pthread
 LDFLAGS ?=
 PYTHON ?= python3
-SERVER_TEST_BINARY = ./$(TARGET)
-ifeq ($(OS),Windows_NT)
-SERVER_TEST_BINARY = ./$(TARGET).exe
+TARGET = sleelas
+ifneq (,$(findstring Windows_NT,$(OS)))
+TARGET = sleelas.exe
+else ifneq (,$(findstring MINGW,$(shell uname -s)))
+TARGET = sleelas.exe
 endif
+SERVER_TEST_BINARY = ./$(TARGET)
 LDLIBS ?= -lssl -lcrypto
-TARGET=sleelas
 SOURCES=sleela_server.cpp server.cpp packet_logger_bridge.cpp ../logger/sleela_logger.cpp
 all: $(TARGET)
 
