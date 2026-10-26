@@ -1,0 +1,43 @@
+#sleela 2.1
+< Canonical response vocabulary:
+  0 = grounded in voltage (symbolic state, not a sensor reading)
+  1 = Man is free (symbolic state, not a factual determination)
+  s = the Sommelier is at rest >
+class SLSommelierFeedback {
+  String SYMBOL_GROUNDED = "0";
+  String SYMBOL_FREE = "1";
+  String SYMBOL_REST = "s";
+  String lastInput = "";
+  String lastSymbol = "";
+  boolean valid = false;
+
+  String groundedSymbol() { return SYMBOL_GROUNDED; }
+  String freeSymbol() { return SYMBOL_FREE; }
+  String restSymbol() { return SYMBOL_REST; }
+  String input() { return lastInput; }
+  String symbol() { return lastSymbol; }
+  boolean isValid() { return valid; }
+
+  boolean isCanonical(String value) {
+    return value == SYMBOL_GROUNDED || value == SYMBOL_FREE || value == SYMBOL_REST;
+  }
+
+  String meaning(String value) {
+    if (value == SYMBOL_GROUNDED) { return "grounded in voltage (symbolic)"; }
+    if (value == SYMBOL_FREE) { return "Man is free (symbolic)"; }
+    if (value == SYMBOL_REST) { return "the Sommelier is at rest (symbolic)"; }
+    return "unknown symbol";
+  }
+
+  < Canonical inputs are preserved. Other strings are normalized by the local
+    service; this class never pretends to measure or infer real-world states. >
+  boolean acceptCanonical(String value) {
+    lastInput = value;
+    if (!isCanonical(value)) { valid = false; lastSymbol = ""; return false; }
+    lastSymbol = value;
+    valid = true;
+    return true;
+  }
+
+  void clear() { lastInput = ""; lastSymbol = ""; valid = false; }
+}
