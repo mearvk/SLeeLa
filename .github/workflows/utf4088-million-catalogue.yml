@@ -1,0 +1,56 @@
+name: UTF-4088 Million-Entry Catalogue
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+    paths:
+      - "utf-4088/**"
+      - ".github/workflows/utf4088-million-catalogue.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  generate-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Run generator unit tests
+        run: |
+          python -m unittest discover -s utf-4088/tests -p 'test_*.py' -v
+      - name: Generate full catalogue
+        run: |
+          python utf-4088/tools/generate_catalogue.py \
+            --output utf4088-million.bin \
+            --summary utf4088-million.summary.json
+      - name: Verify output contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          binary = Path("utf4088-million.bin")
+          summary = json.loads(Path("utf4088-million.summary.json").read_text())
+          assert summary["entry_count"] == 1_048_576
+          assert summary["unique_glyph_count"] == 1_048_576
+          assert binary.stat().st_size == 16_777_244
+          assert binary.stat().st_size < 20_000_000
+          assert summary["under_size_limit"] is True
+          print("UTF-4088 catalogue verified:", summary["entry_count"], "entries;",
+                binary.stat().st_size, "bytes; SHA-256", summary["sha256"])
+          PY
+      - name: Upload catalogue artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: utf4088-million-catalogue
+          path: |
+            utf4088-million.bin
+            utf4088-million.summary.json
+          if-no-files-found: error
+          retention-days: 90
