@@ -10,6 +10,7 @@ it is copied, traced, or adapted from any film, novel, or other copyrighted artw
 | Path | What it is |
 |------|------------|
 | [`MANUAL.md`](./MANUAL.md) | How to read, use, render, and extend the set. |
+| [`REFERENCE.md`](./REFERENCE.md) | A light, factual reference to the fictional grimoire the name alludes to (description + attribution only; no artwork reproduced). |
 | [`gates/gate-01.md`](./gates/gate-01.md) … [`gate-09.md`](./gates/gate-09.md) | One document per gate: its name, motif, and a described meaning. |
 | [`images/gate-01.svg`](./images/gate-01.svg) … `gate-09.svg` | One **original** SVG emblem per gate (plain vector line-art, no external assets). |
 | [`images/nine-gates-contact-sheet.svg`](./images/nine-gates-contact-sheet.svg) | All nine emblems on one sheet. |
@@ -35,6 +36,10 @@ it is copied, traced, or adapted from any film, novel, or other copyrighted artw
   adaptation of the engravings from the film *The Ninth Gate* or the novel *The Club Dumas*, or of
   any other protected artwork. Any thematic resemblance (the count of nine, the gate motif) is to
   ideas and generic motifs, which are not themselves copyrightable.
+- **The allusion is documented separately.** [`REFERENCE.md`](./REFERENCE.md) explains the
+  fictional grimoire the directory name alludes to — as description and attribution only. The
+  real engravings are copyrighted and are **not** reproduced here; that document links their
+  legitimate sources instead.
 - **Format.** The emblems are hand-written SVG (vector line-art), self-contained with no external
   fonts or images, so they render anywhere and are easy to diff and re-license with the repo.
 

@@ -15,7 +15,9 @@ step indicators, or simply as a reference motif.
 
 It is **inspired by the generic idea** of a nine-stage passage (a motif found across many myths,
 games, and stories). It is **not** a copy or adaptation of any specific book, film, or other
-copyrighted artwork, and it deliberately does not reproduce such material.
+copyrighted artwork, and it deliberately does not reproduce such material. The specific fictional
+work the directory name alludes to is documented, as description and attribution only, in
+[`REFERENCE.md`](./REFERENCE.md).
 
 ---
 
