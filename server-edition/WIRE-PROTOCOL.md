@@ -18,7 +18,7 @@ All integers are unsigned big-endian.
 | 24 | 8 | REQUEST-ID |
 | 32 | 8 | SEQUENCE |
 
-The variable section is HEADER-LENGTH bytes followed by PAYLOAD-LENGTH bytes.
+The variable section is HEADER-LENGTH bytes followed by PAYLOAD-LENGTH bytes. In wire version 1, FLAGS must be zero; nonzero flags are rejected until their semantics are specified.
 
 Header records are one per line as KEY=VALUE. Required routing keys are PROTOCOL-GRADE, SERVICE-ID, and OP-ID. The fixed-header grade is authoritative and a mismatch is rejected.
 
@@ -28,7 +28,7 @@ The server treats complex metadata as application data. It never executes a fiel
 
 ## Hard limits
 
-The server rejects bad magic, bad wire version, truncated frames, duplicate headers, missing routing fields, non-printable routing values, unknown grades in strict mode, denied services or operations, packet-rate violations, and configured size-limit violations.
+The server rejects bad magic, bad wire version, truncated frames, duplicate headers, invalid header names or control characters, missing routing fields, inconsistent fixed/header values, nonzero flags (reserved in version 1), unknown grades in strict mode, denied services or operations, packet-rate violations, and configured size-limit violations. Header parsing is transactional: rejected header blocks do not partially update the packet object.
 
 Responses are application admission responses in the form:
 
