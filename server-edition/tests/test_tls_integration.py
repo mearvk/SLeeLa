@@ -21,7 +21,8 @@ def run(*args: str, cwd: pathlib.Path) -> None:
 def make_certificates(root: pathlib.Path) -> dict[str, pathlib.Path]:
     paths = {name: root / name for name in (
         "ca.key", "ca.crt", "server.key", "server.csr", "server.crt",
-        "client.key", "client.csr", "client.crt", "other-ca.key",
+        "client.key", "client.csr", "client.crt", "other-client.key",
+        "other-client.csr", "other-client.crt", "other-ca.key",
         "other-ca.crt", "bad-client.key", "bad-client.csr", "bad-client.crt",
         "server-ext.cnf", "client-ext.cnf",
     )}
@@ -45,6 +46,13 @@ def make_certificates(root: pathlib.Path) -> dict[str, pathlib.Path]:
     run("openssl", "x509", "-req", "-in", str(paths["client.csr"]),
         "-CA", str(paths["ca.crt"]), "-CAkey", str(paths["ca.key"]),
         "-CAcreateserial", "-out", str(paths["client.crt"]), "-days", "2",
+        "-extfile", str(paths["client-ext.cnf"]), "-extensions", "client", cwd=root)
+    run("openssl", "req", "-newkey", "rsa:2048", "-nodes",
+        "-keyout", str(paths["other-client.key"]), "-out", str(paths["other-client.csr"]),
+        "-subj", "/CN=not-allowlisted", cwd=root)
+    run("openssl", "x509", "-req", "-in", str(paths["other-client.csr"]),
+        "-CA", str(paths["ca.crt"]), "-CAkey", str(paths["ca.key"]),
+        "-CAcreateserial", "-out", str(paths["other-client.crt"]), "-days", "2",
         "-extfile", str(paths["client-ext.cnf"]), "-extensions", "client", cwd=root)
     run("openssl", "req", "-x509", "-newkey", "rsa:2048", "-nodes",
         "-keyout", str(paths["other-ca.key"]), "-out", str(paths["other-ca.crt"]),
@@ -134,6 +142,7 @@ def main() -> int:
                     return
 
             assert_rejected(context(cert["ca.crt"]), "a client without a certificate")
+            assert_rejected(context(cert["ca.crt"], cert["other-client.crt"], cert["other-client.key"]), "a trusted but non-allowlisted identity")
             bad = context(cert["ca.crt"], cert["bad-client.crt"], cert["bad-client.key"])
             assert_rejected(bad, "a certificate from an untrusted CA")
         finally:
@@ -143,7 +152,7 @@ def main() -> int:
             except subprocess.TimeoutExpired:
                 proc.kill()
                 proc.wait(timeout=5)
-    print("TLS integration: PASS (trusted client, unauthorized operation denied, missing/untrusted client certificate rejected)")
+    print("TLS integration: PASS (trusted client, unauthorized operation denied, missing/non-allowlisted/untrusted client certificates rejected)")
     return 0
 
 
