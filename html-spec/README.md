@@ -46,6 +46,11 @@ specification source is obtainable, it is included verbatim in [`specifications/
 
 ## Appraisals
 
+- [`WEALTH.md`](./WEALTH.md) — a financial appraisal of **what HTML is worth**: by generation and
+  overall, to its "owner" (under a capital-trade assumption), and to the national and
+  international economy. Honest framing — HTML is a royalty-free public good, so its *exchange
+  value* is ≈$0 while its *enabling value* runs to tens of trillions; all figures past two anchored
+  facts are explicitly-labeled illustrative estimates.
 - [`STATE.md`](./STATE.md) — coherence audit of every archived spec (completeness, labeling).
 - [`APPRAISAL-structural-elements.md`](./APPRAISAL-structural-elements.md) — structural-integrity
   appraisal of `div` / `span` / `table` vs. international-technology expectations, a safeguarding
