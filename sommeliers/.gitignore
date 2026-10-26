@@ -1,0 +1,4 @@
+# Keep build outputs local; retain the build directory placeholder.
+*
+!.gitkeep
+!README.md
