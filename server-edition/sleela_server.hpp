@@ -11,7 +11,8 @@
 namespace sleela::server {
 enum class Severity { DEBUG, INFO, NOTICE, WARN, ERROR, ALERT };
 struct ServerConfig {
- std::string bind_address="0.0.0.0"; std::uint16_t port=19866;
+ // Local-only by default. Remote exposure must be an explicit deployment decision.
+ std::string bind_address="127.0.0.1"; std::uint16_t port=19866;
  std::size_t max_connections=256, max_packet_bytes=16*1024*1024, max_header_bytes=64*1024, max_payload_bytes=16*1024*1024;
  std::uint32_t idle_timeout_seconds=60, max_packets_per_second=1000, max_failures_per_minute=60;
  bool require_known_grade=true, reject_malformed=true, log_payload=false;
