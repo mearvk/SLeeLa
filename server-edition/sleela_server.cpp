@@ -113,7 +113,7 @@ const bool tls_enabled=!config_.tls_certificate_file.empty();
  if(tls_enabled && (config_.allowed_peer_identities.empty()||config_.identity_permissions.empty())){logger_.write(Severity::ERROR,"tls_identity_policy_missing",nullptr,nullptr);return false;}
  if(tls_enabled){
   tls_context_=SSL_CTX_new(TLS_server_method());
-  if(!tls_context_ || SSL_CTX_set_min_proto_version(tls_context_,TLS1_3_VERSION)!=1 || SSL_CTX_set_max_proto_version(tls_context_,TLS1_3_VERSION)!=1 ||
+  if(!tls_context_ || SSL_CTX_set_min_proto_version(tls_context_,TLS1_3_VERSION)!=1 || SSL_CTX_set_max_proto_version(tls_context_,TLS1_3_VERSION)!=1 || SSL_CTX_set1_groups_list(tls_context_,"X25519:P-256:P-384")!=1 ||
      SSL_CTX_use_certificate_chain_file(tls_context_,config_.tls_certificate_file.c_str())!=1 ||
      SSL_CTX_use_PrivateKey_file(tls_context_,config_.tls_private_key_file.c_str(),SSL_FILETYPE_PEM)!=1 ||
      SSL_CTX_check_private_key(tls_context_)!=1 || SSL_CTX_load_verify_locations(tls_context_,config_.tls_client_ca_file.c_str(),nullptr)!=1){
