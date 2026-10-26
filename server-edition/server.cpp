@@ -92,12 +92,12 @@ int main(int argc, char** argv) {
    const char* value = require_value("--tls-client-ca"); if (!value) return 2; cfg.tls_client_ca_file = value;
   } else if (arg == "--allow-peer") {
    const char* value = require_value("--allow-peer"); if (!value) return 2;
-   if (std::string(value).find_first_of("\\r\\n") != std::string::npos || std::string(value).empty()) { std::cerr << "Invalid --allow-peer identity\\n"; return 2; }
+   if (std::string(value).find_first_of("\\r\n") != std::string::npos || std::string(value).empty()) { std::cerr << "Invalid --allow-peer identity\n"; return 2; }
    cfg.allowed_peer_identities.insert(value);
   } else if (arg == "--authorize") {
    const char* value = require_value("--authorize"); if (!value) return 2;
    const std::string rule(value); const auto first=rule.find(':'); const auto second=first==std::string::npos?first:rule.find(':',first+1);
-   if(first==std::string::npos||second==std::string::npos||first==0||second==first+1||second+1>=rule.size()||rule.find(':',second+1)!=std::string::npos){std::cerr << "Invalid --authorize: expected ID:SERVICE:OPERATION\\n";return 2;}
+   if(first==std::string::npos||second==std::string::npos||first==0||second==first+1||second+1>=rule.size()||rule.find(':',second+1)!=std::string::npos){std::cerr << "Invalid --authorize: expected ID:SERVICE:OPERATION\n";return 2;}
    cfg.identity_permissions[rule.substr(0,first)].insert(rule.substr(first+1,second-first-1)+char(31)+rule.substr(second+1));
   } else if (arg == "--log-payload") {
    cfg.log_payload = true;
@@ -112,8 +112,8 @@ int main(int argc, char** argv) {
   return 0;
  }
  const bool tls_configured=!cfg.tls_certificate_file.empty()&&!cfg.tls_private_key_file.empty()&&!cfg.tls_client_ca_file.empty();
- if((!cfg.tls_certificate_file.empty()||!cfg.tls_private_key_file.empty()||!cfg.tls_client_ca_file.empty())&&!tls_configured){std::cerr << "TLS requires --tls-cert, --tls-key, and --tls-client-ca together\\n";return 2;}
- if(tls_configured&&(cfg.allowed_peer_identities.empty()||cfg.identity_permissions.empty())){std::cerr << "TLS requires --allow-peer and --authorize rules; no implicit permissions are granted\\n";return 2;}
+ if((!cfg.tls_certificate_file.empty()||!cfg.tls_private_key_file.empty()||!cfg.tls_client_ca_file.empty())&&!tls_configured){std::cerr << "TLS requires --tls-cert, --tls-key, and --tls-client-ca together\n";return 2;}
+ if(tls_configured&&(cfg.allowed_peer_identities.empty()||cfg.identity_permissions.empty())){std::cerr << "TLS requires --allow-peer and --authorize rules; no implicit permissions are granted\n";return 2;}
  if (!is_loopback_ipv4(cfg.bind_address) && (!allow_remote || !tls_configured)) {
   std::cerr << "Refusing non-loopback bind without --allow-remote and configured TLS client authentication. "
                "Remote exposure requires a protected, authenticated deployment boundary.\n";
@@ -121,7 +121,7 @@ int main(int argc, char** argv) {
  }
  if (!is_loopback_ipv4(cfg.bind_address)) {
   std::cerr << "WARNING: remote binding requested. TLS 1.3 and client-certificate verification are enabled; explicit identity operation rules are required. "
-               "TLS or authenticated peer identity; do not expose it directly to untrusted networks.\n";
+               "The TLS configuration and authorization rules are mandatory for this mode.\n";
  }
  try {
   SleelaServer server(cfg);
