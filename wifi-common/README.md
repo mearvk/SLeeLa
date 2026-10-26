@@ -1,9 +1,5 @@
 # SLeeLa Wi-Fi Management Core (C11 / C++17)
 
-# SLeeLa
-<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
-<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
-
 This shared control layer sits above the Wi-Fi 4/5/6 reference profiles. It provides a stable C ABI and C++ wrapper for scanning, selecting an exact SSID/BSSID result, applying fail-closed security policy, requesting native authentication, connecting and disconnecting. It is a client-side control layer, not an 802.11 PHY/MAC implementation or monitor-mode packet sniffer.
 
 ## Layout

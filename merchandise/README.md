@@ -27,3 +27,9 @@ This directory holds the concept catalog, logo masters, print guidance, and futu
 - Do not use third-party platform logos or imply endorsement.
 - Do not add unsupported performance, security, or compatibility claims.
 - Add vendor, SKU, price, and storefront details only after real procurement is arranged.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

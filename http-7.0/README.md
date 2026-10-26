@@ -144,3 +144,9 @@ treats assertions as data with provenance and classification.
 VM identity: /impl Core, /1 Foundation, /2 Operator, /3 Specialist,
 /4 Supervisor, /5 Manager, /6 Director, /7 Administrator, /8 Executive,
 /9 Authority, /10 Principal, /11 Sovereign.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

@@ -35,3 +35,9 @@ were removed and the backend view renamed to `BackendRegisterSnapshot`; a
 missing `<memory>` include (for `std::unique_ptr`) and a literal-`\n` corruption
 were also fixed. The debugger now builds. See the 2026-10-03 entry in
 [`../REVISIONS.md`](../REVISIONS.md).
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

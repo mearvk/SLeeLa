@@ -438,3 +438,9 @@ wired through the analyzer and the bytecode compiler, a latent `Binary`-operand
 bug was fixed, and several build-blocking source/Makefile defects were repaired.
 `cd impl && make` builds `sleela` and `nordshrift`, and `make test` passes every
 target. See the 2026-10-03 entry in [`../REVISIONS.md`](../REVISIONS.md).
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

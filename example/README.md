@@ -245,3 +245,9 @@ Set `SLEELA_BIN` to override executable discovery. The GUI examples require a de
 ## Connectivity status control
 
 The five interactive GUI examples (`dual`, `gual`, `mual`, `thual`, and `military`) include a clickable **📶 Wi-Fi** control at the lower-right of the status bar. It opens a connectivity panel with scan, connect, disconnect, settings, connection-details, and close actions. The panel closes when the icon is toggled, an action is selected, or another example control is activated. Until an SLVM-to-native Wi-Fi host bridge is bound, network-changing actions report that limitation rather than claiming to change the real radio.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

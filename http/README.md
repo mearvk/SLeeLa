@@ -63,3 +63,9 @@ Operational logging and generated artifacts are documented separately:
 - [`../http-servers/OUTPUTS.md`](../http-servers/OUTPUTS.md)
 
 HTTP/3 runtime diagnostics are emitted through the service's standard error stream and the selected QUIC backend; private keys, certificates, logs, and generated binaries are deployment/runtime artifacts rather than HTTP source data.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

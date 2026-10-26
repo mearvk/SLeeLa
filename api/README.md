@@ -89,3 +89,9 @@ The [API catalogue](API-CATALOG.md) includes the maintenance checklist and the d
 ## Module completeness matrix
 
 See [MODULE-COMPLETENESS.md](MODULE-COMPLETENESS.md) for the module-by-module inventory of existing API entry points, aggregate build integration, and evidence gaps. The shared posting build also provides a `make test` target for posting/listener/router descriptor validation.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

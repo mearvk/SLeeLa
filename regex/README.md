@@ -58,3 +58,9 @@ locale-dependent `sort` and a dependency on absent `cmp`, a buggy `awk` pattern,
 and wrong test expectations (anchored pattern used for a substring search, plus
 match-span/capture-count). See the 2026-10-03 entry in
 [`../REVISIONS.md`](../REVISIONS.md).
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

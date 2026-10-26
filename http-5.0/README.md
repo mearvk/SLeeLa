@@ -74,3 +74,9 @@ Do not expose the current server directly to an untrusted network. Use an indepe
 - [Negotiation notes](HTTP.NEGOTIATION.md)
 
 The repository's SHA-256 integrity gate must remain enabled. Review changed source and regenerate approved manifest entries only through the project's established verification process.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

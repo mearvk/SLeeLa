@@ -44,3 +44,9 @@ it is copied, traced, or adapted from any film, novel, or other copyrighted artw
   fonts or images, so they render anywhere and are easy to diff and re-license with the repo.
 
 See [`MANUAL.md`](./MANUAL.md) for details.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

@@ -125,3 +125,9 @@ let G = constant.get("physics.newtonian_gravitational_constant")
 ```
 
 Canonical names are preferred over short aliases so symbols with multiple scientific meanings remain unambiguous. Registry values retain units, exactness/uncertainty, and provenance metadata.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

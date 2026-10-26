@@ -65,3 +65,9 @@ The folder name is the one given for this working set. The contents are
 general-purpose creator tools — design, math, and an ethics-as-mean model — and
 assert no political doctrine; the moral class is explicitly a neutral reasoning
 frame that credits its sources.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

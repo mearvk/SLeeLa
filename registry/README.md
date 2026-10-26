@@ -82,3 +82,9 @@ SLREG 1
 The OOD mirror lives in [`../lib/registry`](../lib/registry/) — `SLRegistry`,
 `SLRegistryKey`, `SLRegistryValue`, `SLRegistryProvenance` — for programs that
 read or review the registry from Sleela.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

@@ -170,3 +170,9 @@ On a display this opens the live editing window and drives the editing API; on a
 headless host it builds the drawing in memory, prints a report plus the DXF, and
 exits cleanly. See the [Creator module README](creator/README.md) for the full
 tool list and editing API.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

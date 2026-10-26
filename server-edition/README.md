@@ -76,3 +76,9 @@ POLICE, SECURITY, SAFETY, CLASSIFICATION, DARK-BAND, frequency, grade, and relat
 Read SECURITY-STANDARDS.md for the hardening baseline and release gates, and 1-2-3-4.md for the prioritized implementation plan.
 
 Max Rupplin — MEARVK LLC — 2026
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

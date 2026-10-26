@@ -168,3 +168,9 @@ its fill index is `< filledCells`. The Java edition uses ANSI color (orange
 filled on white empty); here the filled/empty distinction is carried by the
 `█` / `░` glyphs, and colorizing the `c`/`java` targets is tracked as the
 `colorizeTargets` work-plan item in the SST sheet.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

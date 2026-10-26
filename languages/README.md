@@ -118,3 +118,9 @@ Switch the language of all localized output by changing one line
 `resolve(override)` applies the override-then-active precedence.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

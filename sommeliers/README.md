@@ -49,3 +49,9 @@ curl -X POST --data-binary '08s1' http://127.0.0.1:4081/feedback
 - `feedback_test.c`: C unit tests for normalization.
 - `Makefile`: build, test, run, and clean targets.
 - `build/`: generated executables and object files; created by `make`.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

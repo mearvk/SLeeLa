@@ -93,3 +93,9 @@ Skya supports TLS certificate verification, RSA-2048 compatibility, ephemeral Di
 The Skya JavaFX client uses Guia™ 1.0 as its standard GUI-to-SLeeLa client/listener protocol, with BODI providing declarative UI definitions and Guia™ providing runtime lifecycle, events, commands, data, monitoring, and listener transitions.
 
 See `docs/SLEELA_GUI_PROTOCOL.md`, `docs/GUIA_PROTOCOL_REFERENCE.md`, `docs/GUIA_OBJECTS.md`, and `docs/GUIA_TRANSITIONS.md` for the normative Guia™ references.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

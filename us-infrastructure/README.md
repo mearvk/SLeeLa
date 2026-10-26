@@ -124,3 +124,9 @@ impl/build/sleela run us-infrastructure/model.sleela
 *This model is a descriptive, transparent computation. It asserts no official
 status and no forecast; its outputs are only as good as the assumptions and
 sourced data supplied to it.*
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

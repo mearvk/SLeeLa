@@ -41,3 +41,9 @@ Infrastructure being implemented does not imply that every device model is hardw
 A model is hardware-complete only when its applicable device-specific paths have been audited and the repository records the evidence, hardware mappings, supported operations, unsupported operations, assumptions and test scope.
 
 See `DRIVER.COMPLETENESS.md` and the terminology in `/TERMINOLOGY.md`.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

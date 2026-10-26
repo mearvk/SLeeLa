@@ -71,3 +71,9 @@ The class and native-library loaders enforce their documented allow-list and
 root policies, but loading native code executes with the process's privileges.
 Only allow trusted libraries and directories. This build does not sandbox native
 code.
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>

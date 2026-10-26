@@ -144,3 +144,9 @@ The detailed five-point mapping and sudden-pressure transition rules are maintai
 ## 4D implementation symbol inventory
 
 The source-level catalogue at [alphabet/utf-4088/SYMBOLS.md](../alphabet/utf-4088/SYMBOLS.md) documents the C/C++ 4D point and field symbols, geometric comparison metrics, binary glyph topology, registry identifiers, and graph state/edge coalescence. The separate five-input probe glyphs and provisional labels remain in the trial output files under [alphabet/utf-4088/results](../alphabet/utf-4088/results/).
+
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
