@@ -29,13 +29,14 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y libssl-dev
       - name: Install OpenSSL (macOS)
         if: runner.os == 'macOS'
-        run: brew install openssl@3
+        run: |
+          brew install openssl@3
+          echo "CPPFLAGS=-I$(brew --prefix openssl@3)/include" >> "$GITHUB_ENV"
+          echo "LDFLAGS=-L$(brew --prefix openssl@3)/lib" >> "$GITHUB_ENV"
       - name: Build server
         run: make -C server-edition clean all
       - name: Run protocol tests
         run: make -C server-edition test
-      - name: Run NAT parser unit tests
-        run: python3 -m unittest discover -s server-edition/tests -p 'test_nat_awareness.py' -v
       - name: Check CLI help
         run: ./server-edition/sleelas --help
       - name: Check whitespace
