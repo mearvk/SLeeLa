@@ -1,0 +1,100 @@
+<< lib/web-server-technology/SLWebServer.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines the SLeeLa standard-library type SLWebServer, the
+   SLeeLa-side model of the dynamic SQL-backed HTTP/1.1 web server whose native
+   implementation lives at web-server-technology/native/dyn_sql_server.cpp. >>
+#sleela 2.1
+< Unified SLeeLa SDK front-end object. >
+< Family: web-server-technology. Native implementation crosses an explicit VM/OS bridge. >
+class SLWebServer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11641;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-26";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-26";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "RFC 9112 (HTTP/1.1 message framing)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Server configuration (mirrors the native command-line contract) ---- >
+  < Document root for static files. >
+  String root;
+  < TCP port the listener binds. Native default is 8090. >
+  int port;
+  < Worker-thread count. Native default is 16, maximum 256. >
+  int threads;
+  < Bind address; empty means all interfaces as dual-stack IPv6 plus IPv4. >
+  String bindAddress;
+  < Directory of CSV tables for the dynamic /db endpoint; empty disables it. >
+  String databaseDirectory;
+  < When false the /db endpoint rejects mutating statements. >
+  boolean databaseWritable;
+  < Lifecycle state: 0 configured/stopped, 1 running. >
+  int state;
+
+  void configure(String documentRoot) {
+    root = documentRoot;
+    port = 8090;
+    threads = 16;
+    bindAddress = "";
+    databaseDirectory = "";
+    databaseWritable = false;
+    state = 0;
+  }
+  void setPort(int p) { port = p; }
+  int getPort() { return port; }
+  void setThreads(int n) { threads = n; }
+  int getThreads() { return threads; }
+  void setBindAddress(String a) { bindAddress = a; }
+  String getBindAddress() { return bindAddress; }
+
+  < Enable the dynamic SQL endpoint against a directory of CSV tables. >
+  void enableDatabase(String tableDirectory) { databaseDirectory = tableDirectory; }
+  < Permit mutating SQL on the /db endpoint. Default policy is read-only. >
+  void allowDatabaseWrites() { databaseWritable = true; }
+  boolean databaseEnabled() { return databaseDirectory != null && databaseDirectory != ""; }
+  boolean writesAllowed() { return databaseWritable; }
+
+  < Transition to the running state. The native listener performs the actual >
+  < bind, dual-stack setup, and request service. >
+  void open() { state = 1; }
+  < Graceful stop. Named shutdownServer() rather than close() because close is >
+  < a reserved Munction reach-handle builtin in the SLeeLa runtime. >
+  void shutdownServer() { state = 0; }
+  boolean active() { return state == 1; }
+
+  String serviceName() { return "SLWebServer"; }
+}

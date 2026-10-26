@@ -1,0 +1,83 @@
+<< lib/web-server-technology/SLDualStackBinding.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines the SLeeLa standard-library type SLDualStackBinding, the
+   SLeeLa-side model of the native listener binding that accepts the full range
+   of world IP addresses over IPv6 with IPv4-mapped fallback. >>
+#sleela 2.1
+< Unified SLeeLa SDK front-end object. >
+< Family: web-server-technology. Native implementation crosses an explicit VM/OS bridge. >
+class SLDualStackBinding {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11643;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-26";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-26";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "RFC 4291 (IPv6 addressing architecture)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Binding descriptor ---- >
+  < Explicit bind address literal; empty means all interfaces. >
+  String address;
+  < TCP port. >
+  int port;
+  < True when one AF_INET6 socket also accepts IPv4-mapped peers. >
+  boolean dualStack;
+
+  void configure(int listenPort) {
+    address = "";
+    port = listenPort;
+    dualStack = true;
+  }
+  void bindTo(String literal) {
+    address = literal;
+    < An explicit literal binds a single family, so dual-stack reach only >
+    < holds for the all-interfaces (empty-address) case. >
+    dualStack = (literal == "");
+  }
+  String getAddress() { return address; }
+  int getPort() { return port; }
+  boolean isDualStack() { return dualStack; }
+
+  < Whether this binding reaches the full range of world IP addresses: true >
+  < only when bound to all interfaces as dual-stack. >
+  boolean reachesWorld() {
+    if (address != "") return false;
+    return dualStack;
+  }
+
+  String serviceName() { return "SLDualStackBinding"; }
+}

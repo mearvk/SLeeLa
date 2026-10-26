@@ -46363,7 +46363,7 @@
     },
     {
       "path": "lib/sleela-sql/native/src/sleela_sql.c",
-      "sha256": "b8ca04c30c96ede70936fff253b784c619108486ce62211ea8110ed9bbcfd43a"
+      "sha256": "9071341905911aecfed98be3275cb01ec8cec4b9f15b90109c675d0069c729a5"
     },
     {
       "path": "lib/sleela-sql/native/src/sleela_sql_cli.c",
@@ -46388,6 +46388,50 @@
     {
       "path": "lib/social-model/SLPackage.sleela",
       "sha256": "01abbff402cd5f49a2c926ed0b23ea9ff44e54908f7395c02536c884a4c90b6b"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierCare.sleela",
+      "sha256": "91bc8c04259279b5e858a6522bda85858e55a10eba508dc71a356b9dc1b94ebc"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierCareDemo.sleela",
+      "sha256": "da6dab77f0c61fa80d94c85f6c4d7cd73e564e3eed7daafc9a58fea47192f1b0"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierCarePlan.sleela",
+      "sha256": "3fa9bb20b5689ef0a53e11581f4adcfc707a1865f16edc60d95db15630dc6a30"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierConsent.sleela",
+      "sha256": "c1a102ffaec5d6e433d6070e3264ab1af618a153c1157d91d9b98c628aebc8c1"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierFeedback.sleela",
+      "sha256": "7570bf683138b8e9b81d71755f7e6813d7ba8f6e49deb935606b8ec63afee789"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierFeedbackClient.sleela",
+      "sha256": "8a347c01ffe6bede0e1bbccf3e8368027431ae54d3e48c0df821ec991b4a6652"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierLocale.sleela",
+      "sha256": "dec6ce3160b8b6b6c4586c0907c5baf8e63af898a43c0d966561715a17d7f5f1"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierOffer.sleela",
+      "sha256": "0a986a017c1e7875cab06f52024414207bee5de8c429eda975134f505f6dc003"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierOfferRegistry.sleela",
+      "sha256": "5a4103616081602f7d20ab8a02999e8b410491d0114bfa158971f6d7e1efa07f"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierProfile.sleela",
+      "sha256": "0b5f5c534bedc509ada0a33b3387858f7c48fd857d9b1975bc6d8b23e1754180"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierSession.sleela",
+      "sha256": "6d6bd3d03359a051c722c12b5e5170cbeb92c4f0535548a854dbf0544a92bc08"
     },
     {
       "path": "lib/sst/DynamiteConnector.sleela",
@@ -47580,6 +47624,26 @@
     {
       "path": "lib/vm/tutorials/examples/startup-and-memory-guard.sleela",
       "sha256": "1d985b7fd2a741ec9c9627f49143c414c2a7e0424d7ab35b4e725bbe82048ffc"
+    },
+    {
+      "path": "lib/web-server-technology/SLDualStackBinding.sleela",
+      "sha256": "54e05a49c3334f0075f5f3ba0c748d79bd39594ecd39b13db78cd0e7f1677d5e"
+    },
+    {
+      "path": "lib/web-server-technology/SLPackage.sleela",
+      "sha256": "6e59f7c0fb8728cdd2f162887dbf93b4e00cfd0e20ae492339f6752d233a2d82"
+    },
+    {
+      "path": "lib/web-server-technology/SLSqlEndpoint.sleela",
+      "sha256": "12cecbab4050b1f128960ea38d7f74d120fc31d879d942185b46b59c504b1bf2"
+    },
+    {
+      "path": "lib/web-server-technology/SLWebServer.sleela",
+      "sha256": "888f4c2a7ba948002e802fb708fb013ef6e413badd5d35be2c5a615d5eaed36a"
+    },
+    {
+      "path": "lib/web-server-technology/demo-web-server-technology.sleela",
+      "sha256": "e8c33a6ac81b448f1d7f56426c9157d782499dfe53e55314f3f86d69c0468c0f"
     },
     {
       "path": "lib/website/SLWebsiteDesign.sleela",

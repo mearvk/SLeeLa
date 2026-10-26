@@ -839,7 +839,7 @@ static ssql_status exec_alter(ssql_stmt *st) {
     return status;
 }
 
-static ssql_status exec_drop(ssql_stmt *st)
+static ssql_status exec_drop(ssql_stmt *st) {
     if (!table_exists(st->db, st->table))
         return st->drop_if_exists ? SSQL_OK : SSQL_ERR_NOTABLE;
     char path[SSQL_MAX_PATH];
