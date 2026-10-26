@@ -33,18 +33,20 @@
 
 #include <cctype>
 #include <fstream>
+#include <memory>
 #include <sstream>
+
+#include "../../lib/web-server-technology/native/include/slweb.h"
 
 namespace sleela {
 namespace wst {
 
 const char *program_kind_name(ProgramKind k) {
-  switch (k) {
-    case ProgramKind::Static: return "static";
-    case ProgramKind::Sql:    return "sql";
-    case ProgramKind::Meme:   return "meme";
-  }
-  return "meme";
+  // Delegate the naming to the shared C core so there is one source of truth.
+  slweb_program_kind ck = k == ProgramKind::Static ? SLWEB_PROGRAM_STATIC
+                          : k == ProgramKind::Sql  ? SLWEB_PROGRAM_SQL
+                                                   : SLWEB_PROGRAM_MEME;
+  return slweb_program_kind_name(ck);
 }
 
 const Program *Envelopment::find_program(const std::string &name) const {
@@ -53,37 +55,59 @@ const Program *Envelopment::find_program(const std::string &name) const {
   return nullptr;
 }
 
+namespace {
+// Build a transient slweb_envelopment mirror of this server-side Envelopment so
+// the Scientist-gate and longest-prefix resolution run in the shared C core.
+// The server's richer Program (meme body, roots, db dir) is kept here; slweb
+// only needs names/kinds/mounts and the warrant routing keys.
+struct SlwebEnvDeleter {
+  void operator()(slweb_envelopment *e) const { slweb_env_free(e); }
+};
+std::unique_ptr<slweb_envelopment, SlwebEnvDeleter> build_mirror(
+    const Envelopment &env) {
+  std::unique_ptr<slweb_envelopment, SlwebEnvDeleter> m(
+      slweb_env_new(env.domain.c_str()));
+  if (!m) return m;
+  slweb_env_set_enabled(m.get(), env.enabled ? 1 : 0);
+  slweb_env_set_scientist(m.get(), env.scientist ? 1 : 0);
+  for (const auto &p : env.programs) {
+    slweb_program_kind k = p.kind == ProgramKind::Static ? SLWEB_PROGRAM_STATIC
+                           : p.kind == ProgramKind::Sql  ? SLWEB_PROGRAM_SQL
+                                                         : SLWEB_PROGRAM_MEME;
+    slweb_env_add_program(m.get(), p.name.c_str(), k, p.mount.c_str(), "",
+                          p.db_writable ? 1 : 0);
+  }
+  for (const auto &w : env.warrants)
+    slweb_env_add_warrant(m.get(), w.cause.c_str(), w.subject.c_str(),
+                          w.path_prefix.c_str(), w.program.c_str(),
+                          w.enabled ? 1 : 0);
+  return m;
+}
+}  // namespace
+
 bool Envelopment::active() const {
-  return enabled && scientist && !warrants.empty();
+  // Scientist-gate rule lives in the shared C core.
+  auto m = build_mirror(*this);
+  return m && slweb_env_active(m.get()) != 0;
 }
 
 const Program *Envelopment::resolve(const std::string &host,
                                     const std::string &path,
                                     std::string &out_cause) const {
-  if (!active()) return nullptr;
-  // Longest-matching-path-prefix wins so a broad warrant (path "/") does not
-  // shadow a specific one (path "/papers"); ties break by declaration order.
-  const Warrant *best = nullptr;
-  const Program *best_prog = nullptr;
-  size_t best_len = 0;
-  bool have = false;
-  for (const auto &w : warrants) {
-    if (!w.enabled) continue;
-    if (!(w.subject == "*" || w.subject == host)) continue;
-    if (!w.path_prefix.empty() && path.rfind(w.path_prefix, 0) != 0) continue;
-    const Program *p = find_program(w.program);
-    if (!p) continue;  // warrant names a missing program; skip, don't crash
-    size_t len = w.path_prefix.size();
-    if (!have || len > best_len) {
-      have = true;
-      best = &w;
-      best_prog = p;
-      best_len = len;
-    }
-  }
-  if (!have) return nullptr;
-  out_cause = best->cause;
-  return best_prog;
+  // Longest-matching-path-prefix resolution and the active() gate are performed
+  // by the shared C core (slweb); we map the chosen program NAME back to the
+  // server-side Program, which carries the transport details (body/root/dir).
+  auto m = build_mirror(*this);
+  if (!m) return nullptr;
+  char prog[SLWEB_MAX_NAME], cause[SLWEB_MAX_PATH];
+  slweb_program_kind kind;
+  if (slweb_env_resolve(m.get(), host.c_str(), path.c_str(), prog, cause,
+                        &kind) != SLWEB_OK)
+    return nullptr;
+  const Program *p = find_program(prog);
+  if (!p) return nullptr;
+  out_cause = cause;
+  return p;
 }
 
 // ---- parsing helpers --------------------------------------------------------

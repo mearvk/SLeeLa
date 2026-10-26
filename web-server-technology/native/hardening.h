@@ -22,11 +22,12 @@
  */
 #include <chrono>
 #include <cstdint>
-#include <deque>
+#include <memory>
 #include <mutex>
 #include <string>
-#include <unordered_map>
 #include <vector>
+
+#include "../../lib/web-server-technology/native/include/slweb.h"
 
 namespace sleela {
 namespace wst {
@@ -36,22 +37,31 @@ namespace wst {
  *   - a global cap:   at most `global_max` requests per `window` across all peers;
  *   - a per-peer cap: at most `per_peer_max` requests per `window` for each IP.
  * A limit of 0 disables that dimension. Thread-safe.
+ *
+ * This is a thin, thread-safe C++ wrapper over the shared C core
+ * (slweb_rate in lib/web-server-technology): the server and the library now use
+ * ONE implementation of the sliding-window logic. The wrapper adds the mutex
+ * (the C core is single-threaded) and converts steady_clock time points to the
+ * monotonic millisecond counter the C ABI takes.
  */
 class RateLimiter {
  public:
   using clock = std::chrono::steady_clock;
 
-  RateLimiter() = default;
+  RateLimiter() { configure(0, 0, std::chrono::milliseconds(1000)); }
   RateLimiter(unsigned per_peer_max, unsigned global_max,
-              std::chrono::milliseconds window)
-      : per_peer_max_(per_peer_max), global_max_(global_max), window_(window) {}
+              std::chrono::milliseconds window) {
+    configure(per_peer_max, global_max, window);
+  }
 
   void configure(unsigned per_peer_max, unsigned global_max,
                  std::chrono::milliseconds window) {
     std::lock_guard<std::mutex> g(m_);
     per_peer_max_ = per_peer_max;
     global_max_ = global_max;
-    window_ = window;
+    rate_.reset(slweb_rate_new(per_peer_max, global_max,
+                               (unsigned)window.count()));
+    epoch_ = clock::now();
   }
 
   bool enabled() const { return per_peer_max_ != 0 || global_max_ != 0; }
@@ -61,23 +71,35 @@ class RateLimiter {
    * allowed. When it would exceed either cap the request is rejected and NOT
    * counted (so a flood does not keep the window permanently saturated).
    */
-  bool allow(const std::string &peer, clock::time_point now);
+  bool allow(const std::string &peer, clock::time_point now) {
+    std::lock_guard<std::mutex> g(m_);
+    if (!rate_) return true;
+    return slweb_rate_allow(rate_.get(), peer.c_str(), to_ms(now)) != 0;
+  }
 
   /* Convenience overload using the current time. */
   bool allow(const std::string &peer) { return allow(peer, clock::now()); }
 
   /* Drop per-peer windows that have fully aged out; bounds memory use. */
-  void sweep(clock::time_point now);
+  void sweep(clock::time_point now) {
+    std::lock_guard<std::mutex> g(m_);
+    if (rate_) slweb_rate_sweep(rate_.get(), to_ms(now));
+  }
 
  private:
+  unsigned long long to_ms(clock::time_point t) const {
+    return (unsigned long long)std::chrono::duration_cast<std::chrono::milliseconds>(
+               t - epoch_)
+        .count();
+  }
+  struct RateDeleter {
+    void operator()(slweb_rate *r) const { slweb_rate_free(r); }
+  };
   mutable std::mutex m_;
   unsigned per_peer_max_ = 0;
   unsigned global_max_ = 0;
-  std::chrono::milliseconds window_{1000};
-  std::deque<clock::time_point> global_;
-  std::unordered_map<std::string, std::deque<clock::time_point>> peers_;
-
-  static void trim(std::deque<clock::time_point> &dq, clock::time_point cutoff);
+  clock::time_point epoch_{};
+  std::unique_ptr<slweb_rate, RateDeleter> rate_;
 };
 
 /*

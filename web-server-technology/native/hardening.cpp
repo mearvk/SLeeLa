@@ -13,106 +13,32 @@
 namespace sleela {
 namespace wst {
 
-// ---- RateLimiter ------------------------------------------------------------
-void RateLimiter::trim(std::deque<clock::time_point> &dq,
-                       clock::time_point cutoff) {
-  while (!dq.empty() && dq.front() <= cutoff) dq.pop_front();
-}
+// ---- primitives: delegate to the shared C core (slweb) ----------------------
+// RateLimiter is implemented inline in the header as a thread-safe wrapper over
+// slweb_rate; the three functions below forward to the same C core so the
+// server and lib/web-server-technology share ONE implementation.
 
-bool RateLimiter::allow(const std::string &peer, clock::time_point now) {
-  std::lock_guard<std::mutex> g(m_);
-  if (per_peer_max_ == 0 && global_max_ == 0) return true;  // disabled
-  const clock::time_point cutoff = now - window_;
-
-  // Check global window first (without mutating until we know we admit).
-  trim(global_, cutoff);
-  if (global_max_ != 0 && global_.size() >= global_max_) return false;
-
-  auto &pq = peers_[peer];
-  trim(pq, cutoff);
-  if (per_peer_max_ != 0 && pq.size() >= per_peer_max_) {
-    // Rejected: do not count it, so a sustained flood from one peer does not
-    // also consume the global budget or keep its own window pinned full.
-    if (pq.empty()) peers_.erase(peer);
-    return false;
-  }
-
-  // Admit: record in both windows.
-  if (global_max_ != 0) global_.push_back(now);
-  pq.push_back(now);
-  return true;
-}
-
-void RateLimiter::sweep(clock::time_point now) {
-  std::lock_guard<std::mutex> g(m_);
-  const clock::time_point cutoff = now - window_;
-  trim(global_, cutoff);
-  for (auto it = peers_.begin(); it != peers_.end();) {
-    trim(it->second, cutoff);
-    if (it->second.empty())
-      it = peers_.erase(it);
-    else
-      ++it;
-  }
-}
-
-// ---- constant-time compare & WriteAuth --------------------------------------
 bool constant_time_equals(const std::string &a, const std::string &b) {
-  // Compare over a fixed number of iterations so the running time depends on
-  // the max length, not on where the first mismatch is. A length difference is
-  // folded into the accumulator rather than short-circuiting.
-  const size_t n = std::max(a.size(), b.size());
-  unsigned diff = (a.size() == b.size()) ? 0u : 1u;
-  for (size_t i = 0; i < n; ++i) {
-    unsigned char ca = i < a.size() ? (unsigned char)a[i] : 0;
-    unsigned char cb = i < b.size() ? (unsigned char)b[i] : 0;
-    diff |= (unsigned)(ca ^ cb);
-  }
-  return diff == 0;
+  return slweb_constant_time_equals(a.c_str(), b.c_str()) != 0;
 }
 
 bool WriteAuth::authorize(const std::string &authorization_header) const {
-  if (token_.empty()) return true;  // no token configured => no gate
-  // Expect "Bearer <token>" (scheme is case-insensitive per RFC 7617/6750).
-  const std::string &h = authorization_header;
-  // find first non-space
-  size_t i = 0;
-  while (i < h.size() && std::isspace((unsigned char)h[i])) ++i;
-  // scheme
-  size_t s = i;
-  while (s < h.size() && !std::isspace((unsigned char)h[s])) ++s;
-  std::string scheme = h.substr(i, s - i);
-  for (char &c : scheme) c = (char)std::tolower((unsigned char)c);
-  if (scheme != "bearer") return false;
-  // skip spaces to the credential
-  while (s < h.size() && std::isspace((unsigned char)h[s])) ++s;
-  std::string presented = h.substr(s);
-  // trim trailing whitespace from the credential
-  while (!presented.empty() && std::isspace((unsigned char)presented.back()))
-    presented.pop_back();
-  return constant_time_equals(presented, token_);
+  return slweb_write_authorize(token_.empty() ? nullptr : token_.c_str(),
+                               authorization_header.c_str()) != 0;
 }
 
-// ---- client IP from a trusted proxy -----------------------------------------
 std::string client_ip_from(const std::string &peer_ip,
                            const std::string &forwarded_for,
                            const std::vector<std::string> &trusted_proxies) {
-  if (forwarded_for.empty()) return peer_ip;
-  const bool peer_trusted =
-      std::find(trusted_proxies.begin(), trusted_proxies.end(), peer_ip) !=
-      trusted_proxies.end();
-  if (!peer_trusted) return peer_ip;  // do not trust a non-proxy's claim
-  // forwarded_for may be a comma list "client, proxy1, proxy2"; the left-most
-  // is the originating client as recorded by the trusted terminator.
-  std::string v = forwarded_for;
-  size_t comma = v.find(',');
-  if (comma != std::string::npos) v = v.substr(0, comma);
-  // trim
-  size_t a = 0, b = v.size();
-  while (a < b && std::isspace((unsigned char)v[a])) ++a;
-  while (b > a && std::isspace((unsigned char)v[b - 1])) --b;
-  v = v.substr(a, b - a);
-  return v.empty() ? peer_ip : v;
+  std::vector<const char *> ptrs;
+  ptrs.reserve(trusted_proxies.size());
+  for (const auto &p : trusted_proxies) ptrs.push_back(p.c_str());
+  char out[64];
+  if (slweb_client_ip(peer_ip.c_str(), forwarded_for.c_str(),
+                      ptrs.empty() ? nullptr : ptrs.data(), ptrs.size(), out,
+                      sizeof out) != SLWEB_OK)
+    return peer_ip;
+  return std::string(out);
 }
 
 // ---- hardening config file --------------------------------------------------
