@@ -75,9 +75,11 @@ void Window::refresh_native_size_limits() {
     const SLUISize min = effective_minimum();
     if (min.w != applied_min_width_ || min.h != applied_min_height_ ||
         max_width_ != applied_max_width_ || max_height_ != applied_max_height_) {
-        native_->set_size_limits(min.w, min.h, max_width_, max_height_);
+        /* Cache before calling into the native backend: some window systems can
+         * synchronously deliver a resize notification from set_size_limits(). */
         applied_min_width_ = min.w; applied_min_height_ = min.h;
         applied_max_width_ = max_width_; applied_max_height_ = max_height_;
+        native_->set_size_limits(min.w, min.h, max_width_, max_height_);
     }
     const int cw = native_->width(), ch = native_->height();
     const int w = std::max(min.w, max_width_ > 0 ? std::min(cw, max_width_) : cw);
