@@ -498,6 +498,11 @@ double slui_widget_get_value(const SLUIWidget* w) {
 int slui_widget_take_activated(SLUIWidget* w) {
     return w ? (as_widget(w)->take_activated() ? 1 : 0) : 0;
 }
+int slui_widget_is_hovered(SLUIWidget* w) { return w ? (as_widget(w)->hovered() ? 1 : 0) : 0; }
+int slui_widget_take_pressed(SLUIWidget* w) { return w ? (as_widget(w)->take_pressed() ? 1 : 0) : 0; }
+int slui_widget_take_released(SLUIWidget* w) { return w ? (as_widget(w)->take_released() ? 1 : 0) : 0; }
+int slui_widget_take_hover_entered(SLUIWidget* w) { return w ? (as_widget(w)->take_hover_entered() ? 1 : 0) : 0; }
+int slui_widget_take_hover_left(SLUIWidget* w) { return w ? (as_widget(w)->take_hover_left() ? 1 : 0) : 0; }
 void slui_widget_set_suggested(SLUIWidget* w, int suggested) {
     if (w) as_widget(w)->set_suggested(suggested != 0);
 }
