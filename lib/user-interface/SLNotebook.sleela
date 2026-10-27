@@ -1,14 +1,11 @@
 << lib/user-interface/SLNotebook.sleela
    SLeeLa Standard Library Definition.
-   Definition: Defines SLNotebook — a SleelaUI tabbed container. It is a
-     composite widget (no new C ABI): a vertical box holding a horizontal tab
-     strip of SLButtons above a content area in which exactly one page's widget
-     is visible at a time. Adding a page registers a tab button and a content
-     container (a vertical SLBox) child widgets attach to; selecting a tab shows
-     that page and hides the others, and the active tab button is drawn as the
-     suggested (accent) action so the selection reads clearly. A dirty marker can
-     be shown per tab (e.g. an unsaved editor). This is the multi-document
-     surface an IDE needs, written entirely in SLeeLa over SleelaUI primitives.
+   Definition: Defines SLNotebook — a browser-style horizontal tab strip and page
+     stack. It uses themed native buttons, selected accent, quiet inactive tabs,
+     a compact strip, and a clearly separated content region. A dirty marker can
+     be shown per tab (e.g. an unsaved editor). Pointer hover/press visuals are
+     provided by the native Button widget; clicked() is the one-shot release-on-
+     target activation latch. This stays in SLeeLa over SleelaUI primitives.
    
    An SLNotebook IS an SLWidget container.
    
@@ -85,8 +82,8 @@ class SLNotebook extends SLWidget {
     widget = column.handle();
 
     strip = new SLBox();
-    strip.horizontal(column, 4);
-    strip.setSizeRequest(0, 32);
+    strip.horizontal(column, 2);
+    strip.setSizeRequest(0, 36);
 
     stack = new SLBox();
     stack.vertical(column, 0);
@@ -105,6 +102,8 @@ class SLNotebook extends SLWidget {
     if (count >= MAX_PAGES) { return -1; }
     SLButton tab = new SLButton();
     tab.createIn(strip, title);
+    tab.setMargin(2, 6, 0, 6);
+    tab.setSizeRequest(84, 32);
     tabs[count] = tab;
 
     SLBox page = new SLBox();
@@ -139,6 +138,20 @@ class SLNotebook extends SLWidget {
   }
 
   int activeIndex() { return active; }
+
+  < Browser-style convenience: activate the previous or next tab. >
+  void selectPrevious() {
+    if (count < 1) { return; }
+    int next = active - 1;
+    if (next < 0) { next = count - 1; }
+    select(next);
+  }
+  void selectNext() {
+    if (count < 1) { return; }
+    int next = active + 1;
+    if (next >= count) { next = 0; }
+    select(next);
+  }
 
   < Poll the tab strip: if a tab was clicked since the last check, make it >
   < active and return its index; otherwise return -1. >
