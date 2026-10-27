@@ -103,7 +103,7 @@ size_t gc_collect_full(GarbageCollector *g){if(!g||!g->initialized)return 0;gc_s
 size_t gc_collect(GarbageCollector *g){return gc_collect_full(g);}
 size_t gc_collect_with_roots(GarbageCollector *g,SLGCMarkRootsFn roots,void *ctx,int young_only){
     if(!g||!g->initialized){return 0;}
-    clear_marks(g);g->phase=SLGC_MARKING;g->collecting_young=young_only?1:0;
+    clear_marks(g);g->phase=SLGC_MARKING;g->collecting_young=(young_only && !g->force_full_collection)?1:0;g->force_full_collection=0;
     if(roots){roots(g,ctx);}
     for(size_t i=0;i<g->root_count;i++){mark_internal(g,g->roots[i]);}
     if(young_only){for(size_t i=0;i<g->remembered_count;i++)mark_internal(g,g->remembered[i]);}
@@ -118,7 +118,8 @@ void gc_safepoint(GarbageCollector *g,size_t budget){
 void gc_safepoint_with_roots(GarbageCollector *g,SLGCMarkRootsFn roots,void *ctx,int young_only,size_t budget){
     if(!g||!g->initialized)return;
     if(g->phase==SLGC_IDLE && g->bytes_allocated>=g->bytes_threshold){
-        int do_young = young_only && ((g->young_collections + 1u) % 8u != 0u);
+        int do_young = young_only && !g->force_full_collection && ((g->young_collections + 1u) % 8u != 0u);
+        g->force_full_collection = 0;
         clear_marks(g);g->phase=SLGC_MARKING;g->collecting_young=do_young?1:0;
         if(roots){roots(g,ctx);}
         for(size_t i=0;i<g->root_count;i++){mark_internal(g,g->roots[i]);}
