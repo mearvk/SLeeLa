@@ -66,15 +66,38 @@ events. This keeps the model testable and avoids inventing a premature
 ## Visual Quality Baseline
 
 - Use a full-width, single-row menu bar; dropdown contents flow vertically.
-- Keep the menu bar visually distinct from the title bar and address/URL bar.
-  The current SLeeLa palette uses `#1d2025` for title bars, `#2b2f32` for menu
-  bars, and `#383c47` for URL bars.
+- Preserve the shared base palette from `SLGuiTheme`; depth tokens are a
+  transitional layer and must not fork the chrome colors between GUI versions.
+- Give dropdowns restrained elevation: a soft shadow, a fine one-pixel edge,
+  and a slightly lifted surface. The effect should separate the popup from the
+  page without looking like a floating card detached from its menu heading.
+- Use a small corner radius (nominally 6 px) and a short transition (nominally
+  120 ms) for opacity/elevation where the host supports it. Avoid bounce,
+  large blur, perspective transforms, and long animations.
+- Give menu items a minor pressed-depth response: a subtle surface shift and
+  at most a one-pixel visual depression/raise. Do not move layout geometry or
+  cause neighboring items to jump.
+- Keep the popup surface `#292D35`, edge `#505866`, hover `#343A44`,
+  pressed `#252A32`, and highlight `#3A404B` consistent across versions.
+  These are menu-specific transitional tokens, not replacements for base
+  chrome colors.
 - Provide clear hover, keyboard-focus, pressed/open, disabled, checked, and
   separator states. Hover highlights; it must not be required to open a menu.
+  Keyboard focus must remain visible without relying on shadow or color alone.
 - Keep popup edges and item hit targets consistent, prevent clipping at window
   edges, and avoid popup geometry exceeding the parent/window bounds.
+- Honor reduced-motion preferences when available; if not available, keep the
+  transition short and purely decorative.
+- Treat shadow, edge light, and depth as presentation only. They must not imply
+  disabled/enabled state, security status, or action success.
 - Preserve readable contrast and use spacing/alignment rather than decorative
   effects to establish hierarchy.
+
+The five `SLGuiTheme` definitions now expose shared menu depth tokens and
+accessors. These define the intended design language; a host renderer must
+consume them before the effect is visible. Native and Java hosts should be
+verified separately, and unsupported effects should degrade cleanly to a clear
+border and hover/focus state.
 
 ## Limits
 
