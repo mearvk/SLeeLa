@@ -38,6 +38,7 @@ struct GarbageCollector {
 
 void gc_init(GarbageCollector *, size_t threshold);
 int gc_set_limit(GarbageCollector *, size_t bytes);
+int gc_resize_object(GarbageCollector *, SLGCObject *, size_t new_bytes);
 size_t gc_limit(const GarbageCollector *);
 void gc_free(GarbageCollector *);
 SLGCObject *gc_allocate(GarbageCollector *, size_t, SLGCMarkFn, SLGCDestroyFn, void *);
