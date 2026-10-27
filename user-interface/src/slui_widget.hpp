@@ -229,6 +229,20 @@ public:
         return a;
     }
     bool hovered() const { return hovered_; }
+    bool has_pressed_descendant() const {
+        if (pressed_) return true;
+        for (const auto& child : children_)
+            if (child->has_pressed_descendant()) return true;
+        return false;
+    }
+    void pointer_moved_outside() {
+        if (hovered_) {
+            hovered_ = false;
+            hover_leave_event_ = true;
+            invalidate();
+        }
+        for (auto& child : children_) child->pointer_moved_outside();
+    }
     bool take_pressed() { bool v = press_event_; press_event_ = false; return v; }
     bool take_released() { bool v = release_event_; release_event_ = false; return v; }
     bool take_hover_entered() { bool v = hover_enter_event_; hover_enter_event_ = false; return v; }
