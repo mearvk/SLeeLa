@@ -1,0 +1,34 @@
+<< impl/examples/slvaluelist_basic.sleela
+   Demonstrates mixed-value storage and recursive pass-through. >>
+#sleela 2.1
+class Customer {
+  String label = "customer";
+  int visits = 3;
+}
+class Order {
+  String label = "order";
+  int quantity = 2;
+}
+class SLValueListBasicExample {
+  int recurseCount(SLValueList values, int index) {
+    if (index >= values.length()) { return 0; }
+    return 1 + recurseCount(values, index + 1);
+  }
+
+  int main() {
+    SLValueList values = new SLValueList();
+    Customer customer = new Customer();
+    Order order = new Order();
+    values.add("text");
+    values.add(42);
+    values.add(customer);
+    values.add(order);
+    print(values.length());
+    print(recurseCount(values, 0));
+    < Values can be retrieved as Any and passed to methods accepting Any.
+      Checked conversion back to a concrete class is not yet available. >
+    Any retained = values.get(2);
+    print(retained);
+    return 0;
+  }
+}
