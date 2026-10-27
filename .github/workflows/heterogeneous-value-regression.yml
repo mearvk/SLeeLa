@@ -1,0 +1,79 @@
+name: Heterogeneous value regression
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'impl/core/**'
+      - 'impl/frontend/**'
+      - 'impl/examples/slvaluelist_basic.sleela'
+      - 'impl/tests/heterogeneous/**'
+      - 'lib/collections/SLValueList*'
+      - 'security/sha256-manifest.json'
+      - '.github/workflows/heterogeneous-value-regression.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'impl/core/**'
+      - 'impl/frontend/**'
+      - 'impl/examples/slvaluelist_basic.sleela'
+      - 'impl/tests/heterogeneous/**'
+      - 'lib/collections/SLValueList*'
+      - 'security/sha256-manifest.json'
+      - '.github/workflows/heterogeneous-value-regression.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  linux-build-and-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3
+      - name: Generate a fresh workspace manifest
+        run: |
+          # The repository manifest may be empty/stale during source changes.
+          # Generate a workspace-local manifest so the existing fail-closed
+          # build gate still verifies every source input before compiling.
+          python3 tools/generate-sha256-manifest.py --root . --output /tmp/sleela-sha256-manifest.json
+      - name: Build runtime and compiler
+        run: make -C impl all SLEELA_SHA256_MANIFEST=/tmp/sleela-sha256-manifest.json
+      - name: Run existing SLeeLa example suite
+        run: make -C impl test-sleela SLEELA_SHA256_MANIFEST=/tmp/sleela-sha256-manifest.json
+      - name: Verify checked casts reject the wrong class
+        shell: bash
+        run: |
+          set +e
+          SLEELA_SHA256_MANIFEST=/tmp/sleela-sha256-manifest.json ./impl/build/sleela run impl/tests/heterogeneous/wrong_class_cast.sleela > /tmp/wrong-cast.log 2>&1
+          status=$?
+          set -e
+          cat /tmp/wrong-cast.log
+          if [ "$status" -eq 0 ]; then
+            echo "ERROR: incompatible Any-to-class cast unexpectedly succeeded" >&2
+            exit 1
+          fi
+          if ! grep -qi "checked cast failed" /tmp/wrong-cast.log; then
+            echo "ERROR: wrong-class cast failed without the expected checked-cast diagnostic" >&2
+            exit 1
+          fi
+      - name: Verify typed arrays reject incompatible writes
+        shell: bash
+        run: |
+          set +e
+          SLEELA_SHA256_MANIFEST=/tmp/sleela-sha256-manifest.json ./impl/build/sleela run impl/tests/heterogeneous/typed_array_rejects_wrong_value.sleela > /tmp/typed-array.log 2>&1
+          status=$?
+          set -e
+          cat /tmp/typed-array.log
+          if [ "$status" -eq 0 ]; then
+            echo "ERROR: String[] unexpectedly accepted an integer value" >&2
+            exit 1
+          fi
+          if ! grep -qi "cannot store" /tmp/typed-array.log; then
+            echo "ERROR: typed-array rejection did not produce the expected diagnostic" >&2
+            exit 1
+          fi
