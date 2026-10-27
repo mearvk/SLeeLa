@@ -37,9 +37,10 @@ jobs:
           sudo apt-get install -y build-essential python3
       - name: Generate a fresh workspace manifest
         run: |
-          # The repository manifest may be empty/stale during source changes.
-          # Generate a workspace-local manifest so the existing fail-closed
-          # build gate still verifies every source input before compiling.
+          # Generate an ephemeral manifest for this exact checked-out source
+          # snapshot so the build gate can validate its inputs during regression
+          # testing. This does not modify or certify the committed manifest;
+          # manifest consistency remains a separate repository-maintenance check.
           python3 tools/generate-sha256-manifest.py --root . --output /tmp/sleela-sha256-manifest.json
       - name: Build runtime and compiler
         run: make -C impl all SLEELA_SHA256_MANIFEST=/tmp/sleela-sha256-manifest.json
