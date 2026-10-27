@@ -260,7 +260,7 @@ contract and runnable walkthroughs.)
 
 | Class | Role |
 |---|---|
-| `SLTheme` | A palette handle. Start from the default **Sleela Base** (`sleelaBase()`, warm **#2B1608**), `slickBlack()`, or `GRAPHITE`; reconfigure the base colour (`setBaseColor` / `loadConfig`) or override any role, radius, control height, or font. |
+| `SLTheme` | A palette handle. Choose `DEFAULT`, `WHITE`, `BLUE`, `BLACK`, or `GRAY` with `preset()`; `loadConfig()` explicitly loads a runtime theme file. Custom base colours and per-role overrides remain supported. |
 | `SLColor` | A straight-alpha `0xRRGGBBAA` colour value helper (`rgb`/`rgba` + channel accessors). |
 
 ### Example
@@ -276,7 +276,7 @@ SLUserInterface ui = new SLUserInterface();
 ui.configure("com.example.App");
 if (ui.open()) {                               // false if no display (X11)
   SLTheme theme = new SLTheme();
-  theme.sleelaBase();                          // the default look (#2B1608)
+  theme.preset(SLTheme.DEFAULT);                // graphite/charcoal + steel blue
 
   SLWindow win = ui.openWindow("Hello", 480, 320, theme.handle());
   SLWidget root = win.rootWidget();
