@@ -1,30 +1,35 @@
 <<
-   example/gui-gual-settings-console.sleela
-   The GUAL (2.0) "preferences console" scene as a REAL, on-screen window --
-   driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
-   bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
-   this file only print()ed a walkthrough; now the hardened, settings-first
-   surface (validated, clamp-to-a-safe-window knobs: theme, DPI scale,
-   reduced-motion, vsync, poll/debounce, window min/max, document-listener
-   backpressure) is painted as actual, interactive widgets.
-   
-   The three-layer stack is live here:
-     SLeeLa decoration (this program + the theme below)
-       -> model (ui* built-ins: uiWindowCreate, uiComboBox, uiSlider, uiToggle)
-         -> C/C++ (SleelaUI software rasterizer + native window backend)
-   
-   Run (needs a display: X on Linux, native on macOS/Windows):
-     SLEELA_SHEET=./SHEET.sheet \
-     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
-     ./impl/build/sleela run example/gui-gual-settings-console.sleela
-   
-   With no display (headless/CI) it reports that and exits 0 without a window.
+    example/gui-gual-settings-console.sleela
+    The GUAL (2.0) "preferences console" scene as a REAL, on-screen window --
+    driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
+    bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
+    this file only print()ed a walkthrough; now the hardened, settings-first
+    surface (validated, clamp-to-a-safe-window knobs: theme, DPI scale,
+    reduced-motion, vsync, poll/debounce, window min/max, document-listener
+    backpressure) is painted as actual, interactive widgets.
+    
+    The three-layer stack is live here:
+      SLeeLa decoration (this program + the theme below)
+        -> model (ui* built-ins: uiWindowCreate, uiComboBox, uiSlider, uiToggle)
+          -> C/C++ (SleelaUI software rasterizer + native window backend)
+    
+    Run (needs a display: X on Linux, native on macOS/Windows):
+      SLEELA_SHEET=./SHEET.sheet \
+      SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+      ./impl/build/sleela run example/gui-gual-settings-console.sleela
+    
+    With no display (headless/CI) it reports that and exits 0 without a window.
 >>
 #sleela 2.1
 // GUAL (2.0): the clamp-to-a-safe-window discipline applied to GUI settings.
 // Every knob is validated; here the validated values are shown on real
 // controls (sliders/toggles/combo) that reflect the clamped result.
 class GuiGualSettingsConsole {
+
+  // Unified layout standard for the example family: frame contents have a
+  // minimum 10px inset and 10px internal spacing to stay inside the container.
+  int PAD = 10;
+  int GAP = 10;
 
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
   // Static build policy: default keeps the normal layout within its parent width.
@@ -152,29 +157,29 @@ class GuiGualSettingsConsole {
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
-    int menuStrip = uiBox(root, 1, 4);
-    uiWidgetMargin(menuStrip, 4, 8, 4, 8);
+    int menuStrip = uiBox(root, 1, GAP);
+    uiWidgetMargin(menuStrip, PAD, PAD, PAD, PAD);
     menuFileButton = uiButton(menuStrip, "File");
     menuSettingsButton = uiButton(menuStrip, "Settings");
     menuBackendButton = uiButton(menuStrip, "Backend");
     menuHelpButton = uiButton(menuStrip, "Help");
-    menuFilePanel = uiBox(root, 0, 2);
-    uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
+    menuFilePanel = uiBox(root, 0, GAP);
+    uiWidgetMargin(menuFilePanel, PAD, PAD, PAD, PAD);
     menuFileItem1 = uiButton(menuFilePanel, "Export Settings");
     menuFileItem2 = uiButton(menuFilePanel, "Reset Defaults");
     uiWidgetVisible(menuFilePanel, 0);
-    menuSettingsPanel = uiBox(root, 0, 2);
-    uiWidgetMargin(menuSettingsPanel, 4, 10, 4, 10);
+    menuSettingsPanel = uiBox(root, 0, GAP);
+    uiWidgetMargin(menuSettingsPanel, PAD, PAD, PAD, PAD);
     menuSettingsItem1 = uiButton(menuSettingsPanel, "Appearance");
     menuSettingsItem2 = uiButton(menuSettingsPanel, "Listener Timing");
     uiWidgetVisible(menuSettingsPanel, 0);
-    menuBackendPanel = uiBox(root, 0, 2);
-    uiWidgetMargin(menuBackendPanel, 4, 10, 4, 10);
+    menuBackendPanel = uiBox(root, 0, GAP);
+    uiWidgetMargin(menuBackendPanel, PAD, PAD, PAD, PAD);
     menuBackendItem1 = uiButton(menuBackendPanel, "Select JavaFX");
     menuBackendItem2 = uiButton(menuBackendPanel, "Backend Policy");
     uiWidgetVisible(menuBackendPanel, 0);
-    menuHelpPanel = uiBox(root, 0, 2);
-    uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
+    menuHelpPanel = uiBox(root, 0, GAP);
+    uiWidgetMargin(menuHelpPanel, PAD, PAD, PAD, PAD);
     menuHelpItem1 = uiButton(menuHelpPanel, "Preferences Help");
     menuHelpItem2 = uiButton(menuHelpPanel, "About GUAL");
     uiWidgetVisible(menuHelpPanel, 0);
@@ -183,7 +188,7 @@ class GuiGualSettingsConsole {
     int header = uiHeaderBar(root);
     uiWidgetSizeRequest(header, 0, 48);          // Coherent Dignity: 6X header banner (48px)
     int htitle = uiLabel(header, "\u2699  Preferences");
-    uiWidgetMargin(htitle, 0, 10, 0, 12);
+    uiWidgetMargin(htitle, 0, PAD, 0, PAD + 2);
     uiSpacer(header);
 
     // --- Content: two columns of validated settings, inside a scrolled view so
@@ -191,24 +196,24 @@ class GuiGualSettingsConsole {
     //     spilling past the frame when the window is smaller than the content. ---
     int scroller = uiScrolledView(root, SCROLL_AUTO, SCROLL_AUTO);
     uiWidgetExpand(scroller, 1, 1);
-    int content = uiBox(scroller, 1, 14);     // the scroll CONTENT (1st child)
-    uiWidgetMargin(content, 16, 16, 16, 16);
+    int content = uiBox(scroller, 1, GAP);     // the scroll CONTENT (1st child)
+    uiWidgetMargin(content, PAD, PAD, PAD, PAD);
     uiWidgetExpand(content, 1, 0); // let content grow vertically so the scroller can scroll
 
     int contentAxis = ALLOW_HORIZONTAL_OVERFLOW == 1 ? 0 : 1;
-    int cols = uiBox(content, contentAxis, 16); // stack cards vertically to keep them within the frame width
+    int cols = uiBox(content, contentAxis, GAP); // stack cards vertically to keep them within the frame width
     uiWidgetExpand(cols, 1, 0);
-    int colL = uiBox(cols, 1, 14);
+    int colL = uiBox(cols, 1, GAP);
     uiWidgetExpand(colL, 1, 0);
-    int colR = uiBox(cols, 1, 14);
+    int colR = uiBox(cols, 1, GAP);
     uiWidgetExpand(colR, 1, 0);
 
     // Appearance card: theme allow-list + clamped DPI scale.
     int appear = uiCard(colL);
     uiWidgetExpand(appear, 1, 0);
-    int appBox = uiBox(appear, 1, 8);
+    int appBox = uiBox(appear, 1, GAP);
     uiWidgetExpand(appBox, 1, 0);
-    uiWidgetMargin(appBox, 14, 14, 14, 14);
+    uiWidgetMargin(appBox, PAD, PAD, PAD, PAD);
 
     int themePick = uiComboBox(appBox);
     uiWidgetExpand(themePick, 1, 0);
@@ -225,9 +230,9 @@ class GuiGualSettingsConsole {
     // Listener timing card: clamped poll / debounce / queue cap.
     int timing = uiCard(colR);
     uiWidgetExpand(timing, 1, 0);
-    int timBox = uiBox(timing, 1, 8);
+    int timBox = uiBox(timing, 1, GAP);
     uiWidgetExpand(timBox, 1, 0);
-    uiWidgetMargin(timBox, 14, 14, 14, 14);
+    uiWidgetMargin(timBox, PAD, PAD, PAD, PAD);
 
     int poll = clamp(5, 50, 5000);             // 5 -> 50ms
 
@@ -242,11 +247,11 @@ class GuiGualSettingsConsole {
     // Backend + window card (full width).
     int sys = uiCard(content);
     uiWidgetExpand(sys, 1, 0);
-    int sysBox = uiBox(sys, 1, 8);
+    int sysBox = uiBox(sys, 1, GAP);
     uiWidgetExpand(sysBox, 1, 0);
-    uiWidgetMargin(sysBox, 14, 14, 14, 14);
+    uiWidgetMargin(sysBox, PAD, PAD, PAD, PAD);
 
-    int brow = uiBox(sysBox, 1, 8); // avoid a long backend row overflowing narrow windows
+    int brow = uiBox(sysBox, 1, GAP); // avoid a long backend row overflowing narrow windows
     uiWidgetExpand(brow, 1, 0);
     btnJfx = uiButton(brow, "javafx");
     uiWidgetSuggested(btnJfx, 1);              // selected by default
@@ -255,7 +260,7 @@ class GuiGualSettingsConsole {
     btnQt = uiButton(brow, "qt  \u2715 refused");
     uiWidgetDestructive(btnQt, 1);
     uiSpacer(brow);
-    int wrow = uiBox(sysBox, 1, 10);
+    int wrow = uiBox(sysBox, 1, GAP);
     uiWidgetExpand(wrow, 1, 0);
 
     uiSpacer(wrow);
@@ -265,10 +270,10 @@ class GuiGualSettingsConsole {
     // Native Wi-Fi scan/connect/disconnect are backed by wifi-common via the SLVM.
     wifiPanel = uiPopupCreate(root);
     uiWidgetExpand(wifiPanel, 1, 0);
-    uiWidgetMargin(wifiPanel, 4, 8, 4, 8);
-    int wifiBox = uiBox(wifiPanel, 1, 5);
+    uiWidgetMargin(wifiPanel, PAD, PAD, PAD, PAD);
+    int wifiBox = uiBox(wifiPanel, 1, GAP);
     uiWidgetExpand(wifiBox, 1, 0);
-    uiWidgetMargin(wifiBox, 8, 10, 8, 10);
+    uiWidgetMargin(wifiBox, PAD, PAD, PAD, PAD);
     int wifiHeading = uiHeading(wifiBox, "Connectivity", 18);
     wifiStatusLabel = uiLabel(wifiBox, "Scan to list nearby networks; connect with an OS-saved profile.");
     wifiProfileEntry = uiEntry(wifiBox, "Optional saved profile (blank = OS authentication)");
@@ -282,12 +287,12 @@ class GuiGualSettingsConsole {
 
     int status = uiStatusBar(root);
     statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
-    uiWidgetMargin(statusLabel, 0, 12, 0, 12);
+    uiWidgetMargin(statusLabel, 0, PAD, 0, PAD);
     uiSpacer(status);
     wifiButton = uiButton(status, "Wi-Fi");
     // Permanent Wi-Fi identity: Wifi; PNG is primary, SVG/JPEG are retained alternates.
     uiWidgetSetIcon(wifiButton, "user-interface/icons/wifi.png", "Wifi");
-    uiWidgetMargin(wifiButton, 0, 8, 0, 8);
+    uiWidgetMargin(wifiButton, 0, PAD, 0, PAD);
     uiWidgetSuggested(wifiButton, 1);
 
     uiWindowShow(win);
@@ -382,20 +387,20 @@ class GuiGualSettingsConsole {
         if (uiWidgetTakeActivated(btnJfx) == 1) {
 
           openMenu(-1);
-          selectBackend(0); uiWidgetSetText(statusLabel, "backend selected: javafx \u2713 (configureStrict accepted)");
+          selectBackend(0); uiWidgetSetText(statusLabel, "backend selected: javafx ✓ (configureStrict accepted)");
         }
         if (uiWidgetTakeActivated(btnSwing) == 1) {
           openMenu(-1);
-          selectBackend(1); uiWidgetSetText(statusLabel, "backend selected: swing \u2713 (configureStrict accepted)");
+          selectBackend(1); uiWidgetSetText(statusLabel, "backend selected: swing ✓ (configureStrict accepted)");
         }
         if (uiWidgetTakeActivated(btnNative) == 1) {
           openMenu(-1);
-          selectBackend(2); uiWidgetSetText(statusLabel, "backend selected: native \u2713 (configureStrict accepted)");
+          selectBackend(2); uiWidgetSetText(statusLabel, "backend selected: native ✓ (configureStrict accepted)");
         }
         if (uiWidgetTakeActivated(btnQt) == 1) {
           openMenu(-1);
           // Fail-closed: refused. Selection does not change.
-          uiWidgetSetText(statusLabel, "backend 'qt' REFUSED \u2715 \u00B7 configureStrict is fail-closed; selection unchanged");
+          uiWidgetSetText(statusLabel, "backend 'qt' REFUSED ✕ · configureStrict is fail-closed; selection unchanged");
         }
       }
     }

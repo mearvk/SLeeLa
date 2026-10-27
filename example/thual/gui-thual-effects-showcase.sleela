@@ -1,30 +1,35 @@
 <<
-   example/gui-thual-effects-showcase.sleela
-   The THUAL (3.0) "effects showcase" scene as a REAL, on-screen window --
-   driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
-   bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
-   this file only print()ed a walkthrough; now the visual-effects layer (glow /
-   shine / shadow / metal / rotation / fade + branding + audio cues, with a
-   scheduled rotation that advances a memo key epoch) is painted as actual
-   widgets, including a live throbber that drives the SleelaUI event loop.
-   
-   The three-layer stack is live here:
-     SLeeLa decoration (this program + the bright "studio" theme below)
-       -> model (ui* built-ins: uiWindowCreate, uiThrobber, uiProgressBar, ...)
-         -> C/C++ (SleelaUI software rasterizer + native window backend)
-   
-   Run (needs a display: X on Linux, native on macOS/Windows):
-     SLEELA_SHEET=./SHEET.sheet \
-     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
-     ./impl/build/sleela run example/gui-thual-effects-showcase.sleela
-   
-   With no display (headless/CI) it reports that and exits 0 without a window.
+    example/gui-thual-effects-showcase.sleela
+    The THUAL (3.0) "effects showcase" scene as a REAL, on-screen window --
+    driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
+    bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
+    this file only print()ed a walkthrough; now the visual-effects layer (glow /
+    shine / shadow / metal / rotation / fade + branding + audio cues, with a
+    scheduled rotation that advances a memo key epoch) is painted as actual
+    widgets, including a live throbber that drives the SleelaUI event loop.
+    
+    The three-layer stack is live here:
+      SLeeLa decoration (this program + the bright "studio" theme below)
+        -> model (ui* built-ins: uiWindowCreate, uiThrobber, uiProgressBar, ...)
+          -> C/C++ (SleelaUI software rasterizer + native window backend)
+    
+    Run (needs a display: X on Linux, native on macOS/Windows):
+      SLEELA_SHEET=./SHEET.sheet \
+      SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+      ./impl/build/sleela run example/gui-thual-effects-showcase.sleela
+    
+    With no display (headless/CI) it reports that and exits 0 without a window.
 >>
 #sleela 2.1
 // THUAL (3.0): a clamped visual-effects layer. Every knob clamps to a safe
 // window; here those clamped values drive real level/progress controls and a
 // live, hue-tinted throbber (the "rotation" made visible).
 class GuiThualEffectsShowcase {
+
+  // Unified layout standard for the example family: each frame keeps a minimum
+  // 10px inset and 10px between children so the surface stays bounded.
+  int PAD = 10;
+  int GAP = 10;
 
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
   // Scroll-policy ordinal (mirror the toolkit C ABI: 0=auto on overflow).
@@ -140,29 +145,29 @@ class GuiThualEffectsShowcase {
     int root = uiWindowRoot(win);
 
     // --- Functional menubar strip and dropdowns ---
-    int menuStrip = uiBox(root, 1, 4);
-    uiWidgetMargin(menuStrip, 4, 8, 4, 8);
+    int menuStrip = uiBox(root, 1, GAP);
+    uiWidgetMargin(menuStrip, PAD, PAD, PAD, PAD);
     menuFileButton = uiButton(menuStrip, "File");
     menuEffectsButton = uiButton(menuStrip, "Effects");
     menuViewButton = uiButton(menuStrip, "View");
     menuHelpButton = uiButton(menuStrip, "Help");
-    menuFilePanel = uiBox(root, 0, 2);
-    uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
+    menuFilePanel = uiBox(root, 0, GAP);
+    uiWidgetMargin(menuFilePanel, PAD, PAD, PAD, PAD);
     menuFileItem1 = uiButton(menuFilePanel, "Save Preset");
     menuFileItem2 = uiButton(menuFilePanel, "Load Preset");
     uiWidgetVisible(menuFilePanel, 0);
-    menuEffectsPanel = uiBox(root, 0, 2);
-    uiWidgetMargin(menuEffectsPanel, 4, 10, 4, 10);
+    menuEffectsPanel = uiBox(root, 0, GAP);
+    uiWidgetMargin(menuEffectsPanel, PAD, PAD, PAD, PAD);
     menuEffectsItem1 = uiButton(menuEffectsPanel, "Glow And Shine");
     menuEffectsItem2 = uiButton(menuEffectsPanel, "Fade Controls");
     uiWidgetVisible(menuEffectsPanel, 0);
-    menuViewPanel = uiBox(root, 0, 2);
-    uiWidgetMargin(menuViewPanel, 4, 10, 4, 10);
+    menuViewPanel = uiBox(root, 0, GAP);
+    uiWidgetMargin(menuViewPanel, PAD, PAD, PAD, PAD);
     menuViewItem1 = uiButton(menuViewPanel, "Rotation Schedule");
     menuViewItem2 = uiButton(menuViewPanel, "Effect Status");
     uiWidgetVisible(menuViewPanel, 0);
-    menuHelpPanel = uiBox(root, 0, 2);
-    uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
+    menuHelpPanel = uiBox(root, 0, GAP);
+    uiWidgetMargin(menuHelpPanel, PAD, PAD, PAD, PAD);
     menuHelpItem1 = uiButton(menuHelpPanel, "Effects Guide");
     menuHelpItem2 = uiButton(menuHelpPanel, "About THUAL");
     uiWidgetVisible(menuHelpPanel, 0);
@@ -171,7 +176,7 @@ class GuiThualEffectsShowcase {
     int header = uiHeaderBar(root);
     uiWidgetSizeRequest(header, 0, 48);                   // Coherent Dignity: 6X header banner (48px)
     int logo = uiLabel(header, "\u2756");                 // the studio mark
-    uiWidgetMargin(logo, 0, 10, 0, 14);
+    uiWidgetMargin(logo, 0, PAD, 0, PAD + 4);
     int brand = uiBox(header, 1, 0);
 
     uiSpacer(header);
@@ -180,23 +185,23 @@ class GuiThualEffectsShowcase {
     // scrollbars) instead of spilling past the frame on a small window.
     int scroller = uiScrolledView(root, SCROLL_AUTO, SCROLL_AUTO);
     uiWidgetExpand(scroller, 1, 1);
-    int content = uiBox(scroller, 1, 14);     // the scroll CONTENT (1st child)
-    uiWidgetMargin(content, 18, 18, 18, 18);
+    int content = uiBox(scroller, 1, GAP);     // the scroll CONTENT (1st child)
+    uiWidgetMargin(content, PAD, PAD, PAD, PAD);
     uiWidgetExpand(content, 1, 0); // preserve natural height for vertical scrolling
 
-    int cols = uiBox(content, 1, 16); // stack cards vertically so they fit the available width
+    int cols = uiBox(content, 1, GAP); // stack cards vertically so they fit the available width
     uiWidgetExpand(cols, 1, 0);
-    int colL = uiBox(cols, 1, 14);
+    int colL = uiBox(cols, 1, GAP);
     uiWidgetExpand(colL, 1, 0);
-    int colR = uiBox(cols, 1, 14);
+    int colR = uiBox(cols, 1, GAP);
     uiWidgetExpand(colR, 1, 0);
 
     // Effects bundle card: each clamped knob shown on a level/progress bar.
     int fx = uiCard(colL);
     uiWidgetExpand(fx, 1, 0);
-    int fxBox = uiBox(fx, 1, 8);
+    int fxBox = uiBox(fx, 1, GAP);
     uiWidgetExpand(fxBox, 1, 0);
-    uiWidgetMargin(fxBox, 14, 14, 14, 14);
+    uiWidgetMargin(fxBox, PAD, PAD, PAD, PAD);
 
     int glow = clamp(140, 0, 100);             // 140% -> 100%
 
@@ -215,14 +220,14 @@ class GuiThualEffectsShowcase {
     // The primary button carrying the effect bundle, plus its audio cues.
     int demo = uiCard(colR);
     uiWidgetExpand(demo, 1, 0);
-    int demoBox = uiBox(demo, 1, 10);
+    int demoBox = uiBox(demo, 1, GAP);
     uiWidgetExpand(demoBox, 1, 0);
-    uiWidgetMargin(demoBox, 14, 14, 14, 14);
+    uiWidgetMargin(demoBox, PAD, PAD, PAD, PAD);
 
     btnConfirm = uiButton(demoBox, "\u2756 Confirm");
     uiWidgetSuggested(btnConfirm, 1);
     btnFade = uiButton(demoBox, "Toggle fade");
-    int cues = uiBox(demoBox, 1, 8);
+    int cues = uiBox(demoBox, 1, GAP);
     uiWidgetExpand(cues, 1, 0);
 
     uiSpacer(cues);
@@ -231,11 +236,11 @@ class GuiThualEffectsShowcase {
     // made visible by a live, accent-hued throbber.
     int rot = uiCard(content);
     uiWidgetExpand(rot, 1, 0);
-    int rotBox = uiBox(rot, 1, 8);
+    int rotBox = uiBox(rot, 1, GAP);
     uiWidgetExpand(rotBox, 1, 0);
-    uiWidgetMargin(rotBox, 14, 14, 14, 14);
+    uiWidgetMargin(rotBox, PAD, PAD, PAD, PAD);
 
-    int rrow = uiBox(rotBox, 1, 12);
+    int rrow = uiBox(rotBox, 1, GAP);
     spin = uiThrobber(rrow, 1);                // 1 = active/spinning
     uiThrobberSetHue(spin, 215.0);             // blue accent hue
     uiThrobberSetIntensity(spin, 0.9);
@@ -249,10 +254,10 @@ class GuiThualEffectsShowcase {
     // Native Wi-Fi scan/connect/disconnect are backed by wifi-common via the SLVM.
     wifiPanel = uiPopupCreate(root);
     uiWidgetExpand(wifiPanel, 1, 0);
-    uiWidgetMargin(wifiPanel, 4, 8, 4, 8);
-    int wifiBox = uiBox(wifiPanel, 1, 5);
+    uiWidgetMargin(wifiPanel, PAD, PAD, PAD, PAD);
+    int wifiBox = uiBox(wifiPanel, 1, GAP);
     uiWidgetExpand(wifiBox, 1, 0);
-    uiWidgetMargin(wifiBox, 8, 10, 8, 10);
+    uiWidgetMargin(wifiBox, PAD, PAD, PAD, PAD);
     int wifiHeading = uiHeading(wifiBox, "Connectivity", 18);
     wifiStatusLabel = uiLabel(wifiBox, "Scan to list nearby networks; connect with an OS-saved profile.");
     wifiProfileEntry = uiEntry(wifiBox, "Optional saved profile (blank = OS authentication)");
@@ -266,12 +271,12 @@ class GuiThualEffectsShowcase {
 
     int status = uiStatusBar(root);
     statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
-    uiWidgetMargin(statusLabel, 0, 12, 0, 12);
+    uiWidgetMargin(statusLabel, 0, PAD, 0, PAD);
     uiSpacer(status);
     wifiButton = uiButton(status, "Wi-Fi");
     // Permanent Wi-Fi identity: Wifi; PNG is primary, SVG/JPEG are retained alternates.
     uiWidgetSetIcon(wifiButton, "user-interface/icons/wifi.png", "Wifi");
-    uiWidgetMargin(wifiButton, 0, 8, 0, 8);
+    uiWidgetMargin(wifiButton, 0, PAD, 0, PAD);
     uiWidgetSuggested(wifiButton, 1);
 
     uiWindowShow(win);
@@ -374,7 +379,7 @@ class GuiThualEffectsShowcase {
           // report the memo key epoch stepping with it.
           hue = hue + 90; if (hue >= 360) { hue = hue - 360; }
           uiThrobberSetHue(spin, hue);
-          uiWidgetSetText(statusLabel, "cue: confirm \u2713 \u00B7 schene tick " + confirms
+          uiWidgetSetText(statusLabel, "cue: confirm ✓ · schene tick " + confirms
               + " (memo key epoch advanced; hue " + hue + "deg)");
         }
         if (uiWidgetTakeActivated(btnFade) == 1) {
