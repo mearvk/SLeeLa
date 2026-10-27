@@ -13,11 +13,11 @@ window system through one small backend interface with three implementations.
 
 > SleelaUI™ — MEARVK LLC. Original SLeeLa work.
 
-![SleelaUI preview on the #2B1608 base](docs/preview.png)
+![SleelaUI preview on the graphite default theme](docs/preview.png)
 
-*The default warm theme (base colour #2B1608), rendered by the toolkit's own
-software rasterizer. Regenerate with `make snapshot` (no display required). The
-schematic text is the headless preview font; real backends render system glyphs.*
+*The default graphite/charcoal theme with a steel-blue accent, rendered by the
+toolkit's own software rasterizer. Regenerate with `make snapshot` (no display
+required). The schematic text is the headless preview font; real backends render system glyphs.*
 
 ## Status & platform support
 
@@ -45,7 +45,7 @@ theming — builds and smoke-tests on CI with **no display on any OS**.
      ┌───────────────┴────────────────┐
      │        portable core            │  no OS calls, identical everywhere
      │  Widget tree · box layout       │
-     │  Theme (Slick Black default)    │
+     │  Theme (graphite/charcoal default)    │
      │  Software rasterizer (Canvas)   │
      └───────────────┬────────────────┘
                      │  Backend interface (slui_backend.hpp)
