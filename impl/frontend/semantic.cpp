@@ -36,7 +36,7 @@ static std::string nameOf(const Type&t){
 static bool same(const Type&a,const Type&b){return a.kind==b.kind&&((a.kind!=Kind::Struct&&a.kind!=Kind::Array&&a.kind!=Kind::Unsigned)||a.name==b.name);}
 static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Double||t.kind==Kind::Unsigned;}
 static bool assignable(const Type&to,const Type&from){
- return to.kind==Kind::Unknown||from.kind==Kind::Unknown||to.kind==Kind::Any||from.kind==Kind::Any||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Any||to.kind==Kind::Struct||to.kind==Kind::String||to.kind==Kind::Array))||same(to,from);
+ return to.kind==Kind::Unknown||from.kind==Kind::Unknown||to.kind==Kind::Any||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Any||to.kind==Kind::Struct||to.kind==Kind::String||to.kind==Kind::Array))||same(to,from);
 }
 static bool builtin(const std::string&n){
  static const std::set<std::string> s={
