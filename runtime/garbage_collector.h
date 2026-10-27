@@ -33,7 +33,7 @@ struct GarbageCollector {
     size_t bytes_allocated, bytes_threshold, young_bytes_threshold;
     size_t collections, young_collections, reclaimed, promoted, incremental_steps;
     size_t target_step_work;
-    SLGCPhase phase; uint8_t collecting_young, initialized, mark_failed;
+    SLGCPhase phase; uint8_t collecting_young, initialized, mark_failed, force_full_collection;
 };
 
 void gc_init(GarbageCollector *, size_t threshold);
