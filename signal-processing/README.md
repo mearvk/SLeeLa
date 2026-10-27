@@ -64,6 +64,14 @@ C++ vector helpers throw std::invalid_argument for invalid parameters,
 std::overflow_error for non-finite numeric results, and std::runtime_error for
 other library failures. The direct fft() wrapper returns a Status.
 
+## Engineering notes
+
+The shorter engineering notes are collected under [docs/](docs/README.md):
+[API contracts](docs/API-CONTRACTS.md), [algorithm behavior](docs/ALGORITHM-NOTES.md),
+[numerical safety](docs/NUMERICAL-SAFETY.md), [build and testing](docs/TESTING-AND-BUILD.md),
+and a clearly labeled [development roadmap](docs/ROADMAP.md). The public headers,
+implementation, examples and regression tests each also have a short README.
+
 ## Historical organization: 1951–present
 
 Each decades/ folder records representative research/application themes and
