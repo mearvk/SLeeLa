@@ -1647,6 +1647,46 @@ static SLResult run_thread(SLThread* t) {
             pthread_mutex_unlock(&vm->struct_mtx);
             PUSH(slval_struct(h));
         } break;
+        case OP_CHECKCAST: {
+            SLValue value=POP();
+            if(in.a>=0) {
+                if(value.type==SL_NULL) { PUSH(value); break; }
+                if(value.type!=SL_STRUCT || !struct_valid_handle(vm,value.as.h))
+                    TERR("checked cast failed: value is not a valid class/struct instance");
+                pthread_mutex_lock(&vm->struct_mtx);
+                int actualType=vm->structs[value.as.h].type;
+                int matches=(actualType==in.a);
+                pthread_mutex_unlock(&vm->struct_mtx);
+                if(!matches) TERR("checked cast failed: runtime class/struct type does not match target");
+            } else {
+                int targetTag=-in.a-1;
+                if(targetTag<SL_NULL || targetTag>SL_ARRAY)
+                    TERR("invalid checked-cast type descriptor");
+                if(value.type==SL_NULL && (targetTag==SL_STR || targetTag==SL_ARRAY)) {
+                    PUSH(value); break;
+                }
+                if((int)value.type!=targetTag)
+                    TERR("checked cast failed: runtime value tag does not match target");
+            }
+            PUSH(value);
+        } break;
+        case OP_INSTANCEOF: {
+            SLValue value=POP();
+            int matches=0;
+            if(in.a>=0) {
+                if(value.type==SL_STRUCT && struct_valid_handle(vm,value.as.h)) {
+                    pthread_mutex_lock(&vm->struct_mtx);
+                    matches=(vm->structs[value.as.h].type==in.a);
+                    pthread_mutex_unlock(&vm->struct_mtx);
+                }
+            } else {
+                int targetTag=-in.a-1;
+                if(targetTag<SL_NULL || targetTag>SL_ARRAY)
+                    TERR("invalid instanceof type descriptor");
+                matches=((int)value.type==targetTag);
+            }
+            PUSH(slval_bool(matches));
+        } break;
         /* ---- arrays: dynamic, zero-indexed SLValue sequences ------------ */
         case OP_NEWARRAY: {
             SLValue nv=POP();
