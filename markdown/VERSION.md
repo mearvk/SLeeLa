@@ -12,11 +12,13 @@ This increment extends the arbitrary-width unsigned integer foundation for sourc
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
-**Sleela Language Syntax:** 1.7 (supported range 1.3 .. 1.7)  
+**Sleela Language Syntax:** 2.4 (accepted pragma range 1.0 .. 2.4; see `impl/frontend/version.h`)  
 **Compiler Compatibility Gate:** 2.9-dev  
 **Java Authorship Transition Gate:** 1.19-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
+
+**Specification reconciliation note (2026-10-27):** The active grammar header and native version gate declare syntax 2.4 and an accepted pragma range of 1.0 through 2.4. The historical “Language Syntax 1.7” entry below records the earlier release and is retained as history, not as the current version. Recursion uses existing method-call syntax; implementation correctness and heterogeneous collection behavior require executable regression coverage.
 **Repository:** mearkv/SLeeLa
 
 ## 0.3.29 Development Increment
