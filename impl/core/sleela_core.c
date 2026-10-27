@@ -597,25 +597,41 @@ static SLGCObject *array_gc_object(SLVM *vm, int h) {
     if (!vm || !vm->arrays || h < 0 || h >= SL_MAX_ARRAYS) return NULL;
     return vm->arrays[h].gc_object;
 }
+static void gc_mark_value(SLVM *vm, GarbageCollector *gc, SLValue v);
+
+static SLGCObject *gc_object_for_value(SLVM *vm, SLValue v) {
+    if (!vm) return NULL;
+    if (v.type == SL_STRUCT && struct_valid_handle(vm, v.as.h))
+        return struct_gc_object(vm, v.as.h);
+    if (v.type == SL_ARRAY && array_valid_handle(vm, v.as.h))
+        return array_gc_object(vm, v.as.h);
+    return NULL;
+}
+
+/* Child traversal is delegated to the collector's mark worklist rather than
+ * recursively traversing the graph on the C call stack. This keeps deep and
+ * cyclic object graphs safe and lets the collector detect worklist failures. */
+static void gc_trace_struct(SLGCObject *object, void *context) {
+    SLVM *vm = (SLVM *)context;
+    SLStructInstance *si = object ? (SLStructInstance *)object->payload : NULL;
+    if (!vm || !si || !si->active) return;
+    for (int i = 0; i < SL_MAX_STRUCT_FIELDS; ++i)
+        if (si->fields[i].type == SL_STRUCT || si->fields[i].type == SL_ARRAY)
+            gc_mark_value(vm, &vm->gc, si->fields[i]);
+}
+
+static void gc_trace_array(SLGCObject *object, void *context) {
+    SLVM *vm = (SLVM *)context;
+    SLArrayInstance *ai = object ? (SLArrayInstance *)object->payload : NULL;
+    if (!vm || !ai || !ai->active) return;
+    for (int i = 0; i < ai->len; ++i)
+        if (ai->elems && (ai->elems[i].type == SL_STRUCT || ai->elems[i].type == SL_ARRAY))
+            gc_mark_value(vm, &vm->gc, ai->elems[i]);
+}
+
 static void gc_mark_value(SLVM *vm, GarbageCollector *gc, SLValue v) {
-    if (!vm || !gc) return;
-    if (v.type == SL_STRUCT && struct_valid_handle(vm, v.as.h)) {
-        SLGCObject *o = struct_gc_object(vm, v.as.h);
-        if (!o || o->marked) return;
-        gc_mark(gc, o);
-        SLStructInstance *si = &vm->structs[v.as.h];
-        for (int i = 0; i < SL_MAX_STRUCT_FIELDS; ++i)
-            if (si->fields[i].type == SL_STRUCT || si->fields[i].type == SL_ARRAY)
-                gc_mark_value(vm, gc, si->fields[i]);
-    } else if (v.type == SL_ARRAY && array_valid_handle(vm, v.as.h)) {
-        SLGCObject *o = array_gc_object(vm, v.as.h);
-        if (!o || o->marked) return;
-        gc_mark(gc, o);
-        SLArrayInstance *ai = &vm->arrays[v.as.h];
-        for (int i = 0; i < ai->len; ++i)
-            if (ai->elems && (ai->elems[i].type == SL_STRUCT || ai->elems[i].type == SL_ARRAY))
-                gc_mark_value(vm, gc, ai->elems[i]);
-    }
+    SLGCObject *object = gc_object_for_value(vm, v);
+    if (gc && object) gc_mark(gc, object);
 }
 typedef struct { SLVM *vm; SLThread *current; } SLGCRootContext;
 static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
@@ -674,7 +690,7 @@ static int struct_alloc(SLVM* vm, int type) {
         if (!vm->structs[i].active) {
             vm->structs[i].active = 1;
             vm->structs[i].type = type;
-            vm->structs[i].gc_object = gc_allocate_external(&vm->gc, &vm->structs[i], sizeof(vm->structs[i]), NULL, gc_struct_destroy, NULL);
+            vm->structs[i].gc_object = gc_allocate_external(&vm->gc, &vm->structs[i], sizeof(vm->structs[i]), gc_trace_struct, gc_struct_destroy, vm);
             if (!vm->structs[i].gc_object) { vm->structs[i].active = 0; pthread_mutex_unlock(&vm->struct_mtx); return -1; }
             for (int j = 0; j < nf; j++) vm->structs[i].fields[j] = slval_null();
             vm->nstruct_live++;
@@ -722,7 +738,7 @@ static int array_alloc(SLVM* vm, int n) {
             vm->arrays[i].len = n;
             vm->arrays[i].cap = cap;
             vm->arrays[i].elems = elems;
-            vm->arrays[i].gc_object = gc_allocate_external(&vm->gc, &vm->arrays[i], sizeof(vm->arrays[i]), NULL, gc_array_destroy, NULL);
+            vm->arrays[i].gc_object = gc_allocate_external(&vm->gc, &vm->arrays[i], sizeof(vm->arrays[i]) + (size_t)cap * sizeof(*elems), gc_trace_array, gc_array_destroy, vm);
             if (!vm->arrays[i].gc_object) { free(elems); vm->arrays[i].active = 0; vm->arrays[i].elems = NULL; pthread_mutex_unlock(&vm->array_mtx); return -1; }
             for (int j = 0; j < n; j++) vm->arrays[i].elems[j] = slval_null();
             vm->narray_live++;
@@ -743,8 +759,18 @@ static int array_push(SLVM* vm, int h, SLValue val) {
         int ncap = ai->cap > 0 ? ai->cap * 2 : 8;
         if (ncap > SL_MAX_ARRAY_LEN) ncap = SL_MAX_ARRAY_LEN;
         if (ai->len >= ncap) { pthread_mutex_unlock(&vm->array_mtx); return -1; }
+        size_t old_bytes = sizeof(*ai) + (size_t)ai->cap * sizeof(SLValue);
+        size_t new_bytes = sizeof(*ai) + (size_t)ncap * sizeof(SLValue);
+        if (!gc_resize_object(&vm->gc, ai->gc_object, new_bytes)) {
+            pthread_mutex_unlock(&vm->array_mtx);
+            return -1;
+        }
         SLValue* ne = (SLValue*)realloc(ai->elems, (size_t)ncap * sizeof(SLValue));
-        if (!ne) { pthread_mutex_unlock(&vm->array_mtx); return -1; }
+        if (!ne) {
+            (void)gc_resize_object(&vm->gc, ai->gc_object, old_bytes);
+            pthread_mutex_unlock(&vm->array_mtx);
+            return -1;
+        }
         ai->elems = ne; ai->cap = ncap;
     }
     ai->elems[ai->len++] = val;
@@ -1636,8 +1662,8 @@ static SLResult run_thread(SLThread* t) {
             SLStructInstance* si=&vm->structs[iv.as.h];
             if(in.a<0||in.a>=vm->struct_types[si->type].nfields){pthread_mutex_unlock(&vm->struct_mtx);TERR("field offset out of range");}
             SLValue old = si->fields[in.a];
-            if (old.type == SL_STRUCT || val.type == SL_STRUCT)
-                gc_write_barrier(&vm->gc, si->gc_object, struct_gc_object(vm, old.as.h), struct_gc_object(vm, val.as.h));
+            if (old.type == SL_STRUCT || old.type == SL_ARRAY || val.type == SL_STRUCT || val.type == SL_ARRAY)
+                gc_write_barrier(&vm->gc, si->gc_object, gc_object_for_value(vm, old), gc_object_for_value(vm, val));
             si->fields[in.a]=val;
             pthread_mutex_unlock(&vm->struct_mtx);
             PUSH(val);

@@ -30,13 +30,16 @@ struct GarbageCollector {
     SLGCObject **roots; size_t root_count, root_capacity;
     SLGCObject **mark_stack; size_t mark_count, mark_capacity;
     SLGCObject **remembered; size_t remembered_count, remembered_capacity;
-    size_t bytes_allocated, bytes_threshold, young_bytes_threshold;
+    size_t bytes_allocated, bytes_threshold, young_bytes_threshold, bytes_limit;
     size_t collections, young_collections, reclaimed, promoted, incremental_steps;
     size_t target_step_work;
-    SLGCPhase phase; uint8_t collecting_young, initialized;
+    SLGCPhase phase; uint8_t collecting_young, initialized, mark_failed, force_full_collection;
 };
 
 void gc_init(GarbageCollector *, size_t threshold);
+int gc_set_limit(GarbageCollector *, size_t bytes);
+int gc_resize_object(GarbageCollector *, SLGCObject *, size_t new_bytes);
+size_t gc_limit(const GarbageCollector *);
 void gc_free(GarbageCollector *);
 SLGCObject *gc_allocate(GarbageCollector *, size_t, SLGCMarkFn, SLGCDestroyFn, void *);
 SLGCObject *gc_allocate_external(GarbageCollector *, void *, size_t, SLGCMarkFn, SLGCDestroyFn, void *);

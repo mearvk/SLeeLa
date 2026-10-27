@@ -1,21 +1,35 @@
 #sleela 2.1
+#author Max Rupplin - MEARVK LLC - 2026
+#
+# Fail-closed SLeeLa policy facade.
+# The native SecuritySupervisor remains authoritative. These methods must not
+# be treated as native enforcement until the VM binding is connected and tested.
+
 class GarbageCollector {
- int liveObjects;
- int bytesAllocated;
- int collections;
- boolean needsCollection(int threshold) { return bytesAllocated >= threshold; }
- int liveCount() { return liveObjects; }
+    int liveObjects;
+    int bytesAllocated;
+    int collections;
+
+    boolean needsCollection(int threshold) {
+        return threshold > 0 && bytesAllocated >= threshold;
+    }
+
+    int liveCount() { return liveObjects; }
 }
+
 class SecuritySupervisor {
- int activeRole;
- int totalInstances;
- int totalBytes;
- boolean authorizeClass(String className) { return true; }
- boolean reserve(String className, int bytes) { return authorizeClass(className); }
- void release(String className, int bytes) { }
+    int activeRole;
+    int totalInstances;
+    int totalBytes;
+
+    # No permissive default: missing native binding denies admission.
+    boolean authorizeClass(String className) { return false; }
+    boolean reserve(String className, int bytes) { return false; }
+    void release(String className, int bytes) { }
 }
+
 class RuntimePolicy {
- boolean allowClass(String className) { return true; }
- int maximumObjects() { return 0; }
- int maximumBytes() { return 0; }
+    boolean allowClass(String className) { return false; }
+    int maximumObjects() { return 0; }
+    int maximumBytes() { return 0; }
 }
