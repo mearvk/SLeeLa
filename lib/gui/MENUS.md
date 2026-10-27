@@ -11,7 +11,7 @@
 - `menuitem` / `menu-item`: actionable button-like entry.
 - `menuseparator` / `menu-separator`: horizontal separator.
 
-The factories use existing `uiBox`, `uiButton`, and `uiSeparator` primitives. This is a portable custom-widget fallback; native OS menu rendering requires the Java/native host to implement the corresponding bridge behavior.
+The factories use existing `uiBox`, `uiButton`, and `uiSeparator` primitives. The menu and menu-bar tags are recognized as container surfaces; `menuitem`/`menu-item` tags are included in host activation polling and raise the ordinary `CLICK` event through `SLGuiHostAdapter`. This is the portable custom-widget fallback; native OS menu rendering still requires the Java/native host to implement the corresponding bridge behavior.
 
 ## Model Responsibilities
 
