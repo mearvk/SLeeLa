@@ -14,7 +14,8 @@ $Examples = @(
   "example/gual/gui-gual-settings-console.sleela",
   "example/thual/gui-thual-effects-showcase.sleela",
   "example/dual/gui-dual-media-studio.sleela",
-  "example/military/gui-military-command-console.sleela"
+  "example/military/gui-military-command-console.sleela",
+  "example/menus/gui-menubar-expandable.sleela"
 )
 foreach ($Example in $Examples) {
   Write-Host ("=" * 72)
@@ -22,4 +23,4 @@ foreach ($Example in $Examples) {
   & $Sleela run $Example
   if ($LASTEXITCODE -ne 0) { throw "Example failed: $Example (exit $LASTEXITCODE)" }
 }
-Write-Host "All five GUI examples completed."
+Write-Host "All six GUI examples completed."
