@@ -99,12 +99,22 @@ consume them before the effect is visible. Native and Java hosts should be
 verified separately, and unsupported effects should degrade cleanly to a clear
 border and hover/focus state.
 
+## Host Activation Status
+
+The factories recognize menu surfaces as containers. `menuitem` and `menu-item`
+are included in `SLGuiWidgetFactory.interactive()` and map to `CLICK`, so the
+existing `SLGuiHostAdapter` polls their activation latches and dispatches the
+same DOM event type as ordinary buttons. The military command-console example
+and the dedicated menu showcase both demonstrate visible, collapsible dropdown
+panels backed by the `ui*` widget bridge.
+
 ## Limits
 
 The SLeeLa library models now provide explicit toggle, outside-dismissal,
 Escape, activation-dismissal, and top-level navigation state transitions.
 These are not by themselves proof that every host wires those transitions to
 real native pointer/keyboard input. Native OS menu widgets, popup positioning,
-full keyboard event routing, submenu rendering, and action dispatch remain
-host/runtime integration responsibilities and must be tested in each backend
-before being described as complete.
+full keyboard event routing, outside-click dismissal, resolution of the model's
+named action/operation fields, and accessibility semantics remain host/runtime
+integration responsibilities and must be tested in each backend before being
+described as complete.
