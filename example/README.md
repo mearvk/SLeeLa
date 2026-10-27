@@ -1,7 +1,7 @@
 # `/example` — worked, runnable SLeeLa examples
 
 This folder holds hands-on, self-contained starting points you can read, run,
-and adapt. It now covers three things:
+and adapt. It now covers four things:
 
 1. **One GUI example per `lib/gui` version line** — the full spread of known UI
    lines, from the 1.0 baseline to the 5.0 military build. Each one renders a
