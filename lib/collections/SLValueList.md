@@ -13,7 +13,7 @@
 - `int length()`
 - `boolean empty()`
 
-Indices are zero-based. Invalid reads return null; invalid writes/removals return false.
+Indices are zero-based. Invalid reads return null; invalid writes/removals return false. Removed entries are nulled so the list does not keep otherwise-unused object references alive; allocated array capacity is retained for reuse.
 
 ## Current boundary
 
