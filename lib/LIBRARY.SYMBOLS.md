@@ -11433,8 +11433,6 @@ user-interface	SLProgressBar.sleela	lib/user-interface/SLProgressBar.sleela	sour
 user-interface	SLRadioButton.sleela	lib/user-interface/SLRadioButton.sleela	source
 user-interface	SLScrollBar.sleela	lib/user-interface/SLScrollBar.sleela	source
 user-interface	SLScrollView.sleela	lib/user-interface/SLScrollView.sleela	source
-user-interface	SLTabBar.sleela	lib/user-interface/SLTabBar.sleela	source
-user-interface	SLVerticalTabs.sleela	lib/user-interface/SLVerticalTabs.sleela	source
 user-interface	SLSearchEntry.sleela	lib/user-interface/SLSearchEntry.sleela	source
 user-interface	SLSeparator.sleela	lib/user-interface/SLSeparator.sleela	source
 user-interface	SLSlider.sleela	lib/user-interface/SLSlider.sleela	source
@@ -11442,11 +11440,13 @@ user-interface	SLSpacer.sleela	lib/user-interface/SLSpacer.sleela	source
 user-interface	SLSpinButton.sleela	lib/user-interface/SLSpinButton.sleela	source
 user-interface	SLSpinner.sleela	lib/user-interface/SLSpinner.sleela	source
 user-interface	SLStatusBar.sleela	lib/user-interface/SLStatusBar.sleela	source
+user-interface	SLTabBar.sleela	lib/user-interface/SLTabBar.sleela	source
 user-interface	SLTextView.sleela	lib/user-interface/SLTextView.sleela	source
 user-interface	SLTheme.sleela	lib/user-interface/SLTheme.sleela	source
 user-interface	SLThrobber.sleela	lib/user-interface/SLThrobber.sleela	source
 user-interface	SLToggle.sleela	lib/user-interface/SLToggle.sleela	source
 user-interface	SLTooltip.sleela	lib/user-interface/SLTooltip.sleela	source
+user-interface	SLVerticalTabs.sleela	lib/user-interface/SLVerticalTabs.sleela	source
 user-interface	SLTreeView.sleela	lib/user-interface/SLTreeView.sleela	source
 user-interface	SLUserInterface.sleela	lib/user-interface/SLUserInterface.sleela	source
 user-interface	SLWash.sleela	lib/user-interface/SLWash.sleela	source
