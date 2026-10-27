@@ -17,7 +17,7 @@ Indices are zero-based. Invalid reads return null; invalid writes/removals retur
 
 ## Current boundary
 
-The compiler's `Any` type permits mixed values to be stored and passed through methods whose parameters are also `Any`. It does not make arbitrary concrete class members accessible through an `Any` reference. Checked runtime type tests and checked casts back to a concrete class are a separate required follow-up; do not use an unchecked cast to retrieve a concrete class from this list.
+The compiler's `Any` type permits mixed values to be stored and passed through methods whose parameters are also `Any`. It does not make arbitrary concrete class members accessible through an `Any` reference. Use `instanceof` to test a runtime tag/class hierarchy and a checked cast such as `(Customer) item` before accessing concrete fields. A mismatched non-null cast raises a controlled VM runtime error; casting null to a reference type preserves null.
 
 Ordinary typed arrays retain semantic element checks for direct indexing and for `arrayPush`/`arraySet` calls where the array's declared type is known. Runtime array instances still do not carry an element-type contract, so native/unknown-typed boundaries need further runtime enforcement.
 
