@@ -193,6 +193,22 @@ typedef enum {
     SLUI_FN_BALLUM_FX_NAME,          /* uiBallumFxName(fx:i) -> string name */
     SLUI_FN_BALLUM_FX_BY_NAME,       /* uiBallumFxByName(name:s) -> effect id */
 
+    /* Keep parity with impl/core before appending new UI calls. */
+    SLUI_FN_WIDGET_IS_HOVERED,
+    SLUI_FN_WIDGET_TAKE_PRESSED,
+    SLUI_FN_WIDGET_TAKE_RELEASED,
+    SLUI_FN_WIDGET_TAKE_HOVER_ENTERED,
+    SLUI_FN_WIDGET_TAKE_HOVER_LEFT,
+
+    /* Window size limits (pixel dimensions; max 0 means unbounded). */
+    SLUI_FN_WINDOW_SET_MIN_SIZE,       /* uiWindowSetMinSize(window:i,w:i,h:i) -> status */
+    SLUI_FN_WINDOW_SET_MAX_SIZE,       /* uiWindowSetMaxSize(window:i,w:i,h:i) -> status */
+    SLUI_FN_WINDOW_SET_SIZE_LIMITS,    /* uiWindowSetSizeLimits(window:i,minW:i,minH:i,maxW:i,maxH:i) -> status */
+    SLUI_FN_WINDOW_MIN_WIDTH,          /* uiWindowMinWidth(window:i) -> px or -1 */
+    SLUI_FN_WINDOW_MIN_HEIGHT,         /* uiWindowMinHeight(window:i) -> px or -1 */
+    SLUI_FN_WINDOW_MAX_WIDTH,          /* uiWindowMaxWidth(window:i) -> px/0 or -1 */
+    SLUI_FN_WINDOW_MAX_HEIGHT,         /* uiWindowMaxHeight(window:i) -> px/0 or -1 */
+
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;
 
