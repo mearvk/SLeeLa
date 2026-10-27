@@ -9,7 +9,7 @@
 #include <utility>
 namespace sleela {
 namespace {
-enum class Kind { Void, Int, Unsigned, Double, Bool, String, Null, Struct, Array, Unknown, Error };
+enum class Kind { Void, Int, Unsigned, Double, Bool, String, Null, Any, Struct, Array, Unknown, Error };
 // For Kind::Array, `name` carries the full array type text (e.g. "int[]") and
 // `elem` the element type name (e.g. "int").
 struct Type { Kind kind=Kind::Unknown; std::string name{}; std::string elem{}; };
@@ -27,15 +27,16 @@ static Type typeOf(const std::string& n){
  if(n=="double"){return{Kind::Double,{},{}};}
  if(n=="bool"||n=="boolean"){return{Kind::Bool,{},{}};}
  if(n=="string"||n=="String"){return{Kind::String,{},{}};}
+  if(n=="Any"){return{Kind::Any,"Any",{}};}
  return{Kind::Struct,n,{}};
 }
 static std::string nameOf(const Type&t){
- switch(t.kind){case Kind::Void:return"void";case Kind::Int:return"int";case Kind::Unsigned:return t.name;case Kind::Double:return"double";case Kind::Bool:return"bool";case Kind::String:return"string";case Kind::Null:return"null";case Kind::Struct:return t.name;case Kind::Array:return t.name.empty()?"array":t.name;case Kind::Unknown:return"unknown";default:return"error";}
+ switch(t.kind){case Kind::Void:return"void";case Kind::Int:return"int";case Kind::Unsigned:return t.name;case Kind::Double:return"double";case Kind::Bool:return"bool";case Kind::String:return"string";case Kind::Null:return"null";case Kind::Any:return"Any";case Kind::Struct:return t.name;case Kind::Array:return t.name.empty()?"array":t.name;case Kind::Unknown:return"unknown";default:return"error";}
 }
 static bool same(const Type&a,const Type&b){return a.kind==b.kind&&((a.kind!=Kind::Struct&&a.kind!=Kind::Array&&a.kind!=Kind::Unsigned)||a.name==b.name);}
 static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Double||t.kind==Kind::Unsigned;}
 static bool assignable(const Type&to,const Type&from){
- return to.kind==Kind::Unknown||from.kind==Kind::Unknown||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Struct||to.kind==Kind::String||to.kind==Kind::Array))||same(to,from);
+ return to.kind==Kind::Unknown||from.kind==Kind::Unknown||to.kind==Kind::Any||from.kind==Kind::Any||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Any||to.kind==Kind::Struct||to.kind==Kind::String||to.kind==Kind::Array))||same(to,from);
 }
 static bool builtin(const std::string&n){
  static const std::set<std::string> s={
@@ -78,7 +79,7 @@ class Analyzer{
   // An array type "T[]" is known when its element type T is known. Nested
   // arrays ("T[][]") recurse. Element type must not be void.
   if(t.size()>=2 && t.compare(t.size()-2,2,"[]")==0){std::string inner=t.substr(0,t.size()-2);return inner!="void"&&known(inner);}
-  return t=="void"||t=="int"||unsignedTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||structs.count(t)||classNames.count(t);
+  return t=="void"||t=="int"||unsignedTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||t=="Any"||structs.count(t)||classNames.count(t);
  }
  Type tn(const std::string&t)const{return known(t)?typeOf(t):Type{Kind::Error,t};}
  void collect(){
@@ -373,12 +374,27 @@ class Analyzer{
   // `structUnpack(TypeName, json)` -- the first argument is a struct type name,
   // not a value; the result is an instance of that struct type.
   if(c.callee=="structUnpack"){if(c.args.size()!=2){err("structUnpack(TypeName, json) takes exactly two arguments");return{Kind::Error,{}};}auto v=dynamic_cast<const VarExpr*>(c.args[0].get());if(!v||!structs.count(v->name)){err("structUnpack first argument must be a declared struct type name");return{Kind::Error,{}};}expr(*c.args[1]);return{Kind::Struct,v->name};}
-  for(const auto&a:c.args){expr(*a);}
+  std::vector<Type> argTypes; argTypes.reserve(c.args.size());
+  for(const auto&a:c.args) argTypes.push_back(expr(*a));
   if(!builtin(c.callee)){err("call to unknown method '"+c.callee+"'");}
   const std::string&n=c.callee;
   if(n=="arrayNew")return{Kind::Array,"array",{}};
-  if(n=="arrayLength"||n=="arrayPush")return{Kind::Int,{}};
-  if(n=="arrayGet"||n=="arraySet")return{Kind::Unknown,{}};
+  if(n=="arrayLength")return{Kind::Int,{}};
+  if(n=="arrayPush" || n=="arraySet"){
+   const size_t valueArg=(n=="arrayPush"?1:2);
+   if(argTypes.size()>valueArg){
+    const Type& at=argTypes[0];
+    if(at.kind==Kind::Array){
+     Type expected=typeOf(at.elem);
+     if(!assignable(expected,argTypes[valueArg])) err(n+" cannot store "+nameOf(argTypes[valueArg])+" in "+nameOf(at));
+    } else if(at.kind!=Kind::Unknown && at.kind!=Kind::Error) err(n+" requires an array as its first argument, got "+nameOf(at));
+   }
+   return n=="arrayPush"?Type{Kind::Int,{},{}}:(argTypes.size()>2?argTypes[2]:Type{Kind::Unknown,{},{}});
+  }
+  if(n=="arrayGet"){
+   if(!argTypes.empty() && argTypes[0].kind==Kind::Array) return typeOf(argTypes[0].elem);
+   return{Kind::Unknown,{}};
+  }
   if(n=="conduct"||n=="congruent"){return{Kind::Bool,{}};}
   if(n=="role"||n=="insight"||n=="route"||n=="timeLocation"||n=="timeHttpDate"||n=="timeJson"){return{Kind::String,{}};}
   if(n=="osPlatform"||n=="osGetEnv"||n=="osCurrentDir"||n=="osHostName"||n=="osUserName"||n=="osTempDir"){return{Kind::String,{}};}
