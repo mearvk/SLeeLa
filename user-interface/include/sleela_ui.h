@@ -21,7 +21,7 @@
  *
  * SleelaUI is an ORIGINAL toolkit: it is not GTK, Qt, wxWidgets, or a wrapper
  * around them. It draws its own widgets with its own software rasterizer so the
- * look -- the "Slick Black" matte default -- is pixel-identical on every target.
+ * look -- the graphite/charcoal default -- is pixel-identical on every target.
  * It talks to the real host window system through one backend interface with
  * three implementations:
  *
@@ -150,7 +150,7 @@ typedef struct {
 } SLUITheme;
 
 /* Fill `out` with one of the built-in palettes. SLUI_THEME_SLEELA_BASE is the
- * documented default (base colour #2B1608) and what slui_window_create() uses
+ * documented graphite/charcoal default and what slui_window_create() uses
  * when given no theme. */
 void slui_theme_preset(SLUITheme *out, SLUIThemeId id);
 
@@ -163,7 +163,7 @@ void slui_theme_set_base_color(SLUITheme *out, SLUIColor base);
 
 /* Load the base colour (and optional overrides) from a simple key=value config
  * file into `out`, which must already hold a preset. Recognised keys:
- *   base_color=#RRGGBB      (or 0xRRGGBB)   -> re-derives the warm palette
+ *   base_color=#RRGGBB      (or 0xRRGGBB)   -> re-derives a neutral palette
  *   accent=#RRGGBB  font_family=...  font_size=NN  radius=NN
  * Returns SLUI_OK, or SLUI_ERR_INVALID if the file could not be read. Unknown
  * keys are ignored so the file can carry other sections. */
@@ -288,7 +288,7 @@ typedef struct {
     const char *title;
     int width, height;
     int resizable;              /* 0/1                                       */
-    const SLUITheme *theme;     /* NULL -> Slick Black default               */
+    const SLUITheme *theme;     /* NULL -> graphite/charcoal default         */
     int custom_titlebar;        /* 1 -> SleelaUI draws its own title bar      */
 } SLUIWindowConfig;
 
