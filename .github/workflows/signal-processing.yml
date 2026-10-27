@@ -1,0 +1,32 @@
+name: Signal Processing C/C++ CI
+
+on:
+  push:
+    paths:
+      - "signal-processing/**"
+      - ".github/workflows/signal-processing.yml"
+  pull_request:
+    paths:
+      - "signal-processing/**"
+      - ".github/workflows/signal-processing.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build and test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S signal-processing -B build-signal-processing -DCMAKE_BUILD_TYPE=Release
+      - name: Build C and C++ library, examples, and tests
+        run: cmake --build build-signal-processing --config Release --parallel
+      - name: Run regression tests
+        run: ctest --test-dir build-signal-processing --build-config Release --output-on-failure
