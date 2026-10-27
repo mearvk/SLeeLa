@@ -228,6 +228,11 @@ public:
         activated_ = false;
         return a;
     }
+    bool hovered() const { return hovered_; }
+    bool take_pressed() { bool v = press_event_; press_event_ = false; return v; }
+    bool take_released() { bool v = release_event_; release_event_ = false; return v; }
+    bool take_hover_entered() { bool v = hover_enter_event_; hover_enter_event_ = false; return v; }
+    bool take_hover_left() { bool v = hover_leave_event_; hover_leave_event_ = false; return v; }
 
 protected:
     void emit_activate() {
@@ -263,6 +268,10 @@ protected:
     bool sensitive_ = true;
     bool hovered_ = false;
     bool pressed_ = false;
+    bool press_event_ = false;
+    bool release_event_ = false;
+    bool hover_enter_event_ = false;
+    bool hover_leave_event_ = false;
     bool focused_ = false;
     bool suggested_ = false;
     bool destructive_ = false;
