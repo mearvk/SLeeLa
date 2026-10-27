@@ -8,6 +8,12 @@ matches a virus. Nothing here is a port, a copy, or a dependency. It exists so
 the Sleelavirin™ native matcher can learn from a mature design while remaining
 small, self-contained, and license-clean.
 
+> **New to these terms?** Every algorithm and structural concept named below
+> (Boyer–Moore, Aho–Corasick, trie, hashing, fuzzy/Hamming distance, PCRE,
+> logical signatures, prefilter, recursion stack, fmap, memory pool, …) is defined
+> from first principles — for novices *and* professionals — in the companion
+> **`SCANNING-CONCEPTS-GLOSSARY.md`**.
+
 > **License note.** ClamAV `libclamav` is GPLv2. Sleelavirin does **not** vendor
 > any ClamAV source. The upstream engine is only ever reached as an *external
 > provider/adapter* (see `SCANNERS.md`). This document describes architecture and
