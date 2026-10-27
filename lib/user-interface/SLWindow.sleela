@@ -111,5 +111,22 @@ class SLWindow {
   void setBuffering(int mode) { if (window >= 0) { uiWindowSetBuffering(window, mode); } }
   int buffering() { return (window >= 0) ? uiWindowBuffering(window) : 0; }
 
+  < Window size constraints are in pixels. A maximum dimension of 0 is
+    unbounded. Setters return SLUI status (0 = success, negative = error). >
+  int setMinSize(int width, int height) {
+    return (window >= 0) ? uiWindowSetMinSize(window, width, height) : -3;
+  }
+  int setMaxSize(int width, int height) {
+    return (window >= 0) ? uiWindowSetMaxSize(window, width, height) : -3;
+  }
+  int setSizeLimits(int minWidth, int minHeight, int maxWidth, int maxHeight) {
+    return (window >= 0) ? uiWindowSetSizeLimits(window, minWidth, minHeight, maxWidth, maxHeight) : -3;
+  }
+  int minWidth() { return (window >= 0) ? uiWindowMinWidth(window) : -1; }
+  int minHeight() { return (window >= 0) ? uiWindowMinHeight(window) : -1; }
+  < Maximum getters return 0 for unbounded and -1 when the window is invalid. >
+  int maxWidth() { return (window >= 0) ? uiWindowMaxWidth(window) : -1; }
+  int maxHeight() { return (window >= 0) ? uiWindowMaxHeight(window) : -1; }
+
   int handle() { return window; }
 }
