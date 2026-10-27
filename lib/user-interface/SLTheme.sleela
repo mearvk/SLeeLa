@@ -69,15 +69,18 @@ class SLTheme {
   static final int GRAPHITE    = 1;
   < fully host-defined via the setters >
   static final int CUSTOM      = 2;
+  < Backward-compatible preset ids; mirror user-interface/include/sleela_ui.h >
+  static final int SLICK_BLACK = 0;
+  static final int GRAPHITE = 1;
+  static final int CUSTOM = 2;
   < THE DEFAULT: graphite/charcoal with steel-blue accent >
   static final int SLEELA_BASE = 3;
   static final int DEFAULT = 3;
-  < Named Standard Pattern presets; ids mirror user-interface/include/sleela_ui.h >
+  < Named Standard Pattern presets >
   static final int WHITE = 4;
   static final int BLACK = 5;
   static final int BLUE = 6;
   static final int GRAY = 7;
-  < Backward-compatible legacy presets >
   static final int BASE_COLOR_DEFAULT = 0x1D2025FF;
 
   < VM-local theme handle (-1 = none) >
