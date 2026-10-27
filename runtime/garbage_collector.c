@@ -47,7 +47,7 @@ void gc_init(GarbageCollector *g, size_t threshold) {
         char *end = NULL;
         errno = 0;
         unsigned long long parsed = strtoull(limit_text, &end, 10);
-        if (errno == 0 && end != limit_text && *end == '\\0' && parsed > 0 && parsed <= SIZE_MAX)
+        if (errno == 0 && end != limit_text && *end == '\0' && parsed > 0 && parsed <= SIZE_MAX)
             g->bytes_limit = (size_t)parsed;
     }
     g->target_step_work=32u; g->phase=SLGC_IDLE; g->initialized=1;
