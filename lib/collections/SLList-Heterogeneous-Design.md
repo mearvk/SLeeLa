@@ -37,12 +37,12 @@ This is a dynamic top type, **not Generics**. It must preserve object identity: 
 1. **Implemented:** add a source-level `Any` type to semantic analysis. Values of `Any` can be passed through `Any` parameters; `Any` does not silently convert to concrete class types.
 2. **Partially implemented:** heterogeneous storage uses `Any[]`; semantic checks cover ordinary typed-array writes where the declared array type is known.
 3. Semantic analysis now checks `arrayPush` and `arraySet` when the first argument has a statically known array type. Runtime array instances still do not record element contracts, so native/unknown-typed boundaries remain a gap.
-4. **Implemented:** `instanceof` checks runtime tags and class ancestry; casts emit a checked VM opcode that validates the runtime tag and class ancestry before returning a value usable through a concrete type.
+4. **Implemented:** `instanceof` checks runtime tags and registered class ancestry; casts validate the runtime tag or class hierarchy before returning a value usable through a concrete type.
 5. Preserve GC reachability and alias identity across list storage, list reads, recursive calls, and collections. Do not expose raw handles as integers.
 
 ## 5. Regression test matrix
 
-The implementation is not complete until the compiler and runtime tests cover all of the following: The current mixed-list example is illustrative and has not been compiled or executed here:
+The implementation is not complete until the compiler and runtime tests cover all of the following. The current mixed-list example is illustrative and has not been compiled or executed here:
 
 - **Mixed scalar values:** String, int, double, boolean, and null can coexist in one heterogeneous list and round-trip with the right runtime tags.
 - **Mixed references:** instances of two different struct/class types can coexist; retrieving each with the correct checked type preserves identity.
@@ -56,4 +56,4 @@ The implementation is not complete until the compiler and runtime tests cover al
 
 ## 6. Verification status
 
-The repository now contains `Any`, semantic checks for typed `arrayPush`/`arraySet` calls with known array types, `SLValueList`, its API documentation, and an illustrative example. The semantic analyzer explicitly rejects casts from `Any` to a concrete struct/class and `instanceof` on `Any` until checked runtime support exists. Branches `main` and `master` contain matching file content. A local build/test run was not possible in this environment because a repository clone could not be obtained; no successful compilation or runtime test is claimed.
+The repository now contains `Any`, semantic checks for typed `arrayPush`/`arraySet` calls with known array types, `SLValueList`, checked `instanceof` and cast opcodes, runtime class-parent metadata, documentation, and an illustrative example. Branches `main` and `master` contain matching implementation files. A local build/test run was not possible in this environment because a repository clone could not be obtained; no successful compilation or runtime test is claimed.
