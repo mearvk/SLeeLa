@@ -86,6 +86,19 @@ static void test_external_payload_ownership(void) {
     gc_free(&gc);
 }
 
+
+static void test_managed_heap_limit(void) {
+    GarbageCollector gc;
+    gc_init(&gc, 1024u * 1024u);
+    assert(gc_limit(&gc) == 512u * 1024u * 1024u);
+    assert(gc_set_limit(&gc, sizeof(Node)) == 1);
+    SLGCObject *first = gc_allocate(&gc, sizeof(Node), NULL, NULL, NULL);
+    assert(first);
+    assert(gc_allocate(&gc, 1, NULL, NULL, NULL) == NULL);
+    assert(gc_set_limit(&gc, 1) == 0);
+    gc_free(&gc);
+}
+
 static void test_security_default_deny_and_quotas(void) {
     SecuritySupervisor security;
     security_supervisor_init(&security, SLS_ROLE_USER);
@@ -104,6 +117,7 @@ int main(void) {
     test_root_reachability_and_sweep();
     test_remembered_owner_survives_repeated_young_collections();
     test_external_payload_ownership();
+    test_managed_heap_limit();
     test_security_default_deny_and_quotas();
     puts("runtime GC/security regression tests: PASS");
     return 0;
