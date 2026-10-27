@@ -19,9 +19,10 @@ array may retain unused trailing slots after removal; `size` is the logical
 length and only indices below it are visible through the public API.
 
 This first version intentionally accepts **Strings only**. It is not a
-heterogeneous `SLValue` collection and is not a generic `List<T>`. Support for
-other concrete value families should be designed separately without introducing
-generic syntax prematurely.
+heterogeneous `SLValue` collection and is not a generic `List<T>`. The source/VM audit and proposed type-safe design are documented in
+[`SLList-Heterogeneous-Design.md`](SLList-Heterogeneous-Design.md). That design
+requires an explicit dynamic value type and checked type conversion; it is not
+safe to emulate with unchecked mixed-type array writes.
 
 ## Example
 
