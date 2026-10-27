@@ -43,7 +43,7 @@ Each source file includes its own build command. These are portable C/C++ refere
 
 ## Coverage
 
-The 12 prototypes cover generic reuse, applied algorithms, scientific numerical work, and teaching/traceability. Together with the original eight examples, the directory has 20 focused source examples; the stanchion catalogue is the curated starting point when choosing a pattern for a new implementation.
+The 26 stanchion prototypes cover primitive-specialized recursion, generic reuse, applied algorithms, scientific numerical work, and teaching/traceability. Together with the original eight examples, the directory has 34 focused source examples; the stanchion catalogue is the curated starting point when choosing a pattern for a new implementation.
 
 ## Primitive-specialized recursion prototypes
 
