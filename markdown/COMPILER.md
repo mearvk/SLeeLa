@@ -1,3 +1,29 @@
+## 4. Versions
+
+The compiler versions several things independently (per SL-META-0001 §8.3),
+so they do not share one number. See [`VERSION.md`](VERSION.md) for the
+project history and the source files for implementation values.
+
+| Component | Version | Meaning | Source of truth |
+|-----------|---------|---------|-----------------|
+| **Sleela toolchain / implementation** (`sleela` CLI) | **0.3.29-dev** (documented release line) | Native C/C++ front end and core; confirm the local CLI output for the exact build. | `impl/frontend/driver.cpp` |
+| **Sleela language syntax** | **2.4** (accepted pragma range `1.0 .. 2.4`) | The grammar version declared via `#sleela`; later-minor features remain individually gated. | `impl/frontend/version.h` and `SLEELA.syntax` |
+| **Nordshrift** (`.sst` transpiler driver) | **2.7.1-dev** (documented release line) | Source-sheet/transpiler implementation; verify the local build for the exact value. | `impl/nordshrift/nordshrift.cpp` |
+| **NS-SST-0001** (`.sst` format spec) | **1.0.0** (Normative) | The `.sst` control-sheet format. | `SST.model` |
+| **SL-META-0001** (metadocument) | **1.0.0** (Pre-Normative) | Governing language metadocument, including §4.4. | `src/Sleela.manifest` |
+
+> **In short:** toolchain version and language syntax version are independent.
+> The accepted pragma range does not mean every documented syntax feature has
+> complete end-to-end verification.
+
+Query the live values:
+
+```sh
+./build/sleela version
+```
+
+Use that command's output as the runtime truth for the particular build;
+do not copy stale version-output examples into documentation.
 # The Sleela Compiler
 
 This document describes the Sleela compiler: what it is, how it is structured,
@@ -92,70 +118,38 @@ class Hello {
 > supported version range."* — SL-META-0001 §4.4
 
 The compiler resolves a declared version to one of: **accept**, **warn**
-(no pragma → assume the floor), or **reject**. On a compiler whose supported
-range is `1.0 .. 1.0`:
+(no pragma → assume the configured default), or **reject**. The native gate in
+`impl/frontend/version.h` currently declares the accepted range as
+`1.0 .. 2.4` and defaults to `2.4`. Features introduced in a later syntax
+minor remain individually gated; acceptance of a pragma is not proof that every
+feature in that version has complete end-to-end runtime coverage.
 
 | Declared `#sleela` | Result | Rationale |
 |--------------------|--------|-----------|
-| `1.3`     | **accepted** | current supported syntax |
-| `1.4`     | **rejected** (too new) | MINOR ahead of the supported max |
-| `2.0`     | **rejected** (too new) | MAJOR ahead → breaking grammar unsupported |
-| `1.2`     | **rejected** (too old) | below the supported floor |
-| `one.zero`| **rejected** (malformed) | not a numeric `MAJOR.MINOR` |
-| *(none)*  | **accepted, with warning** | assumed `1.3` for backward compatibility |
+| `2.4` | **accepted** | current maximum declared by the native version gate |
+| `2.5` | **rejected** (too new) | exceeds the supported maximum |
+| `1.0` | **accepted** | supported lower bound |
+| `0.9` | **rejected** (too old) | below the supported floor |
+| `one.zero` | **rejected** (malformed) | not a numeric `MAJOR.MINOR` |
+| *(none)* | **accepted, with warning** | compiler applies its configured default |
 
-A rejected source exits non-zero with a descriptive diagnostic, e.g.:
-
-```
-sleela: prog.sleela: error: source declares Sleela syntax 2.0, which exceeds
-this compiler's supported range (1.3 .. 1.3). Upgrade the compiler or lower
-the #sleela pragma.
-```
+A rejected source exits non-zero with a descriptive diagnostic. The exact
+wording should be taken from the compiler's current output rather than copied
+from an older release's example.
 
 ### Where the supported range lives
 
-The range is defined in [`impl/frontend/version.h`](impl/frontend/version.h):
+The range and default are defined in
+[`impl/frontend/version.h`](../impl/frontend/version.h):
 
 ```cpp
-inline SyntaxVersion minSupportedSyntax() { return SyntaxVersion{1, 3}; }
-inline SyntaxVersion maxSupportedSyntax() { return SyntaxVersion{1, 3}; }
-inline SyntaxVersion defaultSyntaxVersion() { return minSupportedSyntax(); }
+inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};}
+inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{2,4};}
+inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
 ```
 
-To widen support, raise `maxSupportedSyntax()` (and, when an old grammar is
-finally dropped, `minSupportedSyntax()`), then bump the toolchain version and
-record it in [`VERSION.md`](VERSION.md).
-
----
-
-## 4. Versions
-
-The compiler versions several things independently (per SL-META-0001 §8.3),
-so they do not share one number. `VERSION.md` is the single source of record;
-the current values are:
-
-| Component | Version | Meaning | Source of truth |
-|-----------|---------|---------|-----------------|
-| **Sleela toolchain / implementation** (`sleela` CLI) | **0.3.0-dev** | The C/C++ front end + core in `impl/`. Pre-1.0. | `impl/frontend/driver.cpp` |
-| **Sleela language syntax** | **1.3** (range `1.3 .. 1.3`) | The grammar version a `.sleela` file declares via `#sleela`. | `impl/frontend/version.h` |
-| **Nordshrift** (`.sst` transpiler driver) | **2.6-dev** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
-| **NS-SST-0001** (`.sst` format spec) | **1.0.0** (Normative) | The `.sst` control-sheet format. | `SST.model` |
-| **SL-META-0001** (metadocument) | **1.0.0** (Pre-Normative) | The governing language metadocument, incl. §4.4. | `src/Sleela.manifest` |
-
-> **In short:** the compiler here is the **0.3.0-dev** toolchain, implementing
-> **Sleela language syntax 1.3**. Syntax is versioned independently of the
-> implementation: the `0.3.0-dev` toolchain implements syntax `1.3`.
-
-Query the live values:
-
-```sh
-./build/sleela version
-#  Sleela 0.3.0-dev (C/C++ core; SHEET.sheet conducted methods; .xclass input)
-#    supported .sleela syntax: 1.3 .. 1.3 (declare per-file with '#sleela 1.3')
-```
-
----
-
+When widening or narrowing support, update the implementation, syntax matrix,
+normative specification header, fixtures, and this documentation together.
 ## 5. Runtime integration
 
 The executable targets are linked with the SLVM runtime service layer: GarbageCollector, SecuritySupervisor, and the explicit Parameters contract. Class admission and resource reservation precede managed allocation; garbage collection governs object lifetime.
