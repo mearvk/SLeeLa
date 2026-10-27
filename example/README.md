@@ -242,6 +242,10 @@ Set `SLEELA_BIN` to override executable discovery. The GUI examples require a de
 **Source-of-Truth Rule:** The five GUI examples and `SLGuiTheme.sleela` define the palette directly in SLeeLa source code. The `SLGuiApp` implementations apply those tokens to the live window theme. Do not depend on external theme files, environment variables, or generated settings to select these colors; editing the source palette is the authoritative change.
 
 
+## Expandable Menubar Showcase
+
+The dedicated [`menus/`](./menus/README.md) example demonstrates a horizontal File/Edit/View/Help menubar, single-open dropdowns, nested Recent Files and Panels groups that expand/collapse, and menu-item status feedback. Run it with `./impl/build/sleela run example/menus/gui-menubar-expandable.sleela`; the unified GUI runners also include it.
+
 ## Connectivity status control
 
 The five interactive GUI examples (`dual`, `gual`, `mual`, `thual`, and `military`) include a clickable **📶 Wi-Fi** control at the lower-right of the status bar. It opens a connectivity panel with scan, connect, disconnect, settings, connection-details, and close actions. The panel closes when the icon is toggled, an action is selected, or another example control is activated. Until an SLVM-to-native Wi-Fi host bridge is bound, network-changing actions report that limitation rather than claiming to change the real radio.
