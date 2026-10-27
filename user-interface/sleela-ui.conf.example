@@ -1,23 +1,16 @@
-# SleelaUI(TM) presentation configuration (example)
-# Loaded with slui_theme_load_config() / SLTheme.loadConfig(). Simple key=value;
-# lines beginning with '#' or ';' are comments. Unknown keys are ignored so this
-# file can carry other sections.
+# SleelaUI(TM) presentation configuration.
+# This file is loaded ONLY when an application explicitly calls
+# SLTheme.loadConfig(path) / slui_theme_load_config(theme, path).
+# It is not silently auto-loaded from the user's home directory.
+#
+# Choose one of: default, white, blue, black, gray.
+# "default" is graphite/charcoal with a steel-blue accent.
+theme=default
 
-# -----------------------------------------------------------------------------
-# Base colour. This single value is the floor of the UI; the whole warm palette
-# (surfaces, chrome, border, text, accent) is DERIVED from it. Sleela's default
-# base is a deep toasted umber. Change it here to re-theme the entire UI.
-# Accepts #RRGGBB or 0xRRGGBB.
-base_color=#2B1608
+# Optional role overrides. Leave commented to preserve the selected preset.
+# base_color=#1D2025
+# accent=#4F8CFF
 
-# -----------------------------------------------------------------------------
-# Optional overrides applied on top of the derived palette.
-# accent is the one accent colour (ember amber by default).
-accent=#E89A3C
-
-# Typography (the system UI face by default).
 font_family=system
 font_size=11
-
-# Corner radius for buttons/cards/panels, in pixels.
 radius=8

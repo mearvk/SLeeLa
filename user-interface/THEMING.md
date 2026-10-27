@@ -1,92 +1,109 @@
 # SleelaUI™ Theming
 
-SleelaUI is **configurable but ships a warm base colour by default**: Sleela's
-base is **`#2B1608`**, a deep toasted umber, and the whole palette is *derived*
-from it. A theme is a flat `SLUITheme` struct: a set of named role colours
-(0xRRGGBBAA words), one corner radius, the 4px spacing unit, a minimum control
-height, and a font family/size. Because every widget reads these roles — and
-nothing else — restyling the whole UI is a single value (the base colour) or a
-single struct edit.
+SLeeLa provides five named, coordinated themes: **Default**, **White**, **Blue**,
+**Black**, and **Gray**. The default is graphite/charcoal with a restrained
+steel-blue accent; brown and amber are not part of the standard palette.
 
-## The base colour
+## Selection chain
 
-The default theme's floor is `SLUI_BASE_COLOR_DEFAULT` = `#2B1608`. The rest of
-the warm family (surfaces, chrome, border, text, ember-amber accent) is derived
-from it, so changing the one base re-tunes everything. It is configurable:
+1. **Native default:** a window opened with no explicit theme uses
+   `SLUI_THEME_SLEELA_BASE` (the same palette as `SLTheme.DEFAULT`).
+2. **Source selection:** use `slui_theme_preset(&theme, SLUI_THEME_WHITE)` in C,
+   or `theme.preset(SLTheme.WHITE)` in SLeeLa source.
+3. **Runtime configuration:** call `slui_theme_load_config` or
+   `SLTheme.loadConfig(path)` explicitly. The config's `theme=` value selects
+   one of the five presets, then optional role overrides are applied. The legacy
+`slick-black` name is also accepted for existing configurations.
+4. **Explicit role setters:** source code may set individual colours after
+   choosing a preset. Those overrides are intentional and take precedence.
 
-**At code time** — pick a preset, then re-derive from any base:
+No config file is silently auto-loaded. This avoids an unknown home-directory
+file unexpectedly changing application appearance.
 
-```c
-SLUITheme t;
-slui_theme_preset(&t, SLUI_THEME_SLEELA_BASE);   /* the #2B1608 default      */
-slui_theme_set_base_color(&t, 0x113355FF);        /* re-derive from any base  */
-```
+## Named presets
 
-**At configuration time** — load `base_color` (and optional overrides) from a
-`key=value` file (see [`sleela-ui.conf.example`](sleela-ui.conf.example)):
+| Name | Character |
+|---|---|
+| `default` | Charcoal/graphite, neutral light text, steel-blue accent |
+| `white` | Light surface, dark text, restrained blue accent |
+| `blue` | Deep blue surfaces, light text, brighter blue accent |
+| `black` | Matte near-black surfaces, white text, blue accent |
+| `gray` | Neutral mid-gray surfaces, light text, cool accent |
 
-```c
-SLUITheme t;
-slui_theme_preset(&t, SLUI_THEME_SLEELA_BASE);
-slui_theme_load_config(&t, "~/.config/sleela/sleela-ui.conf");
-```
+Legacy preset ids `SLICK_BLACK`, `GRAPHITE`, `CUSTOM`, and `SLEELA_BASE`
+remain supported for ABI compatibility. `SLEELA_BASE` is the new cool default;
+`black` selects the Standard Pattern Black palette, while `slick-black` retains
+the legacy Slick Black palette.
 
-## Presets
-
-```c
-SLUITheme t;
-slui_theme_preset(&t, SLUI_THEME_SLEELA_BASE);  /* THE DEFAULT: warm #2B1608 */
-slui_theme_preset(&t, SLUI_THEME_SLICK_BLACK);  /* the original matte black  */
-slui_theme_preset(&t, SLUI_THEME_GRAPHITE);     /* a lighter neutral palette */
-```
-
-Pass the theme in `SLUIWindowConfig.theme` at window creation, or swap it live:
+## Select in C/C++
 
 ```c
-slui_window_set_theme(win, &t);   /* repaints immediately */
+SLUITheme theme;
+slui_theme_preset(&theme, SLUI_THEME_BLUE);
+
+SLUIWindowConfig cfg = {0};
+cfg.title = "SLeeLa";
+cfg.width = 900;
+cfg.height = 600;
+cfg.theme = &theme;
 ```
 
-Passing `NULL` for `cfg.theme` uses the Sleela base (`#2B1608`).
+## Select directly in SLeeLa source
 
-## Role colours
+```sleela
+SLTheme theme = new SLTheme();
+theme.preset(SLTheme.DEFAULT); // Change to WHITE, BLUE, BLACK, or GRAY.
+int window = ui.openWindow("SLeeLa", 900, 600, theme.handle());
+```
+
+The five `/lib/gui/version-*/SLGuiApp.sleela` sources expose the same choice as
+`THEME_PRESET = SLTheme.DEFAULT`; changing that constant chooses a theme for
+that GUI family without changing the toolkit.
+
+## Runtime configuration
+
+Call the loader explicitly after creating a theme. The config first selects a
+preset, then applies optional overrides:
+
+```sleela
+SLTheme theme = new SLTheme();
+theme.preset(SLTheme.DEFAULT);
+boolean loaded = theme.loadConfig("user-interface/themes/blue.conf");
+```
+
+The repository includes `user-interface/themes/default.conf`,
+`white.conf`, `blue.conf`, `black.conf`, and `gray.conf`. Installed
+applications should use their installed configuration path rather than assume
+the repository-relative example path.
+
+Example config:
+
+```ini
+theme=blue
+font_family=system
+font_size=11
+radius=8
+```
+
+Optional `base_color` and `accent` keys are supported for deliberate custom
+palettes. A custom `base_color` derives neutral surfaces and a steel-blue
+accent; it does not silently reintroduce the old amber accent.
+
+## Palette roles and accessibility
 
 | Field | Meaning |
 |---|---|
-| `bg` | window floor (the matte black) |
-| `surface` | panels, cards, entries |
-| `surface_hi` | hovered surface / gradient top / slider trough |
-| `chrome` | header-bar strip |
-| `border` | 1px hairline separators and surface outlines |
-| `fg` | primary text and glyphs |
-| `fg_dim` | secondary / disabled text |
-| `accent` | focus ring, suggested action, selection, toggle-on, slider fill |
-| `accent_fg` | text/knob drawn on top of the accent |
-| `danger` | destructive action / close-hover |
-| `hover` | additive hover tint (small alpha, composited over the base) |
-| `active` | additive pressed tint |
+| `bg` | Window/root background |
+| `surface` | Panels, cards, menus |
+| `surface_hi` | Hovered/raised surface |
+| `chrome` | Title bar/header strip |
+| `border` | Hairline separators |
+| `fg` | Primary text and glyphs |
+| `fg_dim` | Secondary/disabled text |
+| `accent` | Focus ring, selection, suggested action, slider fill |
+| `accent_fg` | Text drawn on the accent |
+| `danger` | Destructive actions |
+| `hover`, `active` | Hover and pressed-state tints |
 
-Metrics: `radius` (corner radius, px), `unit` (spacing unit, 4), and
-`control_height` (minimum hit target; keep ≥ 32). Typography: `font_family`
-(`"system"` resolves to the host's default UI face) and `font_size` (points).
-
-## A custom theme
-
-Start from a preset and override the roles you care about, or build one from
-scratch and set `id = SLUI_THEME_CUSTOM`:
-
-```c
-SLUITheme t;
-slui_theme_preset(&t, SLUI_THEME_SLICK_BLACK);
-t.accent = slui_rgb(0x3d, 0xd6, 0x8c);   /* a green accent instead of blue  */
-t.radius = 12;                           /* rounder corners                 */
-strcpy(t.font_family, "Inter");
-```
-
-## Keeping within the principles
-
-Any custom palette should still clear the [UI principles](UI-PRINCIPLES.md):
-AA-contrast text on every surface, one accent per group, a visible focus ring,
-and ≥ 32px hit targets. The presets are tuned to clear these; verify a custom
-palette the same way.
-
-— SleelaUI™ · MEARVK LLC
+Keep one accent per visual group, maintain at least 32px control hit targets, and
+verify readable contrast on every role pairing after any custom overrides.

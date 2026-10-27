@@ -8,10 +8,10 @@
      the base-colour hooks. Each bottoms out in the SleelaUI C ABI
      (slui_theme_preset + the SLUITheme fields).
    
-   The DEFAULT is "Sleela Base": the whole warm palette DERIVED from Sleela's
-   base colour #2B1608 (a deep toasted umber). The base is configurable at code
-   time (setBaseColor) or configuration time (loadConfig reads base_color from a
-   key=value file), and the surfaces/border/accent re-tune around it.
+   The DEFAULT is a cool graphite/charcoal palette with a steel-blue accent.
+   White, blue, black and gray are selectable named presets. Apps may choose a
+   preset directly in source or explicitly load a named theme from a key=value
+   configuration file. Configuration is never silently auto-loaded.
    
    A theme is a VM-local handle (-1 = none). Pass handle() to
    SLUserInterface.openWindow() or SLWindow.setTheme(); pass -1 anywhere a theme
@@ -62,42 +62,43 @@ class SLTheme {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  < Preset ordinals (mirror SLUIThemeId in the toolkit C ABI). >
-  < the original matte-black theme >
+  < Preset ordinals mirror SLUIThemeId in the toolkit C ABI. >
   static final int SLICK_BLACK = 0;
-  < a lighter neutral alternative >
-  static final int GRAPHITE    = 1;
-  < fully host-defined via the setters >
-  static final int CUSTOM      = 2;
-  < THE DEFAULT: base colour #2B1608 >
+  static final int GRAPHITE = 1;
+  static final int CUSTOM = 2;
+  < DEFAULT is the coordinated graphite/charcoal + steel-blue palette. >
   static final int SLEELA_BASE = 3;
-
-  < Sleela's base colour, #2B1608 opaque, as a 0xRRGGBBAA word. >
-  static final int BASE_COLOR_DEFAULT = 0x2B1608FF;
+  static final int DEFAULT = 3;
+  static final int WHITE = 4;
+  static final int BLACK = 5;
+  static final int BLUE = 6;
+  static final int GRAY = 7;
+  static final int BASE_COLOR_DEFAULT = 0x1D2025FF;
 
   < VM-local theme handle (-1 = none) >
   int theme;
 
-  < Build a theme pre-filled from a built-in preset. Start from SLEELA_BASE for >
-  < the warm default, SLICK_BLACK for the matte-black look, or GRAPHITE. >
+  < Select one preset directly in source: DEFAULT, WHITE, BLUE, BLACK, or GRAY. >
   void preset(int presetId) {
     theme = uiThemePreset(presetId);
   }
-  < Shorthand for the signature default (the #2B1608 warm family). >
   void sleelaBase() { preset(SLEELA_BASE); }
-  < Shorthand for the original matte-black theme. >
+  void defaultTheme() { preset(DEFAULT); }
+  void white() { preset(WHITE); }
+  void blue() { preset(BLUE); }
+  void black() { preset(BLACK); }
+  void gray() { preset(GRAY); }
   void slickBlack() { preset(SLICK_BLACK); }
 
   int handle() { return theme; }
   boolean valid() { return theme >= 0; }
 
-  < Re-derive the whole warm palette from a new base colour (0xRRGGBBAA; the >
-  < alpha is ignored). The configuration/code-time base-colour hook. >
+  < Re-derive a neutral/cool palette from a custom base colour (0xRRGGBBAA). >
   void setBaseColor(int baseColor) {
     if (theme >= 0) { uiThemeSetBaseColor(theme, baseColor); }
   }
-  < Load base_color (and optional accent/font/radius) from a key=value config >
-  < file into this theme. Returns true on success. >
+  < Load theme=default|white|blue|black|gray plus optional overrides from a >
+  < key=value config file. Returns true on success. Config is never auto-loaded. >
   boolean loadConfig(String path) {
     if (theme < 0) { return false; }
     return uiThemeLoadConfig(theme, path) == 0;

@@ -56,6 +56,8 @@ class SLGuiApp {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Choose DEFAULT, WHITE, BLUE, BLACK, or GRAY here for this GUI family. >
+  static final int THEME_PRESET = SLTheme.DEFAULT;
   SLUserInterface ui;
   SLWindow window;
   SLGuiDom dom;
@@ -90,17 +92,9 @@ class SLGuiApp {
     }
 
     SLTheme theme = new SLTheme();
-    theme.preset(SLTheme.CUSTOM);
-    theme.setBackground(SLGuiTheme.SURFACE_COLOR);
-    theme.setSurface(SLGuiTheme.PANEL_COLOR);
-    theme.setSurfaceHi(SLGuiTheme.URL_BAR_COLOR);
-    theme.setChrome(SLGuiTheme.TITLE_BAR_COLOR);
-    theme.setBorder(SLGuiTheme.BORDER_COLOR);
-    theme.setForeground(SLGuiTheme.TEXT_COLOR);
-    theme.setForegroundDim(SLGuiTheme.MUTED_TEXT_COLOR);
-    theme.setAccent(SLGuiTheme.ACCENT_COLOR);
-    theme.setAccentForeground(0x121824FF);
-    theme.setDanger(SLGuiTheme.DANGER_COLOR);
+    < Source-selected preset is the single palette source for native widgets. >
+    < To choose another look, set THEME_PRESET to SLTheme.WHITE, BLUE, BLACK, or GRAY. >
+    theme.preset(THEME_PRESET);
     theme.setRadius(8);
     theme.setControlHeight(32);
     window = ui.openWindow(title, width, height, theme.handle());
