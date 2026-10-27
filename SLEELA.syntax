@@ -175,7 +175,7 @@ A program is one or more classes, optionally preceded or interleaved with
 
 ### 3.1 Types
 
-    type       ::= "int" | "double" | "boolean" | "String" | "void"
+    type       ::= "int" | "double" | "boolean" | "String" | "void" | "Any"
                  | unsigned-type
                  | character-set-type
                  | struct-name                      // any declared struct (1.2+)
@@ -216,6 +216,15 @@ its `strings:` block (see the Nordshrift Sheet Reference), so a value typed
 A **struct type name** (§3.4) is additionally used at compile time to
 resolve `.field` offsets, so struct-typed variables/parameters/fields must be
 declared with their struct type for member access to compile.
+
+`Any` is the heterogeneous top type used at dynamic collection boundaries. It
+can carry supported scalar values, strings, null, arrays, and class/struct
+reference handles. Passing a value through an `Any` parameter does not make
+concrete fields or methods available on that value: use a runtime type test and
+checked cast before concrete member access. The source-level type name does not
+guarantee that every native boundary enforces an element-type contract; those
+paths require runtime tests. See `lib/collections/SLValueList.md` and the
+heterogeneous collection verification plan.
 
 ### 3.2 Fields (shared state)
 
