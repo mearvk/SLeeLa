@@ -13,6 +13,11 @@ small, self-contained, and license-clean.
 > logical signatures, prefilter, recursion stack, fmap, memory pool, …) is defined
 > from first principles — for novices *and* professionals — in the companion
 > **`SCANNING-CONCEPTS-GLOSSARY.md`**.
+>
+> **Where do the signatures come from?** How ClamAV sources, packages (CVD),
+> signs, and delivers (freshclam/CDIFF) its virus definitions — and how
+> Sleelavirin could reasonably build its own — is covered in the companion
+> **`DEFINITIONS-SOURCING.md`**.
 
 > **License note.** ClamAV `libclamav` is GPLv2. Sleelavirin does **not** vendor
 > any ClamAV source. The upstream engine is only ever reached as an *external
