@@ -10,7 +10,7 @@ SLeeLa provides three related tab patterns:
 - `SLTabBar`: a horizontal tab strip for applications that manage their own content.
 - `SLVerticalTabs`: a vertical navigation rail beside a page stack.
 
-All components use existing `SLButton`, `SLBox`, and `SLWidget` APIs. They do not hard-code palette colors: inactive, hover, pressed, focus, and selected appearance comes from the active native SleelaUI theme. The default SLeeLa Base theme derives its warm surfaces and accent from the configured base color; Slick Black and Graphite remain supported.
+All components use existing `SLButton`, `SLBox`, and `SLWidget` APIs. They do not hard-code palette colors: inactive, hover, pressed, focus, and selected appearance comes from the active native SleelaUI theme. The default theme is graphite/charcoal with a steel-blue accent. White, Blue, Black, and Gray are also available; tabs inherit the active preset rather than hard-coding colors.
 
 ## Browser-style notebook
 
