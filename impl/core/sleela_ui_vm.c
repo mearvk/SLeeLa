@@ -141,7 +141,6 @@ int sleela_ui_arity(int id) {
             return 1;
         /* 2 args */
         case SLUI_FN_APP_PUMP: case SLUI_FN_APP_QUIT: case SLUI_FN_WINDOW_SET_TITLE:
-        case SLUI_FN_WINDOW_SET_MIN_SIZE: case SLUI_FN_WINDOW_SET_MAX_SIZE:
         case SLUI_FN_WINDOW_SET_BUFFERING:
         case SLUI_FN_WINDOW_SET_THEME: case SLUI_FN_FRAME: case SLUI_FN_SEPARATOR:
         case SLUI_FN_BUTTON: case SLUI_FN_LINK_BUTTON: case SLUI_FN_LABEL:
@@ -174,6 +173,7 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_SCROLLED_VIEW:
         case SLUI_FN_SCROLLED_SCROLL_TO: case SLUI_FN_SCROLLED_SCROLL_BY:
         case SLUI_FN_WIDGET_SET_ICON:
+        case SLUI_FN_WINDOW_SET_MIN_SIZE: case SLUI_FN_WINDOW_SET_MAX_SIZE:
         case SLUI_FN_BALLUM_GET_PIXEL:
             return 3;
         /* 4 args */
