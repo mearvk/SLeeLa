@@ -6647,7 +6647,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiMenuBar.sleela",
-      "sha256": "3eca853ab293dc9fac9cbe847f862982c87b9ad6c7e91a7d9a2f955969958f10"
+      "sha256": "8b070e4755076127292275104c6c7e3c1ec2340bc41cdce4012c5baf15ace7f6"
     },
     {
       "path": "lib/gui/version-dual/SLGuiMenuItem.sleela",
@@ -6699,7 +6699,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiTheme.sleela",
-      "sha256": "658157ff4f66f7b41cf1ef7e8b7ecf6ff44f8fa997f035ad0614217cc1b60080"
+      "sha256": "7483167f83527c281fb4452438a88ac64482c3c0c983b618504347f3238feaeb"
     },
     {
       "path": "lib/gui/version-dual/SLGuiToast.sleela",
@@ -6815,7 +6815,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiMenuBar.sleela",
-      "sha256": "ead0fd128b43ed51ab360fb78179c2e139ac0b23f4e472b92efaeb988d38b780"
+      "sha256": "efb9995b74f2286ee26680fe6bcee909954b6efb42a875aad81357ab64f30fcc"
     },
     {
       "path": "lib/gui/version-gual/SLGuiMenuItem.sleela",
@@ -6863,7 +6863,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiTheme.sleela",
-      "sha256": "bdd96a13dda9985c9f8c5fe26a9b7b213a67e304cfe4333b29649fcc2f8c9e82"
+      "sha256": "1fcb98f2728bee3902cae8970c754889cf297d46070a79974cebbf2064614d0c"
     },
     {
       "path": "lib/gui/version-gual/SLGuiToast.sleela",
@@ -7051,7 +7051,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiMenuBar.sleela",
-      "sha256": "32cc7042dac6537af43869088b5372cbea0b94a5e09fb18f78d951b339882be2"
+      "sha256": "a0db0166966e8f1b5f991b055f4afe74c2dab88aeda18e59fc69e2f3ebdc4cfd"
     },
     {
       "path": "lib/gui/version-military/SLGuiMenuItem.sleela",
@@ -7103,7 +7103,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiTheme.sleela",
-      "sha256": "b984dbcb1dcf4c89860deec9f42a7ca611aef062829be420b8a46eb4860cf012"
+      "sha256": "25e3032c27d028a67c556765ecb1930091428b5fb32e0a9c3c9cf35fcf6e226e"
     },
     {
       "path": "lib/gui/version-military/SLGuiToast.sleela",
@@ -7227,7 +7227,7 @@
     },
     {
       "path": "lib/gui/version-mual/SLGuiMenuBar.sleela",
-      "sha256": "823e64a48db5514e9e7f485f473331c627cb2e1804908f3e2578c7a2ad961700"
+      "sha256": "eb31545409f62c1c77f3550bdb34c47677e9add9e963784734456a85c4ebf168"
     },
     {
       "path": "lib/gui/version-mual/SLGuiMenuItem.sleela",
@@ -7271,7 +7271,7 @@
     },
     {
       "path": "lib/gui/version-mual/SLGuiTheme.sleela",
-      "sha256": "7f0ec81db5b00f3d7001ac6e765138ea080f609808eaec2201d28189d4370fe2"
+      "sha256": "43e8772bfd30d97642962125763ca65b2f540c88573b4c6d5443203bbd87397b"
     },
     {
       "path": "lib/gui/version-mual/SLGuiToast.sleela",
@@ -7399,7 +7399,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiMenuBar.sleela",
-      "sha256": "b9ce79ce2a86324528849bdc8825d17c2cf83a2a59f469b834896787ad467f9d"
+      "sha256": "b772295abd351549df9ece219b7e4e8c09284012e767181c57c12c3e64287507"
     },
     {
       "path": "lib/gui/version-thual/SLGuiMenuItem.sleela",
@@ -7451,7 +7451,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiTheme.sleela",
-      "sha256": "0f7c4ff01e3bc325296a49a3c47d71c445fcd1a22f9ef67dcc541f0ebaef5708"
+      "sha256": "3dbcea219c6a63ec7be58619f62e3176015f48b96880c12cd82c8dfc17eeb74f"
     },
     {
       "path": "lib/gui/version-thual/SLGuiToast.sleela",
