@@ -176,7 +176,7 @@ class SLGuiWidgetFactory {
 
   < Is this tag an interactive control the host should poll for activations? >
   boolean interactive(String tag) {
-    return tag == "button" || tag == "entry" || tag == "input"
+    return tag == "button" || tag == "menuitem" || tag == "menu-item" || tag == "entry" || tag == "input"
         || tag == "toggle" || tag == "switch"
         || tag == "recorder" || tag == "record"
         || tag == "urlbar" || tag == "addressbar"
@@ -188,7 +188,7 @@ class SLGuiWidgetFactory {
   < Buttons -> CLICK; entries -> SUBMIT (Enter); toggles -> TOGGLE; the 4.0 >
   < surfaces raise CLICK (recorder/video/circle) or SUBMIT (urlbar go). >
   int activationEvent(String tag) {
-    if (tag == "button") { return SLGuiEventType.CLICK; }
+    if (tag == "button" || tag == "menuitem" || tag == "menu-item") { return SLGuiEventType.CLICK; }
     if (tag == "toggle" || tag == "switch") { return SLGuiEventType.TOGGLE; }
     if (tag == "entry" || tag == "input")   { return SLGuiEventType.SUBMIT; }
     if (tag == "urlbar" || tag == "addressbar") { return SLGuiEventType.SUBMIT; }
