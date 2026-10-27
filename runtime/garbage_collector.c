@@ -3,10 +3,12 @@
 #include <string.h>
 
 static int grow(SLGCObject ***a, size_t *n, size_t *cap) {
-    if (*n < *cap) { return 1; }
+    if (*n < *cap) return 1;
+    if (*cap > SIZE_MAX / 2u) return 0;
     size_t next = *cap ? *cap * 2u : 32u;
+    if (next > SIZE_MAX / sizeof(**a)) return 0;
     SLGCObject **p = (SLGCObject **)realloc(*a, next * sizeof(*p));
-    if (!p) { return 0; }
+    if (!p) return 0;
     *a = p; *cap = next; return 1;
 }
 static int live(const GarbageCollector *g, const SLGCObject *o) {
@@ -21,12 +23,18 @@ static int push_unique(SLGCObject ***a, size_t *n, size_t *cap, SLGCObject *o) {
     (*a)[(*n)++]=o; return 1;
 }
 static void mark_internal(GarbageCollector *g, SLGCObject *o) {
-    if (!g || !o || !live(g,o) || o->marked) return;
-    o->marked=1; if (!o->queued) { o->queued=1; (void)push_unique(&g->mark_stack,&g->mark_count,&g->mark_capacity,o); }
+    if (!g || !o || !live(g, o) || o->marked || g->mark_failed) return;
+    if (!grow(&g->mark_stack, &g->mark_count, &g->mark_capacity)) {
+        g->mark_failed = 1;
+        return;
+    }
+    o->marked = 1;
+    o->queued = 1;
+    g->mark_stack[g->mark_count++] = o;
 }
 static void clear_marks(GarbageCollector *g) {
     for (size_t i=0;i<g->count;i++) { g->objects[i]->marked=0; g->objects[i]->queued=0; }
-    g->mark_count=0;
+    g->mark_count=0; g->mark_failed=0;
 }
 void gc_init(GarbageCollector *g, size_t threshold) {
     if (!g) { return; }
@@ -42,7 +50,7 @@ SLGCObject *gc_allocate(GarbageCollector *g,size_t bytes,SLGCMarkFn m,SLGCDestro
     g->objects[g->count++]=o;g->bytes_allocated+=bytes;return o;
 }
 SLGCObject *gc_allocate_external(GarbageCollector *g,void *payload,size_t bytes,SLGCMarkFn m,SLGCDestroyFn d,void *c) {
-    if(!g||!g->initialized||!payload||!grow(&g->objects,&g->count,&g->capacity)) return NULL;
+    if (!g || !g->initialized || !payload || bytes > SIZE_MAX - g->bytes_allocated || !grow(&g->objects, &g->count, &g->capacity)) return NULL;
     SLGCObject *o=(SLGCObject*)calloc(1,sizeof(*o));if(!o)return NULL;
     o->payload=payload;o->bytes=bytes;o->generation=SLGC_GENERATION_YOUNG;o->mark_children=m;o->destroy=d;o->context=c;o->external=1;
     g->objects[g->count++]=o;g->bytes_allocated+=bytes;return o;
@@ -71,8 +79,9 @@ size_t gc_step(GarbageCollector *g,size_t budget){
     if(!g||!g->initialized||g->phase!=SLGC_MARKING){return 0;}
     if(!budget){budget=g->target_step_work;}
     size_t work=0;
-    while(g->mark_count&&work<budget){SLGCObject*o=g->mark_stack[--g->mark_count];o->queued=0;if(o->mark_children)o->mark_children(o,o->context);++work;++g->incremental_steps;}
-    if(!g->mark_count){g->phase=SLGC_SWEEPING;}
+    while(g->mark_count&&work<budget&&!g->mark_failed){SLGCObject*o=g->mark_stack[--g->mark_count];o->queued=0;if(o->mark_children)o->mark_children(o,o->context);++work;++g->incremental_steps;}
+    if (g->mark_failed) { clear_marks(g); g->phase = SLGC_IDLE; }
+    else if (!g->mark_count) { g->phase=SLGC_SWEEPING; }
     return work;
 }
 static size_t sweep(GarbageCollector *g);
@@ -84,10 +93,10 @@ static size_t sweep(GarbageCollector *g){
         if(o->marked&&o->generation==SLGC_GENERATION_YOUNG){if(o->age<255)++o->age;if(!g->collecting_young||o->age>=2){o->generation=SLGC_GENERATION_OLD;++promoted;}}
         o->marked=0;o->queued=0;g->objects[write++]=o;}
     g->count=write;g->bytes_allocated=g->bytes_allocated>=reclaimed?g->bytes_allocated-reclaimed:0;g->reclaimed+=reclaimed;g->promoted+=promoted;
-    size_t rw=0;for(size_t i=0;i<g->remembered_count;i++){SLGCObject*o=g->remembered[i];if(live(g,o)){o->remembered=0;g->remembered[rw++]=o;}}g->remembered_count=rw;
+    size_t rw=0;for(size_t i=0;i<g->remembered_count;i++){SLGCObject*o=g->remembered[i];if(live(g,o)){g->remembered[rw++]=o;}}g->remembered_count=rw;
     g->phase=SLGC_IDLE;return reclaimed;
 }
-static size_t finish(GarbageCollector *g){while(g->phase==SLGC_MARKING)gc_step(g,g->target_step_work);return sweep(g);}
+static size_t finish(GarbageCollector *g){while(g->phase==SLGC_MARKING)gc_step(g,g->target_step_work);if(g->phase!=SLGC_SWEEPING)return 0;return sweep(g);}
 size_t gc_collect_young(GarbageCollector *g){if(!g||!g->initialized)return 0;gc_start_cycle(g,1);size_t r=finish(g);++g->collections;++g->young_collections;return r;}
 size_t gc_collect_full(GarbageCollector *g){if(!g||!g->initialized)return 0;gc_start_cycle(g,0);size_t r=finish(g);++g->collections;return r;}
 size_t gc_collect(GarbageCollector *g){return gc_collect_full(g);}
