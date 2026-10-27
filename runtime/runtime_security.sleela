@@ -1,9 +1,9 @@
 #sleela 2.1
 #author Max Rupplin - MEARVK LLC - 2026
 #
-# SLeeLa-facing contract for the native runtime security supervisor.
-# Enforcement MUST be performed by the native supervisor before allocation
-# or service admission. These declarations do not replace native quota checks.
+# Fail-closed SLeeLa policy facade.
+# The native SecuritySupervisor remains authoritative. These methods must not
+# be treated as native enforcement until the VM binding is connected and tested.
 
 class GarbageCollector {
     int liveObjects;
@@ -22,36 +22,14 @@ class SecuritySupervisor {
     int totalInstances;
     int totalBytes;
 
-    # Policy is deny-by-default. Native policy configuration must authorize
-    # a class before reservation can succeed.
-    boolean authorizeClass(String className) {
-        return className != null && className.length() > 0 && nativeAuthorizeClass(className);
-    }
-
-    boolean reserve(String className, int bytes) {
-        if (bytes < 0 || !authorizeClass(className)) return false;
-        return nativeReserve(className, bytes);
-    }
-
-    void release(String className, int bytes) {
-        if (className != null && bytes >= 0) nativeRelease(className, bytes);
-    }
-
-    native boolean nativeAuthorizeClass(String className);
-    native boolean nativeReserve(String className, int bytes);
-    native void nativeRelease(String className, int bytes);
+    # No permissive default: missing native binding denies admission.
+    boolean authorizeClass(String className) { return false; }
+    boolean reserve(String className, int bytes) { return false; }
+    void release(String className, int bytes) { }
 }
 
 class RuntimePolicy {
-    boolean allowClass(String className) {
-        return className != null && className.length() > 0 &&
-               nativeAllowClass(className);
-    }
-
-    int maximumObjects() { return nativeMaximumObjects(); }
-    int maximumBytes() { return nativeMaximumBytes(); }
-
-    native boolean nativeAllowClass(String className);
-    native int nativeMaximumObjects();
-    native int nativeMaximumBytes();
+    boolean allowClass(String className) { return false; }
+    int maximumObjects() { return 0; }
+    int maximumBytes() { return 0; }
 }
