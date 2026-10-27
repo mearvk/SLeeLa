@@ -48070,18 +48070,6 @@
       "sha256": "ad7abf87d8012a2bc41a85f5e6ef5eea526d1e818c15e053f0f79d3352dc5adf"
     },
     {
-      "path": "user-interface/src/slui_api.cpp",
-      "sha256": "c8ccf1e1ddcea7339589ade70887d566a1a6957d44da24b583e6075bde5b1a66"
-    },
-    {
-      "path": "user-interface/src/slui_widget.cpp",
-      "sha256": "e112d9d2dbf3bf7bcb24950751b274427fa64a2492854336126ac5e6dcb1c9c0"
-    },
-    {
-      "path": "user-interface/src/slui_widget.hpp",
-      "sha256": "807e0337773f20299d39f40728f9553b28a914c5c2fdb8d35564f5621ea37eb0"
-    },
-    {
       "path": "wifi-common/include/sleela_wifi/wifi_manager_cpp.hpp",
       "sha256": "b4322ede83134b9e09b75e11181915d0e09e260462e360e04ba32642611608e3"
     },
