@@ -1,0 +1,123 @@
+<< lib/user-interface/SLVerticalTabs.sleela
+   SLeeLa Standard Library Definition.
+   Definition: A vertical navigation-tabs composite for settings, tool panels,
+     and application sections. A narrow themed button rail sits beside a page
+     stack; selecting a rail item reveals exactly one content container. Uses
+     existing native button states and the active theme without fixed colors.
+   Family: user-interface. >>
+#sleela 2.1
+class SLVerticalTabs extends SLWidget {
+  String metaVersion = "1.0.0";
+  int metaId = 11481;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-10-26";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-26";
+  int metaScienceRating = 9;
+  String metaNationalSchedule = "none";
+
+  static final int MAX_PAGES = 512;
+  SLBox layout;
+  SLBox rail;
+  SLBox stack;
+  SLButton[] tabs;
+  SLBox[] pages;
+  String[] titles;
+  boolean[] dirty;
+  int count;
+  int active;
+
+  void createIn(SLWidget parent) {
+    layout = new SLBox();
+    layout.horizontal(parent, 8);
+    layout.setExpand(true, true);
+    widget = layout.handle();
+
+    rail = new SLBox();
+    rail.vertical(layout, 2);
+    rail.setSizeRequest(148, 0);
+
+    stack = new SLBox();
+    stack.vertical(layout, 0);
+    stack.setExpand(true, true);
+
+    tabs = new SLButton[MAX_PAGES];
+    pages = new SLBox[MAX_PAGES];
+    titles = new String[MAX_PAGES];
+    dirty = new boolean[MAX_PAGES];
+    count = 0;
+    active = -1;
+  }
+
+  int addPage(String title) {
+    if (count >= MAX_PAGES) { return -1; }
+
+    SLButton tab = new SLButton();
+    tab.createIn(rail, title);
+    tab.setSizeRequest(132, 36);
+    tab.setAlign(SLWidget.ALIGN_START, SLWidget.ALIGN_CENTER);
+    tab.setMargin(2, 8, 2, 8);
+    tabs[count] = tab;
+
+    SLBox page = new SLBox();
+    page.vertical(stack, 10);
+    page.setMarginAll(10);
+    page.setExpand(true, true);
+    pages[count] = page;
+
+    titles[count] = title;
+    dirty[count] = false;
+    int index = count;
+    count = count + 1;
+    select(index);
+    return index;
+  }
+
+  SLWidget pageContent(int index) {
+    if (index < 0 || index >= count) { return null; }
+    return pages[index];
+  }
+
+  void select(int index) {
+    if (index < 0 || index >= count) { return; }
+    active = index;
+    for (int i = 0; i < count; i = i + 1) {
+      pages[i].setVisible(i == index);
+      tabs[i].setSuggested(i == index);
+    }
+  }
+
+  int selectedIndex() { return active; }
+  int pageCount() { return count; }
+
+  < Poll after the UI event loop has dispatched input. Returns index or -1. >
+  int takeClickedTab() {
+    for (int i = 0; i < count; i = i + 1) {
+      if (tabs[i].clicked()) { select(i); return i; }
+    }
+    return -1;
+  }
+
+  void setTitle(int index, String title) {
+    if (index < 0 || index >= count) { return; }
+    titles[index] = title;
+    refreshTitle(index);
+  }
+
+  void setDirty(int index, boolean value) {
+    if (index < 0 || index >= count) { return; }
+    dirty[index] = value;
+    refreshTitle(index);
+  }
+
+  boolean isDirty(int index) {
+    return index >= 0 && index < count && dirty[index];
+  }
+
+  void refreshTitle(int index) {
+    tabs[index].setText(dirty[index] ? (titles[index] + " *") : titles[index]);
+  }
+}
