@@ -6,8 +6,9 @@
 widget library with a software rasterizer and native per-OS backends. It is
 **not** GTK, Qt, wxWidgets, or a wrapper around any of them: SleelaUI draws its
 own widgets with its own 2D rasterizer, so its look is pixel-identical on every
-target. Its base colour is a deep warm **`#2B1608`** (configurable at code or
-config time); the whole palette is derived from it. It talks to the real host
+target. Its default is graphite/charcoal **`#1D2025`** with a steel-blue accent. Five
+named presets are available: Default, White, Blue, Black, and Gray; selection is
+explicit in source or through a runtime `.conf` file. It talks to the real host
 window system through one small backend interface with three implementations.
 
 > SleelaUI™ — MEARVK LLC. Original SLeeLa work.
@@ -153,7 +154,7 @@ int main(void) {
     SLUIApp *app = slui_app_create("com.example.App");
 
     SLUITheme theme;
-    slui_theme_preset(&theme, SLUI_THEME_SLICK_BLACK);   /* the default */
+    slui_theme_preset(&theme, SLUI_THEME_SLEELA_BASE);   /* the default */
 
     SLUIWindowConfig cfg = {0};
     cfg.title = "Hello"; cfg.width = 480; cfg.height = 320;
