@@ -1,4 +1,4 @@
-# Run all five GUI examples on Windows PowerShell.
+# Run all six GUI examples, including the expandable menubar, on Windows PowerShell.
 $ErrorActionPreference = "Stop"
 $Root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $Candidates = @()
