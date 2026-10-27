@@ -1,0 +1,34 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Shared status and validation conventions mirroring the native C API.
+#sleela 2.1
+class SLSignalProcessingStatus {
+  static final int OK = 0;
+  static final int ERR_INVALID = -1;
+  static final int ERR_CAPACITY = -2;
+  static final int ERR_ALLOC = -3;
+  static final int ERR_SIZE = -4;
+  static final int ERR_NUMERIC = -5;
+
+  static final String VERSION = "1.0.0";
+  static final double MAX_FINITE = 1.7976931348623157E308;
+
+  static String version() { return VERSION; }
+
+  static String text(int code) {
+    if (code == OK) { return "success"; }
+    if (code == ERR_INVALID) { return "invalid argument"; }
+    if (code == ERR_CAPACITY) { return "output capacity too small"; }
+    if (code == ERR_ALLOC) { return "allocation failed"; }
+    if (code == ERR_SIZE) { return "unsupported or overflowing size"; }
+    if (code == ERR_NUMERIC) { return "non-finite input or numerical overflow"; }
+    return "unknown signal-processing status";
+  }
+
+  // NaN is unequal to itself; infinities exceed the largest finite double.
+  static boolean isFinite(double value) {
+    if (value != value) { return false; }
+    if (value > MAX_FINITE) { return false; }
+    if (value < (0.0 - MAX_FINITE)) { return false; }
+    return true;
+  }
+}

@@ -1,0 +1,95 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Deterministic smoke checks for the SLeeLa source mirror.
+#sleela 2.1
+import math;
+
+class SLSignalProcessingSmoke {
+  void check(String name, boolean passed) {
+    if (passed) { print("PASS " + name); }
+    else { print("FAIL " + name); }
+  }
+
+  void near(String name, double actual, double expected, double tolerance) {
+    double difference = actual - expected;
+    if (difference < 0.0) { difference = 0.0 - difference; }
+    check(name, difference <= tolerance);
+  }
+
+  void main() {
+    SLSignalProcessing api = new SLSignalProcessing();
+    SLSignalSeries values = new SLSignalSeries();
+    SLSignalScalar scalar = new SLSignalScalar();
+    values.clear();
+    values.append(1.0);
+    values.append(2.0);
+    values.append(3.0);
+
+    int status = api.mean(values, scalar);
+    check("mean status", status == SLSignalProcessingStatus.OK);
+    near("mean", scalar.get(), 2.0, 0.000001);
+
+    status = api.rms(values, scalar);
+    check("rms status", status == SLSignalProcessingStatus.OK);
+    near("rms", scalar.get(), math.sqrt(14.0 / 3.0), 0.000001);
+
+    SLSignalSeries average = new SLSignalSeries();
+    average.clear();
+    status = api.movingAverage(values, 2, average);
+    check("moving average status", status == SLSignalProcessingStatus.OK);
+    check("moving average length", average.size() == 3);
+    near("moving average tail", average.sampleAt(2).value, 2.5, 0.000001);
+
+    SLSignalSeries kernel = new SLSignalSeries();
+    SLSignalSeries convolved = new SLSignalSeries();
+    kernel.clear();
+    convolved.clear();
+    kernel.append(1.0);
+    kernel.append(1.0);
+    status = api.convolve(values, kernel, convolved);
+    check("convolution status", status == SLSignalProcessingStatus.OK);
+    check("convolution length", convolved.size() == 4);
+    near("convolution middle", convolved.sampleAt(1).value, 3.0, 0.000001);
+    near("convolution last", convolved.sampleAt(3).value, 3.0, 0.000001);
+
+    SLSignalSeries oneWindow = new SLSignalSeries();
+    oneWindow.clear();
+    status = api.hannWindow(1, oneWindow);
+    check("single-point Hann status", status == SLSignalProcessingStatus.OK);
+    near("single-point Hann value", oneWindow.sampleAt(0).value, 1.0, 0.000001);
+
+    SLSignalComplexSeries impulse = new SLSignalComplexSeries();
+    impulse.clear();
+    impulse.appendParts(1.0, 0.0);
+    impulse.appendParts(0.0, 0.0);
+    impulse.appendParts(0.0, 0.0);
+    impulse.appendParts(0.0, 0.0);
+
+    SLSignalComplexSeries dft = new SLSignalComplexSeries();
+    dft.clear();
+    status = api.dft(impulse, dft, false);
+    check("DFT status", status == SLSignalProcessingStatus.OK);
+    near("DFT impulse bin", dft.sampleAt(3).re, 1.0, 0.000001);
+    near("DFT impulse imaginary", dft.sampleAt(3).im, 0.0, 0.000001);
+
+    SLSignalComplexSeries transformed = impulse.cloneSeries();
+    status = api.fft(transformed, false);
+    check("FFT status", status == SLSignalProcessingStatus.OK);
+    near("FFT impulse bin", transformed.sampleAt(3).re, 1.0, 0.000001);
+    near("FFT impulse imaginary", transformed.sampleAt(3).im, 0.0, 0.000001);
+
+    SLSignalSeries magnitudes = new SLSignalSeries();
+    magnitudes.clear();
+    status = api.magnitudeSpectrum(impulse, magnitudes);
+    check("magnitude status", status == SLSignalProcessingStatus.OK);
+    check("magnitude bin count", magnitudes.size() == 3);
+    near("magnitude impulse bin", magnitudes.sampleAt(2).value, 1.0, 0.000001);
+
+    SLSignalComplexSeries invalidLength = new SLSignalComplexSeries();
+    invalidLength.clear();
+    invalidLength.appendParts(1.0, 0.0);
+    invalidLength.appendParts(0.0, 0.0);
+    invalidLength.appendParts(0.0, 0.0);
+    status = api.fft(invalidLength, false);
+    check("non-radix-two FFT rejection", status == SLSignalProcessingStatus.ERR_SIZE);
+  }
+}

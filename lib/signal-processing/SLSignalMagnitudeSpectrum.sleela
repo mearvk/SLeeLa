@@ -1,0 +1,36 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Unnormalized nonnegative-frequency magnitude spectrum, bins 0..floor(N/2).
+#sleela 2.1
+import math;
+
+class SLSignalMagnitudeSpectrum {
+  int compute(SLSignalComplexSeries input, SLSignalSeries output) {
+    if (input == null || output == null || input.size() <= 0) {
+      return SLSignalProcessingStatus.ERR_INVALID;
+    }
+    int n = input.size();
+    SLSignalFFT operation = new SLSignalFFT();
+    if (!operation.isPowerOfTwo(n)) { return SLSignalProcessingStatus.ERR_SIZE; }
+    if (!input.valuesFinite()) { return SLSignalProcessingStatus.ERR_NUMERIC; }
+
+    SLSignalComplexSeries work = input.cloneSeries();
+    if (work == null) { return SLSignalProcessingStatus.ERR_NUMERIC; }
+    int status = operation.forward(work);
+    if (status != SLSignalProcessingStatus.OK) { return status; }
+
+    output.clear();
+    int bins = n / 2 + 1;
+    int i = 0;
+    SLSignalComplexSample node = work.head;
+    while (i < bins && node != null) {
+      double magnitude = math.hypot(node.re, node.im);
+      if (!SLSignalProcessingStatus.isFinite(magnitude) || !output.append(magnitude)) {
+        return SLSignalProcessingStatus.ERR_NUMERIC;
+      }
+      node = node.next;
+      i = i + 1;
+    }
+    return i == bins
+        ? SLSignalProcessingStatus.OK : SLSignalProcessingStatus.ERR_NUMERIC;
+  }
+}

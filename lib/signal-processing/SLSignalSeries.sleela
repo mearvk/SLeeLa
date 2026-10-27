@@ -1,0 +1,70 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Doubly-linked real sample sequence used by the SLeeLa source mirror.
+#sleela 2.1
+class SLSignalSeries {
+  SLSignalSample head;
+  SLSignalSample tail;
+  int count;
+
+  void clear() {
+    head = null;
+    tail = null;
+    count = 0;
+  }
+
+  int size() { return count; }
+  boolean empty() { return count == 0; }
+
+  boolean append(double value) {
+    if (!SLSignalProcessingStatus.isFinite(value)) { return false; }
+    SLSignalSample node = new SLSignalSample();
+    node.set(value);
+    node.previous = tail;
+    if (tail == null) { head = node; }
+    else { tail.next = node; }
+    tail = node;
+    count = count + 1;
+    return true;
+  }
+
+  SLSignalSample sampleAt(int index) {
+    if (index < 0 || index >= count) { return null; }
+    SLSignalSample node;
+    int step;
+    if (index <= count / 2) {
+      node = head;
+      step = 0;
+      while (step < index) {
+        node = node.next;
+        step = step + 1;
+      }
+    } else {
+      node = tail;
+      step = count - 1;
+      while (step > index) {
+        node = node.previous;
+        step = step - 1;
+      }
+    }
+    return node;
+  }
+
+  boolean valuesFinite() {
+    SLSignalSample node = head;
+    while (node != null) {
+      if (!SLSignalProcessingStatus.isFinite(node.value)) { return false; }
+      node = node.next;
+    }
+    return true;
+  }
+
+  boolean appendSeries(SLSignalSeries source) {
+    if (source == null || source == this) { return false; }
+    SLSignalSample node = source.head;
+    while (node != null) {
+      if (!append(node.value)) { return false; }
+      node = node.next;
+    }
+    return true;
+  }
+}

@@ -1,0 +1,98 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Moving average, full linear convolution and symmetric Hann window.
+#sleela 2.1
+import math;
+
+class SLSignalFilters {
+  int movingAverage(SLSignalSeries input, int window, SLSignalSeries output) {
+    if (input == null || output == null || input.size() == 0
+        || window <= 0 || window > input.size() || input == output) {
+      return SLSignalProcessingStatus.ERR_INVALID;
+    }
+    if (!input.valuesFinite()) { return SLSignalProcessingStatus.ERR_NUMERIC; }
+
+    output.clear();
+    int index = 0;
+    int count = input.size();
+    double sum = 0.0;
+    SLSignalSample current = input.head;
+    SLSignalSample expired = input.head;
+    while (current != null) {
+      sum = sum + current.value;
+      if (index >= window) {
+        sum = sum - expired.value;
+        expired = expired.next;
+      }
+      int divisor = index + 1 < window ? index + 1 : window;
+      double value = sum / divisor;
+      if (!SLSignalProcessingStatus.isFinite(value) || !output.append(value)) {
+        return SLSignalProcessingStatus.ERR_NUMERIC;
+      }
+      current = current.next;
+      index = index + 1;
+    }
+    return output.size() == count
+        ? SLSignalProcessingStatus.OK : SLSignalProcessingStatus.ERR_NUMERIC;
+  }
+
+  int convolve(SLSignalSeries input, SLSignalSeries kernel, SLSignalSeries output) {
+    if (input == null || kernel == null || output == null
+        || input.size() == 0 || kernel.size() == 0
+        || output == input || output == kernel) {
+      return SLSignalProcessingStatus.ERR_INVALID;
+    }
+    if (!input.valuesFinite() || !kernel.valuesFinite()) {
+      return SLSignalProcessingStatus.ERR_NUMERIC;
+    }
+    int inputLength = input.size();
+    int kernelLength = kernel.size();
+    if (inputLength > 2147483647 - (kernelLength - 1)) {
+      return SLSignalProcessingStatus.ERR_SIZE;
+    }
+    int required = inputLength + kernelLength - 1;
+    output.clear();
+    int n = 0;
+    while (n < required) {
+      int first = n >= kernelLength - 1 ? n - (kernelLength - 1) : 0;
+      int last = n < inputLength - 1 ? n : inputLength - 1;
+      SLSignalSample x = input.sampleAt(first);
+      SLSignalSample h = kernel.sampleAt(n - first);
+      double sum = 0.0;
+      int i = first;
+      while (i <= last) {
+        sum = sum + x.value * h.value;
+        if (!SLSignalProcessingStatus.isFinite(sum)) {
+          return SLSignalProcessingStatus.ERR_NUMERIC;
+        }
+        x = x.next;
+        h = h.previous;
+        i = i + 1;
+      }
+      if (!output.append(sum)) { return SLSignalProcessingStatus.ERR_NUMERIC; }
+      n = n + 1;
+    }
+    return output.size() == required
+        ? SLSignalProcessingStatus.OK : SLSignalProcessingStatus.ERR_NUMERIC;
+  }
+
+  int hannWindow(int length, SLSignalSeries output) {
+    if (output == null || length <= 0) {
+      return SLSignalProcessingStatus.ERR_INVALID;
+    }
+    output.clear();
+    if (length == 1) {
+      return output.append(1.0)
+          ? SLSignalProcessingStatus.OK : SLSignalProcessingStatus.ERR_NUMERIC;
+    }
+    double twoPi = 2.0 * math.pi();
+    int i = 0;
+    while (i < length) {
+      double coefficient = 0.5 - 0.5 * math.cos(twoPi * i / (length - 1));
+      if (!SLSignalProcessingStatus.isFinite(coefficient) || !output.append(coefficient)) {
+        return SLSignalProcessingStatus.ERR_NUMERIC;
+      }
+      i = i + 1;
+    }
+    return SLSignalProcessingStatus.OK;
+  }
+}

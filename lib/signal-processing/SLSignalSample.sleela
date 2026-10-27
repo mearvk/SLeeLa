@@ -1,0 +1,14 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Doubly-linked real-valued sample node; no array dependency.
+#sleela 2.1
+class SLSignalSample {
+  double value;
+  SLSignalSample previous;
+  SLSignalSample next;
+
+  void set(double sampleValue) {
+    value = sampleValue;
+    previous = null;
+    next = null;
+  }
+}

@@ -1,0 +1,57 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Direct reference DFT for arbitrary positive series lengths.
+#sleela 2.1
+import math;
+
+class SLSignalDFT {
+  int transform(SLSignalComplexSeries input, SLSignalComplexSeries output,
+                boolean inverse) {
+    if (input == null || output == null || input.size() == 0 || input == output) {
+      return SLSignalProcessingStatus.ERR_INVALID;
+    }
+    if (!input.valuesFinite()) { return SLSignalProcessingStatus.ERR_NUMERIC; }
+
+    int n = input.size();
+    double sign = inverse ? 1.0 : (0.0 - 1.0);
+    double twoPi = 2.0 * math.pi();
+    output.clear();
+    int k = 0;
+    while (k < n) {
+      double realSum = 0.0;
+      double imaginarySum = 0.0;
+      int t = 0;
+      SLSignalComplexSample sample = input.head;
+      while (sample != null) {
+        double angle = sign * twoPi * k * t / n;
+        double cosine = math.cos(angle);
+        double sine = math.sin(angle);
+        realSum = realSum + sample.re * cosine - sample.im * sine;
+        imaginarySum = imaginarySum + sample.re * sine + sample.im * cosine;
+        if (!SLSignalProcessingStatus.isFinite(realSum)
+            || !SLSignalProcessingStatus.isFinite(imaginarySum)) {
+          return SLSignalProcessingStatus.ERR_NUMERIC;
+        }
+        sample = sample.next;
+        t = t + 1;
+      }
+      if (inverse) {
+        realSum = realSum / n;
+        imaginarySum = imaginarySum / n;
+      }
+      if (!output.appendParts(realSum, imaginarySum)) {
+        return SLSignalProcessingStatus.ERR_NUMERIC;
+      }
+      k = k + 1;
+    }
+    return output.size() == n
+        ? SLSignalProcessingStatus.OK : SLSignalProcessingStatus.ERR_NUMERIC;
+  }
+
+  int forward(SLSignalComplexSeries input, SLSignalComplexSeries output) {
+    return transform(input, output, false);
+  }
+
+  int inverse(SLSignalComplexSeries input, SLSignalComplexSeries output) {
+    return transform(input, output, true);
+  }
+}

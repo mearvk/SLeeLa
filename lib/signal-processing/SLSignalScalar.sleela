@@ -1,0 +1,9 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Output cell for scalar C-style out parameters.
+#sleela 2.1
+class SLSignalScalar {
+  double value;
+
+  void set(double nextValue) { value = nextValue; }
+  double get() { return value; }
+}
