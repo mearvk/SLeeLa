@@ -89,6 +89,7 @@ typedef struct {
 typedef struct {
     char* name;
     int nfields;
+    int parent_type;
     char* fields[SL_MAX_STRUCT_FIELDS];
 } SLStructType;
 typedef struct {
@@ -305,8 +306,16 @@ int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_nam
     SLStructType* st = &vm->struct_types[idx];
     st->name = strdup(name);
     st->nfields = nfields;
+    st->parent_type = -1;
     for (int i = 0; i < nfields; i++) st->fields[i] = strdup(field_names[i] ? field_names[i] : "");
     return idx;
+}
+
+int slvm_set_struct_parent(SLVM* vm, int type_index, int parent_type_index) {
+    if (!vm || type_index < 0 || type_index >= vm->nstruct_types) return -1;
+    if (parent_type_index < -1 || parent_type_index >= vm->nstruct_types || parent_type_index == type_index) return -1;
+    vm->struct_types[type_index].parent_type = parent_type_index;
+    return 0;
 }
 
 int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals) {
@@ -678,6 +687,14 @@ static int struct_alloc(SLVM* vm, int type) {
 }
 static int struct_valid_handle(SLVM* vm, int h) {
     return vm->structs && h >= 0 && h < SL_MAX_STRUCTS && vm->structs[h].active;
+}
+static int struct_type_is_a(SLVM* vm, int actual, int expected) {
+    if (!vm || expected < 0 || expected >= vm->nstruct_types) return 0;
+    for (int depth = 0; actual >= 0 && actual < vm->nstruct_types && depth < SL_MAX_STRUCT_TYPES; ++depth) {
+        if (actual == expected) return 1;
+        actual = vm->struct_types[actual].parent_type;
+    }
+    return 0;
 }
 
 /* ---- array instances: the same bounded-handle discipline as structs ------- */
@@ -1655,7 +1672,7 @@ static SLResult run_thread(SLThread* t) {
                     TERR("checked cast failed: value is not a valid class/struct instance");
                 pthread_mutex_lock(&vm->struct_mtx);
                 int actualType=vm->structs[value.as.h].type;
-                int matches=(actualType==in.a);
+                int matches=struct_type_is_a(vm,actualType,in.a);
                 pthread_mutex_unlock(&vm->struct_mtx);
                 if(!matches) TERR("checked cast failed: runtime class/struct type does not match target");
             } else {
@@ -1676,7 +1693,7 @@ static SLResult run_thread(SLThread* t) {
             if(in.a>=0) {
                 if(value.type==SL_STRUCT && struct_valid_handle(vm,value.as.h)) {
                     pthread_mutex_lock(&vm->struct_mtx);
-                    matches=(vm->structs[value.as.h].type==in.a);
+                    matches=struct_type_is_a(vm,vm->structs[value.as.h].type,in.a);
                     pthread_mutex_unlock(&vm->struct_mtx);
                 }
             } else {
