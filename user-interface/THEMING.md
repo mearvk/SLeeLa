@@ -12,7 +12,8 @@ steel-blue accent; brown and amber are not part of the standard palette.
    or `theme.preset(SLTheme.WHITE)` in SLeeLa source.
 3. **Runtime configuration:** call `slui_theme_load_config` or
    `SLTheme.loadConfig(path)` explicitly. The config's `theme=` value selects
-   one of the five presets, then optional role overrides are applied.
+   one of the five presets, then optional role overrides are applied. The legacy
+`slick-black` name is also accepted for existing configurations.
 4. **Explicit role setters:** source code may set individual colours after
    choosing a preset. Those overrides are intentional and take precedence.
 
@@ -31,7 +32,8 @@ file unexpectedly changing application appearance.
 
 Legacy preset ids `SLICK_BLACK`, `GRAPHITE`, `CUSTOM`, and `SLEELA_BASE`
 remain supported for ABI compatibility. `SLEELA_BASE` is the new cool default;
-`SLICK_BLACK` maps to the dedicated Black palette when chosen by config name.
+`black` selects the Standard Pattern Black palette, while `slick-black` retains
+the legacy Slick Black palette.
 
 ## Select in C/C++
 
