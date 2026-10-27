@@ -8,17 +8,13 @@ Wants=clamd.service clamav-daemon.service
 Type=simple
 EnvironmentFile=-/etc/default/sleela-antivirus
 EnvironmentFile=-/etc/sleela-antivirus/sleela-antivirus.env
-Environment=SLEELA_ANTIVIRUS_ENGINE=both
-Environment=SLEELA_ANTIVIRUS_ROOT=/var/lib/sleela-antivirus
-Environment=SLEELA_ANTIVIRUS_REPORT=/var/log/sleela-antivirus/scan-report.json
-Environment=SLEELA_ANTIVIRUS_QUARANTINE=/var/lib/sleela-antivirus/quarantine
-Environment=SLEELA_ANTIVIRUS_DB=/opt/sleela/antivirus/signatures/native-sha256.txt
-Environment=SLEELA_ANTIVIRUS_NATIVE=/opt/sleela/antivirus/build/sleelavirin-scan
+# Host-specific values are intentionally read from the environment file and are
+# expected to be set by the target system admin. The repo defaults remain a
+# template for review only and are not considered the live operational policy.
 WorkingDirectory=/opt/sleela
 ExecStart=/usr/bin/env python3 /opt/sleela/antivirus/tools/sleelavirin_scan.py \
   --engine ${SLEELA_ANTIVIRUS_ENGINE} \
   --database ${SLEELA_ANTIVIRUS_DB} \
-  --native-scanner ${SLEELA_ANTIVIRUS_NATIVE} \
   --report-json ${SLEELA_ANTIVIRUS_REPORT} \
   --quarantine-dir ${SLEELA_ANTIVIRUS_QUARANTINE} \
   ${SLEELA_ANTIVIRUS_ROOT}

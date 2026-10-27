@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import shutil
 import subprocess
 import sys
@@ -24,6 +23,14 @@ DEFAULT_POLICY_NAME = "antivirus-policy.example.json"
 DEFAULT_POLICY_DIR = Path("lib/antivirus")
 DEFAULT_ENV_EXAMPLE = "antivirus/systemd/sleela-antivirus.env.example"
 DEFAULT_ENV_PATH = Path("/etc/sleela-antivirus/sleela-antivirus.env")
+REQUIRED_ENV_VARS = [
+    "SLEELA_ANTIVIRUS_ENGINE",
+    "SLEELA_ANTIVIRUS_ROOT",
+    "SLEELA_ANTIVIRUS_REPORT",
+    "SLEELA_ANTIVIRUS_QUARANTINE",
+    "SLEELA_ANTIVIRUS_DB",
+    "SLEELA_ANTIVIRUS_NATIVE",
+]
 
 
 def repo_root() -> Path:
@@ -104,6 +111,62 @@ def install_file(source: Path, target: Path, overwrite: bool = False) -> bool:
     return True
 
 
+def path_is_inside_repo(path_value: str) -> bool:
+    try:
+        return Path(path_value).resolve().is_relative_to(repo_root().resolve())
+    except Exception:
+        return False
+
+
+def validate_host(service_name: str, env_path: Path, policy_path: Path) -> Dict[str, object]:
+    report: Dict[str, object] = {
+        "service": service_name,
+        "systemd_available": systemctl_available(),
+        "policy_path": str(policy_path),
+        "policy_exists": policy_path.exists(),
+        "env_path": str(env_path),
+        "env_exists": env_path.exists(),
+        "errors": [],
+        "warnings": [],
+        "missing_env_vars": [],
+        "path_checks": {},
+        "env_values": {},
+    }
+
+    env_values = read_env_file(env_path)
+    report["env_values"] = env_values
+
+    for name in REQUIRED_ENV_VARS:
+        if name not in env_values or not str(env_values[name]).strip():
+            report["missing_env_vars"].append(name)
+            report["errors"].append(f"missing required env var: {name}")
+        else:
+            report["path_checks"][name] = env_values[name]
+
+    for name, value in env_values.items():
+        if name in {"SLEELA_ANTIVIRUS_ROOT", "SLEELA_ANTIVIRUS_REPORT", "SLEELA_ANTIVIRUS_QUARANTINE", "SLEELA_ANTIVIRUS_DB", "SLEELA_ANTIVIRUS_NATIVE"}:
+            p = Path(value)
+            if not p.is_absolute():
+                report["warnings"].append(f"{name} is not an absolute path: {value}")
+            if path_is_inside_repo(value):
+                report["warnings"].append(f"{name} resolves inside the repository: {value}")
+            if name in {"SLEELA_ANTIVIRUS_REPORT", "SLEELA_ANTIVIRUS_QUARANTINE"}:
+                parent = p.parent
+                if parent.exists() and not parent.is_dir():
+                    report["errors"].append(f"{name} parent is not a directory: {parent}")
+
+    if not report["policy_exists"]:
+        report["warnings"].append("policy file does not exist; using the repository example fallback only")
+
+    if not report["systemd_available"]:
+        report["warnings"].append("systemctl is not available; service lifecycle operations are unavailable on this host")
+
+    if not env_path.exists():
+        report["warnings"].append("host environment file is absent; install it before enabling the service")
+
+    return report
+
+
 def status_payload(service: str, policy_path: Path, env_path: Optional[Path] = None) -> dict:
     payload = {
         "service": service,
@@ -111,10 +174,9 @@ def status_payload(service: str, policy_path: Path, env_path: Optional[Path] = N
         "policy_path": str(policy_path),
         "policy": read_policy(policy_path),
         "env_file_path": str(env_path or DEFAULT_ENV_PATH),
-        "env_file_exists": bool(env_path or DEFAULT_ENV_PATH).exists(),
+        "env_file_exists": bool((env_path or DEFAULT_ENV_PATH).exists()),
+        "env_file_values": read_env_file(env_path or DEFAULT_ENV_PATH),
     }
-    env_path = env_path or DEFAULT_ENV_PATH
-    payload["env_file_values"] = read_env_file(env_path)
     if not systemctl_available():
         payload["state"] = "systemd-unavailable"
         return payload
@@ -296,15 +358,21 @@ def handle_install_env(args: argparse.Namespace) -> int:
 
 
 def handle_install_host(args: argparse.Namespace) -> int:
-    unit_rc = handle_install_unit(args)
+    unit_args = argparse.Namespace(target_dir=args.target_unit_dir, service_name=args.service_name, force=args.force)
+    unit_rc = handle_install_unit(unit_args)
     if unit_rc != 0:
         return unit_rc
-    env_args = argparse.Namespace(
-        target_dir=args.target_env_dir,
-        env_name=args.env_name,
-        force=args.force,
-    )
+    env_args = argparse.Namespace(target_dir=args.target_env_dir, env_name=args.env_name, force=args.force)
     return handle_install_env(env_args)
+
+
+def handle_validate_host(args: argparse.Namespace) -> int:
+    report = validate_host(args.service_name, args.env_file, args.policy)
+    if args.json:
+        print_json(report)
+        return 0 if not report["errors"] else 2
+    print(json.dumps(report, indent=2, sort_keys=True))
+    return 0 if not report["errors"] else 2
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -318,6 +386,10 @@ def build_parser() -> argparse.ArgumentParser:
     status = subparsers.add_parser("status", help="show service and policy status")
     status.add_argument("--json", action="store_true")
     status.set_defaults(func=handle_status)
+
+    validate_host_cmd = subparsers.add_parser("validate-host", help="validate host runtime values before enabling the service")
+    validate_host_cmd.add_argument("--json", action="store_true")
+    validate_host_cmd.set_defaults(func=handle_validate_host)
 
     start = subparsers.add_parser("start", help="start the SLeeLa antivirus service")
     start.set_defaults(func=handle_start)
@@ -356,6 +428,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     install = subparsers.add_parser("install-unit", help="install the unit file template to the target systemd directory")
     install.add_argument("--target-dir", default="/etc/systemd/system", help="target directory for the service unit")
+    install.add_argument("--service-name", default=DEFAULT_SERVICE_NAME, help="service name to install")
     install.add_argument("--force", action="store_true", help="overwrite an existing unit file")
     install.set_defaults(func=handle_install_unit)
 
