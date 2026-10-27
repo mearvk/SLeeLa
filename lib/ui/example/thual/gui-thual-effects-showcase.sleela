@@ -1,0 +1,396 @@
+<<
+   example/gui-thual-effects-showcase.sleela
+   The THUAL (3.0) "effects showcase" scene as a REAL, on-screen window --
+   driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
+   bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
+   this file only print()ed a walkthrough; now the visual-effects layer (glow /
+   shine / shadow / metal / rotation / fade + branding + audio cues, with a
+   scheduled rotation that advances a memo key epoch) is painted as actual
+   widgets, including a live throbber that drives the SleelaUI event loop.
+   
+   The three-layer stack is live here:
+     SLeeLa decoration (this program + the bright "studio" theme below)
+       -> model (ui* built-ins: uiWindowCreate, uiThrobber, uiProgressBar, ...)
+         -> C/C++ (SleelaUI software rasterizer + native window backend)
+   
+   Run (needs a display: X on Linux, native on macOS/Windows):
+     SLEELA_SHEET=./SHEET.sheet \
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/gui-thual-effects-showcase.sleela
+   
+   With no display (headless/CI) it reports that and exits 0 without a window.
+>>
+#sleela 2.1
+// THUAL (3.0): a clamped visual-effects layer. Every knob clamps to a safe
+// window; here those clamped values drive real level/progress controls and a
+// live, hue-tinted throbber (the "rotation" made visible).
+class GuiThualEffectsShowcase {
+
+  // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
+  // Scroll-policy ordinal (mirror the toolkit C ABI: 0=auto on overflow).
+  int SCROLL_AUTO = 0;
+
+  // Live handles the event loop reacts on/to.
+  int btnConfirm;
+  int btnFade;
+  int spin;          // the throbber (rotation made visible)
+  int statusLabel;
+  // Lower-right status-bar connectivity control and its dismissible menu.
+  int wifiButton;
+  int wifiPanel;
+  int wifiStatusLabel;
+  int wifiScanButton;
+  int wifiConnectButton;
+  int wifiDisconnectButton;
+  int wifiSettingsButton;
+  int wifiInfoButton;
+  int wifiProfileEntry;
+  int wifiCloseButton;
+  // Menubar strip and its dropdown panels (built from existing ui* widgets).
+  int openMenuIndex = -1;
+  int menuFileButton;
+  int menuFilePanel;
+  int menuFileItem1;
+  int menuFileItem2;
+  int menuEffectsButton;
+  int menuEffectsPanel;
+  int menuEffectsItem1;
+  int menuEffectsItem2;
+  int menuViewButton;
+  int menuViewPanel;
+  int menuViewItem1;
+  int menuViewItem2;
+  int menuHelpButton;
+  int menuHelpPanel;
+  int menuHelpItem1;
+  int menuHelpItem2;
+
+  int rgba(int r, int g, int b, int a) {
+    return r * 16777216 + g * 65536 + b * 256 + a;
+  }
+  int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
+
+  // Every effect knob clamps to a safe window (the THUAL discipline).
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+  String intToStr(int v) { return "" + v; }
+
+  // A bright, dimensional "studio" theme for the effects line.
+  // Shared SLeeLa family palette: chrome/title bar #1D2025,
+  // Standard Pattern ordinal (mirror SLUIThemeId): 6=BLUE. thual uses BLUE.
+  int THEME_BLUE = 6;
+  // thual is the BLUE Standard Pattern: blue-tinted surfaces with light text,
+  // supplied by the toolkit preset (no per-colour overrides); metrics only.
+  int studioTheme() {
+    int t = uiThemePreset(THEME_BLUE);
+    uiThemeSetRadius(t, 8);
+    uiThemeSetControlHeight(t, 32);
+    return t;
+  }
+
+  // Show one dropdown at a time; selecting the open menu closes it.
+  void openMenu(int which) {
+    int next = openMenuIndex == which ? -1 : which;
+    openMenuIndex = next;
+    uiWidgetVisible(menuFilePanel, next == 0 ? 1 : 0);
+    uiWidgetVisible(menuEffectsPanel, next == 1 ? 1 : 0);
+    uiWidgetVisible(menuViewPanel, next == 2 ? 1 : 0);
+    uiWidgetVisible(menuHelpPanel, next == 3 ? 1 : 0);
+    uiWidgetVisible(wifiPanel, next == 4 ? 1 : 0);
+  }
+
+  void wifiActionUnavailable(String action) {
+    uiWidgetSetText(wifiStatusLabel, action + " requires the native Wi-Fi host bridge.");
+    uiWidgetSetText(statusLabel, "Connectivity · " + action + " unavailable (host bridge required)");
+    openMenu(-1);
+  }
+
+  void main() {
+    print("SLeeLa THUAL Effects Showcase (native SleelaUI) — backend "
+        + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
+
+    int app = uiAppCreate("com.mearvk.SleelaUI.ThualEffectsShowcase");
+    if (app < 0) {
+      print("No display available (headless): the ui* bridge is wired, but the");
+      print("toolkit could not open a window. Run on a desktop (X/Cocoa/Win32).");
+      return;
+    }
+
+    int theme = studioTheme();
+    // Derive the initial frame from the real screen. Requested design dimensions
+    // are preferences only; the physical screen is the hard upper bound.
+    int screenW = uiScreenWidth(app);
+    int screenH = uiScreenHeight(app);
+    int winW = 1000;
+    int winH = 640;
+    if (screenW > 0) {
+      int maxW = screenW - 32;
+      if (maxW < 1) { maxW = screenW; }
+      if (winW > maxW) { winW = maxW; }
+    }
+    if (screenH > 0) {
+      int maxH = screenH - 64;
+      if (maxH < 1) { maxH = screenH; }
+      if (winH > maxH) { winH = maxH; }
+    }
+    int win = uiWindowCreate(app, "International Criminal Court - GR3+ Grades", winW, winH, theme);
+    int root = uiWindowRoot(win);
+
+    // --- Functional menubar strip and dropdowns ---
+    int menuStrip = uiBox(root, 1, 4);
+    uiWidgetMargin(menuStrip, 4, 8, 4, 8);
+    menuFileButton = uiButton(menuStrip, "File");
+    menuEffectsButton = uiButton(menuStrip, "Effects");
+    menuViewButton = uiButton(menuStrip, "View");
+    menuHelpButton = uiButton(menuStrip, "Help");
+    menuFilePanel = uiBox(root, 0, 2);
+    uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
+    menuFileItem1 = uiButton(menuFilePanel, "Save Preset");
+    menuFileItem2 = uiButton(menuFilePanel, "Load Preset");
+    uiWidgetVisible(menuFilePanel, 0);
+    menuEffectsPanel = uiBox(root, 0, 2);
+    uiWidgetMargin(menuEffectsPanel, 4, 10, 4, 10);
+    menuEffectsItem1 = uiButton(menuEffectsPanel, "Glow And Shine");
+    menuEffectsItem2 = uiButton(menuEffectsPanel, "Fade Controls");
+    uiWidgetVisible(menuEffectsPanel, 0);
+    menuViewPanel = uiBox(root, 0, 2);
+    uiWidgetMargin(menuViewPanel, 4, 10, 4, 10);
+    menuViewItem1 = uiButton(menuViewPanel, "Rotation Schedule");
+    menuViewItem2 = uiButton(menuViewPanel, "Effect Status");
+    uiWidgetVisible(menuViewPanel, 0);
+    menuHelpPanel = uiBox(root, 0, 2);
+    uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
+    menuHelpItem1 = uiButton(menuHelpPanel, "Effects Guide");
+    menuHelpItem2 = uiButton(menuHelpPanel, "About THUAL");
+    uiWidgetVisible(menuHelpPanel, 0);
+
+    // --- Chrome: branding painted into the header ---
+    int header = uiHeaderBar(root);
+    uiWidgetSizeRequest(header, 0, 48);                   // Coherent Dignity: 6X header banner (48px)
+    int logo = uiLabel(header, "\u2756");                 // the studio mark
+    uiWidgetMargin(logo, 0, 10, 0, 14);
+    int brand = uiBox(header, 1, 0);
+
+    uiSpacer(header);
+
+    // The content lives inside a scrolled view so it scrolls (with automatic
+    // scrollbars) instead of spilling past the frame on a small window.
+    int scroller = uiScrolledView(root, SCROLL_AUTO, SCROLL_AUTO);
+    uiWidgetExpand(scroller, 1, 1);
+    int content = uiBox(scroller, 1, 14);     // the scroll CONTENT (1st child)
+    uiWidgetMargin(content, 18, 18, 18, 18);
+    uiWidgetExpand(content, 1, 0); // preserve natural height for vertical scrolling
+
+    int cols = uiBox(content, 1, 16); // stack cards vertically so they fit the available width
+    uiWidgetExpand(cols, 1, 0);
+    int colL = uiBox(cols, 1, 14);
+    uiWidgetExpand(colL, 1, 0);
+    int colR = uiBox(cols, 1, 14);
+    uiWidgetExpand(colR, 1, 0);
+
+    // Effects bundle card: each clamped knob shown on a level/progress bar.
+    int fx = uiCard(colL);
+    uiWidgetExpand(fx, 1, 0);
+    int fxBox = uiBox(fx, 1, 8);
+    uiWidgetExpand(fxBox, 1, 0);
+    uiWidgetMargin(fxBox, 14, 14, 14, 14);
+
+    int glow = clamp(140, 0, 100);             // 140% -> 100%
+
+    int glowBar = uiLevelBar(fxBox, glow / 100.0);
+    uiWidgetExpand(glowBar, 1, 0);
+    int shine = clamp(70, 0, 100);
+
+    int shineBar = uiLevelBar(fxBox, shine / 100.0);
+    uiWidgetExpand(shineBar, 1, 0);
+    int sheen = clamp(85, 0, 100);
+
+    int sheenBar = uiLevelBar(fxBox, sheen / 100.0);
+    uiWidgetExpand(sheenBar, 1, 0);
+    int fadeMs = clamp(50, 60, 2000);          // 50 -> 60ms
+
+    // The primary button carrying the effect bundle, plus its audio cues.
+    int demo = uiCard(colR);
+    uiWidgetExpand(demo, 1, 0);
+    int demoBox = uiBox(demo, 1, 10);
+    uiWidgetExpand(demoBox, 1, 0);
+    uiWidgetMargin(demoBox, 14, 14, 14, 14);
+
+    btnConfirm = uiButton(demoBox, "\u2756 Confirm");
+    uiWidgetSuggested(btnConfirm, 1);
+    btnFade = uiButton(demoBox, "Toggle fade");
+    int cues = uiBox(demoBox, 1, 8);
+    uiWidgetExpand(cues, 1, 0);
+
+    uiSpacer(cues);
+
+    // Scheduled-rotation card (full width): the 'schene' == memo key epoch,
+    // made visible by a live, accent-hued throbber.
+    int rot = uiCard(content);
+    uiWidgetExpand(rot, 1, 0);
+    int rotBox = uiBox(rot, 1, 8);
+    uiWidgetExpand(rotBox, 1, 0);
+    uiWidgetMargin(rotBox, 14, 14, 14, 14);
+
+    int rrow = uiBox(rotBox, 1, 12);
+    spin = uiThrobber(rrow, 1);                // 1 = active/spinning
+    uiThrobberSetHue(spin, 215.0);             // blue accent hue
+    uiThrobberSetIntensity(spin, 0.9);
+    uiThrobberSetWidth(spin, 4);
+    int epochBox = uiBox(rrow, 1, 2);
+    uiWidgetExpand(epochBox, 1, 0);
+
+    uiSpacer(rrow);
+
+    // --- Connectivity popover: opened from the lower-right Wi-Fi status icon. ---
+    // Native Wi-Fi scan/connect/disconnect are backed by wifi-common via the SLVM.
+    wifiPanel = uiPopupCreate(root);
+    uiWidgetExpand(wifiPanel, 1, 0);
+    uiWidgetMargin(wifiPanel, 4, 8, 4, 8);
+    int wifiBox = uiBox(wifiPanel, 1, 5);
+    uiWidgetExpand(wifiBox, 1, 0);
+    uiWidgetMargin(wifiBox, 8, 10, 8, 10);
+    int wifiHeading = uiHeading(wifiBox, "Connectivity", 18);
+    wifiStatusLabel = uiLabel(wifiBox, "Scan to list nearby networks; connect with an OS-saved profile.");
+    wifiProfileEntry = uiEntry(wifiBox, "Optional saved profile (blank = OS authentication)");
+    wifiScanButton = uiButton(wifiBox, "Scan for Networks");
+    wifiConnectButton = uiButton(wifiBox, "Connect to First Listed Network");
+    wifiDisconnectButton = uiButton(wifiBox, "Disconnect");
+    wifiSettingsButton = uiButton(wifiBox, "Network Settings");
+    wifiInfoButton = uiButton(wifiBox, "Connection Details");
+    wifiCloseButton = uiButton(wifiBox, "Close Menu");
+    uiWidgetVisible(wifiPanel, 0);
+
+    int status = uiStatusBar(root);
+    statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
+    uiWidgetMargin(statusLabel, 0, 12, 0, 12);
+    uiSpacer(status);
+    wifiButton = uiButton(status, "Wi-Fi");
+    // Permanent Wi-Fi identity: Wifi; PNG is primary, SVG/JPEG are retained alternates.
+    uiWidgetSetIcon(wifiButton, "user-interface/icons/wifi.png", "Wifi");
+    uiWidgetMargin(wifiButton, 0, 8, 0, 8);
+    uiWidgetSuggested(wifiButton, 1);
+
+    uiWindowShow(win);
+    print("Window shown (throbber animating). Buttons fire the cue and toggle fade.");
+
+    // --- Interactive event loop: pump, then poll the effect buttons. ---
+    int confirms = 0;
+    int hue = 215;
+    boolean faded = false;
+    boolean running = true;
+    while (running) {
+      int dispatched = uiAppPump(app, 1);
+      if (dispatched < 0) { running = false; }
+      else {
+
+        // Menubar top-level buttons toggle their dropdown panels.
+        if (uiWidgetTakeActivated(menuFileButton) == 1) { openMenu(0); }
+        if (uiWidgetTakeActivated(menuEffectsButton) == 1) { openMenu(1); }
+        if (uiWidgetTakeActivated(menuViewButton) == 1) { openMenu(2); }
+        if (uiWidgetTakeActivated(menuHelpButton) == 1) { openMenu(3); }
+        if (uiWidgetTakeActivated(wifiButton) == 1) { openMenu(4); }
+        // Menu items announce the selected command, then dismiss the dropdown.
+        if (uiWidgetTakeActivated(menuFileItem1) == 1) {
+          uiWidgetSetText(statusLabel, "File · Save Preset");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuFileItem2) == 1) {
+          uiWidgetSetText(statusLabel, "File · Load Preset");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuEffectsItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Effects · Glow And Shine");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuEffectsItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Effects · Fade Controls");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuViewItem1) == 1) {
+          uiWidgetSetText(statusLabel, "View · Rotation Schedule");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuViewItem2) == 1) {
+          uiWidgetSetText(statusLabel, "View · Effect Status");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Help · Effects Guide");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Help · About THUAL");
+          openMenu(-1);
+        }
+        // Scan results are sourced from the native OS provider, never fabricated.
+        if (uiWidgetTakeActivated(wifiScanButton) == 1) {
+          int scanResult = uiWifiScan();
+          int networkCount = uiWifiNetworkCount();
+          if (scanResult == 0 && networkCount > 0) {
+            uiWidgetSetText(wifiStatusLabel, "Found " + networkCount + " network(s). First: " + uiWifiNetworkSsid(0) + " · " + uiWifiNetworkSignal(0) + "% · " + uiWifiNetworkSecurity(0));
+            uiWidgetSetText(statusLabel, "Connectivity · scan complete");
+          } else {
+            uiWidgetSetText(wifiStatusLabel, "Wi-Fi scan: " + uiWifiStatusName(scanResult) + " (" + networkCount + " networks)");
+          }
+        }
+        if (uiWidgetTakeActivated(wifiConnectButton) == 1) {
+          String profileName = uiWidgetGetText(wifiProfileEntry);
+          int connectResult = uiWifiConnect(0, profileName);
+          uiWidgetSetText(wifiStatusLabel, "Connect: " + uiWifiStatusName(connectResult));
+          uiWidgetSetText(statusLabel, "Connectivity · " + uiWifiStatusName(connectResult));
+        }
+        if (uiWidgetTakeActivated(wifiDisconnectButton) == 1) {
+          int disconnectResult = uiWifiDisconnect();
+          uiWidgetSetText(wifiStatusLabel, "Disconnect: " + uiWifiStatusName(disconnectResult));
+        }
+        if (uiWidgetTakeActivated(wifiSettingsButton) == 1) {
+          int settingsResult = uiWifiOpenSettings();
+          if (settingsResult == 0) {
+            uiWidgetSetText(wifiStatusLabel, "Opened the operating system's network settings.");
+            uiWidgetSetText(statusLabel, "Connectivity · opened system network settings");
+            openMenu(-1);
+          } else {
+            wifiActionUnavailable("Opening network settings");
+          }
+        }
+        if (uiWidgetTakeActivated(wifiInfoButton) == 1) {
+          if (uiWifiNetworkCount() > 0) {
+            uiWidgetSetText(wifiStatusLabel, uiWifiNetworkSsid(0) + " · " + uiWifiNetworkBssid(0) + " · " + uiWifiNetworkSignal(0) + "% · " + uiWifiNetworkSecurity(0));
+          } else {
+            uiWidgetSetText(wifiStatusLabel, "Scan before requesting connection details.");
+          }
+        }
+        if (uiWidgetTakeActivated(wifiCloseButton) == 1) { openMenu(-1); }
+
+        if (uiWidgetTakeActivated(btnConfirm) == 1) {
+
+          openMenu(-1);
+          confirms = confirms + 1;
+          // Advance the schene: rotate the throbber hue a quarter-turn and
+          // report the memo key epoch stepping with it.
+          hue = hue + 90; if (hue >= 360) { hue = hue - 360; }
+          uiThrobberSetHue(spin, hue);
+          uiWidgetSetText(statusLabel, "cue: confirm \u2713 \u00B7 schene tick " + confirms
+              + " (memo key epoch advanced; hue " + hue + "deg)");
+        }
+        if (uiWidgetTakeActivated(btnFade) == 1) {
+          openMenu(-1);
+          faded = !faded;
+          // Fade the primary action out/in (visible-toggle stands in for opacity).
+          uiWidgetVisible(btnConfirm, faded ? 0 : 1);
+          uiWidgetSetText(statusLabel, faded
+              ? "fade-out: primary action faded (SLGuiEffects.fadeOut)"
+              : "fade-in: primary action restored (SLGuiEffects.fadeIn)");
+        }
+      }
+    }
+
+    uiThemeDestroy(theme);
+    uiAppDestroy(app);
+    print("event loop exited; confirms this session: " + confirms);
+  }
+}

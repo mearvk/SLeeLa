@@ -1,0 +1,18 @@
+=== philosophers: the perfect Constructor (example) ===
+ordain(Patch): Patch: rank 3, category Inception, 17 below the crown (Approval)
+ordain(Aim):   Aim: rank 6, category Intent, 14 below the crown (Approval)
+ordain(crown): Approval: rank 20, category Closure, 0 below the crown (Approval)
+
+-- favor granted --
+chain:  Constructor() :: Patch :: Seed :: Aim :: Guide
+colors: Gold/Yellow :: Green :: Gold/Yellow :: Gold/Yellow
+verdict: favor granted
+lives free: true   phase: free   quorum: 2
+
+-- favor withheld --
+chain:  Constructor() :: Patch :: Seed :: Aim :: Guide
+colors: Gold/Yellow :: Green :: Gold/Yellow :: Gold/Yellow
+verdict: favor withheld
+lives free: false   phase: closed   quorum: 3
+
+done

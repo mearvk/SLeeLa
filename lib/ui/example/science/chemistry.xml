@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="example-science-chemistry-001" kind="science" title="Chemistry — ratio and similarity over standard atomic weights"/>
+  <science model="native-chemistry">
+    <discipline name="chemistry">
+      <operation name="ratio"      sequence="001"><arg value="15.999"/><arg value="12.011"/></operation>
+      <operation name="ratio"      sequence="002"><arg value="12.011"/><arg value="1.008"/></operation>
+      <operation name="ratio"      sequence="003"><arg value="4.0026"/><arg value="1.008"/></operation>
+      <operation name="similarity" sequence="004"><arg value="14.007"/><arg value="15.999"/></operation>
+      <operation name="similarity" sequence="005"><arg value="1.008"/><arg value="4.0026"/></operation>
+      <operation name="similarity" sequence="006"><arg value="12.011"/><arg value="14.007"/></operation>
+    </discipline>
+  </science>
+</bodi>

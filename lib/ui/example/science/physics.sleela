@@ -1,0 +1,68 @@
+<<
+   example/science/physics.sleela
+   A runnable SLeeLa PHYSICS program on the native `physics` subject library
+   (import physics;). It exercises the subject library's formula families
+   directly — mechanics, gravitation, special relativity, electricity, waves —
+   via qualified calls like physics.velocity(...). Physics depends on Math, so
+   the subject library requires `import math;` as well.
+   
+   The inputs are grounded in the CODATA 2022 constants the physics library
+   carries and Earth's mass/radius from churn/2/data/solar-system.json.
+   
+   Run (a built sleela binary is required — ./scripts/build-linux.sh):
+     SLEELA_SHEET=./SHEET.sheet \
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/science/physics.sleela
+>>
+#sleela 2.1
+import math;
+import physics;
+
+class SciencePhysics {
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa Science — Physics (import physics;)");
+
+    // Earth, from churn/2/data/solar-system.json.
+    double mEarth = 5.97 * math.pow(10.0, 24.0);   // kg
+    double rEarth = 6.3781 * math.pow(10.0, 6.0);  // m
+    // Standard gravity for the kinematics line.
+    double g = 9.80665;                             // m/s^2
+    // 0.5 c, for the relativity lines.
+    double v = 1.5 * math.pow(10.0, 8.0);           // m/s
+
+    print("[mechanics]");
+    print("  velocity(100 m, 5 s)                 = " + physics.velocity(100.0, 5.0) + " m/s");
+    print("  acceleration(30 m/s, 6 s)            = " + physics.acceleration(30.0, 6.0) + " m/s^2");
+    print("  kinematic_position(0, 20, g, 3 s)    = " + physics.kinematic_position(0.0, 20.0, g, 3.0) + " m");
+    print("  force(10 kg, g)                      = " + physics.force(10.0, g) + " N");
+    print("  kinetic_energy(2 kg, 20 m/s)         = " + physics.kinetic_energy(2.0, 20.0) + " J");
+
+    print("[gravitation]");
+    print("  gravitational_force(Earth, 100 kg, R) = " + physics.gravitational_force(mEarth, 100.0, rEarth) + " N");
+    print("  escape_velocity(Earth)               = " + physics.escape_velocity(mEarth, rEarth) + " m/s");
+
+    print("[special relativity]  (v = 1.5e8 m/s ~ 0.5c)");
+    print("  lorentz_gamma(0.5c)                  = " + physics.lorentz_gamma(v));
+    print("  relativistic_energy(1 kg, 0.5c)      = " + physics.relativistic_energy(1.0, v) + " J");
+    print("  momentum(1 kg, 0.5c)                 = " + physics.momentum(1.0, v) + " kg m/s");
+
+    print("[electricity]");
+    print("  ohms_voltage(2 A, 60 ohm)            = " + physics.ohms_voltage(2.0, 60.0) + " V");
+    print("  electric_power(120 V, 2 A)           = " + physics.electric_power(120.0, 2.0) + " W");
+
+    print("[waves]  (microwave, lambda = 0.06 m)");
+    print("  wave_frequency(c, 0.06 m)            = " + physics.wave_frequency(299792458.0, 0.06) + " Hz");
+    print("  angular_frequency(60 Hz)             = " + physics.angular_frequency(60.0) + " rad/s");
+    print("  wavenumber(0.06 m)                   = " + physics.wavenumber(0.06) + " rad/m");
+
+    banner("Done");
+    print("Physics is a native subject library (import physics;); it builds on math.");
+  }
+}

@@ -1,0 +1,5 @@
+=== first-class Guide-chain operator (syntax 2.3) ===
+chain:  :: Patch :: Seed :: Aim :: Guide
+total: 113
+just aim: 10
+done

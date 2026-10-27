@@ -1,0 +1,15 @@
+================================================================
+  SLeeLa Science — Chemistry (import chemistry;)
+================================================================
+[mass ratios]  ratio(a, b) = a / b
+  O / C   = 1.33203
+  C / H   = 11.9157
+  He / H  = 3.97083
+[similarity]  similarity(a, b) = 1 - |a-b| / max(|a|,|b|)
+  N vs O  = 0.875492
+  C vs N  = 0.8575
+  H vs He = 0.251836
+================================================================
+  Done
+================================================================
+Chemistry is an independent subject library; it needs import math; for its kernels.

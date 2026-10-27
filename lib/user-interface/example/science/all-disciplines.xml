@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="example-science-all-001" kind="science" title="All executable science disciplines — grand tour"/>
+  <science model="native">
+    <discipline name="math">
+      <operation name="sqrt"  sequence="001"><arg value="81"/></operation>
+      <operation name="hypot" sequence="002"><arg value="5"/><arg value="12"/></operation>
+      <operation name="pow"   sequence="003"><arg value="2"/><arg value="10"/></operation>
+    </discipline>
+    <discipline name="physics">
+      <operation name="escape_velocity" sequence="004"><arg value="5.97e24"/><arg value="6.3781e6"/></operation>
+      <operation name="kinetic_energy"  sequence="005"><arg value="2"/><arg value="20"/></operation>
+      <operation name="electric_power"  sequence="006"><arg value="120"/><arg value="2"/></operation>
+    </discipline>
+    <discipline name="chemistry">
+      <operation name="ratio"      sequence="007"><arg value="15.999"/><arg value="12.011"/></operation>
+      <operation name="similarity" sequence="008"><arg value="14.007"/><arg value="15.999"/></operation>
+    </discipline>
+    <discipline name="data-analytics">
+      <operation name="mean"   sequence="009">
+        <arg value="4.2"/><arg value="62.5"/><arg value="59.9"/><arg value="2.7"/><arg value="11.1"/>
+      </operation>
+      <operation name="stddev" sequence="010">
+        <arg value="4.2"/><arg value="62.5"/><arg value="59.9"/><arg value="2.7"/><arg value="11.1"/>
+      </operation>
+    </discipline>
+  </science>
+</bodi>

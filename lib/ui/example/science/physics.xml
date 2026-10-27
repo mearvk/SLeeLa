@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="example-science-physics-001" kind="science" title="Physics — full operation tour"/>
+  <science model="native-physics">
+    <discipline name="physics">
+      <operation name="velocity"           sequence="001"><arg value="100"/><arg value="5"/></operation>
+      <operation name="acceleration"       sequence="002"><arg value="30"/><arg value="6"/></operation>
+      <operation name="kinematic_position" sequence="003"><arg value="0"/><arg value="20"/><arg value="9.80665"/><arg value="3"/></operation>
+      <operation name="force"              sequence="004"><arg value="10"/><arg value="9.80665"/></operation>
+      <operation name="kinetic_energy"     sequence="005"><arg value="2"/><arg value="20"/></operation>
+      <operation name="gravitational_force" sequence="006"><arg value="5.97e24"/><arg value="100"/><arg value="6.3781e6"/></operation>
+      <operation name="escape_velocity"    sequence="007"><arg value="5.97e24"/><arg value="6.3781e6"/></operation>
+      <operation name="lorentz_gamma"      sequence="008"><arg value="150000000"/></operation>
+      <operation name="relativistic_energy" sequence="009"><arg value="1"/><arg value="150000000"/></operation>
+      <operation name="momentum"           sequence="010"><arg value="1"/><arg value="150000000"/></operation>
+      <operation name="ohms_voltage"       sequence="011"><arg value="2"/><arg value="60"/></operation>
+      <operation name="electric_power"     sequence="012"><arg value="120"/><arg value="2"/></operation>
+      <operation name="wave_frequency"     sequence="013"><arg value="299792458"/><arg value="0.06"/></operation>
+      <operation name="angular_frequency"  sequence="014"><arg value="60"/></operation>
+      <operation name="wavenumber"         sequence="015"><arg value="0.06"/></operation>
+      <operation name="neutrino_oscillation_probability" sequence="016"><arg value="0.5872"/><arg value="2.5e-3"/><arg value="1300"/><arg value="2.5"/></operation>
+    </discipline>
+  </science>
+</bodi>
