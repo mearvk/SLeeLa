@@ -89,4 +89,23 @@ class SLButton extends SLWidget {
     if (widget < 0) { return false; }
     return uiWidgetTakeActivated(widget) == 1;
   }
+
+  < True while the pointer is over the button. >
+  boolean hovered() {
+    return widget >= 0 && uiWidgetIsHovered(widget) == 1;
+  }
+
+  < One-shot pointer press/release and hover transition events. >
+  boolean takePressed() {
+    return widget >= 0 && uiWidgetTakePressed(widget) == 1;
+  }
+  boolean takeReleased() {
+    return widget >= 0 && uiWidgetTakeReleased(widget) == 1;
+  }
+  boolean takeHoverEntered() {
+    return widget >= 0 && uiWidgetTakeHoverEntered(widget) == 1;
+  }
+  boolean takeHoverLeft() {
+    return widget >= 0 && uiWidgetTakeHoverLeft(widget) == 1;
+  }
 }
