@@ -145,6 +145,14 @@ public:
             if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register class layout '"+cls.name+"'");
             structLayout_[cls.name]=layout;
         }
+        if(inheritance) {
+            for(const auto& cls:prog_.classes) {
+                const std::string& parent=cls.java.superclass;
+                if(parent.empty() || !structLayout_.count(parent) || !structLayout_.count(cls.name)) continue;
+                const int rc=slvm_set_struct_parent(vm_,structLayout_.at(cls.name).typeIndex,structLayout_.at(parent).typeIndex);
+                if(rc!=0) throw std::runtime_error("Semantic error: could not register runtime parent class for '"+cls.name+"'");
+            }
+        }
         for(const auto& cls:prog_.classes) for(const auto& f:cls.fields) if(f.isStatic){
             const std::string key=cls.name+"::"+f.name;
             fieldGlobal_[key]=slvm_declare_global(vm_,key.c_str()); fieldProtected_[key]=f.isProtected; fieldOwner_[key]=cls.name; fields_.push_back(&f);
