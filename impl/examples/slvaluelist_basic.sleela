@@ -25,10 +25,12 @@ class SLValueListBasicExample {
     values.add(order);
     print(values.length());
     print(recurseCount(values, 0));
-    < Values can be retrieved as Any and passed to methods accepting Any.
-      Checked conversion back to a concrete class is not yet available. >
     Any retained = values.get(2);
     print(retained);
+    print(retained instanceof Customer); // true: runtime type inspection
+    print(retained instanceof Order);    // false: different runtime class
+    Customer restored = (Customer) retained; // checked runtime cast
+    print(restored.label);
     return 0;
   }
 }
