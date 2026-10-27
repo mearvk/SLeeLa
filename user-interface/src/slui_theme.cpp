@@ -295,7 +295,8 @@ extern "C" SLUIStatus slui_theme_load_config(SLUITheme* out, const char* path) {
             if (name == "default" || name == "sleela-base") preset = SLUI_THEME_SLEELA_BASE;
             else if (name == "white") preset = SLUI_THEME_WHITE;
             else if (name == "blue") preset = SLUI_THEME_BLUE;
-            else if (name == "black" || name == "slick-black") preset = SLUI_THEME_BLACK;
+            else if (name == "black") preset = SLUI_THEME_BLACK;
+            else if (name == "slick-black") preset = SLUI_THEME_SLICK_BLACK;
             else if (name == "gray" || name == "grey" || name == "graphite") preset = SLUI_THEME_GRAY;
             else known = false;
             if (known) slui::theme_fill_preset(out, preset);
