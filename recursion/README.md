@@ -1,6 +1,6 @@
 # SLeeLa Recursion
 
-This directory contains documentation, examples, and implementation notes for recursive programming in SLeeLa.
+This directory contains documentation, examples, and implementation notes for recursive programming in SLeeLa. The curated C/C++ source-file prototypes are collected in [`stanchion/`](stanchion/README.md).
 
 ## Scope
 
@@ -20,4 +20,4 @@ This directory contains documentation, examples, and implementation notes for re
 
 ## Status
 
-This folder establishes the documentation entry point. Add SLeeLa source examples and tests here as they are implemented and verified.
+The `stanchion/` subdirectory provides 12 standalone C/C++ prototypes for generic, applied, scientific, and teaching use. These are reference examples, not SLeeLa-language implementations; compile and test them before treating them as verified.
