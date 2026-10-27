@@ -1,0 +1,98 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Linked complex sequence. Public linked nodes keep the representation inspectable.
+#sleela 2.1
+class SLSignalComplexSeries {
+  SLSignalComplexSample head;
+  SLSignalComplexSample tail;
+  int count;
+
+  void clear() {
+    head = null;
+    tail = null;
+    count = 0;
+  }
+
+  int size() { return count; }
+  boolean empty() { return count == 0; }
+
+  boolean appendParts(double realPart, double imaginaryPart) {
+    if (!SLSignalProcessingStatus.isFinite(realPart)
+        || !SLSignalProcessingStatus.isFinite(imaginaryPart)) { return false; }
+    SLSignalComplexSample node = new SLSignalComplexSample();
+    node.set(realPart, imaginaryPart);
+    node.previous = tail;
+    if (tail == null) { head = node; }
+    else { tail.next = node; }
+    tail = node;
+    count = count + 1;
+    return true;
+  }
+
+  boolean appendValue(SLSignalComplex value) {
+    if (value == null || !value.finite()) { return false; }
+    return appendParts(value.re, value.im);
+  }
+
+  SLSignalComplexSample sampleAt(int index) {
+    if (index < 0 || index >= count) { return null; }
+    SLSignalComplexSample node;
+    int step;
+    if (index <= count / 2) {
+      node = head;
+      step = 0;
+      while (step < index) {
+        node = node.next;
+        step = step + 1;
+      }
+    } else {
+      node = tail;
+      step = count - 1;
+      while (step > index) {
+        node = node.previous;
+        step = step - 1;
+      }
+    }
+    return node;
+  }
+
+  boolean valuesFinite() {
+    SLSignalComplexSample node = head;
+    while (node != null) {
+      if (!SLSignalProcessingStatus.isFinite(node.re)
+          || !SLSignalProcessingStatus.isFinite(node.im)) { return false; }
+      node = node.next;
+    }
+    return true;
+  }
+
+  boolean appendSeries(SLSignalComplexSeries source) {
+    if (source == null || source == this) { return false; }
+    SLSignalComplexSample node = source.head;
+    while (node != null) {
+      if (!appendParts(node.re, node.im)) { return false; }
+      node = node.next;
+    }
+    return true;
+  }
+
+  SLSignalComplexSeries cloneSeries() {
+    if (!valuesFinite()) { return null; }
+    SLSignalComplexSeries result = new SLSignalComplexSeries();
+    result.clear();
+    if (!result.appendSeries(this)) { return null; }
+    return result;
+  }
+
+  boolean copyValuesFrom(SLSignalComplexSeries source) {
+    if (source == null || source.count != count) { return false; }
+    SLSignalComplexSample targetNode = head;
+    SLSignalComplexSample sourceNode = source.head;
+    while (targetNode != null && sourceNode != null) {
+      targetNode.re = sourceNode.re;
+      targetNode.im = sourceNode.im;
+      targetNode = targetNode.next;
+      sourceNode = sourceNode.next;
+    }
+    return targetNode == null && sourceNode == null;
+  }
+}

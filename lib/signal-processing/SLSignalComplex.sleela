@@ -1,0 +1,21 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Scalar complex value matching SleelaSPComplex (re, im).
+#sleela 2.1
+import math;
+
+class SLSignalComplex {
+  double re;
+  double im;
+
+  void set(double realPart, double imaginaryPart) {
+    re = realPart;
+    im = imaginaryPart;
+  }
+
+  boolean finite() {
+    return SLSignalProcessingStatus.isFinite(re)
+        && SLSignalProcessingStatus.isFinite(im);
+  }
+
+  double magnitude() { return math.hypot(re, im); }
+}

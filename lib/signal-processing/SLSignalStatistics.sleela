@@ -1,0 +1,68 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Scalar statistics using SLeeLa source operations.
+#sleela 2.1
+import math;
+
+class SLSignalStatistics {
+  int mean(SLSignalSeries input, SLSignalScalar result) {
+    if (input == null || result == null || input.size() == 0) {
+      return SLSignalProcessingStatus.ERR_INVALID;
+    }
+    if (!input.valuesFinite()) { return SLSignalProcessingStatus.ERR_NUMERIC; }
+
+    double sum = 0.0;
+    double correction = 0.0;
+    SLSignalSample node = input.head;
+    while (node != null) {
+      double adjusted = node.value - correction;
+      double nextSum = sum + adjusted;
+      correction = (nextSum - sum) - adjusted;
+      sum = nextSum;
+      if (!SLSignalProcessingStatus.isFinite(sum)
+          || !SLSignalProcessingStatus.isFinite(correction)) {
+        return SLSignalProcessingStatus.ERR_NUMERIC;
+      }
+      node = node.next;
+    }
+    result.value = sum / input.size();
+    if (!SLSignalProcessingStatus.isFinite(result.value)) {
+      return SLSignalProcessingStatus.ERR_NUMERIC;
+    }
+    return SLSignalProcessingStatus.OK;
+  }
+
+  int rms(SLSignalSeries input, SLSignalScalar result) {
+    if (input == null || result == null || input.size() == 0) {
+      return SLSignalProcessingStatus.ERR_INVALID;
+    }
+    if (!input.valuesFinite()) { return SLSignalProcessingStatus.ERR_NUMERIC; }
+
+    double scale = 0.0;
+    double sumSquares = 1.0;
+    SLSignalSample node = input.head;
+    while (node != null) {
+      double value = math.abs(node.value);
+      if (value != 0.0) {
+        if (scale < value) {
+          double ratio = scale / value;
+          sumSquares = 1.0 + sumSquares * ratio * ratio;
+          scale = value;
+        } else {
+          double ratio = value / scale;
+          sumSquares = sumSquares + ratio * ratio;
+        }
+      }
+      if (!SLSignalProcessingStatus.isFinite(sumSquares)) {
+        return SLSignalProcessingStatus.ERR_NUMERIC;
+      }
+      node = node.next;
+    }
+
+    if (scale == 0.0) { result.value = 0.0; }
+    else { result.value = scale * math.sqrt(sumSquares / input.size()); }
+    if (!SLSignalProcessingStatus.isFinite(result.value)) {
+      return SLSignalProcessingStatus.ERR_NUMERIC;
+    }
+    return SLSignalProcessingStatus.OK;
+  }
+}

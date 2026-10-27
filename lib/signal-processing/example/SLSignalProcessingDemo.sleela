@@ -1,0 +1,66 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Demonstrates the SLeeLa mirror of the native signal-processing routines.
+#sleela 2.1
+class SLSignalProcessingDemo {
+  void printSeries(String label, SLSignalSeries samples) {
+    print(label);
+    SLSignalSample node = samples.head;
+    while (node != null) {
+      print("  " + node.value);
+      node = node.next;
+    }
+  }
+
+  void main() {
+    SLSignalProcessing api = new SLSignalProcessing();
+    SLSignalSeries signal = new SLSignalSeries();
+    SLSignalSeries smoothed = new SLSignalSeries();
+    SLSignalSeries kernel = new SLSignalSeries();
+    SLSignalSeries convolution = new SLSignalSeries();
+    SLSignalSeries hann = new SLSignalSeries();
+    SLSignalScalar scalar = new SLSignalScalar();
+    signal.clear();
+    smoothed.clear();
+    kernel.clear();
+    convolution.clear();
+    hann.clear();
+
+    signal.append(1.0);
+    signal.append(2.0);
+    signal.append(3.0);
+    signal.append(4.0);
+    signal.append(5.0);
+
+    int status = api.mean(signal, scalar);
+    print("SLeeLa Signal Processing " + api.version());
+    print("mean status=" + api.statusText(status) + ", value=" + scalar.get());
+    status = api.rms(signal, scalar);
+    print("RMS status=" + api.statusText(status) + ", value=" + scalar.get());
+
+    status = api.movingAverage(signal, 3, smoothed);
+    print("moving average status=" + api.statusText(status));
+    printSeries("causal moving average:", smoothed);
+
+    kernel.append(1.0);
+    kernel.append(1.0);
+    status = api.convolve(signal, kernel, convolution);
+    print("convolution status=" + api.statusText(status));
+    printSeries("full convolution:", convolution);
+
+    status = api.hannWindow(5, hann);
+    print("Hann window status=" + api.statusText(status));
+    printSeries("symmetric Hann window:", hann);
+
+    SLSignalComplexSeries impulse = new SLSignalComplexSeries();
+    SLSignalSeries magnitude = new SLSignalSeries();
+    impulse.clear();
+    magnitude.clear();
+    impulse.appendParts(1.0, 0.0);
+    impulse.appendParts(0.0, 0.0);
+    impulse.appendParts(0.0, 0.0);
+    impulse.appendParts(0.0, 0.0);
+    status = api.magnitudeSpectrum(impulse, magnitude);
+    print("magnitude spectrum status=" + api.statusText(status));
+    printSeries("unnormalized nonnegative-frequency magnitudes:", magnitude);
+  }
+}

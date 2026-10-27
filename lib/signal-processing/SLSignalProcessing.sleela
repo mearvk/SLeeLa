@@ -1,0 +1,47 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Small source-level entry point mirroring the C API and C++ vector helpers.
+#sleela 2.1
+class SLSignalProcessing {
+  String version() { return SLSignalProcessingStatus.version(); }
+  String statusText(int code) { return SLSignalProcessingStatus.text(code); }
+
+  int mean(SLSignalSeries input, SLSignalScalar output) {
+    SLSignalStatistics operation = new SLSignalStatistics();
+    return operation.mean(input, output);
+  }
+
+  int rms(SLSignalSeries input, SLSignalScalar output) {
+    SLSignalStatistics operation = new SLSignalStatistics();
+    return operation.rms(input, output);
+  }
+
+  int movingAverage(SLSignalSeries input, int window, SLSignalSeries output) {
+    SLSignalFilters operation = new SLSignalFilters();
+    return operation.movingAverage(input, window, output);
+  }
+
+  int convolve(SLSignalSeries input, SLSignalSeries kernel, SLSignalSeries output) {
+    SLSignalFilters operation = new SLSignalFilters();
+    return operation.convolve(input, kernel, output);
+  }
+
+  int hannWindow(int length, SLSignalSeries output) {
+    SLSignalFilters operation = new SLSignalFilters();
+    return operation.hannWindow(length, output);
+  }
+
+  int dft(SLSignalComplexSeries input, SLSignalComplexSeries output, boolean inverse) {
+    SLSignalDFT operation = new SLSignalDFT();
+    return operation.transform(input, output, inverse);
+  }
+
+  int fft(SLSignalComplexSeries data, boolean inverse) {
+    SLSignalFFT operation = new SLSignalFFT();
+    return operation.transform(data, inverse);
+  }
+
+  int magnitudeSpectrum(SLSignalComplexSeries input, SLSignalSeries output) {
+    SLSignalMagnitudeSpectrum operation = new SLSignalMagnitudeSpectrum();
+    return operation.compute(input, output);
+  }
+}

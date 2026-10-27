@@ -1,0 +1,16 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Doubly-linked complex sample node.
+#sleela 2.1
+class SLSignalComplexSample {
+  double re;
+  double im;
+  SLSignalComplexSample previous;
+  SLSignalComplexSample next;
+
+  void set(double realPart, double imaginaryPart) {
+    re = realPart;
+    im = imaginaryPart;
+    previous = null;
+    next = null;
+  }
+}

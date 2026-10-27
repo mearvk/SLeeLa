@@ -1,0 +1,101 @@
+// @author Max Rupplin — MEARVK LLC — 2026
+// Recursive radix-2 Cooley–Tukey FFT using linked SLeeLa complex series.
+#sleela 2.1
+import math;
+
+class SLSignalFFT {
+  boolean isPowerOfTwo(int length) {
+    if (length <= 0) { return false; }
+    int value = length;
+    while (value > 1) {
+      if (value % 2 != 0) { return false; }
+      value = value / 2;
+    }
+    return true;
+  }
+
+  int transform(SLSignalComplexSeries data, boolean inverse) {
+    if (data == null || data.size() <= 0) {
+      return SLSignalProcessingStatus.ERR_INVALID;
+    }
+    int n = data.size();
+    if (!isPowerOfTwo(n)) { return SLSignalProcessingStatus.ERR_SIZE; }
+    if (!data.valuesFinite()) { return SLSignalProcessingStatus.ERR_NUMERIC; }
+
+    SLSignalComplexSeries transformed = recurse(data, inverse);
+    if (transformed == null) { return SLSignalProcessingStatus.ERR_NUMERIC; }
+    if (inverse) {
+      SLSignalComplexSample node = transformed.head;
+      while (node != null) {
+        node.re = node.re / n;
+        node.im = node.im / n;
+        if (!SLSignalProcessingStatus.isFinite(node.re)
+            || !SLSignalProcessingStatus.isFinite(node.im)) {
+          return SLSignalProcessingStatus.ERR_NUMERIC;
+        }
+        node = node.next;
+      }
+    }
+    return data.copyValuesFrom(transformed)
+        ? SLSignalProcessingStatus.OK : SLSignalProcessingStatus.ERR_NUMERIC;
+  }
+
+  int forward(SLSignalComplexSeries data) { return transform(data, false); }
+  int inverse(SLSignalComplexSeries data) { return transform(data, true); }
+
+  SLSignalComplexSeries recurse(SLSignalComplexSeries input, boolean inverse) {
+    if (input == null || input.size() <= 0 || !input.valuesFinite()) { return null; }
+    int n = input.size();
+    if (n == 1) { return input.cloneSeries(); }
+
+    int half = n / 2;
+    SLSignalComplexSeries even = new SLSignalComplexSeries();
+    SLSignalComplexSeries odd = new SLSignalComplexSeries();
+    even.clear();
+    odd.clear();
+    int index = 0;
+    SLSignalComplexSample source = input.head;
+    while (source != null) {
+      boolean ok;
+      if (index % 2 == 0) { ok = even.appendParts(source.re, source.im); }
+      else { ok = odd.appendParts(source.re, source.im); }
+      if (!ok) { return null; }
+      source = source.next;
+      index = index + 1;
+    }
+
+    SLSignalComplexSeries evenTransform = recurse(even, inverse);
+    SLSignalComplexSeries oddTransform = recurse(odd, inverse);
+    if (evenTransform == null || oddTransform == null) { return null; }
+
+    SLSignalComplexSeries upper = new SLSignalComplexSeries();
+    SLSignalComplexSeries lower = new SLSignalComplexSeries();
+    upper.clear();
+    lower.clear();
+    SLSignalComplexSample e = evenTransform.head;
+    SLSignalComplexSample o = oddTransform.head;
+    double sign = inverse ? 1.0 : (0.0 - 1.0);
+    double twoPi = 2.0 * math.pi();
+    int k = 0;
+    while (k < half && e != null && o != null) {
+      double angle = sign * twoPi * k / n;
+      double cosine = math.cos(angle);
+      double sine = math.sin(angle);
+      double twiddleReal = o.re * cosine - o.im * sine;
+      double twiddleImaginary = o.re * sine + o.im * cosine;
+      if (!upper.appendParts(e.re + twiddleReal, e.im + twiddleImaginary)
+          || !lower.appendParts(e.re - twiddleReal, e.im - twiddleImaginary)) {
+        return null;
+      }
+      e = e.next;
+      o = o.next;
+      k = k + 1;
+    }
+    if (k != half || e != null || o != null) { return null; }
+
+    SLSignalComplexSeries result = new SLSignalComplexSeries();
+    result.clear();
+    if (!result.appendSeries(upper) || !result.appendSeries(lower)) { return null; }
+    return result;
+  }
+}
