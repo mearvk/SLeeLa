@@ -5,6 +5,7 @@
 
 #include "slui_widget.hpp"
 
+#include <algorithm>
 #include <functional>
 #include <vector>
 
@@ -35,6 +36,7 @@ Window::Window(void*, Backend* backend, const SLUIWindowConfig& cfg)
     /* Triple buffering is the native default for smoother rapid redraws,
      * resize, and animation. Applications may explicitly select single/double. */
     if (native_) native_->set_buffering(buffering_);
+    refresh_native_size_limits();
 }
 
 Window::~Window() = default;
@@ -44,6 +46,75 @@ void Window::set_buffering(SLUIBufferingMode mode) {
     if (native_) native_->set_buffering(mode);
     request_redraw();
 }
+
+SLUISize Window::layout_minimum() const {
+    PaintContext ctx;
+    ctx.canvas = const_cast<Canvas*>(&canvas_);
+    ctx.backend = backend_;
+    ctx.theme = &theme_;
+    if (backend_) backend_->set_font(theme_.font_family, theme_.font_size);
+    SLUISize natural = root_ ? root_->measure(ctx) : SLUISize{0, 0};
+    const int padding = 2 * SLUI_WINDOW_CONTENT_PADDING;
+    return SLUISize{std::max(0, natural.w) + padding,
+                    std::max(0, natural.h) + padding};
+}
+
+SLUISize Window::effective_minimum() const {
+    const SLUISize natural = layout_minimum();
+    int w = std::max(min_width_, natural.w);
+    int h = std::max(min_height_, natural.h);
+    /* If a later widget mutation grows beyond an explicit maximum, that maximum
+     * remains authoritative and the layout compresses inside the client area. */
+    if (max_width_ > 0) w = std::min(w, max_width_);
+    if (max_height_ > 0) h = std::min(h, max_height_);
+    return SLUISize{w, h};
+}
+
+void Window::refresh_native_size_limits() {
+    if (!native_) return;
+    const SLUISize min = effective_minimum();
+    if (min.w != applied_min_width_ || min.h != applied_min_height_ ||
+        max_width_ != applied_max_width_ || max_height_ != applied_max_height_) {
+        native_->set_size_limits(min.w, min.h, max_width_, max_height_);
+        applied_min_width_ = min.w; applied_min_height_ = min.h;
+        applied_max_width_ = max_width_; applied_max_height_ = max_height_;
+    }
+    const int cw = native_->width(), ch = native_->height();
+    const int w = std::max(min.w, max_width_ > 0 ? std::min(cw, max_width_) : cw);
+    const int h = std::max(min.h, max_height_ > 0 ? std::min(ch, max_height_) : ch);
+    if (w != cw || h != ch) native_->resize_content(w, h);
+}
+
+SLUIStatus Window::set_min_size(int width, int height) {
+    return set_size_limits(width, height, max_width_, max_height_);
+}
+SLUIStatus Window::set_max_size(int width, int height) {
+    return set_size_limits(min_width_, min_height_, width, height);
+}
+SLUIStatus Window::set_size_limits(int minw, int minh, int maxw, int maxh) {
+    if (minw < 0 || minh < 0 || maxw < 0 || maxh < 0) return SLUI_ERR_INVALID;
+    if ((maxw > 0 && minw > maxw) || (maxh > 0 && minh > maxh))
+        return SLUI_ERR_INVALID;
+    const SLUISize natural = layout_minimum();
+    if ((maxw > 0 && maxw < std::max(minw, natural.w)) ||
+        (maxh > 0 && maxh < std::max(minh, natural.h)))
+        return SLUI_ERR_INVALID;
+    min_width_ = minw; min_height_ = minh; max_width_ = maxw; max_height_ = maxh;
+    /* Apply as one transaction: no field is changed on invalid requests. */
+    request_redraw();
+    return SLUI_OK;
+}
+SLUIStatus Window::get_min_size(SLUISize* out) const {
+    if (!out) return SLUI_ERR_INVALID;
+    *out = effective_minimum();
+    return SLUI_OK;
+}
+SLUIStatus Window::get_max_size(SLUISize* out) const {
+    if (!out) return SLUI_ERR_INVALID;
+    *out = SLUISize{max_width_, max_height_};
+    return SLUI_OK;
+}
+
 
 SLUIWidget* Window::root_handle() {
     return reinterpret_cast<SLUIWidget*>(root_.get());
@@ -67,6 +138,7 @@ void Window::set_theme(const Theme& t) {
 
 void Window::request_redraw() {
     dirty_ = true;
+    refresh_native_size_limits();
     if (native_) native_->request_redraw();
 }
 
@@ -79,7 +151,9 @@ void Window::relayout() {
     int w = native_ ? native_->width() : canvas_.width();
     int h = native_ ? native_->height() : canvas_.height();
     canvas_.resize(w, h);
-    root_->arrange(ctx, Rect{0, 0, w, h});
+    const int inset = SLUI_WINDOW_CONTENT_PADDING;
+    root_->arrange(ctx, Rect{inset, inset, std::max(0, w - 2 * inset),
+                             std::max(0, h - 2 * inset)});
 }
 
 const Canvas& Window::render() {
@@ -165,6 +239,13 @@ void Window::handle_event(const SLUIEvent& ev) {
         return;
     }
     if (ev.type == SLUI_EVENT_RESIZE) {
+        const SLUISize minimum = effective_minimum();
+        const int w = std::max(minimum.w, max_width_ > 0 ? std::min(ev.width, max_width_) : ev.width);
+        const int h = std::max(minimum.h, max_height_ > 0 ? std::min(ev.height, max_height_) : ev.height);
+        if (w != ev.width || h != ev.height) {
+            if (native_) native_->resize_content(w, h);
+            return;
+        }
         canvas_.resize(ev.width, ev.height);
         request_redraw();
     }

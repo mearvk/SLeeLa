@@ -18,6 +18,7 @@
 #include "slui_backend.hpp"
 #include "slui_window.hpp"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -113,7 +114,7 @@ namespace {
 class CocoaWindow : public NativeWindow {
 public:
     CocoaWindow(NSWindow* w, SLUIView* v, SLUIWindowDelegate* d)
-        : window_(w), view_(v), delegate_(d) {}
+        : window_(w), view_(v), delegate_(d), original_max_size_([w contentMaxSize]) {}
     ~CocoaWindow() override {
         [window_ close];
     }
@@ -124,6 +125,17 @@ public:
         [window_ makeKeyAndOrderFront:nil];
     }
     void hide() override { [window_ orderOut:nil]; }
+    void set_size_limits(int minw, int minh, int maxw, int maxh) override {
+        min_width_ = minw; min_height_ = minh; max_width_ = maxw; max_height_ = maxh;
+        [window_ setContentMinSize:NSMakeSize(std::max(1, minw), std::max(1, minh))];
+        NSSize allowed_max = original_max_size_; if (maxw > 0) allowed_max.width = maxw; if (maxh > 0) allowed_max.height = maxh;
+        [window_ setContentMaxSize:allowed_max]; resize_content(width(), height());
+    }
+    void resize_content(int w, int h) override {
+        w = std::max(w, min_width_); h = std::max(h, min_height_);
+        if (max_width_ > 0) w = std::min(w, max_width_); if (max_height_ > 0) h = std::min(h, max_height_);
+        [window_ setContentSize:NSMakeSize(std::max(1, w), std::max(1, h))];
+    }
     int width() const override { return (int)[[window_ contentView] bounds].size.width; }
     int height() const override { return (int)[[window_ contentView] bounds].size.height; }
     void request_redraw() override { [view_ setNeedsDisplay:YES]; }
@@ -135,6 +147,8 @@ private:
     NSWindow* window_;
     SLUIView* view_;
     SLUIWindowDelegate* delegate_;
+    NSSize original_max_size_;
+    int min_width_ = 0, min_height_ = 0, max_width_ = 0, max_height_ = 0;
 };
 
 class CocoaBackend : public Backend {

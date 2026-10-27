@@ -26,6 +26,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include <algorithm>
 #include <cstring>
 #include <map>
 #include <string>
@@ -93,12 +94,14 @@ class X11Backend; /* fwd */
 
 class X11Window : public NativeWindow {
 public:
-    X11Window(Display* dpy, ::Window win, GC gc);
+    X11Window(Display* dpy, ::Window win, GC gc, bool resizable);
     ~X11Window() override;
 
     void set_title(const std::string& title) override;
     void show() override;
     void hide() override;
+    void set_size_limits(int minw, int minh, int maxw, int maxh) override;
+    void resize_content(int width, int height) override;
     int width() const override { return width_; }
     int height() const override { return height_; }
     void request_redraw() override { dirty_ = true; }
@@ -129,7 +132,9 @@ private:
     Display* dpy_;
     ::Window win_;
     GC gc_;
+    bool resizable_ = true;
     int width_ = 0, height_ = 0;
+    int min_width_ = 0, min_height_ = 0, max_width_ = 0, max_height_ = 0;
     bool dirty_ = true;
     XImage* image_ = nullptr;
     std::vector<uint32_t> buffer_;
@@ -194,17 +199,8 @@ public:
         set_utf8_window_title(dpy_, win, title);
         XSetWMProtocols(dpy_, win, &wm_delete_, 1);
 
-        if (!resizable) {
-            XSizeHints* hints = XAllocSizeHints();
-            hints->flags = PMinSize | PMaxSize;
-            hints->min_width = hints->max_width = width;
-            hints->min_height = hints->max_height = height;
-            XSetWMNormalHints(dpy_, win, hints);
-            XFree(hints);
-        }
-
         GC gc = XCreateGC(dpy_, win, 0, nullptr);
-        auto* nw = new X11Window(dpy_, win, gc);
+        auto* nw = new X11Window(dpy_, win, gc, resizable);
         nw->set_size(width, height);
         owners_[win] = owner;
         windows_[win] = nw;
@@ -551,8 +547,8 @@ private:
 };
 
 /* ---- X11Window out-of-line ---------------------------------------------- */
-X11Window::X11Window(Display* dpy, ::Window win, GC gc)
-    : dpy_(dpy), win_(win), gc_(gc) {}
+X11Window::X11Window(Display* dpy, ::Window win, GC gc, bool resizable)
+    : dpy_(dpy), win_(win), gc_(gc), resizable_(resizable) {}
 
 X11Window::~X11Window() {
     if (image_) {
@@ -594,6 +590,25 @@ void X11Window::show() {
 void X11Window::hide() {
     XUnmapWindow(dpy_, win_);
     XFlush(dpy_);
+}
+void X11Window::set_size_limits(int minw, int minh, int maxw, int maxh) {
+    min_width_ = minw; min_height_ = minh; max_width_ = maxw; max_height_ = maxh;
+    XSizeHints hints{};
+    if (!resizable_) {
+        hints.flags = PMinSize | PMaxSize;
+        hints.min_width = hints.max_width = std::max(1, width_);
+        hints.min_height = hints.max_height = std::max(1, height_);
+    } else {
+        if (minw > 0 || minh > 0) { hints.flags |= PMinSize; hints.min_width = std::max(1, minw); hints.min_height = std::max(1, minh); }
+        if (maxw > 0 || maxh > 0) { hints.flags |= PMaxSize; hints.max_width = maxw > 0 ? maxw : 65535; hints.max_height = maxh > 0 ? maxh : 65535; }
+    }
+    XSetWMNormalHints(dpy_, win_, &hints); XFlush(dpy_);
+}
+void X11Window::resize_content(int w, int h) {
+    w = std::max(w, min_width_); h = std::max(h, min_height_);
+    if (max_width_ > 0) w = std::min(w, max_width_);
+    if (max_height_ > 0) h = std::min(h, max_height_);
+    if (w > 0 && h > 0) { XResizeWindow(dpy_, win_, static_cast<unsigned>(w), static_cast<unsigned>(h)); XFlush(dpy_); }
 }
 
 void X11Window::present(const Canvas& canvas) {

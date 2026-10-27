@@ -40,6 +40,9 @@ public:
     virtual void set_title(const std::string& title) = 0;
     virtual void show() = 0;
     virtual void hide() = 0;
+    virtual void set_size_limits(int min_width, int min_height,
+                                 int max_width, int max_height) = 0;
+    virtual void resize_content(int width, int height) = 0;
 
     /* Current client-area size in device pixels. */
     virtual int width() const = 0;

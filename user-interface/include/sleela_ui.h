@@ -91,6 +91,9 @@ typedef struct { int w, h; } SLUISize;
 typedef struct { int x, y, w, h; } SLUIRect;
 typedef uint32_t SLUIColor; /* 0xRRGGBBAA */
 
+/* Root content is inset 10px from each client-area edge. */
+#define SLUI_WINDOW_CONTENT_PADDING 10
+
 static inline SLUIColor slui_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     return ((SLUIColor)r << 24) | ((SLUIColor)g << 16) | ((SLUIColor)b << 8) |
            (SLUIColor)a;
@@ -312,6 +315,18 @@ void slui_window_render(SLUIWindow *window);
  * that cannot honor it (headless) ignores it gracefully. */
 void slui_window_set_buffering(SLUIWindow *window, int mode);
 int slui_window_buffering(const SLUIWindow *window);
+
+/* Client-area sizes are measured in device pixels. Zero minimums use the
+ * automatic widget-tree minimum; zero maximums mean unbounded. The effective
+ * minimum includes measured root content plus 10px on every edge. Failed
+ * changes are atomic; a maximum below the current measured minimum is rejected. */
+SLUIStatus slui_window_set_min_size(SLUIWindow *window, int width, int height);
+SLUIStatus slui_window_set_max_size(SLUIWindow *window, int width, int height);
+SLUIStatus slui_window_set_size_limits(SLUIWindow *window,
+                                       int min_width, int min_height,
+                                       int max_width, int max_height);
+SLUIStatus slui_window_get_min_size(const SLUIWindow *window, SLUISize *out);
+SLUIStatus slui_window_get_max_size(const SLUIWindow *window, SLUISize *out);
 
 /* A per-window event callback, called for events the widget tree did not fully
  * consume (e.g. window CLOSE). Return non-zero to mark the event handled. */

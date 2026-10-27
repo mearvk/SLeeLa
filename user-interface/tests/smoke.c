@@ -108,6 +108,25 @@ int main(void) {
     SLUIWidget* root = slui_window_root(win);
     CHECK(root != NULL, "root widget present");
 
+    /* Native resize guards use client-area pixels, with 10px root padding. */
+    SLUISize min_size = {0, 0}, max_size = {0, 0};
+    CHECK(slui_window_get_min_size(win, &min_size) == SLUI_OK && min_size.w >= 20 && min_size.h >= 20,
+          "automatic minimum includes 10px padding on each edge");
+    CHECK(slui_window_set_size_limits(win, 100, 90, 500, 400) == SLUI_OK,
+          "valid window size limits accepted");
+    CHECK(slui_window_get_min_size(win, &min_size) == SLUI_OK && min_size.w >= 100 && min_size.h >= 90,
+          "effective minimum respects explicit size");
+    CHECK(slui_window_get_max_size(win, &max_size) == SLUI_OK && max_size.w == 500 && max_size.h == 400,
+          "maximum size limits round-trip");
+    CHECK(slui_window_set_max_size(win, 80, 50) == SLUI_ERR_INVALID,
+          "maximum below the minimum is rejected");
+    CHECK(slui_window_get_max_size(win, &max_size) == SLUI_OK && max_size.w == 500 && max_size.h == 400,
+          "failed size-limit change is atomic");
+    CHECK(slui_window_set_min_size(win, -1, 20) == SLUI_ERR_INVALID,
+          "negative minimum size is rejected");
+    CHECK(slui_window_set_size_limits(win, 0, 0, 0, 0) == SLUI_OK,
+          "zero limits restore automatic minimum and unbounded maximum");
+
     /* --- build a representative tree ----------------------------------- */
     SLUIWidget* header = slui_header_bar(root);
     slui_label(header, "SleelaUI");
