@@ -130,6 +130,8 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_WIFI_NETWORK_SIGNAL: case SLUI_FN_WIFI_NETWORK_SECURITY:
         case SLUI_FN_WIFI_STATUS_NAME:
         case SLUI_FN_WINDOW_BUFFERING:
+        case SLUI_FN_WINDOW_MIN_WIDTH: case SLUI_FN_WINDOW_MIN_HEIGHT:
+        case SLUI_FN_WINDOW_MAX_WIDTH: case SLUI_FN_WINDOW_MAX_HEIGHT:
         case SLUI_FN_BALLUM_DISPLAY_ID: case SLUI_FN_BALLUM_DISPLAY_NAME:
         case SLUI_FN_BALLUM_DISPLAY_WIDTH: case SLUI_FN_BALLUM_DISPLAY_HEIGHT:
         case SLUI_FN_BALLUM_DISPLAY_PRIMARY: case SLUI_FN_BALLUM_DISPLAY_CAPS:
@@ -171,6 +173,7 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_SCROLLED_VIEW:
         case SLUI_FN_SCROLLED_SCROLL_TO: case SLUI_FN_SCROLLED_SCROLL_BY:
         case SLUI_FN_WIDGET_SET_ICON:
+        case SLUI_FN_WINDOW_SET_MIN_SIZE: case SLUI_FN_WINDOW_SET_MAX_SIZE:
         case SLUI_FN_BALLUM_GET_PIXEL:
             return 3;
         /* 4 args */
@@ -179,6 +182,7 @@ int sleela_ui_arity(int id) {
             return 4;
         /* 5 args */
         case SLUI_FN_WINDOW_CREATE: case SLUI_FN_SPIN_BUTTON:
+        case SLUI_FN_WINDOW_SET_SIZE_LIMITS:
         case SLUI_FN_WIDGET_SET_MARGIN:
             return 5;
         /* 7 args */
@@ -223,6 +227,25 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_WINDOW_HIDE:   slui_window_hide(win_get(ai(a,n,0))); return r_null();
         case SLUI_FN_WINDOW_ROOT:   return r_int(widget_put(slui_window_root(win_get(ai(a,n,0)))));
         case SLUI_FN_WINDOW_SET_TITLE: slui_window_set_title(win_get(ai(a,n,0)), as_(a,n,1)); return r_null();
+        case SLUI_FN_WINDOW_SET_MIN_SIZE:
+            return r_int(slui_window_set_min_size(win_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2)));
+        case SLUI_FN_WINDOW_SET_MAX_SIZE:
+            return r_int(slui_window_set_max_size(win_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2)));
+        case SLUI_FN_WINDOW_SET_SIZE_LIMITS:
+            return r_int(slui_window_set_size_limits(win_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2), (int)ai(a,n,3), (int)ai(a,n,4)));
+        case SLUI_FN_WINDOW_MIN_WIDTH: case SLUI_FN_WINDOW_MIN_HEIGHT:
+        case SLUI_FN_WINDOW_MAX_WIDTH: case SLUI_FN_WINDOW_MAX_HEIGHT: {
+            SLUISize size = {0, 0};
+            SLUIWindow* window = win_get(ai(a,n,0));
+            int status;
+            if (id == SLUI_FN_WINDOW_MIN_WIDTH || id == SLUI_FN_WINDOW_MIN_HEIGHT)
+                status = slui_window_get_min_size(window, &size);
+            else
+                status = slui_window_get_max_size(window, &size);
+            if (status != SLUI_OK) return r_int(-1);
+            if (id == SLUI_FN_WINDOW_MIN_WIDTH || id == SLUI_FN_WINDOW_MAX_WIDTH) return r_int(size.w);
+            return r_int(size.h);
+        }
         case SLUI_FN_WINDOW_SET_BUFFERING: slui_window_set_buffering(win_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WINDOW_BUFFERING: return r_int(slui_window_buffering(win_get(ai(a,n,0))));
         case SLUI_FN_WINDOW_SET_THEME: slui_window_set_theme(win_get(ai(a,n,0)), theme_get(ai(a,n,1))); return r_null();
