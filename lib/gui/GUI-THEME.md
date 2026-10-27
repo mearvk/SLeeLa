@@ -30,6 +30,31 @@ These values are fixed across all five GUI lines. Do not fork or silently reinte
 
 The supporting palette is a shared default. Products may add semantic tokens, but must retain the required title-bar and URL-bar colors and provide visible keyboard focus, readable text, and non-color-only status cues.
 
+## Transitional Menu Depth Tokens
+
+The five `SLGuiTheme.sleela` files share menu-specific presentation tokens for
+the custom-widget fallback and hosts that can render elevated popups:
+
+| Token | Default | Intended use |
+|---|---|---|
+| `MENU_POPUP_SURFACE` | `#292D35` | Dropdown surface |
+| `MENU_POPUP_EDGE` | `#505866` | Fine popup outline |
+| `MENU_ITEM_HOVER` | `#343A44` | Hovered item |
+| `MENU_ITEM_PRESSED` | `#252A32` | Pressed item |
+| `MENU_ITEM_HIGHLIGHT` | `#3A404B` | Active/open emphasis |
+| `MENU_POPUP_SHADOW` | `0 8px 20px rgba(0,0,0,0.28)` | Soft elevation |
+| `MENU_POPUP_RADIUS` | `6` | Nominal corner radius in px |
+| `MENU_ITEM_RAISE` | `1` | Maximum subtle depth response in px |
+| `MENU_TRANSITION_MS` | `120` | Short transition duration in ms |
+
+These are transitional design tokens, not new mandatory native theme-color
+entries. The values are source-defined in every GUI version to keep the design
+consistent. Host renderers should translate them to native toolkit properties
+where supported; they must not pass CSS-like shadow strings to a native API
+that expects a different representation. If a host cannot render a shadow or
+transition, it should retain the popup edge, item states, and focus indicator
+instead of failing or silently changing layout.
+
 ## Responsibilities
 
 - SLeeLa owns GUI state and the meaning of actions.
