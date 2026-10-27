@@ -25,7 +25,7 @@ distribution marks, see [`SLEELA.md`](SLEELA.md); for the compiler, see
 A Wrapper™ is one or more classes; `main()` is the entry point. The accepted
 surface (authoritative list in `impl/README.md`):
 
-- typed locals — `int`, `double`, `boolean`, `String`, `void`;
+- typed locals — `int`, `double`, `boolean`, `String`, `void`, and heterogeneous `Any` values (subject to the implementation limits below);
 - methods with recursion; class **fields** (shared state);
 - control flow — `if`/`else`, `while`, `for`;
 - the operator set — `+ - * / %`, comparisons, `&& || !`, unary `-`;
