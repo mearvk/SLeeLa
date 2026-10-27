@@ -165,14 +165,17 @@ class SLGuiWidgetFactory {
 
   < Is this tag an interactive control the host should poll for activations? >
   boolean interactive(String tag) {
-    return tag == "button" || tag == "entry" || tag == "input"
+    return tag == "button" || tag == "menuitem" || tag == "menu-item"
+        || tag == "entry" || tag == "input"
         || tag == "toggle" || tag == "switch";
   }
 
-  < Which SLGuiEventType an activation on this tag should raise. >
-  < Buttons -> CLICK; entries -> SUBMIT (Enter); toggles -> TOGGLE. >
+  < Menubar/menuitem tags share the ordinary button activation channel.
+    The host adapter dispatches CLICK and the menu controller owns dismissal. >
   int activationEvent(String tag) {
-    if (tag == "button") { return SLGuiEventType.CLICK; }
+    if (tag == "button" || tag == "menuitem" || tag == "menu-item") {
+      return SLGuiEventType.CLICK;
+    }
     if (tag == "toggle" || tag == "switch") { return SLGuiEventType.TOGGLE; }
     if (tag == "entry" || tag == "input")   { return SLGuiEventType.SUBMIT; }
     return SLGuiEventType.CUSTOM;
