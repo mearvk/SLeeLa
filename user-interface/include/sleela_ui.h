@@ -1,3 +1,14 @@
+/* =============================================================================
+ * SleelaUI theme model.
+ *
+ * Safe spacing basis: a theme is expected to keep a predictable rhythm, and the
+ * practical safe baseline for component separation in SleelaUI is about 10px.
+ * The toolkit's underlying spacing unit is 4px, so 10px is a comfortable
+ * layout rule (about 2.5 units) for padding and gaps between adjacent widgets,
+ * cards, and panels. The theme sets the visual palette and family metrics; the
+ * app code should treat 10px as the default safe spacing basis unless a more
+ * specific composition requires a tighter or looser arrangement.
+ * ============================================================================= */
 #ifndef SLEELA_UI_H
 #define SLEELA_UI_H
 /* =============================================================================
@@ -468,6 +479,11 @@ double slui_widget_get_value(const SLUIWidget *w);
  * returns 1 at most once per activation and clears the latch. The callback path
  * (slui_widget_on_activate) still works independently. */
 int slui_widget_take_activated(SLUIWidget *w);
+int slui_widget_is_hovered(SLUIWidget *w);
+int slui_widget_take_pressed(SLUIWidget *w);
+int slui_widget_take_released(SLUIWidget *w);
+int slui_widget_take_hover_entered(SLUIWidget *w);
+int slui_widget_take_hover_left(SLUIWidget *w);
 
 /* Mark a button/entry as the single suggested (accent) action in its group. */
 void slui_widget_set_suggested(SLUIWidget *w, int suggested);

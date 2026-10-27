@@ -447,11 +447,11 @@
     },
     {
       "path": "impl/core/sleela_ui_ids.h",
-      "sha256": "db7671a271c187e20b5160428c946aef53a082e5d7aeec619806d1a5a0a9336d"
+      "sha256": "aa36d9b90204a99a5ab2e71eefd2779e99eee51d3bf5a83857bf6a613bea89a7"
     },
     {
       "path": "impl/core/sleela_ui_vm.c",
-      "sha256": "845cbc02eee06833b3b318bcea7033950cb1665b3ffed9a124957ce9d76f71be"
+      "sha256": "6d05c07914640e83ea36fe51ba7d2cbb312eb6f8af9c31b97a50234d016b256d"
     },
     {
       "path": "impl/core/sleela_ui_vm.h",
@@ -511,7 +511,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "3d7b0888c9ab262760b4bced0e45d77857eaf5beb32f4f99ce14a6ca4261f4a9"
+      "sha256": "48d57b3dc007f1f514c60ea0df71d89c75d421b563e6c372bb9a9bee28490d03"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -46667,7 +46667,7 @@
     },
     {
       "path": "lib/user-interface/SLButton.sleela",
-      "sha256": "63f6e0a2923a2974288abf56e0171d76ebc10509941ce036bf10847aa36540f8"
+      "sha256": "5feae9b7ae7a12c9e944eec8c6e446f7f6cb52f13c176ef71e05d0e927d81e7c"
     },
     {
       "path": "lib/user-interface/SLCalculus8.sleela",
@@ -46847,7 +46847,7 @@
     },
     {
       "path": "lib/user-interface/SLNotebook.sleela",
-      "sha256": "2ceb970f49a51cd2dfd79acf483f10a740a4450efeea900b43178c67fbad124a"
+      "sha256": "a3416d7d2874c12cee7439aa0c7c129e8b3075845580bf42c9a87a774e1eb564"
     },
     {
       "path": "lib/user-interface/SLPackage.sleela",
@@ -46902,6 +46902,10 @@
       "sha256": "ae9a9ef3ad33d28c89fd4ecbc4f9827acefac6ffd425d6e9c85ef696f042a784"
     },
     {
+      "path": "lib/user-interface/SLTabBar.sleela",
+      "sha256": "6af50d45d5dc872dd0e786119312c0854aa3844f2ffe613eac195db5f37d9644"
+    },
+    {
       "path": "lib/user-interface/SLTextView.sleela",
       "sha256": "5340a124f26401b5ca08f791146db1a1c37c018646e7b5fb8f28f9b3f424b7aa"
     },
@@ -46928,6 +46932,10 @@
     {
       "path": "lib/user-interface/SLUserInterface.sleela",
       "sha256": "0d74fdc75a89736fcec3a792352e6423c9b781352bf759e682e1b43fdb966c09"
+    },
+    {
+      "path": "lib/user-interface/SLVerticalTabs.sleela",
+      "sha256": "aff367aaac0e87b1cc2290c6da063bc5d6160945d483f3b4f35bab28c297b21b"
     },
     {
       "path": "lib/user-interface/SLWash.sleela",

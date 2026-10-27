@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11576
+library-source-files: 11578
 library-packages: 101
 module-facade-symbols: 70
-total-symbol-records: 11646
+total-symbol-records: 11648
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11440,6 +11440,8 @@ user-interface	SLSpacer.sleela	lib/user-interface/SLSpacer.sleela	source
 user-interface	SLSpinButton.sleela	lib/user-interface/SLSpinButton.sleela	source
 user-interface	SLSpinner.sleela	lib/user-interface/SLSpinner.sleela	source
 user-interface	SLStatusBar.sleela	lib/user-interface/SLStatusBar.sleela	source
+user-interface	SLTabBar.sleela	lib/user-interface/SLTabBar.sleela	source
+user-interface	SLVerticalTabs.sleela	lib/user-interface/SLVerticalTabs.sleela	source
 user-interface	SLTextView.sleela	lib/user-interface/SLTextView.sleela	source
 user-interface	SLTheme.sleela	lib/user-interface/SLTheme.sleela	source
 user-interface	SLThrobber.sleela	lib/user-interface/SLThrobber.sleela	source
