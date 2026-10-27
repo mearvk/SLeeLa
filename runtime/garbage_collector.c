@@ -40,8 +40,16 @@ void gc_init(GarbageCollector *g, size_t threshold) {
     if (!g) { return; }
     memset(g,0,sizeof(*g)); g->bytes_threshold=threshold?threshold:1024u*1024u;
     g->young_bytes_threshold=g->bytes_threshold/4u; if (g->young_bytes_threshold<64u*1024u) g->young_bytes_threshold=64u*1024u;
+    g->bytes_limit = 512u * 1024u * 1024u;
     g->target_step_work=32u; g->phase=SLGC_IDLE; g->initialized=1;
 }
+int gc_set_limit(GarbageCollector *g, size_t bytes) {
+    if (!g || !g->initialized || bytes < g->bytes_allocated) return 0;
+    g->bytes_limit = bytes;
+    return 1;
+}
+size_t gc_limit(const GarbageCollector *g) { return g ? g->bytes_limit : 0; }
+
 SLGCObject *gc_allocate(GarbageCollector *g,size_t bytes,SLGCMarkFn m,SLGCDestroyFn d,void *c) {
     if (!g||!g->initialized||!grow(&g->objects,&g->count,&g->capacity)) return NULL;
     SLGCObject *o=(SLGCObject*)calloc(1,sizeof(*o)); if(!o)return NULL;
@@ -50,7 +58,7 @@ SLGCObject *gc_allocate(GarbageCollector *g,size_t bytes,SLGCMarkFn m,SLGCDestro
     g->objects[g->count++]=o;g->bytes_allocated+=bytes;return o;
 }
 SLGCObject *gc_allocate_external(GarbageCollector *g,void *payload,size_t bytes,SLGCMarkFn m,SLGCDestroyFn d,void *c) {
-    if (!g || !g->initialized || !payload || bytes > SIZE_MAX - g->bytes_allocated || !grow(&g->objects, &g->count, &g->capacity)) return NULL;
+    if (!g || !g->initialized || !payload || bytes > SIZE_MAX - g->bytes_allocated || g->bytes_allocated > g->bytes_limit || bytes > g->bytes_limit - g->bytes_allocated || !grow(&g->objects, &g->count, &g->capacity)) return NULL;
     SLGCObject *o=(SLGCObject*)calloc(1,sizeof(*o));if(!o)return NULL;
     o->payload=payload;o->bytes=bytes;o->generation=SLGC_GENERATION_YOUNG;o->mark_children=m;o->destroy=d;o->context=c;o->external=1;
     g->objects[g->count++]=o;g->bytes_allocated+=bytes;return o;
