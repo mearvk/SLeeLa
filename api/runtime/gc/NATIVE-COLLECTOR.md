@@ -25,7 +25,7 @@ The collector must not sweep after incomplete marking. Allocation accounting and
 
 ## Memory budget
 
-The collector's collection threshold is a trigger for work, not a hard heap limit. The VM's configured managed-memory ceiling must be enforced at allocation boundaries separately. The intended default is a lazy 512 MiB ceiling, not an eagerly reserved heap.
+The collector's collection threshold is a trigger for work, not a hard heap limit. The VM's configured managed-memory ceiling must be enforced at allocation boundaries separately. The collector now defaults to a lazy 512 MiB managed-object accounting ceiling, not an eagerly reserved heap. Embedders may call `gc_set_limit`; `SLEELA_GC_LIMIT_BYTES` overrides the default when set to a valid positive integer. The current accounting tracks sizes supplied by the VM for managed structs and arrays; native allocations outside that accounting still require separate enforcement.
 
 ## Verification
 
