@@ -43,15 +43,24 @@ class SLValueList {
       i = i + 1;
     }
     size = size - 1;
+    arraySet(values, size, null);
     return true;
   }
 
   void remove() {
-    if (size > 0) { size = size - 1; }
+    if (size > 0) {
+      size = size - 1;
+      arraySet(values, size, null);
+    }
   }
 
-  < Capacity is retained for reuse; stale references beyond size may remain rooted. >
-  void clear() { size = 0; }
+  < Capacity is retained for reuse; removed references are cleared for GC. >
+  void clear() {
+    while (size > 0) {
+      size = size - 1;
+      arraySet(values, size, null);
+    }
+  }
   int length() { return size; }
   boolean empty() { return size == 0; }
 }
