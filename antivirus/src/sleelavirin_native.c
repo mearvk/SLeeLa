@@ -91,6 +91,16 @@ int sleelavirin_sha256_file(const char *path, uint8_t digest[32])
     if(fclose(f)!=0)return -1;
     sha256_final(&c,digest); return 0;
 }
+int sleelavirin_sha256_buffer(const uint8_t *data, size_t length, uint8_t digest[32])
+{
+    sha256_ctx c;
+    if(!digest)return -1;
+    if(!data&&length)return -1;
+    sha256_init(&c);
+    if(length)sha256_update(&c,data,length);
+    sha256_final(&c,digest);
+    return 0;
+}
 static void digest_hex(const uint8_t digest[32], char out[65])
 {
     static const char hex[]="0123456789abcdef"; size_t i;

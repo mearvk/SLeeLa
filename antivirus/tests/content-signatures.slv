@@ -1,0 +1,9 @@
+# Sleelavirin content signatures - test fixture
+# Format: name:severity:flags:hex-bytes   (see src/sleelavirin_sig.h)
+#
+# The EICAR standard antivirus test string is a safe, industry-standard marker
+# used to verify that a scanner's detection path works. It is NOT malware.
+# Here we match a distinctive middle fragment of it: "EICAR-STANDARD-ANTIVIRUS"
+EICAR-Test-Fragment:5::45494341522d5354414e444152442d414e544956495255530d0a
+# A demo byte-pattern marker (case-insensitive) for pipeline tests.
+Demo.Marker:3:nocase:6d616c776172652d6d61726b6572

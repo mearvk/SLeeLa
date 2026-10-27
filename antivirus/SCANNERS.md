@@ -28,9 +28,20 @@ AMSI is a primary integration reference. Microsoft documents APIs for initializi
 Linux and macOS adapters should use the locally installed security provider or an explicitly declared scanner. Sleelavirin must not assume that one vendor or engine exists on every system.
 
 
+## Native C/C++ engine
+
+The in-tree native engine (`antivirus/src/`, built with `make`) is a
+self-contained, license-clean scanner: SHA-256 whole-file hashing **plus** a
+from-scratch **Aho–Corasick** content (byte-pattern) matcher, a fuzzy similarity
+check, the Trap-2 heuristic, a stable C bridge ABI, and a C++ wrapper. It is
+exposed as `build/libsleelavirin.a`, `build/libsleelavirin_cpp.a`, and the
+`build/sleelavirin-scan` CLI. See **`NATIVE-ENGINE.md`** for details. This is the
+default, dependency-free backend; external providers below are optional adapters
+for broader coverage.
+
 ## Native-first engine selection
 
-- **Native (default):** SHA-256 whole-file hash matching, with directory enumeration, exclusions, size/depth limits, and bounded worker count managed by the scan coordinator.
+- **Native (default):** SHA-256 whole-file hash matching and content byte-pattern matching (Aho–Corasick), with directory enumeration, exclusions, size/depth limits, and bounded worker count managed by the scan coordinator.
 - **Both:** run the native pass first, then scan the same eligible files with the installed ClamAV engine. Recommended when ClamAV is available.
 - **ClamAV:** use ClamAV alone as the detection backend.
 

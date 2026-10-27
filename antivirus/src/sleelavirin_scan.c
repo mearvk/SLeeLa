@@ -1,4 +1,5 @@
 #include "sleelavirin_scan.h"
+#include "sleelavirin_native.h"
 #include <stdlib.h>
 #include <string.h>
 typedef struct {
@@ -11,6 +12,35 @@ struct sleelavirin_hashmap {
     size_t count;
     sleelavirin_slot_t *slots;
 };
+int sleelavirin_fingerprint_buffer(const uint8_t *data, size_t length,
+                                   sleelavirin_file_fingerprint_t *out)
+{
+    uint64_t hist[64];
+    uint64_t total = 0, mean;
+    size_t i;
+    if (!out) return -1;
+    if (!data && length) return -1;
+    memset(out, 0, sizeof(*out));
+    if (sleelavirin_sha256_buffer(data, length, out->sha256) != 0) return -1;
+    out->file_size = (uint64_t)length;
+
+    /* Byte-value histogram folded into 64 equal-width bands (each band covers
+     * 4 adjacent byte values). A feature bit is set when its band's frequency
+     * is at or above the mean band frequency; the mask marks non-empty bands. */
+    memset(hist, 0, sizeof(hist));
+    for (i = 0; i < length; ++i) {
+        hist[data[i] >> 2]++; /* 256 values / 4 = 64 bands */
+        ++total;
+    }
+    if (total == 0) return 0; /* empty file: all-zero fp/mask is valid */
+    mean = total / 64u;
+    if (mean == 0) mean = 1u;
+    for (i = 0; i < 64; ++i) {
+        if (hist[i] > 0) out->feature_mask |= (UINT64_C(1) << i);
+        if (hist[i] >= mean) out->feature_fp |= (UINT64_C(1) << i);
+    }
+    return 0;
+}
 static uint64_t hash64(const uint8_t digest[32])
 {
     uint64_t h = UINT64_C(1469598103934665603);
