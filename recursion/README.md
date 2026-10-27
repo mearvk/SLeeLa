@@ -20,4 +20,7 @@ This directory contains documentation, examples, and implementation notes for re
 
 ## Status
 
-The `stanchion/` subdirectory provides 12 standalone C/C++ prototypes for generic, applied, scientific, and teaching use. These are reference examples, not SLeeLa-language implementations; compile and test them before treating them as verified.
+The `stanchion/` subdirectory provides 26 standalone C/C++ prototypes for generic, applied, scientific, and teaching use. These are reference examples, not SLeeLa-language implementations; compile and test them before treating them as verified.
+
+
+The stanchion also includes type-specialized C and C++ recursion prototypes for the seven primitive contracts documented in `lib/CORE.BASE.md` (Boolean, Byte, Character, Integer, Long, Float, and Double).
