@@ -1,6 +1,6 @@
 # Runtime and VM Hardening Plan
 
-Status: implementation plan for the runtime/SLVM integration. This document is not a claim that the controls below are already implemented.
+Status: active implementation branch. Completed items are listed below; remaining integration and test gaps are explicit. This is not a claim that the full runtime hardening effort is complete.
 
 ## 1. Garbage collector correctness
 
@@ -40,6 +40,29 @@ Status: implementation plan for the runtime/SLVM integration. This document is n
 - Document which APIs are implemented in C/C++, exposed to SLeeLa, or still placeholders.
 - Update `api/runtime/gc/` with lifecycle, root registration, child traversal, barriers, safepoints, failure behavior, and ownership examples.
 - Verify Linux, Windows, and macOS build paths before claiming portability.
+
+## Implementation status
+
+### Implemented on this branch
+
+- GC mark-worklist growth and byte-accounting overflow checks.
+- No sweep after failed marking; fallback to full collection if remembered-set growth fails.
+- Persistent remembered owners across young collections.
+- Iterative VM child tracing for structs and arrays, avoiding recursive C traversal of object graphs.
+- Struct/array write barriers use the actual old/new object handles.
+- Lazy 512 MiB default managed-object accounting limit, C API override, and SLEELA_GC_LIMIT_BYTES override.
+- Array element-buffer accounting and managed-size updates on array growth.
+- Fail-closed SLeeLa security facade and overflow-safe native quota arithmetic.
+- Initial standalone GC/security tests, Makefile target, and integration documentation.
+
+### Still open
+
+- Execute and fix the new test target and full Core/SLVM test suite in CI; this environment could not resolve GitHub for a local clone.
+- Connect SecuritySupervisor authorization/reservation/release to real VM allocation and native-service admission.
+- Add automated allocation-failure injection tests for mark-stack and remembered-set growth.
+- Define and implement Dynamic Memory Guard Hard / Slow Careful / Aggressive RAM behavior beyond the hard ceiling.
+- Wire the memory limit into a unified runtime config contract and reconcile VM version 12 only after its semantics and tests are defined.
+- Verify recursion/frame roots, worker-thread quiescence, Windows/macOS builds, and compiled-artifact execution end to end.
 
 ## Acceptance criteria
 
