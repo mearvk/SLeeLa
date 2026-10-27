@@ -100,16 +100,16 @@ static inline SLUIColor slui_rgb(uint8_t r, uint8_t g, uint8_t b) {
 }
 
 /* --------------------------------------------------------------------------
- * Theme. The toolkit ships a configurable palette; the DEFAULT is "Slick
- * Black" -- a deep matte-black family with a single cool accent. A theme is a
- * flat set of named role colours plus a corner radius and base metrics, so a
- * host can restyle the whole UI by editing one struct (or loading a .conf).
+ * Theme. The DEFAULT is a graphite/charcoal family with neutral text and a
+ * steel-blue accent. White, blue, black and gray presets are also available.
+ * A theme is a flat set of named role colours plus metrics, selected in source
+ * or loaded explicitly from a .conf file.
  * ------------------------------------------------------------------------- */
 typedef enum {
     SLUI_THEME_SLICK_BLACK = 0,  /* the original matte-black theme            */
     SLUI_THEME_GRAPHITE = 1,     /* a lighter neutral alternative             */
     SLUI_THEME_CUSTOM = 2,       /* fully host-defined via SLUITheme fields   */
-    SLUI_THEME_SLEELA_BASE = 3,  /* THE DEFAULT: base colour #2B1608 (warm)   */
+    SLUI_THEME_SLEELA_BASE = 3,  /* THE DEFAULT: graphite + steel blue       */
     /* The four Standard Patterns -- flat, one-accent palettes a host can pick
      * by id with no field edits. Appended after SLEELA_BASE to preserve the
      * existing ABI numbering. */
@@ -119,11 +119,9 @@ typedef enum {
     SLUI_THEME_GRAY = 7          /* neutral mid-gray surfaces                 */
 } SLUIThemeId;
 
-/* Sleela's configurable BASE COLOUR, the floor of the default theme. Deep warm
- * brown #2B1608. A host may override it at code time (edit the SLUITheme after
- * slui_theme_preset) or at configuration time (slui_theme_set_base_color /
- * a loaded .conf), and the rest of the warm palette is derived from it. */
-#define SLUI_BASE_COLOR_DEFAULT 0x2B1608FFu /* #2B1608, opaque */
+/* Base floor for the default graphite theme. Custom base colours remain
+ * supported, but use a neutral steel-blue accent instead of warm amber. */
+#define SLUI_BASE_COLOR_DEFAULT 0x1D2025FFu /* #1D2025, opaque */
 
 typedef struct {
     SLUIThemeId id;
