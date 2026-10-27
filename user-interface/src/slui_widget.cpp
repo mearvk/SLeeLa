@@ -109,12 +109,8 @@ bool Widget::on_event(const SLUIEvent& ev) {
         Widget* c = it->get();
         if (!c->visible_) continue;
         if (positional && !c->bounds_.contains(ev.x, ev.y) &&
-            !(ev.type == SLUI_EVENT_POINTER_UP && c->pressed_)) {
-            if (c->hovered_ && ev.type == SLUI_EVENT_POINTER_MOVE) {
-                c->hovered_ = false;
-                c->hover_leave_event_ = true;
-                c->invalidate();
-            }
+            !(ev.type == SLUI_EVENT_POINTER_UP && c->has_pressed_descendant())) {
+            if (ev.type == SLUI_EVENT_POINTER_MOVE) c->pointer_moved_outside();
             continue;
         }
         if (c->on_event(ev)) return true;
