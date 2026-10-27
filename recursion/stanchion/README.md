@@ -44,3 +44,29 @@ Each source file includes its own build command. These are portable C/C++ refere
 ## Coverage
 
 The 12 prototypes cover generic reuse, applied algorithms, scientific numerical work, and teaching/traceability. Together with the original eight examples, the directory has 20 focused source examples; the stanchion catalogue is the curated starting point when choosing a pattern for a new implementation.
+
+## Primitive-specialized recursion prototypes
+
+The primitive suite adds a C typed module and a C++ typed class for each primitive contract listed in `lib/CORE.BASE.md`: **Boolean, Byte, Character, Integer, Long, Float, and Double**. Java-compatibility primitives (such as Java's `short`) are not silently treated as native SLeeLa primitive contracts.
+
+Each type module demonstrates three applicable recursion patterns: linear sequence traversal, divide-and-conquer range traversal, and structural binary-tree traversal. C uses a typed alias/node structure and functions; C++ uses a dedicated type-specific class and managed tree nodes. These are teaching/reference prototypes, not VM ABI definitions.
+
+| Primitive | C source | C++ source/class | Important note |
+|---|---|---|---|
+| boolean | `c_primitive_boolean_recursion.c` | `cpp_primitive_boolean_recursion.cpp` / `SLStanchionBooleanRecursor` | Boolean values support predicate/counting recursion, not numeric accumulation. |
+| byte | `c_primitive_byte_recursion.c` | `cpp_primitive_byte_recursion.cpp` / `SLStanchionByteRecursor` | Byte is treated as unsigned 8-bit; do not assume arithmetic wraps unless SLeeLa specifies it. |
+| character | `c_primitive_character_recursion.c` | `cpp_primitive_character_recursion.cpp` / `SLStanchionCharacterRecursor` | Character is modeled as a Unicode scalar/code point, not an arbitrary UTF-8 byte. |
+| integer | `c_primitive_integer_recursion.c` | `cpp_primitive_integer_recursion.cpp` / `SLStanchionIntegerRecursor` | This prototype uses signed 32-bit values; confirm the canonical SLInteger width. |
+| long | `c_primitive_long_recursion.c` | `cpp_primitive_long_recursion.cpp` / `SLStanchionLongRecursor` | This prototype uses signed 64-bit values; confirm canonical SLLong width and overflow rules. |
+| float | `c_primitive_float_recursion.c` | `cpp_primitive_float_recursion.cpp` / `SLStanchionFloatRecursor` | Exact equality is demonstration-only; scientific algorithms should use an explicit tolerance. |
+| double | `c_primitive_double_recursion.c` | `cpp_primitive_double_recursion.cpp` / `SLStanchionDoubleRecursor` | Exact equality is demonstration-only; scientific algorithms should use an explicit tolerance. |
+
+### Pattern applicability
+
+- **Linear / tail-style progress, divide-and-conquer, and structural tree recursion** are demonstrated by every primitive-specific module.
+- **Backtracking** remains represented by `cpp_subset_sum.cpp`, where numeric addition has defined meaning; it is not artificially applied to every primitive.
+- **Mutual and nested recursion** remain represented by `mutual_even_odd.cpp` and `nested_ackermann.cpp`; these demonstrate control-flow patterns rather than operations meaningful for every type.
+- **Scientific recursion** remains represented by bisection and adaptive Simpson integration for appropriate numeric types. Floating-point equality in the primitive examples is demonstration-only; scientific algorithms need explicit tolerances and convergence limits.
+- **Graph recursion** remains represented by `cpp_graph_dfs.cpp`, with visited-state tracking. A primitive value alone does not define graph structure.
+
+The C Character prototype uses `uint32_t`, while C++ uses `char32_t`; confirm the canonical SLeeLa character representation before integration. Confirm Byte, Integer, and Long widths against the runtime contracts. These prototypes have not yet been compiled or run as part of this update.
