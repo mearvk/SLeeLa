@@ -1,18 +1,16 @@
 << lib/collections/SLList.sleela
    SLeeLa Standard Library Definition.
-   Definition: Defines the SLeeLa standard-library type SLList used within the collections library family. >>
+   Definition: A concrete, string-valued list with stable order and bounded
+   index behavior. This first implementation deliberately avoids Generics. >>
 #sleela 2.1
 < Unified SLeeLa standard-library front-end object. >
 < Family: collections. Native VM/OS work crosses an explicit bridge. >
 class SLList {
-  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
-  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
-     or catalog can read and (where appropriate) override this record.
-     Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  < ---- Descriptive metadata ---- >
+  String metaVersion = "1.1.0";
   int metaId = 532;
   String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
-  String metaDate = "2026-10-16";
+  String metaDate = "2026-10-27";
   String metaCopyright = "SLeeLa project";
   String metaTrademark = "none";
   String metaCorporation = "none";
@@ -21,8 +19,12 @@ class SLList {
   String metaBirthDate = "2026-09-28";
   < metaScienceRating: maturity/robustness on a 1..10 scale >
   int metaScienceRating = 9;
-  < metaNationalSchedule: a real, citable instrument or "none" >
   String metaNationalSchedule = "none";
+
+  < Backing storage uses the VM-managed, growable String array.
+    size is the logical count; values[size..capacity) are unused slots. >
+  String[] values = new String[0];
+  int size = 0;
 
   String getMetaVersion() { return metaVersion; }
   void setMetaVersion(String v) { metaVersion = v; }
@@ -46,5 +48,49 @@ class SLList {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int size; void add(){size=size+1;} void remove(){if(size>0)size=size-1;} int length(){return size;} boolean empty(){return size==0;}
+
+  < Append one String. Existing capacity is reused after removals. >
+  void add(String value) {
+    if (size < arrayLength(values)) {
+      arraySet(values, size, value);
+    } else {
+      arrayPush(values, value);
+    }
+    size = size + 1;
+  }
+
+  < Return null for an invalid index; valid indices are 0 through length()-1. >
+  String get(int index) {
+    if (index < 0 || index >= size) { return null; }
+    return arrayGet(values, index);
+  }
+
+  < Replace a value; return false when the index is invalid. >
+  boolean set(int index, String value) {
+    if (index < 0 || index >= size) { return false; }
+    arraySet(values, index, value);
+    return true;
+  }
+
+  < Remove at index and preserve the order of remaining values. >
+  boolean removeAt(int index) {
+    if (index < 0 || index >= size) { return false; }
+    int i = index;
+    while (i + 1 < size) {
+      arraySet(values, i, arrayGet(values, i + 1));
+      i = i + 1;
+    }
+    size = size - 1;
+    return true;
+  }
+
+  < Compatibility convenience: remove the final item, if present. >
+  void remove() {
+    if (size > 0) { size = size - 1; }
+  }
+
+  < Clear the logical list; capacity remains available for reuse. >
+  void clear() { size = 0; }
+  int length() { return size; }
+  boolean empty() { return size == 0; }
 }
