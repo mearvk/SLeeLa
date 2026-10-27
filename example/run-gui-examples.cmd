@@ -16,6 +16,7 @@ call :run example\gual\gui-gual-settings-console.sleela || exit /b 1
 call :run example\thual\gui-thual-effects-showcase.sleela || exit /b 1
 call :run example\dual\gui-dual-media-studio.sleela || exit /b 1
 call :run example\military\gui-military-command-console.sleela || exit /b 1
+call :run example\menus\gui-menubar-expandable.sleela || exit /b 1
 echo All six GUI examples completed.
 exit /b 0
 :run
