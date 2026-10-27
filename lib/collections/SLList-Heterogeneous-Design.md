@@ -1,6 +1,6 @@
 # Heterogeneous SLList: design and verification plan
 
-Status: **audit complete; implementation remains blocked on type-safety work**.
+Status: **partial implementation committed; checked concrete-object retrieval and runtime enforcement remain outstanding**.
 
 This document records the source/VM audit for a non-generic list that can retain values of different concrete types, including class/struct instances, and pass those values through recursive calls. It deliberately separates the current String-only `SLList` from the future heterogeneous contract.
 
@@ -13,7 +13,7 @@ The array store uses `SLValue` elements, and `arrayPush` accepts an `SLValue` at
 ## 2. Why the current SLList cannot yet promise this
 
 - `lib/collections/SLList.sleela` declares `String[] values` and `add(String value)`; it is intentionally String-only.
-- The semantic type system treats named types as distinct struct types. It has no source-level top type such as `Any`.
+- The semantic type system now has a source-level `Any` top type. `Any` accepts mixed values, but a value typed as `Any` is not implicitly assignable to a concrete type.
 - `arrayPush` and `arraySet` lower to generic array opcodes, and the runtime array instance does not record an element-type contract. The core can therefore store a value whose runtime tag does not match the source array's declared element type if a caller bypasses static checks.
 - Struct member access is compiled using the declared struct layout and a field offset. Retrieving a mixed value as the wrong struct type must be rejected before field access, not treated as a raw unchecked cast.
 
@@ -21,7 +21,7 @@ Until these checks exist, changing `SLList.add` to accept arbitrary objects woul
 
 ## 3. Recommended non-generic API
 
-Keep the existing `SLList` as a concrete String list for compatibility. Introduce a separate `SLValueList` (name provisional) once the runtime checks are implemented:
+Keep the existing `SLList` as a concrete String list for compatibility. `SLValueList` is now added as a first implementation of mixed storage; its safe public contract is intentionally limited until runtime type inspection/casting is implemented:
 
 - `add(Any value)` — append any supported value: null, primitive, String, array handle, or class/struct handle.
 - `Any get(int index)` — return a dynamically typed value; invalid indices return null.
@@ -34,15 +34,15 @@ This is a dynamic top type, **not Generics**. It must preserve object identity: 
 
 ## 4. Required implementation safeguards
 
-1. Add a source-level `Any` type to semantic analysis; make it accept values of all supported kinds without silently treating every named class type as interchangeable.
-2. Restrict heterogeneous storage to `Any[]` / the new list. Preserve declared element-type checks for ordinary `String[]`, `Node[]`, and other typed arrays.
-3. Validate `arrayPush` and `arraySet` against the array's element contract. If static information is insufficient, emit or invoke a runtime check.
+1. **Implemented:** add a source-level `Any` type to semantic analysis. Values of `Any` can be passed through `Any` parameters; `Any` does not silently convert to concrete class types.
+2. **Partially implemented:** heterogeneous storage uses `Any[]`; semantic checks cover ordinary typed-array writes where the declared array type is known.
+3. Semantic analysis now checks `arrayPush` and `arraySet` when the first argument has a statically known array type. Runtime array instances still do not record element contracts, so native/unknown-typed boundaries remain a gap.
 4. Add a checked type-test/cast path for struct handles. Confirm both the `SL_STRUCT` tag and the exact runtime struct-type index before field access through a cast result.
 5. Preserve GC reachability and alias identity across list storage, list reads, recursive calls, and collections. Do not expose raw handles as integers.
 
 ## 5. Regression test matrix
 
-The implementation is not complete until the compiler and runtime tests cover all of the following:
+The implementation is not complete until the compiler and runtime tests cover all of the following. The current mixed-list example is illustrative and has not been compiled or executed here:
 
 - **Mixed scalar values:** String, int, double, boolean, and null can coexist in one heterogeneous list and round-trip with the right runtime tags.
 - **Mixed references:** instances of two different struct/class types can coexist; retrieving each with the correct checked type preserves identity.
@@ -56,4 +56,4 @@ The implementation is not complete until the compiler and runtime tests cover al
 
 ## 6. Verification status
 
-The repository source was inspected on `main` for `SLValue`, array storage/opcodes, GC marking, semantic assignability, and compiler field-offset resolution. A local build/test run was not possible in this environment because the GitHub host could not be resolved for a repository clone. No heterogeneous implementation or successful runtime test is claimed by this document.
+The repository now contains `Any`, semantic checks for typed `arrayPush`/`arraySet` calls with known array types, `SLValueList`, its API documentation, and an illustrative example. The semantic analyzer explicitly rejects casts from `Any` to a concrete struct/class and `instanceof` on `Any` until checked runtime support exists. Branches `main` and `master` contain matching file content. A local build/test run was not possible in this environment because a repository clone could not be obtained; no successful compilation or runtime test is claimed.
