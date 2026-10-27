@@ -55,6 +55,18 @@ class SLGuiTheme {
   static final String DANGER = "#D9534F";
   static final String SUCCESS = "#3FA776";
 
+  < Transitional depth tokens for menus and floating UI. These are presentation
+    contracts for host renderers; they do not alter the base chrome palette. >
+  static final String MENU_POPUP_SURFACE = "#292D35";
+  static final String MENU_POPUP_EDGE = "#505866";
+  static final String MENU_ITEM_HOVER = "#343A44";
+  static final String MENU_ITEM_PRESSED = "#252A32";
+  static final String MENU_ITEM_HIGHLIGHT = "#3A404B";
+  static final String MENU_POPUP_SHADOW = "0 8px 20px rgba(0,0,0,0.28)";
+  static final String MENU_POPUP_RADIUS = "6";
+  static final String MENU_ITEM_RAISE = "1";
+  static final String MENU_TRANSITION_MS = "120";
+
   < Typed SLColor words (0xRRGGBBAA) used by SLTheme at runtime. >
   static final int TITLE_BAR_COLOR = 0x1D2025FF;
   static final int MENU_BAR_COLOR = 0x1D2025FF;
@@ -81,4 +93,13 @@ class SLGuiTheme {
   String focus() { return FOCUS; }
   String danger() { return DANGER; }
   String success() { return SUCCESS; }
+  String menuPopupSurface() { return MENU_POPUP_SURFACE; }
+  String menuPopupEdge() { return MENU_POPUP_EDGE; }
+  String menuItemHover() { return MENU_ITEM_HOVER; }
+  String menuItemPressed() { return MENU_ITEM_PRESSED; }
+  String menuItemHighlight() { return MENU_ITEM_HIGHLIGHT; }
+  String menuPopupShadow() { return MENU_POPUP_SHADOW; }
+  String menuPopupRadius() { return MENU_POPUP_RADIUS; }
+  String menuItemRaise() { return MENU_ITEM_RAISE; }
+  String menuTransitionMs() { return MENU_TRANSITION_MS; }
 }
