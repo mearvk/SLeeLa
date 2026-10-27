@@ -1,0 +1,57 @@
+<< lib/collections/SLValueList.sleela
+   SLeeLa Standard Library Definition.
+   Definition: a non-generic heterogeneous list for VM values. >>
+#sleela 2.1
+< author: Max Rupplin - MEARVK LLC - 2026 >
+< Family: collections. Mixed storage uses the VM's tagged SLValue array. >
+class SLValueList {
+  String metaVersion = "0.1.0";
+  int metaId = 533;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-10-27";
+  String metaCopyright = "SLeeLa project";
+  Any[] values = new Any[0];
+  int size = 0;
+
+  < Append a value of any supported runtime kind, preserving reference identity. >
+  void add(Any value) {
+    if (size < arrayLength(values)) {
+      arraySet(values, size, value);
+    } else {
+      arrayPush(values, value);
+    }
+    size = size + 1;
+  }
+
+  < Return null when index is outside the logical list. >
+  Any get(int index) {
+    if (index < 0 || index >= size) { return null; }
+    return arrayGet(values, index);
+  }
+
+  boolean set(int index, Any value) {
+    if (index < 0 || index >= size) { return false; }
+    arraySet(values, index, value);
+    return true;
+  }
+
+  boolean removeAt(int index) {
+    if (index < 0 || index >= size) { return false; }
+    int i = index;
+    while (i + 1 < size) {
+      arraySet(values, i, arrayGet(values, i + 1));
+      i = i + 1;
+    }
+    size = size - 1;
+    return true;
+  }
+
+  void remove() {
+    if (size > 0) { size = size - 1; }
+  }
+
+  < Capacity is retained for reuse; stale references beyond size may remain rooted. >
+  void clear() { size = 0; }
+  int length() { return size; }
+  boolean empty() { return size == 0; }
+}
