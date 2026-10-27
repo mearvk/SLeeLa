@@ -12,7 +12,10 @@ and adapt. It now covers three things:
    subject libraries (math, physics, chemistry, astrophysics, sociology) **and**
    BODI XML projects for every executable runner discipline, all grounded in the
    real [`churn/`](../churn) datasets.
-3. **A worked XLT CPU-model sheet.**
+3. **A dedicated menubar showcase** with a horizontal File/Edit/View/Help bar,
+   working dropdowns, and nested Recent Files / Panels groups that expand and
+   collapse. See [`menus/`](./menus/README.md).
+4. **A worked XLT CPU-model sheet.**
 
 ## Unified layout standard
 
@@ -54,4 +57,5 @@ A built `sleela` binary is required — `./scripts/build-linux.sh` (or
 ./example/run-gui-examples.sh
 ```
 
-This runs the example set with a consistent shell and bounded layout behaviour.
+This runs the five GUI-line demos plus the expandable-menubar showcase with a
+consistent shell and bounded layout behaviour.
