@@ -1,0 +1,445 @@
+<<
+   example/gui-dual-media-studio.sleela
+   The DUAL (4.0) "media studio" scene as a REAL, on-screen window -- driven by
+   SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM bridge
+   (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously this file
+   only print()ed a walkthrough; now the rich professional component set (audio
+   recorder, video canvas with transport, codec-aware controls, URL bar, layout,
+   graphics) is painted as actual, interactive widgets.
+   
+   The three-layer stack is live here:
+     SLeeLa decoration (this program + the glass theme below)
+       -> model (ui* built-ins: uiWindowCreate, uiSlider, uiProgressBar, ...)
+         -> C/C++ (SleelaUI software rasterizer + native window backend)
+   
+   Run (needs a display: X on Linux, native on macOS/Windows):
+     SLEELA_SHEET=./SHEET.sheet \
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/gui-dual-media-studio.sleela
+   
+   With no display (headless/CI) it reports that and exits 0 without a window.
+>>
+#sleela 2.1
+// DUAL (4.0): rich professional components that are codec-aware -- the UI never
+// offers media it cannot play. Here the codec gate decides which transport
+// controls are shown as live widgets.
+class GuiDualMediaStudio {
+
+  // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
+  // Static build policy: default keeps the normal layout within its parent width.
+  // Set to 1 only in builds that intentionally permit horizontal overflow.
+  static final int ALLOW_HORIZONTAL_OVERFLOW = 0;
+
+  // Scroll-policy ordinal (mirror the toolkit C ABI: 0=auto on overflow).
+  int SCROLL_AUTO = 0;
+
+  // Live handles the event loop reacts on/to.
+  int btnPlay;
+  int btnPause;
+  int btnStop;
+  int btnRec;
+  int btnRecStop;
+  int videoLabel;    // the movie surface caption (player state)
+  int recState;      // the recorder state label
+  int statusLabel;
+  // Lower-right status-bar connectivity control and its dismissible menu.
+  int wifiButton;
+  int wifiPanel;
+  int wifiStatusLabel;
+  int wifiScanButton;
+  int wifiConnectButton;
+  int wifiDisconnectButton;
+  int wifiSettingsButton;
+  int wifiInfoButton;
+  int wifiProfileEntry;
+  int wifiCloseButton;
+  // Menubar strip and its dropdown panels (built from existing ui* widgets).
+  int openMenuIndex = -1;
+  int menuFileButton;
+  int menuFilePanel;
+  int menuFileItem1;
+  int menuFileItem2;
+  int menuMediaButton;
+  int menuMediaPanel;
+  int menuMediaItem1;
+  int menuMediaItem2;
+  int menuPlaybackButton;
+  int menuPlaybackPanel;
+  int menuPlaybackItem1;
+  int menuPlaybackItem2;
+  int menuHelpButton;
+  int menuHelpPanel;
+  int menuHelpItem1;
+  int menuHelpItem2;
+
+  int rgba(int r, int g, int b, int a) {
+    return r * 16777216 + g * 65536 + b * 256 + a;
+  }
+  int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
+
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+  String intToStr(int v) { return "" + v; }
+
+  // Codec gate: the studio consults the registry before offering a control.
+  boolean canPlayType(String mime) {
+    return mime == "audio/wav"
+        || mime == "audio/mpeg"
+        || mime == "video/mp4"
+        || mime == "audio/ogg";
+  }
+
+  // Shared action helpers keep menu commands and transport buttons consistent.
+  void playMedia() {
+    uiWidgetSetText(videoLabel, "transport: playing \u25B6");
+    uiWidgetSetText(statusLabel, "video/mp4 playing (codec gate passed)");
+  }
+  void pauseMedia() {
+    uiWidgetSetText(videoLabel, "transport: paused \u2759\u2759");
+    uiWidgetSetText(statusLabel, "video paused");
+  }
+  void stopMedia() {
+    uiWidgetSetText(videoLabel, "transport: stopped \u25A0");
+    uiWidgetSetText(statusLabel, "video stopped (position reset to 0s)");
+  }
+  void startRecording() {
+    uiWidgetSetText(recState, "state: recording \u25CF  \u00B7  capturing audio/wav");
+    uiWidgetSetText(statusLabel, "recorder armed -> recording (audio/wav recordable)");
+  }
+  void stopRecording() {
+    uiWidgetSetText(recState, "state: stopped  \u00B7  clip captured");
+    uiWidgetSetText(statusLabel, "recording stopped; clip captured");
+  }
+
+  // A cool "glass" studio theme for the DUAL line.
+  // Shared SLeeLa family palette: chrome/title bar #1D2025,
+  // Standard Pattern ordinal (mirror SLUIThemeId): 7=GRAY. dual uses GRAY.
+  int THEME_GRAY = 7;
+  // dual is the GRAY Standard Pattern: neutral mid-gray surfaces with light
+  // text, supplied by the toolkit preset (no per-colour overrides); metrics only.
+  int glassTheme() {
+    int t = uiThemePreset(THEME_GRAY);
+    uiThemeSetRadius(t, 8);
+    uiThemeSetControlHeight(t, 32);
+    return t;
+  }
+
+  // Show one dropdown at a time; selecting the open menu closes it.
+  void openMenu(int which) {
+    int next = openMenuIndex == which ? -1 : which;
+    openMenuIndex = next;
+    uiWidgetVisible(menuFilePanel, next == 0 ? 1 : 0);
+    uiWidgetVisible(menuMediaPanel, next == 1 ? 1 : 0);
+    uiWidgetVisible(menuPlaybackPanel, next == 2 ? 1 : 0);
+    uiWidgetVisible(menuHelpPanel, next == 3 ? 1 : 0);
+    uiWidgetVisible(wifiPanel, next == 4 ? 1 : 0);
+  }
+
+  void wifiActionUnavailable(String action) {
+    uiWidgetSetText(wifiStatusLabel, action + " requires the native Wi-Fi host bridge.");
+    uiWidgetSetText(statusLabel, "Connectivity · " + action + " unavailable (host bridge required)");
+    openMenu(-1);
+  }
+
+  void main() {
+    print("SLeeLa DUAL Media Studio (native SleelaUI) — backend "
+        + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
+
+    int app = uiAppCreate("com.mearvk.SleelaUI.DualMediaStudio");
+    if (app < 0) {
+      print("No display available (headless): the ui* bridge is wired, but the");
+      print("toolkit could not open a window. Run on a desktop (X/Cocoa/Win32).");
+      return;
+    }
+
+    int theme = glassTheme();
+    // Derive the initial frame from the real screen. Requested design dimensions
+    // are preferences only; the physical screen is the hard upper bound.
+    int screenW = uiScreenWidth(app);
+    int screenH = uiScreenHeight(app);
+    int winW = 1040;
+    int winH = 660;
+    if (screenW > 0) {
+      int maxW = screenW - 32;
+      if (maxW < 1) { maxW = screenW; }
+      if (winW > maxW) { winW = maxW; }
+    }
+    if (screenH > 0) {
+      int maxH = screenH - 64;
+      if (maxH < 1) { maxH = screenH; }
+      if (winH > maxH) { winH = maxH; }
+    }
+    int win = uiWindowCreate(app, "International Criminal Court - GR3+ Grades", winW, winH, theme);
+    int root = uiWindowRoot(win);
+
+    // --- Functional menubar strip and dropdowns ---
+    int menuStrip = uiBox(root, 1, 4);
+    uiWidgetMargin(menuStrip, 4, 8, 4, 8);
+    menuFileButton = uiButton(menuStrip, "File");
+    menuMediaButton = uiButton(menuStrip, "Media");
+    menuPlaybackButton = uiButton(menuStrip, "Playback");
+    menuHelpButton = uiButton(menuStrip, "Help");
+    menuFilePanel = uiBox(root, 0, 2);
+    uiWidgetMargin(menuFilePanel, 4, 10, 4, 10);
+    menuFileItem1 = uiButton(menuFilePanel, "Open Media");
+    menuFileItem2 = uiButton(menuFilePanel, "Media Information");
+    uiWidgetVisible(menuFilePanel, 0);
+    menuMediaPanel = uiBox(root, 0, 2);
+    uiWidgetMargin(menuMediaPanel, 4, 10, 4, 10);
+    menuMediaItem1 = uiButton(menuMediaPanel, "Audio Recorder");
+    menuMediaItem2 = uiButton(menuMediaPanel, "Codec Registry");
+    uiWidgetVisible(menuMediaPanel, 0);
+    menuPlaybackPanel = uiBox(root, 0, 2);
+    uiWidgetMargin(menuPlaybackPanel, 4, 10, 4, 10);
+    menuPlaybackItem1 = uiButton(menuPlaybackPanel, "Play Media");
+    menuPlaybackItem2 = uiButton(menuPlaybackPanel, "Stop Playback");
+    uiWidgetVisible(menuPlaybackPanel, 0);
+    menuHelpPanel = uiBox(root, 0, 2);
+    uiWidgetMargin(menuHelpPanel, 4, 10, 4, 10);
+    menuHelpItem1 = uiButton(menuHelpPanel, "Media Guide");
+    menuHelpItem2 = uiButton(menuHelpPanel, "About DUAL");
+    uiWidgetVisible(menuHelpPanel, 0);
+
+    // --- Chrome: URL bar (HTML-aware, HTTP-driven) ---
+    int header = uiHeaderBar(root);
+    uiWidgetSizeRequest(header, 0, 48);          // Coherent Dignity: 6X header banner (48px)
+    uiButton(header, "\u2039");                  // back
+    uiButton(header, "\u203A");                  // forward
+    uiButton(header, "\u21BB");                  // reload
+    int url = uiEntry(header, "https://sleela.example/studio");
+    uiWidgetExpand(url, 1, 0);
+    uiWidgetMargin(url, 0, 8, 0, 8);
+
+    // The content lives inside a scrolled view so it scrolls (with automatic
+    // scrollbars) instead of spilling past the frame on a small window.
+    int scroller = uiScrolledView(root, SCROLL_AUTO, SCROLL_AUTO);
+    uiWidgetExpand(scroller, 1, 1);
+    int content = uiBox(scroller, 1, 14);     // the scroll CONTENT (1st child)
+    uiWidgetMargin(content, 16, 16, 16, 16);
+    uiWidgetExpand(content, 1, 0); // let the content height drive vertical scrolling
+
+    // Layout: a two-column grid (video canvas + recorder panel).
+    // MUAL-style responsive hierarchy: vertical subslots only; later panels
+    // flow below earlier panels instead of competing for horizontal width.
+    int contentAxis = ALLOW_HORIZONTAL_OVERFLOW == 1 ? 0 : 1;
+    int cols = uiBox(content, contentAxis, 16);
+    uiWidgetExpand(cols, 1, 0);
+    int colL = uiBox(cols, 1, 12);
+    uiWidgetExpand(colL, 1, 0);
+    int colR = uiBox(cols, 1, 12);
+    uiWidgetExpand(colR, 1, 0);
+
+    // Video canvas card with full transport (codec-gated on video/mp4).
+    boolean playable = canPlayType("video/mp4");
+    int video = uiCard(colL);
+    uiWidgetExpand(video, 1, 1);
+    int vBox = uiBox(video, 1, 8);
+    uiWidgetMargin(vBox, 12, 12, 12, 12);
+    uiWidgetExpand(vBox, 1, 1);
+
+    // Default: the media canvas must not impose a fixed width on a compact frame.
+    int canvasW = 320;
+    if (ALLOW_HORIZONTAL_OVERFLOW == 0 && screenW > 0 && canvasW > screenW - 96) {
+      canvasW = screenW - 96;
+    }
+    if (canvasW < 1) { canvasW = 1; }
+    int canvasH = canvasW * 9 / 16;
+    int canvas = uiImage(vBox, "\\u25B6 intro.mp4", canvasW, canvasH);
+    uiWidgetExpand(canvas, 1, 0); // fit width to the card without vertical expansion
+    videoLabel = uiLabel(vBox, "transport: stopped");
+    // Position / duration: seek clamps past the 180s end.
+    int pos = clamp(0, 0, 180);
+
+    int seek = uiSlider(vBox, 0.0, 180.0, pos);
+    uiWidgetExpand(seek, 1, 0);
+    int transport = uiBox(vBox, 1, 8); // stack transport controls within the card width
+    btnPlay = uiButton(transport, "\u25B6 Play");
+    uiWidgetSuggested(btnPlay, 1);
+    btnPause = uiButton(transport, "\u2759\u2759 Pause");
+    btnStop = uiButton(transport, "\u25A0 Stop");
+    uiSpacer(transport);
+    int vol = clamp(130, 0, 100);              // 130% -> 100%
+
+    // Audio recorder card: idle -> armed -> recording <-> paused -> stopped.
+    boolean recordable = canPlayType("audio/wav");
+    int rec = uiCard(colR);
+    uiWidgetExpand(rec, 1, 0);
+    int rBox = uiBox(rec, 1, 8);
+    uiWidgetExpand(rBox, 1, 0);
+    uiWidgetMargin(rBox, 12, 12, 12, 12);
+
+    int level = uiBox(rBox, 1, 8);
+
+    int lb = uiLevelBar(level, 0.71);
+    uiWidgetExpand(lb, 1, 0);
+    recState = uiLabel(rBox, "state: idle  \u00B7  press Record to arm");
+    int rrow = uiBox(rBox, 1, 8);
+    uiWidgetExpand(rrow, 1, 0);
+    btnRec = uiButton(rrow, "\u25CF Record");
+    uiWidgetDestructive(btnRec, 1);
+    btnRecStop = uiButton(rrow, "\u25A0 Stop");
+
+    // Codec registry card (full width): what the UI will and won't offer.
+    int codec = uiCard(content);
+    uiWidgetExpand(codec, 1, 0);
+    int cBox = uiBox(codec, 1, 6);
+    uiWidgetExpand(cBox, 1, 0);
+    uiWidgetMargin(cBox, 12, 12, 12, 12);
+
+    int crow = uiBox(cBox, 1, 8);
+    uiWidgetExpand(crow, 1, 0);
+
+    int hidden = uiBadge(crow, "video/avi \u2715 hidden");
+    uiWidgetDestructive(hidden, 1);
+    uiSpacer(crow);
+
+    // --- Connectivity popover: opened from the lower-right Wi-Fi status icon. ---
+    // Native Wi-Fi scan/connect/disconnect are backed by wifi-common via the SLVM.
+    wifiPanel = uiPopupCreate(root);
+    uiWidgetExpand(wifiPanel, 1, 0);
+    uiWidgetMargin(wifiPanel, 4, 8, 4, 8);
+    int wifiBox = uiBox(wifiPanel, 1, 5);
+    uiWidgetExpand(wifiBox, 1, 0);
+    uiWidgetMargin(wifiBox, 8, 10, 8, 10);
+    int wifiHeading = uiHeading(wifiBox, "Connectivity", 18);
+    wifiStatusLabel = uiLabel(wifiBox, "Scan to list nearby networks; connect with an OS-saved profile.");
+    wifiProfileEntry = uiEntry(wifiBox, "Optional saved profile (blank = OS authentication)");
+    wifiScanButton = uiButton(wifiBox, "Scan for Networks");
+    wifiConnectButton = uiButton(wifiBox, "Connect to First Listed Network");
+    wifiDisconnectButton = uiButton(wifiBox, "Disconnect");
+    wifiSettingsButton = uiButton(wifiBox, "Network Settings");
+    wifiInfoButton = uiButton(wifiBox, "Connection Details");
+    wifiCloseButton = uiButton(wifiBox, "Close Menu");
+    uiWidgetVisible(wifiPanel, 0);
+
+    int status = uiStatusBar(root);
+    statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
+    uiWidgetMargin(statusLabel, 0, 12, 0, 12);
+    uiSpacer(status);
+    wifiButton = uiButton(status, "Wi-Fi");
+    // Permanent Wi-Fi identity: Wifi; PNG is primary, SVG/JPEG are retained alternates.
+    uiWidgetSetIcon(wifiButton, "user-interface/icons/wifi.png", "Wifi");
+    uiWidgetMargin(wifiButton, 0, 8, 0, 8);
+    uiWidgetSuggested(wifiButton, 1);
+
+    uiWindowShow(win);
+    print("Window shown. Transport + recorder buttons change the player state.");
+
+    // --- Interactive event loop: pump, then poll the media controls. ---
+    boolean running = true;
+    while (running) {
+      int dispatched = uiAppPump(app, 1);
+      if (dispatched < 0) { running = false; }
+      else {
+
+        // Menubar top-level buttons toggle their dropdown panels.
+        if (uiWidgetTakeActivated(menuFileButton) == 1) { openMenu(0); }
+        if (uiWidgetTakeActivated(menuMediaButton) == 1) { openMenu(1); }
+        if (uiWidgetTakeActivated(menuPlaybackButton) == 1) { openMenu(2); }
+        if (uiWidgetTakeActivated(menuHelpButton) == 1) { openMenu(3); }
+        if (uiWidgetTakeActivated(wifiButton) == 1) { openMenu(4); }
+        // Menu items announce the selected command, then dismiss the dropdown.
+        if (uiWidgetTakeActivated(menuFileItem1) == 1) {
+          uiWidgetSetText(statusLabel, "File · Open Media");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuFileItem2) == 1) {
+          uiWidgetSetText(statusLabel, "File · Media Information");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuMediaItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Media · Audio Recorder");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuMediaItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Media · Codec Registry");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuPlaybackItem1) == 1) {
+          playMedia();
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuPlaybackItem2) == 1) {
+          stopMedia();
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem1) == 1) {
+          uiWidgetSetText(statusLabel, "Help · Media Guide");
+          openMenu(-1);
+        }
+        if (uiWidgetTakeActivated(menuHelpItem2) == 1) {
+          uiWidgetSetText(statusLabel, "Help · About DUAL");
+          openMenu(-1);
+        }
+        // Scan results are sourced from the native OS provider, never fabricated.
+        if (uiWidgetTakeActivated(wifiScanButton) == 1) {
+          int scanResult = uiWifiScan();
+          int networkCount = uiWifiNetworkCount();
+          if (scanResult == 0 && networkCount > 0) {
+            uiWidgetSetText(wifiStatusLabel, "Found " + networkCount + " network(s). First: " + uiWifiNetworkSsid(0) + " · " + uiWifiNetworkSignal(0) + "% · " + uiWifiNetworkSecurity(0));
+            uiWidgetSetText(statusLabel, "Connectivity · scan complete");
+          } else {
+            uiWidgetSetText(wifiStatusLabel, "Wi-Fi scan: " + uiWifiStatusName(scanResult) + " (" + networkCount + " networks)");
+          }
+        }
+        if (uiWidgetTakeActivated(wifiConnectButton) == 1) {
+          String profileName = uiWidgetGetText(wifiProfileEntry);
+          int connectResult = uiWifiConnect(0, profileName);
+          uiWidgetSetText(wifiStatusLabel, "Connect: " + uiWifiStatusName(connectResult));
+          uiWidgetSetText(statusLabel, "Connectivity · " + uiWifiStatusName(connectResult));
+        }
+        if (uiWidgetTakeActivated(wifiDisconnectButton) == 1) {
+          int disconnectResult = uiWifiDisconnect();
+          uiWidgetSetText(wifiStatusLabel, "Disconnect: " + uiWifiStatusName(disconnectResult));
+        }
+        if (uiWidgetTakeActivated(wifiSettingsButton) == 1) {
+          int settingsResult = uiWifiOpenSettings();
+          if (settingsResult == 0) {
+            uiWidgetSetText(wifiStatusLabel, "Opened the operating system's network settings.");
+            uiWidgetSetText(statusLabel, "Connectivity · opened system network settings");
+            openMenu(-1);
+          } else {
+            wifiActionUnavailable("Opening network settings");
+          }
+        }
+        if (uiWidgetTakeActivated(wifiInfoButton) == 1) {
+          if (uiWifiNetworkCount() > 0) {
+            uiWidgetSetText(wifiStatusLabel, uiWifiNetworkSsid(0) + " · " + uiWifiNetworkBssid(0) + " · " + uiWifiNetworkSignal(0) + "% · " + uiWifiNetworkSecurity(0));
+          } else {
+            uiWidgetSetText(wifiStatusLabel, "Scan before requesting connection details.");
+          }
+        }
+        if (uiWidgetTakeActivated(wifiCloseButton) == 1) { openMenu(-1); }
+
+        if (uiWidgetTakeActivated(btnPlay) == 1) {
+
+          openMenu(-1);
+          playMedia();
+        }
+        if (uiWidgetTakeActivated(btnPause) == 1) {
+          openMenu(-1);
+          pauseMedia();
+        }
+        if (uiWidgetTakeActivated(btnStop) == 1) {
+          openMenu(-1);
+          stopMedia();
+        }
+        if (uiWidgetTakeActivated(btnRec) == 1) {
+          openMenu(-1);
+          startRecording();
+        }
+        if (uiWidgetTakeActivated(btnRecStop) == 1) {
+          openMenu(-1);
+          stopRecording();
+        }
+      }
+    }
+
+    uiThemeDestroy(theme);
+    uiAppDestroy(app);
+    print("event loop exited.");
+  }
+}

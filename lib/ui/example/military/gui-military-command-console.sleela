@@ -1,0 +1,437 @@
+<<
+   example/gui-military-command-console.sleela
+   The MILITARY (5.0) "command console" scene as a REAL, on-screen window --
+   driven by SleelaUI, SLeeLa's own native C/C++ toolkit, through the ui* SLVM
+   bridge (OP_UI_CALL -> user-interface/ C ABI -> X11/Cocoa/Win32). Previously
+   this file only print()ed a walkthrough of the hardened military surface; now
+   that scene (metal/blue 3D-lit frame, strong branding, Component-vs-Container
+   taxonomy, icons on clickables, a post-quantum crypto selector, and the public
+   key certificate store) is painted as actual, interactive widgets.
+   
+   It is the console-flavoured companion to gui-military-window.sleela: both
+   render through the same native path, this one foregrounding the crypto
+   selector + certificate store workflow.
+   
+   The three-layer stack is live here:
+     SLeeLa decoration (this program + the metal/blue theme below)
+       -> model (ui* built-ins: uiWindowCreate, uiComboBox, uiBadge, ...)
+         -> C/C++ (SleelaUI software rasterizer + native window backend)
+   
+   Run (needs a display: X on Linux, native on macOS/Windows):
+     SLEELA_SHEET=./SHEET.sheet \
+     SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
+     ./impl/build/sleela run example/gui-military-command-console.sleela
+   
+   With no display (headless/CI) it reports that and exits 0 without a window.
+>>
+#sleela 2.1
+class GuiMilitaryCommandConsole {
+
+  // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
+  int THEME_CUSTOM = 2;
+
+  // Scroll-policy ordinal (mirror the toolkit C ABI: 0=auto on overflow).
+  int SCROLL_AUTO = 0;
+
+  // Live handles the event loop reacts on/to.
+  int btnAuthorize;
+  int btnRun;
+  int btnReset;
+  int statusLabel;
+  boolean wifiMenuOpen = false;
+  // Lower-right status-bar connectivity control and its dismissible menu.
+  int wifiButton;
+  int wifiPanel;
+  int wifiStatusLabel;
+  int wifiScanButton;
+  int wifiConnectButton;
+  int wifiDisconnectButton;
+  int wifiSettingsButton;
+  int wifiInfoButton;
+  int wifiProfileEntry;
+  int wifiCloseButton;
+
+  // Reusable menu-bar interaction state for the command console.
+  int consoleMenuIndex = -1;
+  int menuFileButton;
+  int menuEditButton;
+  int menuViewButton;
+  int menuHelpButton;
+  int menuFilePanel;
+  int menuEditPanel;
+  int menuViewPanel;
+  int menuHelpPanel;
+  int menuFileNew;
+  int menuFileSave;
+  int menuEditAudit;
+  int menuEditClear;
+  int menuViewStatus;
+  int menuViewCertificates;
+  int menuHelpAbout;
+
+  void openConsoleMenu(int index) {
+    int next = consoleMenuIndex == index ? -1 : index;
+    consoleMenuIndex = next;
+    uiWidgetVisible(menuFilePanel, next == 0 ? 1 : 0);
+    uiWidgetVisible(menuEditPanel, next == 1 ? 1 : 0);
+    uiWidgetVisible(menuViewPanel, next == 2 ? 1 : 0);
+    uiWidgetVisible(menuHelpPanel, next == 3 ? 1 : 0);
+  }
+
+  void closeConsoleMenus() {
+    consoleMenuIndex = -1;
+    uiWidgetVisible(menuFilePanel, 0);
+    uiWidgetVisible(menuEditPanel, 0);
+    uiWidgetVisible(menuViewPanel, 0);
+    uiWidgetVisible(menuHelpPanel, 0);
+  }
+
+  // 0xRRGGBBAA colours for the military "metal / blue-hue" palette.
+  int rgba(int r, int g, int b, int a) {
+    return r * 16777216 + g * 65536 + b * 256 + a;
+  }
+  int rgb(int r, int g, int b) { return rgba(r, g, b, 255); }
+
+  // Build the hardened metal/blue military theme and return its handle.
+  // Shared SLeeLa family palette: chrome/title bar #1D2025,
+  // URL-entry surface #383C47; keep these tokens aligned across all five lines.
+  int militaryTheme() {
+    int t = uiThemePreset(THEME_CUSTOM);
+    // Shared SLeeLa palette is defined in source code; no external theme settings.
+    uiThemeSetBg(t, rgb(34, 38, 45));           // #22262D application floor
+    uiThemeSetSurface(t, rgb(41, 45, 53));      // #292D35 panels/cards
+    uiThemeSetSurfaceHi(t, rgb(56, 60, 71));    // #383C47 URL / raised surface
+    uiThemeSetChrome(t, rgb(29, 32, 37));       // #1D2025 title/menu/header chrome
+    uiThemeSetBorder(t, rgba(68, 74, 86, 255));// #444A56
+    uiThemeSetFg(t, rgb(232, 234, 237));       // #E8EAED primary text
+    uiThemeSetFgDim(t, rgb(176, 183, 195));    // #B0B7C3 muted text
+    uiThemeSetAccent(t, rgb(79, 140, 255));    // #4F8CFF accent
+    uiThemeSetAccentFg(t, rgb(18, 24, 36));
+    uiThemeSetDanger(t, rgb(217, 83, 79));     // #D9534F
+    uiThemeSetRadius(t, 8);
+    uiThemeSetControlHeight(t, 32);
+    return t;
+  }
+
+  void toggleWifiMenu() {
+    wifiMenuOpen = !wifiMenuOpen;
+    uiWidgetVisible(wifiPanel, wifiMenuOpen ? 1 : 0);
+  }
+
+  void closeWifiMenu() {
+    wifiMenuOpen = false;
+    uiWidgetVisible(wifiPanel, 0);
+  }
+
+  void wifiActionUnavailable(String action) {
+    uiWidgetSetText(wifiStatusLabel, action + " requires the native Wi-Fi host bridge.");
+    uiWidgetSetText(statusLabel, "Connectivity · " + action + " unavailable (host bridge required)");
+    closeWifiMenu();
+  }
+
+  void main() {
+    print("SLeeLa Military Command Console (native SleelaUI) — backend "
+        + uiBackendName(uiBackend()) + ", toolkit " + uiVersion());
+
+    int app = uiAppCreate("com.mearvk.SleelaUI.MilitaryCommandConsole");
+    if (app < 0) {
+      print("No display available (headless): the ui* bridge is wired, but the");
+      print("toolkit could not open a window. Run on a desktop (X/Cocoa/Win32).");
+      return;
+    }
+
+    int theme = militaryTheme();
+    // Derive the initial frame from the real screen. Requested design dimensions
+    // are preferences only; the physical screen is the hard upper bound.
+    int screenW = uiScreenWidth(app);
+    int screenH = uiScreenHeight(app);
+    int winW = 1040;
+    int winH = 640;
+    if (screenW > 0) {
+      int maxW = screenW - 32;
+      if (maxW < 1) { maxW = screenW; }
+      if (winW > maxW) { winW = maxW; }
+    }
+    if (screenH > 0) {
+      int maxH = screenH - 64;
+      if (maxH < 1) { maxH = screenH; }
+      if (winH > maxH) { winH = maxH; }
+    }
+    int win = uiWindowCreate(app, "International Criminal Court - GR3+ Grades", winW, winH, theme);
+    int root = uiWindowRoot(win);
+
+    // --- Chrome: insignia + strong branding, then window buttons ---
+    int header = uiHeaderBar(root);
+    uiWidgetSizeRequest(header, 0, 56);
+    int insignia = uiLabel(header, "\u25C8");            // the diamond insignia
+    uiWidgetMargin(insignia, 0, 10, 0, 14);
+    int brand = uiBox(header, 1, 0);
+
+    uiSpacer(header);
+    uiButton(header, "\u2014");                           // minimize-right fold
+    uiButton(header, "\u2922");                           // fullscreen
+    uiButton(header, "\u21E5");                           // double-click restore
+
+    // Full-width horizontal menu bar. Dropdowns are ordinary host-backed
+    // widgets so this fallback works consistently without assuming native OS menus.
+    int menubar = uiBox(root, 1, 4);
+    uiWidgetMargin(menubar, 4, 8, 4, 8);
+    menuFileButton = uiButton(menubar, "File  v");
+    menuEditButton = uiButton(menubar, "Edit  v");
+    menuViewButton = uiButton(menubar, "View  v");
+    menuHelpButton = uiButton(menubar, "Help  v");
+
+    menuFilePanel = uiBox(root, 0, 4);
+    uiWidgetMargin(menuFilePanel, 4, 12, 4, 12);
+    menuFileNew = uiButton(menuFilePanel, "New Session");
+    menuFileSave = uiButton(menuFilePanel, "Save Report");
+    uiWidgetVisible(menuFilePanel, 0);
+
+    menuEditPanel = uiBox(root, 0, 4);
+    uiWidgetMargin(menuEditPanel, 4, 12, 4, 12);
+    menuEditAudit = uiButton(menuEditPanel, "Audit Trail");
+    menuEditClear = uiButton(menuEditPanel, "Clear Status");
+    uiWidgetVisible(menuEditPanel, 0);
+
+    menuViewPanel = uiBox(root, 0, 4);
+    uiWidgetMargin(menuViewPanel, 4, 12, 4, 12);
+    menuViewStatus = uiButton(menuViewPanel, "Status Overview");
+    menuViewCertificates = uiButton(menuViewPanel, "Certificate Store");
+    uiWidgetVisible(menuViewPanel, 0);
+
+    menuHelpPanel = uiBox(root, 0, 4);
+    uiWidgetMargin(menuHelpPanel, 4, 12, 4, 12);
+    menuHelpAbout = uiButton(menuHelpPanel, "About SLeeLa GUI");
+    uiWidgetVisible(menuHelpPanel, 0);
+
+    // The content lives inside a scrolled view so it scrolls (with automatic
+    // scrollbars) instead of spilling past the frame on a small window.
+    int scroller = uiScrolledView(root, SCROLL_AUTO, SCROLL_AUTO);
+    uiWidgetExpand(scroller, 1, 1);
+    int content = uiBox(scroller, 1, 14);     // the scroll CONTENT (1st child)
+    uiWidgetMargin(content, 18, 18, 18, 18);
+    uiWidgetExpand(content, 1, 0); // content grows to its natural height inside the scroller
+
+    // Taxonomy row: Component vs Container, shown as chips.
+    int tax = uiBox(content, 1, 8); // stack taxonomy chips so the row cannot exceed the frame
+    uiWidgetExpand(tax, 1, 0);
+
+    uiSpacer(tax);
+
+    int cols = uiBox(content, 1, 16); // stack cards vertically to fit the available width
+    uiWidgetExpand(cols, 1, 0);
+    int colL = uiBox(cols, 1, 16);
+    uiWidgetExpand(colL, 1, 0);
+    int colR = uiBox(cols, 1, 16);
+    uiWidgetExpand(colR, 1, 0);
+
+    // Actions toolbar card: icon on the primary clickable.
+    int actions = uiCard(colL);
+    uiWidgetExpand(actions, 1, 0);
+    int actBox = uiBox(actions, 1, 8);
+    uiWidgetExpand(actBox, 1, 0);
+    uiWidgetMargin(actBox, 12, 14, 12, 14);
+
+    int arow = uiBox(actBox, 1, 8);
+    uiWidgetExpand(arow, 1, 0);
+    btnAuthorize = uiButton(arow, "\u26CA Authorize");   // md icon, leading, gap 8
+    uiWidgetSuggested(btnAuthorize, 1);
+    btnRun = uiButton(arow, "\u25B9 Run");
+    uiWidgetSensitive(btnRun, 0);                        // fail-closed: locked until authorized
+    btnReset = uiButton(arow, "\u27F2 Reset");
+    uiSpacer(arow);
+
+    // Cryptography selector card: gated to strong / post-quantum.
+    int crypto = uiCard(colR);
+    uiWidgetExpand(crypto, 1, 0);
+    int cryBox = uiBox(crypto, 1, 8);
+    uiWidgetExpand(cryBox, 1, 0);
+    uiWidgetMargin(cryBox, 12, 14, 12, 14);
+
+    int pick = uiComboBox(cryBox);
+    uiWidgetExpand(pick, 1, 0);
+    uiComboBoxAdd(pick, "AES-256-GCM + ML-KEM-768 + ML-DSA-65  [PQC, accepted]");
+    uiComboBoxAdd(pick, "AES-256-GCM + X25519 (strong)");
+    int gated = uiLabel(cryBox, "3DES-CBC + RSA-2048 (legacy)  \u2715 below min, gated out");
+
+    // Certificate store card (full width): import -> trust -> select -> revoke.
+    int certs = uiCard(content);
+    uiWidgetExpand(certs, 1, 0);
+    int certBox = uiBox(certs, 1, 6);
+    uiWidgetExpand(certBox, 1, 0);
+    uiWidgetMargin(certBox, 12, 14, 12, 14);
+
+    int r1 = uiBox(certBox, 1, 10);
+
+    uiSpacer(r1);
+
+    uiSeparator(certBox, 0);
+    int r2 = uiBox(certBox, 1, 10);
+
+    uiSpacer(r2);
+    int revoked = uiBadge(r2, "revoked \u00B7 selection cleared");
+    uiWidgetDestructive(revoked, 1);
+
+    // Window state card: minimize-right fold, double-click restore, fullscreen.
+    int wstate = uiCard(content);
+    uiWidgetExpand(wstate, 1, 0);
+    int wBox = uiBox(wstate, 1, 6);
+    uiWidgetExpand(wBox, 1, 0);
+    uiWidgetMargin(wBox, 12, 12, 12, 12);
+
+    int wrow = uiBox(wBox, 1, 10);
+    uiWidgetExpand(wrow, 1, 0);
+
+    uiSpacer(wrow);
+
+    // --- Connectivity popover: opened from the lower-right Wi-Fi status icon. ---
+    // Native Wi-Fi scan/connect/disconnect are backed by wifi-common via the SLVM.
+    wifiPanel = uiPopupCreate(root);
+    uiWidgetExpand(wifiPanel, 1, 0);
+    uiWidgetMargin(wifiPanel, 4, 8, 4, 8);
+    int wifiBox = uiBox(wifiPanel, 1, 5);
+    uiWidgetExpand(wifiBox, 1, 0);
+    uiWidgetMargin(wifiBox, 8, 10, 8, 10);
+    int wifiHeading = uiHeading(wifiBox, "Connectivity", 18);
+    wifiStatusLabel = uiLabel(wifiBox, "Scan to list nearby networks; connect with an OS-saved profile.");
+    wifiProfileEntry = uiEntry(wifiBox, "Optional saved profile (blank = OS authentication)");
+    wifiScanButton = uiButton(wifiBox, "Scan for Networks");
+    wifiConnectButton = uiButton(wifiBox, "Connect to First Listed Network");
+    wifiDisconnectButton = uiButton(wifiBox, "Disconnect");
+    wifiSettingsButton = uiButton(wifiBox, "Network Settings");
+    wifiInfoButton = uiButton(wifiBox, "Connection Details");
+    wifiCloseButton = uiButton(wifiBox, "Close Menu");
+    uiWidgetVisible(wifiPanel, 0);
+
+    int status = uiStatusBar(root);
+    statusLabel = uiLabel(status, "Sleela™ GUI - Version 1.0");
+    uiWidgetMargin(statusLabel, 0, 12, 0, 12);
+    uiSpacer(status);
+    wifiButton = uiButton(status, "Wi-Fi");
+    // Permanent Wi-Fi identity: Wifi; PNG is primary, SVG/JPEG are retained alternates.
+    uiWidgetSetIcon(wifiButton, "user-interface/icons/wifi.png", "Wifi");
+    uiWidgetMargin(wifiButton, 0, 8, 0, 8);
+    uiWidgetSuggested(wifiButton, 1);
+
+    uiWindowShow(win);
+    print("Window shown. Authorize unlocks Run; Reset re-locks it (fail-closed).");
+
+    // --- Interactive event loop: pump, then poll the command actions. ---
+    // Fail-closed authority: Run is sensitive only after Authorize, and Reset
+    // returns the console to the locked state. This is the hardened posture of
+    // SLGuiAdminAuthority made tangible: sign in to start a process, sign off,
+    // and a clear audit of the current authority state in the status line.
+    boolean authorized = false;
+    int runs = 0;
+    boolean running = true;
+    while (running) {
+      int dispatched = uiAppPump(app, 1);
+      if (dispatched < 0) { running = false; }
+      else {
+        // Top-level menu bar: one dropdown at a time; repeat-click collapses.
+        if (uiWidgetTakeActivated(menuFileButton) == 1) { openConsoleMenu(0); closeWifiMenu(); }
+        if (uiWidgetTakeActivated(menuEditButton) == 1) { openConsoleMenu(1); closeWifiMenu(); }
+        if (uiWidgetTakeActivated(menuViewButton) == 1) { openConsoleMenu(2); closeWifiMenu(); }
+        if (uiWidgetTakeActivated(menuHelpButton) == 1) { openConsoleMenu(3); closeWifiMenu(); }
+
+        if (uiWidgetTakeActivated(menuFileNew) == 1) {
+          uiWidgetSetText(statusLabel, "File · New Session selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuFileSave) == 1) {
+          uiWidgetSetText(statusLabel, "File · Save Report selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuEditAudit) == 1) {
+          uiWidgetSetText(statusLabel, "Edit · Audit Trail selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuEditClear) == 1) {
+          uiWidgetSetText(statusLabel, "Edit · Clear Status selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuViewStatus) == 1) {
+          uiWidgetSetText(statusLabel, "View · Status Overview selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuViewCertificates) == 1) {
+          uiWidgetSetText(statusLabel, "View · Certificate Store selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuHelpAbout) == 1) {
+          uiWidgetSetText(statusLabel, "Help · SLeeLa GUI menu integration");
+          closeConsoleMenus();
+        }
+
+        // Connectivity actions are deliberately fail-closed until SLVM can call
+        // the native Wi-Fi provider; a menu click never invents a radio result.
+        if (uiWidgetTakeActivated(wifiScanButton) == 1) {
+          int scanResult = uiWifiScan();
+          int networkCount = uiWifiNetworkCount();
+          if (scanResult == 0 && networkCount > 0) {
+            uiWidgetSetText(wifiStatusLabel, "Found " + networkCount + " network(s). First: " + uiWifiNetworkSsid(0) + " · " + uiWifiNetworkSignal(0) + "% · " + uiWifiNetworkSecurity(0));
+            uiWidgetSetText(statusLabel, "Connectivity · scan complete");
+          } else {
+            uiWidgetSetText(wifiStatusLabel, "Wi-Fi scan: " + uiWifiStatusName(scanResult) + " (" + networkCount + " networks)");
+          }
+        }
+        if (uiWidgetTakeActivated(wifiConnectButton) == 1) {
+          String profileName = uiWidgetGetText(wifiProfileEntry);
+          int connectResult = uiWifiConnect(0, profileName);
+          uiWidgetSetText(wifiStatusLabel, "Connect: " + uiWifiStatusName(connectResult));
+          uiWidgetSetText(statusLabel, "Connectivity · " + uiWifiStatusName(connectResult));
+        }
+        if (uiWidgetTakeActivated(wifiDisconnectButton) == 1) {
+          int disconnectResult = uiWifiDisconnect();
+          uiWidgetSetText(wifiStatusLabel, "Disconnect: " + uiWifiStatusName(disconnectResult));
+        }
+        if (uiWidgetTakeActivated(wifiSettingsButton) == 1) {
+          int settingsResult = uiWifiOpenSettings();
+          if (settingsResult == 0) {
+            uiWidgetSetText(wifiStatusLabel, "Opened the operating system's network settings.");
+            uiWidgetSetText(statusLabel, "Connectivity · opened system network settings");
+            closeWifiMenu();
+          } else {
+            wifiActionUnavailable("Opening network settings");
+          }
+        }
+        if (uiWidgetTakeActivated(wifiInfoButton) == 1) {
+          if (uiWifiNetworkCount() > 0) {
+            uiWidgetSetText(wifiStatusLabel, uiWifiNetworkSsid(0) + " · " + uiWifiNetworkBssid(0) + " · " + uiWifiNetworkSignal(0) + "% · " + uiWifiNetworkSecurity(0));
+          } else {
+            uiWidgetSetText(wifiStatusLabel, "Scan before requesting connection details.");
+          }
+        }
+        if (uiWidgetTakeActivated(wifiCloseButton) == 1) { closeWifiMenu(); }
+
+        if (uiWidgetTakeActivated(wifiButton) == 1) { toggleWifiMenu(); }
+        if (uiWidgetTakeActivated(btnAuthorize) == 1) {
+          closeWifiMenu();
+          authorized = true;
+          uiWidgetSensitive(btnRun, 1);              // unlock Run
+          uiWidgetSetText(statusLabel, "AUTHORIZED \u2713 \u00B7 PQC suite \u00B7 Run unlocked");
+        }
+        if (uiWidgetTakeActivated(btnRun) == 1) {
+          closeWifiMenu();
+          if (authorized) {
+            runs = runs + 1;
+            uiWidgetSetText(statusLabel, "RUN \u25B9 executed under authority (" + runs + " this session)");
+          } else {
+            // Defence in depth: refuse even if somehow fired while locked.
+            uiWidgetSetText(statusLabel, "RUN refused \u2715 \u00B7 not authorized (fail-closed)");
+          }
+        }
+        if (uiWidgetTakeActivated(btnReset) == 1) {
+          closeWifiMenu();
+          authorized = false;
+          uiWidgetSensitive(btnRun, 0);              // re-lock Run
+          uiWidgetSetText(statusLabel, "RESET \u27F2 \u00B7 authority cleared \u00B7 Run locked again");
+        }
+      }
+    }
+
+    uiThemeDestroy(theme);
+    uiAppDestroy(app);
+    print("event loop exited; authorized runs this session: " + runs);
+  }
+}

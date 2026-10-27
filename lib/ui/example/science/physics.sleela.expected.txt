@@ -1,0 +1,27 @@
+================================================================
+  SLeeLa Science — Physics (import physics;)
+================================================================
+[mechanics]
+  velocity(100 m, 5 s)                 = 20 m/s
+  acceleration(30 m/s, 6 s)            = 5 m/s^2
+  kinematic_position(0, 20, g, 3 s)    = 104.13 m
+  force(10 kg, g)                      = 98.0665 N
+  kinetic_energy(2 kg, 20 m/s)         = 400 J
+[gravitation]
+  gravitational_force(Earth, 100 kg, R) = 979.484 N
+  escape_velocity(Earth)               = 11177.9 m/s
+[special relativity]  (v = 1.5e8 m/s ~ 0.5c)
+  lorentz_gamma(0.5c)                  = 1.15497
+  relativistic_energy(1 kg, 0.5c)      = 1.03803e+17 J
+  momentum(1 kg, 0.5c)                 = 1.73245e+08 kg m/s
+[electricity]
+  ohms_voltage(2 A, 60 ohm)            = 120 V
+  electric_power(120 V, 2 A)           = 240 W
+[waves]  (microwave, lambda = 0.06 m)
+  wave_frequency(c, 0.06 m)            = 4.99654e+09 Hz
+  angular_frequency(60 Hz)             = 376.991 rad/s
+  wavenumber(0.06 m)                   = 104.72 rad/m
+================================================================
+  Done
+================================================================
+Physics is a native subject library (import physics;); it builds on math.
