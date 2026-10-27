@@ -226,11 +226,11 @@ class GuiMenubarExpandable {
           closeMenus();
         }
         if (uiWidgetTakeActivated(panelEditor) == 1) {
-          setStatus("View · Editor Panel visibility toggled");
+          setStatus("View · Editor Panel command selected");
           closeMenus();
         }
         if (uiWidgetTakeActivated(panelInspector) == 1) {
-          setStatus("View · Inspector Panel visibility toggled");
+          setStatus("View · Inspector Panel command selected");
           closeMenus();
         }
         if (uiWidgetTakeActivated(helpAbout) == 1) {
