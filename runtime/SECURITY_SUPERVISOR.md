@@ -1,6 +1,6 @@
 # Garbage Collector and Security Supervisor
 
-The runtime now provides explicit C and C++ implementations and a Sleela semantic contract.
+The runtime provides native C policy enforcement and a SLeeLa-facing facade. The facade currently fails closed because the VM-native binding is not yet connected; it must not be described as end-to-end admission enforcement until integration tests prove that allocations reserve quota and all destruction/failure paths release it.
 
 ## Security policy
 
@@ -13,6 +13,8 @@ For quality-sensitive admission, use objective and auditable attributes such as 
 ## Runtime path
 
 authorize class -> reserve quota -> allocate -> execute -> release -> collect
+
+The C supervisor rejects unknown classes by default. The SLeeLa facade's default methods deny admission until an authoritative native binding is installed. Do not use the facade's local counters as evidence that native quotas are enforced.
 
 Unknown classes are denied by default. A denied class or exhausted quota prevents admission.
 
