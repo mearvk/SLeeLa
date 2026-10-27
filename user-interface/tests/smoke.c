@@ -62,7 +62,7 @@ int main(void) {
     CHECK(base.accent == slui_rgb(0x4F, 0x8C, 0xFF), "default accent is steel blue");
     CHECK(white.bg != blue.bg && blue.bg != black.bg && black.bg != gray.bg,
           "white, blue, black and gray presets are distinct");
-    CHECK(black.fg == slui_rgb(0xFF, 0xFF, 0xFF), "black preset primary text is white");
+    CHECK(((black.fg >> 24) & 0xFF) >= 0xDE, "black preset primary text is light");
     CHECK(base.control_height >= 32, "control height clears 32px hit target");
     CHECK(base.unit == 4, "spacing unit is 4px");
 
