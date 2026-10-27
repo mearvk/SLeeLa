@@ -738,7 +738,7 @@ static int array_alloc(SLVM* vm, int n) {
             vm->arrays[i].len = n;
             vm->arrays[i].cap = cap;
             vm->arrays[i].elems = elems;
-            vm->arrays[i].gc_object = gc_allocate_external(&vm->gc, &vm->arrays[i], sizeof(vm->arrays[i]), gc_trace_array, gc_array_destroy, vm);
+            vm->arrays[i].gc_object = gc_allocate_external(&vm->gc, &vm->arrays[i], sizeof(vm->arrays[i]) + (size_t)cap * sizeof(*elems), gc_trace_array, gc_array_destroy, vm);
             if (!vm->arrays[i].gc_object) { free(elems); vm->arrays[i].active = 0; vm->arrays[i].elems = NULL; pthread_mutex_unlock(&vm->array_mtx); return -1; }
             for (int j = 0; j < n; j++) vm->arrays[i].elems[j] = slval_null();
             vm->narray_live++;
