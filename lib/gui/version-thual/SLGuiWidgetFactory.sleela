@@ -182,7 +182,7 @@ class SLGuiWidgetFactory {
   }
 
   boolean isContainer(String tag) {
-    return tag == "window" || tag == "box" || tag == "vbox" || tag == "hbox"
+    return tag == "menubar" || tag == "menu-bar" || tag == "menu" || tag == "window" || tag == "box" || tag == "vbox" || tag == "hbox"
         || tag == "row" || tag == "header" || tag == "headerbar"
         || tag == "status" || tag == "statusbar" || tag == "frame"
         || tag == "group"
