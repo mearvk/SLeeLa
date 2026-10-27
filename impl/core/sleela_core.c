@@ -759,8 +759,18 @@ static int array_push(SLVM* vm, int h, SLValue val) {
         int ncap = ai->cap > 0 ? ai->cap * 2 : 8;
         if (ncap > SL_MAX_ARRAY_LEN) ncap = SL_MAX_ARRAY_LEN;
         if (ai->len >= ncap) { pthread_mutex_unlock(&vm->array_mtx); return -1; }
+        size_t old_bytes = sizeof(*ai) + (size_t)ai->cap * sizeof(SLValue);
+        size_t new_bytes = sizeof(*ai) + (size_t)ncap * sizeof(SLValue);
+        if (!gc_resize_object(&vm->gc, ai->gc_object, new_bytes)) {
+            pthread_mutex_unlock(&vm->array_mtx);
+            return -1;
+        }
         SLValue* ne = (SLValue*)realloc(ai->elems, (size_t)ncap * sizeof(SLValue));
-        if (!ne) { pthread_mutex_unlock(&vm->array_mtx); return -1; }
+        if (!ne) {
+            (void)gc_resize_object(&vm->gc, ai->gc_object, old_bytes);
+            pthread_mutex_unlock(&vm->array_mtx);
+            return -1;
+        }
         ai->elems = ne; ai->cap = ncap;
     }
     ai->elems[ai->len++] = val;
