@@ -58,6 +58,22 @@ int gc_set_limit(GarbageCollector *g, size_t bytes) {
     return 1;
 }
 size_t gc_limit(const GarbageCollector *g) { return g ? g->bytes_limit : 0; }
+int gc_resize_object(GarbageCollector *g, SLGCObject *object, size_t new_bytes) {
+    if (!g || !g->initialized || !object || !live(g, object)) return 0;
+    size_t old_bytes = object->bytes;
+    if (new_bytes > old_bytes) {
+        size_t delta = new_bytes - old_bytes;
+        if (delta > SIZE_MAX - g->bytes_allocated ||
+            g->bytes_allocated > g->bytes_limit ||
+            delta > g->bytes_limit - g->bytes_allocated) return 0;
+        g->bytes_allocated += delta;
+    } else {
+        size_t delta = old_bytes - new_bytes;
+        g->bytes_allocated = g->bytes_allocated >= delta ? g->bytes_allocated - delta : 0;
+    }
+    object->bytes = new_bytes;
+    return 1;
+}
 
 SLGCObject *gc_allocate(GarbageCollector *g,size_t bytes,SLGCMarkFn m,SLGCDestroyFn d,void *c) {
     if (!g||!g->initialized||!grow(&g->objects,&g->count,&g->capacity)) return NULL;
