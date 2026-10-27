@@ -51,6 +51,41 @@ class GuiMilitaryCommandConsole {
   int wifiProfileEntry;
   int wifiCloseButton;
 
+  // Reusable menu-bar interaction state for the command console.
+  int consoleMenuIndex = -1;
+  int menuFileButton;
+  int menuEditButton;
+  int menuViewButton;
+  int menuHelpButton;
+  int menuFilePanel;
+  int menuEditPanel;
+  int menuViewPanel;
+  int menuHelpPanel;
+  int menuFileNew;
+  int menuFileSave;
+  int menuEditAudit;
+  int menuEditClear;
+  int menuViewStatus;
+  int menuViewCertificates;
+  int menuHelpAbout;
+
+  void openConsoleMenu(int index) {
+    int next = consoleMenuIndex == index ? -1 : index;
+    consoleMenuIndex = next;
+    uiWidgetVisible(menuFilePanel, next == 0 ? 1 : 0);
+    uiWidgetVisible(menuEditPanel, next == 1 ? 1 : 0);
+    uiWidgetVisible(menuViewPanel, next == 2 ? 1 : 0);
+    uiWidgetVisible(menuHelpPanel, next == 3 ? 1 : 0);
+  }
+
+  void closeConsoleMenus() {
+    consoleMenuIndex = -1;
+    uiWidgetVisible(menuFilePanel, 0);
+    uiWidgetVisible(menuEditPanel, 0);
+    uiWidgetVisible(menuViewPanel, 0);
+    uiWidgetVisible(menuHelpPanel, 0);
+  }
+
   // 0xRRGGBBAA colours for the military "metal / blue-hue" palette.
   int rgba(int r, int g, int b, int a) {
     return r * 16777216 + g * 65536 + b * 256 + a;
@@ -136,6 +171,38 @@ class GuiMilitaryCommandConsole {
     uiButton(header, "\u2014");                           // minimize-right fold
     uiButton(header, "\u2922");                           // fullscreen
     uiButton(header, "\u21E5");                           // double-click restore
+
+    // Full-width horizontal menu bar. Dropdowns are ordinary host-backed
+    // widgets so this fallback works consistently without assuming native OS menus.
+    int menubar = uiBox(root, 1, 4);
+    uiWidgetMargin(menubar, 4, 8, 4, 8);
+    menuFileButton = uiButton(menubar, "File  v");
+    menuEditButton = uiButton(menubar, "Edit  v");
+    menuViewButton = uiButton(menubar, "View  v");
+    menuHelpButton = uiButton(menubar, "Help  v");
+
+    menuFilePanel = uiBox(root, 0, 4);
+    uiWidgetMargin(menuFilePanel, 4, 12, 4, 12);
+    menuFileNew = uiButton(menuFilePanel, "New Session");
+    menuFileSave = uiButton(menuFilePanel, "Save Report");
+    uiWidgetVisible(menuFilePanel, 0);
+
+    menuEditPanel = uiBox(root, 0, 4);
+    uiWidgetMargin(menuEditPanel, 4, 12, 4, 12);
+    menuEditAudit = uiButton(menuEditPanel, "Audit Trail");
+    menuEditClear = uiButton(menuEditPanel, "Clear Status");
+    uiWidgetVisible(menuEditPanel, 0);
+
+    menuViewPanel = uiBox(root, 0, 4);
+    uiWidgetMargin(menuViewPanel, 4, 12, 4, 12);
+    menuViewStatus = uiButton(menuViewPanel, "Status Overview");
+    menuViewCertificates = uiButton(menuViewPanel, "Certificate Store");
+    uiWidgetVisible(menuViewPanel, 0);
+
+    menuHelpPanel = uiBox(root, 0, 4);
+    uiWidgetMargin(menuHelpPanel, 4, 12, 4, 12);
+    menuHelpAbout = uiButton(menuHelpPanel, "About SLeeLa GUI");
+    uiWidgetVisible(menuHelpPanel, 0);
 
     // The content lives inside a scrolled view so it scrolls (with automatic
     // scrollbars) instead of spilling past the frame on a small window.
@@ -261,6 +328,41 @@ class GuiMilitaryCommandConsole {
       int dispatched = uiAppPump(app, 1);
       if (dispatched < 0) { running = false; }
       else {
+        // Top-level menu bar: one dropdown at a time; repeat-click collapses.
+        if (uiWidgetTakeActivated(menuFileButton) == 1) { openConsoleMenu(0); closeWifiMenu(); }
+        if (uiWidgetTakeActivated(menuEditButton) == 1) { openConsoleMenu(1); closeWifiMenu(); }
+        if (uiWidgetTakeActivated(menuViewButton) == 1) { openConsoleMenu(2); closeWifiMenu(); }
+        if (uiWidgetTakeActivated(menuHelpButton) == 1) { openConsoleMenu(3); closeWifiMenu(); }
+
+        if (uiWidgetTakeActivated(menuFileNew) == 1) {
+          uiWidgetSetText(statusLabel, "File · New Session selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuFileSave) == 1) {
+          uiWidgetSetText(statusLabel, "File · Save Report selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuEditAudit) == 1) {
+          uiWidgetSetText(statusLabel, "Edit · Audit Trail selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuEditClear) == 1) {
+          uiWidgetSetText(statusLabel, "Edit · Clear Status selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuViewStatus) == 1) {
+          uiWidgetSetText(statusLabel, "View · Status Overview selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuViewCertificates) == 1) {
+          uiWidgetSetText(statusLabel, "View · Certificate Store selected");
+          closeConsoleMenus();
+        }
+        if (uiWidgetTakeActivated(menuHelpAbout) == 1) {
+          uiWidgetSetText(statusLabel, "Help · SLeeLa GUI menu integration");
+          closeConsoleMenus();
+        }
+
         // Connectivity actions are deliberately fail-closed until SLVM can call
         // the native Wi-Fi provider; a menu click never invents a radio result.
         if (uiWidgetTakeActivated(wifiScanButton) == 1) {
