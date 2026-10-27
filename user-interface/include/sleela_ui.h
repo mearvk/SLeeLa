@@ -154,11 +154,8 @@ typedef struct {
  * when given no theme. */
 void slui_theme_preset(SLUITheme *out, SLUIThemeId id);
 
-/* Re-derive the whole warm palette in `out` from a new base colour, in place.
- * This is the configuration-time hook: pass the colour read from a .conf (or a
- * code-time choice) and every surface/border/accent is recomputed as a tasteful
- * tint/shade of it, so a single value re-themes the UI. The alpha of `base` is
- * ignored (the floor is opaque). */
+/* Re-derive a neutral/cool palette in `out` from a custom base colour.
+ * Surfaces are re-derived and the accent remains steel-blue; alpha is ignored. */
 void slui_theme_set_base_color(SLUITheme *out, SLUIColor base);
 
 /* Load the base colour (and optional overrides) from a simple key=value config
