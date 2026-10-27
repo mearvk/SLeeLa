@@ -40,6 +40,36 @@ static void test_root_reachability_and_sweep(void) {
     test_gc_current = NULL;
 }
 
+
+static void test_remembered_owner_survives_repeated_young_collections(void) {
+    GarbageCollector gc;
+    gc_init(&gc, 1024u * 1024u);
+    test_gc_current = &gc;
+
+    SLGCObject *parent = gc_allocate(&gc, sizeof(Node), trace_node, NULL, NULL);
+    assert(parent);
+    assert(gc_add_root(&gc, parent) == 1);
+    assert(gc_collect_young(&gc) == 0);
+    assert(gc_collect_young(&gc) == 0);
+    assert(parent->generation == SLGC_GENERATION_OLD);
+
+    SLGCObject *child = gc_allocate(&gc, sizeof(Node), trace_node, NULL, NULL);
+    assert(child);
+    ((Node *)parent->payload)->child = child;
+    gc_write_barrier(&gc, parent, NULL, child);
+
+    assert(gc_collect_young(&gc) == 0);
+    assert(gc_live_objects(&gc) == 2);
+    assert(gc_collect_young(&gc) == 0);
+    assert(gc_live_objects(&gc) == 2);
+
+    assert(gc_remove_root(&gc, parent) == 1);
+    assert(gc_collect_full(&gc) > 0);
+    assert(gc_live_objects(&gc) == 0);
+    gc_free(&gc);
+    test_gc_current = NULL;
+}
+
 static void test_external_payload_ownership(void) {
     GarbageCollector gc;
     gc_init(&gc, 1024u * 1024u);
@@ -72,6 +102,7 @@ static void test_security_default_deny_and_quotas(void) {
 
 int main(void) {
     test_root_reachability_and_sweep();
+    test_remembered_owner_survives_repeated_young_collections();
     test_external_payload_ownership();
     test_security_default_deny_and_quotas();
     puts("runtime GC/security regression tests: PASS");
