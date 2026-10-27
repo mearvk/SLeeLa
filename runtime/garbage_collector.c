@@ -100,7 +100,7 @@ void gc_write_barrier(GarbageCollector *g,SLGCObject *owner,SLGCObject *oldv,SLG
     if(g->phase==SLGC_MARKING&&oldv&&!oldv->marked)mark_internal(g,oldv);
     if(owner->generation==SLGC_GENERATION_OLD&&newv&&newv->generation==SLGC_GENERATION_YOUNG&&!owner->remembered){
         if (push_unique(&g->remembered, &g->remembered_count, &g->remembered_capacity, owner)) owner->remembered=1;
-        else g->force_full_collection=1;
+        else { g->force_full_collection=1; if (g->phase==SLGC_MARKING && g->collecting_young) g->mark_failed=1; }
     }
 }
 void gc_start_cycle(GarbageCollector *g,int young_only){
