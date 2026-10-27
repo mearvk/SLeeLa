@@ -4,6 +4,7 @@
 #include "compiler.h"
 #include "semantic.h"
 #include "java_compat.h"
+#include "unsigned_integer.h"
 
 #include <map>
 #include <stdexcept>
@@ -213,6 +214,16 @@ private:
     std::map<std::string,std::string> varType_;
     int fieldSlot(const std::string& name) const { auto it=fieldGlobal_.find(currentClass_+"::"+name); if(it!=fieldGlobal_.end())return it->second;it=fieldGlobal_.find(name);return it==fieldGlobal_.end()?-1:it->second; }
     int instanceFieldOffset(const std::string& name) const { auto it=structLayout_.find(currentClass_);if(it==structLayout_.end())return -1;auto f=it->second.fieldOffset.find(name);return f==it->second.fieldOffset.end()?-1:f->second; }
+    int runtimeTypeOperand(const std::string& name) const {
+        auto st=structLayout_.find(name);
+        if(st!=structLayout_.end()) return st->second.typeIndex;
+        if(name=="int" || UnsignedInteger::isValidTypeName(name)) return -(SL_INT+1);
+        if(name=="double") return -(SL_DOUBLE+1);
+        if(name=="bool" || name=="boolean") return -(SL_BOOL+1);
+        if(name=="String" || name=="string") return -(SL_STR+1);
+        if(name.size()>=2 && name.compare(name.size()-2,2,"[]")==0) return -(SL_ARRAY+1);
+        throw std::runtime_error("Semantic error: no runtime type descriptor for '"+name+"'");
+    }
     void emitThis(){if(!ctx_||ctx_->slotOf("this")<0)throw std::runtime_error("Semantic error: instance member requires an instance context");emit(OP_LOADL,ctx_->slotOf("this"));}
     int countLocals(const Method& m){int n=(int)m.params.size();countInBlock(*m.body,n);return n;}
     void countInBlock(const Block& b,int& n){for(const auto& s:b.stmts)countInStmt(s.get(),n);}
@@ -373,8 +384,16 @@ private:
         if(auto x=dynamic_cast<const MethodCall*>(e)){emitMethodCall(*x);return;}
         if(auto x=dynamic_cast<const AssignmentExpr*>(e)){emitAssignmentExpr(*x);return;}
         if(auto x=dynamic_cast<const ConditionalExpr*>(e)){emitConditional(*x);return;}
-        if(auto x=dynamic_cast<const CastExpr*>(e)){emitExpr(x->operand.get());return;}
-        if(auto x=dynamic_cast<const InstanceOfExpr*>(e)){emitExpr(x->value.get());emit(OP_POP);emit(OP_CONST,slvm_add_const_bool(vm_,0));return;}
+        if(auto x=dynamic_cast<const CastExpr*>(e)){
+             emitExpr(x->operand.get());
+             if(x->typeName!="Any") emit(OP_CHECKCAST,runtimeTypeOperand(x->typeName));
+             return;
+         }
+        if(auto x=dynamic_cast<const InstanceOfExpr*>(e)){
+             emitExpr(x->value.get());
+             emit(OP_INSTANCEOF,runtimeTypeOperand(x->typeName));
+             return;
+         }
         if(dynamic_cast<const SuperExpr*>(e)){emit(OP_CONST,addNullConst());return;}
         if(dynamic_cast<const ThisExpr*>(e)){emitThis();return;}
         if(auto x=dynamic_cast<const ArrayAccess*>(e)){emitExpr(x->base.get());emitExpr(x->index.get());emit(OP_ARRGET);return;}
@@ -476,6 +495,7 @@ private:
         }
         if(dynamic_cast<const ThisExpr*>(e))return currentClass_;
         if(auto m=dynamic_cast<const MemberAccess*>(e)){std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
+        if(auto ca=dynamic_cast<const CastExpr*>(e))return ca->typeName;
         if(auto n=dynamic_cast<const NewExpr*>(e))return n->typeName;
         // A Guide chain evaluates to its constructed head instance, so its
         // struct type is the head's type -- this lets `(new T() :: g).m()`
