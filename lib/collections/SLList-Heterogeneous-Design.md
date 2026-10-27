@@ -1,6 +1,6 @@
 # Heterogeneous SLList: design and verification plan
 
-Status: **partial implementation committed; checked concrete-object retrieval and runtime enforcement remain outstanding**.
+Status: **runtime checked casts and type tests committed; compile/runtime verification remains outstanding**
 
 This document records the source/VM audit for a non-generic list that can retain values of different concrete types, including class/struct instances, and pass those values through recursive calls. It deliberately separates the current String-only `SLList` from the future heterogeneous contract.
 
@@ -37,12 +37,12 @@ This is a dynamic top type, **not Generics**. It must preserve object identity: 
 1. **Implemented:** add a source-level `Any` type to semantic analysis. Values of `Any` can be passed through `Any` parameters; `Any` does not silently convert to concrete class types.
 2. **Partially implemented:** heterogeneous storage uses `Any[]`; semantic checks cover ordinary typed-array writes where the declared array type is known.
 3. Semantic analysis now checks `arrayPush` and `arraySet` when the first argument has a statically known array type. Runtime array instances still do not record element contracts, so native/unknown-typed boundaries remain a gap.
-4. Add a checked type-test/cast path for struct handles. Confirm both the `SL_STRUCT` tag and the exact runtime struct-type index before field access through a cast result.
+4. **Implemented:** `instanceof` checks runtime tags and class ancestry; casts emit a checked VM opcode that validates the runtime tag and class ancestry before returning a value usable through a concrete type.
 5. Preserve GC reachability and alias identity across list storage, list reads, recursive calls, and collections. Do not expose raw handles as integers.
 
 ## 5. Regression test matrix
 
-The implementation is not complete until the compiler and runtime tests cover all of the following. The current mixed-list example is illustrative and has not been compiled or executed here:
+The implementation is not complete until the compiler and runtime tests cover all of the following: The current mixed-list example is illustrative and has not been compiled or executed here:
 
 - **Mixed scalar values:** String, int, double, boolean, and null can coexist in one heterogeneous list and round-trip with the right runtime tags.
 - **Mixed references:** instances of two different struct/class types can coexist; retrieving each with the correct checked type preserves identity.
