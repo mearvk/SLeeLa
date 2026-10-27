@@ -72,6 +72,16 @@ The shorter engineering notes are collected under [docs/](docs/README.md):
 and a clearly labeled [development roadmap](docs/ROADMAP.md). The public headers,
 implementation, examples and regression tests each also have a short README.
 
+
+## SLeeLa source-side mirror
+
+The companion SLeeLa source model is maintained in
+[lib/signal-processing](../lib/signal-processing/README.md). It mirrors the
+statistics, moving average, full convolution, Hann window, DFT, radix-2 FFT and
+magnitude-spectrum conventions using linked series, since SLeeLa has no native
+array type. It is intended as inspectable source-level functionality; the
+contiguous C/C++ library remains the preferred implementation for throughput.
+
 ## Historical organization: 1951–present
 
 Each decades/ folder records representative research/application themes and
