@@ -11,16 +11,19 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import subprocess
 import sys
 from pathlib import Path
-from typing import Iterable, List, Optional
+from typing import Dict, Iterable, List, Optional
 
 
 DEFAULT_SERVICE_NAME = "sleela-antivirus.service"
 DEFAULT_POLICY_NAME = "antivirus-policy.example.json"
 DEFAULT_POLICY_DIR = Path("lib/antivirus")
+DEFAULT_ENV_EXAMPLE = "antivirus/systemd/sleela-antivirus.env.example"
+DEFAULT_ENV_PATH = Path("/etc/sleela-antivirus/sleela-antivirus.env")
 
 
 def repo_root() -> Path:
@@ -29,6 +32,10 @@ def repo_root() -> Path:
 
 def default_policy_path() -> Path:
     return repo_root() / DEFAULT_POLICY_DIR / DEFAULT_POLICY_NAME
+
+
+def default_env_example_path() -> Path:
+    return repo_root() / DEFAULT_ENV_EXAMPLE
 
 
 def print_json(data: object) -> None:
@@ -74,15 +81,40 @@ def read_policy(path: Path) -> dict:
         return json.load(handle)
 
 
-def status_payload(service: str, policy_path: Path, unit_file: Optional[Path] = None) -> dict:
+def read_env_file(path: Path) -> Dict[str, str]:
+    result: Dict[str, str] = {}
+    if not path.exists():
+        return result
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        result[key.strip()] = value.strip()
+    return result
+
+
+def install_file(source: Path, target: Path, overwrite: bool = False) -> bool:
+    if target.exists() and not overwrite:
+        return False
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+    return True
+
+
+def status_payload(service: str, policy_path: Path, env_path: Optional[Path] = None) -> dict:
     payload = {
         "service": service,
         "systemd": systemctl_available(),
         "policy_path": str(policy_path),
         "policy": read_policy(policy_path),
+        "env_file_path": str(env_path or DEFAULT_ENV_PATH),
+        "env_file_exists": bool(env_path or DEFAULT_ENV_PATH).exists(),
     }
-    unit_file = unit_file or (Path("/etc/systemd/system") / service)
-    payload["unit_file_exists"] = unit_file.exists()
+    env_path = env_path or DEFAULT_ENV_PATH
+    payload["env_file_values"] = read_env_file(env_path)
     if not systemctl_available():
         payload["state"] = "systemd-unavailable"
         return payload
@@ -101,13 +133,14 @@ def status_payload(service: str, policy_path: Path, unit_file: Optional[Path] = 
 def handle_status(args: argparse.Namespace) -> int:
     service = args.service_name
     policy_path = args.policy
-    payload = status_payload(service, policy_path)
+    payload = status_payload(service, policy_path, args.env_file)
     if args.json:
         print_json(payload)
         return 0
     print(f"Service: {service}")
     print(f"systemd available: {payload['systemd']}")
     print(f"Policy: {payload['policy_path']}")
+    print(f"Environment file: {payload['env_file_path']}")
     print(f"state: {payload['state']}")
     if payload['systemd']:
         print(f"enabled: {payload.get('is_enabled', 'unknown')}")
@@ -239,8 +272,9 @@ def handle_install_unit(args: argparse.Namespace) -> int:
         print(f"Missing service template: {source}", file=sys.stderr)
         return 2
     target = Path(args.target_dir) / args.service_name
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+    if not install_file(source, target, overwrite=args.force):
+        print(f"Unit file already exists at {target}; use --force to overwrite.", file=sys.stderr)
+        return 1
     print(f"Installed service template at {target}")
     if systemctl_available():
         run_cmd(["systemctl", "daemon-reload"], check=False)
@@ -248,10 +282,36 @@ def handle_install_unit(args: argparse.Namespace) -> int:
     return 0
 
 
+def handle_install_env(args: argparse.Namespace) -> int:
+    example = default_env_example_path()
+    if not example.exists():
+        print(f"Missing environment example: {example}", file=sys.stderr)
+        return 2
+    target = Path(args.target_dir) / args.env_name
+    if not install_file(example, target, overwrite=args.force):
+        print(f"Environment file already exists at {target}; use --force to overwrite.", file=sys.stderr)
+        return 1
+    print(f"Installed environment file at {target}")
+    return 0
+
+
+def handle_install_host(args: argparse.Namespace) -> int:
+    unit_rc = handle_install_unit(args)
+    if unit_rc != 0:
+        return unit_rc
+    env_args = argparse.Namespace(
+        target_dir=args.target_env_dir,
+        env_name=args.env_name,
+        force=args.force,
+    )
+    return handle_install_env(env_args)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="SLeeLa-aware antivirus service controller.")
     parser.add_argument("--service-name", default=DEFAULT_SERVICE_NAME, help="systemd service name to control")
     parser.add_argument("--policy", type=Path, default=default_policy_path(), help="path to a SLeeLa antivirus policy JSON file")
+    parser.add_argument("--env-file", type=Path, default=DEFAULT_ENV_PATH, help="host environment file for the service")
 
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -296,7 +356,22 @@ def build_parser() -> argparse.ArgumentParser:
 
     install = subparsers.add_parser("install-unit", help="install the unit file template to the target systemd directory")
     install.add_argument("--target-dir", default="/etc/systemd/system", help="target directory for the service unit")
+    install.add_argument("--force", action="store_true", help="overwrite an existing unit file")
     install.set_defaults(func=handle_install_unit)
+
+    install_env = subparsers.add_parser("install-env", help="install the example environment file to the target host directory")
+    install_env.add_argument("--target-dir", default="/etc/sleela-antivirus", help="target directory for the service environment file")
+    install_env.add_argument("--env-name", default="sleela-antivirus.env", help="environment file name")
+    install_env.add_argument("--force", action="store_true", help="overwrite an existing environment file")
+    install_env.set_defaults(func=handle_install_env)
+
+    install_host = subparsers.add_parser("install-host", help="install both the service unit and the host environment file")
+    install_host.add_argument("--target-unit-dir", default="/etc/systemd/system", help="target directory for the service unit")
+    install_host.add_argument("--target-env-dir", default="/etc/sleela-antivirus", help="target directory for the service environment file")
+    install_host.add_argument("--env-name", default="sleela-antivirus.env", help="environment file name")
+    install_host.add_argument("--service-name", default=DEFAULT_SERVICE_NAME, help="service name to install")
+    install_host.add_argument("--force", action="store_true", help="overwrite existing files")
+    install_host.set_defaults(func=handle_install_host)
 
     return parser
 
