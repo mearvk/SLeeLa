@@ -1,5 +1,5 @@
 @echo off
-rem Run all five GUI examples from Windows CMD.
+rem Run all six GUI examples, including the expandable menubar, from Windows CMD.
 setlocal
 set "ROOT=%~dp0.."
 for %%I in ("%ROOT%") do set "ROOT=%%~fI"
