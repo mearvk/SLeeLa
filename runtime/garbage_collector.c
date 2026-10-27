@@ -1,6 +1,7 @@
 #include "garbage_collector.h"
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 static int grow(SLGCObject ***a, size_t *n, size_t *cap) {
     if (*n < *cap) return 1;
@@ -41,6 +42,14 @@ void gc_init(GarbageCollector *g, size_t threshold) {
     memset(g,0,sizeof(*g)); g->bytes_threshold=threshold?threshold:1024u*1024u;
     g->young_bytes_threshold=g->bytes_threshold/4u; if (g->young_bytes_threshold<64u*1024u) g->young_bytes_threshold=64u*1024u;
     g->bytes_limit = 512u * 1024u * 1024u;
+    const char *limit_text = getenv("SLEELA_GC_LIMIT_BYTES");
+    if (limit_text && *limit_text) {
+        char *end = NULL;
+        errno = 0;
+        unsigned long long parsed = strtoull(limit_text, &end, 10);
+        if (errno == 0 && end != limit_text && *end == '\\0' && parsed > 0 && parsed <= SIZE_MAX)
+            g->bytes_limit = (size_t)parsed;
+    }
     g->target_step_work=32u; g->phase=SLGC_IDLE; g->initialized=1;
 }
 int gc_set_limit(GarbageCollector *g, size_t bytes) {
