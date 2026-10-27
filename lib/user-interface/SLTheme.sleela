@@ -62,21 +62,13 @@ class SLTheme {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  < Preset ordinals (mirror SLUIThemeId in the toolkit C ABI). >
-  < the original matte-black theme >
-  static final int SLICK_BLACK = 0;
-  < a lighter neutral alternative >
-  static final int GRAPHITE    = 1;
-  < fully host-defined via the setters >
-  static final int CUSTOM      = 2;
-  < Backward-compatible preset ids; mirror user-interface/include/sleela_ui.h >
+  < Preset ordinals mirror SLUIThemeId in the toolkit C ABI. >
   static final int SLICK_BLACK = 0;
   static final int GRAPHITE = 1;
   static final int CUSTOM = 2;
-  < THE DEFAULT: graphite/charcoal with steel-blue accent >
+  < DEFAULT is the coordinated graphite/charcoal + steel-blue palette. >
   static final int SLEELA_BASE = 3;
   static final int DEFAULT = 3;
-  < Named Standard Pattern presets >
   static final int WHITE = 4;
   static final int BLACK = 5;
   static final int BLUE = 6;
@@ -101,13 +93,12 @@ class SLTheme {
   int handle() { return theme; }
   boolean valid() { return theme >= 0; }
 
-  < Re-derive the whole warm palette from a new base colour (0xRRGGBBAA; the >
-  < alpha is ignored). The configuration/code-time base-colour hook. >
+  < Re-derive a neutral/cool palette from a custom base colour (0xRRGGBBAA). >
   void setBaseColor(int baseColor) {
     if (theme >= 0) { uiThemeSetBaseColor(theme, baseColor); }
   }
-  < Load base_color (and optional accent/font/radius) from a key=value config >
-  < file into this theme. Returns true on success. >
+  < Load theme=default|white|blue|black|gray plus optional overrides from a >
+  < key=value config file. Returns true on success. Config is never auto-loaded. >
   boolean loadConfig(String path) {
     if (theme < 0) { return false; }
     return uiThemeLoadConfig(theme, path) == 0;
