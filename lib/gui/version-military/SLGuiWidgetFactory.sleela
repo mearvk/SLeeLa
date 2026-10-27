@@ -188,7 +188,7 @@ class SLGuiWidgetFactory {
         || tag == "urlbar" || tag == "addressbar"
         || tag == "video" || tag == "movie"
         || tag == "circle" || tag == "clickobject"
-        || tag == "cryptoselector" || tag == "certstore" || tag == "menuitem";
+        || tag == "cryptoselector" || tag == "certstore" || tag == "menuitem" || tag == "menu-item";
   }
 
   < Which SLGuiEventType an activation on this tag should raise. >
@@ -201,12 +201,12 @@ class SLGuiWidgetFactory {
     if (tag == "urlbar" || tag == "addressbar") { return SLGuiEventType.SUBMIT; }
     if (tag == "recorder" || tag == "record" || tag == "video" ||
         tag == "movie" || tag == "circle" || tag == "clickobject" ||
-        tag == "menuitem" || tag == "cryptoselector" || tag == "certstore") { return SLGuiEventType.CLICK; }
+        tag == "menuitem" || tag == "menu-item" || tag == "cryptoselector" || tag == "certstore") { return SLGuiEventType.CLICK; }
     return SLGuiEventType.CUSTOM;
   }
 
   boolean isContainer(String tag) {
-    return tag == "window" || tag == "box" || tag == "vbox" || tag == "hbox"
+    return tag == "menubar" || tag == "menu-bar" || tag == "menu" || tag == "window" || tag == "box" || tag == "vbox" || tag == "hbox"
         || tag == "row" || tag == "header" || tag == "headerbar"
         || tag == "status" || tag == "statusbar" || tag == "frame"
         || tag == "group"
