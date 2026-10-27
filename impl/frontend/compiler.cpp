@@ -495,6 +495,7 @@ private:
         }
         if(dynamic_cast<const ThisExpr*>(e))return currentClass_;
         if(auto m=dynamic_cast<const MemberAccess*>(e)){std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
+        if(auto ca=dynamic_cast<const CastExpr*>(e))return ca->typeName;
         if(auto n=dynamic_cast<const NewExpr*>(e))return n->typeName;
         // A Guide chain evaluates to its constructed head instance, so its
         // struct type is the head's type -- this lets `(new T() :: g).m()`
