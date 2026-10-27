@@ -88,7 +88,7 @@ class SLTheme {
   void blue() { preset(BLUE); }
   void black() { preset(BLACK); }
   void gray() { preset(GRAY); }
-  void slickBlack() { preset(BLACK); }
+  void slickBlack() { preset(SLICK_BLACK); }
 
   int handle() { return theme; }
   boolean valid() { return theme >= 0; }
