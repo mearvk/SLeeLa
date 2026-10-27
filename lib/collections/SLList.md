@@ -18,11 +18,19 @@ Indices are zero-based. Invalid mutations do not change the list. The backing
 array may retain unused trailing slots after removal; `size` is the logical
 length and only indices below it are visible through the public API.
 
-This first version intentionally accepts **Strings only**. It is not a
-heterogeneous `SLValue` collection and is not a generic `List<T>`. The source/VM audit and proposed type-safe design are documented in
-[`SLList-Heterogeneous-Design.md`](SLList-Heterogeneous-Design.md). That design
-requires an explicit dynamic value type and checked type conversion; it is not
-safe to emulate with unchecked mixed-type array writes.
+This implementation intentionally accepts **Strings only**. It is not a
+heterogeneous `SLValue` collection and is not a generic `List<T>`. The existing
+[`SLListBasic`](../../impl/examples/sllist_basic.sleela) example includes a
+simple recursive method that passes the same list reference through several
+calls. That demonstrates the intended source pattern, not proof of deep-stack
+safety or heterogeneous object retrieval.
+
+For mixed values and class/struct references, use the separate `SLValueList`
+contract and read [`SLList-Heterogeneous-Design.md`](SLList-Heterogeneous-Design.md).
+A value returned as `Any` must be checked and cast before concrete members are
+accessed. Object identity and GC reachability through list storage and recursive
+frames must be verified by executable tests; do not treat the design plan as a
+claim that all those cases already pass.
 
 ## Example
 

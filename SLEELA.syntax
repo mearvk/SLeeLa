@@ -58,9 +58,12 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax 1.3..2.4 surface the front end accepts.
-Every production and built-in below is implemented in `impl/frontend` and
-executes on `impl/core`.
+This document is the normative grammar and feature-contract reference for the
+syntax 1.0..2.4 range declared by `impl/frontend/version.h`. A grammar entry or
+design contract is not, by itself, proof of end-to-end implementation. Feature
+claims must be checked against the native frontend, runtime behavior, and
+regression tests; sections that explicitly identify gaps or unverified behavior
+remain conditional until those checks pass.
 
 --------------------------------------------------------------------------------
 ## 1. Lexical grammar
@@ -172,7 +175,7 @@ A program is one or more classes, optionally preceded or interleaved with
 
 ### 3.1 Types
 
-    type       ::= "int" | "double" | "boolean" | "String" | "void"
+    type       ::= "int" | "double" | "boolean" | "String" | "void" | "Any"
                  | unsigned-type
                  | character-set-type
                  | struct-name                      // any declared struct (1.2+)
@@ -214,6 +217,15 @@ A **struct type name** (§3.4) is additionally used at compile time to
 resolve `.field` offsets, so struct-typed variables/parameters/fields must be
 declared with their struct type for member access to compile.
 
+`Any` is the heterogeneous top type used at dynamic collection boundaries. It
+can carry supported scalar values, strings, null, arrays, and class/struct
+reference handles. Passing a value through an `Any` parameter does not make
+concrete fields or methods available on that value: use a runtime type test and
+checked cast before concrete member access. The source-level type name does not
+guarantee that every native boundary enforces an element-type contract; those
+paths require runtime tests. See `lib/collections/SLValueList.md` and the
+heterogeneous collection verification plan.
+
 ### 3.2 Fields (shared state)
 
     field-decl ::= ["static"] type ident ["=" expr] ";"
@@ -238,6 +250,38 @@ class, not an instance). Method **locals** are per-thread; **fields** are shared
 A **class** declaration may carry leading type parameters
 (`class Box<T extends Number> { ... }`); they parse as a signature-level
 annotation (§16.2). Method-level type parameters are not accepted (§16.4).
+
+### 3.3.1 Recursion and method calls (existing syntax; no version bump)
+
+A method call uses the ordinary call form in §5:
+
+    call ::= ident "(" args? ")"
+
+A method may call itself directly (self-recursion) or call another method that
+eventually calls it (mutual recursion), provided each referenced method resolves
+under the compiler's normal declaration and name-resolution rules. Recursion is
+not a separate keyword or expression form and does not by itself require a new
+syntax version. The call's arguments are evaluated for that invocation, and a
+non-void result is returned to the caller through the ordinary expression/return
+rules. Each active invocation must preserve its own parameters, local slots,
+return location, and pending expression state; these must not be overwritten by
+a nested call. Shared class fields remain shared and are not a substitute for
+per-invocation locals.
+
+Every recursive algorithm must have a reachable base case for its intended
+inputs. The language does not promise that arbitrary recursion terminates, that
+stack depth is unlimited, or that tail calls are optimized. Runtime exhaustion
+must be reported or handled by the runtime's documented failure policy; it must
+not silently return a fabricated value. Compiler/runtime support for a particular
+recursion pattern is considered verified only when covered by executable tests.
+
+When a reference value is passed to a recursive method, ordinary reference
+semantics apply: the value must preserve identity across frames, and a mutation
+through an alias must remain observable to the caller. Heterogeneous collection
+storage adds a separate requirement: a value retrieved as `Any` must be checked
+and converted to its concrete type before concrete members are accessed (§16 and
+the `SLValueList` contract). Recursion alone does not make an unchecked cast
+safe or guarantee garbage-collector reachability.
 
 ### 3.4 Structs (syntax 1.2+)
 

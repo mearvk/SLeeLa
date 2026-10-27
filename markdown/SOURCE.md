@@ -25,7 +25,7 @@ distribution marks, see [`SLEELA.md`](SLEELA.md); for the compiler, see
 A Wrapper™ is one or more classes; `main()` is the entry point. The accepted
 surface (authoritative list in `impl/README.md`):
 
-- typed locals — `int`, `double`, `boolean`, `String`, `void`;
+- typed locals — `int`, `double`, `boolean`, `String`, `void`, and heterogeneous `Any` values (subject to the implementation limits below);
 - methods with recursion; class **fields** (shared state);
 - control flow — `if`/`else`, `while`, `for`;
 - the operator set — `+ - * / %`, comparisons, `&& || !`, unary `-`;
@@ -81,11 +81,28 @@ class Hello {
 ```
 
 Form is `#sleela MAJOR.MINOR` (a trailing `.PATCH` is tolerated and ignored).
-The compiler is version aware: it accepts declared syntax versions from `1.3`
-through `1.7`, warns and assumes the floor when the pragma is absent, and rejects
-a version outside that range or a malformed pragma. Syntax version `1.7` adds
-the `U1` through `U1048576` arbitrary-width unsigned integer type signatures. See
-[`COMPILER.md`](COMPILER.md) §3.
+The native version gate currently accepts declared syntax versions from `1.0`
+through `2.4` and defaults to `2.4`; feature-specific gates still apply. A
+missing pragma is handled according to the compiler's warning/default policy,
+and malformed or out-of-range pragmas are rejected. Syntax 1.7 documents the
+`U1` through `U1048576` unsigned type-signature family; later additions are
+summarized in [the syntax-version matrix](../api/language/SYNTAX-VERSION-MATRIX.md)
+and defined normatively in [`SLEELA.syntax`](../SLEELA.syntax). The accepted
+pragma range is not a claim that every documented feature has end-to-end test
+coverage. See [`COMPILER.md`](COMPILER.md) §3.
+
+## Recursion and object-preserving calls
+
+Methods use the ordinary call syntax and may be self-recursive or mutually
+recursive when method names resolve. Recursion is not a separately versioned
+syntax feature. The runtime must preserve each active invocation's parameters,
+locals, return state, and expression state; it must also preserve reference
+identity when an object is passed through recursive frames. No guarantee of
+unbounded recursion or automatic tail-call optimization is implied. Base cases,
+resource exhaustion, checked conversion from `Any`, and garbage-collector
+reachability must be covered by tests before a recursion/heterogeneous-collection
+path is described as fully supported. See [`SLEELA.syntax`](../SLEELA.syntax)
+§3.3.1 and the [heterogeneous collection verification plan](../lib/collections/SLList-Heterogeneous-Design.md).
 
 ## Lifecycle
 
