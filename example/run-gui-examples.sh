@@ -18,7 +18,7 @@
 # host with a display (X on Linux, native on macOS/Windows) each opens a window
 # and paints its widgets; headless/CI it reports "no display" and exits 0.
 # This wrapper sets the environment the fail-closed SHA-256 security gate
-# requires and runs them all.
+# requires and runs all six examples.
 #
 # Usage:
 #   ./example/run-gui-examples.sh
