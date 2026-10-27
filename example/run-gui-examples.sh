@@ -59,6 +59,7 @@ EXAMPLES=(
   "example/thual/gui-thual-effects-showcase.sleela"
   "example/dual/gui-dual-media-studio.sleela"
   "example/military/gui-military-command-console.sleela"
+  "example/menus/gui-menubar-expandable.sleela"
 )
 
 for prog in "${EXAMPLES[@]}"; do
@@ -69,4 +70,4 @@ for prog in "${EXAMPLES[@]}"; do
   echo
 done
 
-echo "run-gui-examples: all five GUI examples ran."
+echo "run-gui-examples: all six GUI examples ran."
