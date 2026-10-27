@@ -1,0 +1,15 @@
+#sleela 2.1
+class CastCustomer {
+  String label = "customer";
+}
+class CastOrder {
+  String label = "order";
+}
+class WrongClassCastRegression {
+  int main() {
+    Any value = new CastCustomer();
+    CastOrder wrong = (CastOrder) value;
+    print(wrong.label);
+    return 0;
+  }
+}
