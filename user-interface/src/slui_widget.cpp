@@ -108,9 +108,11 @@ bool Widget::on_event(const SLUIEvent& ev) {
     for (auto it = children_.rbegin(); it != children_.rend(); ++it) {
         Widget* c = it->get();
         if (!c->visible_) continue;
-        if (positional && !c->bounds_.contains(ev.x, ev.y)) {
+        if (positional && !c->bounds_.contains(ev.x, ev.y) &&
+            !(ev.type == SLUI_EVENT_POINTER_UP && c->pressed_)) {
             if (c->hovered_ && ev.type == SLUI_EVENT_POINTER_MOVE) {
                 c->hovered_ = false;
+                c->hover_leave_event_ = true;
                 c->invalidate();
             }
             continue;
@@ -560,17 +562,20 @@ bool Button::on_event(const SLUIEvent& ev) {
     case SLUI_EVENT_POINTER_MOVE:
         if (!hovered_) {
             hovered_ = true;
+            hover_enter_event_ = true;
             invalidate();
         }
         return true;
     case SLUI_EVENT_POINTER_DOWN:
         pressed_ = true;
+        press_event_ = true;
         set_focused(true);
         invalidate();
         return true;
     case SLUI_EVENT_POINTER_UP:
         if (pressed_) {
             pressed_ = false;
+            release_event_ = true;
             invalidate();
             if (bounds_.contains(ev.x, ev.y)) emit_activate();
         }
