@@ -1,0 +1,27 @@
+#sleela 2.1
+// SLList basic checks: ordered string storage, bounds, mutation, and reuse.
+class SLListBasic {
+  void main() {
+    SLList names = new SLList();
+    names.add("Ada");
+    names.add("Grace");
+    names.add("Edsger");
+
+    print(names.length());       // 3
+    print(names.get(0));        // Ada
+    print(names.get(1));        // Grace
+    print(names.set(1, "Katherine")); // true
+    print(names.get(1));        // Katherine
+    print(names.removeAt(0));   // true
+    print(names.get(0));        // Katherine
+    print(names.length());      // 2
+    print(names.get(8) == null);// true
+    print(names.removeAt(8));   // false
+    names.remove();             // remove last item
+    print(names.length());      // 1
+    names.clear();
+    print(names.empty());       // true
+    names.add("reused capacity");
+    print(names.get(0));        // reused capacity
+  }
+}
