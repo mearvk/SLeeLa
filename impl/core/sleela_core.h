@@ -243,6 +243,7 @@ int slvm_declare_global(SLVM* vm, const char* name);
  * used by OP_NEWSTRUCT / OP_STRUCTUNPACK, or -1 on error. Field order defines
  * the offsets used by OP_GETFIELD / OP_SETFIELD. */
 int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_names, int nfields);
+int slvm_set_struct_parent(SLVM* vm, int type_index, int parent_type_index);
 int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals);
 void slvm_end_func(SLVM* vm);
 int slvm_emit(SLVM* vm, SLOp op, int32_t a);
