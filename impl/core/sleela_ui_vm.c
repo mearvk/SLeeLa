@@ -23,6 +23,13 @@
 
 #include "../../user-interface/include/sleela_ui.h"
 
+/* Interaction polling exports from SleelaUI's C ABI. */
+extern int slui_widget_is_hovered(SLUIWidget*);
+extern int slui_widget_take_pressed(SLUIWidget*);
+extern int slui_widget_take_released(SLUIWidget*);
+extern int slui_widget_take_hover_entered(SLUIWidget*);
+extern int slui_widget_take_hover_left(SLUIWidget*);
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -113,6 +120,9 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_THEME_DESTROY: case SLUI_FN_WIDGET_GET_TEXT:
         case SLUI_FN_WIDGET_GET_TOGGLE: case SLUI_FN_WIDGET_GET_VALUE:
         case SLUI_FN_WIDGET_TAKE_ACTIVATED:
+        case SLUI_FN_WIDGET_IS_HOVERED: case SLUI_FN_WIDGET_TAKE_PRESSED:
+        case SLUI_FN_WIDGET_TAKE_RELEASED: case SLUI_FN_WIDGET_TAKE_HOVER_ENTERED:
+        case SLUI_FN_WIDGET_TAKE_HOVER_LEFT:
         case SLUI_FN_SCREEN_WIDTH: case SLUI_FN_SCREEN_HEIGHT:
         case SLUI_FN_SCROLLED_SCROLL_X: case SLUI_FN_SCROLLED_SCROLL_Y:
         case SLUI_FN_POPUP_CREATE: case SLUI_FN_POPUP_IS_OPEN:
@@ -354,6 +364,11 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_WIDGET_GET_TOGGLE:    return r_int(slui_widget_get_toggle(widget_get(ai(a,n,0))));
         case SLUI_FN_WIDGET_GET_VALUE:     return r_dbl(slui_widget_get_value(widget_get(ai(a,n,0))));
         case SLUI_FN_WIDGET_TAKE_ACTIVATED:return r_int(slui_widget_take_activated(widget_get(ai(a,n,0))));
+        case SLUI_FN_WIDGET_IS_HOVERED:return r_int(slui_widget_is_hovered(widget_get(ai(a,n,0))));
+        case SLUI_FN_WIDGET_TAKE_PRESSED:return r_int(slui_widget_take_pressed(widget_get(ai(a,n,0))));
+        case SLUI_FN_WIDGET_TAKE_RELEASED:return r_int(slui_widget_take_released(widget_get(ai(a,n,0))));
+        case SLUI_FN_WIDGET_TAKE_HOVER_ENTERED:return r_int(slui_widget_take_hover_entered(widget_get(ai(a,n,0))));
+        case SLUI_FN_WIDGET_TAKE_HOVER_LEFT:return r_int(slui_widget_take_hover_left(widget_get(ai(a,n,0))));
 
         /* --- theme --- */
         case SLUI_FN_THEME_PRESET: {
