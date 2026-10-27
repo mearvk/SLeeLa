@@ -1,0 +1,110 @@
+<< lib/user-interface/SLTabBar.sleela
+   SLeeLa Standard Library Definition.
+   Definition: A reusable horizontal browser-style tab bar. It uses the
+     existing native SLButton visual states and current window theme, with a
+     clear selected accent, consistent inactive tabs, compact spacing, and
+     one-shot click activation. Page content is deliberately left to the caller.
+   Family: user-interface. >>
+#sleela 2.1
+class SLTabBar extends SLWidget {
+  String metaVersion = "1.0.0";
+  int metaId = 11480;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-10-26";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-26";
+  int metaScienceRating = 9;
+  String metaNationalSchedule = "none";
+
+  static final int MAX_TABS = 512;
+  SLBox strip;
+  SLButton[] tabs;
+  String[] titles;
+  boolean[] dirty;
+  int count;
+  int active;
+
+  void createIn(SLWidget parent) {
+    strip = new SLBox();
+    strip.horizontal(parent, 2);
+    strip.setSizeRequest(0, 36);
+    strip.setExpand(true, false);
+    widget = strip.handle();
+    tabs = new SLButton[MAX_TABS];
+    titles = new String[MAX_TABS];
+    dirty = new boolean[MAX_TABS];
+    count = 0;
+    active = -1;
+  }
+
+  int addTab(String title) {
+    if (count >= MAX_TABS) { return -1; }
+    SLButton tab = new SLButton();
+    tab.createIn(strip, title);
+    tab.setMargin(2, 6, 0, 6);
+    tab.setSizeRequest(84, 32);
+    tabs[count] = tab;
+    titles[count] = title;
+    dirty[count] = false;
+    int index = count;
+    count = count + 1;
+    select(index);
+    return index;
+  }
+
+  void select(int index) {
+    if (index < 0 || index >= count) { return; }
+    active = index;
+    for (int i = 0; i < count; i = i + 1) {
+      tabs[i].setSuggested(i == index);
+    }
+  }
+
+  int selectedIndex() { return active; }
+  int tabCount() { return count; }
+
+  < Poll after the UI event loop has dispatched input. Returns index or -1. >
+  int takeClickedTab() {
+    for (int i = 0; i < count; i = i + 1) {
+      if (tabs[i].clicked()) { select(i); return i; }
+    }
+    return -1;
+  }
+
+  void selectPrevious() {
+    if (count < 1) { return; }
+    int next = active - 1;
+    if (next < 0) { next = count - 1; }
+    select(next);
+  }
+
+  void selectNext() {
+    if (count < 1) { return; }
+    int next = active + 1;
+    if (next >= count) { next = 0; }
+    select(next);
+  }
+
+  void setTitle(int index, String title) {
+    if (index < 0 || index >= count) { return; }
+    titles[index] = title;
+    refreshTitle(index);
+  }
+
+  void setDirty(int index, boolean value) {
+    if (index < 0 || index >= count) { return; }
+    dirty[index] = value;
+    refreshTitle(index);
+  }
+
+  boolean isDirty(int index) {
+    return index >= 0 && index < count && dirty[index];
+  }
+
+  void refreshTitle(int index) {
+    tabs[index].setText(dirty[index] ? (titles[index] + " *") : titles[index]);
+  }
+}
