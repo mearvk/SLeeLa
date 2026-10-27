@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11576
+library-source-files: 11578
 library-packages: 101
 module-facade-symbols: 70
-total-symbol-records: 11646
+total-symbol-records: 11648
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11433,6 +11433,8 @@ user-interface	SLProgressBar.sleela	lib/user-interface/SLProgressBar.sleela	sour
 user-interface	SLRadioButton.sleela	lib/user-interface/SLRadioButton.sleela	source
 user-interface	SLScrollBar.sleela	lib/user-interface/SLScrollBar.sleela	source
 user-interface	SLScrollView.sleela	lib/user-interface/SLScrollView.sleela	source
+user-interface	SLTabBar.sleela	lib/user-interface/SLTabBar.sleela	source
+user-interface	SLVerticalTabs.sleela	lib/user-interface/SLVerticalTabs.sleela	source
 user-interface	SLSearchEntry.sleela	lib/user-interface/SLSearchEntry.sleela	source
 user-interface	SLSeparator.sleela	lib/user-interface/SLSeparator.sleela	source
 user-interface	SLSlider.sleela	lib/user-interface/SLSlider.sleela	source
