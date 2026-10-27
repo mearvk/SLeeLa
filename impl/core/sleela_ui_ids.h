@@ -189,6 +189,12 @@ typedef enum {
     SLUI_FN_BALLUM_FX_NAME,          /* uiBallumFxName(fx:i) -> string name */
     SLUI_FN_BALLUM_FX_BY_NAME,       /* uiBallumFxByName(name:s) -> effect id */
 
+    /* --- pointer interaction polling (tab/button state) --- */
+    SLUI_FN_WIDGET_IS_HOVERED,
+    SLUI_FN_WIDGET_TAKE_PRESSED,
+    SLUI_FN_WIDGET_TAKE_RELEASED,
+    SLUI_FN_WIDGET_TAKE_HOVER_ENTERED,
+    SLUI_FN_WIDGET_TAKE_HOVER_LEFT,
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;
 
