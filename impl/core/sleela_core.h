@@ -175,6 +175,11 @@ typedef enum {
      * own datum via the Munction transport. */
     OP_SSEND
     ,
+    /* Runtime type safety for Any values. Operand a is a nonnegative VM
+     * struct-type index, or -(SLType+1) for a primitive/String/array tag. */
+    OP_CHECKCAST,     /* pops value; checked conversion; pushes the same value */
+    OP_INSTANCEOF     /* pops value; pushes bool for the requested runtime type */
+    ,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
