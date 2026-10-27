@@ -13,6 +13,7 @@
 #include "slui_backend.hpp"
 #include "slui_window.hpp"
 
+#include <algorithm>
 #include <cstdint>
 #include <cstring>
 
@@ -135,6 +136,13 @@ public:
     void set_title(const std::string& t) override { title_ = t; }
     void show() override { visible_ = true; }
     void hide() override { visible_ = false; }
+    void set_size_limits(int minw, int minh, int maxw, int maxh) override {
+        min_width_ = minw; min_height_ = minh; max_width_ = maxw; max_height_ = maxh;
+        resize_content(width_, height_);
+    }
+    void resize_content(int w, int h) override {
+        width_ = clamp(w, min_width_, max_width_); height_ = clamp(h, min_height_, max_height_); dirty_ = true;
+    }
     int width() const override { return width_; }
     int height() const override { return height_; }
     void request_redraw() override { dirty_ = true; }
@@ -148,7 +156,9 @@ public:
     int last_ = 0;
 
 private:
+    static int clamp(int v, int lo, int hi) { v = std::max(v, lo); return hi > 0 ? std::min(v, hi) : v; }
     int width_, height_;
+    int min_width_ = 0, min_height_ = 0, max_width_ = 0, max_height_ = 0;
     std::string title_;
 };
 

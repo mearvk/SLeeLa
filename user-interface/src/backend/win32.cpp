@@ -21,8 +21,13 @@
 #ifndef _UNICODE
 #define _UNICODE
 #endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #include <windowsx.h> /* GET_X_LPARAM / GET_Y_LPARAM */
+
+#include <algorithm>
 
 #include <cstring>
 #include <map>
@@ -87,6 +92,23 @@ public:
         UpdateWindow(hwnd_);
     }
     void hide() override { ShowWindow(hwnd_, SW_HIDE); }
+    void set_size_limits(int minw, int minh, int maxw, int maxh) override {
+        min_width_ = minw; min_height_ = minh; max_width_ = maxw; max_height_ = maxh;
+                resize_content(width(), height());
+    }
+    void resize_content(int w, int h) override {
+                w = clamp(w, min_width_, max_width_); h = clamp(h, min_height_, max_height_);
+        if (width() == w && height() == h) return;
+        RECT r{0, 0, w, h}; DWORD style = (DWORD)GetWindowLongPtrW(hwnd_, GWL_STYLE); DWORD exstyle = (DWORD)GetWindowLongPtrW(hwnd_, GWL_EXSTYLE);
+        AdjustWindowRectEx(&r, style, GetMenu(hwnd_) != nullptr, exstyle);
+        SetWindowPos(hwnd_, nullptr, 0, 0, r.right-r.left, r.bottom-r.top, SWP_NOMOVE|SWP_NOZORDER|SWP_NOACTIVATE);
+    }
+    void apply_track_limits(MINMAXINFO* info) const {
+        if (!info) return;
+        auto outer = [this](int w, int h) { RECT r{0,0,w,h}; DWORD s=(DWORD)GetWindowLongPtrW(hwnd_,GWL_STYLE); DWORD e=(DWORD)GetWindowLongPtrW(hwnd_,GWL_EXSTYLE); AdjustWindowRectEx(&r,s,GetMenu(hwnd_)!=nullptr,e); return POINT{r.right-r.left,r.bottom-r.top}; };
+        if (min_width_ > 0 || min_height_ > 0) info->ptMinTrackSize = outer(std::max(1,min_width_), std::max(1,min_height_));
+        if (max_width_ > 0 || max_height_ > 0) info->ptMaxTrackSize = outer(max_width_ > 0 ? max_width_ : 65535, max_height_ > 0 ? max_height_ : 65535);
+    }
     int width() const override {
         RECT r;
         GetClientRect(hwnd_, &r);
@@ -121,8 +143,10 @@ public:
     HWND hwnd() const { return hwnd_; }
 
 private:
+    static int clamp(int v, int lo, int hi) { v = std::max(v, lo); return hi > 0 ? std::min(v, hi) : v; }
     Win32Backend* backend_;
     HWND hwnd_;
+    int min_width_ = 0, min_height_ = 0, max_width_ = 0, max_height_ = 0;
     HBITMAP dib_ = nullptr;
     HDC mem_dc_ = nullptr;
 };
@@ -323,6 +347,11 @@ private:
         if (owner) ev.window = reinterpret_cast<SLUIWindow*>(owner);
 
         switch (msg) {
+        case WM_GETMINMAXINFO: {
+            auto it = windows_.find(hwnd);
+            if (it != windows_.end()) { it->second->apply_track_limits(reinterpret_cast<MINMAXINFO*>(lp)); return 0; }
+            break;
+        }
         case WM_PAINT: {
             PAINTSTRUCT ps;
             BeginPaint(hwnd, &ps);

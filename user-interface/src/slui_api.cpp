@@ -221,6 +221,23 @@ int slui_window_buffering(const SLUIWindow* window) {
     return static_cast<int>(
         as_window(const_cast<SLUIWindow*>(window))->buffering());
 }
+
+SLUIStatus slui_window_set_min_size(SLUIWindow* window, int width, int height) {
+    return window ? as_window(window)->set_min_size(width, height) : SLUI_ERR_INVALID;
+}
+SLUIStatus slui_window_set_max_size(SLUIWindow* window, int width, int height) {
+    return window ? as_window(window)->set_max_size(width, height) : SLUI_ERR_INVALID;
+}
+SLUIStatus slui_window_set_size_limits(SLUIWindow* window, int minw, int minh, int maxw, int maxh) {
+    return window ? as_window(window)->set_size_limits(minw, minh, maxw, maxh) : SLUI_ERR_INVALID;
+}
+SLUIStatus slui_window_get_min_size(const SLUIWindow* window, SLUISize* out) {
+    return window ? as_window(const_cast<SLUIWindow*>(window))->get_min_size(out) : SLUI_ERR_INVALID;
+}
+SLUIStatus slui_window_get_max_size(const SLUIWindow* window, SLUISize* out) {
+    return window ? as_window(const_cast<SLUIWindow*>(window))->get_max_size(out) : SLUI_ERR_INVALID;
+}
+
 void slui_window_set_event_handler(SLUIWindow* window, SLUIEventHandler handler,
                                    void* user) {
     if (window) as_window(window)->set_event_handler(handler, user);
