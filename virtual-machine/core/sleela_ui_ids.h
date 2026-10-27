@@ -193,6 +193,13 @@ typedef enum {
     SLUI_FN_BALLUM_FX_NAME,          /* uiBallumFxName(fx:i) -> string name */
     SLUI_FN_BALLUM_FX_BY_NAME,       /* uiBallumFxByName(name:s) -> effect id */
 
+    /* Keep parity with the newer impl/core ID table before appended APIs. */
+    SLUI_FN_WIDGET_IS_HOVERED,
+    SLUI_FN_WIDGET_TAKE_PRESSED,
+    SLUI_FN_WIDGET_TAKE_RELEASED,
+    SLUI_FN_WIDGET_TAKE_HOVER_ENTERED,
+    SLUI_FN_WIDGET_TAKE_HOVER_LEFT,
+
     /* Window size limits (pixel dimensions; max 0 means unbounded). */
     SLUI_FN_WINDOW_SET_MIN_SIZE,       /* uiWindowSetMinSize(window:i,w:i,h:i) -> status */
     SLUI_FN_WINDOW_SET_MAX_SIZE,       /* uiWindowSetMaxSize(window:i,w:i,h:i) -> status */
