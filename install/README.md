@@ -4,6 +4,26 @@
 
 The installer supports user-local and system-wide installation on Linux, macOS, and Windows 10+. User-local installation is the recommended default and does not require administrator access.
 
+## Clean Install (recommended for most users)
+
+For a calm, beautiful, guided install of the **main package only**, run:
+
+```sh
+make clean-install          # or: ./install/sleela-clean-install.sh
+```
+
+It installs the binaries (`sleela`, `sleelvac`, `nordshrift`), the standard
+library, protocols, and support modules — and **excludes** servers, IDEs/editors,
+Wi-Fi implementations, and religious/moral/political systems. You make **one
+primary decision** (install the main package), choose a scope, and then — on
+success — may optionally add curated **enhancement modules** (audio, video,
+signal-processing, codecs, compression, gui, ui, database, connector).
+
+The output is styled with the SLeeLa palette and degrades to plain text
+automatically when not attached to a terminal, when `NO_COLOR` is set, or with
+`--plain`. The full-featured installer below (with server/HTTP/VM-edition
+options) remains available for advanced deployments.
+
 ## Installation scope
 
 At the start, choose:

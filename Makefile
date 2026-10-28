@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product tutorial-check tests server config route common-rails registry premium-vms clean help
+.PHONY: all uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install tutorial-check tests server config route common-rails registry premium-vms clean help
 
 SLEELA_MANIFEST_CONSENT ?=
 
@@ -178,6 +178,12 @@ uninstall-all:
 install-product: autocheck
 	@./install/quick-safe-install.sh
 
+# Clean, guided install of the main package only (binaries + standard library +
+# protocols + support modules; no servers, IDEs, Wi-Fi, or religious/moral
+# systems). One primary decision, then optional enhancement modules.
+clean-install: autocheck
+	@./install/sleela-clean-install.sh
+
 tutorial-check:
 	@./scripts/tutorial-check.sh
 
@@ -267,6 +273,7 @@ help:
 	@echo "  make install-system [PREFIX=/usr/local] System install; uses sudo for system paths only"
 	@echo "      (every variant first offers the base-code SHA-256 manifest step; SLEELA_MANIFEST_CONSENT=yes|no|skip answers it)"
 	@echo "  make install-product  Build and interactively install compiled products (user-local or system-wide)"
+	@echo "  make clean-install    Guided, beautiful install of the MAIN package only (no servers/IDEs/wifi/moral); then optional modules"
 	@echo "  make tutorial-check Verify tutorial lesson sequence, example XML, and expected-evidence pairing"
 	@echo "  make tests     Build and run tests/"
 	@echo "  make server    Build api/server/"
