@@ -37,6 +37,7 @@
 #include <set>
 #include <chrono>
 #include <cerrno>
+#include <cstring>
 #if defined(_WIN32)
 #  include <process.h>
 #else
@@ -1173,7 +1174,7 @@ static int runExternalProcess(const std::vector<std::string>& args){
             std::cerr<<"sleela: process argument is not valid UTF-8.\n";
             return 2;
         }
-        std::wstring value((size_t)count,L'\\0');
+        std::wstring value((size_t)count,L'\0');
         if(MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,arg.c_str(),-1,&value[0],count)<=0){
             std::cerr<<"sleela: unable to convert process argument to UTF-16.\n";
             return 2;
