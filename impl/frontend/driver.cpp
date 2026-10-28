@@ -13,6 +13,7 @@
 #include "financial_api.h"
 #include "version.h"
 #include "library_index.h"
+#include "keyword_supporter.h"
 #include "../../registry/sleela_registry.h"
 #include "../annotation/AnnotationRuntime.hpp"
 #include "../catalog/sheet_catalog.h"
@@ -1110,7 +1111,25 @@ static bool checkSyntaxVersion(const std::string& path,const std::string& src){s
     if(s.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<s.message<<"\n";return false;}
     if(s.present())std::cerr<<"sleelvac: "<<path<<": "<<s.message<<"\n";
     return true;}
-static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation;validation.imports=prog.imports;validation.imports.erase(std::remove_if(validation.imports.begin(),validation.imports.end(),[](const std::string& module){return !sleela::native::isModuleAvailable(module);}),validation.imports.end());sleela::native::validateImports(validation);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
+// Supporter-document pass for the five control-flow keywords (try, catch,
+// throw, synchronized, super). For every occurrence we record a stable hashed
+// `@supporter(...)` language annotation on the program and create a relative
+// folder (docs/keyword-supporters/<keyword>/<hash>/) with a SUPPORT.md stub the
+// developer fills out. Folder creation is best-effort: a read-only or
+// unwritable tree must never fail a check/compile, so a materialize failure is
+// silently tolerated (the annotations are still attached in-memory).
+static void runKeywordSupporterPass(const std::string& path, sleela::Program& prog){
+    std::string rel = path;
+    std::error_code ec;
+    fs::path abs = fs::weakly_canonical(fs::path(path), ec);
+    if(!ec){ fs::path r = fs::relative(abs, fs::current_path(), ec); if(!ec && !r.empty()) rel = r.generic_string(); }
+    auto records = sleela::frontend::collectKeywordSupporters(prog, rel);
+    if(records.empty()) return;
+    sleela::frontend::attachSupporterAnnotations(prog, records);
+    std::string docsRoot = (fs::current_path() / "docs").generic_string();
+    sleela::frontend::materializeSupporterFolders(records, docsRoot); // best-effort
+}
+static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation;validation.imports=prog.imports;validation.imports.erase(std::remove_if(validation.imports.begin(),validation.imports.end(),[](const std::string& module){return !sleela::native::isModuleAvailable(module);}),validation.imports.end());sleela::native::validateImports(validation);runKeywordSupporterPass(path,prog);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
 static bool loadReferencedLibraryUnits(const std::string& source, sleela::Program& program);
 static int checkFile(const std::string&path){
     if(verifyBeforeExecution(fs::current_path()))return 1;

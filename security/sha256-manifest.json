@@ -491,7 +491,7 @@
     },
     {
       "path": "impl/frontend/annotation_pipeline.cpp",
-      "sha256": "41526cc2f07f4b02d403029ab9bd8a957adfd54cc5a7c8a401acfc6d76248c9e"
+      "sha256": "4b42b23cd27eb72678b36d48a50076f89bba21a02a9245061aea719469cb6c72"
     },
     {
       "path": "impl/frontend/annotation_pipeline.h",
@@ -519,7 +519,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "7652f272ac82e3ee22788063b97d7565e7a691d1d15ab33d05b88de0944e9ad6"
+      "sha256": "8f5dc09d7f923f66b851b9fb55cfd7b7407423916d844410b52a88d1f72c8950"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -564,6 +564,14 @@
     {
       "path": "impl/frontend/java_flow.h",
       "sha256": "f5c3091d8db9d1442e472e729a199a220ec3e4bec983adc4bfe922d0fcf65799"
+    },
+    {
+      "path": "impl/frontend/keyword_supporter.cpp",
+      "sha256": "4d9b24783c5c6d5a54071ab6382171798171f5f9dbba8db8f055fccc48915bdf"
+    },
+    {
+      "path": "impl/frontend/keyword_supporter.h",
+      "sha256": "ec8466e33dd6064b37e31a82406770feb670a3db66c3bdbc775444fb56bc4e5c"
     },
     {
       "path": "impl/frontend/lexer.cpp",
