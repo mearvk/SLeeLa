@@ -2,6 +2,8 @@
 
 The version declared in a source file (for example, `#sleela 1.9`) is the **language syntax version**, not the Sleelvac compiler release number. Consult [`SLEELA.syntax`](../../SLEELA.syntax) and `impl/frontend/version.{h,cpp}` for the normative grammar and accepted version gate.
 
+The document-scope markers below (`author`/`authorial`, `material`, `memory`, `determine`) are catalogued as a family in [Document markers](DOCUMENT-MARKERS.md).
+
 | Syntax version | Documented feature | Evidence / reference | Status note |
 |---|---|---|---|
 | 1.8 | Inferred local declarations with `let`; constructor arguments on `new Type(args)` | `SLEELA.syntax`, compiler semantic analysis | The specification explicitly excludes constructor overload resolution and `this(...)` / base delegation from verified support. |

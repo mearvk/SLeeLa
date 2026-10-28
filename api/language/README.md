@@ -5,6 +5,7 @@ This directory documents the language-facing contracts that affect API consumers
 ## Versioned contracts
 
 - [Syntax version matrix](SYNTAX-VERSION-MATRIX.md) — features and compatibility boundaries.
+- [Document markers](DOCUMENT-MARKERS.md) — the `author`/`authorial`, `material`, `memory`, and `determine` document-scope markers in one catalog.
 - [System namespace API](system-namespace/API.md) — the `ran::` system-reference namespace.
 - [Verified system references](system-namespace/REFERENCES.md) — reference inventory grounded in the current syntax 1.9 fixtures.
 

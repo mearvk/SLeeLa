@@ -4,7 +4,7 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "7348f5128e8c27592a5e129b6a24eb4454a683a59d4e15f144a16fcfd4d649cd"
+      "sha256": "fb13f8a687c6c456f1e66caf110c4b4f144922656454e3e7e0c965fdea8da462"
     },
     {
       "path": "SLEELA.syntax",
@@ -443,12 +443,16 @@
       "sha256": "b6365614f664d9d09f60043e7cc102c345d7901895c4c7cd8a0c8c2377696391"
     },
     {
+      "path": "api/language/DOCUMENT-MARKERS.md",
+      "sha256": "af33b43f6602f96595e5b4c90f88073480a268c324c2e8609e89b5c5e70c6cca"
+    },
+    {
       "path": "api/language/README.md",
-      "sha256": "aeb599e4f6ad8da391b88fca94b513b6cb54075700dc47745b332640b3202aa6"
+      "sha256": "dacdb2190be632880f82cee7ab3740ca4b32638584d5aa1a04c9fd3831e51f28"
     },
     {
       "path": "api/language/SYNTAX-VERSION-MATRIX.md",
-      "sha256": "ac4e60b67f49bb2e55b7b1068cd72fcd87c77bbca8b53340ace4139c3da949db"
+      "sha256": "a776864b87138baad747c6ad9562407580e84a81a7f8e81756a48e6ac9412059"
     },
     {
       "path": "api/language/system-namespace/API.md",
@@ -4779,6 +4783,10 @@
       "sha256": "bdd55d33a4f3da66d5570bdf709de72045a1bad1d652cd5a2f2ccd2277bb866a"
     },
     {
+      "path": "examples/determine-marker-demo.sleela",
+      "sha256": "d484c9f572169e886e3b6e852015c3def141d80f91a1fc017b422b72551b5b02"
+    },
+    {
       "path": "examples/extends/document_grouping.sleela",
       "sha256": "7ff0a86b30efe172abc69c60da2089ef63b4fe819c6f49af5511b76a9137eb06"
     },
@@ -7629,6 +7637,14 @@
     {
       "path": "impl/tests/unsigned_integer_test.cpp",
       "sha256": "e878825999c9f59d6b2ea664b306e0189a8abb92f34f2f366b8b024bdf50b4f4"
+    },
+    {
+      "path": "impl/tests/version/determine_2_6.sleela",
+      "sha256": "cc8889e2fb84ad52ccb7a87b88a11a07351cc1c03ceeb42c7f668446db4e7a71"
+    },
+    {
+      "path": "impl/tests/version/determine_too_early.sleela",
+      "sha256": "71d48703f889512d5eaf174c5dc47576626d2287c6526be00a9465f44fd5f9b9"
     },
     {
       "path": "impl/tests/version/int_double_widening.sleela",
@@ -55600,15 +55616,15 @@
     },
     {
       "path": "lib/xml/SLXmlAttribute.sleela",
-      "sha256": "db6481dcf9b6ebeb45ddec371c17fee598b86ddd62266a5a1a20fad587a9fe1c"
+      "sha256": "094218cf958fefd1457bf7bd5616a46ab9f7a1570e21eb163eeafb8c14c56313"
     },
     {
       "path": "lib/xml/SLXmlDocument.sleela",
-      "sha256": "e723f14639abdc61711b48c206d3932268acb8ae3edb3be5bbb6538830926a85"
+      "sha256": "1f853f10e5605e07fce1981ad50d4529f38186c3f9af18166e4779792c59eee7"
     },
     {
       "path": "lib/xml/SLXmlNode.sleela",
-      "sha256": "6bc5a49940887e9d3ee8f777356749a82bcde0c5f453bedfa4f5c2ba015016bd"
+      "sha256": "dd0527b5dd9f988c4d04239e65021792d1bcea966b483fe0e69a59b3d368a46a"
     },
     {
       "path": "lib/xml/SLXmlNodeType.sleela",
@@ -55624,7 +55640,7 @@
     },
     {
       "path": "lib/xml/xml-dom.sleela",
-      "sha256": "043e3e64cfa59df225131f68c3e11be4032e424964c1c5a39c50c6122cf514e1"
+      "sha256": "3b781ca733c010335be6901834992ca9bc809608c4d711a6d33cc56d74f687e4"
     },
     {
       "path": "libs/download-all.sh",
