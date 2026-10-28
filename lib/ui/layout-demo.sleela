@@ -76,6 +76,13 @@ class LayoutDemo {
     print("auto fullscreen: " + auto.getWidth() + "x" + auto.getHeight()
         + " fullscreen=" + auto.isFullscreen());
 
+    << Full-screen at the REAL primary-display size is available via
+       SLLayoutFrame.placeFullscreenFromScreen(x, y), which asks the Ballum
+       display subsystem (XRANDR / EnumDisplayMonitors / Core Graphics) for the
+       primary monitor's real pixels. It is exercised in the Ballum-linked
+       screen example rather than here, so this layout demo stays within the
+       pure-SLeeLa lib/ui package. >>
+
     print("done");
   }
 }

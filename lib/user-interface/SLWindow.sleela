@@ -180,5 +180,13 @@ class SLWindow {
     configureOn(app, windowTitle, w, h, themeHandle);
   }
 
+  << To open a full-screen-sized window at the host's REAL primary-display size,
+     discovered per-OS by the Ballum display subsystem (XRANDR /
+     EnumDisplayMonitors / Core Graphics), call
+     SLBallumScreenFit.fitWindow(window, app, title, theme) in lib/ballum. The
+     screen-size bridge lives on the Ballum side so this package does not depend
+     on it; pass the real pixels to configureFullscreen(...) directly if you
+     already know them. >>
+
   int handle() { return window; }
 }
