@@ -165,11 +165,42 @@ print_contents() {
 # Build + stage + install the main package.
 # ---------------------------------------------------------------------------
 STAGE_DIR=""
-STAGE_LOG=""
+INSTALLED_LOG=""
+LIB_KEPT=0
+LIB_DROPPED=0
 # Always returns success so the EXIT trap never overrides the script's real exit
 # status (a bare `[ -n "$x" ]` that is false would otherwise surface as exit 1).
-cleanup() { [ -n "$STAGE_DIR" ] && rm -rf "$STAGE_DIR"; [ -n "$STAGE_LOG" ] && rm -f "$STAGE_LOG"; return 0; }
+# NOTE: the build log ($BUILD_LOG) is intentionally NOT removed here — it is the
+# persistent, verbatim record kept for debugging.
+cleanup() { [ -n "$STAGE_DIR" ] && rm -rf "$STAGE_DIR"; return 0; }
 trap cleanup EXIT
+
+# The verbatim build log. Written first under the repo's install/logs/ (which
+# always exists), then copied into <install_root>/logs/ on a successful install.
+BUILD_LOG=""
+BUILD_STARTED=""
+BUILD_ENDED=""
+
+# Parse the verbatim log into a concise, dignified summary and print it. Also
+# records the product -> status table used by the closing Record of Build.
+summarize_build() {
+  local log="$1"
+  local compiles links warns total
+  total=$(wc -l <"$log" 2>/dev/null | tr -d ' '); : "${total:=0}"
+  compiles=$(grep -cE '(^| )-c ' "$log" 2>/dev/null || true); : "${compiles:=0}"
+  links=$(grep -cE ' -o build/(sleela|sleelvac|nordshrift)( |$)' "$log" 2>/dev/null || true); : "${links:=0}"
+  warns=$(grep -ciE 'warning:' "$log" 2>/dev/null || true); : "${warns:=0}"
+  local u_unit="units" u_prod="products"
+  [ "$compiles" = 1 ] && u_unit="unit"
+  [ "$links" = 1 ] && u_prod="product"
+  printf "    %scompiled%s %s %s   %slinked%s %s %s   %swarnings%s %s   %slog lines%s %s\n" \
+    "$GREY" "$RESET" "$compiles" "$u_unit" "$GREY" "$RESET" "$links" "$u_prod" \
+    "$GREY" "$RESET" "$warns" "$GREY" "$RESET" "$total"
+  if [ "$warns" -gt 0 ]; then
+    warn "compiler emitted ${warns} warning(s); first few:"
+    grep -iE 'warning:' "$log" | head -n 3 | sed 's/^/        /'
+  fi
+}
 
 install_main() {
   local install_root="$1" bin_dest="$2" config_dir="$3" mode="$4"
@@ -182,15 +213,49 @@ install_main() {
   # and which pull in heavy external toolchains (e.g. a JDK for jni.h). Building
   # just the core keeps the install fast, dependency-light, and consistent with
   # "main package only".
-  step "building the core products (sleela · sleelvac · nordshrift)"
+  #
+  # The on-screen view is a calm, summarized progress report; the EXACT,
+  # verbatim compiler/linker messages are captured to $BUILD_LOG for debugging.
   local manifest="${SLEELA_SHA256_MANIFEST:-$REPO_ROOT/security/sha256-manifest.json}"
-  if ! env SLEELA_SHA256_MANIFEST="$manifest" \
-        make -C "$REPO_ROOT/impl" build/sleela build/sleelvac build/nordshrift \
-        >"$STAGE_LOG" 2>&1; then
-    warn "build output (tail):"; tail -n 12 "$STAGE_LOG" | sed 's/^/      /'
-    die "build failed — see the output above."
+  local stamp; stamp="$(date +%Y%m%d-%H%M%S)"
+  mkdir -p "$REPO_ROOT/install/logs"
+  BUILD_LOG="$REPO_ROOT/install/logs/build-$stamp.log"
+  BUILD_STARTED="$(date '+%Y-%m-%d %H:%M:%S %Z')"
+  {
+    printf 'SLeeLa Clean Install — verbatim build log\n'
+    printf 'started: %s\n' "$BUILD_STARTED"
+    printf 'command: make -C %s/impl build/sleela build/sleelvac build/nordshrift\n' "$REPO_ROOT"
+    printf 'manifest: %s\n' "$manifest"
+    printf '%s\n' "----------------------------------------------------------------------"
+  } >"$BUILD_LOG"
+
+  say "  ${GREY}building the core products; verbatim output captured to the build log${RESET}"
+  local product built_ok=1
+  for product in sleela sleelvac nordshrift; do
+    step "build ${WHITE}$product${RESET}"
+    printf '\n===== make build/%s =====\n' "$product" >>"$BUILD_LOG"
+    if env SLEELA_SHA256_MANIFEST="$manifest" \
+          make -C "$REPO_ROOT/impl" "build/$product" >>"$BUILD_LOG" 2>&1; then
+      ok "$product built"
+    else
+      built_ok=0
+      warn "build of ${WHITE}$product${RESET} failed — exact messages (tail):"
+      tail -n 14 "$BUILD_LOG" | sed 's/^/        /'
+      break
+    fi
+  done
+  BUILD_ENDED="$(date '+%Y-%m-%d %H:%M:%S %Z')"
+  printf '\n----------------------------------------------------------------------\nended: %s\n' \
+    "$BUILD_ENDED" >>"$BUILD_LOG"
+
+  if [ "$built_ok" -ne 1 ]; then
+    say "  ${GREY}full verbatim build log:${RESET} ${WHITE}$BUILD_LOG${RESET}"
+    die "build failed — the exact messages above and the full log are retained for debugging."
   fi
   ok "build complete"
+  say "  ${GREY}summary${RESET}"
+  summarize_build "$BUILD_LOG"
+  say "  ${GREY}verbatim log:${RESET} ${WHITE}$BUILD_LOG${RESET}"
 
   heading "Staging the main package"
   STAGE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/sleela-clean.XXXXXX")"
@@ -206,16 +271,17 @@ install_main() {
   done
 
   step "staging the standard library (excluding servers, IDEs, Wi-Fi, religious/moral)"
-  local kept=0 dropped=0 entry name
+  local entry name
+  LIB_KEPT=0; LIB_DROPPED=0
   for entry in "$REPO_ROOT"/lib/*/; do
     name="$(basename "$entry")"
-    if is_excluded "$name"; then dropped=$((dropped+1)); continue; fi
+    if is_excluded "$name"; then LIB_DROPPED=$((LIB_DROPPED+1)); continue; fi
     cp -a "$entry" "$STAGE_DIR/lib/"
-    kept=$((kept+1))
+    LIB_KEPT=$((LIB_KEPT+1))
   done
   # top-level lib/*.md inventory files travel with the library
   cp -a "$REPO_ROOT"/lib/*.md "$STAGE_DIR/lib/" 2>/dev/null || true
-  ok "library staged: ${kept} packages kept, ${dropped} excluded"
+  ok "library staged: ${LIB_KEPT} packages kept, ${LIB_DROPPED} excluded"
 
   step "staging the integrity manifest and verifier"
   cp -a "$REPO_ROOT/tools/verify-before-execution.py" "$STAGE_DIR/tools/"
@@ -289,16 +355,51 @@ case "$SCOPE" in
   *) die "invalid scope (choose 1 or 2)";;
 esac
 
-STAGE_LOG="$(mktemp "${TMPDIR:-/tmp}/sleela-build.XXXXXX.log")"
-trap cleanup EXIT
-
 install_main "$INSTALL_ROOT" "$BIN_DEST" "$CONFIG_DIR" "$MODE"
+
+# Preserve the verbatim build log alongside the installation for debugging.
+if [ -n "$BUILD_LOG" ] && [ -f "$BUILD_LOG" ]; then
+  if [ "$MODE" = user ]; then
+    mkdir -p "$INSTALL_ROOT/logs" && cp -a "$BUILD_LOG" "$INSTALL_ROOT/logs/" 2>/dev/null || true
+    INSTALLED_LOG="$INSTALL_ROOT/logs/$(basename "$BUILD_LOG")"
+  else
+    sudo mkdir -p "$INSTALL_ROOT/logs" && sudo cp -a "$BUILD_LOG" "$INSTALL_ROOT/logs/" 2>/dev/null || true
+    INSTALLED_LOG="$INSTALL_ROOT/logs/$(basename "$BUILD_LOG")"
+  fi
+fi
 
 # ---- success + optional enhancements --------------------------------------
 heading "Installed"
 ok "SLeeLa ${RELEASE} main package is installed."
 say "  ${GREY}Binaries:${RESET} ${WHITE}$INSTALL_ROOT/bin${RESET}  ${GREY}(sleela · sleelvac · nordshrift)${RESET}"
 say "  ${GREY}Try:${RESET}      ${WHITE}$INSTALL_ROOT/bin/sleela version${RESET}"
+
+# ---- Record of Build: a formal, orderly attestation of what was done. -------
+# Clean dressing appropriate for a State Captain / Attorney General: a plainly
+# worded, signed-off record, with the verbatim build log cited for inspection.
+record_of_build() {
+  local lw=58
+  local f_prod f_lib f_dest f_log f_when
+  f_prod="sleela, sleelvac, nordshrift"
+  f_lib="${LIB_KEPT} packages included · ${LIB_DROPPED} excluded"
+  f_dest="$INSTALL_ROOT"
+  f_log="${INSTALLED_LOG:-$BUILD_LOG}"
+  f_when="$BUILD_STARTED → $BUILD_ENDED"
+  heading "Record of Build"
+  printf "  %sBe it recorded that the SLeeLa main package was built and installed%s\n" "$GREY" "$RESET"
+  printf "  %sin good order, as attested below.%s\n\n" "$GREY" "$RESET"
+  printf "    %s%-18s%s %s\n" "$GREY" "Product" "$RESET" "SLeeLa ${RELEASE}  (syntax ${SYNTAX_RANGE})"
+  printf "    %s%-18s%s %s\n" "$GREY" "Binaries" "$RESET" "$f_prod"
+  printf "    %s%-18s%s %s\n" "$GREY" "Library" "$RESET" "$f_lib"
+  printf "    %s%-18s%s %s\n" "$GREY" "Excluded" "$RESET" "servers · IDEs/editors · Wi-Fi · religious/moral/political"
+  printf "    %s%-18s%s %s\n" "$GREY" "Scope" "$RESET" "$MODE"
+  printf "    %s%-18s%s %s\n" "$GREY" "Destination" "$RESET" "$f_dest"
+  printf "    %s%-18s%s %s\n" "$GREY" "Build window" "$RESET" "$f_when"
+  printf "    %s%-18s%s %s\n" "$GREY" "Integrity" "$RESET" "SHA-256 manifest honored (fail-closed)"
+  printf "    %s%-18s%s %s%s%s\n" "$GREY" "Verbatim log" "$RESET" "$WHITE" "$f_log" "$RESET"
+  printf "\n  %s%sSo attested, this build complete and in order.%s\n" "$GREEN" "$ITAL" "$RESET"
+}
+record_of_build
 
 heading "Enhance your experience (optional)"
 say "  ${GREY}The main package is ready. You may now add optional modules${RESET}"

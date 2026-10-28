@@ -7792,7 +7792,7 @@
     },
     {
       "path": "install/sleela-clean-install.sh",
-      "sha256": "19f18f57a7179495f0c8522762d88fb8c604a7a020088dafe3e58a782f8e12da"
+      "sha256": "fb317be7e5c3b3d59c03734e371614b45b537628d78290da952b5dfdce3aaeb5"
     },
     {
       "path": "install/system-install.sh",

@@ -51,6 +51,30 @@ core binary itself is unchanged.
    safe, non-excluded set (`audio`, `video`, `signal-processing`, `codecs`,
    `compression`, `gui`, `ui`, `database`, `connector`) — selected by number.
 
+## Build output: summarized on screen, verbatim in a log
+
+The on-screen build is a **calm, summarized** progress report — one step per core
+product (`sleela`, `sleelvac`, `nordshrift`), then a one-line summary
+(`compiled N units · linked N products · warnings N · log lines N`).
+
+The **exact, verbatim** compiler/linker messages are captured to a persistent,
+timestamped log for debugging: `install/logs/build-YYYYMMDD-HHMMSS.log` (the
+`*.log` gitignore keeps it out of commits), with a header recording the start
+time, the exact `make` command, and the manifest path. On a **successful**
+install the log is copied to `<install_root>/logs/`; on **failure** the exact
+error tail is shown on screen and the full log is retained and cited by path.
+Keep both: the summary is the clean dressing; the log is the debugging record.
+
+## The Record of Build (formal attestation)
+
+The installer closes a successful run with a **Record of Build** — a plainly
+worded, orderly attestation suitable for a State Captain / Attorney General:
+Product + syntax range, Binaries, Library (included · excluded counts), the
+Excluded categories, Scope, Destination, the Build window (start → end),
+Integrity ("SHA-256 manifest honored, fail-closed"), and the Verbatim log path,
+signed off with "So attested, this build complete and in order." Preserve this
+dignified, factual tone; it asserts only what the build actually did.
+
 ## Presentation (keep this discipline)
 
 - Brand palette: glimmering green (approx `#00D68F`, 256-color `38;5;43`) on a
