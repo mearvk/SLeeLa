@@ -54623,6 +54623,10 @@
       "sha256": "c3078db9adedf63769d203bbb03e7356d82d8611c9b3df890915acc74fff79be"
     },
     {
+      "path": "lib/vm/SLPackage.sleela",
+      "sha256": "87dbe0e90dea76dbed839ab41c037dc92ac9f95ea40e640f248756acc09854d3"
+    },
+    {
       "path": "lib/vm/SLVM.sleela",
       "sha256": "9157b4eba6f65b0ce4ffec817de8444cff84c4b5b2d8596288c1f12ac9565653"
     },

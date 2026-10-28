@@ -3,8 +3,8 @@ schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
 library-source-files: 11641
 library-packages: 104
-module-facade-symbols: 71
-total-symbol-records: 11712
+module-facade-symbols: 72
+total-symbol-records: 11713
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11539,6 +11539,7 @@ vm	GCRoot.sleela	lib/vm/GCRoot.sleela	source
 vm	GarbageCollector.sleela	lib/vm/GarbageCollector.sleela	source
 vm	InstructionSet.sleela	lib/vm/InstructionSet.sleela	source
 vm	SLNativeMemory.sleela	lib/vm/SLNativeMemory.sleela	source
+vm	SLPackage.sleela	lib/vm/SLPackage.sleela	facade
 vm	SLVM.sleela	lib/vm/SLVM.sleela	source
 vm	SLVMClass.sleela	lib/vm/SLVMClass.sleela	source
 vm	SLVMComponentFetcher.sleela	lib/vm/SLVMComponentFetcher.sleela	source
