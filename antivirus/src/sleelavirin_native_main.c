@@ -9,6 +9,7 @@
  * At least one of the two must be supplied. A NO_MATCH / CLEAN result is NEVER
  * proof that a file is safe.
  */
+#include "sleelavirin_compat.h"
 #include "sleelavirin_native.h"
 #include "sleelavirin_ac.h"
 #include "sleelavirin_sig.h"
@@ -35,13 +36,15 @@ static void usage(const char *program)
 static int read_file(const char *path, uint8_t **out, size_t *out_len)
 {
     FILE *f = fopen(path, "rb");
-    long end;
+    uint64_t end = 0;
     uint8_t *buf;
     size_t n;
     *out = NULL; *out_len = 0;
     if (!f) return -1;
-    if (fseek(f, 0, SEEK_END) != 0 || (end = ftell(f)) < 0 ||
-        fseek(f, 0, SEEK_SET) != 0) { fclose(f); return -1; }
+    if (slv_file_size(f, &end) != 0) { fclose(f); return -1; }
+    /* Content scanning loads the whole file into memory; refuse what will not
+     * fit in size_t (e.g. a >4 GiB file on a 32-bit XP build). */
+    if (end > (uint64_t)(size_t)-1) { fclose(f); return -1; }
     buf = (uint8_t *)malloc((size_t)end ? (size_t)end : 1u);
     if (!buf) { fclose(f); return -1; }
     n = fread(buf, 1, (size_t)end, f);

@@ -1,0 +1,82 @@
+# Sleelavirin(TM) native engine - MSVC nmake build.
+# Max Rupplin - MEARVK LLC - 2026.
+#
+# For users building with the Visual Studio toolchain directly (no CMake).
+# Open a "Developer Command Prompt for VS" (or run vcvarsall.bat) so cl.exe and
+# lib.exe are on PATH, then:
+#
+#     nmake /f Makefile.win              build libs + scanner + tests
+#     nmake /f Makefile.win test         build and run the tests
+#     nmake /f Makefile.win WINXP=1      target the Windows XP API floor (0x0501)
+#     nmake /f Makefile.win clean        remove build\
+#
+# Targets Windows 7+ by default (compat header floor 0x0601). WINXP=1 lowers the
+# floor to 0x0501 for an XP-capable toolchain (see PLATFORMS.md).
+
+CC = cl
+LIB = lib
+BUILD = build
+SRC = src
+TEST = tests
+
+# /W4 strict warnings, /O2 optimize, standard CRT (we opt out of _s deprecations
+# in the compat header). /TC forces C, /TP forces C++.
+CFLAGS = /nologo /W4 /O2 /I$(SRC) /D_CRT_SECURE_NO_WARNINGS
+CXXFLAGS = /nologo /W4 /O2 /std:c++17 /EHsc /I$(SRC) /D_CRT_SECURE_NO_WARNINGS
+
+!IF "$(WINXP)" == "1"
+CFLAGS = $(CFLAGS) /D_WIN32_WINNT=0x0501 /DWINVER=0x0501
+CXXFLAGS = $(CXXFLAGS) /D_WIN32_WINNT=0x0501 /DWINVER=0x0501
+!ENDIF
+
+COBJS = $(BUILD)\sleelavirin_scan.obj $(BUILD)\sleelavirin_heuristic.obj \
+        $(BUILD)\sleelavirin_native.obj $(BUILD)\sleelavirin_ac.obj \
+        $(BUILD)\sleelavirin_sig.obj $(BUILD)\sleelavirin_bridge.obj
+
+LIBC = $(BUILD)\sleelavirin.lib
+LIBCPP = $(BUILD)\sleelavirin_cpp.lib
+SCANNER = $(BUILD)\sleelavirin-scan.exe
+
+all: $(BUILD) $(LIBC) $(LIBCPP) $(SCANNER)
+
+$(BUILD):
+	@if not exist $(BUILD) mkdir $(BUILD)
+
+# Pattern-free explicit rules (nmake-portable).
+$(BUILD)\sleelavirin_scan.obj: $(SRC)\sleelavirin_scan.c
+	$(CC) $(CFLAGS) /TC /c $(SRC)\sleelavirin_scan.c /Fo$@
+$(BUILD)\sleelavirin_heuristic.obj: $(SRC)\sleelavirin_heuristic.c
+	$(CC) $(CFLAGS) /TC /c $(SRC)\sleelavirin_heuristic.c /Fo$@
+$(BUILD)\sleelavirin_native.obj: $(SRC)\sleelavirin_native.c
+	$(CC) $(CFLAGS) /TC /c $(SRC)\sleelavirin_native.c /Fo$@
+$(BUILD)\sleelavirin_ac.obj: $(SRC)\sleelavirin_ac.c
+	$(CC) $(CFLAGS) /TC /c $(SRC)\sleelavirin_ac.c /Fo$@
+$(BUILD)\sleelavirin_sig.obj: $(SRC)\sleelavirin_sig.c
+	$(CC) $(CFLAGS) /TC /c $(SRC)\sleelavirin_sig.c /Fo$@
+$(BUILD)\sleelavirin_bridge.obj: $(SRC)\sleelavirin_bridge.c
+	$(CC) $(CFLAGS) /TC /c $(SRC)\sleelavirin_bridge.c /Fo$@
+
+$(LIBC): $(COBJS)
+	$(LIB) /nologo /OUT:$(LIBC) $(COBJS)
+
+$(BUILD)\sleelavirin_cpp.obj: $(SRC)\sleelavirin_cpp.cpp
+	$(CC) $(CXXFLAGS) /TP /c $(SRC)\sleelavirin_cpp.cpp /Fo$@
+
+$(LIBCPP): $(BUILD)\sleelavirin_cpp.obj
+	$(LIB) /nologo /OUT:$(LIBCPP) $(BUILD)\sleelavirin_cpp.obj
+
+$(SCANNER): $(SRC)\sleelavirin_native_main.c $(LIBC)
+	$(CC) $(CFLAGS) /TC $(SRC)\sleelavirin_native_main.c /Fe$@ /link $(LIBC)
+
+test: all
+	$(CC) $(CFLAGS) /TC $(TEST)\test_scan.c /Fe$(BUILD)\test_scan.exe /link $(LIBC)
+	$(BUILD)\test_scan.exe
+	$(CC) $(CFLAGS) /TC $(TEST)\test_ac.c /Fe$(BUILD)\test_ac.exe /link $(LIBC)
+	$(BUILD)\test_ac.exe
+	$(CC) $(CFLAGS) /TC $(TEST)\test_bridge.c /Fe$(BUILD)\test_bridge.exe /link $(LIBC)
+	$(BUILD)\test_bridge.exe
+	$(CC) $(CXXFLAGS) /TP $(TEST)\test_cpp_scan.cpp /Fe$(BUILD)\test_cpp_scan.exe /link $(LIBCPP) $(LIBC)
+	$(BUILD)\test_cpp_scan.exe
+
+clean:
+	@if exist $(BUILD) rmdir /S /Q $(BUILD)

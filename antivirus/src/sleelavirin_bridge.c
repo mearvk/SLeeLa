@@ -4,6 +4,7 @@
  *
  * Original Sleelavirin code; portable C11; no third-party AV engine.
  */
+#include "sleelavirin_compat.h"
 #include "sleelavirin_bridge.h"
 
 #include <stdio.h>
@@ -48,16 +49,14 @@ int sleelavirin_bridge_validate_request(const sleelavirin_bridge_request_t *req)
 static int file_too_large(const char *path, uint64_t limit, uint64_t *size_out)
 {
     FILE *f;
-    long end;
+    uint64_t end = 0;
     if (limit == 0) { if (size_out) *size_out = 0; return 0; }
     f = fopen(path, "rb");
     if (!f) return 0; /* let the scanner report the unreadable-file error */
-    if (fseek(f, 0, SEEK_END) != 0) { fclose(f); return 0; }
-    end = ftell(f);
+    if (slv_file_size(f, &end) != 0) { fclose(f); return 0; }
     fclose(f);
-    if (end < 0) return 0;
-    if (size_out) *size_out = (uint64_t)end;
-    return ((uint64_t)end > limit) ? 1 : 0;
+    if (size_out) *size_out = end;
+    return (end > limit) ? 1 : 0;
 }
 
 int sleelavirin_bridge_scan_native(const sleelavirin_bridge_request_t *req,

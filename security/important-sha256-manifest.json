@@ -31,6 +31,14 @@
       "sha256": "c1938a7558c5ad8889dc85b29e94c02736d337c676068d4a6afb29258bc939da"
     },
     {
+      "path": "antivirus/build-macos.sh",
+      "sha256": "252b714242a830ab5117040cde84470770ce17b454419d151aba49ea4be346d4"
+    },
+    {
+      "path": "antivirus/build-windows.ps1",
+      "sha256": "a7ca84d48cfb7a67fa54a1af0f3cb1203da1d125284536ad49300a908ef94bfe"
+    },
+    {
       "path": "antivirus/src/sleelavirin_ac.c",
       "sha256": "96f0f4d32d1a0ac0484534a9dd38871c4f133e238ff0a89bd14e6f83efa24eed"
     },
@@ -40,11 +48,15 @@
     },
     {
       "path": "antivirus/src/sleelavirin_bridge.c",
-      "sha256": "12532e873192b0b7bfbfcdfc92647200738e2b25f94a2add120768efe28cb486"
+      "sha256": "f9959763742d01fd352d71a41a315ad0578fb12a0690f0961b923b7f647c597b"
     },
     {
       "path": "antivirus/src/sleelavirin_bridge.h",
       "sha256": "a8b6983a1251b844fc49279c996f562f37180ebf9b8f361e2b499d5e307eece5"
+    },
+    {
+      "path": "antivirus/src/sleelavirin_compat.h",
+      "sha256": "a400311ebce3c64558a9b76d9e2c3bfbe4fc13e3204f9a77de508f4fc5b9c1f3"
     },
     {
       "path": "antivirus/src/sleelavirin_cpp.cpp",
@@ -72,7 +84,7 @@
     },
     {
       "path": "antivirus/src/sleelavirin_native_main.c",
-      "sha256": "11c6cd96259472b0c75999c4d6d9c5fcb17a3c480edd97cf5e137fd16ec00dd7"
+      "sha256": "f5faafebe4992534c91b637375b72dac898f1f2fe291ff1545a3160100373efa"
     },
     {
       "path": "antivirus/src/sleelavirin_scan.c",
@@ -84,7 +96,7 @@
     },
     {
       "path": "antivirus/src/sleelavirin_sig.c",
-      "sha256": "02c7319d24287bd0328c611cb29822405f856c9b67eb8439d7b4a775956062a1"
+      "sha256": "d4a1c47c0bf87d7554f34473b5f263334b1de1ab2a9466101a4ae9abd1cf8978"
     },
     {
       "path": "antivirus/src/sleelavirin_sig.h",

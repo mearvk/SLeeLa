@@ -4,6 +4,7 @@
  *
  * Original implementation. Portable C11. No third-party AV code.
  */
+#include "sleelavirin_compat.h"
 #include "sleelavirin_sig.h"
 
 #include <stdio.h>

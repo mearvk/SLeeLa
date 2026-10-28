@@ -55,7 +55,7 @@ Artifacts produced by `make`:
 
 ```sh
 cd antivirus
-make           # build C lib, C++ lib, tests, and the scanner
+make           # build C lib, C++ lib, tests, and the scanner (POSIX GNU Make)
 make test      # build + run all C, C++, native, content, and Python tests
 make cpp-test  # just the C++ library test
 CC=clang CXX=clang++ make   # use Clang
@@ -63,6 +63,21 @@ CC=clang CXX=clang++ make   # use Clang
 
 The engine builds warning-clean under `-O2 -Wall -Wextra -Wpedantic`
 (C11 and C++17).
+
+### Cross-platform
+
+The engine compiles from one source tree on **Windows XP+/7+/10+**, **macOS**
+(Intel & Apple Silicon), and **Linux/Unix**. OS differences live only in
+`src/sleelavirin_compat.h`. Build options:
+
+- **CMake (universal):** `cmake -S . -B build && cmake --build build` — add
+  `-DSLEELAVIRIN_WINXP=ON` for the Windows XP floor, or
+  `-DCMAKE_OSX_DEPLOYMENT_TARGET=10.9` for older macOS.
+- **Windows:** `./build-windows.ps1 [-WinXP] [-Test]` (CMake or MinGW-w64), or
+  `nmake /f Makefile.win [WINXP=1] [test]` (MSVC).
+- **macOS:** `./build-macos.sh [test]` (Apple Clang).
+
+See **`PLATFORMS.md`** for the full matrix and the Windows XP toolchain notes.
 
 ---
 
