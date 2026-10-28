@@ -30,6 +30,8 @@ Java is a separate, optional execution surface. Selecting VM generation 10 or 11
 - `javafx.module_path` and `javafx.modules`: optional JavaFX module configuration; JavaFX classes and native platform libraries must actually be installed.
 - `java.headless = auto`: detect the environment where practical and report that graphical UI may be unavailable.
 
+For direct command-line launches, the initial supported forms are `sleela run app.jar [args...]`, `sleela run --class-path <path> <MainClass> [args...]`, and `sleela run --class <MainClass> [args...]`. The JAR must declare `Main-Class`; class files must be under the supplied class-path root with package directories intact. These forms currently consume the external-Java environment discovery and enable/disable controls; the key/value file settings are not yet parsed by the launcher.
+
 Capability reporting must distinguish detection from verified execution. A Java executable does not prove that Swing can open a display or that JavaFX modules are installed. Runtime configuration keys are descriptive until the launcher consumes them; unsupported settings must not be reported as active behavior.
 
 `config/slvm-runtime.conf` is a separate SLVM/6 runtime profile (`vm.instance = 6`), not a competing global default. It applies only when a deployment explicitly selects that SLVM/6 profile; `config/vm.conf` remains the general default selection (generation 11).
