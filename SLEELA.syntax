@@ -1,19 +1,27 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  2.5  (1.3..1.11 baseline carried forward)
-    Compiler:        Sleelvac(TM) 0.3.30-dev  (version gate accepts syntax 1.0 .. 2.5)
+    Syntax version:  2.6  (1.3..1.11 baseline carried forward)
+    Compiler:        Sleelvac(TM) 0.3.30-dev  (version gate accepts syntax 1.0 .. 2.6)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.3..2.5 surface
+    Status:          Normative for the syntax 1.3..2.6 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 2.5`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.5).
+    `#sleela 2.6`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.6).
+    Syntax 2.6 is the current spec level: it adds **keyword supporter
+    documents** (section 22) — every use of the five control-flow keywords
+    (`try`, `catch`, `throw`, `synchronized`, `super`) is given a stable hash,
+    recorded through the annotation mechanism as a
+    `@supporter("<keyword>:<hash>")` language annotation, and linked to a
+    relative folder `docs/keyword-supporters/<keyword>/<hash>/` holding a
+    `SUPPORT.md` stub the developer fills out. The pass runs at parse time and
+    does not change the parsing, typing, or codegen of the keywords themselves.
     Syntax 2.5 is the current spec level: it adds the **`material` document
     marker** (section 19) — a bare, contextual, *declarative-only* word (sibling
     to `author`/`authorial`) claiming the document is material: well considered,
@@ -73,7 +81,7 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax 1.3..2.5 surface the front end accepts.
+This document is normative for the syntax 1.3..2.6 surface the front end accepts.
 Every production and built-in below is implemented in `impl/frontend` and
 executes on `impl/core`.
 
@@ -1514,3 +1522,63 @@ value. For arbitrary-width *unsigned* integers, the `U<width>` family, e.g.
   (`sl_int128_t`); `sleela_core.c` adds `slval_int128`, 128-bit promotion in the
   arithmetic/comparison ops, a 128-bit decimal formatter, and int128 widening in
   `OP_CHECKCAST`. `long`/`int64` continue to use the 64-bit `SLValue.as.i`.
+
+--------------------------------------------------------------------------------
+## 22. Syntax 2.6 — keyword supporter documents (try / catch / throw / synchronized / super)
+
+This section is **normative** for syntax **2.6**. The five control-flow keywords
+`try`, `catch`, `throw`, `synchronized`, and `super` carry developer-authored
+semantics that the core VM does not yet lower faithfully. Syntax 2.6 requires
+that every *use* of one of them be linked to a **supporter document** the
+developer fills out, so the intended behavior of each occurrence is recorded.
+
+### 22.1 How a use is linked
+
+At parse time the front end walks the parsed document and, for each occurrence of
+one of the five keywords, performs three steps:
+
+1. **Hash.** It computes a stable, reproducible 16-hex-character identifier over
+   the tuple `keyword | repository-relative-source-path | Class::method |
+   ordinal-within-method` (via `ledger::sha256_hex`). The hash does not use
+   source line/column, so it is unaffected by unrelated lines moving; it changes
+   only if the enclosing method or the order of that keyword's uses within the
+   method changes.
+2. **Annotate.** It records the occurrence as a language annotation through the
+   ordinary annotation mechanism:
+
+       @supporter("<keyword>:<hash>")
+
+   `supporter` is a registered, **repeatable** language-annotation name (see
+   `impl/frontend/annotation_pipeline.cpp`), so it is accepted without an
+   "unknown annotation" warning and may appear any number of times on a document.
+3. **Materialise.** It creates the relative folder
+   `docs/keyword-supporters/<keyword>/<hash>/` containing a `SUPPORT.md` stub —
+   with the Metadata Class metapattern header (section 15) and
+   Intent / Behavior / Invariants / Notes sections — for the developer to fill
+   out, plus a regenerated `docs/keyword-supporters/INDEX.md` listing every
+   occurrence.
+
+### 22.2 Rules
+
+- An existing `SUPPORT.md` is **never overwritten**: once a stub exists, the
+  developer's content is preserved across recompiles. Only missing folders/stubs
+  are created. `INDEX.md` is generated output and is rewritten each run.
+- Folder creation is **best-effort**: on a read-only or unwritable tree the
+  `check`/`compile`/`run` still succeeds (the `@supporter` annotations are still
+  attached to the parsed document in memory); materialisation failure is not an
+  error.
+- The pass is purely **additive**: it does not change the parsing, typing, or
+  codegen of `try`/`catch`/`throw`/`synchronized`/`super`. It links each
+  occurrence to a document; it does not alter the keyword's behavior.
+- `docs/` is outside the `lib/**` + `impl/` SHA-256 build gate, so generated
+  stubs there never require regenerating `security/sha256-manifest.json`.
+
+### 22.3 Where this is implemented
+
+- `impl/frontend/keyword_supporter.{h,cpp}` — the walker, the per-occurrence
+  hash, `@supporter` attachment, and folder/stub materialisation.
+- `impl/frontend/driver.cpp` — `runKeywordSupporterPass()`, invoked from
+  `parseSource()` on every `check`/`compile`/`run`.
+- `impl/frontend/annotation_pipeline.cpp` — `supporter` registered in
+  `isKnownLanguageAnnotation()` and `annotationMayRepeat()`.
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.6.

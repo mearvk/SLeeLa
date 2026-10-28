@@ -63,7 +63,7 @@
 
 #define SL_PRODUCT  "SLeeLa"
 #define SL_RELEASE  "0.3.30-dev"
-#define SL_SYNTAX   "1.0 - 2.5"
+#define SL_SYNTAX   "1.0 - 2.6"
 #define SL_TAGLINE  "THE NOW. THE INGREDIENT."
 
 /* ---- host OS identity (operating-system/ model: National -> ... ) -------- */

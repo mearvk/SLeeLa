@@ -4,11 +4,11 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "ef851950514a2359af5bc594127e764e26b34c40d08419f93f58729072405d84"
+      "sha256": "ef25b861a2c31f0946ecdf3437bd04391d40e918d72633227c7bc508cce36401"
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "7d7d445358d56798966430b259b71a3f9cda6af8dc11be185fb3cdb8ef82c06f"
+      "sha256": "46d0908e206be34fbb9daea5b37663e8e93720de7620f05f36aba2d4a70309b5"
     },
     {
       "path": "SST-2.0.model",
@@ -2892,7 +2892,7 @@
     },
     {
       "path": "build/native-builder/slbuild.c",
-      "sha256": "eba9bf6fcc170be161e5b688cf3fe2975a85a0bbd8869f7c2eb89128ac0baa8a"
+      "sha256": "48d20b376f52382c0ef632d8057eab5c2e187d5c00b87d54be0fa9a793f004c0"
     },
     {
       "path": "build/skya-linux.sh",
@@ -6603,6 +6603,14 @@
       "sha256": "f5c3091d8db9d1442e472e729a199a220ec3e4bec983adc4bfe922d0fcf65799"
     },
     {
+      "path": "impl/frontend/keyword_supporter.cpp",
+      "sha256": "4d9b24783c5c6d5a54071ab6382171798171f5f9dbba8db8f055fccc48915bdf"
+    },
+    {
+      "path": "impl/frontend/keyword_supporter.h",
+      "sha256": "ec8466e33dd6064b37e31a82406770feb670a3db66c3bdbc775444fb56bc4e5c"
+    },
+    {
       "path": "impl/frontend/lexer.cpp",
       "sha256": "b3833af6b7c7816da450e858f2fdacb430806590b139d1dcc4b0008433c02c60"
     },
@@ -6660,7 +6668,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "64f70c8a5033e796498e7edbea4741e86a42537b3ee66a73f5d515fda8246e43"
+      "sha256": "9247d8364680567a7dc8869c0470547215e76659da7caf6dcd74a6998efb560e"
     },
     {
       "path": "impl/frontend/wikigen.cpp",
@@ -7524,7 +7532,7 @@
     },
     {
       "path": "impl/tests/nordshrift/run_cross_version_tests.sh",
-      "sha256": "4a65c66e6efba4ab8f77c968ded9c613d1c934abb889abee345f01f26c9f54d2"
+      "sha256": "78714e4c8d467d725e102dae286d48a6af3f97671e6ff765993b4b31a01731bc"
     },
     {
       "path": "impl/tests/nordshrift/run_end_to_end_tests.sh",
@@ -7548,7 +7556,7 @@
     },
     {
       "path": "impl/tests/nordshrift/src/compat-new/main.sleela",
-      "sha256": "91bcdab2662ca41d6f2d054504617dfdd34be77128d35ee32fff15e9de699ebb"
+      "sha256": "a9a03b7fa1c3dd2aef64bd1df58c49b62659636e23894ab37075a357c6bbd1a1"
     },
     {
       "path": "impl/tests/nordshrift/src/compat-old/main.sleela",
@@ -7648,7 +7656,7 @@
     },
     {
       "path": "impl/tests/version/minor_ahead.sleela",
-      "sha256": "9ce9680127b7ebcb5da2d08c3d8b391abaec35ce5bd689b807416f553fcffc8e"
+      "sha256": "62e7007772eb9ef84fb935df1e0e4618d808bf0276ab3ead4826a6aba471b475"
     },
     {
       "path": "impl/tests/version/network_1_1.sleela",
@@ -7664,7 +7672,7 @@
     },
     {
       "path": "impl/tests/version/run_version_tests.sh",
-      "sha256": "223cd6946921ba0c749bb5a2c5f78168d6537d05165c585865889ec755f229ce"
+      "sha256": "02521d48052bf1b74e748c3603c3c5924522bcaf6bdda20a555f27b9d3bed0ac"
     },
     {
       "path": "impl/tests/version/syntax_0_9.sleela",

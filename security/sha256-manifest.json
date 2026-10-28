@@ -631,7 +631,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "64f70c8a5033e796498e7edbea4741e86a42537b3ee66a73f5d515fda8246e43"
+      "sha256": "9247d8364680567a7dc8869c0470547215e76659da7caf6dcd74a6998efb560e"
     },
     {
       "path": "impl/frontend/wikigen.cpp",

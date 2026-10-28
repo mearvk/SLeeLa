@@ -1,4 +1,4 @@
-#sleela 2.6
+#sleela 2.7
 
 class CompatNew {
     void main() {

@@ -6,10 +6,10 @@
 #include <string>
 namespace sleela {
 struct SyntaxVersion { int major=0, minor=0; std::string str() const { return std::to_string(major)+"."+std::to_string(minor); } bool operator<(const SyntaxVersion&o)const{return major!=o.major?major<o.major:minor<o.minor;} bool operator>(const SyntaxVersion&o)const{return o<*this;} bool operator==(const SyntaxVersion&o)const{return major==o.major&&minor==o.minor;} bool operator<=(const SyntaxVersion&o)const{return !(*this>o);} bool operator>=(const SyntaxVersion&o)const{return !(*this<o);} };
-// Supported source-syntax range the toolchain drives: 1.0 .. 2.5. Features
+// Supported source-syntax range the toolchain drives: 1.0 .. 2.6. Features
 // introduced in later minors are still gated individually (a 1.0 source that
 // uses, e.g., network built-ins errors with "requires #sleela 1.1"), but the
-// floor itself is 1.0 so the runtime can drive the whole 1.0 .. 2.5 range.
+// floor itself is 1.0 so the runtime can drive the whole 1.0 .. 2.6 range.
 // Syntax 2.3 adds the philosophers Guide-chain expression
 // (`new T(...) :: Guide :: Guide ...`, section 17 of SLEELA.syntax).
 // Syntax 2.4 adds the `author`/`authorial` document marker: a document so
@@ -34,7 +34,15 @@ struct SyntaxVersion { int major=0, minor=0; std::string str() const { return st
 // membership in the set of memory documents the Graduates of Supply hold as
 // kept standing (section 20 of SLEELA.syntax). It is gated to 2.5, the same
 // edition as material; the edition is not bumped.
-inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};} inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{2,5};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
+// Syntax 2.6 adds keyword supporter documents: every use of the five
+// control-flow keywords (`try`, `catch`, `throw`, `synchronized`, `super`) is
+// given a stable hash and recorded through the annotation mechanism as a
+// `@supporter("<keyword>:<hash>")` language annotation, and each hash maps to a
+// relative folder docs/keyword-supporters/<keyword>/<hash>/ holding a SUPPORT.md
+// stub the developer fills out (section 22 of SLEELA.syntax). The pass runs at
+// parse time and does not change parsing, typing, or codegen of the keywords
+// themselves; it links each occurrence to its supporting document.
+inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};} inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{2,6};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
 enum class VersionStatus{OkDeclared,OkAssumed,TooNew,TooOld,Malformed};
 struct VersionResolution{ VersionStatus status=VersionStatus::OkAssumed; SyntaxVersion declared; bool pragmaPresent=false; std::string raw; std::string message; bool accepted()const{return status==VersionStatus::OkDeclared||status==VersionStatus::OkAssumed;} bool isError()const{return !accepted();} bool isWarning()const{return status==VersionStatus::OkAssumed;} };
 bool parseSyntaxVersion(const std::string& text,SyntaxVersion& out); VersionResolution resolveSyntaxVersion(const std::string& source);
