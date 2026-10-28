@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11641
+library-source-files: 11645
 library-packages: 104
 module-facade-symbols: 71
-total-symbol-records: 11712
+total-symbol-records: 11716
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -397,6 +397,8 @@ character	JamesCameronAdvancedTrace.sleela	lib/character/james-cameron/JamesCame
 character	JamesCameronHuman.sleela	lib/character/james-cameron/JamesCameronHuman.sleela	source
 character	JamesCameronHumanEvent.sleela	lib/character/james-cameron/JamesCameronHumanEvent.sleela	source
 character	JamesCameronLifeStats.sleela	lib/character/james-cameron/JamesCameronLifeStats.sleela	source
+character	CharacterDemo.sleela	lib/character/seem/CharacterDemo.sleela	source
+character	CharacterStats.sleela	lib/character/seem/CharacterStats.sleela	source
 churn	SLPackage.sleela	lib/churn/SLPackage.sleela	facade
 citizen	BankAccount.sleela	lib/citizen/BankAccount.sleela	source
 citizen	Citizen.sleela	lib/citizen/Citizen.sleela	source
@@ -430,6 +432,8 @@ citizen	RetailModel.sleela	lib/citizen/character/RetailModel.sleela	source
 citizen	SaaSModel.sleela	lib/citizen/character/SaaSModel.sleela	source
 citizen	SubscriptionModel.sleela	lib/citizen/character/SubscriptionModel.sleela	source
 citizen	WholesaleModel.sleela	lib/citizen/character/WholesaleModel.sleela	source
+citizen	CitizenDemo.sleela	lib/citizen/seem/CitizenDemo.sleela	source
+citizen	CitizenStats.sleela	lib/citizen/seem/CitizenStats.sleela	source
 codecs	SLCodecAac.sleela	lib/codecs/SLCodecAac.sleela	source
 codecs	SLCodecAc3.sleela	lib/codecs/SLCodecAc3.sleela	source
 codecs	SLCodecAiff.sleela	lib/codecs/SLCodecAiff.sleela	source

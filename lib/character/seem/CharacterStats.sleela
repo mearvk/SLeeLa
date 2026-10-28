@@ -1,20 +1,65 @@
-#sleela 2.1
-/*
- * CharacterStats.sleela
- * Canonical character attribute and derived-stat model for SLeeLa games,
- * simulations, and interactive fiction.
- *
- * Design notes:
- * - STR, DEX, CON, INT, WIS, and CHA are the six classic primary abilities.
- * - Scores are raw numeric values; the owning game defines its scale and caps.
- * - Derived values are kept separate from primary abilities and should be
- *   recalculated by the game rules when equipment, level, effects, or stats change.
- * - Resistances, skills, and status effects are represented as extensible
- *   named collections when the consuming runtime supports collections.
- */
+#sleela 2.5
+material;
+<< lib/character/seem/CharacterStats.sleela
+   Canonical character attribute and derived-stat model for SLeeLa games,
+   simulations, and interactive fiction.
 
+   Design notes:
+   - STR, DEX, CON, INT, WIS, and CHA are the six classic primary abilities.
+   - Scores are raw numeric values; the owning game defines its scale and caps.
+   - Derived values are kept separate from primary abilities and should be
+     recalculated by the game rules when equipment, level, effects, or stats change.
+   - Resistances, skills, and status effects are represented as extensible
+     named collections when the consuming runtime supports collections.
+
+   This is the monolithic companion to the split lib/character/Character*Stats
+   component classes; it gathers the whole stat surface into one value class for
+   callers that prefer a single object. Moved here under lib/character/seem/ as a
+   settled Source; marked material (section 19 of SLEELA.syntax). >>
 class CharacterStats {
-    // Identity and progression
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "2.5.0";
+  int metaId = 11601;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+    < Identity and progression >
     string characterId;
     string characterName;
     string characterClass;
@@ -26,23 +71,35 @@ class CharacterStats {
     int proficiencyBonus;
     int alignment;
 
-    // Six primary abilities
-    int STR; // Strength: force, lifting, melee power
-    int DEX; // Dexterity: agility, precision, reflexes
-    int CON; // Constitution: endurance and resilience
-    int INT; // Intelligence: reasoning, memory, learned knowledge
-    int WIS; // Wisdom: awareness, intuition, judgment
-    int CHA; // Charisma: presence, persuasion, leadership
+    < Six primary abilities >
+    < STR Strength: force, lifting, melee power >
+    int STR;
+    < DEX Dexterity: agility, precision, reflexes >
+    int DEX;
+    < CON Constitution: endurance and resilience >
+    int CON;
+    < INT Intelligence: reasoning, memory, learned knowledge >
+    int INT;
+    < WIS Wisdom: awareness, intuition, judgment >
+    int WIS;
+    < CHA Charisma: presence, persuasion, leadership >
+    int CHA;
 
-    // Optional expanded abilities
-    int LCK; // Luck
-    int PER; // Perception / sensory awareness
-    int WILL; // Willpower and mental resistance
-    int SPI; // Spirit / spiritual affinity
-    int TEC; // Technical aptitude
-    int CRAFT; // Crafting aptitude
+    < Optional expanded abilities >
+    < LCK Luck >
+    int LCK;
+    < PER Perception / sensory awareness >
+    int PER;
+    < WILL Willpower and mental resistance >
+    int WILL;
+    < SPI Spirit / spiritual affinity >
+    int SPI;
+    < TEC Technical aptitude >
+    int TEC;
+    < CRAFT Crafting aptitude >
+    int CRAFT;
 
-    // Core survival pools
+    < Core survival pools >
     int health;
     int maxHealth;
     int healthRegen;
@@ -57,7 +114,7 @@ class CharacterStats {
     int barrier;
     int maxBarrier;
 
-    // Combat and action economy
+    < Combat and action economy >
     int attackPower;
     int spellPower;
     int rangedPower;
@@ -80,7 +137,7 @@ class CharacterStats {
     int reactionPoints;
     int maxReactionPoints;
 
-    // Saving throws and resistance scores
+    < Saving throws and resistance scores >
     int saveStrength;
     int saveDexterity;
     int saveConstitution;
@@ -105,7 +162,7 @@ class CharacterStats {
     int charmResistance;
     int curseResistance;
 
-    // Exploration and interaction
+    < Exploration and interaction >
     int perception;
     int insight;
     int investigation;
@@ -123,7 +180,7 @@ class CharacterStats {
     int navigation;
     int luckCheck;
 
-    // Skills: systems may use these as ranks, bonuses, or proficiency values
+    < Skills: systems may use these as ranks, bonuses, or proficiency values >
     int athletics;
     int acrobatics;
     int sleightOfHand;
@@ -147,7 +204,7 @@ class CharacterStats {
     int swimming;
     int climbing;
 
-    // Carrying capacity, economy, and equipment
+    < Carrying capacity, economy, and equipment >
     int carryCapacity;
     int carriedWeight;
     int inventoryCapacity;
@@ -159,7 +216,7 @@ class CharacterStats {
     int notoriety;
     int factionStanding;
 
-    // Body and movement
+    < Body and movement >
     int height;
     int weight;
     int reach;
@@ -170,7 +227,7 @@ class CharacterStats {
     int flightSpeed;
     int encumbrance;
 
-    // Needs and long-duration condition (game-defined scales)
+    < Needs and long-duration condition (game-defined scales) >
     int hunger;
     int thirst;
     int fatigue;
@@ -184,7 +241,7 @@ class CharacterStats {
     int infection;
     int intoxication;
 
-    // Social, knowledge, and reputation
+    < Social, knowledge, and reputation >
     int socialStanding;
     int fame;
     int infamy;
@@ -194,7 +251,7 @@ class CharacterStats {
     int commandLimit;
     int relationshipScore;
 
-    // Lifetime and current state
+    < Lifetime and current state >
     int age;
     int lifespan;
     int alive;
@@ -208,7 +265,7 @@ class CharacterStats {
     int boss;
     int elite;
 
-    // Versioned rules metadata
+    < Versioned rules metadata >
     int schemaVersion;
     int rulesetId;
 
