@@ -220,6 +220,7 @@ private:
     // can resolve `x.field` to the right struct layout. Names not present are
     // untyped (dynamic); member access then defers field resolution to runtime.
     std::map<std::string,std::string> varType_;
+    std::string currentRetType_;
     int fieldSlot(const std::string& name) const { auto it=fieldGlobal_.find(currentClass_+"::"+name); if(it!=fieldGlobal_.end())return it->second;it=fieldGlobal_.find(name);return it==fieldGlobal_.end()?-1:it->second; }
     int instanceFieldOffset(const std::string& name) const { auto it=structLayout_.find(currentClass_);if(it==structLayout_.end())return -1;auto f=it->second.fieldOffset.find(name);return f==it->second.fieldOffset.end()?-1:f->second; }
     int runtimeTypeOperand(const std::string& name) const {
@@ -232,6 +233,25 @@ private:
         if(name=="String" || name=="string") return -(SL_STR+1);
         if(name.size()>=2 && name.compare(name.size()-2,2,"[]")==0) return -(SL_ARRAY+1);
         throw std::runtime_error("Semantic error: no runtime type descriptor for '"+name+"'");
+    }
+    // Emit a widening coercion for the value on top of the stack when it is
+    // being stored into / passed as a declared `double` or `int128` target, so
+    // `double d = 3;` holds 3.0 (Java int->double widening) and `int128 c = 5;`
+    // holds a real 128-bit value. The runtime OP_CHECKCAST coerces ints and
+    // passes non-ints through, so this is safe to emit unconditionally at a
+    // double/int128-typed store. Other target types need no coercion (int, long,
+    // int64 share the 64-bit representation; class/array/String stores are
+    // exact).
+    void coerceToDeclared(const std::string& declType){
+        if(declType=="double"||declType=="int128") emit(OP_CHECKCAST,runtimeTypeOperand(declType));
+    }
+    // Emit call arguments, widening each integer argument to a declared double
+    // or int128 parameter (so half(9) passes 9.0, not 9).
+    void emitArgsCoerced(const std::vector<ExprP>& args, const Method* target){
+        for(size_t i=0;i<args.size();++i){
+            emitExpr(args[i].get());
+            if(target && i<target->params.size()) coerceToDeclared(target->params[i].type);
+        }
     }
     void emitThis(){if(!ctx_||ctx_->slotOf("this")<0)throw std::runtime_error("Semantic error: instance member requires an instance context");emit(OP_LOADL,ctx_->slotOf("this"));}
     int countLocals(const Method& m){int n=(int)m.params.size();countInBlock(*m.body,n);return n;}
@@ -252,8 +272,9 @@ private:
         const Method& m=*mi.method; const std::string key=methodKeyByPtr_.at(&m); currentClass_=methodOwner_.at(key);
         MethodCtx ctx; if(!m.isStatic)ctx.declare("this"); for(const auto& p:m.params)ctx.declare(p.name);
         std::map<std::string,std::string> savedTypes=varType_;
-        for(const auto& p:m.params) if(structLayout_.count(p.type)) varType_[p.name]=p.type;
+        for(const auto& p:m.params) varType_[p.name]=p.type;
         if(!m.isStatic)varType_["this"]=currentClass_;
+        const std::string savedRet=currentRetType_; currentRetType_=m.retType;
         slvm_begin_func(vm_,key.c_str(),(int)m.params.size()+(m.isStatic?0:1),mi.nlocals); ctx_=&ctx;
         // Initialise static fields before main runs. These compile to VM
         // globals; their initialisers must execute regardless of which class
@@ -273,7 +294,7 @@ private:
             currentClass_=savedClass;
         }
         emitBlock(*m.body);ctx_=nullptr;emit(OP_CONST,addNullConst());emit(OP_RET);slvm_end_func(vm_);
-        varType_=savedTypes;
+        varType_=savedTypes; currentRetType_=savedRet;
     }
     int addNullConst(){if(nullConst_<0){SLExchangeArg a{};a.value=slval_null();slcore_exchange(vm_,SLX_ADD_CONST,&a);nullConst_=a.out;}return nullConst_;}
     int nullConst_=-1;
@@ -298,8 +319,11 @@ private:
     void emitBlock(const Block& b){for(const auto& s:b.stmts)emitStmt(s.get());}
     void emitVarDecl(const VarDecl& d){
         int slot=ctx_->declare(d.name);
-        if(structLayout_.count(d.type)) varType_[d.name]=d.type;
-        else if(d.type=="let" && d.init){
+        // Record the declared type so later assignments can apply the same
+        // widening coercion (double / int128). Previously only struct/class
+        // types were tracked; primitives are needed for double/int128 locals.
+        if(d.type!="let") varType_[d.name]=d.type;
+        if(d.type=="let" && d.init){
             if(auto created=dynamic_cast<const NewExpr*>(d.init.get())){
                 if(structLayout_.count(created->typeName)) varType_[d.name]=created->typeName;
             } else if(auto existing=dynamic_cast<const VarExpr*>(d.init.get())){
@@ -309,14 +333,18 @@ private:
         }
         if(d.init){
             emitExpr(d.init.get());
-            // Widen an integer initializer into the 128-bit representation when
-            // the variable is declared int128, so `int128 c = 5;` holds a real
-            // 128-bit value (and subsequent arithmetic promotes correctly).
-            if(d.type=="int128") emit(OP_CHECKCAST,runtimeTypeOperand("int128"));
+            coerceToDeclared(d.type);
         } else emit(OP_CONST,addNullConst());
         emit(OP_STOREL,slot);
     }
-    void emitAssign(const Assign& a){int slot=ctx_->slotOf(a.name);if(slot>=0){emitExpr(a.value.get());emit(OP_STOREL,slot);return;}int off=instanceFieldOffset(a.name);if(off>=0){emitThis();emitExpr(a.value.get());emit(OP_SETFIELD,off);emit(OP_POP);return;}int g=fieldSlot(a.name);if(g>=0){emitExpr(a.value.get());emit(OP_STOREG,g);return;}throw std::runtime_error("Semantic error: assignment to undeclared variable '"+a.name+"'");}
+    // Declared type of an instance field of the current class ("" if unknown).
+    std::string instanceFieldType(const std::string& name) const {
+        auto it=structLayout_.find(currentClass_); if(it==structLayout_.end()) return "";
+        auto f=it->second.fieldOffset.find(name); if(f==it->second.fieldOffset.end()) return "";
+        if(f->second>=0 && f->second<(int)it->second.fieldType.size()) return it->second.fieldType[(size_t)f->second];
+        return "";
+    }
+    void emitAssign(const Assign& a){int slot=ctx_->slotOf(a.name);if(slot>=0){emitExpr(a.value.get());{auto t=varType_.find(a.name);if(t!=varType_.end())coerceToDeclared(t->second);}emit(OP_STOREL,slot);return;}int off=instanceFieldOffset(a.name);if(off>=0){emitThis();emitExpr(a.value.get());coerceToDeclared(instanceFieldType(a.name));emit(OP_SETFIELD,off);emit(OP_POP);return;}int g=fieldSlot(a.name);if(g>=0){emitExpr(a.value.get());emit(OP_STOREG,g);return;}throw std::runtime_error("Semantic error: assignment to undeclared variable '"+a.name+"'");}
     // GC hint (syntax 1.9): `x = gc N;` / `x = mem N;`. The target must name an
     // in-scope value the developer is finished using (a local, instance field,
     // or static field), which keeps the hint honest: it marks a real binding as
@@ -338,8 +366,8 @@ private:
         if(r.word=="mem"){emit(OP_RAN_MEM);return;}
         throw std::runtime_error("Semantic error: unknown system reference 'ran::"+r.word+"'");
     }
-    void emitReturn(const ReturnStmt& r){if(r.value)emitExpr(r.value.get());else emit(OP_CONST,addNullConst());emit(OP_RET);}
-    void emitFieldAssign(const FieldAssign& fa){int off=-1;memberLayout(fa.base.get(),fa.field,off);emitExpr(fa.base.get());emitExpr(fa.value.get());emit(OP_SETFIELD,off);emit(OP_POP);}
+    void emitReturn(const ReturnStmt& r){if(r.value){emitExpr(r.value.get());coerceToDeclared(currentRetType_);}else emit(OP_CONST,addNullConst());emit(OP_RET);}
+    void emitFieldAssign(const FieldAssign& fa){int off=-1;const StructLayout& ml=memberLayout(fa.base.get(),fa.field,off);std::string ft=(off>=0&&off<(int)ml.fieldType.size())?ml.fieldType[(size_t)off]:"";emitExpr(fa.base.get());emitExpr(fa.value.get());coerceToDeclared(ft);emit(OP_SETFIELD,off);emit(OP_POP);}
     void emitIf(const IfStmt& s){emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.thenS.get());if(s.elseS){int jend=emit(OP_JMP,0);patch(jf,here());emitStmt(s.elseS.get());patch(jend,here());}else patch(jf,here());}
     // Loop context for break/continue: each enclosing loop records the jump
     // sites that must be patched to the loop exit (break) and to the loop's
@@ -428,6 +456,7 @@ private:
             if(slot>=0){
                 if(!bin.empty()){emit(OP_LOADL,slot);emitExpr(a.value.get());emitBinOp(bin);}
                 else emitExpr(a.value.get());
+                {auto t=varType_.find(v->name);if(t!=varType_.end())coerceToDeclared(t->second);}
                 emit(OP_STOREL,slot);emit(OP_LOADL,slot);return;
             }
             int off=instanceFieldOffset(v->name);
@@ -435,6 +464,7 @@ private:
                 emitThis();                         // [this]
                 if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitExpr(a.value.get());emitBinOp(bin);}
                 else emitExpr(a.value.get());
+                coerceToDeclared(instanceFieldType(v->name));
                 emit(OP_SETFIELD,off);              // leaves assigned value
                 return;
             }
@@ -449,11 +479,13 @@ private:
             throw std::runtime_error("Semantic error: assignment to undeclared variable '"+v->name+"'");
         }
         if(auto m=dynamic_cast<const MemberAccess*>(a.target.get())){
-            int off=-1;memberLayout(m->base.get(),m->field,off);
+            int off=-1;const StructLayout& ml=memberLayout(m->base.get(),m->field,off);
+            std::string ft=(off>=0&&off<(int)ml.fieldType.size())?ml.fieldType[(size_t)off]:"";
             // SETFIELD expects [struct, newval] and leaves newval on the stack.
             emitExpr(m->base.get());                 // [struct]
             if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitExpr(a.value.get());emitBinOp(bin);} // [struct, newval]
             else emitExpr(a.value.get());            // [struct, newval]
+            coerceToDeclared(ft);
             emit(OP_SETFIELD,off);                   // [newval]
             return;
         }
@@ -678,7 +710,7 @@ private:
         if(method->isStatic)throw std::runtime_error("Semantic error: static method '"+receiverType+"::"+m+"' must be called through its class");
         if((int)mc.args.size()!=(int)method->params.size())throw std::runtime_error("Semantic error: method '"+receiverType+"::"+m+"' expects "+std::to_string(method->params.size())+" argument(s), got "+std::to_string(mc.args.size()));
         if(method->isProtected&&receiverType!=currentClass_)throw std::runtime_error("protected method access denied");
-        emitExpr(mc.receiver.get());for(const auto&a:mc.args)emitExpr(a.get());emit(OP_CALL,target->second);
+        emitExpr(mc.receiver.get());emitArgsCoerced(mc.args,method);emit(OP_CALL,target->second);
     }
     void emitVar(const VarExpr& v){
         if(v.name=="next"){emit(OP_CONST,slvm_add_const_int(vm_,kNextSystemDegree));return;}
@@ -1049,7 +1081,7 @@ private:
             if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+currentClass_+"::"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
             if(target->isProtected&&methodOwner_[currentClass_+"::"+c.callee]!=currentClass_)throw std::runtime_error("protected method access denied");
             if(!target->isStatic)emitThis();
-            for(const auto&a:c.args)emitExpr(a.get());emit(OP_CALL,it->second);return;
+            emitArgsCoerced(c.args,target);emit(OP_CALL,it->second);return;
         }
         // Native subject helpers are synthesized as qualified class methods.
         // Resolve all __Native* helper names consistently with semantic analysis.
@@ -1066,7 +1098,7 @@ private:
         if(it==funcIndex_.end())throw std::runtime_error("Semantic error: call to unknown method '"+c.callee+"'");
         const Method* target=methods_[it->second].method;
         if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
-        for(const auto&a:c.args)emitExpr(a.get());emit(OP_CALL,it->second);
+        emitArgsCoerced(c.args,target);emit(OP_CALL,it->second);
     }
 };
 

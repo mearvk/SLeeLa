@@ -1751,6 +1751,18 @@ static SLResult run_thread(SLThread* t) {
                 if(targetTag==SL_INT && value.type==SL_INT128) {
                     PUSH(slval_int((int64_t)value.as.i128)); break;
                 }
+                /* Java-style widening to double: an integer stored into, cast
+                 * to, or passed as a double becomes a double (so `double d = 3;`
+                 * then `d / 2` is 1.5, not integer 1). An already-double value
+                 * passes through; any other value (null etc.) is passed through
+                 * unchanged so a compiler-inserted double coercion can be applied
+                 * unconditionally at a double-typed store without regressing
+                 * non-numeric cases. */
+                if(targetTag==SL_DOUBLE) {
+                    if(value.type==SL_INT||value.type==SL_INT128) PUSH(slval_double(as_num(value)));
+                    else PUSH(value);
+                    break;
+                }
                 if((int)value.type!=targetTag)
                     TERR("checked cast failed: runtime value tag does not match target");
             }

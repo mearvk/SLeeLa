@@ -42,6 +42,7 @@ expect_ok "$HERE/syntax_missing.sleela" "#sleela absent (defaults to the current
 expect_ok "$HERE/material_2_5.sleela"   "#sleela 2.5 with the 'material' document marker (declarative)"
 expect_ok "$HERE/memory_2_5.sleela"     "#sleela 2.5 with the 'memory' document marker (declarative)"
 expect_ok "$HERE/wide_integers.sleela"  "#sleela 2.5 with long / int64 / int128 primitives (64-bit)"
+expect_ok "$HERE/int_double_widening.sleela" "#sleela 2.5 integer->double widening at decl/assign/field/arg/return"
 
 echo "rejected:"
 expect_reject "$HERE/syntax_0_9.sleela" "#sleela 0.9 (too old; floor is 1.0)"
