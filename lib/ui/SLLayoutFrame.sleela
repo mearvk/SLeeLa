@@ -72,6 +72,14 @@ class SLLayoutFrame {
   static final int LAYOUT_STACK = 0;
   static final int LAYOUT_GRID  = 1;
   static final int MAX_COMPONENTS = 128;
+  < A Frame never opens smaller than this, no matter how few components it has: >
+  < the absolute assumed floor for a usable starting window. >
+  static final int MIN_FRAME_W = 160;
+  static final int MIN_FRAME_H = 120;
+  < presentation mode: NORMAL uses the assumed/explicit size; FULLSCREEN fills >
+  < the supplied screen rectangle. >
+  static final int MODE_NORMAL = 0;
+  static final int MODE_FULLSCREEN = 1;
 
   String frameTitle;
   int kind;
@@ -87,6 +95,8 @@ class SLLayoutFrame {
   int count;
   < 1 once place() has arranged the layout >
   int placed;
+  < presentation mode: MODE_NORMAL or MODE_FULLSCREEN, set by how it was placed >
+  int mode;
 
   void create() {
     frameTitle = "";
@@ -98,6 +108,7 @@ class SLLayoutFrame {
     qualities = new SLComponentQuality[MAX_COMPONENTS];
     count = 0;
     placed = 0;
+    mode = MODE_NORMAL;
   }
 
   void title(String t) { if (t != null) { frameTitle = t; } }
@@ -171,8 +182,53 @@ class SLLayoutFrame {
     fw = (w < 0) ? 0 : w; fh = (h < 0) ? 0 : h;
     if (kind == LAYOUT_GRID) { grid.arrange(fx, fy, fw, fh); }
     else { stack.arrange(fx, fy, fw, fh); }
+    mode = MODE_NORMAL;
     placed = 1;
   }
+
+  < ---- assumed size: how large this Frame must START, from its components -- >
+  << The assumed minimum WIDTH for this Frame: the natural width of its
+     governing layout (derived from the components' sizes, gaps, and padding),
+     never less than MIN_FRAME_W. This is the "it has so many components so wide
+     that the starting size must be at least so large" rule, made explicit. >>
+  int assumedWidth() {
+    int nat = (kind == LAYOUT_GRID) ? grid.naturalWidth() : stack.naturalWidth();
+    return (nat < MIN_FRAME_W) ? MIN_FRAME_W : nat;
+  }
+  << The assumed minimum HEIGHT for this Frame: the natural height of its
+     governing layout, never less than MIN_FRAME_H. >>
+  int assumedHeight() {
+    int nat = (kind == LAYOUT_GRID) ? grid.naturalHeight() : stack.naturalHeight();
+    return (nat < MIN_FRAME_H) ? MIN_FRAME_H : nat;
+  }
+
+  << Place the Frame at `(x, y)` using its ASSUMED size — the starting size
+     computed from the components it holds. This is the initialization sizing:
+     call it instead of place() when you want the Frame to open at least as
+     large as its contents require, without hand-computing a width/height. >>
+  void placeAssumed(int x, int y) {
+    place(x, y, assumedWidth(), assumedHeight());
+  }
+
+  << Place the Frame FULL SCREEN: it fills the supplied screen rectangle
+     (`screenW` x `screenH` at `x, y`) rather than its assumed size. The screen
+     extent is supplied by the caller/host because this pure-SLeeLa Frame has no
+     native display handle to query; a native host passes its real screen size.
+     The Frame is never placed smaller than its assumed size, so a tiny screen
+     still shows every component. >>
+  void placeFullscreen(int x, int y, int screenW, int screenH) {
+    int w = (screenW < assumedWidth()) ? assumedWidth() : screenW;
+    int h = (screenH < assumedHeight()) ? assumedHeight() : screenH;
+    fx = x; fy = y; fw = w; fh = h;
+    if (kind == LAYOUT_GRID) { grid.arrange(fx, fy, fw, fh); }
+    else { stack.arrange(fx, fy, fw, fh); }
+    mode = MODE_FULLSCREEN;
+    placed = 1;
+  }
+  < True when this Frame was placed in full-screen mode. >
+  boolean isFullscreen() { return mode == MODE_FULLSCREEN; }
+  < The presentation mode: MODE_NORMAL or MODE_FULLSCREEN. >
+  int getMode() { return mode; }
 
   < ---- read a component's rectangle, in reference to the Frame ------------ >
   SLLayoutBox boxOf(String name) {
@@ -219,6 +275,7 @@ class SLLayoutFrame {
   boolean honored() {
     boolean kindOk = kind == LAYOUT_STACK || kind == LAYOUT_GRID;
     boolean lay = (kind == LAYOUT_GRID) ? grid.honored() : stack.honored();
-    return kindOk && lay && count >= 0 && count <= MAX_COMPONENTS && fw >= 0 && fh >= 0;
+    boolean modeOk = mode == MODE_NORMAL || mode == MODE_FULLSCREEN;
+    return kindOk && lay && modeOk && count >= 0 && count <= MAX_COMPONENTS && fw >= 0 && fh >= 0;
   }
 }

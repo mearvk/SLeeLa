@@ -56,6 +56,26 @@ class LayoutDemo {
     print("  body:   " + frame.boxOf("body").describe());
     print("  footer: " + frame.boxOf("footer").describe());
 
+    << Assumed size: the Frame reports the minimum starting size its own
+       components require (header 40 + body flex-floor + footer 32 + gaps + pad),
+       so a caller never has to hand-pick a width/height that is too small. >>
+    print("assumed size = " + frame.assumedWidth() + "x" + frame.assumedHeight());
+    SLLayoutFrame auto = new SLLayoutFrame(); auto.create();
+    auto.title("Auto");
+    auto.useColumn(8, 12);
+    auto.add("toolbar", 40);
+    auto.add("content", 0);
+    auto.add("status", 24);
+    < open at the assumed size, not a hand-picked guess >
+    auto.placeAssumed(0, 0);
+    print("auto placed assumed: " + auto.getWidth() + "x" + auto.getHeight()
+        + " fullscreen=" + auto.isFullscreen());
+
+    << Full-screen: the same Frame filling a supplied screen rectangle. >>
+    auto.placeFullscreen(0, 0, 1920, 1080);
+    print("auto fullscreen: " + auto.getWidth() + "x" + auto.getHeight()
+        + " fullscreen=" + auto.isFullscreen());
+
     print("done");
   }
 }

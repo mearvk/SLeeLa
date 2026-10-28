@@ -130,5 +130,55 @@ class SLWindow {
   int maxWidth() { return (window >= 0) ? uiWindowMaxWidth(window) : -1; }
   int maxHeight() { return (window >= 0) ? uiWindowMaxHeight(window) : -1; }
 
+  < ---- assumed starting size + full-screen intent ------------------------- >
+  < Absolute assumed floor for a usable native window, mirroring the pure-SLeeLa >
+  < lib/ui/SLLayoutFrame floor so both UI systems agree on "at least so large". >
+  static final int MIN_WINDOW_W = 160;
+  static final int MIN_WINDOW_H = 120;
+  < A very large extent treated as "fill the screen" when a real screen size is >
+  < not known. A native host that knows its monitor passes the true pixels to >
+  < configureFullscreen() instead of relying on this sentinel. >
+  static final int FULLSCREEN = 100000;
+
+  << Adopt an ASSUMED minimum size for an already-open window: clamp the two
+     supplied dimensions up to the window floor and pin them as the window's
+     minimum size, so the window can never be shrunk below the size its content
+     requires. Returns the SLUI status from the native size-limit call. Pass the
+     assumedWidth()/assumedHeight() computed by a lib/ui SLLayoutFrame. >>
+  int assumeSize(int assumedW, int assumedH) {
+    int w = (assumedW < MIN_WINDOW_W) ? MIN_WINDOW_W : assumedW;
+    int h = (assumedH < MIN_WINDOW_H) ? MIN_WINDOW_H : assumedH;
+    return setMinSize(w, h);
+  }
+
+  << Open a window at its ASSUMED starting size on `app`: the window is created
+     at least `assumedW` x `assumedH` (clamped up to the floor), and that size is
+     also pinned as the minimum so content is never clipped. This is the native
+     counterpart to SLLayoutFrame.placeAssumed(): size driven by content, made
+     explicit at construction. >>
+  void configureAssumed(int app, String windowTitle, int assumedW, int assumedH,
+                        int themeHandle) {
+    int w = (assumedW < MIN_WINDOW_W) ? MIN_WINDOW_W : assumedW;
+    int h = (assumedH < MIN_WINDOW_H) ? MIN_WINDOW_H : assumedH;
+    configureOn(app, windowTitle, w, h, themeHandle);
+    if (window >= 0) { setMinSize(w, h); }
+  }
+
+  << Open a window intended to be FULL SCREEN at `screenW` x `screenH`. Pass the
+     host's real monitor pixels; pass FULLSCREEN for both when the size is not
+     known and you want the largest window the toolkit will grant.
+
+     Honest limitation: the SleelaUI VM bridge is pack/size based and exposes no
+     true window-manager full-screen built-in (there is no uiWindowFullscreen),
+     so this opens a window sized to the screen rectangle rather than taking an
+     exclusive full-screen mode. A genuine full-screen state would require a new
+     ui* bridge built-in; that is a documented follow-up, not done here. >>
+  void configureFullscreen(int app, String windowTitle, int screenW, int screenH,
+                           int themeHandle) {
+    int w = (screenW < MIN_WINDOW_W) ? MIN_WINDOW_W : screenW;
+    int h = (screenH < MIN_WINDOW_H) ? MIN_WINDOW_H : screenH;
+    configureOn(app, windowTitle, w, h, themeHandle);
+  }
+
   int handle() { return window; }
 }
