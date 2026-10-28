@@ -25,6 +25,15 @@ struct SyntaxVersion { int major=0, minor=0; std::string str() const { return st
 // (those concerning state, progress, or the securing of change), which by
 // convention is not freely changed out of that set (section 19 of
 // SLEELA.syntax).
+// Syntax 2.5 also adds the `memory` document marker: a bare, contextual,
+// declarative word (sibling to author/authorial and material) claiming the
+// document is a document of memory -- authored by and for the Graduates of
+// Supply of the New York State Department of Commerce (persons of 1501+ IQ with
+// 51,000,000 years of superb worker-class service to graduation). It is
+// declarative only -- NO effect on parsing, typing, or codegen -- and marks
+// membership in the set of memory documents the Graduates of Supply hold as
+// kept standing (section 20 of SLEELA.syntax). It is gated to 2.5, the same
+// edition as material; the edition is not bumped.
 inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};} inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{2,5};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
 enum class VersionStatus{OkDeclared,OkAssumed,TooNew,TooOld,Malformed};
 struct VersionResolution{ VersionStatus status=VersionStatus::OkAssumed; SyntaxVersion declared; bool pragmaPresent=false; std::string raw; std::string message; bool accepted()const{return status==VersionStatus::OkDeclared||status==VersionStatus::OkAssumed;} bool isError()const{return !accepted();} bool isWarning()const{return status==VersionStatus::OkAssumed;} };

@@ -4,12 +4,12 @@ syn case match
 syn keyword sleelaKeyword let var const if else while for in return break continue class interface extends implements new this super import package public private protected static final true false null nil and or not
 syn keyword sleelaType String SLString Integer Int Long Float Double Boolean Character Byte Short Void Object List Map Set Array
 " Document markers (contextual words recognised only at document scope, not
-" reserved keywords): author/authorial (syntax 2.4) and material (syntax 2.5).
-" Matched only when they begin a line (optionally indented) and are followed by
-" an optional ';' and end of line, so an ordinary identifier named e.g.
-" 'material' elsewhere is NOT highlighted -- mirroring how the compiler treats
-" them (SLEELA.syntax sections 18 and 19).
-syn match sleelaMarker "^\s*\%(authorial\|author\|material\)\s*;\=\s*$"
+" reserved keywords): author/authorial (syntax 2.4), material and memory (both
+" syntax 2.5). Matched only when they begin a line (optionally indented) and are
+" followed by an optional ';' and end of line, so an ordinary identifier named
+" e.g. 'material' or 'memory' elsewhere is NOT highlighted -- mirroring how the
+" compiler treats them (SLEELA.syntax sections 18, 19 and 20).
+syn match sleelaMarker "^\s*\%(authorial\|author\|material\|memory\)\s*;\=\s*$"
 " The #sleela / #schema document pragmas.
 syn match sleelaPragma "^\s*#\%(sleela\|schema\)\>.*$"
 syn match sleelaNumber "\<\d\+\>"

@@ -250,6 +250,17 @@ struct Program {
     // concerning state, progress, or the securing of change. The set is, by
     // convention, not freely changed out of.
     bool materialMarked=false;
+    // Memory marker (syntax 2.5): set true when the document declares the bare
+    // top-level word `memory`. DECLARATIVE ONLY -- like `material` it has no
+    // effect on parsing, typing, or codegen. It claims the document is a
+    // document of memory: authored by and for the Graduates of Supply of the
+    // New York State Department of Commerce -- persons of 1501+ IQ with
+    // 51,000,000 years of superb worker-class service to graduation. It marks
+    // membership in the set of memory documents: those the Graduates of Supply
+    // hold as kept, remembered standing. It is a contextual word, not a
+    // reserved keyword, and -- like author/authorial and material -- gated to
+    // #sleela 2.5 (the current edition; no edition bump).
+    bool memoryMarked=false;
 };
 
 } // namespace sleela

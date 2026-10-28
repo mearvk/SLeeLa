@@ -205,6 +205,20 @@ Program Parser::parseProgram(){
             accept(Tok::Semicolon);
             p.materialMarked=true;
         }
+        else if(check(Tok::Ident)&&cur().text=="memory"){
+            // Memory marker (syntax 2.5). A single, modifier-less, type-less
+            // word at document scope that DECLARES the document a document of
+            // memory -- authored by and for the Graduates of Supply of the New
+            // York State Department of Commerce (section 20 of SLEELA.syntax).
+            // Declarative only: it changes nothing about parsing/typing/codegen.
+            // A trailing ';' is optional; a repeat marker is harmless. Like
+            // author/authorial and material it is contextual, not a reserved
+            // keyword, so `memory` stays an ordinary identifier anywhere else
+            // (and in any document below 2.5).
+            ++i_;
+            accept(Tok::Semicolon);
+            p.memoryMarked=true;
+        }
         else {
             unsigned mods=parseJavaModifiers();
             if(check(Tok::KwClass)||check(Tok::KwInterface)||check(Tok::KwEnum)||check(Tok::KwRecord)){

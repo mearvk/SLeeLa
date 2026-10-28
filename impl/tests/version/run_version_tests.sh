@@ -40,12 +40,14 @@ expect_ok "$HERE/syntax_1_3.sleela"     "#sleela 1.3 (declared, in range 1.0 .. 
 expect_ok "$HERE/syntax_1_4.sleela"     "#sleela 1.4 (declared, in range 1.0 .. 2.5)"
 expect_ok "$HERE/syntax_missing.sleela" "#sleela absent (defaults to the current version with a warning)"
 expect_ok "$HERE/material_2_5.sleela"   "#sleela 2.5 with the 'material' document marker (declarative)"
+expect_ok "$HERE/memory_2_5.sleela"     "#sleela 2.5 with the 'memory' document marker (declarative)"
 
 echo "rejected:"
 expect_reject "$HERE/syntax_0_9.sleela" "#sleela 0.9 (too old; floor is 1.0)"
 expect_reject "$HERE/too_new.sleela"     "#sleela 3.0 (major too new)"
 expect_reject "$HERE/minor_ahead.sleela" "#sleela 2.6 (minor too new; ceiling is 2.5)"
 expect_reject "$HERE/material_too_early.sleela" "'material' marker under #sleela 2.4 (feature too new for the declared version)"
+expect_reject "$HERE/memory_too_early.sleela" "'memory' marker under #sleela 2.4 (feature too new for the declared version)"
 expect_reject "$HERE/malformed.sleela"   "#sleela malformed"
 
 echo "diagnostics (stderr shown):"

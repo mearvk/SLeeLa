@@ -112,6 +112,11 @@ class Analyzer{
   // older-declared document. There is deliberately no behavioral effect.
   if(p.materialMarked&&syntax<SyntaxVersion{2,5})
    err("the material document marker requires #sleela 2.5");
+  // Memory marker (syntax 2.5): declarative only. Below 2.5 the word never
+  // parses as a marker, so this fires only on a genuine 2.5-feature use in an
+  // older-declared document. There is deliberately no behavioral effect.
+  if(p.memoryMarked&&syntax<SyntaxVersion{2,5})
+   err("the memory document marker requires #sleela 2.5");
   for(const auto&c:p.classes){
    std::map<std::string,Type> instanceFields;
    for(const auto&f:c.fields){Type t=tn(f.type);if(t.kind==Kind::Error)err("unknown type '"+f.type+"' for field '"+f.name+"'");if(t.kind==Kind::Void)err("field '"+f.name+"' cannot be void");

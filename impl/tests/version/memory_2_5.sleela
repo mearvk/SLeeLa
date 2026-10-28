@@ -1,0 +1,3 @@
+#sleela 2.5
+memory;
+class MemoryMarker { void main() { print("memory document"); } }
