@@ -1,7 +1,7 @@
 << lib/vm/SLVMComponentFetcher.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines SLVMComponentFetcher — the VM series' hook into the
-     resilient support-downloader module (lib/os/SLSupportDownloader). The VM
+     resilient support-downloader module (lib/operating-system/SLSupportDownloader). The VM
      sometimes needs to obtain an OS/runtime component at run time (a kernel
      source, a package index, a backend runtime); if the primary URL 404s, the
      VM must fall through to prioritized support/mirror URLs rather than fail.

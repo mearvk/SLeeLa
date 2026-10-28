@@ -1,0 +1,126 @@
+<< lib/operating-system/ssd/SLSSDCatalog.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLSSDCatalog — a by-name factory for solid-state drives
+     from the major SSD manufacturers (Samsung, Western Digital, SK Hynix,
+     Crucial/Micron, Kingston, Seagate, Intel/Solidigm, Corsair, Sabrent). It
+     returns representative, correctly-specified SLSSD instances for well-known
+     families so a machine description can request storage by maker and model
+     name rather than by raw specification.
+   
+   Representative model names are used for identity; exact capacities and speeds
+   vary by SKU and can be refined on the returned SLSSD.
+   
+   Family: operating-system. Produces SLSSD. >>
+#sleela 2.5
+material;
+class SLSSDCatalog {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10938;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  void configure() {}
+
+  < A flagship NVMe PCIe 4.0 drive from a named manufacturer. >
+  SLSSD nvme4(String manufacturer, int capacityGb) {
+    SLSSD d = new SLSSD();
+    d.configure(manufacturer, nvmePart(manufacturer), d.IF_NVME_PCIE4, capacityGb);
+    return d;
+  }
+  < A flagship NVMe PCIe 5.0 drive from a named manufacturer. >
+  SLSSD nvme5(String manufacturer, int capacityGb) {
+    SLSSD d = new SLSSD();
+    d.configure(manufacturer, nvme5Part(manufacturer), d.IF_NVME_PCIE5, capacityGb);
+    return d;
+  }
+  < A SATA III 2.5" drive from a named manufacturer. >
+  SLSSD sata(String manufacturer, int capacityGb) {
+    SLSSD d = new SLSSD();
+    d.configure(manufacturer, sataPart(manufacturer), d.IF_SATA3, capacityGb);
+    return d;
+  }
+
+  < Build an SSD by interface name from any manufacturer. >
+  SLSSD drive(String manufacturer, String ifName, int capacityGb) {
+    SLSSD d = new SLSSD();
+    d.configureByName(manufacturer, partFor(manufacturer, ifName), ifName, capacityGb);
+    return d;
+  }
+
+  boolean known(String manufacturer) {
+    return manufacturer == "Samsung" || manufacturer == "Western Digital"
+        || manufacturer == "SK Hynix" || manufacturer == "Crucial"
+        || manufacturer == "Kingston" || manufacturer == "Seagate"
+        || manufacturer == "Solidigm" || manufacturer == "Intel"
+        || manufacturer == "Corsair"  || manufacturer == "Sabrent";
+  }
+
+  < ---- Representative model names ---------------------------------------- >
+  String nvme5Part(String mfr) {
+    if (mfr == "Samsung")         { return "990 PRO"; }
+    if (mfr == "Crucial")         { return "T700"; }
+    if (mfr == "Sabrent")         { return "Rocket 5"; }
+    if (mfr == "Corsair")         { return "MP700"; }
+    if (mfr == "Western Digital") { return "WD_BLACK SN8100"; }
+    return "NVMe-PCIe5";
+  }
+  String nvmePart(String mfr) {
+    if (mfr == "Samsung")         { return "980 PRO"; }
+    if (mfr == "Western Digital") { return "WD_BLACK SN850X"; }
+    if (mfr == "SK Hynix")        { return "Platinum P41"; }
+    if (mfr == "Crucial")         { return "P5 Plus"; }
+    if (mfr == "Kingston")        { return "KC3000"; }
+    if (mfr == "Sabrent")         { return "Rocket 4 Plus"; }
+    if (mfr == "Solidigm")        { return "P44 Pro"; }
+    return "NVMe-PCIe4";
+  }
+  String sataPart(String mfr) {
+    if (mfr == "Samsung")         { return "870 EVO"; }
+    if (mfr == "Crucial")         { return "MX500"; }
+    if (mfr == "Western Digital") { return "WD Blue SA510"; }
+    if (mfr == "Kingston")        { return "A400"; }
+    if (mfr == "Seagate")         { return "BarraCuda SSD"; }
+    return "SATA-SSD";
+  }
+  String partFor(String mfr, String ifName) {
+    if (ifName == "PCIe5") { return nvme5Part(mfr); }
+    if (ifName == "SATA")  { return sataPart(mfr); }
+    return nvmePart(mfr);
+  }
+}

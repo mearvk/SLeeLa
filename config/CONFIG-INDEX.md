@@ -31,7 +31,7 @@ Component-private settings may stay with their component for packaging or isolat
 
 ## Generated OS configuration (OS Creator™)
 
-OS Creator™ (lib/os/os-creator/) emits configuration into the generated OS development tree rooted at /os-development, outside this repository: /os-development/config/os.conf; firmware/uefi/uefi.conf and firmware/bios/bios.cfg; boot/loader/loader.conf and boot/kernel-loader/kernel-loader.conf; kernel/driver-loader/drivers.conf; userspace/os-loader/services.conf; desktop/gui-loader/session.conf (desktop editions). These outputs are documented in lib/os/os-creator/ARCHITECTURE.md and do not participate in repository configuration resolution.
+OS Creator™ (lib/operating-system/os-creator/) emits configuration into the generated OS development tree rooted at /os-development, outside this repository: /os-development/config/os.conf; firmware/uefi/uefi.conf and firmware/bios/bios.cfg; boot/loader/loader.conf and boot/kernel-loader/kernel-loader.conf; kernel/driver-loader/drivers.conf; userspace/os-loader/services.conf; desktop/gui-loader/session.conf (desktop editions). These outputs are documented in lib/operating-system/os-creator/ARCHITECTURE.md and do not participate in repository configuration resolution.
 
 ## Rules
 

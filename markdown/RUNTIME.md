@@ -40,7 +40,7 @@ metadata, and process execution — is exposed to SLeeLa source through the `os*
 built-ins (`osRun`/`osSpawn`/`osGetEnv`/`osExists`/...), which lower to the
 `OP_OS_*` opcodes and are serviced by `impl/core/sleela_os.c` on Windows, Linux,
 and macOS. See [`SYSTEM_CALL_SURFACE.md`](SYSTEM_CALL_SURFACE.md),
-[`/lib/os/OS.md`](../lib/os/OS.md), and [`/lib/vm/OPCODE-MAP.md`](../lib/vm/OPCODE-MAP.md).
+[`/lib/operating-system/OS.md`](../lib/operating-system/OS.md), and [`/lib/vm/OPCODE-MAP.md`](../lib/vm/OPCODE-MAP.md).
 
 ## Concurrency
 

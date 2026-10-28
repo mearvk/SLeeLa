@@ -1,6 +1,6 @@
 /*
  * operating-system/include/sleela_os_fetch.h
- * SLeeLa OS fetch -- the C backing of lib/os/SLOSSensitivityFetch.sleela and
+ * SLeeLa OS fetch -- the C backing of lib/operating-system/SLOSSensitivityFetch.sleela and
  * the SLDistroFetch download idiom (DOWNLOADING capability).
  *
  * This does NOT open sockets or run git itself -- transport is the VM's job

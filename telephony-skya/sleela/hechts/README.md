@@ -45,7 +45,7 @@ run comes back empty), it reaches back **finally** to the local Promise-brand
 server (`127.0.0.1:171`) and PINGs it.
 
 Elapsed time comes from the SLeeLa Time API built-in `timeUtcMillis()` — the
-same clock service `lib/os/SLClock` uses.
+same clock service `lib/operating-system/SLClock` uses.
 
 ### Server — always open, NAT-careful, PING-ready
 

@@ -6,7 +6,7 @@ material;
 << Runtime support: all 150 entries are dispatched by /impl/core. Unknown values are rejected and logged.
    (0..123 canonical; 124 OP_GC_HINT, 125 OP_RAN_MEM; 126..147 OP_IC_* idea-canvas;
    148 OP_VM_SELECT; 149 OP_MODIUM_SCAN.) >>
-< Operating-system system calls (OP_OS_*, syntax 1.5) are a runtime-service family like sockets/files: a spawned process is a VM-local bounded handle. See /lib/vm/RUNTIME-SERVICES.md and /lib/os/OS.md. >
+< Operating-system system calls (OP_OS_*, syntax 1.5) are a runtime-service family like sockets/files: a spawned process is a VM-local bounded handle. See /lib/vm/RUNTIME-SERVICES.md and /lib/operating-system/OS.md. >
 < OP_NOP >
 < OP_CONST >
 < OP_POP >

@@ -1,0 +1,103 @@
+<< lib/operating-system/SLWindowsOS.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLWindowsOS — the Windows-specific flavor of the OS
+     family. It composes the general `os*` built-ins into idioms a Windows
+     developer expects: cmd.exe/PowerShell invocation, Windows environment
+     entries (USERPROFILE, APPDATA, COMSPEC, SystemRoot), backslash paths and
+     drive letters, and Windows directory conventions. Every call still runs on
+     the genuine Win32 System API underneath (CreateProcess, GetEnvironmentVariable,
+     GetCurrentDirectory, ...), so this class is a thin, honest Windows face over
+     the same cross-OS SLVM bridge.
+   
+   Guard: methods are meaningful only when osPlatform()=="Windows"; isHost()
+   lets a program check before using Windows-specific behavior.
+   
+   Family: operating-system. Native VM/OS work crosses the explicit `os*` SLVM bridge. >>
+#sleela 2.5
+material;
+class SLWindowsOS {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10288;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  void configure() {}
+
+  < True when the running host is actually Windows. >
+  boolean isHost() { return osPlatform() == "Windows"; }
+
+  < ---- Shells ------------------------------------------------------------- >
+  < Run a command through cmd.exe (osRun already routes through cmd.exe on >
+  < Windows). Returns the exit code. >
+  int cmd(String commandLine) { return osRun(commandLine); }
+  < Run a command through PowerShell. Returns the exit code. >
+  int powershell(String script) {
+    return osRun("powershell -NoProfile -Command " + script);
+  }
+  < Start a background command via the process bridge; returns an SLProcess. >
+  SLProcess startCmd(String commandLine) {
+    SLProcess p = new SLProcess(); p.configure(commandLine); p.start(); return p;
+  }
+
+  < ---- Windows environment entries --------------------------------------- >
+  String userProfile() { return osGetEnv("USERPROFILE"); }
+  String appData()     { return osGetEnv("APPDATA"); }
+  String localAppData(){ return osGetEnv("LOCALAPPDATA"); }
+  String systemRoot()  { return osGetEnv("SystemRoot"); }
+  String programFiles(){ return osGetEnv("ProgramFiles"); }
+  < path to cmd.exe >
+  String comSpec()     { return osGetEnv("COMSPEC"); }
+  String computerName(){ return osGetEnv("COMPUTERNAME"); }
+
+  < ---- Paths (backslash world) ------------------------------------------- >
+  String separator() { return "\\"; }
+  String join(String base, String child) { return base + "\\" + child; }
+  < Build a drive-rooted path, e.g. drive 'C' -> "C:\\...". >
+  String onDrive(String driveLetter, String rest) {
+    return driveLetter + ":\\" + rest;
+  }
+
+  < ---- Filesystem / identity (through the real OS) ------------------------ >
+  boolean exists(String path) { return osExists(path) == 1; }
+  boolean makeDir(String path) { return osMkdir(path) == 0; }
+  < honours TMP/TEMP via GetTempPath >
+  String tempDir() { return osTempDir(); }
+  String hostName() { return osHostName(); }
+  String userName() { return osUserName(); }
+}

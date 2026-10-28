@@ -1,0 +1,122 @@
+<< lib/operating-system/SLHardwareRegistry.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLHardwareRegistry — the single by-name front door to the
+     whole hardware-component catalogue. It composes every per-family catalogue
+     (SLDDRCatalog, SLSSDCatalog, SLHardDiskCatalog, SLUSBCatalog, and the UEFI
+     and video-card factories) so a machine description can request any part by
+     its class, manufacturer, and model/generation name through one object and
+     receive a correctly-specified component.
+   
+   This is what makes the parts "name-addressable": because the real catalogue
+   of device types is finite, the registry exposes memory(), ssd(), hdd(),
+   usb(), uefi(), and video() lookups keyed on manufacturer + variant name.
+   
+   Family: operating-system. Composes the per-family catalogues; produces SLHardwareComponent
+     subclasses. >>
+#sleela 2.5
+material;
+class SLHardwareRegistry {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10897;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  SLDDRCatalog ddr;
+  SLSSDCatalog ssds;
+  SLHardDiskCatalog hdds;
+  SLUSBCatalog usb;
+  SLVideoCardCatalog gpus;
+
+  void configure() {
+    ddr = new SLDDRCatalog(); ddr.configure();
+    ssds = new SLSSDCatalog(); ssds.configure();
+    hdds = new SLHardDiskCatalog(); hdds.configure();
+    usb = new SLUSBCatalog(); usb.configure();
+    gpus = new SLVideoCardCatalog(); gpus.configure();
+  }
+
+  < ---- Memory ------------------------------------------------------------ >
+  < A DDR module by manufacturer, generation name ("DDR".."DDR5"), capacity MB. >
+  SLDDRModule memory(String manufacturer, String generation, int capacityMb) {
+    return ddr.module(manufacturer, generation, capacityMb, false);
+  }
+  SLDDRModule eccMemory(String manufacturer, String generation, int capacityMb) {
+    return ddr.module(manufacturer, generation, capacityMb, true);
+  }
+
+  < ---- Solid-state storage ----------------------------------------------- >
+  < An SSD by manufacturer, interface name ("SATA"/"PCIe3"/"PCIe4"/"PCIe5"), GB. >
+  SLSSD ssd(String manufacturer, String iface, int capacityGb) {
+    return ssds.drive(manufacturer, iface, capacityGb);
+  }
+
+  < ---- Rotational storage ------------------------------------------------ >
+  SLHardDisk hdd(String manufacturer, int rpm, int capacityGb) {
+    if (rpm > 7200) { return hdds.performance(manufacturer, rpm, capacityGb); }
+    return hdds.sata7200(manufacturer, capacityGb);
+  }
+
+  < ---- USB --------------------------------------------------------------- >
+  < A USB host controller by vendor + generation name. >
+  SLUSBDevice usbController(String vendor, String generation, int ports) {
+    return usb.controller(vendor, generation, ports);
+  }
+  SLUSBDevice usbFlash(String vendor, String model, String generation) {
+    return usb.flashDrive(vendor, model, generation);
+  }
+
+  < ---- UEFI firmware ----------------------------------------------------- >
+  SLUEFIFirmware uefi(String vendor) {
+    SLUEFIFirmware fw = new SLUEFIFirmware();
+    fw.configureByVendor(vendor);
+    return fw;
+  }
+
+  < ---- Video card -------------------------------------------------------- >
+  SLVideoCard video(String vendor, String model, int vramMb) {
+    return gpus.card(vendor, model, vramMb);
+  }
+
+  < Catalogue accessors for callers that want the richer per-family API. >
+  SLDDRCatalog memoryCatalog()     { return ddr; }
+  SLSSDCatalog ssdCatalog()        { return ssds; }
+  SLHardDiskCatalog hddCatalog()   { return hdds; }
+  SLUSBCatalog usbCatalog()        { return usb; }
+  SLVideoCardCatalog videoCatalog(){ return gpus; }
+}

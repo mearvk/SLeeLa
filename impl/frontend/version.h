@@ -44,7 +44,7 @@ bool parseSyntaxVersion(const std::string& text,SyntaxVersion& out); VersionReso
 // A source that drives the OS Creator may declare, near the top (after the
 // #sleela pragma), a schema it conforms to:
 //
-//     #schema lib/os/os-creator/os-creator.xsd 1.0.0
+//     #schema lib/operating-system/os-creator/os-creator.xsd 1.0.0
 //
 // This binds the document to a normative XSD describing how the Creator parts
 // compose (the ordered firmware->desktop layering) and the version of that

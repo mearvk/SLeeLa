@@ -409,7 +409,7 @@
 > (C, C++, Java, Python, JavaScript, Rust, Go), each an independent front end
 > that lowers its own language toward the common SLeeLa IR; see
 > `lib/compiler/MULTI-LANGUAGE.FRAMEWORK.md`. This revision also folds in four
-> previously-uncounted units (`os/SLLinuxOS`, `os/SLMacOS`, `os/SLWindowsOS`,
+> previously-uncounted units (`operating-system/SLLinuxOS`, `operating-system/SLMacOS`, `operating-system/SLWindowsOS`,
 > `vm/SleelaVMSystemCallBridge`). Sixteen `.sleela` units in total: 10,330 ->
 > **10,346** total records (10,275 -> **10,291** source classes); package count
 > unchanged at 83. `LIBRARY.SYMBOLS.md` was regenerated from the live tree

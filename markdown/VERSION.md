@@ -234,8 +234,8 @@ active development line to 0.3.24-dev.
   classes + **55** `SLPackage.sleela` module facades = **10,346** total symbol
   records (10,330 -> 10,346; +16 units). The increment folds in the compiler
   framework's 12 new units plus four previously-uncounted units from the
-  intervening operating-system system-call work (`os/SLLinuxOS`, `os/SLMacOS`,
-  `os/SLWindowsOS`, `vm/SleelaVMSystemCallBridge`).
+  intervening operating-system system-call work (`operating-system/SLLinuxOS`, `operating-system/SLMacOS`,
+  `operating-system/SLWindowsOS`, `vm/SleelaVMSystemCallBridge`).
 - Updated the matching records: `lib/LIBRARY.INDEX.md` (Revision 0.30),
   `test-suites/test-library-inventory.sh` (`EXPECTED_*` totals), `SST.model` and
   `SST-2.0.model` (Revision 2.0.3) current-inventory lines, and the informative

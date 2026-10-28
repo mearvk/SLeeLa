@@ -1,6 +1,6 @@
 /*
  * operating-system/include/sleela_os_aggregate.h
- * SLeeLa OS build aggregation -- the C backing of lib/os/SLOSBuildReport.sleela
+ * SLeeLa OS build aggregation -- the C backing of lib/operating-system/SLOSBuildReport.sleela
  * (the AGGREGATION capability).
  *
  * As the OS Creator emits artifacts (C/C++ sources, configs, scripts, the ISO

@@ -3,7 +3,7 @@
  * Implementation of the OS desktop theme model (see sleela_os_theme.h).
  * Palettes mirror the shared role vocabulary of the editor themes
  * (linux-editors/sleela_editor_theme.c) and SleelaUI (`accent`). Keep in
- * lockstep with lib/os/SLDesktopTheme.sleela.
+ * lockstep with lib/operating-system/SLDesktopTheme.sleela.
  */
 #include "sleela_os_theme.h"
 #include <string.h>

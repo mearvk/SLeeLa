@@ -3,7 +3,7 @@
  * SLeeLa OS base-driver interface — the minimum-boot driver series contract.
  *
  * This header is the C ABI the generated base-driver table (base_drivers_table.c,
- * emitted by lib/os/os-creator/SLBaseDriverEmitter from an SLBaseDriverSeries)
+ * emitted by lib/operating-system/os-creator/SLBaseDriverEmitter from an SLBaseDriverSeries)
  * plugs into. It declares the driver-class enumeration, a driver record, the
  * registration/probe/boot order a kernel's early init walks, and the driver
  * SOURCE policy (in-tree / vendor-signed / unknown / foreign) plus the cross-OS
@@ -77,7 +77,7 @@ int sleela_base_drivers_bringup(void);
 
 /* ---- Driver source policy + cross-OS bridge --------------------------- */
 /* Admit a driver of a given origin (and, when foreign, a source OS family +
- * device class) under the current policy. Mirrors lib/os/SLDriverSource.admit. */
+ * device class) under the current policy. Mirrors lib/operating-system/SLDriverSource.admit. */
 sleela_driver_admit sleela_driver_admit_check(sleela_driver_origin origin,
                                               const char *foreign_family,
                                               const char *device_class);

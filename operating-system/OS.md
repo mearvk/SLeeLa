@@ -7,7 +7,7 @@ functions** of the SLeeLa `lib/os` package. It builds to one static library,
 headers in `include/`, implementation in `src/`, unit tests in `tests/`, a
 `Makefile`, and this document.
 
-`lib/os/*.sleela` is the design and orchestration layer; it reaches the real
+`lib/operating-system/*.sleela` is the design and orchestration layer; it reaches the real
 host OS through the VM's `os*` / file built-ins (serviced by `impl/core`
 `slos_*` / `slio_*`). This `/os` subsystem sits one level in from that — at the
 **OS-build concern** — providing pure, dependency-free, unit-testable logic that
@@ -29,12 +29,12 @@ in `impl/core`.
 Two shared cores support the above:
 
 - **Shape model** (`include/sleela_os_shape.h`, `src/sleela_os_shape.c`) — the
-  Linux/Windows/macOS conventions, mirroring `lib/os/SLOSShape.sleela`.
+  Linux/Windows/macOS conventions, mirroring `lib/operating-system/SLOSShape.sleela`.
 - **Minimum-boot driver series** (`base_drivers.{h,c,cpp}` + the default
   `src/base_drivers_table.c`) — the driver-admission policy, cross-OS bridge,
   and boot bring-up. The default table is reference data; a real OS build
   replaces `base_drivers_table.c` with the one the OS Creator emits
-  (`lib/os/os-creator/SLBaseDriverEmitter.sleela`).
+  (`lib/operating-system/os-creator/SLBaseDriverEmitter.sleela`).
 
 ### What each capability does
 
@@ -63,11 +63,11 @@ Two shared cores support the above:
   cursor, wallpaper) an OS rollout applies. Per-shape defaults and edition
   presets (including a `white` theme aligned with `ubuntu-white`); the asset
   bytes are fetched from the `desktop-loader` warehouse component. Backs
-  `lib/os/SLDesktopTheme.sleela`, composed into `SLDesktopSpec`.
+  `lib/operating-system/SLDesktopTheme.sleela`, composed into `SLDesktopSpec`.
 
 ## The SLeeLa handle
 
-`lib/os/SLOSNativeSubsystem.sleela` is the SLeeLa-facing façade: it names each
+`lib/operating-system/SLOSNativeSubsystem.sleela` is the SLeeLa-facing façade: it names each
 capability, the native header that backs it, and the `lib/os` class that uses
 it, so the contract between the two halves is explicit.
 
@@ -92,4 +92,4 @@ The OS-grade C/C++ for each shape is sourced per user from the warehouse
 (`SLOSSensitivitySource` / `SLOSSensitivityFetch`); this subsystem supplies the
 native fetch-command composition, the security review of what is fetched, the
 shape/conversion logic that tailors it, and the aggregation of the resulting
-preliminary ISO source build. See [`lib/os/WAREHOUSE.md`](../lib/os/WAREHOUSE.md).
+preliminary ISO source build. See [`lib/operating-system/WAREHOUSE.md`](../lib/operating-system/WAREHOUSE.md).

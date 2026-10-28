@@ -15,6 +15,6 @@ directory is now at **`operating-system/`**. Use the new path everywhere:
 - Path references were updated in `SHA256-DIGESTS.md` and
   `security/important-sha256-manifest.json`; the recorded SHA-256 digests match
   the moved files.
-- **Unrelated:** the SLeeLa library package `lib/os/` (e.g. `SLLinuxOS`,
-  `SLMacOS`, `SLWindowsOS`, `lib/os/OS.md`) is a different thing and was **not**
-  renamed — keep using `lib/os/` as-is.
+- **Unrelated:** the SLeeLa library package `lib/operating-system/` (e.g. `SLLinuxOS`,
+  `SLMacOS`, `SLWindowsOS`, `lib/operating-system/OS.md`) is a different thing and was **not**
+  renamed — keep using `lib/operating-system/` as-is.

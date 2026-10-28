@@ -4,8 +4,8 @@
  * bring-up hooks, so /os builds and tests as a self-contained static library.
  *
  * This is the DEFAULT, reference table. In a real OS build the OS Creator
- * (lib/os/os-creator/SLBaseDriverEmitter.sleela, mirrored by
- * lib/os/os-generate.sleela baseDriversTableC) emits a shape-specific
+ * (lib/operating-system/os-creator/SLBaseDriverEmitter.sleela, mirrored by
+ * lib/operating-system/os-generate.sleela baseDriversTableC) emits a shape-specific
  * base_drivers_table.c that REPLACES this one. The three accessors declared in
  * base_drivers.h are satisfied here; the extern kernel_* hooks are provided as
  * safe no-op stubs so sleela_base_drivers_bringup() links and runs in a host

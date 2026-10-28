@@ -39,13 +39,13 @@ climb:
    crashed).
 4. **Very senior** — the full "assemble → verify → emit" pipeline, including the
    resilient fallback acquisition pattern (the same tiering as
-   `SLVMComponentFetcher` + `lib/os/SLSupportDownloader`), a capability bridge
+   `SLVMComponentFetcher` + `lib/operating-system/SLSupportDownloader`), a capability bridge
    gated by features, a challenge/report verdict, and generated C that only
    emits once verification passes.
 
 ## Issues and notes (read before extending)
 
-These mirror the `lib/os/examples` notes and are deliberate, not shortcuts:
+These mirror the `lib/operating-system/examples` notes and are deliberate, not shortcuts:
 
 1. **Each example is a self-contained single file — required, not a shortcut.**
    `sleela run`/`check` compiles **one file as a single compilation unit**. The
@@ -80,4 +80,4 @@ These mirror the `lib/os/examples` notes and are deliberate, not shortcuts:
 | `Vm` (novice) | `SLVM` |
 | option objects + `BuildPlan` (mid) | `SleelaVMMemoryOptions`/`CpuOptions`/`ExecutionOptions`, `SleelaVMFeatureBits`, `SleelaVMBuildPlan` |
 | the managers (senior) | `SleelaVMMemoryManagement*`, `SleelaVMSecurityManagement*`, `SleelaVMLinkingManager*`, `SLVMHeap`, `GarbageCollector` |
-| fetcher + bridge + challenge + emit (very senior) | `SLVMComponentFetcher` (+ `lib/os/SLSupportDownloader`), `SleelaVMSystemCallBridge`, `SleelaVMDynamicMemoryGuard`, `SleelaVMChallengeManagerAdvanced`, `SleelaVMReportsManager`, `SleelaVMBuildPlan` |
+| fetcher + bridge + challenge + emit (very senior) | `SLVMComponentFetcher` (+ `lib/operating-system/SLSupportDownloader`), `SleelaVMSystemCallBridge`, `SleelaVMDynamicMemoryGuard`, `SleelaVMChallengeManagerAdvanced`, `SleelaVMReportsManager`, `SleelaVMBuildPlan` |

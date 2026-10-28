@@ -2,7 +2,7 @@
  * operating-system/include/sleela_os_translate.h
  * SLeeLa OS executable translation -- the C ABI of the MANIPULATION capability
  * (classifying which executables a shape runs, and which guest shape a file
- * belongs to). Backs lib/os/SLExecutableTypes + SLExecutableTranslator.
+ * belongs to). Backs lib/operating-system/SLExecutableTypes + SLExecutableTranslator.
  *
  * The implementation is C++ (sleela_os_translate.cpp) but the surface is a C
  * ABI so it links cleanly with the rest of /os and is callable from the VM
