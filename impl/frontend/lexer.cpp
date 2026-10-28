@@ -48,7 +48,7 @@ const char* tokName(Tok t) {
         case Tok::KwReturn:return "return"; case Tok::KwThrow:return "throw"; case Tok::KwTry:return "try"; case Tok::KwCatch:return "catch"; case Tok::KwFinally:return "finally";
         case Tok::KwExtends:return "extends"; case Tok::KwImplements:return "implements"; case Tok::KwThrows:return "throws"; case Tok::KwSuper:return "super"; case Tok::KwThis:return "this"; case Tok::KwInstanceof:return "instanceof";
         case Tok::KwNew:return "new"; case Tok::KwNull:return "null"; case Tok::KwTrue:return "true"; case Tok::KwFalse:return "false"; case Tok::KwPrint:return "print";
-        case Tok::KwVoid:return "void"; case Tok::KwIntT:return "int"; case Tok::KwDoubleT:return "double"; case Tok::KwBoolT:return "boolean"; case Tok::KwStringT:return "String";
+        case Tok::KwVoid:return "void"; case Tok::KwIntT:return "int"; case Tok::KwLongT:return "long"; case Tok::KwInt64T:return "int64"; case Tok::KwInt128T:return "int128"; case Tok::KwDoubleT:return "double"; case Tok::KwBoolT:return "boolean"; case Tok::KwStringT:return "String";
         case Tok::LParen:return "("; case Tok::RParen:return ")"; case Tok::LBrace:return "{"; case Tok::RBrace:return "}";
         case Tok::LBracket:return "["; case Tok::RBracket:return "]"; case Tok::Semicolon:return ";"; case Tok::Comma:return ","; case Tok::Dot:return ".";
         case Tok::Assign:return "="; case Tok::Plus:return "+"; case Tok::Minus:return "-"; case Tok::Star:return "*"; case Tok::Slash:return "/";
@@ -141,7 +141,7 @@ Token Lexer::makeIdentOrKeyword(){
         {"return",Tok::KwReturn},{"throw",Tok::KwThrow},{"try",Tok::KwTry},{"catch",Tok::KwCatch},{"finally",Tok::KwFinally},
         {"default",Tok::KwDefault},{"extends",Tok::KwExtends},{"implements",Tok::KwImplements},{"throws",Tok::KwThrows},{"super",Tok::KwSuper},{"this",Tok::KwThis},{"instanceof",Tok::KwInstanceof},
         {"new",Tok::KwNew},{"null",Tok::KwNull},{"true",Tok::KwTrue},{"false",Tok::KwFalse},{"print",Tok::KwPrint},
-        {"void",Tok::KwVoid},{"int",Tok::KwIntT},{"double",Tok::KwDoubleT},{"boolean",Tok::KwBoolT},{"String",Tok::KwStringT}
+        {"void",Tok::KwVoid},{"int",Tok::KwIntT},{"long",Tok::KwLongT},{"int64",Tok::KwInt64T},{"int128",Tok::KwInt128T},{"double",Tok::KwDoubleT},{"boolean",Tok::KwBoolT},{"String",Tok::KwStringT}
     };
     int L=line_,C=col_;std::string s;while(std::isalnum((unsigned char)peek())||peek()=='_'||peek()=='-')s+=advance();
     auto it=kw.find(s);return Token{it!=kw.end()?it->second:Tok::Ident,s,L,C};
