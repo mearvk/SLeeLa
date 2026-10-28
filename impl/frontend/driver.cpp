@@ -1170,9 +1170,9 @@ static int runJavaFrameworkSource(const std::string&path){
                  <<"       Set SLEELA_JAVA or JAVA_HOME, or install/configure a Java distribution, then retry.\n";
         return 2;
     }
-    if(probe.kind<SLEELA_JAVA_AWT || probe.kind>SLEELA_JAVA_FX){
-        return runLangin({path});
-    }
+    /* A .java source file is Java even when it uses no GUI framework.
+       Execute it with the discovered JVM instead of treating it as a SLeeLa
+       source-ingestion unit. */
     if(!plan.ready || !probe.java_executable || !probe.java_executable[0]){
         std::cerr<<"sleelvac: Java provider did not produce a runnable JVM handoff for '"<<path<<"'\n";
         return 1;
@@ -1438,8 +1438,7 @@ static int runFile(const std::string&path){
             int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),path.c_str(),
                                                               &request,&probe,&plan);
             if(dispatch<0)return 1;
-            if(probe.kind>=SLEELA_JAVA_AWT&&probe.kind<=SLEELA_JAVA_FX)
-                return runJavaFrameworkSource(path);
+            return runJavaFrameworkSource(path);
         }
     }
     if(isLangInput(path))return runLangin({path});
@@ -1523,7 +1522,7 @@ int main(int argc,char**argv){
     }
     else if(cmd=="check"){if(argc<3)return usage();rc=checkFile(argv[2]);}
     else if(cmd=="validate-artifact"){if(argc!=3)return usage();rc=validateArtifact(argv[2]);}
-    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);if(hasExt(argv[2],".java")){std::string src;if(readFile(argv[2],src)){SleelaJavaRuntimeProbeResult probe{};SleelaJavaProgramRequest request{};request.classpath=".";request.source_file=argv[2];SleelaJavaProgramPlan plan{};int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),argv[2],&request,&probe,&plan);if(dispatch<0)return 1;if(probe.kind>=SLEELA_JAVA_AWT&&probe.kind<=SLEELA_JAVA_FX){rc=runJavaFrameworkSource(argv[2]);}else rc=runLangin(files);}else rc=runLangin(files);}else rc=runLangin(files);}else if(argc>3){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runSourceMulti(files);}else rc=runFile(argv[2]);}
+    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);if(hasExt(argv[2],".java")){std::string src;if(readFile(argv[2],src)){SleelaJavaRuntimeProbeResult probe{};SleelaJavaProgramRequest request{};request.classpath=".";request.source_file=argv[2];SleelaJavaProgramPlan plan{};int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),argv[2],&request,&probe,&plan);if(dispatch<0)return 1;rc=runJavaFrameworkSource(argv[2]);}else rc=runLangin(files);}else rc=runLangin(files);}else if(argc>3){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runSourceMulti(files);}else rc=runFile(argv[2]);}
     else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
