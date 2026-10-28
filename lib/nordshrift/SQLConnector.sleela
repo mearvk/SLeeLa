@@ -1,4 +1,4 @@
-#sleela 2.1
+#sleela 2.5
 < Nordshrift semantic SQL connector boundary. >
 class SQLConnector {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

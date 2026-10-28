@@ -48,7 +48,7 @@ extern "C" {
 using namespace nordshrift;
 
 static const char* kVersion =
-    "Nordshrift 2.7.1-dev (NS-SST-0001 spec 2.2; source validation; semantic analysis; semantic subject model; Sleelvac™ runnable .sleela target)";
+    "Nordshrift 2.7.1-dev (NS-SST-0001 spec 2.2; drives SLeeLa source syntax up to 2.5; source validation; semantic analysis; semantic subject model; Sleelvac™ runnable .sleela target)";
 
 static int usage() {
     std::cerr <<
@@ -522,7 +522,16 @@ static int doRelevance(int argc, char** argv) {
 int main(int argc, char** argv) {
     if (argc < 2) return usage();
     std::string cmd = argv[1];
-    if (cmd == "version" || cmd == "--version" || cmd == "-v") { std::cout << kVersion << "\n"; return 0; }
+    if (cmd == "version" || cmd == "--version" || cmd == "-v") {
+        std::cout << kVersion << "\n";
+        // Nordshrift delegates the #sleela syntax gate to the shared front end,
+        // so report the exact range it drives (currently 1.0 .. 2.5).
+        std::cout << "SLeeLa source syntax: "
+                  << sleela::minSupportedSyntax().str() << " .. "
+                  << sleela::maxSupportedSyntax().str()
+                  << " (default " << sleela::defaultSyntaxVersion().str() << ")\n";
+        return 0;
+    }
     if (cmd == "check") { if (argc < 3) return usage(); return doCheck(argv[2]); }
     if (cmd == "build") { if (argc < 3) return usage(); return doBuild(argv[2]); }
     if (cmd == "objects") { return doObjects(); }
