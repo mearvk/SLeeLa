@@ -15,7 +15,7 @@ SLeeLa is treated as a Turing-complete language whose front end should be expres
 
 The library uses one SLeeLa source file per front-end object. This makes the object inventory measurable and gives the project a path toward a roughly 2,000-object standard library without hiding declarations inside aggregate files.
 
-Families: `core/`, `collections/`, `text/`, `io/`, `vm/`, `os/`, `net/`, `wifi/`, `security/`, `opcodes/`, `sldocument/`, `coorenagraph/`, `moral-capacitor/`.
+Families: `core/`, `collections/`, `text/`, `xml/`, `io/`, `vm/`, `os/`, `net/`, `wifi/`, `security/`, `opcodes/`, `sldocument/`, `coorenagraph/`, `moral-capacitor/`.
 
 ### Moral Capacitor™ — the ethical gate for every family
 
@@ -82,7 +82,7 @@ built in CI: `build-linux.yml`, `build-macos.yml`, `build-windows.yml`).
 
 ## Library discovery
 
-The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **83 package families / 10,297 .sleela source classes / 55 `SLPackage.sleela` module facades / 10,352 total symbol records** (verified filesystem count via `tools/generate-library-symbols.py`, reconciled with `CLASS.INVENTORY.md` Revision 2.3). See `LIBRARY.SYMBOLS.md` for the complete collection.
+The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **105 package families / 11,654 .sleela source classes / 73 `SLPackage.sleela` module facades / 11,727 total symbol records** (verified filesystem count via `tools/generate-library-symbols.py`, reconciled with `LIBRARY.INDEX.md` Revision 0.52). See `LIBRARY.SYMBOLS.md` for the complete collection.
 
 The `sldocument` family defines the `.sldocument` format: an ordered, top-down SLeeLa document that compiles against and with standard `.sleela` source. Its annotated method steps run in order (`@order` / `@function` / bare method name), and each step usually returns a single binary **veritable-and-kind** value (`SLVeritable`). These documents suit tasks more sophisticated than bash scripting and clear national-program work where order is already established. The compile/invoke primitives sit below the explicit VM/OS bridge in `native/src/sleela_sldocument.cpp`. See `sldocument/SLDOCUMENT.md`.
 
@@ -93,6 +93,26 @@ The `sldocument` family defines the `.sldocument` format: an ordered, top-down S
 The `wifi/` package contains the SLeeLa source object model for access-point records, credential modes, security policy, manager state, OOD state, and generation-specific Wi-Fi 4/5/6 facades. Its native counterpart in `wifi-common/` provides the C11 and C++17 operating-system providers for live scanning and connection operations. The SLVM bridge contract is documented in `wifi/WIFI.VM.BRIDGE.md`; a live SLeeLa OOD must bind that native API explicitly and must not report success while the bridge is unavailable. See `wifi/README.md`.
 
 The compiler and Nordshrift share recursive `/lib` discovery; new package directories and source units require no compiler allow-list update.
+
+## XML — a Document Object Model
+
+The `xml/` package is the SLeeLa-side **XML DOM**: a document owns a tree of
+element / text / comment / CDATA / processing-instruction nodes, each node owns
+ordered children and named attributes, a serializer renders the tree back to
+well-formed XML (compact or pretty, with XML 1.0 §2.4 escaping), and a char-cell
+parser reads text back into a DOM for the common subset. The DOM core is
+`SLXmlDocument` (the W3C `Document`: node factory, root management,
+`getElementById`, `getElementsByTagName`, serialization), `SLXmlNode` (children,
+attributes, `textContent`, depth/counts), `SLXmlAttribute`, and `SLXmlNodeType`
+(the DOM `nodeType` vocabulary); `SLXmlSerializer` and `SLXmlParser` are the
+text boundary. `SLXmlAspect` is an executive-grade aspect/quality register that
+rates — honestly, against each aspect's real governing W3C instrument — how
+fully the library addresses well-formedness, DOM, namespaces, serialization, and
+validity. Node equality is a three-rung **tie of trust** (identity → same
+subject → structure), reflexive, symmetric, and deterministic. See
+`xml/README.md` and the runnable `xml/xml-dom.sleela`. This is the DOM data model
+in `lib/`; it is distinct from `markdown/XML.SLEELA.DEFINITION.md`, which defines
+an XML **interchange form for `.sleela`/`.sst` source artifacts**.
 
 The `opcodes` family expresses the canonical SLeeLa VM instruction set as one SLeeLa class per opcode: 103 `SLOp*` classes (codes 0–102; the base 98 are `OP_NOP`..`OP_AUDIO_PLATFORM`), plus `SLOpcodeBase` and `SLOpcodeStream`. Each class carries a single opcode and honours the fetch-then-execute-one contract — carefully call the VM to the next instruction, then execute exactly that one opcode — modeling `impl/core`'s dispatch loop at the SLeeLa layer. The fetch/dispatch primitives sit below the explicit VM/OS bridge in `native/src/sleela_opcode.cpp`. See `opcodes/OPCODES.md`, including the rationale for why 98 opcodes is complete for a modern program and developer.
 

@@ -23,6 +23,13 @@
 
 Recent additions to the language, drivers, and standard library:
 
+- **XML Document Object Model (`lib/xml`).** A SLeeLa-side XML DOM — a document
+  owning a tree of element/text/comment/CDATA/PI nodes with ordered children and
+  named attributes, a serializer (compact/pretty, XML 1.0 §2.4 escaping), a
+  char-cell parser, and the `SLXmlAspect` quality register. Node equality is a
+  three-rung tie of trust (identity → same subject → structure), reflexive,
+  symmetric, and deterministic. See [`lib/xml/README.md`](lib/xml/README.md) and
+  the runnable [`lib/xml/xml-dom.sleela`](lib/xml/xml-dom.sleela).
 - **Wide signed integer primitives (`long`, `int64`, `int128`).** `int`, `long`,
   and `int64` are all 64-bit signed integers that type-check and run identically;
   `int128` is accepted as an integer type (64-bit-backed for now, with true

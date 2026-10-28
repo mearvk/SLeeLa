@@ -1,11 +1,46 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.51  
-**Packages:** 101  
-**SLeeLa source units:** 11576  
-**Module-facade symbols:** 70  
-**Total symbol records:** 11646  
+**Revision:** 0.52  
+**Packages:** 105  
+**SLeeLa source units:** 11654  
+**Module-facade symbols:** 73  
+**Total symbol records:** 11727  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.52 adds the new **`xml`** package (`lib/xml/`): a SLeeLa-side XML
+> **Document Object Model (DOM)**. Eight source Master Classes plus the package
+> facade. The DOM core — **`SLXmlDocument`** (the W3C `Document`: node factory
+> `createElement`/`createTextNode`/…, root management, `getElementById`,
+> `getElementsByTagName`, the XML declaration + serialization), **`SLXmlNode`**
+> (the central node: ordered children, named attributes, `textContent`,
+> `appendChild`/`removeChild`, depth/counts), **`SLXmlAttribute`** (a
+> name/value attribute with namespace prefix/local parts), and **`SLXmlNodeType`**
+> (the DOM `nodeType` vocabulary + walker predicates). The text boundary —
+> **`SLXmlSerializer`** (DOM → well-formed XML, compact or pretty, with XML 1.0
+> §2.4 character-data escaping) and **`SLXmlParser`** (a char-cell text → DOM
+> reader for the common subset plus a structural well-formedness check). And
+> **`SLXmlAspect`**, an executive-grade **aspect/quality register** that rates how
+> fully the library addresses each XML aspect (well-formedness, DOM, namespaces,
+> serialization, validity), each against its real governing W3C instrument, with
+> honest 0..10 scores (unimplemented validity scores low, never inflated).
+>
+> Node equality is a three-rung **tie of trust**: **identity** (`sameReference`,
+> native `==` on objects = same memory), **same subject** (`sameSubject`: same
+> nature/name/id/value, case-sensitive, children ignored), and **structure**
+> (`equals`/`sameStructure`: deep-equal subtrees — same subject, same attribute
+> set, same children in order). `tieStrength`/`tieName` report the rung; every
+> rung is reflexive, symmetric, and deterministic (idempotent). `SLXmlAttribute`
+> and `SLXmlDocument` carry the matching ladder. Node storage uses growable
+> VM-managed object arrays so a node's footprint tracks its real content. A
+> runnable reference (`xml-dom.sleela`) builds, queries, serializes, round-trips,
+> compares, and verifies the equality guarantees; `lib/xml/README.md` documents
+> the surface. Every class carries the Metadata Class metapattern.
+>
+> One new package (104 → **105**), one new facade (72 → **73**), eight new source
+> classes plus one upstream-reconciled source unit (11645 → **11654** sources;
+> 11717 → **11727** total records). Counts reconciled to the live `/lib` tree by
+> `tools/generate-library-symbols.py` and verified by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.51 adds two companion `core` classes expressing the standing of a
 > work and its wins, both author-marked (syntax 2.4) and carrying the full
