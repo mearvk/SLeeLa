@@ -1165,6 +1165,13 @@ static int runJavaFrameworkSource(const std::string&path,const std::vector<std::
         std::cerr<<"sleelvac: Java runtime dispatch failed for '"<<path<<"'\n";
         return 1;
     }
+    const char* javaMode=std::getenv("SLEELA_JAVA_MODE");
+    const char* javaEnabled=std::getenv("SLEELA_JAVA_ENABLED");
+    if((javaMode&&std::string(javaMode)=="disabled") ||
+       (javaEnabled&&std::string(javaEnabled)=="0")){
+        std::cerr<<"[java] Java execution is disabled by SLEELA_JAVA_MODE or SLEELA_JAVA_ENABLED.\n";
+        return 2;
+    }
     if(dispatch==1 || probe.action==SLEELA_JAVA_ACTION_PROMPT_INSTALL){
         std::cerr<<"[java] Java VM required for "<<path<<" but no local VM was found.\n"
                  <<"       Set SLEELA_JAVA or JAVA_HOME, or install/configure a Java distribution, then retry.\n";
@@ -1200,7 +1207,7 @@ static int runJavaFrameworkSource(const std::string&path,const std::vector<std::
         const char* display=std::getenv("DISPLAY");
         const char* wayland=std::getenv("WAYLAND_DISPLAY");
         if((!display||!*display)&&(!wayland||!*wayland))
-            std::cerr<<"[javafx] no DISPLAY or WAYLAND_DISPLAY detected; graphical startup may fail on this headless host.\\n";
+            std::cerr<<"[javafx] no DISPLAY or WAYLAND_DISPLAY detected; graphical startup may fail on this headless host.\n";
 #endif
     }
     args.push_back(path);
@@ -1210,7 +1217,7 @@ static int runJavaFrameworkSource(const std::string&path,const std::vector<std::
     for(auto&arg:args)argv.push_back(arg.data());
     argv.push_back(nullptr);
     std::cout<<"[java] secondary circuit: "<<sleela_java_runtime_kind_name(probe.kind)
-             <<" -> "<<probe.java_executable<<" -> "<<path<<"\\n";
+             <<" -> "<<probe.java_executable<<" -> "<<path<<"\n";
     return nativeCmd(static_cast<int>(args.size()),argv.data());
 }
 static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
