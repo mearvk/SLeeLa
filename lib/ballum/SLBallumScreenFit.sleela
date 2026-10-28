@@ -1,0 +1,127 @@
+#sleela 2.5
+material;
+<< lib/ballum/SLBallumScreenFit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLBallumScreenFit — the screen-size bridge between the Ballum
+     display subsystem and the standard UI full-screen paths. It asks Ballum for
+     the host's REAL primary-display pixel size (discovered per-OS: XRANDR on
+     Linux, EnumDisplayMonitors on Windows, Core Graphics on macOS) and hands
+     that size to a pure UI object's existing full-screen entry point.
+
+   Why it lives here, in lib/ballum: the pure-SLeeLa lib/ui/SLLayoutFrame and the
+   native lib/user-interface/SLWindow deliberately carry NO Ballum dependency, so
+   they stay independently linkable. This helper is the one place that couples
+   the two — it links the whole Ballum display chain (resolved here, in the
+   Ballum package) and calls the UI object's plain placeFullscreen(x,y,w,h) /
+   configureFullscreen(...) with the discovered pixels.
+
+   Honest limitation: Ballum enumerates the screen; it does NOT create an
+   exclusive window-manager full-screen state (there is no such op in Ballum nor
+   in the SleelaUI VM bridge). So "full screen" here means a surface/window sized
+   to the real screen, not an exclusive full-screen mode. >>
+class SLBallumScreenFit {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11610;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < last discovered primary-display size (0 until a fit* call succeeds) >
+  int screenW;
+  int screenH;
+  < 1 once a real screen size was obtained from the Ballum backend >
+  int gotReal;
+
+  void create() { screenW = 0; screenH = 0; gotReal = 0; }
+
+  << Discover the host's primary-display pixel size through Ballum. Returns true
+     and caches width()/height() on success; false if the display backend is
+     unavailable (headless / no XRANDR / permission denied), leaving the cached
+     size at 0. >>
+  boolean discover() {
+    SLBallumScreen screen = new SLBallumScreen();
+    screen.create();
+    screen.open();
+    if (screen.isReady() && screen.width() > 0 && screen.height() > 0) {
+      screenW = screen.width();
+      screenH = screen.height();
+      gotReal = 1;
+      return true;
+    }
+    screenW = 0; screenH = 0; gotReal = 0;
+    return false;
+  }
+
+  < The last discovered primary-display width (0 if none). >
+  int width() { return screenW; }
+  < The last discovered primary-display height (0 if none). >
+  int height() { return screenH; }
+  < True if the last fit*/discover obtained a real screen size from the backend. >
+  boolean hasRealScreen() { return gotReal == 1; }
+
+  << Place a pure-SLeeLa SLLayoutFrame FULL SCREEN at the real primary-display
+     size discovered from Ballum. On a host with no display backend it falls back
+     to the Frame's own assumed size (so it is never placed smaller than its
+     content). Returns true when the real screen size was used. >>
+  boolean fitFrame(SLLayoutFrame frame, int x, int y) {
+    if (frame == null) { return false; }
+    boolean real = discover();
+    if (real) {
+      frame.placeFullscreen(x, y, screenW, screenH);
+    } else {
+      frame.placeFullscreen(x, y, frame.assumedWidth(), frame.assumedHeight());
+    }
+    return real;
+  }
+
+  << For the native lib/user-interface window: this bridge does not reference it
+     directly, because the bare name `SLWindow` is ambiguous across /lib
+     (ui/SLWindow and user-interface/SLWindow). Instead, a caller discovers the
+     screen here and feeds it to the window's own entry point:
+
+       SLBallumScreenFit fit = new SLBallumScreenFit(); fit.create();
+       if (fit.discover()) {
+         win.configureFullscreen(app, title, fit.width(), fit.height(), theme);
+       } else {
+         win.configureFullscreen(app, title, SLWindow.FULLSCREEN, SLWindow.FULLSCREEN, theme);
+       }
+
+     which keeps the screen-size reuse without coupling this file to either
+     SLWindow line. >>
+}

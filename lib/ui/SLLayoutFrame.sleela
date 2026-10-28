@@ -230,6 +230,13 @@ class SLLayoutFrame {
   < The presentation mode: MODE_NORMAL or MODE_FULLSCREEN. >
   int getMode() { return mode; }
 
+  << To place the Frame FULL SCREEN at the host's REAL primary-display size,
+     discovered per-OS by the Ballum display subsystem, call
+     SLBallumScreenFit.fitFrame(frame, x, y) in lib/ballum. The screen-size
+     bridge lives on the Ballum side so this lib/ui package stays pure (no native
+     dependency); pass the real pixels to placeFullscreen(x, y, w, h) directly if
+     you already know them. >>
+
   < ---- read a component's rectangle, in reference to the Frame ------------ >
   SLLayoutBox boxOf(String name) {
     int idx = indexOf(name);

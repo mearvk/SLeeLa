@@ -567,7 +567,7 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "502adbf01d9644fe43b65c65baeca97c69751b3ce3ed0cef0feb3e6bb3c4494b"
+      "sha256": "b3833af6b7c7816da450e858f2fdacb430806590b139d1dcc4b0008433c02c60"
     },
     {
       "path": "impl/frontend/lexer.h",
@@ -1096,6 +1096,10 @@
     {
       "path": "lib/ballum/SLBallumScreen.sleela",
       "sha256": "6289fe3c0a55c21c1d40e79b3e09290f6c348480aabbe77e1ec45493dc074584"
+    },
+    {
+      "path": "lib/ballum/SLBallumScreenFit.sleela",
+      "sha256": "a82625cf0339e87b746bf5f394a34589afab8ccf2b149ebc6fd68020047d8645"
     },
     {
       "path": "lib/ballum/SLBallumSession.sleela",
@@ -46719,7 +46723,7 @@
     },
     {
       "path": "lib/ui/SLLayoutFrame.sleela",
-      "sha256": "820a2033b51b0aef7995e59e681287f3106fd9188e628af0db9c443771d8fcfc"
+      "sha256": "a1669d6223a251aa7ead1eb1e7fb0eade6a4796eedd412f25c730490c9a56c18"
     },
     {
       "path": "lib/ui/SLLayoutKit.sleela",
@@ -46839,7 +46843,7 @@
     },
     {
       "path": "lib/ui/layout-demo.sleela",
-      "sha256": "d95fe21df408b48ede01a9b5ebd8c6108215ca5644286a275e8be4ad2b00a5e8"
+      "sha256": "952eb125860423fb896ee3b23d0dfebcad6a07d31310970ef038a8a3a00906f3"
     },
     {
       "path": "lib/ui/layout-driver-demo.sleela",
@@ -47151,7 +47155,7 @@
     },
     {
       "path": "lib/user-interface/SLWindow.sleela",
-      "sha256": "0e9dc5861fd2cf17c855c4d439e360d4e88991ca2d2fb25d0e9430d019b004b2"
+      "sha256": "d9973a28ef0f520ffaebe1aefb5f5048f07a3066aa1ce648f309ac70d27793f6"
     },
     {
       "path": "lib/user-interface/example/dual/gui-dual-media-studio.sleela",
