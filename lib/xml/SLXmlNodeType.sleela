@@ -1,0 +1,98 @@
+<< lib/xml/SLXmlNodeType.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLXmlNodeType -- the DOM node-kind registry for the xml
+     family. Mirrors the W3C DOM nodeType constants so a node always reports an
+     honest, catalogued kind. >>
+#sleela 2.5
+material;
+< Family: xml. The DOM node-kind vocabulary. The W3C DOM assigns each node a >
+< small integer nodeType; this class holds that vocabulary and the predicates a >
+< tree walker uses to branch on kind. SLXmlNode stores one of these codes and >
+< asks this registry for its name and category. >
+<  >
+< Node kinds (subset of the DOM nodeType constants that this DOM models): >
+<   1 ELEMENT        a tag with a name, attributes, and children >
+<   3 TEXT           character data between tags >
+<   4 CDATA          a <![CDATA[ ... ]]> literal section >
+<   7 PI             a <?target data?> processing instruction >
+<   8 COMMENT        a <!-- ... --> comment >
+<   9 DOCUMENT       the document root that owns the single root element >
+class SLXmlNodeType {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7921;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument. >
+  String metaNationalSchedule = "W3C DOM nodeType constants";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- the DOM nodeType constants this DOM models ---- >
+  static final int ELEMENT  = 1;
+  static final int TEXT     = 3;
+  static final int CDATA    = 4;
+  static final int PI       = 7;
+  static final int COMMENT  = 8;
+  static final int DOCUMENT = 9;
+
+  < Human-readable kind name for a nodeType code. >
+  String nameOf(int kind) {
+    if (kind == 1) { return "element"; }
+    if (kind == 3) { return "text"; }
+    if (kind == 4) { return "cdata"; }
+    if (kind == 7) { return "processing-instruction"; }
+    if (kind == 8) { return "comment"; }
+    if (kind == 9) { return "document"; }
+    return "unknown";
+  }
+
+  < True for a code this DOM recognizes. >
+  boolean isKnown(int kind) {
+    return kind == 1 || kind == 3 || kind == 4
+        || kind == 7 || kind == 8 || kind == 9;
+  }
+
+  < An element is the only kind that may itself carry attributes and children. >
+  boolean isContainer(int kind) { return kind == 1 || kind == 9; }
+
+  < Text and CDATA are character-data leaves. >
+  boolean isCharacterData(int kind) { return kind == 3 || kind == 4; }
+
+  < A leaf node never owns element children in this DOM. >
+  boolean isLeaf(int kind) {
+    return kind == 3 || kind == 4 || kind == 7 || kind == 8;
+  }
+}

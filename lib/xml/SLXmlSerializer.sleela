@@ -1,0 +1,180 @@
+<< lib/xml/SLXmlSerializer.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLXmlSerializer -- renders a DOM tree (SLXmlNode) back to
+     well-formed XML text, with correct character escaping and optional pretty
+     indentation. >>
+#sleela 2.5
+material;
+< Family: xml. The DOM-to-text half of the round trip. Given a node, it writes >
+< the node and its whole subtree as well-formed XML: elements with escaped >
+< attribute values, text with escaped character data, comments, CDATA sections, >
+< and processing instructions. Escaping follows XML 1.0 section 2.4: & < > in >
+< text; & < > " additionally in attribute values. >
+class SLXmlSerializer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7924;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument. >
+  String metaNationalSchedule = "W3C REC-xml section 2.4 (character-data escaping)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << ---- escaping (XML 1.0 section 2.4) ----
+     The built-in String is opaque (no in-language slicing), so escaping scans an
+     explicit char-cell String[] -- the sanctioned real char-level mechanism, as
+     in lib/text/SLString. A node stores its text as a whole String AND, for any
+     content that needs escaping, a char-cell view; escapeTextCells/escape-
+     AttributeCells turn that view into a correctly escaped String. Content with
+     no &, <, >, " needs no cells and serializes verbatim. >>
+
+  < Map one glyph cell to its XML character-data replacement (& < > escaped). >
+  String textCell(String ch) {
+    if (ch == "&") { return "&amp;"; }
+    if (ch == "<") { return "&lt;"; }
+    if (ch == ">") { return "&gt;"; }
+    return ch;
+  }
+  < Map one glyph cell for an attribute value (adds the double-quote entity). >
+  String attrCell(String ch) {
+    if (ch == "\"") { return "&quot;"; }
+    return textCell(ch);
+  }
+
+  < Escape element character data given its char-cell view (real). >
+  String escapeTextCells(String[] cells) {
+    String out = "";
+    int n = arrayLength(cells);
+    for (int i = 0; i < n; i = i + 1) { out = out + textCell(cells[i]); }
+    return out;
+  }
+  < Escape an attribute value given its char-cell view (real). >
+  String escapeAttributeCells(String[] cells) {
+    String out = "";
+    int n = arrayLength(cells);
+    for (int i = 0; i < n; i = i + 1) { out = out + attrCell(cells[i]); }
+    return out;
+  }
+
+  < n levels of two-space indentation. >
+  String indent(int n) {
+    String out = "";
+    for (int i = 0; i < n; i = i + 1) { out = out + "  "; }
+    return out;
+  }
+
+  < ---- element rendering ---- >
+
+  < The escaped form of an attribute's value: its char-cell view when supplied >
+  < (correctly escaped), else the raw value verbatim (known-safe content). >
+  String attrValue(SLXmlAttribute a) {
+    if (a.hasCells()) { return escapeAttributeCells(a.valueCells()); }
+    return a.getValue();
+  }
+  < The escaped form of a text/CDATA node's data: its char-cell view when >
+  < supplied (correctly escaped), else the raw data verbatim. >
+  String textValue(SLXmlNode node) {
+    if (node.hasDataCells()) { return escapeTextCells(node.dataCells()); }
+    return node.nodeValue();
+  }
+
+  < The opening tag (with attributes) for an element node. >
+  String openTag(SLXmlNode e) {
+    String out = "<" + e.name();
+    int an = e.attributeCount();
+    for (int i = 0; i < an; i = i + 1) {
+      SLXmlAttribute a = e.attributeAt(i);
+      if (a != null) {
+        out = out + " " + a.getName() + "=\"" + attrValue(a) + "\"";
+      }
+    }
+    return out;
+  }
+
+  < Serialize `node` and its subtree at indent level `level`, pretty or compact. >
+  String renderNode(SLXmlNode node, int level, boolean pretty) {
+    if (node == null) { return ""; }
+    int k = node.nodeType();
+    String pad = "";
+    if (pretty) { pad = indent(level); }
+
+    < text >
+    if (k == 3) { return pad + textValue(node); }
+    < cdata >
+    if (k == 4) { return pad + "<![CDATA[" + node.nodeValue() + "]]>"; }
+    < comment >
+    if (k == 8) { return pad + "<!--" + node.nodeValue() + "-->"; }
+    < processing instruction >
+    if (k == 7) { return pad + "<?" + node.name() + " " + node.nodeValue() + "?>"; }
+
+    < element (k == 1) >
+    String head = pad + openTag(node);
+    int cn = node.childCount();
+    if (cn == 0) {
+      < empty element collapses to a self-closing tag >
+      return head + "/>";
+    }
+    String nl = "";
+    if (pretty) { nl = "\n"; }
+
+    < Pretty mode: an element whose single child is character data stays on one >
+    < line (<name>text</name>) rather than exploding the text onto its own row. >
+    if (pretty && cn == 1) {
+      SLXmlNode only = node.childAt(0);
+      if (only != null && only.isCharacterData()) {
+        return head + ">" + renderNode(only, 0, false) + "</" + node.name() + ">";
+      }
+    }
+
+    String out = head + ">";
+    for (int i = 0; i < cn; i = i + 1) {
+      SLXmlNode c = node.childAt(i);
+      out = out + nl + renderNode(c, level + 1, pretty);
+    }
+    out = out + nl + pad + "</" + node.name() + ">";
+    return out;
+  }
+
+  < Compact one-line serialization of a subtree. >
+  String toXml(SLXmlNode root) {
+    return renderNode(root, 0, false);
+  }
+
+  < Pretty, indented, multi-line serialization of a subtree. >
+  String toPrettyXml(SLXmlNode root) {
+    return renderNode(root, 0, true);
+  }
+}

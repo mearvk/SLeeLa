@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11645
-library-packages: 104
-module-facade-symbols: 72
-total-symbol-records: 11717
+library-source-files: 11654
+library-packages: 105
+module-facade-symbols: 73
+total-symbol-records: 11727
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -59,6 +59,7 @@ ballum	SLBallumInput.sleela	lib/ballum/SLBallumInput.sleela	source
 ballum	SLBallumManager.sleela	lib/ballum/SLBallumManager.sleela	source
 ballum	SLBallumPointerEvent.sleela	lib/ballum/SLBallumPointerEvent.sleela	source
 ballum	SLBallumScreen.sleela	lib/ballum/SLBallumScreen.sleela	source
+ballum	SLBallumScreenFit.sleela	lib/ballum/SLBallumScreenFit.sleela	source
 ballum	SLBallumSession.sleela	lib/ballum/SLBallumSession.sleela	source
 ballum	SLBallumStatus.sleela	lib/ballum/SLBallumStatus.sleela	source
 ballum	SLPackage.sleela	lib/ballum/SLPackage.sleela	facade
@@ -11724,3 +11725,12 @@ xlt	SLXltProducerRegistry.sleela	lib/xlt/SLXltProducerRegistry.sleela	source
 xlt	SLXltRefBank.sleela	lib/xlt/SLXltRefBank.sleela	source
 xlt	SLXltSource.sleela	lib/xlt/SLXltSource.sleela	source
 xlt	compile-xlt-models.sleela	lib/xlt/examples/compile-xlt-models.sleela	source
+xml	SLPackage.sleela	lib/xml/SLPackage.sleela	facade
+xml	SLXmlAspect.sleela	lib/xml/SLXmlAspect.sleela	source
+xml	SLXmlAttribute.sleela	lib/xml/SLXmlAttribute.sleela	source
+xml	SLXmlDocument.sleela	lib/xml/SLXmlDocument.sleela	source
+xml	SLXmlNode.sleela	lib/xml/SLXmlNode.sleela	source
+xml	SLXmlNodeType.sleela	lib/xml/SLXmlNodeType.sleela	source
+xml	SLXmlParser.sleela	lib/xml/SLXmlParser.sleela	source
+xml	SLXmlSerializer.sleela	lib/xml/SLXmlSerializer.sleela	source
+xml	xml-dom.sleela	lib/xml/xml-dom.sleela	source

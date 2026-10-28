@@ -1,0 +1,334 @@
+<< lib/xml/SLXmlNode.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLXmlNode -- the central DOM node. An element node owns an
+     ordered list of child nodes and a list of attributes; text/CDATA/comment/PI
+     nodes carry character data. This is the mutable tree a document, parser, and
+     serializer all operate on. >>
+#sleela 2.5
+material;
+< Family: xml. The DOM node. Every node has a kind (one of the SLXmlNodeType >
+< codes), a name (the tag name for an element; a conventional name such as >
+< "#text" / "#comment" for leaf kinds), and character data (used by text, CDATA, >
+< comment, and PI kinds). Element nodes additionally own ordered children and >
+< named attributes, both held in growable VM-managed arrays. >
+<  >
+< The DOM operations mirror the W3C Node / Element interface, in SLeeLa spelling: >
+< appendChild, childCount, childAt, setAttribute, getAttribute, hasAttribute, >
+< getElementsByTagName (collected into a caller-provided result list), textContent, >
+< firstChild / lastChild, and removeChild. >
+class SLXmlNode {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7923;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument. >
+  String metaNationalSchedule = "W3C DOM Level 1 Node/Element interface";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- node identity ---- >
+  < nodeType: one of the SLXmlNodeType codes (1 element, 3 text, ...). >
+  int kind;
+  < For an element: the tag name. For leaves: a conventional "#text" etc. >
+  String nodeName;
+  < Character data for text/CDATA/comment/PI leaves (unescaped). "" otherwise. >
+  String data;
+  << Optional char-cell view of `data` (one glyph per cell). The built-in String
+     is opaque, so the serializer can only escape special characters when a cell
+     view is supplied. Content set with a plain value (no cells) is emitted
+     verbatim (use it for content known free of & < > "). >>
+  String[] dataCellView;
+  boolean dataHasCells = false;
+
+  < ---- tree storage (element nodes) ---- >
+  < Object arrays are allocated at a fixed capacity and addressed by subscript >
+  < (the proven idiom for class-typed arrays, as in lib/autocad). The logical >
+  < counts childN/attrN track how many slots are in use. >
+  static final int MAX_CHILDREN = 1024;
+  static final int MAX_ATTRS = 64;
+  SLXmlNode[] children;
+  int childN = 0;
+  SLXmlAttribute[] attrs;
+  int attrN = 0;
+
+  < Allocate the backing stores. Called by every as* constructor so a freshly >
+  < `new`-ed node is immediately usable. >
+  void ensureStores() {
+    if (children == null) { children = new SLXmlNode[MAX_CHILDREN]; }
+    if (attrs == null) { attrs = new SLXmlAttribute[MAX_ATTRS]; }
+  }
+
+  < ---- construction ---- >
+
+  < Make this an element node named `tag`. >
+  void asElement(String tag) {
+    ensureStores();
+    kind = 1; nodeName = tag; data = "";
+  }
+  < Make this a text node holding `value`. >
+  void asText(String value) {
+    ensureStores();
+    kind = 3; nodeName = "#text"; data = value;
+  }
+  < Make this a CDATA section holding `value`. >
+  void asCData(String value) {
+    ensureStores();
+    kind = 4; nodeName = "#cdata-section"; data = value;
+  }
+  < Make this a processing instruction with target `target` and data `value`. >
+  void asProcessingInstruction(String target, String value) {
+    ensureStores();
+    kind = 7; nodeName = target; data = value;
+  }
+  < Make this a comment holding `value`. >
+  void asComment(String value) {
+    ensureStores();
+    kind = 8; nodeName = "#comment"; data = value;
+  }
+
+  < Attach a char-cell view of this node's data so the serializer can escape it. >
+  void setDataCells(String[] cells) {
+    dataCellView = cells;
+    dataHasCells = true;
+  }
+  boolean hasDataCells() { return dataHasCells; }
+  String[] dataCells() { return dataCellView; }
+
+  < ---- identity accessors ---- >
+  int nodeType() { return kind; }
+  String name() { return nodeName; }
+  String nodeValue() { return data; }
+  void setNodeValue(String v) { data = v; }
+  boolean isElement() { return kind == 1; }
+  boolean isText() { return kind == 3; }
+  boolean isCharacterData() { return kind == 3 || kind == 4; }
+
+  < ---- children (DOM Node) ---- >
+
+  < Append a child node and return it (DOM appendChild returns the child). >
+  < Appends are ignored once the fixed capacity is reached. >
+  SLXmlNode appendChild(SLXmlNode child) {
+    ensureStores();
+    if (childN >= MAX_CHILDREN) { return child; }
+    children[childN] = child;
+    childN = childN + 1;
+    return child;
+  }
+
+  int childCount() { return childN; }
+
+  < The child at `index`, or null when out of range. >
+  SLXmlNode childAt(int index) {
+    if (index < 0 || index >= childN) { return null; }
+    return children[index];
+  }
+
+  SLXmlNode firstChild() { return childAt(0); }
+  SLXmlNode lastChild() { return childAt(childN - 1); }
+
+  < Remove the child at `index`, preserving the order of the rest. >
+  < Returns the removed node, or null when the index is invalid. >
+  SLXmlNode removeChild(int index) {
+    if (index < 0 || index >= childN) { return null; }
+    SLXmlNode gone = children[index];
+    int i = index;
+    while (i + 1 < childN) {
+      children[i] = children[i + 1];
+      i = i + 1;
+    }
+    childN = childN - 1;
+    return gone;
+  }
+
+  < Convenience: create, append, and return a child element. >
+  SLXmlNode addElement(String tag) {
+    SLXmlNode e = new SLXmlNode();
+    e.asElement(tag);
+    return appendChild(e);
+  }
+  < Convenience: append a text node with `value` (emitted verbatim). >
+  SLXmlNode addText(String value) {
+    SLXmlNode t = new SLXmlNode();
+    t.asText(value);
+    return appendChild(t);
+  }
+  < Convenience: append a text node whose `cells` are the glyphs of its value, >
+  < so the serializer escapes & < > correctly. `value` is the rejoined text. >
+  SLXmlNode addTextCells(String value, String[] cells) {
+    SLXmlNode t = new SLXmlNode();
+    t.asText(value);
+    t.setDataCells(cells);
+    return appendChild(t);
+  }
+  < Convenience: append a comment node. >
+  SLXmlNode addComment(String value) {
+    SLXmlNode c = new SLXmlNode();
+    c.asComment(value);
+    return appendChild(c);
+  }
+
+  < ---- attributes (DOM Element) ---- >
+
+  int attributeCount() { return attrN; }
+
+  < Index of the attribute whose qualified name equals `qn`, or -1. >
+  int attributeIndex(String qn) {
+    ensureStores();
+    for (int i = 0; i < attrN; i = i + 1) {
+      SLXmlAttribute a = attrs[i];
+      if (a != null && a.getName() == qn) { return i; }
+    }
+    return -1;
+  }
+
+  boolean hasAttribute(String qn) { return attributeIndex(qn) >= 0; }
+
+  < The value of attribute `qn`, or null when it is absent. >
+  String getAttribute(String qn) {
+    int i = attributeIndex(qn);
+    if (i < 0) { return null; }
+    SLXmlAttribute a = attrs[i];
+    return a.getValue();
+  }
+
+  < Set attribute `qn` to `value`, replacing an existing one or appending a new. >
+  void setAttribute(String qn, String value) {
+    ensureStores();
+    int i = attributeIndex(qn);
+    if (i >= 0) {
+      SLXmlAttribute existing = attrs[i];
+      existing.setValue(value);
+      return;
+    }
+    if (attrN >= MAX_ATTRS) { return; }
+    SLXmlAttribute a = new SLXmlAttribute();
+    a.set(qn, value);
+    attrs[attrN] = a;
+    attrN = attrN + 1;
+  }
+
+  < Set attribute `qn` to a value whose `cells` are its glyphs, so the serializer >
+  < escapes & < > " correctly. `value` is the rejoined text. >
+  void setAttributeCells(String qn, String value, String[] cells) {
+    setAttribute(qn, value);
+    int i = attributeIndex(qn);
+    if (i >= 0) {
+      SLXmlAttribute a = attrs[i];
+      a.setValueCells(cells);
+    }
+  }
+
+  < The attribute object at `index`, or null when out of range. >
+  SLXmlAttribute attributeAt(int index) {
+    if (index < 0 || index >= attrN) { return null; }
+    return attrs[index];
+  }
+
+  < Remove attribute `qn`; return true when one was removed. >
+  boolean removeAttribute(String qn) {
+    int idx = attributeIndex(qn);
+    if (idx < 0) { return false; }
+    int i = idx;
+    while (i + 1 < attrN) {
+      attrs[i] = attrs[i + 1];
+      i = i + 1;
+    }
+    attrN = attrN - 1;
+    return true;
+  }
+
+  < ---- queries (DOM Element) ---- >
+
+  < The concatenated character data of this node and all its descendants, >
+  < i.e. DOM textContent. Element structure contributes no characters. >
+  String textContent() {
+    if (kind == 3 || kind == 4) { return data; }
+    String acc = "";
+    for (int i = 0; i < childN; i = i + 1) {
+      SLXmlNode c = children[i];
+      if (c != null) { acc = acc + c.textContent(); }
+    }
+    return acc;
+  }
+
+  < The first direct child element with tag name `tag`, or null. >
+  SLXmlNode firstElementByTag(String tag) {
+    for (int i = 0; i < childN; i = i + 1) {
+      SLXmlNode c = children[i];
+      if (c != null && c.isElement() && c.name() == tag) { return c; }
+    }
+    return null;
+  }
+
+  < DOM getElementsByTagName: append every descendant element whose tag is >
+  < `tag` (document order) into the caller-provided result node, which is used >
+  < purely as an ordered collection via appendChild. "*" matches every element. >
+  void collectByTag(String tag, SLXmlNode result) {
+    for (int i = 0; i < childN; i = i + 1) {
+      SLXmlNode c = children[i];
+      if (c == null) { continue; }
+      if (c.isElement()) {
+        if (tag == "*" || c.name() == tag) { result.appendChild(c); }
+        c.collectByTag(tag, result);
+      }
+    }
+  }
+
+  < Count descendant elements (not counting this node). >
+  int descendantElementCount() {
+    int n = 0;
+    for (int i = 0; i < childN; i = i + 1) {
+      SLXmlNode c = children[i];
+      if (c != null && c.isElement()) {
+        n = n + 1 + c.descendantElementCount();
+      }
+    }
+    return n;
+  }
+
+  < Depth of the deepest element subtree rooted here (a leaf element is 1). >
+  int depth() {
+    int best = 0;
+    for (int i = 0; i < childN; i = i + 1) {
+      SLXmlNode c = children[i];
+      if (c != null && c.isElement()) {
+        int d = c.depth();
+        if (d > best) { best = d; }
+      }
+    }
+    return best + 1;
+  }
+}

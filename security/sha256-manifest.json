@@ -48258,6 +48258,42 @@
       "sha256": "4e9d3b7615203d88eb9683edf905e50450e7e0024f44a090c62e4f260941c74c"
     },
     {
+      "path": "lib/xml/SLPackage.sleela",
+      "sha256": "212c97e6be75dd3fb74fda1de919b04b43284ae465d90fc7d478199678563ef7"
+    },
+    {
+      "path": "lib/xml/SLXmlAspect.sleela",
+      "sha256": "f08eb320d94795b4ab8fc93e9dc9d56a984b551f4f22493896128cd4ddc17f97"
+    },
+    {
+      "path": "lib/xml/SLXmlAttribute.sleela",
+      "sha256": "db6481dcf9b6ebeb45ddec371c17fee598b86ddd62266a5a1a20fad587a9fe1c"
+    },
+    {
+      "path": "lib/xml/SLXmlDocument.sleela",
+      "sha256": "e723f14639abdc61711b48c206d3932268acb8ae3edb3be5bbb6538830926a85"
+    },
+    {
+      "path": "lib/xml/SLXmlNode.sleela",
+      "sha256": "6bc5a49940887e9d3ee8f777356749a82bcde0c5f453bedfa4f5c2ba015016bd"
+    },
+    {
+      "path": "lib/xml/SLXmlNodeType.sleela",
+      "sha256": "7472a8460fea69af025bfb22be5bd62acc89ac7deee57a8666ebbe2e488293fc"
+    },
+    {
+      "path": "lib/xml/SLXmlParser.sleela",
+      "sha256": "6bc203d17ec985a9265f7341b765a602d1e75a5c6db2d3e17a85c3cb5ed016ee"
+    },
+    {
+      "path": "lib/xml/SLXmlSerializer.sleela",
+      "sha256": "7fa2fa7dff78111bedf0450f587f1386a3d49de2aaa792123bbd7f5ffc2ee736"
+    },
+    {
+      "path": "lib/xml/xml-dom.sleela",
+      "sha256": "043e3e64cfa59df225131f68c3e11be4032e424964c1c5a39c50c6122cf514e1"
+    },
+    {
       "path": "runtime/Parameters.c",
       "sha256": "6c2dad5b6e91b8efe1d9c8512636be31f584af5002ed253463c8fd9ea1c50247"
     },
