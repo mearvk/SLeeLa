@@ -1,4 +1,4 @@
-#sleela 2.1
+#sleela 2.5
 < Source-facing Nordshrift contract. >
 < .sst remains the authoring surface; this object records its resolved >
 < SLeeLa source result before the normal compiler/VM pipeline. >
@@ -52,6 +52,12 @@ class NordshriftSource {
  uint32 resolvedSymbols;
  uint32 resolved;
  uint32 emitted;
+ < Whole-tree access facts. Nordshrift resolves through the SAME recursive >
+ < sleela::library::Index the compiler uses, so it reaches EVERY package >
+ < under /lib and every .sleela unit inside them -- no per-folder allow-list. >
+ uint32 availablePackages;
+ uint32 availableSymbols;
+ uint32 fullTreeAccess;
 
  function configure(sheet,root,targetName){
   sheetPath=sheet;libraryRoot=root;target=targetName;
@@ -60,6 +66,18 @@ class NordshriftSource {
  function recordResolution(packages,symbols){
   resolvedPackages=packages;resolvedSymbols=symbols;
  }
+ < Record the complete /lib index the driver discovered (every package and >
+ < every .sleela unit under the root), so the SLeeLa-layer contract reflects >
+ < that resolution spans the entire library tree, not a curated subset. >
+ function recordLibraryIndex(packages,symbols){
+  availablePackages=packages;availableSymbols=symbols;
+  fullTreeAccess=(packages>0 && symbols>0 &&
+                  resolvedPackages==packages && resolvedSymbols==symbols)?1:0;
+  return fullTreeAccess;
+ }
+ < True only when this source resolved against the full discovered index -- >
+ < i.e. it can see all /lib folders and what is inside them. >
+ function reachesWholeLibrary(){return fullTreeAccess==1;}
  function emitSleela(sourcePath){
   outputSource=sourcePath;emitted=1;return 1;
  }

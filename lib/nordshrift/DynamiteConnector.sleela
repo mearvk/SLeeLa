@@ -1,4 +1,4 @@
-#sleela 2.1
+#sleela 2.5
 < Nordshrift semantic Dynamite Connector boundary. >
 class DynamiteConnector {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -1,4 +1,4 @@
-#sleela 2.1
+#sleela 2.5
 < Compile-time Nordshrift symbol table produced from SST declarations. >
 class NordshriftSymbolTable {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
