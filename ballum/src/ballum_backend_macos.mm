@@ -170,7 +170,7 @@ static const ballum_backend_t k_macos = {
     macos_poll_key
 };
 
-const ballum_backend_t *ballum_backend_macos(void) { return &k_macos; }
+extern "C" const ballum_backend_t *ballum_backend_macos(void) { return &k_macos; }
 
 #else  /* !BALLUM_BACKEND_MACOS */
 
