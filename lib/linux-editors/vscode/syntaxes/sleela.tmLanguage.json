@@ -1,0 +1,112 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "SLeeLa",
+  "scopeName": "source.sleela",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#pragmas"
+    },
+    {
+      "include": "#markers"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#annotations"
+    },
+    {
+      "include": "#functions"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.sleela",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.sleela",
+          "begin": "/\\*",
+          "end": "\\*/"
+        },
+        {
+          "name": "comment.block.angle.sleela",
+          "begin": "^\\s*<<",
+          "end": ">>"
+        },
+        {
+          "name": "comment.line.angle.sleela",
+          "match": "^\\s*<[^<].*>?$"
+        }
+      ]
+    },
+    "pragmas": {
+      "name": "keyword.control.directive.sleela",
+      "match": "^\\s*#(sleela|schema)\\b.*$"
+    },
+    "markers": {
+      "name": "keyword.other.marker.sleela",
+      "match": "^\\s*(author|authorial|material|memory|determine)\\s*;?\\s*$"
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.sleela",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.sleela",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.sleela",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.sleela",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "name": "constant.numeric.sleela",
+      "match": "\\b[0-9]+\\b"
+    },
+    "keywords": {
+      "name": "keyword.control.sleela",
+      "match": "\\b(let|var|const|if|else|while|for|in|return|break|continue|class|interface|extends|implements|new|this|super|import|package|public|private|protected|static|final|true|false|null|nil|and|or|not|try|catch|throw|synchronized|finally|switch|case|default|do|assert|yield|instanceof)\\b"
+    },
+    "types": {
+      "name": "storage.type.sleela",
+      "match": "\\b(String|SLString|Integer|Int|Long|Double|Float|Boolean|Character|Byte|Short|Void|Object|List|Map|Set|Array|int64|int128|long|double|boolean)\\b"
+    },
+    "annotations": {
+      "name": "entity.other.attribute-name.sleela",
+      "match": "@[A-Za-z_][A-Za-z0-9_]*"
+    },
+    "functions": {
+      "name": "entity.name.function.sleela",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?=\\s*\\()"
+    }
+  }
+}

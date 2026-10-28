@@ -1,0 +1,102 @@
+{
+  "name": "SLeeLa Greek",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#0A1A30",
+    "editor.foreground": "#FFFFFF",
+    "editorCursor.foreground": "#2E7BD6",
+    "editor.lineHighlightBackground": "#102744",
+    "editorLineNumber.foreground": "#6E86A6",
+    "editorLineNumber.activeForeground": "#2E7BD6",
+    "editor.selectionBackground": "#0D5EAF",
+    "editor.findMatchBackground": "#FFFFFF",
+    "statusBar.background": "#0D5EAF",
+    "statusBar.foreground": "#FFFFFF",
+    "editorError.foreground": "#FF6B6B"
+  },
+  "tokenColors": [
+    {
+      "scope": [
+        "keyword",
+        "keyword.control.sleela",
+        "storage.modifier"
+      ],
+      "settings": {
+        "foreground": "#2E7BD6",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "storage.type.sleela",
+        "support.type"
+      ],
+      "settings": {
+        "foreground": "#5E9FE0",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "string",
+        "string.quoted"
+      ],
+      "settings": {
+        "foreground": "#9FC3EC"
+      }
+    },
+    {
+      "scope": [
+        "constant.numeric.sleela"
+      ],
+      "settings": {
+        "foreground": "#C7DBF3"
+      }
+    },
+    {
+      "scope": [
+        "constant",
+        "constant.language"
+      ],
+      "settings": {
+        "foreground": "#4C8FDE"
+      }
+    },
+    {
+      "scope": [
+        "entity.name.function.sleela"
+      ],
+      "settings": {
+        "foreground": "#FFFFFF",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "comment"
+      ],
+      "settings": {
+        "foreground": "#6E86A6",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": [
+        "keyword.control.directive.sleela",
+        "keyword.other.marker.sleela",
+        "entity.other.attribute-name.sleela"
+      ],
+      "settings": {
+        "foreground": "#5E9FE0"
+      }
+    },
+    {
+      "scope": [
+        "keyword.operator"
+      ],
+      "settings": {
+        "foreground": "#C7D4E4"
+      }
+    }
+  ]
+}

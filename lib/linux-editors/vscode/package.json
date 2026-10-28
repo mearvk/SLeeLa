@@ -1,0 +1,72 @@
+{
+  "name": "sleela",
+  "displayName": "SLeeLa",
+  "description": "SLeeLa language grammar and color themes (mirrors the vim/emacs palettes).",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Themes"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "sleela",
+        "aliases": [
+          "SLeeLa",
+          "sleela"
+        ],
+        "extensions": [
+          ".sleela"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "sleela",
+        "scopeName": "source.sleela",
+        "path": "./syntaxes/sleela.tmLanguage.json"
+      }
+    ],
+    "themes": [
+      {
+        "label": "SLeeLa American Professional",
+        "uiTheme": "vs-dark",
+        "path": "./themes/sleela-american-color-theme.json"
+      },
+      {
+        "label": "SLeeLa Pan-Eurasian",
+        "uiTheme": "vs-dark",
+        "path": "./themes/sleela-eurasia-color-theme.json"
+      },
+      {
+        "label": "SLeeLa Russian and Slavic (Medium)",
+        "uiTheme": "vs-dark",
+        "path": "./themes/sleela-russian-slavic-color-theme.json"
+      },
+      {
+        "label": "SLeeLa Central Asian / Silk Road",
+        "uiTheme": "vs-dark",
+        "path": "./themes/sleela-silk-road-color-theme.json"
+      },
+      {
+        "label": "SLeeLa East Asian",
+        "uiTheme": "vs-dark",
+        "path": "./themes/sleela-east-asian-color-theme.json"
+      },
+      {
+        "label": "SLeeLa Greek",
+        "uiTheme": "vs-dark",
+        "path": "./themes/sleela-greek-color-theme.json"
+      },
+      {
+        "label": "SLeeLa Turkish",
+        "uiTheme": "vs-dark",
+        "path": "./themes/sleela-turkish-color-theme.json"
+      }
+    ]
+  }
+}

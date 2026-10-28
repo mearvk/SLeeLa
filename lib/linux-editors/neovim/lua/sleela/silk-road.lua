@@ -1,0 +1,41 @@
+-- SLeeLa Central Asian / Silk Road colorscheme for Neovim (Lua).
+-- Mirrors lib/linux-editors/vim/colors/sleela-silk-road.vim.
+vim.cmd("highlight clear")
+if vim.fn.exists("syntax_on") == 1 then vim.cmd("syntax reset") end
+vim.o.background = "dark"
+vim.g.colors_name = "sleela-silk-road"
+local s = vim.api.nvim_set_hl
+local function hi(group, opts) s(0, group, opts) end
+hi('Normal', { fg = '#F5F0E5', bg = '#1C2529' })
+hi('Cursor', { fg = '#1C2529', bg = '#7FADE0' })
+hi('CursorLine', { bg = '#26363A' })
+hi('LineNr', { fg = '#87999A', bg = '#1C2529' })
+hi('CursorLineNr', { fg = '#7FADE0', bold = true })
+hi('Visual', { bg = '#315052' })
+hi('Search', { fg = '#1C2529', bg = '#D9B56D' })
+hi('StatusLine', { fg = '#F5F0E5', bg = '#315052', bold = true })
+hi('Pmenu', { fg = '#F5F0E5', bg = '#315052' })
+hi('MatchParen', { fg = '#F5F0E5', bg = '#315052', bold = true })
+hi('Keyword', { fg = '#7FADE0', bold = true })
+hi('Statement', { fg = '#7FADE0', bold = true })
+hi('Type', { fg = '#45C6C2', bold = true })
+hi('String', { fg = '#D9B56D' })
+hi('Number', { fg = '#C4A4DE' })
+hi('Constant', { fg = '#E58B79' })
+hi('Function', { fg = '#A7C982', bold = true })
+hi('Identifier', { fg = '#F5F0E5' })
+hi('Operator', { fg = '#D5DEDA' })
+hi('Comment', { fg = '#92A3A0', italic = true })
+hi('PreProc', { fg = '#E5A9A0' })
+hi('Special', { fg = '#45C6C2' })
+hi('Error', { fg = '#FF7777', undercurl = true })
+hi('Todo', { fg = '#D9B56D', bg = '#315052', bold = true })
+hi('@keyword', { link = 'Keyword' })
+hi('@type', { link = 'Type' })
+hi('@string', { link = 'String' })
+hi('@number', { link = 'Number' })
+hi('@comment', { link = 'Comment' })
+hi('@function', { link = 'Function' })
+hi('@constant', { link = 'Constant' })
+hi('@operator', { link = 'Operator' })
+hi('@preproc', { link = 'PreProc' })

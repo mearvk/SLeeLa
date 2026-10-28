@@ -4,7 +4,7 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "fb13f8a687c6c456f1e66caf110c4b4f144922656454e3e7e0c965fdea8da462"
+      "sha256": "f80b76d7046853647df062a11cce7599554689abc1978b1be2d3f9f78edaa84d"
     },
     {
       "path": "SLEELA.syntax",
@@ -51051,6 +51051,10 @@
       "sha256": "698330ef7f3bc3dc50f12df27830efb2177cfae8076e3d262889a8ad87fc6350"
     },
     {
+      "path": "lib/linux-editors/generate-editor-themes.py",
+      "sha256": "cd649c007f365a1c188e8b2377dbd9a19d05dde16f5fe952ab17a213bfbdf988"
+    },
+    {
       "path": "lib/manifesto/SLPackage.sleela",
       "sha256": "8c2aaf458768d5e9dca84d4c10e562900c50f8b7de937a6412bb9cae822bf9ca"
     },
@@ -53673,6 +53677,42 @@
     {
       "path": "lib/sleela-terminal/SLPackage.sleela",
       "sha256": "41a9a7bb664a265696561fca06488443204b3df319963efcaa30228bddd8f51d"
+    },
+    {
+      "path": "lib/sleeladoc/SLDocComment.sleela",
+      "sha256": "ffb3da03837963141676ab77926d98d80bd77bc4b2885a2c446942fc2068be24"
+    },
+    {
+      "path": "lib/sleeladoc/SLDocMember.sleela",
+      "sha256": "83dc7f14b4d4333b4ae48d2866bc2179649d7c5624f9352f56041e76b763f4a9"
+    },
+    {
+      "path": "lib/sleeladoc/SLDocModel.sleela",
+      "sha256": "3600d160efcf819e2963bf6f9ace7a5d564a6c6c77446c29281802ec634cd804"
+    },
+    {
+      "path": "lib/sleeladoc/SLDocRenderer.sleela",
+      "sha256": "ec9659aa953399ef1e3c0ebfb335ef013c51584009ad15d1a3362f72223d4c4e"
+    },
+    {
+      "path": "lib/sleeladoc/SLDocScanner.sleela",
+      "sha256": "f05d6a0d1f8fb2ed41274929110277347bb55018c8c9be69667b65f605ff4456"
+    },
+    {
+      "path": "lib/sleeladoc/SLDocTag.sleela",
+      "sha256": "18d5e64f8d943895c5f58cc235719b172a3128de8faa015fb07d31b39481aac8"
+    },
+    {
+      "path": "lib/sleeladoc/SLPackage.sleela",
+      "sha256": "7aa8e4967b346ccbfac17c2fcaf148477eefeaa2dbc7fd1db08f3d19f0a4558c"
+    },
+    {
+      "path": "lib/sleeladoc/SLSleelaDoc.sleela",
+      "sha256": "cd04efd46a629d671404d17586fb94a91d9aad033045aceca4c270841d8843cc"
+    },
+    {
+      "path": "lib/sleeladoc/sleeladoc-demo.sleela",
+      "sha256": "324b06b2b527b366b498516455fe65915c1edea18b17edb0b37258ede9607af4"
     },
     {
       "path": "lib/social-model/SLPackage.sleela",
@@ -58240,7 +58280,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "6a0a964c0cd1c7e84dfb85d324cdf40ddc89fb880c441256a1d7dd08c2df221c"
+      "sha256": "cd12afdb76d365710bd066b7988044d230a69fce115a5d19161baddc43b0d943"
     },
     {
       "path": "tests/http-1.0/fuzz_download_metadata.c",
@@ -58533,6 +58573,10 @@
     {
       "path": "tools/generate-sha256-manifest.py",
       "sha256": "ef2cd7e022d22a8b588c77ed2fd40a6a82d7b8459070e65f61627d0c0fb79e3e"
+    },
+    {
+      "path": "tools/generate-sleeladoc-api.py",
+      "sha256": "5aa6068b027a5fc7070e4f3eafb5d26c74ea3843f55571bf884fd65df875c59b"
     },
     {
       "path": "tools/generate-vocab-appendix.py",

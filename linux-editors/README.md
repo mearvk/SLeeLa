@@ -44,6 +44,30 @@ Copy `lib/linux-editors/emacs/sleela-mode.el` and the desired `sleela-*-theme.el
 
 Theme IDs: `sleela-american`, `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`. Theme files are independent; load only the theme you want.
 
+## More editors (Neovim, Helix, nano, VS Code)
+
+The same palettes are available for four more editors, generated from one
+palette table so the colours stay identical across all of them. Each has its
+own install guide:
+
+- **Neovim** — native Lua colorschemes + Tree-sitter capture links.
+  See [`lib/linux-editors/neovim/README.md`](../lib/linux-editors/neovim/README.md).
+- **Helix** — `languages.toml` language definition + per-theme TOML.
+  See [`lib/linux-editors/helix/README.md`](../lib/linux-editors/helix/README.md).
+- **nano** — `nanorc` syntax files (24-bit colour, nano >= 5.0).
+  See [`lib/linux-editors/nano/README.md`](../lib/linux-editors/nano/README.md).
+- **VS Code** — a TextMate grammar + one color theme per palette.
+  See [`lib/linux-editors/vscode/README.md`](../lib/linux-editors/vscode/README.md).
+
+All seven palettes (`american`, `eurasia`, `russian-slavic`, `silk-road`,
+`east-asian`, `greek`, `turkish`) are provided for each editor. Regenerate every
+editor's files after a palette change with
+`python3 lib/linux-editors/generate-editor-themes.py`.
+
+> **Ed / Sed** are non-interactive line editors with no colour-scheme or
+> syntax-highlighting concept, so there is nothing to theme for them; use them
+> for scripted `.sleela` edits.
+
 ## What is highlighted
 
 Both the Vim syntax (`vim/syntax/sleela.vim`) and the Emacs mode
