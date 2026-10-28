@@ -4,11 +4,11 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "33fa7a79861bb3b93de4e3c3d9cb43fe310906eae589bb9b369f7c23d1c34fc3"
+      "sha256": "ab70e20c8c119cc085c188761db7652ce96b0780383e679e1ce6277c72637bbc"
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "ff53f8ef83aa2f50efa902898e94e570d6d7d85a832ba2283ee76a88f2af7292"
+      "sha256": "7a324101d4b7bc81856e106816ef1b52698cb213e79047d61eef28e40bc2c538"
     },
     {
       "path": "SST-2.0.model",
@@ -448,7 +448,7 @@
     },
     {
       "path": "api/language/SYNTAX-VERSION-MATRIX.md",
-      "sha256": "2153527045beb5ff44396bb86a7ce8fc83ad754642134036fa24e36719819790"
+      "sha256": "6a2d56be8ad014d2d60cb1547dfe40d0120af3499e23c4297715a407db1a3cc8"
     },
     {
       "path": "api/language/system-namespace/API.md",
@@ -6064,11 +6064,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "f001b43054888586b234d6a4f7c94e0acc9d47585c45dbac77e97c6fa93613b7"
+      "sha256": "58c28abbbf18fe7e879b01e65510c6c142347e6c77c73285368f547fcafba79d"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "984cfbc0514fcfb6c3e7833dbf774d87dddff0ac4de5dd9106461ffd048a078f"
+      "sha256": "4121b79bbfafdf595d3fe3dadabaa146d96f9eda2ab3b88ce82ba20eeb151c1a"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -6524,7 +6524,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "3d36410e95910ee840d736169f79a908f1464a3db480494be7af2d4107647486"
+      "sha256": "e85ce5a0ac026577a5100ed8d2b9e1a23821c84470ed9229ed919bfe4495238d"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -7668,7 +7668,7 @@
     },
     {
       "path": "impl/tests/version/wide_integers.sleela",
-      "sha256": "0e5825627b4db36bf9801e694f94c194cd1f5a0429c271d21ea21cd78d78f0ac"
+      "sha256": "f463c56251132dcd2e858e016312b13e2a68a19d0067c27b7c2964e99fff48f4"
     },
     {
       "path": "impl/xclass/XCLASS.model",

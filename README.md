@@ -23,6 +23,19 @@
 
 Recent additions to the language, drivers, and standard library:
 
+- **Wide signed integer primitives (`long`, `int64`, `int128`).** `int`, `long`,
+  and `int64` are all 64-bit signed integers that type-check and run identically;
+  `int128` is accepted as an integer type (64-bit-backed for now, with true
+  128-bit a documented follow-up). See
+  [`SLEELA.syntax`](SLEELA.syntax) §21.
+- **Document markers (`material`, `memory`, `author`/`authorial`).** Syntax 2.5
+  adds first-class, declarative-only document markers — `material;` (settled
+  Source), `memory;`, and the `author`/`authorial` marker — recognised and
+  version-gated by the front end with no effect on parsing, typing, or codegen.
+  See [`SLEELA.syntax`](SLEELA.syntax) §18–§20.
+- **Nordshrift at syntax 2.5 with full library reach.** Nordshrift resolves
+  through the same recursive `/lib` index as the compiler, reaching every
+  package and `.sleela` unit; `nordshrift check` reports the whole-tree counts.
 - **Recursion stanchion.** The [`recursion/stanchion/`](recursion/stanchion/README.md) directory now includes dedicated C and C++ reference prototypes for the seven documented primitive contracts, plus generic, applied, scientific, and teaching examples. These are reference sources; compile and test them before treating them as verified.
 
 - **Angle-bracket comments (`<` / `<<`).** A new go-forward comment style —
@@ -119,11 +132,23 @@ The conventional installer uses `/usr/local/bin`, `/usr/local/lib/sleela`,
 and `/usr/local/share/sleela` by default. It preserves an existing startup
 configuration and refuses to overwrite untracked existing commands. Uninstall
 removes only files recorded by the installer, preserving configuration and
-untracked runtime data. For the interactive deployment workflow and all
-installation options, see [Quick and Safe Install](install/README.md).
+untracked runtime data.
+
+For a focused, guided deployment of just the main package — the `sleela`,
+`sleelvac`, and `nordshrift` binaries, the standard library, protocols, and
+support modules — use the clean installer:
+
+```sh
+make clean-install       # guided install of the main package only
+```
+
+It makes one primary decision (install the main package), then a scope choice,
+then on success an optional picker for curated enhancement modules. For the
+interactive deployment workflow and all installation options, see
+[Quick and Safe Install](install/README.md).
 
 ## V. Language and Runtime
-The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **2.5**; compiler/tool version and source syntax version are distinct. Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
+The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **2.5**; compiler/tool version and source syntax version are distinct. The 2.5 surface includes the wide signed integer primitives `long`/`int64`/`int128` (§21) and the declarative document markers `material`/`memory`/`author`/`authorial` (§18–§20). Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
 
 The repository includes a native C/C++ implementation, SLVM generation references, standard-library modules, tests, examples, and platform integrations. Implementation and validation status varies by module; consult its specification and current CI results rather than assuming uniform completeness.
 

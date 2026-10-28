@@ -189,6 +189,9 @@ static void set_err(SLVM* vm, const char* msg) {
 
 SLValue slval_null(void) { SLValue v; v.type = SL_NULL; v.as.i = 0; return v; }
 SLValue slval_int(int64_t x) { SLValue v; v.type = SL_INT; v.as.i = x; return v; }
+SLValue slval_int128(sl_int128_t x) { SLValue v; v.type = SL_INT128; v.as.i128 = x; return v; }
+/* Read any integer value (SL_INT or SL_INT128) as a 128-bit operand. */
+static sl_int128_t as_i128(SLValue v) { return v.type == SL_INT128 ? v.as.i128 : (sl_int128_t)v.as.i; }
 SLValue slval_double(double x) { SLValue v; v.type = SL_DOUBLE; v.as.d = x; return v; }
 SLValue slval_bool(int x) { SLValue v; v.type = SL_BOOL; v.as.b = x ? 1 : 0; return v; }
 
@@ -480,6 +483,7 @@ void slvm_free(SLVM* vm) {
 
 static double as_num(SLValue v) {
     if (v.type == SL_INT) return (double)v.as.i;
+    if (v.type == SL_INT128) return (double)v.as.i128;
     if (v.type == SL_DOUBLE) return v.as.d;
     if (v.type == SL_BOOL) return v.as.b;
     return 0.0;
@@ -487,11 +491,17 @@ static double as_num(SLValue v) {
 static int is_truthy(SLValue v) {
     if (v.type == SL_NULL) return 0;
     if (v.type == SL_INT) return v.as.i != 0;
+    if (v.type == SL_INT128) return v.as.i128 != 0;
     if (v.type == SL_DOUBLE) return v.as.d != 0.0;
     if (v.type == SL_BOOL) return v.as.b != 0;
     return 1;
 }
 static int both_int(SLValue a, SLValue b) { return a.type == SL_INT && b.type == SL_INT; }
+/* True when both operands are some integer (SL_INT or SL_INT128). */
+static int both_any_int(SLValue a, SLValue b) {
+    return (a.type == SL_INT || a.type == SL_INT128) && (b.type == SL_INT || b.type == SL_INT128);
+}
+static int any_i128(SLValue a, SLValue b) { return a.type == SL_INT128 || b.type == SL_INT128; }
 
 static int socket_alloc(SLVM* vm, SLNetHandle handle) {
     pthread_mutex_lock(&vm->sock_mtx);
@@ -823,10 +833,33 @@ static int open_file_handle(SLVM* vm, const char* path, const char* mode) {
 
 /* Render one scalar SLValue into buf (used by print, string concat, and JSON
  * packing). Struct handles render as "TypeName#handle". */
+/* Render a signed 128-bit integer in base 10. %lld cannot print 128-bit, so we
+ * build the digits by repeated division on the unsigned magnitude. Works both
+ * for a real __int128 and for the 64-bit fallback typedef. */
+static void format_int128(sl_int128_t v, char* buf, size_t cap) {
+    if (cap == 0) return;
+    char tmp[48];
+    int neg = (v < 0);
+    /* Unsigned magnitude; the standard negate-min-value guard is handled by
+     * doing the math in the unsigned domain. */
+#if SLEELA_HAVE_INT128
+    unsigned __int128 mag = neg ? (unsigned __int128)(-(v + 1)) + 1u : (unsigned __int128)v;
+#else
+    uint64_t mag = neg ? (uint64_t)(-(v + 1)) + 1u : (uint64_t)v;
+#endif
+    int n = 0;
+    if (mag == 0) tmp[n++] = '0';
+    while (mag > 0 && n < (int)sizeof(tmp)) { tmp[n++] = (char)('0' + (int)(mag % 10)); mag /= 10; }
+    size_t pos = 0;
+    if (neg && pos < cap - 1) buf[pos++] = '-';
+    while (n > 0 && pos < cap - 1) buf[pos++] = tmp[--n];
+    buf[pos] = '\0';
+}
 static void value_to_text(SLVM* vm, SLValue v, char* buf, size_t cap) {
     switch (v.type) {
         case SL_NULL:   snprintf(buf, cap, "null"); break;
         case SL_INT:    snprintf(buf, cap, "%lld", (long long)v.as.i); break;
+        case SL_INT128: format_int128(v.as.i128, buf, cap); break;
         case SL_DOUBLE: snprintf(buf, cap, "%g", v.as.d); break;
         case SL_BOOL:   snprintf(buf, cap, "%s", v.as.b ? "true" : "false"); break;
         case SL_STR:    snprintf(buf, cap, "%s", slvm_str(vm, v.as.s)); break;
@@ -1082,19 +1115,20 @@ static SLResult run_thread(SLThread* t) {
                 value_to_text(vm,b,sb,cap);
                 snprintf(buf,cap*2,"%s%s",sa,sb); SLValue r; r.type=SL_STR; r.as.s=intern(vm,buf); PUSH(r);
                 free(sa); free(sb); free(buf);
-            } else if (both_int(a,b)) PUSH(slval_int(a.as.i+b.as.i)); else PUSH(slval_double(as_num(a)+as_num(b)));
+            } else if (any_i128(a,b) && both_any_int(a,b)) PUSH(slval_int128(as_i128(a)+as_i128(b)));
+              else if (both_int(a,b)) PUSH(slval_int(a.as.i+b.as.i)); else PUSH(slval_double(as_num(a)+as_num(b)));
         } break;
-        case OP_SUB: { SLValue b=POP(),a=POP(); if(both_int(a,b)) PUSH(slval_int(a.as.i-b.as.i)); else PUSH(slval_double(as_num(a)-as_num(b))); } break;
-        case OP_MUL: { SLValue b=POP(),a=POP(); if(both_int(a,b)) PUSH(slval_int(a.as.i*b.as.i)); else PUSH(slval_double(as_num(a)*as_num(b))); } break;
-        case OP_DIV: { SLValue b=POP(),a=POP(); if(both_int(a,b)){if(!b.as.i) TERR("integer divide by zero"); PUSH(slval_int(a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
-        case OP_MOD: { SLValue b=POP(),a=POP(); if(both_int(a,b)){ if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TERR("modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
-        case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
-        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_NULL||b.type==SL_NULL) e=(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
-        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_NULL||b.type==SL_NULL) e=!(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
-        case OP_LT: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)<as_num(b))); } break;
-        case OP_LE: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
-        case OP_GT: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)>as_num(b))); } break;
-        case OP_GE: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)>=as_num(b))); } break;
+        case OP_SUB: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_int128(as_i128(a)-as_i128(b))); else if(both_int(a,b)) PUSH(slval_int(a.as.i-b.as.i)); else PUSH(slval_double(as_num(a)-as_num(b))); } break;
+        case OP_MUL: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_int128(as_i128(a)*as_i128(b))); else if(both_int(a,b)) PUSH(slval_int(a.as.i*b.as.i)); else PUSH(slval_double(as_num(a)*as_num(b))); } break;
+        case OP_DIV: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TERR("integer divide by zero"); PUSH(slval_int128(as_i128(a)/as_i128(b))); } else if(both_int(a,b)){if(!b.as.i) TERR("integer divide by zero"); PUSH(slval_int(a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
+        case OP_MOD: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TERR("integer modulo by zero"); PUSH(slval_int128(as_i128(a)%as_i128(b))); } else if(both_int(a,b)){ if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TERR("modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
+        case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT128) PUSH(slval_int128(-a.as.i128)); else if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
+        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_NULL||b.type==SL_NULL) e=(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)==as_i128(b)); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_NULL||b.type==SL_NULL) e=!(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)!=as_i128(b)); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_LT: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<as_i128(b))); else PUSH(slval_bool(as_num(a)<as_num(b))); } break;
+        case OP_LE: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<=as_i128(b))); else PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
+        case OP_GT: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>as_i128(b))); else PUSH(slval_bool(as_num(a)>as_num(b))); } break;
+        case OP_GE: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>=as_i128(b))); else PUSH(slval_bool(as_num(a)>=as_num(b))); } break;
         case OP_AND: { SLValue b=POP(),a=POP(); PUSH(slval_bool(is_truthy(a)&&is_truthy(b))); } break;
         case OP_OR: { SLValue b=POP(),a=POP(); PUSH(slval_bool(is_truthy(a)||is_truthy(b))); } break;
         case OP_NOT: { SLValue a=POP(); PUSH(slval_bool(!is_truthy(a))); } break;
@@ -1703,10 +1737,19 @@ static SLResult run_thread(SLThread* t) {
                 if(!matches) TERR("checked cast failed: runtime class/struct type does not match target");
             } else {
                 int targetTag=-in.a-1;
-                if(targetTag<SL_NULL || targetTag>SL_ARRAY)
+                if(targetTag<SL_NULL || targetTag>SL_INT128)
                     TERR("invalid checked-cast type descriptor");
                 if(value.type==SL_NULL && (targetTag==SL_STR || targetTag==SL_ARRAY)) {
                     PUSH(value); break;
+                }
+                /* int128 casts widen an integer to the 128-bit representation
+                 * (this is how `(int128)x` and int128-typed storage produce a
+                 * real 128-bit value), and allow the reverse narrowing. */
+                if(targetTag==SL_INT128 && (value.type==SL_INT||value.type==SL_INT128)) {
+                    PUSH(slval_int128(as_i128(value))); break;
+                }
+                if(targetTag==SL_INT && value.type==SL_INT128) {
+                    PUSH(slval_int((int64_t)value.as.i128)); break;
                 }
                 if((int)value.type!=targetTag)
                     TERR("checked cast failed: runtime value tag does not match target");
@@ -1724,7 +1767,7 @@ static SLResult run_thread(SLThread* t) {
                 }
             } else {
                 int targetTag=-in.a-1;
-                if(targetTag<SL_NULL || targetTag>SL_ARRAY)
+                if(targetTag<SL_NULL || targetTag>SL_INT128)
                     TERR("invalid instanceof type descriptor");
                 matches=((int)value.type==targetTag);
             }
