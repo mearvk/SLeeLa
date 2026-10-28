@@ -1060,8 +1060,10 @@ static int usage(){
         << "                               Compile one or more Sleela source files to a runnable Core artifact\n"
         << "  " << n << " check <file.sleela>\n"
         << "                               Parse, resolve referenced library units, and check semantics\n"
-        << "  " << n << " run <file.sleela|file.xclass|file.java|file.kt|file.scala|file.groovy|file.clj> [more-files ...]\n"
-        << "                               Run a Core artifact or run supported source/framework input\n"
+        << "  " << n << " run <file.sleela|file.xclass|file.java|file.jar> [arguments ...]\n"
+        << "  " << n << " run --class-path <path> <MainClass> [arguments ...]\n"
+        << "  " << n << " run --class <MainClass> [arguments ...]\n"
+        << "                               Run SLeeLa input, Java source, runnable JAR, or compiled Java class\n"
         << "  " << n << " validate-artifact <file.sleela>\n"
         << "                               Validate the runnable artifact ABI and format\n"
         << "  " << n << " version\n"
@@ -1219,6 +1221,58 @@ static int runJavaFrameworkSource(const std::string&path,const std::vector<std::
     std::cout<<"[java] secondary circuit: "<<sleela_java_runtime_kind_name(probe.kind)
              <<" -> "<<probe.java_executable<<" -> "<<path<<"\n";
     return nativeCmd(static_cast<int>(args.size()),argv.data());
+}
+static int runJavaApplication(const std::vector<std::string>&javaArgs,const std::string&description){
+    const char* javaMode=std::getenv("SLEELA_JAVA_MODE");
+    const char* javaEnabled=std::getenv("SLEELA_JAVA_ENABLED");
+    if((javaMode&&std::string(javaMode)=="disabled") ||
+       (javaEnabled&&std::string(javaEnabled)=="0")){
+        std::cerr<<"[java] Java execution is disabled by SLEELA_JAVA_MODE or SLEELA_JAVA_ENABLED.\n";
+        return 2;
+    }
+    SleelaJavaRuntimeProbeResult probe{};
+    if(sleela_java_runtime_probe_local_vm(&probe)!=1 ||
+       !probe.java_vm_available || !probe.java_executable[0]){
+        std::cerr<<"[java] A Java runtime is required for "<<description<<" but was not found.\n"
+                 <<"       Set SLEELA_JAVA or JAVA_HOME, or install/configure a Java distribution, then retry.\n";
+        return 2;
+    }
+    std::vector<std::string> args={"sleela","native","--",probe.java_executable};
+    args.insert(args.end(),javaArgs.begin(),javaArgs.end());
+    std::vector<char*> argv;
+    argv.reserve(args.size()+1);
+    for(auto&arg:args)argv.push_back(arg.data());
+    argv.push_back(nullptr);
+    std::cout<<"[java] external JVM: "<<probe.java_executable<<" -> "<<description<<"\n";
+    return nativeCmd(static_cast<int>(args.size()),argv.data());
+}
+static bool validJavaMainClass(const std::string&name){
+    // Accept conventional binary class names, including nested classes ($).
+    // A class name is a single argument, never a shell fragment or JVM option.
+    static const std::regex pattern(
+        R"(^[A-Za-z_$][A-Za-z0-9_$]*(\.[A-Za-z_$][A-Za-z0-9_$]*)*$)");
+    return std::regex_match(name,pattern);
+}
+static int runJavaJar(const std::string&jar,const std::vector<std::string>&programArgs){
+    std::error_code ec;
+    if(!fs::is_regular_file(fs::path(jar),ec)){
+        std::cerr<<"sleela: Java JAR not found or not a regular file: "<<jar<<"\n";
+        return 2;
+    }
+    std::vector<std::string> args={"-jar",jar};
+    args.insert(args.end(),programArgs.begin(),programArgs.end());
+    return runJavaApplication(args,"JAR "+jar);
+}
+static int runJavaClass(const std::string&classpath,const std::string&mainClass,
+                        const std::vector<std::string>&programArgs){
+    if(!validJavaMainClass(mainClass)){
+        std::cerr<<"sleela: invalid Java main class name '"<<mainClass<<"'.\n"
+                 <<"       Use a binary class name such as com.example.Main.\n";
+        return 2;
+    }
+    std::vector<std::string> args={"-cp",classpath.empty()?".":classpath,mainClass};
+    args.insert(args.end(),programArgs.begin(),programArgs.end());
+    return runJavaApplication(args,"class "+mainClass+" (classpath "+(classpath.empty()?".":classpath)+")");
 }
 static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
 // Combine several parsed Programs into one compilation unit by concatenating
@@ -1530,7 +1584,7 @@ int main(int argc,char**argv){
     }
     else if(cmd=="check"){if(argc<3)return usage();rc=checkFile(argv[2]);}
     else if(cmd=="validate-artifact"){if(argc!=3)return usage();rc=validateArtifact(argv[2]);}
-    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);if(hasExt(argv[2],".java")){std::string src;if(readFile(argv[2],src)){SleelaJavaRuntimeProbeResult probe{};SleelaJavaProgramRequest request{};request.classpath=".";request.source_file=argv[2];SleelaJavaProgramPlan plan{};int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),argv[2],&request,&probe,&plan);if(dispatch<0)return 1;{std::vector<std::string> javaArgs;for(int i=3;i<argc;++i)javaArgs.emplace_back(argv[i]);rc=runJavaFrameworkSource(argv[2],javaArgs);}}else rc=runLangin(files);}else rc=runLangin(files);}else if(argc>3){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runSourceMulti(files);}else rc=runFile(argv[2]);}
+    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".jar")){std::vector<std::string> javaArgs;for(int i=3;i<argc;++i)javaArgs.emplace_back(argv[i]);rc=runJavaJar(argv[2],javaArgs);}else if(std::string(argv[2])=="--class-path"||std::string(argv[2])=="--classpath"||std::string(argv[2])=="-cp"){if(argc<5){std::cerr<<"sleela run: expected --class-path <path> <MainClass> [arguments...]\n";return 2;}std::vector<std::string> javaArgs;for(int i=5;i<argc;++i)javaArgs.emplace_back(argv[i]);rc=runJavaClass(argv[3],argv[4],javaArgs);}else if(std::string(argv[2])=="--class"){if(argc<4){std::cerr<<"sleela run: expected --class <MainClass> [arguments...]\n";return 2;}std::vector<std::string> javaArgs;for(int i=4;i<argc;++i)javaArgs.emplace_back(argv[i]);rc=runJavaClass(".",argv[3],javaArgs);}else if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);if(hasExt(argv[2],".java")){std::string src;if(readFile(argv[2],src)){SleelaJavaRuntimeProbeResult probe{};SleelaJavaProgramRequest request{};request.classpath=".";request.source_file=argv[2];SleelaJavaProgramPlan plan{};int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),argv[2],&request,&probe,&plan);if(dispatch<0)return 1;{std::vector<std::string> javaArgs;for(int i=3;i<argc;++i)javaArgs.emplace_back(argv[i]);rc=runJavaFrameworkSource(argv[2],javaArgs);}}else rc=runLangin(files);}else rc=runLangin(files);}else if(argc>3){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runSourceMulti(files);}else rc=runFile(argv[2]);}
     else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
