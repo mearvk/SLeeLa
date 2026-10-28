@@ -66,8 +66,8 @@ class CharacterStats {
     string characterRace;
     string characterArchetype;
     int level;
-    long experience;
-    long experienceToNextLevel;
+    int experience;
+    int experienceToNextLevel;
     int proficiencyBonus;
     int alignment;
 
