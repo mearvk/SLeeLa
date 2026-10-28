@@ -12,7 +12,8 @@
    bit so a Sleela-sourced VM can reason about liveness without crossing to C.
    
    Family: vm. Composes SLRAM; composed by SLVM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVMHeap {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

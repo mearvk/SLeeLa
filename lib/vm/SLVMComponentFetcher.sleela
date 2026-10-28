@@ -16,7 +16,8 @@
    
    Family: vm. Composes SLVM + SLSupportDownloader; fetch/probe cross the osRun
      bridge (requires #sleela 1.5). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVMComponentFetcher {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

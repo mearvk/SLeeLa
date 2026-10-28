@@ -19,7 +19,8 @@
    authoritative current level in impl/frontend/version.h (max supported 2.4).
    No language constructs changed; the bump keeps the VM manifests on the same
    current syntax as the rest of the tree. >>
-#sleela 2.4
+#sleela 2.5
+material;
 class SLVmVersion {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

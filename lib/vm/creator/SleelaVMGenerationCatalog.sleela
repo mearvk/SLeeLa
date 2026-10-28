@@ -5,6 +5,8 @@
      SleelaVMCreator consults it to name and validate a selected generation.
    
    Family: vm.creator. Consulted by SleelaVMCreator. >>
+#sleela 2.5
+material;
 package vm.creator;
 
 class SleelaVMGenerationCatalog {

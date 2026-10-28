@@ -14,7 +14,8 @@
    VM-local bounded handle (the sockets/files discipline), never a raw PID.
    
    Family: vm. Native VM/OS work crosses the explicit os* SLVM bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SleelaVMSystemCallBridge {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

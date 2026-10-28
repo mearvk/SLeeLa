@@ -12,7 +12,8 @@
      vm_ok/vm_fail/vm_is_ok/vm_result_report/vm_result_from_status.
    
    Family: vm. Composes SLVmReport; folded into SLVmAudit. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVmResult {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

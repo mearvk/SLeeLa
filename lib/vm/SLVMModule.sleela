@@ -12,7 +12,8 @@
    interprets, which is what keeps the two VM layers behaviourally identical.
    
    Family: vm. Composes SLVMClass, SLSleelaVM; composed by SLVM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVMModule {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

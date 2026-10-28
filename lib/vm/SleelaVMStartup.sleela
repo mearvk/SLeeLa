@@ -1,6 +1,8 @@
 < SLeeLa VM Startup Definition >
 < The SLeeLa source definition for bootstrapping a VM selected as a System Startup Module. >
 
+#sleela 2.5
+material;
 class SleelaVMStartup {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

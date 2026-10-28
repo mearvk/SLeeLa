@@ -17,7 +17,8 @@
    
    Family: vm. Composes SLVmResult, SLVmReport; selected per version via
      SLVmVersion/SLVmRegistry. Native work crosses the SLVMNativeBinding VM-exit. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVmModium {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
