@@ -36,6 +36,13 @@
 #include <regex>
 #include <set>
 #include <chrono>
+#include <cerrno>
+#include <cstring>
+#if defined(_WIN32)
+#  include <process.h>
+#else
+#  include <sys/wait.h>
+#endif
 extern "C" {
 #include "../core/sleela_core.h"
 #include "../core/sleela_memmgr.h"
@@ -48,6 +55,7 @@ extern "C" {
 #elif defined(__APPLE__)
 #  include <mach-o/dyld.h>
 #  include <climits>
+#  include <unistd.h>
 #else
 #  include <unistd.h>
 #  include <climits>
@@ -1150,6 +1158,67 @@ static int runArtifact(const std::string&path){
     if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";slvm_free(vm);return 1;}
     slvm_free(vm);return 0;
 }
+// Launch a child process with an argv vector, without routing Java arguments
+// through a shell or the interactive PTY. This preserves whitespace/metacharacters
+// in application arguments and returns the child's actual exit status.
+static int runExternalProcess(const std::vector<std::string>& args){
+    if(args.empty()||args[0].empty()){
+        std::cerr<<"sleela: cannot launch an empty process command.\n";
+        return 2;
+    }
+#if defined(_WIN32)
+    std::vector<std::wstring> wide;
+    wide.reserve(args.size());
+    for(const auto& arg:args){
+        int count=MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,arg.c_str(),-1,nullptr,0);
+        if(count<=0){
+            std::cerr<<"sleela: process argument is not valid UTF-8.\n";
+            return 2;
+        }
+        std::wstring value((size_t)count,L'\0');
+        if(MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,arg.c_str(),-1,&value[0],count)<=0){
+            std::cerr<<"sleela: unable to convert process argument to UTF-16.\n";
+            return 2;
+        }
+        value.resize((size_t)count-1);
+        wide.push_back(std::move(value));
+    }
+    std::vector<const wchar_t*> argv;
+    argv.reserve(wide.size()+1);
+    for(const auto& arg:wide)argv.push_back(arg.c_str());
+    argv.push_back(nullptr);
+    intptr_t status=_wspawnvp(_P_WAIT,wide[0].c_str(),argv.data());
+    if(status==-1){
+        std::cerr<<"sleela: unable to start Java process (errno "<<errno<<").\n";
+        return errno==ENOENT?127:126;
+    }
+    return (int)status;
+#else
+    std::vector<char*> argv;
+    argv.reserve(args.size()+1);
+    for(const auto& arg:args)argv.push_back(const_cast<char*>(arg.c_str()));
+    argv.push_back(nullptr);
+    pid_t child=fork();
+    if(child<0){
+        std::cerr<<"sleela: fork failed while launching Java: "<<std::strerror(errno)<<"\n";
+        return 127;
+    }
+    if(child==0){
+        execvp(argv[0],argv.data());
+        std::perror("sleela: execvp");
+        _exit(errno==ENOENT?127:126);
+    }
+    int status=0;
+    while(waitpid(child,&status,0)<0){
+        if(errno==EINTR)continue;
+        std::cerr<<"sleela: waitpid failed while collecting Java exit status: "<<std::strerror(errno)<<"\n";
+        return 127;
+    }
+    if(WIFEXITED(status))return WEXITSTATUS(status);
+    if(WIFSIGNALED(status))return 128+WTERMSIG(status);
+    return 1;
+#endif
+}
 static int runJavaFrameworkSource(const std::string&path,const std::vector<std::string>&programArgs={}){
     std::string src;
     if(!readFile(path,src)){
@@ -1182,7 +1251,7 @@ static int runJavaFrameworkSource(const std::string&path,const std::vector<std::
     /* A .java source file is Java even when it uses no GUI framework.
        Execute it with the discovered JVM instead of treating it as a SLeeLa
        source-ingestion unit. */
-    if(!plan.ready || !probe.java_executable || !probe.java_executable[0]){
+    if(!plan.ready || !probe.java_executable[0]){
         std::cerr<<"sleelvac: Java provider did not produce a runnable JVM handoff for '"<<path<<"'\n";
         return 1;
     }
@@ -1190,7 +1259,7 @@ static int runJavaFrameworkSource(const std::string&path,const std::vector<std::
     /* Build a real Java process argument vector. JavaFX module options must
        precede the source-file operand; never infer module availability merely
        from finding the java executable. */
-    std::vector<std::string> args={"sleela","native","--",probe.java_executable};
+    std::vector<std::string> args={probe.java_executable};
     if(probe.kind==SLEELA_JAVA_FX){
         const char* modulePath=std::getenv("SLEELA_JAVAFX_MODULE_PATH");
         const char* configuredModules=std::getenv("SLEELA_JAVAFX_MODULES");
@@ -1214,13 +1283,10 @@ static int runJavaFrameworkSource(const std::string&path,const std::vector<std::
     }
     args.push_back(path);
     for(const auto&arg:programArgs) args.push_back(arg);
-    std::vector<char*> argv;
-    argv.reserve(args.size()+1);
-    for(auto&arg:args)argv.push_back(arg.data());
-    argv.push_back(nullptr);
     std::cout<<"[java] secondary circuit: "<<sleela_java_runtime_kind_name(probe.kind)
              <<" -> "<<probe.java_executable<<" -> "<<path<<"\n";
-    return nativeCmd(static_cast<int>(args.size()),argv.data());
+    std::cout.flush();
+    return runExternalProcess(args);
 }
 static int runJavaApplication(const std::vector<std::string>&javaArgs,const std::string&description){
     const char* javaMode=std::getenv("SLEELA_JAVA_MODE");
@@ -1237,14 +1303,11 @@ static int runJavaApplication(const std::vector<std::string>&javaArgs,const std:
                  <<"       Set SLEELA_JAVA or JAVA_HOME, or install/configure a Java distribution, then retry.\n";
         return 2;
     }
-    std::vector<std::string> args={"sleela","native","--",probe.java_executable};
+    std::vector<std::string> args={probe.java_executable};
     args.insert(args.end(),javaArgs.begin(),javaArgs.end());
-    std::vector<char*> argv;
-    argv.reserve(args.size()+1);
-    for(auto&arg:args)argv.push_back(arg.data());
-    argv.push_back(nullptr);
     std::cout<<"[java] external JVM: "<<probe.java_executable<<" -> "<<description<<"\n";
-    return nativeCmd(static_cast<int>(args.size()),argv.data());
+    std::cout.flush();
+    return runExternalProcess(args);
 }
 static bool validJavaMainClass(const std::string&name){
     // Accept conventional binary class names, including nested classes ($).
