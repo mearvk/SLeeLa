@@ -1,7 +1,8 @@
 << lib/cpu/components/examples/build-your-executor.sleela
    SLeeLa example: build a custom Sleela executor from catalog parts, overclock
    the CPU, upgrade the RAM/storage, and run a program on it under the SLVM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class BuildYourExecutorExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

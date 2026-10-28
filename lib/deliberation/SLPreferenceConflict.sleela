@@ -1,7 +1,8 @@
 << lib/deliberation/SLPreferenceConflict.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLPreferenceConflict used within the deliberation library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa deliberation front-end contract. >
 < Explicit reasoning/evidence/decision state; native facilities cross a VM/OS bridge. >
 class SLPreferenceConflict {

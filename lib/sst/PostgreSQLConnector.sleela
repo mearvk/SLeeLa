@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < SST PostgreSQL connector contract. Installation is intentionally deferred. >
 class PostgreSQLConnector {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

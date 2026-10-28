@@ -1,7 +1,8 @@
 << lib/common-rails/PrintComponent.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type PrintComponent used within the common-rails library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class PrintComponent {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,5 +1,6 @@
 < W-CDMA / UMTS profile metadata, not a complete 3GPP stack. >
-#sleela 2.1
+#sleela 2.5
+material;
 class WCDMAProfile {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

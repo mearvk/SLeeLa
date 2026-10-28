@@ -11,7 +11,8 @@
    
    Family: gui. A self-dismissing notification; the host renders it, this model
    decides when it is visible and how opaque. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiToast {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

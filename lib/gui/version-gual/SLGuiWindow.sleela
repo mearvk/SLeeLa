@@ -5,7 +5,8 @@
      refresh(documentId, revision). SLeeLa describes the window; the backend
      (Swing/JavaFX/native) renders it and marshals updates onto the toolkit
      thread. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa gui front-end contract — a window the host renders. >
 < Family: gui. State transitions and the meaning of events stay in SLeeLa; the >
 < backend owns presentation and desktop lifecycle. >

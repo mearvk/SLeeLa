@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << CitizenCommunityRelationshipsAndCivicParticipationStats.sleela
    Individual category class extracted from citizen/sleela/CitizenStats.sleela.
    Source category: Community, relationships, and civic participation.

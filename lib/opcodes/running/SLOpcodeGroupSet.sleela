@@ -9,7 +9,8 @@
      single stream or runs them group-by-group against a VM frame.
    
    Family: opcodes.running. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 class SLOpcodeGroupSet {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

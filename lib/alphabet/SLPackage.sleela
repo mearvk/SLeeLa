@@ -1,7 +1,8 @@
 << lib/alphabet/SLPackage.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library package for alphabet. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: alphabet >
 < Exposes the package to the SLeeLa compiler, Loader, and Nordshrift. >
 < The Master Classes (Color, Palette, Letter, Alphabet + the concrete scripts, >

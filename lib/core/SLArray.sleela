@@ -1,7 +1,8 @@
 << lib/core/SLArray.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLArray used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa core/base language contract. >
 class SLArray {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

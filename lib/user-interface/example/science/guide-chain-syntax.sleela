@@ -11,7 +11,8 @@
    Run:
      SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
      ./impl/build/sleela run example/science/guide-chain-syntax.sleela >>
-#sleela 2.3
+#sleela 2.5
+material;
 << Family: example. A tiny "perfect Constructor" whose Guides are zero-arg
    methods, seated inline with the :: operator. >>
 class Perfect {

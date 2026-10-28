@@ -12,7 +12,8 @@
 < (0 ok; negative = a specific, honest failure) so source and native agree. >
 <  >
 < Comments use the angle-bracket style; #sleela 2.1. >
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: core. The shared service result-code vocabulary. >
 
 class SLServiceResult {

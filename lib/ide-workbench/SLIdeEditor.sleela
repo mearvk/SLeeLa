@@ -7,7 +7,8 @@
      lib/gui SLGuiDocument revision fingerprint so external changes can be
      reconciled. Presentation (actual glyphs, syntax colors) is still owned by
      the Java/native host; SLeeLa owns the buffer and the meaning of edits. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ide-workbench. One editor == one open document buffer. >
 class SLIdeEditor {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -1,6 +1,7 @@
 // @author Max Rupplin — MEARVK LLC — 2026
 // Demonstrates the SLeeLa mirror of the native signal-processing routines.
-#sleela 2.1
+#sleela 2.5
+material;
 class SLSignalProcessingDemo {
   void printSeries(String label, SLSignalSeries samples) {
     print(label);

@@ -22,7 +22,8 @@
    
    Family: os. Design + host roles; markExecutable()/isHostExecutable() cross
      the osRun / osPlatform bridge (requires #sleela 1.5). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLExecutableTypes {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

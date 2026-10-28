@@ -15,7 +15,8 @@
    Run:
      ./impl/build/sleela run lib/ballum/session-demo.sleela
      SESSION_FRAMES=12 ./impl/build/sleela run lib/ballum/session-demo.sleela >>
-#sleela 2.2
+#sleela 2.5
+material;
 
 class SessionDemo {
   << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----

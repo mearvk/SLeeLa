@@ -2,7 +2,8 @@
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa Java library package facade used to expose Java interoperability
    and Java-oriented library services to the SLeeLa Compiler, Loader, and Nordshrift. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class SLPackage {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

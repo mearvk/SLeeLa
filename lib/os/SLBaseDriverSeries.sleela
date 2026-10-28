@@ -16,7 +16,8 @@
    
    Family: os. Pure design model; the series is consumed by the kernel/initramfs
      emitters. No native bridge calls. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLBaseDriverSeries {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

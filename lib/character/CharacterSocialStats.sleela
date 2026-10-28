@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << CharacterSocialStats.sleela
    SLeeLa CharacterStats component: social standing, knowledge, language, and relationships.
    

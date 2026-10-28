@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < input-demo.sleela -- the runnable demo of the Ballum touchscreen + mouse >
 < input listener. It inlines the gesture state machine (mirroring SLBallumInput) >
 < and a main that polls the uiBallum* VM bridge, turning raw DOWN/MOVE/UP events >

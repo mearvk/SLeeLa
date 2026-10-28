@@ -8,7 +8,8 @@
      explicit Component vs Container taxonomy, a cryptography selector and a
      public-key certificate store, and window key-listeners (resize / minimize /
      fullscreen / fold-to-side-of-desktop with double-click restore). >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: gui >
 < Exposes the package to the SLeeLa compiler, Loader, and Nordshrift. >
 < This package is the SLeeLa-facing *consequence* of the top-level gui/ work >

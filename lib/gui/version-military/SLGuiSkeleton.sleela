@@ -12,7 +12,8 @@
    
    Family: gui. A loading placeholder; this model decides shimmer phase, panel
    opacity, and when the real content is revealed. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiSkeleton {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Aggregate entry point for the open sommelier create-use care suite. >
 class SLSommelierCare {
   SLSommelierOffer offer;

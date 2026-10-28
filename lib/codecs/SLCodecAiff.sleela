@@ -1,7 +1,8 @@
 << lib/codecs/SLCodecAiff.sleela
    SLeeLa Standard Library Definition.
    Definition: AIFF codec class — the SLeeLa-facing handle to codec id 1. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: codecs. Individual codec class for AIFF: >
 < Audio Interchange File Format (Apple): uncompressed big-endian PCM in a FORM/AIFF container. Mirrors codecs/codecs/aiff/ and the registry entry in >
 < sleela_codec_manager.h. SLeeLa never calls a codec directly; the >

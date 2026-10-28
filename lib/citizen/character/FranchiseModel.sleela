@@ -5,7 +5,8 @@
      one-time fee amortized across the month, and the brand does the rest.
    
    A concrete BusinessModel. Family: character. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class FranchiseModel extends BusinessModel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

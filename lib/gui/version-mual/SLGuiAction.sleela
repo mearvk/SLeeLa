@@ -5,7 +5,8 @@
      in gui/: a name the window raises and a SLeeLa operation it maps to. The VM
      latches each activation so a click (or Enter/Space while focused) is
      observed exactly once. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa gui front-end contract — a named action bound to a SLeeLa operation. >
 < Family: gui. Java/native raise activations; SLeeLa decides what they mean. >
 class SLGuiAction {

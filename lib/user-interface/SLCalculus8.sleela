@@ -15,7 +15,8 @@
    
    Family: user-interface. Native VM/UI work crosses the explicit `calc8*` SLVM
    bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCalculus8 {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

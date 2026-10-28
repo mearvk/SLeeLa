@@ -6,7 +6,8 @@
      renders bytes to the host terminal across the explicit VM/OS bridge.
    
    Family: cpu. Extends SLDeviceDriver. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLConsoleDriver extends SLDeviceDriver {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

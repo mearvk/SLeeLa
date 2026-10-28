@@ -5,7 +5,8 @@
    exercise the package. It does not open a real socket -- it drives the
    SLeeLa-side model whose native counterpart is
    web-server-technology/native/dyn_sql_server.cpp. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class DemoWebServerTechnology {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Worker-class demo: baseline identity record is sufficient. >>

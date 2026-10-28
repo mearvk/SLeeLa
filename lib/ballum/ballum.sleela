@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < ballum.sleela -- the self-contained, runnable Ballum demonstration. The >
 < compiler run compiles one file as a single unit, so this aggregate inlines a >
 < compact display + manager model (mirroring SLBallumDisplay / SLBallumManager / >

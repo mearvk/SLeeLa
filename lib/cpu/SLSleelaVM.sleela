@@ -15,7 +15,8 @@
    computations are expressible (unbounded tape => Turing-complete).
    
    Family: cpu. Composes SLSleelaOpcode, SLStack, SLRAM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLSleelaVM {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

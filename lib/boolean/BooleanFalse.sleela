@@ -1,7 +1,8 @@
 << lib/boolean/BooleanFalse.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the primitive Boolean syllable BOOLEAN.FALSE as a SLeeLa standard-library constant. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa boolean primitive syllable — BOOLEAN.FALSE. >
 < Family: boolean. The two primitive syllables from which every Boolean word >
 < (BOOLEAN.TRUE.FALSE, BOOLEAN.TRUE.FALSE.FALSE, ...) is composed. >

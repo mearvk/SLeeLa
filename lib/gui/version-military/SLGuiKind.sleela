@@ -13,7 +13,8 @@
    
    Family: gui. Pure classification; consulted by the factory, mount, and the
      icon system to decide layout role and icon eligibility. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiKind {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

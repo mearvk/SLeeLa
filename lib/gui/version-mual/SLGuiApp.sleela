@@ -13,7 +13,8 @@
    
    Family: gui. SLeeLa owns the DOM, dispatch, and script execution; SleelaUI
    owns presentation; this object is the wiring between them. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiApp {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -16,7 +16,8 @@
    
    Family: gui. A "cryptoselector" node's backing model; the host supplies which
      suites are actually available and performs the selected cryptography. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiCryptoSelector {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

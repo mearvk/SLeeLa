@@ -17,7 +17,8 @@
      internal-memorandum rationale.
    
    Family: gui. Attached to SLGuiNode; flattened to style; realized by the host. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiEffects {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

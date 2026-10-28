@@ -7,7 +7,8 @@
    entirely in the Sleela layer, not in the host OS.
    
    Shows the key property: you compose BOTH the real module AND the interface. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class Ddr5AsDdr2CadenceExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

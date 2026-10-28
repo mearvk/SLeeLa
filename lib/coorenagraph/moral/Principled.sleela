@@ -3,6 +3,8 @@
    Part of speech: adjective
    Definition: Acting firmly according to a clear and honorable system of moral beliefs. >>
 
+#sleela 2.5
+material;
 class Principled {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

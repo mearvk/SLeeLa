@@ -8,7 +8,8 @@
    Mirrors examples/epyc-ddr2.xlt (the declarative sheet) and the SST compile
    flow, without any new keyword or setter surface — the orthogonal document is
    the whole contract. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class CompileXltModelsExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -6,7 +6,8 @@
      project, open a .sst sheet, edit it, compile it through "SST Nordshrit"
      (Nordshrift -> .sleela -> SLeeLa compiler), see diagnostics, and save.
      Self-contained (inline flow + main), in the style of lib/gui/gui-demo.sleela. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa IDE Workbench demonstrator. >
 < SLeeLa owns the IDE's meaning (open/edit/compile/save state); the Java/native >
 < host owns presentation. The split per-class files (SLIdeWorkbench, >

@@ -10,7 +10,8 @@
    in, the turn applies it to the Player, and describe() narrates it.
    
    Family: gameplay. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class MoveOutcome {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

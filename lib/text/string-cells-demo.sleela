@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < string-cells-demo.sleela -- a self-contained, runnable reference for the >
 < REAL char-cell toolkit added to the SLeeLa text/String surface: the new >
 < subsequence search/replace, split, explicit-table case mapping, trim, and >

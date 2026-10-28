@@ -17,7 +17,8 @@
    
    Family: os. Pure reference/manifest; no payload. SLDistroFetch performs the
      opt-in download; SLOSModel/SLOSCreator may record this as provenance. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLDistroSource {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

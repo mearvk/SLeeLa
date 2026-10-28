@@ -1,5 +1,6 @@
 < Subscriber/session lifecycle model; no real subscriber credentials. >
-#sleela 2.1
+#sleela 2.5
+material;
 class CDMASession {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -12,7 +12,8 @@
    a bytecode IR behind javac). This models that convergence point.
    
    Family: cpu. Pure Sleela IR node. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLIRInstruction {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

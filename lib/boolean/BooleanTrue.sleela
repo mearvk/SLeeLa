@@ -1,7 +1,8 @@
 << lib/boolean/BooleanTrue.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the primitive Boolean syllable BOOLEAN.TRUE as a SLeeLa standard-library constant. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa boolean primitive syllable — BOOLEAN.TRUE. >
 < Family: boolean. The two primitive syllables from which every Boolean word >
 < (BOOLEAN.TRUE.FALSE, BOOLEAN.TRUE.FALSE.FALSE, ...) is composed. >

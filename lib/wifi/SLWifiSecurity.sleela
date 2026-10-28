@@ -1,6 +1,7 @@
 << lib/wifi/SLWifiSecurity.sleela
    Security identifiers match wifi_security_t in wifi_manager.h. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLWifiSecurity {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

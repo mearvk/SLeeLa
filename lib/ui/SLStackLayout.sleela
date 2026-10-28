@@ -16,7 +16,8 @@
    A child size of 0 means "flexible" -- it shares the leftover main-axis space
    equally with the other flexible children, so a body region that fills the
    rest is just s.add(0). >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. A standard, professional, beginner-friendly stack layout. >
 class SLStackLayout {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

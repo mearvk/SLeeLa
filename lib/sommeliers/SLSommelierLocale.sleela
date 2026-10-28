@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Language preference holder. Translation content should be reviewed by fluent
   speakers and is not inferred from a user's location. >
 class SLSommelierLocale {

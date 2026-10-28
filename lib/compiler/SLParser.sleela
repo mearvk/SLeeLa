@@ -1,7 +1,8 @@
 << lib/compiler/SLParser.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLParser used within the compiler library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 < Family: compiler. Native implementation crosses an explicit VM/OS bridge. >
 class SLParser {

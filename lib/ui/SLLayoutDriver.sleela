@@ -47,7 +47,8 @@
      int footer = uiButton(box, "Close");
      d.applyComponent(f, 2, footer);
    >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. Realizes a planned SLLayoutFrame onto native ui* widgets. >
 class SLLayoutDriver {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

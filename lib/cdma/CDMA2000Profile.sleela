@@ -1,5 +1,6 @@
 < CDMA2000 1xRTT profile metadata, not an air-interface implementation. >
-#sleela 2.1
+#sleela 2.5
+material;
 class CDMA2000Profile {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

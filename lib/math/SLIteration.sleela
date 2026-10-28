@@ -1,7 +1,8 @@
 << lib/math/SLIteration.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLIteration used within the math library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa mathematics front-end contract. >
 < Native numerical kernels cross an explicit VM bridge. >
 class SLIteration {

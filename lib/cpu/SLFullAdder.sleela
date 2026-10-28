@@ -9,7 +9,8 @@
    carry_out = c1 OR c2
    
    Family: cpu. Pure Sleela logic. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLFullAdder {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

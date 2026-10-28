@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 import math;
 < autocad.sleela -- the self-contained, runnable build of the SLeeLa AutoCAD >
 < Renderer. The SLeeLa compiler's `run` compiles one file as a single unit, so >

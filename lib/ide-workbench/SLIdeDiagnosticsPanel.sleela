@@ -7,7 +7,8 @@
      a 1-based (line, column) origin, the owning document id, and a message,
      honoring the /ide SLEELA.IDE.CONTRACT.md rule that compiler failures stay
      IDE-visible failures (a failed compile must not read back as success). >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ide-workbench. The problems list bound to a status/list widget. >
 class SLIdeDiagnosticsPanel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

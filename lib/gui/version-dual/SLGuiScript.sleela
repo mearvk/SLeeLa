@@ -12,7 +12,8 @@
      can never do more than the DOM API already allows.
    
    Family: gui. SLeeLa owns execution; scripts express UI intent declaratively. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiScript {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

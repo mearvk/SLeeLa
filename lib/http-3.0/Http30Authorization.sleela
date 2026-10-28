@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Client-supplied route IDs are not credentials. Identity verification belongs to security adapter. >
 class Http30Authorization {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

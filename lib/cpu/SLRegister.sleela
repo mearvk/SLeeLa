@@ -9,7 +9,8 @@
    clocked, load-enabled flip-flop behavior exactly.
    
    Family: cpu. Clocked storage. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLRegister {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

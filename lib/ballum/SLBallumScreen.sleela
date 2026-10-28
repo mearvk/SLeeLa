@@ -1,7 +1,8 @@
 << lib/ballum/SLBallumScreen.sleela
    SLeeLa Standard Library Definition.
    Definition: The clean, pixel-accurate Screen API for Ballum developers. >>
-#sleela 2.1
+#sleela 2.5
+material;
 << Family: ballum. SLBallumScreen is the high-level, pixel-accurate developer
    API for one bound display. Where SLBallumManager is the low-level bridge to
    the native ballum_manager_t, SLBallumScreen is the polite, ergonomic surface

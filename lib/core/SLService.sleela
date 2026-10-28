@@ -1,7 +1,8 @@
 << lib/core/SLService.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLService used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Native foundational bridge contract for Service -- the common lifecycle base >
 < every SLeeLa service honors. A "service" is any managed subsystem with a >
 < create -> use -> destroy lifecycle (codecs, compression, video, crypto, http, >

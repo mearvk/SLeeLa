@@ -12,7 +12,8 @@
    and roller through bind(); resolve() does the rest.
    
    Family: gameplay. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class GameMove {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

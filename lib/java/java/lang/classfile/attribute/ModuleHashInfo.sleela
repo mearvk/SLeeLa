@@ -2,7 +2,8 @@
    SLeeLa Java 28 source envelope.
    Definition: SLeeLa source declaration for the Java type java.lang.classfile.attribute.ModuleHashInfo.
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class ModuleHashInfo {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -14,7 +14,8 @@
      SLEELA_SHA256_MANIFEST=./security/sha256-manifest.json \
      ./impl/build/sleela run lib/ui/layout-driver-demo.sleela
    >>
-#sleela 2.1
+#sleela 2.5
+material;
 class LayoutDriverDemo {
   String metaVersion = "1.0.0";
   int metaId = 0;

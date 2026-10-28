@@ -18,7 +18,8 @@
    
    Family: cpu. Composes SLVoltageRail, SLCpuTiming, SLBusTiming, SLIOTiming,
      SLRamTiming, SLTimingClass; produces SLTimingManifest. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLTimingProfile {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

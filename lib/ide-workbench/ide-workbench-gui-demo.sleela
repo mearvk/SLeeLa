@@ -10,7 +10,8 @@
    
    Family: ide-workbench. The user interface is SleelaUI; this file proves the
    IDE shell is usable from the language itself. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class IdeWorkbenchGuiDemo {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

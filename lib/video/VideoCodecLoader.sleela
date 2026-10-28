@@ -1,7 +1,8 @@
 << lib/video/VideoCodecLoader.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type VideoCodecLoader used within the video library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: video. The SLeeLa-facing handle to the native video codec registry >
 < (video/codecs/include/sleela_video_codecs.h). Like the audio SLCodecLoader, >
 < a program never calls an individual video codec directly: it loads a codec >

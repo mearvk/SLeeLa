@@ -1,4 +1,5 @@
 #sleela 2.5
+material;
 < Source-facing Nordshrift contract. >
 < .sst remains the authoring surface; this object records its resolved >
 < SLeeLa source result before the normal compiler/VM pipeline. >

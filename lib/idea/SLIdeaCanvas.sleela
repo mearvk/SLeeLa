@@ -25,7 +25,8 @@
    
    Family: idea. Native CPU rendering/physics work crosses the explicit
      `ideaCanvas*` SLVM bridge into idea/realtime. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLIdeaCanvas {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

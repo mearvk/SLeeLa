@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << SLeeLa generation negotiation is distinct from IETF HTTP/3 negotiation.
    authenticatedOffer is only a caller-supplied policy signal; it is not itself
    a cryptographic transcript proof. The native authenticated carrier must bind

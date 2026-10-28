@@ -12,7 +12,8 @@
    
    Family: gui. Backs SLGuiWindow's lifecycle; the host feeds gestures in and
      reads the resolved mode + target geometry out. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiWindowState {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

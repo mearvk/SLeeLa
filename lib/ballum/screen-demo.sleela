@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < screen-demo.sleela -- the runnable demo of the clean, pixel-accurate Ballum >
 < Screen API. It inlines a compact Screen over the uiBallum* VM bridge >
 < (mirroring SLBallumScreen + SLBallumManager) and a main that opens the >

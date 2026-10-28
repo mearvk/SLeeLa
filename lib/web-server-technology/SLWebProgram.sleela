@@ -4,7 +4,8 @@
    SLeeLa-side model of a mounted program in a Side-2 envelopment: a named unit
    of behaviour whose backing kind is static, sql, or meme. Named SLWebProgram
    (not SLProgram) to avoid colliding with the existing lib/cpu/SLProgram. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 < Family: web-server-technology. Native implementation crosses an explicit VM/OS bridge. >
 class SLWebProgram {

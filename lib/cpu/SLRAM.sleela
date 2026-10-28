@@ -9,7 +9,8 @@
    Addressing is by word index; out-of-range access is rejected.
    
    Family: cpu. Native backing store via bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLRAM {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

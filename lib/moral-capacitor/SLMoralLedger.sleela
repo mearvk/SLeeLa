@@ -11,7 +11,8 @@
    the rest of the library favours); a caller can print it or persist it.
    
    Family: moral-capacitor. Written by SLMoralCapacitor / the adapters. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMoralLedger {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

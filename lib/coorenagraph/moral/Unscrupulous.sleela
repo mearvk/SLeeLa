@@ -3,6 +3,8 @@
    Part of speech: adjective
    Definition: Lacking moral principles or ethical restraint in pursuit of a goal. >>
 
+#sleela 2.5
+material;
 class Unscrupulous {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -12,7 +12,8 @@
    and faster RAM visibly change an executor's characterization.
    
    Family: cpu.components. Composes SLRAM; selected via SLComponentCatalog. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMemoryModule {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

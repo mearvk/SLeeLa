@@ -1,7 +1,8 @@
 << lib/collections/SLValueList.sleela
    SLeeLa Standard Library Definition.
    Definition: a non-generic heterogeneous list for VM values. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < author: Max Rupplin - MEARVK LLC - 2026 >
 < Family: collections. Mixed storage uses the VM's tagged SLValue array. >
 class SLValueList {

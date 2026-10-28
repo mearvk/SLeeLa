@@ -1,6 +1,7 @@
 // @author Max Rupplin — MEARVK LLC — 2026
 // Doubly-linked complex sample node.
-#sleela 2.1
+#sleela 2.5
+material;
 class SLSignalComplexSample {
   double re;
   double im;

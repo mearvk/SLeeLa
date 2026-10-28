@@ -6,7 +6,8 @@
      the project root, a flat ordered list of entries (path + kind + depth that
      a tree widget renders), and the currently selected entry. Opening an entry
      is delegated upward to the workbench, which creates/focuses an SLIdeEditor. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ide-workbench. The project explorer model behind an SLTreeView. >
 class SLIdeProjectTree {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

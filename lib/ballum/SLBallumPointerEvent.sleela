@@ -1,7 +1,8 @@
 << lib/ballum/SLBallumPointerEvent.sleela
    SLeeLa Standard Library Definition.
    Definition: One Ballum pointer (mouse/touch) event, mirroring ballum_pointer_event_t. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ballum. A single pointer event in screen pixel coordinates (top-left >
 < origin), mirroring the native ballum_pointer_event_t. Mouse and touch are >
 < unified: a touch contact arrives as DOWN/MOVE/UP with source == TOUCH. Higher >

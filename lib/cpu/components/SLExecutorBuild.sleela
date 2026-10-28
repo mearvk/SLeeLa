@@ -14,7 +14,8 @@
    
    Family: cpu.components. Composes SLCPURuntime, SLMotherboard, SLMemoryModule,
      SLMemoryInterface, SLStorageDevice, SLOpticalDrive, SLSystemBus. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLExecutorBuild {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

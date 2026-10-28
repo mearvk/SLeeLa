@@ -6,7 +6,8 @@
      value; devices and drivers sit on the far side.
    
    Family: cpu. Pure Sleela I/O element. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLIOPort {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

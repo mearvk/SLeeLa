@@ -12,7 +12,8 @@
    many turns; it increments its own turn counter each time play() runs.
    
    Family: gameplay. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class GameTurn {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

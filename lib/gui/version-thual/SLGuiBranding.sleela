@@ -8,7 +8,8 @@
      host renders it. Every knob is validated/clamped.
    
    Family: gui. Owned by SLGuiApp; read by the host when it dresses the window. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiBranding {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

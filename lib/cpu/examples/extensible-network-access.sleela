@@ -11,7 +11,8 @@
    It registers the members, resolves (classify + order the hop chain), loads
    (fail-closed) to realize the backdrop, then flattens to an SLAccessManifest
    and attaches it to a program image — exactly how the VM reads it back. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class ExtensibleNetworkAccessExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

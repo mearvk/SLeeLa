@@ -1,7 +1,8 @@
 << lib/boolean/8/Bool_TFTTFFFF.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the Boolean/Binary word BOOLEAN.TRUE.FALSE.TRUE.TRUE.FALSE.FALSE.FALSE.FALSE (depth 8) as a SLeeLa standard-library constant. HEAD syllable is the result (TRUE); the remaining 7 syllable(s) are carried caveat structure. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa boolean/8 front-end constant — one Boolean word per file. >
 < Word: BOOLEAN.TRUE.FALSE.TRUE.TRUE.FALSE.FALSE.FALSE.FALSE >
 < Family: boolean. The HEAD syllable is the RESULT; trailing syllables are >

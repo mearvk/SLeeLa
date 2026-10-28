@@ -1,5 +1,6 @@
 < Novice lesson: recognize one quoted-string statement. Educational scaffold. >
-#sleela 2.1
+#sleela 2.5
+material;
 
 class HelloCompiler {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

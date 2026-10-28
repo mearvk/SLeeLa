@@ -3,7 +3,8 @@
    White) and the source-hint -> renderer flow. Shows each flavor unified over
    one token model and a document selecting its intended flavor by a hint the
    renderer then uses to produce the design. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class ThemeDemo {
   String metaVersion = "1.0.0";
   int metaId = 0;

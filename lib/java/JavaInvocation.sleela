@@ -1,7 +1,8 @@
 << lib/java/JavaInvocation.sleela
    SLeeLa JDK 28 Framework Binding.
    Definition: Controlled description of a Java constructor or method invocation. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class JavaInvocation {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

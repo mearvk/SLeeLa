@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < SST MySQL connector contract. Installation is intentionally deferred. >
 class MySQLConnector {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -7,7 +7,8 @@
    
    A concrete BusinessModel: the fixed cost is the drama; volume is the cure.
    Family: character. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class ManufacturingModel extends BusinessModel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

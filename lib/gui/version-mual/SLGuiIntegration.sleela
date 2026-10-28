@@ -5,7 +5,8 @@
      exclusive: SLeeLa owns business logic, state transitions, and the meaning
      of events; Java owns Swing/JavaFX presentation and desktop lifecycle; the
      native bridge provides a stable low-level boundary to the C/C++ core. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa gui front-end contract — the three-path integration posture. >
 < Family: gui. Intentionally asymmetric: Java is a native desktop host for >
 < SLeeLa, not a second business-logic implementation. >

@@ -11,7 +11,8 @@
      g.add(); g.add(); g.add(); g.add(); g.add();   < 5 cells -> 2 rows >
      g.arrange(0, 0, 600, 400);
      SLLayoutBox b = g.boxOf(0); >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. A standard, professional, beginner-friendly grid layout. >
 class SLGridLayout {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

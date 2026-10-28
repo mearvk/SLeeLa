@@ -3,7 +3,8 @@
    Definition: Defines the SLeeLa standard-library type SLSqlEndpoint, the
    SLeeLa-side model of the dynamic /db route that executes SQL against the
    CSV-backed SLeeLa SQL engine and returns JSON. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 < Family: web-server-technology. Native implementation crosses an explicit VM/OS bridge. >
 class SLSqlEndpoint {

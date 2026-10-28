@@ -13,7 +13,8 @@
      using one of the operators below.
    
    Family: opcodes.running. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 class SLOpcodeCondition {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -11,7 +11,8 @@
    
    Family: user-interface. The factory crosses the `ui*` SLVM bridge to the real toolkit;
    SLeeLa still owns the node that the widget mirrors. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiWidgetFactory {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

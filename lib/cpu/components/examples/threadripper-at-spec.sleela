@@ -4,7 +4,8 @@
    across the platform's channels, the DDR5/SoC/core voltage rails settled, and
    the DDR5-6400 expert RAM timings honored. Shows both a HEDT 9980X build and a
    workstation PRO 9995WX build, then reports the assembled characterization. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class ThreadripperAtSpecExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

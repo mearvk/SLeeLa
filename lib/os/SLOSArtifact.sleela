@@ -13,7 +13,8 @@
    printable index without needing a dynamic array.
    
    Family: os. Produced by SLOSCompiler, SLISOBuilder, SLInstallerGenerator. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLOSArtifact {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

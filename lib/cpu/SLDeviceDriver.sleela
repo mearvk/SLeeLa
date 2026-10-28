@@ -10,7 +10,8 @@
    the transfer methods.
    
    Family: cpu. Composes SLIOBus; base of the driver hierarchy. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLDeviceDriver {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -9,7 +9,8 @@
    
    A concrete GameMove: override resolve() to roll and fill a MoveOutcome.
    Family: gameplay. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class HelpIndexMove extends GameMove {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -12,7 +12,8 @@
      can do no more than the canvas API allows.
    
    Family: gui. Backs a "canvas"/"graphics" node; replayed by the host renderer. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiGraphics {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

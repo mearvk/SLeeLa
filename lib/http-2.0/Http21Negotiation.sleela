@@ -1,6 +1,7 @@
 << SLeeLa HTTP 2.0/2.1 application-generation negotiation.
    These generation labels are not Internet HTTP protocol versions. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class Http21Negotiation {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

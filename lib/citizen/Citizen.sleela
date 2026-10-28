@@ -17,7 +17,8 @@
    example lives in citizen/sleela/CitizenDemo.sleela.
    
    Family: citizen. Civic data crosses an explicit bridge to the ledger. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class Citizen {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

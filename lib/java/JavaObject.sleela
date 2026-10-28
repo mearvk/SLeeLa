@@ -1,7 +1,8 @@
 << lib/java/JavaObject.sleela
    SLeeLa Standard Library Definition.
    Definition: Represents a Java object reference within the SLeeLa Java interoperability library. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class JavaObject {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

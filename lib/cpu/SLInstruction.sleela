@@ -8,7 +8,8 @@
    or variable-width words; here they are fields for clarity.
    
    Family: cpu. Pure Sleela data. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLInstruction {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

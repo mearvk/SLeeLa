@@ -15,7 +15,8 @@
    lowers the speed it can be trusted at rather than silently corrupting it.
    
    Family: cpu. Composes SLTiming and SLVoltageRail; partners SLBus/SLClock. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLBusTiming {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

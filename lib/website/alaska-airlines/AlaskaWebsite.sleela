@@ -1,7 +1,8 @@
 << lib/website/alaska-airlines/AlaskaWebsite.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines AlaskaWebsite — the SLeeLa Website Generator build for Alaska Airlines. It composes the airline's brand design (brand #01426a, accent #44c8f5) and an ordered list of semantic signs (nav, hero, feature, testimonial, cta, footer) into a complete, self-contained HTML site. Mirrors lib/website/website.sleela: String concatenation on OP_ADD plus integer-to-text, no new VM opcode. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa website/alaska-airlines front-end builder — one airline website per directory. >
 < Family: website. Alaska Airlines brand site, built from the website model: a >
 < design (brand/base/accent + an energy dial) and an ordered list of semantic >

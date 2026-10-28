@@ -21,7 +21,8 @@
    realizer (SLLayoutDriver) reads a component's quality and applies the parts
    the toolkit can honor per widget (emphasis + sensitivity); the role is a hint
    the themed renderer uses when it draws the surface. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. Per-component quality: role + emphasis + interactivity. >
 class SLComponentQuality {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

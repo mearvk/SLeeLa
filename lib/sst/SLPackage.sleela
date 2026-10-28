@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa Standard Library package facade for SST. >
 class SLPackage {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < moral-certificate.sleela -- the self-contained, runnable demonstrator of the >
 < Certificate of Morals(TM) and the Guard of the Moral Code (lib/moral-capacitor >
 < SLMoralCertificate, SLMoralCertificateAuthority, SLMoralCodeGuard, >

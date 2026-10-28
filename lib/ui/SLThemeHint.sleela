@@ -12,7 +12,8 @@
 
    The renderer takes the resolved SLStandardTheme (its role tokens) and draws
    the UI; it never has to parse the hint itself -- that is this class job. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. Source-hint resolution: a document intended flavor -> a theme. >
 class SLThemeHint {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

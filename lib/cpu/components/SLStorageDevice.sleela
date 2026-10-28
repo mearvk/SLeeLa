@@ -9,7 +9,8 @@
      behaves differently from one with a 3600-RPM MFM drive.
    
    Family: cpu.components. Selected via SLComponentCatalog. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLStorageDevice {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

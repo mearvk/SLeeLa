@@ -6,7 +6,8 @@
    
    A concrete BusinessModel: revenue is cases x case-price; the per-case margin
    is slim by design. Family: character. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class WholesaleModel extends BusinessModel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

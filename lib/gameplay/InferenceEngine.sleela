@@ -12,7 +12,8 @@
    depend on, the lib/inference-model package family.
    
    Family: gameplay. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class InferenceEngine {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -1,7 +1,8 @@
 << lib/compression/SLCompressionProcessor.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLCompressionProcessor used within the compression library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: compression. The compress/decompress dispatch layer — the SLeeLa >
 < mirror of the native manager's processor path >
 < (sleela_compression_manager_compress / sleela_compression_manager_decompress) >

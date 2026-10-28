@@ -16,7 +16,8 @@
      SLSCRIPT   — the dynamic scripting form (.sleela-script).
    
    Family: compiler. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class SLSourceForm {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

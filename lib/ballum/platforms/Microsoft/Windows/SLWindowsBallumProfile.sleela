@@ -1,5 +1,6 @@
 < OS profile: Microsoft / Windows 10+ (Win32 GDI). >
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ballum. Per-OS facts for the Windows backend >
 < (ballum/src/ballum_backend_windows.c). Enumeration uses EnumDisplayMonitors; >
 < pixel I/O uses GDI SetPixel/GetPixel; brightness, warmth, and gamma are >

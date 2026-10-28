@@ -1,7 +1,8 @@
 << lib/compression/SLCompressionController.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLCompressionController used within the compression library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: compression. The SLeeLa-facing Compression Management Controller — >
 < the single surface a GUI or application drives, mirroring the native >
 < "Compression Loader / Unloader / Management Controller" >

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << CitizenHousingUtilitiesAndHouseholdServicesStats.sleela
    Individual category class extracted from citizen/sleela/CitizenStats.sleela.
    Source category: Housing, utilities, and household services.

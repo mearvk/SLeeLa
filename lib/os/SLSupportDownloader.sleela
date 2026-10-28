@@ -22,7 +22,8 @@
    
    Family: os. Design model; reachability/fetch cross the osRun bridge
      (requires #sleela 1.5 for curl probing). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLSupportDownloader {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

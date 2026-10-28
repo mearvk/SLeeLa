@@ -6,7 +6,8 @@
      is OS-driven (WatchService over inotify / ReadDirectoryChangesW /
      kqueue/FSEvents), not polling; an OS event that does not move a document's
      revision is coalesced away. The 1..14 bound is a hard contract. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa gui front-end contract — the OS-backed 1..14 document watch. >
 < Family: gui. The watch wakes on an OS call, re-reads each document's >
 < revision, and emits only real changes; a host may also force a refresh. >

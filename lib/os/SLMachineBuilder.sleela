@@ -16,7 +16,8 @@
    
    Family: os. Consumes SLMachineModel; composes lib/cpu (SLMachine, SLRAM,
      SLHardDrive, SLCPU, SLInstructionSet). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMachineBuilder {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

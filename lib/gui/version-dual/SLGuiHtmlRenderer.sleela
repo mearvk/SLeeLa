@@ -17,7 +17,8 @@
    
    Family: gui. Backs an "html"/"webview" node; partners SLGuiUrlBar and
      SLGuiCodecs; realized by the host web engine. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiHtmlRenderer {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

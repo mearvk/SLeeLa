@@ -18,7 +18,8 @@
    
    Family: os. Design + policy model; the signature/presence checks that reach
      the host cross the os* bridge (osRun/osExists), requiring #sleela 1.5. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLDriverSource {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

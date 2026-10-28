@@ -8,7 +8,8 @@
      each timer tick.
    
    Family: cpu. Pure Sleela guest OS data structure. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestTask {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

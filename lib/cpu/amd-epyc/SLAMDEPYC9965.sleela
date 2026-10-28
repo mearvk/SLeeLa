@@ -7,7 +7,8 @@
      configure() with this SKU's rated clock/label. Full figures in
      SPECIFICATION.md.
    Family: cpu. Extends SLAMDEPYCCPU. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLAMDEPYC9965 extends SLAMDEPYCCPU {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

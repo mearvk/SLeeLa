@@ -1,6 +1,7 @@
 << Public professional profile and optional capability-simulation metadata.
    Scenario inputs are separate from verified biography. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class JamesCameronHuman {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

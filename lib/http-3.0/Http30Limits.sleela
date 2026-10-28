@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Values mirror documented HTTP 3.0 protocol constants; verify against native headers on change. >
 class Http30Limits {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

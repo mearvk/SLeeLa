@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < State model only; native server must enforce it atomically per stream. >
 class Http50StreamState {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
