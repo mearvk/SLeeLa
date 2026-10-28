@@ -12,16 +12,24 @@ class GuiWindowSizeLimits {
       print("Headless: size-limit built-ins are registered; run on a desktop to test native resize constraints.");
       return;
     }
+
     int win = uiWindowCreate(app, "SLeeLa Window Size Limits", 720, 480, -1);
-    if (win < 0) { print("Could not create a native window."); uiAppDestroy(app); return; }
+    if (win < 0) {
+      print("Could not create a native window.");
+      uiAppDestroy(app);
+      return;
+    }
+
     int status = uiWindowSetSizeLimits(win, 500, 350, 1200, 900);
     print("setSizeLimits status: " + status);
     print("minimum: " + uiWindowMinWidth(win) + " x " + uiWindowMinHeight(win));
     print("maximum: " + uiWindowMaxWidth(win) + " x " + uiWindowMaxHeight(win));
+
     int root = uiWindowRoot(win);
     uiLabel(root, "Resize this window. Minimum: 500 x 350 px. Maximum: 1200 x 900 px.");
     uiLabel(root, "The native toolkit enforces the same limits on Linux, macOS, and Windows.");
     uiWindowShow(win);
+
     boolean running = true;
     while (running) {
       int dispatched = uiAppPump(app, 1);

@@ -1,0 +1,31 @@
+#sleela 2.1
+< A self-directed care plan. It is not medical advice or a substitute for care. >
+class SLSommelierCarePlan {
+  boolean quietMode = true;
+  boolean restReminderEnabled = false;
+  boolean peerContactEnabled = false;
+  int restReminderMinutes = 60;
+  String preferredPause = "Take a voluntary pause when useful.";
+
+  boolean quiet() { return quietMode; }
+  boolean remindersEnabled() { return restReminderEnabled; }
+  boolean peerContactEnabledNow() { return peerContactEnabled; }
+  int reminderMinutes() { return restReminderMinutes; }
+  String pauseText() { return preferredPause; }
+
+  void setQuietMode(boolean value) { quietMode = value; }
+  void enableRestReminder(boolean value) { restReminderEnabled = value; }
+  void enablePeerContact(boolean value) { peerContactEnabled = value; }
+  void setPreferredPause(String value) { preferredPause = value; }
+
+  boolean setReminderMinutes(int value) {
+    if (value < 5 || value > 1440) { return false; }
+    restReminderMinutes = value;
+    return true;
+  }
+
+  String guidance() {
+    if (quietMode) { return "Quiet mode is on. No unsolicited outreach."; }
+    return preferredPause;
+  }
+}

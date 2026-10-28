@@ -1,0 +1,33 @@
+[Unit]
+Description=SLeeLa Antivirus Coordinator
+Documentation=https://github.com/mearvk/SLeeLa/tree/master/antivirus
+After=local-fs.target network.target
+Wants=clamd.service clamav-daemon.service
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/default/sleela-antivirus
+EnvironmentFile=-/etc/sleela-antivirus/sleela-antivirus.env
+# Host-specific values are intentionally read from the environment file and are
+# expected to be set by the target system admin. The repo defaults remain a
+# template for review only and are not considered the live operational policy.
+WorkingDirectory=/opt/sleela
+ExecStart=/usr/bin/env python3 /opt/sleela/antivirus/tools/sleelavirin_scan.py \
+  --engine ${SLEELA_ANTIVIRUS_ENGINE} \
+  --database ${SLEELA_ANTIVIRUS_DB} \
+  --report-json ${SLEELA_ANTIVIRUS_REPORT} \
+  --quarantine-dir ${SLEELA_ANTIVIRUS_QUARANTINE} \
+  ${SLEELA_ANTIVIRUS_ROOT}
+Restart=on-failure
+RestartSec=30
+RuntimeDirectory=sleela-antivirus
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+ReadWritePaths=/var/lib/sleela-antivirus /var/log/sleela-antivirus
+
+[Install]
+WantedBy=multi-user.target

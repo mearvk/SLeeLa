@@ -46,31 +46,51 @@ static void on_value(SLUIWidget* w, double v, void* user) {
 }
 
 int main(void) {
-    /* --- theme presets ------------------------------------------------- */
-    SLUITheme black, graphite;
-    slui_theme_preset(&black, SLUI_THEME_SLICK_BLACK);
+    /* --- five named theme presets -------------------------------------- */
+    SLUITheme black, graphite, base, white, blue, gray;
+    slui_theme_preset(&black, SLUI_THEME_BLACK);
     slui_theme_preset(&graphite, SLUI_THEME_GRAPHITE);
-    CHECK(black.id == SLUI_THEME_SLICK_BLACK, "slick black preset id");
-
-    /* --- Sleela base colour (#2B1608) is the default theme ------------- */
-    SLUITheme base;
     slui_theme_preset(&base, SLUI_THEME_SLEELA_BASE);
-    CHECK(base.id == SLUI_THEME_SLEELA_BASE, "sleela base preset id");
-    CHECK(((base.bg >> 24) & 0xFF) == 0x2B && ((base.bg >> 16) & 0xFF) == 0x16 &&
-              ((base.bg >> 8) & 0xFF) == 0x08,
-          "base colour floor is #2B1608");
-    /* surfaces are lighter warm tints of the floor */
-    CHECK(((base.surface >> 24) & 0xFF) > 0x2B, "surface lighter than base");
-    /* configurable: re-derive from a different base in place */
+    slui_theme_preset(&white, SLUI_THEME_WHITE);
+    slui_theme_preset(&blue, SLUI_THEME_BLUE);
+    slui_theme_preset(&gray, SLUI_THEME_GRAY);
+    CHECK(base.id == SLUI_THEME_SLEELA_BASE, "default preset id");
+    CHECK(((base.bg >> 24) & 0xFF) == 0x1D &&
+          ((base.bg >> 16) & 0xFF) == 0x20 &&
+          ((base.bg >> 8) & 0xFF) == 0x25,
+          "default palette is graphite #1D2025, not brown");
+    CHECK(base.accent == slui_rgb(0x4F, 0x8C, 0xFF), "default accent is steel blue");
+    CHECK(white.bg != blue.bg && blue.bg != black.bg && black.bg != gray.bg,
+          "white, blue, black and gray presets are distinct");
+    CHECK(((black.fg >> 24) & 0xFF) >= 0xDE, "black preset primary text is light");
+    CHECK(base.control_height >= 32, "control height clears 32px hit target");
+    CHECK(base.unit == 4, "spacing unit is 4px");
+
+    /* Custom base colours remain supported and use the neutral blue accent. */
     SLUITheme recol;
     slui_theme_preset(&recol, SLUI_THEME_SLEELA_BASE);
     slui_theme_set_base_color(&recol, 0x113355FFu);
     CHECK(((recol.bg >> 24) & 0xFF) == 0x11 && ((recol.bg >> 8) & 0xFF) == 0x55,
           "base colour reconfigured in place");
-    CHECK(black.control_height >= 32, "control height clears 32px hit target");
-    CHECK(black.unit == 4, "spacing unit is 4px");
-    CHECK(black.fg == slui_rgb(0xff, 0xff, 0xff), "slick black primary text is white");
-    CHECK(black.bg != graphite.bg, "presets differ");
+    CHECK(recol.accent == slui_rgb(0x4F, 0x8C, 0xFF), "custom base keeps steel-blue accent");
+
+    /* Config selection is explicit: theme=blue selects the named preset. */
+    const char* theme_cfg_path = "sleela-theme-smoke.conf";
+    FILE* theme_cfg = fopen(theme_cfg_path, "w");
+    CHECK(theme_cfg != NULL, "temporary theme config created");
+    if (theme_cfg) {
+        fputs("theme=blue\nfont_size=12\nradius=9\n", theme_cfg);
+        fclose(theme_cfg);
+        SLUITheme configured;
+        slui_theme_preset(&configured, SLUI_THEME_SLEELA_BASE);
+        CHECK(slui_theme_load_config(&configured, theme_cfg_path) == SLUI_OK,
+              "runtime theme config loads");
+        CHECK(configured.id == SLUI_THEME_BLUE && configured.bg == blue.bg,
+              "theme=blue selects the blue preset");
+        CHECK(configured.font_size == 12 && configured.radius == 9,
+              "config metrics override selected preset");
+        remove(theme_cfg_path);
+    }
 
     /* --- app + window -------------------------------------------------- */
     SLUIApp* app = slui_app_create("com.mearvk.SleelaUI.Smoke");

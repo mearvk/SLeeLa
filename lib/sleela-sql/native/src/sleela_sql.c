@@ -183,6 +183,9 @@ static int csv_parse_line(char *line, char **out, int max) {
 
 /* dir (<=SSQL_MAX_FIELD) + '/' + name (<=SSQL_MAX_FIELD) + ".csv" + NUL */
 #define SSQL_MAX_PATH (SSQL_MAX_FIELD * 2 + 8)
+/* A transaction journal path is <journal-dir (<=SSQL_MAX_PATH)>/<name.csv>, so
+ * it needs room for a full path plus another filename. */
+#define SSQL_MAX_TXN_PATH (SSQL_MAX_PATH + SSQL_MAX_FIELD + 8)
 
 static void table_path(const ssql_db *db, const char *name, char *buf, size_t cap) {
     snprintf(buf, cap, "%s/%s.csv", db->dir, name);
@@ -839,7 +842,7 @@ static ssql_status exec_alter(ssql_stmt *st) {
     return status;
 }
 
-static ssql_status exec_drop(ssql_stmt *st)
+static ssql_status exec_drop(ssql_stmt *st) {
     if (!table_exists(st->db, st->table))
         return st->drop_if_exists ? SSQL_OK : SSQL_ERR_NOTABLE;
     char path[SSQL_MAX_PATH];
@@ -1211,4 +1214,196 @@ const char *ssql_dialect_name(ssql_dialect d) {
         case SSQL_DIALECT_SLEELA: return "sleelasql";
         default:                  return "auto";
     }
+}
+
+/* ===================================================================== *
+ *  Transactions (snapshot-based; see header for the honest guarantees)
+ * ===================================================================== */
+
+/* The journal directory holding a transaction's table snapshot. */
+static void journal_dir(const ssql_db *db, char *buf, size_t cap) {
+    snprintf(buf, cap, "%s/.ssql-txn", db->dir);
+}
+
+/* Byte-copy src -> dst. Returns SSQL_OK or SSQL_ERR_IO. */
+static ssql_status copy_file(const char *src, const char *dst) {
+    FILE *in = fopen(src, "rb");
+    if (!in) return SSQL_ERR_IO;
+    FILE *out = fopen(dst, "wb");
+    if (!out) { fclose(in); return SSQL_ERR_IO; }
+    char buf[8192];
+    size_t n;
+    ssql_status rc = SSQL_OK;
+    while ((n = fread(buf, 1, sizeof buf, in)) > 0) {
+        if (fwrite(buf, 1, n, out) != n) { rc = SSQL_ERR_IO; break; }
+    }
+    if (ferror(in)) rc = SSQL_ERR_IO;
+    if (fclose(out) != 0) rc = SSQL_ERR_IO;
+    fclose(in);
+    return rc;
+}
+
+/* Does `name` end in ".csv"? */
+static int is_csv_name(const char *name) {
+    size_t n = strlen(name);
+    return n > 4 && strcmp(name + n - 4, ".csv") == 0;
+}
+
+/*
+ * Walk the .csv files in `dir`, invoking fn(name, ctx) for each. Portable over
+ * the engine's existing POSIX/Win32 directory split. Returns SSQL_OK or
+ * SSQL_ERR_IO; a missing directory is treated as empty (SSQL_OK).
+ */
+typedef void (*csv_visitor)(const char *name, void *ctx);
+static ssql_status for_each_csv(const char *dir, csv_visitor fn, void *ctx) {
+#ifdef _WIN32
+    char pattern[SSQL_MAX_PATH];
+    struct _finddata_t entry;
+    intptr_t handle;
+    snprintf(pattern, sizeof(pattern), "%s/*.csv", dir);
+    handle = _findfirst(pattern, &entry);
+    if (handle == -1L) return errno == ENOENT ? SSQL_OK : SSQL_ERR_IO;
+    do { if (is_csv_name(entry.name)) fn(entry.name, ctx); } while (_findnext(handle, &entry) == 0);
+    _findclose(handle);
+    return SSQL_OK;
+#else
+    DIR *d = opendir(dir);
+    struct dirent *e;
+    if (!d) return errno == ENOENT ? SSQL_OK : SSQL_ERR_IO;
+    while ((e = readdir(d)) != NULL)
+        if (is_csv_name(e->d_name)) fn(e->d_name, ctx);
+    closedir(d);
+    return SSQL_OK;
+#endif
+}
+
+/* Context for snapshot/restore passes. */
+typedef struct {
+    const ssql_db *db;
+    char jdir[SSQL_MAX_PATH];
+    ssql_status rc;
+} txn_ctx;
+
+static void snapshot_one(const char *name, void *vctx) {
+    txn_ctx *c = (txn_ctx *)vctx;
+    if (c->rc != SSQL_OK) return;
+    char src[SSQL_MAX_TXN_PATH], dst[SSQL_MAX_TXN_PATH];
+    snprintf(src, sizeof src, "%s/%s", c->db->dir, name);
+    snprintf(dst, sizeof dst, "%s/%s", c->jdir, name);
+    c->rc = copy_file(src, dst);
+}
+
+/* Collect .csv base names into a growable list (so we never modify a directory
+ * while a readdir/_findnext walk over it is still in progress). */
+typedef struct { char **names; size_t n, cap; int oom; } name_list;
+static void collect_name(const char *name, void *vctx) {
+    name_list *l = (name_list *)vctx;
+    if (l->oom) return;
+    if (l->n >= l->cap) {
+        size_t ncap = l->cap ? l->cap * 2 : 8;
+        char **p = (char **)realloc(l->names, ncap * sizeof *p);
+        if (!p) { l->oom = 1; return; }
+        l->names = p; l->cap = ncap;
+    }
+    char *dup = str_dup(name);
+    if (!dup) { l->oom = 1; return; }
+    l->names[l->n++] = dup;
+}
+static void name_list_free(name_list *l) {
+    for (size_t i = 0; i < l->n; ++i) free(l->names[i]);
+    free(l->names);
+    l->names = NULL; l->n = l->cap = 0;
+}
+
+static void restore_one(const char *name, void *vctx) {
+    txn_ctx *c = (txn_ctx *)vctx;
+    if (c->rc != SSQL_OK) return;
+    char src[SSQL_MAX_TXN_PATH], dst[SSQL_MAX_TXN_PATH];
+    snprintf(src, sizeof src, "%s/%s", c->jdir, name);
+    snprintf(dst, sizeof dst, "%s/%s", c->db->dir, name);
+    c->rc = copy_file(src, dst);
+}
+
+/* Remove every .csv in the journal dir, then the dir itself. */
+static void journal_remove_one(const char *name, void *vctx) {
+    const char *jdir = (const char *)vctx;
+    char path[SSQL_MAX_TXN_PATH];
+    snprintf(path, sizeof path, "%s/%s", jdir, name);
+    remove(path);
+}
+static void clear_journal(const char *jdir) {
+    for_each_csv(jdir, journal_remove_one, (void *)jdir);
+#ifdef _WIN32
+    _rmdir(jdir);
+#else
+    rmdir(jdir);
+#endif
+}
+
+int ssql_in_transaction(const ssql_db *db) {
+    if (!db) return 0;
+    char jdir[SSQL_MAX_PATH];
+    struct stat st;
+    journal_dir(db, jdir, sizeof jdir);
+    return (stat(jdir, &st) == 0) ? 1 : 0;
+}
+
+ssql_status ssql_begin(ssql_db *db) {
+    if (!db) return SSQL_ERR_ARG;
+    if (ssql_in_transaction(db)) return SSQL_ERR_ARG; /* already in a txn */
+    char jdir[SSQL_MAX_PATH];
+    journal_dir(db, jdir, sizeof jdir);
+    if (SSQL_MKDIR(jdir) != 0) return SSQL_ERR_IO;
+    txn_ctx c;
+    c.db = db;
+    c.rc = SSQL_OK;
+    snprintf(c.jdir, sizeof c.jdir, "%s", jdir);
+    ssql_status walk = for_each_csv(db->dir, snapshot_one, &c);
+    if (walk != SSQL_OK || c.rc != SSQL_OK) {
+        clear_journal(jdir);
+        return SSQL_ERR_IO;
+    }
+    return SSQL_OK;
+}
+
+ssql_status ssql_commit(ssql_db *db) {
+    if (!db) return SSQL_ERR_ARG;
+    if (!ssql_in_transaction(db)) return SSQL_ERR_ARG; /* no open txn */
+    char jdir[SSQL_MAX_PATH];
+    journal_dir(db, jdir, sizeof jdir);
+    /* Commit = accept current on-disk state; just discard the snapshot. */
+    clear_journal(jdir);
+    return SSQL_OK;
+}
+
+ssql_status ssql_rollback(ssql_db *db) {
+    if (!db) return SSQL_ERR_ARG;
+    if (!ssql_in_transaction(db)) return SSQL_ERR_ARG; /* no open txn */
+    char jdir[SSQL_MAX_PATH];
+    journal_dir(db, jdir, sizeof jdir);
+    txn_ctx c;
+    c.db = db;
+    c.rc = SSQL_OK;
+    snprintf(c.jdir, sizeof c.jdir, "%s", jdir);
+    /* 1) Collect current table names, then delete them (iteration-safe: we do
+     *    not remove files while still walking the directory). This undoes any
+     *    tables CREATEd during the transaction; snapshot tables are rewritten
+     *    by the restore pass below. */
+    name_list cur = {0};
+    for_each_csv(db->dir, collect_name, &cur);
+    if (cur.oom) { name_list_free(&cur); return SSQL_ERR_OOM; }
+    for (size_t i = 0; i < cur.n; ++i) {
+        char path[SSQL_MAX_TXN_PATH];
+        snprintf(path, sizeof path, "%s/%s", db->dir, cur.names[i]);
+        remove(path);
+    }
+    name_list_free(&cur);
+    /* 2) Restore every table captured at begin (undoes UPDATE/DELETE/DROP). */
+    ssql_status walk = for_each_csv(jdir, restore_one, &c);
+    if (walk != SSQL_OK || c.rc != SSQL_OK) {
+        /* Leave the journal in place for manual recovery on a restore failure. */
+        return SSQL_ERR_IO;
+    }
+    clear_journal(jdir);
+    return SSQL_OK;
 }

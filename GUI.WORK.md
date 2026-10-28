@@ -1,5 +1,9 @@
 # GUI.WORK.md — SLeeLa Terminal GUI Work Log
 
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
+
 > Working handoff for the next development session. Keep this file current as decisions are implemented, tested, or revised.
 
 ## 1. Purpose

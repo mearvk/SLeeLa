@@ -193,7 +193,7 @@ typedef enum {
     SLUI_FN_BALLUM_FX_NAME,          /* uiBallumFxName(fx:i) -> string name */
     SLUI_FN_BALLUM_FX_BY_NAME,       /* uiBallumFxByName(name:s) -> effect id */
 
-    /* Keep parity with impl/core before appending new UI calls. */
+    /* Keep parity with the newer impl/core ID table before appended APIs. */
     SLUI_FN_WIDGET_IS_HOVERED,
     SLUI_FN_WIDGET_TAKE_PRESSED,
     SLUI_FN_WIDGET_TAKE_RELEASED,

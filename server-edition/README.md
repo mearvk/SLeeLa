@@ -2,22 +2,13 @@
 
 <img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela/sleela-logo-004.jpg" alt="SLeeLa">
 
-
-
-
-
-
 # SLeeLa Server Edition
 
-SLeeLa Server Edition is the rugged network service for the SLeeLa HTTP 1.0 through HTTP 9.0 application packet family.
-
-Rugged means bounded memory and frame sizes, timeouts, malformed-input rejection, and deterministic shutdown. Tough means strict framing, routing filters, rate controls, and structured audit logs. Clean means a small server core with a documented wire boundary and no payload execution.
+SLeeLa Server Edition is a bounded transport and packet-admission component for the SLeeLa application packet family.
 
 ## Supported traffic
 
-The server accepts SLeeLa HTTP grades 1 through 9 through the Server Edition wire envelope. Generation-specific fields remain application metadata and follow PACKET.md.
-
-HTTP 9.0 preserves the HTTP 8.0 metadata boundary and adds its International Data and Dark Band records.
+The server accepts SLeeLa grades 1 through 9 through the Server Edition wire envelope. Generation-specific fields remain application metadata and follow PACKET.md. This envelope is not itself a claim of native HTTP compatibility; see HTTP-GENERATIONS.md for the current protocol boundary.
 
 ## Build
 
@@ -25,78 +16,66 @@ Linux and macOS:
 
     make -C server-edition
 
-Windows:
+Windows builds require the full source list and Winsock2 linkage to be verified; see the Makefile and platform notes before treating Windows as release-supported.
 
-Compile server-edition/sleela_server.cpp and server-edition/server.cpp as C++17 and link Winsock2.
+## Run safely
 
-## Run
+The default listener is local-only:
 
-    ./server-edition/sleelas --bind 0.0.0.0 --port 19866
+    ./server-edition/sleelas
 
-Default TCP listener: 19866.
+Equivalent explicit local binding:
 
-Existing PORT-AWARENESS.md remains the host-firewall lifecycle contract. Firewall policy is deliberately separate from the socket engine.
+    ./server-edition/sleelas --bind 127.0.0.1 --port 19866
 
-## Processing
+To request a non-loopback bind, pass --allow-remote explicitly:
 
-    accept
-      |
-      v
-    fixed envelope
-      |
-      v
-    header parser
-      |
-      v
-    generation and routing policy
-      |
-      v
-    filters and heuristics
-      |
-      +---- reject -> audit log + status
-      |
-      v
-    admission boundary
-      |
-      v
-    application service handler
+    ./server-edition/sleelas --bind 192.0.2.10 --port 19866 --allow-remote
 
-The current implementation is an admission and transport server. Service handlers can be attached above it without weakening packet validation.
+Remote binding is refused unless TLS certificate, private key, client CA, an allowlisted client certificate Common Name, and at least one explicit authorization rule are configured. The remote path uses TLS 1.3 only and requires client certificates signed by the configured CA.
 
-## Safety boundary
+Example (replace paths and identities with your deployment values):
 
-Payloads are bytes. The server does not execute programs, shell commands, scripts, XML procedures, or metadata.
+    ./server-edition/sleelas --bind 0.0.0.0 --allow-remote \
+      --tls-cert certs/server-chain.pem --tls-key certs/server-key.pem \
+      --tls-client-ca certs/client-ca.pem \
+      --allow-peer billing-client \
+      --authorize billing-client:billing:submit
 
-POLICE, SECURITY, SAFETY, CLASSIFICATION, DARK-BAND, frequency, and related fields are application metadata. They do not grant authority, clearance, identity verification, network control, or access.
+The server authorizes exact `identity:service:operation` triples; no permissions are granted implicitly. The identity is taken from the verified client certificate's Common Name (CN), not from packet metadata. Do not reuse a CN for different principals. Use a server certificate with the correct Subject Alternative Name (SAN), protect private-key files, and provision client certificates only from a trusted CA. This is an initial mutual-TLS control, not a claim of complete production security; review certificate rotation, revocation, rate limiting, replay protection, and deployment policy before production.
 
-## Production integration
+## Diffie–Hellman and forward secrecy
 
-Before public deployment, add authenticated peer identity, TLS or another protected carrier, per-service authorization, persistent replay and sequence state, service-manager integration, metrics, and conformance vectors for every HTTP grade.
+TLS is restricted to TLS 1.3 and explicitly configures the ephemeral key-exchange groups `X25519`, `P-256`, and `P-384` (subject to support in the installed OpenSSL build). TLS 1.3 uses ephemeral (EC)DHE key exchange with its supported cipher suites; the server does not enable static RSA key exchange. Actual negotiation must be verified with a live TLS handshake on each supported platform.
 
+## Router and NAT awareness
 
-## Core vocabulary
-Holding Document → Forwarding Annotation → Nexter Colony.
+The optional, read-only STUN probe reports the local source address and the externally mapped address observed by a STUN server. It does not modify router configuration, firewall rules, or port forwarding:
 
-Forwarding is never an implicit privilege grant and remains subject to security, capability, resource, release, and deployment controls.
+    python3 server-edition/tools/nat-awareness.py
+    python3 server-edition/tools/nat-awareness.py --server stun.example.net --port 3478 --timeout 3
+
+Use a STUN service you trust and allow outbound UDP to that service. A different mapped address suggests address translation or an upstream mapping; it does **not** reliably identify the exact NAT type or prove that unsolicited inbound connections can reach the server. Carrier-grade NAT, double NAT, VPNs, and firewall policy can affect the result. Never automatically create port-forwarding rules based on this probe. Keep the server loopback-only unless remote access is intentionally configured and secured.
+
+Run the protocol and NAT parser tests with:
+
+    make -C server-edition test
+
+The GitHub Actions workflow `.github/workflows/server-edition-security.yml` builds and tests on Linux, macOS, and Windows. The workflow is a release gate; check its actual run result before treating any platform as verified.
+
+## Processing boundary
+
+After admission checks, the server dispatches only to explicitly registered `(SERVICE-ID, OP-ID)` handlers. Missing handlers return `501 service_not_implemented`; handler exceptions return `500 handler_error`. End-to-end dispatch and lifecycle tests remain required.
+
+Payloads are bytes. The server must not execute programs, shell commands, scripts, XML procedures, or metadata merely because they arrive in a packet.
+
+POLICE, SECURITY, SAFETY, CLASSIFICATION, DARK-BAND, frequency, grade, and related fields are application metadata. They do not establish identity, clearance, authority, network control, or access rights.
+
+## Security and standards
+
+Read SECURITY-STANDARDS.md for the hardening baseline and release gates, and 1-2-3-4.md for the prioritized implementation plan.
 
 Max Rupplin — MEARVK LLC — 2026
-
-
-## HTTP generation support
-The Server Edition is prepared to dispatch the SLeeLa HTTP generation family from 1.0 through 9.0 through explicit generation adapters. HTTP 1.0/1.1 remain Internet compatibility targets; HTTP 2.0–9.0 are SLeeLa project generations where applicable. Annotation forwarding remains uniform: Holding Document → Forwarding Annotation → Nexter Colony.
-
-
-## First-class language annotation path
-
-The Server Edition consumes annotation metadata produced by the language front end:
-
-**Wrapper → Lexer → Parser → AST → Semantic Analysis → Compiler → Runtime → Server Edition**
-
-The concrete bridge is server-edition/annotation_language_bridge.hpp/.cpp. It installs the same AnnotationRuntime used by the direct SLeeLa runtime, so the Server Edition does not maintain a second annotation parser or forwarding engine.
-
-A single valid @next becomes the Nexter Colony candidate. Multiple @next declarations remain metadata but are rejected by the current runtime until an explicit multi-destination forwarding policy exists.
-
-See server-edition/ANNOTATION_LANGUAGE.md.
 
 ---
 

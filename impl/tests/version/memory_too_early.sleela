@@ -1,0 +1,3 @@
+#sleela 2.4
+memory;
+class MemoryTooEarly { void main() { print("should be rejected below 2.5"); } }

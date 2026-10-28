@@ -121,6 +121,37 @@ ssql_status ssql_run(ssql_stmt *stmt, FILE *out);
 /* Release a prepared statement. Safe on NULL. */
 void ssql_finalize(ssql_stmt *stmt);
 
+/* ---- transactions (snapshot-based) ----------------------------------- */
+
+/*
+ * A deliberately-modest, HONEST first transaction API with documented
+ * guarantees (ROADMAP Priority A). This is SNAPSHOT-based, single-connection
+ * rollback -- NOT full ACID and NOT multi-writer isolation:
+ *
+ *   ssql_begin(db)    : take a snapshot of every table (.csv) in the database
+ *                       directory into a journal subdirectory. One active
+ *                       transaction per database directory.
+ *   ssql_commit(db)   : accept the current on-disk state; discard the snapshot.
+ *   ssql_rollback(db) : restore every table from the snapshot, undoing all
+ *                       statements executed since ssql_begin, then discard it.
+ *
+ * Guarantees it DOES provide: after a successful ssql_begin, a subsequent
+ * ssql_rollback returns the table files to exactly their begin-time contents
+ * (atomic at the API level for a single caller). Tables created after begin are
+ * removed on rollback; tables dropped after begin are restored.
+ *
+ * Guarantees it does NOT yet provide (see ROADMAP): crash recovery (a process
+ * crash mid-transaction leaves the journal for manual recovery, not automatic
+ * replay), isolation between concurrent writers, and nested transactions.
+ * Do not advertise ACID until the journal/recovery and isolation items land.
+ */
+ssql_status ssql_begin(ssql_db *db);
+ssql_status ssql_commit(ssql_db *db);
+ssql_status ssql_rollback(ssql_db *db);
+
+/* Nonzero if a transaction is currently open on this database directory. */
+int ssql_in_transaction(const ssql_db *db);
+
 /* ---- diagnostics ----------------------------------------------------- */
 
 /* Human-readable message for a status code. */

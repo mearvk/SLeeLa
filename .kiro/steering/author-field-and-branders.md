@@ -4,12 +4,13 @@ inclusion: always
 
 # Author field, `∴` branders, and the originated Source Document (syntax 2.4)
 
-A planned language feature. The authoritative design is
-[`markdown/AUTHOR-FIELD-AND-BRANDER.design.md`](../../markdown/AUTHOR-FIELD-AND-BRANDER.design.md);
-read it before implementing. Status: **design signed-off pending** — the
-compiler is unchanged and `maxSupportedSyntax()` is still `2.3`. Do not bump the
-gate or edit `semantic.cpp` until the open decisions in §7 of the design are
-confirmed.
+The authoritative design is
+[`markdown/AUTHOR-FIELD-AND-BRANDER.design.md`](../../markdown/AUTHOR-FIELD-AND-BRANDER.design.md).
+Status: **shipped.** Syntax 2.4 is implemented and is no longer the ceiling —
+`maxSupportedSyntax()` is now `2.5` (the `material` document marker, section 19;
+see `material-marker.md`). The `author`/`authorial` marker is live in the
+lexer/parser/semantic analyzer and the originated/wiki emitters, and
+`SLEELA.syntax` §18 is normative for it.
 
 ## The decision in one paragraph
 

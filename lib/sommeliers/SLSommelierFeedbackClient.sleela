@@ -1,0 +1,51 @@
+#sleela 2.1
+< Client-side contract for the local C/C++ service at 127.0.0.1:4081.
+  This source does not claim to perform HTTP until a host networking bridge is
+  connected. >
+class SLSommelierFeedbackClient {
+  String host = "127.0.0.1";
+  int port = 4081;
+  String route = "/feedback";
+  int STATUS_OK = 0;
+  int STATUS_BRIDGE_REQUIRED = 100;
+  int STATUS_INVALID_INPUT = 101;
+  int lastStatus = 100;
+  String lastResponse = "";
+
+  String endpointHost() { return host; }
+  int endpointPort() { return port; }
+  String endpointRoute() { return route; }
+  int status() { return lastStatus; }
+  String response() { return lastResponse; }
+
+  boolean configure(String address, int servicePort) {
+    if (address != "127.0.0.1" || servicePort < 1 || servicePort > 65535) {
+      lastStatus = STATUS_INVALID_INPUT;
+      return false;
+    }
+    host = address;
+    port = servicePort;
+    lastStatus = STATUS_BRIDGE_REQUIRED;
+    return true;
+  }
+
+  < Validate the single-symbol vocabulary before crossing a future host bridge. >
+  boolean validateResponse(String value) {
+    return value == "0" || value == "1" || value == "s";
+  }
+
+  < Honest placeholder: no socket operation is performed by this SLeeLa class. >
+  int send(String value) {
+    if (value == "") { lastStatus = STATUS_INVALID_INPUT; return lastStatus; }
+    lastResponse = "";
+    lastStatus = STATUS_BRIDGE_REQUIRED;
+    return lastStatus;
+  }
+
+  boolean acceptResponse(String value) {
+    if (!validateResponse(value)) { lastStatus = STATUS_INVALID_INPUT; return false; }
+    lastResponse = value;
+    lastStatus = STATUS_OK;
+    return true;
+  }
+}

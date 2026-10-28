@@ -1,0 +1,9 @@
+# Sleelavirin native build artifacts
+build/
+cmbuild/
+*.o
+*.obj
+*.a
+*.lib
+*.exe
+sleelavirin-scan

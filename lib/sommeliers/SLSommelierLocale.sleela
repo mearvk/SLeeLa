@@ -1,0 +1,29 @@
+#sleela 2.1
+< Language preference holder. Translation content should be reviewed by fluent
+  speakers and is not inferred from a user's location. >
+class SLSommelierLocale {
+  String languageTag = "en";
+  String regionTag = "";
+  String displayDirection = "ltr";
+  boolean translationReviewed = false;
+
+  String language() { return languageTag; }
+  String region() { return regionTag; }
+  String direction() { return displayDirection; }
+  boolean reviewed() { return translationReviewed; }
+
+  boolean setLanguage(String value) {
+    if (value == "") { return false; }
+    languageTag = value;
+    translationReviewed = false;
+    return true;
+  }
+
+  void setRegion(String value) { regionTag = value; }
+  boolean setDirection(String value) {
+    if (value != "ltr" && value != "rtl") { return false; }
+    displayDirection = value;
+    return true;
+  }
+  void markTranslationReviewed(boolean value) { translationReviewed = value; }
+}

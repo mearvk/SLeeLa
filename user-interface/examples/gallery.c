@@ -57,7 +57,7 @@ int main(void) {
            slui_backend_name(slui_backend()));
 
     SLUITheme theme;
-    slui_theme_preset(&theme, SLUI_THEME_SLICK_BLACK); /* the default look */
+    slui_theme_preset(&theme, SLUI_THEME_SLEELA_BASE); /* the default look */
 
     SLUIWindowConfig cfg;
     memset(&cfg, 0, sizeof(cfg));

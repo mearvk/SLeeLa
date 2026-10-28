@@ -1,0 +1,44 @@
+#sleela 2.1
+< SLSommelierOffer.sleela
+  Open, respectful offer model for sommelier create-use. An offer is a proposal,
+  not a claim that a service has been booked or a person has consented. >
+class SLSommelierOffer {
+  String offerId = "sommelier-open-001";
+  String title = "Open Sommelier Create-Use";
+  String description = "An open invitation to explore, create, share and rest.";
+  String language = "en";
+  String host = "127.0.0.1";
+  int port = 4081;
+  boolean open = true;
+  boolean consentRequired = true;
+  boolean publicByDefault = false;
+
+  String getOfferId() { return offerId; }
+  String getTitle() { return title; }
+  String getDescription() { return description; }
+  String getLanguage() { return language; }
+  String getHost() { return host; }
+  int getPort() { return port; }
+  boolean isOpen() { return open; }
+  boolean requiresConsent() { return consentRequired; }
+  boolean isPublicByDefault() { return publicByDefault; }
+
+  void setOfferId(String value) { offerId = value; }
+  void setTitle(String value) { title = value; }
+  void setDescription(String value) { description = value; }
+  void setLanguage(String value) { language = value; }
+  void setOpen(boolean value) { open = value; }
+  void setConsentRequired(boolean value) { consentRequired = value; }
+  void setPublicByDefault(boolean value) { publicByDefault = value; }
+
+  boolean valid() {
+    return offerId != "" && title != "" && description != ""
+      && port > 0 && port < 65536 && host == "127.0.0.1";
+  }
+
+  String summary() {
+    if (!open) { return "Offer is currently closed."; }
+    return title + ": " + description + " Endpoint " + host + ":" + port
+      + ". Participation is voluntary; sharing is off by default.";
+  }
+}

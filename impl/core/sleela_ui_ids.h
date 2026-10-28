@@ -203,6 +203,7 @@ typedef enum {
     SLUI_FN_WINDOW_MIN_HEIGHT,         /* uiWindowMinHeight(window:i) -> px or -1 */
     SLUI_FN_WINDOW_MAX_WIDTH,          /* uiWindowMaxWidth(window:i) -> px/0 or -1 */
     SLUI_FN_WINDOW_MAX_HEIGHT,         /* uiWindowMaxHeight(window:i) -> px/0 or -1 */
+
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;
 

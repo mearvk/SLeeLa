@@ -1,0 +1,65 @@
+name: Server Edition security verification
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - "server-edition/**"
+      - ".github/workflows/server-edition-security.yml"
+  pull_request:
+    paths:
+      - "server-edition/**"
+      - ".github/workflows/server-edition-security.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  protocol-and-nat-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OpenSSL (Ubuntu)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libssl-dev
+      - name: Install OpenSSL (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install openssl@3
+          echo "CPPFLAGS=-I$(brew --prefix openssl@3)/include" >> "$GITHUB_ENV"
+          echo "LDFLAGS=-L$(brew --prefix openssl@3)/lib" >> "$GITHUB_ENV"
+      - name: Build server
+        run: make -C server-edition clean all
+      - name: Run protocol tests
+        run: make -C server-edition test
+      - name: Check CLI help
+        run: ./server-edition/sleelas --help
+      - name: Check whitespace
+        run: git diff --check
+
+  windows-build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            git
+            make
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-openssl
+            mingw-w64-ucrt-x86_64-python
+      - name: Build server
+        run: make -C server-edition clean all
+      - name: Run protocol tests
+        run: make -C server-edition test

@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "0b6ebe4c11076f3e09f45d70fc45d7d5fc62ba055ca5313004cc8926e40caf1c"
+      "sha256": "f001b43054888586b234d6a4f7c94e0acc9d47585c45dbac77e97c6fa93613b7"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "47ac2e54aae73529a859d9a80a13c25a9797ffbf3d940a5ca0af388c08cf58b9"
+      "sha256": "984cfbc0514fcfb6c3e7833dbf774d87dddff0ac4de5dd9106461ffd048a078f"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -447,11 +447,11 @@
     },
     {
       "path": "impl/core/sleela_ui_ids.h",
-      "sha256": "aa36d9b90204a99a5ab2e71eefd2779e99eee51d3bf5a83857bf6a613bea89a7"
+      "sha256": "a3798a6086995496a998488d4e8828ad3d631a9e41c2e3f6e8ed51a7da5e7279"
     },
     {
       "path": "impl/core/sleela_ui_vm.c",
-      "sha256": "6d05c07914640e83ea36fe51ba7d2cbb312eb6f8af9c31b97a50234d016b256d"
+      "sha256": "aaac7da3ff3e84d2596f72717e42153a81d288a74870eb0831f74ac59c76f6db"
     },
     {
       "path": "impl/core/sleela_ui_vm.h",
@@ -507,11 +507,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "a99af83265c9cbe41be8f18fb76f8bfe9af47c5166a25aa750a3280cddfdec55"
+      "sha256": "667c31a25494891bf577b8ee1129586911e0e05372cd6852eb9707b10a6bb910"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "48d57b3dc007f1f514c60ea0df71d89c75d421b563e6c372bb9a9bee28490d03"
+      "sha256": "f615f18630d7987719748f9576967e536f70f6c3e6f2696b488f8d34c3c905a4"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -591,7 +591,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "0e40bce080a76b5f562f6e62412e1f6d8fb5565cdcd19bb2f62f6c9eb9d5f457"
+      "sha256": "1ae87e55c6761cea1abfa4142e0a8f8532dfd1b89e67b77e4d43984e72646268"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -607,7 +607,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "374b31d7c1fc5a2324b8256d51946fdaa620cf49d00695f8e007b4dca5a3bbc1"
+      "sha256": "28f864e0a39efe3d099ab7967e31417073513c5c87e2c18352eaee56995b5a15"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -623,7 +623,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "092c25fb9d81357ba55b8b1923b558ab4e8d99d0d148c9e7f9c06b5585b182a3"
+      "sha256": "2e9275da18e2cf05378c97abdb9873f21ce0ba66743286e09010bd9af7d30a89"
     },
     {
       "path": "impl/frontend/wikigen.cpp",
@@ -955,63 +955,75 @@
     },
     {
       "path": "lib/antivirus/Antivirus.sleela",
-      "sha256": "e0fff144f71aa8d65c4c735f2352dec6f6114fc5bc5fdcc274cbbf9f1115ac47"
+      "sha256": "a9be4c029d24fdf3a4bc9ce9c44a0c80b9c9cf422b9f980abf2706797582de9b"
     },
     {
       "path": "lib/antivirus/SLClamAVAdapter.sleela",
-      "sha256": "30f413de52cd196ea2007b618628102e33528fd97bb039e22b9d9258461bd5fc"
+      "sha256": "d61bdcd8f77c036de61e8d9147d06ccc867249f5e8abba50ed1c3649e300c3dd"
+    },
+    {
+      "path": "lib/antivirus/SLControl.sleela",
+      "sha256": "72f84eaab55299b9f148f13ef9b7a304d9f75e92bdfd79020f7302a9fbe13fc1"
+    },
+    {
+      "path": "lib/antivirus/SLCreator.sleela",
+      "sha256": "46b1a1a1cc8d5311e45c0541c3ed2764e8f7f849623baa6b08fee0535e780938"
     },
     {
       "path": "lib/antivirus/SLLocalScanner.sleela",
-      "sha256": "a23f2967627aa95e2a87d75badfcb2fbcea7e8422884c3132a74d92cd240a8fa"
+      "sha256": "4823276ba2a836fb5b02231bded776bfbc01cd603ca720be35f2b8ad7c833596"
+    },
+    {
+      "path": "lib/antivirus/SLMaterialClaim.sleela",
+      "sha256": "314982c2bc9cc5adb5ed12213de60fa852e667730b119aba2e31a2434c3b3587"
     },
     {
       "path": "lib/antivirus/SLPackage.sleela",
-      "sha256": "a148f66c84967f43f167390262aec851f6f54a0c71282ea0ed28786f534767be"
+      "sha256": "429ab5529440bebf5ba70b010bcc753892527259212a78f06f4620301f49ba3c"
     },
     {
       "path": "lib/antivirus/SLQuarantineManager.sleela",
-      "sha256": "d66f9bcdb56e96b882e27fe9979a5fafe8d9eab2999c92c8ca8c7bcb64eb1d3e"
+      "sha256": "6c74ea4fc029a00144b5d41e20146a464f90c98c4b44b7e1dfe5bccd82748ee3"
     },
     {
       "path": "lib/antivirus/SLScanPolicy.sleela",
-      "sha256": "ebfed829856bdee8f88a1ef427dc84b934fac5df5d28013d8fc1a5fa2d1e44a9"
+      "sha256": "c2bb03498d89a74a7d3cf3304cdddfbe5da129efcee5d347e7c4a4e9f85b07fe"
     },
     {
       "path": "lib/antivirus/SLScanRequest.sleela",
-      "sha256": "e98a6778c73058c957c3e52540b1ca381b801ae70fa95656d3d9f3cd5565ca18"
+      "sha256": "641e513d25627fa9e97d8ef72cd7915060b3416e079d45a5f8bbdc545eb9cd90"
     },
     {
       "path": "lib/antivirus/SLScanResult.sleela",
-      "sha256": "9f6e9d49ebc6743aec6ce0d9b5da62278cb15171f86290c75817356da3109489"
+      "sha256": "1f979fa2f687311afc2475106ac4c3e9ae944aa1e7041b90b6cbaf6851a7b454"
     },
     {
       "path": "lib/antivirus/SLScannerEngine.sleela",
-      "sha256": "7501017b611a2860e62dbba37a2072b50bbd7816b2e73d6ae850863d710ca6b3"
+      "sha256": "8699ad93eb0135ed4645be6bf66576847f6a44b55f3ac0699d72a0f57f969c5e"
     },
     {
       "path": "lib/antivirus/SLSystemScanner.sleela",
-      "sha256": "383f7ec6b48ff11e1536866afa2b9abc289479414e87dd48511f60e9e897af51"
+      "sha256": "4ee8d4c6220aede4c09870d9e034ab545a93ed463589df2feecd94a479463200"
     },
     {
       "path": "lib/antivirus/platforms/Apple/macOS/SLMacOSAntivirusProfile.sleela",
-      "sha256": "5b035e29b999f372bc81bbbe38990b1ac5cae1d288adfd56ac39b2b1cdb0424a"
+      "sha256": "b60f79b49f70c32879d4272bb424cfda047e6dbea69d9f6f39ad4cb8c843daf5"
     },
     {
       "path": "lib/antivirus/platforms/GNU/Linux/Debian/SLDebianAntivirusProfile.sleela",
-      "sha256": "1b8492d2f386282ff3fe6ab1a0e0f6505bad155ad568bd16b7a501f76d232e3c"
+      "sha256": "e705e22b89928a3913291b2836c4922de2300d9dfb03f74c91d37c2c27cc9de3"
     },
     {
       "path": "lib/antivirus/platforms/GNU/Linux/Fedora/SLFedoraAntivirusProfile.sleela",
-      "sha256": "fc8662b081bbe711ff8b360e1691cec097d5b3d85e0321ebf77de7cebc3e1e6b"
+      "sha256": "9e54e4f2dab2080eea03b49efb0a46f8ed747d7608c20c7f90aa0bb3dd5d3162"
     },
     {
       "path": "lib/antivirus/platforms/GNU/Linux/Ubuntu/SLUbuntuAntivirusProfile.sleela",
-      "sha256": "e27630453e075e41f6bbfc0a37ff4d36cb52b28ade693b041fe8e3092ef579fa"
+      "sha256": "72fb7287a65594dea63154484f87ad6916a80896a0f8dced2af3ebcc69797ab3"
     },
     {
       "path": "lib/antivirus/platforms/Microsoft/Windows/SLWindowsAntivirusProfile.sleela",
-      "sha256": "d5c70bc2a145eb8da3a64087ef6ee73b789c49d65837ba64fb01f972441570ce"
+      "sha256": "bf06dc1460b68f18b6526a903f0eb77a38286c12e04b310ff7b38ee4e8fc05e3"
     },
     {
       "path": "lib/api/SLPackage.sleela",
@@ -2687,7 +2699,7 @@
     },
     {
       "path": "lib/collections/SLList.sleela",
-      "sha256": "e034ca840112d91f5880276ccd4c37652172c1931d56f5161ce10419591392e5"
+      "sha256": "3e2e626868839dbd75d7b1a4594d2ef58ab38328cb22b45b861a0e5bb527bd8c"
     },
     {
       "path": "lib/collections/SLMap.sleela",
@@ -2708,6 +2720,10 @@
     {
       "path": "lib/collections/SLStack.sleela",
       "sha256": "af005e31572528b0c13f6bd88d09d972beb03fa6eb58390dc42834167b9c40dd"
+    },
+    {
+      "path": "lib/collections/SLValueList.sleela",
+      "sha256": "6af338ae29c23001bb6ab15002fc33fb68d8c7a5f8104bd09028cf00acba3544"
     },
     {
       "path": "lib/common-rails/PrintComponent.sleela",
@@ -5070,6 +5086,18 @@
       "sha256": "946d4e548551366dc47101437164e4e6c3b5115454f1df2b8506b37fb8c53f2d"
     },
     {
+      "path": "lib/db-connector/include/sldbc.h",
+      "sha256": "1695386c79526e9258bc507bab1ead7cec7e9789e1fbabbbe3a0d0060448ab86"
+    },
+    {
+      "path": "lib/db-connector/src/sldbc.c",
+      "sha256": "6f07fa7d18e232a6fa14e796f2a872a33ca5335be45f2955914e17e71b3e91d1"
+    },
+    {
+      "path": "lib/db-connector/tests/test_connector.c",
+      "sha256": "864069191c27f8360e27a29fc4076b2cba314c0594ad66b52570854d5528c77f"
+    },
+    {
       "path": "lib/debugger/SLBreakpoint.sleela",
       "sha256": "b1bd1a7d495ae2b499b39659bd566a0345a4de764d8ebe20130cff5bad9687cb"
     },
@@ -6511,7 +6539,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiApp.sleela",
-      "sha256": "947ef16abf87b8b260474cfa42a40625e9e465f1926cfdf62ceff7c4e6f18d73"
+      "sha256": "206285244352872edb1e69729d364dcf5227a051bf6d21f8263f24fbafc171e8"
     },
     {
       "path": "lib/gui/version-dual/SLGuiAudioCues.sleela",
@@ -6603,7 +6631,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiMenuBar.sleela",
-      "sha256": "3eca853ab293dc9fac9cbe847f862982c87b9ad6c7e91a7d9a2f955969958f10"
+      "sha256": "8b070e4755076127292275104c6c7e3c1ec2340bc41cdce4012c5baf15ace7f6"
     },
     {
       "path": "lib/gui/version-dual/SLGuiMenuItem.sleela",
@@ -6655,7 +6683,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiTheme.sleela",
-      "sha256": "658157ff4f66f7b41cf1ef7e8b7ecf6ff44f8fa997f035ad0614217cc1b60080"
+      "sha256": "7483167f83527c281fb4452438a88ac64482c3c0c983b618504347f3238feaeb"
     },
     {
       "path": "lib/gui/version-dual/SLGuiToast.sleela",
@@ -6675,7 +6703,7 @@
     },
     {
       "path": "lib/gui/version-dual/SLGuiWidgetFactory.sleela",
-      "sha256": "8999cad6a0064410fb7fb38e317109ac27ea9ffaff58d088d48a1c4a9c9f7a4a"
+      "sha256": "0d23a876f647488fd9e358c375a093515c15c7d90fa011331d53bb8286cfc7f1"
     },
     {
       "path": "lib/gui/version-dual/SLGuiWindow.sleela",
@@ -6727,7 +6755,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiApp.sleela",
-      "sha256": "25042968055c1643db2558049f7f27f60b38412564c2a2241d7f0d4bfa93d39e"
+      "sha256": "878e0590fdffc67b1355e1de1ede7324a8c5332e1c115aa544618dae22dca7e2"
     },
     {
       "path": "lib/gui/version-gual/SLGuiBackend.sleela",
@@ -6783,7 +6811,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiMenuBar.sleela",
-      "sha256": "ead0fd128b43ed51ab360fb78179c2e139ac0b23f4e472b92efaeb988d38b780"
+      "sha256": "efb9995b74f2286ee26680fe6bcee909954b6efb42a875aad81357ab64f30fcc"
     },
     {
       "path": "lib/gui/version-gual/SLGuiMenuItem.sleela",
@@ -6831,7 +6859,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiTheme.sleela",
-      "sha256": "bdd96a13dda9985c9f8c5fe26a9b7b213a67e304cfe4333b29649fcc2f8c9e82"
+      "sha256": "1fcb98f2728bee3902cae8970c754889cf297d46070a79974cebbf2064614d0c"
     },
     {
       "path": "lib/gui/version-gual/SLGuiToast.sleela",
@@ -6847,7 +6875,7 @@
     },
     {
       "path": "lib/gui/version-gual/SLGuiWidgetFactory.sleela",
-      "sha256": "744bbd290e15495b4b6c6a646f7af28d4505ae683b129cc3e98711b1a3df5f4f"
+      "sha256": "1716a2561aa69cb238748757f026cf091ed857cd0975f7a5e194e9a2a9bddf01"
     },
     {
       "path": "lib/gui/version-gual/SLGuiWindow.sleela",
@@ -6891,7 +6919,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiApp.sleela",
-      "sha256": "af41cdb15cb7af887b46f79e1abaf73c8b26194b01cf6c61d3a2942a74fb1cf3"
+      "sha256": "f70c5cee279ea95114ebc25a921097f7cbcb92dc5ae352c6124abe0d95488e5d"
     },
     {
       "path": "lib/gui/version-military/SLGuiAudioCues.sleela",
@@ -6999,7 +7027,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiMenuBar.sleela",
-      "sha256": "32cc7042dac6537af43869088b5372cbea0b94a5e09fb18f78d951b339882be2"
+      "sha256": "a0db0166966e8f1b5f991b055f4afe74c2dab88aeda18e59fc69e2f3ebdc4cfd"
     },
     {
       "path": "lib/gui/version-military/SLGuiMenuItem.sleela",
@@ -7051,7 +7079,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiTheme.sleela",
-      "sha256": "b984dbcb1dcf4c89860deec9f42a7ca611aef062829be420b8a46eb4860cf012"
+      "sha256": "25e3032c27d028a67c556765ecb1930091428b5fb32e0a9c3c9cf35fcf6e226e"
     },
     {
       "path": "lib/gui/version-military/SLGuiToast.sleela",
@@ -7071,7 +7099,7 @@
     },
     {
       "path": "lib/gui/version-military/SLGuiWidgetFactory.sleela",
-      "sha256": "25f69d746599f3bc6454575360d0a020c30ea4e3406647d0347aca2163dc0a2a"
+      "sha256": "73292237c29a8a129e89c9284e155f44bbed2150dd946ddc2137b8af65b1ddb4"
     },
     {
       "path": "lib/gui/version-military/SLGuiWindow.sleela",
@@ -7135,7 +7163,7 @@
     },
     {
       "path": "lib/gui/version-mual/SLGuiApp.sleela",
-      "sha256": "34c845fb090a8d858a7f4ff9f14521db7f259990acd6529631ade90c2925bf65"
+      "sha256": "ff949b301296303e5c5adb1e7a0320f8bee70d24c0105da4ae475ab3b375ce35"
     },
     {
       "path": "lib/gui/version-mual/SLGuiBackend.sleela",
@@ -7191,7 +7219,7 @@
     },
     {
       "path": "lib/gui/version-mual/SLGuiMenuBar.sleela",
-      "sha256": "823e64a48db5514e9e7f485f473331c627cb2e1804908f3e2578c7a2ad961700"
+      "sha256": "eb31545409f62c1c77f3550bdb34c47677e9add9e963784734456a85c4ebf168"
     },
     {
       "path": "lib/gui/version-mual/SLGuiMenuItem.sleela",
@@ -7235,7 +7263,7 @@
     },
     {
       "path": "lib/gui/version-mual/SLGuiTheme.sleela",
-      "sha256": "7f0ec81db5b00f3d7001ac6e765138ea080f609808eaec2201d28189d4370fe2"
+      "sha256": "43e8772bfd30d97642962125763ca65b2f540c88573b4c6d5443203bbd87397b"
     },
     {
       "path": "lib/gui/version-mual/SLGuiToast.sleela",
@@ -7251,7 +7279,7 @@
     },
     {
       "path": "lib/gui/version-mual/SLGuiWidgetFactory.sleela",
-      "sha256": "bbea476f64696616f6232f90aa71d447d99d838b308c8025e7eeb050b462e4fc"
+      "sha256": "97d5a8d9cff40bdaf0e8b0ec521a41ca28c0216d7beffbff0db897abf01ab511"
     },
     {
       "path": "lib/gui/version-mual/SLGuiWindow.sleela",
@@ -7295,7 +7323,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiApp.sleela",
-      "sha256": "70f8c7645079faee599071c2df4e019d462c5a72d1c3895c4a77b8ddc886bedf"
+      "sha256": "309addc465b3d007ba04b371f9b12264d0eb2a6cc184aa0b028108a166f8698c"
     },
     {
       "path": "lib/gui/version-thual/SLGuiAudioCues.sleela",
@@ -7363,7 +7391,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiMenuBar.sleela",
-      "sha256": "b9ce79ce2a86324528849bdc8825d17c2cf83a2a59f469b834896787ad467f9d"
+      "sha256": "b772295abd351549df9ece219b7e4e8c09284012e767181c57c12c3e64287507"
     },
     {
       "path": "lib/gui/version-thual/SLGuiMenuItem.sleela",
@@ -7415,7 +7443,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiTheme.sleela",
-      "sha256": "0f7c4ff01e3bc325296a49a3c47d71c445fcd1a22f9ef67dcc541f0ebaef5708"
+      "sha256": "3dbcea219c6a63ec7be58619f62e3176015f48b96880c12cd82c8dfc17eeb74f"
     },
     {
       "path": "lib/gui/version-thual/SLGuiToast.sleela",
@@ -7431,7 +7459,7 @@
     },
     {
       "path": "lib/gui/version-thual/SLGuiWidgetFactory.sleela",
-      "sha256": "118f85d6967f42acf5891aa36bd5a78d62c818dfa4067e3a618872da874f09e5"
+      "sha256": "df92ea82b3efc0101145fa4511e4bd95655bba5d1530c136530ae5068d97ef31"
     },
     {
       "path": "lib/gui/version-thual/SLGuiWindow.sleela",
@@ -46302,6 +46330,66 @@
       "sha256": "0163bd344acaacdf6e372700ce954a095abac11fe771978e22cbcba05ec33e61"
     },
     {
+      "path": "lib/signal-processing/SLSignalComplex.sleela",
+      "sha256": "63108e23a1e2f3c8b3acbb60965d1d8eaa9f5f7490d3b9e1ffca503625ebdb3b"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalComplexSample.sleela",
+      "sha256": "2c1b3d1278858dbc321ba2a211fa41f772252a75dc70d6ba5af87ec00ff52284"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalComplexSeries.sleela",
+      "sha256": "e44f6adadd630e96aefc0b65ce0f537ddba758a68d57b41528264a4819003447"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalDFT.sleela",
+      "sha256": "761b2a43ed77e3bc7a6f3ade9be30bc6b8ace1445577a0ef4171dcf0d5de5f14"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalFFT.sleela",
+      "sha256": "51c63d242598c043729bc8ef0632392ff1f7ce2eb4e13fcdb5b9e51ab39c5eab"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalFilters.sleela",
+      "sha256": "372cb96c70c170d4e0854a5ca0c5b4d3fac7805fba3ff1f83d40872da2a84408"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalMagnitudeSpectrum.sleela",
+      "sha256": "bb970545746a70da81902e5d472ae40355efeb5eb5048b7cd362b63aa9996ea9"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalProcessing.sleela",
+      "sha256": "93de5ee3c519b23c33282d834454f51476a4147b83eda76929f35ebed9c013fc"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalProcessingStatus.sleela",
+      "sha256": "871b056f7a0abe319298f71a9d4813e50b0062174d618b5bcf0455cfba89ce73"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalSample.sleela",
+      "sha256": "47eb7fdb3228bdf386fbb6dc4f6a9b1055bae5a7361e3b674857a4854ccf711c"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalScalar.sleela",
+      "sha256": "d6152b9b7154931976f19cca3ce2f93fc7bec9b83111d4f3a0979e585a406361"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalSeries.sleela",
+      "sha256": "9b91096a05cf6847963931f01584560a3668260c2696802681d443dd6b80f845"
+    },
+    {
+      "path": "lib/signal-processing/SLSignalStatistics.sleela",
+      "sha256": "cb777e45b7bc7187a0a2731909dd4140104e07850fa7e2d673452df7d95b8bcd"
+    },
+    {
+      "path": "lib/signal-processing/example/SLSignalProcessingDemo.sleela",
+      "sha256": "09ced664cdff7340fe5051d0e462328003bcefc3d17b1a4f3ee5ecec66f4889b"
+    },
+    {
+      "path": "lib/signal-processing/tests/SLSignalProcessingSmoke.sleela",
+      "sha256": "16eb4a7956a2dd38aadb054e657fd6fd9f6df45ffabd6c522213a152604ebb75"
+    },
+    {
       "path": "lib/sldocument/SLDocument.sleela",
       "sha256": "e1450c19abc05ef004f3ba90e820732d4590d67152c9e8387089703aa53c3246"
     },
@@ -46359,11 +46447,11 @@
     },
     {
       "path": "lib/sleela-sql/native/include/sleela_sql.h",
-      "sha256": "b79f1921086c9d316f7524c805b6075867d1a14a25bb72792d04e2b8ca7e6c1b"
+      "sha256": "ec396ab3de0441a46972deba13d9a0aff8cdf84edf9ddb3b8f385594f9493c6c"
     },
     {
       "path": "lib/sleela-sql/native/src/sleela_sql.c",
-      "sha256": "b8ca04c30c96ede70936fff253b784c619108486ce62211ea8110ed9bbcfd43a"
+      "sha256": "27d1962796752a6b5319b76cf1173b644e3da5afbb133d68a4a2f5917ca8a6ba"
     },
     {
       "path": "lib/sleela-sql/native/src/sleela_sql_cli.c",
@@ -46378,6 +46466,10 @@
       "sha256": "46d0f377c545d2266ede263df50aaf4d791ae604cb7612bb01aaa74a3c3dc5a2"
     },
     {
+      "path": "lib/sleela-sql/tests/test_txn.c",
+      "sha256": "6ff8c96a87d6eac534b01f1197c4b052d1d930261c756b8b5791e9ee9d55537c"
+    },
+    {
       "path": "lib/sleela-terminal/SLPackage.sleela",
       "sha256": "f3462dc2e96915eb0f4d59419b9ae70def341ff9fc13848a6950ad968d662f2c"
     },
@@ -46388,6 +46480,50 @@
     {
       "path": "lib/social-model/SLPackage.sleela",
       "sha256": "01abbff402cd5f49a2c926ed0b23ea9ff44e54908f7395c02536c884a4c90b6b"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierCare.sleela",
+      "sha256": "91bc8c04259279b5e858a6522bda85858e55a10eba508dc71a356b9dc1b94ebc"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierCareDemo.sleela",
+      "sha256": "da6dab77f0c61fa80d94c85f6c4d7cd73e564e3eed7daafc9a58fea47192f1b0"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierCarePlan.sleela",
+      "sha256": "3fa9bb20b5689ef0a53e11581f4adcfc707a1865f16edc60d95db15630dc6a30"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierConsent.sleela",
+      "sha256": "c1a102ffaec5d6e433d6070e3264ab1af618a153c1157d91d9b98c628aebc8c1"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierFeedback.sleela",
+      "sha256": "7570bf683138b8e9b81d71755f7e6813d7ba8f6e49deb935606b8ec63afee789"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierFeedbackClient.sleela",
+      "sha256": "8a347c01ffe6bede0e1bbccf3e8368027431ae54d3e48c0df821ec991b4a6652"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierLocale.sleela",
+      "sha256": "dec6ce3160b8b6b6c4586c0907c5baf8e63af898a43c0d966561715a17d7f5f1"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierOffer.sleela",
+      "sha256": "0a986a017c1e7875cab06f52024414207bee5de8c429eda975134f505f6dc003"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierOfferRegistry.sleela",
+      "sha256": "5a4103616081602f7d20ab8a02999e8b410491d0114bfa158971f6d7e1efa07f"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierProfile.sleela",
+      "sha256": "0b5f5c534bedc509ada0a33b3387858f7c48fd857d9b1975bc6d8b23e1754180"
+    },
+    {
+      "path": "lib/sommeliers/SLSommelierSession.sleela",
+      "sha256": "6d6bd3d03359a051c722c12b5e5170cbeb92c4f0535548a854dbf0544a92bc08"
     },
     {
       "path": "lib/sst/DynamiteConnector.sleela",
@@ -46632,6 +46768,58 @@
     {
       "path": "lib/ui/SLWindow.sleela",
       "sha256": "86d66aa26ae6aee054e36a992041f8a8fcdc2cd90df59ba2b96291eab5e313e7"
+    },
+    {
+      "path": "lib/ui/example/dual/gui-dual-media-studio.sleela",
+      "sha256": "607362a07d1a75bf6009d71a10fb92152f99b7e261acd512a4452dc0cac70d2a"
+    },
+    {
+      "path": "lib/ui/example/gual/gui-gual-settings-console.sleela",
+      "sha256": "a29845f372fdf018466c571d9a80c8a1aa9677dc02e5f69e5fa51d8e89077138"
+    },
+    {
+      "path": "lib/ui/example/menus/gui-menubar-expandable.sleela",
+      "sha256": "13f34ea97a36b902e93bb880fea0f8001b1d468c4ed087c604c56357d98f67b1"
+    },
+    {
+      "path": "lib/ui/example/military/gui-military-command-console.sleela",
+      "sha256": "6258fae89403eb7cb1bc84b484b1eb2754ecafbdddede28ba9f5ac47caf392b5"
+    },
+    {
+      "path": "lib/ui/example/mual/gui-mual-text-editor.sleela",
+      "sha256": "00ad8364ee0b02af5778ffd72ab734982069a9e3d954979584b40b8e6e17505a"
+    },
+    {
+      "path": "lib/ui/example/science/astrophysics.sleela",
+      "sha256": "051cfb91c8b344eecdbe0c38a8e7b83b6333ab80525db071e9d8330f6a80a619"
+    },
+    {
+      "path": "lib/ui/example/science/chemistry.sleela",
+      "sha256": "27a28992d09275cc05280910f7c4129c70e890669e8a733208732d4d2f167cd3"
+    },
+    {
+      "path": "lib/ui/example/science/guide-chain-syntax.sleela",
+      "sha256": "ec6987eaf0d47a12831681e1dfb26339891be874953d7528167b6ef5d2e522bb"
+    },
+    {
+      "path": "lib/ui/example/science/math.sleela",
+      "sha256": "cc1a090ef8a3a60427820dd8c2057fec333532167181a5ff18c82c7959467c8f"
+    },
+    {
+      "path": "lib/ui/example/science/philosophers-constructor.sleela",
+      "sha256": "56b6a230440d1d0db50e00cd794cb2d88fc4b360715565a07ba83f8d057995dd"
+    },
+    {
+      "path": "lib/ui/example/science/physics.sleela",
+      "sha256": "075a1656fbb2b1a3e713e618ffa02bf2509117cc7ddb7ef8d7fe249452d7b520"
+    },
+    {
+      "path": "lib/ui/example/science/sociology.sleela",
+      "sha256": "d7d99a02f83f09f878f428e97dc3dee9c79e24b5b64f3765326aa3eaf61e4d97"
+    },
+    {
+      "path": "lib/ui/example/thual/gui-thual-effects-showcase.sleela",
+      "sha256": "4446b5faa3a3fc7dc992c9ed1d4cf9c95a0a129c91167d984a1655bcc3584f46"
     },
     {
       "path": "lib/ui/layout-demo.sleela",
@@ -46911,7 +47099,7 @@
     },
     {
       "path": "lib/user-interface/SLTheme.sleela",
-      "sha256": "32b59222b9aa90fabfee6b247bc1159f43050664f939e984acab442b1cb5bfcb"
+      "sha256": "f54fcb61584871c3f3c927a5282251f9f091c92882c76d0188837aaff6e12fd2"
     },
     {
       "path": "lib/user-interface/SLThrobber.sleela",
@@ -46947,7 +47135,59 @@
     },
     {
       "path": "lib/user-interface/SLWindow.sleela",
-      "sha256": "fabc8a24fa809cb9ea1be5512f352c0e0c2ed8dccdd2467715f7808b26af6318"
+      "sha256": "d3e84fe7bd8011f7d17de79d03eda5bc200e49521c61ef6ed7426a7eda638b46"
+    },
+    {
+      "path": "lib/user-interface/example/dual/gui-dual-media-studio.sleela",
+      "sha256": "607362a07d1a75bf6009d71a10fb92152f99b7e261acd512a4452dc0cac70d2a"
+    },
+    {
+      "path": "lib/user-interface/example/gual/gui-gual-settings-console.sleela",
+      "sha256": "a29845f372fdf018466c571d9a80c8a1aa9677dc02e5f69e5fa51d8e89077138"
+    },
+    {
+      "path": "lib/user-interface/example/menus/gui-menubar-expandable.sleela",
+      "sha256": "13f34ea97a36b902e93bb880fea0f8001b1d468c4ed087c604c56357d98f67b1"
+    },
+    {
+      "path": "lib/user-interface/example/military/gui-military-command-console.sleela",
+      "sha256": "6258fae89403eb7cb1bc84b484b1eb2754ecafbdddede28ba9f5ac47caf392b5"
+    },
+    {
+      "path": "lib/user-interface/example/mual/gui-mual-text-editor.sleela",
+      "sha256": "00ad8364ee0b02af5778ffd72ab734982069a9e3d954979584b40b8e6e17505a"
+    },
+    {
+      "path": "lib/user-interface/example/science/astrophysics.sleela",
+      "sha256": "051cfb91c8b344eecdbe0c38a8e7b83b6333ab80525db071e9d8330f6a80a619"
+    },
+    {
+      "path": "lib/user-interface/example/science/chemistry.sleela",
+      "sha256": "27a28992d09275cc05280910f7c4129c70e890669e8a733208732d4d2f167cd3"
+    },
+    {
+      "path": "lib/user-interface/example/science/guide-chain-syntax.sleela",
+      "sha256": "ec6987eaf0d47a12831681e1dfb26339891be874953d7528167b6ef5d2e522bb"
+    },
+    {
+      "path": "lib/user-interface/example/science/math.sleela",
+      "sha256": "cc1a090ef8a3a60427820dd8c2057fec333532167181a5ff18c82c7959467c8f"
+    },
+    {
+      "path": "lib/user-interface/example/science/philosophers-constructor.sleela",
+      "sha256": "56b6a230440d1d0db50e00cd794cb2d88fc4b360715565a07ba83f8d057995dd"
+    },
+    {
+      "path": "lib/user-interface/example/science/physics.sleela",
+      "sha256": "075a1656fbb2b1a3e713e618ffa02bf2509117cc7ddb7ef8d7fe249452d7b520"
+    },
+    {
+      "path": "lib/user-interface/example/science/sociology.sleela",
+      "sha256": "d7d99a02f83f09f878f428e97dc3dee9c79e24b5b64f3765326aa3eaf61e4d97"
+    },
+    {
+      "path": "lib/user-interface/example/thual/gui-thual-effects-showcase.sleela",
+      "sha256": "4446b5faa3a3fc7dc992c9ed1d4cf9c95a0a129c91167d984a1655bcc3584f46"
     },
     {
       "path": "lib/user-interface/gui-app-demo.sleela",
@@ -47590,6 +47830,62 @@
       "sha256": "1d985b7fd2a741ec9c9627f49143c414c2a7e0424d7ab35b4e725bbe82048ffc"
     },
     {
+      "path": "lib/web-server-technology/SLDualStackBinding.sleela",
+      "sha256": "54e05a49c3334f0075f5f3ba0c748d79bd39594ecd39b13db78cd0e7f1677d5e"
+    },
+    {
+      "path": "lib/web-server-technology/SLEnvelopment.sleela",
+      "sha256": "b001d6e9719a144a4e94578f5c77f3af72ac41f1ee980e6a49809ae426807e1c"
+    },
+    {
+      "path": "lib/web-server-technology/SLPackage.sleela",
+      "sha256": "6e59f7c0fb8728cdd2f162887dbf93b4e00cfd0e20ae492339f6752d233a2d82"
+    },
+    {
+      "path": "lib/web-server-technology/SLSqlEndpoint.sleela",
+      "sha256": "12cecbab4050b1f128960ea38d7f74d120fc31d879d942185b46b59c504b1bf2"
+    },
+    {
+      "path": "lib/web-server-technology/SLWarrant.sleela",
+      "sha256": "aa457d4d8f21c3ade15e6b932eb4e89249b3249e26706ce27e680d6cb0e8a9a8"
+    },
+    {
+      "path": "lib/web-server-technology/SLWebProgram.sleela",
+      "sha256": "0c53ab8850b3762cce7a9953d5afce3910e88da6bb383f6a32e4eaa9df4340a1"
+    },
+    {
+      "path": "lib/web-server-technology/SLWebServer.sleela",
+      "sha256": "888f4c2a7ba948002e802fb708fb013ef6e413badd5d35be2c5a615d5eaed36a"
+    },
+    {
+      "path": "lib/web-server-technology/cpp/include/slweb.hpp",
+      "sha256": "8f23676e8d48fa686e3f21bffe391ecd3d5e4404d6e7de686e554a975cbcb3d2"
+    },
+    {
+      "path": "lib/web-server-technology/cpp/src/slweb.cpp",
+      "sha256": "35b272482c60f258215a22b92ee4362ecf979a95d295d128ff53989aa5aca35f"
+    },
+    {
+      "path": "lib/web-server-technology/demo-web-server-technology.sleela",
+      "sha256": "5fefa8b6f2fef411c0898b33bb59ef2b2dd903da4e7e3ef44ce54c8f6872e457"
+    },
+    {
+      "path": "lib/web-server-technology/native/include/slweb.h",
+      "sha256": "a4ee18df0c440c311cc74f6e934019c45f4cafb2280970b555832166b356ddc6"
+    },
+    {
+      "path": "lib/web-server-technology/native/src/slweb.c",
+      "sha256": "c3ad9af1a0855fbebf30c157893f88228e71b5cd68213b6453c4b78e107db305"
+    },
+    {
+      "path": "lib/web-server-technology/tests/test_c.c",
+      "sha256": "fe3020ce7796908658e2d438a2bf3e7f247b3381d2d83bc17b4d92e3b1ef6a11"
+    },
+    {
+      "path": "lib/web-server-technology/tests/test_cpp.cpp",
+      "sha256": "64880ba478d17dea3e17afac92f1c0af6f291eda0eeb46765ab74d61a8baf93b"
+    },
+    {
       "path": "lib/website/SLWebsiteDesign.sleela",
       "sha256": "9623834a4ad290104cbe5a1a5eee76998ddfd0d67f2e26045e1862072cb94827"
     },
@@ -47939,15 +48235,15 @@
     },
     {
       "path": "runtime/garbage_collector.c",
-      "sha256": "c06acb926dc32f465e4f57cf7d0c4cafca56794e5cdadd8880ef7f5538ada8ae"
+      "sha256": "712d21ca01b3a0f03170bb203aac111fff3ed60e11a99e3be92a679c5fefdb12"
     },
     {
       "path": "runtime/garbage_collector.h",
-      "sha256": "3684d0cb3f54db309e46193b5ad29991e7ec38415a65419f0a14a22824e61074"
+      "sha256": "0a7085a37dbb38c818c179f51435c974db444bf64af0ca29c141e4fea2416bea"
     },
     {
       "path": "runtime/security_supervisor.c",
-      "sha256": "9edfa3ab07079020a12260690d83f1b15876f358e71d14fbab1d69dda4f7689d"
+      "sha256": "d59d92c4a081243c3d6d888e308b6cf5757215f16234851b0613f28e901c1796"
     },
     {
       "path": "runtime/security_supervisor.h",

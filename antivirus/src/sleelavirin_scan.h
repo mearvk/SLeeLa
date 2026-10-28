@@ -32,6 +32,18 @@ typedef struct {
     uint8_t severity;
 } sleelavirin_known_file_t;
 typedef struct sleelavirin_hashmap sleelavirin_hashmap_t;
+/*
+ * Compute a file fingerprint (SHA-256 + a 64-bit feature fingerprint/mask +
+ * size) over an in-memory buffer. The feature model is defined by Sleelavirin
+ * and is intentionally simple and deterministic: the 64 feature bits summarize
+ * the byte-value histogram of the content (bit b is set when byte values in the
+ * b-th of 64 equal-width value bands occur with at least the mean frequency).
+ * Similar files share most feature bits, so a small Hamming distance indicates
+ * similarity (see SCANNING-CONCEPTS-GLOSSARY.md -> fuzzy hashing). feature_mask
+ * marks which bands carried any data. Returns 0 on success, -1 on bad args.
+ */
+int sleelavirin_fingerprint_buffer(const uint8_t *data, size_t length,
+                                   sleelavirin_file_fingerprint_t *out);
 typedef struct {
     sleelavirin_match_kind_t kind;
     uint8_t confidence;

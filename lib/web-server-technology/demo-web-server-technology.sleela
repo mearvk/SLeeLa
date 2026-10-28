@@ -1,0 +1,129 @@
+<< lib/web-server-technology/demo-web-server-technology.sleela
+   Runnable demo that validates the web-server-technology SLeeLa facade:
+   SLWebServer, SLSqlEndpoint, and SLDualStackBinding. Library classes have no
+   main(); this sibling demo supplies one so `sleela run` can auto-link and
+   exercise the package. It does not open a real socket -- it drives the
+   SLeeLa-side model whose native counterpart is
+   web-server-technology/native/dyn_sql_server.cpp. >>
+#sleela 2.1
+class DemoWebServerTechnology {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Worker-class demo: baseline identity record is sufficient. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11649;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-26";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-26";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    print("SLeeLa web-server-technology demo");
+
+    < 1) Configure a dual-stack, world-reachable server. >
+    SLWebServer server = new SLWebServer();
+    server.configure("/srv/www");
+    server.setPort(8090);
+    server.enableDatabase("/srv/db");
+    print("server service: " + server.serviceName());
+    print("db enabled: " + server.databaseEnabled());
+    print("writes allowed (default): " + server.writesAllowed());
+
+    < 2) The dynamic SQL endpoint policy: read-only by default. >
+    SLSqlEndpoint endpoint = new SLSqlEndpoint();
+    endpoint.configure("/db");
+    print("endpoint prefix: " + endpoint.getRoutePrefix());
+    print("SELECT permitted: " + endpoint.permits("select"));
+    print("INSERT permitted (read-only): " + endpoint.permits("insert"));
+    endpoint.allowWrites();
+    print("INSERT permitted (writable): " + endpoint.permits("insert"));
+
+    < 3) The binding that reaches the full range of world IP addresses. >
+    SLDualStackBinding binding = new SLDualStackBinding();
+    binding.configure(8090);
+    print("dual-stack: " + binding.isDualStack());
+    print("reaches world IPs: " + binding.reachesWorld());
+    binding.bindTo("127.0.0.1");
+    print("after binding to a single literal, reaches world IPs: " + binding.reachesWorld());
+
+    server.open();
+    print("server active: " + server.active());
+    server.shutdownServer();
+    print("server active after shutdown: " + server.active());
+
+    < 4) Side 2: envelopment -- one domain, many programs via warrants, >
+    < gated to Scientists. >
+    print("-- Side 2: envelopment --");
+    SLEnvelopment env = new SLEnvelopment();
+    env.configure("science.example");
+
+    SLWebProgram landing = new SLWebProgram();
+    landing.configure("landing");
+    landing.setMount("/");
+    landing.asMeme("<h1>science.example</h1>");
+    env.registerProgram();
+
+    SLWebProgram lab = new SLWebProgram();
+    lab.configure("lab");
+    lab.setMount("/lab");
+    lab.asSql("/srv/labdb");
+    env.registerProgram();
+    print("lab program is sql: " + lab.isSql());
+    print("lab writes allowed (default): " + lab.databaseWritable);
+
+    SLWarrant wLanding = new SLWarrant();
+    wLanding.configure("publish-landing-page");
+    wLanding.setSubject("science.example");
+    wLanding.setPathPrefix("/");
+    wLanding.bindProgram("landing");
+    env.registerWarrant();
+
+    SLWarrant wLab = new SLWarrant();
+    wLab.configure("expose-lab-dataset-readonly");
+    wLab.setSubject("science.example");
+    wLab.setPathPrefix("/lab");
+    wLab.bindProgram("lab");
+    env.registerWarrant();
+    print("lab warrant matches its host: " + wLab.matchesHost("science.example"));
+    print("lab warrant matches other host: " + wLab.matchesHost("other.example"));
+
+    < Scientist gate: enabled alone is not enough. >
+    env.turnOn();
+    print("active with turnOn() but no scientist: " + env.active());
+    env.grantScientist();
+    print("active with enable() and scientist and warrants: " + env.active());
+    print("programs=" + env.getProgramCount() + " warrants=" + env.getWarrantCount());
+
+    print("demo complete");
+  }
+}

@@ -1,0 +1,99 @@
+<< lib/web-server-technology/SLEnvelopment.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines the SLeeLa standard-library type SLEnvelopment, the
+   SLeeLa-side model of Side 2: a domain that fronts many disparate programs via
+   warrants, gated to Scientists. Native counterpart:
+   web-server-technology/native/envelopment.cpp. >>
+#sleela 2.1
+< Unified SLeeLa SDK front-end object. >
+< Family: web-server-technology. Native implementation crosses an explicit VM/OS bridge. >
+class SLEnvelopment {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known.
+     Executive-tier record: this type represents a jurisdictional artifact -- a
+     domain that envelops many causes -- so it carries the full record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11646;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-26";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-26";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "RFC 9110 (HTTP semantics)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Envelopment state (mirrors struct Envelopment in envelopment.h) ---- >
+  < Master switch; Side 2 is off (Side 1 only) unless this is true. >
+  boolean enabled;
+  < Capability gate; envelopment requires a Scientist. >
+  boolean scientist;
+  < The domain this envelopment fronts. >
+  String domain;
+  < Count of declared programs and warrants (the native side owns the lists). >
+  int programCount;
+  int warrantCount;
+
+  void configure(String domainName) {
+    domain = domainName;
+    enabled = false;
+    scientist = false;
+    programCount = 0;
+    warrantCount = 0;
+  }
+  String getDomain() { return domain; }
+
+  < Turn Side 2 on. Does not by itself activate; see active(). Named turnOn() >
+  < rather than enable() because enable is a reserved Munction builtin. >
+  void turnOn() { enabled = true; }
+  void turnOff() { enabled = false; }
+  < Assert the Scientist capability that gates Side 2. >
+  void grantScientist() { scientist = true; }
+  boolean hasScientist() { return scientist; }
+
+  < The native loader populates these as it parses the config. The SLeeLa model >
+  < tracks the counts so active() can enforce the "at least one warrant" rule. >
+  void registerProgram() { programCount = programCount + 1; }
+  void registerWarrant() { warrantCount = warrantCount + 1; }
+  int getProgramCount() { return programCount; }
+  int getWarrantCount() { return warrantCount; }
+
+  < Side 2 is usable only with BOTH gates set and at least one warrant. This is >
+  < the exact rule enforced natively by Envelopment::active(). >
+  boolean active() {
+    if (!enabled) return false;
+    if (!scientist) return false;
+    return warrantCount > 0;
+  }
+
+  String serviceName() { return "SLEnvelopment"; }
+}

@@ -1,6 +1,7 @@
 << lib/antivirus/SLScanRequest.sleela
    Request model for local and system-wide antivirus scans. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLScanRequest {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

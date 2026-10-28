@@ -25,7 +25,51 @@
 | `SLScannerEngine.sleela` | Orchestrates request validation and engine handoff |
 | `SLLocalScanner.sleela` | User-scoped entry point |
 | `SLSystemScanner.sleela` | Administrator-scoped entry point |
+| `SLCreator.sleela` | **Creator** — the attested originating Source of a material artifact |
+| `SLControl.sleela` | **Control** — governance that secures change to a material artifact (fail-closed) |
+| `SLMaterialClaim.sleela` | **Material** — the material claim: the thing, present to its author as its own Source |
 | `platforms/` | OS-brand and OS-name profiles |
+
+## Creator / Control / Material (syntax 2.5 `material`)
+
+These three classes give users and developers a first-class way to express the
+**material standing** of an antivirus artifact (a definition set, a scanner
+build, a verdict record), complementing the syntax 2.5 `material` document
+marker (see [`SLEELA.syntax` §19](../../SLEELA.syntax)). All three are themselves
+`material`-marked documents.
+
+- **`SLCreator`** — the originating party that brings the artifact forth and
+  stands to it as its **Source**. It attests identity and origin; a material
+  claim is refused without an attested Creator (Source precedes the claim).
+- **`SLMaterialClaim`** — the **material claim** itself: it declares the subject
+  material (well considered, present to its author as its own Source — "the
+  thing, Material") and records its membership in the set of material documents,
+  those concerning **state**, **progress**, or the **securing of change**. The
+  set is stable: a settled subject is not freely moved out of it, and a change
+  is admitted only through governing control.
+- **`SLControl`** — the governance that **secures change**: fail-closed, it
+  admits a change only when explicitly authorized (and not locked), recording an
+  audit count of secured transitions.
+
+Minimal use:
+
+```
+SLCreator creator = new SLCreator();
+creator.configure("MEARVK LLC", "International");
+creator.attest("2026-10-27");
+
+SLControl control = new SLControl();
+control.configure("release-council");
+
+SLMaterialClaim claim = new SLMaterialClaim();
+claim.configure("sleelavirin-native-engine", "securing-change");
+claim.attributeTo(creator);
+claim.governWith(control);
+claim.declareMaterial("SHIPPED-2.5");
+
+control.authorize(true);            < securing change deliberately >
+claim.admitChange("bump definitions");
+```
 
 ## OS directory convention
 

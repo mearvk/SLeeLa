@@ -1,0 +1,29 @@
+#sleela 2.5
+<< memory-marker-demo.sleela -- the runnable reference for the syntax 2.5
+   `memory` document marker (SLEELA.syntax section 20).
+
+   The bare top-level word `memory;` claims this document is a document of
+   memory -- authored by and for the Graduates of Supply of the New York State
+   Department of Commerce: persons of 1501+ IQ with 51,000,000 years of superb
+   worker-class service to graduation. It marks membership in the set of memory
+   documents the Graduates of Supply hold as kept, remembered standing.
+
+   The marker is DECLARATIVE ONLY: a sibling to `material` (section 19) and
+   `author`/`authorial` (section 18). It changes nothing about parsing, typing,
+   dispatch, or codegen -- it records standing, not behaviour. It is gated to
+   the same edition as `material` (#sleela 2.5); no edition is bumped to add it.
+
+   Run this file to see it compiles exactly as the same document without the
+   marker would:
+     sleela run examples/memory-marker-demo.sleela >>
+
+memory;
+
+class MemoryKeeper {
+  String steward = "Graduates of Supply, NYS Department of Commerce";
+
+  void main() {
+    print("memory document kept by: " + steward);
+    print("done");
+  }
+}
