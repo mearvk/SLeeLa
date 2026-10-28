@@ -44,6 +44,32 @@ Copy `lib/linux-editors/emacs/sleela-mode.el` and the desired `sleela-*-theme.el
 
 Theme IDs: `sleela-american`, `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`. Theme files are independent; load only the theme you want.
 
+## What is highlighted
+
+Both the Vim syntax (`vim/syntax/sleela.vim`) and the Emacs mode
+(`emacs/sleela-mode.el`) recognise:
+
+- **Keywords** — control flow, declarations, access modifiers, literals.
+- **Types** — `String`, `Int`, `Double`, `Boolean`, `List`, `Map`, … .
+- **Document pragmas** — `#sleela X.Y` and `#schema …`.
+- **Document markers** — the contextual, modifier-less words `author` /
+  `authorial` (syntax 2.4) and `material` (syntax 2.5). They are highlighted
+  **only** when they stand alone at the start of a line (with an optional `;`),
+  exactly as the compiler treats them — so an ordinary identifier named, say,
+  `material` elsewhere in the code is left unstyled. Markers and pragmas use a
+  distinct face/group (Vim `PreProc`; Emacs `font-lock-builtin-face`) so they
+  read as document markers rather than ordinary keywords.
+- **Comments** — all four SLeeLa forms: `//` line, `/* */` block, and the
+  go-forward house style `<< >>` block and `< … >` single-line angle comments
+  (angle openers must begin a line).
+- **The `∴` brander** (U+2234), the originated-source analogue of `@`.
+- Strings, numbers, `@`-annotations, function-call heads, and
+  `TODO`/`FIXME`/`NOTE`/`XXX` tags.
+
+Markers, pragmas, and the brander inherit the active palette automatically
+(they map to groups/faces each bundled theme already defines), so no per-theme
+change is needed to colour them.
+
 ## Native C/C++ palette utility
 
 ```sh
