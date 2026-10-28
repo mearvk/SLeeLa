@@ -1178,13 +1178,38 @@ static int runJavaFrameworkSource(const std::string&path){
         return 1;
     }
 
-    std::vector<std::string> args={"sleela","native","--",probe.java_executable,path};
+    /* Build a real Java process argument vector. JavaFX module options must
+       precede the source-file operand; never infer module availability merely
+       from finding the java executable. */
+    std::vector<std::string> args={"sleela","native","--",probe.java_executable};
+    if(probe.kind==SLEELA_JAVA_FX){
+        const char* modulePath=std::getenv("SLEELA_JAVAFX_MODULE_PATH");
+        const char* configuredModules=std::getenv("SLEELA_JAVAFX_MODULES");
+        if(modulePath&&*modulePath){
+            args.push_back("--module-path");
+            args.emplace_back(modulePath);
+            args.push_back("--add-modules");
+            args.emplace_back((configuredModules&&*configuredModules)
+                ? configuredModules : "javafx.controls,javafx.graphics");
+        }else{
+            std::cerr<<"[javafx] no module path configured; launch will work only if "
+                        "JavaFX is already available to this Java runtime. Set "
+                        "SLEELA_JAVAFX_MODULE_PATH and optionally SLEELA_JAVAFX_MODULES.\\n";
+        }
+#if !defined(_WIN32) && !defined(__APPLE__)
+        const char* display=std::getenv("DISPLAY");
+        const char* wayland=std::getenv("WAYLAND_DISPLAY");
+        if((!display||!*display)&&(!wayland||!*wayland))
+            std::cerr<<"[javafx] no DISPLAY or WAYLAND_DISPLAY detected; graphical startup may fail on this headless host.\\n";
+#endif
+    }
+    args.push_back(path);
     std::vector<char*> argv;
     argv.reserve(args.size()+1);
     for(auto&arg:args)argv.push_back(arg.data());
     argv.push_back(nullptr);
     std::cout<<"[java] secondary circuit: "<<sleela_java_runtime_kind_name(probe.kind)
-             <<" -> "<<probe.java_executable<<" -> "<<path<<"\n";
+             <<" -> "<<probe.java_executable<<" -> "<<path<<"\\n";
     return nativeCmd(static_cast<int>(args.size()),argv.data());
 }
 static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
