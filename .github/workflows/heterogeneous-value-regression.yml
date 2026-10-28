@@ -34,7 +34,7 @@ jobs:
       - name: Install build prerequisites
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential python3
+          sudo apt-get install -y build-essential pkg-config python3 openjdk-21-jdk libx11-dev libfreetype-dev libfontconfig1-dev
       - name: Generate a fresh workspace manifest
         run: |
           # Generate an ephemeral manifest for this exact checked-out source
