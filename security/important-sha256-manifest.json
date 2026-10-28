@@ -4,11 +4,11 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "ab70e20c8c119cc085c188761db7652ce96b0780383e679e1ce6277c72637bbc"
+      "sha256": "33fa7a79861bb3b93de4e3c3d9cb43fe310906eae589bb9b369f7c23d1c34fc3"
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "3c0f4eabadcf9a41b56cad0c0ad7100f931fde1480ebc3ac57821856c69842f2"
+      "sha256": "ff53f8ef83aa2f50efa902898e94e570d6d7d85a832ba2283ee76a88f2af7292"
     },
     {
       "path": "SST-2.0.model",
@@ -448,7 +448,7 @@
     },
     {
       "path": "api/language/SYNTAX-VERSION-MATRIX.md",
-      "sha256": "45a43c72452f508de36ab19b9b4313d381a0c5551a5dafb8224c421778bf83c2"
+      "sha256": "2153527045beb5ff44396bb86a7ce8fc83ad754642134036fa24e36719819790"
     },
     {
       "path": "api/language/system-namespace/API.md",
@@ -6524,7 +6524,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "f615f18630d7987719748f9576967e536f70f6c3e6f2696b488f8d34c3c905a4"
+      "sha256": "3d36410e95910ee840d736169f79a908f1464a3db480494be7af2d4107647486"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -6580,11 +6580,11 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "76c5face7d13dd42f8951cfd39511c5129902df1799fd7a8b78e46428ffdbbd4"
+      "sha256": "502adbf01d9644fe43b65c65baeca97c69751b3ce3ed0cef0feb3e6bb3c4494b"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "c822044183e4dd11e7061ef9e67abd3b2eea0a88eadf653f47e3079287b9bdec"
+      "sha256": "c2b6516e37a6f0bcb046d51e18ea15ee1b794e9bd8159c6d871e17d372dd0891"
     },
     {
       "path": "impl/frontend/library_index.cpp",
@@ -6604,7 +6604,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "1ae87e55c6761cea1abfa4142e0a8f8532dfd1b89e67b77e4d43984e72646268"
+      "sha256": "25bb0390d2c927ec2914b74f06ac6fb61d694d869b3490c5d3121bf557ffbb12"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -6620,7 +6620,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "28f864e0a39efe3d099ab7967e31417073513c5c87e2c18352eaee56995b5a15"
+      "sha256": "f58a4ca3812946134dc4785097a3d7d8647b36f1e05f68b7d837c5a1a900d05b"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -7636,7 +7636,7 @@
     },
     {
       "path": "impl/tests/version/run_version_tests.sh",
-      "sha256": "3da317aeaf5473e88ca3d7444f3eff6354b5a8e72bc12dea781663f6124ff1a2"
+      "sha256": "c8476d9c98cf283314ca2d063c01701b610151b6aa291137f247a5b3c8131a36"
     },
     {
       "path": "impl/tests/version/syntax_0_9.sleela",
@@ -7665,6 +7665,10 @@
     {
       "path": "impl/tests/version/too_new.sleela",
       "sha256": "d328ba00ac642f6ff643cd32f4c25cca5cdcef4046adb5db42717d660fb457bd"
+    },
+    {
+      "path": "impl/tests/version/wide_integers.sleela",
+      "sha256": "0e5825627b4db36bf9801e694f94c194cd1f5a0429c271d21ea21cd78d78f0ac"
     },
     {
       "path": "impl/xclass/XCLASS.model",

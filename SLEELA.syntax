@@ -1445,3 +1445,52 @@ document compiles exactly as the same document without the marker would.
 - `impl/frontend/semantic.cpp` — `collect()` gates the marker to 2.5 (and has no
   other effect for it).
 - `impl/frontend/ast.h` — `Program.memoryMarked`.
+
+--------------------------------------------------------------------------------
+## 21. Syntax 2.5 — wide signed integer primitives (`long`, `int64`, `int128`)
+
+This section is **normative** for syntax **2.5**. In addition to `int`, three
+wide signed-integer primitive type names are accepted wherever a primitive type
+may appear (fields, locals, parameters, return types, array element types,
+casts, and `new T[n]`):
+
+    long     a 64-bit signed integer
+    int64    an explicit-width alias of `long` (64-bit signed)
+    int128   a 128-bit-named signed integer (see the storage note below)
+
+### 21.1 Semantics
+
+`int`, `long`, and `int64` are all **64-bit signed integers** that type-check
+identically: they are numeric, interoperate in arithmetic, and widen to `double`
+on assignment exactly as `int` does. The runtime value model already stores an
+integer as `int64_t`, so `long`/`int64` are genuine 64-bit types end to end:
+
+    long   a = 9000000000;      < larger than 2^31; exact >
+    int64  b = 1000000000000;
+    long   sum = a + b;         < 64-bit arithmetic >
+    long[] xs  = new long[3];   < arrays of long >
+    double d   = a;             < int->double widening still applies >
+
+Integer literals are lexed as 64-bit values (`0x`/`0b`/`0o` radix and `_`
+separators supported); no literal suffix is required — `long x = 5;` type-checks
+because an integer literal is assignable to any of `int`/`long`/`int64`.
+
+### 21.2 `int128` storage note (honesty boundary)
+
+`int128` is accepted and type-checks as an integer today, but its **runtime
+backing is currently 64-bit** (the same `int64_t` slot). True 128-bit arithmetic
+(a dedicated 128-bit runtime value) is a planned follow-up; until then, values
+beyond the 64-bit range are not represented. Use `int128` to express intent and
+forward-compatibility; do not rely on >64-bit magnitudes yet. (For arbitrary
+width *unsigned* integers today, use the `U<width>` family, e.g. `U128`.)
+
+### 21.3 Where this is implemented
+
+- `impl/frontend/lexer.{h,cpp}` — `KwLongT`/`KwInt64T`/`KwInt128T` tokens and the
+  `long`/`int64`/`int128` keyword-map entries.
+- `impl/frontend/parser.cpp` — the type-start, cast, and `new T[]` predicates
+  accept the new tokens; the type string is carried as `"long"`/`"int64"`/`"int128"`.
+- `impl/frontend/semantic.cpp` — `known()` and `typeOf()` map the three names to
+  the integer kind (identical checking to `int`).
+- `impl/frontend/compiler.cpp` — `runtimeTypeOperand()` maps them to `SL_INT`.
+- Runtime: `impl/core/sleela_core.h` `SLValue.as.i` is `int64_t` (unchanged).

@@ -41,6 +41,7 @@ expect_ok "$HERE/syntax_1_4.sleela"     "#sleela 1.4 (declared, in range 1.0 .. 
 expect_ok "$HERE/syntax_missing.sleela" "#sleela absent (defaults to the current version with a warning)"
 expect_ok "$HERE/material_2_5.sleela"   "#sleela 2.5 with the 'material' document marker (declarative)"
 expect_ok "$HERE/memory_2_5.sleela"     "#sleela 2.5 with the 'memory' document marker (declarative)"
+expect_ok "$HERE/wide_integers.sleela"  "#sleela 2.5 with long / int64 / int128 primitives (64-bit)"
 
 echo "rejected:"
 expect_reject "$HERE/syntax_0_9.sleela" "#sleela 0.9 (too old; floor is 1.0)"

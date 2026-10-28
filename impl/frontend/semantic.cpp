@@ -24,6 +24,11 @@ static Type typeOf(const std::string& n){
  if(unsignedTypeName(n)){return{Kind::Unsigned,n,{}};}
  if(n=="void"){return{Kind::Void,{},{}};}
  if(n=="int"){return{Kind::Int,{},{}};}
+ // Wide signed integer primitives (syntax 2.6). long and int64 are true 64-bit
+ // aliases of int (the runtime SLValue already stores int as int64_t). int128
+ // is accepted and type-checks as an integer; its runtime backing is currently
+ // 64-bit (true 128-bit arithmetic is a documented follow-up).
+ if(n=="long"||n=="int64"||n=="int128"){return{Kind::Int,{},{}};}
  if(n=="double"){return{Kind::Double,{},{}};}
  if(n=="bool"||n=="boolean"){return{Kind::Bool,{},{}};}
  if(n=="string"||n=="String"){return{Kind::String,{},{}};}
@@ -79,7 +84,7 @@ class Analyzer{
   // An array type "T[]" is known when its element type T is known. Nested
   // arrays ("T[][]") recurse. Element type must not be void.
   if(t.size()>=2 && t.compare(t.size()-2,2,"[]")==0){std::string inner=t.substr(0,t.size()-2);return inner!="void"&&known(inner);}
-  return t=="void"||t=="int"||unsignedTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||t=="Any"||structs.count(t)||classNames.count(t);
+  return t=="void"||t=="int"||t=="long"||t=="int64"||t=="int128"||unsignedTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||t=="Any"||structs.count(t)||classNames.count(t);
  }
  Type tn(const std::string&t)const{return known(t)?typeOf(t):Type{Kind::Error,t};}
  void collect(){
