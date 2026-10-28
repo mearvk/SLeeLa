@@ -14,11 +14,22 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-typedef enum { SL_NULL = 0, SL_INT, SL_DOUBLE, SL_BOOL, SL_STR, SL_STRUCT, SL_ARRAY } SLType;
+/* SL_INT128 is appended LAST so the pre-existing tag numbers are unchanged
+ * (bytecode/const-pool compatibility). It carries a true 128-bit signed value
+ * in the i128 union member where the toolchain provides __int128 (GCC/Clang);
+ * otherwise it degrades to the 64-bit path (see SLEELA_HAVE_INT128). */
+typedef enum { SL_NULL = 0, SL_INT, SL_DOUBLE, SL_BOOL, SL_STR, SL_STRUCT, SL_ARRAY, SL_INT128 } SLType;
+#if defined(__SIZEOF_INT128__)
+#  define SLEELA_HAVE_INT128 1
+typedef __int128 sl_int128_t;
+#else
+#  define SLEELA_HAVE_INT128 0
+typedef int64_t sl_int128_t; /* graceful fallback: 64-bit backing */
+#endif
 /* SL_STRUCT is a VM-local handle (index into the struct-instance store), the
  * same bounded-handle discipline used for sockets/files/threads. Sleela code
  * never sees a raw pointer; a struct value carries only its instance handle. */
-typedef struct { SLType type; union { int64_t i; double d; int b; int32_t s; int32_t h; } as; } SLValue;
+typedef struct { SLType type; union { int64_t i; double d; int b; int32_t s; int32_t h; sl_int128_t i128; } as; } SLValue;
 typedef enum {
     OP_NOP = 0, OP_CONST, OP_POP, OP_DUP, OP_LOADG, OP_STOREG, OP_LOADL, OP_STOREL,
     OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_MOD, OP_NEG,
@@ -256,6 +267,7 @@ SLValue slvm_result(SLVM* vm);
 void slvm_joinall(SLVM* vm);
 SLValue slval_null(void);
 SLValue slval_int(int64_t v);
+SLValue slval_int128(sl_int128_t v);
 SLValue slval_double(double v);
 SLValue slval_bool(int v);
 const char* slvm_str(SLVM* vm, int32_t id);

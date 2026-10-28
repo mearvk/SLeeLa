@@ -225,7 +225,8 @@ private:
     int runtimeTypeOperand(const std::string& name) const {
         auto st=structLayout_.find(name);
         if(st!=structLayout_.end()) return st->second.typeIndex;
-        if(name=="int" || name=="long" || name=="int64" || name=="int128" || UnsignedInteger::isValidTypeName(name)) return -(SL_INT+1);
+        if(name=="int128") return -(SL_INT128+1);
+        if(name=="int" || name=="long" || name=="int64" || UnsignedInteger::isValidTypeName(name)) return -(SL_INT+1);
         if(name=="double") return -(SL_DOUBLE+1);
         if(name=="bool" || name=="boolean") return -(SL_BOOL+1);
         if(name=="String" || name=="string") return -(SL_STR+1);
@@ -306,7 +307,13 @@ private:
                 if(known!=varType_.end()) varType_[d.name]=known->second;
             }
         }
-        if(d.init)emitExpr(d.init.get());else emit(OP_CONST,addNullConst());
+        if(d.init){
+            emitExpr(d.init.get());
+            // Widen an integer initializer into the 128-bit representation when
+            // the variable is declared int128, so `int128 c = 5;` holds a real
+            // 128-bit value (and subsequent arithmetic promotes correctly).
+            if(d.type=="int128") emit(OP_CHECKCAST,runtimeTypeOperand("int128"));
+        } else emit(OP_CONST,addNullConst());
         emit(OP_STOREL,slot);
     }
     void emitAssign(const Assign& a){int slot=ctx_->slotOf(a.name);if(slot>=0){emitExpr(a.value.get());emit(OP_STOREL,slot);return;}int off=instanceFieldOffset(a.name);if(off>=0){emitThis();emitExpr(a.value.get());emit(OP_SETFIELD,off);emit(OP_POP);return;}int g=fieldSlot(a.name);if(g>=0){emitExpr(a.value.get());emit(OP_STOREG,g);return;}throw std::runtime_error("Semantic error: assignment to undeclared variable '"+a.name+"'");}
