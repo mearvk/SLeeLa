@@ -1462,7 +1462,15 @@ casts, and `new T[n]`):
 
 `int`, `long`, and `int64` are all **64-bit signed integers** that type-check
 identically: they are numeric, interoperate in arithmetic, and widen to `double`
-on assignment exactly as `int` does. The runtime value model already stores an
+on assignment exactly as `int` does.
+
+**Integer-to-`double` widening is applied at the store.** When an integer value
+is stored into, assigned to, cast to, passed as, or returned as a `double`, it is
+converted to a floating-point value — so `double d = 3;` holds `3.0` and `d / 2`
+is `1.5` (not integer `1`). This Java-style widening is honored at variable
+declarations, assignments, instance-field stores, call arguments, and `return`.
+The same mechanism widens an integer stored into an `int128` target to the
+128-bit representation. The runtime value model already stores an
 integer as `int64_t`, so `long`/`int64` are genuine 64-bit types end to end:
 
     long   a = 9000000000;      < larger than 2^31; exact >

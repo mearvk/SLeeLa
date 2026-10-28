@@ -1,0 +1,19 @@
+#sleela 2.5
+class IntDoubleWidening {
+  double field;
+  double half(double x) { return x / 2; }
+  double give() { return 7; }
+  void main() {
+    double d = 3;
+    print(d / 2);
+    double e;
+    e = 7;
+    print(e / 2);
+    IntDoubleWidening o = new IntDoubleWidening();
+    o.field = 5;
+    print(o.field / 2);
+    print(half(9));
+    double g = give();
+    print(g / 2);
+  }
+}
