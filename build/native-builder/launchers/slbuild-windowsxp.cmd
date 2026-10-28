@@ -14,12 +14,16 @@ rem this from an MSYS / MinGW shell environment where gcc, make and sh are on
 rem PATH (classic MSYS 1.0 works on XP).
 rem
 rem Usage:
-rem   slbuild-windowsxp.cmd [--prefix DIR] [--build-only] [--dry-run] [--plain]
+rem   slbuild-windowsxp.cmd [--produce-only] [--prefix DIR] [--build-only]
+rem                         [--dry-run] [--plain]
+rem
+rem   --produce-only   compile slbuild.exe, print its path, and stop (do NOT run
+rem                    the build/install). Also honored via SLBUILD_PRODUCE_ONLY=1.
 rem
 rem For Windows 7/8/8.1 use slbuild-windows7.ps1; for Windows 10/11 use
 rem slbuild-windows10.ps1.
 rem ============================================================================
-setlocal
+setlocal enabledelayedexpansion
 
 rem --- locate this script's directory and the native-builder dir -------------
 set "HERE=%~dp0"
@@ -31,6 +35,18 @@ set "BIN=%OUTDIR%\slbuild.exe"
 
 set "CC=gcc"
 if not "%SLBUILD_CC%"=="" set "CC=%SLBUILD_CC%"
+
+rem --- parse --produce-only out of the arguments; collect the rest in SLARGS --
+set "PRODUCE_ONLY=0"
+if "%SLBUILD_PRODUCE_ONLY%"=="1" set "PRODUCE_ONLY=1"
+set "SLARGS="
+for %%A in (%*) do (
+  if /I "%%~A"=="--produce-only" (
+    set "PRODUCE_ONLY=1"
+  ) else (
+    set "SLARGS=!SLARGS! %%A"
+  )
+)
 
 echo == SLeeLa Windows XP+ launcher ==
 
@@ -74,8 +90,15 @@ if not exist "%BIN%" (
 )
 echo == built %BIN% ==
 
+if "%PRODUCE_ONLY%"=="1" (
+  echo == SLeeLa Windows XP+ launcher: builder/installer binary produced ==
+  echo %BIN%
+  endlocal
+  exit /b 0
+)
+
 echo == running the build + install ==
-"%BIN%" %*
+"%BIN%" !SLARGS!
 set "RC=%ERRORLEVEL%"
 if not "%RC%"=="0" (
   echo ERROR: slbuild reported a failure ^(exit %RC%^).

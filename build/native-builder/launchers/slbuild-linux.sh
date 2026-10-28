@@ -7,14 +7,32 @@
 # it to build the core products and install the main package.
 #
 # Usage:
-#   build/native-builder/launchers/slbuild-linux.sh [slbuild options...]
+#   build/native-builder/launchers/slbuild-linux.sh [--produce-only] [slbuild options...]
 #
-# Any extra arguments are passed through to slbuild, e.g.:
+# --produce-only   compile the slbuild binary, print its path, and stop
+#                  (do NOT run the build/install). Also honored via the
+#                  SLBUILD_PRODUCE_ONLY=1 environment variable.
+#
+# Without --produce-only the binary is compiled and then run; any extra
+# arguments are passed through to slbuild, e.g.:
 #   slbuild-linux.sh --prefix "$HOME/.local/sleela"
 #   slbuild-linux.sh --build-only
 #   slbuild-linux.sh --dry-run --plain
+#   slbuild-linux.sh --produce-only          # just build the builder/installer
 # =============================================================================
 set -eu
+
+# --produce-only: compile the binary only, then stop. Accept it in any argument
+# position and strip it from the args forwarded to slbuild.
+PRODUCE_ONLY="${SLBUILD_PRODUCE_ONLY:-0}"
+_args=""
+for a in "$@"; do
+    if [ "$a" = "--produce-only" ]; then PRODUCE_ONLY=1; continue; fi
+    _args="$_args $a"
+done
+# Reset positional parameters to the filtered list.
+# shellcheck disable=SC2086
+set -- $_args
 
 HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)       # .../build/native-builder/launchers
 NB=$(CDPATH= cd -- "$HERE/.." && pwd)                   # .../build/native-builder
@@ -38,6 +56,12 @@ echo "== SLeeLa Linux launcher: compiling the slbuild binary =="
 sh "$MAKE_SLBUILD"
 
 [ -x "$BIN" ] || { echo "ERROR: slbuild binary not produced at $BIN." >&2; exit 1; }
+
+if [ "$PRODUCE_ONLY" = "1" ]; then
+    echo "== SLeeLa Linux launcher: builder/installer binary produced =="
+    echo "$BIN"
+    exit 0
+fi
 
 echo "== SLeeLa Linux launcher: running the build + install =="
 exec "$BIN" "$@"

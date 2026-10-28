@@ -24,8 +24,9 @@ OS-aware executable you compile and run per platform.
 ## OS-specific launchers (compile + run in one step)
 
 `launchers/` holds the per-OS entry points. Each one compiles `slbuild` for its
-platform and then runs it (passing through any extra options). These are the
-recommended starting point.
+platform and then runs it (passing through any extra options) — or, with
+`--produce-only` / `-ProduceOnly`, just produces the binary and stops. These are
+the recommended starting point.
 
 | Target | Launcher | Notes |
 |--------|----------|-------|
@@ -35,7 +36,26 @@ recommended starting point.
 | Windows 7+ | `launchers/slbuild-windows7.ps1` | Windows 7/8/8.1; PowerShell 2.0-safe, enables TLS 1.2 |
 | Windows XP+ | `launchers/slbuild-windowsxp.cmd` | Windows XP/Server 2003; classic batch + XP-capable MinGW |
 
-All launchers forward their arguments to `slbuild`, e.g.:
+### Produce the binary vs. produce-and-run
+
+By default each launcher **compiles the binary and then runs it** (build +
+install). To **only produce the per-OS builder/installer binary** and stop,
+pass `--produce-only` (POSIX / XP) or `-ProduceOnly` (PowerShell); the launcher
+compiles the binary, prints its path, and exits without building or installing.
+`SLBUILD_PRODUCE_ONLY=1` in the environment does the same.
+
+```sh
+launchers/slbuild-linux.sh --produce-only     # prints bin/linux/slbuild and stops
+launchers/slbuild-macos.sh --produce-only
+```
+```powershell
+powershell -ExecutionPolicy Bypass -File launchers\slbuild-windows10.ps1 -ProduceOnly
+```
+```bat
+launchers\slbuild-windowsxp.cmd --produce-only
+```
+
+All launchers forward their remaining arguments to `slbuild`, e.g.:
 
 ```sh
 launchers/slbuild-linux.sh --prefix "$HOME/.local/sleela"

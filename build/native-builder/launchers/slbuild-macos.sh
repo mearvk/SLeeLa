@@ -8,13 +8,29 @@
 # the core products and install the main package.
 #
 # Usage:
-#   build/native-builder/launchers/slbuild-macos.sh [slbuild options...]
+#   build/native-builder/launchers/slbuild-macos.sh [--produce-only] [slbuild options...]
+#
+# --produce-only   compile the slbuild binary, print its path, and stop
+#                  (do NOT run the build/install). Also honored via the
+#                  SLBUILD_PRODUCE_ONLY=1 environment variable.
 #
 #   slbuild-macos.sh --prefix "$HOME/.local/sleela"
 #   slbuild-macos.sh --build-only
 #   slbuild-macos.sh --dry-run --plain
+#   slbuild-macos.sh --produce-only          # just build the builder/installer
 # =============================================================================
 set -eu
+
+# --produce-only: compile the binary only, then stop. Accept it in any position
+# and strip it from the args forwarded to slbuild.
+PRODUCE_ONLY="${SLBUILD_PRODUCE_ONLY:-0}"
+_args=""
+for a in "$@"; do
+    if [ "$a" = "--produce-only" ]; then PRODUCE_ONLY=1; continue; fi
+    _args="$_args $a"
+done
+# shellcheck disable=SC2086
+set -- $_args
 
 HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 NB=$(CDPATH= cd -- "$HERE/.." && pwd)
@@ -50,6 +66,12 @@ echo "== SLeeLa macOS launcher: compiling the slbuild binary =="
 sh "$MAKE_SLBUILD"
 
 [ -x "$BIN" ] || { echo "ERROR: slbuild binary not produced at $BIN." >&2; exit 1; }
+
+if [ "$PRODUCE_ONLY" = "1" ]; then
+    echo "== SLeeLa macOS launcher: builder/installer binary produced =="
+    echo "$BIN"
+    exit 0
+fi
 
 echo "== SLeeLa macOS launcher: running the build + install =="
 exec "$BIN" "$@"

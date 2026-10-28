@@ -2872,19 +2872,19 @@
     },
     {
       "path": "build/native-builder/launchers/slbuild-linux.sh",
-      "sha256": "1a51b52ad11c302fefde263309aa797edd4f50670cdf2120885c9865645dd898"
+      "sha256": "6ee0ccc194c24ca172c03059054be6cbd7217bb0f5e3226b86d6cc9e44308f77"
     },
     {
       "path": "build/native-builder/launchers/slbuild-macos.sh",
-      "sha256": "63249befc954164be5547c21af612e67f45f17d62baa230d78cc5d54c23e2dfe"
+      "sha256": "e69d13be873e30e0047b70dc7c17e303d9d83a6958d9b3f1740a3171204caaf8"
     },
     {
       "path": "build/native-builder/launchers/slbuild-windows10.ps1",
-      "sha256": "8c05324d3e43e38ac37af911680690e1477cc57241589b49fd91caf04c56d68c"
+      "sha256": "46032a17e940fc7faa9923fea762efa7a8034de79cfe6ee1dcfd9ecae4325ed8"
     },
     {
       "path": "build/native-builder/launchers/slbuild-windows7.ps1",
-      "sha256": "a3aa18508aaa66051875013320716a3633a800d3d34a7e79d64cf431726af892"
+      "sha256": "f6266964aea18c5ae8733894871d1797fc80f98693683d1ccf583c7debbc3b33"
     },
     {
       "path": "build/native-builder/make-slbuild.sh",

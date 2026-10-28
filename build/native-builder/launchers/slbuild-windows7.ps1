@@ -25,6 +25,10 @@
 .PARAMETER Cc
     C compiler used to compile slbuild.exe (default: gcc).
 
+.PARAMETER ProduceOnly
+    Compile slbuild.exe, print its path, and stop. Do NOT run the build/install.
+    Also honored via the SLBUILD_PRODUCE_ONLY=1 environment variable.
+
 .PARAMETER BuildOnly
     Build the core products only; do not stage/install.
 
@@ -36,11 +40,13 @@
 
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File slbuild-windows7.ps1
+    powershell -ExecutionPolicy Bypass -File slbuild-windows7.ps1 -ProduceOnly
 #>
 [CmdletBinding()]
 param(
     [string]$Prefix = "",
     [string]$Cc = "gcc",
+    [switch]$ProduceOnly,
     [switch]$BuildOnly,
     [switch]$DryRun,
     [switch]$Plain
@@ -86,6 +92,12 @@ Write-Host ("== compiling slbuild.exe with " + $Cc + " (MinGW-w64) ==")
 if ($LASTEXITCODE -ne 0) { throw "slbuild.exe compile failed." }
 if (-not (Test-Path $Bin)) { throw ("slbuild.exe was not produced at " + $Bin) }
 Write-Host ("== built " + $Bin + " ==")
+
+if ($ProduceOnly -or $env:SLBUILD_PRODUCE_ONLY -eq "1") {
+    Write-Host "== SLeeLa Windows 7+ launcher: builder/installer binary produced =="
+    Write-Output $Bin
+    return
+}
 
 $slArgs = @()
 if ($Prefix -ne "") { $slArgs += @("--prefix", $Prefix) }
