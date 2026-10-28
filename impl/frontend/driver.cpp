@@ -1120,7 +1120,7 @@ static int checkFile(const std::string&path){
     try{
         sleela::SemanticResult sem=sleela::analyzeSemantics(prog,v.declared);
         for(const auto&w:sem.warnings) std::cerr<<"sleelvac: "<<path<<": warning: "<<w<<"\n";
-        if(!sem.ok()){std::cerr<<"sleelvac: "<<path<<": error: "<<sem.errors.front()<<"\n";return 1;}
+        if(!sem.ok()){for(const auto&e:sem.errors)std::cerr<<"sleelvac: "<<path<<": error: "<<e<<"\n";return 1;}
         sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);
     }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}
     std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;

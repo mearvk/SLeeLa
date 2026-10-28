@@ -2880,11 +2880,11 @@
     },
     {
       "path": "build/native-builder/launchers/slbuild-windows10.ps1",
-      "sha256": "46032a17e940fc7faa9923fea762efa7a8034de79cfe6ee1dcfd9ecae4325ed8"
+      "sha256": "4391d4a5a344503fe282068bd50dea6e192e883f4feac0c2a933de07dcbef295"
     },
     {
       "path": "build/native-builder/launchers/slbuild-windows7.ps1",
-      "sha256": "f6266964aea18c5ae8733894871d1797fc80f98693683d1ccf583c7debbc3b33"
+      "sha256": "f90832175415007351b5cae243f2e48f4e6ac9d08b78273031194d4e24b9ddaf"
     },
     {
       "path": "build/native-builder/make-slbuild.sh",
@@ -6088,11 +6088,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "c8300c4253274a0f3463b5361abe0ae3eda93c57d4f9a51ae31413e196253c72"
+      "sha256": "973cfd3520598e54569c9a95f254e31fd2455572840b73c48d12f8861de65b7d"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "4121b79bbfafdf595d3fe3dadabaa146d96f9eda2ab3b88ce82ba20eeb151c1a"
+      "sha256": "406ff7c96ec46a8ada178b0d050e7b10450cba07d4904082ef6f53f3d5333b98"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -6548,7 +6548,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "d68263bea57d1346b9e019e02abde153df987d194def729e9f5d897a59ed59b9"
+      "sha256": "b1238483e776f1e21379ffb20635b5b837831bc4f1f6abfe63a150d58f1eb3d0"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -6556,7 +6556,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "8834cc1f91d53fa213dbb4c181bf9ccc40c601aa1e82ca6bea587d5a1f5b37f5"
+      "sha256": "7652f272ac82e3ee22788063b97d7565e7a691d1d15ab33d05b88de0944e9ad6"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -6628,7 +6628,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "25bb0390d2c927ec2914b74f06ac6fb61d694d869b3490c5d3121bf557ffbb12"
+      "sha256": "fe539ee0914fdc91c48207c5680dca2a48032559fcb318fffef56173d14f647c"
     },
     {
       "path": "impl/frontend/parser.h",

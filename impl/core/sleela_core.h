@@ -191,6 +191,12 @@ typedef enum {
     OP_CHECKCAST,     /* pops value; checked conversion; pushes the same value */
     OP_INSTANCEOF     /* pops value; pushes bool for the requested runtime type */
     ,
+    /* Duplicate the top TWO stack entries: [.. a b] -> [.. a b a b]. Lets a
+     * compound array/element assignment reuse an already-evaluated (array,
+     * index) pair for the read-modify-write without re-evaluating either
+     * sub-expression (which would run side effects like a[i++] += 1 twice).
+     * Added at the end of the enum so existing opcode numbers are unchanged. */
+    OP_DUP2,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */

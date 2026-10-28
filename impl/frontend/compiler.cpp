@@ -494,14 +494,12 @@ private:
             emitExpr(aa->base.get());                // [array]
             emitExpr(aa->index.get());               // [array, index]
             if(!bin.empty()){
-                // compound: load current element, combine, then store.
-                emit(OP_DUP);                        // [array, index, index] -- dup index
-                // need [array, index] under a copy of (array,index) to read; simplest: recompute
-                // Stack now [array, index, index]; we actually need array too. Recompute cleanly:
-                // Drop the shortcut and recompute both for the read.
-                emit(OP_POP);                        // [array, index]
-                emitExpr(aa->base.get());            // [array, index, array]
-                emitExpr(aa->index.get());           // [array, index, array, index]
+                // compound read-modify-write. Duplicate the already-evaluated
+                // (array, index) pair with OP_DUP2 and read through the copy,
+                // so the base and index sub-expressions are evaluated EXACTLY
+                // ONCE. Re-emitting them here would run their side effects a
+                // second time (e.g. a[i++] += 1 would increment i twice).
+                emit(OP_DUP2);                       // [array, index, array, index]
                 emit(OP_ARRGET);                     // [array, index, cur]
                 emitExpr(a.value.get());             // [array, index, cur, val]
                 emitBinOp(bin);                      // [array, index, newval]
@@ -1107,7 +1105,16 @@ private:
 int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat, const SyntaxVersion& syntax){
     SemanticResult semantic = analyzeSemantics(prog, syntax);
     if(!semantic.ok()){
-        throw std::runtime_error(semantic.errors.front());
+        // Surface every semantic error, not just the first. The analyzer
+        // collects all of them; reporting only errors.front() hid the rest and
+        // forced a fix-one-recompile loop. The first line stays the primary
+        // message (callers that show one line still get the most relevant one);
+        // any additional errors follow on their own lines.
+        std::string msg = semantic.errors.front();
+        for(size_t i=1;i<semantic.errors.size();++i) msg += "\n  " + semantic.errors[i];
+        if(semantic.errors.size()>1)
+            msg += "\n(" + std::to_string(semantic.errors.size()) + " semantic errors)";
+        throw std::runtime_error(msg);
     }
     Compiler c(prog,vm,cat,syntax);
     return c.run();

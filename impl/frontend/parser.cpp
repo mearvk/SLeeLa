@@ -4,6 +4,15 @@
 #include "parser.h"
 #include <stdexcept>
 namespace sleela {
+// Parse a GC-hint aggressiveness level that is already clamped to a small band
+// (0..1000000) at the call site, tolerating an absurdly long digit run without
+// throwing std::out_of_range from std::stoll. Returns the clamp ceiling for any
+// value that would overflow, which the caller clamps again.
+static long long parseHintLevel(const std::string& s){
+    try{ return std::stoll(s); }
+    catch(const std::out_of_range&){ return 1000000; }
+    catch(const std::invalid_argument&){ return 0; }
+}
 const Token& Parser::peek(int off) const { size_t p=i_+(size_t)off; if(p>=toks_.size()) return toks_.back(); return toks_[p]; }
 bool Parser::accept(Tok k){if(check(k)){i_++;return true;}return false;}
 const Token& Parser::expect(Tok k,const char* what){if(!check(k)) error(std::string("expected ")+what+" but found '"+(cur().text.empty()?tokName(cur().kind):cur().text)+"'");return toks_[i_++];}
@@ -355,7 +364,7 @@ StmtP Parser::parseSimpleStatement(){
             h->spelling=cur().text;         // "gc" or "mem"
             i_++;                           // consume the GC-hint word
             if(levelHint){
-                long long n=std::stoll(cur().text); i_++;
+                long long n=parseHintLevel(cur().text); i_++;
                 if(n>1000000) n=1000000;
                 h->aggressiveness=(int)n;
             } else {
@@ -384,7 +393,7 @@ StmtP Parser::parseSimpleStatement(){
             if(levelHint){
                 // Preserve the raw level so the semantic analyzer can reject an
                 // out-of-range band (0..100) rather than silently clamping it.
-                long long n=std::stoll(cur().text); i_++;   // consume the int level
+                long long n=parseHintLevel(cur().text); i_++;   // consume the int level
                 if(n>1000000) n=1000000;   // guard only absurd input for int fit
                 h->aggressiveness=(int)n;
             } else {
@@ -499,8 +508,25 @@ ExprP Parser::parseUnary(){
 ExprP Parser::parsePrimary(){
     const Token&t=cur();
     switch(t.kind){
-    case Tok::Int:{i_++;long long iv;const std::string&nt=t.text;if(nt.size()>2&&nt[0]=='0'&&(nt[1]=='b'||nt[1]=='B'))iv=std::stoll(nt.substr(2),nullptr,2);else iv=std::stoll(nt,nullptr,0);return parsePostfix(std::make_unique<IntLit>(iv));}
-    case Tok::Double:i_++;return parsePostfix(std::make_unique<DoubleLit>(std::stod(t.text)));
+    case Tok::Int:{
+        // Capture position before advancing so an overflow/format failure is
+        // reported as a located "Syntax error (line,col)" naming the literal,
+        // not an uncaught std::stoll exception whose what() is just "stoll".
+        int ln=t.line,cl=t.col;const std::string nt=t.text;i_++;long long iv;
+        try{
+            if(nt.size()>2&&nt[0]=='0'&&(nt[1]=='b'||nt[1]=='B'))iv=std::stoll(nt.substr(2),nullptr,2);
+            else iv=std::stoll(nt,nullptr,0);
+        }catch(const std::out_of_range&){throw std::runtime_error("Syntax error (line "+std::to_string(ln)+", col "+std::to_string(cl)+"): integer literal '"+nt+"' is out of range for a 64-bit integer");}
+        catch(const std::invalid_argument&){throw std::runtime_error("Syntax error (line "+std::to_string(ln)+", col "+std::to_string(cl)+"): malformed integer literal '"+nt+"'");}
+        return parsePostfix(std::make_unique<IntLit>(iv));
+    }
+    case Tok::Double:{
+        int ln=t.line,cl=t.col;const std::string nt=t.text;i_++;double dv;
+        try{dv=std::stod(nt);}
+        catch(const std::out_of_range&){throw std::runtime_error("Syntax error (line "+std::to_string(ln)+", col "+std::to_string(cl)+"): floating-point literal '"+nt+"' is out of range");}
+        catch(const std::invalid_argument&){throw std::runtime_error("Syntax error (line "+std::to_string(ln)+", col "+std::to_string(cl)+"): malformed floating-point literal '"+nt+"'");}
+        return parsePostfix(std::make_unique<DoubleLit>(dv));
+    }
     case Tok::Str:i_++;return parsePostfix(std::make_unique<StrLit>(t.text));
     case Tok::KwTrue:i_++;return parsePostfix(std::make_unique<BoolLit>(true));
     case Tok::KwFalse:i_++;return parsePostfix(std::make_unique<BoolLit>(false));
