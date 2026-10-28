@@ -19,7 +19,7 @@
     },
     {
       "path": "ballum/src/ballum_backend_macos.mm",
-      "sha256": "2e64a7c5279264869dc8bb0381c81bcbc691409dd0fa98d04e8012fccd178ffa"
+      "sha256": "7f3475c7b08cb5f59b923d7076b5b24b8a372f1419dd9d3b6054c93981c1738b"
     },
     {
       "path": "ballum/src/ballum_backend_select.c",
