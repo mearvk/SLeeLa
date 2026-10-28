@@ -3,15 +3,17 @@ class WideIntegers {
   void main() {
     long a = 9000000000;
     int64 b = 1000000000000;
-    int128 c = 123456;
     long sum = a + b;
     long[] xs = new long[2];
     xs[0] = 9000000000;
     xs[1] = xs[0] + 1;
     print(a);
     print(b);
-    print(c);
     print(sum);
     print(xs[1]);
+    < true 128-bit: 9e9 * 9e9 = 8.1e19, beyond the 64-bit range >
+    int128 w = 9000000000;
+    int128 p = w * w;
+    print(p);
   }
 }

@@ -1475,14 +1475,21 @@ Integer literals are lexed as 64-bit values (`0x`/`0b`/`0o` radix and `_`
 separators supported); no literal suffix is required — `long x = 5;` type-checks
 because an integer literal is assignable to any of `int`/`long`/`int64`.
 
-### 21.2 `int128` storage note (honesty boundary)
+### 21.2 `int128` is backed by a true 128-bit runtime value
 
-`int128` is accepted and type-checks as an integer today, but its **runtime
-backing is currently 64-bit** (the same `int64_t` slot). True 128-bit arithmetic
-(a dedicated 128-bit runtime value) is a planned follow-up; until then, values
-beyond the 64-bit range are not represented. Use `int128` to express intent and
-forward-compatibility; do not rely on >64-bit magnitudes yet. (For arbitrary
-width *unsigned* integers today, use the `U<width>` family, e.g. `U128`.)
+`int128` is a genuine **128-bit signed integer** at run time. The VM value model
+carries a dedicated 128-bit member (`SL_INT128`, backed by the toolchain's
+`__int128` on GCC/Clang), and arithmetic **promotes to 128-bit** whenever an
+operand is `int128`: `+ - * / %`, unary negation, and the comparisons all
+compute exactly in 128 bits, and `print` renders the full decimal. An integer
+assigned or cast to `int128` (e.g. `int128 c = 5;` or `(int128)x`) is widened to
+the 128-bit representation, so `int128 a = 9000000000; a * a` yields the exact
+`81000000000000000000` (beyond the 64-bit range). `int`/`long`/`int64` remain the
+64-bit fast path; mixing an `int128` with a 64-bit integer promotes the result to
+`int128`. (On a toolchain without `__int128`, `int128` degrades gracefully to
+64-bit backing; GCC/Clang — the supported toolchains — provide the full 128-bit
+value. For arbitrary-width *unsigned* integers, the `U<width>` family, e.g.
+`U128`, remains available.)
 
 ### 21.3 Where this is implemented
 
@@ -1492,5 +1499,10 @@ width *unsigned* integers today, use the `U<width>` family, e.g. `U128`.)
   accept the new tokens; the type string is carried as `"long"`/`"int64"`/`"int128"`.
 - `impl/frontend/semantic.cpp` — `known()` and `typeOf()` map the three names to
   the integer kind (identical checking to `int`).
-- `impl/frontend/compiler.cpp` — `runtimeTypeOperand()` maps them to `SL_INT`.
-- Runtime: `impl/core/sleela_core.h` `SLValue.as.i` is `int64_t` (unchanged).
+- `impl/frontend/compiler.cpp` — `runtimeTypeOperand()` maps `long`/`int64` to
+  `SL_INT` and `int128` to `SL_INT128`; `emitVarDecl` widens an int128
+  initializer with a checkcast.
+- Runtime: `impl/core/sleela_core.h` adds `SL_INT128` + a `__int128` union member
+  (`sl_int128_t`); `sleela_core.c` adds `slval_int128`, 128-bit promotion in the
+  arithmetic/comparison ops, a 128-bit decimal formatter, and int128 widening in
+  `OP_CHECKCAST`. `long`/`int64` continue to use the 64-bit `SLValue.as.i`.
