@@ -781,7 +781,7 @@ test-java-runtime: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash test-suites/java-runtime-bridge.sh
 
 test-sleela: $(SLEELA_BIN)
-	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && for f in impl/examples/*.sleela; do echo "=== $f ==="; $(CURDIR)/$(SLEELA_BIN) run $f || exit 1; done
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && found=0; for f in impl/examples/*.sleela; do [ -f "$f" ] || continue; found=1; echo "=== $f ==="; $(CURDIR)/$(SLEELA_BIN) run "$f" || exit 1; done; if [ "$found" -eq 0 ]; then echo "No legacy impl/examples/*.sleela files; skipping this optional loop."; fi
 
 test-class-dispatch: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash impl/tests/class_dispatch/run_class_dispatch_tests.sh $(CURDIR)/$(SLEELA_BIN)
