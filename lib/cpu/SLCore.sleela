@@ -10,7 +10,8 @@
    single-cycle model).
    
    Family: cpu. Composes the Layer-0/1/2 components into a runnable core. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCore {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

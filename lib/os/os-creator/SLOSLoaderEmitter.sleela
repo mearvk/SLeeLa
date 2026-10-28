@@ -12,7 +12,8 @@
    named manager and iterates the model's boot-time units.
    
    Family: os. OS Creator(TM) piece emitter; consumes SLOSModel, fills SLOSPiece. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLOSLoaderEmitter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

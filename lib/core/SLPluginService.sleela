@@ -16,7 +16,8 @@
 <  >
 < Result codes follow the shared SLServiceResult standard (0 ok, -2 invalid id, >
 < -5 not loaded, -1 backend absent). Comments use the angle-bracket style. >
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: core. Plugin-registry service harness; extends SLService. >
 
 class SLPluginService extends SLService {

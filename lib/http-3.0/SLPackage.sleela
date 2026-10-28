@@ -1,6 +1,7 @@
 << lib/http-3.0/SLPackage.sleela
    SLeeLa Standard Library Definition for the HTTP 3.0 application protocol. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < H3 is a project-specific application protocol generation, not the IETF HTTP/3 wire protocol. >
 < Native core includes compact envelopes, keyed integrity checks and a pipeline. >
 < Native server transport and QUIC/HTTP/3 interoperability must be verified separately. >

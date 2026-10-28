@@ -2,7 +2,8 @@
    A runnable walkthrough of the dual (4.0) HTML renderer and codec awareness:
    a quick-responsive HTML/CSS/JS render pipeline, and GUI components that can
    SEE the codecs the system supports (/codecs) before offering media. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class GuiHtmlCodecsDemo {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

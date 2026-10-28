@@ -1,7 +1,8 @@
 << lib/terminal_pixel/SLPackage.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library package for terminal_pixel. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: terminal_pixel >
 < Exposes the package to the SLeeLa compiler, Loader, and Nordshrift. >
 class SLPackage {

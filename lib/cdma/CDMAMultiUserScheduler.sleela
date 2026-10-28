@@ -1,5 +1,6 @@
 < Deterministic scheduler scaffold; protocol-specific MAC rules are separate. >
-#sleela 2.1
+#sleela 2.5
+material;
 class CDMAMultiUserScheduler {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

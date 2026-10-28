@@ -12,7 +12,8 @@
    operations return BRIDGE_REQUIRED. The facade still performs every bound,
    range, and capability check locally so a program fails cleanly and never asks
    the native layer to write an out-of-range pixel or an impossible control. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLBallumManager {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

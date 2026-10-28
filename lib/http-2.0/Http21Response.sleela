@@ -1,6 +1,7 @@
 << SLeeLa HTTP 2.1 response model; protocol field records the HTTP/1.x transport version.
    The C/C++ transport implementation serializes responses to the wire. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class Http21Response {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

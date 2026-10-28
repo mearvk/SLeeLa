@@ -11,7 +11,8 @@
    emission) is language-neutral and shared.
    
    Family: cpu. Base of the frontend hierarchy; composes SLIR. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLFrontend {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

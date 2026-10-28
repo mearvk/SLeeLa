@@ -1,7 +1,8 @@
 << lib/compression/SLCompressionLzma.sleela
    SLeeLa Standard Library Definition.
    Definition: LZMA algorithm class — the SLeeLa-facing handle to algorithm id 8. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: compression. Individual algorithm class for LZMA, mirroring >
 < compression/compressors/lzma/ and the registry entry in >
 < sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the >

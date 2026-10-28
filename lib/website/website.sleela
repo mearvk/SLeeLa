@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < website.sleela -- the self-contained, runnable build of the SLeeLa Website >
 < Generator. The SLeeLa compiler's `run` compiles one file as a single unit, >
 < so this aggregate inlines every class the generator needs (design, sign, >

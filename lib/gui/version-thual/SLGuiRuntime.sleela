@@ -5,7 +5,8 @@
      Mirrors SleelaGuiRuntime: window(title,w,h), text(...), action(name,op),
      and the listen(...) document-change option that refreshes the running
      window directly on an OS call. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa gui front-end contract — Path 2 (SLeeLa intent -> Java GUI). >
 < Family: gui. The .sleela Wrapper describes the UI behavior; Java/native is a >
 < presentation/runtime substrate. >

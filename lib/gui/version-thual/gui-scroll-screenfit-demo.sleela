@@ -11,7 +11,8 @@
    the native uiScreenWidth / uiScreenHeight built-ins) and the viewport/content
    extents, and reads the resolved sizes back out. Tier/axis/policy ordinals are
    passed as small ints (documented in each class) — the house style for callers. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Select the GUI 5.0 military source line so SLPackage, SLGuiScreenFit, and >
 < SLGuiScrollbar resolve to this line's classes through the library index. >
 import gui.version-thual;

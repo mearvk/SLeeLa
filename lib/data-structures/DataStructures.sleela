@@ -1,7 +1,8 @@
 << lib/data-structures/DataStructures.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type DataStructures used within the data-structures library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 < Aggregate semantic facade for the SLeeLa data-structure family. >
 < The concrete structure declarations live in the sibling source files. >

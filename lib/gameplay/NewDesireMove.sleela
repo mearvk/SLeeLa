@@ -9,7 +9,8 @@
    
    A concrete GameMove: override resolve() to offer the slate, grant courtroom
    standing, and resolve the chosen bet into profit. Family: gameplay. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class NewDesireMove extends GameMove {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

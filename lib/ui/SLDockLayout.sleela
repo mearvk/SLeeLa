@@ -12,7 +12,8 @@
      d.top(32); d.bottom(24); d.fill();
      d.arrange(0, 0, 800, 600);
      SLLayoutBox content = d.boxOf(2); >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. A standard, professional, beginner-friendly dock layout. >
 class SLDockLayout {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

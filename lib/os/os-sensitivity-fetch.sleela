@@ -19,7 +19,8 @@
      ./impl/build/sleela run lib/os/os-sensitivity-fetch.sleela
      OS_SHAPE=Windows OS_FETCH=1 OS_OUT=/tmp/ossrc \
        ./impl/build/sleela run lib/os/os-sensitivity-fetch.sleela >>
-#sleela 2.2
+#sleela 2.5
+material;
 
 class OsSensitivityFetch {
   String param(String name, String fallback) {

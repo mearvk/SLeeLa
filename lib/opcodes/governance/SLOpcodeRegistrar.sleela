@@ -22,7 +22,8 @@
      a fragment awaiting composition). A structural violation REJECTs.
    
    Family: opcodes.governance. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 class SLOpcodeRegistrar {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

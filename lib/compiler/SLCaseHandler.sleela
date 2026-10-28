@@ -1,3 +1,5 @@
+#sleela 2.5
+material;
 # SLCaseHandler — source-level case statement validation
 #
 # This class validates selection branches. Object creation is handled separately.

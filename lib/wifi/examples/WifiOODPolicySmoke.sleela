@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << A model/policy smoke example. It does not access a physical radio.
    The live OOD must bind SLWifiManager to a native SLVM bridge. >>
 class WifiOODPolicySmoke {

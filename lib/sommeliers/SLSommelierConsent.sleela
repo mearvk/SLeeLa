@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Consent is explicit, purpose-specific, and revocable. Defaults are denied. >
 class SLSommelierConsent {
   boolean feedbackAllowed = false;

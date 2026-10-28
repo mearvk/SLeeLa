@@ -3,6 +3,8 @@
    Part of speech: noun
    Definition: The practice of doing good, showing kindness, and acting to benefit others. >>
 
+#sleela 2.5
+material;
 class Beneficence {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

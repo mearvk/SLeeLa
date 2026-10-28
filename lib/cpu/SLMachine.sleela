@@ -15,7 +15,8 @@
    Class-Driven OS, which then loads and runs Sleela programs on top of it.
    
    Family: cpu. Top-level composition of the whole package. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMachine {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

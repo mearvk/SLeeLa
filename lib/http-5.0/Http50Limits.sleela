@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Documented policy defaults; values are not enforced until native code applies them. >
 class Http50Limits {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

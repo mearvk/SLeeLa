@@ -8,7 +8,8 @@
    absent. It does not open, read, parse, link, load, or execute the input.
    
    Family: compiler. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class SLCompileRequest {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

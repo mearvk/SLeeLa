@@ -1,7 +1,8 @@
 << lib/codecs/SLCodecG711Alaw.sleela
    SLeeLa Standard Library Definition.
    Definition: G.711 A-law codec class — the SLeeLa-facing handle to codec id 16. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: codecs. Individual codec class for G.711 A-law: >
 < ITU-T G.711 A-law companding: one byte per 16-bit PCM sample, telephony. Mirrors codecs/codecs/g711_alaw/ and the registry entry in >
 < sleela_codec_manager.h. SLeeLa never calls a codec directly; the >

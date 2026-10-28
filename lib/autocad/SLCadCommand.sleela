@@ -12,7 +12,8 @@
    
    Family: autocad. SLeeLa owns the edit history; a command is a plain record,
    replayed/reversed against an SLCadDocument. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCadCommand {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

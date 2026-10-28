@@ -1,7 +1,8 @@
 << lib/website/etihad-airways/EtihadWebsite.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines EtihadWebsite — the SLeeLa Website Generator build for Etihad Airways. It composes the airline's brand design (brand #bd8b13, accent #4c4c4c) and an ordered list of semantic signs (nav, hero, feature, testimonial, cta, footer) into a complete, self-contained HTML site. Mirrors lib/website/website.sleela: String concatenation on OP_ADD plus integer-to-text, no new VM opcode. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa website/etihad-airways front-end builder — one airline website per directory. >
 < Family: website. Etihad Airways brand site, built from the website model: a >
 < design (brand/base/accent + an energy dial) and an ordered list of semantic >

@@ -17,7 +17,8 @@
    arithmetic, store the result back to a global.
    
    Family: cpu. Composes SLInstructionSet, SLSystemCall, SLSleelaOpcode, SLSleelaVM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLOpcodeMap {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Wifi6Model.sleela >
 < SLeeLa reference metadata for Wi-Fi 6 / IEEE 802.11ax. >
 < 6 GHz operation is a Wi-Fi 6E extension and is not assumed by this profile. >

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Wifi4Model.sleela >
 < SLeeLa reference metadata for Wi-Fi 4 / IEEE 802.11n. >
 < This model does not control a radio or configure the operating system. >

@@ -12,7 +12,8 @@
    
    Family: user-interface. SLeeLa owns the document and dispatch; the host mounts and
    paints it. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiDom {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

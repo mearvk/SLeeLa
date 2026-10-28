@@ -23,7 +23,8 @@
    for each opcode as it fires. SLeeLa and the VM both know to notify the Listener.
    
    Family: opcodes.governance. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 class SLOpcodeListener {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

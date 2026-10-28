@@ -26,7 +26,8 @@
    Family: cpu.components. Wraps SLMemoryModule; fills its cadence slot with an
      SLCadenceConnector; installed in SLExecutorBuild; selected via
      SLComponentCatalog. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMemoryInterface {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

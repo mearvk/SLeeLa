@@ -6,7 +6,8 @@
      "absent" when the file is gone). A change is a same-id/same-path document
      whose revision moved; an OS event that does not move the revision is
      coalesced away. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa gui front-end contract — an immutable watched-document snapshot. >
 < Family: gui. The revision is OS metadata (cheap on every OS call), not file >
 < contents; it is sufficient to detect the "document changed" condition. >

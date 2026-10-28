@@ -15,7 +15,8 @@
    
    Family: cpu.components. Selected via SLComponentCatalog; mounted in
      SLExecutorBuild; partners SLMemoryModule and SLSystemBus. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMotherboard {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

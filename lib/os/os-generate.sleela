@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < os-generate.sleela -- the runnable OS SOURCE GENERATOR for lib/os. Unlike >
 < os-build.sleela (which PRINTS the generated artifacts to show the shape), >
 < this program WRITES the real Linux-level C/C++ source tree to disk through >

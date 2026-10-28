@@ -5,7 +5,8 @@
      layout takes a container rect and the children's requested sizes and fills
      an array of SLLayoutBox, one per child. Pure SLeeLa, no native handle, so
      it always checks and runs. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. The standard layout result type, shared by every SL*Layout class. >
 class SLLayoutBox {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

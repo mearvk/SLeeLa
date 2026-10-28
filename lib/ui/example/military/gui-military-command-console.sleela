@@ -24,7 +24,8 @@
    
    With no display (headless/CI) it reports that and exits 0 without a window.
 >>
-#sleela 2.1
+#sleela 2.5
+material;
 class GuiMilitaryCommandConsole {
 
   // SLUITheme preset ordinals (mirror SLUIThemeId in the toolkit C ABI).

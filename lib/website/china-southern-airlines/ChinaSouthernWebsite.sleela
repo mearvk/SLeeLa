@@ -1,7 +1,8 @@
 << lib/website/china-southern-airlines/ChinaSouthernWebsite.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines ChinaSouthernWebsite — the SLeeLa Website Generator build for China Southern Airlines. It composes the airline's brand design (brand #004b8d, accent #e4002b) and an ordered list of semantic signs (nav, hero, feature, testimonial, cta, footer) into a complete, self-contained HTML site. Mirrors lib/website/website.sleela: String concatenation on OP_ADD plus integer-to-text, no new VM opcode. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa website/china-southern-airlines front-end builder — one airline website per directory. >
 < Family: website. China Southern Airlines brand site, built from the website model: a >
 < design (brand/base/accent + an energy dial) and an ordered list of semantic >

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Shared resumable DOWNLOAD contract; 50 MiB is a mode threshold, not a cap. >
 class Http40DownloadState {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

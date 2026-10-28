@@ -8,48 +8,48 @@
 **The Now. The Ingredient.** A language is more than syntax: it is the compiler, runtime, libraries, tools, and platform contracts that make software usable.
 
 ## I. Start Here
-- [Build the native implementation](impl/README.md)
-- [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
-- [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
-- [Documentation index](docs/README.md)
-- [Recursion stanchion — C and C++ prototypes](recursion/stanchion/README.md) — primitive-specialized examples for Boolean, Byte, Character, Integer, Long, Float, and Double, alongside generic, applied, scientific, and teaching recursion patterns.
-- [Platform support and validation matrix](docs/PLATFORM-SUPPORT.md)
-- [Brand guide](docs/BRAND-GUIDE.md)
-- [Merchandise concepts and assets](merchandise/README.md)
-- [NitroWebExpress logo](images/nitro-web-express/nitrowebexpress-logo-004.jpeg)
-- [Testing policy and release gates](markdown/TESTING.md)
+- [$\color{#E30A17}{\text{Build the native implementation}}$](impl/README.md)
+- [$\color{#E30A17}{\text{Virtual machines \& Modium — hands-on user guide}}$](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
+- [$\color{#E30A17}{\text{CPU stack in SLeeLa source}}$](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [$\color{#E30A17}{\text{voltages, variable clocks, and expert timings}}$](lib/cpu/TIMING.md) you can [$\color{#E30A17}{\text{run at spec and overclock}}$](lib/cpu/components/README.md)
+- [$\color{#E30A17}{\text{Documentation index}}$](docs/README.md)
+- [$\color{#E30A17}{\text{Recursion stanchion — C and C++ prototypes}}$](recursion/stanchion/README.md) — primitive-specialized examples for Boolean, Byte, Character, Integer, Long, Float, and Double, alongside generic, applied, scientific, and teaching recursion patterns.
+- [$\color{#E30A17}{\text{Platform support and validation matrix}}$](docs/PLATFORM-SUPPORT.md)
+- [$\color{#E30A17}{\text{Brand guide}}$](docs/BRAND-GUIDE.md)
+- [$\color{#E30A17}{\text{Merchandise concepts and assets}}$](merchandise/README.md)
+- [$\color{#E30A17}{\text{NitroWebExpress logo}}$](images/nitro-web-express/nitrowebexpress-logo-004.jpeg)
+- [$\color{#E30A17}{\text{Testing policy and release gates}}$](markdown/TESTING.md)
 
 ## II. News
 
 Recent additions to the language, drivers, and standard library:
 
-- **Recursion stanchion.** The [`recursion/stanchion/`](recursion/stanchion/README.md) directory now includes dedicated C and C++ reference prototypes for the seven documented primitive contracts, plus generic, applied, scientific, and teaching examples. These are reference sources; compile and test them before treating them as verified.
+- **Recursion stanchion.** The [$\color{#E30A17}{\texttt{recursion/stanchion/}}$](recursion/stanchion/README.md) directory now includes dedicated C and C++ reference prototypes for the seven documented primitive contracts, plus generic, applied, scientific, and teaching examples. These are reference sources; compile and test them before treating them as verified.
 
 - **Angle-bracket comments (`<` / `<<`).** A new go-forward comment style —
   `< line >` and `<< block >>` — lexed by the SLeeLa frontend and documented in
-  [`SLEELA.syntax`](SLEELA.syntax) §1.1.
+  [$\color{#E30A17}{\texttt{SLEELA.syntax}}$](SLEELA.syntax) §1.1.
 - **Radix integer literals.** `int` literals now accept hexadecimal (`0x`),
   binary (`0b`), and octal (`0o`) forms with `_` digit separators, in both the
-  SLeeLa source language ([`SLEELA.syntax`](SLEELA.syntax) §1.4) and the
-  [`.xlt` CPU-model format](lib/xlt/README.md).
+  SLeeLa source language ([$\color{#E30A17}{\texttt{SLEELA.syntax}}$](SLEELA.syntax) §1.4) and the
+  [$\color{#E30A17}{\text{`.xlt` CPU-model format}}$](lib/xlt/README.md).
 - **The Metadata Class standard across the library.** The descriptive-metadata
   metapattern (provenance, legality, jurisdictional scope) is now carried by
   every class-bearing `.sleela` file under `/lib`; see
-  [`SLEELA.syntax`](SLEELA.syntax) §15 and
-  [the tutorial lesson](tutorial/13-metadata-class.md).
+  [$\color{#E30A17}{\texttt{SLEELA.syntax}}$](SLEELA.syntax) §15 and
+  [$\color{#E30A17}{\text{the tutorial lesson}}$](tutorial/13-metadata-class.md).
 - **A richer text / String family.** `lib/text` gains real in-language helpers,
   a char-cell view giving genuine `charAt`/`substring`/`indexOf`/`reverse`/
   column-alignment, and a real positional templater — see the
-  [text & String tutorial](tutorial/14-text-and-strings.md) and the runnable
-  [`lib/text/text-string-demo.sleela`](lib/text/text-string-demo.sleela).
+  [$\color{#E30A17}{\text{text \& String tutorial}}$](tutorial/14-text-and-strings.md) and the runnable
+  [$\color{#E30A17}{\texttt{lib/text/text-string-demo.sleela}}$](lib/text/text-string-demo.sleela).
 - **First-class `String` in Nordshrift sheets.** A `.sst` sheet can declare a
   typed `strings:` block that contributes to the build's component manifest;
-  see the [Nordshrift Sheet Reference](wiki/Nordshrift-Sheet-Reference.md).
+  see the [$\color{#E30A17}{\text{Nordshrift Sheet Reference}}$](wiki/Nordshrift-Sheet-Reference.md).
 - **CPU models run by both opcodes and function-call equivalence.** Every
   `SL<ARCH>CPU` inherits the basis of running a native instruction stream
   through its fetch-decode-execute loop *and* running the code of an assumed
   other process by equivalent calls on the shared VM substrate — see
-  [`lib/cpu/EXECUTION.md`](lib/cpu/EXECUTION.md) §5.
+  [$\color{#E30A17}{\texttt{lib/cpu/EXECUTION.md}}$](lib/cpu/EXECUTION.md) §5.
 
 ## III. Build and Test
 
@@ -95,12 +95,12 @@ make ballum              # build the Ballum display library for this OS (see bal
 bin/install-modules      # paced install/build of each module over ~10-20 min (see bin/)
 ```
 
-The `registry` target runs [`build-registry.sh`](build-registry.sh): it builds
+The `registry` target runs [$\color{#E30A17}{\texttt{build-registry.sh}}$](build-registry.sh): it builds
 the registry core, seeds the baseline table into the portable text store
 `registry/build/sleela.sleelareg`, and exports the MySQL table script
 `registry/build/registry.sql` (via `sleela registry export`). Review it with
 `sleela registry` or `registry/build/sleela-registry review`. See the
-[registry guide](registry/README.md).
+[$\color{#E30A17}{\text{registry guide}}$](registry/README.md).
 
 Consult the build and testing guides for prerequisites and platform-specific steps. A successful build of one component does not prove every library or platform is release-ready.
 
@@ -120,10 +120,10 @@ and `/usr/local/share/sleela` by default. It preserves an existing startup
 configuration and refuses to overwrite untracked existing commands. Uninstall
 removes only files recorded by the installer, preserving configuration and
 untracked runtime data. For the interactive deployment workflow and all
-installation options, see [Quick and Safe Install](install/README.md).
+installation options, see [$\color{#E30A17}{\text{Quick and Safe Install}}$](install/README.md).
 
 ## V. Language and Runtime
-The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **2.5**; compiler/tool version and source syntax version are distinct. Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
+The authoritative grammar is [$\color{#E30A17}{\texttt{SLEELA.syntax}}$](SLEELA.syntax). The current repository documents syntax **2.5**; compiler/tool version and source syntax version are distinct. Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
 
 The repository includes a native C/C++ implementation, SLVM generation references, standard-library modules, tests, examples, and platform integrations. Implementation and validation status varies by module; consult its specification and current CI results rather than assuming uniform completeness.
 
@@ -153,9 +153,9 @@ excluding generated output and the mutable ClamAV cache. ClamAV database
 snapshots have their own manifests. Release ZIPs include `INTEGRITY-MANIFEST.json`,
 `SHA256SUMS`, and a `.sha256` sidecar. Verify downloaded archive hashes against
 a trusted value obtained independently: a checksum stored beside an archive is
-not a publisher signature. See the [Sleelavirin guide](antivirus/README.md),
-[security checklist](antivirus/SECURITY.md), and
-[antivirus build workflow](.github/workflows/antivirus-binaries.yml).
+not a publisher signature. See the [$\color{#E30A17}{\text{Sleelavirin guide}}$](antivirus/README.md),
+[$\color{#E30A17}{\text{security checklist}}$](antivirus/SECURITY.md), and
+[$\color{#E30A17}{\text{antivirus build workflow}}$](.github/workflows/antivirus-binaries.yml).
 
 A release is not considered verified until the relevant CI jobs pass on the
 exact release commit and the resulting artifacts have been checked.
@@ -277,7 +277,7 @@ make -C linux-editors test
 
 For backward compatibility, `--palette` and `--hex COLOR` without `--theme` select American Professional. Build and test results should be checked on the target system and CI; documentation of a command is not itself evidence that it passed.
 
-See [the editor integration guide](linux-editors/README.md) for the full palette descriptions and utility details.
+See [$\color{#E30A17}{\text{the editor integration guide}}$](linux-editors/README.md) for the full palette descriptions and utility details.
 
 ## IX. Contributing
 1. Read the documentation index and testing policy.
@@ -285,7 +285,7 @@ See [the editor integration guide](linux-editors/README.md) for the full palette
 3. Run targeted tests, then the broad suite.
 4. Report OS/toolchain details; do not describe skipped checks as passing.
 
-SLeeLa is developed by **MEARVK LLC**. Historical landing-page material is preserved in [`docs/README-LEGACY.md`](docs/README-LEGACY.md).
+SLeeLa is developed by **MEARVK LLC**. Historical landing-page material is preserved in [$\color{#E30A17}{\texttt{docs/README-LEGACY.md}}$](docs/README-LEGACY.md).
 
 ## X. AE6E66 — Round Public Email Levy Expectation
 
@@ -304,7 +304,7 @@ The experimental UTF-4088 catalogue and its SLeeLa lookup adapter are documented
 
 ## XII. AutoCAD Creator™
 
-The [AutoCAD Creator™](autocad/creator/README.md) is an interactive 2D CAD
+The [$\color{#E30A17}{\text{AutoCAD Creator™}}$](autocad/creator/README.md) is an interactive 2D CAD
 application written entirely in SLeeLa. Where the sibling AutoCAD Renderer turns
 a plan into a drawing in one shot, the Creator lets you **create and alter** a 2D
 AutoCAD document live — add walls, rooms, dimensions and notes, then move,
@@ -312,20 +312,20 @@ relabel, re-layer, delete, and undo what you placed — and **save** the result 
 real AutoCAD DXF drawing (R12 text, opens in AutoCAD / LibreCAD).
 
 Its graphical interface is built on **SleelaUI™**, SLeeLa's own cross-platform UI
-toolkit (under [`lib/user-interface`](lib/user-interface)) — not JavaFX — raising
+toolkit (under [$\color{#E30A17}{\texttt{lib/user-interface}}$](lib/user-interface)) — not JavaFX — raising
 a real native window on X11 / Cocoa / Win32. The design follows one rule,
 **"SleelaUI presents; SLeeLa decides"**: the GUI never computes geometry or writes
 DXF. Every tool issues a create / alter / delete / undo / save intent to the
-authoritative [`SLCadCreator`](lib/autocad/SLCadCreator.sleela), which owns the
+authoritative [$\color{#E30A17}{\texttt{SLCadCreator}}$](lib/autocad/SLCadCreator.sleela), which owns the
 editable document and a reversible command history, while the canvas only previews
 the geometry the Creator holds.
 
-The reusable editing engine lives in [`lib/autocad`](lib/autocad) —
-[`SLCadEntity`](lib/autocad/SLCadEntity.sleela),
-[`SLCadDocument`](lib/autocad/SLCadDocument.sleela),
-[`SLCadCommand`](lib/autocad/SLCadCommand.sleela), and
-[`SLCadCreator`](lib/autocad/SLCadCreator.sleela) — and runs end to end headless.
-The GUI shell and demo live under [`autocad/creator`](autocad/creator):
+The reusable editing engine lives in [$\color{#E30A17}{\texttt{lib/autocad}}$](lib/autocad) —
+[$\color{#E30A17}{\texttt{SLCadEntity}}$](lib/autocad/SLCadEntity.sleela),
+[$\color{#E30A17}{\texttt{SLCadDocument}}$](lib/autocad/SLCadDocument.sleela),
+[$\color{#E30A17}{\texttt{SLCadCommand}}$](lib/autocad/SLCadCommand.sleela), and
+[$\color{#E30A17}{\texttt{SLCadCreator}}$](lib/autocad/SLCadCreator.sleela) — and runs end to end headless.
+The GUI shell and demo live under [$\color{#E30A17}{\texttt{autocad/creator}}$](autocad/creator):
 
 ```sh
 make creator          # from autocad/: run the Creator demo -> out/altered.dxf
@@ -337,7 +337,7 @@ drawing in memory, prints a report plus the DXF, and exits cleanly.
 
 ## XIII. UTF-4088 Input-map Ordering
 
-The specialized UTF-4088 catalogue defines its spatial input-map traversal and abstract pressure iterations in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). The National Lien subject-index policy is in [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). Map coordinates, pressure levels (1–50), permanent catalogue IDs, and alphabetic ranks are independent fields; none should be silently substituted for another. Pressure is an algorithmic iteration level, not a physical quantity.
+The specialized UTF-4088 catalogue defines its spatial input-map traversal and abstract pressure iterations in [$\color{#E30A17}{\texttt{utf-4088/INPUT-MAP-AND-PRESSURE.md}}$](../utf-4088/INPUT-MAP-AND-PRESSURE.md). The National Lien subject-index policy is in [$\color{#E30A17}{\texttt{utf-4088/NATIONAL-LIEN-REGISTER.md}}$](../utf-4088/NATIONAL-LIEN-REGISTER.md). Map coordinates, pressure levels (1–50), permanent catalogue IDs, and alphabetic ranks are independent fields; none should be silently substituted for another. Pressure is an algorithmic iteration level, not a physical quantity.
 
 
 ## XIV. Recent and Expanded Package Index
@@ -424,7 +424,7 @@ US Democratic and US Policy.
 
 ## XVII. UTF-4088 Million-Entry Experimental Catalogue
 
-The [UTF-4088 catalogue generator](utf-4088/tools/generate_catalogue.py) deterministically builds a 1,048,576-entry experimental symbol catalogue. The documented compact format is described in [utf-4088/FORMAT.md](utf-4088/FORMAT.md); the generation and validation contract is in [utf-4088/GENERATION-RESULTS.md](utf-4088/GENERATION-RESULTS.md).
+The [$\color{#E30A17}{\text{UTF-4088 catalogue generator}}$](utf-4088/tools/generate_catalogue.py) deterministically builds a 1,048,576-entry experimental symbol catalogue. The documented compact format is described in [$\color{#E30A17}{\text{utf-4088/FORMAT.md}}$](utf-4088/FORMAT.md); the generation and validation contract is in [$\color{#E30A17}{\text{utf-4088/GENERATION-RESULTS.md}}$](utf-4088/GENERATION-RESULTS.md).
 
 Run the generator with Python 3:
 

@@ -12,7 +12,8 @@
    match, whether a name had to be synthesized, and whether any collision arose.
    
    Family: sldocument. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 class SLSourceNameComparison {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

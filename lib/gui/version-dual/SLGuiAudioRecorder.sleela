@@ -10,7 +10,8 @@
    
    Family: gui. A control node's backing model; the host captures audio and
    reports level/duration back through this object. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiAudioRecorder {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

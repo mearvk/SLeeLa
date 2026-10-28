@@ -19,7 +19,8 @@
    
    Family: gui. Companion to the window geometry (SLGuiWindowState, where the
      line provides it); this class decides the initial, screen-relative size. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiScreenFit {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

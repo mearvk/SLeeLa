@@ -1,7 +1,8 @@
 << lib/core/SLBoolean.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLBoolean used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 < Family: core. Native VM/OS work crosses an explicit bridge. >
 class SLBoolean {

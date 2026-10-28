@@ -6,7 +6,8 @@
      350 W. A thin SKU subclass of SLAMDThreadripperCPU overriding only
      configure(). Full figures in SPECIFICATION.md.
    Family: cpu. Extends SLAMDThreadripperCPU. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLAMDThreadripperPro9945WX extends SLAMDThreadripperCPU {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

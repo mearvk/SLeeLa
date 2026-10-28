@@ -13,7 +13,8 @@
    the critical stage by name, and whether the dialed point is honored.
    
    Family: cpu. Composes SLTiming and SLVoltageRail; partners SLCore/SLClock. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCpuTiming {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

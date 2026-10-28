@@ -1,6 +1,7 @@
 << lib/wifi/SLWifiSecurityPolicy.sleela
    Defaults align with wifi_security_policy_default() in wifi_manager.c. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLWifiSecurityPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

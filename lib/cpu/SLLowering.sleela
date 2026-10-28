@@ -13,7 +13,8 @@
    common small-function case directly.
    
    Family: cpu. Composes SLIR, SLAssembler, SLProgram, SLInstructionSet. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLLowering {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

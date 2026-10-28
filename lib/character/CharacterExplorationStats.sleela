@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << CharacterExplorationStats.sleela
    SLeeLa CharacterStats component: exploration and interaction skills.
    

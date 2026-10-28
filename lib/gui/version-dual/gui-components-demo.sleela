@@ -4,7 +4,8 @@
    click object (motion + apprentice timer -> final call), exact positioning +
    layout, a graphics facility, the admin authority surface, and the upgraded
    aesthetic. SLeeLa names and gates each component; the host renders/plays them. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class GuiComponentsDemo {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

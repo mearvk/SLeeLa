@@ -1,7 +1,8 @@
 << lib/crypto/SLSignature.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLSignature used within the crypto library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 < Family: crypto. Digital-signature producer (ML-DSA, FIPS 204) over /crypto. >
 < Native implementation crosses an explicit VM/OS bridge. >

@@ -4,7 +4,8 @@
 < input file to a front end by extension, and plan a compile toward a target. >
 < Each language is an independent SLLanguageCompiler subclass under >
 < lib/compiler/frontends/<language>/. >
-#sleela 2.1
+#sleela 2.5
+material;
 class MultiLanguageRegistryExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

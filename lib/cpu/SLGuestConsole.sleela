@@ -9,7 +9,8 @@
    MMIO registers: 0 = data (write a char code), 1 = status (RO, ready).
    
    Family: cpu. Extends SLGuestDevice. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestConsole extends SLGuestDevice {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

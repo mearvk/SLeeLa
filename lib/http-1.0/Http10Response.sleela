@@ -1,6 +1,7 @@
 << SLeeLa HTTP/1.0 response model.
    The C/C++ transport implementation serializes responses to the wire. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class Http10Response {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

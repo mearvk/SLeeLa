@@ -10,7 +10,8 @@
    semantics are identical and this models the canonical case.
    
    Family: cpu. Composes SLFullAdder over a word width. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLAdder {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

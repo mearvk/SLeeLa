@@ -15,7 +15,8 @@
    data rate / CAS of the actual module, and a DDR2 refresh duty cycle imposed
    in the Sleela layer (never the host OS). The CPU runs a real decode loop over
    its own instruction encoding; the memory figures reflect the DDR2 choices. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class EpycWithDdr2Settings {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

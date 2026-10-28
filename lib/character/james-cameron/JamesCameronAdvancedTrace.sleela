@@ -1,6 +1,7 @@
 << Advanced Trace for public career chronology and hypothetical life-stat model.
    This is a provenance ledger, not a live-person monitoring system. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class JamesCameronAdvancedTrace {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

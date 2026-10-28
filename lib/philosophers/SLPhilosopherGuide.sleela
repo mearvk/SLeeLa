@@ -2,7 +2,8 @@
    SLeeLa Standard Library Definition.
    Definition: One Guide -- a single growth in a Constructor's chain, with its
    color impart and its listener for contexts and imparts. >>
-#sleela 2.1
+#sleela 2.5
+material;
 << Family: philosophers. In the chain
 
      Constructor() :: Patch :: Constructor :: Aim :: Guide

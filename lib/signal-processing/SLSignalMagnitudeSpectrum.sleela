@@ -1,6 +1,7 @@
 // @author Max Rupplin — MEARVK LLC — 2026
 // Unnormalized nonnegative-frequency magnitude spectrum, bins 0..floor(N/2).
-#sleela 2.1
+#sleela 2.5
+material;
 import math;
 
 class SLSignalMagnitudeSpectrum {

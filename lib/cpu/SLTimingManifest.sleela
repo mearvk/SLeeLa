@@ -16,7 +16,8 @@
      same declared operating point.
    
    Family: cpu. Serialization layer over SLTimingProfile; embedded in SLProgram. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLTimingManifest {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

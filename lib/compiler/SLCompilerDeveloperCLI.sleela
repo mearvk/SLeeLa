@@ -1,6 +1,7 @@
 << SLeeLa-level command interface for terminal and IDE integration. Native
    filesystem and process operations are delegated to approved bridge APIs. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCompilerDeveloperCLI {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

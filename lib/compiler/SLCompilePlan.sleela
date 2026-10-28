@@ -10,7 +10,8 @@
    surfaced rather than silently satisfied.
    
    Family: compiler. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class SLCompilePlan {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

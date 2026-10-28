@@ -14,7 +14,8 @@
    output is ordinary String concatenation on OP_ADD; no new VM opcode is used.
    
    Family: os. Consumes SLOSModel and its composed specs. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCEmitter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

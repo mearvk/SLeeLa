@@ -1,5 +1,6 @@
 < Mid lesson: separate lexing, parsing, semantics, and IR emission. >
-#sleela 2.1
+#sleela 2.5
+material;
 
 class ExpressionCompiler {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

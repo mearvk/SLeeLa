@@ -29,7 +29,8 @@
    (SLTuringBridge).
    
    Family: cpu. Pure Sleela opcode registry; the canonical substrate. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLSleelaOpcode {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

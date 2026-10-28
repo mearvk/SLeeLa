@@ -1,7 +1,8 @@
 << lib/ballum/SLBallumDisplay.sleela
    SLeeLa Standard Library Definition.
    Definition: A connected display description, mirroring ballum_display_t. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ballum. The SLeeLa-side description of one connected display, >
 < mirroring the native ballum_display_t struct. A host SLVM binding fills these >
 < fields from ballum_manager_enumerate/describe; the capability bitmask mirrors >

@@ -4,7 +4,8 @@
    
    The Java class name is retained exactly. The SLeeLa declaration is the source
    contract; Java behavior is supplied only through the conformance boundary. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class Double {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

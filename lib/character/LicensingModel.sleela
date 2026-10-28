@@ -6,7 +6,8 @@
    
    A concrete BusinessModel: wonderfully cheap to run, entirely dependent on the
    licensee's hustle. Family: character. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class LicensingModel extends BusinessModel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

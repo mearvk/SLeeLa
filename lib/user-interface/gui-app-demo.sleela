@@ -10,7 +10,8 @@
      DOM -> reconcile -> widgets, and widget activations -> events -> handlers.
    
    Family: user-interface. SLeeLa owns the document and dispatch; SleelaUI renders it. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class GuiAppDemo {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

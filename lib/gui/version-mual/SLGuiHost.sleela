@@ -5,7 +5,8 @@
      SleelaGuiHost: show(title,w,h, actionOperation) binds the window's action to
      a SLeeLa operation, and listen(...) ties each document change to a SLeeLa
      operation whose result is published to the window. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa gui front-end contract — Path 1 (Java host -> SLeeLa business logic). >
 < Family: gui. Java is a native desktop host for SLeeLa, not a second >
 < business-logic implementation; SLeeLa stays authoritative for meaning. >

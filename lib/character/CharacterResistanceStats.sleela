@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << CharacterResistanceStats.sleela
    SLeeLa CharacterStats component: saving throws and damage/status resistances.
    

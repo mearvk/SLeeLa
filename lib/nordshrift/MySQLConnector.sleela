@@ -1,4 +1,5 @@
 #sleela 2.5
+material;
 < Nordshrift MySQL connector semantic boundary. >
 class MySQLConnector {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

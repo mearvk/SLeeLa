@@ -17,7 +17,8 @@
    keeps working: a zero-argument `new Letter()` is still valid under 1.8.
    
    Family: alphabet. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class Letter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

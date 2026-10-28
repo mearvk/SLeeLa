@@ -1,7 +1,8 @@
 << lib/core/SLConditionVariable.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLConditionVariable used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Native foundational bridge contract for Condition. >
 < Role: runtime. Responsibility: thread synchronization condition. >
 class SLConditionVariable {

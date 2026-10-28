@@ -16,7 +16,8 @@
 <  >
 < only; #sleela 2.1. > >
 < Comments are
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: text. Native VM/OS work crosses an explicit bridge. >
 
 class SLTextWriter {

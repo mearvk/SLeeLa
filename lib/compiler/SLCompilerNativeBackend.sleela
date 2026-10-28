@@ -1,6 +1,7 @@
 << Fail-closed native backend selection. C/C++ are generated outputs; SLeeLa
    remains the source-level contract and language semantics authority. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCompilerNativeBackend {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -10,7 +10,8 @@
      chain evaluates to the constructed panel (fluent). This is the gui-family
      reading of the perfect Constructor: the construction of a GUI surface IS a
      seated sequence of growths. Self-contained (inline model + main). >>
-#sleela 2.3
+#sleela 2.5
+material;
 < SLeeLa gui package: the Guide-chain operator for one-expression GUI setup. >
 < SLeeLa owns the meaning of the steps; a host (Java/native) owns presentation. >
 import gui.version-mual;

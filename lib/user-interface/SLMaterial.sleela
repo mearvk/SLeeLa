@@ -11,7 +11,8 @@
      helpers and to a canvas widget's light attachment.
    
    Family: user-interface. Mirrors SLUIMaterial in the SleelaUI Lighting C ABI. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMaterial {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

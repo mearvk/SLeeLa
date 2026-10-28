@@ -10,7 +10,8 @@
    cores are wired as fields (SLeeLa surface has no arrays).
    
    Family: cpu. Composes SLCore, SLCache, SLRAM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCPU {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -18,7 +18,8 @@
    Family: os. OS Creator(TM) orchestrator. Composes SLOSDevTree, the seven piece
      emitters, SLCEmitter/SLCppEmitter, SLISOBuilder, SLToolchainEmitter,
      SLSourceDropper; records an SLOSBuildReport. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLOSCreator {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

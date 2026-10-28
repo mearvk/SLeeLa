@@ -7,7 +7,8 @@
      name the host invokes. This is the single place that binds UI affordances
      (menus from lib/ui/SLMenu, toolbars, shortcuts) to the services:
      compile -> lib/nordshrift + lib/compiler, save/load -> lib/sldocument. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ide-workbench. Named commands bound to SLeeLa operations. >
 class SLIdeCommandRegistry {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

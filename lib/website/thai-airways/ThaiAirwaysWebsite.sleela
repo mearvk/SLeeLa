@@ -1,7 +1,8 @@
 << lib/website/thai-airways/ThaiAirwaysWebsite.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines ThaiAirwaysWebsite — the SLeeLa Website Generator build for Thai Airways. It composes the airline's brand design (brand #4b276d, accent #d4a017) and an ordered list of semantic signs (nav, hero, feature, testimonial, cta, footer) into a complete, self-contained HTML site. Mirrors lib/website/website.sleela: String concatenation on OP_ADD plus integer-to-text, no new VM opcode. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa website/thai-airways front-end builder — one airline website per directory. >
 < Family: website. Thai Airways brand site, built from the website model: a >
 < design (brand/base/accent + an energy dial) and an ordered list of semantic >

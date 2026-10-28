@@ -19,7 +19,8 @@
    drive the REAL host OS the VM already runs on.
    
    Family: os. Pure design model; no native bridge calls. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLOSShape {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

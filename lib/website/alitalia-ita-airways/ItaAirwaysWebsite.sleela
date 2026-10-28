@@ -1,7 +1,8 @@
 << lib/website/alitalia-ita-airways/ItaAirwaysWebsite.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines ItaAirwaysWebsite — the SLeeLa Website Generator build for ITA Airways. It composes the airline's brand design (brand #004a99, accent #008c45) and an ordered list of semantic signs (nav, hero, feature, testimonial, cta, footer) into a complete, self-contained HTML site. Mirrors lib/website/website.sleela: String concatenation on OP_ADD plus integer-to-text, no new VM opcode. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa website/alitalia-ita-airways front-end builder — one airline website per directory. >
 < Family: website. ITA Airways brand site, built from the website model: a >
 < design (brand/base/accent + an energy dial) and an ordered list of semantic >

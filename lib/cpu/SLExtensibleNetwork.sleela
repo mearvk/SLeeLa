@@ -27,7 +27,8 @@
    
    Family: cpu. A Dynamite Connector; composes SLAccessSemantics; produces
      SLAccessManifest; realized backdrop mirrors lib/net + lib/os services. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLExtensibleNetwork {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

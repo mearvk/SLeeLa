@@ -15,7 +15,8 @@
    fictional.
    
    Family: citizen. Clearing crosses an explicit bridge to the ledger. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class FederalReserveID {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

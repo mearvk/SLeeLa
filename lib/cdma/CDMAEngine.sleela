@@ -1,5 +1,6 @@
 < High-level orchestration facade for validated CDMA model components. >
-#sleela 2.1
+#sleela 2.5
+material;
 class CDMAEngine {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

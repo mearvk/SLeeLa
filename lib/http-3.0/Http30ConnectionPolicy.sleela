@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < HTTP/1.0 connection lifecycle defaults. >
 class Http30ConnectionPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -16,7 +16,8 @@
    
    Family: os. Consumes SLOSModel; composes SLCEmitter, SLCppEmitter,
      SLOSArtifact, SLOSBuildReport, SLISOBuilder, SLInstallerGenerator. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLOSCompiler {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

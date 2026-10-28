@@ -1,7 +1,8 @@
 << lib/math/SLDistribution.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLDistribution used within the math library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa math front-end contract. >
 class SLDistribution {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

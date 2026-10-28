@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < ballum-live.sleela -- the runnable live Ballum demo. Unlike ballum.sleela >
 < (a self-contained model), this drives the real native Ballum manager through >
 < the uiBallum* VM bridge (impl/core/ballum_vm_bridge.c over ballum/). What it >

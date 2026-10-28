@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << Policy model only: native code must perform cryptographic verification.
    Use one instance per authenticated stream/direction. This scalar nonce
    high-water model is NOT safe as a shared connection-wide replay window for

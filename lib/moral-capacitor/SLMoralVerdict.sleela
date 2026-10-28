@@ -9,7 +9,8 @@
      exactly why an operation was allowed, held, or refused.
    
    Family: moral-capacitor. Returned by SLMoralCapacitor.evaluate. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMoralVerdict {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

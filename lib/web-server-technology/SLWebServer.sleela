@@ -3,7 +3,8 @@
    Definition: Defines the SLeeLa standard-library type SLWebServer, the
    SLeeLa-side model of the dynamic SQL-backed HTTP/1.1 web server whose native
    implementation lives at web-server-technology/native/dyn_sql_server.cpp. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 < Family: web-server-technology. Native implementation crosses an explicit VM/OS bridge. >
 class SLWebServer {

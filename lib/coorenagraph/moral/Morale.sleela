@@ -3,6 +3,8 @@
    Part of speech: noun
    Definition: The collective emotional state, confidence, or spirit of a group. >>
 
+#sleela 2.5
+material;
 class Morale {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

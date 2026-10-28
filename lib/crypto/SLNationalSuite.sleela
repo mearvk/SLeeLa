@@ -1,7 +1,8 @@
 << lib/crypto/SLNationalSuite.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLNationalSuite used within the crypto library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 < Family: crypto. National-grade (NSA CNSA 1.0/2.0, NIST FIPS) algorithm roster. >
 < Names the suite member set; native computation crosses the explicit VM/OS >

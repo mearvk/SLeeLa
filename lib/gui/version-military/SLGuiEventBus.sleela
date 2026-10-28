@@ -12,7 +12,8 @@
    
    Family: gui. SLeeLa owns dispatch and the meaning of events; the host only
    raises them. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiEventBus {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

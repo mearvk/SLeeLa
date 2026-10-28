@@ -9,7 +9,8 @@
    Mirrors: enum sl_reg_kind (STRING/INT/BOOL) and the value cell.
    
    Family: registry. Composed by SLRegistryKey. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLRegistryValue {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

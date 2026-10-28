@@ -3,7 +3,8 @@
    Native runtime owns UTF-8 validation, duplicate checks, and insertion.
    This is the SLeeLa-facing API contract; compiler/VM binding remains explicit
    integration work until native calls are connected and tested end-to-end. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class CharacterSet {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

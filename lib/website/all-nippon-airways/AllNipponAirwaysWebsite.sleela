@@ -1,7 +1,8 @@
 << lib/website/all-nippon-airways/AllNipponAirwaysWebsite.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines AllNipponAirwaysWebsite — the SLeeLa Website Generator build for All Nippon Airways. It composes the airline's brand design (brand #1c3f94, accent #00a0e9) and an ordered list of semantic signs (nav, hero, feature, testimonial, cta, footer) into a complete, self-contained HTML site. Mirrors lib/website/website.sleela: String concatenation on OP_ADD plus integer-to-text, no new VM opcode. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa website/all-nippon-airways front-end builder — one airline website per directory. >
 < Family: website. All Nippon Airways brand site, built from the website model: a >
 < design (brand/base/accent + an energy dial) and an ordered list of semantic >

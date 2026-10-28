@@ -10,7 +10,8 @@
    exit, spawn, yield.
    
    Family: cpu. Pure Sleela ABI definition. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLSystemCall {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

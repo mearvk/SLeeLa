@@ -1,5 +1,6 @@
 < OS profile: Apple / macOS (Core Graphics / Quartz). >
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ballum. Per-OS facts for the macOS backend >
 < (ballum/src/ballum_backend_macos.mm). Enumeration and gamma/warmth/brightness >
 < use Core Graphics / Quartz (CGDisplay* + CGSetDisplayTransferByFormula); >

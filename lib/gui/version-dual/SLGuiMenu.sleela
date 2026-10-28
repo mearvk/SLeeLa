@@ -1,6 +1,7 @@
 << SLeeLa Standard Library Definition: SLGuiMenu
    Menu state model with stable action names and predictable dismissal. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiMenu {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

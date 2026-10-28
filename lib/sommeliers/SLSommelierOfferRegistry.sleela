@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Small fixed-capacity in-memory registry. No remote publication or persistent
   storage is implied. >
 class SLSommelierOfferRegistry {

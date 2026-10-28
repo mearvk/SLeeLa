@@ -1,7 +1,8 @@
 << lib/core/SLCancellationToken.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLCancellationToken used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Native foundational bridge contract for CancellationToken. >
 < Role: runtime. Responsibility: cooperative cancellation. >
 class SLCancellationToken {

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Formal SST symbol table: local declarations plus canonical /lib references. >
 class SSTSymbolTable {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

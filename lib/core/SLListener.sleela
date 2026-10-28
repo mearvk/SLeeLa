@@ -1,7 +1,8 @@
 << lib/core/SLListener.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLListener used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Native foundational bridge contract for Listener. >
 < Role: runtime. Responsibility: event/network listener contract. >
 class SLListener {

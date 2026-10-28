@@ -16,7 +16,8 @@
    
    Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
    bridge, the same discipline as /lib/os's `os*` bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLUserInterface {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

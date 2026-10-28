@@ -13,7 +13,8 @@
    features idiomatic to each platform.
    
    Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLOperatingSystem {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

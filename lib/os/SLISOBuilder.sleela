@@ -15,7 +15,8 @@
    does, so the SLeeLa model becomes a real .iso through the existing toolchain.
    
    Family: os. Consumes SLOSModel + SLOSCompiler; produces an SLOSArtifact. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLISOBuilder {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

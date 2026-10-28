@@ -2,7 +2,8 @@
    SLeeLa Standard Library Definition.
    Definition: A concrete, string-valued list with stable order and bounded
    index behavior. This first implementation deliberately avoids Generics. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 < Family: collections. Native VM/OS work crosses an explicit bridge. >
 class SLList {

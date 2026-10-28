@@ -14,7 +14,8 @@
    
    Family: autocad. SLeeLa owns the document, the edits, and the history; a front
    end selects, creates, alters, and saves through this object. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCadCreator {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

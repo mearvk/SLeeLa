@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Source-level SQL connector contract for SST. >
 class SQLConnector {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

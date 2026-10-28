@@ -1,6 +1,7 @@
 << SLeeLa HTTP 3.0 request model; protocol field records the HTTP/1.x transport version.
    Protocol model only; native socket and wire parsing stay in /http-2.0. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class Http30Request {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

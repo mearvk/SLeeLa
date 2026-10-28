@@ -9,7 +9,8 @@
    to a scripting family without changing the pipeline shape.
    
    Family: compiler (front end). Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class PythonLanguageCompiler extends SLLanguageCompiler {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

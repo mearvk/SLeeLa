@@ -5,7 +5,8 @@
    
    A concrete Alphabet: subclass, and override compose() to append its letters
    in order. Call begin("Latin") to build it. Family: alphabet. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class LatinAlphabet extends Alphabet {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

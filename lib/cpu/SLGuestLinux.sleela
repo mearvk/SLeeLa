@@ -16,7 +16,8 @@
        SLCPU -> SleelaOS -> SLHypervisor -> SLGuestVM -> SLGuestLinux -> guest programs.
    
    Family: cpu. Composes SLGuestVM; booted by SLHypervisor. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestLinux {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -11,7 +11,8 @@
    
    Family: gui. The host raises the activation; SLeeLa reads this event and
    decides what it means. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiEvent {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -12,7 +12,8 @@
    per target task id (a small fixed table; SLeeLa surface has no arrays).
    
    Family: cpu. Composes SLGuestScheduler for delivery/termination effects. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestSignal {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

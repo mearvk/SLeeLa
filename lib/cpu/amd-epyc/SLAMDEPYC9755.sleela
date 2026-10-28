@@ -5,7 +5,8 @@
      12-channel DDR5, SP5, up to 500 W. A thin SKU subclass of SLAMDEPYCCPU
      overriding only configure(). Full figures in SPECIFICATION.md.
    Family: cpu. Extends SLAMDEPYCCPU. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLAMDEPYC9755 extends SLAMDEPYCCPU {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

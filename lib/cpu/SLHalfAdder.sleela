@@ -8,7 +8,8 @@
    carry = a AND b
    
    Family: cpu. Pure Sleela logic composed from SLGate semantics. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLHalfAdder {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

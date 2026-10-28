@@ -14,7 +14,8 @@
      col.arrange(0, 0, 320, 480);
      SLLayoutBox body = col.boxOf(1);
    >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. The standard, beginner-first facade over the SL*Layout family. >
 class SLLayoutKit {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

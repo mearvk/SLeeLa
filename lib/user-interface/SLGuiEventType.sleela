@@ -9,7 +9,8 @@
      uses), mirroring the activation model already in SLGuiAction.
    
    Family: user-interface. Java/native raise typed activations; SLeeLa owns their meaning. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiEventType {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -6,7 +6,8 @@
      This is the inverse of SLInstruction.encode().
    
    Family: cpu. Pure Sleela decode logic. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLInstructionDecoder {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

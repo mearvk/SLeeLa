@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Wifi5Model.sleela >
 < SLeeLa reference metadata for Wi-Fi 5 / IEEE 802.11ac. >
 < This model does not control a radio or configure the operating system. >

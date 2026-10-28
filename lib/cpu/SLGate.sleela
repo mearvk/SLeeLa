@@ -11,7 +11,8 @@
    why real silicon favors them; this class exposes them directly.
    
    Family: cpu. Pure Sleela logic; no native bridge needed at this layer. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGate {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

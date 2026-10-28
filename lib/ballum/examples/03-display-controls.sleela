@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Ballum example 03: query capability flags before changing display controls. >
 class BallumDisplayControls {
   boolean has(int caps, int bit) { return (caps / bit) % 2 == 1; }

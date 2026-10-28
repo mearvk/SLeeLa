@@ -1,6 +1,7 @@
 << Resumable DOWNLOAD metadata shared by SLeeLa HTTP generations.
    Large-file mode begins above 50 MB; this is a mode threshold, not a size cap. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class Http30DownloadState {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -12,7 +12,8 @@
    user->kernel boundary built in the previous steps.
    
    Family: cpu. Composes SLGuestSyscall (its only kernel interface). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestShell {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,7 +1,8 @@
 << lib/website/SLWebsiteSign.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLWebsiteSign used within the website library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 < Family: website. A "sign" is a semantic content block a page is composed >
 < from. A sign carries only its meaning and a little text (three slots); the >

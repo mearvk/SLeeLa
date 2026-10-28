@@ -11,7 +11,8 @@
    an optional interrupt line it can raise into the guest.
    
    Family: cpu. Base of the guest device hierarchy. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestDevice {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

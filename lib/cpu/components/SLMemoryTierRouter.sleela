@@ -16,7 +16,8 @@
    
    Family: cpu.components. Composes SLMemoryModule; held by SLExecutorBuild;
      consulted by the VM dispatch path. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMemoryTierRouter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
