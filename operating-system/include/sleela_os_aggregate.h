@@ -1,5 +1,5 @@
 /*
- * os/include/sleela_os_aggregate.h
+ * operating-system/include/sleela_os_aggregate.h
  * SLeeLa OS build aggregation -- the C backing of lib/os/SLOSBuildReport.sleela
  * (the AGGREGATION capability).
  *

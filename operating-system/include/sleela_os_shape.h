@@ -1,5 +1,5 @@
 /*
- * os/include/sleela_os_shape.h
+ * operating-system/include/sleela_os_shape.h
  * SLeeLa OS shape model -- the C backing of lib/os/SLOSShape.sleela.
  *
  * A "shape" is the family of conventions a target OS adopts: Linux, Windows, or

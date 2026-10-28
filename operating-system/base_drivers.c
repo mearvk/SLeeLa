@@ -1,5 +1,5 @@
 /*
- * os/base_drivers.c
+ * operating-system/base_drivers.c
  * SLeeLa OS base-driver runtime — minimum-boot bring-up + driver source policy.
  *
  * Implements the contract in base_drivers.h against the generated series table

@@ -1,5 +1,5 @@
 /*
- * os/src/sleela_os_aggregate.c
+ * operating-system/src/sleela_os_aggregate.c
  * Implementation of the OS build report aggregator (see sleela_os_aggregate.h).
  * Mirrors SLOSBuildReport.
  */

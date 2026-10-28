@@ -1,5 +1,5 @@
 /*
- * os/include/sleela_os_fetch.h
+ * operating-system/include/sleela_os_fetch.h
  * SLeeLa OS fetch -- the C backing of lib/os/SLOSSensitivityFetch.sleela and
  * the SLDistroFetch download idiom (DOWNLOADING capability).
  *

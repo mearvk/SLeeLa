@@ -1,5 +1,5 @@
 /*
- * os/include/sleela_os_ideology.h
+ * operating-system/include/sleela_os_ideology.h
  * SLeeLa OS ideology inspection & conversion -- the C backing of the
  * IDEOLOGY-INSPECTING / CONVERSION capability of lib/os.
  *

@@ -1,4 +1,4 @@
-/* os/tests/test_os_translate.c -- executable classification (manipulate). */
+/* operating-system/tests/test_os_translate.c -- executable classification (manipulate). */
 #include "sleela_os_translate.h"
 #include <assert.h>
 #include <stdio.h>

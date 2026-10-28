@@ -1,4 +1,4 @@
-/* os/tests/test_os_security.c -- SHA-256, verify-before-execute, driver admit. */
+/* operating-system/tests/test_os_security.c -- SHA-256, verify-before-execute, driver admit. */
 #include "sleela_os_security.h"
 #include <assert.h>
 #include <string.h>

@@ -1,5 +1,5 @@
 /*
- * os/src/sleela_os_translate.cpp
+ * operating-system/src/sleela_os_translate.cpp
  * C++ implementation of executable-type classification (see
  * sleela_os_translate.h). Exposes a C ABI. Mirrors lib/os SLExecutableTypes /
  * SLExecutableTranslator. Pure classification: runs nothing.

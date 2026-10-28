@@ -1,5 +1,5 @@
 /*
- * os/src/sleela_os_shape.c
+ * operating-system/src/sleela_os_shape.c
  * Implementation of the SLeeLa OS shape model (see sleela_os_shape.h).
  * Values are faithful to SLOSShape.sleela; keep the two in lockstep.
  */

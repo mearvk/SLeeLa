@@ -1,5 +1,5 @@
 /*
- * os/src/sleela_os_fetch.c
+ * operating-system/src/sleela_os_fetch.c
  * Implementation of the OS fetch command/path composer (see sleela_os_fetch.h).
  * Values mirror SLOSSensitivitySource / SLOSSensitivityFetch.
  */

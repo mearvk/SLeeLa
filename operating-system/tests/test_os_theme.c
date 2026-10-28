@@ -1,4 +1,4 @@
-/* os/tests/test_os_theme.c -- desktop theme model (theming capability). */
+/* operating-system/tests/test_os_theme.c -- desktop theme model (theming capability). */
 #include "sleela_os_theme.h"
 #include <assert.h>
 #include <string.h>

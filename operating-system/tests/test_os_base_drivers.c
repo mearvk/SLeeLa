@@ -1,4 +1,4 @@
-/* os/tests/test_os_base_drivers.c -- default series + bring-up + policy. */
+/* operating-system/tests/test_os_base_drivers.c -- default series + bring-up + policy. */
 #include "base_drivers.h"
 #include <assert.h>
 #include <string.h>

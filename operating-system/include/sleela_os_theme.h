@@ -1,5 +1,5 @@
 /*
- * os/include/sleela_os_theme.h
+ * operating-system/include/sleela_os_theme.h
  * SLeeLa OS desktop theme model -- the C backing of lib/os/SLDesktopTheme.sleela
  * (the THEMING capability: appearance of a constructed OS's desktop).
  *

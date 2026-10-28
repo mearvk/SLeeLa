@@ -1,5 +1,5 @@
 /*
- * os/src/base_drivers_table.c
+ * operating-system/src/base_drivers_table.c
  * The default minimum-boot driver series table + host identity + the kernel
  * bring-up hooks, so /os builds and tests as a self-contained static library.
  *

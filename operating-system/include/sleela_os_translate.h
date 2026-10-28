@@ -1,5 +1,5 @@
 /*
- * os/include/sleela_os_translate.h
+ * operating-system/include/sleela_os_translate.h
  * SLeeLa OS executable translation -- the C ABI of the MANIPULATION capability
  * (classifying which executables a shape runs, and which guest shape a file
  * belongs to). Backs lib/os/SLExecutableTypes + SLExecutableTranslator.

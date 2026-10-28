@@ -1,5 +1,5 @@
 /*
- * os/base_drivers.cpp
+ * operating-system/base_drivers.cpp
  * SLeeLa OS base-driver C++ surface — a typed view over the minimum-boot series.
  *
  * A thin C++ wrapper over base_drivers.h for host tools and the OS image's C++

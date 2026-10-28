@@ -1,5 +1,5 @@
 /*
- * os/base_drivers.h
+ * operating-system/base_drivers.h
  * SLeeLa OS base-driver interface — the minimum-boot driver series contract.
  *
  * This header is the C ABI the generated base-driver table (base_drivers_table.c,

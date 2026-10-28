@@ -1,4 +1,4 @@
-/* os/tests/test_os_shape.c -- shape model conventions. */
+/* operating-system/tests/test_os_shape.c -- shape model conventions. */
 #include "sleela_os_shape.h"
 #include <assert.h>
 #include <string.h>

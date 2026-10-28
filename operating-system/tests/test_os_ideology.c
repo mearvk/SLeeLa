@@ -1,4 +1,4 @@
-/* os/tests/test_os_ideology.c -- origin-scope inspection + shape conversion. */
+/* operating-system/tests/test_os_ideology.c -- origin-scope inspection + shape conversion. */
 #include "sleela_os_ideology.h"
 #include <assert.h>
 #include <string.h>

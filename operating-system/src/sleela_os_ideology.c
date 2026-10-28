@@ -1,5 +1,5 @@
 /*
- * os/src/sleela_os_ideology.c
+ * operating-system/src/sleela_os_ideology.c
  * Implementation of origin-scope inspection and shape-conversion naming
  * (see sleela_os_ideology.h). Descriptive and neutral by construction.
  */

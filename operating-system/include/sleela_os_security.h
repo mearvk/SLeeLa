@@ -1,5 +1,5 @@
 /*
- * os/include/sleela_os_security.h
+ * operating-system/include/sleela_os_security.h
  * SLeeLa OS security review -- the C backing of the SECURITY-REVIEW capability
  * of lib/os (and the repo-wide SHA-256 verify-before-execute discipline).
  *
@@ -9,7 +9,7 @@
  *     be computed over a buffer or a file;
  *   - a verifier that checks a digest against an expected hex digest (the
  *     verify-before-execution contract used across the repo);
- *   - the driver-admission policy surface (re-exposed from os/base_drivers.h)
+ *   - the driver-admission policy surface (re-exposed from operating-system/base_drivers.h)
  *     so a security pass can decide whether an in-tree/vendor/unknown/foreign
  *     driver may load.
  *

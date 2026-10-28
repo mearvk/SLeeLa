@@ -1,5 +1,5 @@
 /*
- * os/src/sleela_os_theme.c
+ * operating-system/src/sleela_os_theme.c
  * Implementation of the OS desktop theme model (see sleela_os_theme.h).
  * Palettes mirror the shared role vocabulary of the editor themes
  * (linux-editors/sleela_editor_theme.c) and SleelaUI (`accent`). Keep in

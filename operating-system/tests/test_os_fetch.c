@@ -1,4 +1,4 @@
-/* os/tests/test_os_fetch.c -- fetch command + path composition (download). */
+/* operating-system/tests/test_os_fetch.c -- fetch command + path composition (download). */
 #include "sleela_os_fetch.h"
 #include <assert.h>
 #include <string.h>

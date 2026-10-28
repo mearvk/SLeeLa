@@ -1,4 +1,4 @@
-/* os/tests/test_os_aggregate.c -- build-report aggregation. */
+/* operating-system/tests/test_os_aggregate.c -- build-report aggregation. */
 #include "sleela_os_aggregate.h"
 #include <assert.h>
 #include <string.h>

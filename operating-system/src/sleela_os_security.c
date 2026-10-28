@@ -1,5 +1,5 @@
 /*
- * os/src/sleela_os_security.c
+ * operating-system/src/sleela_os_security.c
  * SHA-256 (self-contained, FIPS 180-4), file digesting, verify-before-execute,
  * and the driver-admission review alias (see sleela_os_security.h).
  *
