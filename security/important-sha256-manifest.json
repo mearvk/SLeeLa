@@ -2871,6 +2871,22 @@
       "sha256": "0370964879935f7d0901a335536c8c71eab7587496e5e57e66683aa3c106fdfa"
     },
     {
+      "path": "build/native-builder/launchers/slbuild-linux.sh",
+      "sha256": "1a51b52ad11c302fefde263309aa797edd4f50670cdf2120885c9865645dd898"
+    },
+    {
+      "path": "build/native-builder/launchers/slbuild-macos.sh",
+      "sha256": "63249befc954164be5547c21af612e67f45f17d62baa230d78cc5d54c23e2dfe"
+    },
+    {
+      "path": "build/native-builder/launchers/slbuild-windows10.ps1",
+      "sha256": "8c05324d3e43e38ac37af911680690e1477cc57241589b49fd91caf04c56d68c"
+    },
+    {
+      "path": "build/native-builder/launchers/slbuild-windows7.ps1",
+      "sha256": "a3aa18508aaa66051875013320716a3633a800d3d34a7e79d64cf431726af892"
+    },
+    {
       "path": "build/native-builder/make-slbuild.sh",
       "sha256": "eb55b443d7adaf4a48a17b4bd3287c7727ed19739c02bb3383445a3e9e2bf865"
     },

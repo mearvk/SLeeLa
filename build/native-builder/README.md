@@ -21,7 +21,39 @@ OS-aware executable you compile and run per platform.
 > sibling `build/*.sh` entry points are tracked the same way). Do not commit
 > `bin/`, `logs/`, or `.stage/`.
 
-## Build the binary (per OS)
+## OS-specific launchers (compile + run in one step)
+
+`launchers/` holds the per-OS entry points. Each one compiles `slbuild` for its
+platform and then runs it (passing through any extra options). These are the
+recommended starting point.
+
+| Target | Launcher | Notes |
+|--------|----------|-------|
+| Linux | `launchers/slbuild-linux.sh` | needs `cc`/`gcc`/`clang`, `make`, `g++`, `python3` |
+| macOS | `launchers/slbuild-macos.sh` | Xcode CLT (`clang`); `MACOSX_DEPLOYMENT_TARGET` default 11.0 |
+| Windows 10+ | `launchers/slbuild-windows10.ps1` | PowerShell 5+, MSYS2 UCRT MinGW-w64 |
+| Windows 7+ | `launchers/slbuild-windows7.ps1` | Windows 7/8/8.1; PowerShell 2.0-safe, enables TLS 1.2 |
+| Windows XP+ | `launchers/slbuild-windowsxp.cmd` | Windows XP/Server 2003; classic batch + XP-capable MinGW |
+
+All launchers forward their arguments to `slbuild`, e.g.:
+
+```sh
+launchers/slbuild-linux.sh --prefix "$HOME/.local/sleela"
+launchers/slbuild-macos.sh --build-only
+```
+```powershell
+powershell -ExecutionPolicy Bypass -File launchers\slbuild-windows10.ps1 -Prefix C:\Tools\sleela
+```
+```bat
+launchers\slbuild-windowsxp.cmd --prefix C:\sleela --plain
+```
+
+> The Windows launchers run `slbuild` inside an MSYS2 / Git-Bash (or classic
+> MSYS on XP) environment, because `slbuild` drives the SLeeLa build through
+> `make` and a POSIX shell. Install a MinGW-w64 toolchain plus `make` and `sh`
+> on PATH.
+
+## Build the binary directly (per OS)
 
 ```sh
 build/native-builder/make-slbuild.sh
