@@ -95,6 +95,12 @@ is the curated, main-package-only path for users who want a minimal, beautiful
 experience. Reuse the `do-install` model (binary set + lib staging + manifest/
 verifier) but never re-introduce the server/IDE/wifi/moral trees into it.
 
+**Compiled twin:** `build/native-builder/slbuild` is the native per-OS binary
+form of this same clean-install flow (same core products, same `EXCLUDE_LIB`
+policy, same integrity gate, same presentation + Record of Build). See
+`native-builder.md`. Keep the two in lockstep — a policy change in one belongs
+in both.
+
 ## When editing
 
 `install/*.sh` is not under the SHA-256 build gate (that gate covers `lib/**` and
