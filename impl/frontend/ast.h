@@ -242,6 +242,14 @@ struct Program {
     // fields/methods (each member then carries a declaration-order id and an
     // SHA-256 brander) and requests the originated source document on compile.
     bool authorMarked=false;
+    // Material marker (syntax 2.5): set true when the document declares the bare
+    // top-level word `material`. DECLARATIVE ONLY -- it has no effect on
+    // parsing, typing, or codegen. It claims the document is material (well
+    // considered, present to its author as its own Source -- "the thing,
+    // Material") and marks membership in the set of material documents: those
+    // concerning state, progress, or the securing of change. The set is, by
+    // convention, not freely changed out of.
+    bool materialMarked=false;
 };
 
 } // namespace sleela

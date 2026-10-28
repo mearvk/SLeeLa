@@ -1,6 +1,6 @@
 << lib/antivirus/SLLocalScanner.sleela
    User-scoped scanner entry point; does not elevate privileges. >>
-#sleela 2.1
+#sleela 2.4
 class SLLocalScanner {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

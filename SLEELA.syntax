@@ -1,20 +1,27 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  2.4  (1.3..1.11 baseline carried forward)
-    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.0 .. 2.4)
+    Syntax version:  2.5  (1.3..1.11 baseline carried forward)
+    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.0 .. 2.5)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.3..2.4 surface
+    Status:          Normative for the syntax 1.3..2.5 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 2.4`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.4).
-    Syntax 2.4 is the current spec level: it adds the **`author`/`authorial`
+    `#sleela 2.5`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.5).
+    Syntax 2.5 is the current spec level: it adds the **`material` document
+    marker** (section 19) — a bare, contextual, *declarative-only* word (sibling
+    to `author`/`authorial`) claiming the document is material: well considered,
+    present to its author as its own Source, "the thing, Material". It has no
+    effect on parsing, typing, or codegen; it marks membership in the set of
+    material documents (those concerning state, progress, or the securing of
+    change), which by convention is not freely changed out of.
+    Syntax 2.4 adds the **`author`/`authorial`
     document marker** (section 18) — a modifier-less word that marks a document
     as handled by professional council, legalises duplicate fields/methods
     (each member gets a declaration-order id and an SHA-256 brander), and makes
@@ -58,7 +65,7 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax 1.3..2.4 surface the front end accepts.
+This document is normative for the syntax 1.3..2.5 surface the front end accepts.
 Every production and built-in below is implemented in `impl/frontend` and
 executes on `impl/core`.
 
@@ -1297,3 +1304,68 @@ there.
 - `impl/frontend/driver.cpp` — the `compile` flow calls the emitters for
   author-marked documents and parses `--originate-dir=<dir>`, `--wiki`, and
   `--wiki-dir=<dir>`.
+
+--------------------------------------------------------------------------------
+## 19. Syntax 2.5 — the `material` document marker
+
+This section is **normative** for syntax **2.5**. The marker is a first-class,
+compiler-recognised document property — not a library convention — but it is
+**declarative only**: unlike the `author`/`authorial` marker of section 18, the
+`material` marker changes **nothing** about parsing, typing, dispatch, or code
+generation. It is a *claim about the document*, recognised and version-gated by
+the front end and otherwise inert.
+
+### 19.1 The marker
+
+A document may declare, at top level (after the `#sleela` pragma, outside any
+class), the single bare word:
+
+    material;
+
+It takes no modifier and no type. It is a **contextual** word, not a reserved
+keyword: anywhere other than this top-level marker position (and in any document
+below 2.5) `material` remains an ordinary identifier. A trailing `;` is optional
+and a repeated marker is harmless.
+
+Version gate: the marker requires `#sleela 2.5`; a 2.5-feature use declared below
+2.5 is rejected ("the material document marker requires #sleela 2.5").
+
+### 19.2 Meaning
+
+`material` claims that the document is **material** — already well considered,
+*present to its author as its own Source*. It is the thing: **Material**. The
+document does not become material by being compiled; the marker records that it
+already is, and that its author stands to it as to a settled Source rather than
+a draft.
+
+The marker is **compositional with** `author`/`authorial`: a document may be
+both authorial and material. The two are orthogonal — `author` concerns handling
+by professional council and member identity; `material` concerns the document's
+standing as settled Source.
+
+### 19.3 The set of material documents
+
+A material-marked document is, by the marker, a member of the **set of material
+documents**: those concerning **state**, **progress**, or the **securing of
+change**. The set is understood to be **stable** — a document, once material, is
+not expected to be freely moved out of the set; changes to a material document
+are changes to settled Source and are made deliberately, not casually. This is a
+convention the marker records; the compiler does not lock the file, and places
+no mechanical restriction on editing it. (A material-marked document that is
+revised remains material; the marker is a statement of standing, not a lock.)
+
+### 19.4 Effect on the toolchain
+
+None, by design. The front end recognises the marker, gates it to `#sleela 2.5`,
+and records it on the parsed document (`Program.materialMarked`). It emits no
+additional artifact, relaxes no rule, and reserves no identifier. A material
+document compiles exactly as the same document without the marker would.
+
+### 19.5 Where this is implemented
+
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.5.
+- `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
+  contextual `material` marker and sets `Program.materialMarked`.
+- `impl/frontend/semantic.cpp` — `collect()` gates the marker to 2.5 (and has no
+  other effect for it).
+- `impl/frontend/ast.h` — `Program.materialMarked`.

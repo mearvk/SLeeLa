@@ -6,10 +6,10 @@
 #include <string>
 namespace sleela {
 struct SyntaxVersion { int major=0, minor=0; std::string str() const { return std::to_string(major)+"."+std::to_string(minor); } bool operator<(const SyntaxVersion&o)const{return major!=o.major?major<o.major:minor<o.minor;} bool operator>(const SyntaxVersion&o)const{return o<*this;} bool operator==(const SyntaxVersion&o)const{return major==o.major&&minor==o.minor;} bool operator<=(const SyntaxVersion&o)const{return !(*this>o);} bool operator>=(const SyntaxVersion&o)const{return !(*this<o);} };
-// Supported source-syntax range the toolchain drives: 1.0 .. 2.4. Features
+// Supported source-syntax range the toolchain drives: 1.0 .. 2.5. Features
 // introduced in later minors are still gated individually (a 1.0 source that
 // uses, e.g., network built-ins errors with "requires #sleela 1.1"), but the
-// floor itself is 1.0 so the runtime can drive the whole 1.0 .. 2.4 range.
+// floor itself is 1.0 so the runtime can drive the whole 1.0 .. 2.5 range.
 // Syntax 2.3 adds the philosophers Guide-chain expression
 // (`new T(...) :: Guide :: Guide ...`, section 17 of SLEELA.syntax).
 // Syntax 2.4 adds the `author`/`authorial` document marker: a document so
@@ -17,7 +17,15 @@ struct SyntaxVersion { int major=0, minor=0; std::string str() const { return st
 // declaration-order id and an SHA-256 brander, and the standard compile emits a
 // second "originated" source document whose members carry `∴` branders
 // (section 18 of SLEELA.syntax).
-inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};} inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{2,4};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
+// Syntax 2.5 adds the `material` document marker: a bare, contextual,
+// declarative word (sibling to author/authorial) claiming the document is
+// material -- well considered, present to its author as its own Source, "the
+// thing, Material". It is declarative only: it has NO effect on parsing,
+// typing, or codegen. It marks membership in the set of material documents
+// (those concerning state, progress, or the securing of change), which by
+// convention is not freely changed out of that set (section 19 of
+// SLEELA.syntax).
+inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};} inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{2,5};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
 enum class VersionStatus{OkDeclared,OkAssumed,TooNew,TooOld,Malformed};
 struct VersionResolution{ VersionStatus status=VersionStatus::OkAssumed; SyntaxVersion declared; bool pragmaPresent=false; std::string raw; std::string message; bool accepted()const{return status==VersionStatus::OkDeclared||status==VersionStatus::OkAssumed;} bool isError()const{return !accepted();} bool isWarning()const{return status==VersionStatus::OkAssumed;} };
 bool parseSyntaxVersion(const std::string& text,SyntaxVersion& out); VersionResolution resolveSyntaxVersion(const std::string& source);

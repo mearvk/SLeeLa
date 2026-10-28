@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11578
-library-packages: 101
-module-facade-symbols: 70
-total-symbol-records: 11648
+library-source-files: 11641
+library-packages: 104
+module-facade-symbols: 71
+total-symbol-records: 11712
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -25,7 +25,10 @@ alphabet	SolarizedTheme.sleela	lib/alphabet/SolarizedTheme.sleela	source
 alphabet	Theme.sleela	lib/alphabet/Theme.sleela	source
 antivirus	Antivirus.sleela	lib/antivirus/Antivirus.sleela	source
 antivirus	SLClamAVAdapter.sleela	lib/antivirus/SLClamAVAdapter.sleela	source
+antivirus	SLControl.sleela	lib/antivirus/SLControl.sleela	source
+antivirus	SLCreator.sleela	lib/antivirus/SLCreator.sleela	source
 antivirus	SLLocalScanner.sleela	lib/antivirus/SLLocalScanner.sleela	source
+antivirus	SLMaterialClaim.sleela	lib/antivirus/SLMaterialClaim.sleela	source
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
 antivirus	SLQuarantineManager.sleela	lib/antivirus/SLQuarantineManager.sleela	source
 antivirus	SLScanPolicy.sleela	lib/antivirus/SLScanPolicy.sleela	source
@@ -462,6 +465,7 @@ collections	SLQueue.sleela	lib/collections/SLQueue.sleela	source
 collections	SLRange.sleela	lib/collections/SLRange.sleela	source
 collections	SLSet.sleela	lib/collections/SLSet.sleela	source
 collections	SLStack.sleela	lib/collections/SLStack.sleela	source
+collections	SLValueList.sleela	lib/collections/SLValueList.sleela	source
 common-rails	PrintComponent.sleela	lib/common-rails/PrintComponent.sleela	source
 common-rails	PrintContractTest.sleela	lib/common-rails/PrintContractTest.sleela	source
 common-rails	PrintField.sleela	lib/common-rails/PrintField.sleela	source
@@ -11299,6 +11303,21 @@ security	SLPermission.sleela	lib/security/SLPermission.sleela	source
 security	SLRandom.sleela	lib/security/SLRandom.sleela	source
 security	SLSecureBuffer.sleela	lib/security/SLSecureBuffer.sleela	source
 server-edition	SLPackage.sleela	lib/server-edition/SLPackage.sleela	facade
+signal-processing	SLSignalComplex.sleela	lib/signal-processing/SLSignalComplex.sleela	source
+signal-processing	SLSignalComplexSample.sleela	lib/signal-processing/SLSignalComplexSample.sleela	source
+signal-processing	SLSignalComplexSeries.sleela	lib/signal-processing/SLSignalComplexSeries.sleela	source
+signal-processing	SLSignalDFT.sleela	lib/signal-processing/SLSignalDFT.sleela	source
+signal-processing	SLSignalFFT.sleela	lib/signal-processing/SLSignalFFT.sleela	source
+signal-processing	SLSignalFilters.sleela	lib/signal-processing/SLSignalFilters.sleela	source
+signal-processing	SLSignalMagnitudeSpectrum.sleela	lib/signal-processing/SLSignalMagnitudeSpectrum.sleela	source
+signal-processing	SLSignalProcessing.sleela	lib/signal-processing/SLSignalProcessing.sleela	source
+signal-processing	SLSignalProcessingStatus.sleela	lib/signal-processing/SLSignalProcessingStatus.sleela	source
+signal-processing	SLSignalSample.sleela	lib/signal-processing/SLSignalSample.sleela	source
+signal-processing	SLSignalScalar.sleela	lib/signal-processing/SLSignalScalar.sleela	source
+signal-processing	SLSignalSeries.sleela	lib/signal-processing/SLSignalSeries.sleela	source
+signal-processing	SLSignalStatistics.sleela	lib/signal-processing/SLSignalStatistics.sleela	source
+signal-processing	SLSignalProcessingDemo.sleela	lib/signal-processing/example/SLSignalProcessingDemo.sleela	source
+signal-processing	SLSignalProcessingSmoke.sleela	lib/signal-processing/tests/SLSignalProcessingSmoke.sleela	source
 sldocument	SLDocument.sleela	lib/sldocument/SLDocument.sleela	source
 sldocument	SLDocumentAnnotation.sleela	lib/sldocument/SLDocumentAnnotation.sleela	source
 sldocument	SLDocumentCompiler.sleela	lib/sldocument/SLDocumentCompiler.sleela	source
@@ -11312,6 +11331,17 @@ sleela	SLPackage.sleela	lib/sleela/SLPackage.sleela	facade
 sleela-sql	SqlModel.sleela	lib/sleela-sql/SqlModel.sleela	source
 sleela-terminal	SLPackage.sleela	lib/sleela-terminal/SLPackage.sleela	facade
 social-model	SLPackage.sleela	lib/social-model/SLPackage.sleela	facade
+sommeliers	SLSommelierCare.sleela	lib/sommeliers/SLSommelierCare.sleela	source
+sommeliers	SLSommelierCareDemo.sleela	lib/sommeliers/SLSommelierCareDemo.sleela	source
+sommeliers	SLSommelierCarePlan.sleela	lib/sommeliers/SLSommelierCarePlan.sleela	source
+sommeliers	SLSommelierConsent.sleela	lib/sommeliers/SLSommelierConsent.sleela	source
+sommeliers	SLSommelierFeedback.sleela	lib/sommeliers/SLSommelierFeedback.sleela	source
+sommeliers	SLSommelierFeedbackClient.sleela	lib/sommeliers/SLSommelierFeedbackClient.sleela	source
+sommeliers	SLSommelierLocale.sleela	lib/sommeliers/SLSommelierLocale.sleela	source
+sommeliers	SLSommelierOffer.sleela	lib/sommeliers/SLSommelierOffer.sleela	source
+sommeliers	SLSommelierOfferRegistry.sleela	lib/sommeliers/SLSommelierOfferRegistry.sleela	source
+sommeliers	SLSommelierProfile.sleela	lib/sommeliers/SLSommelierProfile.sleela	source
+sommeliers	SLSommelierSession.sleela	lib/sommeliers/SLSommelierSession.sleela	source
 sst	DynamiteConnector.sleela	lib/sst/DynamiteConnector.sleela	source
 sst	MySQLConnector.sleela	lib/sst/MySQLConnector.sleela	source
 sst	PostgreSQLConnector.sleela	lib/sst/PostgreSQLConnector.sleela	source
@@ -11373,6 +11403,19 @@ ui	SLTreeView.sleela	lib/ui/SLTreeView.sleela	source
 ui	SLView.sleela	lib/ui/SLView.sleela	source
 ui	SLWidget.sleela	lib/ui/SLWidget.sleela	source
 ui	SLWindow.sleela	lib/ui/SLWindow.sleela	source
+ui	gui-dual-media-studio.sleela	lib/ui/example/dual/gui-dual-media-studio.sleela	source
+ui	gui-gual-settings-console.sleela	lib/ui/example/gual/gui-gual-settings-console.sleela	source
+ui	gui-menubar-expandable.sleela	lib/ui/example/menus/gui-menubar-expandable.sleela	source
+ui	gui-military-command-console.sleela	lib/ui/example/military/gui-military-command-console.sleela	source
+ui	gui-mual-text-editor.sleela	lib/ui/example/mual/gui-mual-text-editor.sleela	source
+ui	astrophysics.sleela	lib/ui/example/science/astrophysics.sleela	source
+ui	chemistry.sleela	lib/ui/example/science/chemistry.sleela	source
+ui	guide-chain-syntax.sleela	lib/ui/example/science/guide-chain-syntax.sleela	source
+ui	math.sleela	lib/ui/example/science/math.sleela	source
+ui	philosophers-constructor.sleela	lib/ui/example/science/philosophers-constructor.sleela	source
+ui	physics.sleela	lib/ui/example/science/physics.sleela	source
+ui	sociology.sleela	lib/ui/example/science/sociology.sleela	source
+ui	gui-thual-effects-showcase.sleela	lib/ui/example/thual/gui-thual-effects-showcase.sleela	source
 ui	layout-demo.sleela	lib/ui/layout-demo.sleela	source
 ui	layout-driver-demo.sleela	lib/ui/layout-driver-demo.sleela	source
 ui	theme-demo.sleela	lib/ui/theme-demo.sleela	source
@@ -11446,12 +11489,25 @@ user-interface	SLTheme.sleela	lib/user-interface/SLTheme.sleela	source
 user-interface	SLThrobber.sleela	lib/user-interface/SLThrobber.sleela	source
 user-interface	SLToggle.sleela	lib/user-interface/SLToggle.sleela	source
 user-interface	SLTooltip.sleela	lib/user-interface/SLTooltip.sleela	source
-user-interface	SLVerticalTabs.sleela	lib/user-interface/SLVerticalTabs.sleela	source
 user-interface	SLTreeView.sleela	lib/user-interface/SLTreeView.sleela	source
 user-interface	SLUserInterface.sleela	lib/user-interface/SLUserInterface.sleela	source
+user-interface	SLVerticalTabs.sleela	lib/user-interface/SLVerticalTabs.sleela	source
 user-interface	SLWash.sleela	lib/user-interface/SLWash.sleela	source
 user-interface	SLWidget.sleela	lib/user-interface/SLWidget.sleela	source
 user-interface	SLWindow.sleela	lib/user-interface/SLWindow.sleela	source
+user-interface	gui-dual-media-studio.sleela	lib/user-interface/example/dual/gui-dual-media-studio.sleela	source
+user-interface	gui-gual-settings-console.sleela	lib/user-interface/example/gual/gui-gual-settings-console.sleela	source
+user-interface	gui-menubar-expandable.sleela	lib/user-interface/example/menus/gui-menubar-expandable.sleela	source
+user-interface	gui-military-command-console.sleela	lib/user-interface/example/military/gui-military-command-console.sleela	source
+user-interface	gui-mual-text-editor.sleela	lib/user-interface/example/mual/gui-mual-text-editor.sleela	source
+user-interface	astrophysics.sleela	lib/user-interface/example/science/astrophysics.sleela	source
+user-interface	chemistry.sleela	lib/user-interface/example/science/chemistry.sleela	source
+user-interface	guide-chain-syntax.sleela	lib/user-interface/example/science/guide-chain-syntax.sleela	source
+user-interface	math.sleela	lib/user-interface/example/science/math.sleela	source
+user-interface	philosophers-constructor.sleela	lib/user-interface/example/science/philosophers-constructor.sleela	source
+user-interface	physics.sleela	lib/user-interface/example/science/physics.sleela	source
+user-interface	sociology.sleela	lib/user-interface/example/science/sociology.sleela	source
+user-interface	gui-thual-effects-showcase.sleela	lib/user-interface/example/thual/gui-thual-effects-showcase.sleela	source
 user-interface	gui-app-demo.sleela	lib/user-interface/gui-app-demo.sleela	source
 user-interface	gui-events-demo.sleela	lib/user-interface/gui-events-demo.sleela	source
 video	Video.sleela	lib/video/Video.sleela	source
@@ -11582,6 +11638,14 @@ vm	SLVmTelemetry.sleela	lib/vm/src/sleela/SLVmTelemetry.sleela	source
 vm	SLVmVersion.sleela	lib/vm/src/sleela/SLVmVersion.sleela	source
 vm	basic-vm.sleela	lib/vm/tutorials/examples/basic-vm.sleela	source
 vm	startup-and-memory-guard.sleela	lib/vm/tutorials/examples/startup-and-memory-guard.sleela	source
+web-server-technology	SLDualStackBinding.sleela	lib/web-server-technology/SLDualStackBinding.sleela	source
+web-server-technology	SLEnvelopment.sleela	lib/web-server-technology/SLEnvelopment.sleela	source
+web-server-technology	SLPackage.sleela	lib/web-server-technology/SLPackage.sleela	facade
+web-server-technology	SLSqlEndpoint.sleela	lib/web-server-technology/SLSqlEndpoint.sleela	source
+web-server-technology	SLWarrant.sleela	lib/web-server-technology/SLWarrant.sleela	source
+web-server-technology	SLWebProgram.sleela	lib/web-server-technology/SLWebProgram.sleela	source
+web-server-technology	SLWebServer.sleela	lib/web-server-technology/SLWebServer.sleela	source
+web-server-technology	demo-web-server-technology.sleela	lib/web-server-technology/demo-web-server-technology.sleela	source
 website	SLWebsiteDesign.sleela	lib/website/SLWebsiteDesign.sleela	source
 website	SLWebsiteEmitter.sleela	lib/website/SLWebsiteEmitter.sleela	source
 website	SLWebsiteGenerator.sleela	lib/website/SLWebsiteGenerator.sleela	source

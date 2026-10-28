@@ -192,6 +192,19 @@ Program Parser::parseProgram(){
             accept(Tok::Semicolon);
             p.authorMarked=true;
         }
+        else if(check(Tok::Ident)&&cur().text=="material"){
+            // Material marker (syntax 2.5). A single, modifier-less, type-less
+            // word at document scope that DECLARES the document material -- well
+            // considered, present to its author as its own Source (see
+            // SLEELA.syntax section 19). Declarative only: it changes nothing
+            // about parsing/typing/codegen. A trailing ';' is optional; a repeat
+            // marker is harmless. Like author/authorial it is contextual, not a
+            // reserved keyword, so `material` stays an ordinary identifier
+            // anywhere else (and in any document below 2.5).
+            ++i_;
+            accept(Tok::Semicolon);
+            p.materialMarked=true;
+        }
         else {
             unsigned mods=parseJavaModifiers();
             if(check(Tok::KwClass)||check(Tok::KwInterface)||check(Tok::KwEnum)||check(Tok::KwRecord)){

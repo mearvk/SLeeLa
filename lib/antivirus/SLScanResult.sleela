@@ -1,6 +1,6 @@
 << lib/antivirus/SLScanResult.sleela
    Structured result; errors must never be interpreted as a clean scan. >>
-#sleela 2.1
+#sleela 2.4
 class SLScanResult {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

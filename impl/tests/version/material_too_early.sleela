@@ -1,0 +1,3 @@
+#sleela 2.4
+material;
+class MaterialTooEarly { void main() { print("should be rejected below 2.5"); } }
