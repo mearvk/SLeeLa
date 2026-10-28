@@ -3019,14 +3019,6 @@
       "sha256": "c6125f20dbfc5f1e2f4dcd70a3897f3e670385c9221da05b5d6ed1fd50515a2f"
     },
     {
-      "path": "character/sleela/CharacterDemo.sleela",
-      "sha256": "f21ea33d408d0ccdc36944622700367308f0591fcae6131dbe38a4d56328c383"
-    },
-    {
-      "path": "character/sleela/CharacterStats.sleela",
-      "sha256": "b5ad4c13cd9d7726b3b6a9a997d1dea717549121cb638ffd2ed1d5b9292624c9"
-    },
-    {
       "path": "churn/1/assumptions/assumptions.sleela",
       "sha256": "fbf83b35c6d216bbe18e8f2962402a7294c576957c299ca52e832771a5114b1c"
     },
@@ -3073,14 +3065,6 @@
     {
       "path": "churn/validate_data.py",
       "sha256": "4aa04f7cfe99e9a8ca52c9365df10e9c92bee558af968bba29d353934725081b"
-    },
-    {
-      "path": "citizen/sleela/CitizenDemo.sleela",
-      "sha256": "70d44b727dd4fe098aacc68f91f768aadf5713c63f7978c827953f5d9bfeb10c"
-    },
-    {
-      "path": "citizen/sleela/CitizenStats.sleela",
-      "sha256": "7a258290da07c9108e3ecdb8258d3ec75062a942168ba536440d7fdfe8dfa5a4"
     },
     {
       "path": "codecs/codecs/aac/aac.c",
@@ -9523,6 +9507,14 @@
       "sha256": "4045b5ddabf0f52092e89c263cab928228965c0431e99661b6a61d160d861d59"
     },
     {
+      "path": "lib/character/seem/CharacterDemo.sleela",
+      "sha256": "fa58b431b96772fdf0b2955e9e37bb4b73a2494fcd833cd741b1ebc7641ffd86"
+    },
+    {
+      "path": "lib/character/seem/CharacterStats.sleela",
+      "sha256": "9707dcd0a55c56851b3fd4a82922f6e4c8060f4f3f8166c5e5ac9e99bf377563"
+    },
+    {
       "path": "lib/churn/SLPackage.sleela",
       "sha256": "b24e2ef671400eb11b88c7de2231f148345b562b8dca6d39d360d6f5fb6f0098"
     },
@@ -9653,6 +9645,14 @@
     {
       "path": "lib/citizen/character/WholesaleModel.sleela",
       "sha256": "8f12b8bda628120a13f07c5b8f471610c8d25deaf1e891d829a3a20ce00f8252"
+    },
+    {
+      "path": "lib/citizen/seem/CitizenDemo.sleela",
+      "sha256": "877f82ea766391d26fb70c75c2b71b1ca0796525274b8a354c6cd01991a5071d"
+    },
+    {
+      "path": "lib/citizen/seem/CitizenStats.sleela",
+      "sha256": "2d2c29287a8ccf546e89b25a4addca3ef886bf786b66023f6d8a9f542d900bf1"
     },
     {
       "path": "lib/codecs/SLCodecAac.sleela",
@@ -58144,7 +58144,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "1247abba05f71921bd127ff7bb7a66f094310f5bed6251990a95634bc5075cf9"
+      "sha256": "2c32db3d79eac1d226e957eeb82612a2f40fdbd21e487760104398335da6ade1"
     },
     {
       "path": "tests/http-1.0/fuzz_download_metadata.c",

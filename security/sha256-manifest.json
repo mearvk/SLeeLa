@@ -679,7 +679,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "4ceb670b6f6425bcd2774eab9830210060871e21403a2c68e525fc223bc8d2b3"
+      "sha256": "3797eb115b86fd4c04a26db9af7dcd8a777c1fb08a3bf5e3fa39180850fa5a5a"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -45067,47 +45067,47 @@
     },
     {
       "path": "lib/nordshrift/DynamiteConnector.sleela",
-      "sha256": "4a24b1ad4a7b7965b36fa19b85a2e70bba778fd2bea37d7baff44612da927840"
+      "sha256": "4c62d052638ca4ca2132d24387867ba13ab16d8370183723bbfe906305349e34"
     },
     {
       "path": "lib/nordshrift/MySQLConnector.sleela",
-      "sha256": "4e980065d90495ce31668cc23b0899437e8c30312cbc5fa42b90cc9ae4015397"
+      "sha256": "9b0285f5ab3d945e7de76e209b6e75943ec694c4fbe0b6d580b36bfd61fba26b"
     },
     {
       "path": "lib/nordshrift/NordshriftCompilerBridge.sleela",
-      "sha256": "b6566154118d5bdc4c7d183bf80ff4355db1e2fbe0f7a1890d8c61b088ba9144"
+      "sha256": "b53304d1fa8d86da817f297214d42f9b40f3cc6b58cb3779869852ef56cdb15b"
     },
     {
       "path": "lib/nordshrift/NordshriftSource.sleela",
-      "sha256": "f992658c6accdc8b635695c01b5432a796617555d432c88f7df47e2c59177c5f"
+      "sha256": "dbcebc47c3e606352bbda3ee0dac4792c1b0fab9873a777854643a53949d6884"
     },
     {
       "path": "lib/nordshrift/NordshriftSymbol.sleela",
-      "sha256": "15c2142e416dfb624faea5b09bbcca81377e21c8aaa5acf290951a2135698a0d"
+      "sha256": "c6b93aba352bb472b2d48b0669339fe74968242df09a552cc86f33c6eb04d01b"
     },
     {
       "path": "lib/nordshrift/NordshriftSymbolResolver.sleela",
-      "sha256": "c1f9a7791acf946fb4362dc819f49c797b24e35de23c0f351b50df775c38401a"
+      "sha256": "6f01990c28ee68445e9986feb94f428623ef12a67ecdadbb6df60fa46946d121"
     },
     {
       "path": "lib/nordshrift/NordshriftSymbolTable.sleela",
-      "sha256": "f32c52ae30210cfd070bad2c5bacb986c2c81921a900ae8e983cdeb6fa4915a4"
+      "sha256": "1418042a381f9a84e6743e6375ad21e8a028cbc55c3f7900ec7466f43332d24c"
     },
     {
       "path": "lib/nordshrift/PermissibleConnector.sleela",
-      "sha256": "0568a9c51b52958743f81adbc7b77b79d549352f3e25cd1f32d540b644af11bc"
+      "sha256": "1ed747b740493b7e2ce81ca585e72d87fb74cc7871a1b164d0c9cc300ede540d"
     },
     {
       "path": "lib/nordshrift/PostgreSQLConnector.sleela",
-      "sha256": "d6e46a442702a6fcf54b0459aeea4e05597445383d21b4afe653f7622d8db85e"
+      "sha256": "ac39219725eb4e522e87aaf175ab99eecf0245cb245708b56afb23c4e3ce4102"
     },
     {
       "path": "lib/nordshrift/SLPackage.sleela",
-      "sha256": "72bbc87337e66ec8fe3fb552322f902c3cf07a149ca0bef5b5cef4654f4a783d"
+      "sha256": "53cc368ce696c15b62f018fb67181c2c7119d1bc3764107e8a7012d896317b56"
     },
     {
       "path": "lib/nordshrift/SQLConnector.sleela",
-      "sha256": "15e8d3eef6121ca83dae93995f6122540975665c07d637264de190f190342002"
+      "sha256": "124ca3187bbac65ebb044f3e0199cdce69eac36f5b1047086859421efc07c049"
     },
     {
       "path": "lib/opcodes/SLOpAccept.sleela",
