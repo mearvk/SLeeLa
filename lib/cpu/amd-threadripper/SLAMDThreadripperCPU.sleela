@@ -21,7 +21,8 @@
    (9995WX...9945WX) run 8-channel DDR5-6400 with up to 128 PCIe 5.0 lanes.
    
    Family: cpu. Extends SLCPURuntime. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLAMDThreadripperCPU extends SLCPURuntime {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

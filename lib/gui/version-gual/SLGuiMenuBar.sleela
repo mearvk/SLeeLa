@@ -1,6 +1,7 @@
 << SLeeLa Standard Library Definition: SLGuiMenuBar
    Toolkit-neutral menu-bar model. Rendering belongs to the selected GUI host. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiMenuBar {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

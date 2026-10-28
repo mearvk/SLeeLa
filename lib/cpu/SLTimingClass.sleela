@@ -20,7 +20,8 @@
    where "basic/novice/advanced" become objects that govern the rest.
    
    Family: cpu. Pure Sleela policy object; governs SLTimingProfile. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLTimingClass {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

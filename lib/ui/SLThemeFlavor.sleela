@@ -20,7 +20,8 @@
 
    Every pairing (text on bg/surface/chrome, accentText on accent) is tuned to
    clear WCAG AA contrast. Colors are faithful design values, not placeholders. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. The four standard flavors: Blue, Gray, Black, White. >
 class SLThemeFlavor {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

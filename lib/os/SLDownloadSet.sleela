@@ -20,7 +20,8 @@
    
    Family: os. Design model; the reachability probe crosses the osRun bridge
      (requires #sleela 1.5). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLDownloadSet {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

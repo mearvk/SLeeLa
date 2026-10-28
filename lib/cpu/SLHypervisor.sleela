@@ -18,7 +18,8 @@
    upstream Linux. See CPU.md and EXECUTION.md for the exact boundary.
    
    Family: cpu. Composes SLCPU/SLCore, SLRAM, SLGuestVM, SLMMU, SLGuestDeviceBus. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLHypervisor {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

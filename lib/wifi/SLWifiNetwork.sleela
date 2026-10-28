@@ -1,6 +1,7 @@
 << lib/wifi/SLWifiNetwork.sleela
    One discovered access-point record. The native provider validates again at connect time. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLWifiNetwork {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -17,7 +17,8 @@
 < Unlike the opaque built-in String, this builder tracks how many segments it >
 < has appended; exact character length is char-level and stays bridged. >
 < Comments use the angle-bracket style; #sleela 2.1. >
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: text. Native VM/OS work crosses an explicit bridge. >
 
 class SLStringBuilder {

@@ -11,7 +11,8 @@
      its own rising edge. The bank is the single place a running loop consults.
    
    Family: opcodes.running. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 class SLOpcodeReactorBank {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

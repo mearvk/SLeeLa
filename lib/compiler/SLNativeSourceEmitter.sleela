@@ -1,6 +1,7 @@
 << Backend contract for translating validated SLeeLa compiler IR into portable
    C or C++ source. Unsupported constructs must be rejected, never approximated. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLNativeSourceEmitter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

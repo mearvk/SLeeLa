@@ -1,7 +1,8 @@
 << lib/compression/SLCompressionZip.sleela
    SLeeLa Standard Library Definition.
    Definition: ZIP archive algorithm class — the SLeeLa-facing handle to algorithm id 14. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: compression. Individual algorithm class for ZIP archive, mirroring >
 < compression/compressors/zip/ and the registry entry in >
 < sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the >

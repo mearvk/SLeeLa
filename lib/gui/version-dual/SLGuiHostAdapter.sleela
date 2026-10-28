@@ -13,7 +13,8 @@
    
    Family: gui. The adapter crosses the `ui*` SLVM bridge inbound; dispatch and
    meaning stay SLeeLa-owned. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiHostAdapter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

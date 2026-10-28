@@ -1,6 +1,7 @@
 << lib/wifi/SLWifiOOD.sleela
    UI-independent OOD entry point for Wi-Fi connectivity surfaces. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLWifiOOD {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

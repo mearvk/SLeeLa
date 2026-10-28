@@ -10,7 +10,8 @@
    
    Family: gui. Attached to a node (or a container) to drive placement; read by
    SLGuiMount when it positions the widget. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiLayout {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

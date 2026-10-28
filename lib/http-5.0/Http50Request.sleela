@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Request metadata for the HTTP/1.x carrier endpoint. >
 class Http50Request {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

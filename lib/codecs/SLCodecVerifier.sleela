@@ -1,7 +1,8 @@
 << lib/codecs/SLCodecVerifier.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLCodecVerifier used within the codecs library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: codecs. The verification layer for codecs — the SLeeLa mirror of the >
 < native manager's resolve/probe path (sleela_codec_manager_resolve_extension, >
 < sleela_codec_manager_resolve_probe) and each plugin's probe() contract >

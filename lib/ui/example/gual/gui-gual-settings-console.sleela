@@ -20,7 +20,8 @@
    
    With no display (headless/CI) it reports that and exits 0 without a window.
 >>
-#sleela 2.1
+#sleela 2.5
+material;
 // GUAL (2.0): the clamp-to-a-safe-window discipline applied to GUI settings.
 // Every knob is validated; here the validated values are shown on real
 // controls (sliders/toggles/combo) that reflect the clamped result.

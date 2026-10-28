@@ -10,7 +10,8 @@
    (1 read, 2 write), 3 = status (RO). Completion raises the device IRQ.
    
    Family: cpu. Extends SLGuestDevice; composes SLHardDrive. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestBlockDevice extends SLGuestDevice {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

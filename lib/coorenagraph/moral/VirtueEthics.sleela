@@ -3,6 +3,8 @@
    Part of speech: noun
    Definition: An ethical perspective that places moral character and virtuous conduct at the center of morality. >>
 
+#sleela 2.5
+material;
 class VirtueEthics {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

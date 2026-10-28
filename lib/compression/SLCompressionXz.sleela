@@ -1,7 +1,8 @@
 << lib/compression/SLCompressionXz.sleela
    SLeeLa Standard Library Definition.
    Definition: xz (LZMA2) algorithm class — the SLeeLa-facing handle to algorithm id 9. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: compression. Individual algorithm class for xz (LZMA2), mirroring >
 < compression/compressors/xz/ and the registry entry in >
 < sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the >

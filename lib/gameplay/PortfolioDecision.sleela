@@ -12,7 +12,8 @@
    directly; the move that owns it decides what to do with the result.
    
    Family: gameplay. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class PortfolioDecision {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

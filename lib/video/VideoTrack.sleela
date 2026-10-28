@@ -1,7 +1,8 @@
 << lib/video/VideoTrack.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type VideoTrack used within the video library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class VideoTrack {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

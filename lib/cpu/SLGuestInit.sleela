@@ -10,7 +10,8 @@
    the system's initial programs; the timer-driven scheduler multitasks them.
    
    Family: cpu. Composes SLGuestLinux, SLGuestProgram, SLGuestTask, SLSleelaVM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestInit {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

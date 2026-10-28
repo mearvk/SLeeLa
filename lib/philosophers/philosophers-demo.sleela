@@ -3,7 +3,8 @@
    Definition: builds the canonical chain Constructor() :: Patch :: Constructor
    :: Aim :: Guide, weighs favor on the Notice of Approach, runs a time-bounded
    contract, and lets the object live free. >>
-#sleela 2.1
+#sleela 2.5
+material;
 << Family: philosophers. A worker-class runnable that exercises the perfect
    Constructor end to end and prints its quality, effect and output. It seats
    four Guides -- Patch, Constructor, Aim, Guide -- as the user's example asks,

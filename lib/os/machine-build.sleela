@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < machine-build.sleela -- the self-contained, runnable demonstrator of the >
 < lib/os NAMED-HARDWARE machine family (SLHardwareComponent, the per-family >
 < catalogues under memory-ddr/ ssd/ hdd/ usb/ uefi/ video-cards/, the >

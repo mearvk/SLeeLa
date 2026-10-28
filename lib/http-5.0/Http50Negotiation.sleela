@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Project-generation negotiation. Caller flags are not cryptographic proof. >
 class Http50Negotiation {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

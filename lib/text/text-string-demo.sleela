@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < text-string-demo.sleela -- the self-contained, runnable reference for the >
 < SLeeLa text/String surface, parallel to the codec/compression *-pipeline >
 < demos. The compiler's `run` compiles one file as a single unit, so this >

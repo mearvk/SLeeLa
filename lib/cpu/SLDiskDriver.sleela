@@ -6,7 +6,8 @@
      disk IRQ for completion. The bootloader and filesystem go through it.
    
    Family: cpu. Extends SLDeviceDriver; composes SLHardDrive and SLDMAController. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLDiskDriver extends SLDeviceDriver {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

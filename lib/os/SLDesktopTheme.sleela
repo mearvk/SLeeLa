@@ -22,7 +22,8 @@
      warehouse (SLOSSensitivitySource / OS.Sensitivity.III), not carried here.
    
    Family: os. Pure design model; no native bridge calls. >>
-#sleela 2.2
+#sleela 2.5
+material;
 class SLDesktopTheme {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

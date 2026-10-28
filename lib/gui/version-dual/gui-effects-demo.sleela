@@ -4,7 +4,8 @@
    look-and-feel, fixed and scheduled ("schene") rotation, fade in/out,
    activation audio, and logo branding. SLeeLa names every effect; the host
    renders the pixels and plays the cues. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class GuiEffectsDemo {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

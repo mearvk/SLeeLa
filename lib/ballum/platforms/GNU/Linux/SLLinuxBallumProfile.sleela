@@ -1,5 +1,6 @@
 < OS profile: GNU / Linux (X11 + XRANDR). >
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ballum. Per-OS facts for the Linux backend >
 < (ballum/src/ballum_backend_x11.c). Pixel I/O goes through X11; brightness, >
 < warmth, and gamma are applied via the XRANDR CRTC gamma ramp. Per-monitor >

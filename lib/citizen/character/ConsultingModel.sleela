@@ -7,7 +7,8 @@
    A concrete BusinessModel: revenue scales with utilization, not headcount
    alone; cost is the consultants' salaries whether or not they billed. Family:
    character. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class ConsultingModel extends BusinessModel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

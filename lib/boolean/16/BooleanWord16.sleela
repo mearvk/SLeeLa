@@ -1,7 +1,8 @@
 << lib/boolean/16/BooleanWord16.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines BooleanWord16, the generative factory for all 65536 depth-16 Boolean/Binary words. Full materialization of every combination as a file is impractical at this depth; this factory models any such word by its HEAD (result) and CARRY (caveat) composition, which is validated and read on demand. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa boolean/16 generative word factory. >
 < All 65536 combinations of BOOLEAN.TRUE / BOOLEAN.FALSE at depth 16 >
 < are modeled by this type rather than materialized as 65536 separate files. >

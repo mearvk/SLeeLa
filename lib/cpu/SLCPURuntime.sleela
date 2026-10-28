@@ -22,7 +22,8 @@
    
    Family: cpu. Composes SLRAM, SLALU, SLSleelaVM, SLSleelaOpcode. Extended by
      SL6502CPU, SLZ80CPU, SLX86CPU, SLARMCPU, SLMIPSCPU, SLRISCVCPU, SLM68000CPU. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCPURuntime {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

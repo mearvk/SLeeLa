@@ -5,7 +5,8 @@
    also exposes a neutral, optional life-capability profile for human or
    fictional character simulations. Capability values are scenario inputs, not
    clinical, psychometric, or factual assessments. Zero means unknown/unset. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class Character {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

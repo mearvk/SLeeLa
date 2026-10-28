@@ -1,4 +1,5 @@
 #sleela 2.5
+material;
 < Formal resolver boundary between SST symbols and canonical /lib symbols. >
 class NordshriftSymbolResolver {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -1,7 +1,8 @@
 << lib/http-8.0/SLPackage.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library package for http-8.0. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: http-8.0 >
 < Exposes the package to the SLeeLa compiler, Loader, and Nordshrift. >
 class SLPackage {

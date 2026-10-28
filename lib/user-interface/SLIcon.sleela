@@ -2,7 +2,8 @@
    SLeeLa Standard Library Definition.
    A portable icon descriptor for widgets. The native UI bridge attempts to
    load the JPEG asset and uses its symbolic name as the vector fallback. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLIcon {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

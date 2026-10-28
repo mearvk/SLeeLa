@@ -1,7 +1,8 @@
 << lib/codecs/SLCodecProcessor.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLCodecProcessor used within the codecs library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: codecs. The decode/encode dispatch layer — the SLeeLa mirror of the >
 < native manager's processor path (sleela_codec_manager_decode / >
 < sleela_codec_manager_encode) and each plugin's decode/encode entry points >

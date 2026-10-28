@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 import math;
 < world-net-results.sleela -- the self-contained, runnable build of the CPU >
 < ROSTER + FLEET + NET-RESULTS world simulation, with the Creator->network->CPU >

@@ -14,7 +14,8 @@
    detail remains in this folder's markdown docs.
    
    Family: cpu. Extends SLCPURuntime. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCortexMCPU extends SLCPURuntime {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

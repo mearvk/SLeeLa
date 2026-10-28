@@ -8,7 +8,8 @@
      component positioning + strong layout support, a graphics facility and
      control, and an admin authority surface (sign-off on operations, sign-in to
      start a process, legal signature), with a substantially upgraded aesthetic. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: gui >
 < Exposes the package to the SLeeLa compiler, Loader, and Nordshrift. >
 < This package is the SLeeLa-facing *consequence* of the top-level gui/ work >

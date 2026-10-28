@@ -1,7 +1,8 @@
 << lib/compression/SLCompressionBrotli.sleela
    SLeeLa Standard Library Definition.
    Definition: Brotli algorithm class — the SLeeLa-facing handle to algorithm id 12. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: compression. Individual algorithm class for Brotli, mirroring >
 < compression/compressors/brotli/ and the registry entry in >
 < sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the >

@@ -29,7 +29,8 @@
 
    worshipsElsewhere() is false by contract and standsOnItsOwn() is true.
    Comments use the angle-bracket style; #sleela 2.4. >>
-#sleela 2.4
+#sleela 2.5
+material;
 < Family: core. The Victory Model: a win is a check resolving to an exact item. >
 
 author;

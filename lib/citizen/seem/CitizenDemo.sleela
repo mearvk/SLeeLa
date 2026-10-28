@@ -1,4 +1,5 @@
 #sleela 2.5
+material;
 << lib/citizen/seem/CitizenDemo.sleela
    SLeeLa Standard Library — runnable orchestration example.
    Definition: Walks a single Citizen through a whole, slightly comic life —

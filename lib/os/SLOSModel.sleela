@@ -23,7 +23,8 @@
    Family: os. Composes SLOSShape, SLArchitectureSet, SLBootloaderSpec,
      SLKernelSpec, SLFilesystemLayout, SLDriverSet, SLPackageSet, SLServiceSet,
      SLDesktopSpec. Pure design model; no native bridge calls. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLOSModel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

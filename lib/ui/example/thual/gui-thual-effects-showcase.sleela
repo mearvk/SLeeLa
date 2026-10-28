@@ -20,7 +20,8 @@
    
    With no display (headless/CI) it reports that and exits 0 without a window.
 >>
-#sleela 2.1
+#sleela 2.5
+material;
 // THUAL (3.0): a clamped visual-effects layer. Every knob clamps to a safe
 // window; here those clamped values drive real level/progress controls and a
 // live, hue-tinted throbber (the "rotation" made visible).

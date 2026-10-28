@@ -6,7 +6,8 @@
    
    A concrete Theme: override dress() to fill the palette and role colors. Call
    begin("Solarized") to build it. Family: alphabet. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SolarizedTheme extends Theme {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,7 +1,8 @@
 << lib/ui/layout-demo.sleela
    SLeeLa runnable demo for the standard UI Layout family. Shows the kit's
    one-call column/row/grid/dock/absolute and reads back real pixel rects. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class LayoutDemo {
   String metaVersion = "1.0.0";
   int metaId = 0;

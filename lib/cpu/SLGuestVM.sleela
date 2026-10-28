@@ -16,7 +16,8 @@
    when one is attached, falling back to a single base-offset window otherwise.
    
    Family: cpu. Composes SLCore, SLSleelaVM, SLRAM, SLMMU. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestVM {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

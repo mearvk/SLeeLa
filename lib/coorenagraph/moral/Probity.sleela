@@ -3,6 +3,8 @@
    Part of speech: noun
    Definition: Strict adherence to high moral principles, honesty, and integrity. >>
 
+#sleela 2.5
+material;
 class Probity {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

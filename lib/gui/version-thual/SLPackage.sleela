@@ -5,7 +5,8 @@
      clean, professional visual-effects layer: lighting/glow/3D shine, shadow,
      metal look-and-feel, component rotation (incl. scheduled "schene" rotation),
      fade in/out, activation audio, and logo branding. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: gui >
 < Exposes the package to the SLeeLa compiler, Loader, and Nordshrift. >
 < This package is the SLeeLa-facing *consequence* of the top-level gui/ work >

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << CharacterAbilityStats.sleela
    SLeeLa CharacterStats component: primary and expanded abilities.
    

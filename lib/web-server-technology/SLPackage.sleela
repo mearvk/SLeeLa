@@ -2,7 +2,8 @@
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library package for
    web-server-technology, the dynamic SQL-backed web server family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: web-server-technology >
 < Exposes the package to the SLeeLa compiler, Loader, and Nordshrift. >
 class SLPackage {

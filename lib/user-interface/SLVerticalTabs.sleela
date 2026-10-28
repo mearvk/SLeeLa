@@ -5,7 +5,8 @@
      stack; selecting a rail item reveals exactly one content container. Uses
      existing native button states and the active theme without fixed colors.
    Family: user-interface. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVerticalTabs extends SLWidget {
   String metaVersion = "1.0.0";
   int metaId = 11481;

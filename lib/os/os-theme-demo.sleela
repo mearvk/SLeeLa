@@ -10,7 +10,8 @@
 
    Run:
      ./impl/build/sleela run lib/os/os-theme-demo.sleela >>
-#sleela 2.2
+#sleela 2.5
+material;
 
 class OsThemeDemo {
   void printTheme(SLDesktopTheme t) {

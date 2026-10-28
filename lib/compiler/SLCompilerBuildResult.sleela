@@ -1,6 +1,7 @@
 << Result envelope for a compiler-workbench build request.
    Success is only reported by the native bridge after validation and emission. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCompilerBuildResult {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

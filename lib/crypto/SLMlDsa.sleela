@@ -1,7 +1,8 @@
 << lib/crypto/SLMlDsa.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLMlDsa used within the crypto library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 < Family: crypto. ML-DSA post-quantum digital signature (FIPS 204, CNSA 2.0). >
 < Native impl crosses the VM/OS bridge to /crypto; see crypto/PQ-INTEGRATION.md. >

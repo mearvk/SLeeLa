@@ -18,7 +18,8 @@
    so the table can be large (realistic address spaces).
    
    Family: cpu. Composes SLRAM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMMU {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

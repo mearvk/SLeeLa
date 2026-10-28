@@ -7,7 +7,8 @@
    SLeeLa Java conformance boundary.
    
    This file is additive-only generated output. Existing files are preserved. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class ContentHandlerFactory {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

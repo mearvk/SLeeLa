@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Ballum example 02: bounds-check before a pixel write. >
 class BallumSafePixel {
   boolean inBounds(int x, int y, int w, int h) {

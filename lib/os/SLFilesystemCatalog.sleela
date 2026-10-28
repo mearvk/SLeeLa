@@ -15,7 +15,8 @@
    model's SLFilesystemLayout and the installer can pick and format correctly.
    
    Family: os. Pure design/catalogue model; no native bridge calls. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLFilesystemCatalog {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,7 +1,8 @@
 << lib/java/JavaClass.sleela
    SLeeLa Standard Library Definition.
    Definition: Represents a Java class reference within the SLeeLa Java interoperability library. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class JavaClass {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

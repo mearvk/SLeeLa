@@ -14,7 +14,8 @@
    (load / loaded / moduleName / describe).
    
    Family: alphabet. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class Theme {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

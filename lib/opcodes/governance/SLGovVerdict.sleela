@@ -18,7 +18,8 @@
      REJECT  — the opcode/sequence is out of order unto itself; refuse it.
    
    Family: opcodes.governance. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 class SLGovVerdict {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

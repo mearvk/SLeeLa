@@ -20,7 +20,8 @@
    
    Family: cpu. Pure policy; pairs SLProgram (document default) with
      SLMemoryTierRouter (physical modules) and SLVMMethod (per-method tier). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMemoryTierPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

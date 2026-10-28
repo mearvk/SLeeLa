@@ -13,7 +13,8 @@
    settled Vddq, so tightening past what the voltage honors is refused.
    
    Family: cpu. Composes SLTiming and SLVoltageRail; partners SLRAM/SLBusTiming. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLRamTiming {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

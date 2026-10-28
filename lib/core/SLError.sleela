@@ -1,7 +1,8 @@
 << lib/core/SLError.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLError used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Native foundational bridge contract for Error. >
 < Role: language. Responsibility: error identity and reporting. >
 class SLError {

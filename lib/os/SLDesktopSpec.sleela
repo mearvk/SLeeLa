@@ -14,7 +14,8 @@
    userspace services, so it can be swapped (GNOME for KDE/Xfce) or omitted.
    
    Family: os. Pure design model; no native bridge calls. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLDesktopSpec {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

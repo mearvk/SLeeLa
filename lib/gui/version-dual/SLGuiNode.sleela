@@ -16,7 +16,8 @@
      applyEffects() flattens it into the node's style for the reconciler.
    
    Family: gui. The DOM is SLeeLa-owned; the host mirrors it onto widgets. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiNode {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

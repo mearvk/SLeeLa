@@ -10,7 +10,8 @@
      result back. URLs are validated (scheme + non-empty host).
    
    Family: gui. Backs a URL-bar node; the host fetches and feeds back status. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiUrlBar {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

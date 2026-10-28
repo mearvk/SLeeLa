@@ -13,7 +13,8 @@
    builder consumes to populate the rootfs.
    
    Family: os. Pure design model; no native bridge calls. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLPackageSet {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

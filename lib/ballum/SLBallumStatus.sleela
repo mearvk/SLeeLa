@@ -1,7 +1,8 @@
 << lib/ballum/SLBallumStatus.sleela
    SLeeLa Standard Library Definition.
    Definition: Ballum result/status codes, mirroring ballum_status_t. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ballum. The result codes for every Ballum operation, mirroring the >
 < native ballum_status_t enum in ballum/include/sleela_ballum/ballum_manager.h >
 < one-for-one, plus the SLeeLa-side BRIDGE_REQUIRED code used before the VM >

@@ -1,7 +1,8 @@
 << lib/codecs/SLCodecSpeex.sleela
    SLeeLa Standard Library Definition.
    Definition: Speex codec class — the SLeeLa-facing handle to codec id 9. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: codecs. Individual codec class for Speex: >
 < Speex (Xiph), speech. Mirrors codecs/codecs/speex/ and the registry entry in >
 < sleela_codec_manager.h. SLeeLa never calls a codec directly; the >

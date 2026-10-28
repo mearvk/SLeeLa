@@ -1,7 +1,8 @@
 << lib/crypto/SLKeyPair.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLKeyPair used within the crypto library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 < Family: crypto. Asymmetric key pair (ML-KEM / ML-DSA, CNSA 2.0) handle over >
 < /crypto. Native implementation crosses an explicit VM/OS bridge. >

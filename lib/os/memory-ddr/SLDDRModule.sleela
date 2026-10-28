@@ -14,7 +14,8 @@
    machine builder reads; the actual backing store is the VM's SLRAM.
    
    Family: os. Extends SLHardwareComponent. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLDDRModule extends SLHardwareComponent {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

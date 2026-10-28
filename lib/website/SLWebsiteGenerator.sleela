@@ -1,7 +1,8 @@
 << lib/website/SLWebsiteGenerator.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLWebsiteGenerator used within the website library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 < Family: website. The library facade that names the one-call entry point a >
 < front end (CLI or the JavaFX Website Studio) uses to compose a design + an >

@@ -12,7 +12,8 @@
 < boundary and reports it honestly rather than pretending to lock in-language. >
 <  >
 < Comments use the angle-bracket style; #sleela 2.1. >
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: text. Native VM/OS work crosses an explicit bridge. >
 
 class SLStringBuffer {

@@ -1,7 +1,8 @@
 << lib/core/SLDnsResolver.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLDnsResolver used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Native foundational bridge contract for DnsResolver. >
 < Role: service. Responsibility: name resolution. >
 class SLDnsResolver {

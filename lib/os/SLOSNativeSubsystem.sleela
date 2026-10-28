@@ -23,7 +23,8 @@
    contract between the SLeeLa layer and /os is explicit and greppable.
    
    Family: os. Pure reference/manifest; no payload, no native bridge calls. >>
-#sleela 2.2
+#sleela 2.5
+material;
 class SLOSNativeSubsystem {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

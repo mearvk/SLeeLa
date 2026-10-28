@@ -14,7 +14,8 @@
    Beneficence), made evaluable as capacitor charge.
    
    Family: moral-capacitor. Bridges coorenagraph; charges SLMoralCapacitor. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMoralFramework {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

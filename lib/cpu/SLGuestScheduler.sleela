@@ -12,7 +12,8 @@
    clocked by the guest timer rather than the host timer.
    
    Family: cpu. Composes SLGuestTask; clocked by SLGuestTimer via the device bus. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestScheduler {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

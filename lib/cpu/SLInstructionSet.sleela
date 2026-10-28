@@ -16,7 +16,8 @@
    Each mnemonic has a stable numeric opcode; mnemonic<->code lookup is provided.
    
    Family: cpu. Pure Sleela ISA registry. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLInstructionSet {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

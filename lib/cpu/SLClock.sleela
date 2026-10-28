@@ -6,7 +6,8 @@
      cycles it has issued (the basis for performance accounting).
    
    Family: cpu. Pure Sleela timing source. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLClock {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

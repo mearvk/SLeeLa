@@ -6,7 +6,8 @@
      registers, and SRAM cells are built up from latches.
    
    Family: cpu. Pure Sleela state. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLLatch {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

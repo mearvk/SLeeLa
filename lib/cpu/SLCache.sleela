@@ -10,7 +10,8 @@
    the exact line contents live in the backing SLRAM below the bridge.
    
    Family: cpu. Composes SLRAM as its backing store. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCache {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

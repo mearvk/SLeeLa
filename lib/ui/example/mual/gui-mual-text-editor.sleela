@@ -28,7 +28,8 @@
    
    With no display (headless/CI) it reports that and exits 0 without a window.
 >>
-#sleela 2.1
+#sleela 2.5
+material;
 // MUAL (1.0) is the stable baseline: the original 25-class surface. SLeeLa owns
 // business logic and the meaning of events; here that model is projected onto
 // the native toolkit AND its events are handled, so the baseline window is both

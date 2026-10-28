@@ -1,7 +1,8 @@
 << lib/core/SLSerializer.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLSerializer used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Native foundational bridge contract for Serializer. >
 < Role: runtime. Responsibility: structured data encoding. >
 class SLSerializer {

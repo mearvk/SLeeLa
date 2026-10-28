@@ -1,6 +1,7 @@
 << Unified route metadata for Server Edition, HTTP 1.0–9.0, and standalone servers.
    Capability is explicit; VM generation is metadata and does not grant authority. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLRouteData {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

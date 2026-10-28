@@ -7,7 +7,8 @@
      existing services: Nordshrift (.sst -> .sleela) + the SLeeLa compiler for
      compilation, and lib/sldocument for load/save. SLeeLa owns the IDE's
      meaning; the Java/native host owns presentation and desktop lifecycle. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ide-workbench. The IDE shell that wires every existing contract. >
 class SLIdeWorkbench {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

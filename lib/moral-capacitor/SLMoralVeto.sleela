@@ -14,7 +14,8 @@
    line forbids discharge.
    
    Family: moral-capacitor. Consulted by SLMoralCapacitor. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMoralVeto {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

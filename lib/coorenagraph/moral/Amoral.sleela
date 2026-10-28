@@ -3,6 +3,8 @@
    Part of speech: adjective
    Definition: Lacking moral sensibility or treating right and wrong as irrelevant. >>
 
+#sleela 2.5
+material;
 class Amoral {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -24,7 +24,8 @@
 < (returns ""/-1/empty array) matching the text library convention. >
 <  >
 < Comments use the angle-bracket style (< line, << block >>). #sleela 2.1. >
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: text. Pure in-language char-cell toolkit; no VM/OS bridge. >
 
 class SLStringCells {

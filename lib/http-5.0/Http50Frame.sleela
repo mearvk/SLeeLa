@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < HTTP 5.0 application frame model. Not an IETF HTTP/3 frame. >
 class Http50Frame {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

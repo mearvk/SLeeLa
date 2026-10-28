@@ -22,7 +22,8 @@
      A synthesized or derived name is always a legal SLeeLa identifier.
    
    Family: sldocument. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 class SLDocumentNaming {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

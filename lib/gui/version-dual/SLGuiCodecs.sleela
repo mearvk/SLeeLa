@@ -17,7 +17,8 @@
    
    Family: gui. The SLeeLa-source mirror of /codecs; consulted by SLGuiVideoCanvas,
      SLGuiAudioRecorder, and SLGuiHtmlRenderer media elements. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiCodecs {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -15,7 +15,8 @@
    observable semantics here are the same.
    
    Family: cpu. Composes decoder, register file, ALU, PC, status, RAM, and stack. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLControlUnit {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -21,7 +21,8 @@
    math the native viewport uses to size/position its thumb) so it is
    deterministic and headless; the native ScrolledView's live overflow handling
    is exercised by the toolkit's own smoke test. >>
-#sleela 2.1
+#sleela 2.5
+material;
 import gui.version-thual;
 class GuiOverflowScrollDemo {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

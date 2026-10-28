@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Limits mirror the native h21_server and H21 envelope constants. >
 class Http21Limits {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

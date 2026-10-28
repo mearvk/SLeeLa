@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < linux-creator.sleela -- a self-contained, COMPILABLE OS Creator example for a >
 < Linux-shaped OS. It mirrors the lib/os design classes (SLOSModel + its layers, >
 < SLOSCreator) in one compilation unit, because `sleela run` compiles one file >

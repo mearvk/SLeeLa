@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < SLSommelierOffer.sleela
   Open, respectful offer model for sommelier create-use. An offer is a proposal,
   not a claim that a service has been booked or a person has consented. >

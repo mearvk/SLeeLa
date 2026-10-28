@@ -19,7 +19,8 @@
    
    With no display (headless/CI) it reports that and exits 0 without a window.
 >>
-#sleela 2.1
+#sleela 2.5
+material;
 // DUAL (4.0): rich professional components that are codec-aware -- the UI never
 // offers media it cannot play. Here the codec gate decides which transport
 // controls are shown as live widgets.

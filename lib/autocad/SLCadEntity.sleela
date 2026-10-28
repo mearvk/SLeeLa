@@ -13,7 +13,8 @@
    
    Family: autocad. SLeeLa owns the geometry and every edit to it; a front end
    only issues create/alter/move/delete intents. >>
-#sleela 2.1
+#sleela 2.5
+material;
 import math;
 class SLCadEntity {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

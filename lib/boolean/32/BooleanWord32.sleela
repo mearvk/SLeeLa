@@ -1,7 +1,8 @@
 << lib/boolean/32/BooleanWord32.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines BooleanWord32, the generative factory for all 4294967296 depth-32 Boolean/Binary words. Full materialization of every combination as a file is impractical at this depth; this factory models any such word by its HEAD (result) and CARRY (caveat) composition, which is validated and read on demand. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa boolean/32 generative word factory. >
 < All 4294967296 combinations of BOOLEAN.TRUE / BOOLEAN.FALSE at depth 32 >
 < are modeled by this type rather than materialized as 4294967296 separate files. >

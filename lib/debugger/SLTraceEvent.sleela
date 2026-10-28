@@ -1,7 +1,8 @@
 << lib/debugger/SLTraceEvent.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLTraceEvent used within the debugger library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 < Family: debugger. Native implementation crosses an explicit VM/OS bridge. >
 class SLTraceEvent {

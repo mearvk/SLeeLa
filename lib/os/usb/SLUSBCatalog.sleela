@@ -8,7 +8,8 @@
      (keyboard/mouse HID, mass-storage key, hub) to attach to it.
    
    Family: os. Produces SLUSBDevice. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLUSBCatalog {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

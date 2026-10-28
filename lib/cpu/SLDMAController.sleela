@@ -13,7 +13,8 @@
    CPU. Transfers are bounded by the backing SLRAM and accounted for.
    
    Family: cpu. Composes SLRAM. Enabled via the DMA option on SLCPURuntime / SLVM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLDMAController {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

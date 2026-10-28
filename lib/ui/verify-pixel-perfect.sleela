@@ -2,7 +2,8 @@
    Rigorous self-check that the Standard Layout family places every component
    pixel-perfect: exact x/y/width/height, no gaps or overlaps, children tiling
    the container's inner area exactly. Prints PASS/FAIL per assertion. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class VerifyPixelPerfect {
   String metaVersion = "1.0.0";
   int metaId = 0;

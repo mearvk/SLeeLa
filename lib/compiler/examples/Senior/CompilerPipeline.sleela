@@ -1,5 +1,6 @@
 < Senior lesson: phase orchestration with fail-closed boundaries. >
-#sleela 2.1
+#sleela 2.5
+material;
 
 class CompilerPipeline {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

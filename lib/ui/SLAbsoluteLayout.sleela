@@ -11,7 +11,8 @@
      a.add(10, 44, 120, 24);     < a field >
      a.arrange(0, 0, 400, 300);  < container origin offsets all children >
      SLLayoutBox b = a.boxOf(0); >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. A standard, professional, beginner-friendly absolute layout. >
 class SLAbsoluteLayout {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

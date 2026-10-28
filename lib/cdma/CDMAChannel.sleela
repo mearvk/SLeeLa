@@ -1,5 +1,6 @@
 < Forward/reverse channel metadata, independent of radio hardware. >
-#sleela 2.1
+#sleela 2.5
+material;
 class CDMAChannel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

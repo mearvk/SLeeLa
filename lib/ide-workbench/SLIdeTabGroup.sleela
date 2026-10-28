@@ -7,7 +7,8 @@
      one, while exposing only the active + most-recently-focused editors
      (<= SLGUI_MAX_DOCUMENTS) to be registered with the OS watch. The 1..14
      bound stays an OS-watch contract; the open-file count is independent of it. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ide-workbench. Owns open editors; feeds a bounded watch set to lib/gui. >
 class SLIdeTabGroup {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

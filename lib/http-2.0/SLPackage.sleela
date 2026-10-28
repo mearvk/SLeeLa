@@ -1,6 +1,7 @@
 << lib/http-2.0/SLPackage.sleela
    SLeeLa Standard Library Definition for the HTTP 2.0 / 2.1 application protocol. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < H21 is an application protocol. Native h21_server currently uses HTTP/1.x; >
 < it does not provide IETF HTTP/2 transport, TLS, authentication, or packet integrity. >
 class SLPackage {

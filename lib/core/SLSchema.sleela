@@ -1,7 +1,8 @@
 << lib/core/SLSchema.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLSchema used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Native foundational bridge contract for Schema. >
 < Role: language. Responsibility: data/type schema. >
 class SLSchema {

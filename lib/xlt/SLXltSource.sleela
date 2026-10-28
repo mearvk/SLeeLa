@@ -48,7 +48,8 @@
    
    Family: xlt. Source-time contract; resolved by SLXltCompiler into a real
      SLExecutorBuild. Mirrors lib/sst/SSTSource. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLXltSource {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

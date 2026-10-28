@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Ballum example 01: inspect the host display without writing pixels. >
 class BallumScreenInspection {
   void main() {

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < codec-pipeline.sleela -- the self-contained, runnable build of the SLeeLa >
 < audio codec Controller/Verifier/Processor pipeline. The compiler's `run` >
 < compiles one file as a single unit, so this aggregate inlines the >

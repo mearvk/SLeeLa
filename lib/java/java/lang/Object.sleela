@@ -3,7 +3,8 @@
    
    The declarations below mirror the public/protected Object API in the JDK 28
    source. Runtime behavior remains owned by the SLeeLa/JVM conformance boundary. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class Object {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -10,7 +10,8 @@
    so a Player knows where they sit in the room.
    
    Family: gameplay. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class ManagementCourtroom {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

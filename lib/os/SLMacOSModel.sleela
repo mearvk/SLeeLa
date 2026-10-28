@@ -11,7 +11,8 @@
    default to arm64 (Apple silicon) with x86_64 available as an added target.
    
    Family: os. Extends SLOSModel. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMacOSModel extends SLOSModel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

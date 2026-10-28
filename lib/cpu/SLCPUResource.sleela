@@ -11,7 +11,8 @@
    bounded, explicit slice of the machine, and the CPU accounts usage against it.
    
    Family: cpu. Composed by SLWorkload; enforced by SLCPURuntime. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCPUResource {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

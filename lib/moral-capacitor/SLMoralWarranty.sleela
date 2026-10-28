@@ -14,7 +14,8 @@
    warranting an outcome the gate cannot guarantee.
    
    Family: moral-capacitor. Carried by SLMoralCertificate. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMoralWarranty {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

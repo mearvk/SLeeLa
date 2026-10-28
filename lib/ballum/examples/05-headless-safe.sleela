@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Ballum example 05: confirm unavailable hardware is reported honestly. >
 class BallumHeadlessSafe {
   void main() {

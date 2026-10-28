@@ -1,6 +1,7 @@
 << SLeeLa HTTP generation negotiation policy for the HTTP/1.0 module.
    Negotiation is explicit; SLeeLa-specific generations are not Internet HTTP versions. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class Http10Negotiation {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

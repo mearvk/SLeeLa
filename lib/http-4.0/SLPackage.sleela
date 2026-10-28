@@ -1,6 +1,7 @@
 << lib/http-4.0/SLPackage.sleela
    SLeeLa Standard Library Definition for HTTP 4.0 application models. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < This package facade advertises model capabilities only; native implementation >
 < and transport interoperability must be independently verified. >
 class SLPackage {

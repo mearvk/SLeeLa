@@ -1,6 +1,7 @@
 << SLeeLa HTTP/1.0 request model.
    Protocol model only; native socket and wire parsing stay in /http-1.0. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class Http10Request {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

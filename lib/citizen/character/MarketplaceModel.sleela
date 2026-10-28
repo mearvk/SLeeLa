@@ -6,7 +6,8 @@
    
    A concrete BusinessModel: revenue = GMV x take-rate; cost scales with the
    number of transactions it has to shepherd. Family: character. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class MarketplaceModel extends BusinessModel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
