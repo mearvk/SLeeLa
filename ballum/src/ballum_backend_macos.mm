@@ -67,22 +67,14 @@ static ballum_status_t macos_set_pixel(void *ctx, uint32_t id,
 
 static ballum_status_t macos_get_pixel(void *ctx, uint32_t id,
                                        ballum_point_t at, ballum_color_t *out) {
-    (void)ctx;
+    (void)ctx; (void)id; (void)at;
     if (!out) return BALLUM_STATUS_INVALID_ARGUMENT;
-    CGDirectDisplayID disp = (CGDirectDisplayID)id;
-    CGImageRef img = CGDisplayCreateImageForRect(disp, CGRectMake(at.x, at.y, 1, 1));
-    if (!img) return BALLUM_STATUS_BACKEND_ERROR;
-    CGDataProviderRef prov = CGImageGetDataProvider(img);
-    CFDataRef data = CGDataProviderCopyData(prov);
-    ballum_status_t st = BALLUM_STATUS_BACKEND_ERROR;
-    if (data && CFDataGetLength(data) >= 4) {
-        const UInt8 *p = CFDataGetBytePtr(data);
-        out->r = p[2]; out->g = p[1]; out->b = p[0]; out->a = 255; /* BGRA */
-        st = BALLUM_STATUS_OK;
-    }
-    if (data) CFRelease(data);
-    CGImageRelease(img);
-    return st;
+    /* macOS 15 marks CGDisplayCreateImageForRect unavailable. ScreenCaptureKit
+       is the supported replacement, but it requires an asynchronous capture
+       session and user-granted screen-recording permission. Do not call the
+       removed API or claim synchronous readback; drawing/blitting remain
+       available through the Core Graphics backend. */
+    return BALLUM_STATUS_UNSUPPORTED;
 }
 
 static ballum_status_t macos_blit(void *ctx, uint32_t id, ballum_rect_t rect,
