@@ -154,4 +154,6 @@ This keeps the Java facility lightweight while allowing SLeeLa to use the Java e
 
 The probe and bridge tests are intentionally self-contained. They verify detection and JVM handoff planning without requiring a Java installation on the test host.
 
-The integration is now wired into the SLeeLa command-line loader/launcher for Java source files that require AWT, Swing, or JavaFX. Those framework inputs are dispatched through the Java runtime bridge; native SLeeLa and ordinary Java-family inputs retain their existing execution paths. The provider invokes Java source-file mode through the existing OS-aware native launcher.
+The command-line `run <file.java> [arguments...]` path now dispatches Java source files to the discovered external JVM, including ordinary Java SE sources as well as AWT, Swing, and JavaFX sources. JavaFX module options can be supplied with `SLEELA_JAVAFX_MODULE_PATH` and `SLEELA_JAVAFX_MODULES`. The Java delegation can be disabled with `SLEELA_JAVA_MODE=disabled` or `SLEELA_JAVA_ENABLED=0`. Native SLeeLa source continues on its own execution path.
+
+This is external-process hosting, not an embedded JVM. JavaFX module presence is not yet independently verified before launch; when no module path is configured the launcher warns that JavaFX must already be available to the selected Java runtime. Linux graphical launches also warn when neither `DISPLAY` nor `WAYLAND_DISPLAY` is set. The bridge uses the existing OS-aware native launcher, and Java source-file arguments are forwarded after the source path.
