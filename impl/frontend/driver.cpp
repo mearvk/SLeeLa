@@ -55,6 +55,7 @@ extern "C" {
 #elif defined(__APPLE__)
 #  include <mach-o/dyld.h>
 #  include <climits>
+#  include <unistd.h>
 #else
 #  include <unistd.h>
 #  include <climits>
@@ -1250,7 +1251,7 @@ static int runJavaFrameworkSource(const std::string&path,const std::vector<std::
     /* A .java source file is Java even when it uses no GUI framework.
        Execute it with the discovered JVM instead of treating it as a SLeeLa
        source-ingestion unit. */
-    if(!plan.ready || !probe.java_executable || !probe.java_executable[0]){
+    if(!plan.ready || !probe.java_executable[0]){
         std::cerr<<"sleelvac: Java provider did not produce a runnable JVM handoff for '"<<path<<"'\n";
         return 1;
     }
