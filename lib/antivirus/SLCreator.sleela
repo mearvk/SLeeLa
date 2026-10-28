@@ -5,7 +5,7 @@
    not stand without an attested Creator -- Source precedes the claim. The
    Creator attests identity and origin; it authorizes nothing by itself (that is
    SLControl's role) and it scans nothing (that is the engine's role). >>
-#sleela 2.4
+#sleela 2.5
 material;
 class SLCreator {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

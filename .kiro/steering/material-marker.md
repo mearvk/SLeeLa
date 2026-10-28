@@ -41,6 +41,35 @@ settled, is edited deliberately, as settled Source.
   `material_too_early.sleela` (rejected at 2.4); `minor_ahead.sleela` is now
   `#sleela 2.6` (one above the ceiling).
 
+## Placement convention (standing rule)
+
+**Any SLeeLa source file at `#sleela 2.5` or newer carries the `material;`
+marker at the top of the document** — on the line immediately **after** the
+`#sleela` pragma (a leading `<< ... >>` header comment, if present, stays above
+the pragma), with a trailing semicolon:
+
+```
+<< path/Name.sleela — header comment >>
+#sleela 2.5
+material;
+class Name { ... }
+```
+
+Because the marker *requires* 2.5, adding `material;` to a file means that file
+must already be at `#sleela 2.5+`; do not add the marker to a 2.1–2.4 file
+without first bumping its pragma to 2.5 (a `material;` under `#sleela 2.4` is a
+hard error: "the material document marker requires #sleela 2.5").
+
+## lib/antivirus is fully material (as of this change)
+
+Every `.sleela` source file under `lib/antivirus/` (all 18 — the facade,
+engine/policy/request/result, the ClamAV adapter, quarantine, local/system
+scanners, `SLPackage`, the five OS platform profiles, and the Creator/Control/
+Material trio) is now `#sleela 2.5` and carries `material;` immediately after the
+pragma. The antivirus package is a settled member of the material set
+(concerning state, progress, and the securing of change); keep new antivirus
+source files at 2.5 with the marker.
+
 ## Library use (Creator / Control / Material)
 
 `lib/antivirus/` carries the user/developer-facing companion trio, all

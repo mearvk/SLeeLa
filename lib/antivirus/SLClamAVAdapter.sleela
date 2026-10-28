@@ -1,6 +1,7 @@
 << lib/antivirus/SLClamAVAdapter.sleela
    ClamAV integration contract. Native process/socket bridge is required. >>
-#sleela 2.4
+#sleela 2.5
+material;
 class SLClamAVAdapter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

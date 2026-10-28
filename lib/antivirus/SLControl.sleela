@@ -7,7 +7,7 @@
    change only -- it neither originates the subject (SLCreator) nor scans files
    (the engine). Fail-closed: without explicit authorization a change is
    refused. >>
-#sleela 2.4
+#sleela 2.5
 material;
 class SLControl {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

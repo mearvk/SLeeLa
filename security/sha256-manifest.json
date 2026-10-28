@@ -955,75 +955,75 @@
     },
     {
       "path": "lib/antivirus/Antivirus.sleela",
-      "sha256": "a700dc2ac832b96450facb15cc0852f601f76bcda479481fc0e26883015fef65"
+      "sha256": "a9be4c029d24fdf3a4bc9ce9c44a0c80b9c9cf422b9f980abf2706797582de9b"
     },
     {
       "path": "lib/antivirus/SLClamAVAdapter.sleela",
-      "sha256": "e1454954392acaa9190d7566d15b6ff29adfb1028d38079ca59e0a11e441435f"
+      "sha256": "d61bdcd8f77c036de61e8d9147d06ccc867249f5e8abba50ed1c3649e300c3dd"
     },
     {
       "path": "lib/antivirus/SLControl.sleela",
-      "sha256": "24b6155f49e0decc3c704616df647081acd0d297953071ed63cdd54df4002867"
+      "sha256": "72f84eaab55299b9f148f13ef9b7a304d9f75e92bdfd79020f7302a9fbe13fc1"
     },
     {
       "path": "lib/antivirus/SLCreator.sleela",
-      "sha256": "6b8a98cc3de80e3174dbe3c91a21277c01c439ceb5990e0fc637465ac9d1607f"
+      "sha256": "46b1a1a1cc8d5311e45c0541c3ed2764e8f7f849623baa6b08fee0535e780938"
     },
     {
       "path": "lib/antivirus/SLLocalScanner.sleela",
-      "sha256": "aad399632941aa6c53dbca2bf1de21e135723144b87debb36427feccba2ba747"
+      "sha256": "4823276ba2a836fb5b02231bded776bfbc01cd603ca720be35f2b8ad7c833596"
     },
     {
       "path": "lib/antivirus/SLMaterialClaim.sleela",
-      "sha256": "d4a74fd92d4b47e262f5b60bc499844797fc8e44f6cd63f16dac2c0840968dd3"
+      "sha256": "314982c2bc9cc5adb5ed12213de60fa852e667730b119aba2e31a2434c3b3587"
     },
     {
       "path": "lib/antivirus/SLPackage.sleela",
-      "sha256": "8a0f7670ce5482364c493416a47451a6a352f6dbd8fe3154fe29da89cc655407"
+      "sha256": "429ab5529440bebf5ba70b010bcc753892527259212a78f06f4620301f49ba3c"
     },
     {
       "path": "lib/antivirus/SLQuarantineManager.sleela",
-      "sha256": "e0d9cd011bcf368261bb8cc4a243c6806d713c363e0749a9c1dbf89878f10202"
+      "sha256": "6c74ea4fc029a00144b5d41e20146a464f90c98c4b44b7e1dfe5bccd82748ee3"
     },
     {
       "path": "lib/antivirus/SLScanPolicy.sleela",
-      "sha256": "32424bce773e542acf805f53149a6f542d0f6ec6bf5d5a48fde8816f68cc9e57"
+      "sha256": "c2bb03498d89a74a7d3cf3304cdddfbe5da129efcee5d347e7c4a4e9f85b07fe"
     },
     {
       "path": "lib/antivirus/SLScanRequest.sleela",
-      "sha256": "04ee859e9e60b36e64695f320814de2687a231afd2ffffc63276f0a284450e90"
+      "sha256": "641e513d25627fa9e97d8ef72cd7915060b3416e079d45a5f8bbdc545eb9cd90"
     },
     {
       "path": "lib/antivirus/SLScanResult.sleela",
-      "sha256": "ebc0e782f495e76a1dd5964a3bd4a086a84aa55b796e567bdc7e52fd621b4881"
+      "sha256": "1f979fa2f687311afc2475106ac4c3e9ae944aa1e7041b90b6cbaf6851a7b454"
     },
     {
       "path": "lib/antivirus/SLScannerEngine.sleela",
-      "sha256": "f857d894e302c8d746b6d0cf3850209205c4e681b39dce560799ac712f44f63d"
+      "sha256": "8699ad93eb0135ed4645be6bf66576847f6a44b55f3ac0699d72a0f57f969c5e"
     },
     {
       "path": "lib/antivirus/SLSystemScanner.sleela",
-      "sha256": "29be2e1be6f12693adc06d185efbb05b4d5cf9769822ba3af18ac24467eea7ca"
+      "sha256": "4ee8d4c6220aede4c09870d9e034ab545a93ed463589df2feecd94a479463200"
     },
     {
       "path": "lib/antivirus/platforms/Apple/macOS/SLMacOSAntivirusProfile.sleela",
-      "sha256": "8d7ec89c05a7b2e3a1107e5bdcaeaaa990081c9b1e8231f3af3194c2b319c57d"
+      "sha256": "b60f79b49f70c32879d4272bb424cfda047e6dbea69d9f6f39ad4cb8c843daf5"
     },
     {
       "path": "lib/antivirus/platforms/GNU/Linux/Debian/SLDebianAntivirusProfile.sleela",
-      "sha256": "b5279b9d7583ca108145b994a3162be1a3f030571af4486887eb4ea2b31c44f2"
+      "sha256": "e705e22b89928a3913291b2836c4922de2300d9dfb03f74c91d37c2c27cc9de3"
     },
     {
       "path": "lib/antivirus/platforms/GNU/Linux/Fedora/SLFedoraAntivirusProfile.sleela",
-      "sha256": "9a15b2f47b8a1f0083e24d705b797cee8c1e4df9f2ade50f695414c3d3011d2d"
+      "sha256": "9e54e4f2dab2080eea03b49efb0a46f8ed747d7608c20c7f90aa0bb3dd5d3162"
     },
     {
       "path": "lib/antivirus/platforms/GNU/Linux/Ubuntu/SLUbuntuAntivirusProfile.sleela",
-      "sha256": "5d7acd0782a5bf6899a776865346e659072aacbd62b6a80e3fdfac3205c7c684"
+      "sha256": "72fb7287a65594dea63154484f87ad6916a80896a0f8dced2af3ebcc69797ab3"
     },
     {
       "path": "lib/antivirus/platforms/Microsoft/Windows/SLWindowsAntivirusProfile.sleela",
-      "sha256": "886258280dd7b6cbaf70779477699f9d0f66a677edfef2772c5cf42a8a506e3f"
+      "sha256": "bf06dc1460b68f18b6526a903f0eb77a38286c12e04b310ff7b38ee4e8fc05e3"
     },
     {
       "path": "lib/api/SLPackage.sleela",

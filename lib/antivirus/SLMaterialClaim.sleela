@@ -6,7 +6,7 @@
    claims a source document is material; SLMaterialClaim carries that standing
    for a scanner artifact, definition set, or verdict record at run time.
    Declarative by nature -- it records standing and state, it does not scan. >>
-#sleela 2.4
+#sleela 2.5
 material;
 class SLMaterialClaim {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
