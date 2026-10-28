@@ -15,7 +15,8 @@
    Family: vm. Composes SLVmConfig, SLVmReport, SLVmStatus, SLVmMemory,
      SLVmResult, SLVmTelemetry, SLVmGc, SLVmProfile, SLVmCapability,
      SLVmPlatform, SLVmAudit. Native effects route via SLVMNativeBinding. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVmRuntime {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

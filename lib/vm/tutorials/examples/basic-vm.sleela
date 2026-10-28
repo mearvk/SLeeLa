@@ -1,4 +1,6 @@
 < SLeeLa VM tutorial example: basic complete VM request. >
+#sleela 2.5
+material;
 class BasicVMTutorialExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

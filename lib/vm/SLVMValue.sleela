@@ -11,7 +11,8 @@
    heaps without the SLeeLa surface needing arrays of structs.
    
    Family: vm. Composed by SLVMFrame, SLVMObject, SLVMHeap. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVMValue {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

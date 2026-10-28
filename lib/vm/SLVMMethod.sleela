@@ -15,7 +15,8 @@
    gate resolution by role and realize the per-role backdrop.
    
    Family: vm. Composed by SLVMClass; drives SLVMFrame + SLVMModule. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVMMethod {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < 02-mid: configuring a VM with options and a build plan -- compilable. >
 <  >
 < A mid-level user composes a VM from option objects (memory, CPU, execution) >

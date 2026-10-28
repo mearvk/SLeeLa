@@ -1,4 +1,6 @@
 < SLeeLa VM tutorial example: Startup Module plus Dynamic Memory Guard. >
+#sleela 2.5
+material;
 class StartupAndMemoryGuardTutorialExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

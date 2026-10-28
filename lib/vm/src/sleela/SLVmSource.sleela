@@ -12,7 +12,8 @@
      _plan_modules/_feature_enabled/_option_compatible (ABI: SLJVM=32, SLVM=30/31).
    
    Family: vm. Consulted by SLVmVersion* manifests and SLVmRegistry. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVmSource {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

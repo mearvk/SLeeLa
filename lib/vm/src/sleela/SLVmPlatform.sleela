@@ -11,7 +11,8 @@
    Mirrors: enum VmPlatform, vm_platform_supports/parity/audit/report.
    
    Family: vm. Composes SLVmConfig, SLVmCapability, SLVmResult, SLVmReport. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVmPlatform {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -26,7 +26,8 @@
    Family: vm. Composes SLVmConfig, SLVmRuntime. Premium sibling of SLVmVersion.
 
    [SYNC syntax-2.4 2026-10-25] Authored at the current syntax level. >>
-#sleela 2.4
+#sleela 2.5
+material;
 class SLVmPremiumVersion {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

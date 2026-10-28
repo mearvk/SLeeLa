@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < 03-senior: a VM orchestrated through its managers -- compilable. >
 <  >
 < A senior user wires the subsystem managers a real VM runs on: a memory >

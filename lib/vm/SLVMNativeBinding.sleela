@@ -12,7 +12,8 @@
    named, arity-checked binding that the hypervisor/OS can audit.
    
    Family: vm. Composed by SLVM; mirrors lib/cpu VM-exit routing. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVMNativeBinding {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

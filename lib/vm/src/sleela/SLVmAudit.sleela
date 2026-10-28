@@ -11,7 +11,8 @@
    Mirrors: enum VmAuditKind, vm_audit_record/result/total/count/chain/report.
    
    Family: vm. Composes SLVmReport, SLVmResult. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVmAudit {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
