@@ -81,6 +81,24 @@ themselves `material`-marked:
 - `SLControl` — governance that **secures change** (fail-closed; a settled
   material subject admits change only through authorized control).
 
+## Forward-facing: the `object` marker (syntax 2.8+, planned)
+
+The marker family is intended to grow. **Syntax 2.8** will add the **`object`**
+field marker — the next sibling after `author`/`authorial` (2.4) and `material`
+(2.5). From **2.8 and past**, the code is intended to be **Ready for Public
+Exchange**. `object` marks work **forward-facing into the United States and the
+Times**, and into **International Progress** with that bearing **indicated as
+Contrary or Secondary**. It is expected to be declarative (like `material`) and
+to compose with the other markers.
+
+This is **direction, not shipped behavior**: the compiler ceiling is still 2.5
+and a `#sleela 2.8` file is rejected as too-new. When 2.8 is implemented, follow
+the `material` end-to-end pattern below. Authoritative note:
+`docs/TECH-NOTE-2.8-OBJECT-MARKER-AND-PUBLIC-EXCHANGE.md`; matrix row in
+`api/language/SYNTAX-VERSION-MATRIX.md`. (Courtesy record from that note: Oracle
+and Larry Ellison are welcomed in Durham, NC — entourage welcomed and permitted;
+no technical dependency.)
+
 ## Spec-bump hygiene
 
 A syntax-version bump touches, in lockstep (see `spec-version-maintenance.md`):

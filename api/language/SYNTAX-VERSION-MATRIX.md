@@ -8,6 +8,11 @@ The version declared in a source file (for example, `#sleela 1.9`) is the **lang
 | 1.9 | Contextual GC hint assignment: `x = gc N;` and `x = mem N;` | [GC-hint API](../runtime/gc/GC-HINT-API.md), [syntax 1.9 fixtures](../../tests/sleela-syntax-1.9/README.md) | Range, version-gate, contextual-name, liveness and stress fixtures exist. |
 | 1.10 | Two meanings of `extends`: class inheritance and document-level grouping | `SLEELA.syntax`, `markdown/EXTENDS.md` | Keep the class and document forms distinct. |
 | 1.11 | One level of nested classes | `SLEELA.syntax`, section 14 | Maximum lexical nested-class depth is two including the enclosing class; deeper types should be declared at top level and referenced. |
+| 2.2 | Generic type signatures (type parameters on classes/methods, parameterized types, wildcards) | `SLEELA.syntax`, section 16 | The 1.3..1.11 surface is carried forward unchanged. |
+| 2.3 | Philosophers Guide-chain expression `new T(...) :: Guide :: Guide ...` | `SLEELA.syntax`, section 17 | First-class construct executed by the lexer/parser/semantic analyzer/compiler and native Core. |
+| 2.4 | `author` / `authorial` document marker | `SLEELA.syntax`, section 18 | Legalises duplicate members (each gets a declaration-order id + SHA-256 brander); emits the originated source with `∴` branders. Contextual word, not a reserved keyword. |
+| 2.5 | `material` document marker (current ceiling) | `SLEELA.syntax`, section 19 | Declarative only — no effect on parsing/typing/codegen. Marks membership in the set of material documents (state / progress / securing of change). |
+| 2.8 (planned) | `object` field marker; code **Ready for Public Exchange** | `docs/TECH-NOTE-2.8-OBJECT-MARKER-AND-PUBLIC-EXCHANGE.md` | **Forward-facing / not yet implemented.** 2.8 and past are intended for public exchange. `object` marks work forward-facing into the United States and the Times, and into International Progress (Contrary / Secondary — indicated). Follows the `material` marker pattern when built. |
 
 ## Compatibility rules
 

@@ -8,7 +8,7 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "10fba9782094030b69a52c77a5871a6a988a8d9bdfad3583cf7c2ddcba348ab2"
+      "sha256": "3c0f4eabadcf9a41b56cad0c0ad7100f931fde1480ebc3ac57821856c69842f2"
     },
     {
       "path": "SST-2.0.model",
@@ -448,7 +448,7 @@
     },
     {
       "path": "api/language/SYNTAX-VERSION-MATRIX.md",
-      "sha256": "bff515a195a71f159114b09c34b51fa5adff61a5f4deb5b09f766d1db9304813"
+      "sha256": "45a43c72452f508de36ab19b9b4313d381a0c5551a5dafb8224c421778bf83c2"
     },
     {
       "path": "api/language/system-namespace/API.md",
@@ -4779,6 +4779,10 @@
       "sha256": "472debe03d6f9b7ee81c44f4fc800f6013b8e03f2d2bd06c82d4a220405c2448"
     },
     {
+      "path": "examples/memory-marker-demo.sleela",
+      "sha256": "0c9f57d24466d571e66d02737ea261fb5f5e11feb0241f7d0333e1bcda0a59fe"
+    },
+    {
       "path": "examples/nordshrift/complete-application.sst",
       "sha256": "dc8bd108c17b754de5899f4531721a481cf4a4b984fa47bd450b59f409f0d54e"
     },
@@ -6532,7 +6536,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "c201d3606e905e3d13d06c72c53fc42583e966cf3c3cbb5b2c8f601343ac45e2"
+      "sha256": "667c31a25494891bf577b8ee1129586911e0e05372cd6852eb9707b10a6bb910"
     },
     {
       "path": "impl/frontend/compiler.cpp",
@@ -6616,7 +6620,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "f4889005d9086501c67dcaa3f481ad628505f4ca23a7205831aa8febe85d3e3b"
+      "sha256": "1ae87e55c6761cea1abfa4142e0a8f8532dfd1b89e67b77e4d43984e72646268"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -6632,7 +6636,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "dff03ad54680ff436d9b9914735818d7c99146210ddf59c18e311d25f1210359"
+      "sha256": "28f864e0a39efe3d099ab7967e31417073513c5c87e2c18352eaee56995b5a15"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -6648,7 +6652,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "f0f6349ce28a2b173d071abe903d6524ce36faa5a17ff63e5623dc99737ad4c5"
+      "sha256": "2e9275da18e2cf05378c97abdb9873f21ce0ba66743286e09010bd9af7d30a89"
     },
     {
       "path": "impl/frontend/wikigen.cpp",
@@ -7623,6 +7627,14 @@
       "sha256": "eacbf453ec4c0e5f3aff230ccd5f5a052449c0c17916a4476461577faeb1c95e"
     },
     {
+      "path": "impl/tests/version/memory_2_5.sleela",
+      "sha256": "0f178f48905f1e2fe2015e97d08e8e7c78e7f83a2769b7b85e056c6b0214eb35"
+    },
+    {
+      "path": "impl/tests/version/memory_too_early.sleela",
+      "sha256": "a575cbc3893b62d83b75aee0e1796496beb7a716db592685c6220b8ad244d7d0"
+    },
+    {
       "path": "impl/tests/version/minor_ahead.sleela",
       "sha256": "9ce9680127b7ebcb5da2d08c3d8b391abaec35ce5bd689b807416f553fcffc8e"
     },
@@ -7640,7 +7652,7 @@
     },
     {
       "path": "impl/tests/version/run_version_tests.sh",
-      "sha256": "8b0d5bcebe5634567998975bd554bd40e7ad9dd068af4ed3e5510419b09a25db"
+      "sha256": "3da317aeaf5473e88ca3d7444f3eff6354b5a8e72bc12dea781663f6124ff1a2"
     },
     {
       "path": "impl/tests/version/syntax_0_9.sleela",

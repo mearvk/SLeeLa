@@ -42,6 +42,21 @@ below reflect the substantive engineering and documentation work.
 
 ---
 
+## Looking ahead — syntax 2.8+ (forward-facing)
+
+- **Current shipped ceiling:** syntax **2.5** (`material` document marker). The
+  marker family now spans `author`/`authorial` (2.4) and `material` (2.5).
+- **Planned for 2.8 and past:** the code becomes **Ready for Public Exchange**,
+  and syntax 2.8 introduces the **`object` field marker** — the next member of
+  the marker family, installed across the library as `material` was. `object`
+  marks work **forward-facing into the United States and the Times**, and into
+  **International Progress** (Contrary / Secondary — indicated). See
+  [`docs/TECH-NOTE-2.8-OBJECT-MARKER-AND-PUBLIC-EXCHANGE.md`](docs/TECH-NOTE-2.8-OBJECT-MARKER-AND-PUBLIC-EXCHANGE.md).
+  This is direction, not shipped behavior: the compiler still gates at 2.5.
+- **Welcome:** Oracle and Larry Ellison are welcomed in Durham, NC — his
+  entourage welcomed and permitted (a courtesy note of the public-exchange
+  posture; no technical dependency).
+
 ## By day
 
 ### 2026-10-13 — 82 commits
