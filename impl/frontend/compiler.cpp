@@ -225,7 +225,7 @@ private:
     int runtimeTypeOperand(const std::string& name) const {
         auto st=structLayout_.find(name);
         if(st!=structLayout_.end()) return st->second.typeIndex;
-        if(name=="int" || UnsignedInteger::isValidTypeName(name)) return -(SL_INT+1);
+        if(name=="int" || name=="long" || name=="int64" || name=="int128" || UnsignedInteger::isValidTypeName(name)) return -(SL_INT+1);
         if(name=="double") return -(SL_DOUBLE+1);
         if(name=="bool" || name=="boolean") return -(SL_BOOL+1);
         if(name=="String" || name=="string") return -(SL_STR+1);

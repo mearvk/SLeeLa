@@ -314,7 +314,7 @@ ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Ann
 }
 Field Parser::parseField(bool isStatic,bool isProtected,unsigned modifiers,std::vector<annotation::Annotation> annotations){Field f;f.isStatic=isStatic;f.isProtected=isProtected;f.java.modifiers=modifiers;f.annotations=std::move(annotations);f.type=parseType(&f.typeAnnotations);f.name=expect(Tok::Ident,"field name").text;if(accept(Tok::Assign))f.init=parseExpr();expect(Tok::Semicolon,"';'");return f;}
 // A type is one of the scalar keywords, or an identifier naming a declared struct.
-bool Parser::isTypeStart()const{Tok k=cur().kind;if(k==Tok::KwVoid||k==Tok::KwIntT||k==Tok::KwDoubleT||k==Tok::KwBoolT||k==Tok::KwStringT)return true;return k==Tok::Ident;}
+bool Parser::isTypeStart()const{Tok k=cur().kind;if(k==Tok::KwVoid||k==Tok::KwIntT||k==Tok::KwLongT||k==Tok::KwInt64T||k==Tok::KwInt128T||k==Tok::KwDoubleT||k==Tok::KwBoolT||k==Tok::KwStringT)return true;return k==Tok::Ident;}
 std::string Parser::parseType(std::vector<annotation::Annotation>* typeAnnotations){
     if(typeAnnotations){auto a=parseTypeAnnotations(); typeAnnotations->insert(typeAnnotations->end(),a.begin(),a.end());}
     if(!isTypeStart()) error("expected a type");
@@ -510,7 +510,7 @@ ExprP Parser::parsePrimary(){
     case Tok::LParen:{
         i_++;
         // Java cast disambiguation for a simple/qualified type: (Type) expression.
-        if(check(Tok::Ident)||check(Tok::KwIntT)||check(Tok::KwDoubleT)||check(Tok::KwBoolT)||check(Tok::KwStringT)){
+        if(check(Tok::Ident)||check(Tok::KwIntT)||check(Tok::KwLongT)||check(Tok::KwInt64T)||check(Tok::KwInt128T)||check(Tok::KwDoubleT)||check(Tok::KwBoolT)||check(Tok::KwStringT)){
             size_t save=i_; std::string type;
             try { type=parseType(); if(check(Tok::RParen)){i_++; return std::make_unique<CastExpr>(type,parseUnary());} }
             catch(const std::exception&) {}
@@ -525,7 +525,7 @@ ExprP Parser::parsePrimary(){
         // `new int[n]` and `new String[n]` parse like `new Point()`.
         std::string type;
         if(check(Tok::Ident)) type=mangleTypeName(parseGenericType());
-        else if(check(Tok::KwIntT)||check(Tok::KwDoubleT)||check(Tok::KwBoolT)||check(Tok::KwStringT)||check(Tok::KwVoid)){ type=cur().text; i_++; }
+        else if(check(Tok::KwIntT)||check(Tok::KwLongT)||check(Tok::KwInt64T)||check(Tok::KwInt128T)||check(Tok::KwDoubleT)||check(Tok::KwBoolT)||check(Tok::KwStringT)||check(Tok::KwVoid)){ type=cur().text; i_++; }
         else { error("expected a type after 'new'"); }
         auto n=std::make_unique<NewExpr>(type);
         if(accept(Tok::LBracket)){
