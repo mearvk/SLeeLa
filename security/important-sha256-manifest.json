@@ -2871,6 +2871,14 @@
       "sha256": "0370964879935f7d0901a335536c8c71eab7587496e5e57e66683aa3c106fdfa"
     },
     {
+      "path": "build/native-builder/make-slbuild.sh",
+      "sha256": "eb55b443d7adaf4a48a17b4bd3287c7727ed19739c02bb3383445a3e9e2bf865"
+    },
+    {
+      "path": "build/native-builder/slbuild.c",
+      "sha256": "a3bf180d51bad22aa41da32785847931e9895c572a07230fcea0d43ced0baee2"
+    },
+    {
       "path": "build/skya-linux.sh",
       "sha256": "99c408f73684d35d4eb6fa1edd431b3ba0fd4f456b2a58322ccad540fe485ab7"
     },
@@ -8157,6 +8165,10 @@
     {
       "path": "lib/ballum/SLBallumScreen.sleela",
       "sha256": "6289fe3c0a55c21c1d40e79b3e09290f6c348480aabbe77e1ec45493dc074584"
+    },
+    {
+      "path": "lib/ballum/SLBallumScreenFit.sleela",
+      "sha256": "a82625cf0339e87b746bf5f394a34589afab8ccf2b149ebc6fd68020047d8645"
     },
     {
       "path": "lib/ballum/SLBallumSession.sleela",
