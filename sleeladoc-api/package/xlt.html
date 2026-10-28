@@ -17,6 +17,7 @@
   <a href="../index.html"><strong>Home</strong></a>
   <a href="../packages.html"><strong>All packages</strong></a>
   <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
   <h2>Packages</h2><ul>
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
@@ -131,7 +132,7 @@
 <h1>Package <code>xlt</code></h1>
 <div class="lead">This package contains <strong>6</strong> source unit(s) defining <strong>6</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="compile-xlt-models">compile-xlt-models <span class="muted" style="font-size:13px">(lib/xlt/examples/compile-xlt-models.sleela)</span></h2>
+<h2 class="section" data-u="compile-xlt-models">compile-xlt-models <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xlt/examples/compile-xlt-models.sleela)</span></h2>
 <div data-u="compile-xlt-models compilexltmodelsexample">
 <h3 id="CompileXltModelsExample">CompileXltModelsExample <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -141,7 +142,7 @@
 <tr><td><code>printResult</code></td><td><span class="sig">void printResult(SLXltBuildResult r)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxltbuildresult">SLXltBuildResult <span class="muted" style="font-size:13px">(lib/xlt/SLXltBuildResult.sleela)</span></h2>
+<h2 class="section" data-u="slxltbuildresult">SLXltBuildResult <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xlt/SLXltBuildResult.sleela)</span></h2>
 <div data-u="slxltbuildresult slxltbuildresult">
 <h3 id="SLXltBuildResult">SLXltBuildResult <span class="pill">class</span></h3>
 <p class="desc">Defines SLXltBuildResult — the outcome of compiling an .xlt CPU-model sheet. Per the format&#x27;s contract, compilation yields exactly one of two things: (a) SUCCESS: the model was built, with a list of what was built (the CPU SKU and each part that resolved and was installed), or (b) a CONGRUENCE report: an ordered list of reasons the model could NOT be built — a missing part (a declared ref resolved to nothing) or a part that is &quot;not agreeable to design&quot; (resolves, but does not agree with another declared part, e.g. memory channels exceeding the board). The result is deliberately like a diagnostics bag: structured, ordered, and human-readable, so the author sees precisely why integrity failed, in the document order the parts were declared. Family: xlt. Produced by SLXltCompiler. Mirrors the role of Nordshrift&#x27;s diagnostics + component manifest for the SST path.</p>
@@ -175,7 +176,7 @@
 <tr><td><code>model</code></td><td><span class="sig">String model()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxltcompiler">SLXltCompiler <span class="muted" style="font-size:13px">(lib/xlt/SLXltCompiler.sleela)</span></h2>
+<h2 class="section" data-u="slxltcompiler">SLXltCompiler <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xlt/SLXltCompiler.sleela)</span></h2>
 <div data-u="slxltcompiler slxltcompiler">
 <h3 id="SLXltCompiler">SLXltCompiler <span class="pill">class</span></h3>
 <p class="desc">Defines SLXltCompiler — the compiler for the XLT (.xlt) CPU-model</p>
@@ -202,7 +203,7 @@
 <tr><td><code>busFor</code></td><td><span class="sig">SLSystemBus busFor(String ref)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxltproducerregistry">SLXltProducerRegistry <span class="muted" style="font-size:13px">(lib/xlt/SLXltProducerRegistry.sleela)</span></h2>
+<h2 class="section" data-u="slxltproducerregistry">SLXltProducerRegistry <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xlt/SLXltProducerRegistry.sleela)</span></h2>
 <div data-u="slxltproducerregistry slxltproducerregistry">
 <h3 id="SLXltProducerRegistry">SLXltProducerRegistry <span class="pill">class</span></h3>
 <p class="desc">Defines SLXltProducerRegistry — the explicit registry of part producers the XLT compiler resolves declared refs against. Instead of the compiler hardcoding &quot;is this a known ref&quot; tables inline, each recognizable part ref (CPU SKU, memory preset, board, cadence, storage, bus) is REGISTERED here under its slot, and the compiler asks the registry whether a ref is known and (for memory/board) what channel count it implies for the agreement check. A new part becomes recognizable by registering it, not by editing the compiler — the open/closed seam the SST symbol tables have. A registered entry carries: the slot it belongs to, the ref string, and an integer attribute (memory channel count, or board routed channels; 0/1 otherwise). Registration order does not matter; lookup is by (slot, ref). Family: xlt. Consulted by SLXltCompiler; mirrors the resolution role of lib/sst/SSTSymbolTable for the CPU-model format.</p>
@@ -232,7 +233,7 @@
 <tr><td><code>loadDefaults</code></td><td><span class="sig">void loadDefaults()</span></td><td class="desc">The default roster: every ref the SLComponentCatalog + CPU folders expose, with memory/board channel attributes for the agreement check.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxltrefbank">SLXltRefBank <span class="muted" style="font-size:13px">(lib/xlt/SLXltRefBank.sleela)</span></h2>
+<h2 class="section" data-u="slxltrefbank">SLXltRefBank <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xlt/SLXltRefBank.sleela)</span></h2>
 <div data-u="slxltrefbank slxltrefbank">
 <h3 id="SLXltRefBank">SLXltRefBank <span class="pill">class</span></h3>
 <p class="desc">Defines SLXltRefBank — a small fixed-capacity bank of String values indexed by integer position, used by SLXltProducerRegistry to hold the ref string of each registered producer (SLRAM stores words, not strings, so the registry pages its integer attributes into SLRAM and its ref strings into this bank at the same index). The surface language has no arrays, so the bank is a bounded set of explicit slots selected by index, the same idiom SLVMClass uses for its f0..f7 / m0..m7 members. Family: xlt. Internal helper for SLXltProducerRegistry.</p>
@@ -248,7 +249,7 @@
 <tr><td><code>get</code></td><td><span class="sig">String get(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxltsource">SLXltSource <span class="muted" style="font-size:13px">(lib/xlt/SLXltSource.sleela)</span></h2>
+<h2 class="section" data-u="slxltsource">SLXltSource <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xlt/SLXltSource.sleela)</span></h2>
 <div data-u="slxltsource slxltsource">
 <h3 id="SLXltSource">SLXltSource <span class="pill">class</span></h3>
 <p class="desc">Defines SLXltSource — the canonical source-time representation of</p>
@@ -329,8 +330,8 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:34 UTC.
-SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC.
+<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
 </div>

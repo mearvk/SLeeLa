@@ -17,6 +17,7 @@
   <a href="../index.html"><strong>Home</strong></a>
   <a href="../packages.html"><strong>All packages</strong></a>
   <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
   <h2>Packages</h2><ul>
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
@@ -131,7 +132,7 @@
 <h1>Package <code>character</code></h1>
 <div class="lead">This package contains <strong>34</strong> source unit(s) defining <strong>34</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="advertisingmodel">AdvertisingModel <span class="muted" style="font-size:13px">(lib/character/AdvertisingModel.sleela)</span></h2>
+<h2 class="section" data-u="advertisingmodel">AdvertisingModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/AdvertisingModel.sleela)</span></h2>
 <div data-u="advertisingmodel advertisingmodel">
 <h3 id="AdvertisingModel">AdvertisingModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">AdvertisingModel — the audience is not the customer; the audience is the product. Revenue is impressions priced per thousand (CPM), and the only cost that matters is keeping the audience entertained enough to stay. A concrete BusinessModel: revenue = (impressions / 1000) x CPM. Family: character.</p>
@@ -149,7 +150,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="brokeragemodel">BrokerageModel <span class="muted" style="font-size:13px">(lib/character/BrokerageModel.sleela)</span></h2>
+<h2 class="section" data-u="brokeragemodel">BrokerageModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/BrokerageModel.sleela)</span></h2>
 <div data-u="brokeragemodel brokeragemodel">
 <h3 id="BrokerageModel">BrokerageModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">BrokerageModel — stand between two parties who want to trade and charge a fee per trade for the privilege of your standing there. Revenue is trades x fee; cost is the clearing/compliance machinery that keeps the regulators calm. A concrete BusinessModel. Family: character.</p>
@@ -168,7 +169,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="businessmodel">BusinessModel <span class="muted" style="font-size:13px">(lib/character/BusinessModel.sleela)</span></h2>
+<h2 class="section" data-u="businessmodel">BusinessModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/BusinessModel.sleela)</span></h2>
 <div data-u="businessmodel businessmodel">
 <h3 id="BusinessModel">BusinessModel <span class="pill">class</span></h3>
 <p class="desc">Defines BusinessModel, the language-neutral base contract a developer extends to describe how a Character actually makes a living. It is the heart of the character package&#x27;s business-model family: every concrete model (subscription, freemium, marketplace, advertising, retail, wholesale, franchise, licensing, SaaS, consulting, manufacturing, brokerage) subclasses it and overrides the revenue math. A new model is created exactly like a compiler front end in lib/compiler: subclass BusinessModel, call configure() to declare identity, and override monthlyRevenue()/monthlyCost() with the model&#x27;s own economics. The base implementations are deliberate no-ops that report &quot;nothing yet&quot;, so an un-overridden model is honest rather than magical. BusinessModel is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It holds model state only; a Character owns one and asks it, each month, &quot;so — did we make money?&quot;. Family: character. Settlement crosses an explicit bridge to the ledger.</p>
@@ -214,7 +215,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="character">Character <span class="muted" style="font-size:13px">(lib/character/Character.sleela)</span></h2>
+<h2 class="section" data-u="character">Character <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/Character.sleela)</span></h2>
 <div data-u="character character">
 <h3 id="Character">Character <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -269,7 +270,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="characterabilitystats">CharacterAbilityStats <span class="muted" style="font-size:13px">(lib/character/CharacterAbilityStats.sleela)</span></h2>
+<h2 class="section" data-u="characterabilitystats">CharacterAbilityStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterAbilityStats.sleela)</span></h2>
 <div data-u="characterabilitystats characterabilitystats">
 <h3 id="CharacterAbilityStats">CharacterAbilityStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -299,7 +300,7 @@
 <tr><td><code>charismaModifier</code></td><td><span class="sig">int charismaModifier()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="characterbodystats">CharacterBodyStats <span class="muted" style="font-size:13px">(lib/character/CharacterBodyStats.sleela)</span></h2>
+<h2 class="section" data-u="characterbodystats">CharacterBodyStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterBodyStats.sleela)</span></h2>
 <div data-u="characterbodystats characterbodystats">
 <h3 id="CharacterBodyStats">CharacterBodyStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -321,7 +322,7 @@
 <tr><td><code>canFly</code></td><td><span class="sig">int canFly()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="charactercombatstats">CharacterCombatStats <span class="muted" style="font-size:13px">(lib/character/CharacterCombatStats.sleela)</span></h2>
+<h2 class="section" data-u="charactercombatstats">CharacterCombatStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterCombatStats.sleela)</span></h2>
 <div data-u="charactercombatstats charactercombatstats">
 <h3 id="CharacterCombatStats">CharacterCombatStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -355,7 +356,7 @@
 <tr><td><code>canReact</code></td><td><span class="sig">int canReact()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="characterconditionstats">CharacterConditionStats <span class="muted" style="font-size:13px">(lib/character/CharacterConditionStats.sleela)</span></h2>
+<h2 class="section" data-u="characterconditionstats">CharacterConditionStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterConditionStats.sleela)</span></h2>
 <div data-u="characterconditionstats characterconditionstats">
 <h3 id="CharacterConditionStats">CharacterConditionStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -380,7 +381,7 @@
 <tr><td><code>isUnderStress</code></td><td><span class="sig">int isUnderStress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="characterdemo">CharacterDemo <span class="muted" style="font-size:13px">(lib/character/seem/CharacterDemo.sleela)</span></h2>
+<h2 class="section" data-u="characterdemo">CharacterDemo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/seem/CharacterDemo.sleela)</span></h2>
 <div data-u="characterdemo characterdemo">
 <h3 id="CharacterDemo">CharacterDemo <span class="pill">class</span></h3>
 <p class="desc">Casts three Characters, hands each a different BusinessModel, and runs a quarter of business. It shows the whole point of the package: one Character class composing many business-model classes through a single base-typed reference, each answering the same question — did we make money? — with entirely different math. The authoritative definitions (Character, BusinessModel, and the twelve concrete business-model subclasses) live one level up in lib/character/*.sleela. Family: character.</p>
@@ -390,7 +391,7 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="charactereconomystats">CharacterEconomyStats <span class="muted" style="font-size:13px">(lib/character/CharacterEconomyStats.sleela)</span></h2>
+<h2 class="section" data-u="charactereconomystats">CharacterEconomyStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterEconomyStats.sleela)</span></h2>
 <div data-u="charactereconomystats charactereconomystats">
 <h3 id="CharacterEconomyStats">CharacterEconomyStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -413,7 +414,7 @@
 <tr><td><code>hasCurrency</code></td><td><span class="sig">int hasCurrency()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="characterexplorationstats">CharacterExplorationStats <span class="muted" style="font-size:13px">(lib/character/CharacterExplorationStats.sleela)</span></h2>
+<h2 class="section" data-u="characterexplorationstats">CharacterExplorationStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterExplorationStats.sleela)</span></h2>
 <div data-u="characterexplorationstats characterexplorationstats">
 <h3 id="CharacterExplorationStats">CharacterExplorationStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -441,7 +442,7 @@
 <tr><td><code>canDetect</code></td><td><span class="sig">int canDetect(int difficulty)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="characteridentitystats">CharacterIdentityStats <span class="muted" style="font-size:13px">(lib/character/CharacterIdentityStats.sleela)</span></h2>
+<h2 class="section" data-u="characteridentitystats">CharacterIdentityStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterIdentityStats.sleela)</span></h2>
 <div data-u="characteridentitystats characteridentitystats">
 <h3 id="CharacterIdentityStats">CharacterIdentityStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -468,7 +469,7 @@
 <tr><td><code>hasIdentity</code></td><td><span class="sig">int hasIdentity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="characterresistancestats">CharacterResistanceStats <span class="muted" style="font-size:13px">(lib/character/CharacterResistanceStats.sleela)</span></h2>
+<h2 class="section" data-u="characterresistancestats">CharacterResistanceStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterResistanceStats.sleela)</span></h2>
 <div data-u="characterresistancestats characterresistancestats">
 <h3 id="CharacterResistanceStats">CharacterResistanceStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -503,7 +504,7 @@
 <tr><td><code>hasAnyResistance</code></td><td><span class="sig">int hasAnyResistance()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="characterskillstats">CharacterSkillStats <span class="muted" style="font-size:13px">(lib/character/CharacterSkillStats.sleela)</span></h2>
+<h2 class="section" data-u="characterskillstats">CharacterSkillStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterSkillStats.sleela)</span></h2>
 <div data-u="characterskillstats characterskillstats">
 <h3 id="CharacterSkillStats">CharacterSkillStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -537,7 +538,7 @@
 <tr><td><code>hasTradeSkill</code></td><td><span class="sig">int hasTradeSkill()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="charactersocialstats">CharacterSocialStats <span class="muted" style="font-size:13px">(lib/character/CharacterSocialStats.sleela)</span></h2>
+<h2 class="section" data-u="charactersocialstats">CharacterSocialStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterSocialStats.sleela)</span></h2>
 <div data-u="charactersocialstats charactersocialstats">
 <h3 id="CharacterSocialStats">CharacterSocialStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -558,7 +559,7 @@
 <tr><td><code>hasLanguages</code></td><td><span class="sig">int hasLanguages()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="characterstatestats">CharacterStateStats <span class="muted" style="font-size:13px">(lib/character/CharacterStateStats.sleela)</span></h2>
+<h2 class="section" data-u="characterstatestats">CharacterStateStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterStateStats.sleela)</span></h2>
 <div data-u="characterstatestats characterstatestats">
 <h3 id="CharacterStateStats">CharacterStateStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -581,7 +582,7 @@
 <tr><td><code>isConscious</code></td><td><span class="sig">int isConscious()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="characterstats">CharacterStats <span class="muted" style="font-size:13px">(lib/character/seem/CharacterStats.sleela)</span></h2>
+<h2 class="section" data-u="characterstats">CharacterStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/seem/CharacterStats.sleela)</span></h2>
 <div data-u="characterstats characterstats">
 <h3 id="CharacterStats">CharacterStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -776,7 +777,7 @@
 <tr><td><code>normalizePools</code></td><td><span class="sig">void normalizePools()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="charactersurvivalstats">CharacterSurvivalStats <span class="muted" style="font-size:13px">(lib/character/CharacterSurvivalStats.sleela)</span></h2>
+<h2 class="section" data-u="charactersurvivalstats">CharacterSurvivalStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/CharacterSurvivalStats.sleela)</span></h2>
 <div data-u="charactersurvivalstats charactersurvivalstats">
 <h3 id="CharacterSurvivalStats">CharacterSurvivalStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -801,7 +802,7 @@
 <tr><td><code>normalize</code></td><td><span class="sig">void normalize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="consultingmodel">ConsultingModel <span class="muted" style="font-size:13px">(lib/character/ConsultingModel.sleela)</span></h2>
+<h2 class="section" data-u="consultingmodel">ConsultingModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/ConsultingModel.sleela)</span></h2>
 <div data-u="consultingmodel consultingmodel">
 <h3 id="ConsultingModel">ConsultingModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">ConsultingModel — sell time, dressed up as insight. Revenue is billable hours x rate, bounded by the brutal truth that there are only so many hours and consultants insist on sleeping some of them. A concrete BusinessModel: revenue scales with utilization, not headcount alone; cost is the consultants&#x27; salaries whether or not they billed. Family: character.</p>
@@ -821,7 +822,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="franchisemodel">FranchiseModel <span class="muted" style="font-size:13px">(lib/character/FranchiseModel.sleela)</span></h2>
+<h2 class="section" data-u="franchisemodel">FranchiseModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/FranchiseModel.sleela)</span></h2>
 <div data-u="franchisemodel franchisemodel">
 <h3 id="FranchiseModel">FranchiseModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">FranchiseModel — don&#x27;t run the shops; rent out the right to BE the shop. Revenue is an ongoing royalty on each franchisee&#x27;s sales plus a one-time fee amortized across the month, and the brand does the rest. A concrete BusinessModel. Family: character.</p>
@@ -841,7 +842,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="freemiummodel">FreemiumModel <span class="muted" style="font-size:13px">(lib/character/FreemiumModel.sleela)</span></h2>
+<h2 class="section" data-u="freemiummodel">FreemiumModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/FreemiumModel.sleela)</span></h2>
 <div data-u="freemiummodel freemiummodel">
 <h3 id="FreemiumModel">FreemiumModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">FreemiumModel — a large crowd uses the product for free, a small fraction converts to paid, and that fraction quietly funds everyone else. The business of giving most of it away on purpose. A concrete BusinessModel: revenue comes only from the converted fraction; cost scales with the whole free-plus-paid population. Family: character.</p>
@@ -862,7 +863,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="georgelucaslifestats">GeorgeLucasLifeStats <span class="muted" style="font-size:13px">(lib/character/george-lucas/GeorgeLucasLifeStats.sleela)</span></h2>
+<h2 class="section" data-u="georgelucaslifestats">GeorgeLucasLifeStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/george-lucas/GeorgeLucasLifeStats.sleela)</span></h2>
 <div data-u="georgelucaslifestats georgelucaslifestats">
 <h3 id="GeorgeLucasLifeStats">GeorgeLucasLifeStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -899,7 +900,7 @@
 <tr><td><code>report</code></td><td><span class="sig">String report()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="jamescameronadvancedtrace">JamesCameronAdvancedTrace <span class="muted" style="font-size:13px">(lib/character/james-cameron/JamesCameronAdvancedTrace.sleela)</span></h2>
+<h2 class="section" data-u="jamescameronadvancedtrace">JamesCameronAdvancedTrace <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/james-cameron/JamesCameronAdvancedTrace.sleela)</span></h2>
 <div data-u="jamescameronadvancedtrace jamescameronadvancedtrace">
 <h3 id="JamesCameronAdvancedTrace">JamesCameronAdvancedTrace <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -928,7 +929,7 @@
 <tr><td><code>report</code></td><td><span class="sig">String report()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="jamescameronhuman">JamesCameronHuman <span class="muted" style="font-size:13px">(lib/character/james-cameron/JamesCameronHuman.sleela)</span></h2>
+<h2 class="section" data-u="jamescameronhuman">JamesCameronHuman <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/james-cameron/JamesCameronHuman.sleela)</span></h2>
 <div data-u="jamescameronhuman jamescameronhuman">
 <h3 id="JamesCameronHuman">JamesCameronHuman <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -953,7 +954,7 @@
 <tr><td><code>isVerified</code></td><td><span class="sig">boolean isVerified()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="jamescameronhumanevent">JamesCameronHumanEvent <span class="muted" style="font-size:13px">(lib/character/james-cameron/JamesCameronHumanEvent.sleela)</span></h2>
+<h2 class="section" data-u="jamescameronhumanevent">JamesCameronHumanEvent <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/james-cameron/JamesCameronHumanEvent.sleela)</span></h2>
 <div data-u="jamescameronhumanevent jamescameronhumanevent">
 <h3 id="JamesCameronHumanEvent">JamesCameronHumanEvent <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -977,7 +978,7 @@
 <tr><td><code>date</code></td><td><span class="sig">String date()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="jamescameronlifestats">JamesCameronLifeStats <span class="muted" style="font-size:13px">(lib/character/james-cameron/JamesCameronLifeStats.sleela)</span></h2>
+<h2 class="section" data-u="jamescameronlifestats">JamesCameronLifeStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/james-cameron/JamesCameronLifeStats.sleela)</span></h2>
 <div data-u="jamescameronlifestats jamescameronlifestats">
 <h3 id="JamesCameronLifeStats">JamesCameronLifeStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -1016,7 +1017,7 @@
 <tr><td><code>report</code></td><td><span class="sig">String report()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="licensingmodel">LicensingModel <span class="muted" style="font-size:13px">(lib/character/LicensingModel.sleela)</span></h2>
+<h2 class="section" data-u="licensingmodel">LicensingModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/LicensingModel.sleela)</span></h2>
 <div data-u="licensingmodel licensingmodel">
 <h3 id="LicensingModel">LicensingModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">LicensingModel — own the idea, let others do the sweating. The Character licenses intellectual property and collects a royalty per licensed unit sold by someone else, with almost no marginal cost of its own. A concrete BusinessModel: wonderfully cheap to run, entirely dependent on the licensee&#x27;s hustle. Family: character.</p>
@@ -1034,7 +1035,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="manufacturingmodel">ManufacturingModel <span class="muted" style="font-size:13px">(lib/character/ManufacturingModel.sleela)</span></h2>
+<h2 class="section" data-u="manufacturingmodel">ManufacturingModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/ManufacturingModel.sleela)</span></h2>
 <div data-u="manufacturingmodel manufacturingmodel">
 <h3 id="ManufacturingModel">ManufacturingModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">ManufacturingModel — make the physical thing at scale. Revenue is units shipped x wholesale price; cost is variable material/labor per unit plus a large, stubborn fixed cost for the factory that does not care whether the line ran today. A concrete BusinessModel: the fixed cost is the drama; volume is the cure. Family: character.</p>
@@ -1054,7 +1055,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="marketplacemodel">MarketplaceModel <span class="muted" style="font-size:13px">(lib/character/MarketplaceModel.sleela)</span></h2>
+<h2 class="section" data-u="marketplacemodel">MarketplaceModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/MarketplaceModel.sleela)</span></h2>
 <div data-u="marketplacemodel marketplacemodel">
 <h3 id="MarketplaceModel">MarketplaceModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">MarketplaceModel — the Character owns neither the goods nor the buyers; it owns the handshake, and takes a cut of every one. Revenue is a commission on gross merchandise value (GMV). A concrete BusinessModel: revenue = GMV x take-rate; cost scales with the number of transactions it has to shepherd. Family: character.</p>
@@ -1074,7 +1075,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="retailmodel">RetailModel <span class="muted" style="font-size:13px">(lib/character/RetailModel.sleela)</span></h2>
+<h2 class="section" data-u="retailmodel">RetailModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/RetailModel.sleela)</span></h2>
 <div data-u="retailmodel retailmodel">
 <h3 id="RetailModel">RetailModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">RetailModel — buy a thing, mark it up, sell it to a person who wants it today. Revenue is units x retail price; cost is units x what you paid, plus the rent on the shop with the nice window. A concrete BusinessModel. Family: character.</p>
@@ -1094,7 +1095,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="saasmodel">SaaSModel <span class="muted" style="font-size:13px">(lib/character/SaaSModel.sleela)</span></h2>
+<h2 class="section" data-u="saasmodel">SaaSModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/SaaSModel.sleela)</span></h2>
 <div data-u="saasmodel saasmodel">
 <h3 id="SaaSModel">SaaSModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">SaaSModel — software as a service, billed per seat per month, priced across tiers. Like Subscription&#x27;s more ambitious cousin: seats are split across a basic and a premium tier, each at its own price, and the cloud bill scales with the whole seat count. A concrete BusinessModel. Family: character.</p>
@@ -1115,7 +1116,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slpackage">SLPackage <span class="muted" style="font-size:13px">(lib/character/SLPackage.sleela)</span></h2>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slpackage">
 <h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library package for character.</p>
@@ -1131,7 +1132,7 @@
 <tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="subscriptionmodel">SubscriptionModel <span class="muted" style="font-size:13px">(lib/character/SubscriptionModel.sleela)</span></h2>
+<h2 class="section" data-u="subscriptionmodel">SubscriptionModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/SubscriptionModel.sleela)</span></h2>
 <div data-u="subscriptionmodel subscriptionmodel">
 <h3 id="SubscriptionModel">SubscriptionModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">SubscriptionModel — recurring revenue from subscribers who each pay the same price every month and leave at a steady churn rate. The classic &quot;predictable until it isn&#x27;t&quot; business. A concrete BusinessModel: subclass, declare identity in setUp(), and override the revenue/cost hooks. Revenue is subscribers x price, minus the ones who quietly cancelled this month. Family: character.</p>
@@ -1151,7 +1152,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="wholesalemodel">WholesaleModel <span class="muted" style="font-size:13px">(lib/character/WholesaleModel.sleela)</span></h2>
+<h2 class="section" data-u="wholesalemodel">WholesaleModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/character/WholesaleModel.sleela)</span></h2>
 <div data-u="wholesalemodel wholesalemodel">
 <h3 id="WholesaleModel">WholesaleModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">WholesaleModel — sell in bulk to the people who sell to people. Thin margin per case, enormous volume, and a loyalty to the pallet jack that borders on romantic. A concrete BusinessModel: revenue is cases x case-price; the per-case margin is slim by design. Family: character.</p>
@@ -1173,8 +1174,8 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:34 UTC.
-SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC.
+<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
 </div>

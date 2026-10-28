@@ -17,6 +17,7 @@
   <a href="../index.html"><strong>Home</strong></a>
   <a href="../packages.html"><strong>All packages</strong></a>
   <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
   <h2>Packages</h2><ul>
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
@@ -131,7 +132,7 @@
 <h1>Package <code>autocad</code></h1>
 <div class="lead">This package contains <strong>9</strong> source unit(s) defining <strong>9</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="autocad">autocad <span class="muted" style="font-size:13px">(lib/autocad/autocad.sleela)</span></h2>
+<h2 class="section" data-u="autocad">autocad <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/autocad/autocad.sleela)</span></h2>
 <div data-u="autocad autocadrenderer">
 <h3 id="AutoCadRenderer">AutoCadRenderer <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -163,7 +164,7 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slcadcommand">SLCadCommand <span class="muted" style="font-size:13px">(lib/autocad/SLCadCommand.sleela)</span></h2>
+<h2 class="section" data-u="slcadcommand">SLCadCommand <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/autocad/SLCadCommand.sleela)</span></h2>
 <div data-u="slcadcommand slcadcommand">
 <h3 id="SLCadCommand">SLCadCommand <span class="pill">class</span></h3>
 <p class="desc">Defines SLCadCommand -- one recorded, reversible edit the AutoCAD Creator(TM) applied to a document. Every creation (line/text/dim/room) and every alteration (move/reshape/relabel/restyle/delete) is captured as a command so the Creator can keep an audit trail and offer undo: a command remembers its verb, the id of the entity it affected, and the &quot;before&quot; values needed to reverse it (prior endpoints, prior label/layer, prior alive flag). This keeps editing a first-class, inspectable operation rather than an opaque mutation -- which is exactly what makes a creator (as opposed to a one-shot renderer) possible. Family: autocad. SLeeLa owns the edit history; a command is a plain record, replayed/reversed against an SLCadDocument.</p>
@@ -203,7 +204,7 @@
 <tr><td><code>describeAt</code></td><td><span class="sig">String describeAt()</span></td><td class="desc">The same description prefixed with the audit stamp, for a timeline view: &quot;#3 @ 2026-10-13T18:00Z move #7&quot;</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slcadcreator">SLCadCreator <span class="muted" style="font-size:13px">(lib/autocad/SLCadCreator.sleela)</span></h2>
+<h2 class="section" data-u="slcadcreator">SLCadCreator <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/autocad/SLCadCreator.sleela)</span></h2>
 <div data-u="slcadcreator slcadcreator">
 <h3 id="SLCadCreator">SLCadCreator <span class="pill">class</span></h3>
 <p class="desc">Defines SLCadCreator -- the AutoCAD Creator(TM): the SLeeLa facade a front end drives to CREATE and ALTER 2D AutoCAD documents and then SAVE them as DXF. It owns an editable SLCadDocument, a current selection (the id a GUI tool acts on), the active layer, and a bounded command history so every create/alter/delete is recorded and undoable. Creation builders (line/wall/room/dim/note) each record a CREATE command; alteration verbs (move/reshape/relabel/restyle/delete) snapshot the prior state before mutating so undo() can reverse them. save() asks the document for the full DXF text. This is the authoritative editing brain; the SleelaUI GUI (autocad/creator) is only a surface that issues these intents and previews the result -- JavaFX never computed geometry here, and neither does SleelaUI. Family: autocad. SLeeLa owns the document, the edits, and the history; a front end selects, creates, alters, and saves through this object.</p>
@@ -271,7 +272,7 @@
 <tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc">A one-line status summary for a GUI status bar.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slcaddocument">SLCadDocument <span class="muted" style="font-size:13px">(lib/autocad/SLCadDocument.sleela)</span></h2>
+<h2 class="section" data-u="slcaddocument">SLCadDocument <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/autocad/SLCadDocument.sleela)</span></h2>
 <div data-u="slcaddocument slcaddocument">
 <h3 id="SLCadDocument">SLCadDocument <span class="pill">class</span></h3>
 <p class="desc">Defines SLCadDocument -- the editable 2D AutoCAD document the</p>
@@ -337,7 +338,7 @@
 <tr><td><code>toDxf</code></td><td><span class="sig">String toDxf()</span></td><td class="desc">Emit the whole document as AutoCAD DXF (R12 text) with the current extents. This is what the Creator&#x27;s Save produces; a host writes it to a .dxf file (or the runnable `main` prints it, as the renderer does).</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slcaddxf">SLCadDxf <span class="muted" style="font-size:13px">(lib/autocad/SLCadDxf.sleela)</span></h2>
+<h2 class="section" data-u="slcaddxf">SLCadDxf <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/autocad/SLCadDxf.sleela)</span></h2>
 <div data-u="slcaddxf slcaddxf">
 <h3 id="SLCadDxf">SLCadDxf <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library type SLCadDxf used within the autocad library family.</p>
@@ -356,7 +357,7 @@
 <tr><td><code>document</code></td><td><span class="sig">String document(double minX, double minY, double maxX, double maxY,</span></td><td class="desc">Wrap the three accumulated entity strings in a complete DXF document, with the AutoCAD creation/update timestamps embedded in the HEADER. (No method overloading in SLeeLa, so this is the single entry point; pass 0.0/0.0 for the timestamps to emit a HEADER identical to the pre-timestamp output.)</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slcadentity">SLCadEntity <span class="muted" style="font-size:13px">(lib/autocad/SLCadEntity.sleela)</span></h2>
+<h2 class="section" data-u="slcadentity">SLCadEntity <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/autocad/SLCadEntity.sleela)</span></h2>
 <div data-u="slcadentity slcadentity">
 <h3 id="SLCadEntity">SLCadEntity <span class="pill">class</span></h3>
 <p class="desc">Defines SLCadEntity -- a single, individually addressable 2D drawing entity in the editable AutoCAD model. Where SLCadModel accumulates geometry append-only into a DXF string (good for one-shot rendering), an SLCadEntity is a mutable record the AutoCAD Creator(TM) can select, move, re-layer, re-label, and delete after it has been created. Each entity has a stable id, a kind (line / text / dim), a layer, two points (p1,p2 -- the second is unused for a point-anchored TEXT), a text value (for TEXT and the measured label of a DIM) and a text height, plus an &quot;alive&quot; flag so a delete is a soft tombstone that keeps ids stable. This is the atom the editable SLCadDocument stores and the SLCadCanvas paints. Family: autocad. SLeeLa owns the geometry and every edit to it; a front end only issues create/alter/move/delete intents.</p>
@@ -412,7 +413,7 @@
 <tr><td><code>num</code></td><td><span class="sig">String num(double v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slcadmodel">SLCadModel <span class="muted" style="font-size:13px">(lib/autocad/SLCadModel.sleela)</span></h2>
+<h2 class="section" data-u="slcadmodel">SLCadModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/autocad/SLCadModel.sleela)</span></h2>
 <div data-u="slcadmodel slcadmodel">
 <h3 id="SLCadModel">SLCadModel <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library type SLCadModel used within the autocad library family.</p>
@@ -436,7 +437,7 @@
 <tr><td><code>distance</code></td><td><span class="sig">double distance(double x1, double y1, double x2, double y2)</span></td><td class="desc">Straight-line distance -- used to compute dimension labels.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slcadplan">SLCadPlan <span class="muted" style="font-size:13px">(lib/autocad/SLCadPlan.sleela)</span></h2>
+<h2 class="section" data-u="slcadplan">SLCadPlan <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/autocad/SLCadPlan.sleela)</span></h2>
 <div data-u="slcadplan slcadplan">
 <h3 id="SLCadPlan">SLCadPlan <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library type SLCadPlan used within the autocad library family.</p>
@@ -447,7 +448,7 @@
 <tr><td><code>known</code></td><td><span class="sig">boolean known(String op)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slcadrenderer">SLCadRenderer <span class="muted" style="font-size:13px">(lib/autocad/SLCadRenderer.sleela)</span></h2>
+<h2 class="section" data-u="slcadrenderer">SLCadRenderer <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/autocad/SLCadRenderer.sleela)</span></h2>
 <div data-u="slcadrenderer slcadrenderer">
 <h3 id="SLCadRenderer">SLCadRenderer <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library type SLCadRenderer used within the autocad library family.</p>
@@ -467,8 +468,8 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:34 UTC.
-SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC.
+<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
 </div>

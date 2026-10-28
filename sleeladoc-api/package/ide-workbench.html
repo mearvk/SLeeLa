@@ -17,6 +17,7 @@
   <a href="../index.html"><strong>Home</strong></a>
   <a href="../packages.html"><strong>All packages</strong></a>
   <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
   <h2>Packages</h2><ul>
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
@@ -131,7 +132,7 @@
 <h1>Package <code>ide-workbench</code></h1>
 <div class="lead">This package contains <strong>10</strong> source unit(s) defining <strong>10</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="ide-workbench-demo">ide-workbench-demo <span class="muted" style="font-size:13px">(lib/ide-workbench/ide-workbench-demo.sleela)</span></h2>
+<h2 class="section" data-u="ide-workbench-demo">ide-workbench-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/ide-workbench-demo.sleela)</span></h2>
 <div data-u="ide-workbench-demo ideworkbenchdemo">
 <h3 id="IdeWorkbenchDemo">IdeWorkbenchDemo <span class="pill">class</span></h3>
 <p class="desc">Runnable demonstrator for the ide-workbench package — the IDE composition over lib/gui, lib/user-interface/lib/ui, lib/nordshrift, lib/compiler, and lib/sldocument. It walks the core worker journey: open a project, open a .sst sheet, edit it, compile it through &quot;SST Nordshrit&quot; (Nordshrift -&gt; .sleela -&gt; SLeeLa compiler), see diagnostics, and save. Self-contained (inline flow + main), in the style of lib/gui/gui-demo.sleela.</p>
@@ -143,7 +144,7 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="ide-workbench-gui-demo">ide-workbench-gui-demo <span class="muted" style="font-size:13px">(lib/ide-workbench/ide-workbench-gui-demo.sleela)</span></h2>
+<h2 class="section" data-u="ide-workbench-gui-demo">ide-workbench-gui-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/ide-workbench-gui-demo.sleela)</span></h2>
 <div data-u="ide-workbench-gui-demo ideworkbenchguidemo">
 <h3 id="IdeWorkbenchGuiDemo">IdeWorkbenchGuiDemo <span class="pill">class</span></h3>
 <p class="desc">Runnable demonstrator that raises the SLeeLa IDE as a REAL SleelaUI window — the whole GUI authored in SLeeLa. It boots SLIdeWorkbenchUI, populates the project tree, opens a couple of files into SLTextView code editors inside the SLNotebook, publishes a sample diagnostic, and runs the SleelaUI event loop. On a headless host (no X11 display) boot() returns false and the demo exits cleanly, exactly like SLGalleryDemo. Family: ide-workbench. The user interface is SleelaUI; this file proves the IDE shell is usable from the language itself.</p>
@@ -153,7 +154,7 @@
 <tr><td><code>run</code></td><td><span class="sig">int run()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slidecommandregistry">SLIdeCommandRegistry <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeCommandRegistry.sleela)</span></h2>
+<h2 class="section" data-u="slidecommandregistry">SLIdeCommandRegistry <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeCommandRegistry.sleela)</span></h2>
 <div data-u="slidecommandregistry slidecommandregistry">
 <h3 id="SLIdeCommandRegistry">SLIdeCommandRegistry <span class="pill">class</span></h3>
 <p class="desc">Defines SLIdeCommandRegistry — the IDE command system lib/gui lacks. SLGuiAction models a single named, take-the-latch action; an IDE needs a registry of commands (Open, Save, Save All, Compile, Run, Close) each mapped to a stable id, a menu/toolbar label, and a SLeeLa operation name the host invokes. This is the single place that binds UI affordances (menus from lib/ui/SLMenu, toolbars, shortcuts) to the services: compile -&gt; lib/nordshrift + lib/compiler, save/load -&gt; lib/sldocument.</p>
@@ -182,7 +183,7 @@
 <tr><td><code>toAction</code></td><td><span class="sig">SLGuiAction toAction(String id)</span></td><td class="desc">Build a bound lib/gui SLGuiAction for a command so a Path 1/Path 2 host can raise it; returns null for an unknown command.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slidediagnosticspanel">SLIdeDiagnosticsPanel <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeDiagnosticsPanel.sleela)</span></h2>
+<h2 class="section" data-u="slidediagnosticspanel">SLIdeDiagnosticsPanel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeDiagnosticsPanel.sleela)</span></h2>
 <div data-u="slidediagnosticspanel slidediagnosticspanel">
 <h3 id="SLIdeDiagnosticsPanel">SLIdeDiagnosticsPanel <span class="pill">class</span></h3>
 <p class="desc">Defines SLIdeDiagnosticsPanel — the surface that renders compiler diagnostics inside the IDE. The compile pipeline (lib/compiler, lib/nordshrift) produces diagnostics; nothing in lib/gui or the widget packages shows them in an editor. This panel records category, severity, a 1-based (line, column) origin, the owning document id, and a message, honoring the /ide SLEELA.IDE.CONTRACT.md rule that compiler failures stay IDE-visible failures (a failed compile must not read back as success).</p>
@@ -217,7 +218,7 @@
 <tr><td><code>severityAt</code></td><td><span class="sig">int severityAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slideeditor">SLIdeEditor <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeEditor.sleela)</span></h2>
+<h2 class="section" data-u="slideeditor">SLIdeEditor <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeEditor.sleela)</span></h2>
 <div data-u="slideeditor slideeditor">
 <h3 id="SLIdeEditor">SLIdeEditor <span class="pill">class</span></h3>
 <p class="desc">Defines SLIdeEditor — a real code-editor buffer for one open source file. Where lib/ui/SLTextArea is a visibility stub, SLIdeEditor adds the editor state an IDE needs: a text buffer, a dirty (unsaved) flag, a caret offset, a selection span, and a revision marker that mirrors the lib/gui SLGuiDocument revision fingerprint so external changes can be reconciled. Presentation (actual glyphs, syntax colors) is still owned by the Java/native host; SLeeLa owns the buffer and the meaning of edits.</p>
@@ -255,7 +256,7 @@
 <tr><td><code>isSleela</code></td><td><span class="sig">boolean isSleela()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slideprojecttree">SLIdeProjectTree <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeProjectTree.sleela)</span></h2>
+<h2 class="section" data-u="slideprojecttree">SLIdeProjectTree <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeProjectTree.sleela)</span></h2>
 <div data-u="slideprojecttree slideprojecttree">
 <h3 id="SLIdeProjectTree">SLIdeProjectTree <span class="pill">class</span></h3>
 <p class="desc">Defines SLIdeProjectTree — the project / file explorer composition. lib/ui and lib/user-interface provide an SLTreeView widget but nothing binds it to a project model; this class is that binding. It holds the project root, a flat ordered list of entries (path + kind + depth that a tree widget renders), and the currently selected entry. Opening an entry is delegated upward to the workbench, which creates/focuses an SLIdeEditor.</p>
@@ -290,7 +291,7 @@
 <tr><td><code>substr</code></td><td><span class="sig">String substr(String s, int from, int to)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slidetabgroup">SLIdeTabGroup <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeTabGroup.sleela)</span></h2>
+<h2 class="section" data-u="slidetabgroup">SLIdeTabGroup <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeTabGroup.sleela)</span></h2>
 <div data-u="slidetabgroup slidetabgroup">
 <h3 id="SLIdeTabGroup">SLIdeTabGroup <span class="pill">class</span></h3>
 <p class="desc">Defines SLIdeTabGroup — the multi-document (tabbed) model lib/gui lacks. SLGuiWindow is a single-text window and SLGuiDocumentListener is hard-bounded to 1..14 watched documents; a real IDE opens many files. This group owns an unbounded set of SLIdeEditor buffers and tracks the active one, while exposing only the active + most-recently-focused editors (&lt;= SLGUI_MAX_DOCUMENTS) to be registered with the OS watch. The 1..14 bound stays an OS-watch contract; the open-file count is independent of it.</p>
@@ -319,7 +320,7 @@
 <tr><td><code>watchSetWithinGuiBound</code></td><td><span class="sig">boolean watchSetWithinGuiBound()</span></td><td class="desc">True when the OS-watch registration must respect the 1..14 bound.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slideworkbench">SLIdeWorkbench <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeWorkbench.sleela)</span></h2>
+<h2 class="section" data-u="slideworkbench">SLIdeWorkbench <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeWorkbench.sleela)</span></h2>
 <div data-u="slideworkbench slideworkbench">
 <h3 id="SLIdeWorkbench">SLIdeWorkbench <span class="pill">class</span></h3>
 <p class="desc">Defines SLIdeWorkbench — the top-level IDE composition. It owns the lib/gui window + the three-path integration posture, the tab group of open editors, the project tree, the command registry, and the diagnostics panel, and it implements the core edit -&gt; compile -&gt; save loop over the existing services: Nordshrift (.sst -&gt; .sleela) + the SLeeLa compiler for compilation, and lib/sldocument for load/save. SLeeLa owns the IDE&#x27;s meaning; the Java/native host owns presentation and desktop lifecycle.</p>
@@ -354,7 +355,7 @@
 <tr><td><code>hostWindow</code></td><td><span class="sig">SLGuiWindow hostWindow()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slideworkbenchui">SLIdeWorkbenchUI <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeWorkbenchUI.sleela)</span></h2>
+<h2 class="section" data-u="slideworkbenchui">SLIdeWorkbenchUI <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeWorkbenchUI.sleela)</span></h2>
 <div data-u="slideworkbenchui slideworkbenchui">
 <h3 id="SLIdeWorkbenchUI">SLIdeWorkbenchUI <span class="pill">class</span></h3>
 <p class="desc">Defines SLIdeWorkbenchUI — the IDE shell rendered as a REAL SleelaUI graphical interface, built on the /lib/gui support structure. The shell&#x27;s chrome (the window, header bar, and the Open/Compile/Save/Close command buttons) is expressed as an SLGuiApp DOM: each command is a DOM button node with an onClick handler bound through the event bus, so a real click flows widget -&gt; SLGuiHostAdapter -&gt; SLGuiEvent -&gt; handler -&gt; command, instead of ad-hoc .clicked() polling. The rich content controls (the SLTreeView project explorer, the SLNotebook of SLTextView code editors, and the SLLoadingIndicator) are specialised SleelaUI widgets mounted into the DOM&#x27;s body/status container handles. SLGuiApp runs the loop (pump -&gt; poll activations -&gt; dispatch -&gt; reconcile); this class only reads the command handler latches and acts. The IDE is the first full consumer of the event/DOM/support stack. Family: ide-workbench. The GUI is SleelaUI driven through the lib/gui DOM; SLeeLa owns meaning and dispatch.</p>
@@ -416,7 +417,7 @@
 <tr><td><code>shutdown</code></td><td><span class="sig">void shutdown()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slpackage">SLPackage <span class="muted" style="font-size:13px">(lib/ide-workbench/SLPackage.sleela)</span></h2>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slpackage">
 <h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library package for ide-workbench.</p>
@@ -435,8 +436,8 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:34 UTC.
-SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC.
+<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
 </div>

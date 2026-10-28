@@ -17,6 +17,7 @@
   <a href="../index.html"><strong>Home</strong></a>
   <a href="../packages.html"><strong>All packages</strong></a>
   <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
   <h2>Packages</h2><ul>
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
@@ -131,7 +132,7 @@
 <h1>Package <code>gameplay</code></h1>
 <div class="lead">This package contains <strong>14</strong> source unit(s) defining <strong>14</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="askforhelpmove">AskForHelpMove <span class="muted" style="font-size:13px">(lib/gameplay/AskForHelpMove.sleela)</span></h2>
+<h2 class="section" data-u="askforhelpmove">AskForHelpMove <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/AskForHelpMove.sleela)</span></h2>
 <div data-u="askforhelpmove askforhelpmove">
 <h3 id="AskForHelpMove">AskForHelpMove <span class="pill">class</span> <span class="muted">extends <code>GameMove</code></span></h3>
 <p class="desc">Move (b) — ask for help or new routes. A straight 50/50. Win the flip and the Inference Engine lets you LOOK at your Expected Future as it is being modeled, so you can see whether you are on schedule in your own custom game. Lose the flip and your Boss instead hands you a Detailed Report with some Game-Engineering moves already decided — and you pay for that information based on the Quality of your Person/Citizen. A concrete GameMove: override resolve() to flip, then either read the future or buy the report. The future it modeled and the report it bought are stashed on the move so the turn can show them. Family: gameplay.</p>
@@ -150,7 +151,7 @@
 <tr><td><code>report</code></td><td><span class="sig">DetailedReport report()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="detailedreport">DetailedReport <span class="muted" style="font-size:13px">(lib/gameplay/DetailedReport.sleela)</span></h2>
+<h2 class="section" data-u="detailedreport">DetailedReport <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/DetailedReport.sleela)</span></h2>
 <div data-u="detailedreport detailedreport">
 <h3 id="DetailedReport">DetailedReport <span class="pill">class</span></h3>
 <p class="desc">Defines DetailedReport, the document the Boss hands a Player on a LOSING &quot;ask for help&quot; roll — the consolation prize that is often the better prize. Where ExpectedFuture only shows the schedule, a DetailedReport comes with some Game-Engineering moves ALREADY decided, so the player gets a plan instead of a prophecy. The player pays for it based on their own quality. DetailedReport is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It holds an ordered list of pre-decided engineering moves and the price that was charged for it. Family: gameplay.</p>
@@ -182,7 +183,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="diceroll">DiceRoll <span class="muted" style="font-size:13px">(lib/gameplay/DiceRoll.sleela)</span></h2>
+<h2 class="section" data-u="diceroll">DiceRoll <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/DiceRoll.sleela)</span></h2>
 <div data-u="diceroll diceroll">
 <h3 id="DiceRoll">DiceRoll <span class="pill">class</span></h3>
 <p class="desc">Defines DiceRoll, the deterministic percent-roller at the heart of the gameplay package. Every &quot;80% then 20%&quot; and &quot;50/50&quot; in a turn is a DiceRoll. It is a seeded linear-congruential generator, so a given seed always replays the same game — the archive must repeat, even the luck. DiceRoll is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It holds a single 32-bit-ish state word and advances it on every roll. No native randomness is used; &quot;live play&quot; is modeled by advancing the same deterministic stream. Family: gameplay.</p>
@@ -211,7 +212,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="expectedfuture">ExpectedFuture <span class="muted" style="font-size:13px">(lib/gameplay/ExpectedFuture.sleela)</span></h2>
+<h2 class="section" data-u="expectedfuture">ExpectedFuture <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/ExpectedFuture.sleela)</span></h2>
 <div data-u="expectedfuture expectedfuture">
 <h3 id="ExpectedFuture">ExpectedFuture <span class="pill">class</span></h3>
 <p class="desc">Defines ExpectedFuture, the forward-looking projection the Inference Engine shows a Player on a winning &quot;ask for help&quot; roll. It answers the one question move (b) exists to answer: am I on schedule in my own custom game? It holds a projected turn, a target turn, and the gap between. ExpectedFuture is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It is produced by InferenceEngine; a Player reads onSchedule() and the projected end to decide whether to push, coast, or panic (professionally). Family: gameplay.</p>
@@ -240,7 +241,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="gamemove">GameMove <span class="muted" style="font-size:13px">(lib/gameplay/GameMove.sleela)</span></h2>
+<h2 class="section" data-u="gamemove">GameMove <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/GameMove.sleela)</span></h2>
 <div data-u="gamemove gamemove">
 <h3 id="GameMove">GameMove <span class="pill">class</span></h3>
 <p class="desc">Defines GameMove, the base contract for the three moves a Player may make on a turn: (a) create a help index / friend, (b) ask for help or new routes, (c) create a new desire. A developer adds a move by subclassing GameMove and overriding resolve(), which rolls the dice and returns a MoveOutcome. The base owns identity, the shared context, and the module contract — exactly the base/subclass pattern used by lib/compiler. GameMove is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). A move is handed the shared engine and roller through bind(); resolve() does the rest. Family: gameplay.</p>
@@ -271,7 +272,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="gameturn">GameTurn <span class="muted" style="font-size:13px">(lib/gameplay/GameTurn.sleela)</span></h2>
+<h2 class="section" data-u="gameturn">GameTurn <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/GameTurn.sleela)</span></h2>
 <div data-u="gameturn gameturn">
 <h3 id="GameTurn">GameTurn <span class="pill">class</span></h3>
 <p class="desc">Defines GameTurn, the orchestrator that runs one turn of the gameplay package. It holds the shared DiceRoll and InferenceEngine, offers the Player a choice of the three moves — (a) help index / friend, (b) ask for help / new routes, (c) create a new desire — binds the chosen move to the turn context, resolves it, and applies the resulting MoveOutcome to the Player. GameTurn is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). One GameTurn can be reused across many turns; it increments its own turn counter each time play() runs. Family: gameplay.</p>
@@ -299,7 +300,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="helpindexmove">HelpIndexMove <span class="muted" style="font-size:13px">(lib/gameplay/HelpIndexMove.sleela)</span></h2>
+<h2 class="section" data-u="helpindexmove">HelpIndexMove <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/HelpIndexMove.sleela)</span></h2>
 <div data-u="helpindexmove helpindexmove">
 <h3 id="HelpIndexMove">HelpIndexMove <span class="pill">class</span> <span class="muted">extends <code>GameMove</code></span></h3>
 <p class="desc">Move (a) — create a help index or a friend. It generally plays as an 80% roll, then a 20% roll. On the first (80%) roll you build the index and bank solid experience; on the rarer second (20%) roll you also pull the BETTER player&#x27;s index and your boss&#x27;s deeper understanding. Each reward is a subevent resolved on its own percentage, live-play, so no two turns feel identical even on the same seed stream. A concrete GameMove: override resolve() to roll and fill a MoveOutcome. Family: gameplay.</p>
@@ -310,7 +311,7 @@
 <tr><td><code>resolve</code></td><td><span class="sig">MoveOutcome resolve(Player p)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="inferenceengine">InferenceEngine <span class="muted" style="font-size:13px">(lib/gameplay/InferenceEngine.sleela)</span></h2>
+<h2 class="section" data-u="inferenceengine">InferenceEngine <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/InferenceEngine.sleela)</span></h2>
 <div data-u="inferenceengine inferenceengine">
 <h3 id="InferenceEngine">InferenceEngine <span class="pill">class</span></h3>
 <p class="desc">Defines InferenceEngine, the in-game modeler that projects a Player&#x27;s Expected Future and, when the player instead gets the Boss&#x27;s help, assembles a DetailedReport with some Game-Engineering moves already decided. This is the brain behind move (b), &quot;ask for help or new routes&quot;. InferenceEngine is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It is deterministic: given the same player state and turn, it projects the same future and decides the same moves, so a replayed game infers identically. It names, but does not depend on, the lib/inference-model package family. Family: gameplay.</p>
@@ -333,7 +334,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="managementcourtroom">ManagementCourtroom <span class="muted" style="font-size:13px">(lib/gameplay/ManagementCourtroom.sleela)</span></h2>
+<h2 class="section" data-u="managementcourtroom">ManagementCourtroom <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/ManagementCourtroom.sleela)</span></h2>
 <div data-u="managementcourtroom managementcourtroom">
 <h3 id="ManagementCourtroom">ManagementCourtroom <span class="pill">class</span></h3>
 <p class="desc">Defines ManagementCourtroom, the ledger of a Player&#x27;s standing — the file, tact, and rolls they have accumulated by playing well. Move (c), &quot;create a new desire&quot;, is the main way a Player earns a seat here. ManagementCourtroom is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It is pure state: three counters that only ever go up through honest play, and a derived &quot;standing&quot; so a Player knows where they sit in the room. Family: gameplay.</p>
@@ -362,7 +363,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="moveoutcome">MoveOutcome <span class="muted" style="font-size:13px">(lib/gameplay/MoveOutcome.sleela)</span></h2>
+<h2 class="section" data-u="moveoutcome">MoveOutcome <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/MoveOutcome.sleela)</span></h2>
 <div data-u="moveoutcome moveoutcome">
 <h3 id="MoveOutcome">MoveOutcome <span class="pill">class</span></h3>
 <p class="desc">Defines MoveOutcome, the result record every GameMove returns — what happened on this turn, in a form the game loop and the player can both read. It carries a headline, whether the move succeeded, and the concrete gains (experience, cash, file/tact/rolls) the move produced. MoveOutcome is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It is a plain carrier: moves fill it in, the turn applies it to the Player, and describe() narrates it. Family: gameplay.</p>
@@ -401,7 +402,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="newdesiremove">NewDesireMove <span class="muted" style="font-size:13px">(lib/gameplay/NewDesireMove.sleela)</span></h2>
+<h2 class="section" data-u="newdesiremove">NewDesireMove <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/NewDesireMove.sleela)</span></h2>
 <div data-u="newdesiremove newdesiremove">
 <h3 id="NewDesireMove">NewDesireMove <span class="pill">class</span> <span class="muted">extends <code>GameMove</code></span></h3>
 <p class="desc">Move (c) — create a new desire. You review a slate of likeable, medium portfolio decisions across realistic industries. Reviewing them earns you standing in your Management Courtroom — file, tact, or banked rolls — and the decision you back resolves into profit and a futures read. The game&#x27;s one law applies: big bets are always winners, where you find them. So when a BIG one shows up, bet big. A concrete GameMove: override resolve() to offer the slate, grant courtroom standing, and resolve the chosen bet into profit. Family: gameplay.</p>
@@ -421,7 +422,7 @@
 <tr><td><code>futures</code></td><td><span class="sig">int futures()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="player">Player <span class="muted" style="font-size:13px">(lib/gameplay/Player.sleela)</span></h2>
+<h2 class="section" data-u="player">Player <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/Player.sleela)</span></h2>
 <div data-u="player player">
 <h3 id="Player">Player <span class="pill">class</span></h3>
 <p class="desc">Defines Player, the actor who takes a turn in the gameplay package. A Player carries experience, a Person/Citizen quality score (which sets the price they pay for information), cash, and the three things a turn can grant them — file, tact, and rolls — plus a Management Courtroom to keep them in. Player is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). The quality score is the hinge of move (b): a higher-quality Person/Citizen is charged more for the Inference Engine&#x27;s information, because good information finds the people who can use it. Family: gameplay.</p>
@@ -461,7 +462,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="portfoliodecision">PortfolioDecision <span class="muted" style="font-size:13px">(lib/gameplay/PortfolioDecision.sleela)</span></h2>
+<h2 class="section" data-u="portfoliodecision">PortfolioDecision <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/PortfolioDecision.sleela)</span></h2>
 <div data-u="portfoliodecision portfoliodecision">
 <h3 id="PortfolioDecision">PortfolioDecision <span class="pill">class</span></h3>
 <p class="desc">Defines PortfolioDecision, one likeable, medium-sized bet on a realistic industry that a Player reviews during move (c), &quot;create a new desire&quot;. Each decision has an industry, a stake, a win chance, and a multiplier — and a size, because the game&#x27;s one law is: big bets are always winners, where you find them. Bet big. PortfolioDecision is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It models the bet and resolves it against a DiceRoll into a profit, but it does not touch the Player directly; the move that owns it decides what to do with the result. Family: gameplay.</p>
@@ -503,7 +504,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slpackage">SLPackage <span class="muted" style="font-size:13px">(lib/gameplay/SLPackage.sleela)</span></h2>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/gameplay/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slpackage">
 <h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library package for gameplay.</p>
@@ -522,8 +523,8 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:34 UTC.
-SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC.
+<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
 </div>

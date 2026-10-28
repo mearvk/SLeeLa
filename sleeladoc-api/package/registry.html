@@ -17,6 +17,7 @@
   <a href="../index.html"><strong>Home</strong></a>
   <a href="../packages.html"><strong>All packages</strong></a>
   <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
   <h2>Packages</h2><ul>
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
@@ -131,7 +132,7 @@
 <h1>Package <code>registry</code></h1>
 <div class="lead">This package contains <strong>4</strong> source unit(s) defining <strong>4</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="slregistry">SLRegistry <span class="muted" style="font-size:13px">(lib/registry/SLRegistry.sleela)</span></h2>
+<h2 class="section" data-u="slregistry">SLRegistry <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistry.sleela)</span></h2>
 <div data-u="slregistry slregistry">
 <h3 id="SLRegistry">SLRegistry <span class="pill">class</span></h3>
 <p class="desc">Defines SLRegistry — the OOD equivalent of the native Sleela Registry (registry/sleela_registry.*): a Windows-style hierarchical store of keys (an HKEY-like path tree), each holding settings and feature-flag values and, where relevant, a sealed provenance record (file/date/author/ version/hex-id/hash/originality-seal). A fresh SLeeLa install seeds a baseline registry that is reviewable from a terminal (sleela registry) or a Sleela terminal program. Persistence and SHA-256/seal computation cross the native bridge; this class is the Sleela-side model + review. Mirrors: sl_reg_create, seed_defaults, key_create, the set_* family, provenance_set, save, load, and review. The native OP for a registry service is reserved for a future opcode; today the terminal &#x27;sleela registry&#x27; is the review surface. Family: registry. Composes SLRegistryKey, SLRegistryValue, SLRegistryProvenance.</p>
@@ -153,7 +154,7 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slregistrykey">SLRegistryKey <span class="muted" style="font-size:13px">(lib/registry/SLRegistryKey.sleela)</span></h2>
+<h2 class="section" data-u="slregistrykey">SLRegistryKey <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryKey.sleela)</span></h2>
 <div data-u="slregistrykey slregistrykey">
 <h3 id="SLRegistryKey">SLRegistryKey <span class="pill">class</span></h3>
 <p class="desc">Defines SLRegistryKey — the OOD equivalent of a native registry key (a node in the HKEY-style path tree). A key is named by its full path (&quot;A/B/C&quot;), holds a bounded set of SLRegistryValue entries (settings and feature flags), and may carry one SLRegistryProvenance record. The surface has no arrays, so the value set is numbered fields (the SLVM binding-table convention). Mirrors: the native RegKey (path + values + optional provenance). Family: registry. Composes SLRegistryValue, SLRegistryProvenance; held by SLRegistry.</p>
@@ -176,7 +177,7 @@
 <tr><td><code>show</code></td><td><span class="sig">void show()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slregistryprovenance">SLRegistryProvenance <span class="muted" style="font-size:13px">(lib/registry/SLRegistryProvenance.sleela)</span></h2>
+<h2 class="section" data-u="slregistryprovenance">SLRegistryProvenance <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryProvenance.sleela)</span></h2>
 <div data-u="slregistryprovenance slregistryprovenance">
 <h3 id="SLRegistryProvenance">SLRegistryProvenance <span class="pill">class</span></h3>
 <p class="desc">Defines SLRegistryProvenance — the OOD equivalent of a native registry provenance record (registry/sleela_registry.* struct sl_reg_provenance). It makes a registry entry self-describing and verifiable: the tracked file&#x27;s name, date, author, version, a stable hex id, the SHA-256 of its content, and an ORIGINALITY SEAL. The seal is a SHA-256 over (hexId | version | hash | author); if any of those is altered, verify() reports the seal broken. The actual hashing crosses the native bridge (the host computes SHA-256); this class is the record + seal check. Mirrors: sl_reg_provenance + sl_reg_seal/sl_reg_seal_verify. Family: registry. Attached to an SLRegistryKey.</p>
@@ -201,7 +202,7 @@
 <tr><td><code>render</code></td><td><span class="sig">String render()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slregistryvalue">SLRegistryValue <span class="muted" style="font-size:13px">(lib/registry/SLRegistryValue.sleela)</span></h2>
+<h2 class="section" data-u="slregistryvalue">SLRegistryValue <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryValue.sleela)</span></h2>
 <div data-u="slregistryvalue slregistryvalue">
 <h3 id="SLRegistryValue">SLRegistryValue <span class="pill">class</span></h3>
 <p class="desc">Defines SLRegistryValue — the OOD equivalent of a native registry value (registry/sleela_registry.* : a name -&gt; typed scalar). A value holds one setting or feature flag under a key: a string, an int, or a boolean, tagged by kind. It is the leaf the registry stores and the terminal review renders. Pure data + accessors; the native store owns persistence. Mirrors: enum sl_reg_kind (STRING/INT/BOOL) and the value cell. Family: registry. Composed by SLRegistryKey.</p>
@@ -231,8 +232,8 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:34 UTC.
-SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC.
+<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
 </div>

@@ -17,6 +17,7 @@
   <a href="../index.html"><strong>Home</strong></a>
   <a href="../packages.html"><strong>All packages</strong></a>
   <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
   <h2>Packages</h2><ul>
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
@@ -131,7 +132,7 @@
 <h1>Package <code>telephony-skya</code></h1>
 <div class="lead">This package contains <strong>7</strong> source unit(s) defining <strong>19</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="communication">Communication <span class="muted" style="font-size:13px">(lib/telephony-skya/Communication.sleela)</span></h2>
+<h2 class="section" data-u="communication">Communication <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/telephony-skya/Communication.sleela)</span></h2>
 <div data-u="communication communication">
 <h3 id="Communication">Communication <span class="pill">class</span></h3>
 <p class="desc">Defines Communication, the Skya message-exchange Master Class — client-side reach / send / receive with an honest coherence tally. Communication is an emblematic Skya module and a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). Where Servers stands ready and Network describes reach, Communication performs the client-side exchange and keeps a simple, honest tally of what was sent and received so a program can tell whether a conversation actually completed. It uses the same portable VM socket primitives as SkyaClient (connect / sockwrite / sockread / sockclose) across the explicit SLeeLa VM/OS bridge. The runnable orchestration example lives in telephony-skya/sleela/Communication.sleela. Family: telephony-skya. Native VM/OS work crosses an explicit bridge.</p>
@@ -158,7 +159,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="network">Network <span class="muted" style="font-size:13px">(lib/telephony-skya/Network.sleela)</span></h2>
+<h2 class="section" data-u="network">Network <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/telephony-skya/Network.sleela)</span></h2>
 <div data-u="network network">
 <h3 id="Network">Network <span class="pill">class</span></h3>
 <p class="desc">Defines Network, the Skya transport-reachability Master Class — local/public address and a careful, non-destructive NAT posture. Network is an emblematic Skya module and a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It is deliberately descriptive and non-destructive: it never opens a firewall or asserts a public mapping — authoritative NAT/firewall lifecycle stays with the native SLeeLa port-awareness subsystem. The sockets live in Servers and Communication; Network only describes the shape of reach. The runnable orchestration example lives in telephony-skya/sleela/Network.sleela. Family: telephony-skya. Native VM/OS work crosses an explicit bridge.</p>
@@ -192,7 +193,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="realacquaintances">RealAcquaintances <span class="muted" style="font-size:13px">(lib/telephony-skya/RealAcquaintances.sleela)</span></h2>
+<h2 class="section" data-u="realacquaintances">RealAcquaintances <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/telephony-skya/RealAcquaintances.sleela)</span></h2>
 <div data-u="realacquaintances realacquaintances">
 <h3 id="RealAcquaintances">RealAcquaintances <span class="pill">class</span></h3>
 <p class="desc">Defines RealAcquaintances, the Skya trust-roster Master Class — the people a node has actually met and confirmed. RealAcquaintances is an emblematic Skya module and a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It is the counterpart to Socio: Socio models the social fabric in the abstract; RealAcquaintances records concrete, confirmed acquaintances a node will preferentially reach and admit. An acquaintance becomes &quot;real&quot; only after a confirmed two-way exchange, so the roster never contains unverified entries. It holds roster state only; the confirming exchange is performed by the Communication module. The runnable orchestration example lives in telephony-skya/sleela/RealAcquaintances.sleela. Family: telephony-skya. Native VM/OS work crosses an explicit bridge.</p>
@@ -220,7 +221,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="servers">Servers <span class="muted" style="font-size:13px">(lib/telephony-skya/Servers.sleela)</span></h2>
+<h2 class="section" data-u="servers">Servers <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/telephony-skya/Servers.sleela)</span></h2>
 <div data-u="servers servers">
 <h3 id="Servers">Servers <span class="pill">class</span></h3>
 <p class="desc">Defines Servers, the Skya server-side-presence Master Class — the listeners the node holds open and the roles they serve. Servers is an emblematic Skya module and a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It can hold the always-open local comm listener (the local SLeeLa comm server) and answers a basic PING so a peer can confirm the node is alive. Networking uses the same portable VM socket primitives as SkyaServer (listen / accept / sockread / sockwrite) across the explicit SLeeLa VM/OS bridge. The runnable orchestration example lives in telephony-skya/sleela/Servers.sleela. Family: telephony-skya. Native VM/OS work crosses an explicit bridge.</p>
@@ -249,7 +250,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="skyamodules">SkyaModules <span class="muted" style="font-size:13px">(lib/telephony-skya/SkyaModules.sleela)</span></h2>
+<h2 class="section" data-u="skyamodules">SkyaModules <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/telephony-skya/SkyaModules.sleela)</span></h2>
 <div data-u="skyamodules skyamodules">
 <h3 id="SkyaModules">SkyaModules <span class="pill">class</span></h3>
 <p class="desc">Defines SkyaModules, the Skya emblematic-module loader Master Class — loads and composes Socio, Network, Servers, Communication, and RealAcquaintances as naturals. SkyaModules is the small registry that brings the emblematic Skya modules up together and confirms each loaded. Each module is a self-describing, loadable SLeeLa class sharing the common contract (load / loaded / moduleName / describe), so the Skya program can treat them uniformly — load now, or load on demand as naturals. The runnable orchestration example lives in telephony-skya/sleela/SkyaModules.sleela. Family: telephony-skya. Native VM/OS work crosses an explicit bridge.</p>
@@ -270,7 +271,7 @@
 <tr><td><code>allReady</code></td><td><span class="sig">boolean allReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slpackage">SLPackage <span class="muted" style="font-size:13px">(lib/telephony-skya/SLPackage.sleela)</span></h2>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/telephony-skya/SLPackage.sleela)</span></h2>
 <div data-u="slpackage audiodevicemanager">
 <h3 id="AudioDeviceManager">AudioDeviceManager <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library package for telephony-skya.</p>
@@ -442,7 +443,7 @@
 <tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="socio">Socio <span class="muted" style="font-size:13px">(lib/telephony-skya/Socio.sleela)</span></h2>
+<h2 class="section" data-u="socio">Socio <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/telephony-skya/Socio.sleela)</span></h2>
 <div data-u="socio socio">
 <h3 id="Socio">Socio <span class="pill">class</span></h3>
 <p class="desc">Defines Socio, the Skya social-fabric Master Class — the people-and-ties layer above raw peers (members, standing, ties, density). Socio is an emblematic Skya module and a NATURAL / LOADABLE MODULE: a self-describing SLeeLa class the Skya program can load and compose. It shares the common module contract (load / loaded / moduleName / describe) with the other Skya emblematic classes so a loader can treat them uniformly. It holds no socket; it models the social layer the networking classes serve. The runnable orchestration example lives in telephony-skya/sleela/Socio.sleela. Family: telephony-skya. Native VM/OS work crosses an explicit bridge.</p>
@@ -472,8 +473,8 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:34 UTC.
-SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC.
+<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
 </div>

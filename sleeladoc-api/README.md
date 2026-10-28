@@ -17,6 +17,12 @@ unit under [`/lib`](../lib). Open it in any web browser — no server needed.
 
 Hierarchy: **Home → Packages → Package → Class → Members (fields, methods)**.
 
+See **`authorship.html`** for the authorship and attribution claims (MEARVK LLC —
+Max Rupplin; UNCW, NCSU, Harvard; 2026; George Soros 2507-2608) and the
+`#sleela` syntax level the library is written at. Each unit also shows its own
+`#sleela` level as a pill on its package page, and the attribution appears in the
+footer of every page.
+
 ## Style
 
 Clean house style in **blue, light blue, light grey, and white with black text**,

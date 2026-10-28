@@ -17,6 +17,7 @@
   <a href="../index.html"><strong>Home</strong></a>
   <a href="../packages.html"><strong>All packages</strong></a>
   <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
   <h2>Packages</h2><ul>
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
@@ -131,7 +132,7 @@
 <h1>Package <code>xml</code></h1>
 <div class="lead">This package contains <strong>9</strong> source unit(s) defining <strong>9</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="slpackage">SLPackage <span class="muted" style="font-size:13px">(lib/xml/SLPackage.sleela)</span></h2>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xml/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slpackage">
 <h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library package for xml -- the Document Object Model (DOM) family. Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.</p>
@@ -147,7 +148,7 @@
 <tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxmlaspect">SLXmlAspect <span class="muted" style="font-size:13px">(lib/xml/SLXmlAspect.sleela)</span></h2>
+<h2 class="section" data-u="slxmlaspect">SLXmlAspect <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xml/SLXmlAspect.sleela)</span></h2>
 <div data-u="slxmlaspect slxmlaspect">
 <h3 id="SLXmlAspect">SLXmlAspect <span class="pill">class</span></h3>
 <p class="desc">Defines SLXmlAspect -- the conformance-aspect and quality register for the xml DOM family. It catalogues the measurable &quot;aspects&quot; an XML processor can satisfy (well-formedness, validity, namespace-awareness, DOM conformance, round-trip fidelity) and rates the quality with which this library addresses each, so a caller can reason about the library&#x27;s standing.</p>
@@ -171,7 +172,7 @@
 <tr><td><code>overallQualityX10</code></td><td><span class="sig">int overallQualityX10()</span></td><td class="desc">The mean quality across all catalogued aspects, scaled x10 to stay integer (e.g. 68 means an average quality of 6.8 / 10).</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxmlattribute">SLXmlAttribute <span class="muted" style="font-size:13px">(lib/xml/SLXmlAttribute.sleela)</span></h2>
+<h2 class="section" data-u="slxmlattribute">SLXmlAttribute <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xml/SLXmlAttribute.sleela)</span></h2>
 <div data-u="slxmlattribute slxmlattribute">
 <h3 id="SLXmlAttribute">SLXmlAttribute <span class="pill">class</span></h3>
 <p class="desc">Defines SLXmlAttribute -- a single name/value attribute on a DOM element, with namespace-aware prefix/local parts.</p>
@@ -207,7 +208,7 @@
 <tr><td><code>strEq</code></td><td><span class="sig">boolean strEq(String a, String b)</span></td><td class="desc">Null-safe, case-sensitive string equality (two nulls are equal).</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxmldocument">SLXmlDocument <span class="muted" style="font-size:13px">(lib/xml/SLXmlDocument.sleela)</span></h2>
+<h2 class="section" data-u="slxmldocument">SLXmlDocument <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xml/SLXmlDocument.sleela)</span></h2>
 <div data-u="slxmldocument slxmldocument">
 <h3 id="SLXmlDocument">SLXmlDocument <span class="pill">class</span></h3>
 <p class="desc">Defines SLXmlDocument -- the DOM document. It owns the single root element, carries the XML declaration (version/encoding/standalone), acts as the factory for new nodes (createElement/createTextNode/...), and offers the document-level queries getElementById-style lookup and getElementsByTagName.</p>
@@ -251,7 +252,7 @@
 <tr><td><code>sameStructure</code></td><td><span class="sig">boolean sameStructure(SLXmlDocument other)</span></td><td class="desc">Alias reading as &quot;the same structure&quot;.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxmlnode">SLXmlNode <span class="muted" style="font-size:13px">(lib/xml/SLXmlNode.sleela)</span></h2>
+<h2 class="section" data-u="slxmlnode">SLXmlNode <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xml/SLXmlNode.sleela)</span></h2>
 <div data-u="slxmlnode slxmlnode">
 <h3 id="SLXmlNode">SLXmlNode <span class="pill">class</span></h3>
 <p class="desc">Defines SLXmlNode -- the central DOM node. An element node owns an ordered list of child nodes and a list of attributes; text/CDATA/comment/PI nodes carry character data. This is the mutable tree a document, parser, and serializer all operate on.</p>
@@ -320,7 +321,7 @@
 <tr><td><code>strEq</code></td><td><span class="sig">boolean strEq(String a, String b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxmlnodetype">SLXmlNodeType <span class="muted" style="font-size:13px">(lib/xml/SLXmlNodeType.sleela)</span></h2>
+<h2 class="section" data-u="slxmlnodetype">SLXmlNodeType <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xml/SLXmlNodeType.sleela)</span></h2>
 <div data-u="slxmlnodetype slxmlnodetype">
 <h3 id="SLXmlNodeType">SLXmlNodeType <span class="pill">class</span></h3>
 <p class="desc">Defines SLXmlNodeType -- the DOM node-kind registry for the xml family. Mirrors the W3C DOM nodeType constants so a node always reports an honest, catalogued kind.</p>
@@ -343,7 +344,7 @@
 <tr><td><code>isLeaf</code></td><td><span class="sig">boolean isLeaf(int kind)</span></td><td class="desc">A leaf node never owns element children in this DOM.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxmlparser">SLXmlParser <span class="muted" style="font-size:13px">(lib/xml/SLXmlParser.sleela)</span></h2>
+<h2 class="section" data-u="slxmlparser">SLXmlParser <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xml/SLXmlParser.sleela)</span></h2>
 <div data-u="slxmlparser slxmlparser">
 <h3 id="SLXmlParser">SLXmlParser <span class="pill">class</span></h3>
 <p class="desc">Defines SLXmlParser -- a char-cell text-to-DOM reader for the common XML subset (elements, attributes with double-quoted values, text, comments, and self-closing tags), plus an honest structural well-formedness check. It builds an SLXmlDocument from a char-cell view of the source.</p>
@@ -370,7 +371,7 @@
 <tr><td><code>readAttributes</code></td><td><span class="sig">void readAttributes(SLXmlNode el, String[] cells, int from, int to)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slxmlserializer">SLXmlSerializer <span class="muted" style="font-size:13px">(lib/xml/SLXmlSerializer.sleela)</span></h2>
+<h2 class="section" data-u="slxmlserializer">SLXmlSerializer <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xml/SLXmlSerializer.sleela)</span></h2>
 <div data-u="slxmlserializer slxmlserializer">
 <h3 id="SLXmlSerializer">SLXmlSerializer <span class="pill">class</span></h3>
 <p class="desc">Defines SLXmlSerializer -- renders a DOM tree (SLXmlNode) back to well-formed XML text, with correct character escaping and optional pretty indentation.</p>
@@ -390,7 +391,7 @@
 <tr><td><code>toPrettyXml</code></td><td><span class="sig">String toPrettyXml(SLXmlNode root)</span></td><td class="desc">Pretty, indented, multi-line serialization of a subtree.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="xml-dom">xml-dom <span class="muted" style="font-size:13px">(lib/xml/xml-dom.sleela)</span></h2>
+<h2 class="section" data-u="xml-dom">xml-dom <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/xml/xml-dom.sleela)</span></h2>
 <div data-u="xml-dom xmldom">
 <h3 id="XmlDom">XmlDom <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -409,8 +410,8 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:34 UTC.
-SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC.
+<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
 </div>

@@ -17,6 +17,7 @@
   <a href="../index.html"><strong>Home</strong></a>
   <a href="../packages.html"><strong>All packages</strong></a>
   <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
   <h2>Packages</h2><ul>
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
@@ -131,7 +132,7 @@
 <h1>Package <code>opcodes</code></h1>
 <div class="lead">This package contains <strong>119</strong> source unit(s) defining <strong>119</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="slgovconcept">SLGovConcept <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLGovConcept.sleela)</span></h2>
+<h2 class="section" data-u="slgovconcept">SLGovConcept <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLGovConcept.sleela)</span></h2>
 <div data-u="slgovconcept slgovconcept">
 <h3 id="SLGovConcept">SLGovConcept <span class="pill">class</span></h3>
 <p class="desc">Defines SLGovConcept, the catalogue of base concepts the</p>
@@ -161,7 +162,7 @@
 <tr><td><code>reason</code></td><td><span class="sig">String reason()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slgovernedexecution">SLGovernedExecution <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLGovernedExecution.sleela)</span></h2>
+<h2 class="section" data-u="slgovernedexecution">SLGovernedExecution <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLGovernedExecution.sleela)</span></h2>
 <div data-u="slgovernedexecution slgovernedexecution">
 <h3 id="SLGovernedExecution">SLGovernedExecution <span class="pill">class</span></h3>
 <p class="desc">Defines SLGovernedExecution, the orchestrator that runs an opcode</p>
@@ -190,7 +191,7 @@
 <tr><td><code>reasonHalted</code></td><td><span class="sig">String reasonHalted()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slgovphase">SLGovPhase <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLGovPhase.sleela)</span></h2>
+<h2 class="section" data-u="slgovphase">SLGovPhase <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLGovPhase.sleela)</span></h2>
 <div data-u="slgovphase slgovphase">
 <h3 id="SLGovPhase">SLGovPhase <span class="pill">class</span></h3>
 <p class="desc">Defines SLGovPhase, the shared phase vocabulary that lets SLeeLa and the VM know when to listen for ordering around opcode execution. A governed opcode stream is observed at three moments the user named: BEFORE — the Registrar considers the whole program A -&gt; B before any opcode runs, and admits, rejects, or pauses it. DURING — the Listener watches the live VM code as each opcode arrives and confirms the admitted sequence still fits the program as it comes. AFTER — the EventObserver judges the completed operation(s) against the architectural and ethical base concepts and may warn or patch. Both SLeeLa (source side) and the VM (runtime side) register their interest in these phases; the orchestrator (SLGovernedExecution) fires them in order. Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.</p>
@@ -213,7 +214,7 @@
 <tr><td><code>isAfter</code></td><td><span class="sig">boolean isAfter()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slgovsymbolmap">SLGovSymbolMap <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLGovSymbolMap.sleela)</span></h2>
+<h2 class="section" data-u="slgovsymbolmap">SLGovSymbolMap <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLGovSymbolMap.sleela)</span></h2>
 <div data-u="slgovsymbolmap slgovsymbolmap">
 <h3 id="SLGovSymbolMap">SLGovSymbolMap <span class="pill">class</span></h3>
 <p class="desc">Defines SLGovSymbolMap, the registry of known symbol maps &quot;that just work&quot; — safe, pre-vetted corrections the EventObserver may apply to patch a fault mid-program instead of rejecting it. A mapping is a trusted substitution: when a given opcode code appears in a context the EventObserver judges faulty, the map supplies the replacement opcode code that is known to make the sequence sound. Only substitutions in this registry may be applied; an unknown fault is never silently &quot;fixed&quot;. Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.</p>
@@ -238,7 +239,7 @@
 <tr><td><code>active</code></td><td><span class="sig">boolean active()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slgovverdict">SLGovVerdict <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLGovVerdict.sleela)</span></h2>
+<h2 class="section" data-u="slgovverdict">SLGovVerdict <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLGovVerdict.sleela)</span></h2>
 <div data-u="slgovverdict slgovverdict">
 <h3 id="SLGovVerdict">SLGovVerdict <span class="pill">class</span></h3>
 <p class="desc">Defines SLGovVerdict, the discretionary outcome a governance principal (Registrar, Listener, EventObserver) returns about an opcode or an opcode sequence. This is the &quot;discretion in SLeeLa herself&quot; the user asked for: rather than a raw boolean pass/fail, a verdict carries a graded disposition so the program can be admitted, warned about, patched, paused as unrest, or rejected. Dispositions, from most permissive to most restrictive: ADMIT — the opcode/sequence is in order; proceed. WARN — proceed, but a concern was recorded (non-blocking). PATCH — a known, safe correction was applied via a symbol map; proceed with the patched form. PAUSE — hold the program as &quot;unrest&quot;: not rejected, but it may not run until a human or a higher authority resolves the concern. REJECT — the opcode/sequence is out of order unto itself; refuse it. Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.</p>
@@ -269,7 +270,7 @@
 <tr><td><code>mostRestrictive</code></td><td><span class="sig">SLGovVerdict mostRestrictive(SLGovVerdict other)</span></td><td class="desc">Combine two verdicts: the more restrictive disposition wins, so a single REJECT or PAUSE anywhere governs the sequence.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopaccept">SLOpAccept <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAccept.sleela)</span></h2>
+<h2 class="section" data-u="slopaccept">SLOpAccept <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAccept.sleela)</span></h2>
 <div data-u="slopaccept slopaccept">
 <h3 id="SLOpAccept">SLOpAccept <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpAccept, the single-opcode class for OP_ACCEPT (canonical code 35). This class carries exactly ONE opcode: OP_ACCEPT. Semantics: accept an inbound socket connection. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -284,7 +285,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopadd">SLOpAdd <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAdd.sleela)</span></h2>
+<h2 class="section" data-u="slopadd">SLOpAdd <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAdd.sleela)</span></h2>
 <div data-u="slopadd slopadd">
 <h3 id="SLOpAdd">SLOpAdd <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpAdd, the single-opcode class for OP_ADD (canonical code 8). This class carries exactly ONE opcode: OP_ADD. Semantics: pop two values; push their sum (numeric) or concatenation (string). Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -299,7 +300,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopand">SLOpAnd <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAnd.sleela)</span></h2>
+<h2 class="section" data-u="slopand">SLOpAnd <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAnd.sleela)</span></h2>
 <div data-u="slopand slopand">
 <h3 id="SLOpAnd">SLOpAnd <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpAnd, the single-opcode class for OP_AND (canonical code 20). This class carries exactly ONE opcode: OP_AND. Semantics: pop two booleans; push logical AND. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -314,7 +315,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloparrget">SLOpArrget <span class="muted" style="font-size:13px">(lib/opcodes/SLOpArrget.sleela)</span></h2>
+<h2 class="section" data-u="sloparrget">SLOpArrget <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpArrget.sleela)</span></h2>
 <div data-u="sloparrget sloparrget">
 <h3 id="SLOpArrget">SLOpArrget <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpArrget, the single-opcode class for OP_ARRGET (canonical code 99). This class carries exactly ONE opcode: OP_ARRGET. Semantics: pop an index then an array; push the element. Membership: array extension (syntax 1.4) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -329,7 +330,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloparrlen">SLOpArrlen <span class="muted" style="font-size:13px">(lib/opcodes/SLOpArrlen.sleela)</span></h2>
+<h2 class="section" data-u="sloparrlen">SLOpArrlen <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpArrlen.sleela)</span></h2>
 <div data-u="sloparrlen sloparrlen">
 <h3 id="SLOpArrlen">SLOpArrlen <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpArrlen, the single-opcode class for OP_ARRLEN (canonical code 101). This class carries exactly ONE opcode: OP_ARRLEN. Semantics: pop an array; push its length. Membership: array extension (syntax 1.4) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -344,7 +345,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloparrpush">SLOpArrpush <span class="muted" style="font-size:13px">(lib/opcodes/SLOpArrpush.sleela)</span></h2>
+<h2 class="section" data-u="sloparrpush">SLOpArrpush <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpArrpush.sleela)</span></h2>
 <div data-u="sloparrpush sloparrpush">
 <h3 id="SLOpArrpush">SLOpArrpush <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpArrpush, the single-opcode class for OP_ARRPUSH (canonical code 102). This class carries exactly ONE opcode: OP_ARRPUSH. Semantics: pop a value and an array; append; push the new length. Membership: array extension (syntax 1.4) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -359,7 +360,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloparrset">SLOpArrset <span class="muted" style="font-size:13px">(lib/opcodes/SLOpArrset.sleela)</span></h2>
+<h2 class="section" data-u="sloparrset">SLOpArrset <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpArrset.sleela)</span></h2>
 <div data-u="sloparrset sloparrset">
 <h3 id="SLOpArrset">SLOpArrset <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpArrset, the single-opcode class for OP_ARRSET (canonical code 100). This class carries exactly ONE opcode: OP_ARRSET. Semantics: pop a value, index, and array; set the element. Membership: array extension (syntax 1.4) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -374,7 +375,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopaudioadd">SLOpAudioAdd <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioAdd.sleela)</span></h2>
+<h2 class="section" data-u="slopaudioadd">SLOpAudioAdd <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioAdd.sleela)</span></h2>
 <div data-u="slopaudioadd slopaudioadd">
 <h3 id="SLOpAudioAdd">SLOpAudioAdd <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpAudioAdd, the single-opcode class for OP_AUDIO_ADD (canonical code 92). This class carries exactly ONE opcode: OP_AUDIO_ADD. Semantics: add an input to a native audio job. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -389,7 +390,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopaudioclose">SLOpAudioClose <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioClose.sleela)</span></h2>
+<h2 class="section" data-u="slopaudioclose">SLOpAudioClose <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioClose.sleela)</span></h2>
 <div data-u="slopaudioclose slopaudioclose">
 <h3 id="SLOpAudioClose">SLOpAudioClose <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpAudioClose, the single-opcode class for OP_AUDIO_CLOSE (canonical code 96). This class carries exactly ONE opcode: OP_AUDIO_CLOSE. Semantics: close a native audio job. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -404,7 +405,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopaudiocontrols">SLOpAudioControls <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioControls.sleela)</span></h2>
+<h2 class="section" data-u="slopaudiocontrols">SLOpAudioControls <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioControls.sleela)</span></h2>
 <div data-u="slopaudiocontrols slopaudiocontrols">
 <h3 id="SLOpAudioControls">SLOpAudioControls <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpAudioControls, the single-opcode class for OP_AUDIO_CONTROLS (canonical code 93). This class carries exactly ONE opcode: OP_AUDIO_CONTROLS. Semantics: set controls on a native audio job. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -419,7 +420,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopaudionew">SLOpAudioNew <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioNew.sleela)</span></h2>
+<h2 class="section" data-u="slopaudionew">SLOpAudioNew <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioNew.sleela)</span></h2>
 <div data-u="slopaudionew slopaudionew">
 <h3 id="SLOpAudioNew">SLOpAudioNew <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpAudioNew, the single-opcode class for OP_AUDIO_NEW (canonical code 91). This class carries exactly ONE opcode: OP_AUDIO_NEW. Semantics: create a native audio job; push its handle. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -434,7 +435,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopaudioplatform">SLOpAudioPlatform <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioPlatform.sleela)</span></h2>
+<h2 class="section" data-u="slopaudioplatform">SLOpAudioPlatform <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioPlatform.sleela)</span></h2>
 <div data-u="slopaudioplatform slopaudioplatform">
 <h3 id="SLOpAudioPlatform">SLOpAudioPlatform <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpAudioPlatform, the single-opcode class for OP_AUDIO_PLATFORM (canonical code 97). This class carries exactly ONE opcode: OP_AUDIO_PLATFORM. Semantics: push the host audio platform name. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -449,7 +450,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopaudiorender">SLOpAudioRender <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioRender.sleela)</span></h2>
+<h2 class="section" data-u="slopaudiorender">SLOpAudioRender <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioRender.sleela)</span></h2>
 <div data-u="slopaudiorender slopaudiorender">
 <h3 id="SLOpAudioRender">SLOpAudioRender <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpAudioRender, the single-opcode class for OP_AUDIO_RENDER (canonical code 95). This class carries exactly ONE opcode: OP_AUDIO_RENDER. Semantics: render a native audio job; push a boolean. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -464,7 +465,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopaudiovalidate">SLOpAudioValidate <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioValidate.sleela)</span></h2>
+<h2 class="section" data-u="slopaudiovalidate">SLOpAudioValidate <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpAudioValidate.sleela)</span></h2>
 <div data-u="slopaudiovalidate slopaudiovalidate">
 <h3 id="SLOpAudioValidate">SLOpAudioValidate <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpAudioValidate, the single-opcode class for OP_AUDIO_VALIDATE (canonical code 94). This class carries exactly ONE opcode: OP_AUDIO_VALIDATE. Semantics: validate a native audio job; push a boolean. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -479,7 +480,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestarch">SLOpBestArch <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestArch.sleela)</span></h2>
+<h2 class="section" data-u="slopbestarch">SLOpBestArch <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestArch.sleela)</span></h2>
 <div data-u="slopbestarch slopbestarch">
 <h3 id="SLOpBestArch">SLOpBestArch <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestArch, the single-opcode class for OP_BEST_ARCH (canonical code 88). This class carries exactly ONE opcode: OP_BEST_ARCH. Semantics: record architecture parameters for a candidate. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -494,7 +495,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestarchstate">SLOpBestArchState <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestArchState.sleela)</span></h2>
+<h2 class="section" data-u="slopbestarchstate">SLOpBestArchState <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestArchState.sleela)</span></h2>
 <div data-u="slopbestarchstate slopbestarchstate">
 <h3 id="SLOpBestArchState">SLOpBestArchState <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestArchState, the single-opcode class for OP_BEST_ARCH_STATE (canonical code 89). This class carries exactly ONE opcode: OP_BEST_ARCH_STATE. Semantics: record realized architecture state for a candidate. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -509,7 +510,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestbest">SLOpBestBest <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestBest.sleela)</span></h2>
+<h2 class="section" data-u="slopbestbest">SLOpBestBest <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestBest.sleela)</span></h2>
 <div data-u="slopbestbest slopbestbest">
 <h3 id="SLOpBestBest">SLOpBestBest <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestBest, the single-opcode class for OP_BEST_BEST (canonical code 84). This class carries exactly ONE opcode: OP_BEST_BEST. Semantics: push the best candidate index. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -524,7 +525,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestbudget">SLOpBestBudget <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestBudget.sleela)</span></h2>
+<h2 class="section" data-u="slopbestbudget">SLOpBestBudget <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestBudget.sleela)</span></h2>
 <div data-u="slopbestbudget slopbestbudget">
 <h3 id="SLOpBestBudget">SLOpBestBudget <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestBudget, the single-opcode class for OP_BEST_BUDGET (canonical code 80). This class carries exactly ONE opcode: OP_BEST_BUDGET. Semantics: set a cost budget on a best-of selector. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -539,7 +540,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestcand">SLOpBestCand <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestCand.sleela)</span></h2>
+<h2 class="section" data-u="slopbestcand">SLOpBestCand <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestCand.sleela)</span></h2>
 <div data-u="slopbestcand slopbestcand">
 <h3 id="SLOpBestCand">SLOpBestCand <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestCand, the single-opcode class for OP_BEST_CAND (canonical code 81). This class carries exactly ONE opcode: OP_BEST_CAND. Semantics: register a candidate with a best-of selector. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -554,7 +555,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestchoice">SLOpBestChoice <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestChoice.sleela)</span></h2>
+<h2 class="section" data-u="slopbestchoice">SLOpBestChoice <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestChoice.sleela)</span></h2>
 <div data-u="slopbestchoice slopbestchoice">
 <h3 id="SLOpBestChoice">SLOpBestChoice <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestChoice, the single-opcode class for OP_BEST_CHOICE (canonical code 86). This class carries exactly ONE opcode: OP_BEST_CHOICE. Semantics: push the winning-choice string. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -569,7 +570,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestclose">SLOpBestClose <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestClose.sleela)</span></h2>
+<h2 class="section" data-u="slopbestclose">SLOpBestClose <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestClose.sleela)</span></h2>
 <div data-u="slopbestclose slopbestclose">
 <h3 id="SLOpBestClose">SLOpBestClose <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestClose, the single-opcode class for OP_BEST_CLOSE (canonical code 90). This class carries exactly ONE opcode: OP_BEST_CLOSE. Semantics: close a best-of selector. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -584,7 +585,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestminver">SLOpBestMinver <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestMinver.sleela)</span></h2>
+<h2 class="section" data-u="slopbestminver">SLOpBestMinver <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestMinver.sleela)</span></h2>
 <div data-u="slopbestminver slopbestminver">
 <h3 id="SLOpBestMinver">SLOpBestMinver <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestMinver, the single-opcode class for OP_BEST_MINVER (canonical code 79). This class carries exactly ONE opcode: OP_BEST_MINVER. Semantics: set a minimum version on a best-of selector. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -599,7 +600,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestnew">SLOpBestNew <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestNew.sleela)</span></h2>
+<h2 class="section" data-u="slopbestnew">SLOpBestNew <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestNew.sleela)</span></h2>
 <div data-u="slopbestnew slopbestnew">
 <h3 id="SLOpBestNew">SLOpBestNew <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestNew, the single-opcode class for OP_BEST_NEW (canonical code 77). This class carries exactly ONE opcode: OP_BEST_NEW. Semantics: create a best-of selector; push its handle. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -614,7 +615,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestrecord">SLOpBestRecord <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestRecord.sleela)</span></h2>
+<h2 class="section" data-u="slopbestrecord">SLOpBestRecord <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestRecord.sleela)</span></h2>
 <div data-u="slopbestrecord slopbestrecord">
 <h3 id="SLOpBestRecord">SLOpBestRecord <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestRecord, the single-opcode class for OP_BEST_RECORD (canonical code 82). This class carries exactly ONE opcode: OP_BEST_RECORD. Semantics: record a measured RTT for a candidate. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -629,7 +630,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestreport">SLOpBestReport <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestReport.sleela)</span></h2>
+<h2 class="section" data-u="slopbestreport">SLOpBestReport <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestReport.sleela)</span></h2>
 <div data-u="slopbestreport slopbestreport">
 <h3 id="SLOpBestReport">SLOpBestReport <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestReport, the single-opcode class for OP_BEST_REPORT (canonical code 87). This class carries exactly ONE opcode: OP_BEST_REPORT. Semantics: push a multi-line best-of report. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -644,7 +645,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestscore">SLOpBestScore <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestScore.sleela)</span></h2>
+<h2 class="section" data-u="slopbestscore">SLOpBestScore <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestScore.sleela)</span></h2>
 <div data-u="slopbestscore slopbestscore">
 <h3 id="SLOpBestScore">SLOpBestScore <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestScore, the single-opcode class for OP_BEST_SCORE (canonical code 83). This class carries exactly ONE opcode: OP_BEST_SCORE. Semantics: push a candidate score. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -659,7 +660,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbeststat">SLOpBestStat <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestStat.sleela)</span></h2>
+<h2 class="section" data-u="slopbeststat">SLOpBestStat <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestStat.sleela)</span></h2>
 <div data-u="slopbeststat slopbeststat">
 <h3 id="SLOpBestStat">SLOpBestStat <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestStat, the single-opcode class for OP_BEST_STAT (canonical code 85). This class carries exactly ONE opcode: OP_BEST_STAT. Semantics: push a selected best-of statistic. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -674,7 +675,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopbestweight">SLOpBestWeight <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestWeight.sleela)</span></h2>
+<h2 class="section" data-u="slopbestweight">SLOpBestWeight <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpBestWeight.sleela)</span></h2>
 <div data-u="slopbestweight slopbestweight">
 <h3 id="SLOpBestWeight">SLOpBestWeight <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpBestWeight, the single-opcode class for OP_BEST_WEIGHT (canonical code 78). This class carries exactly ONE opcode: OP_BEST_WEIGHT. Semantics: set an axis weight on a best-of selector. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -689,7 +690,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcall">SLOpCall <span class="muted" style="font-size:13px">(lib/opcodes/SLOpCall.sleela)</span></h2>
+<h2 class="section" data-u="slopcall">SLOpCall <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpCall.sleela)</span></h2>
 <div data-u="slopcall slopcall">
 <h3 id="SLOpCall">SLOpCall <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpCall, the single-opcode class for OP_CALL (canonical code 25). This class carries exactly ONE opcode: OP_CALL. Semantics: call a function; push a new frame. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -704,7 +705,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcodebase">SLOpcodeBase <span class="muted" style="font-size:13px">(lib/opcodes/SLOpcodeBase.sleela)</span></h2>
+<h2 class="section" data-u="slopcodebase">SLOpcodeBase <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpcodeBase.sleela)</span></h2>
 <div data-u="slopcodebase slopcodebase">
 <h3 id="SLOpcodeBase">SLOpcodeBase <span class="pill">class</span></h3>
 <p class="desc">Defines SLOpcodeBase, the shared base of every single-opcode class</p>
@@ -731,7 +732,7 @@
 <tr><td><code>step</code></td><td><span class="sig">int step(int frame)</span></td><td class="desc">The full ordered contract: next-instruction fetch, then single execute. Returns the next instruction pointer for the following opcode object.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcodecondition">SLOpcodeCondition <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeCondition.sleela)</span></h2>
+<h2 class="section" data-u="slopcodecondition">SLOpcodeCondition <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeCondition.sleela)</span></h2>
 <div data-u="slopcodecondition slopcodecondition">
 <h3 id="SLOpcodeCondition">SLOpcodeCondition <span class="pill">class</span></h3>
 <p class="desc">Defines SLOpcodeCondition, a named predicate over VM/program state that a conditional-reactive construct evaluates to decide whether to react. Role: a condition answers a yes/no question about the running program without itself being an opcode — e.g. &quot;is a LOCK currently held?&quot;, &quot;has the stream reached index N?&quot;, &quot;did the last opcode warn?&quot;. Conditions are the triggers the reactive layer listens on. The actual state read crosses the VM bridge; the comparison and threshold logic live here in SLeeLa. Comparators: a condition compares an observed signal value against a target using one of the operators below. Family: opcodes.running. Native VM/OS work crosses an explicit bridge.</p>
@@ -767,7 +768,7 @@
 <tr><td><code>holds</code></td><td><span class="sig">boolean holds(int frame, int index)</span></td><td class="desc">Evaluate the predicate against the observed signal.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcodeconditionalreactive">SLOpcodeConditionalReactive <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeConditionalReactive.sleela)</span></h2>
+<h2 class="section" data-u="slopcodeconditionalreactive">SLOpcodeConditionalReactive <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeConditionalReactive.sleela)</span></h2>
 <div data-u="slopcodeconditionalreactive slopcodeconditionalreactive">
 <h3 id="SLOpcodeConditionalReactive">SLOpcodeConditionalReactive <span class="pill">class</span></h3>
 <p class="desc">Defines SLOpcodeConditionalReactive, a construct that watches a condition over the running program and reacts by grouping, warming, gating, or skipping a group of opcodes. Role: this is the conditional-reactive the user asked for. It binds a SLOpcodeCondition (the trigger) to a SLOpcodeGroup (the subject) and a reaction. When the condition holds as the stream advances, the reaction fires: WARM — pre-warm the group so a hot path is ready before it is reached. RUN — run the group now, inline, as a reactive sub-sequence. GATE — admit the group into the live stream only now that the condition holds (gated inclusion). SKIP — hold the group back (do not run it) while the condition holds. A reactive is edge-sensitive: it reacts when the condition first becomes true, not repeatedly, unless rearmed. Family: opcodes.running. Native VM/OS work crosses an explicit bridge.</p>
@@ -801,7 +802,7 @@
 <tr><td><code>admits</code></td><td><span class="sig">boolean admits()</span></td><td class="desc">Whether the subject group should be allowed to run given the reaction and the current edge state. GATE allows only after reacting; SKIP forbids while latched; WARM/RUN leave running to the driver.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcodeeventobserver">SLOpcodeEventObserver <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLOpcodeEventObserver.sleela)</span></h2>
+<h2 class="section" data-u="slopcodeeventobserver">SLOpcodeEventObserver <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLOpcodeEventObserver.sleela)</span></h2>
 <div data-u="slopcodeeventobserver slopcodeeventobserver">
 <h3 id="SLOpcodeEventObserver">SLOpcodeEventObserver <span class="pill">class</span></h3>
 <p class="desc">Defines SLOpcodeEventObserver, the AFTER-phase authority that</p>
@@ -845,7 +846,7 @@
 <tr><td><code>conceptAt</code></td><td><span class="sig">SLGovConcept conceptAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcodegroup">SLOpcodeGroup <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeGroup.sleela)</span></h2>
+<h2 class="section" data-u="slopcodegroup">SLOpcodeGroup <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeGroup.sleela)</span></h2>
 <div data-u="slopcodegroup slopcodegroup">
 <h3 id="SLOpcodeGroup">SLOpcodeGroup <span class="pill">class</span></h3>
 <p class="desc">Defines SLOpcodeGroup, a named, ordered group of opcodes that runs as a single cohesive unit within a program. Role: where SLOpcodeStream is the whole verbatim program, a group is a smaller labelled run of opcodes that belong together — a loop body, a critical section, a protocol handshake, a struct build. A group preserves order internally (1..k) and can be run on its own, warmed ahead of time, or folded into a stream. Grouping gives a developer a way to reason about and gate opcodes in meaningful clusters instead of one flat sequence. Family: opcodes.running. Native VM/OS work crosses an explicit bridge.</p>
@@ -877,7 +878,7 @@
 <tr><td><code>at</code></td><td><span class="sig">SLOpcodeBase at(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcodegroupset">SLOpcodeGroupSet <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeGroupSet.sleela)</span></h2>
+<h2 class="section" data-u="slopcodegroupset">SLOpcodeGroupSet <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeGroupSet.sleela)</span></h2>
 <div data-u="slopcodegroupset slopcodegroupset">
 <h3 id="SLOpcodeGroupSet">SLOpcodeGroupSet <span class="pill">class</span></h3>
 <p class="desc">Defines SLOpcodeGroupSet, an ordered collection of SLOpcodeGroup units that compose into a larger program of groups. Role: real programs are built from several cohesive groups run in sequence (setup, work, teardown). A group set holds those groups in order, warms them all ahead of time, finds a group by name, and either flattens them onto a single stream or runs them group-by-group against a VM frame. Family: opcodes.running. Native VM/OS work crosses an explicit bridge.</p>
@@ -907,7 +908,7 @@
 <tr><td><code>at</code></td><td><span class="sig">SLOpcodeGroup at(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcodelistener">SLOpcodeListener <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLOpcodeListener.sleela)</span></h2>
+<h2 class="section" data-u="slopcodelistener">SLOpcodeListener <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLOpcodeListener.sleela)</span></h2>
 <div data-u="slopcodelistener slopcodelistener">
 <h3 id="SLOpcodeListener">SLOpcodeListener <span class="pill">class</span></h3>
 <p class="desc">Defines SLOpcodeListener, the DURING-phase authority that listens</p>
@@ -942,7 +943,7 @@
 <tr><td><code>settle</code></td><td><span class="sig">SLGovVerdict settle()</span></td><td class="desc">Called when the program finishes DURING: unresolved pairings are unrest.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcodereactorbank">SLOpcodeReactorBank <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeReactorBank.sleela)</span></h2>
+<h2 class="section" data-u="slopcodereactorbank">SLOpcodeReactorBank <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeReactorBank.sleela)</span></h2>
 <div data-u="slopcodereactorbank slopcodereactorbank">
 <h3 id="SLOpcodeReactorBank">SLOpcodeReactorBank <span class="pill">class</span></h3>
 <p class="desc">Defines SLOpcodeReactorBank, a bank of conditional-reactives that is ticked as a program advances so grouping and warming reactions fire at the right moments. Role: a program usually has several reactive rules at once — warm a hot group when the loop index crosses a threshold, gate a cleanup group once a socket is open, skip a debug group unless a flag is set. The bank holds those reactives and, at each stream index, ticks every one so each can react on its own rising edge. The bank is the single place a running loop consults. Family: opcodes.running. Native VM/OS work crosses an explicit bridge.</p>
@@ -971,7 +972,7 @@
 <tr><td><code>at</code></td><td><span class="sig">SLOpcodeConditionalReactive at(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcoderegistrar">SLOpcodeRegistrar <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLOpcodeRegistrar.sleela)</span></h2>
+<h2 class="section" data-u="slopcoderegistrar">SLOpcodeRegistrar <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLOpcodeRegistrar.sleela)</span></h2>
 <div data-u="slopcoderegistrar slopcoderegistrar">
 <h3 id="SLOpcodeRegistrar">SLOpcodeRegistrar <span class="pill">class</span></h3>
 <p class="desc">Defines SLOpcodeRegistrar, the BEFORE-phase authority a developer</p>
@@ -994,7 +995,7 @@
 <tr><td><code>consider</code></td><td><span class="sig">SLGovVerdict consider(SLOpcodeStream stream)</span></td><td class="desc">Consider the whole program A -&gt; B before any opcode runs. Returns the discretionary verdict; the orchestrator honours it before DURING begins.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcodestream">SLOpcodeStream <span class="muted" style="font-size:13px">(lib/opcodes/SLOpcodeStream.sleela)</span></h2>
+<h2 class="section" data-u="slopcodestream">SLOpcodeStream <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpcodeStream.sleela)</span></h2>
 <div data-u="slopcodestream slopcodestream">
 <h3 id="SLOpcodeStream">SLOpcodeStream <span class="pill">class</span></h3>
 <p class="desc">Defines SLOpcodeStream, the ordered sequence of single-opcode objects that is handed to the VM verbatim, in program order. Role: a compiled SLeeLa program is a verbatim, ordered list of opcodes. The /lib/opcodes family represents each opcode as its own single-opcode class; SLOpcodeStream is the ordered container that drives them. run() walks the stream and, for each opcode object, performs the family contract — call the VM to the next instruction, then execute that one opcode — so control flows 1,2,3,...,N exactly as emitted. The VM owns the instruction pointer; the stream only hands it the next single opcode to run. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1020,7 +1021,7 @@
 <tr><td><code>run</code></td><td><span class="sig">int run()</span></td><td class="desc">Execute the stream verbatim. For each opcode object, the family contract is honoured: advance the VM to the next instruction, then execute exactly that one opcode. A non-negative return from step() is the next instruction pointer; a negative return halts the stream (e.g. after OP_HALT or an error).</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopcodewarmer">SLOpcodeWarmer <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeWarmer.sleela)</span></h2>
+<h2 class="section" data-u="slopcodewarmer">SLOpcodeWarmer <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/running/SLOpcodeWarmer.sleela)</span></h2>
 <div data-u="slopcodewarmer slopcodewarmer">
 <h3 id="SLOpcodeWarmer">SLOpcodeWarmer <span class="pill">class</span></h3>
 <p class="desc">Defines SLOpcodeWarmer, which warms opcodes and groups ahead of execution so they are ready to fire the instant they are reached. Role: &quot;warming&quot; prepares opcodes before they run — arming each one and asking the VM to pre-stage the next instruction so the first fire of a hot path has no cold-start cost. A warmer can warm a single opcode, a whole group, or a group set, and it keeps a tally so the reactive layer can tell whether a path is warm before gating it in. Family: opcodes.running. Native VM/OS work crosses an explicit bridge.</p>
@@ -1043,7 +1044,7 @@
 <tr><td><code>warmSet</code></td><td><span class="sig">int warmSet(SLOpcodeGroupSet set)</span></td><td class="desc">Warm every group in a set.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopconnect">SLOpConnect <span class="muted" style="font-size:13px">(lib/opcodes/SLOpConnect.sleela)</span></h2>
+<h2 class="section" data-u="slopconnect">SLOpConnect <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpConnect.sleela)</span></h2>
 <div data-u="slopconnect slopconnect">
 <h3 id="SLOpConnect">SLOpConnect <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpConnect, the single-opcode class for OP_CONNECT (canonical code 36). This class carries exactly ONE opcode: OP_CONNECT. Semantics: open an outbound socket connection. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1058,7 +1059,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopconst">SLOpConst <span class="muted" style="font-size:13px">(lib/opcodes/SLOpConst.sleela)</span></h2>
+<h2 class="section" data-u="slopconst">SLOpConst <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpConst.sleela)</span></h2>
 <div data-u="slopconst slopconst">
 <h3 id="SLOpConst">SLOpConst <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpConst, the single-opcode class for OP_CONST (canonical code 1). This class carries exactly ONE opcode: OP_CONST. Semantics: push a constant from the constant pool. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1073,7 +1074,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopdiv">SLOpDiv <span class="muted" style="font-size:13px">(lib/opcodes/SLOpDiv.sleela)</span></h2>
+<h2 class="section" data-u="slopdiv">SLOpDiv <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpDiv.sleela)</span></h2>
 <div data-u="slopdiv slopdiv">
 <h3 id="SLOpDiv">SLOpDiv <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpDiv, the single-opcode class for OP_DIV (canonical code 11). This class carries exactly ONE opcode: OP_DIV. Semantics: pop two values; push the quotient. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1088,7 +1089,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopdup">SLOpDup <span class="muted" style="font-size:13px">(lib/opcodes/SLOpDup.sleela)</span></h2>
+<h2 class="section" data-u="slopdup">SLOpDup <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpDup.sleela)</span></h2>
 <div data-u="slopdup slopdup">
 <h3 id="SLOpDup">SLOpDup <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpDup, the single-opcode class for OP_DUP (canonical code 3). This class carries exactly ONE opcode: OP_DUP. Semantics: duplicate the top stack value. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1103,7 +1104,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopeq">SLOpEq <span class="muted" style="font-size:13px">(lib/opcodes/SLOpEq.sleela)</span></h2>
+<h2 class="section" data-u="slopeq">SLOpEq <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpEq.sleela)</span></h2>
 <div data-u="slopeq slopeq">
 <h3 id="SLOpEq">SLOpEq <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpEq, the single-opcode class for OP_EQ (canonical code 14). This class carries exactly ONE opcode: OP_EQ. Semantics: pop two values; push equality. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1118,7 +1119,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopfifomk">SLOpFifoMk <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFifoMk.sleela)</span></h2>
+<h2 class="section" data-u="slopfifomk">SLOpFifoMk <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFifoMk.sleela)</span></h2>
 <div data-u="slopfifomk slopfifomk">
 <h3 id="SLOpFifoMk">SLOpFifoMk <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpFifoMk, the single-opcode class for OP_FIFO_MK (canonical code 42). This class carries exactly ONE opcode: OP_FIFO_MK. Semantics: create a named FIFO. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1133,7 +1134,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopfileclose">SLOpFileclose <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFileclose.sleela)</span></h2>
+<h2 class="section" data-u="slopfileclose">SLOpFileclose <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFileclose.sleela)</span></h2>
 <div data-u="slopfileclose slopfileclose">
 <h3 id="SLOpFileclose">SLOpFileclose <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpFileclose, the single-opcode class for OP_FILECLOSE (canonical code 46). This class carries exactly ONE opcode: OP_FILECLOSE. Semantics: close an open file. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1148,7 +1149,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopfileopen">SLOpFileopen <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFileopen.sleela)</span></h2>
+<h2 class="section" data-u="slopfileopen">SLOpFileopen <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFileopen.sleela)</span></h2>
 <div data-u="slopfileopen slopfileopen">
 <h3 id="SLOpFileopen">SLOpFileopen <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpFileopen, the single-opcode class for OP_FILEOPEN (canonical code 43). This class carries exactly ONE opcode: OP_FILEOPEN. Semantics: open a file; push a handle. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1163,7 +1164,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopfileread">SLOpFileread <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFileread.sleela)</span></h2>
+<h2 class="section" data-u="slopfileread">SLOpFileread <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFileread.sleela)</span></h2>
 <div data-u="slopfileread slopfileread">
 <h3 id="SLOpFileread">SLOpFileread <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpFileread, the single-opcode class for OP_FILEREAD (canonical code 44). This class carries exactly ONE opcode: OP_FILEREAD. Semantics: read from an open file. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1178,7 +1179,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopfileunlink">SLOpFileunlink <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFileunlink.sleela)</span></h2>
+<h2 class="section" data-u="slopfileunlink">SLOpFileunlink <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFileunlink.sleela)</span></h2>
 <div data-u="slopfileunlink slopfileunlink">
 <h3 id="SLOpFileunlink">SLOpFileunlink <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpFileunlink, the single-opcode class for OP_FILEUNLINK (canonical code 47). This class carries exactly ONE opcode: OP_FILEUNLINK. Semantics: remove a file from the filesystem. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1193,7 +1194,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopfilewrite">SLOpFilewrite <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFilewrite.sleela)</span></h2>
+<h2 class="section" data-u="slopfilewrite">SLOpFilewrite <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpFilewrite.sleela)</span></h2>
 <div data-u="slopfilewrite slopfilewrite">
 <h3 id="SLOpFilewrite">SLOpFilewrite <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpFilewrite, the single-opcode class for OP_FILEWRITE (canonical code 45). This class carries exactly ONE opcode: OP_FILEWRITE. Semantics: write to an open file. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1208,7 +1209,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopge">SLOpGe <span class="muted" style="font-size:13px">(lib/opcodes/SLOpGe.sleela)</span></h2>
+<h2 class="section" data-u="slopge">SLOpGe <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpGe.sleela)</span></h2>
 <div data-u="slopge slopge">
 <h3 id="SLOpGe">SLOpGe <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpGe, the single-opcode class for OP_GE (canonical code 19). This class carries exactly ONE opcode: OP_GE. Semantics: pop two values; push greater-or-equal. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1223,7 +1224,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopgetfield">SLOpGetfield <span class="muted" style="font-size:13px">(lib/opcodes/SLOpGetfield.sleela)</span></h2>
+<h2 class="section" data-u="slopgetfield">SLOpGetfield <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpGetfield.sleela)</span></h2>
 <div data-u="slopgetfield slopgetfield">
 <h3 id="SLOpGetfield">SLOpGetfield <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpGetfield, the single-opcode class for OP_GETFIELD (canonical code 59). This class carries exactly ONE opcode: OP_GETFIELD. Semantics: pop an instance; push a field value. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1238,7 +1239,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopgt">SLOpGt <span class="muted" style="font-size:13px">(lib/opcodes/SLOpGt.sleela)</span></h2>
+<h2 class="section" data-u="slopgt">SLOpGt <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpGt.sleela)</span></h2>
 <div data-u="slopgt slopgt">
 <h3 id="SLOpGt">SLOpGt <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpGt, the single-opcode class for OP_GT (canonical code 18). This class carries exactly ONE opcode: OP_GT. Semantics: pop two values; push greater-than. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1253,7 +1254,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slophalt">SLOpHalt <span class="muted" style="font-size:13px">(lib/opcodes/SLOpHalt.sleela)</span></h2>
+<h2 class="section" data-u="slophalt">SLOpHalt <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpHalt.sleela)</span></h2>
 <div data-u="slophalt slophalt">
 <h3 id="SLOpHalt">SLOpHalt <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpHalt, the single-opcode class for OP_HALT (canonical code 48). This class carries exactly ONE opcode: OP_HALT. Semantics: halt the virtual machine. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1268,7 +1269,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopjmp">SLOpJmp <span class="muted" style="font-size:13px">(lib/opcodes/SLOpJmp.sleela)</span></h2>
+<h2 class="section" data-u="slopjmp">SLOpJmp <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpJmp.sleela)</span></h2>
 <div data-u="slopjmp slopjmp">
 <h3 id="SLOpJmp">SLOpJmp <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpJmp, the single-opcode class for OP_JMP (canonical code 23). This class carries exactly ONE opcode: OP_JMP. Semantics: unconditional jump to an instruction. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1283,7 +1284,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopjmpf">SLOpJmpf <span class="muted" style="font-size:13px">(lib/opcodes/SLOpJmpf.sleela)</span></h2>
+<h2 class="section" data-u="slopjmpf">SLOpJmpf <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpJmpf.sleela)</span></h2>
 <div data-u="slopjmpf slopjmpf">
 <h3 id="SLOpJmpf">SLOpJmpf <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpJmpf, the single-opcode class for OP_JMPF (canonical code 24). This class carries exactly ONE opcode: OP_JMPF. Semantics: pop a boolean; jump if false. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1298,7 +1299,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopjoinall">SLOpJoinall <span class="muted" style="font-size:13px">(lib/opcodes/SLOpJoinall.sleela)</span></h2>
+<h2 class="section" data-u="slopjoinall">SLOpJoinall <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpJoinall.sleela)</span></h2>
 <div data-u="slopjoinall slopjoinall">
 <h3 id="SLOpJoinall">SLOpJoinall <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpJoinall, the single-opcode class for OP_JOINALL (canonical code 29). This class carries exactly ONE opcode: OP_JOINALL. Semantics: join all spawned threads. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1313,7 +1314,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slople">SLOpLe <span class="muted" style="font-size:13px">(lib/opcodes/SLOpLe.sleela)</span></h2>
+<h2 class="section" data-u="slople">SLOpLe <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpLe.sleela)</span></h2>
 <div data-u="slople slople">
 <h3 id="SLOpLe">SLOpLe <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpLe, the single-opcode class for OP_LE (canonical code 17). This class carries exactly ONE opcode: OP_LE. Semantics: pop two values; push less-or-equal. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1328,7 +1329,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloplisten">SLOpListen <span class="muted" style="font-size:13px">(lib/opcodes/SLOpListen.sleela)</span></h2>
+<h2 class="section" data-u="sloplisten">SLOpListen <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpListen.sleela)</span></h2>
 <div data-u="sloplisten sloplisten">
 <h3 id="SLOpListen">SLOpListen <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpListen, the single-opcode class for OP_LISTEN (canonical code 34). This class carries exactly ONE opcode: OP_LISTEN. Semantics: begin listening on a socket. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1343,7 +1344,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloploadg">SLOpLoadg <span class="muted" style="font-size:13px">(lib/opcodes/SLOpLoadg.sleela)</span></h2>
+<h2 class="section" data-u="sloploadg">SLOpLoadg <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpLoadg.sleela)</span></h2>
 <div data-u="sloploadg sloploadg">
 <h3 id="SLOpLoadg">SLOpLoadg <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpLoadg, the single-opcode class for OP_LOADG (canonical code 4). This class carries exactly ONE opcode: OP_LOADG. Semantics: push a global variable. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1358,7 +1359,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloploadl">SLOpLoadl <span class="muted" style="font-size:13px">(lib/opcodes/SLOpLoadl.sleela)</span></h2>
+<h2 class="section" data-u="sloploadl">SLOpLoadl <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpLoadl.sleela)</span></h2>
 <div data-u="sloploadl sloploadl">
 <h3 id="SLOpLoadl">SLOpLoadl <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpLoadl, the single-opcode class for OP_LOADL (canonical code 6). This class carries exactly ONE opcode: OP_LOADL. Semantics: push a local variable. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1373,7 +1374,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloplock">SLOpLock <span class="muted" style="font-size:13px">(lib/opcodes/SLOpLock.sleela)</span></h2>
+<h2 class="section" data-u="sloplock">SLOpLock <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpLock.sleela)</span></h2>
 <div data-u="sloplock sloplock">
 <h3 id="SLOpLock">SLOpLock <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpLock, the single-opcode class for OP_LOCK (canonical code 30). This class carries exactly ONE opcode: OP_LOCK. Semantics: acquire a mutual-exclusion lock. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1388,7 +1389,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloplt">SLOpLt <span class="muted" style="font-size:13px">(lib/opcodes/SLOpLt.sleela)</span></h2>
+<h2 class="section" data-u="sloplt">SLOpLt <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpLt.sleela)</span></h2>
 <div data-u="sloplt sloplt">
 <h3 id="SLOpLt">SLOpLt <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpLt, the single-opcode class for OP_LT (canonical code 16). This class carries exactly ONE opcode: OP_LT. Semantics: pop two values; push less-than. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1403,7 +1404,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopmod">SLOpMod <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMod.sleela)</span></h2>
+<h2 class="section" data-u="slopmod">SLOpMod <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMod.sleela)</span></h2>
 <div data-u="slopmod slopmod">
 <h3 id="SLOpMod">SLOpMod <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpMod, the single-opcode class for OP_MOD (canonical code 12). This class carries exactly ONE opcode: OP_MOD. Semantics: pop two values; push the remainder. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1418,7 +1419,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopmul">SLOpMul <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMul.sleela)</span></h2>
+<h2 class="section" data-u="slopmul">SLOpMul <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMul.sleela)</span></h2>
 <div data-u="slopmul slopmul">
 <h3 id="SLOpMul">SLOpMul <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpMul, the single-opcode class for OP_MUL (canonical code 10). This class carries exactly ONE opcode: OP_MUL. Semantics: pop two values; push the product. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1433,7 +1434,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopmunclose">SLOpMunClose <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunClose.sleela)</span></h2>
+<h2 class="section" data-u="slopmunclose">SLOpMunClose <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunClose.sleela)</span></h2>
 <div data-u="slopmunclose slopmunclose">
 <h3 id="SLOpMunClose">SLOpMunClose <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpMunClose, the single-opcode class for OP_MUN_CLOSE (canonical code 76). This class carries exactly ONE opcode: OP_MUN_CLOSE. Semantics: close a Munction reach; push a receipt. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1448,7 +1449,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopmunconnect">SLOpMunConnect <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunConnect.sleela)</span></h2>
+<h2 class="section" data-u="slopmunconnect">SLOpMunConnect <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunConnect.sleela)</span></h2>
 <div data-u="slopmunconnect slopmunconnect">
 <h3 id="SLOpMunConnect">SLOpMunConnect <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpMunConnect, the single-opcode class for OP_MUN_CONNECT (canonical code 69). This class carries exactly ONE opcode: OP_MUN_CONNECT. Semantics: connect a Munction reach to a URI. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1463,7 +1464,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopmunconsume">SLOpMunConsume <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunConsume.sleela)</span></h2>
+<h2 class="section" data-u="slopmunconsume">SLOpMunConsume <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunConsume.sleela)</span></h2>
 <div data-u="slopmunconsume slopmunconsume">
 <h3 id="SLOpMunConsume">SLOpMunConsume <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpMunConsume, the single-opcode class for OP_MUN_CONSUME (canonical code 73). This class carries exactly ONE opcode: OP_MUN_CONSUME. Semantics: consume a reception on a Munction reach. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1478,7 +1479,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopmunenable">SLOpMunEnable <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunEnable.sleela)</span></h2>
+<h2 class="section" data-u="slopmunenable">SLOpMunEnable <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunEnable.sleela)</span></h2>
 <div data-u="slopmunenable slopmunenable">
 <h3 id="SLOpMunEnable">SLOpMunEnable <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpMunEnable, the single-opcode class for OP_MUN_ENABLE (canonical code 70). This class carries exactly ONE opcode: OP_MUN_ENABLE. Semantics: enable a policy on a Munction reach. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1493,7 +1494,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopmunlatch">SLOpMunLatch <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunLatch.sleela)</span></h2>
+<h2 class="section" data-u="slopmunlatch">SLOpMunLatch <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunLatch.sleela)</span></h2>
 <div data-u="slopmunlatch slopmunlatch">
 <h3 id="SLOpMunLatch">SLOpMunLatch <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpMunLatch, the single-opcode class for OP_MUN_LATCH (canonical code 74). This class carries exactly ONE opcode: OP_MUN_LATCH. Semantics: latch the current Munction reach state. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1508,7 +1509,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopmunreception">SLOpMunReception <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunReception.sleela)</span></h2>
+<h2 class="section" data-u="slopmunreception">SLOpMunReception <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunReception.sleela)</span></h2>
 <div data-u="slopmunreception slopmunreception">
 <h3 id="SLOpMunReception">SLOpMunReception <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpMunReception, the single-opcode class for OP_MUN_RECEPTION (canonical code 75). This class carries exactly ONE opcode: OP_MUN_RECEPTION. Semantics: push the last Munction reception string. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1523,7 +1524,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopmunsend">SLOpMunSend <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunSend.sleela)</span></h2>
+<h2 class="section" data-u="slopmunsend">SLOpMunSend <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunSend.sleela)</span></h2>
 <div data-u="slopmunsend slopmunsend">
 <h3 id="SLOpMunSend">SLOpMunSend <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpMunSend, the single-opcode class for OP_MUN_SEND (canonical code 71). This class carries exactly ONE opcode: OP_MUN_SEND. Semantics: send a datum over a Munction reach. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1538,7 +1539,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopmunstart">SLOpMunStart <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunStart.sleela)</span></h2>
+<h2 class="section" data-u="slopmunstart">SLOpMunStart <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunStart.sleela)</span></h2>
 <div data-u="slopmunstart slopmunstart">
 <h3 id="SLOpMunStart">SLOpMunStart <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpMunStart, the single-opcode class for OP_MUN_START (canonical code 68). This class carries exactly ONE opcode: OP_MUN_START. Semantics: start a Munction reach; push its handle. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1553,7 +1554,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopmunthatch">SLOpMunThatch <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunThatch.sleela)</span></h2>
+<h2 class="section" data-u="slopmunthatch">SLOpMunThatch <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpMunThatch.sleela)</span></h2>
 <div data-u="slopmunthatch slopmunthatch">
 <h3 id="SLOpMunThatch">SLOpMunThatch <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpMunThatch, the single-opcode class for OP_MUN_THATCH (canonical code 72). This class carries exactly ONE opcode: OP_MUN_THATCH. Semantics: apply a composition spec to a Munction reach. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1568,7 +1569,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopne">SLOpNe <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNe.sleela)</span></h2>
+<h2 class="section" data-u="slopne">SLOpNe <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNe.sleela)</span></h2>
 <div data-u="slopne slopne">
 <h3 id="SLOpNe">SLOpNe <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpNe, the single-opcode class for OP_NE (canonical code 15). This class carries exactly ONE opcode: OP_NE. Semantics: pop two values; push inequality. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1583,7 +1584,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopneg">SLOpNeg <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNeg.sleela)</span></h2>
+<h2 class="section" data-u="slopneg">SLOpNeg <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNeg.sleela)</span></h2>
 <div data-u="slopneg slopneg">
 <h3 id="SLOpNeg">SLOpNeg <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpNeg, the single-opcode class for OP_NEG (canonical code 13). This class carries exactly ONE opcode: OP_NEG. Semantics: pop one value; push its arithmetic negation. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1598,7 +1599,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopnewarray">SLOpNewarray <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNewarray.sleela)</span></h2>
+<h2 class="section" data-u="slopnewarray">SLOpNewarray <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNewarray.sleela)</span></h2>
 <div data-u="slopnewarray slopnewarray">
 <h3 id="SLOpNewarray">SLOpNewarray <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpNewarray, the single-opcode class for OP_NEWARRAY (canonical code 98). This class carries exactly ONE opcode: OP_NEWARRAY. Semantics: pop a size; push a fresh array handle. Membership: array extension (syntax 1.4) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1613,7 +1614,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopnewstruct">SLOpNewstruct <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNewstruct.sleela)</span></h2>
+<h2 class="section" data-u="slopnewstruct">SLOpNewstruct <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNewstruct.sleela)</span></h2>
 <div data-u="slopnewstruct slopnewstruct">
 <h3 id="SLOpNewstruct">SLOpNewstruct <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpNewstruct, the single-opcode class for OP_NEWSTRUCT (canonical code 58). This class carries exactly ONE opcode: OP_NEWSTRUCT. Semantics: construct a fresh struct instance; push its handle. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1628,7 +1629,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopnop">SLOpNop <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNop.sleela)</span></h2>
+<h2 class="section" data-u="slopnop">SLOpNop <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNop.sleela)</span></h2>
 <div data-u="slopnop slopnop">
 <h3 id="SLOpNop">SLOpNop <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpNop, the single-opcode class for OP_NOP (canonical code 0). This class carries exactly ONE opcode: OP_NOP. Semantics: no operation; the frame is unchanged. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1643,7 +1644,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopnot">SLOpNot <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNot.sleela)</span></h2>
+<h2 class="section" data-u="slopnot">SLOpNot <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpNot.sleela)</span></h2>
 <div data-u="slopnot slopnot">
 <h3 id="SLOpNot">SLOpNot <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpNot, the single-opcode class for OP_NOT (canonical code 22). This class carries exactly ONE opcode: OP_NOT. Semantics: pop one boolean; push logical NOT. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1658,7 +1659,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopor">SLOpOr <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOr.sleela)</span></h2>
+<h2 class="section" data-u="slopor">SLOpOr <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOr.sleela)</span></h2>
 <div data-u="slopor slopor">
 <h3 id="SLOpOr">SLOpOr <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpOr, the single-opcode class for OP_OR (canonical code 21). This class carries exactly ONE opcode: OP_OR. Semantics: pop two booleans; push logical OR. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1673,7 +1674,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloppipe">SLOpPipe <span class="muted" style="font-size:13px">(lib/opcodes/SLOpPipe.sleela)</span></h2>
+<h2 class="section" data-u="sloppipe">SLOpPipe <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpPipe.sleela)</span></h2>
 <div data-u="sloppipe sloppipe">
 <h3 id="SLOpPipe">SLOpPipe <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpPipe, the single-opcode class for OP_PIPE (canonical code 40). This class carries exactly ONE opcode: OP_PIPE. Semantics: create an anonymous pipe. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1688,7 +1689,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloppipepeer">SLOpPipepeer <span class="muted" style="font-size:13px">(lib/opcodes/SLOpPipepeer.sleela)</span></h2>
+<h2 class="section" data-u="sloppipepeer">SLOpPipepeer <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpPipepeer.sleela)</span></h2>
 <div data-u="sloppipepeer sloppipepeer">
 <h3 id="SLOpPipepeer">SLOpPipepeer <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpPipepeer, the single-opcode class for OP_PIPEPEER (canonical code 41). This class carries exactly ONE opcode: OP_PIPEPEER. Semantics: obtain the peer end of a pipe. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1703,7 +1704,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloppop">SLOpPop <span class="muted" style="font-size:13px">(lib/opcodes/SLOpPop.sleela)</span></h2>
+<h2 class="section" data-u="sloppop">SLOpPop <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpPop.sleela)</span></h2>
 <div data-u="sloppop sloppop">
 <h3 id="SLOpPop">SLOpPop <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpPop, the single-opcode class for OP_POP (canonical code 2). This class carries exactly ONE opcode: OP_POP. Semantics: discard the top stack value. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1718,7 +1719,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopprint">SLOpPrint <span class="muted" style="font-size:13px">(lib/opcodes/SLOpPrint.sleela)</span></h2>
+<h2 class="section" data-u="slopprint">SLOpPrint <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpPrint.sleela)</span></h2>
 <div data-u="slopprint slopprint">
 <h3 id="SLOpPrint">SLOpPrint <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpPrint, the single-opcode class for OP_PRINT (canonical code 27). This class carries exactly ONE opcode: OP_PRINT. Semantics: pop one value and print it. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1733,7 +1734,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloprecv">SLOpRecv <span class="muted" style="font-size:13px">(lib/opcodes/SLOpRecv.sleela)</span></h2>
+<h2 class="section" data-u="sloprecv">SLOpRecv <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpRecv.sleela)</span></h2>
 <div data-u="sloprecv sloprecv">
 <h3 id="SLOpRecv">SLOpRecv <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpRecv, the single-opcode class for OP_RECV (canonical code 33). This class carries exactly ONE opcode: OP_RECV. Semantics: receive a value from a channel. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1748,7 +1749,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopret">SLOpRet <span class="muted" style="font-size:13px">(lib/opcodes/SLOpRet.sleela)</span></h2>
+<h2 class="section" data-u="slopret">SLOpRet <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpRet.sleela)</span></h2>
 <div data-u="slopret slopret">
 <h3 id="SLOpRet">SLOpRet <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpRet, the single-opcode class for OP_RET (canonical code 26). This class carries exactly ONE opcode: OP_RET. Semantics: return from the current function. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1763,7 +1764,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopsend">SLOpSend <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSend.sleela)</span></h2>
+<h2 class="section" data-u="slopsend">SLOpSend <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSend.sleela)</span></h2>
 <div data-u="slopsend slopsend">
 <h3 id="SLOpSend">SLOpSend <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSend, the single-opcode class for OP_SEND (canonical code 32). This class carries exactly ONE opcode: OP_SEND. Semantics: send a value on a channel. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1778,7 +1779,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopsetfield">SLOpSetfield <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSetfield.sleela)</span></h2>
+<h2 class="section" data-u="slopsetfield">SLOpSetfield <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSetfield.sleela)</span></h2>
 <div data-u="slopsetfield slopsetfield">
 <h3 id="SLOpSetfield">SLOpSetfield <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSetfield, the single-opcode class for OP_SETFIELD (canonical code 60). This class carries exactly ONE opcode: OP_SETFIELD. Semantics: pop a value then an instance; set a field. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1793,7 +1794,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopsockclose">SLOpSockclose <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSockclose.sleela)</span></h2>
+<h2 class="section" data-u="slopsockclose">SLOpSockclose <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSockclose.sleela)</span></h2>
 <div data-u="slopsockclose slopsockclose">
 <h3 id="SLOpSockclose">SLOpSockclose <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSockclose, the single-opcode class for OP_SOCKCLOSE (canonical code 39). This class carries exactly ONE opcode: OP_SOCKCLOSE. Semantics: close a socket. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1808,7 +1809,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopsockread">SLOpSockread <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSockread.sleela)</span></h2>
+<h2 class="section" data-u="slopsockread">SLOpSockread <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSockread.sleela)</span></h2>
 <div data-u="slopsockread slopsockread">
 <h3 id="SLOpSockread">SLOpSockread <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSockread, the single-opcode class for OP_SOCKREAD (canonical code 37). This class carries exactly ONE opcode: OP_SOCKREAD. Semantics: read bytes from a socket. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1823,7 +1824,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopsockwrite">SLOpSockwrite <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSockwrite.sleela)</span></h2>
+<h2 class="section" data-u="slopsockwrite">SLOpSockwrite <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSockwrite.sleela)</span></h2>
 <div data-u="slopsockwrite slopsockwrite">
 <h3 id="SLOpSockwrite">SLOpSockwrite <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSockwrite, the single-opcode class for OP_SOCKWRITE (canonical code 38). This class carries exactly ONE opcode: OP_SOCKWRITE. Semantics: write bytes to a socket. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1838,7 +1839,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopspawn">SLOpSpawn <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSpawn.sleela)</span></h2>
+<h2 class="section" data-u="slopspawn">SLOpSpawn <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSpawn.sleela)</span></h2>
 <div data-u="slopspawn slopspawn">
 <h3 id="SLOpSpawn">SLOpSpawn <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSpawn, the single-opcode class for OP_SPAWN (canonical code 28). This class carries exactly ONE opcode: OP_SPAWN. Semantics: spawn a concurrent thread of execution. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1853,7 +1854,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopstoreg">SLOpStoreg <span class="muted" style="font-size:13px">(lib/opcodes/SLOpStoreg.sleela)</span></h2>
+<h2 class="section" data-u="slopstoreg">SLOpStoreg <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpStoreg.sleela)</span></h2>
 <div data-u="slopstoreg slopstoreg">
 <h3 id="SLOpStoreg">SLOpStoreg <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpStoreg, the single-opcode class for OP_STOREG (canonical code 5). This class carries exactly ONE opcode: OP_STOREG. Semantics: pop and store into a global variable. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1868,7 +1869,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopstorel">SLOpStorel <span class="muted" style="font-size:13px">(lib/opcodes/SLOpStorel.sleela)</span></h2>
+<h2 class="section" data-u="slopstorel">SLOpStorel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpStorel.sleela)</span></h2>
 <div data-u="slopstorel slopstorel">
 <h3 id="SLOpStorel">SLOpStorel <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpStorel, the single-opcode class for OP_STOREL (canonical code 7). This class carries exactly ONE opcode: OP_STOREL. Semantics: pop and store into a local variable. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1883,7 +1884,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopstructpack">SLOpStructpack <span class="muted" style="font-size:13px">(lib/opcodes/SLOpStructpack.sleela)</span></h2>
+<h2 class="section" data-u="slopstructpack">SLOpStructpack <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpStructpack.sleela)</span></h2>
 <div data-u="slopstructpack slopstructpack">
 <h3 id="SLOpStructpack">SLOpStructpack <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpStructpack, the single-opcode class for OP_STRUCTPACK (canonical code 61). This class carries exactly ONE opcode: OP_STRUCTPACK. Semantics: pop an instance; push a JSON string of its fields. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1898,7 +1899,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopstructunpack">SLOpStructunpack <span class="muted" style="font-size:13px">(lib/opcodes/SLOpStructunpack.sleela)</span></h2>
+<h2 class="section" data-u="slopstructunpack">SLOpStructunpack <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpStructunpack.sleela)</span></h2>
 <div data-u="slopstructunpack slopstructunpack">
 <h3 id="SLOpStructunpack">SLOpStructunpack <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpStructunpack, the single-opcode class for OP_STRUCTUNPACK (canonical code 62). This class carries exactly ONE opcode: OP_STRUCTUNPACK. Semantics: pop a JSON string; push a new struct handle. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1913,7 +1914,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopsub">SLOpSub <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSub.sleela)</span></h2>
+<h2 class="section" data-u="slopsub">SLOpSub <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSub.sleela)</span></h2>
 <div data-u="slopsub slopsub">
 <h3 id="SLOpSub">SLOpSub <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSub, the single-opcode class for OP_SUB (canonical code 9). This class carries exactly ONE opcode: OP_SUB. Semantics: pop two values; push the difference. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1928,7 +1929,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopsynclose">SLOpSynClose <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSynClose.sleela)</span></h2>
+<h2 class="section" data-u="slopsynclose">SLOpSynClose <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSynClose.sleela)</span></h2>
 <div data-u="slopsynclose slopsynclose">
 <h3 id="SLOpSynClose">SLOpSynClose <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSynClose, the single-opcode class for OP_SYN_CLOSE (canonical code 67). This class carries exactly ONE opcode: OP_SYN_CLOSE. Semantics: close a Synchro probe. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1943,7 +1944,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopsyndispatch">SLOpSynDispatch <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSynDispatch.sleela)</span></h2>
+<h2 class="section" data-u="slopsyndispatch">SLOpSynDispatch <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSynDispatch.sleela)</span></h2>
 <div data-u="slopsyndispatch slopsyndispatch">
 <h3 id="SLOpSynDispatch">SLOpSynDispatch <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSynDispatch, the single-opcode class for OP_SYN_DISPATCH (canonical code 64). This class carries exactly ONE opcode: OP_SYN_DISPATCH. Semantics: dispatch a Synchro probe; push the measured RTT. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1958,7 +1959,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopsynopen">SLOpSynOpen <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSynOpen.sleela)</span></h2>
+<h2 class="section" data-u="slopsynopen">SLOpSynOpen <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSynOpen.sleela)</span></h2>
 <div data-u="slopsynopen slopsynopen">
 <h3 id="SLOpSynOpen">SLOpSynOpen <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSynOpen, the single-opcode class for OP_SYN_OPEN (canonical code 63). This class carries exactly ONE opcode: OP_SYN_OPEN. Semantics: open a Synchro probe; push its handle. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1973,7 +1974,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopsynreport">SLOpSynReport <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSynReport.sleela)</span></h2>
+<h2 class="section" data-u="slopsynreport">SLOpSynReport <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSynReport.sleela)</span></h2>
 <div data-u="slopsynreport slopsynreport">
 <h3 id="SLOpSynReport">SLOpSynReport <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSynReport, the single-opcode class for OP_SYN_REPORT (canonical code 66). This class carries exactly ONE opcode: OP_SYN_REPORT. Semantics: push an honest Synchro report string. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -1988,7 +1989,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopsynstat">SLOpSynStat <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSynStat.sleela)</span></h2>
+<h2 class="section" data-u="slopsynstat">SLOpSynStat <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSynStat.sleela)</span></h2>
 <div data-u="slopsynstat slopsynstat">
 <h3 id="SLOpSynStat">SLOpSynStat <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpSynStat, the single-opcode class for OP_SYN_STAT (canonical code 65). This class carries exactly ONE opcode: OP_SYN_STAT. Semantics: push a selected Synchro statistic. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -2003,7 +2004,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloptimehttpdate">SLOpTimeHttpDate <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeHttpDate.sleela)</span></h2>
+<h2 class="section" data-u="sloptimehttpdate">SLOpTimeHttpDate <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeHttpDate.sleela)</span></h2>
 <div data-u="sloptimehttpdate sloptimehttpdate">
 <h3 id="SLOpTimeHttpDate">SLOpTimeHttpDate <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpTimeHttpDate, the single-opcode class for OP_TIME_HTTP_DATE (canonical code 54). This class carries exactly ONE opcode: OP_TIME_HTTP_DATE. Semantics: push the current time as an HTTP date string. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -2018,7 +2019,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloptimejson">SLOpTimeJson <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeJson.sleela)</span></h2>
+<h2 class="section" data-u="sloptimejson">SLOpTimeJson <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeJson.sleela)</span></h2>
 <div data-u="sloptimejson sloptimejson">
 <h3 id="SLOpTimeJson">SLOpTimeJson <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpTimeJson, the single-opcode class for OP_TIME_JSON (canonical code 55). This class carries exactly ONE opcode: OP_TIME_JSON. Semantics: push the current time as a JSON string. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -2033,7 +2034,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloptimelocation">SLOpTimeLocation <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeLocation.sleela)</span></h2>
+<h2 class="section" data-u="sloptimelocation">SLOpTimeLocation <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeLocation.sleela)</span></h2>
 <div data-u="sloptimelocation sloptimelocation">
 <h3 id="SLOpTimeLocation">SLOpTimeLocation <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpTimeLocation, the single-opcode class for OP_TIME_LOCATION (canonical code 53). This class carries exactly ONE opcode: OP_TIME_LOCATION. Semantics: push the configured time location. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -2048,7 +2049,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloptimemonons">SLOpTimeMonoNs <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeMonoNs.sleela)</span></h2>
+<h2 class="section" data-u="sloptimemonons">SLOpTimeMonoNs <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeMonoNs.sleela)</span></h2>
 <div data-u="sloptimemonons sloptimemonons">
 <h3 id="SLOpTimeMonoNs">SLOpTimeMonoNs <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpTimeMonoNs, the single-opcode class for OP_TIME_MONO_NS (canonical code 51). This class carries exactly ONE opcode: OP_TIME_MONO_NS. Semantics: push a monotonic clock reading in nanoseconds. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -2063,7 +2064,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloptimentp">SLOpTimeNtp <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeNtp.sleela)</span></h2>
+<h2 class="section" data-u="sloptimentp">SLOpTimeNtp <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeNtp.sleela)</span></h2>
 <div data-u="sloptimentp sloptimentp">
 <h3 id="SLOpTimeNtp">SLOpTimeNtp <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpTimeNtp, the single-opcode class for OP_TIME_NTP (canonical code 56). This class carries exactly ONE opcode: OP_TIME_NTP. Semantics: push a time reading sourced from NTP. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -2078,7 +2079,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloptimeprecisionms">SLOpTimePrecisionMs <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimePrecisionMs.sleela)</span></h2>
+<h2 class="section" data-u="sloptimeprecisionms">SLOpTimePrecisionMs <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimePrecisionMs.sleela)</span></h2>
 <div data-u="sloptimeprecisionms sloptimeprecisionms">
 <h3 id="SLOpTimePrecisionMs">SLOpTimePrecisionMs <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpTimePrecisionMs, the single-opcode class for OP_TIME_PRECISION_MS (canonical code 52). This class carries exactly ONE opcode: OP_TIME_PRECISION_MS. Semantics: push the clock precision in milliseconds. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -2093,7 +2094,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloptimesetlocation">SLOpTimeSetLocation <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeSetLocation.sleela)</span></h2>
+<h2 class="section" data-u="sloptimesetlocation">SLOpTimeSetLocation <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeSetLocation.sleela)</span></h2>
 <div data-u="sloptimesetlocation sloptimesetlocation">
 <h3 id="SLOpTimeSetLocation">SLOpTimeSetLocation <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpTimeSetLocation, the single-opcode class for OP_TIME_SET_LOCATION (canonical code 57). This class carries exactly ONE opcode: OP_TIME_SET_LOCATION. Semantics: set the time location. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -2108,7 +2109,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloptimeutcms">SLOpTimeUtcMs <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeUtcMs.sleela)</span></h2>
+<h2 class="section" data-u="sloptimeutcms">SLOpTimeUtcMs <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeUtcMs.sleela)</span></h2>
 <div data-u="sloptimeutcms sloptimeutcms">
 <h3 id="SLOpTimeUtcMs">SLOpTimeUtcMs <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpTimeUtcMs, the single-opcode class for OP_TIME_UTC_MS (canonical code 49). This class carries exactly ONE opcode: OP_TIME_UTC_MS. Semantics: push the current UTC time in milliseconds. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -2123,7 +2124,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sloptimeutcns">SLOpTimeUtcNs <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeUtcNs.sleela)</span></h2>
+<h2 class="section" data-u="sloptimeutcns">SLOpTimeUtcNs <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpTimeUtcNs.sleela)</span></h2>
 <div data-u="sloptimeutcns sloptimeutcns">
 <h3 id="SLOpTimeUtcNs">SLOpTimeUtcNs <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpTimeUtcNs, the single-opcode class for OP_TIME_UTC_NS (canonical code 50). This class carries exactly ONE opcode: OP_TIME_UTC_NS. Semantics: push the current UTC time in nanoseconds. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -2138,7 +2139,7 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slopunlock">SLOpUnlock <span class="muted" style="font-size:13px">(lib/opcodes/SLOpUnlock.sleela)</span></h2>
+<h2 class="section" data-u="slopunlock">SLOpUnlock <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpUnlock.sleela)</span></h2>
 <div data-u="slopunlock slopunlock">
 <h3 id="SLOpUnlock">SLOpUnlock <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
 <p class="desc">Defines SLOpUnlock, the single-opcode class for OP_UNLOCK (canonical code 31). This class carries exactly ONE opcode: OP_UNLOCK. Semantics: release a mutual-exclusion lock. Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
@@ -2156,8 +2157,8 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:34 UTC.
-SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC.
+<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
 </div>

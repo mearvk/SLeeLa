@@ -17,6 +17,7 @@
   <a href="../index.html"><strong>Home</strong></a>
   <a href="../packages.html"><strong>All packages</strong></a>
   <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
   <h2>Packages</h2><ul>
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
@@ -131,7 +132,7 @@
 <h1>Package <code>citizen</code></h1>
 <div class="lead">This package contains <strong>34</strong> source unit(s) defining <strong>34</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="advertisingmodel">AdvertisingModel <span class="muted" style="font-size:13px">(lib/citizen/character/AdvertisingModel.sleela)</span></h2>
+<h2 class="section" data-u="advertisingmodel">AdvertisingModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/AdvertisingModel.sleela)</span></h2>
 <div data-u="advertisingmodel advertisingmodel">
 <h3 id="AdvertisingModel">AdvertisingModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">AdvertisingModel — the audience is not the customer; the audience is the product. Revenue is impressions priced per thousand (CPM), and the only cost that matters is keeping the audience entertained enough to stay. A concrete BusinessModel: revenue = (impressions / 1000) x CPM. Family: character.</p>
@@ -149,7 +150,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="bankaccount">BankAccount <span class="muted" style="font-size:13px">(lib/citizen/BankAccount.sleela)</span></h2>
+<h2 class="section" data-u="bankaccount">BankAccount <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/BankAccount.sleela)</span></h2>
 <div data-u="bankaccount bankaccount">
 <h3 id="BankAccount">BankAccount <span class="pill">class</span></h3>
 <p class="desc">Defines BankAccount, the civic-finance Master Class — the quiet place a Citizen&#x27;s money goes to be anxious. It models a single banking relationship: who you bank with, the routing + account numbers that get the money there, and the balance that is somehow always lower than you expect. BankAccount is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It is a sidecar owned by Citizen and carries the real banking details: a 9-digit ABA routing number (the first two digits of which the Federal Reserve uses to decide which of its twelve Districts your money reports to) and an account number. It holds balance state in whole cents to keep the pennies honest. Family: citizen. Settlement crosses an explicit bridge to the ledger and the FederalReserveID clearing fabric.</p>
@@ -189,7 +190,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="brokeragemodel">BrokerageModel <span class="muted" style="font-size:13px">(lib/citizen/character/BrokerageModel.sleela)</span></h2>
+<h2 class="section" data-u="brokeragemodel">BrokerageModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/BrokerageModel.sleela)</span></h2>
 <div data-u="brokeragemodel brokeragemodel">
 <h3 id="BrokerageModel">BrokerageModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">BrokerageModel — stand between two parties who want to trade and charge a fee per trade for the privilege of your standing there. Revenue is trades x fee; cost is the clearing/compliance machinery that keeps the regulators calm. A concrete BusinessModel. Family: character.</p>
@@ -208,7 +209,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="businessmodel">BusinessModel <span class="muted" style="font-size:13px">(lib/citizen/character/BusinessModel.sleela)</span></h2>
+<h2 class="section" data-u="businessmodel">BusinessModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/BusinessModel.sleela)</span></h2>
 <div data-u="businessmodel businessmodel">
 <h3 id="BusinessModel">BusinessModel <span class="pill">class</span></h3>
 <p class="desc">Defines BusinessModel, the language-neutral base contract a</p>
@@ -254,7 +255,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="character">Character <span class="muted" style="font-size:13px">(lib/citizen/character/Character.sleela)</span></h2>
+<h2 class="section" data-u="character">Character <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/Character.sleela)</span></h2>
 <div data-u="character character">
 <h3 id="Character">Character <span class="pill">class</span></h3>
 <p class="desc">Defines Character, the central Master Class of the character package — a named actor in the Sleela economy who adopts exactly one BusinessModel and lives or dies by its monthly profit. A Character is classful by design: it is one class that composes any one of the many, many business-model classes in this package. Character is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It holds a BusinessModel reference typed to the base class, so it can carry a Subscription, Freemium, Marketplace, Advertising, Retail, Wholesale, Franchise, Licensing, SaaS, Consulting, Manufacturing, or Brokerage model interchangeably and ask it, each month, the only question that matters. The polymorphism follows the exact base/subclass pattern used by lib/compiler&#x27;s SLLanguageCompiler front ends. It also carries a little personality — grit and reputation — because a business model is only as good as the Character running it. Family: character. Settlement crosses an explicit bridge to the ledger.</p>
@@ -293,7 +294,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizen">Citizen <span class="muted" style="font-size:13px">(lib/citizen/Citizen.sleela)</span></h2>
+<h2 class="section" data-u="citizen">Citizen <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/Citizen.sleela)</span></h2>
 <div data-u="citizen citizen">
 <h3 id="Citizen">Citizen <span class="pill">class</span></h3>
 <p class="desc">Defines Citizen, the civic Master Class — one honest, taxpaying, coffee-drinking person as modeled by the Republic of Sleela. A Citizen is the smallest unit of a nation that still complains about the weather. Citizen is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe) with the other /lib Master Classes, so a loader can treat it uniformly. It composes three sidecar records that it owns and keeps consistent: an Industry affiliation (what they do for a living), a BankAccount (where the money quietly leaves from), and a FederalReserveID (how the central bank pretends to know them personally). A Citizen is, famously, able. It can be born, employed, paid, taxed, retired, and — on a good day — content. It holds civic state only; the paperwork is performed by the sidecar classes in this package. The runnable orchestration example lives in citizen/sleela/CitizenDemo.sleela. Family: citizen. Civic data crosses an explicit bridge to the ledger.</p>
@@ -343,7 +344,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizencommunityrelationshipsandcivicparticipationstats">CitizenCommunityRelationshipsAndCivicParticipationStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenCommunityRelationshipsAndCivicParticipationStats.sleela)</span></h2>
+<h2 class="section" data-u="citizencommunityrelationshipsandcivicparticipationstats">CitizenCommunityRelationshipsAndCivicParticipationStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenCommunityRelationshipsAndCivicParticipationStats.sleela)</span></h2>
 <div data-u="citizencommunityrelationshipsandcivicparticipationstats citizencommunityrelationshipsandcivicparticipationstats">
 <h3 id="CitizenCommunityRelationshipsAndCivicParticipationStats">CitizenCommunityRelationshipsAndCivicParticipationStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -373,7 +374,7 @@
 <tr><td><code>communityContribution</code></td><td><span class="sig">int communityContribution</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizendemo">CitizenDemo <span class="muted" style="font-size:13px">(lib/citizen/seem/CitizenDemo.sleela)</span></h2>
+<h2 class="section" data-u="citizendemo">CitizenDemo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/seem/CitizenDemo.sleela)</span></h2>
 <div data-u="citizendemo citizendemo">
 <h3 id="CitizenDemo">CitizenDemo <span class="pill">class</span></h3>
 <p class="desc">Walks a single Citizen through a whole, slightly comic life — born, schooled, employed across the whole industry, banked, cleared through a Federal Reserve District, paid, taxed, treated, and retired — printing a describe() line at each milestone. This is the executable counterpart to the citizen Master Classes; the authoritative definitions (Citizen, Industry, BankAccount, FederalReserveID) live one level up in lib/citizen/*.sleela. Family: citizen.</p>
@@ -383,7 +384,7 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizendigitalaccessandsafetystats">CitizenDigitalAccessAndSafetyStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenDigitalAccessAndSafetyStats.sleela)</span></h2>
+<h2 class="section" data-u="citizendigitalaccessandsafetystats">CitizenDigitalAccessAndSafetyStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenDigitalAccessAndSafetyStats.sleela)</span></h2>
 <div data-u="citizendigitalaccessandsafetystats citizendigitalaccessandsafetystats">
 <h3 id="CitizenDigitalAccessAndSafetyStats">CitizenDigitalAccessAndSafetyStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -401,7 +402,7 @@
 <tr><td><code>telehealthCapability</code></td><td><span class="sig">int telehealthCapability</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizeneducationandknowledgestats">CitizenEducationAndKnowledgeStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenEducationAndKnowledgeStats.sleela)</span></h2>
+<h2 class="section" data-u="citizeneducationandknowledgestats">CitizenEducationAndKnowledgeStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenEducationAndKnowledgeStats.sleela)</span></h2>
 <div data-u="citizeneducationandknowledgestats citizeneducationandknowledgestats">
 <h3 id="CitizenEducationAndKnowledgeStats">CitizenEducationAndKnowledgeStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -432,7 +433,7 @@
 <tr><td><code>educationDebtCents</code></td><td><span class="sig">int educationDebtCents</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizenemploymentworkandprofessionallifestats">CitizenEmploymentWorkAndProfessionalLifeStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenEmploymentWorkAndProfessionalLifeStats.sleela)</span></h2>
+<h2 class="section" data-u="citizenemploymentworkandprofessionallifestats">CitizenEmploymentWorkAndProfessionalLifeStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenEmploymentWorkAndProfessionalLifeStats.sleela)</span></h2>
 <div data-u="citizenemploymentworkandprofessionallifestats citizenemploymentworkandprofessionallifestats">
 <h3 id="CitizenEmploymentWorkAndProfessionalLifeStats">CitizenEmploymentWorkAndProfessionalLifeStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -469,7 +470,7 @@
 <tr><td><code>workLifeBalance</code></td><td><span class="sig">int workLifeBalance</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizenhousingutilitiesandhouseholdservicesstats">CitizenHousingUtilitiesAndHouseholdServicesStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenHousingUtilitiesAndHouseholdServicesStats.sleela)</span></h2>
+<h2 class="section" data-u="citizenhousingutilitiesandhouseholdservicesstats">CitizenHousingUtilitiesAndHouseholdServicesStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenHousingUtilitiesAndHouseholdServicesStats.sleela)</span></h2>
 <div data-u="citizenhousingutilitiesandhouseholdservicesstats citizenhousingutilitiesandhouseholdservicesstats">
 <h3 id="CitizenHousingUtilitiesAndHouseholdServicesStats">CitizenHousingUtilitiesAndHouseholdServicesStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -502,7 +503,7 @@
 <tr><td><code>housingAssistance</code></td><td><span class="sig">int housingAssistance</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizenidentityanddemographicprofilestats">CitizenIdentityAndDemographicProfileStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenIdentityAndDemographicProfileStats.sleela)</span></h2>
+<h2 class="section" data-u="citizenidentityanddemographicprofilestats">CitizenIdentityAndDemographicProfileStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenIdentityAndDemographicProfileStats.sleela)</span></h2>
 <div data-u="citizenidentityanddemographicprofilestats citizenidentityanddemographicprofilestats">
 <h3 id="CitizenIdentityAndDemographicProfileStats">CitizenIdentityAndDemographicProfileStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -539,7 +540,7 @@
 <tr><td><code>accessibilityNeeds</code></td><td><span class="sig">int accessibilityNeeds</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizenlegalandadministrativestandingstats">CitizenLegalAndAdministrativeStandingStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenLegalAndAdministrativeStandingStats.sleela)</span></h2>
+<h2 class="section" data-u="citizenlegalandadministrativestandingstats">CitizenLegalAndAdministrativeStandingStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenLegalAndAdministrativeStandingStats.sleela)</span></h2>
 <div data-u="citizenlegalandadministrativestandingstats citizenlegalandadministrativestandingstats">
 <h3 id="CitizenLegalAndAdministrativeStandingStats">CitizenLegalAndAdministrativeStandingStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -564,7 +565,7 @@
 <tr><td><code>privacyPreferenceLevel</code></td><td><span class="sig">int privacyPreferenceLevel</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizenlifestagegoalsandpersonalstatusstats">CitizenLifeStageGoalsAndPersonalStatusStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenLifeStageGoalsAndPersonalStatusStats.sleela)</span></h2>
+<h2 class="section" data-u="citizenlifestagegoalsandpersonalstatusstats">CitizenLifeStageGoalsAndPersonalStatusStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenLifeStageGoalsAndPersonalStatusStats.sleela)</span></h2>
 <div data-u="citizenlifestagegoalsandpersonalstatusstats citizenlifestagegoalsandpersonalstatusstats">
 <h3 id="CitizenLifeStageGoalsAndPersonalStatusStats">CitizenLifeStageGoalsAndPersonalStatusStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -591,7 +592,7 @@
 <tr><td><code>dataConfidence</code></td><td><span class="sig">int dataConfidence</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizenmobilitytransportandenvironmentalimpactstats">CitizenMobilityTransportAndEnvironmentalImpactStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenMobilityTransportAndEnvironmentalImpactStats.sleela)</span></h2>
+<h2 class="section" data-u="citizenmobilitytransportandenvironmentalimpactstats">CitizenMobilityTransportAndEnvironmentalImpactStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenMobilityTransportAndEnvironmentalImpactStats.sleela)</span></h2>
 <div data-u="citizenmobilitytransportandenvironmentalimpactstats citizenmobilitytransportandenvironmentalimpactstats">
 <h3 id="CitizenMobilityTransportAndEnvironmentalImpactStats">CitizenMobilityTransportAndEnvironmentalImpactStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -614,7 +615,7 @@
 <tr><td><code>environmentalStewardship</code></td><td><span class="sig">int environmentalStewardship</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizenpersonalfinanceandeconomicresiliencestats">CitizenPersonalFinanceAndEconomicResilienceStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenPersonalFinanceAndEconomicResilienceStats.sleela)</span></h2>
+<h2 class="section" data-u="citizenpersonalfinanceandeconomicresiliencestats">CitizenPersonalFinanceAndEconomicResilienceStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenPersonalFinanceAndEconomicResilienceStats.sleela)</span></h2>
 <div data-u="citizenpersonalfinanceandeconomicresiliencestats citizenpersonalfinanceandeconomicresiliencestats">
 <h3 id="CitizenPersonalFinanceAndEconomicResilienceStats">CitizenPersonalFinanceAndEconomicResilienceStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -649,7 +650,7 @@
 <tr><td><code>financialDependents</code></td><td><span class="sig">int financialDependents</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizenpersonalityabilitiesandpersonalcapabilitiesstats">CitizenPersonalityAbilitiesAndPersonalCapabilitiesStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenPersonalityAbilitiesAndPersonalCapabilitiesStats.sleela)</span></h2>
+<h2 class="section" data-u="citizenpersonalityabilitiesandpersonalcapabilitiesstats">CitizenPersonalityAbilitiesAndPersonalCapabilitiesStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenPersonalityAbilitiesAndPersonalCapabilitiesStats.sleela)</span></h2>
 <div data-u="citizenpersonalityabilitiesandpersonalcapabilitiesstats citizenpersonalityabilitiesandpersonalcapabilitiesstats">
 <h3 id="CitizenPersonalityAbilitiesAndPersonalCapabilitiesStats">CitizenPersonalityAbilitiesAndPersonalCapabilitiesStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -682,7 +683,7 @@
 <tr><td><code>problemSolving</code></td><td><span class="sig">int problemSolving</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizenphysicalhealthanddailywellbeingstats">CitizenPhysicalHealthAndDailyWellbeingStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenPhysicalHealthAndDailyWellbeingStats.sleela)</span></h2>
+<h2 class="section" data-u="citizenphysicalhealthanddailywellbeingstats">CitizenPhysicalHealthAndDailyWellbeingStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenPhysicalHealthAndDailyWellbeingStats.sleela)</span></h2>
 <div data-u="citizenphysicalhealthanddailywellbeingstats citizenphysicalhealthanddailywellbeingstats">
 <h3 id="CitizenPhysicalHealthAndDailyWellbeingStats">CitizenPhysicalHealthAndDailyWellbeingStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -713,7 +714,7 @@
 <tr><td><code>disabilitySupportLevel</code></td><td><span class="sig">int disabilitySupportLevel</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizenschemaandrulesmetadatastats">CitizenSchemaAndRulesMetadataStats <span class="muted" style="font-size:13px">(lib/citizen/CitizenSchemaAndRulesMetadataStats.sleela)</span></h2>
+<h2 class="section" data-u="citizenschemaandrulesmetadatastats">CitizenSchemaAndRulesMetadataStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/CitizenSchemaAndRulesMetadataStats.sleela)</span></h2>
 <div data-u="citizenschemaandrulesmetadatastats citizenschemaandrulesmetadatastats">
 <h3 id="CitizenSchemaAndRulesMetadataStats">CitizenSchemaAndRulesMetadataStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -723,7 +724,7 @@
 <tr><td><code>rulesetId</code></td><td><span class="sig">int rulesetId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="citizenstats">CitizenStats <span class="muted" style="font-size:13px">(lib/citizen/seem/CitizenStats.sleela)</span></h2>
+<h2 class="section" data-u="citizenstats">CitizenStats <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/seem/CitizenStats.sleela)</span></h2>
 <div data-u="citizenstats citizenstats">
 <h3 id="CitizenStats">CitizenStats <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -1001,7 +1002,7 @@
 <tr><td><code>normalize</code></td><td><span class="sig">int normalize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="consultingmodel">ConsultingModel <span class="muted" style="font-size:13px">(lib/citizen/character/ConsultingModel.sleela)</span></h2>
+<h2 class="section" data-u="consultingmodel">ConsultingModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/ConsultingModel.sleela)</span></h2>
 <div data-u="consultingmodel consultingmodel">
 <h3 id="ConsultingModel">ConsultingModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">ConsultingModel — sell time, dressed up as insight. Revenue is billable hours x rate, bounded by the brutal truth that there are only so many hours and consultants insist on sleeping some of them. A concrete BusinessModel: revenue scales with utilization, not headcount alone; cost is the consultants&#x27; salaries whether or not they billed. Family: character.</p>
@@ -1021,7 +1022,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="federalreserveid">FederalReserveID <span class="muted" style="font-size:13px">(lib/citizen/FederalReserveID.sleela)</span></h2>
+<h2 class="section" data-u="federalreserveid">FederalReserveID <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/FederalReserveID.sleela)</span></h2>
 <div data-u="federalreserveid federalreserveid">
 <h3 id="FederalReserveID">FederalReserveID <span class="pill">class</span></h3>
 <p class="desc">Defines FederalReserveID, the central-bank identity Master Class — the number by which the Federal Reserve pretends to know a Citizen personally. It issues and validates a civic clearing ID and maps the money to one of the twelve Federal Reserve Districts. FederalReserveID is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It is a sidecar owned by Citizen and the single source of truth for Federal Reserve details in this package: the twelve District codes (01 Boston .. 12 San Francisco), the mapping from an ABA routing prefix to a District, and the issuance of a deterministic, obviously-synthetic clearing identifier. No real identifiers are generated — the central bank&#x27;s holiday card list remains, mercifully, fictional. Family: citizen. Clearing crosses an explicit bridge to the ledger.</p>
@@ -1067,7 +1068,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="franchisemodel">FranchiseModel <span class="muted" style="font-size:13px">(lib/citizen/character/FranchiseModel.sleela)</span></h2>
+<h2 class="section" data-u="franchisemodel">FranchiseModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/FranchiseModel.sleela)</span></h2>
 <div data-u="franchisemodel franchisemodel">
 <h3 id="FranchiseModel">FranchiseModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">FranchiseModel — don&#x27;t run the shops; rent out the right to BE the shop. Revenue is an ongoing royalty on each franchisee&#x27;s sales plus a one-time fee amortized across the month, and the brand does the rest. A concrete BusinessModel. Family: character.</p>
@@ -1087,7 +1088,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="freemiummodel">FreemiumModel <span class="muted" style="font-size:13px">(lib/citizen/character/FreemiumModel.sleela)</span></h2>
+<h2 class="section" data-u="freemiummodel">FreemiumModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/FreemiumModel.sleela)</span></h2>
 <div data-u="freemiummodel freemiummodel">
 <h3 id="FreemiumModel">FreemiumModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">FreemiumModel — a large crowd uses the product for free, a small fraction converts to paid, and that fraction quietly funds everyone else. The business of giving most of it away on purpose. A concrete BusinessModel: revenue comes only from the converted fraction; cost scales with the whole free-plus-paid population. Family: character.</p>
@@ -1108,7 +1109,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="industry">Industry <span class="muted" style="font-size:13px">(lib/citizen/Industry.sleela)</span></h2>
+<h2 class="section" data-u="industry">Industry <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/Industry.sleela)</span></h2>
 <div data-u="industry industry">
 <h3 id="Industry">Industry <span class="pill">class</span></h3>
 <p class="desc">Defines Industry, the civic-sector Master Class — the honest living a Citizen claims to make. It models which slice of &quot;the whole economy&quot; a person belongs to and what that slice pays per cycle. Industry is a NATURAL / LOADABLE MODULE sharing the common module contract (load / loaded / moduleName / describe). It is a sidecar owned by Citizen: Citizen models the person; Industry models their place in the great churning machine of commerce — and whether that machine currently remembers their name. It covers the whole industry at the sector level, from the people who grow the food to the people who grow the spreadsheets. Family: citizen. Economic data crosses an explicit bridge to the ledger.</p>
@@ -1151,7 +1152,7 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="licensingmodel">LicensingModel <span class="muted" style="font-size:13px">(lib/citizen/character/LicensingModel.sleela)</span></h2>
+<h2 class="section" data-u="licensingmodel">LicensingModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/LicensingModel.sleela)</span></h2>
 <div data-u="licensingmodel licensingmodel">
 <h3 id="LicensingModel">LicensingModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">LicensingModel — own the idea, let others do the sweating. The Character licenses intellectual property and collects a royalty per licensed unit sold by someone else, with almost no marginal cost of its own. A concrete BusinessModel: wonderfully cheap to run, entirely dependent on the licensee&#x27;s hustle. Family: character.</p>
@@ -1169,7 +1170,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="manufacturingmodel">ManufacturingModel <span class="muted" style="font-size:13px">(lib/citizen/character/ManufacturingModel.sleela)</span></h2>
+<h2 class="section" data-u="manufacturingmodel">ManufacturingModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/ManufacturingModel.sleela)</span></h2>
 <div data-u="manufacturingmodel manufacturingmodel">
 <h3 id="ManufacturingModel">ManufacturingModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">ManufacturingModel — make the physical thing at scale. Revenue is units shipped x wholesale price; cost is variable material/labor per unit plus a large, stubborn fixed cost for the factory that does not care whether the line ran today. A concrete BusinessModel: the fixed cost is the drama; volume is the cure. Family: character.</p>
@@ -1189,7 +1190,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="marketplacemodel">MarketplaceModel <span class="muted" style="font-size:13px">(lib/citizen/character/MarketplaceModel.sleela)</span></h2>
+<h2 class="section" data-u="marketplacemodel">MarketplaceModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/MarketplaceModel.sleela)</span></h2>
 <div data-u="marketplacemodel marketplacemodel">
 <h3 id="MarketplaceModel">MarketplaceModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">MarketplaceModel — the Character owns neither the goods nor the buyers; it owns the handshake, and takes a cut of every one. Revenue is a commission on gross merchandise value (GMV). A concrete BusinessModel: revenue = GMV x take-rate; cost scales with the number of transactions it has to shepherd. Family: character.</p>
@@ -1209,7 +1210,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="retailmodel">RetailModel <span class="muted" style="font-size:13px">(lib/citizen/character/RetailModel.sleela)</span></h2>
+<h2 class="section" data-u="retailmodel">RetailModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/RetailModel.sleela)</span></h2>
 <div data-u="retailmodel retailmodel">
 <h3 id="RetailModel">RetailModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">RetailModel — buy a thing, mark it up, sell it to a person who wants it today. Revenue is units x retail price; cost is units x what you paid, plus the rent on the shop with the nice window. A concrete BusinessModel. Family: character.</p>
@@ -1229,7 +1230,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="saasmodel">SaaSModel <span class="muted" style="font-size:13px">(lib/citizen/character/SaaSModel.sleela)</span></h2>
+<h2 class="section" data-u="saasmodel">SaaSModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/SaaSModel.sleela)</span></h2>
 <div data-u="saasmodel saasmodel">
 <h3 id="SaaSModel">SaaSModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">SaaSModel — software as a service, billed per seat per month, priced across tiers. Like Subscription&#x27;s more ambitious cousin: seats are split across a basic and a premium tier, each at its own price, and the cloud bill scales with the whole seat count. A concrete BusinessModel. Family: character.</p>
@@ -1250,7 +1251,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slpackage">SLPackage <span class="muted" style="font-size:13px">(lib/citizen/SLPackage.sleela)</span></h2>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slpackage">
 <h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library package for citizen.</p>
@@ -1266,7 +1267,7 @@
 <tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="subscriptionmodel">SubscriptionModel <span class="muted" style="font-size:13px">(lib/citizen/character/SubscriptionModel.sleela)</span></h2>
+<h2 class="section" data-u="subscriptionmodel">SubscriptionModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/SubscriptionModel.sleela)</span></h2>
 <div data-u="subscriptionmodel subscriptionmodel">
 <h3 id="SubscriptionModel">SubscriptionModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">SubscriptionModel — recurring revenue from subscribers who each pay the same price every month and leave at a steady churn rate. The classic &quot;predictable until it isn&#x27;t&quot; business. A concrete BusinessModel: subclass, declare identity in setUp(), and override the revenue/cost hooks. Revenue is subscribers x price, minus the ones who quietly cancelled this month. Family: character.</p>
@@ -1286,7 +1287,7 @@
 <tr><td><code>monthlyCost</code></td><td><span class="sig">int monthlyCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="wholesalemodel">WholesaleModel <span class="muted" style="font-size:13px">(lib/citizen/character/WholesaleModel.sleela)</span></h2>
+<h2 class="section" data-u="wholesalemodel">WholesaleModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/citizen/character/WholesaleModel.sleela)</span></h2>
 <div data-u="wholesalemodel wholesalemodel">
 <h3 id="WholesaleModel">WholesaleModel <span class="pill">class</span> <span class="muted">extends <code>BusinessModel</code></span></h3>
 <p class="desc">WholesaleModel — sell in bulk to the people who sell to people. Thin margin per case, enormous volume, and a loyalty to the pallet jack that borders on romantic. A concrete BusinessModel: revenue is cases x case-price; the per-case margin is slim by design. Family: character.</p>
@@ -1308,8 +1309,8 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:34 UTC.
-SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC.
+<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
 </div>

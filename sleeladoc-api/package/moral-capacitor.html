@@ -17,6 +17,7 @@
   <a href="../index.html"><strong>Home</strong></a>
   <a href="../packages.html"><strong>All packages</strong></a>
   <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
   <h2>Packages</h2><ul>
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
@@ -131,7 +132,7 @@
 <h1>Package <code>moral-capacitor</code></h1>
 <div class="lead">This package contains <strong>19</strong> source unit(s) defining <strong>21</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="moral-capacitor">moral-capacitor <span class="muted" style="font-size:13px">(lib/moral-capacitor/moral-capacitor.sleela)</span></h2>
+<h2 class="section" data-u="moral-capacitor">moral-capacitor <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/moral-capacitor.sleela)</span></h2>
 <div data-u="moral-capacitor op">
 <h3 id="Op">Op <span class="pill struct">struct</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -153,7 +154,7 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="moral-certificate">moral-certificate <span class="muted" style="font-size:13px">(lib/moral-capacitor/moral-certificate.sleela)</span></h2>
+<h2 class="section" data-u="moral-certificate">moral-certificate <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/moral-certificate.sleela)</span></h2>
 <div data-u="moral-certificate cert">
 <h3 id="Cert">Cert <span class="pill struct">struct</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -175,7 +176,7 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmachinemoralgate">SLMachineMoralGate <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMachineMoralGate.sleela)</span></h2>
+<h2 class="section" data-u="slmachinemoralgate">SLMachineMoralGate <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMachineMoralGate.sleela)</span></h2>
 <div data-u="slmachinemoralgate slmachinemoralgate">
 <h3 id="SLMachineMoralGate">SLMachineMoralGate <span class="pill">class</span></h3>
 <p class="desc">Defines SLMachineMoralGate — the Moral Capacitor(TM) adapter for the Machine surface (SLMachineModel / SLMachineBuilder and the lib/cpu SLMachine it composes). It wraps an SLMoralCapacitor with machine-power policies and exposes intention-named checks consulted before a machine does something consequential: powering on, booting a guest OS, and executing a program on the composed machine. Booting a guest and running code are gated so a machine built from named parts cannot be turned to a prohibited use without an auditable moral discharge. Family: moral-capacitor. Machine adapter over SLMoralCapacitor.</p>
@@ -203,7 +204,7 @@
 <tr><td><code>decide</code></td><td><span class="sig">SLMoralVerdict decide(SLMoralOperation o, SLMoralPolicy p)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralcapacitor">SLMoralCapacitor <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCapacitor.sleela)</span></h2>
+<h2 class="section" data-u="slmoralcapacitor">SLMoralCapacitor <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCapacitor.sleela)</span></h2>
 <div data-u="slmoralcapacitor slmoralcapacitor">
 <h3 id="SLMoralCapacitor">SLMoralCapacitor <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralCapacitor(TM) — the ethical gate every /lib library can place in front of a consequential operation. Like an electrical capacitor it accumulates charge and only discharges when enough has built up; here the charge is moral justification contributed by ethical frameworks (deontology, utilitarianism, virtue, beneficence, consent) and the discharge is permission to proceed. An operation runs only when stored charge reaches the policy threshold AND no absolute red line (SLMoralVeto) is tripped. Lifecycle: configure() -&gt; appraise(operation) charges from the frameworks and arms vetoes -&gt; evaluate(threshold) returns an SLMoralVerdict (PERMIT / DEFER / DENY) -&gt; discharge() resets the stored charge so the capacitor is reusable. Family: moral-capacitor. Composes SLMoralCharge, SLMoralVeto, SLMoralFramework, SLMoralPolicy; returns SLMoralVerdict.</p>
@@ -236,7 +237,7 @@
 <tr><td><code>frameworkName</code></td><td><span class="sig">String frameworkName(int ordinal)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralcertificate">SLMoralCertificate <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCertificate.sleela)</span></h2>
+<h2 class="section" data-u="slmoralcertificate">SLMoralCertificate <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCertificate.sleela)</span></h2>
 <div data-u="slmoralcertificate slmoralcertificate">
 <h3 id="SLMoralCertificate">SLMoralCertificate <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralCertificate — the Certificate of Morals(TM): a signed attestation that a SLeeLa software product embeds the Moral Capacitor(TM) and operates under a named moral policy with the absolute red-line veto set armed, carrying the SLMoralWarranty. The certificate names the subject product, the issuer, the moral policy name and discharge threshold, the number of armed red lines, an issue serial, a validity span, and a cryptographic seal (digest/signature) over its canonical body so a Guard can verify it was issued by the authority and not altered. The certificate is the product-facing warranty: it travels WITH the software and is what SLMoralCodeGuard checks before a product is allowed to run or ship. The seal here is an abstract value filled by SLMoralCertificateAuthority (optionally hardened with lib/crypto SLDigest/SLSignature in production). Family: moral-capacitor. Carries SLMoralWarranty; issued by SLMoralCertificateAuthority; verified by SLMoralCodeGuard.</p>
@@ -283,7 +284,7 @@
 <tr><td><code>intToStr</code></td><td><span class="sig">String intToStr(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralcertificateauthority">SLMoralCertificateAuthority <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCertificateAuthority.sleela)</span></h2>
+<h2 class="section" data-u="slmoralcertificateauthority">SLMoralCertificateAuthority <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCertificateAuthority.sleela)</span></h2>
 <div data-u="slmoralcertificateauthority slmoralcertificateauthority">
 <h3 id="SLMoralCertificateAuthority">SLMoralCertificateAuthority <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralCertificateAuthority — the issuer of a Certificate of Morals(TM). Given a product name and a live Moral Capacitor (its policy and armed red-line set), the authority mints an SLMoralCertificate: it records the moral posture, assigns a serial and validity span, computes a deterministic seal over the certificate&#x27;s canonical body, and applies it. The same authority re-verifies a certificate by recomputing the seal, so a Guard can trust that a certificate was issued here and not altered. The seal is a deterministic fold over the canonical body keyed on the authority&#x27;s name — a self-contained, reproducible integrity tag. In production it is hardened by signing the body with lib/crypto SLDigest + SLSignature under the authority&#x27;s key; this class keeps the issue/verify contract stable regardless of which seal backend is linked. Family: moral-capacitor. Issues/verifies SLMoralCertificate; reads SLMoralCapacitor + SLMoralPolicy.</p>
@@ -311,7 +312,7 @@
 <tr><td><code>intToStr</code></td><td><span class="sig">String intToStr(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralcertified">SLMoralCertified <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCertified.sleela)</span></h2>
+<h2 class="section" data-u="slmoralcertified">SLMoralCertified <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCertified.sleela)</span></h2>
 <div data-u="slmoralcertified slmoralcertified">
 <h3 id="SLMoralCertified">SLMoralCertified <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralCertified — the one-object convention a SLeeLa product embeds to become morally certified. It bundles the three things a certified product needs: a live Moral Capacitor(TM) (the operation-boundary gate), a Certificate of Morals(TM) issued over that capacitor (the product- boundary warranty), and the Guard that admits the product only when both are present and valid. A product configures one SLMoralCertified at startup, gates its operations through capacitor(), and lets ship()/boot() paths call admit() to prove the moral code is included before running. This is how the project strives to include Morals and Certificates in ALL its SLeeLa software: embedding one SLMoralCertified makes a product both gated and certified, in a single, uniform step. Family: moral-capacitor. Composes SLMoralCapacitor, SLMoralCertificate, SLMoralCertificateAuthority, SLMoralCodeGuard.</p>
@@ -338,7 +339,7 @@
 <tr><td><code>isCertified</code></td><td><span class="sig">boolean isCertified()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralcharge">SLMoralCharge <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCharge.sleela)</span></h2>
+<h2 class="section" data-u="slmoralcharge">SLMoralCharge <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCharge.sleela)</span></h2>
 <div data-u="slmoralcharge slmoralcharge">
 <h3 id="SLMoralCharge">SLMoralCharge <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralCharge — the stored moral charge of a Moral Capacitor(TM). Charge is the signed sum of per-framework contributions: each ethical framework that endorses the operation adds charge, each that objects subtracts it. Charge is bounded by a maximum (a capacitor has finite capacity) and floored at zero on the discharge decision (negative net charge is simply &quot;no moral basis&quot;). The charge keeps per-framework attribution so a verdict can report which lens contributed what. Family: moral-capacitor. Held by SLMoralCapacitor.</p>
@@ -362,7 +363,7 @@
 <tr><td><code>dominantFramework</code></td><td><span class="sig">int dominantFramework()</span></td><td class="desc">The framework ordinal that contributed the most positive charge (0 if none).</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralcodeguard">SLMoralCodeGuard <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCodeGuard.sleela)</span></h2>
+<h2 class="section" data-u="slmoralcodeguard">SLMoralCodeGuard <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralCodeGuard.sleela)</span></h2>
 <div data-u="slmoralcodeguard slmoralcodeguard">
 <h3 id="SLMoralCodeGuard">SLMoralCodeGuard <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralCodeGuard — the Guard of the Moral Code: the enforcement that a SLeeLa software product actually INCLUDES the moral code it claims. Before a product is permitted to run or ship, the guard checks that it (1) embeds a live Moral Capacitor(TM), (2) presents a Certificate of Morals(TM) that is well-formed, (3) was sealed by a trusted authority and verifies against it, (4) is within its validity span, and (5) attests a posture consistent with the embedded capacitor (same policy threshold, red lines armed). A product that fails any check is refused — the moral code is mandatory, not optional. This is how the project strives to include Morals and Certificates in all its SLeeLa software: the guard is the gate at the product boundary, the counterpart to SLMoralCapacitor at the operation boundary. Family: moral-capacitor. Verifies SLMoralCertificate via SLMoralCertificateAuthority; inspects SLMoralCapacitor.</p>
@@ -391,7 +392,7 @@
 <tr><td><code>outcomeName</code></td><td><span class="sig">String outcomeName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralframework">SLMoralFramework <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralFramework.sleela)</span></h2>
+<h2 class="section" data-u="slmoralframework">SLMoralFramework <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralFramework.sleela)</span></h2>
 <div data-u="slmoralframework slmoralframework">
 <h3 id="SLMoralFramework">SLMoralFramework <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralFramework — the catalogue of ethical lenses the Moral Capacitor(TM) charges from. Each framework is a named way of judging an operation&#x27;s rightness, drawn from the coorenagraph moral vocabulary: deontology (duties/rules), consequentialism/utilitarianism (outcomes), virtue ethics (character), beneficence (do good / avoid harm), and consent/autonomy (respect the affected party&#x27;s will). A framework contributes a small signed charge to the capacitor: positive when it endorses the operation, negative when it objects. This is the vocabulary bridge: the frameworks name the same ethics the coorenagraph package defines (Deontology, Utilitarianism, VirtueEthics, Beneficence), made evaluable as capacitor charge. Family: moral-capacitor. Bridges coorenagraph; charges SLMoralCapacitor.</p>
@@ -420,7 +421,7 @@
 <tr><td><code>coorenagraphTerm</code></td><td><span class="sig">String coorenagraphTerm()</span></td><td class="desc">The coorenagraph vocabulary class name this framework corresponds to, so a caller can cross-reference the moral definition.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralledger">SLMoralLedger <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralLedger.sleela)</span></h2>
+<h2 class="section" data-u="slmoralledger">SLMoralLedger <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralLedger.sleela)</span></h2>
 <div data-u="slmoralledger slmoralledger">
 <h3 id="SLMoralLedger">SLMoralLedger <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralLedger — an append-only audit record of the verdicts a Moral Capacitor(TM) has returned. Each entry names the operation judged, the decision (PERMIT / DEFER / DENY), the charge versus threshold, and the reason, so a library can prove after the fact what was asked and how it was decided. The ledger keeps running counts of each decision for a quick posture summary. The record is a newline-separated String (the same bounded, enumerable form the rest of the library favours); a caller can print it or persist it. Family: moral-capacitor. Written by SLMoralCapacitor / the adapters.</p>
@@ -447,7 +448,7 @@
 <tr><td><code>intToStr</code></td><td><span class="sig">String intToStr(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoraloperation">SLMoralOperation <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralOperation.sleela)</span></h2>
+<h2 class="section" data-u="slmoraloperation">SLMoralOperation <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralOperation.sleela)</span></h2>
 <div data-u="slmoraloperation slmoraloperation">
 <h3 id="SLMoralOperation">SLMoralOperation <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralOperation — the thing the Moral Capacitor(TM) judges. An operation is described by who performs it (actor, e.g. &quot;vm&quot; / &quot;os&quot; / &quot;machine&quot;), the action verb (e.g. &quot;allocate&quot;, &quot;erase&quot;, &quot;spawn&quot;, &quot;boot&quot;), the target it affects (e.g. &quot;guest-memory&quot;, &quot;/dev/sda&quot;), the scope (e.g. &quot;process&quot;, &quot;disk&quot;, &quot;host&quot;), whether it is reversible, and whether the affected party has consented. These fields are what the frameworks appraise and what the veto set tests. Keeping the operation an explicit object (rather than loose arguments) means a verdict and a ledger entry can name exactly what was judged. Family: moral-capacitor. Evaluated by SLMoralCapacitor.</p>
@@ -476,7 +477,7 @@
 <tr><td><code>identity</code></td><td><span class="sig">String identity()</span></td><td class="desc">A short identity line for verdicts and the ledger.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralpolicy">SLMoralPolicy <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralPolicy.sleela)</span></h2>
+<h2 class="section" data-u="slmoralpolicy">SLMoralPolicy <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralPolicy.sleela)</span></h2>
 <div data-u="slmoralpolicy slmoralpolicy">
 <h3 id="SLMoralPolicy">SLMoralPolicy <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralPolicy — a named moral stance a library applies consistently through the Moral Capacitor(TM). A policy bundles the discharge threshold (how much moral charge an operation needs to proceed) with the set of red lines that are armed for the surface, plus whether a DEFER is allowed or a partial charge should fail closed to DENY. The adapters ship ready policies: a lenient VM default, a strict OS-destructive policy, and a Machine-power policy. Making the stance a first-class object means a surface&#x27;s ethical posture is declared once and reused, rather than re-expressed at every call site. Family: moral-capacitor. Consumed by SLMoralCapacitor and the adapters.</p>
@@ -506,7 +507,7 @@
 <tr><td><code>consentRequired</code></td><td><span class="sig">boolean consentRequired()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralverdict">SLMoralVerdict <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralVerdict.sleela)</span></h2>
+<h2 class="section" data-u="slmoralverdict">SLMoralVerdict <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralVerdict.sleela)</span></h2>
 <div data-u="slmoralverdict slmoralverdict">
 <h3 id="SLMoralVerdict">SLMoralVerdict <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralVerdict — the decision a Moral Capacitor(TM) returns for an operation. A verdict is PERMIT (charge met the threshold and no veto tripped), DEFER (partial charge: hold and request more justification or consent), or DENY (no charge, or a veto tripped). The verdict carries the stored charge, the threshold it was compared against, the deciding framework or red line, and a human-readable reason, so a caller can log exactly why an operation was allowed, held, or refused. Family: moral-capacitor. Returned by SLMoralCapacitor.evaluate.</p>
@@ -539,7 +540,7 @@
 <tr><td><code>intToStr</code></td><td><span class="sig">String intToStr(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralveto">SLMoralVeto <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralVeto.sleela)</span></h2>
+<h2 class="section" data-u="slmoralveto">SLMoralVeto <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralVeto.sleela)</span></h2>
 <div data-u="slmoralveto slmoralveto">
 <h3 id="SLMoralVeto">SLMoralVeto <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralVeto — the catalogue of absolute moral red lines the Moral Capacitor(TM) honours. A veto is a hard boundary that, when tripped for an operation, denies it regardless of how much moral charge the capacitor has stored: a capacitor cannot discharge through an open circuit. The red lines mirror the platform&#x27;s content-safety boundaries — child safety, weapons/CBRN enablement, non-consensual surveillance, deception/impersonation, scaled abuse, and irreversible destruction without consent. An SLMoralVeto instance tracks which red lines are armed and which are tripped for the operation under evaluation; the capacitor asks it whether any tripped line forbids discharge. Family: moral-capacitor. Consulted by SLMoralCapacitor.</p>
@@ -567,7 +568,7 @@
 <tr><td><code>redlineName</code></td><td><span class="sig">String redlineName(int redline)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slmoralwarranty">SLMoralWarranty <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralWarranty.sleela)</span></h2>
+<h2 class="section" data-u="slmoralwarranty">SLMoralWarranty <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLMoralWarranty.sleela)</span></h2>
 <div data-u="slmoralwarranty slmoralwarranty">
 <h3 id="SLMoralWarranty">SLMoralWarranty <span class="pill">class</span></h3>
 <p class="desc">Defines SLMoralWarranty — the warranty terms a Certificate of Morals carries. The warranty is the promise that a piece of SLeeLa software embeds the Moral Capacitor(TM), gates its consequential operations through it, honours the absolute red-line veto set, and records its verdicts for audit. It names the warrantor (the issuing party), the covered product, the warranty statement, and the limits of the warranty (it is a conduct guarantee about the embedded gate, not a claim of objective morality or of fitness for any particular purpose). The warranty is deliberately explicit and bounded: it warrants that the moral gate is PRESENT and ENFORCED, which is a checkable property, rather than warranting an outcome the gate cannot guarantee. Family: moral-capacitor. Carried by SLMoralCertificate.</p>
@@ -594,7 +595,7 @@
 <tr><td><code>text</code></td><td><span class="sig">String text()</span></td><td class="desc">The full warranty text (statement + limits) for embedding in a certificate.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slosmoralgate">SLOSMoralGate <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLOSMoralGate.sleela)</span></h2>
+<h2 class="section" data-u="slosmoralgate">SLOSMoralGate <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLOSMoralGate.sleela)</span></h2>
 <div data-u="slosmoralgate slosmoralgate">
 <h3 id="SLOSMoralGate">SLOSMoralGate <span class="pill">class</span></h3>
 <p class="desc">Defines SLOSMoralGate — the Moral Capacitor(TM) adapter for the OS surface (SLOperatingSystem, the OS Creator(TM) provider, and the installers). It wraps an SLMoralCapacitor with OS-appropriate policies and exposes intention-named checks the OS consults before a consequential step: running a shell command, deleting or formatting a filesystem path, installing to a disk, and writing an OS development tree. Destructive operations use a strict, consent-requiring, fail-closed policy. The gate makes the OS&#x27;s most dangerous actions — the ones that erase data or execute arbitrary commands — require an explicit, auditable moral discharge before they run. Family: moral-capacitor. OS adapter over SLMoralCapacitor.</p>
@@ -624,7 +625,7 @@
 <tr><td><code>decide</code></td><td><span class="sig">SLMoralVerdict decide(SLMoralOperation o, SLMoralPolicy p)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slpackage">SLPackage <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLPackage.sleela)</span></h2>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slpackage">
 <h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library package for moral-capacitor.</p>
@@ -640,7 +641,7 @@
 <tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slvmmoralguard">SLVMMoralGuard <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLVMMoralGuard.sleela)</span></h2>
+<h2 class="section" data-u="slvmmoralguard">SLVMMoralGuard <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/moral-capacitor/SLVMMoralGuard.sleela)</span></h2>
 <div data-u="slvmmoralguard slvmmoralguard">
 <h3 id="SLVMMoralGuard">SLVMMoralGuard <span class="pill">class</span></h3>
 <p class="desc">Defines SLVMMoralGuard — the Moral Capacitor(TM) adapter for the VM. It wraps an SLMoralCapacitor with VM-appropriate policies and exposes intention-named checks a VM consults before a consequential step: growing memory, spawning a thread or process, crossing the native/OS bridge, and running a program on the opcode substrate. Each check builds the matching SLMoralOperation, gates it through the capacitor, records the verdict in a ledger, and returns the SLMoralVerdict so the VM can proceed, defer, or refuse. This is the first and foremost placement of the capacitor: the VM is where programs actually run, so it is where moral charge must discharge before an effect is produced. Family: moral-capacitor. VM adapter over SLMoralCapacitor.</p>
@@ -672,8 +673,8 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:34 UTC.
-SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC.
+<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
 </div>
