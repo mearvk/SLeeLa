@@ -23,15 +23,21 @@
 
 Recent additions to the language, drivers, and standard library:
 
-- **SleelaDoc — a Javadoc-style documentation solution.** **SleelaDoc** is
-  SLeeLa's in-source doc-comment convention (angle-bracket comments sentinelled
-  with `@doc` / `@page`; see [`manifesto/SLEELADOC.md`](manifesto/SLEELADOC.md)),
-  and [`lib/sleeladoc`](lib/sleeladoc/README.md) is the **extractor** that renders
-  a `.sleela` unit as a Markdown or HTML API page — the way `javadoc` renders
-  Java, documenting *intent*. The compiler also emits author-marked doc outputs
-  as a byproduct of compilation (`--wiki` MediaWiki page + an originated source
-  twin), documented in [`manifesto/SLEELADOC.WIKI.md`](manifesto/SLEELADOC.WIKI.md).
-  Runnable: [`lib/sleeladoc/sleeladoc-demo.sleela`](lib/sleeladoc/sleeladoc-demo.sleela).
+- **SleelaDoc — a Javadoc-style documentation solution, with a generated HTML
+  site.** **SleelaDoc** is SLeeLa's in-source doc-comment convention
+  (angle-bracket comments sentinelled with `@doc` / `@page`; see
+  [`manifesto/SLEELADOC.md`](manifesto/SLEELADOC.md)), and
+  [`lib/sleeladoc`](lib/sleeladoc/README.md) is the **extractor** that renders a
+  `.sleela` unit as a Markdown or HTML API page — the way `javadoc` renders Java,
+  documenting *intent*. A complete, browsable **HTML documentation site for the
+  entire `/lib`** is generated into [`/sleeladoc-api`](sleeladoc-api/README.md)
+  by `tools/generate-sleeladoc-api.py` (open `sleeladoc-api/index.html`; a clean
+  blue / light-blue / light-grey / white style with a package → class → member
+  hierarchy and a glossary written for the *Student 2* reader). The compiler also
+  emits author-marked doc outputs as a byproduct of compilation (`--wiki`
+  MediaWiki page + an originated source twin), documented in
+  [`manifesto/SLEELADOC.WIKI.md`](manifesto/SLEELADOC.WIKI.md). Runnable:
+  [`lib/sleeladoc/sleeladoc-demo.sleela`](lib/sleeladoc/sleeladoc-demo.sleela).
 - **XML Document Object Model (`lib/xml`).** A SLeeLa-side XML DOM — a document
   owning a tree of element/text/comment/CDATA/PI nodes with ordered children and
   named attributes, a serializer (compact/pretty, XML 1.0 §2.4 escaping), a

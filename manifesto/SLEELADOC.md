@@ -81,6 +81,21 @@ class Reason {
 }
 ```
 
+## The generated HTML site — `/sleeladoc-api`
+
+A complete, browsable HTML documentation site for the **whole** standard library
+is generated into [`/sleeladoc-api`](../sleeladoc-api/README.md) by
+`tools/generate-sleeladoc-api.py`. It walks every unit under `/lib`, extracts the
+class/struct, fields, methods, and the source explanations, and emits a clean
+package → class → member hierarchy (blue / light blue / light grey / white, black
+text). Its glossary defines the reading level the prose targets — a **Student 2**,
+a capable adult learner returning to college-level study to read the books and
+learn what is true. Open `sleeladoc-api/index.html`; regenerate with:
+
+```sh
+python3 tools/generate-sleeladoc-api.py
+```
+
 ## Extracting docs — `sleeladoc` (the Javadoc-tool analogue)
 
 The `lib/sleeladoc/` package is the SleelaDoc **extractor**: the SLeeLa-side
