@@ -2455,7 +2455,7 @@
     },
     {
       "path": "lib/character/seem/CharacterStats.sleela",
-      "sha256": "9707dcd0a55c56851b3fd4a82922f6e4c8060f4f3f8166c5e5ac9e99bf377563"
+      "sha256": "736af0e5ce2e3356f1419a77d79a5f1c5015e2338021a8bb4357ae327cfd10db"
     },
     {
       "path": "lib/churn/SLPackage.sleela",
@@ -2595,7 +2595,7 @@
     },
     {
       "path": "lib/citizen/seem/CitizenStats.sleela",
-      "sha256": "2d2c29287a8ccf546e89b25a4addca3ef886bf786b66023f6d8a9f542d900bf1"
+      "sha256": "59b6ae71bcd8902c1280ef298b9e4b27256b042e03d150ebe069d0095e58a707"
     },
     {
       "path": "lib/codecs/SLCodecAac.sleela",
