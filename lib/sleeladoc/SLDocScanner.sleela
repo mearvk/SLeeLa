@@ -1,0 +1,305 @@
+<< lib/sleeladoc/SLDocScanner.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLDocScanner -- the token-stream reader that lifts
+     SleelaDoc @doc / @page blocks and @tags out of a .sleela unit and attaches
+     each doc comment to the declaration that follows it, building an SLDocModel. >>
+#sleela 2.5
+material;
+<< Family: sleeladoc. The extractor front end.
+
+   The built-in String is opaque (no in-language slicing), so a unit is fed to
+   the scanner one LOGICAL LINE at a time, each line already split into its
+   whitespace-separated TOKENS (a String array of words) -- the sanctioned real
+   char-level boundary used across the standard library (see lib/text/SLString
+   and lib/xml). A caller tokenizes at the boundary; the scanner then recognizes,
+   from tokens alone, the SleelaDoc block openers and closers, one-line docs, tag
+   lines, and the three declaration forms (class, method, field). The exact token
+   forms are tabulated in lib/sleeladoc/README.md; they are not quoted here
+   because an angle block comment cannot contain the angle delimiters themselves.
+
+   A completed doc comment is held pending and attached to the next declaration.
+   Ordinary comment, blank, and other lines are skipped. The model is filled in
+   declaration order. This is a pragmatic reader for the documented surface, not
+   a second parser -- it classifies lines, it does not type-check them. >>
+class SLDocScanner {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7945;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- scanner state ---- >
+  SLDocModel model;
+  < the doc comment being accumulated, or null when outside a block >
+  SLDocComment current;
+  < true while inside a doc block (between its opener and closer) >
+  boolean inBlock = false;
+  < the last completed doc comment, pending attachment to a declaration >
+  SLDocComment pending;
+
+  < Begin a scan of a unit named `unitName`. >
+  void begin(String unitName) {
+    model = new SLDocModel();
+    model.setUnitName(unitName);
+    current = null;
+    inBlock = false;
+    pending = null;
+  }
+  SLDocModel getModel() { return model; }
+
+  < ---- token helpers (all whole-string ==; no slicing) ---- >
+
+  < Join tokens [from, to) with single spaces into one value string. >
+  String joinTokens(String[] toks, int from, int to) {
+    String out = "";
+    int n = arrayLength(toks);
+    int end = to;
+    if (end > n) { end = n; }
+    int i = from;
+    if (i < 0) { i = 0; }
+    boolean first = true;
+    while (i < end) {
+      String t = toks[i];
+      if (t != null && t != "") {
+        if (!first) { out = out + " "; }
+        out = out + t;
+        first = false;
+      }
+      i = i + 1;
+    }
+    return out;
+  }
+
+  < True when `word` names a scalar/known declaration type head (so a line that >
+  < starts with it is a field or method, not prose). Covers the surface type >
+  < vocabulary plus the SL* / upper-initial class-type convention is handled by >
+  < the caller marking declaration lines; here we accept the common scalars and >
+  < treat any other token as a possible class-typed return/field via isTypeish. >
+  boolean isScalarType(String word) {
+    return word == "void" || word == "int" || word == "long"
+        || word == "boolean" || word == "double" || word == "float"
+        || word == "char" || word == "String" || word == "byte";
+  }
+  < A token looks like a type head if it is a known scalar or begins uppercase >
+  < (the SLeeLa class-name convention). The caller passes an explicit flag for >
+  < ambiguous cases; this is the default heuristic. >
+  boolean isTypeHead(String word, boolean upperInitial) {
+    if (isScalarType(word)) { return true; }
+    return upperInitial;
+  }
+
+  < ---- line feed API ---- >
+
+  << Feed one logical line, already tokenized into `toks` (its whitespace-
+     separated words, no comment delimiters stripped beyond tokenization), with
+     `upperInitial` true when the line's first token begins with an uppercase
+     letter (a class-type head) -- the caller computes this at the char-cell
+     boundary. The scanner updates its state and, on a declaration line, records
+     a member (attaching any pending doc comment). >>
+  void feed(String[] toks, boolean upperInitial) {
+    int n = arrayLength(toks);
+    if (n == 0) { return; }
+    String t0 = toks[0];
+
+    < inside a block: either the block closer, a tag line, or wrapped prose. >
+    if (inBlock) {
+      if (t0 == ">>") {
+        closeBlock();
+        return;
+      }
+      absorbBlockLine(toks);
+      return;
+    }
+
+    < a block opener: "<< @doc" (optionally with content on the same line). >
+    if (t0 == "<<" && n >= 2 && toks[1] == "@doc") {
+      openBlock();
+      if (n > 2) { absorbTokens(toks, 2, n); }
+      return;
+    }
+    < a one-line doc: "< @doc value..." closed by a trailing ">". >
+    if (t0 == "<" && n >= 2 && toks[1] == "@doc") {
+      SLDocComment c = new SLDocComment();
+      current = c;
+      int end = n;
+      if (toks[n - 1] == ">") { end = n - 1; }
+      absorbTokens(toks, 2, end);
+      current = null;
+      pending = c;
+      return;
+    }
+    < a page banner (opener then @page) -- recorded as prose on a fresh comment. >
+    if (t0 == "<<" && n >= 2 && toks[1] == "@page") {
+      openBlock();
+      absorbTokens(toks, 1, n);
+      return;
+    }
+    < an ordinary comment line is ignored. >
+    if (t0 == "<" || t0 == "<<" || t0 == "//") { return; }
+
+    < otherwise, a possible declaration line. >
+    classifyDeclaration(toks, upperInitial);
+  }
+
+  < ---- block accumulation ---- >
+
+  void openBlock() {
+    current = new SLDocComment();
+    inBlock = true;
+  }
+  void closeBlock() {
+    inBlock = false;
+    pending = current;
+    current = null;
+  }
+  < A line inside a block: the closer is handled in feed(), so absorb all here. >
+  void absorbBlockLine(String[] toks) {
+    absorbTokens(toks, 0, arrayLength(toks));
+  }
+
+  << Absorb tokens [from, to) into the current comment: a token that begins with
+     "@" starts a tag (name = token without "@", value = the rest of the line);
+     otherwise the run is appended to the summary prose. >>
+  void absorbTokens(String[] toks, int from, int to) {
+    if (current == null) { return; }
+    int i = from;
+    while (i < to) {
+      String t = toks[i];
+      if (t != null && startsWithAt(t)) {
+        String name = tagNameOf(t);
+        String value = joinTokens(toks, i + 1, to);
+        current.addTagOf(name, value);
+        return;
+      }
+      i = i + 1;
+    }
+    < no tag on this run: it is summary prose. >
+    String prose = joinTokens(toks, from, to);
+    if (prose != "") {
+      String s = current.getSummary();
+      if (s == "") { current.setSummary(prose); }
+      else { current.setSummary(s + " " + prose); }
+    }
+  }
+
+  < True when token `t` is a tag marker "@name". Compares the first glyph via a >
+  < single-cell token test the caller cannot give us, so we test known markers: >
+  < a token equals "@" + a known tag name. This keeps it whole-string and real. >
+  boolean startsWithAt(String t) {
+    return t == "@title" || t == "@intent" || t == "@param"
+        || t == "@returns" || t == "@axiom" || t == "@thesis"
+        || t == "@invariant" || t == "@proof" || t == "@congruence"
+        || t == "@evidence" || t == "@to" || t == "@see"
+        || t == "@page";
+  }
+  < The tag name for a known "@name" marker (the marker without the "@"). >
+  String tagNameOf(String t) {
+    if (t == "@title") { return "title"; }
+    if (t == "@intent") { return "intent"; }
+    if (t == "@param") { return "param"; }
+    if (t == "@returns") { return "returns"; }
+    if (t == "@axiom") { return "axiom"; }
+    if (t == "@thesis") { return "thesis"; }
+    if (t == "@invariant") { return "invariant"; }
+    if (t == "@proof") { return "proof"; }
+    if (t == "@congruence") { return "congruence"; }
+    if (t == "@evidence") { return "evidence"; }
+    if (t == "@to") { return "to"; }
+    if (t == "@see") { return "see"; }
+    if (t == "@page") { return "page"; }
+    return "tag";
+  }
+
+  < ---- declaration classification ---- >
+
+  << Classify a non-comment line as a class / method / field declaration and
+     record it, attaching any pending doc comment. A "class" line is "class Name
+     ...". A declaration beginning with a type head is a method when any token
+     contains a "(" marker token, else a field. Lines that are not declarations
+     (statements, braces) are ignored: a statement never begins with a type head
+     followed by a bare name at column zero in the documented surface. >>
+  void classifyDeclaration(String[] toks, boolean upperInitial) {
+    int n = arrayLength(toks);
+    String t0 = toks[0];
+
+    if (t0 == "class" && n >= 2) {
+      addMemberRecord(0, toks[1], joinTokens(toks, 0, n));
+      return;
+    }
+    < must look like a type head to be a member declaration. >
+    if (!isTypeHead(t0, upperInitial)) { return; }
+    if (n < 2) { return; }
+    < a method if any token is or contains the open-paren marker "(". >
+    boolean isMethod = hasParen(toks);
+    String nm = nameToken(toks);
+    if (nm == "") { return; }
+    if (isMethod) { addMemberRecord(2, nm, joinTokens(toks, 0, n)); }
+    else { addMemberRecord(1, nm, joinTokens(toks, 0, n)); }
+  }
+
+  < True when the tokens include a "(" marker (the caller tokenizes "name(" as >
+  < two tokens "name" "(" or passes "(" standalone). >
+  boolean hasParen(String[] toks) {
+    int n = arrayLength(toks);
+    for (int i = 0; i < n; i = i + 1) {
+      if (toks[i] == "(") { return true; }
+    }
+    return false;
+  }
+  < The declared name: the token right after the type head (toks[1]). >
+  String nameToken(String[] toks) {
+    if (arrayLength(toks) < 2) { return ""; }
+    String nm = toks[1];
+    if (nm == null) { return ""; }
+    if (nm == "(") { return ""; }
+    return nm;
+  }
+
+  < Record a member of `kind` named `nm` with signature `sig`, attaching the >
+  < pending doc comment (then clearing it). >
+  void addMemberRecord(int kind, String nm, String sig) {
+    SLDocMember m = new SLDocMember();
+    m.set(kind, nm, sig);
+    if (pending != null) {
+      m.attach(pending);
+      pending = null;
+    }
+    model.addMember(m);
+  }
+}

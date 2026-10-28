@@ -46506,6 +46506,42 @@
       "sha256": "89152c7e555d53161e7b49cc8cfca9439cd5b73395d1c1a1297204c88ca36ebf"
     },
     {
+      "path": "lib/sleeladoc/SLDocComment.sleela",
+      "sha256": "ffb3da03837963141676ab77926d98d80bd77bc4b2885a2c446942fc2068be24"
+    },
+    {
+      "path": "lib/sleeladoc/SLDocMember.sleela",
+      "sha256": "83dc7f14b4d4333b4ae48d2866bc2179649d7c5624f9352f56041e76b763f4a9"
+    },
+    {
+      "path": "lib/sleeladoc/SLDocModel.sleela",
+      "sha256": "3600d160efcf819e2963bf6f9ace7a5d564a6c6c77446c29281802ec634cd804"
+    },
+    {
+      "path": "lib/sleeladoc/SLDocRenderer.sleela",
+      "sha256": "ec9659aa953399ef1e3c0ebfb335ef013c51584009ad15d1a3362f72223d4c4e"
+    },
+    {
+      "path": "lib/sleeladoc/SLDocScanner.sleela",
+      "sha256": "f05d6a0d1f8fb2ed41274929110277347bb55018c8c9be69667b65f605ff4456"
+    },
+    {
+      "path": "lib/sleeladoc/SLDocTag.sleela",
+      "sha256": "18d5e64f8d943895c5f58cc235719b172a3128de8faa015fb07d31b39481aac8"
+    },
+    {
+      "path": "lib/sleeladoc/SLPackage.sleela",
+      "sha256": "7aa8e4967b346ccbfac17c2fcaf148477eefeaa2dbc7fd1db08f3d19f0a4558c"
+    },
+    {
+      "path": "lib/sleeladoc/SLSleelaDoc.sleela",
+      "sha256": "cd04efd46a629d671404d17586fb94a91d9aad033045aceca4c270841d8843cc"
+    },
+    {
+      "path": "lib/sleeladoc/sleeladoc-demo.sleela",
+      "sha256": "324b06b2b527b366b498516455fe65915c1edea18b17edb0b37258ede9607af4"
+    },
+    {
       "path": "lib/social-model/SLPackage.sleela",
       "sha256": "f8190d7998e50234cb0c0b343a0847f2457b9be81bec70616cb574d673c7a4d6"
     },

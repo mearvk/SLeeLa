@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11654
-library-packages: 105
-module-facade-symbols: 73
-total-symbol-records: 11727
+library-source-files: 11662
+library-packages: 106
+module-facade-symbols: 74
+total-symbol-records: 11736
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11335,6 +11335,15 @@ sldocument	SLVeritable.sleela	lib/sldocument/SLVeritable.sleela	source
 sleela	SLPackage.sleela	lib/sleela/SLPackage.sleela	facade
 sleela-sql	SqlModel.sleela	lib/sleela-sql/SqlModel.sleela	source
 sleela-terminal	SLPackage.sleela	lib/sleela-terminal/SLPackage.sleela	facade
+sleeladoc	SLDocComment.sleela	lib/sleeladoc/SLDocComment.sleela	source
+sleeladoc	SLDocMember.sleela	lib/sleeladoc/SLDocMember.sleela	source
+sleeladoc	SLDocModel.sleela	lib/sleeladoc/SLDocModel.sleela	source
+sleeladoc	SLDocRenderer.sleela	lib/sleeladoc/SLDocRenderer.sleela	source
+sleeladoc	SLDocScanner.sleela	lib/sleeladoc/SLDocScanner.sleela	source
+sleeladoc	SLDocTag.sleela	lib/sleeladoc/SLDocTag.sleela	source
+sleeladoc	SLPackage.sleela	lib/sleeladoc/SLPackage.sleela	facade
+sleeladoc	SLSleelaDoc.sleela	lib/sleeladoc/SLSleelaDoc.sleela	source
+sleeladoc	sleeladoc-demo.sleela	lib/sleeladoc/sleeladoc-demo.sleela	source
 social-model	SLPackage.sleela	lib/social-model/SLPackage.sleela	facade
 sommeliers	SLSommelierCare.sleela	lib/sommeliers/SLSommelierCare.sleela	source
 sommeliers	SLSommelierCareDemo.sleela	lib/sommeliers/SLSommelierCareDemo.sleela	source

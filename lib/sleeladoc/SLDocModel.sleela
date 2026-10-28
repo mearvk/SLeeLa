@@ -1,0 +1,97 @@
+<< lib/sleeladoc/SLDocModel.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLDocModel -- the parsed SleelaDoc model of a whole unit:
+     the unit name and its documented members in declaration order. >>
+#sleela 2.5
+material;
+< Family: sleeladoc. The parsed model of one .sleela unit: a name and an ordered >
+< list of SLDocMember (class / field / method) in declaration order. The scanner >
+< fills it; the renderer reads it. Members live in a growable VM-managed object >
+< array (start empty, grow by arrayPush), as in lib/xml. >
+class SLDocModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7944;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < The unit name (the source base name a caller supplies). >
+  String unitName = "";
+  < Documented members in declaration order; growable VM-managed object array. >
+  SLDocMember[] members = new SLDocMember[0];
+  int memberN = 0;
+
+  void setUnitName(String n) { unitName = n; }
+  String getUnitName() { return unitName; }
+
+  < Append a member, preserving declaration order. >
+  void addMember(SLDocMember m) {
+    if (memberN < arrayLength(members)) {
+      members[memberN] = m;
+    } else {
+      arrayPush(members, m);
+    }
+    memberN = memberN + 1;
+  }
+
+  int memberCount() { return memberN; }
+  SLDocMember memberAt(int i) {
+    if (i < 0 || i >= memberN) { return null; }
+    return members[i];
+  }
+
+  < Count members of a given kind (0 class, 1 field, 2 method). >
+  int countKind(int kind) {
+    int c = 0;
+    for (int i = 0; i < memberN; i = i + 1) {
+      SLDocMember m = members[i];
+      if (m != null && m.getKind() == kind) { c = c + 1; }
+    }
+    return c;
+  }
+  < Count members carrying a non-empty doc comment. >
+  int documentedCount() {
+    int c = 0;
+    for (int i = 0; i < memberN; i = i + 1) {
+      SLDocMember m = members[i];
+      if (m != null && m.documented()) { c = c + 1; }
+    }
+    return c;
+  }
+}

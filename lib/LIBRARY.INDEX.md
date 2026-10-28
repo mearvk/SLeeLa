@@ -1,11 +1,37 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.52  
-**Packages:** 105  
-**SLeeLa source units:** 11654  
-**Module-facade symbols:** 73  
-**Total symbol records:** 11727  
+**Revision:** 0.53  
+**Packages:** 106  
+**SLeeLa source units:** 11662  
+**Module-facade symbols:** 74  
+**Total symbol records:** 11736  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.53 adds the new **`sleeladoc`** package (`lib/sleeladoc/`): the
+> SLeeLa-side **SleelaDoc extractor** — the Javadoc-tool analogue. It reads
+> structured doc-comments out of a `.sleela` Wrapper and renders a Markdown or
+> HTML API page, documenting *intent* (not just signatures). A SleelaDoc comment
+> is an ordinary angle-bracket comment whose sentinel token is `@doc` (or
+> `@page`), so it lexes today with no compiler change. Eight source Master
+> Classes plus the facade: **`SLSleelaDoc`** (the façade a caller drives —
+> `begin` → `feed` tokenized lines → `toMarkdown`/`toHtml`), **`SLDocScanner`**
+> (the token-stream front end that lifts doc blocks and `@tags` and attaches each
+> to the following declaration), **`SLDocRenderer`** (the Markdown/HTML back end),
+> and the model **`SLDocModel`** / **`SLDocMember`** / **`SLDocComment`** /
+> **`SLDocTag`**. Because the built-in String is opaque, the scanner reads
+> tokenized lines (the char-cell boundary used across `lib/text`/`lib/xml`); node
+> storage uses growable VM-managed object arrays. A runnable reference
+> (`sleeladoc-demo.sleela`) feeds a small documented class and prints the rendered
+> Markdown and HTML; `lib/sleeladoc/README.md` documents the surface, the
+> convention lives in `manifesto/SLEELADOC.md`, and the compiler's own
+> author-marked doc outputs (`--wiki` wikitext + the originated twin) are
+> documented in `manifesto/SLEELADOC.WIKI.md`. Every class carries the Metadata
+> Class metapattern.
+>
+> One new package (105 → **106**), one new facade (73 → **74**), eight new source
+> classes (11654 → **11662** sources; 11727 → **11736** total records). Counts
+> reconciled to the live `/lib` tree by `tools/generate-library-symbols.py` and
+> verified by `test-suites/test-library-inventory.sh`.
 
 > Revision 0.52 adds the new **`xml`** package (`lib/xml/`): a SLeeLa-side XML
 > **Document Object Model (DOM)**. Eight source Master Classes plus the package

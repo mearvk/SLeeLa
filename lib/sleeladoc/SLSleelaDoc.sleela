@@ -1,0 +1,89 @@
+<< lib/sleeladoc/SLSleelaDoc.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLSleelaDoc -- the one-object facade a caller drives to
+     extract SleelaDoc from a unit and render it: begin, feed tokenized lines,
+     then render Markdown or HTML. The Javadoc-tool analogue entry point. >>
+#sleela 2.5
+material;
+< Family: sleeladoc. The facade. A caller drives ONE object end to end: >
+<   doc.begin("MyUnit");                 start a unit >
+<   doc.feed(tokens, upperInitial);      feed each tokenized source line >
+<   String md = doc.toMarkdown();        render the API page >
+< It owns an SLDocScanner (front end) and an SLDocRenderer (back end) as fields >
+< and calls through them, mirroring lib/xml SLXmlDocument + SLXmlSerializer. >
+class SLSleelaDoc {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7947;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLDocScanner scanner;
+  SLDocRenderer renderer;
+
+  < Begin extracting a unit named `unitName`. >
+  void begin(String unitName) {
+    scanner = new SLDocScanner();
+    renderer = new SLDocRenderer();
+    scanner.begin(unitName);
+  }
+
+  < Feed one tokenized source line; `upperInitial` true when its first token >
+  < begins with an uppercase letter (computed by the caller at the char-cell >
+  < boundary). Order of feeds is declaration order. >
+  void feed(String[] toks, boolean upperInitial) {
+    scanner.feed(toks, upperInitial);
+  }
+
+  < The parsed model (members in declaration order). >
+  SLDocModel model() { return scanner.getModel(); }
+
+  < Render the accumulated model as a Markdown API page. >
+  String toMarkdown() {
+    return renderer.toMarkdown(scanner.getModel());
+  }
+  < Render the accumulated model as a minimal HTML fragment. >
+  String toHtml() {
+    return renderer.toHtml(scanner.getModel());
+  }
+
+  < ---- quick facts ---- >
+  int memberCount() { return scanner.getModel().memberCount(); }
+  int documentedCount() { return scanner.getModel().documentedCount(); }
+}

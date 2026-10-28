@@ -1,0 +1,104 @@
+<< lib/sleeladoc/SLDocComment.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLDocComment -- one parsed SleelaDoc block: its free-prose
+     summary plus an ordered list of @tags. >>
+#sleela 2.5
+material;
+< Family: sleeladoc. One SleelaDoc comment (a doc block or a one-line doc). It >
+< holds the leading free-prose summary (text before the first tag) and the >
+< ordered tags that follow. Tags are stored in a growable VM-managed object >
+< array (start empty, grow by arrayPush), as in lib/xml. >
+class SLDocComment {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7942;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < The free-prose summary (text before the first @tag); "" when none. >
+  String summary = "";
+  < Ordered @tags; a growable VM-managed object array. >
+  SLDocTag[] tags = new SLDocTag[0];
+  int tagN = 0;
+
+  void setSummary(String s) { summary = s; }
+  String getSummary() { return summary; }
+
+  < Append a parsed tag, preserving source order. >
+  void addTag(SLDocTag t) {
+    if (tagN < arrayLength(tags)) {
+      tags[tagN] = t;
+    } else {
+      arrayPush(tags, t);
+    }
+    tagN = tagN + 1;
+  }
+  < Convenience: build and append a tag from name + value. >
+  void addTagOf(String n, String v) {
+    SLDocTag t = new SLDocTag();
+    t.set(n, v);
+    addTag(t);
+  }
+
+  int tagCount() { return tagN; }
+  SLDocTag tagAt(int i) {
+    if (i < 0 || i >= tagN) { return null; }
+    return tags[i];
+  }
+
+  < Index of the first tag with name `n`, or -1. >
+  int indexOfTag(String n) {
+    for (int i = 0; i < tagN; i = i + 1) {
+      SLDocTag t = tags[i];
+      if (t != null && t.is(n)) { return i; }
+    }
+    return -1;
+  }
+  boolean hasTag(String n) { return indexOfTag(n) >= 0; }
+  < The value of the first tag named `n`, or "" when absent. >
+  String tagValue(String n) {
+    int i = indexOfTag(n);
+    if (i < 0) { return ""; }
+    SLDocTag t = tags[i];
+    return t.getTagValue();
+  }
+
+  < True when the comment carries nothing (no summary and no tags). >
+  boolean empty() { return summary == "" && tagN == 0; }
+}

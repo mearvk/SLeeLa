@@ -15,7 +15,7 @@ SLeeLa is treated as a Turing-complete language whose front end should be expres
 
 The library uses one SLeeLa source file per front-end object. This makes the object inventory measurable and gives the project a path toward a roughly 2,000-object standard library without hiding declarations inside aggregate files.
 
-Families: `core/`, `collections/`, `text/`, `xml/`, `io/`, `vm/`, `os/`, `net/`, `wifi/`, `security/`, `opcodes/`, `sldocument/`, `coorenagraph/`, `moral-capacitor/`.
+Families: `core/`, `collections/`, `text/`, `xml/`, `sleeladoc/`, `io/`, `vm/`, `os/`, `net/`, `wifi/`, `security/`, `opcodes/`, `sldocument/`, `coorenagraph/`, `moral-capacitor/`.
 
 ### Moral Capacitor™ — the ethical gate for every family
 
@@ -82,7 +82,7 @@ built in CI: `build-linux.yml`, `build-macos.yml`, `build-windows.yml`).
 
 ## Library discovery
 
-The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **105 package families / 11,654 .sleela source classes / 73 `SLPackage.sleela` module facades / 11,727 total symbol records** (verified filesystem count via `tools/generate-library-symbols.py`, reconciled with `LIBRARY.INDEX.md` Revision 0.52). See `LIBRARY.SYMBOLS.md` for the complete collection.
+The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **106 package families / 11,662 .sleela source classes / 74 `SLPackage.sleela` module facades / 11,736 total symbol records** (verified filesystem count via `tools/generate-library-symbols.py`, reconciled with `LIBRARY.INDEX.md` Revision 0.53). See `LIBRARY.SYMBOLS.md` for the complete collection.
 
 The `sldocument` family defines the `.sldocument` format: an ordered, top-down SLeeLa document that compiles against and with standard `.sleela` source. Its annotated method steps run in order (`@order` / `@function` / bare method name), and each step usually returns a single binary **veritable-and-kind** value (`SLVeritable`). These documents suit tasks more sophisticated than bash scripting and clear national-program work where order is already established. The compile/invoke primitives sit below the explicit VM/OS bridge in `native/src/sleela_sldocument.cpp`. See `sldocument/SLDOCUMENT.md`.
 
@@ -113,6 +113,23 @@ subject → structure), reflexive, symmetric, and deterministic. See
 `xml/README.md` and the runnable `xml/xml-dom.sleela`. This is the DOM data model
 in `lib/`; it is distinct from `markdown/XML.SLEELA.DEFINITION.md`, which defines
 an XML **interchange form for `.sleela`/`.sst` source artifacts**.
+
+## SleelaDoc — documentation extraction (the Javadoc-tool analogue)
+
+The `sleeladoc/` package is the SLeeLa-side **SleelaDoc extractor**: it reads
+structured doc-comments out of a `.sleela` Wrapper and renders a Markdown or HTML
+API page, the way `javadoc` renders Java — documenting *intent*, not just
+signatures. A doc comment is an ordinary angle-bracket comment whose sentinel
+token is `@doc` (or `@page`), so it lexes today with no compiler change.
+`SLSleelaDoc` is the façade (`begin` → `feed` tokenized lines → `toMarkdown`/
+`toHtml`); it owns an `SLDocScanner` (front end) and `SLDocRenderer` (back end)
+over the model `SLDocModel`/`SLDocMember`/`SLDocComment`/`SLDocTag`. Because the
+built-in String is opaque, the scanner reads tokenized lines (the char-cell
+boundary used across `lib/text`/`lib/xml`). See `sleeladoc/README.md`, the
+convention in `manifesto/SLEELADOC.md`, and the runnable
+`sleeladoc/sleeladoc-demo.sleela`. It complements the compiler's own
+author-marked doc outputs (`--wiki` wikitext + the originated twin), documented
+in `manifesto/SLEELADOC.WIKI.md`.
 
 The `opcodes` family expresses the canonical SLeeLa VM instruction set as one SLeeLa class per opcode: 103 `SLOp*` classes (codes 0–102; the base 98 are `OP_NOP`..`OP_AUDIO_PLATFORM`), plus `SLOpcodeBase` and `SLOpcodeStream`. Each class carries a single opcode and honours the fetch-then-execute-one contract — carefully call the VM to the next instruction, then execute exactly that one opcode — modeling `impl/core`'s dispatch loop at the SLeeLa layer. The fetch/dispatch primitives sit below the explicit VM/OS bridge in `native/src/sleela_opcode.cpp`. See `opcodes/OPCODES.md`, including the rationale for why 98 opcodes is complete for a modern program and developer.
 
