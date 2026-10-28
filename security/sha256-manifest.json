@@ -19,7 +19,7 @@
     },
     {
       "path": "ballum/src/ballum_backend_macos.mm",
-      "sha256": "2e64a7c5279264869dc8bb0381c81bcbc691409dd0fa98d04e8012fccd178ffa"
+      "sha256": "f9d6aa05772b1b56d2936e1a6638616cf00ad8d7604f72964d1064f32e4ed0e7"
     },
     {
       "path": "ballum/src/ballum_backend_select.c",
@@ -519,7 +519,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "b05d1fb239c6705e76c1ca3721becbf9f15b29939ddbb47230470464a06f8630"
+      "sha256": "4bf66b7560036441425f4d7553a870e316394e4616095bdd1cf1bf7f83722b13"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
