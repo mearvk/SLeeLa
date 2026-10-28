@@ -72,6 +72,21 @@ static int probe_path_command(const char *command, char *out, size_t out_cap) {
                 free(copy);
                 return 1;
             }
+#if defined(_WIN32)
+            /* Windows installations normally expose java.exe, while the
+               discovery contract intentionally uses the portable name java. */
+            if (strchr(command, '.') == NULL) {
+                size_t used = strlen(candidate);
+                if (used + 5 < sizeof(candidate)) {
+                    memcpy(candidate + used, ".exe", 5);
+                    if (executable_file(candidate)) {
+                        copy_string(out, out_cap, candidate);
+                        free(copy);
+                        return 1;
+                    }
+                }
+            }
+#endif
         }
         if (!next) break;
         cursor = next + 1;
