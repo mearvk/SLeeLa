@@ -189,4 +189,24 @@ class SLXmlDocument {
     if (root == null) { return declaration(); }
     return declaration() + "\n" + writer.toPrettyXml(root);
   }
+
+  << ---- equality (the same three-rung tie, at document scope) ----
+     Tier 1 identity is the native == on the document objects. Beyond that a
+     document IS its tree, so structural equality defers to the root elements'
+     SLXmlNode.equals (the recursive Tier 3 tie). Two empty documents (no root)
+     are structurally equal; an empty and a non-empty document are not.
+     Reflexive, symmetric, and deterministic. >>
+  boolean sameReference(SLXmlDocument other) { return this == other; }
+
+  boolean equals(SLXmlDocument other) {
+    if (other == null) { return false; }
+    if (this == other) { return true; }
+    SLXmlNode mine = root;
+    SLXmlNode theirs = other.documentElement();
+    if (mine == null) { return theirs == null; }
+    if (theirs == null) { return false; }
+    return mine.equals(theirs);
+  }
+  < Alias reading as "the same structure". >
+  boolean sameStructure(SLXmlDocument other) { return equals(other); }
 }

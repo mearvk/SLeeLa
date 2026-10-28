@@ -124,6 +124,44 @@ print(a.nameOf(1) + " " + a.qualityOf(1) + "/10 " + a.bandOf(a.qualityOf(1)));
 print("overall quality x10: " + a.overallQualityX10());   // 68 = 6.8 / 10
 ```
 
+## Equality — a three-rung "tie of trust"
+
+Comparing two nodes is answered on an escalating ladder; each rung is a stronger
+tie than the last, and the binary question stays simple — two nodes are either
+the **same pointer**, the **same subject**, or the **same structure**.
+
+| Rung | Method | Means | Children consulted? |
+| --- | --- | --- | --- |
+| **1 — identity** | `sameReference(other)` | the two references point at the one object in memory (native `==` on objects = reference identity) | — |
+| **2 — same subject** | `sameSubject(other)` | distinct objects that denote the same named thing: same **nature** (`nodeType`), **name**, **id**, and (for leaves) **value**, compared case-sensitively | no |
+| **3 — structure** | `equals(other)` / `sameStructure(other)` | the whole subtrees are shaped alike: same subject, same attribute **set** (name+value, order-independent), same children **in order**, recursively | yes |
+
+`tieStrength(other)` reports the rung two nodes meet on — `3` identity, `2`
+structure, `1` subject, `0` untied — and `tieName(n)` gives the word.
+
+```java
+SLXmlNode a = doc.getElementById("x");
+SLXmlNode b = other.getElementById("x");
+
+a.sameReference(b);   // Tier 1: same object in memory?
+a.sameSubject(b);     // Tier 2: same named thing (ignoring subtree)?
+a.equals(b);          // Tier 3: structurally deep-equal?  (the default sense)
+a.tieName(a.tieStrength(b));   // "identity" | "structure" | "subject" | "untied"
+```
+
+The default `equals()` is the structural tie — the strongest sense in which two
+**independently built** XML trees can be equal. `SLXmlAttribute.equals` (name +
+value) and `SLXmlDocument.equals` (defers to the root elements' structural
+equality) follow the same ladder.
+
+**Charge / idempotency guarantees.** Every rung is **reflexive**
+(`x.equals(x)` is always true), **symmetric** (`a.equals(b) == b.equals(a)`),
+and **deterministic/stable** — comparing two unchanged trees always yields the
+same answer, with no hidden state, clock, or allocation that could perturb it,
+so re-asking is idempotent. String comparison is null-safe and case-sensitive
+(XML names are case-sensitive; no case folding is applied). The `xml-dom.sleela`
+demo exercises all four outcomes and verifies the three guarantees.
+
 ## Implementation boundary
 
 This layer models, builds, queries, serializes, and reparses XML in the common

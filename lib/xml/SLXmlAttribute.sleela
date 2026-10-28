@@ -138,4 +138,27 @@ class SLXmlAttribute {
     if (qname == "xmlns") { return true; }
     return nsPrefix == "xmlns";
   }
+
+  << ---- equality (the same three-rung tie, for an attribute) ----
+     Tier 1 identity is the native == on objects. Tier 2/3 collapse for an
+     attribute (it has no subtree): two attributes are the SAME SUBJECT and the
+     SAME STRUCTURE exactly when their qualified name and value match, compared
+     case-sensitively. Reflexive, symmetric, and deterministic. >>
+  boolean sameReference(SLXmlAttribute other) { return this == other; }
+
+  boolean equals(SLXmlAttribute other) {
+    if (other == null) { return false; }
+    if (this == other) { return true; }
+    if (!strEq(qname, other.getName())) { return false; }
+    return strEq(value, other.getValue());
+  }
+  < Alias, mirroring SLXmlNode.sameSubject (identical to equals here). >
+  boolean sameSubject(SLXmlAttribute other) { return equals(other); }
+
+  < Null-safe, case-sensitive string equality (two nulls are equal). >
+  boolean strEq(String a, String b) {
+    if (a == null) { return b == null; }
+    if (b == null) { return false; }
+    return a == b;
+  }
 }

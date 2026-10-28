@@ -182,8 +182,65 @@ class XmlDom {
     print("overall quality x10: " + aspect.overallQualityX10()
         + " (origin " + aspect.getOrigin() + ")");
 
+    < ---- the three-rung equality tie (kept in its own method so main stays >
+    < small; a very large method strains the VM local-slot budget) ---- >
+    demoEquality();
+
     print("");
     print("=== demonstration complete ===");
+  }
+
+  < Demonstrate and verify the three-rung equality ladder on small, standalone >
+  < trees, plus the reflexive / symmetric / idempotent charge guarantees. >
+  void demoEquality() {
+    print("");
+    print("--- equality: the three-rung tie of trust ---");
+
+    < Two small, independently-built, structurally-identical trees: >
+    <   <item id="x"><name>Bell</name></item> >
+    SLXmlNode treeA = makeItem("x", "Bell");
+    SLXmlNode treeB = makeItem("x", "Bell");
+
+    < Tier 1 IDENTITY: the same object in memory. >
+    SLXmlNode alias = treeA;
+    print("identity  treeA vs alias(treeA): tie=" + treeA.tieName(treeA.tieStrength(alias))
+        + " sameReference=" + treeA.sameReference(alias));
+
+    < Tier 3 STRUCTURE: distinct objects, identical shape. >
+    print("structure treeA vs treeB(copy) : tie=" + treeA.tieName(treeA.tieStrength(treeB))
+        + " equals=" + treeA.equals(treeB)
+        + " sameReference=" + treeA.sameReference(treeB));
+
+    < Tier 2 SUBJECT only: same <item id="x">, different child text. >
+    SLXmlNode treeC = makeItem("x", "A DIFFERENT CHILD");
+    print("subject   treeA vs same-id,diff: tie=" + treeA.tieName(treeA.tieStrength(treeC))
+        + " sameSubject=" + treeA.sameSubject(treeC)
+        + " equals=" + treeA.equals(treeC));
+
+    < Untied: a different subject entirely (different id). >
+    SLXmlNode treeD = makeItem("zzz", "Bell");
+    print("untied    treeA vs id=zzz item : tie=" + treeA.tieName(treeA.tieStrength(treeD))
+        + " sameSubject=" + treeA.sameSubject(treeD));
+
+    < Charge / idempotency guarantees over the tie. >
+    print("guarantee reflexive  treeA.equals(treeA)          : " + treeA.equals(treeA));
+    print("guarantee symmetric  A.eq(B)==B.eq(A)             : "
+        + (treeA.equals(treeB) == treeB.equals(treeA)));
+    print("guarantee idempotent re-ask gives the same answer : "
+        + (treeA.equals(treeB) == treeA.equals(treeB)));
+  }
+
+  < Build a standalone <item id=.. ><name>text</name></item> subtree for the >
+  < equality demonstration. Children are bound to typed locals before use. >
+  SLXmlNode makeItem(String id, String text) {
+    SLXmlNode item = new SLXmlNode();
+    item.asElement("item");
+    item.setAttribute("id", id);
+    SLXmlNode nm = new SLXmlNode();
+    nm.asElement("name");
+    nm.addText(text);
+    item.appendChild(nm);
+    return item;
   }
 
   < The text of an item's <name> child ("" when absent). >

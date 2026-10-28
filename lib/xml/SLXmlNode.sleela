@@ -73,22 +73,24 @@ class SLXmlNode {
   String[] dataCellView;
   boolean dataHasCells = false;
 
-  < ---- tree storage (element nodes) ---- >
-  < Object arrays are allocated at a fixed capacity and addressed by subscript >
-  < (the proven idiom for class-typed arrays, as in lib/autocad). The logical >
-  < counts childN/attrN track how many slots are in use. >
-  static final int MAX_CHILDREN = 1024;
-  static final int MAX_ATTRS = 64;
-  SLXmlNode[] children;
+  << ---- tree storage (element nodes) ----
+     The backing stores are GROWABLE VM-managed object arrays: they start empty
+     and grow by arrayPush (the idiom lib/collections/SLList uses for String[],
+     here applied to class-typed arrays). This keeps a node's footprint
+     proportional to its actual children/attributes rather than pre-allocating a
+     large fixed capacity for every node -- important when a document holds many
+     nodes. The logical counts childN/attrN track how many slots are in use
+     (capacity may exceed them after a removal, and is then reused). >>
+  SLXmlNode[] children = new SLXmlNode[0];
   int childN = 0;
-  SLXmlAttribute[] attrs;
+  SLXmlAttribute[] attrs = new SLXmlAttribute[0];
   int attrN = 0;
 
-  < Allocate the backing stores. Called by every as* constructor so a freshly >
-  < `new`-ed node is immediately usable. >
+  < Ensure the backing stores exist (defensive; the field initializers already >
+  < allocate them, so this is a no-op for a normally `new`-ed node). >
   void ensureStores() {
-    if (children == null) { children = new SLXmlNode[MAX_CHILDREN]; }
-    if (attrs == null) { attrs = new SLXmlAttribute[MAX_ATTRS]; }
+    if (children == null) { children = new SLXmlNode[0]; }
+    if (attrs == null) { attrs = new SLXmlAttribute[0]; }
   }
 
   < ---- construction ---- >
@@ -139,11 +141,14 @@ class SLXmlNode {
   < ---- children (DOM Node) ---- >
 
   < Append a child node and return it (DOM appendChild returns the child). >
-  < Appends are ignored once the fixed capacity is reached. >
+  < Reuses a freed slot when capacity exceeds the live count; else grows. >
   SLXmlNode appendChild(SLXmlNode child) {
     ensureStores();
-    if (childN >= MAX_CHILDREN) { return child; }
-    children[childN] = child;
+    if (childN < arrayLength(children)) {
+      children[childN] = child;
+    } else {
+      arrayPush(children, child);
+    }
     childN = childN + 1;
     return child;
   }
@@ -233,10 +238,13 @@ class SLXmlNode {
       existing.setValue(value);
       return;
     }
-    if (attrN >= MAX_ATTRS) { return; }
     SLXmlAttribute a = new SLXmlAttribute();
     a.set(qn, value);
-    attrs[attrN] = a;
+    if (attrN < arrayLength(attrs)) {
+      attrs[attrN] = a;
+    } else {
+      arrayPush(attrs, a);
+    }
     attrN = attrN + 1;
   }
 
@@ -330,5 +338,153 @@ class SLXmlNode {
       }
     }
     return best + 1;
+  }
+
+  << ====================================================================
+     EQUALITY -- a three-rung "tie of trust"
+     ====================================================================
+     Comparison of two nodes is answered on an escalating ladder, each rung a
+     stronger tie than the last. The binary question stays simple: two nodes are
+     either the SAME POINTER, the SAME SUBJECT, or the SAME STRUCTURE -- and
+     nothing more exotic than that.
+
+       Tier 1  IDENTITY     the two references point at the one object in
+                            memory. This is the native == on objects (reference
+                            identity, confirmed by the runtime). Strongest and
+                            cheapest; if it holds, no further work is done.
+
+       Tier 2  SAME SUBJECT "callingly the same object": distinct objects that
+                            denote the same named thing, decided by carefully
+                            comparing the defining attributes -- nature (kind),
+                            name, id, and value, each case-sensitively (XML names
+                            are case-sensitive, so "Item" and "item" differ).
+                            This rung ignores children: it is identity of the
+                            node AS A SUBJECT, not of its subtree.
+
+       Tier 3  STRUCTURE    the final tie in trust: the two whole subtrees are
+                            shaped alike -- same kind, same name, the same set of
+                            attributes (name+value, order-independent), and the
+                            same children compared in document order, recursively.
+
+     Charge / idempotency guarantees (the "physical idempotency of charge based
+     on the nature of tie"): every rung is
+       - reflexive   x.equals(x) is always true at every tier;
+       - symmetric   a.equals(b) == b.equals(a);
+       - deterministic/stable  a comparison of two unchanged trees always yields
+                     the same answer (no hidden state, no clock, no allocation
+                     that could perturb the result) -- re-asking is idempotent.
+     The default equals() is the structural tie (Tier 3), the strongest sense in
+     which two independently-built XML trees can be "equal". >>
+
+  < The "id" attribute of this node ("" when absent or not an element). Used as >
+  < part of the subject identity of an element. >
+  String subjectId() {
+    if (kind != 1) { return ""; }
+    String got = getAttribute("id");
+    if (got == null) { return ""; }
+    return got;
+  }
+
+  << ---- Tier 1: IDENTITY ----
+     Same object in memory. Native == on objects is reference identity. >>
+  boolean sameReference(SLXmlNode other) {
+    return this == other;
+  }
+
+  << ---- Tier 2: SAME SUBJECT ----
+     Distinct nodes that denote the same named thing. Compares nature (kind),
+     name, id, and leaf value, each case-sensitively. Children are NOT consulted.
+     Reflexive (a node shares every attribute with itself) and symmetric (every
+     test is a symmetric == of two values). >>
+  boolean sameSubject(SLXmlNode other) {
+    if (other == null) { return false; }
+    < Tier 1 subsumes Tier 2: the one object is trivially its own subject. >
+    if (this == other) { return true; }
+    if (kind != other.nodeType()) { return false; }
+    if (!strEq(nodeName, other.name())) { return false; }
+    if (!strEq(subjectId(), other.subjectId())) { return false; }
+    < Leaf kinds (text/cdata/comment/PI) are defined by their data. >
+    if (kind == 3 || kind == 4 || kind == 8 || kind == 7) {
+      return strEq(data, other.nodeValue());
+    }
+    < Elements and the document node need no data comparison at this tier. >
+    return true;
+  }
+
+  << ---- Tier 3: STRUCTURE (the default equals) ----
+     The whole subtree is shaped alike. Escalates through the ladder: a Tier 1
+     hit returns immediately; otherwise the node must be the SAME SUBJECT and
+     then its attributes (as a set) and its children (in order) must match
+     recursively. This is the strongest tie and the meaning of equals(). >>
+  boolean equals(SLXmlNode other) {
+    if (other == null) { return false; }
+    < Tier 1: identity short-circuit (also guarantees reflexivity). >
+    if (this == other) { return true; }
+    < Tier 2: the nodes must denote the same subject before structure matters. >
+    if (!sameSubject(other)) { return false; }
+    < Attributes must match as a set (order-independent, both directions). >
+    if (!attributesEqual(other)) { return false; }
+    < Children must match in document order, recursively. >
+    if (childN != other.childCount()) { return false; }
+    for (int i = 0; i < childN; i = i + 1) {
+      SLXmlNode mine = children[i];
+      SLXmlNode theirs = other.childAt(i);
+      if (mine == null) {
+        if (theirs != null) { return false; }
+      } else {
+        if (!mine.equals(theirs)) { return false; }
+      }
+    }
+    return true;
+  }
+
+  < Convenience alias reading as "the same structure". >
+  boolean sameStructure(SLXmlNode other) { return equals(other); }
+
+  << Attribute-set equality: every attribute of this node has an equal-valued
+     namesake on `other`, AND the counts match -- so neither side carries an
+     extra attribute. Order-independent, and symmetric by construction (equal
+     counts + one-way containment implies two-way containment). >>
+  boolean attributesEqual(SLXmlNode other) {
+    if (attrN != other.attributeCount()) { return false; }
+    for (int i = 0; i < attrN; i = i + 1) {
+      SLXmlAttribute a = attrs[i];
+      if (a == null) { return false; }
+      String theirs = other.getAttribute(a.getName());
+      if (theirs == null) { return false; }
+      if (!strEq(a.getValue(), theirs)) { return false; }
+    }
+    return true;
+  }
+
+  << ---- the decided tie ----
+     Report which rung of the ladder two nodes meet on -- the single "nature of
+     the tie". Higher is a stronger trust. Deterministic for unchanged trees.
+       3 = identity (same reference)
+       2 = same structure (deep-equal subtrees, distinct objects)
+       1 = same subject  (same named thing, differing subtree)
+       0 = untied        (different subjects) >>
+  int tieStrength(SLXmlNode other) {
+    if (other == null) { return 0; }
+    if (this == other) { return 3; }
+    if (equals(other)) { return 2; }
+    if (sameSubject(other)) { return 1; }
+    return 0;
+  }
+  < A human word for a tie strength. >
+  String tieName(int strength) {
+    if (strength == 3) { return "identity"; }
+    if (strength == 2) { return "structure"; }
+    if (strength == 1) { return "subject"; }
+    return "untied";
+  }
+
+  << Null-safe, case-sensitive string equality. Two nulls are equal; a null and
+     a non-null are not. XML is case-sensitive, so == (which is exact) is the
+     right primitive and no case folding is applied. >>
+  boolean strEq(String a, String b) {
+    if (a == null) { return b == null; }
+    if (b == null) { return false; }
+    return a == b;
   }
 }
