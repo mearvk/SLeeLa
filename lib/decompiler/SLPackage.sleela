@@ -1,7 +1,8 @@
 << lib/decompiler/SLPackage.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library package for decompiler. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: decompiler >
 < Exposes the package to the SLeeLa compiler, Loader, and Nordshrift. >
 class SLPackage {

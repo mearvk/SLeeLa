@@ -20,7 +20,8 @@
    are the operational statement of 1:1 Turing effect across the languages.
    
    Family: cpu. Composes the frontends, lowering, opcode map, and the Sleela VM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLTuringBridge {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

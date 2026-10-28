@@ -15,7 +15,8 @@
    
    Family: os. Composes SLCompatLayer (up to three guests). Pure design model
      for composition/validity; the layers' own load/unload cross the os* bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCompatSet {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

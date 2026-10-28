@@ -9,7 +9,8 @@
    program with established order can see exactly where flow broke.
    
    Family: sldocument. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 class SLDocumentResult {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -4,7 +4,8 @@
      line (version 2.0). It adds a version identity and a settings surface
      (SLGuiSettings) over the 1.0 baseline (the mual line), and hardens the
      backend / document-listener / window with validated, nameful settings. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: gui >
 < Exposes the package to the SLeeLa compiler, Loader, and Nordshrift. >
 < This package is the SLeeLa-facing *consequence* of the top-level gui/ work >

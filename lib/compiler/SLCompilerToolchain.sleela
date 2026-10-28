@@ -1,6 +1,7 @@
 << Explicit native C/C++ toolchain descriptor. No PATH probing or process
    execution occurs in this descriptor. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCompilerToolchain {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

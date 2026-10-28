@@ -5,7 +5,8 @@
      clear selected accent, consistent inactive tabs, compact spacing, and
      one-shot click activation. Page content is deliberately left to the caller.
    Family: user-interface. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLTabBar extends SLWidget {
   String metaVersion = "1.0.0";
   int metaId = 11480;

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < SL Sommelier profile: optional display preferences only; no sensitive identity
   fields are required to participate. >
 class SLSommelierProfile {

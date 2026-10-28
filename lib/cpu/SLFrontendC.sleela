@@ -14,7 +14,8 @@
    below it do not change. This mirrors how clang targets LLVM IR.
    
    Family: cpu. Extends SLFrontend. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLFrontendC extends SLFrontend {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,7 +1,8 @@
 << lib/codecs/SLCodecEac3.sleela
    SLeeLa Standard Library Definition.
    Definition: Dolby Digital Plus codec class — the SLeeLa-facing handle to codec id 12. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: codecs. Individual codec class for Dolby Digital Plus: >
 < Enhanced AC-3 (Dolby Digital Plus), multichannel. Mirrors codecs/codecs/eac3/ and the registry entry in >
 < sleela_codec_manager.h. SLeeLa never calls a codec directly; the >

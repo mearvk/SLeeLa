@@ -10,7 +10,8 @@
    Flags follow the usual CPU status register convention.
    
    Family: cpu. Composes SLAdder; pure Sleela arithmetic. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLALU {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

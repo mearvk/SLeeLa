@@ -9,7 +9,8 @@
    SLeeLa opcode substrate — the same contract every CPU in lib/cpu now honors.
    
    Family: cpu. Extends SLCPURuntime. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLPDP8CPU extends SLCPURuntime {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

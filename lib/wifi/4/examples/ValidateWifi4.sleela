@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Demonstration of Wi-Fi 4 profile validation. >
 
 Wifi4Model model;

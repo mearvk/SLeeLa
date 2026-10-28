@@ -3,7 +3,8 @@
    Definition: Defines the SLeeLa standard-library type SLWarrant, the
    SLeeLa-side model of an envelopment warrant: a cause served for a subject by
    a named program. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 < Family: web-server-technology. Native implementation crosses an explicit VM/OS bridge. >
 class SLWarrant {

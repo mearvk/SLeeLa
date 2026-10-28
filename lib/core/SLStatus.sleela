@@ -1,7 +1,8 @@
 << lib/core/SLStatus.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLStatus used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Native foundational bridge contract for Status. >
 < Role: language. Responsibility: status identity. >
 class SLStatus {

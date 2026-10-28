@@ -35,7 +35,8 @@
    Family: ballum. Full-screen session over SLBallumScreen + SLBallumInput; ESC
    uses the uiBallumPollKey keyboard bridge (requires a keyboard backend to exit
    by key; a pointer long-press and requestExit() are always-available fallbacks). >>
-#sleela 2.2
+#sleela 2.5
+material;
 class SLBallumSession {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,6 +1,7 @@
 << SLeeLa compiler developer workbench: runnable-facing build coordinator.
    File I/O and process creation remain in the explicitly enabled native bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCompilerWorkbench {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

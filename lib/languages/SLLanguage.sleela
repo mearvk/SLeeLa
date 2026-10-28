@@ -1,7 +1,8 @@
 << lib/languages/SLLanguage.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLLanguage used within the languages library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 < Family: languages. One loaded language pack: a locale code, its endonym, its >
 < script direction (ltr/rtl), and the lookup from a stable message key to its >

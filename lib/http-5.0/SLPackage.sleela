@@ -1,6 +1,7 @@
 << lib/http-5.0/SLPackage.sleela
    SLeeLa Standard Library Definition for HTTP 5.0. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Capability flags describe source models, not production runtime guarantees. >
 class SLPackage {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

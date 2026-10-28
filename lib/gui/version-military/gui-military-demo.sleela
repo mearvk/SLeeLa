@@ -5,7 +5,8 @@
    items, the explicit Component vs Container taxonomy, the cryptography
    selector, the public-key certificate store, and the window key-listeners
    (resize / minimize / fullscreen / minimize-right fold + double-click restore). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class GuiMilitaryDemo {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

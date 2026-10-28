@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << CharacterBodyStats.sleela
    SLeeLa CharacterStats component: body measurements and movement capabilities.
    

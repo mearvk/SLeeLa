@@ -1,6 +1,7 @@
 // @author Max Rupplin — MEARVK LLC — 2026
 // Output cell for scalar C-style out parameters.
-#sleela 2.1
+#sleela 2.5
+material;
 class SLSignalScalar {
   double value;
 

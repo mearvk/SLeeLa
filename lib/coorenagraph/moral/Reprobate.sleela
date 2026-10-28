@@ -3,6 +3,8 @@
    Part of speech: noun
    Definition: A person characterized in this vocabulary as rejecting moral constraints or acting without principle. >>
 
+#sleela 2.5
+material;
 class Reprobate {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

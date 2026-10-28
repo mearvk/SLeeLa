@@ -3,6 +3,8 @@
    Part of speech: noun
    Definition: A system of internal principles, rules of conduct, and values regarding right and wrong behavior. >>
 
+#sleela 2.5
+material;
 class Morals {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

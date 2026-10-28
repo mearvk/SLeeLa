@@ -6,7 +6,8 @@
    CPU's runWorkload(). The same program runs identically regardless of source
    language (C, C++, Sleela) and regardless of which architecture it runs on,
    because each CPU maps the compiled image onto the canonical opcode substrate. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class RunWorkloadsExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -20,7 +20,8 @@
    
    Family: os. Pure design model; the presence check crosses the osExists bridge
      (requires #sleela 1.5). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLConfigSet {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

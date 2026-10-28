@@ -7,7 +7,8 @@
    A concrete BusinessModel: subclass, declare identity in setUp(), and override
    the revenue/cost hooks. Revenue is subscribers x price, minus the ones who
    quietly cancelled this month. Family: character. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SubscriptionModel extends BusinessModel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

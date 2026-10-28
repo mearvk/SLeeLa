@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << CharacterSurvivalStats.sleela
    SLeeLa CharacterStats component: health, mana, stamina, shield, and barrier pools.
    

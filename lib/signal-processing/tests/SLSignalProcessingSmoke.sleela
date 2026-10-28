@@ -1,6 +1,7 @@
 // @author Max Rupplin — MEARVK LLC — 2026
 // Deterministic smoke checks for the SLeeLa source mirror.
-#sleela 2.1
+#sleela 2.5
+material;
 import math;
 
 class SLSignalProcessingSmoke {

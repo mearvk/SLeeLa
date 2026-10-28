@@ -16,7 +16,8 @@
    
    Family: moral-capacitor. Carries SLMoralWarranty; issued by
      SLMoralCertificateAuthority; verified by SLMoralCodeGuard. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMoralCertificate {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

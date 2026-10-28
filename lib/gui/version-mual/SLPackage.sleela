@@ -1,7 +1,8 @@
 << lib/gui/version-mual/SLPackage.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library package for gui. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: gui >
 < Exposes the package to the SLeeLa compiler, Loader, and Nordshrift. >
 < This package is the SLeeLa-facing *consequence* of the top-level gui/ work >

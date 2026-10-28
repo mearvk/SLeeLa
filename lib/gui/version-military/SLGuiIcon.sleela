@@ -12,7 +12,8 @@
    
    Family: gui. Attached to a node (via SLGuiIconHost / effects) on buttons,
      menu items, and clickables; the host paints the asset at the computed rect. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiIcon {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 << CharacterStateStats.sleela
    SLeeLa CharacterStats component: lifetime and state flags.
    

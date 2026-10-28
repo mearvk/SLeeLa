@@ -17,7 +17,8 @@
    
    Family: autocad. SLeeLa owns the document and every edit; a front end issues
    create/alter/delete intents and reads geometry back for preview and save. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCadDocument {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

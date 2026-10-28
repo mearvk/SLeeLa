@@ -1,7 +1,8 @@
 << lib/ballum/SLBallumColor.sleela
    SLeeLa Standard Library Definition.
    Definition: An 8-bit RGBA color, mirroring ballum_color_t. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ballum. A single pixel color: 8-bit per channel, straight >
 < (non-premultiplied) alpha, mirroring the native ballum_color_t struct. Each >
 < channel is clamped to 0..255 on set so a program can never hand the native >

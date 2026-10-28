@@ -1,7 +1,8 @@
 << lib/compression/SLCompressionZlib.sleela
    SLeeLa Standard Library Definition.
    Definition: zlib (RFC 1950) algorithm class — the SLeeLa-facing handle to algorithm id 5. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: compression. Individual algorithm class for zlib (RFC 1950), mirroring >
 < compression/compressors/zlib/ and the registry entry in >
 < sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the >

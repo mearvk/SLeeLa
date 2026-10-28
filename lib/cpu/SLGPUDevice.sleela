@@ -15,7 +15,8 @@
    
    Family: cpu. Composes SLRAM (VRAM) and SLSleelaVM (per-lane kernel engine).
    Enabled via the GPU option on SLCPURuntime / SLVM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGPUDevice {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

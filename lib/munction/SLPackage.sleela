@@ -1,7 +1,8 @@
 << lib/munction/SLPackage.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library package for munction. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: munction >
 < Original module sources remain authoritative in the package source tree. >
 class reachAllMethods {

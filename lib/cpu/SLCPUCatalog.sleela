@@ -13,7 +13,8 @@
    
    Family: cpu. Selects/instantiates models that extend SLCPURuntime; consumed by
      SLCPUFleet and any "choose a CPU" surface. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLCPUCatalog {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

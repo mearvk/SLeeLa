@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Demonstration of Wi-Fi 5 profile validation. >
 
 Wifi5Model model;

@@ -19,7 +19,8 @@
    
    Family: gui. Consulted by components before a guarded action; the host
    supplies authenticated admin identities. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiAdminAuthority {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

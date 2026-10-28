@@ -17,7 +17,8 @@
    time ticks so the walkthrough is deterministic and headless. Ordinals
    (easing / severity / position / shape) are passed as small ints — the house
    style for callers, documented inline and in each class. >>
-#sleela 2.1
+#sleela 2.5
+material;
 import gui.version-dual;
 class GuiTransitionsDemo {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

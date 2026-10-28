@@ -19,7 +19,8 @@
    
    Family: os. Opt-in network fetch via the osRun / osMakeDir / osExists bridge;
      requires #sleela 1.5 for the os* built-ins. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLDistroFetch {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

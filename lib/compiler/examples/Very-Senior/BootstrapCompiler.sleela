@@ -1,5 +1,6 @@
 < Very Senior lesson: model bootstrap stages and reproducibility checks. >
-#sleela 2.1
+#sleela 2.5
+material;
 
 class BootstrapCompiler {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

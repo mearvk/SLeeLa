@@ -28,7 +28,8 @@
 <  >
 < Comments use the angle-bracket style (< line, << block >>). Methods resolve >
 < on class-typed fields per syntax 1.11+. #sleela 2.1 enables the full surface. >
-#sleela 2.1
+#sleela 2.5
+material;
 
 class SLString {
 

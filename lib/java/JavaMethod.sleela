@@ -1,7 +1,8 @@
 << lib/java/JavaMethod.sleela
    SLeeLa Standard Library Definition.
    Definition: Represents a Java method reference and its callable name within SLeeLa Java interoperability. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class JavaMethod {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

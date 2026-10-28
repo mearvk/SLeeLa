@@ -3,6 +3,8 @@
    Part of speech: noun
    Definition: An ethical theory in which actions are judged by duties or rules, regardless of consequences. >>
 
+#sleela 2.5
+material;
 class Deontology {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

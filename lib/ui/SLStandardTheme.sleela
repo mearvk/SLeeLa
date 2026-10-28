@@ -11,7 +11,8 @@
    A flavor sets all tokens at once (see SLThemeFlavor). Every flavor is tuned so
    text clears WCAG AA contrast on each surface it is drawn over -- that is the
    quality bar, not a suggestion. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. The unified token model shared by the four standard flavors. >
 class SLStandardTheme {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

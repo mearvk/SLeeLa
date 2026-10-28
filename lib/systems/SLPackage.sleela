@@ -1,7 +1,8 @@
 << lib/systems/SLPackage.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library package for systems. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for module package: systems >
 < Exposes the package to the SLeeLa compiler, Loader, and Nordshrift. >
 class SLPackage {

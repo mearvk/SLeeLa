@@ -10,7 +10,8 @@
    (bit0 enable). IRQ fires on count reaching zero when enabled.
    
    Family: cpu. Extends SLGuestDevice. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestTimer extends SLGuestDevice {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

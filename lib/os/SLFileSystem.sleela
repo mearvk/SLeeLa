@@ -8,7 +8,8 @@
      (openFile/read/write/close); this class is the metadata + namespace layer.
    
    Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLFileSystem {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

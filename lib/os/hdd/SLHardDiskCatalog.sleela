@@ -10,7 +10,8 @@
    MG/N300) stand in for identity; exact capacity/RPM bins vary by SKU.
    
    Family: os. Produces SLHardDisk. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLHardDiskCatalog {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -24,7 +24,8 @@
      f.place(0, 0, 320, 600);       < the Frame's own rectangle >
      SLLayoutBox list = f.boxOf("list");   < that component's rect, vs the Frame >
    >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ui. The basic UI interface: the Frame that organizes components via a layout. >
 class SLLayoutFrame {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

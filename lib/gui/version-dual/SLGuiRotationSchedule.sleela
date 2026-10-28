@@ -16,7 +16,8 @@
      to drive the actual key schedule elsewhere. Every value is clamped.
    
    Family: gui. Carried by SLGuiEffects; advanced by the app/mount loop tick. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiRotationSchedule {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

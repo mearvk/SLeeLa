@@ -4,7 +4,8 @@
    Both are opt-in. Here they are requested at the Creator level, flow down
    through the Secondary VM to the hosted CPU, and the program uses them: a DMA
    block move without the CPU copying word by word, and a GPU kernel dispatch. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class DmaAndGpuOptionsExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

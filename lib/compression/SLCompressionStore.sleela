@@ -1,7 +1,8 @@
 << lib/compression/SLCompressionStore.sleela
    SLeeLa Standard Library Definition.
    Definition: Store (raw) algorithm class — the SLeeLa-facing handle to algorithm id 0. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: compression. Individual algorithm class for Store (raw), mirroring >
 < compression/compressors/store/ and the registry entry in >
 < sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the >

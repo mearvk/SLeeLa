@@ -1,7 +1,8 @@
 << lib/website/klm/KLMWebsite.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines KLMWebsite — the SLeeLa Website Generator build for KLM Royal Dutch Airlines. It composes the airline's brand design (brand #00a1de, accent #f36f21) and an ordered list of semantic signs (nav, hero, feature, testimonial, cta, footer) into a complete, self-contained HTML site. Mirrors lib/website/website.sleela: String concatenation on OP_ADD plus integer-to-text, no new VM opcode. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa website/klm front-end builder — one airline website per directory. >
 < Family: website. KLM Royal Dutch Airlines brand site, built from the website model: a >
 < design (brand/base/accent + an energy dial) and an ordered list of semantic >

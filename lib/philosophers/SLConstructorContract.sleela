@@ -3,7 +3,8 @@
    Definition: The time-bounded contract of the instantiative moment -- the
    Constructor is of nature and time, and that moment does not outstay ~2
    minutes. >>
-#sleela 2.1
+#sleela 2.5
+material;
 << Family: philosophers. A Constructor is itself of nature and time: the moment
    of instancing is an event with a beginning and an end, not a resident. This
    contract fixes the length of that moment. By rule the instantiative moment

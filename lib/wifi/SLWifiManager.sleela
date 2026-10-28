@@ -5,7 +5,8 @@
    simulate a live radio. A host SLVM binding must connect its scan/select/connect/
    disconnect methods to wifi_manager_scan/select/connect/disconnect. Until that
    binding is installed operations return BRIDGE_REQUIRED or BACKEND_UNAVAILABLE. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLWifiManager {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -12,7 +12,8 @@
    grow the food to the people who grow the spreadsheets.
    
    Family: citizen. Economic data crosses an explicit bridge to the ledger. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class Industry {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

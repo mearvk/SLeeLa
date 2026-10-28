@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Fixed H3 basket schema metadata. Canonicalization is enforced by native code. >
 class Http30BasketPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

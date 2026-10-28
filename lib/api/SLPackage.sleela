@@ -1,7 +1,8 @@
 << lib/api/SLPackage.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library package for api. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Library facade for the API package. Original API sources remain authoritative. >
 class ApiPackage {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

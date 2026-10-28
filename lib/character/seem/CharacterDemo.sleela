@@ -1,4 +1,5 @@
 #sleela 2.5
+material;
 << lib/character/seem/CharacterDemo.sleela
    SLeeLa Standard Library — runnable orchestration example.
    Definition: Casts three Characters, hands each a different BusinessModel, and

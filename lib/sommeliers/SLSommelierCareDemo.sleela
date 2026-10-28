@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Demonstration of the suite's defaults. Network transport is intentionally not
   claimed until a native/host bridge is connected. >
 class SLSommelierCareDemo {

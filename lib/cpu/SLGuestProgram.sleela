@@ -12,7 +12,8 @@
    the entry index (its base), which becomes the task's entry point.
    
    Family: cpu. Composes SLSleelaVM, SLGuestKernelBuilder (shared compile path). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuestProgram {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

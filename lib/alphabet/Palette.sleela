@@ -9,7 +9,8 @@
    labels that go with them; a Theme borrows from it to assign roles.
    
    Family: alphabet. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class Palette {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

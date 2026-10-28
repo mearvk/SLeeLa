@@ -14,7 +14,8 @@
    
    Family: gui. The companion of SLGuiLayout for overflow; the drawn bar is the
      existing SleelaUI scroll-bar control — this class is the implied geometry. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiScrollbar {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

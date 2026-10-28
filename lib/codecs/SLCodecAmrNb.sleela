@@ -1,7 +1,8 @@
 << lib/codecs/SLCodecAmrNb.sleela
    SLeeLa Standard Library Definition.
    Definition: AMR-NB codec class — the SLeeLa-facing handle to codec id 13. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: codecs. Individual codec class for AMR-NB: >
 < Adaptive Multi-Rate Narrowband, speech. Mirrors codecs/codecs/amr_nb/ and the registry entry in >
 < sleela_codec_manager.h. SLeeLa never calls a codec directly; the >

@@ -12,7 +12,8 @@
    Engine's information, because good information finds the people who can use it.
    
    Family: gameplay. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class Player {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

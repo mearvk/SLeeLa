@@ -16,7 +16,8 @@
    ergonomic, subclass-free front door the 1.8 surface makes possible.
    
    Family: alphabet. Composes Alphabet + Letter (1.8 constructors). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class AlphabetBuilder {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

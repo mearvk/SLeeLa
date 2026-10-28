@@ -1,6 +1,7 @@
 << lib/java/JDK28SourceSet.sleela
    Definition: Registry contract for Java class names represented by native SLeeLa source envelopes. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class JDK28SourceSet {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

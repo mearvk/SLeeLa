@@ -3,7 +3,8 @@
    Definition: A Constructor's chain of growths, written with "::" between one
    growth and the next -- Constructor() :: Patch :: Constructor :: Aim :: Guide.
    >>
-#sleela 2.1
+#sleela 2.5
+material;
 << Family: philosophers. A chain is the leading Constructor() call followed by a
    bounded run of Guides, each separated from the next by a double colon "::".
    The chain owns the Guides in order and enforces the seating register's

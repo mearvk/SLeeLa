@@ -1,7 +1,8 @@
 << lib/data-structures/DataStructuresTest.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type DataStructuresTest used within the data-structures library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 < Contract-oriented source test for the data-structure surface. >
 

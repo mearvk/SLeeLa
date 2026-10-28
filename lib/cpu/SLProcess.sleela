@@ -7,7 +7,8 @@
      scheduler switches the CPU between processes by saving/restoring this.
    
    Family: cpu. Pure Sleela OS data structure. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLProcess {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -16,7 +16,8 @@
    
    Family: ide-workbench. The GUI is SleelaUI driven through the lib/gui DOM;
    SLeeLa owns meaning and dispatch. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLIdeWorkbenchUI {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

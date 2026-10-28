@@ -1,7 +1,8 @@
 << lib/compression/SLCompressionDeflate.sleela
    SLeeLa Standard Library Definition.
    Definition: DEFLATE (RFC 1951) algorithm class — the SLeeLa-facing handle to algorithm id 4. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: compression. Individual algorithm class for DEFLATE (RFC 1951), mirroring >
 < compression/compressors/deflate/ and the registry entry in >
 < sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the >

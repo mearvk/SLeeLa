@@ -1,7 +1,8 @@
 << lib/website/cathay-pacific/CathayPacificWebsite.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines CathayPacificWebsite — the SLeeLa Website Generator build for Cathay Pacific. It composes the airline's brand design (brand #005c63, accent #8ec63f) and an ordered list of semantic signs (nav, hero, feature, testimonial, cta, footer) into a complete, self-contained HTML site. Mirrors lib/website/website.sleela: String concatenation on OP_ADD plus integer-to-text, no new VM opcode. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa website/cathay-pacific front-end builder — one airline website per directory. >
 < Family: website. Cathay Pacific brand site, built from the website model: a >
 < design (brand/base/accent + an energy dial) and an ordered list of semantic >

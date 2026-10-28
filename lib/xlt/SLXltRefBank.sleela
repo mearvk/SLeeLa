@@ -9,7 +9,8 @@
      the same idiom SLVMClass uses for its f0..f7 / m0..m7 members.
    
    Family: xlt. Internal helper for SLXltProducerRegistry. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLXltRefBank {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

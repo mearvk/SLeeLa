@@ -14,7 +14,8 @@
    
    Family: citizen. Settlement crosses an explicit bridge to the ledger and the
    FederalReserveID clearing fabric. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 class BankAccount {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

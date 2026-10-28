@@ -10,7 +10,8 @@
 < language and names the char-level ones as crossing the explicit VM/OS bridge >
 < (CORE.BASE.md: "Runtime-sensitive operations should cross an explicit VM/OS >
 < bridge."). Comments use the angle-bracket style; #sleela 2.1. >
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa core/base language contract. >
 
 class SLString {

@@ -16,7 +16,8 @@
    the OS generator/creator can write it as a real swap setup component.
    
    Family: os. Design model; emit* produce config text. No native bridge calls. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLSwapConfig {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

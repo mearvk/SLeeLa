@@ -1,6 +1,8 @@
 << lib/regex/RegexNaturalGroup.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type RegexNaturalGroup used within the regex library family. >>
+#sleela 2.5
+material;
 subject RegexNaturalGroup
 operation capture(name, pattern)
 operation named(name, pattern)

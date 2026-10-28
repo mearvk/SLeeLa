@@ -5,7 +5,8 @@
      paths (Java host, SLeeLa intent, native ABI bridge) and the 1..14
      document-change listener that refreshes a running window on an OS call.
      Self-contained (inline model + main) in the style of moral-capacitor.sleela. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa gui package demonstrator. >
 < SLeeLa owns business logic and the meaning of events; Java owns Swing/JavaFX >
 < presentation; the native bridge is the low-level boundary to the C/C++ core. >

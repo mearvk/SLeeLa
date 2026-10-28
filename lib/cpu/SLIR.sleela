@@ -10,7 +10,8 @@
    stored by index and the lowering pass walks them in order.
    
    Family: cpu. Composes SLIRInstruction; the IR container. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLIR {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

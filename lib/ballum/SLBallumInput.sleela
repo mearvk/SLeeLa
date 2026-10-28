@@ -1,7 +1,8 @@
 << lib/ballum/SLBallumInput.sleela
    SLeeLa Standard Library Definition.
    Definition: The Ballum touchscreen + mouse input listener (click, move, drag). >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: ballum. SLBallumInput is the pointer-input listener for Ballum: a >
 < clean surface a developer polls to receive touchscreen and mouse input over >
 < the whole screen. It reads raw pointer events through the uiBallum* VM bridge >

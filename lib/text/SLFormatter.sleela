@@ -13,7 +13,8 @@
 < runtime fulfils -- never a faked result. >
 <  >
 < Comments use the angle-bracket style; #sleela 2.1. >
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: text. Native VM/OS work crosses an explicit bridge. >
 
 class SLFormatter {

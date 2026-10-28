@@ -1,7 +1,8 @@
 << lib/languages/SLLanguageCatalog.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLLanguageCatalog used within the languages library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 < Family: languages. The catalog of available language packs. A program selects >
 < the active locale with use(code); text(key) then returns the translation in >

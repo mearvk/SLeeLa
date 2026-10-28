@@ -1,7 +1,8 @@
 << lib/java/JavaConform.sleela
    Pure SLeeLa Java conformance envelope.
    Definition: SLeeLa-side conformance coordinator for Java SE/JDK 28 source envelopes. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 class JavaConform {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -9,7 +9,8 @@
    
    A concrete Alphabet: override compose() to append its letters in order. Call
    begin("Hebrew") to build it. Family: alphabet. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class HebrewAlphabet extends Alphabet {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < windows-creator.sleela -- a self-contained, COMPILABLE OS Creator example for >
 < a Windows 10+ -shaped OS. Mirrors the lib/os design classes in one unit (the >
 < split provider classes use native string intrinsics that do not compile >

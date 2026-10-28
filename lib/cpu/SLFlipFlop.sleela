@@ -8,7 +8,8 @@
    Built from a master/slave pair of latches.
    
    Family: cpu. Pure Sleela state; clocked. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLFlipFlop {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

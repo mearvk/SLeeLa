@@ -1,6 +1,7 @@
 << lib/wifi/SLWifiStatus.sleela
    Status values 0-8 match wifi_status_t; 9 is a SLeeLa-only bridge state. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLWifiStatus {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

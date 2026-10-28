@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Formal source/compile-time symbol contract for SST declarations. >
 class SSTSymbol {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

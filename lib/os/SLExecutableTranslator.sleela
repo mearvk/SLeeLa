@@ -24,7 +24,8 @@
      (requires #sleela 1.5). Honesty: naming a translator does not install it;
      where the interpreter/container is absent the foreign type stays unrunnable
      and the methods report that rather than faking success. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLExecutableTranslator {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

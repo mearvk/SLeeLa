@@ -2,7 +2,8 @@
    SLeeLa Standard Library Definition.
    Definition: The Favor Mechanism -- it catches the facts and sayings of
    Approach at the time of the Constructor call and decides runnability. >>
-#sleela 2.1
+#sleela 2.5
+material;
 << Family: philosophers. When a Constructor is called, its Guides listen for
    contexts and imparts. The Favor Mechanism is the conscience that weighs what
    was heard: it tallies the Notice caught at the Time of the call, and from

@@ -4,7 +4,8 @@
    SLeeLa-side model of Side 2: a domain that fronts many disparate programs via
    warrants, gated to Scientists. Native counterpart:
    web-server-technology/native/envelopment.cpp. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa SDK front-end object. >
 < Family: web-server-technology. Native implementation crosses an explicit VM/OS bridge. >
 class SLEnvelopment {

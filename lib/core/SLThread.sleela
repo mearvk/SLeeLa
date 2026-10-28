@@ -1,7 +1,8 @@
 << lib/core/SLThread.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLThread used within the core library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Native foundational bridge contract for Thread. >
 < Role: runtime. Responsibility: thread execution. >
 class SLThread {

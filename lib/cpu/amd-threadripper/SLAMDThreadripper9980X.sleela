@@ -8,7 +8,8 @@
      Core/thread/cache/TDP figures are documented in SPECIFICATION.md; the
      runnable model carries the rated clock.
    Family: cpu. Extends SLAMDThreadripperCPU. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLAMDThreadripper9980X extends SLAMDThreadripperCPU {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

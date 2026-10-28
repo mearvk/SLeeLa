@@ -13,7 +13,8 @@
    
    Family: gui. A "certstore" node's backing model; partners SLGuiCryptoSelector
      and SLGuiAdminAuthority (an admin signature for Law may reference a cert). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiCertificateStore {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

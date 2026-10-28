@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < A local session state model; persistence and network transport are host concerns. >
 class SLSommelierSession {
   int STATE_NEW = 0;

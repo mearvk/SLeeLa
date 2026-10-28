@@ -1,7 +1,8 @@
 << lib/math/SLTensor.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLTensor used within the math library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < SLeeLa math front-end contract. >
 class SLTensor {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

@@ -20,7 +20,8 @@
      this names exactly which warehouse, which revision, which per-shape parts.
    
    Family: os. Pure reference/manifest; no payload. >>
-#sleela 2.2
+#sleela 2.5
+material;
 class SLOSSensitivitySource {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

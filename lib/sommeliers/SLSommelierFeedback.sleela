@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < Canonical response vocabulary:
   0 = grounded in voltage (symbolic state, not a sensor reading)
   1 = Man is free (symbolic state, not a factual determination)

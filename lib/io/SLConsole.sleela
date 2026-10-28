@@ -1,7 +1,8 @@
 << lib/io/SLConsole.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type SLConsole used within the io library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 < Family: io. Native VM/OS work crosses an explicit bridge. >
 class SLConsole {

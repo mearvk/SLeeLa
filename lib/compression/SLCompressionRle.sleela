@@ -1,7 +1,8 @@
 << lib/compression/SLCompressionRle.sleela
    SLeeLa Standard Library Definition.
    Definition: Run-Length Encoding algorithm class — the SLeeLa-facing handle to algorithm id 1. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Family: compression. Individual algorithm class for Run-Length Encoding, mirroring >
 < compression/compressors/rle/ and the registry entry in >
 < sleela_compression_manager.h. SLeeLa never calls an algorithm directly; the >

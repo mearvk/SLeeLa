@@ -4,7 +4,8 @@
   nested menu groups using the native SleelaUI ui* bridge.
   Run from repository root: ./impl/build/sleela run example/menus/gui-menubar-expandable.sleela
 >>
-#sleela 2.1
+#sleela 2.5
+material;
 class GuiMenubarExpandable {
   int PAD = 10;
   int GAP = 6;

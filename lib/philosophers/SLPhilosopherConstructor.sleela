@@ -3,7 +3,8 @@
    Definition: The perfect Constructor -- it seats its Guides, opens a
    time-bounded contract, weighs favor, runs, and then lets the object live
    free. >>
-#sleela 2.1
+#sleela 2.5
+material;
 << Family: philosophers. This is the orchestrator that ties the design
    together. A perfect Constructor, across an infinite number of possible
    classes, has only so many forms; this one admits a seating band, builds a

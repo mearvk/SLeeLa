@@ -16,7 +16,8 @@
    can do kernelSpec().selectVersion(catalog, "Linux", "6.6 LTS").
    
    Family: os. Pure design/catalogue model; no native bridge calls. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLKernelCatalog {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

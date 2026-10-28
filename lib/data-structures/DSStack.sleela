@@ -1,7 +1,8 @@
 << lib/data-structures/DSStack.sleela
    SLeeLa Standard Library Definition.
    Definition: Defines the SLeeLa standard-library type DSStack used within the data-structures library family. >>
-#sleela 2.1
+#sleela 2.5
+material;
 
 < LIFO stack contract. >
 

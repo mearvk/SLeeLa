@@ -25,7 +25,8 @@
    
    Family: xlt. Consumes SLXltSource; composes SLComponentCatalog +
      SLExecutorBuild; produces SLXltBuildResult. Parallels Nordshrift for SST. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLXltCompiler {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -1,7 +1,8 @@
 << User-configurable simulation inputs for a public-career case study.
    Scores are scenario knobs, not measured attributes of the named person.
    A value of zero for sustainability means unknown. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class JamesCameronLifeStats {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

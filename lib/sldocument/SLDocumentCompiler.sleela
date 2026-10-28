@@ -17,7 +17,8 @@
    impl/frontend); this class drives it with document semantics.
    
    Family: sldocument. Native VM/OS work crosses an explicit bridge. >>
-#sleela 2.1
+#sleela 2.5
+material;
 < Unified SLeeLa standard-library front-end object. >
 class SLDocumentCompiler {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

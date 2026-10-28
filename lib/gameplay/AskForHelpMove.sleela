@@ -10,7 +10,8 @@
    A concrete GameMove: override resolve() to flip, then either read the future
    or buy the report. The future it modeled and the report it bought are stashed
    on the move so the turn can show them. Family: gameplay. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class AskForHelpMove extends GameMove {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

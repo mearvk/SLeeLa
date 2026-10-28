@@ -13,7 +13,8 @@
    the loader, and points it at the kernel the SLKernelSpec names.
    
    Family: os. Pure design model; no native bridge calls. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLBootloaderSpec {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

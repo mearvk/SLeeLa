@@ -9,7 +9,8 @@
    Models up to 16 interrupt lines (IRQ0..IRQ15).
    
    Family: cpu. Pure Sleela controller. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLInterruptController {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

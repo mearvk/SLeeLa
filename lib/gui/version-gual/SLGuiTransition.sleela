@@ -15,7 +15,8 @@
      (SLGuiToast / SLGuiModal / SLGuiSkeleton) embed.
    
    Family: gui. A pure tween model (ints only); the host paints the pixels. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLGuiTransition {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

@@ -12,7 +12,8 @@
    declared once and reused, rather than re-expressed at every call site.
    
    Family: moral-capacitor. Consumed by SLMoralCapacitor and the adapters. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLMoralPolicy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

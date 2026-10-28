@@ -20,7 +20,8 @@
    declared semantics instead of inferring a file-network topology.
    
    Family: cpu. Composes SLInstruction, SLRAM, SLTimingManifest, SLAccessManifest. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLProgram {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
