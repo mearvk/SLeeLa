@@ -123,7 +123,7 @@ static fs::path installRootFromExecutable(){
 // SLeeLa Language/Runtime, independent of argv[0], launchers, symlinks, or
 // aliases. Both banners carry the same release number.
 // The shared release number for both tools.
-static const char* kReleaseVersion="0.3.29-dev";
+static const char* kReleaseVersion="0.3.30-dev";
 // Both banners derive the supported source-syntax range from the single source
 // of truth in version.h (minSupportedSyntax()/maxSupportedSyntax()), so the
 // reported range always matches what the toolchain actually drives.
@@ -1272,7 +1272,7 @@ static int runJavaFrameworkSource(const std::string&path,const std::vector<std::
         }else{
             std::cerr<<"[javafx] no module path configured; launch will work only if "
                         "JavaFX is already available to this Java runtime. Set "
-                        "SLEELA_JAVAFX_MODULE_PATH and optionally SLEELA_JAVAFX_MODULES.\\n";
+                        "SLEELA_JAVAFX_MODULE_PATH and optionally SLEELA_JAVAFX_MODULES.\n";
         }
 #if !defined(_WIN32) && !defined(__APPLE__)
         const char* display=std::getenv("DISPLAY");
@@ -1280,6 +1280,18 @@ static int runJavaFrameworkSource(const std::string&path,const std::vector<std::
         if((!display||!*display)&&(!wayland||!*wayland))
             std::cerr<<"[javafx] no DISPLAY or WAYLAND_DISPLAY detected; graphical startup may fail on this headless host.\n";
 #endif
+    }
+    /* Optional JVM options passthrough for single-file source launches, e.g.
+       SLEELA_JAVA_OPTS="--enable-preview --source 21 -ea". These are JVM flags
+       and must precede the source-file operand. Tokens are split on unquoted
+       whitespace; there is no shell, so each token becomes one argv element. */
+    if(const char* jopts=std::getenv("SLEELA_JAVA_OPTS")){
+        std::string tok; std::string s=jopts;
+        for(size_t i=0;i<=s.size();++i){
+            char c=(i<s.size())?s[i]:' ';
+            if(c==' '||c=='\t'||c=='\n'||c=='\r'){ if(!tok.empty()){args.push_back(tok);tok.clear();} }
+            else tok.push_back(c);
+        }
     }
     args.push_back(path);
     for(const auto&arg:programArgs) args.push_back(arg);

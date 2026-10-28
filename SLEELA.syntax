@@ -2,7 +2,7 @@
 
     Language:        Sleela
     Syntax version:  2.5  (1.3..1.11 baseline carried forward)
-    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.0 .. 2.5)
+    Compiler:        Sleelvac(TM) 0.3.30-dev  (version gate accepts syntax 1.0 .. 2.5)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
@@ -62,7 +62,7 @@
     valid in-scope target and a 0..100 band. Constructor overload resolution and
     `this(...)`/base delegation remain outside the verified implementation and
     are rejected explicitly; do not infer their support from the
-    constructor-series design documents. The **compiler/tool version** (Sleelvac™ 0.3.29-dev, printed by
+    constructor-series design documents. The **compiler/tool version** (Sleelvac™ 0.3.30-dev, printed by
     `sleela version`) is the implementation release and evolves independently.
     A file must declare a syntax version within the verified supported range;
     the tool version is informational.

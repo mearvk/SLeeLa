@@ -62,7 +62,7 @@
 #endif
 
 #define SL_PRODUCT  "SLeeLa"
-#define SL_RELEASE  "0.3.29-dev"
+#define SL_RELEASE  "0.3.30-dev"
 #define SL_SYNTAX   "1.0 - 2.5"
 #define SL_TAGLINE  "THE NOW. THE INGREDIENT."
 

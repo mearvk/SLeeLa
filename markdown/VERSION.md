@@ -8,7 +8,7 @@ This increment extends the arbitrary-width unsigned integer foundation for sourc
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.29-dev
+**SLeeLa:** 0.3.30-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
@@ -18,6 +18,30 @@ This increment extends the arbitrary-width unsigned integer foundation for sourc
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
+
+## 0.3.30 Development Increment
+
+Raised the shared release version of both tools (`sleela` runtime and `sleelvac`
+compiler) from 0.3.29-dev to 0.3.30-dev, and improved stability and the ability
+to run Java source files:
+
+- **Java source dispatch** — plain `.java` sources that use no `java.*` import
+  (for example a single class with `public static void main` and only
+  `System.out`) are now correctly recognised as Java and handed to the JVM,
+  rather than being misread as SLeeLa-ingestion units. Detection also recognises
+  the Jakarta EE (`jakarta.*`) namespace alongside `javax.*`.
+- **JVM options passthrough** — single-file Java launches honor an optional
+  `SLEELA_JAVA_OPTS` environment variable (e.g. `--enable-preview --source 21`),
+  whitespace-split into argv with no shell involved, placed before the source
+  operand. This lets preview/assertion/source-level features run.
+- **VM discovery stability** — the `PATH` search for a local `java` no longer
+  uses a fixed-size candidate buffer, so a valid `java` on a long `PATH` entry
+  is found instead of being silently skipped (buffer is sized to the entry).
+- **Output fix** — corrected a JavaFX diagnostic that printed a literal `\n`
+  instead of a newline.
+
+The supported source-syntax range is unchanged (1.0 .. 2.5); this is a
+tool-release increment, not a grammar edition bump.
 
 ## 0.3.29 Development Increment
 
