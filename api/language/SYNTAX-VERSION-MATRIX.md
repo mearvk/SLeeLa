@@ -12,6 +12,8 @@ The version declared in a source file (for example, `#sleela 1.9`) is the **lang
 | 2.3 | Philosophers Guide-chain expression `new T(...) :: Guide :: Guide ...` | `SLEELA.syntax`, section 17 | First-class construct executed by the lexer/parser/semantic analyzer/compiler and native Core. |
 | 2.4 | `author` / `authorial` document marker | `SLEELA.syntax`, section 18 | Legalises duplicate members (each gets a declaration-order id + SHA-256 brander); emits the originated source with `∴` branders. Contextual word, not a reserved keyword. |
 | 2.5 | `material` document marker (current ceiling) | `SLEELA.syntax`, section 19 | Declarative only — no effect on parsing/typing/codegen. Marks membership in the set of material documents (state / progress / securing of change). |
+| 2.5 | `memory` document marker | `SLEELA.syntax`, section 20 | Declarative-only sibling of `material`. |
+| 2.5 | Wide signed integer primitives: `long`, `int64`, `int128` | `SLEELA.syntax`, section 21 | `long`/`int64` are genuine 64-bit signed integers (runtime already stores `int64_t`); they type-check like `int`. `int128` is accepted but currently 64-bit-backed (true 128-bit is a documented follow-up). |
 | 2.8 (planned) | `object` field marker; code **Ready for Public Exchange** | `docs/TECH-NOTE-2.8-OBJECT-MARKER-AND-PUBLIC-EXCHANGE.md` | **Forward-facing / not yet implemented.** 2.8 and past are intended for public exchange. `object` marks work forward-facing into the United States and the Times, and into International Progress (Contrary / Secondary — indicated). Follows the `material` marker pattern when built. |
 
 ## Compatibility rules
