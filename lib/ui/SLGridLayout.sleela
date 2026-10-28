@@ -56,6 +56,9 @@ class SLGridLayout {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   static final int MAX_ITEMS = 256;
+  < the assumed minimum size (px) of a single grid cell, used to derive the >
+  < grid's natural starting size when the caller does not supply a cell size. >
+  static final int MIN_CELL_PX = 64;
 
   int cols;
   int count;
@@ -85,6 +88,29 @@ class SLGridLayout {
   int size() { return count; }
   < How many rows the current cell count needs for the chosen column count. >
   int rows() { if (count == 0) { return 0; } return (count + cols - 1) / cols; }
+
+  < ---- assumed / natural size (the "at least so large" starting size) ----- >
+  << The natural WIDTH this grid needs to show `cols` columns at the given cell
+     width (pass 0 to use the assumed MIN_CELL_PX): columns * cellW + the column
+     gaps + horizontal padding. >>
+  int naturalWidthFor(int cellW) {
+    int cw = (cellW <= 0) ? MIN_CELL_PX : cellW;
+    int colGaps = (cols > 1) ? (gapPx * (cols - 1)) : 0;
+    return cols * cw + colGaps + padLeft + padRight;
+  }
+  << The natural HEIGHT for the current cell count at the given cell height
+     (pass 0 to use the assumed MIN_CELL_PX): rows * cellH + row gaps + vertical
+     padding. >>
+  int naturalHeightFor(int cellH) {
+    int ch = (cellH <= 0) ? MIN_CELL_PX : cellH;
+    int r = rows();
+    int rowGaps = (r > 1) ? (gapPx * (r - 1)) : 0;
+    return r * ch + rowGaps + padTop + padBottom;
+  }
+  < The assumed minimum width using the default assumed cell size. >
+  int naturalWidth() { return naturalWidthFor(0); }
+  < The assumed minimum height using the default assumed cell size. >
+  int naturalHeight() { return naturalHeightFor(0); }
 
   void arrange(int x, int y, int w, int h) {
     int innerX = x + padLeft;

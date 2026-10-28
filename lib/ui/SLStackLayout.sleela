@@ -66,6 +66,14 @@ class SLStackLayout {
   static final int AXIS_COLUMN = 1;
   < the most a single stack will hold >
   static final int MAX_ITEMS = 128;
+  < the assumed main-axis floor a single FLEXIBLE child (size 0) contributes to >
+  < the natural size: a flexible region must start at least this tall/wide so a >
+  < Frame full of flexible bodies still opens usably large. >
+  static final int MIN_FLEX_PX = 48;
+  < the assumed CROSS-axis extent a stack claims when asked for a natural size >
+  < (the cross axis otherwise just fills its container, so it has no intrinsic >
+  < size; this is the explicit assumed minimum breadth of the stack). >
+  static final int MIN_CROSS_PX = 120;
 
   int axis;
   < requested main-axis size per child (0 = flexible) >
@@ -119,6 +127,34 @@ class SLStackLayout {
     if (index < 0 || index >= count) { return false; }
     return sizes[index] == 0;
   }
+
+  < ---- assumed / natural size (the "at least so large" starting size) ----- >
+  << The natural MAIN-axis extent this stack needs to show every child at its
+     requested size: the sum of fixed child sizes, the floor MIN_FLEX_PX for
+     each flexible child, all inter-child gaps, and the main-axis padding. This
+     is the minimum main length at which no fixed child is squeezed. >>
+  int naturalMain() {
+    int total = 0;
+    int i = 0;
+    while (i < count) {
+      total = total + ((sizes[i] == 0) ? MIN_FLEX_PX : sizes[i]);
+      i = i + 1;
+    }
+    int gaps = (count > 1) ? (gapPx * (count - 1)) : 0;
+    int padMain = isRow() ? (padLeft + padRight) : (padTop + padBottom);
+    return total + gaps + padMain;
+  }
+  << The natural CROSS-axis extent: the explicit assumed breadth MIN_CROSS_PX
+     plus the cross-axis padding. The cross axis has no intrinsic child size
+     (children fill it), so MIN_CROSS_PX is the declared assumed minimum. >>
+  int naturalCross() {
+    int padCross = isRow() ? (padTop + padBottom) : (padLeft + padRight);
+    return MIN_CROSS_PX + padCross;
+  }
+  < The assumed minimum WIDTH (main for a row, cross for a column). >
+  int naturalWidth() { return isRow() ? naturalMain() : naturalCross(); }
+  < The assumed minimum HEIGHT (main for a column, cross for a row). >
+  int naturalHeight() { return isRow() ? naturalCross() : naturalMain(); }
 
   < ---- arrange: compute every child's rectangle inside (x,y,w,h) ---------- >
   void arrange(int x, int y, int w, int h) {
