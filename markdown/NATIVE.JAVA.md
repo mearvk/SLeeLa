@@ -81,6 +81,20 @@ A program using `javafx.*` is classified as JavaFX. JavaFX requires more than th
 
 The JavaFX provider should therefore perform a framework-specific availability check before launch.
 
+## Running a JAR or compiled classes through SLeeLa
+
+Use the ordinary `sleela run` entry point to delegate an existing Java application to the locally configured Java executable:
+
+```sh
+sleela run app.jar [application arguments...]
+sleela run --class-path build/classes com.example.Main [application arguments...]
+sleela run --class com.example.Main [application arguments...]
+```
+
+For class files, keep the normal Java package layout beneath the class-path root. For example, `build/classes/com/example/Main.class` is invoked with main-class name `com.example.Main` and class path `build/classes`. Multiple class-path entries use the platform's standard separator. The JAR must be runnable and declare `Main-Class` in its manifest. Arguments after the JAR or main-class name are passed to the Java application.
+
+The launcher discovers Java using `SLEELA_JAVA`, `JAVA_HOME`, then `PATH`. Set `SLEELA_JAVA_MODE=disabled` or `SLEELA_JAVA_ENABLED=0` to refuse external Java execution. This is process delegation, not embedded-JVM execution.
+
 ## JVM handoff
 
 The bridge prepares a normal JVM invocation. For compiled classes it uses:
