@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "f001b43054888586b234d6a4f7c94e0acc9d47585c45dbac77e97c6fa93613b7"
+      "sha256": "58c28abbbf18fe7e879b01e65510c6c142347e6c77c73285368f547fcafba79d"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "984cfbc0514fcfb6c3e7833dbf774d87dddff0ac4de5dd9106461ffd048a078f"
+      "sha256": "4121b79bbfafdf595d3fe3dadabaa146d96f9eda2ab3b88ce82ba20eeb151c1a"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -511,7 +511,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "3d36410e95910ee840d736169f79a908f1464a3db480494be7af2d4107647486"
+      "sha256": "e85ce5a0ac026577a5100ed8d2b9e1a23821c84470ed9229ed919bfe4495238d"
     },
     {
       "path": "impl/frontend/compiler.h",
