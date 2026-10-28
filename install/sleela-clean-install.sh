@@ -165,15 +165,28 @@ print_contents() {
 # Build + stage + install the main package.
 # ---------------------------------------------------------------------------
 STAGE_DIR=""
-cleanup() { [ -n "$STAGE_DIR" ] && rm -rf "$STAGE_DIR"; }
+STAGE_LOG=""
+# Always returns success so the EXIT trap never overrides the script's real exit
+# status (a bare `[ -n "$x" ]` that is false would otherwise surface as exit 1).
+cleanup() { [ -n "$STAGE_DIR" ] && rm -rf "$STAGE_DIR"; [ -n "$STAGE_LOG" ] && rm -f "$STAGE_LOG"; return 0; }
 trap cleanup EXIT
 
 install_main() {
   local install_root="$1" bin_dest="$2" config_dir="$3" mode="$4"
 
   heading "Building SLeeLa"
-  step "running the integrity-gated build (make all)"
-  if ! make -C "$REPO_ROOT" all >/dev/null 2>"$STAGE_LOG"; then
+  # Build ONLY the core products the main package installs (sleela, sleelvac,
+  # nordshrift) via the integrity-gated impl build. We deliberately do NOT run
+  # the whole-repo `make all`: that also builds servers, IDE bridges, the
+  # java28 JNI bridge, premium VMs, etc. — subsystems this installer excludes,
+  # and which pull in heavy external toolchains (e.g. a JDK for jni.h). Building
+  # just the core keeps the install fast, dependency-light, and consistent with
+  # "main package only".
+  step "building the core products (sleela · sleelvac · nordshrift)"
+  local manifest="${SLEELA_SHA256_MANIFEST:-$REPO_ROOT/security/sha256-manifest.json}"
+  if ! env SLEELA_SHA256_MANIFEST="$manifest" \
+        make -C "$REPO_ROOT/impl" build/sleela build/sleelvac build/nordshrift \
+        >"$STAGE_LOG" 2>&1; then
     warn "build output (tail):"; tail -n 12 "$STAGE_LOG" | sed 's/^/      /'
     die "build failed — see the output above."
   fi
@@ -277,7 +290,7 @@ case "$SCOPE" in
 esac
 
 STAGE_LOG="$(mktemp "${TMPDIR:-/tmp}/sleela-build.XXXXXX.log")"
-trap 'cleanup; rm -f "$STAGE_LOG"' EXIT
+trap cleanup EXIT
 
 install_main "$INSTALL_ROOT" "$BIN_DEST" "$CONFIG_DIR" "$MODE"
 

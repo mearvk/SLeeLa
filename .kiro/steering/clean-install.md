@@ -11,8 +11,13 @@ repo root. It is the recommended way to put SLeeLa on a user's computer.
 ## What it installs (the main package)
 
 - The three binaries: **`sleela`** (runtime), **`sleelvac`** (compiler),
-  **`nordshrift`** (`.sst` transpiler) — built via the integrity-gated `make all`
-  and copied from `impl/build/`.
+  **`nordshrift`** (`.sst` transpiler) — built via the integrity-gated **core**
+  target `make -C impl build/sleela build/sleelvac build/nordshrift` and copied
+  from `impl/build/`. It deliberately does **not** run the whole-repo `make all`:
+  that also builds the excluded subsystems (servers, IDE bridges, the java28 JNI
+  bridge, premium VMs) and pulls in heavy external toolchains (e.g. a JDK for
+  `jni.h`), which would make a core install fragile and contradict "main package
+  only". Building just the core keeps the install fast and dependency-light.
 - The **standard library**, **protocols**, and **support modules** — the full
   `lib/` tree *minus* the excluded trees below.
 - The SHA-256 integrity manifest (`security/sha256-manifest.json`) and the
