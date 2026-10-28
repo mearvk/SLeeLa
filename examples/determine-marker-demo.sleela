@@ -1,0 +1,32 @@
+#sleela 2.6
+<< determine-marker-demo.sleela -- the runnable reference for the syntax 2.6
+   `determine` document marker (SLEELA.syntax section 23).
+
+   The bare top-level word `determine;` claims this document is a determine
+   document. The ideal definition and term, as-is: a doctor, physician, or
+   ghost can process the document to further. Some procurement of term would be
+   ideal as real for the torturement (completion by legal hand) as required by
+   further processor review. Science practitioners should and could can use
+   this keyword.
+
+   The marker is DECLARATIVE ONLY: a sibling to `material` (section 19),
+   `memory` (section 20), and `author`/`authorial` (section 18). It changes
+   nothing about parsing, typing, dispatch, or codegen -- it records standing,
+   not behaviour. It is gated to #sleela 2.6.
+
+   Run this file to see it compiles exactly as the same document without the
+   marker would:
+     sleela run examples/determine-marker-demo.sleela >>
+
+determine;
+
+class DetermineDocument {
+  String processor = "doctor, physician, or ghost";
+
+  void main() {
+    print("determine document -- open to be processed to further");
+    print("completion by legal hand, as required by further processor review");
+    print("qualified hand: " + processor);
+    print("done");
+  }
+}

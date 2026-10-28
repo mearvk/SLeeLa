@@ -4,11 +4,11 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "ef25b861a2c31f0946ecdf3437bd04391d40e918d72633227c7bc508cce36401"
+      "sha256": "7348f5128e8c27592a5e129b6a24eb4454a683a59d4e15f144a16fcfd4d649cd"
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "46d0908e206be34fbb9daea5b37663e8e93720de7620f05f36aba2d4a70309b5"
+      "sha256": "07d7f57eec856e3acdaa4308540e4624861604795b35fe446cf6937424974e3a"
     },
     {
       "path": "SST-2.0.model",
@@ -448,7 +448,7 @@
     },
     {
       "path": "api/language/SYNTAX-VERSION-MATRIX.md",
-      "sha256": "6a2d56be8ad014d2d60cb1547dfe40d0120af3499e23c4297715a407db1a3cc8"
+      "sha256": "ac4e60b67f49bb2e55b7b1068cd72fcd87c77bbca8b53340ace4139c3da949db"
     },
     {
       "path": "api/language/system-namespace/API.md",
@@ -6544,7 +6544,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "667c31a25494891bf577b8ee1129586911e0e05372cd6852eb9707b10a6bb910"
+      "sha256": "f21370b8bdd15df5882b06e70115df974258eab5956e924a5795f2d6b59c7c52"
     },
     {
       "path": "impl/frontend/compiler.cpp",
@@ -6636,7 +6636,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "fe539ee0914fdc91c48207c5680dca2a48032559fcb318fffef56173d14f647c"
+      "sha256": "5d96cd3d2f19304d676e137ab9969b1125da6d98949558a960832b0b04f6a48f"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -6652,7 +6652,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "f58a4ca3812946134dc4785097a3d7d8647b36f1e05f68b7d837c5a1a900d05b"
+      "sha256": "6e45cb0360d766459aabd65bf12e73ed099a5a6fe8d0cd968566caf7bea6b0a8"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -7672,7 +7672,7 @@
     },
     {
       "path": "impl/tests/version/run_version_tests.sh",
-      "sha256": "02521d48052bf1b74e748c3603c3c5924522bcaf6bdda20a555f27b9d3bed0ac"
+      "sha256": "61b18f7fa0844d3e772789271d214756ff6b3023c651b4584d954fd4b9e3ef3c"
     },
     {
       "path": "impl/tests/version/syntax_0_9.sleela",
@@ -55591,6 +55591,42 @@
       "sha256": "4e9d3b7615203d88eb9683edf905e50450e7e0024f44a090c62e4f260941c74c"
     },
     {
+      "path": "lib/xml/SLPackage.sleela",
+      "sha256": "212c97e6be75dd3fb74fda1de919b04b43284ae465d90fc7d478199678563ef7"
+    },
+    {
+      "path": "lib/xml/SLXmlAspect.sleela",
+      "sha256": "f08eb320d94795b4ab8fc93e9dc9d56a984b551f4f22493896128cd4ddc17f97"
+    },
+    {
+      "path": "lib/xml/SLXmlAttribute.sleela",
+      "sha256": "db6481dcf9b6ebeb45ddec371c17fee598b86ddd62266a5a1a20fad587a9fe1c"
+    },
+    {
+      "path": "lib/xml/SLXmlDocument.sleela",
+      "sha256": "e723f14639abdc61711b48c206d3932268acb8ae3edb3be5bbb6538830926a85"
+    },
+    {
+      "path": "lib/xml/SLXmlNode.sleela",
+      "sha256": "6bc5a49940887e9d3ee8f777356749a82bcde0c5f453bedfa4f5c2ba015016bd"
+    },
+    {
+      "path": "lib/xml/SLXmlNodeType.sleela",
+      "sha256": "7472a8460fea69af025bfb22be5bd62acc89ac7deee57a8666ebbe2e488293fc"
+    },
+    {
+      "path": "lib/xml/SLXmlParser.sleela",
+      "sha256": "6bc203d17ec985a9265f7341b765a602d1e75a5c6db2d3e17a85c3cb5ed016ee"
+    },
+    {
+      "path": "lib/xml/SLXmlSerializer.sleela",
+      "sha256": "7fa2fa7dff78111bedf0450f587f1386a3d49de2aaa792123bbd7f5ffc2ee736"
+    },
+    {
+      "path": "lib/xml/xml-dom.sleela",
+      "sha256": "043e3e64cfa59df225131f68c3e11be4032e424964c1c5a39c50c6122cf514e1"
+    },
+    {
       "path": "libs/download-all.sh",
       "sha256": "6f0c0a4c1a566d661ef177a615b2ea6bffab04b3a7657fb541907fcf35c550e0"
     },
@@ -58188,7 +58224,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "2c32db3d79eac1d226e957eeb82612a2f40fdbd21e487760104398335da6ade1"
+      "sha256": "6a0a964c0cd1c7e84dfb85d324cdf40ddc89fb880c441256a1d7dd08c2df221c"
     },
     {
       "path": "tests/http-1.0/fuzz_download_metadata.c",

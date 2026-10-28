@@ -1,0 +1,3 @@
+#sleela 2.6
+determine;
+class DetermineMarker { void main() { print("determine document"); } }

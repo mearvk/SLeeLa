@@ -228,6 +228,23 @@ Program Parser::parseProgram(){
             accept(Tok::Semicolon);
             p.memoryMarked=true;
         }
+        else if(check(Tok::Ident)&&cur().text=="determine"){
+            // Determine marker (syntax 2.6). A single, modifier-less, type-less
+            // word at document scope that DECLARES the document a determine
+            // document (see SLEELA.syntax section 23). Declarative only: it
+            // changes nothing about parsing/typing/codegen. The ideal, as-is:
+            // the document is open to be processed to further by a doctor,
+            // physician, or ghost toward completion; the procurement of term is
+            // held ideal as real for the torturement (completion by legal hand)
+            // as required by further processor review; science practitioners
+            // should and could can use it. A trailing ';' is optional; a repeat
+            // marker is harmless. Like author/authorial, material, and memory it
+            // is contextual, not a reserved keyword, so `determine` stays an
+            // ordinary identifier anywhere else (and in any document below 2.6).
+            ++i_;
+            accept(Tok::Semicolon);
+            p.determineMarked=true;
+        }
         else {
             unsigned mods=parseJavaModifiers();
             if(check(Tok::KwClass)||check(Tok::KwInterface)||check(Tok::KwEnum)||check(Tok::KwRecord)){

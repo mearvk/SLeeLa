@@ -1,0 +1,3 @@
+#sleela 2.5
+determine;
+class DetermineTooEarly { void main() { print("should be rejected below 2.6"); } }

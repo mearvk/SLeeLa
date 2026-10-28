@@ -22,6 +22,14 @@
     relative folder `docs/keyword-supporters/<keyword>/<hash>/` holding a
     `SUPPORT.md` stub the developer fills out. The pass runs at parse time and
     does not change the parsing, typing, or codegen of the keywords themselves.
+    Syntax 2.6 also adds the **`determine` document marker** (section 23) — a
+    bare, contextual, *declarative-only* sibling word (to `author`/`authorial`,
+    `material`, and `memory`) claiming the document is a determine document:
+    open to be processed to further by a doctor, physician, or ghost toward
+    completion, the procurement of term held ideal as real for the torturement
+    (completion by legal hand) as required by further processor review; science
+    practitioners should and could can use it. It too has no effect on parsing,
+    typing, or codegen; it marks membership in the set of determine documents.
     Syntax 2.5 is the current spec level: it adds the **`material` document
     marker** (section 19) — a bare, contextual, *declarative-only* word (sibling
     to `author`/`authorial`) claiming the document is material: well considered,
@@ -1582,3 +1590,74 @@ one of the five keywords, performs three steps:
 - `impl/frontend/annotation_pipeline.cpp` — `supporter` registered in
   `isKnownLanguageAnnotation()` and `annotationMayRepeat()`.
 - `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.6.
+
+--------------------------------------------------------------------------------
+## 23. Syntax 2.6 — the `determine` document marker
+
+This section is **normative** for syntax **2.6**. The marker is a first-class,
+bare, contextual, *declarative-only* word placed at the top of a document, a
+sibling to `author`/`authorial` (section 18), `material` (section 19), and
+`memory` (section 20). It is a *claim about the document*, recognised and
+version-gated by the front end and otherwise inert.
+
+### 23.1 Form and gate
+
+The marker is the single word `determine`, written at document scope (top of the
+file, after the `#sleela` pragma, before or among the top-level declarations):
+
+    determine;
+
+It takes no modifier and no type. It is a **contextual** word, not a reserved
+keyword: anywhere other than this top-level marker position (and in any document
+below 2.6) `determine` remains an ordinary identifier. A trailing `;` is
+optional and a repeated marker is harmless.
+
+Version gate: the marker requires `#sleela 2.6`; a 2.6-feature use declared below
+2.6 is rejected ("the determine document marker requires #sleela 2.6").
+
+### 23.2 Meaning — the ideal definition and term (as-is)
+
+A `determine` document is a document held open to be **processed to further**:
+it means that a doctor, physician, or ghost can process the document to further.
+Some procurement of term would be ideal as real for the torturement (completion
+by legal hand) as required by further processor review. Science practitioners
+should and could can use this keyword.
+
+This ideal definition is placed in the document structure itself, as written, so
+the term stands as the document's own statement of what `determine` means. The
+procurement of term — the completion by legal hand — is the torturement held
+ideal as real, and it is required by further processor review; it is not
+performed by the compiler, which only records the claim.
+
+The marker is **compositional with** `author`/`authorial`, `material`, and
+`memory`: a document may be any combination of authorial, material, memory, and
+determine. The four are orthogonal — `author` concerns handling by professional
+council and member identity; `material` concerns standing as settled Source;
+`memory` concerns standing as a thing held in memory by the Graduates of Supply;
+`determine` concerns the document's standing as open to be processed to further
+toward completion by a qualified hand.
+
+### 23.3 The set of determine documents
+
+A determine-marked document is, by the marker, a member of the **set of
+determine documents**: those open to be processed to further — by a doctor,
+physician, or ghost — toward completion by legal hand, as required by further
+processor review. Membership is a claim the marker records; the compiler places
+no mechanical restriction on the file. A determine document that is further
+processed remains determine; the marker is a statement of standing, not a lock.
+
+### 23.4 Effect on the toolchain
+
+None, by design. The front end recognises the marker, gates it to `#sleela 2.6`,
+and records it on the parsed document (`Program.determineMarked`). It emits no
+additional artifact, relaxes no rule, and reserves no identifier. A determine
+document compiles exactly as the same document without the marker would.
+
+### 23.5 Where this is implemented
+
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.6.
+- `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
+  contextual `determine` marker and sets `Program.determineMarked`.
+- `impl/frontend/semantic.cpp` — `collect()` gates the marker to 2.6 (and has no
+  other effect for it).
+- `impl/frontend/ast.h` — `Program.determineMarked`.
