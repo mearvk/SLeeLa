@@ -1,6 +1,8 @@
 < SLeeLa Dynamic Memory Guard >
 < Developer-selectable runtime memory growth policy for a SLeeLa VM. >
 
+#sleela 2.5
+material;
 enum VMDynamicMemoryGuardMode {
     HARD = 1;
     SLOW_CAREFUL = 2;

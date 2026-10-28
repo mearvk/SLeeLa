@@ -20,7 +20,8 @@
    
    Family: vm.creator. Composes SleelaVMGenerationCatalog; builds SLVM; hosts
      SLCPURuntime; runs SLWorkload (SLCPUResource-bounded). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SleelaVMCreator {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

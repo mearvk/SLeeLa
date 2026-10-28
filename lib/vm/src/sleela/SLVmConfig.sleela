@@ -15,7 +15,8 @@
    Family: vm. A data+policy record; composed by SLVmVersion* manifests and
      applied through SLVmRuntime. Native application crosses the SLVMNativeBinding
      VM-exit seam (never a direct C call). >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVmConfig {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

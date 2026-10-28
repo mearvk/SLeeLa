@@ -11,7 +11,8 @@
    
    The same workload produces the same result whichever source language it came
    from (1:1 Turing effect) and whichever Sleela CPU hosts it. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class CreatorFullStackExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

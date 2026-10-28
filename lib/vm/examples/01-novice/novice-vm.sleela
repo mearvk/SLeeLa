@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < 01-novice: the simplest useful SLVM program -- compilable and runnable. >
 <  >
 < A novice learns the VM lifecycle in four calls: configure -> start -> use -> >

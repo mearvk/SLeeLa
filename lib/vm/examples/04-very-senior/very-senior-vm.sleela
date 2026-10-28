@@ -1,4 +1,5 @@
-#sleela 2.1
+#sleela 2.5
+material;
 < 04-very-senior: a production-grade VM assembly, end to end -- compilable. >
 <  >
 < A very-senior user drives the whole VM lifecycle with the advanced >

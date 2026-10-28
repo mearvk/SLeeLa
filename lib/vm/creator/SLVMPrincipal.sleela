@@ -7,6 +7,8 @@
      capability. SleelaVMCreator does the actual instantiation/boot.
    
    Family: vm.creator. >>
+#sleela 2.5
+material;
 package vm.creator;
 
 class SLVMPrincipal {

@@ -10,7 +10,8 @@
    Mirrors: vm_cap_allowed/check/denials/reset, vm_cap_name.
    
    Family: vm. Composes SLVmConfig, SLVmResult, SLVmReport, SLVmTelemetry. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVmCapability {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

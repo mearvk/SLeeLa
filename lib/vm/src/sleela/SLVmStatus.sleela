@@ -9,7 +9,8 @@
    Mirrors: VM_VERSION_STRING, vm_status_render/banner.
    
    Family: vm. Composes SLVmConfig. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVmStatus {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

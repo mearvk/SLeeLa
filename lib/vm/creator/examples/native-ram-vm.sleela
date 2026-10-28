@@ -5,7 +5,8 @@
    (SLNativeMemory) instead of the simulated SLRAM store — for running outside
    simulation for procedural layment. The rest of the stack (hosting a Sleela
    CPU, running a C/C++/Java/Sleela program) is unchanged. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class NativeRamVMExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

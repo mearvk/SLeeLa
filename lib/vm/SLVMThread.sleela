@@ -13,7 +13,8 @@
    inspect the stack.
    
    Family: vm. Composes SLVMFrame; composed by SLVM. >>
-#sleela 2.1
+#sleela 2.5
+material;
 class SLVMThread {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
