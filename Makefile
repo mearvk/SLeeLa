@@ -43,7 +43,10 @@ advanced-build:
 	case "$$choice" in \
 	  y|Y|yes|YES|Yes) \
 	    echo "Launching the SLeeLa advanced (guided) build..."; \
-	    ./install/sleela-clean-install.sh ;; \
+	    case "$$(uname -s 2>/dev/null)" in \
+	      Darwin) ./install/sleela-clean-install-macos.sh ;; \
+	      *) ./install/sleela-clean-install.sh ;; \
+	    esac ;; \
 	  n|N|no|NO|No|skip|SKIP|Skip) \
 	    echo "Keeping the plain make build; run 'make clean-install' later for the guided install." ;; \
 	  *) echo "Unrecognized answer '$$choice'; expected yes, no, or skip." >&2; exit 2 ;; \

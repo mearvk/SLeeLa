@@ -9,8 +9,15 @@ The installer supports user-local and system-wide installation on Linux, macOS, 
 For a calm, beautiful, guided install of the **main package only**, run:
 
 ```sh
-make clean-install          # or: ./install/sleela-clean-install.sh
+make clean-install          # or, per platform:
+./install/sleela-clean-install.sh         # Linux
+./install/sleela-clean-install-macos.sh   # macOS (bash 3.2-safe)
+.\install\sleela-clean-install.ps1        # Windows 10+ (PowerShell)
 ```
+
+`make clean-install` (and the `make build` → advanced-build prompt) selects the
+right script for your platform automatically. All three give the same guided,
+block-by-block experience.
 
 It installs the binaries (`sleela`, `sleelvac`, `nordshrift`), the standard
 library, protocols, and support modules — and **excludes** servers, IDEs/editors,
