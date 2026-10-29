@@ -10,10 +10,15 @@ source_text=isa.read()
 header_text=hdr.read()
 # Canonical SLeeLa ISA records use the angle-bracket house style. Accept one
 # opcode record per line, with an optional numeric code and -- description.
-source=re.findall(
-    r'^[ \t]*<[ \t]*(OP_[A-Z][A-Z0-9_]*)(?:[ \t]+[0-9]+)?(?:[ \t]+--.*)?[ \t]*>$',
+source_records=re.findall(
+    r'^[ \t]*<[ \t]*(OP_[A-Z][A-Z0-9_]*)(?:[ \t]+([0-9]+))?(?:[ \t]+--.*)?[ \t]*>$',
     source_text, re.M
 )
+for i,(op,code) in enumerate(source_records):
+    if code is not None and int(code) != i:
+        print(f"source ISA code mismatch at index {i}: {op} declares {code}",file=sys.stderr)
+        raise SystemExit(1)
+source=[op for op,_code in source_records]
 # Ignore opcode names in C comments and the OP__COUNT sentinel.
 header_text=re.sub(r'/\*.*?\*/|//[^\n]*', '', header_text, flags=re.S)
 enum_match=re.search(r'typedef enum \{(.*?)\}\s*SLOp;', header_text, re.S)
