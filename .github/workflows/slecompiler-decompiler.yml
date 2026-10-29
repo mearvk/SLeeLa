@@ -1,0 +1,34 @@
+name: Slecompiler Decompiler Build
+
+on:
+  push:
+    paths:
+      - "decompiler/**"
+      - "api/sleela/2.1/include/sleela/api.hpp"
+      - "api/sleela/2.1/src/api.cpp"
+      - ".github/workflows/slecompiler-decompiler.yml"
+  pull_request:
+    paths:
+      - "decompiler/**"
+      - "api/sleela/2.1/include/sleela/api.hpp"
+      - "api/sleela/2.1/src/api.cpp"
+      - ".github/workflows/slecompiler-decompiler.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  linux-cmake:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -S decompiler -B build/decompiler-ci -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build/decompiler-ci --parallel 2
+
+      - name: Test
+        run: ctest --test-dir build/decompiler-ci --output-on-failure

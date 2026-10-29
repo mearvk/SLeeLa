@@ -5,6 +5,19 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# The shared C++ API lives in the versioned Sleela API tree. Keep these
+# paths anchored to this CMakeLists.txt so builds work from any build dir.
+set(SLEE_LA_API_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../api/sleela/2.1")
+set(SLEE_LA_API_INCLUDE "${SLEE_LA_API_ROOT}/include")
+set(SLEE_LA_API_SOURCE "${SLEE_LA_API_ROOT}/src/api.cpp")
+
+if (NOT EXISTS "${SLEE_LA_API_INCLUDE}/sleela/api.hpp")
+  message(FATAL_ERROR "SLeeLa API header not found: ${SLEE_LA_API_INCLUDE}/sleela/api.hpp")
+endif()
+if (NOT EXISTS "${SLEE_LA_API_SOURCE}")
+  message(FATAL_ERROR "SLeeLa API implementation not found: ${SLEE_LA_API_SOURCE}")
+endif()
+
 add_library(sleela_decompiler STATIC
     src/artifact.cpp
     src/decoder.cpp
@@ -16,10 +29,13 @@ add_library(sleela_decompiler STATIC
     src/library.cpp
     src/archive.cpp
     src/output.cpp
-    ../api/src/api.cpp
+    "${SLEE_LA_API_SOURCE}"
 )
 
-target_include_directories(sleela_decompiler PUBLIC include ../api/include)
+target_include_directories(sleela_decompiler PUBLIC
+    include
+    "${SLEE_LA_API_INCLUDE}"
+)
 target_compile_features(sleela_decompiler PUBLIC cxx_std_20)
 
 if (MSVC)
@@ -61,4 +77,4 @@ install(TARGETS sleela_decompiler sleela-decompiler
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/sleela-decompiler)
-install(DIRECTORY ../api/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/sleela-api)
+install(DIRECTORY "${SLEE_LA_API_INCLUDE}/" DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/sleela-api)
