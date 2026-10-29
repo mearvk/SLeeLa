@@ -5,7 +5,7 @@
 # expresses this grade's distinguishing feature. It links the shared native
 # Core engine (impl/build/libslcore.a), this grade's own feature object(s), and
 # the runner; admission exercises this grade's validator before boot:
-#   filesystem-module host above the SLVM/9 and SLVM/10 storage contracts (TAC3)
+#   filesystem-module host above the SLVM/9 and SLVM/10 storage contracts (TAC3), plus the intXXX/uintXXX fixed-width number series (int32..int16777216, uint32..uint16777216)
 #
 # The Core engine archive is produced by the impl build (`make -C impl libslcore`
 # or the master build). Override SLCORE_LIB/SLCORE_INC for an out-of-tree core.
@@ -43,7 +43,7 @@ include $(VM_PLATFORM_LIBS_MK)
 # compiler and needs the platform runtime libs + OpenMP.
 CORE_LDLIBS ?= $(THREADFLAG) -fopenmp $(CORE_LIBS) $(CORE_UI_LIBS)
 
-FEATURE_OBJS = $(BUILD)/slvm11_filesystem_module.o
+FEATURE_OBJS = $(BUILD)/slvm11_filesystem_module.o $(BUILD)/slvm11_intxxx_module.o
 VM = $(BUILD)/slvm-11
 
 all: $(VM)
@@ -54,6 +54,8 @@ $(BUILD):
 $(BUILD)/slvm11_vm.o: src/slvm11_vm.c | $(BUILD)
 	$(CC) $(CFLAGS) -I$(SLCORE_INC) -c $< -o $@
 $(BUILD)/slvm11_filesystem_module.o: src/slvm11_filesystem_module.c | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
+$(BUILD)/slvm11_intxxx_module.o: src/slvm11_intxxx_module.c | $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(VM): $(BUILD)/slvm11_vm.o $(FEATURE_OBJS) $(SLCORE_LIB) | $(BUILD)
