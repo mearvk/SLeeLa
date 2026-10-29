@@ -16,7 +16,7 @@ SLVM/6 is an ordered architectural layer, not a separate SLeeLa language.
 
 ## Opcode support and unsupported-opcode handling
 
-This generation consumes the canonical source ISA in `/lib/vm/InstructionSet.sleela`. The current repository verification finds **124 source opcodes, 124 native enum entries, and 124 native dispatch cases**, with no missing dispatch cases.
+This generation consumes the canonical source ISA in `/lib/vm/InstructionSet.sleela`. The canonical source registry and native `SLOp` enum contain **155 ordered opcodes** (codes 0..154). The repository inventory CI checks source-to-enum parity; runtime dispatch coverage remains a separate implementation requirement.
 
 The tail of that ISA is the operating-system System Call API (`OP_OS_*`, codes 103-123): the `os*` built-ins (`osRun`/`osSpawn`/`osGetEnv`/`osExists`/...) serviced by `impl/core/sleela_os.c` on Windows, Linux, and macOS. Because this generation consumes the one shared ISA, the host system-call surface is available here exactly as in the base VM; a spawned process is a VM-local bounded handle governed by the same resource-ownership and teardown rules as sockets and files.
 
