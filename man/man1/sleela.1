@@ -1,7 +1,7 @@
 .\" Man page for the Sleela compiler and runtime front end.
 .\" Kept in lockstep with impl/frontend/driver.cpp usage; the binary is the
 .\" authority. Build the binary with: cd impl && make build/sleela
-.TH SLEELA 1 "2026-10-24" "SLeeLa 0.3.29-dev" "SLeeLa Manual"
+.TH SLEELA 1 "2026-10-29" "SLeeLa 0.3.30-dev" "SLeeLa Manual"
 .SH NAME
 sleela \- SLeeLa compiler and runtime front end (Sleelvac(TM))
 .SH SYNOPSIS
@@ -17,7 +17,7 @@ compiles
 .I .sleela
 source into a runnable Core artifact, and executes artifacts and supported
 source/framework input on the native C/C++ Core VM. The supported source-syntax
-range is 1.0 \(en 2.2 (see
+range is 1.0 \(en 2.8 (see
 .BR sleela-syntax (7)
 and the in-tree
 .IR SLEELA.syntax ).
@@ -110,6 +110,59 @@ require
 .B \-\-allow\-defender
 or
 .BR SLEELA_DEFENDER_OPTIN=1 .
+.TP
+.B sleela docs \fR[\fIpackage\fR] [\fIClassName\fR] | \fB\-\-generate\fR [\fIdir\fR] | \fB\-\-live\fR ... | \fB\-\-facade\fR \fItopic\fR [\fB\-\-facade\-root\fR \fIdir\fR] [\fB\-\-facade\-max\-mb\fR \fIN\fR] [\fB\-\-facade\-max\-files\fR \fIN\fR] [\fB\-\-facade\-max\-seconds\fR \fIN\fR]
+SleelaDoc in the terminal: the SLeeLa documentation brand, reachable from the
+command line. With no arguments it lists every documentable topic (packages and
+units). Given a
+.I package
+(e.g.
+.BR crypto )
+it prints that package and its units; given a
+.I ClassName
+(e.g.
+.BR stringbuilder ,
+resolved case-insensitively and by the SL\(hy prefix) it prints a rich page:
+definition, design purpose, relationships, structure, user clays, and a mastery
+ladder. A
+.I package ClassName
+pair selects the exact unit. An unknown topic yields ranked near ("did you
+mean") results.
+.IP
+.B \-\-generate
+.RI [ dir ]
+writes the plain\(hytext doc corpus (default
+.IR api/sleela/docs ):
+one
+.I <package>/<Unit>.txt
+per class, a
+.I <package>/_package.txt
+overview, and a
+.I TOPICS.index .
+The CLI prefers a present corpus;
+.B \-\-live
+forces live parsing.
+.IP
+.B \-\-facade
+.I topic
+searches the filesystem at runtime for a facade topic's real folders and files
+(folders first \(em the shape of the subject \(em then the files), rendering any
+.I .sleela
+sources as full pages. The search defaults to the SLeeLa root and is widened
+with
+.B \-\-facade\-root
+(up to
+.IR / )
+or
+.BR SLEELA_FACADE_PATH .
+It is bounded by three user\(hyoverridable caps \(em
+.B \-\-facade\-max\-mb
+(default 6 MB),
+.B \-\-facade\-max\-files
+(default 6000), and
+.B \-\-facade\-max\-seconds
+(default 360, i.e. 6 minutes) \(em and always prints an honest partial report
+naming whichever cap stopped it.
 .SH ENVIRONMENT
 .TP
 .B SLEELA_SHA256_MANIFEST
@@ -125,6 +178,19 @@ subcommands.
 .TP
 .B SLEELA_DEFENDER_ALLOW_ROOT
 When set to 1, explicitly authorizes privileged installation.
+.TP
+.B SLEELA_DOCS_DIR
+Location of the pre-generated SleelaDoc text corpus that
+.B sleela docs
+prefers when present (default
+.IR <root>/api/sleela/docs ).
+.TP
+.B SLEELA_FACADE_PATH
+Default search root for
+.BR "sleela docs \-\-facade" ,
+overriding the SLeeLa root (the
+.B \-\-facade\-root
+option takes precedence over this).
 .SH EXIT STATUS
 .B sleela
 exits 0 on success and non-zero on a parse, resolution, semantic, verification,
@@ -159,7 +225,7 @@ sleela --mm=512M run program.sleela
 .SH FILES
 .TP
 .I SLEELA.syntax
-The normative language-syntax specification (syntax 1.0 \(en 2.2).
+The normative language-syntax specification (syntax 1.0 \(en 2.8).
 .TP
 .I lib/LIBRARY.SYMBOLS.md
 The authoritative /lib class vocabulary.
