@@ -261,6 +261,86 @@ void suggestNear(std::ostream& o, const library::Index& ix, const std::string& t
     o<<"\n";
 }
 
+// ---- pre-generated corpus (deliverable #4) --------------------------------
+// The CLI prefers a pre-generated plain-text corpus when present: it is fast,
+// offline, and ships inside the SleelaDoc JAR alongside sources (deliverable
+// #5). Layout, rooted at the SleelaDoc root (api/sleela/docs by default):
+//     <root>/TOPICS.index              one "package<TAB>Unit" line per unit
+//     <root>/<package>/<Unit>.txt      the rendered class page
+//     <root>/<package>/_package.txt    the rendered package overview
+// The corpus is always byte-identical to live output because both go through
+// the same renderClass/renderPackage writers.
+
+// Where the corpus lives. Overridable with SLEELA_DOCS_DIR; else <root>/api/
+// sleela/docs under the discovered /lib root's parent (the repo/install root).
+std::string corpusDir(const library::Index& ix){
+    if(const char* e=std::getenv("SLEELA_DOCS_DIR"); e&&*e) return e;
+    fs::path lib(ix.root());
+    fs::path base = lib.has_parent_path()? lib.parent_path() : lib;   // repo/install root
+    return (base/"api"/"sleela"/"docs").generic_string();
+}
+
+// Emit one cached page if it exists; returns true when served from cache.
+bool serveCached(std::ostream& o, const std::string& dir, const std::string& pkg, const std::string& unit){
+    fs::path p = fs::path(dir)/pkg/(unit+".txt");
+    std::ifstream in(p); if(!in) return false;
+    o<<in.rdbuf();
+    return true;
+}
+
+// Packages excluded from the COMMITTED corpus (and the JAR). The java compat
+// mirror and the early-access trees are enormous (the java package alone is
+// ~5k units / 22 MB) and are faithful re-declarations of upstream Java, not
+// SLeeLa standard-library design. The live `sleela docs java ...` path still
+// documents them on demand; only the pre-generated corpus is scoped to the
+// SLeeLa standard library. Override by setting SLEELA_DOCS_ALL=1.
+bool corpusIncludes(const std::string& pkg){
+    if(const char* e=std::getenv("SLEELA_DOCS_ALL"); e&&*e&&std::string(e)!="0") return true;
+    if(pkg=="__root__") return false;
+    if(pkg=="java") return false;
+    return true;
+}
+
+// Generate the entire corpus under `outDir`. Returns 0 on success.
+int generateCorpus(const library::Index& ix, const std::string& outDir){
+    std::error_code ec;
+    fs::create_directories(outDir,ec);
+    std::ofstream index((fs::path(outDir)/"TOPICS.index").string());
+    if(!index){ std::cerr<<"sleela docs --generate: cannot write under "<<outDir<<"\n"; return 1; }
+    // Collect packages in sorted order for stable, reviewable output.
+    std::map<std::string,std::vector<const library::Symbol*>> byPkg;
+    for(const auto& s:ix.symbols()){
+        if(s.path.find("early_access")!=std::string::npos) continue;
+        if(!corpusIncludes(s.package)) continue;
+        byPkg[s.package].push_back(&s);
+    }
+    size_t units=0, pages=0;
+    for(auto& kv:byPkg){
+        const std::string& pkg=kv.first;
+        if(pkg=="__root__") continue;
+        fs::create_directories(fs::path(outDir)/pkg,ec);
+        // package overview
+        { std::ostringstream po; renderPackage(po,ix,pkg);
+          std::ofstream pf((fs::path(outDir)/pkg/"_package.txt").string()); pf<<po.str(); }
+        auto& us=kv.second;
+        std::sort(us.begin(),us.end(),[](auto*a,auto*b){return a->name<b->name;});
+        for(auto* s:us){
+            ++units;
+            UnitDoc u=parseUnit(*s,ix.root());
+            if(u.classes.empty()) continue;
+            std::ostringstream cp;
+            for(const auto& c:u.classes) renderClass(cp,u,c);
+            std::ofstream cf((fs::path(outDir)/pkg/(s->name+".txt")).string());
+            cf<<cp.str();
+            index<<pkg<<"\t"<<s->name<<"\n";
+            ++pages;
+        }
+    }
+    std::cout<<"SleelaDoc corpus written to "<<outDir<<"\n"
+             <<"  "<<byPkg.size()<<" package(s), "<<units<<" unit(s), "<<pages<<" class page(s), plus TOPICS.index\n";
+    return 0;
+}
+
 } // namespace
 
 int docsCmd(int argc, char** argv){
@@ -280,12 +360,25 @@ int docsCmd(int argc, char** argv){
     }
     std::ostream& o=std::cout;
 
+    // Corpus generation: `sleela docs --generate [dir]`.
+    if(!words.empty() && (words[0]=="--generate"||words[0]=="-g")){
+        std::string dir = (words.size()>=2)? words[1] : corpusDir(ix);
+        return generateCorpus(ix,dir);
+    }
+    // Prefer a pre-generated corpus unless the caller forces live parsing with
+    // `--live`. When forced, drop the flag and continue.
+    bool forceLive=false;
+    if(!words.empty() && words[0]=="--live"){ forceLive=true; words.erase(words.begin()); }
+    std::string cdir=corpusDir(ix);
+    bool haveCorpus = !forceLive && fs::is_directory(cdir);
+
     if(words.empty()){ listAll(o,ix); return 0; }
 
     // Two-word form: <package> <Class>
     if(words.size()>=2){
         const std::string& pkg=words[0]; const std::string& cls=words[1];
         for(const auto& s:ix.symbols()) if(lower(s.package)==lower(pkg) && lower(s.name)==lower(cls)){
+            if(haveCorpus && serveCached(o,cdir,s.package,s.name)) return 0;
             UnitDoc u=parseUnit(s,ix.root());
             if(u.classes.empty()){ o<<"(unit '"<<s.name<<"' declares no class)\n"; return 0; }
             for(const auto& c:u.classes) renderClass(o,u,c);
@@ -330,6 +423,7 @@ int docsCmd(int argc, char** argv){
             o<<"\nShowing the best standard-library match ("<<good.front().first.package<<"):\n\n";
         }
         const auto& g=good.front();
+        if(haveCorpus && serveCached(o,cdir,g.first.package,g.first.name)) return 0;
         for(const auto& c:g.second.classes) renderClass(o,g.second,c);
         return 0;
     }

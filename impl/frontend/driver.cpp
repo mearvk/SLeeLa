@@ -1236,7 +1236,7 @@ static int usage(){
         << "  " << n << " exec [--config <file>|-c <file>] [--memory-manager[=<size>]|--mm[=<size>]] [--] <program> [args...]\n"
         << "  " << n << " design-activity <science> <correctness> <reproducibility> <observability> <safety> <resource> <interoperability>\n"
         << "  " << n << " defender <detect|fetch|build|install|provision> [directory] [--allow-defender|--optin] [--allow-root] [--sha256 <hex>|--sha256=<hex>]\n"
-        << "  " << n << " docs [<package>] [<ClassName>]   SleelaDoc in the terminal (e.g. docs crypto, docs stringbuilder); no args lists all topics\n"
+        << "  " << n << " docs [<package>] [<ClassName>] | --generate [dir] | --live ...   SleelaDoc in the terminal (e.g. docs crypto, docs stringbuilder); no args lists all topics; --generate writes the text corpus\n"
         << "\n"
         << "Command-specific option details:\n"
         << "  xclass: --run (default), --emit, --info\n"
