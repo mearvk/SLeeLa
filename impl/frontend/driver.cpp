@@ -13,6 +13,7 @@
 #include "financial_api.h"
 #include "version.h"
 #include "library_index.h"
+#include "docs.h"
 #include "keyword_supporter.h"
 #include "../../registry/sleela_registry.h"
 #include "vm_config.h"
@@ -1235,6 +1236,7 @@ static int usage(){
         << "  " << n << " exec [--config <file>|-c <file>] [--memory-manager[=<size>]|--mm[=<size>]] [--] <program> [args...]\n"
         << "  " << n << " design-activity <science> <correctness> <reproducibility> <observability> <safety> <resource> <interoperability>\n"
         << "  " << n << " defender <detect|fetch|build|install|provision> [directory] [--allow-defender|--optin] [--allow-root] [--sha256 <hex>|--sha256=<hex>]\n"
+        << "  " << n << " docs [<package>] [<ClassName>]   SleelaDoc in the terminal (e.g. docs crypto, docs stringbuilder); no args lists all topics\n"
         << "\n"
         << "Command-specific option details:\n"
         << "  xclass: --run (default), --emit, --info\n"
@@ -1832,6 +1834,7 @@ int main(int argc,char**argv){
     else if(cmd=="registry")return registryCmd(argc,argv);
     else if(cmd=="design-activity")return designActivityCmd(argc,argv);
     else if(cmd=="defender")return defenderCmd(argc,argv);
+    else if(cmd=="docs")return sleela::docsCmd(argc,argv);
     else if(cmd=="version"){
         // The identity is baked in at compile time: the `sleela` binary always
         // reports the Language/Runtime; the `sleelvac` binary always reports the
