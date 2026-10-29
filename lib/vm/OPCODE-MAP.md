@@ -6,10 +6,10 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 
 **Target ISA state:** 155 source ISA entries and 155 native `SLOp` entries; the VM coverage check compares their count and order. There are no missing native dispatch cases. The tail groups are the array ops (98–102), the operating-system system calls (103–123, `OP_OS_*`), the GC/system ops (124 `OP_GC_HINT`, 125 `OP_RAN_MEM`), the idea-canvas native-bridge ops (126–147, `OP_IC_*`, from `idea/realtime`), the VM-selection service op (148, `OP_VM_SELECT`), the Modium file-resolution scan op (149, `OP_MODIUM_SCAN`), `OP_UI_CALL` (150), `OP_SSEND` (151), and runtime type/stack ops `OP_CHECKCAST` (152), `OP_INSTANCEOF` (153), and `OP_DUP2` (154) — all appended to the end of the enum so earlier opcode numbers are unchanged.
 
-> Sync note: entries 126–148 were previously a lag in the source ISA (the
-> `OP_IC_*` group existed in the native enum but not in `InstructionSet.sleela`
-> / this map). They are now represented as `SLISAIc*` classes plus
-> `SLISAVmSelect`, so the source ISA, native enum, and this map agree.
+> Sync note: the source registry, native enum, and map now cover the appended
+> `OP_IC_*` group (126–147), `OP_VM_SELECT` (148), `OP_MODIUM_SCAN` (149),
+> and opcodes 150–154. The coverage checks compare the ordered source records
+> against the native enum; CI remains the final build-level verification.
 > `OP_VM_SELECT` (148) is the service-exit seam the Sleela VM selector
 > (`virtual-machine/vm-version/SLVmRegistry` + the `SLVmVersionNNN` manifests)
 > binds to, so choosing a VM parks a VM-exit the host services by building and
