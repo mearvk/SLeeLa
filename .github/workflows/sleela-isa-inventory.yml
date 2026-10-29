@@ -11,6 +11,7 @@ on:
       - "tools/sleela-build.py"
       - "tools/verify-vm-source-coverage.sh"
       - "impl/core/sleela_core.h"
+      - "impl/core/sleela_core.c"
       - ".github/workflows/sleela-isa-inventory.yml"
   pull_request:
     paths:
@@ -22,6 +23,7 @@ on:
       - "tools/sleela-build.py"
       - "tools/verify-vm-source-coverage.sh"
       - "impl/core/sleela_core.h"
+      - "impl/core/sleela_core.c"
       - ".github/workflows/sleela-isa-inventory.yml"
 
 permissions:
