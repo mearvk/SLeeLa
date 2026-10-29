@@ -4,13 +4,13 @@
      the Turing-complete substrate that the whole CPU model reduces to. The
      codes and mnemonics mirror the native enum exactly (impl/core/sleela_core.h
      `SLOp` and lib/vm/InstructionSet.sleela). The native enum currently defines
-     150 opcodes (codes 0..149), dispatched one-at-a-time by the native VM, and
+     155 opcodes (codes 0..154), dispatched one-at-a-time by the native VM, and
      organized here as a DOUBLE SHELF of three contiguous tiers:
        - shelf 1, base computational/service core (codes 0..48): arithmetic,
          control flow, call/return, threads, sockets, pipes, files;
        - shelf 2, substrate extensions (codes 49..97): time services, structs,
          Synchro / Munction / Best-of;
-       - shelf 3, host-facing services (codes 98..149): arrays, OS syscalls, GC
+       - shelf 3, host-facing services (codes 98..154): arrays, OS syscalls, GC
          hint, `ran::`, the Idea realtime canvas, VM-select / Modium.
      All three shelves are acceptable opcodes; the tiers (BASE_COUNT /
      SUBSTRATE_COUNT / NATIVE_COUNT and the TIER_* flags) do not gate execution,
@@ -93,8 +93,8 @@ class SLSleelaOpcode {
   static final int OP_NEWSTRUCT=58; static final int OP_GETFIELD=59; static final int OP_SETFIELD=60;
 
   < --- Double-shelf opcode tiers -------------------------------------------- >
-  < The native substrate (impl/core/sleela_core.h `SLOp`) defines 150 opcodes >
-  < (codes 0..149). All are acceptable; the tiers below do not gate execution, >
+  < The native substrate (impl/core/sleela_core.h `SLOp`) defines 155 opcodes >
+  < (codes 0..154). All are acceptable; the tiers below do not gate execution, >
   < they let the professional monitoring/storage layer tag each opcode by the >
   < SHELF it belongs to and iterate each shelf under its own flag. >
   <  >
@@ -104,15 +104,16 @@ class SLSleelaOpcode {
   < files. The Turing-complete subset the CPU ISA + syscalls lower onto. >
   < Shelf 2  codes  49..97  substrate extensions: time services, structs, >
   < Synchro / Munction / Best-of. Part of the canonical substrate. >
-  < Shelf 3  codes 98..149  host-facing services: arrays, OS syscalls, GC >
+  < Shelf 3  codes 98..154  host-facing services: arrays, OS syscalls, GC >
   < hint, `ran::`, the Idea realtime canvas, VM-select / Modium. >
   < end of shelf 1 (base core), exclusive >
   static final int BASE_COUNT      = 49;
   < end of shelf 2 (substrate), exclusive >
   static final int SUBSTRATE_COUNT = 98;
-  < end of shelf 3 (full native enum), exclusive. Grew to admit OP_UI_CALL (150) >
-  < and OP_SSEND (151): the real opcodes are 0..151, so the count is 152. >
-  static final int NATIVE_COUNT    = 152;
+  < end of shelf 3 (full native enum), exclusive. Includes host-facing services through OP_DUP2 (154) >
+  < OP_UI_CALL (150), OP_SSEND (151), OP_CHECKCAST (152), OP_INSTANCEOF (153), >
+  < and OP_DUP2 (154): the real opcodes are 0..154, so the count is 155. >
+  static final int NATIVE_COUNT    = 155;
 
   < OP_SSEND (151): the ::: structural-offload send. A host-shelf service opcode >
   < that frames a String source element-by-element into a receiver reach. >
