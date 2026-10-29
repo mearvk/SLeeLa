@@ -519,7 +519,7 @@
     },
     {
       "path": "impl/frontend/docs.cpp",
-      "sha256": "d53969e2b38017bc3cabe56fbd1c0001d37f251799c6d26c2e10036f39f9236b"
+      "sha256": "960c4053894fccd5969e49fbb7658339fde68a80c6ec627f138036b33e1404e7"
     },
     {
       "path": "impl/frontend/docs.h",
@@ -527,7 +527,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "5283edeb1ad871f26def88cea00bd574614ff55f7fda92572e685167ebfa4ef4"
+      "sha256": "0a0f4227ffe81c00c9eee8e14e5ad91d6c3be75cffc0e85eb92827998d90e395"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
