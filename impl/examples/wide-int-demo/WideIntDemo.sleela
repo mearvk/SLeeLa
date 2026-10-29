@@ -1,0 +1,39 @@
+#sleela 2.7
+
+# Demo: extended wide signed integer primitives int256..int16777216 (syntax 2.7).
+# Exercises declarations, arithmetic, parameters, returns, casts and arrays.
+class WideIntDemo {
+
+    static int256 doubleIt(int256 x) {
+        return x + x;
+    }
+
+    static void main() {
+        int256  a = 1000000000;
+        int512  b = 2000000000;
+        int1024 c = a + b;
+        print(c);
+
+        int256 big = a * a;
+        print(big);
+
+        int256 r = doubleIt(21);
+        print(r);
+
+        int2048 wide = 7;
+        int4096 wider = wide + 1;
+        print(wider);
+
+        int16777216 widest = 123456789;
+        print(widest);
+
+        int256[] xs = new int256[3];
+        xs[0] = 10;
+        xs[1] = 20;
+        xs[2] = xs[0] + xs[1];
+        print(xs[2]);
+
+        int256 castv = (int256) 99;
+        print(castv);
+    }
+}

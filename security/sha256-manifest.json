@@ -511,7 +511,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "b1238483e776f1e21379ffb20635b5b837831bc4f1f6abfe63a150d58f1eb3d0"
+      "sha256": "8ce89685338d238a55f26ccc9bb3a32e5b5292dce04e859f5b7072e8da27e42b"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -599,7 +599,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "5d96cd3d2f19304d676e137ab9969b1125da6d98949558a960832b0b04f6a48f"
+      "sha256": "d4289027811a642f2deb768f6f9ff2e0e9d3e9afdf35ae302fb052772d8540d6"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -615,7 +615,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "6e45cb0360d766459aabd65bf12e73ed099a5a6fe8d0cd968566caf7bea6b0a8"
+      "sha256": "d5d3073a4d568ed845a756ddd84da6f83f88796674020f4febea583e6d9e1385"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -631,7 +631,11 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "9247d8364680567a7dc8869c0470547215e76659da7caf6dcd74a6998efb560e"
+      "sha256": "6563e289f58ffaed9e73d96cacb7466131248089e83f4b9df422ad406281dd38"
+    },
+    {
+      "path": "impl/frontend/wide_integer.h",
+      "sha256": "bd3de677ba8e500e7047576956841a3e2f6e9fbaf6af03e01557603b25655e77"
     },
     {
       "path": "impl/frontend/wikigen.cpp",

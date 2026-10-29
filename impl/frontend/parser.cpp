@@ -435,6 +435,16 @@ StmtP Parser::parseSimpleStatement(){
             while(peek((int)k).kind==Tok::Dot&&peek((int)(k+1)).kind==Tok::Ident) k+=2;
             if(peek((int)k).kind==Tok::Ident) localDecl=true;         // run followed by the var name
         }
+        else if(peek(1).kind==Tok::LBracket){                         // array of an Ident type: `T[] name` / `T[][] name`
+            // Distinguish a declaration `U256[] xs` / `int256[][] m` from an
+            // indexing expression `arr[i] = ...`: a declaration's brackets are
+            // all empty (`[` immediately followed by `]`) and the run is
+            // followed by the variable name. An indexing expression has a
+            // subscript between the brackets, so this never misfires on it.
+            size_t k=1;                                               // peek offset: at first '['
+            while(peek((int)k).kind==Tok::LBracket&&peek((int)(k+1)).kind==Tok::RBracket) k+=2;
+            if(k>1 && peek((int)k).kind==Tok::Ident) localDecl=true;  // one+ empty `[]` then the var name
+        }
     }
     if(localDecl){auto d=std::make_unique<VarDecl>();d->type=parseType();d->name=expect(Tok::Ident,"variable name").text;if(accept(Tok::Assign))d->init=parseExpr();return d;}
     // Otherwise parse an expression; if `=` follows, it is an assignment whose

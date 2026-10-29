@@ -5,6 +5,7 @@
 #include "semantic.h"
 #include "java_compat.h"
 #include "unsigned_integer.h"
+#include "wide_integer.h"
 
 #include <map>
 #include <stdexcept>
@@ -226,7 +227,9 @@ private:
     int runtimeTypeOperand(const std::string& name) const {
         auto st=structLayout_.find(name);
         if(st!=structLayout_.end()) return st->second.typeIndex;
-        if(name=="int128") return -(SL_INT128+1);
+        // int128 and the extended wide signed family int256..int16777216
+        // (syntax 2.7) ride the VM's widest native integer slot (SL_INT128).
+        if(name=="int128" || SignedWideInteger::isValidTypeName(name)) return -(SL_INT128+1);
         if(name=="int" || name=="long" || name=="int64" || UnsignedInteger::isValidTypeName(name)) return -(SL_INT+1);
         if(name=="double") return -(SL_DOUBLE+1);
         if(name=="bool" || name=="boolean") return -(SL_BOOL+1);
@@ -243,7 +246,10 @@ private:
     // int64 share the 64-bit representation; class/array/String stores are
     // exact).
     void coerceToDeclared(const std::string& declType){
-        if(declType=="double"||declType=="int128") emit(OP_CHECKCAST,runtimeTypeOperand(declType));
+        // Widen into a double, an int128, or any extended wide signed integer
+        // (int256..int16777216); the latter all back onto the VM's 128-bit slot.
+        if(declType=="double"||declType=="int128"||SignedWideInteger::isValidTypeName(declType))
+            emit(OP_CHECKCAST,runtimeTypeOperand(declType));
     }
     // Emit call arguments, widening each integer argument to a declared double
     // or int128 parameter (so half(9) passes 9.0, not 9).
