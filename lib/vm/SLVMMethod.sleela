@@ -7,7 +7,7 @@
      an SLVMFrame sized to maxLocals and points the substrate's ip at entry.
    
    The method does not own code bytes itself — code lives once in the module's
-   SLSleelaVM so every layer executes the same 124 canonical opcodes the native
+   SLSleelaVM so every layer executes the same 155 canonical opcodes the native
    engine (lib/cpu/SLSleelaVM) interprets.
    
    A method also carries an access role (exposed-hop / local-system /
