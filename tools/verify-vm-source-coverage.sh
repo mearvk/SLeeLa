@@ -3,13 +3,15 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ISA="$ROOT/lib/vm/InstructionSet.sleela"
 HDR="$ROOT/impl/core/sleela_core.h"
-python3 - "$ISA" "$HDR" <<'PY'
-import re,sys
-isa,hdr=map(open,sys.argv[1:])
+DISPATCH="$ROOT/impl/core/sleela_core.c"
+python3 - "$ISA" "$HDR" "$DISPATCH" <<'PY'
+import collections,re,sys
+isa,hdr,dispatch=map(open,sys.argv[1:])
 source_text=isa.read()
 header_text=hdr.read()
-# Canonical SLeeLa ISA records use the angle-bracket house style. Accept one
-# opcode record per line, with an optional numeric code and -- description.
+dispatch_text=dispatch.read()
+# Canonical SLeeLa ISA records use one angle-bracket record per line.
+# Optional numeric codes and -- descriptions belong to that record.
 source_records=re.findall(
     r'^[ \t]*<[ \t]*(OP_[A-Z][A-Z0-9_]*)(?:[ \t]+([0-9]+))?(?:[ \t]+--.*)?[ \t]*>$',
     source_text, re.M
@@ -19,7 +21,7 @@ for i,(op,code) in enumerate(source_records):
         print(f"source ISA code mismatch at index {i}: {op} declares {code}",file=sys.stderr)
         raise SystemExit(1)
 source=[op for op,_code in source_records]
-# Ignore opcode names in C comments and the OP__COUNT sentinel.
+# Ignore C comments and the OP__COUNT sentinel in the native enum.
 header_text=re.sub(r'/\*.*?\*/|//[^\n]*', '', header_text, flags=re.S)
 enum_match=re.search(r'typedef enum \{(.*?)\}\s*SLOp;', header_text, re.S)
 if not enum_match:
@@ -30,8 +32,17 @@ if source != native:
     print("ISA source/native mismatch",file=sys.stderr)
     for i,(a,b) in enumerate(zip(source,native)):
         if a!=b: print(f"first difference at {i}: source={a} native={b}",file=sys.stderr); break
+    print(f"source={len(source)} native={len(native)}",file=sys.stderr)
     raise SystemExit(1)
-print(f"ISA source/native coverage: PASS ({len(source)} ordered opcodes)")
+dispatch_ops=re.findall(r'\bcase\s+(OP_[A-Z][A-Z0-9_]*)\s*:',dispatch_text)
+dispatch_counts=collections.Counter(dispatch_ops)
+missing=[op for op in native if dispatch_counts[op] == 0]
+extra=[op for op in dispatch_counts if op not in native]
+duplicates=[op for op,count in dispatch_counts.items() if count != 1]
+if missing or extra or duplicates:
+    print(f"native dispatch mismatch: missing={missing}, extra={extra}, non-unique={duplicates}",file=sys.stderr)
+    raise SystemExit(1)
+print(f"ISA source/native/dispatch coverage: PASS ({len(source)} ordered opcodes; {len(dispatch_ops)} dispatch cases)")
 PY
 COUNT="$(find "$ROOT/lib" -type f -name '*.sleela' | wc -l)"
 test "$COUNT" -gt 0
