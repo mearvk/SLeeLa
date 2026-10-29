@@ -214,7 +214,7 @@ def isa_source_native_check() -> tuple[bool, str]:
         re.MULTILINE,
     )
     for index, (name, code) in enumerate(source_records):
-        if code is not None and int(code) != index:
+        if code and int(code) != index:
             return False, f"source ISA code mismatch at index {index}: {name} declares {code}"
     source_ops = [name for name, _code in source_records]
 
