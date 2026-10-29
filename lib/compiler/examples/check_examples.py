@@ -39,7 +39,7 @@ for level, files in levels.items():
     require(level in index, f"top-level examples index does not mention {level}")
 
 novice = read("Novice/HelloCompiler.sleela")
-require('#sleela 2.1' in novice, "Novice scaffold must declare language version 2.1")
+require('#sleela 2.5' in novice, "Novice scaffold must declare language version 2.5 (required by material; syntax)")
 require('keyword != "say"' in novice, "Novice scaffold must reject an unknown keyword")
 require("!closedQuote" in novice, "Novice scaffold must reject an unterminated string")
 require("if (!valid)" in novice, "Novice scaffold must block emission before validation")
