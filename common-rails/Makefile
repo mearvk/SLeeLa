@@ -7,6 +7,14 @@ CFLAGS ?= -std=c11 -Wall -Wextra -pedantic -Iheritage/printing/c
 SLEELA ?= ../impl/build/sleela
 NORDSHRIFT ?= ../impl/build/nordshrift
 
+# Anchor the compiler's built-in SHA-256 gate to the repository checkout (the
+# parent of this directory) rather than a stale installed tree such as
+# ~/.local/sleela. findRepoRoot() in the driver honors SLEELA_HOME first. The
+# root dispatcher already exports this; defaulting it here keeps a standalone
+# `make -C common-rails` correct too. Overridable from the environment.
+SLEELA_HOME ?= $(abspath ..)
+export SLEELA_HOME
+
 .PHONY: all check c-check cpp-check java-check sleela-check sst-check clean help
 
 all: check

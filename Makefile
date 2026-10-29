@@ -56,6 +56,18 @@ SLEELA_REPO_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 SLEELA_SHA256_MANIFEST ?= $(SLEELA_REPO_ROOT)/security/sha256-manifest.json
 SLEELA_VERIFY_TOOL := $(SLEELA_REPO_ROOT)/tools/verify-before-execution.py
 export SLEELA_SHA256_MANIFEST
+# Anchor the COMPILER's own built-in SHA-256 gate to this checkout too. Child
+# stages invoke `$(SLEELA) check`/`run` (common-rails, the lib example science
+# harnesses, ...); that binary resolves its own verification root via
+# findRepoRoot(), which honors $SLEELA_HOME FIRST, then falls back to the
+# binary's installed layout (e.g. ~/.local/sleela). Without this export, a
+# freshly built checkout would be verified against a STALE installed tree,
+# producing "missing file"/"SHA-256 mismatch" failures for files the checkout
+# added or changed since that install. Exporting SLEELA_HOME here makes the
+# gate verify the checkout the manifest actually describes. Developers may still
+# override it in the environment to point at a deliberate trusted root.
+SLEELA_HOME ?= $(SLEELA_REPO_ROOT)
+export SLEELA_HOME
 
 verify-security:
 	@test -f "$(SLEELA_SHA256_MANIFEST)" || { echo "SLeeLa verification manifest not found: $(SLEELA_SHA256_MANIFEST)" >&2; exit 1; }
