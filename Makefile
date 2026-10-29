@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install tutorial-check tests server config route common-rails registry premium-vms clean help
+.PHONY: all uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install tutorial-check tests server config route common-rails registry premium-vms clean verify-security help
 
 SLEELA_MANIFEST_CONSENT ?=
 
@@ -12,16 +12,23 @@ DESTDIR ?=
 
 all: core java28 regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs churn antivirus registry premium-vms ballum
 
-# The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
-# repository's manifest (absolute path) so `make` works from the repo root; an
-# explicit SLEELA_SHA256_MANIFEST on the command line still overrides it.
-SLEELA_SHA256_MANIFEST ?= $(abspath $(CURDIR)/security/sha256-manifest.json)
+# Anchor verification to the directory containing this root Makefile, rather
+# than an installed runtime tree such as ~/.local/sleela. The manifest remains
+# overridable with SLEELA_SHA256_MANIFEST for deliberate trusted-manifest use.
+SLEELA_REPO_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+SLEELA_SHA256_MANIFEST ?= $(SLEELA_REPO_ROOT)/security/sha256-manifest.json
+SLEELA_VERIFY_TOOL := $(SLEELA_REPO_ROOT)/tools/verify-before-execution.py
 export SLEELA_SHA256_MANIFEST
+
+verify-security:
+	@test -f "$(SLEELA_SHA256_MANIFEST)" || { echo "SLeeLa verification manifest not found: $(SLEELA_SHA256_MANIFEST)" >&2; exit 1; }
+	@test -r "$(SLEELA_VERIFY_TOOL)" || { echo "SLeeLa verification tool not readable: $(SLEELA_VERIFY_TOOL)" >&2; exit 1; }
+	python3 "$(SLEELA_VERIFY_TOOL)" --manifest "$(SLEELA_SHA256_MANIFEST)" --root "$(SLEELA_REPO_ROOT)"
 
 autocheck:
 	@sh ./scripts/autocheck-toolchain.sh
 
-core: autocheck
+core: autocheck verify-security
 	$(MAKE) -C impl all
 
 java28:
@@ -239,6 +246,7 @@ clean:
 help:
 	@echo "SLeeLa repository build dispatcher"
 	@echo "  make all       Build core, Java 28, regex, compiler, decompiler, VM, codecs, and tests"
+	@echo "  make verify-security Verify the checkout rooted at this Makefile against its SHA-256 manifest"
 	@echo "  make core      Build impl/"
 	@echo "  make java28    Build java28/"
 	@echo "  make regex     Build regex/ and its test suites"
