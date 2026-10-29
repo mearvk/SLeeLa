@@ -208,12 +208,15 @@ def isa_source_native_check() -> tuple[bool, str]:
     native = native_path.read_text(encoding="utf-8", errors="replace")
     # The canonical source registry uses one angle-bracket record per opcode.
     # Optional numeric codes and -- descriptions remain part of the same record.
-    source_ops = re.findall(
+    source_records = re.findall(
         r"^[ \t]*<[ \t]*(OP_[A-Z0-9_]+)(?:[ \t]+([0-9]+)(?:[ \t]+--.*)?)?[ \t]*>$",
         source,
         re.MULTILINE,
     )
-    source_ops = [name for name, _code in source_ops]
+    for index, (name, code) in enumerate(source_records):
+        if code is not None and int(code) != index:
+            return False, f"source ISA code mismatch at index {index}: {name} declares {code}"
+    source_ops = [name for name, _code in source_records]
 
     # Strip C comments before reading the enum so opcode names mentioned in
     # explanatory comments cannot inflate the native instruction count.
