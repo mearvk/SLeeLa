@@ -102,7 +102,11 @@ std::string gatherAbove(const std::vector<std::string>& lines, int end){
 UnitDoc parseUnit(const library::Symbol& sym, const std::string& libRoot){
     UnitDoc u; u.package=sym.package; u.name=sym.name;
     fs::path full = fs::path(sym.path).is_absolute() ? fs::path(sym.path) : (fs::path(libRoot)/sym.path);
-    u.path=full.generic_string();
+    // Display a stable, repo-relative path (lib/<...>), not an absolute build
+    // path, so a page is identical on every machine and clean inside the JAR.
+    fs::path libp(libRoot);
+    std::string libName = libp.filename().string().empty()? "lib" : libp.filename().string();
+    u.path = (fs::path(libName)/sym.path).generic_string();
     std::ifstream in(full); if(!in) return u;
     std::stringstream ss; ss<<in.rdbuf(); std::string text=ss.str();
     // header Definition line (within the first block)
