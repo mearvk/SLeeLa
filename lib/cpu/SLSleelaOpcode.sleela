@@ -117,7 +117,11 @@ class SLSleelaOpcode {
 
   < OP_SSEND (151): the ::: structural-offload send. A host-shelf service opcode >
   < that frames a String source element-by-element into a receiver reach. >
+  static final int OP_UI_CALL = 150;
   static final int OP_SSEND = 151;
+  static final int OP_CHECKCAST = 152;
+  static final int OP_INSTANCEOF = 153;
+  static final int OP_DUP2 = 154;
 
   < Tier ids the monitoring/storage layer pivots on (the "iteration flags"). >
   < not a native opcode (out of range) >
