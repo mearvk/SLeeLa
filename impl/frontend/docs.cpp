@@ -4,6 +4,9 @@
 #include "library_index.h"
 #include <algorithm>
 #include <cctype>
+#include <chrono>
+#include <cstdint>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -319,8 +322,18 @@ void renderPackage(std::ostream& o, const library::Index& ix, const std::string&
         if(!one.empty()) o<<"\n      "<<one;
         o<<"\n";
     }
-    o<<"\nRead one in full with:  sleela docs "<<pkg<<" <ClassName>\n"
-      <<"                   or:  sleela docs <ClassName>\n\n";
+    // Facade-only hint: a package whose only /lib unit is the SLPackage marker
+    // has its real material elsewhere on disk. Offer the live OS search.
+    bool facadeOnly = (units.size()==1 && units.front()->name=="SLPackage");
+    if(facadeOnly){
+        o<<"\nThis is a FACADE package: its /lib entry is only the package marker.\n"
+          <<"Find and document its real files on disk with the live OS search:\n"
+          <<"    sleela docs --facade "<<pkg<<"\n"
+          <<"(bounded by 6 MB / 6000 files / 6 min; widen with --facade-root <dir>)\n\n";
+    } else {
+        o<<"\nRead one in full with:  sleela docs "<<pkg<<" <ClassName>\n"
+          <<"                   or:  sleela docs <ClassName>\n\n";
+    }
 }
 
 void listAll(std::ostream& o, const library::Index& ix){
@@ -437,6 +450,182 @@ int generateCorpus(const library::Index& ix, const std::string& outDir){
     return 0;
 }
 
+// ---- facade live OS search (deliverable #6) -------------------------------
+// A facade-only package (e.g. psychiatry, politico) carries just an SLPackage
+// marker under /lib; the real subject material lives elsewhere on disk (sibling
+// top-level dirs, data, docs, scripts). `sleela docs --facade <topic>` searches
+// the filesystem AT RUNTIME for files belonging to the topic and renders a
+// facade report. The search is bounded by three user-overridable caps and
+// always prints an honest, partial report naming whichever cap stopped it:
+//     --facade-max-mb N        working-memory ceiling   (default 6 MB)
+//     --facade-max-files N     files examined ceiling    (default 6000)
+//     --facade-max-seconds N   wall-clock ceiling        (default 360 = 6 min)
+//     --facade-root DIR        where to search (default: the SLeeLa root; may
+//                              be widened up to "/" at the user's choice)
+struct FacadeCaps { size_t maxBytes=6*1024*1024; size_t maxFiles=6000; long maxSeconds=360; };
+
+struct FacadeHit { std::string path; std::string kind; std::string peek; uintmax_t size=0; };
+
+std::string classifyKind(const fs::path& p){
+    std::string e=lower(p.extension().string());
+    if(e==".sleela") return "source (.sleela)";
+    if(e==".md"||e==".txt"||e==".rst"||e==".adoc") return "document";
+    if(e==".c"||e==".h"||e==".cpp"||e==".hpp"||e==".cc"||e==".mm") return "native source";
+    if(e==".py"||e==".sh"||e==".ps1"||e==".bat") return "script";
+    if(e==".json"||e==".xml"||e==".csv"||e==".yaml"||e==".yml"||e==".sst"||e==".sheet") return "data";
+    if(e==".key"||e==".pem"||e==".bin") return "binary/key";
+    return "other";
+}
+
+bool looksText(const fs::path& p){
+    std::string e=lower(p.extension().string());
+    static const std::vector<std::string> bin={".key",".pem",".bin",".png",".jpg",".jpeg",".gif",".zip",".jar",".gz",".o",".a",".so",".class"};
+    for(const auto& b:bin) if(e==b) return false;
+    return true;
+}
+
+// First non-empty, non-trivial line of a text file, trimmed to 120 chars.
+std::string firstLinePeek(const fs::path& p){
+    std::ifstream in(p); if(!in) return "";
+    std::string ln; int guard=0;
+    while(std::getline(in,ln) && guard++<40){
+        std::string s=trim(ln);
+        if(s.empty()) continue;
+        // skip pure comment/marker lines for a more useful peek
+        if(s.size()>120) s=s.substr(0,117)+"...";
+        return s;
+    }
+    return "";
+}
+
+// Should this directory be skipped during the walk?
+bool skipDir(const std::string& name){
+    return name==".git" || name=="node_modules" || name=="build" ||
+           name==".cache" || name=="__pycache__" || name==".svn";
+}
+
+int renderFacade(std::ostream& o, const library::Index& ix, const std::string& topic,
+                 const std::string& rootArg, const FacadeCaps& caps){
+    // Resolve the search root: explicit arg, else env, else the SLeeLa root
+    // (parent of /lib) so sibling top-level subject dirs are found by default.
+    std::string root=rootArg;
+    if(root.empty()) if(const char* e=std::getenv("SLEELA_FACADE_PATH"); e&&*e) root=e;
+    if(root.empty()){ fs::path lib(ix.root()); root=(lib.has_parent_path()?lib.parent_path():lib).generic_string(); }
+    fs::path rootP(root);
+    std::error_code ec;
+    if(!fs::is_directory(rootP,ec)){ o<<"sleela docs --facade: search root is not a directory: "<<root<<"\n"; return 1; }
+
+    std::string tL=lower(topic);
+    rule(o);
+    o<<"  facade  "<<topic<<"   (live OS search)\n";
+    rule(o);
+    o<<"\nsearch root : "<<fs::weakly_canonical(rootP,ec).generic_string();
+    if(ec){ ec.clear(); o<<root; }
+    o<<"\ncaps        : "<<(caps.maxBytes/(1024*1024))<<" MB working memory, "
+      <<caps.maxFiles<<" files, "<<caps.maxSeconds<<" s wall-clock\n\n";
+
+    std::vector<FacadeHit> hits;
+    size_t filesSeen=0, bytesHeld=0, dirsSeen=0;
+    auto t0=std::chrono::steady_clock::now();
+    const char* stopReason=nullptr;
+    bool topicDirMatch=false;
+    auto elapsedS=[&]{ return (long)std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now()-t0).count(); };
+
+    // PHASE 1 -- locate directories named <topic> (case-insensitive) anywhere
+    // under the root. A facade topic's real material lives in a directory of
+    // that name; finding those first lets the file caps apply to the RELEVANT
+    // subtree(s) rather than being spent walking unrelated trees. The dir scan
+    // is itself bounded by the file/time caps (counting directories visited).
+    std::vector<fs::path> topicDirs;
+    // If the root directory itself is named the topic, it is a match -- a user
+    // who points --facade-root straight at the topic dir expects its contents.
+    {
+        fs::path canon=fs::weakly_canonical(rootP,ec); if(ec){ ec.clear(); canon=rootP; }
+        if(lower(canon.filename().string())==tL) topicDirs.push_back(rootP);
+    }
+    {
+        fs::recursive_directory_iterator dit(rootP, fs::directory_options::skip_permission_denied, ec), dend;
+        if(ec){ o<<"(cannot read search root: "<<ec.message()<<")\n"; return 1; }
+        for(; dit!=dend; dit.increment(ec)){
+            if(ec){ ec.clear(); continue; }
+            if(elapsedS()>=caps.maxSeconds){ stopReason="time"; break; }
+            std::error_code dec; if(!dit->is_directory(dec)){ dec.clear(); continue; }
+            const fs::path& d=dit->path();
+            if(skipDir(d.filename().string())){ dit.disable_recursion_pending(); continue; }
+            if(++dirsSeen>=caps.maxFiles){ stopReason="files"; break; }   // reuse the files cap for the dir scan
+            if(lower(d.filename().string())==tL) topicDirs.push_back(d);
+        }
+    }
+
+    // PHASE 2 -- within each matched topic directory, collect every regular
+    // file (recursively), honoring the three caps. Every file under a
+    // topic-named directory belongs to the topic.
+    if(!stopReason)
+    for(const auto& base:topicDirs){
+        topicDirMatch=true;
+        fs::recursive_directory_iterator it(base, fs::directory_options::skip_permission_denied, ec), end;
+        if(ec){ ec.clear(); continue; }
+        for(; it!=end; it.increment(ec)){
+            if(ec){ ec.clear(); continue; }
+            if(elapsedS()>=caps.maxSeconds){ stopReason="time"; break; }
+            std::error_code fec;
+            if(it->is_directory(fec)){ if(skipDir(it->path().filename().string())) it.disable_recursion_pending(); continue; }
+            if(fec){ fec.clear(); continue; }
+            if(!it->is_regular_file(fec)){ fec.clear(); continue; }
+            if(++filesSeen>=caps.maxFiles){ stopReason="files"; break; }
+            const fs::path& p=it->path();
+            FacadeHit h; h.path=p.generic_string(); h.kind=classifyKind(p);
+            h.size=fs::file_size(p,fec); if(fec){ fec.clear(); h.size=0; }
+            if(looksText(p)) h.peek=firstLinePeek(p);
+            size_t cost=h.path.size()+h.peek.size()+64;
+            if(bytesHeld+cost>caps.maxBytes){ stopReason="memory"; break; }
+            bytesHeld+=cost; hits.push_back(std::move(h));
+        }
+        if(stopReason) break;
+    }
+
+    // Group by kind for a legible report.
+    std::sort(hits.begin(),hits.end(),[](const FacadeHit&a,const FacadeHit&b){
+        if(a.kind!=b.kind) return a.kind<b.kind; return a.path<b.path; });
+
+    if(hits.empty()){
+        o<<"No files found for topic '"<<topic<<"' under the search root.\n";
+        if(!topicDirMatch) o<<"  (no path component named '"<<topic<<"' was seen; try --facade-root <dir> to widen)\n";
+    } else {
+        o<<hits.size()<<" file(s) belonging to '"<<topic<<"':\n";
+        std::string lastKind;
+        for(const auto& h:hits){
+            if(h.kind!=lastKind){ o<<"\n["<<h.kind<<"]\n"; lastKind=h.kind; }
+            o<<"  "<<h.path<<"  ("<<h.size<<" bytes)\n";
+            if(!h.peek.empty()) o<<"      "<<h.peek<<"\n";
+        }
+        // For any .sleela sources found, render their full class pages too.
+        bool anySrc=false;
+        for(const auto& h:hits) if(h.kind=="source (.sleela)"){ anySrc=true; break; }
+        if(anySrc){
+            o<<"\n"<<std::string(74,'-')<<"\nRENDERED SOURCE PAGES\n"<<std::string(74,'-')<<"\n";
+            for(const auto& h:hits){
+                if(h.kind!="source (.sleela)") continue;
+                library::Symbol sym{topic, fs::path(h.path).stem().string(), h.path};
+                UnitDoc u=parseUnit(sym, ix.root());
+                u.path=h.path;  // show the real discovered path
+                for(const auto& c:u.classes) renderClass(o,u,c);
+            }
+        }
+    }
+
+    long elapsed=elapsedS();
+    o<<"\n"<<std::string(74,'=')<<"\n";
+    o<<"scanned "<<dirsSeen<<" dir(s), collected "<<filesSeen<<" file(s) in "<<elapsed<<" s; held ~"<<(bytesHeld/1024)<<" KB.\n";
+    if(stopReason) o<<"NOTE: stopped early -- "<<stopReason<<" cap reached ("
+        <<(std::string(stopReason)=="memory"? std::to_string(caps.maxBytes/(1024*1024))+" MB"
+          : std::string(stopReason)=="files"? std::to_string(caps.maxFiles)+" files"
+          : std::to_string(caps.maxSeconds)+" s")
+        <<"). Raise it with --facade-max-"<<(std::string(stopReason)=="memory"?"mb":stopReason==std::string("files")?"files":"seconds")<<" N, or narrow --facade-root.\n";
+    else o<<"complete (no cap reached).\n";
+    return 0;
+}
+
 } // namespace
 
 int docsCmd(int argc, char** argv){
@@ -455,6 +644,29 @@ int docsCmd(int argc, char** argv){
         return 1;
     }
     std::ostream& o=std::cout;
+
+    // Facade live OS search: `sleela docs --facade <topic> [--facade-root DIR]
+    // [--facade-max-mb N] [--facade-max-files N] [--facade-max-seconds N]`.
+    // Also auto-offered when a plain topic resolves to a facade-only package.
+    {
+        bool facade=false; std::string facadeRoot; FacadeCaps caps; std::string facadeTopic;
+        std::vector<std::string> rest;
+        for(size_t i=0;i<words.size();++i){
+            const std::string& w=words[i];
+            auto next=[&](const char* flag)->std::string{ if(i+1<words.size()){ return words[++i]; } std::cerr<<"sleela docs: "<<flag<<" needs a value\n"; return ""; };
+            if(w=="--facade"||w=="-f") facade=true;
+            else if(w=="--facade-root") facadeRoot=next("--facade-root");
+            else if(w.rfind("--facade-root=",0)==0) facadeRoot=w.substr(14);
+            else if(w=="--facade-max-mb"){ std::string v=next("--facade-max-mb"); if(!v.empty()) caps.maxBytes=(size_t)std::strtoull(v.c_str(),nullptr,10)*1024*1024; }
+            else if(w=="--facade-max-files"){ std::string v=next("--facade-max-files"); if(!v.empty()) caps.maxFiles=(size_t)std::strtoull(v.c_str(),nullptr,10); }
+            else if(w=="--facade-max-seconds"){ std::string v=next("--facade-max-seconds"); if(!v.empty()) caps.maxSeconds=std::strtol(v.c_str(),nullptr,10); }
+            else rest.push_back(w);
+        }
+        if(facade){
+            if(rest.empty()){ std::cerr<<"sleela docs --facade: name a topic, e.g. 'sleela docs --facade psychiatry'\n"; return 2; }
+            return renderFacade(o,ix,rest.back(),facadeRoot,caps);
+        }
+    }
 
     // Corpus generation: `sleela docs --generate [dir]`.
     if(!words.empty() && (words[0]=="--generate"||words[0]=="-g")){
