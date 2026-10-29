@@ -42,14 +42,20 @@ struct SyntaxVersion { int major=0, minor=0; std::string str() const { return st
 // stub the developer fills out (section 22 of SLEELA.syntax). The pass runs at
 // parse time and does not change parsing, typing, or codegen of the keywords
 // themselves; it links each occurrence to its supporting document.
-// Syntax 2.7 adds the extended wide signed integer primitives
-// `int256`, `int512`, `int1024`, ... up to `int16777216` (powers of two,
-// 2^8..2^24). Like the arbitrary-width unsigned `U<width>` family they are
-// recognized as identifiers wherever a primitive type may appear; they
-// type-check as the integer kind and are carried by the VM's widest native
-// integer slot (SL_INT128). True arbitrary-width arithmetic beyond 128 bits is
-// a documented follow-up (section 24 of SLEELA.syntax).
-inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};} inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{2,7};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
+// Syntax 2.7 adds the base-2 signed integer series `int32`, `int64`, `int128`,
+// `int256`, ... up to `int16777216` (powers of two, 2^5..2^24). Recognized
+// wherever a primitive type may appear; they type-check as the integer kind and
+// are carried by the narrowest native slot that holds each width (64-bit for
+// int32/int64, 128-bit SL_INT128 for int128 up). True arbitrary-width
+// arithmetic beyond 128 bits is a documented follow-up (section 24 of
+// SLEELA.syntax).
+// Syntax 2.8 adds the matching base-2 UNSIGNED (positive-only) series `uint32`,
+// `uint64`, `uint128`, ... up to `uint16777216` (same twenty widths). Each
+// `uint<width>` type-checks as the unsigned kind -- unary minus is rejected and
+// arithmetic/comparison require operands of the same unsigned width -- and backs
+// on the same native-slot split as the signed series (section 25 of
+// SLEELA.syntax).
+inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};} inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{2,8};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
 enum class VersionStatus{OkDeclared,OkAssumed,TooNew,TooOld,Malformed};
 struct VersionResolution{ VersionStatus status=VersionStatus::OkAssumed; SyntaxVersion declared; bool pragmaPresent=false; std::string raw; std::string message; bool accepted()const{return status==VersionStatus::OkDeclared||status==VersionStatus::OkAssumed;} bool isError()const{return !accepted();} bool isWarning()const{return status==VersionStatus::OkAssumed;} };
 bool parseSyntaxVersion(const std::string& text,SyntaxVersion& out); VersionResolution resolveSyntaxVersion(const std::string& source);

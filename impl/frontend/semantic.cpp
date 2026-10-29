@@ -14,7 +14,12 @@ enum class Kind { Void, Int, Unsigned, Double, Bool, String, Null, Any, Struct, 
 // For Kind::Array, `name` carries the full array type text (e.g. "int[]") and
 // `elem` the element type name (e.g. "int").
 struct Type { Kind kind=Kind::Unknown; std::string name{}; std::string elem{}; };
-static bool unsignedTypeName(const std::string& n){return UnsignedInteger::isValidTypeName(n);}
+// Unsigned (positive-only) type names: the arbitrary-width U<width> family and
+// the base-2 uint<width> series (uint32, uint64, uint128, ... uint16777216,
+// syntax 2.8). Both carry Kind::Unsigned and the same positive-only, width-
+// strict discipline; they are distinguished only by their (different) name
+// strings, so a `U256` and a `uint256` are separate unsigned types.
+static bool unsignedTypeName(const std::string& n){return UnsignedInteger::isValidTypeName(n)||UnsignedWideInteger::isValidTypeName(n);}
 // The base-2 signed-integer series (syntax 2.7): int32, int64, int128, int256,
 // ... up to int16777216 (powers of two, 2^5..2^24). Recognized as identifiers
 // like the U<width> unsigned family; type-checks as an integer (see typeOf).

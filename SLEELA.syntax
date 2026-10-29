@@ -1,25 +1,32 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  2.7  (1.3..1.11 baseline carried forward)
-    Compiler:        Sleelvac(TM) 0.3.30-dev  (version gate accepts syntax 1.0 .. 2.7)
+    Syntax version:  2.8  (1.3..1.11 baseline carried forward)
+    Compiler:        Sleelvac(TM) 0.3.30-dev  (version gate accepts syntax 1.0 .. 2.8)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.3..2.7 surface
+    Status:          Normative for the syntax 1.3..2.8 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 2.7`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.7).
-    Syntax 2.7 is the current spec level: it completes the **base-2 signed
-    integer series** (section 24) — `int32`, `int64`, `int128`, `int256`, ... up
-    to `int16777216` (the type name `int` followed by a power-of-two bit width in
-    2^5..2^24, twenty widths in all), recognized wherever a primitive type may
-    appear, type-checked as integers, and carried by the narrowest native slot
-    that holds each width (64-bit for `int32`/`int64`, 128-bit for `int128` up).
+    `#sleela 2.8`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.8).
+    Syntax 2.8 is the current spec level: it adds the matching **base-2 unsigned
+    (positive-only) integer series** (section 25) — `uint32`, `uint64`,
+    `uint128`, `uint256`, ... up to `uint16777216` (the same twenty power-of-two
+    widths, 2^5..2^24, with a `uint` prefix). Each `uint<width>` type-checks as
+    the unsigned kind (unary minus rejected; arithmetic and comparison require
+    operands of the same unsigned width) and backs on the same native-slot split
+    as the signed series.
+    Syntax 2.7 completes the **base-2 signed integer series** (section 24) —
+    `int32`, `int64`, `int128`, `int256`, ... up to `int16777216` (the type name
+    `int` followed by a power-of-two bit width in 2^5..2^24, twenty widths in
+    all), recognized wherever a primitive type may appear, type-checked as
+    integers, and carried by the narrowest native slot that holds each width
+    (64-bit for `int32`/`int64`, 128-bit for `int128` up).
     Syntax 2.6 is the current spec level: it adds **keyword supporter
     documents** (section 22) — every use of the five control-flow keywords
     (`try`, `catch`, `throw`, `synchronized`, `super`) is given a stable hash,
@@ -95,7 +102,7 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax 1.3..2.7 surface the front end accepts.
+This document is normative for the syntax 1.3..2.8 surface the front end accepts.
 Every production and built-in below is implemented in `impl/frontend` and
 executes on `impl/core`.
 
@@ -1761,5 +1768,86 @@ arbitrary-width *unsigned* integers today, the `U<width>` family — e.g. `U256`
 - `impl/core/sleela_core.{h,c}` — the VM value model (`SL_INT` / `SL_INT128`),
   128-bit promotion in the arithmetic/comparison ops, the 128-bit decimal
   formatter, and `OP_CHECKCAST` int<->int128 widening/narrowing carry the series.
-- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.7, so `#sleela 2.7`
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.8, so `#sleela 2.7`
+  (and 2.8) sources are accepted.
+
+--------------------------------------------------------------------------------
+## 25. Syntax 2.8 — the base-2 unsigned (positive-only) integer series (`uint32` .. `uint16777216`)
+
+This section is **normative** for syntax **2.8**. It adds the unsigned mirror of
+the signed base-2 series (section 24): the type name `uint` followed by a decimal
+bit width that is a **power of two** in the inclusive range **2^5 (32) .. 2^24
+(16777216)**:
+
+    uint32    uint64    uint128    uint256    uint512     uint1024
+    uint2048  uint4096  uint8192   uint16384  uint32768   uint65536
+    uint131072 uint262144 uint524288 uint1048576 uint2097152 uint4194304
+    uint8388608 uint16777216
+
+The same twenty widths as the signed series, each with a `uint` prefix. Any
+other width — not a power of two (e.g. `uint48`), below the floor (`uint16`), or
+above the ceiling (`uint33554432`) — is **not** a member and names no type.
+
+### 25.1 Recognition — identifiers
+
+Unlike `int64`/`int128`, no `uint<width>` name is a lexer keyword: every member
+lexes as an ordinary identifier and is recognized by the front end as a family
+wherever a primitive type may appear (fields, locals, parameters, return types,
+array element types, casts, `new T[n]`). A `uint<width>` and the corresponding
+`U<width>` are **distinct** unsigned types (different name strings); both carry
+the unsigned kind.
+
+### 25.2 Positive-only semantics
+
+Each `uint<width>` type-checks as the **unsigned kind** — the same positive-only,
+width-strict discipline as the arbitrary-width `U<width>` family:
+
+- **No negatives.** Unary minus on an unsigned value is a type error
+  (`unary '-' requires signed numeric operand`).
+- **Width-strict.** `+ - * / %` and the comparisons require both operands to be
+  unsigned of the **same** width; mixing `uint256` with `uint512` (or with a
+  signed `int`) is a type error.
+- **Explicit construction.** A signed integer literal/value is not implicitly
+  assignable to an unsigned target; produce an unsigned value with a cast, e.g.
+  `(uint16777216) 999`. (This matches the shipped `U<width>` behavior.)
+
+```
+uint64       a = (uint64) 4000000000;      < positive, beyond signed 2^31 >
+uint128      c = (uint128) 9000000000;
+print(c * c);                              < 81000000000000000000 (> 2^64) >
+uint256[]    xs = new uint256[2];
+xs[0] = (uint256) 111;
+uint16777216 huge = (uint16777216) 123456789;
+
+static uint128 addU(uint128 a, uint128 b) { return a + b; }   < param + return >
+```
+
+### 25.3 Runtime backing
+
+Identical to the signed series: the native VM carries each value in the
+narrowest native integer slot that holds its declared width —
+
+    width <= 64 bits   (uint32, uint64)         -> SL_INT    (64-bit int64_t)
+    width >= 128 bits  (uint128 .. uint16777216) -> SL_INT128 (true 128-bit
+                                                    __int128 on GCC/Clang)
+
+so the 128-bit-backed members compute exactly up to 128 bits. The unsigned
+*typing* discipline is enforced by the analyzer; the runtime tag is the same
+integer slot the signed series uses. True arbitrary-width arithmetic beyond 128
+bits is a documented follow-up (the `U<width>` family already provides exact
+big-integer arithmetic for arbitrary widths today).
+
+### 25.4 Where this is implemented
+
+- `impl/frontend/wide_integer.h` — `UnsignedWideInteger::isValidTypeName()` /
+  `widthOf()` / `fitsNativeNarrow()`: the power-of-two, 2^5..2^24 recognizer for
+  the `uint<width>` series (sibling to `SignedWideInteger`).
+- `impl/frontend/semantic.cpp` — `unsignedTypeName()` accepts both `U<width>`
+  and `uint<width>`, so `typeOf()`/`known()` map every member to the unsigned
+  kind with its own name string; the existing unsigned arithmetic/comparison and
+  the unary-minus rejection then apply unchanged.
+- `impl/frontend/compiler.cpp` — `runtimeTypeOperand()` routes each member to
+  `SL_INT` (width <= 64) or `SL_INT128` (width >= 128); `coerceToDeclared()`
+  widens the 128-bit-backed members into the 128-bit slot.
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.8, so `#sleela 2.8`
   sources are accepted.

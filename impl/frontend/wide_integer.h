@@ -94,5 +94,76 @@ private:
     }
 };
 
+/*
+ * UnsignedWideInteger -- recognizer for the base-2 series of named *unsigned*
+ * (positive-only) integer primitive type names (syntax 2.8):
+ *
+ *     uint32  uint64  uint128  uint256  uint512  uint1024  ...  uint16777216
+ *
+ * The exact unsigned mirror of SignedWideInteger: the type name "uint"
+ * immediately followed by a decimal bit width that is a power of two in the
+ * inclusive range 2^5 (32) .. 2^24 (16777216) -- the same twenty widths. The
+ * names lex as ordinary identifiers (no keyword spelling) and are recognized by
+ * the front end wherever a primitive type may appear.
+ *
+ * POSITIVE-ONLY semantics. A uint<width> value type-checks as the unsigned kind
+ * (Kind::Unsigned), so unary minus is rejected and arithmetic / comparison
+ * require operands of the same unsigned width -- the same positive-only,
+ * width-strict discipline as the arbitrary-width U<width> family.
+ *
+ * RUNTIME BACKING. Identical to the signed series: widths <= 64 (uint32,
+ * uint64) ride the 64-bit native slot (SL_INT); widths >= 128 (uint128 and up)
+ * ride the 128-bit slot (SL_INT128, true __int128 on GCC/Clang). Exact up to
+ * 128 bits; true arbitrary-width arithmetic beyond 128 bits is a documented
+ * follow-up.
+ */
+class UnsignedWideInteger {
+public:
+    static constexpr std::size_t kMinimumWidth = 32;         // 2^5
+    static constexpr std::size_t kMaximumWidth = 16777216;   // 2^24
+    static constexpr std::size_t kNativeNarrowWidth = 64;
+
+    static bool isValidTypeName(const std::string& name) noexcept {
+        return widthOf(name) != 0;
+    }
+
+    static std::size_t widthOf(const std::string& name) noexcept {
+        std::size_t width = 0;
+        if (!parseWidth(name, width)) return 0;
+        if (width < kMinimumWidth || width > kMaximumWidth || !isPowerOfTwo(width)) return 0;
+        return width;
+    }
+
+    static bool fitsNativeNarrow(const std::string& name) noexcept {
+        const std::size_t w = widthOf(name);
+        return w != 0 && w <= kNativeNarrowWidth;
+    }
+
+private:
+    // Match "uint" followed by a non-empty run of decimal digits (no leading
+    // zero). Fills `width`; returns false on any other shape (overflow-guarded).
+    static bool parseWidth(const std::string& name, std::size_t& width) noexcept {
+        const char prefix[] = "uint";
+        const std::size_t plen = 4;
+        if (name.size() <= plen) return false;
+        for (std::size_t i = 0; i < plen; ++i)
+            if (name[i] != prefix[i]) return false;
+        if (name[plen] == '0') return false;  // no leading zero / bare "uint0"
+        std::size_t w = 0;
+        for (std::size_t i = plen; i < name.size(); ++i) {
+            const char c = name[i];
+            if (c < '0' || c > '9') return false;
+            if (w > (kMaximumWidth / 10) + 1) return false;  // overflow guard
+            w = w * 10 + static_cast<std::size_t>(c - '0');
+        }
+        width = w;
+        return true;
+    }
+
+    static bool isPowerOfTwo(std::size_t n) noexcept {
+        return n != 0 && (n & (n - 1)) == 0;
+    }
+};
+
 }  // namespace sleela
 #endif  // SLEELA_WIDE_INTEGER_H

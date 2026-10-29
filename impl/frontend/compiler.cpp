@@ -234,7 +234,13 @@ private:
         // by width keeps the keyword and pattern spellings consistent.
         if(SignedWideInteger::isValidTypeName(name))
             return SignedWideInteger::fitsNativeNarrow(name) ? -(SL_INT+1) : -(SL_INT128+1);
+        // The base-2 unsigned series uint32..uint16777216 (syntax 2.8) backs on
+        // the same native-slot split as the signed series (positive-only
+        // semantics are enforced in the analyzer, not the runtime tag).
+        if(UnsignedWideInteger::isValidTypeName(name))
+            return UnsignedWideInteger::fitsNativeNarrow(name) ? -(SL_INT+1) : -(SL_INT128+1);
         if(name=="int128") return -(SL_INT128+1);
+        // The arbitrary-width U<width> family rides the 64-bit slot.
         if(name=="int" || name=="long" || name=="int64" || UnsignedInteger::isValidTypeName(name)) return -(SL_INT+1);
         if(name=="double") return -(SL_DOUBLE+1);
         if(name=="bool" || name=="boolean") return -(SL_BOOL+1);
@@ -256,7 +262,8 @@ private:
         // series members (int32, int64) share the 64-bit representation and need
         // no coercion, exactly like `int`/`long`/`int64`.
         const bool wide128 = declType=="int128"
-            || (SignedWideInteger::isValidTypeName(declType) && !SignedWideInteger::fitsNativeNarrow(declType));
+            || (SignedWideInteger::isValidTypeName(declType) && !SignedWideInteger::fitsNativeNarrow(declType))
+            || (UnsignedWideInteger::isValidTypeName(declType) && !UnsignedWideInteger::fitsNativeNarrow(declType));
         if(declType=="double"||wide128)
             emit(OP_CHECKCAST,runtimeTypeOperand(declType));
     }
