@@ -64,9 +64,17 @@ export SLEELA_SHA256_MANIFEST
 # freshly built checkout would be verified against a STALE installed tree,
 # producing "missing file"/"SHA-256 mismatch" failures for files the checkout
 # added or changed since that install. Exporting SLEELA_HOME here makes the
-# gate verify the checkout the manifest actually describes. Developers may still
-# override it in the environment to point at a deliberate trusted root.
-SLEELA_HOME ?= $(SLEELA_REPO_ROOT)
+# gate verify the checkout the manifest actually describes.
+#
+# This is an unconditional ':=' ON PURPOSE: a stale SLEELA_HOME inherited from
+# the environment (the installer writes `export SLEELA_HOME=~/.local/sleela`
+# into /etc/profile.d/sleela.sh and the per-user profile) must NOT hijack a
+# build of THIS source tree -- when you build this checkout, the only correct
+# verification root is this checkout. A '?=' here would let the inherited
+# install path win and reintroduce the stale-tree "missing file" failures.
+# To verify against a different trusted root, build from that root (or run the
+# verifier directly with --root), rather than relying on the ambient variable.
+SLEELA_HOME := $(SLEELA_REPO_ROOT)
 export SLEELA_HOME
 
 verify-security:

@@ -10,9 +10,11 @@ NORDSHRIFT ?= ../impl/build/nordshrift
 # Anchor the compiler's built-in SHA-256 gate to the repository checkout (the
 # parent of this directory) rather than a stale installed tree such as
 # ~/.local/sleela. findRepoRoot() in the driver honors SLEELA_HOME first. The
-# root dispatcher already exports this; defaulting it here keeps a standalone
-# `make -C common-rails` correct too. Overridable from the environment.
-SLEELA_HOME ?= $(abspath ..)
+# root dispatcher sets this too; forcing it here keeps a standalone
+# `make -C common-rails` correct. Unconditional ':=' on purpose so a stale
+# SLEELA_HOME inherited from the environment (the installer exports one pointing
+# at ~/.local/sleela) cannot hijack a build of this source tree.
+SLEELA_HOME := $(abspath ..)
 export SLEELA_HOME
 
 .PHONY: all check c-check cpp-check java-check sleela-check sst-check clean help

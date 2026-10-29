@@ -23,8 +23,10 @@ REPO_ROOT := ../..
 # driver honors SLEELA_HOME first. Derive the real checkout root from THIS
 # Makefile's own location (this file lives at lib/user-interface/example/
 # science/), so the anchor is correct no matter the caller's working directory.
-# Overridable from the environment.
-SLEELA_HOME ?= $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/../../../..)
+# Unconditional ':=' on purpose so a stale SLEELA_HOME inherited from the
+# environment (the installer exports one pointing at ~/.local/sleela) cannot
+# hijack a source-tree build.
+SLEELA_HOME := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/../../../..)
 export SLEELA_HOME
 
 EXAMPLES := math physics chemistry data-analytics social all-disciplines
