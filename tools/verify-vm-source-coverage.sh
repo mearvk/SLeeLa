@@ -11,15 +11,15 @@ header_text=hdr.read()
 # Canonical SLeeLa ISA records use the angle-bracket house style. Accept one
 # opcode record per line, with an optional numeric code and -- description.
 source=re.findall(
-    r'^[ \\t]*<[ \\t]*(OP_[A-Z][A-Z0-9_]*)(?:[ \\t]+[0-9]+)?(?:[ \\t]+--.*)?[ \\t]*>$',
+    r'^[ \t]*<[ \t]*(OP_[A-Z][A-Z0-9_]*)(?:[ \t]+[0-9]+)?(?:[ \t]+--.*)?[ \t]*>$',
     source_text, re.M
 )
 # Ignore opcode names in C comments and the OP__COUNT sentinel.
-header_text=re.sub(r'/\\*.*?\\*/|//[^\\n]*', '', header_text, flags=re.S)
-enum_match=re.search(r'typedef enum \\{(.*?)\\}\\s*SLOp;', header_text, re.S)
+header_text=re.sub(r'/\*.*?\*/|//[^\n]*', '', header_text, flags=re.S)
+enum_match=re.search(r'typedef enum \{(.*?)\}\s*SLOp;', header_text, re.S)
 if not enum_match:
     raise SystemExit("native SLOp enum missing")
-native=[op for op in re.findall(r'\\bOP_[A-Z][A-Z0-9_]*\\b',enum_match.group(1))
+native=[op for op in re.findall(r'\bOP_[A-Z][A-Z0-9_]*\b',enum_match.group(1))
         if op != "OP__COUNT"]
 if source != native:
     print("ISA source/native mismatch",file=sys.stderr)
