@@ -206,10 +206,8 @@ def isa_source_native_check() -> tuple[bool, str]:
         return False, "source-side ISA registry or native SLOp header is missing"
     source = source_path.read_text(encoding="utf-8", errors="replace")
     native = native_path.read_text(encoding="utf-8", errors="replace")
-    # The canonical source registry uses SLeeLa angle-bracket metadata lines,
-    # not C-style // comments. Accept only exact opcode records, optionally with
-    # an explicit numeric code and trailing -- description; this avoids counting
-    # explanatory prose such as "< OP_IC_* ... >" as duplicate instructions.
+    # The canonical source registry uses one angle-bracket record per opcode.
+    # Optional numeric codes and -- descriptions remain part of the same record.
     source_ops = re.findall(
         r"^[ \t]*<[ \t]*(OP_[A-Z0-9_]+)(?:[ \t]+([0-9]+)(?:[ \t]+--.*)?)?[ \t]*>$",
         source,
