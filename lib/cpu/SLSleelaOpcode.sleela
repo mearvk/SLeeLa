@@ -11,7 +11,8 @@
        - shelf 2, substrate extensions (codes 49..97): time services, structs,
          Synchro / Munction / Best-of;
        - shelf 3, host-facing services (codes 98..154): arrays, OS syscalls, GC
-         hint, `ran::`, the Idea realtime canvas, VM-select / Modium.
+         hint, `ran::`, Idea realtime canvas, VM-select / Modium, UI bridge,
+         structural send, runtime type checks, and two-entry stack duplication.
      All three shelves are acceptable opcodes; the tiers (BASE_COUNT /
      SUBSTRATE_COUNT / NATIVE_COUNT and the TIER_* flags) do not gate execution,
      they let the professional monitoring/storage layer tag and iterate each
@@ -105,7 +106,8 @@ class SLSleelaOpcode {
   < Shelf 2  codes  49..97  substrate extensions: time services, structs, >
   < Synchro / Munction / Best-of. Part of the canonical substrate. >
   < Shelf 3  codes 98..154  host-facing services: arrays, OS syscalls, GC >
-  < hint, `ran::`, the Idea realtime canvas, VM-select / Modium. >
+  < hint, `ran::`, Idea realtime canvas, VM-select / Modium, UI bridge, >
+  < structural send, runtime type checks, and two-entry stack duplication. >
   < end of shelf 1 (base core), exclusive >
   static final int BASE_COUNT      = 49;
   < end of shelf 2 (substrate), exclusive >
