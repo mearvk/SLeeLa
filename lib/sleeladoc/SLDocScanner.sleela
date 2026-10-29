@@ -3,7 +3,7 @@
    Definition: Defines SLDocScanner -- the token-stream reader that lifts
      SleelaDoc @doc / @page blocks and @tags out of a .sleela unit and attaches
      each doc comment to the declaration that follows it, building an SLDocModel. >>
-#sleela 2.5
+#sleela 2.8
 material;
 << Family: sleeladoc. The extractor front end.
 

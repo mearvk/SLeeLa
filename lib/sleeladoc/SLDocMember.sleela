@@ -2,7 +2,7 @@
    SLeeLa Standard Library Definition.
    Definition: Defines SLDocMember -- a documented declaration (class, field, or
      method) with its signature line and the SleelaDoc comment attached to it. >>
-#sleela 2.5
+#sleela 2.8
 material;
 < Family: sleeladoc. One documented declaration lifted from a unit: its kind >
 < (class / field / method), its name, the raw signature line as written, and the >

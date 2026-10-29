@@ -32,6 +32,24 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 
 Recent additions to the language, drivers, and standard library:
 
+- **SleelaDoc from the command line — `sleela docs`.** SleelaDoc is now reachable
+  straight from the terminal. `sleela docs` lists every documentable topic;
+  `sleela docs crypto` shows a package; `sleela docs stringbuilder` resolves a
+  class (case-insensitively, and by the `SL` standard-library prefix →
+  `SLStringBuilder`) and prints a rich page — **definition, design purpose,
+  relationships, structure, user clays, and a five-rung mastery ladder** — with
+  ranked "did you mean" results for a near miss. Authors enrich any page simply
+  by adding SleelaDoc `@`-tags (`@intent`, `@thesis`, `@axiom`, `@param`,
+  `@see`, `@mastery`). `sleela docs --generate [dir]` writes a plain-text corpus
+  (one page per class + a `TOPICS.index`) that the CLI then reads offline;
+  **`make sleeladoc`** bundles that corpus **and the matching `.sleela` sources**
+  into `sleeladoc/build/sleeladoc.jar`. For facade-only subjects (e.g.
+  `psychiatry`, `politico`), `sleela docs --facade <topic>` searches the
+  filesystem at runtime and lists the real **folders (then files, as natural
+  motion)**, bounded by user-overridable caps of **6 MB / 6000 files / 6
+  minutes**. The `lib/sleeladoc` units are maintained at the current edition,
+  **`#sleela 2.8`**. See [`man/man1/sleela.1`](man/man1/sleela.1) and
+  [`lib/sleeladoc/README.md`](lib/sleeladoc/README.md).
 - **SleelaDoc — a Javadoc-style documentation solution, with a generated HTML
   site.** **SleelaDoc** is SLeeLa's in-source doc-comment convention
   (angle-bracket comments sentinelled with `@doc` / `@page`; see

@@ -2,7 +2,7 @@
    SLeeLa Standard Library Definition.
    Definition: Defines SLDocComment -- one parsed SleelaDoc block: its free-prose
      summary plus an ordered list of @tags. >>
-#sleela 2.5
+#sleela 2.8
 material;
 < Family: sleeladoc. One SleelaDoc comment (a doc block or a one-line doc). It >
 < holds the leading free-prose summary (text before the first tag) and the >

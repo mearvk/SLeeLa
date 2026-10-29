@@ -2,7 +2,7 @@
    SLeeLa Standard Library Definition.
    Definition: Defines SLDocModel -- the parsed SleelaDoc model of a whole unit:
      the unit name and its documented members in declaration order. >>
-#sleela 2.5
+#sleela 2.8
 material;
 < Family: sleeladoc. The parsed model of one .sleela unit: a name and an ordered >
 < list of SLDocMember (class / field / method) in declaration order. The scanner >

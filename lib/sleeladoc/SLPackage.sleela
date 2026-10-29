@@ -3,7 +3,7 @@
    Definition: Defines the SLeeLa standard-library package for sleeladoc -- the
      SleelaDoc extractor family (the Javadoc-tool analogue for SLeeLa). Exposes
      the package to the SLeeLa compiler, Loader, and Nordshrift. >>
-#sleela 2.5
+#sleela 2.8
 material;
 < Library facade for module package: sleeladoc >
 < SleelaDoc is SLeeLa in-source documentation: doc-comments that make a .sleela >
