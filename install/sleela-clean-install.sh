@@ -119,32 +119,65 @@ ask_value() { local prompt="$1" default="$2" answer
 #   INCLUDED : binaries + the standard library minus the excluded trees.
 #   EXCLUDED : servers, IDEs/editors, Wi-Fi, religious/moral/political trees.
 # ---------------------------------------------------------------------------
-# Named groups of "fuller modules / larger builds". By default the main package
-# excludes all of these; the installer asks a yes/no question per group and, on
-# "yes", that group is INCLUDED in the staged library (removed from EXCLUDE_LIB).
-GROUP_SERVERS=(
-  http http-1.0 http-2.0 http-3.0 http-4.0 http-5.0 http-6.0 http-7.0 http-8.0 http-9.0
-  http-servers server-edition web-server-technology
-)
-GROUP_IDES=(ide ide-workbench linux-editors)
-GROUP_WIFI=(wifi)
-# Religious / moral / political trees are excluded by design and are NOT offered
-# as a fuller-build toggle here.
-GROUP_MORAL=(moral-capacitor philosophers manifesto politico international-criminal-court psychiatry citizen)
+# ===========================================================================
+# The full SLeeLa environment, organized into FOUR main blocks of resident
+# software. The installer walks block by block and, for each, asks yes/no:
+# include the whole block, or (on "no") pick its modules one yes/no at a time.
+# Together the blocks + the always-resident core cover EVERY lib/ package, so
+# the user can install every potential part of the SLeeLa environment.
+# ===========================================================================
 
-# The live exclusion set. Starts as "everything above excluded" (the minimal
-# main package) and is narrowed as the user opts in to fuller groups.
-EXCLUDE_LIB=(
-  "${GROUP_SERVERS[@]}"
-  "${GROUP_IDES[@]}"
-  "${GROUP_WIFI[@]}"
-  "${GROUP_MORAL[@]}"
+# Always-resident core: the foundation. Never offered as yes/no (installing
+# SLeeLa without it is meaningless); always included.
+CORE_RESIDENT=(
+  core cpu opcodes vm runtime memory native reflection security registry
+  config process modules public sleela
 )
+
+# --- Block 1: Language, Compiler & Text -----------------------------------
+BLOCK1_NAME="Language, Compiler & Text"
+BLOCK1=(
+  compiler decompiler debugger sst nordshrift languages alphabet character
+  boolean regex xml html text sldocument sleeladoc
+)
+# --- Block 2: Standard Library, Data & Media ------------------------------
+BLOCK2_NAME="Standard Library, Data & Media"
+BLOCK2=(
+  collections data data-structures math crypto compression codecs audio video
+  signal-processing io filesystem database db-connector sleela-sql ledger inputs
+  inference-model
+)
+# --- Block 3: Systems, Networking & Protocols -----------------------------
+BLOCK3_NAME="Systems, Networking & Protocols"
+BLOCK3=(
+  net rmi munction synchro connector drivers operating-system systems bash
+  terminal terminal_pixel sleela-terminal telephony-skya cdma wifi
+  http http-1.0 http-2.0 http-3.0 http-4.0 http-5.0 http-6.0 http-7.0 http-8.0
+  http-9.0 http-servers server-edition web-server-technology website api
+  us-infrastructure
+)
+# --- Block 4: Applications, UI, Tooling & Society -------------------------
+BLOCK4_NAME="Applications, UI, Tooling & Society"
+BLOCK4=(
+  gui ui user-interface idea ballum autocad ide ide-workbench linux-editors
+  common-rails coorenagraph deliberation gameplay journey sommeliers
+  social-model citizen manifesto moral-capacitor philosophers politico
+  international-criminal-court psychiatry java java28 antivirus churn xlt
+)
+
+BLOCK_NAMES=("$BLOCK1_NAME" "$BLOCK2_NAME" "$BLOCK3_NAME" "$BLOCK4_NAME")
+
+# The live exclusion set is computed at selection time (start = every lib/
+# package that is NOT always-resident; each inclusion removes members). This
+# guarantees completeness: a package not listed in any block above still shows
+# up under a synthesized "Additional modules" block, so nothing is orphaned.
+EXCLUDE_LIB=()
 is_excluded() { local name="$1" e; for e in "${EXCLUDE_LIB[@]}"; do [ "$e" = "$name" ] && return 0; done; return 1; }
+in_list() { local n="$1"; shift; local e; for e in "$@"; do [ "$e" = "$n" ] && return 0; done; return 1; }
 
-# Remove the named group members from EXCLUDE_LIB (i.e. INCLUDE that group).
+# Remove named members from EXCLUDE_LIB (i.e. INCLUDE them).
 include_group() {
-  local keep=() e drop m matched
+  local keep=() e m matched
   for e in "${EXCLUDE_LIB[@]}"; do
     matched=0
     for m in "$@"; do [ "$e" = "$m" ] && { matched=1; break; }; done
@@ -157,39 +190,101 @@ include_group() {
 INCLUDED_GROUPS=""
 note_group() { INCLUDED_GROUPS="${INCLUDED_GROUPS:+$INCLUDED_GROUPS, }$1"; }
 
-# Curated optional enhancement modules offered AFTER a successful main install.
-# Each is a top-level lib/ package that is safe, non-excluded, and genuinely
-# "enhances the experience" rather than being part of the minimal core.
-OPT_NAMES=(audio video signal-processing codecs compression gui ui database connector)
-OPT_DESC=(
-  "Audio playback and synthesis library"
-  "Video decode/display library"
-  "Signal processing (FFT, filters, spectra)"
-  "Media codec registry and plugins"
-  "Compression library"
-  "Graphical UI widgets (SleelaUI)"
-  "Core UI layout and quality system"
-  "SQL/data model support"
-  "Optional native data-source connectors"
-)
+# Build EXCLUDE_LIB = every lib/<pkg> on disk that is not always-resident core.
+# Also compute BLOCK_EXTRA = packages present on disk but not named in any block
+# (so a synthesized "Additional modules" block keeps coverage total).
+BLOCK_EXTRA=()
+compute_catalog() {
+  EXCLUDE_LIB=(); BLOCK_EXTRA=()
+  local entry name
+  for entry in "$REPO_ROOT"/lib/*/; do
+    name="$(basename "$entry")"
+    in_list "$name" "${CORE_RESIDENT[@]}" && continue   # always resident
+    EXCLUDE_LIB+=("$name")                                # excluded until opted in
+    if ! in_list "$name" "${BLOCK1[@]}" "${BLOCK2[@]}" "${BLOCK3[@]}" "${BLOCK4[@]}"; then
+      BLOCK_EXTRA+=("$name")                              # not in any named block
+    fi
+  done
+}
+
+# Only offer the members of a block that actually exist on disk.
+present_members() {
+  local out=() m
+  for m in "$@"; do [ -d "$REPO_ROOT/lib/$m" ] && out+=("$m"); done
+  printf '%s\n' "${out[@]}"
+}
+
+# Walk one block: offer "include all of <block>?"; on no, per-module yes/no.
+# Usage: select_block "Block name" member1 member2 ...
+select_block() {
+  local block_name="$1"; shift
+  local members; mapfile -t members < <(present_members "$@")
+  [ "${#members[@]}" -eq 0 ] && return 0
+  heading "Block: $block_name  ${GREY}(${#members[@]} modules)${RESET}"
+  # Show the block's modules so the choice is informed.
+  local line="" m
+  for m in "${members[@]}"; do line="${line:+$line }$m"; done
+  printf "  %s%s%s\n\n" "$GREY" "$line" "$RESET"
+  if [ "$(ask_yn "Include the entire \"$block_name\" block?" yes)" = yes ]; then
+    include_group "${members[@]}"; note_group "$block_name (all)"
+    ok "including all ${#members[@]} modules of \"$block_name\""
+    return 0
+  fi
+  # Granular: ask per module.
+  say "  ${GREY}Choosing modules individually for this block:${RESET}"
+  local picked=0
+  for m in "${members[@]}"; do
+    if [ "$(ask_yn "  include ${WHITE}$m${RESET}?" no)" = yes ]; then
+      include_group "$m"; picked=$((picked+1))
+    fi
+  done
+  if [ "$picked" -gt 0 ]; then
+    note_group "$block_name ($picked)"; ok "$picked module(s) included from \"$block_name\""
+  else
+    skip "no modules included from \"$block_name\""
+  fi
+  return 0
+}
+
+# The whole selection experience: four blocks (+ any additional), with an
+# "install EVERYTHING" fast path first.
+select_environment() {
+  compute_catalog
+  heading "Choose your SLeeLa environment"
+  say "  ${GREY}The core runtime is always installed. Beyond it, the full SLeeLa${RESET}"
+  say "  ${GREY}environment is organized into four blocks of resident software.${RESET}"
+  say "  ${GREY}You will decide each block with a yes/no (then, if no, each module).${RESET}"
+  printf "\n"
+  if [ "$(ask_yn "Install EVERYTHING — every module in every block?" no)" = yes ]; then
+    include_group "${EXCLUDE_LIB[@]}"; note_group "complete environment (all blocks)"
+    ok "the complete SLeeLa environment will be installed"
+    return 0
+  fi
+  select_block "$BLOCK1_NAME" "${BLOCK1[@]}"
+  select_block "$BLOCK2_NAME" "${BLOCK2[@]}"
+  select_block "$BLOCK3_NAME" "${BLOCK3[@]}"
+  select_block "$BLOCK4_NAME" "${BLOCK4[@]}"
+  if [ "${#BLOCK_EXTRA[@]}" -gt 0 ]; then
+    select_block "Additional modules" "${BLOCK_EXTRA[@]}"
+  fi
+  return 0
+}
 
 print_contents() {
-  heading "Contents of the main package"
-  printf "  %sBinaries%s\n" "$WHITE" "$RESET"
+  heading "What this installs"
+  printf "  %sBinaries%s %s(always installed)%s\n" "$WHITE" "$RESET" "$GREY" "$RESET"
   item "sleela      ${GREY}— the SLeeLa language runtime (native C/C++ Core VM)${RESET}"
   item "sleelvac    ${GREY}— the SLeeLa compiler${RESET}"
   item "nordshrift  ${GREY}— the .sst → Java/SLeeLa/C transpiler${RESET}"
-  printf "\n  %sLibrary, protocols & support modules%s %s(selected)%s\n" "$WHITE" "$RESET" "$GREY" "$RESET"
-  item "crypto · codecs · compression · regex · data-structures · collections"
-  item "runtime · resolver · route · rmi · munction · connector · registry"
-  item "native · drivers · modules · io · net · text · math · reflection"
-  item "the full standard library, minus the excluded trees below"
-  printf "\n  %sExcluded by design%s\n" "$WHITE" "$RESET"
-  skip "servers        ${DIM}(http, http-1.0…9.0, http-servers, server-edition, web-server-technology)${RESET}"
-  skip "IDEs / editors ${DIM}(ide, ide-workbench, linux-editors)${RESET}"
-  skip "Wi-Fi          ${DIM}(wifi)${RESET}"
-  skip "religious / moral / political systems"
-  printf "\n"
+  printf "\n  %sResident core%s %s(always installed)%s\n" "$WHITE" "$RESET" "$GREY" "$RESET"
+  item "core · cpu · vm · runtime · memory · native · reflection · security · registry · config"
+  printf "\n  %sThe rest of the environment%s %s(you choose, block by block)%s\n" "$WHITE" "$RESET" "$GREY" "$RESET"
+  item "1) ${WHITE}$BLOCK1_NAME${RESET}"
+  item "2) ${WHITE}$BLOCK2_NAME${RESET}"
+  item "3) ${WHITE}$BLOCK3_NAME${RESET}"
+  item "4) ${WHITE}$BLOCK4_NAME${RESET}"
+  printf "\n  %sYou will be asked yes/no for each block (and, if you decline a block,%s\n" "$GREY" "$RESET"
+  printf "  %sfor each module in it). You may also install EVERYTHING at once.%s\n\n" "$GREY" "$RESET"
 }
 
 # ---------------------------------------------------------------------------
@@ -301,7 +396,7 @@ install_main() {
     item "$product"
   done
 
-  step "staging the standard library (${INCLUDED_GROUPS:+including ${INCLUDED_GROUPS}; }always excluding religious/moral/political)"
+  step "staging the standard library (resident core + the modules you selected)"
   local entry name
   LIB_KEPT=0; LIB_DROPPED=0
   for entry in "$REPO_ROOT"/lib/*/; do
@@ -352,18 +447,6 @@ EOF
   fi
 }
 
-install_optional_module() {
-  local name="$1" install_root="$2" mode="$3"
-  local src="$REPO_ROOT/lib/$name"
-  [ -d "$src" ] || { warn "module '$name' not found; skipping"; return 0; }
-  if [ "$mode" = user ]; then
-    cp -a "$src" "$install_root/lib/"
-  else
-    sudo cp -a "$src" "$install_root/lib/"
-  fi
-  ok "added ${WHITE}$name${RESET}"
-}
-
 # ===========================================================================
 # Flow
 # ===========================================================================
@@ -392,31 +475,12 @@ case "$SCOPE" in
 esac
 
 # ---------------------------------------------------------------------------
-# Fuller modules / larger build (opt-in). The main package excludes servers,
-# IDEs/editors, and Wi-Fi by default. Here we ask a plain yes/no per group so
-# you can choose a fuller build. Religious/moral/political trees are excluded
-# by design and are not offered.
+# The full module selection: four blocks of resident software, each a yes/no
+# (whole block) with a per-module yes/no fallback, plus an "install everything"
+# fast path. Together with the always-resident core, this covers every part of
+# the SLeeLa environment.
 # ---------------------------------------------------------------------------
-heading "Fuller modules (optional — larger build)"
-say "  ${GREY}The main package is lean. You can include fuller module groups.${RESET}"
-say "  ${GREY}Answer yes to include a group, no to leave it out.${RESET}"
-printf "\n"
-
-if [ "$(ask_yn "Include server trees? (http, http-1.0..9.0, http-servers, server-edition, web-server-technology)" no)" = yes ]; then
-  include_group "${GROUP_SERVERS[@]}"; note_group "servers"; ok "servers will be included"
-else
-  skip "servers excluded"
-fi
-if [ "$(ask_yn "Include IDEs / editors? (ide, ide-workbench, linux-editors)" no)" = yes ]; then
-  include_group "${GROUP_IDES[@]}"; note_group "IDEs/editors"; ok "IDEs/editors will be included"
-else
-  skip "IDEs / editors excluded"
-fi
-if [ "$(ask_yn "Include Wi-Fi? (wifi)" no)" = yes ]; then
-  include_group "${GROUP_WIFI[@]}"; note_group "Wi-Fi"; ok "Wi-Fi will be included"
-else
-  skip "Wi-Fi excluded"
-fi
+select_environment
 
 install_main "$INSTALL_ROOT" "$BIN_DEST" "$CONFIG_DIR" "$MODE"
 
@@ -454,9 +518,8 @@ record_of_build() {
   printf "    %s%-18s%s %s\n" "$GREY" "Product" "$RESET" "SLeeLa ${RELEASE}  (syntax ${SYNTAX_RANGE})"
   printf "    %s%-18s%s %s\n" "$GREY" "Binaries" "$RESET" "$f_prod"
   printf "    %s%-18s%s %s\n" "$GREY" "Library" "$RESET" "$f_lib"
-  local f_incl="(none — minimal main package)"; [ -n "$INCLUDED_GROUPS" ] && f_incl="$INCLUDED_GROUPS"
-  printf "    %s%-18s%s %s\n" "$GREY" "Fuller modules" "$RESET" "$f_incl"
-  printf "    %s%-18s%s %s\n" "$GREY" "Always excluded" "$RESET" "religious/moral/political"
+  local f_incl="(resident core only)"; [ -n "$INCLUDED_GROUPS" ] && f_incl="$INCLUDED_GROUPS"
+  printf "    %s%-18s%s %s\n" "$GREY" "Blocks chosen" "$RESET" "$f_incl"
   printf "    %s%-18s%s %s\n" "$GREY" "Scope" "$RESET" "$MODE"
   printf "    %s%-18s%s %s\n" "$GREY" "Destination" "$RESET" "$f_dest"
   printf "    %s%-18s%s %s\n" "$GREY" "Build window" "$RESET" "$f_when"
@@ -466,41 +529,9 @@ record_of_build() {
 }
 record_of_build
 
-heading "Enhance your experience (optional)"
-say "  ${GREY}The main package is ready. You may now add optional modules${RESET}"
-say "  ${GREY}that further enhance SLeeLa. Each is independent.${RESET}"
-printf "\n"
-WANT_OPT="$(ask_yn "Browse optional enhancement modules?" no)"
-if [ "$WANT_OPT" = yes ]; then
-  printf "\n"
-  i=0
-  while [ "$i" -lt "${#OPT_NAMES[@]}" ]; do
-    printf "    %s%2d%s  %s%-18s%s %s%s%s\n" "$GREEN" "$((i+1))" "$RESET" \
-      "$WHITE" "${OPT_NAMES[$i]}" "$RESET" "$GREY" "${OPT_DESC[$i]}" "$RESET"
-    i=$((i+1))
-  done
-  printf "\n"
-  say "  ${GREY}Enter numbers separated by spaces (e.g. 1 3 6), 'all', or blank to skip.${RESET}"
-  SELECTION="$(ask_value "Modules to add" "")"
-  if [ -n "$SELECTION" ]; then
-    heading "Adding modules"
-    if [ "$SELECTION" = all ]; then
-      for name in "${OPT_NAMES[@]}"; do install_optional_module "$name" "$INSTALL_ROOT" "$MODE"; done
-    else
-      for n in $SELECTION; do
-        case "$n" in
-          *[!0-9]*) warn "ignoring '$n' (not a number)";;
-          *) idx=$((n-1))
-             if [ "$idx" -ge 0 ] && [ "$idx" -lt "${#OPT_NAMES[@]}" ]; then
-               install_optional_module "${OPT_NAMES[$idx]}" "$INSTALL_ROOT" "$MODE"
-             else warn "ignoring '$n' (out of range)"; fi;;
-        esac
-      done
-    fi
-  else
-    skip "no modules added"
-  fi
-fi
+# Module selection now happens up front, block by block (select_environment),
+# so everything the user chose was already staged with the main package — no
+# separate "optional enhancements" pass is needed.
 
 heading "Done"
 ok "Enjoy SLeeLa."
