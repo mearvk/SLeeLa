@@ -557,19 +557,33 @@ int renderFacade(std::ostream& o, const library::Index& ix, const std::string& t
         }
     }
 
-    // PHASE 2 -- within each matched topic directory, collect every regular
-    // file (recursively), honoring the three caps. Every file under a
-    // topic-named directory belongs to the topic.
+    // PHASE 2 -- within each matched topic directory, collect its FOLDERS and
+    // its regular files (recursively), honoring the three caps. The folders are
+    // the shape of the subject; the files follow as a matter of natural motion.
+    // Every directory and file under a topic-named directory belongs to the
+    // topic. The matched topic directories themselves are folders of record.
+    std::vector<FacadeHit> folders;
+    auto addFolder=[&](const fs::path& d){
+        FacadeHit f; f.path=d.generic_string(); f.kind="folder"; f.size=0;
+        size_t cost=f.path.size()+64; if(bytesHeld+cost>caps.maxBytes){ stopReason="memory"; return false; }
+        bytesHeld+=cost; folders.push_back(std::move(f)); return true;
+    };
     if(!stopReason)
     for(const auto& base:topicDirs){
         topicDirMatch=true;
+        if(!addFolder(base)) break;                     // the topic folder itself
         fs::recursive_directory_iterator it(base, fs::directory_options::skip_permission_denied, ec), end;
         if(ec){ ec.clear(); continue; }
         for(; it!=end; it.increment(ec)){
             if(ec){ ec.clear(); continue; }
             if(elapsedS()>=caps.maxSeconds){ stopReason="time"; break; }
             std::error_code fec;
-            if(it->is_directory(fec)){ if(skipDir(it->path().filename().string())) it.disable_recursion_pending(); continue; }
+            if(it->is_directory(fec)){
+                if(skipDir(it->path().filename().string())){ it.disable_recursion_pending(); continue; }
+                if(++dirsSeen>=caps.maxFiles){ stopReason="files"; break; }
+                if(!addFolder(it->path())){ break; }     // folders shown implicitly
+                continue;
+            }
             if(fec){ fec.clear(); continue; }
             if(!it->is_regular_file(fec)){ fec.clear(); continue; }
             if(++filesSeen>=caps.maxFiles){ stopReason="files"; break; }
@@ -588,11 +602,19 @@ int renderFacade(std::ostream& o, const library::Index& ix, const std::string& t
     std::sort(hits.begin(),hits.end(),[](const FacadeHit&a,const FacadeHit&b){
         if(a.kind!=b.kind) return a.kind<b.kind; return a.path<b.path; });
 
-    if(hits.empty()){
-        o<<"No files found for topic '"<<topic<<"' under the search root.\n";
+    std::sort(folders.begin(),folders.end(),[](const FacadeHit&a,const FacadeHit&b){return a.path<b.path;});
+
+    if(hits.empty() && folders.empty()){
+        o<<"No folders or files found for topic '"<<topic<<"' under the search root.\n";
         if(!topicDirMatch) o<<"  (no path component named '"<<topic<<"' was seen; try --facade-root <dir> to widen)\n";
     } else {
-        o<<hits.size()<<" file(s) belonging to '"<<topic<<"':\n";
+        // Folders first -- the shape of the subject, shown implicitly.
+        if(!folders.empty()){
+            o<<folders.size()<<" folder(s) of '"<<topic<<"':\n\n[folder]\n";
+            for(const auto& f:folders) o<<"  "<<f.path<<"/\n";
+            o<<"\n";
+        }
+        o<<hits.size()<<" file(s) belonging to '"<<topic<<"' (the files follow as natural motion):\n";
         std::string lastKind;
         for(const auto& h:hits){
             if(h.kind!=lastKind){ o<<"\n["<<h.kind<<"]\n"; lastKind=h.kind; }

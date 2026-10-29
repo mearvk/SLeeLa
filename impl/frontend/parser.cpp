@@ -245,6 +245,40 @@ Program Parser::parseProgram(){
             accept(Tok::Semicolon);
             p.determineMarked=true;
         }
+        else if(check(Tok::Ident)&&cur().text=="object"){
+            // Object marker (syntax 2.6). A single, modifier-less, type-less
+            // word at document scope that DECLARES the document an object
+            // document -- a member of the Natural Process family of markers
+            // (author/authorial, material, memory, determine; see SLEELA.syntax
+            // section 24). It names the document as an Object: a settled thing
+            // standing in the catalogue of what is, to which its author and the
+            // field relate. Declarative only: it changes nothing about
+            // parsing/typing/codegen. A trailing ';' is optional; a repeat
+            // marker is harmless. Contextual, not a reserved keyword, so
+            // `object` stays an ordinary identifier anywhere else (and in any
+            // document below 2.6). Recognised only here, at top-level document
+            // scope before content begins, so a field access or a class member
+            // named `object` is unaffected.
+            ++i_;
+            accept(Tok::Semicolon);
+            p.objectMarked=true;
+        }
+        else if(check(Tok::Ident)&&cur().text=="field"&&!contentStarted){
+            // Field marker (syntax 2.6). A single, modifier-less, type-less word
+            // at document scope that DECLARES the document a field document -- a
+            // member of the Natural Process family (author/authorial, material,
+            // memory, determine, object; see SLEELA.syntax section 24). It names
+            // the document as the Field: the ground of relation in which objects
+            // stand and move. Declarative only: it changes nothing about
+            // parsing/typing/codegen. A trailing ';' is optional; a repeat
+            // marker is harmless. Contextual, not a reserved keyword, and
+            // recognised ONLY at top-level document scope BEFORE any content has
+            // begun, so the ordinary `field-decl` grammar inside a class and
+            // every `.field` access remain exactly as before.
+            ++i_;
+            accept(Tok::Semicolon);
+            p.fieldMarked=true;
+        }
         else {
             unsigned mods=parseJavaModifiers();
             if(check(Tok::KwClass)||check(Tok::KwInterface)||check(Tok::KwEnum)||check(Tok::KwRecord)){

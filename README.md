@@ -7,6 +7,15 @@
 
 **The Now. The Ingredient.** A language is more than syntax: it is the compiler, runtime, libraries, tools, and platform contracts that make software usable.
 
+**What SLeeLa is involved in.** SLeeLa is involved in **Math**, **Object**,
+**Science**, and **Reach** — the four faces of its work: the calculable
+(Math), the settled thing standing in the catalogue of what is (Object), the
+disciplined study of the true (Science), and the extension of a system's hand
+to other systems and people (Reach). **National Interests remain** — they are
+not set aside by any of the four; where a subject bears on a nation's interest,
+that standing is kept (recorded faithfully, e.g. in each class's Metadata
+`metaOrigin` / `metaNationalSchedule`), never dissolved.
+
 ## I. Start Here
 - [Build the native implementation](impl/README.md)
 - [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
@@ -50,13 +59,20 @@ Recent additions to the language, drivers, and standard library:
   `int128` is accepted as an integer type (64-bit-backed for now, with true
   128-bit a documented follow-up). See
   [`SLEELA.syntax`](SLEELA.syntax) §21.
-- **Document markers (`material`, `memory`, `author`/`authorial`, `determine`).**
-  First-class, declarative-only document markers — `material;` (settled Source)
-  and `memory;` (syntax 2.5), the `author`/`authorial` marker (syntax 2.4), and
-  `determine;` (syntax 2.6; a document open to be processed to further by a
-  doctor, physician, or ghost toward completion by legal hand) — recognised and
-  version-gated by the front end with no effect on parsing, typing, or codegen.
-  See [`SLEELA.syntax`](SLEELA.syntax) §18–§20 and §23.
+- **Document markers — the Natural Process (`author`/`authorial`, `material`,
+  `memory`, `determine`, `object`, `field`).** First-class, declarative-only
+  document markers naming what a document *is* in the order of making:
+  `author`/`authorial` (syntax 2.4; handled by professional council — the one
+  member with a behavioral effect), `material;` (settled Source) and `memory;`
+  (syntax 2.5), `determine;` (syntax 2.6; a document open to be processed
+  further by a doctor, physician, or ghost toward completion by legal hand),
+  and the two newest, **`object;`** (a settled thing standing in the catalogue
+  of what is) and **`field;`** (the ground of relation in which objects stand
+  and move) — syntax 2.6. Each is bare, contextual, and version-gated by the
+  front end with no effect on parsing, typing, or codegen; outside the marker
+  position every one stays an ordinary identifier (so `field` never disturbs a
+  class member or a `.field` access). See [`SLEELA.syntax`](SLEELA.syntax)
+  §18–§20, §23, and §26.
 - **Nordshrift at syntax 2.5 with full library reach.** Nordshrift resolves
   through the same recursive `/lib` index as the compiler, reaching every
   package and `.sleela` unit; `nordshrift check` reports the whole-tree counts.

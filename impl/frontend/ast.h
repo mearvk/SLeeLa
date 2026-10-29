@@ -273,6 +273,20 @@ struct Program {
     // a contextual word, not a reserved keyword, so `determine` stays an
     // ordinary identifier anywhere else (and in any document below 2.6).
     bool determineMarked=false;
+    // Object marker (syntax 2.6): set true when the document declares the bare
+    // top-level word `object`. DECLARATIVE ONLY -- like the other Natural
+    // Process markers it has no effect on parsing, typing, or codegen. It names
+    // the document an Object: a settled thing standing in the catalogue of what
+    // is, to which its author and the field relate (SLEELA.syntax section 24).
+    // Contextual, not a reserved keyword, gated to #sleela 2.6.
+    bool objectMarked=false;
+    // Field marker (syntax 2.6): set true when the document declares the bare
+    // top-level word `field` at document scope BEFORE any content. DECLARATIVE
+    // ONLY. It names the document the Field: the ground of relation in which
+    // objects stand and move (SLEELA.syntax section 24). Recognised only at
+    // top-level pre-content scope, so the class-member `field-decl` grammar and
+    // every `.field` access are unaffected. Gated to #sleela 2.6.
+    bool fieldMarked=false;
 };
 
 } // namespace sleela
