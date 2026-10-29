@@ -1,3 +1,5 @@
+The canonical VM ISA has since grown to 155 opcodes (codes 0–154). This page documents the `lib/opcodes` wrapper subset only (codes 0–102); do not use its 103-class count as the full VM ISA count.
+
 <img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian/debian-logo.png" width="75" height="75" alt="SLeeLa">
 
 <img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela/sleela-logo-004.jpg" alt="SLeeLa">
