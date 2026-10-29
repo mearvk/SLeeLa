@@ -1,4 +1,4 @@
-#sleela 2.5
+#sleela 2.8
 material;
 << sleeladoc-demo.sleela -- the self-contained, runnable reference for the
    SleelaDoc extractor (the Javadoc-tool analogue for SLeeLa).

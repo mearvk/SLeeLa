@@ -3,7 +3,7 @@
    Definition: Defines SLSleelaDoc -- the one-object facade a caller drives to
      extract SleelaDoc from a unit and render it: begin, feed tokenized lines,
      then render Markdown or HTML. The Javadoc-tool analogue entry point. >>
-#sleela 2.5
+#sleela 2.8
 material;
 < Family: sleeladoc. The facade. A caller drives ONE object end to end: >
 <   doc.begin("MyUnit");                 start a unit >

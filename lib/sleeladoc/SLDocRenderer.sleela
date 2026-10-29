@@ -2,7 +2,7 @@
    SLeeLa Standard Library Definition.
    Definition: Defines SLDocRenderer -- renders a parsed SLDocModel as a Markdown
      or minimal HTML API page (the way javadoc renders an HTML page for Java). >>
-#sleela 2.5
+#sleela 2.8
 material;
 < Family: sleeladoc. The back end: turn an SLDocModel into a human-readable API >
 < page. toMarkdown() emits a GitHub-flavored Markdown document; toHtml() emits a >

@@ -2,7 +2,7 @@
    SLeeLa Standard Library Definition.
    Definition: Defines SLDocTag -- one parsed SleelaDoc tag: a name (without the
      leading @) and its value text. >>
-#sleela 2.5
+#sleela 2.8
 material;
 < Family: sleeladoc. One SleelaDoc @tag lifted from a doc comment, for example >
 < "@intent Model a thought" becomes name="intent", value="Model a thought". >
