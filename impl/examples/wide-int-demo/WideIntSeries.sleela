@@ -1,0 +1,52 @@
+#sleela 2.7
+
+# Full base-2 signed integer series: int32, int64, int128, int256, ... int16777216.
+class WideIntSeries {
+
+    static int128 square(int128 x) {
+        return x * x;
+    }
+
+    static void main() {
+        # Narrow members (64-bit backed): int32, int64.
+        int32 a = 2000000000;        # near 2^31
+        int64 b = 9000000000000;     # beyond 2^31
+        print(a + b);
+
+        # 128-bit backed members: int128 and up, exact beyond 2^64.
+        int128 c = 9000000000;
+        print(square(c));            # 81000000000000000000  (> 2^64)
+
+        int256 d = 1000000000;
+        int512 e = 2000000000;
+        int1024 f = d + e;
+        print(f);
+
+        # Every width across the series is a usable type.
+        int2048 g = 7;
+        int4096 h = 8;
+        int8192 i = 9;
+        int16384 j = 10;
+        int32768 k = 11;
+        int65536 l = 12;
+        int131072 m = 13;
+        int262144 n = 14;
+        int524288 o = 15;
+        int1048576 p = 16;
+        int2097152 q = 17;
+        int4194304 r = 18;
+        int8388608 s = 19;
+        int16777216 t = 20;
+        print(g + h + i + j + k + l + m + n + o + p + q + r + s + t);
+
+        # Arrays and casts across the series.
+        int256[] xs = new int256[2];
+        xs[0] = 100;
+        xs[1] = 200;
+        print(xs[0] + xs[1]);
+        int64 narrowCast = (int64) 123;
+        print(narrowCast);
+        int512 wideCast = (int512) 456;
+        print(wideCast);
+    }
+}

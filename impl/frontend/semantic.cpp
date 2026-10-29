@@ -15,9 +15,10 @@ enum class Kind { Void, Int, Unsigned, Double, Bool, String, Null, Any, Struct, 
 // `elem` the element type name (e.g. "int").
 struct Type { Kind kind=Kind::Unknown; std::string name{}; std::string elem{}; };
 static bool unsignedTypeName(const std::string& n){return UnsignedInteger::isValidTypeName(n);}
-// The extended wide signed-integer family (syntax 2.7): int256 .. int16777216
-// (powers of two, 2^8..2^24). Recognized as identifiers like the U<width>
-// unsigned family; type-checks as an integer (see typeOf below).
+// The base-2 signed-integer series (syntax 2.7): int32, int64, int128, int256,
+// ... up to int16777216 (powers of two, 2^5..2^24). Recognized as identifiers
+// like the U<width> unsigned family; type-checks as an integer (see typeOf).
+// int64/int128 are also keyword-spelled but resolve to the same integer kind.
 static bool signedWideTypeName(const std::string& n){return SignedWideInteger::isValidTypeName(n);}
 static Type typeOf(const std::string& n){
  // Accept the Java-style keyword names the lexer produces (int, double,
@@ -29,9 +30,9 @@ static Type typeOf(const std::string& n){
  if(unsignedTypeName(n)){return{Kind::Unsigned,n,{}};}
  if(n=="void"){return{Kind::Void,{},{}};}
  if(n=="int"){return{Kind::Int,{},{}};}
- // Extended wide signed integers int256..int16777216 (syntax 2.7) type-check
- // as the integer kind -- identical checking to `int`/`int128`. Their runtime
- // backing is the VM's widest native integer slot (see compiler.cpp
+ // Base-2 signed series int32..int16777216 (syntax 2.7) type-checks as the
+ // integer kind -- identical checking to `int`. The runtime backs widths <=64
+ // on the 64-bit slot and widths >=128 on the 128-bit slot (see compiler.cpp
  // runtimeTypeOperand); arithmetic beyond 128 bits is a documented follow-up.
  if(signedWideTypeName(n)){return{Kind::Int,{},{}};}
  // Wide signed integer primitives (syntax 2.6). long and int64 are true 64-bit

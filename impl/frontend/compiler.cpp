@@ -227,9 +227,14 @@ private:
     int runtimeTypeOperand(const std::string& name) const {
         auto st=structLayout_.find(name);
         if(st!=structLayout_.end()) return st->second.typeIndex;
-        // int128 and the extended wide signed family int256..int16777216
-        // (syntax 2.7) ride the VM's widest native integer slot (SL_INT128).
-        if(name=="int128" || SignedWideInteger::isValidTypeName(name)) return -(SL_INT128+1);
+        // The base-2 signed series int32..int16777216 (syntax 2.7) rides the
+        // narrowest native integer slot that holds its width: widths <= 64
+        // (int32, int64) use SL_INT, widths >= 128 (int128 and up) use the
+        // 128-bit SL_INT128. `int64`/`int128` are also keyword-spelled; routing
+        // by width keeps the keyword and pattern spellings consistent.
+        if(SignedWideInteger::isValidTypeName(name))
+            return SignedWideInteger::fitsNativeNarrow(name) ? -(SL_INT+1) : -(SL_INT128+1);
+        if(name=="int128") return -(SL_INT128+1);
         if(name=="int" || name=="long" || name=="int64" || UnsignedInteger::isValidTypeName(name)) return -(SL_INT+1);
         if(name=="double") return -(SL_DOUBLE+1);
         if(name=="bool" || name=="boolean") return -(SL_BOOL+1);
@@ -246,9 +251,13 @@ private:
     // int64 share the 64-bit representation; class/array/String stores are
     // exact).
     void coerceToDeclared(const std::string& declType){
-        // Widen into a double, an int128, or any extended wide signed integer
-        // (int256..int16777216); the latter all back onto the VM's 128-bit slot.
-        if(declType=="double"||declType=="int128"||SignedWideInteger::isValidTypeName(declType))
+        // Widen into a double, or into a 128-bit-backed signed integer (int128
+        // and the wider base-2 series members int256..int16777216). Narrow
+        // series members (int32, int64) share the 64-bit representation and need
+        // no coercion, exactly like `int`/`long`/`int64`.
+        const bool wide128 = declType=="int128"
+            || (SignedWideInteger::isValidTypeName(declType) && !SignedWideInteger::fitsNativeNarrow(declType));
+        if(declType=="double"||wide128)
             emit(OP_CHECKCAST,runtimeTypeOperand(declType));
     }
     // Emit call arguments, widening each integer argument to a declared double

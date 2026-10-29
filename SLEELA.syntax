@@ -14,11 +14,12 @@
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
     `#sleela 2.7`) is the grammar version defined here and enforced by
     `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.7).
-    Syntax 2.7 is the current spec level: it adds the **extended wide signed
-    integer primitives** (section 24) — `int256`, `int512`, `int1024`, ... up to
-    `int16777216` (the type name `int` followed by a power-of-two bit width in
-    2^8..2^24), recognized as identifiers wherever a primitive type may appear,
-    type-checked as integers, and carried by the VM's widest native integer slot.
+    Syntax 2.7 is the current spec level: it completes the **base-2 signed
+    integer series** (section 24) — `int32`, `int64`, `int128`, `int256`, ... up
+    to `int16777216` (the type name `int` followed by a power-of-two bit width in
+    2^5..2^24, twenty widths in all), recognized wherever a primitive type may
+    appear, type-checked as integers, and carried by the narrowest native slot
+    that holds each width (64-bit for `int32`/`int64`, 128-bit for `int128` up).
     Syntax 2.6 is the current spec level: it adds **keyword supporter
     documents** (section 22) — every use of the five control-flow keywords
     (`try`, `catch`, `throw`, `synchronized`, `super`) is given a stable hash,
@@ -1669,77 +1670,96 @@ document compiles exactly as the same document without the marker would.
 - `impl/frontend/ast.h` — `Program.determineMarked`.
 
 --------------------------------------------------------------------------------
-## 24. Syntax 2.7 — extended wide signed integer primitives (`int256` .. `int16777216`)
+## 24. Syntax 2.7 — the base-2 signed integer series (`int32` .. `int16777216`)
 
-This section is **normative** for syntax **2.7**. It extends the signed-integer
-primitive family (`int`/`long`/`int64` at 64 bits, `int128` at 128 bits; section
-21) with a parameterized set of wider named signed integers:
+This section is **normative** for syntax **2.7**. It completes the signed-integer
+primitive family as the full **binary base-2 series** of named signed integers —
+the type name `int` followed by a decimal bit width that is a **power of two** in
+the inclusive range **2^5 (32) .. 2^24 (16777216)**:
 
-    int256   int512   int1024   int2048   int4096   int8192
-    int16384 int32768 int65536  int131072 int262144 int524288
-    int1048576 int2097152 int4194304 int8388608 int16777216
+    int32    int64    int128    int256    int512     int1024
+    int2048  int4096  int8192   int16384  int32768   int65536
+    int131072 int262144 int524288 int1048576 int2097152 int4194304
+    int8388608 int16777216
 
-The member names are the type name `int` immediately followed by a decimal bit
-width that is a **power of two** in the inclusive range **2^8 (256) .. 2^24
-(16777216)** — seventeen types in all. Any other width (e.g. `int300`,
-`int192`, `int33554432`) is **not** a member of the family and names no type.
+Twenty widths in all (2^5, 2^6, ..., 2^24). Any other width — not a power of two
+(e.g. `int48`, `int300`), below the floor (`int16`), or above the ceiling
+(`int33554432`) — is **not** a member of the series and names no type. (The
+pre-existing names `int`/`long` remain the 64-bit spelling, and `int64`/`int128`
+are series members that are additionally spelled as keywords; see §24.1.)
 
-### 24.1 Recognition — identifiers, not keywords
+### 24.1 Recognition — identifiers (plus two keyword spellings)
 
-Like the arbitrary-width *unsigned* `U<width>` family (section 16-adjacent;
-`U128`, `U256`, ...), the extended signed names are **not** lexer keywords. They
-lex as ordinary identifiers and are recognized by the front end wherever a
-primitive type may appear: fields, locals, parameters, return types, array
-element types, casts, and `new T[n]`. Consequently the three narrower
-keyword-spelled signed primitives (`int`/`long`/`int64`, `int128`) are never
-shadowed, and any width outside 2^8..2^24 (or not a power of two) simply remains
-an ordinary identifier / unknown type.
+Like the arbitrary-width *unsigned* `U<width>` family (`U128`, `U256`, ...), the
+series names are recognized by the front end as a family wherever a primitive
+type may appear: fields, locals, parameters, return types, array element types,
+casts, and `new T[n]`. Most members (`int32`, and `int256` and up) lex as
+ordinary identifiers. Two members, **`int64` and `int128`, are also lexer
+keywords** for source convenience (alongside `int`/`long`); the keyword and
+identifier paths resolve to the same type and the same runtime backing, so a
+width behaves identically however it was spelled. A width outside 2^5..2^24, or
+not a power of two, simply remains an ordinary identifier / unknown type.
 
-    int256   a = 1000000000;        < larger than 2^31; exact >
-    int512   b = 2000000000;
-    int1024  c = a + b;             < wide-integer arithmetic >
-    int256[] xs = new int256[3];    < arrays of a wide signed int >
-    int256   d = (int256) 99;       < cast to a wide signed int >
+    int32    a = 2000000000;        < near 2^31 >
+    int64    b = 9000000000000;     < beyond 2^31, 64-bit >
+    int256   c = 1000000000;
+    int512   d = 2000000000;
+    int1024  e = c + d;             < wide-integer arithmetic >
+    int256[] xs = new int256[3];    < arrays of a series member >
+    int512   f = (int512) 99;       < cast to a series member >
 
-    static int256 doubleIt(int256 x) { return x + x; }   < param + return >
+    static int128 square(int128 x) { return x * x; }   < param + return >
 
 ### 24.2 Semantics
 
-Each `int<width>` type-checks **identically to `int`**: it is numeric,
+Each series member type-checks **identically to `int`**: it is numeric,
 interoperates in arithmetic (`+ - * / %`, unary negation, comparisons, the
 bitwise and shift operators), and widens to `double` on assignment exactly as
-`int` does. An integer literal is assignable to any `int<width>` target (no
-literal suffix is required).
+`int` does. An integer literal is assignable to any series target (no literal
+suffix is required).
 
-**Runtime backing (this edition).** The compiler and the native VM handle these
-types today by carrying their values in the VM's widest native integer slot —
-the same 128-bit value model as `int128` (`SL_INT128`, backed by the toolchain's
-`__int128` on GCC/Clang). An integer stored into, assigned to, cast to, passed
-as, or returned as an `int<width>` target is widened to that representation, so
-values beyond the 64-bit range compute exactly up to 128 bits:
+**Runtime backing.** The compiler and the native VM carry each value in the
+**narrowest native integer slot that holds its declared width**:
 
-    int256 a = 9000000000;
-    int256 p = a * a;               < prints 81000000000000000000 (> 2^64) >
+    width <= 64 bits   (int32, int64)        -> SL_INT    (64-bit int64_t)
+    width >= 128 bits  (int128 .. int16777216) -> SL_INT128 (true 128-bit
+                                                  __int128 on GCC/Clang)
 
-True **arbitrary-width** signed arithmetic beyond 128 bits is a documented
-follow-up: the names, type-checking, declarations, arrays, casts, parameters and
-returns are all in place now, and the storage layer widens as the value model
-grows. (For arbitrary-width *unsigned* integers today, the `U<width>` family —
-e.g. `U256`, `U1024` — provides exact big-integer arithmetic.)
+A value stored into, assigned to, cast to, passed as, or returned as a
+128-bit-backed member is widened to the 128-bit representation, so values beyond
+the 64-bit range compute exactly up to 128 bits:
+
+    int128 a = 9000000000;
+    int128 p = a * a;               < prints 81000000000000000000 (> 2^64) >
+
+Mixing a 128-bit-backed member with a 64-bit integer promotes the result to
+128-bit (VM arithmetic rule for `SL_INT128`). True **arbitrary-width** signed
+arithmetic beyond 128 bits is a documented follow-up: the names, type-checking,
+declarations, arrays, casts, parameters and returns are all in place now across
+the whole series, and the storage layer widens as the value model grows. (For
+arbitrary-width *unsigned* integers today, the `U<width>` family — e.g. `U256`,
+`U1024` — provides exact big-integer arithmetic.)
 
 ### 24.3 Where this is implemented
 
 - `impl/frontend/wide_integer.h` — `SignedWideInteger::isValidTypeName()` /
-  `widthOf()`: the power-of-two, 2^8..2^24 recognizer for the `int<width>` names
-  (sibling to `unsigned_integer.h`'s `UnsignedInteger::isValidTypeName()`).
-- `impl/frontend/semantic.cpp` — `typeOf()` and `known()` map every family
+  `widthOf()` / `fitsNativeNarrow()`: the power-of-two, 2^5..2^24 recognizer for
+  the `int<width>` series and the 64-vs-128-bit backing split (sibling to
+  `unsigned_integer.h`'s `UnsignedInteger::isValidTypeName()`).
+- `impl/frontend/lexer.{h,cpp}` — `int64`/`int128` keep their `KwInt64T`/
+  `KwInt128T` keyword spellings; the other widths lex as identifiers.
+- `impl/frontend/semantic.cpp` — `typeOf()` and `known()` map every series
   member to the integer kind (identical checking to `int`).
 - `impl/frontend/parser.cpp` — local-declaration detection recognizes an
   identifier-typed **array** declaration (`T[] name`, `T[][] name`), so
   `int256[] xs = ...` (and, as a fix, `U256[] xs = ...`) parse as declarations
   rather than indexing expressions.
-- `impl/frontend/compiler.cpp` — `runtimeTypeOperand()` maps every `int<width>`
-  to `SL_INT128`, and `coerceToDeclared()` widens an initializer / store / call
-  argument to the 128-bit slot (as it already does for `int128`).
+- `impl/frontend/compiler.cpp` — `runtimeTypeOperand()` routes each member to
+  `SL_INT` (width <= 64) or `SL_INT128` (width >= 128); `coerceToDeclared()`
+  widens an initializer / store / call argument into the 128-bit slot for the
+  128-bit-backed members (narrow members need no coercion).
+- `impl/core/sleela_core.{h,c}` — the VM value model (`SL_INT` / `SL_INT128`),
+  128-bit promotion in the arithmetic/comparison ops, the 128-bit decimal
+  formatter, and `OP_CHECKCAST` int<->int128 widening/narrowing carry the series.
 - `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.7, so `#sleela 2.7`
   sources are accepted.
