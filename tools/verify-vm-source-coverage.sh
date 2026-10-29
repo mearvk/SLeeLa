@@ -47,5 +47,5 @@ PY
 COUNT="$(find "$ROOT/lib" -type f -name '*.sleela' | wc -l)"
 test "$COUNT" -gt 0
 printf 'SLeeLa /lib source inventory: PASS (%s .sleela files)\n' "$COUNT"
-for n in $(seq 1 11); do test -f "$ROOT/sleela-virtual-machine/$n/docs/SOURCE-TO-VM.md"; done
+for n in $(seq 1 11); do printf -v version "%03d" "$n"; test -f "$ROOT/sleela-virtual-machine/$version/docs/SOURCE-TO-VM.md"; done
 printf 'SLVM generation contracts: PASS (1-11)\n'
