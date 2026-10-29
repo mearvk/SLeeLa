@@ -3,7 +3,7 @@
    Definition: Defines SLVMNativeBinding — the controlled seam where a method of
      the secondary Sleela VM crosses to the native engine. A binding names a
      native service (by symbol and by a canonical OS/service opcode from the
-     124-opcode ISA) and records its arity. When the VM dispatches a native
+     155-opcode ISA) and records its arity. When the VM dispatches a native
      method it invokes the binding, which parks a VM-exit the host services —
      exactly the mechanism lib/cpu/SLSleelaVM uses in hosted mode.
    
