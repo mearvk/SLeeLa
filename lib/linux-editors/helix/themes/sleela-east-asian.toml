@@ -1,0 +1,55 @@
+# SLeeLa SLeeLa East Asian theme for Helix.
+# Mirrors lib/linux-editors/vim/colors/sleela-east-asian.vim.
+"ui.background" = { bg = "bg" }
+"ui.text" = "fg"
+"ui.cursor" = { fg = "bg", bg = "keyword" }
+"ui.cursorline.primary" = { bg = "cursorline" }
+"ui.linenr" = "linenr"
+"ui.linenr.selected" = { fg = "keyword", modifiers = ["bold"] }
+"ui.selection" = { bg = "visual" }
+"ui.statusline" = { fg = "fg", bg = "statusbg", modifiers = ["bold"] }
+"ui.menu" = { fg = "fg", bg = "statusbg" }
+"ui.menu.selected" = { fg = "bg", bg = "keyword" }
+"ui.help" = { fg = "fg", bg = "statusbg" }
+"ui.popup" = { bg = "statusbg" }
+"ui.virtual.ruler" = { bg = "cursorline" }
+"ui.virtual.whitespace" = "linenr"
+"keyword" = { fg = "keyword", modifiers = ["bold"] }
+"type" = { fg = "type", modifiers = ["bold"] }
+"type.builtin" = { fg = "type", modifiers = ["bold"] }
+"string" = "string"
+"constant.numeric" = "number"
+"constant" = "constant"
+"constant.builtin" = "constant"
+"function" = { fg = "function", modifiers = ["bold"] }
+"function.builtin" = { fg = "function", modifiers = ["bold"] }
+"variable" = "fg"
+"operator" = "operator"
+"comment" = { fg = "comment", modifiers = ["italic"] }
+"keyword.directive" = "preproc"
+"special" = "special"
+"label" = "preproc"
+"diagnostic" = { underline = { color = "error", style = "curl" } }
+"error" = "error"
+"warning" = "string"
+"info" = "keyword"
+"markup.heading" = { fg = "keyword", modifiers = ["bold"] }
+
+[palette]
+bg = "#171A1C"
+fg = "#F2EFE7"
+cursorline = "#242A2B"
+linenr = "#8C9693"
+visual = "#3A4541"
+statusbg = "#343D39"
+keyword = "#D97878"
+type = "#72C7A5"
+string = "#D8B76A"
+number = "#BDA6DE"
+constant = "#E59B83"
+function = "#9FCB9A"
+comment = "#969F9B"
+operator = "#D6DBD7"
+preproc = "#D97878"
+special = "#72C7A5"
+error = "#FF7777"

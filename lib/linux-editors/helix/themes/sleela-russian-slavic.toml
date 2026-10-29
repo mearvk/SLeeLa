@@ -1,0 +1,55 @@
+# SLeeLa SLeeLa Russian and Slavic (Medium) theme for Helix.
+# Mirrors lib/linux-editors/vim/colors/sleela-russian-slavic.vim.
+"ui.background" = { bg = "bg" }
+"ui.text" = "fg"
+"ui.cursor" = { fg = "bg", bg = "keyword" }
+"ui.cursorline.primary" = { bg = "cursorline" }
+"ui.linenr" = "linenr"
+"ui.linenr.selected" = { fg = "keyword", modifiers = ["bold"] }
+"ui.selection" = { bg = "visual" }
+"ui.statusline" = { fg = "fg", bg = "statusbg", modifiers = ["bold"] }
+"ui.menu" = { fg = "fg", bg = "statusbg" }
+"ui.menu.selected" = { fg = "bg", bg = "keyword" }
+"ui.help" = { fg = "fg", bg = "statusbg" }
+"ui.popup" = { bg = "statusbg" }
+"ui.virtual.ruler" = { bg = "cursorline" }
+"ui.virtual.whitespace" = "linenr"
+"keyword" = { fg = "keyword", modifiers = ["bold"] }
+"type" = { fg = "type", modifiers = ["bold"] }
+"type.builtin" = { fg = "type", modifiers = ["bold"] }
+"string" = "string"
+"constant.numeric" = "number"
+"constant" = "constant"
+"constant.builtin" = "constant"
+"function" = { fg = "function", modifiers = ["bold"] }
+"function.builtin" = { fg = "function", modifiers = ["bold"] }
+"variable" = "fg"
+"operator" = "operator"
+"comment" = { fg = "comment", modifiers = ["italic"] }
+"keyword.directive" = "preproc"
+"special" = "special"
+"label" = "preproc"
+"diagnostic" = { underline = { color = "error", style = "curl" } }
+"error" = "error"
+"warning" = "string"
+"info" = "keyword"
+"markup.heading" = { fg = "keyword", modifiers = ["bold"] }
+
+[palette]
+bg = "#202733"
+fg = "#E8EAF0"
+cursorline = "#293341"
+linenr = "#929BA8"
+visual = "#3B4655"
+statusbg = "#3B4655"
+keyword = "#A9C0DD"
+type = "#8FC4B2"
+string = "#D6BD8B"
+number = "#C2B0D8"
+constant = "#D99198"
+function = "#A7C69C"
+comment = "#9AA3AF"
+operator = "#D1D6DE"
+preproc = "#D5A6B4"
+special = "#8FC4B2"
+error = "#E58B91"

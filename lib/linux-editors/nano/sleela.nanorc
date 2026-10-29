@@ -1,0 +1,27 @@
+## SLeeLa syntax highlighting for nano (SLeeLa American Professional palette).
+## Requires nano >= 5.0 for 24-bit "color #RRGGBB" values.
+syntax sleela "\.sleela$"
+comment "//"
+
+## keywords, types, literals
+color #7fb3ff "\<(let|var|const|if|else|while|for|in|return|break|continue|class|interface|extends|implements|new|this|super|import|package|public|private|protected|static|final|true|false|null|nil|and|or|not|try|catch|throw|synchronized|finally|switch|case|default|do|assert|yield|instanceof)\>"
+color #73daca "\<(String|SLString|Integer|Int|Long|Double|Float|Boolean|Character|Byte|Short|Void|Object|List|Map|Set|Array|int64|int128|long|double|boolean)\>"
+## function-call heads
+color #82c91e "[A-Za-z_][A-Za-z0-9_]*[[:space:]]*\("
+## numbers
+color #c4a7e7 "\<[0-9]+\>"
+## strings (double- and single-quoted; inner double-quote escaped as \")
+color #f2c078 "\"(\\.|[^\"\\])*\""
+color #f2c078 "'(\\.|[^'\\])*'"
+## annotations and the document pragmas
+color #f0a6ca "@[A-Za-z_][A-Za-z0-9_]*"
+color #f0a6ca "^[[:space:]]*#(sleela|schema)\>.*$"
+## document markers (only when alone on a line, optional ;)
+color #f0a6ca "^[[:space:]]*(author|authorial|material|memory|determine)[[:space:]]*;?[[:space:]]*$"
+## comments: // line and /* */ block, plus << >> and < > angle forms
+color #8a96a3 "//.*$"
+color #8a96a3 start="/\*" end="\*/"
+color #8a96a3 start="^[[:space:]]*<<" end=">>"
+color #8a96a3 "^[[:space:]]*<[^<].*>?$"
+## TODO/FIXME/NOTE/XXX inside comments
+color #f2c078 "\<(TODO|FIXME|NOTE|XXX)\>"

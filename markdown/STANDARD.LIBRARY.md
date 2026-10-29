@@ -31,7 +31,10 @@ Digest interfaces, integrity manifests, key/certificate interfaces and secure tr
 HTTP 1.x, HTTP 2.0/2.1, HTTP 3/QUIC integration and the experimental SLeeLa HTTP 4.0 profile.
 
 ### Data formats
-JSON, XML, BODI, structured records and binary framing.
+JSON, XML, BODI, structured records and binary framing. XML is provided as a
+Document Object Model by the `lib/xml` family (`SLXmlDocument`/`SLXmlNode`/
+`SLXmlAttribute`, with `SLXmlParser`, `SLXmlSerializer`, and the `SLXmlAspect`
+quality register); see `lib/xml/README.md`.
 
 ### Email
 SMTP message construction, headers, transport and mailbox-facing interfaces.

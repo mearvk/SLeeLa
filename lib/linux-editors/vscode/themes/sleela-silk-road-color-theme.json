@@ -1,0 +1,102 @@
+{
+  "name": "SLeeLa Central Asian / Silk Road",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#1C2529",
+    "editor.foreground": "#F5F0E5",
+    "editorCursor.foreground": "#7FADE0",
+    "editor.lineHighlightBackground": "#26363A",
+    "editorLineNumber.foreground": "#87999A",
+    "editorLineNumber.activeForeground": "#7FADE0",
+    "editor.selectionBackground": "#315052",
+    "editor.findMatchBackground": "#D9B56D",
+    "statusBar.background": "#315052",
+    "statusBar.foreground": "#F5F0E5",
+    "editorError.foreground": "#FF7777"
+  },
+  "tokenColors": [
+    {
+      "scope": [
+        "keyword",
+        "keyword.control.sleela",
+        "storage.modifier"
+      ],
+      "settings": {
+        "foreground": "#7FADE0",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "storage.type.sleela",
+        "support.type"
+      ],
+      "settings": {
+        "foreground": "#45C6C2",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "string",
+        "string.quoted"
+      ],
+      "settings": {
+        "foreground": "#D9B56D"
+      }
+    },
+    {
+      "scope": [
+        "constant.numeric.sleela"
+      ],
+      "settings": {
+        "foreground": "#C4A4DE"
+      }
+    },
+    {
+      "scope": [
+        "constant",
+        "constant.language"
+      ],
+      "settings": {
+        "foreground": "#E58B79"
+      }
+    },
+    {
+      "scope": [
+        "entity.name.function.sleela"
+      ],
+      "settings": {
+        "foreground": "#A7C982",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "comment"
+      ],
+      "settings": {
+        "foreground": "#92A3A0",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": [
+        "keyword.control.directive.sleela",
+        "keyword.other.marker.sleela",
+        "entity.other.attribute-name.sleela"
+      ],
+      "settings": {
+        "foreground": "#E5A9A0"
+      }
+    },
+    {
+      "scope": [
+        "keyword.operator"
+      ],
+      "settings": {
+        "foreground": "#D5DEDA"
+      }
+    }
+  ]
+}

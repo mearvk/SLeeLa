@@ -31,7 +31,7 @@ The following `.sleela` files are the source-level VM and architecture definitio
 - `SLVMModule.sleela` — VM module representation.
 - `SLVMModuleLoader.sleela` — VM module loading model.
 - `SLVMNativeBinding.sleela` — native binding model.
-- `SleelaVMSystemCallBridge.sleela` — the VM-family face of the operating-system System Call API: exposes the host System API (environment, identity, working directory, filesystem metadata, process execution) to a running VM through the `os*` built-ins / `OP_OS_*` opcodes. Shared by the base VM and every generation. Pairs with the `PROCESS`/`OS_SYSCALLS` feature bits. See `OPCODE-MAP.md` and `/lib/os/OS.md`.
+- `SleelaVMSystemCallBridge.sleela` — the VM-family face of the operating-system System Call API: exposes the host System API (environment, identity, working directory, filesystem metadata, process execution) to a running VM through the `os*` built-ins / `OP_OS_*` opcodes. Shared by the base VM and every generation. Pairs with the `PROCESS`/`OS_SYSCALLS` feature bits. See `OPCODE-MAP.md` and `/lib/operating-system/OS.md`.
 - `SLVMMemory.sleela` — VM memory model.
 - `SLVMHeap.sleela` — VM heap model.
 

@@ -1,0 +1,41 @@
+-- SLeeLa Greek colorscheme for Neovim (Lua).
+-- Mirrors lib/linux-editors/vim/colors/sleela-greek.vim.
+vim.cmd("highlight clear")
+if vim.fn.exists("syntax_on") == 1 then vim.cmd("syntax reset") end
+vim.o.background = "dark"
+vim.g.colors_name = "sleela-greek"
+local s = vim.api.nvim_set_hl
+local function hi(group, opts) s(0, group, opts) end
+hi('Normal', { fg = '#FFFFFF', bg = '#0A1A30' })
+hi('Cursor', { fg = '#0A1A30', bg = '#2E7BD6' })
+hi('CursorLine', { bg = '#102744' })
+hi('LineNr', { fg = '#6E86A6', bg = '#0A1A30' })
+hi('CursorLineNr', { fg = '#2E7BD6', bold = true })
+hi('Visual', { bg = '#0D5EAF' })
+hi('Search', { fg = '#0A1A30', bg = '#FFFFFF' })
+hi('StatusLine', { fg = '#FFFFFF', bg = '#0D5EAF', bold = true })
+hi('Pmenu', { fg = '#FFFFFF', bg = '#0D5EAF' })
+hi('MatchParen', { fg = '#FFFFFF', bg = '#0D5EAF', bold = true })
+hi('Keyword', { fg = '#2E7BD6', bold = true })
+hi('Statement', { fg = '#2E7BD6', bold = true })
+hi('Type', { fg = '#5E9FE0', bold = true })
+hi('String', { fg = '#9FC3EC' })
+hi('Number', { fg = '#C7DBF3' })
+hi('Constant', { fg = '#4C8FDE' })
+hi('Function', { fg = '#FFFFFF', bold = true })
+hi('Identifier', { fg = '#FFFFFF' })
+hi('Operator', { fg = '#C7D4E4' })
+hi('Comment', { fg = '#6E86A6', italic = true })
+hi('PreProc', { fg = '#5E9FE0' })
+hi('Special', { fg = '#9FC3EC' })
+hi('Error', { fg = '#FF6B6B', undercurl = true })
+hi('Todo', { fg = '#FFFFFF', bg = '#0D5EAF', bold = true })
+hi('@keyword', { link = 'Keyword' })
+hi('@type', { link = 'Type' })
+hi('@string', { link = 'String' })
+hi('@number', { link = 'Number' })
+hi('@comment', { link = 'Comment' })
+hi('@function', { link = 'Function' })
+hi('@constant', { link = 'Constant' })
+hi('@operator', { link = 'Operator' })
+hi('@preproc', { link = 'PreProc' })

@@ -1,5 +1,6 @@
 #include "semantic.h"
 #include "unsigned_integer.h"
+#include "wide_integer.h"
 #include "annotation_pipeline.h"
 #include <map>
 #include <set>
@@ -13,7 +14,17 @@ enum class Kind { Void, Int, Unsigned, Double, Bool, String, Null, Any, Struct, 
 // For Kind::Array, `name` carries the full array type text (e.g. "int[]") and
 // `elem` the element type name (e.g. "int").
 struct Type { Kind kind=Kind::Unknown; std::string name{}; std::string elem{}; };
-static bool unsignedTypeName(const std::string& n){return UnsignedInteger::isValidTypeName(n);}
+// Unsigned (positive-only) type names: the arbitrary-width U<width> family and
+// the base-2 uint<width> series (uint32, uint64, uint128, ... uint16777216,
+// syntax 2.8). Both carry Kind::Unsigned and the same positive-only, width-
+// strict discipline; they are distinguished only by their (different) name
+// strings, so a `U256` and a `uint256` are separate unsigned types.
+static bool unsignedTypeName(const std::string& n){return UnsignedInteger::isValidTypeName(n)||UnsignedWideInteger::isValidTypeName(n);}
+// The base-2 signed-integer series (syntax 2.7): int32, int64, int128, int256,
+// ... up to int16777216 (powers of two, 2^5..2^24). Recognized as identifiers
+// like the U<width> unsigned family; type-checks as an integer (see typeOf).
+// int64/int128 are also keyword-spelled but resolve to the same integer kind.
+static bool signedWideTypeName(const std::string& n){return SignedWideInteger::isValidTypeName(n);}
 static Type typeOf(const std::string& n){
  // Accept the Java-style keyword names the lexer produces (int, double,
  // boolean, String, void) as well as the lowercase aliases (bool, string).
@@ -24,6 +35,11 @@ static Type typeOf(const std::string& n){
  if(unsignedTypeName(n)){return{Kind::Unsigned,n,{}};}
  if(n=="void"){return{Kind::Void,{},{}};}
  if(n=="int"){return{Kind::Int,{},{}};}
+ // Base-2 signed series int32..int16777216 (syntax 2.7) type-checks as the
+ // integer kind -- identical checking to `int`. The runtime backs widths <=64
+ // on the 64-bit slot and widths >=128 on the 128-bit slot (see compiler.cpp
+ // runtimeTypeOperand); arithmetic beyond 128 bits is a documented follow-up.
+ if(signedWideTypeName(n)){return{Kind::Int,{},{}};}
  // Wide signed integer primitives (syntax 2.6). long and int64 are true 64-bit
  // aliases of int (the runtime SLValue already stores int as int64_t). int128
  // is accepted and type-checks as an integer; its runtime backing is currently
@@ -84,7 +100,7 @@ class Analyzer{
   // An array type "T[]" is known when its element type T is known. Nested
   // arrays ("T[][]") recurse. Element type must not be void.
   if(t.size()>=2 && t.compare(t.size()-2,2,"[]")==0){std::string inner=t.substr(0,t.size()-2);return inner!="void"&&known(inner);}
-  return t=="void"||t=="int"||t=="long"||t=="int64"||t=="int128"||unsignedTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||t=="Any"||structs.count(t)||classNames.count(t);
+  return t=="void"||t=="int"||t=="long"||t=="int64"||t=="int128"||unsignedTypeName(t)||signedWideTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||t=="Any"||structs.count(t)||classNames.count(t);
  }
  Type tn(const std::string&t)const{return known(t)?typeOf(t):Type{Kind::Error,t};}
  void collect(){
@@ -122,6 +138,11 @@ class Analyzer{
   // older-declared document. There is deliberately no behavioral effect.
   if(p.memoryMarked&&syntax<SyntaxVersion{2,5})
    err("the memory document marker requires #sleela 2.5");
+  // Determine marker (syntax 2.6): declarative only. Below 2.6 the word never
+  // parses as a marker, so this fires only on a genuine 2.6-feature use in an
+  // older-declared document. There is deliberately no behavioral effect.
+  if(p.determineMarked&&syntax<SyntaxVersion{2,6})
+   err("the determine document marker requires #sleela 2.6");
   for(const auto&c:p.classes){
    std::map<std::string,Type> instanceFields;
    for(const auto&f:c.fields){Type t=tn(f.type);if(t.kind==Kind::Error)err("unknown type '"+f.type+"' for field '"+f.name+"'");if(t.kind==Kind::Void)err("field '"+f.name+"' cannot be void");

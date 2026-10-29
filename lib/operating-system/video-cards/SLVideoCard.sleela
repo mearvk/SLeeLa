@@ -1,0 +1,128 @@
+<< lib/operating-system/video-cards/SLVideoCard.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLVideoCard — a named graphics card (GPU). It extends
+     SLHardwareComponent and models the finite set of GPU variants by the
+     attributes a machine description needs: the GPU vendor (NVIDIA, AMD, Intel)
+     and architecture family, the board interface (PCIe generation and lane
+     count), video memory size and type (GDDR6/GDDR6X/GDDR7/HBM), display
+     outputs (HDMI/DisplayPort counts), board power (watts), and the APIs it
+     advertises (Vulkan, OpenGL, Direct3D, compute). A machine description
+     requests a card by vendor + model and composes it as the display adapter.
+   
+   Family: operating-system. Extends SLHardwareComponent. >>
+#sleela 2.5
+material;
+class SLVideoCard extends SLHardwareComponent {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10947;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < GPU vendor ordinals. >
+  static final int GPU_NVIDIA = 0;
+  static final int GPU_AMD    = 1;
+  static final int GPU_INTEL  = 2;
+  < Video-memory type ordinals. >
+  static final int VRAM_GDDR6  = 0;
+  static final int VRAM_GDDR6X = 1;
+  static final int VRAM_GDDR7  = 2;
+  static final int VRAM_HBM    = 3;
+
+  < GPU_* >
+  int gpuVendor;
+  < e.g. "Ada Lovelace", "RDNA 3", "Xe-HPG" >
+  String architecture;
+  < PCIe generation (3,4,5) >
+  int pcieGen;
+  < typically 16 >
+  int pcieLanes;
+  < video memory in MB >
+  int vramMb;
+  < VRAM_* >
+  int vramType;
+  int hdmiPorts;
+  int displayPorts;
+  < typical board power (TGP) in watts >
+  int boardPowerW;
+  < 1 if Vulkan supported >
+  int vulkan;
+  < 1 if Direct3D 12 supported >
+  int direct3d;
+
+  void configure(String vendorName, String partName, int vendorOrdinal, int vramMegabytes) {
+    configureComponent(vendorName, partName, CLASS_VIDEO);
+    gpuVendor = vendorOrdinal; vramMb = vramMegabytes;
+    pcieGen = 4; pcieLanes = 16; vramType = VRAM_GDDR6;
+    hdmiPorts = 1; displayPorts = 3; boardPowerW = 200;
+    vulkan = 1; direct3d = 1;
+    if (vendorOrdinal == GPU_NVIDIA) { architecture = "Ada Lovelace"; vramType = VRAM_GDDR6X; }
+    if (vendorOrdinal == GPU_AMD)    { architecture = "RDNA 3"; vramType = VRAM_GDDR6; }
+    if (vendorOrdinal == GPU_INTEL)  { architecture = "Xe-HPG"; vramType = VRAM_GDDR6; }
+  }
+
+  < Configure by vendor name ("NVIDIA"/"AMD"/"Intel"). >
+  void configureByVendor(String vendorName, String partName, int vramMb) {
+    if (vendorName == "NVIDIA") { configure(vendorName, partName, GPU_NVIDIA, vramMb); return; }
+    if (vendorName == "AMD")    { configure(vendorName, partName, GPU_AMD, vramMb); return; }
+    if (vendorName == "Intel")  { configure(vendorName, partName, GPU_INTEL, vramMb); return; }
+    configure(vendorName, partName, GPU_NVIDIA, vramMb);
+  }
+
+  void setArchitecture(String arch) { architecture = arch; }
+  void setPcie(int gen, int lanes) { pcieGen = gen; pcieLanes = lanes; }
+  void setVram(int megabytes, int type) { vramMb = megabytes; vramType = type; }
+  void setOutputs(int hdmi, int dp) { hdmiPorts = hdmi; displayPorts = dp; }
+  void setBoardPower(int watts) { boardPowerW = watts; }
+
+  String vendorName()   { return vendor; }
+  String architectureName() { return architecture; }
+  int pcieGeneration()  { return pcieGen; }
+  int lanes()           { return pcieLanes; }
+  int vramMegabytes()   { return vramMb; }
+  String vramTypeName() {
+    if (vramType == VRAM_GDDR7)  { return "GDDR7"; }
+    if (vramType == VRAM_GDDR6X) { return "GDDR6X"; }
+    if (vramType == VRAM_HBM)    { return "HBM"; }
+    return "GDDR6";
+  }
+  int outputsTotal()    { return hdmiPorts + displayPorts; }
+  int boardPower()      { return boardPowerW; }
+  boolean supportsVulkan()   { return vulkan == 1; }
+  boolean supportsDirect3D() { return direct3d == 1; }
+}

@@ -1,0 +1,312 @@
+<< lib/xml/SLXmlParser.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLXmlParser -- a char-cell text-to-DOM reader for the
+     common XML subset (elements, attributes with double-quoted values, text,
+     comments, and self-closing tags), plus an honest structural well-formedness
+     check. It builds an SLXmlDocument from a char-cell view of the source. >>
+#sleela 2.5
+material;
+<< Family: xml. The text-to-DOM half of the round trip.
+
+   The built-in String is opaque (no in-language slicing), so this parser reads
+   an explicit char-cell String[] -- one glyph per cell -- exactly the sanctioned
+   real char-level mechanism used across lib/text/SLString. A caller supplies the
+   cells (from a known literal decomposition or the runtime's bridged chars());
+   parseCells() then walks them once and builds a document: it opens elements on
+   start tags, closes them on end tags, attaches text runs, reads double-quoted
+   attributes, and skips the XML declaration and comments.
+
+   It is a pragmatic reader for well-formed input in the common subset -- it does
+   NOT implement DTDs, general entity expansion beyond the five predefined
+   entities, or validation; those aspects report honestly through SLXmlAspect
+   rather than being faked here. isWellFormedCells() is a fast structural check
+   (balanced, correctly-nested tags, single root) usable before a full parse. >>
+class SLXmlParser {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7927;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument. >
+  String metaNationalSchedule = "W3C REC-xml section 2 (well-formed documents)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << ---- parse stack ----
+     Class-typed arrays are held as fields (the house idiom for object arrays,
+     which may not be declared as method locals). parseCells() resets the count
+     to 0 and refills it as it walks. >>
+  static final int MAX_DEPTH = 256;
+  SLXmlNode[] openStack;
+
+  < ---- char-cell helpers (all real; mirror lib/text/SLString) ---- >
+
+  String cellAt(String[] cells, int i) {
+    if (i < 0 || i >= arrayLength(cells)) { return ""; }
+    return cells[i];
+  }
+  boolean isSpaceCell(String ch) {
+    return ch == " " || ch == "\t" || ch == "\n" || ch == "\r";
+  }
+  < Rejoin cells in [from, to) into a String. >
+  String joinRange(String[] cells, int from, int to) {
+    String out = "";
+    int n = arrayLength(cells);
+    int i = from;
+    if (i < 0) { i = 0; }
+    int end = to;
+    if (end > n) { end = n; }
+    while (i < end) { out = out + cells[i]; i = i + 1; }
+    return out;
+  }
+  < First index >= from whose cell equals needle, or -1. >
+  int indexFrom(String[] cells, int from, String needle) {
+    int n = arrayLength(cells);
+    for (int i = from; i < n; i = i + 1) {
+      if (cells[i] == needle) { return i; }
+    }
+    return -1;
+  }
+  < Unescape the five predefined XML entities in a rejoined text run. Operates >
+  < cell-wise so "&amp;" / "&lt;" / "&gt;" / "&quot;" / "&apos;" become & < > " '. >
+  String unescapeCells(String[] cells, int from, int to) {
+    String out = "";
+    int n = arrayLength(cells);
+    int end = to;
+    if (end > n) { end = n; }
+    int i = from;
+    if (i < 0) { i = 0; }
+    while (i < end) {
+      if (cells[i] == "&") {
+        int semi = indexFrom(cells, i, ";");
+        if (semi > i && semi < end) {
+          String name = joinRange(cells, i + 1, semi);
+          out = out + entity(name);
+          i = semi + 1;
+          continue;
+        }
+      }
+      out = out + cells[i];
+      i = i + 1;
+    }
+    return out;
+  }
+  < The replacement for a predefined entity name, or "&name;" left intact. >
+  String entity(String name) {
+    if (name == "lt") { return "<"; }
+    if (name == "gt") { return ">"; }
+    if (name == "amp") { return "&"; }
+    if (name == "quot") { return "\""; }
+    if (name == "apos") { return "'"; }
+    return "&" + name + ";";
+  }
+
+  < ---- well-formedness (structural, over cells) ---- >
+
+  << A fast structural check over a char-cell view: every start tag is matched by
+     the right end tag in the right order, with exactly one root. Returns true for
+     balanced input in the common subset. It checks nesting -- the aspect this
+     method advertises -- not attribute or entity details. >>
+  boolean isWellFormedCells(String[] cells) {
+    if (cells == null) { return false; }
+    int n = arrayLength(cells);
+    openStack = new SLXmlNode[MAX_DEPTH];
+    int top = 0;
+    int roots = 0;
+    int i = 0;
+    while (i < n) {
+      if (cells[i] != "<") { i = i + 1; continue; }
+      < declaration / comment are skipped >
+      if (cellAt(cells, i + 1) == "?") { i = seekClose(cells, i); continue; }
+      if (cellAt(cells, i + 1) == "!") { i = seekClose(cells, i); continue; }
+      int end = indexFrom(cells, i, ">");
+      if (end < 0) { return false; }
+      boolean selfClose = (cellAt(cells, end - 1) == "/");
+      int innerTo = end;
+      if (selfClose) { innerTo = end - 1; }
+      if (cellAt(cells, i + 1) == "/") {
+        < end tag >
+        if (top == 0) { return false; }
+        String tag = tagNameFrom(cells, i + 2, innerTo);
+        SLXmlNode marker = openStack[top - 1];
+        if (marker.name() != tag) { return false; }
+        top = top - 1;
+      } else {
+        < start tag; a root opens while the stack is empty >
+        String tag = tagNameFrom(cells, i + 1, innerTo);
+        if (top == 0) { roots = roots + 1; }
+        if (!selfClose) {
+          if (top >= MAX_DEPTH) { return false; }
+          SLXmlNode marker = new SLXmlNode();
+          marker.asElement(tag);
+          openStack[top] = marker;
+          top = top + 1;
+        }
+      }
+      i = end + 1;
+    }
+    if (top != 0) { return false; }
+    return roots == 1;
+  }
+
+  < Index just past the next ">" at/after the "<" at `from` (used to skip a >
+  < declaration or comment coarsely); returns n when unterminated. >
+  int seekClose(String[] cells, int from) {
+    int gt = indexFrom(cells, from, ">");
+    if (gt < 0) { return arrayLength(cells); }
+    return gt + 1;
+  }
+
+  < The tag name within cells [from, to): the run up to the first whitespace. >
+  String tagNameFrom(String[] cells, int from, int to) {
+    < skip leading whitespace >
+    int a = from;
+    while (a < to && isSpaceCell(cells[a])) { a = a + 1; }
+    int b = a;
+    while (b < to && !isSpaceCell(cells[b])) { b = b + 1; }
+    return joinRange(cells, a, b);
+  }
+
+  < ---- parse (cells -> DOM) ---- >
+
+  << Parse a char-cell view into a document. Builds the element tree, attaches
+     text runs (whitespace-only runs between tags are dropped), reads double-
+     quoted attributes, and skips the declaration and comments. The document's
+     hasRoot() is false when no element was found. >>
+  SLXmlDocument parseCells(String[] cells) {
+    SLXmlDocument doc = new SLXmlDocument();
+    doc.create();
+    if (cells == null) { return doc; }
+
+    int n = arrayLength(cells);
+    openStack = new SLXmlNode[MAX_DEPTH];
+    int top = 0;
+    int i = 0;
+
+    while (i < n) {
+      if (cells[i] == "<") {
+        < declaration / comment are skipped >
+        if (cellAt(cells, i + 1) == "?") { i = seekClose(cells, i); continue; }
+        if (cellAt(cells, i + 1) == "!") { i = seekClose(cells, i); continue; }
+
+        int end = indexFrom(cells, i, ">");
+        if (end < 0) { i = n; continue; }
+        boolean selfClose = (cellAt(cells, end - 1) == "/");
+        int innerTo = end;
+        if (selfClose) { innerTo = end - 1; }
+
+        if (cellAt(cells, i + 1) == "/") {
+          < end tag: pop >
+          if (top > 0) { top = top - 1; }
+        } else {
+          String tag = tagNameFrom(cells, i + 1, innerTo);
+          SLXmlNode el = doc.createElement(tag);
+          < readAttributes re-skips the tag name itself from the "<"+1 start. >
+          readAttributes(el, cells, i + 1, innerTo);
+          if (top == 0) {
+            doc.setDocumentElement(el);
+          } else {
+            SLXmlNode parent = openStack[top - 1];
+            parent.appendChild(el);
+          }
+          if (!selfClose) {
+            if (top < MAX_DEPTH) { openStack[top] = el; top = top + 1; }
+          }
+        }
+        i = end + 1;
+      } else {
+        < text run up to the next "<" >
+        int lt = indexFrom(cells, i, "<");
+        if (lt < 0) { lt = n; }
+        int ts = firstNonSpace(cells, i, lt);
+        int te = lastNonSpace(cells, i, lt);
+        if (ts >= 0 && te >= ts && top > 0) {
+          String text = unescapeCells(cells, ts, te + 1);
+          SLXmlNode parent = openStack[top - 1];
+          parent.appendChild(doc.createTextNode(text));
+        }
+        i = lt;
+      }
+    }
+    return doc;
+  }
+
+  < First non-whitespace cell index in [from, to), or -1 if all whitespace. >
+  int firstNonSpace(String[] cells, int from, int to) {
+    for (int i = from; i < to; i = i + 1) {
+      if (!isSpaceCell(cells[i])) { return i; }
+    }
+    return -1;
+  }
+  < Last non-whitespace cell index in [from, to), or -1 if all whitespace. >
+  int lastNonSpace(String[] cells, int from, int to) {
+    int found = -1;
+    for (int i = from; i < to; i = i + 1) {
+      if (!isSpaceCell(cells[i])) { found = i; }
+    }
+    return found;
+  }
+
+  << Read name="value" attributes from the start-tag body cells [from, to) and
+     set them on `el`. `from` points just after "<"; this method first re-skips
+     the tag name, then reads each attribute. Only double-quoted values are
+     recognized (the common and serializer-produced form). Values are unescaped. >>
+  void readAttributes(SLXmlNode el, String[] cells, int from, int to) {
+    < skip the tag name (run up to first whitespace) >
+    int i = from;
+    while (i < to && isSpaceCell(cells[i])) { i = i + 1; }
+    while (i < to && !isSpaceCell(cells[i])) { i = i + 1; }
+    < now read attributes >
+    while (i < to) {
+      while (i < to && isSpaceCell(cells[i])) { i = i + 1; }
+      if (i >= to) { return; }
+      < name up to '=' or whitespace >
+      int ns = i;
+      while (i < to && cells[i] != "=" && !isSpaceCell(cells[i])) { i = i + 1; }
+      String name = joinRange(cells, ns, i);
+      while (i < to && cells[i] != "=") { i = i + 1; }
+      if (i >= to) { return; }
+      i = i + 1;
+      while (i < to && isSpaceCell(cells[i])) { i = i + 1; }
+      if (i >= to || cells[i] != "\"") { return; }
+      i = i + 1;
+      int vs = i;
+      while (i < to && cells[i] != "\"") { i = i + 1; }
+      String value = unescapeCells(cells, vs, i);
+      if (i < to) { i = i + 1; }
+      if (name != "") { el.setAttribute(name, value); }
+    }
+  }
+}

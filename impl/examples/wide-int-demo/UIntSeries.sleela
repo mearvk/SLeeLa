@@ -1,0 +1,38 @@
+#sleela 2.8
+
+# Base-2 UNSIGNED (positive-only) integer series: uint32, uint64, uint128,
+# uint256, ... up to uint16777216. Mirrors the signed int<width> series, with
+# the same positive-only, width-strict discipline as the U<width> family:
+# values are produced by an explicit cast, unary minus is rejected, and
+# arithmetic/comparison require operands of the same unsigned width.
+class UIntSeries {
+
+    static uint128 addU(uint128 a, uint128 b) {
+        return a + b;
+    }
+
+    static void main() {
+        # Narrow members (64-bit backed): uint32, uint64.
+        uint64 a = (uint64) 4000000000;      # beyond signed 2^31, fine unsigned
+        uint64 b = (uint64) 9000000000000;
+        print(a + b);
+
+        # 128-bit backed members: uint128 and up, exact beyond 2^64.
+        uint128 c = (uint128) 9000000000;
+        print(c * c);                        # 81000000000000000000 (> 2^64)
+        print(addU((uint128) 100, (uint128) 200));
+
+        # The specific width requested: uint16777216.
+        uint16777216 huge = (uint16777216) 123456789;
+        print(huge);
+
+        # Arrays and casts.
+        uint256[] xs = new uint256[2];
+        xs[0] = (uint256) 111;
+        xs[1] = (uint256) 222;
+        print(xs[0] + xs[1]);
+
+        uint16777216 castv = (uint16777216) 999;
+        print(castv);
+    }
+}

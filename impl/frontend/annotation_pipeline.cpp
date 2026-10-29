@@ -3,11 +3,11 @@
 #include <set>
 namespace sleela::frontend {
 bool isKnownLanguageAnnotation(const std::string& name) noexcept {
-    static const std::set<std::string> names = {"scope","area","next","responsibility","provider","source","requires","capability","group","counter","stage","release","runbook"};
+    static const std::set<std::string> names = {"scope","area","next","responsibility","provider","source","requires","capability","group","counter","stage","release","runbook","supporter"};
     return names.count(name) != 0;
 }
 bool annotationMayRepeat(const std::string& name) noexcept {
-    return name == "next" || name == "requires" || name == "capability" || name == "counter";
+    return name == "next" || name == "requires" || name == "capability" || name == "counter" || name == "supporter";
 }
 std::vector<AnnotationDiagnostic> validateLanguageAnnotations(const annotation::DocumentAnnotations& annotations) {
     std::vector<AnnotationDiagnostic> out;

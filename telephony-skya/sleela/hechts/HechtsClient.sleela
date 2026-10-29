@@ -38,7 +38,7 @@ class HechtsClient {
   }
 
   // Wall-clock milliseconds via the SLeeLa Time API (the OS clock service's
-  // timeUtcMillis built-in, the same one lib/os/SLClock uses).
+  // timeUtcMillis built-in, the same one lib/operating-system/SLClock uses).
   int now() { return timeUtcMillis(); }
 
   // Are we still inside the 500-minute silent reachout window?

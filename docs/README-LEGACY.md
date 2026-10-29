@@ -58,13 +58,13 @@ best offer to customers is one SLeeLa source library, identical on all three
 desktop platforms. A `/lib` class is either pure SLeeLa (inherently portable) or
 it crosses the explicit VM/OS bridge, which resolves to the genuine host System
 API through the three `impl/core` backends, so no `/lib` package is
-single-platform. The [`lib/os/`](lib/os/) package drives the **real** host OS
+single-platform. The [`lib/operating-system/`](lib/operating-system/) package drives the **real** host OS
 through one portable surface: general write-once classes (`SLOperatingSystem`,
 `SLEnvironment`, `SLProcess`, `SLFileSystem`, `SLPath`, `SLClock`, …) expose the
 portable intersection, while the OS-specific flavor classes `SLWindowsOS`,
 `SLMacOS`, and `SLLinuxOS` expose each platform's native idioms (cmd.exe /
 PowerShell and `%APPDATA%`; `open(1)` and `~/Library` / Homebrew; `/bin/sh` and
-the FHS roots) with an `isHost()` guard. See [`lib/os/OS.md`](lib/os/OS.md) and
+the FHS roots) with an `isHost()` guard. See [`lib/operating-system/OS.md`](lib/operating-system/OS.md) and
 the cross-platform statement in [`lib/README.md`](lib/README.md#cross-platform-support--windows-10-macos-and-linux).
 
 **Recent hardening and correctness work** (see [`ARCHITECTURE.md`](markdown/ARCHITECTURE.md)):

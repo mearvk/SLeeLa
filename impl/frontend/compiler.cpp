@@ -5,6 +5,7 @@
 #include "semantic.h"
 #include "java_compat.h"
 #include "unsigned_integer.h"
+#include "wide_integer.h"
 
 #include <map>
 #include <stdexcept>
@@ -226,7 +227,20 @@ private:
     int runtimeTypeOperand(const std::string& name) const {
         auto st=structLayout_.find(name);
         if(st!=structLayout_.end()) return st->second.typeIndex;
+        // The base-2 signed series int32..int16777216 (syntax 2.7) rides the
+        // narrowest native integer slot that holds its width: widths <= 64
+        // (int32, int64) use SL_INT, widths >= 128 (int128 and up) use the
+        // 128-bit SL_INT128. `int64`/`int128` are also keyword-spelled; routing
+        // by width keeps the keyword and pattern spellings consistent.
+        if(SignedWideInteger::isValidTypeName(name))
+            return SignedWideInteger::fitsNativeNarrow(name) ? -(SL_INT+1) : -(SL_INT128+1);
+        // The base-2 unsigned series uint32..uint16777216 (syntax 2.8) backs on
+        // the same native-slot split as the signed series (positive-only
+        // semantics are enforced in the analyzer, not the runtime tag).
+        if(UnsignedWideInteger::isValidTypeName(name))
+            return UnsignedWideInteger::fitsNativeNarrow(name) ? -(SL_INT+1) : -(SL_INT128+1);
         if(name=="int128") return -(SL_INT128+1);
+        // The arbitrary-width U<width> family rides the 64-bit slot.
         if(name=="int" || name=="long" || name=="int64" || UnsignedInteger::isValidTypeName(name)) return -(SL_INT+1);
         if(name=="double") return -(SL_DOUBLE+1);
         if(name=="bool" || name=="boolean") return -(SL_BOOL+1);
@@ -243,7 +257,15 @@ private:
     // int64 share the 64-bit representation; class/array/String stores are
     // exact).
     void coerceToDeclared(const std::string& declType){
-        if(declType=="double"||declType=="int128") emit(OP_CHECKCAST,runtimeTypeOperand(declType));
+        // Widen into a double, or into a 128-bit-backed signed integer (int128
+        // and the wider base-2 series members int256..int16777216). Narrow
+        // series members (int32, int64) share the 64-bit representation and need
+        // no coercion, exactly like `int`/`long`/`int64`.
+        const bool wide128 = declType=="int128"
+            || (SignedWideInteger::isValidTypeName(declType) && !SignedWideInteger::fitsNativeNarrow(declType))
+            || (UnsignedWideInteger::isValidTypeName(declType) && !UnsignedWideInteger::fitsNativeNarrow(declType));
+        if(declType=="double"||wide128)
+            emit(OP_CHECKCAST,runtimeTypeOperand(declType));
     }
     // Emit call arguments, widening each integer argument to a declared double
     // or int128 parameter (so half(9) passes 9.0, not 9).
@@ -494,14 +516,12 @@ private:
             emitExpr(aa->base.get());                // [array]
             emitExpr(aa->index.get());               // [array, index]
             if(!bin.empty()){
-                // compound: load current element, combine, then store.
-                emit(OP_DUP);                        // [array, index, index] -- dup index
-                // need [array, index] under a copy of (array,index) to read; simplest: recompute
-                // Stack now [array, index, index]; we actually need array too. Recompute cleanly:
-                // Drop the shortcut and recompute both for the read.
-                emit(OP_POP);                        // [array, index]
-                emitExpr(aa->base.get());            // [array, index, array]
-                emitExpr(aa->index.get());           // [array, index, array, index]
+                // compound read-modify-write. Duplicate the already-evaluated
+                // (array, index) pair with OP_DUP2 and read through the copy,
+                // so the base and index sub-expressions are evaluated EXACTLY
+                // ONCE. Re-emitting them here would run their side effects a
+                // second time (e.g. a[i++] += 1 would increment i twice).
+                emit(OP_DUP2);                       // [array, index, array, index]
                 emit(OP_ARRGET);                     // [array, index, cur]
                 emitExpr(a.value.get());             // [array, index, cur, val]
                 emitBinOp(bin);                      // [array, index, newval]
@@ -1107,7 +1127,16 @@ private:
 int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat, const SyntaxVersion& syntax){
     SemanticResult semantic = analyzeSemantics(prog, syntax);
     if(!semantic.ok()){
-        throw std::runtime_error(semantic.errors.front());
+        // Surface every semantic error, not just the first. The analyzer
+        // collects all of them; reporting only errors.front() hid the rest and
+        // forced a fix-one-recompile loop. The first line stays the primary
+        // message (callers that show one line still get the most relevant one);
+        // any additional errors follow on their own lines.
+        std::string msg = semantic.errors.front();
+        for(size_t i=1;i<semantic.errors.size();++i) msg += "\n  " + semantic.errors[i];
+        if(semantic.errors.size()>1)
+            msg += "\n(" + std::to_string(semantic.errors.size()) + " semantic errors)";
+        throw std::runtime_error(msg);
     }
     Compiler c(prog,vm,cat,syntax);
     return c.run();

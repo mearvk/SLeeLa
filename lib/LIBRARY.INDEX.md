@@ -1,11 +1,72 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.51  
-**Packages:** 101  
-**SLeeLa source units:** 11576  
-**Module-facade symbols:** 70  
-**Total symbol records:** 11646  
+**Revision:** 0.53  
+**Packages:** 106  
+**SLeeLa source units:** 11662  
+**Module-facade symbols:** 74  
+**Total symbol records:** 11736  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.53 adds the new **`sleeladoc`** package (`lib/sleeladoc/`): the
+> SLeeLa-side **SleelaDoc extractor** — the Javadoc-tool analogue. It reads
+> structured doc-comments out of a `.sleela` Wrapper and renders a Markdown or
+> HTML API page, documenting *intent* (not just signatures). A SleelaDoc comment
+> is an ordinary angle-bracket comment whose sentinel token is `@doc` (or
+> `@page`), so it lexes today with no compiler change. Eight source Master
+> Classes plus the facade: **`SLSleelaDoc`** (the façade a caller drives —
+> `begin` → `feed` tokenized lines → `toMarkdown`/`toHtml`), **`SLDocScanner`**
+> (the token-stream front end that lifts doc blocks and `@tags` and attaches each
+> to the following declaration), **`SLDocRenderer`** (the Markdown/HTML back end),
+> and the model **`SLDocModel`** / **`SLDocMember`** / **`SLDocComment`** /
+> **`SLDocTag`**. Because the built-in String is opaque, the scanner reads
+> tokenized lines (the char-cell boundary used across `lib/text`/`lib/xml`); node
+> storage uses growable VM-managed object arrays. A runnable reference
+> (`sleeladoc-demo.sleela`) feeds a small documented class and prints the rendered
+> Markdown and HTML; `lib/sleeladoc/README.md` documents the surface, the
+> convention lives in `manifesto/SLEELADOC.md`, and the compiler's own
+> author-marked doc outputs (`--wiki` wikitext + the originated twin) are
+> documented in `manifesto/SLEELADOC.WIKI.md`. Every class carries the Metadata
+> Class metapattern.
+>
+> One new package (105 → **106**), one new facade (73 → **74**), eight new source
+> classes (11654 → **11662** sources; 11727 → **11736** total records). Counts
+> reconciled to the live `/lib` tree by `tools/generate-library-symbols.py` and
+> verified by `test-suites/test-library-inventory.sh`.
+
+> Revision 0.52 adds the new **`xml`** package (`lib/xml/`): a SLeeLa-side XML
+> **Document Object Model (DOM)**. Eight source Master Classes plus the package
+> facade. The DOM core — **`SLXmlDocument`** (the W3C `Document`: node factory
+> `createElement`/`createTextNode`/…, root management, `getElementById`,
+> `getElementsByTagName`, the XML declaration + serialization), **`SLXmlNode`**
+> (the central node: ordered children, named attributes, `textContent`,
+> `appendChild`/`removeChild`, depth/counts), **`SLXmlAttribute`** (a
+> name/value attribute with namespace prefix/local parts), and **`SLXmlNodeType`**
+> (the DOM `nodeType` vocabulary + walker predicates). The text boundary —
+> **`SLXmlSerializer`** (DOM → well-formed XML, compact or pretty, with XML 1.0
+> §2.4 character-data escaping) and **`SLXmlParser`** (a char-cell text → DOM
+> reader for the common subset plus a structural well-formedness check). And
+> **`SLXmlAspect`**, an executive-grade **aspect/quality register** that rates how
+> fully the library addresses each XML aspect (well-formedness, DOM, namespaces,
+> serialization, validity), each against its real governing W3C instrument, with
+> honest 0..10 scores (unimplemented validity scores low, never inflated).
+>
+> Node equality is a three-rung **tie of trust**: **identity** (`sameReference`,
+> native `==` on objects = same memory), **same subject** (`sameSubject`: same
+> nature/name/id/value, case-sensitive, children ignored), and **structure**
+> (`equals`/`sameStructure`: deep-equal subtrees — same subject, same attribute
+> set, same children in order). `tieStrength`/`tieName` report the rung; every
+> rung is reflexive, symmetric, and deterministic (idempotent). `SLXmlAttribute`
+> and `SLXmlDocument` carry the matching ladder. Node storage uses growable
+> VM-managed object arrays so a node's footprint tracks its real content. A
+> runnable reference (`xml-dom.sleela`) builds, queries, serializes, round-trips,
+> compares, and verifies the equality guarantees; `lib/xml/README.md` documents
+> the surface. Every class carries the Metadata Class metapattern.
+>
+> One new package (104 → **105**), one new facade (72 → **73**), eight new source
+> classes plus one upstream-reconciled source unit (11645 → **11654** sources;
+> 11717 → **11727** total records). Counts reconciled to the live `/lib` tree by
+> `tools/generate-library-symbols.py` and verified by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.51 adds two companion `core` classes expressing the standing of a
 > work and its wins, both author-marked (syntax 2.4) and carrying the full
@@ -409,7 +470,7 @@
 > (C, C++, Java, Python, JavaScript, Rust, Go), each an independent front end
 > that lowers its own language toward the common SLeeLa IR; see
 > `lib/compiler/MULTI-LANGUAGE.FRAMEWORK.md`. This revision also folds in four
-> previously-uncounted units (`os/SLLinuxOS`, `os/SLMacOS`, `os/SLWindowsOS`,
+> previously-uncounted units (`operating-system/SLLinuxOS`, `operating-system/SLMacOS`, `operating-system/SLWindowsOS`,
 > `vm/SleelaVMSystemCallBridge`). Sixteen `.sleela` units in total: 10,330 ->
 > **10,346** total records (10,275 -> **10,291** source classes); package count
 > unchanged at 83. `LIBRARY.SYMBOLS.md` was regenerated from the live tree

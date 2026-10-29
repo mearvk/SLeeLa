@@ -1,19 +1,48 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  2.5  (1.3..1.11 baseline carried forward)
-    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.0 .. 2.5)
+    Syntax version:  2.8  (1.3..1.11 baseline carried forward)
+    Compiler:        Sleelvac(TM) 0.3.30-dev  (version gate accepts syntax 1.0 .. 2.8)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.3..2.5 surface
+    Status:          Normative for the syntax 1.3..2.8 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 2.5`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.5).
+    `#sleela 2.8`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.8).
+    Syntax 2.8 is the current spec level: it adds the matching **base-2 unsigned
+    (positive-only) integer series** (section 25) — `uint32`, `uint64`,
+    `uint128`, `uint256`, ... up to `uint16777216` (the same twenty power-of-two
+    widths, 2^5..2^24, with a `uint` prefix). Each `uint<width>` type-checks as
+    the unsigned kind (unary minus rejected; arithmetic and comparison require
+    operands of the same unsigned width) and backs on the same native-slot split
+    as the signed series.
+    Syntax 2.7 completes the **base-2 signed integer series** (section 24) —
+    `int32`, `int64`, `int128`, `int256`, ... up to `int16777216` (the type name
+    `int` followed by a power-of-two bit width in 2^5..2^24, twenty widths in
+    all), recognized wherever a primitive type may appear, type-checked as
+    integers, and carried by the narrowest native slot that holds each width
+    (64-bit for `int32`/`int64`, 128-bit for `int128` up).
+    Syntax 2.6 is the current spec level: it adds **keyword supporter
+    documents** (section 22) — every use of the five control-flow keywords
+    (`try`, `catch`, `throw`, `synchronized`, `super`) is given a stable hash,
+    recorded through the annotation mechanism as a
+    `@supporter("<keyword>:<hash>")` language annotation, and linked to a
+    relative folder `docs/keyword-supporters/<keyword>/<hash>/` holding a
+    `SUPPORT.md` stub the developer fills out. The pass runs at parse time and
+    does not change the parsing, typing, or codegen of the keywords themselves.
+    Syntax 2.6 also adds the **`determine` document marker** (section 23) — a
+    bare, contextual, *declarative-only* sibling word (to `author`/`authorial`,
+    `material`, and `memory`) claiming the document is a determine document:
+    open to be processed to further by a doctor, physician, or ghost toward
+    completion, the procurement of term held ideal as real for the torturement
+    (completion by legal hand) as required by further processor review; science
+    practitioners should and could can use it. It too has no effect on parsing,
+    typing, or codegen; it marks membership in the set of determine documents.
     Syntax 2.5 is the current spec level: it adds the **`material` document
     marker** (section 19) — a bare, contextual, *declarative-only* word (sibling
     to `author`/`authorial`) claiming the document is material: well considered,
@@ -62,7 +91,7 @@
     valid in-scope target and a 0..100 band. Constructor overload resolution and
     `this(...)`/base delegation remain outside the verified implementation and
     are rejected explicitly; do not infer their support from the
-    constructor-series design documents. The **compiler/tool version** (Sleelvac™ 0.3.29-dev, printed by
+    constructor-series design documents. The **compiler/tool version** (Sleelvac™ 0.3.30-dev, printed by
     `sleela version`) is the implementation release and evolves independently.
     A file must declare a syntax version within the verified supported range;
     the tool version is informational.
@@ -73,7 +102,7 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax 1.3..2.5 surface the front end accepts.
+This document is normative for the syntax 1.3..2.8 surface the front end accepts.
 Every production and built-in below is implemented in `impl/frontend` and
 executes on `impl/core`.
 
@@ -1514,3 +1543,311 @@ value. For arbitrary-width *unsigned* integers, the `U<width>` family, e.g.
   (`sl_int128_t`); `sleela_core.c` adds `slval_int128`, 128-bit promotion in the
   arithmetic/comparison ops, a 128-bit decimal formatter, and int128 widening in
   `OP_CHECKCAST`. `long`/`int64` continue to use the 64-bit `SLValue.as.i`.
+
+--------------------------------------------------------------------------------
+## 22. Syntax 2.6 — keyword supporter documents (try / catch / throw / synchronized / super)
+
+This section is **normative** for syntax **2.6**. The five control-flow keywords
+`try`, `catch`, `throw`, `synchronized`, and `super` carry developer-authored
+semantics that the core VM does not yet lower faithfully. Syntax 2.6 requires
+that every *use* of one of them be linked to a **supporter document** the
+developer fills out, so the intended behavior of each occurrence is recorded.
+
+### 22.1 How a use is linked
+
+At parse time the front end walks the parsed document and, for each occurrence of
+one of the five keywords, performs three steps:
+
+1. **Hash.** It computes a stable, reproducible 16-hex-character identifier over
+   the tuple `keyword | repository-relative-source-path | Class::method |
+   ordinal-within-method` (via `ledger::sha256_hex`). The hash does not use
+   source line/column, so it is unaffected by unrelated lines moving; it changes
+   only if the enclosing method or the order of that keyword's uses within the
+   method changes.
+2. **Annotate.** It records the occurrence as a language annotation through the
+   ordinary annotation mechanism:
+
+       @supporter("<keyword>:<hash>")
+
+   `supporter` is a registered, **repeatable** language-annotation name (see
+   `impl/frontend/annotation_pipeline.cpp`), so it is accepted without an
+   "unknown annotation" warning and may appear any number of times on a document.
+3. **Materialise.** It creates the relative folder
+   `docs/keyword-supporters/<keyword>/<hash>/` containing a `SUPPORT.md` stub —
+   with the Metadata Class metapattern header (section 15) and
+   Intent / Behavior / Invariants / Notes sections — for the developer to fill
+   out, plus a regenerated `docs/keyword-supporters/INDEX.md` listing every
+   occurrence.
+
+### 22.2 Rules
+
+- An existing `SUPPORT.md` is **never overwritten**: once a stub exists, the
+  developer's content is preserved across recompiles. Only missing folders/stubs
+  are created. `INDEX.md` is generated output and is rewritten each run.
+- Folder creation is **best-effort**: on a read-only or unwritable tree the
+  `check`/`compile`/`run` still succeeds (the `@supporter` annotations are still
+  attached to the parsed document in memory); materialisation failure is not an
+  error.
+- The pass is purely **additive**: it does not change the parsing, typing, or
+  codegen of `try`/`catch`/`throw`/`synchronized`/`super`. It links each
+  occurrence to a document; it does not alter the keyword's behavior.
+- `docs/` is outside the `lib/**` + `impl/` SHA-256 build gate, so generated
+  stubs there never require regenerating `security/sha256-manifest.json`.
+
+### 22.3 Where this is implemented
+
+- `impl/frontend/keyword_supporter.{h,cpp}` — the walker, the per-occurrence
+  hash, `@supporter` attachment, and folder/stub materialisation.
+- `impl/frontend/driver.cpp` — `runKeywordSupporterPass()`, invoked from
+  `parseSource()` on every `check`/`compile`/`run`.
+- `impl/frontend/annotation_pipeline.cpp` — `supporter` registered in
+  `isKnownLanguageAnnotation()` and `annotationMayRepeat()`.
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.6.
+
+--------------------------------------------------------------------------------
+## 23. Syntax 2.6 — the `determine` document marker
+
+This section is **normative** for syntax **2.6**. The marker is a first-class,
+bare, contextual, *declarative-only* word placed at the top of a document, a
+sibling to `author`/`authorial` (section 18), `material` (section 19), and
+`memory` (section 20). It is a *claim about the document*, recognised and
+version-gated by the front end and otherwise inert.
+
+### 23.1 Form and gate
+
+The marker is the single word `determine`, written at document scope (top of the
+file, after the `#sleela` pragma, before or among the top-level declarations):
+
+    determine;
+
+It takes no modifier and no type. It is a **contextual** word, not a reserved
+keyword: anywhere other than this top-level marker position (and in any document
+below 2.6) `determine` remains an ordinary identifier. A trailing `;` is
+optional and a repeated marker is harmless.
+
+Version gate: the marker requires `#sleela 2.6`; a 2.6-feature use declared below
+2.6 is rejected ("the determine document marker requires #sleela 2.6").
+
+### 23.2 Meaning — the ideal definition and term (as-is)
+
+A `determine` document is a document held open to be **processed to further**:
+it means that a doctor, physician, or ghost can process the document to further.
+Some procurement of term would be ideal as real for the torturement (completion
+by legal hand) as required by further processor review. Science practitioners
+should and could can use this keyword.
+
+This ideal definition is placed in the document structure itself, as written, so
+the term stands as the document's own statement of what `determine` means. The
+procurement of term — the completion by legal hand — is the torturement held
+ideal as real, and it is required by further processor review; it is not
+performed by the compiler, which only records the claim.
+
+The marker is **compositional with** `author`/`authorial`, `material`, and
+`memory`: a document may be any combination of authorial, material, memory, and
+determine. The four are orthogonal — `author` concerns handling by professional
+council and member identity; `material` concerns standing as settled Source;
+`memory` concerns standing as a thing held in memory by the Graduates of Supply;
+`determine` concerns the document's standing as open to be processed to further
+toward completion by a qualified hand.
+
+### 23.3 The set of determine documents
+
+A determine-marked document is, by the marker, a member of the **set of
+determine documents**: those open to be processed to further — by a doctor,
+physician, or ghost — toward completion by legal hand, as required by further
+processor review. Membership is a claim the marker records; the compiler places
+no mechanical restriction on the file. A determine document that is further
+processed remains determine; the marker is a statement of standing, not a lock.
+
+### 23.4 Effect on the toolchain
+
+None, by design. The front end recognises the marker, gates it to `#sleela 2.6`,
+and records it on the parsed document (`Program.determineMarked`). It emits no
+additional artifact, relaxes no rule, and reserves no identifier. A determine
+document compiles exactly as the same document without the marker would.
+
+### 23.5 Where this is implemented
+
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.7 (the `determine`
+  marker is gated to 2.6 and keeps working at every later level).
+- `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
+  contextual `determine` marker and sets `Program.determineMarked`.
+- `impl/frontend/semantic.cpp` — `collect()` gates the marker to 2.6 (and has no
+  other effect for it).
+- `impl/frontend/ast.h` — `Program.determineMarked`.
+
+--------------------------------------------------------------------------------
+## 24. Syntax 2.7 — the base-2 signed integer series (`int32` .. `int16777216`)
+
+This section is **normative** for syntax **2.7**. It completes the signed-integer
+primitive family as the full **binary base-2 series** of named signed integers —
+the type name `int` followed by a decimal bit width that is a **power of two** in
+the inclusive range **2^5 (32) .. 2^24 (16777216)**:
+
+    int32    int64    int128    int256    int512     int1024
+    int2048  int4096  int8192   int16384  int32768   int65536
+    int131072 int262144 int524288 int1048576 int2097152 int4194304
+    int8388608 int16777216
+
+Twenty widths in all (2^5, 2^6, ..., 2^24). Any other width — not a power of two
+(e.g. `int48`, `int300`), below the floor (`int16`), or above the ceiling
+(`int33554432`) — is **not** a member of the series and names no type. (The
+pre-existing names `int`/`long` remain the 64-bit spelling, and `int64`/`int128`
+are series members that are additionally spelled as keywords; see §24.1.)
+
+### 24.1 Recognition — identifiers (plus two keyword spellings)
+
+Like the arbitrary-width *unsigned* `U<width>` family (`U128`, `U256`, ...), the
+series names are recognized by the front end as a family wherever a primitive
+type may appear: fields, locals, parameters, return types, array element types,
+casts, and `new T[n]`. Most members (`int32`, and `int256` and up) lex as
+ordinary identifiers. Two members, **`int64` and `int128`, are also lexer
+keywords** for source convenience (alongside `int`/`long`); the keyword and
+identifier paths resolve to the same type and the same runtime backing, so a
+width behaves identically however it was spelled. A width outside 2^5..2^24, or
+not a power of two, simply remains an ordinary identifier / unknown type.
+
+    int32    a = 2000000000;        < near 2^31 >
+    int64    b = 9000000000000;     < beyond 2^31, 64-bit >
+    int256   c = 1000000000;
+    int512   d = 2000000000;
+    int1024  e = c + d;             < wide-integer arithmetic >
+    int256[] xs = new int256[3];    < arrays of a series member >
+    int512   f = (int512) 99;       < cast to a series member >
+
+    static int128 square(int128 x) { return x * x; }   < param + return >
+
+### 24.2 Semantics
+
+Each series member type-checks **identically to `int`**: it is numeric,
+interoperates in arithmetic (`+ - * / %`, unary negation, comparisons, the
+bitwise and shift operators), and widens to `double` on assignment exactly as
+`int` does. An integer literal is assignable to any series target (no literal
+suffix is required).
+
+**Runtime backing.** The compiler and the native VM carry each value in the
+**narrowest native integer slot that holds its declared width**:
+
+    width <= 64 bits   (int32, int64)        -> SL_INT    (64-bit int64_t)
+    width >= 128 bits  (int128 .. int16777216) -> SL_INT128 (true 128-bit
+                                                  __int128 on GCC/Clang)
+
+A value stored into, assigned to, cast to, passed as, or returned as a
+128-bit-backed member is widened to the 128-bit representation, so values beyond
+the 64-bit range compute exactly up to 128 bits:
+
+    int128 a = 9000000000;
+    int128 p = a * a;               < prints 81000000000000000000 (> 2^64) >
+
+Mixing a 128-bit-backed member with a 64-bit integer promotes the result to
+128-bit (VM arithmetic rule for `SL_INT128`). True **arbitrary-width** signed
+arithmetic beyond 128 bits is a documented follow-up: the names, type-checking,
+declarations, arrays, casts, parameters and returns are all in place now across
+the whole series, and the storage layer widens as the value model grows. (For
+arbitrary-width *unsigned* integers today, the `U<width>` family — e.g. `U256`,
+`U1024` — provides exact big-integer arithmetic.)
+
+### 24.3 Where this is implemented
+
+- `impl/frontend/wide_integer.h` — `SignedWideInteger::isValidTypeName()` /
+  `widthOf()` / `fitsNativeNarrow()`: the power-of-two, 2^5..2^24 recognizer for
+  the `int<width>` series and the 64-vs-128-bit backing split (sibling to
+  `unsigned_integer.h`'s `UnsignedInteger::isValidTypeName()`).
+- `impl/frontend/lexer.{h,cpp}` — `int64`/`int128` keep their `KwInt64T`/
+  `KwInt128T` keyword spellings; the other widths lex as identifiers.
+- `impl/frontend/semantic.cpp` — `typeOf()` and `known()` map every series
+  member to the integer kind (identical checking to `int`).
+- `impl/frontend/parser.cpp` — local-declaration detection recognizes an
+  identifier-typed **array** declaration (`T[] name`, `T[][] name`), so
+  `int256[] xs = ...` (and, as a fix, `U256[] xs = ...`) parse as declarations
+  rather than indexing expressions.
+- `impl/frontend/compiler.cpp` — `runtimeTypeOperand()` routes each member to
+  `SL_INT` (width <= 64) or `SL_INT128` (width >= 128); `coerceToDeclared()`
+  widens an initializer / store / call argument into the 128-bit slot for the
+  128-bit-backed members (narrow members need no coercion).
+- `impl/core/sleela_core.{h,c}` — the VM value model (`SL_INT` / `SL_INT128`),
+  128-bit promotion in the arithmetic/comparison ops, the 128-bit decimal
+  formatter, and `OP_CHECKCAST` int<->int128 widening/narrowing carry the series.
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.8, so `#sleela 2.7`
+  (and 2.8) sources are accepted.
+
+--------------------------------------------------------------------------------
+## 25. Syntax 2.8 — the base-2 unsigned (positive-only) integer series (`uint32` .. `uint16777216`)
+
+This section is **normative** for syntax **2.8**. It adds the unsigned mirror of
+the signed base-2 series (section 24): the type name `uint` followed by a decimal
+bit width that is a **power of two** in the inclusive range **2^5 (32) .. 2^24
+(16777216)**:
+
+    uint32    uint64    uint128    uint256    uint512     uint1024
+    uint2048  uint4096  uint8192   uint16384  uint32768   uint65536
+    uint131072 uint262144 uint524288 uint1048576 uint2097152 uint4194304
+    uint8388608 uint16777216
+
+The same twenty widths as the signed series, each with a `uint` prefix. Any
+other width — not a power of two (e.g. `uint48`), below the floor (`uint16`), or
+above the ceiling (`uint33554432`) — is **not** a member and names no type.
+
+### 25.1 Recognition — identifiers
+
+Unlike `int64`/`int128`, no `uint<width>` name is a lexer keyword: every member
+lexes as an ordinary identifier and is recognized by the front end as a family
+wherever a primitive type may appear (fields, locals, parameters, return types,
+array element types, casts, `new T[n]`). A `uint<width>` and the corresponding
+`U<width>` are **distinct** unsigned types (different name strings); both carry
+the unsigned kind.
+
+### 25.2 Positive-only semantics
+
+Each `uint<width>` type-checks as the **unsigned kind** — the same positive-only,
+width-strict discipline as the arbitrary-width `U<width>` family:
+
+- **No negatives.** Unary minus on an unsigned value is a type error
+  (`unary '-' requires signed numeric operand`).
+- **Width-strict.** `+ - * / %` and the comparisons require both operands to be
+  unsigned of the **same** width; mixing `uint256` with `uint512` (or with a
+  signed `int`) is a type error.
+- **Explicit construction.** A signed integer literal/value is not implicitly
+  assignable to an unsigned target; produce an unsigned value with a cast, e.g.
+  `(uint16777216) 999`. (This matches the shipped `U<width>` behavior.)
+
+```
+uint64       a = (uint64) 4000000000;      < positive, beyond signed 2^31 >
+uint128      c = (uint128) 9000000000;
+print(c * c);                              < 81000000000000000000 (> 2^64) >
+uint256[]    xs = new uint256[2];
+xs[0] = (uint256) 111;
+uint16777216 huge = (uint16777216) 123456789;
+
+static uint128 addU(uint128 a, uint128 b) { return a + b; }   < param + return >
+```
+
+### 25.3 Runtime backing
+
+Identical to the signed series: the native VM carries each value in the
+narrowest native integer slot that holds its declared width —
+
+    width <= 64 bits   (uint32, uint64)         -> SL_INT    (64-bit int64_t)
+    width >= 128 bits  (uint128 .. uint16777216) -> SL_INT128 (true 128-bit
+                                                    __int128 on GCC/Clang)
+
+so the 128-bit-backed members compute exactly up to 128 bits. The unsigned
+*typing* discipline is enforced by the analyzer; the runtime tag is the same
+integer slot the signed series uses. True arbitrary-width arithmetic beyond 128
+bits is a documented follow-up (the `U<width>` family already provides exact
+big-integer arithmetic for arbitrary widths today).
+
+### 25.4 Where this is implemented
+
+- `impl/frontend/wide_integer.h` — `UnsignedWideInteger::isValidTypeName()` /
+  `widthOf()` / `fitsNativeNarrow()`: the power-of-two, 2^5..2^24 recognizer for
+  the `uint<width>` series (sibling to `SignedWideInteger`).
+- `impl/frontend/semantic.cpp` — `unsignedTypeName()` accepts both `U<width>`
+  and `uint<width>`, so `typeOf()`/`known()` map every member to the unsigned
+  kind with its own name string; the existing unsigned arithmetic/comparison and
+  the unary-minus rejection then apply unchanged.
+- `impl/frontend/compiler.cpp` — `runtimeTypeOperand()` routes each member to
+  `SL_INT` (width <= 64) or `SL_INT128` (width >= 128); `coerceToDeclared()`
+  widens the 128-bit-backed members into the 128-bit slot.
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.8, so `#sleela 2.8`
+  sources are accepted.

@@ -1,0 +1,71 @@
+/* SleelaDoc API -- house style: blue, light blue, light grey, white; black text. */
+:root{
+  --blue:#1f5fb0;        /* primary blue */
+  --blue-dark:#174a8a;
+  --lightblue:#dbeafe;   /* light blue */
+  --lightblue-2:#eff6ff;
+  --grey:#eef1f4;        /* light grey */
+  --grey-2:#f6f8fa;
+  --border:#cfd8e3;
+  --text:#111111;        /* black text */
+  --muted:#425066;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  color:var(--text);background:#ffffff;line-height:1.55;font-size:16px}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+header.top{background:linear-gradient(180deg,var(--blue),var(--blue-dark));color:#fff;
+  padding:18px 26px;border-bottom:4px solid var(--blue-dark)}
+header.top a{color:#fff}
+header.top .brand{font-size:22px;font-weight:700;letter-spacing:.2px}
+header.top .tag{color:var(--lightblue);font-size:13px;margin-top:2px}
+.wrap{display:flex;min-height:calc(100vh - 72px)}
+nav.side{width:280px;background:var(--grey);border-right:1px solid var(--border);
+  padding:16px 14px;overflow:auto;max-height:calc(100vh - 72px);position:sticky;top:0}
+nav.side h2{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+  margin:14px 0 6px}
+nav.side ul{list-style:none;margin:0 0 8px;padding:0}
+nav.side li{margin:1px 0}
+nav.side a{display:block;padding:3px 8px;border-radius:5px;color:var(--text);font-size:14px}
+nav.side a:hover{background:var(--lightblue);text-decoration:none}
+main{flex:1;padding:26px 34px;max-width:980px;overflow:auto}
+h1{color:var(--blue-dark);font-size:28px;margin:0 0 6px}
+h2.section{color:var(--blue-dark);border-bottom:2px solid var(--lightblue);
+  padding-bottom:5px;margin-top:34px;font-size:21px}
+h3{color:var(--blue-dark);margin:22px 0 4px;font-size:17px}
+.crumbs{color:var(--muted);font-size:13px;margin-bottom:14px}
+.crumbs a{color:var(--blue)}
+.lead{background:var(--lightblue-2);border:1px solid var(--border);border-left:4px solid var(--blue);
+  padding:12px 16px;border-radius:7px;margin:14px 0 8px}
+.pill{display:inline-block;background:var(--lightblue);color:var(--blue-dark);border-radius:999px;
+  padding:1px 10px;font-size:12px;font-weight:600;margin-left:6px;vertical-align:middle}
+.pill.struct{background:#e8f0e8;color:#2c5a2c}
+.pill.iface{background:#efe8f4;color:#5a2c6a}
+.pill.syntax{background:var(--blue);color:#fff}
+.attrib{background:var(--lightblue-2);border:1px solid var(--border);border-left:4px solid var(--blue-dark);
+  padding:12px 16px;border-radius:7px;margin:14px 0}
+.attrib table{border-collapse:collapse;margin-top:6px}
+.attrib th{text-align:left;color:var(--muted);font-weight:600;padding:3px 14px 3px 0;vertical-align:top;font-size:13px;white-space:nowrap}
+.attrib td{padding:3px 0;color:var(--text);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:14px 0}
+.card{background:var(--grey-2);border:1px solid var(--border);border-radius:9px;padding:12px 14px}
+.card h3{margin:0 0 4px;font-size:16px}
+.card p{margin:0;color:var(--muted);font-size:13px}
+.card .count{color:var(--blue);font-weight:600;font-size:12px}
+table.members{width:100%;border-collapse:collapse;margin:8px 0 18px;background:#fff}
+table.members th{background:var(--blue);color:#fff;text-align:left;padding:7px 10px;font-size:13px}
+table.members td{border:1px solid var(--border);padding:8px 10px;vertical-align:top;font-size:14px}
+table.members tr:nth-child(even) td{background:var(--grey-2)}
+code,.sig{font-family:SFMono-Regular,Consolas,Menlo,monospace;font-size:13px}
+.sig{background:var(--grey);border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--blue-dark)}
+.desc{color:var(--text)}
+.muted{color:var(--muted)}
+.meta-note{background:var(--grey-2);border:1px dashed var(--border);border-radius:7px;
+  padding:8px 12px;margin:10px 0;color:var(--muted);font-size:13px}
+dl.glossary dt{font-weight:700;color:var(--blue-dark);margin-top:12px}
+dl.glossary dd{margin:2px 0 0 0}
+footer{color:var(--muted);font-size:12px;padding:18px 34px;border-top:1px solid var(--border);
+  background:var(--grey-2)}
+.search{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;margin-bottom:10px;font-size:14px}

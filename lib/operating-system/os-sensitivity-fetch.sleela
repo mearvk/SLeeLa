@@ -1,0 +1,78 @@
+<< lib/operating-system/os-sensitivity-fetch.sleela
+   SLeeLa OS Creator(TM) runnable -- the per-user fetch front door for the
+   OS-grade C/C++ warehouse (mearvk/OS.Sensitivity.III).
+
+   What it demonstrates: SLeeLa drives the contract. The warehouse isolates the
+   C and C++ for each operating-system shape (linux/, windows/, macos/); this
+   program references it (SLOSSensitivitySource), prints the reference sheet and
+   the exact clone command as a DRY RUN, runs a cheap reachability probe, and --
+   only when explicitly opted in via OS_FETCH=1 -- downloads the chosen shape's
+   C/C++ into a user-named output root and reports the on-disk component paths a
+   preliminary ISO source build would consume. Nothing downloads by default.
+
+   Build parameters (environment):
+     OS_SHAPE  shape to fetch: "Linux" (default) | "Windows" | "macOS"
+     OS_OUT    output root (default "/projects/sandbox/os-sensitivity")
+     OS_FETCH  "1" to actually clone; anything else = dry run + probe only
+
+   Run:
+     ./impl/build/sleela run lib/operating-system/os-sensitivity-fetch.sleela
+     OS_SHAPE=Windows OS_FETCH=1 OS_OUT=/tmp/ossrc \
+       ./impl/build/sleela run lib/operating-system/os-sensitivity-fetch.sleela >>
+#sleela 2.5
+material;
+
+class OsSensitivityFetch {
+  String param(String name, String fallback) {
+    String v = osGetEnv(name);
+    if (v == "") { return fallback; }
+    return v;
+  }
+
+  void main() {
+    String shape = param("OS_SHAPE", "Linux");
+    String out   = param("OS_OUT", "/projects/sandbox/os-sensitivity");
+    String doit  = param("OS_FETCH", "0");
+
+    SLOSSensitivityFetch f = new SLOSSensitivityFetch();
+    f.configure();
+    SLOSSensitivitySource src = f.source();
+
+    print("================================================================");
+    print("  SLeeLa OS Creator -- OS.Sensitivity.III warehouse fetch");
+    print("  shape: " + shape + "   output root: " + out);
+    print("================================================================");
+    print(src.referenceSheet());
+
+    if (!src.providesShape(shape)) {
+      print("unknown shape '" + shape + "' -- expected Linux | Windows | macOS");
+      return;
+    }
+
+    String dest = out + "/" + src.repo;
+    print("dry-run clone command:");
+    print("  " + f.cloneCommand(dest));
+
+    print("reachability probe (no download):");
+    int pr = f.probe();
+    if (pr == 0) { print("  reachable: yes"); }
+    else { print("  reachable: no (rc=" + pr + ")"); }
+
+    if (doit == "1") {
+      print("fetching (opt-in OS_FETCH=1) ...");
+      int rc = f.fetchShallow(out);
+      if (rc == 0) {
+        print("  fetched into " + dest);
+        print("  shape folder:   " + f.shapePath(out, shape));
+        print("  os-core C/C++:  " + f.componentPath(out, shape, "os-core"));
+        print("  base-drivers:   " + f.componentPath(out, shape, "base-drivers"));
+        print("  bootloader:     " + f.componentPath(out, shape, "bootloader"));
+        print("These folders feed the preliminary ISO source build.");
+      } else {
+        print("  fetch failed (rc=" + rc + ")");
+      }
+    } else {
+      print("dry run only (set OS_FETCH=1 to download the chosen shape's C/C++).");
+    }
+  }
+}

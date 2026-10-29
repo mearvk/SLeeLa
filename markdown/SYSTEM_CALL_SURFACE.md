@@ -22,7 +22,7 @@ The unit of support is a SLeeLa operation family. The native implementation then
 The **Environment & identity**, **Filesystem metadata**, **Paths**, and
 **Processes** families are reached from SLeeLa source through the `os*`
 built-ins (syntax 1.5), which lower to the `OP_OS_*` opcodes and are serviced by
-`impl/core/sleela_os.c`. See [`/lib/os/OS.md`](../lib/os/OS.md) for the full
+`impl/core/sleela_os.c`. See [`/lib/operating-system/OS.md`](../lib/operating-system/OS.md) for the full
 built-in surface and the `/lib/os` classes that wrap it, and
 [`/lib/vm/OPCODE-MAP.md`](../lib/vm/OPCODE-MAP.md) for the opcode map. A spawned
 process is a VM-local bounded handle, never a raw PID or HANDLE.

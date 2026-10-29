@@ -59,6 +59,7 @@ typedef struct SLThread {
     int entry_func;
     SLValue result;
     char err[256];
+    int underflow;   /* set by POP() on stack underflow; checked each instruction */
     pthread_t handle;
     int started;
 } SLThread;
@@ -1031,7 +1032,13 @@ void slvm_joinall(SLVM* vm) {
 
 #define TERR(msg) do { strncpy(t->err, (msg), sizeof(t->err)-1); t->err[sizeof(t->err)-1]=0; set_err(vm,(msg)); return SLR_ERROR; } while (0)
 #define PUSH(v) do { if (t->sp >= STACK_MAX) TERR("stack overflow"); t->stack[t->sp++] = (v); } while (0)
-#define POP() (t->stack[--t->sp])
+/* POP() fails closed on underflow. The front-end bytecode compiler is supposed
+ * to keep the operand stack balanced, but a codegen defect (e.g. an opcode path
+ * that pops more than it pushes) must surface as a clean VM diagnostic, not an
+ * out-of-bounds read of stack[-1]. On underflow we record a sticky flag and
+ * return a null value; the per-instruction guard below converts that flag into
+ * a TERR("stack underflow") before the corrupt result can be used. */
+#define POP() (t->sp > 0 ? t->stack[--t->sp] : (t->underflow = 1, slval_null()))
 
 static SLResult run_thread(SLThread* t) {
     SLVM* vm = t->vm; int fi = t->entry_func;
@@ -1042,7 +1049,9 @@ static SLResult run_thread(SLThread* t) {
         for (int i = 0; i < ef->nlocals; i++) PUSH(slval_null());
     }
     int ip = ef->entry;
+    t->underflow = 0;
     for (;;) {
+        if (t->underflow) TERR("stack underflow");
         if (ip < 0 || ip >= vm->codelen) TERR("ip out of range");
         SLInstr in = vm->code[ip++];
         slvm_gc_safepoint(vm, t, 4);
@@ -1094,11 +1103,12 @@ static SLResult run_thread(SLThread* t) {
         } break;
         case OP_CONST: PUSH(vm->consts[in.a]); break;
         case OP_POP: (void)POP(); break;
-        case OP_DUP: { SLValue dupv = t->stack[t->sp-1]; PUSH(dupv); } break;
+        case OP_DUP: { if (t->sp < 1) TERR("stack underflow"); SLValue dupv = t->stack[t->sp-1]; PUSH(dupv); } break;
+        case OP_DUP2: { if (t->sp < 2) TERR("stack underflow"); SLValue av = t->stack[t->sp-2], bv = t->stack[t->sp-1]; PUSH(av); PUSH(bv); } break;
         case OP_LOADG: { pthread_mutex_lock(&vm->global_mtx); SLValue v=vm->globals[in.a]; pthread_mutex_unlock(&vm->global_mtx); PUSH(v); } break;
         case OP_STOREG: { SLValue v=POP(); pthread_mutex_lock(&vm->global_mtx); vm->globals[in.a]=v; pthread_mutex_unlock(&vm->global_mtx); } break;
-        case OP_LOADL: { SLFrame* f=&t->frames[t->fp-1]; PUSH(t->stack[f->base+in.a]); } break;
-        case OP_STOREL: { SLFrame* f=&t->frames[t->fp-1]; t->stack[f->base+in.a]=POP(); } break;
+        case OP_LOADL: { SLFrame* f=&t->frames[t->fp-1]; int s=f->base+in.a; if(s<0||s>=STACK_MAX) TERR("local slot out of range"); PUSH(t->stack[s]); } break;
+        case OP_STOREL: { SLFrame* f=&t->frames[t->fp-1]; int s=f->base+in.a; if(s<0||s>=STACK_MAX) TERR("local slot out of range"); t->stack[s]=POP(); } break;
         case OP_ADD: {
             SLValue b=POP(), a=POP();
             if (a.type==SL_STR || b.type==SL_STR) {
@@ -1137,7 +1147,8 @@ static SLResult run_thread(SLThread* t) {
         case OP_CALL: {
             int cfi=in.a; if(cfi<0||cfi>=vm->nfunc) TERR("call to unknown function");
             SLFunc* f=&vm->funcs[cfi]; if(t->fp>=FRAMES_MAX) TERR("call depth exceeded");
-            int base=t->sp-f->nargs; SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs;
+            int base=t->sp-f->nargs; if(base<0) TERR("call: not enough arguments on stack");
+            SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs;
             for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
         } break;
         case OP_RET: {

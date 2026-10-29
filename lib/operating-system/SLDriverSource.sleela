@@ -1,0 +1,198 @@
+<< lib/operating-system/SLDriverSource.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLDriverSource — the provenance and trust policy for a
+     device driver an OS loads, and the cross-OS driver bridge. A driver can
+     come from four origins: in-tree (shipped with the OS), vendor-signed (a
+     trusted third party), unknown-source (unsigned / out-of-tree), or
+     foreign-OS (a driver written for a DIFFERENT OS family). This object says,
+     per origin and per OS, whether a driver may load, under what policy
+     (enforce / permissive / off), and — for a foreign-OS driver — through which
+     BRIDGE it is adapted (NDISwrapper for Windows NDIS network drivers on Linux;
+     a shim/UDF wrapper; or "none" where no bridge exists).
+   
+   The point: allow drivers from unknown sources, verified "correct" drivers, and
+   foreign-OS drivers, while being honest about what actually works. Loading a
+   foreign kernel-mode driver is NOT generally possible (kernel ABIs differ); the
+   bridge covers the real cases (e.g. NDIS network drivers via NDISwrapper) and
+   reports "unsupported" for the rest rather than pretending.
+   
+   Family: operating-system. Design + policy model; the signature/presence checks that reach
+     the host cross the os* bridge (osRun/osExists), requiring #sleela 1.5. >>
+#sleela 2.5
+material;
+class SLDriverSource {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11007;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Origin tags. >
+  < shipped with the OS >
+  static final int ORIGIN_INTREE  = 0;
+  < signed by a trusted vendor >
+  static final int ORIGIN_VENDOR  = 1;
+  < unsigned / out-of-tree >
+  static final int ORIGIN_UNKNOWN = 2;
+  < written for another OS family >
+  static final int ORIGIN_FOREIGN = 3;
+
+  < the OS loading the driver >
+  String host;
+  < Policy per origin: "enforce" (signature required), "permissive" (load with >
+  < a taint warning), or "off" (refuse). Defaults are safe. >
+  < for ORIGIN_UNKNOWN >
+  String unknownPolicy;
+  < for ORIGIN_FOREIGN >
+  String foreignPolicy;
+  int configured;
+
+  void configure(String hostFamily) {
+    host = norm(hostFamily);
+    < allow, but taint — the common dev stance >
+    unknownPolicy = "permissive";
+    < bridge-only, and only where a bridge exists >
+    foreignPolicy = "enforce";
+    configured = 1;
+  }
+  String norm(String s) {
+    if (s == "Windows") { return "Windows"; }
+    if (s == "macOS")   { return "macOS"; }
+    return "Linux";
+  }
+
+  < Developer stance: allow unknown-source drivers (load unsigned with a taint). >
+  void allowUnknown(boolean on) {
+    if (on) { unknownPolicy = "permissive"; } else { unknownPolicy = "enforce"; }
+  }
+  < Allow foreign-OS drivers where a bridge exists ("bridge"), or refuse ("off"). >
+  void allowForeign(boolean on) {
+    if (on) { foreignPolicy = "bridge"; } else { foreignPolicy = "off"; }
+  }
+
+  < ---- Origin naming -------------------------------------------------- >
+  String originName(int origin) {
+    if (origin == ORIGIN_INTREE)  { return "in-tree"; }
+    if (origin == ORIGIN_VENDOR)  { return "vendor-signed"; }
+    if (origin == ORIGIN_UNKNOWN) { return "unknown-source"; }
+    return "foreign-OS";
+  }
+
+  < ---- May a driver of this origin (from guestFamily, if foreign) load? --- >
+  < Returns a result code: 0 = load (clean), 1 = load with taint (unsigned), >
+  < 2 = load via a foreign bridge, -1 = refused by policy, -2 = no bridge >
+  < exists for this foreign driver (unsupported). guestFamily matters only for >
+  < ORIGIN_FOREIGN. >
+  int admit(int origin, String guestFamily, String deviceClass) {
+    < always >
+    if (origin == ORIGIN_INTREE)  { return 0; }
+    < trusted signature >
+    if (origin == ORIGIN_VENDOR)  { return 0; }
+    if (origin == ORIGIN_UNKNOWN) {
+      if (unknownPolicy == "off")     { return -1; }
+      < signature required, none present >
+      if (unknownPolicy == "enforce") { return -1; }
+      < permissive: load, taint >
+      return 1;
+    }
+    < ORIGIN_FOREIGN. >
+    if (foreignPolicy == "off") { return -1; }
+    if (bridgeFor(guestFamily, deviceClass) == "none") { return -2; }
+    < adapt via the bridge >
+    return 2;
+  }
+
+  < ---- The cross-OS driver bridge ------------------------------------ >
+  < bridgeFor(guestFamily, deviceClass): the mechanism that adapts a driver >
+  < from guestFamily to run on this host for a device class, or "none". >
+  < The honest real cases: >
+  < - Linux host, Windows NETWORK driver (NDIS) -> NDISwrapper. >
+  < - Linux host, Windows filesystem/UDF        -> a usermode (FUSE) shim. >
+  < - a VM path can host the foreign driver INSIDE its own OS (device passthrough). >
+  < Kernel-mode graphics/storage/audio foreign drivers have no in-kernel bridge. >
+  String bridgeFor(String guestFamily, String deviceClass) {
+    String g = norm(guestFamily);
+    if (g == host) { return "native"; }
+    if (host == "Linux" && g == "Windows") {
+      if (deviceClass == "network") { return "ndiswrapper"; }
+      if (deviceClass == "filesystem") { return "fuse-shim"; }
+      < gpu/storage/audio: no bridge >
+      return "none";
+    }
+    < A universal fallback: run the foreign driver inside a VM that owns the >
+    < device (passthrough). Honest: this hosts the driver in its own OS, it does >
+    < not load it into the host kernel. >
+    if (deviceClass == "passthrough") { return "vm-passthrough"; }
+    return "none";
+  }
+
+  < Can this host use a foreign driver from guestFamily for a device class? >
+  boolean foreignSupported(String guestFamily, String deviceClass) {
+    if (foreignPolicy == "off") { return false; }
+    return bridgeFor(guestFamily, deviceClass) != "none";
+  }
+
+  < ---- Verification (host) ------------------------------------------- >
+  < verifySignature(path, trustedKeyring): does the driver file carry a >
+  < signature from the trusted keyring? Best-effort over the host bridge; a >
+  < missing tool/keyring reports unverified (0), never a false "trusted". >
+  < Returns 1 trusted, 0 unverified/unsigned. >
+  int verifySignature(String path, String trustedKeyring) {
+    if (osExists(path) != 1) { return 0; }
+    < On Linux, module signatures live appended to the .ko; a real check uses >
+    < the kernel keyring. Here we probe for the presence of a signature marker. >
+    int rc = osRun("grep -qa '~Module signature appended~' " + path + " 2>/dev/null");
+    if (rc == 0) { return 1; }
+    return 0;
+  }
+
+  < ---- Config / summary ---------------------------------------------- >
+  String policySummary() {
+    return "driver policy on " + host + ": unknown=" + unknownPolicy
+         + ", foreign=" + foreignPolicy;
+  }
+
+  < The admit decision as text, for logs and the generated config. >
+  String admitText(int code) {
+    if (code == 0)  { return "load"; }
+    if (code == 1)  { return "load (tainted: unsigned)"; }
+    if (code == 2)  { return "load via bridge"; }
+    if (code == -1) { return "refused by policy"; }
+    return "unsupported (no bridge)";
+  }
+}

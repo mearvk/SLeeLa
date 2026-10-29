@@ -1,0 +1,212 @@
+<< lib/xml/SLXmlDocument.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLXmlDocument -- the DOM document. It owns the single root
+     element, carries the XML declaration (version/encoding/standalone), acts as
+     the factory for new nodes (createElement/createTextNode/...), and offers the
+     document-level queries getElementById-style lookup and getElementsByTagName. >>
+#sleela 2.5
+material;
+< Family: xml. The DOM Document: the owner and factory for a tree of SLXmlNode. >
+< A document has exactly one root element (the "document element") plus the XML >
+< declaration it emits first. The create* methods are the DOM node factory; a >
+< GUI or application builds a tree by asking the document for nodes and appending >
+< them. The serializer is held as a field and drives toXml()/toPrettyXml(), so a >
+< caller drives one object end to end. >
+class SLXmlDocument {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7926;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument. >
+  String metaNationalSchedule = "W3C DOM Level 1 Document interface";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- XML declaration + root ---- >
+  String xmlVersion = "1.0";
+  String encoding = "UTF-8";
+  boolean standalone = true;
+  SLXmlNode root;
+  SLXmlSerializer writer;
+
+  < Build an empty document with a default declaration and a wired serializer. >
+  void create() {
+    xmlVersion = "1.0";
+    encoding = "UTF-8";
+    standalone = true;
+    root = null;
+    writer = new SLXmlSerializer();
+  }
+
+  String getXmlVersion() { return xmlVersion; }
+  void setXmlVersion(String v) { xmlVersion = v; }
+  String getEncoding() { return encoding; }
+  void setEncoding(String v) { encoding = v; }
+  boolean getStandalone() { return standalone; }
+  void setStandalone(boolean v) { standalone = v; }
+
+  < ---- node factory (DOM Document.create*) ---- >
+
+  SLXmlNode createElement(String tag) {
+    SLXmlNode n = new SLXmlNode();
+    n.asElement(tag);
+    return n;
+  }
+  SLXmlNode createTextNode(String value) {
+    SLXmlNode n = new SLXmlNode();
+    n.asText(value);
+    return n;
+  }
+  SLXmlNode createCDataSection(String value) {
+    SLXmlNode n = new SLXmlNode();
+    n.asCData(value);
+    return n;
+  }
+  SLXmlNode createComment(String value) {
+    SLXmlNode n = new SLXmlNode();
+    n.asComment(value);
+    return n;
+  }
+  SLXmlNode createProcessingInstruction(String target, String value) {
+    SLXmlNode n = new SLXmlNode();
+    n.asProcessingInstruction(target, value);
+    return n;
+  }
+
+  < ---- root management ---- >
+
+  < Install `element` as the single document element and return it. >
+  SLXmlNode setDocumentElement(SLXmlNode element) {
+    root = element;
+    return element;
+  }
+  < Create, install, and return a root element named `tag`. >
+  SLXmlNode newRoot(String tag) {
+    return setDocumentElement(createElement(tag));
+  }
+  SLXmlNode documentElement() { return root; }
+  boolean hasRoot() { return root != null; }
+
+  < ---- document-level queries ---- >
+
+  < Every element in the document with tag `tag` (document order), collected >
+  < into a throwaway element whose children are the matches. "*" matches all. >
+  < Returns an element node acting as a NodeList; read it with childCount()/ >
+  < childAt(). Returns an empty collection when there is no root. >
+  SLXmlNode getElementsByTagName(String tag) {
+    SLXmlNode list = new SLXmlNode();
+    list.asElement("#node-list");
+    if (root == null) { return list; }
+    if (tag == "*" || root.name() == tag) { list.appendChild(root); }
+    root.collectByTag(tag, list);
+    return list;
+  }
+
+  < The first element whose "id" attribute equals `id`, or null (DOM-style >
+  < getElementById; this DOM treats the literal attribute name "id"). >
+  SLXmlNode getElementById(String id) {
+    if (root == null) { return null; }
+    return findById(root, id);
+  }
+  SLXmlNode findById(SLXmlNode e, String id) {
+    if (e == null) { return null; }
+    if (e.isElement()) {
+      String got = e.getAttribute("id");
+      if (got != null && got == id) { return e; }
+      int cn = e.childCount();
+      for (int i = 0; i < cn; i = i + 1) {
+        SLXmlNode c = e.childAt(i);
+        SLXmlNode hit = findById(c, id);
+        if (hit != null) { return hit; }
+      }
+    }
+    return null;
+  }
+
+  < Total number of element nodes in the document (root included). >
+  int elementCount() {
+    if (root == null) { return 0; }
+    return 1 + root.descendantElementCount();
+  }
+  < Nesting depth of the document element (0 when empty). >
+  int depth() {
+    if (root == null) { return 0; }
+    return root.depth();
+  }
+
+  < ---- serialization ---- >
+
+  < The XML declaration line (<?xml version="1.0" encoding="UTF-8" ...?>). >
+  String declaration() {
+    String sa = "no";
+    if (standalone) { sa = "yes"; }
+    return "<?xml version=\"" + xmlVersion + "\" encoding=\"" + encoding
+         + "\" standalone=\"" + sa + "\"?>";
+  }
+
+  < The whole document as compact well-formed XML (declaration + tree). >
+  String toXml() {
+    if (writer == null) { writer = new SLXmlSerializer(); }
+    if (root == null) { return declaration(); }
+    return declaration() + writer.toXml(root);
+  }
+  < The whole document, pretty-printed (declaration on its own line). >
+  String toPrettyXml() {
+    if (writer == null) { writer = new SLXmlSerializer(); }
+    if (root == null) { return declaration(); }
+    return declaration() + "\n" + writer.toPrettyXml(root);
+  }
+
+  << ---- equality (the same three-rung tie, at document scope) ----
+     Tier 1 identity is the native == on the document objects. Beyond that a
+     document IS its tree, so structural equality defers to the root elements'
+     SLXmlNode.equals (the recursive Tier 3 tie). Two empty documents (no root)
+     are structurally equal; an empty and a non-empty document are not.
+     Reflexive, symmetric, and deterministic. >>
+  boolean sameReference(SLXmlDocument other) { return this == other; }
+
+  boolean equals(SLXmlDocument other) {
+    if (other == null) { return false; }
+    if (this == other) { return true; }
+    SLXmlNode mine = root;
+    SLXmlNode theirs = other.documentElement();
+    if (mine == null) { return theirs == null; }
+    if (theirs == null) { return false; }
+    return mine.equals(theirs);
+  }
+  < Alias reading as "the same structure". >
+  boolean sameStructure(SLXmlDocument other) { return equals(other); }
+}

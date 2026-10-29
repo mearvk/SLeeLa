@@ -1,0 +1,214 @@
+<< lib/operating-system/os-creator/SLOSCreator.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLOSCreator — the OS Creator(TM) provider: the single
+     object that turns an SLOSModel into a complete /os-development tree on disk.
+     Running the compiled SLeeLa program that calls create(model, root) lays out
+     the directory tree (SLOSDevTree) and writes, for every piece of the
+     firmware -> boot -> kernel -> userspace -> desktop chain, its C source, its
+     C++ source, and its configuration file; then it writes the OS itself
+     (os_config.h / os_boot.c / os_image.cpp via SLCEmitter/SLCppEmitter), the
+     ISO recipe (SLISOBuilder), the build tooling (SLToolchainEmitter: Makefile,
+     build.sh, build.ps1), and the SLeeLa source that produced the tree
+     (SLSourceDropper). Finally it writes MANIFEST.md.
+   
+   This is the top-down path from a SLeeLa OS description to a buildable,
+   self-describing OS project on disk. Every file is a genuine host filesystem
+   write across the explicit VM/OS bridge; nothing is in-memory only.
+   
+   Family: operating-system. OS Creator(TM) orchestrator. Composes SLOSDevTree, the seven piece
+     emitters, SLCEmitter/SLCppEmitter, SLISOBuilder, SLToolchainEmitter,
+     SLSourceDropper; records an SLOSBuildReport. >>
+#sleela 2.5
+material;
+class SLOSCreator {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10927;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  SLUEFIEmitter uefi;
+  SLBIOSEmitter bios;
+  SLBootLoaderEmitter bootLoader;
+  SLKernelLoaderEmitter kernelLoader;
+  SLDriverLoaderEmitter driverLoader;
+  SLOSLoaderEmitter osLoader;
+  SLDesktopLoaderEmitter desktopLoader;
+  SLCompatLoaderEmitter compatLoader;
+  SLBaseDriverEmitter baseDriverEmit;
+  SLCEmitter cEmit;
+  SLCppEmitter cppEmit;
+  SLToolchainEmitter toolchain;
+  SLSourceDropper dropper;
+  SLOSDevTree tree;
+
+  void configure() {
+    uefi = new SLUEFIEmitter();
+    bios = new SLBIOSEmitter();
+    bootLoader = new SLBootLoaderEmitter();
+    kernelLoader = new SLKernelLoaderEmitter();
+    driverLoader = new SLDriverLoaderEmitter();
+    osLoader = new SLOSLoaderEmitter();
+    desktopLoader = new SLDesktopLoaderEmitter();
+    compatLoader = new SLCompatLoaderEmitter();
+    baseDriverEmit = new SLBaseDriverEmitter();
+    cEmit = new SLCEmitter();
+    cppEmit = new SLCppEmitter();
+    toolchain = new SLToolchainEmitter();
+    dropper = new SLSourceDropper();
+  }
+
+  < The OS Creator(TM) provider entry point. Materialise a complete >
+  < /os-development tree at `root` for the given model. Returns a build report >
+  < indexing every file written. If the model is not buildable, the report is >
+  < marked failed and nothing is written. >
+  SLOSBuildReport create(SLOSModel m, String root) {
+    SLOSBuildReport report = new SLOSBuildReport();
+    report.configure(m.identity());
+
+    < Gate: refuse to materialise the tree unless the model is buildable AND >
+    < the related download URLs and the required pre-compile settings files are >
+    < declared ready. This is the "have the URLs and config in place before we >
+    < compile or convert the ISO" check. >
+    if (!m.readyToCompile()) {
+      report.fail();
+      return report;
+    }
+
+    boolean withDesktop = m.desktopSpec().hasDesktop();
+
+    < 1. Lay out the /os-development directory tree. >
+    tree = new SLOSDevTree();
+    tree.configure(root);
+    tree.layout(withDesktop);
+
+    < 2. Global config + the resolved download URLs and the fetch script, so the >
+    < related downloads and OS settings are recorded before compile/ISO. >
+    tree.writeFile("/config/os.conf", toolchain.emitOsConf(m));
+    tree.writeFile("/config/downloads.conf", downloadsConf(m));
+    tree.writeFile("/config/config-manifest.conf", m.configSet().configManifest());
+    tree.writeFile("/fetch-downloads.sh", m.downloadSet().fetchScript(0));
+
+    < 3. Pieces 1-7: C + C++ + config for each stage of the boot chain. >
+    writePiece(uefi.emit(m), report);
+    writePiece(bios.emit(m), report);
+    writePiece(bootLoader.emit(m), report);
+    writePiece(kernelLoader.emit(m), report);
+    writePiece(driverLoader.emit(m), report);
+    < minimum-boot driver series table >
+    writePiece(baseDriverEmit.emit(m), report);
+    writePiece(osLoader.emit(m), report);
+    < Foreign-executable compatibility loader: only when the model declares >
+    < guest families to support (an SLCompatSet with at least one route). >
+    if (m.compatSet().hasAny()) { writePiece(compatLoader.emit(m), report); }
+    if (withDesktop) { writePiece(desktopLoader.emit(m), report); }
+
+    < 4. Piece 8: the OS itself (reuse the existing C/C++ emitters). >
+    recordWrite(report, "/os/os_config.h", tree.writeFile("/os/os_config.h", cEmit.emitConfigHeader(m)));
+    recordWrite(report, "/os/os_boot.c",   tree.writeFile("/os/os_boot.c",   cEmit.emitBootUnit(m)));
+    recordWrite(report, "/os/os_image.cpp",tree.writeFile("/os/os_image.cpp",cppEmit.emitOsImage(m)));
+
+    < 5. The ISO recipe (reuse SLISOBuilder through a scratch compiler). >
+    SLOSCompiler compiler = new SLOSCompiler(); compiler.configure();
+    SLISOBuilder iso = new SLISOBuilder(); iso.configure();
+    SLOSArtifact isoRecipe = iso.build(m, compiler);
+    recordWrite(report, "/tools/gen-iso.sh", tree.writeFile("/tools/gen-iso.sh", isoRecipe.text()));
+
+    < 6. The build tooling (make + build drivers). >
+    recordWrite(report, "/Makefile", tree.writeFile("/Makefile", toolchain.emitMakefile(m, withDesktop)));
+    recordWrite(report, "/build.sh", tree.writeFile("/build.sh", toolchain.emitBuildSh(m)));
+    recordWrite(report, "/build.ps1", tree.writeFile("/build.ps1", toolchain.emitBuildPs1(m)));
+
+    < 7. The SLeeLa source that produced the tree. >
+    dropper.drop(m, tree);
+    report.record(sourceArtifact("/src/sleela/os-model.sleela"));
+    report.record(sourceArtifact("/src/README.md"));
+
+    < 8. Finalise with the manifest. >
+    tree.writeManifest(m.identity());
+    report.record(sourceArtifact("/MANIFEST.md"));
+
+    return report;
+  }
+
+  < The resolved download URLs for the model, as a conf header + the set's >
+  < manifest ("<kind> <phase> <url>" lines from SLDownloadSet). >
+  String downloadsConf(SLOSModel m) {
+    String s = "# downloads.conf - related download URLs for " + m.identity() + "\n";
+    s = s + "# resolved before compile / ISO; format: <kind> <phase> <url>\n";
+    s = s + m.downloadSet().downloadManifest() + "\n";
+    return s;
+  }
+
+  < plan() returns a human description of what create() would write, without >
+  < touching the filesystem — useful for a dry run. >
+  String plan(SLOSModel m) {
+    boolean withDesktop = m.desktopSpec().hasDesktop();
+    String s = "OS Creator(TM) plan for " + m.identity() + "\n";
+    s = s + "root: /os-development\n";
+    s = s + "pieces: UEFI, BIOS, Boot Loader, Kernel Loader, Driver Loader, OS Loader";
+    if (withDesktop) { s = s + ", Desktop GUI Loader"; }
+    s = s + "\nos: os_config.h, os_boot.c, os_image.cpp\n";
+    s = s + "tooling: Makefile, build.sh, build.ps1, tools/gen-iso.sh\n";
+    s = s + "source: src/sleela/os-model.sleela, src/README.md\n";
+    return s;
+  }
+
+  < Write a piece and record each of its files in the report. >
+  void writePiece(SLOSPiece p, SLOSBuildReport report) {
+    tree.writePiece(p);
+    report.record(sourceArtifact("/" + p.cPath()));
+    report.record(sourceArtifact("/" + p.cppPath()));
+    if (p.hasConfig()) { report.record(sourceArtifact("/" + p.configPath())); }
+    if (p.hasReadme()) { report.record(sourceArtifact("/" + p.readmePath())); }
+  }
+
+  < Record a direct writeFile result in the report when the write succeeded. >
+  void recordWrite(SLOSBuildReport report, String path, int bytes) {
+    if (bytes >= 0) { report.record(sourceArtifact(path)); }
+  }
+
+  < Build a lightweight artifact handle for the report index. >
+  SLOSArtifact sourceArtifact(String path) {
+    SLOSArtifact a = new SLOSArtifact();
+    a.configure(path, a.KIND_SCRIPT, "");
+    return a;
+  }
+
+  SLOSDevTree devTree() { return tree; }
+}

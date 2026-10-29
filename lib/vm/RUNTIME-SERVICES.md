@@ -97,7 +97,7 @@ Any unrecoverable lifecycle violation moves to `QUARANTINED` rather than reopeni
 
 The sequence is idempotent: repeated shutdown requests observe the current state and do not execute destruction twice.
 
-## Mapping to the 124-opcode ISA
+## Mapping to the 155-opcode ISA
 
 The existing ISA already contains direct primitives for:
 

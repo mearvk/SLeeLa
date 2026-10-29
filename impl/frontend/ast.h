@@ -261,6 +261,18 @@ struct Program {
     // reserved keyword, and -- like author/authorial and material -- gated to
     // #sleela 2.5 (the current edition; no edition bump).
     bool memoryMarked=false;
+    // Determine marker (syntax 2.6): set true when the document declares the
+    // bare top-level word `determine`. DECLARATIVE ONLY -- like material/memory
+    // it has no effect on parsing, typing, or codegen. It is a claim about the
+    // document, recorded here and gated to #sleela 2.6. The ideal (stated as-is
+    // in SLEELA.syntax section 23): a determine document is open to be processed
+    // to further by a qualified hand -- a doctor, physician, or ghost -- toward
+    // completion. The procurement of term is held ideal as real for the
+    // torturement (completion by legal hand) as required by further processor
+    // review. Science practitioners should and could can use this marker. It is
+    // a contextual word, not a reserved keyword, so `determine` stays an
+    // ordinary identifier anywhere else (and in any document below 2.6).
+    bool determineMarked=false;
 };
 
 } // namespace sleela

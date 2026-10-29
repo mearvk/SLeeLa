@@ -341,7 +341,7 @@ idempotently; produce exactly these artifacts:
   **1a. `SLEELA.syntax`** — the normative language grammar, as a numbered
   Markdown spec with these sections in order (this exact structure):
    - Header block: Language=Sleela; **Syntax version 1.11** (baseline 1.3–1.10 +
-     nested classes); Compiler **Sleelvac(TM) 0.3.29-dev** accepting syntax
+     nested classes); Compiler **Sleelvac(TM) 0.3.30-dev** accepting syntax
      **1.3..1.11**; Surface = Java-like; Core = Turing-complete, thread-friendly
      C/C++ execution core; Companions = `SHEET.sheet`, `SST.model` (NS-SST-0001),
      `lib/LIBRARY.SYMBOLS.md`, `markdown/EXTENDS.md`. State the two distinct
@@ -437,7 +437,7 @@ idempotently; produce exactly these artifacts:
 bytecode ISA and the VM; everything above compiles to it. Produce:
    - `sleela_core.h` — the value model (`SLValue` tagged union: int/double/
      bool/string/null/struct/array handles), the **canonical bytecode ISA**
-     (the opcode enum; the design target is the **124 canonical opcodes** the
+     (the opcode enum; the design target is the **155 canonical opcodes** the
      lib `SLSleelaVM` references — the enum is strictly **APPEND-ONLY** so
      serialized-artifact opcode numbers never shift), and the bounded VM-local
      handle-table sizes (`SL_SYNCHRO_MAX`, `SL_BESTOF_MAX`, `SL_MUNCTION_MAX`,
@@ -477,7 +477,7 @@ order so each depends only on the ones before it:
      (the `sleela` CLI: `check`/`run`/`compile -o`/`validate-artifact`/
      `version`/`nordshrift`).
    Add `impl/Makefile` so it links `impl/build/sleela` and `impl/build/nordshrift`.
-   Checkpoint: `impl/build/sleela version` prints `Sleelvac(TM) 0.3.29-dev`, and
+   Checkpoint: `impl/build/sleela version` prints `Sleelvac(TM) 0.3.30-dev`, and
    `class X { void main(){ print(\"ok\"); } }` compiles and runs via
    `sleela run`.
 

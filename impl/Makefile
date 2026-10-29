@@ -237,6 +237,11 @@ DESIGN_ACTIVITY_OBJ := $(BUILD)/sleela_design_activity.o
 GC_OBJ := $(BUILD)/garbage_collector.o
 SECURITY_OBJ := $(BUILD)/security_supervisor.o
 PARAMETERS_OBJ := $(BUILD)/Parameters.o
+# Defined here (before the $(SLEELA_BIN) rule at line ~443) so the sleela link
+# line actually picks it up; the vm-config smoke target below reuses it. The
+# driver's `sleela vm lock/unlock/status` calls into this object.
+VM_CONFIG_OBJ := $(BUILD)/vm_config.o
+VM_CONFIG_SMOKE := $(BUILD)/vm_config_smoke
 JAVA_RUNTIME_PROBE_OBJ := $(BUILD)/java_runtime_probe.o
 JAVA_RUNTIME_BRIDGE_OBJ := $(BUILD)/java_runtime_bridge.o
 CHEMISTRY_OBJ := $(BUILD)/chemistry.o
@@ -250,7 +255,7 @@ SOC_OBJ := $(BUILD)/sociology.o
 SOC_SMOKE := $(BUILD)/sociology_smoke
 CORE_SRC := core/sleela_artifact.c
 FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/java_equivalence.cpp frontend/semantic.cpp frontend/compiler.cpp \
-          frontend/version.cpp frontend/artifact.cpp frontend/originate.cpp frontend/wikigen.cpp frontend/annotation_pipeline.cpp frontend/library_index.cpp frontend/dynamite.cpp frontend/permissible.cpp \
+          frontend/version.cpp frontend/artifact.cpp frontend/originate.cpp frontend/wikigen.cpp frontend/annotation_pipeline.cpp frontend/library_index.cpp frontend/keyword_supporter.cpp frontend/dynamite.cpp frontend/permissible.cpp \
           annotation/Annotation.cpp annotation/ForwardingAnnotation.cpp annotation/AnnotationForwarder.cpp \
           annotation/AnnotationInterpreter.cpp annotation/AnnotationRuntime.cpp \
           subjects/native/native_api.cpp \
@@ -434,12 +439,12 @@ $(ALL_OBJECTS): | verify-security
 # shares the whole front end with `sleela` but links its own driver object
 # (compiled with -DSLEELA_PRODUCT_SLEELVAC), so its `version` identity is fixed
 # at compile time and `sleela version` can never surface the Sleelvac banner.
-$(SLEELAVC_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
+$(SLEELAVC_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
 
 sleelvac: $(SLEELAVC_BIN)
 
-$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
+$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
 $(AUDIO_NATIVE_OBJ): core/sleela_audio_bridge.cpp core/sleela_audio_bridge.h ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
@@ -630,7 +635,7 @@ $(VM_CONFIG_OBJ): ../runtime/vm_config.c ../runtime/vm_config.h | $(BUILD)
 $(VM_CONFIG_SMOKE): ../runtime/vm_config_smoke.c ../runtime/vm_config.h $(VM_CONFIG_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -I../runtime ../runtime/vm_config_smoke.c $(VM_CONFIG_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 test-vm-config: $(VM_CONFIG_SMOKE)
-	@echo "=== SLeeLa VM generation configuration ==="; (cd .. && $(VM_CONFIG_SMOKE))
+	@echo "=== SLeeLa VM generation configuration ==="; (cd .. && $(CURDIR)/$(VM_CONFIG_SMOKE))
 
 $(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/security_supervisor.c -o $@
@@ -762,12 +767,12 @@ $(JAVA_RUNTIME_PROBE_OBJ): ../runtime/java_runtime_probe.c ../runtime/java_runti
 	$(CC) $(CFLAGS) -c $< -o $@
 $(JAVA_RUNTIME_BRIDGE_OBJ): ../runtime/java_runtime_bridge.c ../runtime/java_runtime_bridge.h ../runtime/java_runtime_probe.h | $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
-$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/version.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/version.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h ../runtime/vm_config.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -I../runtime -c $< -o $@
 # Same source, compiled with the compiler product identity for the independent
 # sleelvac binary. Keeps driver.o (runtime) untouched.
-$(BUILD)/driver_sleelvac.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/version.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -DSLEELA_PRODUCT_SLEELVAC -c $< -o $@
+$(BUILD)/driver_sleelvac.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/version.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h ../runtime/vm_config.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -I../runtime -DSLEELA_PRODUCT_SLEELVAC -c $< -o $@
 $(BUILD):
 	mkdir -p $(BUILD)
 
@@ -877,8 +882,6 @@ build-runtime: verify-security $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ)
 # enforcement) rather than merely compiling them.
 RUNTIME_SMOKE := $(BUILD)/runtime_smoke
 GC_MODERN_SMOKE := $(BUILD)/gc_modern_smoke
-VM_CONFIG_OBJ := $(BUILD)/vm_config.o
-VM_CONFIG_SMOKE := $(BUILD)/vm_config_smoke
 CONFIG_LOCATION_OBJ := $(BUILD)/config_location.o
 CONFIG_LOCATION_SMOKE := $(BUILD)/config_location_smoke
 $(RUNTIME_SMOKE): tests/runtime/runtime_smoke.c $(GC_OBJ) $(SECURITY_OBJ) | verify-security $(BUILD)

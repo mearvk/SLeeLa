@@ -1,0 +1,9 @@
+# SLeeLa language definition for Helix. Place in ~/.config/helix/ or
+# merge into your existing languages.toml.
+[[language]]
+name = "sleela"
+scope = "source.sleela"
+file-types = ["sleela"]
+comment-tokens = ["//", "#"]
+block-comment-tokens = [{ start = "/*", end = "*/" }, { start = "<<", end = ">>" }]
+indent = { tab-width = 2, unit = "  " }

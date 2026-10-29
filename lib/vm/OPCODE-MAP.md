@@ -4,12 +4,12 @@ Max Rupplin - MEARVK LLC - 2026
 
 This is the human-readable support map for the canonical source-defined SLeeLa ISA in `lib/vm/InstructionSet.sleela`.
 
-**Verified master-tree state:** 150 source ISA entries, 150 native `SLOp` entries, and 150 native dispatch cases. There are no missing native dispatch cases. The tail groups are the array ops (98–102), the operating-system system calls (103–123, `OP_OS_*`), the GC/system ops (124 `OP_GC_HINT`, 125 `OP_RAN_MEM`), the idea-canvas native-bridge ops (126–147, `OP_IC_*`, from `idea/realtime`), the VM-selection service op (148, `OP_VM_SELECT`), and the Modium file-resolution scan op (149, `OP_MODIUM_SCAN`) — all appended to the end of the enum so earlier opcode numbers are unchanged.
+**Verified target state:** 155 source ISA entries, 155 native `SLOp` entries, and 155 native dispatch cases. The VM coverage check compares source order, explicit numeric annotations, and one native dispatch case per opcode. The tail groups are the array ops (98–102), the operating-system system calls (103–123, `OP_OS_*`), the GC/system ops (124 `OP_GC_HINT`, 125 `OP_RAN_MEM`), the idea-canvas native-bridge ops (126–147, `OP_IC_*`, from `idea/realtime`), the VM-selection service op (148, `OP_VM_SELECT`), the Modium file-resolution scan op (149, `OP_MODIUM_SCAN`), `OP_UI_CALL` (150), `OP_SSEND` (151), and runtime type/stack ops `OP_CHECKCAST` (152), `OP_INSTANCEOF` (153), and `OP_DUP2` (154) — all appended to the end of the enum so earlier opcode numbers are unchanged.
 
-> Sync note: entries 126–148 were previously a lag in the source ISA (the
-> `OP_IC_*` group existed in the native enum but not in `InstructionSet.sleela`
-> / this map). They are now represented as `SLISAIc*` classes plus
-> `SLISAVmSelect`, so the source ISA, native enum, and this map agree.
+> Sync note: the source registry, native enum, and map now cover the appended
+> `OP_IC_*` group (126–147), `OP_VM_SELECT` (148), `OP_MODIUM_SCAN` (149),
+> and opcodes 150–154. The coverage checks compare the ordered source records
+> against the native enum; CI remains the final build-level verification.
 > `OP_VM_SELECT` (148) is the service-exit seam the Sleela VM selector
 > (`virtual-machine/vm-version/SLVmRegistry` + the `SLVmVersionNNN` manifests)
 > binds to, so choosing a VM parks a VM-exit the host services by building and
@@ -141,6 +141,38 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 121 | `OP_OS_WAIT` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
 122 | `OP_OS_KILL` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
 123 | `OP_OS_PCLOSE` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+124 | `OP_GC_HINT` | Implemented | `impl/core/sleela_core.c`
+125 | `OP_RAN_MEM` | Implemented | `impl/core/sleela_core.c`
+126 | `OP_IC_CREATE` | Implemented | `impl/core/sleela_core.c`
+127 | `OP_IC_DESTROY` | Implemented | `impl/core/sleela_core.c`
+128 | `OP_IC_COLS` | Implemented | `impl/core/sleela_core.c`
+129 | `OP_IC_ROWS` | Implemented | `impl/core/sleela_core.c`
+130 | `OP_IC_COUNT` | Implemented | `impl/core/sleela_core.c`
+131 | `OP_IC_SETPARAMS` | Implemented | `impl/core/sleela_core.c`
+132 | `OP_IC_EXCITE` | Implemented | `impl/core/sleela_core.c`
+133 | `OP_IC_STEP` | Implemented | `impl/core/sleela_core.c`
+134 | `OP_IC_ADVANCE` | Implemented | `impl/core/sleela_core.c`
+135 | `OP_IC_TIMESTEP` | Implemented | `impl/core/sleela_core.c`
+136 | `OP_IC_INTENSITY` | Implemented | `impl/core/sleela_core.c`
+137 | `OP_IC_HASREND` | Implemented | `impl/core/sleela_core.c`
+138 | `OP_IC_OPENWIN` | Implemented | `impl/core/sleela_core.c`
+139 | `OP_IC_SHOULDCLOSE` | Implemented | `impl/core/sleela_core.c`
+140 | `OP_IC_PRESENT` | Implemented | `impl/core/sleela_core.c`
+141 | `OP_IC_RUN` | Implemented | `impl/core/sleela_core.c`
+142 | `OP_IC_SETPOLICY` | Implemented | `impl/core/sleela_core.c`
+143 | `OP_IC_POLICY` | Implemented | `impl/core/sleela_core.c`
+144 | `OP_IC_BACKEND` | Implemented | `impl/core/sleela_core.c`
+145 | `OP_IC_GPUAVAIL` | Implemented | `impl/core/sleela_core.c`
+146 | `OP_IC_MEASHZ` | Implemented | `impl/core/sleela_core.c`
+147 | `OP_IC_MIGRATE` | Implemented | `impl/core/sleela_core.c`
+148 | `OP_VM_SELECT` | Implemented | `impl/core/sleela_core.c`
+149 | `OP_MODIUM_SCAN` | Implemented | `impl/core/sleela_core.c`
+150 | `OP_UI_CALL` | Implemented | `impl/core/sleela_core.c`
+151 | `OP_SSEND` | Implemented | `impl/core/sleela_core.c`
+152 | `OP_CHECKCAST` | Implemented | `impl/core/sleela_core.c`
+153 | `OP_INSTANCEOF` | Implemented | `impl/core/sleela_core.c`
+154 | `OP_DUP2` | Implemented | `impl/core/sleela_core.c`
+
 
 The operating-system opcodes (`OP_OS_*`) are the host System Call API: the `os*`
 built-ins (`osRun`/`osSpawn`/`osGetEnv`/`osExists`/...) lower to these opcodes,

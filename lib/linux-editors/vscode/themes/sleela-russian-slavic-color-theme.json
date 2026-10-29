@@ -1,0 +1,102 @@
+{
+  "name": "SLeeLa Russian and Slavic (Medium)",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#202733",
+    "editor.foreground": "#E8EAF0",
+    "editorCursor.foreground": "#A9C0DD",
+    "editor.lineHighlightBackground": "#293341",
+    "editorLineNumber.foreground": "#929BA8",
+    "editorLineNumber.activeForeground": "#A9C0DD",
+    "editor.selectionBackground": "#3B4655",
+    "editor.findMatchBackground": "#C9AD76",
+    "statusBar.background": "#3B4655",
+    "statusBar.foreground": "#E8EAF0",
+    "editorError.foreground": "#E58B91"
+  },
+  "tokenColors": [
+    {
+      "scope": [
+        "keyword",
+        "keyword.control.sleela",
+        "storage.modifier"
+      ],
+      "settings": {
+        "foreground": "#A9C0DD",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "storage.type.sleela",
+        "support.type"
+      ],
+      "settings": {
+        "foreground": "#8FC4B2",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "string",
+        "string.quoted"
+      ],
+      "settings": {
+        "foreground": "#D6BD8B"
+      }
+    },
+    {
+      "scope": [
+        "constant.numeric.sleela"
+      ],
+      "settings": {
+        "foreground": "#C2B0D8"
+      }
+    },
+    {
+      "scope": [
+        "constant",
+        "constant.language"
+      ],
+      "settings": {
+        "foreground": "#D99198"
+      }
+    },
+    {
+      "scope": [
+        "entity.name.function.sleela"
+      ],
+      "settings": {
+        "foreground": "#A7C69C",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "comment"
+      ],
+      "settings": {
+        "foreground": "#9AA3AF",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": [
+        "keyword.control.directive.sleela",
+        "keyword.other.marker.sleela",
+        "entity.other.attribute-name.sleela"
+      ],
+      "settings": {
+        "foreground": "#D5A6B4"
+      }
+    },
+    {
+      "scope": [
+        "keyword.operator"
+      ],
+      "settings": {
+        "foreground": "#D1D6DE"
+      }
+    }
+  ]
+}

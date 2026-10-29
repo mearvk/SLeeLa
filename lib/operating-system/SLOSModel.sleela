@@ -1,0 +1,214 @@
+<< lib/operating-system/SLOSModel.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLOSModel — the root aggregate of the OS-construction
+     family: a complete object-oriented description of an operating system a
+     developer is DESIGNING. It composes one of each layer in the
+     firmware -> boot -> kernel -> userspace -> desktop model: a shape
+     (SLOSShape), a target-architecture set (SLArchitectureSet), a bootloader
+     (SLBootloaderSpec), a kernel (SLKernelSpec), a filesystem layout
+     (SLFilesystemLayout), a driver set (SLDriverSet), a package seed
+     (SLPackageSet), a service set (SLServiceSet), and an optional desktop
+     (SLDesktopSpec).
+   
+   This is the OOD extrapolation point: `shape()` applies every per-family
+   default in one call, so an OS can "assume the shape" of Windows, Linux, or
+   macOS and then be refined field by field. A fully configured SLOSModel is the
+   single input to SLOSCompiler (which emits C and C++), SLISOBuilder (which
+   assembles the bootable ISO), and SLInstallerGenerator (which writes the
+   per-OS installer).
+   
+   This models an OS being BUILT. It is distinct from SLOperatingSystem, which
+   talks to the real host OS the VM already runs on.
+   
+   Family: operating-system. Composes SLOSShape, SLArchitectureSet, SLBootloaderSpec,
+     SLKernelSpec, SLFilesystemLayout, SLDriverSet, SLPackageSet, SLServiceSet,
+     SLDesktopSpec. Pure design model; no native bridge calls. >>
+#sleela 2.5
+material;
+class SLOSModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10930;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-10";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < product name, e.g. "Determinant" >
+  String osName;
+  < "Desktop" / "Server" >
+  String edition;
+  < product version >
+  String version;
+
+  SLOSShape shape;
+  SLArchitectureSet arches;
+  SLBootloaderSpec boot;
+  SLKernelSpec kernel;
+  SLFilesystemLayout filesystem;
+  < swap/paging kind + quality >
+  SLSwapConfig swap;
+  < minimum-boot driver series >
+  SLBaseDriverSeries baseDrivers;
+  < driver provenance/trust + cross-OS bridge >
+  SLDriverSource driverSource;
+  SLDriverSet drivers;
+  SLPackageSet packages;
+  SLServiceSet services;
+  SLDesktopSpec desktop;
+  < foreign-OS execution capability (optional layer) >
+  SLCompatSet compat;
+  < URLs for related downloads (pre-compile / pre-ISO) >
+  SLDownloadSet downloads;
+  < the settings files that must be present pre-build >
+  SLConfigSet configFiles;
+  int configured;
+
+  < Begin a model with a product name and version. Layers are created empty; >
+  < call shape(...) to populate them with a family's defaults. >
+  void configure(String name, String ver) {
+    osName = name; version = ver; edition = "Desktop";
+    shape = new SLOSShape();
+    arches = new SLArchitectureSet();
+    boot = new SLBootloaderSpec();
+    kernel = new SLKernelSpec();
+    filesystem = new SLFilesystemLayout();
+    swap = new SLSwapConfig();
+    baseDrivers = new SLBaseDriverSeries();
+    driverSource = new SLDriverSource();
+    drivers = new SLDriverSet();
+    packages = new SLPackageSet();
+    services = new SLServiceSet();
+    desktop = new SLDesktopSpec();
+    compat = new SLCompatSet();
+    downloads = new SLDownloadSet();
+    configFiles = new SLConfigSet();
+    configured = 1;
+  }
+
+  < OOD extrapolation: take the shape of a named family ("Linux"/"Windows"/ >
+  < "macOS") on a primary architecture, filling every layer with that family's >
+  < defaults. Refine any layer afterwards by reaching its spec object. >
+  void shapeAs(String family, String primaryArch) {
+    shape.configure(family);
+    SLOSArchitecture a = new SLOSArchitecture();
+    a.configure(primaryArch);
+    a.retargetForShape(shape);
+    arches.configure(a);
+    boot.forShape(shape);
+    kernel.forShape(shape);
+    filesystem.forShape(shape);
+    swap.forShape(shape);
+    baseDrivers.forShape(shape);
+    driverSource.configure(shape.name());
+    drivers.forShape(shape);
+    packages.baseSeedForShape(shape);
+    services.forShape(shape);
+    desktop.forShape(shape);
+    < seed the family's foreign-exec defaults >
+    compat.forShape(shape);
+    < seed the family's download URLs >
+    downloads.forShape(shape);
+    < seed the settings checklist >
+    configFiles.forModel(compat.hasAny());
+  }
+
+  < Mark this as a server edition: drop the desktop layer. >
+  void asServer() { edition = "Server"; desktop.headless(); }
+
+  < ---- Accessors for the layers (for refinement and emission) ------------- >
+  SLOSShape osShape()            { return shape; }
+  SLArchitectureSet architectures() { return arches; }
+  SLBootloaderSpec bootloader()  { return boot; }
+  SLKernelSpec kernelSpec()      { return kernel; }
+  SLFilesystemLayout layout()    { return filesystem; }
+  SLSwapConfig swapConfig()      { return swap; }
+  SLBaseDriverSeries baseDriverSeries() { return baseDrivers; }
+  SLDriverSource driverPolicy()  { return driverSource; }
+  SLDriverSet driverSet()        { return drivers; }
+  < The filesystem (file-table) type catalogue — a fresh reference helper for >
+  < choosing/validating a filesystem format (FAT/NTFS/ext4/APFS/...). >
+  SLFilesystemCatalog fsCatalog() { return new SLFilesystemCatalog(); }
+  SLPackageSet packageSet()      { return packages; }
+  SLServiceSet serviceSet()      { return services; }
+  SLDesktopSpec desktopSpec()    { return desktop; }
+  SLCompatSet compatSet()        { return compat; }
+  SLDownloadSet downloadSet()    { return downloads; }
+  SLConfigSet configSet()        { return configFiles; }
+
+  String name()    { return osName; }
+  String osVersion() { return version; }
+  String osEdition() { return edition; }
+
+  < ---- Validity: can this model be built into a bootable OS? -------------- >
+  < Every irreducible layer must be present and self-consistent. >
+  boolean isBuildable() {
+    if (configured != 1) { return false; }
+    if (!boot.isComplete()) { return false; }
+    if (!kernel.isBootable()) { return false; }
+    if (!baseDrivers.canBoot()) { return false; }
+    if (!drivers.canReachRootfs()) { return false; }
+    if (!filesystem.isComplete()) { return false; }
+    if (packages.isEmpty()) { return false; }
+    if (!services.hasServices()) { return false; }
+    return true;
+  }
+
+  < ---- Pre-build readiness: downloads + settings in place ----------------- >
+  < Before the OS is COMPILED, the model must be buildable AND the related >
+  < download URLs and the required settings files for the compile phase must be >
+  < declared. This is the gate the OS Creator checks before emitting/compiling. >
+  boolean readyToCompile() {
+    if (!isBuildable()) { return false; }
+    if (!downloads.readyForCompile()) { return false; }
+    if (!configFiles.readyForCompile()) { return false; }
+    return true;
+  }
+  < Before the final ISO conversion, additionally the ISO-phase downloads >
+  < (firmware, runtime payloads) and settings (services, swap) must be ready. >
+  boolean readyForIso() {
+    if (!readyToCompile()) { return false; }
+    if (!downloads.readyForIso()) { return false; }
+    if (!configFiles.readyForIso()) { return false; }
+    return true;
+  }
+
+  < A short, human-readable identity line for logs and ISO volume labels. >
+  String identity() {
+    return osName + " " + version + " (" + edition + ", " + shape.name()
+         + ", " + arches.primaryArch().arch() + ")";
+  }
+}

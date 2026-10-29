@@ -31,7 +31,7 @@ fork, vfork, execve, execv, execvp, posix_spawn, waitpid, waitid, _exit, exit, g
 
 Process creation, credential changes, and signal delivery must remain behind explicit SLeeLa permissions.
 
-**Exposed to SLeeLa.** The process family is reachable from SLeeLa source through the `os*` built-ins (syntax 1.5), serviced by `impl/core/sleela_os.c`: `osRun` (synchronous, via `/bin/sh -c`), `osSpawn` (`posix_spawn`), `osWait` (`waitpid`), `osKill` (`kill(SIGTERM)`), `osProcessClose` (reap), and `osProcessId` (`getpid`). A spawned child is a VM-local bounded handle, never a raw PID. See `/lib/os/OS.md`.
+**Exposed to SLeeLa.** The process family is reachable from SLeeLa source through the `os*` built-ins (syntax 1.5), serviced by `impl/core/sleela_os.c`: `osRun` (synchronous, via `/bin/sh -c`), `osSpawn` (`posix_spawn`), `osWait` (`waitpid`), `osKill` (`kill(SIGTERM)`), `osProcessClose` (reap), and `osProcessId` (`getpid`). A spawned child is a VM-local bounded handle, never a raw PID. See `/lib/operating-system/OS.md`.
 
 ## Threads and synchronization
 
@@ -51,7 +51,7 @@ Important calls include open, openat, close, read, write, pread, pwrite, readv, 
 
 File descriptors are process-local resources. SLeeLa should track ownership, closure, inheritance, and errors explicitly.
 
-**Exposed to SLeeLa.** File *content* I/O uses `openFile`/`read`/`write`/`close`/`unlinkFile`. Filesystem *metadata and namespace* operations use the `os*` built-ins (serviced by `impl/core/sleela_os.c`): `osExists`/`osIsDir`/`osFileSize` (`stat`), `osMakeDir` (`mkdir`), `osRemove` (`unlink`/`rmdir`), `osRename` (`rename`), and the working-directory calls `osCurrentDir` (`getcwd`), `osChangeDir` (`chdir`), `osTempDir`. Environment and identity use `osGetEnv`/`osSetEnv` (`getenv`/`setenv`), `osHostName` (`gethostname`), and `osUserName` (`getpwuid`/`$USER`). See `/lib/os/OS.md`.
+**Exposed to SLeeLa.** File *content* I/O uses `openFile`/`read`/`write`/`close`/`unlinkFile`. Filesystem *metadata and namespace* operations use the `os*` built-ins (serviced by `impl/core/sleela_os.c`): `osExists`/`osIsDir`/`osFileSize` (`stat`), `osMakeDir` (`mkdir`), `osRemove` (`unlink`/`rmdir`), `osRename` (`rename`), and the working-directory calls `osCurrentDir` (`getcwd`), `osChangeDir` (`chdir`), `osTempDir`. Environment and identity use `osGetEnv`/`osSetEnv` (`getenv`/`setenv`), `osHostName` (`gethostname`), and `osUserName` (`getpwuid`/`$USER`). See `/lib/operating-system/OS.md`.
 
 ## Event and asynchronous I/O
 

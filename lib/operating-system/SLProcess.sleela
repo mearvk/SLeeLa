@@ -1,0 +1,124 @@
+<< lib/operating-system/SLProcess.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLProcess — a host operating-system process launched from
+     SLeeLa source. It wraps the VM's process built-ins: osRun (synchronous),
+     osSpawn (background), osWait (reap + exit code), osKill (terminate), and
+     osProcessClose (release). Underneath, the VM calls CreateProcess + Wait*
+     on Windows and posix_spawn + waitpid on Linux/macOS; the spawned child is a
+     VM-local handle, never a raw PID, keeping the bounded-handle safety model.
+   
+   Lifecycle: configure(command) -> start() (async) or runSync(); then wait()
+   for the exit code, or kill() to terminate. A handle is single-use: wait()
+   and close() both release it.
+   
+   Family: operating-system. Native VM/OS work crosses the explicit `os*` SLVM bridge. >>
+#sleela 2.5
+material;
+class SLProcess {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 707;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  static final int STATE_NEW     = 0;
+  static final int STATE_RUNNING = 1;
+  static final int STATE_EXITED  = 2;
+  static final int STATE_FAILED  = 3;
+
+  String command;
+  < VM-local process handle (-1 = none) >
+  int handle;
+  int state;
+  int exitCode;
+
+  void configure(String cmd) {
+    command = cmd; handle = -1; state = STATE_NEW; exitCode = -1;
+  }
+
+  < Run synchronously: block until the process exits, recording the exit code. >
+  < Returns the exit code (0 == success). >
+  int runSync() {
+    exitCode = osRun(command);
+    state = (exitCode == 0) ? STATE_EXITED : STATE_FAILED;
+    return exitCode;
+  }
+
+  < Start the process in the background. Returns true if it launched. After a >
+  < successful start the process is RUNNING and must be reaped with wait() >
+  < (or released with close()). >
+  boolean start() {
+    handle = osSpawn(command);
+    if (handle < 0) { state = STATE_FAILED; return false; }
+    state = STATE_RUNNING;
+    return true;
+  }
+
+  < Block for a started process and collect its exit code; releases the handle. >
+  int wait() {
+    if (handle < 0) { return -1; }
+    exitCode = osWait(handle);
+    < osWait consumes the handle >
+    handle = -1;
+    state = (exitCode == 0) ? STATE_EXITED : STATE_FAILED;
+    return exitCode;
+  }
+
+  < Terminate a running process and release its handle (reaping it), so a >
+  < kill-only path does not leak a VM process-table slot. After kill() the >
+  < process is FAILED and the handle is gone. >
+  boolean kill() {
+    if (handle < 0) { return false; }
+    boolean ok = osKill(handle) == 0;
+    < release the slot (reap the child) >
+    osProcessClose(handle);
+    handle = -1;
+    state = STATE_FAILED;
+    return ok;
+  }
+
+  < Release a started-but-unwaited process without blocking. >
+  void close() {
+    if (handle >= 0) { osProcessClose(handle); handle = -1; }
+  }
+
+  boolean running() { return state == STATE_RUNNING; }
+  boolean succeeded() { return state == STATE_EXITED && exitCode == 0; }
+  int status() { return exitCode; }
+  int processState() { return state; }
+}

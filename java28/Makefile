@@ -13,7 +13,15 @@ CC ?= cc
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra
 JAVAC ?= javac
 JAVA ?= java
-JAVA_HOME ?= $(shell dirname $$(dirname $$(readlink -f $$(which javac))))
+# Resolve the JDK home robustly. Prefer the JVM's own authoritative `java.home`
+# (via `java -XshowSettings:properties`), which points at the real JDK even when
+# `javac` on PATH is a version-manager SHIM (mise/asdf/sdkman) -- in that case
+# `readlink -f $(which javac)` resolves to the shim itself, not the JDK, and
+# yields a bogus home with no include/jni.h. Fall back to the readlink method
+# when XshowSettings is unavailable. An explicit JAVA_HOME override wins (?=).
+JAVA_HOME ?= $(shell h=$$($(JAVA) -XshowSettings:properties -version 2>&1 | sed -n 's/^[[:space:]]*java\.home = //p'); \
+	if [ -n "$$h" ] && [ -f "$$h/include/jni.h" ]; then echo "$$h"; \
+	else dirname $$(dirname $$(readlink -f $$(which $(JAVAC)))); fi)
 
 BUILD := build
 CLASSES := $(BUILD)/classes
@@ -42,6 +50,11 @@ $(BIN)/sleela_java28_demo: src/native/sleela_java28_port.c src/native/sleela_jav
 # --- JNI channel: shared library (depends on generated JNI header) ------------
 jni: $(BIN)/libsleela_java28.so
 $(BIN)/libsleela_java28.so: src/native/sleela_java28_bridge.c java | $(BIN)
+	@test -f "$(JAVA_HOME)/include/jni.h" || { \
+	  echo "java28: cannot find jni.h under JAVA_HOME=$(JAVA_HOME)" >&2; \
+	  echo "  Set JAVA_HOME to a JDK that has include/jni.h, e.g.:" >&2; \
+	  echo "    make -C java28 JAVA_HOME=\$$($(JAVA) -XshowSettings:properties -version 2>&1 | sed -n 's/^.*java.home = //p')" >&2; \
+	  exit 1; }
 	$(CC) $(CFLAGS) -fPIC -shared \
 	  -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/linux" -I$(JNIH) $(NATIVE_INC) \
 	  src/native/sleela_java28_bridge.c -o $@

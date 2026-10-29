@@ -1,0 +1,161 @@
+<< lib/operating-system/SLOSSensitivityFetch.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLOSSensitivityFetch -- the OPT-IN, per-user downloader
+     that materialises the OS-grade C/C++ warehouse referenced by
+     SLOSSensitivitySource (mearvk/OS.Sensitivity.III) into a developer-chosen
+     directory, through the osRun host-process bridge. It never runs
+     automatically and bundles nothing: SLeeLa carries only the reference; an OS
+     Creator(TM) runnable invokes fetch(root) explicitly to download the C/C++
+     for the chosen operating-system shape, which it then manipulates into the
+     user's preliminary ISO source build at home or office.
+   
+   Strategy: compose a `git clone` from the SLOSSensitivitySource reference and
+     run it via osRun (which returns the child's exit code). The default mode is
+     a SHALLOW, single-branch clone pinned to the reference branch; a full clone
+     is available for a complete working tree. Nothing is written into the
+     SLeeLa repository itself -- the destination is an external output root the
+     developer names. After a full clone the pinned commit is checked out for
+     reproducibility. A per-shape path resolver (shapePath) lets the caller
+     locate the chosen shape's folder inside the fetched tree.
+   
+   Family: operating-system. Opt-in network fetch via the osRun / osMakeDir / osExists bridge;
+     requires #sleela 1.5 for the os* built-ins. >>
+#sleela 2.5
+material;
+class SLOSSensitivityFetch {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10932;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-23";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-23";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Fetch depth/mode tags. >
+  < --depth 1 --single-branch (default) >
+  static final int MODE_SHALLOW = 0;
+  < full history >
+  static final int MODE_FULL    = 1;
+
+  < the reference (field; wired by configure()) >
+  SLOSSensitivitySource src;
+  int mode;
+  < exit code of the most recent fetch (-1 if none run) >
+  int lastExit;
+
+  void configure() {
+    src = new SLOSSensitivitySource();
+    src.configure();
+    mode = MODE_SHALLOW;
+    lastExit = -1;
+  }
+
+  < Point at a specific reference instead of the default. >
+  void useSource(SLOSSensitivitySource source) { src = source; }
+  void setMode(int m) { mode = m; }
+  SLOSSensitivitySource source() { return src; }
+
+  < Build the git clone command that fetch(root) will run, without running it. >
+  < Exposed so a tool can show or log the exact command (dry run). >
+  String cloneCommand(String destDir) {
+    String base = "git -c http.postBuffer=524288000 -c http.version=HTTP/1.1 clone";
+    String opts = "";
+    if (mode == MODE_SHALLOW) {
+      opts = " --depth 1 --single-branch --branch " + src.defaultBranch();
+    }
+    return base + opts + " " + src.cloneUrl() + " " + destDir;
+  }
+
+  < After a FULL clone, hard-pin the reference commit (shallow clones can only >
+  < pin the branch tip). Returns the checkout command, or "" for shallow mode. >
+  String pinCommand(String destDir) {
+    if (mode == MODE_SHALLOW) { return ""; }
+    return "git -C " + destDir + " checkout " + src.commit();
+  }
+
+  < The opt-in fetch. Creates destRoot, clones the warehouse into >
+  < destRoot/<repo>, optionally pins the commit, and returns the git exit code >
+  < (0 == success). force==false and an existing destination short-circuits to >
+  < 0 so a re-run does not re-download. >
+  int fetch(String destRoot, boolean force) {
+    osMakeDir(destRoot);
+    String dest = destRoot + "/" + src.repo;
+    if (osExists(dest) == 1 && !force) {
+      lastExit = 0;
+      return 0;
+    }
+    int rc = osRun(cloneCommand(dest));
+    if (rc == 0) {
+      String pin = pinCommand(dest);
+      if (pin != "") { osRun(pin); }
+    }
+    lastExit = rc;
+    return rc;
+  }
+
+  < Convenience: shallow fetch (the safe default). >
+  int fetchShallow(String destRoot) { setMode(MODE_SHALLOW); return fetch(destRoot, false); }
+
+  < Convenience: full fetch pinned to the reference commit. >
+  int fetchComplete(String destRoot) { setMode(MODE_FULL); return fetch(destRoot, false); }
+
+  int lastExitCode() { return lastExit; }
+  boolean succeeded() { return lastExit == 0; }
+
+  < Verify the warehouse is reachable without downloading it (git ls-remote). >
+  < Returns 0 when the branch is resolvable. Cheap pre-flight for a GUI. >
+  int probe() {
+    return osRun("git ls-remote --heads " + src.cloneUrl() + " " + src.defaultBranch() + " >/dev/null 2>&1");
+  }
+
+  < After a fetch into destRoot, the on-disk path to a chosen shape's folder >
+  < ("Linux"/"Windows"/"macOS"), e.g. destRoot/OS.Sensitivity.III/linux. >
+  < Returns "" for an unknown shape. >
+  String shapePath(String destRoot, String shape) {
+    String sd = src.shapeDir(shape);
+    if (sd == "") { return ""; }
+    return destRoot + "/" + src.repo + "/" + sd;
+  }
+
+  < After a fetch, the on-disk path to a (shape, component) C/C++ folder, >
+  < e.g. destRoot/OS.Sensitivity.III/linux/os-core. "" if shape/component bad. >
+  String componentPath(String destRoot, String shape, String component) {
+    String rel = src.dirFor(shape, component);
+    if (rel == "") { return ""; }
+    return destRoot + "/" + src.repo + "/" + rel;
+  }
+}

@@ -1,0 +1,60 @@
+<< lib/xml/SLPackage.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines the SLeeLa standard-library package for xml -- the
+     Document Object Model (DOM) family. Exposes the package to the SLeeLa
+     compiler, Loader, and Nordshrift. >>
+#sleela 2.5
+material;
+< Library facade for module package: xml >
+< A DOM-shaped XML surface: a document owns a tree of element/text/comment >
+< /CDATA nodes, each node owns ordered children and named attributes, and a >
+< serializer renders the tree back to well-formed XML text. >
+class SLPackage {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7920;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-28";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument. >
+  < XML 1.0 is W3C REC-xml-20081126 (Fifth Edition); DOM is W3C DOM / ISO-IEC >
+  < 19776. These are the governing instruments for this family. >
+  String metaNationalSchedule = "W3C REC-xml (XML 1.0, Fifth Edition)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  String packageName;
+  void configure(String name){packageName=name;}
+  String name(){return packageName;}
+  boolean available(){return packageName!=null;}
+}

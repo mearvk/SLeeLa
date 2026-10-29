@@ -23,16 +23,40 @@
 
 Recent additions to the language, drivers, and standard library:
 
+- **SleelaDoc — a Javadoc-style documentation solution, with a generated HTML
+  site.** **SleelaDoc** is SLeeLa's in-source doc-comment convention
+  (angle-bracket comments sentinelled with `@doc` / `@page`; see
+  [`manifesto/SLEELADOC.md`](manifesto/SLEELADOC.md)), and
+  [`lib/sleeladoc`](lib/sleeladoc/README.md) is the **extractor** that renders a
+  `.sleela` unit as a Markdown or HTML API page — the way `javadoc` renders Java,
+  documenting *intent*. A complete, browsable **HTML documentation site for the
+  entire `/lib`** is generated into [`/sleeladoc-api`](sleeladoc-api/README.md)
+  by `tools/generate-sleeladoc-api.py` (open `sleeladoc-api/index.html`; a clean
+  blue / light-blue / light-grey / white style with a package → class → member
+  hierarchy and a glossary written for the *Student 2* reader). The compiler also
+  emits author-marked doc outputs as a byproduct of compilation (`--wiki`
+  MediaWiki page + an originated source twin), documented in
+  [`manifesto/SLEELADOC.WIKI.md`](manifesto/SLEELADOC.WIKI.md). Runnable:
+  [`lib/sleeladoc/sleeladoc-demo.sleela`](lib/sleeladoc/sleeladoc-demo.sleela).
+- **XML Document Object Model (`lib/xml`).** A SLeeLa-side XML DOM — a document
+  owning a tree of element/text/comment/CDATA/PI nodes with ordered children and
+  named attributes, a serializer (compact/pretty, XML 1.0 §2.4 escaping), a
+  char-cell parser, and the `SLXmlAspect` quality register. Node equality is a
+  three-rung tie of trust (identity → same subject → structure), reflexive,
+  symmetric, and deterministic. See [`lib/xml/README.md`](lib/xml/README.md) and
+  the runnable [`lib/xml/xml-dom.sleela`](lib/xml/xml-dom.sleela).
 - **Wide signed integer primitives (`long`, `int64`, `int128`).** `int`, `long`,
   and `int64` are all 64-bit signed integers that type-check and run identically;
   `int128` is accepted as an integer type (64-bit-backed for now, with true
   128-bit a documented follow-up). See
   [`SLEELA.syntax`](SLEELA.syntax) §21.
-- **Document markers (`material`, `memory`, `author`/`authorial`).** Syntax 2.5
-  adds first-class, declarative-only document markers — `material;` (settled
-  Source), `memory;`, and the `author`/`authorial` marker — recognised and
+- **Document markers (`material`, `memory`, `author`/`authorial`, `determine`).**
+  First-class, declarative-only document markers — `material;` (settled Source)
+  and `memory;` (syntax 2.5), the `author`/`authorial` marker (syntax 2.4), and
+  `determine;` (syntax 2.6; a document open to be processed to further by a
+  doctor, physician, or ghost toward completion by legal hand) — recognised and
   version-gated by the front end with no effect on parsing, typing, or codegen.
-  See [`SLEELA.syntax`](SLEELA.syntax) §18–§20.
+  See [`SLEELA.syntax`](SLEELA.syntax) §18–§20 and §23.
 - **Nordshrift at syntax 2.5 with full library reach.** Nordshrift resolves
   through the same recursive `/lib` index as the compiler, reaching every
   package and `.sleela` unit; `nordshrift check` reports the whole-tree counts.
@@ -148,7 +172,7 @@ interactive deployment workflow and all installation options, see
 [Quick and Safe Install](install/README.md).
 
 ## V. Language and Runtime
-The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **2.5**; compiler/tool version and source syntax version are distinct. The 2.5 surface includes the wide signed integer primitives `long`/`int64`/`int128` (§21) and the declarative document markers `material`/`memory`/`author`/`authorial` (§18–§20). Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
+The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **2.6**; compiler/tool version and source syntax version are distinct. The 2.6 surface adds **keyword supporter documents** (§22) — every use of `try`/`catch`/`throw`/`synchronized`/`super` is hashed, recorded as a `@supporter(...)` annotation, and linked to a `docs/keyword-supporters/` folder the developer fills out — and the **`determine` document marker** (§23), a declarative-only sibling to `material`/`memory`/`author`. It carries forward the wide signed integer primitives `long`/`int64`/`int128` (§21) and the declarative document markers `material`/`memory`/`author`/`authorial` (§18–§20). Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
 
 The repository includes a native C/C++ implementation, SLVM generation references, standard-library modules, tests, examples, and platform integrations. Implementation and validation status varies by module; consult its specification and current CI results rather than assuming uniform completeness.
 

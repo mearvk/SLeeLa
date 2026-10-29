@@ -34,6 +34,27 @@ int main(void) {
     CHECK(set_env("SLEELA_VM_VERSION", "11x") == 0, 9);
     CHECK(sleela_vm_config_apply_environment(&c) != 0, 10);
     CHECK(set_env("SLEELA_VM_VERSION", NULL) == 0, 11);
+
+    /* Lock semantics: default is unlocked; validation accepts 0/1; a save/load
+     * round-trip persists a pinned (locked) version and preserves it. */
+    sleela_vm_config_defaults(&c);
+    CHECK(c.locked == 0, 12);
+    c.locked = 1; c.version = 11;
+    CHECK(sleela_vm_config_validate(&c) == 0, 13);
+    c.locked = 5;
+    CHECK(sleela_vm_config_validate(&c) != 0, 14);
+    {
+        const char *tmp = "vm_config_smoke_lock.tmp.conf";
+        SLEELA_VM_CONFIG w, r;
+        sleela_vm_config_defaults(&w);
+        w.version = 11; w.locked = 1; w.strict = 1;
+        CHECK(sleela_vm_config_save(tmp, &w) == 0, 15);
+        sleela_vm_config_defaults(&r);
+        CHECK(sleela_vm_config_load(tmp, &r) == 0, 16);
+        CHECK(r.version == 11 && r.locked == 1, 17);
+        remove(tmp);
+    }
+
     puts("VM CONFIG: PASS");
     return 0;
 }

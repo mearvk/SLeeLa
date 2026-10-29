@@ -64,11 +64,18 @@ static int probe_path_command(const char *command, char *out, size_t out_cap) {
         if (next) *next = '\0';
 
         if (cursor[0] != '\0') {
-            char candidate[1024];
-            snprintf(candidate, sizeof(candidate), "%s%c%s",
+            /* Size the candidate buffer to the actual directory + separator +
+               command (+ ".exe" headroom on Windows). A fixed buffer would
+               silently skip long PATH entries and miss a valid java there. */
+            size_t dir_len = strlen(cursor);
+            size_t cand_cap = dir_len + 1 + strlen(command) + 6; /* sep + NUL + .exe */
+            char *candidate = (char *)malloc(cand_cap);
+            if (!candidate) { free(copy); return 0; }
+            snprintf(candidate, cand_cap, "%s%c%s",
                      cursor, SLEELA_PATH_SEP, command);
             if (executable_file(candidate)) {
                 copy_string(out, out_cap, candidate);
+                free(candidate);
                 free(copy);
                 return 1;
             }
@@ -77,16 +84,18 @@ static int probe_path_command(const char *command, char *out, size_t out_cap) {
                discovery contract intentionally uses the portable name java. */
             if (strchr(command, '.') == NULL) {
                 size_t used = strlen(candidate);
-                if (used + 5 < sizeof(candidate)) {
+                if (used + 5 < cand_cap) {
                     memcpy(candidate + used, ".exe", 5);
                     if (executable_file(candidate)) {
                         copy_string(out, out_cap, candidate);
+                        free(candidate);
                         free(copy);
                         return 1;
                     }
                 }
             }
 #endif
+            free(candidate);
         }
         if (!next) break;
         cursor = next + 1;
@@ -151,6 +160,19 @@ int sleela_java_runtime_probe_source(
         contains(source, length, "java.construct:") ||
         contains(source, length, "java.invoke:") ||
         contains(source, length, "java.static:"))
+        java = 1;
+
+    /* A plain Java source may use no java.* import at all (e.g. a single class
+       with a main method and only System.out). Recognise the canonical Java
+       entry point and standard-library surface so such files still take the
+       JVM path rather than being misread as SLeeLa-ingestion units. Also
+       recognise Jakarta EE (jakarta.*), the successor namespace to javax.* */
+    if (contains(source, length, "public static void main") ||
+        contains(source, length, "static void main(") ||
+        contains(source, length, "System.out.") ||
+        contains(source, length, "System.err.") ||
+        contains(source, length, "import jakarta.") ||
+        contains(source, length, "import javax."))
         java = 1;
 
     if (contains(source, length, "java.awt.") ||

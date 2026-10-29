@@ -1,0 +1,41 @@
+-- SLeeLa East Asian colorscheme for Neovim (Lua).
+-- Mirrors lib/linux-editors/vim/colors/sleela-east-asian.vim.
+vim.cmd("highlight clear")
+if vim.fn.exists("syntax_on") == 1 then vim.cmd("syntax reset") end
+vim.o.background = "dark"
+vim.g.colors_name = "sleela-east-asian"
+local s = vim.api.nvim_set_hl
+local function hi(group, opts) s(0, group, opts) end
+hi('Normal', { fg = '#F2EFE7', bg = '#171A1C' })
+hi('Cursor', { fg = '#171A1C', bg = '#D97878' })
+hi('CursorLine', { bg = '#242A2B' })
+hi('LineNr', { fg = '#8C9693', bg = '#171A1C' })
+hi('CursorLineNr', { fg = '#D97878', bold = true })
+hi('Visual', { bg = '#3A4541' })
+hi('Search', { fg = '#171A1C', bg = '#D8B76A' })
+hi('StatusLine', { fg = '#F2EFE7', bg = '#343D39', bold = true })
+hi('Pmenu', { fg = '#F2EFE7', bg = '#343D39' })
+hi('MatchParen', { fg = '#F2EFE7', bg = '#3A4541', bold = true })
+hi('Keyword', { fg = '#D97878', bold = true })
+hi('Statement', { fg = '#D97878', bold = true })
+hi('Type', { fg = '#72C7A5', bold = true })
+hi('String', { fg = '#D8B76A' })
+hi('Number', { fg = '#BDA6DE' })
+hi('Constant', { fg = '#E59B83' })
+hi('Function', { fg = '#9FCB9A', bold = true })
+hi('Identifier', { fg = '#F2EFE7' })
+hi('Operator', { fg = '#D6DBD7' })
+hi('Comment', { fg = '#969F9B', italic = true })
+hi('PreProc', { fg = '#D97878' })
+hi('Special', { fg = '#72C7A5' })
+hi('Error', { fg = '#FF7777', undercurl = true })
+hi('Todo', { fg = '#D8B76A', bg = '#343D39', bold = true })
+hi('@keyword', { link = 'Keyword' })
+hi('@type', { link = 'Type' })
+hi('@string', { link = 'String' })
+hi('@number', { link = 'Number' })
+hi('@comment', { link = 'Comment' })
+hi('@function', { link = 'Function' })
+hi('@constant', { link = 'Constant' })
+hi('@operator', { link = 'Operator' })
+hi('@preproc', { link = 'PreProc' })

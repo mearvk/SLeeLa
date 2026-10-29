@@ -1,0 +1,41 @@
+-- SLeeLa American Professional colorscheme for Neovim (Lua).
+-- Mirrors lib/linux-editors/vim/colors/sleela-american.vim.
+vim.cmd("highlight clear")
+if vim.fn.exists("syntax_on") == 1 then vim.cmd("syntax reset") end
+vim.o.background = "dark"
+vim.g.colors_name = "sleela-american"
+local s = vim.api.nvim_set_hl
+local function hi(group, opts) s(0, group, opts) end
+hi('Normal', { fg = '#F4F7FA', bg = '#101820' })
+hi('Cursor', { fg = '#101820', bg = '#7FB3FF' })
+hi('CursorLine', { bg = '#172632' })
+hi('LineNr', { fg = '#687887', bg = '#101820' })
+hi('CursorLineNr', { fg = '#7FB3FF', bold = true })
+hi('Visual', { bg = '#233D55' })
+hi('Search', { fg = '#101820', bg = '#F2C078' })
+hi('StatusLine', { fg = '#F4F7FA', bg = '#233D55', bold = true })
+hi('Pmenu', { fg = '#F4F7FA', bg = '#233D55' })
+hi('MatchParen', { fg = '#F4F7FA', bg = '#233D55', bold = true })
+hi('Keyword', { fg = '#7FB3FF', bold = true })
+hi('Statement', { fg = '#7FB3FF', bold = true })
+hi('Type', { fg = '#73DACA', bold = true })
+hi('String', { fg = '#F2C078' })
+hi('Number', { fg = '#C4A7E7' })
+hi('Constant', { fg = '#FF8F8F' })
+hi('Function', { fg = '#82C91E', bold = true })
+hi('Identifier', { fg = '#F4F7FA' })
+hi('Operator', { fg = '#D8DEE9' })
+hi('Comment', { fg = '#8A96A3', italic = true })
+hi('PreProc', { fg = '#F0A6CA' })
+hi('Special', { fg = '#73DACA' })
+hi('Error', { fg = '#FF6B6B', undercurl = true })
+hi('Todo', { fg = '#F2C078', bg = '#233D55', bold = true })
+hi('@keyword', { link = 'Keyword' })
+hi('@type', { link = 'Type' })
+hi('@string', { link = 'String' })
+hi('@number', { link = 'Number' })
+hi('@comment', { link = 'Comment' })
+hi('@function', { link = 'Function' })
+hi('@constant', { link = 'Constant' })
+hi('@operator', { link = 'Operator' })
+hi('@preproc', { link = 'PreProc' })

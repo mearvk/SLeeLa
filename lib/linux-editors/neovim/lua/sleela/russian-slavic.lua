@@ -1,0 +1,41 @@
+-- SLeeLa Russian and Slavic (Medium) colorscheme for Neovim (Lua).
+-- Mirrors lib/linux-editors/vim/colors/sleela-russian-slavic.vim.
+vim.cmd("highlight clear")
+if vim.fn.exists("syntax_on") == 1 then vim.cmd("syntax reset") end
+vim.o.background = "dark"
+vim.g.colors_name = "sleela-russian-slavic"
+local s = vim.api.nvim_set_hl
+local function hi(group, opts) s(0, group, opts) end
+hi('Normal', { fg = '#E8EAF0', bg = '#202733' })
+hi('Cursor', { fg = '#202733', bg = '#A9C0DD' })
+hi('CursorLine', { bg = '#293341' })
+hi('LineNr', { fg = '#929BA8', bg = '#202733' })
+hi('CursorLineNr', { fg = '#A9C0DD', bold = true })
+hi('Visual', { bg = '#3B4655' })
+hi('Search', { fg = '#202733', bg = '#C9AD76' })
+hi('StatusLine', { fg = '#E8EAF0', bg = '#3B4655', bold = true })
+hi('Pmenu', { fg = '#E8EAF0', bg = '#3B4655' })
+hi('MatchParen', { fg = '#E8EAF0', bg = '#3B4655', bold = true })
+hi('Keyword', { fg = '#A9C0DD', bold = true })
+hi('Statement', { fg = '#A9C0DD', bold = true })
+hi('Type', { fg = '#8FC4B2', bold = true })
+hi('String', { fg = '#D6BD8B' })
+hi('Number', { fg = '#C2B0D8' })
+hi('Constant', { fg = '#D99198' })
+hi('Function', { fg = '#A7C69C', bold = true })
+hi('Identifier', { fg = '#E8EAF0' })
+hi('Operator', { fg = '#D1D6DE' })
+hi('Comment', { fg = '#9AA3AF', italic = true })
+hi('PreProc', { fg = '#D5A6B4' })
+hi('Special', { fg = '#8FC4B2' })
+hi('Error', { fg = '#E58B91', undercurl = true })
+hi('Todo', { fg = '#C9AD76', bg = '#3B4655', bold = true })
+hi('@keyword', { link = 'Keyword' })
+hi('@type', { link = 'Type' })
+hi('@string', { link = 'String' })
+hi('@number', { link = 'Number' })
+hi('@comment', { link = 'Comment' })
+hi('@function', { link = 'Function' })
+hi('@constant', { link = 'Constant' })
+hi('@operator', { link = 'Operator' })
+hi('@preproc', { link = 'PreProc' })

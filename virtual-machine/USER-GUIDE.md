@@ -99,6 +99,30 @@ sleela vm run native program.sleela      # same as plain `sleela run` (Native VM
 > of `make all`). Standard think-tank versions (`1..10`) are not yet bootable
 > this way — use the Native VM (plain `sleela run`) for those.
 
+### Lock in a VM generation
+
+If you want one generation used every time — typically the **advanced
+(highest)** VM — you can pin it so the CLI refuses anything else:
+
+```sh
+sleela vm lock              # lock in the advanced VM (the highest generation)
+sleela vm lock premium 11   # lock a specific generation (same as above)
+sleela vm status            # show the current pin (version / locked / strict)
+sleela vm unlock            # clear the pin; selection is free again
+```
+
+While locked, `sleela vm run premium <n>` uses the pinned generation and
+**refuses** any other `<n>` (exit code 3) with a message telling you to run the
+pinned version or `sleela vm unlock`. `sleela vm select premium <n>` still
+reports the choice but notes that running it will be refused until you unlock.
+
+The lock is your explicit choice and is **persisted** to the VM config
+(`config/vm.conf`, or the path in `$SLEELA_VM_CONF`) as `vm.locked = true` with
+`vm.version = <n>`. It is written through the existing VM-selection precedence
+(CLI → `SLEELA_VM_VERSION` → `vm.conf` → compiled default 11), and the save
+preserves everything else already in the file (e.g. the `java.*` block). Nothing
+is locked by default.
+
 ---
 
 ## 2. `sleela modium` — scan a VM's files for resolution
