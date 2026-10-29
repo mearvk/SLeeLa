@@ -3,9 +3,10 @@ material;
 < Source-side canonical SLeeLa VM ISA registry. Numeric order is canonical. >
 < Canonical opcode order follows the native enum exactly. >
 < Runtime services (networking, files, sockets, threading, GC, cancellation, ownership, and teardown) are specified in /lib/vm/RUNTIME-SERVICES.md. GC is a runtime mechanism, not a hidden opcode. >
-<< Runtime support: all 150 entries are dispatched by /impl/core. Unknown values are rejected and logged.
+<< Runtime support: all canonical entries are dispatched by /impl/core. Unknown values are rejected and logged.
    (0..123 canonical; 124 OP_GC_HINT, 125 OP_RAN_MEM; 126..147 OP_IC_* idea-canvas;
-   148 OP_VM_SELECT; 149 OP_MODIUM_SCAN.) >>
+   148 OP_VM_SELECT; 149 OP_MODIUM_SCAN; 150 OP_UI_CALL; 151 OP_SSEND;
+   152 OP_CHECKCAST; 153 OP_INSTANCEOF; 154 OP_DUP2.) >>
 < Operating-system system calls (OP_OS_*, syntax 1.5) are a runtime-service family like sockets/files: a spawned process is a VM-local bounded handle. See /lib/vm/RUNTIME-SERVICES.md and /lib/operating-system/OS.md. >
 < OP_NOP >
 < OP_CONST >
@@ -385,3 +386,12 @@ class SLISAUiCall { String name; int code; }
 
 < OP_SSEND 151 -- the ::: structural-offload send (String source -> receiver reach) >
 class SLISASSend { String name; int code; }
+
+< OP_CHECKCAST 152 >
+class SLISACheckCast { String name; int code; }
+
+< OP_INSTANCEOF 153 >
+class SLISAInstanceOf { String name; int code; }
+
+< OP_DUP2 154 >
+class SLISADup2 { String name; int code; }
