@@ -77,6 +77,11 @@ class SLVmVersion {
   < Which hardening units this version composes (additive 001..010). >
   < 001 >
   int hasConfig; int hasReport; int hasStatus;
+  < big integer series: SLeeLa fixed-width int32..int16777216 (signed) and >
+  < uint32..uint16777216 (unsigned), power-of-two widths 2^5..2^24. A >
+  < foundational language number capability, present from v001 in every >
+  < think-tank version (parallels the premium VMs admitting the same series). >
+  int hasBigIntSeries;
   < 002 >
   int hasMemory;
   < 003 >
@@ -104,6 +109,9 @@ class SLVmVersion {
     number = n; id = identifier; label = lbl; nativeDir = dir; nativeMain = mainEntry;
     < ground floor is present from 001. >
     hasConfig = 1; hasReport = 1; hasStatus = 1;
+    < the fixed-width big integer series is a foundational language capability, >
+    < available in every version from 001 onward. >
+    hasBigIntSeries = 1;
     hasMemory = 0; hasResult = 0; hasTelemetry = 0; hasGc = 0; hasProfile = 0;
     hasCapability = 0; hasPlatform = 0; hasAudit = 0; hasRuntime = 0;
     profile = new SLVmConfig();
@@ -124,11 +132,15 @@ class SLVmVersion {
   }
 
   int unitCount() {
-    int c = hasConfig + hasReport + hasStatus + hasMemory + hasResult
-          + hasTelemetry + hasGc + hasProfile + hasCapability + hasPlatform
-          + hasAudit + hasRuntime;
+    int c = hasConfig + hasReport + hasStatus + hasBigIntSeries + hasMemory
+          + hasResult + hasTelemetry + hasGc + hasProfile + hasCapability
+          + hasPlatform + hasAudit + hasRuntime;
     return c;
   }
+
+  < 1 iff this version supports the SLeeLa fixed-width big integer series >
+  < (int32..int16777216, uint32..uint16777216). True for every version. >
+  int supportsBigIntSeries() { return hasBigIntSeries; }
 
   < Build a configured runtime for this version (what selection resolves to). >
   SLVmRuntime build() {
@@ -138,7 +150,10 @@ class SLVmVersion {
   }
 
   void describe() {
+    String bigint = " bigint=no";
+    if (hasBigIntSeries == 1) { bigint = " bigint=int32..int16777216,uint32..uint16777216"; }
     print(id + "  [" + label + "]  units=" + unitCount()
+          + bigint
           + "  native=" + nativeDir + "/" + nativeMain);
   }
 }

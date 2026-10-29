@@ -13,6 +13,9 @@
  * through v008). It extends SLVmVersion (lib/vm/src/sleela/SLVmVersion.sleela).
  *
  * Family: vm. Composes SLVmVersion, SLVmConfig, SLVmRuntime.
+ * Number support: the SLeeLa fixed-width big integer series (signed int32..int16777216,
+ *   unsigned uint32..uint16777216) is available in every version, inherited from
+ *   SLVmVersion (hasBigIntSeries, set from v001). See supportsBigIntSeries().
  */
 #sleela 2.4
 class SLVmVersion008 extends SLVmVersion {
