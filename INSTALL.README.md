@@ -50,6 +50,25 @@ artifact is produced with these options baked in.
 | `MODULES=all` | Install **every** `lib/` package. This is the **default**. |
 | `MODULES="pkg1 pkg2 …"` | Install **only** the named packages (the "individually" selection expressed as data). |
 | `EXCLUDE_MODULES="pkgA pkgB"` | Drop these packages from whatever `MODULES` selected. |
+| `SERVERS=on` / `SERVERS=off` | Convenience group for the HTTP/web **server** trees. `on` (default) keeps them; `off` drops them all in one flag. Composes with `EXCLUDE_MODULES`. |
+
+### The `SERVERS` group
+
+`SERVERS=off` is shorthand for excluding every HTTP/web server package without
+naming each one. It drops:
+
+```
+http  http-1.0  http-2.0  http-3.0  http-4.0  http-5.0  http-6.0
+http-7.0  http-8.0  http-9.0  http-servers  server-edition
+web-server-technology  website
+```
+
+`SERVERS=on` (the default) keeps them. Whatever `SERVERS` decides is **composed
+with** any explicit `EXCLUDE_MODULES` you also pass.
+
+> Note: the HTTP server *objects* are statically linked into the `sleela` binary
+> upstream, so `SERVERS=off` omits the server **library source trees** — the
+> core binary itself is unchanged.
 
 ### Examples
 
@@ -62,6 +81,12 @@ make -C install install MODULES="crypto codecs compression regex"
 
 # Everything except a couple of trees.
 make -C install install MODULES=all EXCLUDE_MODULES="ide wifi"
+
+# Everything except the HTTP/web server trees (one flag).
+make -C install install SERVERS=off
+
+# Servers off AND also drop the IDE tree (SERVERS composes with EXCLUDE_MODULES).
+make -C install install SERVERS=off EXCLUDE_MODULES="ide"
 
 # Works on every install path and for staged (DESTDIR) package builds, e.g.:
 make -C install install-local MODULES="crypto regex"
