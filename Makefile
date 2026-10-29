@@ -43,10 +43,14 @@ advanced-build:
 	case "$$choice" in \
 	  y|Y|yes|YES|Yes) \
 	    echo "Launching the SLeeLa advanced (guided) build..."; \
-	    case "$$(uname -s 2>/dev/null)" in \
-	      Darwin) ./install/sleela-clean-install-macos.sh ;; \
-	      *) ./install/sleela-clean-install.sh ;; \
-	    esac ;; \
+    if [ "$$OS" = "Windows_NT" ]; then \
+      powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./install/sleela-clean-install.ps1; \
+    else \
+      case "$$(uname -s 2>/dev/null)" in \
+        Darwin) bash ./install/sleela-clean-install-macos.sh ;; \
+        *) bash ./install/sleela-clean-install.sh ;; \
+      esac; \
+    fi ;; \
 	  n|N|no|NO|No|skip|SKIP|Skip) \
 	    echo "Keeping the plain make build; run 'make clean-install' later for the guided install." ;; \
 	  *) echo "Unrecognized answer '$$choice'; expected yes, no, or skip." >&2; exit 2 ;; \
@@ -249,7 +253,7 @@ install-product: autocheck
 # protocols + support modules; no servers, IDEs, Wi-Fi, or religious/moral
 # systems). One primary decision, then optional enhancement modules.
 clean-install: autocheck
-	@./install/sleela-clean-install.sh
+	@if [ "$$OS" = "Windows_NT" ]; then powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./install/sleela-clean-install.ps1; elif [ "$$(uname -s 2>/dev/null)" = "Darwin" ]; then bash ./install/sleela-clean-install-macos.sh; else bash ./install/sleela-clean-install.sh; fi
 
 tutorial-check:
 	@./scripts/tutorial-check.sh
