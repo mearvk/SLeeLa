@@ -112,7 +112,8 @@ try {
   }
   if ($LASTEXITCODE -ne 0) { throw "Staged SHA-256 verification failed. Installation was not changed." }
   foreach ($product in @("sleela","sleelvac","nordshrift")) {
-    $built = @((Join-Path $RepoRoot "impl\build\$product.exe"),(Join-Path $RepoRoot "impl\build\$product")) | Where-Object { Test-Path $_ -PathType Leaf } | Select-Object -First 1
+    $built = Join-Path $RepoRoot "impl\build\$product.exe"
+    if (-not (Test-Path $built -PathType Leaf)) { $built = $null }
     if (-not $built) { throw "Required Windows product missing: impl\build\$product.exe. Build the native Windows artifacts first; no install was changed." }
     Copy-Item -Force $built (Join-Path $stage "bin\$product.exe")
   }
