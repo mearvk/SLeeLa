@@ -6,7 +6,6 @@
 
 
 
-
 # SLeeLa Build
 
 The `build/` tree documents and hosts product-specific native build entry points.
@@ -41,7 +40,14 @@ Requirements: GCC or Clang with C++17 support.
     chmod +x build/skya-linux.sh
     ./build/skya-linux.sh
 
-Output: `build/skya/linux/skya`
+The script builds `build/skya/linux/skya`, then asks whether to start the
+server. Answer `y` or `yes` to launch it in the background; the build script
+returns immediately. Answer `n`, `no`, or press Enter to leave it stopped.
+Non-interactive builds compile Skya without starting the server.
+
+When started, output is redirected to `build/skya/linux/skya.log`, and the
+process ID is recorded in `build/skya/linux/skya.pid`. Set `SKYA_ROOM` to
+override the default `lobby` room.
 
 ## Windows 10+
 
@@ -107,7 +113,6 @@ Slecompiler's CMake project is explicitly C++20. The API examples, CLI, tests, a
 ### Slecompiler verification path
 
 After configuration, the native test suite can be invoked from the generated build directory with CTest. The repository also contains five API exemplars, which provide compile-time coverage of the public usage path. Cross-platform CI and packaged release verification remain future build layers.
-
 
 ### Windows 10+ toolchain notes
 
