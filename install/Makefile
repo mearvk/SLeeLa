@@ -41,6 +41,22 @@ SLEELA_MANIFEST_CONSENT ?=
 # refusing. install-all sets this so it can refresh every location in one run.
 SLEELA_INSTALL_FORCE ?=
 
+# -----------------------------------------------------------------------------
+# Module selection for the staged standard library. The installer is BUILT with
+# these options rather than asking at install time:
+#
+#   MODULES=all                 install every lib/ package (default).
+#   MODULES="crypto codecs ..."  install only the named packages ("individually"
+#                                expressed as data -- the explicit set to keep).
+#   EXCLUDE_MODULES="ide wifi"   drop these packages from whatever MODULES chose.
+#
+# "All" is simply the default (MODULES=all). "Individually" is MODULES set to the
+# chosen subset. Selection is non-interactive and is resolved by
+# install-runtime.py stage-lib, so every install path (install, install-local,
+# install-system, install-all) and any DESTDIR package build honor it.
+MODULES ?= all
+EXCLUDE_MODULES ?=
+
 .PHONY: all install install-all install-local install-system do-install refresh-extra-bins install-check install-help uninstall uninstall-all remove-extra-bins manifest-prompt
 
 # Extra standard bin directories that may hold a SLeeLa command from a prior or
@@ -61,6 +77,12 @@ install-help:
 	@echo "  make -C install uninstall      [PREFIX=/usr/local]      Remove one tracked install (single prefix)"
 	@echo "  make -C install uninstall-all                           Remove from EVERY location (mirror of install-all)"
 	@echo "  BINDIR, LIBDIR, DATADIR, SYSCONFDIR, EXTRA_BINDIRS may be overridden."
+	@echo
+	@echo "Module selection (the installer is built with these, not asked at runtime):"
+	@echo "  MODULES=all                      install every lib/ package (default)"
+	@echo "  MODULES=\"crypto codecs regex\"     install only the named packages"
+	@echo "  EXCLUDE_MODULES=\"ide wifi\"        drop these from whatever MODULES selected"
+	@echo "  Example: make -C install install MODULES=\"crypto codecs compression regex\""
 	@echo
 	@echo "Every install variant first offers to (re)generate and verify the base"
 	@echo "SLeeLa code SHA-256 manifest (yes/no). Answer non-interactively with"
@@ -143,6 +165,7 @@ install:
 			exec sudo $(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 				PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" BINDIR="$(BINDIR)" \
 				LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)" \
+				MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
 				SLEELA_INSTALL_ELEVATED=1; \
 		else echo "System installation needs root privileges; install sudo or run this target as root." >&2; exit 1; fi; \
 	fi
@@ -154,12 +177,15 @@ install:
 			$(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 				PREFIX="$$prefix" DESTDIR="$(DESTDIR)" \
 				BINDIR="$$prefix/bin" LIBDIR="$$prefix/lib" DATADIR="$$prefix/share" \
-				SYSCONFDIR="$$HOME/.config" SLEELA_INSTALL_ELEVATED=1 || exit 1; \
+				SYSCONFDIR="$$HOME/.config" \
+				MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
+				SLEELA_INSTALL_ELEVATED=1 || exit 1; \
 		done; \
 	else \
 		$(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 			PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" BINDIR="$(BINDIR)" \
 			LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)" \
+			MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
 			SLEELA_INSTALL_ELEVATED="$(SLEELA_INSTALL_ELEVATED)"; \
 	fi
 
@@ -190,7 +216,9 @@ install-local:
 		$(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 			PREFIX="$$p" DESTDIR="$(DESTDIR)" \
 			BINDIR="$$p/bin" LIBDIR="$$p/lib" DATADIR="$$p/share" \
-			SYSCONFDIR="$$HOME/.config" SLEELA_INSTALL_ELEVATED=1 || exit 1; \
+			SYSCONFDIR="$$HOME/.config" \
+			MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
+			SLEELA_INSTALL_ELEVATED=1 || exit 1; \
 	done
 
 # install-system: system-wide install via the dedicated sudo script. The script
@@ -223,7 +251,9 @@ install-all:
 		$$RUNAS $(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 			PREFIX="$$p" DESTDIR="" \
 			BINDIR="$$p/bin" LIBDIR="$$p/lib" DATADIR="$$p/share" \
-			SYSCONFDIR="$$uh/.config" SLEELA_INSTALL_ELEVATED=1 SLEELA_INSTALL_FORCE=1 || exit 1; \
+			SYSCONFDIR="$$uh/.config" \
+			MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
+			SLEELA_INSTALL_ELEVATED=1 SLEELA_INSTALL_FORCE=1 || exit 1; \
 	done; \
 	echo; \
 	echo "-- (2/3) system prefix /usr/local --"; \
@@ -231,6 +261,7 @@ install-all:
 	$$SUDO $(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 		PREFIX=/usr/local DESTDIR="" BINDIR=/usr/local/bin \
 		LIBDIR=/usr/local/lib DATADIR=/usr/local/share SYSCONFDIR=/etc \
+		MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
 		SLEELA_INSTALL_ELEVATED=1 SLEELA_INSTALL_FORCE=1 || exit 1; \
 	echo; \
 	echo "-- (3/3) refresh stray binaries in $(EXTRA_BINDIRS) --"; \
@@ -342,11 +373,12 @@ do-install:
 	install -m 755 "$(REPO_ROOT)/impl/build/sleela" "$(DESTDIR)$(BINDIR)/sleela"
 	install -m 755 "$(REPO_ROOT)/impl/build/sleelvac" "$(DESTDIR)$(BINDIR)/sleelvac"
 	install -m 755 "$(REPO_ROOT)/impl/build/nordshrift" "$(DESTDIR)$(BINDIR)/nordshrift"
-	cp -a "$(REPO_ROOT)/lib/." "$(RUNTIME_DIR)/lib/"
+	@echo "Staging standard library (MODULES=$(MODULES); EXCLUDE_MODULES=$(EXCLUDE_MODULES))"
+	python3 "$(REPO_ROOT)/install/install-runtime.py" stage-lib "$(REPO_ROOT)" "$(RUNTIME_DIR)/lib" "$(MODULES)" "$(EXCLUDE_MODULES)"
 	install -m 644 "$(REPO_ROOT)/tools/verify-before-execution.py" "$(RUNTIME_DIR)/tools/"
 	install -m 644 "$(REPO_ROOT)/security/sha256-manifest.json" "$(RUNTIME_DIR)/security/"
 	if [ -f "$(REPO_ROOT)/SHEET.sheet" ]; then install -m 644 "$(REPO_ROOT)/SHEET.sheet" "$(RUNTIME_DIR)/SHEET.sheet"; fi
-	python3 "$(REPO_ROOT)/install/install-runtime.py" copy-manifest "$(REPO_ROOT)" "$(RUNTIME_DIR)"
+	python3 "$(REPO_ROOT)/install/install-runtime.py" copy-manifest "$(REPO_ROOT)" "$(RUNTIME_DIR)" "$(MODULES)" "$(EXCLUDE_MODULES)"
 	cp -a "$(REPO_ROOT)/docs/." "$(DATA_DIR)/docs/"
 	if [ -d "$(REPO_ROOT)/examples" ]; then cp -a "$(REPO_ROOT)/examples/." "$(DATA_DIR)/examples/"; fi
 	install -m 644 "$(REPO_ROOT)/README.md" "$(DATA_DIR)/README.md"
