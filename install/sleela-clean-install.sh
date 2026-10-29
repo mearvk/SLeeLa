@@ -126,22 +126,6 @@ EXCLUDE_LIB=(
 )
 is_excluded() { local name="$1" e; for e in "${EXCLUDE_LIB[@]}"; do [ "$e" = "$name" ] && return 0; done; return 1; }
 
-# Curated optional enhancement modules offered AFTER a successful main install.
-# Each is a top-level lib/ package that is safe, non-excluded, and genuinely
-# "enhances the experience" rather than being part of the minimal core.
-OPT_NAMES=(audio video signal-processing codecs compression gui ui database connector)
-OPT_DESC=(
-  "Audio playback and synthesis library"
-  "Video decode/display library"
-  "Signal processing (FFT, filters, spectra)"
-  "Media codec registry and plugins"
-  "Compression library"
-  "Graphical UI widgets (SleelaUI)"
-  "Core UI layout and quality system"
-  "SQL/data model support"
-  "Optional native data-source connectors"
-)
-
 print_contents() {
   heading "Contents of the main package"
   printf "  %sBinaries%s\n" "$WHITE" "$RESET"
@@ -328,6 +312,31 @@ install_optional_module() {
   ok "added ${WHITE}$name${RESET}"
 }
 
+# ---------------------------------------------------------------------------
+# Discover every ADDITIONAL module available to add on top of the main package.
+# These are the lib/ packages the main package did NOT already stage — i.e. the
+# trees excluded by design (servers, IDEs/editors, Wi-Fi, religious/moral/
+# political). We compute this dynamically by diffing lib/ against what already
+# landed in <install_root>/lib, so the offer stays correct no matter how the
+# main package's scope changes over time. Result is placed in the global array
+# ADDITIONAL_MODULES, sorted, de-duplicated.
+# ---------------------------------------------------------------------------
+ADDITIONAL_MODULES=()
+discover_additional_modules() {
+  local install_root="$1" entry name
+  ADDITIONAL_MODULES=()
+  for entry in "$REPO_ROOT"/lib/*/; do
+    name="$(basename "$entry")"
+    # Skip anything the main package already installed.
+    [ -d "$install_root/lib/$name" ] && continue
+    ADDITIONAL_MODULES+=("$name")
+  done
+  # Stable, predictable order.
+  if [ "${#ADDITIONAL_MODULES[@]}" -gt 0 ]; then
+    IFS=$'\n' ADDITIONAL_MODULES=($(printf '%s\n' "${ADDITIONAL_MODULES[@]}" | sort -u)); unset IFS
+  fi
+}
+
 # ===========================================================================
 # Flow
 # ===========================================================================
@@ -401,40 +410,65 @@ record_of_build() {
 }
 record_of_build
 
-heading "Enhance your experience (optional)"
-say "  ${GREY}The main package is ready. You may now add optional modules${RESET}"
-say "  ${GREY}that further enhance SLeeLa. Each is independent.${RESET}"
-printf "\n"
-WANT_OPT="$(ask_yn "Browse optional enhancement modules?" no)"
-if [ "$WANT_OPT" = yes ]; then
+# ---------------------------------------------------------------------------
+# Additional modules. Every lib/ package NOT already part of the main package
+# can be added here. The user chooses one of two paths:
+#   All         — add every remaining module at once.
+#   Individually — walk each remaining module and answer yes/no.
+# ---------------------------------------------------------------------------
+# A yes/no/ask question that returns: all | individually | skip.
+ask_modules_mode() {
+  local answer
+  printf "  %s?%s %s %s{%sAll%s, %sIndividually%s, or %sSkip%s}%s " \
+    "$GREEN" "$RESET" "Would you like to install all additional modules, or install them individually?" \
+    "$GREY" "$WHITE" "$GREY" "$WHITE" "$GREY" "$WHITE" "$GREY" "$RESET" >&2
+  read -r answer || answer=""
+  case "${answer,,}" in
+    a|all|1)          echo all ;;
+    i|individual|individually|2) echo individually ;;
+    ""|s|skip|n|no)   echo skip ;;
+    *)                echo skip ;;
+  esac
+}
+
+heading "Additional modules (optional)"
+discover_additional_modules "$INSTALL_ROOT"
+
+if [ "${#ADDITIONAL_MODULES[@]}" -eq 0 ]; then
+  skip "no additional modules available — everything is already installed."
+else
+  say "  ${GREY}The main package is ready. ${#ADDITIONAL_MODULES[@]} further module(s) are${RESET}"
+  say "  ${GREY}available to add on top of it. Each is independent.${RESET}"
   printf "\n"
-  i=0
-  while [ "$i" -lt "${#OPT_NAMES[@]}" ]; do
-    printf "    %s%2d%s  %s%-18s%s %s%s%s\n" "$GREEN" "$((i+1))" "$RESET" \
-      "$WHITE" "${OPT_NAMES[$i]}" "$RESET" "$GREY" "${OPT_DESC[$i]}" "$RESET"
-    i=$((i+1))
+  for name in "${ADDITIONAL_MODULES[@]}"; do
+    item "${WHITE}${name}${RESET}"
   done
   printf "\n"
-  say "  ${GREY}Enter numbers separated by spaces (e.g. 1 3 6), 'all', or blank to skip.${RESET}"
-  SELECTION="$(ask_value "Modules to add" "")"
-  if [ -n "$SELECTION" ]; then
-    heading "Adding modules"
-    if [ "$SELECTION" = all ]; then
-      for name in "${OPT_NAMES[@]}"; do install_optional_module "$name" "$INSTALL_ROOT" "$MODE"; done
-    else
-      for n in $SELECTION; do
-        case "$n" in
-          *[!0-9]*) warn "ignoring '$n' (not a number)";;
-          *) idx=$((n-1))
-             if [ "$idx" -ge 0 ] && [ "$idx" -lt "${#OPT_NAMES[@]}" ]; then
-               install_optional_module "${OPT_NAMES[$idx]}" "$INSTALL_ROOT" "$MODE"
-             else warn "ignoring '$n' (out of range)"; fi;;
-        esac
+  MOD_MODE="$(ask_modules_mode)"
+  case "$MOD_MODE" in
+    all)
+      heading "Adding all additional modules"
+      for name in "${ADDITIONAL_MODULES[@]}"; do
+        install_optional_module "$name" "$INSTALL_ROOT" "$MODE"
       done
-    fi
-  else
-    skip "no modules added"
-  fi
+      ;;
+    individually)
+      heading "Choosing modules individually"
+      added=0
+      for name in "${ADDITIONAL_MODULES[@]}"; do
+        if [ "$(ask_yn "Install ${name}?" no)" = yes ]; then
+          install_optional_module "$name" "$INSTALL_ROOT" "$MODE"
+          added=$((added+1))
+        else
+          skip "skipped ${name}"
+        fi
+      done
+      [ "$added" -eq 0 ] && skip "no additional modules added"
+      ;;
+    *)
+      skip "no additional modules added"
+      ;;
+  esac
 fi
 
 heading "Done"
