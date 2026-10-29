@@ -74,6 +74,10 @@ for entry in entries:
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     shutil.copy2(src, dst)
 PY_MANIFEST_COPY
+echo "Verifying staged runtime against the trusted SHA-256 manifest..."
+python3 "$STAGE_DIR/tools/verify-before-execution.py" \
+  --manifest "$STAGE_DIR/security/sha256-manifest.json" \
+  --root "$STAGE_DIR"
 if [ -d "$REPO_ROOT/bin" ]; then cp -a "$REPO_ROOT/bin/." "$STAGE_DIR/bin/"; fi
 # sleelvac is now an INDEPENDENT binary (not a copy of sleela), so it must be
 # installed too -- otherwise a stale or missing sleelvac is left behind.
