@@ -6,7 +6,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def parse(path, sections=False):
+def parse(path, sections=False, allow_empty_values_for=()):
     result = {}
     section = ""
     for number, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
@@ -21,7 +21,7 @@ def parse(path, sections=False):
         if "=" not in line:
             raise ValueError(f"{path.relative_to(ROOT)}:{number}: expected key=value")
         key, value = (item.strip() for item in line.split("=", 1))
-        if not key or not value:
+        if not key or (not value and key not in allow_empty_values_for):
             raise ValueError(f"{path.relative_to(ROOT)}:{number}: empty key/value")
         key = f"{section}.{key}" if section else key
         if key in result:
@@ -39,7 +39,9 @@ def unquote(value):
 def main():
     policy = parse(ROOT / "config/config-location.conf")
     runtime = parse(ROOT / "config/sleela.conf", sections=True)
-    vm = parse(ROOT / "config/vm.conf")
+    # An empty JavaFX module path is intentional: it lets Java use its default
+    # module search path when no explicit JavaFX installation path is configured.
+    vm = parse(ROOT / "config/vm.conf", allow_empty_values_for={"javafx.module_path"})
     expected = {
         "config.project.name": "SLeeLa",
         "config.location.relative": ".sleela/config",
