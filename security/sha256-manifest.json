@@ -519,7 +519,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "8f5dc09d7f923f66b851b9fb55cfd7b7407423916d844410b52a88d1f72c8950"
+      "sha256": "bc8a5372cc83202a2372217d1c99d63dfb2efdbd83dd37a0dc37fa12b493fad8"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -4219,7 +4219,7 @@
     },
     {
       "path": "lib/cpu/SLSleelaOpcode.sleela",
-      "sha256": "506b1f76cad70f2a6eaa165f7c540fe5663f209efb4ed24d9463c6cb0beb8e5f"
+      "sha256": "687a8c525103d56db7acbcdd0c91fae97bed3d51ec3c2c7a25f370761fd0d17b"
     },
     {
       "path": "lib/cpu/SLSleelaVM.sleela",
@@ -47375,7 +47375,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "ba2769744dc0c63fe2d1f214e3a0eddce17377aff2001ac35e5b15dd93dad8c6"
+      "sha256": "72469ab992b7ac3d968ea7869f718f9fdf0a7d1e258663557cc87b88571436c7"
     },
     {
       "path": "lib/vm/SLNativeMemory.sleela",
@@ -47387,7 +47387,7 @@
     },
     {
       "path": "lib/vm/SLVM.sleela",
-      "sha256": "9157b4eba6f65b0ce4ffec817de8444cff84c4b5b2d8596288c1f12ac9565653"
+      "sha256": "6554df21dd113816e2aab8bcf40e44e81069e6aaf0b07539a4f4d63f6ada1def"
     },
     {
       "path": "lib/vm/SLVMClass.sleela",
@@ -47415,11 +47415,11 @@
     },
     {
       "path": "lib/vm/SLVMMethod.sleela",
-      "sha256": "4fdae91b084417002dd72165ab47b2ba7665759692c648d9ef0f3cc5d739b19d"
+      "sha256": "1b1804e0810ce2b56ee692bf19348f59988339d3f3f23defca320555391c60f4"
     },
     {
       "path": "lib/vm/SLVMModule.sleela",
-      "sha256": "871954c569f335d30d0b8b939248482ad67cbe5667d948733e3d30a4da2c894c"
+      "sha256": "9304d9cf6a7a83cb4d1783b01d0b7a270ab3ccff940f2a48ab691de2b82a51eb"
     },
     {
       "path": "lib/vm/SLVMModuleLoader.sleela",
@@ -47427,7 +47427,7 @@
     },
     {
       "path": "lib/vm/SLVMNativeBinding.sleela",
-      "sha256": "7e63159beec041f9e5f66540f8bc60d633266c7862c96e8b3f857889db7bb20e"
+      "sha256": "aeb0e4b49e23194633da46f1f2769067c01f74bbdac082432aededf7e35c883d"
     },
     {
       "path": "lib/vm/SLVMObject.sleela",
