@@ -4,17 +4,18 @@ The canonical VM ISA has since grown to 155 opcodes (codes 0–154). This page d
 
 <img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela/sleela-logo-004.jpg" alt="SLeeLa">
 
-# SLeeLa `/lib/opcodes` — One Class Per Opcode
+# SLeeLa `/lib/opcodes` — Core Opcode Wrapper Subset
 
 **Family:** `lib/opcodes`
 **Revision:** 0.1
 **Canonical ISA:** `lib/vm/InstructionSet.sleela` / `lib/vm/OPCODE-MAP.md`
 **Native bridge:** `native/include/sleela_opcode.h`, `native/src/sleela_opcode.cpp`
 
-The `/lib/opcodes` family expresses the SLeeLa virtual-machine instruction set
-as **one SLeeLa source class per opcode**. Each class carries exactly one opcode
-and nothing else, so the object inventory of the ISA is directly measurable and
-every instruction has a first-class, nameable identity in SLeeLa source.
+The `/lib/opcodes` family expresses the **core wrapper subset** of the SLeeLa
+virtual-machine instruction set as one SLeeLa source class per opcode. It covers
+codes 0–102; the complete canonical ISA is defined by
+`lib/vm/InstructionSet.sleela` and currently covers codes 0–154 (155 opcodes).
+Each class in this package carries exactly one opcode and nothing else.
 
 ## What is here
 
@@ -29,8 +30,9 @@ every instruction has a first-class, nameable identity in SLeeLa source.
 
 Codes **0–97** are the **base 98** opcodes (`OP_NOP` … `OP_AUDIO_PLATFORM`).
 Codes **98–102** are the five array-extension opcodes added for syntax 1.4
-(`OP_NEWARRAY`, `OP_ARRGET`, `OP_ARRSET`, `OP_ARRLEN`, `OP_ARRPUSH`). The package
-therefore ships **the 98 opcodes, and more** — the full canonical set.
+(`OP_NEWARRAY`, `OP_ARRGET`, `OP_ARRSET`, `OP_ARRLEN`, `OP_ARRPUSH`). The package therefore ships **the 98 base opcodes plus five array extensions**
+(103 wrappers total); it does not yet provide a wrapper class for every opcode
+in the 155-opcode canonical ISA.
 
 ## The single-opcode contract
 
