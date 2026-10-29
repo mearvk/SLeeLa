@@ -372,11 +372,3 @@ class SLISAInstanceOf { String name; int code; }
 < OP_DUP2 154 >
 class SLISADup2 { String name; int code; }
 
-< OP_CHECKCAST 152 >
-class SLISACheckCast { String name; int code; }
-
-< OP_INSTANCEOF 153 >
-class SLISAInstanceOf { String name; int code; }
-
-< OP_DUP2 154 >
-class SLISADup2 { String name; int code; }
