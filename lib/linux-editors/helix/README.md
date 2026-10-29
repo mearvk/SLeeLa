@@ -15,11 +15,13 @@ cp lib/linux-editors/helix/themes/*.toml ~/.config/helix/themes/
 Then in `~/.config/helix/config.toml`:
 
 ```toml
-theme = "sleela-american"
+theme = "sleela-kiro"
 ```
 
-Themes: `sleela-american`, `sleela-eurasia`, `sleela-russian-slavic`,
-`sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`.
+Brand themes (palette: purple, black, dark blue, yellow, white) — `sleela-kiro`
+and the more potent `sleela-sleela`. Regional themes: `sleela-american`,
+`sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`,
+`sleela-east-asian`, `sleela-greek`, `sleela-turkish`.
 
 > Full token highlighting uses a `sleela` Tree-sitter grammar; the theme colours
 > map standard Helix scopes (`keyword`, `type`, `string`, `comment`, `function`,

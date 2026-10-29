@@ -16,11 +16,13 @@ cp lib/linux-editors/vim/syntax/sleela.vim   ~/.config/nvim/syntax/
 Then in `init.lua`:
 
 ```lua
-vim.cmd.colorscheme("sleela-american")
+vim.cmd.colorscheme("sleela-kiro")   -- or sleela-sleela, sleela-american, ...
 ```
 
-Themes: `sleela-american`, `sleela-eurasia`, `sleela-russian-slavic`,
-`sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`.
+Brand themes (palette: purple, black, dark blue, yellow, white) — `sleela-kiro`
+and the more potent `sleela-sleela`. Regional themes: `sleela-american`,
+`sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`,
+`sleela-east-asian`, `sleela-greek`, `sleela-turkish`.
 
 Each theme also links the common Tree-sitter capture groups (`@keyword`,
 `@type`, `@string`, …) so it works with `nvim-treesitter` highlighting as well

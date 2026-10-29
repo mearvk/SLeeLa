@@ -1,0 +1,41 @@
+-- Kiro colorscheme for Neovim (Lua).
+-- Mirrors lib/linux-editors/vim/colors/sleela-kiro.vim.
+vim.cmd("highlight clear")
+if vim.fn.exists("syntax_on") == 1 then vim.cmd("syntax reset") end
+vim.o.background = "dark"
+vim.g.colors_name = "sleela-kiro"
+local s = vim.api.nvim_set_hl
+local function hi(group, opts) s(0, group, opts) end
+hi('Normal', { fg = '#F5F5FA', bg = '#0B0B12' })
+hi('Cursor', { fg = '#0B0B12', bg = '#A98EDA' })
+hi('CursorLine', { bg = '#15131F' })
+hi('LineNr', { fg = '#5A5470', bg = '#0B0B12' })
+hi('CursorLineNr', { fg = '#A98EDA', bold = true })
+hi('Visual', { bg = '#1E2A55' })
+hi('Search', { fg = '#0B0B12', bg = '#E8C547' })
+hi('StatusLine', { fg = '#F5F5FA', bg = '#241B3A', bold = true })
+hi('Pmenu', { fg = '#F5F5FA', bg = '#241B3A' })
+hi('MatchParen', { fg = '#F5F5FA', bg = '#1E2A55', bold = true })
+hi('Keyword', { fg = '#A98EDA', bold = true })
+hi('Statement', { fg = '#A98EDA', bold = true })
+hi('Type', { fg = '#6E8BE0', bold = true })
+hi('String', { fg = '#E8C547' })
+hi('Number', { fg = '#8A7BD8' })
+hi('Constant', { fg = '#C0A9F0' })
+hi('Function', { fg = '#F2D45C', bold = true })
+hi('Identifier', { fg = '#F5F5FA' })
+hi('Operator', { fg = '#CFCFE6' })
+hi('Comment', { fg = '#6A6482', italic = true })
+hi('PreProc', { fg = '#B79CE6' })
+hi('Special', { fg = '#6E8BE0' })
+hi('Error', { fg = '#FF6B6B', undercurl = true })
+hi('Todo', { fg = '#E8C547', bg = '#241B3A', bold = true })
+hi('@keyword', { link = 'Keyword' })
+hi('@type', { link = 'Type' })
+hi('@string', { link = 'String' })
+hi('@number', { link = 'Number' })
+hi('@comment', { link = 'Comment' })
+hi('@function', { link = 'Function' })
+hi('@constant', { link = 'Constant' })
+hi('@operator', { link = 'Operator' })
+hi('@preproc', { link = 'PreProc' })

@@ -1,0 +1,102 @@
+{
+  "name": "Kiro",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#0B0B12",
+    "editor.foreground": "#F5F5FA",
+    "editorCursor.foreground": "#A98EDA",
+    "editor.lineHighlightBackground": "#15131F",
+    "editorLineNumber.foreground": "#5A5470",
+    "editorLineNumber.activeForeground": "#A98EDA",
+    "editor.selectionBackground": "#1E2A55",
+    "editor.findMatchBackground": "#E8C547",
+    "statusBar.background": "#241B3A",
+    "statusBar.foreground": "#F5F5FA",
+    "editorError.foreground": "#FF6B6B"
+  },
+  "tokenColors": [
+    {
+      "scope": [
+        "keyword",
+        "keyword.control.sleela",
+        "storage.modifier"
+      ],
+      "settings": {
+        "foreground": "#A98EDA",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "storage.type.sleela",
+        "support.type"
+      ],
+      "settings": {
+        "foreground": "#6E8BE0",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "string",
+        "string.quoted"
+      ],
+      "settings": {
+        "foreground": "#E8C547"
+      }
+    },
+    {
+      "scope": [
+        "constant.numeric.sleela"
+      ],
+      "settings": {
+        "foreground": "#8A7BD8"
+      }
+    },
+    {
+      "scope": [
+        "constant",
+        "constant.language"
+      ],
+      "settings": {
+        "foreground": "#C0A9F0"
+      }
+    },
+    {
+      "scope": [
+        "entity.name.function.sleela"
+      ],
+      "settings": {
+        "foreground": "#F2D45C",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "comment"
+      ],
+      "settings": {
+        "foreground": "#6A6482",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": [
+        "keyword.control.directive.sleela",
+        "keyword.other.marker.sleela",
+        "entity.other.attribute-name.sleela"
+      ],
+      "settings": {
+        "foreground": "#B79CE6"
+      }
+    },
+    {
+      "scope": [
+        "keyword.operator"
+      ],
+      "settings": {
+        "foreground": "#CFCFE6"
+      }
+    }
+  ]
+}

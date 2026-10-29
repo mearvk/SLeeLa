@@ -37,6 +37,25 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 #   error       diagnostic foreground
 # ---------------------------------------------------------------------------
 THEMES = {
+    # Brand schemes. Palette: purple, black, dark blue, yellow, white.
+    # "kiro" is the calmer cut; "sleela" is the same palette turned up --
+    # deeper black, more saturated purple/blue and a more vivid yellow.
+    "kiro": dict(
+        name="Kiro",
+        bg="#0B0B12", fg="#F5F5FA", cursorline="#15131F", linenr="#5A5470",
+        visual="#1E2A55", searchbg="#E8C547", statusbg="#241B3A",
+        keyword="#A98EDA", type="#6E8BE0", string="#E8C547", number="#8A7BD8",
+        constant="#C0A9F0", function="#F2D45C", comment="#6A6482",
+        operator="#CFCFE6", preproc="#B79CE6", special="#6E8BE0", error="#FF6B6B",
+    ),
+    "sleela": dict(
+        name="SLeeLa",
+        bg="#08080E", fg="#FFFFFF", cursorline="#141022", linenr="#5B4F82",
+        visual="#17236A", searchbg="#FFD21E", statusbg="#2A1358",
+        keyword="#B07CFF", type="#5A7CFF", string="#FFD21E", number="#9B6CFF",
+        constant="#D7B3FF", function="#FFE23D", comment="#6E5F9E",
+        operator="#E6E1FF", preproc="#C98CFF", special="#5A7CFF", error="#FF5C7A",
+    ),
     "american": dict(
         name="SLeeLa American Professional",
         bg="#101820", fg="#F4F7FA", cursorline="#172632", linenr="#687887",
@@ -467,11 +486,13 @@ cp lib/linux-editors/vim/syntax/sleela.vim   ~/.config/nvim/syntax/
 Then in `init.lua`:
 
 ```lua
-vim.cmd.colorscheme("sleela-american")
+vim.cmd.colorscheme("sleela-kiro")   -- or sleela-sleela, sleela-american, ...
 ```
 
-Themes: `sleela-american`, `sleela-eurasia`, `sleela-russian-slavic`,
-`sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`.
+Brand themes (palette: purple, black, dark blue, yellow, white) — `sleela-kiro`
+and the more potent `sleela-sleela`. Regional themes: `sleela-american`,
+`sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`,
+`sleela-east-asian`, `sleela-greek`, `sleela-turkish`.
 
 Each theme also links the common Tree-sitter capture groups (`@keyword`,
 `@type`, `@string`, …) so it works with `nvim-treesitter` highlighting as well
@@ -495,11 +516,13 @@ cp lib/linux-editors/helix/themes/*.toml ~/.config/helix/themes/
 Then in `~/.config/helix/config.toml`:
 
 ```toml
-theme = "sleela-american"
+theme = "sleela-kiro"
 ```
 
-Themes: `sleela-american`, `sleela-eurasia`, `sleela-russian-slavic`,
-`sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`.
+Brand themes (palette: purple, black, dark blue, yellow, white) — `sleela-kiro`
+and the more potent `sleela-sleela`. Regional themes: `sleela-american`,
+`sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`,
+`sleela-east-asian`, `sleela-greek`, `sleela-turkish`.
 
 > Full token highlighting uses a `sleela` Tree-sitter grammar; the theme colours
 > map standard Helix scopes (`keyword`, `type`, `string`, `comment`, `function`,
@@ -516,11 +539,12 @@ full SLeeLa syntax rules painted in that palette's 24-bit colours (nano >= 5.0).
 
 ```sh
 mkdir -p ~/.nano
-cp lib/linux-editors/nano/sleela-american.nanorc ~/.nano/sleela.nanorc
+cp lib/linux-editors/nano/sleela-kiro.nanorc ~/.nano/sleela.nanorc
 echo 'include "~/.nano/sleela.nanorc"' >> ~/.nanorc
 ```
 
-Swap `sleela-american.nanorc` for any of `sleela-eurasia`,
+Swap `sleela-kiro.nanorc` for the more potent `sleela-sleela.nanorc`, or for
+any regional palette: `sleela-american`, `sleela-eurasia`,
 `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`,
 `sleela-greek`, or `sleela-turkish`.
 
@@ -548,10 +572,11 @@ mkdir -p ~/.vscode/extensions/sleela
 cp -r lib/linux-editors/vscode/* ~/.vscode/extensions/sleela/
 ```
 
-Restart VS Code, then pick a theme via **Preferences: Color Theme** — e.g.
-*SLeeLa American Professional*, *SLeeLa Pan-Eurasian*, *SLeeLa Russian and
-Slavic (Medium)*, *SLeeLa Central Asian / Silk Road*, *SLeeLa East Asian*,
-*SLeeLa Greek*, or *SLeeLa Turkish*.
+Restart VS Code, then pick a theme via **Preferences: Color Theme** — the brand
+themes *Kiro* and the more potent *SLeeLa* (palette: purple, black, dark blue,
+yellow, white), or a regional one: *SLeeLa American Professional*, *SLeeLa
+Pan-Eurasian*, *SLeeLa Russian and Slavic (Medium)*, *SLeeLa Central Asian /
+Silk Road*, *SLeeLa East Asian*, *SLeeLa Greek*, or *SLeeLa Turkish*.
 
 The grammar highlights keywords, types, strings, numbers, `@`-annotations, the
 `#sleela`/`#schema` pragmas, the document markers (`author`/`authorial`/

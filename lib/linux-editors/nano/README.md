@@ -7,11 +7,12 @@ full SLeeLa syntax rules painted in that palette's 24-bit colours (nano >= 5.0).
 
 ```sh
 mkdir -p ~/.nano
-cp lib/linux-editors/nano/sleela-american.nanorc ~/.nano/sleela.nanorc
+cp lib/linux-editors/nano/sleela-kiro.nanorc ~/.nano/sleela.nanorc
 echo 'include "~/.nano/sleela.nanorc"' >> ~/.nanorc
 ```
 
-Swap `sleela-american.nanorc` for any of `sleela-eurasia`,
+Swap `sleela-kiro.nanorc` for the more potent `sleela-sleela.nanorc`, or for
+any regional palette: `sleela-american`, `sleela-eurasia`,
 `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`,
 `sleela-greek`, or `sleela-turkish`.
 

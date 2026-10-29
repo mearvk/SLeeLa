@@ -1,0 +1,102 @@
+{
+  "name": "SLeeLa",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#08080E",
+    "editor.foreground": "#FFFFFF",
+    "editorCursor.foreground": "#B07CFF",
+    "editor.lineHighlightBackground": "#141022",
+    "editorLineNumber.foreground": "#5B4F82",
+    "editorLineNumber.activeForeground": "#B07CFF",
+    "editor.selectionBackground": "#17236A",
+    "editor.findMatchBackground": "#FFD21E",
+    "statusBar.background": "#2A1358",
+    "statusBar.foreground": "#FFFFFF",
+    "editorError.foreground": "#FF5C7A"
+  },
+  "tokenColors": [
+    {
+      "scope": [
+        "keyword",
+        "keyword.control.sleela",
+        "storage.modifier"
+      ],
+      "settings": {
+        "foreground": "#B07CFF",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "storage.type.sleela",
+        "support.type"
+      ],
+      "settings": {
+        "foreground": "#5A7CFF",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "string",
+        "string.quoted"
+      ],
+      "settings": {
+        "foreground": "#FFD21E"
+      }
+    },
+    {
+      "scope": [
+        "constant.numeric.sleela"
+      ],
+      "settings": {
+        "foreground": "#9B6CFF"
+      }
+    },
+    {
+      "scope": [
+        "constant",
+        "constant.language"
+      ],
+      "settings": {
+        "foreground": "#D7B3FF"
+      }
+    },
+    {
+      "scope": [
+        "entity.name.function.sleela"
+      ],
+      "settings": {
+        "foreground": "#FFE23D",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": [
+        "comment"
+      ],
+      "settings": {
+        "foreground": "#6E5F9E",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": [
+        "keyword.control.directive.sleela",
+        "keyword.other.marker.sleela",
+        "entity.other.attribute-name.sleela"
+      ],
+      "settings": {
+        "foreground": "#C98CFF"
+      }
+    },
+    {
+      "scope": [
+        "keyword.operator"
+      ],
+      "settings": {
+        "foreground": "#E6E1FF"
+      }
+    }
+  ]
+}

@@ -33,6 +33,16 @@
     ],
     "themes": [
       {
+        "label": "Kiro",
+        "uiTheme": "vs-dark",
+        "path": "./themes/sleela-kiro-color-theme.json"
+      },
+      {
+        "label": "SLeeLa",
+        "uiTheme": "vs-dark",
+        "path": "./themes/sleela-sleela-color-theme.json"
+      },
+      {
         "label": "SLeeLa American Professional",
         "uiTheme": "vs-dark",
         "path": "./themes/sleela-american-color-theme.json"
