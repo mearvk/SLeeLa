@@ -18,6 +18,15 @@ RUNNER ?= ../../api/bodi/bodi-xml-runner
 SLEELA ?= ../../impl/build/sleela
 REPO_ROOT := ../..
 
+# Anchor the compiler's built-in SHA-256 gate to the repository checkout rather
+# than a stale installed tree (e.g. ~/.local/sleela). findRepoRoot() in the
+# driver honors SLEELA_HOME first. Derive the real checkout root from THIS
+# Makefile's own location (this file lives at lib/user-interface/example/
+# science/), so the anchor is correct no matter the caller's working directory.
+# Overridable from the environment.
+SLEELA_HOME ?= $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/../../../..)
+export SLEELA_HOME
+
 EXAMPLES := math physics chemistry data-analytics social all-disciplines
 SLEELA_PROGS := math physics chemistry astrophysics sociology
 

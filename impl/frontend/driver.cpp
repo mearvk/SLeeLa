@@ -281,6 +281,25 @@ static std::string resolveLibraryRoot(){
     }
     return std::string();
 }
+// A trusted SHA-256 manifest and the source tree it describes are COLOCATED:
+// the manifest lives at <root>/security/sha256-manifest.json and lists every
+// file by a path relative to <root>. Given an explicit manifest, the only root
+// it can faithfully describe is therefore the directory two levels up from the
+// manifest (<root>/security/<file> -> <root>). Returns that directory when it
+// both resolves and carries the verifier tool; otherwise an empty path.
+static fs::path rootFromManifest(const fs::path&manifest){
+    std::error_code ec;
+    fs::path securityDir=manifest.parent_path();            // <root>/security
+    if(securityDir.empty()) return fs::path();
+    fs::path candidate=securityDir.parent_path();           // <root>
+    if(candidate.empty()) return fs::path();
+    fs::path canonical=fs::weakly_canonical(candidate,ec);
+    if(!ec) candidate=canonical; else ec.clear();
+    if(fs::is_directory(candidate,ec) &&
+       fs::is_regular_file(candidate/"tools"/"verify-before-execution.py",ec))
+        return candidate;
+    return fs::path();
+}
 static int verifyBeforeExecution(const fs::path&cwd){
     // Resolve the SLeeLa root first so a configured installation works even
     // when the caller is a separate client project and has no local verifier.
@@ -290,6 +309,27 @@ static int verifyBeforeExecution(const fs::path&cwd){
     const char* env=std::getenv("SLEELA_SHA256_MANIFEST");
     fs::path manifest=(env&&*env)?fs::path(env):(root/"security"/"sha256-manifest.json");
     if(!manifest.is_absolute())manifest=root/manifest;
+
+    // Self-healing anchor: when the caller pins a specific manifest (via
+    // SLEELA_SHA256_MANIFEST, as the repo's own `make` does), verify the tree
+    // that manifest actually describes -- its colocated root -- rather than
+    // whatever root findRepoRoot() guessed. Without this, a binary installed at
+    // ~/.local/sleela would verify a freshly built checkout's manifest against
+    // the STALE installed tree and fail closed on files the checkout added or
+    // changed since install. We only re-anchor when the manifest's own root
+    // carries the verifier (fail-safe), and never override an explicit
+    // SLEELA_HOME, which remains the operator's deliberate last word.
+    if(env&&*env){
+        if(fs::path manifestRoot=rootFromManifest(manifest); !manifestRoot.empty()){
+            const char* home=std::getenv("SLEELA_HOME");
+            bool homePinned = home && *home;
+            if(!homePinned && manifestRoot!=root){
+                std::cout<<"[security] anchoring verification to the manifest's own root: "
+                         <<manifestRoot.string()<<"\n";
+                root=manifestRoot;
+            }
+        }
+    }
 
     fs::path tool=root/"tools"/"verify-before-execution.py";
     std::error_code ec;
