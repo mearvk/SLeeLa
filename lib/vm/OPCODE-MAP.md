@@ -141,6 +141,38 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 121 | `OP_OS_WAIT` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
 122 | `OP_OS_KILL` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
 123 | `OP_OS_PCLOSE` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+124 | `OP_GC_HINT` | Implemented | `impl/core/sleela_core.c`
+125 | `OP_RAN_MEM` | Implemented | `impl/core/sleela_core.c`
+126 | `OP_IC_CREATE` | Implemented | `impl/core/sleela_core.c`
+127 | `OP_IC_DESTROY` | Implemented | `impl/core/sleela_core.c`
+128 | `OP_IC_COLS` | Implemented | `impl/core/sleela_core.c`
+129 | `OP_IC_ROWS` | Implemented | `impl/core/sleela_core.c`
+130 | `OP_IC_COUNT` | Implemented | `impl/core/sleela_core.c`
+131 | `OP_IC_SETPARAMS` | Implemented | `impl/core/sleela_core.c`
+132 | `OP_IC_EXCITE` | Implemented | `impl/core/sleela_core.c`
+133 | `OP_IC_STEP` | Implemented | `impl/core/sleela_core.c`
+134 | `OP_IC_ADVANCE` | Implemented | `impl/core/sleela_core.c`
+135 | `OP_IC_TIMESTEP` | Implemented | `impl/core/sleela_core.c`
+136 | `OP_IC_INTENSITY` | Implemented | `impl/core/sleela_core.c`
+137 | `OP_IC_HASREND` | Implemented | `impl/core/sleela_core.c`
+138 | `OP_IC_OPENWIN` | Implemented | `impl/core/sleela_core.c`
+139 | `OP_IC_SHOULDCLOSE` | Implemented | `impl/core/sleela_core.c`
+140 | `OP_IC_PRESENT` | Implemented | `impl/core/sleela_core.c`
+141 | `OP_IC_RUN` | Implemented | `impl/core/sleela_core.c`
+142 | `OP_IC_SETPOLICY` | Implemented | `impl/core/sleela_core.c`
+143 | `OP_IC_POLICY` | Implemented | `impl/core/sleela_core.c`
+144 | `OP_IC_BACKEND` | Implemented | `impl/core/sleela_core.c`
+145 | `OP_IC_GPUAVAIL` | Implemented | `impl/core/sleela_core.c`
+146 | `OP_IC_MEASHZ` | Implemented | `impl/core/sleela_core.c`
+147 | `OP_IC_MIGRATE` | Implemented | `impl/core/sleela_core.c`
+148 | `OP_VM_SELECT` | Implemented | `impl/core/sleela_core.c`
+149 | `OP_MODIUM_SCAN` | Implemented | `impl/core/sleela_core.c`
+150 | `OP_UI_CALL` | Implemented | `impl/core/sleela_core.c`
+151 | `OP_SSEND` | Implemented | `impl/core/sleela_core.c`
+152 | `OP_CHECKCAST` | Implemented | `impl/core/sleela_core.c`
+153 | `OP_INSTANCEOF` | Implemented | `impl/core/sleela_core.c`
+154 | `OP_DUP2` | Implemented | `impl/core/sleela_core.c`
+
 
 The operating-system opcodes (`OP_OS_*`) are the host System Call API: the `os*`
 built-ins (`osRun`/`osSpawn`/`osGetEnv`/`osExists`/...) lower to these opcodes,
@@ -187,9 +219,3 @@ A source opcode is not considered supported merely because it appears in the sou
 > `InstructionSet.sleela` (step 1), the native `SLOp` enum (step 2) and dispatch
 > (step 3), this map (step 4), and reflected in the SLVM/1–11 runtime-services
 > contract (step 6) via `RUNTIME-SERVICES.md`.
-
-150 | `OP_UI_CALL` | Implemented | `impl/core/sleela_core.c`
-151 | `OP_SSEND` | Implemented | `impl/core/sleela_core.c`
-152 | `OP_CHECKCAST` | Implemented | `impl/core/sleela_core.c`
-153 | `OP_INSTANCEOF` | Implemented | `impl/core/sleela_core.c`
-154 | `OP_DUP2` | Implemented | `impl/core/sleela_core.c`
