@@ -66,6 +66,9 @@ foreach ($Entry in $Manifest.files) {
   New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Target) | Out-Null
   Copy-Item -Force $Source $Target
 }
+Write-Host "Verifying staged runtime against the trusted SHA-256 manifest..."
+& py -3 (Join-Path $Stage "tools\verify-before-execution.py") --manifest (Join-Path $Stage "security\sha256-manifest.json") --root $Stage
+if ($LASTEXITCODE -ne 0) { throw "Staged runtime integrity verification failed; installation was not changed." }
 foreach ($Product in @("sleela.exe","sleelvac.exe","nordshrift.exe")) {
   $Built = Join-Path $RepoRoot ("impl\build\" + $Product)
   if (-not (Test-Path $Built)) { throw "Required compiled product missing: $Built" }
