@@ -12,7 +12,7 @@ For a calm, beautiful, guided install of the **main package only**, run:
 make clean-install          # auto-selects the host platform; or run directly:
 ./install/sleela-clean-install.sh         # Linux
 bash ./install/sleela-clean-install-macos.sh   # macOS (bash 3.2-safe)
-.\install\sleela-clean-install.ps1        # Windows 10+ (PowerShell)
+install\\sleela-clean-install.cmd               # Windows 10+ (PowerShell launcher)
 ```
 
 `make clean-install` and the `make build` → `advanced-build` prompt dispatch by host OS.
