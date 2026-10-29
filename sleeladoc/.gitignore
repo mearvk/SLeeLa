@@ -1,0 +1,3 @@
+# SleelaDoc build outputs: the generated corpus, staged sources, and the JAR
+# are produced on demand by `make -C sleeladoc jar` and are not committed.
+build/

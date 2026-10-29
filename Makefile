@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all build uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry premium-vms clean verify-security help guess install-guide
+.PHONY: all build uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry premium-vms sleeladoc sleeladoc-jar clean verify-security help guess install-guide
 
 SLEELA_MANIFEST_CONSENT ?=
 # Answer the "install the advanced (beautified/guided) build?" prompt
@@ -261,6 +261,16 @@ route:
 	@python3 -m json.tool route/ROUTE.DATA.json >/dev/null
 	@echo "SLeeLa unified route data: route/ROUTE.DATA.json"
 
+# SleelaDoc distribution: generate the plain-text doc corpus and bundle it with
+# the matching .sleela sources into sleeladoc/build/sleeladoc.jar. Depends on
+# `core` for the built compiler (impl/build/sleela), which powers
+# `sleela docs --generate`.
+sleeladoc: core
+	$(MAKE) -C sleeladoc all
+
+sleeladoc-jar: core
+	$(MAKE) -C sleeladoc jar
+
 config:
 	@make -C config test
 
@@ -298,6 +308,7 @@ clean:
 	$(MAKE) -C antivirus clean
 	$(MAKE) -C ballum clean
 	$(MAKE) -C lib/ballum clean
+	$(MAKE) -C sleeladoc clean
 	@make -C config clean
 
 # guess: show the build order. A plain-language walk-through for first timers
