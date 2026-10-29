@@ -6,11 +6,21 @@ HDR="$ROOT/impl/core/sleela_core.h"
 python3 - "$ISA" "$HDR" <<'PY'
 import re,sys
 isa,hdr=map(open,sys.argv[1:])
-source=re.findall(r'^// (OP_[A-Z0-9_]+)$',isa.read(),re.M)
-body=re.search(r'typedef enum \{(.*?)\} SLOp;',hdr.read(),re.S).group(1)
-native=[]
-for op in re.findall(r'\bOP_[A-Z][A-Z0-9_]*\b',body):
-    if op not in native: native.append(op)
+source_text=isa.read()
+header_text=hdr.read()
+# Canonical SLeeLa ISA records use the angle-bracket house style. Accept one
+# opcode record per line, with an optional numeric code and -- description.
+source=re.findall(
+    r'^[ \\t]*<[ \\t]*(OP_[A-Z][A-Z0-9_]*)(?:[ \\t]+[0-9]+)?(?:[ \\t]+--.*)?[ \\t]*>$',
+    source_text, re.M
+)
+# Ignore opcode names in C comments and the OP__COUNT sentinel.
+header_text=re.sub(r'/\\*.*?\\*/|//[^\\n]*', '', header_text, flags=re.S)
+enum_match=re.search(r'typedef enum \\{(.*?)\\}\\s*SLOp;', header_text, re.S)
+if not enum_match:
+    raise SystemExit("native SLOp enum missing")
+native=[op for op in re.findall(r'\\bOP_[A-Z][A-Z0-9_]*\\b',enum_match.group(1))
+        if op != "OP__COUNT"]
 if source != native:
     print("ISA source/native mismatch",file=sys.stderr)
     for i,(a,b) in enumerate(zip(source,native)):
