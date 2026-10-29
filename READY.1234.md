@@ -437,7 +437,7 @@ idempotently; produce exactly these artifacts:
 bytecode ISA and the VM; everything above compiles to it. Produce:
    - `sleela_core.h` — the value model (`SLValue` tagged union: int/double/
      bool/string/null/struct/array handles), the **canonical bytecode ISA**
-     (the opcode enum; the design target is the **124 canonical opcodes** the
+     (the opcode enum; the design target is the **155 canonical opcodes** the
      lib `SLSleelaVM` references — the enum is strictly **APPEND-ONLY** so
      serialized-artifact opcode numbers never shift), and the bounded VM-local
      handle-table sizes (`SL_SYNCHRO_MAX`, `SL_BESTOF_MAX`, `SL_MUNCTION_MAX`,

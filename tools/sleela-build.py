@@ -206,11 +206,26 @@ def isa_source_native_check() -> tuple[bool, str]:
         return False, "source-side ISA registry or native SLOp header is missing"
     source = source_path.read_text(encoding="utf-8", errors="replace")
     native = native_path.read_text(encoding="utf-8", errors="replace")
-    source_ops = re.findall(r"^// (OP_[A-Z0-9_]+)\s*$", source, re.MULTILINE)
-    enum_match = re.search(r"typedef enum \{(.*?)\} SLOp;", native, re.DOTALL)
+    # The canonical source registry uses one angle-bracket record per opcode.
+    # Optional numeric codes and -- descriptions remain part of the same record.
+    source_records = re.findall(
+        r"^[ \t]*<[ \t]*(OP_[A-Z0-9_]+)(?:[ \t]+([0-9]+)(?:[ \t]+--.*)?)?[ \t]*>$",
+        source,
+        re.MULTILINE,
+    )
+    for index, (name, code) in enumerate(source_records):
+        if code and int(code) != index:
+            return False, f"source ISA code mismatch at index {index}: {name} declares {code}"
+    source_ops = [name for name, _code in source_records]
+
+    # Strip C comments before reading the enum so opcode names mentioned in
+    # explanatory comments cannot inflate the native instruction count.
+    native = re.sub(r"/\*.*?\*/|//[^\n]*", "", native, flags=re.DOTALL)
+    enum_match = re.search(r"typedef enum \{(.*?)\}\s*SLOp;", native, re.DOTALL)
     if not enum_match:
         return False, "native SLOp enum is missing"
     native_ops = re.findall(r"\b(OP_[A-Z0-9_]+)\b", enum_match.group(1))
+    native_ops = [name for name in native_ops if name != "OP__COUNT"]
     if source_ops != native_ops:
         first = next((i for i, pair in enumerate(zip(source_ops, native_ops)) if pair[0] != pair[1]), min(len(source_ops), len(native_ops)))
         return False, f"ISA order/count mismatch at index {first}: source={len(source_ops)} native={len(native_ops)}"

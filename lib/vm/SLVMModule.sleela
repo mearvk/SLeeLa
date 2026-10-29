@@ -3,7 +3,7 @@
    Definition: Defines SLVMModule — a loaded unit of code and types in the
      secondary Sleela VM: the id->SLVMClass table for the types it declares, an
      entry class/method to begin execution, and the shared SLSleelaVM substrate
-     that actually holds and runs the 124 canonical opcodes those methods compile
+     that actually holds and runs the 155 canonical opcodes those methods compile
      to. A module is the granularity the loader (SLVMModuleLoader) resolves and
      the linker (SleelaVMLinkingManager*) binds.
    

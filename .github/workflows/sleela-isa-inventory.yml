@@ -1,0 +1,43 @@
+name: SLeeLa ISA Inventory
+
+on:
+  push:
+    paths:
+      - "lib/vm/InstructionSet.sleela"
+      - "lib/vm/OPCODE-MAP.md"
+      - "lib/cpu/SLSleelaOpcode.sleela"
+      - "lib/cpu/CPU.md"
+      - "lib/cpu/EXECUTION.md"
+      - "tools/sleela-build.py"
+      - "tools/verify-vm-source-coverage.sh"
+      - "impl/core/sleela_core.h"
+      - "impl/core/sleela_core.c"
+      - ".github/workflows/sleela-isa-inventory.yml"
+  pull_request:
+    paths:
+      - "lib/vm/InstructionSet.sleela"
+      - "lib/vm/OPCODE-MAP.md"
+      - "lib/cpu/SLSleelaOpcode.sleela"
+      - "lib/cpu/CPU.md"
+      - "lib/cpu/EXECUTION.md"
+      - "tools/sleela-build.py"
+      - "tools/verify-vm-source-coverage.sh"
+      - "impl/core/sleela_core.h"
+      - "impl/core/sleela_core.c"
+      - ".github/workflows/sleela-isa-inventory.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  source-isa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check source/native ISA inventory
+        run: python3 tools/sleela-build.py inventory-lib
+
+      - name: Check VM source coverage
+        run: bash tools/verify-vm-source-coverage.sh
