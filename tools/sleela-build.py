@@ -215,7 +215,10 @@ def isa_source_native_check() -> tuple[bool, str]:
         source,
         re.MULTILINE,
     )
-    source_ops = [name for name, _code in source_ops]
+    # The registry lists the core ISA once in canonical order, then repeats
+    # some later opcode names with numeric annotations. Preserve first-seen
+    # order while collapsing those metadata repeats.
+    source_ops = list(dict.fromkeys(name for name, _code in source_ops))
 
     # Strip C comments before reading the enum so opcode names mentioned in
     # explanatory comments cannot inflate the native instruction count.
