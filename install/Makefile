@@ -57,6 +57,23 @@ SLEELA_INSTALL_FORCE ?=
 MODULES ?= all
 EXCLUDE_MODULES ?=
 
+# Convenience group: the HTTP / web server library trees. SERVERS=off drops
+# every one of these in a single flag instead of naming all of them in
+# EXCLUDE_MODULES. SERVERS=on (the default) keeps them. Whatever SERVERS does is
+# COMPOSED with any explicit EXCLUDE_MODULES you also pass, via EFFECTIVE_EXCLUDE
+# below -- so e.g. `SERVERS=off EXCLUDE_MODULES="ide"` drops the servers AND ide.
+SERVERS ?= on
+SERVER_MODULES := http http-1.0 http-2.0 http-3.0 http-4.0 http-5.0 http-6.0 \
+  http-7.0 http-8.0 http-9.0 http-servers server-edition web-server-technology \
+  website
+# The exclude set actually handed to the staging step: the user's
+# EXCLUDE_MODULES, plus the server group when SERVERS=off.
+ifeq ($(SERVERS),off)
+  EFFECTIVE_EXCLUDE := $(strip $(EXCLUDE_MODULES) $(SERVER_MODULES))
+else
+  EFFECTIVE_EXCLUDE := $(strip $(EXCLUDE_MODULES))
+endif
+
 .PHONY: all install install-all install-local install-system do-install refresh-extra-bins install-check install-help uninstall uninstall-all remove-extra-bins manifest-prompt
 
 # Extra standard bin directories that may hold a SLeeLa command from a prior or
@@ -82,7 +99,13 @@ install-help:
 	@echo "  MODULES=all                      install every lib/ package (default)"
 	@echo "  MODULES=\"crypto codecs regex\"     install only the named packages"
 	@echo "  EXCLUDE_MODULES=\"ide wifi\"        drop these from whatever MODULES selected"
+	@echo "  SERVERS=on|off                   on (default) keeps the HTTP/web server trees;"
+	@echo "                                   off drops them all in one flag:"
+	@echo "                                   http, http-1.0..9.0, http-servers,"
+	@echo "                                   server-edition, web-server-technology, website"
 	@echo "  Example: make -C install install MODULES=\"crypto codecs compression regex\""
+	@echo "  Example: make -C install install SERVERS=off          (everything except servers)"
+	@echo "  Example: make -C install install SERVERS=off EXCLUDE_MODULES=\"ide\"  (also drop ide)"
 	@echo
 	@echo "Every install variant first offers to (re)generate and verify the base"
 	@echo "SLeeLa code SHA-256 manifest (yes/no). Answer non-interactively with"
@@ -165,7 +188,7 @@ install:
 			exec sudo $(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 				PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" BINDIR="$(BINDIR)" \
 				LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)" \
-				MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
+				MODULES="$(MODULES)" EXCLUDE_MODULES="$(EFFECTIVE_EXCLUDE)" SERVERS=on \
 				SLEELA_INSTALL_ELEVATED=1; \
 		else echo "System installation needs root privileges; install sudo or run this target as root." >&2; exit 1; fi; \
 	fi
@@ -178,14 +201,14 @@ install:
 				PREFIX="$$prefix" DESTDIR="$(DESTDIR)" \
 				BINDIR="$$prefix/bin" LIBDIR="$$prefix/lib" DATADIR="$$prefix/share" \
 				SYSCONFDIR="$$HOME/.config" \
-				MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
+				MODULES="$(MODULES)" EXCLUDE_MODULES="$(EFFECTIVE_EXCLUDE)" SERVERS=on \
 				SLEELA_INSTALL_ELEVATED=1 || exit 1; \
 		done; \
 	else \
 		$(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 			PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" BINDIR="$(BINDIR)" \
 			LIBDIR="$(LIBDIR)" DATADIR="$(DATADIR)" SYSCONFDIR="$(SYSCONFDIR)" \
-			MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
+			MODULES="$(MODULES)" EXCLUDE_MODULES="$(EFFECTIVE_EXCLUDE)" SERVERS=on \
 			SLEELA_INSTALL_ELEVATED="$(SLEELA_INSTALL_ELEVATED)"; \
 	fi
 
@@ -217,7 +240,7 @@ install-local:
 			PREFIX="$$p" DESTDIR="$(DESTDIR)" \
 			BINDIR="$$p/bin" LIBDIR="$$p/lib" DATADIR="$$p/share" \
 			SYSCONFDIR="$$HOME/.config" \
-			MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
+			MODULES="$(MODULES)" EXCLUDE_MODULES="$(EFFECTIVE_EXCLUDE)" SERVERS=on \
 			SLEELA_INSTALL_ELEVATED=1 || exit 1; \
 	done
 
@@ -252,7 +275,7 @@ install-all:
 			PREFIX="$$p" DESTDIR="" \
 			BINDIR="$$p/bin" LIBDIR="$$p/lib" DATADIR="$$p/share" \
 			SYSCONFDIR="$$uh/.config" \
-			MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
+			MODULES="$(MODULES)" EXCLUDE_MODULES="$(EFFECTIVE_EXCLUDE)" SERVERS=on \
 			SLEELA_INSTALL_ELEVATED=1 SLEELA_INSTALL_FORCE=1 || exit 1; \
 	done; \
 	echo; \
@@ -261,7 +284,7 @@ install-all:
 	$$SUDO $(MAKE) --no-print-directory -C "$(CURDIR)" do-install \
 		PREFIX=/usr/local DESTDIR="" BINDIR=/usr/local/bin \
 		LIBDIR=/usr/local/lib DATADIR=/usr/local/share SYSCONFDIR=/etc \
-		MODULES="$(MODULES)" EXCLUDE_MODULES="$(EXCLUDE_MODULES)" \
+		MODULES="$(MODULES)" EXCLUDE_MODULES="$(EFFECTIVE_EXCLUDE)" SERVERS=on \
 		SLEELA_INSTALL_ELEVATED=1 SLEELA_INSTALL_FORCE=1 || exit 1; \
 	echo; \
 	echo "-- (3/3) refresh stray binaries in $(EXTRA_BINDIRS) --"; \
@@ -373,12 +396,12 @@ do-install:
 	install -m 755 "$(REPO_ROOT)/impl/build/sleela" "$(DESTDIR)$(BINDIR)/sleela"
 	install -m 755 "$(REPO_ROOT)/impl/build/sleelvac" "$(DESTDIR)$(BINDIR)/sleelvac"
 	install -m 755 "$(REPO_ROOT)/impl/build/nordshrift" "$(DESTDIR)$(BINDIR)/nordshrift"
-	@echo "Staging standard library (MODULES=$(MODULES); EXCLUDE_MODULES=$(EXCLUDE_MODULES))"
-	python3 "$(REPO_ROOT)/install/install-runtime.py" stage-lib "$(REPO_ROOT)" "$(RUNTIME_DIR)/lib" "$(MODULES)" "$(EXCLUDE_MODULES)"
+	@echo "Staging standard library (MODULES=$(MODULES); SERVERS=$(SERVERS); EXCLUDE=$(EFFECTIVE_EXCLUDE))"
+	python3 "$(REPO_ROOT)/install/install-runtime.py" stage-lib "$(REPO_ROOT)" "$(RUNTIME_DIR)/lib" "$(MODULES)" "$(EFFECTIVE_EXCLUDE)"
 	install -m 644 "$(REPO_ROOT)/tools/verify-before-execution.py" "$(RUNTIME_DIR)/tools/"
 	install -m 644 "$(REPO_ROOT)/security/sha256-manifest.json" "$(RUNTIME_DIR)/security/"
 	if [ -f "$(REPO_ROOT)/SHEET.sheet" ]; then install -m 644 "$(REPO_ROOT)/SHEET.sheet" "$(RUNTIME_DIR)/SHEET.sheet"; fi
-	python3 "$(REPO_ROOT)/install/install-runtime.py" copy-manifest "$(REPO_ROOT)" "$(RUNTIME_DIR)" "$(MODULES)" "$(EXCLUDE_MODULES)"
+	python3 "$(REPO_ROOT)/install/install-runtime.py" copy-manifest "$(REPO_ROOT)" "$(RUNTIME_DIR)" "$(MODULES)" "$(EFFECTIVE_EXCLUDE)"
 	cp -a "$(REPO_ROOT)/docs/." "$(DATA_DIR)/docs/"
 	if [ -d "$(REPO_ROOT)/examples" ]; then cp -a "$(REPO_ROOT)/examples/." "$(DATA_DIR)/examples/"; fi
 	install -m 644 "$(REPO_ROOT)/README.md" "$(DATA_DIR)/README.md"
