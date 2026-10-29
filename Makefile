@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install tutorial-check tests server config route common-rails registry premium-vms clean verify-security help
+.PHONY: all uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install tutorial-check tests server config route common-rails registry premium-vms clean verify-security help guess install-guide
 
 SLEELA_MANIFEST_CONSENT ?=
 
@@ -243,9 +243,143 @@ clean:
 	$(MAKE) -C lib/ballum clean
 	@make -C config clean
 
+# guess: show the build order. A plain-language walk-through for first timers
+# ("what runs, in what order, and why") followed by the raw target graph for
+# experts. Pure echo target -- it has no object-file prerequisites, so it works
+# before anything is built and never trips the SHA-256 verification gate.
+guess:
+	@echo "SLeeLa build order -- 'make guess'"
+	@echo "=================================================================="
+	@echo
+	@echo "THE ONE RULE THAT SHAPES EVERYTHING"
+	@echo "------------------------------------------------------------------"
+	@echo "  Nothing native compiles until the checkout passes its integrity"
+	@echo "  gate. 'core' depends on 'autocheck' then 'verify-security', and"
+	@echo "  verify-security is an order-only prerequisite of every object"
+	@echo "  file. A stale security/sha256-manifest.json stops the build here"
+	@echo "  BEFORE any compile. Regenerate it with:"
+	@echo "      python3 tools/generate-sha256-manifest.py --root . \\"
+	@echo "              --output security/sha256-manifest.json"
+	@echo "      (cd impl && make check-manifest)   # should print OK"
+	@echo
+	@echo "FIRST TIMER -- the short path to a working compiler"
+	@echo "------------------------------------------------------------------"
+	@echo "  1) make core          Build just the native C/C++ runtime."
+	@echo "                        Internally this runs, in order:"
+	@echo "                          autocheck        toolchain + assets present"
+	@echo "                          verify-security  SHA-256 gate (fail-closed)"
+	@echo "                          make -C impl all compile -> link"
+	@echo "                                           impl/build/sleela"
+	@echo "  2) impl/build/sleela version    Confirm it runs."
+	@echo "  3) make install-local           Install under \$$HOME/.local"
+	@echo "                                  (never uses sudo)."
+	@echo "  For the guided, narrated installation, run:  make install-guide"
+	@echo
+	@echo "EXPERT -- the full 'make all' order (left to right)"
+	@echo "------------------------------------------------------------------"
+	@echo "  core -> java28 -> regex -> compiler -> decompiler -> vm ->"
+	@echo "  scripting -> jetbrains -> install-check -> tutorial-check ->"
+	@echo "  tests -> config -> route -> common-rails -> codecs -> churn ->"
+	@echo "  antivirus -> registry -> premium-vms -> ballum"
+	@echo
+	@echo "  Key dependency edges (prerequisite -> dependent):"
+	@echo "    autocheck, verify-security  ->  core"
+	@echo "    core                        ->  install / install-local /"
+	@echo "                                    install-system / install-all"
+	@echo "    core                        ->  premium-vms (links the Core"
+	@echo "                                    archive impl/build/libslcore.a)"
+	@echo "    verify-security (order-only) ->  every impl object file"
+	@echo
+	@echo "  What each stage produces:"
+	@echo "    core         native sleela/sleelvac/nordshrift + libslcore.a"
+	@echo "    java28       Java 28 runtime bridge pieces"
+	@echo "    regex        regex engine + its test suites"
+	@echo "    compiler     lib/compiler"
+	@echo "    decompiler   lib/decompiler"
+	@echo "    vm           lib/vm"
+	@echo "    premium-vms  the 11 premium SLVM generations (need core first)"
+	@echo "    ballum       native display library; falls back to the portable"
+	@echo "                 test when OS display libs are missing (non-fatal)"
+	@echo
+	@echo "  Resolve the real recipe graph yourself with GNU make's own output:"
+	@echo "      make -n all        dry run: print the commands in order"
+	@echo "      make -pn all | less   full database (rules + prerequisites)"
+	@echo
+	@echo "  See also:  make help           every target, one line each"
+	@echo "             make install-guide  installation explained as a process"
+
+# install-guide: installation as a readable process, start to finish. This is
+# the narrative companion to 'make help' (which is the flat target reference).
+# Pure echo target; safe to run at any time.
+install-guide:
+	@echo "SLeeLa installation -- the process, end to end"
+	@echo "=================================================================="
+	@echo
+	@echo "WHAT 'INSTALL' ACTUALLY DOES"
+	@echo "------------------------------------------------------------------"
+	@echo "  Every install variant is the same three movements:"
+	@echo "    (A) BUILD     'install' depends on 'core', so the native"
+	@echo "                  products are built (and the integrity gate"
+	@echo "                  passes) before anything is copied."
+	@echo "    (B) INTEGRITY A yes/no prompt offers to regenerate + verify the"
+	@echo "                  base-code SHA-256 manifest. Decline and it still"
+	@echo "                  VERIFIES the tree against the committed manifest,"
+	@echo "                  so tampering is always caught. Answer without a"
+	@echo "                  terminal using SLEELA_MANIFEST_CONSENT=yes|no|skip."
+	@echo "    (C) INSTALL   Copy binaries + the selected standard library to"
+	@echo "                  the destination prefix."
+	@echo
+	@echo "CHOOSE A SCOPE"
+	@echo "------------------------------------------------------------------"
+	@echo "  make install-local    User-local. Never uses sudo. Installs to"
+	@echo "                        BOTH \$$HOME/.local and \$$HOME/.local/sleela"
+	@echo "                        so the commands are found with no env setup."
+	@echo "  make install-system   System-wide under /usr/local. Elevates with"
+	@echo "                        sudo for the system paths only."
+	@echo "  make install          Scope-aware: a user PREFIX stays local; a"
+	@echo "                        system PREFIX (no DESTDIR) elevates."
+	@echo "  make install-all      Refresh every standard location at once."
+	@echo
+	@echo "TUNE WHAT GETS INSTALLED  (passed at build time, not asked at runtime)"
+	@echo "------------------------------------------------------------------"
+	@echo "  PREFIX=<dir>                 destination root (e.g. /opt/sleela)"
+	@echo "  DESTDIR=<dir>                staged/packaging root (no elevation)"
+	@echo "  MODULES=all                  install every lib/ package (default)"
+	@echo "  MODULES=\"crypto codecs regex\"  install only the named packages"
+	@echo "  EXCLUDE_MODULES=\"ide wifi\"     drop these from whatever MODULES chose"
+	@echo "  SERVERS=on|off               off drops all HTTP/web-server trees"
+	@echo "  BINDIR/LIBDIR/DATADIR/SYSCONFDIR  override individual layout dirs"
+	@echo
+	@echo "GUIDED INSTALLERS (interactive, narrated)"
+	@echo "------------------------------------------------------------------"
+	@echo "  make clean-install    Guided install of the MAIN package only"
+	@echo "                        (binaries + standard library + protocols;"
+	@echo "                        no servers, IDEs, Wi-Fi, or moral systems),"
+	@echo "                        then optional enhancement modules."
+	@echo "  make install-product  Build, then interactively choose user-local"
+	@echo "                        or system-wide for the compiled products."
+	@echo
+	@echo "A TYPICAL FIRST INSTALL"
+	@echo "------------------------------------------------------------------"
+	@echo "  make core                               # build + pass the gate"
+	@echo "  make install-local SLEELA_MANIFEST_CONSENT=yes"
+	@echo "  \$$HOME/.local/bin/sleela version          # confirm it works"
+	@echo
+	@echo "VERIFY / BACK OUT"
+	@echo "------------------------------------------------------------------"
+	@echo "  make install-check    Confirm the installer entry points exist."
+	@echo "  make uninstall [PREFIX=...]   Remove one tracked install; config"
+	@echo "                                files are preserved."
+	@echo "  make uninstall-all            Remove from every standard location."
+	@echo
+	@echo "  Per-target detail:  make -C install install-help"
+	@echo "  Flat target list:   make help"
+
 help:
 	@echo "SLeeLa repository build dispatcher"
 	@echo "  make all       Build core, Java 28, regex, compiler, decompiler, VM, codecs, and tests"
+	@echo "  make guess     Show the build order (first-timer path + expert target graph)"
+	@echo "  make install-guide  Installation explained as a process (companion to this list)"
 	@echo "  make verify-security Verify the checkout rooted at this Makefile against its SHA-256 manifest"
 	@echo "  make core      Build impl/"
 	@echo "  make java28    Build java28/"
