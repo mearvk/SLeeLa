@@ -11,7 +11,7 @@
    time, intercepting CALL/RET to maintain frames and service opcodes to route
    through native bindings. Running on top of that substrate is exactly what makes
    this the "secondary VM on top of the Native Sleela VM": every effect ultimately
-   executes on the same 124-opcode engine the native layer interprets.
+   executes on the same 155-opcode engine (codes 0..154) the native layer interprets.
    
    Typical use (opcode module):
      vm = new SLVM(); vm.boot(1<<16, 1<<16);
