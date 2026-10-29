@@ -423,7 +423,18 @@ static int defenderCmd(int argc,char**argv){
         else if(!baseSet){base=fs::path(a);baseSet=true;}
         else{std::cerr<<"sleelvac: defender: unexpected argument '"<<a<<"'\n";return 2;}
     }
-    fs::path source=base/defenderName();
+    // Accept either a download workspace (the normal form) or the
+    // extracted backend source directory itself. Keep the workspace separate
+    // so fetch always places the archive/extraction beside the source tree.
+    fs::path workspace=base;
+    fs::path source;
+    if(base.filename()==defenderName()){
+        source=base;
+        workspace=base.parent_path();
+        if(workspace.empty())workspace=".";
+    }else{
+        source=base/defenderName();
+    }
     // `detect` performs no network/build/install activity and needs no opt-in.
     if(action=="detect"){if(verifyBeforeExecution(fs::current_path()))return 1;std::cout<<"OS defender: "<<defenderName()<<"\nRepository: "<<defenderRepo()<<"\n";return 0;}
     if(action!="fetch"&&action!="build"&&action!="install"&&action!="provision"){std::cerr<<"sleelvac: unknown defender action '"<<action<<"'\n";defenderUsage();return 2;}
@@ -433,10 +444,10 @@ static int defenderCmd(int argc,char**argv){
                    "  Re-run with --allow-defender (or SLEELA_DEFENDER_OPTIN=1) to opt in.\n";
         defenderUsage();return 1;
     }
-    if(action=="fetch"){if(verifyBeforeExecution(fs::current_path()))return 1;return defenderFetch(base,opts);}
-    if(action=="build"){if(!fs::exists(source)&&defenderFetch(base,opts))return 1;if(verifyBeforeExecution(fs::current_path()))return 1;return defenderBuild(source);}
-    if(action=="install"){if(!fs::exists(source)&&defenderFetch(base,opts))return 1;if(verifyBeforeExecution(fs::current_path()))return 1;if(defenderBuild(source))return 1;return defenderInstall(source,opts);}
-    /*provision*/{if(defenderFetch(base,opts))return 1;if(verifyBeforeExecution(fs::current_path()))return 1;if(defenderBuild(source))return 1;return defenderInstall(source,opts);}
+    if(action=="fetch"){if(verifyBeforeExecution(fs::current_path()))return 1;return defenderFetch(workspace,opts);}
+    if(action=="build"){if(!fs::exists(source)&&defenderFetch(workspace,opts))return 1;if(verifyBeforeExecution(fs::current_path()))return 1;return defenderBuild(source);}
+    if(action=="install"){if(!fs::exists(source)&&defenderFetch(workspace,opts))return 1;if(verifyBeforeExecution(fs::current_path()))return 1;if(defenderBuild(source))return 1;return defenderInstall(source,opts);}
+    /*provision*/{if(defenderFetch(workspace,opts))return 1;if(verifyBeforeExecution(fs::current_path()))return 1;if(defenderBuild(source))return 1;return defenderInstall(source,opts);}
 }
 // ---------------------------------------------------------------------------
 // Memory Manager wiring.
