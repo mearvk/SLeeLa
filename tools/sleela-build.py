@@ -211,14 +211,11 @@ def isa_source_native_check() -> tuple[bool, str]:
     # an explicit numeric code and trailing -- description; this avoids counting
     # explanatory prose such as "< OP_IC_* ... >" as duplicate instructions.
     source_ops = re.findall(
-        r"^[ \\t]*<[ \\t]*(OP_[A-Z0-9_]+)(?:[ \\t]+([0-9]+)(?:[ \\t]+--.*)?)?[ \\t]*>$",
+        r"^[ \t]*<[ \t]*(OP_[A-Z0-9_]+)(?:[ \t]+([0-9]+)(?:[ \t]+--.*)?)?[ \t]*>$",
         source,
         re.MULTILINE,
     )
-    # The registry lists the core ISA once in canonical order, then repeats
-    # some later opcode names with numeric annotations. Preserve first-seen
-    # order while collapsing those metadata repeats.
-    source_ops = list(dict.fromkeys(name for name, _code in source_ops))
+    source_ops = [name for name, _code in source_ops]
 
     # Strip C comments before reading the enum so opcode names mentioned in
     # explanatory comments cannot inflate the native instruction count.
