@@ -78,7 +78,7 @@ install: jar
 	@echo "Installed to $(DESTDIR)/sleela-connector.jar"
 
 clean:
-	"$(RM)" -r "$(BUILD_DIR)"
+	$(RM) -r "$(BUILD_DIR)"
 
 help:
 	@echo "SLeeLa connector targets:"

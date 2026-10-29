@@ -27,7 +27,7 @@ smoke: $(SMOKE) $(VM_SMOKE)
 	cd .. && "./config/$(VM_SMOKE)"
 
 clean:
-	"$(RM)" -r "$(BUILD_DIR)"
+	$(RM) -r "$(BUILD_DIR)"
 
 help:
 	@echo "Configuration targets: all, test, check, smoke, clean, help"
