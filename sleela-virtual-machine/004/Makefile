@@ -43,7 +43,7 @@ include $(VM_PLATFORM_LIBS_MK)
 # compiler and needs the platform runtime libs + OpenMP.
 CORE_LDLIBS ?= $(THREADFLAG) -fopenmp $(CORE_LIBS) $(CORE_UI_LIBS)
 
-FEATURE_OBJS = $(BUILD)/slvm4_distributed.o
+FEATURE_OBJS = $(BUILD)/slvm4_distributed.o $(BUILD)/slvm04_intxxx_module.o
 VM = $(BUILD)/slvm-04
 
 all: $(VM)
@@ -54,6 +54,8 @@ $(BUILD):
 $(BUILD)/slvm04_vm.o: src/slvm04_vm.c | $(BUILD)
 	$(CC) $(CFLAGS) -I$(SLCORE_INC) -c $< -o $@
 $(BUILD)/slvm4_distributed.o: src/slvm4_distributed.c | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
+$(BUILD)/slvm04_intxxx_module.o: src/slvm04_intxxx_module.c | $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(VM): $(BUILD)/slvm04_vm.o $(FEATURE_OBJS) $(SLCORE_LIB) | $(BUILD)

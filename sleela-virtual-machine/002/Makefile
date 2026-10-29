@@ -43,7 +43,7 @@ include $(VM_PLATFORM_LIBS_MK)
 # compiler and needs the platform runtime libs + OpenMP.
 CORE_LDLIBS ?= $(THREADFLAG) -fopenmp $(CORE_LIBS) $(CORE_UI_LIBS)
 
-FEATURE_OBJS = $(BUILD)/slvm2_crypto.o
+FEATURE_OBJS = $(BUILD)/slvm2_crypto.o $(BUILD)/slvm02_intxxx_module.o
 VM = $(BUILD)/slvm-02
 
 all: $(VM)
@@ -54,6 +54,8 @@ $(BUILD):
 $(BUILD)/slvm02_vm.o: src/slvm02_vm.c | $(BUILD)
 	$(CC) $(CFLAGS) -I$(SLCORE_INC) -c $< -o $@
 $(BUILD)/slvm2_crypto.o: src/slvm2_crypto.c | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
+$(BUILD)/slvm02_intxxx_module.o: src/slvm02_intxxx_module.c | $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(VM): $(BUILD)/slvm02_vm.o $(FEATURE_OBJS) $(SLCORE_LIB) | $(BUILD)

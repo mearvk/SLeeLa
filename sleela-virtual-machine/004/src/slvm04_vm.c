@@ -4,7 +4,7 @@
  * A REAL virtual machine: it links the shared native SLeeLa Core engine
  * (impl/core, archived as libslcore.a) and runs a compiled .sleela program
  * artifact on it. SLVM/4's distinguishing contribution --
- *   authenticated and distributed execution
+ *   authenticated and distributed execution; plus the intXXX/uintXXX fixed-width number series (int32..int16777216, uint32..uint16777216)
  * -- is expressed in SOURCE here: the admission step builds a well-formed
  * instance of this grade's own feature and calls this grade's real validator,
  * and (under --selfcheck) proves a malformed instance is REJECTED. A program
@@ -23,11 +23,12 @@
  * ========================================================================== */
 #include "sleela_core.h"
 #include "slvm4_distributed.h"
+#include "slvm04_intxxx_module.h"
 #include <stdio.h>
 #include <string.h>
 
 static const char* SLVM_CODENAME = "Supervisor";
-static const char* SLVM_FEATURE  = "authenticated and distributed execution";
+static const char* SLVM_FEATURE  = "authenticated and distributed execution; plus the intXXX/uintXXX fixed-width number series (int32..int16777216, uint32..uint16777216)";
 
 /* Admit a well-formed instance of this grade's feature. Returns 0 if this
  * grade's real validator ACCEPTS the well-formed instance, -1 otherwise.
@@ -41,7 +42,29 @@ static int slvm04_vm_admit(void) {
     };
     slvm4_execution_t ex = { 42u, 7u, nodes, 2u, 2u };
     int rc0 = slvm4_execution_validate(&ex);
-    return (rc0 == 0) ? 0 : -1;
+
+    /* intXXX/uintXXX number series (every premium generation): the full,
+     * canonical series -- both families, the 2^5..2^24 bounds, the 64-bit
+     * narrow boundary, and the twenty widths -- plus a live proof that the
+     * shared Core value model carries both runtime slots: a 64-bit value
+     * through SL_INT and a value wider than 64 bits through SL_INT128. */
+    slvm04_intxxx_module_t intxxx = {
+        SLVM04_INTXXX_MIN_WIDTH, SLVM04_INTXXX_MAX_WIDTH,
+        SLVM04_INTXXX_NATIVE_NARROW, SLVM04_INTXXX_SERIES_COUNT, 1, 1 };
+    SLValue intxxx_narrow = slval_int(9223372036854775807LL);    /* INT64_MAX */
+    int intxxx_carry = (intxxx_narrow.type == SL_INT && intxxx_narrow.as.i == 9223372036854775807LL);
+#if SLEELA_HAVE_INT128
+    sl_int128_t intxxx_deep = ((sl_int128_t)1 << 100) + (sl_int128_t)1;
+    SLValue intxxx_wide = slval_int128(intxxx_deep);
+    intxxx_carry = intxxx_carry && intxxx_wide.type == SL_INT128 && intxxx_wide.as.i128 == intxxx_deep;
+#else
+    SLValue intxxx_wide = slval_int128((sl_int128_t)1234567890123456789LL);
+    intxxx_carry = intxxx_carry && intxxx_wide.type == SL_INT128;
+#endif
+    int rc_intxxx = (slvm04_intxxx_module_validate(&intxxx) == 0 &&
+                     slvm04_intxxx_module_is_full_series(&intxxx) && intxxx_carry) ? 0 : -1;
+
+    return (rc0 == 0 && rc_intxxx == 0) ? 0 : -1;
 }
 
 /* Prove the grade's validator is real: a deliberately malformed instance must
@@ -51,7 +74,15 @@ static int slvm04_vm_reject(void) {
     static const slvm4_node_t bad_nodes[1] = { { 1,1,7, "spki://x", "att", 1,0,1 } }; /* not attested */
     slvm4_execution_t bad = { 42u, 7u, bad_nodes, 1u, 1u };
     int rc1 = slvm4_execution_validate(&bad);
-    return (rc1 != 0) ? 0 : -1;
+
+    /* A malformed intXXX descriptor (wrong ceiling + bogus width count) must be
+     * rejected, proving the number-series validator really discriminates. */
+    slvm04_intxxx_module_t badintxxx = {
+        SLVM04_INTXXX_MIN_WIDTH, 33554432u /* 2^25: above ceiling */,
+        SLVM04_INTXXX_NATIVE_NARROW, 99u /* wrong count */, 1, 1 };
+    int rc_intxxx_bad = (slvm04_intxxx_module_validate(&badintxxx) != 0) ? -1 : 0;
+
+    return (rc1 != 0 && rc_intxxx_bad != 0) ? 0 : -1;
 }
 
 static int slvm04_run_artifact(const char* path) {

@@ -171,56 +171,227 @@ LEVELS = [
     int rc1 = slvm10_storage_validate(&noint);
 """),
     dict(dir="011", nn="11", codename="Sovereign",
-         feature="filesystem-module host above the SLVM/9 and SLVM/10 storage contracts (TAC3), "
-                 "plus the intXXX/uintXXX fixed-width number series (int32..int16777216, uint32..uint16777216)",
-         headers=["slvm11_filesystem_module.h", "slvm11_intxxx_module.h"],
-         sources=["slvm11_filesystem_module.c", "slvm11_intxxx_module.c"],
+         feature="filesystem-module host above the SLVM/9 and SLVM/10 storage contracts (TAC3)",
+         headers=["slvm11_filesystem_module.h"], sources=["slvm11_filesystem_module.c"],
          admit_ok="""
     slvm11_filesystem_module_t tac3 = {
         SLVM11_FS_MODULE_TAC3_ID, SLVM11_FS_MODULE_SCHEMA, "TAC3", 1, 0, 4096,
         1, 1, 1, 1, 1 };
-    /* The full, canonical intXXX/uintXXX number series: both families, the
-     * 2^5..2^24 bounds, the 64-bit narrow boundary, and the twenty widths. */
-    slvm11_intxxx_module_t intxxx = {
-        SLVM11_INTXXX_MIN_WIDTH, SLVM11_INTXXX_MAX_WIDTH,
-        SLVM11_INTXXX_NATIVE_NARROW, SLVM11_INTXXX_SERIES_COUNT, 1, 1 };
-    /* Prove the shared Core value model actually carries BOTH runtime slots the
-     * series maps to: a 64-bit value through SL_INT, and a value wider than 64
-     * bits through SL_INT128 with its high bits intact. */
-    SLValue narrow = slval_int(9223372036854775807LL);          /* INT64_MAX */
-    int intxxx_carry = (narrow.type == SL_INT && narrow.as.i == 9223372036854775807LL);
-#if SLEELA_HAVE_INT128
-    sl_int128_t deep = ((sl_int128_t)1 << 100) + (sl_int128_t)1; /* needs > 64 bits */
-    SLValue wide = slval_int128(deep);
-    intxxx_carry = intxxx_carry && wide.type == SL_INT128 && wide.as.i128 == deep;
-#else
-    SLValue wide = slval_int128((sl_int128_t)1234567890123456789LL);
-    intxxx_carry = intxxx_carry && wide.type == SL_INT128;
-#endif
     int rc0 = (slvm11_filesystem_module_validate(&tac3) == 0 &&
-               slvm11_filesystem_module_is_tac3(&tac3) &&
-               slvm11_intxxx_module_validate(&intxxx) == 0 &&
-               slvm11_intxxx_module_is_full_series(&intxxx) &&
-               intxxx_carry) ? 0 : -1;
+               slvm11_filesystem_module_is_tac3(&tac3)) ? 0 : -1;
 """,
          admit_bad="""
     slvm11_filesystem_module_t badschema = {
         SLVM11_FS_MODULE_TAC3_ID, "wrong.schema/v9", "TAC3", 1, 0, 4096,
         1, 1, 1, 1, 1 };
-    /* A malformed intXXX descriptor (wrong ceiling + bogus width count) must be
-     * rejected, proving the number-series validator really discriminates. */
-    slvm11_intxxx_module_t badintxxx = {
-        SLVM11_INTXXX_MIN_WIDTH, 33554432u /* 2^25: above ceiling */,
-        SLVM11_INTXXX_NATIVE_NARROW, 99u /* wrong count */, 1, 1 };
-    int rc1 = (slvm11_filesystem_module_validate(&badschema) != 0 &&
-               slvm11_intxxx_module_validate(&badintxxx) != 0) ? -1 : 0;
+    int rc1 = slvm11_filesystem_module_validate(&badschema);  /* wrong schema */
 """),
 ]
+
+# ---------------------------------------------------------------------------
+# intXXX / uintXXX number-series feature, shared by EVERY premium VM generation.
+# Each level gets slvmNN_intxxx_module.{h,c} (a Core-independent recognizer +
+# admission for the fixed-width integer series int32..int16777216 /
+# uint32..uint16777216), and the runner weaves the module's validation plus a
+# live Core SLValue round-trip (SL_INT for <=64 bits, SL_INT128 for >=128) into
+# the grade's admit/reject. So "support for the intXXX number series" is a
+# property of ALL eleven generations, proven at each VM's self-check, on top of
+# whatever distinguishing grade feature that VM already carries.
+# ---------------------------------------------------------------------------
+def intxxx_header(nn):
+    return ('''/* ==========================================================================
+ * slvm{nn}_intxxx_module.h  --  SLVM/{n} intXXX/uintXXX number support.
+ *
+ * First-class admission for SLeeLa's fixed-width integer number series -- the
+ * signed  int32 .. int16777216  (syntax 2.7) and the unsigned uint32 ..
+ * uint16777216 (syntax 2.8). A member is the prefix ("int"/"uint") followed by
+ * a bit-width that must be a power of two in [2^5, 2^24]; twenty widths each.
+ * This module lets the VM PROVE, at admission, that it genuinely carries the
+ * series through the shared native Core value model, using the exact width ->
+ * runtime-slot split the compiler uses:
+ *
+ *     width <= 64 bits  (int32/int64, uint32/uint64)  -> SL_INT    (int64_t)
+ *     width >= 128 bits (int128.., uint128..)         -> SL_INT128 (__int128)
+ *
+ * Unsigned-ness is a compile-time (analyzer) discipline -- positive-only,
+ * width-strict -- so at runtime a uint<width> shares the SL_INT / SL_INT128
+ * tag with the signed series. This module validates the type-name series; the
+ * runner proves the live Core round-trip. Shared by all premium generations.
+ *
+ * Generated by sleela-virtual-machine/tools/gen-premium-vm-runners.py.
+ * Copyright (c) Max Rupplin - MEARVK LLC - 2026
+ * ========================================================================== */
+#ifndef SLVM{nn}_INTXXX_MODULE_H
+#define SLVM{nn}_INTXXX_MODULE_H
+
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {{
+#endif
+
+/* Series bounds, shared by the signed and unsigned families. Mirrors
+ * impl/frontend/wide_integer.h (kMinimumWidth / kMaximumWidth) and
+ * SLEELA.syntax Sections 24 (signed) and 25 (unsigned). */
+#define SLVM{nn}_INTXXX_MIN_WIDTH        32u         /* 2^5  */
+#define SLVM{nn}_INTXXX_MAX_WIDTH        16777216u   /* 2^24 */
+#define SLVM{nn}_INTXXX_NATIVE_NARROW    64u         /* <= this width uses SL_INT */
+#define SLVM{nn}_INTXXX_SERIES_COUNT     20u         /* widths per family (2^5..2^24) */
+
+/* Runtime slot a width maps to, matching the Core SLType tags SL_INT / SL_INT128. */
+typedef enum {{
+    SLVM{nn}_SLOT_NONE  = 0,   /* not a valid series width                 */
+    SLVM{nn}_SLOT_INT   = 1,   /* width <= 64  -> SL_INT    (int64_t slot)  */
+    SLVM{nn}_SLOT_INT128 = 2   /* width >= 128 -> SL_INT128 (__int128 slot) */
+}} slvm{nn}_intxxx_slot_t;
+
+/* An admission descriptor: the series this VM claims to support. */
+typedef struct {{
+    uint32_t             min_width;     /* must equal SLVM{nn}_INTXXX_MIN_WIDTH   */
+    uint32_t             max_width;     /* must equal SLVM{nn}_INTXXX_MAX_WIDTH   */
+    uint32_t             narrow_width;  /* must equal SLVM{nn}_INTXXX_NATIVE_NARROW */
+    uint32_t             series_count;  /* must equal SLVM{nn}_INTXXX_SERIES_COUNT */
+    int                  has_signed;    /* 1: supports the int<width> family     */
+    int                  has_unsigned;  /* 1: supports the uint<width> family    */
+}} slvm{nn}_intxxx_module_t;
+
+/* 1 iff `w` is a power of two within [MIN_WIDTH, MAX_WIDTH]. */
+int slvm{nn}_intxxx_is_series_width(uint32_t w);
+/* The runtime slot a width maps to (SLVM{nn}_SLOT_NONE for a non-series width). */
+slvm{nn}_intxxx_slot_t slvm{nn}_intxxx_slot_for_width(uint32_t w);
+/* Count of valid series widths in [MIN_WIDTH, MAX_WIDTH]; must be SERIES_COUNT. */
+uint32_t slvm{nn}_intxxx_count_series_widths(void);
+/* Validate an admission descriptor against the series rules. 0 if well-formed. */
+int slvm{nn}_intxxx_module_validate(const slvm{nn}_intxxx_module_t* m);
+/* 1 iff the descriptor is the full, canonical SLeeLa series (both families). */
+int slvm{nn}_intxxx_module_is_full_series(const slvm{nn}_intxxx_module_t* m);
+
+#ifdef __cplusplus
+}}
+#endif
+
+#endif /* SLVM{nn}_INTXXX_MODULE_H */
+''').format(nn=nn, n=int(nn))
+
+
+def intxxx_source(nn):
+    return ('''/* ==========================================================================
+ * slvm{nn}_intxxx_module.c  --  SLVM/{n} intXXX/uintXXX number-series support.
+ *
+ * Recognizer + admission for the SLeeLa fixed-width integer number series: the
+ * power-of-two width rule (2^5..2^24), the twenty-width count per family, and
+ * the width -> runtime-slot split (SL_INT for <=64, SL_INT128 for >=128) that
+ * matches the compiler. Same "admit a well-formed instance; reject a malformed
+ * one" discipline every grade feature uses. Core-independent; the live Core
+ * SLValue round-trip for each slot is proven in the VM runner's admission.
+ *
+ * Generated by sleela-virtual-machine/tools/gen-premium-vm-runners.py.
+ * Copyright (c) Max Rupplin - MEARVK LLC - 2026
+ * ========================================================================== */
+#include "slvm{nn}_intxxx_module.h"
+
+static int slvm{nn}_is_power_of_two(uint32_t w) {{
+    return w != 0u && (w & (w - 1u)) == 0u;
+}}
+
+int slvm{nn}_intxxx_is_series_width(uint32_t w) {{
+    if (!slvm{nn}_is_power_of_two(w)) return 0;
+    if (w < SLVM{nn}_INTXXX_MIN_WIDTH) return 0;
+    if (w > SLVM{nn}_INTXXX_MAX_WIDTH) return 0;
+    return 1;
+}}
+
+slvm{nn}_intxxx_slot_t slvm{nn}_intxxx_slot_for_width(uint32_t w) {{
+    if (!slvm{nn}_intxxx_is_series_width(w)) return SLVM{nn}_SLOT_NONE;
+    return (w <= SLVM{nn}_INTXXX_NATIVE_NARROW) ? SLVM{nn}_SLOT_INT : SLVM{nn}_SLOT_INT128;
+}}
+
+uint32_t slvm{nn}_intxxx_count_series_widths(void) {{
+    uint32_t count = 0u;
+    uint32_t w;
+    for (w = SLVM{nn}_INTXXX_MIN_WIDTH; w <= SLVM{nn}_INTXXX_MAX_WIDTH; w <<= 1) {{
+        if (slvm{nn}_intxxx_is_series_width(w)) count++;
+    }}
+    return count;
+}}
+
+int slvm{nn}_intxxx_module_validate(const slvm{nn}_intxxx_module_t* m) {{
+    if (m == 0) return -1;
+    if (m->min_width    != SLVM{nn}_INTXXX_MIN_WIDTH)     return -1;
+    if (m->max_width    != SLVM{nn}_INTXXX_MAX_WIDTH)     return -1;
+    if (m->narrow_width != SLVM{nn}_INTXXX_NATIVE_NARROW) return -1;
+    if (m->series_count != SLVM{nn}_INTXXX_SERIES_COUNT)  return -1;
+    if (!m->has_signed && !m->has_unsigned)              return -1;
+    if (slvm{nn}_intxxx_count_series_widths() != m->series_count) return -1;
+    if (slvm{nn}_intxxx_slot_for_width(32u)       != SLVM{nn}_SLOT_INT)    return -1;
+    if (slvm{nn}_intxxx_slot_for_width(64u)       != SLVM{nn}_SLOT_INT)    return -1;
+    if (slvm{nn}_intxxx_slot_for_width(128u)      != SLVM{nn}_SLOT_INT128) return -1;
+    if (slvm{nn}_intxxx_slot_for_width(16777216u) != SLVM{nn}_SLOT_INT128) return -1;
+    if (slvm{nn}_intxxx_slot_for_width(16u)       != SLVM{nn}_SLOT_NONE)   return -1; /* below floor  */
+    if (slvm{nn}_intxxx_slot_for_width(48u)       != SLVM{nn}_SLOT_NONE)   return -1; /* not pow2      */
+    if (slvm{nn}_intxxx_slot_for_width(33554432u) != SLVM{nn}_SLOT_NONE)   return -1; /* above ceiling */
+    return 0;
+}}
+
+int slvm{nn}_intxxx_module_is_full_series(const slvm{nn}_intxxx_module_t* m) {{
+    if (m == 0) return 0;
+    return (m->has_signed && m->has_unsigned &&
+            m->min_width    == SLVM{nn}_INTXXX_MIN_WIDTH &&
+            m->max_width    == SLVM{nn}_INTXXX_MAX_WIDTH &&
+            m->series_count == SLVM{nn}_INTXXX_SERIES_COUNT) ? 1 : 0;
+}}
+''').format(nn=nn, n=int(nn))
+
+
+# The admit/reject snippets the runner appends for the intXXX series (every VM).
+def intxxx_admit_ok(nn):
+    return ('''
+    /* intXXX/uintXXX number series (every premium generation): the full,
+     * canonical series -- both families, the 2^5..2^24 bounds, the 64-bit
+     * narrow boundary, and the twenty widths -- plus a live proof that the
+     * shared Core value model carries both runtime slots: a 64-bit value
+     * through SL_INT and a value wider than 64 bits through SL_INT128. */
+    slvm{nn}_intxxx_module_t intxxx = {{
+        SLVM{nn}_INTXXX_MIN_WIDTH, SLVM{nn}_INTXXX_MAX_WIDTH,
+        SLVM{nn}_INTXXX_NATIVE_NARROW, SLVM{nn}_INTXXX_SERIES_COUNT, 1, 1 }};
+    SLValue intxxx_narrow = slval_int(9223372036854775807LL);    /* INT64_MAX */
+    int intxxx_carry = (intxxx_narrow.type == SL_INT && intxxx_narrow.as.i == 9223372036854775807LL);
+#if SLEELA_HAVE_INT128
+    sl_int128_t intxxx_deep = ((sl_int128_t)1 << 100) + (sl_int128_t)1;
+    SLValue intxxx_wide = slval_int128(intxxx_deep);
+    intxxx_carry = intxxx_carry && intxxx_wide.type == SL_INT128 && intxxx_wide.as.i128 == intxxx_deep;
+#else
+    SLValue intxxx_wide = slval_int128((sl_int128_t)1234567890123456789LL);
+    intxxx_carry = intxxx_carry && intxxx_wide.type == SL_INT128;
+#endif
+    int rc_intxxx = (slvm{nn}_intxxx_module_validate(&intxxx) == 0 &&
+                     slvm{nn}_intxxx_module_is_full_series(&intxxx) && intxxx_carry) ? 0 : -1;
+''').format(nn=nn)
+
+
+def intxxx_admit_bad(nn):
+    return ('''
+    /* A malformed intXXX descriptor (wrong ceiling + bogus width count) must be
+     * rejected, proving the number-series validator really discriminates. */
+    slvm{nn}_intxxx_module_t badintxxx = {{
+        SLVM{nn}_INTXXX_MIN_WIDTH, 33554432u /* 2^25: above ceiling */,
+        SLVM{nn}_INTXXX_NATIVE_NARROW, 99u /* wrong count */, 1, 1 }};
+    int rc_intxxx_bad = (slvm{nn}_intxxx_module_validate(&badintxxx) != 0) ? -1 : 0;
+''').format(nn=nn)
 
 
 def runner_source(L):
     nn = L["nn"]; n = int(nn)
-    incs = "".join('#include "%s"\n' % h for h in L["headers"])
+    # Every VM also includes the shared intXXX/uintXXX number-series module.
+    headers = list(L["headers"]) + ["slvm%s_intxxx_module.h" % nn]
+    incs = "".join('#include "%s"\n' % h for h in headers)
+    # Weave the intXXX series admission into the grade's admit/reject: the
+    # grade feature AND the number series must both admit the valid instance
+    # and reject the malformed one.
+    admit_ok = L["admit_ok"] + intxxx_admit_ok(nn)
+    admit_ok_return = "    return (rc0 == 0 && rc_intxxx == 0) ? 0 : -1;"
+    admit_bad = L["admit_bad"] + intxxx_admit_bad(nn)
+    admit_bad_return = "    return (rc1 != 0 && rc_intxxx_bad != 0) ? 0 : -1;"
     return """/* ==========================================================================
  * slvm{nn}_vm.c  --  SLVM/{n} "{codename}" runnable virtual machine.
  *
@@ -256,13 +427,15 @@ static const char* SLVM_FEATURE  = "{feature}";
  * Named slvm{nn}_vm_admit (not slvm{nn}_admit) to avoid clashing with any
  * grade feature API that already defines an admit entry point. */
 static int slvm{nn}_vm_admit(void) {{
-{admit_ok}    return (rc0 == 0) ? 0 : -1;
+{admit_ok}
+{admit_ok_return}
 }}
 
 /* Prove the grade's validator is real: a deliberately malformed instance must
  * be REJECTED. Returns 0 if the bad instance is correctly rejected. */
 static int slvm{nn}_vm_reject(void) {{
-{admit_bad}    return (rc1 != 0) ? 0 : -1;
+{admit_bad}
+{admit_bad_return}
 }}
 
 static int slvm{nn}_run_artifact(const char* path) {{
@@ -308,16 +481,20 @@ int main(int argc, char** argv) {{
     }}
     return slvm{nn}_run_artifact(argv[1]);
 }}
-""".format(nn=nn, n=n, codename=L["codename"], feature=L["feature"],
-           incs=incs, admit_ok=L["admit_ok"], admit_bad=L["admit_bad"])
+""".format(nn=nn, n=n, codename=L["codename"],
+           feature=L["feature"] + "; plus the intXXX/uintXXX fixed-width number series "
+                                   "(int32..int16777216, uint32..uint16777216)",
+           incs=incs, admit_ok=admit_ok, admit_ok_return=admit_ok_return,
+           admit_bad=admit_bad, admit_bad_return=admit_bad_return)
 
 
 def makefile_text(L):
     nn = L["nn"]; n = int(nn)
-    # feature object rules + object list
-    objs = " ".join("$(BUILD)/%s.o" % os.path.splitext(s)[0] for s in L["sources"])
+    # Every VM links its grade feature source(s) PLUS the shared intXXX module.
+    sources = list(L["sources"]) + ["slvm%s_intxxx_module.c" % nn]
+    objs = " ".join("$(BUILD)/%s.o" % os.path.splitext(s)[0] for s in sources)
     feat_rules = ""
-    for s in L["sources"]:
+    for s in sources:
         base = os.path.splitext(s)[0]
         feat_rules += ("$(BUILD)/%s.o: src/%s | $(BUILD)\n"
                        "\t$(CC) $(CFLAGS) -c $< -o $@\n") % (base, s)
@@ -401,14 +578,22 @@ def main():
         d = L["dir"]; nn = L["nn"]
         ldir = os.path.join(ROOT, d)
         srcdir = os.path.join(ldir, "src")
+        incdir = os.path.join(ldir, "include")
         os.makedirs(srcdir, exist_ok=True)
+        os.makedirs(incdir, exist_ok=True)
         runner = os.path.join(srcdir, "slvm%s_vm.c" % nn)
         makefile = os.path.join(ldir, "Makefile")
+        intxxx_h = os.path.join(incdir, "slvm%s_intxxx_module.h" % nn)
+        intxxx_c = os.path.join(srcdir, "slvm%s_intxxx_module.c" % nn)
         if not check:
             with open(runner, "w") as f:
                 f.write(runner_source(L))
             with open(makefile, "w") as f:
                 f.write(makefile_text(L))
+            with open(intxxx_h, "w") as f:
+                f.write(intxxx_header(nn))
+            with open(intxxx_c, "w") as f:
+                f.write(intxxx_source(nn))
         wrote.append(d)
     print("%s %d premium VM runner(s) + Makefiles: %s" %
           ("would write" if check else "wrote", len(wrote), ", ".join(wrote)))

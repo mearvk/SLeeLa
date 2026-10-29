@@ -4,7 +4,7 @@
  * A REAL virtual machine: it links the shared native SLeeLa Core engine
  * (impl/core, archived as libslcore.a) and runs a compiled .sleela program
  * artifact on it. SLVM/11's distinguishing contribution --
- *   filesystem-module host above the SLVM/9 and SLVM/10 storage contracts (TAC3), plus the intXXX/uintXXX fixed-width number series (int32..int16777216, uint32..uint16777216)
+ *   filesystem-module host above the SLVM/9 and SLVM/10 storage contracts (TAC3); plus the intXXX/uintXXX fixed-width number series (int32..int16777216, uint32..uint16777216)
  * -- is expressed in SOURCE here: the admission step builds a well-formed
  * instance of this grade's own feature and calls this grade's real validator,
  * and (under --selfcheck) proves a malformed instance is REJECTED. A program
@@ -28,7 +28,7 @@
 #include <string.h>
 
 static const char* SLVM_CODENAME = "Sovereign";
-static const char* SLVM_FEATURE  = "filesystem-module host above the SLVM/9 and SLVM/10 storage contracts (TAC3), plus the intXXX/uintXXX fixed-width number series (int32..int16777216, uint32..uint16777216)";
+static const char* SLVM_FEATURE  = "filesystem-module host above the SLVM/9 and SLVM/10 storage contracts (TAC3); plus the intXXX/uintXXX fixed-width number series (int32..int16777216, uint32..uint16777216)";
 
 /* Admit a well-formed instance of this grade's feature. Returns 0 if this
  * grade's real validator ACCEPTS the well-formed instance, -1 otherwise.
@@ -39,30 +39,31 @@ static int slvm11_vm_admit(void) {
     slvm11_filesystem_module_t tac3 = {
         SLVM11_FS_MODULE_TAC3_ID, SLVM11_FS_MODULE_SCHEMA, "TAC3", 1, 0, 4096,
         1, 1, 1, 1, 1 };
-    /* The full, canonical intXXX/uintXXX number series: both families, the
-     * 2^5..2^24 bounds, the 64-bit narrow boundary, and the twenty widths. */
+    int rc0 = (slvm11_filesystem_module_validate(&tac3) == 0 &&
+               slvm11_filesystem_module_is_tac3(&tac3)) ? 0 : -1;
+
+    /* intXXX/uintXXX number series (every premium generation): the full,
+     * canonical series -- both families, the 2^5..2^24 bounds, the 64-bit
+     * narrow boundary, and the twenty widths -- plus a live proof that the
+     * shared Core value model carries both runtime slots: a 64-bit value
+     * through SL_INT and a value wider than 64 bits through SL_INT128. */
     slvm11_intxxx_module_t intxxx = {
         SLVM11_INTXXX_MIN_WIDTH, SLVM11_INTXXX_MAX_WIDTH,
         SLVM11_INTXXX_NATIVE_NARROW, SLVM11_INTXXX_SERIES_COUNT, 1, 1 };
-    /* Prove the shared Core value model actually carries BOTH runtime slots the
-     * series maps to: a 64-bit value through SL_INT, and a value wider than 64
-     * bits through SL_INT128 with its high bits intact. */
-    SLValue narrow = slval_int(9223372036854775807LL);          /* INT64_MAX */
-    int intxxx_carry = (narrow.type == SL_INT && narrow.as.i == 9223372036854775807LL);
+    SLValue intxxx_narrow = slval_int(9223372036854775807LL);    /* INT64_MAX */
+    int intxxx_carry = (intxxx_narrow.type == SL_INT && intxxx_narrow.as.i == 9223372036854775807LL);
 #if SLEELA_HAVE_INT128
-    sl_int128_t deep = ((sl_int128_t)1 << 100) + (sl_int128_t)1; /* needs > 64 bits */
-    SLValue wide = slval_int128(deep);
-    intxxx_carry = intxxx_carry && wide.type == SL_INT128 && wide.as.i128 == deep;
+    sl_int128_t intxxx_deep = ((sl_int128_t)1 << 100) + (sl_int128_t)1;
+    SLValue intxxx_wide = slval_int128(intxxx_deep);
+    intxxx_carry = intxxx_carry && intxxx_wide.type == SL_INT128 && intxxx_wide.as.i128 == intxxx_deep;
 #else
-    SLValue wide = slval_int128((sl_int128_t)1234567890123456789LL);
-    intxxx_carry = intxxx_carry && wide.type == SL_INT128;
+    SLValue intxxx_wide = slval_int128((sl_int128_t)1234567890123456789LL);
+    intxxx_carry = intxxx_carry && intxxx_wide.type == SL_INT128;
 #endif
-    int rc0 = (slvm11_filesystem_module_validate(&tac3) == 0 &&
-               slvm11_filesystem_module_is_tac3(&tac3) &&
-               slvm11_intxxx_module_validate(&intxxx) == 0 &&
-               slvm11_intxxx_module_is_full_series(&intxxx) &&
-               intxxx_carry) ? 0 : -1;
-    return (rc0 == 0) ? 0 : -1;
+    int rc_intxxx = (slvm11_intxxx_module_validate(&intxxx) == 0 &&
+                     slvm11_intxxx_module_is_full_series(&intxxx) && intxxx_carry) ? 0 : -1;
+
+    return (rc0 == 0 && rc_intxxx == 0) ? 0 : -1;
 }
 
 /* Prove the grade's validator is real: a deliberately malformed instance must
@@ -72,14 +73,16 @@ static int slvm11_vm_reject(void) {
     slvm11_filesystem_module_t badschema = {
         SLVM11_FS_MODULE_TAC3_ID, "wrong.schema/v9", "TAC3", 1, 0, 4096,
         1, 1, 1, 1, 1 };
+    int rc1 = slvm11_filesystem_module_validate(&badschema);  /* wrong schema */
+
     /* A malformed intXXX descriptor (wrong ceiling + bogus width count) must be
      * rejected, proving the number-series validator really discriminates. */
     slvm11_intxxx_module_t badintxxx = {
         SLVM11_INTXXX_MIN_WIDTH, 33554432u /* 2^25: above ceiling */,
         SLVM11_INTXXX_NATIVE_NARROW, 99u /* wrong count */, 1, 1 };
-    int rc1 = (slvm11_filesystem_module_validate(&badschema) != 0 &&
-               slvm11_intxxx_module_validate(&badintxxx) != 0) ? -1 : 0;
-    return (rc1 != 0) ? 0 : -1;
+    int rc_intxxx_bad = (slvm11_intxxx_module_validate(&badintxxx) != 0) ? -1 : 0;
+
+    return (rc1 != 0 && rc_intxxx_bad != 0) ? 0 : -1;
 }
 
 static int slvm11_run_artifact(const char* path) {
