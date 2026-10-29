@@ -69,3 +69,16 @@ dl.glossary dd{margin:2px 0 0 0}
 footer{color:var(--muted);font-size:12px;padding:18px 34px;border-top:1px solid var(--border);
   background:var(--grey-2)}
 .search{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;margin-bottom:10px;font-size:14px}
+
+/* prestige -- the topmost dedication, set ahead of and above the 2.8 object;
+   addition. Kindness over the technical and the immediate; a count over all
+   Objects. A future feature (syntax 2.9), declared here, not yet compiled. */
+.prestige{border:1px solid var(--border);border-left:5px solid var(--blue-dark);
+  background:linear-gradient(180deg,var(--lightblue-2),#ffffff);
+  border-radius:8px;padding:16px 20px;margin:0 0 22px}
+.prestige .prestige-mark{margin:0 0 4px;font-size:13px;color:var(--muted)}
+.prestige .prestige-mark code{background:var(--grey);padding:1px 6px;border-radius:4px;color:var(--blue-dark);font-weight:700}
+.prestige .prestige-gate{font-style:italic}
+.prestige .prestige-title{margin:.2em 0 .4em;color:var(--blue-dark);font-size:20px}
+.prestige p{margin:.5em 0}
+.prestige .prestige-note{font-size:13px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;margin-top:10px}

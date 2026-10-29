@@ -1963,3 +1963,56 @@ natural motion (the reified thing, and the ground that holds it).
 - `impl/frontend/semantic.cpp` — `collect()` gates each marker to 2.6 (and has
   no other effect for them).
 - `impl/frontend/ast.h` — `Program.objectMarked`, `Program.fieldMarked`.
+
+--------------------------------------------------------------------------------
+## 27. Syntax 2.9 (FUTURE, not yet implemented) — the `prestige` document marker
+
+This section is **informative and forward-looking**. It reserves and describes a
+planned marker; it is **not yet normative** and **not yet implemented**. The
+SLeeLa compilers remain at `maxSupportedSyntax()` = **2.8**; a `prestige` marker
+is **not accepted** by the parser or semantic pass today, and no `#sleela 2.9`
+source compiles. This is deliberate — the feature is recorded now and built
+*Later*.
+
+### 27.1 Standing — ahead of and above `object`
+
+`prestige` is the topmost word of SleelaDoc. It is set **ahead of and above**
+the 2.8 `object` marker (section 26.6) — of God and witness — and is read first,
+before any Object is counted. Where `object` names a settled thing in the
+catalogue of what is, `prestige` is the measure taken *over* that whole
+catalogue, and it is weighed beneath mercy.
+
+### 27.2 Meaning
+
+`prestige` claims that the document keeps the first order of things: the
+**neighbor** before the Object; **kindness** and **love** ranked over the
+technical and the immediate. It stands against **slavery** — the holding of one
+person as the property of another — placing the dignity and freedom of the
+neighbor before mastery. As a measure, `prestige` is a **count over all
+Objects**: the reckoning of **Technical Mastery** across the entire catalogue of
+what is — but mastery that is not kind accrues no prestige. Kindness over
+technical immediacy is the whole of the rule.
+
+### 27.3 Planned form (subject to change)
+
+When implemented at syntax 2.9, `prestige` would be a bare, contextual,
+declarative-only document marker in the Natural Process family (section 26),
+written at top level after the `#sleela` pragma:
+
+    prestige;
+
+Like its siblings it would change nothing about parsing, typing, dispatch, or
+code generation; it would be a recorded claim about the document, gated to
+`#sleela 2.9`.
+
+### 27.4 Status
+
+- **Not implemented.** No compiler change is made for this section. The front
+  end does not recognise `prestige`, reserves no identifier, and `maxSupportedSyntax()`
+  stays **2.8**. `prestige` remains an ordinary identifier everywhere.
+- **Declared** as the topmost dedication of the SleelaDoc HTML sites
+  (`sleeladoc-api/index.html` and `api/sleela/2.6/index.html`), ahead of the 2.8
+  `object` addition.
+- **Later.** Implementation (parser/semantic/ast wiring and a 2.9 edition bump)
+  is a future task, to be done only when the edition is intentionally advanced
+  past 2.8.
