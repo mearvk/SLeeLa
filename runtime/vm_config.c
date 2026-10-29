@@ -71,7 +71,11 @@ int sleela_vm_config_load(const char *path, SLEELA_VM_CONFIG *config) {
         *equals = '\0';
         key = trim(entry);
         value = trim(equals + 1);
-        if (!*key || !*value) { fclose(file); return -3; }
+        /* JavaFX is optional; an empty module path means use Java defaults. */
+        if (!*key || (!*value && strcmp(key, "javafx.module_path") != 0)) {
+            fclose(file);
+            return -3;
+        }
         if (!strcmp(key, "vm.version")) {
             if ((seen & 1u) || !parse_version(value, &next.version)) { fclose(file); return -4; }
             seen |= 1u;
