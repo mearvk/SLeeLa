@@ -67,8 +67,9 @@ Recent additions to the language, drivers, and standard library:
   (syntax 2.5), `determine;` (syntax 2.6; a document open to be processed
   further by a doctor, physician, or ghost toward completion by legal hand),
   and the two newest, **`object;`** (a settled thing standing in the catalogue
-  of what is) and **`field;`** (the ground of relation in which objects stand
-  and move) — syntax 2.6. Each is bare, contextual, and version-gated by the
+  of what is — **reified, given concrete standing, at syntax 2.8**) and
+  **`field;`** (the ground of relation in which objects stand and move) —
+  both gated from syntax 2.6. Each is bare, contextual, and version-gated by the
   front end with no effect on parsing, typing, or codegen; outside the marker
   position every one stays an ordinary identifier (so `field` never disturbs a
   class member or a `.field` access). See [`SLEELA.syntax`](SLEELA.syntax)

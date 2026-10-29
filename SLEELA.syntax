@@ -1933,10 +1933,30 @@ None, by design. The front end recognises each marker, gates it to `#sleela
 reserves no identifier. An object- or field-marked document compiles exactly as
 the same document without the marker would.
 
-### 26.6 Where this is implemented
+### 26.6 `object` is reified at syntax 2.8
+
+At syntax **2.8** the `object` marker is **reified**: its claim — "a settled
+thing standing in the catalogue of what is" (section 26.3) — is, as of 2.8, a
+concrete standing rather than only a declaration. Reification here means the
+Object the marker names is treated as a settled, enumerable member of the
+catalogue of what is, on the same edition that completes the base-2 **unsigned**
+integer series (section 25) — the edition at which the type system's catalogue
+of concrete, countable things is itself completed. The `object` marker thus
+*relates to 2.8*: recognised and gated from 2.6 (so earlier documents keep
+working unchanged), it attains its reified, concrete standing at 2.8.
+
+This is still **declarative only** — reification changes nothing about parsing,
+typing, dispatch, or code generation; it records that, from 2.8, an
+`object`-marked document stands in the catalogue as a settled thing, not merely
+a claim. The `field` marker remains the ground of relation and is not reified by
+this subsection; object and field stay the two complementary faces of the one
+natural motion (the reified thing, and the ground that holds it).
+
+### 26.7 Where this is implemented
 
 - `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.8 (both markers are
-  gated to 2.6 and keep working at every later level).
+  gated to 2.6 and keep working at every later level; `object` is reified —
+  concretely standing — at 2.8, per section 26.6).
 - `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
   contextual `object` and (pre-content) `field` markers and sets
   `Program.objectMarked` / `Program.fieldMarked`.
