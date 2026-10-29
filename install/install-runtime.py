@@ -16,19 +16,109 @@ def safe_child(root, relative):
         raise SystemExit("Refusing path outside installation root: " + path)
     return path
 
-def copy_manifest(repo, runtime):
+def _selected_lib_packages(repo, modules, exclude):
+    """Resolve the set of lib/ package names to KEEP given the MODULES/EXCLUDE
+    selection, mirroring stage_lib. Returns None when every package is selected
+    (MODULES=all with no excludes) so callers can skip filtering entirely."""
+    lib_root = os.path.join(repo, "lib")
+    available = sorted(
+        name for name in os.listdir(lib_root)
+        if os.path.isdir(os.path.join(lib_root, name))
+    ) if os.path.isdir(lib_root) else []
+    drop = set(exclude.split()) if exclude else set()
+    if (not modules or modules.strip().lower() == "all") and not drop:
+        return None  # everything; no filtering needed
+    want = modules.split() if modules and modules.strip().lower() != "all" else list(available)
+    return {n for n in want if n in available and n not in drop}
+
+def copy_manifest(repo, runtime, modules="all", exclude=""):
+    """Restore the trusted, SHA-256-manifested base files into the runtime tree.
+
+    When a module selection is in effect, manifest entries under lib/<pkg>/ are
+    only restored for packages in the selected set, so copy-manifest does not
+    re-populate lib packages the install deliberately omitted. Non-lib manifest
+    entries (core, tools, security, etc.) are always restored."""
     repo, runtime = map(os.path.abspath, (repo, runtime))
     manifest_path = os.path.join(repo, "security", "sha256-manifest.json")
     with open(manifest_path, encoding="utf-8") as stream:
         entries = json.load(stream).get("files", [])
+    keep = _selected_lib_packages(repo, modules, exclude)
+    skipped = 0
     for entry in entries:
         rel = entry["path"]
+        # Honor the module selection for library paths.
+        if keep is not None:
+            parts = rel.replace("\\", "/").split("/")
+            if len(parts) >= 2 and parts[0] == "lib":
+                if parts[1] not in keep:
+                    skipped += 1
+                    continue
         src = safe_child(repo, rel)
         if not os.path.isfile(src):
             raise SystemExit("Invalid or missing manifest source: " + rel)
         dst = safe_child(runtime, rel)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         shutil.copy2(src, dst)
+    if keep is not None and skipped:
+        print("copy-manifest honored module selection: skipped %d file(s) in omitted lib packages."
+              % skipped)
+
+def stage_lib(repo, runtime_lib, modules, exclude):
+    """Stage selected lib/ packages into the runtime's lib/ directory.
+
+    modules: either the literal string "all" (every top-level lib package) or a
+             whitespace-separated list of package names to include.
+    exclude: whitespace-separated list of package names to drop from the
+             selection (applied after the include set is resolved).
+
+    This is the data-driven equivalent of the installer's module options: the
+    caller (the Makefile / a package build) decides the set up front; there is
+    no interactive prompting here. Unknown names are reported and skipped. The
+    top-level lib/*.md inventory files always travel with the library. Returns
+    the number of packages actually staged.
+    """
+    repo = os.path.abspath(repo)
+    runtime_lib = os.path.abspath(runtime_lib)
+    lib_root = os.path.join(repo, "lib")
+    if not os.path.isdir(lib_root):
+        raise SystemExit("No lib/ directory under repo root: " + lib_root)
+
+    available = sorted(
+        name for name in os.listdir(lib_root)
+        if os.path.isdir(os.path.join(lib_root, name))
+    )
+    want = modules.split() if modules and modules.strip().lower() != "all" else list(available)
+    drop = set(exclude.split()) if exclude else set()
+
+    selected = []
+    seen = set()
+    for name in want:
+        if name in drop or name in seen:
+            continue
+        if name not in available:
+            print("  skip (not a lib package): " + name)
+            continue
+        seen.add(name)
+        selected.append(name)
+
+    os.makedirs(runtime_lib, exist_ok=True)
+    for name in selected:
+        src = safe_child(lib_root, name)
+        dst = safe_child(runtime_lib, name)
+        if os.path.isdir(dst):
+            shutil.rmtree(dst)
+        shutil.copytree(src, dst, symlinks=True)
+
+    # The lib inventory markdown always accompanies the library.
+    for entry in os.listdir(lib_root):
+        if entry.endswith(".md"):
+            shutil.copy2(os.path.join(lib_root, entry), os.path.join(runtime_lib, entry))
+
+    kept = len(selected)
+    dropped = len(available) - kept
+    print("Staged %d lib package(s) into %s (%d of the tree omitted)."
+          % (kept, runtime_lib, dropped))
+    return kept
 
 def _timestamp():
     import datetime
@@ -135,10 +225,15 @@ def uninstall(runtime, data, bindir):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        raise SystemExit("usage: install-runtime.py copy-manifest REPO RUNTIME | backup RUNTIME DATA BINDIR BACKUP_ROOT | record RUNTIME DATA BINDIR | uninstall RUNTIME DATA BINDIR")
+        raise SystemExit("usage: install-runtime.py copy-manifest REPO RUNTIME [MODULES EXCLUDE] | stage-lib REPO RUNTIME_LIB MODULES EXCLUDE | backup RUNTIME DATA BINDIR BACKUP_ROOT | record RUNTIME DATA BINDIR | uninstall RUNTIME DATA BINDIR")
     command = sys.argv[1]
-    if command == "copy-manifest" and len(sys.argv) == 4:
-        copy_manifest(sys.argv[2], sys.argv[3])
+    if command == "copy-manifest" and len(sys.argv) in (4, 6):
+        if len(sys.argv) == 6:
+            copy_manifest(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+        else:
+            copy_manifest(sys.argv[2], sys.argv[3])
+    elif command == "stage-lib" and len(sys.argv) == 6:
+        stage_lib(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
     elif command == "backup" and len(sys.argv) == 6:
         backup(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
     elif command == "record" and len(sys.argv) == 5:
