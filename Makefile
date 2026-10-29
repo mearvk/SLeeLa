@@ -3,14 +3,51 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install tutorial-check tests server config route common-rails registry premium-vms clean verify-security help guess install-guide
+.PHONY: all build uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry premium-vms clean verify-security help guess install-guide
 
 SLEELA_MANIFEST_CONSENT ?=
+# Answer the "install the advanced (beautified/guided) build?" prompt
+# non-interactively: yes runs install/sleela-clean-install.sh, no/skip keeps
+# the plain make-driven build. Empty + a TTY prompts; empty + no TTY skips.
+SLEELA_ADVANCED_BUILD ?=
 
 PREFIX ?= /usr/local
 DESTDIR ?=
 
 all: core java28 regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs churn antivirus registry premium-vms ballum
+
+# `build` is the human-facing entry point: it performs the full `make all`
+# build and THEN offers, with a yes/no prompt, to simply install the advanced
+# (beautified/guided) build instead of leaving you with only the plain,
+# make-driven artifacts. `all` itself stays non-interactive so CI is unaffected.
+# Answer non-interactively with SLEELA_ADVANCED_BUILD=yes|no (or skip); with no
+# terminal the prompt is skipped and the plain build stands.
+build: all advanced-build
+
+# advanced-build: the yes/no gate. On yes it runs the calm, guided installer
+# (install/sleela-clean-install.sh) which itself asks about scope and the fuller
+# module groups; on no/skip (or no TTY) it does nothing and the plain `make`
+# build you just produced is what you keep. TTY/env-aware, mirroring
+# install/Makefile::manifest-prompt so automated builds never block.
+advanced-build:
+	@choice="$(SLEELA_ADVANCED_BUILD)"; \
+	if [ -z "$$choice" ]; then \
+	  if [ -t 0 ]; then \
+	    printf 'Install the advanced (beautified/guided) build now instead of the plain make output? [yes/no]: '; \
+	    read choice || choice=no; \
+	  else \
+	    choice=skip; \
+	    echo "No terminal for the advanced-build prompt; keeping the plain make build (set SLEELA_ADVANCED_BUILD=yes to run the guided installer)."; \
+	  fi; \
+	fi; \
+	case "$$choice" in \
+	  y|Y|yes|YES|Yes) \
+	    echo "Launching the SLeeLa advanced (guided) build..."; \
+	    ./install/sleela-clean-install.sh ;; \
+	  n|N|no|NO|No|skip|SKIP|Skip) \
+	    echo "Keeping the plain make build; run 'make clean-install' later for the guided install." ;; \
+	  *) echo "Unrecognized answer '$$choice'; expected yes, no, or skip." >&2; exit 2 ;; \
+	esac
 
 # Anchor verification to the directory containing this root Makefile, rather
 # than an installed runtime tree such as ~/.local/sleela. The manifest remains
@@ -378,6 +415,8 @@ install-guide:
 help:
 	@echo "SLeeLa repository build dispatcher"
 	@echo "  make all       Build core, Java 28, regex, compiler, decompiler, VM, codecs, and tests"
+	@echo "  make build     Run 'make all', then ask yes/no to install the advanced (guided) build"
+	@echo "                 (SLEELA_ADVANCED_BUILD=yes|no answers it non-interactively)"
 	@echo "  make guess     Show the build order (first-timer path + expert target graph)"
 	@echo "  make install-guide  Installation explained as a process (companion to this list)"
 	@echo "  make verify-security Verify the checkout rooted at this Makefile against its SHA-256 manifest"
