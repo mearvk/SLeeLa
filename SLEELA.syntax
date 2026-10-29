@@ -1851,3 +1851,95 @@ big-integer arithmetic for arbitrary widths today).
   widens the 128-bit-backed members into the 128-bit slot.
 - `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.8, so `#sleela 2.8`
   sources are accepted.
+
+--------------------------------------------------------------------------------
+## 26. Syntax 2.6 — the `object` and `field` document markers (the Natural Process)
+
+This section is **normative** for syntax **2.6**. It adds two more first-class,
+compiler-recognised document markers — `object` and `field` — completing the
+**Natural Process** family of declarative markers. Like `author`/`authorial`
+(section 18), `material` (section 19), `memory` (section 20), and `determine`
+(section 23), each is **declarative only**: it changes **nothing** about
+parsing, typing, dispatch, or code generation. Each is a *claim about the
+document*, recognised and version-gated by the front end and otherwise inert.
+
+### 26.1 The Natural Process family
+
+The Natural Process is the set of bare, contextual, declarative-only document
+markers by which a document states what it *is* in the order of making. As of
+syntax 2.6 the whole of the family is, in order of introduction:
+
+    author / authorial   (syntax 2.4; section 18)  handled by professional
+                                                   council; legalises duplicate
+                                                   members (the one marker with
+                                                   a behavioral effect)
+    material              (syntax 2.5; section 19)  settled Source; the thing,
+                                                   Material
+    memory                (syntax 2.5; section 20)  kept, remembered standing
+    determine             (syntax 2.6; section 23)  open to be processed further
+                                                   toward completion
+    object                (syntax 2.6; this section) a settled thing standing in
+                                                   the catalogue of what is
+    field                 (syntax 2.6; this section) the ground of relation in
+                                                   which objects stand and move
+
+Every member but `author`/`authorial` is purely declarative. All are
+**contextual words, not reserved keywords**: outside the top-level marker
+position (and in any document below their gate) they remain ordinary
+identifiers.
+
+### 26.2 The markers
+
+A document may declare, at top level (after the `#sleela` pragma, outside any
+class), either bare word:
+
+    object;
+    field;
+
+Each takes no modifier and no type. A trailing `;` is optional and a repeated
+marker is harmless. Both are **contextual**: `object` and `field` are ordinary
+identifiers everywhere else. In particular `field` is recognised as a marker
+**only at top-level document scope before any content has begun**, so the
+ordinary class-member `field-decl` grammar (section 3.3) and every `.field`
+member access (section 6) are completely unaffected.
+
+Version gate: both markers require `#sleela 2.6`; a 2.6-feature use declared
+below 2.6 is rejected ("the object document marker requires #sleela 2.6" /
+"the field document marker requires #sleela 2.6").
+
+### 26.3 Meaning
+
+`object` claims that the document is an **Object**: a settled thing standing in
+the catalogue of what is — the subject as a bounded, nameable entity to which
+its author and the field relate. `field` claims that the document is the
+**Field**: the ground of relation, the medium in which objects stand and move.
+Object and field are the two complementary faces of the same natural motion —
+the thing, and the ground that holds it — and a document may carry both, and may
+further be authorial, material, memory, or determine. The markers are
+**orthogonal and compositional**.
+
+### 26.4 The sets
+
+An `object`-marked document is a member of the **set of object documents**; a
+`field`-marked document is a member of the **set of field documents**. Like the
+material and memory sets, these are conventions the markers record; the compiler
+places no mechanical restriction on the file.
+
+### 26.5 Effect on the toolchain
+
+None, by design. The front end recognises each marker, gates it to `#sleela
+2.6`, and records it on the parsed document (`Program.objectMarked` /
+`Program.fieldMarked`). It emits no additional artifact, relaxes no rule, and
+reserves no identifier. An object- or field-marked document compiles exactly as
+the same document without the marker would.
+
+### 26.6 Where this is implemented
+
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.8 (both markers are
+  gated to 2.6 and keep working at every later level).
+- `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
+  contextual `object` and (pre-content) `field` markers and sets
+  `Program.objectMarked` / `Program.fieldMarked`.
+- `impl/frontend/semantic.cpp` — `collect()` gates each marker to 2.6 (and has
+  no other effect for them).
+- `impl/frontend/ast.h` — `Program.objectMarked`, `Program.fieldMarked`.

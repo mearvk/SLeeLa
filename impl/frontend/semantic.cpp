@@ -143,6 +143,12 @@ class Analyzer{
   // older-declared document. There is deliberately no behavioral effect.
   if(p.determineMarked&&syntax<SyntaxVersion{2,6})
    err("the determine document marker requires #sleela 2.6");
+  // Object marker (syntax 2.6): declarative only; gate-check only, no effect.
+  if(p.objectMarked&&syntax<SyntaxVersion{2,6})
+   err("the object document marker requires #sleela 2.6");
+  // Field marker (syntax 2.6): declarative only; gate-check only, no effect.
+  if(p.fieldMarked&&syntax<SyntaxVersion{2,6})
+   err("the field document marker requires #sleela 2.6");
   for(const auto&c:p.classes){
    std::map<std::string,Type> instanceFields;
    for(const auto&f:c.fields){Type t=tn(f.type);if(t.kind==Kind::Error)err("unknown type '"+f.type+"' for field '"+f.name+"'");if(t.kind==Kind::Void)err("field '"+f.name+"' cannot be void");
