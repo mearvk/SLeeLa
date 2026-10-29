@@ -15,6 +15,7 @@
 #include "library_index.h"
 #include "keyword_supporter.h"
 #include "../../registry/sleela_registry.h"
+#include "vm_config.h"
 #include "../annotation/AnnotationRuntime.hpp"
 #include "../catalog/sheet_catalog.h"
 #include "../xclass/xclass_loader.h"
@@ -674,6 +675,24 @@ static std::string g_wikiDir;
 static int compileFile(const std::string&sourcePath,const std::string&outputPath);
 static int runFile(const std::string&path);
 
+/* Where the VM-selection config lives. Honors SLEELA_VM_CONF; otherwise the
+ * shipped template config/vm.conf, resolved relative to the current directory
+ * (the repository/runtime root), matching the vm-config smoke test. */
+static std::string vmConfigPath(){
+    const char* env=std::getenv("SLEELA_VM_CONF");
+    if(env&&*env) return std::string(env);
+    return "config/vm.conf";
+}
+/* Load the VM selection config, applying the SLEELA_VM_VERSION environment
+ * override on top. Falls back to compiled defaults (version 11, unlocked) when
+ * no config file is present, so the CLI works with or without a config. */
+static void vmLoadConfig(SLEELA_VM_CONFIG* cfg){
+    sleela_vm_config_defaults(cfg);
+    std::string path=vmConfigPath();
+    sleela_vm_config_load(path.c_str(), cfg);   /* best-effort: keep defaults on miss */
+    sleela_vm_config_apply_environment(cfg);
+}
+
 static int vmCmd(int argc,char**argv){
     struct VmEntry{int n;const char*id;const char*label;const char*dir;const char*mainEntry;};
     static const VmEntry kVms[10]={
@@ -721,6 +740,8 @@ static int vmCmd(int argc,char**argv){
             std::cout<<"  premium "<<v.n<<"  "<<v.id<<"  ["<<v.label<<"]  -> "<<v.dir<<"\n";
         std::cout<<"\nUse: sleela vm select <native|1..10|premium 1..11>   |   sleela vm info <1..10|premium 1..11>\n";
         std::cout<<"     sleela vm run <premium <1..11>|native> <program.sleela>   (premium generations are real runnable VMs)\n";
+        std::cout<<"     sleela vm lock [premium <1..11>]   pin a generation (no arg = the advanced/highest VM)\n";
+        std::cout<<"     sleela vm unlock                   clear the pin   |   sleela vm status   show the current pin\n";
         return 0;
     }
     // `sleela vm run premium <n> <program.sleela|artifact>` actually boots the
@@ -742,6 +763,17 @@ static int vmCmd(int argc,char**argv){
         if(progIdx>=argc){std::cerr<<"sleela vm run: missing <program>\n";return 2;}
         int n=std::atoi(pnum.c_str());
         if(n<1||n>11){std::cerr<<"sleela vm run: premium '"<<pnum<<"' out of range (1..11)\n";return 2;}
+        // Honor a pinned (locked) generation: when the user has locked the VM,
+        // refuse to boot any other generation. This is the lock-in guarantee.
+        {
+            SLEELA_VM_CONFIG cfg; vmLoadConfig(&cfg);
+            if(cfg.locked && n!=cfg.version){
+                std::cerr<<"sleela vm run: VM is locked to premium "<<cfg.version
+                         <<"; refusing to run premium "<<n<<".\n"
+                         <<"  Run 'sleela vm run premium "<<cfg.version<<" <program>' or clear the lock with 'sleela vm unlock'.\n";
+                return 3;
+            }
+        }
         const PremiumVm&v=kPremium[n-1];
         char nn[4]; std::snprintf(nn,sizeof(nn),"%02d",n);
         std::string vmbin=std::string(v.dir)+"/vm-build/slvm-"+nn;
@@ -771,6 +803,62 @@ static int vmCmd(int argc,char**argv){
         if(!tmp.empty()){ std::error_code ec; fs::remove(tmp,ec); }
         return rc;
     }
+    // `sleela vm lock [premium <n> | p<N> | <n>]` pins a premium generation so
+    // every later `vm run` uses it and refuses any other. With no argument it
+    // locks in the ADVANCED (highest) generation. The choice is persisted to
+    // the VM config (config/vm.conf or $SLEELA_VM_CONF) as vm.locked=true.
+    if(sub=="lock"){
+        int n=SLEELA_VM_MAX_VERSION;   // default: the advanced VM
+        if(argc>=4){
+            std::string sel=argv[3];
+            std::string pnum;
+            if(sel=="premium"){ if(argc<5){std::cerr<<"sleela vm lock: premium needs a number 1..11\n";return 2;} pnum=argv[4]; }
+            else if(sel.size()>=2 && (sel[0]=='p'||sel[0]=='P') && std::isdigit((unsigned char)sel[1])) pnum=sel.substr(1);
+            else pnum=sel;   // bare number
+            n=std::atoi(pnum.c_str());
+            if(n<SLEELA_VM_MIN_VERSION||n>SLEELA_VM_MAX_VERSION){
+                std::cerr<<"sleela vm lock: premium '"<<pnum<<"' out of range (1..11)\n";return 2;
+            }
+        }
+        SLEELA_VM_CONFIG cfg; vmLoadConfig(&cfg);
+        cfg.version=n; cfg.locked=1;
+        std::string path=vmConfigPath();
+        int rc=sleela_vm_config_save(path.c_str(), &cfg);
+        if(rc!=0){
+            std::cerr<<"sleela vm lock: could not write "<<path<<" (error "<<rc<<").\n"
+                     <<"  Set SLEELA_VM_CONF to a writable path, or create "<<path<<" first.\n";
+            return 1;
+        }
+        const PremiumVm&v=kPremium[n-1];
+        std::cout<<"Locked in premium VM "<<v.id<<" ["<<v.label<<"].\n"
+                 <<"  vm.version = "<<n<<", vm.locked = true  (written to "<<path<<")\n"
+                 <<"  Every 'sleela vm run' now uses premium "<<n<<" and refuses other generations.\n"
+                 <<"  Clear with: sleela vm unlock\n";
+        return 0;
+    }
+    // `sleela vm unlock` clears the pin; selection is free again.
+    if(sub=="unlock"){
+        SLEELA_VM_CONFIG cfg; vmLoadConfig(&cfg);
+        if(!cfg.locked){ std::cout<<"sleela vm unlock: VM is not locked (nothing to do).\n"; return 0; }
+        cfg.locked=0;
+        std::string path=vmConfigPath();
+        int rc=sleela_vm_config_save(path.c_str(), &cfg);
+        if(rc!=0){ std::cerr<<"sleela vm unlock: could not write "<<path<<" (error "<<rc<<").\n"; return 1; }
+        std::cout<<"Unlocked the VM selection (vm.locked = false, written to "<<path<<").\n"
+                 <<"  'sleela vm run premium <n>' may use any generation 1..11 again.\n";
+        return 0;
+    }
+    // `sleela vm status` reports the current pin.
+    if(sub=="status"){
+        SLEELA_VM_CONFIG cfg; vmLoadConfig(&cfg);
+        std::cout<<"SLeeLa VM selection:\n"
+                 <<"  config   : "<<vmConfigPath()<<"\n"
+                 <<"  version  : premium "<<cfg.version
+                 <<(cfg.version==SLEELA_VM_MAX_VERSION?"  (advanced / highest)":"")<<"\n"
+                 <<"  locked   : "<<(cfg.locked?"yes -- pinned; other generations refused":"no -- selection is free")<<"\n"
+                 <<"  strict   : "<<(cfg.strict?"yes":"no")<<"\n";
+        return 0;
+    }
     if(sub=="select"||sub=="info"){
         if(argc<4){std::cerr<<"sleela vm "<<sub<<": expected <native|1..10|premium 1..11>\n";return 2;}
         std::string sel=argv[3];
@@ -793,6 +881,12 @@ static int vmCmd(int argc,char**argv){
                      <<"  Generation lives in "<<v.dir<<" (its own src/include/Makefile).\n"
                      <<"  This is a real runnable VM (it links the shared Core engine). Run a\n"
                      <<"  program on it with:  sleela vm run premium "<<n<<" <program.sleela>\n";
+            {
+                SLEELA_VM_CONFIG cfg; vmLoadConfig(&cfg);
+                if(cfg.locked && n!=cfg.version)
+                    std::cout<<"  NOTE: the VM is locked to premium "<<cfg.version
+                             <<"; 'vm run' will refuse premium "<<n<<" until you 'sleela vm unlock'.\n";
+            }
             return 0;
         }
         if(sel=="native"||sel=="0"){
@@ -815,7 +909,7 @@ static int vmCmd(int argc,char**argv){
                  <<"   is a host/build step beyond the shipped sleela binary.)\n";
         return 0;
     }
-    std::cerr<<"sleela vm: unknown subcommand '"<<sub<<"' (use list | select | info)\n";
+    std::cerr<<"sleela vm: unknown subcommand '"<<sub<<"' (use list | select | info | run | lock | unlock | status)\n";
     return 2;
 }
 /* ---- SHA-256 (self-contained, for `sleela modium`) ----------------------
