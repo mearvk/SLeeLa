@@ -30,6 +30,34 @@ sleela defender provision [directory] --allow-defender --sha256 <hex> --allow-ro
 
 `provision` performs fetch, build, and install in sequence.
 
+### Download and build directory
+
+The optional `[directory]` argument is the **download workspace**, not the
+SLeeLa installation directory and not the backend source directory itself.
+The driver downloads/extracts the selected backend to:
+
+- Linux: `<directory>/Linux.Admin.Defender`
+- Windows: `<directory>/Windows.Admin.Defender`
+
+If omitted, the workspace defaults to the system temporary directory under
+`sleela-defender` (for example, `/tmp/sleela-defender` on Linux). The native
+build is invoked directly in the extracted backend tree: Linux runs
+`make -C <workspace>/Linux.Admin.Defender/kernel/file-locker`; Windows invokes
+`<workspace>/Windows.Admin.Defender/build/build.ps1`. The backend is not
+supposed to be copied into SLeeLa's `~/.local/sleela` directory.
+
+Example using a persistent download workspace on Linux:
+
+```sh
+sleela defender fetch "$HOME/.cache/sleela-defender" --allow-defender --sha256 <archive-sha256>
+sleela defender build "$HOME/.cache/sleela-defender" --allow-defender --sha256 <archive-sha256>
+```
+
+The SLeeLa runtime's own integrity gate is separate from the backend download
+and build path. If that gate reports missing or mismatched SLeeLa files, repair
+the installed SLeeLa tree by rerunning the updated installer from the verified
+checkout; do not bypass the gate or copy arbitrary files over the installation.
+
 ## Opt-in and integrity gates (required)
 
 Because `fetch`/`build`/`install`/`provision` download a remote source tree and
