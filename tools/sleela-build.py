@@ -211,7 +211,7 @@ def isa_source_native_check() -> tuple[bool, str]:
     # an explicit numeric code and trailing -- description; this avoids counting
     # explanatory prose such as "< OP_IC_* ... >" as duplicate instructions.
     source_ops = re.findall(
-        r"^<\\s*(OP_[A-Z0-9_]+)(?:\\s+([0-9]+)(?:\\s+--[^>]*)?)?\\s*>$",
+        r"^<\s*(OP_[A-Z0-9_]+)(?:\s+([0-9]+)(?:\s+--[^>]*)?)?\s*>$",
         source,
         re.MULTILINE,
     )
@@ -219,11 +219,11 @@ def isa_source_native_check() -> tuple[bool, str]:
 
     # Strip C comments before reading the enum so opcode names mentioned in
     # explanatory comments cannot inflate the native instruction count.
-    native = re.sub(r"/\\*.*?\\*/|//[^\\n]*", "", native, flags=re.DOTALL)
-    enum_match = re.search(r"typedef enum \\{(.*?)\\}\\s*SLOp;", native, re.DOTALL)
+    native = re.sub(r"/\*.*?\*/|//[^\n]*", "", native, flags=re.DOTALL)
+    enum_match = re.search(r"typedef enum \{(.*?)\}\s*SLOp;", native, re.DOTALL)
     if not enum_match:
         return False, "native SLOp enum is missing"
-    native_ops = re.findall(r"\\b(OP_[A-Z0-9_]+)\\b", enum_match.group(1))
+    native_ops = re.findall(r"\b(OP_[A-Z0-9_]+)\b", enum_match.group(1))
     native_ops = [name for name in native_ops if name != "OP__COUNT"]
     if source_ops != native_ops:
         first = next((i for i, pair in enumerate(zip(source_ops, native_ops)) if pair[0] != pair[1]), min(len(source_ops), len(native_ops)))
