@@ -40,10 +40,15 @@ int nearness(const std::string& topicL, const std::string& candL){
 }
 
 // ---- the parsed, rich doc model -------------------------------------------
-struct Member { std::string kind, name, sig, desc; };
+struct Tag { std::string name, value; };
+struct Member {
+    std::string kind, name, sig, desc;
+    std::vector<Tag> tags;           // @param/@returns/... harvested above it
+};
 struct ClassDoc {
     std::string kind, name, extends, summary;
     std::vector<Member> fields, methods;
+    std::vector<Tag> tags;           // class-level @intent/@thesis/@axiom/...
     bool hasMetadata=false;
 };
 struct UnitDoc {
@@ -73,6 +78,55 @@ std::string commentText(const std::string& raw){
     bool rule=!s.empty(); for(char c:s) if(c!='-'&&c!=' '){ rule=false; break; }
     if(rule) return "";
     return s;
+}
+
+// Collect the raw comment lines (delimiters stripped) of the contiguous run
+// ending at `end`, top-to-bottom. Used by both the plain-prose and the tagged
+// gatherers so they agree on run boundaries.
+std::vector<std::string> gatherRaw(const std::vector<std::string>& lines, int end){
+    std::vector<std::string> pieces; int i=end;
+    while(i>=0){
+        std::string s=trim(lines[i]);
+        if(s.empty()) break;
+        bool isComment = (!s.empty() && (s[0]=='<' || s.rfind("//",0)==0 || s.rfind("<<",0)==0));
+        if(!isComment){
+            if(!pieces.empty() && s.find(';')==std::string::npos && s.find('{')==std::string::npos && s.find('(')==std::string::npos){ pieces.push_back(s); --i; continue; }
+            break;
+        }
+        // keep the raw (post-delimiter) text, preserving a leading @tag token
+        std::string t=trim(lines[i]);
+        if(t.rfind("<<",0)==0){ t=t.substr(2); if(t.size()>=2 && t.substr(t.size()-2)==">>") t=t.substr(0,t.size()-2); }
+        else if(!t.empty() && t[0]=='<'){ t=t.substr(1); if(!t.empty() && t.back()=='>') t.pop_back(); }
+        else if(t.rfind("//",0)==0){ t=t.substr(2); }
+        pieces.push_back(trim(t)); --i;
+    }
+    std::reverse(pieces.begin(),pieces.end());
+    return pieces;
+}
+
+// Split a comment run into (free prose, tags). A line whose first token is an
+// @word starts a tag; following non-@ lines continue that tag's value; lines
+// before any @tag are summary prose. Recognised SleelaDoc tags only.
+void splitDoc(const std::vector<std::string>& raw, std::string& proseOut, std::vector<Tag>& tagsOut){
+    static const std::regex tagHead("^@([A-Za-z]+)\\b\\s*(.*)$");
+    std::vector<std::string> prose; Tag* curTag=nullptr;
+    for(auto line : raw){
+        std::string s=trim(line);
+        bool rule=!s.empty(); for(char c:s) if(c!='-'&&c!=' '){ rule=false; break; }
+        if(rule||s.empty()) continue;
+        std::smatch m;
+        if(std::regex_match(s,m,tagHead)){
+            tagsOut.push_back(Tag{lower(m[1].str()), trim(m[2].str())});
+            curTag=&tagsOut.back();
+        } else if(curTag){
+            if(!curTag->value.empty()) curTag->value+=" ";
+            curTag->value+=s;
+        } else {
+            prose.push_back(s);
+        }
+    }
+    std::string p; for(auto& x:prose){ if(x.empty()) continue; if(!p.empty()) p+=" "; p+=x; }
+    proseOut=squeeze(p);
 }
 
 // Gather the contiguous comment run that ends at line index `end` (inclusive),
@@ -129,9 +183,9 @@ UnitDoc parseUnit(const library::Symbol& sym, const std::string& libRoot){
         int closes=(int)std::count(s.begin(),s.end(),'}');
         std::smatch cm;
         if(std::regex_search(s,cm,classRe)){
-            u.classes.push_back(ClassDoc{cm[1].str(),cm[2].str(),cm[3].matched?cm[3].str():"", "", {}, {}, false});
+            u.classes.push_back(ClassDoc{cm[1].str(),cm[2].str(),cm[3].matched?cm[3].str():"", "", {}, {}, {}, false});
             cur=&u.classes.back();
-            cur->summary=gatherAbove(lines, idx-1);
+            { std::string prose; std::vector<Tag> tg; splitDoc(gatherRaw(lines,idx-1),prose,tg); cur->summary=prose; cur->tags=tg; }
             depth += opens-closes;      // usually enters the class body (depth 1)
             continue;
         }
@@ -143,12 +197,14 @@ UnitDoc parseUnit(const library::Symbol& sym, const std::string& libRoot){
         if(atClassBody && std::regex_search(s,mm,fieldRe)){
             std::string nm=mm[2].str();
             if(isMetaName(nm)){ cur->hasMetadata=true; }
-            else cur->fields.push_back(Member{"field",nm,squeeze(s.substr(0,s.size()-1)),gatherAbove(lines,idx-1)});
+            else { std::string prose; std::vector<Tag> tg; splitDoc(gatherRaw(lines,idx-1),prose,tg);
+                   cur->fields.push_back(Member{"field",nm,squeeze(s.substr(0,s.size()-1)),prose,tg}); }
         } else if(atClassBody && std::regex_search(s,mm,methRe)){
             std::string nm=mm[2].str();
             if(isMetaName(nm)){ cur->hasMetadata=true; }
             else { std::string sig=s; size_t br=sig.find('{'); if(br!=std::string::npos) sig=trim(sig.substr(0,br));
-                   cur->methods.push_back(Member{"method",nm,squeeze(sig),gatherAbove(lines,idx-1)}); }
+                   std::string prose; std::vector<Tag> tg; splitDoc(gatherRaw(lines,idx-1),prose,tg);
+                   cur->methods.push_back(Member{"method",nm,squeeze(sig),prose,tg}); }
         }
         depth += opens-closes;
         if(depth<0) depth=0;
@@ -168,12 +224,36 @@ void renderClass(std::ostream& o, const UnitDoc& u, const ClassDoc& c){
     if(!u.syntax.empty()) o<<"   |   #sleela "<<u.syntax;
     o<<"\n";
     rule(o);
-    if(!u.definition.empty()){ o<<"\nDEFINITION\n  "<<u.definition<<"\n"; }
-    if(!c.summary.empty()){ o<<"\nDESIGN PURPOSE\n  "<<c.summary<<"\n"; }
+    // helper: first tag value matching any of the given names (class scope)
+    auto classTag=[&](std::initializer_list<const char*> names)->std::string{
+        for(const char* nm:names) for(const auto& t:c.tags) if(t.name==nm) return t.value; return std::string(); };
+    auto allTags=[&](const char* name)->std::vector<std::string>{
+        std::vector<std::string> v; for(const auto& t:c.tags) if(t.name==name) v.push_back(t.value); return v; };
 
-    // RELATIONSHIPS: what it builds on, and (shallow) what types it names.
+    if(!u.definition.empty()){ o<<"\nDEFINITION\n  "<<u.definition<<"\n"; }
+
+    // DESIGN PURPOSE: prefer an explicit @intent, then @thesis, then the
+    // harvested summary prose. Richer when the author tagged intent.
+    std::string intent=classTag({"intent"});
+    std::string thesis=classTag({"thesis"});
+    o<<"\nDESIGN PURPOSE\n";
+    if(!intent.empty()) o<<"  "<<intent<<"\n";
+    if(!c.summary.empty() && c.summary!=intent) o<<"  "<<c.summary<<"\n";
+    if(!thesis.empty()) o<<"  Thesis: "<<thesis<<"\n";
+    if(intent.empty() && c.summary.empty() && thesis.empty()) o<<"  (no stated purpose; see the source header)\n";
+
+    // Axioms / invariants: the load-bearing promises, when the author stated them.
+    { auto ax=allTags("axiom"); auto inv=allTags("invariant");
+      if(!ax.empty()||!inv.empty()){
+        o<<"\nPRINCIPLES\n";
+        for(auto& a:ax)  o<<"  * axiom: "<<a<<"\n";
+        for(auto& i:inv) o<<"  * invariant: "<<i<<"\n";
+      } }
+
+    // RELATIONSHIPS: what it builds on, author @see links, and the member tally.
     o<<"\nRELATIONSHIPS\n";
     if(!c.extends.empty()) o<<"  * builds on: "<<c.extends<<"\n";
+    for(auto& s:allTags("see")) o<<"  * see also: "<<s<<"\n";
     o<<"  * fields: "<<c.fields.size()<<"   methods: "<<c.methods.size()<<"\n";
     if(c.hasMetadata) o<<"  * carries the standard Metadata Class record (provenance + fiduciary attributes)\n";
 
@@ -184,7 +264,15 @@ void renderClass(std::ostream& o, const UnitDoc& u, const ClassDoc& c){
     }
     if(!c.methods.empty()){
         o<<"\nSTRUCTURE -- behaviour\n";
-        for(const auto& mth:c.methods){ o<<"  "<<mth.sig<<"\n"; if(!mth.desc.empty()) o<<"      "<<mth.desc<<"\n"; }
+        for(const auto& mth:c.methods){
+            o<<"  "<<mth.sig<<"\n";
+            if(!mth.desc.empty()) o<<"      "<<mth.desc<<"\n";
+            for(const auto& t:mth.tags){
+                if(t.name=="param")   o<<"      param   "<<t.value<<"\n";
+                else if(t.name=="returns"||t.name=="return") o<<"      returns "<<t.value<<"\n";
+                else if(t.name=="throws") o<<"      throws  "<<t.value<<"\n";
+            }
+        }
     }
 
     // USER CLAYS: the usage habits a reader brings, and the cues that make a
@@ -195,13 +283,17 @@ void renderClass(std::ostream& o, const UnitDoc& u, const ClassDoc& c){
     o<<"  * Assumed Be: a reader trained on other peoples' systems will reach for\n"
        "    "<<c.name<<" expecting the familiar shape of its name; read the DESIGN\n"
        "    PURPOSE before assuming behaviour by analogy.\n";
-    o<<"  * Careful cue: "<<(c.summary.empty()? std::string("consult the source header and the member explanations above")
-                                              : squeeze(c.summary).substr(0,std::min<size_t>(c.summary.size(),160)))<<"\n";
+    std::string cue = !intent.empty()? intent : c.summary;
+    o<<"  * Careful cue: "<<(cue.empty()? std::string("consult the source header and the member explanations above")
+                                        : squeeze(cue).substr(0,std::min<size_t>(cue.size(),180)))<<"\n";
     o<<"  * Audience: INT (the attentive reader) studies the RELATIONSHIPS;\n"
        "    Swarmy (the habitual reader) should slow at the Careful cue.\n";
 
-    // MASTERY LEVELS: a graduated study ladder over this class.
+    // MASTERY LEVELS: a graduated study ladder over this class. Author-supplied
+    // @mastery lines (if any) are listed first as the class's own guidance; the
+    // standard five-rung ladder always follows so every page teaches the method.
     o<<"\nMASTERY LEVELS\n";
+    { auto ms=allTags("mastery"); for(size_t k=0;k<ms.size();++k) o<<"  * "<<ms[k]<<"\n"; if(!ms.empty()) o<<"  --\n"; }
     o<<"  1 Recognise  -- name "<<c.name<<" and say, in one line, what it is for.\n";
     o<<"  2 Use        -- call its "<<c.methods.size()<<" method(s) for the common task.\n";
     o<<"  3 Relate     -- place it among its collaborators"<<(c.extends.empty()?"":" and its base "+c.extends)<<".\n";
