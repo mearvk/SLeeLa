@@ -211,7 +211,7 @@ def isa_source_native_check() -> tuple[bool, str]:
     # an explicit numeric code and trailing -- description; this avoids counting
     # explanatory prose such as "< OP_IC_* ... >" as duplicate instructions.
     source_ops = re.findall(
-        r"^<\s*(OP_[A-Z0-9_]+)(?:\s+([0-9]+)(?:\s+--[^>]*)?)?\s*>$",
+        r"^[ \\t]*<[ \\t]*(OP_[A-Z0-9_]+)(?:[ \\t]+([0-9]+)(?:[ \\t]+--.*)?)?[ \\t]*>$",
         source,
         re.MULTILINE,
     )
