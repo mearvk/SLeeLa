@@ -15,7 +15,7 @@ source_records=re.findall(
     source_text, re.M
 )
 for i,(op,code) in enumerate(source_records):
-    if code is not None and int(code) != i:
+    if code and int(code) != i:
         print(f"source ISA code mismatch at index {i}: {op} declares {code}",file=sys.stderr)
         raise SystemExit(1)
 source=[op for op,_code in source_records]
