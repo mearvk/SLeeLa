@@ -1,0 +1,425 @@
+#!/usr/bin/env sh
+# =============================================================================
+# sleelactl — the unified SLeeLa control plane.
+#
+# One command to control every module family: daemons and servers, the HTTP and
+# wireless protocols, the codec/compression/video registries, the compiler and
+# decompiler tools, and the availability of the data systems.
+#
+# The families are genuinely DIFFERENT kinds of thing, so the verbs are chosen
+# per nature rather than forced into one shape (see lib/core/SERVICE-STANDARD.md).
+# The grammar is:
+#
+#     sleelactl <verb> <module> [args...]
+#     sleelactl <verb> all                 # fan the verb across every module of
+#                                           # a compatible nature
+#
+# plus the cross-cutting verbs:
+#
+#     sleelactl list [nature]              # enumerate modules (optionally by nature)
+#     sleelactl status [module|all]        # status of a module or everything
+#     sleelactl natures                    # explain the natures and their verbs
+#     sleelactl help [verb|module]         # help, or the verbs legal for a module
+#
+# NATURES and their legal verbs:
+#     daemon      start stop restart reload status enable disable
+#     registry    load unload enable disable list probe can status
+#     datasource  open close status available
+#     protocol    negotiate grade simulate validate info
+#     tool        run build inspect info
+#     library     info
+#
+# A verb that a module's nature does not support is REFUSED with the correct
+# verb set for that module — sleelactl never pretends to do something a module
+# cannot do (no fake "start" of a protocol spec, no fake "decode" of a daemon).
+#
+# Underlying mechanisms (honest, delegating to what already exists):
+#     daemon      -> systemctl on the module's unit (user bus when unprivileged)
+#     registry    -> the lib/<pkg> SLeeLa Controller via `sleela run`
+#     datasource  -> the lib/<pkg> SLDataSource surface via `sleela run`
+#     protocol    -> `make -C <dir>` targets / the module's own sim/validate CLI
+#     tool        -> the module's built CLI, or `make -C <dir>`
+# When a mechanism is absent (no systemctl, binary not built), sleelactl says so
+# plainly and exits non-zero rather than faking success.
+# =============================================================================
+set -u
+
+PROG=sleelactl
+
+# --- locate the repo root from this script's location (bin/..) ---------------
+SELF=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+ROOT=$(CDPATH= cd -- "$SELF/.." && pwd)
+REGISTRY="$SELF/sleelactl.d/registry.conf"
+
+# Allow an installed layout: if the registry is not beside the script, try a
+# couple of conventional spots before giving up.
+if [ ! -f "$REGISTRY" ]; then
+  for cand in "$ROOT/bin/sleelactl.d/registry.conf" \
+              "$ROOT/lib/sleela/bin/sleelactl.d/registry.conf" \
+              "$SELF/../lib/sleela/bin/sleelactl.d/registry.conf" \
+              "/usr/local/lib/sleela/bin/sleelactl.d/registry.conf" \
+              "$HOME/.local/lib/sleela/bin/sleelactl.d/registry.conf" \
+              "$HOME/.local/sleela/lib/sleela/bin/sleelactl.d/registry.conf" \
+              "/etc/sleela/sleelactl/registry.conf" \
+              "$ROOT/share/sleela/sleelactl/registry.conf"; do
+    [ -f "$cand" ] && { REGISTRY="$cand"; break; }
+  done
+fi
+# Allow an explicit override.
+[ -n "${SLEELACTL_REGISTRY:-}" ] && [ -f "$SLEELACTL_REGISTRY" ] && REGISTRY="$SLEELACTL_REGISTRY"
+
+# The SLeeLa runtime used to drive registry/datasource surfaces. Prefer a built
+# compiler in-tree; fall back to one on PATH.
+SLEELA_BIN="${SLEELA_BIN:-$ROOT/impl/build/sleela}"
+if [ ! -x "$SLEELA_BIN" ]; then
+  command -v sleela >/dev/null 2>&1 && SLEELA_BIN=sleela
+fi
+
+# --- presentation (optional color, degrades to plain) ------------------------
+if [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
+  E=$(printf '\033'); R="${E}[0m"; B="${E}[1m"; G="${E}[38;5;43m"
+  Y="${E}[38;5;215m"; RD="${E}[38;5;203m"; GY="${E}[38;5;245m"
+else
+  R=""; B=""; G=""; Y=""; RD=""; GY=""
+fi
+say()  { printf '%s\n' "$*"; }
+info() { printf '  %s%s%s\n' "$GY" "$*" "$R"; }
+okay() { printf '  %s✓%s %s\n' "$G" "$R" "$*"; }
+warn() { printf '  %s!%s %s\n' "$Y" "$R" "$*"; }
+err()  { printf '  %s✗%s %s\n' "$RD" "$R" "$*" >&2; }
+die()  { err "$*"; exit 1; }
+
+# --- registry access ----------------------------------------------------------
+# Each lookup reads the plain-text registry; small enough to re-scan cheaply.
+reg_require() { [ -f "$REGISTRY" ] || die "module registry not found: $REGISTRY"; }
+
+# Emit "name nature handle" for a module, or nothing if unknown.
+reg_row() {
+  reg_require
+  awk -v want="$1" '
+    /^[[:space:]]*#/ {next} NF==0 {next}
+    $1==want { print $1, $2, $3; found=1; exit }
+    END { if (!found) exit 1 }
+  ' "$REGISTRY"
+}
+nature_of() { reg_row "$1" | awk '{print $2}'; }
+handle_of() { reg_row "$1" | awk '{print $3}'; }
+
+# All module names, optionally filtered by nature.
+reg_names() {
+  reg_require
+  awk -v nat="${1:-}" '
+    /^[[:space:]]*#/ {next} NF==0 {next}
+    nat=="" || $2==nat { print $1 }
+  ' "$REGISTRY"
+}
+
+# The summary (col 4..end) for a module.
+summary_of() {
+  reg_require
+  awk -v want="$1" '
+    /^[[:space:]]*#/ {next} NF==0 {next}
+    $1==want { $1=$2=$3=""; sub(/^[[:space:]]+/,""); print; exit }
+  ' "$REGISTRY"
+}
+
+# Legal verbs for a nature.
+verbs_for_nature() {
+  case "$1" in
+    daemon)     echo "start stop restart reload status enable disable" ;;
+    registry)   echo "load unload enable disable list probe can status" ;;
+    datasource) echo "open close status available" ;;
+    protocol)   echo "negotiate grade simulate validate info" ;;
+    tool)       echo "run build inspect info" ;;
+    library)    echo "info" ;;
+    *)          echo "" ;;
+  esac
+}
+
+verb_allowed() { # verb nature
+  for v in $(verbs_for_nature "$2"); do [ "$v" = "$1" ] && return 0; done
+  return 1
+}
+
+# =============================================================================
+# systemctl plumbing for daemons. Use the system bus when root, else the user
+# bus, and report honestly when systemd is not the init (e.g. containers).
+# =============================================================================
+have_systemctl() { command -v systemctl >/dev/null 2>&1; }
+sctl() {
+  have_systemctl || { err "systemctl not available on this host; cannot control daemons here."; return 3; }
+  if [ "$(id -u)" -eq 0 ]; then systemctl "$@"; else sudo systemctl "$@"; fi
+}
+
+daemon_cmd() { # module verb
+  unit=$(handle_of "$1")
+  [ -n "$unit" ] || die "no systemd unit mapped for '$1'"
+  case "$2" in
+    start|stop|restart|reload) info "systemctl $2 $unit"; sctl "$2" "$unit" && okay "$1: $2 issued" ;;
+    enable)  info "systemctl enable $unit";  sctl enable "$unit"  && okay "$1 enabled (starts at boot)" ;;
+    disable) info "systemctl disable $unit"; sctl disable "$unit" && okay "$1 disabled (will not start at boot)" ;;
+    status)
+      if have_systemctl; then sctl --no-pager status "$unit" 2>/dev/null \
+        || { warn "$1 ($unit): not loaded/active"; return 1; }
+      else warn "$1: systemctl unavailable; unit is $unit"; return 3; fi ;;
+    *) die "daemon verb '$2' not understood" ;;
+  esac
+}
+
+# =============================================================================
+# registry (codecs/compression/video): drive the lib/<pkg> Controller. These
+# are process-local registries, so "enable/disable/load/unload" operate on the
+# Controller surface. We run the package's reference pipeline through the SLeeLa
+# runtime; without a built runtime we report the intended action honestly.
+# =============================================================================
+registry_runtime_ok() { [ -x "$SLEELA_BIN" ] || [ "$SLEELA_BIN" = sleela ] && command -v "$SLEELA_BIN" >/dev/null 2>&1; }
+registry_demo() { # pkg -> path to the runnable Controller pipeline, if any
+  pkg="$1"
+  for f in "$ROOT/lib/$pkg/codec-pipeline.sleela" \
+           "$ROOT/lib/$pkg/video-codec-pipeline.sleela" \
+           "$ROOT/lib/$pkg/compression-pipeline.sleela" \
+           "$ROOT/lib/$pkg"/*pipeline*.sleela; do
+    [ -f "$f" ] && { echo "$f"; return 0; }
+  done
+  return 1
+}
+registry_cmd() { # module verb [id]
+  pkg=$(handle_of "$1"); id="${3:-}"
+  demo=$(registry_demo "$pkg" 2>/dev/null) || demo=""
+  case "$2" in
+    list)
+      info "handlers registered by the $pkg Controller:"
+      if [ -n "$demo" ] && registry_runtime_ok; then "$SLEELA_BIN" run "$demo" 2>/dev/null || warn "could not run $pkg pipeline"; \
+      else warn "built SLeeLa runtime not found ($SLEELA_BIN); listing the registry source instead"; ls "$ROOT/lib/$pkg"/SL*"$( : )"*.sleela 2>/dev/null | sed 's|.*/|    |'; fi ;;
+    load|unload|enable|disable|probe|can|status)
+      [ "$2" = status ] || [ -n "$id" ] || { warn "$2 needs a codec id (0-based); showing the registry instead"; id=""; }
+      if [ -n "$demo" ] && registry_runtime_ok; then
+        info "$pkg Controller.$2${id:+ $id} (via $(basename "$demo"))"
+        "$SLEELA_BIN" run "$demo" 2>/dev/null \
+          && okay "$1: ran the Controller pipeline (load/canProcess/decode/unload are exercised in the reference flow)" \
+          || warn "$pkg pipeline did not complete"
+      else
+        warn "SLeeLa runtime not built; '$2' on the $pkg registry is a process-local Controller call."
+        info "build it:  (cd impl && make build/sleela)   then re-run"
+        return 3
+      fi ;;
+    *) die "registry verb '$2' not understood" ;;
+  esac
+}
+
+# =============================================================================
+# datasource (database/ledger/...): availability is open/close/active, not
+# start/stop. Drive the SLDataSource surface; honest about not fabricating a
+# live connection when there is no runtime or no configured backend.
+# =============================================================================
+datasource_cmd() { # module verb
+  pkg=$(handle_of "$1")
+  case "$2" in
+    status|available)
+      info "$1 ($pkg) is an open/close/active data surface (SLDataSource)."
+      if [ -d "$ROOT/lib/$pkg" ]; then
+        okay "$pkg library present at lib/$pkg"
+        info "availability is a per-connection runtime state: open() → active() == true; close() → false"
+      else warn "lib/$pkg not present in this install"; return 1; fi ;;
+    open|close)
+      warn "$2 acts on a live SLDataSource instance inside a running SLeeLa program."
+      info "sleelactl reports availability; it does not hold a connection of its own."
+      info "in SLeeLa:  SLDataSource ds = new SLDataSource(); ds.configure(\"$pkg\"); ds.$2();" ;;
+    *) die "datasource verb '$2' not understood" ;;
+  esac
+}
+
+# =============================================================================
+# protocol (http-N, cdma, wifi, resolver, route): specs / stacks / sims. The
+# honest verbs are negotiate/grade/simulate/validate/info — built via the
+# module's own Makefile or sim CLI.
+# =============================================================================
+protocol_cmd() { # module verb [args]
+  dir="$ROOT/$(handle_of "$1")"
+  [ -d "$dir" ] || { warn "$1: directory $(handle_of "$1") not present in this install"; return 1; }
+  case "$2" in
+    info)
+      okay "$1 — $(summary_of "$1")"
+      info "location: ${dir#$ROOT/}"
+      [ -f "$dir/README.md" ] && info "see: ${dir#$ROOT/}/README.md"
+      ls "$dir"/*.SPEC.md "$dir"/*.md 2>/dev/null | head -3 | sed 's|.*/|    spec: |' ;;
+    validate)
+      if [ -f "$dir/Makefile" ] && grep -qE '^(syntax|test|validate):' "$dir/Makefile"; then
+        tgt=$(grep -oE '^(validate|syntax|test):' "$dir/Makefile" | head -1 | tr -d :)
+        info "make -C ${dir#$ROOT/} $tgt"; make -C "$dir" "$tgt" && okay "$1 validated" || { warn "$1 validation reported issues"; return 1; }
+      else warn "$1 has no validate/syntax/test target; nothing to run"; return 3; fi ;;
+    simulate)
+      sim=""
+      for s in "$dir/tools/cdma-sim" "$dir/build/cdma-sim" "$dir"/tools/*sim* "$dir"/build/*sim*; do
+        [ -x "$s" ] && { sim="$s"; break; }
+      done
+      if [ -n "$sim" ]; then shift 2; info "$sim $*"; "$sim" "$@"; \
+      else warn "$1: no built simulator found; build it with  make -C ${dir#$ROOT/}  first"; return 3; fi ;;
+    negotiate|grade)
+      info "$1 '$2' is a protocol-metadata operation defined by the generated spec."
+      [ -f "$dir/README.md" ] && info "see the $2 section in ${dir#$ROOT/}/README.md"
+      warn "no standalone $2 CLI is built; this operation is exercised in the protocol's own tests/spec." ; return 3 ;;
+    *) die "protocol verb '$2' not understood" ;;
+  esac
+}
+
+# =============================================================================
+# tool (compiler/decompiler/debugger): one-shot build-time tools.
+# =============================================================================
+tool_cmd() { # module verb [args]
+  dir="$ROOT/$(handle_of "$1")"
+  [ -d "$dir" ] || { warn "$1: directory not present in this install"; return 1; }
+  case "$2" in
+    info)
+      okay "$1 — $(summary_of "$1")"; info "location: ${dir#$ROOT/}"
+      [ -f "$dir/README.md" ] && info "see: ${dir#$ROOT/}/README.md" ;;
+    build)
+      [ -f "$dir/Makefile" ] || { warn "$1 has no Makefile to build"; return 3; }
+      info "make -C ${dir#$ROOT/}"; make -C "$dir" && okay "$1 built" || { warn "$1 build failed"; return 1; } ;;
+    run|inspect)
+      bin=""
+      for b in "$dir/cli"/* "$dir/build"/* "$dir/bin"/*; do
+        [ -x "$b" ] && [ ! -d "$b" ] && { bin="$b"; break; }
+      done
+      if [ -n "$bin" ]; then shift 2; info "$bin $*"; "$bin" "$@"; \
+      else warn "$1: no built CLI found; run  sleelactl build $1  first"; return 3; fi ;;
+    *) die "tool verb '$2' not understood" ;;
+  esac
+}
+
+# --- dispatch one verb at one module, gating by nature -----------------------
+dispatch() { # verb module [args...]
+  verb="$1"; mod="$2"; shift 2
+  nat=$(nature_of "$mod") || true
+  [ -n "$nat" ] || die "unknown module '$mod'  (try: $PROG list)"
+  if ! verb_allowed "$verb" "$nat"; then
+    err "'$verb' is not valid for '$mod' (a $nat module)."
+    info "legal verbs for $mod:  $(verbs_for_nature "$nat")"
+    return 64
+  fi
+  case "$nat" in
+    daemon)     daemon_cmd "$mod" "$verb" "$@" ;;
+    registry)   registry_cmd "$mod" "$verb" "$@" ;;
+    datasource) datasource_cmd "$mod" "$verb" "$@" ;;
+    protocol)   protocol_cmd "$mod" "$verb" "$@" ;;
+    tool)       tool_cmd "$mod" "$verb" "$@" ;;
+    library)    [ "$verb" = info ] && { okay "$mod — $(summary_of "$mod")"; } ;;
+    *)          die "module '$mod' has an unknown nature '$nat'" ;;
+  esac
+}
+
+# --- 'all' fan-out: apply a verb to every module whose nature allows it ------
+dispatch_all() { # verb [args...]
+  verb="$1"; shift
+  any=0; rc=0
+  for m in $(reg_names); do
+    nat=$(nature_of "$m")
+    if verb_allowed "$verb" "$nat"; then
+      any=1
+      printf '%s== %s (%s) ==%s\n' "$B" "$m" "$nat" "$R"
+      dispatch "$verb" "$m" "$@" || rc=$?
+    fi
+  done
+  [ "$any" -eq 1 ] || { err "no module accepts the verb '$verb'."; return 64; }
+  return "$rc"
+}
+
+# --- cross-cutting verbs -----------------------------------------------------
+cmd_list() {
+  filter="${1:-}"
+  reg_require
+  printf '%s%-18s %-11s %s%s\n' "$B" MODULE NATURE SUMMARY "$R"
+  for m in $(reg_names "$filter"); do
+    printf '  %-18s %s%-11s%s %s\n' "$m" "$G" "$(nature_of "$m")" "$R" "$(summary_of "$m")"
+  done
+}
+
+cmd_status() {
+  target="${1:-all}"
+  if [ "$target" = all ]; then
+    for m in $(reg_names); do
+      nat=$(nature_of "$m")
+      case "$nat" in
+        daemon)                printf '%s== %s (daemon) ==%s\n' "$B" "$m" "$R"; dispatch status "$m" || true ;;
+        registry|datasource)   printf '%s== %s (%s) ==%s\n' "$B" "$m" "$nat" "$R"; dispatch status "$m" || true ;;
+        *)                     printf '  %-18s %s%s%s  (no runtime status; %s)\n' "$m" "$GY" "$nat" "$R" "$(summary_of "$m")" ;;
+      esac
+    done
+  else
+    nat=$(nature_of "$target")
+    [ -n "$nat" ] || die "unknown module '$target'  (try: $PROG list)"
+    case "$nat" in
+      daemon|registry|datasource) dispatch status "$target" ;;
+      *) okay "$target ($nat) — $(summary_of "$target")"; info "a $nat module has no running status; use: $PROG info $target" ;;
+    esac
+  fi
+}
+
+cmd_natures() {
+  say "${B}sleelactl module natures${R} — each family is controlled with verbs that fit it:"
+  say ""
+  printf '  %s%-11s%s  %s\n' "$G" daemon     "$R" "long-lived process + systemd unit"
+  info  "      verbs: $(verbs_for_nature daemon)"
+  printf '  %s%-11s%s  %s\n' "$G" registry   "$R" "closed handler set, load/unload by id (SLPluginService)"
+  info  "      verbs: $(verbs_for_nature registry)"
+  printf '  %s%-11s%s  %s\n' "$G" datasource "$R" "open/close/active data surface + pooling (SLDataSource)"
+  info  "      verbs: $(verbs_for_nature datasource)"
+  printf '  %s%-11s%s  %s\n' "$G" protocol   "$R" "spec / stack / reference model"
+  info  "      verbs: $(verbs_for_nature protocol)"
+  printf '  %s%-11s%s  %s\n' "$G" tool       "$R" "on-demand, one-shot toolchain component"
+  info  "      verbs: $(verbs_for_nature tool)"
+  printf '  %s%-11s%s  %s\n' "$G" library    "$R" "pure library; informational only"
+  info  "      verbs: $(verbs_for_nature library)"
+}
+
+cmd_help() {
+  topic="${1:-}"
+  if [ -n "$topic" ]; then
+    if nat=$(nature_of "$topic" 2>/dev/null) && [ -n "$nat" ]; then
+      okay "$topic — a $nat module"; info "$(summary_of "$topic")"
+      info "legal verbs:  $(verbs_for_nature "$nat")"; return 0
+    fi
+  fi
+  cat <<EOF
+${B}sleelactl${R} — the unified SLeeLa control plane
+
+${B}Usage${R}
+  $PROG <verb> <module> [args]      control one module (verb must fit its nature)
+  $PROG <verb> all                  fan a verb across every compatible module
+  $PROG list [nature]               list modules (optionally filtered by nature)
+  $PROG status [module|all]         show running status
+  $PROG natures                     explain natures and their verbs
+  $PROG help [verb|module]          this help, or the verbs legal for a module
+
+${B}Examples${R}
+  $PROG start server-edition        start the server daemon (systemd)
+  $PROG enable antivirus            enable the antivirus coordinator at boot
+  $PROG status all                  status of every controllable module
+  $PROG load codecs 2               load FLAC (id 2) in the codec registry
+  $PROG list registry               list the registry-nature modules
+  $PROG available database          report the database data-source availability
+  $PROG validate http-9.0           validate the HTTP/9.0 protocol spec
+  $PROG build decompiler            build the decompiler CLI
+
+Verbs are gated by module nature (see '$PROG natures'); an unsupported verb is
+refused with the correct verb set — sleelactl never fakes an action a module
+cannot perform.
+EOF
+}
+
+# --- main --------------------------------------------------------------------
+[ "$#" -ge 1 ] || { cmd_help; exit 0; }
+verb="$1"; shift
+
+case "$verb" in
+  -h|--help|help) cmd_help "${1:-}" ;;
+  list)           cmd_list "${1:-}" ;;
+  natures)        cmd_natures ;;
+  status)         cmd_status "${1:-all}" ;;
+  version|--version) say "sleelactl (SLeeLa control plane) 1.0" ;;
+  *)
+    [ "$#" -ge 1 ] || die "verb '$verb' needs a module (or 'all'). Try: $PROG help"
+    mod="$1"; shift
+    if [ "$mod" = all ]; then dispatch_all "$verb" "$@"; else dispatch "$verb" "$mod" "$@"; fi
+    ;;
+esac

@@ -5,9 +5,10 @@ installer is **built with module-selection options** so you decide which
 standard-library packages are staged — without being prompted interactively at
 install time.
 
-The installer produces three commands — `sleela` (runtime), `sleelvac`
-(compiler), and `nordshrift` (the `.sst` → Java/SLeeLa/C transpiler) — plus the
-selected standard-library packages, the integrity manifest, docs, and examples.
+The installer produces four commands — `sleela` (runtime), `sleelvac`
+(compiler), `nordshrift` (the `.sst` → Java/SLeeLa/C transpiler), and
+`sleelactl` (the control plane for every module family) — plus the selected
+standard-library packages, the integrity manifest, docs, and examples.
 
 ---
 
@@ -169,8 +170,41 @@ you no longer need them.
 
 ---
 
+## Controlling modules after install: `sleelactl`
+
+Once installed, the `sleelactl` command controls every module family at runtime
+— daemons/servers, protocols, the codec/compression/video registries, the
+compiler/decompiler tools, and the availability of the data systems. Because the
+families are different kinds of thing, the verbs are chosen per **nature** and an
+unsupported verb is refused rather than faked:
+
+| Nature | Legal verbs |
+| --- | --- |
+| daemon | `start stop restart reload status enable disable` |
+| registry | `load unload enable disable list probe can status` |
+| datasource | `open close status available` |
+| protocol | `negotiate grade simulate validate info` |
+| tool | `run build inspect info` |
+
+```sh
+sleelactl list                 # every module and its nature
+sleelactl status all           # running status across the board
+sleelactl start server-edition # start the server daemon
+sleelactl enable antivirus     # enable the antivirus coordinator at boot
+sleelactl load codecs 2        # load a codec by id
+sleelactl available database   # data-source availability
+sleelactl validate http-9.0    # validate a protocol spec
+sleelactl build decompiler     # build a tool CLI
+```
+
+Full reference: `bin/SLEELACTL.md`. The module → nature map is the plain-text
+`bin/sleelactl.d/registry.conf` (installed to
+`<prefix>/lib/sleela/bin/sleelactl.d/registry.conf`); add a module with a
+one-line append.
+
 ## See also
 
+- `bin/SLEELACTL.md` — the sleelactl control-plane reference.
 - `install/README.md` — fuller installer reference.
 - `install/Makefile` — the conventional installation targets and module knobs.
 - `install/install-runtime.py` — safe staging, manifest, and uninstall logic.
