@@ -134,30 +134,6 @@ material;
 < OP_OS_PCLOSE >
 < OP_GC_HINT >
 < OP_RAN_MEM >
-< OP_IC_CREATE >
-< OP_IC_DESTROY >
-< OP_IC_COLS >
-< OP_IC_ROWS >
-< OP_IC_COUNT >
-< OP_IC_SETPARAMS >
-< OP_IC_EXCITE >
-< OP_IC_STEP >
-< OP_IC_ADVANCE >
-< OP_IC_TIMESTEP >
-< OP_IC_INTENSITY >
-< OP_IC_HASREND >
-< OP_IC_OPENWIN >
-< OP_IC_SHOULDCLOSE >
-< OP_IC_PRESENT >
-< OP_IC_RUN >
-< OP_IC_SETPOLICY >
-< OP_IC_POLICY >
-< OP_IC_BACKEND >
-< OP_IC_GPUAVAIL >
-< OP_IC_MEASHZ >
-< OP_IC_MIGRATE >
-< OP_VM_SELECT >
-< OP_MODIUM_SCAN >
 class SLISANop {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
@@ -386,6 +362,15 @@ class SLISAUiCall { String name; int code; }
 
 < OP_SSEND 151 -- the ::: structural-offload send (String source -> receiver reach) >
 class SLISASSend { String name; int code; }
+
+< OP_CHECKCAST 152 >
+class SLISACheckCast { String name; int code; }
+
+< OP_INSTANCEOF 153 >
+class SLISAInstanceOf { String name; int code; }
+
+< OP_DUP2 154 >
+class SLISADup2 { String name; int code; }
 
 < OP_CHECKCAST 152 >
 class SLISACheckCast { String name; int code; }
