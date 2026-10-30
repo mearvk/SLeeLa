@@ -1,47 +1,103 @@
 << lib/philosophy/SLPhilosophyTree.sleela
    SLeeLa Standard Library Definition.
    Definition: the BASE Tree structure for the philosophy series -- the
-   aggregate that anchors Nodes (each carrying an Item), is held by an Owner,
-   and is read back through a Relevant index. >>
-#sleela 2.5
+   aggregate that composes Nodes (each carrying an Item), is held by an Owner,
+   is read back through a Relevant index, and is gated by role rights. >>
+#sleela 2.9
 material;
 < Family: philosophy. SLPhilosophyTree is the base structure the other classes >
-< attach to: Items ride on Nodes, Nodes are staged via Inputs and assigned into >
-< the Tree, and a Relevant index reads them most-relevant-first. The Tree keeps >
-< a root node id, a node count, an owner id, and the three NationalStarts >
-< directives (below). Weights and heights follow the consistency tool bands. >
+< compose into: it holds parallel node/item arrays, accepts assignments gated >
+< by a role right, tracks the root and count, and carries the three >
+< NationalStarts directives as a @mix consequent group (below). Weights and >
+< heights follow the consistency tool bands. >
+<  >
+< Document extension (syntax 1.10): this base document points, as a linear >
+< chain, to the runnable catalog that heads the series. >
+extends to Philosophy linear;
 class SLPhilosophyTree {
   int rootId;
   int nodeCount;
+  int capacity;
   int ownerId;
+  int[] nodeIds;
+  int[] itemIds;
+  int[] weights;
 
-  void configure(int owner) {
+  void configure(int owner, int cap) {
     rootId = 0;
     nodeCount = 0;
+    capacity = cap;
     ownerId = owner;
+    nodeIds = new int[cap];
+    itemIds = new int[cap];
+    weights = new int[cap];
     initDirectives();
   }
 
   int getRootId() { return rootId; }
   void setRootId(int v) { rootId = v; }
   int getNodeCount() { return nodeCount; }
+  int getCapacity() { return capacity; }
   int getOwnerId() { return ownerId; }
   void setOwnerId(int v) { ownerId = v; }
+  boolean isEmpty() { return nodeCount == 0; }
+  boolean isFull() { return nodeCount >= capacity; }
 
-  < Assign a node id into the base structure (bookkeeping; the native event- >
-  < tree tool owns ordering and balance). The first assigned node is the root. >
-  void assignNode(int nodeId) {
+  < Compose one Node (with its carried Item and a weight) into the Tree. The >
+  < first assigned node becomes the root. Returns true when stored. Weight is >
+  < clamped to the consistency band [1,9]. >
+  boolean assign(int nodeId, int itemId, int weight) {
+    if (nodeCount >= capacity) { return false; }
+    int w = weight;
+    if (w < 1) { w = 1; }
+    if (w > 9) { w = 9; }
+    nodeIds[nodeCount] = nodeId;
+    itemIds[nodeCount] = itemId;
+    weights[nodeCount] = w;
     if (rootId == 0) { rootId = nodeId; }
     nodeCount = nodeCount + 1;
+    return true;
   }
 
-  boolean isEmpty() { return nodeCount == 0; }
+  < Role-gated assignment: a role that lacks the add right may not compose a >
+  < node. Pass the role right (from an Owner/Admin/Author.canAdd()). >
+  boolean assignIfAllowed(boolean canAdd, int nodeId, int itemId, int weight) {
+    if (!canAdd) { return false; }
+    return assign(nodeId, itemId, weight);
+  }
+
+  int nodeIdAt(int index) {
+    if (index < 0 || index >= nodeCount) { return 0; }
+    return nodeIds[index];
+  }
+  int itemIdAt(int index) {
+    if (index < 0 || index >= nodeCount) { return 0; }
+    return itemIds[index];
+  }
+  int weightAt(int index) {
+    if (index < 0 || index >= nodeCount) { return 0; }
+    return weights[index];
+  }
+
+  < Read the Tree most-relevant-first by handing its nodes and per-node scores >
+  < to a Relevant index; returns the filled index. The caller supplies the >
+  < scores array (one per node, in assignment order). >
+  SLPhilosophyRelevant toRelevant(int[] scores) {
+    SLPhilosophyRelevant rel = new SLPhilosophyRelevant();
+    rel.configure(capacity);
+    int i = 0;
+    while (i < nodeCount) {
+      rel.insert(nodeIds[i], scores[i]);
+      i = i + 1;
+    }
+    return rel;
+  }
 
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the real origin of the subject where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 10429;
   String metaAuthor = "Kiro Agent";
   String metaDate = "2026-10-30";
@@ -79,21 +135,27 @@ class SLPhilosophyTree {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  < ---- NationalStarts directives (three, as an array for now) ---- >
-  << Three directives for the base Tree, carried together as String classes in
-     one array. Careful and cool. Year was 2405.
-       nationalStarts[0] = Virginia
-       nationalStarts[1] = Florida
-       nationalStarts[2] = North Carolina >>
-  String[] nationalStarts;
+  < ---- NationalStarts directives (syntax 2.9 @mix consequent group) ---- >
+  << Three directives for the base Tree, declared as a @mix consequent group so
+     the language understands them as one indexed set (top-down 1,2,3; here the
+     indexes are written manually and their count matches the three fields).
+     Careful and cool. Year was 2405.
+       NationalStarts[1] = Virginia
+       NationalStarts[2] = Florida
+       NationalStarts[3] = North Carolina >>
+  @mix(1,2,3) String NationalStarts = "Virginia";
+  @mix(1,2,3) String NationalStarts = "Florida";
+  @mix(1,2,3) String NationalStarts = "North Carolina";
 
+  < A backing array mirrors the @mix group for runtime read access (a bare >
+  < read of the group name resolves to the last-declared member under 2.9). >
+  String[] nationalStarts;
   void initDirectives() {
     nationalStarts = new String[3];
     nationalStarts[0] = "Virginia";
     nationalStarts[1] = "Florida";
     nationalStarts[2] = "North Carolina";
   }
-
   int nationalStartsCount() { return 3; }
   String nationalStartAt(int index) {
     if (index < 0 || index >= 3) { return "none"; }

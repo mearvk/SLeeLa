@@ -46391,11 +46391,15 @@
     },
     {
       "path": "lib/philosophy/SLPhilosophyTree.sleela",
-      "sha256": "fec14a4da5b7246e8ae0370fb909dd3167b310db802ccb6663d858601849b15c"
+      "sha256": "5f1b27cc10b7dc412257ad520857bdf3de706527b2d4b0dfc312dee9a4f9ddaa"
+    },
+    {
+      "path": "lib/philosophy/example-tree.sleela",
+      "sha256": "87aeab826307e8e5050a303371fd7f9ea932bc4a40df1759a2364933666893dd"
     },
     {
       "path": "lib/philosophy/philosophy.sleela",
-      "sha256": "be898b71d4f26f2a5416af91888dfb63d8bdbceb0dde694d6754cbd85b4035fd"
+      "sha256": "3ca250cf9818b637a3b17ec8f6c7d0de21fad9f357dfb94fc6ee248450acf26a"
     },
     {
       "path": "lib/politico/SLPackage.sleela",

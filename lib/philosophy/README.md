@@ -22,7 +22,7 @@ the native implementations live under `philosophy/` at the repository root.
 
 | Class | Role in the Tree |
 |---|---|
-| `SLPhilosophyTree` | the BASE Tree: anchors Nodes, holds an Owner id, and carries the three `NationalStarts` directives (Virginia / Florida / North Carolina) |
+| `SLPhilosophyTree` | the BASE Tree: **composes** Nodes + Items into parallel arrays, gates assignment by a role right, reads back through a `Relevant` index, and carries the three `NationalStarts` directives as a 2.9 `@mix` group (Virginia / Florida / North Carolina) |
 | `SLPhilosophyItem` | smallest payload: keyed, typed value with a source reference |
 | `SLPhilosophyNode` | a branch of the Tree: ordering id, left/right child ids, weight [1,9], carried Item |
 | `SLPhilosophyInput` | one explicit, consented submission bound for the Tree |
@@ -54,12 +54,33 @@ re-implement them.
 - The speculation invite makes **no diagnosis**, gives **no treatment advice**,
   verifies **no credentials**, and requires a falsifiability note.
 
-## Run the catalog
+## Using the newer language features (2.7–2.9)
 
-    # with a source-built compiler that supports #sleela 2.5:
-    impl/build/sleela run lib/philosophy/philosophy.sleela
+This package now exercises the recent SLeeLa features in real library code, so
+they are discoverable to developers and compiler-checked:
 
-The runnable `Philosophy` class lists the six tools a SLeeLa build can use.
+- **`@mix` consequent fields (2.9).** `SLPhilosophyTree` declares its three
+  `NationalStarts` directives as a `@mix(1,2,3)` group — the language
+  understands them as one indexed set and validates that the manual index count
+  matches the number of fields. (A backing `String[]` mirrors the group for
+  runtime read access, since a bare read of a `@mix` group name resolves to the
+  last-declared member under 2.9.)
+- **Document `extends` (1.10).** The catalog (`philosophy.sleela`) heads a
+  **linear** chain of the series — the six tool handles, then the base Tree — so
+  the ordering of the series is first-class and bounded (`extends to … linear`).
+  `SLPhilosophyTree` and the example each point onward in the chain too.
+
+## Run the catalog and the Tree example
+
+    # source-built compiler supporting #sleela 2.9 (impl/build/sleela):
+    impl/build/sleela run lib/philosophy/philosophy.sleela      # lists the six tools
+    impl/build/sleela run lib/philosophy/example-tree.sleela    # composed Tree walk-through
+
+`example-tree.sleela` is the **developer front door**: it builds Items, carries
+them on Nodes, composes them into a `SLPhilosophyTree` **gated by an Owner
+role**, reads the Tree back **most-relevant-first** through a `Relevant` index,
+shows an `Exitor` (no add right) being **refused**, and prints the `@mix`
+`NationalStarts` directives.
 
 ## A note for History and Man
 

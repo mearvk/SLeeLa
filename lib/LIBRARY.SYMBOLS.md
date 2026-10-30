@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11758
+library-source-files: 11759
 library-packages: 108
 module-facade-symbols: 75
-total-symbol-records: 11833
+total-symbol-records: 11834
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11314,6 +11314,7 @@ philosophy	SLPhilosophyPartitionApi.sleela	lib/philosophy/SLPhilosophyPartitionA
 philosophy	SLPhilosophyRelevant.sleela	lib/philosophy/SLPhilosophyRelevant.sleela	source
 philosophy	SLPhilosophySpeculation.sleela	lib/philosophy/SLPhilosophySpeculation.sleela	source
 philosophy	SLPhilosophyTree.sleela	lib/philosophy/SLPhilosophyTree.sleela	source
+philosophy	example-tree.sleela	lib/philosophy/example-tree.sleela	source
 philosophy	philosophy.sleela	lib/philosophy/philosophy.sleela	source
 politico	SLPackage.sleela	lib/politico/SLPackage.sleela	facade
 process	SLAtomic.sleela	lib/process/SLAtomic.sleela	source
