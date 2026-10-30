@@ -1,5 +1,4 @@
-#sleela 2.5
-material;
+#sleela 1.7
 // USED: policy/state smoke example. It does not access a physical radio.
 // The Wi-Fi README documents that scan/connect requires the native SLVM bridge.
 class WifiPolicySmoke {
