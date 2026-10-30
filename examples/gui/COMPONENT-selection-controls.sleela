@@ -1,0 +1,20 @@
+#sleela 2.5
+class SelectionControls {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.Selection");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.defaultTheme();
+    SLWindow win = ui.openWindow("Selection Controls", 640, 560, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLBox col = new SLBox(); col.vertical(root, 10); col.setMarginAll(18);
+    SLToggle toggle = new SLToggle(); toggle.createIn(col, "Enable notifications", true);
+    SLCheckBox check = new SLCheckBox(); check.createIn(col, "Remember this device", false);
+    SLRadioButton r1 = new SLRadioButton(); r1.createIn(col, "Standard", 1, true);
+    SLRadioButton r2 = new SLRadioButton(); r2.createIn(col, "Advanced", 1, false);
+    SLComboBox combo = new SLComboBox(); combo.createIn(col);
+    combo.addOption("Default"); combo.addOption("Balanced"); combo.addOption("Performance");
+    SLSpinButton spin = new SLSpinButton(); spin.createIn(col, 1, 20, 1, 4);
+    SLLabel note = new SLLabel(); note.createIn(col, "Radio buttons are mutually exclusive within a shared group and parent.");
+    win.show(); return ui.run();
+  }
+}
