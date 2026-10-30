@@ -122,14 +122,16 @@ class Hello { void main() { print("Hello, Sleela!"); } }
 ```
 
 The compiler **rejects** any file whose declared version is outside its
-supported range (shown by `sleela version`, currently `1.0 .. 2.8`); a file with
+supported range (shown by `sleela version`, currently `1.0 .. 2.9`); a file with
 no pragma is accepted with a warning and assumed to be the floor version. The
 supported range is defined in [`frontend/version.h`](frontend/version.h). The current
 normative language grammar is [`../SLEELA.syntax`](../SLEELA.syntax), syntax version
-`2.8`. Syntax 2.7 adds the signed wide-integer family (`int32` through
+`2.9`. Syntax 2.7 adds the signed wide-integer family (`int32` through
 `int16777216`); syntax 2.8 adds the matching unsigned family (`uint32` through
-`uint16777216`). See [`../markdown/SOURCE.md`](../markdown/SOURCE.md) for the
-type-signature contract.
+`uint16777216`); syntax 2.9 adds `@mix` consequent fields (multiple same-named
+fields understood as one indexed group, top-down 1,2,3,… or manual
+`@mix(1,2,3,...)` whose count must match the group). See
+[`../markdown/SOURCE.md`](../markdown/SOURCE.md) for the type-signature contract.
 
 ## The language (first pass)
 

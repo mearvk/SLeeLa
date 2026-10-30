@@ -623,7 +623,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "41f40922c51599784698938f2b552afb5493f3a14f3d984cc372370b404606a5"
+      "sha256": "f1124f7ae276aba3448cb3bad61c934fb97e6ce921e19f1983bccce6bef9bc11"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -639,7 +639,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "2b45a575a5ab0deb74af3a30b78848088afb77b2c1728414288abd233643404d"
+      "sha256": "a8420dc04e16f2ad5c58c91c606da1c5bb16dca6c047f4f5eb5c9f442005f34c"
     },
     {
       "path": "impl/frontend/wide_integer.h",
