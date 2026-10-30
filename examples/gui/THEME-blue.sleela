@@ -1,0 +1,12 @@
+#sleela 2.5
+class ThemeBlue {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.ThemeBlue");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.blue();
+    SLWindow win = ui.openWindow("Blue Theme", 520, 300, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLLabel label = new SLLabel(); label.createIn(root, "Blue: deep blue surfaces, brighter blue accent.");
+    win.show(); return ui.run();
+  }
+}
