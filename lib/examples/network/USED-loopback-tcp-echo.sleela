@@ -1,0 +1,30 @@
+#sleela 2.1
+// USED: real loopback TCP echo smoke test.
+// Opens only 127.0.0.1:45218. Run only where local socket operations are permitted.
+class NetworkEcho {
+    static int listener;
+
+    static void server() {
+        int client = accept(listener);
+        String request = sockread(client);
+        sockwrite(client, "pong");
+        sockclose(client);
+    }
+
+    static String client() {
+        int socket = connect("127.0.0.1", 45218);
+        sockwrite(socket, "ping");
+        String response = sockread(socket);
+        sockclose(socket);
+        return response;
+    }
+
+    static void main() {
+        listener = listen(45218);
+        spawn(server);
+        String response = client();
+        print(response);
+        join();
+        sockclose(listener);
+    }
+}
