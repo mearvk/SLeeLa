@@ -4,7 +4,19 @@ This directory is the learning and demonstration catalogue for the SLeeLa librar
 
 ## How the catalogue is organized
 
-- **CLASSIC** — foundational, minimal patterns.
+Each file is named for the concept it teaches. Most subsystem folders now carry a
+three-step learning progression plus a plain-English guide:
+
+- **BASIC** — the single core idea of the subsystem, in the shortest honest form.
+- **MODERATE** — the idea applied to realistic data or a small workflow.
+- **ADVANCED** — a fuller, closer-to-real case that combines several ideas.
+- **LEARNING-NOTES.md** — a plain-English guide in each subsystem folder: what the
+  examples teach, what to take away, and the SLeeLa gotchas they illustrate. **Start
+  there when you open a folder.**
+
+Other name prefixes you will see:
+
+- **CLASSIC** — foundational, minimal patterns (the original per-folder starters).
 - **ORIGINAL** — familiar teaching exercises and canonical algorithms.
 - **USED** — practical, established workflows.
 - **NEW** — newer language or library capabilities.
@@ -12,6 +24,11 @@ This directory is the learning and demonstration catalogue for the SLeeLa librar
 - **SAFE / PREFLIGHT** — non-destructive validation and operational checklists.
 
 Start with the [child-friendly SLeeLa learning path](sleela/LEARNER-PATH.md), review [SLeeLa's command workflow](sleela/COMMANDS-and-workflow.md), then run the [classic Hello World](sleela/CLASSIC-hello-world.sleela).
+
+Nearly every subsystem folder below has a **LEARNING-NOTES.md** that explains, in
+simple terms, what the BASIC → MODERATE → ADVANCED examples are for and what you
+should understand after reading them. The table below links the recommended first
+example per folder; open the folder's `LEARNING-NOTES.md` for the guided path.
 
 ## Example catalogue
 
