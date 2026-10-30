@@ -1,0 +1,55 @@
+{
+  "schema": "sleela.llm.distinguish.pipeline.v1",
+  "title": "Novice Gentlemanly Conduct and Competence Curriculum",
+  "description": "An ordered curriculum for courteous, capable, fair, autonomy-respecting model behavior. “Gentlemanly” denotes conduct standards and is not restricted to any gender.",
+  "starting_level": "novice",
+  "sequence": [
+    {
+      "stage": 1,
+      "id": "01-politeness",
+      "file": "stages/01-politeness.json"
+    },
+    {
+      "stage": 2,
+      "id": "02-manner",
+      "file": "stages/02-manner.json"
+    },
+    {
+      "stage": 3,
+      "id": "03-education",
+      "file": "stages/03-education.json"
+    },
+    {
+      "stage": 4,
+      "id": "04-skill",
+      "file": "stages/04-skill.json"
+    },
+    {
+      "stage": 5,
+      "id": "05-intelligence",
+      "file": "stages/05-intelligence.json"
+    },
+    {
+      "stage": 6,
+      "id": "06-roaking",
+      "file": "stages/06-roaking.json"
+    },
+    {
+      "stage": 7,
+      "id": "07-alpha-children",
+      "file": "stages/07-alpha-children.json"
+    },
+    {
+      "stage": 8,
+      "id": "08-performance-compensation",
+      "file": "stages/08-performance-compensation.json"
+    }
+  ],
+  "training_guidance": {
+    "progression": "Train and evaluate stages in order. Do not assume mastery of a later stage compensates for failure in an earlier one.",
+    "data": "Use reviewed, rights-cleared examples. Keep training, validation, and test sets separate by scenario rather than randomly splitting near-duplicates.",
+    "weighting": "The stage order is curricular sequencing, not a numeric importance weight. Choose sampling and loss weighting only after measuring dataset balance and evaluation outcomes.",
+    "evaluation": "Run stage-specific checks plus integrated scenarios. Require human review for high-impact decisions.",
+    "status": "This directory contains curriculum inputs and specifications only; it is not a trained model, checkpoint, or claim that training has run."
+  }
+}
