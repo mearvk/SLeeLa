@@ -1,0 +1,12 @@
+#sleela 2.6
+// Conceptual connector lifecycle; no external service or credential is contacted.
+class ClassicConnectorLifecycle {
+    void main() {
+        print("1. configure endpoint and policy");
+        print("2. validate configuration");
+        print("3. establish connection");
+        print("4. exchange bounded request/response data");
+        print("5. close connection and record outcome");
+        print("Demo mode: lifecycle only; no network side effects.");
+    }
+}
