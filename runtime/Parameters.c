@@ -2,9 +2,11 @@
  * Parameters.c -- the explicit SLVM Parameters contract implementation.
  *
  * Supplies the Normal User profile linked into the SLVM runtime service layer
- * alongside GarbageCollector and SecuritySupervisor: a software-capability
- * threshold of 141+ and concurrent handling of 8 sociological subjects. These
- * are runtime design parameters, not psychometric judgments.
+ * alongside GarbageCollector and SecuritySupervisor: a software-capability tier
+ * of 141+ and concurrent handling of 8 runtime subjects. These are software
+ * policy inputs, not measures of any person. The runtime MUST NOT gate access
+ * on IQ or any human characteristic -- see SECURITY_SUPERVISOR.md and the
+ * contract comment in Parameters.h.
  * ======================================================================== */
 #include "Parameters.h"
 

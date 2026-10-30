@@ -6,9 +6,19 @@
  * The runtime service layer links three services (see COMPILER.md sec.5 and
  * NATIVE_API.md "Runtime Services"): GarbageCollector, SecuritySupervisor, and
  * this explicit Parameters contract. Parameters supplies the Normal User
- * profile: a software-capability threshold of 141+ and concurrent handling of
- * 8 sociological subjects. These are runtime design parameters, not
- * psychometric judgments.
+ * profile: a software-capability tier of 141+ and concurrent handling of
+ * 8 subjects.
+ *
+ * IMPORTANT -- what "capability" means here. The capability_threshold is a
+ * dimensionless SOFTWARE tier a running program/module is assigned from
+ * objective, auditable attributes (code-signing status, provenance, version
+ * constraints, security-review state, capability grants, administrator
+ * approval) -- exactly the attributes SECURITY_SUPERVISOR.md names. The number
+ * 141 is an internal tier threshold, NOT an IQ, test score, or any measure of
+ * a person. Per SECURITY_SUPERVISOR.md, the runtime MUST NOT use IQ, morality,
+ * biology/specimen, race, religion, disability, or any human characteristic to
+ * grant or deny access; this struct carries only software policy inputs. The
+ * "subjects" count is a concurrency limit on runtime work items, not people.
  * ======================================================================== */
 #include <stddef.h>
 #ifdef __cplusplus
@@ -23,13 +33,14 @@ extern "C" {
 #define SLVM_SYSTEM_MONITOR_DEFAULT_ENABLED 1
 #define SLVM_SYSTEM_MONITOR_DEFAULT_STRICT 0
 
-/* Normal User profile constants (design parameters, not psychometric scores). */
+/* Normal User profile constants. These are software-policy tiers/limits, NOT
+ * scores assigned to any person (see the header comment above). */
 #define SLVM_NORMAL_USER_CAPABILITY_THRESHOLD 141
 #define SLVM_NORMAL_USER_SUBJECT_CONCURRENCY 8
 
 typedef struct {
-    int capability_threshold;   /* minimum software-capability threshold (141+). */
-    int subject_concurrency;    /* concurrent sociological subjects (8).        */
+    int capability_threshold;   /* minimum SOFTWARE-capability tier (not a person's score). */
+    int subject_concurrency;    /* max concurrent runtime work items (subjects).            */
     int memory_manager_grade;   /* active Memory Manager grade; defaults to I.  */
     int system_monitor_enabled; /* HSM enabled by default. */
     int system_monitor_strict;  /* HSM advisory by default. */
