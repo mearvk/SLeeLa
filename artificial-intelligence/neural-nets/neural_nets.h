@@ -65,7 +65,8 @@ SLNN_API size_t slnn_network_output_count(const slnn_network *network);
 /*
  * Computes one inference pass.
  * input_count/output_count must exactly match the network dimensions.
- * Input and output buffers must not overlap.
+ * Input and output buffers must not overlap. The implementation uses mutable
+ * scratch storage, so operations on one network instance are not thread-safe.
  */
 SLNN_API slnn_status slnn_network_predict(
     const slnn_network *network,
