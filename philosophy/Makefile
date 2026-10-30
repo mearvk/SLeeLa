@@ -21,9 +21,11 @@ EVENT_CPP_EXAMPLE := $(BUILD_DIR)/event-example-cpp$(EXE)
 EVENT_TEST := $(BUILD_DIR)/test-event-tree$(EXE)
 CONSISTENCY_EXAMPLE := $(BUILD_DIR)/consistency-example$(EXE)
 CONSISTENCY_TEST := $(BUILD_DIR)/test-consistency$(EXE)
+PARTITION_EXAMPLE := $(BUILD_DIR)/partition-example$(EXE)
+PARTITION_TEST := $(BUILD_DIR)/test-partition-api$(EXE)
 
 .PHONY: all test clean
-all: $(C_EXAMPLE) $(CPP_EXAMPLE) $(TEST_PROGRAM) $(EVENT_C_EXAMPLE) $(EVENT_CPP_EXAMPLE) $(EVENT_TEST) $(CONSISTENCY_EXAMPLE) $(CONSISTENCY_TEST)
+all: $(C_EXAMPLE) $(CPP_EXAMPLE) $(TEST_PROGRAM) $(EVENT_C_EXAMPLE) $(EVENT_CPP_EXAMPLE) $(EVENT_TEST) $(CONSISTENCY_EXAMPLE) $(CONSISTENCY_TEST) $(PARTITION_EXAMPLE) $(PARTITION_TEST)
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 $(BUILD_DIR)/screen_map.o: screen_map.c screen_map.h | $(BUILD_DIR)
@@ -75,9 +77,22 @@ $(CONSISTENCY_EXAMPLE): $(BUILD_DIR)/consistency_monitor.o $(BUILD_DIR)/signal_t
 $(CONSISTENCY_TEST): $(BUILD_DIR)/consistency_monitor.o $(BUILD_DIR)/signal_toss.o $(BUILD_DIR)/thread_compat.o $(BUILD_DIR)/test-consistency.o
 	$(CC) $^ -lm $(THREAD_LIBS) -o $@
 
-test: $(TEST_PROGRAM) $(EVENT_TEST) $(CONSISTENCY_TEST)
+$(BUILD_DIR)/partition_api.o: partition_api.c partition_api.h consistency_monitor.h signal_toss.h event_tree.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(THREAD_FLAGS) -c $< -o $@
+$(BUILD_DIR)/partition-example.o: partition_example.c partition_api.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(THREAD_FLAGS) -c $< -o $@
+$(BUILD_DIR)/test-partition-api.o: test_partition_api.c partition_api.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(THREAD_FLAGS) -c $< -o $@
+PARTITION_OBJS := $(BUILD_DIR)/partition_api.o $(BUILD_DIR)/consistency_monitor.o $(BUILD_DIR)/signal_toss.o $(BUILD_DIR)/thread_compat.o $(BUILD_DIR)/event_tree.o
+$(PARTITION_EXAMPLE): $(PARTITION_OBJS) $(BUILD_DIR)/partition-example.o
+	$(CC) $^ -lm $(THREAD_LIBS) -o $@
+$(PARTITION_TEST): $(PARTITION_OBJS) $(BUILD_DIR)/test-partition-api.o
+	$(CC) $^ -lm $(THREAD_LIBS) -o $@
+
+test: $(TEST_PROGRAM) $(EVENT_TEST) $(CONSISTENCY_TEST) $(PARTITION_TEST)
 	./$(TEST_PROGRAM)
 	./$(EVENT_TEST)
 	./$(CONSISTENCY_TEST)
+	./$(PARTITION_TEST)
 clean:
 	rm -rf $(BUILD_DIR)

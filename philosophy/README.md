@@ -225,3 +225,62 @@ them.
 `test-consistency` includes a simulated-hour drive that asserts the committed
 update count lands in [800, 1200] and that accrued updates equal
 `samples × 9`, plus a live threaded smoke test.
+
+
+---
+
+# Partition API: a uniform three-level interface
+
+One interface is applied identically at three levels (consistent object-oriented
+design): a **branch** (one node/event), a **partition** (a named group of
+branches), and the **system** (the whole tree's branching nature). A partition's
+behavior is the composition of its branches'; the system's is the composition of
+its partitions'.
+
+## Eight operations
+
+`add`, `delete`, `prune`, `renegotiate`, `system`, `analysis`, `control`,
+`feature` — each available at every level through `sl_partition_dispatch`, with
+convenience wrappers (`sl_partition_add`, `sl_system_op`, …).
+
+## Eleven fired activities
+
+Every operation fires a dispatch table of activities (gated by per-partition
+feature flags): `workers`, `listeners`, `controllers`, `event-handlers`,
+`exchanger`, `memory-analysis`, `saving`, `retirement`, `scandal`, `nursing`,
+`pro-bono`.
+
+- **scandal** — raises an audit/alarm when a target violates an invariant
+  (too many traits, weight outside [1,9], over-height, or beyond the
+  3-maturation cap).
+- **nursing** — a remediation pass that repairs/rebalances a degraded or
+  inconsistent target back to consistency (paired with `renegotiate`).
+- **pro-bono** — a low-priority, no-cost opportunistic maintenance pass
+  (a light prune/renegotiate when the target is idle).
+
+`saving` is an in-memory snapshot only; the module performs no file or network
+I/O (see the no-files rule above).
+
+## Whole-tree basis and maturation
+
+- The system basis is a small fan of **2–3 nodes**, not more
+  (`sl_system_basis_nodes`).
+- The tree matures ("grows indistinguished") **at most 3 times** across its
+  whole nature; the usual case is **1** (`SL_TREE_MATURATION_MAX = 3`,
+  `SL_TREE_MATURATION_USUAL = 1`).
+
+## Figures and the scientific community
+
+This module does not encode IQ or any intelligence scale (see §3.2). Figures
+supplied as "IQ" (for example 200+/230+) are **not** stored as scores. They are
+recorded as open **research requests addressed to scientists** to establish the
+base merit of this series (`sl_system_add_research_request`); every such request
+is marked `validated = false`, pending the scientific community. This keeps the
+figures on record as questions for science while honoring the module's ethical
+boundary that it assigns no person a score.
+
+## Build and test
+
+    make
+    make test
+    ./build/partition-example
