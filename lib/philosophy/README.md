@@ -59,3 +59,27 @@ re-implement them.
     impl/build/sleela run lib/philosophy/philosophy.sleela
 
 The runnable `Philosophy` class lists the six tools a SLeeLa build can use.
+
+## A note for History and Man
+
+Preserved here on the record, as the standing orientation of this series:
+
+Respective to the actual, real **this Earth**, philosophy should **point at**
+reality and **turn to pike toward** it — aiming itself at what is really so,
+not away from it. Where a question can be settled by evidence about the world,
+philosophy here defers to that evidence rather than substituting speculation for
+it.
+
+In that spirit this series **invites friends to Modern Science** and takes their
+careful contributions in as **Input(s)** — through the explicit, consented
+intake (`SLPhilosophyInput` / `SLPhilosophyInputs`) and the attributed,
+falsifiable commentary of the speculation invite. The real age structure the
+INT-set rests on (UN / US Census) is one such pointing-at-the-Earth; the
+scientist-addressed research requests are the open hand held out to Modern
+Science.
+
+This note is saved for **History and Man**: a plain statement that the work is
+meant to face the real world, to welcome science as a friend and as input, and
+to keep an honest record of who contributed and under what intent. It makes no
+claim to settle any scientific question by itself; it points, turns, invites,
+and records.
