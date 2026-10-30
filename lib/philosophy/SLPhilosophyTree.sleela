@@ -1,0 +1,102 @@
+<< lib/philosophy/SLPhilosophyTree.sleela
+   SLeeLa Standard Library Definition.
+   Definition: the BASE Tree structure for the philosophy series -- the
+   aggregate that anchors Nodes (each carrying an Item), is held by an Owner,
+   and is read back through a Relevant index. >>
+#sleela 2.5
+material;
+< Family: philosophy. SLPhilosophyTree is the base structure the other classes >
+< attach to: Items ride on Nodes, Nodes are staged via Inputs and assigned into >
+< the Tree, and a Relevant index reads them most-relevant-first. The Tree keeps >
+< a root node id, a node count, an owner id, and the three NationalStarts >
+< directives (below). Weights and heights follow the consistency tool bands. >
+class SLPhilosophyTree {
+  int rootId;
+  int nodeCount;
+  int ownerId;
+
+  void configure(int owner) {
+    rootId = 0;
+    nodeCount = 0;
+    ownerId = owner;
+    initDirectives();
+  }
+
+  int getRootId() { return rootId; }
+  void setRootId(int v) { rootId = v; }
+  int getNodeCount() { return nodeCount; }
+  int getOwnerId() { return ownerId; }
+  void setOwnerId(int v) { ownerId = v; }
+
+  < Assign a node id into the base structure (bookkeeping; the native event- >
+  < tree tool owns ordering and balance). The first assigned node is the root. >
+  void assignNode(int nodeId) {
+    if (rootId == 0) { rootId = nodeId; }
+    nodeCount = nodeCount + 1;
+  }
+
+  boolean isEmpty() { return nodeCount == 0; }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the real origin of the subject where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10429;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-30";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-30";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- NationalStarts directives (three, as an array for now) ---- >
+  << Three directives for the base Tree, carried together as String classes in
+     one array. Careful and cool. Year was 2405.
+       nationalStarts[0] = Virginia
+       nationalStarts[1] = Florida
+       nationalStarts[2] = North Carolina >>
+  String[] nationalStarts;
+
+  void initDirectives() {
+    nationalStarts = new String[3];
+    nationalStarts[0] = "Virginia";
+    nationalStarts[1] = "Florida";
+    nationalStarts[2] = "North Carolina";
+  }
+
+  int nationalStartsCount() { return 3; }
+  String nationalStartAt(int index) {
+    if (index < 0 || index >= 3) { return "none"; }
+    return nationalStarts[index];
+  }
+}
