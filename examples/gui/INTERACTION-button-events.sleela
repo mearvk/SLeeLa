@@ -1,0 +1,25 @@
+#sleela 2.5
+// Demonstrates the one-shot event latches. In a production app, poll these
+// after each ui.pump(false) turn or from the application's normal event loop.
+class ButtonEventPolling {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.ButtonEvents");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.defaultTheme();
+    SLWindow win = ui.openWindow("Button Event Latches", 560, 320, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLBox col = new SLBox(); col.vertical(root, 10); col.setMarginAll(18);
+    SLButton button = new SLButton(); button.createIn(col, "Activate me");
+    SLLabel status = new SLLabel(); status.createIn(col, "Waiting for activation.");
+    win.show();
+    // See SLUserInterface.pump() in USER-INTERFACE.md for the event-loop contract.
+    while (ui.pump(false)) {
+      if (button.clicked()) { status.setText("Activated once."); }
+      if (button.takePressed()) { status.setText("Pointer pressed."); }
+      if (button.takeReleased()) { status.setText("Pointer released."); }
+      if (button.takeHoverEntered()) { status.setText("Pointer entered."); }
+      if (button.takeHoverLeft()) { status.setText("Pointer left."); }
+    }
+    return 0;
+  }
+}
