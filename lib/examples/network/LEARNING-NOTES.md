@@ -13,7 +13,7 @@ Read them in order.
 | Level | File | The one new idea |
 |---|---|---|
 | Basic | [`BASIC-endpoint-validation.sleela`](BASIC-endpoint-validation.sleela) | The cheap checks that belong *before* a connect: host present, port range, privileged-port policy. No I/O. |
-| Moderate | [`USED-loopback-tcp-echo.sleela`](USED-loopback-tcp-echo.sleela) | One real round trip: a server thread accepts, reads, and replies; the client sends and reads back. |
+| Moderate (`USED`) | [`USED-loopback-tcp-echo.sleela`](USED-loopback-tcp-echo.sleela) | One real round trip: a server thread accepts, reads, and replies; the client sends and reads back. This folder's moderate step is an established workflow, so it carries the `USED` prefix rather than `MODERATE`. |
 | Advanced | [`ADVANCED-request-response-protocol.sleela`](ADVANCED-request-response-protocol.sleela) | A tiny command protocol (`PING`/`ECHO`/unknown) with the server parsing requests over several round trips. |
 
 ## What we want you to take away

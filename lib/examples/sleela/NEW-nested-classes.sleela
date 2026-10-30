@@ -1,12 +1,15 @@
-#sleela 1.7
+#sleela 1.11
 // NEW: nested class structure for grouping related program concepts.
+// Nested classes arrived in syntax 1.11 (spec section 14, the "rule of two").
+// A nested class is referenced by its dotted qualified name, Outer.Inner,
+// in both type position and `new` -- a bare `Label` does not resolve.
 class NewNestedClasses {
     class Label {
         String value;
         String display() { return "[" + value + "]"; }
     }
     void main() {
-        Label label = new Label();
+        NewNestedClasses.Label label = new NewNestedClasses.Label();
         label.value = "SLeeLa";
         print(label.display());
     }

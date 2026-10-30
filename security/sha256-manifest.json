@@ -6683,7 +6683,7 @@
     },
     {
       "path": "lib/examples/sleela/NEW-nested-classes.sleela",
-      "sha256": "96fc61ddfbe32e4333fed55b9a2a5efb25b32ec0f8b56e6b53541007f2f1ab3c"
+      "sha256": "f0c70f58763cd0d64c70525f5d81a7d79d9953a50e1a8f1056306309ca3b1414"
     },
     {
       "path": "lib/examples/sleela/NEW-signed-wide-integers-2.7.sleela",
@@ -6711,7 +6711,7 @@
     },
     {
       "path": "lib/examples/sleela/NEW-unsigned-wide-integers-2.8.sleela",
-      "sha256": "48b098803d73cc164c8096d7a83460095cbcf3a79cbe29e936171eeec12b0b3b"
+      "sha256": "c72db0296c8ddaa8a8e9efe343441dee4a8f76d4d5ede54c2ecb184f10fc5ce8"
     },
     {
       "path": "lib/examples/sleela/ORIGINAL-fizz-buzz.sleela",

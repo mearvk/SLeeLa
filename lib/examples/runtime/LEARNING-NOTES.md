@@ -13,7 +13,7 @@ Read them in order.
 | Level | File | The one new idea |
 |---|---|---|
 | Basic | [`BASIC-sequential-accumulate.sleela`](BASIC-sequential-accumulate.sleela) | The baseline: one thread, one loop, one result (the number parallel code must still match). |
-| Moderate | [`USED-thread-workers.sleela`](USED-thread-workers.sleela) | Spawn workers, guard a shared counter with a lock, report via a mailbox, and `join`. |
+| Moderate (`USED`) | [`USED-thread-workers.sleela`](USED-thread-workers.sleela) | Spawn workers, guard a shared counter with a lock, report via a mailbox, and `join`. This folder's moderate step is an established workflow, so it carries the `USED` prefix rather than `MODERATE`. |
 | Advanced | [`ADVANCED-producer-consumer.sleela`](ADVANCED-producer-consumer.sleela) | A producer/consumer pipeline: one producer feeds a mailbox, several consumers fold results into a lock-guarded total. |
 
 ## What we want you to take away

@@ -1,11 +1,13 @@
 #sleela 2.8
 // NEW: unsigned integer-width types introduced in syntax 2.8.
 // Unsigned values are positive-only; do not apply unary minus.
+// A signed integer literal is NOT implicitly assignable to an unsigned
+// target (spec section 25.2): construct the value with an explicit cast.
 class NewUnsignedWideIntegers {
     void main() {
-        uint32 packetCount = 120;
-        uint64 byteCount = 64000;
-        uint128 addressSpaceUnits = 1000000;
+        uint32 packetCount = (uint32) 120;
+        uint64 byteCount = (uint64) 64000;
+        uint128 addressSpaceUnits = (uint128) 1000000;
         print("uint32 packets = " + packetCount);
         print("uint64 bytes = " + byteCount);
         print("uint128 units = " + addressSpaceUnits);
