@@ -1,18 +1,20 @@
 # Sleelvac compiler invocation
 
-The compiler is built as a separate executable. From the repository root, build it using the repository's documented build target, then inspect its own help text before using optional flags.
+SLeeLa builds the runtime/command driver and the separate `sleelvac` compiler product from the same front-end sources.
+
+From the repository root:
 
 ```sh
-make -C impl build
+make -C impl
 ./impl/build/sleelvac --help
 ```
 
-The language reference documents the source workflow through the SLeeLa command driver:
+For the source-to-artifact workflow, the documented SLeeLa command driver provides:
 
 ```sh
-sleela check lib/examples/sleela/CLASSIC-hello-world.sleela
-sleela compile lib/examples/sleela/CLASSIC-hello-world.sleela -o /tmp/hello.sleela
-sleela run /tmp/hello.sleela
+./impl/build/sleela check lib/examples/sleela/CLASSIC-hello-world.sleela
+./impl/build/sleela compile lib/examples/sleela/CLASSIC-hello-world.sleela -o /tmp/hello.sleela
+./impl/build/sleela run /tmp/hello.sleela
 ```
 
-The separate `sleelvac` binary is the compiler product; `sleela` is the runtime/command driver. Do not assume a command or flag is supported by both binaries unless their respective `--help` output confirms it.
+The separate `sleelvac` binary is the compiler product; `sleela` is the runtime/command driver. Confirm compiler-only flags with `sleelvac --help`; do not assume every `sleela` subcommand is an identical `sleelvac` subcommand.
