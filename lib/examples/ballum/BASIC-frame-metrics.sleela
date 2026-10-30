@@ -1,0 +1,14 @@
+#sleela 1.7
+// BASIC: the core Ballum idea -- describe a display frame as numbers.
+// Width, height, pixel count, and aspect ratio. No display backend is opened.
+class BasicFrameMetrics {
+    void main() {
+        int width = 800;
+        int height = 600;
+        print("frame = " + width + " x " + height);
+        print("pixel count = " + (width * height));
+        // Aspect ratio as a double so we keep the fractional part.
+        double aspect = (width * 1.0) / (height * 1.0);
+        print("aspect ratio (w/h) = " + aspect);
+    }
+}

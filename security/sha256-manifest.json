@@ -6450,12 +6450,36 @@
       "sha256": "532e191e41bd78c8d86764534345e14793bcc574cd0566e26573ec9c2850ba21"
     },
     {
+      "path": "lib/examples/autocad/ADVANCED-layer-takeoff.sleela",
+      "sha256": "20c0b4dd223c769bae164b9d08e8df93419218dc838aaf4bbf753d5dc431561c"
+    },
+    {
+      "path": "lib/examples/autocad/BASIC-geometry-area.sleela",
+      "sha256": "d23a0ea6127306057c91e48e7b4aee5228acd1b006f74e3123cd2a2c5cd74c97"
+    },
+    {
       "path": "lib/examples/autocad/CLASSIC-geometry-primitives.sleela",
       "sha256": "5bad1594d1afc02d43bd5d184236f80e140cd08ffe0b566a23a8a4ce80d934c2"
     },
     {
+      "path": "lib/examples/autocad/MODERATE-polyline-bounds.sleela",
+      "sha256": "70ea331f09bb1c6624ea9ae676fc48da02e20a04f1c354ee7b3c15d15063b006"
+    },
+    {
+      "path": "lib/examples/ballum/ADVANCED-dirty-rects.sleela",
+      "sha256": "225142d47f498dae829d9b5b0b882a1cbfb60fa1e851a240b256b77864a1e381"
+    },
+    {
+      "path": "lib/examples/ballum/BASIC-frame-metrics.sleela",
+      "sha256": "fe9cc0a1e3fe979fe0b8914f44abf32c1ebb0b53cfd91af22980151b79acebf5"
+    },
+    {
       "path": "lib/examples/ballum/CLASSIC-display-frame.sleela",
       "sha256": "e1a718ac30c73c6c31907bcab9656181744a2d457071c31c3f97479cb2949a2d"
+    },
+    {
+      "path": "lib/examples/ballum/MODERATE-fit-and-letterbox.sleela",
+      "sha256": "0158ad0e51275ccd04e5e2eacfe085d0af3b346e726a7021594fab7e1d05c5f6"
     },
     {
       "path": "lib/examples/cdma/CLASSIC-link-budget.sleela",
