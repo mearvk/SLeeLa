@@ -1,0 +1,10 @@
+#sleela 1.7
+// One of two independent programs gathered by MODERATE-multi-source.sst.
+// Nordshrift validates each gathered source as its own compilation unit, so
+// every file in a multi-source sheet is self-contained (its own main()).
+class ModerateApp {
+    int daily(int perHour) { return perHour * 24; }
+    void main() {
+        print("App: daily from 150/hour = " + daily(150));
+    }
+}

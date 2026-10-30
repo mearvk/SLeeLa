@@ -1,0 +1,14 @@
+#sleela 1.7
+// Program run by ADVANCED-tiered-memory.xlt on the model it builds.
+// Kept as plain 1.7 so it validates with the base compiler. The memory-tier
+// FUNCTION modifiers (usualmem / accuratemem) are an XLT-aware language feature
+// -- see LEARNING-NOTES.md and lib/xlt/examples/epyc-tiered-memory.xlt. Here the
+// tiers are declared at the MODEL level in the .xlt sheet instead.
+class AdvancedApp {
+    void logActivity() { print("logged an activity"); }
+    int settleLedger() { return 100; }
+    void main() {
+        logActivity();
+        print("ledger = " + settleLedger());
+    }
+}

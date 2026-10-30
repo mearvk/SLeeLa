@@ -1,0 +1,10 @@
+#xlt 1.0
+// BASIC: the smallest useful CPU model -- a CPU SKU, some memory, and a target.
+// An .xlt sheet declaratively assembles a machine from registered catalog parts.
+// Validate with:
+//   impl/xlt/build/xltc lib/examples/xlt/BASIC-cpu-memory.xlt
+model BasicWorkstation {
+  cpu     "SLAMDEPYC9355";    // a registered CPU SKU
+  memory  "ddr4_3200" 8192;   // memory preset + capacity in MiB
+  target  sleela;
+}

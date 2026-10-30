@@ -1,0 +1,15 @@
+#xlt 1.0
+// MODERATE: a fuller model -- add refresh cadence, storage, a bus, and optional
+// capability directives (gpu/dma). Each slot appears at most once.
+// Validate with:
+//   impl/xlt/build/xltc lib/examples/xlt/MODERATE-storage-bus-capabilities.xlt
+model ModerateServer {
+  cpu      "SLAMDEPYC9755";
+  memory   "ddr5_6400" 16384;
+  cadence  "DDR5";             // present a DDR5 refresh cadence
+  storage  "nvmeGen4";         // optional storage part
+  bus      "pcieGen5x16";      // optional bus part
+  gpu;                         // capability: native GPU compute
+  dma;                         // capability: DMA bulk-move engine
+  target   sleela;
+}

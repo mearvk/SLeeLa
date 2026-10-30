@@ -6606,8 +6606,28 @@
       "sha256": "e0c2393a163eb7c170241a8266d6670d9a3a48cdc9343fac769e92fb104f0fde"
     },
     {
+      "path": "lib/examples/nordshrift/ADVANCED-Service.sleela",
+      "sha256": "01afe89949b232f07038b77e0681ee9e8bb4f5dc8c30e27efeca584f1ca08314"
+    },
+    {
+      "path": "lib/examples/nordshrift/ADVANCED-ServiceDraft.sleela",
+      "sha256": "059f081a7e7240b7186fffc35b759f50354e7b845c2650a9287f671a1a9c77d6"
+    },
+    {
+      "path": "lib/examples/nordshrift/BASIC-Greeter.sleela",
+      "sha256": "43bb33f83872790797d55cc0b1190c1fb1ee545838c5d1baedcb582d34c1ccf2"
+    },
+    {
       "path": "lib/examples/nordshrift/CLASSIC-Ledgerize.sleela",
       "sha256": "2e354391bc6e294c67072685e04ad2c497700282c8bd379b7aa85045abc65cdd"
+    },
+    {
+      "path": "lib/examples/nordshrift/MODERATE-App.sleela",
+      "sha256": "d4db9071123b4c607d255d9842abd644b01806193643d74af8d8a7fb9e972860"
+    },
+    {
+      "path": "lib/examples/nordshrift/MODERATE-Report.sleela",
+      "sha256": "a71b4be17ac72708b4a6e8713de6f6e0d1dd7aa456d2cc582f0d92f177140479"
     },
     {
       "path": "lib/examples/regex/ADVANCED-anchored-classes.sleela",
@@ -6740,6 +6760,10 @@
     {
       "path": "lib/examples/wifi/USED-wifi-policy-smoke.sleela",
       "sha256": "b3ec10aed2647bb76fbc22ee6cd62e343f5d44af4cc6928022270c5af4a7042b"
+    },
+    {
+      "path": "lib/examples/xlt/ADVANCED-app.sleela",
+      "sha256": "f6fcf4b5eca5ae50396212f3db0725c0d43ed1540dd007ae1659f3eeec9cb681"
     },
     {
       "path": "lib/filesystem/SLArchive.sleela",

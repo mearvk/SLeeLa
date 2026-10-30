@@ -1,0 +1,7 @@
+#sleela 1.7
+// Deliberately EXCLUDED by ADVANCED-exclude.sst via the exclude pattern.
+// It is kept in the directory to prove the exclude actually removes it from the
+// build set. (It is valid SLeeLa, just not wanted in this target.)
+class ServiceDraft {
+    int scratch() { return 0; }
+}
