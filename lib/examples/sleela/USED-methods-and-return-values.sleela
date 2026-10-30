@@ -1,11 +1,7 @@
-#sleela 2.6
+#sleela 1.7
 // USED: reusable methods, parameters, return values, and string output.
-
 class UsedMethods {
-    int square(int value) {
-        return value * value;
-    }
-
+    int square(int value) { return value * value; }
     void main() {
         int input = 12;
         print("square(" + input + ") = " + square(input));
