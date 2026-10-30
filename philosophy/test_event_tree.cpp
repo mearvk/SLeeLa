@@ -3,6 +3,8 @@
 #include <cmath>
 #include <cstdint>
 #include <vector>
+
+using namespace sleela::philosophy;
 struct VisitLog{std::vector<std::uint64_t> ids;};
 static bool collect(const sl_event *e,double,void *p){static_cast<VisitLog *>(p)->ids.push_back(e->id);return true;}
 static sl_event event(std::uint64_t id,std::uint64_t at,std::uint64_t half,
