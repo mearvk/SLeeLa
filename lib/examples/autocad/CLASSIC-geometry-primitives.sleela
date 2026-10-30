@@ -1,13 +1,11 @@
-#sleela 2.6
+#sleela 1.7
 // Teaching example: geometry calculations only; this does not call AutoCAD APIs.
 class ClassicGeometryPrimitives {
     void main() {
         double width = 120.0;
         double height = 45.0;
-        double area = width * height;
-        double perimeter = 2.0 * (width + height);
-        print("rectangle area = " + area);
-        print("rectangle perimeter = " + perimeter);
-        print("CAD integration step: map these values to the selected drawing API.");
+        print("rectangle area = " + (width * height));
+        print("rectangle perimeter = " + (2.0 * (width + height)));
+        print("CAD integration: map these values to the selected drawing API.");
     }
 }
