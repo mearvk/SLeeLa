@@ -1,0 +1,12 @@
+#sleela 2.6
+// Safe numerical illustration; no modem or radio is accessed.
+class ClassicCdmaLinkBudget {
+    void main() {
+        double transmitDbm = 20.0;
+        double pathLossDb = 105.0;
+        double receivedDbm = transmitDbm - pathLossDb;
+        print("transmit power dBm = " + transmitDbm);
+        print("path loss dB = " + pathLossDb);
+        print("estimated received power dBm = " + receivedDbm);
+    }
+}
