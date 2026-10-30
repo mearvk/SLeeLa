@@ -5,8 +5,13 @@ CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Wpedantic
 BUILD_DIR := build
 ifeq ($(OS),Windows_NT)
 EXE := .exe
+THREAD_FLAGS :=
+THREAD_LIBS :=
 else
 EXE :=
+# POSIX/C11 threads need -pthread on Linux and the BSDs; harmless on macOS.
+THREAD_FLAGS := -pthread
+THREAD_LIBS := -pthread
 endif
 C_EXAMPLE := $(BUILD_DIR)/example-c$(EXE)
 CPP_EXAMPLE := $(BUILD_DIR)/example-cpp$(EXE)
@@ -14,9 +19,11 @@ TEST_PROGRAM := $(BUILD_DIR)/test-screen-map$(EXE)
 EVENT_C_EXAMPLE := $(BUILD_DIR)/event-example-c$(EXE)
 EVENT_CPP_EXAMPLE := $(BUILD_DIR)/event-example-cpp$(EXE)
 EVENT_TEST := $(BUILD_DIR)/test-event-tree$(EXE)
+CONSISTENCY_EXAMPLE := $(BUILD_DIR)/consistency-example$(EXE)
+CONSISTENCY_TEST := $(BUILD_DIR)/test-consistency$(EXE)
 
 .PHONY: all test clean
-all: $(C_EXAMPLE) $(CPP_EXAMPLE) $(TEST_PROGRAM) $(EVENT_C_EXAMPLE) $(EVENT_CPP_EXAMPLE) $(EVENT_TEST)
+all: $(C_EXAMPLE) $(CPP_EXAMPLE) $(TEST_PROGRAM) $(EVENT_C_EXAMPLE) $(EVENT_CPP_EXAMPLE) $(EVENT_TEST) $(CONSISTENCY_EXAMPLE) $(CONSISTENCY_TEST)
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 $(BUILD_DIR)/screen_map.o: screen_map.c screen_map.h | $(BUILD_DIR)
@@ -52,8 +59,25 @@ $(EVENT_CPP_EXAMPLE): $(BUILD_DIR)/event_tree.o $(BUILD_DIR)/social_listener.o $
 	$(CXX) $^ -lm -o $@
 $(EVENT_TEST): $(BUILD_DIR)/event_tree.o $(BUILD_DIR)/social_listener.o $(BUILD_DIR)/test-event-tree.o
 	$(CXX) $^ -lm -o $@
-test: $(TEST_PROGRAM) $(EVENT_TEST)
+
+$(BUILD_DIR)/thread_compat.o: thread_compat.c thread_compat.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(THREAD_FLAGS) -c $< -o $@
+$(BUILD_DIR)/consistency_monitor.o: consistency_monitor.c consistency_monitor.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+$(BUILD_DIR)/signal_toss.o: signal_toss.c signal_toss.h consistency_monitor.h thread_compat.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(THREAD_FLAGS) -c $< -o $@
+$(BUILD_DIR)/consistency-example.o: consistency_example.c consistency_monitor.h signal_toss.h event_tree.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(THREAD_FLAGS) -c $< -o $@
+$(BUILD_DIR)/test-consistency.o: test_consistency.c consistency_monitor.h signal_toss.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(THREAD_FLAGS) -c $< -o $@
+$(CONSISTENCY_EXAMPLE): $(BUILD_DIR)/consistency_monitor.o $(BUILD_DIR)/signal_toss.o $(BUILD_DIR)/thread_compat.o $(BUILD_DIR)/event_tree.o $(BUILD_DIR)/consistency-example.o
+	$(CC) $^ -lm $(THREAD_LIBS) -o $@
+$(CONSISTENCY_TEST): $(BUILD_DIR)/consistency_monitor.o $(BUILD_DIR)/signal_toss.o $(BUILD_DIR)/thread_compat.o $(BUILD_DIR)/test-consistency.o
+	$(CC) $^ -lm $(THREAD_LIBS) -o $@
+
+test: $(TEST_PROGRAM) $(EVENT_TEST) $(CONSISTENCY_TEST)
 	./$(TEST_PROGRAM)
 	./$(EVENT_TEST)
+	./$(CONSISTENCY_TEST)
 clean:
 	rm -rf $(BUILD_DIR)

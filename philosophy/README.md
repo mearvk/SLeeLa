@@ -158,3 +158,70 @@ The event tree is in-memory only. Persistence, encryption, authentication, and a
 ### Hormone, medication, and media inputs
 
 An integer or floating-point field can record a user-entered dose, published population statistic, industrial-growth metric, or other explicitly defined quantity. The value must retain its unit, timestamp, source, and study/context label. Recording a hormone or medication value does not establish that it improves intelligence, memory, or mood; causal or clinical conclusions require appropriate human evidence and a qualified assessor. Media observations describe the cited report, not a private message or targeted communication to the listener.
+
+
+---
+
+# Tree Consistency: Signal Toss and Branch Invariants
+
+A cross-platform threaded monitor that continuously checks the event tree for
+*branch consistency*. It is additive: the existing `event_tree` and
+`social_listener` APIs are unchanged.
+
+## Cadences
+
+- **Sampling ~44 Hz.** A background worker wakes about 44 times per second and
+  "tosses a signal" at a branch to check it. Each toss feeds the pure
+  consistency monitor.
+- **Committed updates 800–1200/hour.** A logged "tree is consistent" update is
+  emitted only when a throttle interval has elapsed, keeping the confirmation
+  rate inside the 800–1200/hour band (default 1000/hour). The two cadences are
+  one mechanism: fast sampling, throttled confirmation.
+
+## Update accounting
+
+- **+4 every time a branch is considered.**
+- **+5 every time a branch's length is considered while that branch is
+  object-mature.**
+
+So one consistent, mature branch accrues 9 updates per toss (`4 + 5`); an
+immature or inconsistent branch accrues 4.
+
+## Branch invariants (hard consistency rules)
+
+| Rule | Bound |
+|---|---|
+| Traits per branch | ≤ 45 (soft warning at 44) |
+| Branch weight | clamped to [1, 9] |
+| Weight-9 branch that studies the economy | studies exactly 2 things |
+| Branching points per side | ≤ 15 (12–15 typical); both sides considered for the total arrangement |
+
+## Maturity by reference weighting
+
+Maturity is probabilistic, not a fixed age. A branch supplies weighted
+references, and the monitor computes a reference-weighted truth value with
+three ascending gates:
+
+- **0.80** — provisional maturity (candidate),
+- **0.97** — strong maturity (confirmed),
+- **0.51** — the decisive majority-of-references gate: *object is Mature* is
+  declared **yes only when the reference-weighted truth is ≥ 0.51*, even after
+  the 0.80 / 0.97 stages are reached.
+
+## Portability
+
+Threading is selected at compile time by `thread_compat.*`, preferring the
+"best available" backend: ISO C11 `<threads.h>`, else Win32
+`CreateThread`/`CRITICAL_SECTION` (covers Windows XP+, 7+, 10+), else POSIX
+`pthreads` (Linux, macOS, BSD). The same source builds consistently on all of
+them.
+
+## Build and test
+
+    make
+    make test
+    ./build/consistency-example
+
+`test-consistency` includes a simulated-hour drive that asserts the committed
+update count lands in [800, 1200] and that accrued updates equal
+`samples × 9`, plus a live threaded smoke test.
