@@ -1,0 +1,12 @@
+#sleela 2.6
+import math;
+import financial;
+
+// NEW: calling a native library module through an explicit import.
+
+class NewFinancialImport {
+    void main() {
+        print("future value = " + financial.future_value(1000.0, 0.05, 10.0));
+        print("CAPM = " + financial.capm(0.04, 1.2, 0.10));
+    }
+}
