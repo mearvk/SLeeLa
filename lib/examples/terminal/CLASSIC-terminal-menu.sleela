@@ -1,0 +1,16 @@
+#sleela 2.6
+// CLASSIC: a simple deterministic terminal menu presentation.
+// This demonstrates text output; it does not read interactive keyboard input.
+class ClassicTerminalMenu {
+    void main() {
+        print("==============================");
+        print("          SLeeLa Tools");
+        print("==============================");
+        print("1. Build");
+        print("2. Verify");
+        print("3. Run examples");
+        print("0. Exit");
+        print("------------------------------");
+        print("Choose an action from the menu.");
+    }
+}
