@@ -1,4 +1,4 @@
-#sleela 2.6
+#sleela 1.7
 // Safe numerical illustration; no modem or radio is accessed.
 class ClassicCdmaLinkBudget {
     void main() {
