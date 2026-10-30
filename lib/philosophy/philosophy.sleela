@@ -1,4 +1,4 @@
-#sleela 2.5
+#sleela 2.9
 material;
 < philosophy.sleela -- the self-contained, runnable build of the SLeeLa >
 < philosophy tool catalog. The `run` subcommand compiles one file as a single >
@@ -10,6 +10,13 @@ material;
 <  >
 < Tool ids mirror the per-class id(): 1 event-tree, 2 consistency, 3 partition- >
 < api, 4 helper, 5 int-set, 6 speculation. >
+<  >
+< Document extension (syntax 1.10): the catalog heads a linear chain of the >
+< series documents -- the tool handles, then the base Tree -- so the ordering >
+< of the series is first-class and compiler-checked (linear reals, bounded). >
+extends to { SLPhilosophyEventTree, SLPhilosophyConsistency, SLPhilosophyPartitionApi } linear;
+extends to { SLPhilosophyHelper, SLPhilosophyIntSet, SLPhilosophySpeculation } linear;
+extends to SLPhilosophyTree linear;
 class Philosophy {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,

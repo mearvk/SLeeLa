@@ -1,0 +1,70 @@
+#sleela 2.9
+material;
+< example-tree.sleela -- a runnable front door for developers: compose a >
+< philosophy Tree from Items and Nodes, gate assignment by an Owner role, read >
+< the Tree back most-relevant-first through a Relevant index, and print the >
+< @mix NationalStarts directives. `run` auto-links the sibling classes in this >
+< package (SLPhilosophyTree/Item/Node/Owner/Relevant), so no imports needed. >
+<  >
+< Document extension (syntax 1.10): this example points to the base Tree it >
+< demonstrates, as a linear chain. >
+extends to SLPhilosophyTree linear;
+class PhilosophyTreeExample {
+  void main() {
+    < An Owner holds the Tree; Owner.canAdd() gates composition. >
+    SLPhilosophyOwner owner = new SLPhilosophyOwner();
+    owner.configure(500, "Tree Holder");
+
+    SLPhilosophyTree tree = new SLPhilosophyTree();
+    tree.configure(owner.getOwnerId(), 8);
+
+    < Build three Items and carry each on a Node, then compose them into the >
+    < Tree gated by the Owner right (weights clamp to the [1,9] band). >
+    SLPhilosophyItem i1 = new SLPhilosophyItem();
+    i1.configure(1, "industrial_output", 104, "index", "named report");
+    SLPhilosophyItem i2 = new SLPhilosophyItem();
+    i2.configure(2, "education", 124, "index", "school record");
+    SLPhilosophyItem i3 = new SLPhilosophyItem();
+    i3.configure(3, "revisit", 1, "count", "first-person reflection");
+
+    SLPhilosophyNode n1 = new SLPhilosophyNode();
+    n1.configure(10, 9, i1.getItemId());
+    SLPhilosophyNode n2 = new SLPhilosophyNode();
+    n2.configure(20, 7, i2.getItemId());
+    SLPhilosophyNode n3 = new SLPhilosophyNode();
+    n3.configure(30, 3, i3.getItemId());
+
+    tree.assignIfAllowed(owner.canAdd(), n1.getNodeId(), i1.getItemId(), n1.getWeight());
+    tree.assignIfAllowed(owner.canAdd(), n2.getNodeId(), i2.getItemId(), n2.getWeight());
+    tree.assignIfAllowed(owner.canAdd(), n3.getNodeId(), i3.getItemId(), n3.getWeight());
+
+    print("root id   : " + tree.getRootId());
+    print("node count: " + tree.getNodeCount());
+
+    < Read the Tree back most-relevant-first: supply a relevance score per node >
+    < (in assignment order) and hand them to a Relevant index via the Tree. >
+    int[] scores = new int[3];
+    scores[0] = 30;
+    scores[1] = 55;
+    scores[2] = 95;
+    SLPhilosophyRelevant rel = tree.toRelevant(scores);
+    print("most relevant node (right end) : " + rel.mostRelevant());
+    print("least relevant node (left end) : " + rel.leastRelevant());
+
+    < An Exitor handles departures and lacks the add right, so a gated >
+    < assignment through it is refused (Author/Admin/Owner may add; Exitor may >
+    < not). This shows role rights actually gate composition. >
+    SLPhilosophyExitor exitor = new SLPhilosophyExitor();
+    exitor.configure(600, "Departure Handler");
+    boolean allowed = tree.assignIfAllowed(exitor.canAdd(), 40, 4, 5);
+    print("exitor add allowed? " + allowed + " (node count still " + tree.getNodeCount() + ")");
+
+    < The @mix NationalStarts directives (year was 2405). >
+    print("NationalStarts directives:");
+    int k = 0;
+    while (k < tree.nationalStartsCount()) {
+      print("  [" + k + "] " + tree.nationalStartAt(k));
+      k = k + 1;
+    }
+  }
+}
