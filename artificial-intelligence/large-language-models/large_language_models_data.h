@@ -25,7 +25,8 @@ typedef enum sllmd_status {
 typedef sllmd_status (*sllmd_read_fn)(void *connector_user_data,
                                      unsigned char *buffer, size_t capacity,
                                      size_t *bytes_read);
-/* Receives one complete non-empty UTF-8 JSONL record, without its newline.
+/* Receives one complete non-empty JSONL record as bytes, without its newline.
+   The reader rejects embedded NUL but does not validate UTF-8 or JSON syntax.
    Return non-zero to stop iteration; the reader reports SLLMD_CALLBACK_STOP. */
 typedef int (*sllmd_record_fn)(void *user_data, const char *record, size_t length);
 /* Reads a stream in bounded memory. max_record_bytes must be non-zero.
