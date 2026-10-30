@@ -14,7 +14,8 @@ Provider-neutral native APIs for SLeeLa applications that connect to local or ho
 | `training/` | End-to-end data-to-token-batch training workflow |
 | `inference/` | Model loading and streamed generation guidance |
 | `checkpoints/` | Backend checkpoint lifecycle and provenance |
-| `examples/` | Small, human-readable input examples |
+| `examples/` | Small, human-readable input examples and JSONL records |
+| `basis/` | Ten terminal-driven LLM application cases, each in C11 and C++17 |
 
 ## Public files
 
