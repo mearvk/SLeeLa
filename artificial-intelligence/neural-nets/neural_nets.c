@@ -240,5 +240,7 @@ slnn_status slnn_network_train_sample(slnn_network *n,
         }
     }
     (void)base;
-    return finite_array(n->weights, n->total_weights) ? SLNN_OK : SLNN_ERROR_NUMERIC;
+    return (finite_array(n->weights, n->total_weights) &&
+            finite_array(n->biases, n->total_neurons - n->sizes[0])) ?
+        SLNN_OK : SLNN_ERROR_NUMERIC;
 }
