@@ -1,0 +1,34 @@
+{
+  "title": "Human INT set (authored schema over real age structure)",
+  "source": "UN DYB 2024 Table 02 / WPP 2024 / US Census (age); schema authored",
+  "startAge": 18,
+  "ageGrowsOlder": true,
+  "notMentionedBelow": 16,
+  "basicAnatomyCheckinAbove": 85,
+  "routedOutBy": ["Fellows", "Worship"],
+  "intRange": { "low": 70, "high": 160, "psychometric": false, "units": "ordinal lateral index (not psychometric IQ)" },
+  "traits": [
+    { "name": "Start", "intIndex": 70, "note": "entry / natural beginning" },
+    { "name": "Business", "intIndex": 82, "note": "task and exchange focus" },
+    { "name": "Model", "intIndex": 88, "note": "representation / pattern-holding" },
+    { "name": "Conversation", "intIndex": 94, "note": "dialogue and turn-taking" },
+    { "name": "Help", "intIndex": 96, "note": "assistance offered or sought" },
+    { "name": "Diner", "intIndex": 92, "note": "shared meal / social setting" },
+    { "name": "Exit", "intIndex": 74, "note": "leaving a context" },
+    { "name": "Concentration", "intIndex": 120, "note": "sustained attention" },
+    { "name": "Chores", "intIndex": 86, "note": "routine maintenance activity" },
+    { "name": "Method", "intIndex": 118, "note": "procedure and discipline" },
+    { "name": "A-ness", "intIndex": 104, "note": "quality-of-being descriptor (authored)" },
+    { "name": "Consideration", "intIndex": 112, "note": "regard for others and context" },
+    { "name": "Departure", "intIndex": 76, "note": "deliberate going-away" },
+    { "name": "Winning Runs for Home Team", "intIndex": 130, "note": "a positive-outcome marker (authored)" },
+    { "name": "Education", "intIndex": 124, "note": "learning and schooling" },
+    { "name": "Scent of IQ", "intIndex": 160, "note": "authored nickname; NOT an IQ measure" }
+  ],
+  "ageBands": [
+    { "label": "0-14", "lower": 0, "upper": 14, "populationMillions": 2017, "mentioned": false, "basicAnatomyCheckin": false, "route": "not-mentioned" },
+    { "label": "15-64", "lower": 15, "upper": 64, "populationMillions": 5312, "mentioned": true, "basicAnatomyCheckin": false, "route": "none" },
+    { "label": "65-85", "lower": 65, "upper": 85, "populationMillions": 0, "mentioned": true, "basicAnatomyCheckin": false, "route": "none" },
+    { "label": "85+", "lower": 86, "upper": -1, "populationMillions": 833, "mentioned": true, "basicAnatomyCheckin": true, "route": "fellows" }
+  ]
+}
