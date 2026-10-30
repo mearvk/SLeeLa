@@ -1,0 +1,41 @@
+#sleela 1.7
+// MODERATE: decide whether a network is allowed by a security policy.
+// A safe default policy forbids open and legacy-WEP networks and requires a
+// minimum security rank. We rank a few networks and apply the rule. This mirrors
+// the intent of the standard SLWifiSecurityPolicy, but is self-contained so it
+// runs with `check`/`run` directly. No radio is accessed.
+class ModerateSecurityPolicy {
+    // Security ranks (higher = stronger).
+    static int OPEN = 0;
+    static int WEP  = 1;
+    static int WPA  = 2;
+    static int WPA2 = 3;
+    static int WPA3 = 4;
+
+    static int minRank = WPA2;   // policy floor
+
+    // 0 = allowed, otherwise a reason code.
+    int evaluate(int rank) {
+        if (rank == OPEN) return 1;         // open networks forbidden
+        if (rank == WEP)  return 2;         // legacy WEP forbidden
+        if (rank < minRank) return 3;       // below the policy floor
+        return 0;
+    }
+
+    void report(String ssid, int rank) {
+        int code = evaluate(rank);
+        if (code == 0) print("allow  " + ssid + " (rank " + rank + ")");
+        if (code == 1) print("deny   " + ssid + " -- open network");
+        if (code == 2) print("deny   " + ssid + " -- legacy WEP");
+        if (code == 3) print("deny   " + ssid + " -- below policy floor (rank " + rank + " < " + minRank + ")");
+    }
+
+    void main() {
+        print("policy floor = WPA2 (rank " + minRank + ")");
+        report("CoffeeShop-Free", OPEN);
+        report("OldRouter",       WEP);
+        report("Home-WPA",        WPA);
+        report("Lab-WPA2",        WPA2);
+        report("Secure-WPA3",     WPA3);
+    }
+}

@@ -6726,6 +6726,18 @@
       "sha256": "cfd6d1c30ffe7b8642dad50563c688b73219b1cde546b21aa963b8de3536a67f"
     },
     {
+      "path": "lib/examples/wifi/ADVANCED-nonoverlap-plan.sleela",
+      "sha256": "87de616e4bff927d2ca7b2157b1dc4da3d9ce7787566a431f34309a916e51166"
+    },
+    {
+      "path": "lib/examples/wifi/BASIC-channel-frequency.sleela",
+      "sha256": "ec7881e74249d5f0b41885e5132f25a6dae32e7f260eb6b14777cc65af58d728"
+    },
+    {
+      "path": "lib/examples/wifi/MODERATE-security-policy.sleela",
+      "sha256": "06723ce8ed24130603ad358b5c3d3aacbc2006d7a9dda41ef588e8dd44f4c624"
+    },
+    {
       "path": "lib/examples/wifi/USED-wifi-policy-smoke.sleela",
       "sha256": "b3ec10aed2647bb76fbc22ee6cd62e343f5d44af4cc6928022270c5af4a7042b"
     },
