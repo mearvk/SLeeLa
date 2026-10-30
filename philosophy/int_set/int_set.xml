@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<intSet ageGrowsOlder="true" startAge="18" notMentionedBelow="16" basicAnatomyCheckinAbove="85">
+  <title>Human INT set (authored schema over real age structure)</title>
+  <source>UN DYB 2024 Table 02 / WPP 2024 / US Census (age); schema authored</source>
+  <routedOutBy>
+    <handler>Fellows</handler>
+    <handler>Worship</handler>
+  </routedOutBy>
+  <intRange low="70" high="160" psychometric="false" units="ordinal lateral index (not psychometric IQ)"/>
+  <traits>
+    <trait intIndex="70">
+      <name>Start</name>
+      <note>entry / natural beginning</note>
+    </trait>
+    <trait intIndex="82">
+      <name>Business</name>
+      <note>task and exchange focus</note>
+    </trait>
+    <trait intIndex="88">
+      <name>Model</name>
+      <note>representation / pattern-holding</note>
+    </trait>
+    <trait intIndex="94">
+      <name>Conversation</name>
+      <note>dialogue and turn-taking</note>
+    </trait>
+    <trait intIndex="96">
+      <name>Help</name>
+      <note>assistance offered or sought</note>
+    </trait>
+    <trait intIndex="92">
+      <name>Diner</name>
+      <note>shared meal / social setting</note>
+    </trait>
+    <trait intIndex="74">
+      <name>Exit</name>
+      <note>leaving a context</note>
+    </trait>
+    <trait intIndex="120">
+      <name>Concentration</name>
+      <note>sustained attention</note>
+    </trait>
+    <trait intIndex="86">
+      <name>Chores</name>
+      <note>routine maintenance activity</note>
+    </trait>
+    <trait intIndex="118">
+      <name>Method</name>
+      <note>procedure and discipline</note>
+    </trait>
+    <trait intIndex="104">
+      <name>A-ness</name>
+      <note>quality-of-being descriptor (authored)</note>
+    </trait>
+    <trait intIndex="112">
+      <name>Consideration</name>
+      <note>regard for others and context</note>
+    </trait>
+    <trait intIndex="76">
+      <name>Departure</name>
+      <note>deliberate going-away</note>
+    </trait>
+    <trait intIndex="130">
+      <name>Winning Runs for Home Team</name>
+      <note>a positive-outcome marker (authored)</note>
+    </trait>
+    <trait intIndex="124">
+      <name>Education</name>
+      <note>learning and schooling</note>
+    </trait>
+    <trait intIndex="160">
+      <name>Scent of IQ</name>
+      <note>authored nickname; NOT an IQ measure</note>
+    </trait>
+  </traits>
+  <ageBands>
+    <ageBand lower="0" upper="14" populationMillions="2017" mentioned="false" basicAnatomyCheckin="false" route="not-mentioned">0-14</ageBand>
+    <ageBand lower="15" upper="64" populationMillions="5312" mentioned="true" basicAnatomyCheckin="false" route="none">15-64</ageBand>
+    <ageBand lower="65" upper="85" populationMillions="0" mentioned="true" basicAnatomyCheckin="false" route="none">65-85</ageBand>
+    <ageBand lower="86" upper="-1" populationMillions="833" mentioned="true" basicAnatomyCheckin="true" route="fellows">85+</ageBand>
+  </ageBands>
+</intSet>
