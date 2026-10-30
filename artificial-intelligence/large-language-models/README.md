@@ -1,6 +1,6 @@
 # Large Language Models
 
-Provider-neutral native APIs for SLeeLa applications that connect to local or hosted large-language-model runtimes. The directory separates data ingestion, connectors, datasets, tokenizers, model packages, training, inference, and checkpoints.
+Provider-neutral native APIs for SLeeLa applications that connect to local or hosted large-language-model runtimes. The directory separates data ingestion, connectors, datasets, tokenizers, model packages, lexical resources, training, inference, and checkpoints.
 
 ## Directory map
 
@@ -8,6 +8,7 @@ Provider-neutral native APIs for SLeeLa applications that connect to local or ho
 |---|---|
 | `connectors/` | Adapters for local files and application-provided database, HTTP, memory, or object-storage streams |
 | `datasets/` | JSONL interchange format and dataset schema guidance |
+| `vocabulary/` | Tokenizer vocabulary assets and separately labelled lexical dictionary sources |
 | `tokenizers/` | Model-compatible tokenizer assets and compatibility rules |
 | `models/` | Model configuration, weights, metadata, and integrity guidance |
 | `training/` | End-to-end data-to-token-batch training workflow |
@@ -55,11 +56,15 @@ The C data API accepts an `sllmd_read_fn` callback and reads bounded chunks from
 
 The reader intentionally emits raw JSONL record bytes: it is not a JSON parser. Applications must validate each record against a versioned schema, extract text fields, check data rights/provenance, and tokenize with the exact tokenizer associated with the target model. The included example is in `examples/sample-instruction.jsonl`.
 
-## Vocabulary and word sets
+## Tokenizer vocabulary and lexical dictionaries
 
-The vocabulary API stores exact UTF-8 token strings and assigns stable, insertion-order `uint32_t` IDs. It uses an open-addressed hash table for average constant-time token lookup and grows its storage as the vocabulary expands. Duplicate additions return the existing ID. The encode helper maps whitespace-separated tokens to IDs and returns an owned ID array that the caller must release with `sllmv_vocabulary_free_ids`.
+The tokenizer vocabulary API stores exact UTF-8 token strings and assigns stable, insertion-order `uint32_t` IDs. It uses an open-addressed hash table for average constant-time token lookup and grows its storage as the vocabulary expands. Duplicate additions return the existing ID. The encode helper maps whitespace-separated tokens to IDs and returns an owned ID array that the caller must release with `sllmv_vocabulary_free_ids`.
 
 This is deliberately a vocabulary primitive, not a claim to implement every tokenizer. It does not currently perform BPE, WordPiece, unigram segmentation, byte fallback, Unicode normalization, or punctuation splitting. Punctuation remains attached to its whitespace-delimited token. Applications that need a model's exact tokenizer should provide that tokenizer in their model backend and keep its vocabulary/model metadata aligned. Input strings must be valid UTF-8 when the application treats them as UTF-8.
+
+Dictionary definitions belong in a separate lexical store. Lexical records can contain headwords, parts of speech, sense IDs, definitions, examples, synonyms, semantic relations, source/version metadata, and license notices. They must not be mixed into model token-ID tables.
+
+The `vocabulary/samples/` directory contains one carefully labelled example for each of three sources using the headword `computer`: Open English WordNet 2025, Oxford Advanced Learner's Dictionary, and Merriam-Webster. Only the OEWN senses are included as definition text. Oxford and Merriam-Webster entries are metadata-only reference records because their dictionary content is proprietary; use authorized APIs/licenses before importing definitions. The sample documentation records source links and attribution requirements.
 
 ## Inference
 
