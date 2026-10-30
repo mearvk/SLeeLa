@@ -43,6 +43,7 @@ compatibility. No theme configuration is silently loaded.
 | [Selection controls](COMPONENT-selection-controls.sleela) | Toggle, CheckBox, RadioButton, ComboBox, SpinButton |
 | [Progress and indicators](COMPONENT-progress-indicators.sleela) | Slider, ProgressBar, LevelBar, Spinner, ScrollBar, Throbber |
 | [Display and feedback](COMPONENT-display-feedback.sleela) | Avatar, Image, Badge, Chip, InfoBar, Tooltip |
+| [Canvas view](COMPONENT-canvas-view.sleela) | Animated drawing surface and frame-rate target; draw handler binding is host-side |
 | [Tabs and pages](COMPONENT-tabs-notebook.sleela) | Notebook, TabBar, VerticalTabs |
 | [Widget common properties](COMPONENT-widget-properties.sleela) | Margins, alignment, expansion, size, visibility, sensitivity |
 | [Button event polling](INTERACTION-button-events.sleela) | Click, hover, press/release latches |
