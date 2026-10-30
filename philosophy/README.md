@@ -115,3 +115,41 @@ The Makefile is intentionally local to philosophy/. This first implementation do
 6. [Why animal model studies are lost in translation](https://pmc.ncbi.nlm.nih.gov/articles/PMC9052957/). Limitations when translating animal-model findings to human disease and treatment outcomes.
 
 These references support the boundaries above; they do not validate this software as a medical, psychological, employment, or legal instrument.
+
+
+---
+
+# Event Tree and Social Listener
+
+This is an explicit-input event store. It does not monitor ambient audio, television, networks, or other people.
+
+## Core design
+
+- AVL tree indexed by unique unsigned 64-bit event ID. Insert, find, and end-event updates are O(log n).
+- Each event has an individual half-life in seconds. Relevance is 2^(-elapsed / half-life). An ended event starts its decay interval at the caller-supplied end timestamp.
+- Callers choose shorter half-lives for transient status changes and longer half-lives for durable records. The code does not assume every marriage, resignation, diagnosis, or other life event has the same time constant.
+- Pruning checks each event, so a full pruning pass is O(n), plus AVL rebalancing for removed nodes. The tree remains AVL-balanced; a pruning pass is not O(log n).
+- Values preserve their kind: signed 64-bit integer or finite double, with declared property and unit.
+- Provenance distinguishes self-report, direct observation, media/publication, assessor-authored text, and system import.
+- A revisit can link to an earlier event using related_event_id. Repeating or replaying a thought is not independent corroboration.
+- Medical requests and assessor-authored opinions are separate event types. An opinion requires supplied text, an author role, author attestation, and consent. The library cannot verify identity, licensure, or clinical correctness.
+- Base, economic, and medical C++ listeners filter only explicitly submitted events consented for sharing.
+
+## Neutral and evidence-aware listening
+
+The library does not diagnose paranoia, label a person as paranoid, or infer that strangers, broadcasts, or unrelated events are directed at the listener. Neutral and evidence-aware modes are available. Evidence-aware views preserve source distinctions: first-person reports remain reports, external observations retain their stated source, and revisit links do not become corroboration. A person's self-report is not suppressed.
+
+TV or broadcast information may be entered as a named media/publication source with a reference. It is not evidence that the broadcast is addressing or communicating with a particular person. Unknown intent remains unknown.
+
+## Medical requests
+
+A medical-request event records that the person asked for an assessor. An assessor-opinion event stores the assessor's own supplied statement and attestation. The library does not generate an assessor's opinion, verify a professional's identity or licensing, assess symptoms, or recommend medication. Host applications must implement authentication, authorization, encryption, audit, and professional verification before using this in a real medical workflow.
+
+## Build
+
+    make
+    make test
+    ./build/event-example-c
+    ./build/event-example-cpp
+
+The event tree is in-memory only. Persistence, encryption, authentication, and access controls belong to the host application.
