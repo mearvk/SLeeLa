@@ -247,7 +247,7 @@ exact release commit and the resulting artifacts have been checked.
 
 ## VIII. SLeeLa Editor Themes — Vim and Emacs
 
-SLeeLa includes a coordinated set of professional dark color schemes for **Vim** and **Emacs**, plus a native C/C++ palette utility. The original **American Professional** scheme remains the default. Twelve companion palettes are available for different cultural and institutional design inspirations; these are interpretive design palettes, not official representations of any nation, culture, court, or institution.
+SLeeLa includes a coordinated set of professional dark color schemes for **Vim** and **Emacs**, plus a native C/C++ palette utility. The original **American Professional** scheme remains the default. Ten companion palettes are available for different cultural and institutional design inspirations; these are interpretive design palettes, not official representations of any nation, culture, court, or institution.
 
 ### The Eleven Schemes and Their Colors
 
