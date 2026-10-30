@@ -1,0 +1,11 @@
+#sleela 2.1
+// DRAFT: this demonstrates the proposed readable regex API vocabulary.
+// The source file is not a claim that match() is a compiler intrinsic today.
+class DraftLiteralFind {
+    void main() {
+        print(match("hello, SLeeLa", "contains hello"));
+        print(match("SLeeLa Regex", "starts SLeeLa"));
+        print(match("report.txt", "ends .txt"));
+        print(match("ready", "exact ready"));
+    }
+}
