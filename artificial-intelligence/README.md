@@ -7,11 +7,11 @@ This directory contains SLeeLa's native artificial-intelligence APIs, integratio
 | Category | Purpose | Native API |
 |---|---|---|
 | [Neural Networks](neural-nets/) | CPU feed-forward networks, inference, and training foundations | C11 and C++17 |
-| [Large Language Models](large-language-models/) | Provider-neutral model lifecycle and streaming generation interface | C11 and C++17 |
+| [Large Language Models](large-language-models/) | Provider-neutral model lifecycle, data ingestion, vocabulary, training, and streaming generation | C11 and C++17 |
 
 ## Source conventions
 
-Each category provides a public C header and implementation (`.h`, `.c`), plus a C++ interface and implementation (`.hpp`, `.cpp`). Public interfaces use explicit ABI versions, opaque handles where appropriate, documented ownership, and status/error reporting.
+Each category provides public C interfaces and implementations, plus C++ interfaces and implementations where appropriate. Public interfaces use explicit ABI versions, opaque handles where appropriate, documented ownership, and status/error reporting.
 
 Implementations should remain portable across supported SLeeLa platforms. Optional accelerators and provider SDKs belong behind category APIs rather than becoming mandatory dependencies of the core interface.
 
