@@ -1969,10 +1969,12 @@ natural motion (the reified thing, and the ground that holds it).
 
 This section is **informative and forward-looking**. It reserves and describes a
 planned marker; it is **not yet normative** and **not yet implemented**. The
-SLeeLa compilers remain at `maxSupportedSyntax()` = **2.8**; a `prestige` marker
-is **not accepted** by the parser or semantic pass today, and no `#sleela 2.9`
-source compiles. This is deliberate — the feature is recorded now and built
-*Later*.
+edition has since advanced to **2.9** for the `@mix` consequent-fields feature
+(section 28); nevertheless the `prestige` marker itself remains **not
+accepted** by the parser or semantic pass today — it reserves no identifier and
+has no behavioral effect. This is deliberate — the `prestige` feature is
+recorded now and built *Later*, independently of the 2.9 edition bump that
+`@mix` carried.
 
 ### 27.1 Standing — ahead of and above `object`
 
@@ -2007,12 +2009,74 @@ code generation; it would be a recorded claim about the document, gated to
 
 ### 27.4 Status
 
-- **Not implemented.** No compiler change is made for this section. The front
-  end does not recognise `prestige`, reserves no identifier, and `maxSupportedSyntax()`
-  stays **2.8**. `prestige` remains an ordinary identifier everywhere.
+- **Not implemented.** No compiler change is made for `prestige`. The front end
+  does not recognise it and it reserves no identifier; `prestige` remains an
+  ordinary identifier everywhere.
 - **Declared** as the topmost dedication of the SleelaDoc HTML sites
   (`sleeladoc-api/index.html` and `api/sleela/2.6/index.html`), ahead of the 2.8
   `object` addition.
-- **Later.** Implementation (parser/semantic/ast wiring and a 2.9 edition bump)
-  is a future task, to be done only when the edition is intentionally advanced
-  past 2.8.
+- **Later.** The `prestige` implementation (parser/semantic/ast wiring) is a
+  future task. Note the edition itself is now **2.9** because the `@mix`
+  consequent-fields feature (section 28) advanced it; `prestige` will be wired
+  when it is intentionally taken up, not as part of that bump.
+
+---
+
+## 28. Syntax 2.9 — `@mix` consequent fields (same-named fields as an indexed group)
+
+Syntax 2.9 lets a class declare **multiple instance fields with the same name**,
+provided each repeated occurrence carries the `@mix` annotation. The language
+understands such a group as **consequent** — treated together as an array / list
+/ simple array struct keyed by index — rather than rejecting the repetition as a
+duplicate field.
+
+### 28.1 Form
+
+```sleela
+#sleela 2.9
+class Registry {
+  @mix int NationalID = 1;
+  @mix int NationalID = 2;
+  @mix int NationalID = 3;
+}
+```
+
+Three fields share the name `NationalID`. Because each carries `@mix`, the
+duplicate-field rejection is relaxed and the three are understood as one
+consequent group.
+
+### 28.2 Indexing
+
+- **Top-down default.** Unless indicated otherwise, declaration order gives the
+  indexes **1, 2, 3, …** from top to bottom.
+- **Manual.** The argument form `@mix(1,2,3,4,5)` assigns the indexes of the
+  group explicitly. When the argument form is used, the **number of indexes in
+  the annotation must match the number of same-named `@mix` fields** in the
+  class:
+
+```sleela
+  @mix(1,2,3,4,5) int NationalID = 1;
+  @mix(1,2,3,4,5) int NationalID = 2;
+  @mix(1,2,3,4,5) int NationalID = 3;
+  @mix(1,2,3,4,5) int NationalID = 4;
+  @mix(1,2,3,4,5) int NationalID = 5;
+```
+
+Five indexes, five `NationalID` fields — accepted. A count that disagrees (for
+example three indexes over two fields) is a **semantic error**:
+`@mix index count (3) does not match the number of 'NationalID' fields (2)`.
+
+### 28.3 Gating
+
+`@mix` consequent fields require `#sleela 2.9`. Below 2.9 the historical
+duplicate-field rule stands: repeating a field name is rejected as
+`duplicate field '<name>' in class '<class>'`, with or without the annotation.
+So the relaxation fires only on a genuine 2.9-feature use. `@mix` is an
+annotation, not a reserved word; it reserves no identifier elsewhere.
+
+### 28.4 Status
+
+- **Implemented.** `maxSupportedSyntax()` = **2.9**. The semantic pass permits
+  same-named instance fields that carry `@mix` under `#sleela 2.9`, applies
+  top-down 1,2,3,… indexing by default, and validates that a manual
+  `@mix(...)` index count matches the number of fields in the group.

@@ -149,11 +149,52 @@ class Analyzer{
   // Field marker (syntax 2.6): declarative only; gate-check only, no effect.
   if(p.fieldMarked&&syntax<SyntaxVersion{2,6})
    err("the field document marker requires #sleela 2.6");
+  // @mix consequent fields (syntax 2.9): a field annotated `@mix` may repeat
+  // its name; the group is understood as consequent (array/list). Top-down
+  // order gives indexes 1,2,3,... unless `@mix(1,2,3,...)` assigns them, in
+  // which case the index count must match the number of same-named @mix fields.
+  const bool mixEnabled = !(syntax<SyntaxVersion{2,9});
+  auto fieldHasMix=[](const Field&f,const annotation::Annotation**out)->bool{
+   for(const auto&a:f.annotations){
+    if(a.name=="mix"){ if(out){*out=&a;} return true; }
+   }
+   if(out){*out=nullptr;}
+   return false;};
+  // Count comma-separated index tokens in an @mix(...) value (parser joins
+  // tokens with spaces, e.g. "1 , 2 , 3"); a bare marker @mix has no value.
+  auto mixIndexCount=[](const std::string&v)->int{
+   if(v.empty()){return 0;}
+   int n=1;
+   for(char ch:v){ if(ch==','){++n;} }
+   return n;};
   for(const auto&c:p.classes){
    std::map<std::string,Type> instanceFields;
+   // First, for 2.9, tally @mix groups (name -> count) and remember any manual
+   // index annotation seen on that name, so we can validate the counts match.
+   std::map<std::string,int> mixGroupCount; std::map<std::string,int> mixManualCount; std::map<std::string,bool> mixManualSeen;
+   if(mixEnabled){for(const auto&f:c.fields){
+    if(f.isStatic){continue;}
+    const annotation::Annotation*ma=nullptr;
+    if(fieldHasMix(f,&ma)){
+     ++mixGroupCount[f.name];
+     if(ma&&!ma->value.empty()){
+      mixManualSeen[f.name]=true;
+      int cnt=mixIndexCount(ma->value);
+      if(mixManualCount.count(f.name)&&mixManualCount[f.name]!=cnt){ err("@mix index lists for field '"+f.name+"' in class '"+c.name+"' disagree on count"); }
+      mixManualCount[f.name]=cnt;
+     }
+    }
+   }}
+   if(mixEnabled){for(const auto&kv:mixManualSeen){
+    if(kv.second){
+     const std::string&nm=kv.first;
+     if(mixManualCount[nm]!=mixGroupCount[nm]){ err("@mix index count ("+std::to_string(mixManualCount[nm])+") does not match the number of '"+nm+"' fields ("+std::to_string(mixGroupCount[nm])+") in class '"+c.name+"'"); }
+    }
+   }}
    for(const auto&f:c.fields){Type t=tn(f.type);if(t.kind==Kind::Error)err("unknown type '"+f.type+"' for field '"+f.name+"'");if(t.kind==Kind::Void)err("field '"+f.name+"' cannot be void");
+    const bool isMix = mixEnabled && fieldHasMix(f,nullptr);
     if(f.isStatic){const std::string key=c.name+"::"+f.name;if(globals.count(key)&&!p.authorMarked)err("duplicate static field '"+key+"'");globals[key]=t;owners[key]=c.name;}
-    else {if(instanceFields.count(f.name)&&!p.authorMarked)err("duplicate field '"+f.name+"' in class '"+c.name+"'");instanceFields[f.name]=t;}}
+    else {if(instanceFields.count(f.name)&&!p.authorMarked&&!isMix)err("duplicate field '"+f.name+"' in class '"+c.name+"'");instanceFields[f.name]=t;}}
    fields[c.name]=instanceFields;
    for(const auto&m:c.methods){const std::string key=c.name+"::"+m.name;if(methods.count(key)&&!p.authorMarked)err("duplicate method '"+key+"'");
     if(!known(m.retType))err("unknown return type '"+m.retType+"' for method '"+m.name+"'");
