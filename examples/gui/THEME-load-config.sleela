@@ -1,0 +1,15 @@
+#sleela 2.5
+// Config is explicit: the toolkit never silently auto-loads a theme file.
+class ThemeLoadConfig {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.ThemeConfig");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.defaultTheme();
+    // Replace with an installed or repository-relative theme config path.
+    boolean loaded = theme.loadConfig("user-interface/themes/blue.conf");
+    SLWindow win = ui.openWindow(loaded ? "Loaded Theme Config" : "Default Theme Fallback", 540, 300, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLLabel label = new SLLabel(); label.createIn(root, loaded ? "Theme config loaded." : "Config not found; default preset retained.");
+    win.show(); return ui.run();
+  }
+}
