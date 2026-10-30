@@ -27,6 +27,7 @@ layout, input, status/feedback, tabs, and interaction polling.
 | [Black](THEME-black.sleela) | `SLTheme.BLACK` |
 | [Gray](THEME-gray.sleela) | `SLTheme.GRAY` |
 | [Legacy Slick Black](THEME-legacy-slick-black.sleela) | `SLTheme.SLICK_BLACK` |
+| [Legacy Graphite](THEME-legacy-graphite.sleela) | `SLTheme.GRAPHITE` |
 | [Config-loaded theme](THEME-load-config.sleela) | Explicit `.conf` load |
 
 The five current named presets are Default, White, Blue, Black, and Gray.
