@@ -23,6 +23,7 @@ This directory defines a staged input curriculum that combines the themes in `..
 ## Files
 
 - `pipeline.json` — ordered stage manifest and training/evaluation guidance.
+- `TERMS.md` — supporting definitions for all eight stages, their observable learning targets, boundaries, and cumulative relationship.
 - `stages/*.json` — one structured instruction model per stage.
 - `novice-gentleman-sequence.jsonl` — eight compact prompt/completion training records following the same JSONL schema as the parent examples.
 
