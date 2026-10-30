@@ -1,0 +1,34 @@
+// USED: worker threads, a guarded shared counter, mailbox messages, and join().
+class ThreadWorkers {
+    static int total = 0;
+
+    static void worker() {
+        int sum = 0;
+        int k = 0;
+        while (k < 1000) {
+            sum = sum + k;
+            k = k + 1;
+        }
+        lock(0);
+        total = total + 1;
+        unlock(0);
+        send(1, sum);
+    }
+
+    static void main() {
+        int spawned = 0;
+        while (spawned < 8) {
+            spawn(worker);
+            spawned = spawned + 1;
+        }
+
+        int received = 0;
+        while (received < 8) {
+            int value = recv(1);
+            received = received + 1;
+        }
+
+        join();
+        print("workers done = " + total);
+    }
+}
