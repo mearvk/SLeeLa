@@ -1,6 +1,6 @@
 # SLeeLa language examples
 
-This is the guided language-learning sequence. The foundational examples use syntax 1.7; the newest integer examples demonstrate syntax 2.7 and 2.8.
+This is the guided language-learning sequence. The foundational examples use syntax 1.7; the advanced examples use documented syntax 2.1 and the newest integer examples demonstrate syntax 2.7 and 2.8.
 
 ## Start here
 
@@ -13,14 +13,29 @@ This is the guided language-learning sequence. The foundational examples use syn
 7. [NEW struct records](NEW-struct-record.sleela) — data aggregates.
 8. [NEW nested classes](NEW-nested-classes.sleela) — grouping related types.
 9. [NEW native imports](NEW-native-financial-import.sleela) — calling library modules.
-10. [NEW signed wide integers](NEW-signed-wide-integers-2.7.sleela) — syntax 2.7 signed-width family.
-11. [NEW unsigned wide integers](NEW-unsigned-wide-integers-2.8.sleela) — syntax 2.8 unsigned-width family.
+
+## Advanced feature examples
+
+| File | Feature |
+|---|---|
+| [NEW-file-pipes](NEW-file-pipes.sleela) | Pipe creation, worker thread, read/write, close, join |
+| [NEW-Synchro](NEW-synchro-measure.sleela) | Packet dispatch and honest latency/loss measurements |
+| [NEW-Munction](NEW-munction-file-reach.sleela) | Composed local file-channel reach and receipt |
+| [NEW-Best-of](NEW-bestof-route.sleela) | Weighted route selection using measured outcomes |
+| [NEW-struct-network-transport](NEW-struct-network-transport.sleela) | Pack/unpack structs across loopback TCP |
+| [NEW-time-api](NEW-time-api.sleela) | UTC, monotonic time, precision, HTTP date, JSON time |
+| [NEW-static-protected-access](NEW-static-protected-access.sleela) | Static protected members and controlled access |
+
+## Newest syntax examples
+
+- [Signed wide integers — syntax 2.7](NEW-signed-wide-integers-2.7.sleela)
+- [Unsigned wide integers — syntax 2.8](NEW-unsigned-wide-integers-2.8.sleela)
 
 For the child-friendly lesson order, vocabulary, and exercises, see [LEARNER-PATH](LEARNER-PATH.md).
 
 ## Commands
 
-See [COMMANDS-and-workflow](COMMANDS-and-workflow.md) for the documented `version`, `check`, `run`, `compile`, `validate-artifact`, `xclass`, `langin`, `nordshrift`, and other command variations.
+See [COMMANDS-and-workflow](COMMANDS-and-workflow.md) for the documented `version`, `check`, `run`, `compile`, `validate-artifact`, `xclass`, `langin`, `nordshrift`, and operational command families.
 
 ## Run
 
@@ -32,6 +47,6 @@ make -C impl
 ./impl/build/sleela run lib/examples/sleela/CLASSIC-hello-world.sleela
 ```
 
-The runtime's authoritative supported syntax range is reported by `sleela version` and defined in `impl/frontend/version.h`. The repository's `impl/README.md` contains an older syntax-range note; prefer the compiler's version output and `version.h`.
+The authoritative supported syntax range is reported by `sleela version` and defined in `impl/frontend/version.h`. The repository's `impl/README.md` contains an older syntax-range note; prefer the compiler's version output and `version.h`.
 
 Some examples in other subsystem folders are contract, policy, or simulation demonstrations. Their comments and the catalogue explain when they do not access hardware, external services, or an implemented native bridge.
