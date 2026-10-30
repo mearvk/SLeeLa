@@ -1,0 +1,12 @@
+#sleela 2.1
+// NEW: UTC wall clock, monotonic clock, precision, and standard representations.
+class TimeApi {
+    void main() {
+        print("UTC milliseconds = " + timeUtcMillis());
+        print("UTC nanoseconds = " + timeUtcNanos());
+        print("monotonic nanoseconds = " + timeMonotonicNanos());
+        print("precision milliseconds = " + timePrecisionMillis());
+        print("HTTP date = " + timeHttpDate());
+        print("JSON time = " + timeJson());
+    }
+}
