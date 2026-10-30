@@ -11,7 +11,7 @@ This directory is the learning and demonstration catalogue for the SLeeLa librar
 - **DRAFT** — proposed source vocabulary that is not guaranteed to be implemented as a compiler intrinsic.
 - **SAFE / PREFLIGHT** — non-destructive validation and operational checklists.
 
-Start with [SLeeLa's command workflow](sleela/COMMANDS-and-workflow.md), then run the [classic Hello World](sleela/CLASSIC-hello-world.sleela).
+Start with the [child-friendly SLeeLa learning path](sleela/LEARNER-PATH.md), review [SLeeLa's command workflow](sleela/COMMANDS-and-workflow.md), then run the [classic Hello World](sleela/CLASSIC-hello-world.sleela).
 
 ## Example catalogue
 
