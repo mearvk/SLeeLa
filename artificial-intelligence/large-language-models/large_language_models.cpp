@@ -1,17 +1,24 @@
 #include "large_language_models.hpp"
 
+#include <exception>
 #include <utility>
 
 namespace sleela::ai {
 namespace {
 struct CallbackContext {
     const std::function<bool(std::string_view)>* callback;
+    std::exception_ptr exception;
 };
 
 int forward_chunk(const char* bytes, std::size_t length, void* opaque) {
     auto* context = static_cast<CallbackContext*>(opaque);
     if (!context || !context->callback || !*context->callback) return 1;
-    return (*context->callback)(std::string_view(bytes ? bytes : "", length)) ? 1 : 0;
+    try {
+        return (*context->callback)(std::string_view(bytes ? bytes : "", length)) ? 1 : 0;
+    } catch (...) {
+        context->exception = std::current_exception();
+        return 0;
+    }
 }
 } // namespace
 
@@ -60,9 +67,11 @@ void LanguageModel::generate(const std::string& prompt,
     c_options.temperature = options.temperature;
     c_options.top_p = options.top_p;
     c_options.seed = options.seed;
-    CallbackContext context{&callback};
-    throw_if_error(sllm_engine_generate(handle_, prompt.c_str(), &c_options,
-                                        forward_chunk, &context));
+    CallbackContext context{&callback, nullptr};
+    const sllm_status status = sllm_engine_generate(
+        handle_, prompt.c_str(), &c_options, forward_chunk, &context);
+    if (context.exception) std::rethrow_exception(context.exception);
+    throw_if_error(status);
 }
 
 } // namespace sleela::ai
