@@ -1,21 +1,20 @@
 # Artificial Intelligence
 
-This directory contains the SLeeLa project's artificial-intelligence capabilities, integrations, examples, and supporting documentation.
+This directory contains SLeeLa's native artificial-intelligence APIs, integrations, examples, and supporting documentation.
 
-## Scope
+## Categories
 
-- AI-facing APIs and language bindings
-- Model and inference integrations
-- Prompt, context, and conversation utilities
-- Tool and agent interfaces
-- Evaluation, testing, and safety controls
-- Cross-platform native support where applicable
-- Examples and tutorials for SLeeLa developers
+| Category | Purpose | Native API |
+|---|---|---|
+| [Neural Networks](neural-nets/) | CPU feed-forward networks, inference, and training foundations | C11 and C++17 |
+| [Large Language Models](large-language-models/) | Provider-neutral model lifecycle and streaming generation interface | C11 and C++17 |
 
-## Organization
+## Source conventions
 
-Add each subsystem in its own clearly named subdirectory. Keep public API documentation, runnable examples, and implementation notes alongside the relevant component. Record external dependencies and platform requirements explicitly.
+Each category provides a public C header and implementation (`.h`, `.c`), plus a C++ interface and implementation (`.hpp`, `.cpp`). Public interfaces use explicit ABI versions, opaque handles where appropriate, documented ownership, and status/error reporting.
 
-## Compatibility
+Implementations should remain portable across supported SLeeLa platforms. Optional accelerators and provider SDKs belong behind category APIs rather than becoming mandatory dependencies of the core interface.
 
-Implementations should follow the repository's existing SLeeLa language, compiler, runtime, build, and verification conventions. Do not assume a model provider, network service, or native backend is available unless it is detected or explicitly configured.
+## Security and compatibility
+
+Do not commit credentials, private model weights, or user data. Document model licenses, dependencies, resource requirements, network behavior, and platform constraints. Keep C ABI changes versioned and preserve clear C++ ownership semantics.
