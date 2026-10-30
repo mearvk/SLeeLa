@@ -1,0 +1,13 @@
+#sleela 2.8
+// NEW: unsigned integer-width types introduced in syntax 2.8.
+// Unsigned values are positive-only; do not apply unary minus.
+class NewUnsignedWideIntegers {
+    void main() {
+        uint32 packetCount = 120;
+        uint64 byteCount = 64000;
+        uint128 addressSpaceUnits = 1000000;
+        print("uint32 packets = " + packetCount);
+        print("uint64 bytes = " + byteCount);
+        print("uint128 units = " + addressSpaceUnits);
+    }
+}
