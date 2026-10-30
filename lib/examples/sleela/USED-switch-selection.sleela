@@ -1,21 +1,13 @@
-#sleela 2.6
-// USED: switch/case for a readable multi-way selection.
-
+#sleela 1.7
+// USED: switch/case for readable multi-way selection.
 class UsedSwitchSelection {
     void main() {
         int status = 2;
         switch (status) {
-            case 1:
-                print("starting");
-                break;
-            case 2:
-                print("running");
-                break;
-            case 3:
-                print("complete");
-                break;
-            default:
-                print("unknown status");
+            case 1: print("starting"); break;
+            case 2: print("running"); break;
+            case 3: print("complete"); break;
+            default: print("unknown status");
         }
     }
 }
