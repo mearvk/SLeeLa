@@ -1,0 +1,41 @@
+#sleela 2.5
+// USED: demonstrate all five current named theme presets in separate windows.
+class ThemePresets {
+  int main() {
+    SLUserInterface ui = new SLUserInterface();
+    ui.configure("com.mearvk.examples.ThemePresets");
+    if (!ui.open()) { return 1; }
+
+    SLTheme t0 = new SLTheme(); t0.preset(SLTheme.DEFAULT);
+    SLWindow w0 = ui.openWindow("Theme - Default Graphite", 420, 220, t0.handle());
+    SLWidget r0 = w0.rootWidget();
+    SLLabel l0 = new SLLabel(); l0.createIn(r0, "Default / graphite with steel-blue accent");
+    w0.show();
+
+    SLTheme t1 = new SLTheme(); t1.preset(SLTheme.WHITE);
+    SLWindow w1 = ui.openWindow("Theme - White", 420, 220, t1.handle());
+    SLWidget r1 = w1.rootWidget();
+    SLLabel l1 = new SLLabel(); l1.createIn(r1, "White / light surface, dark text");
+    w1.show();
+
+    SLTheme t2 = new SLTheme(); t2.preset(SLTheme.BLUE);
+    SLWindow w2 = ui.openWindow("Theme - Blue", 420, 220, t2.handle());
+    SLWidget r2 = w2.rootWidget();
+    SLLabel l2 = new SLLabel(); l2.createIn(r2, "Blue / deep blue surfaces");
+    w2.show();
+
+    SLTheme t3 = new SLTheme(); t3.preset(SLTheme.BLACK);
+    SLWindow w3 = ui.openWindow("Theme - Black", 420, 220, t3.handle());
+    SLWidget r3 = w3.rootWidget();
+    SLLabel l3 = new SLLabel(); l3.createIn(r3, "Black / matte near-black surfaces");
+    w3.show();
+
+    SLTheme t4 = new SLTheme(); t4.preset(SLTheme.GRAY);
+    SLWindow w4 = ui.openWindow("Theme - Gray", 420, 220, t4.handle());
+    SLWidget r4 = w4.rootWidget();
+    SLLabel l4 = new SLLabel(); l4.createIn(r4, "Gray / neutral mid-gray surfaces");
+    w4.show();
+
+    return ui.run();
+  }
+}
