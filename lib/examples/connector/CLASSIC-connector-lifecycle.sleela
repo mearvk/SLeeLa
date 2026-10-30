@@ -1,4 +1,4 @@
-#sleela 2.6
+#sleela 1.7
 // Conceptual connector lifecycle; no external service or credential is contacted.
 class ClassicConnectorLifecycle {
     void main() {
