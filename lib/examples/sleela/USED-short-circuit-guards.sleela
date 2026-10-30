@@ -1,0 +1,18 @@
+#sleela 2.6
+// USED: && and || short-circuit. The right side is evaluated only when needed.
+
+class UsedShortCircuitGuards {
+    boolean isReady(int value) {
+        return value > 0;
+    }
+
+    void main() {
+        int value = 7;
+        if (value > 0 && isReady(value)) {
+            print("safe to proceed");
+        }
+        if (value < 0 || isReady(value)) {
+            print("at least one condition is true");
+        }
+    }
+}
