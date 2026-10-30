@@ -1,0 +1,36 @@
+#sleela 1.7
+// ADVANCED: compute the pixel rectangle of every cell in a uniform grid layout,
+// accounting for gutters between cells. This is what a grid engine does before
+// placing a widget in each cell. No window is opened.
+//
+// Mirrors the standard library's SLGridLayout idea (see lib/ui): the content
+// area is divided into rows x cols equal cells separated by a fixed gutter.
+class ADVGridLayout {
+    void main() {
+        int areaW = 300;
+        int areaH = 200;
+        int cols = 3;
+        int rows = 2;
+        int gutter = 10;
+
+        // Cell size = (area minus the gutters between cells) divided evenly.
+        int cellW = (areaW - gutter * (cols - 1)) / cols;
+        int cellH = (areaH - gutter * (rows - 1)) / rows;
+
+        print("area = " + areaW + " x " + areaH + ", grid = " + cols + " x " + rows + ", gutter = " + gutter);
+        print("cell size = " + cellW + " x " + cellH);
+
+        int r = 0;
+        while (r < rows) {
+            int c = 0;
+            while (c < cols) {
+                int x = c * (cellW + gutter);
+                int y = r * (cellH + gutter);
+                int index = r * cols + c;
+                print("cell " + index + " [r" + r + " c" + c + "]: x=" + x + " y=" + y + " w=" + cellW + " h=" + cellH);
+                c = c + 1;
+            }
+            r = r + 1;
+        }
+    }
+}

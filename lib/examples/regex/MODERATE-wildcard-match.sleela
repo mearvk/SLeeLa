@@ -1,0 +1,70 @@
+#sleela 1.7
+// MODERATE: glob-style matching with '?' (any one character) and '*' (any run,
+// including empty). Implemented on arrays of character codes. We use the code
+// -1 inside a pattern to mean '?' and -2 to mean '*', so the matcher stays pure
+// arithmetic. This is the recursive-free, two-pointer backtracking algorithm
+// that every shell uses for filename globbing.
+class ModerateWildcardMatch {
+    static int ANY1 = -1;   // '?'
+    static int ANYRUN = -2; // '*'
+
+    boolean match(int[] text, int[] pat) {
+        int ti = 0;
+        int pi = 0;
+        int starPi = -1;   // last '*' position in pattern, or -1
+        int starTi = 0;    // text position when that '*' was taken
+
+        while (ti < arrayLength(text)) {
+            boolean advanced = false;
+            if (pi < arrayLength(pat)) {
+                int pc = pat[pi];
+                if (pc == ANYRUN) {
+                    starPi = pi;
+                    starTi = ti;
+                    pi = pi + 1;
+                    advanced = true;
+                }
+                if (!advanced && (pc == ANY1 || pc == text[ti])) {
+                    ti = ti + 1;
+                    pi = pi + 1;
+                    advanced = true;
+                }
+            }
+            if (!advanced) {
+                // Mismatch: if we saw a '*', let it swallow one more char.
+                if (starPi >= 0) {
+                    pi = starPi + 1;
+                    starTi = starTi + 1;
+                    ti = starTi;
+                }
+                if (starPi < 0) return false;
+            }
+        }
+        // Consume any trailing '*' in the pattern.
+        while (pi < arrayLength(pat) && pat[pi] == ANYRUN) pi = pi + 1;
+        return pi == arrayLength(pat);
+    }
+
+    void main() {
+        // text = "report.txt"
+        int[] text = new int[10];
+        text[0]=114; text[1]=101; text[2]=112; text[3]=111; text[4]=114;
+        text[5]=116; text[6]=46;  text[7]=116; text[8]=120; text[9]=116;
+
+        // pattern "*.txt"  ->  [* . t x t]
+        int[] p1 = new int[5];
+        p1[0]=ANYRUN; p1[1]=46; p1[2]=116; p1[3]=120; p1[4]=116;
+
+        // pattern "re?ort*"  ->  [r e ? o r t *]
+        int[] p2 = new int[7];
+        p2[0]=114; p2[1]=101; p2[2]=ANY1; p2[3]=111; p2[4]=114; p2[5]=116; p2[6]=ANYRUN;
+
+        // pattern "*.csv"  ->  [* . c s v]
+        int[] p3 = new int[5];
+        p3[0]=ANYRUN; p3[1]=46; p3[2]=99; p3[3]=115; p3[4]=118;
+
+        print("'report.txt' matches '*.txt'   ? " + match(text, p1));
+        print("'report.txt' matches 're?ort*' ? " + match(text, p2));
+        print("'report.txt' matches '*.csv'   ? " + match(text, p3));
+    }
+}

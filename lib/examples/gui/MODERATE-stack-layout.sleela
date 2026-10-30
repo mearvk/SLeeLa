@@ -1,0 +1,33 @@
+#sleela 1.7
+// MODERATE: a horizontal stack layout. Three children share a row: two have a
+// fixed width, one is "flexible" and absorbs the leftover space. This is the
+// exact arithmetic a real layout engine performs to assign pixel rectangles.
+// No window is opened; we just compute and print each child's x and width.
+//
+// Mirrors the standard library's SLStackLayout idea (see lib/ui): fixed
+// children keep their size, flexible children split the remaining space.
+class ModerateStackLayout {
+    void main() {
+        int rowWidth = 400;
+        int spacing = 10;      // gap between children
+
+        int leftFixed = 80;    // e.g. a label
+        int rightFixed = 120;  // e.g. a button
+        // The middle child is flexible: it gets whatever is left after the two
+        // fixed children and the two gaps between the three children.
+        int gaps = spacing * 2;
+        int flexible = rowWidth - leftFixed - rightFixed - gaps;
+
+        int x0 = 0;
+        int x1 = x0 + leftFixed + spacing;
+        int x2 = x1 + flexible + spacing;
+
+        print("row width = " + rowWidth + ", spacing = " + spacing);
+        print("child 0 (fixed label):   x=" + x0 + " w=" + leftFixed);
+        print("child 1 (flexible field):x=" + x1 + " w=" + flexible);
+        print("child 2 (fixed button):  x=" + x2 + " w=" + rightFixed);
+        // Verification: the last child must end exactly at the row edge.
+        int rightEdge = x2 + rightFixed;
+        print("right edge = " + rightEdge + " (should equal row width)");
+    }
+}

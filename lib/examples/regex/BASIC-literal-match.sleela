@@ -1,0 +1,34 @@
+#sleela 1.7
+// BASIC: literal matching, implemented honestly in pure SLeeLa.
+//
+// SLeeLa 1.7 String supports only +, ==, and != -- there is no length() or
+// charAt() and no regex intrinsic. So we represent text and pattern as arrays
+// of character codes (ints), which gives us indexed access. This basic example
+// does an exact, whole-string literal compare.
+class BasicLiteralMatch {
+    // True when the two code arrays are equal element by element.
+    boolean equals(int[] a, int[] b) {
+        if (arrayLength(a) != arrayLength(b)) return false;
+        int i = 0;
+        while (i < arrayLength(a)) {
+            if (a[i] != b[i]) return false;
+            i = i + 1;
+        }
+        return true;
+    }
+
+    void main() {
+        // "cat"
+        int[] text = new int[3];
+        text[0] = 99; text[1] = 97; text[2] = 116;
+        // pattern "cat"
+        int[] pat = new int[3];
+        pat[0] = 99; pat[1] = 97; pat[2] = 116;
+        // pattern "car"
+        int[] other = new int[3];
+        other[0] = 99; other[1] = 97; other[2] = 114;
+
+        print("text == 'cat'  ? " + equals(text, pat));
+        print("text == 'car'  ? " + equals(text, other));
+    }
+}

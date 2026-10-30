@@ -1,0 +1,15 @@
+#sleela 1.7
+// BASIC: print a terminal menu. Demonstrates output only -- no interactive input.
+class BasicMenu {
+    void main() {
+        print("==============================");
+        print("          SLeeLa Tools");
+        print("==============================");
+        print("1. Build");
+        print("2. Verify");
+        print("3. Run examples");
+        print("0. Exit");
+        print("------------------------------");
+        print("Choose an action from the menu.");
+    }
+}

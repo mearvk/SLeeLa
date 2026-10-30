@@ -6562,8 +6562,20 @@
       "sha256": "1fa4ea133056359ceae0736bd8bd0d16acfd11be3f81257da1241cc2f0663f34"
     },
     {
+      "path": "lib/examples/gui/ADVANCED-grid-layout.sleela",
+      "sha256": "89d8866a3368c0306902706b59d9b6b4fd20d9b0ec250c46330421b378f8b0ca"
+    },
+    {
+      "path": "lib/examples/gui/BASIC-clamp-to-parent.sleela",
+      "sha256": "70be2c5c4c51d70cc12beebfb96a0da1bf714b6fbe424257ed36301940c0d72c"
+    },
+    {
       "path": "lib/examples/gui/CLASSIC-layout-bounds.sleela",
       "sha256": "6795a1434b0a2303b2f9a0c3ea015359f9fad0b6d085f9c1ee3f5e8f6c70fc63"
+    },
+    {
+      "path": "lib/examples/gui/MODERATE-stack-layout.sleela",
+      "sha256": "418f36ae1c1f938bc5ff2f1797299afa09c7dac11aa72143b26911f135cbb7c4"
     },
     {
       "path": "lib/examples/java/ADVANCED-main-class-resolution.sleela",
@@ -6598,8 +6610,20 @@
       "sha256": "2e354391bc6e294c67072685e04ad2c497700282c8bd379b7aa85045abc65cdd"
     },
     {
+      "path": "lib/examples/regex/ADVANCED-anchored-classes.sleela",
+      "sha256": "a179797dc95626c82e517fb7e1614f38cc519aee2ba548de0803c2f3a5f941d3"
+    },
+    {
+      "path": "lib/examples/regex/BASIC-literal-match.sleela",
+      "sha256": "55b9417c6360dafd76a70807403256fae4e0b7be9362b7cf3a3cd004746e59b0"
+    },
+    {
       "path": "lib/examples/regex/DRAFT-literal-find.sleela",
       "sha256": "d6ae41a4786946d2b37846a560c2f340a75c39b2aa85a73ac131aad2f899e990"
+    },
+    {
+      "path": "lib/examples/regex/MODERATE-wildcard-match.sleela",
+      "sha256": "1188b81e8ffe5a9b12013a22a472c9da13e7794df7a0453c49c8a00403b759be"
     },
     {
       "path": "lib/examples/runtime/ADVANCED-producer-consumer.sleela",
@@ -6686,8 +6710,20 @@
       "sha256": "98037a523ca54e6a9cb936c5296fb58e1194f152a18d5ce176093e5d246609ce"
     },
     {
+      "path": "lib/examples/terminal/ADVANCED-progress-bar.sleela",
+      "sha256": "b31cf2cf81bede9640e0554a9ae1883ebcf1d4bbd8b330b29040f382b11fdf88"
+    },
+    {
+      "path": "lib/examples/terminal/BASIC-menu.sleela",
+      "sha256": "dcd1d60d550a3a35e38e8863721752cf6ba8001fa98be47efd6834326c43dda4"
+    },
+    {
       "path": "lib/examples/terminal/CLASSIC-terminal-menu.sleela",
       "sha256": "2074258cf1f798e0a7d560d2735e1f245a0d9b50d90bf3a6526f039d64975115"
+    },
+    {
+      "path": "lib/examples/terminal/MODERATE-aligned-table.sleela",
+      "sha256": "cfd6d1c30ffe7b8642dad50563c688b73219b1cde546b21aa963b8de3536a67f"
     },
     {
       "path": "lib/examples/wifi/USED-wifi-policy-smoke.sleela",
