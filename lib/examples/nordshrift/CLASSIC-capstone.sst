@@ -1,0 +1,15 @@
+#nordshrift 1.0
+#sleela     2.1
+
+sheet capstone:
+  version 1.0.0
+  description "A first Nordshrift sheet that builds a runnable SLeeLa program."
+
+source:
+  root  "."
+  glob  "Ledgerize.sleela"
+  exclude [ "build/**" ]
+
+target:
+  root            "out"
+  target-language sleela
