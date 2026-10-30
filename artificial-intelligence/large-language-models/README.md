@@ -9,6 +9,7 @@ Provider-neutral native APIs for SLeeLa applications that connect to local or ho
 | `large_language_models.h/.c` | C ABI for backend lifecycle, generation options, and streamed UTF-8 output |
 | `large_language_models.hpp/.cpp` | C++17 RAII inference facade |
 | `large_language_models_vocabulary.h/.c` | C vocabulary/word-set store, stable token IDs, lookup, and whitespace-token encoding |
+| `large_language_models_vocabulary.hpp/.cpp` | C++17 RAII vocabulary wrapper with string and vector helpers |
 | `large_language_models_training.h/.c` | C training-backend ABI, batch training, evaluation, metrics, and checkpoint requests |
 | `large_language_models_training.hpp/.cpp` | C++17 RAII training facade |
 
@@ -43,6 +44,7 @@ cc -std=c11 -O2 -Wall -Wextra -pedantic -c large_language_models.c
 cc -std=c11 -O2 -Wall -Wextra -pedantic -c large_language_models_vocabulary.c
 cc -std=c11 -O2 -Wall -Wextra -pedantic -c large_language_models_training.c
 c++ -std=c++17 -O2 -Wall -Wextra -pedantic -c large_language_models.cpp
+c++ -std=c++17 -O2 -Wall -Wextra -pedantic -c large_language_models_vocabulary.cpp
 c++ -std=c++17 -O2 -Wall -Wextra -pedantic -c large_language_models_training.cpp
 ```
 
