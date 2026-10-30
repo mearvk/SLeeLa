@@ -1,0 +1,15 @@
+#sleela 1.7
+// BASIC: a single thread of execution doing bounded work.
+// Before you reach for concurrency, know what the plain sequential version
+// looks like -- it is the baseline every parallel version must still match.
+class BasicSequentialAccumulate {
+    void main() {
+        int sum = 0;
+        int k = 0;
+        while (k < 1000) {
+            sum = sum + k;
+            k = k + 1;
+        }
+        print("sum of 0..999 = " + sum);
+    }
+}

@@ -1,0 +1,57 @@
+#sleela 1.7
+// ADVANCED: a producer/consumer pipeline using the runtime's real threading
+// intrinsics -- spawn, a mailbox (send/recv), a lock-guarded counter, and join.
+//
+// One producer thread generates N work items and sends each into mailbox slot 1.
+// Several consumer threads pull items, "process" them (a bounded loop), and add
+// their results into a shared total under lock slot 0. main() waits with join()
+// and prints the aggregate. The arithmetic is deterministic, so the printed
+// total is always the same regardless of how the threads interleave.
+class AdvancedProducerConsumer {
+    static int ITEMS = 12;
+    static int CONSUMERS = 4;
+
+    static int total = 0;      // shared, guarded by lock slot 0
+    static int processed = 0;  // shared, guarded by lock slot 0
+
+    // Produce ITEMS values (1..ITEMS) into mailbox slot 1.
+    static void producer() {
+        int n = 1;
+        while (n <= ITEMS) {
+            send(1, n);
+            n = n + 1;
+        }
+    }
+
+    // Each consumer pulls exactly ITEMS/CONSUMERS items (even split) and folds
+    // their squares into the shared total.
+    static void consumer() {
+        int mine = ITEMS / CONSUMERS;
+        int got = 0;
+        while (got < mine) {
+            int item = recv(1);
+            int work = item * item;   // the "processing"
+            lock(0);
+            total = total + work;
+            processed = processed + 1;
+            unlock(0);
+            got = got + 1;
+        }
+    }
+
+    static void main() {
+        spawn(producer);
+        int c = 0;
+        while (c < CONSUMERS) {
+            spawn(consumer);
+            c = c + 1;
+        }
+        join();
+
+        // Expected total = sum of squares 1..12 = 650 (deterministic).
+        print("items = " + ITEMS);
+        print("consumers = " + CONSUMERS);
+        print("processed = " + processed);
+        print("sum of squares 1.." + ITEMS + " = " + total);
+    }
+}

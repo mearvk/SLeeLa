@@ -1,0 +1,31 @@
+#sleela 1.7
+// BASIC: validate an endpoint (host + port) before any socket is opened.
+// Deterministic: this performs no network I/O. The lesson is the cheap checks
+// that belong *before* a connect call -- port range, privileged-port policy,
+// and an empty-host guard.
+class BasicEndpointValidation {
+    // 0 = ok, otherwise a reason code.
+    int validate(String host, int port) {
+        if (host == "")       return 1;   // empty host
+        if (port < 1)         return 2;   // port below range
+        if (port > 65535)     return 3;   // port above range
+        if (port < 1024)      return 4;   // privileged port (policy: disallow)
+        return 0;
+    }
+
+    void report(String host, int port) {
+        int code = validate(host, port);
+        if (code == 0) print("ok: " + host + ":" + port);
+        if (code == 1) print("reject " + host + ":" + port + " -- empty host");
+        if (code == 2) print("reject " + host + ":" + port + " -- port < 1");
+        if (code == 3) print("reject " + host + ":" + port + " -- port > 65535");
+        if (code == 4) print("reject " + host + ":" + port + " -- privileged port (<1024)");
+    }
+
+    void main() {
+        report("127.0.0.1", 45218);
+        report("example.test", 80);
+        report("example.test", 70000);
+        report("", 8080);
+    }
+}

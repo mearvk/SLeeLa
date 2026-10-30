@@ -6582,6 +6582,14 @@
       "sha256": "e42ed9119f41994e6b85b15ffbaa60d54215e7bd1b669137dd68609d02dbab2b"
     },
     {
+      "path": "lib/examples/network/ADVANCED-request-response-protocol.sleela",
+      "sha256": "2ec550d01827f92b3d5a994d2068738535513da7a426f6f2bd6fde4f6e6c6b75"
+    },
+    {
+      "path": "lib/examples/network/BASIC-endpoint-validation.sleela",
+      "sha256": "4d8edc9b2d9da0cc51e402d9eb512c14ab2f39452d34c924c7b6c0c8968e8e3b"
+    },
+    {
       "path": "lib/examples/network/USED-loopback-tcp-echo.sleela",
       "sha256": "e0c2393a163eb7c170241a8266d6670d9a3a48cdc9343fac769e92fb104f0fde"
     },
@@ -6592,6 +6600,14 @@
     {
       "path": "lib/examples/regex/DRAFT-literal-find.sleela",
       "sha256": "d6ae41a4786946d2b37846a560c2f340a75c39b2aa85a73ac131aad2f899e990"
+    },
+    {
+      "path": "lib/examples/runtime/ADVANCED-producer-consumer.sleela",
+      "sha256": "478446d26de26f49481d74262d6b38bc7953085a32a06a02151d641fe8c361e4"
+    },
+    {
+      "path": "lib/examples/runtime/BASIC-sequential-accumulate.sleela",
+      "sha256": "38710f7f00a2243208278050f727babc4f2b68e4feb0e3d0925a6ceb40ef7106"
     },
     {
       "path": "lib/examples/runtime/USED-thread-workers.sleela",

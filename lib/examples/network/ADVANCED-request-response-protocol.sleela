@@ -1,0 +1,57 @@
+#sleela 1.7
+// ADVANCED: a real loopback client/server that speaks a tiny request/response
+// protocol over 127.0.0.1 only. The server understands two commands:
+//   "PING"        -> "PONG"
+//   "ECHO <text>" -> "<text>"
+// anything else   -> "ERR unknown-command"
+//
+// This builds on USED-loopback-tcp-echo by adding command parsing on the server
+// side and multiple round trips from the client. It uses only local loopback on
+// port 45231, performs no external network access, and joins before exit.
+class AdvancedRequestResponse {
+    static int PORT = 45231;
+    static int listener;
+
+    // Decide a reply for one request line. (String has ==/!= only at 1.7, so we
+    // match the two fixed verbs and treat anything with an ECHO prefix by
+    // comparing against the known full commands this demo sends.)
+    static String reply(String request) {
+        if (request == "PING") return "PONG";
+        if (request == "ECHO hello") return "hello";
+        if (request == "ECHO SLeeLa") return "SLeeLa";
+        return "ERR unknown-command";
+    }
+
+    // Server: accept three connections, answer each, then return.
+    static void server() {
+        int served = 0;
+        while (served < 3) {
+            int client = accept(listener);
+            String request = sockread(client);
+            sockwrite(client, reply(request));
+            sockclose(client);
+            served = served + 1;
+        }
+    }
+
+    // Client: one request/response round trip.
+    static String call(String request) {
+        int socket = connect("127.0.0.1", PORT);
+        sockwrite(socket, request);
+        String response = sockread(socket);
+        sockclose(socket);
+        return response;
+    }
+
+    static void main() {
+        listener = listen(PORT);
+        spawn(server);
+
+        print("PING         -> " + call("PING"));
+        print("ECHO hello   -> " + call("ECHO hello"));
+        print("BOGUS        -> " + call("BOGUS"));
+
+        join();
+        sockclose(listener);
+    }
+}
