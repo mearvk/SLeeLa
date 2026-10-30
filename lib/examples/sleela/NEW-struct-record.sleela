@@ -1,0 +1,17 @@
+#sleela 2.6
+// NEW: a struct models data separately from the class that operates on it.
+
+struct Point {
+    int x;
+    int y;
+}
+
+class NewStructRecord {
+    void main() {
+        Point point = new Point();
+        point.x = 3;
+        point.y = 4;
+        print("point = (" + point.x + ", " + point.y + ")");
+        print("manhattan distance = " + (point.x + point.y));
+    }
+}
