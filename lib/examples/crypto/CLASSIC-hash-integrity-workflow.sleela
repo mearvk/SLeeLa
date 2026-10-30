@@ -1,0 +1,12 @@
+#sleela 2.6
+// Workflow illustration only. Use the repository's verified SHA-256 tool
+// for real file integrity checks; this example does not implement cryptography.
+class ClassicHashIntegrityWorkflow {
+    void main() {
+        print("1. choose the exact file and trusted manifest");
+        print("2. calculate the file digest with the approved verifier");
+        print("3. compare digest with the manifest entry");
+        print("4. stop execution when verification fails");
+        print("5. record the verification result");
+    }
+}
