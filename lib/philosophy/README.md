@@ -22,6 +22,7 @@ the native implementations live under `philosophy/` at the repository root.
 
 | Class | Role in the Tree |
 |---|---|
+| `SLPhilosophyTree` | the BASE Tree: anchors Nodes, holds an Owner id, and carries the three `NationalStarts` directives (Virginia / Florida / North Carolina) |
 | `SLPhilosophyItem` | smallest payload: keyed, typed value with a source reference |
 | `SLPhilosophyNode` | a branch of the Tree: ordering id, left/right child ids, weight [1,9], carried Item |
 | `SLPhilosophyInput` | one explicit, consented submission bound for the Tree |

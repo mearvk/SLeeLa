@@ -46390,6 +46390,10 @@
       "sha256": "ea6dcd8de6ea25df7350e67c0a9ce50ac7c2222c2981db3c62d70622a0208173"
     },
     {
+      "path": "lib/philosophy/SLPhilosophyTree.sleela",
+      "sha256": "fec14a4da5b7246e8ae0370fb909dd3167b310db802ccb6663d858601849b15c"
+    },
+    {
       "path": "lib/philosophy/philosophy.sleela",
       "sha256": "be898b71d4f26f2a5416af91888dfb63d8bdbceb0dde694d6754cbd85b4035fd"
     },
