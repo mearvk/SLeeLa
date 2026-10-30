@@ -64,7 +64,13 @@ make -C impl
 ./impl/build/sleela run examples/gui/CLASSIC-hello-window.sleela
 ```
 
-For the component examples, substitute the desired file name. A real desktop
+Validate every source example without opening windows:
+
+```sh
+sh examples/gui/check-all.sh
+```
+
+For an individual example, substitute the desired file name. A real desktop
 session is required for native windows; a headless build can validate/compile
 source but cannot present an interactive native window.
 
