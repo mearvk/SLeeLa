@@ -1,0 +1,18 @@
+#sleela 2.6
+// NEW: nested class structure for grouping related program concepts.
+
+class NewNestedClasses {
+    class Label {
+        String value;
+
+        String display() {
+            return "[" + value + "]";
+        }
+    }
+
+    void main() {
+        Label label = new Label();
+        label.value = "SLeeLa";
+        print(label.display());
+    }
+}
