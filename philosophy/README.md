@@ -153,3 +153,8 @@ A medical-request event records that the person asked for an assessor. An assess
     ./build/event-example-cpp
 
 The event tree is in-memory only. Persistence, encryption, authentication, and access controls belong to the host application.
+
+
+### Hormone, medication, and media inputs
+
+An integer or floating-point field can record a user-entered dose, published population statistic, industrial-growth metric, or other explicitly defined quantity. The value must retain its unit, timestamp, source, and study/context label. Recording a hormone or medication value does not establish that it improves intelligence, memory, or mood; causal or clinical conclusions require appropriate human evidence and a qualified assessor. Media observations describe the cited report, not a private message or targeted communication to the listener.

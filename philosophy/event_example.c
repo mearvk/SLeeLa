@@ -3,6 +3,7 @@
 #include <stdio.h>
 static bool show(const sl_event *e,double w,void *ctx){
     size_t *n=(size_t *)ctx;
+    if(!e->consent_to_share) return true;
     printf("id=%" PRIu64 " %s %s w=%.3f %s ",e->id,
            sl_event_type_string(e->type),sl_source_kind_string(e->source),w,e->property);
     if(e->numeric.kind==SL_VALUE_INTEGER)printf("%" PRId64,e->numeric.as.integer);
@@ -32,7 +33,7 @@ int main(void){
            sl_event_tree_insert(tree,&e)!=SL_STATUS_OK){sl_event_tree_destroy(tree);return 1;}
     }
     st=sl_event_tree_get_stats(tree);printf("AVL count=%zu height=%zu\n",st.count,st.height);
-    (void)sl_event_tree_visit(tree,now,0.5,show,&n);printf("Above floor: %zu\n",n);
+    (void)sl_event_tree_visit(tree,now,0.5,show,&n);printf("Above consent and relevance floor: %zu\n",n);
     (void)sl_event_tree_prune(tree,now,0.25,&removed);printf("Pruned: %zu\n",removed);
     sl_event_tree_destroy(tree);return 0;
 }
