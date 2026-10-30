@@ -1,9 +1,7 @@
-#sleela 2.6
+#sleela 1.7
 import math;
 import financial;
-
-// NEW: calling a native library module through an explicit import.
-
+// NEW: calling a native library module through explicit imports.
 class NewFinancialImport {
     void main() {
         print("future value = " + financial.future_value(1000.0, 0.05, 10.0));
