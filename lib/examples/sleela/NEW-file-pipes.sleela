@@ -1,0 +1,20 @@
+#sleela 2.1
+// NEW: anonymous pipes, a worker thread, write/read, close, and join.
+class FilePipes {
+    static int readEnd;
+    static int writeEnd;
+
+    static void writer() {
+        write(writeEnd, "hello from a SLeeLa pipe");
+        close(writeEnd);
+    }
+
+    static void main() {
+        readEnd = pipe();
+        writeEnd = pipePeer(readEnd);
+        spawn(writer);
+        print(read(readEnd));
+        close(readEnd);
+        join();
+    }
+}
