@@ -1,0 +1,49 @@
+#sleela 1.7
+// MODERATE: the connector lifecycle as an explicit state machine.
+// States are integer constants; transitions are methods that only advance when
+// the current state allows it. This is how real connectors stay correct under
+// surprising call orders. No network side effects.
+class ModerateStateMachine {
+    // States
+    static int NEW        = 0;
+    static int CONFIGURED = 1;
+    static int OPEN       = 2;
+    static int CLOSED     = 3;
+    static int FAILED     = 4;
+
+    static int state;
+
+    String name(int s) {
+        if (s == NEW)        return "NEW";
+        if (s == CONFIGURED) return "CONFIGURED";
+        if (s == OPEN)       return "OPEN";
+        if (s == CLOSED)     return "CLOSED";
+        return "FAILED";
+    }
+
+    // Each transition guards its precondition and returns the new state.
+    int configure() {
+        if (state == NEW) { state = CONFIGURED; return state; }
+        state = FAILED; return state;
+    }
+    int open() {
+        if (state == CONFIGURED) { state = OPEN; return state; }
+        state = FAILED; return state;
+    }
+    int requestClose() {
+        if (state == OPEN) { state = CLOSED; return state; }
+        state = FAILED; return state;
+    }
+
+    void main() {
+        state = NEW;
+        print("start: " + name(state));
+        configure();   print("after configure: " + name(state));
+        open();        print("after open: " + name(state));
+        requestClose();print("after close: " + name(state));
+
+        // Illegal transition: opening again after close must fail closed.
+        open();
+        print("after illegal re-open: " + name(state));
+    }
+}

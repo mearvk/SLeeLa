@@ -1,0 +1,43 @@
+#sleela 1.7
+// ADVANCED: a deterministic retry policy with exponential backoff and a cap.
+// A connector that fails transiently should retry, but with growing delays and
+// a hard ceiling so it never hammers a service. We simulate a scripted sequence
+// of attempt outcomes so the run is reproducible -- no real connection is made.
+class AdvancedRetryBackoff {
+    void main() {
+        int maxAttempts = 6;
+        int baseDelayMs = 100;
+        int capMs = 2000;
+
+        // Scripted outcomes: 0 = transient failure, 1 = success.
+        // The link recovers on the 4th attempt.
+        int[] outcome = new int[6];
+        outcome[0] = 0; outcome[1] = 0; outcome[2] = 0;
+        outcome[3] = 1; outcome[4] = 1; outcome[5] = 1;
+
+        int attempt = 0;
+        int delay = baseDelayMs;
+        boolean connected = false;
+        int totalWaitMs = 0;
+
+        while (attempt < maxAttempts) {
+            if (outcome[attempt] == 1) {
+                connected = true;
+                print("attempt " + (attempt + 1) + ": success");
+                attempt = maxAttempts;   // done
+            }
+            if (!connected && attempt < maxAttempts) {
+                print("attempt " + (attempt + 1) + ": transient failure, backoff " + delay + "ms");
+                totalWaitMs = totalWaitMs + delay;
+                // Exponential growth, clamped to the cap.
+                delay = delay * 2;
+                if (delay > capMs) delay = capMs;
+                attempt = attempt + 1;
+            }
+        }
+
+        if (connected) print("result: connected");
+        if (!connected) print("result: gave up after " + maxAttempts + " attempts");
+        print("total simulated backoff wait = " + totalWaitMs + "ms");
+    }
+}

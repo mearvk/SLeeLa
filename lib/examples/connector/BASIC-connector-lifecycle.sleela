@@ -1,0 +1,12 @@
+#sleela 1.7
+// BASIC: the connector lifecycle as an ordered checklist.
+// Conceptual only -- no external service or credential is contacted.
+class BasicConnectorLifecycle {
+    void main() {
+        print("1. configure endpoint and policy");
+        print("2. validate configuration");
+        print("3. establish connection");
+        print("4. exchange bounded request/response data");
+        print("5. close connection and record the outcome");
+    }
+}

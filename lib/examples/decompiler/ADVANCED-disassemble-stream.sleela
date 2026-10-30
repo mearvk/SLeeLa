@@ -1,0 +1,54 @@
+#sleela 1.7
+// ADVANCED: disassemble a stream of bytecode into human-readable mnemonics.
+// A decompiler/disassembler walks a byte stream, decodes each opcode, and reads
+// any immediate operands that follow it. We use a tiny made-up instruction set
+// so the example is self-contained; no real artifact is decoded.
+//
+// Instruction set (1 byte opcode, some take a 1-byte operand):
+//   0x01 PUSH <imm>   push a constant
+//   0x02 ADD          pop two, push sum
+//   0x03 MUL          pop two, push product
+//   0x04 PRINT        show top of stack
+//   0x00 HALT         stop
+class AdvancedDisassembleStream {
+    String mnemonic(int op) {
+        if (op == 1) return "PUSH";
+        if (op == 2) return "ADD";
+        if (op == 3) return "MUL";
+        if (op == 4) return "PRINT";
+        if (op == 0) return "HALT";
+        return "???";
+    }
+    // Does this opcode consume a following operand byte?
+    boolean hasOperand(int op) { return op == 1; }
+
+    void main() {
+        // Program: PUSH 6, PUSH 7, MUL, PRINT, HALT
+        int[] code = new int[8];
+        code[0] = 1; code[1] = 6;
+        code[2] = 1; code[3] = 7;
+        code[4] = 3;
+        code[5] = 4;
+        code[6] = 0;
+        code[7] = 0;   // padding
+
+        int pc = 0;
+        int decoded = 0;
+        while (pc < arrayLength(code)) {
+            int op = code[pc];
+            String text = mnemonic(op);
+            if (hasOperand(op)) {
+                int imm = code[pc + 1];
+                print(pc + ": " + text + " " + imm);
+                pc = pc + 2;
+            }
+            if (!hasOperand(op)) {
+                print(pc + ": " + text);
+                pc = pc + 1;
+            }
+            decoded = decoded + 1;
+            if (op == 0) pc = arrayLength(code);   // stop at HALT
+        }
+        print("instructions decoded = " + decoded);
+    }
+}

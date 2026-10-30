@@ -1,0 +1,40 @@
+#sleela 1.7
+// MODERATE: read the section table of a (synthetic) binary artifact.
+// Every compiled format -- ELF, class files, SLeeLa artifacts -- starts with a
+// header and a list of sections (name, offset, size). A decompiler's first job
+// is to parse that map before touching any code. Here the table is in-memory
+// stand-in data, so nothing is decoded and the run is deterministic.
+class Section { String name; int offset; int size; }
+class ModerateSectionTable {
+    static Section[] sections;
+
+    Section sec(String name, int offset, int size) {
+        Section s = new Section();
+        s.name = name; s.offset = offset; s.size = size;
+        return s;
+    }
+
+    void main() {
+        // A tiny synthetic artifact: header is 64 bytes, then three sections.
+        int headerBytes = 64;
+        sections = new Section[3];
+        sections[0] = sec(".code",     64,  512);
+        sections[1] = sec(".data",     576, 128);
+        sections[2] = sec(".strings",  704, 96);
+
+        int total = headerBytes;
+        int i = 0;
+        print("header bytes = " + headerBytes);
+        while (i < arrayLength(sections)) {
+            Section s = sections[i];
+            int end = s.offset + s.size;
+            print("section " + s.name + ": offset=" + s.offset + " size=" + s.size + " end=" + end);
+            total = total + s.size;
+            // Integrity sanity check a real parser performs: sections must not
+            // overlap the header and must appear in non-decreasing offset order.
+            if (s.offset < headerBytes) print("  WARNING: section overlaps header");
+            i = i + 1;
+        }
+        print("total bytes accounted = " + total);
+    }
+}

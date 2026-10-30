@@ -1,0 +1,36 @@
+#sleela 1.7
+// ADVANCED: decide which main class a launcher will run, following the same
+// precedence a JVM launcher uses, and fail closed when the inputs are ambiguous
+// or missing. No JVM is launched; all inputs are in-memory stand-ins.
+//
+// Precedence modeled here:
+//   1. An explicit main class on the command line always wins.
+//   2. Otherwise, the JAR manifest's Main-Class attribute is used.
+//   3. If neither is present, the launch is rejected.
+class AdvancedMainClassResolution {
+    // Decide the launch target. Empty string ("") means "not provided".
+    String resolve(String cliMain, String manifestMain) {
+        if (cliMain != "") return cliMain;          // step 1
+        if (manifestMain != "") return manifestMain; // step 2
+        return "REJECT";                             // step 3
+    }
+
+    void report(String label, String cliMain, String manifestMain) {
+        String target = resolve(cliMain, manifestMain);
+        if (target == "REJECT") {
+            print(label + " -> REJECT (no main class; launch refused)");
+        }
+        if (target != "REJECT") {
+            print(label + " -> run " + target);
+        }
+    }
+
+    void main() {
+        // Case A: CLI override present -> CLI wins over the manifest.
+        report("A: cli=com.app.Tool, manifest=com.app.Main", "com.app.Tool", "com.app.Main");
+        // Case B: no CLI override -> manifest Main-Class is used.
+        report("B: cli=(none),        manifest=com.app.Main", "", "com.app.Main");
+        // Case C: neither present -> fail closed.
+        report("C: cli=(none),        manifest=(none)",       "", "");
+    }
+}

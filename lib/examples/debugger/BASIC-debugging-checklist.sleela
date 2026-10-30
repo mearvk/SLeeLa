@@ -1,0 +1,11 @@
+#sleela 1.7
+// BASIC: a deterministic debugging checklist. It does not attach to a process.
+class BasicDebuggingChecklist {
+    void main() {
+        print("1. reproduce the smallest failing input");
+        print("2. capture the exact command and diagnostic");
+        print("3. inspect the first failing source location");
+        print("4. change one suspected cause at a time");
+        print("5. rerun the focused test, then the regression suite");
+    }
+}

@@ -1,0 +1,11 @@
+#sleela 1.7
+// BASIC: a safe artifact inspection workflow. No artifact is decoded here.
+class BasicArtifactInspection {
+    void main() {
+        print("1. identify the artifact format and version");
+        print("2. verify its digest before inspection");
+        print("3. inspect metadata and declared sections");
+        print("4. preserve the original artifact unchanged");
+        print("5. compare output against a known-good fixture");
+    }
+}

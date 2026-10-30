@@ -6498,8 +6498,20 @@
       "sha256": "b64701fde31a1b708996e32aa33519a874f4487511f11b4d37fdd86aaf6033c1"
     },
     {
+      "path": "lib/examples/connector/ADVANCED-retry-backoff.sleela",
+      "sha256": "0396cb3c8d50edf6b71852549b3338e653ca383206f8050a317d1d69dc466e41"
+    },
+    {
+      "path": "lib/examples/connector/BASIC-connector-lifecycle.sleela",
+      "sha256": "f15b262a217d229c0d301449fce44ae0e99338b0905037711ba533ca808c8ec1"
+    },
+    {
       "path": "lib/examples/connector/CLASSIC-connector-lifecycle.sleela",
       "sha256": "bfe770ea411340e3e9cf97b1229919efebf7efb43e2acd66aecd2c5740acbaad"
+    },
+    {
+      "path": "lib/examples/connector/MODERATE-state-machine.sleela",
+      "sha256": "04fa726d863c774b1a5daa6da321340fe2778e19a35379c1cfe3c4d93bff5d41"
     },
     {
       "path": "lib/examples/crypto/ADVANCED-manifest-verify-sim.sleela",
@@ -6518,20 +6530,56 @@
       "sha256": "a696d6544ee50359af6cb91cc481124eb9afd63b7c24bd0e8a7fc04b55c950f9"
     },
     {
+      "path": "lib/examples/debugger/ADVANCED-invariant-harness.sleela",
+      "sha256": "469700f8538799b098f0d5bf65df9fd7adca9639596df65ba9ef64de4dc82ad0"
+    },
+    {
+      "path": "lib/examples/debugger/BASIC-debugging-checklist.sleela",
+      "sha256": "1d536e420e460102538145c4a6ae1ec6f3770991e483fd2e5352bccd7129b2db"
+    },
+    {
       "path": "lib/examples/debugger/CLASSIC-debugging-checklist.sleela",
       "sha256": "4e5f9f21ca07a1e14dd1ffecc1483c6490dd6f5e6574e1e084a0cfc85cda8b46"
+    },
+    {
+      "path": "lib/examples/debugger/MODERATE-bisect-regression.sleela",
+      "sha256": "09a5887ad726ac604010abd08f28dbf08ec89c156dec2bbe9ee15531d31a545e"
+    },
+    {
+      "path": "lib/examples/decompiler/ADVANCED-disassemble-stream.sleela",
+      "sha256": "a11670902bf3e062056ac077aa592990306f1bbd120032301a3af11c5b127c90"
+    },
+    {
+      "path": "lib/examples/decompiler/BASIC-artifact-inspection.sleela",
+      "sha256": "a80e00d82a7a0db3cb96946f6930baac7df61189e1d12e5c151cb269c50ea2bb"
     },
     {
       "path": "lib/examples/decompiler/CLASSIC-artifact-inspection.sleela",
       "sha256": "a92ca3dfc6482efc927ea0365265eb23da25add98007e26aa34ebd7f321df294"
     },
     {
+      "path": "lib/examples/decompiler/MODERATE-section-table.sleela",
+      "sha256": "1fa4ea133056359ceae0736bd8bd0d16acfd11be3f81257da1241cc2f0663f34"
+    },
+    {
       "path": "lib/examples/gui/CLASSIC-layout-bounds.sleela",
       "sha256": "6795a1434b0a2303b2f9a0c3ea015359f9fad0b6d085f9c1ee3f5e8f6c70fc63"
     },
     {
+      "path": "lib/examples/java/ADVANCED-main-class-resolution.sleela",
+      "sha256": "76d3b42964c8e1ce65b5332d2545a3c6cba5eb95e1266dd4c197494420732ece"
+    },
+    {
+      "path": "lib/examples/java/BASIC-launch-preflight.sleela",
+      "sha256": "176ad2f1f48ec13dc0e855c81fd87da9e7349c029e13e7cdf11390f23f731910"
+    },
+    {
       "path": "lib/examples/java/CLASSIC-java-launch-preflight.sleela",
       "sha256": "480ccf9f2a33a5a6513e3e622d84f26b4f7b02aef53581081e593dfa537e29a4"
+    },
+    {
+      "path": "lib/examples/java/MODERATE-classpath-resolution.sleela",
+      "sha256": "e42ed9119f41994e6b85b15ffbaa60d54215e7bd1b669137dd68609d02dbab2b"
     },
     {
       "path": "lib/examples/network/USED-loopback-tcp-echo.sleela",
