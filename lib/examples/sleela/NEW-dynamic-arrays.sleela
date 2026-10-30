@@ -1,0 +1,17 @@
+#sleela 2.6
+// NEW: dynamic arrays, indexed access, append, and length.
+
+class NewDynamicArrays {
+    void main() {
+        int[] scores = new int[3];
+        scores[0] = 84;
+        scores[1] = 91;
+        scores[2] = 77;
+
+        print("initial count = " + arrayLength(scores));
+        int count = arrayPush(scores, 96);
+        print("after append = " + count);
+        print("new score = " + scores[3]);
+        print(scores);
+    }
+}
