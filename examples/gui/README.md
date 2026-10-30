@@ -46,6 +46,9 @@ compatibility. No theme configuration is silently loaded.
 | [Tabs and pages](COMPONENT-tabs-notebook.sleela) | Notebook, TabBar, VerticalTabs |
 | [Widget common properties](COMPONENT-widget-properties.sleela) | Margins, alignment, expansion, size, visibility, sensitivity |
 | [Button event polling](INTERACTION-button-events.sleela) | Click, hover, press/release latches |
+| [Settings panel](FORM-settings-panel.sleela) | Composed real-world preference form |
+| [SDK family scope](SDK-ui-family-scope.md) | Distinguishes `lib/ui` model classes from native `lib/user-interface` bindings |
+| [SDK object model](SDK-ui-object-model.sleela) | Exercises the current `lib/ui` model methods without claiming native rendering |
 | [Window lifecycle](WINDOW-lifecycle-buffering.sleela) | Show/hide, title, redraw, single/double/triple buffering |
 | [Backend and display info](SYSTEM-backend-screen-info.sleela) | Backend, toolkit version, screen dimensions |
 
