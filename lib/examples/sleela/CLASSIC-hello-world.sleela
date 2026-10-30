@@ -1,9 +1,3 @@
-#sleela 2.6
+#sleela 1.7
 // CLASSIC: the smallest complete SLeeLa program.
-// Run: sleela run CLASSIC-hello-world.sleela
-
-class ClassicHelloWorld {
-    void main() {
-        print("Hello, SLeeLa.");
-    }
-}
+class ClassicHelloWorld { void main() { print("Hello, SLeeLa."); } }
