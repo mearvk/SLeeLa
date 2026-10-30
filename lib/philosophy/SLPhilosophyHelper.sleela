@@ -1,0 +1,77 @@
+<< lib/philosophy/SLPhilosophyHelper.sleela
+   SLeeLa Standard Library Definition.
+   Definition: handle to the help / reach-out desk tool
+   (philosophy/module/helper/help_desk.*). >>
+#sleela 2.5
+material;
+< Family: philosophy. A directory of contacts a user can reach out to -- >
+< management, co-series authors, telegenically-aware authors, mayors, city >
+< spokespersons -- answering a Question/Query by listing respondents with >
+< alive and known-of-Science status. Ships no real contact data; it performs >
+< no network I/O (never emails, calls, or connects). >
+class SLPhilosophyHelper {
+  int id() { return 4; }
+  String name() { return "helper-reach-out"; }
+  String summary() { return "query-to-respondents desk with alive / known-of-Science status"; }
+
+  < Sizing contract (mirrors help_desk.h). >
+  int defaultCapacity() { return 512; }
+  int defaultCompanySize() { return 1000; }
+  int roleCount() { return 5; }
+
+  < The library stores no real PII and makes no network connection. >
+  boolean shipsRealContacts() { return false; }
+  boolean performsNetworkIo() { return false; }
+
+  < Role names, by ordinal 0..4. >
+  String roleName(int r) {
+    if (r == 0) { return "management"; }
+    if (r == 1) { return "co-series author"; }
+    if (r == 2) { return "telegenically-aware author"; }
+    if (r == 3) { return "mayor"; }
+    if (r == 4) { return "city spokesperson"; }
+    return "unknown";
+  }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the real origin of the subject where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10413;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-30";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-30";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

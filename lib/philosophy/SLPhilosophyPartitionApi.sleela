@@ -1,0 +1,96 @@
+<< lib/philosophy/SLPhilosophyPartitionApi.sleela
+   SLeeLa Standard Library Definition.
+   Definition: handle to the uniform three-level partition API tool
+   (philosophy/partition_api.*). >>
+#sleela 2.5
+material;
+< Family: philosophy. One interface applied at branch, partition and system >
+< levels. Eight operations, each firing an eleven-activity dispatch table. >
+< Whole-tree basis of 2-3 nodes; maturation capped at 3 (usual 1). >
+class SLPhilosophyPartitionApi {
+  int id() { return 3; }
+  String name() { return "partition-api"; }
+  String summary() { return "uniform branch/partition/system operations with activity dispatch"; }
+
+  < Levels and the eight operations. >
+  int levelCount() { return 3; }
+  int operationCount() { return 8; }
+  int activityCount() { return 11; }
+
+  < Whole-tree basis and maturation caps (mirrors partition_api.h). >
+  int basisNodesMin() { return 2; }
+  int basisNodesMax() { return 3; }
+  int maturationUsual() { return 1; }
+  int maturationMax() { return 3; }
+
+  < Operation names, by ordinal 0..7. >
+  String operationName(int op) {
+    if (op == 0) { return "add"; }
+    if (op == 1) { return "delete"; }
+    if (op == 2) { return "prune"; }
+    if (op == 3) { return "renegotiate"; }
+    if (op == 4) { return "system"; }
+    if (op == 5) { return "analysis"; }
+    if (op == 6) { return "control"; }
+    if (op == 7) { return "feature"; }
+    return "unknown";
+  }
+
+  < Activity names, by ordinal 0..10. >
+  String activityName(int a) {
+    if (a == 0) { return "workers"; }
+    if (a == 1) { return "listeners"; }
+    if (a == 2) { return "controllers"; }
+    if (a == 3) { return "event-handlers"; }
+    if (a == 4) { return "exchanger"; }
+    if (a == 5) { return "memory-analysis"; }
+    if (a == 6) { return "saving"; }
+    if (a == 7) { return "retirement"; }
+    if (a == 8) { return "scandal"; }
+    if (a == 9) { return "nursing"; }
+    if (a == 10) { return "pro-bono"; }
+    return "unknown";
+  }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the real origin of the subject where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10412;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-30";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-30";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
