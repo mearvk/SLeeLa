@@ -14,8 +14,9 @@ class ButtonEventPolling {
     SLButton quit = new SLButton(); quit.createIn(col, "Quit");
     win.show();
     // pump(true) blocks for an event; the explicit Quit action ends this loop.
-    while (ui.pump(true) >= 0) {
-      if (quit.clicked()) { ui.quit(0); break; }
+    boolean running = true;
+    while (running && ui.pump(true) >= 0) {
+      if (quit.clicked()) { ui.quit(0); running = false; }
       if (button.clicked()) { status.setText("Activated once."); }
       if (button.takePressed()) { status.setText("Pointer pressed."); }
       if (button.takeReleased()) { status.setText("Pointer released."); }
