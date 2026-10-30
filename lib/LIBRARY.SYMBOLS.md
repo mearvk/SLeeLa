@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11748
+library-source-files: 11757
 library-packages: 108
 module-facade-symbols: 75
-total-symbol-records: 11823
+total-symbol-records: 11832
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11298,11 +11298,20 @@ philosophers	SLPhilosopherGuide.sleela	lib/philosophers/SLPhilosopherGuide.sleel
 philosophers	SLPhilosopherSeating.sleela	lib/philosophers/SLPhilosopherSeating.sleela	source
 philosophers	philosophers-demo.sleela	lib/philosophers/philosophers-demo.sleela	source
 philosophy	SLPackage.sleela	lib/philosophy/SLPackage.sleela	facade
+philosophy	SLPhilosophyAdmin.sleela	lib/philosophy/SLPhilosophyAdmin.sleela	source
+philosophy	SLPhilosophyAuthor.sleela	lib/philosophy/SLPhilosophyAuthor.sleela	source
 philosophy	SLPhilosophyConsistency.sleela	lib/philosophy/SLPhilosophyConsistency.sleela	source
 philosophy	SLPhilosophyEventTree.sleela	lib/philosophy/SLPhilosophyEventTree.sleela	source
+philosophy	SLPhilosophyExitor.sleela	lib/philosophy/SLPhilosophyExitor.sleela	source
 philosophy	SLPhilosophyHelper.sleela	lib/philosophy/SLPhilosophyHelper.sleela	source
+philosophy	SLPhilosophyInput.sleela	lib/philosophy/SLPhilosophyInput.sleela	source
+philosophy	SLPhilosophyInputs.sleela	lib/philosophy/SLPhilosophyInputs.sleela	source
 philosophy	SLPhilosophyIntSet.sleela	lib/philosophy/SLPhilosophyIntSet.sleela	source
+philosophy	SLPhilosophyItem.sleela	lib/philosophy/SLPhilosophyItem.sleela	source
+philosophy	SLPhilosophyNode.sleela	lib/philosophy/SLPhilosophyNode.sleela	source
+philosophy	SLPhilosophyOwner.sleela	lib/philosophy/SLPhilosophyOwner.sleela	source
 philosophy	SLPhilosophyPartitionApi.sleela	lib/philosophy/SLPhilosophyPartitionApi.sleela	source
+philosophy	SLPhilosophyRelevant.sleela	lib/philosophy/SLPhilosophyRelevant.sleela	source
 philosophy	SLPhilosophySpeculation.sleela	lib/philosophy/SLPhilosophySpeculation.sleela	source
 philosophy	philosophy.sleela	lib/philosophy/philosophy.sleela	source
 politico	SLPackage.sleela	lib/politico/SLPackage.sleela	facade

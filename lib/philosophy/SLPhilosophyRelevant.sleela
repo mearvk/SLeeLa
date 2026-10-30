@@ -1,0 +1,107 @@
+<< lib/philosophy/SLPhilosophyRelevant.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Relevant -- a sorted, right-ordered index over Tree nodes by
+   relevance, so the most relevant node sits at the right end. >>
+#sleela 2.5
+material;
+< Family: philosophy. Relevant is the sorted-right index: it keeps node ids >
+< ordered by an integer relevance score in ascending order, so the highest- >
+< relevance node is at the right (last) slot. A Tree can hand its nodes to a >
+< Relevant index to read them back most-relevant-first without reordering the >
+< Tree. Insertion keeps the index sorted (insertion sort, ascending). >
+class SLPhilosophyRelevant {
+  int[] nodeIds;
+  int[] scores;
+  int size;
+  int capacity;
+
+  void configure(int cap) {
+    capacity = cap;
+    nodeIds = new int[cap];
+    scores = new int[cap];
+    size = 0;
+  }
+
+  int getSize() { return size; }
+  int getCapacity() { return capacity; }
+
+  < Insert a (nodeId, score) keeping ascending order; right end = most relevant. >
+  boolean insert(int nodeId, int score) {
+    if (size >= capacity) { return false; }
+    int i = size;
+    while (i > 0 && scores[i - 1] > score) {
+      scores[i] = scores[i - 1];
+      nodeIds[i] = nodeIds[i - 1];
+      i = i - 1;
+    }
+    scores[i] = score;
+    nodeIds[i] = nodeId;
+    size = size + 1;
+    return true;
+  }
+
+  < The node id at a given rank from the left (0) to the right (size-1). >
+  int nodeAt(int index) {
+    if (index < 0 || index >= size) { return 0; }
+    return nodeIds[index];
+  }
+  int scoreAt(int index) {
+    if (index < 0 || index >= size) { return 0; }
+    return scores[index];
+  }
+
+  < The most relevant node id (right end), or 0 when empty. >
+  int mostRelevant() {
+    if (size == 0) { return 0; }
+    return nodeIds[size - 1];
+  }
+  < The least relevant node id (left end), or 0 when empty. >
+  int leastRelevant() {
+    if (size == 0) { return 0; }
+    return nodeIds[0];
+  }
+
+  void clear() { size = 0; }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the real origin of the subject where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10424;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-30";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-30";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
