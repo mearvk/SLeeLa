@@ -10,15 +10,15 @@ Build the repository toolchain from the repository root:
 make -C impl
 ```
 
-Check that the runtime is available:
+Check the supported syntax range:
 
 ```sh
 ./impl/build/sleela version
 ```
 
-The runtime README documents syntax versions 1.3 through 1.7. These examples use `#sleela 1.7`.
+The compiler source currently defines the supported syntax range as **1.0–2.8** in `impl/frontend/version.h`. The first lessons use syntax 1.7; the final two introduce syntax 2.7 and 2.8.
 
-## The nine small lessons
+## The eleven small lessons
 
 | Step | File | What to learn |
 |---:|---|---|
@@ -26,11 +26,13 @@ The runtime README documents syntax versions 1.3 through 1.7. These examples use
 | 2 | [ORIGINAL-fizz-buzz.sleela](ORIGINAL-fizz-buzz.sleela) | Numbers, a `for` loop, `if`, and the remainder operator |
 | 3 | [USED-methods-and-return-values.sleela](USED-methods-and-return-values.sleela) | Give a method a value and get an answer back |
 | 4 | [USED-switch-selection.sleela](USED-switch-selection.sleela) | Choose one path from several cases |
-| 5 | [USED-short-circuit-guards.sleela](USED-short-circuit-guards.sleela) | Combine conditions without evaluating unnecessary checks |
+| 5 | [USED-short-circuit-guards.sleela](USED-short-circuit-guards.sleela) | Combine conditions without unnecessary checks |
 | 6 | [NEW-dynamic-arrays.sleela](NEW-dynamic-arrays.sleela) | Store a list of values and add another one |
 | 7 | [NEW-struct-record.sleela](NEW-struct-record.sleela) | Keep related data together |
 | 8 | [NEW-nested-classes.sleela](NEW-nested-classes.sleela) | Put a helper type inside the class that uses it |
 | 9 | [NEW-native-financial-import.sleela](NEW-native-financial-import.sleela) | Import a library and call its functions |
+| 10 | [NEW-signed-wide-integers-2.7.sleela](NEW-signed-wide-integers-2.7.sleela) | Meet the newer signed integer widths |
+| 11 | [NEW-unsigned-wide-integers-2.8.sleela](NEW-unsigned-wide-integers-2.8.sleela) | Meet positive-only unsigned integer widths |
 
 ## How to run each lesson
 
@@ -57,7 +59,7 @@ You can also create a reusable runnable artifact:
 
 ## A small challenge
 
-After completing the nine lessons, write a program that stores three scores in an array, calculates their total, and prints the total. Then add a fourth score with `arrayPush` and print the new array length.
+Write a program that stores three scores in an array, calculates their total, and prints the total. Then add a fourth score with `arrayPush` and print the new array length.
 
 ## Important distinction
 
