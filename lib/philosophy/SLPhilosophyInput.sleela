@@ -1,0 +1,80 @@
+<< lib/philosophy/SLPhilosophyInput.sleela
+   SLeeLa Standard Library Definition.
+   Definition: one explicit Input -- a single submission bound for the Tree,
+   pairing an Item id with the consent and timing needed to add it. >>
+#sleela 2.5
+material;
+< Family: philosophy. An Input is an explicit, consented submission. It names >
+< the Item id to add, the time it occurred, and whether it may be shared. Only >
+< supplied Inputs enter the Tree; nothing is collected in the background. >
+class SLPhilosophyInput {
+  int inputId;
+  int itemId;
+  int occurredAt;
+  boolean consentToShare;
+  boolean accepted;
+
+  void configure(int id, int carriedItemId, int at, boolean consent) {
+    inputId = id;
+    itemId = carriedItemId;
+    occurredAt = at;
+    consentToShare = consent;
+    accepted = false;
+  }
+
+  int getInputId() { return inputId; }
+  void setInputId(int v) { inputId = v; }
+  int getItemId() { return itemId; }
+  void setItemId(int v) { itemId = v; }
+  int getOccurredAt() { return occurredAt; }
+  void setOccurredAt(int v) { occurredAt = v; }
+  boolean getConsentToShare() { return consentToShare; }
+  void setConsentToShare(boolean v) { consentToShare = v; }
+  boolean getAccepted() { return accepted; }
+  void setAccepted(boolean v) { accepted = v; }
+
+  < An Input is valid for the Tree only when it has an item, a time, and id. >
+  boolean valid() { return inputId != 0 && itemId != 0 && occurredAt > 0; }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the real origin of the subject where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10422;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-30";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-30";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

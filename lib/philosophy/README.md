@@ -18,6 +18,26 @@ the native implementations live under `philosophy/` at the repository root.
 | `SLPackage` | package facade (names the package to the compiler / Loader / Nordshrift) |
 | `Philosophy` | runnable aggregate catalog (`philosophy.sleela`, has `main()`) |
 
+### Structural classes (attach to a Tree or anchor its base structure)
+
+| Class | Role in the Tree |
+|---|---|
+| `SLPhilosophyItem` | smallest payload: keyed, typed value with a source reference |
+| `SLPhilosophyNode` | a branch of the Tree: ordering id, left/right child ids, weight [1,9], carried Item |
+| `SLPhilosophyInput` | one explicit, consented submission bound for the Tree |
+| `SLPhilosophyInputs` | ordered intake queue of Input ids, drained into Nodes |
+| `SLPhilosophyRelevant` | sorted, right-ordered relevance index (most relevant at the right end) |
+| `SLPhilosophyAuthor` | contributor role: may add/read, not prune or transfer ownership |
+| `SLPhilosophyAdmin` | maintainer role: may add/read/prune, not transfer ownership |
+| `SLPhilosophyExitor` | departure role: may end/retire nodes and read, not add |
+| `SLPhilosophyOwner` | holder role: full rights including ownership transfer |
+
+These neatly add to a Tree (Items on Nodes, Nodes staged via Inputs, read back
+through a Relevant index) or anchor its base structure (an Owner holds it;
+Author/Admin/Exitor carry scoped rights). Each carries the Metadata Class
+metapattern and advertises its rights explicitly; identities are self-reported
+and no credential is verified.
+
 Each handle advertises its tool's capability contract (ids, limits, flags) and
 an honest metadata record. The handles describe the tools; they do not
 re-implement them.

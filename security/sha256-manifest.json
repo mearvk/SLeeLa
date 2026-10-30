@@ -46014,6 +46014,14 @@
       "sha256": "e86ba497373c24c5e15574f0937b9d3579ffb08be2c1cc6bf15aa005a83cbf59"
     },
     {
+      "path": "lib/philosophy/SLPhilosophyAdmin.sleela",
+      "sha256": "a4aab50d4868e4604689769c3b58cf0defc2fda5b4f2e2cb4c4df6a14f89c832"
+    },
+    {
+      "path": "lib/philosophy/SLPhilosophyAuthor.sleela",
+      "sha256": "dc011d5d097741eee8233777169e46d9819e7c4a497899b6a5d2a3594c1bc486"
+    },
+    {
       "path": "lib/philosophy/SLPhilosophyConsistency.sleela",
       "sha256": "9c1102f74eace686f8d640ee9f5fb0a00e7016cccd45a6bb8ca7a64cbd5999c8"
     },
@@ -46022,16 +46030,44 @@
       "sha256": "5a1d2c9d6ff1b7cbf4e523c479a1d8e669409511a27c92fd2dd00818825ffe06"
     },
     {
+      "path": "lib/philosophy/SLPhilosophyExitor.sleela",
+      "sha256": "4b4a5d753feee432c699c1b259edc09ff3a06cfdc9dbdc46b012eaf93cf98db7"
+    },
+    {
       "path": "lib/philosophy/SLPhilosophyHelper.sleela",
       "sha256": "53e901205e423eb9b006ff569f16720d28aaa46f73dc35a5131c346b33958b87"
+    },
+    {
+      "path": "lib/philosophy/SLPhilosophyInput.sleela",
+      "sha256": "e90c4f211c0c4945b607d0cb03e445491760933b0bf35f1284316f730a8d25d3"
+    },
+    {
+      "path": "lib/philosophy/SLPhilosophyInputs.sleela",
+      "sha256": "123aecb843e59dc8278799dba11f62d562229e6a42154086b36a7cb10a3b02f1"
     },
     {
       "path": "lib/philosophy/SLPhilosophyIntSet.sleela",
       "sha256": "acf24c53ed3baf09f1d8bd043c8e005615e5f8f0754b3e69f617bacf6ea60b7b"
     },
     {
+      "path": "lib/philosophy/SLPhilosophyItem.sleela",
+      "sha256": "8edc5609bc360e0b687baa78fb693782e79b73cc3b0e4b1f14f81fe46ff69c3c"
+    },
+    {
+      "path": "lib/philosophy/SLPhilosophyNode.sleela",
+      "sha256": "f6332b7dd340539e97bf6124bc82a9caab83e973dae58aa55b3198789d17d3c8"
+    },
+    {
+      "path": "lib/philosophy/SLPhilosophyOwner.sleela",
+      "sha256": "11a7fc4e1c80d2ee89939abe7c4d2c1efd0bbca8b9c12ff56d838f0acc7f4fa5"
+    },
+    {
       "path": "lib/philosophy/SLPhilosophyPartitionApi.sleela",
       "sha256": "634433ec2f4ddf634ba413526bbcc2478f898aba60a35c1d2473427b344318d1"
+    },
+    {
+      "path": "lib/philosophy/SLPhilosophyRelevant.sleela",
+      "sha256": "f6ffb5bf3323a930e686fba8fbed8a2296ef27322b5c7c4e551ae0d7fc75c808"
     },
     {
       "path": "lib/philosophy/SLPhilosophySpeculation.sleela",

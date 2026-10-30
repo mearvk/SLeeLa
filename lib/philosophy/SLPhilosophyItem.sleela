@@ -1,0 +1,80 @@
+<< lib/philosophy/SLPhilosophyItem.sleela
+   SLeeLa Standard Library Definition.
+   Definition: one catalogued Item -- a keyed, typed value with provenance --
+   that a Node may carry inside a philosophy Tree. >>
+#sleela 2.5
+material;
+< Family: philosophy. An Item is the smallest payload unit: a stable key, one >
+< integer value, a unit label, and a source reference. Items are carried by a >
+< Node and (via Inputs) added to a Tree. Values are explicit; the Item infers >
+< nothing it was not given. >
+class SLPhilosophyItem {
+  int itemId;
+  String key;
+  int value;
+  String unit;
+  String sourceReference;
+
+  void configure(int id, String k, int v, String u, String src) {
+    itemId = id;
+    key = k;
+    value = v;
+    unit = u;
+    sourceReference = src;
+  }
+
+  int getItemId() { return itemId; }
+  void setItemId(int v) { itemId = v; }
+  String getKey() { return key; }
+  void setKey(String v) { key = v; }
+  int getValue() { return value; }
+  void setValue(int v) { value = v; }
+  String getUnit() { return unit; }
+  void setUnit(String v) { unit = v; }
+  String getSourceReference() { return sourceReference; }
+  void setSourceReference(String v) { sourceReference = v; }
+
+  boolean hasKey() { return key != null; }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the real origin of the subject where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10420;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-30";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-30";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
