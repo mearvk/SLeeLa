@@ -1,0 +1,17 @@
+#sleela 2.1
+// Small deterministic source file for CLASSIC-capstone.sst.
+class Ledgerize {
+    int sumWindow(int completed, int window) {
+        if (window <= 0) {
+            return 0;
+        }
+        return completed / window;
+    }
+
+    void main() {
+        int completed = 120;
+        int window = 4;
+        print("throughput = " + sumWindow(completed, window) + " ops/second");
+        print("done");
+    }
+}
