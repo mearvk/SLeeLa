@@ -1863,11 +1863,20 @@ compiler-recognised document markers — `object` and `field` — completing the
 parsing, typing, dispatch, or code generation. Each is a *claim about the
 document*, recognised and version-gated by the front end and otherwise inert.
 
-### 26.1 The Natural Process family
+### 26.1 The Natural Process family — the Preonems
 
-The Natural Process is the set of bare, contextual, declarative-only document
-markers by which a document states what it *is* in the order of making. As of
-syntax 2.6 the whole of the family is, in order of introduction:
+These bare document-marker words are collectively titled the **Preonems**:
+`author` / `authorial`, `material`, `memory`, `determine`, `object`, `field`
+(and the forward-looking `prestige`, section 27). "Preonem" is the title for a
+single such marker; "Preonems" names the set. A Preonem is a bare, contextual,
+declarative word placed at the top of a document (after the `#sleela` pragma,
+outside any class) that states what the document *is* in the order of making.
+All but `author`/`authorial` are purely declarative; each is version-gated and,
+outside the top-level marker position, remains an ordinary identifier.
+
+The Natural Process is the set of Preonems by which a document states what it
+*is* in the order of making. As of syntax 2.6 the whole of the family — the
+Preonems — is, in order of introduction:
 
     author / authorial   (syntax 2.4; section 18)  handled by professional
                                                    council; legalises duplicate
@@ -1998,8 +2007,8 @@ technical immediacy is the whole of the rule.
 ### 27.3 Planned form (subject to change)
 
 When implemented at syntax 2.9, `prestige` would be a bare, contextual,
-declarative-only document marker in the Natural Process family (section 26),
-written at top level after the `#sleela` pragma:
+declarative-only document marker in the Natural Process family (section 26) — a
+Preonem (section 26.1) — written at top level after the `#sleela` pragma:
 
     prestige;
 
