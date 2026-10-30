@@ -1,13 +1,11 @@
-#sleela 2.6
-// Demonstrates a parent-bounds layout calculation without opening a GUI window.
+#sleela 1.7
+// Demonstrates parent-bounds layout calculation without opening a GUI window.
 class ClassicLayoutBounds {
     void main() {
         int parentWidth = 800;
         int requestedChildWidth = 920;
         int actualChildWidth = requestedChildWidth;
-        if (actualChildWidth > parentWidth) {
-            actualChildWidth = parentWidth;
-        }
+        if (actualChildWidth > parentWidth) actualChildWidth = parentWidth;
         print("parent width = " + parentWidth);
         print("requested child width = " + requestedChildWidth);
         print("clamped child width = " + actualChildWidth);
