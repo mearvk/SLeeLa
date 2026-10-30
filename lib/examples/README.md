@@ -17,7 +17,7 @@ Start with the [child-friendly SLeeLa learning path](sleela/LEARNER-PATH.md), re
 
 | Directory | Starting example | Scope / run notes |
 |---|---|---|
-| [sleela](sleela/) | [CLASSIC Hello World](sleela/CLASSIC-hello-world.sleela) | Language foundations, loops, methods, arrays, structs, nested classes, imports, and command variations |
+| [sleela](sleela/) | [CLASSIC Hello World](sleela/CLASSIC-hello-world.sleela) | Language foundations, loops, methods, arrays, structs, nested classes, imports, and [16 CLI option/workflow examples](sleela/README.md#command-line-examples) |
 | [sleelvac](sleelvac/) | [Compiler invocation](sleelvac/CLASSIC-compiler-invocation.md) | Separate compiler product; confirm options with `sleelvac --help` |
 | [nordshrift](nordshrift/) | [Capstone sheet](nordshrift/CLASSIC-capstone.sst) | Paired with [Ledgerize source](nordshrift/CLASSIC-Ledgerize.sleela); build using the repository's Nordshrift tool |
 | [xlt](xlt/) | [EPYC + DDR2 model](xlt/CLASSIC-epyc-ddr2-model.xlt) | Validate with the built `xltc` tool and current catalog |
