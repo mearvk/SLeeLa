@@ -1,0 +1,33 @@
+#sleela 2.5
+// CLASSIC: smallest native SleelaUI window from SLeeLa source.
+class HelloWindow {
+  int main() {
+    SLUserInterface ui = new SLUserInterface();
+    ui.configure("com.mearvk.examples.HelloWindow");
+    if (!ui.open()) { return 1; }
+
+    SLTheme theme = new SLTheme();
+    theme.defaultTheme();
+
+    SLWindow win = ui.openWindow("Hello SleelaUI", 520, 300, theme.handle());
+    SLWidget root = win.rootWidget();
+
+    SLBox content = new SLBox();
+    content.vertical(root, 12);
+    content.setMarginAll(20);
+    content.setExpand(true, true);
+
+    SLHeading heading = new SLHeading();
+    heading.createIn(content, "Hello, SleelaUI", 24);
+
+    SLLabel note = new SLLabel();
+    note.createIn(content, "A native cross-platform window built in SLeeLa.");
+
+    SLButton close = new SLButton();
+    close.createIn(content, "Finish");
+    close.setSuggested(true);
+
+    win.show();
+    return ui.run();
+  }
+}
