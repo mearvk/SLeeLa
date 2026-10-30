@@ -15,7 +15,7 @@ layout, input, status/feedback, tabs, and interaction polling.
 2. [USED Full Widget Gallery](USED-widget-gallery.sleela)
 3. [USED Theme Presets Gallery](USED-theme-presets.sleela)
 4. [NEW Custom Theme Roles](NEW-custom-theme-roles.sleela)
-5. [USED Form Layout](USED-form-layout.sleela)
+5. [Settings Panel](FORM-settings-panel.sleela)
 
 ## Theme examples
 
