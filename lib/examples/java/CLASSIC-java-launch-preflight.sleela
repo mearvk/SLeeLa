@@ -1,0 +1,11 @@
+#sleela 2.6
+// Preflight checklist only; this example does not start a JVM or execute a JAR.
+class ClassicJavaLaunchPreflight {
+    void main() {
+        print("1. verify the Java runtime is available");
+        print("2. locate the requested JAR or class root");
+        print("3. validate manifest and class-path inputs");
+        print("4. resolve the main class");
+        print("5. launch only after all checks pass");
+    }
+}
