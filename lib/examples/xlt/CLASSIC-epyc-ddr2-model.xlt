@@ -1,0 +1,17 @@
+#xlt 1.0
+// CLASSIC: a declarative CPU model using registered catalog parts.
+// Validate with: impl/xlt/build/xltc lib/examples/xlt/CLASSIC-epyc-ddr2-model.xlt
+model EpycWithDdr2 {
+  cpu       "SLAMDEPYC9575F";
+  memory    "ddr2_800" 4096;
+  cadence   "DDR2";
+  storage   "nvmeGen4";
+  bus       "pci33";
+  gpu;
+  dma;
+  nativeram;
+  memtier   "ddr2_800" usual;
+  memtier   "ddr5_6400" accurate;
+  maintier  "accurate";
+  target    sleela;
+}
