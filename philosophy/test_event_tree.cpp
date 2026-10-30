@@ -1,4 +1,4 @@
-#include "event_tree.h"
+#include "social_listener.hpp"
 #include <cassert>
 #include <cmath>
 #include <cstdint>
@@ -38,5 +38,32 @@ int main(){
     assert(sl_event_tree_insert(t,&opinion)==SL_STATUS_OK);
     sl_event priv=event(1002u,base,100u,SL_EVENT_MEDICAL_REQUEST,SL_SOURCE_SELF_REPORT);
     priv.consent_to_share=false;assert(sl_event_tree_insert(t,&priv)==SL_STATUS_OK);
-    sl_event_tree_destroy(t);return 0;
+    sl_event_tree_destroy(t);
+
+    /* C++ listeners retain provenance, filter by event type, and honor consent. */
+    EconomicSocialListener economy(SL_LISTENER_EVIDENCE_AWARE);
+    MedicalSocialListener medicine(SL_LISTENER_NEUTRAL);
+    sl_event economic = event(2000u, base, 1000u, SL_EVENT_ECONOMIC_METRIC,
+                              SL_SOURCE_MEDIA_OR_PUBLICATION);
+    sl_event request = event(2001u, base, 1000u, SL_EVENT_MEDICAL_REQUEST,
+                             SL_SOURCE_SELF_REPORT);
+    sl_event private_health = event(2002u, base, 1000u, SL_EVENT_HEALTH_CONTEXT,
+                                    SL_SOURCE_SELF_REPORT);
+    private_health.consent_to_share = false;
+    assert(economy.submit(economic) == SL_STATUS_OK);
+    assert(economy.submit(request) == SL_STATUS_OK);
+    assert(medicine.submit(request) == SL_STATUS_OK);
+    assert(medicine.submit(private_health) == SL_STATUS_OK);
+    const auto economy_view = economy.listen(base);
+    const auto medicine_view = medicine.listen(base);
+    assert(economy_view.size() == 1u);
+    assert(economy_view[0].event.type == SL_EVENT_ECONOMIC_METRIC);
+    assert(economy_view[0].evidence_aware_mode);
+    assert(!economy_view[0].first_person_report);
+    assert(medicine_view.size() == 1u);
+    assert(medicine_view[0].event.type == SL_EVENT_MEDICAL_REQUEST);
+    assert(!medicine_view[0].evidence_aware_mode);
+    assert(medicine_view[0].first_person_report);
+    assert(!medicine_view[0].corroboration_inferred);
+    return 0;
 }

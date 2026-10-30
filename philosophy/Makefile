@@ -50,7 +50,7 @@ $(EVENT_C_EXAMPLE): $(BUILD_DIR)/event_tree.o $(BUILD_DIR)/event-example-c.o
 	$(CC) $^ -lm -o $@
 $(EVENT_CPP_EXAMPLE): $(BUILD_DIR)/event_tree.o $(BUILD_DIR)/social_listener.o $(BUILD_DIR)/event-example-cpp.o
 	$(CXX) $^ -lm -o $@
-$(EVENT_TEST): $(BUILD_DIR)/event_tree.o $(BUILD_DIR)/test-event-tree.o
+$(EVENT_TEST): $(BUILD_DIR)/event_tree.o $(BUILD_DIR)/social_listener.o $(BUILD_DIR)/test-event-tree.o
 	$(CXX) $^ -lm -o $@
 test: $(TEST_PROGRAM) $(EVENT_TEST)
 	./$(TEST_PROGRAM)
