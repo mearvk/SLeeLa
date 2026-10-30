@@ -122,6 +122,9 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
+      - name: Build and test philosophy event tree
+        run: make -C philosophy clean all test
+
       - name: Build native runtime and static core
         env:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
