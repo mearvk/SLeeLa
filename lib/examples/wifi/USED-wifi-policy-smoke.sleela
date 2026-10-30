@@ -1,0 +1,23 @@
+#sleela 2.5
+material;
+// USED: policy/state smoke example. It does not access a physical radio.
+// The Wi-Fi README documents that scan/connect requires the native SLVM bridge.
+class WifiPolicySmoke {
+    int run() {
+        SLWifiSecurityPolicy policy = new SLWifiSecurityPolicy();
+        policy.configureDefaults();
+        if (!policy.valid()) return 1;
+        if (policy.minimumSecurityRank != 4) return 2;
+        if (policy.allowOpenNetworks != 0 || policy.allowLegacyWep != 0) return 3;
+
+        SLWifiNetwork secureNetwork = new SLWifiNetwork();
+        secureNetwork.configure("SLeeLa-Lab", "02:11:22:33:44:55", 36, 5180, 80,
+                                SLWifiSecurity.WPA2_PERSONAL, 0, 1);
+        if (!policy.allowsNetwork(secureNetwork)) return 4;
+
+        SLWifiManager manager = new SLWifiManager();
+        manager.configure();
+        if (manager.beginScanRequest() != SLWifiStatus.BRIDGE_REQUIRED) return 5;
+        return 0;
+    }
+}
