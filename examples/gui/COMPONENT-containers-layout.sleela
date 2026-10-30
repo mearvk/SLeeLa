@@ -1,0 +1,25 @@
+#sleela 2.5
+class ContainersLayout {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.Containers");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.defaultTheme();
+    SLWindow win = ui.openWindow("Containers and Layout", 760, 560, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLBox page = new SLBox(); page.vertical(root, 12); page.setMarginAll(16);
+    SLHeaderBar header = new SLHeaderBar(); header.createIn(page);
+    SLLabel brand = new SLLabel(); brand.createIn(header, "HeaderBar");
+    SLGrid grid = new SLGrid(); grid.createIn(page, 2, 10); grid.setExpand(true, true);
+    SLCard card = new SLCard(); card.createIn(grid);
+    SLLabel c = new SLLabel(); c.createIn(card, "Card surface");
+    SLFrame frame = new SLFrame(); frame.createIn(grid, "Frame group");
+    SLLabel f = new SLLabel(); f.createIn(frame, "Frame content");
+    SLSeparator sep = new SLSeparator(); sep.createIn(page, SLWidget.ORIENT_HORIZONTAL);
+    SLBox footer = new SLBox(); footer.horizontal(page, 8);
+    SLStatusBar status = new SLStatusBar(); status.createIn(footer);
+    SLLabel state = new SLLabel(); state.createIn(status, "Layout ready");
+    SLSpacer spacer = new SLSpacer(); spacer.createIn(footer);
+    SLButton done = new SLButton(); done.createIn(footer, "Done");
+    win.show(); return ui.run();
+  }
+}
