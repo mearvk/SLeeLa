@@ -35,7 +35,32 @@ For the child-friendly lesson order, vocabulary, and exercises, see [LEARNER-PAT
 
 ## Commands
 
-See [COMMANDS-and-workflow](COMMANDS-and-workflow.md) for the documented `version`, `check`, `run`, `compile`, `validate-artifact`, `xclass`, `langin`, `nordshrift`, and operational command families.
+See [COMMANDS-and-workflow](COMMANDS-and-workflow.md) for the command overview. The option-by-option cookbook is indexed below; it follows `man/man1/sleela.1` and the C++ command dispatcher.
+
+## Command-line examples
+
+| Example | Coverage |
+|---|---|
+| [CLI-01](CLI-01-global-memory-options.md) | Global memory-manager flags and size suffixes |
+| [CLI-02](CLI-02-source-and-artifact.md) | Version, check, run, compile, artifact validation |
+| [CLI-03](CLI-03-multi-source-compilation.md) | Multiple source inputs |
+| [CLI-04](CLI-04-native-and-exec.md) | Native/exec, config, memory option, option terminator |
+| [CLI-05](CLI-05-sleeladoc-topic-lookup.md) | SleelaDoc topic/package/class lookup |
+| [CLI-06](CLI-06-sleeladoc-generate-live.md) | Documentation generation and live parsing |
+| [CLI-07](CLI-07-sleeladoc-facade.md) | Facade search and resource caps |
+| [CLI-08](CLI-08-vm-commands.md) | VM list/select/info/run |
+| [CLI-09](CLI-09-modium-commands.md) | Modium scan/status/restore |
+| [CLI-10](CLI-10-registry-commands.md) | Registry read/write/export |
+| [CLI-11](CLI-11-xclass-and-langin.md) | XClass and JVM-family source modes |
+| [CLI-12](CLI-12-nordshrift-options.md) | Nordshrift emit/roundtrip/targets |
+| [CLI-13](CLI-13-http-server-options.md) | HTTP versions and server flags |
+| [CLI-14](CLI-14-design-activity.md) | Seven design-activity axes |
+| [CLI-15](CLI-15-defender-safety.md) | Defender safety gates |
+| [CLI-16](CLI-16-environment-and-exit-status.md) | Environment variables and exit status |
+
+These are documentation examples. Confirm each operation against the exact
+binary built on the target platform; server, VM, registry, and Defender actions
+may depend on configuration or have side effects.
 
 ## Run
 
