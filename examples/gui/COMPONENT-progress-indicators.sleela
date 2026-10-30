@@ -1,0 +1,19 @@
+#sleela 2.5
+class ProgressIndicators {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.Progress");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.blue();
+    SLWindow win = ui.openWindow("Progress and Indicators", 620, 480, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLBox col = new SLBox(); col.vertical(root, 14); col.setMarginAll(18);
+    SLSlider slider = new SLSlider(); slider.createIn(col, 0.0, 100.0, 42.0);
+    SLProgressBar progress = new SLProgressBar(); progress.createIn(col, 0.42);
+    SLLevelBar level = new SLLevelBar(); level.createIn(col, 0.76);
+    SLSpinner spinner = new SLSpinner(); spinner.createIn(col);
+    SLScrollBar scroll = new SLScrollBar(); scroll.createIn(col, SLWidget.ORIENT_VERTICAL, 0.0, 0.25);
+    SLThrobber throbber = new SLThrobber(); throbber.createIn(col, 240);
+    SLLabel note = new SLLabel(); note.createIn(col, "Use progress for known completion; spinner/throbber for indeterminate work.");
+    win.show(); return ui.run();
+  }
+}
