@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11662
-library-packages: 106
-module-facade-symbols: 74
-total-symbol-records: 11736
+library-source-files: 11669
+library-packages: 107
+module-facade-symbols: 75
+total-symbol-records: 11744
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11218,6 +11218,14 @@ philosophers	SLPhilosopherConstructor.sleela	lib/philosophers/SLPhilosopherConst
 philosophers	SLPhilosopherGuide.sleela	lib/philosophers/SLPhilosopherGuide.sleela	source
 philosophers	SLPhilosopherSeating.sleela	lib/philosophers/SLPhilosopherSeating.sleela	source
 philosophers	philosophers-demo.sleela	lib/philosophers/philosophers-demo.sleela	source
+philosophy	SLPackage.sleela	lib/philosophy/SLPackage.sleela	facade
+philosophy	SLPhilosophyConsistency.sleela	lib/philosophy/SLPhilosophyConsistency.sleela	source
+philosophy	SLPhilosophyEventTree.sleela	lib/philosophy/SLPhilosophyEventTree.sleela	source
+philosophy	SLPhilosophyHelper.sleela	lib/philosophy/SLPhilosophyHelper.sleela	source
+philosophy	SLPhilosophyIntSet.sleela	lib/philosophy/SLPhilosophyIntSet.sleela	source
+philosophy	SLPhilosophyPartitionApi.sleela	lib/philosophy/SLPhilosophyPartitionApi.sleela	source
+philosophy	SLPhilosophySpeculation.sleela	lib/philosophy/SLPhilosophySpeculation.sleela	source
+philosophy	philosophy.sleela	lib/philosophy/philosophy.sleela	source
 politico	SLPackage.sleela	lib/politico/SLPackage.sleela	facade
 process	SLAtomic.sleela	lib/process/SLAtomic.sleela	source
 process	SLBarrier.sleela	lib/process/SLBarrier.sleela	source

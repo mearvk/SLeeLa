@@ -1,0 +1,91 @@
+#sleela 2.5
+material;
+< philosophy.sleela -- the self-contained, runnable build of the SLeeLa >
+< philosophy tool catalog. The `run` subcommand compiles one file as a single >
+< unit, so this aggregate inlines a small catalog (mirroring the six tool- >
+< handle classes in this package) and a `main` that lists the tools SLeeLa >
+< builds can use. SLeeLa code names these tools; the native tools themselves >
+< live under philosophy/ at the repository root (event_tree, consistency/ >
+< signal-toss, partition_api, module/helper, int_set, psychiatry-friend). >
+<  >
+< Tool ids mirror the per-class id(): 1 event-tree, 2 consistency, 3 partition- >
+< api, 4 helper, 5 int-set, 6 speculation. >
+class Philosophy {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the real origin of the subject where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10417;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-30";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-30";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int count() { return 6; }
+
+  String nameOf(int id) {
+    if (id == 1) { return "event-tree"; }
+    if (id == 2) { return "consistency-signal-toss"; }
+    if (id == 3) { return "partition-api"; }
+    if (id == 4) { return "helper-reach-out"; }
+    if (id == 5) { return "int-set"; }
+    if (id == 6) { return "speculation-invite"; }
+    return "tool#" + id;
+  }
+
+  String summaryOf(int id) {
+    if (id == 1) { return "half-life-decayed explicit-input event store"; }
+    if (id == 2) { return "44 Hz branch-consistency sampler, 800-1200 commits/hour"; }
+    if (id == 3) { return "uniform branch/partition/system operations"; }
+    if (id == 4) { return "query-to-respondents desk with alive / known-of-Science"; }
+    if (id == 5) { return "authored character schema over real age structure"; }
+    if (id == 6) { return "adult-psychiatry hypotheses about programming reach"; }
+    return "unknown";
+  }
+
+  void report(int id) {
+    print(nameOf(id) + " -> " + summaryOf(id));
+  }
+
+  void main() {
+    print("SLeeLa philosophy tools available to builds:");
+    int i = 1;
+    while (i <= count()) {
+      report(i);
+      i = i + 1;
+    }
+    print("tool count: " + count());
+  }
+}
