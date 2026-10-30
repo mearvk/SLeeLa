@@ -6,7 +6,7 @@
 #include <string>
 namespace sleela {
 struct SyntaxVersion { int major=0, minor=0; std::string str() const { return std::to_string(major)+"."+std::to_string(minor); } bool operator<(const SyntaxVersion&o)const{return major!=o.major?major<o.major:minor<o.minor;} bool operator>(const SyntaxVersion&o)const{return o<*this;} bool operator==(const SyntaxVersion&o)const{return major==o.major&&minor==o.minor;} bool operator<=(const SyntaxVersion&o)const{return !(*this>o);} bool operator>=(const SyntaxVersion&o)const{return !(*this<o);} };
-// Supported source-syntax range the toolchain drives: 1.0 .. 2.7. Features
+// Supported source-syntax range the toolchain drives: 1.0 .. 2.8. Features
 // introduced in later minors are still gated individually (a 1.0 source that
 // uses, e.g., network built-ins errors with "requires #sleela 1.1"), but the
 // floor itself is 1.0 so the runtime can drive the whole 1.0 .. 2.7 range.
