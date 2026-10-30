@@ -16,9 +16,9 @@ Check the supported syntax range:
 ./impl/build/sleela version
 ```
 
-The compiler source currently defines the supported syntax range as **1.0–2.8** in `impl/frontend/version.h`. The first lessons use syntax 1.7; the final two introduce syntax 2.7 and 2.8.
+The compiler source currently defines the supported syntax range as **1.0–2.8** in `impl/frontend/version.h`. The first lessons use syntax 1.7; the advanced examples use 2.1, and the newest integer lessons use 2.7 and 2.8.
 
-## The eleven small lessons
+## The eleven first lessons
 
 | Step | File | What to learn |
 |---:|---|---|
@@ -61,6 +61,10 @@ You can also create a reusable runnable artifact:
 
 Write a program that stores three scores in an array, calculates their total, and prints the total. Then add a fourth score with `arrayPush` and print the new array length.
 
+## Where to go next
+
+After the first lessons, open [the advanced feature catalogue](README.md#advanced-feature-examples). Try the pipe, time, or struct-transport example next. Network examples use loopback only; read each source comment before running it.
+
 ## Important distinction
 
-The examples in this directory are intended to be runnable language lessons. Some examples in other subsystem folders are explicitly labelled as simulations, checklists, policy tests, or draft API vocabulary. Their README files explain which ones require native bridges, external services, or hardware.
+The examples in this directory are intended to be language demonstrations. Some examples in other subsystem folders are explicitly labelled as simulations, checklists, policy tests, or draft API vocabulary. Their README files explain which ones require native bridges, external services, or hardware.
