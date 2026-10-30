@@ -1,0 +1,248 @@
+{
+  "schema_version": "1.0",
+  "title": "Language model architecture and system taxonomy",
+  "scope": "Representative families known through 2025, with a separate speculative placeholder for 2026–2500.",
+  "warning": "This is a curated taxonomy, not a count of 2,000–2,500 distinct models and not an exhaustive catalogue of products or checkpoints.",
+  "entries": [
+    {
+      "id": "n-gram",
+      "name": "Statistical language model",
+      "description": "Predicts tokens from local frequency context; useful baseline, limited long-range structure.",
+      "period_or_status": "2000s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "hidden-markov-model",
+      "name": "Probabilistic sequence model",
+      "description": "Models hidden states and observed token sequences; historically important for speech and NLP.",
+      "period_or_status": "pre-2010",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "conditional-random-field",
+      "name": "Structured prediction",
+      "description": "Labels sequences using contextual feature dependencies in classical NLP pipelines.",
+      "period_or_status": "2000s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "feed-forward-neural-lm",
+      "name": "Neural language model",
+      "description": "Predicts a token from a fixed context window using dense neural layers.",
+      "period_or_status": "2000s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "rnn",
+      "name": "Recurrent neural network",
+      "description": "Processes sequences with recurrent state; foundational neural sequence architecture.",
+      "period_or_status": "2010s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "lstm",
+      "name": "Gated recurrent network",
+      "description": "Uses input, forget, and output gates to retain information over longer sequences.",
+      "period_or_status": "2010s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "gru",
+      "name": "Gated recurrent network",
+      "description": "A streamlined gated recurrent architecture with update and reset gates.",
+      "period_or_status": "2010s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "seq2seq",
+      "name": "Encoder-decoder sequence model",
+      "description": "Maps an input sequence to an output sequence, often with recurrent or transformer components.",
+      "period_or_status": "2010s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "attention-seq2seq",
+      "name": "Attention-based encoder-decoder",
+      "description": "Allows decoder steps to focus on relevant encoded input positions.",
+      "period_or_status": "2010s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "transformer-encoder",
+      "name": "Bidirectional encoder",
+      "description": "Uses self-attention and feed-forward blocks for contextual representations; BERT-style family.",
+      "period_or_status": "2018 onward",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "transformer-decoder",
+      "name": "Autoregressive decoder",
+      "description": "Uses causal self-attention to predict the next token; GPT-style family.",
+      "period_or_status": "2018 onward",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "encoder-decoder-transformer",
+      "name": "Text-to-text transformer",
+      "description": "Uses an encoder and autoregressive decoder for translation, summarization, and general text tasks.",
+      "period_or_status": "2019 onward",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "sparse-mixture-of-experts",
+      "name": "Conditional-compute model",
+      "description": "Routes tokens or examples to a subset of expert networks to scale capacity with conditional computation.",
+      "period_or_status": "2020s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "retrieval-augmented-generation",
+      "name": "Retrieval-grounded model system",
+      "description": "Combines a language model with search or document retrieval; retrieved evidence is distinct from model weights.",
+      "period_or_status": "2020s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "long-context-transformer",
+      "name": "Extended-context model",
+      "description": "Uses attention variants, memory, or position strategies to process longer sequences.",
+      "period_or_status": "2020s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "state-space-language-model",
+      "name": "State-space sequence model",
+      "description": "Uses structured state-space dynamics or selective scans as an alternative to full attention in some settings.",
+      "period_or_status": "2020s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "hybrid-attention-state-space",
+      "name": "Hybrid sequence model",
+      "description": "Combines attention layers with state-space or recurrent components.",
+      "period_or_status": "2020s",
+      "evidence_status": "emerging",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "multimodal-language-model",
+      "name": "Multimodal model",
+      "description": "Connects text with image, audio, video, or other modality encoders and decoders.",
+      "period_or_status": "2020s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "speech-language-model",
+      "name": "Audio/speech model",
+      "description": "Processes or generates speech/audio, sometimes through discrete audio tokens or aligned encoders.",
+      "period_or_status": "2020s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "code-language-model",
+      "name": "Code-specialized model",
+      "description": "Trains on source code and text for completion, explanation, transformation, and tool-assisted coding.",
+      "period_or_status": "2020s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "vision-language-model",
+      "name": "Vision-text model",
+      "description": "Aligns visual representations with language for image understanding and visual question answering.",
+      "period_or_status": "2020s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "diffusion-language-hybrid",
+      "name": "Generative hybrid",
+      "description": "Combines language modeling with diffusion-style generation or refinement; implementations vary.",
+      "period_or_status": "2020s",
+      "evidence_status": "research",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "agentic-model-system",
+      "name": "Tool-using model system",
+      "description": "Combines an LLM with planning, tools, memory, and feedback loops; system design rather than a single neural architecture.",
+      "period_or_status": "2020s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "continual-learning-model",
+      "name": "Continual adaptation system",
+      "description": "Updates or adapts from sequential data while attempting to limit catastrophic forgetting.",
+      "period_or_status": "ongoing",
+      "evidence_status": "research",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "neuromorphic-language-model",
+      "name": "Brain-inspired computing model",
+      "description": "Explores spiking or event-driven computation for language-related workloads.",
+      "period_or_status": "ongoing",
+      "evidence_status": "research",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "quantized-language-model",
+      "name": "Compressed deployment variant",
+      "description": "Uses reduced-precision weights or activations to lower memory and compute; orthogonal to base architecture.",
+      "period_or_status": "2020s",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "distilled-language-model",
+      "name": "Compressed student model",
+      "description": "Transfers behavior from a larger teacher to a smaller model; orthogonal to base architecture.",
+      "period_or_status": "2010s onward",
+      "evidence_status": "established",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "federated-language-model",
+      "name": "Distributed training system",
+      "description": "Trains across decentralized data holders with aggregation and privacy constraints; a training topology, not an architecture.",
+      "period_or_status": "2020s",
+      "evidence_status": "research",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "neuro-symbolic-language-system",
+      "name": "Hybrid symbolic-neural system",
+      "description": "Combines neural language processing with explicit rules, logic, knowledge graphs, or verifiers.",
+      "period_or_status": "ongoing",
+      "evidence_status": "research",
+      "category": "architecture-or-system-pattern"
+    },
+    {
+      "id": "future-hypothetical-model",
+      "name": "Speculative category",
+      "description": "Potential post-2025 systems through 2500 cannot be catalogued as known facts; record proposals separately with evidence and uncertainty.",
+      "period_or_status": "2026–2500",
+      "evidence_status": "speculative",
+      "category": "architecture-or-system-pattern"
+    }
+  ]
+}
