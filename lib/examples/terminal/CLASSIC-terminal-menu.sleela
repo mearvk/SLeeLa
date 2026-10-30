@@ -1,6 +1,5 @@
-#sleela 2.6
-// CLASSIC: a simple deterministic terminal menu presentation.
-// This demonstrates text output; it does not read interactive keyboard input.
+#sleela 1.7
+// CLASSIC: terminal menu presentation. Demonstrates output, not interactive input.
 class ClassicTerminalMenu {
     void main() {
         print("==============================");
