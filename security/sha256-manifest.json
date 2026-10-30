@@ -6482,16 +6482,40 @@
       "sha256": "0158ad0e51275ccd04e5e2eacfe085d0af3b346e726a7021594fab7e1d05c5f6"
     },
     {
+      "path": "lib/examples/cdma/ADVANCED-processing-gain-capacity.sleela",
+      "sha256": "990a984b3d2e156d3d9fc5b9c2c8837496b0fa0eeb7ab3919fc2959cb5e7aec2"
+    },
+    {
+      "path": "lib/examples/cdma/BASIC-link-budget.sleela",
+      "sha256": "cb5b752f880295bf4307340e854965dc1a2d1b395855951b25d26a3d9c68e4c9"
+    },
+    {
       "path": "lib/examples/cdma/CLASSIC-link-budget.sleela",
       "sha256": "b98ee0241311223035c387def95f65ef18b4df0d9b02a13fce9c89be471a0883"
+    },
+    {
+      "path": "lib/examples/cdma/MODERATE-link-margin.sleela",
+      "sha256": "b64701fde31a1b708996e32aa33519a874f4487511f11b4d37fdd86aaf6033c1"
     },
     {
       "path": "lib/examples/connector/CLASSIC-connector-lifecycle.sleela",
       "sha256": "bfe770ea411340e3e9cf97b1229919efebf7efb43e2acd66aecd2c5740acbaad"
     },
     {
+      "path": "lib/examples/crypto/ADVANCED-manifest-verify-sim.sleela",
+      "sha256": "671d872559cb6f846f27099cd606a14b16b4a8f757e4790bc85dbe7d4eab6258"
+    },
+    {
+      "path": "lib/examples/crypto/BASIC-integrity-workflow.sleela",
+      "sha256": "0f0e9d6331c848cc74e5078ea82b32b839f7984226f7a97ac16be447ad837011"
+    },
+    {
       "path": "lib/examples/crypto/CLASSIC-hash-integrity-workflow.sleela",
       "sha256": "b58f7de8f987b8f54567b9227411d1a550f97e474c887b821b903d1645cafe6a"
+    },
+    {
+      "path": "lib/examples/crypto/MODERATE-checksum-not-crypto.sleela",
+      "sha256": "a696d6544ee50359af6cb91cc481124eb9afd63b7c24bd0e8a7fc04b55c950f9"
     },
     {
       "path": "lib/examples/debugger/CLASSIC-debugging-checklist.sleela",

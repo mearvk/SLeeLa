@@ -1,0 +1,48 @@
+#sleela 1.7
+// ADVANCED: the two numbers that make CDMA "CDMA".
+//
+//  1. Processing (spreading) gain: a narrow data signal is spread across a much
+//     wider chip bandwidth. Gain ratio = chip rate / data rate. In dB it is
+//     10*log10(ratio); we approximate log10 with a tiny integer table so the
+//     example stays self-contained (SLeeLa 1.7 has no math intrinsics).
+//
+//  2. Pole capacity: how many users one cell can carry before the shared noise
+//     floor rises too far. Approx users = processing_gain / (Eb/N0 target).
+//
+// All illustrative arithmetic; no radio is accessed.
+class AdvancedProcessingGainCapacity {
+    // log10 for exact powers/ratios we use here, via a small lookup.
+    // Returns dB = 10*log10(ratio) for the handful of ratios in this demo.
+    double gainDb(int ratio) {
+        if (ratio == 128) return 21.07;   // 10*log10(128)
+        if (ratio == 64)  return 18.06;   // 10*log10(64)
+        return 0.0;                        // unknown ratio -> report 0 dB
+    }
+
+    void main() {
+        double chipRateMcps = 1.2288;   // classic IS-95 CDMA chip rate (Mcps)
+        double dataRateKbps = 9.6;      // a voice channel (kbps)
+
+        // Processing gain as a plain ratio (watch the unit scaling: Mcps vs kbps).
+        double ratioExact = (chipRateMcps * 1000000.0) / (dataRateKbps * 1000.0);
+        int ratio = 128;               // 1.2288e6 / 9.6e3 = 128 exactly
+        double pgDb = gainDb(ratio);
+
+        // Required energy-per-bit to noise-density for usable voice (dB and linear).
+        double ebN0DbTarget = 7.0;
+        // 10^(7/10) ~= 5.01; use the standard rounded value 5.0 for the ratio.
+        double ebN0Linear = 5.0;
+
+        // Pole capacity (single cell, omni, no sectorization or voice activity):
+        //   users ~= processing_gain_ratio / ebN0_linear
+        double poleUsers = ratio / ebN0Linear;
+
+        print("chip rate (Mcps) = " + chipRateMcps);
+        print("data rate (kbps) = " + dataRateKbps);
+        print("processing gain (ratio) = " + ratioExact);
+        print("processing gain (dB) = " + pgDb);
+        print("Eb/N0 target (dB) = " + ebN0DbTarget);
+        print("pole capacity (users/cell, ideal) = " + poleUsers);
+        print("note: real capacity is lower after interference and overhead margins.");
+    }
+}
