@@ -5,6 +5,24 @@ first-class, one-class-per-file library units carrying the Metadata Class
 metapattern. SLeeLa code names and gates these tools through the handles here;
 the native implementations live under `philosophy/` at the repository root.
 
+## Module organization
+
+The native module is organized at [`philosophy/module/`](../../philosophy/module/README.md)
+into three cooperating areas. The SLeeLa-facing package here exposes the tool
+contracts to compiler, Loader, Nordshrift, and SleelaDoc; it does not duplicate
+the native implementations.
+
+| Area | Contract | SLeeLa-facing connection |
+|---|---|---|
+| `philosophy/module/data/` | Typed observations and events; units, timestamps, optional end times, half-life settings, related-event IDs, provenance, and consent-to-share. | `SLPhilosophyEventTree`, `SLPhilosophyInput`, `SLPhilosophyInputs`, `SLPhilosophyItem` |
+| `philosophy/module/helper/` | Deterministic validation, half-life relevance, compatible longitudinal comparisons, display normalization, and consent/domain filtering. | `SLPhilosophyHelper`, `SLPhilosophyRelevant`, `SLPhilosophyTree` |
+| `philosophy/module/psychiatry-friend/` | Supportive, non-clinical conversation support; separates self-report, observation, publication, and professional opinion while preserving uncertainty. | `SLPhilosophySpeculation` and the attributed input path |
+
+The module is an explicit-input reference architecture, not a clinical product.
+It does not diagnose, verify credentials, infer another person's intent, monitor
+ambient media, recommend medication changes, or turn observations into a score
+of human worth. A revisit is a link to an earlier event, not new corroboration.
+
 ## Classes
 
 | Class | Tool it fronts (native source) |
