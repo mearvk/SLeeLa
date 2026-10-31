@@ -70,6 +70,8 @@ int slcr_segment_page(const uint8_t *binary, size_t width, size_t height,
                       size_t minimum_ink_pixels, slcr_box **boxes,
                       size_t *box_count);
 void slcr_free_segments(slcr_box *boxes);
+/* Load an 8-bit grayscale PGM (P2 or P5); caller frees *gray with free(). */
+int slcr_load_pgm(const char *path, uint8_t **gray, size_t *width, size_t *height);
 
 /* Apply reviewer overrides: TSV lines are zero-based glyph index, TAB, UTF-8
  * single-codepoint label. Unchanged positions are recognized again.
