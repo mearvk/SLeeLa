@@ -43,6 +43,10 @@ jobs:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl clean all
 
+      - name: Train and verify the CPU neural network with XOR
+        timeout-minutes: 3
+        run: make -C tests ai-neural-nets-xor
+
       - name: Test native Wi-Fi manager contract
         timeout-minutes: 3
         run: make -C wifi-common test
