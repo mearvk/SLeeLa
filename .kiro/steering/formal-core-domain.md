@@ -11,12 +11,12 @@ implementing, reviewing, documenting, or changing SLeeLa language behavior.
 ## Required documents
 
 1. **Canonical working document:** [`src/Sleela.formal-core`](../../src/Sleela.formal-core)
-2. **Preserved formal-core archive:** [`formal-core/Sleela.formal-core`](../../formal-core/Sleela.formal-core)
+2. **Preserved formal-core archive:** [`formal-core/Sleela.formal-core`](../../src/formal-core/Sleela.formal-core)
 
-The archive is a byte-identical preservation copy of the canonical document as
+The archive under `src/formal-core/` is a byte-identical preservation copy of the canonical document as
 of its archive commit. Keep the two copies synchronized whenever the canonical
 document changes. Update `src/Sleela.formal-core` first, then copy its complete
-contents to `formal-core/Sleela.formal-core`. Do not independently edit the
+contents to `src/formal-core/Sleela.formal-core`. Do not independently edit the
 two copies or allow them to silently diverge.
 
 ## Authority and scope
