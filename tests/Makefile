@@ -4,9 +4,9 @@ CXX ?= c++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pedantic
 LDLIBS ?= -lm
 
-.PHONY: all clean check ai-neural-nets-xor neural-nets-xor jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies java-constraints java-signature-comparison java-platform-qualification
+.PHONY: all clean check ai-neural-nets-xor neural-nets-xor ai-character-recognition character-recognition-smoke jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies java-constraints java-signature-comparison java-platform-qualification
 
-all: memory reflection nordshrift runtime network-security neural-nets-xor
+all: memory reflection nordshrift runtime network-security neural-nets-xor character-recognition-smoke
 
 memory: native_memory_smoke.cpp ../api/native/memory/sleela_memory_manager.cpp
 	$(CXX) $(CXXFLAGS) -I../api/native/memory $^ -o $@
@@ -51,7 +51,7 @@ java-source-equivalence:
 	python3 java_source_equivalence.py --java java_equivalence/ExpressionSurface.java --sleela java_equivalence/ExpressionSurface.sleela --json java_equivalence/expression-report.json
 
 clean:
-	rm -f memory reflection nordshrift runtime network-security neural-nets-xor
+	rm -f memory reflection nordshrift runtime network-security neural-nets-xor character-recognition-smoke character-recognition-smoke.txt character-recognition-smoke.jsonl
 
 java-conversions:
 	$(CXX) $(CXXFLAGS) -I../impl/frontend java_conversion_semantics.cpp ../impl/frontend/java_equivalence.cpp -o java-conversions
