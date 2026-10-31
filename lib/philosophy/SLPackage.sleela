@@ -1,6 +1,10 @@
 << lib/philosophy/SLPackage.sleela
    SLeeLa Standard Library Definition.
-   Definition: Defines the SLeeLa standard-library package for philosophy. >>
+   Definition: Defines the SLeeLa standard-library package for philosophy,
+   including the explicit-input module organized as data contracts, deterministic
+   helpers, and a non-clinical psychiatry-friend conversation interface. The
+   package facade names the SLeeLa units; native implementations remain under
+   philosophy/ and the module's documented subdirectories. >>
 #sleela 2.5
 material;
 < Library facade for module package: philosophy >
