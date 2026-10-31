@@ -37,11 +37,4 @@ std::optional<InputFields> decode_input(CodePoint identifier) {
     return unpack_input(static_cast<std::uint32_t>(delta));
 }
 
-std::optional<CodePoint> symbol_from_input(InputState packed_input) {
-    if (packed_input > kPackedInputMask) return std::nullopt;
-    const auto fields = unpack_input(static_cast<std::uint32_t>(packed_input));
-    if (!fields) return std::nullopt;
-    return encode_input(*fields);
-}
-
 } // namespace utf4088
