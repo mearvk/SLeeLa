@@ -4,9 +4,9 @@ CXX ?= c++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pedantic
 LDLIBS ?= -lm
 
-.PHONY: all clean check ai-neural-nets-xor neural-nets-xor ai-character-recognition character-recognition-smoke jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies java-constraints java-signature-comparison java-platform-qualification
+.PHONY: all clean check ai-neural-nets-xor neural-nets-xor ai-character-recognition character-recognition-smoke character-recognition-cli jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies java-constraints java-signature-comparison java-platform-qualification
 
-all: memory reflection nordshrift runtime network-security neural-nets-xor character-recognition-smoke
+all: memory reflection nordshrift runtime network-security neural-nets-xor character-recognition-smoke character-recognition-cli
 
 memory: native_memory_smoke.cpp ../api/native/memory/sleela_memory_manager.cpp
 	$(CXX) $(CXXFLAGS) -I../api/native/memory $^ -o $@
@@ -35,6 +35,10 @@ character-recognition-smoke: character_recognition_smoke.c ../artificial-intelli
 ai-character-recognition: character-recognition-smoke
 	./character-recognition-smoke
 
+character-recognition-cli: ../artificial-intelligence/character-recognition/character_recognition_main.c ../artificial-intelligence/character-recognition/character_recognition.c ../artificial-intelligence/character-recognition/character_recognition.h
+	$(CC) $(CFLAGS) -I../artificial-intelligence/character-recognition ../artificial-intelligence/character-recognition/character_recognition_main.c ../artificial-intelligence/character-recognition/character_recognition.c $(LDLIBS) -o $@
+	./character-recognition-cli --help
+
 check: all
 	./memory
 	./reflection
@@ -58,7 +62,7 @@ java-source-equivalence:
 	python3 java_source_equivalence.py --java java_equivalence/ExpressionSurface.java --sleela java_equivalence/ExpressionSurface.sleela --json java_equivalence/expression-report.json
 
 clean:
-	rm -f memory reflection nordshrift runtime network-security neural-nets-xor character-recognition-smoke character-recognition-smoke.txt character-recognition-smoke.jsonl
+	rm -f memory reflection nordshrift runtime network-security neural-nets-xor character-recognition-smoke character-recognition-cli character-recognition-smoke.txt character-recognition-smoke.jsonl
 
 java-conversions:
 	$(CXX) $(CXXFLAGS) -I../impl/frontend java_conversion_semantics.cpp ../impl/frontend/java_equivalence.cpp -o java-conversions
