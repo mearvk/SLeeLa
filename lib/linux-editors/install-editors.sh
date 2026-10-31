@@ -119,7 +119,7 @@ uninstall_all() {
         installed_copy="$STATE_DIR/installed$dest"
         if [ -f "$dest" ] && [ -f "$installed_copy" ] && ! cmp -s "$dest" "$installed_copy"; then
             say "Preserve locally modified file: $dest"
-            printf '%s\\n' "$dest" >> "$remaining"
+            printf '%s\n' "$dest" >> "$remaining"
             continue
         fi
         if [ -f "$backup" ]; then
