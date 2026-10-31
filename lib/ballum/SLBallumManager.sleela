@@ -268,4 +268,29 @@ class SLBallumManager {
     lastStatus = uiBallumSetGamma(id, clampGamma(gammaScaled));
     return lastStatus;
   }
+
+  < ---- fullscreen surface: total, owned, fast per-pixel control ------- >
+  < Does display `id` offer a claimable fullscreen framebuffer surface? >
+  boolean hasSurface(int id) { return uiBallumHasSurface(id) == 1; }
+
+  < Claim an override-redirect fullscreen surface over display `id`. While >
+  < claimed, setPixel writes to an in-memory framebuffer (no device round- >
+  < trips) and present() pushes the whole frame in one shot. >
+  int claimSurface(int id) {
+    lastStatus = uiBallumClaimSurface(id);
+    return lastStatus;
+  }
+
+  < Push the claimed framebuffer to the screen (one native XPutImage; MIT-SHM >
+  < when available). >
+  int present(int id) {
+    lastStatus = uiBallumPresent(id);
+    return lastStatus;
+  }
+
+  < Release the claimed surface; drawing reverts to the live-desktop fallback. >
+  int releaseSurface(int id) {
+    lastStatus = uiBallumReleaseSurface(id);
+    return lastStatus;
+  }
 }

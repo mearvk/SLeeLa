@@ -131,12 +131,15 @@ The developer-facing classes live in `lib/ballum/` (`SLBallumManager`,
 `SLBallumDisplay`, `SLBallumColor`, `SLBallumStatus`, and per-OS profile
 classes under `lib/ballum/platforms/`). See `lib/ballum/README.md`.
 
-> **Note.** The fullscreen-surface trio (`claim_surface`/`present`/
-> `release_surface`) is implemented in the native C layer and the portable
-> manager, with the X11 backend and the manager/portable tests covering it.
-> Exposing it through the SLeeLa facade (`lib/ballum/SLBallumScreen`) and the
-> host VM bridge (`impl/core/ballum_vm_bridge.c`) is the next step; the native
-> ABI is in place for that wiring.
+> **SLeeLa-facing surface.** The fullscreen-surface trio is now wired all the
+> way to SLeeLa. The host VM bridge (`impl/core/ballum_vm_bridge.c`) exposes
+> `uiBallumHasSurface` / `uiBallumClaimSurface` / `uiBallumPresent` /
+> `uiBallumReleaseSurface`, and the facade adds ergonomic methods:
+> `SLBallumScreen.canFullScreen()` / `claimFullScreen()` / `present()` /
+> `releaseFullScreen()` (over `SLBallumManager.hasSurface/claimSurface/present/
+> releaseSurface`). See `lib/ballum/surface-demo.sleela` for a runnable
+> walk-through. Each call is validated by the native manager and fails closed on
+> a backend without the capability.
 
 ---
 

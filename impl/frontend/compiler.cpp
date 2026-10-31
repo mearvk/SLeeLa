@@ -832,6 +832,8 @@ private:
             {"uiBallumLogoLoad",SLUI_FN_BALLUM_LOGO_LOAD},{"uiBallumLogoSetEffect",SLUI_FN_BALLUM_LOGO_SET_EFFECT},
             {"uiBallumFxCount",SLUI_FN_BALLUM_FX_COUNT},{"uiBallumFxName",SLUI_FN_BALLUM_FX_NAME},
             {"uiBallumFxByName",SLUI_FN_BALLUM_FX_BY_NAME},
+            {"uiBallumHasSurface",SLUI_FN_BALLUM_HAS_SURFACE},{"uiBallumClaimSurface",SLUI_FN_BALLUM_CLAIM_SURFACE},
+            {"uiBallumPresent",SLUI_FN_BALLUM_PRESENT},{"uiBallumReleaseSurface",SLUI_FN_BALLUM_RELEASE_SURFACE},
             {"uiWidgetSetToggle",SLUI_FN_WIDGET_SET_TOGGLE},
             {"uiWidgetSetValue",SLUI_FN_WIDGET_SET_VALUE},{"uiWidgetGetText",SLUI_FN_WIDGET_GET_TEXT},
             {"uiWidgetGetToggle",SLUI_FN_WIDGET_GET_TOGGLE},{"uiWidgetGetValue",SLUI_FN_WIDGET_GET_VALUE},

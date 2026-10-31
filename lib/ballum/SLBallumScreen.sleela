@@ -143,6 +143,38 @@ class SLBallumScreen {
   boolean canSetBrightness() { return capHas(4); }
   boolean canSetWarmth() { return capHas(8); }
   boolean canSetGamma() { return capHas(16); }
+  < 128 == BALLUM_CAP_FULLSCREEN_SURFACE: a claimable, owned fullscreen frame. >
+  boolean canFullScreen() { return capHas(128); }
+
+  < ---- fullscreen surface: total, owned, fast per-pixel control -------- >
+  < Claim an override-redirect fullscreen surface over the bound display. The >
+  < window manager/compositor leaves every pixel to this program, so drawing >
+  < is total (not overpainted). While claimed, plot()/fillRect() write to an >
+  < in-memory framebuffer with no per-pixel device round-trips; call present() >
+  < to push the whole frame to the screen in one native image transfer >
+  < (MIT-SHM when the server supports it). Call releaseFullScreen() to give the >
+  < screen back. Returns the result code (also in lastStatus). >
+  int claimFullScreen() {
+    if (!isReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    if (!canFullScreen()) { lastStatus = SLBallumStatus.UNSUPPORTED; return lastStatus; }
+    lastStatus = manager.claimSurface(boundId);
+    return lastStatus;
+  }
+
+  < Push the claimed framebuffer to the screen in one shot. Call after a batch >
+  < of plot()/fillRect() writes to make them visible. >
+  int present() {
+    if (!isReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    lastStatus = manager.present(boundId);
+    return lastStatus;
+  }
+
+  < Release a claimed fullscreen surface; drawing reverts to the live desktop. >
+  int releaseFullScreen() {
+    if (!isReady()) { lastStatus = SLBallumStatus.BRIDGE_REQUIRED; return lastStatus; }
+    lastStatus = manager.releaseSurface(boundId);
+    return lastStatus;
+  }
 
   < ---- pixel accuracy helpers ----------------------------------------- >
 

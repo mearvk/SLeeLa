@@ -136,6 +136,33 @@ const char *sleela_ballum_vm_status_name(int status) {
     return ballum_status_name((ballum_status_t)status);
 }
 
+/* ---- fullscreen surface (total per-pixel control) ------------------------ */
+/* Claim an override-redirect fullscreen framebuffer over the display; while
+ * claimed, set_pixel/get_pixel and logo_blend write to the framebuffer (fast,
+ * no X round-trips) and present() pushes the whole frame in one shot. */
+int sleela_ballum_vm_has_surface(int display_id) {
+    if (ensure_manager() != BALLUM_STATUS_OK) return 0;
+    return ballum_manager_has_surface(&g_manager, (uint32_t)display_id) == 1 ? 1 : 0;
+}
+
+int sleela_ballum_vm_claim_surface(int display_id) {
+    int init = ensure_manager();
+    if (init != BALLUM_STATUS_OK) return init;
+    return (int)ballum_manager_claim_surface(&g_manager, (uint32_t)display_id);
+}
+
+int sleela_ballum_vm_present(int display_id) {
+    int init = ensure_manager();
+    if (init != BALLUM_STATUS_OK) return init;
+    return (int)ballum_manager_present(&g_manager, (uint32_t)display_id);
+}
+
+int sleela_ballum_vm_release_surface(int display_id) {
+    int init = ensure_manager();
+    if (init != BALLUM_STATUS_OK) return init;
+    return (int)ballum_manager_release_surface(&g_manager, (uint32_t)display_id);
+}
+
 /* ---- pointer input ------------------------------------------------------- */
 /* The most recently polled event, latched so the SLeeLa side can read its
  * fields after poll() reports the type. */

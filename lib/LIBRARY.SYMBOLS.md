@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11680
+library-source-files: 11681
 library-packages: 107
 module-facade-symbols: 75
-total-symbol-records: 11755
+total-symbol-records: 11756
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -76,6 +76,7 @@ ballum	SLLinuxBallumProfile.sleela	lib/ballum/platforms/GNU/Linux/SLLinuxBallumP
 ballum	SLWindowsBallumProfile.sleela	lib/ballum/platforms/Microsoft/Windows/SLWindowsBallumProfile.sleela	source
 ballum	screen-demo.sleela	lib/ballum/screen-demo.sleela	source
 ballum	session-demo.sleela	lib/ballum/session-demo.sleela	source
+ballum	surface-demo.sleela	lib/ballum/surface-demo.sleela	source
 bash	SLPackage.sleela	lib/bash/SLPackage.sleela	facade
 boolean	Bool_FFFFFFFFFFFFFFFF.sleela	lib/boolean/16/Bool_FFFFFFFFFFFFFFFF.sleela	source
 boolean	Bool_FTTTTTTTTTTTTTTT.sleela	lib/boolean/16/Bool_FTTTTTTTTTTTTTTT.sleela	source

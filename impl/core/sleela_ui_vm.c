@@ -138,6 +138,8 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_BALLUM_STATUS_NAME: case SLUI_FN_BALLUM_EVENT_TYPE_NAME:
         case SLUI_FN_BALLUM_LOGO_LOAD: case SLUI_FN_BALLUM_LOGO_SET_EFFECT:
         case SLUI_FN_BALLUM_FX_NAME: case SLUI_FN_BALLUM_FX_BY_NAME:
+        case SLUI_FN_BALLUM_HAS_SURFACE: case SLUI_FN_BALLUM_CLAIM_SURFACE:
+        case SLUI_FN_BALLUM_PRESENT: case SLUI_FN_BALLUM_RELEASE_SURFACE:
             return 1;
         /* 2 args */
         case SLUI_FN_APP_PUMP: case SLUI_FN_APP_QUIT: case SLUI_FN_WINDOW_SET_TITLE:
@@ -373,6 +375,10 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_BALLUM_FX_COUNT:        return r_int(sleela_ballum_vm_fx_count());
         case SLUI_FN_BALLUM_FX_NAME:         return r_str(sleela_ballum_vm_fx_name((int)ai(a,n,0)));
         case SLUI_FN_BALLUM_FX_BY_NAME:      return r_int(sleela_ballum_vm_fx_by_name(as_(a,n,0)));
+        case SLUI_FN_BALLUM_HAS_SURFACE:     return r_int(sleela_ballum_vm_has_surface((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_CLAIM_SURFACE:   return r_int(sleela_ballum_vm_claim_surface((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_PRESENT:         return r_int(sleela_ballum_vm_present((int)ai(a,n,0)));
+        case SLUI_FN_BALLUM_RELEASE_SURFACE: return r_int(sleela_ballum_vm_release_surface((int)ai(a,n,0)));
 
         case SLUI_FN_WIDGET_SET_TOGGLE:    slui_widget_set_toggle(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_WIDGET_SET_VALUE:     slui_widget_set_value(widget_get(ai(a,n,0)), ad(a,n,1)); return r_null();
