@@ -1,3 +1,7 @@
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
+
 #include "encoder_decoder.hpp"
 #include <cassert>
 #include <cstdint>
