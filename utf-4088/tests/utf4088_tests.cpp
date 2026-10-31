@@ -64,17 +64,17 @@ int main() {
     const auto& conceptSymbols = semantics::concept_symbol_registry();
     assert(conceptSymbols.size() == 44);
     for (std::size_t i = 0; i < conceptSymbols.size(); ++i) {
-        const auto& concept = conceptSymbols[i];
-        assert(concept.id == i + 1);
-        assert(concept.metrics.black_pixels <= 96);
-        for (double coordinate : concept.anchor_4d) {
+        const auto& conceptEntry = conceptSymbols[i];
+        assert(conceptEntry.id == i + 1);
+        assert(conceptEntry.metrics.black_pixels <= 96);
+        for (double coordinate : conceptEntry.anchor_4d) {
             assert(std::isfinite(coordinate));
             assert(coordinate >= 0.0 && coordinate <= 1.0);
         }
         for (std::size_t j = 0; j < i; ++j) {
-            assert(concept.key != conceptSymbols[j].key);
-            assert(concept.id != conceptSymbols[j].id);
-            assert(concept.glyph.rows != conceptSymbols[j].glyph.rows);
+            assert(conceptEntry.key != conceptSymbols[j].key);
+            assert(conceptEntry.id != conceptSymbols[j].id);
+            assert(conceptEntry.glyph.rows != conceptSymbols[j].glyph.rows);
         }
     }
     for (const char* key : {"wealth", "wood", "sex", "pleasure", "quality", "asia"}) {
