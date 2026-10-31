@@ -15,7 +15,7 @@ bool is_valid_code_point(CodePoint value) {
 // implemented by the central encoder and uses a namespace disjoint from the
 // 16,606-record front-end registry.
 std::optional<CodePoint> symbol_from_input(InputState input) {
-    if (input > UINT32_MAX) return std::nullopt;
+    if (input > 0xFFFFFFFFULL) return std::nullopt;
     return encode_input(static_cast<std::uint32_t>(input));
 }
 
