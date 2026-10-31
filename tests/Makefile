@@ -42,6 +42,7 @@ check: all
 	./runtime
 	./network-security
 	./neural-nets-xor
+	./character-recognition-smoke
 
 jdk28-conformance:
 	python3 jdk28_functional_equivalence.py
