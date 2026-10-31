@@ -1,0 +1,46 @@
+name: Character Recognition C11
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - "artificial-intelligence/character-recognition/**"
+      - "tests/character_recognition_smoke.c"
+      - "tests/Makefile"
+      - ".github/workflows/character-recognition.yml"
+  pull_request:
+    branches: [master, main]
+    paths:
+      - "artificial-intelligence/character-recognition/**"
+      - "tests/character_recognition_smoke.c"
+      - "tests/Makefile"
+      - ".github/workflows/character-recognition.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  glyph-recognition:
+    name: C11 glyph recognition (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up MinGW-w64 on Windows
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            make
+            mingw-w64-ucrt-x86_64-gcc
+
+      - name: Run character recognition regression test
+        run: make -C tests ai-character-recognition
