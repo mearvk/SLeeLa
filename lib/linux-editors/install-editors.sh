@@ -93,6 +93,8 @@ install_file() {
         record_file "$dest" "$backup"
         mkdir -p "$(dirname "$dest")"
         cp -p "$src" "$dest"
+        mkdir -p "$(dirname "$STATE_DIR/installed$dest")"
+        cp -p "$src" "$STATE_DIR/installed$dest"
     fi
 }
 install_tree() {
@@ -112,6 +114,11 @@ uninstall_all() {
     while IFS= read -r dest; do
         [ -n "$dest" ] || continue
         backup="$BACKUP_DIR$dest"
+        installed_copy="$STATE_DIR/installed$dest"
+        if [ -f "$dest" ] && [ -f "$installed_copy" ] && ! cmp -s "$dest" "$installed_copy"; then
+            say "Preserve locally modified file: $dest"
+            continue
+        fi
         if [ -f "$backup" ]; then
             say "Restore: $dest"
             if [ "$DRY_RUN" -eq 0 ]; then
@@ -123,6 +130,7 @@ uninstall_all() {
             say "Remove: $dest"
             if [ "$DRY_RUN" -eq 0 ]; then rm -f "$dest"; fi
         fi
+        if [ "$DRY_RUN" -eq 0 ]; then rm -f "$installed_copy"; fi
     done < "$RECORD"
     if [ "$DRY_RUN" -eq 0 ]; then
         rm -f "$RECORD"
@@ -145,7 +153,7 @@ for editor in vim neovim emacs vscode helix nano; do
         vim) install_tree "$SCRIPT_DIR/vim" "$HOME_DIR/.vim" ;;
         neovim) install_tree "$SCRIPT_DIR/neovim" "$XDG_CONFIG_HOME/nvim" ;;
         emacs) install_tree "$SCRIPT_DIR/emacs" "$HOME_DIR/.emacs.d/sleela" ;;
-        vscode) install_tree "$SCRIPT_DIR/vscode" "$XDG_DATA_HOME/code/extensions/sleela-language-1.0.0" ;;
+        vscode) install_tree "$SCRIPT_DIR/vscode" "$HOME_DIR/.vscode/extensions/mearvk.sleela-1.0.0" ;;
         helix) install_tree "$SCRIPT_DIR/helix" "$XDG_CONFIG_HOME/helix" ;;
         nano) install_tree "$SCRIPT_DIR/nano" "$XDG_CONFIG_HOME/nano/sleela" ;;
     esac
