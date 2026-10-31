@@ -4,8 +4,8 @@ Featherweight Sleela — Type System, Operational Semantics, and Metatheory
 
 Document Status:    Pre-Normative (Draft)
 Document Series:    SL-FORMAL-0001
-Revision:           0.1.0
-Date:               September 2026
+Revision:           0.2.0
+Date:               October 2026
 Governing Authority: Sleela Language Design Council (SLDC)
 Supersedes:         Nothing. Companion to SL-META-0001.
 Depends On:         SL-META-0001 (Sleela Language Metadocument)
@@ -888,5 +888,231 @@ document, and the SL-META provision it discharges.
   MT-08  Exhaustiveness Decidability (sealed) . 11.2    SR-04 (amended)
   MT-09  Lens Law Preservation under >> ....... 12.1    INV-04/SEM-04, 2.3
   MT-10  Deterministic IR under Canonical Order  13.2   CR-03
+================================================================================
+Part VII — Versioned Language Extensions (Syntax 2.2–2.9)
+================================================================================
 
-End of Document — SL-FORMAL-0001 Revision 0.1.0 — Sleela Language Design Council — September 2026
+This part records implemented language surface added after the original
+Featherweight Sleela core. It is a conservative extension register: a feature is
+formalized only to the extent supported by SLEELA.syntax, compiler
+implementation, and repository release/commit evidence. Syntax versions are
+source-language editions (#sleela M.N), not compiler/tool release numbers and
+not this document's revision.
+
+14. Version and evidence discipline
+
+14.1 Version axes. Three identifiers must not be conflated:
+
+  - Source syntax edition: the per-file #sleela M.N pragma.
+  - Compiler/tool release: for example Sleelvac 0.3.30-dev.
+  - Formal-document revision: SL-FORMAL-0001 Revision 0.2.0.
+
+A source file declaring edition n may use only features whose version gate is
+at most n, subject to the compiler's supported range. A later compiler does
+not silently upgrade the source edition. This document records the language
+model; it does not authorize a feature the compiler rejects.
+
+14.2 Version ledger (implemented surface through 2.9).
+
+  2.0–2.1  Earlier 2.x baseline. The current SLEELA.syntax history does not
+           identify a distinct, separately gated feature for either point
+           release. Treat their accepted surface as the inherited language
+           baseline, not as evidence for an invented feature.
+
+  2.2      Generic type signatures: parameterized reference types, class
+           type-parameter signatures, and wildcards. The implementation uses
+           erasure: the raw head determines known-ness and assignability;
+           type arguments are retained as signature metadata and are not
+           reified for runtime checking. Method-level type parameters,
+           primitive type arguments, and instantiation-aware bound checking
+           remain outside the accepted surface.
+
+  2.3      Constructor Guide-chain: new T(args) :: guide1 :: guide2. The head
+           is a construction; each Guide is a zero-argument method of T; Guides
+           execute in order and the expression evaluates to the constructed
+           instance. Lowering uses existing Core operations; no new artifact
+           ABI is required.
+
+  2.4      author / authorial document marker. This is contextual, declarative
+           document metadata. In the implemented authorial path it also
+           permits repeated members under documented declaration-order
+           identity and SHA-256 origin-branding rules.
+
+  2.5      material and memory document markers. These are contextual,
+           declarative-only markers. They classify a document; they do not
+           change expression typing, runtime evaluation, dispatch, or codegen.
+
+  2.6      Keyword supporter documents and the determine, object, and field
+           document markers. Uses of try, catch, throw, synchronized, and
+           super receive stable supporter hashes and @supporter metadata linked
+           to docs/keyword-supporters/<keyword>/<hash>/SUPPORT.md. The
+           determine/object/field markers are declarative metadata, not
+           runtime operations.
+
+  2.7      Signed base-2 integer family: int32, int64, int128, int256, ...,
+           int16777216 (twenty widths, 2^5 through 2^24). These are recognized
+           in primitive type positions and checked as signed integer kinds.
+           The compiler maps each width to the narrowest available native
+           storage slot; this is a representation choice, not a promise that
+           every host has a native integer of that exact width.
+
+  2.8      Unsigned base-2 integer family: uint32, uint64, uint128, uint256,
+           ..., uint16777216 (twenty widths, 2^5 through 2^24). Unary minus is
+           rejected; arithmetic/comparison require matching unsigned widths.
+           The object document marker attains its described reified catalogue
+           standing at 2.8, while remaining declarative-only.
+
+  2.9      @mix consequent fields. Repeated same-named instance fields are
+           admitted only when each member carries @mix. Declaration order
+           supplies indexes 1,2,3,... unless @mix(index-list) is supplied.
+           For a manual list, its number of indexes must equal the number of
+           fields in the same-named group. Below 2.9, ordinary duplicate-field
+           rejection remains in force. @mix is an annotation, not a reserved
+           identifier.
+
+15. Conservative formal extensions
+
+15.1 Generic signatures (2.2). Let erase(T<A1,...,An>) = T. In the current
+     accepted subset, well-formedness and assignability are determined by the
+     erased raw head. Type arguments are preserved for signature/documentation
+     fidelity but do not introduce runtime type identity. This is a surface
+     extension, not full parametric polymorphism; no soundness theorem for
+     reified generic instantiation is claimed here.
+
+15.2 Guide-chain (2.3). If construct e0 = new T(args) is well-typed and each
+     gi resolves to a zero-argument method of T, then
+     e0 :: g1 :: ... :: gn evaluates the constructor once, invokes g1 through
+     gn in order on that same receiver, and yields that receiver. Guide calls
+     retain their ordinary effects; the chain does not erase or suppress them.
+     This is conservative with respect to existing object and method semantics.
+
+15.3 Declarative document markers (2.4–2.6). The markers author/authorial,
+     material, memory, determine, object, and field are document-level
+     classification metadata. Except for the explicitly specified authorial
+     duplicate-member/origin-record behavior, they do not add expression
+     forms, values, effects, or runtime transitions. Keyword supporter records
+     similarly add provenance/documentation metadata for keyword occurrences;
+     they do not alter the keyword's existing typing or execution semantics.
+
+15.4 Wide integer families (2.7–2.8). Extend the primitive type grammar with
+     signed Int[w] and unsigned UInt[w], where w ranges over powers of two from
+     32 through 16777216 inclusive. The names int<w> and uint<w> denote these
+     families. Signed and unsigned families are distinct; operations requiring
+     matching widths/kinds reject mixed operands. For UInt[w], unary negation
+     is undefined and rejected. The compiler's native-slot representation is
+     an implementation mapping; this document makes no claim of arbitrary-
+     precision arithmetic unless the implementation explicitly supplies it.
+
+15.5 @mix groups (2.9). For a class C and instance-field name n, define:
+
+       Mix(C,n) = [ f in Fields(C) | f.name = n and hasAnnotation(f,@mix) ]
+
+     A repeated-name group is valid only when every repeated instance field
+     participating in that name is @mix-annotated. If the group has k fields,
+     its implicit index sequence is [1,...,k]. If a manual index list I is
+     supplied, validity requires |I| = k. The group's observable ordering is
+     declaration order under implicit indexing and the supplied index mapping
+     under manual indexing. The current specification describes the group as
+     consequent (array/list/simple array-struct keyed by index); it does not
+     specify a new independent mutable collection type, generic element
+     covariance, or a new Core opcode. Static fields are not included in this
+     instance-field rule. The version gate is 2.9.
+
+     A key semantic obligation for a fuller SL-SPEC proof is uniqueness and
+     stability of the index mapping: no two members of one group may ambiguously
+     claim the same logical index, and every permitted field access must
+     resolve deterministically. The current syntax section establishes count
+     matching for manual lists; any stronger uniqueness rule must be stated by
+     the normative grammar/compiler before being treated as implemented.
+
+================================================================================
+Part VIII — SleelaDoc Rich Pages as an Observational Documentation Layer
+================================================================================
+
+16. Rich documentation model (tooling, not core runtime semantics)
+
+The newer SleelaDoc work introduces rich pages generated from source comments.
+This is a documentation/tooling model layered over the language, not a new
+expression form or runtime feature. It belongs beside the formal core as an
+observational metadata system and must not be mistaken for a change to typing,
+effects, or execution.
+
+16.1 Parsed model. A documentation unit contains classes; a class contains
+     fields and methods. A class and each member may carry a contiguous
+     comment run, split into free-prose summary and recognized @-tags:
+
+       DocComment = (summary : Text, tags : List<DocTag>)
+       DocTag     = (name : Identifier, value : Text)
+       ClassDoc   = (kind, name, extends, summary, tags, fields, methods)
+       MemberDoc  = (kind, name, signature, summary, tags)
+
+     The scanner harvests both class-level and member-level tags. Untagged
+     source remains documentable: the renderer derives sections from available
+     declarations and prose rather than requiring authors to annotate every
+     member.
+
+16.2 Recognized enrichment vocabulary. The rich-page pass recognizes:
+
+       @intent      design purpose / user-facing intent
+       @thesis      thesis fallback for design purpose
+       @axiom       principles / load-bearing promises
+       @invariant   principles / load-bearing promises
+       @see         author-supplied relationships
+       @param       parameter explanation under a method signature
+       @returns     result explanation
+       @throws      exceptional outcome explanation
+       @mastery     author-supplied mastery steps
+
+     Free prose remains the page summary. Design purpose prefers @intent,
+     otherwise the summary, otherwise @thesis. Principles collect @axiom and
+     @invariant. Relationships add @see references to derived base-class and
+     member relationships. Structure attaches @param/@returns/@throws to the
+     corresponding member. User-clay guidance prefers @intent where present.
+     Author @mastery entries precede the standard five-rung mastery ladder.
+     The tag parser is backward compatible with ordinary untagged comments.
+
+16.3 Rendered page observations. The rich page exposes definition, design
+     purpose, relationships, structure, user clays, and mastery levels. These
+     are derived documentation views of source declarations and comments; they
+     are not runtime reflection and do not grant authority to execute a
+     declaration. A documentation relationship or @see tag is descriptive,
+     not an import, dependency edge, or permission.
+
+16.4 SleelaDoc CLI and corpus. The terminal sleela docs interface can list
+     topics, resolve packages/classes (including case-insensitive and SL-prefix
+     resolution), render rich pages, and provide ranked near-match suggestions.
+     sleela docs --generate [dir] emits a plain-text corpus with one page per
+     class, package overview files, and TOPICS.index for offline lookup. The
+     CLI may prefer that corpus; --live forces live parsing. --facade topic
+     performs bounded filesystem discovery and reports partial results
+     honestly when a configured size/file/time cap is reached. The JAR build
+     bundles the generated corpus with the matching .sleela sources.
+
+16.5 Evidence and compatibility. The repository commit record for the rich
+     @-tag enrichment confirms class- and member-level harvesting, the
+     @intent/@thesis/@axiom/@invariant/@see/@param/@returns/@throws/@mastery
+     vocabulary, and backward compatibility for tagged and plain units.
+     A later commit advances the SleelaDoc library units to #sleela 2.8 and
+     documents the CLI at syntax 2.8; the current repository subsequently
+     records the language edition as 2.9. This documentation-tool versioning
+     must not be read as changing the formal source-language version gates.
+
+================================================================================
+Appendix D — Repository Evidence and Conformance Boundaries
+================================================================================
+
+D-1. Normative language source: SLEELA.syntax, especially sections 16–28.
+D-2. Implemented 2.9 gate: impl/frontend/version.h and the semantic pass for
+     @mix; the current syntax specification records maxSupportedSyntax() = 2.9.
+D-3. Rich-page implementation: the SleelaDoc renderer and its rich-tag commit;
+     the documentation model is intentionally separate from runtime semantics.
+D-4. Release notes and README News are evidence of shipped repository features,
+     but a release title alone does not change the syntax gate.
+D-5. The 2.9 syntax surface includes @mix consequent fields. The separate
+     prestige marker described in SLEELA.syntax section 27 remains unimplemented
+     and is not part of the accepted 2.9 language surface.
+D-6. Compiler/tool version and syntax version are distinct. At the repository
+     snapshot reviewed for this revision, the man page identifies Sleelvac
+     0.3.30-dev while the language syntax gate is 2.9.
+
+End of Document — SL-FORMAL-0001 Revision 0.2.0 — Sleela Language Design Council — October 2026
