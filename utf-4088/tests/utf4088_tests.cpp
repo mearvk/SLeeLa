@@ -104,7 +104,13 @@ int main() {
     const auto graph = build_digraph(states);
     assert(graph.nodes.size() == 2);
     assert(graph.edges.size() == 2);
-    for (const auto& edge : graph.edges) assert(edge.weight == 2.0);
+    // A -> B occurs twice; B -> A occurs once. Directed edges are distinct.
+    assert(graph.edges[0].from == graph.nodes[0].id);
+    assert(graph.edges[0].to == graph.nodes[1].id);
+    assert(graph.edges[0].weight == 2.0);
+    assert(graph.edges[1].from == graph.nodes[1].id);
+    assert(graph.edges[1].to == graph.nodes[0].id);
+    assert(graph.edges[1].weight == 1.0);
 
     return 0;
 }
