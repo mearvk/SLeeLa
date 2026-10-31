@@ -16,7 +16,9 @@ bool is_valid_code_point(CodePoint value) {
 // 16,606-record front-end registry.
 std::optional<CodePoint> symbol_from_input(InputState input) {
     if (input > 0xFFFFFFFFULL) return std::nullopt;
-    return encode_input(static_cast<std::uint32_t>(input));
+    const auto fields = unpack_input(static_cast<std::uint32_t>(input));
+    if (!fields) return std::nullopt;
+    return encode_input(*fields);
 }
 
 } // namespace utf4088
