@@ -2,34 +2,34 @@
 
 Emacs support for `.sleela` files: a `prog-mode`-derived major mode
 (`sleela-mode`), an optional philosophers Guide-chain overlay, and nine Custom
-themes. There is no installer — Emacs loads these from your `load-path` and
-`custom-theme-load-path`, so installation is a copy plus two lines of config.
+themes.
 
 ## Install
 
+The optional installer copies the integration into a user-local directory:
+
 ```sh
-mkdir -p ~/.emacs.d/sleela
-cp lib/linux-editors/emacs/*.el ~/.emacs.d/sleela/
+make install-editors EDITORS=emacs
 ```
 
-Then in your `~/.emacs` (or `~/.emacs.d/init.el`):
+Preview with `make install-editors EDITORS=emacs EDITOR_ARGS=--dry-run`.
+Uninstall managed files with `make uninstall-editors`.
+
+Then add the following to your `~/.emacs` (or `~/.emacs.d/init.el`):
 
 ```elisp
-;; make the files loadable and the themes trusted
 (add-to-list 'load-path "~/.emacs.d/sleela")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/sleela")
-
-;; the major mode: binds .sleela -> sleela-mode via auto-mode-alist
 (require 'sleela-mode)
-
-;; pick one color scheme (t = don't prompt for confirmation)
 (load-theme 'sleela-kiro t)        ; or sleela-sleela, sleela-american, ...
-
-;; optional: the philosophers Guide-chain highlighting overlay
+;; Optional Guide-chain highlighting:
 (require 'sleela-philosophers)
 ```
 
-`sleela-mode.el` already adds `("\\.sleela\\'" . sleela-mode)` to
+For manual installation, copy `lib/linux-editors/emacs/*.el` into
+`~/.emacs.d/sleela/` first.
+
+`sleela-mode.el` adds `("\\.sleela\\'" . sleela-mode)` to
 `auto-mode-alist`, so opening a `.sleela` file selects the mode automatically.
 
 ## Themes (9)
@@ -53,6 +53,6 @@ and the more potent `sleela-sleela`. Regional themes: `sleela-american`,
 ## Source of truth
 
 The Emacs themes share their palette with the Vim `colors/*.vim` files, which
-are the palette source of truth for the editor set; `../generate-editor-themes.py`
-mirrors that palette into Neovim, Helix, nano, and VS Code. Keep the Emacs
-`deftheme` colours in step with the Vim palette when it changes.
+are the palette source of truth for the editor set; the generator mirrors that
+palette into Neovim, Helix, nano, and VS Code. Keep the Emacs `deftheme`
+colours in step with the Vim palette when it changes.
