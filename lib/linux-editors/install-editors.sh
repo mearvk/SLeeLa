@@ -139,7 +139,7 @@ uninstall_all() {
         if [ -s "$remaining" ]; then mv "$remaining" "$RECORD"; else rm -f "$remaining" "$RECORD"; fi
         # Remove only now-empty directories inside the dedicated state tree.
         if [ -d "$BACKUP_DIR" ]; then
-            find "$BACKUP_DIR" -depth -type d -exec rmdir {} \\; 2>/dev/null || :
+            find "$BACKUP_DIR" -depth -type d -exec rmdir {} \; 2>/dev/null || :
         fi
         find "$STATE_DIR" -depth -type d -exec rmdir {} \\; 2>/dev/null || :
     fi
