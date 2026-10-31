@@ -1,6 +1,7 @@
 #include "../artificial-intelligence/character-recognition/character_recognition.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 static void make_glyph(uint8_t pixels[SLCR_GLYPH_PIXELS], int variant) {
@@ -31,6 +32,8 @@ int main(void) {
     slcr_box *boxes = NULL;
     size_t box_count = 0;
     uint8_t page[20 * 16];
+    uint8_t *pgm = NULL;
+    size_t pgm_width = 0, pgm_height = 0;
     char line[256];
     int ok = 1;
 
@@ -65,6 +68,19 @@ int main(void) {
         if (slcr_model_recognize(loaded, e, &result) != 0 || strcmp(result.label, "é") != 0) ok = 0;
         slcr_model_destroy(loaded);
     }
+    file = fopen("character-recognition-smoke.pgm", "wb");
+    if (file) {
+        fputs("P2\n# tiny grayscale page\n3 2\n255\n0 255 0\n255 0 255\n", file);
+        fclose(file);
+    }
+    if (!file || slcr_load_pgm("character-recognition-smoke.pgm", &pgm,
+                               &pgm_width, &pgm_height) != 0 ||
+        pgm_width != 3 || pgm_height != 2 || pgm[0] != 0 || pgm[1] != 255) {
+        fprintf(stderr, "character recognition: PGM page loading failed\n");
+        ok = 0;
+    }
+    free(pgm);
+    remove("character-recognition-smoke.pgm");
     memset(page, 0, sizeof(page));
     for (size_t y = 2; y < 8; ++y) {
         for (size_t x = 2; x < 5; ++x) page[y * 20 + x] = 255;
