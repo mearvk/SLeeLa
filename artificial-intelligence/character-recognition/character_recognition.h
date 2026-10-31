@@ -56,6 +56,30 @@ int slcr_write_document(const slcr_model *model,
                         const char *review_jsonl_path,
                         double minimum_similarity);
 
+
+/* Versioned binary model persistence (format version 1). */
+int slcr_model_save(const slcr_model *model, const char *path);
+slcr_model *slcr_model_load(const char *path);
+
+/* Simple page segmentation over a binary page: foreground is nonzero.
+ * Returns one bounding box per horizontal/vertical projection run.
+ * Touching cursive characters remain a single segment; no claim of cursive OCR.
+ */
+typedef struct slcr_box { size_t x, y, width, height; } slcr_box;
+int slcr_segment_page(const uint8_t *binary, size_t width, size_t height,
+                      size_t minimum_ink_pixels, slcr_box **boxes,
+                      size_t *box_count);
+void slcr_free_segments(slcr_box *boxes);
+
+/* Apply reviewer overrides: TSV lines are zero-based glyph index, TAB, UTF-8
+ * single-codepoint label. Unchanged positions are recognized again.
+ */
+int slcr_write_corrected_document(const slcr_model *model,
+                        const slcr_document_glyph *glyphs, size_t glyph_count,
+                        const char *corrections_tsv,
+                        const char *transcript_path,
+                        double minimum_similarity);
+
 #ifdef __cplusplus
 }
 #endif
