@@ -111,12 +111,15 @@ uninstall_all() {
         say "No SLeeLa editor files are recorded for removal."
         return
     fi
+    remaining="$RECORD.tmp"
+    : > "$remaining"
     while IFS= read -r dest; do
         [ -n "$dest" ] || continue
         backup="$BACKUP_DIR$dest"
         installed_copy="$STATE_DIR/installed$dest"
         if [ -f "$dest" ] && [ -f "$installed_copy" ] && ! cmp -s "$dest" "$installed_copy"; then
             say "Preserve locally modified file: $dest"
+            printf '%s\\n' "$dest" >> "$remaining"
             continue
         fi
         if [ -f "$backup" ]; then
@@ -133,10 +136,12 @@ uninstall_all() {
         if [ "$DRY_RUN" -eq 0 ]; then rm -f "$installed_copy"; fi
     done < "$RECORD"
     if [ "$DRY_RUN" -eq 0 ]; then
-        rm -f "$RECORD"
+        if [ -s "$remaining" ]; then mv "$remaining" "$RECORD"; else rm -f "$remaining" "$RECORD"; fi
         # Remove only now-empty directories inside the dedicated state tree.
-        find "$BACKUP_DIR" -type d -empty -delete 2>/dev/null || :
-        rmdir "$BACKUP_DIR" "$STATE_DIR" 2>/dev/null || :
+        if [ -d "$BACKUP_DIR" ]; then
+            find "$BACKUP_DIR" -depth -type d -exec rmdir {} \\; 2>/dev/null || :
+        fi
+        rmdir "$STATE_DIR" 2>/dev/null || :
     fi
 }
 if [ "$ACTION" = uninstall ]; then
