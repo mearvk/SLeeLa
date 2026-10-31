@@ -1,28 +1,49 @@
 # SLeeLa Syntax Version Matrix
 
-The version declared in a source file (for example, `#sleela 1.9`) is the **language syntax version**, not the Sleelvac compiler release number. Consult [`SLEELA.syntax`](../../SLEELA.syntax) and `impl/frontend/version.{h,cpp}` for the normative grammar and accepted version gate.
+The version declared in a source file (for example, `#sleela 2.9`) is the
+**language syntax version**, not the Sleelvac compiler release number. The
+normative grammar is [`SLEELA.syntax`](../../SLEELA.syntax); the compiler gate
+is implemented in `impl/frontend/version.{h,cpp}`.
 
-The document-scope markers below (`author`/`authorial`, `material`, `memory`, `determine`) are catalogued as a family in [Document markers](DOCUMENT-MARKERS.md).
+The compiler currently accepts source syntax **1.0 through 2.9** and defaults
+to its maximum supported version. The specification's documented normative
+surface is **1.3 through 2.9**. A newer compiler does not silently upgrade an
+older source file: each feature remains subject to its own syntax-version gate.
 
-| Syntax version | Documented feature | Evidence / reference | Status note |
+| Syntax version | Documented feature | Normative reference | Status / boundary |
 |---|---|---|---|
-| 1.8 | Inferred local declarations with `let`; constructor arguments on `new Type(args)` | `SLEELA.syntax`, compiler semantic analysis | The specification explicitly excludes constructor overload resolution and `this(...)` / base delegation from verified support. |
-| 1.9 | Contextual GC hint assignment: `x = gc N;` and `x = mem N;` | [GC-hint API](../runtime/gc/GC-HINT-API.md), [syntax 1.9 fixtures](../../tests/sleela-syntax-1.9/README.md) | Range, version-gate, contextual-name, liveness and stress fixtures exist. |
-| 1.10 | Two meanings of `extends`: class inheritance and document-level grouping | `SLEELA.syntax`, `markdown/EXTENDS.md` | Keep the class and document forms distinct. |
-| 1.11 | One level of nested classes | `SLEELA.syntax`, section 14 | Maximum lexical nested-class depth is two including the enclosing class; deeper types should be declared at top level and referenced. |
-| 2.2 | Generic type signatures (type parameters on classes/methods, parameterized types, wildcards) | `SLEELA.syntax`, section 16 | The 1.3..1.11 surface is carried forward unchanged. |
-| 2.3 | Philosophers Guide-chain expression `new T(...) :: Guide :: Guide ...` | `SLEELA.syntax`, section 17 | First-class construct executed by the lexer/parser/semantic analyzer/compiler and native Core. |
-| 2.4 | `author` / `authorial` document marker | `SLEELA.syntax`, section 18 | Legalises duplicate members (each gets a declaration-order id + SHA-256 brander); emits the originated source with `∴` branders. Contextual word, not a reserved keyword. |
-| 2.5 | `material` document marker | `SLEELA.syntax`, section 19 | Declarative only — no effect on parsing/typing/codegen. Marks membership in the set of material documents (state / progress / securing of change). |
-| 2.5 | `memory` document marker | `SLEELA.syntax`, section 20 | Declarative-only sibling of `material`. |
-| 2.5 | Wide signed integer primitives: `long`, `int64`, `int128` | `SLEELA.syntax`, section 21 | `long`/`int64` are genuine 64-bit signed integers (runtime stores `int64_t`); they type-check like `int`. `int128` is a **true 128-bit** signed integer: the VM carries a dedicated `SL_INT128`/`__int128` value and arithmetic/comparisons/printing all compute in 128 bits (e.g. `9000000000 * 9000000000` = `81000000000000000000`). |
-| 2.6 | Keyword supporter documents (`try`/`catch`/`throw`/`synchronized`/`super`) | `SLEELA.syntax`, section 22 | Each occurrence is hashed, recorded as a repeatable `@supporter("<keyword>:<hash>")` annotation, and linked to a `docs/keyword-supporters/<keyword>/<hash>/SUPPORT.md` stub the developer fills out. Parse-time, additive; no change to the keywords' parsing/typing/codegen. |
-| 2.6 | `determine` document marker (current ceiling) | `SLEELA.syntax`, section 23 | Declarative-only sibling of `material`/`memory`/`author`. Claims the document is open to be processed to further by a doctor, physician, or ghost toward completion by legal hand, as required by further processor review; science practitioners may use it. No effect on parsing/typing/codegen. |
-| 2.8 (planned) | `object` field marker; code **Ready for Public Exchange** | `docs/TECH-NOTE-2.8-OBJECT-MARKER-AND-PUBLIC-EXCHANGE.md` | **Forward-facing / not yet implemented.** 2.8 and past are intended for public exchange. `object` marks work forward-facing into the United States and the Times, and into International Progress (Contrary / Secondary — indicated). Follows the `material` marker pattern when built. |
+| 1.8 | Inferred local declarations with `let`; constructor arguments on `new Type(args)` | `SLEELA.syntax`, §12 | Constructor overload resolution and `this(...)` / base delegation are not verified and are rejected. |
+| 1.9 | Contextual GC-hint assignment: `x = gc N;` and `x = mem N;` | `SLEELA.syntax`, §13; [GC-hint API](../runtime/gc/GC-HINT-API.md) | Runtime cleanup requests, not guarantees of immediate reclamation; reachable objects remain valid. |
+| 1.10 | Two meanings of `extends`: class inheritance and document-level grouping | `SLEELA.syntax`, §14; [EXTENDS](../../../../markdown/EXTENDS.md) | Keep the class and document forms distinct. |
+| 1.11 | One level of nested classes | `SLEELA.syntax`, §14 | Maximum lexical nested-class depth is two including the enclosing class. |
+| 2.2 | Generic type signatures | `SLEELA.syntax`, §16 | Type parameters on classes/methods, parameterized types, and wildcards; earlier 1.3–1.11 surface is carried forward. |
+| 2.3 | Philosophers Guide-chain expression `new T(...) :: Guide :: Guide ...` | `SLEELA.syntax`, §17 | Normative language construct; consult implementation and tests for current execution coverage. |
+| 2.4 | `author` / `authorial` document marker | `SLEELA.syntax`, §18 | Compiler-active: permits duplicate members in marked documents and emits originated-source branding. |
+| 2.5 | `material` and `memory` document markers | `SLEELA.syntax`, §§19–20 | Declarative document claims; no parsing, typing, dispatch, or code-generation effect. |
+| 2.5 | Wide signed integer primitives: `long`, `int64`, `int128` | `SLEELA.syntax`, §21 | Signed-width behavior is described in the normative specification; do not infer arbitrary-precision arithmetic from the larger named widths. |
+| 2.6 | Keyword supporter documents | `SLEELA.syntax`, §22 | Links occurrences of selected control-flow keywords to supporting documentation; additive annotation behavior. |
+| 2.6 | `determine`, `object`, and `field` document markers | `SLEELA.syntax`, §§23, 26 | Declarative markers. `object` has the additional 2.8 reification standing described in §26.6. |
+| 2.7 | Base-2 signed integer series: `int32` through `int16777216` | `SLEELA.syntax`, §24 | Named signed widths; actual arithmetic capacity remains bounded by the implemented native value slots. |
+| 2.8 | Base-2 unsigned integer series: `uint32` through `uint16777216` | `SLEELA.syntax`, §25 | Positive-only unsigned widths; operands must satisfy the specified unsigned typing rules. |
+| 2.8 | Reified standing of the `object` document marker | `SLEELA.syntax`, §26.6 | The marker is gated from 2.6; its catalogue/reification standing is specified from 2.8. |
+| 2.9 | `@mix` consequent fields | `SLEELA.syntax`, §28 | Repeated same-named instance fields marked `@mix` form an indexed group. Automatic indexes follow declaration order; explicit index lists must match the number of fields. |
+| 2.9 (future proposal) | `prestige` document marker | `SLEELA.syntax`, §27 | **Not implemented.** Its appearance in a 2.9 specification does not make it an accepted compiler feature. |
+
+## Document-marker catalog
+
+The document-scope marker family is summarized in
+[DOCUMENT-MARKERS.md](DOCUMENT-MARKERS.md). The `author` marker is the
+compiler-active exception; the other catalogued markers are declarative and
+must not be described as changing runtime behavior.
 
 ## Compatibility rules
 
-- Use the version pragma and compiler gate as the source of truth for whether a feature is legal in a file.
-- A newer compiler does not automatically make a newer syntax feature legal under an older file pragma.
-- Tests that are expected to fail are part of the contract: invalid forms must fail explicitly rather than silently being clamped or reinterpreted.
-- This matrix is a concise navigation aid, not a replacement for the full grammar or implementation tests.
+- Use the source file's `#sleela X.Y` pragma and the compiler's feature gate to
+  determine whether a construct is legal.
+- The compiler's maximum accepted version is not proof that every proposed
+  feature described under that version is implemented.
+- Keep planned or future proposals explicitly separate from implemented syntax.
+- Tests that are expected to fail are part of the contract: invalid forms must
+  fail explicitly rather than being silently clamped or reinterpreted.
+- This matrix is a navigation aid, not a replacement for the full grammar,
+  implementation, or regression tests.
