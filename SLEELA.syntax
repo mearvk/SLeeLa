@@ -1,19 +1,19 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  2.8  (1.3..1.11 baseline carried forward)
-    Compiler:        Sleelvac(TM) 0.3.30-dev  (version gate accepts syntax 1.0 .. 2.8)
+    Syntax version:  2.9  (1.3..1.11 baseline carried forward)
+    Compiler:        Sleelvac(TM) 0.3.30-dev  (version gate accepts syntax 1.0 .. 2.9)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.3..2.8 surface
+    Status:          Normative for the syntax 1.3..2.9 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
     `#sleela 2.8`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.8).
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.9).
     Syntax 2.8 is the current spec level: it adds the matching **base-2 unsigned
     (positive-only) integer series** (section 25) — `uint32`, `uint64`,
     `uint128`, `uint256`, ... up to `uint16777216` (the same twenty power-of-two
@@ -102,7 +102,7 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax 1.3..2.8 surface the front end accepts.
+This document is normative for the syntax 1.3..2.9 surface the front end accepts.
 Every production and built-in below is implemented in `impl/frontend` and
 executes on `impl/core`.
 
