@@ -41,9 +41,17 @@ Part V — Lens Laws
 Part VI — Determinism
   Chapter 13 — Canonical Ordering for Deterministic Compilation
 
+Part VII — Versioned Language Extensions (Syntax 2.2–2.9)
+  Section 14 — Version and Evidence Discipline
+  Section 15 — Conservative Formal Extensions
+
+Part VIII — SleelaDoc Rich Pages as an Observational Documentation Layer
+  Section 16 — Rich Documentation Model
+
 Appendix A — Redline: Specific Amendments Proposed to SL-META-0001
 Appendix B — Open Questions for the SLDC
 Appendix C — Metatheorem Register
+Appendix D — Repository Evidence and Conformance Boundaries
 
 ================================================================================
 Preamble — Purpose and Relationship to SL-META-0001
@@ -1088,14 +1096,19 @@ effects, or execution.
      honestly when a configured size/file/time cap is reached. The JAR build
      bundles the generated corpus with the matching .sleela sources.
 
-16.5 Evidence and compatibility. The repository commit record for the rich
-     @-tag enrichment confirms class- and member-level harvesting, the
+16.5 Evidence and compatibility. The repository implementation and
+     source files confirm class- and member-level harvesting, the
      @intent/@thesis/@axiom/@invariant/@see/@param/@returns/@throws/@mastery
      vocabulary, and backward compatibility for tagged and plain units.
-     A later commit advances the SleelaDoc library units to #sleela 2.8 and
-     documents the CLI at syntax 2.8; the current repository subsequently
-     records the language edition as 2.9. This documentation-tool versioning
-     must not be read as changing the formal source-language version gates.
+     The checked SleelaDoc facade and renderer source units
+     (lib/sleeladoc/SLSleelaDoc.sleela and
+     lib/sleeladoc/SLDocRenderer.sleela) declare #sleela 2.8. The compiler's
+     overall source-language gate is 2.9; that higher gate does not silently
+     advance individual library units or the SleelaDoc tooling contract.
+     The repository README currently describes the SleelaDoc units as 2.9,
+     which is inconsistent with those checked source pragmas and should be
+     reconciled separately. Documentation-tool versioning must not be read as
+     changing the formal source-language version gates.
 
 ================================================================================
 Appendix D — Repository Evidence and Conformance Boundaries
