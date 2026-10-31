@@ -20,7 +20,7 @@ Key pointers (full table in `ORGANIZATION.md`):
 - **Architecture / compiler** → `markdown/ARCHITECTURE.md`, `markdown/COMPILER.md`.
 - **XML/DTD interchange form** → `markdown/XML.SLEELA.DEFINITION.md`, `xml-moment/`.
 
-**Formal language/domain authority:** Read both [`src/Sleela.formal-core`](../../src/Sleela.formal-core) and its preserved archive [`formal-core/Sleela.formal-core`](../../formal-core/Sleela.formal-core). They are pertinent structural/domain references for language design, syntax editions through 2.9, semantic boundaries, and SleelaDoc Rich Pages. The two copies are intended to remain identical; edit the canonical `src/` document first, then refresh the archive. See [`formal-core-domain.md`](formal-core-domain.md) for the governing Kiro steering rules.
+**Formal language/domain authority:** Read both [`src/Sleela.formal-core`](../../src/Sleela.formal-core) and its preserved archive [`formal-core/Sleela.formal-core`](../../src/formal-core/Sleela.formal-core). They are pertinent structural/domain references for language design, syntax editions through 2.9, semantic boundaries, and SleelaDoc Rich Pages. The two copies are intended to remain identical; edit the canonical `src/Sleela.formal-core` first, then refresh `src/formal-core/Sleela.formal-core`. See [`formal-core-domain.md`](formal-core-domain.md) for the governing Kiro steering rules.
 
 Prefer the canonical spec over restating grammar or numbers from memory.
 
