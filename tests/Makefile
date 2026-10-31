@@ -29,6 +29,12 @@ neural-nets-xor: ../artificial-intelligence/neural-nets/xor_example.c ../artific
 ai-neural-nets-xor: neural-nets-xor
 	./neural-nets-xor
 
+character-recognition-smoke: character_recognition_smoke.c ../artificial-intelligence/character-recognition/character_recognition.c ../artificial-intelligence/character-recognition/character_recognition.h
+	$(CC) $(CFLAGS) -I../artificial-intelligence/character-recognition $< ../artificial-intelligence/character-recognition/character_recognition.c $(LDLIBS) -o $@
+
+ai-character-recognition: character-recognition-smoke
+	./character-recognition-smoke
+
 check: all
 	./memory
 	./reflection
