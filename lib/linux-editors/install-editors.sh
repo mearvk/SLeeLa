@@ -112,7 +112,7 @@ uninstall_all() {
         return
     fi
     remaining="$RECORD.tmp"
-    : > "$remaining"
+    if [ "$DRY_RUN" -eq 0 ]; then : > "$remaining"; fi
     while IFS= read -r dest; do
         [ -n "$dest" ] || continue
         backup="$BACKUP_DIR$dest"
