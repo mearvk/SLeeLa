@@ -6,7 +6,7 @@ This directory contains SLeeLa's native artificial-intelligence APIs, integratio
 
 | Category | Purpose | Native API |
 |---|---|---|
-| [Neural Networks](neural-nets/) | CPU feed-forward networks, inference, and training foundations | C11 and C++17 |
+| [Neural Networks](neural-nets/) | CPU feed-forward networks, inference, and training foundations | C11 and C++17 |\n| [Character Recognition](character-recognition/) | Clean-glyph recognition and reviewable document transcription for European scripts | C11 |
 | [Large Language Models](large-language-models/) | Provider-neutral model lifecycle, data ingestion, vocabulary, training, and streaming generation | C11 and C++17 |
 
 ## Source conventions
