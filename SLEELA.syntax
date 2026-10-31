@@ -14,6 +14,11 @@
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
     `#sleela 2.9`) is the grammar version defined here and enforced by
     `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.9).
+    Syntax 2.9 adds **`@mix` consequent fields** (section 28): repeated
+    same-named instance fields explicitly marked `@mix` form an indexed group;
+    declaration order supplies indexes unless a matching index list is provided.
+    The `prestige` marker in section 27 remains a future proposal, not an
+    implemented 2.9 feature.
     Syntax 2.8 added the matching **base-2 unsigned
     (positive-only) integer series** (section 25) — `uint32`, `uint64`,
     `uint128`, `uint256`, ... up to `uint16777216` (the same twenty power-of-two
@@ -1963,9 +1968,9 @@ natural motion (the reified thing, and the ground that holds it).
 
 ### 26.7 Where this is implemented
 
-- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.8 (both markers are
-  gated to 2.6 and keep working at every later level; `object` is reified —
-  concretely standing — at 2.8, per section 26.6).
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.9. Both markers
+  remain gated to 2.6 and continue to be accepted at later supported syntax
+  levels; `object` retains its 2.8 reification standing described in §26.6.
 - `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
   contextual `object` and (pre-content) `field` markers and sets
   `Program.objectMarked` / `Program.fieldMarked`.
