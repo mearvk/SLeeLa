@@ -49,6 +49,7 @@
 <li><a href="../package/decompiler.html">decompiler</a></li>
 <li><a href="../package/deliberation.html">deliberation</a></li>
 <li><a href="../package/drivers.html">drivers</a></li>
+<li><a href="../package/examples.html">examples</a></li>
 <li><a href="../package/filesystem.html">filesystem</a></li>
 <li><a href="../package/gameplay.html">gameplay</a></li>
 <li><a href="../package/gui.html">gui</a></li>
@@ -89,6 +90,7 @@
 <li><a href="../package/opcodes.html">opcodes</a></li>
 <li><a href="../package/operating-system.html">operating-system</a></li>
 <li><a href="../package/philosophers.html">philosophers</a></li>
+<li><a href="../package/philosophy.html">philosophy</a></li>
 <li><a href="../package/politico.html">politico</a></li>
 <li><a href="../package/process.html">process</a></li>
 <li><a href="../package/psychiatry.html">psychiatry</a></li>
@@ -130,7 +132,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; vm</div>
 <h1>Package <code>vm</code></h1>
-<div class="lead">This package contains <strong>108</strong> source unit(s) defining <strong>276</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>108</strong> source unit(s) defining <strong>279</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="basic-vm">basic-vm <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/vm/tutorials/examples/basic-vm.sleela)</span></h2>
 <div data-u="basic-vm basicvmtutorialexample">
@@ -869,6 +871,18 @@
 </div>
 <div data-u="instructionset slisassend">
 <h3 id="SLISASSend">SLISASSend <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="instructionset slisacheckcast">
+<h3 id="SLISACheckCast">SLISACheckCast <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="instructionset slisainstanceof">
+<h3 id="SLISAInstanceOf">SLISAInstanceOf <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="instructionset slisadup2">
+<h3 id="SLISADup2">SLISADup2 <span class="pill">class</span></h3>
 <p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
 </div>
 <h2 class="section" data-u="mid-vm-config">mid-vm-config <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/vm/examples/02-mid/mid-vm-config.sleela)</span></h2>
@@ -2222,7 +2236,7 @@
 <h2 class="section" data-u="slvmmethod">SLVMMethod <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/vm/SLVMMethod.sleela)</span></h2>
 <div data-u="slvmmethod slvmmethod">
 <h3 id="SLVMMethod">SLVMMethod <span class="pill">class</span></h3>
-<p class="desc">Defines SLVMMethod — one executable method in the secondary Sleela VM. A method is a window into its module&#x27;s canonical-opcode code store (SLVMModule holds the SLSleelaVM substrate): an entry instruction index, a length, an argument count, and a local-slot count. Calling a method pushes an SLVMFrame sized to maxLocals and points the substrate&#x27;s ip at entry. The method does not own code bytes itself — code lives once in the module&#x27;s SLSleelaVM so every layer executes the same 124 canonical opcodes the native engine (lib/cpu/SLSleelaVM) interprets. A method also carries an access role (exposed-hop / local-system / integrity-guarded) under the extensible-network interpretation, so the VM can gate resolution by role and realize the per-role backdrop. Family: vm. Composed by SLVMClass; drives SLVMFrame + SLVMModule.</p>
+<p class="desc">Defines SLVMMethod — one executable method in the secondary Sleela VM. A method is a window into its module&#x27;s canonical-opcode code store (SLVMModule holds the SLSleelaVM substrate): an entry instruction index, a length, an argument count, and a local-slot count. Calling a method pushes an SLVMFrame sized to maxLocals and points the substrate&#x27;s ip at entry. The method does not own code bytes itself — code lives once in the module&#x27;s SLSleelaVM so every layer executes the same 155 canonical opcodes the native engine (lib/cpu/SLSleelaVM) interprets. A method also carries an access role (exposed-hop / local-system / integrity-guarded) under the extensible-network interpretation, so the VM can gate resolution by role and realize the per-role backdrop. Family: vm. Composed by SLVMClass; drives SLVMFrame + SLVMModule.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
@@ -2294,7 +2308,7 @@
 <h2 class="section" data-u="slvmmodule">SLVMModule <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/vm/SLVMModule.sleela)</span></h2>
 <div data-u="slvmmodule slvmmodule">
 <h3 id="SLVMModule">SLVMModule <span class="pill">class</span></h3>
-<p class="desc">Defines SLVMModule — a loaded unit of code and types in the secondary Sleela VM: the id-&gt;SLVMClass table for the types it declares, an entry class/method to begin execution, and the shared SLSleelaVM substrate that actually holds and runs the 124 canonical opcodes those methods compile to. A module is the granularity the loader (SLVMModuleLoader) resolves and the linker (SleelaVMLinkingManager*) binds. The module owns the substrate so every method in it executes against one code store — the same opcode stream the native engine (lib/cpu/SLSleelaVM) interprets, which is what keeps the two VM layers behaviourally identical. Family: vm. Composes SLVMClass, SLSleelaVM; composed by SLVM.</p>
+<p class="desc">Defines SLVMModule — a loaded unit of code and types in the secondary Sleela VM: the id-&gt;SLVMClass table for the types it declares, an entry class/method to begin execution, and the shared SLSleelaVM substrate that actually holds and runs the 155 canonical opcodes those methods compile to. A module is the granularity the loader (SLVMModuleLoader) resolves and the linker (SleelaVMLinkingManager*) binds. The module owns the substrate so every method in it executes against one code store — the same opcode stream the native engine (lib/cpu/SLSleelaVM) interprets, which is what keeps the two VM layers behaviourally identical. Family: vm. Composes SLVMClass, SLSleelaVM; composed by SLVM.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
@@ -2370,7 +2384,7 @@
 <h2 class="section" data-u="slvmnativebinding">SLVMNativeBinding <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/vm/SLVMNativeBinding.sleela)</span></h2>
 <div data-u="slvmnativebinding slvmnativebinding">
 <h3 id="SLVMNativeBinding">SLVMNativeBinding <span class="pill">class</span></h3>
-<p class="desc">Defines SLVMNativeBinding — the controlled seam where a method of the secondary Sleela VM crosses to the native engine. A binding names a native service (by symbol and by a canonical OS/service opcode from the 124-opcode ISA) and records its arity. When the VM dispatches a native method it invokes the binding, which parks a VM-exit the host services — exactly the mechanism lib/cpu/SLSleelaVM uses in hosted mode. This keeps &quot;native work crosses an explicit bridge&quot; (the vm-family rule) concrete: nothing in the secondary VM calls C directly; it goes through a named, arity-checked binding that the hypervisor/OS can audit. Family: vm. Composed by SLVM; mirrors lib/cpu VM-exit routing.</p>
+<p class="desc">Defines SLVMNativeBinding — the controlled seam where a method of the secondary Sleela VM crosses to the native engine. A binding names a native service (by symbol and by a canonical OS/service opcode from the 155-opcode ISA) and records its arity. When the VM dispatches a native method it invokes the binding, which parks a VM-exit the host services — exactly the mechanism lib/cpu/SLSleelaVM uses in hosted mode. This keeps &quot;native work crosses an explicit bridge&quot; (the vm-family rule) concrete: nothing in the secondary VM calls C directly; it goes through a named, arity-checked binding that the hypervisor/OS can audit. Family: vm. Composed by SLVM; mirrors lib/cpu VM-exit routing.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
@@ -2811,6 +2825,7 @@
 <tr><td><code>number</code></td><td><span class="sig">int    number</span></td><td class="desc">1..10</td></tr>
 <tr><td><code>nativeDir</code></td><td><span class="sig">String nativeDir</span></td><td class="desc">e.g. &quot;virtual-machine/vm-version/001&quot;</td></tr>
 <tr><td><code>nativeMain</code></td><td><span class="sig">String nativeMain</span></td><td class="desc">the C/C++ entry (e.g. &quot;vm_ground_test&quot; / &quot;vm_runtime&quot;)</td></tr>
+<tr><td><code>hasBigIntSeries</code></td><td><span class="sig">int hasBigIntSeries</span></td><td class="desc">big integer series: SLeeLa fixed-width int32..int16777216 (signed) and uint32..uint16777216 (unsigned), power-of-two widths 2^5..2^24. A foundational language number capability, present from v001 in every think-tank version (parallels the premium VMs admitting the same series).</td></tr>
 <tr><td><code>hasMemory</code></td><td><span class="sig">int hasMemory</span></td><td class="desc">002</td></tr>
 <tr><td><code>hasResult</code></td><td><span class="sig">int hasResult</span></td><td class="desc">003</td></tr>
 <tr><td><code>hasTelemetry</code></td><td><span class="sig">int hasTelemetry</span></td><td class="desc">004</td></tr>
@@ -2827,6 +2842,7 @@
 <tr><td><code>base</code></td><td><span class="sig">void base(int n, String identifier, String lbl, String dir, String mainEntry)</span></td><td class="desc">Subclasses call base() then set their specifics.</td></tr>
 <tr><td><code>composeThrough</code></td><td><span class="sig">void composeThrough(int n)</span></td><td class="desc">Enable every additive unit up to version `n` (the cumulative carry-forward).</td></tr>
 <tr><td><code>unitCount</code></td><td><span class="sig">int unitCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsBigIntSeries</code></td><td><span class="sig">int supportsBigIntSeries()</span></td><td class="desc">1 iff this version supports the SLeeLa fixed-width big integer series (int32..int16777216, uint32..uint16777216). True for every version.</td></tr>
 <tr><td><code>build</code></td><td><span class="sig">SLVmRuntime build()</span></td><td class="desc">Build a configured runtime for this version (what selection resolves to).</td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">void describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
@@ -2914,7 +2930,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+<code>/lib</code> tree on 2026-10-31 00:00 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>

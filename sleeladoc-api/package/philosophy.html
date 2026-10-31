@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Package philosophy — SleelaDoc API</title>
+<link rel="stylesheet" href="../style.css">
+
+</head>
+<body>
+<header class="top">
+  <div class="brand"><a href="../index.html">SleelaDoc API</a></div>
+  <div class="tag">HTML documentation for the SLeeLa standard library (/lib)</div>
+</header>
+<div class="wrap">
+<nav class="side">
+  <a href="../index.html"><strong>Home</strong></a>
+  <a href="../packages.html"><strong>All packages</strong></a>
+  <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
+  <h2>Packages</h2><ul>
+<li><a href="../package/alphabet.html">alphabet</a></li>
+<li><a href="../package/antivirus.html">antivirus</a></li>
+<li><a href="../package/api.html">api</a></li>
+<li><a href="../package/audio.html">audio</a></li>
+<li><a href="../package/autocad.html">autocad</a></li>
+<li><a href="../package/ballum.html">ballum</a></li>
+<li><a href="../package/bash.html">bash</a></li>
+<li><a href="../package/boolean.html">boolean</a></li>
+<li><a href="../package/cdma.html">cdma</a></li>
+<li><a href="../package/character.html">character</a></li>
+<li><a href="../package/churn.html">churn</a></li>
+<li><a href="../package/citizen.html">citizen</a></li>
+<li><a href="../package/codecs.html">codecs</a></li>
+<li><a href="../package/collections.html">collections</a></li>
+<li><a href="../package/common-rails.html">common-rails</a></li>
+<li><a href="../package/compiler.html">compiler</a></li>
+<li><a href="../package/compression.html">compression</a></li>
+<li><a href="../package/config.html">config</a></li>
+<li><a href="../package/connector.html">connector</a></li>
+<li><a href="../package/coorenagraph.html">coorenagraph</a></li>
+<li><a href="../package/core.html">core</a></li>
+<li><a href="../package/cpu.html">cpu</a></li>
+<li><a href="../package/crypto.html">crypto</a></li>
+<li><a href="../package/data.html">data</a></li>
+<li><a href="../package/data-structures.html">data-structures</a></li>
+<li><a href="../package/database.html">database</a></li>
+<li><a href="../package/debugger.html">debugger</a></li>
+<li><a href="../package/decompiler.html">decompiler</a></li>
+<li><a href="../package/deliberation.html">deliberation</a></li>
+<li><a href="../package/drivers.html">drivers</a></li>
+<li><a href="../package/examples.html">examples</a></li>
+<li><a href="../package/filesystem.html">filesystem</a></li>
+<li><a href="../package/gameplay.html">gameplay</a></li>
+<li><a href="../package/gui.html">gui</a></li>
+<li><a href="../package/html.html">html</a></li>
+<li><a href="../package/http.html">http</a></li>
+<li><a href="../package/http-1.0.html">http-1.0</a></li>
+<li><a href="../package/http-2.0.html">http-2.0</a></li>
+<li><a href="../package/http-3.0.html">http-3.0</a></li>
+<li><a href="../package/http-4.0.html">http-4.0</a></li>
+<li><a href="../package/http-5.0.html">http-5.0</a></li>
+<li><a href="../package/http-6.0.html">http-6.0</a></li>
+<li><a href="../package/http-7.0.html">http-7.0</a></li>
+<li><a href="../package/http-8.0.html">http-8.0</a></li>
+<li><a href="../package/http-9.0.html">http-9.0</a></li>
+<li><a href="../package/http-servers.html">http-servers</a></li>
+<li><a href="../package/ide.html">ide</a></li>
+<li><a href="../package/ide-workbench.html">ide-workbench</a></li>
+<li><a href="../package/idea.html">idea</a></li>
+<li><a href="../package/inference-model.html">inference-model</a></li>
+<li><a href="../package/inputs.html">inputs</a></li>
+<li><a href="../package/international-criminal-court.html">international-criminal-court</a></li>
+<li><a href="../package/io.html">io</a></li>
+<li><a href="../package/java.html">java</a></li>
+<li><a href="../package/java28.html">java28</a></li>
+<li><a href="../package/journey.html">journey</a></li>
+<li><a href="../package/languages.html">languages</a></li>
+<li><a href="../package/ledger.html">ledger</a></li>
+<li><a href="../package/linux-editors.html">linux-editors</a></li>
+<li><a href="../package/manifesto.html">manifesto</a></li>
+<li><a href="../package/math.html">math</a></li>
+<li><a href="../package/memory.html">memory</a></li>
+<li><a href="../package/modules.html">modules</a></li>
+<li><a href="../package/moral-capacitor.html">moral-capacitor</a></li>
+<li><a href="../package/munction.html">munction</a></li>
+<li><a href="../package/native.html">native</a></li>
+<li><a href="../package/net.html">net</a></li>
+<li><a href="../package/nordshrift.html">nordshrift</a></li>
+<li><a href="../package/opcodes.html">opcodes</a></li>
+<li><a href="../package/operating-system.html">operating-system</a></li>
+<li><a href="../package/philosophers.html">philosophers</a></li>
+<li><a href="../package/philosophy.html">philosophy</a></li>
+<li><a href="../package/politico.html">politico</a></li>
+<li><a href="../package/process.html">process</a></li>
+<li><a href="../package/psychiatry.html">psychiatry</a></li>
+<li><a href="../package/public.html">public</a></li>
+<li><a href="../package/reflection.html">reflection</a></li>
+<li><a href="../package/regex.html">regex</a></li>
+<li><a href="../package/registry.html">registry</a></li>
+<li><a href="../package/rmi.html">rmi</a></li>
+<li><a href="../package/runtime.html">runtime</a></li>
+<li><a href="../package/security.html">security</a></li>
+<li><a href="../package/server-edition.html">server-edition</a></li>
+<li><a href="../package/signal-processing.html">signal-processing</a></li>
+<li><a href="../package/sldocument.html">sldocument</a></li>
+<li><a href="../package/sleela.html">sleela</a></li>
+<li><a href="../package/sleela-sql.html">sleela-sql</a></li>
+<li><a href="../package/sleela-terminal.html">sleela-terminal</a></li>
+<li><a href="../package/sleeladoc.html">sleeladoc</a></li>
+<li><a href="../package/social-model.html">social-model</a></li>
+<li><a href="../package/sommeliers.html">sommeliers</a></li>
+<li><a href="../package/sst.html">sst</a></li>
+<li><a href="../package/synchro.html">synchro</a></li>
+<li><a href="../package/systems.html">systems</a></li>
+<li><a href="../package/telephony-skya.html">telephony-skya</a></li>
+<li><a href="../package/terminal.html">terminal</a></li>
+<li><a href="../package/terminal_pixel.html">terminal_pixel</a></li>
+<li><a href="../package/text.html">text</a></li>
+<li><a href="../package/ui.html">ui</a></li>
+<li><a href="../package/us-infrastructure.html">us-infrastructure</a></li>
+<li><a href="../package/user-interface.html">user-interface</a></li>
+<li><a href="../package/video.html">video</a></li>
+<li><a href="../package/vm.html">vm</a></li>
+<li><a href="../package/web-server-technology.html">web-server-technology</a></li>
+<li><a href="../package/website.html">website</a></li>
+<li><a href="../package/wifi.html">wifi</a></li>
+<li><a href="../package/xlt.html">xlt</a></li>
+<li><a href="../package/xml.html">xml</a></li>
+</ul>
+</nav>
+<main>
+<div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; philosophy</div>
+<h1>Package <code>philosophy</code></h1>
+<div class="lead">This package contains <strong>19</strong> source unit(s) defining <strong>19</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
+<h2 class="section" data-u="example-tree">example-tree <span class="pill syntax">#sleela 2.9</span> <span class="muted" style="font-size:13px">(lib/philosophy/example-tree.sleela)</span></h2>
+<div data-u="example-tree philosophytreeexample">
+<h3 id="PhilosophyTreeExample">PhilosophyTreeExample <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="philosophy">philosophy <span class="pill syntax">#sleela 2.9</span> <span class="muted" style="font-size:13px">(lib/philosophy/philosophy.sleela)</span></h2>
+<div data-u="philosophy philosophy">
+<h3 id="Philosophy">Philosophy <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nameOf</code></td><td><span class="sig">String nameOf(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summaryOf</code></td><td><span class="sig">String summaryOf(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>report</code></td><td><span class="sig">void report(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPackage.sleela)</span></h2>
+<div data-u="slpackage slpackage">
+<h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
+<p class="desc">Defines the SLeeLa standard-library package for philosophy.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>packageName</code></td><td><span class="sig">String packageName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyadmin">SLPhilosophyAdmin <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyAdmin.sleela)</span></h2>
+<div data-u="slphilosophyadmin slphilosophyadmin">
+<h3 id="SLPhilosophyAdmin">SLPhilosophyAdmin <span class="pill">class</span></h3>
+<p class="desc">Admin -- a party who may maintain a Tree, including pruning and rebalancing the base structure, but not transferring ownership.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>adminId</code></td><td><span class="sig">int adminId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>role</code></td><td><span class="sig">String role</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int id, String personName)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAdminId</code></td><td><span class="sig">int getAdminId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setAdminId</code></td><td><span class="sig">void setAdminId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getName</code></td><td><span class="sig">String getName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setName</code></td><td><span class="sig">void setName(String v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRole</code></td><td><span class="sig">String getRole()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canAdd</code></td><td><span class="sig">boolean canAdd()</span></td><td class="desc">Rights on the Tree.</td></tr>
+<tr><td><code>canRead</code></td><td><span class="sig">boolean canRead()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canPrune</code></td><td><span class="sig">boolean canPrune()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canTransferOwnership</code></td><td><span class="sig">boolean canTransferOwnership()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyauthor">SLPhilosophyAuthor <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyAuthor.sleela)</span></h2>
+<div data-u="slphilosophyauthor slphilosophyauthor">
+<h3 id="SLPhilosophyAuthor">SLPhilosophyAuthor <span class="pill">class</span></h3>
+<p class="desc">Author -- a party who may contribute Inputs/Items to a Tree, attributed by name, with authoring (not administrative) rights.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>authorId</code></td><td><span class="sig">int authorId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>role</code></td><td><span class="sig">String role</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int id, String personName)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAuthorId</code></td><td><span class="sig">int getAuthorId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setAuthorId</code></td><td><span class="sig">void setAuthorId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getName</code></td><td><span class="sig">String getName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setName</code></td><td><span class="sig">void setName(String v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRole</code></td><td><span class="sig">String getRole()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canAdd</code></td><td><span class="sig">boolean canAdd()</span></td><td class="desc">Rights on the Tree.</td></tr>
+<tr><td><code>canRead</code></td><td><span class="sig">boolean canRead()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canPrune</code></td><td><span class="sig">boolean canPrune()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canTransferOwnership</code></td><td><span class="sig">boolean canTransferOwnership()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyconsistency">SLPhilosophyConsistency <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyConsistency.sleela)</span></h2>
+<div data-u="slphilosophyconsistency slphilosophyconsistency">
+<h3 id="SLPhilosophyConsistency">SLPhilosophyConsistency <span class="pill">class</span></h3>
+<p class="desc">handle to the tree-consistency signal-toss tool (philosophy/consistency_monitor.* and philosophy/signal_toss.*).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sampleHz</code></td><td><span class="sig">int sampleHz()</span></td><td class="desc">Cadence contract (mirrors signal_toss.h).</td></tr>
+<tr><td><code>commitMinPerHour</code></td><td><span class="sig">int commitMinPerHour()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>commitMaxPerHour</code></td><td><span class="sig">int commitMaxPerHour()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>updatesPerBranch</code></td><td><span class="sig">int updatesPerBranch()</span></td><td class="desc">Update accounting (mirrors consistency_monitor.h).</td></tr>
+<tr><td><code>updatesPerMatureLength</code></td><td><span class="sig">int updatesPerMatureLength()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>traitMax</code></td><td><span class="sig">int traitMax()</span></td><td class="desc">Structural invariants.</td></tr>
+<tr><td><code>traitWarn</code></td><td><span class="sig">int traitWarn()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weightMin</code></td><td><span class="sig">int weightMin()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weightMax</code></td><td><span class="sig">int weightMax()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>economyStudyArity</code></td><td><span class="sig">int economyStudyArity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sideBranchpointMax</code></td><td><span class="sig">int sideBranchpointMax()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyeventtree">SLPhilosophyEventTree <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyEventTree.sleela)</span></h2>
+<div data-u="slphilosophyeventtree slphilosophyeventtree">
+<h3 id="SLPhilosophyEventTree">SLPhilosophyEventTree <span class="pill">class</span></h3>
+<p class="desc">the SLeeLa-facing handle to the philosophy event tree tool (philosophy/event_tree.*). An explicit-input, half-life-decayed event store; it does not monitor ambient audio, networks, or other people.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity.</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertsById</code></td><td><span class="sig">boolean insertsById()</span></td><td class="desc">Capability contract (mirrors event_tree.h).</td></tr>
+<tr><td><code>decaysByHalfLife</code></td><td><span class="sig">boolean decaysByHalfLife()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>prunesByRelevanceFloor</code></td><td><span class="sig">boolean prunesByRelevanceFloor()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>monitorsAmbient</code></td><td><span class="sig">boolean monitorsAmbient()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>revisitIsCorroboration</code></td><td><span class="sig">boolean revisitIsCorroboration()</span></td><td class="desc">A revisit links to an earlier event; it is not independent corroboration.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyexitor">SLPhilosophyExitor <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyExitor.sleela)</span></h2>
+<div data-u="slphilosophyexitor slphilosophyexitor">
+<h3 id="SLPhilosophyExitor">SLPhilosophyExitor <span class="pill">class</span></h3>
+<p class="desc">Exitor -- a party who may retire or end nodes (mark a departure from the Tree) without otherwise altering the base structure.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>exitorId</code></td><td><span class="sig">int exitorId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>role</code></td><td><span class="sig">String role</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastExitedNodeId</code></td><td><span class="sig">int lastExitedNodeId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastExitAt</code></td><td><span class="sig">int lastExitAt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int id, String personName)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getExitorId</code></td><td><span class="sig">int getExitorId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setExitorId</code></td><td><span class="sig">void setExitorId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getName</code></td><td><span class="sig">String getName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setName</code></td><td><span class="sig">void setName(String v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRole</code></td><td><span class="sig">String getRole()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLastExitedNodeId</code></td><td><span class="sig">int getLastExitedNodeId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLastExitAt</code></td><td><span class="sig">int getLastExitAt()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>exitNode</code></td><td><span class="sig">boolean exitNode(int nodeId, int at)</span></td><td class="desc">Record a departure of a node at a time; returns true when recorded.</td></tr>
+<tr><td><code>canAdd</code></td><td><span class="sig">boolean canAdd()</span></td><td class="desc">Rights on the Tree.</td></tr>
+<tr><td><code>canRead</code></td><td><span class="sig">boolean canRead()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canRetire</code></td><td><span class="sig">boolean canRetire()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canTransferOwnership</code></td><td><span class="sig">boolean canTransferOwnership()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyhelper">SLPhilosophyHelper <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyHelper.sleela)</span></h2>
+<div data-u="slphilosophyhelper slphilosophyhelper">
+<h3 id="SLPhilosophyHelper">SLPhilosophyHelper <span class="pill">class</span></h3>
+<p class="desc">handle to the help / reach-out desk tool (philosophy/module/helper/help_desk.*).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>defaultCapacity</code></td><td><span class="sig">int defaultCapacity()</span></td><td class="desc">Sizing contract (mirrors help_desk.h).</td></tr>
+<tr><td><code>defaultCompanySize</code></td><td><span class="sig">int defaultCompanySize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>roleCount</code></td><td><span class="sig">int roleCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shipsRealContacts</code></td><td><span class="sig">boolean shipsRealContacts()</span></td><td class="desc">The library stores no real PII and makes no network connection.</td></tr>
+<tr><td><code>performsNetworkIo</code></td><td><span class="sig">boolean performsNetworkIo()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>roleName</code></td><td><span class="sig">String roleName(int r)</span></td><td class="desc">Role names, by ordinal 0..4.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyinput">SLPhilosophyInput <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyInput.sleela)</span></h2>
+<div data-u="slphilosophyinput slphilosophyinput">
+<h3 id="SLPhilosophyInput">SLPhilosophyInput <span class="pill">class</span></h3>
+<p class="desc">one explicit Input -- a single submission bound for the Tree, pairing an Item id with the consent and timing needed to add it.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>inputId</code></td><td><span class="sig">int inputId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>itemId</code></td><td><span class="sig">int itemId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>occurredAt</code></td><td><span class="sig">int occurredAt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>consentToShare</code></td><td><span class="sig">boolean consentToShare</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>accepted</code></td><td><span class="sig">boolean accepted</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int id, int carriedItemId, int at, boolean consent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getInputId</code></td><td><span class="sig">int getInputId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setInputId</code></td><td><span class="sig">void setInputId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getItemId</code></td><td><span class="sig">int getItemId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setItemId</code></td><td><span class="sig">void setItemId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOccurredAt</code></td><td><span class="sig">int getOccurredAt()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setOccurredAt</code></td><td><span class="sig">void setOccurredAt(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getConsentToShare</code></td><td><span class="sig">boolean getConsentToShare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setConsentToShare</code></td><td><span class="sig">void setConsentToShare(boolean v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAccepted</code></td><td><span class="sig">boolean getAccepted()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setAccepted</code></td><td><span class="sig">void setAccepted(boolean v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>valid</code></td><td><span class="sig">boolean valid()</span></td><td class="desc">An Input is valid for the Tree only when it has an item, a time, and id.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyinputs">SLPhilosophyInputs <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyInputs.sleela)</span></h2>
+<div data-u="slphilosophyinputs slphilosophyinputs">
+<h3 id="SLPhilosophyInputs">SLPhilosophyInputs <span class="pill">class</span></h3>
+<p class="desc">an ordered collection of Input ids staged for a Tree -- the intake queue that feeds Nodes into the base structure.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>inputIds</code></td><td><span class="sig">int[] inputIds</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>capacity</code></td><td><span class="sig">int capacity</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int cap)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSize</code></td><td><span class="sig">int getSize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCapacity</code></td><td><span class="sig">int getCapacity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isFull</code></td><td><span class="sig">boolean isFull()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">boolean add(int inputId)</span></td><td class="desc">Stage one Input id; returns true when accepted.</td></tr>
+<tr><td><code>at</code></td><td><span class="sig">int at(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyintset">SLPhilosophyIntSet <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyIntSet.sleela)</span></h2>
+<div data-u="slphilosophyintset slphilosophyintset">
+<h3 id="SLPhilosophyIntSet">SLPhilosophyIntSet <span class="pill">class</span></h3>
+<p class="desc">handle to the INT-set data tool (philosophy/int_set/int_set.*). An authored character schema over a real human age structure, emitted as JSON and XML.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>traitCount</code></td><td><span class="sig">int traitCount()</span></td><td class="desc">Schema contract (mirrors int_set.*).</td></tr>
+<tr><td><code>rangeLow</code></td><td><span class="sig">int rangeLow()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rangeHigh</code></td><td><span class="sig">int rangeHigh()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>psychometric</code></td><td><span class="sig">boolean psychometric()</span></td><td class="desc">The INT range is an ordinal lateral index, never a validated IQ score.</td></tr>
+<tr><td><code>startAge</code></td><td><span class="sig">int startAge()</span></td><td class="desc">Age rules.</td></tr>
+<tr><td><code>notMentionedBelow</code></td><td><span class="sig">int notMentionedBelow()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>basicAnatomyCheckinAbove</code></td><td><span class="sig">int basicAnatomyCheckinAbove()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>emitsJson</code></td><td><span class="sig">boolean emitsJson()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>emitsXml</code></td><td><span class="sig">boolean emitsXml()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyitem">SLPhilosophyItem <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyItem.sleela)</span></h2>
+<div data-u="slphilosophyitem slphilosophyitem">
+<h3 id="SLPhilosophyItem">SLPhilosophyItem <span class="pill">class</span></h3>
+<p class="desc">one catalogued Item -- a keyed, typed value with provenance -- that a Node may carry inside a philosophy Tree.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>itemId</code></td><td><span class="sig">int itemId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>key</code></td><td><span class="sig">String key</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>value</code></td><td><span class="sig">int value</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unit</code></td><td><span class="sig">String unit</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sourceReference</code></td><td><span class="sig">String sourceReference</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int id, String k, int v, String u, String src)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getItemId</code></td><td><span class="sig">int getItemId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setItemId</code></td><td><span class="sig">void setItemId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getKey</code></td><td><span class="sig">String getKey()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setKey</code></td><td><span class="sig">void setKey(String v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getValue</code></td><td><span class="sig">int getValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setValue</code></td><td><span class="sig">void setValue(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getUnit</code></td><td><span class="sig">String getUnit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setUnit</code></td><td><span class="sig">void setUnit(String v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSourceReference</code></td><td><span class="sig">String getSourceReference()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setSourceReference</code></td><td><span class="sig">void setSourceReference(String v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasKey</code></td><td><span class="sig">boolean hasKey()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophynode">SLPhilosophyNode <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyNode.sleela)</span></h2>
+<div data-u="slphilosophynode slphilosophynode">
+<h3 id="SLPhilosophyNode">SLPhilosophyNode <span class="pill">class</span></h3>
+<p class="desc">one Node of a philosophy Tree -- a branch with an ordering key, left/right child ids, a weight, and the Item it carries.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>nodeId</code></td><td><span class="sig">int nodeId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>leftId</code></td><td><span class="sig">int leftId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rightId</code></td><td><span class="sig">int rightId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>height</code></td><td><span class="sig">int height</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weight</code></td><td><span class="sig">int weight</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>itemId</code></td><td><span class="sig">int itemId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int id, int w, int carriedItemId)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getNodeId</code></td><td><span class="sig">int getNodeId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setNodeId</code></td><td><span class="sig">void setNodeId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLeftId</code></td><td><span class="sig">int getLeftId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setLeftId</code></td><td><span class="sig">void setLeftId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRightId</code></td><td><span class="sig">int getRightId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRightId</code></td><td><span class="sig">void setRightId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getHeight</code></td><td><span class="sig">int getHeight()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setHeight</code></td><td><span class="sig">void setHeight(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getWeight</code></td><td><span class="sig">int getWeight()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setWeight</code></td><td><span class="sig">void setWeight(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getItemId</code></td><td><span class="sig">int getItemId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setItemId</code></td><td><span class="sig">void setItemId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isLeaf</code></td><td><span class="sig">boolean isLeaf()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyowner">SLPhilosophyOwner <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyOwner.sleela)</span></h2>
+<div data-u="slphilosophyowner slphilosophyowner">
+<h3 id="SLPhilosophyOwner">SLPhilosophyOwner <span class="pill">class</span></h3>
+<p class="desc">Owner -- the party who holds a Tree, with full rights including ownership transfer. The Owner anchors the base structure.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>ownerId</code></td><td><span class="sig">int ownerId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>role</code></td><td><span class="sig">String role</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int id, String personName)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOwnerId</code></td><td><span class="sig">int getOwnerId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setOwnerId</code></td><td><span class="sig">void setOwnerId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getName</code></td><td><span class="sig">String getName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setName</code></td><td><span class="sig">void setName(String v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRole</code></td><td><span class="sig">String getRole()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>transferTo</code></td><td><span class="sig">int transferTo(int newOwnerId)</span></td><td class="desc">Transfer ownership to a new owner id; returns the new owner id.</td></tr>
+<tr><td><code>canAdd</code></td><td><span class="sig">boolean canAdd()</span></td><td class="desc">Rights on the Tree.</td></tr>
+<tr><td><code>canRead</code></td><td><span class="sig">boolean canRead()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canPrune</code></td><td><span class="sig">boolean canPrune()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canTransferOwnership</code></td><td><span class="sig">boolean canTransferOwnership()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophypartitionapi">SLPhilosophyPartitionApi <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyPartitionApi.sleela)</span></h2>
+<div data-u="slphilosophypartitionapi slphilosophypartitionapi">
+<h3 id="SLPhilosophyPartitionApi">SLPhilosophyPartitionApi <span class="pill">class</span></h3>
+<p class="desc">handle to the uniform three-level partition API tool (philosophy/partition_api.*).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>levelCount</code></td><td><span class="sig">int levelCount()</span></td><td class="desc">Levels and the eight operations.</td></tr>
+<tr><td><code>operationCount</code></td><td><span class="sig">int operationCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>activityCount</code></td><td><span class="sig">int activityCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>basisNodesMin</code></td><td><span class="sig">int basisNodesMin()</span></td><td class="desc">Whole-tree basis and maturation caps (mirrors partition_api.h).</td></tr>
+<tr><td><code>basisNodesMax</code></td><td><span class="sig">int basisNodesMax()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maturationUsual</code></td><td><span class="sig">int maturationUsual()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maturationMax</code></td><td><span class="sig">int maturationMax()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>operationName</code></td><td><span class="sig">String operationName(int op)</span></td><td class="desc">Operation names, by ordinal 0..7.</td></tr>
+<tr><td><code>activityName</code></td><td><span class="sig">String activityName(int a)</span></td><td class="desc">Activity names, by ordinal 0..10.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyrelevant">SLPhilosophyRelevant <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyRelevant.sleela)</span></h2>
+<div data-u="slphilosophyrelevant slphilosophyrelevant">
+<h3 id="SLPhilosophyRelevant">SLPhilosophyRelevant <span class="pill">class</span></h3>
+<p class="desc">Relevant -- a sorted, right-ordered index over Tree nodes by relevance, so the most relevant node sits at the right end.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>nodeIds</code></td><td><span class="sig">int[] nodeIds</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>scores</code></td><td><span class="sig">int[] scores</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>capacity</code></td><td><span class="sig">int capacity</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int cap)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSize</code></td><td><span class="sig">int getSize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCapacity</code></td><td><span class="sig">int getCapacity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insert</code></td><td><span class="sig">boolean insert(int nodeId, int score)</span></td><td class="desc">Insert a (nodeId, score) keeping ascending order; right end = most relevant.</td></tr>
+<tr><td><code>nodeAt</code></td><td><span class="sig">int nodeAt(int index)</span></td><td class="desc">The node id at a given rank from the left (0) to the right (size-1).</td></tr>
+<tr><td><code>scoreAt</code></td><td><span class="sig">int scoreAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mostRelevant</code></td><td><span class="sig">int mostRelevant()</span></td><td class="desc">The most relevant node id (right end), or 0 when empty.</td></tr>
+<tr><td><code>leastRelevant</code></td><td><span class="sig">int leastRelevant()</span></td><td class="desc">The least relevant node id (left end), or 0 when empty.</td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophyspeculation">SLPhilosophySpeculation <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophySpeculation.sleela)</span></h2>
+<div data-u="slphilosophyspeculation slphilosophyspeculation">
+<h3 id="SLPhilosophySpeculation">SLPhilosophySpeculation <span class="pill">class</span></h3>
+<p class="desc">handle to the speculation-invite tool (philosophy/module/psychiatry-friend/speculation_invite.*).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>requiresFalsifiability</code></td><td><span class="sig">boolean requiresFalsifiability()</span></td><td class="desc">Careful-science contract (mirrors speculation_invite.h).</td></tr>
+<tr><td><code>requiresSelfAttestation</code></td><td><span class="sig">boolean requiresSelfAttestation()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>verifiesCredentials</code></td><td><span class="sig">boolean verifiesCredentials()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>makesDiagnosis</code></td><td><span class="sig">boolean makesDiagnosis()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>givesTreatmentAdvice</code></td><td><span class="sig">boolean givesTreatmentAdvice()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>aboutSoftwareNotPerson</code></td><td><span class="sig">boolean aboutSoftwareNotPerson()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>aspectCount</code></td><td><span class="sig">int aspectCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>confidenceLevelCount</code></td><td><span class="sig">int confidenceLevelCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>aspectName</code></td><td><span class="sig">String aspectName(int a)</span></td><td class="desc">Aspect names, by ordinal 0..4.</td></tr>
+<tr><td><code>confidenceName</code></td><td><span class="sig">String confidenceName(int c)</span></td><td class="desc">Confidence band names, by ordinal 0..2 (there is no &quot;certain&quot; level).</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slphilosophytree">SLPhilosophyTree <span class="pill syntax">#sleela 2.9</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPhilosophyTree.sleela)</span></h2>
+<div data-u="slphilosophytree slphilosophytree">
+<h3 id="SLPhilosophyTree">SLPhilosophyTree <span class="pill">class</span></h3>
+<p class="desc">the BASE Tree structure for the philosophy series -- the aggregate that composes Nodes (each carrying an Item), is held by an Owner, is read back through a Relevant index, and is gated by role rights.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>rootId</code></td><td><span class="sig">int rootId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nodeCount</code></td><td><span class="sig">int nodeCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>capacity</code></td><td><span class="sig">int capacity</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ownerId</code></td><td><span class="sig">int ownerId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nodeIds</code></td><td><span class="sig">int[] nodeIds</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>itemIds</code></td><td><span class="sig">int[] itemIds</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weights</code></td><td><span class="sig">int[] weights</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nationalStarts</code></td><td><span class="sig">String[] nationalStarts</span></td><td class="desc">A backing array mirrors the @mix group for runtime read access (a bare read of the group name resolves to the last-declared member under 2.9).</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int owner, int cap)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRootId</code></td><td><span class="sig">int getRootId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRootId</code></td><td><span class="sig">void setRootId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getNodeCount</code></td><td><span class="sig">int getNodeCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCapacity</code></td><td><span class="sig">int getCapacity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOwnerId</code></td><td><span class="sig">int getOwnerId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setOwnerId</code></td><td><span class="sig">void setOwnerId(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isFull</code></td><td><span class="sig">boolean isFull()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>assign</code></td><td><span class="sig">boolean assign(int nodeId, int itemId, int weight)</span></td><td class="desc">Compose one Node (with its carried Item and a weight) into the Tree. The first assigned node becomes the root. Returns true when stored. Weight is clamped to the consistency band [1,9].</td></tr>
+<tr><td><code>assignIfAllowed</code></td><td><span class="sig">boolean assignIfAllowed(boolean canAdd, int nodeId, int itemId, int weight)</span></td><td class="desc">Role-gated assignment: a role that lacks the add right may not compose a node. Pass the role right (from an Owner/Admin/Author.canAdd()).</td></tr>
+<tr><td><code>nodeIdAt</code></td><td><span class="sig">int nodeIdAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>itemIdAt</code></td><td><span class="sig">int itemIdAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weightAt</code></td><td><span class="sig">int weightAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toRelevant</code></td><td><span class="sig">SLPhilosophyRelevant toRelevant(int[] scores)</span></td><td class="desc">Read the Tree most-relevant-first by handing its nodes and per-node scores to a Relevant index; returns the filled index. The caller supplies the scores array (one per node, in assignment order).</td></tr>
+<tr><td><code>initDirectives</code></td><td><span class="sig">void initDirectives()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nationalStartsCount</code></td><td><span class="sig">int nationalStartsCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nationalStartAt</code></td><td><span class="sig">String nationalStartAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
+<footer>
+Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
+<code>/lib</code> tree on 2026-10-31 00:00 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
+</footer>
+</main>
+</div>
+</body>
+</html>
