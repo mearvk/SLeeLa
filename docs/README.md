@@ -7,14 +7,17 @@ normative specifications from implementation notes and live validation results.
 
 ## Language and compiler
 
-- [Language syntax specification](../SLEELA.syntax) — checked-in grammar and
-  documented syntax range. The current source snapshot documents **1.3–1.8**:
-  the compiler version gate (`impl/frontend/version.{h,cpp}`) accepts 1.3–1.8
-  and defaults to 1.8, the grammar defines the 1.8 features in §12 (inferred
-  `let` locals and constructor arguments), and the regression fixtures in
-  [`tests/sleela-syntax-1.8/`](../tests/sleela-syntax-1.8/) exercise them.
-  Constructor overload resolution and `this(...)`/base delegation are **not**
-  part of verified 1.8 and are rejected explicitly.
+- [Language syntax specification](../SLEELA.syntax) — normative grammar for
+  the documented **1.3–2.9** source-syntax range. The compiler gate in
+  `impl/frontend/version.{h,cpp}` accepts syntax **1.0–2.9** and defaults
+  to its maximum; individual features remain subject to their own version
+  gates. The current edition adds `@mix` consequent fields (§28); the
+  `prestige` marker in §27 is explicitly future-facing and is not an
+  implemented feature. The compiler/tool release number is independent of the
+  source syntax edition. See the [syntax version matrix](../api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md)
+  for feature history and implementation boundaries. Constructor overload
+  resolution and `this(...)`/base delegation remain outside the verified
+  implementation and are rejected explicitly.
 - [Compiler documentation](../markdown/COMPILER.md) — pipeline and version-aware
   behavior.
 - [Source and file format](../markdown/SOURCE.md) — `.sleela` source contract.
