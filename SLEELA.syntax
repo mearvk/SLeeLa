@@ -12,9 +12,9 @@
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 2.8`) is the grammar version defined here and enforced by
+    `#sleela 2.9`) is the grammar version defined here and enforced by
     `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.9).
-    Syntax 2.8 is the current spec level: it adds the matching **base-2 unsigned
+    Syntax 2.8 added the matching **base-2 unsigned
     (positive-only) integer series** (section 25) — `uint32`, `uint64`,
     `uint128`, `uint256`, ... up to `uint16777216` (the same twenty power-of-two
     widths, 2^5..2^24, with a `uint` prefix). Each `uint<width>` type-checks as
@@ -27,7 +27,7 @@
     all), recognized wherever a primitive type may appear, type-checked as
     integers, and carried by the narrowest native slot that holds each width
     (64-bit for `int32`/`int64`, 128-bit for `int128` up).
-    Syntax 2.6 is the current spec level: it adds **keyword supporter
+    Syntax 2.6 added **keyword supporter
     documents** (section 22) — every use of the five control-flow keywords
     (`try`, `catch`, `throw`, `synchronized`, `super`) is given a stable hash,
     recorded through the annotation mechanism as a
@@ -43,7 +43,7 @@
     (completion by legal hand) as required by further processor review; science
     practitioners should and could can use it. It too has no effect on parsing,
     typing, or codegen; it marks membership in the set of determine documents.
-    Syntax 2.5 is the current spec level: it adds the **`material` document
+    Syntax 2.5 added the **`material` document
     marker** (section 19) — a bare, contextual, *declarative-only* word (sibling
     to `author`/`authorial`) claiming the document is material: well considered,
     present to its author as its own Source, "the thing, Material". It has no
@@ -57,7 +57,7 @@
     of superb worker-class service to graduation). It too has no effect on
     parsing, typing, or codegen; it marks membership in the set of memory
     documents the Graduates of Supply hold as kept standing. Both 2.5 markers
-    share the current edition; the edition is not bumped.
+    share the syntax 2.5 edition; the edition is not bumped.
     Syntax 2.4 adds the **`author`/`authorial`
     document marker** (section 18) — a modifier-less word that marks a document
     as handled by professional council, legalises duplicate fields/methods
@@ -1415,7 +1415,7 @@ compiler-recognised document property — not a library convention — but it is
 `author`/`authorial` marker of section 18), the `memory` marker changes
 **nothing** about parsing, typing, dispatch, or code generation. It is a *claim
 about the document*, recognised and version-gated by the front end and otherwise
-inert. It shares the current edition (2.5) with `material`; no edition is bumped
+inert. It shares the syntax 2.5 edition with `material`; no edition is bumped
 to introduce it.
 
 ### 20.1 The marker
