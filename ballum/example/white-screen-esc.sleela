@@ -1,0 +1,288 @@
+#sleela 2.9
+material;
+<< ballum/example/white-screen-esc.sleela
+   ----------------------------------------------------------------------------
+   A full white screen with black ~14pt text that reads "ESC to exit..." and
+   then fades out; the screen stays white. Self-contained over the uiBallum* VM
+   bridge (the house demo style), so it drives the real native Ballum manager.
+
+   Ballum is a pixel/blit surface -- it has no font engine -- so the text is
+   drawn from a tiny embedded 5x7 bitmap font, scaled x2 (~14pt on a typical
+   display), as black pixels on the white fullscreen surface. The fade blends
+   the black text toward white over a set number of frames; the white screen
+   itself never changes. ESC exits.
+
+   Headless host: the native backend is the unavailable fallback, so there is no
+   display; the program then prints an honest status and exits, never drawing a
+   false frame. On a Linux X11 host with the backend compiled in, it claims an
+   owned fullscreen surface and presents real pixels.
+   ---------------------------------------------------------------------------- >>
+class WhiteScreenEsc {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the real origin of the subject where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 11560;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-10-31";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-10-31";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int boundId;
+  int w;
+  int h;
+  int caps;
+
+  < Glyph scale: a 5x7 cell x SCALE ~= 14pt text on a typical display. >
+  int scale;
+
+  boolean capHas(int bit) { return (caps / bit) % 2 == 1; }
+
+  < Open the primary display and cache its facts. Returns a status code. >
+  int open() {
+    int st = uiBallumEnumerate();
+    if (st != 0) { return st; }
+    int n = uiBallumDisplayCount();
+    if (n == 0) { return 4; }
+    int idx = 0;
+    int i = 0;
+    while (i < n) { if (uiBallumDisplayPrimary(i) == 1) { idx = i; } i = i + 1; }
+    boundId = uiBallumDisplayId(idx);
+    w = uiBallumDisplayWidth(idx);
+    h = uiBallumDisplayHeight(idx);
+    caps = uiBallumDisplayCaps(idx);
+    return 0;
+  }
+
+  < Fill the whole surface white. >
+  void paintWhite() {
+    int y = 0;
+    while (y < h) {
+      int x = 0;
+      while (x < w) {
+        uiBallumSetPixel(boundId, x, y, 255, 255, 255, 255);
+        x = x + 1;
+      }
+      y = y + 1;
+    }
+  }
+
+  < ---- tiny 5x7 bitmap font -------------------------------------------- >
+  < Each glyph is seven row masks; bit 4 (value 16) is the leftmost of five >
+  < columns, bit 0 the rightmost. Only the characters of "ESC to exit..." are >
+  < provided; any other character renders blank. rowMask(ch, row) returns the >
+  < 5-bit mask for one scanline of the glyph. >
+  int rowMask(String ch, int row) {
+    if (ch == "E") {
+      if (row == 0) { return 31; } if (row == 1) { return 16; }
+      if (row == 2) { return 16; } if (row == 3) { return 30; }
+      if (row == 4) { return 16; } if (row == 5) { return 16; }
+      return 31;
+    }
+    if (ch == "S") {
+      if (row == 0) { return 15; } if (row == 1) { return 16; }
+      if (row == 2) { return 16; } if (row == 3) { return 14; }
+      if (row == 4) { return 1; }  if (row == 5) { return 1; }
+      return 30;
+    }
+    if (ch == "C") {
+      if (row == 0) { return 14; } if (row == 1) { return 17; }
+      if (row == 2) { return 16; } if (row == 3) { return 16; }
+      if (row == 4) { return 16; } if (row == 5) { return 17; }
+      return 14;
+    }
+    if (ch == "t") {
+      if (row == 0) { return 8; }  if (row == 1) { return 8; }
+      if (row == 2) { return 30; } if (row == 3) { return 8; }
+      if (row == 4) { return 8; }  if (row == 5) { return 9; }
+      return 6;
+    }
+    if (ch == "o") {
+      if (row == 0) { return 0; }  if (row == 1) { return 0; }
+      if (row == 2) { return 14; } if (row == 3) { return 17; }
+      if (row == 4) { return 17; } if (row == 5) { return 17; }
+      return 14;
+    }
+    if (ch == "e") {
+      if (row == 0) { return 0; }  if (row == 1) { return 0; }
+      if (row == 2) { return 14; } if (row == 3) { return 17; }
+      if (row == 4) { return 31; } if (row == 5) { return 16; }
+      return 14;
+    }
+    if (ch == "x") {
+      if (row == 0) { return 0; }  if (row == 1) { return 0; }
+      if (row == 2) { return 17; } if (row == 3) { return 10; }
+      if (row == 4) { return 4; }  if (row == 5) { return 10; }
+      return 17;
+    }
+    if (ch == "i") {
+      if (row == 0) { return 4; }  if (row == 1) { return 0; }
+      if (row == 2) { return 12; } if (row == 3) { return 4; }
+      if (row == 4) { return 4; }  if (row == 5) { return 4; }
+      return 14;
+    }
+    if (ch == ".") {
+      if (row == 6) { return 4; }
+      return 0;
+    }
+    < space and unknown: blank. >
+    return 0;
+  }
+
+  < Plot one glyph at (ox, oy), scaled, with the given gray level 0..255 for the >
+  < "on" pixels (255 = white = fully faded; 0 = black = fully opaque). >
+  void drawGlyph(String ch, int ox, int oy, int level) {
+    int row = 0;
+    while (row < 7) {
+      int mask = rowMask(ch, row);
+      int col = 0;
+      while (col < 5) {
+        int bit = 16;
+        int c2 = 0;
+        while (c2 < col) { bit = bit / 2; c2 = c2 + 1; }
+        if ((mask / bit) % 2 == 1) {
+          < scale the pixel up into a scale x scale block >
+          int sy = 0;
+          while (sy < scale) {
+            int sx = 0;
+            while (sx < scale) {
+              uiBallumSetPixel(boundId,
+                ox + col * scale + sx, oy + row * scale + sy,
+                level, level, level, 255);
+              sx = sx + 1;
+            }
+            sy = sy + 1;
+          }
+        }
+        col = col + 1;
+      }
+      row = row + 1;
+    }
+  }
+
+  < Draw one glyph of the message and return the next pen x. Advance is 6 >
+  < columns per glyph (5 + 1 spacing), scaled. >
+  int drawAt(String ch, int penX, int oy, int level) {
+    drawGlyph(ch, penX, oy, level);
+    return penX + 6 * scale;
+  }
+
+  < The message "ESC to exit..." is a constant, drawn as an explicit glyph >
+  < sequence so no runtime string indexing is needed. `level` is the gray of >
+  < the "on" pixels (0 black .. 255 white = fully faded). >
+  void drawMessage(int ox, int oy, int level) {
+    int x = ox;
+    x = drawAt("E", x, oy, level);
+    x = drawAt("S", x, oy, level);
+    x = drawAt("C", x, oy, level);
+    x = drawAt(" ", x, oy, level);
+    x = drawAt("t", x, oy, level);
+    x = drawAt("o", x, oy, level);
+    x = drawAt(" ", x, oy, level);
+    x = drawAt("e", x, oy, level);
+    x = drawAt("x", x, oy, level);
+    x = drawAt("i", x, oy, level);
+    x = drawAt("t", x, oy, level);
+    x = drawAt(".", x, oy, level);
+    x = drawAt(".", x, oy, level);
+    x = drawAt(".", x, oy, level);
+  }
+
+  < Column count of the message "ESC to exit..." = 14 glyphs. >
+  int messageGlyphs() { return 14; }
+
+  void main() {
+    print("=== Ballum example: white screen, black ~14pt 'ESC to exit...', text fades ===");
+    print("backend: " + uiBallumBackendName());
+
+    < 5x7 cell x2 ~= 14pt >
+    scale = 2;
+    int st = open();
+    if (st != 0) {
+      print("no display (" + uiBallumStatusName(st) + "); this example needs a "
+            + "Linux X11 display. Nothing drawn.");
+      print("done");
+      return;
+    }
+
+    print("display " + boundId + " " + w + "x" + h
+          + " fullscreen=" + capHas(128));
+
+    < Claim an owned fullscreen surface so the compositor cannot overpaint. >
+    uiBallumClaimSurface(boundId);
+
+    < The message is "ESC to exit..." (14 glyphs). Center it: width = glyphs * >
+    < 6 columns * scale; height = 7 rows * scale. >
+    int textW = messageGlyphs() * 6 * scale;
+    int textH = 7 * scale;
+    int ox = (w - textW) / 2;
+    int oy = (h - textH) / 2;
+
+    < Paint white once, draw the fully-black text, present the first frame. >
+    paintWhite();
+    drawMessage(ox, oy, 0);
+    uiBallumPresent(boundId);
+
+    << Fade: raise the text gray level 0 -> 255 over the fade frames, repainting
+       only the text region white each step so the screen stays white and the
+       letters dissolve into it. ESC exits early. >>
+    int fadeFrames = 48;
+    int frame = 0;
+    while (frame <= fadeFrames) {
+      int k = uiBallumPollKey();
+      if (k == 27) { frame = fadeFrames + 1; }
+      else {
+        int level = frame * 255 / fadeFrames;
+        < clear the text box to white, then redraw the text at this fade level >
+        int y = oy;
+        while (y < oy + textH) {
+          int x = ox;
+          while (x < ox + textW) {
+            uiBallumSetPixel(boundId, x, y, 255, 255, 255, 255);
+            x = x + 1;
+          }
+          y = y + 1;
+        }
+        drawMessage(ox, oy, level);
+        uiBallumPresent(boundId);
+        frame = frame + 1;
+      }
+    }
+
+    < The text has faded to white; the screen remains white. Let that be it. >
+    uiBallumReleaseSurface(boundId);
+    print("text faded; screen remains white. done");
+  }
+}
