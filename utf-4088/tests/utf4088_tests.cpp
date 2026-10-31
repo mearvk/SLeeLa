@@ -5,6 +5,7 @@
 #include "character_map.hpp"
 #include "digraph_engine.hpp"
 #include "utf4088.hpp"
+#include "encoder_decoder.hpp"
 #include "sleela_alphabet_adapter.hpp"
 #include "voltage_field.hpp"
 #include "glyph8x12.hpp"
@@ -24,8 +25,12 @@ int main() {
     assert(is_valid_code_point(0x110000ULL));
     assert(is_valid_code_point(0x1FFFFFFFFULL));
     assert(!is_valid_code_point(0x200000000ULL));
-    assert(symbol_from_input(0x110000ULL).has_value());
-    assert(!symbol_from_input(0x110000ULL - 1).has_value());
+
+    const InputFields sample{3, 7, 25, 128};
+    const auto packedSample = pack_input(sample);
+    assert(packedSample.has_value());
+    assert(symbol_from_input(*packedSample).has_value());
+    assert(!symbol_from_input(1ULL << 21).has_value());
 
     const auto first = generate_frontend_registry();
     const auto& cached = frontend_registry();
@@ -56,9 +61,6 @@ int main() {
     assert(glyph_signature(glyph) == glyph_signature(glyph));
     assert(analyze_glyph(glyph).black_pixels <= 96);
 
-
-    // The semantic concept registry must expose stable concept identities and
-    // reproducible, distinct 8x12 seed glyphs for the starter vocabulary.
     const auto& conceptSymbols = semantics::concept_symbol_registry();
     assert(conceptSymbols.size() == 44);
     for (std::size_t i = 0; i < conceptSymbols.size(); ++i) {
