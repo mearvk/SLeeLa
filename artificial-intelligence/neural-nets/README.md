@@ -10,6 +10,7 @@ Portable native neural-network API for SLeeLa, with a C ABI and a C++17 facade.
 | `neural_nets.c` | Dependency-light CPU implementation |
 | `neural_nets.hpp` | C++17 RAII interface |
 | `neural_nets.cpp` | C++ facade implementation |
+| `xor_example.c` | Deterministic XOR learning example and regression check |
 
 ## Current capabilities
 
@@ -52,6 +53,23 @@ c++ -std=c++17 -O2 -c neural_nets.cpp -o neural_nets_cpp.o
 ```
 
 Link the C++ facade with the C object and the platform math library (often `-lm` on Unix-like systems).
+
+## XOR learning example
+
+`xor_example.c` trains a seeded 2–4–1 sigmoid network on the four XOR
+samples using the public single-sample SGD API. It runs 5,000 epochs and
+checks that both expected-zero outputs are at most `0.20` and both expected-one
+outputs are at least `0.80`. It prints all four predictions and exits nonzero
+if training or classification fails.
+
+From the repository root, run the integrated test with:
+
+```sh
+make -C tests ai-neural-nets-xor
+```
+
+The same target is included in the native portability workflow for Linux,
+macOS, and Windows/MinGW-w64.
 
 ## Contract and limitations
 
