@@ -55,9 +55,28 @@ For a document, construct an ordered `slcr_document_glyph` array. Set
 `space_before` or `line_break_before` from the page segmentation stage, then
 call `slcr_write_document` with distinct transcript and review-sidecar paths.
 
-The model is currently in memory only; applications must load their approved,
-labelled training samples and register them at startup. A portable, versioned
-model-file format and page segmentation are future work.
+## Page segmentation, reusable models, and review corrections
+
+The C API now includes a simple projection-based page segmenter for binary
+page images. It groups horizontal ink runs into text lines and vertical ink
+runs into glyph boxes. The caller crops each box from the source image and
+passes it through `slcr_normalize_glyph` before recognition. This first
+segmenter expects clean, separated handwriting; touching cursive glyphs,
+complex layouts, columns, tables, and automatic page deskew require a stronger
+layout engine and must be reviewed manually.
+
+`slcr_model_save` and `slcr_model_load` persist the labelled glyph bank in a
+versioned binary format. Keep model files with their training provenance and
+writer/sample metadata; do not mix samples from different writers without
+tracking that fact.
+
+For human review, prepare a UTF-8 TSV correction file with one override per
+line: zero-based glyph index, a tab, then the corrected single character.
+Pass it to `slcr_write_corrected_document`. Positions without an override are
+recognized again and still obey the configured similarity threshold. Keep the
+original scan, machine transcript, correction file, and corrected transcript
+as separate artifacts. This creates an auditable workflow but is not itself a
+cryptographic chain-of-custody or legal certification system.
 
 ## Regression check
 
