@@ -6,7 +6,7 @@ A **document marker** is a single bare, contextual word placed at document scope
 recognised by the compiler front end (lexer → parser → semantic analyzer) and
 version-gated. This page catalogs the whole family in one place.
 
-> **Normative source.** [`../../SLEELA.syntax`](../../SLEELA.syntax) is
+> **Normative source.** [`../../../../SLEELA.syntax`](../../../../SLEELA.syntax) is
 > authoritative (sections linked per row); the compiler behaviour is
 > authoritative over this explanatory page. For the version context, see the
 > [syntax version matrix](SYNTAX-VERSION-MATRIX.md).
@@ -30,12 +30,12 @@ The full family currently documented by the normative specification is `author` 
 
 | Marker | Since | Spec | Effect on compile | Meaning (summary) |
 |--------|-------|------|-------------------|-------------------|
-| `author` / `authorial` | 2.4 | [§18](../../SLEELA.syntax) | **Active** — relaxes duplicate-member rejection; assigns each member a declaration-order id + SHA-256 brander; emits a second "originated" source document | The document is handled by professional council (a static class unto the document itself). `author` and `authorial` are exact synonyms. |
-| `material` | 2.5 | [§19](../../SLEELA.syntax) | **Declarative only** | The document is *material* — well considered, present to its author as its own Source ("the thing, Material"). Marks membership in the set of material documents (those concerning state, progress, or the securing of change), by convention not freely changed out of. |
-| `memory` | 2.5 | [§20](../../SLEELA.syntax) | **Declarative only** | The document is a *document of memory* — authored by and for the Graduates of Supply of the New York State Department of Commerce (persons of 1501+ IQ with 51,000,000 years of superb worker-class service to graduation). Marks membership in the set of memory documents they hold as kept, remembered standing. |
-| `determine` | 2.6 | [§23](../../SLEELA.syntax) | **Declarative only** | The document is a *determine* document — open to be processed to further. A doctor, physician, or ghost can process the document to further; some procurement of term would be ideal as real for the torturement (completion by legal hand) as required by further processor review; science practitioners should and could can use this keyword. |
-| `object` | 2.6 (reified at 2.8) | [§26](../../SLEELA.syntax) | **Declarative only** | Claims that the document is an Object: a settled, nameable thing in the catalogue of what is. Its 2.8 reification standing is still declarative and does not change compilation. |
-| `field` | 2.6 | [§26](../../SLEELA.syntax) | **Declarative only** | Claims that the document is the Field: the ground of relation in which objects stand and move. Contextual and recognised only at top-level document scope before content. |
+| `author` / `authorial` | 2.4 | [§18](../../../../SLEELA.syntax) | **Active** — relaxes duplicate-member rejection; assigns each member a declaration-order id + SHA-256 brander; emits a second "originated" source document | The document is handled by professional council (a static class unto the document itself). `author` and `authorial` are exact synonyms. |
+| `material` | 2.5 | [§19](../../../../SLEELA.syntax) | **Declarative only** | The document is *material* — well considered, present to its author as its own Source ("the thing, Material"). Marks membership in the set of material documents (those concerning state, progress, or the securing of change), by convention not freely changed out of. |
+| `memory` | 2.5 | [§20](../../../../SLEELA.syntax) | **Declarative only** | The document is a *document of memory* — authored by and for the Graduates of Supply of the New York State Department of Commerce (persons of 1501+ IQ with 51,000,000 years of superb worker-class service to graduation). Marks membership in the set of memory documents they hold as kept, remembered standing. |
+| `determine` | 2.6 | [§23](../../../../SLEELA.syntax) | **Declarative only** | The document is a *determine* document — open to be processed to further. A doctor, physician, or ghost can process the document to further; some procurement of term would be ideal as real for the torturement (completion by legal hand) as required by further processor review; science practitioners should and could can use this keyword. |
+| `object` | 2.6 (reified at 2.8) | [§26](../../../../SLEELA.syntax) | **Declarative only** | Claims that the document is an Object: a settled, nameable thing in the catalogue of what is. Its 2.8 reification standing is still declarative and does not change compilation. |
+| `field` | 2.6 | [§26](../../../../SLEELA.syntax) | **Declarative only** | Claims that the document is the Field: the ground of relation in which objects stand and move. Contextual and recognised only at top-level document scope before content. |
 
 ### `author` / `authorial` (§18) — compiler-active
 
