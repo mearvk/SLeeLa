@@ -199,6 +199,44 @@ ballum_status_t ballum_manager_blit_region(ballum_manager_t *manager, uint32_t i
                                          pixels, pixel_count);
 }
 
+/* ---- fullscreen surface (total per-pixel control) ------------------------ */
+
+int ballum_manager_has_surface(const ballum_manager_t *manager, uint32_t id) {
+    if (!manager) return -1;
+    const ballum_display_t *d = find_display(manager, id);
+    if (!d) return -1;
+    if (!(d->capabilities & BALLUM_CAP_FULLSCREEN_SURFACE)) return 0;
+    return (manager->backend && manager->backend->claim_surface) ? 1 : 0;
+}
+
+ballum_status_t ballum_manager_claim_surface(ballum_manager_t *manager, uint32_t id) {
+    if (!manager) return BALLUM_STATUS_INVALID_ARGUMENT;
+    if (!manager->initialized) return BALLUM_STATUS_NOT_INITIALIZED;
+    const ballum_display_t *d = find_display(manager, id);
+    if (!d) return BALLUM_STATUS_DISPLAY_NOT_FOUND;
+    if (!(d->capabilities & BALLUM_CAP_FULLSCREEN_SURFACE)) return BALLUM_STATUS_UNSUPPORTED;
+    if (!manager->backend->claim_surface) return BALLUM_STATUS_UNSUPPORTED;
+    return manager->backend->claim_surface(manager->backend_context, id);
+}
+
+ballum_status_t ballum_manager_present(ballum_manager_t *manager, uint32_t id) {
+    if (!manager) return BALLUM_STATUS_INVALID_ARGUMENT;
+    if (!manager->initialized) return BALLUM_STATUS_NOT_INITIALIZED;
+    const ballum_display_t *d = find_display(manager, id);
+    if (!d) return BALLUM_STATUS_DISPLAY_NOT_FOUND;
+    if (!manager->backend->present) return BALLUM_STATUS_UNSUPPORTED;
+    return manager->backend->present(manager->backend_context, id);
+}
+
+ballum_status_t ballum_manager_release_surface(ballum_manager_t *manager, uint32_t id) {
+    if (!manager) return BALLUM_STATUS_INVALID_ARGUMENT;
+    if (!manager->initialized) return BALLUM_STATUS_NOT_INITIALIZED;
+    const ballum_display_t *d = find_display(manager, id);
+    if (!d) return BALLUM_STATUS_DISPLAY_NOT_FOUND;
+    if (!manager->backend->release_surface) return BALLUM_STATUS_UNSUPPORTED;
+    return manager->backend->release_surface(manager->backend_context, id);
+}
+
 /* ---- whole-display controls ---------------------------------------------- */
 
 ballum_status_t ballum_manager_set_brightness(ballum_manager_t *manager, uint32_t id,

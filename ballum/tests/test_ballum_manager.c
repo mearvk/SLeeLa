@@ -35,7 +35,7 @@ static ballum_status_t mock_enumerate(void *ctx, ballum_display_t *out,
     out[0].width = 1920; out[0].height = 1080; out[0].is_primary = 1;
     out[0].capabilities = BALLUM_CAP_PER_PIXEL | BALLUM_CAP_REGION_BLIT |
                           BALLUM_CAP_BRIGHTNESS | BALLUM_CAP_COLOR_TEMPERATURE |
-                          BALLUM_CAP_GAMMA;
+                          BALLUM_CAP_GAMMA | BALLUM_CAP_FULLSCREEN_SURFACE;
 
     /* A second display that supports brightness ONLY (no per-pixel). */
     out[1].id = 200;
@@ -105,10 +105,26 @@ static ballum_status_t mock_poll_key(void *ctx, int *out) {
     return BALLUM_STATUS_OK;
 }
 
+/* Mock fullscreen surface: record claim/present/release so the manager's new
+ * surface path is exercised without any display hardware. */
+static int g_surface_claimed = 0;
+static int g_present_calls = 0;
+static int g_release_calls = 0;
+static ballum_status_t mock_claim_surface(void *ctx, uint32_t id) {
+    (void)ctx; (void)id; g_surface_claimed = 1; return BALLUM_STATUS_OK;
+}
+static ballum_status_t mock_present(void *ctx, uint32_t id) {
+    (void)ctx; (void)id; g_present_calls++; return BALLUM_STATUS_OK;
+}
+static ballum_status_t mock_release_surface(void *ctx, uint32_t id) {
+    (void)ctx; (void)id; g_release_calls++; g_surface_claimed = 0; return BALLUM_STATUS_OK;
+}
+
 static const ballum_backend_t g_mock = {
     "mock", mock_enumerate, mock_set_pixel, mock_get_pixel, mock_blit,
     mock_set_brightness, mock_set_warmth, mock_set_gamma, mock_poll_event,
-    mock_poll_key
+    mock_poll_key,
+    mock_claim_surface, mock_present, mock_release_surface
 };
 
 int main(void) {
@@ -219,6 +235,20 @@ int main(void) {
     assert(key == BALLUM_KEY_NONE);
     assert(ballum_manager_poll_key(&m, &key) == BALLUM_STATUS_OK);
     assert(key == BALLUM_KEY_ENTER);
+
+    /* ---- fullscreen surface (total per-pixel path) ----------------------- */
+    /* Display 100 advertises the surface capability; 200 does not. */
+    assert(ballum_manager_has_surface(&m, 100) == 1);
+    assert(ballum_manager_has_surface(&m, 200) == 0);
+    assert(ballum_manager_claim_surface(&m, 100) == BALLUM_STATUS_OK);
+    assert(g_surface_claimed == 1);
+    assert(ballum_manager_present(&m, 100) == BALLUM_STATUS_OK);
+    assert(ballum_manager_present(&m, 100) == BALLUM_STATUS_OK);
+    assert(g_present_calls == 2);
+    assert(ballum_manager_release_surface(&m, 100) == BALLUM_STATUS_OK);
+    assert(g_release_calls == 1 && g_surface_claimed == 0);
+    /* A display without the capability is refused before the backend is hit. */
+    assert(ballum_manager_claim_surface(&m, 200) == BALLUM_STATUS_UNSUPPORTED);
 
     /* ---- the unavailable fallback fails closed --------------------------- */
     ballum_manager_t u;

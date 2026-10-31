@@ -34,15 +34,45 @@ backend shape that `wifi-common/` uses for the radio.
   pointers).
 - **Backend vtable** (`include/sleela_ballum/ballum_manager.h`) — a C
   struct-of-function-pointers: `enumerate`, `set_pixel`, `get_pixel`,
-  `blit_region`, `set_brightness`, `set_warmth`, `set_gamma`. Exactly one
-  backend is compiled in per build; `ballum_backend_default()` returns it and is
-  never NULL.
+  `blit_region`, `set_brightness`, `set_warmth`, `set_gamma`, `poll_event`,
+  `poll_key`, and the fullscreen-surface trio `claim_surface` / `present` /
+  `release_surface`. Exactly one backend is compiled in per build;
+  `ballum_backend_default()` returns it and is never NULL.
+
+## Total per-pixel control: the fullscreen surface (World-Class path)
+
+Drawing on the live desktop (`set_pixel`/`blit` with no surface claimed) is
+**transient** — a compositor can repaint over it — and per-pixel device calls
+are slow. For **total, owned, fast** per-pixel control, claim a fullscreen
+surface:
+
+```
+claim_surface(id)  ->  set_pixel / blit (into an in-memory RGBA framebuffer)
+                   ->  present(id)         (one XPutImage; MIT-SHM when available)
+                   ->  release_surface(id)
+```
+
+- `claim_surface` creates an **override-redirect, always-on-top** fullscreen
+  window sized to the display's CRTC, so the window manager/compositor leaves
+  every pixel to the program.
+- While claimed, `set_pixel`/`get_pixel`/`blit_region` operate on the
+  framebuffer in memory — O(1) / row-wise `memcpy`, **no X round-trips** — and
+  `present` pushes the whole frame to the screen in **one** `XPutImage` (a
+  shared-memory `XShmPutImage` when the server has MIT-SHM). A 1920×1080 frame
+  is one image transfer, not ~2 million `XDrawPoint` calls.
+- The capability is advertised as `BALLUM_CAP_FULLSCREEN_SURFACE`; a backend
+  that cannot provide it returns `UNSUPPORTED`, and the manager reports
+  `ballum_manager_has_surface(id) == 0`.
+
+On Linux this targets **X11** (including XWayland). Native Wayland does not grant
+a client root/screen ownership through X11; true Wayland pixel control needs a
+different protocol (wlr-layer-shell or DRM-KMS) and is a documented follow-up.
 
 ### Per-OS backends (open standards only)
 
 | OS | File | Technology |
 |---|---|---|
-| Linux | `src/ballum_backend_x11.c` | X11 + XRANDR CRTC gamma ramp (DDC/CI backlight where available) |
+| Linux | `src/ballum_backend_x11.c` | X11 + XRANDR CRTC gamma ramp; **fullscreen framebuffer surface** via an override-redirect window + one `XPutImage` (MIT-SHM when available); DDC/CI backlight where available |
 | macOS | `src/ballum_backend_macos.mm` | Core Graphics / Quartz (`CGDisplay*`, `CGSetDisplayTransferByFormula`) |
 | Windows 10+ | `src/ballum_backend_windows.c` | Win32 GDI + `SetDeviceGammaRamp`, `EnumDisplayMonitors` |
 | (fallback) | `src/ballum_backend_unavailable.c` | always present; fails closed with `BACKEND_UNAVAILABLE` |
@@ -100,6 +130,13 @@ such dependency.
 The developer-facing classes live in `lib/ballum/` (`SLBallumManager`,
 `SLBallumDisplay`, `SLBallumColor`, `SLBallumStatus`, and per-OS profile
 classes under `lib/ballum/platforms/`). See `lib/ballum/README.md`.
+
+> **Note.** The fullscreen-surface trio (`claim_surface`/`present`/
+> `release_surface`) is implemented in the native C layer and the portable
+> manager, with the X11 backend and the manager/portable tests covering it.
+> Exposing it through the SLeeLa facade (`lib/ballum/SLBallumScreen`) and the
+> host VM bridge (`impl/core/ballum_vm_bridge.c`) is the next step; the native
+> ABI is in place for that wiring.
 
 ---
 

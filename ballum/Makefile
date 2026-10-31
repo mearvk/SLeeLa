@@ -58,8 +58,16 @@ else ifeq ($(PLATFORM),macos)
   BACKEND_IS_CPP := 1
 else
   BACKEND_SRC    := src/ballum_backend_x11.c
-  BACKEND_DEFINE := -DBALLUM_BACKEND_X11
-  BACKEND_LIBS   := -lX11 -lXrandr -lm
+  # MIT-SHM (fast fullscreen present) is on by default; set BALLUM_X11_SHM=0 to
+  # drop it (then the plain-XImage present path is used and -lXext is not needed).
+  BALLUM_X11_SHM ?= 1
+  ifeq ($(BALLUM_X11_SHM),1)
+    BACKEND_DEFINE := -DBALLUM_BACKEND_X11 -DBALLUM_X11_USE_SHM
+    BACKEND_LIBS   := -lX11 -lXrandr -lXext -lm
+  else
+    BACKEND_DEFINE := -DBALLUM_BACKEND_X11
+    BACKEND_LIBS   := -lX11 -lXrandr -lm
+  endif
   BACKEND_IS_CPP := 0
 endif
 

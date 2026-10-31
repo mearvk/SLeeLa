@@ -77,7 +77,8 @@ typedef enum {
     BALLUM_CAP_COLOR_TEMPERATURE = 1 << 3, /* warmth / color temperature        */
     BALLUM_CAP_GAMMA             = 1 << 4, /* gamma ramp                        */
     BALLUM_CAP_POINTER_INPUT     = 1 << 5, /* mouse/touch pointer events        */
-    BALLUM_CAP_TOUCH_INPUT       = 1 << 6  /* multi-touch is reported           */
+    BALLUM_CAP_TOUCH_INPUT       = 1 << 6, /* multi-touch is reported           */
+    BALLUM_CAP_FULLSCREEN_SURFACE = 1 << 7 /* claim a fullscreen framebuffer    */
 } ballum_capability_t;
 
 /* ---- pointer input ------------------------------------------------------- */
@@ -219,6 +220,28 @@ typedef struct ballum_backend {
      * Key codes are the backend-neutral ballum_key_t set (ESC is the one a
      * session needs to exit); per-OS backends map their native keysyms onto it. */
     ballum_status_t (*poll_key)(void *context, int *out);
+
+    /* ---- Fullscreen surface (the World-Class per-pixel path) -------------
+     * These three turn Ballum from "draw on the live desktop (transient,
+     * compositor may overpaint)" into TOTAL per-pixel control: the backend
+     * creates an override-redirect, always-on-top fullscreen surface backed by
+     * an in-memory RGBA framebuffer, so the program owns every pixel and the
+     * window manager cannot paint over it.
+     *
+     * claim_surface : create and map the fullscreen surface for `display_id`.
+     *                 While a surface is claimed, set_pixel/get_pixel/blit
+     *                 operate on its framebuffer (O(1) / memcpy -- no X calls),
+     *                 and `present` pushes the whole framebuffer to the screen
+     *                 in ONE XPutImage (MIT-SHM when available), not per-pixel.
+     * present       : push the framebuffer to the surface in one shot.
+     * release_surface: unmap and destroy the surface; drawing reverts to the
+     *                 live-desktop fallback (if the backend offers one).
+     *
+     * Any of these may be NULL: the manager then reports
+     * BALLUM_STATUS_UNSUPPORTED and BALLUM_CAP_FULLSCREEN_SURFACE is absent. */
+    ballum_status_t (*claim_surface)(void *context, uint32_t display_id);
+    ballum_status_t (*present)(void *context, uint32_t display_id);
+    ballum_status_t (*release_surface)(void *context, uint32_t display_id);
 } ballum_backend_t;
 
 /* The backend compiled in for this build (never NULL; may be the unavailable
@@ -268,6 +291,27 @@ ballum_status_t ballum_manager_blit_region(ballum_manager_t *manager, uint32_t i
                                            ballum_rect_t rect,
                                            const ballum_color_t *pixels,
                                            size_t pixel_count);
+
+/* ---- fullscreen surface (total per-pixel control) ------------------------ */
+
+/* Claim an override-redirect, always-on-top fullscreen surface over display
+ * `id`, backed by an in-memory RGBA framebuffer the program owns. While
+ * claimed, set_pixel/get_pixel/blit operate on the framebuffer (fast, no
+ * per-pixel device calls) and ballum_manager_present() pushes it to the screen
+ * in one shot. Validated against the display's BALLUM_CAP_FULLSCREEN_SURFACE
+ * capability. Returns BALLUM_STATUS_UNSUPPORTED when the backend cannot. */
+ballum_status_t ballum_manager_claim_surface(ballum_manager_t *manager, uint32_t id);
+
+/* Present the framebuffer of a claimed surface to the screen (one XPutImage on
+ * X11, SHM when available). */
+ballum_status_t ballum_manager_present(ballum_manager_t *manager, uint32_t id);
+
+/* Release a claimed surface; drawing reverts to the backend's live-desktop
+ * fallback, if any. */
+ballum_status_t ballum_manager_release_surface(ballum_manager_t *manager, uint32_t id);
+
+/* Does display `id` advertise a claimable fullscreen surface? 1/0/<0. */
+int ballum_manager_has_surface(const ballum_manager_t *manager, uint32_t id);
 
 /* Whole-display controls (validated against the documented ranges). */
 ballum_status_t ballum_manager_set_brightness(ballum_manager_t *manager, uint32_t id,

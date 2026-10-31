@@ -64,7 +64,10 @@ static const ballum_backend_t k_unavailable = {
     0,
     /* poll_key = NULL: the fallback has no keyboard queue either, so
      * has_keyboard()==0 and poll_key returns UNSUPPORTED (never a fake key). */
-    0
+    0,
+    /* claim_surface / present / release_surface = NULL: no fullscreen surface,
+     * so has_surface()==0 and the three surface calls return UNSUPPORTED. */
+    0, 0, 0
 };
 
 const ballum_backend_t *ballum_backend_unavailable(void) { return &k_unavailable; }
