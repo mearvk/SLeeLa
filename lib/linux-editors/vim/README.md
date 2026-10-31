@@ -1,10 +1,21 @@
 # SLeeLa syntax and color schemes for Vim
 
 Classic Vim support for `.sleela` files: a filetype detector, a syntax file,
-and nine color schemes. There is no installer — Vim loads these from your
-`~/.vim` runtime directory, so installation is a copy.
+and nine color schemes.
 
 ## Install
+
+From the SLeeLa repository root:
+
+```sh
+make install-editors EDITORS=vim
+```
+
+Preview with `make install-editors EDITORS=vim EDITOR_ARGS=--dry-run`.
+Remove managed files with `make uninstall-editors`; backed-up files are
+restored and locally modified files are preserved.
+
+For manual installation instead:
 
 ```sh
 mkdir -p ~/.vim/{ftdetect,syntax,colors}
@@ -46,8 +57,7 @@ and the more potent `sleela-sleela`. Regional themes: `sleela-american`,
 
 These Vim `colors/*.vim` files are the **palette source of truth** for the whole
 editor set: `../generate-editor-themes.py` reads their hex values and mirrors
-them into Neovim, Helix, nano, and VS Code. So edit the palette here, then run
-the generator to propagate the change to the other editors:
+them into Neovim, Helix, nano, and VS Code. Edit the palette here, then run:
 
 ```sh
 python3 lib/linux-editors/generate-editor-themes.py
