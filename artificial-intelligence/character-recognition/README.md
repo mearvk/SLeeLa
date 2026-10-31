@@ -57,16 +57,22 @@ call `slcr_write_document` with distinct transcript and review-sidecar paths.
 
 ## Page segmentation, reusable models, and review corrections
 
-The C API now includes a simple projection-based page segmenter for binary
-page images. It groups horizontal ink runs into text lines and vertical ink
-runs into glyph boxes. The caller crops each box from the source image and
-passes it through `slcr_normalize_glyph` before recognition. This first
+The C API now includes a dependency-free PGM page reader (`P2` and `P5`, up
+to 8-bit grayscale) and a simple projection-based page segmenter for binary
+page images. Load the original grayscale page with `slcr_load_pgm`, apply a
+threshold to make a binary foreground mask, then pass that mask to
+`slcr_segment_page`. It groups horizontal ink runs into text lines and vertical ink
+runs into glyph boxes. The caller crops each box from the original grayscale image and passes it
+through `slcr_normalize_glyph` before recognition. The PGM reader does not
+alter or overwrite the source file. This first
 segmenter expects clean, separated handwriting; touching cursive glyphs,
 complex layouts, columns, tables, and automatic page deskew require a stronger
 layout engine and must be reviewed manually.
 
 `slcr_model_save` and `slcr_model_load` persist the labelled glyph bank in a
-versioned binary format. Keep model files with their training provenance and
+versioned binary format (format v1). The file stores the sample labels and
+28×28 pixel patterns; it is intended as a local model asset, not a signed or
+portable interchange format. Keep model files with their training provenance and
 writer/sample metadata; do not mix samples from different writers without
 tracking that fact.
 
@@ -85,3 +91,6 @@ From the repository root:
 ```sh
 make -C tests ai-character-recognition
 ```
+
+The standalone `Character Recognition C11` GitHub Actions workflow runs this
+regression test on Ubuntu, macOS, and Windows/MinGW-w64.
