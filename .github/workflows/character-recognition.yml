@@ -43,4 +43,4 @@ jobs:
             mingw-w64-ucrt-x86_64-gcc
 
       - name: Run character recognition regression test
-        run: make -C tests ai-character-recognition
+        run: make -C tests ai-character-recognition character-recognition-cli
