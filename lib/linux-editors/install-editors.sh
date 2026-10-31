@@ -141,7 +141,7 @@ uninstall_all() {
         if [ -d "$BACKUP_DIR" ]; then
             find "$BACKUP_DIR" -depth -type d -exec rmdir {} \; 2>/dev/null || :
         fi
-        find "$STATE_DIR" -depth -type d -exec rmdir {} \\; 2>/dev/null || :
+        find "$STATE_DIR" -depth -type d -exec rmdir {} \; 2>/dev/null || :
     fi
 }
 if [ "$ACTION" = uninstall ]; then
