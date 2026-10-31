@@ -481,12 +481,19 @@ status should be checked in each package's own documentation and tests.
 
 - **OFDMA** — `ofdma/`: orthogonal frequency-division multiple-access
   technical material and C/C++ development resources.
-- **Philosophy** — `philosophy/` (native C/C++ tools: an explicit-input event
-  tree, a ~44 Hz consistency signal toss, a uniform partition API, a reach-out
-  help desk, an INT-set JSON/XML generator, and an adult-psychiatry speculation
-  invite) with SLeeLa handles and a composed base Tree in
-  [`lib/philosophy/`](lib/philosophy/README.md). Non-clinical and
-  consent-first by design.
+- **Philosophy and the Conversation Mask module** — [`philosophy/`](philosophy/README.md)
+  contains the native C/C++ foundations and [`philosophy/module/`](philosophy/module/README.md)
+  organizes their next module layer into three explicit areas:
+  [`data/`](philosophy/module/data/README.md) for typed, dated observations,
+  event endings, half-life settings, provenance, and consent; [`helper/`](philosophy/module/helper/README.md)
+  for deterministic validation, relevance decay, compatible comparisons, and
+  consent-filtered presentation; and [`psychiatry-friend/`](philosophy/module/psychiatry-friend/README.md)
+  for a supportive, non-clinical conversation interface. The SLeeLa-facing
+  handles and composed Tree live in [`lib/philosophy/`](lib/philosophy/README.md),
+  alongside the wider philosophy package. The module is explicit-input and
+  consent-first: it does not passively monitor people or media, diagnose, infer
+  private intent, score human worth, or recommend medication changes. Its
+  event links preserve provenance and navigation, not independent corroboration.
 - **Synchro** — native runtime/compiler integration and packet-dispatch and
   measurement-related functionality; see the relevant `impl/` source and
   compiler implementation.
