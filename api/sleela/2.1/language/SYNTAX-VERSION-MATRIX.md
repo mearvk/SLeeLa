@@ -2,7 +2,7 @@
 
 The version declared in a source file (for example, `#sleela 2.9`) is the
 **language syntax version**, not the Sleelvac compiler release number. The
-normative grammar is [`SLEELA.syntax`](../../SLEELA.syntax); the compiler gate
+normative grammar is [`SLEELA.syntax`](../../../../SLEELA.syntax); the compiler gate
 is implemented in `impl/frontend/version.{h,cpp}`.
 
 The compiler currently accepts source syntax **1.0 through 2.9** and defaults
