@@ -58,7 +58,14 @@ then its value); any other run is summary prose.
 `@title`, `@intent`, `@param`, `@returns`, `@axiom`, `@thesis`, `@invariant`,
 `@proof`, `@congruence`, `@evidence`, `@to`, `@see`, `@page`.
 
-## Driving it (syntax 2.5)
+## Driving it (source units currently declare syntax 2.8)
+
+The extractor's checked-in source units, `SLSleelaDoc.sleela` and
+`SLDocRenderer.sleela`, currently declare `#sleela 2.8`. That per-file
+source pragma is distinct from the compiler's maximum supported syntax edition
+(2.9) and from the Sleeladoc tool/package version. This README describes the
+extractor's token-driven API; it does not claim that its own source files have
+been migrated to 2.9.
 
 SLeeLa's built-in `String` is **opaque** (no in-language slicing), so — exactly
 as in `lib/text/SLString` and `lib/xml` — the scanner reads each source line as
