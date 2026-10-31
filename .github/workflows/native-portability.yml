@@ -134,6 +134,10 @@ jobs:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl clean all
 
+      - name: Test clean-glyph character recognition and transcript writer
+        timeout-minutes: 3
+        run: make -C tests ai-character-recognition
+
       - name: Test native Wi-Fi manager contract
         timeout-minutes: 3
         run: make -C wifi-common test
