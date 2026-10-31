@@ -2,7 +2,7 @@
 
 This directory documents the language-facing contracts that affect API
 consumers. The normative grammar remains
-[`SLEELA.syntax`](../../SLEELA.syntax); compiler behavior and regression tests
+[`SLEELA.syntax`](../../../../SLEELA.syntax); compiler behavior and regression tests
 establish the implemented boundary.
 
 ## Versioned contracts
@@ -24,7 +24,7 @@ A file's `#sleela X.Y` pragma selects its source-syntax edition; the compiler
 release number is a separate version and does not silently change that pragma.
 
 Syntax 2.9 adds `@mix` consequent fields (see §28 of
-[`SLEELA.syntax`](../../SLEELA.syntax)). Repeated same-named instance fields
+[`SLEELA.syntax`](../../../../SLEELA.syntax)). Repeated same-named instance fields
 must carry `@mix`; their declaration order supplies indexes unless explicit
 indexes are provided. The `prestige` marker described in §27 remains a future
 proposal and is **not** an implemented 2.9 feature.
