@@ -188,6 +188,11 @@ typedef enum {
     SLUI_FN_BALLUM_FX_COUNT,         /* uiBallumFxCount() -> number of effects */
     SLUI_FN_BALLUM_FX_NAME,          /* uiBallumFxName(fx:i) -> string name */
     SLUI_FN_BALLUM_FX_BY_NAME,       /* uiBallumFxByName(name:s) -> effect id */
+    /* --- fullscreen surface: total, owned, fast per-pixel control --- */
+    SLUI_FN_BALLUM_HAS_SURFACE,      /* uiBallumHasSurface(id:i) -> 1/0 */
+    SLUI_FN_BALLUM_CLAIM_SURFACE,    /* uiBallumClaimSurface(id:i) -> status */
+    SLUI_FN_BALLUM_PRESENT,          /* uiBallumPresent(id:i) -> status (one XPutImage) */
+    SLUI_FN_BALLUM_RELEASE_SURFACE,  /* uiBallumReleaseSurface(id:i) -> status */
 
     /* --- pointer interaction polling (tab/button state) --- */
     SLUI_FN_WIDGET_IS_HOVERED,

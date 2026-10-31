@@ -33,6 +33,16 @@ int         sleela_ballum_vm_set_brightness(int display_id, int percent);  /* ->
 int         sleela_ballum_vm_set_warmth(int display_id, int kelvin);       /* -> status              */
 int         sleela_ballum_vm_set_gamma(int display_id, int gamma_scaled);  /* -> status              */
 const char *sleela_ballum_vm_status_name(int status);         /* human-readable status text          */
+/* Fullscreen surface: total, owned, fast per-pixel control. claim_surface()
+ * creates an override-redirect fullscreen framebuffer the program owns; while
+ * claimed, set_pixel/get_pixel/logo_blend write to the framebuffer (no X
+ * round-trips) and present() pushes the whole frame in one XPutImage (MIT-SHM
+ * when available). A backend without the capability yields a clean status and
+ * has_surface() reports 0 -- fail closed, never a false success. */
+int         sleela_ballum_vm_has_surface(int display_id);     /* 1 claimable, 0 not                  */
+int         sleela_ballum_vm_claim_surface(int display_id);   /* -> status                           */
+int         sleela_ballum_vm_present(int display_id);         /* -> status (push framebuffer)        */
+int         sleela_ballum_vm_release_surface(int display_id); /* -> status                           */
 /* Pointer input (mouse/touch). poll() dequeues one event into a VM-local latch
  * and returns its type (0 none, 1 down, 2 move, 3 up); the accessors read the
  * latched event. has_input() reports whether the backend supplies any input. */

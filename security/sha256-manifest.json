@@ -179,11 +179,11 @@
     },
     {
       "path": "impl/core/ballum_vm_bridge.c",
-      "sha256": "0ead72f1238ba6216d5fff6db9e9cce63b394385c9301046870997bea027bea8"
+      "sha256": "e03fbedc4f5cfcae3c417b8196557b584a4e7ee5d4d51148d859a3383aaaf6d4"
     },
     {
       "path": "impl/core/ballum_vm_bridge.h",
-      "sha256": "2db6bdf4f6fcb80f0068fa5911cb93667665d004277bbe637d903417fbdc6a9e"
+      "sha256": "3e996b449f2691c81cf626d06c2e22606fe033aac23898336c8934b71481ed11"
     },
     {
       "path": "impl/core/bestof_smoke.c",
@@ -447,11 +447,11 @@
     },
     {
       "path": "impl/core/sleela_ui_ids.h",
-      "sha256": "a3798a6086995496a998488d4e8828ad3d631a9e41c2e3f6e8ed51a7da5e7279"
+      "sha256": "aead730a7e6a43fce6f8958e2830c7096e1252609ad0c2ec4af0f583c40d8eee"
     },
     {
       "path": "impl/core/sleela_ui_vm.c",
-      "sha256": "aaac7da3ff3e84d2596f72717e42153a81d288a74870eb0831f74ac59c76f6db"
+      "sha256": "4b8649713bc15230597cdb9802a4af24a06b7714a2c6f07a4210dd8046b6f82e"
     },
     {
       "path": "impl/core/sleela_ui_vm.h",
@@ -511,7 +511,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "e21778dd079c8e79751e87b264ee460fd3335d58c646f6413877d700dd905d02"
+      "sha256": "69f43c2a285b0553ffec6af003725829234443f9a24934d1968050f3531f216c"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -1107,7 +1107,7 @@
     },
     {
       "path": "lib/ballum/SLBallumManager.sleela",
-      "sha256": "5abe98b160b423fc07923348a8b62f66a854ce229c649a4e3e4ea497223e6712"
+      "sha256": "f57cf85789dc29e57f5aa40a5e425dab4ca33a5d2c260c6356d0a42d1a027b3e"
     },
     {
       "path": "lib/ballum/SLBallumPointerEvent.sleela",
@@ -1115,7 +1115,7 @@
     },
     {
       "path": "lib/ballum/SLBallumScreen.sleela",
-      "sha256": "6289fe3c0a55c21c1d40e79b3e09290f6c348480aabbe77e1ec45493dc074584"
+      "sha256": "645a088b781ea125abb68b84d489f872c2ca568994cb75e66bd90885c6bb8304"
     },
     {
       "path": "lib/ballum/SLBallumScreenFit.sleela",
@@ -1184,6 +1184,10 @@
     {
       "path": "lib/ballum/session-demo.sleela",
       "sha256": "32f2ae0d9b5c4d1320aacbb7b06a484b316a752ef8632d6de9c2ccab525b7eef"
+    },
+    {
+      "path": "lib/ballum/surface-demo.sleela",
+      "sha256": "b31aa93b966228ab7f402846ef408371c85a52ca6e287349a94d7c52fdd4e57f"
     },
     {
       "path": "lib/bash/SLPackage.sleela",
