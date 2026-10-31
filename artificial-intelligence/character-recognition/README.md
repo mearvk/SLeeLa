@@ -84,13 +84,46 @@ original scan, machine transcript, correction file, and corrected transcript
 as separate artifacts. This creates an auditable workflow but is not itself a
 cryptographic chain-of-custody or legal certification system.
 
+## Standalone program (`main`)
+
+A command-line entry point is provided separately in
+`character_recognition_main.c`. Keeping `main()` outside the library source
+allows applications to link the C API without a duplicate entry point, while
+also providing a ready-to-run OCR executable.
+
+Build it from the repository root:
+
+```sh
+make -C tests character-recognition-cli
+```
+
+Run it with a previously trained and saved model:
+
+```sh
+./tests/character-recognition-cli MODEL.slcrm INPUT.pgm OUTPUT.txt REVIEW.jsonl
+```
+
+Optional arguments are a grayscale threshold (0–255, default 180) and a
+minimum similarity (0–1, default 0.70):
+
+```sh
+./tests/character-recognition-cli MODEL.slcrm scan.pgm transcript.txt review.jsonl 180 0.70
+```
+
+Use `--help` for usage. The executable loads the saved model, reads the PGM
+page, segments clean separated glyphs, normalizes them, and writes the
+transcript and JSONL review sidecar. It does not train a model: prepare and
+validate labelled glyph samples with the library API first. The projection
+segmenter is intentionally conservative and can merge touching letters or
+split dotted characters; inspect the sidecar and original scan carefully.
+
 ## Regression check
 
 From the repository root:
 
 ```sh
-make -C tests ai-character-recognition
+make -C tests ai-character-recognition character-recognition-cli
 ```
 
-The standalone `Character Recognition C11` GitHub Actions workflow runs this
-regression test on Ubuntu, macOS, and Windows/MinGW-w64.
+The standalone `Character Recognition C11` GitHub Actions workflow builds the
+CLI and runs the regression test on Ubuntu, macOS, and Windows/MinGW-w64.
