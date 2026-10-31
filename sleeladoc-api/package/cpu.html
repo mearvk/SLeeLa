@@ -89,6 +89,7 @@
 <li><a href="../package/opcodes.html">opcodes</a></li>
 <li><a href="../package/operating-system.html">operating-system</a></li>
 <li><a href="../package/philosophers.html">philosophers</a></li>
+<li><a href="../package/philosophy.html">philosophy</a></li>
 <li><a href="../package/politico.html">politico</a></li>
 <li><a href="../package/process.html">process</a></li>
 <li><a href="../package/psychiatry.html">psychiatry</a></li>
@@ -7762,10 +7763,14 @@
 <tr><td><code>OP_FILEREAD</code></td><td><span class="sig">static final int OP_FILEREAD=44; static final int OP_FILEWRITE=45; static final int OP_FILECLOSE=46; static final int OP_FILEUNLINK=47</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>OP_HALT</code></td><td><span class="sig">static final int OP_HALT=48</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>OP_NEWSTRUCT</code></td><td><span class="sig">static final int OP_NEWSTRUCT=58; static final int OP_GETFIELD=59; static final int OP_SETFIELD=60</span></td><td class="desc">Time services 49..57, structs 58..62 (available to the substrate).</td></tr>
-<tr><td><code>BASE_COUNT</code></td><td><span class="sig">static final int BASE_COUNT      = 49</span></td><td class="desc">--- Double-shelf opcode tiers -------------------------------------------- The native substrate (impl/core/sleela_core.h `SLOp`) defines 150 opcodes (codes 0..149). All are acceptable; the tiers below do not gate execution, they let the professional monitoring/storage layer tag each opcode by the SHELF it belongs to and iterate each shelf under its own flag. The three shelves are contiguous half-open ranges [prev, COUNT): Shelf 1 codes 0..48 base computational/service core (through OP_HALT): arithmetic, control flow, call/return, threads, sockets, pipes, files. The Turing-complete subset the CPU ISA + syscalls lower onto. Shelf 2 codes 49..97 substrate extensions: time services, structs, Synchro / Munction / Best-of. Part of the canonical substrate. Shelf 3 codes 98..149 host-facing services: arrays, OS syscalls, GC hint, `ran::`, the Idea realtime canvas, VM-select / Modium. end of shelf 1 (base core), exclusive</td></tr>
+<tr><td><code>BASE_COUNT</code></td><td><span class="sig">static final int BASE_COUNT      = 49</span></td><td class="desc">--- Double-shelf opcode tiers -------------------------------------------- The native substrate (impl/core/sleela_core.h `SLOp`) defines 155 opcodes (codes 0..154). All are acceptable; the tiers below do not gate execution, they let the professional monitoring/storage layer tag each opcode by the SHELF it belongs to and iterate each shelf under its own flag. The three shelves are contiguous half-open ranges [prev, COUNT): Shelf 1 codes 0..48 base computational/service core (through OP_HALT): arithmetic, control flow, call/return, threads, sockets, pipes, files. The Turing-complete subset the CPU ISA + syscalls lower onto. Shelf 2 codes 49..97 substrate extensions: time services, structs, Synchro / Munction / Best-of. Part of the canonical substrate. Shelf 3 codes 98..154 host-facing services: arrays, OS syscalls, GC hint, `ran::`, Idea realtime canvas, VM-select / Modium, UI bridge, structural send, runtime type checks, and two-entry stack duplication. end of shelf 1 (base core), exclusive</td></tr>
 <tr><td><code>SUBSTRATE_COUNT</code></td><td><span class="sig">static final int SUBSTRATE_COUNT = 98</span></td><td class="desc">end of shelf 2 (substrate), exclusive</td></tr>
-<tr><td><code>NATIVE_COUNT</code></td><td><span class="sig">static final int NATIVE_COUNT    = 152</span></td><td class="desc">end of shelf 3 (full native enum), exclusive. Grew to admit OP_UI_CALL (150) and OP_SSEND (151): the real opcodes are 0..151, so the count is 152.</td></tr>
-<tr><td><code>OP_SSEND</code></td><td><span class="sig">static final int OP_SSEND = 151</span></td><td class="desc">OP_SSEND (151): the ::: structural-offload send. A host-shelf service opcode that frames a String source element-by-element into a receiver reach.</td></tr>
+<tr><td><code>NATIVE_COUNT</code></td><td><span class="sig">static final int NATIVE_COUNT    = 155</span></td><td class="desc">end of shelf 3 (full native enum), exclusive. Includes host-facing services through OP_DUP2 (154) OP_UI_CALL (150), OP_SSEND (151), OP_CHECKCAST (152), OP_INSTANCEOF (153), and OP_DUP2 (154): the real opcodes are 0..154, so the count is 155.</td></tr>
+<tr><td><code>OP_UI_CALL</code></td><td><span class="sig">static final int OP_UI_CALL = 150</span></td><td class="desc">OP_SSEND (151): the ::: structural-offload send. A host-shelf service opcode that frames a String source element-by-element into a receiver reach.</td></tr>
+<tr><td><code>OP_SSEND</code></td><td><span class="sig">static final int OP_SSEND = 151</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>OP_CHECKCAST</code></td><td><span class="sig">static final int OP_CHECKCAST = 152</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>OP_INSTANCEOF</code></td><td><span class="sig">static final int OP_INSTANCEOF = 153</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>OP_DUP2</code></td><td><span class="sig">static final int OP_DUP2 = 154</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>TIER_NONE</code></td><td><span class="sig">static final int TIER_NONE      = 0</span></td><td class="desc">Tier ids the monitoring/storage layer pivots on (the &quot;iteration flags&quot;). not a native opcode (out of range)</td></tr>
 <tr><td><code>TIER_BASE</code></td><td><span class="sig">static final int TIER_BASE      = 1</span></td><td class="desc">shelf 1: base computational/service core</td></tr>
 <tr><td><code>TIER_SUBSTRATE</code></td><td><span class="sig">static final int TIER_SUBSTRATE = 2</span></td><td class="desc">shelf 2: substrate extensions</td></tr>
@@ -9539,7 +9544,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+<code>/lib</code> tree on 2026-10-31 00:02 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>

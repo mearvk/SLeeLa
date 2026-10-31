@@ -89,6 +89,7 @@
 <li><a href="../package/opcodes.html">opcodes</a></li>
 <li><a href="../package/operating-system.html">operating-system</a></li>
 <li><a href="../package/philosophers.html">philosophers</a></li>
+<li><a href="../package/philosophy.html">philosophy</a></li>
 <li><a href="../package/politico.html">politico</a></li>
 <li><a href="../package/process.html">process</a></li>
 <li><a href="../package/psychiatry.html">psychiatry</a></li>
@@ -132,7 +133,7 @@
 <h1>Package <code>sleeladoc</code></h1>
 <div class="lead">This package contains <strong>9</strong> source unit(s) defining <strong>9</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
-<h2 class="section" data-u="sldoccomment">SLDocComment <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocComment.sleela)</span></h2>
+<h2 class="section" data-u="sldoccomment">SLDocComment <span class="pill syntax">#sleela 2.8</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocComment.sleela)</span></h2>
 <div data-u="sldoccomment sldoccomment">
 <h3 id="SLDocComment">SLDocComment <span class="pill">class</span></h3>
 <p class="desc">Defines SLDocComment -- one parsed SleelaDoc block: its free-prose summary plus an ordered list of @tags.</p>
@@ -157,7 +158,7 @@
 <tr><td><code>empty</code></td><td><span class="sig">boolean empty()</span></td><td class="desc">True when the comment carries nothing (no summary and no tags).</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sldocmember">SLDocMember <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocMember.sleela)</span></h2>
+<h2 class="section" data-u="sldocmember">SLDocMember <span class="pill syntax">#sleela 2.8</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocMember.sleela)</span></h2>
 <div data-u="sldocmember sldocmember">
 <h3 id="SLDocMember">SLDocMember <span class="pill">class</span></h3>
 <p class="desc">Defines SLDocMember -- a documented declaration (class, field, or method) with its signature line and the SleelaDoc comment attached to it.</p>
@@ -184,7 +185,7 @@
 <tr><td><code>kindName</code></td><td><span class="sig">String kindName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sldocmodel">SLDocModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocModel.sleela)</span></h2>
+<h2 class="section" data-u="sldocmodel">SLDocModel <span class="pill syntax">#sleela 2.8</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocModel.sleela)</span></h2>
 <div data-u="sldocmodel sldocmodel">
 <h3 id="SLDocModel">SLDocModel <span class="pill">class</span></h3>
 <p class="desc">Defines SLDocModel -- the parsed SleelaDoc model of a whole unit: the unit name and its documented members in declaration order.</p>
@@ -206,7 +207,7 @@
 <tr><td><code>documentedCount</code></td><td><span class="sig">int documentedCount()</span></td><td class="desc">Count members carrying a non-empty doc comment.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sldocrenderer">SLDocRenderer <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocRenderer.sleela)</span></h2>
+<h2 class="section" data-u="sldocrenderer">SLDocRenderer <span class="pill syntax">#sleela 2.8</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocRenderer.sleela)</span></h2>
 <div data-u="sldocrenderer sldocrenderer">
 <h3 id="SLDocRenderer">SLDocRenderer <span class="pill">class</span></h3>
 <p class="desc">Defines SLDocRenderer -- renders a parsed SLDocModel as a Markdown or minimal HTML API page (the way javadoc renders an HTML page for Java).</p>
@@ -220,7 +221,7 @@
 <tr><td><code>esc</code></td><td><span class="sig">String esc(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sldocscanner">SLDocScanner <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocScanner.sleela)</span></h2>
+<h2 class="section" data-u="sldocscanner">SLDocScanner <span class="pill syntax">#sleela 2.8</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocScanner.sleela)</span></h2>
 <div data-u="sldocscanner sldocscanner">
 <h3 id="SLDocScanner">SLDocScanner <span class="pill">class</span></h3>
 <p class="desc">Defines SLDocScanner -- the token-stream reader that lifts SleelaDoc @doc / @page blocks and @tags out of a .sleela unit and attaches each doc comment to the declaration that follows it, building an SLDocModel.</p>
@@ -252,7 +253,7 @@
 <tr><td><code>addMemberRecord</code></td><td><span class="sig">void addMemberRecord(int kind, String nm, String sig)</span></td><td class="desc">Record a member of `kind` named `nm` with signature `sig`, attaching the pending doc comment (then clearing it).</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sldoctag">SLDocTag <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocTag.sleela)</span></h2>
+<h2 class="section" data-u="sldoctag">SLDocTag <span class="pill syntax">#sleela 2.8</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLDocTag.sleela)</span></h2>
 <div data-u="sldoctag sldoctag">
 <h3 id="SLDocTag">SLDocTag <span class="pill">class</span></h3>
 <p class="desc">Defines SLDocTag -- one parsed SleelaDoc tag: a name (without the leading @) and its value text.</p>
@@ -270,7 +271,7 @@
 <tr><td><code>is</code></td><td><span class="sig">boolean is(String n)</span></td><td class="desc">True when this is the given tag name (case-sensitive; tags are lowercase).</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sleeladoc-demo">sleeladoc-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/sleeladoc-demo.sleela)</span></h2>
+<h2 class="section" data-u="sleeladoc-demo">sleeladoc-demo <span class="pill syntax">#sleela 2.8</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/sleeladoc-demo.sleela)</span></h2>
 <div data-u="sleeladoc-demo sleeladocdemo">
 <h3 id="SleeladocDemo">SleeladocDemo <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
@@ -284,7 +285,7 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLPackage.sleela)</span></h2>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.8</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slpackage">
 <h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
 <p class="desc">Defines the SLeeLa standard-library package for sleeladoc -- the SleelaDoc extractor family (the Javadoc-tool analogue for SLeeLa). Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.</p>
@@ -300,7 +301,7 @@
 <tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="slsleeladoc">SLSleelaDoc <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLSleelaDoc.sleela)</span></h2>
+<h2 class="section" data-u="slsleeladoc">SLSleelaDoc <span class="pill syntax">#sleela 2.8</span> <span class="muted" style="font-size:13px">(lib/sleeladoc/SLSleelaDoc.sleela)</span></h2>
 <div data-u="slsleeladoc slsleeladoc">
 <h3 id="SLSleelaDoc">SLSleelaDoc <span class="pill">class</span></h3>
 <p class="desc">Defines SLSleelaDoc -- the one-object facade a caller drives to extract SleelaDoc from a unit and render it: begin, feed tokenized lines, then render Markdown or HTML. The Javadoc-tool analogue entry point.</p>
@@ -324,7 +325,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-28 21:44 UTC.
+<code>/lib</code> tree on 2026-10-31 00:02 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
