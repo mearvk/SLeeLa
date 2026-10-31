@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all build uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry premium-vms sleeladoc sleeladoc-jar clean verify-security help guess install-guide
+.PHONY: all build uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry premium-vms sleeladoc sleeladoc-jar clean verify-security help guess install-guide install-editors uninstall-editors
 
 SLEELA_MANIFEST_CONSENT ?=
 # Answer the "install the advanced (beautified/guided) build?" prompt
@@ -13,6 +13,10 @@ SLEELA_ADVANCED_BUILD ?=
 
 PREFIX ?= /usr/local
 DESTDIR ?=
+
+# Optional editor integration deployment; EDITORS is a comma-separated filter.
+EDITORS ?=
+EDITOR_ARGS ?=
 
 all: core java28 regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs churn antivirus registry premium-vms ballum
 
@@ -248,6 +252,14 @@ uninstall-all:
 # Interactive deployment of the compiled binaries; choose user-local or system-wide.
 install-product: autocheck
 	@./install/quick-safe-install.sh
+
+# Optional user-local deployment of editor syntax/themes (never uses sudo).
+# EDITORS=vim,emacs selects a subset; EDITOR_ARGS=--dry-run previews changes.
+install-editors:
+	@EDITORS="$(EDITORS)" sh ./lib/linux-editors/install-editors.sh $(EDITOR_ARGS)
+
+uninstall-editors:
+	@sh ./lib/linux-editors/install-editors.sh --uninstall $(EDITOR_ARGS)
 
 # Clean, guided install of the main package only (binaries + standard library +
 # protocols + support modules; no servers, IDEs, Wi-Fi, or religious/moral
@@ -492,6 +504,8 @@ help:
 	@echo "  make install-system [PREFIX=/usr/local] System install; uses sudo for system paths only"
 	@echo "      (every variant first offers the base-code SHA-256 manifest step; SLEELA_MANIFEST_CONSENT=yes|no|skip answers it)"
 	@echo "  make install-product  Build and interactively install compiled products (user-local or system-wide)"
+	@echo "  make install-editors [EDITORS=vim,emacs] [EDITOR_ARGS=--dry-run] Install editor integrations user-locally"
+	@echo "  make uninstall-editors Restore backups/remove unchanged files deployed by install-editors"
 	@echo "  make clean-install    Guided, beautiful install of the MAIN package only (no servers/IDEs/wifi/moral); then optional modules"
 	@echo "  make tutorial-check Verify tutorial lesson sequence, example XML, and expected-evidence pairing"
 	@echo "  make tests     Build and run tests/"
