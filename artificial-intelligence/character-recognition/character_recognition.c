@@ -380,3 +380,72 @@ int slcr_write_corrected_document(const slcr_model *model,
     free(labels);
     return failed ? -1 : 0;
 }
+
+static int pgm_token(FILE *f, char *token, size_t capacity) {
+    int ch;
+    size_t n = 0;
+    do {
+        ch = fgetc(f);
+        if (ch == '#') {
+            while (ch != '\n' && ch != EOF) ch = fgetc(f);
+        }
+    } while (ch != EOF && (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n'));
+    if (ch == EOF) return -1;
+    do {
+        if (n + 1 >= capacity) return -1;
+        token[n++] = (char)ch;
+        ch = fgetc(f);
+    } while (ch != EOF && ch != ' ' && ch != '\t' && ch != '\r' && ch != '\n' && ch != '#');
+    if (ch == '#') while (ch != '\n' && ch != EOF) ch = fgetc(f);
+    token[n] = '\0';
+    return 0;
+}
+
+int slcr_load_pgm(const char *path, uint8_t **gray, size_t *width, size_t *height) {
+    FILE *f;
+    char token[32];
+    size_t w, h, count, i;
+    unsigned long maxval;
+    uint8_t *pixels;
+    int binary;
+    if (!path || !gray || !width || !height || !(f = fopen(path, "rb"))) return -1;
+    *gray = NULL; *width = *height = 0;
+    if (pgm_token(f, token, sizeof(token)) != 0 ||
+        (strcmp(token, "P2") != 0 && strcmp(token, "P5") != 0)) {
+        fclose(f); return -1;
+    }
+    binary = token[1] == '5';
+    if (pgm_token(f, token, sizeof(token)) != 0) { fclose(f); return -1; }
+    w = (size_t)strtoull(token, NULL, 10);
+    if (pgm_token(f, token, sizeof(token)) != 0) { fclose(f); return -1; }
+    h = (size_t)strtoull(token, NULL, 10);
+    if (pgm_token(f, token, sizeof(token)) != 0) { fclose(f); return -1; }
+    maxval = strtoul(token, NULL, 10);
+    if (!w || !h || w > SIZE_MAX / h || maxval == 0 || maxval > 255) {
+        fclose(f); return -1;
+    }
+    count = w * h;
+    pixels = (uint8_t *)malloc(count);
+    if (!pixels) { fclose(f); return -1; }
+    if (binary) {
+        if (fread(pixels, 1, count, f) != count) {
+            free(pixels); fclose(f); return -1;
+        }
+        if (maxval != 255)
+            for (i = 0; i < count; ++i)
+                pixels[i] = (uint8_t)(((unsigned int)pixels[i] * 255u) / (unsigned int)maxval);
+    } else {
+        for (i = 0; i < count; ++i) {
+            unsigned long value;
+            if (pgm_token(f, token, sizeof(token)) != 0) {
+                free(pixels); fclose(f); return -1;
+            }
+            value = strtoul(token, NULL, 10);
+            if (value > maxval) { free(pixels); fclose(f); return -1; }
+            pixels[i] = (uint8_t)((value * 255u) / maxval);
+        }
+    }
+    fclose(f);
+    *gray = pixels; *width = w; *height = h;
+    return 0;
+}
