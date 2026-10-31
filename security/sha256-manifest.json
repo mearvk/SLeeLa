@@ -15,7 +15,7 @@
     },
     {
       "path": "ballum/include/sleela_ballum/ballum_manager.h",
-      "sha256": "e36f1d0e6aab6dc5666593f232b066cc1ed43062fb0726d5faa9d00f44c81c1c"
+      "sha256": "56f0d9a139de83764634e73cf2bdcfd34c396c976529836c669a73119d32fa0c"
     },
     {
       "path": "ballum/src/ballum_backend_macos.mm",
@@ -27,7 +27,7 @@
     },
     {
       "path": "ballum/src/ballum_backend_unavailable.c",
-      "sha256": "7ad13fc0ef133d58e7f61d4845ac5cf4d69a9f3c111bdcc9b7bf909e7b26c1e7"
+      "sha256": "0fdf65e81dbb2afd0c88431b880de4128be5ad7e65f1618087c2eebedf8e5e8e"
     },
     {
       "path": "ballum/src/ballum_backend_windows.c",
@@ -35,7 +35,7 @@
     },
     {
       "path": "ballum/src/ballum_backend_x11.c",
-      "sha256": "e50f30ec9ebb9b65b1880ee67d26c61709b05c5c3b81365c7ae4787b2b742b1d"
+      "sha256": "c229589192c3c3dfcd1b8c2986561f27b67d429b9a98a784422528ce181445de"
     },
     {
       "path": "ballum/src/ballum_demo.c",
@@ -51,7 +51,7 @@
     },
     {
       "path": "ballum/src/ballum_manager.c",
-      "sha256": "bbf4bd4509f6cdb48fdb68d746fca6200170f80c7984faacc77c897332d9208b"
+      "sha256": "f8477b0e6516ff898ca7ece913f9e3f2fb559483c08de47655be4461e09c4c37"
     },
     {
       "path": "ballum/tests/test_ballum_effects.c",
@@ -59,7 +59,7 @@
     },
     {
       "path": "ballum/tests/test_ballum_manager.c",
-      "sha256": "e8de0e1bdc74a16639141e8b8a3a4589a97bd9814e690b851f2612bec8d54813"
+      "sha256": "ef506feed22bcfc00fa282bd52afa1ccc4ea1b617140b106914bd62b8d99e7d1"
     },
     {
       "path": "bash/pixel_terminal.cpp",
