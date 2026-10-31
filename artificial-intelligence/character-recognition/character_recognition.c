@@ -397,6 +397,7 @@ static int pgm_token(FILE *f, char *token, size_t capacity) {
         ch = fgetc(f);
     } while (ch != EOF && ch != ' ' && ch != '\t' && ch != '\r' && ch != '\n' && ch != '#');
     if (ch == '#') while (ch != '\n' && ch != EOF) ch = fgetc(f);
+    else if (ch == '\r') { int next = fgetc(f); if (next != '\n' && next != EOF) ungetc(next, f); }
     token[n] = '\0';
     return 0;
 }
