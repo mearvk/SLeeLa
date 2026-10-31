@@ -27,6 +27,10 @@ int main(void) {
     slcr_result result;
     slcr_document_glyph glyphs[2];
     FILE *file;
+    slcr_model *loaded = NULL;
+    slcr_box *boxes = NULL;
+    size_t box_count = 0;
+    uint8_t page[20 * 16];
     char line[256];
     int ok = 1;
 
@@ -53,6 +57,24 @@ int main(void) {
         fprintf(stderr, "character recognition: glyph normalization failed\n");
         ok = 0;
     }
+    if (slcr_model_save(model, "character-recognition-smoke.model") != 0 ||
+        !(loaded = slcr_model_load("character-recognition-smoke.model"))) {
+        fprintf(stderr, "character recognition: model persistence failed\n");
+        ok = 0;
+    } else {
+        if (slcr_model_recognize(loaded, e, &result) != 0 || strcmp(result.label, "é") != 0) ok = 0;
+        slcr_model_destroy(loaded);
+    }
+    memset(page, 0, sizeof(page));
+    for (size_t y = 2; y < 8; ++y) {
+        for (size_t x = 2; x < 5; ++x) page[y * 20 + x] = 255;
+        for (size_t x = 10; x < 14; ++x) page[y * 20 + x] = 255;
+    }
+    if (slcr_segment_page(page, 20, 16, 1, &boxes, &box_count) != 0 || box_count != 2) {
+        fprintf(stderr, "character recognition: page segmentation failed\n");
+        ok = 0;
+    }
+    slcr_free_segments(boxes);
     glyphs[0].pixels = a;
     glyphs[0].line_break_before = 0;
     glyphs[0].space_before = 0;
@@ -84,6 +106,18 @@ int main(void) {
         }
         if (file) fclose(file);
     }
+    file = fopen("character-recognition-smoke.tsv", "wb");
+    if (file) { fputs("0\tZ\n", file); fclose(file); }
+    if (ok && slcr_write_corrected_document(model, glyphs, 2,
+            "character-recognition-smoke.tsv", "character-recognition-corrected.txt", 0.90) != 0) ok = 0;
+    if (ok) {
+        file = fopen("character-recognition-corrected.txt", "rb");
+        if (!file || !fgets(line, sizeof(line), file) || strcmp(line, "Z é") != 0) ok = 0;
+        if (file) fclose(file);
+    }
+    remove("character-recognition-smoke.model");
+    remove("character-recognition-smoke.tsv");
+    remove("character-recognition-corrected.txt");
     remove("character-recognition-smoke.txt");
     remove("character-recognition-smoke.jsonl");
     slcr_model_destroy(model);
