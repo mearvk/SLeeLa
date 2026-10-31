@@ -206,3 +206,177 @@ int slcr_write_document(const slcr_model *model,
     if (fclose(review) != 0) failed = 1;
     return failed ? -1 : 0;
 }
+
+#define SLCR_MODEL_MAGIC "SLCRM01"
+#define SLCR_MODEL_MAX_SAMPLES 1000000u
+
+int slcr_model_save(const slcr_model *model, const char *path) {
+    FILE *f;
+    uint64_t count;
+    size_t i;
+    if (!model || !path || model->count > SLCR_MODEL_MAX_SAMPLES) return -1;
+    f = fopen(path, "wb");
+    if (!f) return -1;
+    count = (uint64_t)model->count;
+    if (fwrite(SLCR_MODEL_MAGIC, 1, 7, f) != 7 ||
+        fwrite(&count, sizeof(count), 1, f) != 1) {
+        fclose(f); return -1;
+    }
+    for (i = 0; i < model->count; ++i) {
+        if (fwrite(model->samples[i].label, 1, SLCR_LABEL_CAPACITY, f) != SLCR_LABEL_CAPACITY ||
+            fwrite(model->samples[i].pixels, 1, SLCR_GLYPH_PIXELS, f) != SLCR_GLYPH_PIXELS) {
+            fclose(f); return -1;
+        }
+    }
+    return fclose(f) == 0 ? 0 : -1;
+}
+
+slcr_model *slcr_model_load(const char *path) {
+    FILE *f;
+    char magic[7];
+    uint64_t count;
+    slcr_model *model;
+    size_t i;
+    if (!path || !(f = fopen(path, "rb"))) return NULL;
+    if (fread(magic, 1, 7, f) != 7 || memcmp(magic, SLCR_MODEL_MAGIC, 7) != 0 ||
+        fread(&count, sizeof(count), 1, f) != 1 || count > SLCR_MODEL_MAX_SAMPLES) {
+        fclose(f); return NULL;
+    }
+    model = slcr_model_create();
+    if (!model) { fclose(f); return NULL; }
+    for (i = 0; i < (size_t)count; ++i) {
+        char label[SLCR_LABEL_CAPACITY];
+        uint8_t pixels[SLCR_GLYPH_PIXELS];
+        size_t label_length;
+        if (fread(label, 1, sizeof(label), f) != sizeof(label) ||
+            fread(pixels, 1, sizeof(pixels), f) != sizeof(pixels) ||
+            !utf8_one_codepoint((const unsigned char *)label, &label_length) ||
+            slcr_model_add(model, label, pixels) != 0) {
+            slcr_model_destroy(model); fclose(f); return NULL;
+        }
+    }
+    if (fgetc(f) != EOF || ferror(f)) {
+        slcr_model_destroy(model); fclose(f); return NULL;
+    }
+    fclose(f);
+    return model;
+}
+
+void slcr_free_segments(slcr_box *boxes) { free(boxes); }
+
+int slcr_segment_page(const uint8_t *binary, size_t width, size_t height,
+                      size_t minimum_ink_pixels, slcr_box **boxes,
+                      size_t *box_count) {
+    size_t y, x, count = 0, capacity = 0;
+    size_t *rows;
+    slcr_box *items = NULL;
+    if (!binary || !width || !height || width > SIZE_MAX / height ||
+        !boxes || !box_count) return -1;
+    *boxes = NULL; *box_count = 0;
+    rows = (size_t *)calloc(height, sizeof(size_t));
+    if (!rows) return -1;
+    for (y = 0; y < height; ++y)
+        for (x = 0; x < width; ++x)
+            if (binary[y * width + x]) ++rows[y];
+    y = 0;
+    while (y < height) {
+        size_t top, bottom, *cols, line_ink = 0;
+        while (y < height && rows[y] == 0) ++y;
+        if (y == height) break;
+        top = y;
+        while (y < height && rows[y] != 0) { line_ink += rows[y]; ++y; }
+        bottom = y;
+        if (line_ink < minimum_ink_pixels) continue;
+        cols = (size_t *)calloc(width, sizeof(size_t));
+        if (!cols) { free(rows); free(items); return -1; }
+        for (size_t yy = top; yy < bottom; ++yy)
+            for (x = 0; x < width; ++x)
+                if (binary[yy * width + x]) ++cols[x];
+        x = 0;
+        while (x < width) {
+            size_t left, right, ink = 0;
+            while (x < width && cols[x] == 0) ++x;
+            if (x == width) break;
+            left = x;
+            while (x < width && cols[x] != 0) { ink += cols[x]; ++x; }
+            right = x;
+            if (ink < minimum_ink_pixels) continue;
+            if (count == capacity) {
+                size_t next = capacity ? capacity * 2 : 32;
+                slcr_box *grown;
+                if (next < capacity || next > SIZE_MAX / sizeof(slcr_box)) {
+                    free(cols); free(rows); free(items); return -1;
+                }
+                grown = (slcr_box *)realloc(items, next * sizeof(slcr_box));
+                if (!grown) { free(cols); free(rows); free(items); return -1; }
+                items = grown; capacity = next;
+            }
+            items[count].x = left; items[count].y = top;
+            items[count].width = right - left; items[count].height = bottom - top;
+            ++count;
+        }
+        free(cols);
+    }
+    free(rows);
+    *boxes = items; *box_count = count;
+    return 0;
+}
+
+int slcr_write_corrected_document(const slcr_model *model,
+                        const slcr_document_glyph *glyphs, size_t glyph_count,
+                        const char *corrections_tsv,
+                        const char *transcript_path,
+                        double minimum_similarity) {
+    FILE *cf = NULL, *out = NULL;
+    char line[128];
+    char **labels = NULL;
+    size_t i;
+    int failed = 0;
+    if (!model || (!glyphs && glyph_count) || !transcript_path ||
+        !isfinite(minimum_similarity) || minimum_similarity < 0.0 ||
+        minimum_similarity > 1.0) return -1;
+    labels = (char **)calloc(glyph_count ? glyph_count : 1, sizeof(char *));
+    if (!labels) return -1;
+    if (corrections_tsv && (cf = fopen(corrections_tsv, "rb")) == NULL) {
+        free(labels); return -1;
+    }
+    while (cf && fgets(line, sizeof(line), cf)) {
+        char *tab = strchr(line, '\t');
+        char *end;
+        unsigned long index;
+        size_t n;
+        if (!tab) { failed = 1; break; }
+        *tab++ = '\0';
+        end = strchr(tab, '\r'); if (end) *end = '\0';
+        end = strchr(tab, '\n'); if (end) *end = '\0';
+        index = strtoul(line, &end, 10);
+        if (*line == '\0' || *end || index >= glyph_count ||
+            !utf8_one_codepoint((const unsigned char *)tab, &n)) {
+            failed = 1; break;
+        }
+        labels[index] = (char *)malloc(n + 1);
+        if (!labels[index]) { failed = 1; break; }
+        memcpy(labels[index], tab, n + 1);
+    }
+    if (cf && ferror(cf)) failed = 1;
+    if (cf) fclose(cf);
+    out = failed ? NULL : fopen(transcript_path, "wb");
+    if (!out) failed = 1;
+    for (i = 0; i < glyph_count && !failed; ++i) {
+        slcr_result result;
+        const char *label = NULL;
+        if (glyphs[i].line_break_before && fputc('\n', out) == EOF) { failed = 1; break; }
+        if (glyphs[i].space_before && !glyphs[i].line_break_before &&
+            fputc(' ', out) == EOF) { failed = 1; break; }
+        if (labels[i]) label = labels[i];
+        else if (glyphs[i].pixels &&
+                 slcr_model_recognize(model, glyphs[i].pixels, &result) == 0 &&
+                 result.similarity >= minimum_similarity) label = result.label;
+        else label = "\xEF\xBF\xBD";
+        if (fputs(label, out) == EOF) failed = 1;
+    }
+    if (out && fclose(out) != 0) failed = 1;
+    for (i = 0; i < glyph_count; ++i) free(labels[i]);
+    free(labels);
+    return failed ? -1 : 0;
+}
