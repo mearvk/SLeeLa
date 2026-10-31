@@ -48,7 +48,7 @@ Recent additions to the language, drivers, and standard library:
   filesystem at runtime and lists the real **folders (then files, as natural
   motion)**, bounded by user-overridable caps of **6 MB / 6000 files / 6
   minutes**. The `lib/sleeladoc` units are maintained at the current edition,
-  **`#sleela 2.8`**. See [`man/man1/sleela.1`](man/man1/sleela.1) and
+  **`#sleela 2.9`**. See [`man/man1/sleela.1`](man/man1/sleela.1) and
   [`lib/sleeladoc/README.md`](lib/sleeladoc/README.md).
 - **SleelaDoc — a Javadoc-style documentation solution, with a generated HTML
   site.** **SleelaDoc** is SLeeLa's in-source doc-comment convention
@@ -75,10 +75,19 @@ Recent additions to the language, drivers, and standard library:
 - **Wide signed integer primitives (`long`, `int64`, `int128`).** `int`, `long`,
   and `int64` are all 64-bit signed integers that type-check and run identically;
   `int128` is accepted as an integer type (64-bit-backed for now, with true
-  128-bit a documented follow-up). See
-  [`SLEELA.syntax`](SLEELA.syntax) §21.
-- **Document markers — the Natural Process (`author`/`authorial`, `material`,
-  `memory`, `determine`, `object`, `field`).** First-class, declarative-only
+  128-bit a documented follow-up). The base-2 signed series `int32`..`int16777216`
+  (syntax 2.7) and the matching unsigned series `uint32`..`uint16777216`
+  (syntax 2.8) extend this. See [`SLEELA.syntax`](SLEELA.syntax) §21, §24, §25.
+- **`@mix` consequent fields (syntax 2.9).** A class may declare multiple
+  instance fields with the **same name** when each repeat carries `@mix`; the
+  language understands the group as consequent (an array / list keyed by index),
+  top-down `1,2,3,…` by default or manual via `@mix(1,2,3,...)` whose index
+  count must match the number of fields. See [`SLEELA.syntax`](SLEELA.syntax) §28.
+- **Document markers — the Natural Process, titled the Preonems
+  (`author`/`authorial`, `material`, `memory`, `determine`, `object`, `field`).**
+  These bare document-marker words are collectively titled the **Preonems**
+  (one marker is a *Preonem*; the set, the *Preonems* — see
+  [`SLEELA.syntax`](SLEELA.syntax) §26.1). First-class, declarative-only
   document markers naming what a document *is* in the order of making:
   `author`/`authorial` (syntax 2.4; handled by professional council — the one
   member with a behavioral effect), `material;` (settled Source) and `memory;`
@@ -207,7 +216,7 @@ interactive deployment workflow and all installation options, see
 [Quick and Safe Install](install/README.md).
 
 ## V. Language and Runtime
-The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **2.6**; compiler/tool version and source syntax version are distinct. The 2.6 surface adds **keyword supporter documents** (§22) — every use of `try`/`catch`/`throw`/`synchronized`/`super` is hashed, recorded as a `@supporter(...)` annotation, and linked to a `docs/keyword-supporters/` folder the developer fills out — and the **`determine` document marker** (§23), a declarative-only sibling to `material`/`memory`/`author`. It carries forward the wide signed integer primitives `long`/`int64`/`int128` (§21) and the declarative document markers `material`/`memory`/`author`/`authorial` (§18–§20). Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
+The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **2.9**; compiler/tool version and source syntax version are distinct. The 2.9 surface adds **`@mix` consequent fields** (§28) — a class may declare multiple same-named instance fields when each carries `@mix`, understood as one indexed group (top-down `1,2,3,…` or manual `@mix(1,2,3,...)` whose index count must match the group). It carries forward the base-2 signed/unsigned wide-integer families `int32`..`int16777216` (§24) and `uint32`..`uint16777216` (§25) over the earlier `long`/`int64`/`int128` (§21); **keyword supporter documents** (§22); and the **Preonems** — the declarative-only document markers `author`/`authorial` (§18), `material`/`memory` (§19–§20), `determine` (§23), and `object`/`field` (§26), collectively titled the Preonems (§26.1). Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
 
 The repository includes a native C/C++ implementation, SLVM generation references, standard-library modules, tests, examples, and platform integrations. Implementation and validation status varies by module; consult its specification and current CI results rather than assuming uniform completeness.
 
@@ -438,8 +447,13 @@ status should be checked in each package's own documentation and tests.
   ordering, and UTF-4088 integration documentation.
 - **AutoCAD Creator** — `autocad/creator/` and `lib/autocad/`: interactive
   2D drawing workflows and reusable CAD document/editing components.
-- **Ballum** — SleelaUI event and widget integration, including VM bridge support
-  under `impl/`; see the corresponding implementation and API documentation.
+- **Ballum** — pixel-level display control: per-pixel set/get, region blit,
+  whole-display brightness/warmth/gamma, pointer/keyboard input, and a
+  **fullscreen framebuffer surface** for total, owned, fast per-pixel control
+  (override-redirect window + single `XPutImage`/MIT-SHM present on Linux/X11).
+  Native core under `ballum/` with the SLeeLa facade in `lib/ballum/` and a VM
+  bridge under `impl/`; see [`ballum/README.md`](ballum/README.md) and the
+  runnable [`ballum/example/`](ballum/example/).
 - **CDMA** — `cdma/` and `lib/cdma/`: CDMA-related technical material and
   SLeeLa source-library work.
 - **Character** — `lib/character/`: character profiles and reusable character
@@ -461,6 +475,12 @@ status should be checked in each package's own documentation and tests.
 
 - **OFDMA** — `ofdma/`: orthogonal frequency-division multiple-access
   technical material and C/C++ development resources.
+- **Philosophy** — `philosophy/` (native C/C++ tools: an explicit-input event
+  tree, a ~44 Hz consistency signal toss, a uniform partition API, a reach-out
+  help desk, an INT-set JSON/XML generator, and an adult-psychiatry speculation
+  invite) with SLeeLa handles and a composed base Tree in
+  [`lib/philosophy/`](lib/philosophy/README.md). Non-clinical and
+  consent-first by design.
 - **Synchro** — native runtime/compiler integration and packet-dispatch and
   measurement-related functionality; see the relevant `impl/` source and
   compiler implementation.
