@@ -63,6 +63,7 @@ int slcr_model_add(slcr_model *model, const char *label,
         model->samples = grown;
         model->capacity = next;
     }
+    memset(model->samples[model->count].label, 0, SLCR_LABEL_CAPACITY);
     memcpy(model->samples[model->count].label, label, label_length + 1);
     memcpy(model->samples[model->count].pixels, pixels, SLCR_GLYPH_PIXELS);
     ++model->count;
@@ -134,6 +135,7 @@ int slcr_model_recognize(const slcr_model *model,
             best = i;
         }
     }
+    memset(result->label, 0, sizeof(result->label));
     memcpy(result->label, model->samples[best].label, SLCR_LABEL_CAPACITY);
     result->similarity = 1.0 - sqrt(best_distance / maximum_distance);
     if (result->similarity < 0.0) result->similarity = 0.0;
