@@ -133,6 +133,7 @@
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; philosophy</div>
 <h1>Package <code>philosophy</code></h1>
 <div class="lead">This package contains <strong>19</strong> source unit(s) defining <strong>19</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead"><strong>Module organization.</strong> The native Philosophy module is separated into <code>data/</code> (typed, dated, provenance-bearing observations and consent), <code>helper/</code> (deterministic validation, half-life relevance, compatible comparisons, and consent-filtered presentation), and <code>psychiatry-friend/</code> (supportive, non-clinical conversation support). The SLeeLa facade describes these contracts; it does not replace the native implementations. No diagnosis, passive monitoring, inference of private intent, or medication advice is provided.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="example-tree">example-tree <span class="pill syntax">#sleela 2.9</span> <span class="muted" style="font-size:13px">(lib/philosophy/example-tree.sleela)</span></h2>
 <div data-u="example-tree philosophytreeexample">
@@ -158,7 +159,7 @@
 <h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/philosophy/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slpackage">
 <h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
-<p class="desc">Defines the SLeeLa standard-library package for philosophy.</p>
+<p class="desc">Defines the SLeeLa standard-library package for philosophy, including its explicit-input module organized as data contracts, deterministic helpers, and a non-clinical psychiatry-friend conversation interface. The facade names the SLeeLa units; native implementations remain under philosophy/.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
