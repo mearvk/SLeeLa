@@ -4,9 +4,12 @@ This folder is a **generated, static HTML documentation site** for every source
 unit under [`/lib`](../../../lib), captured at the **syntax 2.9** edition. Open
 it in any web browser — no server needed.
 
-This 2.9 snapshot is the first to include the **`philosophy`** package (the
-philosophy tool handles and the composed base Tree with its `@mix` directives)
-and reflects the 2.9 language edition — which adds **`@mix` consequent fields**
+This 2.9 snapshot includes the **`philosophy`** package and its module
+organization: structured event/data contracts, deterministic helper logic,
+and a non-clinical, consent-first psychiatry-friend interface. The SLeeLa
+handles are documented together with their source comments and the composed
+base Tree with its `@mix` directives. It reflects the 2.9 language edition —
+which adds **`@mix` consequent fields**
 (multiple same-named fields understood as one indexed group; see
 `../../../SLEELA.syntax` section 28). Each unit still shows its own `#sleela`
 level as a pill on its package page.
