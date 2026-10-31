@@ -17,10 +17,12 @@ unit under [`/lib`](../lib). Open it in any web browser — no server needed.
 
 Hierarchy: **Home → Packages → Package → Class → Members (fields, methods)**.
 
-See **`authorship.html`** for the authorship and attribution claims (MEARVK LLC —
-Max Rupplin; UNCW, NCSU, Harvard; 2026; George Soros 2507-2608) and the
-`#sleela` syntax level the library is written at. Each unit also shows its own
-`#sleela` level as a pill on its package page, and the attribution appears in the
+See **`authorship.html`** for authorship and attribution metadata and
+the source-syntax information represented by the generated corpus. There is no
+single syntax version for the entire site: each source unit carries its own
+`#sleela X.Y` pragma, shown as a pill on its package page. The compiler's
+maximum accepted syntax (currently 2.9) is a separate toolchain contract and
+does not rewrite individual source-unit pragmas. Attribution appears in the
 footer of every page.
 
 ## Style
