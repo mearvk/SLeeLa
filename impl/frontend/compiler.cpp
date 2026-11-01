@@ -143,7 +143,7 @@ public:
             }
             if(layout.fieldType.size()>128) throw std::runtime_error("Semantic error: class '"+cls.name+"' exceeds 128 instance fields");
             layout.typeIndex=slvm_declare_struct(vm_,cls.name.c_str(),names.empty()?nullptr:names.data(),(int)names.size());
-            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register class layout '"+cls.name+"'");
+            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register class layout '"+cls.name+"' (program exceeds the "+std::to_string(SL_MAX_STRUCT_TYPES)+"-layout limit)");
             structLayout_[cls.name]=layout;
         }
         if(inheritance) {

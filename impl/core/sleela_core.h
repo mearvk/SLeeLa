@@ -226,7 +226,15 @@ typedef enum {
 #define SL_MAX_LOCKS 32
 #define SL_MAX_SOCKETS 128
 #define SL_MAX_FILES 256
-#define SL_MAX_STRUCT_TYPES 256   /* distinct struct declarations per program  */
+/* Distinct struct/class layouts per program. The table starts small
+ * (SL_STRUCT_TYPES_INIT) and grows in base-2 steps -- 256 -> 512 -> 1024 ->
+ * 2048 -> 4096 -> ... -> 32768 -> 65536 -- on demand, so a small program keeps
+ * a small VM footprint while a large one (e.g. a rich GUI resolved against a
+ * very large /lib, whose transitive class closure easily passes the old fixed
+ * 256) still compiles. SL_MAX_STRUCT_TYPES is the HARD ceiling (fail-closed);
+ * a program that needs more than 65,536 distinct layouts is rejected cleanly. */
+#define SL_STRUCT_TYPES_INIT 256   /* initial layout-table capacity             */
+#define SL_MAX_STRUCT_TYPES 65536  /* hard ceiling on distinct layouts          */
 #define SL_MAX_STRUCT_FIELDS 64   /* named fields per struct type              */
 #define SL_MAX_STRUCTS 4096       /* live struct instances per VM              */
 #define SL_MAX_STRTEXT 65536      /* max bytes for a built/concatenated String */

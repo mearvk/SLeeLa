@@ -153,8 +153,9 @@ struct SLVM {
     SLBestOf* bestof[SL_BESTOF_MAX];
     pthread_mutex_t idea_canvas_mtx;
     void* idea_canvas[SL_IDEA_CANVAS_MAX];   /* Idea System(TM) realtime canvases */
-    SLStructType struct_types[SL_MAX_STRUCT_TYPES];
+    SLStructType* struct_types;  /* grown base-2 from SL_STRUCT_TYPES_INIT, capped at SL_MAX_STRUCT_TYPES */
     int nstruct_types;
+    int struct_typecap;          /* current allocated capacity of struct_types */
     SLStructInstance* structs;   /* SL_MAX_STRUCTS instances, lazily allocated */
     int nstruct_live;
 
@@ -303,9 +304,21 @@ int slvm_declare_global(SLVM* vm, const char* name) {
 
 int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_names, int nfields) {
     if (!vm || !name || nfields < 0 || nfields > SL_MAX_STRUCT_FIELDS) return -1;
-    if (vm->nstruct_types >= SL_MAX_STRUCT_TYPES) return -1;
     for (int i = 0; i < vm->nstruct_types; i++)
         if (strcmp(vm->struct_types[i].name, name) == 0) return i; /* idempotent */
+    /* Grow the layout table on demand: 256 -> 512 -> ... -> 65536 (base-2),
+     * never past the SL_MAX_STRUCT_TYPES hard ceiling. New slots are zeroed so
+     * a partially-filled table never carries stale name/field pointers. */
+    if (vm->nstruct_types >= vm->struct_typecap) {
+        if (vm->struct_typecap >= SL_MAX_STRUCT_TYPES) return -1; /* at the ceiling */
+        int newcap = vm->struct_typecap ? vm->struct_typecap * 2 : SL_STRUCT_TYPES_INIT;
+        if (newcap > SL_MAX_STRUCT_TYPES) newcap = SL_MAX_STRUCT_TYPES;
+        SLStructType* grown = (SLStructType*)realloc(vm->struct_types, (size_t)newcap * sizeof(SLStructType));
+        if (!grown) return -1; /* out of memory: fail closed, keep the old table */
+        memset(grown + vm->struct_typecap, 0, (size_t)(newcap - vm->struct_typecap) * sizeof(SLStructType));
+        vm->struct_types = grown;
+        vm->struct_typecap = newcap;
+    }
     int idx = vm->nstruct_types++;
     SLStructType* st = &vm->struct_types[idx];
     st->name = strdup(name);
@@ -457,6 +470,7 @@ void slvm_free(SLVM* vm) {
         free(vm->struct_types[i].name);
         for (int j = 0; j < vm->struct_types[i].nfields; j++) free(vm->struct_types[i].fields[j]);
     }
+    free(vm->struct_types);   /* the growable layout table itself */
     free(vm->structs);
     pthread_mutex_destroy(&vm->struct_mtx);
     if (vm->arrays) {

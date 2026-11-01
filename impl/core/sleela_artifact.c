@@ -247,8 +247,14 @@ SLVM* slvm_load_file(const char* path) {
     vm->globals = nglobal ? (SLValue*)calloc(nglobal, sizeof(SLValue)) : NULL;
     vm->gnames = nglobal ? (char**)calloc(nglobal, sizeof(char*)) : NULL;
     vm->funcs = nfunc ? (SLFunc*)calloc(nfunc, sizeof(SLFunc)) : NULL;
+    /* The layout table is a growable heap array (slvm_new leaves it NULL); the
+     * loader sizes it exactly to the artifact's struct-type count, which
+     * sane_count already bounded by the SL_MAX_STRUCT_TYPES ceiling. */
+    vm->struct_types = nstruct ? (SLStructType*)calloc(nstruct, sizeof(SLStructType)) : NULL;
+    vm->struct_typecap = (int)nstruct;
     if ((codelen && !vm->code) || (nconst && !vm->consts) || (nstr && !vm->strs) ||
-        (nglobal && (!vm->globals || !vm->gnames)) || (nfunc && !vm->funcs)) ok = 0;
+        (nglobal && (!vm->globals || !vm->gnames)) || (nfunc && !vm->funcs) ||
+        (nstruct && !vm->struct_types)) ok = 0;
 
     if (ok) {
         for (uint32_t i = 0; ok && i < codelen; ++i)

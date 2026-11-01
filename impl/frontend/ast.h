@@ -195,9 +195,15 @@ struct ClassDecl {
     // "Outer.Inner". These two fields mark a hoisted nested class for tooling.
     bool isNested=false;           // true once hoisted from an enclosing class
     std::string enclosingName;     // the enclosing class name when isNested
+    // Provenance (source-library resolution). False for the user's own local
+    // (non-/lib) classes; set true for a class merged in from the /lib source
+    // tree by loadReferencedLibraryUnits. Records where a class came from so
+    // tooling (and any future layout-budget diagnostics) can distinguish a
+    // user's own class from one pulled in transitively from a large /lib.
+    bool fromLibrary=false;
 };
 
-struct StructDecl{std::string name;std::vector<Field> fields;};
+struct StructDecl{std::string name;std::vector<Field> fields;bool fromLibrary=false;};
 
 struct DynamiteImport { std::string referenceName; std::string sourcePath; };
 struct PermissibleImport { std::string referenceName; std::string sourcePath; };

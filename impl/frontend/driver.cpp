@@ -1658,6 +1658,13 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
                 sleela::Lexer lexer(unitSource);
                 sleela::Parser parser(lexer.tokenize());
                 sleela::Program unit=parser.parseProgram();
+                // Tag every unit pulled from /lib with its provenance so the
+                // compiler can drop library classes that no reachable code uses
+                // (a transitive identifier scan over a very large /lib would
+                // otherwise merge far more class layouts than the program needs
+                // and exhaust the VM's 256-layout budget).
+                for(auto& cls:unit.classes) cls.fromLibrary=true;
+                for(auto& st:unit.structs) st.fromLibrary=true;
                 // Mark the path before merging to prevent dependency cycles.
                 loadedPaths.insert(name);
                 for(const auto& cls:unit.classes) loadedPaths.insert(cls.name);
