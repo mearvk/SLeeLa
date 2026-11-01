@@ -13,6 +13,8 @@
 #include <vector>
 #include <set>
 #include <functional>
+#include <cstdio>
+#include <cstdlib>
 #include "library_index.h"
 #include "../core/sleela_ui_ids.h"
 #include "../core/sleela_ui_vm.h"
@@ -46,6 +48,23 @@ public:
     // of viewpoint: Degree 2 + static extension(2) = Viewpoint Degree 4.
     static constexpr int kStaticExtensionViewpointDegree = 4;
     int run() {
+        // Diagnostic (opt-in via SLEELA_DEBUG_LAYOUTS): report how many class /
+        // struct layouts this program will register with the VM, how many are
+        // library-merged vs the user's own, and whether any class name repeats.
+        // The VM caps distinct layouts at SL_MAX_STRUCT_TYPES; a program that
+        // overflows it almost always did so because the /lib identifier-scan
+        // resolver pulled a large transitive closure, not because the user
+        // wrote that many classes. This makes the cause visible without a
+        // debugger: compare "local" (your classes) against "library" (pulled).
+        if(std::getenv("SLEELA_DEBUG_LAYOUTS")){
+            std::map<std::string,int> dupc; int dups=0, lib=0, local=0;
+            for(const auto& c:prog_.classes){ if(++dupc[c.name]==2) ++dups; if(c.fromLibrary) ++lib; else ++local; }
+            fprintf(stderr,
+                "[debug-layouts] classes=%zu (local=%d library=%d) structs=%zu "
+                "distinct-class-names=%zu duplicate-named-classes=%d limit=%d\n",
+                prog_.classes.size(), local, lib, prog_.structs.size(),
+                dupc.size(), dups, SL_MAX_STRUCT_TYPES);
+        }
         validateJavaCompatibilityMetadata(prog_);
         library::Index libraryIndex = library::Index::discover();
         library::validateImports(prog_.imports, libraryIndex);
