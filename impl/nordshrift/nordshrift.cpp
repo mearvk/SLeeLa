@@ -326,6 +326,7 @@ static void validateSourcePrograms(const Sheet& sheet, const std::string& sheetP
 }
 
 static int doCheck(const std::string& path) {
+    sleela::rails::brandNordshrift(std::cout, 1);
     Sheet sheet; DiagnosticBag diags;
     if (!loadSheet(path, sheet, diags)) return 1;
     validateSubjects(sheet, diags);
@@ -357,6 +358,7 @@ static std::string runnablePathFor(const std::string& srcPath) {
 }
 
 static int doBuild(const std::string& path) {
+    sleela::rails::brandNordshrift(std::cout, 1);
     Sheet sheet; DiagnosticBag diags;
     if (!loadSheet(path, sheet, diags)) return 1;
 

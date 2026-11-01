@@ -24,7 +24,16 @@
 
 #include "CommonRailsPrinting.hpp"   // commonrails::printing (heritage layer)
 #include <ostream>
+#include <iostream>
 #include <string>
+#include <cstdio>
+#if defined(_WIN32)
+#  include <io.h>
+#  define SLEELA_ISATTY(fd) _isatty(fd)
+#else
+#  include <unistd.h>
+#  define SLEELA_ISATTY(fd) isatty(fd)
+#endif
 
 namespace sleela { namespace rails {
 
@@ -34,6 +43,36 @@ using commonrails::printing::PrintFormatter;
 using commonrails::printing::PrintRenderer;
 using commonrails::printing::PrintProgress;
 using commonrails::printing::PrintLayout;
+
+// ---------------------------------------------------------------------------
+// Product brand line.
+//
+// Prints the tool's trademarked product name (e.g. "Sleelvac(TM)") on its own
+// line, in RED + CLASSIC (ANSI SGR 31 -- normal-intensity red, no bold/bright),
+// then resets so the tool's natural output below stays the terminal default
+// (white/classic). It is the first thing a user sees when they compile or run.
+//
+// COLOR IS PRESENTATION-ONLY (Beautiful Design sec 7: "Color ... Optional; it
+// does not change width semantics" / "readable when color is unavailable").
+// The whole line is therefore TTY-GATED: it is emitted ONLY when the target
+// stream is an interactive terminal. Under a pipe, a redirect, or test capture
+// (every harness uses $(... 2>&1)), nothing is emitted -- so machine-parsed
+// output is byte-for-byte unchanged and no escape codes ever leak into logs.
+//
+// `streamFd` is the destination's file descriptor: 1 (stdout) for std::cout,
+// 2 (stderr) for std::cerr. The brand goes to the same stream the natural
+// output will use, so the two are never split across stdout/stderr.
+inline bool brandColorEnabled(int streamFd) {
+    return SLEELA_ISATTY(streamFd) != 0;
+}
+inline void brand(std::ostream& o, int streamFd, const std::string& product) {
+    if (!brandColorEnabled(streamFd)) return;               // plain contexts: no brand line
+    o << "\033[31m" << product << "\u2122" << "\033[0m\n";   // red + classic, then reset
+}
+// Convenience: the three product identities, to stdout (fd 1) or stderr (fd 2).
+inline void brandSleelvac(std::ostream& o, int fd)   { brand(o, fd, "Sleelvac"); }
+inline void brandSleela(std::ostream& o, int fd)     { brand(o, fd, "Sleela"); }
+inline void brandNordshrift(std::ostream& o, int fd) { brand(o, fd, "Nordshrift"); }
 
 // A professional component line for a tool/unit currently being worked on:
 //   -- : [Object ID: 0000000001] [Date: <date>] [Current: @<name>] . <msg> .

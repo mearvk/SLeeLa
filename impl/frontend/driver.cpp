@@ -1302,7 +1302,7 @@ static int checkFile(const std::string&path){
     }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}
     std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;
 }
-static int compileFile(const std::string&sourcePath,const std::string&outputPath){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";if(railsBannersEnabled())sleela::rails::complete(std::cerr,"compiled "+sourcePath+" -> "+outputPath);
+static int compileFile(const std::string&sourcePath,const std::string&outputPath){sleela::rails::brandSleelvac(std::cout,1);if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";if(railsBannersEnabled())sleela::rails::complete(std::cerr,"compiled "+sourcePath+" -> "+outputPath);
     // Author-marked documents (syntax 2.4) get a second, originated source
     // document alongside the artifact: every member located, originated, and
     // branded with a therefore-brander. Clean and united.
@@ -1704,6 +1704,7 @@ static void mergeProgram(sleela::Program& into,sleela::Program&& from){
 // Run one or more .sleela files as a single merged program. Each file is parsed
 // independently; the first file's resolved syntax version governs the unit.
 static int runSourceMulti(const std::vector<std::string>& paths){
+    sleela::rails::brandSleela(std::cout,1);
     if(paths.empty())return 1;
     sleela::Program merged; sleela::VersionResolution firstSyntax; bool haveSyntax=false;
     for(const auto& path:paths){
@@ -1718,6 +1719,7 @@ static int runSourceMulti(const std::vector<std::string>& paths){
 }
 // Compile one or more .sleela files into a single runnable artifact.
 static int compileFilesMulti(const std::vector<std::string>& paths,const std::string& outputPath){
+    sleela::rails::brandSleelvac(std::cout,1);
     if(verifyBeforeExecution(fs::current_path()))return 1;
     if(paths.empty())return 1;
     sleela::Program merged; sleela::VersionResolution firstSyntax; bool haveSyntax=false;
@@ -1747,6 +1749,7 @@ static int runLangin(const std::vector<std::string>&paths){catalog::Catalog cat=
 // `sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file...>`
 static int langinCmd(int argc,char**argv){enum{RUN,EMIT_SLEELA,EMIT_XCLASS,INFO}mode=RUN;std::vector<std::string>files;for(int i=2;i<argc;i++){std::string a=argv[i];if(a=="--run")mode=RUN;else if(a=="--emit-sleela"||a=="--emit")mode=EMIT_SLEELA;else if(a=="--emit-xclass")mode=EMIT_XCLASS;else if(a=="--info")mode=INFO;else if(a.rfind("--",0)==0){std::cerr<<"sleelvac: unknown option "<<a<<"\n";return 2;}else files.push_back(a);}if(files.empty()){std::cerr<<"sleela langin: no source files given (.java/.kt/.scala/.groovy/.clj)\n";return 2;}if(verifyBeforeExecution(fs::current_path()))return 1;if(mode==RUN)return runLangin(files);try{sleela::langin::Loaded loaded=sleela::langin::loadFiles(files);if(mode==EMIT_SLEELA)std::cout<<loaded.emitted;else if(mode==EMIT_XCLASS)std::cout<<sleela::langin::emitXclass(loaded.program,loaded.metas);else for(const auto&m:loaded.metas)std::cout<<sleela::langin::infoLine(m)<<"\n";return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static int runFile(const std::string&path){
+    sleela::rails::brandSleela(std::cout,1);
     if(slvm_is_artifact_file(path.c_str()))return runArtifact(path);
     if(hasExt(path,".xclass"))return runXclass({path});
     if(hasExt(path,".java")){
