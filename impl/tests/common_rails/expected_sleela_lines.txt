@@ -1,0 +1,6 @@
+-- : [Object ID: 0000000001] [Date: 1] [Current: @Sleelvac                     ] . compiling Hello.sleela .
+[START]   semantic analysis                                                     
+[WORKING] lowering subject                                                      
+[COMPLETE] runnable Core artifact written                                       
+[WARN]    deprecated pragma                                                     
+[ERROR]   unknown type                                                          
