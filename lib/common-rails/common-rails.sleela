@@ -1,0 +1,389 @@
+#sleela 2.5
+material;
+<< lib/common-rails/common-rails.sleela
+   SLeeLa Standard Library Definition.
+   Definition: the self-contained, runnable build of the SLeeLa common-rails
+   professional-printing component. The compiler `run` compiles one file as a
+   single unit, so this aggregate inlines the whole PrintRail contract (mirroring
+   the one-class-per-file units PrintField / PrintLine / PrintState /
+   PrintComponent / PrintRenderer / PrintFormatter / PrintLayout / PrintGlyphs,
+   and the native common-rails/heritage/printing C and C++ contract) plus a main
+   method that demonstrates the four producer surfaces it unifies:
+
+     1. COMPILER / Sleelvac(TM)  -- component + state status lines
+     2. NORDSHRIFT               -- component + state status lines
+     3. a running PROGRAM        -- progress square + single-pixel indicator
+     4. the DEBUGGER             -- bordered frame tables
+
+   One rail, one look: a program (or a tool Sleela-authored output) names
+   PrintRail and the driver identifier scan resolves this unit automatically,
+   so compiler progress, Nordshrift progress, program output, and debug frames
+   all share the same aligned, column-formatted, box-drawn surface.
+
+   Design notes carried from the authoritative repo-root common-rails tree:
+   - The core value model has no string-length or char indexing, so every
+     content primitive takes an explicit character count; widths are measured
+     arithmetically and cells are padded, never truncated.
+   - Angle-bracket comments only; a binary operator such as minus must be
+     space-surrounded (w - chars) because the lexer folds a hyphen into an
+     identifier. The block and box glyphs are embedded as raw UTF-8.
+
+   Run:   ./impl/build/sleela run   lib/common-rails/common-rails.sleela
+   Check: ./impl/build/sleela check lib/common-rails/common-rails.sleela >>
+
+class PrintRail {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7100;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-11-01";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-28";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Rail configuration (mirrors the native common-rails heritage PrintLayout):
+     SQUARE_SIZE   progress-square side, 21 -> 441 cells
+     OID_WIDTH     Object-ID zero-pad width
+     CURRENT_WIDTH inner width of the [Current: @Name] field
+     PRINT_WIDTH   canonical fixed-line width
+     STATE_FIELD   field the [STATE] label is laid into >>
+  int SQUARE_SIZE   = 21;
+  int OID_WIDTH     = 10;
+  int CURRENT_WIDTH = 39;
+  int PRINT_WIDTH   = 80;
+  int STATE_FIELD   = 10;
+
+  < Progress-square glyphs: FULL is the filled cell, LIGHT the empty cell. >
+  String FULL  = "█";
+  String LIGHT = "░";
+
+  < Box-drawing glyph set that frames a table (meaning survives without color). >
+  String BOX_TL = "┌";  String BOX_TM = "┬";  String BOX_TR = "┐";
+  String BOX_ML = "├";  String BOX_MM = "┼";  String BOX_MR = "┤";
+  String BOX_BL = "└";  String BOX_BM = "┴";  String BOX_BR = "┘";
+  String BOX_H  = "─";  String BOX_V  = "│";
+
+  < ================================================================= >
+  <  Measured-string primitives (no core string-length / indexing)    >
+  < ================================================================= >
+
+  < repeat(s, n): the core String has no repeat; build it by concatenation. >
+  String repeat(String s, int n) {
+    String out = "";
+    int i = 0;
+    while (i < n) {
+      out = out + s;
+      i = i + 1;
+    }
+    return out;
+  }
+
+  < digitCount(v): number of decimal digits in a non-negative int. >
+  int digitCount(int v) {
+    int n = v;
+    if (n < 0) { n = -n; }
+    int count = 1;
+    while (n >= 10) { n = n / 10; count = count + 1; }
+    return count;
+  }
+
+  < padZeros(value, width): left-pad a non-negative int with zeros to width. >
+  String padZeros(int value, int width) {
+    int v = value;
+    if (v < 0) { v = -v; }
+    int need = width - digitCount(v);
+    if (need <= 0) { return "" + v; }
+    return repeat("0", need) + v;
+  }
+
+  < padRight(content, contentChars, width): content then right-pad spaces. >
+  String padRight(String content, int contentChars, int width) {
+    int pad = width - contentChars;
+    if (pad < 0) { pad = 0; }
+    return content + repeat(" ", pad);
+  }
+
+  < padLeft(content, contentChars, width): left-pad spaces then content. >
+  String padLeft(String content, int contentChars, int width) {
+    int pad = width - contentChars;
+    if (pad < 0) { pad = 0; }
+    return repeat(" ", pad) + content;
+  }
+
+  < ================================================================= >
+  <  String builders (return the rendered line; callers print/capture) >
+  < ================================================================= >
+
+  < A fixed-width content line, PRINT_WIDTH columns wide. >
+  String widthLine(String content, int contentChars) {
+    return padRight(content, contentChars, PRINT_WIDTH);
+  }
+
+  < padCurrent(name, nameChars): "[Current: @Name" + spaces + "]". >
+  String padCurrent(String name, int nameChars) {
+    String inner = "Current: @" + name;
+    int pad = CURRENT_WIDTH - (10 + nameChars);
+    if (pad < 0) { pad = 0; }
+    return "[" + inner + repeat(" ", pad) + "]";
+  }
+
+  << componentLine: the professional component line (mirrors print-method.xml):
+     dash dash colon, bracketed Object ID (zero-padded), bracketed Date seq,
+     the padded Current field, then the message bracketed with dot decorators. >>
+  String componentLine(String name, int nameChars, int oid, int dateSeq, String message) {
+    return "-- : "
+      + "[Object ID: " + padZeros(oid, OID_WIDTH) + "] "
+      + "[Date: " + dateSeq + "] "
+      + padCurrent(name, nameChars) + " "
+      + ". " + message + " .";
+  }
+
+  << stateLineText: a state-labelled status line "[STATE] message", laid into a
+     fixed label field so messages align across states, then to the print width. >>
+  String stateLineText(String state, int stateChars, String message, int messageChars) {
+    String label = "[" + state + "]";
+    int labelChars = stateChars + 2;
+    int field = STATE_FIELD;
+    if (field < labelChars + 1) { field = labelChars + 1; }
+    String content = padRight(label, labelChars, field) + message;
+    return widthLine(content, field + messageChars);
+  }
+
+  < ================================================================= >
+  <  Sophisticated bordered tables                                    >
+  < ================================================================= >
+
+  << One horizontal rule: left glyph, horizontal run across column 0 plus the
+     two inset spaces, mid glyph, the same across column 1, then the right glyph. >>
+  String tableRule(String left, String mid, String right, int w0, int w1) {
+    return left
+      + repeat(BOX_H, w0 + 2) + mid
+      + repeat(BOX_H, w1 + 2) + right;
+  }
+
+  < A table row "│ cell0 │ cell1 │"; leftAlign selects alignment for both cells. >
+  String tableRowText(
+      String c0, int c0Chars, int w0,
+      String c1, int c1Chars, int w1,
+      boolean leftAlign) {
+    String cell0 = "";
+    String cell1 = "";
+    if (leftAlign) {
+      cell0 = padRight(c0, c0Chars, w0);
+      cell1 = padRight(c1, c1Chars, w1);
+    } else {
+      cell0 = padLeft(c0, c0Chars, w0);
+      cell1 = padLeft(c1, c1Chars, w1);
+    }
+    return BOX_V + " " + cell0 + " " + BOX_V + " " + cell1 + " " + BOX_V;
+  }
+
+  < ---- print helpers (the convenience surface on top of the builders) ---- >
+
+  void printComponent(String name, int nameChars, int oid, int dateSeq, String message) {
+    print(componentLine(name, nameChars, oid, dateSeq, message));
+  }
+
+  void printState(String state, int stateChars, String message, int messageChars) {
+    print(stateLineText(state, stateChars, message, messageChars));
+  }
+
+  void printTableTop(int w0, int w1)       { print(tableRule(BOX_TL, BOX_TM, BOX_TR, w0, w1)); }
+  void printTableSeparator(int w0, int w1) { print(tableRule(BOX_ML, BOX_MM, BOX_MR, w0, w1)); }
+  void printTableBottom(int w0, int w1)    { print(tableRule(BOX_BL, BOX_BM, BOX_BR, w0, w1)); }
+
+  void printTableRow(
+      String c0, int c0Chars, int w0,
+      String c1, int c1Chars, int w1,
+      boolean leftAlign) {
+    print(tableRowText(c0, c0Chars, w0, c1, c1Chars, w1, leftAlign));
+  }
+
+  < A complete two-column table: top, header, separator, two rows, bottom. >
+  void printTable(
+      String h0, int h0Chars, String h1, int h1Chars, int w0, int w1,
+      String r0c0, int r0c0Chars, String r0c1, int r0c1Chars,
+      String r1c0, int r1c0Chars, String r1c1, int r1c1Chars) {
+    printTableTop(w0, w1);
+    printTableRow(h0, h0Chars, w0, h1, h1Chars, w1, true);
+    printTableSeparator(w0, w1);
+    printTableRow(r0c0, r0c0Chars, w0, r0c1, r0c1Chars, w1, true);
+    printTableRow(r1c0, r1c0Chars, w0, r1c1, r1c1Chars, w1, true);
+    printTableBottom(w0, w1);
+  }
+
+  < Field/value renderer with a `table` switch: framed table vs plain line. >
+  void printPair(String field, int fieldChars, String value, int valueChars, boolean table) {
+    if (table) {
+      printTableTop(fieldChars, valueChars);
+      printTableRow("Field", 5, fieldChars, "Value", 5, valueChars, true);
+      printTableSeparator(fieldChars, valueChars);
+      printTableRow(field, fieldChars, fieldChars, value, valueChars, valueChars, true);
+      printTableBottom(fieldChars, valueChars);
+    } else {
+      print(widthLine(field + ": " + value, fieldChars + 2 + valueChars));
+    }
+  }
+
+  < ================================================================= >
+  <  21x21 progress square + single-pixel indicator                   >
+  < ================================================================= >
+
+  int clampPercent(int percent) {
+    int p = percent;
+    if (p < 0) { p = 0; }
+    if (p > 100) { p = 100; }
+    return p;
+  }
+
+  int percentToCells(int percent) {
+    int p = clampPercent(percent);
+    int total = SQUARE_SIZE * SQUARE_SIZE;
+    return (p * total) / 100;
+  }
+
+  << `filled` cells are filled in order bottom-right to left, then up a row. >>
+  void printSquare(int filledCells) {
+    int total = SQUARE_SIZE * SQUARE_SIZE;
+    int filled = filledCells;
+    if (filled < 0) { filled = 0; }
+    if (filled > total) { filled = total; }
+
+    int displayRow = 0;
+    while (displayRow < SQUARE_SIZE) {
+      String row = "";
+      int displayCol = 0;
+      while (displayCol < SQUARE_SIZE) {
+        int fillRow = (SQUARE_SIZE - 1) - displayRow;
+        int fillCol = (SQUARE_SIZE - 1) - displayCol;
+        int fillIndex = fillRow * SQUARE_SIZE + fillCol;
+        if (fillIndex < filled) {
+          row = row + FULL;
+        } else {
+          row = row + LIGHT;
+        }
+        displayCol = displayCol + 1;
+      }
+      print(row);
+      displayRow = displayRow + 1;
+    }
+  }
+
+  void printSquarePercent(int percent) {
+    int p = clampPercent(percent);
+    int cells = percentToCells(p);
+    print("  progress " + p + "%  (" + cells + "/" + (SQUARE_SIZE * SQUARE_SIZE) + " cells)");
+    printSquare(cells);
+  }
+
+  < Single-pixel indicator: the most compact rendering, one glyph. >
+  void printPixel(int filledCells) {
+    if (filledCells > 0) { print(FULL); } else { print(LIGHT); }
+  }
+
+  void printPixelPercent(int percent) {
+    printPixel(percentToCells(percent));
+  }
+
+  < ================================================================= >
+  <  Producer-facing convenience rails                                >
+  <  One named entry per producer so compiler / nordshrift / program  >
+  <  / debugger output all share the same look.                       >
+  < ================================================================= >
+
+  << A tool banner line, for example: sleelvac, then the source and artifact. >>
+  String toolLine(String tool, int toolChars, String message, int messageChars) {
+    return padRight(tool + ":", toolChars + 1, STATE_FIELD) + message;
+  }
+
+  < The COMPILER (Sleelvac) rail. >
+  void compilerState(String state, int stateChars, String message, int messageChars) {
+    printState(state, stateChars, message, messageChars);
+  }
+
+  < The NORDSHRIFT rail. >
+  void nordshriftState(String state, int stateChars, String message, int messageChars) {
+    printState(state, stateChars, message, messageChars);
+  }
+
+  < The DEBUGGER rail: one stack frame rendered into the two-column table. >
+  void debugFrame(String symbol, int symbolChars, String location, int locationChars) {
+    printTable(
+      "Frame", 5, "Location", 8, 20, 24,
+      symbol, symbolChars, location, locationChars,
+      "", 0, "", 0);
+  }
+
+  void main() {
+    print("=== CommonRails -- PrintRail: one professional-printing surface ===");
+    print("");
+
+    < 1) COMPILER / Sleelvac rail -------------------------------------- >
+    print("  1. compiler (Sleelvac) rail");
+    printComponent("Sleelvac", 8, 1, 1, "compiling Hello.sleela");
+    compilerState("START", 5, "semantic analysis", 17);
+    compilerState("COMPLETE", 8, "runnable Core artifact written", 30);
+    print("");
+
+    < 2) NORDSHRIFT rail ----------------------------------------------- >
+    print("  2. nordshrift rail");
+    printComponent("Nordshrift", 10, 1, 2, "driving common-rails.sst");
+    nordshriftState("WORKING", 7, "lowering subject to target sleela", 33);
+    nordshriftState("COMPLETE", 8, "transpile ok, 0 error(s)", 24);
+    print("");
+
+    < 3) a running PROGRAM rail ---------------------------------------- >
+    print("  3. program rail (progress square + single pixel)");
+    printPixelPercent(0);
+    printPixelPercent(100);
+    printSquare(1);
+    print("");
+    printSquarePercent(100);
+    print("");
+
+    < 4) DEBUGGER rail ------------------------------------------------- >
+    print("  4. debugger rail (stack frame as a bordered table)");
+    debugFrame("main()", 6, "Hello.sleela:12", 15);
+    print("");
+
+    < Shared forms: a plain pair, then the same data framed as a table. >
+    print("  table flag OFF (plain line), then ON (framed)");
+    printPair("Object ID", 9, "0000001234", 10, false);
+    printPair("Object ID", 9, "0000001234", 10, true);
+    print("");
+    print("done");
+  }
+}

@@ -47,7 +47,12 @@ class CommonRails {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  String source;
+  << The resolvable entry class of this package is PrintRail
+     (lib/common-rails/PrintRail.sleela): the one professional-printing surface
+     shared by the compiler, Nordshrift, running programs, and the debugger.
+     source defaults to that unit; configure(path) can repoint it. >>
+  String source = "lib/common-rails/PrintRail.sleela";
+  String entryClass(){return "PrintRail";}
   void configure(String path){source=path;}
   String path(){return source;}
   boolean available(){return source!=null;}

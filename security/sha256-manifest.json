@@ -2802,6 +2802,10 @@
       "sha256": "09669499f19816e7ecdcbddc4d0bff551c7a17a526cc2a178494d9c49ee4c35a"
     },
     {
+      "path": "lib/common-rails/PrintRail.sleela",
+      "sha256": "d20fe2aa7f4ce67ec6eb44f109df97e1a792485804e3d411d5baa4d1c81846a9"
+    },
+    {
       "path": "lib/common-rails/PrintRenderer.sleela",
       "sha256": "3077402349b1d9fba06b12fb386e7b53ec0ac48c421af197d339db6458a1c39d"
     },
@@ -2815,7 +2819,11 @@
     },
     {
       "path": "lib/common-rails/SLPackage.sleela",
-      "sha256": "b8644f3e0d008a70c0b7da9344df66415b681076364cc4bb9b2c93801bc9496c"
+      "sha256": "d1c4f5d961e9ed618d3b13a2468e90d72a700c10f64db41692db65214747891c"
+    },
+    {
+      "path": "lib/common-rails/common-rails.sleela",
+      "sha256": "dfba20d244389af75ba79df2429be093814d3ed1464fad5bb0d8de410e6f931a"
     },
     {
       "path": "lib/compiler/BinaryFormatReference.sleela",
