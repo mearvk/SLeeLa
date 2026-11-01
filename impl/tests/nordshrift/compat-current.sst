@@ -4,7 +4,7 @@
 sheet compat_current_2_2:
   version 2.3.0
   author "SLeeLa Compatibility Test"
-  description "Cross-version fixture: source syntax at the supported ceiling (2.3)"
+  description "Cross-version fixture: source syntax within the supported range (2.5)"
 
 source:
   root "src"
