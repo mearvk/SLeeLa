@@ -235,7 +235,7 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "2831acd839f1faadf7b28801ff1c53efc0eae27afd6dfdff939dfa554df29b45"
+      "sha256": "f64cb319c2b73f411fa0a0c36270df433e23869b19c3135da15fea3b8b3ab437"
     },
     {
       "path": "impl/core/sleela_audio_bridge.cpp",
