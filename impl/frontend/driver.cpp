@@ -24,6 +24,7 @@
 #include "../nordshrift/sleela_emit.h"
 #include "http_server_cli.h"
 #include "../core/sleela_audio_bridge.h"
+#include "common_rails_banner.hpp"
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
@@ -183,6 +184,14 @@ static int runCommand(const std::string&cmd){std::cout<<"[defender] $ "<<cmd<<"\
 // ---------------------------------------------------------------------------
 struct DefenderOpts{bool optin=false;bool allowRoot=false;std::string sha256;};
 static bool envFlag(const char*name){const char*v=std::getenv(name);return v&&(std::string(v)=="1"||std::string(v)=="true"||std::string(v)=="yes");}
+// CommonRails banner surface (opt-in via SLEELA_RAILS=1). When enabled, the
+// compiler routes its human-facing progress banners through the shared
+// /lib/common-rails PrintRail look (component + state lines). The exact,
+// machine-parsed contract lines (e.g. "sleelvac: <src> -> <dst> (runnable
+// Sleela Core artifact)") are ALWAYS emitted verbatim by their own call site;
+// the rails banner is additive decoration on stderr, so default output and the
+// test suite are byte-for-byte unchanged unless SLEELA_RAILS is set.
+static bool railsBannersEnabled(){return envFlag("SLEELA_RAILS");}
 static std::string toLowerHex(std::string s){for(char&c:s)c=(char)std::tolower((unsigned char)c);return s;}
 static std::string readSha256Env(){const char*v=std::getenv("SLEELA_DEFENDER_SHA256");return v?toLowerHex(v):std::string();}
 static bool sha256OfFile(const fs::path&path,std::string&hexOut){
@@ -548,6 +557,7 @@ static bool memoryManagerRequested(size_t&limit){
 static bool enableMemoryManager(size_t limit,bool announce){
     if(slmm_enable(limit)!=0){std::cerr<<"sleela: memory limit must be between 256 MiB and 2 GiB.\n";return false;}
     if(announce)std::cerr<<"[memory-manager] enabled (hard limit "<<slmm_limit()<<" bytes)\n";
+    if(announce&&railsBannersEnabled())sleela::rails::component(std::cerr,"Sleelvac",1,1,"memory manager enabled");
     return true;
 }
 static void reportMemoryManager(){
@@ -668,7 +678,7 @@ static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const
         }
         if(annotations.hasForwarding()) std::cout<<"[annotation] Nexter Colony: "<<annotations.nexterColony()<<"\n";
         SLResult r=slvm_run(vm);
-        if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";rc=1;}
+        if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";if(railsBannersEnabled())sleela::rails::error(std::cerr,std::string("runtime error: ")+(e?e:"unknown"));rc=1;}
     }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";rc=1;}
     slvm_free(vm);return rc;
 }
@@ -1292,7 +1302,7 @@ static int checkFile(const std::string&path){
     }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}
     std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;
 }
-static int compileFile(const std::string&sourcePath,const std::string&outputPath){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";
+static int compileFile(const std::string&sourcePath,const std::string&outputPath){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";if(railsBannersEnabled())sleela::rails::complete(std::cerr,"compiled "+sourcePath+" -> "+outputPath);
     // Author-marked documents (syntax 2.4) get a second, originated source
     // document alongside the artifact: every member located, originated, and
     // branded with a therefore-brander. Clean and united.
@@ -1322,7 +1332,7 @@ static int runArtifact(const std::string&path){
     if(!annotations.install(data,annotationError)){std::cerr<<"sleelvac: artifact annotation runtime rejected: "<<annotationError<<"\n";slvm_free(vm);return 1;}
     if(annotations.hasForwarding())std::cout<<"[annotation] Nexter Colony: "<<annotations.nexterColony()<<"\n";
     SLResult r=slvm_run(vm);
-    if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";slvm_free(vm);return 1;}
+    if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";if(railsBannersEnabled())sleela::rails::error(std::cerr,std::string("runtime error: ")+(e?e:"unknown"));slvm_free(vm);return 1;}
     slvm_free(vm);return 0;
 }
 // Launch a child process with an argv vector, without routing Java arguments
@@ -1723,6 +1733,7 @@ static int compileFilesMulti(const std::vector<std::string>& paths,const std::st
         int rc=sleela::compileToArtifact(merged,outputPath,&cat,firstSyntax.declared);
         if(rc!=0)return 1;
         std::cout<<"sleelvac: "<<paths.size()<<" source file(s) -> "<<outputPath<<" (runnable Sleela Core artifact)\n";
+        if(railsBannersEnabled())sleela::rails::complete(std::cerr,"compiled "+std::to_string(paths.size())+" source file(s) -> "+outputPath);
         return 0;
     }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}
 }

@@ -510,6 +510,10 @@
       "sha256": "24c304ae2a6954e5d10bbfcb6f4c24b3dbee9df72a2ba71ad69480da68743c71"
     },
     {
+      "path": "impl/frontend/common_rails_banner.hpp",
+      "sha256": "05774d8332f8808ccd2917362c805d7c7242941a6c02397e129be1228be310ee"
+    },
+    {
       "path": "impl/frontend/compiler.cpp",
       "sha256": "b48c06efe80dd8028c947ba27cddcab9899da09b08e57a654e4a3de635b0d36a"
     },
@@ -527,7 +531,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "498c621a274178884011bb11bf6b0ed5c25af95a35061576ecf4242878795dba"
+      "sha256": "d4b1bf32e805bd78c9218c4a3ff42463e737649d0bb775d3c38bfa291043ab05"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -699,7 +703,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "3797eb115b86fd4c04a26db9af7dcd8a777c1fb08a3bf5e3fa39180850fa5a5a"
+      "sha256": "37e75f77477daab2d76164cddb6b264225a918313a96f27c69c91ceab505401b"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
