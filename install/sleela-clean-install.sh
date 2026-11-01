@@ -411,9 +411,26 @@ install_main() {
 
   step "staging the integrity manifest and verifier"
   cp -a "$REPO_ROOT/tools/verify-before-execution.py" "$STAGE_DIR/tools/"
-  cp -a "$REPO_ROOT/security/sha256-manifest.json" "$STAGE_DIR/security/"
   [ -f "$REPO_ROOT/SHEET.sheet" ] && cp -a "$REPO_ROOT/SHEET.sheet" "$STAGE_DIR/"
-  ok "manifest + verifier staged"
+  # The installed runtime ships ONLY the standard library (lib/), the binaries,
+  # the verifier, and the manifest -- it does NOT ship the impl/ C/C++ sources.
+  # The repo-wide manifest covers impl/** too, so copying it verbatim would make
+  # the installed verifier demand impl/ files that were never installed (every
+  # run fails with 'missing file: impl/...'). Instead, regenerate the manifest
+  # ROOTED AT THE STAGE DIRECTORY so it describes exactly what gets installed.
+  # Fall back to the repo manifest only if the generator cannot run.
+  local gen="$REPO_ROOT/tools/generate-sha256-manifest.py"
+  local pybin=""
+  if command -v python3 >/dev/null 2>&1; then pybin=python3
+  elif command -v python >/dev/null 2>&1; then pybin=python; fi
+  if [ -n "$pybin" ] && [ -r "$gen" ] \
+     && "$pybin" "$gen" --root "$STAGE_DIR" --output "$STAGE_DIR/security/sha256-manifest.json" >/dev/null 2>&1; then
+    ok "manifest regenerated for the installed tree (lib-scoped) + verifier staged"
+  else
+    cp -a "$REPO_ROOT/security/sha256-manifest.json" "$STAGE_DIR/security/"
+    warn "could not regenerate the install manifest; copied the repo manifest (impl/ entries will not verify)"
+    ok "manifest (repo copy) + verifier staged"
+  fi
 
   # Reflect the actual fuller-module choices (included iff no longer excluded).
   local st_servers=excluded st_ides=excluded st_wifi=excluded
@@ -431,13 +448,21 @@ wifi=$st_wifi
 EOF
 
   heading "Installing"
+  # The install copies the staged tree OVER the destination (a merge, so user
+  # config/logs survive). But older installs used to place the impl/ C/C++
+  # sources here; the installer no longer ships impl/, and the (now lib-scoped)
+  # manifest does not cover it. Remove any such orphaned impl/ so a stale copy
+  # left by a previous install cannot fail the integrity verifier. Scoped to the
+  # single directory the installer owns and never ships -- nothing else is touched.
   if [ "$mode" = user ]; then
     mkdir -p "$install_root"
+    [ -d "$install_root/impl" ] && rm -rf "$install_root/impl"
     cp -a "$STAGE_DIR/." "$install_root/"
     ok "installed to ${WHITE}$install_root${RESET}"
   else
     command -v sudo >/dev/null 2>&1 || die "system install needs sudo or an already-privileged shell."
     sudo mkdir -p "$install_root" "$bin_dest" "$config_dir"
+    [ -d "$install_root/impl" ] && sudo rm -rf "$install_root/impl"
     sudo cp -a "$STAGE_DIR/." "$install_root/"
     sudo cp "$STAGE_DIR/config/startup.conf" "$config_dir/startup.conf"
     for product in sleela sleelvac nordshrift; do
