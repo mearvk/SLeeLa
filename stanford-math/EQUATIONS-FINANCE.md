@@ -1,10 +1,10 @@
 # Finance & Economics Canon
 
-> 24 equations, sourced from `SMFinanceCanon.sleela` -- the single
+> 25 equations, sourced from `SMFinanceCanon.sleela` -- the single
 > source of truth. This document is a human-readable mirror of that record;
 > if the two ever disagree, the `.sleela` canon wins and this file is stale.
 
-The foundational equations behind money, capitalism, and credit -- the equation of exchange and the quantity theory of money, the time value of money (compounding, discounting, annuities), asset pricing (CAPM, beta, Sharpe, Markowitz), corporate finance (Modigliani-Miller, WACC, Gordon growth), fixed income (bond pricing, duration), and macroeconomics (Phillips curve, Taylor rule, Solow growth). Each row credits the economist and year as the record gives them, with a one-line note on why it matters.
+The foundational equations behind money, capitalism, and credit -- the equation of exchange and the quantity theory of money, the time value of money (compounding, discounting, annuities), asset pricing (CAPM, beta, Sharpe, Markowitz), corporate finance (Modigliani-Miller, WACC, Gordon growth), fixed income (bond pricing, duration), macroeconomics (Phillips curve, Taylor rule, Solow growth), and operations economics (Little's Law). Each row credits the economist and year as the record gives them, with a one-line note on why it matters.
 
 The one hard rule governs every row: **values are faithful to the subject's
 real origin where publicly known**; diffuse or unknown attributions are marked
@@ -13,7 +13,7 @@ Symbolic forms use plain-ASCII notation (`^` power, `*` product, `sqrt`, `sum`, 
 names spelled out) so they stay greppable and diff-friendly. The **Why it matters**
 column states each result's significance in one faithful line.
 
-## The 24 equations
+## The 25 equations
 
 | # | Equation | Form | Field | Discoverer(s) | Year | Why it matters |
 |---|----------|------|-------|---------------|------|----------------|
@@ -41,6 +41,7 @@ column states each result's significance in one faithful line.
 | 22 | Cobb-Douglas production function | `Y = A K^alpha L^(1 - alpha)` | economic growth | Cobb & Douglas | 1928 | Output from capital and labor with constant returns; the workhorse production function in economics. |
 | 23 | Solow growth (steady state) | `s f(k) = (n + delta) k` | economic growth | Robert Solow | 1956 | Explains long-run growth and convergence from saving and capital; the founding model of growth theory (Solow's Nobel). |
 | 24 | Marginal cost = marginal revenue | `MC = MR  (profit-maximizing output)` | microeconomics | classical marginalism (Cournot) | 1838 | The profit-maximizing rule for any firm; the heart of microeconomic decision-making. |
+| 25 | Little's Law (throughput-inventory) | `L = lambda W  (avg inventory = throughput * avg flow-time)` | operations economics | John D. C. Little | 1961 | Inventory equals throughput times flow-time; the exact, proven sense in which the pace of a system is set by how much is in it -- the real backbone of the 'speed of the economy' idea. |
 
 ## Validate
 

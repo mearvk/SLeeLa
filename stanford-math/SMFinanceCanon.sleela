@@ -75,7 +75,7 @@ class SMFinanceCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[24];
+    eqs = new SMEquation[26];
     filled = 0;
 
     add("Equation of exchange (quantity theory of money)", "M V = P T", "monetary economics", "Irving Fisher", "1911");
@@ -102,6 +102,7 @@ class SMFinanceCanon {
     add("Cobb-Douglas production function", "Y = A K^alpha L^(1 - alpha)", "economic growth", "Cobb & Douglas", "1928");
     add("Solow growth (steady state)", "s f(k) = (n + delta) k", "economic growth", "Robert Solow", "1956");
     add("Marginal cost = marginal revenue", "MC = MR  (profit-maximizing output)", "microeconomics", "classical marginalism (Cournot)", "1838");
+    add("Little's Law (throughput-inventory)", "L = lambda W  (avg inventory = throughput * avg flow-time)", "operations economics", "John D. C. Little", "1961");
   }
 
   void add(String name, String form, String field, String who, String year) {
