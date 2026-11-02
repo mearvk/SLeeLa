@@ -8,7 +8,9 @@
 > into `SMMathCanon` / `SMPhysicsCanon` / `SMThermoEquations` /
 > `SMCrossoverCanon`, because it has no citable discoverer, paper, or year. It
 > is recorded here, labelled as what it is, so the idea is preserved thoroughly
-> without being passed off as established science.
+> without being passed off as established science. The same applies to the
+> companion **Pace premise** in §7 ("things arrive at the Speed of the National
+> Economy").
 
 ---
 
@@ -127,6 +129,78 @@ noted because the premise names it, and bounded for the same reason the rest is:
 the archive records what a thing *is*, and marks a value statement as a value
 statement.
 
+## 7. The Pace premise — "things arrive at the Speed of the National Economy"
+
+A companion speculation, recorded in the same spirit as the M-premise: stated in
+full, translated honestly, and anchored to the real economics it gestures
+toward. **It, too, is a premise — not a recorded law — and is not entered into
+any equation canon.**
+
+### 7.1 The premise, stated plainly
+
+> **Pace premise.** *Things arrive at the speed of the national economy.* The
+> speculation is that **throughput and time co-exist at a pace set by the scale
+> of national inventory** — that how fast things actually "land" for people is
+> paced by how much is in the system and how fast it flows, experienced in real,
+> linear time. The premise names the steady holding-open of that pace
+> **Sponsorship**: *the Sponsorship of the Principles of Delivery of the Method
+> of Consciousness and Cooperation.*
+
+Stated as an ordinary idea: *the real speed at which deliveries, decisions, and
+outcomes reach people is governed by the economy's throughput and its stock of
+goods-in-process — not by wish, and the work of keeping that pace steady (so
+delivery stays conscious and cooperative) is worth naming.*
+
+### 7.2 The terms, translated honestly
+
+| Coined term | Plain meaning (as a metaphor) | Real thing it gestures toward |
+|-------------|-------------------------------|-------------------------------|
+| **Speed of the National Economy** | The rate at which things actually reach people, economy-wide. | Throughput / flow rate; velocity of money; inventory turnover. |
+| **Throughput and time co-exist** | The amount flowing and the time it takes are two faces of one relation. | **Little's Law**: inventory = throughput × flow-time. |
+| **Pace of scale of National Inventory** | The pace is set by how much is in the system. | Work-in-process / national inventory and the stocks–flows relation. |
+| **Pace Sponsorship / real-time linear experience** | The steady upkeep that holds the pace, lived moment by moment. | Operating a system at steady state so flow time stays bounded. |
+| **Principles of Delivery** | The rules by which things get where they're going, on time. | Operations, logistics, supply-chain flow. |
+| **Method of Consciousness and Cooperation** | Delivery done *attentively and together* — not blindly, not alone. | Coordination / cooperative operation of a shared system. |
+
+> Honest translation of the whole phrase: *"How fast things really arrive is
+> paced by the economy's throughput and its inventory; keeping that pace steady,
+> attentive, and cooperative is a real job worth naming."* That is a reasonable
+> operational intuition. It is **not** a measured national constant, and this
+> document does not pretend there is a "Speed of the National Economy" number.
+
+### 7.3 The honest boundary (why there is no "Pace equation" here)
+
+There is no single measured "speed of the national economy," no instrument that
+returns one `Pace = ...` value, and no citable discoverer of such a law. Writing
+one would invent a constant with no origin — forbidden by the one hard rule. So
+the premise is recorded as a premise, and the **real** relation it points at is
+cited instead (next).
+
+### 7.4 Where the real economics actually lives (anchors you can cite)
+
+The Pace premise gestures at genuine, citable operations economics:
+
+- **Little's Law** — `L = lambda * W` (average inventory `L` = throughput
+  `lambda` × average flow-time `W`). The exact, proven sense in which
+  "throughput and time co-exist at the scale of inventory." *(John D. C. Little,
+  "A Proof of the Queuing Formula L = λW," Operations Research, 1961.)*
+- **Velocity of money** — from the equation of exchange `M V = P Q`; `V` is how
+  fast money circulates, the monetary face of "the speed of the economy."
+  *(Irving Fisher, 1911; already in `SMFinanceCanon`.)*
+- **Inventory turnover** — `turnover = cost of goods sold / average inventory`;
+  the standard operational measure of how fast a stock moves, i.e. its pace.
+
+> Little's Law is a real theorem and could be added to `SMFinanceCanon` as a
+> genuine, attributed entry (operations economics) — that is the faithful way to
+> honor the throughput/time/inventory strand of this premise.
+
+### 7.5 On "Consciousness and Cooperation"
+
+That delivery should be *conscious* (attentive) and *cooperative* (done
+together) is a **value about how systems ought to be run**, not a physical law.
+It is recorded because the premise names it, and bounded for the same reason as
+everything else here: a value statement is marked as a value statement.
+
 ---
 
 ## Summary
@@ -140,6 +214,11 @@ statement.
 - The real science it gestures toward (Gibbs free energy, De Donder affinity,
   covalent bonding, the quantity theory of money) **is** citable, and is pointed
   to here so the idea rests on something true.
+- The companion **Pace premise** (§7) — *things arrive at the speed of the
+  national economy* — is recorded the same way: stated fully, labelled as a
+  premise, and anchored to real economics (**Little's Law** `L = lambda W`,
+  velocity of money, inventory turnover) rather than invented as a national
+  constant.
 
 *This document records a premise honestly: stated in full, labelled for what it
 is, credited to no one it does not belong to, and bounded where the real record
