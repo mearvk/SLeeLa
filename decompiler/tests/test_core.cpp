@@ -3,11 +3,13 @@
 #include "sleela/decompiler/output.hpp"
 #include "sleela/decompiler/slir.hpp"
 #include "sleela/decompiler/vm.hpp"
+#include "sleela/decompiler/destination.hpp"
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <fstream>
 static void put16(std::vector<std::uint8_t>& b,std::size_t p,std::uint16_t v){b[p]=std::uint8_t(v);b[p+1]=std::uint8_t(v>>8);}
 static void put32(std::vector<std::uint8_t>& b,std::size_t p,std::uint32_t v){for(int i=0;i<4;++i)b[p+i]=std::uint8_t(v>>(8*i));}
 static void put64(std::vector<std::uint8_t>& b,std::size_t p,std::uint64_t v){for(int i=0;i<8;++i)b[p+i]=std::uint8_t(v>>(8*i));}
@@ -231,6 +233,52 @@ int main(){
         Vm vm({4096,32,true}); vm.load(m);
         assert(vm.run());
         assert(vm.register_value(2)==42);
+    }
+
+    // Destination adapter: URI parsing for all schemes, DNS/IPv4/IPv6, ports, credentials.
+    {
+        using namespace sleela::decompiler;
+        Destination d; std::string err;
+        // Bare local path and file: scheme.
+        assert(parse_destination("/tmp/out.cpp", d, err) && d.kind==DestinationKind::File && d.path=="/tmp/out.cpp");
+        assert(parse_destination("file:/var/x.c", d, err) && d.kind==DestinationKind::File && d.path=="/var/x.c");
+        // FTP with credentials, DNS host, explicit port.
+        assert(parse_destination("ftp://user:pass@ftp.example.org:2121/incoming/r.cpp", d, err));
+        assert(d.kind==DestinationKind::FtpStore && d.host=="ftp.example.org" && d.port==2121);
+        assert(d.username=="user" && d.password=="pass" && d.path=="/incoming/r.cpp");
+        // HTTP POST, IPv4 literal, default port (0 => transport default 80).
+        assert(parse_destination("http://192.0.2.10/upload/r.c", d, err));
+        assert(d.kind==DestinationKind::HttpPost && d.host=="192.0.2.10" && d.port==0 && d.path=="/upload/r.c");
+        // Explicit POST and PUT schemes.
+        assert(parse_destination("http+put://host.example:8080/a", d, err) && d.kind==DestinationKind::HttpPut && d.port==8080);
+        assert(parse_destination("http+post://host.example/a", d, err) && d.kind==DestinationKind::HttpPost);
+        // IPv6 literal in brackets, with port; IP preference set to IPv6.
+        assert(parse_destination("http://[2001:db8::1]:8443/p", d, err));
+        assert(d.host=="2001:db8::1" && d.port==8443 && d.ip_preference==IpPreference::IPv6);
+        // IPv6 literal without explicit port.
+        assert(parse_destination("sftp://[2001:db8::2]/remote/r.c", d, err));
+        assert(d.kind==DestinationKind::Sftp && d.host=="2001:db8::2" && d.port==0);
+        // SFTP with user, DNS host.
+        assert(parse_destination("sftp://deploy@build.example.net/out/r.cpp", d, err));
+        assert(d.username=="deploy" && d.host=="build.example.net" && d.path=="/out/r.cpp");
+        // Unsupported scheme fails cleanly.
+        assert(!parse_destination("gopher://host/x", d, err) && !err.empty());
+        // kind names
+        assert(std::string(destination_kind_name(DestinationKind::FtpStore))=="ftp");
+        assert(std::string(destination_kind_name(DestinationKind::HttpPost))=="http-post");
+        assert(std::string(destination_kind_name(DestinationKind::Sftp))=="sftp");
+    }
+
+    // Destination adapter: local File and Directory delivery actually write bytes.
+    {
+        using namespace sleela::decompiler;
+        Destination f; std::string err;
+        assert(parse_destination("file:/tmp/slecompiler_unit_out.txt", f, err));
+        auto r = deliver(f, "hello-slir");
+        assert(r.ok && r.bytes_sent==10);
+        std::ifstream in("/tmp/slecompiler_unit_out.txt", std::ios::binary);
+        std::string got((std::istreambuf_iterator<char>(in)), {});
+        assert(got=="hello-slir");
     }
 
     // x86-64 extended opcodes: REX.W prefix, ModR/M mov, leave, int3, ret.

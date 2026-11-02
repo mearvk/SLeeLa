@@ -1,0 +1,73 @@
+#sleela 2.5
+material;
+<< Output destination for a reconstruction: local or network. Mirrors the native
+   decompiler/ destination adapter (include/sleela/decompiler/destination.hpp).
+
+   Transports: FILE, DIRECTORY, FTP_STORE (RFC 959 STOR), HTTP_POST, HTTP_PUT,
+   and SFTP (delegated to a governed sftp/scp helper; no SSH stack embedded).
+
+   Addressing is explicit: a DNS host name OR an IPv4/IPv6 literal, plus a port.
+   Resolution uses getaddrinfo in the native layer, so IPv4 and IPv6 are handled
+   uniformly. ipPreference may pin ANY/IPV4/IPV6. port 0 selects the transport
+   default (FTP 21, HTTP 80, SFTP 22).
+
+   This layer is OUTPUT ONLY: it transmits an already-produced reconstruction and
+   never reads or executes an input artifact. Network delivery is a governed
+   capability; nothing is sent unless a destination is explicitly configured. >>
+class SleelaDecompilerDestination {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 89;
+  String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
+  String metaDate = "2026-11-02";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-02";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+ < kind: FILE | DIRECTORY | FTP_STORE | HTTP_POST | HTTP_PUT | SFTP >
+ String kind;
+ < host: DNS name, or IPv4/IPv6 literal (IPv6 in brackets in a URI) >
+ String host;
+ < ipPreference: ANY | IPV4 | IPV6 >
+ String ipPreference;
+ Integer port;
+ < path: local path, remote path, or HTTP request path >
+ String path; String filename;
+ String username; String password; String contentType;
+ Boolean passiveFtp; Boolean secure; Integer timeoutSeconds;
+ String resolvedAddress; Integer lastStatusCode; Integer bytesSent;
+ void initialize(){} void parseUri(String uri){} void resolve(){}
+ void validate(){} void deliver(String data){} void report(){} void describe(){}
+}

@@ -153,7 +153,41 @@ sleela-decompiler decompile ./program --output sleela  --file out/recovered.slee
 
 Default extensions when you let the emitter choose: `.c`, `.cpp`, `.java`, `.sleela` for source and `.h` / `.hpp` for C/C++ headers. Without `--file`, the reconstruction is written to standard output, so you can redirect or pipe it.
 
-**Uploads / remote destinations.** This layer is analysis-first and has no network behavior: it writes local files only. Distributing an emitted artifact (committing it to a repository, pushing it to a share, or posting it to a service) is a downstream step performed by your own tooling after the file is written. A dedicated network/destination adapter for `SleelaDecompilerOutput` is planned as separate, explicitly governed work; until it exists, treat "upload" as "emit to a local path, then hand that file to your uploader."
+### Network and remote destinations (`--to`)
+
+A governed destination adapter delivers an already-produced reconstruction to a local or network target. It is **output only** — it transmits bytes the pipeline has already generated and never reads or executes an input artifact. On the contract side this is `SleelaDecompilerDestination`, bound to the output via `SleelaDecompilerOutput.destination`; on the native side it is `decompiler/src/destination.cpp`, driven by `--to <uri>`.
+
+Transports and URI forms:
+
+| Transport | URI form |
+|---|---|
+| Local file | `file:/abs/path` or a bare `/local/path` |
+| FTP (RFC 959 `STOR`, passive) | `ftp://[user:pass@]host[:port]/remote/path` |
+| HTTP POST | `http://host[:port]/path` or `http+post://...` |
+| HTTP PUT | `http+put://host[:port]/path` |
+| SFTP (governed `sftp` helper) | `sftp://[user@]host[:port]/remote/path` |
+
+Addressing is explicit and uniform across IP families: `host` may be a DNS name, an IPv4 literal, or an IPv6 literal written in brackets (`[2001:db8::1]`). Name resolution uses `getaddrinfo`, so A and AAAA records are handled transparently; set the IP preference (`ANY`/`IPV4`/`IPV6`) when a host offers both. A `port` of `0` selects the transport default (FTP 21, HTTP 80, SFTP/SSH 22). The IP actually connected to is reported back for audit.
+
+```sh
+# HTTP POST / PUT (DNS host, explicit path and content type)
+sleela-decompiler decompile ./program --output c++ \
+    --to http://uploads.example.org/recovered.cpp --content-type text/x-c++src
+sleela-decompiler decompile ./program --output c \
+    --to "http+put://198.51.100.20:8080/artifacts/recovered.c"
+
+# FTP STOR with credentials and an explicit port
+sleela-decompiler decompile ./program --output java \
+    --to "ftp://deploy:secret@ftp.example.net:2121/incoming/Recovered.java"
+
+# IPv6 literal (brackets), and SFTP via a governed client on PATH
+sleela-decompiler decompile ./program --output c++ --to "http://[2001:db8::1]:8443/r.cpp"
+sleela-decompiler decompile ./program --output c++ --to "sftp://build@host.example/out/r.cpp"
+```
+
+`--to` takes precedence over `--file`, which takes precedence over standard output.
+
+**Security posture.** Network delivery is a governed capability and nothing is sent unless you supply `--to`. The adapter embeds no SSH stack: SFTP is delegated to a system `sftp` client (key/agent auth; host-key checking is left to your SSH configuration and is not weakened). Plain HTTP and FTP are unencrypted — send only output you are authorized to distribute, and prefer SFTP or an HTTPS-terminating endpoint for sensitive material. Credentials passed in a URI are visible to the local process environment; prefer key-based auth where possible. TLS termination for HTTPS is a follow-on adapter.
 
 ### Boundary note
 

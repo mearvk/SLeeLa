@@ -44,5 +44,7 @@ class SleelaDecompilerOutput {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
  String format; String language; String version; String path; String profile;
  Boolean vmReady; Boolean preserveEvidence; Boolean includeReport;
- void initialize(){} void validate(){} void emit(){} void verifyVM(){}
+ < Destination binding: local or network. See SleelaDecompilerDestination. >
+ SleelaDecompilerDestination destination;
+ void initialize(){} void validate(){} void emit(){} void verifyVM(){} void deliver(){}
 }
