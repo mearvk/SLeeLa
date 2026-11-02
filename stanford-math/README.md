@@ -68,6 +68,15 @@ Breakdown (counts verified by running `SMArchive`):
   capacity, logistic equation, heat equation, plus Michaelis–Menten kinetics,
   Hardy–Weinberg, Lotka–Volterra, and the Kelly criterion.
 
+Each group has a full human-readable table — every equation with its symbolic
+form, field, discoverer(s), and year — mirrored directly from the `.sleela`
+canon (the single source of truth):
+
+- [`EQUATIONS-MATH.md`](EQUATIONS-MATH.md) — 44 mathematics equations (`SMMathCanon`)
+- [`EQUATIONS-PHYSICS.md`](EQUATIONS-PHYSICS.md) — 46 physics equations (`SMPhysicsCanon`)
+- [`EQUATIONS-THERMODYNAMICS.md`](EQUATIONS-THERMODYNAMICS.md) — 24 thermodynamics & statistical-mechanics equations (`SMThermoEquations`)
+- [`EQUATIONS-CROSSOVERS.md`](EQUATIONS-CROSSOVERS.md) — 16 applied/PhD crossovers (`SMCrossoverCanon`)
+
 Where attribution is genuinely diffuse (e.g. the quadratic formula, the 2×2
 determinant), the discoverer field says so honestly rather than crediting a
 single name.
