@@ -22,30 +22,38 @@ std::string reg_name(std::uint8_t r,bool wide64){
     return wide64?r64[r&15]:r32[r&15];
 }
 struct ModRm { std::size_t length{1}; std::string operand; Operand::Kind kind{Operand::Kind::Register}; std::uint8_t reg{}; };
-bool parse_modrm(const std::vector<std::uint8_t>& b,std::size_t p,std::size_t end,bool wide64,ModRm& out){
+// Render a signed displacement the way a reviewer expects: "-0x4" / "+0x18".
+std::string disp_str(std::int64_t d){
+    std::ostringstream s; if(d<0){s<<"-0x"<<std::hex<<std::uint64_t(-d);} else {s<<"+0x"<<std::hex<<std::uint64_t(d);} return s.str();
+}
+// Parse a ModR/M (+ optional SIB + displacement). addr64 sizes the memory base/index
+// registers (always 64-bit in long mode); oper_wide sizes a register-direct operand
+// (REX.W). Returns false only on truncation. out.operand is the rendered r/m operand.
+bool parse_modrm(const std::vector<std::uint8_t>& b,std::size_t p,std::size_t end,bool addr64,bool oper_wide,ModRm& out){
     if(p>=end)return false;
-    const std::uint8_t m=b[p]; const unsigned mod=m>>6u,reg=(m>>3u)&7u,rm=m&7u; out.reg=static_cast<std::uint8_t>(reg); std::size_t n=1; std::ostringstream t; 
-    if(mod==3){out.kind=Operand::Kind::Register;out.operand=reg_name(rm,wide64);return true;}
+    const std::uint8_t m=b[p]; const unsigned mod=m>>6u,reg=(m>>3u)&7u,rm=m&7u; out.reg=static_cast<std::uint8_t>(reg); std::size_t n=1; std::ostringstream t;
+    if(mod==3){out.kind=Operand::Kind::Register;out.operand=reg_name(rm,oper_wide);out.length=n;return true;}
     out.kind=Operand::Kind::Memory;t<<"[";
+    auto rd32v=[&](std::size_t q){return std::uint32_t(b[q])|(std::uint32_t(b[q+1])<<8)|(std::uint32_t(b[q+2])<<16)|(std::uint32_t(b[q+3])<<24);};
     if(rm==4){
         if(p+1>=end)return false; const std::uint8_t sib=b[p+1]; const unsigned scale=1u<<(sib>>6),index=(sib>>3)&7u,base_r=sib&7u; n++;
-        if(index!=4)t<<reg_name(index,wide64)<<"*"<<unsigned(scale);
-        if(index!=4&&base_r!=5)t<<"+";
+        bool wrote=false;
+        if(index!=4){t<<reg_name(index,addr64)<<"*"<<unsigned(scale);wrote=true;}
         if(mod==0&&base_r==5){
-            if(p+n+4>end)return false; const auto d=std::uint32_t(b[p+n])|(std::uint32_t(b[p+n+1])<<8)|(std::uint32_t(b[p+n+2])<<16)|(std::uint32_t(b[p+n+3])<<24);
-            t<<"0x"<<std::hex<<d;n+=4;
+            if(p+n+4>end)return false; const std::int32_t d=std::int32_t(rd32v(p+n));
+            if(wrote)t<<disp_str(d); else t<<"0x"<<std::hex<<std::uint32_t(d); n+=4;
         } else {
-            t<<reg_name(base_r,wide64);
-            if(mod==1){if(p+n>=end)return false;t<<"+"<<int(static_cast<std::int8_t>(b[p+n]));n++;}
-            else if(mod==2){if(p+n+4>end)return false; t<<"+0x"<<std::hex<<std::uint32_t(b[p+n])<<"..." ;n+=4;}
+            if(wrote)t<<"+"; t<<reg_name(base_r,addr64);
+            if(mod==1){if(p+n>=end)return false;t<<disp_str(static_cast<std::int8_t>(b[p+n]));n++;}
+            else if(mod==2){if(p+n+4>end)return false;t<<disp_str(std::int32_t(rd32v(p+n)));n+=4;}
         }
     } else if(mod==0&&rm==5){
-        if(p+n+4>end)return false; const auto d=std::uint32_t(b[p+n])|(std::uint32_t(b[p+n+1])<<8)|(std::uint32_t(b[p+n+2])<<16)|(std::uint32_t(b[p+n+3])<<24);
-        t<<(wide64?"rip+":"disp32")<<"0x"<<std::hex<<d;n+=4;
+        if(p+n+4>end)return false; const std::int32_t d=std::int32_t(rd32v(p+n));
+        if(addr64)t<<"rip"<<disp_str(d); else t<<"0x"<<std::hex<<std::uint32_t(d); n+=4;
     } else {
-        t<<reg_name(rm,wide64);
-        if(mod==1){if(p+n>=end)return false;t<<"+"<<int(static_cast<std::int8_t>(b[p+n]));n++;}
-        else if(mod==2){if(p+n+4>end)return false;t<<"+disp32";n+=4;}
+        t<<reg_name(rm,addr64);
+        if(mod==1){if(p+n>=end)return false;t<<disp_str(static_cast<std::int8_t>(b[p+n]));n++;}
+        else if(mod==2){if(p+n+4>end)return false;t<<disp_str(std::int32_t(rd32v(p+n)));n+=4;}
     }
     t<<"]";out.operand=t.str();out.length=n;return true;
 }
@@ -54,6 +62,19 @@ void mark_relocation(const Artifact& a,Instruction& i){
         i.is_relocated=true;i.relocation_type=r.type;i.relocation_symbol=r.symbol;i.provenance.source+="+reloc";i.provenance.confidence=0.95;
         if(!r.symbol.empty())i.operands.push_back({Operand::Kind::Symbol,r.symbol,0}); return;
     }
+}
+// Render an instruction to a canonical "mnemonic op, op, ..." string from its recovered
+// operands. A relocation symbol, when present, is appended as an evidence annotation.
+std::string render_instruction(const Instruction& i){
+    std::string s=i.mnemonic;
+    bool first=true;
+    for(const auto& op:i.operands){
+        if(op.kind==Operand::Kind::Symbol) continue;      // symbols are rendered as an annotation below
+        s+= first?" ":", "; first=false;
+        s+= op.text.empty()?std::string("?"):op.text;
+    }
+    if(!i.relocation_symbol.empty()) s+= (first?" <":"  <") + i.relocation_symbol + ">";
+    return s;
 }
 }
 // --- AArch64 (ARM64) fixed-width decoder -------------------------------------------------
@@ -206,22 +227,42 @@ std::vector<Instruction> Decoder::decode(const Artifact& a,std::uint64_t address
     std::vector<Instruction> out;const auto& b=a.bytes();std::size_t p=static_cast<std::size_t>(address);
     if(p>=b.size())return out;const auto end=std::min(b.size(),p+length);
     if(a.architecture()==Architecture::ARM64){
-        for(;p+4<=end;p+=4) out.push_back(decode_a64(b,p));
-        for(;p<end;++p){auto i=base(b,p,"db",0.20);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});i.provenance.source="stage4-arm64";out.push_back(std::move(i));}
+        for(;p+4<=end;p+=4){auto i=decode_a64(b,p);i.text=render_instruction(i);out.push_back(std::move(i));}
+        for(;p<end;++p){auto i=base(b,p,"db",0.20);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});i.provenance.source="stage4-arm64";i.text=render_instruction(i);out.push_back(std::move(i));}
         return out;
     }
-    if(a.architecture()==Architecture::ARM&&mode==DecodeMode::ArmThumb){
-        while(p+2<=end){std::size_t len=2; out.push_back(decode_thumb(b,p,end,len)); if(len==0)len=2; p+=len;}
-        for(;p<end;++p){auto i=base(b,p,"db",0.20);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});i.provenance.source="stage4-thumb";out.push_back(std::move(i));}
-        return out;
-    }
+    // ARM state selection: honor $a/$t/$d mapping symbols when present (Auto), otherwise use
+    // the explicitly requested mode, defaulting to A32. Data ($d) regions are not decoded.
+    const bool arm_thumb_default = (mode==DecodeMode::ArmThumb);
     if(a.architecture()==Architecture::ARM){
-        for(;p+4<=end;p+=4) out.push_back(decode_a32(b,p));
-        for(;p<end;++p){auto i=base(b,p,"db",0.20);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});i.provenance.source="stage4-arm";out.push_back(std::move(i));}
+        const auto& maps=a.interfaces().code_mappings;
+        // Mapping-symbol addresses are VIRTUAL; the sweep position is a FILE OFFSET. Translate
+        // through the containing section so the $a/$t/$d boundaries line up with the bytes.
+        auto file_to_vaddr=[&](std::uint64_t off)->std::uint64_t{
+            for(const auto& s:a.interfaces().sections)
+                if(s.file_size&&off>=s.file_offset&&off<s.file_offset+s.file_size&&s.virtual_address)
+                    return s.virtual_address+(off-s.file_offset);
+            return off;
+        };
+        auto kind_at=[&](std::uint64_t off)->CodeKind{
+            CodeKind k = arm_thumb_default?CodeKind::Thumb:CodeKind::Arm;
+            if(mode==DecodeMode::Auto && !maps.empty()){
+                const std::uint64_t va=file_to_vaddr(off);
+                for(const auto& m:maps){ if(m.address<=va) k=m.kind; else break; }
+            }
+            return k;
+        };
+        while(p<end){
+            const CodeKind k=kind_at(p);
+            if(k==CodeKind::Data){ auto i=base(b,p,"db",0.20);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});i.provenance.source="stage4-arm-data";i.text=render_instruction(i);out.push_back(std::move(i));++p;continue; }
+            if(k==CodeKind::Thumb){ if(p+2>end)break; std::size_t len=2; auto i=decode_thumb(b,p,end,len); if(len==0)len=2; i.text=render_instruction(i); out.push_back(std::move(i)); p+=len; continue; }
+            if(p+4>end)break; auto i=decode_a32(b,p); i.text=render_instruction(i); out.push_back(std::move(i)); p+=4;
+        }
+        for(;p<end;++p){auto i=base(b,p,"db",0.20);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});i.provenance.source="stage4-arm";i.text=render_instruction(i);out.push_back(std::move(i));}
         return out;
     }
     if(a.architecture()!=Architecture::X86&&a.architecture()!=Architecture::X86_64){
-        for(;p<end;++p){auto i=base(b,p,"db",0.25);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});out.push_back(std::move(i));}return out;
+        for(;p<end;++p){auto i=base(b,p,"db",0.25);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});i.text=render_instruction(i);out.push_back(std::move(i));}return out;
     }
     const bool mode64=a.architecture()==Architecture::X86_64;
     // Common names for the ModR/M arithmetic/logic group keyed by the primary opcode.
@@ -263,18 +304,26 @@ std::vector<Instruction> Decoder::decode(const Artifact& a,std::uint64_t address
         else if(op>=0x70&&op<=0x7f&&o+1<end){i=emit("jcc");i.is_branch=true;i.is_conditional=true;consume(2);auto target=std::uint64_t(std::int64_t(start+n)+rel8(b[o+1]));i.branch_targets.push_back(target);i.operands.push_back({Operand::Kind::Relative,hex(target),std::int64_t(target)});}
         else if(op==0x0f&&o+5<end&&b[o+1]>=0x80&&b[o+1]<=0x8f){i=emit("jcc");i.is_branch=true;i.is_conditional=true;consume(6);auto target=std::uint64_t(std::int64_t(start+n)+rel32(b,o+2));i.branch_targets.push_back(target);i.operands.push_back({Operand::Kind::Relative,hex(target),std::int64_t(target)});}
         else if(op==0xff&&o+1<end){
-            ModRm mr;if(parse_modrm(b,o+1,end,mode64,mr)){consume(1+mr.length);i=emit((mr.reg&7)==2?"call":((mr.reg&7)==4?"jmp":((mr.reg&7)==6?"push":"inc")));i.operands.push_back({mr.kind,mr.operand,0});if((mr.reg&7)==2)i.is_call=true;if((mr.reg&7)==4)i.is_branch=true;if((mr.reg&7)==2||(mr.reg&7)==4)i.is_indirect=true;}else{i=emit("db",0.35);consume(1);}
+            ModRm mr;if(parse_modrm(b,o+1,end,mode64,wide,mr)){consume(1+mr.length);i=emit((mr.reg&7)==2?"call":((mr.reg&7)==4?"jmp":((mr.reg&7)==6?"push":"inc")));i.operands.push_back({mr.kind,mr.operand,0});if((mr.reg&7)==2)i.is_call=true;if((mr.reg&7)==4)i.is_branch=true;if((mr.reg&7)==2||(mr.reg&7)==4)i.is_indirect=true;}else{i=emit("db",0.35);consume(1);}
         }
         // ModR/M arithmetic/logic group: add/or/adc/sbb/and/sub/xor/cmp (opcodes x0/x1/x8/x9), mov (88/89/8a/8b), test (84/85), lea (8d), xchg (86/87).
         else if(((op&0xc4)==0x00&&(op&0x07)<=0x03) || op==0x88||op==0x89||op==0x8a||op==0x8b||op==0x84||op==0x85||op==0x8d||op==0x86||op==0x87){
-            ModRm mr;if(o+1<end&&parse_modrm(b,o+1,end,mode64,mr)){consume(1+mr.length);
+            ModRm mr;if(o+1<end&&parse_modrm(b,o+1,end,mode64,wide,mr)){consume(1+mr.length);
                 const char* nm = op==0x8d?"lea":((op==0x88||op==0x89||op==0x8a||op==0x8b)?"mov":((op==0x84||op==0x85)?"test":((op==0x86||op==0x87)?"xchg":alu_name(op))));
-                i=emit(nm);i.operands.push_back({mr.kind,mr.operand,0});
+                i=emit(nm);
+                // Operand size: byte for even opcodes (x0/88/8a/84/86), else full width.
+                const bool byteform=(op&1)==0 && op!=0x8d;
+                const std::string regop=reg_name(mr.reg&7,wide&&!byteform);
+                // Direction bit (opcode bit 1): 0 = r/m is destination; 1 = reg is destination.
+                // lea (8d) and the 8a/8b/84/86 loads conventionally render reg first.
+                const bool reg_is_dest = op==0x8d||op==0x8a||op==0x8b||((op&0x02)!=0);
+                if(reg_is_dest){ i.operands.push_back({Operand::Kind::Register,regop,0}); i.operands.push_back({mr.kind,mr.operand,0}); }
+                else { i.operands.push_back({mr.kind,mr.operand,0}); i.operands.push_back({Operand::Kind::Register,regop,0}); }
             } else {i=emit("db",0.35);consume(1);}
         }
         // Immediate ALU group (80 /r ib, 81 /r iz, 83 /r ib): the /digit field selects the operation.
         else if(op==0x80||op==0x81||op==0x83){
-            ModRm mr;if(o+1<end&&parse_modrm(b,o+1,end,mode64,mr)){
+            ModRm mr;if(o+1<end&&parse_modrm(b,o+1,end,mode64,wide,mr)){
                 const std::size_t immlen = op==0x81 ? (opsize16?2:4) : 1;   // 81 = full-width imm (16 under 0x66); 80/83 = imm8
                 if(o+1+mr.length+immlen<=end){consume(1+mr.length+immlen);
                     // The /digit (ModR/M reg field) selects the ALU operation for the 80/81/83 group.
@@ -288,7 +337,7 @@ std::vector<Instruction> Decoder::decode(const Artifact& a,std::uint64_t address
         }
         // mov r/m, imm (C6 /0 ib, C7 /0 iz).
         else if(op==0xc6||op==0xc7){
-            ModRm mr;if(o+1<end&&parse_modrm(b,o+1,end,mode64,mr)){
+            ModRm mr;if(o+1<end&&parse_modrm(b,o+1,end,mode64,wide,mr)){
                 const std::size_t immlen = op==0xc6 ? 1 : (opsize16?2:4);
                 if(o+1+mr.length+immlen<=end){consume(1+mr.length+immlen);i=emit("mov");i.operands.push_back({mr.kind,mr.operand,0});
                     std::uint64_t v=0; for(std::size_t k=0;k<immlen;++k)v|=std::uint64_t(b[o+1+mr.length+k])<<(8*k);
@@ -301,7 +350,9 @@ std::vector<Instruction> Decoder::decode(const Artifact& a,std::uint64_t address
             if(o+1+imm<=end){i=emit("mov");consume(1+imm);std::uint64_t v=0;for(std::size_t k=0;k<imm;++k)v|=std::uint64_t(b[o+1+k])<<(8*k);i.operands.push_back({Operand::Kind::Register,reg_name(op&7,wide),0});i.operands.push_back({Operand::Kind::Immediate,hex(v),std::int64_t(v)});}else{i=emit("db",0.35);consume(1);}
         } else {i=emit("db",0.25);i.operands.push_back({Operand::Kind::Immediate,hex(op),op});consume(1);(void)have_prefix;}
         if(n==0)n=1;                                // defensive: never zero-advance
-        i.bytes.assign(b.begin()+start,b.begin()+std::min(end,start+n));mark_relocation(a,i);out.push_back(std::move(i));p=start+n;
+        i.bytes.assign(b.begin()+start,b.begin()+std::min(end,start+n));mark_relocation(a,i);
+        i.text=render_instruction(i);              // full operand-level rendering
+        out.push_back(std::move(i));p=start+n;
     }
     return out;
 }

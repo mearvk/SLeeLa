@@ -9,6 +9,7 @@ struct ElfAnalysis {
     std::vector<Import> imports;
     std::vector<Export> exports;
     std::vector<Relocation> relocations;
+    std::vector<CodeMapping> code_mappings;
     LibraryMetadata library;
     KernelModuleMetadata kernel_module;
     bool valid{};
