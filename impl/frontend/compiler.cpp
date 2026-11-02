@@ -23,6 +23,16 @@ namespace sleela {
 
 namespace {
 
+// Group a non-negative integer with thousands separators for the compiler's own
+// diagnostic text (e.g. the layout-limit message). System-side presentation
+// only; it never touches a running program's print(...) output.
+static std::string groupDigits(long long v){
+    std::string s=std::to_string(v<0?-v:v);
+    std::string out; int n=(int)s.size();
+    for(int i=0;i<n;++i){ if(i>0 && (n-i)%3==0) out.push_back(','); out.push_back(s[(size_t)i]); }
+    return v<0 ? "-"+out : out;
+}
+
 struct MethodCtx {
     std::map<std::string, int> locals;
     int nextSlot = 0;
@@ -61,9 +71,9 @@ public:
             for(const auto& c:prog_.classes){ if(++dupc[c.name]==2) ++dups; if(c.fromLibrary) ++lib; else ++local; }
             fprintf(stderr,
                 "[debug-layouts] classes=%zu (local=%d library=%d) structs=%zu "
-                "distinct-class-names=%zu duplicate-named-classes=%d limit=%d\n",
+                "distinct-class-names=%zu duplicate-named-classes=%d limit=%s\n",
                 prog_.classes.size(), local, lib, prog_.structs.size(),
-                dupc.size(), dups, SL_MAX_STRUCT_TYPES);
+                dupc.size(), dups, groupDigits(SL_MAX_STRUCT_TYPES).c_str());
         }
         validateJavaCompatibilityMetadata(prog_);
         library::Index libraryIndex = library::Index::discover();
@@ -118,7 +128,7 @@ public:
                 layout.fieldOffset[f.name]=(int)i; layout.fieldType.push_back(f.type); fieldNames.push_back(f.name.c_str());
             }
             layout.typeIndex=slvm_declare_struct(vm_,st.name.c_str(),fieldNames.empty()?nullptr:fieldNames.data(),(int)fieldNames.size());
-            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register struct '"+st.name+"'. A 'layout' is one distinct class/struct type registered with the VM; the program exceeds the "+std::to_string(SL_MAX_STRUCT_TYPES)+" distinct class+struct types the VM admits.");
+            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register struct '"+st.name+"'. A 'layout' is one distinct class/struct type registered with the VM; the program exceeds the "+groupDigits(SL_MAX_STRUCT_TYPES)+" distinct class+struct types the VM admits.");
             structLayout_[st.name]=layout;
         }
         // Class instances share the VM's managed struct allocator, but each
@@ -162,7 +172,7 @@ public:
             }
             if(layout.fieldType.size()>128) throw std::runtime_error("Semantic error: class '"+cls.name+"' exceeds 128 instance fields");
             layout.typeIndex=slvm_declare_struct(vm_,cls.name.c_str(),names.empty()?nullptr:names.data(),(int)names.size());
-            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register class layout '"+cls.name+"'. A 'layout' is one distinct class/struct type registered with the VM (not bytes); the program defines/pulls more than the "+std::to_string(SL_MAX_STRUCT_TYPES)+" distinct class+struct types the VM admits. (If this fires with only a handful of classes, the running sleelvac's VM core is stale/mismatched -- rebuild with 'rm -rf impl/build && make all' and reinstall.)");
+            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register class layout '"+cls.name+"'. A 'layout' is one distinct class/struct type registered with the VM (not bytes); the program defines/pulls more than the "+groupDigits(SL_MAX_STRUCT_TYPES)+" distinct class+struct types the VM admits. (If this fires with only a handful of classes, the running sleelvac's VM core is stale/mismatched -- rebuild with 'rm -rf impl/build && make all' and reinstall.)");
             structLayout_[cls.name]=layout;
         }
         if(inheritance) {

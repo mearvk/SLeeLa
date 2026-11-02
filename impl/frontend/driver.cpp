@@ -187,6 +187,20 @@ static int runCommand(const std::string&cmd){std::cout<<"[defender] $ "<<cmd<<"\
 // ---------------------------------------------------------------------------
 struct DefenderOpts{bool optin=false;bool allowRoot=false;std::string sha256;};
 static bool envFlag(const char*name){const char*v=std::getenv(name);return v&&(std::string(v)=="1"||std::string(v)=="true"||std::string(v)=="yes");}
+// Group a non-negative integer with thousands separators (1234567 -> "1,234,567)
+// for the TOOLCHAIN's own human-facing output (banners, version, diagnostics).
+// This is a SYSTEM-side presentation helper only: a running Sleela program's
+// own print(...) output is produced by the VM's value_to_text and is NEVER
+// routed through here, so user numeric output is unaffected.
+static std::string groupDigits(long long v){
+    bool neg=v<0; unsigned long long n=neg?(unsigned long long)(-(v+1))+1ull:(unsigned long long)v;
+    std::string s=std::to_string(n), out; int c=0;
+    for(int i=(int)s.size()-1;i>=0;--i){ out.push_back(s[(size_t)i]); if(++c%3==0 && i>0) out.push_back(','); }
+    if(neg) out.push_back('-');
+    std::reverse(out.begin(),out.end());
+    return out;
+}
+static std::string groupDigits(unsigned long long v){ return groupDigits((long long)v); }
 // CommonRails banner surface (opt-in via SLEELA_RAILS=1). When enabled, the
 // compiler routes its human-facing progress banners through the shared
 // /lib/common-rails PrintRail look (component + state lines). The exact,
@@ -559,7 +573,7 @@ static bool memoryManagerRequested(size_t&limit){
 }
 static bool enableMemoryManager(size_t limit,bool announce){
     if(slmm_enable(limit)!=0){std::cerr<<"sleela: memory limit must be between 256 MiB and 2 GiB.\n";return false;}
-    if(announce)std::cerr<<"[memory-manager] enabled (hard limit "<<slmm_limit()<<" bytes)\n";
+    if(announce)std::cerr<<"[memory-manager] enabled (hard limit "<<groupDigits((unsigned long long)slmm_limit())<<" bytes)\n";
     if(announce&&railsBannersEnabled())sleela::rails::component(std::cerr,"Sleelvac",1,1,"memory manager enabled");
     return true;
 }
@@ -2216,7 +2230,7 @@ int main(int argc,char**argv){
         // OLD binary built before that change reports 256. This lets a single
         // `version` call confirm whether a binary on PATH is current, which is
         // the fast way to spot a stale/mismatched install.
-        std::cout<<"VM: struct/class layout ceiling "<<SL_MAX_STRUCT_TYPES<<"\n";
+        std::cout<<"VM: struct/class layout ceiling "<<groupDigits((long long)SL_MAX_STRUCT_TYPES)<<"\n";
         return 0;
     }
     else if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")||isLangInput(cmd)){if(verifyBeforeExecution(fs::current_path()))return 1;rc=runFile(cmd);}

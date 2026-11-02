@@ -302,6 +302,22 @@ int slvm_declare_global(SLVM* vm, const char* name) {
     return vm->nglobal++;
 }
 
+/* Group a non-negative long with thousands separators into `out` (1234567 ->
+ * "1,234,567") for the VM's own diagnostic lines. System-side presentation
+ * only; the user print(...) path (value_to_text) does NOT use this. */
+static const char* sl_group_ll(long long v, char* out, size_t cap) {
+    char tmp[32]; long long a = v < 0 ? -v : v;
+    int n = snprintf(tmp, sizeof tmp, "%lld", a);
+    size_t o = 0;
+    if (v < 0 && o + 1 < cap) out[o++] = '-';
+    for (int i = 0; i < n; ++i) {
+        if (i > 0 && (n - i) % 3 == 0 && o + 1 < cap) out[o++] = ',';
+        if (o + 1 < cap) out[o++] = tmp[i];
+    }
+    out[o < cap ? o : cap - 1] = 0;
+    return out;
+}
+
 int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_names, int nfields) {
     if (!vm || !name || nfields < 0 || nfields > SL_MAX_STRUCT_FIELDS) return -1;
     /* Diagnostic trace (env SLEELA_TRACE_LAYOUTS=1): report the live table state
@@ -311,8 +327,11 @@ int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_nam
      * stderr and stdout and flushed, so it cannot be swallowed by redirection. */
     int sl_trace = (getenv("SLEELA_TRACE_LAYOUTS") != NULL);
     if (sl_trace) {
-        fprintf(stderr, "[trace-declare_struct] name='%s' nstruct_types=%d struct_typecap=%d MAX=%d\n",
-                name, vm->nstruct_types, vm->struct_typecap, SL_MAX_STRUCT_TYPES);
+        char gnt[32], gtc[32], gmx[32];
+        fprintf(stderr, "[trace-declare_struct] name='%s' nstruct_types=%s struct_typecap=%s MAX=%s\n",
+                name, sl_group_ll(vm->nstruct_types, gnt, sizeof gnt),
+                sl_group_ll(vm->struct_typecap, gtc, sizeof gtc),
+                sl_group_ll(SL_MAX_STRUCT_TYPES, gmx, sizeof gmx));
         fflush(stderr);
     }
     for (int i = 0; i < vm->nstruct_types; i++)
@@ -324,9 +343,12 @@ int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_nam
         if (vm->struct_typecap >= SL_MAX_STRUCT_TYPES) {
             /* ALWAYS report the refusal (not gated): a layout-table overflow
              * must never be silent, so this prints even without the trace env. */
-            fprintf(stderr, "[sleela-vm] layout-table REFUSED '%s': nstruct_types=%d struct_typecap=%d MAX=%d "
+            char gnt[32], gtc[32], gmx[32];
+            fprintf(stderr, "[sleela-vm] layout-table REFUSED '%s': nstruct_types=%s struct_typecap=%s MAX=%s "
                             "(if this fires at a tiny count, the running VM core is stale/mismatched)\n",
-                    name, vm->nstruct_types, vm->struct_typecap, SL_MAX_STRUCT_TYPES);
+                    name, sl_group_ll(vm->nstruct_types, gnt, sizeof gnt),
+                    sl_group_ll(vm->struct_typecap, gtc, sizeof gtc),
+                    sl_group_ll(SL_MAX_STRUCT_TYPES, gmx, sizeof gmx));
             fflush(stderr);
             return -1; /* at the ceiling */
         }
