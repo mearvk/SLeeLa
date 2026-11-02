@@ -29,14 +29,14 @@ faithful to the subject's real origin where publicly known**; unknowns are
 | `SMProvenance`     | Purpose/method/gains/bedrock + tiered literature callouts (Wikipedia attributed) | Primary/secondary/tertiary sources |
 | `SMArchive` (demo) | Runnable entry point that broadcasts the archive | — |
 
-## The equation canon (130 entries)
+## The equation canon (134 entries)
 
 > On "all of the equations known in the known Universe": **no finite, complete
 > list of every equation exists** — and fabricating one would violate this
 > repo's one hard rule (values faithful to real origin; unknowns are `"none"`,
 > never invented). So this archive records a **curated, fully-attributed canon**
 > of the genuinely foundational equations that every math/physics PhD rests on:
-> **130 entries**, each with its real name, symbolic form, discoverer(s), year,
+> **134 entries**, each with its real name, symbolic form, discoverer(s), year,
 > and field.
 
 Breakdown (counts verified by running `SMArchive`):
@@ -56,13 +56,16 @@ Breakdown (counts verified by running `SMArchive`):
   Rydberg, photoelectric, Navier–Stokes, wave equation, Bernoulli, plus simple
   harmonic motion, centripetal acceleration, Doppler, Snell's law, Ohm's law,
   Compton scattering, and Wien's displacement law.
-- **Thermodynamics & statistical mechanics — 24:** the four laws, Clausius
+- **Thermodynamics & statistical mechanics — 28:** the four laws, Clausius
   entropy, Boltzmann `S=k ln W`, Gibbs entropy, ideal gas law, Gibbs/Helmholtz
   free energies, enthalpy, Carnot efficiency, Maxwell–Boltzmann, Boltzmann
   factor, partition function, Stefan–Boltzmann, Clausius–Clapeyron,
-  Gibbs–Helmholtz, Sackur–Tetrode, Landauer's principle, plus van der Waals,
-  Mayer's heat-capacity relation, Fourier's law of conduction, and the Gibbs
-  chemical potential.
+  Gibbs–Helmholtz, Sackur–Tetrode, Landauer's principle, van der Waals,
+  Mayer's heat-capacity relation, Fourier's law of conduction, the Gibbs
+  chemical potential, plus the **critical-point conditions** and **van der Waals
+  critical constants** (where molecular attraction locates the phase law), **De
+  Donder's chemical affinity**, and the **equilibrium/equality condition**
+  (affinity = 0; equal T, P, and chemical potential across coexisting phases).
 - **Crossovers — 16:** Black–Scholes (PDE & call price), Itô's lemma, Nernst,
   Arrhenius, Friedmann, Hubble–Lemaître, Drake, Shannon entropy & channel
   capacity, logistic equation, heat equation, plus Michaelis–Menten kinetics,
@@ -74,7 +77,7 @@ canon (the single source of truth):
 
 - [`EQUATIONS-MATH.md`](EQUATIONS-MATH.md) — 44 mathematics equations (`SMMathCanon`)
 - [`EQUATIONS-PHYSICS.md`](EQUATIONS-PHYSICS.md) — 46 physics equations (`SMPhysicsCanon`)
-- [`EQUATIONS-THERMODYNAMICS.md`](EQUATIONS-THERMODYNAMICS.md) — 24 thermodynamics & statistical-mechanics equations (`SMThermoEquations`)
+- [`EQUATIONS-THERMODYNAMICS.md`](EQUATIONS-THERMODYNAMICS.md) — 28 thermodynamics & statistical-mechanics equations (`SMThermoEquations`)
 - [`EQUATIONS-CROSSOVERS.md`](EQUATIONS-CROSSOVERS.md) — 16 applied/PhD crossovers (`SMCrossoverCanon`)
 
 Where attribution is genuinely diffuse (e.g. the quadratic formula, the 2×2

@@ -73,7 +73,7 @@ class SMThermoEquations {
   int filled;
 
   void build() {
-    eqs = new SMEquation[28];
+    eqs = new SMEquation[30];
     filled = 0;
 
     add("Zeroth law of thermodynamics", "A~C and B~C  =>  A~B (thermal equilibrium is transitive)", "thermodynamics", "Fowler & Guggenheim (named)", "1939");
@@ -100,6 +100,10 @@ class SMThermoEquations {
     add("Heat capacity relation (ideal gas)", "C_p - C_v = n R", "thermodynamics", "Mayer's relation", "1842");
     add("Fourier's law of heat conduction", "q = -k grad T", "thermodynamics", "Joseph Fourier", "1822");
     add("Chemical potential (Gibbs)", "mu = (dG/dN)_{T,P}", "statistical mechanics", "J. Willard Gibbs", "1876");
+    add("Critical-point conditions", "(dP/dV)_T = 0 and (d2P/dV2)_T = 0", "thermodynamics", "van der Waals (locus); Gibbs (stability)", "1873");
+    add("Van der Waals critical constants", "V_c = 3 n b,  T_c = 8 a / (27 R b),  P_c = a / (27 b^2)", "thermodynamics", "Johannes van der Waals", "1873");
+    add("De Donder chemical affinity", "A = -sum_i nu_i mu_i,  with A dxi >= 0", "chemical thermodynamics", "Theophile De Donder", "1922");
+    add("Chemical / phase equilibrium (affinity = 0)", "A = 0  =>  sum_i nu_i mu_i = 0  (phase coexistence: mu_1 = mu_2 at equal T, P)", "chemical thermodynamics", "Gibbs; De Donder", "1876");
   }
 
   void add(String name, String form, String field, String who, String year) {

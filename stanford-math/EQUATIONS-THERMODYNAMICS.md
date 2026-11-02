@@ -1,10 +1,10 @@
 # Thermodynamics & Statistical Mechanics Canon
 
-> 24 equations, sourced from `SMThermoEquations.sleela` -- the single
+> 28 equations, sourced from `SMThermoEquations.sleela` -- the single
 > source of truth. This document is a human-readable mirror of that record;
 > if the two ever disagree, the `.sleela` canon wins and this file is stale.
 
-Thermodynamics and statistical mechanics from the four laws outward: entropy (Clausius, Boltzmann, Gibbs), the free energies, equations of state, the Maxwell-Boltzmann distribution and partition function, and the bridge to information at Landauer's limit. This is the reach the Stanford probability tradition touches through statistical mechanics, each row with a one-line note on why it matters.
+Thermodynamics and statistical mechanics from the four laws outward: entropy (Clausius, Boltzmann, Gibbs), the free energies, equations of state, the Maxwell-Boltzmann distribution and partition function, the critical point where molecular attraction governs, chemical affinity, and the equilibrium (equality) conditions, out to the bridge to information at Landauer's limit. This is the reach the Stanford probability tradition touches through statistical mechanics, each row with a one-line note on why it matters.
 
 The one hard rule governs every row: **values are faithful to the subject's
 real origin where publicly known**; diffuse or unknown attributions are marked
@@ -14,7 +14,7 @@ Symbolic forms use plain-ASCII notation (`^` power, `*` product, `sqrt`, `integr
 diff-friendly. The **Why it matters** column states each result's significance in one
 faithful line.
 
-## The 24 equations
+## The 28 equations
 
 | # | Equation | Form | Field | Discoverer(s) | Year | Why it matters |
 |---|----------|------|-------|---------------|------|----------------|
@@ -42,6 +42,10 @@ faithful line.
 | 22 | Heat capacity relation (ideal gas) | `C_p - C_v = n R` | thermodynamics | Mayer's relation | 1842 | Cp - Cv = nR links the two heat capacities; an early quantitative success of kinetic theory. |
 | 23 | Fourier's law of heat conduction | `q = -k grad T` | thermodynamics | Joseph Fourier | 1822 | Heat flows down the temperature gradient; the constitutive law of conduction and the heat equation. |
 | 24 | Chemical potential (Gibbs) | `mu = (dG/dN)_{T,P}` | statistical mechanics | J. Willard Gibbs | 1876 | The free-energy cost of adding one particle; the driver of diffusion, reactions, and phase change. |
+| 25 | Critical-point conditions | `(dP/dV)_T = 0 and (d2P/dV2)_T = 0` | thermodynamics | van der Waals (locus); Gibbs (stability) | 1873 | The first and second volume-derivatives of pressure both vanish -- this locates the critical point where liquid and gas become one. |
+| 26 | Van der Waals critical constants | `V_c = 3 n b,  T_c = 8 a / (27 R b),  P_c = a / (27 b^2)` | thermodynamics | Johannes van der Waals | 1873 | Solving the critical conditions gives Tc, Pc, Vc directly from the attraction a and size b -- molecular attractiveness fixes where the phase law sits. |
+| 27 | De Donder chemical affinity | `A = -sum_i nu_i mu_i,  with A dxi >= 0` | chemical thermodynamics | Theophile De Donder | 1922 | A = -sum nu_i mu_i is the thermodynamic driving force of a reaction; the bridge from thermodynamics to chemical kinetics. |
+| 28 | Chemical / phase equilibrium (affinity = 0) | `A = 0  =>  sum_i nu_i mu_i = 0  (phase coexistence: mu_1 = mu_2 at equal T, P)` | chemical thermodynamics | Gibbs; De Donder | 1876 | Equilibrium is the equality A = 0 (sum nu_i mu_i = 0); for coexisting phases it means equal T, P, and chemical potential. |
 
 ## Validate
 
