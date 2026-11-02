@@ -72,9 +72,9 @@ instructions and a control-flow graph).
 
 | Container | Detected | Parsed | Disassembled |
 |---|---|---|---|
-| ELF (exe, PIE, `.so`/`.so.*`, `.o`, `.ko`) | yes | full: sections, segments, symbols, imports, exports, relocations, dynamic metadata, symbol versions, build-id, kernel-module `.modinfo` | x86, x86-64, AArch64 (ARM64), ARM (A32) |
-| PE/COFF (`.exe`, `.dll`, `.sys`) | yes | sections, import directory (DLL deps + named/ordinal imports), export name table, base-relocation presence, image base, entry point, subsystem/driver class | x86, x86-64, AArch64 (ARM64), ARM (A32) |
-| Mach-O thin (32/64-bit) and FAT/universal | yes | load commands: sections, dylib dependencies, symbol table (imports/exports); first analyzable FAT slice lifted | x86, x86-64, AArch64 (ARM64), ARM (A32) |
+| ELF (exe, PIE, `.so`/`.so.*`, `.o`, `.ko`) | yes | full: sections, segments, symbols, imports, exports, relocations, dynamic metadata, symbol versions, build-id, kernel-module `.modinfo` | x86, x86-64, AArch64 (ARM64), ARM (A32 + Thumb/T32) |
+| PE/COFF (`.exe`, `.dll`, `.sys`) | yes | sections, import directory (DLL deps + named/ordinal imports), export name table, base-relocation presence, image base, entry point, subsystem/driver class | x86, x86-64, AArch64 (ARM64), ARM (A32 + Thumb/T32) |
+| Mach-O thin (32/64-bit) and FAT/universal | yes | load commands: sections, dylib dependencies, symbol table (imports/exports); first analyzable FAT slice lifted | x86, x86-64, AArch64 (ARM64), ARM (A32 + Thumb/T32) |
 | GNU static archive (`.a`) | yes | member enumeration with per-member format identification | per-member (ELF members) |
 | Raw / firmware | yes | recorded as an opaque byte artifact with SHA-256 provenance | linear byte view |
 
@@ -83,23 +83,30 @@ returns, conditional branches, indirect transfers — which is what the CFG,
 function-candidate, and SLIR stages consume, plus a growing set of common data-movement
 and arithmetic instructions:
 
-- **x86 / x86-64**: full prefix handling (legacy prefixes and 64-bit REX), near/short
-  `jmp`/`jcc`/`call`, `ret`/`retn`, indirect `ff /2`/`/4`, `push`/`pop` (register and
-  immediate), `mov reg,imm`, the ModR/M arithmetic/logic group (`add`/`or`/`adc`/`sbb`/
-  `and`/`sub`/`xor`/`cmp`), `mov`/`test`/`xchg`/`lea r,r/m`, and `nop`/`leave`/`int3`/
-  `hlt`/`cdq`/`cqo`. Unknown encodings degrade to `db`.
+- **x86 / x86-64**: full prefix handling (legacy prefixes, the `0x66` operand-size
+  override, and 64-bit REX), near/short `jmp`/`jcc`/`call`, `ret`/`retn`, indirect
+  `ff /2`/`/4` (and `ff /6` push), `push`/`pop` (register and immediate), `mov reg,imm`,
+  the ModR/M reg/rm arithmetic-logic group (`add`/`or`/`adc`/`sbb`/`and`/`sub`/`xor`/
+  `cmp`), the immediate-group forms (`80`/`81`/`83` with correctly sized `ib`/`iz`
+  immediates), `mov r/m,imm` (`c6`/`c7`), `mov`/`test`/`xchg`/`lea r,r/m`, and
+  `nop`/`leave`/`int3`/`hlt`/`cdq`/`cqo`. Unknown encodings degrade to `db`.
 - **AArch64 (ARM64)**: `b`/`bl`, `b.cond`, `cbz`/`cbnz`, `tbz`/`tbnz`, `br`/`blr`, `ret`,
   `nop`. Unknown words degrade to `.inst`.
 - **ARM (A32)**: `b`/`bl` (with condition codes), `bx`/`blx` register (and `bx lr`
   recognized as a return), pc-writing `ldm`/`pop` and `mov pc,lr` returns, `nop`. Unknown
   words degrade to `.inst`.
+- **ARM Thumb (T32)**: variable-width (16/32-bit) decode with correct per-instruction
+  width resolution — `b`/`b.w` (conditional and unconditional), `bl`/`blx(imm)`,
+  `bx`/`blx(reg)` (and `bx lr` as a return), `cbz`/`cbnz`, pc-writing `pop` returns, and
+  `nop`. Selected via the `--thumb` flag; the ARM default remains A32 (`--arm`). Unknown
+  encodings degrade to `.inst` of their detected width.
 
 Encodings outside these subsets are represented conservatively with low confidence rather
 than guessed, preserving the provenance guarantee. The `disassemble`/`cfg`/`functions`
 commands start the linear sweep at the first executable section (e.g. `.text`/`__text`)
-when one is identified, rather than at file offset 0. The natural next increment is a
-32-bit ARM **Thumb (T32)** decoder (variable-width) and further widening of the decoded
-x86 opcode set.
+when one is identified, rather than at file offset 0. The natural next increments are
+honoring ARM `$a`/`$t` mapping symbols to auto-select A32 vs. Thumb per region, and
+continuing to widen the decoded x86 opcode set toward operand-level recovery.
 
 ## Native artifact classes
 

@@ -12,7 +12,7 @@ using sleela::decompiler::ErrorCode;
 
 void usage() {
     std::cerr << "usage:\n"
-              << "  sleela-decompiler <inspect|disassemble|cfg|functions> <file> [length]\n"
+              << "  sleela-decompiler <inspect|disassemble|cfg|functions> <file> [length] [--thumb|--arm]\n"
               << "  sleela-decompiler decompile <file> --output <java|sleela|c|c++> [--file <path>] [length]\n";
 }
 
@@ -123,7 +123,17 @@ int main(int argc, char** argv) {
         }
 
         if (command == "disassemble" || command == "cfg" || command == "functions") {
-            const std::size_t length = argc > 3 ? parse_length(argv[3]) : 64;
+            // Optional flags may appear alongside the positional [length]. --thumb selects
+            // the ARM Thumb (T32) instruction set; the ARM default remains A32.
+            std::size_t length = 64;
+            auto mode = sleela::decompiler::DecodeMode::Auto;
+            for (int k = 3; k < argc; ++k) {
+                const std::string arg = argv[k];
+                if (arg == "--thumb") mode = sleela::decompiler::DecodeMode::ArmThumb;
+                else if (arg == "--arm") mode = sleela::decompiler::DecodeMode::ArmA32;
+                else if (!arg.empty() && arg[0] != '-') length = parse_length(arg);
+                else { usage(); return 2; }
+            }
             // Prefer the first executable section (SHF_EXECINSTR, or a ".text" name) so the
             // linear sweep starts in real code rather than container-header bytes. Falls back
             // to file offset 0 when no executable section is identified.
@@ -132,7 +142,7 @@ int main(int argc, char** argv) {
                 const bool exec = (s.flags & 0x4u) != 0 || s.name == ".text" || s.name == "__text";
                 if (exec && s.file_offset != 0) { at = s.file_offset; break; }
             }
-            auto ins = sleela::decompiler::Decoder{}.decode(a, at, length);
+            auto ins = sleela::decompiler::Decoder{}.decode(a, at, length, mode);
             auto cfg = sleela::decompiler::Analyzer{}.build_cfg(ins);
             if (command == "disassemble")
                 for (const auto& i : ins) std::cout << std::hex << i.address << ": " << i.mnemonic << "\n";

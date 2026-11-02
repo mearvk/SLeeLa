@@ -102,9 +102,17 @@ private:
     NativeInterfaces interfaces_;
 };
 
+// Decoding mode selects the instruction set for architectures that have more than one
+// encoding at the same machine type. ARM, in particular, has A32 (fixed 32-bit) and
+// Thumb/T32 (variable 16/32-bit) states. Auto preserves the historical default (A32 for
+// ARM); callers that know the state — e.g. from an odd entry point or $t mapping symbols —
+// can request ArmThumb explicitly.
+enum class DecodeMode { Auto, ArmA32, ArmThumb };
+
 class Decoder {
 public:
     std::vector<Instruction> decode(const Artifact&, std::uint64_t address, std::size_t length) const;
+    std::vector<Instruction> decode(const Artifact&, std::uint64_t address, std::size_t length, DecodeMode mode) const;
 };
 
 class ControlFlowGraph {

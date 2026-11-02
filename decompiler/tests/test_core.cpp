@@ -101,6 +101,49 @@ int main(){
         assert(!cfg.blocks.empty());
     }
 
+    // ARM Thumb (T32): variable-width control-flow decode, bytes from llvm-mc (thumbv7).
+    // Layout: bl(4) b.w(4) beq(2) b(2) cbz(2) bx-lr(2) nop(2) nop(2) = 8 instructions.
+    {
+        using namespace sleela::decompiler;
+        std::vector<std::uint8_t> elf(0x140,0);
+        elf[0]=0x7f;elf[1]='E';elf[2]='L';elf[3]='F';elf[4]=1;elf[5]=1;elf[6]=1;   // 32-bit ELF
+        put16(elf,16,2);put16(elf,18,40);                                          // ET_EXEC, EM_ARM
+        put16(elf,40,32);put16(elf,42,56);put16(elf,44,0);
+        const std::uint8_t code[]={0x00,0xf0,0x07,0xf8, 0x00,0xf0,0x05,0xb8, 0x03,0xd0, 0x02,0xe0, 0x08,0xb1, 0x70,0x47, 0x00,0xbf, 0x00,0xbf};
+        std::copy(std::begin(code),std::end(code),elf.begin()+0x100);
+        auto a=Artifact::from_bytes(elf,"fixture.thumb");
+        assert(a.architecture()==Architecture::ARM);
+        auto ins=Decoder{}.decode(a,0x100,sizeof(code),DecodeMode::ArmThumb);
+        assert(ins.size()==8);                                   // widths resolved correctly
+        assert(ins[0].mnemonic=="bl"&&ins[0].is_call&&ins[0].bytes.size()==4);
+        assert(ins[1].mnemonic=="b.w"&&ins[1].is_branch&&ins[1].bytes.size()==4);
+        assert(ins[2].mnemonic=="b"&&ins[2].is_conditional&&ins[2].bytes.size()==2);
+        assert(ins[3].mnemonic=="b"&&ins[3].is_branch&&!ins[3].is_conditional);
+        assert(ins[4].mnemonic=="cbz"&&ins[4].is_conditional);
+        assert(ins[5].mnemonic=="bx"&&ins[5].is_return);
+        assert(ins[6].mnemonic=="nop"&&ins[7].mnemonic=="nop");
+        // All five branch/call instructions should resolve to the same target (0x112).
+        assert(ins[0].branch_targets[0]==0x112);
+        assert(ins[1].branch_targets[0]==0x112);
+        assert(ins[2].branch_targets[0]==0x112);
+        assert(ins[3].branch_targets[0]==0x112);
+        assert(ins[4].branch_targets[0]==0x112);
+        auto cfg=Analyzer{}.build_cfg(ins);
+        assert(!cfg.blocks.empty());
+        // POP {..,pc} must classify as a return and not be shadowed by the PUSH mask.
+        // push {r4,lr}=10 b5 | pop {r4,pc}=10 bd | pop {r4,r5}=30 bc  (llvm-mc thumbv7)
+        std::vector<std::uint8_t> pp(0x140,0);
+        pp[0]=0x7f;pp[1]='E';pp[2]='L';pp[3]='F';pp[4]=1;pp[5]=1;pp[6]=1;put16(pp,16,2);put16(pp,18,40);
+        const std::uint8_t ppc[]={0x10,0xb5, 0x10,0xbd, 0x30,0xbc};
+        std::copy(std::begin(ppc),std::end(ppc),pp.begin()+0x100);
+        auto pa=Artifact::from_bytes(pp,"fixture.thumbpp");
+        auto pi=Decoder{}.decode(pa,0x100,sizeof(ppc),DecodeMode::ArmThumb);
+        assert(pi.size()==3);
+        assert(pi[0].mnemonic=="push"&&!pi[0].is_return);
+        assert(pi[1].mnemonic=="pop"&&pi[1].is_return);
+        assert(pi[2].mnemonic=="pop"&&!pi[2].is_return);
+    }
+
     // x86-64 extended opcodes: REX.W prefix, ModR/M mov, leave, int3, ret.
     {
         using namespace sleela::decompiler;
@@ -117,6 +160,24 @@ int main(){
         assert(ins[1].mnemonic=="leave");
         assert(ins[2].mnemonic=="int3");
         assert(ins[3].mnemonic=="ret"&&ins[3].is_return);
+    }
+
+    // x86-64 immediate-group ALU + mov-imm, bytes from llvm-mc (x86_64).
+    // sub rsp,0x10 (48 83 ec 10) | cmp [rbp-4],0x7f (83 7d fc 7f) | mov [rbp-8],0xdeadbeef (c7 45 f8 ..)
+    {
+        using namespace sleela::decompiler;
+        std::vector<std::uint8_t> elf(0x140,0);
+        elf[0]=0x7f;elf[1]='E';elf[2]='L';elf[3]='F';elf[4]=2;elf[5]=1;elf[6]=1;
+        put16(elf,16,2);put16(elf,18,62);put64(elf,24,0x100);put16(elf,52,64);put16(elf,54,56);put16(elf,56,0);
+        const std::uint8_t code[]={0x48,0x83,0xec,0x10, 0x83,0x7d,0xfc,0x7f, 0xc7,0x45,0xf8,0xef,0xbe,0xad,0xde};
+        std::copy(std::begin(code),std::end(code),elf.begin()+0x100);
+        auto a=Artifact::from_bytes(elf,"fixture.imm");
+        auto ins=Decoder{}.decode(a,0x100,sizeof(code));
+        assert(ins.size()==3);                                   // all three lengths resolved exactly
+        assert(ins[0].mnemonic=="sub"&&ins[0].bytes.size()==4);
+        assert(ins[1].mnemonic=="cmp"&&ins[1].bytes.size()==4);
+        assert(ins[2].mnemonic=="mov"&&ins[2].bytes.size()==7);
+        assert(ins[2].operands.size()>=2&&ins[2].operands.back().value==std::int64_t(0xdeadbeef));
     }
 
     // ARM64: real A64 control-flow decode (BL, B.cond, CBZ, RET) and CFG construction.
