@@ -362,8 +362,8 @@ When a public API changes, update the corresponding exemplar and these documenta
 - `decompiler/API.md`;
 - `decompiler/docs/TUTORIAL.md`;
 - `decompiler/README.md`;
-- `api/decompiler/README.md`;
-- `api/decompiler/API.html` when the browser-facing API summary changes;
+- `api/sleela/2.1/decompiler/README.md`;
+- `api/sleela/2.1/decompiler/API.html` when the browser-facing API summary changes;
 - `decompiler/TERMINOLOGY.md` when a new product term is introduced.
 
 When a build interface changes, update the relevant platform script and `build/README.md` / `build/PRODUCTS.md` together.

@@ -84,7 +84,7 @@ Start with:
 - `decompiler/API.md` — C++ API layer map;
 - `decompiler/TERMINOLOGY.md` — Slecompiler terminology;
 - `decompiler/ARCHITECTURE.md` — analysis architecture;
-- `api/decompiler/API.html` — browser-oriented API summary.
+- `api/sleela/2.1/decompiler/API.html` — browser-oriented API summary.
 
 ## Analysis pipeline
 
