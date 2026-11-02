@@ -23,6 +23,18 @@ normative specifications from implementation notes and live validation results.
 - [Source and file format](../markdown/SOURCE.md) — `.sleela` source contract.
 - [Library symbol inventory](../lib/LIBRARY.SYMBOLS.md) — canonical library
   vocabulary.
+- [Generated API documentation](../sleeladoc-api/index.html) — the live
+  SleelaDoc HTML site for the whole `/lib` tree (Home → Package → Class →
+  Members), regenerated from source by `tools/generate-sleeladoc-api.py`.
+  Per-edition snapshots live under [`api/sleela/`](../api/sleela/); the **2.9**
+  edition is captured as immutable, dated snapshots in numbered subfolders —
+  [`version-001`](../api/sleela/2.9/version-001/index.html) (initial 2.9 set)
+  and [`version-002`](../api/sleela/2.9/version-002/index.html), which adds the
+  expanded `lib/ui` component-quality API (see the note below). Each later
+  regeneration adds the next `version-NNN/` folder.
+- [UI component quality — visibility, margin, and icon](UI-COMPONENT-QUALITY.md) —
+  the `lib/ui` standard layout model's per-component quality axes and how
+  `SLLayoutDriver` realizes each onto native widgets.
 
 ## Architecture and virtual machines
 

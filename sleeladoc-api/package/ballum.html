@@ -132,7 +132,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; ballum</div>
 <h1>Package <code>ballum</code></h1>
-<div class="lead">This package contains <strong>24</strong> source unit(s) defining <strong>24</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>25</strong> source unit(s) defining <strong>25</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="01-screen-inspection">01-screen-inspection <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/examples/01-screen-inspection.sleela)</span></h2>
 <div data-u="01-screen-inspection ballumscreeninspection">
@@ -518,6 +518,10 @@
 <tr><td><code>setBrightness</code></td><td><span class="sig">int setBrightness(int id, int percent)</span></td><td class="desc">Whole-display controls (clamped locally, then dispatched to native).</td></tr>
 <tr><td><code>setWarmth</code></td><td><span class="sig">int setWarmth(int id, int kelvin)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>setGamma</code></td><td><span class="sig">int setGamma(int id, int gammaScaled)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasSurface</code></td><td><span class="sig">boolean hasSurface(int id)</span></td><td class="desc">---- fullscreen surface: total, owned, fast per-pixel control ------- Does display `id` offer a claimable fullscreen framebuffer surface?</td></tr>
+<tr><td><code>claimSurface</code></td><td><span class="sig">int claimSurface(int id)</span></td><td class="desc">Claim an override-redirect fullscreen surface over display `id`. While claimed, setPixel writes to an in-memory framebuffer (no device round- trips) and present() pushes the whole frame in one shot.</td></tr>
+<tr><td><code>present</code></td><td><span class="sig">int present(int id)</span></td><td class="desc">Push the claimed framebuffer to the screen (one native XPutImage; MIT-SHM when available).</td></tr>
+<tr><td><code>releaseSurface</code></td><td><span class="sig">int releaseSurface(int id)</span></td><td class="desc">Release the claimed surface; drawing reverts to the live-desktop fallback.</td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slballumpointerevent">SLBallumPointerEvent <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLBallumPointerEvent.sleela)</span></h2>
@@ -607,6 +611,10 @@
 <tr><td><code>canSetBrightness</code></td><td><span class="sig">boolean canSetBrightness()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>canSetWarmth</code></td><td><span class="sig">boolean canSetWarmth()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>canSetGamma</code></td><td><span class="sig">boolean canSetGamma()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canFullScreen</code></td><td><span class="sig">boolean canFullScreen()</span></td><td class="desc">128 == BALLUM_CAP_FULLSCREEN_SURFACE: a claimable, owned fullscreen frame.</td></tr>
+<tr><td><code>claimFullScreen</code></td><td><span class="sig">int claimFullScreen()</span></td><td class="desc">---- fullscreen surface: total, owned, fast per-pixel control -------- Claim an override-redirect fullscreen surface over the bound display. The window manager/compositor leaves every pixel to this program, so drawing is total (not overpainted). While claimed, plot()/fillRect() write to an in-memory framebuffer with no per-pixel device round-trips; call present() to push the whole frame to the screen in one native image transfer (MIT-SHM when the server supports it). Call releaseFullScreen() to give the screen back. Returns the result code (also in lastStatus).</td></tr>
+<tr><td><code>present</code></td><td><span class="sig">int present()</span></td><td class="desc">Push the claimed framebuffer to the screen in one shot. Call after a batch of plot()/fillRect() writes to make them visible.</td></tr>
+<tr><td><code>releaseFullScreen</code></td><td><span class="sig">int releaseFullScreen()</span></td><td class="desc">Release a claimed fullscreen surface; drawing reverts to the live desktop.</td></tr>
 <tr><td><code>inBounds</code></td><td><span class="sig">boolean inBounds(int x, int y)</span></td><td class="desc">Is (x, y) an exact, in-range pixel on the bound display? This is the accuracy gate every placement passes through.</td></tr>
 <tr><td><code>rgb</code></td><td><span class="sig">SLBallumColor rgb(int r, int g, int b)</span></td><td class="desc">Build a color without needing to name SLBallumColor at the call site.</td></tr>
 <tr><td><code>rgba</code></td><td><span class="sig">SLBallumColor rgba(int r, int g, int b, int a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -803,10 +811,29 @@
 <tr><td><code>supportsDdcBacklight</code></td><td><span class="sig">boolean supportsDdcBacklight()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="surface-demo">surface-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/surface-demo.sleela)</span></h2>
+<div data-u="surface-demo surfacedemo">
+<h3 id="SurfaceDemo">SurfaceDemo <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>boundId</code></td><td><span class="sig">int boundId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>w</code></td><td><span class="sig">int w</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>h</code></td><td><span class="sig">int h</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>caps</code></td><td><span class="sig">int caps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>capHas</code></td><td><span class="sig">boolean capHas(int bit)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>statusText</code></td><td><span class="sig">String statusText(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>open</code></td><td><span class="sig">int open()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-10-31 00:00 UTC.
+<code>/lib</code> tree on 2026-11-02 02:46 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
