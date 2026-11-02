@@ -72,18 +72,34 @@ instructions and a control-flow graph).
 
 | Container | Detected | Parsed | Disassembled |
 |---|---|---|---|
-| ELF (exe, PIE, `.so`/`.so.*`, `.o`, `.ko`) | yes | full: sections, segments, symbols, imports, exports, relocations, dynamic metadata, symbol versions, build-id, kernel-module `.modinfo` | x86, x86-64 (control flow); ARM64 (control flow) |
-| PE/COFF (`.exe`, `.dll`, `.sys`) | yes | sections, import directory (DLL deps + named/ordinal imports), export name table, base-relocation presence, image base, entry point, subsystem/driver class | x86, x86-64 (control flow); ARM64 (control flow) |
-| Mach-O thin (32/64-bit) and FAT/universal | yes | load commands: sections, dylib dependencies, symbol table (imports/exports); first analyzable FAT slice lifted | x86, x86-64 (control flow); ARM64 (control flow) |
+| ELF (exe, PIE, `.so`/`.so.*`, `.o`, `.ko`) | yes | full: sections, segments, symbols, imports, exports, relocations, dynamic metadata, symbol versions, build-id, kernel-module `.modinfo` | x86, x86-64, AArch64 (ARM64), ARM (A32) |
+| PE/COFF (`.exe`, `.dll`, `.sys`) | yes | sections, import directory (DLL deps + named/ordinal imports), export name table, base-relocation presence, image base, entry point, subsystem/driver class | x86, x86-64, AArch64 (ARM64), ARM (A32) |
+| Mach-O thin (32/64-bit) and FAT/universal | yes | load commands: sections, dylib dependencies, symbol table (imports/exports); first analyzable FAT slice lifted | x86, x86-64, AArch64 (ARM64), ARM (A32) |
 | GNU static archive (`.a`) | yes | member enumeration with per-member format identification | per-member (ELF members) |
 | Raw / firmware | yes | recorded as an opaque byte artifact with SHA-256 provenance | linear byte view |
 
-Disassembly recovers the control-flow-relevant instruction set (branches, calls,
-returns, conditional branches, indirect transfers) on x86/x86-64 and AArch64, which is
-what the CFG, function-candidate, and SLIR stages consume. Instruction encodings outside
-that subset are represented conservatively (x86 `db`, AArch64 `.inst`) with low confidence
-rather than guessed, preserving the provenance guarantee. Extending the decoded opcode set
-and adding a 32-bit ARM (A32/T32) decoder are the natural next increments.
+Disassembly recovers the control-flow-relevant instruction set — branches, calls,
+returns, conditional branches, indirect transfers — which is what the CFG,
+function-candidate, and SLIR stages consume, plus a growing set of common data-movement
+and arithmetic instructions:
+
+- **x86 / x86-64**: full prefix handling (legacy prefixes and 64-bit REX), near/short
+  `jmp`/`jcc`/`call`, `ret`/`retn`, indirect `ff /2`/`/4`, `push`/`pop` (register and
+  immediate), `mov reg,imm`, the ModR/M arithmetic/logic group (`add`/`or`/`adc`/`sbb`/
+  `and`/`sub`/`xor`/`cmp`), `mov`/`test`/`xchg`/`lea r,r/m`, and `nop`/`leave`/`int3`/
+  `hlt`/`cdq`/`cqo`. Unknown encodings degrade to `db`.
+- **AArch64 (ARM64)**: `b`/`bl`, `b.cond`, `cbz`/`cbnz`, `tbz`/`tbnz`, `br`/`blr`, `ret`,
+  `nop`. Unknown words degrade to `.inst`.
+- **ARM (A32)**: `b`/`bl` (with condition codes), `bx`/`blx` register (and `bx lr`
+  recognized as a return), pc-writing `ldm`/`pop` and `mov pc,lr` returns, `nop`. Unknown
+  words degrade to `.inst`.
+
+Encodings outside these subsets are represented conservatively with low confidence rather
+than guessed, preserving the provenance guarantee. The `disassemble`/`cfg`/`functions`
+commands start the linear sweep at the first executable section (e.g. `.text`/`__text`)
+when one is identified, rather than at file offset 0. The natural next increment is a
+32-bit ARM **Thumb (T32)** decoder (variable-width) and further widening of the decoded
+x86 opcode set.
 
 ## Native artifact classes
 

@@ -79,6 +79,46 @@ int main(){
         assert(a.artifact_class()==ArtifactClass::Executable);
     }
 
+    // ARM (A32): real control-flow decode (BL, B, BX lr=return) and CFG construction.
+    {
+        using namespace sleela::decompiler;
+        std::vector<std::uint8_t> elf(0x140,0);
+        elf[0]=0x7f;elf[1]='E';elf[2]='L';elf[3]='F';elf[4]=1;elf[5]=1;elf[6]=1;   // 32-bit ELF
+        put16(elf,16,2);put16(elf,18,40);                                          // ET_EXEC, EM_ARM
+        put32(elf,28,0);put32(elf,32,0);put16(elf,40,32);put16(elf,42,56);put16(elf,44,0);
+        auto w=[&](std::size_t off,std::uint32_t v){for(int k=0;k<4;++k)elf[off+k]=std::uint8_t(v>>(8*k));};
+        w(0x100,0xeb000000);   // bl  (pc+8 + 0)
+        w(0x104,0xea000001);   // b   (pc+8 + 4)
+        w(0x108,0xe12fff1e);   // bx lr  -> return
+        auto a=Artifact::from_bytes(elf,"fixture.arm");
+        assert(a.architecture()==Architecture::ARM);
+        auto ins=Decoder{}.decode(a,0x100,12);
+        assert(ins.size()==3);
+        assert(ins[0].is_call&&ins[0].mnemonic=="bl");
+        assert(ins[1].is_branch&&ins[1].mnemonic=="b");
+        assert(ins[2].is_return&&ins[2].mnemonic=="bx");
+        auto cfg=Analyzer{}.build_cfg(ins);
+        assert(!cfg.blocks.empty());
+    }
+
+    // x86-64 extended opcodes: REX.W prefix, ModR/M mov, leave, int3, ret.
+    {
+        using namespace sleela::decompiler;
+        std::vector<std::uint8_t> elf(0x140,0);
+        elf[0]=0x7f;elf[1]='E';elf[2]='L';elf[3]='F';elf[4]=2;elf[5]=1;elf[6]=1;
+        put16(elf,16,2);put16(elf,18,62);put64(elf,24,0x100);put16(elf,52,64);put16(elf,54,56);put16(elf,56,0);
+        // 48 89 e5  mov rbp,rsp (REX.W + mov r/m,r)  |  c9 leave  |  cc int3  |  c3 ret
+        const std::uint8_t code[]={0x48,0x89,0xe5, 0xc9, 0xcc, 0xc3};
+        std::copy(std::begin(code),std::end(code),elf.begin()+0x100);
+        auto a=Artifact::from_bytes(elf,"fixture.x64");
+        auto ins=Decoder{}.decode(a,0x100,sizeof(code));
+        assert(ins.size()==4);                           // prefix folds into the mov
+        assert(ins[0].mnemonic=="mov"&&ins[0].bytes.size()==3);
+        assert(ins[1].mnemonic=="leave");
+        assert(ins[2].mnemonic=="int3");
+        assert(ins[3].mnemonic=="ret"&&ins[3].is_return);
+    }
+
     // ARM64: real A64 control-flow decode (BL, B.cond, CBZ, RET) and CFG construction.
     {
         using namespace sleela::decompiler;
