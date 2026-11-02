@@ -1,5 +1,6 @@
 #pragma once
 #include "sleela/decompiler/decompiler.hpp"
+#include "sleela/decompiler/slir.hpp"
 #include <string>
 #include <vector>
 
@@ -22,6 +23,12 @@ public:
     static std::string emit(const Artifact&, const std::vector<Instruction>&,
                             const ControlFlowGraph&, const std::vector<Symbol>&,
                             const DecompilationOptions&);
+    // Source rendering with lifted SLIR: each function body shows the architecture-neutral
+    // lifted statements, followed by the instruction evidence. When `module` has no matching
+    // function the emitter falls back to evidence-only rendering.
+    static std::string emit(const Artifact&, const std::vector<Instruction>&,
+                            const ControlFlowGraph&, const std::vector<Symbol>&,
+                            const Module&, const DecompilationOptions&);
     // Companion header (C/C++): include guard + documented prototypes for recovered
     // functions. For Java/Sleela, returns an interface-style declaration surface.
     static std::string emit_header(const Artifact&, const std::vector<Symbol>&,
