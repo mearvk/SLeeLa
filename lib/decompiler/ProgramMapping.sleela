@@ -45,5 +45,5 @@ class DecompilerProgramMapping {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String programName; String language; String version; String inputKind; String outputKind;
   String binaryFormats; String operatingSystems; String architectures; Boolean trustedReference;
-  function validate(); function describe(); function matches(String program);
+  void validate(){} void describe(){} void matches(String program){}
 }

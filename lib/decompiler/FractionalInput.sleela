@@ -44,6 +44,6 @@ class SleelaDecompilerFractionalInput {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
  Integer policy; Integer preservedRegions; Integer unresolvedRegions; Integer discardedRegions;
  Boolean allowGaps; Boolean preserveEvidence; Boolean emitPlaceholders;
- function preserve(); function reconstructPartial(); function reportOnly(); function reject();
- function validate(); function report();
+ void preserve(){} void reconstructPartial(){} void reportOnly(){} void reject(){}
+ void validate(){} void report(){}
 }

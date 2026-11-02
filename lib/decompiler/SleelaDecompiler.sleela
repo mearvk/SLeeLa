@@ -51,12 +51,12 @@ class SleelaDecompiler {
  String sourceLanguage; String sourceVersion; String expectedInput; String desiredOutput;
  String osPolicy; String profile; Integer moduleCount; Integer evidenceCount;
  Integer unresolvedCount; Integer diagnosticCount;
- function initialize(); function loadArtifact(); function selectSourceLanguage();
- function selectSourceVersion(); function selectExpectedInput(); function selectDesiredOutput();
- function setFractionalInputPolicy(); function loadModule(); function detectFormat();
- function discernOS(); function detectArchitecture(); function decode(); function buildCFG();
- function buildIR(); function analyze(); function reconstruct(); function preserveGaps();
- function emitSLeeLa(); function emitSLIR(); function emitC(); function emitCPP();
- function emitReport(); function validateVM(); function verify(); function report();
- function decompileBasicComplete(); function decompileAdvancedTotal();
+ void initialize(){} void loadArtifact(){} void selectSourceLanguage(){}
+ void selectSourceVersion(){} void selectExpectedInput(){} void selectDesiredOutput(){}
+ void setFractionalInputPolicy(){} void loadModule(){} void detectFormat(){}
+ void discernOS(){} void detectArchitecture(){} void decode(){} void buildCFG(){}
+ void buildIR(){} void analyze(){} void reconstruct(){} void preserveGaps(){}
+ void emitSLeeLa(){} void emitSLIR(){} void emitC(){} void emitCPP(){}
+ void emitReport(){} void validateVM(){} void verify(){} void report(){}
+ void decompileBasicComplete(){} void decompileAdvancedTotal(){}
 }

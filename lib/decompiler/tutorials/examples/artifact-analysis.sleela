@@ -43,8 +43,8 @@ class ArtifactAnalysisExample {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-    DecompilerModule module;
-    OutputTarget target;
-    OSDiscernment discernment;
-    function analyze() { return module; }
+    SleelaDecompilerModule module;
+    SleelaDecompilerOutput target;
+    SleelaDecompilerOSDetector discernment;
+    SleelaDecompilerModule analyze() { return module; }
 }

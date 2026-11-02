@@ -5206,32 +5206,72 @@
       "sha256": "58f65304a1e9460ed65893954aaa537506da6f988d71b1324fb6ba62fd9966b4"
     },
     {
+      "path": "lib/decompiler/Analysis.sleela",
+      "sha256": "633a84e6de9f6c65ea2125a703039ecbe42a600d975878ccbf4f2ea352e0a353"
+    },
+    {
+      "path": "lib/decompiler/Architecture.sleela",
+      "sha256": "661cce391c3ca9414ac414c65ea700160c27a1eea7cf2dda0c70ba15023087f7"
+    },
+    {
+      "path": "lib/decompiler/Artifact.sleela",
+      "sha256": "b0814e980ccb2111200d19c655f38a3837a3b4707aae793f045d84eabd55e414"
+    },
+    {
       "path": "lib/decompiler/BinaryFormatReference.sleela",
-      "sha256": "0e84df36ef9b8ec2cabc1c0a5ff058d3db8154fac22abbfb96adfb882d04d782"
+      "sha256": "1da5e2ece7b7d0478385f578aaaaaecd31dfae32ec8432a8eb23984ac5990ad6"
+    },
+    {
+      "path": "lib/decompiler/CFG.sleela",
+      "sha256": "0a5bd090f150d3a30e32bc27511688b7e2acd318cb33bb39369a176dcc693969"
+    },
+    {
+      "path": "lib/decompiler/Decoder.sleela",
+      "sha256": "898e2c4182c1356a755388d17a44fb5f71707962eb20494f95ddd88f13f19017"
     },
     {
       "path": "lib/decompiler/DecompilerModule.sleela",
-      "sha256": "4524c6d73fc7f91f87eecaf5a52640eed2ed2d5d4d262fc695b12a2cb8079382"
+      "sha256": "54c66b3e7fdfb72e007745e1c8c4cd7362a5e733b788c94d1d73c9b61b3ffc5a"
+    },
+    {
+      "path": "lib/decompiler/Diagnostics.sleela",
+      "sha256": "8f32c736714c1e1b044f49a01641c060360c6a1a2461881dd0f42f01c6c4bc30"
+    },
+    {
+      "path": "lib/decompiler/Format.sleela",
+      "sha256": "67cfb94252e668c766bcf0494bb4b9fcd2239416decfb0c552b945f149087756"
     },
     {
       "path": "lib/decompiler/FractionalInput.sleela",
-      "sha256": "004ae6da5ce2314ad621cc7578d184ef848b04af24aea53fd909a572fc7ebaaf"
+      "sha256": "f497855c223f4ed9332402d175ffb530ec667b1904592c49fdae7d452032b957"
     },
     {
       "path": "lib/decompiler/LanguageReference.sleela",
-      "sha256": "3e96d4cb8624b69063eb2d86ed955a5c240406630e279bfad080f441b002d840"
+      "sha256": "4fe07f6bd9b2e1aec0fac7bf7a75ab2c635f49e6418054037d77dc9a759c2c8a"
+    },
+    {
+      "path": "lib/decompiler/Modules.sleela",
+      "sha256": "bda1c0adfd88bfb894fcd58df5c9abfd7a5938f35fe69b4de0cdd287076dab4c"
     },
     {
       "path": "lib/decompiler/OSDiscernment.sleela",
-      "sha256": "bd55701e88a879cc1616f3508b7c6be7b15598e5171dc0ce3ed1c97db5ae4d9c"
+      "sha256": "ae4e2811c942791a594f7ef093316520e67b8e49fc8fe4471e6582ae80bf5e01"
     },
     {
       "path": "lib/decompiler/OutputTarget.sleela",
-      "sha256": "5391803864d976742aba436186b36ba067a8ddc36b4937811cdb498c1a66a135"
+      "sha256": "030728d4f22c1dc8ac57f7d42e1e296d73ed3849dcf9dc8212251ee3df378d4a"
     },
     {
       "path": "lib/decompiler/ProgramMapping.sleela",
-      "sha256": "d3e22c1b7dd4f80c8dce79dd40277d5f64b7463f10a08ac48afe083fca0d51fc"
+      "sha256": "f18dc69350476066a09c10f5f3820bd9da7eefc585f9c5d636f1d06f6f562d32"
+    },
+    {
+      "path": "lib/decompiler/Reconstruction.sleela",
+      "sha256": "8939f3ecb686fa36aeac144aa32b87ececf3fecfce83f850f90d76a0479cafd5"
+    },
+    {
+      "path": "lib/decompiler/SLIR.sleela",
+      "sha256": "b58578c0a6dd4c8f96fe617cd2661b920f699bed5a4c4b32da1337738f25f6ee"
     },
     {
       "path": "lib/decompiler/SLPackage.sleela",
@@ -5239,15 +5279,23 @@
     },
     {
       "path": "lib/decompiler/SafetyReference.sleela",
-      "sha256": "f586b0255f8c7881a2c0ce827bb1345e1b2704bb7f92a40479071cd812408f47"
+      "sha256": "4e0bc01e49141cf697f33c71c43812ea1e6f88e7e248525c3036ec43321ef99f"
     },
     {
       "path": "lib/decompiler/SleelaDecompiler.sleela",
-      "sha256": "bb738a6dd237fb979bdfb05706dd9b551f4e96e2a968430da4b84a093cdb4ddc"
+      "sha256": "04ed011a0c03596ee56a325cffb785f82412f9b6b3df8012334f5c0894bb3bb1"
+    },
+    {
+      "path": "lib/decompiler/Source.sleela",
+      "sha256": "ab29c9050b92160889ae208813c8f4667febd97af95c699d0a69b7262b6397fa"
     },
     {
       "path": "lib/decompiler/SourceLanguage.sleela",
-      "sha256": "acfbe5299922ba3330a691e93d21871e98e3f954c9a64f24e290c974b1937a8a"
+      "sha256": "48e114582bd6b441545014fc7f1ad6d961d1b8064bf3fba375b2150977a1badb"
+    },
+    {
+      "path": "lib/decompiler/VMTarget.sleela",
+      "sha256": "7ebe164386243c20c455788aca430a9eee2c0db785bb577bea0a75373a977dfd"
     },
     {
       "path": "lib/decompiler/include/sleela_decompiler.h",
@@ -5263,11 +5311,11 @@
     },
     {
       "path": "lib/decompiler/tutorials/examples/artifact-analysis.sleela",
-      "sha256": "9d82c20beef56f65ce5ae6ada1c3c4dcc3965d9b7b21991ec010d9b6b84ad953"
+      "sha256": "b287806fd5730c75d53912ee4bc271843d36931151dece1c78b6e0036a65b254"
     },
     {
       "path": "lib/decompiler/tutorials/examples/fractional-reconstruction.sleela",
-      "sha256": "d9e82e365e9484df0a7db4cc2f4210a3bc24ec5585f635a75ee0c467e7c18ed9"
+      "sha256": "f29f0239716b95c758a26b8dfd6daa6e021c9119833bb755b53a4507348ce46f"
     },
     {
       "path": "lib/deliberation/SLAStarSearch.sleela",

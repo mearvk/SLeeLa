@@ -46,5 +46,5 @@ class DecompilerBinaryFormatReference {
   String name; String family; String magic; String architecture; String operatingSystem;
   String objectKind; String executableKind; String loaderModel; Boolean executable;
   Boolean nativeReference; Boolean safetyReviewed;
-  function validate(); function identify(); function describe();
+  void validate(){} void identify(){} void describe(){}
 }

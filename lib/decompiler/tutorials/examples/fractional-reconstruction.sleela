@@ -43,6 +43,6 @@ class FractionalReconstructionExample {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-    FractionalInput policy;
-    function preserve() { return policy; }
+    SleelaDecompilerFractionalInput policy;
+    SleelaDecompilerFractionalInput preserve() { return policy; }
 }

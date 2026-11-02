@@ -44,5 +44,5 @@ class SleelaDecompilerSourceLanguage {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
  String name; String family; String version; String abi; String compiler;
  Boolean enabled; Boolean exactVersionRequired;
- function initialize(); function validate(); function describe();
+ void initialize(){} void validate(){} void describe(){}
 }
