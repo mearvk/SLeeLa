@@ -124,7 +124,15 @@ int main(int argc, char** argv) {
 
         if (command == "disassemble" || command == "cfg" || command == "functions") {
             const std::size_t length = argc > 3 ? parse_length(argv[3]) : 64;
-            auto ins = sleela::decompiler::Decoder{}.decode(a, 0, length);
+            // Prefer the first executable section (SHF_EXECINSTR, or a ".text" name) so the
+            // linear sweep starts in real code rather than container-header bytes. Falls back
+            // to file offset 0 when no executable section is identified.
+            std::uint64_t at = 0;
+            for (const auto& s : a.interfaces().sections) {
+                const bool exec = (s.flags & 0x4u) != 0 || s.name == ".text" || s.name == "__text";
+                if (exec && s.file_offset != 0) { at = s.file_offset; break; }
+            }
+            auto ins = sleela::decompiler::Decoder{}.decode(a, at, length);
             auto cfg = sleela::decompiler::Analyzer{}.build_cfg(ins);
             if (command == "disassemble")
                 for (const auto& i : ins) std::cout << std::hex << i.address << ": " << i.mnemonic << "\n";
