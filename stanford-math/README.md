@@ -26,17 +26,19 @@ faithful to the subject's real origin where publicly known**; unknowns are
 | `SMPhysicsCanon`   | Foundational physics equations | Standard references (see Sources) |
 | `SMThermoEquations`| Thermodynamics & statistical-mechanics equations | Standard references (see Sources) |
 | `SMCrossoverCanon` | Applied/PhD crossovers (finance, chemistry, cosmology, info) | Standard references (see Sources) |
+| `SMFinanceCanon`   | Finance & economics equations (money, capitalism, credit) | Standard references (see Sources) |
+| `SMChemistryCanon` | Covalent-bonding chemistry equations | Standard references (see Sources) |
 | `SMProvenance`     | Purpose/method/gains/bedrock + tiered literature callouts (Wikipedia attributed) | Primary/secondary/tertiary sources |
 | `SMArchive` (demo) | Runnable entry point that broadcasts the archive | — |
 
-## The equation canon (134 entries)
+## The equation canon (176 entries)
 
 > On "all of the equations known in the known Universe": **no finite, complete
 > list of every equation exists** — and fabricating one would violate this
 > repo's one hard rule (values faithful to real origin; unknowns are `"none"`,
 > never invented). So this archive records a **curated, fully-attributed canon**
 > of the genuinely foundational equations that every math/physics PhD rests on:
-> **134 entries**, each with its real name, symbolic form, discoverer(s), year,
+> **176 entries**, each with its real name, symbolic form, discoverer(s), year,
 > and field.
 
 Breakdown (counts verified by running `SMArchive`):
@@ -70,6 +72,18 @@ Breakdown (counts verified by running `SMArchive`):
   Arrhenius, Friedmann, Hubble–Lemaître, Drake, Shannon entropy & channel
   capacity, logistic equation, heat equation, plus Michaelis–Menten kinetics,
   Hardy–Weinberg, Lotka–Volterra, and the Kelly criterion.
+- **Finance & economics — 24:** the equation of exchange / quantity theory of
+  money, compound & continuous interest, present value, annuities & perpetuities,
+  Gordon growth, the Fisher equation, the money multiplier, CAPM & beta,
+  Modigliani–Miller, WACC, bond pricing & Macaulay duration, the Sharpe ratio,
+  Markowitz portfolio variance, put–call parity, Okun's law, the Phillips curve,
+  the Taylor rule, Cobb–Douglas, Solow growth, and MC = MR.
+- **Covalent-bonding chemistry — 18:** the Lewis shared electron pair, the octet
+  rule, MO bond order, LCAO & two-center MO energies, Heitler–London valence
+  bond, Pauling electronegativity, bond dissociation energy, the Morse and
+  Lennard-Jones potentials, Coulomb's law, Born–Oppenheimer, hybridization,
+  formal charge, dipole moment, the harmonic-bond law, Pauli exclusion, and
+  Aufbau/Hund filling.
 
 Each group has a full human-readable table — every equation with its symbolic
 form, field, discoverer(s), and year — mirrored directly from the `.sleela`
@@ -79,6 +93,8 @@ canon (the single source of truth):
 - [`EQUATIONS-PHYSICS.md`](EQUATIONS-PHYSICS.md) — 46 physics equations (`SMPhysicsCanon`)
 - [`EQUATIONS-THERMODYNAMICS.md`](EQUATIONS-THERMODYNAMICS.md) — 28 thermodynamics & statistical-mechanics equations (`SMThermoEquations`)
 - [`EQUATIONS-CROSSOVERS.md`](EQUATIONS-CROSSOVERS.md) — 16 applied/PhD crossovers (`SMCrossoverCanon`)
+- [`EQUATIONS-FINANCE.md`](EQUATIONS-FINANCE.md) — 24 finance & economics equations (`SMFinanceCanon`)
+- [`EQUATIONS-CHEMISTRY.md`](EQUATIONS-CHEMISTRY.md) — 18 covalent-bonding chemistry equations (`SMChemistryCanon`)
 
 Where attribution is genuinely diffuse (e.g. the quadratic formula, the 2×2
 determinant), the discoverer field says so honestly rather than crediting a

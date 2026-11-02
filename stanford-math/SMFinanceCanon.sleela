@@ -1,0 +1,120 @@
+<< stanford-math/SMFinanceCanon.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The canon of foundational finance and economics equations behind
+   money, capitalism, and credit -- the equation of exchange, the time value of
+   money, asset pricing, and corporate finance. Each entry records a real name,
+   symbolic form, discoverer, and year faithful to the public record; where
+   attribution is genuinely diffuse it is marked honestly. >>
+#sleela 2.1
+< Executive+ class: a standards/products artifact, full metadata record. >
+class SMFinanceCanon {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9250;
+  String metaAuthor = "the economics and finance public record";
+  String metaDate = "2026-11-02";
+  String metaCopyright = "results in the peer-reviewed public record";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-02";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Scientific record (purpose / method / gains / bedrock) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors):
+     what the canon is for, the method it follows, what its editors gain, and
+     the bedrock it rests on. See SMProvenance for the literature callouts. >>
+  String metaPurpose = "A curated index of foundational finance and economics equations behind money, capitalism, and credit.";
+  String metaScientificMethod = "Tertiary cataloguing: record published results traceable to their primary papers; originate nothing.";
+  String metaAuthorialGains = "Editorial credit for the catalogue only; each result belongs to its cited authors/publishers.";
+  String metaBedrock = "The peer-reviewed economics and finance record (see SMProvenance).";
+  String metaIntegrityGoal = "Record each foundational result under the name history gives it -- credit the economist, claim nothing, and mark diffuse attributions honestly.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
+  < ---- The finance / economics canon (public record) ---- >
+  SMEquation[] eqs;
+  int filled;
+
+  void build() {
+    eqs = new SMEquation[24];
+    filled = 0;
+
+    add("Equation of exchange (quantity theory of money)", "M V = P T", "monetary economics", "Irving Fisher", "1911");
+    add("Compound interest", "A = P (1 + r/n)^(n t)", "finance", "classical; mercantile practice", "unknown");
+    add("Continuous compounding", "A = P e^(r t)", "finance", "classical (Euler's e)", "unknown");
+    add("Present value (discounting)", "PV = sum_{t} CF_t / (1 + r)^t", "finance", "classical; Fisher (formalized)", "1930");
+    add("Future value of an annuity", "FV = C ((1 + r)^n - 1) / r", "finance", "classical actuarial practice", "unknown");
+    add("Perpetuity value", "PV = C / r", "finance", "classical", "unknown");
+    add("Gordon growth (dividend discount)", "P = D1 / (r - g)", "corporate finance", "Myron J. Gordon", "1959");
+    add("Fisher equation (nominal vs real rate)", "1 + i = (1 + r)(1 + pi) ~ i = r + pi", "monetary economics", "Irving Fisher", "1930");
+    add("Money multiplier", "m = 1 / rr  (reserve ratio rr)", "monetary economics", "classical; Phillips (formalized)", "1920");
+    add("Capital Asset Pricing Model (CAPM)", "E[R_i] = R_f + beta_i (E[R_m] - R_f)", "asset pricing", "William Sharpe; Lintner; Mossin", "1964");
+    add("Beta (systematic risk)", "beta_i = Cov(R_i, R_m) / Var(R_m)", "asset pricing", "William Sharpe", "1964");
+    add("Modigliani-Miller (irrelevance, no tax)", "V_levered = V_unlevered", "corporate finance", "Modigliani & Miller", "1958");
+    add("Weighted average cost of capital", "WACC = (E/V) r_E + (D/V) r_D (1 - Tc)", "corporate finance", "standard corporate finance", "unknown");
+    add("Bond price (discounted cash flows)", "P = sum_{t} C / (1 + y)^t + F / (1 + y)^n", "fixed income", "classical valuation", "unknown");
+    add("Macaulay duration", "D = (1/P) sum_{t} t * CF_t / (1 + y)^t", "fixed income", "Frederick Macaulay", "1938");
+    add("Sharpe ratio", "S = (R_p - R_f) / sigma_p", "portfolio theory", "William Sharpe", "1966");
+    add("Markowitz portfolio variance", "sigma_p^2 = sum_i sum_j w_i w_j Cov(R_i, R_j)", "portfolio theory", "Harry Markowitz", "1952");
+    add("Put-call parity", "C - P = S - K e^(-r T)", "mathematical finance", "classical; Stoll (formalized)", "1969");
+    add("Okun's law", "dU ~ -c (g_Y - g_bar)", "macroeconomics", "Arthur Okun", "1962");
+    add("Phillips curve", "pi = pi_e - a (u - u_n)", "macroeconomics", "A. W. Phillips", "1958");
+    add("Taylor rule", "i = r* + pi + a_pi (pi - pi*) + a_y (y - y*)", "monetary policy", "John B. Taylor", "1993");
+    add("Cobb-Douglas production function", "Y = A K^alpha L^(1 - alpha)", "economic growth", "Cobb & Douglas", "1928");
+    add("Solow growth (steady state)", "s f(k) = (n + delta) k", "economic growth", "Robert Solow", "1956");
+    add("Marginal cost = marginal revenue", "MC = MR  (profit-maximizing output)", "microeconomics", "classical marginalism (Cournot)", "1838");
+  }
+
+  void add(String name, String form, String field, String who, String year) {
+    SMEquation e = new SMEquation();
+    e.define(name, form, field, who, year);
+    eqs[filled] = e;
+    filled = filled + 1;
+  }
+
+  int count() { return filled; }
+
+  String lineAt(int i) {
+    SMEquation e = eqs[i];
+    return e.line();
+  }
+}

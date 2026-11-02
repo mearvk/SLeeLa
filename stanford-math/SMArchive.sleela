@@ -168,7 +168,29 @@ class SMArchive {
       i = i + 1;
     }
 
-    int total = mn + phn + ten + cn;
+    print("");
+    print("-- Finance & economics canon (money, capitalism, credit) --");
+    SMFinanceCanon finCanon = new SMFinanceCanon();
+    finCanon.build();
+    int fin = finCanon.count();
+    i = 0;
+    while (i < fin) {
+      print("  " + finCanon.lineAt(i));
+      i = i + 1;
+    }
+
+    print("");
+    print("-- Covalent-bonding chemistry canon --");
+    SMChemistryCanon chemCanon = new SMChemistryCanon();
+    chemCanon.build();
+    int chn = chemCanon.count();
+    i = 0;
+    while (i < chn) {
+      print("  " + chemCanon.lineAt(i));
+      i = i + 1;
+    }
+
+    int total = mn + phn + ten + cn + fin + chn;
     print("");
     print("Equation canon total: " + total + " entries recorded, each faithful to its real origin.");
 
@@ -191,6 +213,8 @@ class SMArchive {
     print("  SMPhysicsCanon:  " + physCanon.getIntegrityGoal());
     print("  SMThermoEqs:     " + thermoEq.getIntegrityGoal());
     print("  SMCrossoverCanon:" + crossCanon.getIntegrityGoal());
+    print("  SMFinanceCanon:  " + finCanon.getIntegrityGoal());
+    print("  SMChemistryCanon:" + chemCanon.getIntegrityGoal());
 
     print("");
     print("==== Published-literature callouts (sane sources; Wikipedia respected) ====");

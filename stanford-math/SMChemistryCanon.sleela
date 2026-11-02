@@ -1,0 +1,114 @@
+<< stanford-math/SMChemistryCanon.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The canon of covalent-bonding and chemical-bond equations -- the
+   shared-electron-pair model, valence-bond and molecular-orbital theory, bond
+   order, and the interatomic potentials. Each entry records a real name,
+   symbolic form, discoverer, and year faithful to the public record; where
+   attribution is genuinely diffuse it is marked honestly. >>
+#sleela 2.1
+< Executive+ class: a standards/products artifact, full metadata record. >
+class SMChemistryCanon {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9260;
+  String metaAuthor = "the chemistry public record";
+  String metaDate = "2026-11-02";
+  String metaCopyright = "results in the peer-reviewed public record";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-02";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Scientific record (purpose / method / gains / bedrock) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors):
+     what the canon is for, the method it follows, what its editors gain, and
+     the bedrock it rests on. See SMProvenance for the literature callouts. >>
+  String metaPurpose = "A curated index of covalent-bonding and chemical-bond equations: shared-pair model, VB/MO theory, bond order, and interatomic potentials.";
+  String metaScientificMethod = "Tertiary cataloguing: record published results traceable to their primary papers; originate nothing.";
+  String metaAuthorialGains = "Editorial credit for the catalogue only; each result belongs to its cited authors/publishers.";
+  String metaBedrock = "The peer-reviewed chemistry and quantum-chemistry record (see SMProvenance).";
+  String metaIntegrityGoal = "Record each bonding result under the name history gives it -- credit the chemist, claim nothing, and mark diffuse attributions honestly.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
+  < ---- The covalent-bonding canon (public record) ---- >
+  SMEquation[] eqs;
+  int filled;
+
+  void build() {
+    eqs = new SMEquation[20];
+    filled = 0;
+
+    add("Shared electron-pair (covalent) bond", "A. + .B -> A:B  (one shared pair = one single bond)", "chemical bonding", "Gilbert N. Lewis", "1916");
+    add("Octet rule", "atoms share/transfer electrons to reach 8 valence electrons", "chemical bonding", "Lewis; Langmuir", "1919");
+    add("Bond order (molecular orbital)", "BO = (1/2)(n_bonding - n_antibonding)", "molecular orbital theory", "Hund; Mulliken", "1932");
+    add("LCAO molecular orbital", "psi_MO = c_A phi_A + c_B phi_B", "molecular orbital theory", "Lennard-Jones; Mulliken", "1929");
+    add("MO energies (two-center)", "E_pm = (alpha +/- beta) / (1 +/- S)", "molecular orbital theory", "Hund-Mulliken MO theory", "1932");
+    add("Heitler-London valence bond (H2)", "psi = phi_A(1) phi_B(2) + phi_A(2) phi_B(1)", "valence bond theory", "Heitler & London", "1927");
+    add("Pauling electronegativity difference", "chi_A - chi_B = 0.102 sqrt(E_d(AB) - sqrt(E_d(AA) E_d(BB)))", "chemical bonding", "Linus Pauling", "1932");
+    add("Bond dissociation energy", "AB -> A + B,  dH = D(A-B)", "chemical bonding", "classical thermochemistry", "unknown");
+    add("Morse potential", "V(r) = D_e (1 - e^(-a (r - r_e)))^2", "molecular physics", "Philip M. Morse", "1929");
+    add("Lennard-Jones (12-6) potential", "V(r) = 4 eps ((sigma/r)^12 - (sigma/r)^6)", "molecular physics", "John Lennard-Jones", "1924");
+    add("Coulomb's law (two charges)", "F = k_e q1 q2 / r^2", "electrostatics of bonding", "Charles-Augustin de Coulomb", "1785");
+    add("Born-Oppenheimer separation", "psi_total ~ psi_electronic * psi_nuclear", "quantum chemistry", "Born & Oppenheimer", "1927");
+    add("Hybridization (sp^n directed bonds)", "sp^n gives (n+1) equivalent directed orbitals", "valence bond theory", "Linus Pauling", "1931");
+    add("Formal charge", "FC = V - N_nonbonding - (1/2) N_bonding", "chemical bonding", "standard Lewis-structure rule", "unknown");
+    add("Molecular dipole moment", "mu = sum_i q_i r_i", "molecular polarity", "Peter Debye", "1912");
+    add("Hooke's law bond (harmonic stretch)", "V(r) = (1/2) k (r - r_e)^2", "molecular vibration", "classical (Hooke form)", "unknown");
+    add("Pauli exclusion principle", "no two electrons share all four quantum numbers", "quantum chemistry", "Wolfgang Pauli", "1925");
+    add("Aufbau / Hund's rule filling", "fill lowest orbitals first; maximize unpaired spin", "atomic structure", "Hund; Aufbau principle", "1927");
+  }
+
+  void add(String name, String form, String field, String who, String year) {
+    SMEquation e = new SMEquation();
+    e.define(name, form, field, who, year);
+    eqs[filled] = e;
+    filled = filled + 1;
+  }
+
+  int count() { return filled; }
+
+  String lineAt(int i) {
+    SMEquation e = eqs[i];
+    return e.line();
+  }
+}
