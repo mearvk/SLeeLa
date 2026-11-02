@@ -1,0 +1,115 @@
+<< stanford-math/SMSocialCanon.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The canon of social-structure equations -- how social ties,
+   networks, cohesion, and the distribution of wealth are measured in the
+   social sciences. Each entry records a real name, symbolic form, discoverer,
+   and year faithful to the public record; where attribution is genuinely
+   diffuse it is marked honestly. These describe structure, not people: they
+   measure ties and distributions, and rank no person. >>
+#sleela 2.1
+< Executive+ class: a standards/products artifact, full metadata record. >
+class SMSocialCanon {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9270;
+  String metaAuthor = "the social-science public record";
+  String metaDate = "2026-11-02";
+  String metaCopyright = "results in the peer-reviewed public record";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-02";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Scientific record (purpose / method / gains / bedrock) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors):
+     what the canon is for, the method it follows, what its editors gain, and
+     the bedrock it rests on. See SMProvenance for the literature callouts. >>
+  String metaPurpose = "A curated index of social-structure equations: how ties, networks, cohesion, and wealth distribution are measured.";
+  String metaScientificMethod = "Tertiary cataloguing: record published results traceable to their primary papers; originate nothing.";
+  String metaAuthorialGains = "Editorial credit for the catalogue only; each result belongs to its cited authors/publishers.";
+  String metaBedrock = "The peer-reviewed social-science and network-science record (see SMProvenance).";
+  String metaIntegrityGoal = "Record each measure of social structure under the name history gives it -- credit the scholar, measure structure not persons, and claim nothing.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
+  < ---- The social-structure canon (public record) ---- >
+  SMEquation[] eqs;
+  int filled;
+
+  void build() {
+    eqs = new SMEquation[20];
+    filled = 0;
+
+    add("Network density", "D = 2 L / (N (N - 1))", "social network analysis", "classical graph theory", "unknown");
+    add("Local clustering coefficient", "C_i = 2 e_i / (k_i (k_i - 1))", "social network analysis", "Watts & Strogatz", "1998");
+    add("Degree centrality", "C_D(v) = deg(v) / (N - 1)", "social network analysis", "Linton Freeman", "1979");
+    add("Betweenness centrality", "C_B(v) = sum_{s != v != t} sigma_st(v) / sigma_st", "social network analysis", "Linton Freeman", "1977");
+    add("Tie strength (strength of weak ties)", "strength ~ time + intimacy + reciprocity; weak ties bridge groups", "economic sociology", "Mark Granovetter", "1973");
+    add("Dyadic embeddedness (tie overlap)", "overlap(a,b) = |N(a) cap N(b)| / |N(a) cup N(b)|", "social network analysis", "Granovetter (overlap principle)", "1973");
+    add("Homophily index", "H = (same-group ties - expected) / (total - expected)", "sociology", "McPherson; Smith-Lovin; Cook", "2001");
+    add("Social capital (bridging vs bonding)", "returns ~ f(bonding within-group, bridging across-group)", "sociology", "Putnam; Coleman; Bourdieu", "2000");
+    add("Structural holes (constraint)", "C_i = sum_j (p_ij + sum_q p_iq p_qj)^2", "economic sociology", "Ronald Burt", "1992");
+    add("Dunbar's number", "N_stable ~ 150 (cognitive limit on stable ties)", "evolutionary anthropology", "Robin Dunbar", "1992");
+    add("Preferential attachment (scale-free degree)", "P(k) ~ k^(-gamma)", "network science", "Barabasi & Albert", "1999");
+    add("Small-world path length", "L ~ ln(N) / ln(k)", "network science", "Watts & Strogatz", "1998");
+    add("Gini coefficient (wealth inequality)", "G = (sum_i sum_j |x_i - x_j|) / (2 N^2 mu)", "economics of distribution", "Corrado Gini", "1912");
+    add("Lorenz curve", "L(p) = (cumulative wealth of poorest p fraction)", "economics of distribution", "Max O. Lorenz", "1905");
+    add("Pareto (wealth) distribution", "P(X > x) ~ (x_m / x)^alpha", "economics of distribution", "Vilfredo Pareto", "1896");
+    add("Reciprocity (directed ties)", "r = (mutual dyads) / (total ties)", "social network analysis", "standard SNA measure", "unknown");
+    add("Modularity (community structure)", "Q = sum_c (e_cc - a_c^2)", "network science", "Newman & Girvan", "2004");
+    add("Assortativity coefficient", "r = Pearson correlation of degrees across edges", "network science", "M. E. J. Newman", "2002");
+  }
+
+  void add(String name, String form, String field, String who, String year) {
+    SMEquation e = new SMEquation();
+    e.define(name, form, field, who, year);
+    eqs[filled] = e;
+    filled = filled + 1;
+  }
+
+  int count() { return filled; }
+
+  String lineAt(int i) {
+    SMEquation e = eqs[i];
+    return e.line();
+  }
+}

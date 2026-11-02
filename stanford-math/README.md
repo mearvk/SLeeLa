@@ -28,17 +28,18 @@ faithful to the subject's real origin where publicly known**; unknowns are
 | `SMCrossoverCanon` | Applied/PhD crossovers (finance, chemistry, cosmology, info) | Standard references (see Sources) |
 | `SMFinanceCanon`   | Finance & economics equations (money, capitalism, credit) | Standard references (see Sources) |
 | `SMChemistryCanon` | Covalent-bonding chemistry equations | Standard references (see Sources) |
+| `SMSocialCanon`    | Social-structure equations (ties, networks, wealth distribution) | Standard references (see Sources) |
 | `SMProvenance`     | Purpose/method/gains/bedrock + tiered literature callouts (Wikipedia attributed) | Primary/secondary/tertiary sources |
 | `SMArchive` (demo) | Runnable entry point that broadcasts the archive | — |
 
-## The equation canon (177 entries)
+## The equation canon (195 entries)
 
 > On "all of the equations known in the known Universe": **no finite, complete
 > list of every equation exists** — and fabricating one would violate this
 > repo's one hard rule (values faithful to real origin; unknowns are `"none"`,
 > never invented). So this archive records a **curated, fully-attributed canon**
 > of the genuinely foundational equations that every math/physics PhD rests on:
-> **177 entries**, each with its real name, symbolic form, discoverer(s), year,
+> **195 entries**, each with its real name, symbolic form, discoverer(s), year,
 > and field.
 
 Breakdown (counts verified by running `SMArchive`):
@@ -85,6 +86,12 @@ Breakdown (counts verified by running `SMArchive`):
   Lennard-Jones potentials, Coulomb's law, Born–Oppenheimer, hybridization,
   formal charge, dipole moment, the harmonic-bond law, Pauli exclusion, and
   Aufbau/Hund filling.
+- **Social structure — 18:** network density, clustering & centrality (degree,
+  betweenness), tie strength & the strength of weak ties (Granovetter), tie
+  overlap, homophily, social capital (bonding vs bridging), structural holes,
+  Dunbar's number, preferential attachment, small-world path length, modularity,
+  assortativity, and wealth distribution (Gini, Lorenz, Pareto). These measure
+  **structure and distribution — not persons**.
 
 Each group has a full human-readable table — every equation with its symbolic
 form, field, discoverer(s), and year — mirrored directly from the `.sleela`
@@ -96,6 +103,7 @@ canon (the single source of truth):
 - [`EQUATIONS-CROSSOVERS.md`](EQUATIONS-CROSSOVERS.md) — 16 applied/PhD crossovers (`SMCrossoverCanon`)
 - [`EQUATIONS-FINANCE.md`](EQUATIONS-FINANCE.md) — 25 finance & economics equations (`SMFinanceCanon`)
 - [`EQUATIONS-CHEMISTRY.md`](EQUATIONS-CHEMISTRY.md) — 18 covalent-bonding chemistry equations (`SMChemistryCanon`)
+- [`EQUATIONS-SOCIAL.md`](EQUATIONS-SOCIAL.md) — 18 social-structure equations (`SMSocialCanon`)
 
 Where attribution is genuinely diffuse (e.g. the quadratic formula, the 2×2
 determinant), the discoverer field says so honestly rather than crediting a

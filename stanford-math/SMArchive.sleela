@@ -190,7 +190,18 @@ class SMArchive {
       i = i + 1;
     }
 
-    int total = mn + phn + ten + cn + fin + chn;
+    print("");
+    print("-- Social-structure canon (ties, networks, distribution) --");
+    SMSocialCanon socCanon = new SMSocialCanon();
+    socCanon.build();
+    int son = socCanon.count();
+    i = 0;
+    while (i < son) {
+      print("  " + socCanon.lineAt(i));
+      i = i + 1;
+    }
+
+    int total = mn + phn + ten + cn + fin + chn + son;
     print("");
     print("Equation canon total: " + total + " entries recorded, each faithful to its real origin.");
 
@@ -215,6 +226,7 @@ class SMArchive {
     print("  SMCrossoverCanon:" + crossCanon.getIntegrityGoal());
     print("  SMFinanceCanon:  " + finCanon.getIntegrityGoal());
     print("  SMChemistryCanon:" + chemCanon.getIntegrityGoal());
+    print("  SMSocialCanon:   " + socCanon.getIntegrityGoal());
 
     print("");
     print("==== Published-literature callouts (sane sources; Wikipedia respected) ====");
