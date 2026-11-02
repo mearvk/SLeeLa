@@ -129,7 +129,7 @@ than invented source behavior.
 
 ## Shared C/C++ class model
 
-The repository now includes api/include/sleela/api.hpp, with the corresponding translation unit in api/src/api.cpp. This public C++20 API provides the shared semantic model used by planned C and C++ reconstruction.
+The repository now includes api/sleela/2.1/include/sleela/api.hpp, with the corresponding translation unit in api/sleela/2.1/src/api.cpp. This public C++20 API provides the shared semantic model used by planned C and C++ reconstruction.
 
 The model includes Type, Field, Variable, and FunctionSignature for reusable type/signature information; CallingConvention and Method for ABI and function evidence; CStruct, CUnion, and CEnum for C declarations; CppClass and CppNamespace for C++ class and namespace reconstruction; vtable-address and RTTI evidence on CppClass; Artifact, Address, Instruction, BasicBlock, and ControlFlowGraph for native-analysis context; ReconstructionUnit as the language-neutral collection consumed by source backends; and Provenance and EvidenceKind so recovered declarations can distinguish observed, decoded, derived, inferred, hypothesized, unknown, unsupported, and conflicting information.
 
