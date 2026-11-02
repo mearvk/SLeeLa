@@ -178,15 +178,29 @@ class SLLayoutDriver {
   << Apply the quality descriptor's honorable parts to the live widget: the
      single PRIMARY action becomes the toolkit's suggested (accent) action; a
      DANGER action becomes destructive; a non-interactive component is greyed
-     out. The theme ROLE (body/surface/chrome/accent) is a hint the themed
-     renderer uses when drawing the surface; the toolkit has no per-widget
-     surface call, so role is honored through the window theme, not forced here.
-     Safe no-op for a null quality or an invalid handle. >>
+     out; a hidden component is removed from view (uiWidgetVisible); a component
+     with a margin gets per-edge breathing room (uiWidgetMargin); a component
+     with an icon gets a leading symbol/asset (uiWidgetSetIcon). The theme ROLE
+     (body/surface/chrome/accent) is a hint the themed renderer uses when drawing
+     the surface; the toolkit has no per-widget surface call, so role is honored
+     through the window theme, not forced here. Every honored part maps 1:1 to a
+     real ui* bridge call. Safe no-op for a null quality or an invalid handle. >>
   void applyQuality(SLComponentQuality q, int childHandle) {
     if (q == null || childHandle < 0) { return; }
     uiWidgetSuggested(childHandle, q.isPrimary() ? 1 : 0);
     uiWidgetDestructive(childHandle, q.isDanger() ? 1 : 0);
     uiWidgetSensitive(childHandle, q.isInteractive() ? 1 : 0);
+    < visibility: a hidden component is not drawn and takes no space. >
+    uiWidgetVisible(childHandle, q.isVisible() ? 1 : 0);
+    < margin: per-edge breathing room around the component, only when asked. >
+    if (q.hasMargin()) {
+      uiWidgetMargin(childHandle, q.getMarginTop(), q.getMarginRight(),
+        q.getMarginBottom(), q.getMarginLeft());
+    }
+    < icon: an optional leading symbol and/or asset path. >
+    if (q.hasIcon()) {
+      uiWidgetSetIcon(childHandle, q.getIconAsset(), q.getIconSymbol());
+    }
   }
 
   << Apply the plan to a named component (convenience over applyComponent by

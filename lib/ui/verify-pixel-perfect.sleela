@@ -144,6 +144,45 @@ class VerifyPixelPerfect {
         q.qualityAt(1) != null
         && q.qualityOf("list").honored());
 
+    < 4b) EXPANDED QUALITY: the standard model also delivers visibility, margin, >
+    < and icon per component -- each a real ui* bridge call via SLLayoutDriver. >
+    print("[quality+: visibility + margin + icon, per component]");
+
+    < defaults: every fresh component is shown, has no margin, has no icon >
+    check("default is shown",      q.qualityOf("title").isVisible());
+    check("default has no margin", !q.qualityOf("title").hasMargin());
+    check("default has no icon",   !q.qualityOf("title").hasIcon());
+
+    < visibility: hide the title, confirm it reports hidden >
+    q.qualityOf("title").hide();
+    check("title now hidden", !q.qualityOf("title").isVisible());
+    q.qualityOf("title").show();
+    check("title shown again", q.qualityOf("title").isVisible());
+
+    < margin: uniform and per-edge, with negatives clamped to 0 >
+    q.qualityOf("list").margin(8);
+    check("list uniform margin set",
+        q.qualityOf("list").getMarginTop() == 8
+        && q.qualityOf("list").getMarginLeft() == 8
+        && q.qualityOf("list").hasMargin());
+    q.qualityOf("save").setMargins(4, 6, 4, -3);
+    check("save per-edge margin set (neg clamped)",
+        q.qualityOf("save").getMarginTop() == 4
+        && q.qualityOf("save").getMarginRight() == 6
+        && q.qualityOf("save").getMarginLeft() == 0);
+
+    < icon: a named theme symbol marks the component with a leading glyph >
+    q.qualityOf("save").icon("save");
+    check("save has icon symbol",
+        q.qualityOf("save").hasIcon()
+        && q.qualityOf("save").getIconSymbol() == "save");
+    q.qualityOf("save").clearIcon();
+    check("save icon cleared", !q.qualityOf("save").hasIcon());
+
+    < the expanded quality still honors() as a whole >
+    check("expanded quality honored",
+        q.qualityOf("save").honored() && q.qualityOf("list").honored());
+
     < a component is fully described by QUALITY + SIZE + PLACEMENT together >
     SLLayoutBox saveBox = q.boxOf("save");
     print("  'save' fully described: "

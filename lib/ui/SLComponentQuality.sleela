@@ -15,12 +15,22 @@
                 (title/menu bar), or ACCENT (the one interactive accent).
      - EMPHASIS: NORMAL, PRIMARY (the single suggested action -> the toolkit's
                 uiWidgetSuggested), or DANGER (destructive -> uiWidgetDestructive).
-     - interactive: whether the component is enabled (sensitive) right now.
+     - interactive: whether the component is enabled (sensitive) right now
+                (-> uiWidgetSensitive).
+     - visible   : whether the component is shown or hidden right now
+                (-> uiWidgetVisible). A hidden component takes no space.
+     - margin    : per-edge breathing room around the component in px
+                (-> uiWidgetMargin).
+     - icon      : an optional leading symbol/asset for the component
+                (-> uiWidgetSetIcon).
 
    Pure SLeeLa (no native handle); it always checks and runs. The native
-   realizer (SLLayoutDriver) reads a component's quality and applies the parts
-   the toolkit can honor per widget (emphasis + sensitivity); the role is a hint
-   the themed renderer uses when it draws the surface. >>
+   realizer (SLLayoutDriver) reads a component's quality and applies every part
+   the toolkit can honor per widget (emphasis, sensitivity, visibility, margin,
+   icon); the role is a hint the themed renderer uses when it draws the surface.
+   Each new axis maps 1:1 to a real ui* bridge call, so the count of quality
+   aspects the standard model can faithfully deliver grows without inventing any
+   capability the native toolkit lacks. >>
 #sleela 2.5
 material;
 < Family: ui. Per-component quality: role + emphasis + interactivity. >
@@ -80,12 +90,31 @@ class SLComponentQuality {
   int emphasis;
   < 1 = enabled/interactive, 0 = disabled (greyed out) >
   int interactive;
+  < 1 = shown, 0 = hidden. A hidden component takes no space and is not drawn. >
+  int visible;
+  < Margin (breathing room) around the component, in px, per edge. >
+  int marginTop;
+  int marginRight;
+  int marginBottom;
+  int marginLeft;
+  < Optional leading icon: a named theme symbol (e.g. "save", "trash") and/or an >
+  < asset path. Empty strings mean "no icon". >
+  String iconSymbol;
+  String iconAsset;
 
-  < Default quality: body role, no emphasis, interactive. >
+  < Default quality: body role, no emphasis, interactive, shown, no margin, >
+  < no icon. >
   void create() {
     role = ROLE_BODY;
     emphasis = EMPHASIS_NORMAL;
     interactive = 1;
+    visible = 1;
+    marginTop = 0;
+    marginRight = 0;
+    marginBottom = 0;
+    marginLeft = 0;
+    iconSymbol = "";
+    iconAsset = "";
   }
 
   < ---- role (fluent one-call setters, beginner-friendly) ------------------ >
@@ -111,6 +140,51 @@ class SLComponentQuality {
   void setInteractive(boolean on) { interactive = on ? 1 : 0; }
   boolean isInteractive() { return interactive == 1; }
 
+  < ---- visibility --------------------------------------------------------- >
+  < A hidden component is not drawn and (in a stack) collapses to take no space; >
+  < the native realizer honors it with uiWidgetVisible. >
+  void show() { visible = 1; }
+  void hide() { visible = 0; }
+  void setVisible(boolean on) { visible = on ? 1 : 0; }
+  boolean isVisible() { return visible == 1; }
+
+  < ---- margin (breathing room around the component, per edge, in px) ------ >
+  < Uniform margin on all four edges. >
+  void margin(int px) {
+    int m = (px < 0) ? 0 : px;
+    marginTop = m; marginRight = m; marginBottom = m; marginLeft = m;
+  }
+  < Independent per-edge margins (negatives clamped to 0). >
+  void setMargins(int top, int right, int bottom, int left) {
+    marginTop    = (top < 0) ? 0 : top;
+    marginRight  = (right < 0) ? 0 : right;
+    marginBottom = (bottom < 0) ? 0 : bottom;
+    marginLeft   = (left < 0) ? 0 : left;
+  }
+  int getMarginTop()    { return marginTop; }
+  int getMarginRight()  { return marginRight; }
+  int getMarginBottom() { return marginBottom; }
+  int getMarginLeft()   { return marginLeft; }
+  < True when any edge has a non-zero margin. >
+  boolean hasMargin() {
+    return marginTop > 0 || marginRight > 0 || marginBottom > 0 || marginLeft > 0;
+  }
+
+  < ---- icon (optional leading symbol / asset) ----------------------------- >
+  < Set a named theme symbol (e.g. "save", "trash", "search"). >
+  void icon(String symbol) { iconSymbol = (symbol == null) ? "" : symbol; }
+  < Set an asset-path icon (e.g. a file the host loads). >
+  void iconFromAsset(String assetPath) { iconAsset = (assetPath == null) ? "" : assetPath; }
+  < Clear any icon. >
+  void clearIcon() { iconSymbol = ""; iconAsset = ""; }
+  String getIconSymbol() { return iconSymbol; }
+  String getIconAsset()  { return iconAsset; }
+  < True when a symbol or asset icon has been set. >
+  boolean hasIcon() {
+    return (iconSymbol != null && iconSymbol != "")
+        || (iconAsset != null && iconAsset != "");
+  }
+
   < The role name, in the theme's own vocabulary. >
   String roleName() {
     if (role == ROLE_SURFACE) { return "surface"; }
@@ -127,13 +201,26 @@ class SLComponentQuality {
 
   < A one-line account of the quality, for logs/inspection. >
   String describe() {
-    return "quality:" + roleName() + "/" + emphasisName()
-      + (interactive == 1 ? "/enabled" : "/disabled");
+    String s = "quality:" + roleName() + "/" + emphasisName()
+      + (interactive == 1 ? "/enabled" : "/disabled")
+      + (visible == 1 ? "/shown" : "/hidden");
+    if (hasMargin()) {
+      s = s + "/margin[" + marginTop + "," + marginRight + ","
+        + marginBottom + "," + marginLeft + "]";
+    }
+    if (hasIcon()) {
+      s = s + "/icon(" + (iconSymbol != "" ? iconSymbol : iconAsset) + ")";
+    }
+    return s;
   }
 
   boolean honored() {
     return role >= ROLE_BODY && role <= ROLE_ACCENT
       && emphasis >= EMPHASIS_NORMAL && emphasis <= EMPHASIS_DANGER
-      && (interactive == 0 || interactive == 1);
+      && (interactive == 0 || interactive == 1)
+      && (visible == 0 || visible == 1)
+      && marginTop >= 0 && marginRight >= 0
+      && marginBottom >= 0 && marginLeft >= 0
+      && iconSymbol != null && iconAsset != null;
   }
 }
