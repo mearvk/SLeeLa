@@ -304,13 +304,25 @@ int slvm_declare_global(SLVM* vm, const char* name) {
 
 int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_names, int nfields) {
     if (!vm || !name || nfields < 0 || nfields > SL_MAX_STRUCT_FIELDS) return -1;
+    /* Diagnostic trace (env SLEELA_TRACE_LAYOUTS=1): report the live table state
+     * on every registration. Catches a corrupt nstruct_types/struct_typecap --
+     * e.g. a stale sleela_core.o whose slvm_new left them uninitialized -- by
+     * showing the actual counts at the exact call that fails. */
+    if (getenv("SLEELA_TRACE_LAYOUTS"))
+        fprintf(stderr, "[trace-declare_struct] name='%s' nstruct_types=%d struct_typecap=%d MAX=%d\n",
+                name, vm->nstruct_types, vm->struct_typecap, SL_MAX_STRUCT_TYPES);
     for (int i = 0; i < vm->nstruct_types; i++)
         if (strcmp(vm->struct_types[i].name, name) == 0) return i; /* idempotent */
     /* Grow the layout table on demand: 256 -> 512 -> ... -> 65536 (base-2),
      * never past the SL_MAX_STRUCT_TYPES hard ceiling. New slots are zeroed so
      * a partially-filled table never carries stale name/field pointers. */
     if (vm->nstruct_types >= vm->struct_typecap) {
-        if (vm->struct_typecap >= SL_MAX_STRUCT_TYPES) return -1; /* at the ceiling */
+        if (vm->struct_typecap >= SL_MAX_STRUCT_TYPES) {
+            if (getenv("SLEELA_TRACE_LAYOUTS"))
+                fprintf(stderr, "[trace-declare_struct] REFUSED '%s': struct_typecap(%d) >= MAX(%d) -- table reports full\n",
+                        name, vm->struct_typecap, SL_MAX_STRUCT_TYPES);
+            return -1; /* at the ceiling */
+        }
         int newcap = vm->struct_typecap ? vm->struct_typecap * 2 : SL_STRUCT_TYPES_INIT;
         if (newcap > SL_MAX_STRUCT_TYPES) newcap = SL_MAX_STRUCT_TYPES;
         SLStructType* grown = (SLStructType*)realloc(vm->struct_types, (size_t)newcap * sizeof(SLStructType));
