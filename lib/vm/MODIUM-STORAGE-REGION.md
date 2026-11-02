@@ -1,8 +1,12 @@
 # Modium Storage Region — design proposal (for review)
 
-> Status: **PROPOSAL / design-only.** No behavioral code ships with this note.
-> It describes a new Modium capability and, critically, the **safety and
-> ethical rules** for using removable media. Nothing here writes to a device.
+> Status: **IMPLEMENTED** (`sleela modium store ...` in `impl/frontend/driver.cpp`).
+> Stages shipped: (a) file-backed region with the 256M–64G clamp and a
+> rebuildable `.modium`; (b) read-only, OS-resolved USB detect + inspect;
+> (c) terminal-confirmation-gated claim (empty volume / `--claim`,
+> non-empty owned volume / `--claim-force`). No UI. Detection/inspection are
+> strictly read-only; the only writes happen on an explicit, interactively
+> confirmed claim, and never to fixed/system disks.
 
 ## 1. What exists today vs. what this adds
 

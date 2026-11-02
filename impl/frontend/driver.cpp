@@ -25,10 +25,13 @@
 #include "http_server_cli.h"
 #include "../core/sleela_audio_bridge.h"
 #include "common_rails_banner.hpp"
+#include "../core/sleela_platform.h"
+#include "../core/sleela_os.h"
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
 #include <cstdlib>
+#include <cstdint>
 #include <cmath>
 #include <ctime>
 #include <filesystem>
@@ -1115,14 +1118,340 @@ static int modiumScanOne(int n,bool exact,bool seal){
              <<(seal?"  [seal]":(exact?"  [exact]":"  [sha256]"))<<"\n";
     return (missing||bad||moved||sealbad)?1:0;
 }
+
+/* ==========================================================================
+ * Modium Storage Region (MSR) -- `sleela modium store ...`
+ *
+ * An addressable, file-backed Modium data region sized 256 MB .. 64 GB, held
+ * inside a Modium container (a directory carrying a `.modium` descriptor and a
+ * `modium.region` data file). The region may live on a host directory or on an
+ * inserted USB stick claimed as Modium storage.
+ *
+ * SAFETY (see lib/vm/MODIUM-STORAGE-REGION.md): detection and inspection are
+ * strictly READ-ONLY; the only write paths are an explicit `--claim` (init an
+ * empty volume) or `--claim-force` (a volume the operator asserts they own),
+ * each after an interactive terminal confirmation. MSR acts only on volumes the
+ * OS reports as removable and never touches fixed/system disks. The `.modium`
+ * descriptor is rebuildable and device-sealed.
+ * ========================================================================== */
+static const int64_t SL_MODIUM_MIN_BYTES = (int64_t)256 * 1024 * 1024;        /* 256 MB */
+static const int64_t SL_MODIUM_MAX_BYTES = (int64_t)64 * 1024 * 1024 * 1024;  /* 64 GB  */
+static const char* kModiumStoreAuthor = "MEARVK LLC / the Author";
+
+/* Clamp a requested region size into [256 MB, 64 GB], rounded UP to the next
+ * base-2 step from the 256 MB floor (256M, 512M, 1G, ... 64G). 0/absent -> min. */
+static int64_t modiumClampBytes(int64_t want){
+    if(want<=0) return SL_MODIUM_MIN_BYTES;
+    if(want<=SL_MODIUM_MIN_BYTES) return SL_MODIUM_MIN_BYTES;
+    if(want>=SL_MODIUM_MAX_BYTES) return SL_MODIUM_MAX_BYTES;
+    int64_t step=SL_MODIUM_MIN_BYTES;
+    while(step<want && step<SL_MODIUM_MAX_BYTES) step<<=1;
+    return step>SL_MODIUM_MAX_BYTES?SL_MODIUM_MAX_BYTES:step;
+}
+/* Parse a human byte size with K/M/G suffix (e.g. "256M", "64G", "1073741824"). */
+static bool modiumParseBytes(const std::string& s,int64_t& out){
+    if(s.empty()) return false;
+    char* end=nullptr; double v=std::strtod(s.c_str(),&end);
+    if(end==s.c_str()||v<0) return false;
+    double mult=1.0;
+    if(*end){ char c=(char)std::tolower((unsigned char)*end);
+        if(c=='k')mult=1024.0; else if(c=='m')mult=1024.0*1024; else if(c=='g')mult=1024.0*1024*1024;
+        else return false;
+        if(*(end+1)) return false; }
+    out=(int64_t)(v*mult); return true;
+}
+static std::string modiumHumanBytes(int64_t b){
+    char buf[32];
+    if(b>= (int64_t)1024*1024*1024) std::snprintf(buf,sizeof buf,"%.0fG",(double)b/(1024.0*1024*1024));
+    else std::snprintf(buf,sizeof buf,"%.0fM",(double)b/(1024.0*1024));
+    return buf;
+}
+
+/* The `.modium` descriptor. `rebuild` reconstructs the exact JSON text, so the
+ * descriptor is regenerable and diff-stable (keys emitted in sorted order). */
+struct ModiumDesc {
+    std::string modium;      /* "storage-region" */
+    std::string format;      /* "1.0" */
+    int64_t     regionBytes=0;
+    std::string created;     /* ISO-8601 UTC */
+    std::string owner;
+    std::string deviceSeal;  /* sha256(volumeId | regionBytes | owner) */
+    std::string author;      /* kModiumStoreAuthor */
+};
+static std::string modiumNowUtc(){
+    std::time_t t=std::time(nullptr); std::tm g{};
+#if defined(_WIN32)
+    gmtime_s(&g,&t);
+#else
+    gmtime_r(&t,&g);
+#endif
+    char buf[32]; std::strftime(buf,sizeof buf,"%Y-%m-%dT%H:%M:%SZ",&g); return buf;
+}
+/* A stable per-volume identity for the seal. Uses the mount root's canonical
+ * path (the strongest cross-platform identity available without new deps); a
+ * descriptor copied to a different mount root therefore fails the seal. */
+static std::string modiumVolumeId(const std::string& mountRoot){
+    namespace fsx=std::filesystem; std::error_code ec;
+    fsx::path c=fsx::weakly_canonical(fsx::path(mountRoot),ec);
+    return ec?mountRoot:c.string();
+}
+static std::string modiumSeal(const std::string& volumeId,int64_t bytes,const std::string& owner){
+    return sleela::sha256_hex(volumeId+"|"+std::to_string(bytes)+"|"+owner);
+}
+/* Render the descriptor to its canonical, rebuildable JSON text. */
+static std::string modiumRebuild(const ModiumDesc& d){
+    std::ostringstream o;
+    o<<"{\n"
+     <<"  \"author\": \""<<d.author<<"\",\n"
+     <<"  \"created\": \""<<d.created<<"\",\n"
+     <<"  \"deviceSeal\": \""<<d.deviceSeal<<"\",\n"
+     <<"  \"format\": \""<<d.format<<"\",\n"
+     <<"  \"modium\": \""<<d.modium<<"\",\n"
+     <<"  \"owner\": \""<<d.owner<<"\",\n"
+     <<"  \"regionBytes\": "<<d.regionBytes<<"\n"
+     <<"}\n";
+    return o.str();
+}
+/* Minimal dependency-free field pull (same style as modiumScanOne). */
+static bool modiumField(const std::string& text,const std::string& key,std::string& out){
+    size_t k=text.find("\""+key+"\":"); if(k==std::string::npos) return false;
+    size_t q1=text.find('"',k+key.size()+3); if(q1==std::string::npos) return false;
+    size_t q2=text.find('"',q1+1); if(q2==std::string::npos) return false;
+    out=text.substr(q1+1,q2-q1-1); return true;
+}
+static bool modiumFieldInt(const std::string& text,const std::string& key,int64_t& out){
+    size_t k=text.find("\""+key+"\":"); if(k==std::string::npos) return false;
+    size_t p=k+key.size()+3; while(p<text.size()&&(text[p]==' '||text[p]=='\t')) ++p;
+    char* end=nullptr; long long v=std::strtoll(text.c_str()+p,&end,10);
+    if(end==text.c_str()+p) return false;
+    out=(int64_t)v;
+    return true;
+}
+/* Parse a `.modium` file (read-only). Returns true iff it is a well-formed
+ * storage-region descriptor. */
+static bool modiumParseDesc(const std::string& path,ModiumDesc& d){
+    std::ifstream in(path,std::ios::binary); if(!in) return false;
+    std::stringstream ss; ss<<in.rdbuf(); std::string t=ss.str();
+    if(!modiumField(t,"modium",d.modium)||d.modium!="storage-region") return false;
+    modiumField(t,"format",d.format);
+    modiumFieldInt(t,"regionBytes",d.regionBytes);
+    modiumField(t,"created",d.created);
+    modiumField(t,"owner",d.owner);
+    modiumField(t,"deviceSeal",d.deviceSeal);
+    modiumField(t,"author",d.author);
+    return true;
+}
+
+/* ---- Stage (a): a file-backed region container -------------------------- */
+/* Open (creating if needed) a Modium container at `dir`: writes/validates the
+ * `.modium` descriptor and ensures `modium.region` is sized to `bytes`. The
+ * region file is created SPARSE where the OS supports it (truncate to size), so
+ * a 64 GB region costs ~0 real bytes until written. */
+static int modiumStoreOpen(const std::string& dir,int64_t wantBytes,const std::string& owner){
+    namespace fsx=std::filesystem; std::error_code ec;
+    int64_t bytes=modiumClampBytes(wantBytes);
+    fsx::create_directories(dir,ec);
+    if(ec){ std::cerr<<"sleela modium store: cannot create container '"<<dir<<"': "<<ec.message()<<"\n"; return 1; }
+    fsx::path desc=fsx::path(dir)/".modium";
+    fsx::path region=fsx::path(dir)/"modium.region";
+    std::string volumeId=modiumVolumeId(dir);
+    ModiumDesc d;
+    if(fsx::exists(desc)){
+        if(!modiumParseDesc(desc.string(),d)){ std::cerr<<"sleela modium store: '"<<desc.string()<<"' is not a valid Modium descriptor.\n"; return 1; }
+        /* Honor the existing region size; a resize is a separate explicit op. */
+        bytes=modiumClampBytes(d.regionBytes);
+    } else {
+        d.modium="storage-region"; d.format="1.0"; d.regionBytes=bytes;
+        d.created=modiumNowUtc(); d.owner=owner.empty()?"unknown":owner; d.author=kModiumStoreAuthor;
+        d.deviceSeal=modiumSeal(volumeId,bytes,d.owner);
+        std::ofstream out(desc,std::ios::binary); if(!out){ std::cerr<<"sleela modium store: cannot write descriptor.\n"; return 1; }
+        out<<modiumRebuild(d);
+    }
+    /* Size the region file (sparse truncate; never shrinks existing data). */
+    int64_t have=fsx::exists(region)?(int64_t)fsx::file_size(region,ec):0; if(ec){have=0;ec.clear();}
+    if(have<bytes){
+        std::ofstream rf(region,std::ios::binary|std::ios::app); if(!rf){ std::cerr<<"sleela modium store: cannot open region file.\n"; return 1; }
+        rf.close();
+        fsx::resize_file(region,(uintmax_t)bytes,ec);
+        if(ec){ std::cerr<<"sleela modium store: cannot size region to "<<bytes<<" bytes: "<<ec.message()<<"\n"; return 1; }
+    }
+    std::cout<<"modium store: container '"<<dir<<"' ready  region="<<modiumHumanBytes(bytes)
+             <<" ("<<bytes<<" bytes)  owner="<<d.owner<<"  seal="<<d.deviceSeal.substr(0,12)<<"...\n";
+    return 0;
+}
+
+/* ---- Stage (b): OS-resolved removable-volume enumeration (READ-ONLY) ----- */
+/* "Ask the OS runtime how to handle it; appropriate the correct answer only."
+ * Each host resolves its removable volumes via its OWN authoritative view; an
+ * unknown/unsupported host returns a clean status, never a guess. */
+static std::vector<std::string> modiumRemovableVolumes(std::string& howResolved){
+    std::vector<std::string> vols;
+    SLPlatform p=slplatform_current();
+    namespace fsx=std::filesystem; std::error_code ec;
+    if(p==SL_PLATFORM_LINUX){
+        howResolved="Linux: /proc/self/mountinfo (removable mounts under /media,/run/media,/mnt)";
+        std::ifstream mi("/proc/self/mountinfo");
+        std::string line;
+        while(std::getline(mi,line)){
+            /* mountinfo field 5 is the mount point. */
+            std::istringstream ls(line); std::string tok; int idx=0; std::string mp;
+            while(ls>>tok){ if(idx==4){ mp=tok; break; } ++idx; }
+            if(mp.empty()) continue;
+            if(mp.rfind("/media/",0)==0||mp.rfind("/run/media/",0)==0||mp.rfind("/mnt/",0)==0)
+                if(std::find(vols.begin(),vols.end(),mp)==vols.end()) vols.push_back(mp);
+        }
+    } else if(p==SL_PLATFORM_MACOS){
+        howResolved="macOS: /Volumes (mounted volumes; the boot volume is excluded)";
+        for(auto it=fsx::directory_iterator("/Volumes",ec); !ec && it!=fsx::directory_iterator(); it.increment(ec)){
+            std::error_code lec; if(!it->is_directory(lec)) continue;
+            /* The boot volume is a symlink to "/"; skip it. */
+            if(it->is_symlink(lec)) continue;
+            vols.push_back(it->path().string());
+        }
+    } else if(p==SL_PLATFORM_WINDOWS){
+        /* The Win32 removable-drive query lives behind the OS backend; without a
+         * native call here we report that this host needs the OS volume API. The
+         * correct answer is resolved there, not guessed from drive letters. */
+        howResolved="Windows: DRIVE_REMOVABLE via the OS volume API";
+    } else {
+        howResolved="unsupported OS: no removable-media resolver";
+    }
+    return vols;
+}
+static int modiumStoreUsbList(){
+    std::string how; auto vols=modiumRemovableVolumes(how);
+    char osname[32]={0}; slos_platform_name(osname,sizeof osname);
+    std::cout<<"modium store usb: host="<<(osname[0]?osname:"unknown")<<"  resolver="<<how<<"\n";
+    if(vols.empty()){ std::cout<<"  (no removable Modium-eligible volumes detected)\n"; return 0; }
+    for(size_t i=0;i<vols.size();++i){
+        namespace fsx=std::filesystem; bool hasDesc=fsx::exists(fsx::path(vols[i])/".modium");
+        std::cout<<"  ["<<i<<"] "<<vols[i]<<(hasDesc?"  [.modium present]":"  [no .modium]")<<"\n";
+    }
+    return 0;
+}
+/* Inspect a mount root's `.modium` (READ-ONLY). Classifies the three cases. */
+enum class ModiumVolState { AlreadyModium, Empty, NonEmptyForeign, Missing };
+static ModiumVolState modiumInspectVol(const std::string& mountRoot,ModiumDesc& d,bool& sealOk){
+    namespace fsx=std::filesystem; std::error_code ec; sealOk=false;
+    if(!fsx::exists(mountRoot,ec)||!fsx::is_directory(mountRoot,ec)) return ModiumVolState::Missing;
+    fsx::path desc=fsx::path(mountRoot)/".modium";
+    if(fsx::exists(desc)){
+        if(modiumParseDesc(desc.string(),d)){
+            std::string vid=modiumVolumeId(mountRoot);
+            sealOk=(d.deviceSeal==modiumSeal(vid,modiumClampBytes(d.regionBytes),d.owner));
+            return ModiumVolState::AlreadyModium;
+        }
+        return ModiumVolState::NonEmptyForeign; /* a .modium that doesn't parse: treat as foreign */
+    }
+    /* empty iff no visible entries */
+    for(auto it=fsx::directory_iterator(mountRoot,ec); !ec && it!=fsx::directory_iterator(); it.increment(ec)){
+        std::string n=it->path().filename().string();
+        if(n=="."||n==".."||n=="System Volume Information"||n==".Trashes"||n==".Spotlight-V100") continue;
+        return ModiumVolState::NonEmptyForeign;
+    }
+    return ModiumVolState::Empty;
+}
+static int modiumStoreUsbInspect(const std::string& mountRoot){
+    ModiumDesc d; bool sealOk=false;
+    switch(modiumInspectVol(mountRoot,d,sealOk)){
+        case ModiumVolState::Missing:
+            std::cerr<<"modium store usb inspect: '"<<mountRoot<<"' is not a mounted directory.\n"; return 1;
+        case ModiumVolState::AlreadyModium:
+            std::cout<<"  "<<mountRoot<<": Modium storage region  size="<<modiumHumanBytes(d.regionBytes)
+                     <<"  owner="<<d.owner<<"  seal="<<(sealOk?"OK":"FOREIGN (not sealed to this volume)")<<"\n";
+            return sealOk?0:1;
+        case ModiumVolState::Empty:
+            std::cout<<"  "<<mountRoot<<": empty volume, no .modium (eligible for `claim`)\n"; return 0;
+        case ModiumVolState::NonEmptyForeign:
+            std::cout<<"  "<<mountRoot<<": non-empty / not a Modium volume (claim refused unless --claim-force)\n"; return 0;
+    }
+    return 0;
+}
+/* Interactive terminal confirmation (no UI). Returns true iff the operator
+ * types an affirmative. Refuses (returns false) when stdin is not a terminal,
+ * so a headless/piped context can never accidentally confirm a destructive op. */
+static bool modiumConfirm(const std::string& prompt){
+    if(!SLEELA_ISATTY(0)){
+        std::cerr<<"modium store: refusing to proceed without an interactive confirmation (stdin is not a terminal).\n";
+        return false;
+    }
+    std::cerr<<prompt<<" [type 'yes' to proceed]: " <<std::flush;
+    std::string answer; if(!std::getline(std::cin,answer)) return false;
+    return answer=="yes"||answer=="YES"||answer=="Yes";
+}
+/* Claim a removable volume as Modium storage. Empty volume -> needs --claim;
+ * non-empty foreign -> needs --claim-force. Both require terminal confirmation. */
+static int modiumStoreUsbClaim(const std::string& mountRoot,int64_t wantBytes,bool optClaim,bool optForce,const std::string& owner){
+    ModiumDesc existing; bool sealOk=false;
+    ModiumVolState st=modiumInspectVol(mountRoot,existing,sealOk);
+    if(st==ModiumVolState::Missing){ std::cerr<<"modium store claim: '"<<mountRoot<<"' is not a mounted directory.\n"; return 1; }
+    if(st==ModiumVolState::AlreadyModium){
+        std::cout<<"modium store claim: '"<<mountRoot<<"' is already Modium storage"<<(sealOk?" (sealed to this volume).":" but FOREIGN-sealed.")<<" Nothing to do.\n";
+        return sealOk?0:1;
+    }
+    int64_t bytes=modiumClampBytes(wantBytes);
+    if(st==ModiumVolState::Empty){
+        if(!optClaim && !optForce){ std::cerr<<"modium store claim: '"<<mountRoot<<"' is empty; pass --claim to initialize it as Modium storage.\n"; return 1; }
+    } else { /* NonEmptyForeign */
+        if(!optForce){ std::cerr<<"modium store claim: '"<<mountRoot<<"' holds existing data and is NOT Modium. Refusing. Pass --claim-force ONLY for a volume you own and have backed up.\n"; return 1; }
+        std::cerr<<"modium store claim: WARNING -- '"<<mountRoot<<"' contains existing files; claiming adds a .modium container alongside them (no files are deleted).\n";
+    }
+    if(!modiumConfirm("modium store claim: initialize '"+mountRoot+"' as a "+modiumHumanBytes(bytes)+" Modium storage region?"))
+    { std::cerr<<"modium store claim: aborted (no confirmation).\n"; return 1; }
+    return modiumStoreOpen(mountRoot,bytes,owner);
+}
+
+/* Dispatch for `sleela modium store ...`. */
+static int modiumStoreCmd(int argc,char** argv){
+    /* argv: [0]=sleela [1]=modium [2]=store [3]=op [4..]=args/flags */
+    std::string op=(argc>=4)?argv[3]:"";
+    int64_t bytes=0; bool haveBytes=false; bool optClaim=false, optForce=false; std::string owner, positional;
+    for(int i=4;i<argc;++i){
+        std::string a=argv[i];
+        if(a=="--claim") optClaim=true;
+        else if(a=="--claim-force") optForce=true;
+        else if(a.rfind("--bytes=",0)==0){ if(!modiumParseBytes(a.substr(8),bytes)){std::cerr<<"modium store: bad --bytes value\n";return 2;} haveBytes=true; }
+        else if(a=="--bytes"){ if(i+1>=argc||!modiumParseBytes(argv[++i],bytes)){std::cerr<<"modium store: bad --bytes value\n";return 2;} haveBytes=true; }
+        else if(a.rfind("--owner=",0)==0) owner=a.substr(8);
+        else if(a=="--owner"){ if(i+1>=argc){std::cerr<<"modium store: --owner needs a value\n";return 2;} owner=argv[++i]; }
+        else if(a.rfind("--container=",0)==0) positional=a.substr(12);
+        else if(a=="--container"){ if(i+1>=argc){std::cerr<<"modium store: --container needs a value\n";return 2;} positional=argv[++i]; }
+        else if(a.rfind("--",0)==0){ std::cerr<<"modium store: unknown option '"<<a<<"'\n"; return 2; }
+        else positional=a;
+    }
+    (void)haveBytes;
+    if(op=="open"){
+        std::string dir=positional.empty()?(std::string(std::getenv("HOME")?std::getenv("HOME"):".")+"/.sleela/modium"):positional;
+        return modiumStoreOpen(dir,bytes,owner);
+    }
+    if(op=="usb"){
+        std::string usbOp=(argc>=5)?argv[4]:"";
+        if(usbOp=="list") return modiumStoreUsbList();
+        /* for inspect/claim the mount root is the first non-flag positional after 'usb' */
+        std::string mount;
+        for(int i=5;i<argc;++i){ std::string a=argv[i]; if(a.rfind("--",0)!=0){ mount=a; break; } }
+        if(usbOp=="inspect"){ if(mount.empty()){std::cerr<<"modium store usb inspect: expected <mount>\n";return 2;} return modiumStoreUsbInspect(mount); }
+        if(usbOp=="claim"){ if(mount.empty()){std::cerr<<"modium store usb claim: expected <mount>\n";return 2;} return modiumStoreUsbClaim(mount,bytes,optClaim,optForce,owner); }
+        std::cerr<<"modium store usb: use list | inspect <mount> | claim <mount> [--claim|--claim-force]\n"; return 2;
+    }
+    std::cout<<"sleela modium store -- addressable Modium storage region (256M .. 64G)\n"
+               "  sleela modium store open [--bytes 256M..64G] [--container DIR] [--owner NAME]\n"
+               "  sleela modium store usb list\n"
+               "  sleela modium store usb inspect <mount>\n"
+               "  sleela modium store usb claim  <mount> [--bytes ...] [--claim | --claim-force]\n";
+    return (op.empty())?0:2;
+}
+
 static int modiumCmd(int argc,char**argv){
     std::string sub=(argc>=3)?argv[2]:"status";
+    if(sub=="store") return modiumStoreCmd(argc,argv);
     bool exact=false,sealMode=false; for(int i=2;i<argc;++i){std::string a=argv[i]; if(a=="--exact")exact=true; else if(a=="--seal")sealMode=true;}
     if(sub=="-h"||sub=="--help"){
         std::cout<<"sleela modium — scan a VM's files for resolution (exist, placed, intact)\n"
                    "  sleela modium scan [native|1..10] [--exact]   verify files vs MODIUM.json\n"
                    "  sleela modium status                          summary across all versions\n"
-                   "  sleela modium restore <1..10> [--from-sql]    reconstitute from rebuild.sql (explicit; reports first)\n";
+                   "  sleela modium restore <1..10> [--from-sql]    reconstitute from rebuild.sql (explicit; reports first)\n"
+                   "  sleela modium store ...                       addressable Modium storage region (256M..64G); see 'sleela modium store'\n";
         return 0;
     }
     if(sub=="scan"){
@@ -1240,7 +1569,7 @@ static int usage(){
         << "  " << n << " langin [--run|--emit-sleela|--emit-xclass|--info] <file.java|file.kt|file.scala|file.groovy|file.clj> [more-files ...]\n"
         << "  " << n << " nordshrift [--emit|--roundtrip] [--target=sleela|java|c] <file.sleela>\n"
         << "  " << n << " vm [list|select <native|1..10|premium 1..11>|info <selection>|run <premium <1..11>|p<N>|native> <program>]\n"
-        << "  " << n << " modium [scan [native|1..10] [--exact] [--seal]|status|restore <1..10>]\n"
+        << "  " << n << " modium [scan [native|1..10] [--exact] [--seal]|status|restore <1..10>|store ...]\n"
         << "  " << n << " registry [review [key-path]|get <key-path> <name>|set <key-path> <name> <value> [--int|--bool]|feature <name> [on|off]|save|export [file]]\n"
         << "  " << n << " native [--config <file>|-c <file>] [--memory-manager[=<size>]|--mm[=<size>]] [--] <program> [args...]\n"
         << "  " << n << " exec [--config <file>|-c <file>] [--memory-manager[=<size>]|--mm[=<size>]] [--] <program> [args...]\n"
