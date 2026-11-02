@@ -46115,11 +46115,11 @@
     },
     {
       "path": "lib/operating-system/SLOSSensitivityFetch.sleela",
-      "sha256": "52388d4b40558dc31c7ae2d39b7cc7543476d6a09b2f85da29e8c41b07332c8f"
+      "sha256": "3ef07eee78bc1842d66f9cab15860523c5b96cdac4669642493b5de29fd86441"
     },
     {
       "path": "lib/operating-system/SLOSSensitivitySource.sleela",
-      "sha256": "87436bd5762302c1680a783ae91a41209fc320cee1d15c7fca9e7c850d63f9eb"
+      "sha256": "2295e80bf6d982c8753d5807f734b2d058958d5c0e3b26d30bd1881ffb119ab7"
     },
     {
       "path": "lib/operating-system/SLOSShape.sleela",

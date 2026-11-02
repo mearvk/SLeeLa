@@ -153,9 +153,19 @@ class SLOSSensitivityFetch {
 
   < After a fetch, the on-disk path to a (shape, component) C/C++ folder, >
   < e.g. destRoot/OS.Sensitivity.III/linux/os-core. "" if shape/component bad. >
+  < This routes through SLOSSensitivitySource.shapeComponentDir, so it honors >
+  < the per-shape layout: windows/compat-loader (Wine), windows/reactos, >
+  < macos/os-core (XNU), macos/puredarwin, macos/frameworks, macos/compat-loader. >
   String componentPath(String destRoot, String shape, String component) {
     String rel = src.dirFor(shape, component);
     if (rel == "") { return ""; }
     return destRoot + "/" + src.repo + "/" + rel;
+  }
+
+  < After a fetch, the on-disk path to the machine-readable shapes.json shape >
+  < descriptor at the warehouse root. The OSCreator runnable reads this to >
+  < resolve shapes/components/refs/licenses/build-entries deterministically. >
+  String descriptorPath(String destRoot) {
+    return src.descriptorPath(destRoot);
   }
 }

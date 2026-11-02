@@ -84,7 +84,20 @@ class SLOSSensitivitySource {
     repo = "OS.Sensitivity.III";
     url = "https://github.com/mearvk/OS.Sensitivity.III.git";
     branch = "main";
-    pinnedCommit = "f619c8f95acc4eecb734c4ddbb72cc1a954a36e9";
+    < repinned to the main tip that carries all three populated shapes >
+    < (complete linux-5.10.254 kernel; windows wine+reactos; macos xnu+ >
+    < puredarwin+gnustep+darling) plus the root shapes.json descriptor. >
+    pinnedCommit = "a4fd2fce89609481055e5c449acfe947614014d9";
+  }
+
+  < The machine-readable shape descriptor at the warehouse root. The OSCreator >
+  < runnable reads this (after fetch) to resolve shapes, component paths, >
+  < pinned upstream refs, licenses, and build entry points without hard-coding. >
+  String descriptorFile() { return "shapes.json"; }
+
+  < On-disk path to the descriptor after a fetch into destRoot. >
+  String descriptorPath(String destRoot) {
+    return destRoot + "/" + repo + "/" + descriptorFile();
   }
 
   < Repin to a specific revision (keeps fetches reproducible). >
@@ -124,18 +137,57 @@ class SLOSSensitivitySource {
     if (component == "os-loader")      { return "os-loader"; }
     if (component == "desktop-loader") { return "desktop-loader"; }
     if (component == "os-core")        { return "os-core"; }
+    < compatibility/standalone parts carried by the windows + macos shapes >
+    if (component == "compat-loader")  { return "compat-loader"; }
+    if (component == "reactos")        { return "reactos"; }
+    if (component == "puredarwin")     { return "puredarwin"; }
+    if (component == "frameworks")     { return "frameworks"; }
+    if (component == "installer")      { return "installer"; }
+    if (component == "file-systems")   { return "file-systems"; }
     return "";
   }
 
   boolean providesComponent(String component) { return componentDir(component) != ""; }
 
+  < ---- Shape-aware component resolution ------------------------------- >
+  << The windows and macos shapes carry a different component layout than the
+     native linux shape. shapeComponentDir resolves the EXACT warehouse path
+     for a (shape, component) pair, honoring the per-shape structure recorded
+     in the root shapes.json descriptor:
+       linux/os-core, linux/os-loader, linux/desktop-loader, ...
+       windows/compat-loader (Wine), windows/reactos (ReactOS standalone)
+       macos/os-core (XNU), macos/puredarwin, macos/frameworks,
+       macos/compat-loader (Darling)
+     Returns "" when the pair is not provided by this warehouse. >>
+  String shapeComponentDir(String shape, String component) {
+    String sd = shapeDir(shape);
+    if (sd == "") { return ""; }
+    String cd = componentDir(component);
+    if (cd == "") { return ""; }
+    < windows: only compat-loader (wine) and reactos are present >
+    if (sd == "windows") {
+      if (cd == "compat-loader" || cd == "reactos") { return sd + "/" + cd; }
+      return "";
+    }
+    < macos: os-core (xnu), puredarwin, frameworks, compat-loader (darling) >
+    if (sd == "macos") {
+      if (cd == "os-core" || cd == "puredarwin" || cd == "frameworks" || cd == "compat-loader") {
+        return sd + "/" + cd;
+      }
+      return "";
+    }
+    < linux: the native component set >
+    return sd + "/" + cd;
+  }
+
+  boolean providesShapeComponent(String shape, String component) {
+    return shapeComponentDir(shape, component) != "";
+  }
+
   < dirFor(shape, component): the warehouse path "<shape>/<component>", or "" if >
   < either the shape or the component is unknown. >
   String dirFor(String shape, String component) {
-    String sd = shapeDir(shape);
-    String cd = componentDir(component);
-    if (sd == "" || cd == "") { return ""; }
-    return sd + "/" + cd;
+    return shapeComponentDir(shape, component);
   }
 
   < ---- Downloadability notes ------------------------------------------ >
@@ -172,7 +224,15 @@ class SLOSSensitivitySource {
     s = s + "  os-loader     -> " + componentDir("os-loader") + "\n";
     s = s + "  desktop-loader-> " + componentDir("desktop-loader") + "\n";
     s = s + "  os-core       -> " + componentDir("os-core") + "\n";
-    s = s + "example path: " + dirFor("Linux", "os-core") + "\n";
+    s = s + "descriptor: " + descriptorFile() + " (machine-readable shape map)\n";
+    s = s + "example paths:\n";
+    s = s + "  Linux   os-core       -> " + dirFor("Linux", "os-core") + "\n";
+    s = s + "  Windows compat-loader -> " + dirFor("Windows", "compat-loader") + "\n";
+    s = s + "  Windows reactos       -> " + dirFor("Windows", "reactos") + "\n";
+    s = s + "  macOS   os-core        -> " + dirFor("macOS", "os-core") + "\n";
+    s = s + "  macOS   puredarwin    -> " + dirFor("macOS", "puredarwin") + "\n";
+    s = s + "  macOS   frameworks    -> " + dirFor("macOS", "frameworks") + "\n";
+    s = s + "  macOS   compat-loader -> " + dirFor("macOS", "compat-loader") + "\n";
     s = s + "downloadable:\n";
     s = s + "  source parts -> " + downloadabilityNote("source") + "\n";
     s = s + "  git lfs      -> " + downloadabilityNote("lfs") + "\n";
