@@ -45,5 +45,5 @@ class DecompilerLanguageReference {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String name; String family; String version; String compilerProgram; String sourceExtensions;
   String binaryFormats; String runtime; Boolean supported; Boolean safetyReferenceOnly;
-  function validate(); function describe(); function mapsTo(String format);
+  void validate(){} void describe(){} void mapsTo(String format){}
 }

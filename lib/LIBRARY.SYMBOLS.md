@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11760
+library-source-files: 11774
 library-packages: 108
 module-facade-symbols: 75
-total-symbol-records: 11835
+total-symbol-records: 11849
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -480,10 +480,12 @@ common-rails	PrintGlyphs.sleela	lib/common-rails/PrintGlyphs.sleela	source
 common-rails	PrintLayout.sleela	lib/common-rails/PrintLayout.sleela	source
 common-rails	PrintLine.sleela	lib/common-rails/PrintLine.sleela	source
 common-rails	PrintProgress.sleela	lib/common-rails/PrintProgress.sleela	source
+common-rails	PrintRail.sleela	lib/common-rails/PrintRail.sleela	source
 common-rails	PrintRenderer.sleela	lib/common-rails/PrintRenderer.sleela	source
 common-rails	PrintState.sleela	lib/common-rails/PrintState.sleela	source
 common-rails	PrintWriter.sleela	lib/common-rails/PrintWriter.sleela	source
 common-rails	SLPackage.sleela	lib/common-rails/SLPackage.sleela	facade
+common-rails	common-rails.sleela	lib/common-rails/common-rails.sleela	source
 compiler	BinaryFormatReference.sleela	lib/compiler/BinaryFormatReference.sleela	source
 compiler	DynamiteConnector.sleela	lib/compiler/DynamiteConnector.sleela	source
 compiler	LanguageReference.sleela	lib/compiler/LanguageReference.sleela	source
@@ -1020,17 +1022,29 @@ debugger	SLStepController.sleela	lib/debugger/SLStepController.sleela	source
 debugger	SLTraceBuffer.sleela	lib/debugger/SLTraceBuffer.sleela	source
 debugger	SLTraceEvent.sleela	lib/debugger/SLTraceEvent.sleela	source
 debugger	SLWatchpoint.sleela	lib/debugger/SLWatchpoint.sleela	source
+decompiler	Analysis.sleela	lib/decompiler/Analysis.sleela	source
+decompiler	Architecture.sleela	lib/decompiler/Architecture.sleela	source
+decompiler	Artifact.sleela	lib/decompiler/Artifact.sleela	source
 decompiler	BinaryFormatReference.sleela	lib/decompiler/BinaryFormatReference.sleela	source
+decompiler	CFG.sleela	lib/decompiler/CFG.sleela	source
+decompiler	Decoder.sleela	lib/decompiler/Decoder.sleela	source
 decompiler	DecompilerModule.sleela	lib/decompiler/DecompilerModule.sleela	source
+decompiler	Diagnostics.sleela	lib/decompiler/Diagnostics.sleela	source
+decompiler	Format.sleela	lib/decompiler/Format.sleela	source
 decompiler	FractionalInput.sleela	lib/decompiler/FractionalInput.sleela	source
 decompiler	LanguageReference.sleela	lib/decompiler/LanguageReference.sleela	source
+decompiler	Modules.sleela	lib/decompiler/Modules.sleela	source
 decompiler	OSDiscernment.sleela	lib/decompiler/OSDiscernment.sleela	source
 decompiler	OutputTarget.sleela	lib/decompiler/OutputTarget.sleela	source
 decompiler	ProgramMapping.sleela	lib/decompiler/ProgramMapping.sleela	source
+decompiler	Reconstruction.sleela	lib/decompiler/Reconstruction.sleela	source
+decompiler	SLIR.sleela	lib/decompiler/SLIR.sleela	source
 decompiler	SLPackage.sleela	lib/decompiler/SLPackage.sleela	facade
 decompiler	SafetyReference.sleela	lib/decompiler/SafetyReference.sleela	source
 decompiler	SleelaDecompiler.sleela	lib/decompiler/SleelaDecompiler.sleela	source
+decompiler	Source.sleela	lib/decompiler/Source.sleela	source
 decompiler	SourceLanguage.sleela	lib/decompiler/SourceLanguage.sleela	source
+decompiler	VMTarget.sleela	lib/decompiler/VMTarget.sleela	source
 decompiler	artifact-analysis.sleela	lib/decompiler/tutorials/examples/artifact-analysis.sleela	source
 decompiler	fractional-reconstruction.sleela	lib/decompiler/tutorials/examples/fractional-reconstruction.sleela	source
 deliberation	SLAStarSearch.sleela	lib/deliberation/SLAStarSearch.sleela	source

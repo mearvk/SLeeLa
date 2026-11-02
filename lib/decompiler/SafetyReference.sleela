@@ -45,5 +45,5 @@ class DecompilerSafetyReference {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   String language; String program; String format; String platform; String evidence;
   String trustRequirement; String analysisPolicy; Boolean inspectOnly; Boolean requireVerification;
-  function validate(); function describe(); function permitsExecution();
+  void validate(){} void describe(){} void permitsExecution(){}
 }
