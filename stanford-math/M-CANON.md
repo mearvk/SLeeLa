@@ -201,6 +201,91 @@ together) is a **value about how systems ought to be run**, not a physical law.
 It is recorded because the premise names it, and bounded for the same reason as
 everything else here: a value statement is marked as a value statement.
 
+## 8. Dictionary — every coined term, defined once
+
+The *stable function* of this document: one authoritative glossary. Each coined
+term used anywhere above is defined here exactly once, alphabetically, with its
+plain meaning and the real, citable thing it points at. If a term is used in the
+document but not listed here, that is a defect to fix — the dictionary is meant
+to be complete.
+
+| Term | Plain definition | Real anchor (citable) |
+|------|------------------|-----------------------|
+| **Favor as on Newton** | Treating "favor" as a directed tendency, with the seriousness Newton gave to force — not a mood. | A directed tendency toward a more-settled (lower-energy) state. |
+| **Favor toward the Property of Assignment** | Preferring conduct that assigns credit, value, and responsibility where they belong. | Attribution / fair allocation (the archive's integrity rule). |
+| **M (the quantity)** | The name the premise gives to *net favorability of conduct.* A lens, not a measured number. | No unit; analogy to the sign of ΔG only. |
+| **Method of Consciousness and Cooperation** | Delivery done attentively and together — not blindly, not alone. | Coordination / cooperative operation of a shared system. |
+| **Pace of scale of National Inventory** | The idea that the economy's pace is set by how much is in the system. | Work-in-process / inventory; the stocks–flows relation. |
+| **Pace Sponsorship / real-time linear experience** | The steady upkeep that holds a delivery pace open, lived moment by moment in real linear time. | Running a system at steady state so flow time stays bounded. |
+| **Principalism toward net Conduct Becoming** | The principle of conduct becoming better on balance — net good over net harm. | A direction-of-change idea (sign of ΔG), by analogy only. |
+| **Principles of Delivery** | The rules by which things get where they are going, on time. | Operations, logistics, supply-chain flow. |
+| **Sonus / the Dance between Merriment and the Sonus** | The pleasant back-and-forth between joy and harmony — conduct that is enjoyed. | Resonance / harmony, figurative, not a frequency. |
+| **Speed of the National Economy** | The rate at which things actually reach people, economy-wide. | Throughput / flow rate; velocity of money; inventory turnover. |
+| **Sponsorship of the Principles of Delivery of the Method of Consciousness and Cooperation** | The full name of §7's "Pace Sponsorship": keeping delivery steady, attentive, and cooperative. | Operating a logistics/economic system at steady state (Little's Law regime). |
+| **Thermodynamic Favor** | The sense that some conduct is "favored" and flows on its own, like a spontaneous reaction. | Spontaneity: a process is favored when its free-energy change is negative. |
+| **Throughput and time co-exist** | The amount flowing and the time it takes are two faces of one relation. | Little's Law: inventory = throughput × flow-time. |
+| **How Travel lands on Subject** | How an action, once set in motion, arrives — where it rests and on whom. | Reaching equilibrium; an action's actual effect on people. |
+
+## 9. Documentation — how this document serves the record (incl. the United States)
+
+This section documents what the document *is*, how it connects to the rest of
+the archive, and how to use it — the second half of its stable function.
+
+### 9.1 Premise vs. recorded law (the standing distinction)
+
+| In this document (`M-CANON.md`) | In the equation canons (`SM*Canon.sleela`) |
+|---------------------------------|---------------------------------------------|
+| Premises and value statements. | Established, published results. |
+| No discoverer/paper/year required. | Real discoverer, form, and year required. |
+| Never compiled or counted. | Compiled; counted in the `SMArchive` total. |
+| Labelled explicitly as a premise. | Faithful to the public record or marked `unknown`. |
+
+Nothing in this file is ever promoted into a canon without a real citation. That
+is the one hard rule, applied to this document.
+
+### 9.2 The real, citable U.S.-anchored results these premises lean on
+
+Read plainly, "documentation that serves the United States" means: point the
+premises at the genuine results — many of them U.S.-authored or U.S.-adopted —
+that are *already recorded faithfully* in the canons, so the ideas rest on a real
+national record rather than on assertion. These are facts of authorship/adoption,
+not a claim that the archive certifies policy:
+
+- **Equation of exchange / quantity theory of money** — `M V = P Q`. *(Irving
+  Fisher, Yale, 1911 — American economist; `SMFinanceCanon`.)*
+- **Little's Law** — `L = lambda W`. *(John D. C. Little, MIT, 1961 — American
+  operations researcher; the real core of the Pace premise.)*
+- **Capital Asset Pricing Model & beta** — `E[R_i] = R_f + beta_i (E[R_m] - R_f)`.
+  *(William Sharpe, Stanford, 1964 — American economist, Nobel 1990;
+  `SMFinanceCanon`.)*
+- **Modigliani–Miller** — capital-structure irrelevance. *(Modigliani & Miller,
+  largely U.S. academy, 1958; `SMFinanceCanon`.)*
+- **Taylor rule** — interest-rate policy rule. *(John B. Taylor, Stanford, 1993 —
+  American economist; `SMFinanceCanon`.)*
+- **Solow growth** — steady-state growth. *(Robert Solow, MIT, 1956 — American
+  economist, Nobel 1987; `SMFinanceCanon`.)*
+- **Shannon entropy & channel capacity** — `H = -sum p log2 p`, `C = B log2(1+S/N)`.
+  *(Claude Shannon, Bell Labs, 1948 — American; `SMCrossoverCanon`.)*
+
+> Where a contribution is international or diffuse, this document says so rather
+> than claiming it for one nation. "Serves the United States" here means *the
+> U.S.-authored and U.S.-adopted parts of a shared, international record* — named
+> honestly, credited to the real authors, and never inflated.
+
+### 9.3 How to validate the anchors
+
+The anchors above are not just prose — they are live entries in the canons. To
+confirm any of them, build the source compiler and run the archive demo, which
+prints every recorded equation and the running total:
+
+```sh
+SLEELA_LIB="$PWD/stanford-math" impl/build/sleela check stanford-math/SMArchive.sleela
+SLEELA_LIB="$PWD/stanford-math" impl/build/sleela run   stanford-math/SMArchive.sleela
+```
+
+`M-CANON.md` itself is documentation, not code: it is never compiled and never
+counted in the equation total. It serves the record by *pointing at* what is.
+
 ---
 
 ## Summary
