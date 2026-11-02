@@ -96,9 +96,30 @@ void function_evidence(std::ostream& out, const std::string& lc, const Symbol& f
     }
 }
 
+// Find a lifted SLIR function matching an entry address.
+const Function* lifted_for(const Module* mod, std::uint64_t address) {
+    if (!mod) return nullptr;
+    for (const auto& f : mod->functions) if (f.address == address) return &f;
+    return nullptr;
+}
+// Render a function's lifted SLIR statements, indented by `ind`. Returns true if it wrote
+// a body, false if there was nothing lifted (caller then emits the fallback note).
+bool lifted_body(std::ostream& out, const std::string& ind, const Function* f,
+                 const std::string& comment_prefix = "") {
+    if (!f) return false;
+    std::size_t stmts = 0;
+    for (const auto& blk : f->blocks) for (const auto& o : blk.operations) if (!o.text.empty()) ++stmts;
+    if (!stmts) return false;
+    for (const auto& blk : f->blocks)
+        for (const auto& o : blk.operations)
+            if (!o.text.empty()) out << ind << comment_prefix << o.text << "\n";
+    return true;
+}
+
 // --- C / C++ ------------------------------------------------------------------------------
 std::string emit_c_like(const Artifact& a, const std::vector<Instruction>& ins,
-                        const std::vector<Symbol>& funcs, const DecompilationOptions& opt, bool cpp) {
+                        const std::vector<Symbol>& funcs, const DecompilationOptions& opt, bool cpp,
+                        const Module* mod = nullptr) {
     std::ostringstream out;
     banner(out, a, "/* ----------------------------------------------------------------------- */",
            " *", " */", cpp ? "Slecompiler reconstruction (C++)" : "Slecompiler reconstruction (C)");
@@ -120,8 +141,10 @@ std::string emit_c_like(const Artifact& a, const std::vector<Instruction>& ins,
         out << " * @note  Entry " << hex0x(f.address) << "; " << evidence_word(f.provenance.confidence) << " evidence.\n";
         out << " */\n";
         out << "void " << sanitize(f.name) << "(void) {\n";
+        if (!lifted_body(out, "    ", lifted_for(mod, f.address)))
+            out << "    /* Body not yet lifted to statements; see evidence below. */\n";
+        out << "\n";
         function_evidence(out, "    // ", f, ins, opt);
-        out << "    /* Body not yet lifted to statements; see evidence above. */\n";
         out << "}\n\n";
     }
     if (cpp) out << "} // namespace slecompiler\n";
@@ -151,7 +174,8 @@ std::string emit_c_header(const Artifact& a, const std::vector<Symbol>& funcs,
 
 // --- Java ---------------------------------------------------------------------------------
 std::string emit_java(const Artifact& a, const std::vector<Instruction>& ins,
-                      const std::vector<Symbol>& funcs, const DecompilationOptions& opt) {
+                      const std::vector<Symbol>& funcs, const DecompilationOptions& opt,
+                      const Module* mod = nullptr) {
     std::ostringstream out;
     banner(out, a, "// ----------------------------------------------------------------------- //",
            "//", "// ----------------------------------------------------------------------- //",
@@ -165,8 +189,10 @@ std::string emit_java(const Artifact& a, const std::vector<Instruction>& ins,
         out << "     * <p>Entry " << hex0x(f.address) << "; " << evidence_word(f.provenance.confidence) << " evidence.\n";
         out << "     */\n";
         out << "    public static void " << sanitize(f.name) << "() {\n";
+        if (!lifted_body(out, "        ", lifted_for(mod, f.address)))
+            out << "        // Body not yet lifted to statements; see evidence below.\n";
+        out << "\n";
         function_evidence(out, "        // ", f, ins, opt);
-        out << "        // Body not yet lifted to statements; see evidence above.\n";
         out << "    }\n\n";
     }
     if (funcs.empty()) {
@@ -180,7 +206,8 @@ std::string emit_java(const Artifact& a, const std::vector<Instruction>& ins,
 
 // --- Sleela -------------------------------------------------------------------------------
 std::string emit_sleela(const Artifact& a, const std::vector<Instruction>& ins,
-                        const std::vector<Symbol>& funcs, const DecompilationOptions& opt) {
+                        const std::vector<Symbol>& funcs, const DecompilationOptions& opt,
+                        const Module* mod = nullptr) {
     std::ostringstream out;
     banner(out, a, "< ----------------------------------------------------------------------- >",
            "<", "< ----------------------------------------------------------------------- >",
@@ -190,8 +217,12 @@ std::string emit_sleela(const Artifact& a, const std::vector<Instruction>& ins,
         out << "  << recovered native function " << f.name << " @ " << hex0x(f.address)
             << " (" << evidence_word(f.provenance.confidence) << ") >>\n";
         out << "  function " << sanitize(f.name) << "() {\n";
+        // Lifted statements are shown as Sleela `<` annotations (the lift targets a neutral
+        // pseudo-C form, not Sleela grammar), so the emitted module stays lexically valid.
+        if (!lifted_body(out, "    < ", lifted_for(mod, f.address)))
+            out << "    << body not yet lifted to statements; see evidence below >>\n";
+        out << "\n";
         function_evidence(out, "    < ", f, ins, opt);
-        out << "    << body not yet lifted to statements; see evidence above >>\n";
         out << "  }\n\n";
     }
     if (funcs.empty()) {
@@ -228,6 +259,18 @@ std::string SourceEmitter::emit(const Artifact& a, const std::vector<Instruction
         case SourceLanguage::Sleela: return emit_sleela(a, ins, funcs, options);
         case SourceLanguage::C: return emit_c_like(a, ins, funcs, options, false);
         case SourceLanguage::CPlusPlus: return emit_c_like(a, ins, funcs, options, true);
+    }
+    throw std::invalid_argument("unsupported source output language");
+}
+std::string SourceEmitter::emit(const Artifact& a, const std::vector<Instruction>& ins,
+                                const ControlFlowGraph& cfg, const std::vector<Symbol>& funcs,
+                                const Module& module, const DecompilationOptions& options) {
+    (void)cfg;
+    switch (options.language) {
+        case SourceLanguage::Java: return emit_java(a, ins, funcs, options, &module);
+        case SourceLanguage::Sleela: return emit_sleela(a, ins, funcs, options, &module);
+        case SourceLanguage::C: return emit_c_like(a, ins, funcs, options, false, &module);
+        case SourceLanguage::CPlusPlus: return emit_c_like(a, ins, funcs, options, true, &module);
     }
     throw std::invalid_argument("unsupported source output language");
 }

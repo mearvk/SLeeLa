@@ -132,9 +132,28 @@ with an include guard and documented prototypes. Function candidates are promote
 call targets and symbol/export evidence rather than from every basic-block leader, so the
 recovered interface reflects real entry points.
 
+### SLIR statement lifting
+
+Recovered instructions are lifted into architecture-neutral **SLIR** (`Lifter::lift`):
+each native instruction maps to one SLIR `Operation` whose opcode reflects its observed
+effect — `Move` (mov/lea), `Add`/`Sub`/`Mul`/`Div`, `Compare` (cmp/test/cbz), `Branch`,
+`Call`, `Return`, `Store`/`Load` (push/pop) — with register/operand labels carried as SLIR
+`Value`s via per-function value numbering, the original immediate, and preserved
+provenance. Each operation also carries a rendered, architecture-neutral statement
+(`rbp = rsp;`, `rsp -= 0x10;`, `compare([rbp-0x4], 0x7f);`, `if (cc) goto 0x59;`,
+`return;`). Unrecognized effects become `Nop` rather than invented semantics, keeping the
+lift faithful. The lifted `Module` is the same shape the SLIR VM executes, so lifted or
+hand-built IR can be validated by the deterministic VM.
+
+`decompile` renders these lifted statements as the function body (above the evidence
+table) for C, C++, Java, and Sleela — in Sleela as `<` annotations so the module stays
+lexically valid. The result graduates the reconstruction from evidence-only comments to
+readable, provenance-backed statements.
+
 The natural next increments are per-region decode following `$a`/`$t` in the function
-recovery (not only the linear sweep), 8-bit/16-bit x86 register naming for byte-form
-opcodes, and lifting the recovered operands into SLIR statements.
+recovery (not only the linear sweep), reconciling symbol virtual addresses with the
+file-offset sweep so symbol-named functions lift their bodies, 8-bit/16-bit x86 register
+naming for byte-form opcodes, and SSA/dataflow typing over the lifted SLIR.
 
 ## Native artifact classes
 

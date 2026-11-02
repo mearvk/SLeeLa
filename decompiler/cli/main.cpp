@@ -84,10 +84,11 @@ int main(int argc, char** argv) {
             auto ins = sleela::decompiler::Decoder{}.decode(a, at, length);
             auto cfg = sleela::decompiler::Analyzer{}.build_cfg(ins);
             auto funcs = sleela::decompiler::Analyzer{}.recover_function_candidates(a, cfg);
+            auto module = sleela::decompiler::Lifter{}.lift(a, ins, cfg, funcs);
             sleela::decompiler::DecompilationOptions options{language, "decompiled"};
             auto source = want_header
                 ? sleela::decompiler::SourceEmitter::emit_header(a, funcs, options)
-                : sleela::decompiler::SourceEmitter::emit(a, ins, cfg, funcs, options);
+                : sleela::decompiler::SourceEmitter::emit(a, ins, cfg, funcs, module, options);
             if (output_file.empty()) {
                 std::cout << source;
             } else {
