@@ -74,7 +74,7 @@ class SMMathCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[40];
+    eqs = new SMEquation[48];
     filled = 0;
 
     add("Pythagorean theorem", "a^2 + b^2 = c^2", "geometry", "Pythagoras (attrib.)", "c. 530 BC");
@@ -111,6 +111,16 @@ class SMMathCanon {
     add("Eigenvalue equation", "A v = lambda v", "linear algebra", "Cauchy; Hilbert (spectral)", "1829");
     add("Green-Tao theorem", "primes contain arbitrarily long arithmetic progressions", "number theory", "Ben Green & Terence Tao", "2004");
     add("Bayes-rule odds form", "posterior odds = likelihood ratio * prior odds", "probability", "Thomas Bayes", "1763");
+    add("L'Hopital's rule", "lim f/g = lim f'/g'  (0/0 or inf/inf)", "calculus", "l'Hopital; Bernoulli", "1696");
+    add("Integration by parts", "integral u dv = u v - integral v du", "calculus", "Brook Taylor (attrib.)", "1715");
+    add("Chain rule", "d/dx f(g(x)) = f'(g(x)) g'(x)", "calculus", "Leibniz (notation)", "1676");
+    add("Jensen's inequality", "f(E[X]) <= E[f(X)]  (f convex)", "analysis", "Johan Jensen", "1906");
+    add("AM-GM inequality", "(x1+...+xn)/n >= (x1...xn)^(1/n)", "analysis", "Cauchy (proof)", "1821");
+    add("Sum of first n integers", "sum_{k=1}^n k = n(n+1)/2", "algebra", "classical; Gauss (attrib.)", "unknown");
+    add("Geometric series", "sum_{k=0}^inf r^k = 1/(1-r),  |r| < 1", "analysis", "classical", "unknown");
+    add("Euler's totient product", "phi(n) = n product_{p|n} (1 - 1/p)", "number theory", "Leonhard Euler", "1763");
+    add("Fermat's little theorem", "a^p = a (mod p),  p prime", "number theory", "Pierre de Fermat", "1640");
+    add("Cantor's diagonal cardinality", "|P(S)| > |S|  (2^aleph0 > aleph0)", "set theory", "Georg Cantor", "1891");
   }
 
   void add(String name, String form, String field, String who, String year) {

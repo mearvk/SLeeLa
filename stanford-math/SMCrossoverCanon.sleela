@@ -73,7 +73,7 @@ class SMCrossoverCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[16];
+    eqs = new SMEquation[20];
     filled = 0;
 
     add("Black-Scholes PDE", "dV/dt + (1/2) sigma^2 S^2 d2V/dS2 + r S dV/dS - r V = 0", "mathematical finance", "Black; Scholes; Merton", "1973");
@@ -88,6 +88,10 @@ class SMCrossoverCanon {
     add("Shannon channel capacity", "C = B log2(1 + S/N)", "information theory", "Claude Shannon", "1948");
     add("Logistic (population) equation", "dN/dt = r N (1 - N/K)", "mathematical biology", "Pierre Francois Verhulst", "1838");
     add("Schrodinger-form diffusion (heat equation)", "du/dt = alpha laplacian u", "applied analysis", "Joseph Fourier", "1822");
+    add("Michaelis-Menten kinetics", "v = V_max [S] / (K_m + [S])", "biochemistry", "Michaelis; Menten", "1913");
+    add("Hardy-Weinberg principle", "p^2 + 2 p q + q^2 = 1", "population genetics", "Hardy; Weinberg", "1908");
+    add("Lotka-Volterra predator-prey", "dx/dt = a x - b x y,  dy/dt = c x y - d y", "mathematical biology", "Lotka; Volterra", "1925");
+    add("Kelly criterion", "f* = (b p - q) / b", "mathematical finance", "John L. Kelly Jr.", "1956");
   }
 
   void add(String name, String form, String field, String who, String year) {

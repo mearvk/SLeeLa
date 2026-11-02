@@ -74,7 +74,7 @@ class SMPhysicsCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[44];
+    eqs = new SMEquation[54];
     filled = 0;
 
     add("Newton's second law", "F = m*a  (F = dp/dt)", "classical mechanics", "Isaac Newton", "1687");
@@ -113,6 +113,16 @@ class SMPhysicsCanon {
     add("Navier-Stokes (incompressible)", "rho(dv/dt + v.grad v) = -grad p + mu laplacian v + f", "fluid dynamics", "Navier; Stokes", "1845");
     add("Wave equation", "d^2u/dt^2 = c^2 laplacian u", "classical field theory", "Jean le Rond d'Alembert", "1746");
     add("Bernoulli's principle", "p + (1/2) rho v^2 + rho g h = constant", "fluid dynamics", "Daniel Bernoulli", "1738");
+    add("Newton's first law (inertia)", "v = constant when sum F = 0", "classical mechanics", "Isaac Newton", "1687");
+    add("Newton's third law", "F_12 = -F_21", "classical mechanics", "Isaac Newton", "1687");
+    add("Gravitational potential energy", "U = m g h  (near surface)", "classical mechanics", "classical", "unknown");
+    add("Simple harmonic motion", "x(t) = A cos(omega t + phi)", "classical mechanics", "classical", "unknown");
+    add("Centripetal acceleration", "a_c = v^2 / r", "classical mechanics", "Christiaan Huygens", "1659");
+    add("Doppler effect", "f' = f (c +/- v_o) / (c -/+ v_s)", "waves", "Christian Doppler", "1842");
+    add("Snell's law", "n1 sin(theta1) = n2 sin(theta2)", "optics", "Snellius; Descartes", "1621");
+    add("Ohm's law", "V = I R", "electromagnetism", "Georg Ohm", "1827");
+    add("Compton scattering", "d_lambda = (h / (m_e c))(1 - cos theta)", "quantum mechanics", "Arthur Compton", "1923");
+    add("Wien's displacement law", "lambda_max T = b", "quantum mechanics", "Wilhelm Wien", "1893");
   }
 
   void add(String name, String form, String field, String who, String year) {

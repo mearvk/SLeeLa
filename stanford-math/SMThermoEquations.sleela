@@ -73,7 +73,7 @@ class SMThermoEquations {
   int filled;
 
   void build() {
-    eqs = new SMEquation[24];
+    eqs = new SMEquation[28];
     filled = 0;
 
     add("Zeroth law of thermodynamics", "A~C and B~C  =>  A~B (thermal equilibrium is transitive)", "thermodynamics", "Fowler & Guggenheim (named)", "1939");
@@ -96,6 +96,10 @@ class SMThermoEquations {
     add("Gibbs-Helmholtz equation", "d(G/T)/dT = -H / T^2", "thermodynamics", "Gibbs; Helmholtz", "1882");
     add("Sackur-Tetrode equation", "S = N k [ln(V/N (4 pi m U/(3 N h^2))^{3/2}) + 5/2]", "statistical mechanics", "Sackur; Tetrode", "1912");
     add("Landauer's principle", "E_min = k T ln(2) per bit erased", "information thermodynamics", "Rolf Landauer", "1961");
+    add("Van der Waals equation of state", "(P + a n^2/V^2)(V - n b) = n R T", "thermodynamics", "Johannes van der Waals", "1873");
+    add("Heat capacity relation (ideal gas)", "C_p - C_v = n R", "thermodynamics", "Mayer's relation", "1842");
+    add("Fourier's law of heat conduction", "q = -k grad T", "thermodynamics", "Joseph Fourier", "1822");
+    add("Chemical potential (Gibbs)", "mu = (dG/dN)_{T,P}", "statistical mechanics", "J. Willard Gibbs", "1876");
   }
 
   void add(String name, String form, String field, String who, String year) {
