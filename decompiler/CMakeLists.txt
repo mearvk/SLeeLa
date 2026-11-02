@@ -22,6 +22,7 @@ add_library(sleela_decompiler STATIC
     src/artifact.cpp
     src/decoder.cpp
     src/pe.cpp
+    src/macho.cpp
     src/elf.cpp
     src/slir.cpp
     src/vm.cpp

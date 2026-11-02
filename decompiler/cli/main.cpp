@@ -101,6 +101,27 @@ int main(int argc, char** argv) {
                   << "\nformat=" << static_cast<int>(a.format())
                   << "\nsha256=" << a.sha256() << "\n";
 
+        if (command == "inspect") {
+            std::cout << "architecture=" << static_cast<int>(a.architecture())
+                      << "\nartifact_class=" << static_cast<int>(a.artifact_class()) << "\n";
+            const auto& ni = a.interfaces();
+            std::cout << "sections=" << ni.sections.size()
+                      << " symbols=" << ni.symbols.size()
+                      << " imports=" << ni.imports.size()
+                      << " exports=" << ni.exports.size()
+                      << " relocations=" << ni.relocations.size()
+                      << " archive_members=" << ni.archive_members.size() << "\n";
+            const auto& lm = a.library_metadata();
+            if (!lm.soname.empty()) std::cout << "soname=" << lm.soname << "\n";
+            for (const auto& n : lm.needed_libraries) std::cout << "needs=" << n << "\n";
+            if (!lm.build_id.empty()) std::cout << "build_id=" << lm.build_id << "\n";
+            const auto& km = a.kernel_module_metadata();
+            if (!km.module_name.empty()) std::cout << "module=" << km.module_name << "\n";
+            if (!km.vermagic.empty()) std::cout << "vermagic=" << km.vermagic << "\n";
+            if (!km.license.empty()) std::cout << "module_license=" << km.license << "\n";
+            return 0;
+        }
+
         if (command == "disassemble" || command == "cfg" || command == "functions") {
             const std::size_t length = argc > 3 ? parse_length(argv[3]) : 64;
             auto ins = sleela::decompiler::Decoder{}.decode(a, 0, length);

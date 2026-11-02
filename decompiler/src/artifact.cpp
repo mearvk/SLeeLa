@@ -1,6 +1,8 @@
 #include "sleela/decompiler/decompiler.hpp"
 #include "sleela/decompiler/errors.hpp"
 #include "sleela/decompiler/elf.hpp"
+#include "sleela/decompiler/pe.hpp"
+#include "sleela/decompiler/macho.hpp"
 #include "sleela/decompiler/archive.hpp"
 #include <algorithm>
 #include <fstream>
@@ -41,6 +43,10 @@ Artifact Artifact::from_bytes(std::span<const std::uint8_t>b,std::string n){
     const bool named_so=suffix(a.name_,".so")||a.name_.find(".so.")!=std::string::npos;
     const bool named_a=suffix(a.name_,".a");
     const bool named_o=suffix(a.name_,".o");
+    const bool macho_magic = a.bytes_.size()>=4 && (
+        (a.bytes_[0]==0xfe&&a.bytes_[1]==0xed&&a.bytes_[2]==0xfa&&(a.bytes_[3]==0xce||a.bytes_[3]==0xcf)) || // big-endian MH_MAGIC/_64
+        (a.bytes_[3]==0xfe&&a.bytes_[2]==0xed&&a.bytes_[1]==0xfa&&(a.bytes_[0]==0xce||a.bytes_[0]==0xcf)) || // little-endian
+        (a.bytes_[0]==0xca&&a.bytes_[1]==0xfe&&a.bytes_[2]==0xba&&(a.bytes_[3]==0xbe||a.bytes_[3]==0xbf)));  // FAT/universal
     if(a.bytes_.size()>=2&&a.bytes_[0]=='M'&&a.bytes_[1]=='Z'){
         a.format_=Format::PE;
         a.artifact_class_=suffix(a.name_,".sys")?ArtifactClass::Driver:ArtifactClass::Executable;
@@ -48,6 +54,8 @@ Artifact Artifact::from_bytes(std::span<const std::uint8_t>b,std::string n){
             auto m=u16(a.bytes_,pe+4);if(m==0x14c)a.architecture_=Architecture::X86;else if(m==0x8664)a.architecture_=Architecture::X86_64;else if(m==0xaa64)a.architecture_=Architecture::ARM64;
             const auto characteristics=u16(a.bytes_,pe+22); if((characteristics&0x2000)!=0)a.artifact_class_=ArtifactClass::DynamicLibrary;
         }}
+    } else if(macho_magic){
+        a.format_=Format::MachO;
     } else if(a.bytes_.size()>=20&&a.bytes_[0]==0x7f&&a.bytes_[1]=='E'&&a.bytes_[2]=='L'&&a.bytes_[3]=='F'){
         a.format_=Format::ELF; const auto type=u16(a.bytes_,16); const auto m=u16(a.bytes_,18);
         if(m==3)a.architecture_=Architecture::X86;else if(m==62)a.architecture_=Architecture::X86_64;else if(m==40)a.architecture_=Architecture::ARM;else if(m==183)a.architecture_=Architecture::ARM64;
@@ -63,6 +71,8 @@ Artifact Artifact::from_bytes(std::span<const std::uint8_t>b,std::string n){
     if(named_a)a.artifact_class_=ArtifactClass::StaticArchive;
     if(a.format_==Format::GNUArchive){ analyze_archive(a.bytes_,a.interfaces_); }
     if(a.format_==Format::ELF){ auto e=analyze_elf(a.bytes_,a.name_); a.interfaces_.segments=e.segments; a.interfaces_.sections=e.sections; a.interfaces_.symbols=e.symbols; a.interfaces_.imports=e.imports; a.interfaces_.exports=e.exports; a.interfaces_.relocations=e.relocations; a.library_metadata_=e.library; a.kernel_module_metadata_=e.kernel_module; }
+    if(a.format_==Format::PE){ auto pe=analyze_pe(a.bytes_,a.name_); if(pe.valid){ a.interfaces_.sections=pe.sections; a.interfaces_.symbols=pe.symbols; a.interfaces_.imports=pe.imports; a.interfaces_.exports=pe.exports; a.interfaces_.relocations=pe.relocations; a.library_metadata_=pe.library; if(pe.architecture!=Architecture::Unknown)a.architecture_=pe.architecture; if(pe.artifact_class!=ArtifactClass::Unknown)a.artifact_class_=pe.artifact_class; } }
+    if(a.format_==Format::MachO){ auto mo=analyze_macho(a.bytes_,a.name_); if(mo.valid){ a.interfaces_.sections=mo.sections; a.interfaces_.symbols=mo.symbols; a.interfaces_.imports=mo.imports; a.interfaces_.exports=mo.exports; a.library_metadata_=mo.library; if(mo.architecture!=Architecture::Unknown)a.architecture_=mo.architecture; if(mo.artifact_class!=ArtifactClass::Unknown)a.artifact_class_=mo.artifact_class; } }
     if(a.format_==Format::Raw&&named_ko)a.artifact_class_=ArtifactClass::KernelModule;
     return a;
 }

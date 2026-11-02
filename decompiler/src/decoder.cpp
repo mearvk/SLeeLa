@@ -56,9 +56,57 @@ void mark_relocation(const Artifact& a,Instruction& i){
     }
 }
 }
+// --- AArch64 (ARM64) fixed-width decoder -------------------------------------------------
+// A64 instructions are 4 bytes, little-endian. This recovers the control-flow-relevant
+// subset (branches, compares, returns, indirect transfers, nop) needed to build a CFG;
+// other encodings are represented conservatively as a ".inst" word rather than guessed.
+namespace {
+std::uint32_t a64_word(const std::vector<std::uint8_t>& b,std::size_t p){
+    return std::uint32_t(b[p])|(std::uint32_t(b[p+1])<<8)|(std::uint32_t(b[p+2])<<16)|(std::uint32_t(b[p+3])<<24);
+}
+std::int64_t sign_extend(std::uint64_t v,unsigned bits){
+    const std::uint64_t m=std::uint64_t(1)<<(bits-1); return std::int64_t((v^m)-m);
+}
+Instruction a64_base(std::size_t p,const std::vector<std::uint8_t>& b,const std::string& mnem,double conf=0.85){
+    Instruction i;i.address=p;i.bytes.assign(b.begin()+p,b.begin()+p+4);i.mnemonic=mnem;i.provenance={p,p,"stage4-arm64",conf};return i;
+}
+Instruction decode_a64(const std::vector<std::uint8_t>& b,std::size_t p){
+    const std::uint32_t w=a64_word(b,p);
+    auto rel=[&](std::int64_t imm){return std::uint64_t(std::int64_t(p)+imm);};
+    if(w==0xd503201f) return a64_base(p,b,"nop");
+    if(w==0xd65f03c0){auto i=a64_base(p,b,"ret");i.is_return=true;return i;}            // RET x30
+    if((w&0xfffffc1f)==0xd65f0000){auto i=a64_base(p,b,"ret");i.is_return=true;i.is_indirect=true;return i;} // RET Xn
+    if((w&0xfc000000)==0x14000000||(w&0xfc000000)==0x94000000){                          // B / BL imm26
+        const bool link=(w&0x80000000)!=0; auto t=rel(sign_extend((w&0x03ffffff),26)*4);
+        auto i=a64_base(p,b,link?"bl":"b"); if(link)i.is_call=true;else i.is_branch=true;
+        i.branch_targets.push_back(t); i.operands.push_back({Operand::Kind::Relative,hex(t),std::int64_t(t)}); return i;
+    }
+    if((w&0xff000010)==0x54000000){                                                      // B.cond imm19
+        auto t=rel(sign_extend((w>>5)&0x7ffff,19)*4); auto i=a64_base(p,b,"b.cond");
+        i.is_branch=true;i.is_conditional=true;i.branch_targets.push_back(t);i.operands.push_back({Operand::Kind::Relative,hex(t),std::int64_t(t)});return i;
+    }
+    if((w&0x7e000000)==0x34000000){                                                      // CBZ/CBNZ imm19
+        auto t=rel(sign_extend((w>>5)&0x7ffff,19)*4); auto i=a64_base(p,b,(w&0x01000000)?"cbnz":"cbz");
+        i.is_branch=true;i.is_conditional=true;i.branch_targets.push_back(t);i.operands.push_back({Operand::Kind::Relative,hex(t),std::int64_t(t)});return i;
+    }
+    if((w&0x7e000000)==0x36000000){                                                      // TBZ/TBNZ imm14
+        auto t=rel(sign_extend((w>>5)&0x3fff,14)*4); auto i=a64_base(p,b,(w&0x01000000)?"tbnz":"tbz");
+        i.is_branch=true;i.is_conditional=true;i.branch_targets.push_back(t);i.operands.push_back({Operand::Kind::Relative,hex(t),std::int64_t(t)});return i;
+    }
+    if((w&0xfffffc1f)==0xd61f0000){auto i=a64_base(p,b,"br");i.is_branch=true;i.is_indirect=true;return i;}   // BR Xn
+    if((w&0xfffffc1f)==0xd63f0000){auto i=a64_base(p,b,"blr");i.is_call=true;i.is_indirect=true;return i;}    // BLR Xn
+    auto i=a64_base(p,b,".inst",0.30); i.operands.push_back({Operand::Kind::Immediate,hex(w),std::int64_t(w)}); return i;
+}
+}
+
 std::vector<Instruction> Decoder::decode(const Artifact& a,std::uint64_t address,std::size_t length) const {
     std::vector<Instruction> out;const auto& b=a.bytes();std::size_t p=static_cast<std::size_t>(address);
     if(p>=b.size())return out;const auto end=std::min(b.size(),p+length);
+    if(a.architecture()==Architecture::ARM64){
+        for(;p+4<=end;p+=4) out.push_back(decode_a64(b,p));
+        for(;p<end;++p){auto i=base(b,p,"db",0.20);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});i.provenance.source="stage4-arm64";out.push_back(std::move(i));}
+        return out;
+    }
     if(a.architecture()!=Architecture::X86&&a.architecture()!=Architecture::X86_64){
         for(;p<end;++p){auto i=base(b,p,"db",0.25);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});out.push_back(std::move(i));}return out;
     }
