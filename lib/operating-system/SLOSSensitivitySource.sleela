@@ -87,7 +87,7 @@ class SLOSSensitivitySource {
     < repinned to the main tip that carries all three populated shapes >
     < (complete linux-5.10.254 kernel; windows wine+reactos; macos xnu+ >
     < puredarwin+gnustep+darling) plus the root shapes.json descriptor. >
-    pinnedCommit = "a4fd2fce89609481055e5c449acfe947614014d9";
+    pinnedCommit = "36eb3010ec17ed167b25cf52d3569718cbdbc666";
   }
 
   < The machine-readable shape descriptor at the warehouse root. The OSCreator >
