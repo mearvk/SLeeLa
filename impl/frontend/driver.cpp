@@ -2211,6 +2211,12 @@ int main(int argc,char**argv){
             else if(a=="--compiler"||a=="--sleelvac") compiler=true;
         }
         std::cout<<(compiler?sleelvacVersionBanner():sleelaVersionBanner())<<"\n";
+        // VM capability line: report the live layout-table ceiling this binary
+        // was built with. A fresh build reports 65536 (the growable table); an
+        // OLD binary built before that change reports 256. This lets a single
+        // `version` call confirm whether a binary on PATH is current, which is
+        // the fast way to spot a stale/mismatched install.
+        std::cout<<"VM: struct/class layout ceiling "<<SL_MAX_STRUCT_TYPES<<"\n";
         return 0;
     }
     else if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")||isLangInput(cmd)){if(verifyBeforeExecution(fs::current_path()))return 1;rc=runFile(cmd);}
