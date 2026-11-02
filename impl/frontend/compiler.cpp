@@ -118,7 +118,7 @@ public:
                 layout.fieldOffset[f.name]=(int)i; layout.fieldType.push_back(f.type); fieldNames.push_back(f.name.c_str());
             }
             layout.typeIndex=slvm_declare_struct(vm_,st.name.c_str(),fieldNames.empty()?nullptr:fieldNames.data(),(int)fieldNames.size());
-            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register struct '"+st.name+"' (too many struct types?)");
+            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register struct '"+st.name+"'. A 'layout' is one distinct class/struct type registered with the VM; the program exceeds the "+std::to_string(SL_MAX_STRUCT_TYPES)+" distinct class+struct types the VM admits.");
             structLayout_[st.name]=layout;
         }
         // Class instances share the VM's managed struct allocator, but each
@@ -162,7 +162,7 @@ public:
             }
             if(layout.fieldType.size()>128) throw std::runtime_error("Semantic error: class '"+cls.name+"' exceeds 128 instance fields");
             layout.typeIndex=slvm_declare_struct(vm_,cls.name.c_str(),names.empty()?nullptr:names.data(),(int)names.size());
-            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register class layout '"+cls.name+"' (program exceeds the "+std::to_string(SL_MAX_STRUCT_TYPES)+"-layout limit)");
+            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register class layout '"+cls.name+"'. A 'layout' is one distinct class/struct type registered with the VM (not bytes); the program defines/pulls more than the "+std::to_string(SL_MAX_STRUCT_TYPES)+" distinct class+struct types the VM admits. (If this fires with only a handful of classes, the running sleelvac's VM core is stale/mismatched -- rebuild with 'rm -rf impl/build && make all' and reinstall.)");
             structLayout_[cls.name]=layout;
         }
         if(inheritance) {
