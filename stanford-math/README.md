@@ -160,6 +160,9 @@ diffraction), **Donald Ornstein** (the isomorphism theorem in ergodic theory),
 (minimal surfaces). Rosters drawn from Stanford's own bulletins and faculty
 pages.
 
+> Full roster with years, field, Stanford standing, best-known contribution, and
+> a "why it matters" note: [`PEOPLE.md`](PEOPLE.md) (mirrors `SMPersonRegistry`).
+
 ## Named formulas / symbols (examples recorded)
 
 - **"Seven shuffles suffice" (Bayer–Diaconis, 1992):** riffle-shuffle mixing
@@ -172,6 +175,10 @@ pages.
   it extends to an analytic Pick (Nevanlinna) function on the upper half-plane.
 - **Geometrical theory of diffraction (Keller, 1962):** extends geometrical
   optics with diffracted rays from edges, corners, and grazing surfaces.
+
+> Full table of all six Stanford-anchored results with symbolic form, citation,
+> and a "why it matters" note: [`FORMULAS.md`](FORMULAS.md) (mirrors
+> `SMFormulaCatalog`).
 
 ## The reach of "their thermodynamics"
 
