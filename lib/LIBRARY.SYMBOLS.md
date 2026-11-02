@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11693
+library-source-files: 11694
 library-packages: 107
 module-facade-symbols: 75
-total-symbol-records: 11768
+total-symbol-records: 11769
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -1027,6 +1027,7 @@ decompiler	BinaryFormatReference.sleela	lib/decompiler/BinaryFormatReference.sle
 decompiler	CFG.sleela	lib/decompiler/CFG.sleela	source
 decompiler	Decoder.sleela	lib/decompiler/Decoder.sleela	source
 decompiler	DecompilerModule.sleela	lib/decompiler/DecompilerModule.sleela	source
+decompiler	Destination.sleela	lib/decompiler/Destination.sleela	source
 decompiler	Diagnostics.sleela	lib/decompiler/Diagnostics.sleela	source
 decompiler	Format.sleela	lib/decompiler/Format.sleela	source
 decompiler	FractionalInput.sleela	lib/decompiler/FractionalInput.sleela	source

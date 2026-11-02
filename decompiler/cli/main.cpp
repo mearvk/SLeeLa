@@ -1,6 +1,7 @@
 #include "sleela/decompiler/decompiler.hpp"
 #include "sleela/decompiler/errors.hpp"
 #include "sleela/decompiler/output.hpp"
+#include "sleela/decompiler/destination.hpp"
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -13,7 +14,9 @@ using sleela::decompiler::ErrorCode;
 void usage() {
     std::cerr << "usage:\n"
               << "  sleela-decompiler <inspect|disassemble|cfg|functions> <file> [length] [--thumb|--arm]\n"
-              << "  sleela-decompiler decompile <file> --output <java|sleela|c|c++> [--header] [--file <path>] [length]\n";
+              << "  sleela-decompiler decompile <file> --output <java|sleela|c|c++> [--header] [--file <path>] [--to <uri>] [--content-type <t>] [length]\n"
+              << "    --to accepts file:/path, ftp://[user:pass@]host[:port]/path, http://host[:port]/path (POST),\n"
+              << "         http+put://host[:port]/path, or sftp://[user@]host[:port]/path (IPv4, IPv6 in [brackets], or DNS)\n";
 }
 
 std::size_t parse_length(const std::string& text) {
@@ -50,6 +53,8 @@ int main(int argc, char** argv) {
         if (command == "decompile") {
             sleela::decompiler::SourceLanguage language = sleela::decompiler::SourceLanguage::CPlusPlus;
             std::string output_file;
+            std::string destination_uri;
+            std::string content_type = "text/plain";
             std::size_t length = 4096;
             bool want_header = false;
             for (int i = 3; i < argc; ++i) {
@@ -60,6 +65,12 @@ int main(int argc, char** argv) {
                 } else if (arg == "--file") {
                     if (++i >= argc) { usage(); return 2; }
                     output_file = argv[i];
+                } else if (arg == "--to") {
+                    if (++i >= argc) { usage(); return 2; }
+                    destination_uri = argv[i];
+                } else if (arg == "--content-type") {
+                    if (++i >= argc) { usage(); return 2; }
+                    content_type = argv[i];
                 } else if (arg == "--header") {
                     want_header = true;
                 } else if (arg == "--help") {
@@ -89,7 +100,21 @@ int main(int argc, char** argv) {
             auto source = want_header
                 ? sleela::decompiler::SourceEmitter::emit_header(a, funcs, options)
                 : sleela::decompiler::SourceEmitter::emit(a, ins, cfg, funcs, module, options);
-            if (output_file.empty()) {
+            // Destination precedence: --to (network/local adapter) overrides --file, which
+            // overrides stdout. The adapter transmits already-produced output only.
+            if (!destination_uri.empty()) {
+                sleela::decompiler::Destination dest;
+                std::string perr;
+                if (!sleela::decompiler::parse_destination(destination_uri, dest, perr))
+                    throw DecompilerError(ErrorCode::OutputFailure, "invalid --to destination: " + perr, 0, 0, "output");
+                dest.content_type = content_type;
+                const auto res = sleela::decompiler::deliver(dest, source);
+                std::cerr << "destination: " << sleela::decompiler::destination_kind_name(dest.kind);
+                if (!res.resolved_address.empty()) std::cerr << " (" << res.resolved_address << ")";
+                std::cerr << "\n" << res.message << "\n";
+                if (!res.ok)
+                    throw DecompilerError(ErrorCode::OutputFailure, "delivery failed: " + res.message, 0, 0, "output");
+            } else if (output_file.empty()) {
                 std::cout << source;
             } else {
                 std::ofstream out(output_file, std::ios::binary);

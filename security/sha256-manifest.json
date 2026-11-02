@@ -5234,6 +5234,10 @@
       "sha256": "54c66b3e7fdfb72e007745e1c8c4cd7362a5e733b788c94d1d73c9b61b3ffc5a"
     },
     {
+      "path": "lib/decompiler/Destination.sleela",
+      "sha256": "02a7d45cd045a7e69ac5bb4b562882a20f70d152c9ec64db5bebe99a7b74a08a"
+    },
+    {
       "path": "lib/decompiler/Diagnostics.sleela",
       "sha256": "8f32c736714c1e1b044f49a01641c060360c6a1a2461881dd0f42f01c6c4bc30"
     },
@@ -5259,7 +5263,7 @@
     },
     {
       "path": "lib/decompiler/OutputTarget.sleela",
-      "sha256": "030728d4f22c1dc8ac57f7d42e1e296d73ed3849dcf9dc8212251ee3df378d4a"
+      "sha256": "6a229c5b5b40587fbbbb45ef5448b1bfa94abac62320b2302069bbed88d9eb35"
     },
     {
       "path": "lib/decompiler/ProgramMapping.sleela",

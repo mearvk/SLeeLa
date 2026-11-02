@@ -24,6 +24,7 @@ add_library(sleela_decompiler STATIC
     src/pe.cpp
     src/macho.cpp
     src/elf.cpp
+    src/destination.cpp
     src/slir.cpp
     src/vm.cpp
     src/analyzer.cpp
