@@ -63,6 +63,28 @@ Slecompiler™ treats Linux native software as a first-class target, including:
 
 The API models both individual artifacts and library families: dependencies, imported/exported symbols, relocation records, ABI clues, calling conventions, symbol versions, build identifiers, section permissions, and provenance can be represented as related records.
 
+## Coverage status
+
+Coverage is described honestly as three distinct capability levels. A format may be
+*detected* (identity and architecture recognized), *parsed* (sections, symbols, imports,
+exports, and metadata recovered), and/or *disassembled* (machine code lifted to
+instructions and a control-flow graph).
+
+| Container | Detected | Parsed | Disassembled |
+|---|---|---|---|
+| ELF (exe, PIE, `.so`/`.so.*`, `.o`, `.ko`) | yes | full: sections, segments, symbols, imports, exports, relocations, dynamic metadata, symbol versions, build-id, kernel-module `.modinfo` | x86, x86-64 (control flow); ARM64 (control flow) |
+| PE/COFF (`.exe`, `.dll`, `.sys`) | yes | sections, import directory (DLL deps + named/ordinal imports), export name table, base-relocation presence, image base, entry point, subsystem/driver class | x86, x86-64 (control flow); ARM64 (control flow) |
+| Mach-O thin (32/64-bit) and FAT/universal | yes | load commands: sections, dylib dependencies, symbol table (imports/exports); first analyzable FAT slice lifted | x86, x86-64 (control flow); ARM64 (control flow) |
+| GNU static archive (`.a`) | yes | member enumeration with per-member format identification | per-member (ELF members) |
+| Raw / firmware | yes | recorded as an opaque byte artifact with SHA-256 provenance | linear byte view |
+
+Disassembly recovers the control-flow-relevant instruction set (branches, calls,
+returns, conditional branches, indirect transfers) on x86/x86-64 and AArch64, which is
+what the CFG, function-candidate, and SLIR stages consume. Instruction encodings outside
+that subset are represented conservatively (x86 `db`, AArch64 `.inst`) with low confidence
+rather than guessed, preserving the provenance guarantee. Extending the decoded opcode set
+and adding a 32-bit ARM (A32/T32) decoder are the natural next increments.
+
 ## Native artifact classes
 
 1. **Executable** — a native program image.
