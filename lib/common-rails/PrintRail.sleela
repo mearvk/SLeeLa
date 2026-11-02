@@ -108,13 +108,41 @@ class PrintRail {
     return count;
   }
 
-  < padZeros(value, width): left-pad a non-negative int with zeros to width. >
+  << padZeros(value, width): left-pad a non-negative int with zeros to width.
+     This is identifier/token formatting (e.g. a fixed-width Object ID): the
+     result is a string of digits, NOT a human quantity, so it is NEVER grouped
+     with separators. >>
   String padZeros(int value, int width) {
     int v = value;
     if (v < 0) { v = -v; }
     int need = width - digitCount(v);
     if (need <= 0) { return "" + v; }
     return repeat("0", need) + v;
+  }
+
+  << groupInt(value): render a non-negative QUANTITY with thousands separators
+     for human reading (441 -> "441", 12345 -> "12,345"). Use this for counted
+     quantities a reader interprets as a magnitude (the progress cell count),
+     never for identifier tokens like a zero-padded Object ID. The core value
+     model has no string indexing, so the grouped text is assembled from the
+     least-significant digit upward by arithmetic. >>
+  String groupInt(int value) {
+    int v = value;
+    if (v < 0) { v = -v; }
+    if (v < 1000) { return "" + v; }
+    String out = "";
+    int count = 0;
+    while (v > 0) {
+      int digit = v - (v / 10) * 10;
+      out = "" + digit + out;
+      v = v / 10;
+      count = count + 1;
+      if (count == 3 && v > 0) {
+        out = "," + out;
+        count = 0;
+      }
+    }
+    return (value < 0) ? "-" + out : out;
   }
 
   < padRight(content, contentChars, width): content then right-pad spaces. >
@@ -293,7 +321,7 @@ class PrintRail {
   void printSquarePercent(int percent) {
     int p = clampPercent(percent);
     int cells = percentToCells(p);
-    print("  progress " + p + "%  (" + cells + "/" + (SQUARE_SIZE * SQUARE_SIZE) + " cells)");
+    print("  progress " + p + "%  (" + groupInt(cells) + "/" + groupInt(SQUARE_SIZE * SQUARE_SIZE) + " cells)");
     printSquare(cells);
   }
 
