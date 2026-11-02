@@ -1309,10 +1309,20 @@ static std::vector<std::string> modiumRemovableVolumes(std::string& howResolved)
             vols.push_back(it->path().string());
         }
     } else if(p==SL_PLATFORM_WINDOWS){
-        /* The Win32 removable-drive query lives behind the OS backend; without a
-         * native call here we report that this host needs the OS volume API. The
-         * correct answer is resolved there, not guessed from drive letters. */
         howResolved="Windows: DRIVE_REMOVABLE via the OS volume API";
+        /* Ask the OS backend for the live set of removable (DRIVE_REMOVABLE)
+         * volume roots -- the OS is the authority; we never guess drive letters. */
+        char list[4096]={0};
+        int n=slos_removable_volumes(list,sizeof list);
+        if(n>0){
+            std::string s(list); size_t start=0;
+            while(start<s.size()){
+                size_t nl=s.find('\n',start); std::string root=s.substr(start,nl==std::string::npos?std::string::npos:nl-start);
+                if(!root.empty() && std::find(vols.begin(),vols.end(),root)==vols.end()) vols.push_back(root);
+                if(nl==std::string::npos) break;
+                start=nl+1;
+            }
+        }
     } else {
         howResolved="unsupported OS: no removable-media resolver";
     }

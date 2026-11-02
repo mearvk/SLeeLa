@@ -45,6 +45,16 @@ int slos_username(char *buf, size_t cap);   /* login/user name; len or -1     */
 int slos_tempdir(char *buf, size_t cap);    /* system temp dir; len or -1     */
 int64_t slos_process_id(void);              /* this process' id               */
 
+/* ---- Removable media ----------------------------------------------------- */
+/* Enumerate the host's REMOVABLE volume mount roots (USB sticks, etc.), one
+ * per line into `buf` (newline-separated, NUL-terminated). The OS is the sole
+ * authority on what is removable: on Windows this is the set of DRIVE_REMOVABLE
+ * roots (e.g. "E:\\"). On POSIX this returns 0 (no entries): Linux and macOS
+ * removable mounts are richer to resolve from /proc/self/mountinfo and /Volumes
+ * respectively, which the caller does directly. Returns the number of volumes
+ * written, or -1 on bad arguments. Never reports fixed/system disks. */
+int slos_removable_volumes(char *buf, size_t cap);
+
 /* ---- Filesystem metadata / operations ------------------------------------ */
 int slos_exists(const char *path);          /* 1 exists, 0 no, -1 bad arg     */
 int slos_is_dir(const char *path);          /* 1 dir, 0 not, -1 bad arg       */
