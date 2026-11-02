@@ -307,10 +307,14 @@ int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_nam
     /* Diagnostic trace (env SLEELA_TRACE_LAYOUTS=1): report the live table state
      * on every registration. Catches a corrupt nstruct_types/struct_typecap --
      * e.g. a stale sleela_core.o whose slvm_new left them uninitialized -- by
-     * showing the actual counts at the exact call that fails. */
-    if (getenv("SLEELA_TRACE_LAYOUTS"))
+     * showing the actual counts at the exact call that fails. Written to BOTH
+     * stderr and stdout and flushed, so it cannot be swallowed by redirection. */
+    int sl_trace = (getenv("SLEELA_TRACE_LAYOUTS") != NULL);
+    if (sl_trace) {
         fprintf(stderr, "[trace-declare_struct] name='%s' nstruct_types=%d struct_typecap=%d MAX=%d\n",
                 name, vm->nstruct_types, vm->struct_typecap, SL_MAX_STRUCT_TYPES);
+        fflush(stderr);
+    }
     for (int i = 0; i < vm->nstruct_types; i++)
         if (strcmp(vm->struct_types[i].name, name) == 0) return i; /* idempotent */
     /* Grow the layout table on demand: 256 -> 512 -> ... -> 65536 (base-2),
@@ -318,9 +322,12 @@ int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_nam
      * a partially-filled table never carries stale name/field pointers. */
     if (vm->nstruct_types >= vm->struct_typecap) {
         if (vm->struct_typecap >= SL_MAX_STRUCT_TYPES) {
-            if (getenv("SLEELA_TRACE_LAYOUTS"))
-                fprintf(stderr, "[trace-declare_struct] REFUSED '%s': struct_typecap(%d) >= MAX(%d) -- table reports full\n",
-                        name, vm->struct_typecap, SL_MAX_STRUCT_TYPES);
+            /* ALWAYS report the refusal (not gated): a layout-table overflow
+             * must never be silent, so this prints even without the trace env. */
+            fprintf(stderr, "[sleela-vm] layout-table REFUSED '%s': nstruct_types=%d struct_typecap=%d MAX=%d "
+                            "(if this fires at a tiny count, the running VM core is stale/mismatched)\n",
+                    name, vm->nstruct_types, vm->struct_typecap, SL_MAX_STRUCT_TYPES);
+            fflush(stderr);
             return -1; /* at the ceiling */
         }
         int newcap = vm->struct_typecap ? vm->struct_typecap * 2 : SL_STRUCT_TYPES_INIT;
