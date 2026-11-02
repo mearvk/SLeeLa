@@ -91,12 +91,30 @@ ElfAnalysis analyze_elf(std::span<const std::uint8_t> in,const std::string& name
     for(const auto&s:ss) if(range(b.size(),s.off,s.size))
         out.sections.push_back({str(b,s.name,ss[shstr].off,ss[shstr].size),s.off,s.size,s.addr,s.size,std::uint32_t(s.flags)});
     std::uint64_t dynstr_off=0,dynstr_size=0,symoff=0,symsize=0,symentsz=0,modinfo_off=0,modinfo_size=0;
+    std::uint64_t symtab_off=0,symtab_size=0,symtab_ent=0,strtab_off=0,strtab_size=0;
     std::unordered_map<std::string,std::size_t> section_index;
     for(std::size_t i=0;i<ss.size();++i){auto n=str(b,ss[i].name,ss[shstr].off,ss[shstr].size);section_index[n]=i;
         if(n==".dynstr"){dynstr_off=ss[i].off;dynstr_size=ss[i].size;}
         else if(n==".dynsym"){symoff=ss[i].off;symsize=ss[i].size;symentsz=ss[i].entsize?ss[i].entsize:(x64?24:16);}
+        else if(n==".symtab"){symtab_off=ss[i].off;symtab_size=ss[i].size;symtab_ent=ss[i].entsize?ss[i].entsize:(x64?24:16);}
+        else if(n==".strtab"){strtab_off=ss[i].off;strtab_size=ss[i].size;}
         else if(n==".modinfo"){modinfo_off=ss[i].off;modinfo_size=ss[i].size;}
         if(n==".tdata"||n==".tbss") out.library.tls_present=true;
+    }
+    // ARM mapping symbols live in the static .symtab and partition code into A32/Thumb/data
+    // regions. $a = ARM (A32), $t = Thumb, $d = data; suffixed forms ($a.0, $t.1) are the
+    // same marker. We collect them only for EM_ARM and leave the list sorted by address.
+    if(machine==40&&symtab_off&&symtab_ent&&strtab_off&&range(b.size(),symtab_off,symtab_size)){
+        for(std::uint64_t p=symtab_off;p+symtab_ent<=symtab_off+symtab_size;p+=symtab_ent){
+            std::uint32_t no; std::uint64_t val;
+            if(x64){no=rd32(b.data()+p);val=rd64(b.data()+p+8);}else{no=rd32(b.data()+p);val=rd32(b.data()+p+4);}
+            const std::string sn=str(b,no,strtab_off,strtab_size);
+            if(sn.size()>=2&&sn[0]=='$'&&(sn[1]=='a'||sn[1]=='t'||sn[1]=='d')&&(sn.size()==2||sn[2]=='.')){
+                const CodeKind k=sn[1]=='a'?CodeKind::Arm:(sn[1]=='t'?CodeKind::Thumb:CodeKind::Data);
+                out.code_mappings.push_back({val&~std::uint64_t(1),k}); // clear the Thumb low-bit if present
+            }
+        }
+        std::sort(out.code_mappings.begin(),out.code_mappings.end(),[](const CodeMapping&a2,const CodeMapping&b2){return a2.address<b2.address;});
     }
     std::vector<std::string> symbol_names; symbol_names.reserve(1024);
     std::vector<std::uint64_t> symbol_values;

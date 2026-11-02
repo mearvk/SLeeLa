@@ -104,9 +104,37 @@ and arithmetic instructions:
 Encodings outside these subsets are represented conservatively with low confidence rather
 than guessed, preserving the provenance guarantee. The `disassemble`/`cfg`/`functions`
 commands start the linear sweep at the first executable section (e.g. `.text`/`__text`)
-when one is identified, rather than at file offset 0. The natural next increments are
-honoring ARM `$a`/`$t` mapping symbols to auto-select A32 vs. Thumb per region, and
-continuing to widen the decoded x86 opcode set toward operand-level recovery.
+when one is identified, rather than at file offset 0.
+
+### ARM state mapping (`$a`/`$t`/`$d`)
+
+For ARM ELF images, Slecompiler reads the static `.symtab` mapping symbols — `$a` (A32),
+`$t` (Thumb), `$d` (inline data) — and, in the default `Auto` mode, switches the decoder
+to the correct state per region automatically (translating each mapping's virtual address
+through the section table to the file offset). Data regions are left as bytes rather than
+disassembled. `--arm` / `--thumb` force a single state when mapping symbols are absent.
+
+### Operand-level recovery
+
+Decoded x86/x86-64 instructions carry a fully rendered form (`Instruction::text`), not just
+a mnemonic: register, immediate, and memory operands are recovered in Intel order with
+correct operand sizing (REX.W), SIB/displacement decoding, and signed displacements
+rendered as a reviewer expects (`mov [rbp-0x4], 0x2a`, `lea rax, [rbp-0x8]`,
+`mov rcx, [rbp+0x10]`). Relocation-backed operands are annotated with their symbol.
+
+### Review-grade source and header emission
+
+`decompile` renders C, C++, Java, and Sleela reconstructions with a provenance banner, a
+per-function evidence block (control-flow summary plus an aligned address/bytes/instruction
+/basis table in which every line is a valid comment for the target language), and
+doxygen-style function documentation. `--header` emits the companion header (`.h`/`.hpp`)
+with an include guard and documented prototypes. Function candidates are promoted from
+call targets and symbol/export evidence rather than from every basic-block leader, so the
+recovered interface reflects real entry points.
+
+The natural next increments are per-region decode following `$a`/`$t` in the function
+recovery (not only the linear sweep), 8-bit/16-bit x86 register naming for byte-form
+opcodes, and lifting the recovered operands into SLIR statements.
 
 ## Native artifact classes
 

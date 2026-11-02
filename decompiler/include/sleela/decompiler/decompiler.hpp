@@ -16,6 +16,7 @@ struct Instruction {
     std::uint64_t address{};
     std::vector<std::uint8_t> bytes;
     std::string mnemonic;
+    std::string text;                 // fully rendered form, e.g. "mov rbp, rsp" (operand-level recovery)
     std::vector<Operand> operands;
     Provenance provenance;
     bool is_branch{};
@@ -66,6 +67,12 @@ struct KernelModuleMetadata {
 
 struct ArchiveMember { std::string name; std::uint64_t header_offset{}; std::uint64_t data_offset{}; std::uint64_t size{}; Format format{Format::Unknown}; };
 
+// ARM ELF mapping symbols ($a/$t/$d) partition executable sections into regions of A32
+// code, Thumb code, and inline data. Recording them lets the decoder choose the correct
+// instruction state per region instead of guessing a single state for the whole file.
+enum class CodeKind { Arm, Thumb, Data };
+struct CodeMapping { std::uint64_t address{}; CodeKind kind{CodeKind::Arm}; };
+
 struct NativeInterfaces {
     std::vector<Section> sections;
     std::vector<ProgramSegment> segments;
@@ -74,6 +81,7 @@ struct NativeInterfaces {
     std::vector<Import> imports;
     std::vector<Export> exports;
     std::vector<Relocation> relocations;
+    std::vector<CodeMapping> code_mappings;   // ARM $a/$t/$d, sorted by address
 };
 
 class Artifact {

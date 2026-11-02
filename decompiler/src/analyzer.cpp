@@ -1,5 +1,6 @@
 #include "sleela/decompiler/decompiler.hpp"
 #include <algorithm>
+#include <sstream>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -20,8 +21,19 @@ ControlFlowGraph Analyzer::build_cfg(const std::vector<Instruction>& ins) const 
     return g;
 }
 std::vector<Symbol> Analyzer::recover_function_candidates(const ControlFlowGraph& g) const {
+    // A function candidate is an entry point, not merely a basic-block leader. We promote
+    // (1) the first block of the window and (2) any block that is the target of a call -- a
+    // far stronger signal of a function boundary than an intra-procedural branch target.
+    // This avoids reporting every fall-through / branch-target block as a separate function.
     std::vector<Symbol> out;std::unordered_set<std::uint64_t> seen;
-    for(const auto& b:g.blocks)if(!b.instructions.empty()){auto a=b.instructions.front().address;if(seen.insert(a).second)out.push_back({"sub_"+std::to_string(a),a,false,b.instructions.front().provenance});}
+    std::unordered_set<std::uint64_t> call_targets;
+    for(const auto& b:g.blocks) for(const auto& i:b.instructions) if(i.is_call) for(auto t:i.branch_targets) call_targets.insert(t);
+    auto hex=[](std::uint64_t v){std::ostringstream s;s<<std::hex<<v;return s.str();};
+    for(std::size_t n=0;n<g.blocks.size();++n){const auto& b=g.blocks[n];if(b.instructions.empty())continue;
+        const auto addr=b.instructions.front().address;
+        const bool is_entry=(n==0)||call_targets.count(addr);
+        if(is_entry&&seen.insert(addr).second) out.push_back({"sub_"+hex(addr),addr,false,b.instructions.front().provenance});
+    }
     return out;
 }
 std::vector<Symbol> Analyzer::recover_function_candidates(const Artifact& a,const ControlFlowGraph& g) const {
