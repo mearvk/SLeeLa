@@ -130,13 +130,89 @@ Instruction decode_a32(const std::vector<std::uint8_t>& b,std::size_t p){
     auto i=a32_base(p,b,".inst",0.30);i.operands.push_back({Operand::Kind::Immediate,hex(w),std::int64_t(w)});return i;
 }
 }
+// --- ARM Thumb (T32) variable-width decoder ----------------------------------------------
+// Thumb is 16-bit by default; a first halfword with top-5-bits in {11101,11110,11111}
+// introduces a 32-bit instruction that consumes a second halfword. This recovers the
+// control-flow subset -- conditional/unconditional B, BL/BLX(imm), BX/BLX(reg), CBZ/CBNZ,
+// pc-writing POP, and NOP -- which is what the CFG stage needs. Each decoded instruction
+// reports its own byte length so the caller advances correctly; unknown encodings become
+// ".inst" of their detected width rather than being guessed.
+namespace {
+std::uint16_t thumb_hw(const std::vector<std::uint8_t>& b,std::size_t p){
+    return std::uint16_t(b[p])|(std::uint16_t(b[p+1])<<8);
+}
+bool thumb_is_32bit(std::uint16_t hw1){ const std::uint16_t top=hw1&0xf800; return top==0xe800||top==0xf000||top==0xf800; }
+Instruction thumb_base(std::size_t p,const std::vector<std::uint8_t>& b,std::size_t len,const std::string& mnem,double conf=0.80){
+    Instruction i;i.address=p;i.bytes.assign(b.begin()+p,b.begin()+p+len);i.mnemonic=mnem;i.provenance={p,p,"stage4-thumb",conf};return i;
+}
+// Decode one Thumb instruction at p (p+2 <= end guaranteed by caller). out_len is set to 2 or 4.
+Instruction decode_thumb(const std::vector<std::uint8_t>& b,std::size_t p,std::size_t end,std::size_t& out_len){
+    const std::uint16_t hw1=thumb_hw(b,p);
+    auto rel=[&](std::int64_t imm){return std::uint64_t(std::int64_t(p)+4+imm);}; // Thumb PC reads as insn+4
+    if(thumb_is_32bit(hw1)&&p+4<=end){
+        out_len=4; const std::uint16_t hw2=thumb_hw(b,p+2);
+        // 32-bit B/BL/BLX family: hw1[15:11]=11110, hw2[15]=1, hw2[14]=1 selects branch class.
+        if((hw1&0xf800)==0xf000&&(hw2&0x8000)==0x8000){
+            const std::uint32_t s=(hw1>>10)&1, imm10=hw1&0x3ff, j1=(hw2>>13)&1, j2=(hw2>>11)&1, imm11=hw2&0x7ff;
+            const std::uint32_t op2=(hw2>>12)&0x7; // bit14..12
+            const std::uint32_t i1=~(j1^s)&1, i2=~(j2^s)&1;
+            if(op2==0x5||op2==0x7){ // BL (op2 bit14=1,bit12=1) / BLX(imm) (bit12=0) -> both are calls
+                const std::uint32_t imm=(s<<24)|(i1<<23)|(i2<<22)|(imm10<<12)|(imm11<<1);
+                auto t=rel(sign_extend(imm,25)); auto in=thumb_base(p,b,4,(op2&0x1)?"bl":"blx");
+                in.is_call=true; in.branch_targets.push_back(t); in.operands.push_back({Operand::Kind::Relative,hex(t),std::int64_t(t)}); return in;
+            }
+            if(op2==0x1||op2==0x3){ // B.W unconditional (T4)
+                const std::uint32_t imm=(s<<24)|(i1<<23)|(i2<<22)|(imm10<<12)|(imm11<<1);
+                auto t=rel(sign_extend(imm,25)); auto in=thumb_base(p,b,4,"b.w"); in.is_branch=true;
+                in.branch_targets.push_back(t); in.operands.push_back({Operand::Kind::Relative,hex(t),std::int64_t(t)}); return in;
+            }
+            if(op2==0x0||op2==0x2){ // B<cond>.W (T3): cond in hw1[9:6]
+                const std::uint32_t cond=(hw1>>6)&0xf;
+                if(cond<0xe){ const std::uint32_t imm11b=hw2&0x7ff, imm6=hw1&0x3f, j1b=(hw2>>13)&1, j2b=(hw2>>11)&1, sb=(hw1>>10)&1;
+                    const std::uint32_t imm=(sb<<20)|(j2b<<19)|(j1b<<18)|(imm6<<12)|(imm11b<<1);
+                    auto t=rel(sign_extend(imm,21)); auto in=thumb_base(p,b,4,"b.w"); in.is_branch=true; in.is_conditional=true;
+                    in.branch_targets.push_back(t); in.operands.push_back({Operand::Kind::Relative,hex(t),std::int64_t(t)}); return in;
+                }
+            }
+        }
+        auto in=thumb_base(p,b,4,".inst",0.30); in.operands.push_back({Operand::Kind::Immediate,hex((std::uint32_t(hw1)<<16)|hw2),std::int64_t((std::uint32_t(hw1)<<16)|hw2)}); return in;
+    }
+    out_len=2;
+    if(hw1==0xbf00) return thumb_base(p,b,2,"nop");
+    if((hw1&0xff00)==0x4700){ const bool link=(hw1&0x0080)!=0; const std::uint32_t rm=(hw1>>3)&0xf; // BX/BLX Rm
+        auto in=thumb_base(p,b,2,link?"blx":"bx"); if(link)in.is_call=true;else in.is_branch=true; in.is_indirect=true; if(!link&&rm==14)in.is_return=true; return in; }
+    if((hw1&0xfe00)==0xbc00&&(hw1&0x0100)){auto in=thumb_base(p,b,2,"pop");in.is_return=true;in.is_indirect=true;return in;} // POP {..,pc} -> return (check before PUSH mask)
+    if((hw1&0xfe00)==0xb400){auto in=thumb_base(p,b,2,"push");return in;}      // PUSH {reglist}/{..,lr}
+    if((hw1&0xfe00)==0xbc00){auto in=thumb_base(p,b,2,"pop");return in;}       // POP {reglist} (no pc)
+    if((hw1&0xf000)==0xd000){ const std::uint32_t cond=(hw1>>8)&0xf;           // B<cond> (T1), imm8
+        if(cond==0xe){auto in=thumb_base(p,b,2,".inst",0.30);return in;}         // 0xDE = permanently UNDEFINED
+        if(cond==0xf){auto in=thumb_base(p,b,2,"svc");return in;}                // 0xDF = SVC, not a branch
+        auto t=rel(sign_extend(hw1&0xff,8)*2); auto in=thumb_base(p,b,2,"b"); in.is_branch=true; in.is_conditional=true;
+        in.branch_targets.push_back(t); in.operands.push_back({Operand::Kind::Relative,hex(t),std::int64_t(t)}); return in; }
+    if((hw1&0xf800)==0xe000){ auto t=rel(sign_extend(hw1&0x7ff,11)*2);          // B (T2) unconditional, imm11
+        auto in=thumb_base(p,b,2,"b"); in.is_branch=true; in.branch_targets.push_back(t); in.operands.push_back({Operand::Kind::Relative,hex(t),std::int64_t(t)}); return in; }
+    if((hw1&0xf500)==0xb100){ const std::uint32_t i5=((hw1>>9)&1), imm5=(hw1>>3)&0x1f; // CBZ/CBNZ, positive imm only
+        auto t=std::uint64_t(std::int64_t(p)+4+((i5<<6)|(imm5<<1))); auto in=thumb_base(p,b,2,(hw1&0x0800)?"cbnz":"cbz");
+        in.is_branch=true; in.is_conditional=true; in.branch_targets.push_back(t); in.operands.push_back({Operand::Kind::Relative,hex(t),std::int64_t(t)}); return in; }
+    auto in=thumb_base(p,b,2,".inst",0.30); in.operands.push_back({Operand::Kind::Immediate,hex(hw1),hw1}); return in;
+}
+}
 
 std::vector<Instruction> Decoder::decode(const Artifact& a,std::uint64_t address,std::size_t length) const {
+    return decode(a,address,length,DecodeMode::Auto);
+}
+
+std::vector<Instruction> Decoder::decode(const Artifact& a,std::uint64_t address,std::size_t length,DecodeMode mode) const {
     std::vector<Instruction> out;const auto& b=a.bytes();std::size_t p=static_cast<std::size_t>(address);
     if(p>=b.size())return out;const auto end=std::min(b.size(),p+length);
     if(a.architecture()==Architecture::ARM64){
         for(;p+4<=end;p+=4) out.push_back(decode_a64(b,p));
         for(;p<end;++p){auto i=base(b,p,"db",0.20);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});i.provenance.source="stage4-arm64";out.push_back(std::move(i));}
+        return out;
+    }
+    if(a.architecture()==Architecture::ARM&&mode==DecodeMode::ArmThumb){
+        while(p+2<=end){std::size_t len=2; out.push_back(decode_thumb(b,p,end,len)); if(len==0)len=2; p+=len;}
+        for(;p<end;++p){auto i=base(b,p,"db",0.20);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});i.provenance.source="stage4-thumb";out.push_back(std::move(i));}
         return out;
     }
     if(a.architecture()==Architecture::ARM){
@@ -156,11 +232,11 @@ std::vector<Instruction> Decoder::decode(const Artifact& a,std::uint64_t address
         const std::size_t start=p; Instruction i; std::size_t n=1;
         // --- Prefix pre-pass: consume a legacy-prefix run and, in 64-bit mode, one REX byte.
         // Zero prefixes leaves the opcode position and length identical to the original decoder.
-        std::size_t pfx=0; bool rex_w=false; bool have_prefix=false;
+        std::size_t pfx=0; bool rex_w=false; bool have_prefix=false; bool opsize16=false;
         while(start+pfx<end){
             const std::uint8_t c=b[start+pfx];
             const bool legacy=(c==0x66||c==0x67||c==0x2e||c==0x36||c==0x3e||c==0x26||c==0x64||c==0x65||c==0xf0||c==0xf2||c==0xf3);
-            if(legacy){have_prefix=true;++pfx;continue;}
+            if(legacy){have_prefix=true;if(c==0x66)opsize16=true;++pfx;continue;}
             if(mode64&&c>=0x40&&c<=0x4f){have_prefix=true;rex_w=(c&0x08)!=0;++pfx; /*REX is the last prefix before the opcode*/ break;}
             break;
         }
@@ -194,6 +270,30 @@ std::vector<Instruction> Decoder::decode(const Artifact& a,std::uint64_t address
             ModRm mr;if(o+1<end&&parse_modrm(b,o+1,end,mode64,mr)){consume(1+mr.length);
                 const char* nm = op==0x8d?"lea":((op==0x88||op==0x89||op==0x8a||op==0x8b)?"mov":((op==0x84||op==0x85)?"test":((op==0x86||op==0x87)?"xchg":alu_name(op))));
                 i=emit(nm);i.operands.push_back({mr.kind,mr.operand,0});
+            } else {i=emit("db",0.35);consume(1);}
+        }
+        // Immediate ALU group (80 /r ib, 81 /r iz, 83 /r ib): the /digit field selects the operation.
+        else if(op==0x80||op==0x81||op==0x83){
+            ModRm mr;if(o+1<end&&parse_modrm(b,o+1,end,mode64,mr)){
+                const std::size_t immlen = op==0x81 ? (opsize16?2:4) : 1;   // 81 = full-width imm (16 under 0x66); 80/83 = imm8
+                if(o+1+mr.length+immlen<=end){consume(1+mr.length+immlen);
+                    // The /digit (ModR/M reg field) selects the ALU operation for the 80/81/83 group.
+                    const char* nm=[&]{switch(mr.reg&7){case 0:return "add";case 1:return "or";case 2:return "adc";case 3:return "sbb";case 4:return "and";case 5:return "sub";case 6:return "xor";default:return "cmp";}}();
+                    i=emit(nm);
+                    i.operands.push_back({mr.kind,mr.operand,0});
+                    std::int64_t imm=0; for(std::size_t k=0;k<immlen;++k)imm|=std::int64_t(b[o+1+mr.length+k])<<(8*k);
+                    i.operands.push_back({Operand::Kind::Immediate,hex(std::uint64_t(imm)),imm});
+                } else {i=emit("db",0.35);consume(1);}
+            } else {i=emit("db",0.35);consume(1);}
+        }
+        // mov r/m, imm (C6 /0 ib, C7 /0 iz).
+        else if(op==0xc6||op==0xc7){
+            ModRm mr;if(o+1<end&&parse_modrm(b,o+1,end,mode64,mr)){
+                const std::size_t immlen = op==0xc6 ? 1 : (opsize16?2:4);
+                if(o+1+mr.length+immlen<=end){consume(1+mr.length+immlen);i=emit("mov");i.operands.push_back({mr.kind,mr.operand,0});
+                    std::uint64_t v=0; for(std::size_t k=0;k<immlen;++k)v|=std::uint64_t(b[o+1+mr.length+k])<<(8*k);
+                    i.operands.push_back({Operand::Kind::Immediate,hex(v),std::int64_t(v)});
+                } else {i=emit("db",0.35);consume(1);}
             } else {i=emit("db",0.35);consume(1);}
         }
         else if(op>=0xb8&&op<=0xbf){
