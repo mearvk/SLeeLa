@@ -41,6 +41,124 @@ or make decompiler
 
 **SLeeLa — MEARVK LLC — 2026**
 
+## Usage
+
+This package has two cooperating halves, and it helps to keep them distinct:
+
+- **The SLeeLa contract (`lib/decompiler/*.sleela`)** defines *what* a decompilation request is — its input, selection options, fractional-input policy, OS/ABI policy, pipeline stages, and output target. The `.sleela` classes are the source-of-truth contract; their method bodies are intentionally declarative.
+- **The native subsystem (`decompiler/`, built as `sleela-decompiler`)** is the executing implementation — it actually reads a binary, decodes it, builds a CFG, lifts SLIR, and writes reconstructed source. When you want to *run* a decompilation and *save output*, you use this.
+
+The sections below cover accepted inputs, the request/selection surface, worked examples, and how to direct output to a file or directory.
+
+### Input types and mediums
+
+Inputs are treated as untrusted evidence and are never executed. The catalogs in `LANGUAGE.FORMAT.REFERENCE.md` and `EXECUTABLE.LIBRARY.SOURCE.REFERENCE.md` are authoritative; the commonly supported mediums are:
+
+| Medium | Examples | Evidence yielded |
+|---|---|---|
+| Native executable | ELF `ET_EXEC`/PIE, PE `.exe`, Mach-O | format, architecture, OS/ABI, entry point, sections, symbols |
+| Shared/dynamic library | ELF `.so`/`.so.*`, PE `.dll`, Mach-O `.dylib` | SONAME/exports, imports/needed libraries, relocations |
+| Static library / object | AR `.a`, ELF `.o` | member enumeration, per-member format, symbols |
+| Kernel module | ELF `.ko` (incl. compressed, when safely identifiable) | module name, vermagic, license/author, dependencies |
+| Managed / bytecode | JVM class/JAR, .NET assembly, BEAM, Lua bytecode | runtime metadata, managed symbol/debug attributes |
+| Portable / IR | WebAssembly module, LLVM bitcode | producer metadata, name/debug/custom sections |
+| Raw / firmware | raw images, blobs, dumps | byte-level evidence with SHA-256 provenance |
+
+Native disassembly today covers x86, x86-64, AArch64 (ARM64), and 32-bit ARM (A32 + Thumb); other mediums are parsed for format/symbol/metadata evidence. A medium is *detected*, *parsed*, and/or *disassembled* — see `decompiler/README.md` for the per-format coverage matrix.
+
+### Composing a request (the contract surface)
+
+A request declares how the input should be interpreted and how output should be produced. The relevant contract classes and their key fields:
+
+- **`SleelaDecompilerSourceLanguage`** — `name`, `family`, `version`, `abi`, `compiler`, `exactVersionRequired`. Selects the expected source-language family and version hypothesis.
+- **`SleelaDecompilerModule` / `SleelaDecompilerModules`** — `name`, `languageFamily`, `format`, `architecture`, `operatingSystem`, `trusted`. Loads additional language/format modules; selection stays evidence-driven and trust-gated.
+- **`SleelaDecompilerFractionalInput`** — `policy`, `allowGaps`, `preserveEvidence`, `emitPlaceholders`. Never silently discards partial input; choose one policy (below).
+- **`SleelaDecompilerOSDetector`** — weighted evidence over headers, ABI, imports, relocations, runtime metadata, calling conventions, sections; `conflictingEvidence` stays visible.
+- **`SleelaDecompilerOutput`** (the output target) — `format`, `language`, `version`, `path`, `profile`, `vmReady`, `preserveEvidence`, `includeReport`. Covered under "Directing output" below.
+
+**Fractional-input policies** (`SleelaDecompilerFractionalInput`):
+
+| Policy | Meaning |
+|---|---|
+| `PRESERVE` | keep unreadable/undecoded ranges as evidence |
+| `PARTIAL` | reconstruct valid regions, insert explicit unresolved regions |
+| `REPORT_ONLY` | stop before reconstruction, retain analysis evidence |
+| `STRICT` | reject incomplete or contradictory input |
+
+The native request mirror (`lib/decompiler/include/sleela_decompiler.h`) carries the same shape for the C/C++ services:
+
+```c
+sleela_decompiler_request req = {
+    .source_language  = "c++",
+    .source_version   = "",            /* "" = let evidence decide */
+    .expected_input   = "elf",
+    .desired_output   = "c++",
+    .os_policy        = "weighted",
+    .fractional_policy = SLEELA_FRACTIONAL_PRESERVE,
+    .analysis_depth   = 2,
+    .preserve_evidence = 1,
+};
+if (!sleela_decompiler_validate_request(&req)) { /* reject */ }
+```
+
+### Worked examples
+
+Contract-level examples live under `tutorials/examples/`:
+
+- `artifact-analysis.sleela` — acquire an artifact and walk it through module/output/OS-discernment selection.
+- `fractional-reconstruction.sleela` — apply a fractional-input policy to incomplete input.
+
+The lesson path in `tutorials/` (`01-artifact-to-slir`, `02-os-abi-and-format-discernment`, `03-fractional-input-and-source-reconstruction`) covers the body of the work end to end.
+
+To actually run a decompilation, use the native CLI (built from `decompiler/`):
+
+```sh
+# Inspect: format, architecture, sections, symbols, imports/exports, metadata
+sleela-decompiler inspect ./libexample.so
+
+# Disassemble a window (ARM: add --thumb or --arm to force state)
+sleela-decompiler disassemble ./program 256
+
+# Control-flow edges / recovered function candidates
+sleela-decompiler cfg       ./program
+sleela-decompiler functions ./program
+
+# Reconstruct source (lifted SLIR statements + evidence)
+sleela-decompiler decompile ./program --output c++
+```
+
+### Directing output (save toward a directory; uploads)
+
+Output is chosen on the output target. In the contract (`SleelaDecompilerOutput`):
+
+- `format` / `language` / `version` — the reconstruction target (e.g. `c++`, `c`, `java`, `sleela`);
+- `path` — the destination to write toward (a file, or a file within a directory you control);
+- `includeReport` — also emit the evidence/analysis report;
+- `vmReady` — validate the lifted SLIR against the VM before finalizing;
+- `preserveEvidence` — retain observed-vs-inferred distinctions in the output.
+
+With the native CLI, `--output` selects the language and `--file` saves toward a path; `--header` emits the companion header. To save into a directory, point `--file` at a path inside it (create the directory first):
+
+```sh
+mkdir -p out
+# Source and companion header into ./out
+sleela-decompiler decompile ./program --output c++ --file out/recovered.cpp
+sleela-decompiler decompile ./program --output c++ --header --file out/recovered.hpp
+
+# Other targets
+sleela-decompiler decompile ./program --output c      --file out/recovered.c
+sleela-decompiler decompile ./program --output java   --file out/Recovered.java
+sleela-decompiler decompile ./program --output sleela  --file out/recovered.sleela
+```
+
+Default extensions when you let the emitter choose: `.c`, `.cpp`, `.java`, `.sleela` for source and `.h` / `.hpp` for C/C++ headers. Without `--file`, the reconstruction is written to standard output, so you can redirect or pipe it.
+
+**Uploads / remote destinations.** This layer is analysis-first and has no network behavior: it writes local files only. Distributing an emitted artifact (committing it to a repository, pushing it to a share, or posting it to a service) is a downstream step performed by your own tooling after the file is written. A dedicated network/destination adapter for `SleelaDecompilerOutput` is planned as separate, explicitly governed work; until it exists, treat "upload" as "emit to a local path, then hand that file to your uploader."
+
+### Boundary note
+
+Because `.sleela` is the contract and the native subsystem is the implementation, do not expect a contract method such as `emit()` to write a file by itself — it declares the behavior that the native `sleela-decompiler decompile ... --file ...` path performs. Everything here stays static and read-only: no input artifact is loaded or executed merely to identify or reconstruct it.
+
 ## Language and format reference
 
 The package uses LANGUAGE.FORMAT.REFERENCE.md as the decompiler-side native reference for language names, producer programs, binary/object/executable formats, architecture and OS/ABI evidence, and safety considerations. The mapping is evidence, not proof, and does not authorize execution of an input artifact.
