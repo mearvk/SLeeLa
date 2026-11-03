@@ -134,6 +134,13 @@ reason to elevate:
      stale. It never *creates* a new stray command — it only overwrites one that
      already exists. Override the set with `EXTRA_BINDIRS="/usr/bin /opt/bin"`.
 
+  After the three library steps, `make install-all` also builds the standalone
+  **SleelaTerminal** (GUI + `slsh`) once and installs it into the same set of
+  locations — both user-local layouts and `/usr/local` — matching the clean
+  installer. The GUI needs GTK4 + VTE; when absent, the `slsh` shell is
+  installed and the GUI is skipped with a note. Set `SLEELA_WITH_TERMINAL=no` to
+  skip the terminal; a terminal build/install failure never aborts the run.
+
   `install-all` and `uninstall-all` resolve the invoking user's home via
   `$SUDO_USER` when elevated, so the `$HOME/.local` layouts are found whether
   you run them as the user or under `sudo`.
