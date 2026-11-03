@@ -24,8 +24,9 @@ constexpr const char *kConfigName = "sleela-terminal.conf";
 constexpr const char *kVersion = "1.0.0";
 
 // One "child of wattage": a discrete excitation that flows along the throbber
-// strip and locally modulates the base light-blue colour. Many of these,
-// summed, make the living field. Motion is integrated to third order
+// strip and locally modulates the base green colour (the strip is unified in
+// green and shades of green). Many of these, summed, make the living field.
+// Motion is integrated to third order
 // (jerk -> accel -> vel -> pos) so speed changes are smooth and reflexive.
 struct ThrobberCell {
     bool alive = false;
@@ -264,13 +265,17 @@ void install_css(AppState *state) {
            dark-purple / blue family along the horizontal or vertical axis. These are the only places these shades are
            used, so they live here as named tokens (principle 2: one palette,
            one source of truth) and are composed into .sleela-titlebar below. */
-        @define-color sl_titlebar_bg    #1d2025;   /* requested title-bar base */
-        @define-color sl_tb_deep_purple  #2a0f45;   /* retained accent token */
-        @define-color sl_tb_near_black   #0d0a12;   /* retained accent token */
-        @define-color sl_tb_light_blue   #4f74c8;   /* retained accent token */
-        @define-color sl_tb_dark_blue    #16244f;   /* retained accent token */
-        @define-color sl_tb_dark_purple  #1e0e33;   /* retained accent token */
-        @define-color sl_tb_black        #060409;   /* retained accent token */
+        @define-color sl_titlebar_bg    #a7adb4;   /* gray metallic mid-tone fallback */
+        /* Gray metallic / brushed-steel bevel stops (light top highlight -> thin
+           central specular band -> darker shadow grade). Used by the title bar. */
+        @define-color sl_tb_metal_hi     #dfe2e6;   /* bright top highlight */
+        @define-color sl_tb_metal_light  #c2c7cd;
+        @define-color sl_tb_metal_mid    #a7adb4;
+        @define-color sl_tb_metal_mid2   #8b9199;
+        @define-color sl_tb_metal_spec   #e9ecef;   /* thin central specular band */
+        @define-color sl_tb_metal_dim    #7f858d;
+        @define-color sl_tb_metal_dim2   #6e747c;
+        @define-color sl_tb_metal_shadow #4d525a;   /* bottom shadow grade */
 
         window { background: @sl_bg; }
 
@@ -280,16 +285,23 @@ void install_css(AppState *state) {
            organic update). A transparent 1px border keeps the bar's height
            identical to before. */
         headerbar.sleela-titlebar {
-            /* Shared title-bar base colour. Accent colours remain available for
-               controls and focus states; the bar itself uses the requested solid base. */
-            background: @sl_titlebar_bg;
+            /* Gray metallic / brushed-steel title bar: a top-to-bottom bevel with
+               a bright highlight at the top, a thin central specular band, and a
+               darker shadow grade at the base. The preset loader (assets/*.cfg)
+               may substitute an equivalent metallic stop list; this CSS default
+               already renders the gray metallic look on its own. */
+            background: linear-gradient(to bottom,
+                @sl_tb_metal_hi 0%, @sl_tb_metal_light 10%, @sl_tb_metal_mid 24%,
+                @sl_tb_metal_mid2 42%, @sl_tb_metal_spec 49%, @sl_tb_metal_spec 51%,
+                @sl_tb_metal_dim 58%, @sl_tb_metal_mid 74%, @sl_tb_metal_dim2 88%,
+                @sl_tb_metal_shadow 100%);
             color: @sl_fg;
             min-height: 38px;
             border-bottom: 1px solid transparent;
         }
         /* The throbber occupies the thin seam between the title bar and the
            terminal; its colour is painted per-frame by the draw function. */
-        drawingarea.sleela-throbber { background: #ffffff; min-height: 4px; }
+        drawingarea.sleela-throbber { background: #0C2B15; min-height: 4px; }
         headerbar.sleela-titlebar label {
             color: #ffffff;
             font-weight: 600;
@@ -1537,20 +1549,22 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
     return TRUE;
 }
 
-// Render the living field. The strip is NOT one uniform level: it rests at the
-// title-bar chrome colour and is modulated locally by every excitation ("child
-// of wattage"), each adding a relative darker/lighter shade near its position.
-// The sum, drawn per column, is a texture that flows left->right. Under strong
-// amplification, latent per-cell hues (orange/green/blue/red) surface.
+// Render the living field, unified in green. The strip is NOT one uniform
+// level: it rests on a deep forest-green base and is modulated locally by every
+// excitation ("child of wattage"), each adding a relative darker/brighter shade
+// of green near its position. The sum, drawn per column, is a texture that flows
+// left->right. Brighter cells skew toward a vivid spring green; dimmer cells
+// toward a mossy green, so the whole rail stays within one green family.
 void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (width <= 0 || height <= 0) return;
     state->throbber_w = width;
 
-    // The rail is exactly four pixels tall: use a clean white base and compact,
-    // monochrome moving glyphs. All geometry is clipped to the rail so no
-    // triangle rotation or circle stroke can increase its layout height.
-    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+    // The rail is exactly four pixels tall and unified in green: a deep forest
+    // base with compact moving glyphs rendered in brighter shades of green. All
+    // geometry is clipped to the rail so no triangle rotation or circle stroke
+    // can increase its layout height.
+    cairo_set_source_rgb(cr, 0.047, 0.169, 0.082); // #0C2B15 deep forest rail base
     cairo_paint(cr);
     cairo_save(cr);
     cairo_rectangle(cr, 0, 0, width, height);
@@ -1566,6 +1580,10 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
         // itself and its principal outline remain white.
         const double r = std::clamp(1.75 + c.base_intensity * 0.20, 1.75, 1.95);
         const double fade = std::clamp(c.intensity * 2.0, 0.0, 1.0);
+        // Per-cell green shade: brighter cells skew toward a vivid spring green,
+        // dimmer ones toward a mossy green, so the whole field reads as one
+        // unified green in many shades.
+        const double gshade = std::clamp(c.base_intensity, 0.0, 1.0);
         cairo_set_line_width(cr, 0.9);
         cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
         cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
@@ -1577,9 +1595,9 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
         cairo_translate(cr, x, mid_y);
         cairo_rotate(cr, angle);
 
-        // First paint a tiny offset gray contact shadow, then the white body
-        // and white outline. The offset is sub-pixel and the rotation is tiny,
-        // giving a raised/3D read without adding vertical movement.
+        // First paint a tiny offset dark-green contact shadow, then the green
+        // body and green outline. The offset is sub-pixel and the rotation is
+        // tiny, giving a raised/3D read without adding vertical movement.
         auto shape_path = [&](double dx, double dy) {
             if (c.shape == 0) {
                 cairo_arc(cr, dx, dy, r, 0.0, 6.283185307179586);
@@ -1594,23 +1612,29 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
                 cairo_rectangle(cr, dx - half_w, dy - half_h, half_w * 2.0, half_h * 2.0);
             }
         };
+        // Dark-green contact shadow (a deep pine, slightly lighter on the edge).
         shape_path(0.0, 0.35);
-        cairo_set_source_rgba(cr, 0.55, 0.55, 0.55, 0.70 * fade);
+        cairo_set_source_rgba(cr, 0.063, 0.235, 0.110, 0.70 * fade);
         cairo_fill_preserve(cr);
-        cairo_set_source_rgba(cr, 0.62, 0.62, 0.62, 0.75 * fade);
+        cairo_set_source_rgba(cr, 0.094, 0.306, 0.149, 0.75 * fade);
         cairo_set_line_width(cr, 0.55);
         cairo_stroke(cr);
 
+        // Body: a shade of green that brightens with the cell's intensity,
+        // interpolating from a mossy green up to a vivid spring green.
+        const double body_r = 0.251 + 0.251 * gshade; // 0.251 -> 0.502
+        const double body_g = 0.682 + 0.239 * gshade; // 0.682 -> 0.922
+        const double body_b = 0.278 + 0.247 * gshade; // 0.278 -> 0.525
         shape_path(0.0, 0.0);
-        cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, fade);
+        cairo_set_source_rgba(cr, body_r, body_g, body_b, fade);
         cairo_fill_preserve(cr);
         cairo_set_line_width(cr, 0.8);
-        cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, fade);
+        cairo_set_source_rgba(cr, body_r, body_g, body_b, fade);
         cairo_stroke(cr);
 
-        // A narrow silver-gray lower rim and white upper glint make each
-        // white-on-white particle read as a small polished 3D object.
-        cairo_set_source_rgba(cr, 0.68, 0.68, 0.68, 0.85 * fade);
+        // A narrow mid-green lower rim and brighter green upper glint make each
+        // particle read as a small polished 3D object, all within the green family.
+        cairo_set_source_rgba(cr, 0.408, 0.776, 0.455, 0.85 * fade);
         cairo_set_line_width(cr, 0.45);
         if (c.shape == 0) {
             cairo_arc(cr, 0.0, 0.0, r * 0.72, 0.15, 2.75);

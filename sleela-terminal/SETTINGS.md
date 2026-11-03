@@ -10,7 +10,7 @@ The settings menu provides simple choices for:
 - terminal foreground/font color; and
 - a consistent dark terminal background.
 
-The existing dark-purple title bar and three-dimensional purple footer remain the visual frame for the application.
+The gray metallic (brushed-steel) title bar and three-dimensional purple footer remain the visual frame for the application.
 
 ## Language orientation
 
