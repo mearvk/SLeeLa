@@ -105,7 +105,7 @@ class Analyzer{
  Type tn(const std::string&t)const{return known(t)?typeOf(t):Type{Kind::Error,t};}
  void collect(){
   for(const auto&s:p.structs)if(!structs.insert(s.name).second)err("duplicate struct '"+s.name+"'");
-  for(const auto&s:p.structs){std::map<std::string,Type> f;if(s.fields.size()>64)err("struct '"+s.name+"' exceeds 64 fields");
+  for(const auto&s:p.structs){std::map<std::string,Type> f;if(s.fields.size()>64)err("struct '"+s.name+"' declares "+std::to_string(s.fields.size())+" fields, but the VM admits at most 64 fields per struct/class layout. Reduce the field count (for example, group related fields into an array or a nested struct).");
    for(const auto&x:s.fields){if(f.count(x.name))err("duplicate field '"+x.name+"' in struct '"+s.name+"'");
     Type t=tn(x.type);if(t.kind==Kind::Error)err("unknown type '"+x.type+"' for field '"+x.name+"'");if(t.kind==Kind::Void)err("field '"+x.name+"' cannot be void");f[x.name]=t;}fields[s.name]=f;}
   for(const auto&c:p.classes)classNames.insert(c.name);
@@ -195,6 +195,14 @@ class Analyzer{
     const bool isMix = mixEnabled && fieldHasMix(f,nullptr);
     if(f.isStatic){const std::string key=c.name+"::"+f.name;if(globals.count(key)&&!p.authorMarked)err("duplicate static field '"+key+"'");globals[key]=t;owners[key]=c.name;}
     else {if(instanceFields.count(f.name)&&!p.authorMarked&&!isMix)err("duplicate field '"+f.name+"' in class '"+c.name+"'");instanceFields[f.name]=t;}}
+   // The VM admits at most 64 named fields per class/struct layout (the struct
+   // path above enforces the same cap). Catch an over-wide class HERE, at
+   // semantic analysis, so `sleela check` reports it exactly as `run`/`compile`
+   // do -- rather than passing check and only failing later at VM layout
+   // registration with a message that looks like a layout-COUNT overflow.
+   // (Inherited-field overflow from `extends` is still caught downstream when
+   // the full base+derived layout is registered.)
+   if(instanceFields.size()>64)err("class '"+c.name+"' has "+std::to_string(instanceFields.size())+" instance fields, but the VM admits at most 64 fields per class/struct layout. Reduce the field count -- for example, pack a group of related fields into a single array field reached through accessor methods (methods cost no layout slot), or split the class.");
    fields[c.name]=instanceFields;
    for(const auto&m:c.methods){const std::string key=c.name+"::"+m.name;if(methods.count(key)&&!p.authorMarked)err("duplicate method '"+key+"'");
     if(!known(m.retType))err("unknown return type '"+m.retType+"' for method '"+m.name+"'");

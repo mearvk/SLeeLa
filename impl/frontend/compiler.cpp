@@ -117,7 +117,12 @@ public:
         // Struct declarations: register each layout with the VM and record a
         // compiler-side layout (type index + ordered field names -> offsets).
         for(const auto& st:prog_.structs){
-            if(st.fields.size()>128) throw std::runtime_error("Semantic error: struct '"+st.name+"' exceeds 128 fields");
+            // The VM admits at most SL_MAX_STRUCT_FIELDS (64) named fields per
+            // layout; slvm_declare_struct() rejects more by returning -1 BEFORE
+            // any diagnostic, which the generic registration error below would
+            // then misreport as a layout-COUNT overflow. Check the real cap here
+            // so the message names the true cause and the offending count.
+            if(st.fields.size()>SL_MAX_STRUCT_FIELDS) throw std::runtime_error("Semantic error: struct '"+st.name+"' declares "+std::to_string(st.fields.size())+" fields, but the VM admits at most "+std::to_string(SL_MAX_STRUCT_FIELDS)+" fields per struct/class layout. Reduce the field count (for example, group related fields into an array or a nested struct).");
             if(structLayout_.count(st.name)) throw std::runtime_error("Semantic error: duplicate struct '"+st.name+"'");
             if(syntax_<SyntaxVersion{1,2}) throw std::runtime_error("Semantic error: struct declarations require #sleela 1.2");
             StructLayout layout; layout.name=st.name;
@@ -170,8 +175,21 @@ public:
                 if(layout.fieldOffset.count(f.name)) throw std::runtime_error("Semantic error: duplicate instance field '"+f.name+"' in class '"+cls.name+"'");
                 layout.fieldOffset[f.name]=(int)layout.fieldType.size(); layout.fieldType.push_back(f.type); names.push_back(f.name.c_str());
             }
-            if(layout.fieldType.size()>128) throw std::runtime_error("Semantic error: class '"+cls.name+"' exceeds 128 instance fields");
+            // The VM admits at most SL_MAX_STRUCT_FIELDS (64) instance fields
+            // per layout. slvm_declare_struct() rejects an over-wide layout by
+            // returning -1 at its FIRST guard -- before the layout-table growth
+            // path and its diagnostics -- so the generic registration error
+            // below would misreport a too-many-FIELDS class as a too-many-
+            // LAYOUTS (65,536) overflow. (This was the earlier 'exceeds 128
+            // instance fields' check, whose 128 did not match the VM's real 64
+            // cap, letting 65..128-field classes slip through to that confusing
+            // error.) Check the true cap here, naming the class, its field
+            // count, and a concrete remedy.
+            if(layout.fieldType.size()>SL_MAX_STRUCT_FIELDS) throw std::runtime_error("Semantic error: class '"+cls.name+"' has "+std::to_string(layout.fieldType.size())+" instance fields, but the VM admits at most "+std::to_string(SL_MAX_STRUCT_FIELDS)+" fields per class/struct layout. Reduce the field count -- for example, pack a group of related fields into a single array field reached through accessor methods (methods cost no layout slot), or split the class.");
             layout.typeIndex=slvm_declare_struct(vm_,cls.name.c_str(),names.empty()?nullptr:names.data(),(int)names.size());
+            // With the field-cap pre-check above, a -1 here is a genuine
+            // layout-COUNT overflow (too many distinct class+struct types), not
+            // a too-wide single layout.
             if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register class layout '"+cls.name+"'. A 'layout' is one distinct class/struct type registered with the VM (not bytes); the program defines/pulls more than the "+groupDigits(SL_MAX_STRUCT_TYPES)+" distinct class+struct types the VM admits. (If this fires with only a handful of classes, the running sleelvac's VM core is stale/mismatched -- rebuild with 'rm -rf impl/build && make all' and reinstall.)");
             structLayout_[cls.name]=layout;
         }
