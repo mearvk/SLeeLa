@@ -272,8 +272,46 @@ install-system: core
 
 # Refresh EVERY standard location in one command: user-local (both layouts),
 # /usr/local, and any stray binaries in EXTRA_BINDIRS (default /usr/bin).
+#
+# This also builds and installs the standalone SleelaTerminal GUI/shell into
+# the SAME set of locations it refreshes (both user-local layouts and
+# /usr/local), matching the clean installer. The GUI needs GTK4 + VTE; when
+# those are absent the slsh shell is installed and the GUI is skipped with a
+# note. Set SLEELA_WITH_TERMINAL=no to skip the terminal entirely; a terminal
+# build/install failure never aborts install-all.
+SLEELA_WITH_TERMINAL ?= yes
+SLEELA_TERMINAL_DIR := $(SLEELA_REPO_ROOT)/sleela-terminal
 install-all: core
 	$(MAKE) -C install install-all SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)"
+	@if [ "$(SLEELA_WITH_TERMINAL)" = no ]; then \
+	  echo "SleelaTerminal: skipped (SLEELA_WITH_TERMINAL=no)."; \
+	elif [ ! -d "$(SLEELA_TERMINAL_DIR)" ]; then \
+	  echo "SleelaTerminal: sleela-terminal/ not present; skipping."; \
+	else \
+	  uh="$$( [ "$$(id -u)" -eq 0 ] && [ -n "$$SUDO_USER" ] && getent passwd "$$SUDO_USER" | cut -d: -f6 || printf '%s' "$$HOME" )"; \
+	  if command -v pkg-config >/dev/null 2>&1 && pkg-config --exists gtk4 vte-2.91-gtk4 >/dev/null 2>&1; then \
+	    bt=all-gui; it=install-gui; what="GUI terminal + slsh shell"; \
+	  else \
+	    bt=cli; it=install; what="slsh shell (GUI skipped: GTK4/VTE dev packages not found)"; \
+	    echo "SleelaTerminal: GTK4/VTE not detected -- installing slsh only."; \
+	  fi; \
+	  echo "== install-all: SleelaTerminal ($$what) =="; \
+	  if $(MAKE) --no-print-directory -C "$(SLEELA_TERMINAL_DIR)" $$bt; then \
+	    for p in "$$uh/.local" "$$uh/.local/sleela"; do \
+	      echo "==> SleelaTerminal into $$p"; \
+	      if [ "$$(id -u)" -eq 0 ] && [ -n "$$SUDO_USER" ]; then RUNAS="sudo -u $$SUDO_USER"; else RUNAS=""; fi; \
+	      $$RUNAS $(MAKE) --no-print-directory -C "$(SLEELA_TERMINAL_DIR)" $$it \
+	        PREFIX="$$p" BINDIR="$$p/bin" DESKTOPDIR="$$p/share/applications" \
+	        || echo "SleelaTerminal: install into $$p failed (continuing)."; \
+	    done; \
+	    echo "==> SleelaTerminal into /usr/local"; \
+	    if [ "$$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo"; fi; \
+	    $$SUDO $(MAKE) --no-print-directory -C "$(SLEELA_TERMINAL_DIR)" $$it PREFIX=/usr/local \
+	      || echo "SleelaTerminal: system install into /usr/local failed (continuing)."; \
+	  else \
+	    echo "SleelaTerminal: build failed; skipping its install (main install-all unaffected)."; \
+	  fi; \
+	fi
 
 # Remove files recorded by the conventional installer for this PREFIX.
 # The installer removes only tracked SLeeLa files and preserves configuration.
@@ -463,7 +501,9 @@ install-guide:
 	@echo "                        for a system install. Answer without a prompt"
 	@echo "                        via SLEELA_INSTALL_SCOPE=local|system. With no"
 	@echo "                        terminal it uses the scope-aware default."
-	@echo "  make install-all      Refresh every standard location at once."
+	@echo "  make install-all      Refresh every standard location at once"
+	@echo "                        (also installs the SleelaTerminal into each;"
+	@echo "                        SLEELA_WITH_TERMINAL=no skips it)."
 	@echo
 	@echo "TUNE WHAT GETS INSTALLED  (passed at build time, not asked at runtime)"
 	@echo "------------------------------------------------------------------"
