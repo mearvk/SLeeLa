@@ -389,6 +389,81 @@ EOF
 }
 
 # ===========================================================================
+# Optional: the SleelaTerminal(TM) GUI terminal + slsh shell (macOS).
+#
+# Self-contained C++ component under the top-level sleela-terminal/ directory
+# (NOT a lib/ package), with its own Makefile. Offered as an explicit yes/no and
+# installed into the SAME scope chosen for the main package:
+#   user   -> $INSTALL_ROOT/bin  (slsh + SleelaTerminal + assets), no sudo.
+#   system -> /usr/local/bin     (+ assets, + a .desktop entry), via sudo.
+# The GUI needs GTK4 + VTE (e.g. `brew install gtk4 vte3`); when absent we still
+# install the slsh shell and skip the GUI with a clear note.
+# ===========================================================================
+SLEELA_TERMINAL_DIR="$REPO_ROOT/sleela-terminal"
+
+terminal_has_gtk() {
+  command -v pkg-config >/dev/null 2>&1 || return 1
+  pkg-config --exists gtk4 vte-2.91-gtk4 >/dev/null 2>&1
+}
+
+install_sleela_terminal() {
+  local install_root="$1" bin_dest="$2" mode="$3"
+  [ -d "$SLEELA_TERMINAL_DIR" ] || { warn "sleela-terminal/ not present; skipping"; return 0; }
+
+  local have_gtk=no
+  terminal_has_gtk && have_gtk=yes
+
+  local build_target install_target what
+  if [ "$have_gtk" = yes ]; then
+    build_target="all-gui"; install_target="install-gui"; what="GUI terminal + slsh shell"
+  else
+    build_target="cli"; install_target="install"; what="slsh shell (GUI skipped: GTK4/VTE dev packages not found)"
+    warn "GTK4/VTE not detected — installing the ${WHITE}slsh${RESET}${AMBER} shell only; the GUI needs gtk4 + vte (e.g. brew install gtk4 vte3)"
+  fi
+
+  heading "SleelaTerminal"
+  step "building the SleelaTerminal ${what}"
+  local tlog="$REPO_ROOT/install/logs/sleela-terminal-$(date '+%Y%m%d-%H%M%S').log"
+  mkdir -p "$REPO_ROOT/install/logs"
+  if ! make -C "$SLEELA_TERMINAL_DIR" "$build_target" >"$tlog" 2>&1; then
+    warn "SleelaTerminal build failed — exact messages (tail):"
+    tail -n 14 "$tlog" | sed 's/^/        /'
+    warn "skipping the SleelaTerminal install; the main package is unaffected."
+    return 0
+  fi
+  ok "SleelaTerminal built (log: ${WHITE}$tlog${RESET})"
+
+  if [ "$mode" = user ]; then
+    step "installing into ${WHITE}$bin_dest${RESET} (user-local)"
+    if make -C "$SLEELA_TERMINAL_DIR" "$install_target" \
+         PREFIX="$install_root" BINDIR="$bin_dest" \
+         DESKTOPDIR="$install_root/share/applications" >>"$tlog" 2>&1; then
+      item "slsh -> $bin_dest/slsh"
+      [ "$have_gtk" = yes ] && item "SleelaTerminal -> $bin_dest/SleelaTerminal"
+      [ "$have_gtk" = yes ] && item "assets -> $bin_dest/assets/"
+      ok "SleelaTerminal installed (user-local)"
+    else
+      warn "SleelaTerminal install step failed — see ${WHITE}$tlog${RESET}"
+    fi
+  else
+    command -v sudo >/dev/null 2>&1 || { warn "system SleelaTerminal install needs sudo; skipping"; return 0; }
+    step "installing into ${WHITE}/usr/local/bin${RESET} (system-wide)"
+    if sudo make -C "$SLEELA_TERMINAL_DIR" "$install_target" \
+         PREFIX=/usr/local >>"$tlog" 2>&1; then
+      item "slsh -> /usr/local/bin/slsh"
+      if [ "$have_gtk" = yes ]; then
+        item "SleelaTerminal -> /usr/local/bin/SleelaTerminal"
+        item "assets -> /usr/local/bin/assets/"
+        item "desktop entry -> /usr/local/share/applications/SleelaTerminal.desktop"
+      fi
+      ok "SleelaTerminal installed (system-wide)"
+    else
+      warn "SleelaTerminal install step failed — see ${WHITE}$tlog${RESET}"
+    fi
+  fi
+}
+
+# ===========================================================================
 # Flow
 # ===========================================================================
 clear 2>/dev/null || true
@@ -417,7 +492,24 @@ esac
 
 select_environment
 
+# Offer the standalone SleelaTerminal GUI/shell as an explicit extra. It builds
+# from its own tree and installs into the SAME scope chosen above (user-local
+# directories, or the system directories under /usr/local).
+heading "SleelaTerminal (optional)"
+say "  ${GREY}The SleelaTerminal is an original GUI terminal and 'slsh' shell${RESET}"
+say "  ${GREY}(a separate C++ component). It can be built and copied into the${RESET}"
+if [ "$MODE" = user ]; then
+  say "  ${GREY}user directory:${RESET} ${WHITE}$BIN_DEST${RESET}${GREY}.${RESET}"
+else
+  say "  ${GREY}system directories under${RESET} ${WHITE}/usr/local${RESET}${GREY}.${RESET}"
+fi
+WANT_TERMINAL="$(ask_yn "Also install the SleelaTerminal GUI/shell?" no)"
+
 install_main "$INSTALL_ROOT" "$BIN_DEST" "$CONFIG_DIR" "$MODE"
+
+if [ "$WANT_TERMINAL" = yes ]; then
+  install_sleela_terminal "$INSTALL_ROOT" "$BIN_DEST" "$MODE"
+fi
 
 if [ -n "$BUILD_LOG" ] && [ -f "$BUILD_LOG" ]; then
   if [ "$MODE" = user ]; then
@@ -433,6 +525,13 @@ heading "Installed"
 ok "SLeeLa ${RELEASE} main package is installed."
 say "  ${GREY}Binaries:${RESET} ${WHITE}$INSTALL_ROOT/bin${RESET}  ${GREY}(sleela · sleelvac · nordshrift)${RESET}"
 say "  ${GREY}Try:${RESET}      ${WHITE}$INSTALL_ROOT/bin/sleela version${RESET}"
+if [ "${WANT_TERMINAL:-no}" = yes ]; then
+  if [ "$MODE" = user ]; then
+    say "  ${GREY}Terminal:${RESET} ${WHITE}$BIN_DEST/slsh${RESET}  ${GREY}(and SleelaTerminal, if GTK4/VTE were present)${RESET}"
+  else
+    say "  ${GREY}Terminal:${RESET} ${WHITE}/usr/local/bin/slsh${RESET}  ${GREY}(and SleelaTerminal, if GTK4/VTE were present)${RESET}"
+  fi
+fi
 
 record_of_build() {
   local f_prod f_lib f_dest f_log f_when
@@ -451,6 +550,12 @@ record_of_build() {
   printf "    %s%-18s%s %s\n" "$GREY" "Blocks chosen" "$RESET" "$f_incl"
   printf "    %s%-18s%s %s\n" "$GREY" "Scope" "$RESET" "$MODE"
   printf "    %s%-18s%s %s\n" "$GREY" "Platform" "$RESET" "macOS"
+  local f_term="not installed"
+  if [ "${WANT_TERMINAL:-no}" = yes ]; then
+    if [ "$MODE" = user ]; then f_term="installed into $BIN_DEST (slsh + GUI when GTK4/VTE present)"
+    else f_term="installed into /usr/local/bin (slsh + GUI when GTK4/VTE present)"; fi
+  fi
+  printf "    %s%-18s%s %s\n" "$GREY" "SleelaTerminal" "$RESET" "$f_term"
   printf "    %s%-18s%s %s\n" "$GREY" "Destination" "$RESET" "$f_dest"
   printf "    %s%-18s%s %s\n" "$GREY" "Build window" "$RESET" "$f_when"
   printf "    %s%-18s%s %s\n" "$GREY" "Integrity" "$RESET" "SHA-256 manifest honored (fail-closed)"

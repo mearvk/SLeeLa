@@ -28,6 +28,19 @@ primary decision** (install the main package), choose a scope, and then — on
 success — may optionally add curated **enhancement modules** (audio, video,
 signal-processing, codecs, compression, gui, ui, database, connector).
 
+After the module blocks, the installer also offers the **SleelaTerminal** — the
+original GUI terminal and `slsh` shell (a separate C++ component under
+`sleela-terminal/`, not a `lib/` package). Answer **yes** and it is built and
+copied into the **same scope** you chose: for a user-local install into your
+user directory (`$INSTALL_ROOT/bin`, with its `assets/`), or for a system
+install into the system directories under `/usr/local` (binaries in
+`/usr/local/bin`, assets in `/usr/local/bin/assets`, and a `.desktop` entry).
+The GUI needs GTK4 + VTE development packages (`gtk4` and `vte-2.91-gtk4`); when
+they are not present the installer still installs the `slsh` shell and skips the
+GUI binary with a clear note, so the choice always yields a usable terminal.
+Declining leaves the main package untouched. (On Windows, the `.cmd`/PowerShell
+installer does not build this Unix GUI component.)
+
 The output is styled with the SLeeLa palette and degrades to plain text
 automatically when not attached to a terminal, when `NO_COLOR` is set, or with
 `--plain`. The full-featured installer below (with server/HTTP/VM-edition
