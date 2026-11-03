@@ -667,28 +667,30 @@ void install_css(AppState *state) {
         box.sleela-workspace {
             background: @sl_textpane_bg;
         }
-        /* The panel's 10px padding forms a visible frame around the terminal.
-           Paint it in the standard UI gray (@sl_ui_gray) -- replacing the
-           former near-white theme fallthrough -- so it reads as a deliberate
-           standard-gray border, while the VTE text surface below stays dark. */
+        /* The terminal fills its area edge-to-edge: no padding, margin, border,
+           or rounded corners that would inset the text pane and reveal a gray
+           or white frame around it. The panel background matches the dark pane
+           gray so nothing but the terminal shows. */
         overlay.sleela-terminal-panel {
-            background: @sl_ui_gray;
-            border: 1px solid #383838;
-            border-radius: 12px;
-            padding: 10px;
-            margin: 12px;
+            background: @sl_pane_bg;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            margin: 0;
         }
         /* VTE paints its OWN padding/content node; on some GTK themes that node
            falls back to the theme's near-white widget background. Pin the whole
-           vte-terminal box -- including its padding -- to the dark pane gray so
-           the text area stays dark inside the standard-gray panel frame and no
-           white backing can appear behind or around the text pane. */
+           vte-terminal box -- including its padding -- to the dark pane gray and
+           drop any inset so the text area extends to 100% with no white backing
+           around it. */
         vte-terminal {
             color: @sl_output_fg;
             background: @sl_pane_bg;
             background-color: @sl_pane_bg;
             padding: 0;
-            border-radius: 8px;
+            margin: 0;
+            border: none;
+            border-radius: 0;
         }
         window .sleela-file-browser {
             color: #f2f2f2;
