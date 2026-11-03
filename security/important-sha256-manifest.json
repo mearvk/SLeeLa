@@ -56780,7 +56780,7 @@
     },
     {
       "path": "sleela-terminal/sleelaterminal-gui.cpp",
-      "sha256": "e5f3945ae42a3d37e553449e1db85b3fc3c6877ea72dfef2c7a9967df9f8ed85"
+      "sha256": "693e50ec105a7d8bc17e60adf37916e96b57d349b89c0f28b032f07e67b4bb2d"
     },
     {
       "path": "sleela-terminal/slsh.cpp",

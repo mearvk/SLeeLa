@@ -15,10 +15,11 @@ popovers) is a quiet frame around it. Chrome must never compete with terminal
 content for attention: no blinking, flashing, or attention-grabbing motion.
 Controls appear on demand (popovers / right-click), not as permanent panels.
 
-The one sanctioned exception is the **title-bar throbber**: a 2px living
-light-blue seam along the bottom of the title bar that replaces the old static
-border. It is a field of many small excitations in relative shades of one base
-light-blue, flowing mainly left→right at ~20 Hz with third-order (jerk-bounded)
+The one sanctioned exception is the **title-bar throbber** (the "light bar"): a
+living green seam along the bottom of the title bar that replaces the old static
+border. It is unified in green — a field of many small excitations in relative
+shades of one base green (deep forest base, mossy through vivid spring-green
+cells), flowing mainly left→right at ~20 Hz with third-order (jerk-bounded)
 speed changes, so it drifts and breathes rather than scrolling mechanically. It
 is allowed because it is *ambient* — low-contrast, slow, edge-only, and carrying
 no information the user must track — so it signals "alive" without pulling the
@@ -39,7 +40,8 @@ reading palette:
 | `--sl-bg` | `#15101c` | window chrome background |
 | `--sl-surface` | `#21112f` | popovers, dialogs, raised surfaces |
 | `--sl-surface-hi` | `#321a4d` | gradient top / hover surface |
-| `--sl-chrome` | `#24103f` | title bar / footer base |
+| `--sl-chrome` | `#24103f` | footer base / raised chrome |
+| `--sl-titlebar-metal` | `#dfe2e6`→`#4d525a` | gray metallic title-bar bevel (bright top → central specular → shadow base) |
 | `--sl-border` | `#7f56aa` | 1px separators and surface borders |
 | `--sl-fg` | `#ffffff` | chrome text / controls |
 | `--sl-fg-dim` | `rgba(255,255,255,.70)` | secondary / note text |
