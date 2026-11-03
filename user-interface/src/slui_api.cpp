@@ -185,6 +185,10 @@ void slui_window_destroy(SLUIWindow* window) {
 void slui_window_show(SLUIWindow* window) {
     if (window) as_window(window)->show();
 }
+int slui_window_closed(const SLUIWindow* window) {
+    if (!window) return 0;
+    return as_window(const_cast<SLUIWindow*>(window))->closed() ? 1 : 0;
+}
 void slui_window_hide(SLUIWindow* window) {
     if (window) as_window(window)->hide();
 }

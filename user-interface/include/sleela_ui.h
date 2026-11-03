@@ -296,6 +296,11 @@ SLUIWindow *slui_window_create(SLUIApp *app, const SLUIWindowConfig *config);
 void slui_window_destroy(SLUIWindow *window);
 void slui_window_show(SLUIWindow *window);
 void slui_window_hide(SLUIWindow *window);
+/* Non-zero once the user has closed the window (WM close / X button); 0 while
+ * it is still open (or for a NULL handle). A manual slui_app_pump() loop polls
+ * this to end cleanly on close, mirroring what slui_app_run() checks
+ * internally. */
+int slui_window_closed(const SLUIWindow *window);
 void slui_window_set_title(SLUIWindow *window, const char *title);
 SLUIWidget *slui_window_root(SLUIWindow *window);
 const SLUITheme *slui_window_theme(const SLUIWindow *window);

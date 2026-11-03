@@ -828,6 +828,7 @@ private:
             {"uiBackendName",SLUI_FN_BACKEND_NAME},{"uiVersion",SLUI_FN_VERSION},
             {"uiWindowCreate",SLUI_FN_WINDOW_CREATE},{"uiWindowShow",SLUI_FN_WINDOW_SHOW},{"uiWindowHide",SLUI_FN_WINDOW_HIDE},
             {"uiWindowRoot",SLUI_FN_WINDOW_ROOT},{"uiWindowSetTitle",SLUI_FN_WINDOW_SET_TITLE},
+            {"uiWindowClosed",SLUI_FN_WINDOW_CLOSED},
             {"uiWindowSetTheme",SLUI_FN_WINDOW_SET_THEME},{"uiWindowRedraw",SLUI_FN_WINDOW_REDRAW},
             {"uiWindowSetBuffering",SLUI_FN_WINDOW_SET_BUFFERING},{"uiWindowBuffering",SLUI_FN_WINDOW_BUFFERING},
             {"uiWindowSetMinSize",SLUI_FN_WINDOW_SET_MIN_SIZE},{"uiWindowSetMaxSize",SLUI_FN_WINDOW_SET_MAX_SIZE},

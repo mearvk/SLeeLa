@@ -46,6 +46,7 @@ implements the same surface.
 | `uiAppQuit(app,code)` | Ask the loop to stop | `slui_app_quit` |
 | `uiWindowCreate(app,title,w,h,theme)` → int | Open a window; VM-local handle | `slui_window_create` |
 | `uiWindowShow/Hide(win)` | Map / unmap the window | `slui_window_show`/`_hide` |
+| `uiWindowClosed(win)` → int | 1 once the user closed the window (X button), else 0 | `slui_window_closed` |
 | `uiWindowSetTitle(win,title)` | Set the title | `slui_window_set_title` |
 | `uiWindowRoot(win)` → int | The root container widget handle | `slui_window_root` |
 | `uiWindowSetTheme(win,theme)` | Swap the palette live | `slui_window_set_theme` |

@@ -114,6 +114,7 @@ int sleela_ui_arity(int id) {
         /* 1 arg */
         case SLUI_FN_APP_CREATE: case SLUI_FN_APP_RUN: case SLUI_FN_APP_DESTROY:
         case SLUI_FN_BACKEND_NAME: case SLUI_FN_WINDOW_SHOW: case SLUI_FN_WINDOW_HIDE:
+        case SLUI_FN_WINDOW_CLOSED:
         case SLUI_FN_WINDOW_ROOT: case SLUI_FN_WINDOW_REDRAW: case SLUI_FN_CARD:
         case SLUI_FN_HEADER_BAR: case SLUI_FN_STATUS_BAR: case SLUI_FN_SPACER:
         case SLUI_FN_SPINNER: case SLUI_FN_COMBO_BOX: case SLUI_FN_THEME_PRESET:
@@ -227,6 +228,7 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         }
         case SLUI_FN_WINDOW_SHOW:   slui_window_show(win_get(ai(a,n,0))); return r_null();
         case SLUI_FN_WINDOW_HIDE:   slui_window_hide(win_get(ai(a,n,0))); return r_null();
+        case SLUI_FN_WINDOW_CLOSED: return r_int(slui_window_closed(win_get(ai(a,n,0))));
         case SLUI_FN_WINDOW_ROOT:   return r_int(widget_put(slui_window_root(win_get(ai(a,n,0)))));
         case SLUI_FN_WINDOW_SET_TITLE: slui_window_set_title(win_get(ai(a,n,0)), as_(a,n,1)); return r_null();
         case SLUI_FN_WINDOW_SET_MIN_SIZE:
