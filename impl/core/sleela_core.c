@@ -1817,6 +1817,20 @@ static SLResult run_thread(SLThread* t) {
                 if(targetTag==SL_INT && value.type==SL_INT128) {
                     PUSH(slval_int((int64_t)value.as.i128)); break;
                 }
+                /* Java-style narrowing from double to an integer: `(int)d`
+                 * truncates toward zero (C's double->int64_t conversion has the
+                 * same rule). Without this a cast of a double to an int target
+                 * -- e.g. `(int) uiWidgetGetValue(slider)` feeding an int param,
+                 * or any `int n = (int) someDouble;` -- fell through to the
+                 * fail-closed tag check below and aborted with "runtime value
+                 * tag does not match target", even though double->int is a
+                 * well-defined narrowing. Mirror the int128 narrowing above. */
+                if(targetTag==SL_INT && value.type==SL_DOUBLE) {
+                    PUSH(slval_int((int64_t)value.as.d)); break;
+                }
+                if(targetTag==SL_INT128 && value.type==SL_DOUBLE) {
+                    PUSH(slval_int128((sl_int128_t)value.as.d)); break;
+                }
                 /* Java-style widening to double: an integer stored into, cast
                  * to, or passed as a double becomes a double (so `double d = 3;`
                  * then `d / 2` is 1.5, not integer 1). An already-double value
