@@ -30,7 +30,7 @@ GUI   := $(BUILD)/SleelaTerminal
 GTK4_VTE_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(GTK4_VTE_PKGS) 2>/dev/null)
 GTK4_VTE_LIBS   := $(shell $(PKG_CONFIG) --libs $(GTK4_VTE_PKGS) 2>/dev/null)
 
-.PHONY: all cli all-gui smoke test m5-smoke gui install install-gui install-all install-strip uninstall clean sanitize fuzz
+.PHONY: all cli all-gui smoke test m5-smoke gui install install-gui install-all do-install do-install-gui install-strip uninstall clean sanitize fuzz
 
 all: all-gui
 
@@ -66,19 +66,99 @@ test: smoke m5-smoke
 install-smoke: $(SLSH)
 	sh ./install-smoke.sh
 
+# ---------------------------------------------------------------------------
+# Installation is SCOPE-AWARE. `install`, `install-gui`, and `install-all` ask
+#   1) Local   -> $HOME/.local  (user-local, never uses sudo)
+#   2) System  -> /usr/local    (prompts for the sudo password as needed)
+# on a terminal, then dispatch to the raw do-* recipes below. The System path
+# re-invokes make under sudo ONLY for the privileged copy, so you are asked for
+# your password exactly when system paths are written.
+#
+# Non-interactive / packaging stays unchanged:
+#   * an explicit PREFIX= on the command line, or any DESTDIR, is used verbatim
+#     with no prompt and no sudo (staged/distro builds behave as before);
+#   * SLEELA_INSTALL_SCOPE=local|system (or 1|2) answers without a prompt;
+#   * with no terminal and no scope set, it defaults to a user-local install.
+SLEELA_INSTALL_SCOPE ?=
+
+# $(call scope_install,<do-target>) — resolve scope, then run <do-target>,
+# elevating with sudo for a system install when not already root.
+define scope_install
+	@if [ "$(origin PREFIX)" = "command line" ] || [ -n "$(DESTDIR)" ]; then \
+	  echo "Installing into $(DESTDIR)$(BINDIR) (explicit PREFIX/DESTDIR; no sudo, no prompt)."; \
+	  $(MAKE) --no-print-directory $(1) PREFIX="$(PREFIX)" BINDIR="$(BINDIR)" \
+	    DESKTOPDIR="$(DESKTOPDIR)" DESTDIR="$(DESTDIR)"; \
+	else \
+	  scope="$(SLEELA_INSTALL_SCOPE)"; \
+	  if [ -z "$$scope" ] && [ -t 0 ]; then \
+	    echo "Where should SleelaTerminal be installed?"; \
+	    echo "  1) Local   user-local install under \$$HOME/.local (never uses sudo)"; \
+	    echo "  2) System  system-wide install under /usr/local (prompts for sudo as needed)"; \
+	    printf 'Choose [1/2] (default 1): '; \
+	    read scope || scope=1; \
+	  fi; \
+	  [ -z "$$scope" ] && scope=1; \
+	  case "$$scope" in \
+	    1|local|LOCAL|Local|user|USER|User) \
+	      p="$$HOME/.local"; \
+	      echo "Local install selected (no sudo): $$p/bin"; \
+	      $(MAKE) --no-print-directory $(1) PREFIX="$$p" BINDIR="$$p/bin" \
+	        DESKTOPDIR="$$p/share/applications" DESTDIR="" ;; \
+	    2|system|SYSTEM|System) \
+	      echo "System install selected: /usr/local (sudo requested for system paths only)."; \
+	      if [ "$$(id -u)" -eq 0 ]; then SUDO=""; \
+	      elif command -v sudo >/dev/null 2>&1; then SUDO="sudo"; \
+	      else echo "System install needs root; install sudo or run as root." >&2; exit 1; fi; \
+	      $$SUDO $(MAKE) --no-print-directory $(1) PREFIX=/usr/local BINDIR=/usr/local/bin \
+	        DESKTOPDIR=/usr/local/share/applications DESTDIR="" ;; \
+	    *) echo "Unrecognized choice '$$scope'; expected 1 (local) or 2 (system)." >&2; exit 2 ;; \
+	  esac; \
+	fi
+endef
+
+# Scope-aware front-ends.
+#
+# `install` installs the slsh shell only. `install-gui` / `install-all` install
+# the GUI too WHEN GTK4/VTE are available; when they are not, they degrade to a
+# slsh-only install (with a note) instead of failing, so the command always
+# yields a working terminal. Build the GUI explicitly with `make gui`/`all-gui`
+# if you want a hard failure on missing GTK4/VTE.
 install: $(SLSH)
+	$(call scope_install,do-install)
+
+install-gui install-all: $(SLSH)
+	@if [ -n "$(GTK4_VTE_CFLAGS)" ] && [ -n "$(GTK4_VTE_LIBS)" ]; then \
+	  echo "GTK4/VTE found: installing the GUI terminal + slsh shell."; \
+	  $(MAKE) --no-print-directory $(GUI); \
+	  $(MAKE) --no-print-directory _scope-install-gui; \
+	else \
+	  echo "GTK4/VTE not found: installing the slsh shell only (skipping the GUI)."; \
+	  echo "  Install the gtk4 and vte-2.91-gtk4 development packages for the GUI."; \
+	  $(MAKE) --no-print-directory _scope-install; \
+	fi
+
+# Internal scope dispatchers (used by install-gui/install-all after the GTK
+# decision). Kept separate so the GTK probe runs once, before any sudo prompt.
+.PHONY: _scope-install _scope-install-gui
+_scope-install: $(SLSH)
+	$(call scope_install,do-install)
+_scope-install-gui: $(GUI)
+	$(call scope_install,do-install-gui)
+
+# Raw copy recipes (honor PREFIX/BINDIR/DESKTOPDIR/DESTDIR as given). These are
+# what actually write files; the scope front-ends above re-invoke them with the
+# chosen prefix (and under sudo for a system install).
+do-install: $(SLSH)
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 0755 $(SLSH) $(DESTDIR)$(BINDIR)/slsh
 
-install-gui: install $(GUI)
+do-install-gui: do-install $(GUI)
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)/assets
 	$(INSTALL) -d $(DESTDIR)$(DESKTOPDIR)
 	$(INSTALL) -m 0755 $(GUI) $(DESTDIR)$(BINDIR)/SleelaTerminal
 	$(INSTALL) -m 0644 assets/* $(DESTDIR)$(BINDIR)/assets/
 	$(INSTALL) -m 0644 SleelaTerminal.desktop $(DESTDIR)$(DESKTOPDIR)/SleelaTerminal.desktop
-
-install-all: install install-gui
 
 # Keep clean/rebuild/install ordered even when make is invoked with -j.
 install-strip:
