@@ -162,6 +162,23 @@ else
   endif
 endif
 SLUI_BACKEND_OBJ := $(BUILD)/slui/backend.o
+# Optional system image codecs for the SleelaUI Image widget (and Button icons).
+# JPEG is always available via bundled NanoJPEG; PNG (libpng) and AVIF (libavif)
+# are compiled in when pkg-config finds them, mirroring user-interface/Makefile.
+# Without these, Image still decodes JPEG; with them, a gallery can show PNG too.
+SLUI_IMAGE_CFLAGS :=
+SLUI_IMAGE_LIBS :=
+SLUI_PNG_LIBS := $(shell pkg-config --libs libpng 2>/dev/null)
+SLUI_AVIF_LIBS := $(shell pkg-config --libs libavif 2>/dev/null)
+ifneq ($(strip $(SLUI_PNG_LIBS)),)
+  SLUI_IMAGE_CFLAGS += -DSLUI_HAVE_LIBPNG $(shell pkg-config --cflags libpng 2>/dev/null)
+  SLUI_IMAGE_LIBS += $(SLUI_PNG_LIBS)
+endif
+ifneq ($(strip $(SLUI_AVIF_LIBS)),)
+  SLUI_IMAGE_CFLAGS += -DSLUI_HAVE_LIBAVIF $(shell pkg-config --cflags libavif 2>/dev/null)
+  SLUI_IMAGE_LIBS += $(SLUI_AVIF_LIBS)
+endif
+SLUI_LIBS += $(SLUI_IMAGE_LIBS)
 # Shared native Wi-Fi manager plus the selected platform provider. The VM bridge
 # calls this C API directly; the same source is used by the C++ wrapper.
 WIFI_DIR := ../wifi-common
@@ -523,7 +540,7 @@ $(IDEA_CANVAS_CTX_OBJ): $(IDEA_CANVAS_CTX_SRC) $(IDEA_CANVAS_DIR)/idea_canvas_ct
 # ---- SleelaUI toolkit objects + the ui* VM bridge --------------------------
 $(BUILD)/slui/%.o: $(SLUI_DIR)/src/%.cpp | $(BUILD)
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) $(DEPFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(DEPFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) $(SLUI_IMAGE_CFLAGS) -c $< -o $@
 $(SLUI_NANOJPEG_OBJ): $(SLUI_DIR)/src/nanojpeg.c $(SLUI_DIR)/src/nanojpeg.h | $(BUILD)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -Wno-shift-negative-value -I$(SLUI_DIR)/src -c $< -o $@

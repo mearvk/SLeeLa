@@ -74,7 +74,7 @@ implements the same surface.
 | `uiCard(parent)` → int | A raised surface panel | `slui_card` |
 | `uiGrid(parent,cols,spacing)` → int | A row/column grid | `slui_grid` |
 | `uiStatusBar(parent)` → int | A footer status strip | `slui_status_bar` |
-| `uiImage(parent,glyph,w,h)` → int | An image/icon tile | `slui_image` |
+| `uiImage(parent,src,w,h)` → int | Image tile; `src` is a file path — decodes & renders real JPEG (always) / PNG, AVIF (when linked); a non-file string shows a captioned tile. Re-decoded on `uiWidgetSetText`. | `slui_image` |
 | `uiAvatar(parent,initial,d)` → int | A round avatar | `slui_avatar` |
 | `uiBadge(parent,text)` → int | A count/status pill | `slui_badge` |
 | `uiChip(parent,text)` → int | A tag / chip pill | `slui_chip` |

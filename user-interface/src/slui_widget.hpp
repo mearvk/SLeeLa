@@ -580,15 +580,25 @@ private:
 class Image : public Widget {
 public:
     Image(std::string glyph, int w, int h)
-        : Widget(WidgetKind::Image), glyph_(std::move(glyph)), w_(w), h_(h) {}
+        : Widget(WidgetKind::Image), glyph_(std::move(glyph)), w_(w), h_(h) {
+        load_source();
+    }
     SLUISize measure(const PaintContext& ctx) override;
     void paint(PaintContext& ctx) override;
-    void set_text(const std::string& t) override { glyph_ = t; invalidate(); }
+    /* The string argument doubles as the image SOURCE: a readable file path
+     * (jpg/jpeg always; png/avif when the build links libpng/libavif) is
+     * decoded and rendered as real pixels; anything else (a bare caption or a
+     * missing file) falls back to the themed monogram tile. Re-decoded on
+     * every set_text so a gallery can page through files by reusing one Image. */
+    void set_text(const std::string& t) override { glyph_ = t; load_source(); invalidate(); }
     std::string text() const override { return glyph_; }
 
 private:
+    void load_source(); /* (re)decode glyph_ as a file path into rgb_ */
     std::string glyph_;
     int w_, h_;
+    std::vector<unsigned char> rgb_; /* decoded packed 24-bit RGB, empty if none */
+    int iw_ = 0, ih_ = 0;            /* decoded image dimensions */
 };
 
 /* A round avatar showing an initial on an accent disc. */
