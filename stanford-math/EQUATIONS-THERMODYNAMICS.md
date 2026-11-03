@@ -87,3 +87,115 @@ references such as NIST DLMF / Abramowitz & Stegun, and tertiary locators includ
 Wikipedia, cited as CC BY-SA and never treated as a primary authority) and the repo
 `README.md` for per-class integrity goals. This archive records and attributes
 published results; it does not originate, own, or certify them.
+
+## Definitions & relevance (second-layer additions)
+
+The entries below are the second-layer additions to this canon, organized by
+type. Each gives a short **definition** (what the relation states and what its
+symbols mean) and its **relevance** (why it is foundational to thermodynamics and
+statistical mechanics).
+
+### Classical thermodynamics
+
+The four **Maxwell relations** each follow from the equality of mixed second
+derivatives of a thermodynamic potential (U, H, F, G). Their shared relevance is
+enormous leverage: they replace hard-to-measure entropy derivatives with easy
+mechanical ones, so an entropy response can be gotten from a measured equation of
+state.
+
+**Maxwell relation (dS/dV = dP/dT)** — `(dS/dV)_T = (dP/dT)_V`. Derived from the
+Helmholtz free energy `F(T,V)`, it expresses how entropy responds to volume in
+terms of how pressure responds to temperature — the most-used Maxwell relation.
+
+**Maxwell relation (dS/dP = -dV/dT)** — `(dS/dP)_T = -(dV/dT)_P`. Derived from the
+Gibbs free energy `G(T,P)`, it connects the entropy–pressure response to thermal
+expansion, directly measurable in the lab.
+
+**Maxwell relation (dT/dV = -dP/dS)** — `(dT/dV)_S = -(dP/dS)_V`. Derived from the
+internal energy `U(S,V)`, it links temperature and pressure derivatives along
+adiabats.
+
+**Maxwell relation (dT/dP = dV/dS)** — `(dT/dP)_S = (dV/dS)_P`. Derived from the
+enthalpy `H(S,P)`, it is a standard tool for building and checking equations of
+state.
+
+**Euler relation (extensivity)** — `U = T S - P V + sum mu_i N_i`. Because energy
+is a first-order homogeneous function of the extensive variables, it integrates to
+this closed form. It is the structural backbone that makes the fundamental
+relation self-consistent and yields the Gibbs-Duhem constraint.
+
+**Gibbs-Duhem relation** — `S dT - V dP + sum N_i dmu_i = 0`. Constrains how the
+intensive variables (temperature, pressure, chemical potentials) may vary
+together, so they are not all independent. It is foundational for phase and
+mixture thermodynamics, fixing how many intensive quantities one can set freely.
+
+**Clausius inequality** — `closed_integral dQ/T <= 0`. Over any cyclic process the
+integral of heat over temperature cannot be positive, with equality only for
+reversible cycles. It is the precise mathematical statement of the second law and
+the origin of entropy as a state function.
+
+**Entropy change (reversible)** — `dS = dQ_rev / T`. Defines the entropy change of
+a system as the reversible heat transferred divided by temperature. It is the
+operational definition that turns entropy from an abstraction into a computable
+quantity.
+
+**Joule-Thomson coefficient** — `mu_JT = (dT/dP)_H`. The temperature change of a
+real gas as it is throttled at constant enthalpy; its sign decides whether the gas
+heats or cools. It is the thermodynamic basis of gas liquefaction and
+refrigeration.
+
+### Statistical mechanics
+
+**Dulong-Petit law** — `C_molar = 3 R`. Classical equipartition predicts a
+constant molar heat capacity for crystalline solids. Its success at high
+temperature and failure at low temperature was a key clue that led to quantum
+theories of heat capacity.
+
+**Einstein heat capacity** — `C_V = 3 N k_B (x^2 e^x)/(e^x - 1)^2`. The first
+quantum model of a solid, treating atoms as identical quantized oscillators. It
+explained the fall of heat capacity toward zero at low temperature — an early
+triumph of quantum ideas.
+
+**Grand canonical partition function** — `Xi = sum e^(-(E - mu N)/(k_B T))`. Sums
+over both energy and particle number for a system open to a reservoir. It is the
+engine of open-system statistical mechanics, from which pressure, particle
+number, and fluctuations follow.
+
+**Grand potential** — `Omega = -k_B T ln Xi = -P V`. The thermodynamic potential
+natural to open systems, connecting the grand partition function to measurable
+pressure and volume. It is the open-system analog of the free energy.
+
+**Free energy from partition function** — `F = -k_B T ln Z`. The single most
+important bridge in statistical mechanics: it links the microscopic sum over
+states to the macroscopic Helmholtz free energy. Every thermodynamic quantity can
+be derived from it.
+
+**Equipartition theorem** — `<E> = (f/2) k_B T`. Each quadratic degree of freedom
+carries an average energy of `k_B T / 2` in classical equilibrium. It explains
+ideal-gas heat capacities and sets the classical baseline that quantum effects
+later modify.
+
+**Fluctuation-dissipation (energy variance)** — `<dE^2> = k_B T^2 C_V`. Relates
+the size of spontaneous energy fluctuations to the heat capacity. It is a concrete
+case of the deep fluctuation-dissipation theorem linking noise to response.
+
+### Beyond equilibrium, phases, surfaces & thermochemistry
+
+**Onsager reciprocal relations** — `L_ij = L_ji`. The matrix of coefficients
+coupling thermodynamic forces to flows is symmetric, a consequence of microscopic
+time-reversal symmetry. It is the founding result of near-equilibrium
+irreversible thermodynamics (and earned Onsager a Nobel Prize).
+
+**Clapeyron equation** — `dP/dT = L / (T dV)`. Gives the slope of a coexistence
+line in the pressure–temperature plane from the latent heat and volume change of
+the transition. It is the exact governing relation for first-order phase
+boundaries.
+
+**Gibbs adsorption isotherm** — `dgamma = -sum Gamma_i dmu_i`. Relates the change
+in surface tension to the amount of each species adsorbed at an interface. It is
+foundational to surface thermodynamics and the science of surfactants.
+
+**Kirchhoff's law (enthalpy vs T)** — `d(dH)/dT = dC_p`. The temperature
+dependence of a reaction's enthalpy equals the difference in heat capacities of
+products and reactants. It is the standard tool for correcting thermochemical data
+to a target temperature.

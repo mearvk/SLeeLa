@@ -79,3 +79,143 @@ of-economics record; the **Why it matters** notes summarize each result's establ
 significance. See `SMProvenance.sleela` for the tiered source registry and the repo
 `README.md` for per-class integrity goals. This archive records and attributes
 published results; it does not originate, own, or certify them.
+
+## Definitions & relevance (second-layer additions)
+
+The entries below are the second-layer additions to this canon, organized by
+type. Each gives a short **definition** (what the equation states and what its
+symbols mean) and its **relevance** (why it is foundational to chemistry). These
+broaden the canon from covalent bonding out into the rest of general chemistry —
+acids and bases, kinetics, thermodynamics, electrochemistry, solutions, and
+surfaces.
+
+### Acid-base chemistry
+
+**pH definition** — `pH = -log10[H+]`. Defines acidity as the negative base-10
+logarithm of the hydrogen-ion activity, compressing an enormous concentration
+range into a convenient scale. It is the universal language of acidity, the
+reference point every other acid-base relation is expressed against.
+
+**Water autoionization constant** — `Kw = [H+][OH-] = 1.0e-14 at 25 C`. Water
+self-ionizes so that the product of hydrogen- and hydroxide-ion concentrations is
+a fixed constant at a given temperature. It anchors the entire pH scale and fixes
+the neutral point (pH 7 at 25 C), making acidity and basicity two sides of one
+equilibrium.
+
+**Henderson-Hasselbalch equation** — `pH = pKa + log10([A-]/[HA])`. Expresses the
+pH of a buffer in terms of the acid's pKa and the ratio of conjugate base to
+acid. It is the working formula of buffer chemistry and physiology, explaining
+how blood and reagents resist pH change near `pH = pKa`.
+
+### Chemical equilibrium & kinetics
+
+**Equilibrium constant** — `K = product[products]^n / product[reactants]^m`. At
+equilibrium the concentrations settle to a fixed ratio captured by `K`; large `K`
+favors products, small `K` favors reactants. It is the central quantitative
+statement of where a reaction comes to rest.
+
+**Law of mass action (rate)** — `rate = k [A]^m [B]^n`. Reaction rate is
+proportional to reactant concentrations raised to their reaction orders. It is
+the foundational postulate of chemical kinetics, from which individual rate laws
+are built.
+
+**First-order rate law** — `[A] = [A]0 e^(-k t)`. A reactant whose rate depends
+linearly on its own concentration decays exponentially in time, with a
+concentration-independent half-life. It is the kinetic template for radioactive
+decay, many drug-elimination processes, and unimolecular steps.
+
+**Second-order rate law** — `1/[A] = 1/[A]0 + k t`. When rate depends on the
+square of a concentration (or the product of two), the inverse concentration
+grows linearly in time. It is a common and easily-diagnosed kinetic order,
+identified by a straight line in a `1/[A]` plot.
+
+**Arrhenius equation (rate)** — `k = A e^(-Ea / (R T))`. The rate constant rises
+exponentially with temperature, controlled by an activation energy `Ea`. It
+quantifies why heating speeds reactions and defines the activation barrier that
+dominates reaction engineering.
+
+**Eyring equation (transition state)** — `k = (k_B T / h) e^(-dG_act / (R T))`.
+Transition-state theory derives the rate constant from the free energy of
+reaching the activated complex. Its relevance is a molecular, thermodynamic
+account of rate that complements Arrhenius's empirical form.
+
+### Chemical thermodynamics
+
+**Van 't Hoff equation** — `d(ln K)/dT = dH / (R T^2)`. Describes how an
+equilibrium constant shifts with temperature according to the reaction enthalpy.
+It links equilibrium to thermochemistry and is the basis for extracting `dH`
+from the temperature dependence of `K`.
+
+**Gibbs free energy of reaction** — `dG = dH - T dS`. Balances enthalpy against
+entropy at a given temperature; a negative `dG` marks a spontaneous process. It
+is the master criterion that decides the direction of chemical change.
+
+**Gibbs energy and equilibrium** — `dG = -R T ln K`. Ties the standard free-energy
+change directly to the equilibrium constant. It is the quantitative bridge
+between thermodynamics and equilibrium, converting energies into predicted
+compositions.
+
+### Electrochemistry
+
+**Nernst equation (cell potential)** — `E = E0 - (R T / (n F)) ln Q`. Gives a
+cell's voltage away from standard conditions as a function of the reaction
+quotient `Q`. It is the foundation of electrochemistry, underlying batteries,
+sensors, and the resting potentials of living cells.
+
+**Faraday's laws of electrolysis** — `m = (Q / F)(M / z)`. The mass deposited or
+dissolved at an electrode is proportional to the electric charge passed. They are
+the quantitative basis of electroplating, electrorefining, and coulometry.
+
+**Butler-Volmer equation** — `j = j0 [e^(a1 f eta) - e^(-a2 f eta)]`. Relates the
+net current at an electrode to the overpotential `eta`, combining forward and
+reverse electron-transfer rates. It is the central equation of electrode
+kinetics, governing fuel cells, batteries, and corrosion.
+
+### Physical & solution chemistry
+
+**Debye-Huckel limiting law** — `log10 gamma = -A z+ z- sqrt(I)`. Predicts how
+ion–ion interactions lower activity coefficients in dilute electrolytes, scaling
+with the square root of ionic strength. It is the founding theory of real
+(non-ideal) electrolyte solutions.
+
+**Clausius-Clapeyron (vapor pressure)** — `ln(p2/p1) = -(dH_vap / R)(1/T2 - 1/T1)`.
+Relates a liquid's vapor pressure at two temperatures to its enthalpy of
+vaporization. It connects boiling behavior to a measurable thermodynamic quantity
+and lets one predict boiling points under changed pressure.
+
+**Raoult's law** — `p_i = x_i p_i*`. In an ideal solution each component's vapor
+pressure equals its mole fraction times its pure-component vapor pressure. It is
+the reference behavior of solutions, the baseline against which real deviations
+(and distillation) are understood.
+
+**Henry's law** — `p = k_H c`. The amount of a gas dissolved in a liquid is
+proportional to its partial pressure above the liquid. It governs gas solubility
+from carbonated drinks to oxygen in blood and the bends in divers.
+
+**Colligative freezing-point depression** — `dTf = i K_f m`. Adding solute lowers
+a solvent's freezing point in proportion to molal concentration (and the van 't
+Hoff factor `i`). It is a colligative property depending on particle count, not
+identity — the principle behind road salt and antifreeze.
+
+**Osmotic pressure (van 't Hoff)** — `Pi = i M R T`. Dissolved particles exert an
+osmotic pressure formally identical to an ideal gas law in concentration. It is
+central to biology (cell turgor, dialysis) and to measuring molar masses of
+macromolecules.
+
+### Phase equilibria, surfaces & spectroscopy
+
+**Gibbs phase rule** — `F = C - P + 2`. Counts the degrees of freedom `F` of a
+system from its components `C` and coexisting phases `P`. It organizes phase
+diagrams, telling us how many conditions can vary independently at equilibrium.
+
+**Langmuir adsorption isotherm** — `theta = K p / (1 + K p)`. Models surface
+coverage as monolayer adsorption that saturates as pressure rises. It is the
+base model of surface chemistry and heterogeneous catalysis.
+
+**BET isotherm (multilayer)** — a multilayer extension of Langmuir adsorption. It
+is the standard method for measuring the surface area of porous solids and
+catalysts from gas-adsorption data.
+
+**Beer-Lambert absorbance** — `A = epsilon l c`. Absorbance is proportional to the
+molar absorptivity, path length, and concentration. It is the foundation of
+quantitative spectroscopy, turning a light measurement into a concentration.

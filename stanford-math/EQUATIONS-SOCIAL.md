@@ -73,3 +73,125 @@ anchors: Granovetter (1973), Freeman (1977-79), Burt (1992), McPherson-Smith-Lov
 Lorenz (1905), Pareto (1896). See `SMProvenance.sleela` and the repo `README.md`. This
 archive records and attributes published results; it does not originate, own, or certify
 them.
+
+## Definitions & relevance (second-layer additions)
+
+The entries below are the second-layer additions to this canon, organized by
+type. Each gives a short **definition** (what the measure is and what its symbols
+mean) and its **relevance** (why it is foundational to the study of social
+structure). As everywhere in this archive, these describe **structure and
+distribution — not persons**; they rank positions and quantify inequality, never
+individuals.
+
+### Network centrality
+
+**Eigenvector centrality** — `x = (1/lambda) A x`. A node's importance is set
+proportional to the summed importance of the nodes it connects to, so influence
+flows recursively through the network rather than being counted one hop at a
+time. It is foundational because it captures the intuition that being connected
+to well-connected others matters more than raw tie count; it is the mathematical
+ancestor of PageRank and a standard tool for finding structurally influential
+positions.
+
+**PageRank** — `PR = (1-d)/N + d sum PR(j)/outdeg(j)`. The stationary
+distribution of a random surfer who follows links with probability `d` and
+jumps to a random node otherwise; a node's score is the long-run fraction of
+time the surfer spends there. It is relevant far beyond the web: as a damped,
+teleporting eigenvector centrality it ranks importance in any directed network,
+from citation graphs to transport systems.
+
+**Katz centrality** — `x = (I - alpha A)^(-1) . 1`. Credits a node for every
+path that reaches it, discounting longer paths by a factor `alpha` per step, so
+distant connections still contribute but with diminishing weight. It matters
+because it bridges local degree and global eigenvector centrality, and it stays
+well-defined on directed, acyclic structures where plain eigenvector centrality
+can fail.
+
+**Closeness centrality** — `C(v) = (n - 1) / sum_u d(v,u)`. The inverse of a
+node's average shortest-path distance to all others, so a high score means the
+node can reach the rest of the network in few steps. It is the natural measure
+of reach and efficiency — how quickly information or influence originating at a
+position can spread to everyone else.
+
+**Bonacich power centrality** — `c = alpha (I - beta A)^(-1) A . 1`. Generalizes
+eigenvector centrality with a parameter `beta` whose sign decides whether being
+tied to well-connected others is an advantage (positive) or, in bargaining, a
+disadvantage (negative). Its relevance is that it formalizes the counterintuitive
+idea that power can come from connecting to the *weakly* connected — central to
+exchange and negotiation theory.
+
+**Freeman degree centralization** — `C = sum (c_max - c_i) / (max possible)`. A
+graph-level measure of how unequally centrality is distributed, comparing the
+most central node to all the rest against the most star-like possible network.
+It matters because it moves the analysis from individual positions to the whole
+structure, quantifying whether a group is organized around a hub or spread
+evenly.
+
+### Diversity & inequality measurement
+
+**Shannon diversity index** — `H = -sum p_i ln p_i`. Borrows information entropy
+to score a population's variety: it is maximized when categories are many and
+evenly represented, and zero when one category dominates. It is a foundational,
+field-crossing measure of heterogeneity, used from ecology to the diversity of
+occupations or opinions in a social group.
+
+**Simpson diversity index** — `D = 1 - sum p_i^2`. The probability that two
+members drawn at random fall in different categories, so higher means more mixed.
+Its relevance is as an intuitive, bounded companion to Shannon entropy that
+weights common categories more heavily — a standard concentration/diversity
+gauge.
+
+**Theil index (inequality)** — `T = (1/N) sum (x_i/x-bar) ln(x_i/x-bar)`. An entropy-based
+measure of inequality whose signature property is **decomposability**: total
+inequality splits exactly into a within-group part and a between-group part. That
+makes it foundational for attributing inequality to structure — how much of it
+lies between regions, sectors, or classes versus within them.
+
+**Atkinson inequality index** — `A = 1 - (1/x-bar)(mean of x^(1-e))^(1/(1-e))`.
+Measures inequality with an explicit **inequality-aversion** parameter `e`, so
+the analyst states how much weight to place on the bottom of the distribution.
+It matters because it grounds an inequality number in social-welfare theory
+rather than in a purely descriptive statistic.
+
+### Distributional & spatial laws
+
+**Zipf's law (city sizes)** — `size ~ 1 / rank`. The population of the k-th
+largest city is roughly the largest city's size divided by k, giving a strikingly
+regular rank–size curve. It is relevant as one of the most robust empirical
+regularities in the social sciences, constraining theories of how settlements
+and firms grow.
+
+**Gravity model of migration** — `F_ij = G P_i P_j / d_ij^2`. Flows between two
+places rise with the product of their sizes and fall with the distance between
+them, by analogy with Newtonian gravity. It is the workhorse model of migration
+and trade, still the baseline against which spatial-interaction theories are
+tested.
+
+**Benford's law (leading digit)** — `P(d) = log10(1 + 1/d)`. In many
+naturally-occurring datasets the leading digit is 1 far more often than 9,
+following a logarithmic law. Its relevance is both theoretical (scale invariance)
+and practical: deviations from it are a standard red flag in fraud and
+data-integrity auditing.
+
+### Sociobiology & network economics
+
+**Sex ratio at birth (Fisher principle)** — equal parental investment drives the
+population toward a 1:1 ratio. Fisher's argument is that whenever one sex is
+rarer, parents producing it gain a reproductive advantage until balance returns.
+It matters as an early, elegant equilibrium argument that seeded evolutionary
+game theory and the economics of investment under frequency dependence.
+
+**Metcalfe's law (network value)** — `value ~ n^2`. The usefulness of a
+communication network grows roughly with the square of its users, because the
+number of possible pairwise connections does. It is relevant as a heuristic for
+network effects and critical mass, widely invoked (and debated) in the economics
+of platforms and standards.
+
+### Collective behavior
+
+**Granovetter threshold model** — collective action ignites once the fraction of
+others already acting crosses an individual's activation threshold. Because
+thresholds vary across people, a population's *distribution* of thresholds — not
+any single person — determines whether a riot, fad, or adoption cascade takes
+off. It is foundational to understanding tipping points and why outwardly similar
+crowds behave very differently.

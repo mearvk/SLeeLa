@@ -75,3 +75,106 @@ references such as NIST DLMF / Abramowitz & Stegun, and tertiary locators includ
 Wikipedia, cited as CC BY-SA and never treated as a primary authority) and the repo
 `README.md` for per-class integrity goals. This archive records and attributes
 published results; it does not originate, own, or certify them.
+
+## Definitions & relevance (second-layer additions)
+
+The entries below are the second-layer additions to this canon, organized by
+type. Each gives a short **definition** (what the equation states and what its
+symbols mean) and its **relevance** (why it is foundational where mathematics
+crosses into another discipline).
+
+### Stochastic processes & analysis
+
+**Fokker-Planck equation** — `dP/dt = -d/dx(A P) + (1/2) d2/dx2(B P)`. Evolves the
+probability density of a system driven by drift `A` and diffusion `B`. It is the
+master equation of stochastic physics, chemistry, and finance, describing how
+uncertainty spreads over time.
+
+**Langevin equation** — `m dv/dt = -gamma v + eta(t)`. Adds a random force `eta`
+and a friction term to Newton's law, the original model of a particle buffeted by
+molecular collisions. It is the microscopic picture behind Brownian motion and
+noisy dynamics.
+
+**Ornstein-Uhlenbeck process** — `dx = -theta x dt + sigma dW`. A diffusion that is
+pulled back toward a mean with strength `theta`. It is the canonical model of
+mean-reverting noise, used for velocities, interest rates, and relaxation.
+
+**Kolmogorov forward equation** — `dp/dt = L* p`. Governs how the transition
+probabilities of a Markov process evolve in time (the abstract form of
+Fokker-Planck). It is a foundation stone of the modern theory of Markov
+processes.
+
+**Feynman-Kac formula** — `u(x,t) = E[ payoff | X_t = x ]`. Expresses the solution
+of a parabolic PDE as an expectation over paths of a diffusion. It is the bridge
+between PDEs and probability that underlies option pricing and quantum path
+integrals.
+
+**Girsanov theorem (measure change)** — reweights a probability measure to change
+the drift of a process while preserving its diffusion. It is the mathematical
+engine of risk-neutral pricing, letting one switch to a measure where discounted
+prices are martingales.
+
+### Mathematical epidemiology & evolution
+
+**SIR epidemic model** — `dS/dt=-bSI, dI/dt=bSI-gI, dR/dt=gI`. Partitions a
+population into susceptible, infected, and recovered compartments with transfer
+rates. It is the base model of mathematical epidemiology and the starting point
+for outbreak forecasting.
+
+**Basic reproduction number** — `R0 = beta / gamma`. The average number of
+secondary infections one case produces in a fully susceptible population. It is
+the single threshold that decides whether an epidemic grows (`R0 > 1`) or dies out.
+
+**Replicator dynamics** — `dx_i/dt = x_i (f_i - f-bar)`. Strategies that earn
+above-average payoff grow their population share. It is the core dynamical
+equation of evolutionary game theory, linking fitness to frequency change.
+
+**Price equation** — `dz-bar = Cov(w, z)/w-bar + E[w dz]/w-bar`. Decomposes the
+change in any trait across a generation into a selection term and a transmission
+term. It is a remarkably general accounting identity for evolutionary change.
+
+**Fisher's fundamental theorem** — the rate of increase in mean fitness equals the
+additive genetic variance in fitness. It is a landmark of population genetics,
+tying the speed of adaptation to the variation available to select on.
+
+**Wright-Fisher allele drift** — binomial resampling of alleles each generation in
+a finite population. It is the base model of genetic drift, quantifying how chance
+alone changes gene frequencies in small populations.
+
+### Biophysics & electrochemistry
+
+**Goldman-Hodgkin-Katz voltage** — `V_m = (R T / F) ln( sum P_ion [ion] ratio )`.
+Predicts a cell membrane's resting potential from the permeabilities and
+concentrations of several ions. It generalizes the Nernst equation to real,
+multi-ion membranes and is foundational to neurophysiology.
+
+**Hodgkin-Huxley membrane current** — `I = C dV/dt + sum g_k (V - E_k)`. Models the
+nerve action potential with voltage-gated ionic conductances. This Nobel-winning
+system is the quantitative foundation of computational neuroscience.
+
+**Nernst-Planck equation (electrodiffusion)** — `J = -D(dc/dx + (z F / R T) c dphi/dx)`.
+Combines diffusion down a concentration gradient with drift in an electric field.
+It is the governing transport law of electrochemistry and ion channels.
+
+### Social, biological & linguistic crossovers
+
+**Schelling segregation threshold** — mild individual preferences about neighbors
+produce stark global segregation. It is a classic agent-based result showing how
+macro-patterns can emerge from micro-motives that nobody intends.
+
+**Bass diffusion model** — `f(t)/(1-F) = p + q F`. Splits new adopters into
+innovators (rate `p`) and imitators (rate `q`) to produce the S-curve of adoption.
+It is a staple of marketing science and technology forecasting.
+
+**Gompertz growth** — `dN/dt = r N ln(K / N)`. Growth that decelerates as a
+ceiling `K` is approached, faster-saturating than logistic growth. It models tumor
+growth, demography, and reliability.
+
+**Allometric scaling (Kleiber's law)** — metabolic rate scales as mass to the
+three-quarters power. It is one of biology's broadest quantitative regularities,
+holding across many orders of magnitude of body size.
+
+**Zipf's law (rank-frequency)** — `frequency ~ 1 / rank^s`. The frequency of an
+item falls as an inverse power of its frequency rank. First found for word usage,
+it recurs across language, cities, and incomes, constraining theories of how such
+distributions form.

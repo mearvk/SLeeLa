@@ -128,3 +128,197 @@ references such as NIST DLMF / Abramowitz & Stegun, and tertiary locators includ
 Wikipedia, cited as CC BY-SA and never treated as a primary authority) and the repo
 `README.md` for per-class integrity goals. This archive records and attributes
 published results; it does not originate, own, or certify them.
+
+## Definitions & relevance (second-layer additions)
+
+The entries below are the second-layer additions to this canon, organized by
+type. Each gives a short **definition** (what the law states and what its symbols
+mean) and its **relevance** (why it is foundational to physics).
+
+### Celestial mechanics & astronautics
+
+**Kepler's first law** — planets move on ellipses with the Sun at one focus. It
+broke two millennia of circular-orbit assumptions and set the stage for Newton's
+derivation of gravity from the inverse-square law.
+
+**Kepler's second law** — the radius vector sweeps equal areas in equal times. It
+is an early, geometric statement of angular-momentum conservation, explaining why
+planets speed up near the Sun.
+
+**Kepler's third law** — `T^2 = (4 pi^2 / (G M)) a^3`. Orbital period squared is
+proportional to semi-major axis cubed. It quantitatively links the orbits of all
+bodies around a common mass and lets astronomers weigh stars and planets.
+
+**Escape velocity** — `v_e = sqrt(2 G M / r)`. The minimum speed needed to break
+free of a body's gravity without further propulsion. It is a basic design number
+for spaceflight and a conceptual threshold for black-hole horizons.
+
+**Rocket equation (Tsiolkovsky)** — `delta v = v_e ln(m0 / m1)`. The achievable
+change in velocity depends on exhaust speed and the ratio of initial to final
+mass. It is the founding law of astronautics, exposing why staging and high
+exhaust velocity are essential.
+
+### Electromagnetism
+
+**Poisson's equation (electrostatics)** — `laplacian(phi) = -rho / epsilon0`.
+Relates the electric potential to the local charge density. It (and its
+source-free form, Laplace's equation) is the master equation of electrostatics
+and of Newtonian gravity.
+
+**Biot-Savart law** — `dB = (mu0 / (4 pi)) I dl x r-hat / r^2`. Gives the magnetic
+field produced by a current element. It is the magnetic counterpart of Coulomb's
+law and the basic tool for computing fields of coils and wires.
+
+**Lenz's law** — induced currents oppose the change in flux that creates them. It
+fixes the direction of electromagnetic induction and is the embodiment of energy
+conservation in Faraday's law.
+
+**Larmor power (accelerated charge)** — `P = (q^2 a^2) / (6 pi epsilon0 c^3)`. An
+accelerating charge radiates power proportional to the square of its
+acceleration. It underlies antenna radiation, synchrotron light, and the
+classical instability of atoms that quantum theory resolved.
+
+**Poynting theorem (energy flow)** — `dU/dt + div S = -J.E`. Expresses local
+conservation of electromagnetic energy, with the Poynting vector `S` carrying the
+energy flux. It is how we track where field energy goes.
+
+### Fluid dynamics
+
+**Continuity equation (mass)** — `d(rho)/dt + div(rho v) = 0`. States local
+conservation of mass in a flowing medium. It is a foundational conservation law
+reused for charge, probability, and energy transport.
+
+**Euler's equations (inviscid flow)** — `rho (dv/dt + (v.grad) v) = -grad p`.
+Newton's second law for an ideal (frictionless) fluid. They are the ancestor of
+the Navier-Stokes equations and the basis of much of aerodynamics.
+
+**Reynolds number** — `Re = rho v L / mu`. The dimensionless ratio of inertial to
+viscous forces. It predicts the transition from smooth laminar to chaotic
+turbulent flow and underpins fluid-dynamical similarity and scale modeling.
+
+**Poiseuille's law (pipe flow)** — `Q = pi r^4 dP / (8 mu L)`. Volumetric flow
+through a pipe scales with the fourth power of the radius. It governs viscous flow
+in tubes and blood vessels, where small radius changes have large effects.
+
+**Stokes' drag law** — `F = 6 pi mu r v`. The viscous drag on a small sphere moving
+slowly through a fluid. It is used from sedimentation and aerosol physics to
+Millikan's measurement of the electron charge.
+
+### Relativity
+
+**Lorentz transformation** — `t' = gamma(t - v x / c^2),  x' = gamma(x - v t)`.
+Relates space and time coordinates between inertial frames in relative motion. It
+is the kinematic core of special relativity, replacing the Galilean
+transformation.
+
+**Relativistic momentum** — `p = gamma m v`. Momentum grows without bound as speed
+approaches `c`. It corrects Newtonian momentum and keeps conservation laws valid
+at high speed.
+
+**Relativistic energy** — `E = gamma m c^2`. Total energy is the Lorentz factor
+times the rest energy, unifying kinetic energy and mass. It reduces to `E = mc^2`
+at rest and to Newtonian kinetic energy at low speed.
+
+**Relativistic velocity addition** — `w = (u + v)/(1 + u v / c^2)`. Velocities
+combine so that the result never exceeds the speed of light. It is a direct,
+testable hallmark of relativity.
+
+**Gravitational time dilation (weak field)** — `dtau/dt = sqrt(1 - 2 G M / (r c^2))`.
+Clocks deeper in a gravitational well run slower. It is a prediction of general
+relativity confirmed daily in the GPS system and by precision atomic clocks.
+
+### Quantum, nuclear & statistical physics
+
+**Klein-Gordon equation** — `(box + (m c / hbar)^2) psi = 0`. The relativistic wave
+equation for spin-0 particles. It is an entry point to quantum field theory and
+the template for relativistic wave equations.
+
+**Yukawa potential** — `V(r) = -g^2 e^(-m r) / r`. A screened, short-range
+potential mediated by a massive particle. It explained the short range of the
+nuclear force and predicted the existence of the meson.
+
+**Fermi-Dirac distribution** — `n(E) = 1 / (e^((E - mu)/(k_B T)) + 1)`. The
+occupation statistics of fermions, which obey the Pauli exclusion principle. It
+governs electrons in metals, semiconductors, and white dwarfs.
+
+**Bose-Einstein distribution** — `n(E) = 1 / (e^((E - mu)/(k_B T)) - 1)`. The
+occupation statistics of bosons, which can pile into the same state. It explains
+lasers, superfluids, and Bose-Einstein condensation.
+
+**Rayleigh-Jeans law** — `B(lambda,T) = 2 c k_B T / lambda^4`. The classical
+prediction for blackbody radiation, which diverges at short wavelengths. Its
+failure — the ultraviolet catastrophe — forced the birth of quantum theory.
+
+### Condensed matter, optics & QED
+
+**Bragg's law** — `n lambda = 2 d sin(theta)`. The condition for constructive
+interference of waves scattered by crystal planes. It is the foundation of X-ray
+crystallography, through which molecular and material structures are determined.
+
+**Hall effect voltage** — `V_H = I B / (n q t)`. A transverse voltage appears when
+current flows across a magnetic field. It reveals carrier sign and density and is
+the basis of magnetic-field sensors and the quantum Hall standard.
+
+**Drude conductivity** — `sigma = n e^2 tau / m`. A classical free-electron model
+of electrical conduction. It gave the first microscopic account of Ohm's law in
+metals and still frames how we think about carrier transport.
+
+**Debye heat capacity (low-T)** — `C_V = (12 pi^4 / 5) N k_B (T / Theta_D)^3`.
+Predicts the characteristic T-cubed fall of a solid's heat capacity at low
+temperature. It completed the quantum theory of lattice vibrations.
+
+**Malus's law** — `I = I0 cos^2(theta)`. The intensity transmitted through a
+polarizer varies as the cosine squared of the angle. It is a foundational law of
+polarization optics.
+
+**Beer-Lambert law** — `I = I0 e^(-alpha x)`. Light intensity decays exponentially
+with path length through an absorbing medium. It underlies spectroscopy and
+optical attenuation generally.
+
+**Fresnel reflection (normal incidence)** — `R = ((n1 - n2)/(n1 + n2))^2`. The
+fraction of light reflected at an interface between two media. It is central to
+lens coatings, fiber optics, and the physics of reflection.
+
+**Thin lens equation** — `1/f = 1/do + 1/di`. Relates focal length to object and
+image distances. It is the working formula of geometric optics and lens design.
+
+**Rayleigh resolution criterion** — `theta = 1.22 lambda / D`. Sets the smallest
+angular separation an aperture of diameter `D` can resolve. It is the diffraction
+limit of telescopes, microscopes, and cameras.
+
+**London penetration depth** — `lambda_L = sqrt(m / (mu0 n_s e^2))`. The depth to
+which a magnetic field penetrates a superconductor before being expelled. It
+quantifies the Meissner effect that defines superconductivity.
+
+**Josephson relation** — `I = I_c sin(phi),  dphi/dt = 2 e V / hbar`. Supercurrent
+and voltage across a thin insulating barrier between superconductors. It underpins
+SQUID magnetometers and the modern voltage standard.
+
+**Casimir force (parallel plates)** — `F/A = -pi^2 hbar c / (240 d^4)`. An
+attractive force between uncharged conducting plates arising from quantum vacuum
+fluctuations. It is a measurable, striking prediction of quantum electrodynamics.
+
+**Stefan-Boltzmann (radiated power)** — `P = sigma A epsilon T^4`. The power a body
+radiates scales with the fourth power of its temperature. It governs thermal and
+stellar emission and planetary energy balance.
+
+### Classical mechanics of rotation
+
+**Torque** — `tau = r x F`. The rotational analog of force, setting the rate of
+change of angular momentum. It is the basic cause of rotational acceleration.
+
+**Angular momentum** — `L = r x p = I omega`. The conserved quantity of rotational
+motion. Its conservation explains everything from spinning skaters to the
+stability of planetary orbits and atomic states.
+
+**Moment of inertia** — `I = sum m_i r_i^2`. A body's resistance to angular
+acceleration, the rotational counterpart of mass. It depends on how mass is
+distributed about the axis.
+
+**Rotational kinetic energy** — `KE_rot = (1/2) I omega^2`. The energy stored in a
+spinning body. It completes the energy bookkeeping of combined translation and
+rotation.
+
+**Pendulum period (small angle)** — `T = 2 pi sqrt(L / g)`. For small swings a
+pendulum's period depends only on its length and gravity, not amplitude. This
+isochronism is the principle behind the pendulum clock.

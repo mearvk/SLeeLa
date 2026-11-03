@@ -86,3 +86,133 @@ of-economics record; the **Why it matters** notes summarize each result's establ
 significance. See `SMProvenance.sleela` for the tiered source registry and the repo
 `README.md` for per-class integrity goals. This archive records and attributes
 published results; it does not originate, own, or certify them.
+
+## Definitions & relevance (second-layer additions)
+
+The entries below are the second-layer additions to this canon, organized by
+type. Each gives a short **definition** (what the quantity is and what its
+symbols mean) and its **relevance** (why it is foundational to quantitative
+finance and economics).
+
+### Option Greeks (Black-Scholes sensitivities)
+
+**Black-Scholes delta** — `delta_call = N(d1)`. The sensitivity of an option's
+price to a small move in the underlying asset; it equals the number of shares
+needed to hedge one option. It is the primary hedge ratio and the first Greek any
+options desk monitors.
+
+**Black-Scholes gamma** — `gamma = N'(d1) / (S sigma sqrt(T))`. The rate of change
+of delta as the underlying moves, largest near the strike and near expiry. It
+measures how unstable a hedge is and therefore how often a position must be
+rebalanced.
+
+**Black-Scholes vega** — `vega = S N'(d1) sqrt(T)`. The sensitivity of option
+value to a change in volatility. It is the key risk for volatility trading and
+the link between option prices and the market's view of future uncertainty.
+
+**Black-Scholes theta** — `theta = -(S N'(d1) sigma)/(2 sqrt(T)) - r K e^(-r T) N(d2)`.
+The option's time decay — how value erodes as expiry approaches with all else
+fixed. It is central to the economics of holding options, the cost paid for
+optionality over time.
+
+### Derivatives pricing
+
+**Binomial option pricing (CRR)** — `C = e^(-r dt)[p Cu + (1-p) Cd]`. Prices an
+option by stepping back through a discrete tree of up/down moves using
+risk-neutral probabilities. It is an intuitive, flexible route to Black-Scholes
+that also handles early exercise, making it a teaching and pricing staple.
+
+**Black-76 (futures option)** — `C = e^(-r T)[F N(d1) - K N(d2)]`. Adapts
+Black-Scholes to options written on a forward or futures price. It is the market
+standard for interest-rate caps/floors, swaptions, and commodity options.
+
+**Forward price (cost of carry)** — `F = S e^((r - q) T)`. The no-arbitrage
+forward price equals the spot grown at the financing rate net of any yield `q`. It
+is a foundational replication identity: it must hold or a riskless arbitrage
+exists.
+
+### Fixed income
+
+**Covered interest rate parity** — `F/S = (1 + r_d)/(1 + r_f)`. The forward
+exchange rate is pinned by the interest-rate differential between two currencies.
+It is one of the most reliable no-arbitrage conditions in international finance.
+
+**Vasicek short-rate model** — `dr = a(b - r) dt + sigma dW`. Models the short
+interest rate as mean-reverting with constant volatility. It was an early
+tractable term-structure model and remains a reference point for interest-rate
+modeling.
+
+**Cox-Ingersoll-Ross model** — `dr = a(b - r) dt + sigma sqrt(r) dW`. A
+mean-reverting short-rate model whose square-root diffusion keeps rates
+non-negative. It is widely used in fixed income and (in the same form) in
+stochastic-volatility models.
+
+**Modified duration** — `ModDur = MacaulayDur / (1 + y/k)`. The percentage change
+in a bond's price for a small change in yield. It is the primary first-order
+measure of interest-rate risk.
+
+**Bond convexity** — `C = (1/P) d2P/dy2`. The curvature of the price–yield
+relationship, correcting duration for larger yield moves. It matters because it
+captures the asymmetry that benefits bondholders when rates swing.
+
+**Yield to maturity (IRR of bond)** — `P = sum CF_t / (1 + y)^t`. The single
+discount rate that equates a bond's price to the present value of its cash flows.
+It is the standard summary of a bond's return if held to maturity.
+
+### Credit & asset pricing
+
+**Merton structural credit model** — equity is a call option on the firm's assets
+struck at its debt. Default occurs when assets fall below liabilities at maturity.
+It is the foundation of structural credit risk and of distance-to-default
+measures.
+
+**Fama-French three-factor model** — `R - Rf = a + b(Rm-Rf) + s SMB + h HML`.
+Explains asset returns by exposures to the market, a size factor (SMB), and a
+value factor (HML). It is the empirical benchmark that reshaped asset pricing
+after CAPM.
+
+**Arbitrage pricing theory (APT)** — `E[R] = Rf + sum beta_k lambda_k`. Prices
+assets by their exposures to several systematic risk factors, derived from
+no-arbitrage rather than from a single market portfolio. It is the flexible,
+multi-factor alternative to CAPM.
+
+### Performance measurement
+
+**Jensen's alpha** — `alpha = R_p - [Rf + beta(Rm - Rf)]`. The return earned
+beyond what CAPM predicts for a portfolio's risk. It is the classic measure of
+manager skill (or luck).
+
+**Treynor ratio** — `T = (R_p - Rf) / beta_p`. Excess return per unit of
+*systematic* risk (beta). It is relevant for ranking well-diversified portfolios
+whose only remaining risk is market risk.
+
+**Sortino ratio** — `S = (R_p - R_target) / downside deviation`. Like the Sharpe
+ratio but penalizing only downside volatility relative to a target. It matters
+when investors care about losses, not symmetric variation.
+
+### Risk, econometrics & operations
+
+**Value at Risk (parametric)** — `VaR = mu - z_alpha sigma`. The loss threshold
+that will not be exceeded at a stated confidence level over a horizon. It became
+the dominant regulatory and reporting risk metric, for all its known limitations.
+
+**GARCH(1,1) variance** — `sigma_t^2 = omega + alpha e_{t-1}^2 + beta sigma_{t-1}^2`.
+Models volatility that clusters and mean-reverts, with today's variance built
+from yesterday's shock and variance. It is the workhorse of financial
+econometrics and volatility forecasting.
+
+**Rule of 72 (doubling time)** — `t_double = 72 / r%`. A mental-math estimate of
+how long money takes to double at a given compound rate. Its relevance is
+pedagogical and practical: it makes the power of compounding tangible.
+
+**Dividend payout / retention** — `g = ROE * retention ratio`. A firm's
+sustainable growth rate equals its return on equity times the fraction of
+earnings retained. It is a core identity linking payout policy to growth.
+
+**Economic order quantity (EOQ)** — `Q* = sqrt(2 D S / H)`. The order size that
+minimizes the sum of ordering and holding costs. It is the founding result of
+inventory theory and a staple of operations economics.
+
+**Herfindahl-Hirschman index** — `HHI = sum s_i^2`. Market concentration measured
+as the sum of squared market shares. It is a standard antitrust screen for market
+power and merger review.

@@ -165,3 +165,237 @@ references such as NIST DLMF / Abramowitz & Stegun, and tertiary locators includ
 Wikipedia, cited as CC BY-SA and never treated as a primary authority) and the repo
 `README.md` for per-class integrity goals. This archive records and attributes
 published results; it does not originate, own, or certify them.
+
+## Definitions & relevance (second-layer additions)
+
+The entries below are the second-layer additions to this canon, organized by
+type. Each gives a short **definition** (what the result states and what its
+symbols mean) and its **relevance** (why it is foundational to mathematics).
+
+### Optimization & the calculus of variations
+
+**Lagrange multipliers** — `grad f = lambda grad g`. At a constrained extremum the
+gradient of the objective is parallel to the gradient of the constraint. It is the
+backbone of constrained optimization, from economics to physics to machine
+learning.
+
+**Euler-Lagrange equation** — `d/dt (dL/dq') - dL/dq = 0`. The condition a path
+must satisfy to make an integral (an "action") stationary. It is the foundation of
+variational mechanics and of every principle-of-least-action formulation of
+physics.
+
+### Vector & single-variable calculus
+
+**Divergence of a curl** — `div(curl F) = 0`. The divergence of any curl field
+vanishes identically. It is a core vector-calculus identity and the reason
+magnetic fields have no sources.
+
+**Gradient theorem (line integrals)** — `integral_C grad f . dr = f(b) - f(a)`. A
+line integral of a gradient depends only on the endpoints. It is the fundamental
+theorem of calculus for gradient fields and defines what "conservative" means.
+
+**Leibniz integral rule** — `d/dx integral f dt = f(b)b' - f(a)a' + integral f_x dt`.
+Differentiates an integral whose integrand and limits depend on the parameter. It
+is a workhorse across physics, probability, and applied analysis.
+
+**Mean value theorem for integrals** — `integral_a^b f dx = f(c)(b - a)`. A
+continuous function attains its average value somewhere on the interval. It is a
+basic existence result underpinning error estimates and the FTC.
+
+**Riemann sum (definite integral)** — `integral_a^b f dx = lim sum f(x_i*) dx_i`.
+Defines the integral as the limit of partition sums. It is the rigorous meaning of
+"area under a curve" and the starting point of integration theory.
+
+### Real analysis
+
+**Taylor's theorem with remainder** — `f(x) = sum f^(k)(a)/k!(x-a)^k + R_n`. Adds a
+quantified error term to the Taylor expansion. It is what makes polynomial
+approximation rigorous and bounds the accuracy of numerical methods.
+
+**Implicit function theorem** — `F(x,y)=0, F_y != 0 => y = g(x)` locally. A
+relation defines one variable as a function of the others wherever a derivative is
+nonzero. It is essential to the theory of manifolds, constraints, and
+optimization.
+
+**Inverse function theorem** — a map whose derivative is invertible at a point is
+locally invertible. It is a foundation of differential calculus on `R^n` and the
+companion to the implicit function theorem.
+
+**Weierstrass M-test** — bounding each term by a convergent series `sum M_n`
+guarantees uniform convergence. It is the simplest, most-used test for the uniform
+convergence that lets one interchange limits, sums, and integrals.
+
+**Abel's summation / test** — summation by parts yields convergence for products
+of sequences. It is a foundational technique for series whose terms are products of
+a monotone and an oscillating factor.
+
+**Dirichlet's test for series** — a monotone factor tending to zero times a factor
+with bounded partial sums converges. It is a standard, powerful convergence test,
+e.g. for conditionally convergent trigonometric series.
+
+**Holder continuity** — `|f(x) - f(y)| <= C |x - y|^alpha`. Quantifies smoothness
+on a scale between mere continuity (`alpha -> 0`) and Lipschitz (`alpha = 1`). It is
+central to the regularity theory of PDEs.
+
+### Complex analysis
+
+**Cauchy's integral theorem** — `closed_integral f(z) dz = 0` for a holomorphic
+function. The loop integral of an analytic function vanishes. It is the
+cornerstone from which the whole edifice of complex analysis is built.
+
+**Liouville's theorem (bounded entire)** — a bounded entire function must be
+constant. Its relevance includes a one-line proof of the fundamental theorem of
+algebra and deep rigidity results for analytic functions.
+
+**Maximum modulus principle** — a non-constant holomorphic function attains its
+maximum size only on the boundary. It is a defining rigidity property of analytic
+functions, used throughout complex analysis and PDE.
+
+**Schwarz lemma** — a holomorphic self-map of the unit disk fixing the origin
+satisfies `|f(z)| <= |z|`. It seeds hyperbolic geometry on the disk and the theory
+of conformal self-maps.
+
+**Morera's theorem** — vanishing integrals over all triangles imply holomorphy. It
+is the converse of Cauchy's theorem and a key tool for proving functions are
+analytic (e.g. limits of analytic functions).
+
+**Rouche's theorem** — if `|g| < |f|` on a contour, then `f` and `f+g` have the same
+number of zeros inside. It is the practical instrument for counting and locating
+zeros, including a slick proof of the fundamental theorem of algebra.
+
+### Topology & geometry
+
+**Jordan curve theorem** — a simple closed curve divides the plane into an inside
+and an outside. Obvious to the eye yet subtle to prove, it is a foundational fact
+of plane topology.
+
+**Brouwer fixed-point theorem** — any continuous map of a closed ball to itself has
+a fixed point. It is a cornerstone of topology with profound consequences in
+economics (equilibrium existence) and game theory (Nash).
+
+**Gauss-Bonnet theorem** — `integral_M K dA + integral_{dM} k_g ds = 2 pi chi(M)`.
+Total curvature equals `2 pi` times the Euler characteristic. It is the prototypical
+bridge between local geometry (curvature) and global topology.
+
+**Noether's theorem** — every continuous symmetry of an action yields a conservation
+law. It is the organizing principle of modern physics: time symmetry gives energy
+conservation, space symmetry gives momentum, and so on.
+
+### Differential equations & special functions
+
+**Picard-Lindelof existence** — a Lipschitz right-hand side guarantees a unique
+local solution of `y' = f(x,y)`. It is the fundamental existence-and-uniqueness
+theorem for ordinary differential equations.
+
+**Wronskian (linear independence)** — `W(f,g) = f g' - f' g`. A determinant that
+tests whether solutions of a linear ODE are independent. It is a standard tool in
+the structure theory of linear differential equations.
+
+**Bessel's equation** — `x^2 y'' + x y' + (x^2 - n^2) y = 0`. Its solutions,
+Bessel functions, describe cylindrical waves and vibrations. They appear across
+physics and engineering wherever cylindrical symmetry arises.
+
+**Legendre's equation** — `(1 - x^2) y'' - 2 x y' + l(l+1) y = 0`. Yields the
+Legendre polynomials, central to potential theory and the spherical harmonics.
+
+**Hermite's equation** — `y'' - 2 x y' + 2 n y = 0`. Yields the Hermite
+polynomials, the eigenfunctions of the quantum harmonic oscillator and a basis for
+Gaussian-weighted analysis.
+
+**Laguerre's equation** — `x y'' + (1 - x) y' + n y = 0`. Yields the Laguerre
+polynomials, which form the radial part of the hydrogen-atom wavefunction.
+
+**Beta function** — `B(x,y) = integral_0^1 t^(x-1)(1-t)^(y-1) dt`. Euler's integral
+linking factorials via the Gamma function. It underlies the Beta distribution and
+many integral evaluations.
+
+### Harmonic analysis
+
+**Poisson summation formula** — `sum f(n) = sum F-hat(k)`. Equates a sum of a
+function over a lattice to a sum of its Fourier transform over the dual lattice. It
+links sampling in time to periodicity in frequency and is central to analytic
+number theory.
+
+**Parseval-Plancherel theorem** — `integral |f|^2 dx = integral |F-hat|^2 dw`. The
+Fourier transform preserves energy (the `L^2` norm). It is the isometry at the heart
+of harmonic analysis and signal processing.
+
+**Convolution theorem** — `F{f * g} = F{f} . F{g}`. Convolution in one domain is
+pointwise multiplication in the transform domain. It is the reason transforms make
+filtering and differential equations tractable.
+
+### Linear algebra
+
+**Spectral theorem (symmetric matrix)** — `A = Q Lambda Q^T` for symmetric `A`. A
+symmetric matrix is diagonalized by an orthonormal basis of eigenvectors. It is the
+foundation of principal component analysis and of quantum observables.
+
+**Rayleigh quotient** — `R(A,x) = (x^T A x)/(x^T x)`. A normalized quadratic form
+whose extremes are eigenvalues. It is the basis of variational eigenvalue estimates
+and iterative methods.
+
+**Perron-Frobenius theorem** — a positive matrix has a unique largest positive
+eigenvalue with a positive eigenvector. It underpins PageRank, Markov-chain
+equilibria, and population-growth models.
+
+**Sylvester's law of inertia** — the numbers of positive, negative, and zero
+eigenvalues of a quadratic form are invariant under congruence. It classifies
+quadratic forms and the signature of metrics.
+
+**Hadamard's inequality** — `|det A| <= product of column norms`. The determinant is
+bounded by the product of its column lengths, with equality for orthogonal columns.
+It is a sharp geometric bound on volume.
+
+### Numerical linear algebra
+
+**LU decomposition** — `A = L U`. Factors a matrix into lower- and upper-triangular
+parts for efficient repeated solves. It is the matrix form of Gaussian elimination
+and the default direct solver.
+
+**QR decomposition** — `A = Q R`, with `Q` orthogonal and `R` upper-triangular. A
+numerically stable factorization. It is the workhorse behind least squares and the
+QR eigenvalue algorithm.
+
+**Cholesky decomposition** — `A = L L^T` for symmetric positive-definite `A`. An
+efficient, stable factorization using half the work of LU. It is standard in
+optimization, statistics (covariance), and simulation.
+
+### Mathematical statistics, probability & convexity
+
+**Cramer-Rao bound** — `Var(theta-hat) >= 1 / I(theta)`. Sets the minimum variance
+any unbiased estimator can achieve, via the Fisher information `I`. It is the gold
+standard for judging estimator efficiency.
+
+**Maximum likelihood estimator** — `theta-hat = argmax L(theta; x)`. Chooses the
+parameters that make the observed data most probable. It is the dominant estimation
+principle across statistics, with strong large-sample optimality.
+
+**Poisson distribution** — `P(k) = lambda^k e^(-lambda)/k!`. The law of counts of
+rare, independent events at constant average rate. It is ubiquitous in queues,
+physics, and reliability.
+
+**Binomial distribution** — `P(k) = C(n,k) p^k (1-p)^(n-k)`. The law of the number
+of successes in independent trials. It is the discrete foundation of probability
+and the seed of the normal approximation.
+
+**Markov chain stationary distribution** — `pi P = pi`, `sum pi_i = 1`. The
+long-run frequencies a chain settles into. It is central to Markov chain Monte
+Carlo, PageRank, and equilibrium analysis.
+
+**Borel-Cantelli lemma** — if `sum P(A_n) < inf` then `A_n` happens only finitely
+often, almost surely. It is a basic but powerful tool for almost-sure convergence
+and the strong law of large numbers.
+
+**Jensen's gap / convex duality** — convex-conjugate (Legendre-Fenchel) duality
+underlying many bounds and optimization problems. It formalizes the gap in Jensen's
+inequality and is foundational to convex optimization.
+
+### Numerical analysis
+
+**Simpson's rule (quadrature)** — `integral_a^b f dx = (h/3)[f0 + 4 f1 + f2 + ...]`.
+Approximates an integral with parabolic arcs over pairs of subintervals. It is a
+staple of numerical integration, markedly more accurate than the trapezoidal rule.
+
+**Runge-Kutta (RK4) step** — `y_{n+1} = y_n + (h/6)(k1 + 2 k2 + 2 k3 + k4)`. A
+fourth-order one-step method for integrating ODEs. It is the default general-purpose
+integrator in scientific computing.
