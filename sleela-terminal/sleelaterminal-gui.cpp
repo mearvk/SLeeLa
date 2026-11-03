@@ -333,7 +333,7 @@ void install_css(AppState *state) {
         }
         /* The throbber occupies the thin seam between the title bar and the
            terminal; its colour is painted per-frame by the draw function. */
-        drawingarea.sleela-throbber { background: #0C2B15; min-height: 4px; }
+        drawingarea.sleela-throbber { background: #115C28; min-height: 4px; }
         headerbar.sleela-titlebar label {
             color: #ffffff;
             font-weight: 600;
@@ -1608,91 +1608,75 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
     if (width <= 0 || height <= 0) return;
     state->throbber_w = width;
 
-    // The rail is exactly four pixels tall and unified in green: a deep forest
-    // base with compact moving glyphs rendered in brighter shades of green. All
-    // geometry is clipped to the rail so no triangle rotation or circle stroke
-    // can increase its layout height.
-    cairo_set_source_rgb(cr, 0.047, 0.169, 0.082); // #0C2B15 deep forest rail base
+    // The rail is a lit GREEN fluorescent bar: the whole surface is green, and
+    // broad, soft, bright-green swells glow and drift across it (low spatial
+    // frequency -- a few wide blooms rather than many tiny sparks). All geometry
+    // is clipped to the rail so nothing can increase its layout height.
+    //
+    // 1) Paint the whole bar green -- a mid emerald base so the entire strip
+    //    reads as green even where no swell is present.
+    cairo_set_source_rgb(cr, 0.067, 0.361, 0.157); // #115C28 lit green base
     cairo_paint(cr);
     cairo_save(cr);
     cairo_rectangle(cr, 0, 0, width, height);
     cairo_clip(cr);
 
-    const double t = state->throbber_t;
+    // 2) A faint, even fluorescent wash across the whole tube so the green bar
+    //    always looks energised (a tube that is "on"), independent of swells.
+    cairo_set_source_rgba(cr, 0.231, 0.776, 0.360, 0.20); // #3BC65C soft wash
+    cairo_paint(cr);
+
     const double mid_y = height * 0.5;
+    // Additive blending makes overlapping swells build toward a bright, glowing
+    // fluorescent green rather than muddying -- the hallmark of a lit tube.
+    cairo_set_operator(cr, CAIRO_OPERATOR_ADD);
     for (const auto &c : state->throbber_cells) {
         if (!c.alive || c.intensity < 0.015) continue;
         const double x = c.x;
-        // Enlarge the silhouettes as much as the 4px rail permits. A faint
-        // gray offset edge supplies depth against the white rail; the object
-        // itself and its principal outline remain white.
-        const double r = std::clamp(1.75 + c.base_intensity * 0.20, 1.75, 1.95);
         const double fade = std::clamp(c.intensity * 2.0, 0.0, 1.0);
-        // Per-cell green shade: brighter cells skew toward a vivid spring green,
-        // dimmer ones toward a mossy green, so the whole field reads as one
-        // unified green in many shades.
+        // Per-swell brightness: brighter swells glow a vivid spring green, dimmer
+        // ones a softer emerald -- all within the one green family.
         const double gshade = std::clamp(c.base_intensity, 0.0, 1.0);
-        cairo_set_line_width(cr, 0.9);
-        cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
-        cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 
-        // Keep the shapes nearly level: only a small angular wobble is allowed
-        // because the entire rail is 4px high.
-        const double angle = 0.10 * std::sin(t * 1.1 + c.phase);
-        cairo_save(cr);
-        cairo_translate(cr, x, mid_y);
-        cairo_rotate(cr, angle);
+        // A BROAD horizontal glow: the swell's radius is its spatial footprint,
+        // so wider cells (see throbber_spawn) read as broad, low-frequency
+        // blooms. Scaled generously relative to the 4px-tall rail.
+        const double radius = std::max(6.0, c.sigma * 9.0);
 
-        // First paint a tiny offset dark-green contact shadow, then the green
-        // body and green outline. The offset is sub-pixel and the rotation is
-        // tiny, giving a raised/3D read without adding vertical movement.
-        auto shape_path = [&](double dx, double dy) {
-            if (c.shape == 0) {
-                cairo_arc(cr, dx, dy, r, 0.0, 6.283185307179586);
-            } else if (c.shape == 1) {
-                cairo_move_to(cr, dx, dy - r);
-                cairo_line_to(cr, dx + r * 1.05, dy + r * 0.78);
-                cairo_line_to(cr, dx - r * 1.05, dy + r * 0.78);
-                cairo_close_path(cr);
-            } else {
-                const double half_w = r * 1.40;
-                const double half_h = 1.15;
-                cairo_rectangle(cr, dx - half_w, dy - half_h, half_w * 2.0, half_h * 2.0);
-            }
-        };
-        // Dark-green contact shadow (a deep pine, slightly lighter on the edge).
-        shape_path(0.0, 0.35);
-        cairo_set_source_rgba(cr, 0.063, 0.235, 0.110, 0.70 * fade);
-        cairo_fill_preserve(cr);
-        cairo_set_source_rgba(cr, 0.094, 0.306, 0.149, 0.75 * fade);
-        cairo_set_line_width(cr, 0.55);
-        cairo_stroke(cr);
+        // Fluorescent green core -> transparent falloff. The core brightens with
+        // intensity; a tube's glow is brightest at the filament and blooms out.
+        const double core_r = 0.361 + 0.251 * gshade; // 0.361 -> 0.612
+        const double core_g = 0.871 + 0.090 * gshade; // 0.871 -> 0.961
+        const double core_b = 0.420 + 0.220 * gshade; // 0.420 -> 0.640
+        const double core_a = std::clamp(0.55 * fade, 0.0, 0.85);
 
-        // Body: a shade of green that brightens with the cell's intensity,
-        // interpolating from a mossy green up to a vivid spring green.
-        const double body_r = 0.251 + 0.251 * gshade; // 0.251 -> 0.502
-        const double body_g = 0.682 + 0.239 * gshade; // 0.682 -> 0.922
-        const double body_b = 0.278 + 0.247 * gshade; // 0.278 -> 0.525
-        shape_path(0.0, 0.0);
-        cairo_set_source_rgba(cr, body_r, body_g, body_b, fade);
-        cairo_fill_preserve(cr);
-        cairo_set_line_width(cr, 0.8);
-        cairo_set_source_rgba(cr, body_r, body_g, body_b, fade);
-        cairo_stroke(cr);
+        // A subtle vertical breathing of the glow so the tube "pulses" gently.
+        const double breathe = 0.85 + 0.15 * std::sin(state->throbber_t * 1.6 + c.phase);
 
-        // A narrow mid-green lower rim and brighter green upper glint make each
-        // particle read as a small polished 3D object, all within the green family.
-        cairo_set_source_rgba(cr, 0.408, 0.776, 0.455, 0.85 * fade);
-        cairo_set_line_width(cr, 0.45);
-        if (c.shape == 0) {
-            cairo_arc(cr, 0.0, 0.0, r * 0.72, 0.15, 2.75);
-            cairo_stroke(cr);
-        } else {
-            shape_path(0.0, 0.0);
-            cairo_stroke(cr);
-        }
-        cairo_restore(cr);
+        cairo_pattern_t *glow =
+            cairo_pattern_create_radial(x, mid_y, 0.0, x, mid_y, radius * breathe);
+        cairo_pattern_add_color_stop_rgba(glow, 0.0, core_r, core_g, core_b, core_a);
+        cairo_pattern_add_color_stop_rgba(glow, 0.5, 0.231, 0.792, 0.353,
+                                          0.30 * fade);
+        cairo_pattern_add_color_stop_rgba(glow, 1.0, 0.067, 0.361, 0.157, 0.0);
+        cairo_set_source(cr, glow);
+        cairo_rectangle(cr, x - radius, 0, radius * 2.0, height);
+        cairo_fill(cr);
+        cairo_pattern_destroy(glow);
+
+        // A bright fluorescent "filament" highlight at the core centreline makes
+        // the glowing indication read crisply on the lit tube.
+        cairo_pattern_t *core =
+            cairo_pattern_create_radial(x, mid_y, 0.0, x, mid_y, radius * 0.35);
+        cairo_pattern_add_color_stop_rgba(core, 0.0, 0.741, 1.0, 0.776,
+                                          0.55 * fade);
+        cairo_pattern_add_color_stop_rgba(core, 1.0, 0.741, 1.0, 0.776, 0.0);
+        cairo_set_source(cr, core);
+        cairo_rectangle(cr, x - radius * 0.35, 0, radius * 0.70, height);
+        cairo_fill(cr);
+        cairo_pattern_destroy(core);
     }
+    cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
     cairo_restore(cr);
 }
 
@@ -1757,7 +1741,10 @@ void throbber_spawn(AppState *state, int W) {
     c.base_intensity = 0.80 + g_random_double() * 0.20;
     c.intensity = 0.0;
     c.energy = 1.0;
-    c.sigma = 1.0 + g_random_double() * 0.7;
+    // Broad swells (low spatial frequency): much wider footprints than the old
+    // tiny sparks, so the bar shows a few wide glowing blooms rather than dense,
+    // high-frequency specks. (Glow radius in throbber_draw is ~sigma * 9.)
+    c.sigma = 3.5 + g_random_double() * 3.0;
     c.speed_mul = 0.85 + g_random_double() * 0.30;
     c.shape = g_random_int_range(0, 3);
     c.outline_only = false;
@@ -1806,12 +1793,14 @@ gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_da
     if (state->throbber_amp < 0.0) state->throbber_amp = 0.0;
     if (state->throbber_amp > 1.0) state->throbber_amp = 1.0;
 
-    // --- Spawn rate scales with amplification (more wattage -> more children) -
-    double rate = 6.0 + 10.0 * state->throbber_amp;   // children per second
+    // --- Spawn rate: LOW frequency so the bar shows a few broad glowing swells
+    // rather than dense sparks. Rate and cap are kept small because each swell
+    // is now a wide bloom (see throbber_spawn sigma + throbber_draw radius).
+    double rate = 1.6 + 2.4 * state->throbber_amp;   // broad swells per second
     state->throbber_spawn_accum += rate * dt;
     while (state->throbber_spawn_accum >= 1.0) {
         state->throbber_spawn_accum -= 1.0;
-        if (state->throbber_cells.size() < 64) throbber_spawn(state, W);
+        if (state->throbber_cells.size() < 18) throbber_spawn(state, W);
     }
 
     // --- Advance each child with 3rd-order (jerk-driven) motion ---------------
@@ -1822,13 +1811,14 @@ gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_da
         // character so some pulses glide and others race across the sweet spot.
         double desired_v = (34.0 + 10.0 * state->throbber_amp) * c.speed_mul;
 
-        // Size-dependent pacing: broad light bars (>50px overall) glide more
-        // slowly; medium bars gain a little pace; narrow sparks move faster.
-        // Width is estimated from the visible Gaussian footprint (about 2.4σ).
-        const double visual_width = c.sigma * 2.4;
+        // Size-dependent pacing, recalibrated for the new broad swells: the
+        // widest blooms glide slowly (a lit tube breathing across), medium ones
+        // a touch quicker, the narrowest only slightly faster. Width is the
+        // glow footprint used in throbber_draw (~sigma * 9 px, both sides).
+        const double visual_width = c.sigma * 9.0;
         if (visual_width > 50.0) desired_v /= 1.7;
-        else if (visual_width >= 25.0) desired_v *= 1.12;
-        else desired_v *= 1.32;
+        else if (visual_width >= 30.0) desired_v *= 1.10;
+        else desired_v *= 1.20;
 
         if (c.retro && c.retro_px > 0.0) {
             // This rare child pauses or glides right->left for its allotment.
