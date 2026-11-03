@@ -188,14 +188,68 @@ std::string installer_path(const AppState *state) {
     return candidates.front().lexically_normal().string();
 }
 
+// The directory holding THIS running executable. Prefer the kernel's view
+// (/proc/self/exe) so resolution is correct even when launched from PATH or a
+// .desktop file where argv[0] is just "SleelaTerminal"; fall back to argv[0].
+std::string executable_dir(const char *argv0) {
+    namespace fs = std::filesystem;
+    std::error_code ec;
+    gchar *self = g_file_read_link("/proc/self/exe", nullptr);
+    if (self != nullptr) {
+        fs::path p(self);
+        g_free(self);
+        if (!p.empty()) return p.parent_path().string();
+    }
+    fs::path exe = fs::absolute(argv0 ? argv0 : "", ec);
+    if (!ec && !exe.empty()) return exe.parent_path().string();
+    return ".";
+}
+
 std::string sibling_path(const char *argv0, const char *name) {
     namespace fs = std::filesystem;
     std::error_code ec;
-    fs::path executable = fs::absolute(argv0, ec);
-    if (ec) return name;
-    fs::path candidate = executable.parent_path() / name;
+    fs::path candidate = fs::path(executable_dir(argv0)) / name;
     if (fs::exists(candidate, ec) && !ec) return candidate.string();
     return name;
+}
+
+// Resolve the slsh shell robustly so the GUI always has a shell to run (and
+// therefore a prompt and keyboard/mouse input). Search order:
+//   1. a sibling of this executable (the usual install layout: bin/SleelaTerminal
+//      next to bin/slsh, and the build/ tree);
+//   2. ../build/slsh and ./build/slsh (running from the source tree);
+//   3. slsh anywhere on $PATH;
+//   4. common install bin dirs (~/.local/bin, /usr/local/bin, /usr/bin).
+// Returns an empty string if none is found, so the caller can report clearly
+// instead of spawning a non-existent program into a blank terminal.
+std::string resolve_slsh(const char *argv0) {
+    namespace fs = std::filesystem;
+    std::error_code ec;
+    const fs::path dir = executable_dir(argv0);
+    std::vector<fs::path> candidates = {
+        dir / "slsh",
+        dir / "build" / "slsh",
+        dir / ".." / "slsh",
+        dir / ".." / "build" / "slsh",
+        fs::path("build") / "slsh",
+    };
+    for (const auto &c : candidates) {
+        if (fs::exists(c, ec) && !ec) return c.lexically_normal().string();
+    }
+    if (gchar *onpath = g_find_program_in_path("slsh")) {
+        std::string s(onpath);
+        g_free(onpath);
+        return s;
+    }
+    const char *home = g_get_home_dir();
+    std::vector<fs::path> fixed = {
+        home ? fs::path(home) / ".local" / "bin" / "slsh" : fs::path(),
+        "/usr/local/bin/slsh", "/usr/bin/slsh",
+    };
+    for (const auto &c : fixed) {
+        if (!c.empty() && fs::exists(c, ec) && !ec) return c.string();
+    }
+    return std::string();
 }
 
 bool parse_rgba(const std::string &value, GdkRGBA &rgba) {
@@ -260,41 +314,19 @@ void install_css(AppState *state) {
         @define-color sl_menu_hover  #31569a;
         @define-color sl_menu_active #426fc0;
 
-        /* Title-bar gradient palette. The bar is no longer a flat chrome fill:
-           the selected preset distributes this curated sequence of the project's
-           dark-purple / blue family along the horizontal or vertical axis. These are the only places these shades are
-           used, so they live here as named tokens (principle 2: one palette,
-           one source of truth) and are composed into .sleela-titlebar below. */
-        @define-color sl_titlebar_bg    #a7adb4;   /* gray metallic mid-tone fallback */
-        /* Gray metallic / brushed-steel bevel stops (light top highlight -> thin
-           central specular band -> darker shadow grade). Used by the title bar. */
-        @define-color sl_tb_metal_hi     #dfe2e6;   /* bright top highlight */
-        @define-color sl_tb_metal_light  #c2c7cd;
-        @define-color sl_tb_metal_mid    #a7adb4;
-        @define-color sl_tb_metal_mid2   #8b9199;
-        @define-color sl_tb_metal_spec   #e9ecef;   /* thin central specular band */
-        @define-color sl_tb_metal_dim    #7f858d;
-        @define-color sl_tb_metal_dim2   #6e747c;
-        @define-color sl_tb_metal_shadow #4d525a;   /* bottom shadow grade */
+        /* Title bar fill: the SAME flat gray as the terminal text area
+           (@sl_output_bg = #4b4b4b), so the title bar and the text pane read as
+           one continuous surface rather than two different grays. */
+        @define-color sl_titlebar_bg    #4b4b4b;   /* == @sl_output_bg (text area) */
 
         window { background: @sl_bg; }
 
-        /* Title bar: an elegant preset-driven gradient (see assets/*.cfg). The bottom
-           highlight is no longer a static border -- it is the living throbber
-           strip drawn just below the bar (see .sleela-throbber and the 20Hz
-           organic update). A transparent 1px border keeps the bar's height
-           identical to before. */
+        /* Title bar: a flat fill matching the terminal text area's gray. The
+           bottom highlight is the living throbber strip drawn just below the bar
+           (see .sleela-throbber and the 20Hz organic update). A transparent 1px
+           border keeps the bar's height identical to before. */
         headerbar.sleela-titlebar {
-            /* Gray metallic / brushed-steel title bar: a top-to-bottom bevel with
-               a bright highlight at the top, a thin central specular band, and a
-               darker shadow grade at the base. The preset loader (assets/*.cfg)
-               may substitute an equivalent metallic stop list; this CSS default
-               already renders the gray metallic look on its own. */
-            background: linear-gradient(to bottom,
-                @sl_tb_metal_hi 0%, @sl_tb_metal_light 10%, @sl_tb_metal_mid 24%,
-                @sl_tb_metal_mid2 42%, @sl_tb_metal_spec 49%, @sl_tb_metal_spec 51%,
-                @sl_tb_metal_dim 58%, @sl_tb_metal_mid 74%, @sl_tb_metal_dim2 88%,
-                @sl_tb_metal_shadow 100%);
+            background: @sl_titlebar_bg;   /* same gray as the text area */
             color: @sl_fg;
             min-height: 38px;
             border-bottom: 1px solid transparent;
@@ -1520,6 +1552,19 @@ void shell_spawned(VteTerminal *, GPid child_pid, GError *error, gpointer user_d
     auto *state = static_cast<AppState *>(user_data);
     if (error != nullptr || child_pid <= 0) {
         state->child_pid = 0;
+        // Make the failure visible in the pane instead of leaving a blank,
+        // non-interactive terminal with no prompt.
+        if (state->terminal != nullptr) {
+            std::string msg =
+                "\r\n  SleelaTerminal could not start the slsh shell.\r\n";
+            if (!state->shell_path.empty())
+                msg += "  Tried: " + state->shell_path + "\r\n";
+            if (error != nullptr)
+                msg += std::string("  Reason: ") + error->message + "\r\n";
+            msg += "  Install slsh beside SleelaTerminal (same bin dir) or on "
+                   "$PATH, then reopen.\r\n";
+            vte_terminal_feed(state->terminal, msg.c_str(), -1);
+        }
         return;
     }
     state->child_pid = child_pid;
@@ -1893,11 +1938,18 @@ void create_new_tab(AppState *owner) {
     g_object_set_data(G_OBJECT(terminal), "sleela-session-state", tab);
     g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), tab);
 
-    std::vector<char *> shell_argv;
-    shell_argv.push_back(const_cast<char *>(tab->shell_path.c_str()));
-    shell_argv.push_back(nullptr);
-    vte_terminal_spawn_async(tab->terminal, VTE_PTY_DEFAULT, nullptr, shell_argv.data(),
-        nullptr, G_SPAWN_DEFAULT, nullptr, nullptr, nullptr, -1, nullptr, shell_spawned, tab);
+    if (tab->shell_path.empty()) {
+        vte_terminal_feed(tab->terminal,
+            "\r\n  SleelaTerminal could not find the slsh shell.\r\n"
+            "  Install slsh beside SleelaTerminal (same bin dir) or on $PATH, "
+            "then reopen.\r\n", -1);
+    } else {
+        std::vector<char *> shell_argv;
+        shell_argv.push_back(const_cast<char *>(tab->shell_path.c_str()));
+        shell_argv.push_back(nullptr);
+        vte_terminal_spawn_async(tab->terminal, VTE_PTY_DEFAULT, nullptr, shell_argv.data(),
+            nullptr, G_SPAWN_DEFAULT, nullptr, nullptr, nullptr, -1, nullptr, shell_spawned, tab);
+    }
     gtk_widget_grab_focus(terminal);
 }
 
@@ -2145,23 +2197,34 @@ void activate(GtkApplication *application, gpointer user_data) {
     state->throbber_tick = gtk_widget_add_tick_callback(
         throbber, throbber_tick, state, nullptr);
 
-    std::vector<char *> shell_argv;
-    shell_argv.push_back(const_cast<char *>(state->shell_path.c_str()));
-    shell_argv.push_back(nullptr);
-    vte_terminal_spawn_async(
-        state->terminal,
-        VTE_PTY_DEFAULT,
-        nullptr,
-        shell_argv.data(),
-        nullptr,
-        G_SPAWN_DEFAULT,
-        nullptr,
-        nullptr,
-        nullptr,
-        -1,
-        nullptr,
-        shell_spawned,
-        state);
+    if (state->shell_path.empty()) {
+        vte_terminal_feed(state->terminal,
+            "\r\n  SleelaTerminal could not find the slsh shell.\r\n"
+            "  Install slsh beside SleelaTerminal (same bin dir) or on $PATH, "
+            "then reopen.\r\n", -1);
+    } else {
+        std::vector<char *> shell_argv;
+        shell_argv.push_back(const_cast<char *>(state->shell_path.c_str()));
+        shell_argv.push_back(nullptr);
+        vte_terminal_spawn_async(
+            state->terminal,
+            VTE_PTY_DEFAULT,
+            nullptr,
+            shell_argv.data(),
+            nullptr,
+            G_SPAWN_DEFAULT,
+            nullptr,
+            nullptr,
+            nullptr,
+            -1,
+            nullptr,
+            shell_spawned,
+            state);
+    }
+
+    // Ensure the terminal has keyboard focus so typing works immediately and
+    // VTE forwards keystrokes to the slsh prompt.
+    gtk_widget_grab_focus(GTK_WIDGET(state->terminal));
 
     gtk_window_present(state->window);
 }
@@ -2170,8 +2233,11 @@ void activate(GtkApplication *application, gpointer user_data) {
 
 int main(int argc, char **argv) {
     AppState state;
-    if (argc > 1) state.shell_path = argv[1];
-    else state.shell_path = sibling_path(argv[0], "slsh");
+    if (argc > 1) {
+        state.shell_path = argv[1];
+    } else {
+        state.shell_path = resolve_slsh(argv[0]);  // may be empty if not found
+    }
     state.executable_path = argv[0];
 
     GtkApplication *application = gtk_application_new(

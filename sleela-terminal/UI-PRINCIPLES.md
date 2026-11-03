@@ -41,7 +41,7 @@ reading palette:
 | `--sl-surface` | `#21112f` | popovers, dialogs, raised surfaces |
 | `--sl-surface-hi` | `#321a4d` | gradient top / hover surface |
 | `--sl-chrome` | `#24103f` | footer base / raised chrome |
-| `--sl-titlebar-metal` | `#dfe2e6`→`#4d525a` | gray metallic title-bar bevel (bright top → central specular → shadow base) |
+| `--sl-titlebar-bg` | `#4b4b4b` | title-bar fill — the same flat gray as the terminal text area (`--sl-output-bg`) |
 | `--sl-border` | `#7f56aa` | 1px separators and surface borders |
 | `--sl-fg` | `#ffffff` | chrome text / controls |
 | `--sl-fg-dim` | `rgba(255,255,255,.70)` | secondary / note text |
