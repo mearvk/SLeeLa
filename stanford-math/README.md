@@ -32,26 +32,28 @@ faithful to the subject's real origin where publicly known**; unknowns are
 | `SMProvenance`     | Purpose/method/gains/bedrock + tiered literature callouts (Wikipedia attributed) | Primary/secondary/tertiary sources |
 | `SMArchive` (demo) | Runnable entry point that broadcasts the archive | — |
 
-## The equation canon (195 entries)
+## The equation canon (200 entries)
 
 > On "all of the equations known in the known Universe": **no finite, complete
 > list of every equation exists** — and fabricating one would violate this
 > repo's one hard rule (values faithful to real origin; unknowns are `"none"`,
 > never invented). So this archive records a **curated, fully-attributed canon**
 > of the genuinely foundational equations that every math/physics PhD rests on:
-> **195 entries**, each with its real name, symbolic form, discoverer(s), year,
+> **200 entries**, each with its real name, symbolic form, discoverer(s), year,
 > and field.
 
 Breakdown (counts verified by running `SMArchive`):
 
-- **Mathematics — 44:** Pythagoras, Euler's identity/formula, FTC, binomial
+- **Mathematics — 49:** Pythagoras, Euler's identity/formula, FTC, binomial
   theorem, Taylor & Fourier series, Cauchy–Schwarz, Gauss/Green/Stokes,
   Cauchy integral & residue theorems, Riemann zeta functional equation, Euler
   product, prime number theorem, Bayes, CLT, Stirling, Gamma, Basel problem,
   Euler–Mascheroni, golden ratio, polyhedron formula, eigenvalue equation,
   Green–Tao, plus L'Hôpital's rule, integration by parts, chain rule, Jensen &
   AM–GM inequalities, geometric series, Euler's totient, Fermat's little
-  theorem, Cantor's diagonal cardinality, and more.
+  theorem, Cantor's diagonal cardinality, Laplace's equation, Euler's totient
+  theorem, Gauss's quadratic reciprocity, Cramer's rule, the Wallis product,
+  and more.
 - **Physics — 46:** Newton's three laws & gravitation, Lagrange/Hamilton, Coulomb,
   all four Maxwell equations, Lorentz force, `E=mc^2`, Einstein field equations,
   Schwarzschild radius, Planck relation & law, de Broglie, both Schrödinger
@@ -97,7 +99,7 @@ Each group has a full human-readable table — every equation with its symbolic
 form, field, discoverer(s), and year — mirrored directly from the `.sleela`
 canon (the single source of truth):
 
-- [`EQUATIONS-MATH.md`](EQUATIONS-MATH.md) — 44 mathematics equations (`SMMathCanon`)
+- [`EQUATIONS-MATH.md`](EQUATIONS-MATH.md) — 49 mathematics equations (`SMMathCanon`)
 - [`EQUATIONS-PHYSICS.md`](EQUATIONS-PHYSICS.md) — 46 physics equations (`SMPhysicsCanon`)
 - [`EQUATIONS-THERMODYNAMICS.md`](EQUATIONS-THERMODYNAMICS.md) — 28 thermodynamics & statistical-mechanics equations (`SMThermoEquations`)
 - [`EQUATIONS-CROSSOVERS.md`](EQUATIONS-CROSSOVERS.md) — 16 applied/PhD crossovers (`SMCrossoverCanon`)

@@ -1,6 +1,6 @@
 # Mathematics Canon
 
-> 44 equations, sourced from `SMMathCanon.sleela` -- the single
+> 49 equations, sourced from `SMMathCanon.sleela` -- the single
 > source of truth. This document is a human-readable mirror of that record;
 > if the two ever disagree, the `.sleela` canon wins and this file is stale.
 
@@ -14,7 +14,7 @@ Symbolic forms use plain-ASCII notation (`^` power, `*` product, `sqrt`, `integr
 diff-friendly. The **Why it matters** column states each result's significance in one
 faithful line.
 
-## The 44 equations
+## The 49 equations
 
 | # | Equation | Form | Field | Discoverer(s) | Year | Why it matters |
 |---|----------|------|-------|---------------|------|----------------|
@@ -62,6 +62,11 @@ faithful line.
 | 42 | Euler's totient product | `phi(n) = n product_{p\|n} (1 - 1/p)` | number theory | Leonhard Euler | 1763 | Counts integers coprime to n; central to modular arithmetic and RSA cryptography. |
 | 43 | Fermat's little theorem | `a^p = a (mod p),  p prime` | number theory | Pierre de Fermat | 1640 | A prime's fingerprint in modular arithmetic; the basis of primality tests and public-key crypto. |
 | 44 | Cantor's diagonal cardinality | `\|P(S)\| > \|S\|  (2^aleph0 > aleph0)` | set theory | Georg Cantor | 1891 | Proves there are strictly larger infinities; the birth of set theory and the uncountable. |
+| 45 | Laplace's equation | `laplacian(f) = 0` | partial differential equations | Pierre-Simon Laplace | 1784 | The defining equation of harmonic functions and potential theory; governs steady-state heat, gravity, and electrostatics. |
+| 46 | Euler's theorem (totient) | `a^phi(n) = 1 (mod n),  gcd(a,n)=1` | number theory | Leonhard Euler | 1763 | Generalizes Fermat's little theorem to any modulus; the arithmetic that makes RSA decryption work. |
+| 47 | Quadratic reciprocity | `(p/q)(q/p) = (-1)^(((p-1)/2)((q-1)/2))` | number theory | Carl Friedrich Gauss | 1801 | Gauss's 'golden theorem' linking when two primes are squares mod each other; the seed of class field theory. |
+| 48 | Cramer's rule | `x_i = det(A_i) / det(A)` | linear algebra | Gabriel Cramer | 1750 | Solves a linear system by determinant ratios; the closed-form expression of a unique solution. |
+| 49 | Wallis product | `pi/2 = product_{n>=1} (2n)(2n)/((2n-1)(2n+1))` | analysis | John Wallis | 1656 | An infinite product for pi predating calculus; an early landmark in the analysis of limits and products. |
 
 ## Validate
 

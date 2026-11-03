@@ -74,7 +74,7 @@ class SMMathCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[48];
+    eqs = new SMEquation[52];
     filled = 0;
 
     add("Pythagorean theorem", "a^2 + b^2 = c^2", "geometry", "Pythagoras (attrib.)", "c. 530 BC");
@@ -121,6 +121,11 @@ class SMMathCanon {
     add("Euler's totient product", "phi(n) = n product_{p|n} (1 - 1/p)", "number theory", "Leonhard Euler", "1763");
     add("Fermat's little theorem", "a^p = a (mod p),  p prime", "number theory", "Pierre de Fermat", "1640");
     add("Cantor's diagonal cardinality", "|P(S)| > |S|  (2^aleph0 > aleph0)", "set theory", "Georg Cantor", "1891");
+    add("Laplace's equation", "laplacian(f) = 0", "partial differential equations", "Pierre-Simon Laplace", "1784");
+    add("Euler's theorem (totient)", "a^phi(n) = 1 (mod n),  gcd(a,n)=1", "number theory", "Leonhard Euler", "1763");
+    add("Quadratic reciprocity", "(p/q)(q/p) = (-1)^(((p-1)/2)((q-1)/2))", "number theory", "Carl Friedrich Gauss", "1801");
+    add("Cramer's rule", "x_i = det(A_i) / det(A)", "linear algebra", "Gabriel Cramer", "1750");
+    add("Wallis product", "pi/2 = product_{n>=1} (2n)(2n)/((2n-1)(2n+1))", "analysis", "John Wallis", "1656");
   }
 
   void add(String name, String form, String field, String who, String year) {
