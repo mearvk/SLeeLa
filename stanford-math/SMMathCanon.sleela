@@ -74,7 +74,7 @@ class SMMathCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[64];
+    eqs = new SMEquation[80];
     filled = 0;
 
     add("Pythagorean theorem", "a^2 + b^2 = c^2", "geometry", "Pythagoras (attrib.)", "c. 530 BC");
@@ -136,6 +136,22 @@ class SMMathCanon {
     add("Gram-Schmidt orthogonalization", "u_k = v_k - sum_{j<k} proj_{u_j}(v_k)", "linear algebra", "Gram; Schmidt", "1907");
     add("Parseval's identity", "sum |c_n|^2 = (1/(2 pi)) integral_{-pi}^{pi} |f(x)|^2 dx", "analysis", "Marc-Antoine Parseval", "1799");
     add("Chebyshev's inequality", "P(|X - mu| >= k sigma) <= 1/k^2", "probability", "Pafnuty Chebyshev", "1867");
+    add("Fundamental theorem of algebra", "every degree-n polynomial has exactly n complex roots (with multiplicity)", "algebra", "Carl Friedrich Gauss", "1799");
+    add("Rolle's theorem", "f(a) = f(b) => exists c in (a,b): f'(c) = 0", "calculus", "Michel Rolle", "1691");
+    add("Cauchy-Riemann equations", "u_x = v_y,  u_y = -v_x", "complex analysis", "Cauchy; Riemann", "1851");
+    add("Argument principle", "(1/(2*pi*i)) closed_integral f'(z)/f(z) dz = Z - P", "complex analysis", "Augustin-Louis Cauchy", "1831");
+    add("Lagrange interpolation", "p(x) = sum_j y_j product_{m!=j} (x - x_m)/(x_j - x_m)", "numerical analysis", "Lagrange; Waring", "1795");
+    add("Newton's method", "x_{n+1} = x_n - f(x_n)/f'(x_n)", "numerical analysis", "Newton; Raphson", "1690");
+    add("Singular value decomposition", "A = U Sigma V^T", "linear algebra", "Beltrami; Jordan", "1873");
+    add("Bolzano-Weierstrass theorem", "every bounded sequence in R^n has a convergent subsequence", "analysis", "Bolzano; Weierstrass", "1817");
+    add("Banach fixed-point theorem", "a contraction on a complete metric space has a unique fixed point", "analysis", "Stefan Banach", "1922");
+    add("Holder's inequality", "sum |a_k b_k| <= (sum |a_k|^p)^(1/p) (sum |b_k|^q)^(1/q),  1/p + 1/q = 1", "analysis", "Otto Holder", "1889");
+    add("Minkowski's inequality", "||a + b||_p <= ||a||_p + ||b||_p", "analysis", "Hermann Minkowski", "1896");
+    add("Weak law of large numbers", "Xbar_n -> mu in probability as n -> inf", "probability", "Jacob Bernoulli", "1713");
+    add("Markov's inequality", "P(X >= a) <= E[X]/a,  X >= 0, a > 0", "probability", "Andrey Markov", "1884");
+    add("Mobius inversion", "g(n) = sum_{d|n} f(d)  <=>  f(n) = sum_{d|n} mu(n/d) g(d)", "number theory", "August Ferdinand Mobius", "1832");
+    add("Dirichlet's theorem (primes in AP)", "gcd(a,d)=1 => infinitely many primes of the form a + n*d", "number theory", "Peter Gustav Lejeune Dirichlet", "1837");
+    add("Catalan number formula", "C_n = (1/(n+1)) C(2n, n)", "combinatorics", "Euler; Catalan", "1838");
   }
 
   void add(String name, String form, String field, String who, String year) {

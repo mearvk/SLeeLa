@@ -32,19 +32,19 @@ faithful to the subject's real origin where publicly known**; unknowns are
 | `SMProvenance`     | Purpose/method/gains/bedrock + tiered literature callouts (Wikipedia attributed) | Primary/secondary/tertiary sources |
 | `SMArchive` (demo) | Runnable entry point that broadcasts the archive | — |
 
-## The equation canon (210 entries)
+## The equation canon (226 entries)
 
 > On "all of the equations known in the known Universe": **no finite, complete
 > list of every equation exists** — and fabricating one would violate this
 > repo's one hard rule (values faithful to real origin; unknowns are `"none"`,
 > never invented). So this archive records a **curated, fully-attributed canon**
 > of the genuinely foundational equations that every math/physics PhD rests on:
-> **210 entries**, each with its real name, symbolic form, discoverer(s), year,
+> **226 entries**, each with its real name, symbolic form, discoverer(s), year,
 > and field.
 
 Breakdown (counts verified by running `SMArchive`):
 
-- **Mathematics — 59:** Pythagoras, Euler's identity/formula, FTC, binomial
+- **Mathematics — 75:** Pythagoras, Euler's identity/formula, FTC, binomial
   theorem, Taylor & Fourier series, Cauchy–Schwarz, Gauss/Green/Stokes,
   Cauchy integral & residue theorems, Riemann zeta functional equation, Euler
   product, prime number theorem, Bayes, CLT, Stirling, Gamma, Basel problem,
@@ -56,7 +56,12 @@ Breakdown (counts verified by running `SMArchive`):
   Lagrange's mean value theorem, the intermediate value theorem, Wilson's
   theorem, the Chinese remainder theorem, the Vandermonde determinant,
   Cayley–Hamilton, Gram–Schmidt, Parseval's identity, Chebyshev's inequality,
-  and more.
+  the fundamental theorem of algebra, Rolle's theorem, the Cauchy–Riemann
+  equations, the argument principle, Lagrange interpolation, Newton's method,
+  the singular value decomposition, Bolzano–Weierstrass, the Banach
+  fixed-point theorem, Hölder & Minkowski inequalities, the weak law of large
+  numbers, Markov's inequality, Möbius inversion, Dirichlet on primes in
+  arithmetic progression, and the Catalan numbers, and more.
 - **Physics — 46:** Newton's three laws & gravitation, Lagrange/Hamilton, Coulomb,
   all four Maxwell equations, Lorentz force, `E=mc^2`, Einstein field equations,
   Schwarzschild radius, Planck relation & law, de Broglie, both Schrödinger
@@ -102,7 +107,7 @@ Each group has a full human-readable table — every equation with its symbolic
 form, field, discoverer(s), and year — mirrored directly from the `.sleela`
 canon (the single source of truth):
 
-- [`EQUATIONS-MATH.md`](EQUATIONS-MATH.md) — 59 mathematics equations (`SMMathCanon`)
+- [`EQUATIONS-MATH.md`](EQUATIONS-MATH.md) — 75 mathematics equations (`SMMathCanon`)
 - [`EQUATIONS-PHYSICS.md`](EQUATIONS-PHYSICS.md) — 46 physics equations (`SMPhysicsCanon`)
 - [`EQUATIONS-THERMODYNAMICS.md`](EQUATIONS-THERMODYNAMICS.md) — 28 thermodynamics & statistical-mechanics equations (`SMThermoEquations`)
 - [`EQUATIONS-CROSSOVERS.md`](EQUATIONS-CROSSOVERS.md) — 16 applied/PhD crossovers (`SMCrossoverCanon`)

@@ -1,6 +1,6 @@
 # Mathematics Canon
 
-> 59 equations, sourced from `SMMathCanon.sleela` -- the single
+> 75 equations, sourced from `SMMathCanon.sleela` -- the single
 > source of truth. This document is a human-readable mirror of that record;
 > if the two ever disagree, the `.sleela` canon wins and this file is stale.
 
@@ -14,7 +14,7 @@ Symbolic forms use plain-ASCII notation (`^` power, `*` product, `sqrt`, `integr
 diff-friendly. The **Why it matters** column states each result's significance in one
 faithful line.
 
-## The 59 equations
+## The 75 equations
 
 | # | Equation | Form | Field | Discoverer(s) | Year | Why it matters |
 |---|----------|------|-------|---------------|------|----------------|
@@ -77,6 +77,22 @@ faithful line.
 | 57 | Gram-Schmidt orthogonalization | `u_k = v_k - sum_{j<k} proj_{u_j}(v_k)` | linear algebra | Gram; Schmidt | 1907 | Turns any basis into an orthonormal one; the engine behind QR decomposition and least squares. |
 | 58 | Parseval's identity | `sum \|c_n\|^2 = (1/(2 pi)) integral_{-pi}^{pi} \|f(x)\|^2 dx` | analysis | Marc-Antoine Parseval | 1799 | Energy is conserved between a signal and its Fourier coefficients; the cornerstone of Hilbert-space harmonic analysis. |
 | 59 | Chebyshev's inequality | `P(\|X - mu\| >= k sigma) <= 1/k^2` | probability | Pafnuty Chebyshev | 1867 | Bounds how far a random variable strays from its mean using only variance; the first general concentration inequality. |
+| 60 | Fundamental theorem of algebra | `every degree-n polynomial has exactly n complex roots (with multiplicity)` | algebra | Carl Friedrich Gauss | 1799 | Guarantees the complex numbers are algebraically closed; the reason every polynomial factors completely. |
+| 61 | Rolle's theorem | `f(a) = f(b) => exists c in (a,b): f'(c) = 0` | calculus | Michel Rolle | 1691 | The special case that powers the mean value theorem; the first rigorous link between equal values and a flat tangent. |
+| 62 | Cauchy-Riemann equations | `u_x = v_y,  u_y = -v_x` | complex analysis | Cauchy; Riemann | 1851 | The exact condition for complex differentiability; the gateway from calculus to analytic-function theory. |
+| 63 | Argument principle | `(1/(2*pi*i)) closed_integral f'(z)/f(z) dz = Z - P` | complex analysis | Augustin-Louis Cauchy | 1831 | Counts zeros minus poles inside a contour; the tool behind Rouche's theorem and root-locating. |
+| 64 | Lagrange interpolation | `p(x) = sum_j y_j product_{m!=j} (x - x_m)/(x_j - x_m)` | numerical analysis | Lagrange; Waring | 1795 | Builds the unique polynomial through given points; the foundation of polynomial interpolation and quadrature. |
+| 65 | Newton's method | `x_{n+1} = x_n - f(x_n)/f'(x_n)` | numerical analysis | Newton; Raphson | 1690 | Finds roots by successive linearization, converging quadratically; the workhorse of numerical root-finding and optimization. |
+| 66 | Singular value decomposition | `A = U Sigma V^T` | linear algebra | Beltrami; Jordan | 1873 | Factors any matrix into rotations and scalings; the backbone of least squares, PCA, and low-rank approximation. |
+| 67 | Bolzano-Weierstrass theorem | `every bounded sequence in R^n has a convergent subsequence` | analysis | Bolzano; Weierstrass | 1817 | Guarantees limit points of bounded sets; a foundational compactness result underpinning existence proofs. |
+| 68 | Banach fixed-point theorem | `a contraction on a complete metric space has a unique fixed point` | analysis | Stefan Banach | 1922 | Turns iteration into existence-and-uniqueness; the engine behind ODE solutions and numerical convergence. |
+| 69 | Holder's inequality | `sum \|a_k b_k\| <= (sum \|a_k\|^p)^(1/p) (sum \|b_k\|^q)^(1/q),  1/p + 1/q = 1` | analysis | Otto Holder | 1889 | Generalizes Cauchy-Schwarz to L^p spaces; indispensable across functional analysis and probability bounds. |
+| 70 | Minkowski's inequality | `\|\|a + b\|\|_p <= \|\|a\|\|_p + \|\|b\|\|_p` | analysis | Hermann Minkowski | 1896 | The triangle inequality for L^p norms; what makes L^p a normed space. |
+| 71 | Weak law of large numbers | `Xbar_n -> mu in probability as n -> inf` | probability | Jacob Bernoulli | 1713 | Sample averages converge to the true mean; the formal reason large samples are reliable. |
+| 72 | Markov's inequality | `P(X >= a) <= E[X]/a,  X >= 0, a > 0` | probability | Andrey Markov | 1884 | Bounds a nonnegative variable's tail by its mean alone; the seed of Chebyshev and concentration inequalities. |
+| 73 | Mobius inversion | `g(n) = sum_{d\|n} f(d)  <=>  f(n) = sum_{d\|n} mu(n/d) g(d)` | number theory | August Ferdinand Mobius | 1832 | Inverts divisor sums via the Mobius function; a central identity of multiplicative number theory. |
+| 74 | Dirichlet's theorem (primes in AP) | `gcd(a,d)=1 => infinitely many primes of the form a + n*d` | number theory | Peter Gustav Lejeune Dirichlet | 1837 | Primes are spread through every valid arithmetic progression; a landmark that launched analytic number theory. |
+| 75 | Catalan number formula | `C_n = (1/(n+1)) C(2n, n)` | combinatorics | Euler; Catalan | 1838 | Counts balanced structures (parenthesizations, trees, paths); one of combinatorics' most ubiquitous sequences. |
 
 ## Validate
 
