@@ -667,16 +667,27 @@ void install_css(AppState *state) {
         box.sleela-workspace {
             background: @sl_textpane_bg;
         }
+        /* The panel's 10px padding forms a visible frame around the terminal.
+           Paint it in the standard UI gray (@sl_ui_gray) -- replacing the
+           former near-white theme fallthrough -- so it reads as a deliberate
+           standard-gray border, while the VTE text surface below stays dark. */
         overlay.sleela-terminal-panel {
-            background: @sl_pane_bg;
+            background: @sl_ui_gray;
             border: 1px solid #383838;
             border-radius: 12px;
             padding: 10px;
             margin: 12px;
         }
+        /* VTE paints its OWN padding/content node; on some GTK themes that node
+           falls back to the theme's near-white widget background. Pin the whole
+           vte-terminal box -- including its padding -- to the dark pane gray so
+           the text area stays dark inside the standard-gray panel frame and no
+           white backing can appear behind or around the text pane. */
         vte-terminal {
             color: @sl_output_fg;
             background: @sl_pane_bg;
+            background-color: @sl_pane_bg;
+            padding: 0;
             border-radius: 8px;
         }
         window .sleela-file-browser {
