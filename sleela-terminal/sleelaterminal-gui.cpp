@@ -268,8 +268,9 @@ void apply_terminal_style(AppState *state) {
     if (!parse_rgba(state->config.foreground, foreground)) {
         gdk_rgba_parse(&foreground, "#262626");
     }
-    // Keep the surrounding GTK workspace near-white; the interactive VTE
-    // surface itself is the shared charcoal command-output surface. VTE owns
+    // The surrounding GTK workspace backing is dark gray (set via CSS
+    // @sl_textpane_bg); the interactive VTE surface itself is the shared
+    // charcoal command-output surface (#4b4b4b below). VTE owns
     // the live PTY stream, so styling it as one surface preserves arbitrary
     // interactive programs, scrollback, selection, and shell I/O semantics.
     gdk_rgba_parse(&foreground, "#f2f2f2");
@@ -298,7 +299,11 @@ void install_css(AppState *state) {
     // rejects the stray backslash and drops the rest of the rule.
     const char *css = R"CSS(
         @define-color sl_bg          #15101c;
-        @define-color sl_textpane_bg #fcfcfc;
+        /* The workspace backing that frames the terminal. Formerly a near-white
+           #fcfcfc panel; now a dark gray two shades darker than the title bar
+           gray (@sl_titlebar_bg #4b4b4b), following the palette shade steps
+           #4b4b4b -> #383838 -> #262626. No white backing remains. */
+        @define-color sl_textpane_bg #262626;
         @define-color sl_output_bg   #4b4b4b;
         @define-color sl_output_fg   #f2f2f2;
         @define-color sl_item_bg     #626262;
@@ -448,15 +453,15 @@ void install_css(AppState *state) {
             outline-offset: 1px;
         }
 
-        /* Tabs keep the light workspace visible above the unchanged charcoal PTY surface. */
+        /* Tabs sit on the dark workspace backing above the unchanged charcoal PTY surface. */
         notebook.sleela-terminal-tabs > header {
             background: @sl_textpane_bg;
-            border-bottom: 1px solid #d7d7d7;
+            border-bottom: 1px solid #1c1c1c;
             padding: 3px 6px;
         }
-        /* Inverted tab colours: UNSELECTED tabs are dark (charcoal bg, light
-           text); the SELECTED tab is light (near-white bg, dark text). This is
-           the inverse of the former light-unselected / dark-selected scheme. */
+        /* Tab colours on the dark backing: UNSELECTED tabs are charcoal
+           (@sl_output_bg); the SELECTED tab is a slightly lighter dark gray
+           (#383838) with light text, so it reads as raised without any white. */
         notebook.sleela-terminal-tabs tab {
             background: @sl_output_bg;
             color: @sl_output_fg;
@@ -467,10 +472,10 @@ void install_css(AppState *state) {
         }
         notebook.sleela-terminal-tabs tab label { color: @sl_output_fg; }
         notebook.sleela-terminal-tabs tab:checked {
-            background: #eeeeee;
-            border-color: #d0d0d0;
+            background: #383838;
+            border-color: #4b4b4b;
         }
-        notebook.sleela-terminal-tabs tab:checked label { color: #333333; }
+        notebook.sleela-terminal-tabs tab:checked label { color: #f2f2f2; }
         notebook.sleela-terminal-tabs tab button {
             min-width: 18px;
             min-height: 18px;
@@ -594,7 +599,8 @@ void install_css(AppState *state) {
         }
         button.suggested-action:hover { background: @sl_menu_hover; }
 
-        /* The near-white workspace frames one rounded charcoal interactive
+        /* The dark-gray workspace (@sl_textpane_bg, two shades darker than the
+           title bar gray) frames one rounded charcoal interactive
            terminal surface. All VTE output shares the same base palette, while
            ANSI styling remains available for semantic emphasis. A distinct
            rounded panel for each completed command would require separating
