@@ -30,7 +30,7 @@ GUI   := $(BUILD)/SleelaTerminal
 GTK4_VTE_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(GTK4_VTE_PKGS) 2>/dev/null)
 GTK4_VTE_LIBS   := $(shell $(PKG_CONFIG) --libs $(GTK4_VTE_PKGS) 2>/dev/null)
 
-.PHONY: all cli all-gui smoke test m5-smoke gui install install-gui install-all do-install do-install-gui install-strip uninstall clean sanitize fuzz
+.PHONY: all cli all-gui smoke test m5-smoke gui install install-gui install-all check-gui-deps do-install do-install-gui install-strip uninstall clean sanitize fuzz
 
 all: all-gui
 
@@ -118,32 +118,45 @@ endef
 
 # Scope-aware front-ends.
 #
-# `install` installs the slsh shell only. `install-gui` / `install-all` install
-# the GUI too WHEN GTK4/VTE are available; when they are not, they degrade to a
-# slsh-only install (with a note) instead of failing, so the command always
-# yields a working terminal. Build the GUI explicitly with `make gui`/`all-gui`
-# if you want a hard failure on missing GTK4/VTE.
+# `install`       installs the slsh shell only.
+# `install-gui` / `install-all` build and install the GUI SleelaTerminal
+#                 program (plus slsh + assets + .desktop). The GUI REQUIRES the
+#                 GTK4 and VTE development packages: if they are missing these
+#                 targets STOP with exact install instructions rather than
+#                 silently installing only slsh -- so you always get the GUI
+#                 (or a clear reason and the command to fix it).
 install: $(SLSH)
 	$(call scope_install,do-install)
 
-install-gui install-all: $(SLSH)
-	@if [ -n "$(GTK4_VTE_CFLAGS)" ] && [ -n "$(GTK4_VTE_LIBS)" ]; then \
-	  echo "GTK4/VTE found: installing the GUI terminal + slsh shell."; \
-	  $(MAKE) --no-print-directory $(GUI); \
-	  $(MAKE) --no-print-directory _scope-install-gui; \
-	else \
-	  echo "GTK4/VTE not found: installing the slsh shell only (skipping the GUI)."; \
-	  echo "  Install the gtk4 and vte-2.91-gtk4 development packages for the GUI."; \
-	  $(MAKE) --no-print-directory _scope-install; \
-	fi
-
-# Internal scope dispatchers (used by install-gui/install-all after the GTK
-# decision). Kept separate so the GTK probe runs once, before any sudo prompt.
-.PHONY: _scope-install _scope-install-gui
-_scope-install: $(SLSH)
-	$(call scope_install,do-install)
-_scope-install-gui: $(GUI)
+install-gui install-all: check-gui-deps $(GUI) $(SLSH)
 	$(call scope_install,do-install-gui)
+
+# Fail early, with actionable guidance, when the GUI toolchain is absent. This
+# is what turns "silently slsh-only" into "here is exactly what to install".
+.PHONY: check-gui-deps
+check-gui-deps:
+	@if ! command -v $(PKG_CONFIG) >/dev/null 2>&1; then \
+	  echo "ERROR: pkg-config is not installed; the GUI build needs it to locate GTK4/VTE." >&2; \
+	  echo "  Debian/Ubuntu:  sudo apt install pkg-config" >&2; \
+	  exit 1; \
+	fi; \
+	miss=""; \
+	$(PKG_CONFIG) --exists gtk4 2>/dev/null || miss="$$miss gtk4"; \
+	$(PKG_CONFIG) --exists vte-2.91-gtk4 2>/dev/null || miss="$$miss vte-2.91-gtk4"; \
+	if [ -n "$$miss" ] || [ -z "$(GTK4_VTE_CFLAGS)" ] || [ -z "$(GTK4_VTE_LIBS)" ]; then \
+	  echo "ERROR: the SleelaTerminal GUI needs the GTK4 and VTE (gtk4) development packages." >&2; \
+	  echo "       Missing pkg-config module(s):$${miss:- (gtk4 vte-2.91-gtk4)}" >&2; \
+	  echo >&2; \
+	  echo "  Debian/Ubuntu:  sudo apt install libgtk-4-dev libvte-2.91-gtk4-dev pkg-config g++" >&2; \
+	  echo "  Fedora/RHEL:    sudo dnf install gtk4-devel vte291-gtk4-devel pkgconf-pkg-config gcc-c++" >&2; \
+	  echo "  Arch:           sudo pacman -S gtk4 vte4 pkgconf gcc" >&2; \
+	  echo "  openSUSE:       sudo zypper install gtk4-devel vte-gtk4-devel pkg-config gcc-c++" >&2; \
+	  echo "  macOS (brew):   brew install gtk4 vte3 pkg-config" >&2; \
+	  echo >&2; \
+	  echo "Then re-run this install. To install ONLY the slsh shell (no GUI), use: make install" >&2; \
+	  exit 1; \
+	fi; \
+	echo "GTK4/VTE development packages found -- building and installing the GUI SleelaTerminal."
 
 # Raw copy recipes (honor PREFIX/BINDIR/DESKTOPDIR/DESTDIR as given). These are
 # what actually write files; the scope front-ends above re-invoke them with the
