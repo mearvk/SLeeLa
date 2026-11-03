@@ -1,6 +1,6 @@
 # Mathematics Canon
 
-> 49 equations, sourced from `SMMathCanon.sleela` -- the single
+> 59 equations, sourced from `SMMathCanon.sleela` -- the single
 > source of truth. This document is a human-readable mirror of that record;
 > if the two ever disagree, the `.sleela` canon wins and this file is stale.
 
@@ -14,7 +14,7 @@ Symbolic forms use plain-ASCII notation (`^` power, `*` product, `sqrt`, `integr
 diff-friendly. The **Why it matters** column states each result's significance in one
 faithful line.
 
-## The 49 equations
+## The 59 equations
 
 | # | Equation | Form | Field | Discoverer(s) | Year | Why it matters |
 |---|----------|------|-------|---------------|------|----------------|
@@ -67,6 +67,16 @@ faithful line.
 | 47 | Quadratic reciprocity | `(p/q)(q/p) = (-1)^(((p-1)/2)((q-1)/2))` | number theory | Carl Friedrich Gauss | 1801 | Gauss's 'golden theorem' linking when two primes are squares mod each other; the seed of class field theory. |
 | 48 | Cramer's rule | `x_i = det(A_i) / det(A)` | linear algebra | Gabriel Cramer | 1750 | Solves a linear system by determinant ratios; the closed-form expression of a unique solution. |
 | 49 | Wallis product | `pi/2 = product_{n>=1} (2n)(2n)/((2n-1)(2n+1))` | analysis | John Wallis | 1656 | An infinite product for pi predating calculus; an early landmark in the analysis of limits and products. |
+| 50 | Lagrange mean value theorem | `f'(c) = (f(b) - f(a)) / (b - a)` | calculus | Joseph-Louis Lagrange | 1797 | Guarantees a point where the instantaneous rate equals the average rate; the backbone of error bounds in calculus. |
+| 51 | Curl of a gradient | `curl(grad f) = 0` | vector calculus | classical | unknown | A gradient field is always irrotational; the identity behind conservative fields and scalar potentials. |
+| 52 | Intermediate value theorem | `f(a) < y < f(b) => exists c in (a,b): f(c) = y` | analysis | Bernard Bolzano | 1817 | A continuous function hits every value between its endpoints; the rigorous root of existence proofs. |
+| 53 | Wilson's theorem | `(p-1)! = -1 (mod p),  p prime` | number theory | Lagrange (proof); Wilson | 1771 | A factorial test that characterizes primes exactly; a classic link between combinatorics and primality. |
+| 54 | Chinese remainder theorem | `x = a_i (mod n_i) has unique soln mod product n_i` | number theory | Sunzi (attrib.) | c. 400 AD | Reconstructs a number from its remainders modulo coprime bases; foundational to modular arithmetic and RSA. |
+| 55 | Vandermonde determinant | `det = product_{i<j} (x_j - x_i)` | linear algebra | Alexandre-Theophile Vandermonde | 1772 | A clean closed form for a key determinant; central to polynomial interpolation and coding theory. |
+| 56 | Cayley-Hamilton theorem | `p(A) = 0  (A satisfies its characteristic polynomial)` | linear algebra | Cayley; Hamilton | 1858 | Every square matrix satisfies its own characteristic equation; the basis for matrix functions and minimal polynomials. |
+| 57 | Gram-Schmidt orthogonalization | `u_k = v_k - sum_{j<k} proj_{u_j}(v_k)` | linear algebra | Gram; Schmidt | 1907 | Turns any basis into an orthonormal one; the engine behind QR decomposition and least squares. |
+| 58 | Parseval's identity | `sum \|c_n\|^2 = (1/(2 pi)) integral_{-pi}^{pi} \|f(x)\|^2 dx` | analysis | Marc-Antoine Parseval | 1799 | Energy is conserved between a signal and its Fourier coefficients; the cornerstone of Hilbert-space harmonic analysis. |
+| 59 | Chebyshev's inequality | `P(\|X - mu\| >= k sigma) <= 1/k^2` | probability | Pafnuty Chebyshev | 1867 | Bounds how far a random variable strays from its mean using only variance; the first general concentration inequality. |
 
 ## Validate
 

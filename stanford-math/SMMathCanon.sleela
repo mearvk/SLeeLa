@@ -74,7 +74,7 @@ class SMMathCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[52];
+    eqs = new SMEquation[64];
     filled = 0;
 
     add("Pythagorean theorem", "a^2 + b^2 = c^2", "geometry", "Pythagoras (attrib.)", "c. 530 BC");
@@ -126,6 +126,16 @@ class SMMathCanon {
     add("Quadratic reciprocity", "(p/q)(q/p) = (-1)^(((p-1)/2)((q-1)/2))", "number theory", "Carl Friedrich Gauss", "1801");
     add("Cramer's rule", "x_i = det(A_i) / det(A)", "linear algebra", "Gabriel Cramer", "1750");
     add("Wallis product", "pi/2 = product_{n>=1} (2n)(2n)/((2n-1)(2n+1))", "analysis", "John Wallis", "1656");
+    add("Lagrange mean value theorem", "f'(c) = (f(b) - f(a)) / (b - a)", "calculus", "Joseph-Louis Lagrange", "1797");
+    add("Curl of a gradient", "curl(grad f) = 0", "vector calculus", "classical", "unknown");
+    add("Intermediate value theorem", "f(a) < y < f(b) => exists c in (a,b): f(c) = y", "analysis", "Bernard Bolzano", "1817");
+    add("Wilson's theorem", "(p-1)! = -1 (mod p),  p prime", "number theory", "Lagrange (proof); Wilson", "1771");
+    add("Chinese remainder theorem", "x = a_i (mod n_i) has unique soln mod product n_i", "number theory", "Sunzi (attrib.)", "c. 400 AD");
+    add("Vandermonde determinant", "det = product_{i<j} (x_j - x_i)", "linear algebra", "Alexandre-Theophile Vandermonde", "1772");
+    add("Cayley-Hamilton theorem", "p(A) = 0  (A satisfies its characteristic polynomial)", "linear algebra", "Cayley; Hamilton", "1858");
+    add("Gram-Schmidt orthogonalization", "u_k = v_k - sum_{j<k} proj_{u_j}(v_k)", "linear algebra", "Gram; Schmidt", "1907");
+    add("Parseval's identity", "sum |c_n|^2 = (1/(2 pi)) integral_{-pi}^{pi} |f(x)|^2 dx", "analysis", "Marc-Antoine Parseval", "1799");
+    add("Chebyshev's inequality", "P(|X - mu| >= k sigma) <= 1/k^2", "probability", "Pafnuty Chebyshev", "1867");
   }
 
   void add(String name, String form, String field, String who, String year) {
