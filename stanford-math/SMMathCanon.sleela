@@ -74,7 +74,7 @@ class SMMathCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[80];
+    eqs = new SMEquation[130];
     filled = 0;
 
     add("Pythagorean theorem", "a^2 + b^2 = c^2", "geometry", "Pythagoras (attrib.)", "c. 530 BC");
@@ -152,6 +152,57 @@ class SMMathCanon {
     add("Mobius inversion", "g(n) = sum_{d|n} f(d)  <=>  f(n) = sum_{d|n} mu(n/d) g(d)", "number theory", "August Ferdinand Mobius", "1832");
     add("Dirichlet's theorem (primes in AP)", "gcd(a,d)=1 => infinitely many primes of the form a + n*d", "number theory", "Peter Gustav Lejeune Dirichlet", "1837");
     add("Catalan number formula", "C_n = (1/(n+1)) C(2n, n)", "combinatorics", "Euler; Catalan", "1838");
+    add("Lagrange multipliers", "grad f = lambda grad g", "optimization", "Joseph-Louis Lagrange", "1788");
+    add("Euler-Lagrange equation", "d/dt (dL/dq') - dL/dq = 0", "calculus of variations", "Euler; Lagrange", "1755");
+    add("Divergence of a curl", "div(curl F) = 0", "vector calculus", "classical", "unknown");
+    add("Gradient theorem (line integrals)", "integral_C grad f . dr = f(b) - f(a)", "vector calculus", "classical", "unknown");
+    add("Leibniz integral rule", "d/dx integral_{a(x)}^{b(x)} f dt = f(b) b' - f(a) a' + integral f_x dt", "calculus", "Gottfried Leibniz", "1697");
+    add("Taylor's theorem with remainder", "f(x) = sum_{k=0}^{n} f^(k)(a)/k! (x-a)^k + R_n", "analysis", "Brook Taylor; Lagrange (remainder)", "1715");
+    add("Mean value theorem for integrals", "integral_a^b f dx = f(c)(b - a)", "calculus", "classical (Cauchy)", "1823");
+    add("Cauchy's integral theorem", "closed_integral f(z) dz = 0  (f holomorphic)", "complex analysis", "Augustin-Louis Cauchy", "1825");
+    add("Liouville's theorem (bounded entire)", "a bounded entire function is constant", "complex analysis", "Joseph Liouville", "1847");
+    add("Maximum modulus principle", "|f| attains its max on the boundary", "complex analysis", "Riemann; Schwarz", "1851");
+    add("Schwarz lemma", "|f(z)| <= |z| and |f'(0)| <= 1 for f: disk->disk, f(0)=0", "complex analysis", "Hermann Schwarz", "1869");
+    add("Morera's theorem", "closed_integral f = 0 for all triangles => f holomorphic", "complex analysis", "Giacinto Morera", "1886");
+    add("Rouche's theorem", "|g| < |f| on C => f and f+g have equally many zeros inside", "complex analysis", "Eugene Rouche", "1862");
+    add("Jordan curve theorem", "a simple closed curve splits the plane into inside and outside", "topology", "Camille Jordan", "1887");
+    add("Brouwer fixed-point theorem", "a continuous map of a closed ball to itself has a fixed point", "topology", "L. E. J. Brouwer", "1911");
+    add("Gauss-Bonnet theorem", "integral_M K dA + integral_{dM} k_g ds = 2 pi chi(M)", "differential geometry", "Gauss; Bonnet", "1848");
+    add("Noether's theorem", "every differentiable symmetry yields a conservation law", "mathematical physics", "Emmy Noether", "1918");
+    add("Implicit function theorem", "F(x,y)=0, F_y != 0 => y = g(x) locally", "analysis", "Dini; Cauchy", "1877");
+    add("Inverse function theorem", "f' invertible at a => f invertible near a", "analysis", "classical", "unknown");
+    add("Picard-Lindelof existence", "y' = f(x,y), f Lipschitz => unique local solution", "differential equations", "Picard; Lindelof", "1894");
+    add("Wronskian (linear independence)", "W(f,g) = f g' - f' g", "differential equations", "Jozef Wronski", "1812");
+    add("Bessel's equation", "x^2 y'' + x y' + (x^2 - n^2) y = 0", "special functions", "Friedrich Bessel", "1824");
+    add("Legendre's equation", "(1 - x^2) y'' - 2 x y' + l(l+1) y = 0", "special functions", "Adrien-Marie Legendre", "1782");
+    add("Hermite's equation", "y'' - 2 x y' + 2 n y = 0", "special functions", "Charles Hermite", "1864");
+    add("Laguerre's equation", "x y'' + (1 - x) y' + n y = 0", "special functions", "Edmond Laguerre", "1879");
+    add("Beta function", "B(x,y) = integral_0^1 t^(x-1)(1-t)^(y-1) dt = Gamma(x)Gamma(y)/Gamma(x+y)", "special functions", "Euler; Legendre", "1730");
+    add("Riemann sum (definite integral)", "integral_a^b f dx = lim sum f(x_i*) dx_i", "calculus", "Bernhard Riemann", "1854");
+    add("Weierstrass M-test", "sum M_n converges, |f_n| <= M_n => sum f_n converges uniformly", "analysis", "Karl Weierstrass", "1880");
+    add("Abel's summation / test", "convergence of sum a_n b_n via partial sums", "analysis", "Niels Henrik Abel", "1826");
+    add("Dirichlet's test for series", "a_n monotone ->0, partial sums of b_n bounded => sum a_n b_n converges", "analysis", "Peter Gustav Lejeune Dirichlet", "1862");
+    add("Holder continuity", "|f(x) - f(y)| <= C |x - y|^alpha", "analysis", "Otto Holder", "1882");
+    add("Poisson summation formula", "sum f(n) = sum F-hat(k)", "harmonic analysis", "Simeon Denis Poisson", "1827");
+    add("Parseval-Plancherel theorem", "integral |f|^2 dx = integral |F-hat|^2 dw", "harmonic analysis", "Michel Plancherel", "1910");
+    add("Convolution theorem", "F{f * g} = F{f} . F{g}", "harmonic analysis", "classical (Fourier)", "unknown");
+    add("Spectral theorem (symmetric matrix)", "A = Q Lambda Q^T,  A symmetric", "linear algebra", "Cauchy; Hilbert", "1829");
+    add("LU decomposition", "A = L U", "numerical linear algebra", "Alan Turing (modern); Gauss", "1948");
+    add("QR decomposition", "A = Q R,  Q orthogonal, R upper-triangular", "numerical linear algebra", "classical (Gram-Schmidt)", "1907");
+    add("Cholesky decomposition", "A = L L^T,  A symmetric positive-definite", "numerical linear algebra", "Andre-Louis Cholesky", "1910");
+    add("Rayleigh quotient", "R(A,x) = (x^T A x) / (x^T x)", "linear algebra", "Lord Rayleigh", "1877");
+    add("Perron-Frobenius theorem", "a positive matrix has a unique largest positive eigenvalue", "linear algebra", "Perron; Frobenius", "1907");
+    add("Sylvester's law of inertia", "congruent forms share the signature (p, q, z)", "linear algebra", "James Joseph Sylvester", "1852");
+    add("Hadamard's inequality", "|det A| <= product of column norms", "linear algebra", "Jacques Hadamard", "1893");
+    add("Cramer-Rao bound", "Var(theta-hat) >= 1 / I(theta)", "mathematical statistics", "Cramer; Rao", "1945");
+    add("Maximum likelihood estimator", "theta-hat = argmax L(theta; x)", "mathematical statistics", "Ronald A. Fisher", "1922");
+    add("Poisson distribution", "P(k) = lambda^k e^(-lambda) / k!", "probability", "Simeon Denis Poisson", "1837");
+    add("Binomial distribution", "P(k) = C(n,k) p^k (1-p)^(n-k)", "probability", "Jacob Bernoulli", "1713");
+    add("Markov chain stationary distribution", "pi P = pi,  sum pi_i = 1", "probability", "Andrey Markov", "1906");
+    add("Borel-Cantelli lemma", "sum P(A_n) < inf => P(A_n i.o.) = 0", "probability", "Borel; Cantelli", "1909");
+    add("Jensen's gap / convex duality", "f convex => f(E[X]) <= E[f(X)] with Legendre dual", "convex analysis", "Legendre; Fenchel", "1949");
+    add("Simpson's rule (quadrature)", "integral_a^b f dx = (h/3)[f0 + 4 f1 + f2 + ...]", "numerical analysis", "Thomas Simpson", "1743");
+    add("Runge-Kutta (RK4) step", "y_{n+1} = y_n + (h/6)(k1 + 2 k2 + 2 k3 + k4)", "numerical analysis", "Runge; Kutta", "1901");
   }
 
   void add(String name, String form, String field, String who, String year) {

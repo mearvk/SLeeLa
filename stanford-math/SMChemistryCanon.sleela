@@ -75,7 +75,7 @@ class SMChemistryCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[20];
+    eqs = new SMEquation[48];
     filled = 0;
 
     add("Shared electron-pair (covalent) bond", "A. + .B -> A:B  (one shared pair = one single bond)", "chemical bonding", "Gilbert N. Lewis", "1916");
@@ -96,6 +96,31 @@ class SMChemistryCanon {
     add("Hooke's law bond (harmonic stretch)", "V(r) = (1/2) k (r - r_e)^2", "molecular vibration", "classical (Hooke form)", "unknown");
     add("Pauli exclusion principle", "no two electrons share all four quantum numbers", "quantum chemistry", "Wolfgang Pauli", "1925");
     add("Aufbau / Hund's rule filling", "fill lowest orbitals first; maximize unpaired spin", "atomic structure", "Hund; Aufbau principle", "1927");
+    add("Henderson-Hasselbalch equation", "pH = pKa + log10([A-]/[HA])", "acid-base chemistry", "Henderson; Hasselbalch", "1917");
+    add("pH definition", "pH = -log10[H+]", "acid-base chemistry", "S. P. L. Sorensen", "1909");
+    add("Water autoionization constant", "Kw = [H+][OH-] = 1.0e-14 at 25 C", "acid-base chemistry", "classical", "unknown");
+    add("Equilibrium constant", "K = product[products]^n / product[reactants]^m", "chemical equilibrium", "Guldberg & Waage", "1864");
+    add("Law of mass action (rate)", "rate = k [A]^m [B]^n", "chemical kinetics", "Guldberg & Waage", "1864");
+    add("First-order rate law", "[A] = [A]0 e^(-k t)", "chemical kinetics", "classical", "unknown");
+    add("Second-order rate law", "1/[A] = 1/[A]0 + k t", "chemical kinetics", "classical", "unknown");
+    add("Arrhenius equation (rate)", "k = A e^(-Ea / (R T))", "chemical kinetics", "Svante Arrhenius", "1889");
+    add("Eyring equation (transition state)", "k = (k_B T / h) e^(-dG_act / (R T))", "chemical kinetics", "Eyring; Polanyi; Evans", "1935");
+    add("Van 't Hoff equation", "d(ln K)/dT = dH / (R T^2)", "chemical thermodynamics", "Jacobus van 't Hoff", "1884");
+    add("Gibbs free energy of reaction", "dG = dH - T dS", "chemical thermodynamics", "J. Willard Gibbs", "1876");
+    add("Gibbs energy and equilibrium", "dG = -R T ln K", "chemical thermodynamics", "J. Willard Gibbs", "1876");
+    add("Nernst equation (cell potential)", "E = E0 - (R T / (n F)) ln Q", "electrochemistry", "Walther Nernst", "1889");
+    add("Faraday's laws of electrolysis", "m = (Q / F)(M / z)", "electrochemistry", "Michael Faraday", "1834");
+    add("Butler-Volmer equation", "j = j0 [e^(a1 f eta) - e^(-a2 f eta)]", "electrochemistry", "Butler; Volmer", "1930");
+    add("Debye-Huckel limiting law", "log10 gamma = -A z+ z- sqrt(I)", "physical chemistry", "Debye; Huckel", "1923");
+    add("Raoult's law", "p_i = x_i p_i*", "solution chemistry", "Francois-Marie Raoult", "1887");
+    add("Henry's law", "p = k_H c", "solution chemistry", "William Henry", "1803");
+    add("Gibbs phase rule", "F = C - P + 2", "phase equilibria", "J. Willard Gibbs", "1875");
+    add("Colligative freezing-point depression", "dTf = i K_f m", "solution chemistry", "Francois-Marie Raoult", "1878");
+    add("Osmotic pressure (van 't Hoff)", "Pi = i M R T", "solution chemistry", "Jacobus van 't Hoff", "1886");
+    add("Langmuir adsorption isotherm", "theta = K p / (1 + K p)", "surface chemistry", "Irving Langmuir", "1918");
+    add("BET isotherm (multilayer)", "multilayer adsorption extension of Langmuir", "surface chemistry", "Brunauer; Emmett; Teller", "1938");
+    add("Beer-Lambert absorbance", "A = epsilon l c", "spectroscopy", "Beer; Lambert", "1852");
+    add("Clausius-Clapeyron (vapor pressure)", "ln(p2/p1) = -(dH_vap / R)(1/T2 - 1/T1)", "physical chemistry", "Clausius; Clapeyron", "1834");
   }
 
   void add(String name, String form, String field, String who, String year) {

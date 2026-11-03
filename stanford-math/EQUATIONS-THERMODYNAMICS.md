@@ -1,6 +1,6 @@
 # Thermodynamics & Statistical Mechanics Canon
 
-> 28 equations, sourced from `SMThermoEquations.sleela` -- the single
+> 48 equations, sourced from `SMThermoEquations.sleela` -- the single
 > source of truth. This document is a human-readable mirror of that record;
 > if the two ever disagree, the `.sleela` canon wins and this file is stale.
 
@@ -14,7 +14,7 @@ Symbolic forms use plain-ASCII notation (`^` power, `*` product, `sqrt`, `integr
 diff-friendly. The **Why it matters** column states each result's significance in one
 faithful line.
 
-## The 28 equations
+## The 48 equations
 
 | # | Equation | Form | Field | Discoverer(s) | Year | Why it matters |
 |---|----------|------|-------|---------------|------|----------------|
@@ -46,6 +46,26 @@ faithful line.
 | 26 | Van der Waals critical constants | `V_c = 3 n b,  T_c = 8 a / (27 R b),  P_c = a / (27 b^2)` | thermodynamics | Johannes van der Waals | 1873 | Solving the critical conditions gives Tc, Pc, Vc directly from the attraction a and size b -- molecular attractiveness fixes where the phase law sits. |
 | 27 | De Donder chemical affinity | `A = -sum_i nu_i mu_i,  with A dxi >= 0` | chemical thermodynamics | Theophile De Donder | 1922 | A = -sum nu_i mu_i is the thermodynamic driving force of a reaction; the bridge from thermodynamics to chemical kinetics. |
 | 28 | Chemical / phase equilibrium (affinity = 0) | `A = 0  =>  sum_i nu_i mu_i = 0  (phase coexistence: mu_1 = mu_2 at equal T, P)` | chemical thermodynamics | Gibbs; De Donder | 1876 | Equilibrium is the equality A = 0 (sum nu_i mu_i = 0); for coexisting phases it means equal T, P, and chemical potential. |
+| 29 | Maxwell relation (dS/dV = dP/dT) | `(dS/dV)_T = (dP/dT)_V` | thermodynamics | James Clerk Maxwell | 1871 | A thermodynamic cross-derivative identity from the free energy; relates measurable quantities. |
+| 30 | Maxwell relation (dS/dP = -dV/dT) | `(dS/dP)_T = -(dV/dT)_P` | thermodynamics | James Clerk Maxwell | 1871 | A Maxwell relation connecting entropy, pressure, and thermal expansion. |
+| 31 | Maxwell relation (dT/dV = -dP/dS) | `(dT/dV)_S = -(dP/dS)_V` | thermodynamics | James Clerk Maxwell | 1871 | A Maxwell relation from the internal energy; links temperature and pressure derivatives. |
+| 32 | Maxwell relation (dT/dP = dV/dS) | `(dT/dP)_S = (dV/dS)_P` | thermodynamics | James Clerk Maxwell | 1871 | A Maxwell relation from the enthalpy; a tool for deriving equations of state. |
+| 33 | Euler relation (extensivity) | `U = T S - P V + sum mu_i N_i` | thermodynamics | J. Willard Gibbs | 1875 | Integrates the fundamental relation using extensivity; yields the Gibbs-Duhem constraint. |
+| 34 | Gibbs-Duhem relation | `S dT - V dP + sum N_i dmu_i = 0` | thermodynamics | Gibbs; Duhem | 1875 | Constrains how intensive variables can jointly vary; limits independent chemical potentials. |
+| 35 | Clausius inequality | `closed_integral dQ/T <= 0` | thermodynamics | Rudolf Clausius | 1865 | Entropy cannot decrease in a cycle; the mathematical form of the second law. |
+| 36 | Entropy change (reversible) | `dS = dQ_rev / T` | thermodynamics | Rudolf Clausius | 1865 | Defines entropy via reversible heat over temperature; the operational definition of entropy. |
+| 37 | Joule-Thomson coefficient | `mu_JT = (dT/dP)_H` | thermodynamics | Joule; Thomson | 1852 | Describes temperature change on throttling a gas; the basis of refrigeration and liquefaction. |
+| 38 | Dulong-Petit law | `C_molar = 3 R` | statistical mechanics | Dulong; Petit | 1819 | Solids have roughly constant molar heat capacity; an early classical result corrected by quantum theory. |
+| 39 | Einstein heat capacity | `C_V = 3 N k_B (x^2 e^x)/(e^x - 1)^2` | statistical mechanics | Albert Einstein | 1907 | The first quantum model of solid heat capacity; explained its fall at low temperature. |
+| 40 | Grand canonical partition function | `Xi = sum e^(-(E - mu N)/(k_B T))` | statistical mechanics | J. Willard Gibbs | 1902 | Sums over particle number and energy; the engine of open-system statistical mechanics. |
+| 41 | Grand potential | `Omega = -k_B T ln Xi = -P V` | statistical mechanics | J. Willard Gibbs | 1902 | The thermodynamic potential for open systems; equals minus pressure times volume. |
+| 42 | Free energy from partition function | `F = -k_B T ln Z` | statistical mechanics | J. Willard Gibbs | 1902 | Connects microscopic states to macroscopic free energy; the bridge of statistical mechanics. |
+| 43 | Equipartition theorem | `<E> = (f/2) k_B T` | statistical mechanics | Boltzmann; Maxwell | 1876 | Each quadratic degree of freedom carries kT/2 of energy; a classical cornerstone. |
+| 44 | Fluctuation-dissipation (energy variance) | `<dE^2> = k_B T^2 C_V` | statistical mechanics | Einstein; Nyquist | 1905 | Energy fluctuations relate to heat capacity; a case of the fluctuation-dissipation theorem. |
+| 45 | Onsager reciprocal relations | `L_ij = L_ji` | non-equilibrium thermodynamics | Lars Onsager | 1931 | Symmetry of coupled irreversible flows; the founding result of non-equilibrium thermodynamics. |
+| 46 | Clapeyron equation | `dP/dT = L / (T dV)` | phase transitions | Emile Clapeyron | 1834 | The slope of a phase boundary from latent heat and volume change; governs phase coexistence. |
+| 47 | Gibbs adsorption isotherm | `dgamma = -sum Gamma_i dmu_i` | surface thermodynamics | J. Willard Gibbs | 1878 | Links surface tension to adsorbed concentration; the basis of surfactant science. |
+| 48 | Kirchhoff's law (enthalpy vs T) | `d(dH)/dT = dC_p` | thermochemistry | Gustav Kirchhoff | 1858 | How reaction enthalpy varies with temperature via heat capacities; a thermochemistry workhorse. |
 
 ## Validate
 

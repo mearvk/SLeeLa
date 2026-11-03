@@ -75,7 +75,7 @@ class SMFinanceCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[26];
+    eqs = new SMEquation[52];
     filled = 0;
 
     add("Equation of exchange (quantity theory of money)", "M V = P T", "monetary economics", "Irving Fisher", "1911");
@@ -103,6 +103,31 @@ class SMFinanceCanon {
     add("Solow growth (steady state)", "s f(k) = (n + delta) k", "economic growth", "Robert Solow", "1956");
     add("Marginal cost = marginal revenue", "MC = MR  (profit-maximizing output)", "microeconomics", "classical marginalism (Cournot)", "1838");
     add("Little's Law (throughput-inventory)", "L = lambda W  (avg inventory = throughput * avg flow-time)", "operations economics", "John D. C. Little", "1961");
+    add("Black-Scholes delta", "delta_call = N(d1)", "option Greeks", "Black; Scholes; Merton", "1973");
+    add("Black-Scholes gamma", "gamma = N'(d1) / (S sigma sqrt(T))", "option Greeks", "Black; Scholes; Merton", "1973");
+    add("Black-Scholes vega", "vega = S N'(d1) sqrt(T)", "option Greeks", "Black; Scholes; Merton", "1973");
+    add("Black-Scholes theta", "theta = -(S N'(d1) sigma)/(2 sqrt(T)) - r K e^(-r T) N(d2)", "option Greeks", "Black; Scholes; Merton", "1973");
+    add("Binomial option pricing (CRR)", "C = e^(-r dt)[p Cu + (1-p) Cd]", "derivatives pricing", "Cox; Ross; Rubinstein", "1979");
+    add("Black-76 (futures option)", "C = e^(-r T)[F N(d1) - K N(d2)]", "derivatives pricing", "Fischer Black", "1976");
+    add("Forward price (cost of carry)", "F = S e^((r - q) T)", "derivatives pricing", "classical (no-arbitrage)", "unknown");
+    add("Covered interest rate parity", "F/S = (1 + r_d)/(1 + r_f)", "international finance", "John Maynard Keynes", "1923");
+    add("Vasicek short-rate model", "dr = a(b - r) dt + sigma dW", "fixed income", "Oldrich Vasicek", "1977");
+    add("Cox-Ingersoll-Ross model", "dr = a(b - r) dt + sigma sqrt(r) dW", "fixed income", "Cox; Ingersoll; Ross", "1985");
+    add("Merton structural credit model", "equity = call option on firm assets", "credit risk", "Robert C. Merton", "1974");
+    add("Modified duration", "ModDur = MacaulayDur / (1 + y/k)", "fixed income", "Frederick Macaulay (basis)", "1938");
+    add("Bond convexity", "C = (1/P) d2P/dy2", "fixed income", "classical", "unknown");
+    add("Yield to maturity (IRR of bond)", "P = sum CF_t / (1 + y)^t", "fixed income", "classical", "unknown");
+    add("Fama-French three-factor model", "R - Rf = a + b(Rm-Rf) + s SMB + h HML", "asset pricing", "Fama; French", "1993");
+    add("Arbitrage pricing theory (APT)", "E[R] = Rf + sum beta_k lambda_k", "asset pricing", "Stephen Ross", "1976");
+    add("Jensen's alpha", "alpha = R_p - [Rf + beta(Rm - Rf)]", "performance measurement", "Michael Jensen", "1968");
+    add("Treynor ratio", "T = (R_p - Rf) / beta_p", "performance measurement", "Jack Treynor", "1965");
+    add("Sortino ratio", "S = (R_p - R_target) / downside deviation", "performance measurement", "Frank Sortino", "1980");
+    add("Value at Risk (parametric)", "VaR = mu - z_alpha sigma", "risk management", "J.P. Morgan (RiskMetrics)", "1994");
+    add("GARCH(1,1) variance", "sigma_t^2 = omega + alpha e_{t-1}^2 + beta sigma_{t-1}^2", "financial econometrics", "Tim Bollerslev", "1986");
+    add("Rule of 72 (doubling time)", "t_double = 72 / r%", "personal finance", "Luca Pacioli (attrib.)", "1494");
+    add("Dividend payout / retention", "g = ROE * retention ratio", "corporate finance", "classical", "unknown");
+    add("Economic order quantity (EOQ)", "Q* = sqrt(2 D S / H)", "operations economics", "Ford W. Harris", "1913");
+    add("Herfindahl-Hirschman index", "HHI = sum s_i^2", "industrial organization", "Herfindahl; Hirschman", "1945");
   }
 
   void add(String name, String form, String field, String who, String year) {

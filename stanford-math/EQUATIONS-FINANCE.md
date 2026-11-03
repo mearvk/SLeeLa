@@ -1,6 +1,6 @@
 # Finance & Economics Canon
 
-> 25 equations, sourced from `SMFinanceCanon.sleela` -- the single
+> 50 equations, sourced from `SMFinanceCanon.sleela` -- the single
 > source of truth. This document is a human-readable mirror of that record;
 > if the two ever disagree, the `.sleela` canon wins and this file is stale.
 
@@ -13,7 +13,7 @@ Symbolic forms use plain-ASCII notation (`^` power, `*` product, `sqrt`, `sum`, 
 names spelled out) so they stay greppable and diff-friendly. The **Why it matters**
 column states each result's significance in one faithful line.
 
-## The 25 equations
+## The 50 equations
 
 | # | Equation | Form | Field | Discoverer(s) | Year | Why it matters |
 |---|----------|------|-------|---------------|------|----------------|
@@ -42,6 +42,31 @@ column states each result's significance in one faithful line.
 | 23 | Solow growth (steady state) | `s f(k) = (n + delta) k` | economic growth | Robert Solow | 1956 | Explains long-run growth and convergence from saving and capital; the founding model of growth theory (Solow's Nobel). |
 | 24 | Marginal cost = marginal revenue | `MC = MR  (profit-maximizing output)` | microeconomics | classical marginalism (Cournot) | 1838 | The profit-maximizing rule for any firm; the heart of microeconomic decision-making. |
 | 25 | Little's Law (throughput-inventory) | `L = lambda W  (avg inventory = throughput * avg flow-time)` | operations economics | John D. C. Little | 1961 | Inventory equals throughput times flow-time; the exact, proven sense in which the pace of a system is set by how much is in it -- the real backbone of the 'speed of the economy' idea. |
+| 26 | Black-Scholes delta | `delta_call = N(d1)` | option Greeks | Black; Scholes; Merton | 1973 | The option price's sensitivity to the underlying; the primary hedge ratio. |
+| 27 | Black-Scholes gamma | `gamma = N'(d1) / (S sigma sqrt(T))` | option Greeks | Black; Scholes; Merton | 1973 | The rate of change of delta; measures hedging instability near the strike. |
+| 28 | Black-Scholes vega | `vega = S N'(d1) sqrt(T)` | option Greeks | Black; Scholes; Merton | 1973 | Sensitivity of option value to volatility; the key risk in volatility trading. |
+| 29 | Black-Scholes theta | `theta = -(S N'(d1) sigma)/(2 sqrt(T)) - r K e^(-r T) N(d2)` | option Greeks | Black; Scholes; Merton | 1973 | The option's time decay; how value erodes as expiry approaches. |
+| 30 | Binomial option pricing (CRR) | `C = e^(-r dt)[p Cu + (1-p) Cd]` | derivatives pricing | Cox; Ross; Rubinstein | 1979 | Prices options on a discrete price tree; an intuitive route to Black-Scholes. |
+| 31 | Black-76 (futures option) | `C = e^(-r T)[F N(d1) - K N(d2)]` | derivatives pricing | Fischer Black | 1976 | Adapts Black-Scholes to options on futures and forwards; standard in commodities and rates. |
+| 32 | Forward price (cost of carry) | `F = S e^((r - q) T)` | derivatives pricing | classical (no-arbitrage) | unknown | Sets the no-arbitrage forward price from spot and carry costs; a basic pricing identity. |
+| 33 | Covered interest rate parity | `F/S = (1 + r_d)/(1 + r_f)` | international finance | John Maynard Keynes | 1923 | Links forward and spot FX rates to interest differentials; a core no-arbitrage condition. |
+| 34 | Vasicek short-rate model | `dr = a(b - r) dt + sigma dW` | fixed income | Oldrich Vasicek | 1977 | A mean-reverting model of interest rates; an early tractable term-structure model. |
+| 35 | Cox-Ingersoll-Ross model | `dr = a(b - r) dt + sigma sqrt(r) dW` | fixed income | Cox; Ingersoll; Ross | 1985 | A short-rate model keeping rates non-negative; widely used in fixed income. |
+| 36 | Merton structural credit model | `equity = call option on firm assets` | credit risk | Robert C. Merton | 1974 | Treats equity as a call on firm assets; the foundation of structural credit risk. |
+| 37 | Modified duration | `ModDur = MacaulayDur / (1 + y/k)` | fixed income | Frederick Macaulay (basis) | 1938 | A bond's price sensitivity to yield; the primary interest-rate risk measure. |
+| 38 | Bond convexity | `C = (1/P) d2P/dy2` | fixed income | classical | unknown | The curvature of the price-yield relation; refines duration for large yield moves. |
+| 39 | Yield to maturity (IRR of bond) | `P = sum CF_t / (1 + y)^t` | fixed income | classical | unknown | The single discount rate equating price to cash flows; a bond's internal rate of return. |
+| 40 | Fama-French three-factor model | `R - Rf = a + b(Rm-Rf) + s SMB + h HML` | asset pricing | Fama; French | 1993 | Explains returns by market, size, and value factors; a benchmark of empirical asset pricing. |
+| 41 | Arbitrage pricing theory (APT) | `E[R] = Rf + sum beta_k lambda_k` | asset pricing | Stephen Ross | 1976 | Prices assets by exposure to multiple risk factors; a flexible alternative to CAPM. |
+| 42 | Jensen's alpha | `alpha = R_p - [Rf + beta(Rm - Rf)]` | performance measurement | Michael Jensen | 1968 | Return beyond what beta predicts; the classic measure of manager skill. |
+| 43 | Treynor ratio | `T = (R_p - Rf) / beta_p` | performance measurement | Jack Treynor | 1965 | Excess return per unit of systematic risk; a risk-adjusted performance measure. |
+| 44 | Sortino ratio | `S = (R_p - R_target) / downside deviation` | performance measurement | Frank Sortino | 1980 | Excess return per unit of downside risk; penalizes only harmful volatility. |
+| 45 | Value at Risk (parametric) | `VaR = mu - z_alpha sigma` | risk management | J.P. Morgan (RiskMetrics) | 1994 | A loss threshold at a confidence level; a standard regulatory risk metric. |
+| 46 | GARCH(1,1) variance | `sigma_t^2 = omega + alpha e_{t-1}^2 + beta sigma_{t-1}^2` | financial econometrics | Tim Bollerslev | 1986 | Models time-varying, clustering volatility; the workhorse of financial econometrics. |
+| 47 | Rule of 72 (doubling time) | `t_double = 72 / r%` | personal finance | Luca Pacioli (attrib.) | 1494 | Estimates doubling time by dividing 72 by the rate; a quick compounding heuristic. |
+| 48 | Dividend payout / retention | `g = ROE * retention ratio` | corporate finance | classical | unknown | Sustainable growth equals return on equity times retention; a corporate-finance identity. |
+| 49 | Economic order quantity (EOQ) | `Q* = sqrt(2 D S / H)` | operations economics | Ford W. Harris | 1913 | The order size minimizing inventory cost; the founding formula of inventory theory. |
+| 50 | Herfindahl-Hirschman index | `HHI = sum s_i^2` | industrial organization | Herfindahl; Hirschman | 1945 | Market concentration from summed squared shares; a standard antitrust measure. |
 
 ## Validate
 

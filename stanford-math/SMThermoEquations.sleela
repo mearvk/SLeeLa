@@ -73,7 +73,7 @@ class SMThermoEquations {
   int filled;
 
   void build() {
-    eqs = new SMEquation[30];
+    eqs = new SMEquation[52];
     filled = 0;
 
     add("Zeroth law of thermodynamics", "A~C and B~C  =>  A~B (thermal equilibrium is transitive)", "thermodynamics", "Fowler & Guggenheim (named)", "1939");
@@ -104,6 +104,26 @@ class SMThermoEquations {
     add("Van der Waals critical constants", "V_c = 3 n b,  T_c = 8 a / (27 R b),  P_c = a / (27 b^2)", "thermodynamics", "Johannes van der Waals", "1873");
     add("De Donder chemical affinity", "A = -sum_i nu_i mu_i,  with A dxi >= 0", "chemical thermodynamics", "Theophile De Donder", "1922");
     add("Chemical / phase equilibrium (affinity = 0)", "A = 0  =>  sum_i nu_i mu_i = 0  (phase coexistence: mu_1 = mu_2 at equal T, P)", "chemical thermodynamics", "Gibbs; De Donder", "1876");
+    add("Maxwell relation (dS/dV = dP/dT)", "(dS/dV)_T = (dP/dT)_V", "thermodynamics", "James Clerk Maxwell", "1871");
+    add("Maxwell relation (dS/dP = -dV/dT)", "(dS/dP)_T = -(dV/dT)_P", "thermodynamics", "James Clerk Maxwell", "1871");
+    add("Maxwell relation (dT/dV = -dP/dS)", "(dT/dV)_S = -(dP/dS)_V", "thermodynamics", "James Clerk Maxwell", "1871");
+    add("Maxwell relation (dT/dP = dV/dS)", "(dT/dP)_S = (dV/dS)_P", "thermodynamics", "James Clerk Maxwell", "1871");
+    add("Euler relation (extensivity)", "U = T S - P V + sum mu_i N_i", "thermodynamics", "J. Willard Gibbs", "1875");
+    add("Gibbs-Duhem relation", "S dT - V dP + sum N_i dmu_i = 0", "thermodynamics", "Gibbs; Duhem", "1875");
+    add("Clausius inequality", "closed_integral dQ/T <= 0", "thermodynamics", "Rudolf Clausius", "1865");
+    add("Entropy change (reversible)", "dS = dQ_rev / T", "thermodynamics", "Rudolf Clausius", "1865");
+    add("Joule-Thomson coefficient", "mu_JT = (dT/dP)_H", "thermodynamics", "Joule; Thomson", "1852");
+    add("Dulong-Petit law", "C_molar = 3 R", "statistical mechanics", "Dulong; Petit", "1819");
+    add("Einstein heat capacity", "C_V = 3 N k_B (x^2 e^x)/(e^x - 1)^2", "statistical mechanics", "Albert Einstein", "1907");
+    add("Grand canonical partition function", "Xi = sum e^(-(E - mu N)/(k_B T))", "statistical mechanics", "J. Willard Gibbs", "1902");
+    add("Grand potential", "Omega = -k_B T ln Xi = -P V", "statistical mechanics", "J. Willard Gibbs", "1902");
+    add("Free energy from partition function", "F = -k_B T ln Z", "statistical mechanics", "J. Willard Gibbs", "1902");
+    add("Equipartition theorem", "<E> = (f/2) k_B T", "statistical mechanics", "Boltzmann; Maxwell", "1876");
+    add("Fluctuation-dissipation (energy variance)", "<dE^2> = k_B T^2 C_V", "statistical mechanics", "Einstein; Nyquist", "1905");
+    add("Onsager reciprocal relations", "L_ij = L_ji", "non-equilibrium thermodynamics", "Lars Onsager", "1931");
+    add("Clapeyron equation", "dP/dT = L / (T dV)", "phase transitions", "Emile Clapeyron", "1834");
+    add("Gibbs adsorption isotherm", "dgamma = -sum Gamma_i dmu_i", "surface thermodynamics", "J. Willard Gibbs", "1878");
+    add("Kirchhoff's law (enthalpy vs T)", "d(dH)/dT = dC_p", "thermochemistry", "Gustav Kirchhoff", "1858");
   }
 
   void add(String name, String form, String field, String who, String year) {

@@ -1,6 +1,6 @@
 # Covalent-Bonding Chemistry Canon
 
-> 18 equations, sourced from `SMChemistryCanon.sleela` -- the single
+> 43 equations, sourced from `SMChemistryCanon.sleela` -- the single
 > source of truth. This document is a human-readable mirror of that record;
 > if the two ever disagree, the `.sleela` canon wins and this file is stale.
 
@@ -13,7 +13,7 @@ Symbolic forms use plain-ASCII notation (`^` power, `*` product, `sqrt`, `sum`, 
 names spelled out) so they stay greppable and diff-friendly. The **Why it matters**
 column states each result's significance in one faithful line.
 
-## The 18 equations
+## The 43 equations
 
 | # | Equation | Form | Field | Discoverer(s) | Year | Why it matters |
 |---|----------|------|-------|---------------|------|----------------|
@@ -35,6 +35,31 @@ column states each result's significance in one faithful line.
 | 16 | Hooke's law bond (harmonic stretch) | `V(r) = (1/2) k (r - r_e)^2` | molecular vibration | classical (Hooke form) | unknown | Treats a bond as a spring near equilibrium; the basis of vibrational spectroscopy and force fields. |
 | 17 | Pauli exclusion principle | `no two electrons share all four quantum numbers` | quantum chemistry | Wolfgang Pauli | 1925 | No two electrons share all quantum numbers; why electrons pair and shells fill as they do. |
 | 18 | Aufbau / Hund's rule filling | `fill lowest orbitals first; maximize unpaired spin` | atomic structure | Hund; Aufbau principle | 1927 | Rules for filling orbitals; explain electron configurations and magnetic behavior. |
+| 19 | Henderson-Hasselbalch equation | `pH = pKa + log10([A-]/[HA])` | acid-base chemistry | Henderson; Hasselbalch | 1917 | Relates pH to acid dissociation and buffer ratio; the working formula for buffers. |
+| 20 | pH definition | `pH = -log10[H+]` | acid-base chemistry | S. P. L. Sorensen | 1909 | Defines acidity as the negative log of hydrogen-ion activity; the universal acidity scale. |
+| 21 | Water autoionization constant | `Kw = [H+][OH-] = 1.0e-14 at 25 C` | acid-base chemistry | classical | unknown | Fixes the product of hydrogen and hydroxide concentrations in water; anchors the pH scale. |
+| 22 | Equilibrium constant | `K = product[products]^n / product[reactants]^m` | chemical equilibrium | Guldberg & Waage | 1864 | Sets the ratio of products to reactants at equilibrium; the law of chemical balance. |
+| 23 | Law of mass action (rate) | `rate = k [A]^m [B]^n` | chemical kinetics | Guldberg & Waage | 1864 | Reaction rate depends on reactant concentrations raised to their orders; the basis of kinetics. |
+| 24 | First-order rate law | `[A] = [A]0 e^(-k t)` | chemical kinetics | classical | unknown | Concentration decays exponentially; describes radioactive-style and many chemical decays. |
+| 25 | Second-order rate law | `1/[A] = 1/[A]0 + k t` | chemical kinetics | classical | unknown | Inverse concentration grows linearly in time; a common kinetic order. |
+| 26 | Arrhenius equation (rate) | `k = A e^(-Ea / (R T))` | chemical kinetics | Svante Arrhenius | 1889 | Reaction rate rises exponentially with temperature; defines activation energy. |
+| 27 | Eyring equation (transition state) | `k = (k_B T / h) e^(-dG_act / (R T))` | chemical kinetics | Eyring; Polanyi; Evans | 1935 | Derives rate constants from transition-state thermodynamics; the quantum-statistical rate law. |
+| 28 | Van 't Hoff equation | `d(ln K)/dT = dH / (R T^2)` | chemical thermodynamics | Jacobus van 't Hoff | 1884 | How an equilibrium constant shifts with temperature; links kinetics to thermodynamics. |
+| 29 | Gibbs free energy of reaction | `dG = dH - T dS` | chemical thermodynamics | J. Willard Gibbs | 1876 | Balances enthalpy against entropy to decide spontaneity; the master criterion of reactions. |
+| 30 | Gibbs energy and equilibrium | `dG = -R T ln K` | chemical thermodynamics | J. Willard Gibbs | 1876 | Connects standard free energy to the equilibrium constant; the thermodynamics of equilibrium. |
+| 31 | Nernst equation (cell potential) | `E = E0 - (R T / (n F)) ln Q` | electrochemistry | Walther Nernst | 1889 | Gives a cell's voltage away from standard conditions; the foundation of electrochemistry. |
+| 32 | Faraday's laws of electrolysis | `m = (Q / F)(M / z)` | electrochemistry | Michael Faraday | 1834 | Mass deposited is proportional to charge passed; the quantitative law of electrolysis. |
+| 33 | Butler-Volmer equation | `j = j0 [e^(a1 f eta) - e^(-a2 f eta)]` | electrochemistry | Butler; Volmer | 1930 | Relates electrode current to overpotential; the central equation of electrode kinetics. |
+| 34 | Debye-Huckel limiting law | `log10 gamma = -A z+ z- sqrt(I)` | physical chemistry | Debye; Huckel | 1923 | Predicts activity coefficients in dilute electrolytes; the theory of ionic solutions. |
+| 35 | Raoult's law | `p_i = x_i p_i*` | solution chemistry | Francois-Marie Raoult | 1887 | A solvent's vapor pressure scales with its mole fraction; the basis of ideal solutions. |
+| 36 | Henry's law | `p = k_H c` | solution chemistry | William Henry | 1803 | Dissolved gas is proportional to its partial pressure; governs solubility of gases. |
+| 37 | Gibbs phase rule | `F = C - P + 2` | phase equilibria | J. Willard Gibbs | 1875 | Counts the degrees of freedom of a system at equilibrium; organizes phase diagrams. |
+| 38 | Colligative freezing-point depression | `dTf = i K_f m` | solution chemistry | Francois-Marie Raoult | 1878 | Solutes lower the freezing point in proportion to concentration; a colligative property. |
+| 39 | Osmotic pressure (van 't Hoff) | `Pi = i M R T` | solution chemistry | Jacobus van 't Hoff | 1886 | Solute concentration drives osmotic pressure like an ideal gas; central to biology and chemistry. |
+| 40 | Langmuir adsorption isotherm | `theta = K p / (1 + K p)` | surface chemistry | Irving Langmuir | 1918 | Models monolayer adsorption saturating with pressure; the base model of surface chemistry. |
+| 41 | BET isotherm (multilayer) | `multilayer adsorption extension of Langmuir` | surface chemistry | Brunauer; Emmett; Teller | 1938 | Extends Langmuir to multilayer adsorption; the standard method for measuring surface area. |
+| 42 | Beer-Lambert absorbance | `A = epsilon l c` | spectroscopy | Beer; Lambert | 1852 | Absorbance is proportional to concentration and path; the basis of quantitative spectroscopy. |
+| 43 | Clausius-Clapeyron (vapor pressure) | `ln(p2/p1) = -(dH_vap / R)(1/T2 - 1/T1)` | physical chemistry | Clausius; Clapeyron | 1834 | How vapor pressure rises with temperature; relates boiling to the heat of vaporization. |
 
 ## Validate
 

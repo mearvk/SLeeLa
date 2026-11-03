@@ -76,7 +76,7 @@ class SMSocialCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[20];
+    eqs = new SMEquation[40];
     filled = 0;
 
     add("Network density", "D = 2 L / (N (N - 1))", "social network analysis", "classical graph theory", "unknown");
@@ -97,6 +97,22 @@ class SMSocialCanon {
     add("Reciprocity (directed ties)", "r = (mutual dyads) / (total ties)", "social network analysis", "standard SNA measure", "unknown");
     add("Modularity (community structure)", "Q = sum_c (e_cc - a_c^2)", "network science", "Newman & Girvan", "2004");
     add("Assortativity coefficient", "r = Pearson correlation of degrees across edges", "network science", "M. E. J. Newman", "2002");
+    add("Eigenvector centrality", "x = (1/lambda) A x", "network science", "Phillip Bonacich", "1972");
+    add("PageRank", "PR = (1-d)/N + d sum PR(j)/outdeg(j)", "network science", "Page; Brin", "1998");
+    add("Katz centrality", "x = (I - alpha A)^(-1) . 1", "network science", "Leo Katz", "1953");
+    add("Closeness centrality", "C(v) = (n - 1) / sum_u d(v,u)", "network science", "Gert Sabidussi", "1966");
+    add("Bonacich power centrality", "c = alpha (I - beta A)^(-1) A . 1", "network science", "Phillip Bonacich", "1987");
+    add("Freeman degree centralization", "C = sum (c_max - c_i) / max possible", "network science", "Linton Freeman", "1979");
+    add("Shannon diversity index", "H = -sum p_i ln p_i", "social measurement", "Claude Shannon", "1948");
+    add("Simpson diversity index", "D = 1 - sum p_i^2", "social measurement", "Edward H. Simpson", "1949");
+    add("Theil index (inequality)", "T = (1/N) sum (x_i/x-bar) ln(x_i/x-bar)", "social measurement", "Henri Theil", "1967");
+    add("Atkinson inequality index", "A = 1 - (1/x-bar)(mean of x^(1-e))^(1/(1-e))", "social measurement", "Anthony Atkinson", "1970");
+    add("Zipf's law (city sizes)", "size ~ 1 / rank", "urban economics", "George Kingsley Zipf", "1949");
+    add("Gravity model of migration", "F_ij = G P_i P_j / d_ij^2", "spatial social science", "Ernst Georg Ravenstein", "1885");
+    add("Benford's law (leading digit)", "P(d) = log10(1 + 1/d)", "social statistics", "Benford; Newcomb", "1938");
+    add("Sex ratio at birth (Fisher principle)", "parental investment drives a 1:1 ratio", "sociobiology", "Ronald A. Fisher", "1930");
+    add("Metcalfe's law (network value)", "value ~ n^2", "network economics", "Robert Metcalfe", "1980");
+    add("Granovetter threshold model", "collective action occurs above an activation threshold", "collective behavior", "Mark Granovetter", "1978");
   }
 
   void add(String name, String form, String field, String who, String year) {

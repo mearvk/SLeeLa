@@ -1,6 +1,6 @@
 # Physics Canon
 
-> 46 equations, sourced from `SMPhysicsCanon.sleela` -- the single
+> 89 equations, sourced from `SMPhysicsCanon.sleela` -- the single
 > source of truth. This document is a human-readable mirror of that record;
 > if the two ever disagree, the `.sleela` canon wins and this file is stale.
 
@@ -14,7 +14,7 @@ Symbolic forms use plain-ASCII notation (`^` power, `*` product, `sqrt`, `integr
 diff-friendly. The **Why it matters** column states each result's significance in one
 faithful line.
 
-## The 46 equations
+## The 89 equations
 
 | # | Equation | Form | Field | Discoverer(s) | Year | Why it matters |
 |---|----------|------|-------|---------------|------|----------------|
@@ -64,6 +64,49 @@ faithful line.
 | 44 | Ohm's law | `V = I R` | electromagnetism | Georg Ohm | 1827 | Voltage, current, and resistance in proportion; the first law of circuit analysis. |
 | 45 | Compton scattering | `d_lambda = (h / (m_e c))(1 - cos theta)` | quantum mechanics | Arthur Compton | 1923 | Light scatters off electrons like a particle; hard proof of the photon's momentum. |
 | 46 | Wien's displacement law | `lambda_max T = b` | quantum mechanics | Wilhelm Wien | 1893 | Hotter bodies peak at shorter wavelengths; why embers glow red and stars blue. |
+| 47 | Kepler's first law | `planets move on ellipses with the Sun at one focus` | celestial mechanics | Johannes Kepler | 1609 | Planets orbit in ellipses with the Sun at a focus; the first break from circular orbits. |
+| 48 | Kepler's second law | `the radius vector sweeps equal areas in equal times` | celestial mechanics | Johannes Kepler | 1609 | A planet sweeps equal areas in equal times; an early statement of angular-momentum conservation. |
+| 49 | Kepler's third law | `T^2 = (4 pi^2 / (G M)) a^3` | celestial mechanics | Johannes Kepler | 1619 | Orbital period squared scales with semi-major axis cubed; the harmony of the solar system. |
+| 50 | Poisson's equation (electrostatics) | `laplacian(phi) = -rho / epsilon0` | electromagnetism | Simeon Denis Poisson | 1813 | Relates potential to charge density; the master equation of electrostatics and gravitation. |
+| 51 | Continuity equation (mass) | `d(rho)/dt + div(rho v) = 0` | fluid dynamics | Leonhard Euler | 1757 | Expresses local conservation of mass in a flow; the foundation of fluid and charge transport. |
+| 52 | Euler's equations (inviscid flow) | `rho (dv/dt + (v.grad) v) = -grad p` | fluid dynamics | Leonhard Euler | 1757 | Newton's law for an ideal fluid; the ancestor of the Navier-Stokes equations. |
+| 53 | Reynolds number | `Re = rho v L / mu` | fluid dynamics | Osborne Reynolds | 1883 | The ratio of inertial to viscous forces; predicts laminar-versus-turbulent flow. |
+| 54 | Biot-Savart law | `dB = (mu0 / (4 pi)) I dl x r-hat / r^2` | electromagnetism | Biot; Savart | 1820 | Gives the magnetic field of a current element; the magnetic analog of Coulomb's law. |
+| 55 | Lenz's law | `induced EMF opposes the change in flux` | electromagnetism | Heinrich Lenz | 1834 | Induced currents oppose their cause; the sign rule enforcing energy conservation in induction. |
+| 56 | Larmor power (accelerated charge) | `P = (q^2 a^2) / (6 pi epsilon0 c^3)` | electromagnetism | Joseph Larmor | 1897 | The power radiated by an accelerating charge; the basis of antenna and synchrotron theory. |
+| 57 | Poynting theorem (energy flow) | `dU/dt + div S = -J.E` | electromagnetism | John Henry Poynting | 1884 | Tracks electromagnetic energy flow and conservation; defines the Poynting vector's role. |
+| 58 | Lorentz transformation | `t' = gamma(t - v x / c^2),  x' = gamma(x - v t)` | special relativity | Hendrik Lorentz | 1904 | Relates space and time between inertial frames; the kinematic core of special relativity. |
+| 59 | Relativistic momentum | `p = gamma m v` | special relativity | Albert Einstein | 1905 | Momentum grows with the Lorentz factor; corrects Newton at high speed. |
+| 60 | Relativistic energy | `E = gamma m c^2` | special relativity | Albert Einstein | 1905 | Total energy is gamma times rest energy; unifies mass and kinetic energy. |
+| 61 | Relativistic velocity addition | `w = (u + v)/(1 + u v / c^2)` | special relativity | Albert Einstein | 1905 | Velocities combine so nothing exceeds light speed; a hallmark of relativity. |
+| 62 | Klein-Gordon equation | `(box + (m c / hbar)^2) psi = 0` | quantum field theory | Klein; Gordon | 1926 | The relativistic wave equation for spin-0 particles; an entry point to quantum field theory. |
+| 63 | Yukawa potential | `V(r) = -g^2 e^(-m r) / r` | nuclear physics | Hideki Yukawa | 1935 | A screened potential explaining the short-range nuclear force; predicted the meson. |
+| 64 | Fermi-Dirac distribution | `n(E) = 1 / (e^((E - mu)/(k_B T)) + 1)` | statistical physics | Fermi; Dirac | 1926 | Occupation statistics for fermions; governs electrons in metals and semiconductors. |
+| 65 | Bose-Einstein distribution | `n(E) = 1 / (e^((E - mu)/(k_B T)) - 1)` | statistical physics | Bose; Einstein | 1924 | Occupation statistics for bosons; explains lasers and Bose-Einstein condensates. |
+| 66 | Rayleigh-Jeans law | `B(lambda,T) = 2 c k_B T / lambda^4` | statistical physics | Rayleigh; Jeans | 1905 | The classical radiation law whose failure exposed the ultraviolet catastrophe. |
+| 67 | Bragg's law | `n lambda = 2 d sin(theta)` | condensed matter | W. H. Bragg & W. L. Bragg | 1913 | The diffraction condition revealing crystal structure; the basis of X-ray crystallography. |
+| 68 | Malus's law | `I = I0 cos^2(theta)` | optics | Etienne-Louis Malus | 1809 | Transmitted intensity through a polarizer varies as cosine squared; a foundation of optics. |
+| 69 | Beer-Lambert law | `I = I0 e^(-alpha x)` | optics | Beer; Lambert; Bouguer | 1852 | Absorbance grows with path and concentration; the basis of spectrophotometry. |
+| 70 | Fresnel reflection (normal incidence) | `R = ((n1 - n2)/(n1 + n2))^2` | optics | Augustin-Jean Fresnel | 1823 | Gives the fraction of light reflected at an interface; central to optical coatings. |
+| 71 | Thin lens equation | `1/f = 1/do + 1/di` | optics | classical | unknown | Relates object, image, and focal lengths; the working formula of geometric optics. |
+| 72 | Rayleigh resolution criterion | `theta = 1.22 lambda / D` | optics | Lord Rayleigh | 1879 | Sets the smallest resolvable angle of an aperture; the diffraction limit of imaging. |
+| 73 | Hall effect voltage | `V_H = I B / (n q t)` | condensed matter | Edwin Hall | 1879 | A transverse voltage from carriers in a magnetic field; measures carrier type and density. |
+| 74 | Drude conductivity | `sigma = n e^2 tau / m` | condensed matter | Paul Drude | 1900 | A classical model of electrical conduction; the first explanation of Ohm's law in metals. |
+| 75 | Debye heat capacity (low-T) | `C_V = (12 pi^4 / 5) N k_B (T / Theta_D)^3` | condensed matter | Peter Debye | 1912 | Predicts the T-cubed law of heat capacity at low temperature; a triumph of solid-state physics. |
+| 76 | London penetration depth | `lambda_L = sqrt(m / (mu0 n_s e^2))` | superconductivity | Fritz & Heinz London | 1935 | The scale over which a magnetic field decays in a superconductor; defines the Meissner effect. |
+| 77 | Josephson relation | `I = I_c sin(phi),  dphi/dt = 2 e V / hbar` | superconductivity | Brian Josephson | 1962 | Supercurrent and voltage across a tunnel junction; the basis of SQUIDs and the voltage standard. |
+| 78 | Casimir force (parallel plates) | `F/A = -pi^2 hbar c / (240 d^4)` | quantum electrodynamics | Hendrik Casimir | 1948 | An attractive force from quantum vacuum fluctuations; a measurable prediction of QED. |
+| 79 | Stefan-Boltzmann (radiated power) | `P = sigma A epsilon T^4` | thermal radiation | Stefan; Boltzmann | 1879 | Radiated power scales as temperature to the fourth; governs stellar and thermal emission. |
+| 80 | Escape velocity | `v_e = sqrt(2 G M / r)` | celestial mechanics | classical (Newtonian) | unknown | The speed needed to break free of gravity; a basic result of orbital mechanics. |
+| 81 | Rocket equation (Tsiolkovsky) | `delta v = v_e ln(m0 / m1)` | astronautics | Konstantin Tsiolkovsky | 1903 | Links velocity change to exhaust speed and mass ratio; the founding law of spaceflight. |
+| 82 | Torque | `tau = r x F` | classical mechanics | classical (Archimedes/Euler) | unknown | The rotational analog of force; sets angular acceleration about an axis. |
+| 83 | Angular momentum | `L = r x p = I omega` | classical mechanics | Euler | 1775 | The conserved quantity of rotation; central from tops to galaxies to atoms. |
+| 84 | Moment of inertia | `I = sum m_i r_i^2` | classical mechanics | Leonhard Euler | 1765 | A body's resistance to angular acceleration; the rotational counterpart of mass. |
+| 85 | Rotational kinetic energy | `KE_rot = (1/2) I omega^2` | classical mechanics | Euler | 1765 | The energy stored in spinning motion; completes the mechanics of rotation. |
+| 86 | Poiseuille's law (pipe flow) | `Q = pi r^4 dP / (8 mu L)` | fluid dynamics | Hagen; Poiseuille | 1840 | Flow rate scales with the fourth power of radius; governs viscous flow in tubes and vessels. |
+| 87 | Stokes' drag law | `F = 6 pi mu r v` | fluid dynamics | George Gabriel Stokes | 1851 | The viscous drag on a slow sphere; used from sedimentation to Millikan's oil-drop experiment. |
+| 88 | Pendulum period (small angle) | `T = 2 pi sqrt(L / g)` | classical mechanics | classical (Huygens) | 1673 | The period depends only on length and gravity; the principle of the pendulum clock. |
+| 89 | Gravitational time dilation (weak field) | `dtau/dt = sqrt(1 - 2 G M / (r c^2))` | general relativity | Albert Einstein | 1915 | Clocks run slower deeper in a gravity well; confirmed by GPS and precise clocks. |
 
 ## Validate
 

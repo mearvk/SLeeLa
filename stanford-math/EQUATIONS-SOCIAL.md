@@ -1,6 +1,6 @@
 # Social-Structure Canon
 
-> 18 equations, sourced from `SMSocialCanon.sleela` -- the single
+> 34 equations, sourced from `SMSocialCanon.sleela` -- the single
 > source of truth. This document is a human-readable mirror of that record;
 > if the two ever disagree, the `.sleela` canon wins and this file is stale.
 
@@ -14,7 +14,7 @@ network ties and statistical distributions -- **not** scores or rankings of indi
 people. Symbolic forms use plain-ASCII notation so they stay greppable and diff-friendly.
 The **Why it matters** column states each result's significance in one faithful line.
 
-## The 18 equations
+## The 34 equations
 
 | # | Equation | Form | Field | Discoverer(s) | Year | Why it matters |
 |---|----------|------|-------|---------------|------|----------------|
@@ -36,6 +36,22 @@ The **Why it matters** column states each result's significance in one faithful 
 | 16 | Reciprocity (directed ties) | `r = (mutual dyads) / (total ties)` | social network analysis | standard SNA measure | unknown | How often ties are mutual rather than one-way; a basic indicator of balance and cohesion in a network. |
 | 17 | Modularity (community structure) | `Q = sum_c (e_cc - a_c^2)` | network science | Newman & Girvan | 2004 | Measures how cleanly a network splits into communities; the basis of community-detection methods. |
 | 18 | Assortativity coefficient | `r = Pearson correlation of degrees across edges` | network science | M. E. J. Newman | 2002 | Whether well-connected nodes link to other well-connected nodes; distinguishes social networks from technological ones. |
+| 19 | Eigenvector centrality | `x = (1/lambda) A x` | network science | Phillip Bonacich | 1972 | Importance proportional to the importance of neighbors; a foundational network measure. |
+| 20 | PageRank | `PR = (1-d)/N + d sum PR(j)/outdeg(j)` | network science | Page; Brin | 1998 | Ranks nodes by a random surfer's visit frequency; the algorithm behind web search. |
+| 21 | Katz centrality | `x = (I - alpha A)^(-1) . 1` | network science | Leo Katz | 1953 | Credits all paths with distance-decay weighting; a classic influence measure. |
+| 22 | Closeness centrality | `C(v) = (n - 1) / sum_u d(v,u)` | network science | Gert Sabidussi | 1966 | Importance by proximity to all others; measures efficient reach in a network. |
+| 23 | Bonacich power centrality | `c = alpha (I - beta A)^(-1) A . 1` | network science | Phillip Bonacich | 1987 | Power depends on connections to the less-connected; captures bargaining advantage. |
+| 24 | Freeman degree centralization | `C = sum (c_max - c_i) / max possible` | network science | Linton Freeman | 1979 | How unequal a network's degree distribution is; a measure of centralization. |
+| 25 | Shannon diversity index | `H = -sum p_i ln p_i` | social measurement | Claude Shannon | 1948 | Information-entropy measure of variety and evenness; widely used across the social and life sciences. |
+| 26 | Simpson diversity index | `D = 1 - sum p_i^2` | social measurement | Edward H. Simpson | 1949 | The probability two random members differ; a standard diversity measure. |
+| 27 | Theil index (inequality) | `T = (1/N) sum (x_i/x-bar) ln(x_i/x-bar)` | social measurement | Henri Theil | 1967 | An entropy-based, decomposable inequality measure; separates within- and between-group inequality. |
+| 28 | Atkinson inequality index | `A = 1 - (1/x-bar)(mean of x^(1-e))^(1/(1-e))` | social measurement | Anthony Atkinson | 1970 | Inequality with an explicit inequality-aversion parameter; grounded in social welfare. |
+| 29 | Zipf's law (city sizes) | `size ~ 1 / rank` | urban economics | George Kingsley Zipf | 1949 | City size falls inversely with rank; a striking regularity of human settlement. |
+| 30 | Gravity model of migration | `F_ij = G P_i P_j / d_ij^2` | spatial social science | Ernst Georg Ravenstein | 1885 | Flows grow with sizes and fall with distance; the base model of migration and trade. |
+| 31 | Benford's law (leading digit) | `P(d) = log10(1 + 1/d)` | social statistics | Benford; Newcomb | 1938 | Leading digits follow a logarithmic distribution; used to detect fabricated data. |
+| 32 | Sex ratio at birth (Fisher principle) | `parental investment drives a 1:1 ratio` | sociobiology | Ronald A. Fisher | 1930 | Equal parental investment drives a balanced sex ratio; a classic of evolutionary reasoning. |
+| 33 | Metcalfe's law (network value) | `value ~ n^2` | network economics | Robert Metcalfe | 1980 | A network's value scales with the square of its users; a heuristic of network economics. |
+| 34 | Granovetter threshold model | `collective action occurs above an activation threshold` | collective behavior | Mark Granovetter | 1978 | Collective action ignites once enough others act; explains riots, fads, and adoption. |
 
 ## Validate
 

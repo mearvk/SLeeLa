@@ -1,6 +1,6 @@
 # Mathematics Canon
 
-> 75 equations, sourced from `SMMathCanon.sleela` -- the single
+> 126 equations, sourced from `SMMathCanon.sleela` -- the single
 > source of truth. This document is a human-readable mirror of that record;
 > if the two ever disagree, the `.sleela` canon wins and this file is stale.
 
@@ -14,7 +14,7 @@ Symbolic forms use plain-ASCII notation (`^` power, `*` product, `sqrt`, `integr
 diff-friendly. The **Why it matters** column states each result's significance in one
 faithful line.
 
-## The 75 equations
+## The 126 equations
 
 | # | Equation | Form | Field | Discoverer(s) | Year | Why it matters |
 |---|----------|------|-------|---------------|------|----------------|
@@ -93,6 +93,57 @@ faithful line.
 | 73 | Mobius inversion | `g(n) = sum_{d\|n} f(d)  <=>  f(n) = sum_{d\|n} mu(n/d) g(d)` | number theory | August Ferdinand Mobius | 1832 | Inverts divisor sums via the Mobius function; a central identity of multiplicative number theory. |
 | 74 | Dirichlet's theorem (primes in AP) | `gcd(a,d)=1 => infinitely many primes of the form a + n*d` | number theory | Peter Gustav Lejeune Dirichlet | 1837 | Primes are spread through every valid arithmetic progression; a landmark that launched analytic number theory. |
 | 75 | Catalan number formula | `C_n = (1/(n+1)) C(2n, n)` | combinatorics | Euler; Catalan | 1838 | Counts balanced structures (parenthesizations, trees, paths); one of combinatorics' most ubiquitous sequences. |
+| 76 | Lagrange multipliers | `grad f = lambda grad g` | optimization | Joseph-Louis Lagrange | 1788 | Finds extrema subject to constraints by matching gradients; the backbone of constrained optimization. |
+| 77 | Euler-Lagrange equation | `d/dt (dL/dq') - dL/dq = 0` | calculus of variations | Euler; Lagrange | 1755 | The condition a path must satisfy to extremize an action; the foundation of variational mechanics. |
+| 78 | Divergence of a curl | `div(curl F) = 0` | vector calculus | classical | unknown | A curl field has zero divergence; a core identity of vector calculus and magnetostatics. |
+| 79 | Gradient theorem (line integrals) | `integral_C grad f . dr = f(b) - f(a)` | vector calculus | classical | unknown | A conservative field's line integral depends only on endpoints; the FTC for gradients. |
+| 80 | Leibniz integral rule | `d/dx integral_{a(x)}^{b(x)} f dt = f(b) b' - f(a) a' + integral f_x dt` | calculus | Gottfried Leibniz | 1697 | Differentiates an integral with variable limits; essential across physics and probability. |
+| 81 | Taylor's theorem with remainder | `f(x) = sum_{k=0}^{n} f^(k)(a)/k! (x-a)^k + R_n` | analysis | Brook Taylor; Lagrange (remainder) | 1715 | Bounds the error of a Taylor approximation; the rigorous basis of numerical estimates. |
+| 82 | Mean value theorem for integrals | `integral_a^b f dx = f(c)(b - a)` | calculus | classical (Cauchy) | 1823 | Guarantees a point whose value equals the integral's average; a staple existence result. |
+| 83 | Cauchy's integral theorem | `closed_integral f(z) dz = 0  (f holomorphic)` | complex analysis | Augustin-Louis Cauchy | 1825 | A holomorphic function integrates to zero around a closed loop; the start of complex analysis. |
+| 84 | Liouville's theorem (bounded entire) | `a bounded entire function is constant` | complex analysis | Joseph Liouville | 1847 | A bounded entire function must be constant; yields a one-line proof of the fundamental theorem of algebra. |
+| 85 | Maximum modulus principle | `\|f\| attains its max on the boundary` | complex analysis | Riemann; Schwarz | 1851 | A holomorphic function reaches its maximum size only on the boundary; central to complex analysis. |
+| 86 | Schwarz lemma | `\|f(z)\| <= \|z\| and \|f'(0)\| <= 1 for f: disk->disk, f(0)=0` | complex analysis | Hermann Schwarz | 1869 | Constrains holomorphic self-maps of the disk; the seed of hyperbolic geometry and Pick interpolation. |
+| 87 | Morera's theorem | `closed_integral f = 0 for all triangles => f holomorphic` | complex analysis | Giacinto Morera | 1886 | The converse of Cauchy's theorem: zero loop integrals imply holomorphy. |
+| 88 | Rouche's theorem | `\|g\| < \|f\| on C => f and f+g have equally many zeros inside` | complex analysis | Eugene Rouche | 1862 | Counts zeros by comparing magnitudes on a contour; a practical zero-counting tool. |
+| 89 | Jordan curve theorem | `a simple closed curve splits the plane into inside and outside` | topology | Camille Jordan | 1887 | A simple closed curve separates the plane into inside and outside; a deep foundational fact of topology. |
+| 90 | Brouwer fixed-point theorem | `a continuous map of a closed ball to itself has a fixed point` | topology | L. E. J. Brouwer | 1911 | Every continuous self-map of a ball has a fixed point; a cornerstone of topology and game theory. |
+| 91 | Gauss-Bonnet theorem | `integral_M K dA + integral_{dM} k_g ds = 2 pi chi(M)` | differential geometry | Gauss; Bonnet | 1848 | Ties total curvature to the Euler characteristic; the bridge between geometry and topology. |
+| 92 | Noether's theorem | `every differentiable symmetry yields a conservation law` | mathematical physics | Emmy Noether | 1918 | Every continuous symmetry yields a conservation law; the organizing principle of modern physics. |
+| 93 | Implicit function theorem | `F(x,y)=0, F_y != 0 => y = g(x) locally` | analysis | Dini; Cauchy | 1877 | Guarantees a relation defines a function locally; essential to manifolds and optimization. |
+| 94 | Inverse function theorem | `f' invertible at a => f invertible near a` | analysis | classical | unknown | A map with invertible derivative is locally invertible; a foundation of differential calculus. |
+| 95 | Picard-Lindelof existence | `y' = f(x,y), f Lipschitz => unique local solution` | differential equations | Picard; Lindelof | 1894 | Lipschitz continuity guarantees a unique ODE solution; the existence theorem of differential equations. |
+| 96 | Wronskian (linear independence) | `W(f,g) = f g' - f' g` | differential equations | Jozef Wronski | 1812 | A determinant test for independence of solutions; standard in linear ODE theory. |
+| 97 | Bessel's equation | `x^2 y'' + x y' + (x^2 - n^2) y = 0` | special functions | Friedrich Bessel | 1824 | Governs cylindrical waves and vibrations; its solutions appear throughout physics and engineering. |
+| 98 | Legendre's equation | `(1 - x^2) y'' - 2 x y' + l(l+1) y = 0` | special functions | Adrien-Marie Legendre | 1782 | Yields the Legendre polynomials central to potential theory and spherical harmonics. |
+| 99 | Hermite's equation | `y'' - 2 x y' + 2 n y = 0` | special functions | Charles Hermite | 1864 | Yields Hermite polynomials; the eigenfunctions of the quantum harmonic oscillator. |
+| 100 | Laguerre's equation | `x y'' + (1 - x) y' + n y = 0` | special functions | Edmond Laguerre | 1879 | Yields Laguerre polynomials; the radial part of the hydrogen-atom wavefunction. |
+| 101 | Beta function | `B(x,y) = integral_0^1 t^(x-1)(1-t)^(y-1) dt = Gamma(x)Gamma(y)/Gamma(x+y)` | special functions | Euler; Legendre | 1730 | Euler's integral linking factorials and probabilities; the basis of the Beta distribution. |
+| 102 | Riemann sum (definite integral) | `integral_a^b f dx = lim sum f(x_i*) dx_i` | calculus | Bernhard Riemann | 1854 | Defines the integral as a limit of partition sums; the rigorous meaning of area under a curve. |
+| 103 | Weierstrass M-test | `sum M_n converges, \|f_n\| <= M_n => sum f_n converges uniformly` | analysis | Karl Weierstrass | 1880 | A simple bound guaranteeing uniform convergence of a series; a workhorse of analysis. |
+| 104 | Abel's summation / test | `convergence of sum a_n b_n via partial sums` | analysis | Niels Henrik Abel | 1826 | Summation by parts giving convergence of products of sequences; foundational to series analysis. |
+| 105 | Dirichlet's test for series | `a_n monotone ->0, partial sums of b_n bounded => sum a_n b_n converges` | analysis | Peter Gustav Lejeune Dirichlet | 1862 | Convergence from a monotone factor and bounded partial sums; a standard series test. |
+| 106 | Holder continuity | `\|f(x) - f(y)\| <= C \|x - y\|^alpha` | analysis | Otto Holder | 1882 | Quantifies smoothness between continuity and differentiability; central to PDE regularity. |
+| 107 | Poisson summation formula | `sum f(n) = sum F-hat(k)` | harmonic analysis | Simeon Denis Poisson | 1827 | Equates a sum of a function to a sum of its Fourier transform; links time and frequency sampling. |
+| 108 | Parseval-Plancherel theorem | `integral \|f\|^2 dx = integral \|F-hat\|^2 dw` | harmonic analysis | Michel Plancherel | 1910 | Energy is preserved by the Fourier transform; the isometry of harmonic analysis. |
+| 109 | Convolution theorem | `F{f * g} = F{f} . F{g}` | harmonic analysis | classical (Fourier) | unknown | Convolution in time is multiplication in frequency; the reason transforms simplify filtering. |
+| 110 | Spectral theorem (symmetric matrix) | `A = Q Lambda Q^T,  A symmetric` | linear algebra | Cauchy; Hilbert | 1829 | A symmetric matrix diagonalizes in an orthonormal basis; the foundation of PCA and quantum observables. |
+| 111 | LU decomposition | `A = L U` | numerical linear algebra | Alan Turing (modern); Gauss | 1948 | Factors a matrix for fast linear solves; the standard method behind Gaussian elimination. |
+| 112 | QR decomposition | `A = Q R,  Q orthogonal, R upper-triangular` | numerical linear algebra | classical (Gram-Schmidt) | 1907 | Orthogonal-times-triangular factorization; the stable workhorse of least squares and eigenvalues. |
+| 113 | Cholesky decomposition | `A = L L^T,  A symmetric positive-definite` | numerical linear algebra | Andre-Louis Cholesky | 1910 | An efficient factorization for positive-definite matrices; standard in optimization and statistics. |
+| 114 | Rayleigh quotient | `R(A,x) = (x^T A x) / (x^T x)` | linear algebra | Lord Rayleigh | 1877 | Estimates eigenvalues by a normalized quadratic form; the basis of iterative eigenvalue methods. |
+| 115 | Perron-Frobenius theorem | `a positive matrix has a unique largest positive eigenvalue` | linear algebra | Perron; Frobenius | 1907 | A positive matrix has a dominant positive eigenvalue; underpins PageRank and Markov chains. |
+| 116 | Sylvester's law of inertia | `congruent forms share the signature (p, q, z)` | linear algebra | James Joseph Sylvester | 1852 | The signature of a quadratic form is invariant under congruence; classifies conics and metrics. |
+| 117 | Hadamard's inequality | `\|det A\| <= product of column norms` | linear algebra | Jacques Hadamard | 1893 | Bounds a determinant by its column norms; a geometric bound on volume. |
+| 118 | Cramer-Rao bound | `Var(theta-hat) >= 1 / I(theta)` | mathematical statistics | Cramer; Rao | 1945 | Sets the minimum variance of an unbiased estimator; the gold standard of estimation theory. |
+| 119 | Maximum likelihood estimator | `theta-hat = argmax L(theta; x)` | mathematical statistics | Ronald A. Fisher | 1922 | Chooses parameters that make the data most probable; the dominant estimation principle in statistics. |
+| 120 | Poisson distribution | `P(k) = lambda^k e^(-lambda) / k!` | probability | Simeon Denis Poisson | 1837 | Models counts of rare independent events; ubiquitous in queues, physics, and reliability. |
+| 121 | Binomial distribution | `P(k) = C(n,k) p^k (1-p)^(n-k)` | probability | Jacob Bernoulli | 1713 | Counts successes in independent trials; the discrete foundation of probability. |
+| 122 | Markov chain stationary distribution | `pi P = pi,  sum pi_i = 1` | probability | Andrey Markov | 1906 | The long-run state frequencies of a chain; central to MCMC and equilibrium analysis. |
+| 123 | Borel-Cantelli lemma | `sum P(A_n) < inf => P(A_n i.o.) = 0` | probability | Borel; Cantelli | 1909 | Links summable probabilities to almost-sure non-recurrence; a key tool of probability theory. |
+| 124 | Jensen's gap / convex duality | `f convex => f(E[X]) <= E[f(X)] with Legendre dual` | convex analysis | Legendre; Fenchel | 1949 | Convex-conjugate duality underlying bounds and optimization; the Legendre-Fenchel transform. |
+| 125 | Simpson's rule (quadrature) | `integral_a^b f dx = (h/3)[f0 + 4 f1 + f2 + ...]` | numerical analysis | Thomas Simpson | 1743 | Approximates integrals with parabolic arcs; a staple of numerical integration. |
+| 126 | Runge-Kutta (RK4) step | `y_{n+1} = y_n + (h/6)(k1 + 2 k2 + 2 k3 + k4)` | numerical analysis | Runge; Kutta | 1901 | A fourth-order one-step ODE integrator; the default method for numerical simulation. |
 
 ## Validate
 

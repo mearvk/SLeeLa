@@ -73,7 +73,7 @@ class SMCrossoverCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[20];
+    eqs = new SMEquation[40];
     filled = 0;
 
     add("Black-Scholes PDE", "dV/dt + (1/2) sigma^2 S^2 d2V/dS2 + r S dV/dS - r V = 0", "mathematical finance", "Black; Scholes; Merton", "1973");
@@ -92,6 +92,26 @@ class SMCrossoverCanon {
     add("Hardy-Weinberg principle", "p^2 + 2 p q + q^2 = 1", "population genetics", "Hardy; Weinberg", "1908");
     add("Lotka-Volterra predator-prey", "dx/dt = a x - b x y,  dy/dt = c x y - d y", "mathematical biology", "Lotka; Volterra", "1925");
     add("Kelly criterion", "f* = (b p - q) / b", "mathematical finance", "John L. Kelly Jr.", "1956");
+    add("Fokker-Planck equation", "dP/dt = -d/dx(A P) + (1/2) d2/dx2(B P)", "stochastic processes", "Fokker; Planck", "1914");
+    add("Langevin equation", "m dv/dt = -gamma v + eta(t)", "stochastic processes", "Paul Langevin", "1908");
+    add("Ornstein-Uhlenbeck process", "dx = -theta x dt + sigma dW", "stochastic processes", "Uhlenbeck; Ornstein", "1930");
+    add("Feynman-Kac formula", "u(x,t) = E[ payoff | X_t = x ] solves a PDE", "stochastic analysis", "Feynman; Kac", "1949");
+    add("Girsanov theorem (measure change)", "change of drift under an equivalent measure", "stochastic analysis", "Igor Girsanov", "1960");
+    add("Kolmogorov forward equation", "dp/dt = L* p", "stochastic processes", "Andrey Kolmogorov", "1931");
+    add("SIR epidemic model", "dS/dt=-bSI, dI/dt=bSI-gI, dR/dt=gI", "mathematical epidemiology", "Kermack; McKendrick", "1927");
+    add("Basic reproduction number", "R0 = beta / gamma", "mathematical epidemiology", "Kermack; McKendrick", "1927");
+    add("Replicator dynamics", "dx_i/dt = x_i (f_i - f-bar)", "evolutionary game theory", "Taylor; Jonker", "1978");
+    add("Price equation", "dz-bar = Cov(w, z)/w-bar + E[w dz]/w-bar", "evolutionary biology", "George R. Price", "1970");
+    add("Fisher's fundamental theorem", "rate of fitness increase = additive genetic variance", "population genetics", "Ronald A. Fisher", "1930");
+    add("Wright-Fisher allele drift", "binomial sampling of alleles each generation", "population genetics", "Wright; Fisher", "1931");
+    add("Goldman-Hodgkin-Katz voltage", "V_m = (R T / F) ln( sum P_ion [ion] ratio )", "neuroscience / biophysics", "Goldman; Hodgkin; Katz", "1943");
+    add("Hodgkin-Huxley membrane current", "I = C dV/dt + sum g_k (V - E_k)", "neuroscience / biophysics", "Hodgkin; Huxley", "1952");
+    add("Nernst-Planck equation (electrodiffusion)", "J = -D(dc/dx + (z F / R T) c dphi/dx)", "biophysics / electrochemistry", "Nernst; Planck", "1890");
+    add("Schelling segregation threshold", "local-preference tipping produces global segregation", "computational social science", "Thomas Schelling", "1971");
+    add("Bass diffusion model", "f(t)/(1-F) = p + q F", "marketing science", "Frank Bass", "1969");
+    add("Gompertz growth", "dN/dt = r N ln(K / N)", "mathematical biology", "Benjamin Gompertz", "1825");
+    add("Allometric scaling (Kleiber's law)", "metabolic rate ~ mass^(3/4)", "mathematical biology", "Max Kleiber", "1932");
+    add("Zipf's law (rank-frequency)", "frequency ~ 1 / rank^s", "quantitative linguistics", "George Kingsley Zipf", "1935");
   }
 
   void add(String name, String form, String field, String who, String year) {
