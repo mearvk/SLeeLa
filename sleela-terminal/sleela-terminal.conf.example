@@ -13,3 +13,11 @@ national_feeds=false
 persons_of_interest=false
 parametric_documents=false
 national_identifiers=false
+
+# Appearance grays (literal #RRGGBB; invalid values fall back to the defaults).
+# ui_gray       standard UI gray for secondary chrome controls (the + new-tab
+#               button that sits at the left of the tab strip).
+# textpane_gray the darker gray behind the terminal text pane (panel + VTE
+#               surface); replaces the former lighter backing.
+ui_gray=#626262
+textpane_gray=#262626

@@ -58,6 +58,11 @@ Settings are loaded and saved in a simple text configuration file:
 
 An example schema is provided in `sleela-terminal.conf.example`. The file uses straightforward `key=value` entries so it can be inspected or edited without a specialized configuration editor.
 
+Two appearance options control the UI grays (each a literal `#RRGGBB`; an invalid value falls back to the built-in default and is ignored):
+
+- `ui_gray` — the standard UI gray used for secondary chrome controls. The **"+" new-tab button** (which sits at the left of the tab strip) is painted in this gray. Default `#626262`.
+- `textpane_gray` — the darker gray that sits directly behind the terminal text pane (the terminal panel and the VTE surface). Default `#262626`.
+
 ## Build
 
 From `sleela-terminal`:
@@ -107,6 +112,8 @@ outline — and is produced by `tools/logo/Trim.java` from the source artwork in
 
 The title bar keeps its branded purple-to-blue gradient, while every interactive selection surface—the Settings subframe, software popover, and terminal right-click menu—uses the same deep-blue/light-blue family as the main frame. Menu text stays white, hover and active states brighten in blue, and keyboard focus uses a visible light-blue outline so selection states remain clear.
 
+The **"+" new-tab button** is not in the title bar; it sits at the **left of the tab strip** (the notebook's start action widget) and is painted in the standard UI gray (`ui_gray`, default `#626262`) so it reads as part of the gray chrome. Clicking it, or `Ctrl+Shift+T`, opens a new terminal tab.
+
 The bottom edge of the title bar carries a **4px green lightbar** across the terminal's full width. It rests on the project green (`#115C28`) and hosts a single pulse of light that is **logarithmically centred** on the bar: the lit glow is seeded at the centre and **grows outward in width** on a logarithmic curve — the widening is the thing observed — at a slow heartbeat (a calm ~5.5 s breath). At the **peak** of its expansion the lit glow fades back to the original green, then the cycle restarts; because the colour has returned to the base green exactly when the pulse is widest, the reset is seamless. The lightbar is a title-bar indication only and casts no colour spill onto the terminal pane.
 
 Every artistic parameter of the pulse — the base and glow greens, the pulse frequency, the start/peak widths, the logarithmic growth shape, and the peak brightness — is a conserved named constant in the `lightbar` configuration namespace at the top of `sleelaterminal-gui.cpp`, so the look can be re-tuned from one place without touching the render code.
@@ -153,4 +160,4 @@ The title-bar gradient is stored in `assets/HORIZONTAL.cfg` and `assets/VERTICAL
 
 ## Text pane and command-result colors
 
-The VTE text pane uses near-white RGB **(252, 252, 252)** (`#fcfcfc`) with dark default terminal text. Command-result text views use a subtly darker light-gray surface, RGB **(228, 228, 228)** (`#e4e4e4`), with dark-gray text (`#303030`) so results are distinct from the main pane while remaining readable. These are separate named CSS tokens; the rest of the window's purple chrome is unchanged.
+The surface directly behind the terminal text pane (the terminal panel and the VTE surface) uses the darker gray `textpane_gray` (default `#262626`), with light `#f2f2f2` text. The surrounding workspace that frames the panel is the same dark gray, so no lighter backing shows behind the text. Both `ui_gray` and `textpane_gray` are configuration options (see **Configuration**) and feed named CSS tokens (`sl_ui_gray`, `sl_pane_bg`); the rest of the window's purple chrome is unchanged.

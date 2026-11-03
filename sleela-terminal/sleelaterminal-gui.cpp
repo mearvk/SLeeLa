@@ -79,7 +79,27 @@ struct AppConfig {
     bool parametric_documents = false;
     bool national_identifiers = false;
     unsigned footer_scroll_delay_minutes = 5;
+
+    // The standard UI gray used for secondary chrome controls -- currently the
+    // "new tab" (+) button that lives at the left of the tab strip. "#RRGGBB".
+    std::string ui_gray = "#626262";
+    // The darker gray that sits behind the terminal text pane (the panel the
+    // VTE surface is drawn on). Replaces the former charcoal/white. "#RRGGBB".
+    std::string textpane_gray = "#262626";
 };
+
+// Accept only a literal "#RRGGBB" so a hand-edited config can never inject
+// arbitrary text into the generated CSS / VTE colour parse.
+bool is_hex_color(const std::string &value) {
+    if (value.size() != 7 || value[0] != '#') return false;
+    for (std::size_t i = 1; i < value.size(); ++i) {
+        const char ch = value[i];
+        const bool hex = (ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f') ||
+                         (ch >= 'A' && ch <= 'F');
+        if (!hex) return false;
+    }
+    return true;
+}
 
 struct AppState {
     // The first AppState owns the window and all tab sessions. Each additional
@@ -144,6 +164,8 @@ void save_config(const AppConfig &config) {
     out << "parametric_documents=" << (config.parametric_documents ? "true" : "false") << '\n';
     out << "national_identifiers=" << (config.national_identifiers ? "true" : "false") << '\n';
     out << "footer_scroll_delay_minutes=" << config.footer_scroll_delay_minutes << '\n';
+    out << "ui_gray=" << config.ui_gray << '\n';
+    out << "textpane_gray=" << config.textpane_gray << '\n';
 }
 
 void load_config(AppConfig &config) {
@@ -170,6 +192,8 @@ void load_config(AppConfig &config) {
             try { unsigned delay = static_cast<unsigned>(std::stoul(value)); if (delay >= 5 && delay <= 60) config.footer_scroll_delay_minutes = delay; }
             catch (...) { /* retain default */ }
         }
+        else if (key == "ui_gray") { if (is_hex_color(value)) config.ui_gray = value; }
+        else if (key == "textpane_gray") { if (is_hex_color(value)) config.textpane_gray = value; }
     }
 }
 
@@ -285,12 +309,16 @@ void apply_terminal_style(AppState *state) {
     if (!parse_rgba(state->config.foreground, foreground)) {
         gdk_rgba_parse(&foreground, "#262626");
     }
-    // Keep the surrounding GTK workspace near-white; the interactive VTE
-    // surface itself is the shared charcoal command-output surface. VTE owns
-    // the live PTY stream, so styling it as one surface preserves arbitrary
-    // interactive programs, scrollback, selection, and shell I/O semantics.
+    // The surrounding GTK workspace backing is dark gray (CSS @sl_textpane_bg).
+    // The VTE surface directly behind the text uses the configurable darker
+    // gray (config.textpane_gray, default #262626) so no lighter backing shows
+    // behind the text pane. VTE owns the live PTY stream, so styling it as one
+    // surface preserves arbitrary interactive programs, scrollback, selection,
+    // and shell I/O semantics.
     gdk_rgba_parse(&foreground, "#f2f2f2");
-    gdk_rgba_parse(&background, "#4b4b4b");
+    const std::string pane_bg =
+        is_hex_color(state->config.textpane_gray) ? state->config.textpane_gray : "#262626";
+    gdk_rgba_parse(&background, pane_bg.c_str());
 
     // A restrained ANSI palette tuned for the charcoal VTE surface.
     static const char *const kPalette[16] = {
@@ -315,9 +343,17 @@ void install_css(AppState *state) {
     // rejects the stray backslash and drops the rest of the rule.
     const char *css = R"CSS(
         @define-color sl_bg          #15101c;
-        @define-color sl_textpane_bg #fcfcfc;
+        /* The workspace backing that frames the terminal: a dark gray (no white
+           backing remains). */
+        @define-color sl_textpane_bg #262626;
         @define-color sl_output_bg   #4b4b4b;
         @define-color sl_output_fg   #f2f2f2;
+        /* Configurable grays (substituted from AppConfig in install_css):
+           sl_ui_gray  = standard UI gray for the + new-tab button;
+           sl_pane_bg  = the darker gray that sits directly behind the text
+                         pane (the terminal panel + VTE surface). */
+        @define-color sl_ui_gray     __UI_GRAY__;
+        @define-color sl_pane_bg     __PANE_BG__;
         @define-color sl_item_bg     #626262;
         @define-color sl_item_fg     #ffffff;
         @define-color sl_surface     #21112f;
@@ -495,19 +531,30 @@ void install_css(AppState *state) {
             border-radius: 4px;
             color: inherit;
         }
-        headerbar.sleela-titlebar button.sleela-new-tab {
+        /* The + new-tab button now lives at the LEFT of the tab strip (the
+           notebook's start action widget) rather than in the title bar, and is
+           painted in the standard configurable UI gray (@sl_ui_gray) so it
+           reads as part of the gray chrome, not a blue title-bar control. */
+        notebook.sleela-terminal-tabs button.sleela-new-tab {
             min-width: 25px;
             min-height: 24px;
             padding: 0 5px;
-            margin-left: 2px;
-            border: 1px solid #000000;
+            margin: 0 6px 0 2px;
+            border: 1px solid #1c1c1c;
             border-radius: 5px;
-            background: #203b78;
-            color: #ffffff;
+            background: @sl_ui_gray;
+            color: @sl_item_fg;
             font-weight: 700;
         }
-        headerbar.sleela-titlebar button.sleela-new-tab:hover {
-            background: #31569a;
+        notebook.sleela-terminal-tabs button.sleela-new-tab:hover {
+            background: shade(@sl_ui_gray, 1.18);
+        }
+        notebook.sleela-terminal-tabs button.sleela-new-tab:active {
+            background: shade(@sl_ui_gray, 0.90);
+        }
+        notebook.sleela-terminal-tabs button.sleela-new-tab:focus {
+            outline: 2px solid @sl_accent;
+            outline-offset: -2px;
         }
 
         /* Footer: flat chrome bar matching the title bar, one hairline on top. */
@@ -611,17 +658,17 @@ void install_css(AppState *state) {
         }
         button.suggested-action:hover { background: @sl_menu_hover; }
 
-        /* The near-white workspace frames one rounded charcoal interactive
-           terminal surface. All VTE output shares the same base palette, while
-           ANSI styling remains available for semantic emphasis. A distinct
-           rounded panel for each completed command would require separating
-           arbitrary PTY output from the interactive stream and is not simulated
-           by this container. */
+        /* The dark-gray workspace (@sl_textpane_bg) frames one rounded
+           interactive terminal surface. The panel and VTE surface directly
+           behind the text use the configurable darker gray @sl_pane_bg so no
+           lighter backing remains behind the text pane. All VTE output shares
+           the same base palette, while ANSI styling remains available for
+           semantic emphasis. */
         box.sleela-workspace {
             background: @sl_textpane_bg;
         }
         overlay.sleela-terminal-panel {
-            background: @sl_output_bg;
+            background: @sl_pane_bg;
             border: 1px solid #383838;
             border-radius: 12px;
             padding: 10px;
@@ -629,7 +676,7 @@ void install_css(AppState *state) {
         }
         vte-terminal {
             color: @sl_output_fg;
-            background: @sl_output_bg;
+            background: @sl_pane_bg;
             border-radius: 8px;
         }
         window .sleela-file-browser {
@@ -755,6 +802,18 @@ void install_css(AppState *state) {
             }
         }
     }
+
+    // Substitute the configurable gray tokens. Values are validated as literal
+    // "#RRGGBB" on load (is_hex_color), and fall back to the defaults here, so
+    // no untrusted text can reach the CSS parser.
+    auto substitute = [&css_text](const std::string &token, const std::string &value,
+                                  const std::string &fallback) {
+        const std::string color = is_hex_color(value) ? value : fallback;
+        const auto pos = css_text.find(token);
+        if (pos != std::string::npos) css_text.replace(pos, token.size(), color);
+    };
+    substitute("__UI_GRAY__", state->config.ui_gray, "#626262");
+    substitute("__PANE_BG__", state->config.textpane_gray, "#262626");
 
     GtkCssProvider *provider = gtk_css_provider_new();
     gtk_css_provider_load_from_string(provider, css_text.c_str());
@@ -1839,14 +1898,9 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_widget_set_tooltip_text(logo, "SleelaTerminal™ — Debian / Windows Terminal");
     gtk_header_bar_pack_start(GTK_HEADER_BAR(header), logo);
 
-    GtkWidget *new_tab = gtk_button_new_with_label("+");
-    gtk_widget_add_css_class(new_tab, "sleela-new-tab");
-    gtk_widget_set_tooltip_text(new_tab, "New terminal tab (Ctrl+Shift+T)");
-    gtk_widget_set_valign(new_tab, GTK_ALIGN_CENTER);
-    g_signal_connect(new_tab, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
-        create_new_tab(static_cast<AppState *>(data));
-    }), state);
-    gtk_header_bar_pack_start(GTK_HEADER_BAR(header), new_tab);
+    // The "+" new-tab button has MOVED out of the title bar; it is now placed at
+    // the left of the tab strip as the notebook's start action widget (built
+    // below, once the notebook exists).
 
     // Settings control on the RIGHT of the title bar: a custom three-bar
     // hamburger glyph, filled title-bar blue with a 1px black outline. Clicking
@@ -1965,6 +2019,18 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_notebook_set_show_border(GTK_NOTEBOOK(state->notebook), FALSE);
     gtk_widget_set_hexpand(state->notebook, TRUE);
     gtk_widget_set_vexpand(state->notebook, TRUE);
+
+    // The "+" new-tab button, placed at the LEFT of the tab strip (the
+    // notebook's start action widget) and painted in the standard UI gray.
+    GtkWidget *new_tab = gtk_button_new_with_label("+");
+    gtk_widget_add_css_class(new_tab, "sleela-new-tab");
+    gtk_widget_set_tooltip_text(new_tab, "New terminal tab (Ctrl+Shift+T)");
+    gtk_widget_set_valign(new_tab, GTK_ALIGN_CENTER);
+    gtk_widget_set_focus_on_click(new_tab, FALSE);
+    g_signal_connect(new_tab, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
+        create_new_tab(static_cast<AppState *>(data));
+    }), state);
+    gtk_notebook_set_action_widget(GTK_NOTEBOOK(state->notebook), new_tab, GTK_PACK_START);
     GtkWidget *first_tab_label = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
     GtkWidget *first_tab_title = gtk_label_new("Terminal 1");
     gtk_box_append(GTK_BOX(first_tab_label), first_tab_title);
