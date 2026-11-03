@@ -27,6 +27,7 @@
 #include FT_FREETYPE_H
 
 #include <algorithm>
+#include <cstdio>
 #include <cstring>
 #include <map>
 #include <string>
@@ -35,6 +36,43 @@
 
 namespace slui {
 namespace {
+
+/* ---- X protocol error survival -------------------------------------------
+ * Xlib installs a DEFAULT error handler that prints the failing request and
+ * calls exit() on any X protocol error, and a default IO-error handler that
+ * terminates the process when the connection drops. Under a Wayland session
+ * the X11 surface runs through XWayland, which is stricter/raceier about a
+ * few requests around window map and first present -- so without our own
+ * handlers a single non-fatal protocol error (e.g. a transient BadDrawable/
+ * BadMatch/BadWindow) would kill the app right after the window appears,
+ * looking like the GUI "exits immediately after loading". Install handlers
+ * that LOG the detail and keep running instead of exiting. A true IO error
+ * (server gone) is unrecoverable in Xlib, so there we report clearly and let
+ * Xlib proceed rather than crash silently. */
+int slui_x_error_handler(Display* dpy, XErrorEvent* e) {
+    char buf[256];
+    buf[0] = '\0';
+    if (dpy) XGetErrorText(dpy, e->error_code, buf, (int)sizeof(buf));
+    std::fprintf(stderr,
+        "[slui/x11] non-fatal X error: %s (error_code=%u request_code=%u "
+        "minor_code=%u resource=0x%lx serial=%lu) -- continuing\n",
+        buf, (unsigned)e->error_code, (unsigned)e->request_code,
+        (unsigned)e->minor_code, (unsigned long)e->resourceid,
+        (unsigned long)e->serial);
+    std::fflush(stderr);
+    return 0; /* returned value is ignored by Xlib; 0 = handled, do not exit */
+}
+
+int slui_x_io_error_handler(Display* /*dpy*/) {
+    std::fprintf(stderr,
+        "[slui/x11] fatal X IO error: the X/XWayland connection was lost. "
+        "The toolkit cannot continue rendering.\n");
+    std::fflush(stderr);
+    /* An IO error is terminal in Xlib's model; returning lets Xlib run its
+     * default termination path, but we have at least reported the real cause
+     * instead of dying with an opaque default message. */
+    return 0;
+}
 
 /* Set both the ICCCM title and the EWMH UTF-8 title properties.
  * XStoreName alone writes WM_NAME using the legacy STRING convention; a
@@ -152,6 +190,12 @@ private:
 class X11Backend : public Backend {
 public:
     explicit X11Backend(const std::string& /*app_id*/) {
+        /* Install our own handlers BEFORE opening the display so no protocol or
+         * IO error can fall through to Xlib's exit()-on-error defaults (which,
+         * under XWayland, can terminate the process right after the window
+         * maps). These survive non-fatal errors and report fatal ones clearly. */
+        XSetErrorHandler(&slui_x_error_handler);
+        XSetIOErrorHandler(&slui_x_io_error_handler);
         dpy_ = XOpenDisplay(nullptr);
         if (dpy_) {
             screen_ = DefaultScreen(dpy_);
