@@ -17,10 +17,12 @@ Controls appear on demand (popovers / right-click), not as permanent panels.
 
 The one sanctioned exception is the **title-bar throbber** (the "light bar"): a
 living green seam along the bottom of the title bar that replaces the old static
-border. It is unified in green — a field of many small excitations in relative
-shades of one base green (deep forest base, mossy through vivid spring-green
-cells), flowing mainly left→right at ~20 Hz with third-order (jerk-bounded)
-speed changes, so it drifts and breathes rather than scrolling mechanically. It
+border. The whole bar is green — a lit fluorescent tube (mid-emerald base with
+an even energised wash) across which a few BROAD, low-frequency glowing swells
+of brighter fluorescent green drift and bloom left→right with third-order
+(jerk-bounded) speed changes. The glowing swells are rendered with additive
+soft radial gradients so overlaps build toward bright fluorescent green, giving
+a glowing indication rather than discrete sparks. It
 is allowed because it is *ambient* — low-contrast, slow, edge-only, and carrying
 no information the user must track — so it signals "alive" without pulling the
 eye from the terminal. Any motion in the chrome must clear that same bar.
