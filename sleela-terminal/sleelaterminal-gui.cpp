@@ -23,32 +23,51 @@ constexpr const char *kWindowTitle = "SleelaTerminal™ — MEARVK LLC";
 constexpr const char *kConfigName = "sleela-terminal.conf";
 constexpr const char *kVersion = "1.0.0";
 
-// One "child of wattage": a discrete excitation that flows along the throbber
-// strip and locally modulates the base green colour (the strip is unified in
-// green and shades of green). Many of these, summed, make the living field.
-// Motion is integrated to third order
-// (jerk -> accel -> vel -> pos) so speed changes are smooth and reflexive.
-struct ThrobberCell {
-    bool alive = false;
-    double x = 0.0;        // position in pixels
-    double v = 0.0;        // velocity (px/s), mostly positive = left->right
-    double a = 0.0;        // acceleration (px/s^2)
-    double j = 0.0;        // jerk (px/s^3) -- the 3rd-order control term
-    double base_intensity = 0.0; // the cell's inherent shade strength [0..1]
-    double intensity = 0.0;      // live rendered contribution (base * fades)
-    double energy = 1.0;         // life/decay budget
-    double sigma = 0.0;    // spatial half-width of this cell's glow (px)
-    double speed_mul = 1.0;// per-cell speed character (some glide, some race)
-    double phase = 0.0;    // per-cell phase for subtle flicker
-    bool retro = false;    // a rare child allowed to pause / go right->left
-    double retro_px = 0.0; // pixels of retrograde/pause travel remaining
-    // Optional colour tint, only expressed under strong amplification.
-    // (tr,tg,tb) is a fully-saturated hue; tinted==false means pure base shade.
-    bool tinted = false;
-    double tr = 0.0, tg = 0.0, tb = 0.0;
-    int shape = 0;          // 0=circle/lava ball, 1=triangle, 2=rectangle
-    bool outline_only = false;
-};
+// ---- Lightbar pulse: conserved artist configuration ---------------------
+// The lightbar hosts a SINGLE breathing pulse of light that is logarithmically
+// centred on the bar and whose WIDTH is the thing observed: it grows out from
+// the centre like a slow heartbeat, and at the PEAK of its expansion the lit
+// glow fades back to the bar's original green. These conserved constants are
+// the whole artistic vocabulary of the effect -- tune them and nothing else.
+//
+// All are compile-time, side-effect-free, and independent of frame rate / bar
+// width (everything is derived as a fraction of the bar or of the cycle), so an
+// "artist" can address the look purely by editing the values here.
+namespace lightbar {
+    // The base green the whole bar rests on, and the lit green the pulse adds.
+    // kGlowGreen is what the pulse paints while it grows; it washes OUT back to
+    // kBaseGreen exactly at the peak of the widening.
+    constexpr double kBaseGreenR = 0.067, kBaseGreenG = 0.361, kBaseGreenB = 0.157; // #115C28
+    constexpr double kGlowGreenR = 0.361, kGlowGreenG = 0.871, kGlowGreenB = 0.420; // vivid spring green
+
+    // Slow heartbeat. One full grow-and-fade cycle is 1 / kPulseFrequencyHz
+    // seconds. ~0.18 Hz is a calm ~5.5 s breath; raise for a faster pulse.
+    constexpr double kPulseFrequencyHz = 0.18;
+
+    // Width envelope, as a FRACTION of the bar's half-width (the pulse is
+    // centred, so it reaches from the centre outward). kWidthStartFrac is the
+    // seed width at the birth of a cycle; kWidthPeakFrac is how far it has grown
+    // at the peak (1.0 == all the way to the bar edges).
+    constexpr double kWidthStartFrac = 0.06;
+    constexpr double kWidthPeakFrac  = 1.00;
+
+    // Logarithmic centring / growth shape. The width grows on a logarithmic
+    // curve (fast open, gently decelerating toward the peak) rather than
+    // linearly, and the glow's spatial falloff from the centre is likewise
+    // log-shaped so the pulse reads as "logarithmically centred". Larger kLogBase
+    // == more pronounced early burst then flatter approach to the peak.
+    constexpr double kLogBase = 12.0;
+
+    // Peak brightness of the lit glow at the centre (0..1 additive). The glow
+    // amount is strongest mid-growth and returns to 0 (pure base green) at the
+    // expansion peak, which is the "fade back to original green at its peak".
+    constexpr double kGlowPeakAlpha = 0.85;
+
+    // A faint always-on fluorescent wash so the tube always looks energised,
+    // independent of the pulse.
+    constexpr double kTubeWashR = 0.231, kTubeWashG = 0.776, kTubeWashB = 0.360; // #3BC65C
+    constexpr double kTubeWashAlpha = 0.20;
+}
 
 struct AppConfig {
     std::string font = "Monospace 11";
@@ -88,19 +107,17 @@ struct AppState {
     gint64 feed_last_fetch = 0;
     AppConfig config;
 
-    // Full-width 4px pure-white throbber rail under the title bar. The existing
-    // coloured cells move and sway within its pixels; only those coloured cells
-    // may cast reflected light onto the terminal text pane.
+    // The lightbar rail under the title bar. It hosts a single centred pulse of
+    // green light that grows in width on a slow heartbeat and fades back to the
+    // base green at its peak (see the `lightbar` config namespace and
+    // throbber_draw). The pulse is a pure function of throbber_t, so the whole
+    // animation state is one advancing clock -- no particle field is kept.
     GtkWidget *throbber = nullptr;
-    GtkWidget *terminal_glow = nullptr; // non-interactive overlay lit by throbber cells
+    GtkWidget *terminal_glow = nullptr; // non-interactive overlay (currently inert)
     guint throbber_tick = 0; // GTK frame-clock callback ID (main thread only)
     gint64 throbber_last_frame_us = 0;
     double throbber_t = 0.0;        // monotonically advancing time (seconds)
     int    throbber_w = 0;          // last known strip width (px)
-    double throbber_amp = 0.6;      // slow reflexive "amplification" field [0..1]
-    double throbber_amp_v = 0.0;    // its rate of change (for smooth 2nd order)
-    double throbber_spawn_accum = 0.0; // fractional spawn accumulator
-    std::vector<ThrobberCell> throbber_cells;
 };
 
 std::filesystem::path config_path() {
@@ -1603,166 +1620,89 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
     return TRUE;
 }
 
-// Render the living field, unified in green. The strip is NOT one uniform
-// level: it rests on a deep forest-green base and is modulated locally by every
-// excitation ("child of wattage"), each adding a relative darker/brighter shade
-// of green near its position. The sum, drawn per column, is a texture that flows
-// left->right. Brighter cells skew toward a vivid spring green; dimmer cells
-// toward a mossy green, so the whole rail stays within one green family.
+// Render the lightbar as a single, logarithmically-centred pulse of green
+// light. The bar rests on the original green (lightbar::kBaseGreen); a lit
+// glow (lightbar::kGlowGreen) is seeded at the exact centre and GROWS outward
+// in width on a logarithmic curve at a slow heartbeat (kPulseFrequencyHz). The
+// widening is the thing observed. At the PEAK of the expansion the lit glow
+// fades back to the original green, then the cycle restarts. Every artistic
+// knob lives in the `lightbar` config namespace above -- nothing here is
+// hand-tuned outside those conserved constants.
 void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (width <= 0 || height <= 0) return;
     state->throbber_w = width;
 
-    // The rail is a lit GREEN fluorescent bar: the whole surface is green, and
-    // broad, soft, bright-green swells glow and drift across it (low spatial
-    // frequency -- a few wide blooms rather than many tiny sparks). All geometry
-    // is clipped to the rail so nothing can increase its layout height.
-    //
-    // 1) Paint the whole bar green -- a mid emerald base so the entire strip
-    //    reads as green even where no swell is present.
-    cairo_set_source_rgb(cr, 0.067, 0.361, 0.157); // #115C28 lit green base
+    using namespace lightbar;
+
+    // 1) Paint the whole bar in the ORIGINAL green so the rail always reads as
+    //    green -- this is also exactly what the pulse decays back into.
+    cairo_set_source_rgb(cr, kBaseGreenR, kBaseGreenG, kBaseGreenB);
     cairo_paint(cr);
     cairo_save(cr);
     cairo_rectangle(cr, 0, 0, width, height);
     cairo_clip(cr);
 
-    // 2) A faint, even fluorescent wash across the whole tube so the green bar
-    //    always looks energised (a tube that is "on"), independent of swells.
-    cairo_set_source_rgba(cr, 0.231, 0.776, 0.360, 0.20); // #3BC65C soft wash
+    // 2) A faint, even fluorescent wash so the tube always looks energised,
+    //    independent of the pulse.
+    cairo_set_source_rgba(cr, kTubeWashR, kTubeWashG, kTubeWashB, kTubeWashAlpha);
     cairo_paint(cr);
 
-    const double mid_y = height * 0.5;
-    // Additive blending makes overlapping swells build toward a bright, glowing
-    // fluorescent green rather than muddying -- the hallmark of a lit tube.
-    cairo_set_operator(cr, CAIRO_OPERATOR_ADD);
-    for (const auto &c : state->throbber_cells) {
-        if (!c.alive || c.intensity < 0.015) continue;
-        const double x = c.x;
-        const double fade = std::clamp(c.intensity * 2.0, 0.0, 1.0);
-        // Per-swell brightness: brighter swells glow a vivid spring green, dimmer
-        // ones a softer emerald -- all within the one green family.
-        const double gshade = std::clamp(c.base_intensity, 0.0, 1.0);
+    // 3) The single breathing pulse. `phase` sweeps 0 -> 1 over one slow cycle.
+    //    The two halves of the look are independent:
+    //      - width grows monotonically 0 -> 1 across the cycle (logarithmic), so
+    //        the only motion the eye sees is the centred glow getting WIDER;
+    //      - the lit colour amount rises then returns to 0 at the peak width,
+    //        which is the "fade back to original green at its peak".
+    const double cycle = state->throbber_t * kPulseFrequencyHz;
+    const double phase = cycle - std::floor(cycle);   // [0,1)
 
-        // A BROAD horizontal glow: the swell's radius is its spatial footprint,
-        // so wider cells (see throbber_spawn) read as broad, low-frequency
-        // blooms. Scaled generously relative to the 4px-tall rail.
-        const double radius = std::max(6.0, c.sigma * 9.0);
+    // Logarithmic growth: fast early opening that decelerates toward the peak.
+    // grow(phase) maps [0,1] -> [0,1] through log1p so the width expands on a
+    // log curve. This is what makes the pulse read as "logarithmically centred".
+    const double grow = std::log1p(kLogBase * phase) / std::log1p(kLogBase);
 
-        // Fluorescent green core -> transparent falloff. The core brightens with
-        // intensity; a tube's glow is brightest at the filament and blooms out.
-        const double core_r = 0.361 + 0.251 * gshade; // 0.361 -> 0.612
-        const double core_g = 0.871 + 0.090 * gshade; // 0.871 -> 0.961
-        const double core_b = 0.420 + 0.220 * gshade; // 0.420 -> 0.640
-        const double core_a = std::clamp(0.55 * fade, 0.0, 0.85);
+    // Half-width of the glow in pixels, from the seed fraction up to the peak
+    // fraction of the bar's half-width. Centred, so it reaches both ways.
+    const double half_bar = width * 0.5;
+    const double w_frac = kWidthStartFrac + (kWidthPeakFrac - kWidthStartFrac) * grow;
+    const double radius = std::max(2.0, half_bar * w_frac);
 
-        // A subtle vertical breathing of the glow so the tube "pulses" gently.
-        const double breathe = 0.85 + 0.15 * std::sin(state->throbber_t * 1.6 + c.phase);
+    // Lit colour amount: strongest mid-expansion, fading to 0 exactly at the
+    // peak (phase -> 1) so the glow washes out to the original green right when
+    // it is widest. sin(pi * phase) is 0 at phase 0 and 1, peaking at 0.5.
+    const double glow_amount = std::sin(M_PI * phase);
+    const double core_a = std::clamp(kGlowPeakAlpha * glow_amount, 0.0, 1.0);
 
+    if (core_a > 0.001) {
+        const double cx = width * 0.5;   // logarithmically centred on the bar
+        const double mid_y = height * 0.5;
+        cairo_set_operator(cr, CAIRO_OPERATOR_ADD);
+
+        // Logarithmic spatial falloff from the centre: a bright core that eases
+        // out, so the pulse is clearly centre-weighted rather than a hard disc.
         cairo_pattern_t *glow =
-            cairo_pattern_create_radial(x, mid_y, 0.0, x, mid_y, radius * breathe);
-        cairo_pattern_add_color_stop_rgba(glow, 0.0, core_r, core_g, core_b, core_a);
-        cairo_pattern_add_color_stop_rgba(glow, 0.5, 0.231, 0.792, 0.353,
-                                          0.30 * fade);
-        cairo_pattern_add_color_stop_rgba(glow, 1.0, 0.067, 0.361, 0.157, 0.0);
+            cairo_pattern_create_radial(cx, mid_y, 0.0, cx, mid_y, radius);
+        cairo_pattern_add_color_stop_rgba(glow, 0.0, kGlowGreenR, kGlowGreenG, kGlowGreenB, core_a);
+        cairo_pattern_add_color_stop_rgba(glow, 0.45, kGlowGreenR, kGlowGreenG, kGlowGreenB, core_a * 0.45);
+        cairo_pattern_add_color_stop_rgba(glow, 1.0, kBaseGreenR, kBaseGreenG, kBaseGreenB, 0.0);
         cairo_set_source(cr, glow);
-        cairo_rectangle(cr, x - radius, 0, radius * 2.0, height);
+        cairo_rectangle(cr, cx - radius, 0, radius * 2.0, height);
         cairo_fill(cr);
         cairo_pattern_destroy(glow);
 
-        // A bright fluorescent "filament" highlight at the core centreline makes
-        // the glowing indication read crisply on the lit tube.
-        cairo_pattern_t *core =
-            cairo_pattern_create_radial(x, mid_y, 0.0, x, mid_y, radius * 0.35);
-        cairo_pattern_add_color_stop_rgba(core, 0.0, 0.741, 1.0, 0.776,
-                                          0.55 * fade);
-        cairo_pattern_add_color_stop_rgba(core, 1.0, 0.741, 1.0, 0.776, 0.0);
-        cairo_set_source(cr, core);
-        cairo_rectangle(cr, x - radius * 0.35, 0, radius * 0.70, height);
-        cairo_fill(cr);
-        cairo_pattern_destroy(core);
+        cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
     }
-    cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
     cairo_restore(cr);
 }
 
-// Spawn a fresh excitation. Birth position spans the whole 0-100% of the strip
-// width: most children enter at the left edge (preserving the dominant
-// left->right feed), but a share are born anywhere across 0-100% and simply
-// fade in at that spot (intensity eases up from 0). Either way the pulse then
-// travels left->right all the way through to 100%.
-// Paint a restrained, diffuse reflection of the title-bar throbber into the
-// terminal pane. The overlay is non-interactive, so terminal input and selection
-// remain owned by VTE. Keep alpha low so text contrast remains the priority.
-void terminal_glow_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointer user_data) {
-    auto *session = static_cast<AppState *>(user_data);
-    auto *state = root_state(session);
-    if (width <= 0 || height <= 0 || !state || state->throbber_w <= 0) return;
-
-    const double pane_scale = static_cast<double>(width) / state->throbber_w;
-    for (const auto &c : state->throbber_cells) {
-        // The white rail is deliberately not reflected onto the text pane.
-        // Only explicitly coloured cells cast light into the terminal.
-        if (!c.alive || !c.tinted || c.intensity < 0.008) continue;
-        const double x = c.x * pane_scale;
-        const double sigma = std::max(14.0, c.sigma * 2.8 * pane_scale);
-        const double visual_width = std::max(1.0, c.sigma * 2.4);
-        const double width_energy = std::clamp(visual_width / 50.0, 0.35, 2.8);
-        const double colour_gate = std::clamp((state->throbber_amp - 0.80) / 0.15, 0.0, 1.0);
-        const double strength = std::clamp(
-            c.intensity * colour_gate * 0.12 * width_energy, 0.0, 0.12);
-        if (strength < 0.001) continue;
-
-        cairo_pattern_t *glow = cairo_pattern_create_radial(x, 0.0, 1.0, x, 0.0, sigma);
-        cairo_pattern_add_color_stop_rgba(glow, 0.0, c.tr, c.tg, c.tb, strength);
-        cairo_pattern_add_color_stop_rgba(glow, 1.0, c.tr, c.tg, c.tb, 0.0);
-        cairo_rectangle(cr, 0, 0, width,
-                        std::min(height, static_cast<int>(std::ceil(sigma))));
-        cairo_set_source(cr, glow);
-        cairo_fill(cr);
-        cairo_pattern_destroy(glow);
-    }
-}
-
-void throbber_spawn(AppState *state, int W) {
-    ThrobberCell c;
-    c.alive = true;
-
-    // Mostly enter from the left and travel across the rail; a smaller share
-    // starts mid-rail so the animation has depth without losing its direction.
-    const double roll = g_random_double();
-    if (roll < 0.72) {
-        c.x = -3.0 + g_random_double() * 2.0;
-    } else if (roll < 0.90) {
-        c.x = g_random_double() * W;
-    } else {
-        c.x = W * (0.20 + g_random_double() * 0.25);
-    }
-
-    // Keep the particles moving at a fairly even horizontal pace. Small
-    // per-particle variation adds life without making the strip look erratic.
-    c.v = 26.0 + g_random_double() * 12.0;
-    c.a = 0.0;
-    c.j = 0.0;
-    c.base_intensity = 0.80 + g_random_double() * 0.20;
-    c.intensity = 0.0;
-    c.energy = 1.0;
-    // Broad swells (low spatial frequency): much wider footprints than the old
-    // tiny sparks, so the bar shows a few wide glowing blooms rather than dense,
-    // high-frequency specks. (Glow radius in throbber_draw is ~sigma * 9.)
-    c.sigma = 3.5 + g_random_double() * 3.0;
-    c.speed_mul = 0.85 + g_random_double() * 0.30;
-    c.shape = g_random_int_range(0, 3);
-    c.outline_only = false;
-    c.phase = g_random_double() * 6.2831853;
-    // 1 in 30 children may pause or run right->left for 20-50 px.
-    c.retro = (g_random_int_range(0, 30) == 0);
-    c.retro_px = c.retro ? (20.0 + g_random_double() * 30.0) : 0.0;
-
-    // This effect is intentionally monochrome: no coloured spill or terminal glow.
-    c.tinted = false;
-
-    state->throbber_cells.push_back(c);
+// Overlay drawn on top of the terminal pane. The lightbar pulse is a title-bar
+// indication only and intentionally casts NO coloured reflection into the text
+// area, so this overlay is a no-op that preserves full text contrast. It is
+// kept as a non-interactive drawing area so terminal input and selection remain
+// owned by VTE and so the effect can later be re-enabled from one place.
+void terminal_glow_draw(GtkDrawingArea *, cairo_t *, int, int, gpointer) {
+    // Deliberately empty: the centred lightbar pulse does not spill onto the pane.
 }
 
 // Frame-clock-driven update: GTK calls this on the UI thread at display cadence.
@@ -1781,88 +1721,12 @@ gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_da
     if (elapsed_us < 33333) return G_SOURCE_CONTINUE; // cap simulation to ~30 FPS
     state->throbber_last_frame_us = frame_us;
     const double dt = std::clamp(elapsed_us / 1000000.0, 0.001, 0.050);
+
+    // The lightbar pulse is a pure function of time: advancing throbber_t is the
+    // whole simulation. throbber_draw reads throbber_t together with the
+    // conserved `lightbar` constants to grow the centred pulse and fade it back
+    // to the base green at its peak. No particle field is maintained anymore.
     state->throbber_t += dt;
-    const int W = state->throbber_w > 0 ? state->throbber_w : 600;
-
-    // --- Reflexive amplification field (smooth, 2nd order) --------------------
-    // A slowly varying global gain that makes the whole field speed up / glow
-    // more at "pertinent" moments, then relax. Driven to a wandering target
-    // through a critically-damped-ish spring so it never snaps.
-    double amp_target = 0.55
-        + 0.30 * std::sin(state->throbber_t * 0.21)
-        + 0.12 * std::sin(state->throbber_t * 0.53 + 1.3);
-    if (amp_target < 0.1) amp_target = 0.1;
-    if (amp_target > 1.0) amp_target = 1.0;
-    double amp_acc = (amp_target - state->throbber_amp) * 2.2 - state->throbber_amp_v * 1.6;
-    state->throbber_amp_v += amp_acc * dt;
-    state->throbber_amp   += state->throbber_amp_v * dt;
-    if (state->throbber_amp < 0.0) state->throbber_amp = 0.0;
-    if (state->throbber_amp > 1.0) state->throbber_amp = 1.0;
-
-    // --- Spawn rate: LOW frequency so the bar shows a few broad glowing swells
-    // rather than dense sparks. Rate and cap are kept small because each swell
-    // is now a wide bloom (see throbber_spawn sigma + throbber_draw radius).
-    double rate = 1.6 + 2.4 * state->throbber_amp;   // broad swells per second
-    state->throbber_spawn_accum += rate * dt;
-    while (state->throbber_spawn_accum >= 1.0) {
-        state->throbber_spawn_accum -= 1.0;
-        if (state->throbber_cells.size() < 18) throbber_spawn(state, W);
-    }
-
-    // --- Advance each child with 3rd-order (jerk-driven) motion ---------------
-    for (auto &c : state->throbber_cells) {
-        if (!c.alive) continue;
-
-        // Reflexive, amplified desired speed, scaled by this cell's own speed
-        // character so some pulses glide and others race across the sweet spot.
-        double desired_v = (34.0 + 10.0 * state->throbber_amp) * c.speed_mul;
-
-        // Size-dependent pacing, recalibrated for the new broad swells: the
-        // widest blooms glide slowly (a lit tube breathing across), medium ones
-        // a touch quicker, the narrowest only slightly faster. Width is the
-        // glow footprint used in throbber_draw (~sigma * 9 px, both sides).
-        const double visual_width = c.sigma * 9.0;
-        if (visual_width > 50.0) desired_v /= 1.7;
-        else if (visual_width >= 30.0) desired_v *= 1.10;
-        else desired_v *= 1.20;
-
-        if (c.retro && c.retro_px > 0.0) {
-            // This rare child pauses or glides right->left for its allotment.
-            desired_v = -(10.0 + 25.0 * state->throbber_amp);
-            c.retro_px -= std::fabs(c.v) * dt;
-        }
-
-        // 3rd order: steer JERK toward closing the velocity error, integrate
-        // jerk -> accel -> vel -> pos. This keeps the *rate of change of
-        // acceleration* bounded, so speed-ups/slow-downs are gentle, not steppy.
-        double v_err = desired_v - c.v;
-        double jerk_target = v_err * 6.0;                       // reflexive gain
-        c.j += (jerk_target - c.j) * 0.35;                      // ease the jerk
-        c.a += c.j * dt;
-        if (c.a >  900.0) c.a =  900.0;
-        if (c.a < -900.0) c.a = -900.0;
-        c.v += c.a * dt;
-        c.x += c.v * dt;
-
-        // Uniform life across the rail: particles should traverse most of
-        // the width horizontally instead of vanishing around the centre.
-        // Once a particle appears, keep its brightness stable across the
-        // visible band. It leaves only when its centre passes the right edge.
-        c.energy = 1.0;
-        const double target_i = c.base_intensity;
-        c.intensity += (target_i - c.intensity) * std::min(1.0, 8.0 * dt);
-
-        // The pulse still travels left->right across the whole width; it only
-        // dies on exit at the right edge (or once it has faded to nothing well
-        // past the sweet spot, so spent pulses don't linger invisibly).
-        if (c.x > W + 4.0) c.alive = false;
-    }
-
-    // Compact the pool: drop dead cells.
-    state->throbber_cells.erase(
-        std::remove_if(state->throbber_cells.begin(), state->throbber_cells.end(),
-                       [](const ThrobberCell &c) { return !c.alive; }),
-        state->throbber_cells.end());
 
     gtk_widget_queue_draw(state->throbber);
     for (auto *session : state->tab_states) {
@@ -2054,9 +1918,10 @@ void activate(GtkApplication *application, gpointer user_data) {
     GtkWidget *root = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_widget_add_css_class(root, "sleela-workspace");
 
-    // Full-width 4px pure-white throbber rail below the title bar. The moving
-    // coloured field is composited inside the white pixels; the frame clock
-    // animates the cells and their slow travelling sway.
+    // Full-width 4px green lightbar below the title bar. The frame clock
+    // advances throbber_t; throbber_draw grows a single centred pulse of light
+    // across it and fades it back to the base green at its peak (see the
+    // `lightbar` config namespace for all the artistic knobs).
     GtkWidget *throbber = gtk_drawing_area_new();
     state->throbber = throbber;
     gtk_widget_add_css_class(throbber, "sleela-throbber");
