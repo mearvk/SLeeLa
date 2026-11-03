@@ -454,20 +454,23 @@ void install_css(AppState *state) {
             border-bottom: 1px solid #d7d7d7;
             padding: 3px 6px;
         }
+        /* Inverted tab colours: UNSELECTED tabs are dark (charcoal bg, light
+           text); the SELECTED tab is light (near-white bg, dark text). This is
+           the inverse of the former light-unselected / dark-selected scheme. */
         notebook.sleela-terminal-tabs tab {
-            background: #eeeeee;
-            color: #333333;
-            border: 1px solid #d0d0d0;
+            background: @sl_output_bg;
+            color: @sl_output_fg;
+            border: 1px solid #777777;
             border-radius: 6px 6px 0 0;
             padding: 2px 7px;
             margin-right: 3px;
         }
-        notebook.sleela-terminal-tabs tab label { color: #333333; }
+        notebook.sleela-terminal-tabs tab label { color: @sl_output_fg; }
         notebook.sleela-terminal-tabs tab:checked {
-            background: @sl_output_bg;
-            border-color: #777777;
+            background: #eeeeee;
+            border-color: #d0d0d0;
         }
-        notebook.sleela-terminal-tabs tab:checked label { color: @sl_output_fg; }
+        notebook.sleela-terminal-tabs tab:checked label { color: #333333; }
         notebook.sleela-terminal-tabs tab button {
             min-width: 18px;
             min-height: 18px;
