@@ -216,14 +216,49 @@ lib-ballum-install:
 install-check:
 	$(MAKE) -C install install-check
 
-# Conventional installation. Scope-aware: a user-local PREFIX stays as the
-# current user; a system PREFIX (with no DESTDIR) elevates via sudo for the
-# system copy only. Every variant first offers to (re)generate and verify the
-# base-code SHA-256 manifest (yes/no; answer non-interactively with
+# Conventional installation. Interactive scope chooser: on a terminal it asks
+#   1) Local  (user-local install, never uses sudo)
+#   2) System (system-wide install; prompts for the sudo password as needed)
+# and dispatches to install-local / install-system accordingly. The system
+# path elevates via sudo ONLY to copy into system locations, so you are asked
+# for your password exactly when (and only when) privileged paths are written.
+#
+# Answer non-interactively with SLEELA_INSTALL_SCOPE=local|system (or 1|2). With
+# no terminal AND no SLEELA_INSTALL_SCOPE set, it falls back to the previous
+# scope-aware behavior (a user-local PREFIX stays local; a system PREFIX with no
+# DESTDIR elevates via sudo), so CI and staged (DESTDIR) builds are unaffected.
+# Every variant first offers to (re)generate and verify the base-code SHA-256
+# manifest (yes/no; answer non-interactively with
 # SLEELA_MANIFEST_CONSENT=yes|no|skip).
+SLEELA_INSTALL_SCOPE ?=
 install: core
-	$(MAKE) -C install install PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" \
-		SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)"
+	@scope="$(SLEELA_INSTALL_SCOPE)"; \
+	if [ -z "$$scope" ] && [ -t 0 ]; then \
+	  echo "Where should SLeeLa be installed?"; \
+	  echo "  1) Local   user-local install (no administrator access, never uses sudo)"; \
+	  echo "  2) System  system-wide install under $(PREFIX) (prompts for sudo password as needed)"; \
+	  printf 'Choose [1/2] (default 1): '; \
+	  read scope || scope=1; \
+	fi; \
+	case "$$scope" in \
+	  1|local|LOCAL|Local|user|USER|User) \
+	    echo "Local install selected (no sudo)."; \
+	    $(MAKE) --no-print-directory -C install install-local \
+	      PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" \
+	      SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)" ;; \
+	  2|system|SYSTEM|System) \
+	    echo "System install selected (sudo will be requested for system paths only)."; \
+	    $(MAKE) --no-print-directory -C install install-system \
+	      PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" \
+	      SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)" ;; \
+	  "") \
+	    echo "No terminal and no SLEELA_INSTALL_SCOPE set; using scope-aware default."; \
+	    echo "(set SLEELA_INSTALL_SCOPE=local|system to choose explicitly.)"; \
+	    $(MAKE) --no-print-directory -C install install \
+	      PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" \
+	      SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)" ;; \
+	  *) echo "Unrecognized choice '$$scope'; expected 1 (local) or 2 (system)." >&2; exit 2 ;; \
+	esac
 
 # User-local install that never uses sudo (defaults PREFIX to $HOME/.local).
 install-local: core
@@ -423,8 +458,11 @@ install-guide:
 	@echo "                        so the commands are found with no env setup."
 	@echo "  make install-system   System-wide under /usr/local. Elevates with"
 	@echo "                        sudo for the system paths only."
-	@echo "  make install          Scope-aware: a user PREFIX stays local; a"
-	@echo "                        system PREFIX (no DESTDIR) elevates."
+	@echo "  make install          Interactive: asks 1) Local or 2) System,"
+	@echo "                        then prompts for the sudo password as needed"
+	@echo "                        for a system install. Answer without a prompt"
+	@echo "                        via SLEELA_INSTALL_SCOPE=local|system. With no"
+	@echo "                        terminal it uses the scope-aware default."
 	@echo "  make install-all      Refresh every standard location at once."
 	@echo
 	@echo "TUNE WHAT GETS INSTALLED  (passed at build time, not asked at runtime)"
