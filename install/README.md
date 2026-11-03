@@ -113,11 +113,16 @@ reason to elevate:
   [`system-install.sh`](system-install.sh). It runs the integrity step as the
   invoking (unprivileged) user first, then uses `sudo` **only** for the
   privileged copy into system locations.
-- **`make install`** remains scope-aware: run with no `PREFIX` as a normal
-  user it installs to **both** user-local layouts (`$HOME/.local` and
-  `$HOME/.local/sleela`, same as `install-local`); a system prefix (with no
-  `DESTDIR`) elevates automatically for the system copy only; an explicit
-  `PREFIX=...` or a `DESTDIR` staged build installs to that single prefix.
+- **`make install`** is **interactive**: on a terminal it asks you to choose
+  **1) Local** or **2) System**, then dispatches to `install-local` or
+  `install-system` accordingly. For a system install it prompts for the **sudo
+  password as needed** (sudo is used only to copy into system locations).
+  Answer without a prompt via `SLEELA_INSTALL_SCOPE=local|system` (or `1|2`).
+  With **no terminal and no `SLEELA_INSTALL_SCOPE`** it falls back to the prior
+  scope-aware behavior (a user-local `PREFIX` stays local; a system `PREFIX`
+  with no `DESTDIR` elevates automatically; an explicit `PREFIX=`/`DESTDIR`
+  staged build installs to that single prefix), so CI and packaging are
+  unchanged.
 - **`make install-all`** refreshes **every** standard SLeeLa location in one
   command, so a single run updates all the directories `whereis sleela`
   reports. Run it as your normal user (it invokes `sudo` itself for system
