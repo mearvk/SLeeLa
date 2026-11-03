@@ -29,17 +29,18 @@ faithful to the subject's real origin where publicly known**; unknowns are
 | `SMFinanceCanon`   | Finance & economics equations (money, capitalism, credit) | Standard references (see Sources) |
 | `SMChemistryCanon` | Covalent-bonding chemistry equations | Standard references (see Sources) |
 | `SMSocialCanon`    | Social-structure equations (ties, networks, wealth distribution) | Standard references (see Sources) |
+| `SMEventsCanon`    | Calculus-of-events equations (collision, sound, departure, routine) | Standard references (see Sources) |
 | `SMProvenance`     | Purpose/method/gains/bedrock + tiered literature callouts (Wikipedia attributed) | Primary/secondary/tertiary sources |
 | `SMArchive` (demo) | Runnable entry point that broadcasts the archive | — |
 
-## The equation canon (226 entries)
+## The equation canon (248 entries)
 
 > On "all of the equations known in the known Universe": **no finite, complete
 > list of every equation exists** — and fabricating one would violate this
 > repo's one hard rule (values faithful to real origin; unknowns are `"none"`,
 > never invented). So this archive records a **curated, fully-attributed canon**
 > of the genuinely foundational equations that every math/physics PhD rests on:
-> **226 entries**, each with its real name, symbolic form, discoverer(s), year,
+> **248 entries**, each with its real name, symbolic form, discoverer(s), year,
 > and field.
 
 Breakdown (counts verified by running `SMArchive`):
@@ -102,6 +103,17 @@ Breakdown (counts verified by running `SMArchive`):
   Dunbar's number, preferential attachment, small-world path length, modularity,
   assortativity, and wealth distribution (Gini, Lorenz, Pareto). These measure
   **structure and distribution — not persons**.
+- **Calculus of events — 22:** a canon of the equations that govern *things that
+  happen* rather than steady states, in four kinds. **Collision** (impact):
+  impulse–momentum, coefficient of restitution, 1-D elastic and perfectly
+  inelastic collisions, König's kinetic-energy split, Rutherford scattering.
+  **Sound** (a pressure event propagating and heard): speed of sound
+  (Newton–Laplace), the acoustic wave and Helmholtz equations, the Doppler
+  effect, the decibel, the Webster horn equation, Sabine reverberation.
+  **Departure** (arrivals-and-departures / first passage): the Poisson arrival
+  process, M/M/1 and Erlang-C queues, Pollaczek–Khinchine, Kramers escape.
+  **Routine** (periodic, recurrent, renewal): the simple-harmonic period, the
+  Fourier transform, Poincaré recurrence, and the elementary renewal theorem.
 
 Each group has a full human-readable table — every equation with its symbolic
 form, field, discoverer(s), and year — mirrored directly from the `.sleela`
@@ -114,6 +126,7 @@ canon (the single source of truth):
 - [`EQUATIONS-FINANCE.md`](EQUATIONS-FINANCE.md) — 25 finance & economics equations (`SMFinanceCanon`)
 - [`EQUATIONS-CHEMISTRY.md`](EQUATIONS-CHEMISTRY.md) — 18 covalent-bonding chemistry equations (`SMChemistryCanon`)
 - [`EQUATIONS-SOCIAL.md`](EQUATIONS-SOCIAL.md) — 18 social-structure equations (`SMSocialCanon`)
+- [`EQUATIONS-EVENTS.md`](EQUATIONS-EVENTS.md) — 22 calculus-of-events equations (`SMEventsCanon`)
 
 Where attribution is genuinely diffuse (e.g. the quadratic formula, the 2×2
 determinant), the discoverer field says so honestly rather than crediting a
@@ -136,7 +149,7 @@ record**:
   String metaIntegrityGoal     = "...";   < the standing promise the record keeps >
 ```
 
-This block is present on **all 13 classes** in the archive, and — this is the
+This block is present on **all 14 classes** in the archive, and — this is the
 point — it is **written truthfully for each class, not copied**. The purpose of
 `SMEquation` ("hold one equation faithfully") is not the purpose of `SMArchive`
 ("broadcast the whole, unaltered"); the gains of a public-domain theorem differ
@@ -161,6 +174,7 @@ from the gains of a cited 1973 finance paper. *Not the same.*
 | `SMThermodynamics` | Record the great reach fully, out to black-hole thermodynamics — while marking where the math dept ends and Physics begins. |
 | `SMMathCanon` / `SMPhysicsCanon` / `SMThermoEquations` | Record each great result under the name history/experiment gives it — credit the discoverer, claim nothing. |
 | `SMCrossoverCanon` | Record each crossover with its primary paper — credit the authors/publishers, claim nothing. |
+| `SMEventsCanon` | Record each event-law under the name history gives it — impact, pressure, arrival, or return — crediting the discoverer, claiming nothing. |
 | `SMProvenance` | Tier every source honestly — trace greatness to its origin, not a convenient index. |
 | `SMEquation` | Record the move exactly as it happened — great or small — crediting the real author, never the archive. |
 | `SMArchive` | Read the greatness aloud exactly as recorded — adding nothing, hiding nothing. |

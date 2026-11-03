@@ -201,7 +201,18 @@ class SMArchive {
       i = i + 1;
     }
 
-    int total = mn + phn + ten + cn + fin + chn + son;
+    print("");
+    print("-- Calculus-of-events canon (collision, sound, departure, routine) --");
+    SMEventsCanon evCanon = new SMEventsCanon();
+    evCanon.build();
+    int evn = evCanon.count();
+    i = 0;
+    while (i < evn) {
+      print("  " + evCanon.lineAt(i));
+      i = i + 1;
+    }
+
+    int total = mn + phn + ten + cn + fin + chn + son + evn;
     print("");
     print("Equation canon total: " + total + " entries recorded, each faithful to its real origin.");
 
@@ -227,6 +238,7 @@ class SMArchive {
     print("  SMFinanceCanon:  " + finCanon.getIntegrityGoal());
     print("  SMChemistryCanon:" + chemCanon.getIntegrityGoal());
     print("  SMSocialCanon:   " + socCanon.getIntegrityGoal());
+    print("  SMEventsCanon:   " + evCanon.getIntegrityGoal());
 
     print("");
     print("==== Published-literature callouts (sane sources; Wikipedia respected) ====");
