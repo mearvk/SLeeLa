@@ -15,17 +15,22 @@ popovers) is a quiet frame around it. Chrome must never compete with terminal
 content for attention: no blinking, flashing, or attention-grabbing motion.
 Controls appear on demand (popovers / right-click), not as permanent panels.
 
-The one sanctioned exception is the **title-bar throbber** (the "light bar"): a
+The one sanctioned exception is the **title-bar lightbar** (the "light bar"): a
 living green seam along the bottom of the title bar that replaces the old static
 border. The whole bar is green — a lit fluorescent tube (mid-emerald base with
-an even energised wash) across which a few BROAD, low-frequency glowing swells
-of brighter fluorescent green drift and bloom left→right with third-order
-(jerk-bounded) speed changes. The glowing swells are rendered with additive
-soft radial gradients so overlaps build toward bright fluorescent green, giving
-a glowing indication rather than discrete sparks. It
-is allowed because it is *ambient* — low-contrast, slow, edge-only, and carrying
-no information the user must track — so it signals "alive" without pulling the
-eye from the terminal. Any motion in the chrome must clear that same bar.
+an even energised wash) hosting a single pulse of light that is
+*logarithmically centred*: the lit glow is seeded at the centre and grows
+outward in width on a logarithmic curve, breathing at a slow heartbeat. The
+widening is the thing observed. At the peak of its expansion the glow fades back
+to the original green and the cycle restarts, so the only motion the eye sees is
+the centred glow getting wider and softer, never a travelling spark. Every knob
+of the effect (base/glow green, pulse frequency in Hz, start/peak width, the
+logarithmic growth shape, peak brightness) is a conserved named constant in the
+`lightbar` configuration namespace in `sleelaterminal-gui.cpp`, so it can be
+addressed as a single artistic surface. It is allowed because it is *ambient* —
+low-contrast, slow, edge-only, and carrying no information the user must track —
+so it signals "alive" without pulling the eye from the terminal. Any motion in
+the chrome must clear that same bar.
 
 ## 2. One palette, one source of truth
 
