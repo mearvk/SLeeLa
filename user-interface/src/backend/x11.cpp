@@ -306,6 +306,18 @@ public:
         while (XPending(dpy_)) {
             XEvent xe;
             XNextEvent(dpy_, &xe);
+            /* Coalesce pointer motion: a fast drag queues many MotionNotify
+             * events, and acting on every one (set_value -> invalidate ->
+             * repaint) makes a slider knob lag behind the cursor and feel
+             * sticky. Collapse a run of motions on the same window to the most
+             * recent, so each pump processes just the latest position. */
+            if (xe.type == MotionNotify) {
+                XEvent next;
+                while (XCheckTypedWindowEvent(dpy_, xe.xmotion.window,
+                                              MotionNotify, &next)) {
+                    xe = next;
+                }
+            }
             dispatched += dispatch(xe) ? 1 : 0;
         }
 

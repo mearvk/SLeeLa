@@ -856,7 +856,7 @@ private:
             {"uiWidgetSuggested",SLUI_FN_WIDGET_SET_SUGGESTED},{"uiWidgetDestructive",SLUI_FN_WIDGET_SET_DESTRUCT},
             {"uiWidgetSetText",SLUI_FN_WIDGET_SET_TEXT},{"uiWidgetSetIcon",SLUI_FN_WIDGET_SET_ICON},
             {"uiPopupCreate",SLUI_FN_POPUP_CREATE},{"uiPopupSetOpen",SLUI_FN_POPUP_SET_OPEN},{"uiPopupIsOpen",SLUI_FN_POPUP_IS_OPEN},
-            {"uiPopupSetAnchor",SLUI_FN_POPUP_SET_ANCHOR},
+            {"uiPopupSetAnchor",SLUI_FN_POPUP_SET_ANCHOR},{"uiPopupAnchorTo",SLUI_FN_POPUP_ANCHOR_TO},
             {"uiWifiOpenSettings",SLUI_FN_WIFI_OPEN_SETTINGS},
             {"uiWifiScan",SLUI_FN_WIFI_SCAN},{"uiWifiNetworkCount",SLUI_FN_WIFI_NETWORK_COUNT},
             {"uiWifiNetworkSsid",SLUI_FN_WIFI_NETWORK_SSID},{"uiWifiNetworkBssid",SLUI_FN_WIFI_NETWORK_BSSID},

@@ -479,6 +479,11 @@ int slui_popup_is_open(const SLUIWidget *popup);
  * additionally places its left edge at that pixel (under its menu button),
  * clamped on-screen. x < 0 leaves the horizontal placement to the default. */
 void slui_popup_set_anchor(SLUIWidget *popup, int top_left, int x);
+/* Anchor a popup to a TRIGGER widget: the popup is centered horizontally on the
+ * trigger's laid-out rect, dropped just below it, and gets an upward teardrop
+ * caret aimed at the trigger's center. Exact (reads the trigger's real bounds),
+ * unlike the fixed-x form above. Pass NULL to clear. */
+void slui_popup_anchor_to(SLUIWidget *popup, SLUIWidget *trigger);
 
 /* Text accessors (label/button/entry). text buffers are copied in; `out`/`cap`
  * read the current value and return the full length (even if truncated). */

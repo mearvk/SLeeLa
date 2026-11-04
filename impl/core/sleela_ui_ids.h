@@ -219,6 +219,8 @@ typedef enum {
      * menubar dropdown) instead of the default lower-right; x >= 0 puts its left
      * edge at that pixel (under its menu button), clamped on-screen. */
     SLUI_FN_POPUP_SET_ANCHOR,          /* uiPopupSetAnchor(popup:i, topLeft:i, x:i) -> null */
+    /* Center a popup on a trigger widget and give it an upward teardrop caret. */
+    SLUI_FN_POPUP_ANCHOR_TO,           /* uiPopupAnchorTo(popup:i, trigger:i) -> null */
 
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;

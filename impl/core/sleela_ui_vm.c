@@ -154,7 +154,7 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_THROBBER_SET_INTENSITY: case SLUI_FN_THROBBER_SET_HUE:
         case SLUI_FN_WIDGET_SET_TEXT: case SLUI_FN_WIDGET_SET_TOGGLE:
         case SLUI_FN_WIDGET_SET_VALUE: case SLUI_FN_WIDGET_SET_SENSITIVE:
-        case SLUI_FN_WIDGET_SET_VISIBLE: case SLUI_FN_POPUP_SET_OPEN: case SLUI_FN_WIFI_CONNECT:
+        case SLUI_FN_WIDGET_SET_VISIBLE: case SLUI_FN_POPUP_SET_OPEN: case SLUI_FN_POPUP_ANCHOR_TO: case SLUI_FN_WIFI_CONNECT:
         case SLUI_FN_WIDGET_SET_SUGGESTED:
         case SLUI_FN_WIDGET_SET_DESTRUCT:
         case SLUI_FN_THEME_LOAD_CONFIG: case SLUI_FN_THEME_SET_BASE:
@@ -328,6 +328,7 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_POPUP_SET_OPEN:       slui_popup_set_open(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_POPUP_IS_OPEN:        return r_int(slui_popup_is_open(widget_get(ai(a,n,0))));
         case SLUI_FN_POPUP_SET_ANCHOR:     slui_popup_set_anchor(widget_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2)); return r_null();
+        case SLUI_FN_POPUP_ANCHOR_TO:      slui_popup_anchor_to(widget_get(ai(a,n,0)), widget_get(ai(a,n,1))); return r_null();
         case SLUI_FN_WIFI_OPEN_SETTINGS:    return r_int(slui_wifi_open_settings());
         case SLUI_FN_WIFI_SCAN: return r_int(sleela_wifi_vm_scan());
         case SLUI_FN_WIFI_NETWORK_COUNT: return r_int(sleela_wifi_vm_network_count());

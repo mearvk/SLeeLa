@@ -138,6 +138,12 @@ public:
     bool overlay_top_left() const { return anchor_top_left_; }
     int  overlay_anchor_x() const { return anchor_x_; }
     void set_overlay_anchor(bool top_left, int x) { anchor_top_left_ = top_left; anchor_x_ = x; }
+    /* Anchor the overlay to a TRIGGER widget: the Window centers the popup
+     * horizontally on the trigger's laid-out rect and draws a teardrop pointer
+     * at the popup's top aimed at the trigger's center. Exact, not estimated,
+     * because it reads the trigger's real bounds at paint time. */
+    Widget* overlay_anchor_widget() const { return anchor_widget_; }
+    void set_overlay_anchor_widget(Widget* w) { anchor_widget_ = w; anchor_top_left_ = true; }
 
     void paint_children(PaintContext& ctx) {
         for (auto& c : children_) {
@@ -303,6 +309,7 @@ protected:
      * button (a left inset in pixels). */
     bool anchor_top_left_ = false;
     int  anchor_x_ = -1;
+    Widget* anchor_widget_ = nullptr; /* trigger to center under + point a teardrop at */
 
     SLUIActivateHandler activate_ = nullptr;
     void* activate_user_ = nullptr;

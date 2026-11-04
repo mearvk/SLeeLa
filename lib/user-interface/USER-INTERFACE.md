@@ -76,6 +76,7 @@ implements the same surface.
 | `uiPopupSetOpen(popup,open)` | Show (1) / dismiss (0) the popup | `slui_popup_set_open` |
 | `uiPopupIsOpen(popup)` → int | 1 while the popup is open | `slui_popup_is_open` |
 | `uiPopupSetAnchor(popup,topLeft,x)` | Place the overlay: `topLeft`=1 anchors below the top strip (a menubar dropdown), `x`>=0 fixes its left edge under its button; default is lower-right | `slui_popup_set_anchor` |
+| `uiPopupAnchorTo(popup,trigger)` | Center the popup on a trigger widget (exact, from its laid-out rect) and draw a teardrop caret pointing up at it — the way a menu dropdown sits under its button | `slui_popup_anchor_to` |
 | `uiGrid(parent,cols,spacing)` → int | A row/column grid | `slui_grid` |
 | `uiStatusBar(parent)` → int | A footer status strip | `slui_status_bar` |
 | `uiImage(parent,src,w,h)` → int | Image tile; `src` is a file path — decodes & renders real JPEG (always) / PNG, AVIF (when linked); a non-file string shows a captioned tile. Re-decoded on `uiWidgetSetText`. | `slui_image` |
