@@ -1,19 +1,22 @@
 << lib/collections/SLMap.sleela
    SLeeLa Standard Library Definition.
-   Definition: Defines the SLeeLa standard-library type SLMap used within the collections library family. >>
+   Definition: A concrete, String-keyed, String-valued map backed by two
+   parallel VM-managed growable native arrays (keys and values at matching
+   indices). Keys are unique; lookup is a linear scan (suited to
+   small-to-moderate maps). Deliberately avoids Generics. >>
 #sleela 2.5
 material;
 < Unified SLeeLa standard-library front-end object. >
 < Family: collections. Native VM/OS work crosses an explicit bridge. >
 class SLMap {
-  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
-  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+     Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
-     Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+     Values are faithful to the subject real origin where publicly known. >>
+  String metaVersion = "1.1.0";
   int metaId = 544;
   String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
-  String metaDate = "2026-10-16";
+  String metaDate = "2026-11-04";
   String metaCopyright = "SLeeLa project";
   String metaTrademark = "none";
   String metaCorporation = "none";
@@ -47,5 +50,97 @@ class SLMap {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int size; void add(){size=size+1;} void remove(){if(size>0)size=size-1;} int length(){return size;} boolean empty(){return size==0;}
+
+  << Two parallel VM-managed arrays. keys[i] maps to vals[i] for i in
+     [0, size). Keys are compared by String equality; null is not a key. >>
+  String[] keys = new String[0];
+  String[] vals = new String[0];
+  int size = 0;
+
+  < Index of key, or -1 when absent. A null key is never stored. >
+  int indexOfKey(String key) {
+    if (key == null) { return -1; }
+    int i = 0;
+    while (i < size) {
+      String current = arrayGet(keys, i);
+      if (current != null && current == key) { return i; }
+      i = i + 1;
+    }
+    return -1;
+  }
+
+  < True when key is present. >
+  boolean containsKey(String key) {
+    return indexOfKey(key) >= 0;
+  }
+
+  << Associate key with value. Inserts a new entry or overwrites the value of
+     an existing key. A null key is rejected and returns false. >>
+  boolean put(String key, String value) {
+    if (key == null) { return false; }
+    int at = indexOfKey(key);
+    if (at >= 0) {
+      arraySet(vals, at, value);
+      return true;
+    }
+    if (size < arrayLength(keys)) {
+      arraySet(keys, size, key);
+    } else {
+      arrayPush(keys, key);
+    }
+    if (size < arrayLength(vals)) {
+      arraySet(vals, size, value);
+    } else {
+      arrayPush(vals, value);
+    }
+    size = size + 1;
+    return true;
+  }
+
+  < Value associated with key, or null when the key is absent. >
+  String get(String key) {
+    int at = indexOfKey(key);
+    if (at < 0) { return null; }
+    return arrayGet(vals, at);
+  }
+
+  << Remove the entry for key, preserving the order of remaining entries.
+     Returns true when an entry was removed. >>
+  boolean removeKey(String key) {
+    int at = indexOfKey(key);
+    if (at < 0) { return false; }
+    int i = at;
+    while (i + 1 < size) {
+      arraySet(keys, i, arrayGet(keys, i + 1));
+      arraySet(vals, i, arrayGet(vals, i + 1));
+      i = i + 1;
+    }
+    size = size - 1;
+    arraySet(keys, size, null);
+    arraySet(vals, size, null);
+    return true;
+  }
+
+  < Key at the given insertion-order index, or null when out of range. >
+  String keyAt(int index) {
+    if (index < 0 || index >= size) { return null; }
+    return arrayGet(keys, index);
+  }
+
+  < Value at the given insertion-order index, or null when out of range. >
+  String valueAt(int index) {
+    if (index < 0 || index >= size) { return null; }
+    return arrayGet(vals, index);
+  }
+
+  < Drop every entry; capacity remains available for reuse. >
+  void clear() {
+    while (size > 0) {
+      size = size - 1;
+      arraySet(keys, size, null);
+      arraySet(vals, size, null);
+    }
+  }
+  int length() { return size; }
+  boolean empty() { return size == 0; }
 }

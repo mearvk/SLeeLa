@@ -15,7 +15,7 @@ class SLValueListBasicExample {
     return 1 + recurseCount(values, index + 1);
   }
 
-  int main() {
+  void main() {
     SLValueList values = new SLValueList();
     Customer customer = new Customer();
     Order order = new Order();
@@ -31,6 +31,5 @@ class SLValueListBasicExample {
     print(retained instanceof Order);    // false: different runtime class
     Customer restored = (Customer) retained; // checked runtime cast
     print(restored.label);
-    return 0;
   }
 }

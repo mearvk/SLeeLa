@@ -1,18 +1,22 @@
-<< lib/core/SLArray.sleela
+<< lib/core/SLCoreCell.sleela
    SLeeLa Standard Library Definition.
-   Definition: Defines the SLeeLa standard-library type SLArray used within the core library family. >>
+   Definition: A minimal core activation cell: a latchable state bit with an
+   activation counter. Formerly named SLArray in the core family, which was a
+   misnomer (it holds no array storage); the array type lives in the
+   collections family as collections.SLArray. Renamed so that SLArray is an
+   unambiguous, single-definition library symbol. >>
 #sleela 2.5
 material;
 < SLeeLa core/base language contract. >
-class SLArray {
-  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
-  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+class SLCoreCell {
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+     Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
-     Values are faithful to the subject's real origin where publicly known. >>
+     Values are faithful to the subject real origin where publicly known. >>
   String metaVersion = "1.0.0";
   int metaId = 153;
   String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
-  String metaDate = "2026-10-16";
+  String metaDate = "2026-11-04";
   String metaCopyright = "SLeeLa project";
   String metaTrademark = "none";
   String metaCorporation = "none";

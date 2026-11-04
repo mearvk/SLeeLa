@@ -597,7 +597,6 @@ coorenagraph	Utilitarianism.sleela	lib/coorenagraph/moral/Utilitarianism.sleela	
 coorenagraph	VirtueEthics.sleela	lib/coorenagraph/moral/VirtueEthics.sleela	source
 core	SLAnnotation.sleela	lib/core/SLAnnotation.sleela	source
 core	SLAny.sleela	lib/core/SLAny.sleela	source
-core	SLArray.sleela	lib/core/SLArray.sleela	source
 core	SLAuthorship.sleela	lib/core/SLAuthorship.sleela	source
 core	SLBoolean.sleela	lib/core/SLBoolean.sleela	source
 core	SLBuffer.sleela	lib/core/SLBuffer.sleela	source
@@ -614,6 +613,7 @@ core	SLComparable.sleela	lib/core/SLComparable.sleela	source
 core	SLConditionVariable.sleela	lib/core/SLConditionVariable.sleela	source
 core	SLConfiguration.sleela	lib/core/SLConfiguration.sleela	source
 core	SLConnection.sleela	lib/core/SLConnection.sleela	source
+core	SLCoreCell.sleela	lib/core/SLCoreCell.sleela	source
 core	SLDeserializer.sleela	lib/core/SLDeserializer.sleela	source
 core	SLDirectory.sleela	lib/core/SLDirectory.sleela	source
 core	SLDisposable.sleela	lib/core/SLDisposable.sleela	source
