@@ -1,0 +1,19 @@
+< SLeeLa Standard Library Definition.
+  Definition: Status and platform values for the native OS-level-support C ABI.
+  This is a value contract, not an FFI binding. >
+#sleela 2.5
+material;
+
+class SLSystemStatus {
+  int OK = 0;
+  int INVALID_ARGUMENT = 1;
+  int BUFFER_TOO_SMALL = 2;
+  int SYSTEM_ERROR = 3;
+  int NOT_FOUND = 4;
+  int UNSUPPORTED = 5;
+
+  int PLATFORM_UNKNOWN = 0;
+  int PLATFORM_LINUX = 1;
+  int PLATFORM_MACOS = 2;
+  int PLATFORM_WINDOWS = 3;
+}

@@ -1,0 +1,15 @@
+< SLeeLa Standard Library Definition.
+  Definition: Contract shape for the native five-field cron helpers.
+  Validation and next-time calculation are performed by the native osls API. >
+#sleela 2.5
+material;
+
+class SLCronExpression {
+  String expression = "";
+  String timezone = "process local timezone";
+  int searchHorizonYears = 5;
+
+  String getExpression() { return expression; }
+  String getTimezone() { return timezone; }
+  int getSearchHorizonYears() { return searchHorizonYears; }
+}
