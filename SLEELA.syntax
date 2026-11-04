@@ -653,6 +653,7 @@ This appendix mirrors the **10995** package-qualified class symbols across **90*
 - **`sleela`** (1): `SLPackage`
 - **`sleela-terminal`** (1): `SLPackage`
 - **`social-model`** (1): `SLPackage`
+- **`spatial`** (3): `SLOctree`, `SLSpatialHash`, `SLVoxelGrid`
 - **`sst`** (11): `DynamiteConnector`, `MySQLConnector`, `PostgreSQLConnector`, `SLPackage`, `SQLConnector`, `SSTLibrary`, `SSTSource`, `SSTSymbol`, `SSTSymbolKind`, `SSTSymbolReference`, `SSTSymbolTable`
 - **`synchro`** (1): `SLPackage`
 - **`systems`** (1): `SLPackage`

@@ -1,0 +1,46 @@
+#sleela 2.1
+import spatial;
+// SLOctree checks: power-of-two sizing, insert/query, overwrite, region scan, pruning.
+class SLOctreeBasic {
+  void main() {
+    SLOctree t = new SLOctree();
+    t.allocate(5);                 // rounded up to 8
+    print(t.getSpan());            // 8
+    print(t.empty());              // true
+    print(t.branched());           // false: no points yet
+
+    print(t.insert(0, 0, 0, "origin"));   // true
+    print(t.insert(7, 7, 7, "far"));      // true
+    print(t.insert(1, 2, 3, "mid"));      // true
+    print(t.insert(1, 2, 3, "mid2"));     // false: overwrite same cell
+    print(t.insert(8, 0, 0, "oob"));      // false: outside [0,8)
+    print(t.length());                    // 3
+    print(t.branched());                  // true: root subdivided
+
+    print(t.query(0, 0, 0));              // origin
+    print(t.query(1, 2, 3));              // mid2 (overwritten)
+    print(t.query(7, 7, 7));              // far
+    print(t.query(4, 4, 4) == null);      // true: empty cell
+    print(t.contains(7, 7, 7));           // true
+    print(t.contains(2, 2, 2));           // false
+
+    // Region query: the box [0,4)x[0,4)x[0,4) should contain origin and mid only.
+    SLList box = new SLList();
+    int n = t.collectRegion(0, 0, 0, 4, 4, 4, box);
+    print(n);                             // 2
+    print(box.length());                  // 2
+
+    // Region query: box [6,8)^3 contains only far.
+    SLList corner = new SLList();
+    print(t.collectRegion(6, 6, 6, 2, 2, 2, corner)); // 1
+    print(corner.get(0));                 // far
+
+    // Empty region prunes to nothing.
+    SLList none = new SLList();
+    print(t.collectRegion(4, 4, 4, 1, 1, 1, none)); // 0
+
+    // Full traversal returns everything.
+    SLList all = new SLList();
+    print(t.collectAll(all));             // 3
+  }
+}
