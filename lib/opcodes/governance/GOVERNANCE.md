@@ -24,7 +24,7 @@ Added to a `.sleela` source, the Registrar *considers the whole program A → B
 before any opcode runs* and checks that the opcodes are **in order unto
 themselves**:
 
-1. every opcode is a valid, armed, canonical opcode (codes 0–102);
+1. every opcode is a valid, armed, canonical opcode (codes 0–154);
 2. the sequence **terminates** — exactly one `OP_HALT`, and it is last (or the
    source is explicitly marked a composable fragment);
 3. **nothing runs past the terminal**;
