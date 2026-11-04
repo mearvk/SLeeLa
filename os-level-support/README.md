@@ -1,49 +1,18 @@
 # OS Level Support
 
-This directory contains a small, portable C API and C++ wrapper for OS-level
-capabilities that complement (rather than duplicate) the SLeeLa standard OS
-model. It targets Linux, Windows 10+, and macOS.
+Portable C ABI with a thin C++ facade for read-only, user-mode host services that complement the SLeeLa standard OS model. Build with `cmake -S os-level-support -B build/osls`, then build and run `ctest --test-dir build/osls --output-on-failure`.
 
-## Included
+## Available C and C++ surfaces
 
-- Read-only host and current-process facts: platform, PID, hostname, user name,
-  working directory, wall-clock time, and monotonic clock.
-- Cron-style five-field schedule parsing and calculation of the next matching
-  local-time minute. This is a pure calculation; it does not install a cron job,
-  create a service, or launch a process.
-- A C++ value-type wrapper over the C API.
-- The C/C++ native module loader in [`loader/`](loader/README.md), for trusted
-  shared libraries built from up to nine linked C/C++ source/object units.
+- Host snapshot and monotonic/wall clocks (`osls_get_system_info`, `osls::SystemInfo`).
+- Current-process metadata only (`osls_get_process_info`, `osls_enumerate_processes`). `pid == 0` means self; inspecting another process is explicitly unsupported. Enumeration intentionally returns only the caller's process.
+- Current-process environment lookup/enumeration.
+- Filesystem metadata and directory-name listing (no file contents, mutation, or traversal beyond the requested directory).
+- CPU/memory, local timezone, and network-interface metadata. Unsupported platform capabilities return `OSLS_UNSUPPORTED`; fields not available from a portable API may be reported as `unknown`/empty.
+- Cron expression validation and next-time calculation.
 
-These are deliberately user-mode operations. The system-information and cron
-APIs do not change host configuration. The native loader is an execution
-boundary, not a sandbox: loading a library executes native code in the current
-process, so only trusted modules should be loaded. It does not interpret C/C++
-source, load relocatable object files directly, or compile caller-provided code
-at runtime.
+The C++ `osls::Host` methods wrap the same status-returning C API and retain the same access boundaries. Buffer/list outputs are caller-owned; do not assume fixed fields contain truncated strings.
 
-Registry and similar configuration stores are not implemented here: the
-platform semantics, permissions, and persistence policy need a separate
-explicit API. This library never changes system configuration.
+These APIs do not perform raw syscall invocation, syscall hooks, kernel memory/object access, driver installation or unload, registry/configuration mutation, command execution, process creation, or automatic execution of compiled artifacts. The native plugin loader remains a separate boundary: loading trusted shared-library code executes inside the current process and is not a sandbox.
 
-## Build
-
-```sh
-cmake -S os-level-support -B build/os-level-support
-cmake --build build/os-level-support
-ctest --test-dir build/os-level-support --output-on-failure
-```
-
-The API uses the process local timezone for cron calculations. Callers that
-need a named timezone should convert using a timezone-aware library; timezone
-database handling is outside this API.
-
-## API
-
-- `osls_get_system_info` gathers the documented read-only snapshot.
-- `osls_cron_validate` validates a five-field expression (`minute hour day-of-month month day-of-week`).
-- `osls_cron_next_after` finds the next matching local-time minute strictly after the supplied epoch time.
-
-Cron day-of-week accepts `0` or `7` for Sunday. As in common cron
-implementations, day-of-month and day-of-week are ANDed when either field is a
-wildcard; when both are restricted, either may match.
+This is a portable baseline, not a claim to expose every OS service. The Windows network-interface enumerator currently returns `OSLS_UNSUPPORTED`; platform-specific features should be added behind documented APIs and tested on each OS rather than represented as universally available.

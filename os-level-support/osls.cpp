@@ -13,12 +13,4 @@ osls_status SystemInfo::read(SystemInfo &out) {
     return OSLS_OK;
 }
 
-osls_status CronExpression::validate() const noexcept {
-    return osls_cron_validate(expression_.c_str());
-}
-
-osls_status CronExpression::next_after(int64_t epoch_seconds, int64_t &out_epoch_seconds) const noexcept {
-    return osls_cron_next_after(expression_.c_str(), epoch_seconds, &out_epoch_seconds);
-}
-
 } // namespace osls
