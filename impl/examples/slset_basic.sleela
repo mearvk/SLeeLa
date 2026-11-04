@@ -1,0 +1,23 @@
+#sleela 2.1
+// SLSet checks: uniqueness, membership, ordered access, discard, clear.
+class SLSetBasic {
+  void main() {
+    SLSet set = new SLSet();
+    print(set.add("a"));       // true
+    print(set.add("b"));       // true
+    print(set.add("a"));       // false: duplicate
+    print(set.length());       // 2
+    print(set.contains("b"));  // true
+    print(set.contains("z"));  // false
+    print(set.at(0));          // a
+    print(set.at(1));          // b
+    print(set.discard("a"));   // true
+    print(set.discard("a"));   // false: gone
+    print(set.length());       // 1
+    print(set.at(0));          // b
+    print(set.add("c"));       // true
+    print(set.length());       // 2
+    set.clear();
+    print(set.empty());        // true
+  }
+}

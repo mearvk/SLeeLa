@@ -1,0 +1,43 @@
+#sleela 2.1
+// SLArray checks: fixed-capacity bounds-safe storage, fill, search, reverse, copy, toList.
+class SLArrayBasic {
+  void main() {
+    SLArray a = new SLArray();
+    a.allocate(4);
+    print(a.length());          // 4
+    print(a.empty());           // false
+    print(a.get(0) == null);    // true: slots begin null
+
+    print(a.set(0, "alpha"));   // true
+    print(a.set(1, "beta"));    // true
+    print(a.set(2, "gamma"));   // true
+    print(a.set(3, "delta"));   // true
+    print(a.set(4, "oops"));    // false: out of range
+
+    print(a.get(2));            // gamma
+    print(a.get(9) == null);    // true: out of range reads null
+
+    print(a.indexOf("gamma"));  // 2
+    print(a.indexOf("absent")); // -1
+    print(a.contains("beta"));  // true
+
+    a.reverse();
+    print(a.get(0));            // delta
+    print(a.get(3));            // alpha
+
+    SLArray b = new SLArray();
+    b.allocate(4);
+    print(a.copyTo(b, 0, 0, 4));// 4
+    print(b.get(0));            // delta
+
+    SLList list = a.toList();
+    print(list.length());       // 4
+    print(list.get(1));         // gamma
+
+    a.fill("x");
+    print(a.get(0));            // x
+    print(a.get(3));            // x
+    a.clear();
+    print(a.get(0) == null);    // true
+  }
+}

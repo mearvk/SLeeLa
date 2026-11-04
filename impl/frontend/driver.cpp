@@ -1971,12 +1971,19 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
             if(loadedPaths.count(name)) continue;
             const sleela::library::Symbol* match=nullptr;
             // A versioned library import such as `import gui.version-military;`
-            // selects that source subtree for duplicate class names.
+            // selects that source subtree for duplicate class names. A plain
+            // single-segment import that names a real library package (for
+            // example `import collections;`) is honored the same way, so a
+            // program can pick the intended family when a bare class name is
+            // defined in more than one package (for example SLStack, which the
+            // spec assigns to collections but which also exists under cpu/ as
+            // the hardware stack).
             std::vector<std::string> preferredRoots;
             for(const auto& imported : program.imports){
                 std::string root=imported;
                 std::replace(root.begin(),root.end(),'.','/');
                 if(root.find('/')!=std::string::npos) preferredRoots.push_back(root);
+                else if(index.hasPackage(root)) preferredRoots.push_back(root);
             }
             auto underPreferredRoot=[&](const sleela::library::Symbol& symbol){
                 for(const auto& root:preferredRoots)

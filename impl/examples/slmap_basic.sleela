@@ -1,0 +1,27 @@
+#sleela 2.1
+// SLMap checks: put/get, overwrite, key presence, removal, ordered entry access.
+class SLMapBasic {
+  void main() {
+    SLMap m = new SLMap();
+    print(m.empty());            // true
+    print(m.put("one", "1"));    // true
+    print(m.put("two", "2"));    // true
+    print(m.put("three", "3"));  // true
+    print(m.length());           // 3
+    print(m.get("two"));         // 2
+    print(m.get("missing") == null); // true
+    print(m.containsKey("one")); // true
+    print(m.put("two", "22"));   // true: overwrite
+    print(m.get("two"));         // 22
+    print(m.length());           // 3: still 3 keys
+    print(m.keyAt(0));           // one
+    print(m.valueAt(0));         // 1
+    print(m.removeKey("one"));   // true
+    print(m.removeKey("one"));   // false: gone
+    print(m.length());           // 2
+    print(m.keyAt(0));           // two
+    print(m.get("one") == null); // true
+    m.clear();
+    print(m.empty());            // true
+  }
+}

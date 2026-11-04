@@ -1,19 +1,22 @@
 << lib/collections/SLQueue.sleela
    SLeeLa Standard Library Definition.
-   Definition: Defines the SLeeLa standard-library type SLQueue used within the collections library family. >>
+   Definition: A concrete, String-valued FIFO queue backed by the VM-managed
+   growable native array. enqueue appends to the tail; dequeue removes from
+   the head. A head cursor avoids shifting on every dequeue; storage is
+   compacted when the dead prefix dominates. Deliberately avoids Generics. >>
 #sleela 2.5
 material;
 < Unified SLeeLa standard-library front-end object. >
 < Family: collections. Native VM/OS work crosses an explicit bridge. >
 class SLQueue {
-  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
-  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+     Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
-     Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
-  int metaId = 731;
+     Values are faithful to the subject real origin where publicly known. >>
+  String metaVersion = "1.1.0";
+  int metaId = 846;
   String metaAuthor = "Max Rupplin vs. Dr. Mrs. Elisabeth Harkins";
-  String metaDate = "2026-10-16";
+  String metaDate = "2026-11-04";
   String metaCopyright = "SLeeLa project";
   String metaTrademark = "none";
   String metaCorporation = "none";
@@ -47,5 +50,80 @@ class SLQueue {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int size; void add(){size=size+1;} void remove(){if(size>0)size=size-1;} int length(){return size;} boolean empty(){return size==0;}
+
+  << Backing storage uses the VM-managed, growable String array.
+     Live values occupy [head, tail); size == tail - head. >>
+  String[] values = new String[0];
+  int head = 0;
+  int tail = 0;
+
+  << Compact live values down to index 0 so the dead prefix is reclaimed.
+     Called when the head cursor has advanced past half the backing length. >>
+  void compact() {
+    int n = tail - head;
+    int i = 0;
+    while (i < n) {
+      arraySet(values, i, arrayGet(values, head + i));
+      i = i + 1;
+    }
+    int j = n;
+    while (j < tail) {
+      arraySet(values, j, null);
+      j = j + 1;
+    }
+    head = 0;
+    tail = n;
+  }
+
+  < Append one value to the tail. Freed capacity is reused after dequeues. >
+  void enqueue(String value) {
+    if (tail < arrayLength(values)) {
+      arraySet(values, tail, value);
+    } else {
+      arrayPush(values, value);
+    }
+    tail = tail + 1;
+  }
+
+  < Return the head value without removing it; null when empty. >
+  String front() {
+    if (head >= tail) { return null; }
+    return arrayGet(values, head);
+  }
+
+  < Remove and return the head value; null when empty. >
+  String dequeue() {
+    if (head >= tail) { return null; }
+    String value = arrayGet(values, head);
+    arraySet(values, head, null);
+    head = head + 1;
+    if (head >= tail) {
+      head = 0;
+      tail = 0;
+    } else {
+      int backing = arrayLength(values);
+      if (head > backing / 2) { compact(); }
+    }
+    return value;
+  }
+
+  < Compatibility convenience: enqueue defers to add for a uniform API. >
+  void add(String value) { enqueue(value); }
+
+  < Compatibility convenience: discard the head item, if present. >
+  void remove() {
+    if (head < tail) { dequeue(); }
+  }
+
+  < Drop every item; capacity remains available for reuse. >
+  void clear() {
+    while (head < tail) {
+      arraySet(values, head, null);
+      head = head + 1;
+    }
+    head = 0;
+    tail = 0;
+  }
+  int length() { return tail - head; }
+  boolean empty() { return head >= tail; }
 }

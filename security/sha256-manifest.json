@@ -531,7 +531,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "a7d252163759694468ef2a4667f1795a3bb9c45a923037c2754921825fbafcab"
+      "sha256": "89cb67ce9b12a7f164bfc7882c2e19864a6f7f95a2705ecfc565e9397614349e"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -2739,7 +2739,7 @@
     },
     {
       "path": "lib/collections/SLArray.sleela",
-      "sha256": "393aea8535a9ca21a7453988f87d315958d12d135791bfb0e47554158adc4dab"
+      "sha256": "93108ecff57308c16fadc78118a8f68240c3712295fa6adf360afaf830a457ac"
     },
     {
       "path": "lib/collections/SLIterator.sleela",
@@ -2747,15 +2747,15 @@
     },
     {
       "path": "lib/collections/SLList.sleela",
-      "sha256": "b6ee4c4130e9816a4489b25fca1fef1f1e48a9f50bd87d787f30969f89d267a6"
+      "sha256": "7fbe3218a05cae53ab0a4662f04f7a34699bfde64c22c0ea6481ade3dce6b55f"
     },
     {
       "path": "lib/collections/SLMap.sleela",
-      "sha256": "517fe9d20920e0180d5775f509506c40ac41b690b026655c87128349138c2fbd"
+      "sha256": "1fe0fd955e6cd652351a861047d49ba7cff8da1418fb1aa260b3395112a08a4d"
     },
     {
       "path": "lib/collections/SLQueue.sleela",
-      "sha256": "46d20c78ed591b63220370c24729b8765bf8caedc432d91cbad474983b9cdf22"
+      "sha256": "a729b88bcabd9efc0fe868eef3f68cc7b6d0e0bdac0e5ef1614d5a4a64bdb70d"
     },
     {
       "path": "lib/collections/SLRange.sleela",
@@ -2763,11 +2763,11 @@
     },
     {
       "path": "lib/collections/SLSet.sleela",
-      "sha256": "f6c8d97193e1f3d16b84d0500727c3e77093827b1d5e31d77324d689324bfa5a"
+      "sha256": "cb87cae56b06fcc9a2368703c5501ca59bccb4cebda199f885a35c86e451c16b"
     },
     {
       "path": "lib/collections/SLStack.sleela",
-      "sha256": "f0789fd15b6f3c699e3a51ef52419b0ae15b6c7f23043f1e13284dd24314a98c"
+      "sha256": "390d4018c99c79d87055290926a5b9133f4147d19d80a3a674733648ba482c7f"
     },
     {
       "path": "lib/collections/SLValueList.sleela",
@@ -3514,10 +3514,6 @@
       "sha256": "578699d6fc74379dbfe7f72992b586eb087bdb1170d2d1ca09d9c4dec322c6a1"
     },
     {
-      "path": "lib/core/SLArray.sleela",
-      "sha256": "b67b47cf497387cfaea1aa7871fff0fdfbff01ba065c6db132e80edc4d5643c8"
-    },
-    {
       "path": "lib/core/SLAuthorship.sleela",
       "sha256": "fb1f82746109677cf9fc0c1a3d1f9e84ba08ca2fa243a6d0a9a7919cb61d0836"
     },
@@ -3580,6 +3576,10 @@
     {
       "path": "lib/core/SLConnection.sleela",
       "sha256": "4ba5080ce8088b63780170edd611d18a52c775507b11087913ef03d73cea9388"
+    },
+    {
+      "path": "lib/core/SLCoreCell.sleela",
+      "sha256": "68306083845f89f2f9a2ad968016240f606979640964758e830c52c12e7233d8"
     },
     {
       "path": "lib/core/SLDeserializer.sleela",

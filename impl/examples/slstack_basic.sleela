@@ -1,0 +1,28 @@
+#sleela 2.1
+import collections;
+// SLStack checks: LIFO push/pop/peek, emptiness, clear, capacity reuse.
+// `import collections;` selects the collections SLStack over cpu/SLStack.
+class SLStackBasic {
+  void main() {
+    SLStack s = new SLStack();
+    print(s.empty());        // true
+    s.push("a");
+    s.push("b");
+    s.push("c");
+    print(s.length());       // 3
+    print(s.peek());         // c
+    print(s.pop());          // c
+    print(s.pop());          // b
+    print(s.length());       // 1
+    print(s.peek());         // a
+    s.push("d");             // reuse freed capacity
+    print(s.length());       // 2
+    print(s.pop());          // d
+    print(s.pop());          // a
+    print(s.pop() == null);  // true: empty
+    print(s.empty());        // true
+    s.push("x");
+    s.clear();
+    print(s.empty());        // true
+  }
+}

@@ -22,8 +22,8 @@ class SLList {
   int metaScienceRating = 9;
   String metaNationalSchedule = "none";
 
-  < Backing storage uses the VM-managed, growable String array.
-    size is the logical count; values[size..capacity) are unused slots. >
+  << Backing storage uses the VM-managed, growable String array.
+     size is the logical count; values[size..capacity) are unused slots. >>
   String[] values = new String[0];
   int size = 0;
 

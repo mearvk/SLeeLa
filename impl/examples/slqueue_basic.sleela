@@ -1,0 +1,28 @@
+#sleela 2.1
+// SLQueue checks: FIFO enqueue/dequeue/front, head-cursor reuse, compaction, clear.
+class SLQueueBasic {
+  void main() {
+    SLQueue q = new SLQueue();
+    print(q.empty());         // true
+    q.enqueue("a");
+    q.enqueue("b");
+    q.enqueue("c");
+    print(q.length());        // 3
+    print(q.front());         // a
+    print(q.dequeue());       // a
+    print(q.dequeue());       // b
+    print(q.length());        // 1
+    print(q.front());         // c
+    q.enqueue("d");
+    q.enqueue("e");
+    print(q.length());        // 3
+    print(q.dequeue());       // c
+    print(q.dequeue());       // d
+    print(q.dequeue());       // e
+    print(q.dequeue() == null);// true: empty
+    print(q.empty());         // true
+    q.enqueue("z");
+    q.clear();
+    print(q.empty());         // true
+  }
+}
