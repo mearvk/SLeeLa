@@ -1,5 +1,4 @@
 #include "grt_claim.hpp"
-#include <cstring>
 
 namespace grt {
 

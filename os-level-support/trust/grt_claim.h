@@ -28,8 +28,6 @@ typedef enum grt_claim_kind {
     GRT_KIND_INDEPENDENT_ASSESSMENT = 4
 } grt_claim_kind;
 
-/* Fixed-size, caller-owned claim data. Strings must be NUL-terminated.
- * Timestamps are Unix seconds; expiry must be later than issuance. */
 typedef struct grt_claim {
     uint32_t version;
     grt_claim_kind kind;
@@ -47,9 +45,10 @@ typedef struct grt_claim {
     int64_t expires_at;
 } grt_claim;
 
-/* Structural checks only. This function performs no signature verification,
- * identity lookup, network access, trust decision, or authorization. */
-gr t_claim_status_placeholder
+/* Structural checks only. No signature, identity, network, trust, or
+ * authorization decision is performed. */
+grt_claim_status grt_claim_validate(const grt_claim *claim, int64_t now);
+const char *grt_claim_status_name(grt_claim_status status);
 
 #ifdef __cplusplus
 }

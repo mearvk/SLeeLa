@@ -1,7 +1,6 @@
 #include "grt_claim.h"
 
 #include <ctype.h>
-#include <string.h>
 
 static int bounded_string(const char *value, size_t capacity, int required) {
     size_t i;
@@ -16,7 +15,9 @@ static int valid_digest(const char *digest, size_t capacity) {
     size_t i, n = 0;
     if (!bounded_string(digest, capacity, 1)) return 0;
     while (n < capacity && digest[n]) ++n;
-    if (n < 16 || (n & 1u)) return 0;
+    /* Require SHA-256-sized-or-longer hexadecimal syntax. This checks format,
+     * not digest correctness or the declared algorithm. */
+    if (n < 64 || (n & 1u)) return 0;
     for (i = 0; i < n; ++i) {
         if (!isxdigit((unsigned char)digest[i])) return 0;
     }
@@ -36,19 +37,16 @@ grt_claim_status grt_claim_validate(const grt_claim *claim, int64_t now) {
         return GRT_CLAIM_INVALID;
     }
 
-    if (claim->kind == GRT_KIND_ARTIFACT_PROVENANCE) {
-        if (!bounded_string(claim->source_revision, sizeof(claim->source_revision), 1) ||
-            !bounded_string(claim->artifact_digest_algorithm, sizeof(claim->artifact_digest_algorithm), 1) ||
-            !valid_digest(claim->artifact_digest, sizeof(claim->artifact_digest))) {
-            return GRT_CLAIM_INVALID;
-        }
+    if (claim->kind == GRT_KIND_ARTIFACT_PROVENANCE &&
+        (!bounded_string(claim->source_revision, sizeof(claim->source_revision), 1) ||
+         !bounded_string(claim->artifact_digest_algorithm, sizeof(claim->artifact_digest_algorithm), 1) ||
+         !valid_digest(claim->artifact_digest, sizeof(claim->artifact_digest)))) {
+        return GRT_CLAIM_INVALID;
     }
-
     if (claim->kind == GRT_KIND_INDEPENDENT_ASSESSMENT &&
         !bounded_string(claim->evidence_reference, sizeof(claim->evidence_reference), 1)) {
         return GRT_CLAIM_INVALID;
     }
-
     if (claim->expires_at <= now) return GRT_CLAIM_EXPIRED;
     return GRT_CLAIM_WELL_FORMED;
 }
