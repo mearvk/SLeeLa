@@ -7,8 +7,6 @@ target_compile_features(os_level_support PUBLIC c_std_99 cxx_std_11)
 
 if(WIN32)
   target_compile_definitions(os_level_support PRIVATE _CRT_SECURE_NO_WARNINGS)
-elseif(APPLE)
-  target_link_libraries(os_level_support PRIVATE)
 endif()
 
 include(CTest)
@@ -17,3 +15,6 @@ if(BUILD_TESTING)
   target_link_libraries(osls_test PRIVATE os_level_support)
   add_test(NAME osls_test COMMAND osls_test)
 endif()
+
+# The C/C++ native plugin loader is part of this OS support module.
+add_subdirectory(loader)
