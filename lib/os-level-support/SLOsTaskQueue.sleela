@@ -1,0 +1,17 @@
+< SLeeLa Standard Library Definition.
+  Definition: Descriptive contract for the bounded cooperative task queue in the native OS-support library.
+  This SLeeLa value does not enqueue or execute native callbacks. >
+#sleela 2.5
+material;
+
+class SLOsTaskQueue {
+  int capacity = 128;
+  int pendingCount = 0;
+  boolean taskRunning = false;
+  String executionModel = "post queues work; run-one executes at most one task";
+
+  int getCapacity() { return capacity; }
+  int getPendingCount() { return pendingCount; }
+  boolean isTaskRunning() { return taskRunning; }
+  String getExecutionModel() { return executionModel; }
+}

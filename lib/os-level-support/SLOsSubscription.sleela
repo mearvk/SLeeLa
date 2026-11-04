@@ -1,0 +1,17 @@
+< SLeeLa Standard Library Definition.
+  Definition: Descriptive subscription record for the native OS-support binding API.
+  Native callback registration is performed by the C/C++ library, not this SLeeLa value. >
+#sleela 2.5
+material;
+
+class SLOsSubscription {
+  int eventKind = 0;
+  String token = "";
+  boolean active = false;
+  String scope = "runtime-local callback";
+
+  int getEventKind() { return eventKind; }
+  String getToken() { return token; }
+  boolean isActive() { return active; }
+  String getScope() { return scope; }
+}

@@ -1,14 +1,14 @@
 < SLeeLa Standard Library Definition.
-  Definition: Native OS-support binding API note.
-  This source unit is a contract sketch only; native operations are not callable
-  from SLeeLa until an explicit, validated VM/FFI bridge is implemented. >
+  Definition: Native OS-support binding status values, matching sleela_os_support.h. >
 #sleela 2.5
 material;
 
 class SLOsSupportStatus {
   int OK = 0;
   int INVALID_ARGUMENT = 1;
-  int CAPACITY = 2;
-  int NOT_FOUND = 3;
-  int CALLBACK_FAILED = 4;
+  int OUT_OF_MEMORY = 2;
+  int CAPACITY = 3;
+  int NOT_FOUND = 4;
+  int BUSY = 5;
+  int CALLBACK_FAILED = 6;
 }

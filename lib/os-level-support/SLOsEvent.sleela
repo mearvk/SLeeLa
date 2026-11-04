@@ -1,0 +1,21 @@
+< SLeeLa Standard Library Definition.
+  Definition: Descriptive event record for the native OS-support binding API.
+  This is a contract sketch; it does not carry native pointers or dispatch events. >
+#sleela 2.5
+material;
+
+class SLOsEvent {
+  int USER = 1;
+  int TASK_QUEUED = 2;
+  int TASK_FINISHED = 3;
+
+  int kind = 0;
+  int sequence = 0;
+  int payloadSize = 0;
+  String payloadLifetime = "borrowed for the native callback duration only";
+
+  int getKind() { return kind; }
+  int getSequence() { return sequence; }
+  int getPayloadSize() { return payloadSize; }
+  String getPayloadLifetime() { return payloadLifetime; }
+}
