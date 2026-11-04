@@ -182,13 +182,27 @@ const Canvas& Window::render() {
             int oh = s.h > 0 ? s.h : 160;
             if (ow > W) ow = W;
             if (oh > H) oh = H;
-            /* Anchor to the lower-right, a small inset above the status bar,
-             * which is where the connectivity trigger sits in these demos. */
             int margin = theme_.unit * 3;
-            int ox = W - ow - margin;
-            int oy = H - oh - (theme_.control_height + margin);
-            if (ox < margin) ox = margin;
-            if (oy < margin) oy = margin;
+            int ox, oy;
+            if (ov->overlay_top_left()) {
+                /* Menubar dropdown: anchor just below the top strip and, when a
+                 * per-overlay x is given, under its own menu button. Clamp so
+                 * the panel stays fully on-screen. */
+                int ax = ov->overlay_anchor_x();
+                ox = ax >= 0 ? ax : margin;
+                oy = theme_.control_height + margin;
+                if (ox + ow > W - margin) ox = W - ow - margin;
+                if (ox < margin) ox = margin;
+                if (oy + oh > H - margin) oy = H - oh - margin;
+                if (oy < margin) oy = margin;
+            } else {
+                /* Default: lower-right inset above the status bar (connectivity
+                 * popup), preserving the historical placement. */
+                ox = W - ow - margin;
+                oy = H - oh - (theme_.control_height + margin);
+                if (ox < margin) ox = margin;
+                if (oy < margin) oy = margin;
+            }
             ov->arrange(ctx, Rect{ox, oy, ow, oh});
             canvas_.push_clip(Rect{0, 0, W, H});
             ov->paint(ctx);

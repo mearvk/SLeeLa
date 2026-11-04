@@ -1215,8 +1215,29 @@ void Card::arrange(const PaintContext& ctx, const Rect& area) {
 void Card::paint(PaintContext& ctx) {
     const Theme& t = *ctx.theme;
     Rect c = content();
-    ctx.canvas->fill_round_rect(c, t.radius, t.surface);
-    ctx.canvas->stroke_round_rect(c, t.radius, 1.0, t.border);
+    if (is_overlay_) {
+        /* A floating overlay card (a popup / menu dropdown) reads as a raised
+         * panel: a soft drop shadow beneath it, a top-lit vertical-gradient
+         * face, and a bright top hairline over the themed border. Only overlays
+         * get this treatment so inline cards stay flat. */
+        for (int i = 3; i >= 1; --i) {
+            Rect s{c.x + i, c.y + i + 1, c.w, c.h};
+            ctx.canvas->fill_round_rect(s, t.radius + i,
+                Color{0, 0, 0, static_cast<uint8_t>(20 + 10 * (3 - i))});
+        }
+        /* Raised face: lighter surface_hi at the top easing to surface at the
+         * bottom gives a subtle 3D dome without any new theme tokens. */
+        ctx.canvas->fill_round_rect_vgrad(c, t.radius, t.surface_hi, t.surface);
+        ctx.canvas->stroke_round_rect(c, t.radius, 1.0, t.border);
+        /* Top-edge highlight: a thin brighter inset line across the top for the
+         * lit bevel. */
+        Rect hi{c.x + 2, c.y + 1, c.w - 4, 1};
+        ctx.canvas->fill_round_rect(hi, 0.5,
+            Color{t.surface_hi.r, t.surface_hi.g, t.surface_hi.b, 140});
+    } else {
+        ctx.canvas->fill_round_rect(c, t.radius, t.surface);
+        ctx.canvas->stroke_round_rect(c, t.radius, 1.0, t.border);
+    }
     /* A card is a hard paint boundary: clip children to the card's content box
      * so interior components can never spill past the rounded border/margins. */
     if (ctx.canvas) ctx.canvas->push_clip(c);

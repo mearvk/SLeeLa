@@ -72,6 +72,10 @@ implements the same surface.
 | `uiScrollBar(parent,orient,val,page)` → int | A scroll bar indicator | `slui_scroll_bar` |
 | `uiFrame(parent,title)` → int | A titled bordered container | `slui_frame` |
 | `uiCard(parent)` → int | A raised surface panel | `slui_card` |
+| `uiPopupCreate(parent)` → int | A hidden floating overlay card (menu/dropdown); painted last, above the frame, with a drop shadow + raised 3D face | `slui_popup_create` |
+| `uiPopupSetOpen(popup,open)` | Show (1) / dismiss (0) the popup | `slui_popup_set_open` |
+| `uiPopupIsOpen(popup)` → int | 1 while the popup is open | `slui_popup_is_open` |
+| `uiPopupSetAnchor(popup,topLeft,x)` | Place the overlay: `topLeft`=1 anchors below the top strip (a menubar dropdown), `x`>=0 fixes its left edge under its button; default is lower-right | `slui_popup_set_anchor` |
 | `uiGrid(parent,cols,spacing)` → int | A row/column grid | `slui_grid` |
 | `uiStatusBar(parent)` → int | A footer status strip | `slui_status_bar` |
 | `uiImage(parent,src,w,h)` → int | Image tile; `src` is a file path — decodes & renders real JPEG (always) / PNG, AVIF (when linked); a non-file string shows a captioned tile. Re-decoded on `uiWidgetSetText`. | `slui_image` |

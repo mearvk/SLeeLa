@@ -215,6 +215,11 @@ typedef enum {
      * observe the window closing and can only exit via its own Quit control. */
     SLUI_FN_WINDOW_CLOSED,             /* uiWindowClosed(window:i) -> 1/0 */
 
+    /* Place a popup overlay: topLeft != 0 anchors it below the top strip (a
+     * menubar dropdown) instead of the default lower-right; x >= 0 puts its left
+     * edge at that pixel (under its menu button), clamped on-screen. */
+    SLUI_FN_POPUP_SET_ANCHOR,          /* uiPopupSetAnchor(popup:i, topLeft:i, x:i) -> null */
+
     SLUI_FN__COUNT               /* KEEP LAST: one past the last id             */
 } SleelaUiFnId;
 

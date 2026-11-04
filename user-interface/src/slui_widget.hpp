@@ -133,6 +133,12 @@ public:
     bool is_overlay() const { return is_overlay_; }
     void set_overlay(bool on) { is_overlay_ = on; }
 
+    /* Overlay placement hints (honored by the Window's overlay pass): anchor a
+     * popup top-left (a menubar dropdown) and optionally fix its left edge x. */
+    bool overlay_top_left() const { return anchor_top_left_; }
+    int  overlay_anchor_x() const { return anchor_x_; }
+    void set_overlay_anchor(bool top_left, int x) { anchor_top_left_ = top_left; anchor_x_ = x; }
+
     void paint_children(PaintContext& ctx) {
         for (auto& c : children_) {
             if (c->visible_ && !c->is_overlay_) c->paint(ctx);
@@ -291,6 +297,12 @@ protected:
     bool destructive_ = false;
     bool activated_ = false; /* one-shot activation latch (take_activated) */
     bool is_overlay_ = false; /* floats forward of the frame; painted last */
+    /* Overlay placement. Default -1 keeps the historical lower-right anchor (the
+     * connectivity popup). anchor_top_left_ anchors near the top-left instead
+     * (a menubar dropdown), and anchor_x_ >= 0 nudges it to sit under its menu
+     * button (a left inset in pixels). */
+    bool anchor_top_left_ = false;
+    int  anchor_x_ = -1;
 
     SLUIActivateHandler activate_ = nullptr;
     void* activate_user_ = nullptr;

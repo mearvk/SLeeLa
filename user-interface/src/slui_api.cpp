@@ -379,6 +379,9 @@ SLUIWidget* slui_popup_create(SLUIWidget* parent) {
 void slui_popup_set_open(SLUIWidget* popup, int open) {
     slui_widget_set_visible(popup, open != 0);
 }
+void slui_popup_set_anchor(SLUIWidget* popup, int top_left, int x) {
+    if (popup) as_widget(popup)->set_overlay_anchor(top_left != 0, x);
+}
 int slui_popup_is_open(const SLUIWidget* popup) {
     return popup ? as_widget(popup)->visible() : 0;
 }

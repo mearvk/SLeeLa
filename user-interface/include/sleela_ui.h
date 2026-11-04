@@ -474,6 +474,11 @@ void slui_widget_set_visible(SLUIWidget *w, int visible);
 SLUIWidget *slui_popup_create(SLUIWidget *parent);
 void slui_popup_set_open(SLUIWidget *popup, int open);
 int slui_popup_is_open(const SLUIWidget *popup);
+/* Overlay placement for a popup. top_left != 0 anchors the panel just below the
+ * top strip (a menubar dropdown) instead of the default lower-right; x >= 0
+ * additionally places its left edge at that pixel (under its menu button),
+ * clamped on-screen. x < 0 leaves the horizontal placement to the default. */
+void slui_popup_set_anchor(SLUIWidget *popup, int top_left, int x);
 
 /* Text accessors (label/button/entry). text buffers are copied in; `out`/`cap`
  * read the current value and return the full length (even if truncated). */

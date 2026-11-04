@@ -170,6 +170,7 @@ int sleela_ui_arity(int id) {
         /* 3 args */
         case SLUI_FN_BOX: case SLUI_FN_GRID: case SLUI_FN_TOGGLE:
         case SLUI_FN_CHECK_BOX: case SLUI_FN_HEADING: case SLUI_FN_INFO_BAR:
+        case SLUI_FN_POPUP_SET_ANCHOR:
         case SLUI_FN_WIDGET_SET_ALIGN: case SLUI_FN_WIDGET_SET_EXPAND:
         case SLUI_FN_WIDGET_SET_SIZE_REQ: case SLUI_FN_AVATAR:
         case SLUI_FN_THEME_SET_FONT:
@@ -326,6 +327,7 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_POPUP_CREATE:        return r_int(widget_put(slui_popup_create(widget_get(ai(a,n,0)))));
         case SLUI_FN_POPUP_SET_OPEN:       slui_popup_set_open(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_POPUP_IS_OPEN:        return r_int(slui_popup_is_open(widget_get(ai(a,n,0))));
+        case SLUI_FN_POPUP_SET_ANCHOR:     slui_popup_set_anchor(widget_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2)); return r_null();
         case SLUI_FN_WIFI_OPEN_SETTINGS:    return r_int(slui_wifi_open_settings());
         case SLUI_FN_WIFI_SCAN: return r_int(sleela_wifi_vm_scan());
         case SLUI_FN_WIFI_NETWORK_COUNT: return r_int(sleela_wifi_vm_network_count());
