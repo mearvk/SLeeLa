@@ -1,0 +1,14 @@
+< SLeeLa Standard Library Definition.
+  Definition: Native OS-support binding API note.
+  These names describe the user-mode runtime contract; this facade does not
+  install OS hooks, launch processes, or grant privileges. >
+#sleela 2.5
+material;
+
+class SLOsSupportRuntime {
+  String packageName = "os-level-support";
+  String boundary = "in-process callbacks and cooperative task queue";
+
+  String getPackageName() { return packageName; }
+  String getBoundary() { return boundary; }
+}
