@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11775
-library-packages: 108
+library-source-files: 11778
+library-packages: 109
 module-facade-symbols: 75
-total-symbol-records: 11850
+total-symbol-records: 11853
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11470,6 +11470,9 @@ sommeliers	SLSommelierOffer.sleela	lib/sommeliers/SLSommelierOffer.sleela	source
 sommeliers	SLSommelierOfferRegistry.sleela	lib/sommeliers/SLSommelierOfferRegistry.sleela	source
 sommeliers	SLSommelierProfile.sleela	lib/sommeliers/SLSommelierProfile.sleela	source
 sommeliers	SLSommelierSession.sleela	lib/sommeliers/SLSommelierSession.sleela	source
+spatial	SLOctree.sleela	lib/spatial/SLOctree.sleela	source
+spatial	SLSpatialHash.sleela	lib/spatial/SLSpatialHash.sleela	source
+spatial	SLVoxelGrid.sleela	lib/spatial/SLVoxelGrid.sleela	source
 sst	DynamiteConnector.sleela	lib/sst/DynamiteConnector.sleela	source
 sst	MySQLConnector.sleela	lib/sst/MySQLConnector.sleela	source
 sst	PostgreSQLConnector.sleela	lib/sst/PostgreSQLConnector.sleela	source

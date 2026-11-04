@@ -47062,6 +47062,18 @@
       "sha256": "d7b6365b55c82dcd5b762295a2f57a6eab59fd35932e83723514faea5227e6d7"
     },
     {
+      "path": "lib/spatial/SLOctree.sleela",
+      "sha256": "5985ea0a5a0b1cfda5a7af6e9ac4137aab06802187b9a10c9b998835329235bc"
+    },
+    {
+      "path": "lib/spatial/SLSpatialHash.sleela",
+      "sha256": "4b1b4b5354e3293447de5f0bd4c26f3a620fb8229754b9ad469a6f92de3a339e"
+    },
+    {
+      "path": "lib/spatial/SLVoxelGrid.sleela",
+      "sha256": "bdd2e881fe4058ecc59ee8f477b1819109aad0e3a3f8f9073ada0c2d19463764"
+    },
+    {
       "path": "lib/sst/DynamiteConnector.sleela",
       "sha256": "ec355885b0d0d12a1f2d9349b8fcd3617cb72e805a05bba81cf1e69bb1d1221c"
     },

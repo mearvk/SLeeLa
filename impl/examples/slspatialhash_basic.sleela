@@ -1,0 +1,43 @@
+#sleela 2.1
+import spatial;
+// SLSpatialHash checks: quantization, point query, negative coords, neighbourhood scan.
+class SLSpatialHashBasic {
+  void main() {
+    SLSpatialHash h = new SLSpatialHash();
+    h.configure(10, 16);          // cellSize 10, 16 buckets
+    print(h.getCellSize());       // 10
+    print(h.empty());             // true
+
+    // Points 0..9 fall in cell 0; 10..19 in cell 1; negatives floor down.
+    print(h.cellX(5));            // 0
+    print(h.cellX(10));           // 1
+    print(h.cellX(-1));           // -1 (floor, not 0)
+    print(h.cellX(-10));          // -1
+    print(h.cellX(-11));          // -2
+
+    print(h.insert(5, 5, 5, "A"));    // true: new cell (0,0,0)
+    print(h.insert(7, 2, 9, "A2"));   // false: same cell, overwrite
+    print(h.insert(15, 5, 5, "B"));   // true: cell (1,0,0)
+    print(h.insert(-3, -3, -3, "C")); // true: cell (-1,-1,-1)
+    print(h.length());                // 3
+
+    print(h.queryPoint(1, 1, 1));     // A2 (overwrote A)
+    print(h.queryPoint(15, 9, 0));    // B
+    print(h.queryPoint(-3, -3, -3));  // C
+    print(h.queryPoint(100, 100, 100) == null); // true: empty cell
+    print(h.contains(19, 0, 0));      // true: cell (1,0,0)
+    print(h.contains(25, 0, 0));      // false: cell (2,0,0)
+
+    // Neighbourhood of point (5,5,5) = cell (0,0,0), radius 1 -> 3x3x3.
+    // Should find A2 (cell 0,0,0), B (cell 1,0,0 is a neighbour), C (cell -1,-1,-1 is a neighbour).
+    SLList near = new SLList();
+    int n = h.queryNeighbourhood(5, 5, 5, 1, near);
+    print(n);                         // 3
+    print(near.length());             // 3
+
+    // Radius 0 -> only the centre cell.
+    SLList just = new SLList();
+    print(h.queryNeighbourhood(5, 5, 5, 0, just)); // 1
+    print(just.get(0));               // A2
+  }
+}
